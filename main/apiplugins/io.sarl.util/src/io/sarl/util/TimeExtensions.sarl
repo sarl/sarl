@@ -48,7 +48,7 @@ public final class TimeExtensions {
 
 	/** Convert milliseconds to milliseconds.
 	 *
-	 * @param milis - number of milliseconds to convert.
+	 * @param milis number of milliseconds to convert.
 	 * @return the number of milliseconds in <code>milis</code>.
 	 */
 	static def milliseconds(milis : Integer) : long {
@@ -57,7 +57,7 @@ public final class TimeExtensions {
 
 	/** Convert seconds to milliseconds.
 	 *
-	 * @param secs - number of seconds to convert.
+	 * @param secs number of seconds to convert.
 	 * @return the number of milliseconds in seconds.
 	 */
 	static def seconds(secs : Integer) : long {
@@ -66,7 +66,7 @@ public final class TimeExtensions {
 
 	/** Convert minutes to milliseconds.
 	 *
-	 * @param mins - number of minutes to convert.
+	 * @param mins number of minutes to convert.
 	 * @return the number of milliseconds in <code>mins</code>
 	 */
 	static def minutes(mins : Integer) : long {
@@ -75,7 +75,7 @@ public final class TimeExtensions {
 
 	/** Convert hours to milliseconds.
 	 *
-	 * @param hours - number of hours to convert.
+	 * @param hours number of hours to convert.
 	 * @return the number of milliseconds in <code>hours</code>
 	 */
 	static def hours(hours : Integer) : long {
@@ -84,7 +84,7 @@ public final class TimeExtensions {
 
 	/** Convert days to milliseconds.
 	 *
-	 * @param days - number of days to convert.
+	 * @param days number of days to convert.
 	 * @return the number of days in <code>days</code>
 	 */
 	static def days(days : Integer) : long {
@@ -93,7 +93,7 @@ public final class TimeExtensions {
 
 	/** Convert weeks to milliseconds.
 	 *
-	 * @param weeks - number of weeks to convert.
+	 * @param weeks number of weeks to convert.
 	 * @return the number of milliseconds in <code>weeks</code>
 	 */
 	static def weeks(weeks : Integer) : long {

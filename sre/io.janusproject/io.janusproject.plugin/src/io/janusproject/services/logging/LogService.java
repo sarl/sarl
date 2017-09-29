@@ -57,8 +57,8 @@ public interface LogService extends DependentService {
 	/**
 	 * Log an information message.
 	 *
-	 * @param message - the message.
-	 * @param params - the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
+	 * @param message the message.
+	 * @param params the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
 	 * @see #fineInfo(String, Object...)
 	 * @see #finerInfo(String, Object...)
 	 */
@@ -67,8 +67,8 @@ public interface LogService extends DependentService {
 	/**
 	 * Log a fine information message.
 	 *
-	 * @param message - the message in the properties.
-	 * @param params - the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
+	 * @param message the message in the properties.
+	 * @param params the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
 	 * @see #info(String, Object...)
 	 * @see #finerInfo(String, Object...)
 	 */
@@ -77,8 +77,8 @@ public interface LogService extends DependentService {
 	/**
 	 * Log a finer information message.
 	 *
-	 * @param message - the message in the properties.
-	 * @param params - the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
+	 * @param message the message in the properties.
+	 * @param params the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
 	 * @see #info(String, Object...)
 	 * @see #fineInfo(String, Object...)
 	 */
@@ -87,23 +87,23 @@ public interface LogService extends DependentService {
 	/**
 	 * Log a debug message.
 	 *
-	 * @param message - the message in the properties.
-	 * @param params - the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
+	 * @param message the message in the properties.
+	 * @param params the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
 	 */
 	void debug(String message, Object... params);
 
 	/**
 	 * Log a warning message.
 	 *
-	 * @param message - the message in the properties.
-	 * @param params - the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
+	 * @param message the message in the properties.
+	 * @param params the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
 	 */
 	void warning(String message, Object... params);
 
 	/**
 	 * Log a warning message.
 	 *
-	 * @param exception - the exception to log.
+	 * @param exception the exception to log.
 	 * @since 0.5
 	 */
 	void warning(Throwable exception);
@@ -111,15 +111,15 @@ public interface LogService extends DependentService {
 	/**
 	 * Log an error message.
 	 *
-	 * @param message - the message in the properties.
-	 * @param params - the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
+	 * @param message the message in the properties.
+	 * @param params the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
 	 */
 	void error(String message, Object... params);
 
 	/**
 	 * Log an error message.
 	 *
-	 * @param exception - the exception to log.
+	 * @param exception the exception to log.
 	 * @since 0.5
 	 */
 	void error(Throwable exception);
@@ -127,16 +127,16 @@ public interface LogService extends DependentService {
 	/**
 	 * Log the given record.
 	 *
-	 * @param record - the description of the message to log.
+	 * @param record the description of the message to log.
 	 */
 	void log(LogRecord record);
 
 	/**
 	 * Log a warning message.
 	 *
-	 * @param level - level of logging for the message.
-	 * @param message - the message in the properties.
-	 * @param params - the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
+	 * @param level level of logging for the message.
+	 * @param message the message in the properties.
+	 * @param params the values to insert into the message in place of the parameter marker (<code>{0}</code>, etc.)
 	 */
 	void log(Level level, String message, Object... params);
 
@@ -150,14 +150,14 @@ public interface LogService extends DependentService {
 	/**
 	 * Change the logger.
 	 *
-	 * @param logger - the background logger instance.
+	 * @param logger the background logger instance.
 	 */
 	void setLogger(Logger logger);
 
 	/**
 	 * Change the filter that permits to output particular logs.
 	 *
-	 * @param filter - the filter.
+	 * @param filter the filter.
 	 */
 	void setFilter(Filter filter);
 
@@ -172,7 +172,7 @@ public interface LogService extends DependentService {
 	 * Check if a message of the given level would actually be logged by this logger. This check is based on the Loggers effective
 	 * level, which may be inherited from its parent.
 	 *
-	 * @param level - a message logging level
+	 * @param level a message logging level
 	 * @return <code>true</code> if the given message level is currently being logged.
 	 */
 	boolean isLoggeable(Level level);
@@ -187,7 +187,7 @@ public interface LogService extends DependentService {
 	/**
 	 * Change the level of logging.
 	 *
-	 * @param level - the level of the logging.
+	 * @param level the level of the logging.
 	 */
 	void setLevel(Level level);
 

@@ -67,8 +67,8 @@ public final class SARLMapExtensions {
 	 *
 	 * @param <K> - type of the map keys.
 	 * @param <V> - type of the map values.
-	 * @param map - the map to update.
-	 * @param entry - the entry (key, value) to add into the map.
+	 * @param map the map to update.
+	 * @param entry the entry (key, value) to add into the map.
 	 * @return the value previously associated to the key, or <code>null</code>
 	 *     if the key was not present in the map before the addition.
 	 */
@@ -84,8 +84,8 @@ public final class SARLMapExtensions {
 	 *
 	 * @param <K> - type of the map keys.
 	 * @param <V> - type of the map values.
-	 * @param outputMap - the map to update.
-	 * @param inputMap - the entries to add.
+	 * @param outputMap the map to update.
+	 * @param inputMap the entries to add.
 	 */
 	@Inline(value = "$1.putAll($2)", statementExpression = true)
 	public static <K, V> void operator_add(Map<K, V> outputMap, Map<? extends K, ? extends V> inputMap) {
@@ -101,8 +101,8 @@ public final class SARLMapExtensions {
 	 *
 	 * @param <K> - type of the map keys.
 	 * @param <V> - type of the map values.
-	 * @param left - the map to consider.
-	 * @param right - the entry (key, value) to add into the map.
+	 * @param left the map to consider.
+	 * @param right the entry (key, value) to add into the map.
 	 * @return an immutable map with the content of the map and with the given entry.
 	 * @throws IllegalArgumentException - when the right operand key exists in the left operand.
 	 */
@@ -122,8 +122,8 @@ public final class SARLMapExtensions {
 	 *
 	 * @param <K> - type of the map keys.
 	 * @param <V> - type of the map values.
-	 * @param left - the left map.
-	 * @param right - the right map.
+	 * @param left the left map.
+	 * @param right the right map.
 	 * @return a map with the merged contents from the two maps.
 	 * @throws IllegalArgumentException - when a right operand key exists in the left operand.
 	 */
@@ -137,8 +137,8 @@ public final class SARLMapExtensions {
 	 *
 	 * @param <K> - type of the map keys.
 	 * @param <V> - type of the map values.
-	 * @param map - the map to update.
-	 * @param key - the key to remove.
+	 * @param map the map to update.
+	 * @param key the key to remove.
 	 * @return the removed value, or <code>null</code> if the key was not
 	 *     present in the map.
 	 * @since 2.8
@@ -155,8 +155,8 @@ public final class SARLMapExtensions {
 	 *
 	 * @param <K> - type of the map keys.
 	 * @param <V> - type of the map values.
-	 * @param map - the map to update.
-	 * @param entry - the entry (key, value) to remove from the map.
+	 * @param map the map to update.
+	 * @param entry the entry (key, value) to remove from the map.
 	 * @return {@code true} if the pair was removed.
 	 */
 	@Inline(value = "$1.remove($2.getKey(), $2.getValue())", statementExpression = true)
@@ -169,8 +169,8 @@ public final class SARLMapExtensions {
 	 *
 	 * @param <K> - type of the map keys.
 	 * @param <V> - type of the map values.
-	 * @param map - the map to update.
-	 * @param keysToRemove - the keys of the pairs to remove.
+	 * @param map the map to update.
+	 * @param keysToRemove the keys of the pairs to remove.
 	 */
 	public static <K, V> void operator_remove(Map<K, V> map, Iterable<? super K> keysToRemove) {
 		for (final Object key : keysToRemove) {
@@ -185,8 +185,8 @@ public final class SARLMapExtensions {
 	 *
 	 * @param <K> - type of the map keys.
 	 * @param <V> - type of the map values.
-	 * @param left - the map to consider.
-	 * @param right - the entry (key, value) to remove from the map.
+	 * @param left the map to consider.
+	 * @param right the entry (key, value) to remove from the map.
 	 * @return an immutable map with the content of the map and with the given entry.
 	 * @throws IllegalArgumentException - when the right operand key exists in the left operand.
 	 */
@@ -204,8 +204,8 @@ public final class SARLMapExtensions {
 	 *
 	 * @param <K> - type of the map keys.
 	 * @param <V> - type of the map values.
-	 * @param map - the map to update.
-	 * @param key - the key to remove.
+	 * @param map the map to update.
+	 * @param key the key to remove.
 	 * @return the map with the content of the map except the key.
 	 */
 	@Pure
@@ -230,8 +230,8 @@ public final class SARLMapExtensions {
 	 *
 	 * @param <K> - type of the map keys.
 	 * @param <V> - type of the map values.
-	 * @param left - the map to update.
-	 * @param right - the pairs to remove.
+	 * @param left the map to update.
+	 * @param right the pairs to remove.
 	 * @return the map with the content of the left map except the pairs of the right map.
 	 */
 	@Pure
@@ -247,8 +247,8 @@ public final class SARLMapExtensions {
 	 *
 	 * @param <K> - type of the map keys.
 	 * @param <V> - type of the map values.
-	 * @param map - the map to update.
-	 * @param keys - the keys of the pairs to remove.
+	 * @param map the map to update.
+	 * @param keys the keys of the pairs to remove.
 	 * @return the map with the content of the map except the pairs.
 	 */
 	@Pure
@@ -265,8 +265,8 @@ public final class SARLMapExtensions {
 	 *
 	 * @param <K> - type of the map keys.
 	 * @param <V> - type of the map values.
-	 * @param map - the map to consider.
-	 * @param key - the key of the value.
+	 * @param map the map to consider.
+	 * @param key the key of the value.
 	 * @return the value associated to the key, or <code>null</code> if
 	 *     the key was not found.
 	 */
@@ -285,8 +285,8 @@ public final class SARLMapExtensions {
 	 *
 	 * @param <K> - type of the map keys.
 	 * @param <V> - type of the map values.
-	 * @param left - the left map.
-	 * @param right - the right map.
+	 * @param left the left map.
+	 * @param right the right map.
 	 * @return a map with the merged contents from the two maps.
 	 */
 	public static <K, V> Map<K, V> union(Map<? extends K, ? extends V> left, Map<? extends K, ? extends V> right) {
@@ -312,8 +312,8 @@ public final class SARLMapExtensions {
 
 		/** Construct the wrapping map.
 		 *
-		 * @param left - the left operand to merge.
-		 * @param right - the right operand to merge.
+		 * @param left the left operand to merge.
+		 * @param right the right operand to merge.
 		 */
 		MergingMap(Map<? extends K, ? extends V> left, Map<? extends K, ? extends V> right) {
 			this.left = left;

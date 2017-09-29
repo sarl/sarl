@@ -53,14 +53,14 @@ public interface DMap<K, V> extends Map<K, V> {
 	/**
 	 * Add listener on events on the DMap.
 	 *
-	 * @param listener - the listener
+	 * @param listener the listener
 	 */
 	void addDMapListener(DMapListener<? super K, ? super V> listener);
 
 	/**
 	 * Remove listener on events on the DMap.
 	 *
-	 * @param listener - the listener
+	 * @param listener the listener
 	 */
 	void removeDMapListener(DMapListener<? super K, ? super V> listener);
 

@@ -80,7 +80,7 @@ public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {
 
 	/** Create a qualified name with the given name.
 	 *
-	 * @param name - the name.
+	 * @param name the name.
 	 * @return the qualified name.
 	 */
 	public static QualifiedName qualify(String name) {
@@ -142,8 +142,8 @@ public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {
 	/** Save the flag that indicates if the specific project options must be
 	 * used.
 	 *
-	 * @param project - the project.
-	 * @param useSpecificOptions - indicates if the specifi options must be used.
+	 * @param project the project.
+	 * @param useSpecificOptions indicates if the specifi options must be used.
 	 * @return <code>true</code> if the property was saved successfully.
 	 */
 	@SuppressWarnings("static-method")

@@ -114,20 +114,20 @@ public class SarlCapacitySourceAppender extends AbstractSourceAppender implement
 	}
 
 	/** Add the super type.
-	 * @param superType - the qualified name of the super type.
+	 * @param superType the qualified name of the super type.
 	 */
 	public void addExtends(String superType) {
 		this.builder.addExtends(superType);	}
 
 	/** Add a modifier.
-	 * @param modifier - the modifier to add.
+	 * @param modifier the modifier to add.
 	 */
 	public void addModifier(String modifier) {
 		this.builder.addModifier(modifier);
 	}
 
 	/** Create a SarlAction.
-	 * @param name - the name of the SarlAction.
+	 * @param name the name of the SarlAction.
 	 * @return the builder.
 	 */
 	public ISarlActionBuilder addDefSarlAction(String name) {
@@ -135,7 +135,7 @@ public class SarlCapacitySourceAppender extends AbstractSourceAppender implement
 	}
 
 	/** Create a SarlAction.
-	 * @param name - the name of the SarlAction.
+	 * @param name the name of the SarlAction.
 	 * @return the builder.
 	 */
 	public ISarlActionBuilder addOverrideSarlAction(String name) {
@@ -144,7 +144,7 @@ public class SarlCapacitySourceAppender extends AbstractSourceAppender implement
 
 	/** Create a SarlAction.	 *
 	 * <p>This function is equivalent to {@link #addDefSarlAction}.
-	 * @param name - the name of the SarlAction.
+	 * @param name the name of the SarlAction.
 	 * @return the builder.
 	 */
 	public ISarlActionBuilder addSarlAction(String name) {

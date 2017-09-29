@@ -57,7 +57,7 @@ public class NewSarlFileWizard extends Wizard implements INewWizard {
 	private Injector injector;
 
 	/**
-	 * @param fileExtension - the extension of the file.
+	 * @param fileExtension the extension of the file.
 	 */
 	@Inject
 	public NewSarlFileWizard(@Named(Constants.FILE_EXTENSIONS) String fileExtension) {

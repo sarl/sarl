@@ -38,16 +38,16 @@ public interface SpaceRepositoryListener extends EventListener {
 	/**
 	 * Invoked when the space is added.
 	 *
-	 * @param space - reference to the created space.
-	 * @param isLocalCreation - indicates if the creation of the space was initiated on the current kernel.
+	 * @param space reference to the created space.
+	 * @param isLocalCreation indicates if the creation of the space was initiated on the current kernel.
 	 */
 	void spaceCreated(Space space, boolean isLocalCreation);
 
 	/**
 	 * Invoked when the space is destroyed.
 	 *
-	 * @param space - reference to the destroyed space.
-	 * @param isLocalDestruction - indicates if the destruction of the space was initiated on the current kernel.
+	 * @param space reference to the destroyed space.
+	 * @param isLocalDestruction indicates if the destruction of the space was initiated on the current kernel.
 	 */
 	void spaceDestroyed(Space space, boolean isLocalDestruction);
 

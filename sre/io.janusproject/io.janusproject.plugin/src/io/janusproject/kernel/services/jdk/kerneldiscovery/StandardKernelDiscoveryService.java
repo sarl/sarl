@@ -79,8 +79,8 @@ public class StandardKernelDiscoveryService extends AbstractDependentService
 	/**
 	 * Do the post initialization.
 	 *
-	 * @param networkService - network service to be linked to.
-	 * @param executorService - execution service to use.
+	 * @param networkService network service to be linked to.
+	 * @param executorService execution service to use.
 	 */
 	@Inject
 	void postConstruction(NetworkService networkService, ExecutorService executorService) {

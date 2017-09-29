@@ -223,7 +223,7 @@ public final class Boot {
 	/**
 	 * Parse the command line.
 	 *
-	 * @param args - the CLI arguments given to the program.
+	 * @param args the CLI arguments given to the program.
 	 * @return the arguments that are not recognized as CLI options.
 	 */
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
@@ -406,7 +406,7 @@ public final class Boot {
 	/**
 	 * Main function that is parsing the command line and launching the first agent.
 	 *
-	 * @param args - command line arguments
+	 * @param args command line arguments
 	 * @see #startJanus(Class, Object...)
 	 */
 	public static void main(String[] args) {
@@ -462,7 +462,7 @@ public final class Boot {
 	 * <p>The console stream is independent of the stream used by the {@link LoggingService logging service} of the platform. Indeed,
 	 * the console stream is used for displaying information, warnings and messages before the Janus platform is realy launched.
 	 *
-	 * @param stream - the stream to use for the console logging.
+	 * @param stream the stream to use for the console logging.
 	 */
 	public static void setConsoleLogger(PrintStream stream) {
 		consoleLogger = stream;
@@ -554,8 +554,8 @@ public final class Boot {
 	 *
 	 * <p>This function never returns.
 	 *
-	 * @param message - the description of the error.
-	 * @param exception - the cause of the error.
+	 * @param message the description of the error.
+	 * @param exception the cause of the error.
 	 */
 	@SuppressWarnings("checkstyle:regexp")
 	public static void showError(String message, Throwable exception) {
@@ -649,7 +649,7 @@ public final class Boot {
 	/**
 	 * Show the command line arguments. This function never returns.
 	 *
-	 * @param args - the command line arguments.
+	 * @param args the command line arguments.
 	 */
 	@SuppressWarnings("checkstyle:regexp")
 	public static void showCommandLineArguments(String[] args) {
@@ -680,7 +680,7 @@ public final class Boot {
 	 *
 	 * <p>This function must be called before launching the Janus platform.
 	 *
-	 * @param isOffline - the offline flag.
+	 * @param isOffline the offline flag.
 	 * @since 2.0.2.0
 	 * @see JanusConfig#OFFLINE
 	 */
@@ -740,7 +740,7 @@ public final class Boot {
 	 *
 	 * <p>This function must be called before launching the Janus platform.
 	 *
-	 * @param level - the verbosity level.
+	 * @param level the verbosity level.
 	 * @since 2.0.2.0
 	 * @see JanusConfig#VERBOSE_LEVEL_NAME
 	 */
@@ -753,8 +753,8 @@ public final class Boot {
 	 *
 	 * <p>This function must be called before launching the Janus platform.
 	 *
-	 * @param name - the name of the property.
-	 * @param value - the value of the property. If the value is <code>null</code> or empty, the property is removed.
+	 * @param name the name of the property.
+	 * @param value the value of the property. If the value is <code>null</code> or empty, the property is removed.
 	 * @since 2.0.2.0
 	 * @see System#setProperty(String, String)
 	 * @see System#getProperties()
@@ -773,7 +773,7 @@ public final class Boot {
 	 * Set the system property from the content of the file with the given URL. This function is an helper for setting the system
 	 * properties usually accessible with {@link System}.
 	 *
-	 * @param propertyFile - the URL from which a stream is opened.
+	 * @param propertyFile the URL from which a stream is opened.
 	 * @throws IOException - if the stream cannot be read.
 	 * @since 2.0.2.0
 	 * @see System#getProperties()
@@ -790,7 +790,7 @@ public final class Boot {
 	 * Set the system property from the content of the file with the given URL. This function is an helper for setting the system
 	 * properties usually accessible with {@link System}.
 	 *
-	 * @param propertyFile - the URL from which a stream is opened.
+	 * @param propertyFile the URL from which a stream is opened.
 	 * @throws IOException - if the stream cannot be read.
 	 * @since 2.0.2.0
 	 * @see System#getProperties()
@@ -837,8 +837,8 @@ public final class Boot {
 	 *
 	 * <p>The function {@link #getBootAgentIdentifier()} permits to retreive the identifier of the launched agent.
 	 *
-	 * @param agentCls - type of the first agent to launch.
-	 * @param params - parameters to pass to the agent as its initliazation parameters.
+	 * @param agentCls type of the first agent to launch.
+	 * @param params parameters to pass to the agent as its initliazation parameters.
 	 * @return the kernel that was launched.
 	 * @throws Exception - if it is impossible to start the platform.
 	 * @see #main(String[])
@@ -862,10 +862,10 @@ public final class Boot {
 	 *
 	 * <p>The function {@link #getBootAgentIdentifier()} permits to retreive the identifier of the launched agent.
 	 *
-	 * @param platformModule - type of the injection module to use for initializing the platform, if <code>null</code> the default
+	 * @param platformModule type of the injection module to use for initializing the platform, if <code>null</code> the default
 	 *        module will be used.
-	 * @param agentCls - type of the first agent to launch.
-	 * @param params - parameters to pass to the agent as its initliazation parameters.
+	 * @param agentCls type of the first agent to launch.
+	 * @param params parameters to pass to the agent as its initliazation parameters.
 	 * @return the kernel that was launched.
 	 * @throws Exception - if it is impossible to start the platform.
 	 * @since 0.5
@@ -896,9 +896,9 @@ public final class Boot {
 	 *
 	 * <p>The function {@link #getBootAgentIdentifier()} permits to retreive the identifier of the launched agent.
 	 *
-	 * @param startupModule - the injection module to use for initializing the platform.
-	 * @param agentCls - type of the first agent to launch.
-	 * @param params - parameters to pass to the agent as its initliazation parameters.
+	 * @param startupModule the injection module to use for initializing the platform.
+	 * @param agentCls type of the first agent to launch.
+	 * @param params parameters to pass to the agent as its initliazation parameters.
 	 * @return the kernel that was launched.
 	 * @throws Exception - if it is impossible to start the platform.
 	 * @since 0.5
@@ -926,7 +926,7 @@ public final class Boot {
 	/**
 	 * Start the SRE without an agent. This function prepare the default context.
 	 *
-	 * @param startupModule - the injection module to use for initializing the platform.
+	 * @param startupModule the injection module to use for initializing the platform.
 	 * @return the context that is created by the bootstrap. If {@code null} there is no context created.
 	 * @since 2.0.7.0
 	 */
@@ -971,7 +971,7 @@ public final class Boot {
 	/**
 	 * Changes the tool that permits to stop the application.
 	 *
-	 * @param exiter - the exit tool.
+	 * @param exiter the exit tool.
 	 */
 	public static void setExiter(Exiter exiter) {
 		applicationExiter = exiter;

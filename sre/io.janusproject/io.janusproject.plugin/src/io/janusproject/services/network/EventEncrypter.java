@@ -36,7 +36,7 @@ public interface EventEncrypter {
 	/**
 	 * Encrypt the given envelope.
 	 *
-	 * @param envelope - the envelope to encrypt.
+	 * @param envelope the envelope to encrypt.
 	 * @throws Exception - if error when encrypting.
 	 */
 	void encrypt(EventEnvelope envelope) throws Exception;
@@ -44,7 +44,7 @@ public interface EventEncrypter {
 	/**
 	 * Decrypt the given envelope.
 	 *
-	 * @param envelope - the envelope to decrypt.
+	 * @param envelope the envelope to decrypt.
 	 * @throws Exception - if error when decrypting.
 	 */
 	void decrypt(EventEnvelope envelope) throws Exception;
@@ -52,7 +52,7 @@ public interface EventEncrypter {
 	/**
 	 * Encrypt the given UUID.
 	 *
-	 * @param uuid - the UUID to encrypt.
+	 * @param uuid the UUID to encrypt.
 	 * @return the encrypted UUID.
 	 */
 	byte[] encryptUUID(UUID uuid);

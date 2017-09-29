@@ -81,30 +81,30 @@ public interface ISarlCapacityBuilder {
 	void setDocumentation(String doc);
 
 	/** Add the super type.
-	 * @param superType - the qualified name of the super type.
+	 * @param superType the qualified name of the super type.
 	 */
 	void addExtends(String superType);
 
 	/** Add a modifier.
-	 * @param modifier - the modifier to add.
+	 * @param modifier the modifier to add.
 	 */
 	void addModifier(String modifier);
 
 	/** Create a SarlAction.
-	 * @param name - the name of the SarlAction.
+	 * @param name the name of the SarlAction.
 	 * @return the builder.
 	 */
 	ISarlActionBuilder addDefSarlAction(String name);
 
 	/** Create a SarlAction.
-	 * @param name - the name of the SarlAction.
+	 * @param name the name of the SarlAction.
 	 * @return the builder.
 	 */
 	ISarlActionBuilder addOverrideSarlAction(String name);
 
 	/** Create a SarlAction.	 *
 	 * <p>This function is equivalent to {@link #addDefSarlAction}.
-	 * @param name - the name of the SarlAction.
+	 * @param name the name of the SarlAction.
 	 * @return the builder.
 	 */
 	ISarlActionBuilder addSarlAction(String name);

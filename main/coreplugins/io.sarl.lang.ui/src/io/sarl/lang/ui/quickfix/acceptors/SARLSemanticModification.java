@@ -45,7 +45,7 @@ public abstract class SARLSemanticModification implements ISemanticModification 
 
 	/** Set the issue fixed by this quick fix modification.
 	 *
-	 * @param issue - the fixed issue.
+	 * @param issue the fixed issue.
 	 */
 	protected void setIssue(Issue issue) {
 		this.issue = new WeakReference<>(issue);
@@ -53,7 +53,7 @@ public abstract class SARLSemanticModification implements ISemanticModification 
 
 	/** Set the tools related to the quick fixes.
 	 *
-	 * @param tools - the tools.
+	 * @param tools the tools.
 	 */
 	protected void setTools(SARLQuickfixProvider tools) {
 		this.tools = new WeakReference<>(tools);

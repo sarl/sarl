@@ -49,7 +49,7 @@ public class ExceptionLogService extends AbstractService implements LogService {
 	private final Logger logger;
 
 	/**
-	 * @param results - the results of the run.
+	 * @param results the results of the run.
 	 */
 	public ExceptionLogService(List<Object> results) {
 		this.results = results;
@@ -203,22 +203,22 @@ public class ExceptionLogService extends AbstractService implements LogService {
 		private static final long serialVersionUID = 7747342758657910404L;
 
 		/**
-		 * @param message - the error message.
+		 * @param message the error message.
 		 */
 		public LoggedException(String message) {
 			super(message);
 		}
 
 		/**
-		 * @param cause - the cause of the error..
+		 * @param cause the cause of the error..
 		 */
 		public LoggedException(Throwable cause) {
 			super(cause);
 		}
 
 		/**
-		 * @param message - the error message.
-		 * @param cause - the cause of the error..
+		 * @param message the error message.
+		 * @param cause the cause of the error..
 		 */
 		public LoggedException(String message, Throwable cause) {
 			super(message, cause);

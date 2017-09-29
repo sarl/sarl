@@ -63,8 +63,8 @@ public class DefaultContextInteractionsSkill extends BuiltinSkill implements Def
 	/**
 	 * Constructs a <code>DefaultContextInteractionsImpl</code>.
 	 *
-	 * @param agent - owner of the skill.
-	 * @param parentContext - reference to the parent context.
+	 * @param agent owner of the skill.
+	 * @param parentContext reference to the parent context.
 	 */
 	DefaultContextInteractionsSkill(Agent agent, AgentContext parentContext) {
 		super(agent);

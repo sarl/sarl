@@ -79,8 +79,8 @@ public abstract class AbstractEventSpace extends SpaceBase {
 	/**
 	 * Constructs an event space.
 	 *
-	 * @param id - identifier of the space.
-	 * @param factory - factory that is used to create the internal data structure.
+	 * @param id identifier of the space.
+	 * @param factory factory that is used to create the internal data structure.
 	 */
 	public AbstractEventSpace(SpaceID id, DistributedDataStructureService factory) {
 		super(id);
@@ -99,7 +99,7 @@ public abstract class AbstractEventSpace extends SpaceBase {
 	/**
 	 * Replies the address associated to the given participant.
 	 *
-	 * @param entity - instance of a participant.
+	 * @param entity instance of a participant.
 	 * @return the address of the participant with the given id.
 	 */
 	public final Address getAddress(EventListener entity) {
@@ -109,7 +109,7 @@ public abstract class AbstractEventSpace extends SpaceBase {
 	/**
 	 * Replies the address associated with the given id.
 	 *
-	 * @param id - the identifier of the participant.
+	 * @param id the identifier of the participant.
 	 * @return the address.
 	 */
 	public Address getAddress(UUID id) {
@@ -121,9 +121,9 @@ public abstract class AbstractEventSpace extends SpaceBase {
 	 *
 	 * <p>This function emits on the internal event bus of the agent (call to {@link #doEmit(Event, Scope)}), and on the network.
 	 *
-	 * @param eventSource - the source of the event.
-	 * @param event - the event to emit.
-	 * @param scope - description of the scope of the event, i.e. the receivers of the event.
+	 * @param eventSource the source of the event.
+	 * @param event the event to emit.
+	 * @param scope description of the scope of the event, i.e. the receivers of the event.
 	 * @since 2.0.6.0
 	 */
 	public final void emit(UUID eventSource, Event event, Scope<Address> scope) {
@@ -142,8 +142,8 @@ public abstract class AbstractEventSpace extends SpaceBase {
 
 	/** Ensure that the given event has a source.
 	 *
-	 * @param eventSource - the source of the event.
-	 * @param event - the event to emit.
+	 * @param eventSource the source of the event.
+	 * @param event the event to emit.
 	 * @since 2.0.6.0
 	 */
 	protected void ensureEventSource(UUID eventSource, Event event) {
@@ -161,8 +161,8 @@ public abstract class AbstractEventSpace extends SpaceBase {
 	 *
 	 * <p>This function emits the event <strong>only on the internal event bus</strong> of the agents.
 	 *
-	 * @param event - the event to emit.
-	 * @param scope - description of the scope of the event, i.e. the receivers of the event.
+	 * @param event the event to emit.
+	 * @param scope description of the scope of the event, i.e. the receivers of the event.
 	 */
 	protected void doEmit(Event event, Scope<? super Address> scope) {
 		assert scope != null;

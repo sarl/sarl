@@ -80,8 +80,8 @@ public class SarlActionSourceAppender extends AbstractSourceAppender implements 
 	}
 
 	/** Initialize the Ecore element.
-	 * @param container - the container of the SarlAction.
-	 * @param name - the name of the SarlAction.
+	 * @param container the container of the SarlAction.
+	 * @param name the name of the SarlAction.
 	 */
 	public void eInit(XtendTypeDeclaration container, String name, String modifier, IJvmTypeProvider context) {
 		this.builder.eInit(container, name, modifier, context);
@@ -154,7 +154,7 @@ public class SarlActionSourceAppender extends AbstractSourceAppender implements 
 	}
 
 	/** Add a modifier.
-	 * @param modifier - the modifier to add.
+	 * @param modifier the modifier to add.
 	 */
 	public void addModifier(String modifier) {
 		this.builder.addModifier(modifier);
@@ -167,7 +167,7 @@ public class SarlActionSourceAppender extends AbstractSourceAppender implements 
 	}
 
 	/** Add a type parameter.
-	 * @param name - the simple name of the type parameter.
+	 * @param name the simple name of the type parameter.
 	 * @return the builder of type parameter.
 	 */
 	public ITypeParameterBuilder addTypeParameter(String name) {

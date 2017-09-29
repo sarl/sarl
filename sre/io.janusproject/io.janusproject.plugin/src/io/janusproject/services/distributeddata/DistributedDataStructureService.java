@@ -51,7 +51,7 @@ public interface DistributedDataStructureService extends DependentService {
 	 *
 	 * @param <K> - types of the keys in the map.
 	 * @param <V> - types of the values in the map.
-	 * @param name - name of the shared map.
+	 * @param name name of the shared map.
 	 * @return the map.
 	 * @see #getMap(String, Comparator)
 	 */
@@ -72,8 +72,8 @@ public interface DistributedDataStructureService extends DependentService {
 	 *
 	 * @param <K> - types of the keys in the map.
 	 * @param <V> - types of the values in the map.
-	 * @param name - name of the shared map.
-	 * @param comparator - the comparator of the keys.
+	 * @param name name of the shared map.
+	 * @param comparator the comparator of the keys.
 	 * @return the map.
 	 * @see #getMap(String)
 	 */
@@ -93,7 +93,7 @@ public interface DistributedDataStructureService extends DependentService {
 	 *
 	 * @param <K> - types of the keys in the map.
 	 * @param <V> - types of the values in the map.
-	 * @param name - name of the shared multi-map.
+	 * @param name name of the shared multi-map.
 	 * @return the map.
 	 * @see #getMultiMap(String, Comparator)
 	 */
@@ -115,8 +115,8 @@ public interface DistributedDataStructureService extends DependentService {
 	 *
 	 * @param <K> - types of the keys in the map.
 	 * @param <V> - types of the values in the map.
-	 * @param name - name of the shared multi-map.
-	 * @param comparator - the comparator of the keys.
+	 * @param name name of the shared multi-map.
+	 * @param comparator the comparator of the keys.
 	 * @return the map.
 	 * @see #getMultiMap(String)
 	 */

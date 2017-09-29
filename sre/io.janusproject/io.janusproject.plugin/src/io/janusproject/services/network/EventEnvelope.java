@@ -55,11 +55,11 @@ public class EventEnvelope implements Serializable {
 	/**
 	 * Construct an envelope.
 	 *
-	 * @param contextId - identifier of the context in which the event occurs.
-	 * @param spaceID - identifier of the space in which the event occurs.
-	 * @param scope - scope for the event.
-	 * @param headers - custom header associated to the event.
-	 * @param body - body of the event.
+	 * @param contextId identifier of the context in which the event occurs.
+	 * @param spaceID identifier of the space in which the event occurs.
+	 * @param scope scope for the event.
+	 * @param headers custom header associated to the event.
+	 * @param body body of the event.
 	 */
 	public EventEnvelope(byte[] contextId, byte[] spaceID, byte[] scope, byte[] headers, byte[] body) {
 
@@ -124,7 +124,7 @@ public class EventEnvelope implements Serializable {
 	/**
 	 * Change the custom header.
 	 *
-	 * @param headers - the serialized header for the message
+	 * @param headers the serialized header for the message
 	 */
 	public void setCustomHeaders(byte[] headers) {
 		assert headers != null && headers.length > 0 : "Parameter 'headers' must not be null or zero-length"; //$NON-NLS-1$
@@ -134,7 +134,7 @@ public class EventEnvelope implements Serializable {
 	/**
 	 * Change the body of the event.
 	 *
-	 * @param body - the serialized message content
+	 * @param body the serialized message content
 	 */
 	public void setBody(byte[] body) {
 		assert body != null && body.length > 0 : "Parameter 'body' must not be null or zero-length"; //$NON-NLS-1$
@@ -144,7 +144,7 @@ public class EventEnvelope implements Serializable {
 	/**
 	 * Change the identifier of the context in which the event occurs.
 	 *
-	 * @param contextID - the serialized context identifier
+	 * @param contextID the serialized context identifier
 	 */
 	public void setContextId(byte[] contextID) {
 		assert contextID != null && contextID.length > 0 : "Parameter 'contextID' must not be null or zero-length"; //$NON-NLS-1$
@@ -154,7 +154,7 @@ public class EventEnvelope implements Serializable {
 	/**
 	 * Change the identifier of the space in which the event occurs.
 	 *
-	 * @param spaceID - the serialized space identifier
+	 * @param spaceID the serialized space identifier
 	 */
 	public void setSpaceId(byte[] spaceID) {
 		assert spaceID != null && spaceID.length > 0 : "Parameter 'spaceID' must not be null or zero-length"; //$NON-NLS-1$
@@ -164,7 +164,7 @@ public class EventEnvelope implements Serializable {
 	/**
 	 * Change the scope of the event.
 	 *
-	 * @param scope - the serialized scope
+	 * @param scope the serialized scope
 	 */
 	public void setScope(byte[] scope) {
 		assert scope != null && scope.length > 0 : "Parameter 'scope' must not be null or zero-length"; //$NON-NLS-1$

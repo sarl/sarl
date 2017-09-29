@@ -45,7 +45,7 @@ public interface BuiltinCapacitiesProvider {
 
 	/** Replies the built-in capacities for the given agent.
 	 *
-	 * @param agent - the agent for which the built-in capacities must be retreived.
+	 * @param agent the agent for which the built-in capacities must be retreived.
 	 * @return the built-in capacities for the given agent.
 	 */
 	@Pure
@@ -59,8 +59,8 @@ public interface BuiltinCapacitiesProvider {
 
 	/** Applies the given callback on the built-in capacities for the given agent.
 	 *
-	 * @param agent - the agent for which the built-in capacities must be retreived.
-	 * @param skillMappingCallback - the callback function for mapping a capacity and a skill.
+	 * @param agent the agent for which the built-in capacities must be retreived.
+	 * @param skillMappingCallback the callback function for mapping a capacity and a skill.
 	 *     The first argument is the agent. The second
 	 *     argument is the builtin capacity. The third argument is the skill instance.
 	 */

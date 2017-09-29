@@ -177,7 +177,7 @@ public final class Main {
 	/**
 	 * Parse the command line.
 	 *
-	 * @param args - the CLI arguments given to the program.
+	 * @param args the CLI arguments given to the program.
 	 * @param compiler the compiler to configure.
 	 */
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
@@ -397,7 +397,7 @@ public final class Main {
 	 *
 	 * <p>This function never returns.
 	 *
-	 * @param exception - the cause of the error.
+	 * @param exception the cause of the error.
 	 */
 	@SuppressWarnings("checkstyle:regexp")
 	protected static void showError(Throwable exception) {

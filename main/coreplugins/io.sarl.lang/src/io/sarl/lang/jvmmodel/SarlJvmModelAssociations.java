@@ -55,42 +55,42 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 
 	/** Replies the SARL event associated to the given type.
 	 *
-	 * @param jvmType - the JVM type.
+	 * @param jvmType the JVM type.
 	 * @return the SARL element.
 	 */
 	SarlEvent getSarlEvent(JvmGenericType jvmType);
 
 	/** Replies the SARL agent associated to the given type.
 	 *
-	 * @param jvmType - the JVM type.
+	 * @param jvmType the JVM type.
 	 * @return the SARL element.
 	 */
 	SarlAgent getSarlAgent(JvmGenericType jvmType);
 
 	/** Replies the SARL behavior associated to the given type.
 	 *
-	 * @param jvmType - the JVM type.
+	 * @param jvmType the JVM type.
 	 * @return the SARL element.
 	 */
 	SarlBehavior getSarlBehavior(JvmGenericType jvmType);
 
 	/** Replies the SARL capacity associated to the given type.
 	 *
-	 * @param jvmType - the JVM type.
+	 * @param jvmType the JVM type.
 	 * @return the SARL element.
 	 */
 	SarlCapacity getSarlCapacity(JvmGenericType jvmType);
 
 	/** Replies the SARL skill associated to the given type.
 	 *
-	 * @param jvmType - the JVM type.
+	 * @param jvmType the JVM type.
 	 * @return the SARL element.
 	 */
 	SarlSkill getSarlSkill(JvmGenericType jvmType);
 
 	/** Replies the SARL space associated to the given type.
 	 *
-	 * @param jvmType - the JVM type.
+	 * @param jvmType the JVM type.
 	 * @return the SARL element.
 	 * @since 0.6
 	 */
@@ -98,7 +98,7 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 
 	/** Replies the SARL artifact associated to the given type.
 	 *
-	 * @param jvmType - the JVM type.
+	 * @param jvmType the JVM type.
 	 * @return the SARL element.
 	 * @since 0.6
 	 */
@@ -106,7 +106,7 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 
 	/** Replies the SARL class associated to the given type.
 	 *
-	 * @param jvmType - the JVM type.
+	 * @param jvmType the JVM type.
 	 * @return the SARL element.
 	 * @since 0.6
 	 */
@@ -114,7 +114,7 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 
 	/** Replies the SARL interface associated to the given type.
 	 *
-	 * @param jvmType - the JVM type.
+	 * @param jvmType the JVM type.
 	 * @return the SARL element.
 	 * @since 0.6
 	 */
@@ -122,7 +122,7 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 
 	/** Replies the SARL enumeration associated to the given type.
 	 *
-	 * @param jvmType - the JVM type.
+	 * @param jvmType the JVM type.
 	 * @return the SARL element.
 	 * @since 0.6
 	 */
@@ -130,7 +130,7 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 
 	/** Replies the SARL annotation type associated to the given type.
 	 *
-	 * @param jvmType - the JVM type.
+	 * @param jvmType the JVM type.
 	 * @return the SARL element.
 	 * @since 0.6
 	 */

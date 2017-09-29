@@ -57,8 +57,8 @@ public interface IExpressionBuilder {
 	IJvmTypeProvider getTypeResolutionContext();
 
 	/** Initialize the expression.
-	 * @param context - the context of the expressions.
-	 * @param setter - the object that permits to assign the expression to the context.
+	 * @param context the context of the expressions.
+	 * @param setter the object that permits to assign the expression to the context.
 	 */
 	void eInit(EObject context, Procedure1<? super XExpression> setter, IJvmTypeProvider typeContext);
 
@@ -76,26 +76,26 @@ public interface IExpressionBuilder {
 
 	/** Change the expression in the container.
 	 *
-	 * @param expression - the textual representation of the expression.
+	 * @param expression the textual representation of the expression.
 	 */
 	void setExpression(String expression);
 
 	/** Change the expression in the container.
 	 *
-	 * @param expression - the expression.
+	 * @param expression the expression.
 	 */
 	void setXExpression(XExpression expression);
 
 
 	/** Replies the XExpression for the default value associated to the given type.
-	 * @param type - the type for which the default value should be determined.
+	 * @param type the type for which the default value should be determined.
 	 * @return the default value.
 	 */
 	@Pure
 	XExpression getDefaultXExpressionForType(String type);
 
 	/** Replies the default value for the given type.
-	 * @param type - the type for which the default value should be determined.
+	 * @param type the type for which the default value should be determined.
 	 * @return the default value.
 	 */
 	@Pure

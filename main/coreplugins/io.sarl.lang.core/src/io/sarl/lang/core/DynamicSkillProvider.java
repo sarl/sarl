@@ -44,8 +44,8 @@ public interface DynamicSkillProvider {
 	 *
 	 * <p>If the given type of skill depends on another builtin capacity, the corresponding skill is also installed.
 	 *
-	 * @param agent - the agent for which the built-in capacities must be retrieved.
-	 * @param capacity - the type of the capacity to retrieve.
+	 * @param agent the agent for which the built-in capacities must be retrieved.
+	 * @param capacity the type of the capacity to retrieve.
 	 * @return the skill that is installed into the agent.
 	 */
 	@Pure

@@ -156,7 +156,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 
 	/** Make absolute the given filename, relatively to the project's folder.
 	 *
-	 * @param file - the file to convert.
+	 * @param file the file to convert.
 	 * @return the absolute filename.
 	 */
 	protected File makeAbsolute(File file) {
@@ -218,12 +218,12 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 
 	/** Execute another MOJO.
 	 *
-	 * @param groupId - identifier of the MOJO plugin group.
-	 * @param artifactId - identifier of the MOJO plugin artifact.
-	 * @param version - version of the MOJO plugin version.
-	 * @param goal - the goal to run.
-	 * @param configuration - the XML code for the configuration.
-	 * @param dependencies - the dependencies of the plugin.
+	 * @param groupId identifier of the MOJO plugin group.
+	 * @param artifactId identifier of the MOJO plugin artifact.
+	 * @param version version of the MOJO plugin version.
+	 * @param goal the goal to run.
+	 * @param configuration the XML code for the configuration.
+	 * @param dependencies the dependencies of the plugin.
 	 * @throws MojoExecutionException when cannot run the MOJO.
 	 * @throws MojoFailureException when the build failed.
 	 */
@@ -301,7 +301,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 * The key given to {@link MavenHelper#getConfig(String)} is
 	 * <code>&lt;configurationKeyPrefix&gt;.dependencies</code>.
 	 *
-	 * @param configurationKeyPrefix - the string that is the prefix in the configuration file.
+	 * @param configurationKeyPrefix the string that is the prefix in the configuration file.
 	 * @return the list of the dependencies.
 	 * @throws MojoExecutionException if something cannot be done when extracting the dependencies.
 	 */

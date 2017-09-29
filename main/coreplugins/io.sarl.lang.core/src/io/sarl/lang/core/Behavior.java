@@ -36,7 +36,7 @@ public abstract class Behavior extends AgentTrait {
 	/**
 	 * Construct a behavior for the given agent.
 	 *
-	 * @param agent - the owner of this behavior.
+	 * @param agent the owner of this behavior.
 	 */
 	public Behavior(Agent agent) {
 		super(agent);

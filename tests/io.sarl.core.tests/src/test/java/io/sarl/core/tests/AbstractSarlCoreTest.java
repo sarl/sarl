@@ -49,8 +49,8 @@ public abstract class AbstractSarlCoreTest<T> extends AbstractSarlTest {
 
 	/** Load the given class, generated from the SARL code.
 	 *
-	 * @param iclassname - the name of the class.
-	 * @param expectedType - the type of the expected loaded class.
+	 * @param iclassname the name of the class.
+	 * @param expectedType the type of the expected loaded class.
 	 */
 	protected void loadSARL(String iclassname, Class<T> expectedType) {
 		assertNotNull(iclassname);
@@ -72,9 +72,9 @@ public abstract class AbstractSarlCoreTest<T> extends AbstractSarlTest {
 
 	/** Assert the the specified method is defined in the loaded class.
 	 *
-	 * @param methodName - the name of the method.
-	 * @param returnType - the type of the returned value.
-	 * @param parameterTypes - the types of the paremeters.
+	 * @param methodName the name of the method.
+	 * @param returnType the type of the returned value.
+	 * @param parameterTypes the types of the paremeters.
 	 * @return the method.
 	 */
 	protected Method assertMethod(String methodName, Class<?> returnType, Class<?>... parameterTypes) {
@@ -91,8 +91,8 @@ public abstract class AbstractSarlCoreTest<T> extends AbstractSarlTest {
 
 	/** Assert the the specified field is defined in the loaded class.
 	 *
-	 * @param fieldName - the name of the field.
-	 * @param fieldType - the type of the field.
+	 * @param fieldName the name of the field.
+	 * @param fieldType the type of the field.
 	 * @return the field.
 	 */
 	protected Field assertField(String fieldName, Class<?> fieldType) {
@@ -109,7 +109,7 @@ public abstract class AbstractSarlCoreTest<T> extends AbstractSarlTest {
 
 	/** Assert the the specified constructor is defined in the loaded class.
 	 *
-	 * @param parameterTypes - the types of the constructor parameters.
+	 * @param parameterTypes the types of the constructor parameters.
 	 * @return the constructor.
 	 */
 	@SuppressWarnings("unchecked")

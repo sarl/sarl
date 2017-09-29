@@ -90,7 +90,7 @@ public abstract class SREInstallWizard extends Wizard {
 	/**
 	 * Returns a page to use for editing a SRE install type.
 	 *
-	 * @param sre - the edited SRE.
+	 * @param sre the edited SRE.
 	 * @return the wizard page.
 	 */
 	public AbstractSREInstallPage getPage(ISREInstall sre) {

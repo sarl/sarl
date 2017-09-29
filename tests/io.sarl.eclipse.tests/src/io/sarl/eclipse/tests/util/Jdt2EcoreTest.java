@@ -259,9 +259,9 @@ public class Jdt2EcoreTest {
 	 * <tr><td>[ type</td><td>type[]</td></tr>
 	 * </table>
 	 *
-	 * @param type - the enclosing type of the method.
-	 * @param methodName - the name of the method.
-	 * @param returnType - the type of the returned value.
+	 * @param type the enclosing type of the method.
+	 * @param methodName the name of the method.
+	 * @param returnType the type of the returned value.
 	 * @throws JavaModelException
 	 */
 	protected static IMethod createIMethodMock(IType type, String methodName, String returnType,
@@ -286,9 +286,9 @@ public class Jdt2EcoreTest {
 	 * <tr><td>[ type</td><td>type[]</td></tr>
 	 * </table>
 	 *
-	 * @param type - the enclosing type of the method.
-	 * @param methodName - the name of the method.
-	 * @param returnType - the type of the returned value.
+	 * @param type the enclosing type of the method.
+	 * @param methodName the name of the method.
+	 * @param returnType the type of the returned value.
 	 * @throws JavaModelException
 	 */
 	protected static IMethod createIMethodMock(IType type, String methodName, String returnType,

@@ -48,8 +48,8 @@ class BehaviorGuardEvaluator {
 
     /** Creates a {@code Subscriber} for {@code method} on {@code listener}.
 	 *
-	 * @param target - the listener
-	 * @param method - the method to call to evaluate a guard
+	 * @param target the listener
+	 * @param method the method to call to evaluate a guard
 	 */
     new (target : Object, method : Method) {
     	assert target !== null
@@ -60,8 +60,8 @@ class BehaviorGuardEvaluator {
 	/**
 	 * Evaluates the guard associated to the specified {@code event} and returns the list of behaviors methods that must be
 	 * executed.
-	 * @param event - the event triggering behaviors
-	 * @param behaviorsMethodsToExecute - the list of behavior methods that will be completed according to the result of the guard
+	 * @param event the event triggering behaviors
+	 * @param behaviorsMethodsToExecute the list of behavior methods that will be completed according to the result of the guard
 	 *        evaluation, BE CARFEUL: we suppose that these behavior methods are parts of the SAME object where the
 	 *        {@code PerceptGuardEvaluator} method is declared
 	 */

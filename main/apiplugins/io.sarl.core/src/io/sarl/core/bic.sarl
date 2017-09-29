@@ -124,8 +124,8 @@ capacity ExternalContextAccess {
 	/** Replies if the given event was emitted in the space with
 	 * the given identifier..
 	 *
-	 * @param event - the event to test.
-	 * @param spaceID - the identifier of the space in which the event may be.
+	 * @param event the event to test.
+	 * @param spaceID the identifier of the space in which the event may be.
 	 * @return <code>true</code> if the given event was emitted in the
 	 *     space with the given identifier. Otherwise <code>false</code>.
 	 * @since 0.2
@@ -136,8 +136,8 @@ capacity ExternalContextAccess {
 	/** Replies if the given event was emitted in the space with
 	 * the given identifier..
 	 *
-	 * @param event - the event to test.
-	 * @param spaceID - the identifier of the space in which the event may be.
+	 * @param event the event to test.
+	 * @param spaceID the identifier of the space in which the event may be.
 	 * @return <code>true</code> if the given event was emitted in the
 	 *     space with the given identifier. Otherwise <code>false</code>.
 	 * @since 0.2
@@ -218,7 +218,7 @@ capacity InnerContextAccess {
 	/** Replies if the given identifier is the identifier of the
 	 * default space of the inner context.
 	 *
-	 * @param spaceID - the identifier to test.
+	 * @param spaceID the identifier to test.
 	 * @return <code>true</code> if the given identifier is the identifier
 	 *     of the default space of the inner context. Otherwise <code>false</code>.
 	 * @since 0.2
@@ -229,7 +229,7 @@ capacity InnerContextAccess {
 	/** Replies if the given identifier is the identifier of the
 	 * default space of the inner context.
 	 *
-	 * @param spaceID - the identifier to test.
+	 * @param spaceID the identifier to test.
 	 * @return <code>true</code> if the given identifier is the identifier
 	 *     of the default space of the inner context. Otherwise <code>false</code>.
 	 * @since 0.2
@@ -240,7 +240,7 @@ capacity InnerContextAccess {
 	/** Replies if the given event was emitted in the default space
 	 * of the inner context.
 	 *
-	 * @param event - the event to test.
+	 * @param event the event to test.
 	 * @return <code>true</code> if the given event was emitted
 	 *     in the default space of the inner context. Otherwise <code>false</code>.
 	 * @since 0.2
@@ -743,7 +743,7 @@ capacity Logging {
 
 	/** Change the name used for logging.
 	 *
-	 * @param name - the name used for logging.
+	 * @param name the name used for logging.
 	 */
 	def setLoggingName(name : String)
 
@@ -752,7 +752,7 @@ capacity Logging {
 	 * <strong>This function is deprecated.</strong> Please use
 	 * {@link #info(Object,Object...)} in place of <code>println</code>.
 	 *
-	 * @param message - the elements to display.
+	 * @param message the elements to display.
 	 * @deprecated Use {@link #info(Object,Object...)}.
 	 */
 	@Deprecated
@@ -760,31 +760,31 @@ capacity Logging {
 	
 	/** Print the given message at error logging level.
 	 *
-	 * @param message - the elements to display. The format of the message must follow {@link MessageFormat}.
-	 * @param exception - the exception that is the cause of the error.
-	 * @param parameters - the values to dynamically insert into the message.
+	 * @param message the elements to display. The format of the message must follow {@link MessageFormat}.
+	 * @param exception the exception that is the cause of the error.
+	 * @param parameters the values to dynamically insert into the message.
 	 */
 	def error(message : Object, exception : Throwable=null, parameters : Object*)
 
 	/** Print the given message at warning logging level.
 	 *
-	 * @param message - the elements to display. The format of the message must follow {@link MessageFormat}.
-	 * @param exception - the exception that is the cause of the error.
-	 * @param parameters - the values to dynamically insert into the message.
+	 * @param message the elements to display. The format of the message must follow {@link MessageFormat}.
+	 * @param exception the exception that is the cause of the error.
+	 * @param parameters the values to dynamically insert into the message.
 	 */
 	def warning(message : Object, exception : Throwable=null, parameters : Object*)
 
 	/** Print the given message at information logging level.
 	 *
-	 * @param message - the elements to display. The format of the message must follow {@link MessageFormat}.
-	 * @param parameters - the values to dynamically insert into the message.
+	 * @param message the elements to display. The format of the message must follow {@link MessageFormat}.
+	 * @param parameters the values to dynamically insert into the message.
 	 */
 	def info(message : Object, parameters : Object*)
 
 	/** Print the given message at debug logging level.
 	 *
-	 * @param message - the elements to display. The format of the message must follow {@link MessageFormat}.
-	 * @param parameters - the values to dynamically insert into the message.
+	 * @param message the elements to display. The format of the message must follow {@link MessageFormat}.
+	 * @param parameters the values to dynamically insert into the message.
 	 */
 	def debug(message : Object, parameters : Object*)
 
@@ -831,7 +831,7 @@ capacity Logging {
 
 	/** Set the logging level.
 	 *
-	 * @param level - <code>0</code> for no logging, <code>1</code> for error,
+	 * @param level <code>0</code> for no logging, <code>1</code> for error,
 	 *         <code>2</code> for warning, <code>3</code> for info,
 	 *         <code>5</code> for debug.
 	 */

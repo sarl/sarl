@@ -54,8 +54,8 @@ interface SREBootstrap {
 	 *
 	 * <p>The function {@link #getBootAgentIdentifier()} permits to retrieve the identifier of the launched agent.
 	 *
-	 * @param agentCls - type of the first agent to launch.
-	 * @param params - parameters to pass to the agent as its initialization parameters.
+	 * @param agentCls type of the first agent to launch.
+	 * @param params parameters to pass to the agent as its initialization parameters.
 	 * @return the identifier of the created agent.
 	 * @throws Exception - if it is impossible to start the platform.
 	 * @see #getBootAgentIdentifier()
@@ -67,9 +67,9 @@ interface SREBootstrap {
 	 *
 	 * <p>The function {@link #getBootAgentIdentifier()} permits to retrieve the identifier of the launched agent.
 	 *
-	 * @param nbAgents - the number of agents to be launched.
-	 * @param agentCls - type of the first agent to launch.
-	 * @param params - parameters to pass to the agent as its initialization parameters.
+	 * @param nbAgents the number of agents to be launched.
+	 * @param agentCls type of the first agent to launch.
+	 * @param params parameters to pass to the agent as its initialization parameters.
 	 * @return the identifiers of the created agents.
 	 * @throws Exception - if it is impossible to start the platform.
 	 * @see #getBootAgentIdentifier()
@@ -189,6 +189,7 @@ final class SRE {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 * @since 0.6
+	 * @ExcludeFromApidoc
 	 */
 	private static class VoidSREBootstrap implements SREBootstrap {
 

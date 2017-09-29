@@ -47,9 +47,9 @@ public class SpaceID extends SRESpecificDataContainer implements Serializable, C
 
 	/** Constructs a space ID.
 	 *
-	 * @param contextID - the unique ID of the context that contains the space (cannot be <code>null</code>).
-	 * @param id - the unique ID of the space (cannot be <code>null</code>).
-	 * @param spaceSpec - the specification of the space for which the ID must be created
+	 * @param contextID the unique ID of the context that contains the space (cannot be <code>null</code>).
+	 * @param id the unique ID of the space (cannot be <code>null</code>).
+	 * @param spaceSpec the specification of the space for which the ID must be created
 	 * 	   (could be <code>null</code>).
 	 */
 	public SpaceID(UUID contextID, UUID id, Class<? extends SpaceSpecification<?>> spaceSpec) {

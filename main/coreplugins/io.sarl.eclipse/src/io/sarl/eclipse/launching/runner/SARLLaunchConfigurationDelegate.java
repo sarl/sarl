@@ -138,7 +138,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	 * Returns the main type name specified by the given launch configuration,
 	 * or <code>null</code> if none.
 	 *
-	 * @param configuration - launch configuration
+	 * @param configuration launch configuration
 	 * @return the main type name specified by the given launch configuration,
 	 *         or <code>null</code> if none
 	 * @throws CoreException if unable to retrieve the attribute
@@ -156,7 +156,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	 * Verifies a main type name is specified by the given launch configuration,
 	 * and returns the main type name.
 	 *
-	 * @param configuration - launch configuration
+	 * @param configuration launch configuration
 	 * @throws CoreException if unable to retrieve the attribute or the attribute is
 	 *     unspecified
 	 */
@@ -422,8 +422,8 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 
 	/** Replies the project SRE from the given configuration.
 	 *
-	 * @param configuration - the configuration to read.
-	 * @param verify  - if true verify the SRE validity, do nothing otherwise
+	 * @param configuration the configuration to read.
+	 * @param verify  if true verify the SRE validity, do nothing otherwise
 	 * @return the project SRE or <code>null</code>.
 	 * @throws CoreException Some error occurs when accessing to the ecore elements.
 	 */
@@ -458,7 +458,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 
 	/** Replies the SRE installation to be used for the given configuration.
 	 *
-	 * @param configuration - the configuration to check.
+	 * @param configuration the configuration to check.
 	 * @return the SRE install.
 	 * @throws CoreException if impossible to get the SRE.
 	 */
@@ -485,7 +485,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 
 	/** Replies the classpath entries associated to the SRE of the given configuration.
 	 *
-	 * @param configuration - the configuration to read.
+	 * @param configuration the configuration to read.
 	 * @return the classpath entries for the SRE associated to the configuration.
 	 * @throws CoreException if impossible to determine the classpath entries.
 	 */
@@ -497,7 +497,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 
 	/** Replies if the given classpath entry is a SRE.
 	 *
-	 * @param entry - the entry.
+	 * @param entry the entry.
 	 * @return <code>true</code> if the entry points to a SRE;
 	 * <code>false</code> otherwise.
 	 */
@@ -517,7 +517,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 
 	/** Replies the class path for the SARL application.
 	 *
-	 * @param configuration - the configuration that provides the classpath.
+	 * @param configuration the configuration that provides the classpath.
 	 * @return the filtered entries.
 	 * @throws CoreException if impossible to get the classpath.
 	 */
@@ -714,9 +714,9 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		private VMRunnerConfiguration runConfig;
 
 		/**
-		 * @param configuration - the launch configuration.
-		 * @param mode - the launching mode.
-		 * @param launch - the launching
+		 * @param configuration the launch configuration.
+		 * @param mode the launching mode.
+		 * @param launch the launching
 		 */
 		LaunchProcess(ILaunchConfiguration configuration, String mode, ILaunch launch) {
 			this.configuration = configuration;
@@ -807,7 +807,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 
 		/** Run a preparation step of the launching process.
 		 *
-		 * @param monitor - the progression monitor.
+		 * @param monitor the progression monitor.
 		 * @return <code>true</code> if something more must be done; otherwise <code>false</code>.
 		 * @throws CoreException if something cannot be done.
 		 */
@@ -867,7 +867,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 
 		/** Run a launching step of the launching process.
 		 *
-		 * @param monitor - the progression monitor.
+		 * @param monitor the progression monitor.
 		 * @return <code>true</code> if something more must be done; otherwise <code>false</code>.
 		 * @throws CoreException if something cannot be done.
 		 */

@@ -111,7 +111,7 @@ public class SarlSkillBuilderImpl extends AbstractBuilder implements ISarlSkillB
 	}
 
 	/** Change the super type.
-	 * @param superType - the qualified name of the super type,
+	 * @param superType the qualified name of the super type,
 	 *     or <code>null</code> if the default type.
 	 */
 	public void setExtends(String superType) {
@@ -128,7 +128,7 @@ public class SarlSkillBuilderImpl extends AbstractBuilder implements ISarlSkillB
 	}
 
 	/** Add an implemented type.
-	 * @param type - the qualified name of the implemented type.
+	 * @param type the qualified name of the implemented type.
 	 */
 	public void addImplements(String type) {
 		if (!Strings.isEmpty(type)) {
@@ -137,7 +137,7 @@ public class SarlSkillBuilderImpl extends AbstractBuilder implements ISarlSkillB
 	}
 
 	/** Add a modifier.
-	 * @param modifier - the modifier to add.
+	 * @param modifier the modifier to add.
 	 */
 	public void addModifier(String modifier) {
 		if (!Strings.isEmpty(modifier)) {
@@ -161,7 +161,7 @@ public class SarlSkillBuilderImpl extends AbstractBuilder implements ISarlSkillB
 	private Provider<ISarlBehaviorUnitBuilder> iSarlBehaviorUnitBuilderProvider;
 
 	/** Create a SarlBehaviorUnit.
-	 * @param name - the type of the SarlBehaviorUnit.
+	 * @param name the type of the SarlBehaviorUnit.
 	 * @return the builder.
 	 */
 	public ISarlBehaviorUnitBuilder addSarlBehaviorUnit(String name) {
@@ -174,7 +174,7 @@ public class SarlSkillBuilderImpl extends AbstractBuilder implements ISarlSkillB
 	private Provider<ISarlFieldBuilder> iSarlFieldBuilderProvider;
 
 	/** Create a SarlField.
-	 * @param name - the name of the SarlField.
+	 * @param name the name of the SarlField.
 	 * @return the builder.
 	 */
 	public ISarlFieldBuilder addVarSarlField(String name) {
@@ -184,7 +184,7 @@ public class SarlSkillBuilderImpl extends AbstractBuilder implements ISarlSkillB
 	}
 
 	/** Create a SarlField.
-	 * @param name - the name of the SarlField.
+	 * @param name the name of the SarlField.
 	 * @return the builder.
 	 */
 	public ISarlFieldBuilder addValSarlField(String name) {
@@ -195,7 +195,7 @@ public class SarlSkillBuilderImpl extends AbstractBuilder implements ISarlSkillB
 
 	/** Create a SarlField.	 *
 	 * <p>This function is equivalent to {@link #addVarSarlField}.
-	 * @param name - the name of the SarlField.
+	 * @param name the name of the SarlField.
 	 * @return the builder.
 	 */
 	public ISarlFieldBuilder addSarlField(String name) {
@@ -206,7 +206,7 @@ public class SarlSkillBuilderImpl extends AbstractBuilder implements ISarlSkillB
 	private Provider<ISarlActionBuilder> iSarlActionBuilderProvider;
 
 	/** Create a SarlAction.
-	 * @param name - the name of the SarlAction.
+	 * @param name the name of the SarlAction.
 	 * @return the builder.
 	 */
 	public ISarlActionBuilder addDefSarlAction(String name) {
@@ -216,7 +216,7 @@ public class SarlSkillBuilderImpl extends AbstractBuilder implements ISarlSkillB
 	}
 
 	/** Create a SarlAction.
-	 * @param name - the name of the SarlAction.
+	 * @param name the name of the SarlAction.
 	 * @return the builder.
 	 */
 	public ISarlActionBuilder addOverrideSarlAction(String name) {
@@ -227,7 +227,7 @@ public class SarlSkillBuilderImpl extends AbstractBuilder implements ISarlSkillB
 
 	/** Create a SarlAction.	 *
 	 * <p>This function is equivalent to {@link #addDefSarlAction}.
-	 * @param name - the name of the SarlAction.
+	 * @param name the name of the SarlAction.
 	 * @return the builder.
 	 */
 	public ISarlActionBuilder addSarlAction(String name) {
@@ -238,7 +238,7 @@ public class SarlSkillBuilderImpl extends AbstractBuilder implements ISarlSkillB
 	private Provider<ISarlClassBuilder> iSarlClassBuilderProvider;
 
 	/** Create a SarlClass.
-	 * @param name - the name of the SarlClass.
+	 * @param name the name of the SarlClass.
 	 * @return the builder.
 	 */
 	public ISarlClassBuilder addSarlClass(String name) {
@@ -251,7 +251,7 @@ public class SarlSkillBuilderImpl extends AbstractBuilder implements ISarlSkillB
 	private Provider<ISarlInterfaceBuilder> iSarlInterfaceBuilderProvider;
 
 	/** Create a SarlInterface.
-	 * @param name - the name of the SarlInterface.
+	 * @param name the name of the SarlInterface.
 	 * @return the builder.
 	 */
 	public ISarlInterfaceBuilder addSarlInterface(String name) {
@@ -264,7 +264,7 @@ public class SarlSkillBuilderImpl extends AbstractBuilder implements ISarlSkillB
 	private Provider<ISarlEnumerationBuilder> iSarlEnumerationBuilderProvider;
 
 	/** Create a SarlEnumeration.
-	 * @param name - the name of the SarlEnumeration.
+	 * @param name the name of the SarlEnumeration.
 	 * @return the builder.
 	 */
 	public ISarlEnumerationBuilder addSarlEnumeration(String name) {
@@ -277,7 +277,7 @@ public class SarlSkillBuilderImpl extends AbstractBuilder implements ISarlSkillB
 	private Provider<ISarlAnnotationTypeBuilder> iSarlAnnotationTypeBuilderProvider;
 
 	/** Create a SarlAnnotationType.
-	 * @param name - the name of the SarlAnnotationType.
+	 * @param name the name of the SarlAnnotationType.
 	 * @return the builder.
 	 */
 	public ISarlAnnotationTypeBuilder addSarlAnnotationType(String name) {
@@ -287,7 +287,7 @@ public class SarlSkillBuilderImpl extends AbstractBuilder implements ISarlSkillB
 	}
 
 	/** Create a SarlCapacityUses.
-	 * @param name - the types referenced by the SarlCapacityUses.
+	 * @param name the types referenced by the SarlCapacityUses.
 	 */
 	public void addSarlCapacityUses(String... name) {
 		if (name != null && name.length > 0) {
@@ -305,7 +305,7 @@ public class SarlSkillBuilderImpl extends AbstractBuilder implements ISarlSkillB
 	}
 
 	/** Create a SarlRequiredCapacity.
-	 * @param name - the types referenced by the SarlRequiredCapacity.
+	 * @param name the types referenced by the SarlRequiredCapacity.
 	 */
 	public void addSarlRequiredCapacity(String... name) {
 		if (name != null && name.length > 0) {

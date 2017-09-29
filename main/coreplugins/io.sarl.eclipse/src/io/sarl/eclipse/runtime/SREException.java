@@ -35,7 +35,7 @@ public class SREException extends RuntimeException {
 	private static final long serialVersionUID = 4435195594095001001L;
 
 	/**
-	 * @param message - error message.
+	 * @param message error message.
 	 */
 	public SREException(String message) {
 		super(message);
@@ -43,8 +43,8 @@ public class SREException extends RuntimeException {
 
 	/**
 	 * @parma installation - the source of the exception.
-	 * @param message - error message.
-	 * @param cause - the cause of the error.
+	 * @param message error message.
+	 * @param cause the cause of the error.
 	 */
 	public SREException(String message, Throwable cause) {
 		super(message, cause);
@@ -52,7 +52,7 @@ public class SREException extends RuntimeException {
 
 	/**
 	 * @parma installation - the source of the exception.
-	 * @param cause - the cause of the error.
+	 * @param cause the cause of the error.
 	 */
 	public SREException(Throwable cause) {
 		super(cause);

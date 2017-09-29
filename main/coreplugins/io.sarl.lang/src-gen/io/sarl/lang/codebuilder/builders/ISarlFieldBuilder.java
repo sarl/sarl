@@ -59,8 +59,8 @@ public interface ISarlFieldBuilder {
 	IJvmTypeProvider getTypeResolutionContext();
 
 	/** Initialize the Ecore element.
-	 * @param container - the container of the SarlField.
-	 * @param name - the name of the SarlField.
+	 * @param container the container of the SarlField.
+	 * @param name the name of the SarlField.
 	 */
 	void eInit(XtendTypeDeclaration container, String name, String modifier, IJvmTypeProvider context);
 
@@ -88,13 +88,13 @@ public interface ISarlFieldBuilder {
 	void setType(String type);
 
 	/** Change the initialValue.
-	 * @param value - the value of the initialValue. It may be <code>null</code>.
+	 * @param value the value of the initialValue. It may be <code>null</code>.
 	 */
 	@Pure
 	IExpressionBuilder getInitialValue();
 
 	/** Add a modifier.
-	 * @param modifier - the modifier to add.
+	 * @param modifier the modifier to add.
 	 */
 	void addModifier(String modifier);
 

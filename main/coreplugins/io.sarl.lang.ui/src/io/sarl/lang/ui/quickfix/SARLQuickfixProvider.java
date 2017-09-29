@@ -306,9 +306,9 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Remove the element related to the issue, and the whitespaces before the element until the given separator.
 	 *
-	 * @param issue - the issue.
-	 * @param document - the document.
-	 * @param separator - the separator to consider.
+	 * @param issue the issue.
+	 * @param document the document.
+	 * @param separator the separator to consider.
 	 * @return <code>true</code> if the separator was found, <code>false</code> if not.
 	 * @throws BadLocationException if there is a problem with the location of the element.
 	 */
@@ -319,10 +319,10 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Remove the portion of text, and the whitespaces before the text until the given separator.
 	 *
-	 * @param offset - the offset where to start to remove.
-	 * @param length - the length of the text to remove.
-	 * @param document - the document.
-	 * @param separator - the separator to consider.
+	 * @param offset the offset where to start to remove.
+	 * @param length the length of the text to remove.
+	 * @param document the document.
+	 * @param separator the separator to consider.
 	 * @return <code>true</code> if the separator was found, <code>false</code> if not.
 	 * @throws BadLocationException if there is a problem with the location of the element.
 	 */
@@ -356,7 +356,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Replies the index where import declaration could be inserted into the given container.
 	 *
-	 * @param script - the script to consider for the insertion
+	 * @param script the script to consider for the insertion
 	 * @return the insertion index.
 	 */
 	public int getImportInsertOffset(SarlScript script) {
@@ -374,9 +374,9 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Remove the element related to the issue, and the whitespaces after the element until the given separator.
 	 *
-	 * @param issue - the issue.
-	 * @param document - the document.
-	 * @param separator - the separator to consider.
+	 * @param issue the issue.
+	 * @param document the document.
+	 * @param separator the separator to consider.
 	 * @return <code>true</code> if the separator was found, <code>false</code> if not.
 	 * @throws BadLocationException if there is a problem with the location of the element.
 	 */
@@ -411,10 +411,10 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	/** Remove the element related to the issue, and the whitespaces before the element until one of the given
 	 * keywords is encountered.
 	 *
-	 * @param issue - the issue.
-	 * @param document - the document.
-	 * @param keyword1 - the first keyword to consider.
-	 * @param otherKeywords - other keywords.
+	 * @param issue the issue.
+	 * @param document the document.
+	 * @param keyword1 the first keyword to consider.
+	 * @param otherKeywords other keywords.
 	 * @return <code>true</code> if one keyword was found, <code>false</code> if not.
 	 * @throws BadLocationException if there is a problem with the location of the element.
 	 */
@@ -455,10 +455,10 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 	/** Remove the element related to the issue, and the whitespaces before the element until the begin separator,
 	 * and the whitespaces after the element until the end separator.
 	 *
-	 * @param issue - the issue.
-	 * @param document - the document.
-	 * @param beginSeparator - the separator before the element.
-	 * @param endSeparator - the separator after the element.
+	 * @param issue the issue.
+	 * @param document the document.
+	 * @param beginSeparator the separator before the element.
+	 * @param endSeparator the separator after the element.
 	 * @return <code>true</code> if the separator was found, <code>false</code> if not.
 	 * @throws BadLocationException if there is a problem with the location of the element.
 	 */
@@ -512,7 +512,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Replies the index where elements could be inserted into the given container.
 	 *
-	 * @param container - the container to consider for the insertion
+	 * @param container the container to consider for the insertion
 	 * @return the insertion index.
 	 */
 	public int getInsertOffset(XtendTypeDeclaration container) {
@@ -532,8 +532,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Replies the size of a sequence of whitespaces.
 	 *
-	 * @param document - the document.
-	 * @param offset - the offset of the first character of the sequence.
+	 * @param document the document.
+	 * @param offset the offset of the first character of the sequence.
 	 * @return the number of whitespaces at the given offset.
 	 * @throws BadLocationException if there is a problem with the location of the element.
 	 */
@@ -567,7 +567,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Replies the qualified name for the given name.
 	 *
-	 * @param name - the name.
+	 * @param name the name.
 	 * @return the qualified name.
 	 */
 	public QualifiedName qualifiedName(String name) {
@@ -580,8 +580,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Remove the exectuable feature.
 	 *
-	 * @param element - the executable feature to remove.
-	 * @param context - the context of the change.
+	 * @param element the executable feature to remove.
+	 * @param context the context of the change.
 	 * @throws BadLocationException if there is a problem with the location of the element.
 	 */
 	public void removeExecutableFeature(EObject element, IModificationContext context) throws BadLocationException {
@@ -661,8 +661,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Quick fix for "Duplicate type".
 	 *
-	 * @param issue - the issue.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param issue the issue.
+	 * @param acceptor the quick fix acceptor.
 	 */
 	@Fix(IssueCodes.DUPLICATE_TYPE_NAME)
 	public void fixDuplicateTopElements(Issue issue, IssueResolutionAcceptor acceptor) {
@@ -671,8 +671,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Quick fix for "Duplicate field".
 	 *
-	 * @param issue - the issue.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param issue the issue.
+	 * @param acceptor the quick fix acceptor.
 	 */
 	@Fix(IssueCodes.DUPLICATE_FIELD)
 	public void fixDuplicateAttribute(Issue issue, IssueResolutionAcceptor acceptor) {
@@ -681,8 +681,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Quick fix for "Duplicate method".
 	 *
-	 * @param issue - the issue.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param issue the issue.
+	 * @param acceptor the quick fix acceptor.
 	 */
 	@Fix(IssueCodes.DUPLICATE_METHOD)
 	public void fixDuplicateMethod(Issue issue, IssueResolutionAcceptor acceptor) {
@@ -691,8 +691,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Quick fix for "disallowed variable name".
 	 *
-	 * @param issue - the issue.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param issue the issue.
+	 * @param acceptor the quick fix acceptor.
 	 */
 	@Fix(org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED)
 	public void fixDisallowedFieldName(final Issue issue, IssueResolutionAcceptor acceptor) {
@@ -702,8 +702,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Quick fix for "disallowed variable name".
 	 *
-	 * @param issue - the issue.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param issue the issue.
+	 * @param acceptor the quick fix acceptor.
 	 */
 	@Fix(org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISCOURAGED)
 	public void fixDiscouragedFieldName(final Issue issue, IssueResolutionAcceptor acceptor) {
@@ -712,8 +712,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Quick fix for "Invalid member name".
 	 *
-	 * @param issue - the issue.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param issue the issue.
+	 * @param acceptor the quick fix acceptor.
 	 */
 	@Fix(IssueCodes.INVALID_MEMBER_NAME)
 	public void fixMemberName(final Issue issue, IssueResolutionAcceptor acceptor) {
@@ -723,8 +723,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Quick fix for "Redundant interface implementation".
 	 *
-	 * @param issue - the issue.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param issue the issue.
+	 * @param acceptor the quick fix acceptor.
 	 */
 	@Fix(io.sarl.lang.validation.IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION)
 	public void fixRedundantInterface(final Issue issue, IssueResolutionAcceptor acceptor) {
@@ -733,8 +733,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Quick fix for "Variable name shadowing".
 	 *
-	 * @param issue - the issue.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param issue the issue.
+	 * @param acceptor the quick fix acceptor.
 	 */
 	@Fix(org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING)
 	public void fixVariableNameShadowing(final Issue issue, IssueResolutionAcceptor acceptor) {
@@ -744,8 +744,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Quick fix for "Override final operation".
 	 *
-	 * @param issue - the issue.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param issue the issue.
+	 * @param acceptor the quick fix acceptor.
 	 */
 	@Fix(IssueCodes.OVERRIDDEN_FINAL)
 	public void fixOverriddenFinal(Issue issue, IssueResolutionAcceptor acceptor) {
@@ -759,8 +759,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Quick fix for "Discouraged boolean expression".
 	 *
-	 * @param issue - the issue.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param issue the issue.
+	 * @param acceptor the quick fix acceptor.
 	 */
 	@Fix(io.sarl.lang.validation.IssueCodes.DISCOURAGED_BOOLEAN_EXPRESSION)
 	public void fixDiscouragedBooleanExpression(final Issue issue, IssueResolutionAcceptor acceptor) {
@@ -769,8 +769,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Quick fix for "Unreachable behavior unit".
 	 *
-	 * @param issue - the issue.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param issue the issue.
+	 * @param acceptor the quick fix acceptor.
 	 */
 	@Fix(io.sarl.lang.validation.IssueCodes.UNREACHABLE_BEHAVIOR_UNIT)
 	public void fixUnreachableBehaviorUnit(Issue issue, IssueResolutionAcceptor acceptor) {
@@ -779,8 +779,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Quick fix for "Invalid capacity type".
 	 *
-	 * @param issue - the issue.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param issue the issue.
+	 * @param acceptor the quick fix acceptor.
 	 */
 	@Fix(io.sarl.lang.validation.IssueCodes.INVALID_CAPACITY_TYPE)
 	public void fixInvalidCapacityType(final Issue issue, IssueResolutionAcceptor acceptor) {
@@ -789,8 +789,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Quick fix for "Invalid firing event type".
 	 *
-	 * @param issue - the issue.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param issue the issue.
+	 * @param acceptor the quick fix acceptor.
 	 */
 	@Fix(io.sarl.lang.validation.IssueCodes.INVALID_FIRING_EVENT_TYPE)
 	public void fixInvalidFiringEventType(final Issue issue, IssueResolutionAcceptor acceptor) {
@@ -799,8 +799,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Quick fix for "Invalid implemented type".
 	 *
-	 * @param issue - the issue.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param issue the issue.
+	 * @param acceptor the quick fix acceptor.
 	 */
 	@Fix(io.sarl.lang.validation.IssueCodes.INVALID_IMPLEMENTED_TYPE)
 	public void fixInvalidImplementedType(final Issue issue, IssueResolutionAcceptor acceptor) {
@@ -809,8 +809,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Quick fix for "Invalid extended type".
 	 *
-	 * @param issue - the issue.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param issue the issue.
+	 * @param acceptor the quick fix acceptor.
 	 */
 	@Fix(io.sarl.lang.validation.IssueCodes.INVALID_EXTENDED_TYPE)
 	public void fixInvalidExtendedType(final Issue issue, IssueResolutionAcceptor acceptor) {
@@ -819,8 +819,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Quick fix for "Cyclic hierarchy".
 	 *
-	 * @param issue - the issue.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param issue the issue.
+	 * @param acceptor the quick fix acceptor.
 	 */
 	@Fix(IssueCodes.CYCLIC_INHERITANCE)
 	public void fixCyclicInheritance(final Issue issue, IssueResolutionAcceptor acceptor) {
@@ -829,8 +829,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Quick fix for "Interface expected".
 	 *
-	 * @param issue - the issue.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param issue the issue.
+	 * @param acceptor the quick fix acceptor.
 	 */
 	@Fix(IssueCodes.INTERFACE_EXPECTED)
 	public void fixInteraceExpected(final Issue issue, IssueResolutionAcceptor acceptor) {
@@ -839,8 +839,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Quick fix for "Class expected".
 	 *
-	 * @param issue - the issue.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param issue the issue.
+	 * @param acceptor the quick fix acceptor.
 	 */
 	@Fix(IssueCodes.CLASS_EXPECTED)
 	public void fixClassExpected(final Issue issue, IssueResolutionAcceptor acceptor) {
@@ -849,8 +849,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Quick fix for "Discouraged capacity definition".
 	 *
-	 * @param issue - the issue.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param issue the issue.
+	 * @param acceptor the quick fix acceptor.
 	 */
 	@Fix(io.sarl.lang.validation.IssueCodes.DISCOURAGED_CAPACITY_DEFINITION)
 	public void fixDiscouragedCapacityDefinition(Issue issue, IssueResolutionAcceptor acceptor) {
@@ -860,8 +860,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Quick fix for "Incompatible return type".
 	 *
-	 * @param issue - the issue.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param issue the issue.
+	 * @param acceptor the quick fix acceptor.
 	 */
 	@Fix(org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE)
 	public void fixIncompatibleReturnType(final Issue issue, IssueResolutionAcceptor acceptor) {
@@ -870,8 +870,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Quick fix for "Return type is recommended".
 	 *
-	 * @param issue - the issue.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param issue the issue.
+	 * @param acceptor the quick fix acceptor.
 	 */
 	@Fix(io.sarl.lang.validation.IssueCodes.RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED)
 	public void fixReturnTypeRecommended(final Issue issue, IssueResolutionAcceptor acceptor) {
@@ -880,8 +880,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Quick fix for "Unused agent capacity".
 	 *
-	 * @param issue - the issue.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param issue the issue.
+	 * @param acceptor the quick fix acceptor.
 	 */
 	@Fix(io.sarl.lang.validation.IssueCodes.UNUSED_AGENT_CAPACITY)
 	public void fixUnusedAgentCapacity(final Issue issue, IssueResolutionAcceptor acceptor) {
@@ -890,8 +890,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Quick fix for "Redundant capacity use".
 	 *
-	 * @param issue - the issue.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param issue the issue.
+	 * @param acceptor the quick fix acceptor.
 	 */
 	@Fix(io.sarl.lang.validation.IssueCodes.REDUNDANT_CAPACITY_USE)
 	public void fixRedundantAgentCapacityUse(final Issue issue, IssueResolutionAcceptor acceptor) {
@@ -958,8 +958,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Quick fix for the no viable alternative at an input that is a SARL keyword.
 	 *
-	 * @param issue - the issue.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param issue the issue.
+	 * @param acceptor the quick fix acceptor.
 	 */
 	@Fix(SyntaxIssueCodes.USED_RESERVED_KEYWORD)
 	public void fixNoViableAlternativeAtKeyword(final Issue issue, IssueResolutionAcceptor acceptor) {
@@ -968,8 +968,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Quick fix for the discouraged annotation uses.
 	 *
-	 * @param issue - the issue.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param issue the issue.
+	 * @param acceptor the quick fix acceptor.
 	 */
 	@Fix(io.sarl.lang.validation.IssueCodes.USED_RESERVED_SARL_ANNOTATION)
 	public void fixDiscouragedAnnotationUse(final Issue issue, IssueResolutionAcceptor acceptor) {
@@ -978,8 +978,8 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 
 	/** Quick fix for the manual definition of inline statements.
 	 *
-	 * @param issue - the issue.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param issue the issue.
+	 * @param acceptor the quick fix acceptor.
 	 */
 	@Fix(io.sarl.lang.validation.IssueCodes.MANUAL_INLINE_DEFINITION)
 	public void fixManualInlineDefinition(final Issue issue, IssueResolutionAcceptor acceptor) {

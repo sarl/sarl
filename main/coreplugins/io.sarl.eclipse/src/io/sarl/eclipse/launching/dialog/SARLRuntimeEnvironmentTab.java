@@ -162,7 +162,7 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 	/**
 	 * Loads the SARL runtime environment from the launch configuration's preference store.
 	 *
-	 * @param config - the config to load the runtime environment from
+	 * @param config the config to load the runtime environment from
 	 */
 	protected void selectSREFromConfig(ILaunchConfiguration config) {
 		final String sreId = this.accessor.getSREId(config);
@@ -241,7 +241,7 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 	/** Replies if the selected configuration has a valid version for
 	 * a SARL application.
 	 *
-	 * @param config - the configuration.
+	 * @param config the configuration.
 	 * @return <code>true</code> if the JRE is compatible with SARL.
 	 */
 	protected boolean isValidJREVersion(ILaunchConfiguration config) {

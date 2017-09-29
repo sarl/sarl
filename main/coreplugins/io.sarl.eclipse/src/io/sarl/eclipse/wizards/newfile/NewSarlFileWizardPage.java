@@ -57,8 +57,8 @@ public class NewSarlFileWizardPage extends WizardNewFileCreationPage {
 	private XbaseValueConverterService converter;
 
 	/**
-	 * @param selection - selection in the IDE.
-	 * @param fileExtension - the extension of the file to create.
+	 * @param selection selection in the IDE.
+	 * @param fileExtension the extension of the file to create.
 	 */
 	public NewSarlFileWizardPage(IStructuredSelection selection, String fileExtension) {
 		super(Messages.NewSarlFileWizardPage_1, selection);

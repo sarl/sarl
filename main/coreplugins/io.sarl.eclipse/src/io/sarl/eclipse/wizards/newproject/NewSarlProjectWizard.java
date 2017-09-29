@@ -91,8 +91,8 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 
 	/** Construct a new wizard for creating a SARL project.
 	 *
-	 * @param pageOne - reference to the first page of the wizard.
-	 * @param pageTwo - reference to the second page of the wizard.
+	 * @param pageOne reference to the first page of the wizard.
+	 * @param pageTwo reference to the second page of the wizard.
 	 */
 	public NewSarlProjectWizard(MainProjectWizardPage pageOne, BuildSettingWizardPage pageTwo) {
 		setDialogSettings(JavaPlugin.getDefault().getDialogSettings());
@@ -165,7 +165,7 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 
 	/** Validate the SARL properties of the new projects.
 	 *
-	 * @param element - the created element
+	 * @param element the created element
 	 * @return validity
 	 */
 	protected boolean validateSARLSpecificElements(IJavaElement element) {

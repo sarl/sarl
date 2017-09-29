@@ -73,7 +73,7 @@ public class SARLMavenEclipsePlugin extends AbstractUIPlugin {
 
 	/** Set the default instance of the plugin.
 	 *
-	 * @param defaultInstance - the default plugin instance.
+	 * @param defaultInstance the default plugin instance.
 	 */
 	public static void setDefault(SARLMavenEclipsePlugin defaultInstance) {
 		instance = defaultInstance;
@@ -81,8 +81,8 @@ public class SARLMavenEclipsePlugin extends AbstractUIPlugin {
 
 	/** Create a status.
 	 *
-	 * @param severity - the severity level, see {@link IStatus}.
-	 * @param cause - the cause of the problem.
+	 * @param severity the severity level, see {@link IStatus}.
+	 * @param cause the cause of the problem.
 	 * @return the status.
 	 */
 	@SuppressWarnings("static-method")
@@ -99,8 +99,8 @@ public class SARLMavenEclipsePlugin extends AbstractUIPlugin {
 
 	/** Create a status.
 	 *
-	 * @param severity - the severity level, see {@link IStatus}.
-	 * @param message - the status message.
+	 * @param severity the severity level, see {@link IStatus}.
+	 * @param message the status message.
 	 * @return the status.
 	 */
 	@SuppressWarnings("static-method")

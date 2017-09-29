@@ -59,7 +59,7 @@ public interface ISarlConstructorBuilder {
 	IJvmTypeProvider getTypeResolutionContext();
 
 	/** Initialize the Ecore element.
-	 * @param container - the container of the SarlConstructor.
+	 * @param container the container of the SarlConstructor.
 	 */
 	void eInit(XtendTypeDeclaration container, IJvmTypeProvider context);
 
@@ -97,12 +97,12 @@ public interface ISarlConstructorBuilder {
 	IBlockExpressionBuilder getExpression();
 
 	/** Add a modifier.
-	 * @param modifier - the modifier to add.
+	 * @param modifier the modifier to add.
 	 */
 	void addModifier(String modifier);
 
 	/** Add a type parameter.
-	 * @param name - the simple name of the type parameter.
+	 * @param name the simple name of the type parameter.
 	 * @return the builder of type parameter.
 	 */
 	ITypeParameterBuilder addTypeParameter(String name);

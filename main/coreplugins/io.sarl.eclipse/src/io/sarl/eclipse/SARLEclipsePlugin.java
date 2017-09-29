@@ -81,7 +81,7 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	 * Returns a section in the SARL Eclipse plugin's dialog settings.
 	 * If the section doesn't exist yet, it is created.
 	 *
-	 * @param name - the name of the section
+	 * @param name the name of the section
 	 * @return the section of the given name
 	 */
 	public IDialogSettings getDialogSettingsSection(String name) {
@@ -95,7 +95,7 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 
 	/** Set the default instance of the plugin.
 	 *
-	 * @param defaultInstance - the default plugin instance.
+	 * @param defaultInstance the default plugin instance.
 	 */
 	public static void setDefault(SARLEclipsePlugin defaultInstance) {
 		instance = defaultInstance;
@@ -111,7 +111,7 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 
 	/** Replies the image stored in the current Eclipse plugin.
 	 *
-	 * @param imagePath - path of the image.
+	 * @param imagePath path of the image.
 	 * @return the image.
 	 */
 	public Image getImage(String imagePath) {
@@ -124,7 +124,7 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 
 	/** Replies the image descriptor for the given image path.
 	 *
-	 * @param imagePath - path of the image.
+	 * @param imagePath path of the image.
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor getImageDescriptor(String imagePath) {
@@ -140,9 +140,9 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 
 	/** Create a status.
 	 *
-	 * @param severity - the severity level, see {@link IStatus}.
-	 * @param message - the message associated to the status.
-	 * @param cause - the cause of the problem.
+	 * @param severity the severity level, see {@link IStatus}.
+	 * @param message the message associated to the status.
+	 * @param cause the cause of the problem.
 	 * @return the status.
 	 */
 	public IStatus createStatus(int severity, String message, Throwable cause) {
@@ -151,10 +151,10 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 
 	/** Create a status.
 	 *
-	 * @param severity - the severity level, see {@link IStatus}.
-	 * @param code - the code of the error.
-	 * @param message - the message associated to the status.
-	 * @param cause - the cause of the problem.
+	 * @param severity the severity level, see {@link IStatus}.
+	 * @param code the code of the error.
+	 * @param message the message associated to the status.
+	 * @param cause the cause of the problem.
 	 * @return the status.
 	 */
 	public IStatus createStatus(int severity, int code, String message, Throwable cause) {
@@ -190,8 +190,8 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 
 	/** Create a status.
 	 *
-	 * @param severity - the severity level, see {@link IStatus}.
-	 * @param cause - the cause of the problem.
+	 * @param severity the severity level, see {@link IStatus}.
+	 * @param cause the cause of the problem.
 	 * @return the status.
 	 */
 	public IStatus createStatus(int severity, Throwable cause) {
@@ -200,9 +200,9 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 
 	/** Create a status.
 	 *
-	 * @param severity - the severity level, see {@link IStatus}.
-	 * @param code - the code of the error.
-	 * @param cause - the cause of the problem.
+	 * @param severity the severity level, see {@link IStatus}.
+	 * @param code the code of the error.
+	 * @param cause the cause of the problem.
 	 * @return the status.
 	 */
 	public IStatus createStatus(int severity, int code, Throwable cause) {
@@ -211,8 +211,8 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 
 	/** Create a status.
 	 *
-	 * @param severity - the severity level, see {@link IStatus}.
-	 * @param message - the message associated to the status.
+	 * @param severity the severity level, see {@link IStatus}.
+	 * @param message the message associated to the status.
 	 * @return the status.
 	 */
 	public IStatus createStatus(int severity, String message) {
@@ -221,9 +221,9 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 
 	/** Create a status.
 	 *
-	 * @param severity - the severity level, see {@link IStatus}.
-	 * @param code - the code of the error.
-	 * @param message - the message associated to the status.
+	 * @param severity the severity level, see {@link IStatus}.
+	 * @param code the code of the error.
+	 * @param message the message associated to the status.
 	 * @return the status.
 	 */
 	public IStatus createStatus(int severity, int code, String message) {
@@ -241,7 +241,7 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 
 	/** Create a multistatus.
 	 *
-	 * @param status - the status to put in the same status instance.
+	 * @param status the status to put in the same status instance.
 	 * @return the status.
 	 */
 	public IStatus createMultiStatus(IStatus... status) {
@@ -250,7 +250,7 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 
 	/** Create a multistatus.
 	 *
-	 * @param status - the status to put in the same status instance.
+	 * @param status the status to put in the same status instance.
 	 * @return the status.
 	 */
 	@SuppressWarnings("static-method")
@@ -300,7 +300,7 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	/**
 	 * Logs an internal debug message with the specified message.
 	 *
-	 * @param cause - the cause of the message log.
+	 * @param cause the cause of the message log.
 	 */
 	@SuppressWarnings({"static-method", "checkstyle:regexp"})
 	public void logDebugMessage(Throwable cause) {
@@ -310,8 +310,8 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	/**
 	 * Logs an internal debug message with the specified message.
 	 *
-	 * @param message - the debug message to log
-	 * @param cause - the cause of the message log.
+	 * @param message the debug message to log
+	 * @param cause the cause of the message log.
 	 */
 	@SuppressWarnings({"static-method", "checkstyle:regexp"})
 	public void logDebugMessage(String message, Throwable cause) {

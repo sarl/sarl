@@ -64,7 +64,7 @@ public interface ContextSpaceService extends DependentService {
 	/**
 	 * Check if this repository contains a context with the specified id.
 	 *
-	 * @param contextID - the id to test
+	 * @param contextID the id to test
 	 * @return <code>true</code> if this repository contains a context with the specified id, <code>false</code> otherwise
 	 */
 	boolean containsContext(UUID contextID);
@@ -72,8 +72,8 @@ public interface ContextSpaceService extends DependentService {
 	/**
 	 * Create a new context and add it to this repository.
 	 *
-	 * @param contextID - the id of the context to create
-	 * @param defaultSpaceID - the id of the default space of the context to create
+	 * @param contextID the id of the context to create
+	 * @param defaultSpaceID the id of the default space of the context to create
 	 * @return the context.
 	 */
 	AgentContext createContext(UUID contextID, UUID defaultSpaceID);
@@ -81,14 +81,14 @@ public interface ContextSpaceService extends DependentService {
 	/**
 	 * Remove the specified context from this repository.
 	 *
-	 * @param context - the context to remove
+	 * @param context the context to remove
 	 */
 	void removeContext(AgentContext context);
 
 	/**
 	 * Remove the context with the specified id from this repository.
 	 *
-	 * @param contextID - the id of the context to remove
+	 * @param contextID the id of the context to remove
 	 */
 	void removeContext(UUID contextID);
 
@@ -104,7 +104,7 @@ public interface ContextSpaceService extends DependentService {
 	 *
 	 * <p>The replies collection is synchronized and any iteration on it must be synchronized on the mutex replies by {@link #mutex}.
 	 *
-	 * @param contextIDs - the identifiers of the contexts to retreive.
+	 * @param contextIDs the identifiers of the contexts to retreive.
 	 * @return the collection of {@link AgentContext} with the given IDs
 	 */
 	Collection<AgentContext> getContexts(Collection<UUID> contextIDs);
@@ -121,7 +121,7 @@ public interface ContextSpaceService extends DependentService {
 	/**
 	 * Returns the {@link AgentContext} with the given ID.
 	 *
-	 * @param contextID - the identifier of the context to retreive.
+	 * @param contextID the identifier of the context to retreive.
 	 * @return the {@link AgentContext} with the given ID
 	 */
 	AgentContext getContext(UUID contextID);
@@ -129,28 +129,28 @@ public interface ContextSpaceService extends DependentService {
 	/**
 	 * Add a listener on the context repository events.
 	 *
-	 * @param listener - the listener on the context repository events.
+	 * @param listener the listener on the context repository events.
 	 */
 	void addContextRepositoryListener(ContextRepositoryListener listener);
 
 	/**
 	 * Remove a listener on the context repository events.
 	 *
-	 * @param listener - the listener on the context repository events.
+	 * @param listener the listener on the context repository events.
 	 */
 	void removeContextRepositoryListener(ContextRepositoryListener listener);
 
 	/**
 	 * Add a listener on the space repository events.
 	 *
-	 * @param listener - the listener on the space repository events.
+	 * @param listener the listener on the space repository events.
 	 */
 	void addSpaceRepositoryListener(SpaceRepositoryListener listener);
 
 	/**
 	 * Remove a listener on the space repository events.
 	 *
-	 * @param listener - the listener on the space repository events.
+	 * @param listener the listener on the space repository events.
 	 */
 	void removeSpaceRepositoryListener(SpaceRepositoryListener listener);
 

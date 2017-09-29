@@ -65,7 +65,7 @@ public class JavaBinaryEventSerializer extends AbstractEventSerializer {
 	/**
 	 * Constructs an GsonEventSerializer. The {@link EventEncrypter} is injected.
 	 *
-	 * @param encrypter - the object that will permits to encrypt the events.
+	 * @param encrypter the object that will permits to encrypt the events.
 	 */
 	@Inject
 	public JavaBinaryEventSerializer(EventEncrypter encrypter) {

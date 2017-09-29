@@ -55,8 +55,8 @@ public class SarlEnumLiteralBuilderImpl extends AbstractBuilder implements ISarl
 	private SarlEnumLiteral sarlEnumLiteral;
 
 	/** Initialize the Ecore element.
-	 * @param container - the container of the SarlEnumLiteral.
-	 * @param name - the name of the SarlEnumLiteral.
+	 * @param container the container of the SarlEnumLiteral.
+	 * @param name the name of the SarlEnumLiteral.
 	 */
 	public void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context) {
 		setTypeResolutionContext(context);

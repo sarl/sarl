@@ -78,8 +78,8 @@ public class SarlFieldSourceAppender extends AbstractSourceAppender implements I
 	}
 
 	/** Initialize the Ecore element.
-	 * @param container - the container of the SarlField.
-	 * @param name - the name of the SarlField.
+	 * @param container the container of the SarlField.
+	 * @param name the name of the SarlField.
 	 */
 	public void eInit(XtendTypeDeclaration container, String name, String modifier, IJvmTypeProvider context) {
 		this.builder.eInit(container, name, modifier, context);
@@ -117,7 +117,7 @@ public class SarlFieldSourceAppender extends AbstractSourceAppender implements I
 	}
 
 	/** Change the initialValue.
-	 * @param value - the value of the initialValue. It may be <code>null</code>.
+	 * @param value the value of the initialValue. It may be <code>null</code>.
 	 */
 	@Pure
 	public IExpressionBuilder getInitialValue() {
@@ -125,7 +125,7 @@ public class SarlFieldSourceAppender extends AbstractSourceAppender implements I
 	}
 
 	/** Add a modifier.
-	 * @param modifier - the modifier to add.
+	 * @param modifier the modifier to add.
 	 */
 	public void addModifier(String modifier) {
 		this.builder.addModifier(modifier);

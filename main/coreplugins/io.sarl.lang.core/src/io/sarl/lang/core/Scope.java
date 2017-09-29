@@ -44,7 +44,7 @@ public interface Scope<T> extends Serializable {
 	/**
 	 * Checks whether the element is included in this scope.
 	 *
-	 * @param element - the element to test. <strong>It must NOT BE NULL</strong>.
+	 * @param element the element to test. <strong>It must NOT BE NULL</strong>.
 	 * @return true if the element is inside the scope, false otherwise
 	 */
 	@Pure

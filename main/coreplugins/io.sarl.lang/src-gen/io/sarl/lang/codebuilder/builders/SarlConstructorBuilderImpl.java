@@ -57,7 +57,7 @@ public class SarlConstructorBuilderImpl extends AbstractBuilder implements ISarl
 	private SarlConstructor sarlConstructor;
 
 	/** Initialize the Ecore element.
-	 * @param container - the container of the SarlConstructor.
+	 * @param container the container of the SarlConstructor.
 	 */
 	public void eInit(XtendTypeDeclaration container, IJvmTypeProvider context) {
 		setTypeResolutionContext(context);
@@ -135,7 +135,7 @@ public class SarlConstructorBuilderImpl extends AbstractBuilder implements ISarl
 	}
 
 	/** Add a modifier.
-	 * @param modifier - the modifier to add.
+	 * @param modifier the modifier to add.
 	 */
 	public void addModifier(String modifier) {
 		if (!Strings.isEmpty(modifier)) {
@@ -153,7 +153,7 @@ public class SarlConstructorBuilderImpl extends AbstractBuilder implements ISarl
 	private Provider<ITypeParameterBuilder> iTypeParameterBuilderProvider;
 
 	/** Add a type parameter.
-	 * @param name - the simple name of the type parameter.
+	 * @param name the simple name of the type parameter.
 	 * @return the builder of type parameter.
 	 */
 	public ITypeParameterBuilder addTypeParameter(String name) {

@@ -53,7 +53,7 @@ public class PyGeneratorPlugin extends AbstractUIPlugin {
 
 	/** Set the default instance of the plugin.
 	 *
-	 * @param defaultInstance - the default plugin instance.
+	 * @param defaultInstance the default plugin instance.
 	 */
 	public static void setDefault(PyGeneratorPlugin defaultInstance) {
 		instance = defaultInstance;
@@ -71,7 +71,7 @@ public class PyGeneratorPlugin extends AbstractUIPlugin {
 	 * Returns a section in the SARL Eclipse plugin's dialog settings.
 	 * If the section doesn't exist yet, it is created.
 	 *
-	 * @param name - the name of the section
+	 * @param name the name of the section
 	 * @return the section of the given name
 	 */
 	public IDialogSettings getDialogSettingsSection(String name) {
@@ -85,7 +85,7 @@ public class PyGeneratorPlugin extends AbstractUIPlugin {
 
 	/** Replies the image stored in the current Eclipse plugin.
 	 *
-	 * @param imagePath - path of the image.
+	 * @param imagePath path of the image.
 	 * @return the image.
 	 */
 	public Image getImage(String imagePath) {
@@ -98,7 +98,7 @@ public class PyGeneratorPlugin extends AbstractUIPlugin {
 
 	/** Replies the image descriptor for the given image path.
 	 *
-	 * @param imagePath - path of the image.
+	 * @param imagePath path of the image.
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor getImageDescriptor(String imagePath) {
@@ -114,8 +114,8 @@ public class PyGeneratorPlugin extends AbstractUIPlugin {
 
 	/** Create a status.
 	 *
-	 * @param severity - the severity level, see {@link IStatus}.
-	 * @param cause - the cause of the problem.
+	 * @param severity the severity level, see {@link IStatus}.
+	 * @param cause the cause of the problem.
 	 * @return the status.
 	 */
 	@SuppressWarnings("static-method")

@@ -46,7 +46,7 @@ public final class ImplementedTypeRemoveModification extends SARLSemanticModific
 	private final RemovalType type;
 
 	/**
-	 * @param type - the type of removal.
+	 * @param type the type of removal.
 	 */
 	private ImplementedTypeRemoveModification(RemovalType type) {
 		this.type = type;
@@ -57,9 +57,9 @@ public final class ImplementedTypeRemoveModification extends SARLSemanticModific
 	 * <p>The first user data is the name of the type to remove.
 	 * The second parameter may be the type of the removal (see {@link RemovalType}).
 	 *
-	 * @param provider - the quick fix provider.
-	 * @param issue - the issue to fix.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param provider the quick fix provider.
+	 * @param issue the issue to fix.
+	 * @param acceptor the quick fix acceptor.
 	 */
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor) {
 		accept(provider, issue, acceptor, null);
@@ -70,10 +70,10 @@ public final class ImplementedTypeRemoveModification extends SARLSemanticModific
 	 * <p>The first user data is the name of the type to remove.
 	 * The second parameter may be the type of the removal (see {@link RemovalType}).
 	 *
-	 * @param provider - the quick fix provider.
-	 * @param issue - the issue to fix.
-	 * @param acceptor - the quick fix acceptor.
-	 * @param type - the type of the modification.
+	 * @param provider the quick fix provider.
+	 * @param issue the issue to fix.
+	 * @param acceptor the quick fix acceptor.
+	 * @param type the type of the modification.
 	 */
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor, RemovalType type) {
 		final String[] data = issue.getData();

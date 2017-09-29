@@ -73,8 +73,8 @@ public class FormalParameterSourceAppender extends AbstractSourceAppender implem
 	}
 
 	/** Initialize the formal parameter.
-	 * @param context - the context of the formal parameter.
-	 * @param name - the name of the formal parameter.
+	 * @param context the context of the formal parameter.
+	 * @param name the name of the formal parameter.
 	 */
 	public void eInit(XtendExecutable context, String name, IJvmTypeProvider typeContext) {
 		this.builder.eInit(context, name, typeContext);

@@ -44,7 +44,7 @@ public class HazelcastDMapView<K, V> extends AbstractDMapView<K, V> {
 	private final IMap<K, V> map;
 
 	/**
-	 * @param map - the underground map to use.
+	 * @param map the underground map to use.
 	 */
 	public HazelcastDMapView(IMap<K, V> map) {
 		super(map.getName());

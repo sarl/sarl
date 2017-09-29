@@ -388,7 +388,7 @@ final class Collections3 {
 		val singleton : T
 
 		/**
-		 * @param singleton - the singleton.
+		 * @param singleton the singleton.
 		 */
 		package new (singleton : T) {
 			this.singleton = singleton
@@ -488,7 +488,7 @@ final class Collections3 {
 	/** Replies an empty synchronized set.
 	 *
 	 * @param <T> - type of the element.
-	 * @param element - the element to put in the singleton.
+	 * @param element the element to put in the singleton.
 	 * @return an empty synchronized set.
 	 */
 	static def synchronizedSingleton(element : T) : SynchronizedSet<T> with T {
@@ -498,7 +498,7 @@ final class Collections3 {
 	/** Replies an unmodifiable synchronized set.
 	 *
 	 * @param <T> - type of the elements in the set.
-	 * @param elements - the set to transform as unmodifiable set.
+	 * @param elements the set to transform as unmodifiable set.
 	 * @return an unmodifiable synchronized set.
 	 */
 	static def unmodifiableSynchronizedSet(elements : SynchronizedSet<T>) : SynchronizedSet<T> with T {
@@ -528,7 +528,7 @@ final class Collections3 {
 	 * serializable.
 	 *
 	 * @param <T> - type of the elements in the set.
-	 * @param elements - the set to transform as unmodifiable set.
+	 * @param elements the set to transform as unmodifiable set.
 	 * @param mutex is the mutex to use for synchronizing.
 	 * @return an unmodifiable synchronized set.
 	 */
@@ -558,7 +558,7 @@ final class Collections3 {
 	 * serializable.
 	 * 
 	 * @param <T> - type of the elements in the iterable.
-	 * @param elements - the set to transform as unmodifiable set.
+	 * @param elements the set to transform as unmodifiable set.
 	 * @param mutex is the mutex to use for synchronizing.
 	 * @return an unmodifiable synchronized iterable.
 	 */

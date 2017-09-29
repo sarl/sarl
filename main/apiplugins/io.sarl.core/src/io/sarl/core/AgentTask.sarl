@@ -70,7 +70,7 @@ class AgentTask extends SRESpecificDataContainer {
 
 	/** Change the procedure associated to this task.
 	 *
-	 * @param procedure - code of the procedure to associate to the task.
+	 * @param procedure code of the procedure to associate to the task.
 	 */
 	def setProcedure(procedure : (Agent) => void) : void {
 		this.procedure = procedure
@@ -86,7 +86,7 @@ class AgentTask extends SRESpecificDataContainer {
 
 	/** Change the guard of this task.
 	 *
-	 * @param guard - the code of the function that is the predicate associated to the guard.
+	 * @param guard the code of the function that is the predicate associated to the guard.
 	 * @see #unless
 	 * @see #ifTrue
 	 */
@@ -104,7 +104,7 @@ class AgentTask extends SRESpecificDataContainer {
 
 	/** Change the name of this task.
 	 *
-	 * @param name - name of the task.
+	 * @param name name of the task.
 	 */
 	def setName(name : String) : void {
 		this.name = name
@@ -112,7 +112,7 @@ class AgentTask extends SRESpecificDataContainer {
 
 	/** Change the guard of this that with the negation of the given predicate.
 	 *
-	 * @param predicate - the code of the function that is the predicate to test.
+	 * @param predicate the code of the function that is the predicate to test.
 	 * @return <code>this</code>.
 	 * @see #setGuard
 	 */
@@ -127,7 +127,7 @@ class AgentTask extends SRESpecificDataContainer {
 
 	/** Change the guard to the given predicate.
 	 *
-	 * @param predicate - the code of the function that is the predicate to test.
+	 * @param predicate the code of the function that is the predicate to test.
 	 * @return <code>this</code>.
 	 * @see #setGuard
 	 */

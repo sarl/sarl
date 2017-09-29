@@ -69,7 +69,7 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 
 	/** Replies the image for a SARL script.
 	 *
-	 * @param script - the SARL script.
+	 * @param script the SARL script.
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor image(SarlScript script) {
@@ -78,7 +78,7 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 
 	/** Replies the image for an import declaration.
 	 *
-	 * @param declaration - describes the import declaration.
+	 * @param declaration describes the import declaration.
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor image(XImportDeclaration declaration) {
@@ -87,7 +87,7 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 
 	/** Replies the image for an agent.
 	 *
-	 * @param agent - describes the agent.
+	 * @param agent describes the agent.
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor image(SarlAgent agent) {
@@ -99,7 +99,7 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 
 	/** Replies the image for a behavior.
 	 *
-	 * @param behavior - describes the behavior.
+	 * @param behavior describes the behavior.
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor image(SarlBehavior behavior) {
@@ -111,7 +111,7 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 
 	/** Replies the image for a capacity.
 	 *
-	 * @param capacity - describes the capacity.
+	 * @param capacity describes the capacity.
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor image(SarlCapacity capacity) {
@@ -123,7 +123,7 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 
 	/** Replies the image for a skill.
 	 *
-	 * @param skill - describes the skill.
+	 * @param skill describes the skill.
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor image(SarlSkill skill) {
@@ -135,7 +135,7 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 
 	/** Replies the image for an event.
 	 *
-	 * @param event - describes the event.
+	 * @param event describes the event.
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor image(SarlEvent event) {
@@ -147,7 +147,7 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 
 	/** Replies the image for an action.
 	 *
-	 * @param action - describes the action.
+	 * @param action describes the action.
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor image(SarlAction action) {
@@ -159,7 +159,7 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 
 	/** Replies the image for a capacity use.
 	 *
-	 * @param uses - describes the capacity use.
+	 * @param uses describes the capacity use.
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor image(SarlCapacityUses uses) {
@@ -168,7 +168,7 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 
 	/** Replies the image for a required capacity.
 	 *
-	 * @param capacity - describes the required capacity.
+	 * @param capacity describes the required capacity.
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor image(SarlRequiredCapacity capacity) {
@@ -177,7 +177,7 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 
 	/** Replies the image for a behavior unit.
 	 *
-	 * @param unit - describes the behavior unit.
+	 * @param unit describes the behavior unit.
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor image(SarlBehaviorUnit unit) {
@@ -186,7 +186,7 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 
 	/** Replies the image for an attribute.
 	 *
-	 * @param attribute - describes the attribute.
+	 * @param attribute describes the attribute.
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor image(SarlField attribute) {
@@ -197,7 +197,7 @@ public class SARLDescriptionLabelProvider extends XtendDescriptionLabelProvider 
 
 	/** Replies the image for a constructor.
 	 *
-	 * @param constructor - describes the constructor.
+	 * @param constructor describes the constructor.
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor image(SarlConstructor constructor) {

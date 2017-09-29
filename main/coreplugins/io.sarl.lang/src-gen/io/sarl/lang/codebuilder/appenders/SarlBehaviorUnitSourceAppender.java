@@ -79,8 +79,8 @@ public class SarlBehaviorUnitSourceAppender extends AbstractSourceAppender imple
 	}
 
 	/** Initialize the Ecore element.
-	 * @param container - the container of the SarlBehaviorUnit.
-	 * @param name - the type of the SarlBehaviorUnit.
+	 * @param container the container of the SarlBehaviorUnit.
+	 * @param name the type of the SarlBehaviorUnit.
 	 */
 	public void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context) {
 		this.builder.eInit(container, name, context);
@@ -111,7 +111,7 @@ public class SarlBehaviorUnitSourceAppender extends AbstractSourceAppender imple
 	}
 
 	/** Change the guard.
-	 * @param value - the value of the guard. It may be <code>null</code>.
+	 * @param value the value of the guard. It may be <code>null</code>.
 	 */
 	@Pure
 	public IExpressionBuilder getGuard() {

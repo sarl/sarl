@@ -1,0 +1,105 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2017 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.docs.doclet;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+/** Reflexion utilities.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.7
+ */
+public final class Reflect {
+
+	private Reflect() {
+		//
+	}
+
+	/** Change the field.
+	 *
+	 * @param type the type.
+	 * @param fieldName the name of the field.
+	 * @param fieldValue the value of the field.
+	 */
+	public static void setField(Class<?> type, String fieldName, Object fieldValue) {
+		setField(null, type, fieldName, fieldValue);
+	}
+
+	/** Change the field.
+	 *
+	 * @param instance the instance to change.
+	 * @param type the type in which the field is declared.
+	 * @param fieldName the name of the field.
+	 * @param fieldValue the value of the field.
+	 */
+	public static void setField(Object instance, Class<?> type, String fieldName, Object fieldValue) {
+		try {
+			final Field field = type.getDeclaredField(fieldName);
+			field.setAccessible(true);
+			field.set(instance, fieldValue);
+		} catch (Exception exception) {
+			throw new Error(exception);
+		}
+	}
+
+	/** Call the method.
+	 *
+	 * @param instance the instance to call on.
+	 * @param type the type.
+	 * @param methodName the name of the method.
+	 * @param types the types of the parameters.
+	 * @param args the values of the arguments.
+	 */
+	public static void call(Object instance, Class<?> type, String methodName, Class<?>[] types, Object... args) {
+		try {
+			final Method method = type.getDeclaredMethod(methodName, types);
+			method.setAccessible(true);
+			method.invoke(instance, args);
+		} catch (Exception exception) {
+			throw new Error(exception);
+		}
+	}
+
+	/** Replies the value of the field.
+	 *
+	 * @param <T> the field type.
+	 * @param obj the instance.
+	 * @param string the field name.
+	 * @param clazz the field type.
+	 * @return the value.
+	 */
+	public static <T> T getField(Object obj, String string, Class<T> clazz) {
+		try {
+			final Field field = clazz.getDeclaredField(string);
+			field.setAccessible(true);
+			final Object value = field.get(obj);
+			return clazz.cast(value);
+		} catch (Exception exception) {
+			throw new Error(exception);
+		}
+	}
+
+}

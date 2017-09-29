@@ -86,7 +86,7 @@ public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUi
 	/** Create a new assertion tool on a specific code resource.
 	 * The code will be used for generating the outline.
 	 *
-	 * @param code - the code.
+	 * @param code the code.
 	 * @return the assertion tool.
 	 * @throws Exception
 	 * @throws CoreException
@@ -98,7 +98,7 @@ public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUi
 
 	/** Create a new assertion tool on a specific code resource.
 	 *
-	 * @param script - the script to consider for producing the outline.
+	 * @param script the script to consider for producing the outline.
 	 * @return the assertion tool.
 	 * @throws Exception
 	 * @throws CoreException
@@ -160,7 +160,7 @@ public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUi
 		/** Assert the number of children for the node is equal
 		 * to the given value.
 		 *
-		 * @param num - expected number of children.
+		 * @param num expected number of children.
 		 * @return this
 		 */
 		public OutlineAsserts numChildren(int num) {
@@ -175,7 +175,7 @@ public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUi
 		/** Assert the number of children for the node is strictly greater
 		 * than the given value.
 		 *
-		 * @param num - expected number of children.
+		 * @param num expected number of children.
 		 * @return this
 		 */
 		public OutlineAsserts numChildrenGreaterThan(int num) {
@@ -190,7 +190,7 @@ public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUi
 		/** Assert the number of children for the node is strictly lower
 		 * than the given value.
 		 *
-		 * @param num - expected number of children.
+		 * @param num expected number of children.
 		 * @return this
 		 */
 		public OutlineAsserts numChildrenLowerThan(int num) {
@@ -204,7 +204,7 @@ public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUi
 
 		/** Assert that a text region is inside the node.
 		 *
-		 * @param hasTextRegion - expected value
+		 * @param hasTextRegion expected value
 		 * @return this
 		 */
 		public OutlineAsserts hasTextRegion(boolean hasTextRegion) {
@@ -218,8 +218,8 @@ public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUi
 
 		/** Replies an assert builder on a child.
 		 *
-		 * @param index - position of the child.
-		 * @param text - the text associated to the child in the outline.
+		 * @param index position of the child.
+		 * @param text the text associated to the child in the outline.
 		 * @return the asserts for the child.
 		 */
 		public OutlineAsserts child(int index, StyledString text) {
@@ -231,8 +231,8 @@ public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUi
 
 		/** Replies an assert builder on a child.
 		 *
-		 * @param index - position of the child.
-		 * @param text - the text associated to the child in the outline.
+		 * @param index position of the child.
+		 * @param text the text associated to the child in the outline.
 		 * @return the asserts for the child.
 		 */
 		public OutlineAsserts child(int index, String text) {
@@ -245,7 +245,7 @@ public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUi
 
 		/** Move to the next child.
 		 *
-		 * @param text - the text associated to the child in the outline
+		 * @param text the text associated to the child in the outline
 		 * @return the asserts for the child.
 		 */
 		public OutlineAsserts nextChild(String text) {
@@ -255,8 +255,8 @@ public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUi
 
 		/** Assert that the child is a leaf.
 		 *
-		 * @param index - position of the child.
-		 * @param text - the text associated to the child.
+		 * @param index position of the child.
+		 * @param text the text associated to the child.
 		 * @return the asserts for the child.
 		 */
 		public OutlineAsserts leaf(int index, String text) {
@@ -273,8 +273,8 @@ public abstract class AbstractSARLOutlineTreeProviderTest extends AbstractSarlUi
 
 		/** Assert that the child is a leaf.
 		 *
-		 * @param index - position of the child.
-		 * @param text - the text associated to the child.
+		 * @param index position of the child.
+		 * @param text the text associated to the child.
 		 * @return the asserts for the child.
 		 */
 		public OutlineAsserts notLeaf(int index, String text) {

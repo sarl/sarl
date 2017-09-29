@@ -146,7 +146,7 @@ public final class SARLRuntime {
 	 * <p>If the given key is <code>null</code> or empty, the preference key
 	 * is reset to the {@link #DEFAULT_PREFERENCE_KEY}.
 	 *
-	 * @param key - the new key or <code>null</code>.
+	 * @param key the new key or <code>null</code>.
 	 */
 	public static void setCurrentPreferenceKey(String key) {
 		LOCK.lock();
@@ -161,7 +161,7 @@ public final class SARLRuntime {
 	 * Adds the given listener to the list of registered SRE install changed
 	 * listeners. Has no effect if an identical listener is already registered.
 	 *
-	 * @param listener - the listener to add
+	 * @param listener the listener to add
 	 */
 	public static void addSREInstallChangedListener(ISREInstallChangedListener listener) {
 		SRE_LISTENERS.add(listener);
@@ -171,7 +171,7 @@ public final class SARLRuntime {
 	 * Removes the given listener from the list of registered SRE install changed
 	 * listeners. Has no effect if an identical listener is not already registered.
 	 *
-	 * @param listener - the listener to remove
+	 * @param listener the listener to remove
 	 */
 	public static void removeSREInstallChangedListener(ISREInstallChangedListener listener) {
 		SRE_LISTENERS.remove(listener);
@@ -180,7 +180,7 @@ public final class SARLRuntime {
 	/**
 	 * Notifies all SRE install changed listeners of the given property change.
 	 *
-	 * @param event - event describing the change.
+	 * @param event event describing the change.
 	 */
 	public static void fireSREChanged(PropertyChangeEvent event) {
 		for (final Object listener : SRE_LISTENERS.getListeners()) {
@@ -191,7 +191,7 @@ public final class SARLRuntime {
 	/**
 	 * Notifies all SRE install changed listeners of the addition of a SRE.
 	 *
-	 * @param installation - the installed SRE.
+	 * @param installation the installed SRE.
 	 */
 	public static void fireSREAdded(ISREInstall installation) {
 		for (final Object listener : SRE_LISTENERS.getListeners()) {
@@ -202,7 +202,7 @@ public final class SARLRuntime {
 	/**
 	 * Notifies all SRE install changed listeners of the removed of a SRE.
 	 *
-	 * @param installation - the removed SRE.
+	 * @param installation the removed SRE.
 	 */
 	public static void fireSRERemoved(ISREInstall installation) {
 		for (final Object listener : SRE_LISTENERS.getListeners()) {
@@ -213,7 +213,7 @@ public final class SARLRuntime {
 	/**
 	 * Return the SRE corresponding to the specified Id.
 	 *
-	 * @param id - the id that specifies an instance of ISREInstall
+	 * @param id the id that specifies an instance of ISREInstall
 	 * @return the SRE corresponding to the specified Id, or <code>null</code>.
 	 */
 	public static ISREInstall getSREFromId(String id) {
@@ -269,7 +269,7 @@ public final class SARLRuntime {
 	/**
 	 * Sets the installed SREs.
 	 *
-	 * @param sres - The installed SREs.
+	 * @param sres The installed SREs.
 	 * @param monitor the progress monitor to use for reporting progress to the user. It is the caller's responsibility
 	 *        to call done() on the given monitor. Accepts <code>null</code>, indicating that no progress should be
 	 *        reported and that the operation cannot be canceled.
@@ -334,9 +334,9 @@ public final class SARLRuntime {
 	 * Sets a SRE as the system-wide default SRE, and notifies registered SRE install
 	 * change listeners of the change.
 	 *
-	 * @param sre - The SRE to make the default. May be <code>null</code> to clear
+	 * @param sre The SRE to make the default. May be <code>null</code> to clear
 	 * 				the default.
-	 * @param monitor - progress monitor or <code>null</code>
+	 * @param monitor progress monitor or <code>null</code>
 	 * @throws CoreException if trying to set the default SRE install encounters problems
 	 */
 	public static void setDefaultSREInstall(ISREInstall sre, IProgressMonitor monitor) throws CoreException {
@@ -347,10 +347,10 @@ public final class SARLRuntime {
 	 * Sets a SRE as the system-wide default SRE, and notifies registered SRE install
 	 * change listeners of the change.
 	 *
-	 * @param sre - The SRE to make the default. May be <code>null</code> to clear
+	 * @param sre The SRE to make the default. May be <code>null</code> to clear
 	 * 				the default.
-	 * @param monitor - progress monitor or <code>null</code>
-	 * @param savePreference - If <code>true</code>, update workbench preferences to reflect
+	 * @param monitor progress monitor or <code>null</code>
+	 * @param savePreference If <code>true</code>, update workbench preferences to reflect
 	 * 		   				  the new default SRE.
 	 * @throws CoreException if trying to set the default SRE install encounters problems
 	 */
@@ -382,8 +382,8 @@ public final class SARLRuntime {
 	/**
 	 * Notifies registered listeners that the default SRE has changed.
 	 *
-	 * @param previous - the previous SRE
-	 * @param current - the new current default SRE
+	 * @param previous the previous SRE
+	 * @param current the new current default SRE
 	 */
 	private static void fireDefaultSREChanged(ISREInstall previous, ISREInstall current) {
 		for (final Object listener : SRE_LISTENERS.getListeners()) {
@@ -411,7 +411,7 @@ public final class SARLRuntime {
 	/** Replies if the given SRE is provided by the Eclipse platform
 	 * through an extension point.
 	 *
-	 * @param sre - the sre.
+	 * @param sre the sre.
 	 * @return <code>true</code> if the SRE was provided through an extension
 	 *     point.
 	 */
@@ -437,7 +437,7 @@ public final class SARLRuntime {
 	 * This state will be read again upon first access to SRE
 	 * configuration information.
 	 *
-	 * @param monitor - the progression monitor, or <code>null</code>.
+	 * @param monitor the progression monitor, or <code>null</code>.
 	 * @throws CoreException if trying to save the current state of SREs encounters a problem
 	 */
 	public static void saveSREConfiguration(IProgressMonitor monitor) throws CoreException {
@@ -492,7 +492,7 @@ public final class SARLRuntime {
 	/**
 	 * Returns the XML representation of the given SRE.
 	 *
-	 * @param sre - the SRE to serialize.
+	 * @param sre the SRE to serialize.
 	 * @return an XML representation of the given SRE.
 	 * @throws CoreException if trying to compute the XML for the SRE state encounters a problem.
 	 */
@@ -526,8 +526,8 @@ public final class SARLRuntime {
 	/**
 	 * Returns the XML representation of the given SRE.
 	 *
-	 * @param sre - the SRE to serialize.
-	 * @param xml - the XML representation of the given SRE.
+	 * @param sre the SRE to serialize.
+	 * @param xml the XML representation of the given SRE.
 	 * @throws CoreException if trying to compute the XML for the SRE state encounters a problem.
 	 */
 	public static void setSREFromXML(ISREInstall sre, String xml) throws CoreException {
@@ -542,7 +542,7 @@ public final class SARLRuntime {
 	/**
 	 * Returns the listing of currently installed SREs as a single XML file.
 	 *
-	 * @param monitor - monitor on the XML building.
+	 * @param monitor monitor on the XML building.
 	 * @return an XML representation of all of the currently installed SREs.
 	 * @throws CoreException if trying to compute the XML for the SRE state encounters a problem.
 	 */
@@ -860,7 +860,7 @@ public final class SARLRuntime {
 
 	/** Replies if the given directory contains a SRE.
 	 *
-	 * @param directory - the directory.
+	 * @param directory the directory.
 	 * @return <code>true</code> if the given directory contains a SRE. Otherwise <code>false</code>.
 	 * @see #isPackedSRE(File)
 	 */
@@ -889,7 +889,7 @@ public final class SARLRuntime {
 
 	/** Replies if the given directory contains a SRE.
 	 *
-	 * @param directory - the directory.
+	 * @param directory the directory.
 	 * @return <code>true</code> if the given directory contains a SRE. Otherwise <code>false</code>.
 	 * @see #isPackedSRE(File)
 	 */
@@ -912,7 +912,7 @@ public final class SARLRuntime {
 
 	/** Replies if the given JAR file contains a SRE.
 	 *
-	 * @param jarFile - the JAR file to test.
+	 * @param jarFile the JAR file to test.
 	 * @return <code>true</code> if the given directory contains a SRE. Otherwise <code>false</code>.
 	 * @see #isUnpackedSRE(File)
 	 */
@@ -939,7 +939,7 @@ public final class SARLRuntime {
 
 	/** Replies if the given JAR file contains a SRE.
 	 *
-	 * @param jarFile - the JAR file to test.
+	 * @param jarFile the JAR file to test.
 	 * @return <code>true</code> if the given directory contains a SRE. Otherwise <code>false</code>.
 	 * @see #isUnpackedSRE(File)
 	 */

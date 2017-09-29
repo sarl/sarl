@@ -124,14 +124,14 @@ public class SarlAnnotationTypeSourceAppender extends AbstractSourceAppender imp
 	}
 
 	/** Add a modifier.
-	 * @param modifier - the modifier to add.
+	 * @param modifier the modifier to add.
 	 */
 	public void addModifier(String modifier) {
 		this.builder.addModifier(modifier);
 	}
 
 	/** Create a SarlField.
-	 * @param name - the name of the SarlField.
+	 * @param name the name of the SarlField.
 	 * @return the builder.
 	 */
 	public ISarlFieldBuilder addVarSarlField(String name) {
@@ -139,7 +139,7 @@ public class SarlAnnotationTypeSourceAppender extends AbstractSourceAppender imp
 	}
 
 	/** Create a SarlField.
-	 * @param name - the name of the SarlField.
+	 * @param name the name of the SarlField.
 	 * @return the builder.
 	 */
 	public ISarlFieldBuilder addValSarlField(String name) {
@@ -148,7 +148,7 @@ public class SarlAnnotationTypeSourceAppender extends AbstractSourceAppender imp
 
 	/** Create a SarlField.	 *
 	 * <p>This function is equivalent to {@link #addVarSarlField}.
-	 * @param name - the name of the SarlField.
+	 * @param name the name of the SarlField.
 	 * @return the builder.
 	 */
 	public ISarlFieldBuilder addSarlField(String name) {
@@ -156,7 +156,7 @@ public class SarlAnnotationTypeSourceAppender extends AbstractSourceAppender imp
 	}
 
 	/** Create a SarlClass.
-	 * @param name - the name of the SarlClass.
+	 * @param name the name of the SarlClass.
 	 * @return the builder.
 	 */
 	public ISarlClassBuilder addSarlClass(String name) {
@@ -164,7 +164,7 @@ public class SarlAnnotationTypeSourceAppender extends AbstractSourceAppender imp
 	}
 
 	/** Create a SarlInterface.
-	 * @param name - the name of the SarlInterface.
+	 * @param name the name of the SarlInterface.
 	 * @return the builder.
 	 */
 	public ISarlInterfaceBuilder addSarlInterface(String name) {
@@ -172,7 +172,7 @@ public class SarlAnnotationTypeSourceAppender extends AbstractSourceAppender imp
 	}
 
 	/** Create a SarlEnumeration.
-	 * @param name - the name of the SarlEnumeration.
+	 * @param name the name of the SarlEnumeration.
 	 * @return the builder.
 	 */
 	public ISarlEnumerationBuilder addSarlEnumeration(String name) {
@@ -180,7 +180,7 @@ public class SarlAnnotationTypeSourceAppender extends AbstractSourceAppender imp
 	}
 
 	/** Create a SarlAnnotationType.
-	 * @param name - the name of the SarlAnnotationType.
+	 * @param name the name of the SarlAnnotationType.
 	 * @return the builder.
 	 */
 	public ISarlAnnotationTypeBuilder addSarlAnnotationType(String name) {

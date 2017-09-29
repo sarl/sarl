@@ -53,7 +53,7 @@ final class Scopes {
 
 	/** Create an scope restricted to the given addresses.
 	 *
-	 * @param addresses - addresses to put in the scope.
+	 * @param addresses addresses to put in the scope.
 	 * @return the scope restricted to the given addresses.
 	 */
 	static def addresses(addresses : Address*) : Scope<Address> {
@@ -62,7 +62,7 @@ final class Scopes {
 
 	/** Create an scope that is forbidding the given addresses.
 	 *
-	 * @param addresses - addresses to exclude from the scope.
+	 * @param addresses addresses to exclude from the scope.
 	 * @return the scope forbidding the given addresses.
 	 * @since 0.5
 	 */
@@ -72,7 +72,7 @@ final class Scopes {
 
 	/** Create an scope restricted to the given agent identifiers.
 	 *
-	 * @param identifiers - identifiers to put in the scope.
+	 * @param identifiers identifiers to put in the scope.
 	 * @return the scope restricted to the given agent identifiers.
 	 * @since 0.6
 	 */
@@ -82,7 +82,7 @@ final class Scopes {
 
 	/** Create an scope that is forbidding the given agent identifiers.
 	 *
-	 * @param identifiers - identifiers to exclude from the scope.
+	 * @param identifiers identifiers to exclude from the scope.
 	 * @return the scope forbidding the given identifiers.
 	 * @since 0.5
 	 */

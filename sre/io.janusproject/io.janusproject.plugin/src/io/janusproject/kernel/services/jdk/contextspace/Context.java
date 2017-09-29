@@ -72,10 +72,10 @@ public class Context implements AgentContext {
 	 *
 	 * <p>CAUTION: Do not miss to call {@link #postConstruction()}.
 	 *
-	 * @param id - identifier of the context.
-	 * @param defaultSpaceID - identifier of the default space in the context.
-	 * @param factory - factory to use for creating the space repository.
-	 * @param startUpListener - repository listener which is added just after the creation of the repository, but before the
+	 * @param id identifier of the context.
+	 * @param defaultSpaceID identifier of the default space in the context.
+	 * @param factory factory to use for creating the space repository.
+	 * @param startUpListener repository listener which is added just after the creation of the repository, but before the
 	 *        creation of the default space.
 	 */
 	public Context(UUID id, UUID defaultSpaceID, SpaceRepositoryFactory factory, SpaceRepositoryListener startUpListener) {
@@ -184,9 +184,9 @@ public class Context implements AgentContext {
 		private final LogService logger;
 
 		/**
-		 * @param context - the context that is owner this space listener.
-		 * @param logger - the logging service to use.
-		 * @param relay - the space repository listener to register at initialization time.
+		 * @param context the context that is owner this space listener.
+		 * @param logger the logging service to use.
+		 * @param relay the space repository listener to register at initialization time.
 		 */
 		SpaceListener(Context context, LogService logger, SpaceRepositoryListener relay) {
 			assert context != null;
@@ -252,9 +252,9 @@ public class Context implements AgentContext {
 		private final LogService logger;
 
 		/**
-		 * @param injector - instance of the injector to be used.
-		 * @param distributedDataStructure - service that permits to obtain distributed data structure.
-		 * @param logger - logging service.
+		 * @param injector instance of the injector to be used.
+		 * @param distributedDataStructure service that permits to obtain distributed data structure.
+		 * @param logger logging service.
 		 */
 		public DefaultSpaceRepositoryFactory(Injector injector, DistributedDataStructureService distributedDataStructure,
 				LogService logger) {
@@ -282,9 +282,9 @@ public class Context implements AgentContext {
 		 * <p>In opposite to {@link #newInstance(Context, String, SpaceRepositoryListener)}, this function gives the listener to the
 		 * space repository, without wrapping it into the private space listener proxy.
 		 *
-		 * @param context - the context in which the space repository must be created.
-		 * @param distributedSpaceSetName - name of the distribued data structure used by the space repository.
-		 * @param listener - the listener on the space repository events to be register at initialization stage.
+		 * @param context the context in which the space repository must be created.
+		 * @param distributedSpaceSetName name of the distribued data structure used by the space repository.
+		 * @param listener the listener on the space repository events to be register at initialization stage.
 		 * @return the space repository
 		 */
 		protected SpaceRepository newInstanceWithPrivateSpaceListener(Context context, String distributedSpaceSetName,

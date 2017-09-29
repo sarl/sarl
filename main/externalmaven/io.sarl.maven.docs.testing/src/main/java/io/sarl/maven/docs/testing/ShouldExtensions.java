@@ -84,8 +84,8 @@ public final class ShouldExtensions {
 
 	/** Ensure that the string has the format of a date.
 	 *
-	 * @param actual - the string to parse.
-	 * @param dateFormat - the expected format of the date, as
+	 * @param actual the string to parse.
+	 * @param dateFormat the expected format of the date, as
 	 *     described in {@link SimpleDateFormat}. If <code>null</code>, the
 	 *     default date format is considered.
 	 * @return the validation status
@@ -110,7 +110,7 @@ public final class ShouldExtensions {
 
 	/** Ensure that the string has the format of a date.
 	 *
-	 * @param actual - the string to parse.
+	 * @param actual the string to parse.
 	 * @return the validation status
 	 */
 	public static boolean shouldBeDate(String actual) {
@@ -119,8 +119,8 @@ public final class ShouldExtensions {
 
 	/** Ensure that the string has the format of a number.
 	 *
-	 * @param actual - the string to parse.
-	 * @param numberFormat - the expected format of the number, as
+	 * @param actual the string to parse.
+	 * @param numberFormat the expected format of the number, as
 	 *     described in {@link DecimalFormat}. If <code>null</code>, the
 	 *     default date format is considered.
 	 * @return the validation status
@@ -145,7 +145,7 @@ public final class ShouldExtensions {
 
 	/** Ensure that the string has the format of a number.
 	 *
-	 * @param actual - the string to parse.
+	 * @param actual the string to parse.
 	 * @return the validation status
 	 */
 	public static boolean shouldBeNumber(String actual) {
@@ -154,8 +154,8 @@ public final class ShouldExtensions {
 
 	/** Ensure that the given string is a valid Maven version number.
 	 *
-	 * @param actual - the string to test.
-	 * @param allowSnapshot - indicates if the <code>-SNAPSHOT</code> postfix
+	 * @param actual the string to test.
+	 * @param allowSnapshot indicates if the <code>-SNAPSHOT</code> postfix
 	 *     is considered as valid.
 	 * @return the validation status.
 	 */
@@ -176,7 +176,7 @@ public final class ShouldExtensions {
 
 	/** Ensure that the given string is a valid Maven version number, including snapshot.
 	 *
-	 * @param actual - the string to test.
+	 * @param actual the string to test.
 	 * @return the validation status.
 	 */
 	public static boolean shouldBeMavenVersion(String actual) {
@@ -226,8 +226,8 @@ public final class ShouldExtensions {
 	 * If the maxVersion is not given or is not a properly formated version
 	 * number, then all versions after the minVersion are valid.
 	 *
-	 * @param minVersion - the minimal version.
-	 * @param maxVersion - the maximal version.
+	 * @param minVersion the minimal version.
+	 * @param maxVersion the maximal version.
 	 * @return the validation status.
 	 */
 	public static boolean shouldBeJavaRange(String minVersion, String maxVersion) {
@@ -251,7 +251,7 @@ public final class ShouldExtensions {
 	/** Ensure that the version of the current Java specification is at
 	 * least the one given by minVersion.
 	 *
-	 * @param minVersion - the minimal version.
+	 * @param minVersion the minimal version.
 	 * @return the validation status.
 	 */
 	public static boolean shouldBeAtLeastJava(String minVersion) {
@@ -260,8 +260,8 @@ public final class ShouldExtensions {
 
 	/** Ensure that the iterator replies the expected values in the given order.
 	 *
-	 * @param actual - the iterator to test.
-	 * @param expected - the expected values.
+	 * @param actual the iterator to test.
+	 * @param expected the expected values.
 	 * @return the validation status
 	 */
 	public static boolean shouldIterate(Iterator<?> actual, Object expected) {
@@ -270,9 +270,9 @@ public final class ShouldExtensions {
 
 	/** Ensure that the iterator replies the expected values in the given order.
 	 *
-	 * @param actual - the iterator to test.
-	 * @param expected - the expected values.
-	 * @param significantOrder - indicates if the order of the elements is significant.
+	 * @param actual the iterator to test.
+	 * @param expected the expected values.
+	 * @param significantOrder indicates if the order of the elements is significant.
 	 * @return the validation status
 	 */
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
@@ -349,8 +349,8 @@ public final class ShouldExtensions {
 
 	/** Ensure that the string has the format of an URL to the SARL API.
 	 *
-	 * @param actual - the string to parse.
-	 * @param allowedAPIhostname - is a list of API base hostname to consider as valid.
+	 * @param actual the string to parse.
+	 * @param allowedAPIhostname is a list of API base hostname to consider as valid.
 	 *     If not given, only "www.sarl.io" is allowed.
 	 * @return the validation status
 	 */
@@ -394,8 +394,8 @@ public final class ShouldExtensions {
 
 	/** Ensure that the given string literal is equal to the given value.
 	 *
-	 * @param actual - the string literal to test.
-	 * @param expected - the expected value.
+	 * @param actual the string literal to test.
+	 * @param expected the expected value.
 	 * @return the validation status
 	 */
 	public static boolean shouldBe(XStringLiteral actual, Object expected) {
@@ -408,8 +408,8 @@ public final class ShouldExtensions {
 
 	/** Ensure that the given boolean literal is equal to the given value.
 	 *
-	 * @param actual - the boolean literal to test.
-	 * @param expected - the expected value.
+	 * @param actual the boolean literal to test.
+	 * @param expected the expected value.
 	 * @return the validation status
 	 */
 	public static boolean shouldBe(XBooleanLiteral actual, Object expected) {
@@ -431,8 +431,8 @@ public final class ShouldExtensions {
 
 	/** Ensure that the given number literal is equal to the given value.
 	 *
-	 * @param actual - the number literal to test.
-	 * @param expected - the expected value.
+	 * @param actual the number literal to test.
+	 * @param expected the expected value.
 	 * @return the validation status
 	 */
 	public static boolean shouldBe(XNumberLiteral actual, Object expected) {
@@ -455,8 +455,8 @@ public final class ShouldExtensions {
 
 	/** Ensure that the given type literal is equal to the given type.
 	 *
-	 * @param actual - the type literal to test.
-	 * @param expected - the name of the expected type.
+	 * @param actual the type literal to test.
+	 * @param expected the name of the expected type.
 	 * @return the validation status
 	 */
 	public static boolean shouldBe(XTypeLiteral actual, Object expected) {
@@ -475,8 +475,8 @@ public final class ShouldExtensions {
 
 	/** Ensure that the given type literal is equal to the given list.
 	 *
-	 * @param actual - the type literal to test.
-	 * @param expected - the name of the expected type.
+	 * @param actual the type literal to test.
+	 * @param expected the name of the expected type.
 	 * @return the validation status
 	 */
 	public static boolean shouldBe(XCollectionLiteral actual, Object expected) {
@@ -491,8 +491,8 @@ public final class ShouldExtensions {
 
 	/** Ensure that the given type literal is equal to the given type.
 	 *
-	 * @param actual - the type literal to test.
-	 * @param expected - the name of the expected type.
+	 * @param actual the type literal to test.
+	 * @param expected the name of the expected type.
 	 * @return the validation status
 	 */
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:npathcomplexity"})
@@ -544,8 +544,8 @@ public final class ShouldExtensions {
 	 * <li>ID(TYPE, TYPE...) : TYPE</li>
 	 * </ul>
 	 *
-	 * @param type - the type to check.
-	 * @param name - the name and prototype, e.g. <code>fct(java.lang.String):int</code>.
+	 * @param type the type to check.
+	 * @param name the name and prototype, e.g. <code>fct(java.lang.String):int</code>.
 	 * @return the method.
 	 */
 	public static Method shouldHaveDeprecatedMethod(Class<?> type, String name) {
@@ -560,8 +560,8 @@ public final class ShouldExtensions {
 	 * <li>ID(TYPE, TYPE...) : TYPE</li>
 	 * </ul>
 	 *
-	 * @param type - the type to check.
-	 * @param name - the name and prototype, e.g. <code>fct(java.lang.String):int</code>.
+	 * @param type the type to check.
+	 * @param name the name and prototype, e.g. <code>fct(java.lang.String):int</code>.
 	 * @return the method.
 	 */
 	public static Method shouldHaveMethod(Class<?> type, String name) {
@@ -576,8 +576,8 @@ public final class ShouldExtensions {
 	 * <li>ID(TYPE, TYPE...) : TYPE</li>
 	 * </ul>
 	 *
-	 * @param type - the type to check.
-	 * @param name - the name and prototype, e.g. <code>fct(java.lang.String):int</code>.
+	 * @param type the type to check.
+	 * @param name the name and prototype, e.g. <code>fct(java.lang.String):int</code>.
 	 * @param deprecated indicates if the field must be deprecated.
 	 * @return the method.
 	 */
@@ -672,8 +672,8 @@ public final class ShouldExtensions {
 	 * <li>ID(TYPE, TYPE...) : TYPE</li>
 	 * </ul>
 	 *
-	 * @param type - the type to check.
-	 * @param prototypes - the prototypes, e.g. <code>fct(java.lang.String):int</code>.
+	 * @param type the type to check.
+	 * @param prototypes the prototypes, e.g. <code>fct(java.lang.String):int</code>.
 	 * @return the validation status.
 	 */
 	public static boolean shouldHaveMethods(Class<?> type, String... prototypes) {
@@ -708,8 +708,8 @@ public final class ShouldExtensions {
 	 * <li>ID : TYPE</li>
 	 * </ul>
 	 *
-	 * @param type - the type to check.
-	 * @param name - the name and prototype, e.g. <code>x:int</code>.
+	 * @param type the type to check.
+	 * @param name the name and prototype, e.g. <code>x:int</code>.
 	 * @return the field.
 	 */
 	public static Field shouldHaveDeprecatedField(Class<?> type, String name) {
@@ -722,8 +722,8 @@ public final class ShouldExtensions {
 	 * <li>ID : TYPE</li>
 	 * </ul>
 	 *
-	 * @param type - the type to check.
-	 * @param name - the name and prototype, e.g. <code>x:int</code>.
+	 * @param type the type to check.
+	 * @param name the name and prototype, e.g. <code>x:int</code>.
 	 * @return the field.
 	 */
 	public static Field shouldHaveField(Class<?> type, String name) {
@@ -736,8 +736,8 @@ public final class ShouldExtensions {
 	 * <li>ID : TYPE</li>
 	 * </ul>
 	 *
-	 * @param type - the type to check.
-	 * @param name - the name and prototype, e.g. <code>x:int</code>.
+	 * @param type the type to check.
+	 * @param name the name and prototype, e.g. <code>x:int</code>.
 	 * @param deprecated indicates if the field must be deprecated.
 	 * @return the field.
 	 */
@@ -788,8 +788,8 @@ public final class ShouldExtensions {
 
 	/** Ensure that the given type extends specific types.
 	 *
-	 * @param type - the type to check.
-	 * @param expectedTypes - the qualified names of the expected types, separated by comas.
+	 * @param type the type to check.
+	 * @param expectedTypes the qualified names of the expected types, separated by comas.
 	 * @return the validation status.
 	 */
 	public static boolean shouldExtend(Class<?> type, String expectedTypes) {
@@ -825,8 +825,8 @@ public final class ShouldExtensions {
 
 	/** Ensure that the given type has the number of members.
 	 *
-	 * @param type - the type to check.
-	 * @param expectedNbOfElements - the expected number of elements.
+	 * @param type the type to check.
+	 * @param expectedNbOfElements the expected number of elements.
 	 * @return the validation status.
 	 */
 	public static boolean shouldHaveNbMembers(Class<?> type, int expectedNbOfElements) {
@@ -850,8 +850,8 @@ public final class ShouldExtensions {
 	 *
 	 * @param <K> type of the keys.
 	 * @param <V> type of the values.
-	 * @param map - the map to check.
-	 * @param reference - the expected elements in the map.
+	 * @param map the map to check.
+	 * @param reference the expected elements in the map.
 	 * @return the validation status.
 	 */
 	public static <K, V> boolean shouldBe(Map<K, V> map, Map<? super K, ? super V> reference) {
@@ -875,8 +875,8 @@ public final class ShouldExtensions {
 
 	/** Ensure that the given URL is a property file with the given property name.
 	 *
-	 * @param propertyFile - the name of the property file.
-	 * @param propertyName - the name of the property name.
+	 * @param propertyFile the name of the property file.
+	 * @param propertyName the name of the property name.
 	 * @return the validation status.
 	 */
 	public static boolean shouldHaveProperty(URL propertyFile, String propertyName) {
@@ -895,8 +895,8 @@ public final class ShouldExtensions {
 
 	/** Ensure that the given URL is a property file with the given property.
 	 *
-	 * @param propertyFile - the name of the property file.
-	 * @param property - the property.
+	 * @param propertyFile the name of the property file.
+	 * @param property the property.
 	 * @return the validation status.
 	 */
 	public static boolean shouldHaveProperty(URL propertyFile, Pair<String, String> property) {
@@ -932,7 +932,7 @@ public final class ShouldExtensions {
 
 		/** Construct the iterator on array.
 		 *
-		 * @param array - the array to iterate on.
+		 * @param array the array to iterate on.
 		 */
 		ArrayIterator(Array array) {
 			this.array = array;

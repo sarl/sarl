@@ -469,7 +469,7 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	/** Replies the canonical name of the given object.
 	 *
-	 * @param object - the object.
+	 * @param object the object.
 	 * @return the canonical name or <code>null</code> if it cannot be computed.
 	 */
 	protected String canonicalName(EObject object) {
@@ -485,7 +485,7 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	/** Space keyword is reserved.
 	 *
-	 * @param space - the space to check.
+	 * @param space the space to check.
 	 */
 	@Check
 	public void checkSpaceUse(SarlSpace space) {
@@ -498,7 +498,7 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	/** Artifact keyword is reserved.
 	 *
-	 * @param artifact - the artifact to check.
+	 * @param artifact the artifact to check.
 	 */
 	@Check
 	public void checkArtifactUse(SarlArtifact artifact) {
@@ -511,7 +511,7 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	/** Emit a warning when the "fires" keyword is used.
 	 *
-	 * @param action - the action to check.
+	 * @param action the action to check.
 	 */
 	@Check
 	public void checkFiresKeywordUse(SarlAction action) {
@@ -526,7 +526,7 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	/** Emit a warning when the "requires" keyword is used.
 	 *
-	 * @param statement - the statement to check.
+	 * @param statement the statement to check.
 	 */
 	@Check
 	public void checkRequiredCapacityUse(SarlRequiredCapacity statement) {
@@ -542,7 +542,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	 * <p>This function is overriding the function given by the Xtend validator
 	 * for having finer tests, and firing a warning in place of an error.
 	 *
-	 * @param sarlScript - the SARL script.
+	 * @param sarlScript the SARL script.
 	 */
 	@Check(CheckType.NORMAL)
 	@Override
@@ -955,9 +955,9 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	/** Check the super constructors.
 	 *
-	 * @param container - the container.
-	 * @param feature - the syntactic feature related to the supertypes.
-	 * @param defaultSignatures - the signatures of the default constructors for the given container.
+	 * @param container the container.
+	 * @param feature the syntactic feature related to the supertypes.
+	 * @param defaultSignatures the signatures of the default constructors for the given container.
 	 */
 	@SuppressWarnings({"unchecked", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity",
 			"checkstyle:nestedifdepth"})
@@ -1118,7 +1118,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	 *
 	 * <p>One example of a forbidden feature is {@link System#exit(int)}.
 	 *
-	 * @param expression - the expression.
+	 * @param expression the expression.
 	 */
 	@Check(CheckType.FAST)
 	public void checkForbiddenCalls(XAbstractFeatureCall expression) {
@@ -1154,7 +1154,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	 *
 	 * <p>One example of a discouraged feature is {@link System#err}.
 	 *
-	 * @param expression - the expression.
+	 * @param expression the expression.
 	 */
 	@Check(CheckType.FAST)
 	public void checkDiscouragedCalls(XAbstractFeatureCall expression) {
@@ -1171,7 +1171,7 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	/** Check if the default values of the formal parameters have a compatible type with the formal parameter.
 	 *
-	 * @param param - the formal parameter to check.
+	 * @param param the formal parameter to check.
 	 */
 	@Check
 	public void checkDefaultValueTypeCompatibleWithParameterType(SarlFormalParameter param) {
@@ -1220,7 +1220,7 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	/** Check if the default values has not a reference to the not final fields.
 	 *
-	 * @param param - the formal parameter to check.
+	 * @param param the formal parameter to check.
 	 */
 	@Check
 	public void checkDefaultValueFieldReference(SarlFormalParameter param) {
@@ -1262,7 +1262,7 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	/** Check if the given action has a valid name.
 	 *
-	 * @param action - the action to test.
+	 * @param action the action to test.
 	 * @see SARLFeatureNameValidator
 	 */
 	@Check(CheckType.FAST)
@@ -1293,7 +1293,7 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	/** Check if the given field has a valid name.
 	 *
-	 * @param field - the field to test.
+	 * @param field the field to test.
 	 * @see SARLFeatureNameValidator
 	 */
 	@Check(CheckType.FAST)
@@ -1323,7 +1323,7 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	/** Check if the given field has a name that is shadowing an inherited field.
 	 *
-	 * @param field - the field to test.
+	 * @param field the field to test.
 	 */
 	@Check
 	public void checkFieldNameShadowing(SarlField field) {
@@ -1362,7 +1362,7 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	/** Check if the given parameter has a valid name.
 	 *
-	 * @param parameter - the parameter to test.
+	 * @param parameter the parameter to test.
 	 * @see SARLFeatureNameValidator
 	 */
 	@Check(CheckType.FAST)
@@ -1380,7 +1380,7 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	/** Check if the given local variable has a valid name.
 	 *
-	 * @param variable - the variable to test.
+	 * @param variable the variable to test.
 	 * @see SARLFeatureNameValidator
 	 */
 	@Check(CheckType.FAST)
@@ -1598,7 +1598,7 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	/** Check the type of the behavior unit's guard.
 	 *
-	 * @param behaviorUnit - the behavior unit.
+	 * @param behaviorUnit the behavior unit.
 	 */
 	@Check(CheckType.FAST)
 	public void checkBehaviorUnitGuardType(SarlBehaviorUnit behaviorUnit) {
@@ -1648,7 +1648,7 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	/** Check the type of the capacity uses.
 	 *
-	 * @param uses - the capacity uses.
+	 * @param uses the capacity uses.
 	 */
 	@Check(CheckType.FAST)
 	public void checkCapacityTypeForUses(SarlCapacityUses uses) {
@@ -1671,7 +1671,7 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	/** Check the types of the "requires" statement.
 	 *
-	 * @param requires - the "requires" statement.
+	 * @param requires the "requires" statement.
 	 */
 	@Check(CheckType.FAST)
 	public void checkCapacityTypeForRequires(SarlRequiredCapacity requires) {
@@ -1694,7 +1694,7 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	/** Check the types of the parameters of the "fires" statement.
 	 *
-	 * @param action - the signature that contains the "fires" statement.
+	 * @param action the signature that contains the "fires" statement.
 	 */
 	@Check(CheckType.FAST)
 	public void checkActionFires(SarlAction action) {
@@ -1717,11 +1717,11 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	/** Check the super type.
 	 *
-	 * @param element - the child type.
-	 * @param feature - the syntactic feature related to the supertypes.
-	 * @param superTypes - the current super types.
-	 * @param expectedType - the expected root type.
-	 * @param onlySubTypes - if <code>true</code> only the subtype of the <code>expectedType</code> are valid;
+	 * @param element the child type.
+	 * @param feature the syntactic feature related to the supertypes.
+	 * @param superTypes the current super types.
+	 * @param expectedType the expected root type.
+	 * @param onlySubTypes if <code>true</code> only the subtype of the <code>expectedType</code> are valid;
 	 * <code>false</code> if the <code>expectedType</code> is allowed.
 	 * @return the count of supertypes.
 	 */
@@ -1821,7 +1821,7 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	/** Check if the supertype of the given capacity is a subtype of Capacity.
 	 *
-	 * @param capacity - the type to test.
+	 * @param capacity the type to test.
 	 */
 	@Check(CheckType.FAST)
 	public void checkSuperTypes(SarlCapacity capacity) {
@@ -1835,7 +1835,7 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	/** Check if the supertype of the given skill is a subtype of Skill.
 	 *
-	 * @param skill - the type to test.
+	 * @param skill the type to test.
 	 */
 	@Check(CheckType.FAST)
 	public void checkSuperType(SarlSkill skill) {
@@ -1856,7 +1856,7 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	/** Check if the supertype of the given event is a subtype of Event.
 	 *
-	 * @param event - the type to test.
+	 * @param event the type to test.
 	 */
 	@Check(CheckType.FAST)
 	public void checkSuperType(SarlEvent event) {
@@ -1870,7 +1870,7 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	/** Check if the supertype of the given behavior is a subtype of Behavior.
 	 *
-	 * @param behavior - the type to test.
+	 * @param behavior the type to test.
 	 */
 	@Check(CheckType.FAST)
 	public void checkSuperType(SarlBehavior behavior) {
@@ -1884,7 +1884,7 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	/** Check if the supertype of the given agent is a subtype of Agent.
 	 *
-	 * @param agent - the type to test.
+	 * @param agent the type to test.
 	 */
 	@Check(CheckType.FAST)
 	public void checkSuperType(SarlAgent agent) {
@@ -1898,12 +1898,12 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	/** Check the implemeted type.
 	 *
-	 * @param element - the child type.
-	 * @param feature - the syntactic feature related to the supertypes.
-	 * @param implementedTypes - the current super types.
-	 * @param expectedType - the expected root type.
-	 * @param mandatoryNumberOfTypes - the minimal number of implemented types.
-	 * @param onlySubTypes - if <code>true</code> only the subtype of the <code>expectedType</code> are valid;
+	 * @param element the child type.
+	 * @param feature the syntactic feature related to the supertypes.
+	 * @param implementedTypes the current super types.
+	 * @param expectedType the expected root type.
+	 * @param mandatoryNumberOfTypes the minimal number of implemented types.
+	 * @param onlySubTypes if <code>true</code> only the subtype of the <code>expectedType</code> are valid;
 	 * <code>false</code> if the <code>expectedType</code> is allowed.
 	 * @return the count of supertypes.
 	 */
@@ -1960,7 +1960,7 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	/** Check if the parameter of the bahavior unit is an event.
 	 *
-	 * @param behaviorUnit - the behavior unit to test.
+	 * @param behaviorUnit the behavior unit to test.
 	 */
 	@Check(CheckType.FAST)
 	public void checkBehaviorUnitEventType(SarlBehaviorUnit behaviorUnit) {
@@ -1981,7 +1981,7 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	/** Check if a capacity has a feature defined inside.
 	 *
-	 * @param capacity - the capacity to test.
+	 * @param capacity the capacity to test.
 	 */
 	@Check(CheckType.FAST)
 	public void checkCapacityFeatures(SarlCapacity capacity) {
@@ -2000,7 +2000,7 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	/** Check for unused capacities.
 	 *
-	 * @param uses - the capacity use declaration.
+	 * @param uses the capacity use declaration.
 	 */
 	@SuppressWarnings("unchecked")
 	@Check(CheckType.NORMAL)
@@ -2067,7 +2067,7 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	/** Check for multiple capacity use declaration.
 	 *
-	 * @param uses - the capacity use declaration.
+	 * @param uses the capacity use declaration.
 	 */
 	@Check(CheckType.NORMAL)
 	public void checkMultipleCapacityUses(SarlCapacityUses uses) {
@@ -2661,7 +2661,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	protected final class SARLModifierValidator extends ModifierValidator {
 
 		/**
-		 * @param modifiers - the list of the supported modifiers.
+		 * @param modifiers the list of the supported modifiers.
 		 */
 		private SARLModifierValidator(
 				List<String> modifiers) {
@@ -2670,8 +2670,8 @@ public class SARLValidator extends AbstractSARLValidator {
 
 		/** Make this function visible for the enclosing class.
 		 *
-		 * @param member - the member to check.
-		 * @param memberName - the name of the member, usually for the issue message.
+		 * @param member the member to check.
+		 * @param memberName the name of the member, usually for the issue message.
 		 */
 		@Override
 		protected void checkModifiers(XtendMember member, String memberName) {

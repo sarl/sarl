@@ -73,7 +73,7 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 
 	/** Constructor.
 	 *
-	 * @param containerPath - the path of the container, e.g. the project.
+	 * @param containerPath the path of the container, e.g. the project.
 	 */
 	public JanusClasspathContainer(IPath containerPath) {
 		super(containerPath);

@@ -44,8 +44,8 @@ public class DMultiMapView<K, V> extends AbstractDMultiMapView<K, V> {
 	private final Multimap<K, V> map;
 
 	/**
-	 * @param name - the name of the multimap.
-	 * @param map - the multimap.
+	 * @param name the name of the multimap.
+	 * @param map the multimap.
 	 */
 	public DMultiMapView(String name, Multimap<K, V> map) {
 		super(name);

@@ -44,8 +44,8 @@ public interface NetworkService extends DependentService {
 	/**
 	 * Publish a data over the network.
 	 *
-	 * @param scope - scope of the published data.
-	 * @param data - data to propage over the network.
+	 * @param scope scope of the published data.
+	 * @param data data to propage over the network.
 	 * @throws Exception - when the event cannot be published.
 	 */
 	void publish(Scope<?> scope, Event data) throws Exception;
@@ -56,9 +56,9 @@ public interface NetworkService extends DependentService {
 	 * <p>If the network service is not yet ready for connecting the given URI, this URI <strong>MUST</strong> be bufferized until
 	 * the network service has been fully started.
 	 *
-	 * @param peerUri - the URI of the remote kernel to be connected to.
-	 * @param space - the identifier of the space to be connected to.
-	 * @param listener - listener on the receiving of the events.
+	 * @param peerUri the URI of the remote kernel to be connected to.
+	 * @param space the identifier of the space to be connected to.
+	 * @param listener listener on the receiving of the events.
 	 * @throws Exception - when the peer cannot be connected.
 	 */
 	void connectToRemoteSpaces(URI peerUri, SpaceID space, NetworkEventReceivingListener listener) throws Exception;
@@ -66,8 +66,8 @@ public interface NetworkService extends DependentService {
 	/**
 	 * Disconnect this peer from the given peer for the given space.
 	 *
-	 * @param peer - the URI of the remote kernel to be disconnected from.
-	 * @param space - the identifier of the space to be disconnected from.
+	 * @param peer the URI of the remote kernel to be disconnected from.
+	 * @param space the identifier of the space to be disconnected from.
 	 * @throws Exception - when the peer cannot be disconnected.
 	 */
 	void disconnectFromRemoteSpace(URI peer, SpaceID space) throws Exception;
@@ -75,7 +75,7 @@ public interface NetworkService extends DependentService {
 	/**
 	 * Disconnect this peer from the given peer for all the spaces.
 	 *
-	 * @param peer - the URI of the remote kernel to be disconnected from.
+	 * @param peer the URI of the remote kernel to be disconnected from.
 	 * @throws Exception - when the peer cannot be disconnected.
 	 */
 	void disconnectPeer(URI peer) throws Exception;
@@ -90,14 +90,14 @@ public interface NetworkService extends DependentService {
 	/**
 	 * Add a listener on the events in this service and related to the network.
 	 *
-	 * @param listener - the listener on the nerwork events.
+	 * @param listener the listener on the nerwork events.
 	 */
 	void addNetworkServiceListener(NetworkServiceListener listener);
 
 	/**
 	 * Remove a listener on the events in this service and related to the network.
 	 *
-	 * @param listener - the listener on the nerwork events.
+	 * @param listener the listener on the nerwork events.
 	 */
 	void removeNetworkServiceListener(NetworkServiceListener listener);
 
@@ -114,9 +114,9 @@ public interface NetworkService extends DependentService {
 		/**
 		 * Invoked when a data is received from a distant peer.
 		 *
-		 * @param space - the id of the space.
-		 * @param scope - the scope of the received data.
-		 * @param event - the event with the data inside.
+		 * @param space the id of the space.
+		 * @param scope the scope of the received data.
+		 * @param event the event with the data inside.
 		 */
 		void eventReceived(SpaceID space, Scope<?> scope, Event event);
 

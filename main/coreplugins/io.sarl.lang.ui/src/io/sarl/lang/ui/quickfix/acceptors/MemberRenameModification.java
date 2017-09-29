@@ -52,9 +52,9 @@ public final class MemberRenameModification extends SARLSemanticModification {
 	 *
 	 * <p>The user data ccontains the new names.
 	 *
-	 * @param provider - the quick fix provider.
-	 * @param issue - the issue to fix.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param provider the quick fix provider.
+	 * @param issue the issue to fix.
+	 * @param acceptor the quick fix acceptor.
 	 */
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor) {
 		for (final String newName : issue.getData()) {

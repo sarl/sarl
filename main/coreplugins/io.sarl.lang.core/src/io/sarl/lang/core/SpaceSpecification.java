@@ -42,8 +42,8 @@ public interface SpaceSpecification<S extends Space> {
 	/**
 	 * Creates a {@link Space} that respects this specification.
 	 *
-	 * @param id - the {@link SpaceID} for the newly created {@link Space}
-	 * @param params - initialization parameters for the {@link Space}
+	 * @param id the {@link SpaceID} for the newly created {@link Space}
+	 * @param params initialization parameters for the {@link Space}
 	 * @return an instance of {@link Space}
 	 */
 	S create(SpaceID id, Object... params);

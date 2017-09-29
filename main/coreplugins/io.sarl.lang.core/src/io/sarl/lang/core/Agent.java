@@ -69,10 +69,10 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	 * Creates a new agent with a parent <code>parentID</code> and initialize the built-in capacity
 	 * with the given provider.
 	 *
-	 * @param provider - the provider of built-in capacities for this agent. If <code>null</code>, the builtin
+	 * @param provider the provider of built-in capacities for this agent. If <code>null</code>, the builtin
 	 *     capacities will not be initialized.
-	 * @param parentID - the agent's parent.
-	 * @param agentID - the identifier of the agent, or
+	 * @param parentID the agent's parent.
+	 * @param agentID the identifier of the agent, or
 	 *                  <code>null</code> for computing it randomly.
 	 * @deprecated See {@link #Agent(UUID, UUID, DynamicSkillProvider)}.
 	 */
@@ -96,8 +96,8 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	/**
 	 * Creates a new agent with a parent <code>parentID</code> without initializing the built-in capacities.
 	 *
-	 * @param parentID - the agent's spawner.
-	 * @param agentID - the identifier of the agent, or
+	 * @param parentID the agent's spawner.
+	 * @param agentID the identifier of the agent, or
 	 *                  <code>null</code> for computing it randomly.
 	 * @since 0.5
 	 */
@@ -110,10 +110,10 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	/**
 	 * Creates a new agent with a parent <code>parentID</code> without initializing the built-in capacities.
 	 *
-	 * @param parentID - the agent's spawner.
-	 * @param agentID - the identifier of the agent, or
+	 * @param parentID the agent's spawner.
+	 * @param agentID the identifier of the agent, or
 	 *                  <code>null</code> for computing it randomly.
-	 * @param skillProvider - provides the skills dynamically on demand.
+	 * @param skillProvider provides the skills dynamically on demand.
 	 * @since 0.6
 	 */
 	@Inject

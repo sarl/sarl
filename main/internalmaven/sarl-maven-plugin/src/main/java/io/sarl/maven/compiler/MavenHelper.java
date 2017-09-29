@@ -81,11 +81,11 @@ class MavenHelper {
 	private final ResolutionErrorHandler resolutionErrorHandler;
 
 	/**
-	 * @param session - the Maven session.
-	 * @param buildPluginManager - the Maven build plugin manager.
-	 * @param repositorySystem - the Repository system.
-	 * @param resolutionErrorHandler - the error handler during artifact resolution.
-	 * @param log - the log for the caller.
+	 * @param session the Maven session.
+	 * @param buildPluginManager the Maven build plugin manager.
+	 * @param repositorySystem the Repository system.
+	 * @param resolutionErrorHandler the error handler during artifact resolution.
+	 * @param log the log for the caller.
 	 * @throws MojoExecutionException if cannot get the accessors.
 	 */
 	MavenHelper(MavenSession session, BuildPluginManager buildPluginManager, RepositorySystem repositorySystem,
@@ -143,7 +143,7 @@ class MavenHelper {
 
 	/** Extract the value from the hard-coded configuration.
 	 *
-	 * @param key - the key of the configuration entry.
+	 * @param key the key of the configuration entry.
 	 * @return the value.
 	 * @throws MojoExecutionException on error.
 	 */
@@ -168,7 +168,7 @@ class MavenHelper {
 
 	/** Load the given plugin.
 	 *
-	 * @param plugin - the plugin to load.
+	 * @param plugin the plugin to load.
 	 * @return the descriptor of the plugin.
 	 * @throws MojoExecutionException if something bad append.
 	 */
@@ -189,7 +189,7 @@ class MavenHelper {
 
 	/** Execute the given mojo.
 	 *
-	 * @param mojo - the mojo to execute.
+	 * @param mojo the mojo to execute.
 	 * @throws MojoExecutionException if the mojo cannot be run properly.
 	 * @throws MojoFailureException if the build failed.
 	 */
@@ -204,7 +204,7 @@ class MavenHelper {
 
 	/** Convert an artifact to a dependency.
 	 *
-	 * @param artifact - the artifact to convert.
+	 * @param artifact the artifact to convert.
 	 * @return the result of the conversion.
 	 */
 	@SuppressWarnings("static-method")
@@ -247,7 +247,7 @@ class MavenHelper {
 
 	/** Replies the dependencies for the given artifact.
 	 *
-	 * @param artifactId - the artifact identifier.
+	 * @param artifactId the artifact identifier.
 	 * @param plugins indicates if the map of the plugin artifacts must be explore (if true) or the dependency
 	 *     artifacts (if false).
 	 * @return the dependencies.
@@ -291,8 +291,8 @@ class MavenHelper {
 	/** Replies the version of the given plugin that is specified in the POM of the
 	 * plugin in which this mojo is located.
 	 *
-	 * @param groupId - the identifier of the group.
-	 * @param artifactId - thidentifier of the artifact.
+	 * @param groupId the identifier of the group.
+	 * @param artifactId thidentifier of the artifact.
 	 * @return the version, never <code>null</code>
 	 * @throws MojoExecutionException if the plugin was not found.
 	 */

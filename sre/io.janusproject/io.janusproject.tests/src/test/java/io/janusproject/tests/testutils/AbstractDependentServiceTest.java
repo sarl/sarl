@@ -47,7 +47,7 @@ public abstract class AbstractDependentServiceTest<S extends DependentService> e
 	protected final Class<? super S> serviceType;
 
 	/**
-	 * @param type - the type of the service to test.
+	 * @param type the type of the service to test.
 	 */
 	public AbstractDependentServiceTest(Class<? super S> type) {
 		Assume.assumeNotNull(type);

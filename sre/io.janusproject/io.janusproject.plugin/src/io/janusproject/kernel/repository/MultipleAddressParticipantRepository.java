@@ -61,8 +61,8 @@ public final class MultipleAddressParticipantRepository<ADDRESST extends Seriali
 	/**
 	 * Constructs a <code>MultipleAddressParticipantRepository</code>.
 	 *
-	 * @param distributedParticipantMapName - name of the multimap over the network.
-	 * @param repositoryImplFactory - factory that will be used to create the internal data structures.
+	 * @param distributedParticipantMapName name of the multimap over the network.
+	 * @param repositoryImplFactory factory that will be used to create the internal data structures.
 	 */
 	public MultipleAddressParticipantRepository(String distributedParticipantMapName,
 			DistributedDataStructureService repositoryImplFactory) {
@@ -79,8 +79,8 @@ public final class MultipleAddressParticipantRepository<ADDRESST extends Seriali
 	/**
 	 * Add a participant in this repository.
 	 *
-	 * @param address - address of a participant to insert in this repository.
-	 * @param entity - participant to map to the given address.
+	 * @param address address of a participant to insert in this repository.
+	 * @param entity participant to map to the given address.
 	 * @return a.
 	 */
 	public ADDRESST registerParticipant(ADDRESST address, EventListener entity) {
@@ -94,8 +94,8 @@ public final class MultipleAddressParticipantRepository<ADDRESST extends Seriali
 	/**
 	 * Remove a participant from this repository.
 	 *
-	 * @param address - address of a participant to remove from this repository.
-	 * @param entity - participant to unmap to the given address.
+	 * @param address address of a participant to remove from this repository.
+	 * @param entity participant to unmap to the given address.
 	 * @return a.
 	 */
 	public ADDRESST unregisterParticipant(ADDRESST address, EventListener entity) {
@@ -109,7 +109,7 @@ public final class MultipleAddressParticipantRepository<ADDRESST extends Seriali
 	/**
 	 * Replies all the addresses of the participant with the given identifier.
 	 *
-	 * @param participant - the identifier of the participant.
+	 * @param participant the identifier of the participant.
 	 * @return the collection of addresses. It may be <code>null</code> if the participant is unknown.
 	 */
 	public SynchronizedCollection<ADDRESST> getAddresses(UUID participant) {

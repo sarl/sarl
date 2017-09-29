@@ -568,7 +568,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.newLine();
 				it.append("\t * <p>Any previously added content is removed."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @param type - the expected type of the block (the last instruction), or"); //$NON-NLS-1$
+				it.append("\t * @param type the expected type of the block (the last instruction), or"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t    <code>null</code> for no type."); //$NON-NLS-1$
 				it.newLine();

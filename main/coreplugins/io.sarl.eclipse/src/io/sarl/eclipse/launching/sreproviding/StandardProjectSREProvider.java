@@ -51,7 +51,7 @@ public class StandardProjectSREProvider implements ProjectSREProvider {
 	private final String projectSRE;
 
 	/**
-	 * @param project - the project.
+	 * @param project the project.
 	 */
 	public StandardProjectSREProvider(IProject project) {
 		boolean tmpSpecific = false;

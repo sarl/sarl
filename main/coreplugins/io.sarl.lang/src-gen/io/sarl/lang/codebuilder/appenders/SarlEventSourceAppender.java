@@ -115,14 +115,14 @@ public class SarlEventSourceAppender extends AbstractSourceAppender implements I
 	}
 
 	/** Change the super type.
-	 * @param superType - the qualified name of the super type,
+	 * @param superType the qualified name of the super type,
 	 *     or <code>null</code> if the default type.
 	 */
 	public void setExtends(String superType) {
 		this.builder.setExtends(superType);	}
 
 	/** Add a modifier.
-	 * @param modifier - the modifier to add.
+	 * @param modifier the modifier to add.
 	 */
 	public void addModifier(String modifier) {
 		this.builder.addModifier(modifier);
@@ -136,7 +136,7 @@ public class SarlEventSourceAppender extends AbstractSourceAppender implements I
 	}
 
 	/** Create a SarlField.
-	 * @param name - the name of the SarlField.
+	 * @param name the name of the SarlField.
 	 * @return the builder.
 	 */
 	public ISarlFieldBuilder addVarSarlField(String name) {
@@ -144,7 +144,7 @@ public class SarlEventSourceAppender extends AbstractSourceAppender implements I
 	}
 
 	/** Create a SarlField.
-	 * @param name - the name of the SarlField.
+	 * @param name the name of the SarlField.
 	 * @return the builder.
 	 */
 	public ISarlFieldBuilder addValSarlField(String name) {
@@ -153,7 +153,7 @@ public class SarlEventSourceAppender extends AbstractSourceAppender implements I
 
 	/** Create a SarlField.	 *
 	 * <p>This function is equivalent to {@link #addVarSarlField}.
-	 * @param name - the name of the SarlField.
+	 * @param name the name of the SarlField.
 	 * @return the builder.
 	 */
 	public ISarlFieldBuilder addSarlField(String name) {

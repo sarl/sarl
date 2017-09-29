@@ -42,8 +42,8 @@ public class ActionParameterTypes extends BasicEList<String> implements Comparab
 	private final boolean isVarargs;
 
 	/**
-	 * @param isVarArgs - indicates if this signature has the varargs flag.
-	 * @param initialCapacity - initional capacity of the array.
+	 * @param isVarArgs indicates if this signature has the varargs flag.
+	 * @param initialCapacity initional capacity of the array.
 	 */
 	public ActionParameterTypes(boolean isVarArgs, int initialCapacity) {
 		super(initialCapacity);
@@ -54,7 +54,7 @@ public class ActionParameterTypes extends BasicEList<String> implements Comparab
 	 *
 	 * <p>The format of the text is the same as the one replied by {@link #toString()}.
 	 *
-	 * @param text - the text that contains the signature to parse.
+	 * @param text the text that contains the signature to parse.
 	 */
 	public ActionParameterTypes(String text) {
 		assert text != null;
@@ -180,7 +180,7 @@ public class ActionParameterTypes extends BasicEList<String> implements Comparab
 
 	/** Replies the action prototype associate to this list of parameters.
 	 *
-	 * @param actionName - the id of the action.
+	 * @param actionName the id of the action.
 	 * @return the action key.
 	 */
 	public ActionPrototype toActionPrototype(String actionName) {
@@ -189,7 +189,7 @@ public class ActionParameterTypes extends BasicEList<String> implements Comparab
 
 	/** Replies the action prototype associate to this list of parameters with the type parameters.
 	 *
-	 * @param actionName - the id of the action.
+	 * @param actionName the id of the action.
 	 * @return the action key without the type parameters.
 	 */
 	public ActionPrototype toRawActionPrototype(String actionName) {

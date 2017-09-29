@@ -58,7 +58,7 @@ public abstract class AbstractSARLBasedClasspathContainer implements IClasspathC
 	private final IPath containerPath;
 
 	/**
-	 * @param containerPath - the path of the container, e.g. the project.
+	 * @param containerPath the path of the container, e.g. the project.
 	 */
 	public AbstractSARLBasedClasspathContainer(IPath containerPath) {
 		this.containerPath = containerPath;

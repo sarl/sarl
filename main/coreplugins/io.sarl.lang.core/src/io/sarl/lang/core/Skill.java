@@ -46,7 +46,7 @@ public abstract class Skill extends AgentTrait {
 	 *
 	 * <p>This constructor is provided for built-in skills, mainly.
 	 *
-	 * @param agent - the agent that is owning the skill.
+	 * @param agent the agent that is owning the skill.
 	 * @see #Skill() for the standard constructor.
 	 */
 	public Skill(Agent agent) {

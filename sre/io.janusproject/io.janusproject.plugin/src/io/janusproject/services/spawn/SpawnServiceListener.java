@@ -43,15 +43,15 @@ public interface SpawnServiceListener extends EventListener {
 	 * Invoked when the agent is spawned.
 	 *
 	 * @param spawningAgent the identifier of the agent which spawns the given agent.
-	 * @param parent - the context in which the agent was created.
-	 * @param spawnedAgents - the spawned agents.
-	 * @param initializationParameters - list of parameters that were passed to the agent.
+	 * @param parent the context in which the agent was created.
+	 * @param spawnedAgents the spawned agents.
+	 * @param initializationParameters list of parameters that were passed to the agent.
 	 */
 	void agentSpawned(UUID spawningAgent, AgentContext parent, List<Agent> spawnedAgents, Object[] initializationParameters);
 
 	/**
 	 * Invoked when the agent is destroyed.
-	 * @param agent - the agent.
+	 * @param agent the agent.
 	 */
 	void agentDestroy(Agent agent);
 

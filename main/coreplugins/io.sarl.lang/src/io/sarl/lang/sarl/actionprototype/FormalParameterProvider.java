@@ -44,30 +44,30 @@ public interface FormalParameterProvider {
 
 	/** Replies the name of the formal parameter at the given position.
 	 *
-	 * @param position - the position of the formal parameter.
+	 * @param position the position of the formal parameter.
 	 * @return the name of the formal parameter.
 	 */
 	String getFormalParameterName(int position);
 
 	/** Replies the type of the formal parameter at the given position.
 	 *
-	 * @param position - the position of the formal parameter.
-	 * @param isVarargs - indicates if the parameter should be considered as a vararg parameter.
+	 * @param position the position of the formal parameter.
+	 * @param isVarargs indicates if the parameter should be considered as a vararg parameter.
 	 * @return the type of the formal parameter.
 	 */
 	String getFormalParameterType(int position, boolean isVarargs);
 
 	/** Replies the type of the formal parameter at the given position.
 	 *
-	 * @param position - the position of the formal parameter.
-	 * @param isVarargs - indicates if the parameter should be considered as a vararg parameter.
+	 * @param position the position of the formal parameter.
+	 * @param isVarargs indicates if the parameter should be considered as a vararg parameter.
 	 * @return the type of the formal parameter.
 	 */
 	JvmTypeReference getFormalParameterTypeReference(int position, boolean isVarargs);
 
 	/** Replies if the formal parameter at the given position has a default value.
 	 *
-	 * @param position - the position of the formal parameter.
+	 * @param position the position of the formal parameter.
 	 * @return <code>true</code> if the parameter has a default value, <code>false</code> if not.
 	 */
 	boolean hasFormalParameterDefaultValue(int position);
@@ -79,7 +79,7 @@ public interface FormalParameterProvider {
 	 * <p>If this function  replies {@code null}, the string representation of the
 	 * default value may be still available. See {@link #getFormalParameterDefaultValueString(int)}.
 	 *
-	 * @param position - the position of the formal parameter.
+	 * @param position the position of the formal parameter.
 	 * @return the default value, or <code>null</code> if none.
 	 * @see #getFormalParameterDefaultValueString(int)
 	 */
@@ -92,7 +92,7 @@ public interface FormalParameterProvider {
 	 * <p>If this function  replies {@code null} or an empty string of characters, the Xbase representation of the
 	 * default value may be still available. See {@link #getFormalParameterDefaultValue(int)}.
 	 *
-	 * @param position - the position of the formal parameter.
+	 * @param position the position of the formal parameter.
 	 * @return the default value, or <code>null</code> if none.
 	 * @see #getFormalParameterDefaultValue(int)
 	 */
@@ -100,7 +100,7 @@ public interface FormalParameterProvider {
 
 	/** Replies the formal parameter at the given position.
 	 *
-	 * @param position - the position of the formal parameter.
+	 * @param position the position of the formal parameter.
 	 * @return the formal parameter
 	 */
 	EObject getFormalParameter(int position);

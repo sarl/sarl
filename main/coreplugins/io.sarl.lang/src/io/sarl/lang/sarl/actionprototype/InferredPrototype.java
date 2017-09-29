@@ -119,7 +119,7 @@ public interface InferredPrototype {
 
 	/** Replies the formatted list of parameters with an associated function name.
 	 *
-	 * @param functionName - the name of the function to be put in the replied string.
+	 * @param functionName the name of the function to be put in the replied string.
 	 * @return the parameter list.
 	 */
 	String toString(String functionName);

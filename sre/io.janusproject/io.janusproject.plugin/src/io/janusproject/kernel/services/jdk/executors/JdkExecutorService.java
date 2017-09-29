@@ -74,7 +74,7 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 	/**
 	 * Change the JRE service for scheduled tasks.
 	 *
-	 * @param service - the JRE service.
+	 * @param service the JRE service.
 	 */
 	@Inject
 	void setScheduledExecutorService(ScheduledExecutorService service) {
@@ -84,7 +84,7 @@ public class JdkExecutorService extends AbstractDependentService implements io.j
 	/**
 	 * Change the JRE service for scheduled tasks.
 	 *
-	 * @param service - the JRE service.
+	 * @param service the JRE service.
 	 */
 	@Inject
 	void setExecutorService(ExecutorService service) {

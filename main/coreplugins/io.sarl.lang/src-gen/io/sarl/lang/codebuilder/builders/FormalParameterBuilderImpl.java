@@ -65,8 +65,8 @@ public class FormalParameterBuilderImpl extends AbstractBuilder implements IForm
  private IFragmentProvider fragmentProvider;
 
 	/** Initialize the formal parameter.
-	 * @param context - the context of the formal parameter.
-	 * @param name - the name of the formal parameter.
+	 * @param context the context of the formal parameter.
+	 * @param name the name of the formal parameter.
 	 */
 	public void eInit(XtendExecutable context, String name, IJvmTypeProvider typeContext) {
 		setTypeResolutionContext(typeContext);

@@ -231,9 +231,9 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 	 * the given ID. This function creates the different signatures according
 	 * to the definition, or not, of default values for the formal parameters.
 	 *
-	 * @param id - identifier of the function.
-	 * @param isVarargs - indicates if the signature has a variatic parameter.
-	 * @param parameters - list of the formal parameters of the function.
+	 * @param id identifier of the function.
+	 * @param isVarargs indicates if the signature has a variatic parameter.
+	 * @param parameters list of the formal parameters of the function.
 	 * @return the signature or <code>null</code> if none.
 	 */
 	protected InferredPrototype createPrototype(QualifiedActionName id,

@@ -127,7 +127,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	private InheritanceHelper inheritanceHelper;
 
 	/**
-	 * @param delegate - the original provider.
+	 * @param delegate the original provider.
 	 */
 	@Inject
 	public SARLLabelProvider(AdapterFactoryLabelProvider delegate) {
@@ -146,7 +146,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 
 	/** Get the image descriptor for the given element.
 	 *
-	 * @param element - the element.
+	 * @param element the element.
 	 * @return the image descriptor.
 	 */
 	protected ImageDescriptor doGetImageDescriptor(Object element) {
@@ -155,8 +155,8 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 
 	/** Invoked when an image descriptor cannot be found.
 	 *
-	 * @param params - the parameters given to the method polymorphic dispatcher.
-	 * @param exception - the cause of the error.
+	 * @param params the parameters given to the method polymorphic dispatcher.
+	 * @param exception the cause of the error.
 	 * @return the image descriptor for the error.
 	 */
 	protected ImageDescriptor handleImageDescriptorError(Object[] params, Throwable exception) {
@@ -175,8 +175,8 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 
 	/** Create a string representation of a signature without the return type.
 	 *
-	 * @param simpleName - the action name.
-	 * @param element - the executable element.
+	 * @param simpleName the action name.
+	 * @param element the executable element.
 	 * @return the signature.
 	 */
 	protected StyledString signatureWithoutReturnType(StyledString simpleName, JvmExecutable element) {
@@ -210,7 +210,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 
 	/** Create a string representation of the given element.
 	 *
-	 * @param reference - the element.
+	 * @param reference the element.
 	 * @return the string representation.
 	 */
 	protected StyledString getHumanReadableName(JvmTypeReference reference) {
@@ -265,7 +265,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	 *
 	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
-	 * @param element - the element.
+	 * @param element the element.
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
@@ -278,7 +278,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	 *
 	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
-	 * @param element - the element.
+	 * @param element the element.
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
@@ -290,7 +290,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	 *
 	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
-	 * @param element - the element.
+	 * @param element the element.
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
@@ -305,7 +305,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	 *
 	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
-	 * @param element - the element.
+	 * @param element the element.
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
@@ -320,7 +320,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	 *
 	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
-	 * @param element - the element.
+	 * @param element the element.
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
@@ -335,7 +335,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	 *
 	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
-	 * @param element - the element.
+	 * @param element the element.
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
@@ -350,7 +350,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	 *
 	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
-	 * @param element - the element.
+	 * @param element the element.
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
@@ -365,7 +365,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	 *
 	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
-	 * @param element - the element.
+	 * @param element the element.
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
@@ -379,7 +379,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	 *
 	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
-	 * @param element - the element.
+	 * @param element the element.
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
@@ -396,7 +396,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	 *
 	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
-	 * @param element - the element.
+	 * @param element the element.
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
@@ -411,7 +411,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	 *
 	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
-	 * @param element - the element.
+	 * @param element the element.
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
@@ -423,7 +423,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	 *
 	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
-	 * @param element - the element.
+	 * @param element the element.
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
@@ -435,7 +435,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	 *
 	 * <p>This function is a Xtext dispatch function for {@link #imageDescriptor(Object)}.
 	 *
-	 * @param element - the element.
+	 * @param element the element.
 	 * @return the image descriptor.
 	 * @see #imageDescriptor(Object)
 	 */
@@ -447,7 +447,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 
 	/** Replies the text for the given element.
 	 *
-	 * @param element - the element.
+	 * @param element the element.
 	 * @return the text.
 	 */
 	protected StyledString text(JvmTypeReference element) {
@@ -456,7 +456,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 
 	/** Replies the text for the given element.
 	 *
-	 * @param element - the element.
+	 * @param element the element.
 	 * @return the text.
 	 */
 	protected StyledString text(SarlAgent element) {
@@ -465,7 +465,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 
 	/** Replies the text for the given element.
 	 *
-	 * @param element - the element.
+	 * @param element the element.
 	 * @return the text.
 	 */
 	protected StyledString text(SarlEvent element) {
@@ -474,7 +474,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 
 	/** Replies the text for the given element.
 	 *
-	 * @param element - the element.
+	 * @param element the element.
 	 * @return the text.
 	 */
 	protected StyledString text(SarlCapacity element) {
@@ -483,7 +483,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 
 	/** Replies the text for the given element.
 	 *
-	 * @param element - the element.
+	 * @param element the element.
 	 * @return the text.
 	 */
 	protected StyledString text(SarlSkill element) {
@@ -492,7 +492,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 
 	/** Replies the text for the given element.
 	 *
-	 * @param element - the element.
+	 * @param element the element.
 	 * @return the text.
 	 */
 	protected StyledString text(SarlBehavior element) {
@@ -501,7 +501,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 
 	/** Replies the text for the given element.
 	 *
-	 * @param element - the element.
+	 * @param element the element.
 	 * @return the text.
 	 */
 	protected StyledString text(SarlAction element) {
@@ -521,7 +521,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 
 	/** Replies the text for the given element.
 	 *
-	 * @param element - the element.
+	 * @param element the element.
 	 * @return the text.
 	 */
 	@SuppressWarnings("static-method")
@@ -531,7 +531,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 
 	/** Replies the text for the given element.
 	 *
-	 * @param element - the element.
+	 * @param element the element.
 	 * @return the text.
 	 */
 	@SuppressWarnings("static-method")
@@ -541,7 +541,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 
 	/** Replies the text for the given element.
 	 *
-	 * @param element - the element.
+	 * @param element the element.
 	 * @return the text.
 	 */
 	protected StyledString text(SarlBehaviorUnit element) {

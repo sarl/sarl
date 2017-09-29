@@ -81,7 +81,7 @@ public final class NetworkConfig {
 	/**
 	 * Replies the default values for the properties supported by Janus config.
 	 *
-	 * @param defaultValues - filled with the default values supported by the Janus platform.
+	 * @param defaultValues filled with the default values supported by the Janus platform.
 	 */
 	public static void getDefaultValues(Properties defaultValues) {
 		NetworkEventModule.getDefaultValues(defaultValues);

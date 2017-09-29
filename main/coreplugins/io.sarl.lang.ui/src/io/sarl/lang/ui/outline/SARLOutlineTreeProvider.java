@@ -82,8 +82,8 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 
 	/** Create a node for the SARL script.
 	 *
-	 * @param parentNode - the parent node.
-	 * @param modelElement - the feature container for which a node should be created.
+	 * @param parentNode the parent node.
+	 * @param modelElement the feature container for which a node should be created.
 	 */
 	protected void _createChildren(DocumentRootNode parentNode, SarlScript modelElement) {
 		if (!Strings.isNullOrEmpty(modelElement.getPackage())) {
@@ -109,8 +109,8 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 
 	/** Create a node for the given feature container.
 	 *
-	 * @param parentNode - the parent node.
-	 * @param modelElement - the feature container for which a node should be created.
+	 * @param parentNode the parent node.
+	 * @param modelElement the feature container for which a node should be created.
 	 */
 	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	protected void _createNode(DocumentRootNode parentNode, XtendTypeDeclaration modelElement) {
@@ -216,7 +216,7 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 
 	/** Replies if the type declaration element is a leaf in the outline.
 	 *
-	 * @param modelElement - the model element.
+	 * @param modelElement the model element.
 	 * @return <code>true</code> if it is a leaf, <code>false</code> otherwise.
 	 */
 	@SuppressWarnings("static-method")
@@ -226,7 +226,7 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 
 	/** Replies if the member element is a leaf in the outline.
 	 *
-	 * @param modelElement - the model element.
+	 * @param modelElement the model element.
 	 * @return <code>true</code> if it is a leaf, <code>false</code> otherwise.
 	 */
 	@SuppressWarnings("static-method")
@@ -236,7 +236,7 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 
 	/** Replies if the JVM elements are leafs in the outline.
 	 *
-	 * @param modelElement - the model element.
+	 * @param modelElement the model element.
 	 * @return <code>true</code> if it is a leaf, <code>false</code> otherwise.
 	 */
 	@SuppressWarnings("static-method")

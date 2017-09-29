@@ -56,7 +56,7 @@ public final class Utilities {
 
 	/** Null-safe version parser.
 	 *
-	 * @param version - the version string.
+	 * @param version the version string.
 	 * @return the version.
 	 */
 	public static Version parseVersion(String version) {
@@ -75,9 +75,9 @@ public final class Utilities {
 	 * <p>The minVersion must be strictly lower to the maxVersion. Otherwise
 	 * the behavior is not predictible.
 	 *
-	 * @param version - the version to compare to the range; must not be <code>null</code>.
-	 * @param minVersion - the minimal version in the range (inclusive); could be <code>null</code>.
-	 * @param maxVersion - the maximal version in the range (exclusive); could be <code>null</code>.
+	 * @param version the version to compare to the range; must not be <code>null</code>.
+	 * @param minVersion the minimal version in the range (inclusive); could be <code>null</code>.
+	 * @param maxVersion the maximal version in the range (exclusive); could be <code>null</code>.
 	 * @return a negative number if the version in lower than the minVersion.
 	 *     A positive number if the version is greater than or equal to the maxVersion.
 	 *     <code>0</code> if the version is between minVersion and maxVersion.
@@ -117,8 +117,8 @@ public final class Utilities {
 	/** Null-safe comparison.
 	 *
 	 * @param <T> - type of the comparable element.
-	 * @param object1 - the first object.
-	 * @param object2 - the second object.
+	 * @param object1 the first object.
+	 * @param object2 the second object.
 	 * @return Negative number if a lower than b.
 	 *     Positive number if a greater than b.
 	 * <code>0</code> if a is equal to b.

@@ -112,9 +112,9 @@ public interface ISREInstallChangedListener extends EventListener {
 	 * Notification that the workspace default SRE install
 	 * has changed.
 	 *
-	 * @param previous - the SRE install that was previously assigned
+	 * @param previous the SRE install that was previously assigned
 	 * 	   to the workspace, possibly <code>null</code>
-	 * @param current - the SRE install that is currently assigned to the
+	 * @param current the SRE install that is currently assigned to the
 	 * 	   workspace, possibly <code>null</code>
 	 */
 	void defaultSREInstallChanged(ISREInstall previous, ISREInstall current);

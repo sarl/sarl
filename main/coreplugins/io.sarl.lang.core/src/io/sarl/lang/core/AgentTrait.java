@@ -44,7 +44,7 @@ public abstract class AgentTrait extends AgentProtectedAPIObject {
 
 	/** Construct a trait to the given agent.
 	 *
-	 * @param agent - the owner of this trait.
+	 * @param agent the owner of this trait.
 	 */
 	AgentTrait(Agent agent) {
 		this.agentRef = new WeakReference<>(agent);
@@ -65,7 +65,7 @@ public abstract class AgentTrait extends AgentProtectedAPIObject {
 
 	/** Set the agent that has this trait.
 	 *
-	 * @param agent - the owner of this trait.
+	 * @param agent the owner of this trait.
 	 */
 	void setOwner(Agent agent) {
 		this.agentRef = new WeakReference<>(agent);

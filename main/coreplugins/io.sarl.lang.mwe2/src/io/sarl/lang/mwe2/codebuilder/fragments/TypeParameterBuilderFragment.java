@@ -282,9 +282,9 @@ public class TypeParameterBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t * The container is responsible of adding the type parameter in its internal object."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @param name - the name of the type parameter."); //$NON-NLS-1$
+				it.append("\t * @param name the name of the type parameter."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @param typeContext - the provider of types or null."); //$NON-NLS-1$
+				it.append("\t * @param typeContext the provider of types or null."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();

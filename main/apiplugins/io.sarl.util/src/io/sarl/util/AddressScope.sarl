@@ -43,7 +43,7 @@ import io.sarl.lang.core.Scope
 	val addresses : Address[]
 
 	/**
-	 * @param addrs - addresses to put in the scope.
+	 * @param addrs addresses to put in the scope.
 	 */
 	new (addrs : Address*) {
 		if (addrs === null) {
@@ -78,7 +78,7 @@ import io.sarl.lang.core.Scope
 
 	/** Create an scope restricted to the given addresses.
 	 *
-	 * @param addresses - addresses to put in the scope.
+	 * @param addresses addresses to put in the scope.
 	 * @return the scope restricted to the given addresses.
 	 * @deprecated see {@link Scopes#addresses(Address...)}.
 	 */

@@ -118,7 +118,7 @@ public abstract class AbstractMojoTest {
 
 	/** Helper for writting a multiline string in unit tests.
 	 *
-	 * @param lines - the lines in the string.
+	 * @param lines the lines in the string.
 	 * @return the complete multiline string.
 	 */
 	public static String multilineString(Object... lines) {

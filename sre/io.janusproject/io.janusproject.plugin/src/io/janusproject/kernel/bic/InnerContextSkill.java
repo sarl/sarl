@@ -73,8 +73,8 @@ public class InnerContextSkill extends BuiltinSkill implements InnerContextAcces
 	private ContextSpaceService contextService;
 
 	/**
-	 * @param agent - owner of this skill.
-	 * @param agentAddressInInnerDefaultSpace - address of the owner of this skill in its default space.
+	 * @param agent owner of this skill.
+	 * @param agentAddressInInnerDefaultSpace address of the owner of this skill in its default space.
 	 */
 	InnerContextSkill(Agent agent, Address agentAddressInInnerDefaultSpace) {
 		super(agent);

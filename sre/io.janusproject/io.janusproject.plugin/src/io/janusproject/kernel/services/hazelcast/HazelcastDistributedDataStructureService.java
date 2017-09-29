@@ -74,7 +74,7 @@ public class HazelcastDistributedDataStructureService extends AbstractDependentS
 	/**
 	 * Change the hazelcast instance used by this factory.
 	 *
-	 * @param hazelcastInstance - reference to the Hazelcast engine.
+	 * @param hazelcastInstance reference to the Hazelcast engine.
 	 */
 	void setHazelcastInstance(HazelcastInstance hazelcastInstance) {
 		this.hazelcastInstance = hazelcastInstance;
@@ -650,7 +650,7 @@ public class HazelcastDistributedDataStructureService extends AbstractDependentS
 		/**
 		 * Replies the Hazelcast listener associated to this object.
 		 *
-		 * @param hazelcastListener - the hazelcast listener.
+		 * @param hazelcastListener the hazelcast listener.
 		 */
 		public void setHazelcastListener(String hazelcastListener) {
 			this.key = hazelcastListener;

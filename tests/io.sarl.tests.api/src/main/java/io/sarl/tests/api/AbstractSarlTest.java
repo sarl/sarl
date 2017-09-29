@@ -355,10 +355,10 @@ public abstract class AbstractSarlTest {
 
 	/** Helpfer for setting a field, even if it is not visible.
 	 *
-	 * @param instance - the object.
-	 * @param fieldType - the type of the field.
-	 * @param fieldName - the name of the field.
-	 * @param fieldValue - the field value.
+	 * @param instance the object.
+	 * @param fieldType the type of the field.
+	 * @param fieldName the name of the field.
+	 * @param fieldValue the field value.
 	 */
 	public static <T> void setField(Object instance, Class<T> fieldType,
 			String fieldName, T fieldValue) {
@@ -467,8 +467,8 @@ public abstract class AbstractSarlTest {
 	 * If the given exception has no cause, it is the cause.
 	 *
 	 * @param <T> - the type of the expected cause.
-	 * @param expected - the type of the expected cause.
-	 * @param actual - the exception to test.
+	 * @param expected the type of the expected cause.
+	 * @param actual the exception to test.
 	 * @return the cause.
 	 */
 	public static <T extends Throwable> T assertCause(Class<T> expected, Throwable actual) {
@@ -486,9 +486,9 @@ public abstract class AbstractSarlTest {
 
 	/** Test if the objects are equal.
 	 *
-	 * @param message - the message.
-	 * @param actual - the collection to test.
-	 * @param expected - the expected objects.
+	 * @param message the message.
+	 * @param actual the collection to test.
+	 * @param expected the expected objects.
 	 */
 	public static void assertEquals(String message, Object expected, Object actual) {
 		if (!Objects.equal(expected, actual)) {
@@ -500,9 +500,9 @@ public abstract class AbstractSarlTest {
 
 	/** Test if the objects are equal.
 	 *
-	 * @param message - the message.
-	 * @param actual - the collection to test.
-	 * @param expected - the expected objects.
+	 * @param message the message.
+	 * @param actual the collection to test.
+	 * @param expected the expected objects.
 	 */
 	public static void assertEquals(Object expected, Object actual) {
 		assertEquals(null, expected, actual);
@@ -540,8 +540,8 @@ public abstract class AbstractSarlTest {
 
 	/** Test if the actual collection/iterable contains all the expected objects.
 	 *
-	 * @param actual - the collection to test.
-	 * @param expected - the expected objects.
+	 * @param actual the collection to test.
+	 * @param expected the expected objects.
 	 */
 	public static void assertContains(Iterable<?> actual, Object... expected) {
 		assertContainsCollection(actual, Arrays.asList(expected));
@@ -549,8 +549,8 @@ public abstract class AbstractSarlTest {
 
 	/** Test if the actual collection/iterable contains all the expected objects.
 	 *
-	 * @param actual - the collection to test.
-	 * @param expected - the expected objects.
+	 * @param actual the collection to test.
+	 * @param expected the expected objects.
 	 */
 	public static void assertContainsCollection(Iterable<?> actual, Iterable<?> expected) {
 		assertNotNull(actual);
@@ -581,8 +581,8 @@ public abstract class AbstractSarlTest {
 
 	/** Test if the actual collection/iterable contains at least all the expected objects.
 	 *
-	 * @param actual - the collection to test.
-	 * @param expected - the expected objects.
+	 * @param actual the collection to test.
+	 * @param expected the expected objects.
 	 */
 	public static void assertPartlyContains(Iterable<?> actual, Object... expected) {
 		assertPartlyContainsCollection(actual, Arrays.asList(expected));
@@ -590,8 +590,8 @@ public abstract class AbstractSarlTest {
 
 	/** Test if the actual collection/iterable contains at least all the expected objects.
 	 *
-	 * @param actual - the collection to test.
-	 * @param expected - the expected objects.
+	 * @param actual the collection to test.
+	 * @param expected the expected objects.
 	 */
 	public static void assertPartlyContainsCollection(Iterable<?> actual, Iterable<?> expected) {
 		assertNotNull(actual);
@@ -615,8 +615,8 @@ public abstract class AbstractSarlTest {
 
 	/** Test if the actual collection/iterable contains all the expected objects.
 	 *
-	 * @param actual - the collection to test.
-	 * @param expected - the expected objects.
+	 * @param actual the collection to test.
+	 * @param expected the expected objects.
 	 */
 	public static void assertContainsStrings(Iterable<?> actual, String... expected) {
 		assertContainsStringCollection(actual, Arrays.asList(expected));
@@ -624,8 +624,8 @@ public abstract class AbstractSarlTest {
 
 	/** Test if the actual collection/iterable contains all the expected objects.
 	 *
-	 * @param actual - the collection to test.
-	 * @param expected - the expected objects.
+	 * @param actual the collection to test.
+	 * @param expected the expected objects.
 	 */
 	public static void assertContainsStringCollection(Iterable<?> actual, Iterable<String> expected) {
 		assertNotNull(actual);
@@ -653,7 +653,7 @@ public abstract class AbstractSarlTest {
 	/** Assert if the value is the string representation of
 	 * the boolean vlaue <code>true</code>.
 	 *
-	 * @param actual - the value.
+	 * @param actual the value.
 	 */
 	public static void assertTrueStr(String actual) {
 		assertTrueStr(null, actual);
@@ -662,8 +662,8 @@ public abstract class AbstractSarlTest {
 	/** Assert if the value is the string representation of
 	 * the boolean vlaue <code>true</code>.
 	 *
-	 * @param message - the error message.
-	 * @param actual - the value.
+	 * @param message the error message.
+	 * @param actual the value.
 	 */
 	public static void assertTrueStr(String message, String actual) {
 		assertEquals(message, Boolean.TRUE.toString(), actual);
@@ -672,7 +672,7 @@ public abstract class AbstractSarlTest {
 	/** Assert if the value is the string representation of
 	 * the boolean vlaue <code>false</code>.
 	 *
-	 * @param actual - the value.
+	 * @param actual the value.
 	 */
 	public static void assertFalseStr(String actual) {
 		assertFalseStr(null, actual);
@@ -681,8 +681,8 @@ public abstract class AbstractSarlTest {
 	/** Assert if the value is the string representation of
 	 * the boolean vlaue <code>false</code>.
 	 *
-	 * @param message - the error message.
-	 * @param actual - the value.
+	 * @param message the error message.
+	 * @param actual the value.
 	 */
 	public static void assertFalseStr(String message, String actual) {
 		assertEquals(message, Boolean.FALSE.toString(), actual);
@@ -693,7 +693,7 @@ public abstract class AbstractSarlTest {
 	 *
 	 * The property must be defined
 	 *
-	 * @param name - the name of the property.
+	 * @param name the name of the property.
 	 */
 	public static void assertTrueProperty(String name) {
 		String v = System.getProperty(name);
@@ -706,7 +706,7 @@ public abstract class AbstractSarlTest {
 	/** Assert if the system property with the given name has
 	 * the boolean value <code>false</code>.
 	 *
-	 * @param name - the name of the property.
+	 * @param name the name of the property.
 	 */
 	public static void assertFalseProperty(String name) {
 		String v = System.getProperty(name);
@@ -719,7 +719,7 @@ public abstract class AbstractSarlTest {
 	/** Assert if the system property with the given name has
 	 * the boolean value <code>false</code>.
 	 *
-	 * @param name - the name of the property.
+	 * @param name the name of the property.
 	 */
 	public static void assertNullProperty(String name) {
 		String v = System.getProperty(name);
@@ -731,8 +731,8 @@ public abstract class AbstractSarlTest {
 	/** Assert if the system property with the given name has
 	 * the given value.
 	 *
-	 * @param name - the name of the property.
-	 * @param value - the value of the property.
+	 * @param name the name of the property.
+	 * @param value the value of the property.
 	 */
 	public static void assertProperty(String name, String value) {
 		if (Strings.isNullOrEmpty(value)) {
@@ -748,7 +748,7 @@ public abstract class AbstractSarlTest {
 
 	/** Assert that the given value is stricty positive.
 	 *
-	 * @param actual - the value to test.
+	 * @param actual the value to test.
 	 */
 	public static void assertStrictlyPositive(int actual) {
 		if (actual <= 0) {
@@ -758,7 +758,7 @@ public abstract class AbstractSarlTest {
 
 	/** Assert that the given value is stricty negative.
 	 *
-	 * @param actual - the value to test.
+	 * @param actual the value to test.
 	 */
 	public static void assertStrictlyNegative(int actual) {
 		if (actual >= 0) {
@@ -768,7 +768,7 @@ public abstract class AbstractSarlTest {
 
 	/** Assert that the given value is stricty positive.
 	 *
-	 * @param actual - the value to test.
+	 * @param actual the value to test.
 	 */
 	public static void assertPositiveOrZero(int actual) {
 		if (actual < 0) {
@@ -778,7 +778,7 @@ public abstract class AbstractSarlTest {
 
 	/** Assert that the given value is negative or zero.
 	 *
-	 * @param actual - the value to test.
+	 * @param actual the value to test.
 	 */
 	public static void assertNegativeOrZero(int actual) {
 		if (actual > 0) {
@@ -788,7 +788,7 @@ public abstract class AbstractSarlTest {
 
 	/** Assert that the given value is stricty positive.
 	 *
-	 * @param actual - the value to test.
+	 * @param actual the value to test.
 	 */
 	public static void assertStrictlyPositive(float actual) {
 		if (actual <= 0f) {
@@ -798,7 +798,7 @@ public abstract class AbstractSarlTest {
 
 	/** Assert that the given value is stricty negative.
 	 *
-	 * @param actual - the value to test.
+	 * @param actual the value to test.
 	 */
 	public static void assertStrictlyNegative(float actual) {
 		if (actual >= 0f) {
@@ -808,7 +808,7 @@ public abstract class AbstractSarlTest {
 
 	/** Assert that the given value is stricty positive.
 	 *
-	 * @param actual - the value to test.
+	 * @param actual the value to test.
 	 */
 	public static void assertPositiveOrZero(float actual) {
 		if (actual < 0f) {
@@ -818,7 +818,7 @@ public abstract class AbstractSarlTest {
 
 	/** Assert that the given value is negative or zero.
 	 *
-	 * @param actual - the value to test.
+	 * @param actual the value to test.
 	 */
 	public static void assertNegativeOrZero(float actual) {
 		if (actual > 0f) {
@@ -828,7 +828,7 @@ public abstract class AbstractSarlTest {
 
 	/** Assert that the given value is stricty positive.
 	 *
-	 * @param actual - the value to test.
+	 * @param actual the value to test.
 	 */
 	public static void assertStrictlyPositive(double actual) {
 		if (actual <= 0.) {
@@ -838,7 +838,7 @@ public abstract class AbstractSarlTest {
 
 	/** Assert that the given value is stricty negative.
 	 *
-	 * @param actual - the value to test.
+	 * @param actual the value to test.
 	 */
 	public static void assertStrictlyNegative(double actual) {
 		if (actual >= 0.) {
@@ -848,7 +848,7 @@ public abstract class AbstractSarlTest {
 
 	/** Assert that the given value is stricty positive.
 	 *
-	 * @param actual - the value to test.
+	 * @param actual the value to test.
 	 */
 	public static void assertPositiveOrZero(double actual) {
 		if (actual < 0.) {
@@ -858,7 +858,7 @@ public abstract class AbstractSarlTest {
 
 	/** Assert that the given value is negative or zero.
 	 *
-	 * @param actual - the value to test.
+	 * @param actual the value to test.
 	 */
 	public static void assertNegativeOrZero(double actual) {
 		if (actual > 0.) {
@@ -868,7 +868,7 @@ public abstract class AbstractSarlTest {
 
 	/** Assert that the given value is equal to zero.
 	 *
-	 * @param actual - the value to test.
+	 * @param actual the value to test.
 	 */
 	public static void assertZero(int actual) {
 		assertZero(null, actual);
@@ -876,8 +876,8 @@ public abstract class AbstractSarlTest {
 
 	/** Assert that the given value is equal to zero.
 	 *
-	 * @param message - the error message.
-	 * @param actual - the value to test.
+	 * @param message the error message.
+	 * @param actual the value to test.
 	 */
 	public static void assertZero(String message, int actual) {
 		if (actual != 0) {
@@ -893,7 +893,7 @@ public abstract class AbstractSarlTest {
 
 	/** Assert that the given value is NaN.
 	 *
-	 * @param actual - the value to test.
+	 * @param actual the value to test.
 	 */
 	public static void assertNaN(float actual) {
 		assertNaN(null, actual);
@@ -901,8 +901,8 @@ public abstract class AbstractSarlTest {
 
 	/** Assert that the given value is NaN.
 	 *
-	 * @param message - the error message.
-	 * @param actual - the value to test.
+	 * @param message the error message.
+	 * @param actual the value to test.
 	 */
 	public static void assertNaN(String message, float actual) {
 		if (!Float.isNaN(actual)) {
@@ -918,7 +918,7 @@ public abstract class AbstractSarlTest {
 
 	/** Assert that the given value is NaN.
 	 *
-	 * @param actual - the value to test.
+	 * @param actual the value to test.
 	 */
 	public static void assertNaN(double actual) {
 		assertNaN(null, actual);
@@ -926,8 +926,8 @@ public abstract class AbstractSarlTest {
 
 	/** Assert that the given value is NaN.
 	 *
-	 * @param message - the error message.
-	 * @param actual - the value to test.
+	 * @param message the error message.
+	 * @param actual the value to test.
 	 */
 	public static void assertNaN(String message, double actual) {
 		if (!Double.isNaN(actual)) {
@@ -944,8 +944,8 @@ public abstract class AbstractSarlTest {
 	/** Assert that the two given arrays contain the same values even
 	 * they are not in the same order.
 	 *
-	 * @param expected - the expected values.
-	 * @param actual - the actual values.
+	 * @param expected the expected values.
+	 * @param actual the actual values.
 	 */
 	public static <T> void assertArraySimilar(T[] expected, T[] actual) {
 		List<T> expectedValues = new ArrayList<>(Arrays.asList(expected));
@@ -965,8 +965,8 @@ public abstract class AbstractSarlTest {
 
 	/** Assert that the given value is inside the array..
 	 *
-	 * @param expected - the array.
-	 * @param actual - the value.
+	 * @param expected the array.
+	 * @param actual the value.
 	 */
 	public static <T> void assertArrayContains(T[] expected, T actual) {
 		for (T value : expected) {
@@ -994,7 +994,7 @@ public abstract class AbstractSarlTest {
 	/** Helper for writting a multiline string in unit tests, which supports the
 	 * OS-dependent line separator.
 	 *
-	 * @param lines - the lines in the string.
+	 * @param lines the lines in the string.
 	 * @return the complete multiline string.
 	 */
 	public static String multilineString(Object... lines) {
@@ -1005,8 +1005,8 @@ public abstract class AbstractSarlTest {
 	 *
 	 * The order of the identifier is significant.
 	 *
-	 * @param actualReferences - the actual elements.
-	 * @param expectedIdentifiers - the expected elements.
+	 * @param actualReferences the actual elements.
+	 * @param expectedIdentifiers the expected elements.
 	 * @see JvmTypeReference#getIdentifier()
 	 */
 	public static void assertTypeReferenceIdentifiers(Iterable<? extends JvmTypeReference> actualReferences, String... expectedIdentifiers) {
@@ -1023,8 +1023,8 @@ public abstract class AbstractSarlTest {
 
 	/** Assert the the given type reference has the given identifier.
 	 *
-	 * @param actualReference - the actual type reference.
-	 * @param expectedIdentifier - the expected identifier.
+	 * @param actualReference the actual type reference.
+	 * @param expectedIdentifier the expected identifier.
 	 * @see JvmTypeReference#getIdentifier()
 	 */
 	public static void assertTypeReferenceIdentifier(JvmTypeReference actualReference, String expectedIdentifier) {
@@ -1039,8 +1039,8 @@ public abstract class AbstractSarlTest {
 	 *
 	 * The order of the parameters and the expected names is significant.
 	 *
-	 * @param actualFormalParameters - the list of the formal parameters.
-	 * @param expectedParameterNames - the expected names for the formal parameters.
+	 * @param actualFormalParameters the list of the formal parameters.
+	 * @param expectedParameterNames the expected names for the formal parameters.
 	 */
 	public static void assertParameterNames(Iterable<? extends XtendParameter> actualFormalParameters, String... expectedParameterNames) {
 		int i = 0;
@@ -1059,8 +1059,8 @@ public abstract class AbstractSarlTest {
 	 *
 	 * The order of the parameters and the expected types is significant.
 	 *
-	 * @param actualFormalParameters - the list of the formal parameters.
-	 * @param expectedParameterTypes - the expected types for the formal parameters.
+	 * @param actualFormalParameters the list of the formal parameters.
+	 * @param expectedParameterTypes the expected types for the formal parameters.
 	 */
 	public static void assertParameterTypes(Iterable<? extends XtendParameter> actualFormalParameters, String... expectedParameterTypes) {
 		int i = 0;
@@ -1085,8 +1085,8 @@ public abstract class AbstractSarlTest {
 	 * If the first element of the pair is null (meaning no default value), then
 	 * the second element must be missed.
 	 *
-	 * @param actualFormalParameters - the list of the formal parameters.
-	 * @param expectedDefaultValues - the expected default values.
+	 * @param actualFormalParameters the list of the formal parameters.
+	 * @param expectedDefaultValues the expected default values.
 	 */
 	public static void assertParameterDefaultValues(Iterable<? extends XtendParameter> actualFormalParameters, Object... expectedDefaultValues) {
 		int i = 0;
@@ -1152,9 +1152,9 @@ public abstract class AbstractSarlTest {
 
 	/** Assert the actual XExpression is of the given type and initialized with the given literal.
 	 *
-	 * @param actualExpression - the expression to test.
-	 * @param expectedType - the expected type of expression.
-	 * @param expectedValue - the expected value.
+	 * @param actualExpression the expression to test.
+	 * @param expectedType the expected type of expression.
+	 * @param expectedValue the expected value.
 	 */
 	public static void assertXExpression(XExpression actualExpression, Class<? extends XExpression> expectedType, String expectedValue) {
 		assertTrue("Expecting type of expression: " + expectedType.getName(),
@@ -1172,8 +1172,8 @@ public abstract class AbstractSarlTest {
 
 	/** Assert the actual object is a not-null instance of the given type.
 	 *
-	 * @param actualExpression - the expected type.
-	 * @param expectedType - the instance.
+	 * @param actualExpression the expected type.
+	 * @param expectedType the instance.
 	 */
 	public static void assertInstanceOf(Class<?> expected, Object actual) {
 		assertInstanceOf(null, expected, actual);
@@ -1181,9 +1181,9 @@ public abstract class AbstractSarlTest {
 
 	/** Assert the actual object is a not-null instance of the given type.
 	 *
-	 * @param message - the error message.
-	 * @param actualExpression - the expected type.
-	 * @param expectedType - the instance.
+	 * @param message the error message.
+	 * @param actualExpression the expected type.
+	 * @param expectedType the instance.
 	 */
 	public static void assertInstanceOf(String message, Class<?> expected, Object actual) {
 		String m = message;
@@ -1523,8 +1523,8 @@ public abstract class AbstractSarlTest {
 
 	/** Merge two arrays.
 	 *
-	 * @param operand1 - the first array.
-	 * @param operand2 - the second array.
+	 * @param operand1 the first array.
+	 * @param operand2 the second array.
 	 * @return the merge.
 	 */
 	public static String[] merge(String[] operand1, String[] operand2) {
@@ -1662,7 +1662,7 @@ public abstract class AbstractSarlTest {
 		private ValidationTestHelper testHelper;
 
 		/**
-		 * @param resource - the resource to validate.
+		 * @param resource the resource to validate.
 		 */
 		private XtextValidator(Resource resource) {
 			this.resource = resource;

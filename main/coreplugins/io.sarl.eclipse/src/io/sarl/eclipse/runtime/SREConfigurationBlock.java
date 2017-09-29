@@ -103,10 +103,10 @@ public class SREConfigurationBlock {
 	private boolean notify = true;
 
 	/**
-	 * @param enableSystemWideSelector - indicates if the system-wide configuration selector must be enabled.
-	 * @param project - the provider of the project that may be associated to the block. If <code>null</code> the components
+	 * @param enableSystemWideSelector indicates if the system-wide configuration selector must be enabled.
+	 * @param project the provider of the project that may be associated to the block. If <code>null</code> the components
 	 *     related to the project are hidden.
-	 * @param projectProviderFactories - the factories of  the provider of a project that may give SRE configuration.
+	 * @param projectProviderFactories the factories of  the provider of a project that may give SRE configuration.
 	 *     If <code>null</code> the components related to the project are hidden.
 	 */
 	public SREConfigurationBlock(boolean enableSystemWideSelector,
@@ -116,11 +116,11 @@ public class SREConfigurationBlock {
 	}
 
 	/**
-	 * @param title - the title of the group.
-	 * @param enableSystemWideSelector - indicates if the system-wide configuration selector must be enabled.
-	 * @param project - the provider of the project that may be associated to the block. If <code>null</code> the components
+	 * @param title the title of the group.
+	 * @param enableSystemWideSelector indicates if the system-wide configuration selector must be enabled.
+	 * @param project the provider of the project that may be associated to the block. If <code>null</code> the components
 	 *     related to the project are hidden.
-	 * @param projectProviderFactories - the factories of  the provider of a project that may give SRE configuration.
+	 * @param projectProviderFactories the factories of  the provider of a project that may give SRE configuration.
 	 *     If <code>null</code> the components related to the project are hidden.
 	 */
 	public SREConfigurationBlock(String title, boolean enableSystemWideSelector,
@@ -135,7 +135,7 @@ public class SREConfigurationBlock {
 
 	/** Change the event notification flag.
 	 *
-	 * @param notify - <code>true</code> for notifying the events.
+	 * @param notify <code>true</code> for notifying the events.
 	 */
 	public void setNotify(boolean notify) {
 		this.notify = notify;
@@ -151,7 +151,7 @@ public class SREConfigurationBlock {
 
 	/** Add listener on the changes in the SRE configuration.
 	 *
-	 * @param listener - the listener.
+	 * @param listener the listener.
 	 */
 	public void addPropertyChangeListener(IPropertyChangeListener listener) {
 		this.listeners.add(listener);
@@ -159,7 +159,7 @@ public class SREConfigurationBlock {
 
 	/** Add listener on the changes in the SRE configuration.
 	 *
-	 * @param listener - the listener.
+	 * @param listener the listener.
 	 */
 	public void removePropertyChangeListener(IPropertyChangeListener listener) {
 		this.listeners.remove(listener);
@@ -307,7 +307,7 @@ public class SREConfigurationBlock {
 	/**
 	 * Creates this block's control in the given control.
 	 *
-	 * @param parent - containing control
+	 * @param parent containing control
 	 * @return the control.
 	 * @see #getControl()
 	 */
@@ -387,7 +387,7 @@ public class SREConfigurationBlock {
 	 * system-wide SRE, the specific SRE is reset to the system-wide
 	 * SRE.
 	 *
-	 * @param sre - the sre, if <code>null</code> reset to default.
+	 * @param sre the sre, if <code>null</code> reset to default.
 	 * @return <code>true</code> if the selection changed.
 	 * @see #selectSpecificSRE(ISREInstall)
 	 */
@@ -441,7 +441,7 @@ public class SREConfigurationBlock {
 
 	/** Select a specific SRE.
 	 *
-	 * @param sre - the sre, if <code>null</code> reset to default.
+	 * @param sre the sre, if <code>null</code> reset to default.
 	 * @return <code>true</code> if the selection changed.
 	 */
 	@SuppressWarnings("checkstyle:npathcomplexity")
@@ -660,7 +660,7 @@ public class SREConfigurationBlock {
 
 	/** Validate that the given SRE is valid in the context of the SRE configuration.
 	 *
-	 * @param sre - the SRE.
+	 * @param sre the SRE.
 	 * @return the state of the validation, never <code>null</code>.
 	 */
 	public IStatus validate(ISREInstall sre) {

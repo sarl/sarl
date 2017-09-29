@@ -30,6 +30,7 @@ import org.eclipse.osgi.util.NLS;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 0.6
+ * @ExcludeFromApidoc
  */
 @SuppressWarnings("all")
 public class Messages extends NLS {

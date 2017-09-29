@@ -52,8 +52,8 @@ interface RestrictedAccessEventSpace extends EventSpace {
 	 *
 	 * <p>If the agent is already registered the address is return, but the listener is not replaced.
 	 *
-	 * @param entity - the event listener to register.
-	 * @param requester - object that is requesting the access.
+	 * @param entity the event listener to register.
+	 * @param requester object that is requesting the access.
 	 * @return the entity's address in this space
 	 * @fires ParticipantRegistered
 	 * @throws AccessControlException if the requester has not the right to access to the space.
@@ -71,7 +71,7 @@ interface RestrictedAccessEventSpace extends EventSpace {
 	 * <p>If the agent is already registered the address is return, but the listener is not replaced.
 	 *
 	 * @param <P> - type of the entity to register.
-	 * @param entity - object that is requesting the access.
+	 * @param entity object that is requesting the access.
 	 * @return the entity's address in this space
 	 * @fires ParticipantRegistered
 	 * @throws AccessControlException if the requester has not the right to access to the space.
@@ -83,7 +83,7 @@ interface RestrictedAccessEventSpace extends EventSpace {
 	 * Before unregistering an agent, the Space should emit a MemberLeft
 	 * event where the source is the address of the unregistered agent.
 	 *
-	 * @param entity - the event listener to unregister.
+	 * @param entity the event listener to unregister.
 	 * @return the former entity's address
 	 * @fires ParticipantUnregistered
 	 */

@@ -59,8 +59,8 @@ public class BehaviorUnitComparator implements Comparator<SarlBehaviorUnit>, Ser
 
 	/** Compare two Xtext expressions.
 	 *
-	 * @param e1 - the first expression to compare.
-	 * @param e2 - the second expression to compare.
+	 * @param e1 the first expression to compare.
+	 * @param e2 the second expression to compare.
 	 * @return A negative value if <code>e1</code> is
 	 *     lower than <code>e2</code>, a positive value if
 	 *     <code>e1</code> is greater than <code>e2</code>,

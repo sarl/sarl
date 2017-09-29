@@ -39,11 +39,11 @@ class SARLEObjectNode extends EObjectNode {
 	private boolean isStatic;
 
 	/**
-	 * @param object - the object represented by the node.
-	 * @param parent - the parent node.
-	 * @param imageDescriptor - the descriptor of the image related to the node..
-	 * @param text - the text for the node.
-	 * @param isLeaf - indicates if the node is a leaf.
+	 * @param object the object represented by the node.
+	 * @param parent the parent node.
+	 * @param imageDescriptor the descriptor of the image related to the node..
+	 * @param text the text for the node.
+	 * @param isLeaf indicates if the node is a leaf.
 	 */
 	SARLEObjectNode(EObject object, IOutlineNode parent, Image imageDescriptor, Object text,
 			boolean isLeaf) {
@@ -52,7 +52,7 @@ class SARLEObjectNode extends EObjectNode {
 
 	/** Change the static flag for the node.
 	 *
-	 * @param isStatic - the value of the static flag.
+	 * @param isStatic the value of the static flag.
 	 */
 	public void setStatic(boolean isStatic) {
 		this.isStatic = isStatic;

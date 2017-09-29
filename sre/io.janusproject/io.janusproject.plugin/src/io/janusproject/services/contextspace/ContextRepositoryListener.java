@@ -38,14 +38,14 @@ public interface ContextRepositoryListener extends EventListener {
 	/**
 	 * Invoked when the context is added.
 	 *
-	 * @param context - the created context.
+	 * @param context the created context.
 	 */
 	void contextCreated(AgentContext context);
 
 	/**
 	 * Invoked when the context is destroyed.
 	 *
-	 * @param context - the destroyed context.
+	 * @param context the destroyed context.
 	 */
 	void contextDestroyed(AgentContext context);
 

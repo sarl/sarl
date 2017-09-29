@@ -66,7 +66,7 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 	private transient Map<K, Collection<V>> map;
 
 	/**
-	 * @param name - the name of the map.
+	 * @param name the name of the map.
 	 */
 	public AbstractDMultiMapView(String name) {
 		this.name = name;
@@ -83,8 +83,8 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 	 * <p>The replies view may be a {@link SingleKeyValueListView} or a {@link SingleKeyValueSetView} according to the type of the
 	 * given values' collection.
 	 *
-	 * @param key - the key of the values.
-	 * @param values - the values.
+	 * @param key the key of the values.
+	 * @param values the values.
 	 * @return the wrapper.
 	 */
 	Collection<V> wrapValues(K key, Collection<V> values) {
@@ -103,7 +103,7 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 	 *
 	 * <p>The replies collection may be a {@link List} or a {@link Set} according to the type of the given values' collection.
 	 *
-	 * @param values - the values.
+	 * @param values the values.
 	 * @return the copy.
 	 */
 	@SuppressWarnings({ "unchecked", "checkstyle:illegaltype" })
@@ -300,8 +300,8 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 		private final List<V> values;
 
 		/**
-		 * @param key - the key of the values.
-		 * @param values - the values.
+		 * @param key the key of the values.
+		 * @param values the values.
 		 */
 		public SingleKeyValueListView(K key, List<V> values) {
 			this.key = key;
@@ -414,8 +414,8 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 		private final Set<V> values;
 
 		/**
-		 * @param key - the key of the values.
-		 * @param values - the values.
+		 * @param key the key of the values.
+		 * @param values the values.
 		 */
 		public SingleKeyValueSetView(K key, Set<V> values) {
 			this.key = key;
@@ -521,7 +521,7 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 		private final Set<K> keys;
 
 		/**
-		 * @param keys - the keys in the multimap.
+		 * @param keys the keys in the multimap.
 		 */
 		public KeySetView(Set<K> keys) {
 			this.keys = keys;
@@ -617,7 +617,7 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 		private final Collection<Entry<K, V>> entries;
 
 		/**
-		 * @param entries - the entries in the multimap.
+		 * @param entries the entries in the multimap.
 		 */
 		public EntryCollectionView(Collection<Entry<K, V>> entries) {
 			this.entries = entries;
@@ -715,7 +715,7 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 		private final Collection<Entry<K, V>> entries;
 
 		/**
-		 * @param entries - the entries in the multimap.
+		 * @param entries the entries in the multimap.
 		 */
 		public ValueCollectionView(Collection<Entry<K, V>> entries) {
 			this.entries = entries;
@@ -808,7 +808,7 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 		private final Map<K, Collection<V>> backedMap;
 
 		/**
-		 * @param backedMap - the backed map.
+		 * @param backedMap the backed map.
 		 */
 		public MapView(Map<K, Collection<V>> backedMap) {
 			this.backedMap = backedMap;
@@ -887,7 +887,7 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 			private final Set<Entry<K, Collection<V>>> backedSet;
 
 			/**
-			 * @param backedSet - the backed set.
+			 * @param backedSet the backed set.
 			 */
 			EntrySet(Set<Entry<K, Collection<V>>> backedSet) {
 				this.backedSet = backedSet;
@@ -918,7 +918,7 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 				private Entry<K, Collection<V>> entry;
 
 				/**
-				 * @param iterator - the iterator.
+				 * @param iterator the iterator.
 				 */
 				EntryIterator(Iterator<Entry<K, Collection<V>>> iterator) {
 					this.iterator = iterator;

@@ -39,30 +39,30 @@ public interface NetworkServiceListener extends EventListener {
 	/**
 	 * Invoked when a remote peer has been discovered.
 	 *
-	 * @param peerURI - URI of the remote kernel.
+	 * @param peerURI URI of the remote kernel.
 	 */
 	void peerDiscovered(URI peerURI);
 
 	/**
 	 * Invoked when a remote peer has been disconnected.
 	 *
-	 * @param peerURI - URI of the remote kernel.
+	 * @param peerURI URI of the remote kernel.
 	 */
 	void peerDisconnected(URI peerURI);
 
 	/**
 	 * Invoked when a remote peer has been disconnected for a particular space.
 	 *
-	 * @param peerURI - URI of the remote kernel is connected to the local kernel.
-	 * @param space - the identifier of the space for which a connection was opened.
+	 * @param peerURI URI of the remote kernel is connected to the local kernel.
+	 * @param space the identifier of the space for which a connection was opened.
 	 */
 	void peerDisconnected(URI peerURI, SpaceID space);
 
 	/**
 	 * Invoked when a connection to a peer was opened for a particular space.
 	 *
-	 * @param peerURI - URI of the remote kernel is connected to the local kernel.
-	 * @param space - the identifier of the space for which a connection was opened.
+	 * @param peerURI URI of the remote kernel is connected to the local kernel.
+	 * @param space the identifier of the space for which a connection was opened.
 	 */
 	void peerConnected(URI peerURI, SpaceID space);
 

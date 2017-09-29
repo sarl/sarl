@@ -48,7 +48,7 @@ class SARLConfiguration {
 
 	/** Set the uninitialized field with given configuration.
 	 *
-	 * @param config - the configured values.
+	 * @param config the configured values.
 	 */
 	@SuppressWarnings("checkstyle:npathcomplexity")
 	public void setFrom(SARLConfiguration config) {

@@ -55,9 +55,9 @@ public class InferredStandardParameter {
 	protected String defaultValueAnnotationValueBasename;
 
 	/**
-	 * @param source - the original parameter.
-	 * @param name - the name of the formal parameter.
-	 * @param type - the type of the formal parameter.
+	 * @param source the original parameter.
+	 * @param name the name of the formal parameter.
+	 * @param type the type of the formal parameter.
 	 */
 	public InferredStandardParameter(EObject source, String name, JvmTypeReference type) {
 		this.source = source;

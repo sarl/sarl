@@ -98,10 +98,10 @@ public class SpaceRepository {
 	private final Multimap<Class<? extends SpaceSpecification<?>>, SpaceID> spacesBySpec;
 
 	/**
-	 * @param distributedSpaceSetName - the name used to identify distributed map over network
-	 * @param distributedDataStructureService - distributed data structure service.
-	 * @param injector - injector to used for creating new spaces.
-	 * @param listener - listener on the events in the space repository.
+	 * @param distributedSpaceSetName the name used to identify distributed map over network
+	 * @param distributedDataStructureService distributed data structure service.
+	 * @param injector injector to used for creating new spaces.
+	 * @param listener listener on the events in the space repository.
 	 */
 	SpaceRepository(String distributedSpaceSetName, DistributedDataStructureService distributedDataStructureService,
 			Injector injector, SpaceRepositoryListener listener) {
@@ -203,8 +203,8 @@ public class SpaceRepository {
 	/**
 	 * Add the existing, but not yet known, spaces into this repository.
 	 *
-	 * @param id - identifier of the space
-	 * @param initializationParameters - parameters for initialization.
+	 * @param id identifier of the space
+	 * @param initializationParameters parameters for initialization.
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected void ensureLocalSpaceDefinition(SpaceID id, Object[] initializationParameters) {
@@ -218,8 +218,8 @@ public class SpaceRepository {
 	/**
 	 * Remove a remote space.
 	 *
-	 * @param id - identifier of the space
-	 * @param isLocalDestruction - indicates if the destruction is initiated by the local kernel.
+	 * @param id identifier of the space
+	 * @param isLocalDestruction indicates if the destruction is initiated by the local kernel.
 	 */
 	protected void removeLocalSpaceDefinition(SpaceID id, boolean isLocalDestruction) {
 		final Space space;
@@ -237,7 +237,7 @@ public class SpaceRepository {
 	/**
 	 * Remove all the remote spaces.
 	 *
-	 * @param isLocalDestruction - indicates if the destruction is initiated by the local kernel.
+	 * @param isLocalDestruction indicates if the destruction is initiated by the local kernel.
 	 */
 	protected void removeLocalSpaceDefinitions(boolean isLocalDestruction) {
 		List<Space> removedSpaces = null;
@@ -268,9 +268,9 @@ public class SpaceRepository {
 	 * Create a space.
 	 *
 	 * @param <S> - the type of the space to reply.
-	 * @param spaceID - ID of the space.
-	 * @param spec - specification of the space.
-	 * @param creationParams - creation parameters.
+	 * @param spaceID ID of the space.
+	 * @param spec specification of the space.
+	 * @param creationParams creation parameters.
 	 * @return the new space, or <code>null</code> if the space already exists.
 	 */
 	public <S extends io.sarl.lang.core.Space> S createSpace(SpaceID spaceID,
@@ -287,9 +287,9 @@ public class SpaceRepository {
 	 * Retrieve the first space of the given specification, or create a space if none.
 	 *
 	 * @param <S> - the type of the space to reply.
-	 * @param spaceID - ID of the space (used only when creating a space).
-	 * @param spec - specification of the space.
-	 * @param creationParams - creation parameters (used only when creating a space).
+	 * @param spaceID ID of the space (used only when creating a space).
+	 * @param spec specification of the space.
+	 * @param creationParams creation parameters (used only when creating a space).
 	 * @return the new space.
 	 */
 	@SuppressWarnings("unchecked")
@@ -312,9 +312,9 @@ public class SpaceRepository {
 	 * Retrieve the first space of the given identifier, or create a space if none.
 	 *
 	 * @param <S> - the type of the space to reply.
-	 * @param spaceID - ID of the space.
-	 * @param spec - specification of the space.
-	 * @param creationParams - creation parameters (used only when creating a space).
+	 * @param spaceID ID of the space.
+	 * @param spec specification of the space.
+	 * @param creationParams creation parameters (used only when creating a space).
 	 * @return the new space.
 	 */
 	@SuppressWarnings("unchecked")
@@ -346,7 +346,7 @@ public class SpaceRepository {
 	 * Returns the collection of all spaces with the specified {@link SpaceSpecification} stored in this repository.
 	 *
 	 * @param <S> - type of the spaces to reply.
-	 * @param spec - the specification used to filter the set of stored spaces.
+	 * @param spec the specification used to filter the set of stored spaces.
 	 * @return the collection of all spaces with the specified {@link SpaceSpecification} stored in this repository
 	 */
 	@SuppressWarnings("unchecked")
@@ -365,7 +365,7 @@ public class SpaceRepository {
 	/**
 	 * Returns the first instance of a space with the specified SpaceID.
 	 *
-	 * @param spaceID - the identifier to retreive.
+	 * @param spaceID the identifier to retreive.
 	 * @return the space instance of <code>null</code> if none.
 	 */
 	public Space getSpace(SpaceID spaceID) {
@@ -377,8 +377,8 @@ public class SpaceRepository {
 	/**
 	 * Notifies the listeners on the space creation.
 	 *
-	 * @param space - the created space.
-	 * @param isLocalCreation - indicates if the creation of the space was initiated on the current kernel.
+	 * @param space the created space.
+	 * @param isLocalCreation indicates if the creation of the space was initiated on the current kernel.
 	 */
 	protected void fireSpaceAdded(Space space, boolean isLocalCreation) {
 		if (this.externalListener != null) {
@@ -389,8 +389,8 @@ public class SpaceRepository {
 	/**
 	 * Notifies the listeners on the space destruction.
 	 *
-	 * @param space - the removed space.
-	 * @param isLocalDestruction - indicates if the destruction of the space was initiated on the current kernel.
+	 * @param space the removed space.
+	 * @param isLocalDestruction indicates if the destruction of the space was initiated on the current kernel.
 	 */
 	protected void fireSpaceRemoved(Space space, boolean isLocalDestruction) {
 		if (this.externalListener != null) {

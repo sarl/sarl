@@ -86,49 +86,49 @@ public interface ISarlAnnotationTypeBuilder {
 	void setDocumentation(String doc);
 
 	/** Add a modifier.
-	 * @param modifier - the modifier to add.
+	 * @param modifier the modifier to add.
 	 */
 	void addModifier(String modifier);
 
 	/** Create a SarlField.
-	 * @param name - the name of the SarlField.
+	 * @param name the name of the SarlField.
 	 * @return the builder.
 	 */
 	ISarlFieldBuilder addVarSarlField(String name);
 
 	/** Create a SarlField.
-	 * @param name - the name of the SarlField.
+	 * @param name the name of the SarlField.
 	 * @return the builder.
 	 */
 	ISarlFieldBuilder addValSarlField(String name);
 
 	/** Create a SarlField.	 *
 	 * <p>This function is equivalent to {@link #addVarSarlField}.
-	 * @param name - the name of the SarlField.
+	 * @param name the name of the SarlField.
 	 * @return the builder.
 	 */
 	ISarlFieldBuilder addSarlField(String name);
 
 	/** Create a SarlClass.
-	 * @param name - the name of the SarlClass.
+	 * @param name the name of the SarlClass.
 	 * @return the builder.
 	 */
 	ISarlClassBuilder addSarlClass(String name);
 
 	/** Create a SarlInterface.
-	 * @param name - the name of the SarlInterface.
+	 * @param name the name of the SarlInterface.
 	 * @return the builder.
 	 */
 	ISarlInterfaceBuilder addSarlInterface(String name);
 
 	/** Create a SarlEnumeration.
-	 * @param name - the name of the SarlEnumeration.
+	 * @param name the name of the SarlEnumeration.
 	 * @return the builder.
 	 */
 	ISarlEnumerationBuilder addSarlEnumeration(String name);
 
 	/** Create a SarlAnnotationType.
-	 * @param name - the name of the SarlAnnotationType.
+	 * @param name the name of the SarlAnnotationType.
 	 * @return the builder.
 	 */
 	ISarlAnnotationTypeBuilder addSarlAnnotationType(String name);

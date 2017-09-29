@@ -158,8 +158,8 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	/**
 	 * Creates the widgets for specifying a agent name.
 	 *
-	 * @param parent - the parent composite.
-	 * @param text - the label of the group.
+	 * @param parent the parent composite.
+	 * @param text the label of the group.
 	 */
 	protected void createAgentNameEditor(Composite parent, String text) {
 		final Group group = SWTFactory.createGroup(parent, text, 2, 1, GridData.FILL_HORIZONTAL);
@@ -190,8 +190,8 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	/**
 	 * Creates the widgets for configuring the context identifier.
 	 *
-	 * @param parent - the parent composite.
-	 * @param text - the label of the group.
+	 * @param parent the parent composite.
+	 * @param text the label of the group.
 	 */
 	protected void createContextIdentifierTypeEditor(Composite parent, String text) {
 		final Group group = SWTFactory.createGroup(parent, text, 1, 1, GridData.FILL_HORIZONTAL);
@@ -220,8 +220,8 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	/**
 	 * Creates the widgets for configuring the launch options.
 	 *
-	 * @param parent - the parent composite.
-	 * @param text - the label of the group.
+	 * @param parent the parent composite.
+	 * @param text the label of the group.
 	 */
 	protected void createLaunchOptionEditor(Composite parent, String text) {
 		final Group group = SWTFactory.createGroup(parent, text, 1, 1, GridData.FILL_HORIZONTAL);
@@ -250,7 +250,7 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	/**
 	 * Loads the context identifier type from the launch configuration's preference store.
 	 *
-	 * @param config - the config to load the agent name from
+	 * @param config the config to load the agent name from
 	 */
 	protected void updateContextIdentifierTypeFromConfig(ILaunchConfiguration config) {
 		final RootContextIdentifierType type = this.accessor.getDefaultContextIdentifier(config);
@@ -272,7 +272,7 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	/**
 	 * Loads the launch options from the launch configuration's preference store.
 	 *
-	 * @param config - the config to load the agent name from
+	 * @param config the config to load the agent name from
 	 */
 	protected void updateLaunchOptionsFromConfig(ILaunchConfiguration config) {
 		final boolean showLogo = this.accessor.getShowLogoFlag(config);
@@ -292,7 +292,7 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	/**
 	 * Loads the agent name from the launch configuration's preference store.
 	 *
-	 * @param config - the config to load the agent name from
+	 * @param config the config to load the agent name from
 	 */
 	protected void updateAgentNameFromConfig(ILaunchConfiguration config) {
 		final String agentName = this.accessor.getAgent(config);
@@ -417,7 +417,7 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	/**
 	 * Reset the given configuration with the context identifier type.
 	 *
-	 * @param config - the config to set with the context identifier type.
+	 * @param config the config to set with the context identifier type.
 	 */
 	protected void initializeContextIdentifierType(ILaunchConfigurationWorkingCopy config) {
 		this.configurator.setDefaultContextIdentifier(config, null);
@@ -426,7 +426,7 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	/**
 	 * Reset the given configuration with the launch options.
 	 *
-	 * @param config - the config to set with the launch options.
+	 * @param config the config to set with the launch options.
 	 */
 	protected void initializeLaunchOptions(ILaunchConfigurationWorkingCopy config) {
 		this.configurator.setLaunchingFlags(config, null, null, null);
@@ -467,8 +467,8 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	 * Reset the given configuration with the agent name attributes associated
 	 * to the given element.
 	 *
-	 * @param javaElement - the element from which information may be retrieved.
-	 * @param config - the config to set with the agent name.
+	 * @param javaElement the element from which information may be retrieved.
+	 * @param config the config to set with the agent name.
 	 */
 	protected void initializeAgentName(IJavaElement javaElement, ILaunchConfigurationWorkingCopy config) {
 		String name = extractNameFromJavaElement(javaElement);

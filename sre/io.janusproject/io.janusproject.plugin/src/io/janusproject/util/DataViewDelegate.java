@@ -38,7 +38,7 @@ public final class DataViewDelegate {
 	/**
 	 * Find the delegated object.
 	 *
-	 * @param object - the object.
+	 * @param object the object.
 	 * @return the delegator object.
 	 */
 	public static Object undelegate(Object object) {

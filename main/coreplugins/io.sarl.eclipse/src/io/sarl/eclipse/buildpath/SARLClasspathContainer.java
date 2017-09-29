@@ -54,7 +54,7 @@ public class SARLClasspathContainer extends AbstractSARLBasedClasspathContainer 
 	};
 
 	/**
-	 * @param containerPath - the path of the container, e.g. the project.
+	 * @param containerPath the path of the container, e.g. the project.
 	 */
 	public SARLClasspathContainer(IPath containerPath) {
 		super(containerPath);

@@ -73,8 +73,8 @@ public class ExpressionSourceAppender extends AbstractSourceAppender implements 
 	}
 
 	/** Initialize the expression.
-	 * @param context - the context of the expressions.
-	 * @param setter - the object that permits to assign the expression to the context.
+	 * @param context the context of the expressions.
+	 * @param setter the object that permits to assign the expression to the context.
 	 */
 	public void eInit(EObject context, Procedure1<? super XExpression> setter, IJvmTypeProvider typeContext) {
 		this.builder.eInit(context, setter, typeContext);
@@ -98,7 +98,7 @@ public class ExpressionSourceAppender extends AbstractSourceAppender implements 
 
 	/** Change the expression in the container.
 	 *
-	 * @param expression - the textual representation of the expression.
+	 * @param expression the textual representation of the expression.
 	 */
 	public void setExpression(String expression) {
 		this.builder.setExpression(expression);
@@ -106,7 +106,7 @@ public class ExpressionSourceAppender extends AbstractSourceAppender implements 
 
 	/** Change the expression in the container.
 	 *
-	 * @param expression - the expression.
+	 * @param expression the expression.
 	 */
 	public void setXExpression(XExpression expression) {
 		this.builder.setXExpression(expression);
@@ -114,7 +114,7 @@ public class ExpressionSourceAppender extends AbstractSourceAppender implements 
 
 
 	/** Replies the XExpression for the default value associated to the given type.
-	 * @param type - the type for which the default value should be determined.
+	 * @param type the type for which the default value should be determined.
 	 * @return the default value.
 	 */
 	@Pure
@@ -123,7 +123,7 @@ public class ExpressionSourceAppender extends AbstractSourceAppender implements 
 	}
 
 	/** Replies the default value for the given type.
-	 * @param type - the type for which the default value should be determined.
+	 * @param type the type for which the default value should be determined.
 	 * @return the default value.
 	 */
 	@Pure

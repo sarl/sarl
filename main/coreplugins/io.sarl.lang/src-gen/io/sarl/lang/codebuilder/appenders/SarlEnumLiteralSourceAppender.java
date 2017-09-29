@@ -77,8 +77,8 @@ public class SarlEnumLiteralSourceAppender extends AbstractSourceAppender implem
 	}
 
 	/** Initialize the Ecore element.
-	 * @param container - the container of the SarlEnumLiteral.
-	 * @param name - the name of the SarlEnumLiteral.
+	 * @param container the container of the SarlEnumLiteral.
+	 * @param name the name of the SarlEnumLiteral.
 	 */
 	public void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context) {
 		this.builder.eInit(container, name, context);

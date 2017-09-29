@@ -59,7 +59,7 @@ public final class SARLPreferences {
 
 	/** Replies the preference store for the given project.
 	 *
-	 * @param project - the project.
+	 * @param project the project.
 	 * @return the preference store or <code>null</code>.
 	 */
 	public static IPreferenceStore getSARLPreferencesFor(IProject project) {
@@ -73,7 +73,7 @@ public final class SARLPreferences {
 
 	/** Replies the Xtext output configurations related to the given project.
 	 *
-	 * @param project - the project.
+	 * @param project the project.
 	 * @return the Xtext output configurations.
 	 */
 	public static Set<OutputConfiguration> getXtextConfigurationsFor(IProject project) {
@@ -86,7 +86,7 @@ public final class SARLPreferences {
 	/** Configure the given project for using the system-wide
 	 * configuration related to SARL.
 	 *
-	 * @param project - the project.
+	 * @param project the project.
 	 */
 	public static void setSystemSARLConfigurationFor(IProject project) {
 		final IPreferenceStore preferenceStore = getSARLPreferencesFor(project);
@@ -96,8 +96,8 @@ public final class SARLPreferences {
 	/** Configure the given project for using a specific configuration
 	 * related to SARL.
 	 *
-	 * @param project - the project.
-	 * @param outputPath - the path where SARL compiler is generating the Java code.
+	 * @param project the project.
+	 * @param outputPath the path where SARL compiler is generating the Java code.
 	 */
 	public static void setSpecificSARLConfigurationFor(
 			IProject project,
@@ -156,7 +156,7 @@ public final class SARLPreferences {
 	/** Replies the output path for the generated sources that is registered inside the project's preferences.
 	 * If the project has no specific configuration, replies <code>null</code>.
 	 *
-	 * @param project - the project.
+	 * @param project the project.
 	 * @return the output path for SARL compiler if the project has a specific configuration,
 	 *     otherwise <code>null</code>.
 	 */

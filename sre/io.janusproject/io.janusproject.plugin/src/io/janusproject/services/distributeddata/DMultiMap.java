@@ -68,14 +68,14 @@ public interface DMultiMap<K, V> extends Multimap<K, V> {
 	/**
 	 * Add listener on events on the DMultiMap.
 	 *
-	 * @param listener - the listener
+	 * @param listener the listener
 	 */
 	void addDMapListener(DMapListener<? super K, ? super V> listener);
 
 	/**
 	 * Remove listener on events on the DMultiMap.
 	 *
-	 * @param listener - the listener
+	 * @param listener the listener
 	 */
 	void removeDMapListener(DMapListener<? super K, ? super V> listener);
 

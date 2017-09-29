@@ -113,7 +113,7 @@ public class CodeBuilderFactory {
 	}
 
 	/** Compute a unused URI for a synthetic resource.
-	 * @param resourceSet - the resource set in which the resource should be located.
+	 * @param resourceSet the resource set in which the resource should be located.
 	 * @return the uri.
 	 */
 	@Pure

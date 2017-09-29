@@ -97,14 +97,14 @@ public abstract class AbstractSREInstallPage extends WizardPage {
 	/**
 	 * Sets the SRE install to be edited.
 	 *
-	 * @param sre - the SRE install to edit
+	 * @param sre the SRE install to edit
 	 */
 	public abstract void initialize(ISREInstall sre);
 
 	/**
 	 * Create a SRE install to be edited.
 	 *
-	 * @param id - the identifier of the new SRE.
+	 * @param id the identifier of the new SRE.
 	 * @return the created SRE.
 	 */
 	public abstract ISREInstall createSelection(String id);
@@ -113,7 +113,7 @@ public abstract class AbstractSREInstallPage extends WizardPage {
 	 * Replies if the name of the SRE is valid against the names of
 	 * the other SRE.
 	 *
-	 * @param name - the name to validate.
+	 * @param name the name to validate.
 	 * @return the validation status.
 	 */
 	protected IStatus validateNameAgainstOtherSREs(String name) {
@@ -139,7 +139,7 @@ public abstract class AbstractSREInstallPage extends WizardPage {
 	 * <p>You must call {@link #updatePageStatus()} after
 	 * invoking this methid.
 	 *
-	 * @param status - the new status.
+	 * @param status the new status.
 	 */
 	protected void setPageStatus(IStatus status) {
 		this.status = status == null ? SARLEclipsePlugin.getDefault().createOkStatus() : status;
@@ -148,7 +148,7 @@ public abstract class AbstractSREInstallPage extends WizardPage {
 	/**
 	 * Returns whether the name is already in use by an existing SRE.
 	 *
-	 * @param name - new name.
+	 * @param name new name.
 	 * @return whether the name is already in use.
 	 */
 	private boolean isDuplicateName(String name) {

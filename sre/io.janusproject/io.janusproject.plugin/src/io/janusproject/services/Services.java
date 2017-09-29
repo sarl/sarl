@@ -59,7 +59,7 @@ public final class Services {
 	 *
 	 * <p>This starting function supports the {@link DependentService prioritized services}.
 	 *
-	 * @param manager - the manager of the services to start.
+	 * @param manager the manager of the services to start.
 	 */
 	public static void startServices(ServiceManager manager) {
 		startServices(new GoogleServiceManager(manager));
@@ -70,7 +70,7 @@ public final class Services {
 	 *
 	 * <p>This starting function supports the {@link DependentService prioritized services}.
 	 *
-	 * @param manager - the manager of the services to start.
+	 * @param manager the manager of the services to start.
 	 */
 	public static void startServices(IServiceManager manager) {
 		final List<Service> otherServices = new ArrayList<>();
@@ -92,7 +92,7 @@ public final class Services {
 	 *
 	 * <p>This stopping function supports the {@link DependentService prioritized services}.
 	 *
-	 * @param manager - the manager of the services to stop.
+	 * @param manager the manager of the services to stop.
 	 */
 	public static void stopServices(ServiceManager manager) {
 		stopServices(new GoogleServiceManager(manager));
@@ -103,7 +103,7 @@ public final class Services {
 	 *
 	 * <p>This stopping function supports the {@link DependentService prioritized services}.
 	 *
-	 * @param manager - the manager of the services to stop.
+	 * @param manager the manager of the services to stop.
 	 */
 	public static void stopServices(IServiceManager manager) {
 		final List<Service> otherServices = new ArrayList<>();
@@ -165,11 +165,11 @@ public final class Services {
 	/**
 	 * Build the dependency graph for the services.
 	 *
-	 * @param manager - lsit of the services.
-	 * @param roots - filled with the services that have no dependency.
-	 * @param infraServices - filled with the infrastructure services.
-	 * @param freeServices - filled with the services that are executed before/after all the dependent services.
-	 * @param accessors - permits to retreive information on the services.
+	 * @param manager lsit of the services.
+	 * @param roots filled with the services that have no dependency.
+	 * @param infraServices filled with the infrastructure services.
+	 * @param freeServices filled with the services that are executed before/after all the dependent services.
+	 * @param accessors permits to retreive information on the services.
 	 */
 	private static void buildDependencyGraph(IServiceManager manager, List<DependencyNode> roots, List<Service> infraServices,
 			List<Service> freeServices, Accessors accessors) {
@@ -204,11 +204,11 @@ public final class Services {
 	/**
 	 * Build the dependency graph for the services.
 	 *
-	 * @param manager - lsit of the services.
-	 * @param roots - filled with the services that have no dependency.
-	 * @param infraServices - filled with the infrastructure services.
-	 * @param freeServices - filled with the services that are executed before/after all the dependent services.
-	 * @param accessors - permits to retreive information on the services.
+	 * @param manager lsit of the services.
+	 * @param roots filled with the services that have no dependency.
+	 * @param infraServices filled with the infrastructure services.
+	 * @param freeServices filled with the services that are executed before/after all the dependent services.
+	 * @param accessors permits to retreive information on the services.
 	 */
 	private static void buildInvertedDependencyGraph(IServiceManager manager, List<DependencyNode> roots,
 			List<Service> infraServices, List<Service> freeServices, Accessors accessors) {
@@ -272,10 +272,10 @@ public final class Services {
 	/**
 	 * Run the dependency graph for the services.
 	 *
-	 * @param roots - filled with the services that have no dependency.
-	 * @param infraServices - filled with the infrastructure services.
-	 * @param freeServices - filled with the services that are executed before/after all the dependent services.
-	 * @param accessors - permits to retreive information on the services.
+	 * @param roots filled with the services that have no dependency.
+	 * @param infraServices filled with the infrastructure services.
+	 * @param freeServices filled with the services that are executed before/after all the dependent services.
+	 * @param accessors permits to retreive information on the services.
 	 */
 	@SuppressWarnings("checkstyle:npathcomplexity")
 	private static void runDependencyGraph(Queue<DependencyNode> roots, List<Service> infraServices, List<Service> freeServices,

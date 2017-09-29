@@ -17,7 +17,6 @@
 package io.sarl.lang.tests.bugs.to00999;
 
 import com.google.inject.Inject;
-import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.junit.Test;
@@ -25,7 +24,6 @@ import org.junit.Test;
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.tests.bugs.to00699.Bug558;
 import io.sarl.lang.util.Utils;
 import io.sarl.lang.validation.IssueCodes;
 import io.sarl.tests.api.AbstractSarlTest;

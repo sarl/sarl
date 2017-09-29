@@ -42,9 +42,9 @@ public class ActionPrototype implements Cloneable, Serializable, Comparable<Acti
 	private final boolean isRaw;
 
 	/**
-	 * @param function - name of the function for which this signature is created.
-	 * @param signature - description of the parameters of the function.
-	 * @param isRaw - indicates if the prototype is raw (without type parameter) or not (with type parameters).
+	 * @param function name of the function for which this signature is created.
+	 * @param signature description of the parameters of the function.
+	 * @param isRaw indicates if the prototype is raw (without type parameter) or not (with type parameters).
 	 */
 	public ActionPrototype(String function, ActionParameterTypes signature, boolean isRaw) {
 		this.function = function;

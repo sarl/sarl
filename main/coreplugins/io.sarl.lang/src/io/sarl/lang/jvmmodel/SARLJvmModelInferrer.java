@@ -424,8 +424,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	/** Create an annotation with classes as values.
 	 *
-	 * @param type - the type of the annotation.
-	 * @param values - the values.
+	 * @param type the type of the annotation.
+	 * @param values the values.
 	 * @return the reference to the JVM annotation.
 	 */
 	private JvmAnnotationReference annotationClassRef(Class<? extends Annotation> type,
@@ -511,7 +511,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	/** Open the context for the generation of a SARL-specific element.
 	 *
 	 * @param sarlObject the SARL object that is the cause of the generation.
-	 * @param type - the generated type.
+	 * @param type the generated type.
 	 * @param supportedMemberTypes the types of the supported members.
 	 * @return the created context.
 	 */
@@ -576,7 +576,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	/** Replies the SARL-specific generation context.
 	 *
-	 * @param type - the generated type.
+	 * @param type the generated type.
 	 * @return the SARL-specific generation context.
 	 */
 	protected final synchronized GenerationContext getContext(JvmIdentifiableElement type) {
@@ -2209,9 +2209,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	/** Generate the code for the given SARL members in a agent-oriented container.
 	 *
-	 * @param featureContainerType - the feature container.
-	 * @param container - the SARL container.
-	 * @param context - description of the generation context in which the members must be considered.
+	 * @param featureContainerType the feature container.
+	 * @param container the SARL container.
+	 * @param context description of the generation context in which the members must be considered.
 	 */
 	protected void appendAOPMembers(
 			JvmGenericType featureContainerType,
@@ -2284,9 +2284,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	/** Generate the missed operations that are the results from the generation of actions with default value parameters.
 	 *
-	 * @param source - the SARL container.
-	 * @param target - the JVM feature container.
-	 * @param context - description of the generation context in which the members must be considered.
+	 * @param source the SARL container.
+	 * @param target the JVM feature container.
+	 * @param context description of the generation context in which the members must be considered.
 	 */
 	protected void appendSyntheticDefaultValuedParameterMethods(
 			XtendTypeDeclaration source,
@@ -2389,7 +2389,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	/** Create a string concatenation client from a set of Java code lines.
 	 *
-	 * @param javaCodeLines - the Java code lines.
+	 * @param javaCodeLines the Java code lines.
 	 * @return the client.
 	 */
 	private static StringConcatenationClient toStringConcatenation(final String... javaCodeLines) {
@@ -2406,11 +2406,11 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	/** Generate the extended types for the given SARL statement.
 	 *
-	 * @param context - the context of the generation.
-	 * @param owner - the JVM element to change.
-	 * @param defaultJvmType - the default JVM type.
-	 * @param defaultSarlType - the default SARL type.
-	 * @param supertype - the supertype.
+	 * @param context the context of the generation.
+	 * @param owner the JVM element to change.
+	 * @param defaultJvmType the default JVM type.
+	 * @param defaultSarlType the default SARL type.
+	 * @param supertype the supertype.
 	 */
 	protected void appendConstrainedExtends(
 			GenerationContext context,
@@ -2428,11 +2428,11 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	/** Generate the extended types for the given SARL statement.
 	 *
-	 * @param context - the context of the generation.
-	 * @param owner - the JVM element to change.
-	 * @param defaultJvmType - the default JVM type.
-	 * @param defaultSarlType - the default Sarl type.
-	 * @param supertypes - the supertypes.
+	 * @param context the context of the generation.
+	 * @param owner the JVM element to change.
+	 * @param defaultJvmType the default JVM type.
+	 * @param defaultSarlType the default Sarl type.
+	 * @param supertypes the supertypes.
 	 */
 	protected void appendConstrainedExtends(
 			GenerationContext context,
@@ -2465,11 +2465,11 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	/** Generate the implemented types for the given SARL statement.
 	 *
-	 * @param context - the context of the generation.
-	 * @param owner - the JVM element to change.
-	 * @param defaultJvmType - the default JVM type.
-	 * @param defaultSarlType - the default SARL type.
-	 * @param implementedtypes - the implemented types.
+	 * @param context the context of the generation.
+	 * @param owner the JVM element to change.
+	 * @param defaultJvmType the default JVM type.
+	 * @param defaultSarlType the default SARL type.
+	 * @param implementedtypes the implemented types.
 	 */
 	protected void appendConstrainedImplements(
 			GenerationContext context,
@@ -2496,7 +2496,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	/** Add the @Generated annotation to the given target.
 	 * The annotation will not have any generated SARL code associated to it.
 	 *
-	 * @param target - the target of the annotation.
+	 * @param target the target of the annotation.
 	 * @param context the generation context.
 	 */
 	protected final void appendGeneratedAnnotation(JvmAnnotationTarget target, GenerationContext context) {
@@ -2505,9 +2505,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	/** Add the @Generated annotation to the given target.
 	 *
-	 * @param target - the target of the annotation.
+	 * @param target the target of the annotation.
 	 * @param context the generation context.
-	 * @param sarlCode - the code that is the cause of the generation.
+	 * @param sarlCode the code that is the cause of the generation.
 	 */
 	protected void appendGeneratedAnnotation(JvmAnnotationTarget target, GenerationContext context, String sarlCode) {
 		final GeneratorConfig config = context.getGeneratorConfig();
@@ -2907,14 +2907,14 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	/** Generate a list of formal parameters with annotations for the default values.
 	 *
-	 * @param context - the generation context.
-	 * @param owner - the JVM element to change.
-	 * @param actionContainer - the container of the action.
-	 * @param varargs - indicates if the signature has variadic parameter.
-	 * @param params - the parameters.
-	 * @param isForInterface - indicates if the formal parameters are for an interface (<code>true</code>)
+	 * @param context the generation context.
+	 * @param owner the JVM element to change.
+	 * @param actionContainer the container of the action.
+	 * @param varargs indicates if the signature has variadic parameter.
+	 * @param params the parameters.
+	 * @param isForInterface indicates if the formal parameters are for an interface (<code>true</code>)
 	 * 							or a class (<code>false</code>).
-	 * @param paramSpec - the specification of the parameter as computed by a {@link IActionPrototypeProvider}.
+	 * @param paramSpec the specification of the parameter as computed by a {@link IActionPrototypeProvider}.
 	 */
 	protected void translateSarlFormalParameters(
 			GenerationContext context,
@@ -2979,10 +2979,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	/** Generate a list of formal parameters with annotations for the default values.
 	 *
-	 * @param owner - the JVM element to change.
-	 * @param actionContainer - the container of the action.
-	 * @param varargs - indicates if the signature has variadic parameter.
-	 * @param signature - the description of the parameters.
+	 * @param owner the JVM element to change.
+	 * @param actionContainer the container of the action.
+	 * @param varargs indicates if the signature has variadic parameter.
+	 * @param signature the description of the parameters.
 	 * @return the arguments to pass to the original function.
 	 */
 	protected List<String> translateSarlFormalParametersForSyntheticOperation(JvmExecutable owner, JvmGenericType actionContainer,
@@ -3081,9 +3081,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * This function was deprecated in Xbase, and should be provided by DSL
 	 * providers now.
 	 *
-	 * @param sarlElement - the SARL element for which the "equals function must be generated.
-	 * @param declaredType - the declating type.
-	 * @param jvmFields - the fields declared in the container.
+	 * @param sarlElement the SARL element for which the "equals function must be generated.
+	 * @param declaredType the declating type.
+	 * @param jvmFields the fields declared in the container.
 	 * @param generatePureAnnotation indicates if the <code>@Pure</code> annotation should be generated.
 	 * @return the "equals" function.
 	 */
@@ -3194,8 +3194,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * This function was deprecated in Xbase, and should be provided by DSL
 	 * providers now.
 	 *
-	 * @param sarlElement - the SARL element for which the "hashCode" msut be generated.
-	 * @param jvmFields - the fields declared in the container.
+	 * @param sarlElement the SARL element for which the "hashCode" msut be generated.
+	 * @param jvmFields the fields declared in the container.
 	 * @return the "hashCode" function.
 	 */
 	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity",
@@ -3587,6 +3587,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		innerType.setSimpleName(innerTypeName);
 
 		inferredJvmType.getMembers().add(innerType);
+
+		this.typeBuilder.setDocumentation(innerType, "@ExcludeFromApidoc"); //$NON-NLS-1$
 
 		final JvmTypeParameter typeParameter = this.typesFactory.createJvmTypeParameter();
 		typeParameter.setName("C"); //$NON-NLS-1$

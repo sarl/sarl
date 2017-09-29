@@ -117,7 +117,7 @@ public class Kernel {
 	/**
 	 * Create an instance of {@link Kernel}.
 	 *
-	 * @param modules - modules to link to the new kernel.
+	 * @param modules modules to link to the new kernel.
 	 * @return the new kernel.
 	 */
 	public static final Kernel create(Module... modules) {
@@ -138,8 +138,8 @@ public class Kernel {
 	/**
 	 * Spawn an agent of the given type, and pass the parameters to its initialization function.
 	 *
-	 * @param agent - the type of the agent to spawn.
-	 * @param params - the list of the parameters to pass to the agent initialization function.
+	 * @param agent the type of the agent to spawn.
+	 * @param params the list of the parameters to pass to the agent initialization function.
 	 * @return the identifier of the agent, never <code>null</code>.
 	 */
 	public UUID spawn(Class<? extends Agent> agent, Object... params) {
@@ -153,9 +153,9 @@ public class Kernel {
 	/**
 	 * Spawn agents of the given type, and pass the parameters to its initialization function.
 	 *
-	 * @param nbAgents - the number of agents to spawn.
-	 * @param agent - the type of the agents to spawn.
-	 * @param params - the list of the parameters to pass to the agent initialization function.
+	 * @param nbAgents the number of agents to spawn.
+	 * @param agent the type of the agents to spawn.
+	 * @param params the list of the parameters to pass to the agent initialization function.
 	 * @return the identifiers of the agents, never <code>null</code>.
 	 */
 	public List<UUID> spawn(int nbAgents, Class<? extends Agent> agent, Object... params) {
@@ -165,9 +165,9 @@ public class Kernel {
 	/**
 	 * Spawn an agent of the given type, and pass the parameters to its initialization function.
 	 *
-	 * @param agentID - the identifier of the agent to spawn. If <code>null</code> the identifier is randomly selected.
-	 * @param agent - the type of the agent to spawn.
-	 * @param params - the list of the parameters to pass to the agent initialization function.
+	 * @param agentID the identifier of the agent to spawn. If <code>null</code> the identifier is randomly selected.
+	 * @param agent the type of the agent to spawn.
+	 * @param params the list of the parameters to pass to the agent initialization function.
 	 * @return the identifier of the agent, never <code>null</code>.
 	 */
 	public UUID spawn(UUID agentID, Class<? extends Agent> agent, Object... params) {
@@ -182,7 +182,7 @@ public class Kernel {
 	 * Replies a kernel service that is alive.
 	 *
 	 * @param <S> - type of the type to reply.
-	 * @param type - type of the type to reply.
+	 * @param type type of the type to reply.
 	 * @return the service, or <code>null</code>.
 	 */
 	public <S extends Service> S getService(Class<S> type) {
@@ -213,7 +213,7 @@ public class Kernel {
 	/**
 	 * Change the Janus context of the kernel.
 	 *
-	 * @param janusContext - the new janus kernel. It must be never <code>null</code>.
+	 * @param janusContext the new janus kernel. It must be never <code>null</code>.
 	 */
 	@Inject
 	void setJanusContext(@io.janusproject.kernel.annotations.Kernel AgentContext janusContext) {

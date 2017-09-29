@@ -188,7 +188,7 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 
 	/** Update the status of this page according to the given exception.
 	 *
-	 * @param event - the exception.
+	 * @param event the exception.
 	 */
 	private void updateStatus(Throwable event) {
 		Throwable cause = event;

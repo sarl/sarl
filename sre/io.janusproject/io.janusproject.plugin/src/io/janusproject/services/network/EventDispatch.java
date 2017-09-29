@@ -57,10 +57,10 @@ public class EventDispatch implements Serializable {
 	/**
 	 * Construct a <code>EventDispatch</code>.
 	 *
-	 * @param sid - identifier of the space in which the event occurs.
-	 * @param event - event to dispatch.
-	 * @param scope - scope of the event.
-	 * @param headers - custom headers associated to the event.
+	 * @param sid identifier of the space in which the event occurs.
+	 * @param event event to dispatch.
+	 * @param scope scope of the event.
+	 * @param headers custom headers associated to the event.
 	 */
 	public EventDispatch(SpaceID sid, Event event, Scope<?> scope, Map<String, String> headers) {
 		assert sid != null : "Parameter 'sid' must not be null"; //$NON-NLS-1$
@@ -75,9 +75,9 @@ public class EventDispatch implements Serializable {
 	/**
 	 * Construct a <code>EventDispatch</code>.
 	 *
-	 * @param sid - identifier of the space in which the event occurs.
-	 * @param event - event to dispatch.
-	 * @param scope - scope of the event.
+	 * @param sid identifier of the space in which the event occurs.
+	 * @param event event to dispatch.
+	 * @param scope scope of the event.
 	 */
 	public EventDispatch(SpaceID sid, Event event, Scope<?> scope) {
 		this(sid, event, scope, null);

@@ -37,14 +37,14 @@ public interface KernelDiscoveryServiceListener extends EventListener {
 	/**
 	 * Invoked when a remote kernel has been discovered.
 	 *
-	 * @param peerURI - URI of the kernel was was discovered.
+	 * @param peerURI URI of the kernel was was discovered.
 	 */
 	void kernelDiscovered(URI peerURI);
 
 	/**
 	 * Invoked when a remote kernel has been disconnected.
 	 *
-	 * @param peerURI - URI of the kernel that was disconnected.
+	 * @param peerURI URI of the kernel that was disconnected.
 	 */
 	void kernelDisconnected(URI peerURI);
 

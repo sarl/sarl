@@ -102,7 +102,7 @@ public class Bug504 extends AbstractMojoTest {
 				"  ",
 				"  /**",
 				"   * Construct a skill.",
-				"   * @param owner - agent that is owning this skill.",
+				"   * @param owner agent that is owning this skill.",
 				"   */",
 				"  @SyntheticMember",
 				"  public SimulatorInteraction(final Agent owner) {",

@@ -60,7 +60,7 @@ final event Initialize {
 
 	/** Constructor.
 	 *
-	 * @param source - address of the agent that is emitting this event.
+	 * @param source address of the agent that is emitting this event.
 	 * @param spawner the identifier of the spawner of the under-initialization agent.
 	 * @param params the initialization parameters to give to the under-initialization agent.
 	 * @since 0.5

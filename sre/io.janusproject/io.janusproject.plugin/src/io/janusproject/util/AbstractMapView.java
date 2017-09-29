@@ -52,8 +52,8 @@ public abstract class AbstractMapView<K, V> {
 	/**
 	 * Fire the addition event.
 	 *
-	 * @param key - the added key.
-	 * @param value - the added value.
+	 * @param key the added key.
+	 * @param value the added value.
 	 */
 	@SuppressWarnings("unchecked")
 	protected void fireEntryAdded(K key, V value) {
@@ -67,8 +67,8 @@ public abstract class AbstractMapView<K, V> {
 	/**
 	 * Fire the removal event.
 	 *
-	 * @param key - the removed key.
-	 * @param value - the removed value.
+	 * @param key the removed key.
+	 * @param value the removed value.
 	 */
 	@SuppressWarnings("unchecked")
 	protected void fireEntryRemoved(K key, V value) {
@@ -82,8 +82,8 @@ public abstract class AbstractMapView<K, V> {
 	/**
 	 * Fire the update event.
 	 *
-	 * @param key - the updated key.
-	 * @param value - the new value.
+	 * @param key the updated key.
+	 * @param value the new value.
 	 */
 	@SuppressWarnings("unchecked")
 	protected void fireEntryUpdated(K key, V value) {
@@ -95,7 +95,7 @@ public abstract class AbstractMapView<K, V> {
 	/**
 	 * Fire the clearing event.
 	 *
-	 * @param localClearing - indicates if the clearing is done on the local node (if <code>true</code>), or on all the nodes (if
+	 * @param localClearing indicates if the clearing is done on the local node (if <code>true</code>), or on all the nodes (if
 	 *        <code>false</code>).
 	 */
 	@SuppressWarnings("unchecked")
@@ -108,7 +108,7 @@ public abstract class AbstractMapView<K, V> {
 	/**
 	 * Add a listener.
 	 *
-	 * @param listener - the listener.
+	 * @param listener the listener.
 	 */
 	public void addDMapListener(DMapListener<? super K, ? super V> listener) {
 		this.listeners.add(DMapListener.class, listener);
@@ -117,7 +117,7 @@ public abstract class AbstractMapView<K, V> {
 	/**
 	 * Remove a listener.
 	 *
-	 * @param listener - the listener.
+	 * @param listener the listener.
 	 */
 	public void removeDMapListener(DMapListener<? super K, ? super V> listener) {
 		this.listeners.remove(DMapListener.class, listener);

@@ -238,14 +238,14 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 
 	/** Create the patterns.
 	 *
-	 * @param literals - the SARL literals.
-	 * @param expressionKeywords - the SARL keywords, usually within expressions.
-	 * @param modifiers - the modifier keywords.
-	 * @param primitiveTypes - the primitive types.
-	 * @param punctuation - the SARL punctuation symbols.
-	 * @param ignored - the ignored literals (mostly for information).
-	 * @param specialKeywords - the keywords that are marked as special. They are also in keywords.
-	 * @param typeDeclarationKeywords - the keywords that are marked as type declaration keywords. They are also in keywords.
+	 * @param literals the SARL literals.
+	 * @param expressionKeywords the SARL keywords, usually within expressions.
+	 * @param modifiers the modifier keywords.
+	 * @param primitiveTypes the primitive types.
+	 * @param punctuation the SARL punctuation symbols.
+	 * @param ignored the ignored literals (mostly for information).
+	 * @param specialKeywords the keywords that are marked as special. They are also in keywords.
+	 * @param typeDeclarationKeywords the keywords that are marked as type declaration keywords. They are also in keywords.
 	 * @return the patterns.
 	 */
 	protected List<?> createPatterns(Set<String> literals, Set<String> expressionKeywords,

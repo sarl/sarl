@@ -40,7 +40,7 @@ public class TimeSkill extends BuiltinSkill implements Time {
 	private static int installationOrder = -1;
 
 	/**
-	 * @param agent - owner of this skill.
+	 * @param agent owner of this skill.
 	 */
 	TimeSkill(Agent agent) {
 		super(agent);

@@ -56,7 +56,7 @@ public class LoggingSkill extends BuiltinSkill implements Logging {
 	private Logger logger;
 
 	/**
-	 * @param agent - owner of this skill.
+	 * @param agent owner of this skill.
 	 */
 	LoggingSkill(Agent agent) {
 		super(agent);

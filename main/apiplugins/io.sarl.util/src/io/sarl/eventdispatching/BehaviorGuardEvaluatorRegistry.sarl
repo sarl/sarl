@@ -584,7 +584,7 @@ class BehaviorGuardEvaluatorRegistry {
 	 * org.eclipse.xtext.xbase.lib.Functions.Function1, org.eclipse.xtext.xbase.lib.Procedure.Procedure1)}.
 	 *
 	 * @param event -the event to process
-	 * @param listener - the owner of the BehaviorGuardEvaluators (never {@code null}).
+	 * @param listener the owner of the BehaviorGuardEvaluators (never {@code null}).
 	 * @return the set of guard evaluators associated to the specified event
 	 * @since 0.5
 	 */

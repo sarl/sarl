@@ -86,12 +86,12 @@ public interface ISarlEnumerationBuilder {
 	void setDocumentation(String doc);
 
 	/** Add a modifier.
-	 * @param modifier - the modifier to add.
+	 * @param modifier the modifier to add.
 	 */
 	void addModifier(String modifier);
 
 	/** Create a SarlEnumLiteral.
-	 * @param name - the name of the SarlEnumLiteral.
+	 * @param name the name of the SarlEnumLiteral.
 	 * @return the builder.
 	 */
 	ISarlEnumLiteralBuilder addSarlEnumLiteral(String name);

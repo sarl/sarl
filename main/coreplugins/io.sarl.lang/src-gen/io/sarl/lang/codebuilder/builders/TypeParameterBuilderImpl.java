@@ -49,8 +49,8 @@ public class TypeParameterBuilderImpl extends AbstractBuilder implements ITypePa
 	/** Initialize the type parameter.
 	 * <p>Caution: This initialization function does not add the type parameter in its container.
 	 * The container is responsible of adding the type parameter in its internal object.
-	 * @param name - the name of the type parameter.
-	 * @param typeContext - the provider of types or null.
+	 * @param name the name of the type parameter.
+	 * @param typeContext the provider of types or null.
 	 */
 	public void eInit(EObject context, String name, IJvmTypeProvider typeContext) {
 		setTypeResolutionContext(typeContext);

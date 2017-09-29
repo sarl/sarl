@@ -51,10 +51,10 @@ public class RestrictedAccessEventSpaceImpl extends AbstractEventSpace implement
 	/**
 	 * Constructs an event space.
 	 *
-	 * @param id - identifier of the space.
-	 * @param acl - Access Control List
-	 * @param accessPermission - permission that corresponds to the registration in the space.
-	 * @param factory - factory that is used to create the internal data structure.
+	 * @param id identifier of the space.
+	 * @param acl Access Control List
+	 * @param accessPermission permission that corresponds to the registration in the space.
+	 * @param factory factory that is used to create the internal data structure.
 	 */
 	public RestrictedAccessEventSpaceImpl(SpaceID id, Acl acl, Permission accessPermission,
 			DistributedDataStructureService factory) {

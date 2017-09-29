@@ -88,7 +88,7 @@ public interface ISREInstall extends Cloneable {
 	/** Copy this SRE.
 	 * The copy has not the same Id as the copied object.
 	 *
-	 * @param id - the identifier for the copy.
+	 * @param id the identifier for the copy.
 	 * @return the copy.
 	 * @see #clone()
 	 */
@@ -219,14 +219,14 @@ public interface ISREInstall extends Cloneable {
 	 * Change the display name of this SRE.
 	 * The SRE name is intended to be presented to users.
 	 *
-	 * @param name - the display name of this SRE. May be {@code null}.
+	 * @param name the display name of this SRE. May be {@code null}.
 	 */
 	void setName(String name);
 
 	/**
 	 * Change the library locations of this ISREInstall.
 	 *
-	 * @param libraries - The library locations of this ISREInstall.
+	 * @param libraries The library locations of this ISREInstall.
 	 *     Must not be {@code null}.
 	 */
 	void setClassPathEntries(List<IRuntimeClasspathEntry> libraries);
@@ -234,7 +234,7 @@ public interface ISREInstall extends Cloneable {
 	/**
 	 * Change the library locations of this ISREInstall.
 	 *
-	 * @param libraries - The library locations of this ISREInstall.
+	 * @param libraries The library locations of this ISREInstall.
 	 *     Must not be {@code null}.
 	 */
 	default void setClassPathEntries(Iterable<IRuntimeClasspathEntry> libraries) {
@@ -256,7 +256,7 @@ public interface ISREInstall extends Cloneable {
 	 * Change the minimal version number of the SARL specification
 	 * that is supported by the SRE.
 	 *
-	 * @param version - the minimal version number. Must not be {@code null}.
+	 * @param version the minimal version number. Must not be {@code null}.
 	 */
 	void setMinimalSARLVersion(String version);
 
@@ -264,7 +264,7 @@ public interface ISREInstall extends Cloneable {
 	 * Change the maximal version number of the SARL specification
 	 * that is supported by the SRE.
 	 *
-	 * @param version - the maximal version number. Must not be {@code null}.
+	 * @param version the maximal version number. Must not be {@code null}.
 	 */
 	void setMaximalSARLVersion(String version);
 
@@ -272,7 +272,7 @@ public interface ISREInstall extends Cloneable {
 	 * Change the fully qualified name of the main class for launching
 	 * the runtime environment.
 	 *
-	 * @param mainClass - the fully qualified name of the main class of the SRE.
+	 * @param mainClass the fully qualified name of the main class of the SRE.
 	 *      Must not be {@code null}.
 	 */
 	void setMainClass(String mainClass);
@@ -280,14 +280,14 @@ public interface ISREInstall extends Cloneable {
 	/**
 	 * Change the fully qualified name of the bootstrap.
 	 *
-	 * @param bootstrap - the fully qualified name of the bootstrap, or {@code null}.
+	 * @param bootstrap the fully qualified name of the bootstrap, or {@code null}.
 	 */
 	void setBootstrap(String bootstrap);
 
 	/** Change the <code>Map</code> that contains String name/value pairs that
 	 * represent VM-specific attributes for this SRE.
 	 *
-	 * @param attributes - the VM-specific attributes.
+	 * @param attributes the VM-specific attributes.
 	 */
 	void setVMSpecificAttributesMap(Map<String, String> attributes);
 
@@ -295,15 +295,15 @@ public interface ISREInstall extends Cloneable {
 	 * The XML string could be used to save this SRE installation in
 	 * the preferences.
 	 *
-	 * @param document - the XML document is which the XML element is located.
-	 * @param element - the XML node that must be the representation of this SRE installation.
+	 * @param document the XML document is which the XML element is located.
+	 * @param element the XML node that must be the representation of this SRE installation.
 	 * @throws IOException if cannot create the XML representation.
 	 */
 	void getAsXML(Document document, Element element) throws IOException;
 
 	/** Set this SRE installation from the given XML representation.
 	 *
-	 * @param element - the XML node that must be the representation of this SRE installation.
+	 * @param element the XML node that must be the representation of this SRE installation.
 	 * @throws IOException if cannot read the XML representation.
 	 */
 	void setFromXML(Element element) throws IOException;
@@ -321,7 +321,7 @@ public interface ISREInstall extends Cloneable {
 	/** Validate the SRE.
 	 * The validation does not ignore any invalidity cause.
 	 *
-	 * @param ignoreCauses - a set of bits that indicates the invalidity causes to ignore.
+	 * @param ignoreCauses a set of bits that indicates the invalidity causes to ignore.
 	 * @return the validation status.
 	 * @see #getValidity()
 	 */
@@ -336,7 +336,7 @@ public interface ISREInstall extends Cloneable {
 	/**
 	 * Whether this SRE should fire property change notifications.
 	 *
-	 * @param notify - if this SRE should fire property change notifications.
+	 * @param notify if this SRE should fire property change notifications.
 	 */
 	void setNotify(boolean notify);
 
@@ -360,7 +360,7 @@ public interface ISREInstall extends Cloneable {
 	 * A standalone SRE contains all the Java dependencies needed for
 	 * running the SRE.
 	 *
-	 * @param isStandalone - flag that is <code>true</code> if the SRE Install corresponds to a
+	 * @param isStandalone flag that is <code>true</code> if the SRE Install corresponds to a
 	 *     standalone SRE; otherwise <code>false</code>.
 	 */
 	void setStandalone(boolean isStandalone);

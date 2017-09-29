@@ -103,7 +103,7 @@ public class HazelcastKernelDiscoveryService extends AbstractDependentService
 	/**
 	 * Constructs a <code>KernelRepositoryService</code>.
 	 *
-	 * @param janusID - injected identifier of the Janus context.
+	 * @param janusID injected identifier of the Janus context.
 	 */
 	@Inject
 	public HazelcastKernelDiscoveryService(@Named(JanusConfig.DEFAULT_CONTEXT_ID_NAME) UUID janusID) {
@@ -128,10 +128,10 @@ public class HazelcastKernelDiscoveryService extends AbstractDependentService
 	/**
 	 * Do the post initialization.
 	 *
-	 * @param iHazelcastInstance - instance of the Hazelcast service that permits to shared data among the network.
-	 * @param networkService - network service to be linked to.
-	 * @param iExecutorService - execution service to use.
-	 * @param iLogger - logging service to use.
+	 * @param iHazelcastInstance instance of the Hazelcast service that permits to shared data among the network.
+	 * @param networkService network service to be linked to.
+	 * @param iExecutorService execution service to use.
+	 * @param iLogger logging service to use.
 	 */
 	@Inject
 	void postConstruction(HazelcastInstance iHazelcastInstance, NetworkService networkService, ExecutorService iExecutorService,
@@ -167,7 +167,7 @@ public class HazelcastKernelDiscoveryService extends AbstractDependentService
 	/**
 	 * Notifies the listeners about the discovering of a kernel.
 	 *
-	 * @param uri - URI of the discovered kernel.
+	 * @param uri URI of the discovered kernel.
 	 */
 	protected void fireKernelDiscovered(URI uri) {
 		this.logger.info(Messages.HazelcastKernelDiscoveryService_0, uri, getCurrentKernel());
@@ -179,7 +179,7 @@ public class HazelcastKernelDiscoveryService extends AbstractDependentService
 	/**
 	 * Notifies the listeners about the killing of a kernel.
 	 *
-	 * @param uri - URI of the disconnected kernel.
+	 * @param uri URI of the disconnected kernel.
 	 */
 	protected void fireKernelDisconnected(URI uri) {
 		this.logger.info(Messages.HazelcastKernelDiscoveryService_1, uri, getCurrentKernel());

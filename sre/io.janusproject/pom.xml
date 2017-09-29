@@ -39,6 +39,7 @@
 			</activation>
 			<modules>
 				<module>io.janusproject.plugin</module>
+				<module>io.janusproject.kernel</module>
 			</modules>
 		</profile>
 	</profiles>

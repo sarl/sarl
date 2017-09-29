@@ -39,7 +39,7 @@ public class FutureExceptionMatcher extends DiagnosingMatcher<Future<?>> {
 	private final Class<? extends Throwable> expected;
 
 	/**
-	 * @param expected - expected exception.
+	 * @param expected expected exception.
 	 */
 	public FutureExceptionMatcher(Class<? extends Throwable> expected) {
 		this.expected = expected;

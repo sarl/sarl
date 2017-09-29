@@ -59,8 +59,8 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 	private SarlBehaviorUnit sarlBehaviorUnit;
 
 	/** Initialize the Ecore element.
-	 * @param container - the container of the SarlBehaviorUnit.
-	 * @param name - the type of the SarlBehaviorUnit.
+	 * @param container the container of the SarlBehaviorUnit.
+	 * @param name the type of the SarlBehaviorUnit.
 	 */
 	public void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context) {
 		setTypeResolutionContext(context);
@@ -112,7 +112,7 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 	}
 
 	/** Change the guard.
-	 * @param value - the value of the guard. It may be <code>null</code>.
+	 * @param value the value of the guard. It may be <code>null</code>.
 	 */
 	@Pure
 	public IExpressionBuilder getGuard() {

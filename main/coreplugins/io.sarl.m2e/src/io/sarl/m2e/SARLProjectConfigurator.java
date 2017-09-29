@@ -99,9 +99,9 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 
 	/** Invoked to add the preferences dedicated to SARL, JRE, etc.
 	 *
-	 * @param facade - the Maven face.
-	 * @param config - the configuration.
-	 * @param monitor - the monitor.
+	 * @param facade the Maven face.
+	 * @param config the configuration.
+	 * @param monitor the monitor.
 	 * @throws CoreException if cannot add the source folders.
 	 */
 	@SuppressWarnings("static-method")
@@ -147,10 +147,10 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 
 	/** Invoked to add the source folders.
 	 *
-	 * @param facade - the facade of the Maven project.
-	 * @param config - the configuration.
-	 * @param classpath - the project classpath.
-	 * @param monitor - the monitor.
+	 * @param facade the facade of the Maven project.
+	 * @param config the configuration.
+	 * @param classpath the project classpath.
+	 * @param monitor the monitor.
 	 * @throws CoreException if cannot add the source folders.
 	 */
 	@SuppressWarnings("checkstyle:magicnumber")
@@ -219,12 +219,12 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	/** Replies the configuration value.
 	 *
 	 * @param <T> - the expected type.
-	 * @param project - the project.
-	 * @param parameter - the parameter name.
-	 * @param asType - the expected type.
-	 * @param mojoExecution - the mojo execution.
-	 * @param monitor - the monitor.
-	 * @param defaultValue - the default value.
+	 * @param project the project.
+	 * @param parameter the parameter name.
+	 * @param asType the expected type.
+	 * @param mojoExecution the mojo execution.
+	 * @param monitor the monitor.
+	 * @param defaultValue the default value.
 	 * @return the value of the parameter.
 	 * @throws CoreException if cannot read the value.
 	 */
@@ -239,8 +239,8 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 
 	/** Read the SARL configuration.
 	 *
-	 * @param request - the configuration request.
-	 * @param monitor - the monitor.
+	 * @param request the configuration request.
+	 * @param monitor the monitor.
 	 * @return the SARL configuration.
 	 * @throws CoreException if something wrong appends.
 	 */
@@ -273,9 +273,9 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 
 	/** Read the configuration for the Initialize mojo.
 	 *
-	 * @param request - the request.
-	 * @param mojo - the mojo execution.
-	 * @param monitor - the monitor.
+	 * @param request the request.
+	 * @param mojo the mojo execution.
+	 * @param monitor the monitor.
 	 * @return the configuration.
 	 * @throws CoreException error in the eCore configuration.
 	 */
@@ -305,9 +305,9 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 
 	/** Read the configuration for the Compilation mojo.
 	 *
-	 * @param request - the request.
-	 * @param mojo - the mojo execution.
-	 * @param monitor - the monitor.
+	 * @param request the request.
+	 * @param mojo the mojo execution.
+	 * @param monitor the monitor.
 	 * @return the configuration.
 	 * @throws CoreException error in the eCore configuration.
 	 */
@@ -342,7 +342,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 
 	/** Remove any reference to the SARL libraries from the given classpath.
 	 *
-	 * @param classpath - the classpath to update.
+	 * @param classpath the classpath to update.
 	 */
 	@SuppressWarnings("static-method")
 	protected void removeSarlLibraries(IClasspathDescriptor classpath) {
@@ -351,7 +351,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 
 	/** Add the SARL libraries into the given classpath.
 	 *
-	 * @param classpath - the classpath to update.
+	 * @param classpath the classpath to update.
 	 */
 	@SuppressWarnings("static-method")
 	protected void addSarlLibraries(IClasspathDescriptor classpath) {

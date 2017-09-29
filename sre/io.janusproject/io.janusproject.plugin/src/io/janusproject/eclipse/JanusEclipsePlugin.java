@@ -52,7 +52,7 @@ public class JanusEclipsePlugin extends AbstractUIPlugin {
 
 	/** Set the default instance of the plugin.
 	 *
-	 * @param defaultInstance - the default plugin instance.
+	 * @param defaultInstance the default plugin instance.
 	 */
 	public static void setDefault(JanusEclipsePlugin defaultInstance) {
 		instance = defaultInstance;
@@ -68,9 +68,9 @@ public class JanusEclipsePlugin extends AbstractUIPlugin {
 
 	/** Create a status.
 	 *
-	 * @param severity - the severity level, see {@link IStatus}.
-	 * @param message - the message associated to the status.
-	 * @param cause - the cause of the problem.
+	 * @param severity the severity level, see {@link IStatus}.
+	 * @param message the message associated to the status.
+	 * @param cause the cause of the problem.
 	 * @return the status.
 	 */
 	@SuppressWarnings("static-method")
@@ -80,10 +80,10 @@ public class JanusEclipsePlugin extends AbstractUIPlugin {
 
 	/** Create a status.
 	 *
-	 * @param severity - the severity level, see {@link IStatus}.
-	 * @param code - the code of the error.
-	 * @param message - the message associated to the status.
-	 * @param cause - the cause of the problem.
+	 * @param severity the severity level, see {@link IStatus}.
+	 * @param code the code of the error.
+	 * @param message the message associated to the status.
+	 * @param cause the cause of the problem.
 	 * @return the status.
 	 */
 	@SuppressWarnings("static-method")
@@ -93,8 +93,8 @@ public class JanusEclipsePlugin extends AbstractUIPlugin {
 
 	/** Create a status.
 	 *
-	 * @param severity - the severity level, see {@link IStatus}.
-	 * @param cause - the cause of the problem.
+	 * @param severity the severity level, see {@link IStatus}.
+	 * @param cause the cause of the problem.
 	 * @return the status.
 	 */
 	public IStatus createStatus(int severity, Throwable cause) {
@@ -110,9 +110,9 @@ public class JanusEclipsePlugin extends AbstractUIPlugin {
 
 	/** Create a status.
 	 *
-	 * @param severity - the severity level, see {@link IStatus}.
-	 * @param code - the code of the error.
-	 * @param cause - the cause of the problem.
+	 * @param severity the severity level, see {@link IStatus}.
+	 * @param code the code of the error.
+	 * @param cause the cause of the problem.
 	 * @return the status.
 	 */
 	public IStatus createStatus(int severity, int code, Throwable cause) {
@@ -128,8 +128,8 @@ public class JanusEclipsePlugin extends AbstractUIPlugin {
 
 	/** Create a status.
 	 *
-	 * @param severity - the severity level, see {@link IStatus}.
-	 * @param message - the message associated to the status.
+	 * @param severity the severity level, see {@link IStatus}.
+	 * @param message the message associated to the status.
 	 * @return the status.
 	 */
 	@SuppressWarnings("static-method")
@@ -139,9 +139,9 @@ public class JanusEclipsePlugin extends AbstractUIPlugin {
 
 	/** Create a status.
 	 *
-	 * @param severity - the severity level, see {@link IStatus}.
-	 * @param code - the code of the error.
-	 * @param message - the message associated to the status.
+	 * @param severity the severity level, see {@link IStatus}.
+	 * @param code the code of the error.
+	 * @param message the message associated to the status.
 	 * @return the status.
 	 */
 	@SuppressWarnings("static-method")

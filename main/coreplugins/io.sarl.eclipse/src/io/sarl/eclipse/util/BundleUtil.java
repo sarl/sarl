@@ -114,8 +114,8 @@ public final class BundleUtil {
 	 *
 	 * <p>FIXME: Use P2Utils or SimpleConfiguratorManipulator.
 	 *
-	 * @param bundle - the bundle for which the source location must be computed.
-	 * @param bundleLocation - the location of the bundle, as replied by {@link #getBundlePath(Bundle)}.
+	 * @param bundle the bundle for which the source location must be computed.
+	 * @param bundleLocation the location of the bundle, as replied by {@link #getBundlePath(Bundle)}.
 	 * @return the path to the source folder of the bundle, or <code>null</code> if undefined.
 	 * @see #getBundlePath(Bundle)
 	 */
@@ -179,7 +179,7 @@ public final class BundleUtil {
 
 	/** Replies the path of the binary files of the given bundle.
 	 *
-	 * @param bundle - the bundle for which the path must be retreived.
+	 * @param bundle the bundle for which the path must be retreived.
 	 * @return the path to the binaries of the bundle.
 	 * @see #getSourceBundlePath(Bundle, IPath)
 	 */
@@ -204,8 +204,8 @@ public final class BundleUtil {
 	 *
 	 * <p>FIXME: Use P2Utils or SimpleConfiguratorManipulator.
 	 *
-	 * @param bundle - the bundle for which the javadoc location must be computed.
-	 * @param bundleLocation - the location of the bundle, as replied by {@link #getBundlePath(Bundle)}.
+	 * @param bundle the bundle for which the javadoc location must be computed.
+	 * @param bundleLocation the location of the bundle, as replied by {@link #getBundlePath(Bundle)}.
 	 * @return the path to the javadoc folder of the bundle, or <code>null</code> if undefined.
 	 * @see #getBundlePath(Bundle)
 	 */

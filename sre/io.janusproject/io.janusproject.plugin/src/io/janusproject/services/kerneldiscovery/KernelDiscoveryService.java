@@ -55,14 +55,14 @@ public interface KernelDiscoveryService extends DependentService {
 	/**
 	 * Add a listener on the events in this service and related to the kernel discovery.
 	 *
-	 * @param listener - listener on discovery events.
+	 * @param listener listener on discovery events.
 	 */
 	void addKernelDiscoveryServiceListener(KernelDiscoveryServiceListener listener);
 
 	/**
 	 * Remove a listener on the events in this service and related to the kernel discovery.
 	 *
-	 * @param listener - listener on discovery events.
+	 * @param listener listener on discovery events.
 	 */
 	void removeKernelDiscoveryServiceListener(KernelDiscoveryServiceListener listener);
 

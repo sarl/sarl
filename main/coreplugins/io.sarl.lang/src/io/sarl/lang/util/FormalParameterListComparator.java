@@ -64,8 +64,8 @@ public class FormalParameterListComparator implements Comparator<EList<? extends
 
 	/** Compare the two formal parameters.
 	 *
-	 * @param p1 - the first parameter to compare.
-	 * @param p2 - the second parameter to compare.
+	 * @param p1 the first parameter to compare.
+	 * @param p2 the second parameter to compare.
 	 * @return A negative value if <code>p1</code> is
 	 *     lower than <code>p2</code>, a positive value if
 	 *     <code>p1</code> is greater than <code>p2</code>,

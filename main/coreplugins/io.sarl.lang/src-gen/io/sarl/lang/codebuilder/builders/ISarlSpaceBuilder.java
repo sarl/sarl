@@ -81,7 +81,7 @@ public interface ISarlSpaceBuilder {
 	void setDocumentation(String doc);
 
 	/** Add a modifier.
-	 * @param modifier - the modifier to add.
+	 * @param modifier the modifier to add.
 	 */
 	void addModifier(String modifier);
 

@@ -42,7 +42,7 @@ public class AddSREInstallWizard extends SREInstallWizard {
 	/**
 	 * Constructs a new wizard to add a SRE.
 	 *
-	 * @param id - the identifier of the created SRE.
+	 * @param id the identifier of the created SRE.
 	 * @param currentInstalls current SRE installs used to validate name changes.
 	 */
 	public AddSREInstallWizard(String id, ISREInstall[] currentInstalls) {

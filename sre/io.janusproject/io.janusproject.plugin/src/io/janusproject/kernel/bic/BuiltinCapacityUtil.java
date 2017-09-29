@@ -45,7 +45,7 @@ public final class BuiltinCapacityUtil {
 	/**
 	 * Replies the contexts in which the agent is located.
 	 *
-	 * @param agent - the agent for which the contexts must be retrieved.
+	 * @param agent the agent for which the contexts must be retrieved.
 	 * @return the contexts of the agents.
 	 * @throws Exception - when it is not possible to retrieve the contexts.
 	 */
@@ -58,7 +58,7 @@ public final class BuiltinCapacityUtil {
 	/**
 	 * Replies the inner context of the agent, if it was created.
 	 *
-	 * @param agent - the agent for which the inner context must be retreived.
+	 * @param agent the agent for which the inner context must be retreived.
 	 * @return the inner context, or <code>null</code>.
 	 * @throws Exception - when it is not possible to retreive the inner context.
 	 */

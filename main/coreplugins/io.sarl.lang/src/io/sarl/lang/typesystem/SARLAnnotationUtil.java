@@ -62,8 +62,8 @@ public class SARLAnnotationUtil {
 
 	/** Extract the string value of the given annotation, if it exists.
 	 *
-	 * @param op - the annotated element.
-	 * @param annotationType - the type of the annotation to consider
+	 * @param op the annotated element.
+	 * @param annotationType the type of the annotation to consider
 	 * @return the value of the annotation, or {@code null} if no annotation or no
 	 *     value.
 	 */
@@ -98,8 +98,8 @@ public class SARLAnnotationUtil {
 
 	/** Extract the string values of the given annotation, if they exist.
 	 *
-	 * @param op - the annotated element.
-	 * @param annotationType - the type of the annotation to consider
+	 * @param op the annotated element.
+	 * @param annotationType the type of the annotation to consider
 	 * @return the values of the annotation, never {@code null}.
 	 */
 	public List<String> findStringValues(JvmAnnotationTarget op, Class<? extends Annotation> annotationType) {
@@ -133,8 +133,8 @@ public class SARLAnnotationUtil {
 
 	/** Extract the type values of the given annotation, if they exist.
 	 *
-	 * @param op - the annotated element.
-	 * @param annotationType - the type of the annotation to consider
+	 * @param op the annotated element.
+	 * @param annotationType the type of the annotation to consider
 	 * @return the values of the annotation, never {@code null}.
 	 */
 	public List<JvmTypeReference> findTypeValues(JvmAnnotationTarget op, Class<? extends Annotation> annotationType) {
@@ -168,8 +168,8 @@ public class SARLAnnotationUtil {
 
 	/** Extract the integer value of the given annotation, if it exists.
 	 *
-	 * @param op - the annotated element.
-	 * @param annotationType - the type of the annotation to consider
+	 * @param op the annotated element.
+	 * @param annotationType the type of the annotation to consider
 	 * @return the value of the annotation, or {@code null} if no annotation or no
 	 *     value.
 	 * @since 0.6
@@ -206,8 +206,8 @@ public class SARLAnnotationUtil {
 
 	/** Extract the integer values of the given annotation, if they exist.
 	 *
-	 * @param op - the annotated element.
-	 * @param annotationType - the type of the annotation to consider
+	 * @param op the annotated element.
+	 * @param annotationType the type of the annotation to consider
 	 * @return the values of the annotation, never {@code null}.
 	 * @since 0.6
 	 */
@@ -264,8 +264,8 @@ public class SARLAnnotationUtil {
 
 	/** Extract the boolean value of the given annotation, if it exists.
 	 *
-	 * @param op - the annotated element.
-	 * @param annotationType - the type of the annotation to consider
+	 * @param op the annotated element.
+	 * @param annotationType the type of the annotation to consider
 	 * @return the value of the annotation, or {@code null} if no annotation or no
 	 *     value.
 	 * @since 0.6
@@ -302,8 +302,8 @@ public class SARLAnnotationUtil {
 
 	/** Extract the boolean values of the given annotation, if they exist.
 	 *
-	 * @param op - the annotated element.
-	 * @param annotationType - the type of the annotation to consider
+	 * @param op the annotated element.
+	 * @param annotationType the type of the annotation to consider
 	 * @return the values of the annotation, never {@code null}.
 	 * @since 0.6
 	 */

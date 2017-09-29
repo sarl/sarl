@@ -127,7 +127,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 	/**
 	 * Construct a SRE installation.
 	 *
-	 * @param id - the identifier of this SRE installation.
+	 * @param id the identifier of this SRE installation.
 	 */
 	public StandardSREInstall(String id) {
 		super(id);
@@ -162,7 +162,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 	/**
 	 * Change the path to the JAR file that is supporting this SRE installation.
 	 *
-	 * @param jarFile - the path to the JAR file. Must not be <code>null</code>.
+	 * @param jarFile the path to the JAR file. Must not be <code>null</code>.
 	 */
 	public void setJarFile(IPath jarFile) {
 		if (!Objects.equal(jarFile, this.jarFile)) {

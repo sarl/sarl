@@ -40,7 +40,7 @@ public class ErrorLogTestingModule extends AbstractModule {
 	private final List<Object> results;
 
 	/**
-	 * @param results - the results to fill.
+	 * @param results the results to fill.
 	 */
 	public ErrorLogTestingModule(List<Object> results) {
 		this.results = results;

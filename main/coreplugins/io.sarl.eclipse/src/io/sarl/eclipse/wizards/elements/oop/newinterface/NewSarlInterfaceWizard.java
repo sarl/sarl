@@ -38,8 +38,8 @@ import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizard;
 public class NewSarlInterfaceWizard extends AbstractNewSarlElementWizard {
 
 	/**
-	 * @param imgHelper - the helper for getting images.
-	 * @param page - the page of the wizard.
+	 * @param imgHelper the helper for getting images.
+	 * @param page the page of the wizard.
 	 */
 	@Inject
 	public NewSarlInterfaceWizard(IImageDescriptorHelper imgHelper, NewSarlInterfaceWizardPage page) {

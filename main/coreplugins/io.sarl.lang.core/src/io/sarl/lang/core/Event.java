@@ -53,7 +53,7 @@ public abstract class Event implements Serializable {
 	}
 
 	/** Constructs an Event with a source.
-	 * @param source - source of the event.
+	 * @param source source of the event.
 	 */
 	public Event(Address source) {
 		this.source = source;
@@ -96,7 +96,7 @@ public abstract class Event implements Serializable {
 	/**
 	 * The address of the source of this event.
 	 *
-	 * @param source - the source of the event.
+	 * @param source the source of the event.
 	 */
 	public void setSource(Address source) {
 		this.source = source;
@@ -123,7 +123,7 @@ public abstract class Event implements Serializable {
 
 	/** Replies if the event was emitted by an entity with the given address.
 	 *
-	 * @param address - the address of the emitter to test.
+	 * @param address the address of the emitter to test.
 	 * @return <code>true</code> if the given event was emitted by
 	 *     an entity with the given address; otherwise <code>false</code>.
 	 * @since 0.2
@@ -135,7 +135,7 @@ public abstract class Event implements Serializable {
 
 	/** Replies if the event was emitted by an entity with the given identifier.
 	 *
-	 * @param entityId - the identifier of the emitter to test.
+	 * @param entityId the identifier of the emitter to test.
 	 * @return <code>true</code> if the given event was emitted by
 	 *     an entity with the given identifier; otherwise <code>false</code>.
 	 * @since 0.2

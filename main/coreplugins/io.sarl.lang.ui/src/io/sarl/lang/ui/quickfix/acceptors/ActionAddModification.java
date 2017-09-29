@@ -60,9 +60,9 @@ public final class ActionAddModification extends SARLSemanticModification {
 	 *
 	 * <p>The user data contains the name of the container type, and the name of the new action.
 	 *
-	 * @param provider - the quick fix provider.
-	 * @param issue - the issue to fix.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param provider the quick fix provider.
+	 * @param issue the issue to fix.
+	 * @param acceptor the quick fix acceptor.
 	 */
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor) {
 		final String[] data = issue.getData();

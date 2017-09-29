@@ -67,9 +67,9 @@ class AgentLifeCycleSupport implements SpawnServiceListener {
 	private final InternalEventBusCapacity eventBusCapacity;
 
 	/**
-	 * @param agentID - the identifier the agent for which this class is created.
-	 * @param spawnService - the agent spawning service.
-	 * @param eventBusCapacity - the capacity of the agent to manage an internal bus.
+	 * @param agentID the identifier the agent for which this class is created.
+	 * @param spawnService the agent spawning service.
+	 * @param eventBusCapacity the capacity of the agent to manage an internal bus.
 	 */
 	AgentLifeCycleSupport(UUID agentID, SpawnService spawnService, InternalEventBusCapacity eventBusCapacity) {
 		this.agentID = agentID;

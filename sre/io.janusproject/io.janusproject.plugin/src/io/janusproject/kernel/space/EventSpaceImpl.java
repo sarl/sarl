@@ -43,8 +43,8 @@ public class EventSpaceImpl extends AbstractEventSpace implements OpenEventSpace
 	/**
 	 * Constructs an event space.
 	 *
-	 * @param id - identifier of the space.
-	 * @param factory - factory that is used to create the internal data structure.
+	 * @param id identifier of the space.
+	 * @param factory factory that is used to create the internal data structure.
 	 */
 	public EventSpaceImpl(SpaceID id, DistributedDataStructureService factory) {
 		super(id, factory);

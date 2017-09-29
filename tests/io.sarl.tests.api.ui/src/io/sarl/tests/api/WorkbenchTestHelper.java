@@ -279,7 +279,7 @@ public class WorkbenchTestHelper {
 
 	/** Replies the current project.
 	 * 
-	 * @param createOnDemand - create the project if it does not exist yet.
+	 * @param createOnDemand create the project if it does not exist yet.
 	 * @return the project.
 	 */
 	public IProject getProject(boolean createOnDemand) {
@@ -289,7 +289,7 @@ public class WorkbenchTestHelper {
 	/** Replies the project with the given name.
 	 * 
 	 * @param projectName the name of the project.
-	 * @param createOnDemand - create the project if it does not exist yet.
+	 * @param createOnDemand create the project if it does not exist yet.
 	 * @return the project.
 	 */
 	public IProject getProject(String projectName, boolean createOnDemand) {
@@ -312,7 +312,7 @@ public class WorkbenchTestHelper {
 	/** Replies the project for the given resource.
 	 * 
 	 * @param resource the resource to search for.
-	 * @param createOnDemand - create the project if it does not exist yet.
+	 * @param createOnDemand create the project if it does not exist yet.
 	 * @return the project.
 	 */
 	public IProject getProject(Resource resource, boolean createOnDemand) {
@@ -1166,7 +1166,7 @@ public class WorkbenchTestHelper {
 
 	/** Generate a filename for a resource that does not exist yet.
 	 *
-	 * @param pathElements - the elements of the path (directories and basename), without the extension.
+	 * @param pathElements the elements of the path (directories and basename), without the extension.
 	 * @return the filename.
 	 */
 	public String generateFilename(String... pathElements) {
@@ -1201,7 +1201,7 @@ public class WorkbenchTestHelper {
 
 	/** Replies if a file exists in the source folder.
 	 *
-	 * @param basename - the basename of the file in the source folder.
+	 * @param basename the basename of the file in the source folder.
 	 * @return <code>true</code> if the file exists, otherwise <code>false</code>.
 	 */
 	public boolean isFileInSourceFolder(String basename) {
@@ -1211,7 +1211,7 @@ public class WorkbenchTestHelper {
 
 	/** Build a path.
 	 *
-	 * @param path - path elements.
+	 * @param path path elements.
 	 * @return the path.
 	 */
 	public static IPath path(String... path) {
@@ -1225,7 +1225,7 @@ public class WorkbenchTestHelper {
 
 	/** Build a path.
 	 *
-	 * @param path - path elements.
+	 * @param path path elements.
 	 * @return the path.
 	 */
 	public static String pathStr(String... path) {

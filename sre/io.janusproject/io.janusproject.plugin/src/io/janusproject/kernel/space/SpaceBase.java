@@ -43,7 +43,7 @@ public abstract class SpaceBase implements Space, NetworkEventReceivingListener 
 	/**
 	 * Constructs a space.
 	 *
-	 * @param id - identifier of the space.
+	 * @param id identifier of the space.
 	 */
 	public SpaceBase(SpaceID id) {
 		this.id = id;

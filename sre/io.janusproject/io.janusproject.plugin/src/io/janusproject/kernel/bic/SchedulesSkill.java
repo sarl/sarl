@@ -80,7 +80,7 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	private ClearableReference<Skill> skillBufferLogging;
 
 	/**
-	 * @param agent - the owner of this skill.
+	 * @param agent the owner of this skill.
 	 */
 	SchedulesSkill(Agent agent) {
 		super(agent);
@@ -125,7 +125,7 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	 *
 	 * <p>This function is not thread-safe.
 	 *
-	 * @param name - name of the task.
+	 * @param name name of the task.
 	 */
 	private void finishTask(AgentTask task, boolean updateSkillReferences, boolean updateAgentTraitReferences) {
 		assert task != null;

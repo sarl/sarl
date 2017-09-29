@@ -37,9 +37,9 @@ public interface SpaceRepositoryFactory {
 	/**
 	 * Create an instance of the space repository.
 	 *
-	 * @param context - the owner of the space repository.
-	 * @param distributedSpaceSetName - name of the space repository data-structure that is shared among the computer network.
-	 * @param listener - listener on space repository events that must be registered at the creation time.
+	 * @param context the owner of the space repository.
+	 * @param distributedSpaceSetName name of the space repository data-structure that is shared among the computer network.
+	 * @param listener listener on space repository events that must be registered at the creation time.
 	 * @return the new repository
 	 */
 	SpaceRepository newInstance(Context context, String distributedSpaceSetName, SpaceRepositoryListener listener);

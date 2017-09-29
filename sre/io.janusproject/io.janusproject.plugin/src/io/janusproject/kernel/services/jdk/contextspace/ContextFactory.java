@@ -39,10 +39,10 @@ public interface ContextFactory {
 	/**
 	 * Create an instance of context.
 	 *
-	 * @param contextId - id of the context.
-	 * @param defaultSpaceId - id of the default space.
-	 * @param factory - factory of the space repository in the new context.
-	 * @param listener - listener on the space repository that must be given to the created context at startup.
+	 * @param contextId id of the context.
+	 * @param defaultSpaceId id of the default space.
+	 * @param factory factory of the space repository in the new context.
+	 * @param listener listener on the space repository that must be given to the created context at startup.
 	 * @return the context
 	 */
 	Context newInstance(UUID contextId, UUID defaultSpaceId, SpaceRepositoryFactory factory, SpaceRepositoryListener listener);

@@ -55,7 +55,7 @@ public interface IOperationHelper {
 	 * <p>This function does not consider the <code>@Pure</code> annotation that is associated to the
 	 * overridden function declaration. Only the current operation block is considered
 	 *
-	 * @param operation - the operation to test.
+	 * @param operation the operation to test.
 	 * @return <code>true</code> if the given operation has not a side effect;
 	 *     otherwise <code>false</code>.
 	 * @see Pure
@@ -65,7 +65,7 @@ public interface IOperationHelper {
 
 	/** Check if the given operation is annoted with "@Pure".
 	 *
-	 * @param operation - the operation to test.
+	 * @param operation the operation to test.
 	 * @return <code>true</code> if the operation is marked as pure; otherwise <code>false</code>.
 	 * @see Pure
 	 * @see #isPurableOperation(XtendFunction)
@@ -86,15 +86,15 @@ public interface IOperationHelper {
 	/** Replies if the given operation could be annotated with {@code @Pure} according
 	 * to its associated adapters.
 	 *
-	 * @param operation - the operation to update.
+	 * @param operation the operation to update.
 	 * @return {@code true} if the given operation could be annotated.
 	 */
 	boolean evaluatePureAnnotationAdapters(JvmOperation operation);
 
 	/** Create an adapter for attached an pure annotation adapter to given operation.
 	 *
-	 * @param operation - the operation to update.
-	 * @param dynamicCallback - the code to run for adapting the operation. This call back replies {@code true}
+	 * @param operation the operation to update.
+	 * @param dynamicCallback the code to run for adapting the operation. This call back replies {@code true}
 	 *     if the operation could be annotated with {@code @Pure}.
 	 * @see Pure
 	 * @see #evaluatePureAnnotationAdapters(JvmOperation)

@@ -45,11 +45,11 @@ public interface SpawnService extends DependentService {
 	 *
 	 * @param nbAgents the number of agents to spawn.
 	 * @param spawningAgent the agent which is spawning.
-	 * @param parent - the parent entity that is creating the agents.
-	 * @param agentClazz - the type of the agents to spawn.
-	 * @param agentId - the identifier of the agent to spawn. If <code>null</code> the identifier is randomly selected.
+	 * @param parent the parent entity that is creating the agents.
+	 * @param agentClazz the type of the agents to spawn.
+	 * @param agentId the identifier of the agent to spawn. If <code>null</code> the identifier is randomly selected.
 	 *     If {@code nbAgents} is greater than 1, the agent identifier must be {@code null}.
-	 * @param params - the list of the parameters to pass to the agent initialization function.
+	 * @param params the list of the parameters to pass to the agent initialization function.
 	 * @return the identifiers of the agents, never <code>null</code>.
 	 */
 	List<UUID> spawn(int nbAgents, UUID spawningAgent, AgentContext parent, UUID agentId, Class<? extends Agent> agentClazz, Object... params);
@@ -57,7 +57,7 @@ public interface SpawnService extends DependentService {
 	/**
 	 * Kill the agent with the given identifier.
 	 *
-	 * @param agentID - the identifier of the agent to kill.
+	 * @param agentID the identifier of the agent to kill.
 	 * @return {@code true} if the agent was killed by this call; {@code false} if the agent
 	 *     is unknown or already killed.
 	 */
@@ -66,44 +66,44 @@ public interface SpawnService extends DependentService {
 	/**
 	 * Add a listener on the changes in the current state of an agent.
 	 *
-	 * @param id - identifier of the agent.
-	 * @param agentLifecycleListener - the listener on the any change in the life-cycle of the agent.
+	 * @param id identifier of the agent.
+	 * @param agentLifecycleListener the listener on the any change in the life-cycle of the agent.
 	 */
 	void addSpawnServiceListener(UUID id, SpawnServiceListener agentLifecycleListener);
 
 	/**
 	 * Add a listener on the changes in the current state of an agent.
 	 *
-	 * @param agentLifecycleListener - the listener on the any change in the life-cycle of the agent.
+	 * @param agentLifecycleListener the listener on the any change in the life-cycle of the agent.
 	 */
 	void addSpawnServiceListener(SpawnServiceListener agentLifecycleListener);
 
 	/**
 	 * Remove a listener on the changes in the current state of an agent.
 	 *
-	 * @param id - identifier of the agent.
-	 * @param agentLifecycleListener - the listener on the any change in the life-cycle of the agent.
+	 * @param id identifier of the agent.
+	 * @param agentLifecycleListener the listener on the any change in the life-cycle of the agent.
 	 */
 	void removeSpawnServiceListener(UUID id, SpawnServiceListener agentLifecycleListener);
 
 	/**
 	 * Remove a listener on the changes in the current state of an agent.
 	 *
-	 * @param agentLifecycleListener - the listener on the any change in the life-cycle of the agent.
+	 * @param agentLifecycleListener the listener on the any change in the life-cycle of the agent.
 	 */
 	void removeSpawnServiceListener(SpawnServiceListener agentLifecycleListener);
 
 	/**
 	 * Add a listener on the changes related to the kernel agent.
 	 *
-	 * @param listener - listener on the spawning events in the local kernel.
+	 * @param listener listener on the spawning events in the local kernel.
 	 */
 	void addKernelAgentSpawnListener(KernelAgentSpawnListener listener);
 
 	/**
 	 * Remove a listener on the changes related to the kernel agent.
 	 *
-	 * @param listener - listener on the spawning events in the local kernel.
+	 * @param listener listener on the spawning events in the local kernel.
 	 */
 	void removeKernelAgentSpawnListener(KernelAgentSpawnListener listener);
 

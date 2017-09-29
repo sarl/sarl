@@ -55,7 +55,7 @@ public interface InternalEventBusCapacity extends Capacity {
 	/**
 	 * Register the given object on the event bus for receiving any event.
 	 *
-	 * @param listener - the listener on the SARL events.
+	 * @param listener the listener on the SARL events.
 	 * @deprecated see {@link #registerEventListener(Object, boolean, Function1)}.
 	 */
 	@Deprecated
@@ -68,9 +68,9 @@ public interface InternalEventBusCapacity extends Capacity {
 	 * If the filter function replies {@code true} for a specific event as argument, the event is fired in the
 	 * behavior context. If the filter function replies {@code false}, the event is not fired in the behavior context.
 	 *
-	 * @param listener - the listener on the SARL events.
-	 * @param fireInitializeEvent - indicates if the {@code Initialize} event should be fired to the listener if the agent is alive.
-	 * @param filter - the filter function.
+	 * @param listener the listener on the SARL events.
+	 * @param fireInitializeEvent indicates if the {@code Initialize} event should be fired to the listener if the agent is alive.
+	 * @param filter the filter function.
 	 * @since 0.5
 	 */
 	void registerEventListener(Object listener, boolean fireInitializeEvent, Function1<? super Event, ? extends Boolean> filter);
@@ -78,7 +78,7 @@ public interface InternalEventBusCapacity extends Capacity {
 	/**
 	 * Unregister the given object on the event bus for receiving any event.
 	 *
-	 * @param listener - the listener on the SARL events.
+	 * @param listener the listener on the SARL events.
 	 * @deprecated see {@link #unregisterEventListener(Object, boolean)}.
 	 */
 	@Deprecated
@@ -87,8 +87,8 @@ public interface InternalEventBusCapacity extends Capacity {
 	/**
 	 * Unregister the given object on the event bus for receiving any event.
 	 *
-	 * @param listener - the listener on the SARL events.
-	 * @param fireDestroyEvent - indicates if the {@code Destroy} event should be fired to the listener if the agent is alive.
+	 * @param listener the listener on the SARL events.
+	 * @param fireDestroyEvent indicates if the {@code Destroy} event should be fired to the listener if the agent is alive.
 	 * @since 0.5
 	 */
 	void unregisterEventListener(Object listener, boolean fireDestroyEvent);
@@ -115,7 +115,7 @@ public interface InternalEventBusCapacity extends Capacity {
 	 * Sends an event to itself using its defaultInnerAddress as source. Used for platform level event dispatching (i.e.
 	 * {@link Initialize} and {@link Destroy})
 	 *
-	 * @param event - event to propagate into the agent.
+	 * @param event event to propagate into the agent.
 	 */
 	void selfEvent(Event event);
 
@@ -208,6 +208,7 @@ public interface InternalEventBusCapacity extends Capacity {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 * @since 0.5
+	 * @ExcludeFromApidoc
 	 */
 	class ContextAwareCapacityWrapper<C extends InternalEventBusCapacity>
 			extends Capacity.ContextAwareCapacityWrapper<C>

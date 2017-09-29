@@ -56,7 +56,7 @@ public class SARLBehaviorUnitOutlineFilter extends AbstractFilterOutlineContribu
 
 	/** Replies if the given type is a behavior unit.
 	 *
-	 * @param type - the type to test.
+	 * @param type the type to test.
 	 * @return <code>true</code> if the given type is for a behavior unit; <code>false</code> otherwise.
 	 */
 	protected static boolean isBehaviorUnit(EClass type) {

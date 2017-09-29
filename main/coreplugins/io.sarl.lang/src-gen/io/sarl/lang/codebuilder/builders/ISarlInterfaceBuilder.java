@@ -86,79 +86,79 @@ public interface ISarlInterfaceBuilder {
 	void setDocumentation(String doc);
 
 	/** Add the super type.
-	 * @param superType - the qualified name of the super type.
+	 * @param superType the qualified name of the super type.
 	 */
 	void addExtends(String superType);
 
 	/** Add a modifier.
-	 * @param modifier - the modifier to add.
+	 * @param modifier the modifier to add.
 	 */
 	void addModifier(String modifier);
 
 	/** Add a type parameter.
-	 * @param name - the simple name of the type parameter.
+	 * @param name the simple name of the type parameter.
 	 * @return the builder of type parameter.
 	 */
 	ITypeParameterBuilder addTypeParameter(String name);
 
 	/** Create a SarlField.
-	 * @param name - the name of the SarlField.
+	 * @param name the name of the SarlField.
 	 * @return the builder.
 	 */
 	ISarlFieldBuilder addVarSarlField(String name);
 
 	/** Create a SarlField.
-	 * @param name - the name of the SarlField.
+	 * @param name the name of the SarlField.
 	 * @return the builder.
 	 */
 	ISarlFieldBuilder addValSarlField(String name);
 
 	/** Create a SarlField.	 *
 	 * <p>This function is equivalent to {@link #addVarSarlField}.
-	 * @param name - the name of the SarlField.
+	 * @param name the name of the SarlField.
 	 * @return the builder.
 	 */
 	ISarlFieldBuilder addSarlField(String name);
 
 	/** Create a SarlAction.
-	 * @param name - the name of the SarlAction.
+	 * @param name the name of the SarlAction.
 	 * @return the builder.
 	 */
 	ISarlActionBuilder addDefSarlAction(String name);
 
 	/** Create a SarlAction.
-	 * @param name - the name of the SarlAction.
+	 * @param name the name of the SarlAction.
 	 * @return the builder.
 	 */
 	ISarlActionBuilder addOverrideSarlAction(String name);
 
 	/** Create a SarlAction.	 *
 	 * <p>This function is equivalent to {@link #addDefSarlAction}.
-	 * @param name - the name of the SarlAction.
+	 * @param name the name of the SarlAction.
 	 * @return the builder.
 	 */
 	ISarlActionBuilder addSarlAction(String name);
 
 	/** Create a SarlClass.
-	 * @param name - the name of the SarlClass.
+	 * @param name the name of the SarlClass.
 	 * @return the builder.
 	 */
 	ISarlClassBuilder addSarlClass(String name);
 
 	/** Create a SarlInterface.
-	 * @param name - the name of the SarlInterface.
+	 * @param name the name of the SarlInterface.
 	 * @return the builder.
 	 */
 	ISarlInterfaceBuilder addSarlInterface(String name);
 
 	/** Create a SarlEnumeration.
-	 * @param name - the name of the SarlEnumeration.
+	 * @param name the name of the SarlEnumeration.
 	 * @return the builder.
 	 */
 	ISarlEnumerationBuilder addSarlEnumeration(String name);
 
 	/** Create a SarlAnnotationType.
-	 * @param name - the name of the SarlAnnotationType.
+	 * @param name the name of the SarlAnnotationType.
 	 * @return the builder.
 	 */
 	ISarlAnnotationTypeBuilder addSarlAnnotationType(String name);

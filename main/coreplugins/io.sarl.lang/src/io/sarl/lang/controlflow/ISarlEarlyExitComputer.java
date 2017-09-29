@@ -37,7 +37,7 @@ public interface ISarlEarlyExitComputer extends IEarlyExitComputer {
 	/** Replies if the given event is an event that causes an early exit of the
 	 * function was is calling the firing function.
 	 *
-	 * @param reference - the event reference.
+	 * @param reference the event reference.
 	 * @return <code>true</code> if the event may causes early exit of the function,
 	 *     otherwise <code>false</code>.
 	 */
@@ -45,7 +45,7 @@ public interface ISarlEarlyExitComputer extends IEarlyExitComputer {
 
 	/** Replies if the given statement is annotated with the "early-exit" annotation.
 	 *
-	 * @param element - the element to test.
+	 * @param element the element to test.
 	 * @return <code>true</code> if the given element is annotated with the "early-flag"
 	 *     annotation, otherwise <code>false</code>.
 	 */
@@ -53,7 +53,7 @@ public interface ISarlEarlyExitComputer extends IEarlyExitComputer {
 
 	/** Replies if the given expression causes an early exist from a loop.
 	 *
-	 * @param expression - the expression.
+	 * @param expression the expression.
 	 * @return <code>true</code> if the expression causes early exit of the loop statement,
 	 *     otherwise <code>false</code>.
 	 * @since 0.5

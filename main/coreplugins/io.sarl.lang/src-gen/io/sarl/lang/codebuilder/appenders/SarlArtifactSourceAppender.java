@@ -113,7 +113,7 @@ public class SarlArtifactSourceAppender extends AbstractSourceAppender implement
 	}
 
 	/** Add a modifier.
-	 * @param modifier - the modifier to add.
+	 * @param modifier the modifier to add.
 	 */
 	public void addModifier(String modifier) {
 		this.builder.addModifier(modifier);

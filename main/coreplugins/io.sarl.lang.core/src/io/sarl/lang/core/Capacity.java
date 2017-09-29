@@ -38,6 +38,7 @@ public interface Capacity {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 * @since 0.5
+	 * @ExcludeFromApidoc
 	 */
 	abstract class ContextAwareCapacityWrapper<C extends Capacity> implements Capacity {
 

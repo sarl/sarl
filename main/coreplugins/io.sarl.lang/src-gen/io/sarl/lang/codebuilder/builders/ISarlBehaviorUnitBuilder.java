@@ -59,8 +59,8 @@ public interface ISarlBehaviorUnitBuilder {
 	IJvmTypeProvider getTypeResolutionContext();
 
 	/** Initialize the Ecore element.
-	 * @param container - the container of the SarlBehaviorUnit.
-	 * @param name - the type of the SarlBehaviorUnit.
+	 * @param container the container of the SarlBehaviorUnit.
+	 * @param name the type of the SarlBehaviorUnit.
 	 */
 	void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context);
 
@@ -83,7 +83,7 @@ public interface ISarlBehaviorUnitBuilder {
 	void setDocumentation(String doc);
 
 	/** Change the guard.
-	 * @param value - the value of the guard. It may be <code>null</code>.
+	 * @param value the value of the guard. It may be <code>null</code>.
 	 */
 	@Pure
 	IExpressionBuilder getGuard();

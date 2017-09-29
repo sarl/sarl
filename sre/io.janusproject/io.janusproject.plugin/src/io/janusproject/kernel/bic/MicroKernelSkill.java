@@ -44,8 +44,8 @@ public class MicroKernelSkill extends BuiltinSkill implements MicroKernelCapacit
 	private WeakReference<Kernel> kernel;
 
 	/**
-	 * @param agent - the owner of this skill.
-	 * @param kernel - the reference to the local micro-kernel.
+	 * @param agent the owner of this skill.
+	 * @param kernel the reference to the local micro-kernel.
 	 */
 	MicroKernelSkill(Agent agent, Kernel kernel) {
 		super(agent);

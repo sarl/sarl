@@ -121,14 +121,14 @@ public class SarlEnumerationSourceAppender extends AbstractSourceAppender implem
 	}
 
 	/** Add a modifier.
-	 * @param modifier - the modifier to add.
+	 * @param modifier the modifier to add.
 	 */
 	public void addModifier(String modifier) {
 		this.builder.addModifier(modifier);
 	}
 
 	/** Create a SarlEnumLiteral.
-	 * @param name - the name of the SarlEnumLiteral.
+	 * @param name the name of the SarlEnumLiteral.
 	 * @return the builder.
 	 */
 	public ISarlEnumLiteralBuilder addSarlEnumLiteral(String name) {

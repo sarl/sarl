@@ -63,7 +63,7 @@ public interface AgentContext {
 	/** Replies all the spaces that are implementing the given specification.
 	 *
 	 * @param <S> - type of the replied space.
-	 * @param spec - specification of the space to retreive.
+	 * @param spec specification of the space to retreive.
 	 * @return the spaces associated to the given space specification.
 	 */
 	@Pure
@@ -78,9 +78,9 @@ public interface AgentContext {
 	 * a new one, you should use {@link #getOrCreateSpace(Class, UUID, Object...)}.
 	 *
 	 * @param <S> - type of the created space.
-	 * @param spec - specification of the space to create.
-	 * @param spaceUUID - identifier of the new space.
-	 * @param creationParams - parameters to pass to the space constructor.
+	 * @param spec specification of the space to create.
+	 * @param spaceUUID identifier of the new space.
+	 * @param creationParams parameters to pass to the space constructor.
 	 * @return the new space, or <code>null</code> if the space already exists.
 	 * @see #getOrCreateSpace(Class, UUID, Object...)
 	 * @see #getSpace(UUID)
@@ -98,9 +98,9 @@ public interface AgentContext {
 	 * if no existing space created with the given specification was found.
 	 *
 	 * @param <S> - type of the replied space.
-	 * @param spec - specification of the space to retreive/create.
-	 * @param spaceUUID - identifier used only when creating the space.
-	 * @param creationParams - parameters to pass to the space constructor.
+	 * @param spec specification of the space to retreive/create.
+	 * @param spaceUUID identifier used only when creating the space.
+	 * @param creationParams parameters to pass to the space constructor.
 	 * @return the space, never <code>null</code>.
 	 * @see #getOrCreateSpaceWithID(UUID, Class, Object...)
 	 * @see #createSpace(Class, UUID, Object...)
@@ -123,9 +123,9 @@ public interface AgentContext {
 	 * if no existing space created with the given specification was found.
 	 *
 	 * @param <S> - type of the replied space.
-	 * @param spec - specification of the space to retreive/create.
-	 * @param spaceUUID - identifier used only when creating the space.
-	 * @param creationParams - parameters to pass to the space constructor.
+	 * @param spec specification of the space to retreive/create.
+	 * @param spaceUUID identifier used only when creating the space.
+	 * @param creationParams parameters to pass to the space constructor.
 	 * @return the space, never <code>null</code>.
 	 * @see #getOrCreateSpaceWithID(UUID, Class, Object...)
 	 * @see #createSpace(Class, UUID, Object...)
@@ -144,9 +144,9 @@ public interface AgentContext {
 	 * the specification when creating the space.
 	 *
 	 * @param <S> - type of the replied space.
-	 * @param spaceUUID - identifier of the space.
-	 * @param spec - specification of the space for creating the space.
-	 * @param creationParams - parameters to pass to the space constructor.
+	 * @param spaceUUID identifier of the space.
+	 * @param spec specification of the space for creating the space.
+	 * @param creationParams parameters to pass to the space constructor.
 	 * @return the space, never <code>null</code>.
 	 * @see #getOrCreateSpaceWithID(UUID, Class, Object...)
 	 * @see #createSpace(Class, UUID, Object...)
@@ -169,9 +169,9 @@ public interface AgentContext {
 	 * the specification when creating the space.
 	 *
 	 * @param <S> - type of the replied space.
-	 * @param spaceUUID - identifier of the space.
-	 * @param spec - specification of the space for creating the space.
-	 * @param creationParams - parameters to pass to the space constructor.
+	 * @param spaceUUID identifier of the space.
+	 * @param spec specification of the space for creating the space.
+	 * @param creationParams parameters to pass to the space constructor.
 	 * @return the space, never <code>null</code>.
 	 * @see #getOrCreateSpaceWithID(UUID, Class, Object...)
 	 * @see #createSpace(Class, UUID, Object...)
@@ -186,7 +186,7 @@ public interface AgentContext {
 	 * If none was found, this function replies <code>null</code>.
 	 *
 	 * @param <S> - type of the replied space.
-	 * @param spaceUUID - identifier of the space.
+	 * @param spaceUUID identifier of the space.
 	 * @return the space, or <code>null</code> if there is no space found.
 	 * @see #createSpace(Class, UUID, Object...)
 	 * @see #getOrCreateSpace(Class, UUID, Object...)

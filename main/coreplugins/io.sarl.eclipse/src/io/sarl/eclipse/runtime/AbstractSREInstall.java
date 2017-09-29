@@ -78,7 +78,7 @@ public abstract class AbstractSREInstall implements ISREInstall {
 
 	/** Construct a SRE installation.
 	 *
-	 * @param id - the identifier of this SRE installation.
+	 * @param id the identifier of this SRE installation.
 	 */
 	public AbstractSREInstall(String id) {
 		this.id = id;
@@ -155,7 +155,7 @@ public abstract class AbstractSREInstall implements ISREInstall {
 
 	/** Set if this installation has one of its field unresolved.
 	 *
-	 * @param dirty - <code>true</code> if one field has a too old value.
+	 * @param dirty <code>true</code> if one field has a too old value.
 	 */
 	protected void setDirty(boolean dirty) {
 		this.dirty = dirty;
@@ -163,7 +163,7 @@ public abstract class AbstractSREInstall implements ISREInstall {
 
 	/** Force the computation of the installation validity.
 	 *
-	 * @param ignoreCauses - a set of bits that indicates the invalidity causes to ignore.
+	 * @param ignoreCauses a set of bits that indicates the invalidity causes to ignore.
 	 * @return the validity status.
 	 */
 	protected IStatus revalidate(int ignoreCauses) {
@@ -257,7 +257,7 @@ public abstract class AbstractSREInstall implements ISREInstall {
 	/** Invoked when the JAR file has changed for updating the other
 	 * fields.
 	 *
-	 * @param forceSettings - indicates if the fields of this SRE must be set.
+	 * @param forceSettings indicates if the fields of this SRE must be set.
 	 */
 	protected abstract void resolveDirtyFields(boolean forceSettings);
 
@@ -355,7 +355,7 @@ public abstract class AbstractSREInstall implements ISREInstall {
 	/**
 	 * Change the library locations of this ISREInstall.
 	 *
-	 * @param libraries - The library locations of this ISREInstall.
+	 * @param libraries The library locations of this ISREInstall.
 	 *     Must not be <code>null</code>.
 	 */
 	@Override

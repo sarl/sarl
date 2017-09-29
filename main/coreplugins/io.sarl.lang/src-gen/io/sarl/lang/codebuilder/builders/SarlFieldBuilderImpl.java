@@ -58,8 +58,8 @@ public class SarlFieldBuilderImpl extends AbstractBuilder implements ISarlFieldB
 	private SarlField sarlField;
 
 	/** Initialize the Ecore element.
-	 * @param container - the container of the SarlField.
-	 * @param name - the name of the SarlField.
+	 * @param container the container of the SarlField.
+	 * @param name the name of the SarlField.
 	 */
 	public void eInit(XtendTypeDeclaration container, String name, String modifier, IJvmTypeProvider context) {
 		setTypeResolutionContext(context);
@@ -124,7 +124,7 @@ public class SarlFieldBuilderImpl extends AbstractBuilder implements ISarlFieldB
 	}
 
 	/** Change the initialValue.
-	 * @param value - the value of the initialValue. It may be <code>null</code>.
+	 * @param value the value of the initialValue. It may be <code>null</code>.
 	 */
 	@Pure
 	public IExpressionBuilder getInitialValue() {
@@ -138,7 +138,7 @@ public class SarlFieldBuilderImpl extends AbstractBuilder implements ISarlFieldB
 	}
 
 	/** Add a modifier.
-	 * @param modifier - the modifier to add.
+	 * @param modifier the modifier to add.
 	 */
 	public void addModifier(String modifier) {
 		if (!Strings.isEmpty(modifier)) {

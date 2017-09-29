@@ -60,10 +60,10 @@ public final class MemberRemoveModification extends SARLSemanticModification {
 	 *
 	 * <p>No user data.
 	 *
-	 * @param provider - the quick fix provider.
-	 * @param issue - the issue to fix.
-	 * @param acceptor - the quick fix acceptor.
-	 * @param type - the type of the element to remove.
+	 * @param provider the quick fix provider.
+	 * @param issue the issue to fix.
+	 * @param acceptor the quick fix acceptor.
+	 * @param type the type of the element to remove.
 	 */
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor,
 			Class<? extends XtendMember> type) {
@@ -82,9 +82,9 @@ public final class MemberRemoveModification extends SARLSemanticModification {
 	 *
 	 * <p>No user data.
 	 *
-	 * @param provider - the quick fix provider.
-	 * @param issue - the issue to fix.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param provider the quick fix provider.
+	 * @param issue the issue to fix.
+	 * @param acceptor the quick fix acceptor.
 	 */
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor) {
 		final MemberRemoveModification modification = new MemberRemoveModification();

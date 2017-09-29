@@ -76,7 +76,7 @@ public final class M2EUtilities {
 
 	/** Maven version parser.
 	 *
-	 * @param version - the version string.
+	 * @param version the version string.
 	 * @return the version.
 	 */
 	public static Version parseMavenVersion(String version) {

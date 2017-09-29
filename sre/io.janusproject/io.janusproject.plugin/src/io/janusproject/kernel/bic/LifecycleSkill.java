@@ -61,7 +61,7 @@ public class LifecycleSkill extends BuiltinSkill implements Lifecycle {
 	/**
 	 * Constructs the skill.
 	 *
-	 * @param agent - owner of the skill.
+	 * @param agent owner of the skill.
 	 */
 	LifecycleSkill(Agent agent) {
 		super(agent);

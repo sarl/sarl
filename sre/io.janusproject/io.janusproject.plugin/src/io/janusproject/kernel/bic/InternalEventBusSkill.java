@@ -97,8 +97,8 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 	private ClearableReference<Skill> skillBufferLogging;
 
 	/**
-	 * @param agent - reference to the owner of this skill.
-	 * @param addressInInnerDefaultSpace - address of the owner of this skill in its inner default space.
+	 * @param agent reference to the owner of this skill.
+	 * @param addressInInnerDefaultSpace address of the owner of this skill in its inner default space.
 	 */
 	InternalEventBusSkill(Agent agent, Address addressInInnerDefaultSpace) {
 		super(agent);

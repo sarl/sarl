@@ -81,13 +81,13 @@ public interface ISarlEventBuilder {
 	void setDocumentation(String doc);
 
 	/** Change the super type.
-	 * @param superType - the qualified name of the super type,
+	 * @param superType the qualified name of the super type,
 	 *     or <code>null</code> if the default type.
 	 */
 	void setExtends(String superType);
 
 	/** Add a modifier.
-	 * @param modifier - the modifier to add.
+	 * @param modifier the modifier to add.
 	 */
 	void addModifier(String modifier);
 
@@ -97,20 +97,20 @@ public interface ISarlEventBuilder {
 	ISarlConstructorBuilder addSarlConstructor();
 
 	/** Create a SarlField.
-	 * @param name - the name of the SarlField.
+	 * @param name the name of the SarlField.
 	 * @return the builder.
 	 */
 	ISarlFieldBuilder addVarSarlField(String name);
 
 	/** Create a SarlField.
-	 * @param name - the name of the SarlField.
+	 * @param name the name of the SarlField.
 	 * @return the builder.
 	 */
 	ISarlFieldBuilder addValSarlField(String name);
 
 	/** Create a SarlField.	 *
 	 * <p>This function is equivalent to {@link #addVarSarlField}.
-	 * @param name - the name of the SarlField.
+	 * @param name the name of the SarlField.
 	 * @return the builder.
 	 */
 	ISarlFieldBuilder addSarlField(String name);

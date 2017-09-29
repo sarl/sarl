@@ -61,7 +61,7 @@ public abstract class AgentProtectedAPIObject extends SRESpecificDataContainer {
 	 * is thrown.
 	 *
 	 * @param <S> - type of the capacity.
-	 * @param capacity - the capacity to search for the implementation.
+	 * @param capacity the capacity to search for the implementation.
 	 * @return the skill, never <code>null</code>
 	 * @throws UnimplementedCapacityException - if no skill is owned by the agent for the given capacity.
 	 */
@@ -74,7 +74,7 @@ public abstract class AgentProtectedAPIObject extends SRESpecificDataContainer {
 	 * was set, the exception {@link UnimplementedCapacityException}
 	 * is thrown.
 	 *
-	 * @param capacity - the capacity to search for the implementation.
+	 * @param capacity the capacity to search for the implementation.
 	 * @return the reference to the skill, never <code>null</code>
 	 * @throws UnimplementedCapacityException - if no skill is owned by the agent for the given capacity.
 	 */
@@ -84,8 +84,8 @@ public abstract class AgentProtectedAPIObject extends SRESpecificDataContainer {
 	/** Defines the implementation of the "capacity maps-to skill" operator.
 	 *
 	 * @param <S> - type of skill to be mapped to.
-	 * @param capacity - the implemented capacity.
-	 * @param skill - the skill to associate to the capacity.
+	 * @param capacity the implemented capacity.
+	 * @param skill the skill to associate to the capacity.
 	 */
 	protected abstract <S extends Skill> void operator_mappedTo(Class<? extends Capacity> capacity, S skill);
 
@@ -104,7 +104,7 @@ public abstract class AgentProtectedAPIObject extends SRESpecificDataContainer {
 	 * Clears the Skill associated with the capacity.
 	 *
 	 * @param <S> - the type of the capacity.
-	 * @param capacity - the capacity for which the skill must be cleared.
+	 * @param capacity the capacity for which the skill must be cleared.
 	 * @return the skill that was removed
 	 */
 	protected abstract <S extends Capacity> S clearSkill(Class<S> capacity);
@@ -113,7 +113,7 @@ public abstract class AgentProtectedAPIObject extends SRESpecificDataContainer {
 	 * Checks if this agent has a Skill that implements the {@link Capacity}
 	 * <code>capacity</code>.
 	 *
-	 * @param capacity - capacity to check
+	 * @param capacity capacity to check
 	 * @return <code>true</code> if it has a skill associate to this capacity,
 	 *     <code>false</code> otherwise
 	 */
@@ -123,7 +123,7 @@ public abstract class AgentProtectedAPIObject extends SRESpecificDataContainer {
 	/** Replies if the given address is one of the addresses of this agent.
 	 * The test is done on the identifier replied by {@link Address#getUUID()}.
 	 *
-	 * @param address - the address to test.
+	 * @param address the address to test.
 	 * @return <code>true</code> if the given address is one of this agent,
 	 *     otherwise <code>false</code>.
 	 */
@@ -137,7 +137,7 @@ public abstract class AgentProtectedAPIObject extends SRESpecificDataContainer {
 	 * id.equals( agent.getID() )
 	 * </code></pre>
 	 *
-	 * @param uID - the identifier to test.
+	 * @param uID the identifier to test.
 	 * @return <code>true</code> if the given identifier is the one of this agent,
 	 *     otherwise <code>false</code>.
 	 */
@@ -146,7 +146,7 @@ public abstract class AgentProtectedAPIObject extends SRESpecificDataContainer {
 
 	/** Replies if the given event was emitted by this agent.
 	 *
-	 * @param event - the event to test.
+	 * @param event the event to test.
 	 * @return <code>true</code> if the given event was emitted by
 	 *     this agent; otherwise <code>false</code>.
 	 */

@@ -50,7 +50,7 @@ public class FieldInitializerUtil {
 
 	/** Replies the Java element that corresponds to the given selection.
 	 *
-	 * @param selection - the current selection.
+	 * @param selection the current selection.
 	 * @return the Java element.
 	 */
 	@SuppressWarnings("static-method")

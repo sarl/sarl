@@ -57,7 +57,7 @@ public abstract class AbstractSARLHighlightingCalculatorTest extends AbstractSar
 
 	/** Highlight the given text.
 	 *
-	 * @param code - the SARL script.
+	 * @param code the SARL script.
 	 * @return the assertion checker.
 	 */
 	@SuppressWarnings("synthetic-access")

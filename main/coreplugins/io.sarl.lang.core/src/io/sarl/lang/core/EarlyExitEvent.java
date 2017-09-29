@@ -46,7 +46,7 @@ public abstract class EarlyExitEvent extends Event {
 	}
 
 	/** Constructs an EarlyExitEvent with a source.
-	 * @param source - source of the event.
+	 * @param source source of the event.
 	 */
 	public EarlyExitEvent(Address source) {
 		super(source);

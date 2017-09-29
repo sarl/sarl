@@ -38,31 +38,31 @@ public interface DMapListener<K, V> extends EventListener {
 	/**
 	 * Invoked when an entry is added in the map.
 	 *
-	 * @param key - the added key.
-	 * @param value - the added value.
+	 * @param key the added key.
+	 * @param value the added value.
 	 */
 	void entryAdded(K key, V value);
 
 	/**
 	 * Invoked when the value of an entry has changed.
 	 *
-	 * @param key - the removed key.
-	 * @param value - the removed value.
+	 * @param key the removed key.
+	 * @param value the removed value.
 	 */
 	void entryUpdated(K key, V value);
 
 	/**
 	 * Invoked when an entry was removed the map.
 	 *
-	 * @param key - the removed key.
-	 * @param value - the removed value.
+	 * @param key the removed key.
+	 * @param value the removed value.
 	 */
 	void entryRemoved(K key, V value);
 
 	/**
 	 * Invoked when the map was cleared.
 	 *
-	 * @param localClearing - indicates if the clear in local (<code>true</code>) or for all the nodes on the network (
+	 * @param localClearing indicates if the clear in local (<code>true</code>) or for all the nodes on the network (
 	 *        <code>false</code>).
 	 */
 	void mapCleared(boolean localClearing);

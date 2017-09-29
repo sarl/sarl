@@ -476,7 +476,7 @@ public class ScriptBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.append("\t/** Create " + getAorAnArticle(topElementName) //$NON-NLS-1$
 						+ " "+ topElementName + " builder.");  //$NON-NLS-1$//$NON-NLS-2$
 				it.newLine();
-				it.append("\t * @param name - the name of the " + topElementName + "."); //$NON-NLS-1$ //$NON-NLS-2$
+				it.append("\t * @param name the name of the " + topElementName + "."); //$NON-NLS-1$ //$NON-NLS-2$
 				it.newLine();
 				it.append("\t * @return the builder."); //$NON-NLS-1$
 				it.newLine();

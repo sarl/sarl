@@ -84,67 +84,67 @@ public interface IScriptBuilder {
 	boolean isFinalized();
 
 	/** Create a SarlEvent builder.
-	 * @param name - the name of the SarlEvent.
+	 * @param name the name of the SarlEvent.
 	 * @return the builder.
 	 */
 	ISarlEventBuilder addSarlEvent(String name);
 
 	/** Create a SarlCapacity builder.
-	 * @param name - the name of the SarlCapacity.
+	 * @param name the name of the SarlCapacity.
 	 * @return the builder.
 	 */
 	ISarlCapacityBuilder addSarlCapacity(String name);
 
 	/** Create a SarlAgent builder.
-	 * @param name - the name of the SarlAgent.
+	 * @param name the name of the SarlAgent.
 	 * @return the builder.
 	 */
 	ISarlAgentBuilder addSarlAgent(String name);
 
 	/** Create a SarlBehavior builder.
-	 * @param name - the name of the SarlBehavior.
+	 * @param name the name of the SarlBehavior.
 	 * @return the builder.
 	 */
 	ISarlBehaviorBuilder addSarlBehavior(String name);
 
 	/** Create a SarlSkill builder.
-	 * @param name - the name of the SarlSkill.
+	 * @param name the name of the SarlSkill.
 	 * @return the builder.
 	 */
 	ISarlSkillBuilder addSarlSkill(String name);
 
 	/** Create a SarlSpace builder.
-	 * @param name - the name of the SarlSpace.
+	 * @param name the name of the SarlSpace.
 	 * @return the builder.
 	 */
 	ISarlSpaceBuilder addSarlSpace(String name);
 
 	/** Create a SarlArtifact builder.
-	 * @param name - the name of the SarlArtifact.
+	 * @param name the name of the SarlArtifact.
 	 * @return the builder.
 	 */
 	ISarlArtifactBuilder addSarlArtifact(String name);
 
 	/** Create a SarlClass builder.
-	 * @param name - the name of the SarlClass.
+	 * @param name the name of the SarlClass.
 	 * @return the builder.
 	 */
 	ISarlClassBuilder addSarlClass(String name);
 
 	/** Create a SarlInterface builder.
-	 * @param name - the name of the SarlInterface.
+	 * @param name the name of the SarlInterface.
 	 * @return the builder.
 	 */
 	ISarlInterfaceBuilder addSarlInterface(String name);
 
 	/** Create a SarlEnumeration builder.
-	 * @param name - the name of the SarlEnumeration.
+	 * @param name the name of the SarlEnumeration.
 	 * @return the builder.
 	 */
 	ISarlEnumerationBuilder addSarlEnumeration(String name);
 
 	/** Create a SarlAnnotationType builder.
-	 * @param name - the name of the SarlAnnotationType.
+	 * @param name the name of the SarlAnnotationType.
 	 * @return the builder.
 	 */
 	ISarlAnnotationTypeBuilder addSarlAnnotationType(String name);

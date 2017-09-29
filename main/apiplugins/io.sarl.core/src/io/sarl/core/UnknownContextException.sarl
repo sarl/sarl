@@ -35,7 +35,7 @@ class UnknownContextException extends RuntimeException {
 	val unknownContextID : UUID
 
 	/**
-	 * @param unknownContextID - ID of the context that is unkown.
+	 * @param unknownContextID ID of the context that is unkown.
 	 */
 	new(unknownContextID : UUID) {
 		this.unknownContextID = unknownContextID

@@ -108,7 +108,7 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 	}
 
 	/** Add the super type.
-	 * @param superType - the qualified name of the super type.
+	 * @param superType the qualified name of the super type.
 	 */
 	public void addExtends(String superType) {
 		if (!Strings.isEmpty(superType)
@@ -122,7 +122,7 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 	}
 
 	/** Add a modifier.
-	 * @param modifier - the modifier to add.
+	 * @param modifier the modifier to add.
 	 */
 	public void addModifier(String modifier) {
 		if (!Strings.isEmpty(modifier)) {
@@ -134,7 +134,7 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 	private Provider<ISarlActionBuilder> iSarlActionBuilderProvider;
 
 	/** Create a SarlAction.
-	 * @param name - the name of the SarlAction.
+	 * @param name the name of the SarlAction.
 	 * @return the builder.
 	 */
 	public ISarlActionBuilder addDefSarlAction(String name) {
@@ -144,7 +144,7 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 	}
 
 	/** Create a SarlAction.
-	 * @param name - the name of the SarlAction.
+	 * @param name the name of the SarlAction.
 	 * @return the builder.
 	 */
 	public ISarlActionBuilder addOverrideSarlAction(String name) {
@@ -155,7 +155,7 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 
 	/** Create a SarlAction.	 *
 	 * <p>This function is equivalent to {@link #addDefSarlAction}.
-	 * @param name - the name of the SarlAction.
+	 * @param name the name of the SarlAction.
 	 * @return the builder.
 	 */
 	public ISarlActionBuilder addSarlAction(String name) {

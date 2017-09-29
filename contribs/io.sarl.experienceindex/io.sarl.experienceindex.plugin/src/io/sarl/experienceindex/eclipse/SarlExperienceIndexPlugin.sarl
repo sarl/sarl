@@ -50,7 +50,7 @@ class SarlExperienceIndexPlugin extends AbstractUIPlugin {
 
 	/** Set the default instance of the plugin.
 	 *
-	 * @param defaultInstance - the default plugin instance.
+	 * @param defaultInstance the default plugin instance.
 	 */
 	static def setDefault(defaultInstance : SarlExperienceIndexPlugin) {
 		instance = defaultInstance
@@ -66,7 +66,7 @@ class SarlExperienceIndexPlugin extends AbstractUIPlugin {
 
 	/** Replies the image descriptor for the given image path.
 	 *
-	 * @param imagePath - path of the image.
+	 * @param imagePath path of the image.
 	 * @return the image descriptor.
 	 */
 	def getImageDescriptor(imagePath : String) : ImageDescriptor {
@@ -82,7 +82,7 @@ class SarlExperienceIndexPlugin extends AbstractUIPlugin {
 
 	/** Replies the image for the given image path.
 	 *
-	 * @param imagePath - path of the image.
+	 * @param imagePath path of the image.
 	 * @return the image.
 	 */
 	def getImage(imagePath : String) : Image {

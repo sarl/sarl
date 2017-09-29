@@ -51,7 +51,7 @@ public class NetworkEventModule extends AbstractModule {
 	/**
 	 * Replies the default values for the properties supported by Janus config.
 	 *
-	 * @param defaultValues - filled with the default values supported by the Janus platform.
+	 * @param defaultValues filled with the default values supported by the Janus platform.
 	 */
 	public static void getDefaultValues(Properties defaultValues) {
 		defaultValues.put(NetworkConfig.SERIALIZER_CLASSNAME, GsonEventSerializer.class.getName());

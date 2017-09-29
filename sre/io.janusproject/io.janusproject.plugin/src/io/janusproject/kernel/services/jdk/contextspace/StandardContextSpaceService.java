@@ -133,7 +133,7 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	/**
 	 * Change the factory used to create contexts.
 	 *
-	 * @param factory - the context factory.
+	 * @param factory the context factory.
 	 */
 	void setContextFactory(ContextFactory factory) {
 		if (factory != null) {
@@ -153,7 +153,7 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	/**
 	 * Change the factory used to create space repositories.
 	 *
-	 * @param factory - the space repository factory.
+	 * @param factory the space repository factory.
 	 */
 	void setSpaceRepositoryFactory(SpaceRepositoryFactory factory) {
 		if (factory != null) {
@@ -169,10 +169,10 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	/**
 	 * Initialize this service with injected objects.
 	 *
-	 * @param janusID - injected identifier.
-	 * @param dataStructureService - service that permits to obtain distributed data structure.
-	 * @param logService - service of logging.
-	 * @param injector - the injector to use.
+	 * @param janusID injected identifier.
+	 * @param dataStructureService service that permits to obtain distributed data structure.
+	 * @param logService service of logging.
+	 * @param injector the injector to use.
 	 */
 	@Inject
 	void postConstruction(@Named(JanusConfig.DEFAULT_CONTEXT_ID_NAME) UUID janusID,
@@ -292,7 +292,7 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	/**
 	 * Notifies the listeners about a context creation.
 	 *
-	 * @param context - reference to the created context.
+	 * @param context reference to the created context.
 	 */
 	protected void fireContextCreated(AgentContext context) {
 		final ContextRepositoryListener[] ilisteners = this.listeners.getListeners(ContextRepositoryListener.class);
@@ -305,7 +305,7 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	/**
 	 * Notifies the listeners about a context destruction.
 	 *
-	 * @param context - reference to the destroyed context.
+	 * @param context reference to the destroyed context.
 	 */
 	protected void fireContextDestroyed(AgentContext context) {
 		final ContextRepositoryListener[] ilisteners = this.listeners.getListeners(ContextRepositoryListener.class);
@@ -328,8 +328,8 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	/**
 	 * Notifies the listeners on the space creation.
 	 *
-	 * @param space - reference to the created space.
-	 * @param isLocalCreation - indicates if the space was initially created on the current kernel.
+	 * @param space reference to the created space.
+	 * @param isLocalCreation indicates if the space was initially created on the current kernel.
 	 */
 	protected void fireSpaceCreated(Space space, boolean isLocalCreation) {
 		for (final SpaceRepositoryListener listener : this.listeners.getListeners(SpaceRepositoryListener.class)) {
@@ -340,8 +340,8 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	/**
 	 * Notifies the listeners on the space destruction.
 	 *
-	 * @param space - reference to the destroyed space.
-	 * @param isLocalDestruction - indicates if the space was destroyed in the current kernel.
+	 * @param space reference to the destroyed space.
+	 * @param isLocalDestruction indicates if the space was destroyed in the current kernel.
 	 */
 	protected void fireSpaceDestroyed(Space space, boolean isLocalDestruction) {
 		for (final SpaceRepositoryListener listener : this.listeners.getListeners(SpaceRepositoryListener.class)) {
@@ -352,7 +352,7 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	/**
 	 * Update the internal data structure when a default space was discovered.
 	 *
-	 * @param spaceID - identifier of the space to initialize.
+	 * @param spaceID identifier of the space to initialize.
 	 */
 	protected void ensureDefaultSpaceDefinition(SpaceID spaceID) {
 		createContext(spaceID.getContextID(), spaceID.getID());
@@ -361,7 +361,7 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	/**
 	 * Update the internal data structure when a default space was removed.
 	 *
-	 * @param spaceID - identifier of the space to remove.
+	 * @param spaceID identifier of the space to remove.
 	 */
 	protected void removeDefaultSpaceDefinition(SpaceID spaceID) {
 		AgentContext context = null;

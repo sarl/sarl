@@ -73,7 +73,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert milliseconds to milliseconds.
 	 *
-	 * @param milis - number of milliseconds to convert.
+	 * @param milis number of milliseconds to convert.
 	 * @return the number of milliseconds in <code>milis</code>.
 	 */
 	@Pure
@@ -84,7 +84,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert milliseconds to milliseconds.
 	 *
-	 * @param milis - number of milliseconds to convert.
+	 * @param milis number of milliseconds to convert.
 	 * @return the number of milliseconds in <code>milis</code>.
 	 */
 	@Pure
@@ -95,7 +95,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert milliseconds to milliseconds.
 	 *
-	 * @param milis - number of milliseconds to convert.
+	 * @param milis number of milliseconds to convert.
 	 * @return the number of milliseconds in <code>milis</code>.
 	 */
 	@Pure
@@ -106,7 +106,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert milliseconds to milliseconds.
 	 *
-	 * @param milis - number of milliseconds to convert.
+	 * @param milis number of milliseconds to convert.
 	 * @return the number of milliseconds in <code>milis</code>.
 	 */
 	@Pure
@@ -117,7 +117,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert milliseconds to milliseconds.
 	 *
-	 * @param milis - number of milliseconds to convert.
+	 * @param milis number of milliseconds to convert.
 	 * @return the number of milliseconds in <code>milis</code>.
 	 */
 	@Pure
@@ -128,7 +128,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert milliseconds to milliseconds.
 	 *
-	 * @param milis - number of milliseconds to convert.
+	 * @param milis number of milliseconds to convert.
 	 * @return the number of milliseconds in <code>milis</code>.
 	 */
 	@Pure
@@ -139,7 +139,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert milliseconds to milliseconds.
 	 *
-	 * @param milis - number of milliseconds to convert.
+	 * @param milis number of milliseconds to convert.
 	 * @return the number of milliseconds in <code>milis</code>.
 	 */
 	@Pure
@@ -150,7 +150,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert seconds to milliseconds.
 	 *
-	 * @param secs - number of seconds to convert.
+	 * @param secs number of seconds to convert.
 	 * @return the number of milliseconds in seconds.
 	 */
 	@Pure
@@ -161,7 +161,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert seconds to milliseconds.
 	 *
-	 * @param secs - number of seconds to convert.
+	 * @param secs number of seconds to convert.
 	 * @return the number of milliseconds in seconds.
 	 */
 	@Pure
@@ -172,7 +172,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert seconds to milliseconds.
 	 *
-	 * @param secs - number of seconds to convert.
+	 * @param secs number of seconds to convert.
 	 * @return the number of milliseconds in seconds.
 	 */
 	@Pure
@@ -183,7 +183,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert seconds to milliseconds.
 	 *
-	 * @param secs - number of seconds to convert.
+	 * @param secs number of seconds to convert.
 	 * @return the number of milliseconds in seconds.
 	 */
 	@Pure
@@ -194,7 +194,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert seconds to milliseconds.
 	 *
-	 * @param secs - number of seconds to convert.
+	 * @param secs number of seconds to convert.
 	 * @return the number of milliseconds in seconds.
 	 */
 	@Pure
@@ -205,7 +205,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert seconds to milliseconds.
 	 *
-	 * @param secs - number of seconds to convert.
+	 * @param secs number of seconds to convert.
 	 * @return the number of milliseconds in seconds.
 	 */
 	@Pure
@@ -216,7 +216,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert seconds to milliseconds.
 	 *
-	 * @param secs - number of seconds to convert.
+	 * @param secs number of seconds to convert.
 	 * @return the number of milliseconds in seconds.
 	 */
 	@Pure
@@ -227,7 +227,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert minutes to milliseconds.
 	 *
-	 * @param mins - number of minutes to convert.
+	 * @param mins number of minutes to convert.
 	 * @return the number of milliseconds in <code>mins</code>
 	 */
 	@Pure
@@ -238,7 +238,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert minutes to milliseconds.
 	 *
-	 * @param mins - number of minutes to convert.
+	 * @param mins number of minutes to convert.
 	 * @return the number of milliseconds in <code>mins</code>
 	 */
 	@Pure
@@ -249,7 +249,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert minutes to milliseconds.
 	 *
-	 * @param mins - number of minutes to convert.
+	 * @param mins number of minutes to convert.
 	 * @return the number of milliseconds in <code>mins</code>
 	 */
 	@Pure
@@ -260,7 +260,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert minutes to milliseconds.
 	 *
-	 * @param mins - number of minutes to convert.
+	 * @param mins number of minutes to convert.
 	 * @return the number of milliseconds in <code>mins</code>
 	 */
 	@Pure
@@ -271,7 +271,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert minutes to milliseconds.
 	 *
-	 * @param mins - number of minutes to convert.
+	 * @param mins number of minutes to convert.
 	 * @return the number of milliseconds in <code>mins</code>
 	 */
 	@Pure
@@ -282,7 +282,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert minutes to milliseconds.
 	 *
-	 * @param mins - number of minutes to convert.
+	 * @param mins number of minutes to convert.
 	 * @return the number of milliseconds in <code>mins</code>
 	 */
 	@Pure
@@ -293,7 +293,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert minutes to milliseconds.
 	 *
-	 * @param mins - number of minutes to convert.
+	 * @param mins number of minutes to convert.
 	 * @return the number of milliseconds in <code>mins</code>
 	 */
 	@Pure
@@ -304,7 +304,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert hours to milliseconds.
 	 *
-	 * @param hours - number of hours to convert.
+	 * @param hours number of hours to convert.
 	 * @return the number of milliseconds in <code>hours</code>
 	 */
 	@Pure
@@ -315,7 +315,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert hours to milliseconds.
 	 *
-	 * @param hours - number of hours to convert.
+	 * @param hours number of hours to convert.
 	 * @return the number of milliseconds in <code>hours</code>
 	 */
 	@Pure
@@ -326,7 +326,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert hours to milliseconds.
 	 *
-	 * @param hours - number of hours to convert.
+	 * @param hours number of hours to convert.
 	 * @return the number of milliseconds in <code>hours</code>
 	 */
 	@Pure
@@ -337,7 +337,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert hours to milliseconds.
 	 *
-	 * @param hours - number of hours to convert.
+	 * @param hours number of hours to convert.
 	 * @return the number of milliseconds in <code>hours</code>
 	 */
 	@Pure
@@ -348,7 +348,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert hours to milliseconds.
 	 *
-	 * @param hours - number of hours to convert.
+	 * @param hours number of hours to convert.
 	 * @return the number of milliseconds in <code>hours</code>
 	 */
 	@Pure
@@ -359,7 +359,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert hours to milliseconds.
 	 *
-	 * @param hours - number of hours to convert.
+	 * @param hours number of hours to convert.
 	 * @return the number of milliseconds in <code>hours</code>
 	 */
 	@Pure
@@ -370,7 +370,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert hours to milliseconds.
 	 *
-	 * @param hours - number of hours to convert.
+	 * @param hours number of hours to convert.
 	 * @return the number of milliseconds in <code>hours</code>
 	 */
 	@Pure
@@ -381,7 +381,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert days to milliseconds.
 	 *
-	 * @param days - number of days to convert.
+	 * @param days number of days to convert.
 	 * @return the number of days in <code>days</code>
 	 */
 	@Pure
@@ -392,7 +392,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert days to milliseconds.
 	 *
-	 * @param days - number of days to convert.
+	 * @param days number of days to convert.
 	 * @return the number of days in <code>days</code>
 	 */
 	@Pure
@@ -403,7 +403,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert days to milliseconds.
 	 *
-	 * @param days - number of days to convert.
+	 * @param days number of days to convert.
 	 * @return the number of days in <code>days</code>
 	 */
 	@Pure
@@ -414,7 +414,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert days to milliseconds.
 	 *
-	 * @param days - number of days to convert.
+	 * @param days number of days to convert.
 	 * @return the number of days in <code>days</code>
 	 */
 	@Pure
@@ -425,7 +425,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert days to milliseconds.
 	 *
-	 * @param days - number of days to convert.
+	 * @param days number of days to convert.
 	 * @return the number of days in <code>days</code>
 	 */
 	@Pure
@@ -436,7 +436,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert days to milliseconds.
 	 *
-	 * @param days - number of days to convert.
+	 * @param days number of days to convert.
 	 * @return the number of days in <code>days</code>
 	 */
 	@Pure
@@ -447,7 +447,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert days to milliseconds.
 	 *
-	 * @param days - number of days to convert.
+	 * @param days number of days to convert.
 	 * @return the number of days in <code>days</code>
 	 */
 	@Pure
@@ -458,7 +458,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert weeks to milliseconds.
 	 *
-	 * @param weeks - number of weeks to convert.
+	 * @param weeks number of weeks to convert.
 	 * @return the number of milliseconds in <code>weeks</code>
 	 */
 	@Pure
@@ -469,7 +469,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert weeks to milliseconds.
 	 *
-	 * @param weeks - number of weeks to convert.
+	 * @param weeks number of weeks to convert.
 	 * @return the number of milliseconds in <code>weeks</code>
 	 */
 	@Pure
@@ -480,7 +480,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert weeks to milliseconds.
 	 *
-	 * @param weeks - number of weeks to convert.
+	 * @param weeks number of weeks to convert.
 	 * @return the number of milliseconds in <code>weeks</code>
 	 */
 	@Pure
@@ -491,7 +491,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert weeks to milliseconds.
 	 *
-	 * @param weeks - number of weeks to convert.
+	 * @param weeks number of weeks to convert.
 	 * @return the number of milliseconds in <code>weeks</code>
 	 */
 	@Pure
@@ -502,7 +502,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert weeks to milliseconds.
 	 *
-	 * @param weeks - number of weeks to convert.
+	 * @param weeks number of weeks to convert.
 	 * @return the number of milliseconds in <code>weeks</code>
 	 */
 	@Pure
@@ -513,7 +513,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert weeks to milliseconds.
 	 *
-	 * @param weeks - number of weeks to convert.
+	 * @param weeks number of weeks to convert.
 	 * @return the number of milliseconds in <code>weeks</code>
 	 */
 	@Pure
@@ -524,7 +524,7 @@ public final class SARLTimeExtensions {
 
 	/** Convert weeks to milliseconds.
 	 *
-	 * @param weeks - number of weeks to convert.
+	 * @param weeks number of weeks to convert.
 	 * @return the number of milliseconds in <code>weeks</code>
 	 */
 	@Pure

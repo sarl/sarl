@@ -113,7 +113,7 @@ public class AgentInternalEventsDispatcher {
 	 * behavior context. If the filter function replies {@code false}, the event is not fired in the behavior context.
 	 *
 	 * @param object object whose {@code PerceptGuardEvaluator} methods should be registered.
-	 * @param filter - the filter function. It could be {@code null}.
+	 * @param filter the filter function. It could be {@code null}.
 	 * @param callback function which is invoked just after the first registration of the object. It could be {@code null}.
 	 */
 	public void register(Object object, Function1<? super Event, ? extends Boolean> filter, Procedure1<? super Object> callback) {
@@ -153,7 +153,7 @@ public class AgentInternalEventsDispatcher {
 	 * This method will return successfully after the event has been posted to all {@code BehaviorGuardEvaluator}, and regardless
 	 * of any exceptions thrown by {@code BehaviorGuardEvaluator}.
 	 *
-	 * @param event - an event to dispatch synchronously.
+	 * @param event an event to dispatch synchronously.
 	 */
 	public void immediateDispatch(Event event) {
 		assert event != null;
@@ -191,8 +191,8 @@ public class AgentInternalEventsDispatcher {
 	 * This method will return successfully after the event has been posted to all {@code BehaviorGuardEvaluator}, and regardless
 	 * of any exceptions thrown by {@code BehaviorGuardEvaluator}.
 	 *
-	 * @param listener - the listener to dispatch to.
-	 * @param event - an event to dispatch synchronously.
+	 * @param listener the listener to dispatch to.
+	 * @param event an event to dispatch synchronously.
 	 */
 	public void immediateDispatchTo(Object listener, Event event) {
 		assert event != null;
@@ -230,7 +230,7 @@ public class AgentInternalEventsDispatcher {
 	 * This method will return successfully after the event has been posted to all {@code BehaviorGuardEvaluator}, and regardless
 	 * of any exceptions thrown by {@code BehaviorGuardEvaluator}.
 	 *
-	 * @param event - an event to dispatch asynchronously.
+	 * @param event an event to dispatch asynchronously.
 	 */
 	public void asyncDispatch(Event event) {
 		assert event != null;
@@ -261,8 +261,8 @@ public class AgentInternalEventsDispatcher {
 	 * Evaluate the guard associated to the specified {@code event} and returns the list of behaviors methods that must be
 	 * executed.
 	 *
-	 * @param event - the event triggering behaviors
-	 * @param behaviorGuardEvaluators - the list of class containing a {@code PerceptGuardEvaluator} method
+	 * @param event the event triggering behaviors
+	 * @param behaviorGuardEvaluators the list of class containing a {@code PerceptGuardEvaluator} method
 	 * @return the collection of couple associating a object and its collection of behavior methods that must be executed
 	 * @throws InvocationTargetException - exception when you try to execute a method by reflection and this method doesn't exist.
 	 */
@@ -299,7 +299,7 @@ public class AgentInternalEventsDispatcher {
 	 *
 	 * <p>This function may fail if one of the called handlers has failed. Errors are logged by the executor service too.
 	 *
-	 * @param behaviorsMethodsToExecute - the collection of Behaviors runnable that must be executed.
+	 * @param behaviorsMethodsToExecute the collection of Behaviors runnable that must be executed.
 	 * @throws InterruptedException - something interrupt the waiting of the event handler terminations.
 	 * @throws ExecutionException - when the event handlers cannot be called; or when one of the event handler has failed during
 	 *     its run.
@@ -369,7 +369,7 @@ public class AgentInternalEventsDispatcher {
 	 *
 	 * <p>This function never fails. Errors in the event handlers are logged by the executor service.
 	 *
-	 * @param behaviorsMethodsToExecute - the collection of Behaviors runnable that must be executed.
+	 * @param behaviorsMethodsToExecute the collection of Behaviors runnable that must be executed.
 	 */
 	private void executeAsynchronouslyBehaviorMethods(Collection<Runnable> behaviorsMethodsToExecute) {
 		for (final Runnable runnable : behaviorsMethodsToExecute) {

@@ -52,9 +52,9 @@ public abstract class AbstractNewSarlElementWizard extends NewElementWizard {
 	private final AbstractNewSarlElementWizardPage page;
 
 	/**
-	 * @param imgHelper - the helper for getting images.
-	 * @param page - the wizard page.
-	 * @param title - the title of the wizard.
+	 * @param imgHelper the helper for getting images.
+	 * @param page the wizard page.
+	 * @param title the title of the wizard.
 	 */
 	public AbstractNewSarlElementWizard(IImageDescriptorHelper imgHelper, AbstractNewSarlElementWizardPage page, String title) {
 		this.page = page;

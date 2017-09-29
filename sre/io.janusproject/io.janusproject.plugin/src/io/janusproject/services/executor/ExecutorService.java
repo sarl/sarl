@@ -57,7 +57,7 @@ public interface ExecutorService extends DependentService {
 	/**
 	 * Submit a task to the executor service.
 	 *
-	 * @param task - the task to submit.
+	 * @param task the task to submit.
 	 * @see #submit(Runnable) if you want a future.
 	 */
 	void execute(Runnable task);
@@ -84,9 +84,9 @@ public interface ExecutorService extends DependentService {
 	 *
 	 * <p>Caution: if a {@code task} is failing, the exception will be output as an uncaught exception.
 	 *
-	 * @param task - the task to submit.
-	 * @param nbExecutions - the number of times the task must be run, usually greater than 1.
-	 * @param runGroupSize - the number of tasks to be run by a single thread.
+	 * @param task the task to submit.
+	 * @param nbExecutions the number of times the task must be run, usually greater than 1.
+	 * @param runGroupSize the number of tasks to be run by a single thread.
 	 * @return the number of successful runs.
 	 * @throws InterruptedException when the function cannot wait for task termination.
 	 * @since 0.5
@@ -96,7 +96,7 @@ public interface ExecutorService extends DependentService {
 	/**
 	 * Submit a task to the executor service.
 	 *
-	 * @param task - the task to submit.
+	 * @param task the task to submit.
 	 * @return a Future representing the pending execution task.
 	 * @see #execute(Runnable) if you don't want a future.
 	 */
@@ -106,8 +106,8 @@ public interface ExecutorService extends DependentService {
 	 * Submit a task to the executor service. The Future's get method will return the given result upon successful completion.
 	 *
 	 * @param <T> - the type of the value replied by the task.
-	 * @param task - the task to submit.
-	 * @param result - result to return after the execution.
+	 * @param task the task to submit.
+	 * @param result result to return after the execution.
 	 * @return a Future representing the pending execution task.
 	 */
 	<T> Future<T> submit(Runnable task, T result);
@@ -116,7 +116,7 @@ public interface ExecutorService extends DependentService {
 	 * Submit a task to the executor service.
 	 *
 	 * @param <T> - the type of the value replied by the task.
-	 * @param task - the task to submit.
+	 * @param task the task to submit.
 	 * @return a Future representing the pending execution task.
 	 */
 	<T> Future<T> submit(Callable<T> task);
@@ -124,9 +124,9 @@ public interface ExecutorService extends DependentService {
 	/**
 	 * Schedule the given task.
 	 *
-	 * @param command - task to run
-	 * @param delay - delay for waiting before launching the command
-	 * @param unit - time unit of the delay
+	 * @param command task to run
+	 * @param delay delay for waiting before launching the command
+	 * @param unit time unit of the delay
 	 * @return a Future representing the pending execution task.
 	 */
 	ScheduledFuture<?> schedule(Runnable command, long delay, TimeUnit unit);
@@ -135,9 +135,9 @@ public interface ExecutorService extends DependentService {
 	 * Schedule the given task.
 	 *
 	 * @param <T> - the type of the value replied by the task.
-	 * @param command - task to run
-	 * @param delay - delay for waiting before launching the command
-	 * @param unit - time unit of the delay
+	 * @param command task to run
+	 * @param delay delay for waiting before launching the command
+	 * @param unit time unit of the delay
 	 * @return a Future representing the pending execution task.
 	 */
 	<T> ScheduledFuture<T> schedule(Callable<T> command, long delay, TimeUnit unit);
@@ -149,9 +149,9 @@ public interface ExecutorService extends DependentService {
 	 * will only terminate via cancellation or termination of the executor. If any execution of this task takes longer than its
 	 * period, then subsequent executions may start late, but will not concurrently execute.
 	 *
-	 * @param command - task to run
-	 * @param initialDelay - the time to delay first execution
-	 * @param period - the period between successive executions
+	 * @param command task to run
+	 * @param initialDelay the time to delay first execution
+	 * @param period the period between successive executions
 	 * @param unit è the time unit of the initialDelay and period parameters
 	 * @return a Future representing the pending execution task.
 	 */
@@ -163,10 +163,10 @@ public interface ExecutorService extends DependentService {
 	 * encounters an exception, subsequent executions are suppressed. Otherwise, the task will only terminate via cancellation or
 	 * termination of the executor.
 	 *
-	 * @param command - the task to execute
-	 * @param initialDelay - the time to delay first execution
-	 * @param delay - the delay between the termination of one execution and the start of the next
-	 * @param unit - the time unit of the initialDelay and delay parameters
+	 * @param command the task to execute
+	 * @param initialDelay the time to delay first execution
+	 * @param delay the delay between the termination of one execution and the start of the next
+	 * @param unit the time unit of the initialDelay and delay parameters
 	 * @return a ScheduledFuture representing pending completion of the task, and whose get() method will throw an exception upon
 	 *         cancellation
 	 */

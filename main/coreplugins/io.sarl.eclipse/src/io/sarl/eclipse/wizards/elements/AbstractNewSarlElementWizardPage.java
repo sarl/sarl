@@ -236,10 +236,10 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	private boolean hasSuperInterfaceField;
 
 	/**
-	 * @param typeKind - Signals the kind of the type to be created. Valid kinds are
+	 * @param typeKind Signals the kind of the type to be created. Valid kinds are
 	 * {@link NewTypeWizardPage#CLASS_TYPE}, {@link NewTypeWizardPage#INTERFACE_TYPE},
 	 * {@link NewTypeWizardPage#ENUM_TYPE} and {@link NewTypeWizardPage#ANNOTATION_TYPE}.
-	 * @param title - the title of the page.
+	 * @param title the title of the page.
 	 */
 	public AbstractNewSarlElementWizardPage(int typeKind, String title) {
 		super(typeKind, title);
@@ -275,7 +275,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 	/** Change the file extension used by this page.
 	 *
-	 * @param fileExtension - the file extension
+	 * @param fileExtension the file extension
 	 */
 	@Inject
 	public void setFileExtension(@Named(Constants.FILE_EXTENSIONS) String fileExtension) {
@@ -296,7 +296,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 	/** Change the resource where the created SARL element is located.
 	 *
-	 * @param resource - the resource of the created SARL element.
+	 * @param resource the resource of the created SARL element.
 	 */
 	protected void setResource(IResource resource) {
 		this.resource = resource;
@@ -340,8 +340,8 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 	/** Replies if the given filename is a SARL script or a generated Java file.
 	 *
-	 * @param packageFragment - the package in which the file should be search for.
-	 * @param filename - the filename to test.
+	 * @param packageFragment the package in which the file should be search for.
+	 * @param filename the filename to test.
 	 * @return <code>true</code> if a file (SALR or Java) with the given name exists.
 	 */
 	protected boolean isSarlFile(IPackageFragment packageFragment, String filename) {
@@ -367,9 +367,9 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 	/** Replies if the given filename is a SARL script in the given package.
 	 *
-	 * @param packageFragment - the package in which the file should be search for.
-	 * @param filename - the filename to test.
-	 * @param extension - the filename extension to search for.
+	 * @param packageFragment the package in which the file should be search for.
+	 * @param filename the filename to test.
+	 * @param extension the filename extension to search for.
 	 * @return <code>true</code> if a file (SARL or Java) with the given name exists.
 	 */
 	protected static boolean isFileExists(IPackageFragment packageFragment, String filename, String extension) {
@@ -440,7 +440,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 	/** Invoked by the wizard for initializing the page with the given selection.
 	 *
-	 * @param selection - the current selection.
+	 * @param selection the current selection.
 	 */
 	protected void init(IStructuredSelection selection) {
 		final IJavaElement elem = this.fieldInitializer.getSelectedResource(selection);
@@ -473,7 +473,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	/** Replies if the given type is a subtype of the expected super-type.
 	 * The expected super-type is replied by {@link #getRootSuperType()}.
 	 *
-	 * @param className - the name of the class to be tested.
+	 * @param className the name of the class to be tested.
 	 * @return <code>true</code> if the given name is the one of a subtype
 	 *     of the expected root type.
 	 * @throws JavaModelException if there is a problem for retreiving the Java information.
@@ -504,7 +504,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	/** Replies if the given type implements the expected super-interface.
 	 * The expected super-interface is replied by {@link #getRootSuperInterface()}.
 	 *
-	 * @param className - the name of the class to be tested.
+	 * @param className the name of the class to be tested.
 	 * @return <code>true</code> if the given name implements a type
 	 *     of the expected root type.
 	 * @throws JavaModelException if there is a problem for retreiving the Java information.
@@ -669,7 +669,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * <p>You should invoke this from the {@link #createControl(Composite)} of
 	 * the child class.
 	 *
-	 * @param parent - the component in which the common controls are added.
+	 * @param parent the component in which the common controls are added.
 	 * @return the created composite.
 	 */
 	protected Composite createCommonControls(Composite parent) {
@@ -697,7 +697,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 	/** Invoked to create the controls in the page.
 	 *
-	 * @param parent - the container of the controls.
+	 * @param parent the container of the controls.
 	 */
 	protected abstract void createPageControls(Composite parent);
 
@@ -839,7 +839,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 	/** Create the SARL type.
 	 *
-	 * @param monitor - the progression monitor.
+	 * @param monitor the progression monitor.
 	 * @return the size of the generated code.
 	 * @throws CoreException when the creation failed.
 	 * @throws InterruptedException when the operation was canceled.
@@ -984,12 +984,12 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 	/** Create the controls related to the behavior units to generate.
 	 *
-	 * @param composite - the container of the controls.
-	 * @param columns - the number of columns.
-	 * @param enableConstructors - indicates if the constructor creation is enable.
-	 * @param enableInherited - indicates if the inherited operation creation is enable.
-	 * @param defaultEvents - indicates if the default events will be generated.
-	 * @param lifecycleFunctions - indicates if the default lifecycle functions will be generated.
+	 * @param composite the container of the controls.
+	 * @param columns the number of columns.
+	 * @param enableConstructors indicates if the constructor creation is enable.
+	 * @param enableInherited indicates if the inherited operation creation is enable.
+	 * @param defaultEvents indicates if the default events will be generated.
+	 * @param lifecycleFunctions indicates if the default lifecycle functions will be generated.
 	 */
 	protected void createMethodStubControls(Composite composite, int columns,
 			boolean enableConstructors, boolean enableInherited, boolean defaultEvents,

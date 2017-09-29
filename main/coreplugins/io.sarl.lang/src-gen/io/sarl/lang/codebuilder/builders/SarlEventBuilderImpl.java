@@ -108,7 +108,7 @@ public class SarlEventBuilderImpl extends AbstractBuilder implements ISarlEventB
 	}
 
 	/** Change the super type.
-	 * @param superType - the qualified name of the super type,
+	 * @param superType the qualified name of the super type,
 	 *     or <code>null</code> if the default type.
 	 */
 	public void setExtends(String superType) {
@@ -125,7 +125,7 @@ public class SarlEventBuilderImpl extends AbstractBuilder implements ISarlEventB
 	}
 
 	/** Add a modifier.
-	 * @param modifier - the modifier to add.
+	 * @param modifier the modifier to add.
 	 */
 	public void addModifier(String modifier) {
 		if (!Strings.isEmpty(modifier)) {
@@ -149,7 +149,7 @@ public class SarlEventBuilderImpl extends AbstractBuilder implements ISarlEventB
 	private Provider<ISarlFieldBuilder> iSarlFieldBuilderProvider;
 
 	/** Create a SarlField.
-	 * @param name - the name of the SarlField.
+	 * @param name the name of the SarlField.
 	 * @return the builder.
 	 */
 	public ISarlFieldBuilder addVarSarlField(String name) {
@@ -159,7 +159,7 @@ public class SarlEventBuilderImpl extends AbstractBuilder implements ISarlEventB
 	}
 
 	/** Create a SarlField.
-	 * @param name - the name of the SarlField.
+	 * @param name the name of the SarlField.
 	 * @return the builder.
 	 */
 	public ISarlFieldBuilder addValSarlField(String name) {
@@ -170,7 +170,7 @@ public class SarlEventBuilderImpl extends AbstractBuilder implements ISarlEventB
 
 	/** Create a SarlField.	 *
 	 * <p>This function is equivalent to {@link #addVarSarlField}.
-	 * @param name - the name of the SarlField.
+	 * @param name the name of the SarlField.
 	 * @return the builder.
 	 */
 	public ISarlFieldBuilder addSarlField(String name) {

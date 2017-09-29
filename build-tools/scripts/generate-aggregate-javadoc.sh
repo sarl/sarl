@@ -24,4 +24,4 @@ done
 
 echo "Source Paths: ${SOURCE_PATH}"
 
-exec mvn -Dmaven.test.skip=true -Dcheckstyle.skip=true -DpublicSarlApiModuleSet=true -Dsourcepath=${SOURCE_PATH} clean compile org.arakhne.afc.maven:tag-replacer:generatereplacesrc javadoc:aggregate
+exec mvn -Dmaven.test.skip=true -Dcheckstyle.skip=true -DpublicSarlApiModuleSet=true -Dsourcepath=${SOURCE_PATH} clean install org.arakhne.afc.maven:tag-replacer:generatereplacesrc javadoc:aggregate

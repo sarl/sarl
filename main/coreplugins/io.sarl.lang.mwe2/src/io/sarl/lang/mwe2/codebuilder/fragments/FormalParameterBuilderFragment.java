@@ -334,9 +334,9 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 				}
 				it.append("\t/** Initialize the formal parameter."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @param context - the context of the formal parameter."); //$NON-NLS-1$
+				it.append("\t * @param context the context of the formal parameter."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @param name - the name of the formal parameter."); //$NON-NLS-1$
+				it.append("\t * @param name the name of the formal parameter."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();

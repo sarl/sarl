@@ -313,9 +313,9 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				}
 				it.append("\t/** Initialize the expression."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @param context - the context of the expressions."); //$NON-NLS-1$
+				it.append("\t * @param context the context of the expressions."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @param setter - the object that permits to assign the expression to the context."); //$NON-NLS-1$
+				it.append("\t * @param setter the object that permits to assign the expression to the context."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -413,7 +413,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t *"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @param expression - the textual representation of the expression."); //$NON-NLS-1$
+				it.append("\t * @param expression the textual representation of the expression."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -443,7 +443,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t *"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @param expression - the expression."); //$NON-NLS-1$
+				it.append("\t * @param expression the expression."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -611,7 +611,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.newLine();
 					it.append("\t *"); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @param expression - the textual representation of the expression."); //$NON-NLS-1$
+					it.append("\t * @param expression the textual representation of the expression."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t * @return the expression."); //$NON-NLS-1$
 					it.newLine();
@@ -697,7 +697,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t/** Replies the XExpression for the default value associated to the given type."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @param type - the type for which the default value should be determined."); //$NON-NLS-1$
+				it.append("\t * @param type the type for which the default value should be determined."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @return the default value."); //$NON-NLS-1$
 				it.newLine();
@@ -851,7 +851,7 @@ public class ExpressionBuilderFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t/** Replies the default value for the given type."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @param type - the type for which the default value should be determined."); //$NON-NLS-1$
+				it.append("\t * @param type the type for which the default value should be determined."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @return the default value."); //$NON-NLS-1$
 				it.newLine();

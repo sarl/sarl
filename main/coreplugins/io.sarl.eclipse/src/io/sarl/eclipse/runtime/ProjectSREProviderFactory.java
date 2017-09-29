@@ -37,7 +37,7 @@ public interface ProjectSREProviderFactory {
 	/** Replies a project SRE provider that may be
 	 * used for a specific purpose.
 	 *
-	 * @param project - the project for which the provider must be created.
+	 * @param project the project for which the provider must be created.
 	 * @return the project SRE provider.
 	 */
 	ProjectSREProvider getProjectSREProvider(IProject project);

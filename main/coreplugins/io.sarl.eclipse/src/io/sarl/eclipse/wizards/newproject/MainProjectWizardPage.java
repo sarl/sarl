@@ -377,7 +377,7 @@ public class MainProjectWizardPage extends WizardPage {
 	 * Returns the default class path entries to be added on new projects.
 	 * By default this is the JRE container as selected by the user.
 	 *
-	 * @param classpathEntries - the collection in which the classpath entries will be added.
+	 * @param classpathEntries the collection in which the classpath entries will be added.
 	 */
 	public void putDefaultClasspathEntriesIn(Collection<IClasspathEntry> classpathEntries) {
 		final IPath newPath = this.jreGroup.getJREContainerPath();
@@ -1394,8 +1394,8 @@ public class MainProjectWizardPage extends WizardPage {
 
 		/** Check the project name.
 		 *
-		 * @param workspace - the workspace.
-		 * @param name - name of the project.
+		 * @param workspace the workspace.
+		 * @param name name of the project.
 		 * @throws ValidationException if the name is invalid.
 		 */
 		private void checkProjectName(IWorkspace workspace, String name)  throws ValidationException {
@@ -1417,8 +1417,8 @@ public class MainProjectWizardPage extends WizardPage {
 
 		/** Check whether project already exists.
 		 *
-		 * @param workspace - the workspace.
-		 * @param name - name of the project.
+		 * @param workspace the workspace.
+		 * @param name name of the project.
 		 * @return the project.
 		 * @throws ValidationException if the project exists.
 		 */
@@ -1456,7 +1456,7 @@ public class MainProjectWizardPage extends WizardPage {
 		/**
 		 * Check whether the location is a syntactically correct path.
 		 *
-		 * @param location - the location to test.
+		 * @param location the location to test.
 		 * @return the project path.
 		 * @throws ValidationException if the location has invalid syntax.
 		 */
@@ -1492,9 +1492,9 @@ public class MainProjectWizardPage extends WizardPage {
 
 		/** Validate the project location.
 		 *
-		 * @param workspace - the workspace.
-		 * @param handle - the project.
-		 * @param projectPath - the project path.
+		 * @param workspace the workspace.
+		 * @param handle the project.
+		 * @param projectPath the project path.
 		 * @throws ValidationException if the location has invalid syntax.
 		 */
 		private void validateLocation(

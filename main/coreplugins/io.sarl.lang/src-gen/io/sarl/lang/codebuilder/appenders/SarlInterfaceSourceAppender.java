@@ -126,20 +126,20 @@ public class SarlInterfaceSourceAppender extends AbstractSourceAppender implemen
 	}
 
 	/** Add the super type.
-	 * @param superType - the qualified name of the super type.
+	 * @param superType the qualified name of the super type.
 	 */
 	public void addExtends(String superType) {
 		this.builder.addExtends(superType);	}
 
 	/** Add a modifier.
-	 * @param modifier - the modifier to add.
+	 * @param modifier the modifier to add.
 	 */
 	public void addModifier(String modifier) {
 		this.builder.addModifier(modifier);
 	}
 
 	/** Add a type parameter.
-	 * @param name - the simple name of the type parameter.
+	 * @param name the simple name of the type parameter.
 	 * @return the builder of type parameter.
 	 */
 	public ITypeParameterBuilder addTypeParameter(String name) {
@@ -147,7 +147,7 @@ public class SarlInterfaceSourceAppender extends AbstractSourceAppender implemen
 	}
 
 	/** Create a SarlField.
-	 * @param name - the name of the SarlField.
+	 * @param name the name of the SarlField.
 	 * @return the builder.
 	 */
 	public ISarlFieldBuilder addVarSarlField(String name) {
@@ -155,7 +155,7 @@ public class SarlInterfaceSourceAppender extends AbstractSourceAppender implemen
 	}
 
 	/** Create a SarlField.
-	 * @param name - the name of the SarlField.
+	 * @param name the name of the SarlField.
 	 * @return the builder.
 	 */
 	public ISarlFieldBuilder addValSarlField(String name) {
@@ -164,7 +164,7 @@ public class SarlInterfaceSourceAppender extends AbstractSourceAppender implemen
 
 	/** Create a SarlField.	 *
 	 * <p>This function is equivalent to {@link #addVarSarlField}.
-	 * @param name - the name of the SarlField.
+	 * @param name the name of the SarlField.
 	 * @return the builder.
 	 */
 	public ISarlFieldBuilder addSarlField(String name) {
@@ -172,7 +172,7 @@ public class SarlInterfaceSourceAppender extends AbstractSourceAppender implemen
 	}
 
 	/** Create a SarlAction.
-	 * @param name - the name of the SarlAction.
+	 * @param name the name of the SarlAction.
 	 * @return the builder.
 	 */
 	public ISarlActionBuilder addDefSarlAction(String name) {
@@ -180,7 +180,7 @@ public class SarlInterfaceSourceAppender extends AbstractSourceAppender implemen
 	}
 
 	/** Create a SarlAction.
-	 * @param name - the name of the SarlAction.
+	 * @param name the name of the SarlAction.
 	 * @return the builder.
 	 */
 	public ISarlActionBuilder addOverrideSarlAction(String name) {
@@ -189,7 +189,7 @@ public class SarlInterfaceSourceAppender extends AbstractSourceAppender implemen
 
 	/** Create a SarlAction.	 *
 	 * <p>This function is equivalent to {@link #addDefSarlAction}.
-	 * @param name - the name of the SarlAction.
+	 * @param name the name of the SarlAction.
 	 * @return the builder.
 	 */
 	public ISarlActionBuilder addSarlAction(String name) {
@@ -197,7 +197,7 @@ public class SarlInterfaceSourceAppender extends AbstractSourceAppender implemen
 	}
 
 	/** Create a SarlClass.
-	 * @param name - the name of the SarlClass.
+	 * @param name the name of the SarlClass.
 	 * @return the builder.
 	 */
 	public ISarlClassBuilder addSarlClass(String name) {
@@ -205,7 +205,7 @@ public class SarlInterfaceSourceAppender extends AbstractSourceAppender implemen
 	}
 
 	/** Create a SarlInterface.
-	 * @param name - the name of the SarlInterface.
+	 * @param name the name of the SarlInterface.
 	 * @return the builder.
 	 */
 	public ISarlInterfaceBuilder addSarlInterface(String name) {
@@ -213,7 +213,7 @@ public class SarlInterfaceSourceAppender extends AbstractSourceAppender implemen
 	}
 
 	/** Create a SarlEnumeration.
-	 * @param name - the name of the SarlEnumeration.
+	 * @param name the name of the SarlEnumeration.
 	 * @return the builder.
 	 */
 	public ISarlEnumerationBuilder addSarlEnumeration(String name) {
@@ -221,7 +221,7 @@ public class SarlInterfaceSourceAppender extends AbstractSourceAppender implemen
 	}
 
 	/** Create a SarlAnnotationType.
-	 * @param name - the name of the SarlAnnotationType.
+	 * @param name the name of the SarlAnnotationType.
 	 * @return the builder.
 	 */
 	public ISarlAnnotationTypeBuilder addSarlAnnotationType(String name) {

@@ -133,7 +133,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	/**
 	 * Test if the number of results provided by the Janus platform is equal to the given number.
 	 *
-	 * @param expected - the expected number of results.
+	 * @param expected the expected number of results.
 	 */
 	protected void assertNumberOfResults(int expected) {
 		assertEquals("Invalid number of results provided by the platform.", expected, this.results.size());
@@ -142,8 +142,8 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	/**
 	 * Replies result at the given index of the run of the agent.
 	 * 
-	 * @param type - the type of the result.
-	 * @param index - the index of the result.
+	 * @param type the type of the result.
+	 * @param index the index of the result.
 	 * @return the value; or <code>null</code> if no result.
 	 */
 	protected <T> T getResult(Class<T> type, int index) {
@@ -181,7 +181,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	/**
 	 * Replies the index of the first result of the given type.
 	 * 
-	 * @param type - the type of the result.
+	 * @param type the type of the result.
 	 * @return the index; or <code>-1</code> if not found.
 	 */
 	protected int indexOfResult(Class<?> type) {
@@ -191,8 +191,8 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	/**
 	 * Replies the index of the first result of the given type starting at the given index.
 	 * 
-	 * @param type - the type of the result.
-	 * @param fromIndex - the start index.
+	 * @param type the type of the result.
+	 * @param fromIndex the start index.
 	 * @return the index; or <code>-1</code> if not found.
 	 */
 	protected int indexOfResult(Class<?> type, int fromIndex) {
@@ -216,8 +216,8 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	 *
 	 * This function has no timeout for the end of the run.
 	 *
-	 * @param type - the type of the agent to launch at start-up.
-	 * @param enableLogging - indicates if the logging is enable or not.
+	 * @param type the type of the agent to launch at start-up.
+	 * @param enableLogging indicates if the logging is enable or not.
 	 * @throws Exception - if the kernel cannot be launched.
 	 */
 	protected void runJanus(Class<? extends TestingAgent> type, boolean enableLogging) throws Exception {
@@ -229,7 +229,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	 *
 	 * This function enables logging and has no timeout for the end of the run.
 	 * 
-	 * @param type - the type of the agent to launch at start-up.
+	 * @param type the type of the agent to launch at start-up.
 	 * @return the kernel.
 	 * @throws Exception - if the kernel cannot be launched.
 	 */
@@ -240,10 +240,10 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	/**
 	 * Start the Janus platform.
 	 * 
-	 * @param type - the type of the agent to launch at start-up.
-	 * @param enableLogging - indicates if the logging is enable or not.
-	 * @param offline - indicates if the Janus platform is offline
-	 * @param timeout - the maximum waiting time in seconds, or <code>-1</code> to ignore the timeout.
+	 * @param type the type of the agent to launch at start-up.
+	 * @param enableLogging indicates if the logging is enable or not.
+	 * @param offline indicates if the Janus platform is offline
+	 * @param timeout the maximum waiting time in seconds, or <code>-1</code> to ignore the timeout.
 	 *     See {@link #STANDARD_TIMEOUT}, {@link #EXTRA_TIMEOUT} or {@link #NO_TIMEOUT}.
 	 * @throws Exception - if the kernel cannot be launched.
 	 */
@@ -256,9 +256,9 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	/**
 	 * Set-up the Janus platform.
 	 * 
-	 * @param type - the type of the agent to launch at start-up.
-	 * @param enableLogging - indicates if the logging is enable or not.
-	 * @param offline - indicates if the Janus platform is offline
+	 * @param type the type of the agent to launch at start-up.
+	 * @param enableLogging indicates if the logging is enable or not.
+	 * @param offline indicates if the Janus platform is offline
 	 * @return the kernel.
 	 * @throws Exception - if the kernel cannot be launched.
 	 */
@@ -301,7 +301,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	/**
 	 * Wait for the end of the Janus platform.
 	 * 
-	 * @param timeout - the maximum waiting time in seconds, or <code>-1</code> to ignore the timeout.
+	 * @param timeout the maximum waiting time in seconds, or <code>-1</code> to ignore the timeout.
 	 *     See {@link #STANDARD_TIMEOUT}, {@link #EXTRA_TIMEOUT} or {@link #NO_TIMEOUT}.
 	 * @throws Exception - if the kernel cannot be launched.
 	 */
@@ -326,7 +326,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	/**
 	 * Wait for the end of the Janus platform.
 	 * 
-	 * @param timeout - the maximum waiting time in seconds, or <code>-1</code> to ignore the timeout.
+	 * @param timeout the maximum waiting time in seconds, or <code>-1</code> to ignore the timeout.
 	 *     See {@link #STANDARD_TIMEOUT}, {@link #EXTRA_TIMEOUT} or {@link #NO_TIMEOUT}.
 	 * @param predicate the predicate to use as stop condition.
 	 * @throws Exception - if the kernel cannot be launched.
@@ -393,17 +393,17 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 		private Object[] initializationParameters;
 
 		/**
-		 * @param provider - the provider of builtin capacities.
-		 * @param parentID - the identifier of the parent's agent.
-		 * @param agentID - the identifier of the agent.
+		 * @param provider the provider of builtin capacities.
+		 * @param parentID the identifier of the parent's agent.
+		 * @param agentID the identifier of the agent.
 		 */
 		public TestingAgent(BuiltinCapacitiesProvider provider, UUID parentID, UUID agentID) {
 			super(provider, parentID, agentID);
 		}
 
 		/**
-		 * @param parentID - the identifier of the parent's agent.
-		 * @param agentID - the identifier of the agent.
+		 * @param parentID the identifier of the parent's agent.
+		 * @param agentID the identifier of the agent.
 		 */
 		public TestingAgent(UUID parentID, UUID agentID) {
 			super(parentID, agentID);
@@ -412,7 +412,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 		/**
 		 * Add a result.
 		 * 
-		 * @param result - the result.
+		 * @param result the result.
 		 */
 		protected synchronized void addResult(Object result) {
 			this.results.add(result);
@@ -430,7 +430,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 		/**
 		 * Add a result.
 		 * 
-		 * @param result - the result.
+		 * @param result the result.
 		 */
 		protected synchronized void addResults(Collection<?> results) {
 			this.results.addAll(results);
@@ -465,7 +465,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 		/**
 		 * Invoked at the start of the agent.
 		 * 
-		 * @param occurrence - the initialization event.
+		 * @param occurrence the initialization event.
 		 */
 		private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
 			this.initializationParameters = occurrence.parameters;

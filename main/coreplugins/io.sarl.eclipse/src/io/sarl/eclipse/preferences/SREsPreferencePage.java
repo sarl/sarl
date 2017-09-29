@@ -181,7 +181,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 
 	/** Set the error message from the given exception.
 	 *
-	 * @param exception - the exception to log.
+	 * @param exception the exception to log.
 	 */
 	public void setErrorMessage(Throwable exception) {
 		if (exception != null) {
@@ -370,7 +370,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	/**
 	 * Sets the SREs to be displayed in this block.
 	 *
-	 * @param sres - SREs to be displayed
+	 * @param sres SREs to be displayed
 	 */
 	protected void setSREs(ISREInstall[] sres) {
 		this.sreArray.clear();
@@ -423,7 +423,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	 * Compares the given name against current names and adds the appropriate numerical
 	 * suffix to ensure that it is unique.
 	 *
-	 * @param name - the name with which to ensure uniqueness.
+	 * @param name the name with which to ensure uniqueness.
 	 * @return the unique version of the given name.
 	 */
 	public String createUniqueName(String name) {
@@ -541,7 +541,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	/**
 	 * Removes the given SREs from the table.
 	 *
-	 * @param sres - the SREs to remove.
+	 * @param sres the SREs to remove.
 	 */
 	@SuppressWarnings("checkstyle:npathcomplexity")
 	public void removeSREs(ISREInstall... sres) {
@@ -696,7 +696,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	/**
 	 * Restores the column widths from dialog settings.
 	 *
-	 * @param settings - the settings to read.
+	 * @param settings the settings to read.
 	 */
 	private void restoreColumnWidths(IDialogSettings settings) {
 		final int columnCount = this.sreTable.getColumnCount();
@@ -720,7 +720,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	 * Restore table settings from the given dialog store using the
 	 * given key.
 	 *
-	 * @param settings - dialog settings store
+	 * @param settings dialog settings store
 	 */
 	private void restoreColumnSettings(IDialogSettings settings) {
 		this.sresList.getTable().layout(true);
@@ -757,7 +757,7 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	/**
 	 * Sets the default SRE, possible <code>null</code>.
 	 *
-	 * @param sre - the SRE or <code>null</code>
+	 * @param sre the SRE or <code>null</code>
 	 */
 	public void setDefaultSRE(ISREInstall sre) {
 		if (sre == null) {

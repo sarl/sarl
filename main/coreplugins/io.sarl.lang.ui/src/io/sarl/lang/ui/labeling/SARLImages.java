@@ -62,11 +62,11 @@ public class SARLImages extends XtendImages {
 
 	/** Replies the image descriptor for the given element.
 	 *
-	 * @param type - the type of the SARL element, or <code>null</code> if unknown.
-	 * @param isInner - indicates if the element is inner.
-	 * @param isInInterfaceOrAnnotation - indicates if the element is defined inside an interface or an annotation.
-	 * @param flags - the adornments.
-	 * @param useLightIcons - indicates of light icons should be used.
+	 * @param type the type of the SARL element, or <code>null</code> if unknown.
+	 * @param isInner indicates if the element is inner.
+	 * @param isInInterfaceOrAnnotation indicates if the element is defined inside an interface or an annotation.
+	 * @param flags the adornments.
+	 * @param useLightIcons indicates of light icons should be used.
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor getTypeImageDescriptor(
@@ -80,8 +80,8 @@ public class SARLImages extends XtendImages {
 
 	/** Replies the image descriptor for the given element.
 	 *
-	 * @param type - the type of the SARL element, or <code>null</code> if unknown.
-	 * @param isInner - indicates if the element is inner.
+	 * @param type the type of the SARL element, or <code>null</code> if unknown.
+	 * @param isInner indicates if the element is inner.
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor getTypeImageDescriptor(
@@ -92,9 +92,9 @@ public class SARLImages extends XtendImages {
 
 	/** Replies the image descriptor for the given element.
 	 *
-	 * @param type - the type of the SARL element, or <code>null</code> if unknown.
-	 * @param isInner - indicates if the element is inner.
-	 * @param flags - the adornments.
+	 * @param type the type of the SARL element, or <code>null</code> if unknown.
+	 * @param isInner indicates if the element is inner.
+	 * @param flags the adornments.
 	 * @return the image descriptor.
 	 */
 	public ImageDescriptor getTypeImageDescriptor(
@@ -106,8 +106,8 @@ public class SARLImages extends XtendImages {
 
 	/** Replies the image descriptor for the "agents".
 	 *
-	 * @param visibility - the visibility of the agent.
-	 * @param flags - the mark flags. See {@link JavaElementImageDescriptor#setAdornments(int)} for
+	 * @param visibility the visibility of the agent.
+	 * @param flags the mark flags. See {@link JavaElementImageDescriptor#setAdornments(int)} for
 	 *                a description of the available flags.
 	 * @return the image descriptor for the agents.
 	 */
@@ -118,8 +118,8 @@ public class SARLImages extends XtendImages {
 
 	/** Replies the image descriptor for the "behaviors".
 	 *
-	 * @param visibility - the visibility of the behavior.
-	 * @param flags - the mark flags. See {@link JavaElementImageDescriptor#setAdornments(int)} for
+	 * @param visibility the visibility of the behavior.
+	 * @param flags the mark flags. See {@link JavaElementImageDescriptor#setAdornments(int)} for
 	 *                a description of the available flags.
 	 * @return the image descriptor for the behaviors.
 	 */
@@ -130,8 +130,8 @@ public class SARLImages extends XtendImages {
 
 	/** Replies the image descriptor for the "capacities".
 	 *
-	 * @param visibility - the visibility of the capacity.
-	 * @param flags - the mark flags. See {@link JavaElementImageDescriptor#setAdornments(int)} for
+	 * @param visibility the visibility of the capacity.
+	 * @param flags the mark flags. See {@link JavaElementImageDescriptor#setAdornments(int)} for
 	 *                a description of the available flags.
 	 * @return the image descriptor for the capacities.
 	 */
@@ -142,8 +142,8 @@ public class SARLImages extends XtendImages {
 
 	/** Replies the image descriptor for the "skills".
 	 *
-	 * @param visibility - the visibility of the skill.
-	 * @param flags - the mark flags. See {@link JavaElementImageDescriptor#setAdornments(int)} for
+	 * @param visibility the visibility of the skill.
+	 * @param flags the mark flags. See {@link JavaElementImageDescriptor#setAdornments(int)} for
 	 *                a description of the available flags.
 	 * @return the image descriptor for the skills.
 	 */
@@ -154,8 +154,8 @@ public class SARLImages extends XtendImages {
 
 	/** Replies the image descriptor for the "events".
 	 *
-	 * @param visibility - the visibility of the event.
-	 * @param flags - the mark flags. See {@link JavaElementImageDescriptor#setAdornments(int)} for
+	 * @param visibility the visibility of the event.
+	 * @param flags the mark flags. See {@link JavaElementImageDescriptor#setAdornments(int)} for
 	 *                a description of the available flags.
 	 * @return the image descriptor for the events.
 	 */

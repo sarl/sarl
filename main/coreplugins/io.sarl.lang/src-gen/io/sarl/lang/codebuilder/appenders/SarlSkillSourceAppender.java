@@ -121,21 +121,21 @@ public class SarlSkillSourceAppender extends AbstractSourceAppender implements I
 	}
 
 	/** Change the super type.
-	 * @param superType - the qualified name of the super type,
+	 * @param superType the qualified name of the super type,
 	 *     or <code>null</code> if the default type.
 	 */
 	public void setExtends(String superType) {
 		this.builder.setExtends(superType);	}
 
 	/** Add an implemented type.
-	 * @param type - the qualified name of the implemented type.
+	 * @param type the qualified name of the implemented type.
 	 */
 	public void addImplements(String type) {
 		this.builder.addImplements(type);
 	}
 
 	/** Add a modifier.
-	 * @param modifier - the modifier to add.
+	 * @param modifier the modifier to add.
 	 */
 	public void addModifier(String modifier) {
 		this.builder.addModifier(modifier);
@@ -149,7 +149,7 @@ public class SarlSkillSourceAppender extends AbstractSourceAppender implements I
 	}
 
 	/** Create a SarlBehaviorUnit.
-	 * @param name - the type of the SarlBehaviorUnit.
+	 * @param name the type of the SarlBehaviorUnit.
 	 * @return the builder.
 	 */
 	public ISarlBehaviorUnitBuilder addSarlBehaviorUnit(String name) {
@@ -157,7 +157,7 @@ public class SarlSkillSourceAppender extends AbstractSourceAppender implements I
 	}
 
 	/** Create a SarlField.
-	 * @param name - the name of the SarlField.
+	 * @param name the name of the SarlField.
 	 * @return the builder.
 	 */
 	public ISarlFieldBuilder addVarSarlField(String name) {
@@ -165,7 +165,7 @@ public class SarlSkillSourceAppender extends AbstractSourceAppender implements I
 	}
 
 	/** Create a SarlField.
-	 * @param name - the name of the SarlField.
+	 * @param name the name of the SarlField.
 	 * @return the builder.
 	 */
 	public ISarlFieldBuilder addValSarlField(String name) {
@@ -174,7 +174,7 @@ public class SarlSkillSourceAppender extends AbstractSourceAppender implements I
 
 	/** Create a SarlField.	 *
 	 * <p>This function is equivalent to {@link #addVarSarlField}.
-	 * @param name - the name of the SarlField.
+	 * @param name the name of the SarlField.
 	 * @return the builder.
 	 */
 	public ISarlFieldBuilder addSarlField(String name) {
@@ -182,7 +182,7 @@ public class SarlSkillSourceAppender extends AbstractSourceAppender implements I
 	}
 
 	/** Create a SarlAction.
-	 * @param name - the name of the SarlAction.
+	 * @param name the name of the SarlAction.
 	 * @return the builder.
 	 */
 	public ISarlActionBuilder addDefSarlAction(String name) {
@@ -190,7 +190,7 @@ public class SarlSkillSourceAppender extends AbstractSourceAppender implements I
 	}
 
 	/** Create a SarlAction.
-	 * @param name - the name of the SarlAction.
+	 * @param name the name of the SarlAction.
 	 * @return the builder.
 	 */
 	public ISarlActionBuilder addOverrideSarlAction(String name) {
@@ -199,7 +199,7 @@ public class SarlSkillSourceAppender extends AbstractSourceAppender implements I
 
 	/** Create a SarlAction.	 *
 	 * <p>This function is equivalent to {@link #addDefSarlAction}.
-	 * @param name - the name of the SarlAction.
+	 * @param name the name of the SarlAction.
 	 * @return the builder.
 	 */
 	public ISarlActionBuilder addSarlAction(String name) {
@@ -207,7 +207,7 @@ public class SarlSkillSourceAppender extends AbstractSourceAppender implements I
 	}
 
 	/** Create a SarlClass.
-	 * @param name - the name of the SarlClass.
+	 * @param name the name of the SarlClass.
 	 * @return the builder.
 	 */
 	public ISarlClassBuilder addSarlClass(String name) {
@@ -215,7 +215,7 @@ public class SarlSkillSourceAppender extends AbstractSourceAppender implements I
 	}
 
 	/** Create a SarlInterface.
-	 * @param name - the name of the SarlInterface.
+	 * @param name the name of the SarlInterface.
 	 * @return the builder.
 	 */
 	public ISarlInterfaceBuilder addSarlInterface(String name) {
@@ -223,7 +223,7 @@ public class SarlSkillSourceAppender extends AbstractSourceAppender implements I
 	}
 
 	/** Create a SarlEnumeration.
-	 * @param name - the name of the SarlEnumeration.
+	 * @param name the name of the SarlEnumeration.
 	 * @return the builder.
 	 */
 	public ISarlEnumerationBuilder addSarlEnumeration(String name) {
@@ -231,7 +231,7 @@ public class SarlSkillSourceAppender extends AbstractSourceAppender implements I
 	}
 
 	/** Create a SarlAnnotationType.
-	 * @param name - the name of the SarlAnnotationType.
+	 * @param name the name of the SarlAnnotationType.
 	 * @return the builder.
 	 */
 	public ISarlAnnotationTypeBuilder addSarlAnnotationType(String name) {
@@ -239,14 +239,14 @@ public class SarlSkillSourceAppender extends AbstractSourceAppender implements I
 	}
 
 	/** Create a SarlCapacityUses.
-	 * @param name - the types referenced by the SarlCapacityUses.
+	 * @param name the types referenced by the SarlCapacityUses.
 	 */
 	public void addSarlCapacityUses(String... name) {
 		this.builder.addSarlCapacityUses(name);
 	}
 
 	/** Create a SarlRequiredCapacity.
-	 * @param name - the types referenced by the SarlRequiredCapacity.
+	 * @param name the types referenced by the SarlRequiredCapacity.
 	 */
 	public void addSarlRequiredCapacity(String... name) {
 		this.builder.addSarlRequiredCapacity(name);

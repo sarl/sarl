@@ -40,7 +40,7 @@ public interface EventSpace extends Space {
 	/**
 	 * Returns the address of the agent identified by <code>id</code>.
 	 *
-	 * @param id - the agent's id.
+	 * @param id the agent's id.
 	 * @return the agent's address in this space.
 	 */
 	@Pure
@@ -57,8 +57,8 @@ public interface EventSpace extends Space {
 	 * agent depends on the capabilities of the run-time platform. Usually, it is the
 	 * agent that is the cause of the emit.
 	 *
-	 * @param event - the event to emit in the space.
-	 * @param scope - the definition of the list of receivers of the event.
+	 * @param event the event to emit in the space.
+	 * @param scope the definition of the list of receivers of the event.
 	 * @deprecated see {@link #emit(UUID, Event, Scope)}, since 0.6
 	 */
 	@Deprecated
@@ -77,7 +77,7 @@ public interface EventSpace extends Space {
 	 * agent depends on the capabilities of the run-time platform. Usually, it is the
 	 * agent that is the cause of the emit.
 	 *
-	 * @param event - the event to emit in the space.
+	 * @param event the event to emit in the space.
 	 * @deprecated see {@link #emit(UUID, Event)}, since 0.6
 	 */
 	@Inline(value = "emit(null, $1, null)")
@@ -95,9 +95,9 @@ public interface EventSpace extends Space {
 	 * <p>If the given event has no specified source, the emit function uses the
 	 * {@code eventSource} parameter to set the source's address.
 	 *
-	 * @param eventSource - the sender of the event.
-	 * @param event - the event to emit in the space.
-	 * @param scope - the definition of the list of receivers of the event.
+	 * @param eventSource the sender of the event.
+	 * @param event the event to emit in the space.
+	 * @param scope the definition of the list of receivers of the event.
 	 * @since 0.6
 	 */
 	void emit(UUID eventSource, Event event, Scope<Address> scope);
@@ -110,8 +110,8 @@ public interface EventSpace extends Space {
 	 * <p>If the given event has no specified source, the emit function uses the
 	 * {@code eventSource} parameter to set the source's address.
 	 *
-	 * @param eventSource - the sender of the event.
-	 * @param event - the event to emit in the space.
+	 * @param eventSource the sender of the event.
+	 * @param event the event to emit in the space.
 	 * @since 0.6
 	 */
 	@Inline(value = "emit($1, $2, null)")

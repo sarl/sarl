@@ -28,8 +28,7 @@
 		<sarl.version>0.7.0-SNAPSHOT</sarl.version>
 		<janus.version>2.${sarl.version}</janus.version>
 
-		<!-- The versions of the following Xtext libraries are available at:
- 		     https://eclipse.org/Xtext/documentation/350_continuous_integration.html -->
+		<!-- The versions of the following Xtext libraries are available at: https://eclipse.org/Xtext/documentation/350_continuous_integration.html -->
 
 		<!-- Version of the Xtext API -->
 		<xtext.version>2.12.0</xtext.version>
@@ -38,7 +37,7 @@
 		<mwe2.version>2.9.0</mwe2.version>
 		<!-- Version of the Xpand library (used for accessing the Xpand P2) -->
 		<xpand.version>R201605260315</xpand.version>
-		
+
 		<!-- Version of the OSGi module that provides the NLS (package: osgi) -->
 		<osgi.nls.version>3.10.0-v20140606-1445</osgi.nls.version>
 		<!-- Version of the Arakhne Foundation classes -->
@@ -658,20 +657,24 @@
 					<artifactId>maven-javadoc-plugin</artifactId>
 					<version>3.0.0-M1</version>
 					<configuration>
+						<doclet>io.sarl.docs.doclet.SarlDoclet</doclet>
+						<docletArtifact>
+							<groupId>io.sarl.docs</groupId>
+							<artifactId>io.sarl.docs.doclet</artifactId>
+							<version>${sarl.version}</version>
+						</docletArtifact>
 						<docencoding>${project.build.sourceEncoding}</docencoding>
 						<encoding>${project.build.sourceEncoding}</encoding>
 						<charset>${project.build.sourceEncoding}</charset>
 						<show>protected</show>
-						<detectLinks>true</detectLinks>
 						<detectJavaApiLink>true</detectJavaApiLink>
+						<links>
+							<link>http://download.eclipse.org/modeling/tmf/xtext/javadoc/2.9/</link>
+						</links>
 						<docfilessubdirs>true</docfilessubdirs>
 						<excludePackageNames></excludePackageNames>
-						<breakiterator>true</breakiterator>
-						<version>true</version>
-						<author>true</author>
-						<keywords>true</keywords>
-						<useStandardDocletOptions>true</useStandardDocletOptions>
-						<excludePackageNames></excludePackageNames>
+						<nohelp>true</nohelp>
+						<notree>true</notree>
 						<bottom>&lt;small&gt;Copyright &amp;copy; ${year}
 							${copyrighters}.
 						</bottom>
@@ -721,6 +724,10 @@
 							</tag>
 							<tag>
 								<name>optionalparam</name>
+								<placement>X</placement>
+							</tag>
+							<tag>
+								<name>ExcludeFromApidoc</name>
 								<placement>X</placement>
 							</tag>
 						</tags>

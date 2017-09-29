@@ -42,7 +42,7 @@ public interface EventSerializer {
 	/**
 	 * Serialize the given event.
 	 *
-	 * @param dispatch - event to serialize.
+	 * @param dispatch event to serialize.
 	 * @return the envelope with the serialized event.
 	 * @throws Exception - if error when serializing
 	 */
@@ -51,7 +51,7 @@ public interface EventSerializer {
 	/**
 	 * Deserialize the given envelope to obtain an event.
 	 *
-	 * @param envelope - envelope to deserialize.
+	 * @param envelope envelope to deserialize.
 	 * @return the dispatched event.
 	 * @throws Exception - if error when deserializing
 	 */
@@ -60,7 +60,7 @@ public interface EventSerializer {
 	/**
 	 * Serialize the given identifier of context.
 	 *
-	 * @param id - identifier ti serialize.
+	 * @param id identifier ti serialize.
 	 * @return the byte-representation of the given identifier.
 	 * @throws Exception - if error when serializing
 	 */

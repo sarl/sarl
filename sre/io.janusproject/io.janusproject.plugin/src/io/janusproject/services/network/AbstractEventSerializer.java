@@ -42,7 +42,7 @@ public abstract class AbstractEventSerializer implements EventSerializer {
 	/**
 	 * Constructs an AbstractEventSerializer.
 	 *
-	 * @param encrypter - the object that permits to encrypt the events.
+	 * @param encrypter the object that permits to encrypt the events.
 	 */
 	public AbstractEventSerializer(EventEncrypter encrypter) {
 		this.encrypter = encrypter;

@@ -39,10 +39,10 @@ public class InferredValuedParameter extends InferredStandardParameter {
 	protected final String argument;
 
 	/**
-	 * @param source - the original parameter.
-	 * @param name - the name of the formal parameter.
-	 * @param type - the type of the formal parameter.
-	 * @param argument - the value of the calling argument for the formal parameter.
+	 * @param source the original parameter.
+	 * @param name the name of the formal parameter.
+	 * @param type the type of the formal parameter.
+	 * @param argument the value of the calling argument for the formal parameter.
 	 */
 	public InferredValuedParameter(EObject source, String name, JvmTypeReference type, String argument) {
 		super(source, name, type);

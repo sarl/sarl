@@ -428,11 +428,11 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 				}
 				it.append("\t/** Initialize the Ecore element."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @param container - the container of the " //$NON-NLS-1$
+				it.append("\t * @param container the container of the " //$NON-NLS-1$
 						+ description.getElementDescription().getName() + "."); //$NON-NLS-1$
 				it.newLine();
 				if (hasName.get()) {
-					it.append("\t * @param name - the "); //$NON-NLS-1$
+					it.append("\t * @param name the "); //$NON-NLS-1$
 					if (hasTypeName.get()) {
 						it.append("type"); //$NON-NLS-1$
 					} else {
@@ -832,7 +832,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 				for (String expressionName : expressions) {
 					it.append("\t/** Change the " + expressionName + "."); //$NON-NLS-1$ //$NON-NLS-2$
 					it.newLine();
-					it.append("\t * @param value - the value of the "); //$NON-NLS-1$
+					it.append("\t * @param value the value of the "); //$NON-NLS-1$
 					it.append(expressionName);
 					it.append(". It may be <code>null</code>."); //$NON-NLS-1$
 					it.newLine();
@@ -994,7 +994,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 				if (hasModifiers.get()) {
 					it.append("\t/** Add a modifier."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @param modifier - the modifier to add."); //$NON-NLS-1$
+					it.append("\t * @param modifier the modifier to add."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
@@ -1067,7 +1067,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 					}
 					it.append("\t/** Add a type parameter."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @param name - the simple name of the type parameter."); //$NON-NLS-1$
+					it.append("\t * @param name the simple name of the type parameter."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t * @return the builder of type parameter."); //$NON-NLS-1$
 					it.newLine();

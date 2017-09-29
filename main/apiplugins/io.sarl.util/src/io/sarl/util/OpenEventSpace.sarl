@@ -45,7 +45,7 @@ interface OpenEventSpace extends EventSpace {
 	 *
 	 * <p>If the agent is already registered the address is return, but the listener is not replaced.
 	 *
-	 * @param entity - the entity to register.
+	 * @param entity the entity to register.
 	 * @return the entity's address in this space
 	 */
 	def register(entity : EventListener) : Address
@@ -55,7 +55,7 @@ interface OpenEventSpace extends EventSpace {
 	 * Before unregistering an agent, the Space should emit a MemberLeft
 	 * event where the source is the address of the unregistered agent.
 	 *
-	 * @param entity - the entity to unregister.
+	 * @param entity the entity to unregister.
 	 * @return the former entity's address
 	 */
 	def unregister(entity : EventListener) : Address

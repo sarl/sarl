@@ -103,7 +103,7 @@ public class SarlSpaceBuilderImpl extends AbstractBuilder implements ISarlSpaceB
 	}
 
 	/** Add a modifier.
-	 * @param modifier - the modifier to add.
+	 * @param modifier the modifier to add.
 	 */
 	public void addModifier(String modifier) {
 		if (!Strings.isEmpty(modifier)) {

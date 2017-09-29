@@ -76,7 +76,7 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 	private ClearableReference<Skill> skillBufferBehaviors;
 
 	/**
-	 * @param agent - owner of the skill.
+	 * @param agent owner of the skill.
 	 */
 	ExternalContextAccessSkill(Agent agent) {
 		super(agent);
@@ -180,8 +180,8 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 	 * Fires an {@link ContextJoined} event into the Inner Context default space of the owner agent to notify behaviors/members
 	 * that a new context has been joined.
 	 *
-	 * @param futureContext - ID of the newly joined context
-	 * @param futureContextDefaultSpaceID - ID of the default space of the newly joined context
+	 * @param futureContext ID of the newly joined context
+	 * @param futureContextDefaultSpaceID ID of the default space of the newly joined context
 	 */
 	protected final void fireContextJoined(UUID futureContext, UUID futureContextDefaultSpaceID) {
 		getBehaviorsSkill().wake(new ContextJoined(futureContext, futureContextDefaultSpaceID));
@@ -191,7 +191,7 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 	 * Fires an {@link MemberJoined} event into the newly joined parent Context default space to notify other context's members
 	 * that a new agent joined this context.
 	 *
-	 * @param newJoinedContext - the newly joined context to notify its members
+	 * @param newJoinedContext the newly joined context to notify its members
 	 */
 	protected final void fireMemberJoined(AgentContext newJoinedContext) {
 		final EventSpace defSpace = newJoinedContext.getDefaultSpace();
@@ -227,7 +227,7 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 	 * Fires an {@link ContextLeft} event into the Inner Context Default space of the owner agent to notify behaviors/members that
 	 * the specified context has been left.
 	 *
-	 * @param contextID - the ID of context that will be left
+	 * @param contextID the ID of context that will be left
 	 */
 	protected final void fireContextLeft(UUID contextID) {
 		getBehaviorsSkill().wake(new ContextLeft(contextID));
@@ -237,7 +237,7 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 	 * Fires an {@link MemberLeft} event into the default space of the Context that will be left to notify other context's members
 	 * that an agent has left this context.
 	 *
-	 * @param leftContext - the context that will be left
+	 * @param leftContext the context that will be left
 	 */
 	protected final void fireMemberLeft(AgentContext leftContext) {
 		final EventSpace defSpace = leftContext.getDefaultSpace();

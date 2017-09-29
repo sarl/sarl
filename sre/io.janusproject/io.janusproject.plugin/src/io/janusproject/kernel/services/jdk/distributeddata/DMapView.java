@@ -44,8 +44,8 @@ public class DMapView<K, V> extends AbstractDMapView<K, V> {
 	private final Map<K, V> map;
 
 	/**
-	 * @param name - the name of the map.
-	 * @param map - the underground map to use.
+	 * @param name the name of the map.
+	 * @param map the underground map to use.
 	 */
 	public DMapView(String name, Map<K, V> map) {
 		super(name);

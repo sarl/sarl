@@ -45,7 +45,7 @@ import io.sarl.lang.core.Scope
 	val identifiers : UUID[]
 
 	/**
-	 * @param ids - identifiers to put in the scope.
+	 * @param ids identifiers to put in the scope.
 	 */
 	new (ids : UUID*) {
 		if (ids === null) {

@@ -318,9 +318,9 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 	/** Explore the grammar for extracting the key elements.
 	 *
 	 * @param grammar the grammar to explore.
-	 * @param expressionKeywords - the SARL keywords, usually within expressions.
-	 * @param modifiers - the modifier keywords.
-	 * @param primitiveTypes - the primitive types.
+	 * @param expressionKeywords the SARL keywords, usually within expressions.
+	 * @param modifiers the modifier keywords.
+	 * @param primitiveTypes the primitive types.
 	 * @param punctuation the set of detected punctuation symbols.
 	 * @param literals the set of detected literals.
 	 * @param excludedKeywords the set of given excluded keywords.
@@ -463,14 +463,14 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 
 	/** Generate the external specification.
 	 *
-	 * @param literals - the SARL literals.
-	 * @param expressionKeywords - the SARL keywords, usually within expressions.
-	 * @param modifiers - the modifier keywords.
-	 * @param primitiveTypes - the primitive types.
-	 * @param punctuation - the SARL punctuation symbols.
-	 * @param ignored - the ignored literals (mostly for information).
-	 * @param specialKeywords - the keywords that are marked as special. They are also in {@code keywords}.
-	 * @param typeDeclarationKeywords - the keywords that are marked as type declaration keywords.
+	 * @param literals the SARL literals.
+	 * @param expressionKeywords the SARL keywords, usually within expressions.
+	 * @param modifiers the modifier keywords.
+	 * @param primitiveTypes the primitive types.
+	 * @param punctuation the SARL punctuation symbols.
+	 * @param ignored the ignored literals (mostly for information).
+	 * @param specialKeywords the keywords that are marked as special. They are also in {@code keywords}.
+	 * @param typeDeclarationKeywords the keywords that are marked as type declaration keywords.
 	 *     They are also in {@code keywords}.
 	 */
 	protected final void generate(Set<String> literals, Set<String> expressionKeywords,
@@ -488,15 +488,15 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 
 	/** Generate the external specification.
 	 *
-	 * @param appendable - the appendable.
-	 * @param literals - the SARL literals.
-	 * @param expressionKeywords - the SARL keywords, usually within expressions.
-	 * @param modifiers - the modifier keywords.
-	 * @param primitiveTypes - the primitive types.
-	 * @param punctuation - the SARL punctuation symbols.
-	 * @param ignored - the ignored literals (mostly for information).
-	 * @param specialKeywords - the keywords that are marked as special. They are also in {@code keywords}.
-	 * @param typeDeclarationKeywords - the keywords that are marked as type declaration keywords.
+	 * @param appendable the appendable.
+	 * @param literals the SARL literals.
+	 * @param expressionKeywords the SARL keywords, usually within expressions.
+	 * @param modifiers the modifier keywords.
+	 * @param primitiveTypes the primitive types.
+	 * @param punctuation the SARL punctuation symbols.
+	 * @param ignored the ignored literals (mostly for information).
+	 * @param specialKeywords the keywords that are marked as special. They are also in {@code keywords}.
+	 * @param typeDeclarationKeywords the keywords that are marked as type declaration keywords.
 	 *     They are also in {@code keywords}.
 	 */
 	@SuppressWarnings("checkstyle:parameternumber")

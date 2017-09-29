@@ -40,7 +40,7 @@ public interface MicroKernelCapacity extends Capacity {
 	 * Replies a kernel service that is alive.
 	 *
 	 * @param <S> - type of the service to reply.
-	 * @param type - type of the service to reply.
+	 * @param type type of the service to reply.
 	 * @return the service, or <code>null</code>.
 	 */
 	<S extends Service> S getService(Class<S> type);
@@ -53,6 +53,7 @@ public interface MicroKernelCapacity extends Capacity {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 * @since 0.5
+	 * @ExcludeFromApidoc
 	 */
 	class ContextAwareCapacityWrapper<C extends MicroKernelCapacity>
 			extends Capacity.ContextAwareCapacityWrapper<C>

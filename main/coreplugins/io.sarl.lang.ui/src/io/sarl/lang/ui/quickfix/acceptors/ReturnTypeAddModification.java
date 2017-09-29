@@ -58,9 +58,9 @@ public final class ReturnTypeAddModification extends SARLSemanticModification {
 	 *
 	 * <p>User data contains the name of the expected type.
 	 *
-	 * @param provider - the quick fix provider.
-	 * @param issue - the issue to fix.
-	 * @param acceptor - the quick fix acceptor.
+	 * @param provider the quick fix provider.
+	 * @param issue the issue to fix.
+	 * @param acceptor the quick fix acceptor.
 	 */
 	public static void accept(SARLQuickfixProvider provider, Issue issue, IssueResolutionAcceptor acceptor) {
 		final String[] data = issue.getData();

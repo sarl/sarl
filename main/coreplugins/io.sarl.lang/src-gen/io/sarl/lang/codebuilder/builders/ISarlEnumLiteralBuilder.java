@@ -59,8 +59,8 @@ public interface ISarlEnumLiteralBuilder {
 	IJvmTypeProvider getTypeResolutionContext();
 
 	/** Initialize the Ecore element.
-	 * @param container - the container of the SarlEnumLiteral.
-	 * @param name - the name of the SarlEnumLiteral.
+	 * @param container the container of the SarlEnumLiteral.
+	 * @param name the name of the SarlEnumLiteral.
 	 */
 	void eInit(XtendTypeDeclaration container, String name, IJvmTypeProvider context);
 

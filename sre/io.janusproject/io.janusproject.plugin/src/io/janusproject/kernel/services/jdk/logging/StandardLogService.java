@@ -86,7 +86,7 @@ public class StandardLogService extends AbstractDependentService implements LogS
 	/**
 	 * Change the object that permits to determine the caller of the logger.
 	 *
-	 * @param provider - the object that permits to determine the caller of the logger.
+	 * @param provider the object that permits to determine the caller of the logger.
 	 */
 	public void setLoggerCaller(LoggerCallerProvider provider) {
 		if (provider == null) {
@@ -279,8 +279,8 @@ public class StandardLogService extends AbstractDependentService implements LogS
 		private final String className;
 
 		/**
-		 * @param className - the type of the caller.
-		 * @param methodName - the name of the called method.
+		 * @param className the type of the caller.
+		 * @param methodName the name of the called method.
 		 */
 		public LoggerCaller(String className, String methodName) {
 			this.className = className;

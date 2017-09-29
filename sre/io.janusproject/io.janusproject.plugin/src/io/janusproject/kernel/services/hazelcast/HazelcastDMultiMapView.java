@@ -61,7 +61,7 @@ public class HazelcastDMultiMapView<K, V> extends AbstractDMultiMapView<K, V> im
 	private final Multimap<K, V> map;
 
 	/**
-	 * @param map - the multimap.
+	 * @param map the multimap.
 	 */
 	public HazelcastDMultiMapView(MultiMap<K, V> map) {
 		super(map.getName());
@@ -324,7 +324,7 @@ public class HazelcastDMultiMapView<K, V> extends AbstractDMultiMapView<K, V> im
 		private final Collection<Entry<K, V>> entries;
 
 		/**
-		 * @param entries - the entries in the multimap.
+		 * @param entries the entries in the multimap.
 		 */
 		public EntryCollectionView(Collection<Entry<K, V>> entries) {
 			this.entries = entries;

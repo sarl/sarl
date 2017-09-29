@@ -654,7 +654,7 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 	/**
 	 * Restores the column widths from dialog settings.
 	 *
-	 * @param settings - the settings to read.
+	 * @param settings the settings to read.
 	 */
 	private void restoreColumnWidths(IDialogSettings settings) {
 		final int columnCount = this.table.getColumnCount();
@@ -684,7 +684,7 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 	 * Restore table settings from the given dialog store using the
 	 * given key.
 	 *
-	 * @param settings - dialog settings store
+	 * @param settings dialog settings store
 	 */
 	private void restoreColumnSettings(IDialogSettings settings) {
 		this.list.getTable().layout(true);

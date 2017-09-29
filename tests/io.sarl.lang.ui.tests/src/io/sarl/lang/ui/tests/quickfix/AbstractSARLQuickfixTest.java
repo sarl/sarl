@@ -73,8 +73,8 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 
 	/** Create an object that permits to test the details of a quick fix.
 	 *
-	 * @param issueCode - the code of the issue to test.
-	 * @param invalidCode - the code that is generating the issue.
+	 * @param issueCode the code of the issue to test.
+	 * @param invalidCode the code that is generating the issue.
 	 * @return the quick fixes for assertions.
 	 */
 	protected QuickFixAsserts getQuickFixAsserts(
@@ -85,9 +85,9 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 
 	/** Create an object that permits to test the details of a quick fix.
 	 *
-	 * @param issueCode - the code of the issue to test.
-	 * @param invalidCode - the code that is generating the issue.
-	 * @param failOnErrorInCode - indicates if this function fails on error in the code.
+	 * @param issueCode the code of the issue to test.
+	 * @param invalidCode the code that is generating the issue.
+	 * @param failOnErrorInCode indicates if this function fails on error in the code.
 	 * @return the quick fixes for assertions.
 	 */
 	protected QuickFixAsserts getQuickFixAsserts(
@@ -157,11 +157,11 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 
 	/** Assert the quick fix is changing the document in the expected way.
 	 *
-	 * @param issueCode - the code of the issue to test.
-	 * @param invalidCode - the code that is generating the issue.
-	 * @param expectedLabel - the expected label for the quick fix.
-	 * @param expectedResolution - the expected code after fixing.
-	 * @param expectedResolution2 - the expected code after fixing.
+	 * @param issueCode the code of the issue to test.
+	 * @param invalidCode the code that is generating the issue.
+	 * @param expectedLabel the expected label for the quick fix.
+	 * @param expectedResolution the expected code after fixing.
+	 * @param expectedResolution2 the expected code after fixing.
 	 * @return the matching resolved text.
 	 */
 	protected String assertQuickFix(
@@ -176,11 +176,11 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 
 	/** Assert the quick fix is changing the document in the expected way.
 	 *
-	 * @param issueCode - the code of the issue to test.
-	 * @param invalidCode - the code that is generating the issue.
-	 * @param expectedLabel - the expected label for the quick fix.
-	 * @param expectedResolution - the expected code after fixing.
-	 * @param expectedResolution2 - the expected code after fixing.
+	 * @param issueCode the code of the issue to test.
+	 * @param invalidCode the code that is generating the issue.
+	 * @param expectedLabel the expected label for the quick fix.
+	 * @param expectedResolution the expected code after fixing.
+	 * @param expectedResolution2 the expected code after fixing.
 	 * @return the matching resolved text.
 	 */
 	protected String assertQuickFixWithErrors(
@@ -195,12 +195,12 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 	
 	/** Assert the quick fix is changing the document in the expected way.
 	 *
-	 * @param changeOriginalDocument - change the original document.
-	 * @param issueCode - the code of the issue to test.
-	 * @param invalidCode - the code that is generating the issue.
-	 * @param expectedLabel - the expected label for the quick fix.
-	 * @param expectedResolution - the expected code after fixing.
-	 * @param expectedResolution2 - the expected code after fixing.
+	 * @param changeOriginalDocument change the original document.
+	 * @param issueCode the code of the issue to test.
+	 * @param invalidCode the code that is generating the issue.
+	 * @param expectedLabel the expected label for the quick fix.
+	 * @param expectedResolution the expected code after fixing.
+	 * @param expectedResolution2 the expected code after fixing.
 	 * @return the matching resolved text.
 	 */
 	protected String assertQuickFix(
@@ -219,12 +219,12 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 
 	/** Assert the quick fix is changing the document in the expected way.
 	 *
-	 * @param changeOriginalDocument - change the original document.
-	 * @param issueCode - the code of the issue to test.
-	 * @param invalidCode - the code that is generating the issue.
-	 * @param expectedLabel - the expected label for the quick fix.
-	 * @param expectedResolution - the expected code after fixing.
-	 * @param expectedResolution2 - the expected code after fixing.
+	 * @param changeOriginalDocument change the original document.
+	 * @param issueCode the code of the issue to test.
+	 * @param invalidCode the code that is generating the issue.
+	 * @param expectedLabel the expected label for the quick fix.
+	 * @param expectedResolution the expected code after fixing.
+	 * @param expectedResolution2 the expected code after fixing.
 	 * @return the matching resolved text.
 	 */
 	protected String assertQuickFixWithErrors(
@@ -273,9 +273,9 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 
 		/** Replies the resolution that corresponds to the given label.
 		 *
-		 * @param label - the label of the resolution to search for.
-		 * @param failIfNotFound - fails if no resolution found.
-		 * @param removeWhenFound - indicates if the resolution must be removed for the list of the resolutions
+		 * @param label the label of the resolution to search for.
+		 * @param failIfNotFound fails if no resolution found.
+		 * @param removeWhenFound indicates if the resolution must be removed for the list of the resolutions
 		 * when it was found.
 		 * @return the resolution or <code>null</code>.
 		 */
@@ -336,8 +336,8 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 
 		/** Test the existence of a valid quick fix.
 		 *
-		 * @param expectedLabel - the expected label for the quick fix.
-		 * @param expectedResolutions - the expected codes after fixing.
+		 * @param expectedLabel the expected label for the quick fix.
+		 * @param expectedResolutions the expected codes after fixing.
 		 * @return the matching resolved text.
 		 */
 		public String assertQuickFix(
@@ -348,9 +348,9 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 
 		/** Test the existence of a valid quick fix.
 		 *
-		 * @param changeOriginalDocument - change the original document
-		 * @param expectedLabel - the expected label for the quick fix.
-		 * @param expectedResolutions - the expected codes after fixing.
+		 * @param changeOriginalDocument change the original document
+		 * @param expectedLabel the expected label for the quick fix.
+		 * @param expectedResolutions the expected codes after fixing.
 		 * @return the matching resolved text.
 		 */
 		public String assertQuickFix(
@@ -506,7 +506,7 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 		private final StringBuilder content = new StringBuilder();
 
 		/**
-		 * @param initialContent - initialContent
+		 * @param initialContent initialContent
 		 */
 		public TestTextStore(String initialContent) {
 			if (initialContent != null) {

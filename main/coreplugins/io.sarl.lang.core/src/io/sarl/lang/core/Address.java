@@ -50,8 +50,8 @@ public class Address extends SRESpecificDataContainer implements Serializable, C
 	/**
 	 * Create an address based on the specified identifier.
 	 *
-	 * @param spaceId - the identifier of the space related to this address.
-	 * @param agentId - is the identifier of the address.
+	 * @param spaceId the identifier of the space related to this address.
+	 * @param agentId is the identifier of the address.
 	 */
 	public Address(SpaceID spaceId, UUID agentId) {
 		assert agentId != null;
@@ -109,7 +109,7 @@ public class Address extends SRESpecificDataContainer implements Serializable, C
 	/**
 	 * Test if this address and the given one are equal.
 	 *
-	 * @param address - is the address to be compared.
+	 * @param address is the address to be compared.
 	 * @return <code>true</code> if this address and the given one are equal,
 	 *         otherwise <code>false</code>
 	 */
@@ -149,7 +149,7 @@ public class Address extends SRESpecificDataContainer implements Serializable, C
 	 * defined to return one of <code>-1</code>, <code>0</code>, or <code>1</code> according
 	 * to whether the value of <i>expression</i> is negative, zero or positive.
 	 *
-	 * @param address - is the address to be compared.
+	 * @param address is the address to be compared.
 	 * @return a negative integer, zero, or a positive integer as this object is
 	 *         less than, equal to, or greater than the specified object.
 	 */

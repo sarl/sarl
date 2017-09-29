@@ -121,7 +121,7 @@ public final class NetworkUtil {
 	/**
 	 * Replies the byte-array representation of the given id.
 	 *
-	 * @param id - the UUID to convert to byte array.
+	 * @param id the UUID to convert to byte array.
 	 * @return the byte-array representation.
 	 */
 	public static byte[] toByteArray(UUID id) {
@@ -131,7 +131,7 @@ public final class NetworkUtil {
 	/**
 	 * Replies the id from the given byte-array representation.
 	 *
-	 * @param id - the byte array to convert to UUID.
+	 * @param id the byte array to convert to UUID.
 	 * @return the UUID.
 	 */
 	public static UUID fromByteArray(byte[] id) {
@@ -143,7 +143,7 @@ public final class NetworkUtil {
 	 *
 	 * <p>This function support the syntax ":*" for the port.
 	 *
-	 * @param uri - the string representation of the URI to parse.
+	 * @param uri the string representation of the URI to parse.
 	 * @return the URI.
 	 * @throws URISyntaxException - if the given string has invalid format.
 	 */
@@ -164,7 +164,7 @@ public final class NetworkUtil {
 	/**
 	 * Convert an inet address to an URI.
 	 *
-	 * @param adr - address to convert to URI.
+	 * @param adr address to convert to URI.
 	 * @return the URI.
 	 */
 	public static URI toURI(InetAddress adr) {
@@ -178,7 +178,7 @@ public final class NetworkUtil {
 	/**
 	 * Convert a socket address to an URI.
 	 *
-	 * @param adr - address to convert to URI.
+	 * @param adr address to convert to URI.
 	 * @return the URI.
 	 */
 	public static URI toURI(InetSocketAddress adr) {
@@ -188,8 +188,8 @@ public final class NetworkUtil {
 	/**
 	 * Convert an inet address to an URI.
 	 *
-	 * @param adr - the address.
-	 * @param port - port number, if negative or nul, use the "*" notation.
+	 * @param adr the address.
+	 * @param port port number, if negative or nul, use the "*" notation.
 	 * @return the URI.
 	 */
 	public static URI toURI(InetAddress adr, int port) {
@@ -203,7 +203,7 @@ public final class NetworkUtil {
 	/**
 	 * Extract an Inet address from an URI.
 	 *
-	 * @param uri - the address.
+	 * @param uri the address.
 	 * @return the address.
 	 */
 	public static InetAddress toInetAddress(URI uri) {
@@ -223,7 +223,7 @@ public final class NetworkUtil {
 	/**
 	 * Extract an Inet address from an URI.
 	 *
-	 * @param uri - the address.
+	 * @param uri the address.
 	 * @return the address.
 	 */
 	public static InetSocketAddress toInetSocketAddress(URI uri) {

@@ -123,7 +123,7 @@ public class SarlEnumerationBuilderImpl extends AbstractBuilder implements ISarl
 	}
 
 	/** Add a modifier.
-	 * @param modifier - the modifier to add.
+	 * @param modifier the modifier to add.
 	 */
 	public void addModifier(String modifier) {
 		if (!Strings.isEmpty(modifier)) {
@@ -135,7 +135,7 @@ public class SarlEnumerationBuilderImpl extends AbstractBuilder implements ISarl
 	private Provider<ISarlEnumLiteralBuilder> iSarlEnumLiteralBuilderProvider;
 
 	/** Create a SarlEnumLiteral.
-	 * @param name - the name of the SarlEnumLiteral.
+	 * @param name the name of the SarlEnumLiteral.
 	 * @return the builder.
 	 */
 	public ISarlEnumLiteralBuilder addSarlEnumLiteral(String name) {

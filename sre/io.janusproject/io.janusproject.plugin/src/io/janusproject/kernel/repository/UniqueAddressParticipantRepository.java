@@ -63,8 +63,8 @@ public final class UniqueAddressParticipantRepository<ADDRESST extends Serializa
 	/**
 	 * Constructs a <code>UniqueAddressParticipantRepository</code>.
 	 *
-	 * @param distributedParticipantMapName - name of the multimap over the network.
-	 * @param repositoryImplFactory - factory that will be used to create the internal data structures.
+	 * @param distributedParticipantMapName name of the multimap over the network.
+	 * @param repositoryImplFactory factory that will be used to create the internal data structures.
 	 */
 	public UniqueAddressParticipantRepository(String distributedParticipantMapName,
 			DistributedDataStructureService repositoryImplFactory) {
@@ -80,8 +80,8 @@ public final class UniqueAddressParticipantRepository<ADDRESST extends Serializa
 
 	/**
 	 * Registers a new participant in this repository.
-	 * @param address - the address of the participant
-	 * @param entity - the entity associated to the specified address
+	 * @param address the address of the participant
+	 * @param entity the entity associated to the specified address
 	 * @return the address of the participant
 	 */
 	public ADDRESST registerParticipant(ADDRESST address, EventListener entity) {
@@ -95,7 +95,7 @@ public final class UniqueAddressParticipantRepository<ADDRESST extends Serializa
 	/**
 	 * Remove a participant from this repository.
 	 *
-	 * @param entity - participant to remove from this repository.
+	 * @param entity participant to remove from this repository.
 	 * @return the address that was mapped to the given participant.
 	 */
 	public ADDRESST unregisterParticipant(EventListener entity) {
@@ -105,7 +105,7 @@ public final class UniqueAddressParticipantRepository<ADDRESST extends Serializa
 	/**
 	 * Remove a participant with the given ID from this repository.
 	 *
-	 * @param entityID - identifier of the participant to remove from this repository.
+	 * @param entityID identifier of the participant to remove from this repository.
 	 * @return the address that was mapped to the given participant.
 	 */
 	public ADDRESST unregisterParticipant(UUID entityID) {
@@ -118,7 +118,7 @@ public final class UniqueAddressParticipantRepository<ADDRESST extends Serializa
 	/**
 	 * Replies the address associated to the given participant.
 	 *
-	 * @param entity - instance of a participant.
+	 * @param entity instance of a participant.
 	 * @return the address of the participant with the given id.
 	 */
 	public ADDRESST getAddress(EventListener entity) {
@@ -128,7 +128,7 @@ public final class UniqueAddressParticipantRepository<ADDRESST extends Serializa
 	/**
 	 * Replies the address associated to the participant with the given identifier.
 	 *
-	 * @param id - identifier of the participant to retreive.
+	 * @param id identifier of the participant to retreive.
 	 * @return the address of the participant with the given id.
 	 */
 	public ADDRESST getAddress(UUID id) {

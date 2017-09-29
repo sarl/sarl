@@ -519,7 +519,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 						+ " " + memberName + "."); //$NON-NLS-1$//$NON-NLS-2$
 					it.newLine();
 					if (hasName.get()) {
-						it.append("\t * @param name - the "); //$NON-NLS-1$
+						it.append("\t * @param name the "); //$NON-NLS-1$
 						if (hasTypeName.get()) {
 							it.append("type"); //$NON-NLS-1$
 						} else {
@@ -602,7 +602,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.append("}."); //$NON-NLS-1$
 					it.newLine();
 					if (hasName.get()) {
-						it.append("\t * @param name - the "); //$NON-NLS-1$
+						it.append("\t * @param name the "); //$NON-NLS-1$
 						if (hasTypeName.get()) {
 							it.append("type"); //$NON-NLS-1$
 						} else {
@@ -687,7 +687,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.append("\t/** Create " + getAorAnArticle(memberName) //$NON-NLS-1$
 						+ " " + memberName + "."); //$NON-NLS-1$//$NON-NLS-2$
 					it.newLine();
-					it.append("\t * @param name - the types referenced by the " + memberName + "."); //$NON-NLS-1$ //$NON-NLS-2$
+					it.append("\t * @param name the types referenced by the " + memberName + "."); //$NON-NLS-1$ //$NON-NLS-2$
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
@@ -785,7 +785,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					it.append(callFunctionName);
 					it.append("}."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @param name - the type referenced by the " + memberName + "."); //$NON-NLS-1$ //$NON-NLS-2$
+					it.append("\t * @param name the type referenced by the " + memberName + "."); //$NON-NLS-1$ //$NON-NLS-2$
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
@@ -1285,7 +1285,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					if (isExtendsKeywordFound.get()) {
 						it.append("\t/** Add the super type."); //$NON-NLS-1$
 						it.newLine();
-						it.append("\t * @param superType - the qualified name of the super type."); //$NON-NLS-1$
+						it.append("\t * @param superType the qualified name of the super type."); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t */"); //$NON-NLS-1$
 						it.newLine();
@@ -1297,7 +1297,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					} else {
 						it.append("\t/** Change the super type."); //$NON-NLS-1$
 						it.newLine();
-						it.append("\t * @param superType - the qualified name of the super type,"); //$NON-NLS-1$
+						it.append("\t * @param superType the qualified name of the super type,"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t *     or <code>null</code> if the default type."); //$NON-NLS-1$
 						it.newLine();
@@ -1401,7 +1401,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					if (isImplementsKeywordFound.get()) {
 						it.append("\t/** Add an implemented type."); //$NON-NLS-1$
 						it.newLine();
-						it.append("\t * @param type - the qualified name of the implemented type."); //$NON-NLS-1$
+						it.append("\t * @param type the qualified name of the implemented type."); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t */"); //$NON-NLS-1$
 						it.newLine();
@@ -1442,7 +1442,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					} else {
 						it.append("\t/** Change the implemented type."); //$NON-NLS-1$
 						it.newLine();
-						it.append("\t * @param type - the qualified name of the implemented type,"); //$NON-NLS-1$
+						it.append("\t * @param type the qualified name of the implemented type,"); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t *     or <code>null</code> for nothing."); //$NON-NLS-1$
 						it.newLine();
@@ -1485,7 +1485,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 				if (isAnnotated.get()) {
 					it.append("\t/** Add an annotation."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @param type - the qualified name of the annotation."); //$NON-NLS-1$
+					it.append("\t * @param type the qualified name of the annotation."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
@@ -1535,7 +1535,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 				if (hasModifiers.get()) {
 					it.append("\t/** Add a modifier."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @param modifier - the modifier to add."); //$NON-NLS-1$
+					it.append("\t * @param modifier the modifier to add."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
@@ -1583,7 +1583,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 					}
 					it.append("\t/** Add a type parameter."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @param name - the simple name of the type parameter."); //$NON-NLS-1$
+					it.append("\t * @param name the simple name of the type parameter."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t * @return the builder of type parameter."); //$NON-NLS-1$
 					it.newLine();

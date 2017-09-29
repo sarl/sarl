@@ -97,8 +97,8 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 
 	/** Create the block for the SRE arguments.
 	 *
-	 * @param parent - the parent composite.
-	 * @param font - the font for the block.
+	 * @param parent the parent composite.
+	 * @param font the font for the block.
 	 */
 	protected void createSREArgsBlock(Composite parent, Font font) {
 		// Create the block for the SRE

@@ -169,7 +169,7 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 
 	/** Create the default test project with the given classpath.
 	 *
-	 * @param classpath - the bundles on the classpath.
+	 * @param classpath the bundles on the classpath.
 	 * @return the project.
 	 * @throws CoreException if the project cannot be created.
 	 * @since 0.3.0
@@ -180,8 +180,8 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 
 	/** Create the default test project with the given classpath.
 	 *
-	 * @param classpath - the bundles on the classpath.
-	 * @param projectName - the name of the project.
+	 * @param classpath the bundles on the classpath.
+	 * @param projectName the name of the project.
 	 * @return the project.
 	 * @throws CoreException if the project cannot be created.
 	 * @since 0.3.0
@@ -231,8 +231,8 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 
 	/** Assert the given image descriptor is for an image in a bundle.
 	 *
-	 * @param filename - the name of the image file.
-	 * @param desc - the image descriptor to test.
+	 * @param filename the name of the image file.
+	 * @param desc the image descriptor to test.
 	 */
 	protected static void assertBundleImage(String filename, ImageDescriptor desc) {
 		assertNotNull(desc);
@@ -296,8 +296,8 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 
 	/** Assert the given image descriptors are the equal.
 	 *
-	 * @param expected - the expected image descriptor.
-	 * @param actual - the current image descriptor.
+	 * @param expected the expected image descriptor.
+	 * @param actual the current image descriptor.
 	 * @throws Exception if the test cannot be done.
 	 */
 	protected static void assertImageDescriptors(ImageDescriptor expected, ImageDescriptor actual) throws Exception {
@@ -311,8 +311,8 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 
 	/** Assert the given image descriptor is for an image in the platform.
 	 *
-	 * @param filename - the name of the image file.
-	 * @param desc - the image descriptor to test.
+	 * @param filename the name of the image file.
+	 * @param desc the image descriptor to test.
 	 */
 	protected static void assertPlaformImage(String filename, ImageDescriptor desc) {
 		assertNotNull(desc);
@@ -328,9 +328,9 @@ public abstract class AbstractSarlUiTest extends AbstractSarlTest {
 
 	/** Assert the given image descriptor is for an image given by JDT.
 	 *
-	 * @param expected - the expected base image descriptor.
-	 * @param expectedFlags - the additional expected flags.
-	 * @param actual - the image descriptor to test.
+	 * @param expected the expected base image descriptor.
+	 * @param expectedFlags the additional expected flags.
+	 * @param actual the image descriptor to test.
 	 * @throws Exception if the test cannot be done.
 	 */
 	protected static void assertJdtImage(ImageDescriptor expected, int expectedFlags, ImageDescriptor actual) throws Exception {

@@ -132,7 +132,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	private Provider<ISarlEventBuilder> sarlEventProvider;
 
 	/** Create a SarlEvent builder.
-	 * @param name - the name of the SarlEvent.
+	 * @param name the name of the SarlEvent.
 	 * @return the builder.
 	 */
 	public ISarlEventBuilder addSarlEvent(String name) {
@@ -145,7 +145,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	private Provider<ISarlCapacityBuilder> sarlCapacityProvider;
 
 	/** Create a SarlCapacity builder.
-	 * @param name - the name of the SarlCapacity.
+	 * @param name the name of the SarlCapacity.
 	 * @return the builder.
 	 */
 	public ISarlCapacityBuilder addSarlCapacity(String name) {
@@ -158,7 +158,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	private Provider<ISarlAgentBuilder> sarlAgentProvider;
 
 	/** Create a SarlAgent builder.
-	 * @param name - the name of the SarlAgent.
+	 * @param name the name of the SarlAgent.
 	 * @return the builder.
 	 */
 	public ISarlAgentBuilder addSarlAgent(String name) {
@@ -171,7 +171,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	private Provider<ISarlBehaviorBuilder> sarlBehaviorProvider;
 
 	/** Create a SarlBehavior builder.
-	 * @param name - the name of the SarlBehavior.
+	 * @param name the name of the SarlBehavior.
 	 * @return the builder.
 	 */
 	public ISarlBehaviorBuilder addSarlBehavior(String name) {
@@ -184,7 +184,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	private Provider<ISarlSkillBuilder> sarlSkillProvider;
 
 	/** Create a SarlSkill builder.
-	 * @param name - the name of the SarlSkill.
+	 * @param name the name of the SarlSkill.
 	 * @return the builder.
 	 */
 	public ISarlSkillBuilder addSarlSkill(String name) {
@@ -197,7 +197,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	private Provider<ISarlSpaceBuilder> sarlSpaceProvider;
 
 	/** Create a SarlSpace builder.
-	 * @param name - the name of the SarlSpace.
+	 * @param name the name of the SarlSpace.
 	 * @return the builder.
 	 */
 	public ISarlSpaceBuilder addSarlSpace(String name) {
@@ -210,7 +210,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	private Provider<ISarlArtifactBuilder> sarlArtifactProvider;
 
 	/** Create a SarlArtifact builder.
-	 * @param name - the name of the SarlArtifact.
+	 * @param name the name of the SarlArtifact.
 	 * @return the builder.
 	 */
 	public ISarlArtifactBuilder addSarlArtifact(String name) {
@@ -223,7 +223,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	private Provider<ISarlClassBuilder> sarlClassProvider;
 
 	/** Create a SarlClass builder.
-	 * @param name - the name of the SarlClass.
+	 * @param name the name of the SarlClass.
 	 * @return the builder.
 	 */
 	public ISarlClassBuilder addSarlClass(String name) {
@@ -236,7 +236,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	private Provider<ISarlInterfaceBuilder> sarlInterfaceProvider;
 
 	/** Create a SarlInterface builder.
-	 * @param name - the name of the SarlInterface.
+	 * @param name the name of the SarlInterface.
 	 * @return the builder.
 	 */
 	public ISarlInterfaceBuilder addSarlInterface(String name) {
@@ -249,7 +249,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	private Provider<ISarlEnumerationBuilder> sarlEnumerationProvider;
 
 	/** Create a SarlEnumeration builder.
-	 * @param name - the name of the SarlEnumeration.
+	 * @param name the name of the SarlEnumeration.
 	 * @return the builder.
 	 */
 	public ISarlEnumerationBuilder addSarlEnumeration(String name) {
@@ -262,7 +262,7 @@ public class ScriptBuilderImpl extends AbstractBuilder implements IScriptBuilder
 	private Provider<ISarlAnnotationTypeBuilder> sarlAnnotationTypeProvider;
 
 	/** Create a SarlAnnotationType builder.
-	 * @param name - the name of the SarlAnnotationType.
+	 * @param name the name of the SarlAnnotationType.
 	 * @return the builder.
 	 */
 	public ISarlAnnotationTypeBuilder addSarlAnnotationType(String name) {

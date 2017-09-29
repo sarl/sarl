@@ -59,7 +59,7 @@ public class SARLOperationOutlineFilter extends AbstractFilterOutlineContributio
 
 	/** Replies if the given type is for a SARL operation.
 	 *
-	 * @param type - the type to test.
+	 * @param type the type to test.
 	 * @return <code>true</code> if the given type is for a SARL operation; <code>false</code> otherwise.
 	 */
 	protected static boolean isOperation(EClass type) {

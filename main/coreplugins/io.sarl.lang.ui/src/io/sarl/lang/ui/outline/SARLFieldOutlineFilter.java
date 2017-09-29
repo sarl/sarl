@@ -57,7 +57,7 @@ public class SARLFieldOutlineFilter extends AbstractFilterOutlineContribution {
 
 	/** Replies if the given type is for a SARL field.
 	 *
-	 * @param type - the type to test.
+	 * @param type the type to test.
 	 * @return <code>true</code> if the given type is for SARL fields, <code>false</code> otherwise.
 	 */
 	protected static boolean isField(EClass type) {

@@ -56,8 +56,8 @@ public interface IFormalParameterBuilder {
 	IJvmTypeProvider getTypeResolutionContext();
 
 	/** Initialize the formal parameter.
-	 * @param context - the context of the formal parameter.
-	 * @param name - the name of the formal parameter.
+	 * @param context the context of the formal parameter.
+	 * @param name the name of the formal parameter.
 	 */
 	void eInit(XtendExecutable context, String name, IJvmTypeProvider typeContext);
 

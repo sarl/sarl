@@ -39,7 +39,7 @@ public interface EventListener extends Identifiable {
 	/**
 	 * Request the entity to receive a given {@link Event} event.
 	 *
-	 * @param event - the event to be received
+	 * @param event the event to be received
 	 */
 	void receiveEvent(Event event);
 

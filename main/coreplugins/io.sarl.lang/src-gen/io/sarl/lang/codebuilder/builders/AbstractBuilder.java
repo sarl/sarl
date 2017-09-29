@@ -218,9 +218,9 @@ public abstract class AbstractBuilder {
 
 	/** Replies if the first parameter is a subtype of the second parameter.
 	 *
-	 * @param context - the context.
-	 * @param subType - the subtype to test.
-	 * @param superType - the expected super type.
+	 * @param context the context.
+	 * @param subType the subtype to test.
+	 * @param superType the expected super type.
 	 * @return the type reference.
 	 */
 	@Pure
@@ -252,7 +252,7 @@ public abstract class AbstractBuilder {
 	}
 
 	/** Compute a unused URI for a synthetic resource.
-	 * @param resourceSet - the resource set in which the resource should be located.
+	 * @param resourceSet the resource set in which the resource should be located.
 	 * @return the uri.
 	 */
 	@Pure

@@ -50,8 +50,8 @@ public final class FactExtensions {
 
 	/** Replies the first declared field matching with the given marcher.
 	 *
-	 * @param type - the type to check.
-	 * @param matcher - the matcher.
+	 * @param type the type to check.
+	 * @param matcher the matcher.
 	 * @return the validation status.
 	 */
 	public static Field findField(Class<?> type, Function3<Class<?>, Field, Boolean, Boolean> matcher) {
@@ -69,8 +69,8 @@ public final class FactExtensions {
 
 	/** Success if each of the declared fields is matching with the given marcher.
 	 *
-	 * @param type - the type to check.
-	 * @param matcher - the matcher.
+	 * @param type the type to check.
+	 * @param matcher the matcher.
 	 * @return the validation status.
 	 */
 	public static boolean allFields(Class<?> type, Function3<Class<?>, Field, Boolean, Boolean> matcher) {
@@ -88,8 +88,8 @@ public final class FactExtensions {
 
 	/** Replies the URL of the bundle's file.
 	 *
-	 * @param bundleName - the name of the bundle, i.e. the name of the jar file.
-	 * @param filename - the name of the file.
+	 * @param bundleName the name of the bundle, i.e. the name of the jar file.
+	 * @param filename the name of the file.
 	 * @return the URL, or <code>null</code>.
 	 */
 	public static URL getBundlePropertyURL(String bundleName, String filename) {

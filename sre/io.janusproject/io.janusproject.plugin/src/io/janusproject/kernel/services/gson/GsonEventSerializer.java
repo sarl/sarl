@@ -72,8 +72,8 @@ public class GsonEventSerializer extends AbstractEventSerializer {
 	/**
 	 * Constructs an GsonEventSerializer. The {@link Gson} is injected. The {@link EventEncrypter} is injected.
 	 *
-	 * @param gson - the instance of the Gson engine to use.
-	 * @param encrypter - the object that permits to encrypter the events.
+	 * @param gson the instance of the Gson engine to use.
+	 * @param encrypter the object that permits to encrypter the events.
 	 */
 	@Inject
 	public GsonEventSerializer(Gson gson, EventEncrypter encrypter) {

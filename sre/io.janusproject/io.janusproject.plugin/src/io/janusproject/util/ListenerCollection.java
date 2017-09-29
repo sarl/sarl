@@ -123,7 +123,7 @@ public class ListenerCollection<L extends EventListener> {
 	/**
 	 * Returns the total number of listeners of the supplied type for this listener list.
 	 *
-	 * @param type - type of the listeners to consider.
+	 * @param type type of the listeners to consider.
 	 * @return the total number of listeners of the supplied type for this listener list.
 	 */
 	public synchronized int getListenerCount(Class<?> type) {

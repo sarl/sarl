@@ -56,7 +56,7 @@ public class AESEventEncrypter extends AbstractEventEncrypter {
 	/**
 	 * Change the encryption key.
 	 *
-	 * @param key - injected encryption key.
+	 * @param key injected encryption key.
 	 * @throws Exception - when the given key is invalid.
 	 */
 	@Inject

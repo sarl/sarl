@@ -81,7 +81,7 @@ public abstract class ParticipantRepository<ADDRESST extends Serializable> {
 	/**
 	 * Replies if the given address is present inside this repository.
 	 *
-	 * @param key - key to search in the repository.
+	 * @param key key to search in the repository.
 	 * @return <code>true</code> if the given key is found in the repository, <code>false</code> if the key is not present or
 	 *         <code>null</code>.
 	 */
@@ -94,7 +94,7 @@ public abstract class ParticipantRepository<ADDRESST extends Serializable> {
 	/**
 	 * Replies if the given participant is present inside this repository.
 	 *
-	 * @param value - participant to search in the repository.
+	 * @param value participant to search in the repository.
 	 * @return <code>true</code> if the given participant is found in the repository, <code>false</code> if the participant is not
 	 *         present or <code>null</code>.
 	 */
@@ -107,7 +107,7 @@ public abstract class ParticipantRepository<ADDRESST extends Serializable> {
 	/**
 	 * Replies the participant with the given address.
 	 *
-	 * @param key - the address of the participant to retreive.
+	 * @param key the address of the participant to retreive.
 	 * @return the participant with the given address, or <code>null</code> if there is no participant with the given address.
 	 */
 	protected EventListener getListener(ADDRESST key) {
@@ -119,8 +119,8 @@ public abstract class ParticipantRepository<ADDRESST extends Serializable> {
 	/**
 	 * Add a participant with the given address in this repository.
 	 *
-	 * @param key - address of the participant.
-	 * @param value - is the participant to map to the address.
+	 * @param key address of the participant.
+	 * @param value is the participant to map to the address.
 	 * @return the participant that was previously associated to the given address.
 	 */
 	protected EventListener addListener(ADDRESST key, EventListener value) {
@@ -132,7 +132,7 @@ public abstract class ParticipantRepository<ADDRESST extends Serializable> {
 	/**
 	 * Remove the mapping from the given address to the associated participant.
 	 *
-	 * @param key - address of the participant to remove.
+	 * @param key address of the participant to remove.
 	 * @return the participant for which the address was removed, <code>null</code> if the given address was not found.
 	 */
 	protected EventListener removeListener(ADDRESST key) {

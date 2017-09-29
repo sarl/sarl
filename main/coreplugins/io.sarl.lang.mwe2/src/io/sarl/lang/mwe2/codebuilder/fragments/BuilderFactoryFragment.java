@@ -179,7 +179,7 @@ public class BuilderFactoryFragment extends AbstractSubCodeBuilderFragment {
 				it.newLine();
 				it.append("\t/** Compute a unused URI for a synthetic resource."); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t * @param resourceSet - the resource set in which the resource should be located."); //$NON-NLS-1$
+				it.append("\t * @param resourceSet the resource set in which the resource should be located."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t * @return the uri."); //$NON-NLS-1$
 				it.newLine();
