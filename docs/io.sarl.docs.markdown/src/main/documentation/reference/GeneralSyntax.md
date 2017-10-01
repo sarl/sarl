@@ -105,6 +105,8 @@ In the following pages, you could find details on the different elements of the 
 	* [Script format](./general/Script.md)
 	* [Function declaration](./general/FuncDecls.md)
 	* [Synthetic Functions](./general/SyntheticFunctions.md)
+* Type system:
+	* [Supported Types for Variables and Parameters](./general/Types.md)
 * Constant expressions:
 	* [Numerical, string, and collection literals](./general/Literals.md)
 * Structuring expressions:

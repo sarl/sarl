@@ -47,6 +47,8 @@
 	* [Script format](./reference/general/Script.md)
 	* [Function declaration](./reference/general/FuncDecls.md)
 	* [Synthetic Functions](./reference/general/SyntheticFunctions.md)
+* Type system:
+	* [Supported Types for Variables and Parameters](./reference/general/Types.md)
 * Constant expressions:
 	* [Numerical, string, and collection literals](./reference/general/Literals.md)
 * Structuring expressions:
