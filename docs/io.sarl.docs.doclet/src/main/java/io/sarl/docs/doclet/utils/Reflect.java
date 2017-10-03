@@ -19,10 +19,11 @@
  * limitations under the License.
  */
 
-package io.sarl.docs.doclet;
+package io.sarl.docs.doclet.utils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 /** Reflexion utilities.
  *
@@ -73,11 +74,33 @@ public final class Reflect {
 	 * @param types the types of the parameters.
 	 * @param args the values of the arguments.
 	 */
-	public static void call(Object instance, Class<?> type, String methodName, Class<?>[] types, Object... args) {
+	public static void callProc(Object instance, Class<?> type, String methodName, Class<?>[] types, Object... args) {
 		try {
 			final Method method = type.getDeclaredMethod(methodName, types);
 			method.setAccessible(true);
 			method.invoke(instance, args);
+		} catch (Exception exception) {
+			throw new Error(exception);
+		}
+	}
+
+	/** Call the method.
+	 *
+	 * @param <R> the type of the returned value.
+	 * @param instance the instance to call on.
+	 * @param type the type.
+	 * @param returnType the type of the returned value.
+	 * @param methodName the name of the method.
+	 * @param types the types of the parameters.
+	 * @param args the values of the arguments.
+	 * @return the value.
+	 */
+	public static <R> R callFunc(Object instance, Class<?> type, Class<R> returnType,
+			String methodName, Class<?>[] types, Object... args) {
+		try {
+			final Method method = type.getDeclaredMethod(methodName, types);
+			method.setAccessible(true);
+			return returnType.cast(method.invoke(instance, args));
 		} catch (Exception exception) {
 			throw new Error(exception);
 		}
@@ -88,17 +111,42 @@ public final class Reflect {
 	 * @param <T> the field type.
 	 * @param obj the instance.
 	 * @param string the field name.
-	 * @param clazz the field type.
+	 * @param clazz the container type.
+	 * @param fieldType the field type.
 	 * @return the value.
 	 */
-	public static <T> T getField(Object obj, String string, Class<T> clazz) {
+	public static <T> T getField(Object obj, String string, Class<?> clazz, Class<T> fieldType) {
 		try {
 			final Field field = clazz.getDeclaredField(string);
 			field.setAccessible(true);
 			final Object value = field.get(obj);
-			return clazz.cast(value);
+			return fieldType.cast(value);
 		} catch (Exception exception) {
 			throw new Error(exception);
+		}
+	}
+
+	/** Clone the fields.
+	 *
+	 * @param <T> the type of the objects.
+	 * @param type the type of the objects.
+	 * @param dest the destination.
+	 * @param source the source.
+	 */
+	public static <T> void copyFields(Class<T> type, T dest, T source) {
+		Class<?> clazz = type;
+		while (clazz != null && !Object.class.equals(clazz)) {
+			for (final Field field : clazz.getDeclaredFields()) {
+				if (!Modifier.isStatic(field.getModifiers())) {
+					field.setAccessible(true);
+					try {
+						field.set(dest, field.get(source));
+					} catch (IllegalArgumentException | IllegalAccessException e) {
+						throw new Error(e);
+					}
+				}
+			}
+			clazz = clazz.getSuperclass();
 		}
 	}
 

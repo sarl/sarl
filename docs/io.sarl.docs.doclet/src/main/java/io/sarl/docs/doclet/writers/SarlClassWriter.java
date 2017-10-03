@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.docs.doclet;
+package io.sarl.docs.doclet.writers;
 
 import java.io.IOException;
 
@@ -30,6 +30,11 @@ import com.sun.tools.doclets.formats.html.LinkInfoImpl;
 import com.sun.tools.doclets.internal.toolkit.Content;
 import com.sun.tools.doclets.internal.toolkit.util.ClassTree;
 import com.sun.tools.doclets.internal.toolkit.util.links.LinkFactory;
+
+import io.sarl.docs.doclet.SarlConfiguration;
+import io.sarl.docs.doclet.utils.SARLFeatureAccess;
+import io.sarl.docs.doclet.utils.SarlMessageRetreiver;
+import io.sarl.docs.doclet.utils.Utils;
 
 /** Writer of classes dedicated to the SARL doclet.
  *

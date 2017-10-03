@@ -19,10 +19,12 @@
  * limitations under the License.
  */
 
-package io.sarl.docs.doclet;
+package io.sarl.docs.doclet.exclude;
 
 import com.sun.javadoc.Doc;
 import com.sun.javadoc.ProgramElementDoc;
+
+import io.sarl.docs.doclet.utils.Utils;
 
 /** Check if an element should be ignored into the API doc.
  *

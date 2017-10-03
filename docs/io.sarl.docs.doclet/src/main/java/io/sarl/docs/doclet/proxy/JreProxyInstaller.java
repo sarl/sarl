@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.docs.doclet;
+package io.sarl.docs.doclet.proxy;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Array;
@@ -33,9 +33,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.sun.javadoc.AnnotationTypeDoc;
 import com.sun.javadoc.Doc;
 import com.sun.javadoc.ProgramElementDoc;
 import com.sun.javadoc.RootDoc;
+
+import io.sarl.docs.doclet.SarlConfiguration;
+import io.sarl.docs.doclet.exclude.ApidocExcluder;
 
 /** Install the proxies for the {@code Doc}.
  * This object is filtering the arrays that are replied functions in {@link RootDoc} or {@link ProgramElementDoc}.
@@ -73,9 +77,18 @@ public class JreProxyInstaller implements ProxyInstaller {
 	}
 
 	@Override
-	public RootDoc processDocument(RootDoc obj) {
-		//return obj;
+	public RootDoc installProxies(RootDoc obj) {
 		return (RootDoc) processElement(obj, null);
+	}
+
+	@Override
+	public void installProxies(SarlConfiguration configuration) {
+		configuration.root = (RootDoc) processElement(configuration.root, null);
+	}
+
+	@Override
+	public void uninstallProxies(SarlConfiguration configuration) {
+		configuration.root = unwrap(configuration.root);
 	}
 
 	/** Filter the given document.
@@ -120,6 +133,11 @@ public class JreProxyInstaller implements ProxyInstaller {
 		return obj;
 	}
 
+	@Override
+	public AnnotationTypeDoc wrap(AnnotationTypeDoc obj) {
+		return (AnnotationTypeDoc) wrap((Object) obj);
+	}
+
 	/** Unwrap the given object.
 	 *
 	 * @param object the object.
@@ -133,15 +151,11 @@ public class JreProxyInstaller implements ProxyInstaller {
 		return Proxy.newProxyInstance(type.getClassLoader(), type.getInterfaces(), new ProxyHandler(object));
 	}
 
-	/** Unwrap the given object.
-	 *
-	 * @param proxy the object.
-	 * @return the unwrapped object.
-	 */
-	@SuppressWarnings({ "static-method", "synthetic-access" })
-	protected Object unwrap(Object proxy) {
+	@SuppressWarnings({ "synthetic-access", "unchecked" })
+	@Override
+	public <T> T unwrap(T proxy) {
 		if (proxy != null && Proxy.isProxyClass(proxy.getClass())) {
-			return ((ProxyHandler) Proxy.getInvocationHandler(proxy)).target;
+			return (T) ((ProxyHandler) Proxy.getInvocationHandler(proxy)).target;
 		}
 		return proxy;
 	}

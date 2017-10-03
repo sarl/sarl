@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.docs.doclet;
+package io.sarl.docs.doclet.utils;
 
 /** Test the definition of the SARL language elements.
  *

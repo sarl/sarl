@@ -21,10 +21,26 @@
 
 package io.sarl.docs.doclet;
 
+import java.util.Set;
+import java.util.TreeSet;
+
+import com.sun.javadoc.ClassDoc;
+import com.sun.javadoc.PackageDoc;
 import com.sun.tools.doclets.formats.html.ConfigurationImpl;
 import com.sun.tools.doclets.formats.html.HtmlDocletWriter;
 import com.sun.tools.doclets.internal.toolkit.WriterFactory;
 import com.sun.tools.doclets.internal.toolkit.util.links.LinkFactory;
+
+import io.sarl.docs.doclet.exclude.ApidocExcluder;
+import io.sarl.docs.doclet.exclude.DefaultApidocExcluder;
+import io.sarl.docs.doclet.proxy.ProgrammaticWrappingProxyInstaller;
+import io.sarl.docs.doclet.proxy.ProxyInstaller;
+import io.sarl.docs.doclet.references.SarlLinkFactory;
+import io.sarl.docs.doclet.utils.Reflect;
+import io.sarl.docs.doclet.utils.SARLFeatureAccess;
+import io.sarl.docs.doclet.utils.SarlMessageRetreiver;
+import io.sarl.docs.doclet.utils.Utils;
+import io.sarl.docs.doclet.writers.SarlWriterFactory;
 
 /** Configuration for the SARL doclet.
  *
@@ -82,9 +98,32 @@ public class SarlConfiguration extends ConfigurationImpl {
 	 */
 	public ProxyInstaller getProxyInstaller() {
 		if (this.proxyInstaller == null) {
-			this.proxyInstaller = new NoProxyInstaller(this);
+			this.proxyInstaller = new ProgrammaticWrappingProxyInstaller(this);
 		}
 		return this.proxyInstaller;
+	}
+
+	@Override
+	public void setOptions() throws Fault {
+        super.setOptions();
+        resetPackageList();
+    }
+
+	/** Reset the list of packages for avoiding duplicates.
+	 *
+	 * <p>The inherited implementation uses a HashSet that allow
+	 * the same package to be stored multiple times. Here,
+	 * we uses a TreeSet for using the "compareTo" mechanism.
+	 */
+	private void resetPackageList() {
+		final Set<PackageDoc> set = new TreeSet<>();
+        for (final PackageDoc pack : this.root.specifiedPackages()) {
+            set.add(pack);
+        }
+        for (final ClassDoc clazz : this.root.specifiedClasses()) {
+            set.add(clazz.containingPackage());
+        }
+        this.packages = Utils.toArray(this.packages, set);
 	}
 
 }

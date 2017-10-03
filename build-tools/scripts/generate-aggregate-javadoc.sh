@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
+# With Janus
 PLUGIN_MODULES=("./main/coreplugins/io.sarl.lang.core" "./main/apiplugins/io.sarl.core" "./main/apiplugins/io.sarl.util" "./sre/io.janusproject/io.janusproject.plugin")
+
+# Without Janus
+#PLUGIN_MODULES=("./main/coreplugins/io.sarl.lang.core" "./main/apiplugins/io.sarl.core" "./main/apiplugins/io.sarl.util")
 
 SOURCE_PATH=""
 for module in "${PLUGIN_MODULES[@]}"

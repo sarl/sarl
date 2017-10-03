@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.docs.doclet;
+package io.sarl.docs.doclet.writers;
 
 import com.sun.javadoc.AnnotationTypeDoc;
 import com.sun.javadoc.Type;
@@ -28,6 +28,8 @@ import com.sun.tools.doclets.formats.html.ConfigurationImpl;
 import com.sun.tools.doclets.formats.html.LinkInfoImpl;
 import com.sun.tools.doclets.internal.toolkit.Content;
 import com.sun.tools.doclets.internal.toolkit.util.links.LinkFactory;
+
+import io.sarl.docs.doclet.SarlConfiguration;
 
 /** Writer of classes dedicated to the SARL doclet.
  *

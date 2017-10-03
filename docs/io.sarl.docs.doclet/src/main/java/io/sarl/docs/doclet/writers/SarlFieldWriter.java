@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.docs.doclet;
+package io.sarl.docs.doclet.writers;
 
 import java.lang.reflect.Modifier;
 
@@ -33,6 +33,8 @@ import com.sun.tools.doclets.formats.html.markup.HtmlTag;
 import com.sun.tools.doclets.formats.html.markup.HtmlTree;
 import com.sun.tools.doclets.formats.html.markup.StringContent;
 import com.sun.tools.doclets.internal.toolkit.Content;
+
+import io.sarl.docs.doclet.utils.Utils;
 
 /** Writer of fields dedicated to the SARL doclet.
  *

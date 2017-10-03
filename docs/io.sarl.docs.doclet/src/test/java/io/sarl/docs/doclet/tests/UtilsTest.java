@@ -25,7 +25,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import io.sarl.docs.doclet.Utils;
+import io.sarl.docs.doclet.utils.Utils;
 import io.sarl.lang.annotation.DefaultValue;
 
 /**

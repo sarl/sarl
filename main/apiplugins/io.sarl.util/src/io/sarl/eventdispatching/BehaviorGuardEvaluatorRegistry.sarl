@@ -165,7 +165,7 @@ class BehaviorGuardEvaluatorRegistry {
 
 	/**
 	 * A thread-safe cache that contains the mapping from each class to all methods in that class and all super-classes, that are annotated with
-	 * the annotation given by {@link #perceptGuardEvaluatorAnnotation}. The cache is shared across all instances of this class; this greatly
+	 * the annotation given by {@link #getAnnotatedMethodMapOnDemand(java.lang.Class)}. The cache is shared across all instances of this class; this greatly
 	 * improves performance if multiple EventBus instances are created and objects of the same class are registered on all of them.
 	 */
 	static val PERCEPT_GUARD_EVALUATOR_METHOD_CACHE
@@ -580,8 +580,7 @@ class BehaviorGuardEvaluatorRegistry {
 	 * Gets an iterator representing an immutable snapshot of all BehaviorGuardEvaluators of the given listener
 	 * to the given event at the time this method is called.
 	 *
-	 * <p>Caution: This function does not apply filtering function given to {@link #register(Object,
-	 * org.eclipse.xtext.xbase.lib.Functions.Function1, org.eclipse.xtext.xbase.lib.Procedure.Procedure1)}.
+	 * <p>Caution: This function does not apply filtering function given to {@link #register(Object, Function1, Procedure1)}.
 	 *
 	 * @param event -the event to process
 	 * @param listener the owner of the BehaviorGuardEvaluators (never {@code null}).

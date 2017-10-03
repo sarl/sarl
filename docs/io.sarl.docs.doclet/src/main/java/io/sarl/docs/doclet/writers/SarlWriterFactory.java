@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.docs.doclet;
+package io.sarl.docs.doclet.writers;
 
 import java.io.IOException;
 
@@ -34,6 +34,8 @@ import com.sun.tools.doclets.formats.html.WriterFactoryImpl;
 import com.sun.tools.doclets.internal.toolkit.AnnotationTypeWriter;
 import com.sun.tools.doclets.internal.toolkit.ClassWriter;
 import com.sun.tools.doclets.internal.toolkit.util.ClassTree;
+
+import io.sarl.docs.doclet.SarlConfiguration;
 
 /** Class builder dedicated to the SARL doclet.
  *

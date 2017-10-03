@@ -30,7 +30,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.junit.Before;
 import org.junit.Test;
 
-import io.sarl.docs.doclet.SARLFeatureAccess;
+import io.sarl.docs.doclet.utils.SARLFeatureAccess;
 import io.sarl.lang.SARLStandaloneSetup;
 import io.sarl.lang.annotation.DefaultValue;
 import io.sarl.lang.annotation.SarlElementType;

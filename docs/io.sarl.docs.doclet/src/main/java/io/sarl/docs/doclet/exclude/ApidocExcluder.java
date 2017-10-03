@@ -19,12 +19,11 @@
  * limitations under the License.
  */
 
-package io.sarl.docs.doclet;
+package io.sarl.docs.doclet.exclude;
 
-import com.sun.javadoc.RootDoc;
+import com.sun.javadoc.Doc;
 
-/** Install the proxies for the {@code Doc}.
- * This object is filtering the arrays that are replied functions in {@code RootDoc} or {@code ProgramElementDoc}.
+/** Check if an element should be ignored into the API doc.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -32,13 +31,20 @@ import com.sun.javadoc.RootDoc;
  * @mavenartifactid $ArtifactId$
  * @since 0.7
  */
-public interface ProxyInstaller {
+public interface ApidocExcluder {
 
-	/** Filter the given document.
+	/** Replies if the given documented element should be excluded from the documentation.
 	 *
-	 * @param obj the document to filter.
-	 * @return the filtered {@code obj}.
+	 * @param doc the element.
+	 * @return {@code true} if the element should be excluded.
 	 */
-	RootDoc processDocument(RootDoc obj);
+	boolean isExcluded(Doc doc);
+
+	/** Replies if the given documented element should be translated to a tag.
+	 *
+	 * @param doc the element.
+	 * @return {@code true} if the element should be translated.
+	 */
+	boolean isTranslatableToTag(Doc doc);
 
 }

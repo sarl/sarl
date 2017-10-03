@@ -19,13 +19,15 @@
  * limitations under the License.
  */
 
-package io.sarl.docs.doclet;
+package io.sarl.docs.doclet.utils;
 
 import java.text.MessageFormat;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import com.sun.tools.doclets.internal.toolkit.util.MessageRetriever;
+
+import io.sarl.docs.doclet.SarlConfiguration;
 
 /** Message retreiver for SARL.
  *

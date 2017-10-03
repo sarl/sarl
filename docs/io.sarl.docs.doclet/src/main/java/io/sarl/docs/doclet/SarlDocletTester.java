@@ -23,6 +23,8 @@ package io.sarl.docs.doclet;
 
 import com.sun.tools.javadoc.Main;
 
+import io.sarl.docs.doclet.utils.Utils;
+
 /** Tester for the SARL Doclet.
  *
  * @author $Author: sgalland$
@@ -41,6 +43,7 @@ public final class SarlDocletTester {
 	 *
 	 * @param args arguments.
 	 */
+	@SuppressWarnings("checkstyle:all")
 	public static void main(String[] args) {
 		try {
 			System.setProperty("http.proxyHost", "proxy.utbm.fr"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -49,8 +52,9 @@ public final class SarlDocletTester {
 				"-private", //$NON-NLS-1$
 				"-source", "1.8", //$NON-NLS-1$ //$NON-NLS-2$
 				"-doclet", SarlDoclet.class.getName(), //$NON-NLS-1$
-				//"-sourcepath", "/home/sgalland/git/sarl/main/coreplugins/io.sarl.lang.core/src", //$NON-NLS-1$ //$NON-NLS-2$
-				"-sourcepath", "/home/sgalland/git/sarl/main/apiplugins/io.sarl.core/src-gen", //$NON-NLS-1$ //$NON-NLS-2$
+				"-sourcepath", "/home/sgalland/git/sarl/main/coreplugins/io.sarl.lang.core/src", //$NON-NLS-1$ //$NON-NLS-2$
+				//"-sourcepath", "/home/sgalland/git/sarl/main/apiplugins/io.sarl.core/src-gen", //$NON-NLS-1$ //$NON-NLS-2$
+				//"-sourcepath", "/home/sgalland/git/sarl/main/coreplugins/io.sarl.lang.core/src:/home/sgalland/git/sarl/main/apiplugins/io.sarl.core/src-gen", //$NON-NLS-1$ //$NON-NLS-2$
 				"-d", "/home/sgalland/tmp/gen-site", //$NON-NLS-1$ //$NON-NLS-2$
 				"-subpackages", "io", //$NON-NLS-1$ //$NON-NLS-2$
 				"-link", "http://docs.oracle.com/javase/8/docs/api/", //$NON-NLS-1$ //$NON-NLS-2$

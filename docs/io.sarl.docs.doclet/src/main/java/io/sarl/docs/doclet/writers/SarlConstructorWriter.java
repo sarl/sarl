@@ -19,18 +19,20 @@
  * limitations under the License.
  */
 
-package io.sarl.docs.doclet;
+package io.sarl.docs.doclet.writers;
 
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.ConstructorDoc;
 import com.sun.javadoc.ExecutableMemberDoc;
 import com.sun.javadoc.Parameter;
 import com.sun.tools.doclets.formats.html.ConstructorWriterImpl;
-import com.sun.tools.doclets.formats.html.LinkInfoImpl;
 import com.sun.tools.doclets.formats.html.SubWriterHolderWriter;
 import com.sun.tools.doclets.formats.html.markup.HtmlTag;
 import com.sun.tools.doclets.formats.html.markup.HtmlTree;
 import com.sun.tools.doclets.internal.toolkit.Content;
+
+import io.sarl.docs.doclet.SarlConfiguration;
+import io.sarl.docs.doclet.utils.Utils;
 
 /** Writer of constructors dedicated to the SARL doclet.
  *
@@ -78,42 +80,17 @@ public class SarlConstructorWriter extends ConstructorWriterImpl {
 	 * @param htmlTree the output.
 	 */
 	protected void addAnnotations(ExecutableMemberDoc member, Content htmlTree) {
-		this.writer.addAnnotationInfo(member, htmlTree);
+		WriterUtils.addAnnotations(member, htmlTree, this.configuration, this.writer);
 	}
 
 	@Override
-	protected void addTypeParameters(ExecutableMemberDoc arg0, Content arg1) {
-		super.addTypeParameters(arg0, arg1);
+	protected void addTypeParameters(ExecutableMemberDoc member, Content htmlTree) {
+		WriterUtils.addTypeParameters(getTypeParameters(member), htmlTree, this.configuration, this.writer);
 	}
 
 	@Override
 	protected void addParam(ExecutableMemberDoc member, Parameter param, boolean isVarArg, Content htmlTree) {
-        final String defaultValue = Utils.getParameterDefaultValue(member, param, this.configuration);
-        final boolean addDefaultValueBrackets = Utils.isNullOrEmpty(defaultValue)
-        		&& Utils.isDefaultValuedParameter(member, param, this.configuration);
-        if (addDefaultValueBrackets) {
-        	htmlTree.addContent("["); //$NON-NLS-1$
-        }
-        if (param.name().length() > 0) {
-            htmlTree.addContent(param.name());
-        }
-		htmlTree.addContent(this.writer.getSpace());
-		htmlTree.addContent(Utils.getKeywords().getColonKeyword());
-		htmlTree.addContent(" "); //$NON-NLS-1$
-        if (param.type() != null) {
-            final Content link = this.writer.getLink(new LinkInfoImpl(
-                    this.configuration, LinkInfoImpl.Kind.EXECUTABLE_MEMBER_PARAM,
-                    param.type()).varargs(isVarArg));
-            htmlTree.addContent(link);
-        }
-        if (addDefaultValueBrackets) {
-        	htmlTree.addContent("]"); //$NON-NLS-1$
-        } else if (!Utils.isNullOrEmpty(defaultValue)) {
-    		htmlTree.addContent(" "); //$NON-NLS-1$
-    		htmlTree.addContent(Utils.getKeywords().getEqualsSignKeyword());
-    		htmlTree.addContent(this.writer.getSpace());
-    		htmlTree.addContent(defaultValue);
-        }
+		WriterUtils.addFormalParameter(member, param, isVarArg, htmlTree, (SarlConfiguration) this.configuration, this.writer);
 	}
 
 }

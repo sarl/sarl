@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.docs.doclet;
+package io.sarl.docs.doclet.references;
 
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.Doc;
@@ -32,6 +32,10 @@ import com.sun.tools.doclets.formats.html.LinkInfoImpl;
 import com.sun.tools.doclets.internal.toolkit.Content;
 import com.sun.tools.doclets.internal.toolkit.util.links.LinkFactory;
 import com.sun.tools.doclets.internal.toolkit.util.links.LinkInfo;
+
+import io.sarl.docs.doclet.utils.Reflect;
+import io.sarl.docs.doclet.utils.SARLFeatureAccess;
+import io.sarl.docs.doclet.utils.Utils;
 
 /** Link factory for the SARL doclet.
  *
@@ -139,7 +143,7 @@ public class SarlLinkFactory extends LinkFactoryImpl {
 	 * @param bound the new bounds.
 	 */
 	protected void setBoundsLinkInfo(LinkInfo linkInfo, Type bound) {
-		Reflect.call(this, LinkFactory.class, "setBoundsLinkInfo", //$NON-NLS-1$
+		Reflect.callProc(this, LinkFactory.class, "setBoundsLinkInfo", //$NON-NLS-1$
 				new Class<?>[]{LinkInfo.class, Type.class},
 				linkInfo, bound);
     }

@@ -176,6 +176,20 @@
 					</plugins>
 				</pluginManagement>
 			</build>
+			<dependencies>
+				<!-- The following dependencies have been added for enabling Javadoc to
+					find classes that are indirectly used. -->
+				<dependency>
+					<groupId>org.apache.maven.shared</groupId>
+					<artifactId>maven-shared-utils</artifactId>
+					<version>0.8</version>
+				</dependency>
+				<dependency>
+					<groupId>com.google.code.findbugs</groupId>
+					<artifactId>jsr305</artifactId>
+					<version>2.0.1</version>
+				</dependency>
+			</dependencies>
 		</profile>
 	</profiles>
 

@@ -19,11 +19,14 @@
  * limitations under the License.
  */
 
-package io.sarl.docs.doclet;
+package io.sarl.docs.doclet.proxy;
 
-import com.sun.javadoc.Doc;
+import com.sun.javadoc.AnnotationTypeDoc;
+import com.sun.javadoc.RootDoc;
 
-/** Check if an element should be ignored into the API doc.
+import io.sarl.docs.doclet.SarlConfiguration;
+
+/** Install the proxies for the {@code Doc}.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -31,20 +34,39 @@ import com.sun.javadoc.Doc;
  * @mavenartifactid $ArtifactId$
  * @since 0.7
  */
-public interface ApidocExcluder {
+public class NoProxyInstaller implements ProxyInstaller {
 
-	/** Replies if the given documented element should be excluded from the documentation.
+	/** Constructor.
 	 *
-	 * @param doc the element.
-	 * @return {@code true} if the element should be excluded.
+	 * @param configuration the configuration.
 	 */
-	boolean isExcluded(Doc doc);
+	public NoProxyInstaller(SarlConfiguration configuration) {
+		//
+	}
 
-	/** Replies if the given documented element should be translated to a tag.
-	 *
-	 * @param doc the element.
-	 * @return {@code true} if the element should be translated.
-	 */
-	boolean isTranslatableToTag(Doc doc);
+	@Override
+	public RootDoc installProxies(RootDoc obj) {
+		return obj;
+	}
+
+	@Override
+	public void installProxies(SarlConfiguration configuration) {
+		//
+	}
+
+	@Override
+	public void uninstallProxies(SarlConfiguration configuration) {
+		//
+	}
+
+	@Override
+	public <T> T unwrap(T obj) {
+		return obj;
+	}
+
+	@Override
+	public AnnotationTypeDoc wrap(AnnotationTypeDoc obj) {
+		return obj;
+	}
 
 }

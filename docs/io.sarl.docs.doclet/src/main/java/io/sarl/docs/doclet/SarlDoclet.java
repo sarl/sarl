@@ -57,6 +57,10 @@ import com.sun.tools.doclets.internal.toolkit.util.IndexBuilder;
 import com.sun.tools.doclets.internal.toolkit.util.Util;
 import com.sun.tools.javac.jvm.Profile;
 
+import io.sarl.docs.doclet.proxy.ProxyInstaller;
+import io.sarl.docs.doclet.utils.Reflect;
+import io.sarl.docs.doclet.utils.Utils;
+
 /** SARL Doclet.
  *
  * @author $Author: sgalland$
@@ -131,12 +135,12 @@ public class SarlDoclet extends AbstractDoclet {
 	@SuppressWarnings("checkstyle:all")
 	@Override
 	public boolean start(AbstractDoclet doclet, RootDoc root) {
-		configuration().root = configuration().getProxyInstaller().processDocument(root);
+		configuration().root = configuration().getProxyInstaller().installProxies(root);
 		if (!isValidDoclet(doclet)) {
 			return false;
 		}
 		try {
-			Reflect.call(this, AbstractDoclet.class, "startGeneration", //$NON-NLS-1$
+			Reflect.callProc(this, AbstractDoclet.class, "startGeneration", //$NON-NLS-1$
 					new Class[] { RootDoc.class },
 					configuration().root);
 		} catch (DocletAbortException e) {
@@ -154,6 +158,19 @@ public class SarlDoclet extends AbstractDoclet {
 		return true;
 	}
 
+	private AnnotationTypeDoc asAnnotationTypeDoc(ClassDoc doc) {
+		final ProxyInstaller proxyInstaller = configuration().getProxyInstaller();
+		final ClassDoc current = proxyInstaller.unwrap(doc);
+		AnnotationTypeDoc annotationTypeDoc = null;
+		if (current instanceof AnnotationTypeDoc) {
+			annotationTypeDoc = (AnnotationTypeDoc) current;
+		}
+		if (annotationTypeDoc == null) {
+			annotationTypeDoc = current.asAnnotationTypeDoc();
+		}
+		return proxyInstaller.wrap(annotationTypeDoc);
+	}
+
 	@Override
 	protected void generateClassFiles(ClassDoc[] classes, ClassTree classtree) {
 		Arrays.sort(classes);
@@ -165,9 +182,11 @@ public class SarlDoclet extends AbstractDoclet {
 			final ClassDoc previous = i == 0 ? null : classes[i - 1];
 			final ClassDoc next = (i + 1) == classes.length ? null : classes[i + 1];
 			try {
-				if (current.isAnnotationType()) {
+				final AnnotationTypeDoc annotationTypeDoc =
+						current.isAnnotationType() ? asAnnotationTypeDoc(current) : null;
+				if (annotationTypeDoc != null) {
 					final AbstractBuilder annotationTypeBuilder = configuration().getBuilderFactory()
-							.getAnnotationTypeBuilder((AnnotationTypeDoc) current, previous, next);
+							.getAnnotationTypeBuilder(annotationTypeDoc, previous, next);
 					annotationTypeBuilder.build();
 				} else {
 					final AbstractBuilder classBuilder = configuration().getBuilderFactory()
@@ -188,8 +207,8 @@ public class SarlDoclet extends AbstractDoclet {
 	protected void generatePackageFiles(ClassTree classtree) throws Exception {
 		final PackageDoc[] packages = configuration().packages;
 		if (packages.length > 1) {
-			PackageIndexFrameWriter.generate(configuration());
-		}
+            PackageIndexFrameWriter.generate(configuration());
+        }
 		PackageDoc prev = null;
 		PackageDoc next;
 		for (int i = 0; i < packages.length; i++) {
@@ -239,8 +258,12 @@ public class SarlDoclet extends AbstractDoclet {
 					// and profilename-package-frame.html pages for that package.
 					if (!(configuration().nodeprecated && Util.isDeprecated(packages[j]))) {
 						ProfilePackageFrameWriter.generate(configuration(), packages[j], i);
-						next = (j + 1 < packages.length)
-								&& (packages[j + 1].name().length() > 0) ? packages[j + 1] : null;
+						if ((j + 1 < packages.length)
+							&& (packages[j + 1].name().length() > 0)) {
+							next = packages[j + 1];
+						} else {
+							next = null;
+						}
 						final AbstractBuilder profilePackageSummaryBuilder = configuration()
 								.getBuilderFactory().getProfilePackageSummaryBuilder(
 										packages[j], prev, next, Profile.lookup(i));
@@ -292,7 +315,9 @@ public class SarlDoclet extends AbstractDoclet {
 		}
 
 		if (!(configuration().nodeprecatedlist || nodeprecated)) {
-			DeprecatedListWriter.generate(configuration());
+			configuration().getProxyInstaller().noProxy(configuration(), () -> {
+				DeprecatedListWriter.generate(configuration());
+			});
 		}
 
 		AllClassesFrameWriter.generate(configuration(),

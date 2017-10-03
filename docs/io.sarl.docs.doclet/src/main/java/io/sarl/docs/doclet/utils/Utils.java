@@ -19,11 +19,13 @@
  * limitations under the License.
  */
 
-package io.sarl.docs.doclet;
+package io.sarl.docs.doclet.utils;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
@@ -39,11 +41,12 @@ import com.sun.javadoc.ProgramElementDoc;
 import com.sun.javadoc.SourcePosition;
 import com.sun.tools.doclets.formats.html.markup.HtmlTree;
 import com.sun.tools.doclets.formats.html.markup.StringContent;
-import com.sun.tools.doclets.internal.toolkit.Configuration;
 import com.sun.tools.doclets.internal.toolkit.Content;
 import com.sun.tools.doclets.internal.toolkit.util.DocFile;
 import com.sun.tools.doclets.internal.toolkit.util.DocPath;
 import com.sun.tools.doclets.internal.toolkit.util.DocletAbortException;
+
+import io.sarl.docs.doclet.SarlConfiguration;
 
 /** Utilities.
  *
@@ -102,7 +105,7 @@ public final class Utils {
 	 *
 	 * @param sarlKeywords the SARL keywords.
 	 */
-	static void setKeywords(SARLFeatureAccess sarlKeywords) {
+	public static void setKeywords(SARLFeatureAccess sarlKeywords) {
 		keywords = sarlKeywords;
 	}
 
@@ -199,7 +202,7 @@ public final class Utils {
 	 * @return the default value or {@code null}.
 	 */
 	@SuppressWarnings("checkstyle:nestedifdepth")
-	public static String getParameterDefaultValue(ExecutableMemberDoc member, Parameter param, Configuration configuration) {
+	public static String getParameterDefaultValue(ExecutableMemberDoc member, Parameter param, SarlConfiguration configuration) {
 		final AnnotationDesc annotation = Utils.findFirst(param.annotations(), (it) ->
 				qualifiedNameEquals(it.annotationType().qualifiedTypeName(), getKeywords().getDefaultValueAnnnotationName()));
 		if (annotation != null) {
@@ -243,12 +246,11 @@ public final class Utils {
 
 	/** Replies the default value of the given parameter.
 	 *
-	 * @param member the member
 	 * @param param the parameter.
 	 * @param configuration the configuration.
 	 * @return the default value or {@code null}.
 	 */
-	public static boolean isDefaultValuedParameter(ExecutableMemberDoc member, Parameter param, Configuration configuration) {
+	public static boolean isDefaultValuedParameter(Parameter param, SarlConfiguration configuration) {
 		final AnnotationDesc annotation = Utils.findFirst(param.annotations(), (it) ->
 				qualifiedNameEquals(it.annotationType().qualifiedTypeName(), getKeywords().getDefaultValueAnnnotationName()));
 		return annotation != null;
@@ -420,6 +422,33 @@ public final class Utils {
 					exc.toString());
 			throw new DocletAbortException(exc);
 		}
+	}
+
+	/** Create an empty Java list.
+	 *
+	 * @param <T> the type of the elements into the list.
+	 * @return the list.
+	 */
+	public static <T> com.sun.tools.javac.util.List<T> emptyList() {
+		return com.sun.tools.javac.util.List.from(Collections.emptyList());
+	}
+
+	/** Convert to an array.
+	 *
+	 * @param <T> the type of the elements.
+	 * @param source the original array.
+	 * @param newContent the new content.
+	 * @return the new array.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> T[] toArray(T[] source, Collection<? extends T> newContent) {
+		final Object array = Array.newInstance(source.getClass().getComponentType(), newContent.size());
+		int i = 0;
+		for (final T element : newContent) {
+			Array.set(array, i, element);
+			++i;
+		}
+		return (T[]) array;
 	}
 
 	/** Filter function.
