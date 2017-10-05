@@ -33,12 +33,11 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
 
-import javax.inject.Inject;
-
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.Service;
 import com.google.inject.AbstractModule;
+import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;

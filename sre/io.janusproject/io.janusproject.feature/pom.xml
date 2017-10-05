@@ -9,7 +9,7 @@
 
 	<artifactId>io.janusproject.feature</artifactId>
 	<packaging>eclipse-feature</packaging>
-	<name>SARL Examples Feature</name>
+	<name>Janus Feature</name>
 
 	<build>
 		<plugins>

@@ -125,7 +125,9 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	 *
 	 * <p>This function is not thread-safe.
 	 *
-	 * @param name name of the task.
+	 * @param task the task.
+	 * @param updateSkillReferences indicates if the references to skills should be updated too.
+	 * @param updateAgentTraitReferences indicates if the references to agent traits should be updated too.
 	 */
 	private void finishTask(AgentTask task, boolean updateSkillReferences, boolean updateAgentTraitReferences) {
 		assert task != null;

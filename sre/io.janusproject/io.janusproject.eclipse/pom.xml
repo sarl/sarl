@@ -8,11 +8,10 @@
 	</parent>
 
 	<groupId>io.janusproject</groupId>
-	<artifactId>io.janusproject.plugin</artifactId>
+	<artifactId>io.janusproject.eclipse</artifactId>
 	<packaging>eclipse-plugin</packaging>
-	<name>Janus Project</name>
-	<url>${janusUrl}</url>
-	<inceptionYear>2008</inceptionYear>
+	<name>Eclipse Integration for Janus</name>
+	<inceptionYear>2014</inceptionYear>
 
 	<properties>
 		<jkernel.version>2.${project.version}</jkernel.version>
@@ -32,64 +31,44 @@
 				<artifactId>replacer</artifactId>
 				<executions>
 					<execution>
-						<id>generate-javaversion-class</id>
-						<phase>generate-sources</phase>
+						<id>prepare-eclipse-aboutbox</id>
+						<phase>process-resources</phase>
 						<goals>
 							<goal>replace</goal>
 						</goals>
 						<configuration>
 							<encoding>${project.build.sourceEncoding}</encoding>
-							<basedir>${project.basedir}/src-templates</basedir>
-							<outputDir>../src</outputDir>
-							<includes>
-								<include>**/*.java</include>
-							</includes>
+							<file>${project.basedir}/src-templates/about.mappings</file>
+							<outputFile>${project.basedir}/about.mappings</outputFile>
 							<replacements>
 								<replacement>
-									<token>@janusreleaseversion@</token>
-									<value>${janus.release_version}</value>
+									<token>%website%</token>
+									<value>${sarlUrl}</value>
 								</replacement>
 								<replacement>
-									<token>@janusisstableversion@</token>
-									<value>${sarl.is_stable_version}</value>
+									<token>%sarlBuildId%</token>
+									<value>${buildId}</value>
+								</replacement>
+								<replacement>
+									<token>%copyrightdate%</token>
+									<value>${project.inceptionYear}-${year}</value>
+								</replacement>
+								<replacement>
+									<token>%copyrighters%</token>
+									<value>${copyrighters}</value>
+								</replacement>
+								<replacement>
+									<token>%sarlreleaseversion%</token>
+									<value>${sarl.release_version}</value>
+								</replacement>
+								<replacement>
+									<token>%sarlspecificationreleasedate%</token>
+									<value>${sarl.specification.release_date}</value>
 								</replacement>
 							</replacements>
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>io.sarl.maven</groupId>
-				<artifactId>io.sarl.maven.sre</artifactId>
-				<configuration>
-					<sreName>JANUS</sreName>
-					<standaloneSRE>false</standaloneSRE>
-					<commandLineOptions>
-						<hideInfo>--log=warning</hideInfo>
-						<hideLogo>--nologo</hideLogo>
-						<showInfo>--log=info</showInfo>
-						<showLogo></showLogo>
-						<defaultContextId>--worldid</defaultContextId>
-						<randomContextId>--randomid</randomContextId>
-						<bootAgentContextId>--bootid</bootAgentContextId>
-						<offline>--offline</offline>
-						<embedded>--embedded</embedded>
-						<noMoreOption>--</noMoreOption>
-					</commandLineOptions>
-					<mainClass>${cliRunnerMainClass}</mainClass>
-					<bootstrap>${bootstrap}</bootstrap>
-				</configuration>
-
-				<executions>
-					<execution>
-						<goals>
-							<goal>updatemanifest</goal>
-							<goal>addbootstrap</goal>
-						</goals>
-					</execution>
-				</executions>
-
 			</plugin>
 
 			<plugin>
@@ -138,20 +117,6 @@
 					</plugins>
 				</pluginManagement>
 			</build>
-			<dependencies>
-				<!-- The following dependencies have been added for enabling Javadoc to
-					find classes that are indirectly used. -->
-				<dependency>
-					<groupId>org.apache.maven.shared</groupId>
-					<artifactId>maven-shared-utils</artifactId>
-					<version>0.8</version>
-				</dependency>
-				<dependency>
-					<groupId>com.google.code.findbugs</groupId>
-					<artifactId>jsr305</artifactId>
-					<version>2.0.1</version>
-				</dependency>
-			</dependencies>
 		</profile>
 	</profiles>
 

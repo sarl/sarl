@@ -27,9 +27,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.StreamSupport;
 
-import javax.inject.Inject;
-
 import com.google.common.collect.Lists;
+import com.google.inject.Inject;
 import org.arakhne.afc.util.MultiCollection;
 import org.arakhne.afc.util.OutputParameter;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
