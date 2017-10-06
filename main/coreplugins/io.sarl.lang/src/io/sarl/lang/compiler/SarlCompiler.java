@@ -94,7 +94,7 @@ import io.sarl.lang.typesystem.SARLExpressionHelper;
  * <p>This compiler supports also the "$0" parameter in inline expression. This parameter represents the
  * current receiver, e.g. "this.".
  *
- * <p>The compiler supports the SARL keywords too: break.
+ * <p>The compiler supports the SARL keywords: break.
  *
  * <p>This compiler catches exceptions when generating statements for expressions in order to let the compiler
  * to generate as much as possible.
