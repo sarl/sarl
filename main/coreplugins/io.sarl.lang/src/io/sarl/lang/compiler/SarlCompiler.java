@@ -208,6 +208,7 @@ public class SarlCompiler extends XtendCompiler {
 	@Override
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	protected synchronized void appendInlineFeatureCall(XAbstractFeatureCall call, ITreeAppendable target) {
+		// Overridden for fixing the @Inline behavior
 		final JvmAnnotationReference inlineAnnotation = this.expressionHelper.findInlineAnnotation(call);
 
 		String formatString = null;
@@ -346,6 +347,7 @@ public class SarlCompiler extends XtendCompiler {
 
 	@Override
 	public void doInternalToJavaStatement(XExpression obj, ITreeAppendable appendable, boolean isReferenced) {
+		// Overridden for enabling the expressions that are specific to SARL
 		if (obj instanceof SarlBreakExpression) {
 			_toJavaStatement((SarlBreakExpression) obj, appendable, isReferenced);
 		} else if (obj instanceof SarlContinueExpression) {
@@ -364,6 +366,7 @@ public class SarlCompiler extends XtendCompiler {
 
 	@Override
 	public void internalToConvertedExpression(XExpression obj, ITreeAppendable appendable) {
+		// Overridden for enabling the expressions that are specific to SARL
 		if (obj instanceof SarlBreakExpression) {
 			_toJavaExpression((SarlBreakExpression) obj, appendable);
 		} else if (obj instanceof SarlContinueExpression) {
@@ -545,6 +548,7 @@ public class SarlCompiler extends XtendCompiler {
 
 	@Override
 	protected boolean internalCanCompileToJavaExpression(XExpression expression, ITreeAppendable appendable) {
+		// Overridden for enabling the expressions that are specific to SARL
 		if (expression instanceof SarlBreakExpression) {
 			return true;
 		}
@@ -559,7 +563,14 @@ public class SarlCompiler extends XtendCompiler {
 
 	@Override
 	protected boolean isVariableDeclarationRequired(XExpression expression, ITreeAppendable appendable, boolean recursive) {
+		// Overridden for enabling the expressions that are specific to SARL
 		final EObject container = expression.eContainer();
+		if (expression instanceof SarlBreakExpression) {
+			return false;
+		}
+		if (expression instanceof SarlContinueExpression) {
+			return false;
+		}
 		if (container instanceof SarlAssertExpression) {
 			return false;
 		}
