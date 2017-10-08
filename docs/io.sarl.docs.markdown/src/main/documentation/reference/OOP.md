@@ -353,8 +353,7 @@ A static method is a function that is not associated to a specific instance of t
 Modifiers are used to modify declarations of types and type members. This section introduces the modifiers for the class.
 The modifiers are usually written before the keyword for defining the class.
 
-The complete description of the modifiers' semantic is available in
-[this section](#modifiers).
+The complete description of the modifiers' semantic is available in [this section](#definition-of-all-the-supported-modifiers).
 
 
 #### Top Class Modifiers
@@ -754,8 +753,7 @@ The implementing class needs to provide a function code only for the [:switchfct
 Modifiers are used to modify declarations of types and type members. This section introduces the modifiers for the interface.
 The modifiers are usually written before the keyword for defining the interface.
 
-The complete description of the modifiers' semantic is available in
-[this section](#modifiers).
+The complete description of the modifiers' semantic is available in [this section](#definition-of-all-the-supported-modifiers).
 
 
 #### Top Interface Modifiers
@@ -895,8 +893,7 @@ The following example defines the enumeration [:myenumtype:] with two constants:
 Modifiers are used to modify declarations of types and type members. This section introduces the modifiers for the enumeration.
 The modifiers are usually written before the keyword for defining the enumeration.
 
-The complete description of the modifiers' semantic is available in
-[this section](#modifiers).
+The complete description of the modifiers' semantic is available in [this section](#definition-of-all-the-supported-modifiers).
 
 
 #### Top Enumeration Modifiers
@@ -997,8 +994,7 @@ Modifiers are used to modify declarations of types and type members.
 This section introduces the modifiers for the annotation types.
 The modifiers are usually written before the keyword for defining the annotation type.
 
-The complete description of the modifiers' semantic is available in
-[this section](#modifiers).
+The complete description of the modifiers' semantic is available in [this section](#definition-of-all-the-supported-modifiers).
 
 #### Top Annotation Type Modifiers
 
@@ -1208,7 +1204,7 @@ local classes. However, you cannot declare constructors in an anonymous class.</
 
 
 
-## Modifiers
+## Definition of all the supported modifiers
 
 In this section, the semantic of the different modifiers is explained.
 

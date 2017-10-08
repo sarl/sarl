@@ -234,7 +234,7 @@ This section introduces the modifiers for the agent.
 The modifiers are usually written before the keyword for defining the agent.
 
 The complete description of the modifiers' semantic is available in
-[this section](./OOP.md#7-modifiers).
+[this section](./OOP.md#definition-of-all-the-supported-modifiers).
 
 
 #### Agent Modifiers

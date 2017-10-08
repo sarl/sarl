@@ -7,8 +7,8 @@ In this document, we assume that the runtime environment is the [Janus platform]
 
 Two major methods are available for launching a SARL application inside the SARL Eclipse IDE:
 
-* Use a [SARL launch configuration](#create_a_sarl_launch_configuration).
-* Use a [Java launch configuration](#create_a_java_launch_configuration).
+* Use a [SARL launch configuration](#create-a-sarl-launch-configuration).
+* Use a [Java launch configuration](#create-a-java-launch-configuration).
 
 The SARL launch configuration is recommended.
 
@@ -19,7 +19,7 @@ For launching the SARL agents on the runtime environment inside the SARL Eclipse
 define a *Run Configuration*.
 
 <veryimportant>If your project is Maven-based, you could not use this method for launching your
-application. You must use the [Java launch configuration](#create_a_java_launch_configuration).</veryimportant>
+application. You must use the [Java launch configuration](#create-a-java-launch-configuration).</veryimportant>
 
 
 ### Create a Java application configuration

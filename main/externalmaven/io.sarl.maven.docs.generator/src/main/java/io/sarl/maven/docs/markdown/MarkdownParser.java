@@ -46,13 +46,13 @@ import com.vladsch.flexmark.ast.Image;
 import com.vladsch.flexmark.ast.Link;
 import com.vladsch.flexmark.ast.Node;
 import com.vladsch.flexmark.ast.NodeVisitor;
+import com.vladsch.flexmark.ast.Paragraph;
 import com.vladsch.flexmark.ast.VisitHandler;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.options.MutableDataSet;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.arakhne.afc.vmutil.URISchemeType;
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.lib.Functions.Function2;
@@ -61,7 +61,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import io.sarl.maven.docs.bugs.FileSystemAddons;
+import io.sarl.maven.docs.bugfixes.FileSystemAddons;
 import io.sarl.maven.docs.parser.AbstractMarkerLanguageParser;
 import io.sarl.maven.docs.parser.DynamicValidationComponent;
 import io.sarl.maven.docs.parser.DynamicValidationContext;
@@ -439,19 +439,51 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	}
 
 	@Override
-	protected String postProcessingTransformation(String content) {
+	protected String postProcessingTransformation(String content, boolean validationOfInternalLinks) {
 		String result = updateOutline(content);
-		result = transformMardownLinks(result);
-		result = transformHtmlLinks(result);
+		final ReferenceContext references = validationOfInternalLinks ? extractReferencableElements(result) : null;
+		result = transformMardownLinks(result, references);
+		result = transformHtmlLinks(result, references);
 		return result;
+	}
+
+	/** Extract all the referencable objects from the given content.
+	 *
+	 * @param text the content to parse.
+	 * @return the referencables objects
+	 */
+	@SuppressWarnings("static-method")
+	protected ReferenceContext extractReferencableElements(String text) {
+		final ReferenceContext context = new ReferenceContext();
+
+		// Visit the links and record the transformations
+		final MutableDataSet options = new MutableDataSet();
+		final Parser parser = Parser.builder(options).build();
+		final Node document = parser.parse(text);
+		final Pattern pattern = Pattern.compile(SECTION_PATTERN_AUTONUMBERING);
+		final NodeVisitor visitor = new NodeVisitor(
+				new VisitHandler<>(Paragraph.class, (it) -> {
+					final Matcher matcher = pattern.matcher(it.getContentChars());
+					if (matcher.find()) {
+						final String number = matcher.group(2);
+						final String title = matcher.group(3);
+						final String key1 = computeHeaderId(number, title);
+						final String key2 = computeHeaderId(null, title);
+						context.registerSection(key1, key2, title);
+					}
+				}));
+		visitor.visitChildren(document);
+
+		return context;
 	}
 
 	/** Apply link transformation on the HTML links.
 	 *
 	 * @param content the original content.
+	 * @param references the references into the document.
 	 * @return the result of the transformation.
 	 */
-	protected String transformHtmlLinks(String content) {
+	protected String transformHtmlLinks(String content, ReferenceContext references) {
 		if (!isPureHtmlReferenceTransformation()) {
 			return content;
 		}
@@ -474,7 +506,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 						final String href = tag.attr("href"); //$NON-NLS-1$
 						if (!Strings.isEmpty(href)) {
 							URL url = FileSystem.convertStringToURL(href, true);
-							url = transformURL(url);
+							url = transformURL(url, references);
 							if (url != null) {
 								replacements.put(href, convertURLToString(url));
 							}
@@ -502,9 +534,10 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	/** Apply link transformation on the Markdown links.
 	 *
 	 * @param content the original content.
+	 * @param references the references into the document.
 	 * @return the result of the transformation.
 	 */
-	protected String transformMardownLinks(String content) {
+	protected String transformMardownLinks(String content, ReferenceContext references) {
 		if (!isMarkdownToHtmlReferenceTransformation()) {
 			return content;
 		}
@@ -525,7 +558,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 		final NodeVisitor visitor = new NodeVisitor(
 				new VisitHandler<>(Link.class, (it) -> {
 					URL url = FileSystem.convertStringToURL(it.getUrl().toString(), true);
-					url = transformURL(url);
+					url = transformURL(url, references);
 					if (url != null) {
 						replacements.put(it.getUrl(), convertURLToString(url));
 					}
@@ -566,17 +599,33 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	 *
 	 * <p>Usually, the file extension ".md" is replaced by ".html".
 	 *
+	 * <p>This function replaces the anchor to the local reference with the correct one (modified by outline feature).
+	 *
 	 * @param link the link to transform.
+	 * @param references the set of references from the local document.
 	 * @return the result of the transformation. {@code null} if the link should not changed.
 	 */
-	@SuppressWarnings("static-method")
-	protected URL transformURL(URL link) {
+	protected URL transformURL(URL link, ReferenceContext references) {
 		if (URISchemeType.FILE.isURL(link)) {
 			File filename = FileSystem.convertURLToFile(link);
+			if (Strings.isEmpty(filename.getName())) {
+				// This is a link to the local document.
+				final String anchor = transformURLAnchor(filename, link.getRef(), references);
+				final URL url = FileSystemAddons.convertFileToURL(filename, true);
+				if (!Strings.isEmpty(anchor)) {
+					try {
+						return new URL(url.toExternalForm() + "#" + anchor); //$NON-NLS-1$
+					} catch (MalformedURLException e) {
+						//
+					}
+				}
+				return url;
+			}
+			// This is a link to another document.
 			final String extension = FileSystem.extension(filename);
 			if (isMarkdownFileExtension(extension)) {
 				filename = FileSystem.replaceExtension(filename, ".html"); //$NON-NLS-1$
-				final String anchor = link.getRef();
+				final String anchor = transformURLAnchor(filename, link.getRef(), null);
 				final URL url = FileSystemAddons.convertFileToURL(filename, true);
 				if (!Strings.isEmpty(anchor)) {
 					try {
@@ -589,6 +638,23 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 			}
 		}
 		return null;
+	}
+
+	/** Transform the anchor of an URL from Markdown format to HTML format.
+	 *
+	 * @param file the linked file.
+	 * @param anchor the anchor to transform.
+	 * @param references the set of references from the local document, or {@code null}.
+	 * @return the result of the transformation.
+	 * @since 0.7
+	 */
+	@SuppressWarnings("static-method")
+	protected String transformURLAnchor(File file, String anchor, ReferenceContext references) {
+		String anc = anchor;
+		if (references != null) {
+			anc = references.validateAnchor(anc);
+		}
+		return anc;
 	}
 
 	/** Replies if the given extension is for Markdown file.
@@ -922,17 +988,17 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 		if (isLocalFileReferenceValidation() || isRemoteReferenceValidation()) {
 			final int lineno = computeLineNo(it);
 			final URL url = FileSystem.convertStringToURL(it.getUrl().toString(), true);
-			if (URISchemeType.FILE.isURL(url)) {
-				if (isLocalFileReferenceValidation()) {
-					final Collection<DynamicValidationComponent> newComponents = createLocalFileValidatorComponents(
+			if (URISchemeType.HTTP.isURL(url) || URISchemeType.HTTPS.isURL(url) || URISchemeType.FTP.isURL(url)) {
+				if (isRemoteReferenceValidation()) {
+					final Collection<DynamicValidationComponent> newComponents = createRemoteReferenceValidatorComponents(
 							it, url, lineno, currentFile, context);
 					if (newComponents != null && !newComponents.isEmpty()) {
 						components.addAll(newComponents);
 					}
 				}
-			} else if (URISchemeType.HTTP.isURL(url) || URISchemeType.HTTPS.isURL(url) || URISchemeType.FTP.isURL(url)) {
-				if (isRemoteReferenceValidation()) {
-					final Collection<DynamicValidationComponent> newComponents = createRemoteReferenceValidatorComponents(
+			} else if (URISchemeType.FILE.isURL(url)) {
+				if (isLocalFileReferenceValidation()) {
+					final Collection<DynamicValidationComponent> newComponents = createLocalFileValidatorComponents(
 							it, url, lineno, currentFile, context);
 					if (newComponents != null && !newComponents.isEmpty()) {
 						components.addAll(newComponents);
@@ -989,23 +1055,26 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 		if (Strings.isEmpty(fn.getName())) {
 			// Special case: the URL should point to a anchor in the current document.
 			final String linkRef = url.getRef();
-			if (Strings.isEmpty(linkRef)) {
+			if (!Strings.isEmpty(linkRef)) {
 				return Arrays.asList(new DynamicValidationComponent() {
 					@Override
 					public String functionName() {
-						return "File_reference_test_" + lineno + "_"; //$NON-NLS-1$ //$NON-NLS-2$
+						return "Documentation_reference_anchor_test_" + lineno + "_"; //$NON-NLS-1$ //$NON-NLS-2$
 					}
 
 					@Override
-					public void generateValidationCode(ITreeAppendable it2) {
-						it2.append(Assert.class).append(".fail(\""); //$NON-NLS-1$
-						it2.append(Strings.convertToJavaString(
-								MessageFormat.format(Messages.MarkdownParser_2, it.getUrl())));
-						it2.append("\");"); //$NON-NLS-1$
+					public void generateValidationCode(ITreeAppendable it) {
+						context.setTempResourceRoots(null);
+						context.appendTitleAnchorExistenceTest(it, currentFile,
+								url.getRef(),
+								SECTION_PATTERN_TITLE_EXTRACTOR,
+								Iterables.concat(
+										Arrays.asList(MARKDOWN_FILE_EXTENSIONS),
+										Arrays.asList(HTML_FILE_EXTENSIONS)));
 					}
 				});
 			}
-			// No need to validate the current file's existency.
+			// No need to validate the current file's existency and anchor.
 			return null;
 		}
 		if (!fn.isAbsolute()) {

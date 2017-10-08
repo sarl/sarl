@@ -331,8 +331,10 @@ public class DynamicValidationContext {
 		receiver.append(Matcher.class).append(" matcher = sectionPattern.matcher(content);").newLine(); //$NON-NLS-1$
 		receiver.append("while (matcher.find()) {").increaseIndentation().newLine(); //$NON-NLS-1$
 		receiver.append("String title = matcher.group(1);").newLine(); //$NON-NLS-1$
-		receiver.append("String key = computeHeaderId(title);").newLine(); //$NON-NLS-1$
-		receiver.append("if (\"").append(Strings.convertToJavaString(anchor)).append("\".equals(key)) {"); //$NON-NLS-1$ //$NON-NLS-2$
+		receiver.append("String key1 = computeHeaderIdWithSectionNumber(title);").newLine(); //$NON-NLS-1$
+		receiver.append("String key2 = computeHeaderIdWithoutSectionNumber(title);").newLine(); //$NON-NLS-1$
+		receiver.append("if (\"").append(Strings.convertToJavaString(anchor)).append("\".equals(key1) || \""); //$NON-NLS-1$ //$NON-NLS-2$
+		receiver.append(Strings.convertToJavaString(anchor)).append("\".equals(key2)) {"); //$NON-NLS-1$
 		receiver.increaseIndentation().newLine().append("return;").decreaseIndentation().newLine(); //$NON-NLS-1$
 		receiver.append("}").decreaseIndentation().newLine(); //$NON-NLS-1$
 		receiver.append("}").newLine().append(Assert.class).append(".fail(\""); //$NON-NLS-1$ //$NON-NLS-2$
