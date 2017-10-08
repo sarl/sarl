@@ -25,7 +25,13 @@ import java.util.Map;
 import java.util.Set;
 
 import com.google.inject.Inject;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.typesystem.XtendReentrantTypeResolver;
+import org.eclipse.xtend.core.xtend.RichString;
+import org.eclipse.xtend.core.xtend.XtendPackage;
+import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmField;
@@ -35,11 +41,17 @@ import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.util.AnnotationLookup;
+import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
+import org.eclipse.xtext.xbase.XClosure;
+import org.eclipse.xtext.xbase.XConstructorCall;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.XMemberFeatureCall;
+import org.eclipse.xtext.xbase.XVariableDeclaration;
 import org.eclipse.xtext.xbase.XbaseFactory;
+import org.eclipse.xtext.xbase.compiler.GeneratorConfig;
+import org.eclipse.xtext.xbase.compiler.IGeneratorConfigProvider;
 import org.eclipse.xtext.xbase.scoping.batch.IFeatureScopeSession;
 import org.eclipse.xtext.xbase.typesystem.IResolvedTypes;
 import org.eclipse.xtext.xbase.typesystem.internal.ResolvedTypes;
@@ -50,9 +62,17 @@ import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.util.Utils;
 
 /**
+ * Type resolver for SARL.
+ *
+ * <p><strong>Redirection of the calls to capacity function:</strong>
  * The customized reentrant type resolver is responsible for proper typing function calls for
  * extension fields that are associated to used capacities in order to redirect the capacity's function
  * calls to the internal hidden functions.
+ *
+ * <p><strong>Generate Java8 lambda expressions:</strong>
+ * The Xtend reentrant type resolver does not provide a full support of Java 8 yet.
+ * The PR was refused in Xtend project, see <a href="https://github.com/eclipse/xtext-xtend/pull/193">Xtend Issue 193</a>.
+ * TODO: Remove this fix when Xtend support Java 8.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -64,6 +84,11 @@ public class SARLReentrantTypeResolver extends XtendReentrantTypeResolver {
 	@Inject
 	private AnnotationLookup annotationLookup;
 
+	/** The provider of generation configuration.
+	 */
+	@Inject
+	private IGeneratorConfigProvider generatorConfigProvider;
+
 	@Override
 	protected IFeatureScopeSession addExtensionFieldsToMemberSession(
 			ResolvedTypes resolvedTypes,
@@ -72,6 +97,7 @@ public class SARLReentrantTypeResolver extends XtendReentrantTypeResolver {
 			JvmIdentifiableElement thisFeature,
 			Set<String> seenNames,
 			Set<JvmType> seenTypes) {
+		// Overriding for capacity call redirection
 		if (seenTypes.add(type)) {
 			final Iterable<JvmField> fields = type.getDeclaredFields();
 			Map<XExpression, LightweightTypeReference> extensionProviders = null;
@@ -115,6 +141,7 @@ public class SARLReentrantTypeResolver extends XtendReentrantTypeResolver {
 	 * @return the type, never {@code null}.
 	 */
 	protected LightweightTypeReference getSarlCapacityFieldType(IResolvedTypes resolvedTypes, JvmField field) {
+		// For capacity call redirection
 		LightweightTypeReference fieldType = resolvedTypes.getActualType(field);
 		final JvmAnnotationReference capacityAnnotation = this.annotationLookup.findAnnotation(field,
 				ImportedCapacityFeature.class);
@@ -132,6 +159,7 @@ public class SARLReentrantTypeResolver extends XtendReentrantTypeResolver {
 	 * @return the SARL capacity extension provider, or {@code null}.
 	 */
 	protected XAbstractFeatureCall createSarlCapacityExtensionProvider(JvmIdentifiableElement thisFeature, JvmField field) {
+		// For capacity call redirection
 		if (thisFeature instanceof JvmDeclaredType) {
 			final JvmAnnotationReference capacityAnnotation = this.annotationLookup.findAnnotation(field,
 					ImportedCapacityFeature.class);
@@ -154,10 +182,53 @@ public class SARLReentrantTypeResolver extends XtendReentrantTypeResolver {
 	}
 
 	private static JvmOperation findOperation(JvmDeclaredType type, String operationName) {
+		// For capacity call redirection
 		for (final JvmOperation declaredOperation : type.getDeclaredOperations()) {
 			if (declaredOperation.getSimpleName().equals(operationName)) {
 				return declaredOperation;
 			}
+		}
+		return null;
+	}
+
+	@Override
+	protected String getInvalidWritableVariableAccessMessage(XVariableDeclaration variable,
+			XAbstractFeatureCall featureCall, IResolvedTypes resolvedTypes) {
+		// Overriding for proper lambda expression.
+		final EObject containingStructure = getNearestClosureOrTypeDeclaration(featureCall, resolvedTypes);
+		if (containingStructure instanceof XClosure && !EcoreUtil.isAncestor(containingStructure, variable)) {
+			final GeneratorConfig generatorConfig = this.generatorConfigProvider.get(
+					EcoreUtil.getRootContainer(containingStructure));
+			if (generatorConfig != null && generatorConfig.getJavaSourceVersion().isAtLeast(JavaVersion.JAVA8)) {
+				return null;
+			}
+		}
+		return super.getInvalidWritableVariableAccessMessage(variable, featureCall, resolvedTypes);
+	}
+
+	@SuppressWarnings("all")
+	private EObject getNearestClosureOrTypeDeclaration(EObject object, IResolvedTypes resolvedTypes) {
+		// Overriding for proper lambda expression.
+		EObject candidate = object;
+		while(candidate != null) {
+			if (candidate instanceof XClosure) {
+				return candidate;
+			}
+			if (candidate instanceof XConstructorCall) {
+				// skip anonymous class constructors themselves
+				if (candidate.eContainingFeature() == XtendPackage.Literals.ANONYMOUS_CLASS__CONSTRUCTOR_CALL) {
+					candidate = candidate.eContainer();
+				}
+			} else if (candidate instanceof XtendTypeDeclaration) {
+				return candidate;
+			}
+			if (candidate instanceof RichString) {
+				LightweightTypeReference type = resolvedTypes.getActualType((RichString)candidate);
+				if (type != null && type.isType(StringConcatenationClient.class)) {
+					return candidate;
+				}
+			}
+			candidate = candidate.eContainer();
 		}
 		return null;
 	}

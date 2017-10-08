@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.bugfixes.pending.bug764;
+package io.sarl.lang.scoping.numbers;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -37,9 +37,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @see "https://github.com/eclipse/xtext-extras/issues/186"
  */
 @SuppressWarnings("all")
-public final class IntegerExtensions {
+public final class AtomicIntegerExtensions {
 
-	private IntegerExtensions() {
+	private AtomicIntegerExtensions() {
 		//
 	}
 
@@ -53,7 +53,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(-($1).intValue())", constantExpression=true)
-	public static int operator_minus(Integer i) {
+	public static int operator_minus(AtomicInteger i) {
 		return -i.intValue();
 	}
 
@@ -66,7 +66,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() != $2)", constantExpression=true)
-	public static boolean operator_notEquals(Integer a, int b) {
+	public static boolean operator_notEquals(AtomicInteger a, int b) {
 		return a.intValue() != b;
 	}
 
@@ -79,7 +79,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() != $2)", constantExpression=true)
-	public static boolean operator_notEquals(Integer a, long b) {
+	public static boolean operator_notEquals(AtomicInteger a, long b) {
 		return a.longValue() != b;
 	}
 
@@ -92,7 +92,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() != $2)", constantExpression=true)
-	public static boolean operator_notEquals(Integer a, short b) {
+	public static boolean operator_notEquals(AtomicInteger a, short b) {
 		return a.intValue() != b;
 	}
 
@@ -105,7 +105,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() != $2)", constantExpression=true)
-	public static boolean operator_notEquals(Integer a, byte b) {
+	public static boolean operator_notEquals(AtomicInteger a, byte b) {
 		return a.intValue() != b;
 	}
 
@@ -118,7 +118,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() != $2)", constantExpression=true)
-	public static boolean operator_notEquals(Integer a, double b) {
+	public static boolean operator_notEquals(AtomicInteger a, double b) {
 		return a.doubleValue() != b;
 	}
 
@@ -131,7 +131,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() != $2)", constantExpression=true)
-	public static boolean operator_notEquals(Integer a, float b) {
+	public static boolean operator_notEquals(AtomicInteger a, float b) {
 		return a.floatValue() != b;
 	}
 
@@ -144,7 +144,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() != ($2).intValue())", constantExpression=true)
-	public static boolean operator_notEquals(Integer a, Short b) {
+	public static boolean operator_notEquals(AtomicInteger a, Short b) {
 		return a.intValue() != b.intValue();
 	}
 
@@ -157,7 +157,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() != ($2).intValue())", constantExpression=true)
-	public static boolean operator_notEquals(Integer a, Integer b) {
+	public static boolean operator_notEquals(AtomicInteger a, Integer b) {
 		return a.intValue() != b.intValue();
 	}
 
@@ -170,7 +170,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() != ($2).floatValue())", constantExpression=true)
-	public static boolean operator_notEquals(Integer a, Float b) {
+	public static boolean operator_notEquals(AtomicInteger a, Float b) {
 		return a.floatValue() != b.floatValue();
 	}
 
@@ -183,7 +183,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() != ($2).longValue())", constantExpression=true)
-	public static boolean operator_notEquals(Integer a, Long b) {
+	public static boolean operator_notEquals(AtomicInteger a, Long b) {
 		return a.longValue() != b.longValue();
 	}
 
@@ -196,7 +196,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() != ($2).intValue())", constantExpression=true)
-	public static boolean operator_notEquals(Integer a, Byte b) {
+	public static boolean operator_notEquals(AtomicInteger a, Byte b) {
 		return a.intValue() != b.intValue();
 	}
 
@@ -209,7 +209,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() != ($2).doubleValue())", constantExpression=true)
-	public static boolean operator_notEquals(Integer a, Double b) {
+	public static boolean operator_notEquals(AtomicInteger a, Double b) {
 		return a.doubleValue() != b.doubleValue();
 	}
 
@@ -222,7 +222,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() != ($2).intValue())", constantExpression=true)
-	public static boolean operator_notEquals(Integer a, AtomicInteger b) {
+	public static boolean operator_notEquals(AtomicInteger a, AtomicInteger b) {
 		return a.intValue() != b.intValue();
 	}
 
@@ -235,7 +235,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() != ($2).longValue())", constantExpression=true)
-	public static boolean operator_notEquals(Integer a, AtomicLong b) {
+	public static boolean operator_notEquals(AtomicInteger a, AtomicLong b) {
 		return a.longValue() != b.longValue();
 	}
 
@@ -248,7 +248,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() / $2)", constantExpression=true)
-	public static int operator_divide(Integer a, int b) {
+	public static int operator_divide(AtomicInteger a, int b) {
 		return a.intValue() / b;
 	}
 
@@ -261,7 +261,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() / $2)", constantExpression=true)
-	public static long operator_divide(Integer a, long b) {
+	public static long operator_divide(AtomicInteger a, long b) {
 		return a.longValue() / b;
 	}
 
@@ -274,7 +274,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() / $2)", constantExpression=true)
-	public static int operator_divide(Integer a, short b) {
+	public static int operator_divide(AtomicInteger a, short b) {
 		return a.intValue() / b;
 	}
 
@@ -287,7 +287,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() / $2)", constantExpression=true)
-	public static int operator_divide(Integer a, byte b) {
+	public static int operator_divide(AtomicInteger a, byte b) {
 		return a.intValue() / b;
 	}
 
@@ -300,7 +300,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() / $2)", constantExpression=true)
-	public static double operator_divide(Integer a, double b) {
+	public static double operator_divide(AtomicInteger a, double b) {
 		return a.doubleValue() / b;
 	}
 
@@ -313,7 +313,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() / $2)", constantExpression=true)
-	public static float operator_divide(Integer a, float b) {
+	public static float operator_divide(AtomicInteger a, float b) {
 		return a.floatValue() / b;
 	}
 
@@ -326,7 +326,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() / ($2).intValue())", constantExpression=true)
-	public static int operator_divide(Integer a, Short b) {
+	public static int operator_divide(AtomicInteger a, Short b) {
 		return a.intValue() / b.intValue();
 	}
 
@@ -339,7 +339,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() / ($2).intValue())", constantExpression=true)
-	public static int operator_divide(Integer a, Integer b) {
+	public static int operator_divide(AtomicInteger a, Integer b) {
 		return a.intValue() / b.intValue();
 	}
 
@@ -352,7 +352,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() / ($2).floatValue())", constantExpression=true)
-	public static float operator_divide(Integer a, Float b) {
+	public static float operator_divide(AtomicInteger a, Float b) {
 		return a.floatValue() / b.floatValue();
 	}
 
@@ -365,7 +365,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() / ($2).longValue())", constantExpression=true)
-	public static long operator_divide(Integer a, Long b) {
+	public static long operator_divide(AtomicInteger a, Long b) {
 		return a.longValue() / b.longValue();
 	}
 
@@ -378,7 +378,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() / ($2).intValue())", constantExpression=true)
-	public static int operator_divide(Integer a, Byte b) {
+	public static int operator_divide(AtomicInteger a, Byte b) {
 		return a.intValue() / b.intValue();
 	}
 
@@ -391,7 +391,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() / ($2).doubleValue())", constantExpression=true)
-	public static double operator_divide(Integer a, Double b) {
+	public static double operator_divide(AtomicInteger a, Double b) {
 		return a.doubleValue() / b.doubleValue();
 	}
 
@@ -404,7 +404,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() / ($2).intValue())", constantExpression=true)
-	public static int operator_divide(Integer a, AtomicInteger b) {
+	public static int operator_divide(AtomicInteger a, AtomicInteger b) {
 		return a.intValue() / b.intValue();
 	}
 
@@ -417,7 +417,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() / ($2).longValue())", constantExpression=true)
-	public static long operator_divide(Integer a, AtomicLong b) {
+	public static long operator_divide(AtomicInteger a, AtomicLong b) {
 		return a.longValue() / b.longValue();
 	}
 
@@ -430,7 +430,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() == $2)", constantExpression=true)
-	public static boolean operator_equals(Integer a, int b) {
+	public static boolean operator_equals(AtomicInteger a, int b) {
 		return a.intValue() == b;
 	}
 
@@ -443,7 +443,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() == $2)", constantExpression=true)
-	public static boolean operator_equals(Integer a, long b) {
+	public static boolean operator_equals(AtomicInteger a, long b) {
 		return a.longValue() == b;
 	}
 
@@ -456,7 +456,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() == $2)", constantExpression=true)
-	public static boolean operator_equals(Integer a, short b) {
+	public static boolean operator_equals(AtomicInteger a, short b) {
 		return a.intValue() == b;
 	}
 
@@ -469,7 +469,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() == $2)", constantExpression=true)
-	public static boolean operator_equals(Integer a, byte b) {
+	public static boolean operator_equals(AtomicInteger a, byte b) {
 		return a.intValue() == b;
 	}
 
@@ -482,7 +482,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() == $2)", constantExpression=true)
-	public static boolean operator_equals(Integer a, double b) {
+	public static boolean operator_equals(AtomicInteger a, double b) {
 		return a.doubleValue() == b;
 	}
 
@@ -495,7 +495,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() == $2)", constantExpression=true)
-	public static boolean operator_equals(Integer a, float b) {
+	public static boolean operator_equals(AtomicInteger a, float b) {
 		return a.floatValue() == b;
 	}
 
@@ -508,7 +508,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() == ($2).intValue())", constantExpression=true)
-	public static boolean operator_equals(Integer a, Short b) {
+	public static boolean operator_equals(AtomicInteger a, Short b) {
 		return a.intValue() == b.intValue();
 	}
 
@@ -521,7 +521,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() == ($2).intValue())", constantExpression=true)
-	public static boolean operator_equals(Integer a, Integer b) {
+	public static boolean operator_equals(AtomicInteger a, Integer b) {
 		return a.intValue() == b.intValue();
 	}
 
@@ -534,7 +534,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() == ($2).floatValue())", constantExpression=true)
-	public static boolean operator_equals(Integer a, Float b) {
+	public static boolean operator_equals(AtomicInteger a, Float b) {
 		return a.floatValue() == b.floatValue();
 	}
 
@@ -547,7 +547,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() == ($2).longValue())", constantExpression=true)
-	public static boolean operator_equals(Integer a, Long b) {
+	public static boolean operator_equals(AtomicInteger a, Long b) {
 		return a.longValue() == b.longValue();
 	}
 
@@ -560,7 +560,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() == ($2).intValue())", constantExpression=true)
-	public static boolean operator_equals(Integer a, Byte b) {
+	public static boolean operator_equals(AtomicInteger a, Byte b) {
 		return a.intValue() == b.intValue();
 	}
 
@@ -573,7 +573,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() == ($2).doubleValue())", constantExpression=true)
-	public static boolean operator_equals(Integer a, Double b) {
+	public static boolean operator_equals(AtomicInteger a, Double b) {
 		return a.doubleValue() == b.doubleValue();
 	}
 
@@ -586,7 +586,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() == ($2).intValue())", constantExpression=true)
-	public static boolean operator_equals(Integer a, AtomicInteger b) {
+	public static boolean operator_equals(AtomicInteger a, AtomicInteger b) {
 		return a.intValue() == b.intValue();
 	}
 
@@ -599,7 +599,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() == ($2).longValue())", constantExpression=true)
-	public static boolean operator_equals(Integer a, AtomicLong b) {
+	public static boolean operator_equals(AtomicInteger a, AtomicLong b) {
 		return a.longValue() == b.longValue();
 	}
 
@@ -612,7 +612,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() * $2)", constantExpression=true)
-	public static int operator_multiply(Integer a, int b) {
+	public static int operator_multiply(AtomicInteger a, int b) {
 		return a.intValue() * b;
 	}
 
@@ -625,7 +625,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() * $2)", constantExpression=true)
-	public static long operator_multiply(Integer a, long b) {
+	public static long operator_multiply(AtomicInteger a, long b) {
 		return a.longValue() * b;
 	}
 
@@ -638,7 +638,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() * $2)", constantExpression=true)
-	public static int operator_multiply(Integer a, short b) {
+	public static int operator_multiply(AtomicInteger a, short b) {
 		return a.intValue() * b;
 	}
 
@@ -651,7 +651,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() * $2)", constantExpression=true)
-	public static int operator_multiply(Integer a, byte b) {
+	public static int operator_multiply(AtomicInteger a, byte b) {
 		return a.intValue() * b;
 	}
 
@@ -664,7 +664,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() * $2)", constantExpression=true)
-	public static double operator_multiply(Integer a, double b) {
+	public static double operator_multiply(AtomicInteger a, double b) {
 		return a.doubleValue() * b;
 	}
 
@@ -677,7 +677,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() * $2)", constantExpression=true)
-	public static float operator_multiply(Integer a, float b) {
+	public static float operator_multiply(AtomicInteger a, float b) {
 		return a.floatValue() * b;
 	}
 
@@ -690,7 +690,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() * ($2).intValue())", constantExpression=true)
-	public static int operator_multiply(Integer a, Short b) {
+	public static int operator_multiply(AtomicInteger a, Short b) {
 		return a.intValue() * b.intValue();
 	}
 
@@ -703,7 +703,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() * ($2).intValue())", constantExpression=true)
-	public static int operator_multiply(Integer a, Integer b) {
+	public static int operator_multiply(AtomicInteger a, Integer b) {
 		return a.intValue() * b.intValue();
 	}
 
@@ -716,7 +716,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() * ($2).floatValue())", constantExpression=true)
-	public static float operator_multiply(Integer a, Float b) {
+	public static float operator_multiply(AtomicInteger a, Float b) {
 		return a.floatValue() * b.floatValue();
 	}
 
@@ -729,7 +729,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() * ($2).longValue())", constantExpression=true)
-	public static long operator_multiply(Integer a, Long b) {
+	public static long operator_multiply(AtomicInteger a, Long b) {
 		return a.longValue() * b.longValue();
 	}
 
@@ -742,7 +742,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() * ($2).intValue())", constantExpression=true)
-	public static int operator_multiply(Integer a, Byte b) {
+	public static int operator_multiply(AtomicInteger a, Byte b) {
 		return a.intValue() * b.intValue();
 	}
 
@@ -755,7 +755,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() * ($2).doubleValue())", constantExpression=true)
-	public static double operator_multiply(Integer a, Double b) {
+	public static double operator_multiply(AtomicInteger a, Double b) {
 		return a.doubleValue() * b.doubleValue();
 	}
 
@@ -768,7 +768,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() * ($2).intValue())", constantExpression=true)
-	public static int operator_multiply(Integer a, AtomicInteger b) {
+	public static int operator_multiply(AtomicInteger a, AtomicInteger b) {
 		return a.intValue() * b.intValue();
 	}
 
@@ -781,7 +781,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() * ($2).longValue())", constantExpression=true)
-	public static long operator_multiply(Integer a, AtomicLong b) {
+	public static long operator_multiply(AtomicInteger a, AtomicLong b) {
 		return a.longValue() * b.longValue();
 	}
 
@@ -794,7 +794,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "$3.pow(($1).intValue(), $2)", imported = Math.class)
-	public static double operator_power(Integer a, int b) {
+	public static double operator_power(AtomicInteger a, int b) {
 		return Math.pow(a.intValue(), b);
 	}
 
@@ -807,7 +807,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "$3.pow(($1).longValue(), $2)", imported = Math.class)
-	public static double operator_power(Integer a, long b) {
+	public static double operator_power(AtomicInteger a, long b) {
 		return Math.pow(a.longValue(), b);
 	}
 
@@ -820,7 +820,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "$3.pow(($1).intValue(), $2)", imported = Math.class)
-	public static double operator_power(Integer a, short b) {
+	public static double operator_power(AtomicInteger a, short b) {
 		return Math.pow(a.intValue(), b);
 	}
 
@@ -833,7 +833,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "$3.pow(($1).intValue(), $2)", imported = Math.class)
-	public static double operator_power(Integer a, byte b) {
+	public static double operator_power(AtomicInteger a, byte b) {
 		return Math.pow(a.intValue(), b);
 	}
 
@@ -846,7 +846,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "$3.pow(($1).doubleValue(), $2)", imported = Math.class)
-	public static double operator_power(Integer a, double b) {
+	public static double operator_power(AtomicInteger a, double b) {
 		return Math.pow(a.doubleValue(), b);
 	}
 
@@ -859,7 +859,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "$3.pow(($1).floatValue(), $2)", imported = Math.class)
-	public static double operator_power(Integer a, float b) {
+	public static double operator_power(AtomicInteger a, float b) {
 		return Math.pow(a.floatValue(), b);
 	}
 
@@ -872,7 +872,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "$3.pow(($1).intValue(), ($2).intValue())", imported = Math.class)
-	public static double operator_power(Integer a, Short b) {
+	public static double operator_power(AtomicInteger a, Short b) {
 		return Math.pow(a.intValue(), b.intValue());
 	}
 
@@ -885,7 +885,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "$3.pow(($1).intValue(), ($2).intValue())", imported = Math.class)
-	public static double operator_power(Integer a, Integer b) {
+	public static double operator_power(AtomicInteger a, Integer b) {
 		return Math.pow(a.intValue(), b.intValue());
 	}
 
@@ -898,7 +898,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "$3.pow(($1).floatValue(), ($2).floatValue())", imported = Math.class)
-	public static double operator_power(Integer a, Float b) {
+	public static double operator_power(AtomicInteger a, Float b) {
 		return Math.pow(a.floatValue(), b.floatValue());
 	}
 
@@ -911,7 +911,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "$3.pow(($1).longValue(), ($2).longValue())", imported = Math.class)
-	public static double operator_power(Integer a, Long b) {
+	public static double operator_power(AtomicInteger a, Long b) {
 		return Math.pow(a.longValue(), b.longValue());
 	}
 
@@ -924,7 +924,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "$3.pow(($1).intValue(), ($2).intValue())", imported = Math.class)
-	public static double operator_power(Integer a, Byte b) {
+	public static double operator_power(AtomicInteger a, Byte b) {
 		return Math.pow(a.intValue(), b.intValue());
 	}
 
@@ -937,7 +937,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "$3.pow(($1).doubleValue(), ($2).doubleValue())", imported = Math.class)
-	public static double operator_power(Integer a, Double b) {
+	public static double operator_power(AtomicInteger a, Double b) {
 		return Math.pow(a.doubleValue(), b.doubleValue());
 	}
 
@@ -950,7 +950,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "$3.pow(($1).intValue(), ($2).intValue())", imported = Math.class)
-	public static double operator_power(Integer a, AtomicInteger b) {
+	public static double operator_power(AtomicInteger a, AtomicInteger b) {
 		return Math.pow(a.intValue(), b.intValue());
 	}
 
@@ -963,7 +963,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "$3.pow(($1).longValue(), ($2).longValue())", imported = Math.class)
-	public static double operator_power(Integer a, AtomicLong b) {
+	public static double operator_power(AtomicInteger a, AtomicLong b) {
 		return Math.pow(a.longValue(), b.longValue());
 	}
 
@@ -976,7 +976,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() < $2)", constantExpression=true)
-	public static boolean operator_lessThan(Integer a, int b) {
+	public static boolean operator_lessThan(AtomicInteger a, int b) {
 		return a.intValue() < b;
 	}
 
@@ -989,7 +989,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() < $2)", constantExpression=true)
-	public static boolean operator_lessThan(Integer a, long b) {
+	public static boolean operator_lessThan(AtomicInteger a, long b) {
 		return a.longValue() < b;
 	}
 
@@ -1002,7 +1002,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() < $2)", constantExpression=true)
-	public static boolean operator_lessThan(Integer a, short b) {
+	public static boolean operator_lessThan(AtomicInteger a, short b) {
 		return a.intValue() < b;
 	}
 
@@ -1015,7 +1015,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() < $2)", constantExpression=true)
-	public static boolean operator_lessThan(Integer a, byte b) {
+	public static boolean operator_lessThan(AtomicInteger a, byte b) {
 		return a.intValue() < b;
 	}
 
@@ -1028,7 +1028,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() < $2)", constantExpression=true)
-	public static boolean operator_lessThan(Integer a, double b) {
+	public static boolean operator_lessThan(AtomicInteger a, double b) {
 		return a.doubleValue() < b;
 	}
 
@@ -1041,7 +1041,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() < $2)", constantExpression=true)
-	public static boolean operator_lessThan(Integer a, float b) {
+	public static boolean operator_lessThan(AtomicInteger a, float b) {
 		return a.floatValue() < b;
 	}
 
@@ -1054,7 +1054,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() < ($2).intValue())", constantExpression=true)
-	public static boolean operator_lessThan(Integer a, Short b) {
+	public static boolean operator_lessThan(AtomicInteger a, Short b) {
 		return a.intValue() < b.intValue();
 	}
 
@@ -1067,7 +1067,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() < ($2).intValue())", constantExpression=true)
-	public static boolean operator_lessThan(Integer a, Integer b) {
+	public static boolean operator_lessThan(AtomicInteger a, Integer b) {
 		return a.intValue() < b.intValue();
 	}
 
@@ -1080,7 +1080,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() < ($2).floatValue())", constantExpression=true)
-	public static boolean operator_lessThan(Integer a, Float b) {
+	public static boolean operator_lessThan(AtomicInteger a, Float b) {
 		return a.floatValue() < b.floatValue();
 	}
 
@@ -1093,7 +1093,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() < ($2).longValue())", constantExpression=true)
-	public static boolean operator_lessThan(Integer a, Long b) {
+	public static boolean operator_lessThan(AtomicInteger a, Long b) {
 		return a.longValue() < b.longValue();
 	}
 
@@ -1106,7 +1106,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() < ($2).intValue())", constantExpression=true)
-	public static boolean operator_lessThan(Integer a, Byte b) {
+	public static boolean operator_lessThan(AtomicInteger a, Byte b) {
 		return a.intValue() < b.intValue();
 	}
 
@@ -1119,7 +1119,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() < ($2).doubleValue())", constantExpression=true)
-	public static boolean operator_lessThan(Integer a, Double b) {
+	public static boolean operator_lessThan(AtomicInteger a, Double b) {
 		return a.doubleValue() < b.doubleValue();
 	}
 
@@ -1132,7 +1132,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() < ($2).intValue())", constantExpression=true)
-	public static boolean operator_lessThan(Integer a, AtomicInteger b) {
+	public static boolean operator_lessThan(AtomicInteger a, AtomicInteger b) {
 		return a.intValue() < b.intValue();
 	}
 
@@ -1145,7 +1145,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() < ($2).longValue())", constantExpression=true)
-	public static boolean operator_lessThan(Integer a, AtomicLong b) {
+	public static boolean operator_lessThan(AtomicInteger a, AtomicLong b) {
 		return a.longValue() < b.longValue();
 	}
 
@@ -1158,7 +1158,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() > $2)", constantExpression=true)
-	public static boolean operator_greaterThan(Integer a, int b) {
+	public static boolean operator_greaterThan(AtomicInteger a, int b) {
 		return a.intValue() > b;
 	}
 
@@ -1172,7 +1172,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() > $2)", constantExpression=true)
-	public static boolean operator_greaterThan(Integer a, long b) {
+	public static boolean operator_greaterThan(AtomicInteger a, long b) {
 		return a.longValue() > b;
 	}
 
@@ -1186,7 +1186,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() > $2)", constantExpression=true)
-	public static boolean operator_greaterThan(Integer a, short b) {
+	public static boolean operator_greaterThan(AtomicInteger a, short b) {
 		return a.intValue() > b;
 	}
 
@@ -1200,7 +1200,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() > $2)", constantExpression=true)
-	public static boolean operator_greaterThan(Integer a, byte b) {
+	public static boolean operator_greaterThan(AtomicInteger a, byte b) {
 		return a.intValue() > b;
 	}
 
@@ -1214,7 +1214,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() > $2)", constantExpression=true)
-	public static boolean operator_greaterThan(Integer a, double b) {
+	public static boolean operator_greaterThan(AtomicInteger a, double b) {
 		return a.doubleValue() > b;
 	}
 
@@ -1228,7 +1228,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() > $2)", constantExpression=true)
-	public static boolean operator_greaterThan(Integer a, float b) {
+	public static boolean operator_greaterThan(AtomicInteger a, float b) {
 		return a.floatValue() > b;
 	}
 
@@ -1242,7 +1242,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() > ($2).intValue())", constantExpression=true)
-	public static boolean operator_greaterThan(Integer a, Short b) {
+	public static boolean operator_greaterThan(AtomicInteger a, Short b) {
 		return a.intValue() > b.intValue();
 	}
 
@@ -1256,7 +1256,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() > ($2).intValue())", constantExpression=true)
-	public static boolean operator_greaterThan(Integer a, Integer b) {
+	public static boolean operator_greaterThan(AtomicInteger a, Integer b) {
 		return a.intValue() > b.intValue();
 	}
 
@@ -1270,7 +1270,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() > ($2).floatValue())", constantExpression=true)
-	public static boolean operator_greaterThan(Integer a, Float b) {
+	public static boolean operator_greaterThan(AtomicInteger a, Float b) {
 		return a.floatValue() > b.floatValue();
 	}
 
@@ -1284,7 +1284,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() > ($2).longValue())", constantExpression=true)
-	public static boolean operator_greaterThan(Integer a, Long b) {
+	public static boolean operator_greaterThan(AtomicInteger a, Long b) {
 		return a.longValue() > b.longValue();
 	}
 
@@ -1298,7 +1298,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() > ($2).intValue())", constantExpression=true)
-	public static boolean operator_greaterThan(Integer a, Byte b) {
+	public static boolean operator_greaterThan(AtomicInteger a, Byte b) {
 		return a.intValue() > b.intValue();
 	}
 
@@ -1312,7 +1312,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() > ($2).doubleValue())", constantExpression=true)
-	public static boolean operator_greaterThan(Integer a, Double b) {
+	public static boolean operator_greaterThan(AtomicInteger a, Double b) {
 		return a.doubleValue() > b.doubleValue();
 	}
 
@@ -1326,7 +1326,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() > ($2).intValue())", constantExpression=true)
-	public static boolean operator_greaterThan(Integer a, AtomicInteger b) {
+	public static boolean operator_greaterThan(AtomicInteger a, AtomicInteger b) {
 		return a.intValue() > b.intValue();
 	}
 
@@ -1340,7 +1340,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() > ($2).longValue())", constantExpression=true)
-	public static boolean operator_greaterThan(Integer a, AtomicLong b) {
+	public static boolean operator_greaterThan(AtomicInteger a, AtomicLong b) {
 		return a.longValue() > b.longValue();
 	}
 
@@ -1354,7 +1354,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() <= $2)", constantExpression=true)
-	public static boolean operator_lessEqualsThan(Integer a, int b) {
+	public static boolean operator_lessEqualsThan(AtomicInteger a, int b) {
 		return a.intValue() <= b;
 	}
 
@@ -1367,7 +1367,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() <= $2)", constantExpression=true)
-	public static boolean operator_lessEqualsThan(Integer a, long b) {
+	public static boolean operator_lessEqualsThan(AtomicInteger a, long b) {
 		return a.longValue() <= b;
 	}
 
@@ -1380,7 +1380,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() <= $2)", constantExpression=true)
-	public static boolean operator_lessEqualsThan(Integer a, short b) {
+	public static boolean operator_lessEqualsThan(AtomicInteger a, short b) {
 		return a.intValue() <= b;
 	}
 
@@ -1393,7 +1393,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() <= $2)", constantExpression=true)
-	public static boolean operator_lessEqualsThan(Integer a, byte b) {
+	public static boolean operator_lessEqualsThan(AtomicInteger a, byte b) {
 		return a.intValue() <= b;
 	}
 
@@ -1406,7 +1406,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() <= $2)", constantExpression=true)
-	public static boolean operator_lessEqualsThan(Integer a, double b) {
+	public static boolean operator_lessEqualsThan(AtomicInteger a, double b) {
 		return a.doubleValue() <= b;
 	}
 
@@ -1419,7 +1419,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() <= $2)", constantExpression=true)
-	public static boolean operator_lessEqualsThan(Integer a, float b) {
+	public static boolean operator_lessEqualsThan(AtomicInteger a, float b) {
 		return a.floatValue() <= b;
 	}
 
@@ -1432,7 +1432,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() <= ($2).intValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(Integer a, Short b) {
+	public static boolean operator_lessEqualsThan(AtomicInteger a, Short b) {
 		return a.intValue() <= b.intValue();
 	}
 
@@ -1445,7 +1445,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() <= ($2).intValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(Integer a, Integer b) {
+	public static boolean operator_lessEqualsThan(AtomicInteger a, Integer b) {
 		return a.intValue() <= b.intValue();
 	}
 
@@ -1458,7 +1458,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() <= ($2).floatValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(Integer a, Float b) {
+	public static boolean operator_lessEqualsThan(AtomicInteger a, Float b) {
 		return a.floatValue() <= b.floatValue();
 	}
 
@@ -1471,7 +1471,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() <= ($2).longValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(Integer a, Long b) {
+	public static boolean operator_lessEqualsThan(AtomicInteger a, Long b) {
 		return a.longValue() <= b.longValue();
 	}
 
@@ -1484,7 +1484,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() <= ($2).intValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(Integer a, Byte b) {
+	public static boolean operator_lessEqualsThan(AtomicInteger a, Byte b) {
 		return a.intValue() <= b.intValue();
 	}
 
@@ -1497,7 +1497,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() <= ($2).doubleValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(Integer a, Double b) {
+	public static boolean operator_lessEqualsThan(AtomicInteger a, Double b) {
 		return a.doubleValue() <= b.doubleValue();
 	}
 
@@ -1510,7 +1510,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() <= ($2).intValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(Integer a, AtomicInteger b) {
+	public static boolean operator_lessEqualsThan(AtomicInteger a, AtomicInteger b) {
 		return a.intValue() <= b.intValue();
 	}
 
@@ -1523,7 +1523,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() <= ($2).longValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(Integer a, AtomicLong b) {
+	public static boolean operator_lessEqualsThan(AtomicInteger a, AtomicLong b) {
 		return a.longValue() <= b.longValue();
 	}
 
@@ -1536,7 +1536,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() % $2)", constantExpression=true)
-	public static int operator_modulo(Integer a, int b) {
+	public static int operator_modulo(AtomicInteger a, int b) {
 		return a.intValue() % b;
 	}
 
@@ -1549,7 +1549,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() % $2)", constantExpression=true)
-	public static long operator_modulo(Integer a, long b) {
+	public static long operator_modulo(AtomicInteger a, long b) {
 		return a.longValue() % b;
 	}
 
@@ -1562,7 +1562,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() % $2)", constantExpression=true)
-	public static int operator_modulo(Integer a, short b) {
+	public static int operator_modulo(AtomicInteger a, short b) {
 		return a.intValue() % b;
 	}
 
@@ -1575,7 +1575,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() % $2)", constantExpression=true)
-	public static int operator_modulo(Integer a, byte b) {
+	public static int operator_modulo(AtomicInteger a, byte b) {
 		return a.intValue() % b;
 	}
 
@@ -1588,7 +1588,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() % $2)", constantExpression=true)
-	public static double operator_modulo(Integer a, double b) {
+	public static double operator_modulo(AtomicInteger a, double b) {
 		return a.doubleValue() % b;
 	}
 
@@ -1601,7 +1601,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() % $2)", constantExpression=true)
-	public static float operator_modulo(Integer a, float b) {
+	public static float operator_modulo(AtomicInteger a, float b) {
 		return a.floatValue() % b;
 	}
 
@@ -1614,7 +1614,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() % ($2).intValue())", constantExpression=true)
-	public static int operator_modulo(Integer a, Short b) {
+	public static int operator_modulo(AtomicInteger a, Short b) {
 		return a.intValue() % b.intValue();
 	}
 
@@ -1627,7 +1627,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() % ($2).intValue())", constantExpression=true)
-	public static int operator_modulo(Integer a, Integer b) {
+	public static int operator_modulo(AtomicInteger a, Integer b) {
 		return a.intValue() % b.intValue();
 	}
 
@@ -1640,7 +1640,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() % ($2).floatValue())", constantExpression=true)
-	public static float operator_modulo(Integer a, Float b) {
+	public static float operator_modulo(AtomicInteger a, Float b) {
 		return a.floatValue() % b.floatValue();
 	}
 
@@ -1653,7 +1653,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() % ($2).longValue())", constantExpression=true)
-	public static long operator_modulo(Integer a, Long b) {
+	public static long operator_modulo(AtomicInteger a, Long b) {
 		return a.longValue() % b.longValue();
 	}
 
@@ -1666,7 +1666,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() % ($2).intValue())", constantExpression=true)
-	public static int operator_modulo(Integer a, Byte b) {
+	public static int operator_modulo(AtomicInteger a, Byte b) {
 		return a.intValue() % b.intValue();
 	}
 
@@ -1679,7 +1679,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() % ($2).doubleValue())", constantExpression=true)
-	public static double operator_modulo(Integer a, Double b) {
+	public static double operator_modulo(AtomicInteger a, Double b) {
 		return a.doubleValue() % b.doubleValue();
 	}
 
@@ -1692,7 +1692,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() % ($2).intValue())", constantExpression=true)
-	public static int operator_modulo(Integer a, AtomicInteger b) {
+	public static int operator_modulo(AtomicInteger a, AtomicInteger b) {
 		return a.intValue() % b.intValue();
 	}
 
@@ -1705,7 +1705,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() % ($2).longValue())", constantExpression=true)
-	public static long operator_modulo(Integer a, AtomicLong b) {
+	public static long operator_modulo(AtomicInteger a, AtomicLong b) {
 		return a.longValue() % b.longValue();
 	}
 
@@ -1718,7 +1718,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() >= $2)", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(Integer a, int b) {
+	public static boolean operator_greaterEqualsThan(AtomicInteger a, int b) {
 		return a.intValue() >= b;
 	}
 
@@ -1731,7 +1731,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() >= $2)", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(Integer a, long b) {
+	public static boolean operator_greaterEqualsThan(AtomicInteger a, long b) {
 		return a.longValue() >= b;
 	}
 
@@ -1744,7 +1744,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() >= $2)", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(Integer a, short b) {
+	public static boolean operator_greaterEqualsThan(AtomicInteger a, short b) {
 		return a.intValue() >= b;
 	}
 
@@ -1757,7 +1757,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() >= $2)", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(Integer a, byte b) {
+	public static boolean operator_greaterEqualsThan(AtomicInteger a, byte b) {
 		return a.intValue() >= b;
 	}
 
@@ -1770,7 +1770,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() >= $2)", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(Integer a, double b) {
+	public static boolean operator_greaterEqualsThan(AtomicInteger a, double b) {
 		return a.doubleValue() >= b;
 	}
 
@@ -1783,7 +1783,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() >= $2)", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(Integer a, float b) {
+	public static boolean operator_greaterEqualsThan(AtomicInteger a, float b) {
 		return a.floatValue() >= b;
 	}
 
@@ -1796,7 +1796,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() >= ($2).intValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(Integer a, Short b) {
+	public static boolean operator_greaterEqualsThan(AtomicInteger a, Short b) {
 		return a.intValue() >= b.intValue();
 	}
 
@@ -1809,7 +1809,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() >= ($2).intValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(Integer a, Integer b) {
+	public static boolean operator_greaterEqualsThan(AtomicInteger a, Integer b) {
 		return a.intValue() >= b.intValue();
 	}
 
@@ -1822,7 +1822,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() >= ($2).floatValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(Integer a, Float b) {
+	public static boolean operator_greaterEqualsThan(AtomicInteger a, Float b) {
 		return a.floatValue() >= b.floatValue();
 	}
 
@@ -1835,7 +1835,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() >= ($2).longValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(Integer a, Long b) {
+	public static boolean operator_greaterEqualsThan(AtomicInteger a, Long b) {
 		return a.longValue() >= b.longValue();
 	}
 
@@ -1848,7 +1848,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() >= ($2).intValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(Integer a, Byte b) {
+	public static boolean operator_greaterEqualsThan(AtomicInteger a, Byte b) {
 		return a.intValue() >= b.intValue();
 	}
 
@@ -1861,7 +1861,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() >= ($2).doubleValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(Integer a, Double b) {
+	public static boolean operator_greaterEqualsThan(AtomicInteger a, Double b) {
 		return a.doubleValue() >= b.doubleValue();
 	}
 
@@ -1874,7 +1874,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() >= ($2).intValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(Integer a, AtomicInteger b) {
+	public static boolean operator_greaterEqualsThan(AtomicInteger a, AtomicInteger b) {
 		return a.intValue() >= b.intValue();
 	}
 
@@ -1887,7 +1887,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() >= ($2).longValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(Integer a, AtomicLong b) {
+	public static boolean operator_greaterEqualsThan(AtomicInteger a, AtomicLong b) {
 		return a.longValue() >= b.longValue();
 	}
 
@@ -1900,7 +1900,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() + $2)", constantExpression=true)
-	public static int operator_plus(Integer a, int b) {
+	public static int operator_plus(AtomicInteger a, int b) {
 		return a.intValue() + b;
 	}
 
@@ -1913,7 +1913,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() + $2)", constantExpression=true)
-	public static long operator_plus(Integer a, long b) {
+	public static long operator_plus(AtomicInteger a, long b) {
 		return a.longValue() + b;
 	}
 
@@ -1926,7 +1926,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() + $2)", constantExpression=true)
-	public static int operator_plus(Integer a, short b) {
+	public static int operator_plus(AtomicInteger a, short b) {
 		return a.intValue() + b;
 	}
 
@@ -1939,7 +1939,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() + $2)", constantExpression=true)
-	public static int operator_plus(Integer a, byte b) {
+	public static int operator_plus(AtomicInteger a, byte b) {
 		return a.intValue() + b;
 	}
 
@@ -1952,7 +1952,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() + $2)", constantExpression=true)
-	public static double operator_plus(Integer a, double b) {
+	public static double operator_plus(AtomicInteger a, double b) {
 		return a.doubleValue() + b;
 	}
 
@@ -1965,7 +1965,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() + $2)", constantExpression=true)
-	public static float operator_plus(Integer a, float b) {
+	public static float operator_plus(AtomicInteger a, float b) {
 		return a.floatValue() + b;
 	}
 
@@ -1978,7 +1978,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() + ($2).intValue())", constantExpression=true)
-	public static int operator_plus(Integer a, Short b) {
+	public static int operator_plus(AtomicInteger a, Short b) {
 		return a.intValue() + b.intValue();
 	}
 
@@ -1991,7 +1991,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() + ($2).intValue())", constantExpression=true)
-	public static int operator_plus(Integer a, Integer b) {
+	public static int operator_plus(AtomicInteger a, Integer b) {
 		return a.intValue() + b.intValue();
 	}
 
@@ -2004,7 +2004,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() + ($2).floatValue())", constantExpression=true)
-	public static float operator_plus(Integer a, Float b) {
+	public static float operator_plus(AtomicInteger a, Float b) {
 		return a.floatValue() + b.floatValue();
 	}
 
@@ -2017,7 +2017,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() + ($2).longValue())", constantExpression=true)
-	public static long operator_plus(Integer a, Long b) {
+	public static long operator_plus(AtomicInteger a, Long b) {
 		return a.longValue() + b.longValue();
 	}
 
@@ -2030,7 +2030,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() + ($2).intValue())", constantExpression=true)
-	public static int operator_plus(Integer a, Byte b) {
+	public static int operator_plus(AtomicInteger a, Byte b) {
 		return a.intValue() + b.intValue();
 	}
 
@@ -2043,7 +2043,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() + ($2).doubleValue())", constantExpression=true)
-	public static double operator_plus(Integer a, Double b) {
+	public static double operator_plus(AtomicInteger a, Double b) {
 		return a.doubleValue() + b.doubleValue();
 	}
 
@@ -2056,7 +2056,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() + ($2).intValue())", constantExpression=true)
-	public static int operator_plus(Integer a, AtomicInteger b) {
+	public static int operator_plus(AtomicInteger a, AtomicInteger b) {
 		return a.intValue() + b.intValue();
 	}
 
@@ -2069,7 +2069,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() + ($2).longValue())", constantExpression=true)
-	public static long operator_plus(Integer a, AtomicLong b) {
+	public static long operator_plus(AtomicInteger a, AtomicLong b) {
 		return a.longValue() + b.longValue();
 	}
 
@@ -2082,7 +2082,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() - $2)", constantExpression=true)
-	public static int operator_minus(Integer a, int b) {
+	public static int operator_minus(AtomicInteger a, int b) {
 		return a.intValue() - b;
 	}
 
@@ -2095,7 +2095,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() - $2)", constantExpression=true)
-	public static long operator_minus(Integer a, long b) {
+	public static long operator_minus(AtomicInteger a, long b) {
 		return a.longValue() - b;
 	}
 
@@ -2108,7 +2108,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() - $2)", constantExpression=true)
-	public static int operator_minus(Integer a, short b) {
+	public static int operator_minus(AtomicInteger a, short b) {
 		return a.intValue() - b;
 	}
 
@@ -2121,7 +2121,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() - $2)", constantExpression=true)
-	public static int operator_minus(Integer a, byte b) {
+	public static int operator_minus(AtomicInteger a, byte b) {
 		return a.intValue() - b;
 	}
 
@@ -2134,7 +2134,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() - $2)", constantExpression=true)
-	public static double operator_minus(Integer a, double b) {
+	public static double operator_minus(AtomicInteger a, double b) {
 		return a.doubleValue() - b;
 	}
 
@@ -2147,7 +2147,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() - $2)", constantExpression=true)
-	public static float operator_minus(Integer a, float b) {
+	public static float operator_minus(AtomicInteger a, float b) {
 		return a.floatValue() - b;
 	}
 
@@ -2160,7 +2160,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() - ($2).intValue())", constantExpression=true)
-	public static int operator_minus(Integer a, Short b) {
+	public static int operator_minus(AtomicInteger a, Short b) {
 		return a.intValue() - b.intValue();
 	}
 
@@ -2173,7 +2173,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() - ($2).intValue())", constantExpression=true)
-	public static int operator_minus(Integer a, Integer b) {
+	public static int operator_minus(AtomicInteger a, Integer b) {
 		return a.intValue() - b.intValue();
 	}
 
@@ -2186,7 +2186,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() - ($2).floatValue())", constantExpression=true)
-	public static float operator_minus(Integer a, Float b) {
+	public static float operator_minus(AtomicInteger a, Float b) {
 		return a.floatValue() - b.floatValue();
 	}
 
@@ -2199,7 +2199,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() - ($2).longValue())", constantExpression=true)
-	public static long operator_minus(Integer a, Long b) {
+	public static long operator_minus(AtomicInteger a, Long b) {
 		return a.longValue() - b.longValue();
 	}
 
@@ -2212,7 +2212,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() - ($2).intValue())", constantExpression=true)
-	public static int operator_minus(Integer a, Byte b) {
+	public static int operator_minus(AtomicInteger a, Byte b) {
 		return a.intValue() - b.intValue();
 	}
 
@@ -2225,7 +2225,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() - ($2).doubleValue())", constantExpression=true)
-	public static double operator_minus(Integer a, Double b) {
+	public static double operator_minus(AtomicInteger a, Double b) {
 		return a.doubleValue() - b.doubleValue();
 	}
 
@@ -2238,7 +2238,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).intValue() - ($2).intValue())", constantExpression=true)
-	public static int operator_minus(Integer a, AtomicInteger b) {
+	public static int operator_minus(AtomicInteger a, AtomicInteger b) {
 		return a.intValue() - b.intValue();
 	}
 
@@ -2251,7 +2251,7 @@ public final class IntegerExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).longValue() - ($2).longValue())", constantExpression=true)
-	public static long operator_minus(Integer a, AtomicLong b) {
+	public static long operator_minus(AtomicInteger a, AtomicLong b) {
 		return a.longValue() - b.longValue();
 	}
 

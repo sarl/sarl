@@ -91,6 +91,7 @@ import io.sarl.lang.typesystem.SARLExpressionHelper;
  *
  * <p>Additionally, this compiler supports the Inline annotation for non-static calls, by skipping the left
  * operand of a member feature call when the inline expression is constant.
+ * See https://github.com/eclipse/xtext-extras/pull/62.
  *
  * <p>This compiler supports also the "$0" parameter in inline expression. This parameter represents the
  * current receiver, e.g. "this.".
@@ -312,7 +313,7 @@ public class SarlCompiler extends XtendCompiler {
 	}
 
 	private static boolean isConstantExpression(JvmAnnotationReference reference) {
-		//TODO: Remove when Xtext issue is fixed; https://github.com/eclipse/xtext-extras/issues/43
+		//TODO: Remove when Xtext issue is fixed; https://github.com/eclipse/xtext-extras/pull/62
 		for (final JvmAnnotationValue annotationValue: reference.getValues()) {
 			if (CONSTANT_EXPRESSION_NAME.equals(annotationValue.getValueName())) {
 				return ((JvmBooleanAnnotationValue) annotationValue).getValues().get(0).booleanValue();
@@ -324,7 +325,7 @@ public class SarlCompiler extends XtendCompiler {
 	@Override
 	protected void featureCalltoJavaExpression(final XAbstractFeatureCall call, ITreeAppendable output,
 			boolean isExpressionContext) {
-		//TODO: Remove when Xtext issue is fixed; https://github.com/eclipse/xtext-extras/issues/43
+		//TODO: Remove when Xtext issue is fixed; https://github.com/eclipse/xtext-extras/pull/62
 		if (call instanceof XAssignment) {
 			assignmentToJavaExpression((XAssignment) call, output, isExpressionContext);
 		} else {

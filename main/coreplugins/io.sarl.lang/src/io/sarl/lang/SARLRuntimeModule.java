@@ -34,12 +34,8 @@ import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider;
 import org.eclipse.xtext.service.SingletonBinding;
 import org.eclipse.xtext.validation.CompositeEValidator;
 import org.eclipse.xtext.validation.IssueSeveritiesProvider;
-import org.eclipse.xtext.xbase.scoping.batch.ImplicitlyImportedFeatures;
-import org.eclipse.xtext.xbase.typesystem.internal.DefaultReentrantTypeResolver;
 
 import io.sarl.lang.bugfixes.pending.bug621.Bug621SARLValidator;
-import io.sarl.lang.bugfixes.pending.bug764.Bug764ImplicitlyImportedFeatures;
-import io.sarl.lang.bugfixes.refused.bug623.Bug623SARLReentrantTypeResolver;
 import io.sarl.lang.bugfixes.unpublished.bug356.Bug356ImportedNamespaceScopeProvider;
 import io.sarl.lang.bugfixes.unpublished.bug356.Bug356QualifiedNameConverter;
 import io.sarl.lang.compiler.SARLJvmGenerator;
@@ -119,19 +115,9 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 	}
 
 	@Override
-	public Class<? extends DefaultReentrantTypeResolver> bindDefaultReentrantTypeResolver() {
-		return Bug623SARLReentrantTypeResolver.class;
-	}
-
-	@Override
 	@SingletonBinding(eager = true)
 	public Class<? extends SARLValidator> bindSARLValidator() {
 		return Bug621SARLValidator.class;
-	}
-
-	@Override
-	public Class<? extends ImplicitlyImportedFeatures> bindImplicitlyImportedFeatures() {
-		return Bug764ImplicitlyImportedFeatures.class;
 	}
 
 }

@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.bugfixes.pending.bug764;
+package io.sarl.lang.scoping.numbers;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -37,9 +37,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @see "https://github.com/eclipse/xtext-extras/issues/186"
  */
 @SuppressWarnings("all")
-public final class PrimitiveShortExtensions {
+public final class PrimitiveByteExtensions {
 
-	private PrimitiveShortExtensions() {
+	private PrimitiveByteExtensions() {
 		//
 	}
 
@@ -54,7 +54,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 != ($2).shortValue())", constantExpression=true)
-	public static boolean operator_notEquals(short a, Short b) {
+	public static boolean operator_notEquals(byte a, Short b) {
 		return a != b.shortValue();
 	}
 
@@ -67,7 +67,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 != ($2).intValue())", constantExpression=true)
-	public static boolean operator_notEquals(short a, Integer b) {
+	public static boolean operator_notEquals(byte a, Integer b) {
 		return a != b.intValue();
 	}
 
@@ -80,7 +80,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 != ($2).floatValue())", constantExpression=true)
-	public static boolean operator_notEquals(short a, Float b) {
+	public static boolean operator_notEquals(byte a, Float b) {
 		return a != b.floatValue();
 	}
 
@@ -93,7 +93,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 != ($2).longValue())", constantExpression=true)
-	public static boolean operator_notEquals(short a, Long b) {
+	public static boolean operator_notEquals(byte a, Long b) {
 		return a != b.longValue();
 	}
 
@@ -105,9 +105,9 @@ public final class PrimitiveShortExtensions {
 	 * @return   <code>a!=b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 != ($2).shortValue())", constantExpression=true)
-	public static boolean operator_notEquals(short a, Byte b) {
-		return a != b.shortValue();
+	@Inline(value = "($1 != ($2).byteValue())", constantExpression=true)
+	public static boolean operator_notEquals(byte a, Byte b) {
+		return a != b.byteValue();
 	}
 
 	/**
@@ -119,7 +119,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 != ($2).doubleValue())", constantExpression=true)
-	public static boolean operator_notEquals(short a, Double b) {
+	public static boolean operator_notEquals(byte a, Double b) {
 		return a != b.doubleValue();
 	}
 
@@ -132,7 +132,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 != ($2).intValue())", constantExpression=true)
-	public static boolean operator_notEquals(short a, AtomicInteger b) {
+	public static boolean operator_notEquals(byte a, AtomicInteger b) {
 		return a != b.intValue();
 	}
 
@@ -145,7 +145,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 != ($2).longValue())", constantExpression=true)
-	public static boolean operator_notEquals(short a, AtomicLong b) {
+	public static boolean operator_notEquals(byte a, AtomicLong b) {
 		return a != b.longValue();
 	}
 
@@ -158,7 +158,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 / ($2).shortValue())", constantExpression=true)
-	public static int operator_divide(short a, Short b) {
+	public static int operator_divide(byte a, Short b) {
 		return a / b.shortValue();
 	}
 
@@ -171,7 +171,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 / ($2).intValue())", constantExpression=true)
-	public static int operator_divide(short a, Integer b) {
+	public static int operator_divide(byte a, Integer b) {
 		return a / b.intValue();
 	}
 
@@ -184,7 +184,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 / ($2).floatValue())", constantExpression=true)
-	public static float operator_divide(short a, Float b) {
+	public static float operator_divide(byte a, Float b) {
 		return a / b.floatValue();
 	}
 
@@ -197,7 +197,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 / ($2).longValue())", constantExpression=true)
-	public static long operator_divide(short a, Long b) {
+	public static long operator_divide(byte a, Long b) {
 		return a / b.longValue();
 	}
 
@@ -209,9 +209,9 @@ public final class PrimitiveShortExtensions {
 	 * @return   <code>a/b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 / ($2).shortValue())", constantExpression=true)
-	public static int operator_divide(short a, Byte b) {
-		return a / b.shortValue();
+	@Inline(value = "($1 / ($2).byteValue())", constantExpression=true)
+	public static int operator_divide(byte a, Byte b) {
+		return a / b.byteValue();
 	}
 
 	/**
@@ -223,7 +223,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 / ($2).doubleValue())", constantExpression=true)
-	public static double operator_divide(short a, Double b) {
+	public static double operator_divide(byte a, Double b) {
 		return a / b.doubleValue();
 	}
 
@@ -236,7 +236,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 / ($2).intValue())", constantExpression=true)
-	public static int operator_divide(short a, AtomicInteger b) {
+	public static int operator_divide(byte a, AtomicInteger b) {
 		return a / b.intValue();
 	}
 
@@ -249,7 +249,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 / ($2).longValue())", constantExpression=true)
-	public static long operator_divide(short a, AtomicLong b) {
+	public static long operator_divide(byte a, AtomicLong b) {
 		return a / b.longValue();
 	}
 
@@ -262,7 +262,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 == ($2).shortValue())", constantExpression=true)
-	public static boolean operator_equals(short a, Short b) {
+	public static boolean operator_equals(byte a, Short b) {
 		return a == b.shortValue();
 	}
 
@@ -275,7 +275,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 == ($2).intValue())", constantExpression=true)
-	public static boolean operator_equals(short a, Integer b) {
+	public static boolean operator_equals(byte a, Integer b) {
 		return a == b.intValue();
 	}
 
@@ -288,7 +288,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 == ($2).floatValue())", constantExpression=true)
-	public static boolean operator_equals(short a, Float b) {
+	public static boolean operator_equals(byte a, Float b) {
 		return a == b.floatValue();
 	}
 
@@ -301,7 +301,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 == ($2).longValue())", constantExpression=true)
-	public static boolean operator_equals(short a, Long b) {
+	public static boolean operator_equals(byte a, Long b) {
 		return a == b.longValue();
 	}
 
@@ -313,9 +313,9 @@ public final class PrimitiveShortExtensions {
 	 * @return   <code>a==b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 == ($2).shortValue())", constantExpression=true)
-	public static boolean operator_equals(short a, Byte b) {
-		return a == b.shortValue();
+	@Inline(value = "($1 == ($2).byteValue())", constantExpression=true)
+	public static boolean operator_equals(byte a, Byte b) {
+		return a == b.byteValue();
 	}
 
 	/**
@@ -327,7 +327,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 == ($2).doubleValue())", constantExpression=true)
-	public static boolean operator_equals(short a, Double b) {
+	public static boolean operator_equals(byte a, Double b) {
 		return a == b.doubleValue();
 	}
 
@@ -340,7 +340,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 == ($2).intValue())", constantExpression=true)
-	public static boolean operator_equals(short a, AtomicInteger b) {
+	public static boolean operator_equals(byte a, AtomicInteger b) {
 		return a == b.intValue();
 	}
 
@@ -353,7 +353,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 == ($2).longValue())", constantExpression=true)
-	public static boolean operator_equals(short a, AtomicLong b) {
+	public static boolean operator_equals(byte a, AtomicLong b) {
 		return a == b.longValue();
 	}
 
@@ -366,7 +366,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 * ($2).shortValue())", constantExpression=true)
-	public static int operator_multiply(short a, Short b) {
+	public static int operator_multiply(byte a, Short b) {
 		return a * b.shortValue();
 	}
 
@@ -379,7 +379,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 * ($2).intValue())", constantExpression=true)
-	public static int operator_multiply(short a, Integer b) {
+	public static int operator_multiply(byte a, Integer b) {
 		return a * b.intValue();
 	}
 
@@ -392,7 +392,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 * ($2).floatValue())", constantExpression=true)
-	public static float operator_multiply(short a, Float b) {
+	public static float operator_multiply(byte a, Float b) {
 		return a * b.floatValue();
 	}
 
@@ -405,7 +405,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 * ($2).longValue())", constantExpression=true)
-	public static long operator_multiply(short a, Long b) {
+	public static long operator_multiply(byte a, Long b) {
 		return a * b.longValue();
 	}
 
@@ -417,9 +417,9 @@ public final class PrimitiveShortExtensions {
 	 * @return   <code>a*b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 * ($2).shortValue())", constantExpression=true)
-	public static int operator_multiply(short a, Byte b) {
-		return a * b.shortValue();
+	@Inline(value = "($1 * ($2).byteValue())", constantExpression=true)
+	public static int operator_multiply(byte a, Byte b) {
+		return a * b.byteValue();
 	}
 
 	/**
@@ -431,7 +431,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 * ($2).doubleValue())", constantExpression=true)
-	public static double operator_multiply(short a, Double b) {
+	public static double operator_multiply(byte a, Double b) {
 		return a * b.doubleValue();
 	}
 
@@ -444,7 +444,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 * ($2).intValue())", constantExpression=true)
-	public static int operator_multiply(short a, AtomicInteger b) {
+	public static int operator_multiply(byte a, AtomicInteger b) {
 		return a * b.intValue();
 	}
 
@@ -457,7 +457,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 * ($2).longValue())", constantExpression=true)
-	public static long operator_multiply(short a, AtomicLong b) {
+	public static long operator_multiply(byte a, AtomicLong b) {
 		return a * b.longValue();
 	}
 
@@ -470,7 +470,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "$3.pow($1, ($2).shortValue())", imported = Math.class)
-	public static double operator_power(short a, Short b) {
+	public static double operator_power(byte a, Short b) {
 		return Math.pow(a, b.shortValue());
 	}
 
@@ -483,7 +483,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "$3.pow($1, ($2).intValue())", imported = Math.class)
-	public static double operator_power(short a, Integer b) {
+	public static double operator_power(byte a, Integer b) {
 		return Math.pow(a, b.intValue());
 	}
 
@@ -496,7 +496,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "$3.pow($1, ($2).floatValue())", imported = Math.class)
-	public static double operator_power(short a, Float b) {
+	public static double operator_power(byte a, Float b) {
 		return Math.pow(a, b.floatValue());
 	}
 
@@ -509,7 +509,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "$3.pow($1, ($2).longValue())", imported = Math.class)
-	public static double operator_power(short a, Long b) {
+	public static double operator_power(byte a, Long b) {
 		return Math.pow(a, b.longValue());
 	}
 
@@ -521,9 +521,9 @@ public final class PrimitiveShortExtensions {
 	 * @return   <code>Math.pow(a, b)</code>
 	 */
 	@Pure
-	@Inline(value = "$3.pow($1, ($2).shortValue())", imported = Math.class)
-	public static double operator_power(short a, Byte b) {
-		return Math.pow(a, b.shortValue());
+	@Inline(value = "$3.pow($1, ($2).byteValue())", imported = Math.class)
+	public static double operator_power(byte a, Byte b) {
+		return Math.pow(a, b.byteValue());
 	}
 
 	/**
@@ -535,7 +535,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "$3.pow($1, ($2).doubleValue())", imported = Math.class)
-	public static double operator_power(short a, Double b) {
+	public static double operator_power(byte a, Double b) {
 		return Math.pow(a, b.doubleValue());
 	}
 
@@ -548,7 +548,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "$3.pow($1, ($2).intValue())", imported = Math.class)
-	public static double operator_power(short a, AtomicInteger b) {
+	public static double operator_power(byte a, AtomicInteger b) {
 		return Math.pow(a, b.intValue());
 	}
 
@@ -561,7 +561,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "$3.pow($1, ($2).longValue())", imported = Math.class)
-	public static double operator_power(short a, AtomicLong b) {
+	public static double operator_power(byte a, AtomicLong b) {
 		return Math.pow(a, b.longValue());
 	}
 
@@ -574,7 +574,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 < ($2).shortValue())", constantExpression=true)
-	public static boolean operator_lessThan(short a, Short b) {
+	public static boolean operator_lessThan(byte a, Short b) {
 		return a < b.shortValue();
 	}
 
@@ -587,7 +587,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 < ($2).intValue())", constantExpression=true)
-	public static boolean operator_lessThan(short a, Integer b) {
+	public static boolean operator_lessThan(byte a, Integer b) {
 		return a < b.intValue();
 	}
 
@@ -600,7 +600,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 < ($2).floatValue())", constantExpression=true)
-	public static boolean operator_lessThan(short a, Float b) {
+	public static boolean operator_lessThan(byte a, Float b) {
 		return a < b.floatValue();
 	}
 
@@ -613,7 +613,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 < ($2).longValue())", constantExpression=true)
-	public static boolean operator_lessThan(short a, Long b) {
+	public static boolean operator_lessThan(byte a, Long b) {
 		return a < b.longValue();
 	}
 
@@ -625,9 +625,9 @@ public final class PrimitiveShortExtensions {
 	 * @return   <code>a&lt;b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 < ($2).shortValue())", constantExpression=true)
-	public static boolean operator_lessThan(short a, Byte b) {
-		return a < b.shortValue();
+	@Inline(value = "($1 < ($2).byteValue())", constantExpression=true)
+	public static boolean operator_lessThan(byte a, Byte b) {
+		return a < b.byteValue();
 	}
 
 	/**
@@ -639,7 +639,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 < ($2).doubleValue())", constantExpression=true)
-	public static boolean operator_lessThan(short a, Double b) {
+	public static boolean operator_lessThan(byte a, Double b) {
 		return a < b.doubleValue();
 	}
 
@@ -652,7 +652,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 < ($2).intValue())", constantExpression=true)
-	public static boolean operator_lessThan(short a, AtomicInteger b) {
+	public static boolean operator_lessThan(byte a, AtomicInteger b) {
 		return a < b.intValue();
 	}
 
@@ -665,7 +665,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 < ($2).longValue())", constantExpression=true)
-	public static boolean operator_lessThan(short a, AtomicLong b) {
+	public static boolean operator_lessThan(byte a, AtomicLong b) {
 		return a < b.longValue();
 	}
 
@@ -678,7 +678,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 > ($2).shortValue())", constantExpression=true)
-	public static boolean operator_greaterThan(short a, Short b) {
+	public static boolean operator_greaterThan(byte a, Short b) {
 		return a > b.shortValue();
 	}
 
@@ -692,7 +692,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 > ($2).intValue())", constantExpression=true)
-	public static boolean operator_greaterThan(short a, Integer b) {
+	public static boolean operator_greaterThan(byte a, Integer b) {
 		return a > b.intValue();
 	}
 
@@ -706,7 +706,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 > ($2).floatValue())", constantExpression=true)
-	public static boolean operator_greaterThan(short a, Float b) {
+	public static boolean operator_greaterThan(byte a, Float b) {
 		return a > b.floatValue();
 	}
 
@@ -720,7 +720,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 > ($2).longValue())", constantExpression=true)
-	public static boolean operator_greaterThan(short a, Long b) {
+	public static boolean operator_greaterThan(byte a, Long b) {
 		return a > b.longValue();
 	}
 
@@ -733,9 +733,9 @@ public final class PrimitiveShortExtensions {
 	 * @return   <code>a&gt;b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 > ($2).shortValue())", constantExpression=true)
-	public static boolean operator_greaterThan(short a, Byte b) {
-		return a > b.shortValue();
+	@Inline(value = "($1 > ($2).byteValue())", constantExpression=true)
+	public static boolean operator_greaterThan(byte a, Byte b) {
+		return a > b.byteValue();
 	}
 
 
@@ -748,7 +748,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 > ($2).doubleValue())", constantExpression=true)
-	public static boolean operator_greaterThan(short a, Double b) {
+	public static boolean operator_greaterThan(byte a, Double b) {
 		return a > b.doubleValue();
 	}
 
@@ -762,7 +762,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 > ($2).intValue())", constantExpression=true)
-	public static boolean operator_greaterThan(short a, AtomicInteger b) {
+	public static boolean operator_greaterThan(byte a, AtomicInteger b) {
 		return a > b.intValue();
 	}
 
@@ -776,7 +776,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 > ($2).longValue())", constantExpression=true)
-	public static boolean operator_greaterThan(short a, AtomicLong b) {
+	public static boolean operator_greaterThan(byte a, AtomicLong b) {
 		return a > b.longValue();
 	}
 
@@ -790,7 +790,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 <= ($2).shortValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(short a, Short b) {
+	public static boolean operator_lessEqualsThan(byte a, Short b) {
 		return a <= b.shortValue();
 	}
 
@@ -803,7 +803,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 <= ($2).intValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(short a, Integer b) {
+	public static boolean operator_lessEqualsThan(byte a, Integer b) {
 		return a <= b.intValue();
 	}
 
@@ -816,7 +816,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 <= ($2).floatValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(short a, Float b) {
+	public static boolean operator_lessEqualsThan(byte a, Float b) {
 		return a <= b.floatValue();
 	}
 
@@ -829,7 +829,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 <= ($2).longValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(short a, Long b) {
+	public static boolean operator_lessEqualsThan(byte a, Long b) {
 		return a <= b.longValue();
 	}
 
@@ -841,9 +841,9 @@ public final class PrimitiveShortExtensions {
 	 * @return   <code>a&lt;=b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 <= ($2).shortValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(short a, Byte b) {
-		return a <= b.shortValue();
+	@Inline(value = "($1 <= ($2).byteValue())", constantExpression=true)
+	public static boolean operator_lessEqualsThan(byte a, Byte b) {
+		return a <= b.byteValue();
 	}
 
 	/**
@@ -855,7 +855,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 <= ($2).doubleValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(short a, Double b) {
+	public static boolean operator_lessEqualsThan(byte a, Double b) {
 		return a <= b.doubleValue();
 	}
 
@@ -868,7 +868,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 <= ($2).intValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(short a, AtomicInteger b) {
+	public static boolean operator_lessEqualsThan(byte a, AtomicInteger b) {
 		return a <= b.intValue();
 	}
 
@@ -881,7 +881,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 <= ($2).longValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(short a, AtomicLong b) {
+	public static boolean operator_lessEqualsThan(byte a, AtomicLong b) {
 		return a <= b.longValue();
 	}
 
@@ -894,7 +894,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 % ($2).shortValue())", constantExpression=true)
-	public static int operator_modulo(short a, Short b) {
+	public static int operator_modulo(byte a, Short b) {
 		return a % b.shortValue();
 	}
 
@@ -907,7 +907,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 % ($2).intValue())", constantExpression=true)
-	public static int operator_modulo(short a, Integer b) {
+	public static int operator_modulo(byte a, Integer b) {
 		return a % b.intValue();
 	}
 
@@ -920,7 +920,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 % ($2).floatValue())", constantExpression=true)
-	public static float operator_modulo(short a, Float b) {
+	public static float operator_modulo(byte a, Float b) {
 		return a % b.floatValue();
 	}
 
@@ -933,7 +933,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 % ($2).longValue())", constantExpression=true)
-	public static long operator_modulo(short a, Long b) {
+	public static long operator_modulo(byte a, Long b) {
 		return a % b.longValue();
 	}
 
@@ -945,9 +945,9 @@ public final class PrimitiveShortExtensions {
 	 * @return   <code>a%b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 % ($2).shortValue())", constantExpression=true)
-	public static int operator_modulo(short a, Byte b) {
-		return a % b.shortValue();
+	@Inline(value = "($1 % ($2).byteValue())", constantExpression=true)
+	public static int operator_modulo(byte a, Byte b) {
+		return a % b.byteValue();
 	}
 
 	/**
@@ -959,7 +959,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 % ($2).doubleValue())", constantExpression=true)
-	public static double operator_modulo(short a, Double b) {
+	public static double operator_modulo(byte a, Double b) {
 		return a % b.doubleValue();
 	}
 
@@ -972,7 +972,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 % ($2).intValue())", constantExpression=true)
-	public static int operator_modulo(short a, AtomicInteger b) {
+	public static int operator_modulo(byte a, AtomicInteger b) {
 		return a % b.intValue();
 	}
 
@@ -985,7 +985,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 % ($2).longValue())", constantExpression=true)
-	public static long operator_modulo(short a, AtomicLong b) {
+	public static long operator_modulo(byte a, AtomicLong b) {
 		return a % b.longValue();
 	}
 
@@ -998,7 +998,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 >= ($2).shortValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(short a, Short b) {
+	public static boolean operator_greaterEqualsThan(byte a, Short b) {
 		return a >= b.shortValue();
 	}
 
@@ -1011,7 +1011,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 >= ($2).intValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(short a, Integer b) {
+	public static boolean operator_greaterEqualsThan(byte a, Integer b) {
 		return a >= b.intValue();
 	}
 
@@ -1024,7 +1024,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 >= ($2).floatValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(short a, Float b) {
+	public static boolean operator_greaterEqualsThan(byte a, Float b) {
 		return a >= b.floatValue();
 	}
 
@@ -1037,7 +1037,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 >= ($2).longValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(short a, Long b) {
+	public static boolean operator_greaterEqualsThan(byte a, Long b) {
 		return a >= b.longValue();
 	}
 
@@ -1049,9 +1049,9 @@ public final class PrimitiveShortExtensions {
 	 * @return   <code>a&gt;=b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 >= ($2).shortValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(short a, Byte b) {
-		return a >= b.shortValue();
+	@Inline(value = "($1 >= ($2).byteValue())", constantExpression=true)
+	public static boolean operator_greaterEqualsThan(byte a, Byte b) {
+		return a >= b.byteValue();
 	}
 
 	/**
@@ -1063,7 +1063,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 >= ($2).doubleValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(short a, Double b) {
+	public static boolean operator_greaterEqualsThan(byte a, Double b) {
 		return a >= b.doubleValue();
 	}
 
@@ -1076,7 +1076,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 >= ($2).intValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(short a, AtomicInteger b) {
+	public static boolean operator_greaterEqualsThan(byte a, AtomicInteger b) {
 		return a >= b.intValue();
 	}
 
@@ -1089,7 +1089,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 >= ($2).longValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(short a, AtomicLong b) {
+	public static boolean operator_greaterEqualsThan(byte a, AtomicLong b) {
 		return a >= b.longValue();
 	}
 
@@ -1102,7 +1102,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 + ($2).shortValue())", constantExpression=true)
-	public static int operator_plus(short a, Short b) {
+	public static int operator_plus(byte a, Short b) {
 		return a + b.shortValue();
 	}
 
@@ -1115,7 +1115,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 + ($2).intValue())", constantExpression=true)
-	public static int operator_plus(short a, Integer b) {
+	public static int operator_plus(byte a, Integer b) {
 		return a + b.intValue();
 	}
 
@@ -1128,7 +1128,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 + ($2).floatValue())", constantExpression=true)
-	public static float operator_plus(short a, Float b) {
+	public static float operator_plus(byte a, Float b) {
 		return a + b.floatValue();
 	}
 
@@ -1141,7 +1141,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 + ($2).longValue())", constantExpression=true)
-	public static long operator_plus(short a, Long b) {
+	public static long operator_plus(byte a, Long b) {
 		return a + b.longValue();
 	}
 
@@ -1153,9 +1153,9 @@ public final class PrimitiveShortExtensions {
 	 * @return   <code>a+b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 + ($2).shortValue())", constantExpression=true)
-	public static int operator_plus(short a, Byte b) {
-		return a + b.shortValue();
+	@Inline(value = "($1 + ($2).byteValue())", constantExpression=true)
+	public static int operator_plus(byte a, Byte b) {
+		return a + b.byteValue();
 	}
 
 	/**
@@ -1167,7 +1167,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 + ($2).doubleValue())", constantExpression=true)
-	public static double operator_plus(short a, Double b) {
+	public static double operator_plus(byte a, Double b) {
 		return a + b.doubleValue();
 	}
 
@@ -1180,7 +1180,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 + ($2).intValue())", constantExpression=true)
-	public static int operator_plus(short a, AtomicInteger b) {
+	public static int operator_plus(byte a, AtomicInteger b) {
 		return a + b.intValue();
 	}
 
@@ -1193,7 +1193,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 + ($2).longValue())", constantExpression=true)
-	public static long operator_plus(short a, AtomicLong b) {
+	public static long operator_plus(byte a, AtomicLong b) {
 		return a + b.longValue();
 	}
 
@@ -1206,7 +1206,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 - ($2).shortValue())", constantExpression=true)
-	public static int operator_minus(short a, Short b) {
+	public static int operator_minus(byte a, Short b) {
 		return a - b.shortValue();
 	}
 
@@ -1219,7 +1219,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 - ($2).intValue())", constantExpression=true)
-	public static int operator_minus(short a, Integer b) {
+	public static int operator_minus(byte a, Integer b) {
 		return a - b.intValue();
 	}
 
@@ -1232,7 +1232,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 - ($2).floatValue())", constantExpression=true)
-	public static float operator_minus(short a, Float b) {
+	public static float operator_minus(byte a, Float b) {
 		return a - b.floatValue();
 	}
 
@@ -1245,7 +1245,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 - ($2).longValue())", constantExpression=true)
-	public static long operator_minus(short a, Long b) {
+	public static long operator_minus(byte a, Long b) {
 		return a - b.longValue();
 	}
 
@@ -1257,9 +1257,9 @@ public final class PrimitiveShortExtensions {
 	 * @return   <code>a-b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 - ($2).shortValue())", constantExpression=true)
-	public static int operator_minus(short a, Byte b) {
-		return a - b.shortValue();
+	@Inline(value = "($1 - ($2).byteValue())", constantExpression=true)
+	public static int operator_minus(byte a, Byte b) {
+		return a - b.byteValue();
 	}
 
 /**
@@ -1271,7 +1271,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 - ($2).doubleValue())", constantExpression=true)
-	public static double operator_minus(short a, Double b) {
+	public static double operator_minus(byte a, Double b) {
 		return a - b.doubleValue();
 	}
 
@@ -1284,7 +1284,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 - ($2).intValue())", constantExpression=true)
-	public static int operator_minus(short a, AtomicInteger b) {
+	public static int operator_minus(byte a, AtomicInteger b) {
 		return a - b.intValue();
 	}
 
@@ -1297,7 +1297,7 @@ public final class PrimitiveShortExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 - ($2).longValue())", constantExpression=true)
-	public static long operator_minus(short a, AtomicLong b) {
+	public static long operator_minus(byte a, AtomicLong b) {
 		return a - b.longValue();
 	}
 

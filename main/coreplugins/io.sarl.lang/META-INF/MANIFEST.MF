@@ -21,7 +21,6 @@ Require-Bundle: io.sarl.lang.core;bundle-version="0.7.0";visibility:=reexport,
 Bundle-Activator: io.sarl.lang.SARLLangActivator
 Export-Package: io.sarl.lang,
  io.sarl.lang.bugfixes.pending.bug621,
- io.sarl.lang.bugfixes.refused.bug623,
  io.sarl.lang.bugfixes.unpublished,
  io.sarl.lang.bugfixes.unpublished.bug356,
  io.sarl.lang.codebuilder,

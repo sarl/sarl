@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.bugfixes.pending.bug764;
+package io.sarl.lang.scoping.numbers;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -37,9 +37,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @see "https://github.com/eclipse/xtext-extras/issues/186"
  */
 @SuppressWarnings("all")
-public final class FloatExtensions {
+public final class LongExtensions {
 
-	private FloatExtensions() {
+	private LongExtensions() {
 		//
 	}
 
@@ -52,9 +52,9 @@ public final class FloatExtensions {
 	 * @return   <code>-i</code>
 	 */
 	@Pure
-	@Inline(value = "(-($1).floatValue())", constantExpression=true)
-	public static float operator_minus(Float i) {
-		return -i.floatValue();
+	@Inline(value = "(-($1).longValue())", constantExpression=true)
+	public static long operator_minus(Long i) {
+		return -i.longValue();
 	}
 
 	/**
@@ -65,9 +65,9 @@ public final class FloatExtensions {
 	 * @return   <code>a!=b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() != $2)", constantExpression=true)
-	public static boolean operator_notEquals(Float a, int b) {
-		return a.floatValue() != b;
+	@Inline(value = "(($1).longValue() != $2)", constantExpression=true)
+	public static boolean operator_notEquals(Long a, int b) {
+		return a.longValue() != b;
 	}
 
 	/**
@@ -78,9 +78,9 @@ public final class FloatExtensions {
 	 * @return   <code>a!=b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() != $2)", constantExpression=true)
-	public static boolean operator_notEquals(Float a, long b) {
-		return a.floatValue() != b;
+	@Inline(value = "(($1).longValue() != $2)", constantExpression=true)
+	public static boolean operator_notEquals(Long a, long b) {
+		return a.longValue() != b;
 	}
 
 	/**
@@ -91,9 +91,9 @@ public final class FloatExtensions {
 	 * @return   <code>a!=b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() != $2)", constantExpression=true)
-	public static boolean operator_notEquals(Float a, short b) {
-		return a.floatValue() != b;
+	@Inline(value = "(($1).longValue() != $2)", constantExpression=true)
+	public static boolean operator_notEquals(Long a, short b) {
+		return a.longValue() != b;
 	}
 
 	/**
@@ -104,9 +104,9 @@ public final class FloatExtensions {
 	 * @return   <code>a!=b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() != $2)", constantExpression=true)
-	public static boolean operator_notEquals(Float a, byte b) {
-		return a.floatValue() != b;
+	@Inline(value = "(($1).longValue() != $2)", constantExpression=true)
+	public static boolean operator_notEquals(Long a, byte b) {
+		return a.longValue() != b;
 	}
 
 	/**
@@ -118,7 +118,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() != $2)", constantExpression=true)
-	public static boolean operator_notEquals(Float a, double b) {
+	public static boolean operator_notEquals(Long a, double b) {
 		return a.doubleValue() != b;
 	}
 
@@ -131,7 +131,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() != $2)", constantExpression=true)
-	public static boolean operator_notEquals(Float a, float b) {
+	public static boolean operator_notEquals(Long a, float b) {
 		return a.floatValue() != b;
 	}
 
@@ -143,9 +143,22 @@ public final class FloatExtensions {
 	 * @return   <code>a!=b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() != ($2).floatValue())", constantExpression=true)
-	public static boolean operator_notEquals(Float a, Short b) {
-		return a.floatValue() != b.floatValue();
+	@Inline(value = "(($1).longValue() != ($2).longValue())", constantExpression=true)
+	public static boolean operator_notEquals(Long a, Short b) {
+		return a.longValue() != b.longValue();
+	}
+
+	/**
+	 *The binary <code>notEquals</code> operator. This is the equivalent to the Java <code>!=</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a!=b</code>
+	 */
+	@Pure
+	@Inline(value = "(($1).longValue() != ($2).longValue())", constantExpression=true)
+	public static boolean operator_notEquals(Long a, Integer b) {
+		return a.longValue() != b.longValue();
 	}
 
 	/**
@@ -157,7 +170,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() != ($2).floatValue())", constantExpression=true)
-	public static boolean operator_notEquals(Float a, Integer b) {
+	public static boolean operator_notEquals(Long a, Float b) {
 		return a.floatValue() != b.floatValue();
 	}
 
@@ -169,9 +182,9 @@ public final class FloatExtensions {
 	 * @return   <code>a!=b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() != ($2).floatValue())", constantExpression=true)
-	public static boolean operator_notEquals(Float a, Float b) {
-		return a.floatValue() != b.floatValue();
+	@Inline(value = "(($1).longValue() != ($2).longValue())", constantExpression=true)
+	public static boolean operator_notEquals(Long a, Long b) {
+		return a.longValue() != b.longValue();
 	}
 
 	/**
@@ -182,22 +195,9 @@ public final class FloatExtensions {
 	 * @return   <code>a!=b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() != ($2).floatValue())", constantExpression=true)
-	public static boolean operator_notEquals(Float a, Long b) {
-		return a.floatValue() != b.floatValue();
-	}
-
-	/**
-	 *The binary <code>notEquals</code> operator. This is the equivalent to the Java <code>!=</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a!=b</code>
-	 */
-	@Pure
-	@Inline(value = "(($1).floatValue() != ($2).floatValue())", constantExpression=true)
-	public static boolean operator_notEquals(Float a, Byte b) {
-		return a.floatValue() != b.floatValue();
+	@Inline(value = "(($1).longValue() != ($2).longValue())", constantExpression=true)
+	public static boolean operator_notEquals(Long a, Byte b) {
+		return a.longValue() != b.longValue();
 	}
 
 	/**
@@ -209,7 +209,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() != ($2).doubleValue())", constantExpression=true)
-	public static boolean operator_notEquals(Float a, Double b) {
+	public static boolean operator_notEquals(Long a, Double b) {
 		return a.doubleValue() != b.doubleValue();
 	}
 
@@ -221,9 +221,9 @@ public final class FloatExtensions {
 	 * @return   <code>a!=b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() != ($2).floatValue())", constantExpression=true)
-	public static boolean operator_notEquals(Float a, AtomicInteger b) {
-		return a.floatValue() != b.floatValue();
+	@Inline(value = "(($1).longValue() != ($2).longValue())", constantExpression=true)
+	public static boolean operator_notEquals(Long a, AtomicInteger b) {
+		return a.longValue() != b.longValue();
 	}
 
 	/**
@@ -234,9 +234,9 @@ public final class FloatExtensions {
 	 * @return   <code>a!=b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() != ($2).floatValue())", constantExpression=true)
-	public static boolean operator_notEquals(Float a, AtomicLong b) {
-		return a.floatValue() != b.floatValue();
+	@Inline(value = "(($1).longValue() != ($2).longValue())", constantExpression=true)
+	public static boolean operator_notEquals(Long a, AtomicLong b) {
+		return a.longValue() != b.longValue();
 	}
 
 	/**
@@ -247,9 +247,9 @@ public final class FloatExtensions {
 	 * @return   <code>a/b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() / $2)", constantExpression=true)
-	public static float operator_divide(Float a, int b) {
-		return a.floatValue() / b;
+	@Inline(value = "(($1).longValue() / $2)", constantExpression=true)
+	public static long operator_divide(Long a, int b) {
+		return a.longValue() / b;
 	}
 
 	/**
@@ -260,9 +260,9 @@ public final class FloatExtensions {
 	 * @return   <code>a/b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() / $2)", constantExpression=true)
-	public static float operator_divide(Float a, long b) {
-		return a.floatValue() / b;
+	@Inline(value = "(($1).longValue() / $2)", constantExpression=true)
+	public static long operator_divide(Long a, long b) {
+		return a.longValue() / b;
 	}
 
 	/**
@@ -273,9 +273,9 @@ public final class FloatExtensions {
 	 * @return   <code>a/b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() / $2)", constantExpression=true)
-	public static float operator_divide(Float a, short b) {
-		return a.floatValue() / b;
+	@Inline(value = "(($1).longValue() / $2)", constantExpression=true)
+	public static long operator_divide(Long a, short b) {
+		return a.longValue() / b;
 	}
 
 	/**
@@ -286,9 +286,9 @@ public final class FloatExtensions {
 	 * @return   <code>a/b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() / $2)", constantExpression=true)
-	public static float operator_divide(Float a, byte b) {
-		return a.floatValue() / b;
+	@Inline(value = "(($1).longValue() / $2)", constantExpression=true)
+	public static long operator_divide(Long a, byte b) {
+		return a.longValue() / b;
 	}
 
 	/**
@@ -300,7 +300,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() / $2)", constantExpression=true)
-	public static double operator_divide(Float a, double b) {
+	public static double operator_divide(Long a, double b) {
 		return a.doubleValue() / b;
 	}
 
@@ -313,7 +313,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() / $2)", constantExpression=true)
-	public static float operator_divide(Float a, float b) {
+	public static float operator_divide(Long a, float b) {
 		return a.floatValue() / b;
 	}
 
@@ -325,9 +325,22 @@ public final class FloatExtensions {
 	 * @return   <code>a/b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() / ($2).floatValue())", constantExpression=true)
-	public static float operator_divide(Float a, Short b) {
-		return a.floatValue() / b.floatValue();
+	@Inline(value = "(($1).longValue() / ($2).longValue())", constantExpression=true)
+	public static long operator_divide(Long a, Short b) {
+		return a.longValue() / b.longValue();
+	}
+
+	/**
+	 *The binary <code>divide</code> operator. This is the equivalent to the Java <code>/</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a/b</code>
+	 */
+	@Pure
+	@Inline(value = "(($1).longValue() / ($2).longValue())", constantExpression=true)
+	public static long operator_divide(Long a, Integer b) {
+		return a.longValue() / b.longValue();
 	}
 
 	/**
@@ -339,7 +352,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() / ($2).floatValue())", constantExpression=true)
-	public static float operator_divide(Float a, Integer b) {
+	public static float operator_divide(Long a, Float b) {
 		return a.floatValue() / b.floatValue();
 	}
 
@@ -351,9 +364,9 @@ public final class FloatExtensions {
 	 * @return   <code>a/b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() / ($2).floatValue())", constantExpression=true)
-	public static float operator_divide(Float a, Float b) {
-		return a.floatValue() / b.floatValue();
+	@Inline(value = "(($1).longValue() / ($2).longValue())", constantExpression=true)
+	public static long operator_divide(Long a, Long b) {
+		return a.longValue() / b.longValue();
 	}
 
 	/**
@@ -364,22 +377,9 @@ public final class FloatExtensions {
 	 * @return   <code>a/b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() / ($2).floatValue())", constantExpression=true)
-	public static float operator_divide(Float a, Long b) {
-		return a.floatValue() / b.floatValue();
-	}
-
-	/**
-	 *The binary <code>divide</code> operator. This is the equivalent to the Java <code>/</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a/b</code>
-	 */
-	@Pure
-	@Inline(value = "(($1).floatValue() / ($2).floatValue())", constantExpression=true)
-	public static float operator_divide(Float a, Byte b) {
-		return a.floatValue() / b.floatValue();
+	@Inline(value = "(($1).longValue() / ($2).longValue())", constantExpression=true)
+	public static long operator_divide(Long a, Byte b) {
+		return a.longValue() / b.longValue();
 	}
 
 	/**
@@ -391,7 +391,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() / ($2).doubleValue())", constantExpression=true)
-	public static double operator_divide(Float a, Double b) {
+	public static double operator_divide(Long a, Double b) {
 		return a.doubleValue() / b.doubleValue();
 	}
 
@@ -403,9 +403,9 @@ public final class FloatExtensions {
 	 * @return   <code>a/b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() / ($2).floatValue())", constantExpression=true)
-	public static float operator_divide(Float a, AtomicInteger b) {
-		return a.floatValue() / b.floatValue();
+	@Inline(value = "(($1).longValue() / ($2).longValue())", constantExpression=true)
+	public static long operator_divide(Long a, AtomicInteger b) {
+		return a.longValue() / b.longValue();
 	}
 
 	/**
@@ -416,9 +416,9 @@ public final class FloatExtensions {
 	 * @return   <code>a/b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() / ($2).floatValue())", constantExpression=true)
-	public static float operator_divide(Float a, AtomicLong b) {
-		return a.floatValue() / b.floatValue();
+	@Inline(value = "(($1).longValue() / ($2).longValue())", constantExpression=true)
+	public static long operator_divide(Long a, AtomicLong b) {
+		return a.longValue() / b.longValue();
 	}
 
 	/**
@@ -429,9 +429,9 @@ public final class FloatExtensions {
 	 * @return   <code>a==b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() == $2)", constantExpression=true)
-	public static boolean operator_equals(Float a, int b) {
-		return a.floatValue() == b;
+	@Inline(value = "(($1).longValue() == $2)", constantExpression=true)
+	public static boolean operator_equals(Long a, int b) {
+		return a.longValue() == b;
 	}
 
 	/**
@@ -442,9 +442,9 @@ public final class FloatExtensions {
 	 * @return   <code>a==b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() == $2)", constantExpression=true)
-	public static boolean operator_equals(Float a, long b) {
-		return a.floatValue() == b;
+	@Inline(value = "(($1).longValue() == $2)", constantExpression=true)
+	public static boolean operator_equals(Long a, long b) {
+		return a.longValue() == b;
 	}
 
 	/**
@@ -455,9 +455,9 @@ public final class FloatExtensions {
 	 * @return   <code>a==b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() == $2)", constantExpression=true)
-	public static boolean operator_equals(Float a, short b) {
-		return a.floatValue() == b;
+	@Inline(value = "(($1).longValue() == $2)", constantExpression=true)
+	public static boolean operator_equals(Long a, short b) {
+		return a.longValue() == b;
 	}
 
 	/**
@@ -468,9 +468,9 @@ public final class FloatExtensions {
 	 * @return   <code>a==b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() == $2)", constantExpression=true)
-	public static boolean operator_equals(Float a, byte b) {
-		return a.floatValue() == b;
+	@Inline(value = "(($1).longValue() == $2)", constantExpression=true)
+	public static boolean operator_equals(Long a, byte b) {
+		return a.longValue() == b;
 	}
 
 	/**
@@ -482,7 +482,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() == $2)", constantExpression=true)
-	public static boolean operator_equals(Float a, double b) {
+	public static boolean operator_equals(Long a, double b) {
 		return a.doubleValue() == b;
 	}
 
@@ -495,7 +495,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() == $2)", constantExpression=true)
-	public static boolean operator_equals(Float a, float b) {
+	public static boolean operator_equals(Long a, float b) {
 		return a.floatValue() == b;
 	}
 
@@ -507,9 +507,22 @@ public final class FloatExtensions {
 	 * @return   <code>a==b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() == ($2).floatValue())", constantExpression=true)
-	public static boolean operator_equals(Float a, Short b) {
-		return a.floatValue() == b.floatValue();
+	@Inline(value = "(($1).longValue() == ($2).longValue())", constantExpression=true)
+	public static boolean operator_equals(Long a, Short b) {
+		return a.longValue() == b.longValue();
+	}
+
+	/**
+	 *The binary <code>equals</code> operator. This is the equivalent to the Java <code>==</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a==b</code>
+	 */
+	@Pure
+	@Inline(value = "(($1).longValue() == ($2).longValue())", constantExpression=true)
+	public static boolean operator_equals(Long a, Integer b) {
+		return a.longValue() == b.longValue();
 	}
 
 	/**
@@ -521,7 +534,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() == ($2).floatValue())", constantExpression=true)
-	public static boolean operator_equals(Float a, Integer b) {
+	public static boolean operator_equals(Long a, Float b) {
 		return a.floatValue() == b.floatValue();
 	}
 
@@ -533,9 +546,9 @@ public final class FloatExtensions {
 	 * @return   <code>a==b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() == ($2).floatValue())", constantExpression=true)
-	public static boolean operator_equals(Float a, Float b) {
-		return a.floatValue() == b.floatValue();
+	@Inline(value = "(($1).longValue() == ($2).longValue())", constantExpression=true)
+	public static boolean operator_equals(Long a, Long b) {
+		return a.longValue() == b.longValue();
 	}
 
 	/**
@@ -546,22 +559,9 @@ public final class FloatExtensions {
 	 * @return   <code>a==b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() == ($2).floatValue())", constantExpression=true)
-	public static boolean operator_equals(Float a, Long b) {
-		return a.floatValue() == b.floatValue();
-	}
-
-	/**
-	 *The binary <code>equals</code> operator. This is the equivalent to the Java <code>==</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a==b</code>
-	 */
-	@Pure
-	@Inline(value = "(($1).floatValue() == ($2).floatValue())", constantExpression=true)
-	public static boolean operator_equals(Float a, Byte b) {
-		return a.floatValue() == b.floatValue();
+	@Inline(value = "(($1).longValue() == ($2).longValue())", constantExpression=true)
+	public static boolean operator_equals(Long a, Byte b) {
+		return a.longValue() == b.longValue();
 	}
 
 	/**
@@ -573,7 +573,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() == ($2).doubleValue())", constantExpression=true)
-	public static boolean operator_equals(Float a, Double b) {
+	public static boolean operator_equals(Long a, Double b) {
 		return a.doubleValue() == b.doubleValue();
 	}
 
@@ -585,9 +585,9 @@ public final class FloatExtensions {
 	 * @return   <code>a==b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() == ($2).floatValue())", constantExpression=true)
-	public static boolean operator_equals(Float a, AtomicInteger b) {
-		return a.floatValue() == b.floatValue();
+	@Inline(value = "(($1).longValue() == ($2).longValue())", constantExpression=true)
+	public static boolean operator_equals(Long a, AtomicInteger b) {
+		return a.longValue() == b.longValue();
 	}
 
 	/**
@@ -598,9 +598,9 @@ public final class FloatExtensions {
 	 * @return   <code>a==b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() == ($2).floatValue())", constantExpression=true)
-	public static boolean operator_equals(Float a, AtomicLong b) {
-		return a.floatValue() == b.floatValue();
+	@Inline(value = "(($1).longValue() == ($2).longValue())", constantExpression=true)
+	public static boolean operator_equals(Long a, AtomicLong b) {
+		return a.longValue() == b.longValue();
 	}
 
 	/**
@@ -611,9 +611,9 @@ public final class FloatExtensions {
 	 * @return   <code>a*b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() * $2)", constantExpression=true)
-	public static float operator_multiply(Float a, int b) {
-		return a.floatValue() * b;
+	@Inline(value = "(($1).longValue() * $2)", constantExpression=true)
+	public static long operator_multiply(Long a, int b) {
+		return a.longValue() * b;
 	}
 
 	/**
@@ -624,9 +624,9 @@ public final class FloatExtensions {
 	 * @return   <code>a*b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() * $2)", constantExpression=true)
-	public static float operator_multiply(Float a, long b) {
-		return a.floatValue() * b;
+	@Inline(value = "(($1).longValue() * $2)", constantExpression=true)
+	public static long operator_multiply(Long a, long b) {
+		return a.longValue() * b;
 	}
 
 	/**
@@ -637,9 +637,9 @@ public final class FloatExtensions {
 	 * @return   <code>a*b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() * $2)", constantExpression=true)
-	public static float operator_multiply(Float a, short b) {
-		return a.floatValue() * b;
+	@Inline(value = "(($1).longValue() * $2)", constantExpression=true)
+	public static long operator_multiply(Long a, short b) {
+		return a.longValue() * b;
 	}
 
 	/**
@@ -650,9 +650,9 @@ public final class FloatExtensions {
 	 * @return   <code>a*b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() * $2)", constantExpression=true)
-	public static float operator_multiply(Float a, byte b) {
-		return a.floatValue() * b;
+	@Inline(value = "(($1).longValue() * $2)", constantExpression=true)
+	public static long operator_multiply(Long a, byte b) {
+		return a.longValue() * b;
 	}
 
 	/**
@@ -664,7 +664,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() * $2)", constantExpression=true)
-	public static double operator_multiply(Float a, double b) {
+	public static double operator_multiply(Long a, double b) {
 		return a.doubleValue() * b;
 	}
 
@@ -677,7 +677,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() * $2)", constantExpression=true)
-	public static float operator_multiply(Float a, float b) {
+	public static float operator_multiply(Long a, float b) {
 		return a.floatValue() * b;
 	}
 
@@ -689,9 +689,22 @@ public final class FloatExtensions {
 	 * @return   <code>a*b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() * ($2).floatValue())", constantExpression=true)
-	public static float operator_multiply(Float a, Short b) {
-		return a.floatValue() * b.floatValue();
+	@Inline(value = "(($1).longValue() * ($2).longValue())", constantExpression=true)
+	public static long operator_multiply(Long a, Short b) {
+		return a.longValue() * b.longValue();
+	}
+
+	/**
+	 *The binary <code>multiply</code> operator. This is the equivalent to the Java <code>*</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a*b</code>
+	 */
+	@Pure
+	@Inline(value = "(($1).longValue() * ($2).longValue())", constantExpression=true)
+	public static long operator_multiply(Long a, Integer b) {
+		return a.longValue() * b.longValue();
 	}
 
 	/**
@@ -703,7 +716,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() * ($2).floatValue())", constantExpression=true)
-	public static float operator_multiply(Float a, Integer b) {
+	public static float operator_multiply(Long a, Float b) {
 		return a.floatValue() * b.floatValue();
 	}
 
@@ -715,9 +728,9 @@ public final class FloatExtensions {
 	 * @return   <code>a*b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() * ($2).floatValue())", constantExpression=true)
-	public static float operator_multiply(Float a, Float b) {
-		return a.floatValue() * b.floatValue();
+	@Inline(value = "(($1).longValue() * ($2).longValue())", constantExpression=true)
+	public static long operator_multiply(Long a, Long b) {
+		return a.longValue() * b.longValue();
 	}
 
 	/**
@@ -728,22 +741,9 @@ public final class FloatExtensions {
 	 * @return   <code>a*b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() * ($2).floatValue())", constantExpression=true)
-	public static float operator_multiply(Float a, Long b) {
-		return a.floatValue() * b.floatValue();
-	}
-
-	/**
-	 *The binary <code>multiply</code> operator. This is the equivalent to the Java <code>*</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a*b</code>
-	 */
-	@Pure
-	@Inline(value = "(($1).floatValue() * ($2).floatValue())", constantExpression=true)
-	public static float operator_multiply(Float a, Byte b) {
-		return a.floatValue() * b.floatValue();
+	@Inline(value = "(($1).longValue() * ($2).longValue())", constantExpression=true)
+	public static long operator_multiply(Long a, Byte b) {
+		return a.longValue() * b.longValue();
 	}
 
 	/**
@@ -755,7 +755,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() * ($2).doubleValue())", constantExpression=true)
-	public static double operator_multiply(Float a, Double b) {
+	public static double operator_multiply(Long a, Double b) {
 		return a.doubleValue() * b.doubleValue();
 	}
 
@@ -767,9 +767,9 @@ public final class FloatExtensions {
 	 * @return   <code>a*b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() * ($2).floatValue())", constantExpression=true)
-	public static float operator_multiply(Float a, AtomicInteger b) {
-		return a.floatValue() * b.floatValue();
+	@Inline(value = "(($1).longValue() * ($2).longValue())", constantExpression=true)
+	public static long operator_multiply(Long a, AtomicInteger b) {
+		return a.longValue() * b.longValue();
 	}
 
 	/**
@@ -780,9 +780,9 @@ public final class FloatExtensions {
 	 * @return   <code>a*b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() * ($2).floatValue())", constantExpression=true)
-	public static float operator_multiply(Float a, AtomicLong b) {
-		return a.floatValue() * b.floatValue();
+	@Inline(value = "(($1).longValue() * ($2).longValue())", constantExpression=true)
+	public static long operator_multiply(Long a, AtomicLong b) {
+		return a.longValue() * b.longValue();
 	}
 
 	/**
@@ -793,9 +793,9 @@ public final class FloatExtensions {
 	 * @return   <code>Math.pow(a, b)</code>
 	 */
 	@Pure
-	@Inline(value = "$3.pow(($1).floatValue(), $2)", imported = Math.class)
-	public static double operator_power(Float a, int b) {
-		return Math.pow(a.floatValue(), b);
+	@Inline(value = "$3.pow(($1).longValue(), $2)", imported = Math.class)
+	public static double operator_power(Long a, int b) {
+		return Math.pow(a.longValue(), b);
 	}
 
 	/**
@@ -806,9 +806,9 @@ public final class FloatExtensions {
 	 * @return   <code>Math.pow(a, b)</code>
 	 */
 	@Pure
-	@Inline(value = "$3.pow(($1).floatValue(), $2)", imported = Math.class)
-	public static double operator_power(Float a, long b) {
-		return Math.pow(a.floatValue(), b);
+	@Inline(value = "$3.pow(($1).longValue(), $2)", imported = Math.class)
+	public static double operator_power(Long a, long b) {
+		return Math.pow(a.longValue(), b);
 	}
 
 	/**
@@ -819,9 +819,9 @@ public final class FloatExtensions {
 	 * @return   <code>Math.pow(a, b)</code>
 	 */
 	@Pure
-	@Inline(value = "$3.pow(($1).floatValue(), $2)", imported = Math.class)
-	public static double operator_power(Float a, short b) {
-		return Math.pow(a.floatValue(), b);
+	@Inline(value = "$3.pow(($1).longValue(), $2)", imported = Math.class)
+	public static double operator_power(Long a, short b) {
+		return Math.pow(a.longValue(), b);
 	}
 
 	/**
@@ -832,9 +832,9 @@ public final class FloatExtensions {
 	 * @return   <code>Math.pow(a, b)</code>
 	 */
 	@Pure
-	@Inline(value = "$3.pow(($1).floatValue(), $2)", imported = Math.class)
-	public static double operator_power(Float a, byte b) {
-		return Math.pow(a.floatValue(), b);
+	@Inline(value = "$3.pow(($1).longValue(), $2)", imported = Math.class)
+	public static double operator_power(Long a, byte b) {
+		return Math.pow(a.longValue(), b);
 	}
 
 	/**
@@ -846,7 +846,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "$3.pow(($1).doubleValue(), $2)", imported = Math.class)
-	public static double operator_power(Float a, double b) {
+	public static double operator_power(Long a, double b) {
 		return Math.pow(a.doubleValue(), b);
 	}
 
@@ -859,7 +859,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "$3.pow(($1).floatValue(), $2)", imported = Math.class)
-	public static double operator_power(Float a, float b) {
+	public static double operator_power(Long a, float b) {
 		return Math.pow(a.floatValue(), b);
 	}
 
@@ -871,9 +871,22 @@ public final class FloatExtensions {
 	 * @return   <code>Math.pow(a, b)</code>
 	 */
 	@Pure
-	@Inline(value = "$3.pow(($1).floatValue(), ($2).floatValue())", imported = Math.class)
-	public static double operator_power(Float a, Short b) {
-		return Math.pow(a.floatValue(), b.floatValue());
+	@Inline(value = "$3.pow(($1).longValue(), ($2).longValue())", imported = Math.class)
+	public static double operator_power(Long a, Short b) {
+		return Math.pow(a.longValue(), b.longValue());
+	}
+
+	/**
+	 *The binary <code>power</code> operator. This is the equivalent to the Java's <code>Math.pow()</code> function.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>Math.pow(a, b)</code>
+	 */
+	@Pure
+	@Inline(value = "$3.pow(($1).longValue(), ($2).longValue())", imported = Math.class)
+	public static double operator_power(Long a, Integer b) {
+		return Math.pow(a.longValue(), b.longValue());
 	}
 
 	/**
@@ -885,7 +898,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "$3.pow(($1).floatValue(), ($2).floatValue())", imported = Math.class)
-	public static double operator_power(Float a, Integer b) {
+	public static double operator_power(Long a, Float b) {
 		return Math.pow(a.floatValue(), b.floatValue());
 	}
 
@@ -897,9 +910,9 @@ public final class FloatExtensions {
 	 * @return   <code>Math.pow(a, b)</code>
 	 */
 	@Pure
-	@Inline(value = "$3.pow(($1).floatValue(), ($2).floatValue())", imported = Math.class)
-	public static double operator_power(Float a, Float b) {
-		return Math.pow(a.floatValue(), b.floatValue());
+	@Inline(value = "$3.pow(($1).longValue(), ($2).longValue())", imported = Math.class)
+	public static double operator_power(Long a, Long b) {
+		return Math.pow(a.longValue(), b.longValue());
 	}
 
 	/**
@@ -910,22 +923,9 @@ public final class FloatExtensions {
 	 * @return   <code>Math.pow(a, b)</code>
 	 */
 	@Pure
-	@Inline(value = "$3.pow(($1).floatValue(), ($2).floatValue())", imported = Math.class)
-	public static double operator_power(Float a, Long b) {
-		return Math.pow(a.floatValue(), b.floatValue());
-	}
-
-	/**
-	 *The binary <code>power</code> operator. This is the equivalent to the Java's <code>Math.pow()</code> function.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>Math.pow(a, b)</code>
-	 */
-	@Pure
-	@Inline(value = "$3.pow(($1).floatValue(), ($2).floatValue())", imported = Math.class)
-	public static double operator_power(Float a, Byte b) {
-		return Math.pow(a.floatValue(), b.floatValue());
+	@Inline(value = "$3.pow(($1).longValue(), ($2).longValue())", imported = Math.class)
+	public static double operator_power(Long a, Byte b) {
+		return Math.pow(a.longValue(), b.longValue());
 	}
 
 	/**
@@ -937,7 +937,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "$3.pow(($1).doubleValue(), ($2).doubleValue())", imported = Math.class)
-	public static double operator_power(Float a, Double b) {
+	public static double operator_power(Long a, Double b) {
 		return Math.pow(a.doubleValue(), b.doubleValue());
 	}
 
@@ -949,9 +949,9 @@ public final class FloatExtensions {
 	 * @return   <code>Math.pow(a, b)</code>
 	 */
 	@Pure
-	@Inline(value = "$3.pow(($1).floatValue(), ($2).floatValue())", imported = Math.class)
-	public static double operator_power(Float a, AtomicInteger b) {
-		return Math.pow(a.floatValue(), b.floatValue());
+	@Inline(value = "$3.pow(($1).longValue(), ($2).longValue())", imported = Math.class)
+	public static double operator_power(Long a, AtomicInteger b) {
+		return Math.pow(a.longValue(), b.longValue());
 	}
 
 	/**
@@ -962,9 +962,9 @@ public final class FloatExtensions {
 	 * @return   <code>Math.pow(a, b)</code>
 	 */
 	@Pure
-	@Inline(value = "$3.pow(($1).floatValue(), ($2).floatValue())", imported = Math.class)
-	public static double operator_power(Float a, AtomicLong b) {
-		return Math.pow(a.floatValue(), b.floatValue());
+	@Inline(value = "$3.pow(($1).longValue(), ($2).longValue())", imported = Math.class)
+	public static double operator_power(Long a, AtomicLong b) {
+		return Math.pow(a.longValue(), b.longValue());
 	}
 
 	/**
@@ -975,9 +975,9 @@ public final class FloatExtensions {
 	 * @return   <code>a&lt;b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() < $2)", constantExpression=true)
-	public static boolean operator_lessThan(Float a, int b) {
-		return a.floatValue() < b;
+	@Inline(value = "(($1).longValue() < $2)", constantExpression=true)
+	public static boolean operator_lessThan(Long a, int b) {
+		return a.longValue() < b;
 	}
 
 	/**
@@ -988,9 +988,9 @@ public final class FloatExtensions {
 	 * @return   <code>a&lt;b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() < $2)", constantExpression=true)
-	public static boolean operator_lessThan(Float a, long b) {
-		return a.floatValue() < b;
+	@Inline(value = "(($1).longValue() < $2)", constantExpression=true)
+	public static boolean operator_lessThan(Long a, long b) {
+		return a.longValue() < b;
 	}
 
 	/**
@@ -1001,9 +1001,9 @@ public final class FloatExtensions {
 	 * @return   <code>a&lt;b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() < $2)", constantExpression=true)
-	public static boolean operator_lessThan(Float a, short b) {
-		return a.floatValue() < b;
+	@Inline(value = "(($1).longValue() < $2)", constantExpression=true)
+	public static boolean operator_lessThan(Long a, short b) {
+		return a.longValue() < b;
 	}
 
 	/**
@@ -1014,9 +1014,9 @@ public final class FloatExtensions {
 	 * @return   <code>a&lt;b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() < $2)", constantExpression=true)
-	public static boolean operator_lessThan(Float a, byte b) {
-		return a.floatValue() < b;
+	@Inline(value = "(($1).longValue() < $2)", constantExpression=true)
+	public static boolean operator_lessThan(Long a, byte b) {
+		return a.longValue() < b;
 	}
 
 	/**
@@ -1028,7 +1028,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() < $2)", constantExpression=true)
-	public static boolean operator_lessThan(Float a, double b) {
+	public static boolean operator_lessThan(Long a, double b) {
 		return a.doubleValue() < b;
 	}
 
@@ -1041,7 +1041,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() < $2)", constantExpression=true)
-	public static boolean operator_lessThan(Float a, float b) {
+	public static boolean operator_lessThan(Long a, float b) {
 		return a.floatValue() < b;
 	}
 
@@ -1053,9 +1053,22 @@ public final class FloatExtensions {
 	 * @return   <code>a&lt;b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() < ($2).floatValue())", constantExpression=true)
-	public static boolean operator_lessThan(Float a, Short b) {
-		return a.floatValue() < b.floatValue();
+	@Inline(value = "(($1).longValue() < ($2).longValue())", constantExpression=true)
+	public static boolean operator_lessThan(Long a, Short b) {
+		return a.longValue() < b.longValue();
+	}
+
+	/**
+	 *The binary <code>lessThan</code> operator. This is the equivalent to the Java <code>&lt;</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a&lt;b</code>
+	 */
+	@Pure
+	@Inline(value = "(($1).longValue() < ($2).longValue())", constantExpression=true)
+	public static boolean operator_lessThan(Long a, Integer b) {
+		return a.longValue() < b.longValue();
 	}
 
 	/**
@@ -1067,7 +1080,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() < ($2).floatValue())", constantExpression=true)
-	public static boolean operator_lessThan(Float a, Integer b) {
+	public static boolean operator_lessThan(Long a, Float b) {
 		return a.floatValue() < b.floatValue();
 	}
 
@@ -1079,9 +1092,9 @@ public final class FloatExtensions {
 	 * @return   <code>a&lt;b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() < ($2).floatValue())", constantExpression=true)
-	public static boolean operator_lessThan(Float a, Float b) {
-		return a.floatValue() < b.floatValue();
+	@Inline(value = "(($1).longValue() < ($2).longValue())", constantExpression=true)
+	public static boolean operator_lessThan(Long a, Long b) {
+		return a.longValue() < b.longValue();
 	}
 
 	/**
@@ -1092,22 +1105,9 @@ public final class FloatExtensions {
 	 * @return   <code>a&lt;b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() < ($2).floatValue())", constantExpression=true)
-	public static boolean operator_lessThan(Float a, Long b) {
-		return a.floatValue() < b.floatValue();
-	}
-
-	/**
-	 *The binary <code>lessThan</code> operator. This is the equivalent to the Java <code>&lt;</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a&lt;b</code>
-	 */
-	@Pure
-	@Inline(value = "(($1).floatValue() < ($2).floatValue())", constantExpression=true)
-	public static boolean operator_lessThan(Float a, Byte b) {
-		return a.floatValue() < b.floatValue();
+	@Inline(value = "(($1).longValue() < ($2).longValue())", constantExpression=true)
+	public static boolean operator_lessThan(Long a, Byte b) {
+		return a.longValue() < b.longValue();
 	}
 
 	/**
@@ -1119,7 +1119,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() < ($2).doubleValue())", constantExpression=true)
-	public static boolean operator_lessThan(Float a, Double b) {
+	public static boolean operator_lessThan(Long a, Double b) {
 		return a.doubleValue() < b.doubleValue();
 	}
 
@@ -1131,9 +1131,9 @@ public final class FloatExtensions {
 	 * @return   <code>a&lt;b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() < ($2).floatValue())", constantExpression=true)
-	public static boolean operator_lessThan(Float a, AtomicInteger b) {
-		return a.floatValue() < b.floatValue();
+	@Inline(value = "(($1).longValue() < ($2).longValue())", constantExpression=true)
+	public static boolean operator_lessThan(Long a, AtomicInteger b) {
+		return a.longValue() < b.longValue();
 	}
 
 	/**
@@ -1144,9 +1144,9 @@ public final class FloatExtensions {
 	 * @return   <code>a&lt;b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() < ($2).floatValue())", constantExpression=true)
-	public static boolean operator_lessThan(Float a, AtomicLong b) {
-		return a.floatValue() < b.floatValue();
+	@Inline(value = "(($1).longValue() < ($2).longValue())", constantExpression=true)
+	public static boolean operator_lessThan(Long a, AtomicLong b) {
+		return a.longValue() < b.longValue();
 	}
 
 	/**
@@ -1157,23 +1157,9 @@ public final class FloatExtensions {
 	 * @return   <code>a&gt;b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() > $2)", constantExpression=true)
-	public static boolean operator_greaterThan(Float a, int b) {
-		return a.floatValue() > b;
-	}
-
-
-	/**
-	 *The binary <code>greaterThan</code> operator. This is the equivalent to the Java <code>&gt;</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a&gt;b</code>
-	 */
-	@Pure
-	@Inline(value = "(($1).floatValue() > $2)", constantExpression=true)
-	public static boolean operator_greaterThan(Float a, long b) {
-		return a.floatValue() > b;
+	@Inline(value = "(($1).longValue() > $2)", constantExpression=true)
+	public static boolean operator_greaterThan(Long a, int b) {
+		return a.longValue() > b;
 	}
 
 
@@ -1185,9 +1171,9 @@ public final class FloatExtensions {
 	 * @return   <code>a&gt;b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() > $2)", constantExpression=true)
-	public static boolean operator_greaterThan(Float a, short b) {
-		return a.floatValue() > b;
+	@Inline(value = "(($1).longValue() > $2)", constantExpression=true)
+	public static boolean operator_greaterThan(Long a, long b) {
+		return a.longValue() > b;
 	}
 
 
@@ -1199,9 +1185,23 @@ public final class FloatExtensions {
 	 * @return   <code>a&gt;b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() > $2)", constantExpression=true)
-	public static boolean operator_greaterThan(Float a, byte b) {
-		return a.floatValue() > b;
+	@Inline(value = "(($1).longValue() > $2)", constantExpression=true)
+	public static boolean operator_greaterThan(Long a, short b) {
+		return a.longValue() > b;
+	}
+
+
+	/**
+	 *The binary <code>greaterThan</code> operator. This is the equivalent to the Java <code>&gt;</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a&gt;b</code>
+	 */
+	@Pure
+	@Inline(value = "(($1).longValue() > $2)", constantExpression=true)
+	public static boolean operator_greaterThan(Long a, byte b) {
+		return a.longValue() > b;
 	}
 
 
@@ -1214,7 +1214,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() > $2)", constantExpression=true)
-	public static boolean operator_greaterThan(Float a, double b) {
+	public static boolean operator_greaterThan(Long a, double b) {
 		return a.doubleValue() > b;
 	}
 
@@ -1228,7 +1228,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() > $2)", constantExpression=true)
-	public static boolean operator_greaterThan(Float a, float b) {
+	public static boolean operator_greaterThan(Long a, float b) {
 		return a.floatValue() > b;
 	}
 
@@ -1241,9 +1241,23 @@ public final class FloatExtensions {
 	 * @return   <code>a&gt;b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() > ($2).floatValue())", constantExpression=true)
-	public static boolean operator_greaterThan(Float a, Short b) {
-		return a.floatValue() > b.floatValue();
+	@Inline(value = "(($1).longValue() > ($2).longValue())", constantExpression=true)
+	public static boolean operator_greaterThan(Long a, Short b) {
+		return a.longValue() > b.longValue();
+	}
+
+
+	/**
+	 *The binary <code>greaterThan</code> operator. This is the equivalent to the Java <code>&gt;</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a&gt;b</code>
+	 */
+	@Pure
+	@Inline(value = "(($1).longValue() > ($2).longValue())", constantExpression=true)
+	public static boolean operator_greaterThan(Long a, Integer b) {
+		return a.longValue() > b.longValue();
 	}
 
 
@@ -1256,7 +1270,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() > ($2).floatValue())", constantExpression=true)
-	public static boolean operator_greaterThan(Float a, Integer b) {
+	public static boolean operator_greaterThan(Long a, Float b) {
 		return a.floatValue() > b.floatValue();
 	}
 
@@ -1269,9 +1283,9 @@ public final class FloatExtensions {
 	 * @return   <code>a&gt;b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() > ($2).floatValue())", constantExpression=true)
-	public static boolean operator_greaterThan(Float a, Float b) {
-		return a.floatValue() > b.floatValue();
+	@Inline(value = "(($1).longValue() > ($2).longValue())", constantExpression=true)
+	public static boolean operator_greaterThan(Long a, Long b) {
+		return a.longValue() > b.longValue();
 	}
 
 
@@ -1283,23 +1297,9 @@ public final class FloatExtensions {
 	 * @return   <code>a&gt;b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() > ($2).floatValue())", constantExpression=true)
-	public static boolean operator_greaterThan(Float a, Long b) {
-		return a.floatValue() > b.floatValue();
-	}
-
-
-	/**
-	 *The binary <code>greaterThan</code> operator. This is the equivalent to the Java <code>&gt;</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a&gt;b</code>
-	 */
-	@Pure
-	@Inline(value = "(($1).floatValue() > ($2).floatValue())", constantExpression=true)
-	public static boolean operator_greaterThan(Float a, Byte b) {
-		return a.floatValue() > b.floatValue();
+	@Inline(value = "(($1).longValue() > ($2).longValue())", constantExpression=true)
+	public static boolean operator_greaterThan(Long a, Byte b) {
+		return a.longValue() > b.longValue();
 	}
 
 
@@ -1312,7 +1312,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() > ($2).doubleValue())", constantExpression=true)
-	public static boolean operator_greaterThan(Float a, Double b) {
+	public static boolean operator_greaterThan(Long a, Double b) {
 		return a.doubleValue() > b.doubleValue();
 	}
 
@@ -1325,9 +1325,9 @@ public final class FloatExtensions {
 	 * @return   <code>a&gt;b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() > ($2).floatValue())", constantExpression=true)
-	public static boolean operator_greaterThan(Float a, AtomicInteger b) {
-		return a.floatValue() > b.floatValue();
+	@Inline(value = "(($1).longValue() > ($2).longValue())", constantExpression=true)
+	public static boolean operator_greaterThan(Long a, AtomicInteger b) {
+		return a.longValue() > b.longValue();
 	}
 
 
@@ -1339,9 +1339,9 @@ public final class FloatExtensions {
 	 * @return   <code>a&gt;b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() > ($2).floatValue())", constantExpression=true)
-	public static boolean operator_greaterThan(Float a, AtomicLong b) {
-		return a.floatValue() > b.floatValue();
+	@Inline(value = "(($1).longValue() > ($2).longValue())", constantExpression=true)
+	public static boolean operator_greaterThan(Long a, AtomicLong b) {
+		return a.longValue() > b.longValue();
 	}
 
 
@@ -1353,9 +1353,9 @@ public final class FloatExtensions {
 	 * @return   <code>a&lt;=b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() <= $2)", constantExpression=true)
-	public static boolean operator_lessEqualsThan(Float a, int b) {
-		return a.floatValue() <= b;
+	@Inline(value = "(($1).longValue() <= $2)", constantExpression=true)
+	public static boolean operator_lessEqualsThan(Long a, int b) {
+		return a.longValue() <= b;
 	}
 
 	/**
@@ -1366,9 +1366,9 @@ public final class FloatExtensions {
 	 * @return   <code>a&lt;=b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() <= $2)", constantExpression=true)
-	public static boolean operator_lessEqualsThan(Float a, long b) {
-		return a.floatValue() <= b;
+	@Inline(value = "(($1).longValue() <= $2)", constantExpression=true)
+	public static boolean operator_lessEqualsThan(Long a, long b) {
+		return a.longValue() <= b;
 	}
 
 	/**
@@ -1379,9 +1379,9 @@ public final class FloatExtensions {
 	 * @return   <code>a&lt;=b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() <= $2)", constantExpression=true)
-	public static boolean operator_lessEqualsThan(Float a, short b) {
-		return a.floatValue() <= b;
+	@Inline(value = "(($1).longValue() <= $2)", constantExpression=true)
+	public static boolean operator_lessEqualsThan(Long a, short b) {
+		return a.longValue() <= b;
 	}
 
 	/**
@@ -1392,9 +1392,9 @@ public final class FloatExtensions {
 	 * @return   <code>a&lt;=b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() <= $2)", constantExpression=true)
-	public static boolean operator_lessEqualsThan(Float a, byte b) {
-		return a.floatValue() <= b;
+	@Inline(value = "(($1).longValue() <= $2)", constantExpression=true)
+	public static boolean operator_lessEqualsThan(Long a, byte b) {
+		return a.longValue() <= b;
 	}
 
 	/**
@@ -1406,7 +1406,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() <= $2)", constantExpression=true)
-	public static boolean operator_lessEqualsThan(Float a, double b) {
+	public static boolean operator_lessEqualsThan(Long a, double b) {
 		return a.doubleValue() <= b;
 	}
 
@@ -1419,7 +1419,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() <= $2)", constantExpression=true)
-	public static boolean operator_lessEqualsThan(Float a, float b) {
+	public static boolean operator_lessEqualsThan(Long a, float b) {
 		return a.floatValue() <= b;
 	}
 
@@ -1431,9 +1431,22 @@ public final class FloatExtensions {
 	 * @return   <code>a&lt;=b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() <= ($2).floatValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(Float a, Short b) {
-		return a.floatValue() <= b.floatValue();
+	@Inline(value = "(($1).longValue() <= ($2).longValue())", constantExpression=true)
+	public static boolean operator_lessEqualsThan(Long a, Short b) {
+		return a.longValue() <= b.longValue();
+	}
+
+	/**
+	 *The binary <code>lessEqualsThan</code> operator. This is the equivalent to the Java <code>&lt;=</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a&lt;=b</code>
+	 */
+	@Pure
+	@Inline(value = "(($1).longValue() <= ($2).longValue())", constantExpression=true)
+	public static boolean operator_lessEqualsThan(Long a, Integer b) {
+		return a.longValue() <= b.longValue();
 	}
 
 	/**
@@ -1445,7 +1458,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() <= ($2).floatValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(Float a, Integer b) {
+	public static boolean operator_lessEqualsThan(Long a, Float b) {
 		return a.floatValue() <= b.floatValue();
 	}
 
@@ -1457,9 +1470,9 @@ public final class FloatExtensions {
 	 * @return   <code>a&lt;=b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() <= ($2).floatValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(Float a, Float b) {
-		return a.floatValue() <= b.floatValue();
+	@Inline(value = "(($1).longValue() <= ($2).longValue())", constantExpression=true)
+	public static boolean operator_lessEqualsThan(Long a, Long b) {
+		return a.longValue() <= b.longValue();
 	}
 
 	/**
@@ -1470,22 +1483,9 @@ public final class FloatExtensions {
 	 * @return   <code>a&lt;=b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() <= ($2).floatValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(Float a, Long b) {
-		return a.floatValue() <= b.floatValue();
-	}
-
-	/**
-	 *The binary <code>lessEqualsThan</code> operator. This is the equivalent to the Java <code>&lt;=</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a&lt;=b</code>
-	 */
-	@Pure
-	@Inline(value = "(($1).floatValue() <= ($2).floatValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(Float a, Byte b) {
-		return a.floatValue() <= b.floatValue();
+	@Inline(value = "(($1).longValue() <= ($2).longValue())", constantExpression=true)
+	public static boolean operator_lessEqualsThan(Long a, Byte b) {
+		return a.longValue() <= b.longValue();
 	}
 
 	/**
@@ -1497,7 +1497,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() <= ($2).doubleValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(Float a, Double b) {
+	public static boolean operator_lessEqualsThan(Long a, Double b) {
 		return a.doubleValue() <= b.doubleValue();
 	}
 
@@ -1509,9 +1509,9 @@ public final class FloatExtensions {
 	 * @return   <code>a&lt;=b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() <= ($2).floatValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(Float a, AtomicInteger b) {
-		return a.floatValue() <= b.floatValue();
+	@Inline(value = "(($1).longValue() <= ($2).longValue())", constantExpression=true)
+	public static boolean operator_lessEqualsThan(Long a, AtomicInteger b) {
+		return a.longValue() <= b.longValue();
 	}
 
 	/**
@@ -1522,9 +1522,9 @@ public final class FloatExtensions {
 	 * @return   <code>a&lt;=b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() <= ($2).floatValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(Float a, AtomicLong b) {
-		return a.floatValue() <= b.floatValue();
+	@Inline(value = "(($1).longValue() <= ($2).longValue())", constantExpression=true)
+	public static boolean operator_lessEqualsThan(Long a, AtomicLong b) {
+		return a.longValue() <= b.longValue();
 	}
 
 	/**
@@ -1535,9 +1535,9 @@ public final class FloatExtensions {
 	 * @return   <code>a%b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() % $2)", constantExpression=true)
-	public static float operator_modulo(Float a, int b) {
-		return a.floatValue() % b;
+	@Inline(value = "(($1).longValue() % $2)", constantExpression=true)
+	public static long operator_modulo(Long a, int b) {
+		return a.longValue() % b;
 	}
 
 	/**
@@ -1548,9 +1548,9 @@ public final class FloatExtensions {
 	 * @return   <code>a%b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() % $2)", constantExpression=true)
-	public static float operator_modulo(Float a, long b) {
-		return a.floatValue() % b;
+	@Inline(value = "(($1).longValue() % $2)", constantExpression=true)
+	public static long operator_modulo(Long a, long b) {
+		return a.longValue() % b;
 	}
 
 	/**
@@ -1561,9 +1561,9 @@ public final class FloatExtensions {
 	 * @return   <code>a%b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() % $2)", constantExpression=true)
-	public static float operator_modulo(Float a, short b) {
-		return a.floatValue() % b;
+	@Inline(value = "(($1).longValue() % $2)", constantExpression=true)
+	public static long operator_modulo(Long a, short b) {
+		return a.longValue() % b;
 	}
 
 	/**
@@ -1574,9 +1574,9 @@ public final class FloatExtensions {
 	 * @return   <code>a%b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() % $2)", constantExpression=true)
-	public static float operator_modulo(Float a, byte b) {
-		return a.floatValue() % b;
+	@Inline(value = "(($1).longValue() % $2)", constantExpression=true)
+	public static long operator_modulo(Long a, byte b) {
+		return a.longValue() % b;
 	}
 
 	/**
@@ -1588,7 +1588,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() % $2)", constantExpression=true)
-	public static double operator_modulo(Float a, double b) {
+	public static double operator_modulo(Long a, double b) {
 		return a.doubleValue() % b;
 	}
 
@@ -1601,7 +1601,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() % $2)", constantExpression=true)
-	public static float operator_modulo(Float a, float b) {
+	public static float operator_modulo(Long a, float b) {
 		return a.floatValue() % b;
 	}
 
@@ -1613,9 +1613,22 @@ public final class FloatExtensions {
 	 * @return   <code>a%b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() % ($2).floatValue())", constantExpression=true)
-	public static float operator_modulo(Float a, Short b) {
-		return a.floatValue() % b.floatValue();
+	@Inline(value = "(($1).longValue() % ($2).longValue())", constantExpression=true)
+	public static long operator_modulo(Long a, Short b) {
+		return a.longValue() % b.longValue();
+	}
+
+	/**
+	 *The binary <code>modulo</code> operator. This is the equivalent to the Java <code>%</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a%b</code>
+	 */
+	@Pure
+	@Inline(value = "(($1).longValue() % ($2).longValue())", constantExpression=true)
+	public static long operator_modulo(Long a, Integer b) {
+		return a.longValue() % b.longValue();
 	}
 
 	/**
@@ -1627,7 +1640,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() % ($2).floatValue())", constantExpression=true)
-	public static float operator_modulo(Float a, Integer b) {
+	public static float operator_modulo(Long a, Float b) {
 		return a.floatValue() % b.floatValue();
 	}
 
@@ -1639,9 +1652,9 @@ public final class FloatExtensions {
 	 * @return   <code>a%b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() % ($2).floatValue())", constantExpression=true)
-	public static float operator_modulo(Float a, Float b) {
-		return a.floatValue() % b.floatValue();
+	@Inline(value = "(($1).longValue() % ($2).longValue())", constantExpression=true)
+	public static long operator_modulo(Long a, Long b) {
+		return a.longValue() % b.longValue();
 	}
 
 	/**
@@ -1652,22 +1665,9 @@ public final class FloatExtensions {
 	 * @return   <code>a%b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() % ($2).floatValue())", constantExpression=true)
-	public static float operator_modulo(Float a, Long b) {
-		return a.floatValue() % b.floatValue();
-	}
-
-	/**
-	 *The binary <code>modulo</code> operator. This is the equivalent to the Java <code>%</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a%b</code>
-	 */
-	@Pure
-	@Inline(value = "(($1).floatValue() % ($2).floatValue())", constantExpression=true)
-	public static float operator_modulo(Float a, Byte b) {
-		return a.floatValue() % b.floatValue();
+	@Inline(value = "(($1).longValue() % ($2).longValue())", constantExpression=true)
+	public static long operator_modulo(Long a, Byte b) {
+		return a.longValue() % b.longValue();
 	}
 
 	/**
@@ -1679,7 +1679,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() % ($2).doubleValue())", constantExpression=true)
-	public static double operator_modulo(Float a, Double b) {
+	public static double operator_modulo(Long a, Double b) {
 		return a.doubleValue() % b.doubleValue();
 	}
 
@@ -1691,9 +1691,9 @@ public final class FloatExtensions {
 	 * @return   <code>a%b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() % ($2).floatValue())", constantExpression=true)
-	public static float operator_modulo(Float a, AtomicInteger b) {
-		return a.floatValue() % b.floatValue();
+	@Inline(value = "(($1).longValue() % ($2).longValue())", constantExpression=true)
+	public static long operator_modulo(Long a, AtomicInteger b) {
+		return a.longValue() % b.longValue();
 	}
 
 	/**
@@ -1704,9 +1704,9 @@ public final class FloatExtensions {
 	 * @return   <code>a%b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() % ($2).floatValue())", constantExpression=true)
-	public static float operator_modulo(Float a, AtomicLong b) {
-		return a.floatValue() % b.floatValue();
+	@Inline(value = "(($1).longValue() % ($2).longValue())", constantExpression=true)
+	public static long operator_modulo(Long a, AtomicLong b) {
+		return a.longValue() % b.longValue();
 	}
 
 	/**
@@ -1717,9 +1717,9 @@ public final class FloatExtensions {
 	 * @return   <code>a&gt;=b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() >= $2)", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(Float a, int b) {
-		return a.floatValue() >= b;
+	@Inline(value = "(($1).longValue() >= $2)", constantExpression=true)
+	public static boolean operator_greaterEqualsThan(Long a, int b) {
+		return a.longValue() >= b;
 	}
 
 	/**
@@ -1730,9 +1730,9 @@ public final class FloatExtensions {
 	 * @return   <code>a&gt;=b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() >= $2)", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(Float a, long b) {
-		return a.floatValue() >= b;
+	@Inline(value = "(($1).longValue() >= $2)", constantExpression=true)
+	public static boolean operator_greaterEqualsThan(Long a, long b) {
+		return a.longValue() >= b;
 	}
 
 	/**
@@ -1743,9 +1743,9 @@ public final class FloatExtensions {
 	 * @return   <code>a&gt;=b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() >= $2)", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(Float a, short b) {
-		return a.floatValue() >= b;
+	@Inline(value = "(($1).longValue() >= $2)", constantExpression=true)
+	public static boolean operator_greaterEqualsThan(Long a, short b) {
+		return a.longValue() >= b;
 	}
 
 	/**
@@ -1756,9 +1756,9 @@ public final class FloatExtensions {
 	 * @return   <code>a&gt;=b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() >= $2)", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(Float a, byte b) {
-		return a.floatValue() >= b;
+	@Inline(value = "(($1).longValue() >= $2)", constantExpression=true)
+	public static boolean operator_greaterEqualsThan(Long a, byte b) {
+		return a.longValue() >= b;
 	}
 
 	/**
@@ -1770,7 +1770,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() >= $2)", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(Float a, double b) {
+	public static boolean operator_greaterEqualsThan(Long a, double b) {
 		return a.doubleValue() >= b;
 	}
 
@@ -1783,7 +1783,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() >= $2)", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(Float a, float b) {
+	public static boolean operator_greaterEqualsThan(Long a, float b) {
 		return a.floatValue() >= b;
 	}
 
@@ -1795,9 +1795,22 @@ public final class FloatExtensions {
 	 * @return   <code>a&gt;=b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() >= ($2).floatValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(Float a, Short b) {
-		return a.floatValue() >= b.floatValue();
+	@Inline(value = "(($1).longValue() >= ($2).longValue())", constantExpression=true)
+	public static boolean operator_greaterEqualsThan(Long a, Short b) {
+		return a.longValue() >= b.longValue();
+	}
+
+	/**
+	 *The binary <code>greaterEqualsThan</code> operator. This is the equivalent to the Java <code>&gt;=</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a&gt;=b</code>
+	 */
+	@Pure
+	@Inline(value = "(($1).longValue() >= ($2).longValue())", constantExpression=true)
+	public static boolean operator_greaterEqualsThan(Long a, Integer b) {
+		return a.longValue() >= b.longValue();
 	}
 
 	/**
@@ -1809,7 +1822,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() >= ($2).floatValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(Float a, Integer b) {
+	public static boolean operator_greaterEqualsThan(Long a, Float b) {
 		return a.floatValue() >= b.floatValue();
 	}
 
@@ -1821,9 +1834,9 @@ public final class FloatExtensions {
 	 * @return   <code>a&gt;=b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() >= ($2).floatValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(Float a, Float b) {
-		return a.floatValue() >= b.floatValue();
+	@Inline(value = "(($1).longValue() >= ($2).longValue())", constantExpression=true)
+	public static boolean operator_greaterEqualsThan(Long a, Long b) {
+		return a.longValue() >= b.longValue();
 	}
 
 	/**
@@ -1834,22 +1847,9 @@ public final class FloatExtensions {
 	 * @return   <code>a&gt;=b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() >= ($2).floatValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(Float a, Long b) {
-		return a.floatValue() >= b.floatValue();
-	}
-
-	/**
-	 *The binary <code>greaterEqualsThan</code> operator. This is the equivalent to the Java <code>&gt;=</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a&gt;=b</code>
-	 */
-	@Pure
-	@Inline(value = "(($1).floatValue() >= ($2).floatValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(Float a, Byte b) {
-		return a.floatValue() >= b.floatValue();
+	@Inline(value = "(($1).longValue() >= ($2).longValue())", constantExpression=true)
+	public static boolean operator_greaterEqualsThan(Long a, Byte b) {
+		return a.longValue() >= b.longValue();
 	}
 
 	/**
@@ -1861,7 +1861,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() >= ($2).doubleValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(Float a, Double b) {
+	public static boolean operator_greaterEqualsThan(Long a, Double b) {
 		return a.doubleValue() >= b.doubleValue();
 	}
 
@@ -1873,9 +1873,9 @@ public final class FloatExtensions {
 	 * @return   <code>a&gt;=b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() >= ($2).floatValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(Float a, AtomicInteger b) {
-		return a.floatValue() >= b.floatValue();
+	@Inline(value = "(($1).longValue() >= ($2).longValue())", constantExpression=true)
+	public static boolean operator_greaterEqualsThan(Long a, AtomicInteger b) {
+		return a.longValue() >= b.longValue();
 	}
 
 	/**
@@ -1886,9 +1886,9 @@ public final class FloatExtensions {
 	 * @return   <code>a&gt;=b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() >= ($2).floatValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(Float a, AtomicLong b) {
-		return a.floatValue() >= b.floatValue();
+	@Inline(value = "(($1).longValue() >= ($2).longValue())", constantExpression=true)
+	public static boolean operator_greaterEqualsThan(Long a, AtomicLong b) {
+		return a.longValue() >= b.longValue();
 	}
 
 	/**
@@ -1899,9 +1899,9 @@ public final class FloatExtensions {
 	 * @return   <code>a+b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() + $2)", constantExpression=true)
-	public static float operator_plus(Float a, int b) {
-		return a.floatValue() + b;
+	@Inline(value = "(($1).longValue() + $2)", constantExpression=true)
+	public static long operator_plus(Long a, int b) {
+		return a.longValue() + b;
 	}
 
 	/**
@@ -1912,9 +1912,9 @@ public final class FloatExtensions {
 	 * @return   <code>a+b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() + $2)", constantExpression=true)
-	public static float operator_plus(Float a, long b) {
-		return a.floatValue() + b;
+	@Inline(value = "(($1).longValue() + $2)", constantExpression=true)
+	public static long operator_plus(Long a, long b) {
+		return a.longValue() + b;
 	}
 
 	/**
@@ -1925,9 +1925,9 @@ public final class FloatExtensions {
 	 * @return   <code>a+b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() + $2)", constantExpression=true)
-	public static float operator_plus(Float a, short b) {
-		return a.floatValue() + b;
+	@Inline(value = "(($1).longValue() + $2)", constantExpression=true)
+	public static long operator_plus(Long a, short b) {
+		return a.longValue() + b;
 	}
 
 	/**
@@ -1938,9 +1938,9 @@ public final class FloatExtensions {
 	 * @return   <code>a+b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() + $2)", constantExpression=true)
-	public static float operator_plus(Float a, byte b) {
-		return a.floatValue() + b;
+	@Inline(value = "(($1).longValue() + $2)", constantExpression=true)
+	public static long operator_plus(Long a, byte b) {
+		return a.longValue() + b;
 	}
 
 	/**
@@ -1952,7 +1952,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() + $2)", constantExpression=true)
-	public static double operator_plus(Float a, double b) {
+	public static double operator_plus(Long a, double b) {
 		return a.doubleValue() + b;
 	}
 
@@ -1965,7 +1965,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() + $2)", constantExpression=true)
-	public static float operator_plus(Float a, float b) {
+	public static float operator_plus(Long a, float b) {
 		return a.floatValue() + b;
 	}
 
@@ -1977,9 +1977,22 @@ public final class FloatExtensions {
 	 * @return   <code>a+b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() + ($2).floatValue())", constantExpression=true)
-	public static float operator_plus(Float a, Short b) {
-		return a.floatValue() + b.floatValue();
+	@Inline(value = "(($1).longValue() + ($2).longValue())", constantExpression=true)
+	public static long operator_plus(Long a, Short b) {
+		return a.longValue() + b.longValue();
+	}
+
+	/**
+	 *The binary <code>plus</code> operator. This is the equivalent to the Java <code>+</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a+b</code>
+	 */
+	@Pure
+	@Inline(value = "(($1).longValue() + ($2).longValue())", constantExpression=true)
+	public static long operator_plus(Long a, Integer b) {
+		return a.longValue() + b.longValue();
 	}
 
 	/**
@@ -1991,7 +2004,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() + ($2).floatValue())", constantExpression=true)
-	public static float operator_plus(Float a, Integer b) {
+	public static float operator_plus(Long a, Float b) {
 		return a.floatValue() + b.floatValue();
 	}
 
@@ -2003,9 +2016,9 @@ public final class FloatExtensions {
 	 * @return   <code>a+b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() + ($2).floatValue())", constantExpression=true)
-	public static float operator_plus(Float a, Float b) {
-		return a.floatValue() + b.floatValue();
+	@Inline(value = "(($1).longValue() + ($2).longValue())", constantExpression=true)
+	public static long operator_plus(Long a, Long b) {
+		return a.longValue() + b.longValue();
 	}
 
 	/**
@@ -2016,22 +2029,9 @@ public final class FloatExtensions {
 	 * @return   <code>a+b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() + ($2).floatValue())", constantExpression=true)
-	public static float operator_plus(Float a, Long b) {
-		return a.floatValue() + b.floatValue();
-	}
-
-	/**
-	 *The binary <code>plus</code> operator. This is the equivalent to the Java <code>+</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a+b</code>
-	 */
-	@Pure
-	@Inline(value = "(($1).floatValue() + ($2).floatValue())", constantExpression=true)
-	public static float operator_plus(Float a, Byte b) {
-		return a.floatValue() + b.floatValue();
+	@Inline(value = "(($1).longValue() + ($2).longValue())", constantExpression=true)
+	public static long operator_plus(Long a, Byte b) {
+		return a.longValue() + b.longValue();
 	}
 
 	/**
@@ -2043,7 +2043,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() + ($2).doubleValue())", constantExpression=true)
-	public static double operator_plus(Float a, Double b) {
+	public static double operator_plus(Long a, Double b) {
 		return a.doubleValue() + b.doubleValue();
 	}
 
@@ -2055,9 +2055,9 @@ public final class FloatExtensions {
 	 * @return   <code>a+b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() + ($2).floatValue())", constantExpression=true)
-	public static float operator_plus(Float a, AtomicInteger b) {
-		return a.floatValue() + b.floatValue();
+	@Inline(value = "(($1).longValue() + ($2).longValue())", constantExpression=true)
+	public static long operator_plus(Long a, AtomicInteger b) {
+		return a.longValue() + b.longValue();
 	}
 
 	/**
@@ -2068,9 +2068,9 @@ public final class FloatExtensions {
 	 * @return   <code>a+b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() + ($2).floatValue())", constantExpression=true)
-	public static float operator_plus(Float a, AtomicLong b) {
-		return a.floatValue() + b.floatValue();
+	@Inline(value = "(($1).longValue() + ($2).longValue())", constantExpression=true)
+	public static long operator_plus(Long a, AtomicLong b) {
+		return a.longValue() + b.longValue();
 	}
 
 /**
@@ -2081,9 +2081,9 @@ public final class FloatExtensions {
 	 * @return   <code>a-b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() - $2)", constantExpression=true)
-	public static float operator_minus(Float a, int b) {
-		return a.floatValue() - b;
+	@Inline(value = "(($1).longValue() - $2)", constantExpression=true)
+	public static long operator_minus(Long a, int b) {
+		return a.longValue() - b;
 	}
 
 /**
@@ -2094,9 +2094,9 @@ public final class FloatExtensions {
 	 * @return   <code>a-b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() - $2)", constantExpression=true)
-	public static float operator_minus(Float a, long b) {
-		return a.floatValue() - b;
+	@Inline(value = "(($1).longValue() - $2)", constantExpression=true)
+	public static long operator_minus(Long a, long b) {
+		return a.longValue() - b;
 	}
 
 /**
@@ -2107,9 +2107,9 @@ public final class FloatExtensions {
 	 * @return   <code>a-b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() - $2)", constantExpression=true)
-	public static float operator_minus(Float a, short b) {
-		return a.floatValue() - b;
+	@Inline(value = "(($1).longValue() - $2)", constantExpression=true)
+	public static long operator_minus(Long a, short b) {
+		return a.longValue() - b;
 	}
 
 /**
@@ -2120,9 +2120,9 @@ public final class FloatExtensions {
 	 * @return   <code>a-b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() - $2)", constantExpression=true)
-	public static float operator_minus(Float a, byte b) {
-		return a.floatValue() - b;
+	@Inline(value = "(($1).longValue() - $2)", constantExpression=true)
+	public static long operator_minus(Long a, byte b) {
+		return a.longValue() - b;
 	}
 
 /**
@@ -2134,7 +2134,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() - $2)", constantExpression=true)
-	public static double operator_minus(Float a, double b) {
+	public static double operator_minus(Long a, double b) {
 		return a.doubleValue() - b;
 	}
 
@@ -2147,7 +2147,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() - $2)", constantExpression=true)
-	public static float operator_minus(Float a, float b) {
+	public static float operator_minus(Long a, float b) {
 		return a.floatValue() - b;
 	}
 
@@ -2159,9 +2159,22 @@ public final class FloatExtensions {
 	 * @return   <code>a-b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() - ($2).floatValue())", constantExpression=true)
-	public static float operator_minus(Float a, Short b) {
-		return a.floatValue() - b.floatValue();
+	@Inline(value = "(($1).longValue() - ($2).longValue())", constantExpression=true)
+	public static long operator_minus(Long a, Short b) {
+		return a.longValue() - b.longValue();
+	}
+
+/**
+	 *The binary <code>minus</code> operator. This is the equivalent to the Java <code>-</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a-b</code>
+	 */
+	@Pure
+	@Inline(value = "(($1).longValue() - ($2).longValue())", constantExpression=true)
+	public static long operator_minus(Long a, Integer b) {
+		return a.longValue() - b.longValue();
 	}
 
 /**
@@ -2173,7 +2186,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).floatValue() - ($2).floatValue())", constantExpression=true)
-	public static float operator_minus(Float a, Integer b) {
+	public static float operator_minus(Long a, Float b) {
 		return a.floatValue() - b.floatValue();
 	}
 
@@ -2185,9 +2198,9 @@ public final class FloatExtensions {
 	 * @return   <code>a-b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() - ($2).floatValue())", constantExpression=true)
-	public static float operator_minus(Float a, Float b) {
-		return a.floatValue() - b.floatValue();
+	@Inline(value = "(($1).longValue() - ($2).longValue())", constantExpression=true)
+	public static long operator_minus(Long a, Long b) {
+		return a.longValue() - b.longValue();
 	}
 
 /**
@@ -2198,22 +2211,9 @@ public final class FloatExtensions {
 	 * @return   <code>a-b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() - ($2).floatValue())", constantExpression=true)
-	public static float operator_minus(Float a, Long b) {
-		return a.floatValue() - b.floatValue();
-	}
-
-/**
-	 *The binary <code>minus</code> operator. This is the equivalent to the Java <code>-</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a-b</code>
-	 */
-	@Pure
-	@Inline(value = "(($1).floatValue() - ($2).floatValue())", constantExpression=true)
-	public static float operator_minus(Float a, Byte b) {
-		return a.floatValue() - b.floatValue();
+	@Inline(value = "(($1).longValue() - ($2).longValue())", constantExpression=true)
+	public static long operator_minus(Long a, Byte b) {
+		return a.longValue() - b.longValue();
 	}
 
 /**
@@ -2225,7 +2225,7 @@ public final class FloatExtensions {
 	 */
 	@Pure
 	@Inline(value = "(($1).doubleValue() - ($2).doubleValue())", constantExpression=true)
-	public static double operator_minus(Float a, Double b) {
+	public static double operator_minus(Long a, Double b) {
 		return a.doubleValue() - b.doubleValue();
 	}
 
@@ -2237,9 +2237,9 @@ public final class FloatExtensions {
 	 * @return   <code>a-b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() - ($2).floatValue())", constantExpression=true)
-	public static float operator_minus(Float a, AtomicInteger b) {
-		return a.floatValue() - b.floatValue();
+	@Inline(value = "(($1).longValue() - ($2).longValue())", constantExpression=true)
+	public static long operator_minus(Long a, AtomicInteger b) {
+		return a.longValue() - b.longValue();
 	}
 
 /**
@@ -2250,9 +2250,9 @@ public final class FloatExtensions {
 	 * @return   <code>a-b</code>
 	 */
 	@Pure
-	@Inline(value = "(($1).floatValue() - ($2).floatValue())", constantExpression=true)
-	public static float operator_minus(Float a, AtomicLong b) {
-		return a.floatValue() - b.floatValue();
+	@Inline(value = "(($1).longValue() - ($2).longValue())", constantExpression=true)
+	public static long operator_minus(Long a, AtomicLong b) {
+		return a.longValue() - b.longValue();
 	}
 
 	// END GENERATED BLOCK

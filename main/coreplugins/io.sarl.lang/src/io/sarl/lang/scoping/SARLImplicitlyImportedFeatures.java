@@ -28,6 +28,21 @@ import org.eclipse.xtext.xbase.scoping.batch.ImplicitlyImportedFeatures;
 
 import io.sarl.lang.scoping.batch.SARLMapExtensions;
 import io.sarl.lang.scoping.batch.SARLTimeExtensions;
+import io.sarl.lang.scoping.numbers.AtomicIntegerExtensions;
+import io.sarl.lang.scoping.numbers.AtomicLongExtensions;
+import io.sarl.lang.scoping.numbers.ByteExtensions;
+import io.sarl.lang.scoping.numbers.DoubleExtensions;
+import io.sarl.lang.scoping.numbers.FloatExtensions;
+import io.sarl.lang.scoping.numbers.IntegerExtensions;
+import io.sarl.lang.scoping.numbers.LongExtensions;
+import io.sarl.lang.scoping.numbers.NumberExtensions;
+import io.sarl.lang.scoping.numbers.PrimitiveByteExtensions;
+import io.sarl.lang.scoping.numbers.PrimitiveDoubleExtensions;
+import io.sarl.lang.scoping.numbers.PrimitiveFloatExtensions;
+import io.sarl.lang.scoping.numbers.PrimitiveIntExtensions;
+import io.sarl.lang.scoping.numbers.PrimitiveLongExtensions;
+import io.sarl.lang.scoping.numbers.PrimitiveShortExtensions;
+import io.sarl.lang.scoping.numbers.ShortExtensions;
 
 
 /** Provider of the implicitly imported features in the SARL language.
@@ -52,6 +67,25 @@ public class SARLImplicitlyImportedFeatures extends ImplicitlyImportedFeatures {
 		// Insert at the beginning for ensuring the SARL extension is selected before any Xtext extension.
 		xtextList.add(0, SARLMapExtensions.class);
 		xtextList.add(0, SARLTimeExtensions.class);
+
+		// The following extensions have been added due to issue:
+		// https://github.com/eclipse/xtext-extras/issues/186
+		// Since the possible patch was discarded from Xbase, these extensions are present within SARL.
+		xtextList.add(PrimitiveShortExtensions.class);
+		xtextList.add(PrimitiveByteExtensions.class);
+		xtextList.add(PrimitiveFloatExtensions.class);
+		xtextList.add(PrimitiveIntExtensions.class);
+		xtextList.add(PrimitiveDoubleExtensions.class);
+		xtextList.add(PrimitiveLongExtensions.class);
+		xtextList.add(ShortExtensions.class);
+		xtextList.add(LongExtensions.class);
+		xtextList.add(FloatExtensions.class);
+		xtextList.add(ByteExtensions.class);
+		xtextList.add(IntegerExtensions.class);
+		xtextList.add(DoubleExtensions.class);
+		xtextList.add(AtomicLongExtensions.class);
+		xtextList.add(AtomicIntegerExtensions.class);
+		xtextList.add(NumberExtensions.class);
 		return xtextList;
 	}
 

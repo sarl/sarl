@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.bugfixes.pending.bug764;
+package io.sarl.lang.scoping.numbers;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -37,9 +37,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @see "https://github.com/eclipse/xtext-extras/issues/186"
  */
 @SuppressWarnings("all")
-public final class PrimitiveByteExtensions {
+public final class PrimitiveLongExtensions {
 
-	private PrimitiveByteExtensions() {
+	private PrimitiveLongExtensions() {
 		//
 	}
 
@@ -53,9 +53,9 @@ public final class PrimitiveByteExtensions {
 	 * @return   <code>a!=b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 != ($2).shortValue())", constantExpression=true)
-	public static boolean operator_notEquals(byte a, Short b) {
-		return a != b.shortValue();
+	@Inline(value = "($1 != ($2).longValue())", constantExpression=true)
+	public static boolean operator_notEquals(long a, Short b) {
+		return a != b.longValue();
 	}
 
 	/**
@@ -66,9 +66,9 @@ public final class PrimitiveByteExtensions {
 	 * @return   <code>a!=b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 != ($2).intValue())", constantExpression=true)
-	public static boolean operator_notEquals(byte a, Integer b) {
-		return a != b.intValue();
+	@Inline(value = "($1 != ($2).longValue())", constantExpression=true)
+	public static boolean operator_notEquals(long a, Integer b) {
+		return a != b.longValue();
 	}
 
 	/**
@@ -80,7 +80,7 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 != ($2).floatValue())", constantExpression=true)
-	public static boolean operator_notEquals(byte a, Float b) {
+	public static boolean operator_notEquals(long a, Float b) {
 		return a != b.floatValue();
 	}
 
@@ -93,47 +93,8 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 != ($2).longValue())", constantExpression=true)
-	public static boolean operator_notEquals(byte a, Long b) {
+	public static boolean operator_notEquals(long a, Long b) {
 		return a != b.longValue();
-	}
-
-	/**
-	 *The binary <code>notEquals</code> operator. This is the equivalent to the Java <code>!=</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a!=b</code>
-	 */
-	@Pure
-	@Inline(value = "($1 != ($2).byteValue())", constantExpression=true)
-	public static boolean operator_notEquals(byte a, Byte b) {
-		return a != b.byteValue();
-	}
-
-	/**
-	 *The binary <code>notEquals</code> operator. This is the equivalent to the Java <code>!=</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a!=b</code>
-	 */
-	@Pure
-	@Inline(value = "($1 != ($2).doubleValue())", constantExpression=true)
-	public static boolean operator_notEquals(byte a, Double b) {
-		return a != b.doubleValue();
-	}
-
-	/**
-	 *The binary <code>notEquals</code> operator. This is the equivalent to the Java <code>!=</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a!=b</code>
-	 */
-	@Pure
-	@Inline(value = "($1 != ($2).intValue())", constantExpression=true)
-	public static boolean operator_notEquals(byte a, AtomicInteger b) {
-		return a != b.intValue();
 	}
 
 	/**
@@ -145,7 +106,46 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 != ($2).longValue())", constantExpression=true)
-	public static boolean operator_notEquals(byte a, AtomicLong b) {
+	public static boolean operator_notEquals(long a, Byte b) {
+		return a != b.longValue();
+	}
+
+	/**
+	 *The binary <code>notEquals</code> operator. This is the equivalent to the Java <code>!=</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a!=b</code>
+	 */
+	@Pure
+	@Inline(value = "($1 != ($2).doubleValue())", constantExpression=true)
+	public static boolean operator_notEquals(long a, Double b) {
+		return a != b.doubleValue();
+	}
+
+	/**
+	 *The binary <code>notEquals</code> operator. This is the equivalent to the Java <code>!=</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a!=b</code>
+	 */
+	@Pure
+	@Inline(value = "($1 != ($2).longValue())", constantExpression=true)
+	public static boolean operator_notEquals(long a, AtomicInteger b) {
+		return a != b.longValue();
+	}
+
+	/**
+	 *The binary <code>notEquals</code> operator. This is the equivalent to the Java <code>!=</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a!=b</code>
+	 */
+	@Pure
+	@Inline(value = "($1 != ($2).longValue())", constantExpression=true)
+	public static boolean operator_notEquals(long a, AtomicLong b) {
 		return a != b.longValue();
 	}
 
@@ -157,9 +157,9 @@ public final class PrimitiveByteExtensions {
 	 * @return   <code>a/b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 / ($2).shortValue())", constantExpression=true)
-	public static int operator_divide(byte a, Short b) {
-		return a / b.shortValue();
+	@Inline(value = "($1 / ($2).longValue())", constantExpression=true)
+	public static long operator_divide(long a, Short b) {
+		return a / b.longValue();
 	}
 
 	/**
@@ -170,9 +170,9 @@ public final class PrimitiveByteExtensions {
 	 * @return   <code>a/b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 / ($2).intValue())", constantExpression=true)
-	public static int operator_divide(byte a, Integer b) {
-		return a / b.intValue();
+	@Inline(value = "($1 / ($2).longValue())", constantExpression=true)
+	public static long operator_divide(long a, Integer b) {
+		return a / b.longValue();
 	}
 
 	/**
@@ -184,7 +184,7 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 / ($2).floatValue())", constantExpression=true)
-	public static float operator_divide(byte a, Float b) {
+	public static float operator_divide(long a, Float b) {
 		return a / b.floatValue();
 	}
 
@@ -197,47 +197,8 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 / ($2).longValue())", constantExpression=true)
-	public static long operator_divide(byte a, Long b) {
+	public static long operator_divide(long a, Long b) {
 		return a / b.longValue();
-	}
-
-	/**
-	 *The binary <code>divide</code> operator. This is the equivalent to the Java <code>/</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a/b</code>
-	 */
-	@Pure
-	@Inline(value = "($1 / ($2).byteValue())", constantExpression=true)
-	public static int operator_divide(byte a, Byte b) {
-		return a / b.byteValue();
-	}
-
-	/**
-	 *The binary <code>divide</code> operator. This is the equivalent to the Java <code>/</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a/b</code>
-	 */
-	@Pure
-	@Inline(value = "($1 / ($2).doubleValue())", constantExpression=true)
-	public static double operator_divide(byte a, Double b) {
-		return a / b.doubleValue();
-	}
-
-	/**
-	 *The binary <code>divide</code> operator. This is the equivalent to the Java <code>/</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a/b</code>
-	 */
-	@Pure
-	@Inline(value = "($1 / ($2).intValue())", constantExpression=true)
-	public static int operator_divide(byte a, AtomicInteger b) {
-		return a / b.intValue();
 	}
 
 	/**
@@ -249,7 +210,46 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 / ($2).longValue())", constantExpression=true)
-	public static long operator_divide(byte a, AtomicLong b) {
+	public static long operator_divide(long a, Byte b) {
+		return a / b.longValue();
+	}
+
+	/**
+	 *The binary <code>divide</code> operator. This is the equivalent to the Java <code>/</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a/b</code>
+	 */
+	@Pure
+	@Inline(value = "($1 / ($2).doubleValue())", constantExpression=true)
+	public static double operator_divide(long a, Double b) {
+		return a / b.doubleValue();
+	}
+
+	/**
+	 *The binary <code>divide</code> operator. This is the equivalent to the Java <code>/</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a/b</code>
+	 */
+	@Pure
+	@Inline(value = "($1 / ($2).longValue())", constantExpression=true)
+	public static long operator_divide(long a, AtomicInteger b) {
+		return a / b.longValue();
+	}
+
+	/**
+	 *The binary <code>divide</code> operator. This is the equivalent to the Java <code>/</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a/b</code>
+	 */
+	@Pure
+	@Inline(value = "($1 / ($2).longValue())", constantExpression=true)
+	public static long operator_divide(long a, AtomicLong b) {
 		return a / b.longValue();
 	}
 
@@ -261,9 +261,9 @@ public final class PrimitiveByteExtensions {
 	 * @return   <code>a==b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 == ($2).shortValue())", constantExpression=true)
-	public static boolean operator_equals(byte a, Short b) {
-		return a == b.shortValue();
+	@Inline(value = "($1 == ($2).longValue())", constantExpression=true)
+	public static boolean operator_equals(long a, Short b) {
+		return a == b.longValue();
 	}
 
 	/**
@@ -274,9 +274,9 @@ public final class PrimitiveByteExtensions {
 	 * @return   <code>a==b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 == ($2).intValue())", constantExpression=true)
-	public static boolean operator_equals(byte a, Integer b) {
-		return a == b.intValue();
+	@Inline(value = "($1 == ($2).longValue())", constantExpression=true)
+	public static boolean operator_equals(long a, Integer b) {
+		return a == b.longValue();
 	}
 
 	/**
@@ -288,7 +288,7 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 == ($2).floatValue())", constantExpression=true)
-	public static boolean operator_equals(byte a, Float b) {
+	public static boolean operator_equals(long a, Float b) {
 		return a == b.floatValue();
 	}
 
@@ -301,47 +301,8 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 == ($2).longValue())", constantExpression=true)
-	public static boolean operator_equals(byte a, Long b) {
+	public static boolean operator_equals(long a, Long b) {
 		return a == b.longValue();
-	}
-
-	/**
-	 *The binary <code>equals</code> operator. This is the equivalent to the Java <code>==</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a==b</code>
-	 */
-	@Pure
-	@Inline(value = "($1 == ($2).byteValue())", constantExpression=true)
-	public static boolean operator_equals(byte a, Byte b) {
-		return a == b.byteValue();
-	}
-
-	/**
-	 *The binary <code>equals</code> operator. This is the equivalent to the Java <code>==</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a==b</code>
-	 */
-	@Pure
-	@Inline(value = "($1 == ($2).doubleValue())", constantExpression=true)
-	public static boolean operator_equals(byte a, Double b) {
-		return a == b.doubleValue();
-	}
-
-	/**
-	 *The binary <code>equals</code> operator. This is the equivalent to the Java <code>==</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a==b</code>
-	 */
-	@Pure
-	@Inline(value = "($1 == ($2).intValue())", constantExpression=true)
-	public static boolean operator_equals(byte a, AtomicInteger b) {
-		return a == b.intValue();
 	}
 
 	/**
@@ -353,7 +314,46 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 == ($2).longValue())", constantExpression=true)
-	public static boolean operator_equals(byte a, AtomicLong b) {
+	public static boolean operator_equals(long a, Byte b) {
+		return a == b.longValue();
+	}
+
+	/**
+	 *The binary <code>equals</code> operator. This is the equivalent to the Java <code>==</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a==b</code>
+	 */
+	@Pure
+	@Inline(value = "($1 == ($2).doubleValue())", constantExpression=true)
+	public static boolean operator_equals(long a, Double b) {
+		return a == b.doubleValue();
+	}
+
+	/**
+	 *The binary <code>equals</code> operator. This is the equivalent to the Java <code>==</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a==b</code>
+	 */
+	@Pure
+	@Inline(value = "($1 == ($2).longValue())", constantExpression=true)
+	public static boolean operator_equals(long a, AtomicInteger b) {
+		return a == b.longValue();
+	}
+
+	/**
+	 *The binary <code>equals</code> operator. This is the equivalent to the Java <code>==</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a==b</code>
+	 */
+	@Pure
+	@Inline(value = "($1 == ($2).longValue())", constantExpression=true)
+	public static boolean operator_equals(long a, AtomicLong b) {
 		return a == b.longValue();
 	}
 
@@ -365,9 +365,9 @@ public final class PrimitiveByteExtensions {
 	 * @return   <code>a*b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 * ($2).shortValue())", constantExpression=true)
-	public static int operator_multiply(byte a, Short b) {
-		return a * b.shortValue();
+	@Inline(value = "($1 * ($2).longValue())", constantExpression=true)
+	public static long operator_multiply(long a, Short b) {
+		return a * b.longValue();
 	}
 
 	/**
@@ -378,9 +378,9 @@ public final class PrimitiveByteExtensions {
 	 * @return   <code>a*b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 * ($2).intValue())", constantExpression=true)
-	public static int operator_multiply(byte a, Integer b) {
-		return a * b.intValue();
+	@Inline(value = "($1 * ($2).longValue())", constantExpression=true)
+	public static long operator_multiply(long a, Integer b) {
+		return a * b.longValue();
 	}
 
 	/**
@@ -392,7 +392,7 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 * ($2).floatValue())", constantExpression=true)
-	public static float operator_multiply(byte a, Float b) {
+	public static float operator_multiply(long a, Float b) {
 		return a * b.floatValue();
 	}
 
@@ -405,47 +405,8 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 * ($2).longValue())", constantExpression=true)
-	public static long operator_multiply(byte a, Long b) {
+	public static long operator_multiply(long a, Long b) {
 		return a * b.longValue();
-	}
-
-	/**
-	 *The binary <code>multiply</code> operator. This is the equivalent to the Java <code>*</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a*b</code>
-	 */
-	@Pure
-	@Inline(value = "($1 * ($2).byteValue())", constantExpression=true)
-	public static int operator_multiply(byte a, Byte b) {
-		return a * b.byteValue();
-	}
-
-	/**
-	 *The binary <code>multiply</code> operator. This is the equivalent to the Java <code>*</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a*b</code>
-	 */
-	@Pure
-	@Inline(value = "($1 * ($2).doubleValue())", constantExpression=true)
-	public static double operator_multiply(byte a, Double b) {
-		return a * b.doubleValue();
-	}
-
-	/**
-	 *The binary <code>multiply</code> operator. This is the equivalent to the Java <code>*</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a*b</code>
-	 */
-	@Pure
-	@Inline(value = "($1 * ($2).intValue())", constantExpression=true)
-	public static int operator_multiply(byte a, AtomicInteger b) {
-		return a * b.intValue();
 	}
 
 	/**
@@ -457,7 +418,46 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 * ($2).longValue())", constantExpression=true)
-	public static long operator_multiply(byte a, AtomicLong b) {
+	public static long operator_multiply(long a, Byte b) {
+		return a * b.longValue();
+	}
+
+	/**
+	 *The binary <code>multiply</code> operator. This is the equivalent to the Java <code>*</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a*b</code>
+	 */
+	@Pure
+	@Inline(value = "($1 * ($2).doubleValue())", constantExpression=true)
+	public static double operator_multiply(long a, Double b) {
+		return a * b.doubleValue();
+	}
+
+	/**
+	 *The binary <code>multiply</code> operator. This is the equivalent to the Java <code>*</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a*b</code>
+	 */
+	@Pure
+	@Inline(value = "($1 * ($2).longValue())", constantExpression=true)
+	public static long operator_multiply(long a, AtomicInteger b) {
+		return a * b.longValue();
+	}
+
+	/**
+	 *The binary <code>multiply</code> operator. This is the equivalent to the Java <code>*</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a*b</code>
+	 */
+	@Pure
+	@Inline(value = "($1 * ($2).longValue())", constantExpression=true)
+	public static long operator_multiply(long a, AtomicLong b) {
 		return a * b.longValue();
 	}
 
@@ -469,9 +469,9 @@ public final class PrimitiveByteExtensions {
 	 * @return   <code>Math.pow(a, b)</code>
 	 */
 	@Pure
-	@Inline(value = "$3.pow($1, ($2).shortValue())", imported = Math.class)
-	public static double operator_power(byte a, Short b) {
-		return Math.pow(a, b.shortValue());
+	@Inline(value = "$3.pow($1, ($2).longValue())", imported = Math.class)
+	public static double operator_power(long a, Short b) {
+		return Math.pow(a, b.longValue());
 	}
 
 	/**
@@ -482,9 +482,9 @@ public final class PrimitiveByteExtensions {
 	 * @return   <code>Math.pow(a, b)</code>
 	 */
 	@Pure
-	@Inline(value = "$3.pow($1, ($2).intValue())", imported = Math.class)
-	public static double operator_power(byte a, Integer b) {
-		return Math.pow(a, b.intValue());
+	@Inline(value = "$3.pow($1, ($2).longValue())", imported = Math.class)
+	public static double operator_power(long a, Integer b) {
+		return Math.pow(a, b.longValue());
 	}
 
 	/**
@@ -496,7 +496,7 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "$3.pow($1, ($2).floatValue())", imported = Math.class)
-	public static double operator_power(byte a, Float b) {
+	public static double operator_power(long a, Float b) {
 		return Math.pow(a, b.floatValue());
 	}
 
@@ -509,47 +509,8 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "$3.pow($1, ($2).longValue())", imported = Math.class)
-	public static double operator_power(byte a, Long b) {
+	public static double operator_power(long a, Long b) {
 		return Math.pow(a, b.longValue());
-	}
-
-	/**
-	 *The binary <code>power</code> operator. This is the equivalent to the Java's <code>Math.pow()</code> function.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>Math.pow(a, b)</code>
-	 */
-	@Pure
-	@Inline(value = "$3.pow($1, ($2).byteValue())", imported = Math.class)
-	public static double operator_power(byte a, Byte b) {
-		return Math.pow(a, b.byteValue());
-	}
-
-	/**
-	 *The binary <code>power</code> operator. This is the equivalent to the Java's <code>Math.pow()</code> function.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>Math.pow(a, b)</code>
-	 */
-	@Pure
-	@Inline(value = "$3.pow($1, ($2).doubleValue())", imported = Math.class)
-	public static double operator_power(byte a, Double b) {
-		return Math.pow(a, b.doubleValue());
-	}
-
-	/**
-	 *The binary <code>power</code> operator. This is the equivalent to the Java's <code>Math.pow()</code> function.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>Math.pow(a, b)</code>
-	 */
-	@Pure
-	@Inline(value = "$3.pow($1, ($2).intValue())", imported = Math.class)
-	public static double operator_power(byte a, AtomicInteger b) {
-		return Math.pow(a, b.intValue());
 	}
 
 	/**
@@ -561,7 +522,46 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "$3.pow($1, ($2).longValue())", imported = Math.class)
-	public static double operator_power(byte a, AtomicLong b) {
+	public static double operator_power(long a, Byte b) {
+		return Math.pow(a, b.longValue());
+	}
+
+	/**
+	 *The binary <code>power</code> operator. This is the equivalent to the Java's <code>Math.pow()</code> function.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>Math.pow(a, b)</code>
+	 */
+	@Pure
+	@Inline(value = "$3.pow($1, ($2).doubleValue())", imported = Math.class)
+	public static double operator_power(long a, Double b) {
+		return Math.pow(a, b.doubleValue());
+	}
+
+	/**
+	 *The binary <code>power</code> operator. This is the equivalent to the Java's <code>Math.pow()</code> function.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>Math.pow(a, b)</code>
+	 */
+	@Pure
+	@Inline(value = "$3.pow($1, ($2).longValue())", imported = Math.class)
+	public static double operator_power(long a, AtomicInteger b) {
+		return Math.pow(a, b.longValue());
+	}
+
+	/**
+	 *The binary <code>power</code> operator. This is the equivalent to the Java's <code>Math.pow()</code> function.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>Math.pow(a, b)</code>
+	 */
+	@Pure
+	@Inline(value = "$3.pow($1, ($2).longValue())", imported = Math.class)
+	public static double operator_power(long a, AtomicLong b) {
 		return Math.pow(a, b.longValue());
 	}
 
@@ -573,9 +573,9 @@ public final class PrimitiveByteExtensions {
 	 * @return   <code>a&lt;b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 < ($2).shortValue())", constantExpression=true)
-	public static boolean operator_lessThan(byte a, Short b) {
-		return a < b.shortValue();
+	@Inline(value = "($1 < ($2).longValue())", constantExpression=true)
+	public static boolean operator_lessThan(long a, Short b) {
+		return a < b.longValue();
 	}
 
 	/**
@@ -586,9 +586,9 @@ public final class PrimitiveByteExtensions {
 	 * @return   <code>a&lt;b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 < ($2).intValue())", constantExpression=true)
-	public static boolean operator_lessThan(byte a, Integer b) {
-		return a < b.intValue();
+	@Inline(value = "($1 < ($2).longValue())", constantExpression=true)
+	public static boolean operator_lessThan(long a, Integer b) {
+		return a < b.longValue();
 	}
 
 	/**
@@ -600,7 +600,7 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 < ($2).floatValue())", constantExpression=true)
-	public static boolean operator_lessThan(byte a, Float b) {
+	public static boolean operator_lessThan(long a, Float b) {
 		return a < b.floatValue();
 	}
 
@@ -613,47 +613,8 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 < ($2).longValue())", constantExpression=true)
-	public static boolean operator_lessThan(byte a, Long b) {
+	public static boolean operator_lessThan(long a, Long b) {
 		return a < b.longValue();
-	}
-
-	/**
-	 *The binary <code>lessThan</code> operator. This is the equivalent to the Java <code>&lt;</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a&lt;b</code>
-	 */
-	@Pure
-	@Inline(value = "($1 < ($2).byteValue())", constantExpression=true)
-	public static boolean operator_lessThan(byte a, Byte b) {
-		return a < b.byteValue();
-	}
-
-	/**
-	 *The binary <code>lessThan</code> operator. This is the equivalent to the Java <code>&lt;</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a&lt;b</code>
-	 */
-	@Pure
-	@Inline(value = "($1 < ($2).doubleValue())", constantExpression=true)
-	public static boolean operator_lessThan(byte a, Double b) {
-		return a < b.doubleValue();
-	}
-
-	/**
-	 *The binary <code>lessThan</code> operator. This is the equivalent to the Java <code>&lt;</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a&lt;b</code>
-	 */
-	@Pure
-	@Inline(value = "($1 < ($2).intValue())", constantExpression=true)
-	public static boolean operator_lessThan(byte a, AtomicInteger b) {
-		return a < b.intValue();
 	}
 
 	/**
@@ -665,7 +626,46 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 < ($2).longValue())", constantExpression=true)
-	public static boolean operator_lessThan(byte a, AtomicLong b) {
+	public static boolean operator_lessThan(long a, Byte b) {
+		return a < b.longValue();
+	}
+
+	/**
+	 *The binary <code>lessThan</code> operator. This is the equivalent to the Java <code>&lt;</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a&lt;b</code>
+	 */
+	@Pure
+	@Inline(value = "($1 < ($2).doubleValue())", constantExpression=true)
+	public static boolean operator_lessThan(long a, Double b) {
+		return a < b.doubleValue();
+	}
+
+	/**
+	 *The binary <code>lessThan</code> operator. This is the equivalent to the Java <code>&lt;</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a&lt;b</code>
+	 */
+	@Pure
+	@Inline(value = "($1 < ($2).longValue())", constantExpression=true)
+	public static boolean operator_lessThan(long a, AtomicInteger b) {
+		return a < b.longValue();
+	}
+
+	/**
+	 *The binary <code>lessThan</code> operator. This is the equivalent to the Java <code>&lt;</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a&lt;b</code>
+	 */
+	@Pure
+	@Inline(value = "($1 < ($2).longValue())", constantExpression=true)
+	public static boolean operator_lessThan(long a, AtomicLong b) {
 		return a < b.longValue();
 	}
 
@@ -677,9 +677,9 @@ public final class PrimitiveByteExtensions {
 	 * @return   <code>a&gt;b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 > ($2).shortValue())", constantExpression=true)
-	public static boolean operator_greaterThan(byte a, Short b) {
-		return a > b.shortValue();
+	@Inline(value = "($1 > ($2).longValue())", constantExpression=true)
+	public static boolean operator_greaterThan(long a, Short b) {
+		return a > b.longValue();
 	}
 
 
@@ -691,9 +691,9 @@ public final class PrimitiveByteExtensions {
 	 * @return   <code>a&gt;b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 > ($2).intValue())", constantExpression=true)
-	public static boolean operator_greaterThan(byte a, Integer b) {
-		return a > b.intValue();
+	@Inline(value = "($1 > ($2).longValue())", constantExpression=true)
+	public static boolean operator_greaterThan(long a, Integer b) {
+		return a > b.longValue();
 	}
 
 
@@ -706,7 +706,7 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 > ($2).floatValue())", constantExpression=true)
-	public static boolean operator_greaterThan(byte a, Float b) {
+	public static boolean operator_greaterThan(long a, Float b) {
 		return a > b.floatValue();
 	}
 
@@ -720,50 +720,8 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 > ($2).longValue())", constantExpression=true)
-	public static boolean operator_greaterThan(byte a, Long b) {
+	public static boolean operator_greaterThan(long a, Long b) {
 		return a > b.longValue();
-	}
-
-
-	/**
-	 *The binary <code>greaterThan</code> operator. This is the equivalent to the Java <code>&gt;</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a&gt;b</code>
-	 */
-	@Pure
-	@Inline(value = "($1 > ($2).byteValue())", constantExpression=true)
-	public static boolean operator_greaterThan(byte a, Byte b) {
-		return a > b.byteValue();
-	}
-
-
-	/**
-	 *The binary <code>greaterThan</code> operator. This is the equivalent to the Java <code>&gt;</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a&gt;b</code>
-	 */
-	@Pure
-	@Inline(value = "($1 > ($2).doubleValue())", constantExpression=true)
-	public static boolean operator_greaterThan(byte a, Double b) {
-		return a > b.doubleValue();
-	}
-
-
-	/**
-	 *The binary <code>greaterThan</code> operator. This is the equivalent to the Java <code>&gt;</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a&gt;b</code>
-	 */
-	@Pure
-	@Inline(value = "($1 > ($2).intValue())", constantExpression=true)
-	public static boolean operator_greaterThan(byte a, AtomicInteger b) {
-		return a > b.intValue();
 	}
 
 
@@ -776,7 +734,49 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 > ($2).longValue())", constantExpression=true)
-	public static boolean operator_greaterThan(byte a, AtomicLong b) {
+	public static boolean operator_greaterThan(long a, Byte b) {
+		return a > b.longValue();
+	}
+
+
+	/**
+	 *The binary <code>greaterThan</code> operator. This is the equivalent to the Java <code>&gt;</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a&gt;b</code>
+	 */
+	@Pure
+	@Inline(value = "($1 > ($2).doubleValue())", constantExpression=true)
+	public static boolean operator_greaterThan(long a, Double b) {
+		return a > b.doubleValue();
+	}
+
+
+	/**
+	 *The binary <code>greaterThan</code> operator. This is the equivalent to the Java <code>&gt;</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a&gt;b</code>
+	 */
+	@Pure
+	@Inline(value = "($1 > ($2).longValue())", constantExpression=true)
+	public static boolean operator_greaterThan(long a, AtomicInteger b) {
+		return a > b.longValue();
+	}
+
+
+	/**
+	 *The binary <code>greaterThan</code> operator. This is the equivalent to the Java <code>&gt;</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a&gt;b</code>
+	 */
+	@Pure
+	@Inline(value = "($1 > ($2).longValue())", constantExpression=true)
+	public static boolean operator_greaterThan(long a, AtomicLong b) {
 		return a > b.longValue();
 	}
 
@@ -789,9 +789,9 @@ public final class PrimitiveByteExtensions {
 	 * @return   <code>a&lt;=b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 <= ($2).shortValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(byte a, Short b) {
-		return a <= b.shortValue();
+	@Inline(value = "($1 <= ($2).longValue())", constantExpression=true)
+	public static boolean operator_lessEqualsThan(long a, Short b) {
+		return a <= b.longValue();
 	}
 
 	/**
@@ -802,9 +802,9 @@ public final class PrimitiveByteExtensions {
 	 * @return   <code>a&lt;=b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 <= ($2).intValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(byte a, Integer b) {
-		return a <= b.intValue();
+	@Inline(value = "($1 <= ($2).longValue())", constantExpression=true)
+	public static boolean operator_lessEqualsThan(long a, Integer b) {
+		return a <= b.longValue();
 	}
 
 	/**
@@ -816,7 +816,7 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 <= ($2).floatValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(byte a, Float b) {
+	public static boolean operator_lessEqualsThan(long a, Float b) {
 		return a <= b.floatValue();
 	}
 
@@ -829,47 +829,8 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 <= ($2).longValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(byte a, Long b) {
+	public static boolean operator_lessEqualsThan(long a, Long b) {
 		return a <= b.longValue();
-	}
-
-	/**
-	 *The binary <code>lessEqualsThan</code> operator. This is the equivalent to the Java <code>&lt;=</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a&lt;=b</code>
-	 */
-	@Pure
-	@Inline(value = "($1 <= ($2).byteValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(byte a, Byte b) {
-		return a <= b.byteValue();
-	}
-
-	/**
-	 *The binary <code>lessEqualsThan</code> operator. This is the equivalent to the Java <code>&lt;=</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a&lt;=b</code>
-	 */
-	@Pure
-	@Inline(value = "($1 <= ($2).doubleValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(byte a, Double b) {
-		return a <= b.doubleValue();
-	}
-
-	/**
-	 *The binary <code>lessEqualsThan</code> operator. This is the equivalent to the Java <code>&lt;=</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a&lt;=b</code>
-	 */
-	@Pure
-	@Inline(value = "($1 <= ($2).intValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(byte a, AtomicInteger b) {
-		return a <= b.intValue();
 	}
 
 	/**
@@ -881,7 +842,46 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 <= ($2).longValue())", constantExpression=true)
-	public static boolean operator_lessEqualsThan(byte a, AtomicLong b) {
+	public static boolean operator_lessEqualsThan(long a, Byte b) {
+		return a <= b.longValue();
+	}
+
+	/**
+	 *The binary <code>lessEqualsThan</code> operator. This is the equivalent to the Java <code>&lt;=</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a&lt;=b</code>
+	 */
+	@Pure
+	@Inline(value = "($1 <= ($2).doubleValue())", constantExpression=true)
+	public static boolean operator_lessEqualsThan(long a, Double b) {
+		return a <= b.doubleValue();
+	}
+
+	/**
+	 *The binary <code>lessEqualsThan</code> operator. This is the equivalent to the Java <code>&lt;=</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a&lt;=b</code>
+	 */
+	@Pure
+	@Inline(value = "($1 <= ($2).longValue())", constantExpression=true)
+	public static boolean operator_lessEqualsThan(long a, AtomicInteger b) {
+		return a <= b.longValue();
+	}
+
+	/**
+	 *The binary <code>lessEqualsThan</code> operator. This is the equivalent to the Java <code>&lt;=</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a&lt;=b</code>
+	 */
+	@Pure
+	@Inline(value = "($1 <= ($2).longValue())", constantExpression=true)
+	public static boolean operator_lessEqualsThan(long a, AtomicLong b) {
 		return a <= b.longValue();
 	}
 
@@ -893,9 +893,9 @@ public final class PrimitiveByteExtensions {
 	 * @return   <code>a%b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 % ($2).shortValue())", constantExpression=true)
-	public static int operator_modulo(byte a, Short b) {
-		return a % b.shortValue();
+	@Inline(value = "($1 % ($2).longValue())", constantExpression=true)
+	public static long operator_modulo(long a, Short b) {
+		return a % b.longValue();
 	}
 
 	/**
@@ -906,9 +906,9 @@ public final class PrimitiveByteExtensions {
 	 * @return   <code>a%b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 % ($2).intValue())", constantExpression=true)
-	public static int operator_modulo(byte a, Integer b) {
-		return a % b.intValue();
+	@Inline(value = "($1 % ($2).longValue())", constantExpression=true)
+	public static long operator_modulo(long a, Integer b) {
+		return a % b.longValue();
 	}
 
 	/**
@@ -920,7 +920,7 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 % ($2).floatValue())", constantExpression=true)
-	public static float operator_modulo(byte a, Float b) {
+	public static float operator_modulo(long a, Float b) {
 		return a % b.floatValue();
 	}
 
@@ -933,47 +933,8 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 % ($2).longValue())", constantExpression=true)
-	public static long operator_modulo(byte a, Long b) {
+	public static long operator_modulo(long a, Long b) {
 		return a % b.longValue();
-	}
-
-	/**
-	 *The binary <code>modulo</code> operator. This is the equivalent to the Java <code>%</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a%b</code>
-	 */
-	@Pure
-	@Inline(value = "($1 % ($2).byteValue())", constantExpression=true)
-	public static int operator_modulo(byte a, Byte b) {
-		return a % b.byteValue();
-	}
-
-	/**
-	 *The binary <code>modulo</code> operator. This is the equivalent to the Java <code>%</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a%b</code>
-	 */
-	@Pure
-	@Inline(value = "($1 % ($2).doubleValue())", constantExpression=true)
-	public static double operator_modulo(byte a, Double b) {
-		return a % b.doubleValue();
-	}
-
-	/**
-	 *The binary <code>modulo</code> operator. This is the equivalent to the Java <code>%</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a%b</code>
-	 */
-	@Pure
-	@Inline(value = "($1 % ($2).intValue())", constantExpression=true)
-	public static int operator_modulo(byte a, AtomicInteger b) {
-		return a % b.intValue();
 	}
 
 	/**
@@ -985,7 +946,46 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 % ($2).longValue())", constantExpression=true)
-	public static long operator_modulo(byte a, AtomicLong b) {
+	public static long operator_modulo(long a, Byte b) {
+		return a % b.longValue();
+	}
+
+	/**
+	 *The binary <code>modulo</code> operator. This is the equivalent to the Java <code>%</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a%b</code>
+	 */
+	@Pure
+	@Inline(value = "($1 % ($2).doubleValue())", constantExpression=true)
+	public static double operator_modulo(long a, Double b) {
+		return a % b.doubleValue();
+	}
+
+	/**
+	 *The binary <code>modulo</code> operator. This is the equivalent to the Java <code>%</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a%b</code>
+	 */
+	@Pure
+	@Inline(value = "($1 % ($2).longValue())", constantExpression=true)
+	public static long operator_modulo(long a, AtomicInteger b) {
+		return a % b.longValue();
+	}
+
+	/**
+	 *The binary <code>modulo</code> operator. This is the equivalent to the Java <code>%</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a%b</code>
+	 */
+	@Pure
+	@Inline(value = "($1 % ($2).longValue())", constantExpression=true)
+	public static long operator_modulo(long a, AtomicLong b) {
 		return a % b.longValue();
 	}
 
@@ -997,9 +997,9 @@ public final class PrimitiveByteExtensions {
 	 * @return   <code>a&gt;=b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 >= ($2).shortValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(byte a, Short b) {
-		return a >= b.shortValue();
+	@Inline(value = "($1 >= ($2).longValue())", constantExpression=true)
+	public static boolean operator_greaterEqualsThan(long a, Short b) {
+		return a >= b.longValue();
 	}
 
 	/**
@@ -1010,9 +1010,9 @@ public final class PrimitiveByteExtensions {
 	 * @return   <code>a&gt;=b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 >= ($2).intValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(byte a, Integer b) {
-		return a >= b.intValue();
+	@Inline(value = "($1 >= ($2).longValue())", constantExpression=true)
+	public static boolean operator_greaterEqualsThan(long a, Integer b) {
+		return a >= b.longValue();
 	}
 
 	/**
@@ -1024,7 +1024,7 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 >= ($2).floatValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(byte a, Float b) {
+	public static boolean operator_greaterEqualsThan(long a, Float b) {
 		return a >= b.floatValue();
 	}
 
@@ -1037,47 +1037,8 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 >= ($2).longValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(byte a, Long b) {
+	public static boolean operator_greaterEqualsThan(long a, Long b) {
 		return a >= b.longValue();
-	}
-
-	/**
-	 *The binary <code>greaterEqualsThan</code> operator. This is the equivalent to the Java <code>&gt;=</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a&gt;=b</code>
-	 */
-	@Pure
-	@Inline(value = "($1 >= ($2).byteValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(byte a, Byte b) {
-		return a >= b.byteValue();
-	}
-
-	/**
-	 *The binary <code>greaterEqualsThan</code> operator. This is the equivalent to the Java <code>&gt;=</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a&gt;=b</code>
-	 */
-	@Pure
-	@Inline(value = "($1 >= ($2).doubleValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(byte a, Double b) {
-		return a >= b.doubleValue();
-	}
-
-	/**
-	 *The binary <code>greaterEqualsThan</code> operator. This is the equivalent to the Java <code>&gt;=</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a&gt;=b</code>
-	 */
-	@Pure
-	@Inline(value = "($1 >= ($2).intValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(byte a, AtomicInteger b) {
-		return a >= b.intValue();
 	}
 
 	/**
@@ -1089,7 +1050,46 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 >= ($2).longValue())", constantExpression=true)
-	public static boolean operator_greaterEqualsThan(byte a, AtomicLong b) {
+	public static boolean operator_greaterEqualsThan(long a, Byte b) {
+		return a >= b.longValue();
+	}
+
+	/**
+	 *The binary <code>greaterEqualsThan</code> operator. This is the equivalent to the Java <code>&gt;=</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a&gt;=b</code>
+	 */
+	@Pure
+	@Inline(value = "($1 >= ($2).doubleValue())", constantExpression=true)
+	public static boolean operator_greaterEqualsThan(long a, Double b) {
+		return a >= b.doubleValue();
+	}
+
+	/**
+	 *The binary <code>greaterEqualsThan</code> operator. This is the equivalent to the Java <code>&gt;=</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a&gt;=b</code>
+	 */
+	@Pure
+	@Inline(value = "($1 >= ($2).longValue())", constantExpression=true)
+	public static boolean operator_greaterEqualsThan(long a, AtomicInteger b) {
+		return a >= b.longValue();
+	}
+
+	/**
+	 *The binary <code>greaterEqualsThan</code> operator. This is the equivalent to the Java <code>&gt;=</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a&gt;=b</code>
+	 */
+	@Pure
+	@Inline(value = "($1 >= ($2).longValue())", constantExpression=true)
+	public static boolean operator_greaterEqualsThan(long a, AtomicLong b) {
 		return a >= b.longValue();
 	}
 
@@ -1101,9 +1101,9 @@ public final class PrimitiveByteExtensions {
 	 * @return   <code>a+b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 + ($2).shortValue())", constantExpression=true)
-	public static int operator_plus(byte a, Short b) {
-		return a + b.shortValue();
+	@Inline(value = "($1 + ($2).longValue())", constantExpression=true)
+	public static long operator_plus(long a, Short b) {
+		return a + b.longValue();
 	}
 
 	/**
@@ -1114,9 +1114,9 @@ public final class PrimitiveByteExtensions {
 	 * @return   <code>a+b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 + ($2).intValue())", constantExpression=true)
-	public static int operator_plus(byte a, Integer b) {
-		return a + b.intValue();
+	@Inline(value = "($1 + ($2).longValue())", constantExpression=true)
+	public static long operator_plus(long a, Integer b) {
+		return a + b.longValue();
 	}
 
 	/**
@@ -1128,7 +1128,7 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 + ($2).floatValue())", constantExpression=true)
-	public static float operator_plus(byte a, Float b) {
+	public static float operator_plus(long a, Float b) {
 		return a + b.floatValue();
 	}
 
@@ -1141,47 +1141,8 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 + ($2).longValue())", constantExpression=true)
-	public static long operator_plus(byte a, Long b) {
+	public static long operator_plus(long a, Long b) {
 		return a + b.longValue();
-	}
-
-	/**
-	 *The binary <code>plus</code> operator. This is the equivalent to the Java <code>+</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a+b</code>
-	 */
-	@Pure
-	@Inline(value = "($1 + ($2).byteValue())", constantExpression=true)
-	public static int operator_plus(byte a, Byte b) {
-		return a + b.byteValue();
-	}
-
-	/**
-	 *The binary <code>plus</code> operator. This is the equivalent to the Java <code>+</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a+b</code>
-	 */
-	@Pure
-	@Inline(value = "($1 + ($2).doubleValue())", constantExpression=true)
-	public static double operator_plus(byte a, Double b) {
-		return a + b.doubleValue();
-	}
-
-	/**
-	 *The binary <code>plus</code> operator. This is the equivalent to the Java <code>+</code> operator.
-	 *
-	 * @param a a number.
-	 * @param b a number.
-	 * @return   <code>a+b</code>
-	 */
-	@Pure
-	@Inline(value = "($1 + ($2).intValue())", constantExpression=true)
-	public static int operator_plus(byte a, AtomicInteger b) {
-		return a + b.intValue();
 	}
 
 	/**
@@ -1193,7 +1154,46 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 + ($2).longValue())", constantExpression=true)
-	public static long operator_plus(byte a, AtomicLong b) {
+	public static long operator_plus(long a, Byte b) {
+		return a + b.longValue();
+	}
+
+	/**
+	 *The binary <code>plus</code> operator. This is the equivalent to the Java <code>+</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a+b</code>
+	 */
+	@Pure
+	@Inline(value = "($1 + ($2).doubleValue())", constantExpression=true)
+	public static double operator_plus(long a, Double b) {
+		return a + b.doubleValue();
+	}
+
+	/**
+	 *The binary <code>plus</code> operator. This is the equivalent to the Java <code>+</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a+b</code>
+	 */
+	@Pure
+	@Inline(value = "($1 + ($2).longValue())", constantExpression=true)
+	public static long operator_plus(long a, AtomicInteger b) {
+		return a + b.longValue();
+	}
+
+	/**
+	 *The binary <code>plus</code> operator. This is the equivalent to the Java <code>+</code> operator.
+	 *
+	 * @param a a number.
+	 * @param b a number.
+	 * @return   <code>a+b</code>
+	 */
+	@Pure
+	@Inline(value = "($1 + ($2).longValue())", constantExpression=true)
+	public static long operator_plus(long a, AtomicLong b) {
 		return a + b.longValue();
 	}
 
@@ -1205,9 +1205,9 @@ public final class PrimitiveByteExtensions {
 	 * @return   <code>a-b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 - ($2).shortValue())", constantExpression=true)
-	public static int operator_minus(byte a, Short b) {
-		return a - b.shortValue();
+	@Inline(value = "($1 - ($2).longValue())", constantExpression=true)
+	public static long operator_minus(long a, Short b) {
+		return a - b.longValue();
 	}
 
 /**
@@ -1218,9 +1218,9 @@ public final class PrimitiveByteExtensions {
 	 * @return   <code>a-b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 - ($2).intValue())", constantExpression=true)
-	public static int operator_minus(byte a, Integer b) {
-		return a - b.intValue();
+	@Inline(value = "($1 - ($2).longValue())", constantExpression=true)
+	public static long operator_minus(long a, Integer b) {
+		return a - b.longValue();
 	}
 
 /**
@@ -1232,7 +1232,7 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 - ($2).floatValue())", constantExpression=true)
-	public static float operator_minus(byte a, Float b) {
+	public static float operator_minus(long a, Float b) {
 		return a - b.floatValue();
 	}
 
@@ -1245,7 +1245,7 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 - ($2).longValue())", constantExpression=true)
-	public static long operator_minus(byte a, Long b) {
+	public static long operator_minus(long a, Long b) {
 		return a - b.longValue();
 	}
 
@@ -1257,9 +1257,9 @@ public final class PrimitiveByteExtensions {
 	 * @return   <code>a-b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 - ($2).byteValue())", constantExpression=true)
-	public static int operator_minus(byte a, Byte b) {
-		return a - b.byteValue();
+	@Inline(value = "($1 - ($2).longValue())", constantExpression=true)
+	public static long operator_minus(long a, Byte b) {
+		return a - b.longValue();
 	}
 
 /**
@@ -1271,7 +1271,7 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 - ($2).doubleValue())", constantExpression=true)
-	public static double operator_minus(byte a, Double b) {
+	public static double operator_minus(long a, Double b) {
 		return a - b.doubleValue();
 	}
 
@@ -1283,9 +1283,9 @@ public final class PrimitiveByteExtensions {
 	 * @return   <code>a-b</code>
 	 */
 	@Pure
-	@Inline(value = "($1 - ($2).intValue())", constantExpression=true)
-	public static int operator_minus(byte a, AtomicInteger b) {
-		return a - b.intValue();
+	@Inline(value = "($1 - ($2).longValue())", constantExpression=true)
+	public static long operator_minus(long a, AtomicInteger b) {
+		return a - b.longValue();
 	}
 
 /**
@@ -1297,7 +1297,7 @@ public final class PrimitiveByteExtensions {
 	 */
 	@Pure
 	@Inline(value = "($1 - ($2).longValue())", constantExpression=true)
-	public static long operator_minus(byte a, AtomicLong b) {
+	public static long operator_minus(long a, AtomicLong b) {
 		return a - b.longValue();
 	}
 
