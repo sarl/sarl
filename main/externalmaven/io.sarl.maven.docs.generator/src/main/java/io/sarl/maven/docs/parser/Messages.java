@@ -42,6 +42,7 @@ public class Messages extends NLS {
 	public static String SarlDocumentationParser_5;
 	public static String DynamicValidationContext_0;
 	public static String DynamicValidationContext_1;
+	public static String InvalidAnchorLabelException_0;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

@@ -25,9 +25,11 @@ import java.io.File;
 import java.io.Reader;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -176,41 +178,74 @@ public abstract class AbstractMarkerLanguageParser {
 	/** Read the given file and transform its content in order to have a raw text.
 	 *
 	 * @param inputFile the input file.
-	 * @return the raw file context.
+	 * @return the raw file content.
 	 */
-	public String transform(File inputFile) {
-		final String rawContent = getDocumentParser().transform(inputFile);
-		return postProcessingTransformation(rawContent);
+	public final String transform(File inputFile) {
+		return transform(inputFile, true);
 	}
 
 	/** Read the given input stream and transform its content in order to have a raw text.
 	 *
 	 * @param reader the input stream.
 	 * @param inputFile the name of the input file for locating included features and formatting error messages.
-	 * @return the raw file context.
+	 * @return the raw file content.
 	 */
-	public String transform(Reader reader, File inputFile) {
-		final String rawContent = getDocumentParser().transform(reader, inputFile);
-		return postProcessingTransformation(rawContent);
+	public final String transform(Reader reader, File inputFile) {
+		return transform(reader, inputFile, true);
 	}
 
 	/** Read the given input content and transform it in order to have a raw text.
 	 *
 	 * @param content the content to parse.
 	 * @param inputFile the name of the input file for locating included features and formatting error messages.
-	 * @return the raw file context.
+	 * @return the raw file content.
 	 */
-	public String transform(CharSequence content, File inputFile) {
+	public final String transform(CharSequence content, File inputFile) {
+		return transform(content, inputFile, true);
+	}
+
+	/** Read the given file and transform its content in order to have a raw text.
+	 *
+	 * @param inputFile the input file.
+	 * @param validationOfInternalLinks indicates if the internal links should be validated.
+	 * @return the raw file content.
+	 */
+	public String transform(File inputFile, boolean validationOfInternalLinks) {
+		final String rawContent = getDocumentParser().transform(inputFile);
+		return postProcessingTransformation(rawContent, validationOfInternalLinks);
+	}
+
+	/** Read the given input stream and transform its content in order to have a raw text.
+	 *
+	 * @param reader the input stream.
+	 * @param inputFile the name of the input file for locating included features and formatting error messages.
+	 * @param validationOfInternalLinks indicates if the internal links should be validated.
+	 * @return the raw file content.
+	 */
+	public String transform(Reader reader, File inputFile, boolean validationOfInternalLinks) {
+		final String rawContent = getDocumentParser().transform(reader, inputFile);
+		return postProcessingTransformation(rawContent, validationOfInternalLinks);
+	}
+
+	/** Read the given input content and transform it in order to have a raw text.
+	 *
+	 * @param content the content to parse.
+	 * @param inputFile the name of the input file for locating included features and formatting error messages.
+	 * @param validationOfInternalLinks indicates if the internal links should be validated.
+	 * @return the raw file content.
+	 */
+	public String transform(CharSequence content, File inputFile, boolean validationOfInternalLinks) {
 		final String rawContent = getDocumentParser().transform(content, inputFile);
-		return postProcessingTransformation(rawContent);
+		return postProcessingTransformation(rawContent, validationOfInternalLinks);
 	}
 
 	/** Post processing of the content for a transformation.
 	 *
 	 * @param content the extracted content.
+	 * @param validationOfInternalLinks indicates if the internal links should be validated.
 	 * @return the post processing result.
 	 */
-	protected abstract String postProcessingTransformation(String content);
+	protected abstract String postProcessingTransformation(String content, boolean validationOfInternalLinks);
 
 	/** Extract the validation components from the given file.
 	 *
@@ -246,7 +281,7 @@ public abstract class AbstractMarkerLanguageParser {
 			File rootFolder,
 			DynamicValidationContext context) {
 		return getSpecificValidationComponents(
-				transform(inputFile),
+				transform(inputFile, false),
 				inputFile,
 				rootFolder,
 				context);
@@ -264,7 +299,7 @@ public abstract class AbstractMarkerLanguageParser {
 			File rootFolder,
 			DynamicValidationContext context) {
 		return getSpecificValidationComponents(
-				transform(inputFile),
+				transform(inputFile, false),
 				inputFile,
 				rootFolder,
 				context);
@@ -337,6 +372,83 @@ public abstract class AbstractMarkerLanguageParser {
 					this.components.add(component);
 				}
 			}
+		}
+
+	}
+
+	/** Context that describes the references.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.7
+	 */
+	public static class ReferenceContext {
+
+		private static final String MANY = new String();
+
+		private Map<String, String> anchorToTitle = new TreeMap<>();
+
+		private Map<String, String> simpleAnchorToAnchor = new TreeMap<>();
+
+		private Map<String, String> titleToAnchor = new TreeMap<>();
+
+		/** Register a section.
+		 *
+		 * @param keyWithSectionNumber the key of the section with the section number.
+		 * @param keyWithoutSectionNumber the key of the section without the section number.
+		 * @param title the title of the section.
+		 */
+		public void registerSection(String keyWithSectionNumber, String keyWithoutSectionNumber, String title) {
+			this.anchorToTitle.put(keyWithSectionNumber, title);
+			if (this.simpleAnchorToAnchor.containsKey(keyWithoutSectionNumber)) {
+				this.simpleAnchorToAnchor.put(keyWithoutSectionNumber, MANY);
+			} else {
+				this.simpleAnchorToAnchor.put(keyWithoutSectionNumber, keyWithSectionNumber);
+			}
+			if (this.titleToAnchor.containsKey(title)) {
+				this.titleToAnchor.put(title, MANY);
+			} else {
+				this.titleToAnchor.put(title, keyWithSectionNumber);
+			}
+		}
+
+		/** Validate the given anchor and reply the one that is validated.
+		 *
+		 * @param anchor the anchor to validate.
+		 * @return the validated anchor text.
+		 */
+		public String validateAnchor(String anchor) {
+			if (!this.anchorToTitle.containsKey(anchor)) {
+				String anc = this.simpleAnchorToAnchor.get(anchor);
+				if (!Strings.isEmpty(anc) && anc != MANY) {
+					return anc;
+				}
+				anc = this.titleToAnchor.get(anchor);
+				if (!Strings.isEmpty(anc) && anc != MANY) {
+					return anc;
+				}
+				final String[] anchors = new String[this.anchorToTitle.size()];
+				int i = 0;
+				for (final String eanchor : this.anchorToTitle.keySet()) {
+					anchors[i] = eanchor;
+					++i;
+				}
+				Arrays.sort(anchors);
+				throw new InvalidAnchorLabelException(anchor, anchors);
+			}
+			return anchor;
+		}
+
+		@Override
+		public String toString() {
+			final StringBuilder b = new StringBuilder();
+			for (final String key : this.anchorToTitle.keySet()) {
+				b.append(key);
+				b.append("\n"); //$NON-NLS-1$
+			}
+			return b.toString();
 		}
 
 	}

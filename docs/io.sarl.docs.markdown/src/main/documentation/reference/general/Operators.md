@@ -23,7 +23,7 @@ of a binary expression. They work automatically when the corresponding infix ope
 
 
 <note>The assignment operator is the only one operator that cannot be overridden yet.
-See the [operator overloading section](#operator_overloading) for details.</note>
+See the [operator overloading section](#operator-overloading) for details.</note>
 
 
 ## Arithmetic operators
@@ -48,7 +48,7 @@ There are either unary (one operand) or binary (two operands).
 Each operator has an associated function name. This function contains
 the concrete implementation of the operational semantic of the
 operator. This function can be redefined as explained in the 
-[operator overloading section](#operator_overloading).
+[operator overloading section](#operator-overloading).
 
 
 ## Comparison operators
@@ -75,7 +75,7 @@ The comparison operators on primitive types are listed below.
 Each operator has an associated function name. This function contains
 the concrete implementation of the operational semantic of the
 operator. This function can be redefined as explained in the 
-operator overloading section](#operator_overloading).
+operator overloading section](#operator-overloading).
 
 
 ### Comparison operators on objects
@@ -97,7 +97,7 @@ The comparison operators on objects are listed below.
 Each operator has an associated function name. This function contains
 the concrete implementation of the operational semantic of the
 operator. This function can be redefined as explained in the
-operator overloading section](#operator_overloading).
+operator overloading section](#operator-overloading).
 
 
 ## Boolean Operators
@@ -116,7 +116,7 @@ replies the boolean value resulting from the operational semantic of the operato
 Each operator has an associated function name. This function contains
 the concrete implementation of the operational semantic of the
 operator. This function can be redefined as explained in the 
-[operator overloading section](#operator_overloading).
+[operator overloading section](#operator-overloading).
 
 
 ## Bitwise Operators
@@ -147,7 +147,7 @@ a numeric value.
 Each operator has an associated function name. This function contains
 the concrete implementation of the operational semantic of the
 operator. This function can be redefined as explained in the 
-[operator overloading section](#operator_overloading).
+[operator overloading section](#operator-overloading).
 
 Additional bitwise operators are available into the SARL library, but not associated to any operator:
 
@@ -175,7 +175,7 @@ The string operators are listed below. These operators are dedicated to strings 
 Each operator has an associated function name. This function contains
 the concrete implementation of the operational semantic of the
 operator. This function can be redefined as explained in the 
-[operator overloading section](#operator_overloading).
+[operator overloading section](#operator-overloading).
 
 
 ## Number Range operators
@@ -212,7 +212,7 @@ This section presents a collection of operators that define ranges of values.
 Each operator has an associated function name. This function contains
 the concrete implementation of the operational semantic of the
 operator. This function can be redefined as explained in the 
-[operator overloading section](#operator_overloading).
+[operator overloading section](#operator-overloading).
 
 
 ## Collection Operators
@@ -246,7 +246,7 @@ Most of the time, the first operand is the collection on which the operator must
 Each operator has an associated function name. This function contains
 the concrete implementation of the operational semantic of the
 operator. This function can be redefined as explained in the 
-[operator overloading section](#operator_overloading).
+[operator overloading section](#operator-overloading).
 
 
 ## Other operators
@@ -278,7 +278,7 @@ This section presents a collection of operators that are not related to the cate
 Each operator has an associated function name. This function contains
 the concrete implementation of the operational semantic of the
 operator. This function can be redefined as explained in the 
-[operator overloading section](#operator_overloading).
+[operator overloading section](#operator-overloading).
 
 For an example of the [:mapto:] operator, consider the class `Person` with two attributes inside: [:attr1:] and [:attr2:].
 The creation of an instance of `Person` could be done with:

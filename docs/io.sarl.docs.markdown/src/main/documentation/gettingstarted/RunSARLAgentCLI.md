@@ -8,9 +8,9 @@ This document explains how to launch an agent on the
 
 Three methods could be used for launching an agent with Janus:
 
-* [Using the provided janus command-line tool](#use_the_janus_command-line_tool);
-* [Using the standard java method](#use_the_standard_java_method);
-* [Using Maven execution plugin](#use_maven_execution_plugin).
+* [Using the provided janus command-line tool](#use-the-janus-command-line-tool);
+* [Using the standard java method](#use-the-standard-java-method);
+* [Using Maven execution plugin](#use-maven-execution-plugin).
 
 
 
@@ -101,7 +101,7 @@ For obtaining the list of these options, you should type:
 	java -cp app.jar io.janusproject.Boot --help
 
 
-## Use Maven ExecutionPlugin
+## Use Maven Execution Plugin
 
 Maven provides a plugin for launching an application after automatically building
 the application's classpath. This plugin may be used for launching an agent.

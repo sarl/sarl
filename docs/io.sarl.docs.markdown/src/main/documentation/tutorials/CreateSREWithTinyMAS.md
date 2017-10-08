@@ -1804,7 +1804,7 @@ instant during the tinyMAS agent life-cycle, we must define the
 agent living function (`live`) in the `TMSarlAgent` type.
 
 We assume that the `behaviorsSkill` field is defined and set
-(Section <a href="#Creating_built-in_capacity_instances_in_the_agent">Creating
+(Section <a href="#creating-built-in-capacity-instances-in-the-agent">Creating
 built-in capacity instances in the agent</a> explains how to proceed).
 This field contains a reference to the `BehaviorsSkill` skill owned by the agent.
 

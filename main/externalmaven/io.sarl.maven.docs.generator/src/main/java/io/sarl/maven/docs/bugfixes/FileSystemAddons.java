@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.maven.docs.bugs;
+package io.sarl.maven.docs.bugfixes;
 
 import java.io.File;
 import java.net.MalformedURLException;

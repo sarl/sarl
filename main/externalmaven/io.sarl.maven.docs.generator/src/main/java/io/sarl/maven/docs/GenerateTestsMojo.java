@@ -450,7 +450,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		it.decreaseIndentation().newLine();
 		it.append("}"); //$NON-NLS-1$
 		it.newLine().newLine();
-		it.append("public String computeHeaderId(String header) {"); //$NON-NLS-1$
+		it.append("public String computeHeaderIdWithSectionNumber(String header) {"); //$NON-NLS-1$
 		it.increaseIndentation().newLine();
 		it.append("String id = header.replaceAll(\"[^a-zA-Z0-9]+\", \"-\");").newLine(); //$NON-NLS-1$
 		it.append("id = id.toLowerCase();").newLine(); //$NON-NLS-1$
@@ -461,6 +461,14 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		it.append("return \"section\";"); //$NON-NLS-1$
 		it.decreaseIndentation().newLine();
 		it.append("}").newLine(); //$NON-NLS-1$
+		it.append("return id;"); //$NON-NLS-1$
+		it.decreaseIndentation().newLine();
+		it.append("}"); //$NON-NLS-1$
+		it.newLine().newLine();
+		it.append("public String computeHeaderIdWithoutSectionNumber(String header) {"); //$NON-NLS-1$
+		it.increaseIndentation().newLine();
+		it.append("String id = computeHeaderIdWithSectionNumber(header);").newLine(); //$NON-NLS-1$
+		it.append("id = id.replaceFirst(\"^[0-9.\\\\-]+\", \"\");").newLine(); //$NON-NLS-1$
 		it.append("return id;"); //$NON-NLS-1$
 		it.decreaseIndentation().newLine();
 		it.append("}"); //$NON-NLS-1$

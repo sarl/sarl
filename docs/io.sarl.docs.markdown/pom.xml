@@ -94,6 +94,7 @@
 					<addSectionLabels>true</addSectionLabels>
 					<outlineStyleId>page_outline</outlineStyleId>
 
+					<localLinkValidation>true</localLinkValidation>
 					<remoteLinkValidation>false</remoteLinkValidation>
 
 					<!--  <testSourceDirectory>src/main/generated-sources</testSourceDirectory>  -->
