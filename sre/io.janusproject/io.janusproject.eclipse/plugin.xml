@@ -10,7 +10,7 @@
 
   <extension point="org.eclipse.jdt.core.classpathContainerInitializer">
       <classpathContainerInitializer
-          id="io.janusproject.plugin.launching.JANUS_SUPPORT"
+          id="io.janusproject.eclipse.launching.JANUS_SUPPORT"
           class="io.janusproject.eclipse.buildpath.JanusClasspathContainerInitializer"/>
    </extension>
 
@@ -19,7 +19,7 @@
       <classpathContainerPage
             name="%classpathContainerPage.name"
             class="io.janusproject.eclipse.buildpath.JanusContainerWizardPage"
-            id="io.janusproject.plugin.launching.JANUS_SUPPORT">
+            id="io.janusproject.eclipse.launching.JANUS_SUPPORT">
       </classpathContainerPage>
    </extension>
 

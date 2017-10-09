@@ -38,9 +38,13 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class JanusEclipsePlugin extends AbstractUIPlugin {
 
-	/** Identifier of the plugin.
+	/** Identifier of the plugin for Eclipse integration of Janus.
 	 */
-	public static final String PLUGIN_ID = "io.janusproject.plugin"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "io.janusproject.eclipse"; //$NON-NLS-1$
+
+	/** Identifier of the plugin of Janus itself.
+	 */
+	public static final String JANUS_KERNEL_PLUGIN_ID = "io.janusproject.plugin"; //$NON-NLS-1$
 
 	private static JanusEclipsePlugin instance;
 
