@@ -62,7 +62,9 @@ public class SARLClasspathContainer extends AbstractSARLBasedClasspathContainer 
 
 	@Override
 	public int getKind() {
-		return K_APPLICATION;
+		// Must be K_SYSTEM in order to let the run-configuration launcher to replace the SARL
+		// libraries by the SRE libraries.
+		return K_SYSTEM;
 	}
 
 	@Override
