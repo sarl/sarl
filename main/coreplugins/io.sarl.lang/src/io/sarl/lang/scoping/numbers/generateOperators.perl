@@ -19,11 +19,11 @@ my %BI_ERRORS = (
 
 my %MONO_TEMPLATES = (
 	'operator_minus' => '
-	/**
-	 *The unary <code>minus</code> operator. This is the equivalent to the Java\'s <code>-</code> function.
+	/** The unary {@code minus} operator. This is the equivalent to
+	 * the Java\'s {@code -} function.
 	 *
 	 * @param i a number.
-	 * @return   <code>-i</code>
+	 * @return {@code -i}
 	 */
 	@Pure
 	@Inline(value = "(-#I)", constantExpression=true)
@@ -35,12 +35,12 @@ my %MONO_TEMPLATES = (
 
 my %BI_TEMPLATES = (
 	'operator_plus' => '
-	/**
-	 *The binary <code>plus</code> operator. This is the equivalent to the Java <code>+</code> operator.
+	/** The binary {@code plus} operator. This is the equivalent to
+	 * the Java {@code +} operator.
 	 *
 	 * @param a a number.
 	 * @param b a number.
-	 * @return   <code>a+b</code>
+	 * @return {@code a+b}
 	 */
 	@Pure
 	@Inline(value = "(#I1 + #I2)", constantExpression=true)
@@ -49,12 +49,12 @@ my %BI_TEMPLATES = (
 	}
 ',
 	'operator_minus' => '
-/**
-	 *The binary <code>minus</code> operator. This is the equivalent to the Java <code>-</code> operator.
+	/** The binary {@code minus} operator. This is the equivalent to
+	 * the Java {@code -} operator.
 	 *
 	 * @param a a number.
 	 * @param b a number.
-	 * @return   <code>a-b</code>
+	 * @return {@code a-b}
 	 */
 	@Pure
 	@Inline(value = "(#I1 - #I2)", constantExpression=true)
@@ -63,12 +63,12 @@ my %BI_TEMPLATES = (
 	}
 ',
 	'operator_multiply' => '
-	/**
-	 *The binary <code>multiply</code> operator. This is the equivalent to the Java <code>*</code> operator.
+	/** The binary {@code multiply} operator. This is the equivalent to
+	 * the Java {@code *} operator.
 	 *
 	 * @param a a number.
 	 * @param b a number.
-	 * @return   <code>a*b</code>
+	 * @return {@code a*b}
 	 */
 	@Pure
 	@Inline(value = "(#I1 * #I2)", constantExpression=true)
@@ -77,12 +77,12 @@ my %BI_TEMPLATES = (
 	}
 ',
 	'operator_divide' => '
-	/**
-	 *The binary <code>divide</code> operator. This is the equivalent to the Java <code>/</code> operator.
+	/** The binary {@code divide} operator. This is the equivalent to
+	 * the Java {@code /} operator.
 	 *
 	 * @param a a number.
 	 * @param b a number.
-	 * @return   <code>a/b</code>
+	 * @return {@code a/b}
 	 */
 	@Pure
 	@Inline(value = "(#I1 / #I2)", constantExpression=true)
@@ -91,12 +91,12 @@ my %BI_TEMPLATES = (
 	}
 ',
 	'operator_modulo' => '
-	/**
-	 *The binary <code>modulo</code> operator. This is the equivalent to the Java <code>%</code> operator.
+	/** The binary {@code modulo} operator. This is the equivalent to
+	 * the Java {@code %} operator.
 	 *
 	 * @param a a number.
 	 * @param b a number.
-	 * @return   <code>a%b</code>
+	 * @return {@code a%b}
 	 */
 	@Pure
 	@Inline(value = "(#I1 % #I2)", constantExpression=true)
@@ -105,12 +105,12 @@ my %BI_TEMPLATES = (
 	}
 ',
 	'operator_lessThan' => '
-	/**
-	 *The binary <code>lessThan</code> operator. This is the equivalent to the Java <code>&lt;</code> operator.
+	/** The binary {@code lessThan} operator. This is the equivalent to
+	 * the Java {@code &lt;} operator.
 	 *
 	 * @param a a number.
 	 * @param b a number.
-	 * @return   <code>a&lt;b</code>
+	 * @return {@code a&lt;b}
 	 */
 	@Pure
 	@Inline(value = "(#I1 < #I2)", constantExpression=true)
@@ -119,12 +119,12 @@ my %BI_TEMPLATES = (
 	}
 ',
 	'operator_lessEqualsThan' => '
-	/**
-	 *The binary <code>lessEqualsThan</code> operator. This is the equivalent to the Java <code>&lt;=</code> operator.
+	/** The binary {@code lessEqualsThan} operator. This is the equivalent
+	 * to the Java {@code &lt;=} operator.
 	 *
 	 * @param a a number.
 	 * @param b a number.
-	 * @return   <code>a&lt;=b</code>
+	 * @return {@code a&lt;=b}
 	 */
 	@Pure
 	@Inline(value = "(#I1 <= #I2)", constantExpression=true)
@@ -133,12 +133,12 @@ my %BI_TEMPLATES = (
 	}
 ',
 	'operator_greaterThan' => '
-	/**
-	 *The binary <code>greaterThan</code> operator. This is the equivalent to the Java <code>&gt;</code> operator.
+	/** The binary {@code greaterThan} operator. This is the equivalent
+	 * to the Java {@code &gt;} operator.
 	 *
 	 * @param a a number.
 	 * @param b a number.
-	 * @return   <code>a&gt;b</code>
+	 * @return {@code a&gt;b}
 	 */
 	@Pure
 	@Inline(value = "(#I1 > #I2)", constantExpression=true)
@@ -148,12 +148,12 @@ my %BI_TEMPLATES = (
 
 ',
 	'operator_greaterEqualsThan' => '
-	/**
-	 *The binary <code>greaterEqualsThan</code> operator. This is the equivalent to the Java <code>&gt;=</code> operator.
+	/** The binary {@code greaterEqualsThan} operator. This is the equivalent
+	 * to the Java {@code &gt;=} operator.
 	 *
 	 * @param a a number.
 	 * @param b a number.
-	 * @return   <code>a&gt;=b</code>
+	 * @return {@code a&gt;=b}
 	 */
 	@Pure
 	@Inline(value = "(#I1 >= #I2)", constantExpression=true)
@@ -163,11 +163,11 @@ my %BI_TEMPLATES = (
 ',
 	'operator_equals' => '
 	/**
-	 *The binary <code>equals</code> operator. This is the equivalent to the Java <code>==</code> operator.
+	 *The binary {@code equals} operator. This is the equivalent to the Java {@code ==} operator.
 	 *
 	 * @param a a number.
 	 * @param b a number.
-	 * @return   <code>a==b</code>
+	 * @return {@code a==b}
 	 */
 	@Pure
 	@Inline(value = "(#I1 == #I2)", constantExpression=true)
@@ -176,12 +176,12 @@ my %BI_TEMPLATES = (
 	}
 ',
 	'operator_notEquals' => '
-	/**
-	 *The binary <code>notEquals</code> operator. This is the equivalent to the Java <code>!=</code> operator.
+	/** The binary {@code notEquals} operator. This is the equivalent
+	 * to the Java {@code !=} operator.
 	 *
 	 * @param a a number.
 	 * @param b a number.
-	 * @return   <code>a!=b</code>
+	 * @return {@code a!=b}
 	 */
 	@Pure
 	@Inline(value = "(#I1 != #I2)", constantExpression=true)
@@ -190,12 +190,12 @@ my %BI_TEMPLATES = (
 	}
 ',
 	'operator_power' => '
-	/**
-	 *The binary <code>power</code> operator. This is the equivalent to the Java\'s <code>Math.pow()</code> function.
+	/** The binary {@code power} operator. This is the equivalent to
+	 * the Java\'s {@code Math.pow()} function.
 	 *
 	 * @param a a number.
 	 * @param b a number.
-	 * @return   <code>Math.pow(a, b)</code>
+	 * @return {@code Math::pow(a, b)}
 	 */
 	@Pure
 	@Inline(value = "$3.pow(#I1, #I2)", imported = Math.class)
@@ -274,9 +274,11 @@ sub apply1($$$$) {
 	my $r = "$_[0]";
 	my $rt = "$_[1]";
 	my $left = "$_[2]";
+	my $ucleft = ucfirst("$left");
 	my $acc1 = "$_[3]";
 	$r =~ s/\Q#RT\E/$rt/g;
 	$r =~ s/\Q#T\E/$left/g;
+	$r =~ s/\Q#UCT\E/$ucleft/g;
 	$r =~ s/\Q#A\E/i$acc1/g;
 	my $i1 = ($acc1) ? "(\$1)$acc1" : "\$1";
 	$r =~ s/\Q#I\E/$i1/g;
@@ -288,11 +290,15 @@ sub apply2($$$$$$) {
 	my $rt = "$_[1]";
 	my $left = "$_[2]";
 	my $right = "$_[3]";
+	my $ucleft = ucfirst("$left");
+	my $ucright = ucfirst("$right");
 	my $acc1 = "$_[4]";
 	my $acc2 = "$_[5]";
 	$r =~ s/\Q#RT\E/$rt/g;
 	$r =~ s/\Q#T1\E/$left/g;
 	$r =~ s/\Q#T2\E/$right/g;
+	$r =~ s/\Q#UCT1\E/$ucleft/g;
+	$r =~ s/\Q#UCT2\E/$ucright/g;
 	$r =~ s/\Q#A\E/a$acc1/g;
 	$r =~ s/\Q#B\E/b$acc2/g;
 	my $i1 = ($acc1) ? "(\$1)$acc1" : "\$1";
@@ -302,11 +308,15 @@ sub apply2($$$$$$) {
 	return $r;
 }
 
+while (my $file = glob("*OperatorExtensions.java")) {
+	unlink($file) or die("$file: $!\n");
+}
+
 my @FILES = ();
 
 for my $left (keys(%PRIMITIVES), keys(%OBJECTS), keys(%ATOMICS)) {
 	local *FILE;
-	my $basename = (($PRIMITIVES{$left}) ? "Primitive" . ucfirst($left) : ${left}). "Extensions";
+	my $basename = (($PRIMITIVES{$left}) ? "Primitive" . ucfirst($left) : ${left}). "OperatorExtensions";
 	push @FILES, $basename;
 	open(*FILE, "> ${basename}.java") or die("$!\n");
 	print FILE "/*
@@ -330,7 +340,9 @@ for my $left (keys(%PRIMITIVES), keys(%OBJECTS), keys(%ATOMICS)) {
  * limitations under the License.
  */
 
-package io.sarl.lang.bugfixes.pending.bug764;
+// THIS FILE IS AUTO-GENERATED. DO NOT CHANGE MANUALLY
+
+package io.sarl.lang.scoping.numbers;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -338,7 +350,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Provide static operators for atomic numbers.
+/** Provide static operators for numbers of type {\@code $left}.
  *
  * \@author \$Author: sgalland\$
  * \@version \$FullVersion\$
@@ -387,7 +399,7 @@ public final class ${basename} {
 }
 
 local *FILE;
-my $basename = "NumberExtensions";
+my $basename = "NumberOperatorExtensions";
 push @FILES, $basename;
 open(*FILE, "> ${basename}.java") or die("$!\n");
 print FILE "/*
@@ -411,12 +423,14 @@ print FILE "/*
  * limitations under the License.
  */
 
-package io.sarl.lang.bugfixes.pending.bug764;
+// THIS FILE IS AUTO-GENERATED. DO NOT CHANGE MANUALLY
+
+package io.sarl.lang.scoping.numbers;
 
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Provide static operators for atomic numbers.
+/** Provide static operators for numbers of type {\@code Number}.
  *
  * \@author \$Author: sgalland\$
  * \@version \$FullVersion\$
@@ -443,6 +457,6 @@ print FILE "\n\t// END GENERATED BLOCK\n\n}\n";
 close(*FILE);
 
 for my $file (@FILES) {
-	print "\t\txtextList.add($file.class);\n";
+	print "\t\tfeatures.add($file.class);\n";
 }
 
