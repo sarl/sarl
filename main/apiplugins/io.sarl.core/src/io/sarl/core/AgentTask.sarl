@@ -21,6 +21,7 @@
 
 package io.sarl.core
 
+import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.SRESpecificDataContainer
 
@@ -105,7 +106,9 @@ class AgentTask extends SRESpecificDataContainer {
 	/** Change the name of this task.
 	 *
 	 * @param name name of the task.
+	 * @since 0.7, it is part of the private API.
 	 */
+	@PrivateAPI
 	def setName(name : String) : void {
 		this.name = name
 	}

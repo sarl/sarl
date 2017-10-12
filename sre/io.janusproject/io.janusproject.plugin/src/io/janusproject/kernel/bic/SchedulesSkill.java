@@ -300,6 +300,24 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	}
 
 	@Override
+	public void setName(AgentTask task, String name) {
+		String nm = name;
+		int i = 0;
+		final String prefix = name + "-"; //$NON-NLS-1$
+		synchronized (getTaskListMutex()) {
+			final TaskDescription desc = this.tasks.remove(task.getName());
+			if (desc != null) {
+				while (this.tasks.containsKey(nm)) {
+					++i;
+					nm = prefix + i;
+				}
+				task.setName(nm);
+				this.tasks.put(nm, desc);
+			}
+		}
+	}
+
+	@Override
 	public final boolean cancel(AgentTask task) {
 		return cancel(task, Schedules.$DEFAULT_VALUE$CANCEL_0, true);
 	}

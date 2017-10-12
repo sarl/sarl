@@ -510,6 +510,18 @@ capacity Schedules {
 	def task(name : String) : AgentTask
 
 	/**
+	 * Change the name of the given task.
+	 *
+	 * <p>This function should not be directly invoked from a regular SARL code.
+	 * It is provided for enabling a SRE to change the name of a task.
+	 *
+	 * @param task the task to change.
+	 * @param name the new name of the task.
+	 * @since 0.7
+	 */
+	def setName(task : AgentTask, name : String)
+
+	/**
 	 * Attempts to cancel execution of this task.  This attempt will
 	 * fail if the task has already completed, has already been canceled,
 	 * or could not be canceled for some other reason. If successful,
