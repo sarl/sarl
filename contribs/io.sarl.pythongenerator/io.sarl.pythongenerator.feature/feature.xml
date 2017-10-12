@@ -230,10 +230,10 @@
       <import plugin="org.eclipse.xtext.util" version="2.12.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.ui" version="2.12.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtend.core" version="2.12.0" match="greaterOrEqual"/>
-      <import plugin="javax.inject" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.osgi" version="3.12.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui.forms" version="3.7.100" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.builder" version="2.12.0" match="greaterOrEqual"/>
+      <import plugin="javax.inject" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.osgi" version="3.12.50" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.forms" version="3.7.101" match="greaterOrEqual"/>
    </requires>
 
    <plugin

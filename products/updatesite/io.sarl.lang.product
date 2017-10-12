@@ -301,6 +301,7 @@
       <feature id="org.eclipse.platform"/>
       <feature id="org.eclipse.e4.rcp"/>
       <feature id="org.eclipse.wst.common_ui.feature"/>
+      <feature id="org.eclipse.userstorage"/>
    </features>
 
    <configurations>

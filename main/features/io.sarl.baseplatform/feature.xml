@@ -309,21 +309,6 @@
       <import plugin="org.eclipse.ui.workbench" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.jface" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.swt" version="3.4.0" match="compatible"/>
-      <import plugin="org.eclipse.core.runtime" version="3.2.0" match="compatible"/>
-      <import plugin="org.eclipse.core.resources" version="3.2.0" match="compatible"/>
-      <import plugin="org.eclipse.core.expressions" version="3.2.0" match="compatible"/>
-      <import plugin="org.eclipse.debug.core" version="3.2.0" match="compatible"/>
-      <import plugin="org.eclipse.wst.common.core" version="1.2.0" match="compatible"/>
-      <import plugin="org.eclipse.wst.server.discovery" version="1.0.0" match="compatible"/>
-      <import plugin="org.eclipse.equinox.p2.engine" version="2.0.0" match="compatible"/>
-      <import plugin="org.eclipse.equinox.p2.metadata" version="2.0.0" match="compatible"/>
-      <import plugin="org.eclipse.equinox.p2.director" version="1.0.100"/>
-      <import plugin="org.eclipse.equinox.p2.updatesite" version="1.0.100" match="compatible"/>
-      <import plugin="org.eclipse.equinox.p2.ui" version="2.0.0" match="compatible"/>
-      <import plugin="org.eclipse.equinox.p2.repository" version="2.0.0" match="compatible"/>
-      <import plugin="org.eclipse.equinox.p2.core" version="2.0.0" match="compatible"/>
-      <import plugin="org.eclipse.equinox.p2.operations" version="2.0.0" match="compatible"/>
-      <import plugin="org.eclipse.core.variables" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.ui.ide" version="3.13.0" match="compatible"/>
       <import plugin="org.eclipse.jface.text" version="3.10.0" match="compatible"/>
       <import plugin="org.eclipse.debug.ui" version="3.11.0" match="compatible"/>
@@ -361,8 +346,10 @@
       <import plugin="org.eclipse.jface" version="3.6.0" match="compatible"/>
       <import plugin="org.eclipse.ui" version="3.6.0" match="compatible"/>
       <import plugin="org.eclipse.userstorage" version="1.0.0" match="compatible"/>
+      <import plugin="org.eclipse.core.runtime" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.ui" version="3.3.0" match="compatible"/>
       <import plugin="org.eclipse.core.runtime" version="3.11.0" match="compatible"/>
+      <import plugin="org.eclipse.core.resources" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.jdt.core" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.team.core" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.update.configurator" version="3.1.0" match="compatible"/>
@@ -375,6 +362,9 @@
       <import plugin="org.eclipse.equinox.simpleconfigurator.manipulator" version="2.0.0" match="compatible"/>
       <import plugin="org.eclipse.equinox.frameworkadmin" version="2.0.0" match="compatible"/>
       <import plugin="org.eclipse.debug.core" version="3.5.0" match="compatible"/>
+      <import plugin="org.eclipse.equinox.p2.engine" version="2.0.0" match="compatible"/>
+      <import plugin="org.eclipse.equinox.p2.core" version="2.0.0" match="compatible"/>
+      <import plugin="org.eclipse.equinox.p2.metadata" version="2.0.0" match="compatible"/>
       <import plugin="org.eclipse.equinox.p2.director" version="2.1.0" match="compatible"/>
       <import plugin="org.eclipse.equinox.p2.artifact.repository" version="1.0.100" match="compatible"/>
       <import plugin="org.eclipse.equinox.p2.repository" version="2.0.0"/>
