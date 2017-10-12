@@ -80,14 +80,18 @@ capacity ExternalContextAccess {
 	 * <p>This actions registers the agent in the default Space of the context with the
 	 * ID <var>contextID</var>.
 	 *
-	 * <p>This function replies {@code false} is the given identifiers corresponds to a context in which
-	 * the agent is already member.
+	 * <p>This function replies {@code false} if one of the following conditions evaluates to true:
+	 * <ul>
+	 * <li>the agent is not alive;</li>
+	 * <li>the given context identifier does not corresponds to a known context;</li>
+	 * <li>the given space identifier is not the one of the context's default space;</li>
+	 * <li>the given context identifier corresponds to a context in which the agent is already member.</li>
+	 * </ul>
 	 *
 	 * @param contextID the identifier of the context to join.
 	 * @param expectedDefaultSpaceID the known identifier of the default space in the agent context with the given identifier.
-	 * @return {@code true} if the context was joined. {@code false} if the given context id does not corresponds to a known context,
-	 *     or the given space identifier is not the one of the context's default space, or the agent is already member
-	 *     of the context with the given identifier (default context, or any other external context).
+	 * @return {@code true} if the context was joined. {@code false} if one of the conditions described in
+	 *     the function's comment evaluates to true.
 	 * @fires ContextJoined in its inner Context default space (Behaviors#wake).
 	 * @fires MemberJoined in its parent Context default Space 
 	 */
@@ -100,11 +104,18 @@ capacity ExternalContextAccess {
 	 * the context to be leaved is the current default context of the agent, and there is no other context or
 	 * more than 1 other context that could be elected as the new default context.
 	 *
+	 * <p>This function replies {@code false} if one of the following conditions evaluates to true:
+	 * <ul>
+	 * <li>the agent is not alive;</li>
+	 * <li>the given context identifier does not corresponds to a known context;</li>
+	 * <li>the given context identifier corresponds to a context in which the agent is not member.</li>
+	 * <li>the given context identifier corresponds to a known external context, but there is no other
+	 * context to be elected as the new default context for the agent.</li>
+	 * </ul>
+	 *
 	 * @param contextID the identifier of the context to leave.
-	 * @return {@code true} if the agent has leaved the context. {@code false} if the agent has not leaved
-	 *     the context: identifier is not related to a joined context, or the identifier if related to
-	 *     the default context, and their is not a unique joined external context that is different than
-	 *     the default context.
+	 * @return {@code true} if the agent has leaved the context. {@code false} if one of the conditions described in
+	 *     the function's comment evaluates to true.
 	 * @fires ContextLeft in its inner Context default space (Behaviors#wake).
 	 * @fires MemberLeft in its parent Context default Space 
 	 */
@@ -281,6 +292,11 @@ capacity Behaviors {
 	 * If the filter function replies {@code true} for a specific event as argument, the event is fired in the
 	 * behavior context. If the filter function replies {@code false}, the event is not fired in the behavior context. 
 	 *
+	 * <p>This function does nothing if one of the following conditions evaluates to true:
+	 * <ul>
+	 * <li>the agent is not alive.</li>
+	 * </ul>
+	 *
 	 * @param attitude the behavior to add to the agent.
 	 * @param filter the filter that enables to indicates if an event is accepted by a behavior.
 	 * @return the given behavior.
@@ -299,11 +315,16 @@ capacity Behaviors {
 	/**
 	 * Wake the agent's behaviors reacting to the Event evt.
 	 *
-	 * <p>Note that the scope parameter could be used only for filtering the agents (the current agent and its sub-agents)
+	 * <p>Note that the scope parameter could be used only for filtering the agents (the current receiving agent)
 	 * in order to determine the ones that will receive the event.
 	 * The behaviors of the current agent (registered with {@link #registerBehavior(Behavior)} will always
-	 * receive the event if the current agent is not discarded. Indeed, because the behaviors have no associated address,
+	 * receive the event if the current agent is not discarded. Because the behaviors have no associated address,
 	 * they cannot be filtered individually.
+	 *
+	 * <p>This function does nothing if one of the following conditions evaluates to true:
+	 * <ul>
+	 * <li>the agent is not alive.</li>
+	 * </ul>
 	 *
 	 * @param event the event to emit to the agent's behaviors and in the internal context.
 	 * @param scope the definition of the scope that will be used for selected the receivers of the events.
@@ -330,9 +351,14 @@ capacity Lifecycle {
 	 * This action must automatically register the newly created agent
 	 * within the default space of the context.
 	 *
+	 * <p>This function does nothing if one of the following conditions evaluates to true:
+	 * <ul>
+	 * <li>the agent is not alive.</li>
+	 * </ul>
+	 *
 	 * @param agentType the type of the agent to spawn.
 	 * @param params the arguments to pass in the initialization event to the spawned agent.
-	 * @return the identifier of the spawned agent.
+	 * @return the identifier of the spawned agent, or {@code null} if the agent is not spawned.
 	 * @fires AgentSpawned in DefaultSpace
 	 * @since 0.5
 	 */
@@ -342,6 +368,11 @@ capacity Lifecycle {
 	 * Spawns a group of agents inside the default context of this agent.
 	 * This action must automatically register the newly created agents
 	 * within the default space of the context.
+	 *
+	 * <p>This function does nothing if one of the following conditions evaluates to true:
+	 * <ul>
+	 * <li>the agent is not alive.</li>
+	 * </ul>
 	 *
 	 * @param nbAgents the number of agents to spawn.
 	 * @param agentType the type of the agents to spawn.
@@ -356,6 +387,11 @@ capacity Lifecycle {
 	/**
 	 * Spawns a new member agent in the parent's context (parentID).
 	 *
+	 * <p>This function does nothing if one of the following conditions evaluates to true:
+	 * <ul>
+	 * <li>the agent is not alive.</li>
+	 * </ul>
+	 *
 	 * @param agentClass the type of the agent to spawn.
 	 * @param context the context in which the agent must be spawned.
 	 * @param params the arguments to pass to the initialization event that will be sent to the spawned agent.
@@ -366,6 +402,11 @@ capacity Lifecycle {
 	
 	/**
 	 * Spawns a group of agents in the parent's context (parentID).
+	 *
+	 * <p>This function does nothing if one of the following conditions evaluates to true:
+	 * <ul>
+	 * <li>the agent is not alive.</li>
+	 * </ul>
 	 *
 	 * @param nbAgents the number of agents to spawn.
 	 * @param agentClass the type of the agents to spawn.
@@ -380,6 +421,11 @@ capacity Lifecycle {
 
 	/**
 	 * Spawns a new member agent in the parent's context (parentID).
+	 *
+	 * <p>This function does nothing if one of the following conditions evaluates to true:
+	 * <ul>
+	 * <li>the agent is not alive.</li>
+	 * </ul>
 	 *
 	 * @param agentClass the type of the agent to spawn.
 	 * @param agentID the identifier of the spawned agent.
@@ -397,6 +443,11 @@ capacity Lifecycle {
 	 * and therefore all its spaces including the DefaultSpace.
 	 * If this is a composable agent, it must not have any members before calling this action. 
 	 * Otherwise a RuntimeException will be thrown.  
+	 *
+	 * <p>This function does nothing if one of the following conditions evaluates to true:
+	 * <ul>
+	 * <li>the agent is not alive.</li>
+	 * </ul>
 	 *
 	 * @fires AgentKilled in DefaultSpace of all Contexts to which this agent belongs
 	 * @fires Destroy inside the agent
@@ -427,6 +478,11 @@ capacity Schedules {
 	 * the created task will be associated to the behavior instance. It means that the task will
 	 * be automatically canceled when the behavior instance is unregistered from the the owning agent.
 	 *
+	 * <p>This function does nothing if one of the following conditions evaluates to true:
+	 * <ul>
+	 * <li>the agent is not alive.</li>
+	 * </ul>
+	 *
 	 * @param task the task that will run the given closure. If <code>null</code>, a new task is created.
 	 * @param delay time in milliseconds to delay the procedure execution.
 	 * @param procedure the closure to execute.
@@ -442,8 +498,14 @@ capacity Schedules {
 	 * to the behavior instance. It means that the task will be automatically canceled when the behavior
 	 * instance is unregistered from the the owning agent.
 	 *
+	 * <p>This function does nothing if one of the following conditions evaluates to true:
+	 * <ul>
+	 * <li>the agent is not alive.</li>
+	 * </ul>
+	 *
 	 * @param name the name of the task. If {@code null} or empty, a random name will be given to the task.
-	 * @return the task instance.
+	 * @return the task instance, or {@code null} if one of the conditions in the function's comment
+	 *      evaluates to true.
 	 */
 	def task(name : String) : AgentTask
 
@@ -507,6 +569,11 @@ capacity Schedules {
 	 * the created task will be associated to the behavior instance. It means that the task will
 	 * be automatically canceled when the behavior instance is unregistered from the the owning agent.
 	 *
+	 * <p>This function does nothing if one of the following conditions evaluates to true:
+	 * <ul>
+	 * <li>the agent is not alive.</li>
+	 * </ul>
+	 *
 	 * @param task the task to associate to the procedure. If <code>null</code> a new task is created.
 	 * @param period the number of milliseconds between two launches of the given procedure.
 	 * @param procedure the procedure to launch. The parameter of the procedure is the agent.
@@ -543,6 +610,11 @@ capacity Schedules {
 	 * {@code delay} is equal to zero. Indeed, if the {@code delay} is equal to zero, the task
 	 * should be run in an infinite loop until it is canceled, or the owning agent is killed.
 	 *
+	 * <p>This function does nothing if one of the following conditions evaluates to true:
+	 * <ul>
+	 * <li>the agent is not alive.</li>
+	 * </ul>
+	 *
 	 * @param task the task to associate to the procedure. If <code>null</code> a new task is created.
 	 * @param delay the delay in milliseconds.
 	 * @param procedure the procedure to launch. The parameter of the procedure is the agent.
@@ -558,6 +630,8 @@ capacity Schedules {
 	 * {@code in(0) [statements]}.
 	 *
 	 * <p>The given procedure takes one parameter: the agent associated to the task. It is name <code>it</code> by default.
+	 *
+	 * <p>This function is supposed to execute the given procedure, even if the agent is not alive.
 	 *
 	 * @param task the task to associate to the procedure. If <code>null</code> a new task is created.
 	 * @param procedure the procedure to launch. The parameter of the procedure is the agent.
