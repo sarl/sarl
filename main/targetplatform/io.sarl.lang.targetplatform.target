@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="io.sarl.lang.targetplatform" sequenceNumber="118">
+<?pde version="3.8"?><target name="io.sarl.lang.targetplatform" sequenceNumber="119">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.egit.feature.group" version="4.8.0.201706111038-r"/>
-<unit id="org.eclipse.epp.mpc.feature.group" version="1.6.1.v20170906-1830"/>
-<unit id="org.eclipse.equinox.executable.feature.group" version="3.7.1.v20170811-1325"/>
-<unit id="org.eclipse.jdt.feature.group" version="3.13.1.v20170906-1700"/>
-<unit id="org.eclipse.m2e.feature.feature.group" version="1.8.1.20170728-1531"/>
-<unit id="org.eclipse.pde.source.feature.group" version="3.13.1.v20170906-1700"/>
-<unit id="org.eclipse.platform.feature.group" version="4.7.1.v20170906-1700"/>
-<unit id="org.eclipse.platform.ide" version="4.7.1.M20170906-1700"/>
+<unit id="org.eclipse.epp.mpc.feature.group" version="1.6.2.v20171004-2006"/>
+<unit id="org.eclipse.equinox.executable.feature.group" version="3.7.1.v20170928-1359"/>
+<unit id="org.eclipse.jdt.feature.group" version="3.13.1.v20171009-0410"/>
+<unit id="org.eclipse.m2e.feature.feature.group" version="1.8.2.20171007-0217"/>
+<unit id="org.eclipse.pde.source.feature.group" version="3.13.1.v20171009-0537"/>
+<unit id="org.eclipse.platform.feature.group" version="4.7.1.v20171009-0410"/>
+<unit id="org.eclipse.platform.ide" version="4.7.1.M20171009-0410"/>
 <unit id="org.eclipse.wst.common_core.feature.feature.group" version="3.9.1.v201707201954"/>
 <unit id="org.eclipse.wst.common_ui.feature.feature.group" version="3.9.1.v201707201954"/>
 <unit id="org.eclipse.wst.xml_core.feature.feature.group" version="3.9.1.v201707042225"/>
