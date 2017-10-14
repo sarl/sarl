@@ -33,7 +33,7 @@ import org.arakhne.afc.vmutil.ClasspathUtil;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.xtext.xbase.lib.Functions.Function3;
 
-/** Shoulds functions.
+/** Extended Functions for writting facts within the documentation.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

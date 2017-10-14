@@ -8,6 +8,7 @@ The built-in capacity `[:schedules](Schedules)` enables the agent to schedule ta
 		      documented --> 
 		[:Fact:]{typeof(io.sarl.core.[:schedules!]).shouldHaveMethods(
 			"[:task](task)(java.lang.String) : io.sarl.core.[:agenttask](AgentTask)",
+			"[:setname](setName)(io.sarl.core.AgentTask, java.lang.String)",
 			"[:execute](execute)(org.eclipse.xtext.xbase.lib.Procedures$Procedure1) : io.sarl.core.AgentTask",
 			"execute(io.sarl.core.AgentTask, org.eclipse.xtext.xbase.lib.Procedures$Procedure1) : io.sarl.core.AgentTask",
 			"[:in](in)(io.sarl.core.AgentTask, long, org.eclipse.xtext.xbase.lib.Procedures$Procedure1) : io.sarl.core.AgentTask",
@@ -57,6 +58,45 @@ Example:
 			[:Off]
 		[:End:]
 
+
+## Changing the name of a task
+
+A task has a name that serves as its identifier. You could change the task name by calling the following function:
+
+		[:Success:]
+			package io.sarl.docs.reference.bic
+			import io.sarl.core.AgentTask
+			interface Tmp {
+			[:On]
+				def [:setname!](task : AgentTask, name : String)
+			[:Off]
+			}
+		[:End:]
+
+Example:
+
+		[:Success:]
+			package io.sarl.docs.reference.bic
+			import io.sarl.core.Initialize
+			import io.sarl.core.Schedules
+			import io.sarl.core.AgentTask
+			[:On]
+			agent A {
+				uses Schedules
+			
+				var t : AgentTask
+			
+				on Initialize {
+					t = task("abc")
+				}
+
+				def action {
+					this.task.setName("newName")
+				}
+				
+			}
+			[:Off]
+		[:End:]
 
 ## Launching a Task for a single run
 

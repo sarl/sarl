@@ -166,110 +166,96 @@ The extensions are described into categories.
 
 ### Collection Category
 
-The [:arrayext:] class extends the class `Array` with the following functions:
+The following functions are provided for extended the standard collection API:
 
-		[:ShowType:](org.eclipse.xtext.xbase.lib.[:arrayext]$ArrayExtensions$)
-
-The [:colext:] class extends the class `Collection` with the following functions:
-
-		[:ShowType:](org.eclipse.xtext.xbase.lib.[:colext]$CollectionExtensions$)
-
-The [:iterext:] class extends the class `Iterable` with the following functions:
-
-		[:ShowType:](org.eclipse.xtext.xbase.lib.[:iterext]$IterableExtensions$)
-
-The [:iterext2:] class extends the class `Iterator` with the following functions:
-
-		[:ShowType:](org.eclipse.xtext.xbase.lib.[:iterext2]$IteratorExtensions$)
-
-The [:listext:] class extends the class `List` with the following functions:
-
-		[:ShowType:](org.eclipse.xtext.xbase.lib.[:listext]$ListExtensions$)
-
-The [:mapext:] and [:sarlmapext:] classes extend the class `Map` with the following functions:
-
-		[:ShowType:](org.eclipse.xtext.xbase.lib.[:mapext]$MapExtensions$)
-
-		[:ShowType:](io.sarl.lang.scoping.batch.[:sarlmapext]$SARLMapExtensions$)
+[:DynamicCode:]{io.sarl.maven.docs.testing.ReflectExtensions.getPublicMethods(
+		org.eclipse.xtext.xbase.lib.ArrayExtensions,
+		org.eclipse.xtext.xbase.lib.CollectionExtensions,
+		org.eclipse.xtext.xbase.lib.IterableExtensions,
+		org.eclipse.xtext.xbase.lib.IteratorExtensions,
+		org.eclipse.xtext.xbase.lib.ListExtensions,
+		org.eclipse.xtext.xbase.lib.MapExtensions,
+		io.sarl.lang.scoping.batch.SARLMapExtensions)}
 
 
 ### Number Category
 
-The [:bdecext:] class extends the class `BigDecimal` with the following functions:
+The following functions are provided for extended the standard number API:
 
-		[:ShowType:](org.eclipse.xtext.xbase.lib.[:bdecext]$BigDecimalExtensions$)
-
-The [:bintext:] class extends the class `BigInteger` with the following functions:
-
-		[:ShowType:](org.eclipse.xtext.xbase.lib.[:bintext]$BigIntegerExtensions$)
-
-The [:byteext:] class extends the class `Byte` with the following functions:
-
-		[:ShowType:](org.eclipse.xtext.xbase.lib.[:byteext]$ByteExtensions$)
-
-The [:dblext:] class extends the class `Double` with the following functions:
-
-		[:ShowType:](org.eclipse.xtext.xbase.lib.[:dblext]$DoubleExtensions$)
-
-The [:fltext:] class extends the class `Float` with the following functions:
-
-		[:ShowType:](org.eclipse.xtext.xbase.lib.[:fltext]$FloatExtensions$)
-
-The [:intext:] class extends the class `Integer` with the following functions:
-
-		[:ShowType:](org.eclipse.xtext.xbase.lib.[:intext]$IntegerExtensions$)
-
-The [:longext:] class extends the class `Long` with the following functions:
-
-		[:ShowType:](org.eclipse.xtext.xbase.lib.[:longext]$LongExtensions$)
-
-The [:shortext:] class extends the class `Short` with the following functions:
-
-		[:ShowType:](org.eclipse.xtext.xbase.lib.[:shortext]$ShortExtensions$)
+[:DynamicCode:]{io.sarl.maven.docs.testing.ReflectExtensions.getPublicMethods(
+		org.eclipse.xtext.xbase.lib.BigDecimalExtensions,
+		org.eclipse.xtext.xbase.lib.BigIntegerExtensions,
+		org.eclipse.xtext.xbase.lib.ByteExtensions,
+		org.eclipse.xtext.xbase.lib.DoubleExtensions,
+		org.eclipse.xtext.xbase.lib.FloatExtensions,
+		org.eclipse.xtext.xbase.lib.IntegerExtensions,
+		org.eclipse.xtext.xbase.lib.LongExtensions,
+		org.eclipse.xtext.xbase.lib.ShortExtensions,
+		io.sarl.lang.scoping.numbers.PrimitiveByteOperatorExtensions,
+		io.sarl.lang.scoping.numbers.PrimitiveIntOperatorExtensions,
+		io.sarl.lang.scoping.numbers.PrimitiveShortOperatorExtensions,
+		io.sarl.lang.scoping.numbers.PrimitiveDoubleOperatorExtensions,
+		io.sarl.lang.scoping.numbers.PrimitiveFloatOperatorExtensions,
+		io.sarl.lang.scoping.numbers.PrimitiveLongOperatorExtensions,
+		io.sarl.lang.scoping.numbers.IntegerOperatorExtensions,
+		io.sarl.lang.scoping.numbers.ShortOperatorExtensions,
+		io.sarl.lang.scoping.numbers.DoubleOperatorExtensions,
+		io.sarl.lang.scoping.numbers.FloatOperatorExtensions,
+		io.sarl.lang.scoping.numbers.ByteOperatorExtensions,
+		io.sarl.lang.scoping.numbers.LongOperatorExtensions,
+		io.sarl.lang.scoping.numbers.AtomicLongOperatorExtensions,
+		io.sarl.lang.scoping.numbers.AtomicIntegerOperatorExtensions,
+		io.sarl.lang.scoping.numbers.NumberOperatorExtensions,
+		io.sarl.lang.scoping.numbers.IntegerCastExtensions,
+		io.sarl.lang.scoping.numbers.PrimitiveShortCastExtensions,
+		io.sarl.lang.scoping.numbers.AtomicLongCastExtensions,
+		io.sarl.lang.scoping.numbers.LongCastExtensions,
+		io.sarl.lang.scoping.numbers.AtomicIntegerCastExtensions,
+		io.sarl.lang.scoping.numbers.PrimitiveByteCastExtensions,
+		io.sarl.lang.scoping.numbers.PrimitiveDoubleCastExtensions,
+		io.sarl.lang.scoping.numbers.ShortCastExtensions,
+		io.sarl.lang.scoping.numbers.ByteCastExtensions,
+		io.sarl.lang.scoping.numbers.PrimitiveFloatCastExtensions,
+		io.sarl.lang.scoping.numbers.FloatCastExtensions,
+		io.sarl.lang.scoping.numbers.DoubleCastExtensions,
+		io.sarl.lang.scoping.numbers.PrimitiveLongCastExtensions,
+		io.sarl.lang.scoping.numbers.PrimitiveIntCastExtensions)}
 
 
 ### Primitive Type Category
 
-The [:boolext:] class extends the class `Boolean` with the following functions:
+The following functions are provided for extended the standard primitive type  API:
 
-		[:ShowType:](org.eclipse.xtext.xbase.lib.[:boolext]$BooleanExtensions$)
-
-The [:charext:] class extends the class `Character` with the following functions:
-
-		[:ShowType:](org.eclipse.xtext.xbase.lib.[:charext]$CharacterExtensions$)
+[:DynamicCode:]{io.sarl.maven.docs.testing.ReflectExtensions.getPublicMethods(
+		org.eclipse.xtext.xbase.lib.BooleanExtensions,
+		org.eclipse.xtext.xbase.lib.CharacterExtensions)}
 
 
 ### Object Type Category
 
-The [:compext:] class extends the class `Comparable` with the following functions:
+The following functions are provided for extended the Object types:
 
-		[:ShowType:](org.eclipse.xtext.xbase.lib.[:compext]$ComparableExtensions$)
-
-The [:objext:] class extends the class `Object` with the following functions:
-
-		[:ShowType:](org.eclipse.xtext.xbase.lib.[:objext]$ObjectExtensions$)
-
-The [:strext:] class extends the class `String` with the following functions:
-
-		[:ShowType:](org.eclipse.xtext.xbase.lib.[:strext]$StringExtensions$)
+[:DynamicCode:]{io.sarl.maven.docs.testing.ReflectExtensions.getPublicMethods(
+		org.eclipse.xtext.xbase.lib.ComparableExtensions,
+		org.eclipse.xtext.xbase.lib.ObjectExtensions,
+		org.eclipse.xtext.xbase.lib.StringExtensions)}
 
 
 ### Functions and Procedure Category
 
-The [:funcext:] class extends the function type with the following functions:
+The following functions are provided for extended the standard Lambda expression API:
 
-		[:ShowType:](org.eclipse.xtext.xbase.lib.[:funcext]$FunctionExtensions$)
-
-The [:procext:] class extends the procedure type with the following functions:
-
-		[:ShowType:](org.eclipse.xtext.xbase.lib.[:procext]$ProcedureExtensions$)
+[:DynamicCode:]{io.sarl.maven.docs.testing.ReflectExtensions.getPublicMethods(
+		org.eclipse.xtext.xbase.lib.FunctionExtensions,
+		org.eclipse.xtext.xbase.lib.ProcedureExtensions)}
 
 
 ### Time Category
 
-The [:timeext:] class extends the number classes with the following time-based functions:
+The following functions are provided for extended the standard time API:
 
-		[:ShowType:](io.sarl.lang.scoping.batch.[:timeext]$SARLTimeExtensions$)
+[:DynamicCode:]{io.sarl.maven.docs.testing.ReflectExtensions.getPublicMethods(
+		io.sarl.lang.scoping.batch.SARLTimeExtensions)}
 
 
 

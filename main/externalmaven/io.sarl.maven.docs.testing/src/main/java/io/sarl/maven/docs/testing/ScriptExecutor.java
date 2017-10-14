@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.ImplementedBy;
+import org.arakhne.afc.vmutil.FileSystem;
 
 import io.sarl.lang.compiler.batch.ICompilatedResourceReceiver;
 
@@ -73,7 +74,10 @@ public interface ScriptExecutor {
 	 */
 	default List<String> compile(int lineno, String code) throws Exception {
 		List<String> issues = new ArrayList<>();
-		compile(lineno, code, issues, null);
+		final CompiledFile file = compile(lineno, code, issues, null);
+		if (file != null && file.getRootFolder() != null) {
+			FileSystem.delete(file.getRootFolder());
+		}
 		return issues;
 	}
 
@@ -86,7 +90,7 @@ public interface ScriptExecutor {
 	 * @return the file which contains the compiled code.
 	 * @throws Exception if compilation failed.
 	 */
-	File compile(int lineno, String code, List<String> issues, ICompilatedResourceReceiver receiver) throws Exception;
+	CompiledFile compile(int lineno, String code, List<String> issues, ICompilatedResourceReceiver receiver) throws Exception;
 
 	/** Execute the given code for obtaining a string.
 	 *
@@ -97,4 +101,45 @@ public interface ScriptExecutor {
 	 */
 	Object execute(int lineno, String code) throws Exception;
 
+	/** Represents a compiled file.
+	 * 
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.7
+	 */
+	public final class CompiledFile {
+
+		private final File rootFolder;
+
+		private final File file;
+
+		/** Constructor.
+		 *
+		 * @param root the root folder.
+		 * @param file the compiled file.
+		 */
+		public CompiledFile(File root, File file) {
+			this.rootFolder = root;
+			this.file = file;
+		}
+
+		/** Replies the root folder.
+		 *
+		 * @return the root folder.
+		 */
+		public File getRootFolder() {
+			return this.rootFolder;
+		}
+
+		/** Replies the compiled file.
+		 *
+		 * @return the compiled file.
+		 */
+		public File getCompiledFile() {
+			return this.file;
+		}
+
+	}
 }

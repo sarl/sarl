@@ -32,6 +32,7 @@ import javax.inject.Inject;
 
 import com.google.common.io.Files;
 import com.google.inject.Injector;
+import com.google.inject.Provider;
 import org.apache.log4j.Level;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -67,9 +68,9 @@ public class SarlScriptExecutor implements ScriptExecutor {
 
 	private String sourceVersion = Strings.emptyIfNull(null);
 
-	private SarlBatchCompiler compiler;
+	private Provider<SarlBatchCompiler> compilerProvider;
 
-	private IExpressionInterpreter interpreter;
+	private Provider<IExpressionInterpreter> interpreterProvider;
 
 	/** Change the injector.
 	 *
@@ -77,10 +78,8 @@ public class SarlScriptExecutor implements ScriptExecutor {
 	 */
 	@Inject
 	public void setInjector(Injector injector) {
-		if (injector != null) {
-			this.compiler = injector.getInstance(SarlBatchCompiler.class);
-			this.interpreter = injector.getInstance(IExpressionInterpreter.class);
-		}
+		this.compilerProvider = injector.getProvider(SarlBatchCompiler.class);
+		this.interpreterProvider = injector.getProvider(IExpressionInterpreter.class);
 	}
 
 	@Override
@@ -127,62 +126,72 @@ public class SarlScriptExecutor implements ScriptExecutor {
 	}
 
 	@Override
-	public File compile(int lineno, String code, List<String> issues, ICompilatedResourceReceiver receiver) throws Exception {
+	public CompiledFile compile(int lineno, String code, List<String> issues, ICompilatedResourceReceiver receiver) throws Exception {
 		File rootFolder = createRootFolder();
 		File sourceFolder = createSourceFolder(rootFolder);
 		File genFolder = createGenFolder(rootFolder);
 		File binFolder = createBinFolder(rootFolder);
-		this.compiler.setBasePath(rootFolder.getAbsolutePath());
-		this.compiler.addSourcePath(sourceFolder);
-		this.compiler.setClassOutputPath(binFolder);
-		this.compiler.setOutputPath(genFolder);
-		this.compiler.setGenerateGeneratedAnnotation(false);
-		this.compiler.setGenerateInlineAnnotation(false);
-		this.compiler.setGenerateSyntheticSuppressWarnings(true);
-		this.compiler.setDeleteTempDirectory(false);
-		this.compiler.setClassPath(this.classpath);
-		this.compiler.setBootClassPath(this.bootClasspath);
-		this.compiler.setJavaSourceVersion(this.sourceVersion);
-		this.compiler.setAllWarningSeverities(Severity.IGNORE);
-		this.compiler.setWarningSeverity(IssueCodes.DEPRECATED_MEMBER_REFERENCE, Severity.ERROR);
-		this.compiler.setJavaCompilerVerbose(false);
-		this.compiler.getLogger().setLevel(Level.OFF);
-		this.compiler.addIssueMessageListener((issue, uri, message) -> {
-			if (issue.isSyntaxError() || issue.getSeverity().compareTo(Severity.ERROR) >= 0) {
+		final SarlBatchCompiler compiler = this.compilerProvider.get();
+		compiler.setBasePath(rootFolder.getAbsolutePath());
+		compiler.addSourcePath(sourceFolder);
+		compiler.setClassOutputPath(binFolder);
+		compiler.setOutputPath(genFolder);
+		compiler.setGenerateGeneratedAnnotation(false);
+		compiler.setGenerateInlineAnnotation(false);
+		compiler.setGenerateSyntheticSuppressWarnings(true);
+		compiler.setDeleteTempDirectory(false);
+		compiler.setClassPath(this.classpath);
+		compiler.setBootClassPath(this.bootClasspath);
+		compiler.setJavaSourceVersion(this.sourceVersion);
+		compiler.setAllWarningSeverities(Severity.IGNORE);
+		compiler.setWarningSeverity(IssueCodes.DEPRECATED_MEMBER_REFERENCE, Severity.ERROR);
+		compiler.setJavaCompilerVerbose(false);
+		compiler.getLogger().setLevel(Level.OFF);
+		compiler.addIssueMessageListener((issue, uri, message) -> {
+			if (issue.isSyntaxError() || issue.getSeverity() == Severity.ERROR) {
 				final Integer line = issue.getLineNumber();
 				final int issueLine = (line == null ? 0 : line.intValue()) + lineno;
 				issues.add(message + "(line " + issueLine + ")"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		});
 		if (receiver != null) {
-			this.compiler.addCompiledResourceReceiver(receiver);
+			compiler.addCompiledResourceReceiver(receiver);
 		}
 		File file = createFile(sourceFolder, code);
-		if (this.compiler.compile()) {
-			issues.clear();
-		}
-		return file;
+		compiler.compile();
+		return new CompiledFile(rootFolder, file);
 	}
 
 	@Override
 	public Object execute(int lineno, String code) throws Exception {
 		final List<String> issues = new ArrayList<>();
 		final Collection<Resource> resources = new ArrayList<>();
-		compile(lineno, "package x.x.x; class ____Fake_Class____ { var __fake_attr__ : Object = { " + code + " }; }", //$NON-NLS-1$ //$NON-NLS-2$
+		final CompiledFile outFile = compile(lineno,
+				"package x.x.x; class ____Fake_Class____ { var __fake_attr__ : Object = { " + code + " }; }", //$NON-NLS-1$ //$NON-NLS-2$
 				issues, (it) -> {
 					resources.add(it);
 				});
-		assertNoIssue(lineno, issues);
-		for (Resource resource : resources) {
-			SarlScript script = (SarlScript) resource.getContents().get(0);
-			SarlClass clazz = (SarlClass) script.getXtendTypes().get(0);
-			SarlField field = (SarlField) clazz.getMembers().get(0);
-			XExpression xexpression = field.getInitialValue();
-			IEvaluationResult result = this.interpreter.evaluate(xexpression);
-			if (result.getException() == null) {
-				return result.getResult();
+		try {
+			if (resources.isEmpty()) {
+				throw new IllegalStateException("No Xtext resource created [line:" + lineno + "]"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
-			return result.getException();
+			assertNoIssue(lineno, issues);
+			for (Resource resource : resources) {
+				SarlScript script = (SarlScript) resource.getContents().get(0);
+				SarlClass clazz = (SarlClass) script.getXtendTypes().get(0);
+				SarlField field = (SarlField) clazz.getMembers().get(0);
+				XExpression xexpression = field.getInitialValue();
+				final IExpressionInterpreter interpreter = this.interpreterProvider.get();
+				IEvaluationResult result = interpreter.evaluate(xexpression);
+				if (result.getException() == null) {
+					return result.getResult();
+				}
+				throw new RuntimeException(result.getException());
+			}
+		} finally {
+			if (outFile != null && outFile.getRootFolder() != null) {
+				FileSystem.delete(outFile.getRootFolder());
+			}
 		}
 		return null;
 	}

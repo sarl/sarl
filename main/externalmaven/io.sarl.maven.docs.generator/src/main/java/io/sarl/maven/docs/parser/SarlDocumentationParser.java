@@ -27,12 +27,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.lang.ref.WeakReference;
-import java.lang.reflect.GenericArrayType;
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.reflect.WildcardType;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -57,18 +51,13 @@ import com.google.inject.Injector;
 import org.apache.commons.lang3.tuple.MutableTriple;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.arakhne.afc.vmutil.ReflectionUtil;
-import org.eclipse.jdt.core.Flags;
 import org.eclipse.xtext.Constants;
-import org.eclipse.xtext.xbase.lib.Functions;
 import org.eclipse.xtext.xbase.lib.Functions.Function2;
-import org.eclipse.xtext.xbase.lib.Procedures;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
-import io.sarl.lang.annotation.DefaultValue;
-import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.util.OutParameter;
-import io.sarl.lang.util.Utils;
+import io.sarl.maven.docs.testing.ReflectExtensions;
 import io.sarl.maven.docs.testing.ScriptExecutor;
 
 /** Generator of the marker language files for the modified marker language for SARL.
@@ -930,7 +919,12 @@ public class SarlDocumentationParser {
 							blockContent = null;
 						}
 						specialTagFound = true;
-						context.getParserInterceptor().tag(context, tag, tagDynamicName, parameterValue, blockContent);
+						try {
+							context.getParserInterceptor().tag(context, tag, tagDynamicName, parameterValue, blockContent);
+						} catch (Throwable exception) {
+							reportError(context, Messages.SarlDocumentationParser_6, tagName, exception);
+							return false;
+						}
 					} else {
 						// Ignore the tag for this stage.
 					}
@@ -960,15 +954,23 @@ public class SarlDocumentationParser {
 	 *     the filename. The second argument is the line number. The third argument is the position in the file.
 	 * @param parameter additional parameter, starting at {4}.
 	 */
-	protected static void reportError(ParsingContext context, String message, Object parameter) {
+	protected static void reportError(ParsingContext context, String message, Object... parameter) {
 		final File file = context.getCurrentFile();
 		final int offset = context.getMatcher().start() + context.getStartIndex();
 		final int lineno = context.getLineNo();
 		Throwable cause = null;
-		if (parameter instanceof Throwable) {
-			cause = (Throwable) parameter;
+		for (final Object param : parameter) {
+			if (param instanceof Throwable) {
+				cause = (Throwable) param;
+				break;
+			}
 		}
-		final String msg = MessageFormat.format(message, file, lineno, offset, parameter);
+		final Object[] args = new Object[parameter.length + 3];
+		args[0] = file;
+		args[1] = lineno;
+		args[2] = offset;
+		System.arraycopy(parameter, 0, args, 3, parameter.length);
+		final String msg = MessageFormat.format(message, args);
 		if (cause != null) {
 			throw new ParsingException(msg, file, lineno, cause);
 		}
@@ -2131,6 +2133,74 @@ public class SarlDocumentationParser {
 			}
 		},
 
+		/** {@code [:DynamicCode:](code)} returns the text to put in the documentation text within a code block.
+		 *
+		 * @since 0.7
+		 */
+		DYNAMIC_CODE {
+			@Override
+			public String getDefaultPattern() {
+				return DEFAULT_DYNAMIC_CODE_PATTERN;
+			}
+
+			@Override
+			public boolean hasDynamicName() {
+				return false;
+			}
+
+			@Override
+			public boolean hasParameter() {
+				return true;
+			}
+
+			@Override
+			public boolean isOpeningTag() {
+				return false;
+			}
+
+			@Override
+			public String passThrough(ParsingContext context, String dynamicTag, String parameter, String blockValue) {
+				if (context.isInBlock()) {
+					reportError(context, Messages.SarlDocumentationParser_5, name());
+					return null;
+				}
+				String code = blockValue;
+				if (Strings.isNullOrEmpty(code)) {
+					code = parameter;
+				}
+				if (!Strings.isNullOrEmpty(code)) {
+					final ScriptExecutor executor = context.getScriptExecutor();
+					if (executor != null) {
+						try {
+							final Object result = executor.execute(context.getLineNo(), code);
+							if (result != null) {
+								final String stringResult = Strings.nullToEmpty(Objects.toString(result));
+								return formatBlockText(stringResult, context.getOutputLanguage(), context.getBlockCodeFormat());
+							}
+						} catch (Exception exception) {
+							Throwables.propagate(exception);
+						}
+					}
+				}
+				return ""; //$NON-NLS-1$
+			}
+
+			@Override
+			public boolean isActive(ParsingContext context) {
+				return context.isParsing() && context.getStage() == Stage.FIRST;
+			}
+
+			@Override
+			public boolean isEnclosingSpaceCouldRemovable() {
+				return false;
+			}
+
+			@Override
+			public boolean isInternalTextAsBlockContent() {
+				return true;
+			}
+		},
+
 		/** {@code [:On]} switches on the output of the code.
 		 */
 		ON {
@@ -2402,25 +2472,25 @@ public class SarlDocumentationParser {
 				}
 				final String block;
 				if (javaType.isInterface()) {
-					block = extractInterface(context, javaType);
+					block = extractInterface(javaType);
 				} else if (javaType.isEnum()) {
 					block = extractEnumeration(javaType);
 				} else if (javaType.isAnnotation()) {
-					block = extractAnnotation(context, javaType);
+					block = extractAnnotation(javaType);
 				} else {
-					block = extractClass(context, javaType);
+					block = extractClass(javaType);
 				}
 				return formatBlockText(block, context.getOutputLanguage(), context.getBlockCodeFormat());
 			}
 
-			private String extractInterface(ParsingContext context, Class<?> type) {
+			private String extractInterface(Class<?> type) {
 				final StringBuilder it = new StringBuilder();
 				it.append("interface ").append(type.getSimpleName()); //$NON-NLS-1$
 				if (type.getSuperclass() != null && !Object.class.equals(type.getSuperclass())) {
 					it.append(" extends ").append(type.getSuperclass().getSimpleName()); //$NON-NLS-1$
 				}
 				it.append(" {\n"); //$NON-NLS-1$
-				extractPublicMethods(context, it, type);
+				ReflectExtensions.appendPublicMethods(it, true, type);
 				it.append("}"); //$NON-NLS-1$
 				return it.toString();
 			}
@@ -2436,16 +2506,16 @@ public class SarlDocumentationParser {
 				return it.toString();
 			}
 
-			private String extractAnnotation(ParsingContext context, Class<?> type) {
+			private String extractAnnotation(Class<?> type) {
 				final StringBuilder it = new StringBuilder();
 				it.append("interface ").append(type.getSimpleName()); //$NON-NLS-1$
 				it.append(" {\n"); //$NON-NLS-1$
-				extractPublicMethods(context, it, type);
+				ReflectExtensions.appendPublicMethods(it, true, type);
 				it.append("}"); //$NON-NLS-1$
 				return it.toString();
 			}
 
-			private String extractClass(ParsingContext context, Class<?> type) {
+			private String extractClass(Class<?> type) {
 				final StringBuilder it = new StringBuilder();
 				it.append("interface ").append(type.getSimpleName()); //$NON-NLS-1$
 				if (type.getSuperclass() != null && !Object.class.equals(type.getSuperclass())) {
@@ -2469,119 +2539,9 @@ public class SarlDocumentationParser {
 					}
 				}
 				it.append(" {\n"); //$NON-NLS-1$
-				extractPublicMethods(context, it, type);
+				ReflectExtensions.appendPublicMethods(it, true, type);
 				it.append("}"); //$NON-NLS-1$
 				return it.toString();
-			}
-
-			private boolean isDeprecated(Method method) {
-				return Flags.isDeprecated(method.getModifiers()) || method.getAnnotation(Deprecated.class) != null;
-			}
-
-			private void extractPublicMethods(ParsingContext context, StringBuilder it, Class<?> type) {
-				for (final Method method : type.getDeclaredMethods()) {
-					if (Flags.isPublic(method.getModifiers()) && !Utils.isHiddenMember(method.getName())
-							&& !isDeprecated(method) && !method.isSynthetic()
-							&& method.getAnnotation(SyntheticMember.class) == null) {
-						it.append("\tdef ").append(method.getName()); //$NON-NLS-1$
-						if (method.getParameterCount() > 0) {
-							it.append("("); //$NON-NLS-1$
-							boolean first = true;
-							int i = 1;
-							for (final Parameter param : method.getParameters()) {
-								if (first) {
-									first = false;
-								} else {
-									it.append(", "); //$NON-NLS-1$
-								}
-								//it.append(param.getName());
-								//it.append(" : "); //$NON-NLS-1$
-								toType(it, param.getParameterizedType(), method.isVarArgs() && i == method.getParameterCount());
-								final DefaultValue defaultValue = param.getAnnotation(DefaultValue.class);
-								if (defaultValue != null) {
-									final String fieldName = context.getParser().getActionPrototypeProvider().toJavaArgument(
-											"", defaultValue.value()); //$NON-NLS-1$
-									it.append(" = "); //$NON-NLS-1$
-									it.append(fieldName);
-								}
-							}
-							it.append(")"); //$NON-NLS-1$
-							++i;
-						}
-						if (method.getGenericReturnType() != null && !Objects.equals(method.getGenericReturnType(), Void.class)
-								&& !Objects.equals(method.getGenericReturnType(), void.class)) {
-							it.append(" : "); //$NON-NLS-1$
-							toType(it, method.getGenericReturnType(), false);
-						}
-						it.append("\n"); //$NON-NLS-1$
-					}
-				}
-			}
-
-			@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
-			private void toType(StringBuilder it, Type otype, boolean isVarArg) {
-				final Type type;
-				if (otype instanceof Class<?>) {
-					type = isVarArg ? ((Class<?>) otype).getComponentType() : otype;
-				} else {
-					type = otype;
-				}
-				if (type instanceof Class<?>) {
-					it.append(((Class<?>) type).getSimpleName());
-				} else if (type instanceof ParameterizedType) {
-					final ParameterizedType paramType = (ParameterizedType) type;
-					final Type ownerType = paramType.getOwnerType();
-					final boolean isForFunction = ownerType != null && Functions.class.getName().equals(ownerType.getTypeName());
-					final boolean isForProcedure = ownerType != null && Procedures.class.getName().equals(ownerType.getTypeName());
-					if (!isForFunction && !isForProcedure) {
-						it.append(((Class<?>) paramType.getRawType()).getSimpleName());
-						if (paramType.getActualTypeArguments().length > 0) {
-							it.append("<"); //$NON-NLS-1$
-							boolean first = true;
-							for (final Type subtype : paramType.getActualTypeArguments()) {
-								if (first) {
-									first = false;
-								} else {
-									it.append(", "); //$NON-NLS-1$
-								}
-								final StringBuilder it2 = new StringBuilder();
-								toType(it2, subtype, false);
-								it.append(it2);
-							}
-							it.append(">"); //$NON-NLS-1$
-						}
-					} else {
-						int nb = paramType.getActualTypeArguments().length;
-						if (isForFunction) {
-							--nb;
-						}
-						it.append("("); //$NON-NLS-1$
-						for (int i = 0; i < nb; ++i) {
-							final Type subtype = paramType.getActualTypeArguments()[i];
-							if (i > 0) {
-								it.append(", "); //$NON-NLS-1$
-							}
-							toType(it, subtype, false);
-						}
-						it.append(") => "); //$NON-NLS-1$
-						if (isForFunction) {
-							toType(it, paramType.getActualTypeArguments()[nb], false);
-						} else {
-							it.append("void"); //$NON-NLS-1$
-						}
-					}
-				} else if (type instanceof WildcardType) {
-					final Type[] types = ((WildcardType) type).getUpperBounds();
-					toType(it, types[0], false);
-				} else if (type instanceof GenericArrayType) {
-					toType(it, ((GenericArrayType) type).getGenericComponentType(), false);
-					it.append("[]"); //$NON-NLS-1$
-				} else {
-					it.append(Object.class.getSimpleName());
-				}
-				if (isVarArg) {
-					it.append("*"); //$NON-NLS-1$
-				}
 			}
 
 			@Override
@@ -2755,6 +2715,12 @@ public class SarlDocumentationParser {
 		/** Default pattern.
 		 */
 		static final String DEFAULT_DYNAMIC_PATTERN = "\\[:Dynamic:\\]"; //$NON-NLS-1$
+
+		/** Default pattern.
+		 *
+		 * @since 0.7
+		 */
+		static final String DEFAULT_DYNAMIC_CODE_PATTERN = "\\[:DynamicCode:\\]"; //$NON-NLS-1$
 
 		/** Default pattern.
 		 */

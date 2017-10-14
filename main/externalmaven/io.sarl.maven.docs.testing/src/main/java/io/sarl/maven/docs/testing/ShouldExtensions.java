@@ -65,7 +65,7 @@ import org.eclipse.xtext.xbase.XTypeLiteral;
 import org.eclipse.xtext.xbase.lib.Pair;
 import org.osgi.framework.Version;
 
-/** Shoulds functions.
+/** Should functions for the documentation facts.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

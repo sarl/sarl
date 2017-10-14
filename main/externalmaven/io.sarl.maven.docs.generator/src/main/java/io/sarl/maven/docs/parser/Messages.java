@@ -40,6 +40,7 @@ public class Messages extends NLS {
 	public static String SarlDocumentationParser_3;
 	public static String SarlDocumentationParser_4;
 	public static String SarlDocumentationParser_5;
+	public static String SarlDocumentationParser_6;
 	public static String DynamicValidationContext_0;
 	public static String DynamicValidationContext_1;
 	public static String InvalidAnchorLabelException_0;

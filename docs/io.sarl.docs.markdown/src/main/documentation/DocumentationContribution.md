@@ -131,6 +131,15 @@ The `Dynamic` macro is supposed to replies a value that could be interpreted as 
 The given string of characters will replace the `Dynamic` macro into the generated Markdown text.
 
 
+The replied value by `Dynamic` is assumed to be a valid Markdown text. If this value should
+be automatically formatted within a block of code, you should use the following macro: 
+
+[:ParserOff]
+```text
+[:DynamicCode:](expression)
+```
+[:ParserOn]
+
 ### Generate code from Java type
 
 You could generate a piece of code from a Java type with the following macro:

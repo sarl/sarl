@@ -29,7 +29,7 @@ import java.util.List;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 
-/** Tools for generating markdown.
+/** Tools for generating markdown from different sources.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

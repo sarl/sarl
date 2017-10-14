@@ -175,7 +175,7 @@ public interface IActionPrototypeProvider {
 	 */
 	String toJavaArgument(String callerQualifiedName, String argumentSpecification);
 
-	/** Replies the default value of the formal parameter at the given position.
+	/** Replies the default value of the given formal parameter.
 	 *
 	 * <p>This function replies the string representation of the default value.
 	 *
