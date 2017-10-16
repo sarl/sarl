@@ -227,7 +227,6 @@ public class Kernel {
 	 * @return the Janus root context. It must be never <code>null</code>.
 	 * @since 2.0.7.0
 	 */
-	@Inject
 	public AgentContext getJanusContext() {
 		assert this.janusContext != null;
 		return this.janusContext;

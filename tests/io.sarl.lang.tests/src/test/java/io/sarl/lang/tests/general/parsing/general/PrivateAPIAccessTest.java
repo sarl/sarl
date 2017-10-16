@@ -16,14 +16,11 @@
 package io.sarl.lang.tests.general.parsing.general;
 
 import org.eclipse.xtext.xbase.XbasePackage;
+import org.eclipse.xtext.xbase.validation.IssueCodes;
+import org.junit.Test;
 
-import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
-
-import org.eclipse.xtext.xbase.validation.IssueCodes;
-import org.eclipse.xtext.xtype.XtypePackage;
-import org.junit.Test;
 
 
 /**
@@ -36,7 +33,7 @@ import org.junit.Test;
 public class PrivateAPIAccessTest extends AbstractSarlTest {
 
 	@Test
-	public void privateFunctionPublicCaller() throws Exception {
+	public void privateFunctionPublicCaller_01() throws Exception {
 		SarlScript mas = file(multilineString(
 				"import foo.PrivateAPIObject",
 				"",
@@ -78,6 +75,123 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 				"class Accessor {",
 				"  def doSomething(a : PrivateAPIObject) {",
 				"    a.function",
+				"  }",
+				"}",
+				""));
+		validate(mas).assertNoErrors();
+	}
+
+	@Test
+	public void privateFunctionPublicCaller_02() throws Exception {
+		SarlScript mas = file(multilineString(
+				"import foo.PrivateAPIObject2",
+				"",
+				"class Accessor {",
+				"	def doSomething(a : PrivateAPIObject2) {",
+				"		a.function",
+				"	}",
+				"}",
+				""));
+		validate(mas).assertError(
+				XbasePackage.Literals.XMEMBER_FEATURE_CALL,
+				IssueCodes.FORBIDDEN_REFERENCE,
+				"Forbidden feature call");
+	}
+
+	@Test
+	public void privateFunctionPrivateCaller_03() throws Exception {
+		SarlScript mas = file(multilineString(
+				"import io.sarl.lang.annotation.PrivateAPI",
+				"import foo.PrivateAPIObject2",
+				"",
+				"class Accessor {",
+				"  @PrivateAPI(isCallerOnly=true)",
+				"  def doSomething(a : PrivateAPIObject2) {",
+				"    a.function",
+				"  }",
+				"}",
+				""));
+		validate(mas).assertNoErrors();
+	}
+
+	@Test
+	public void privateFunctionPrivateCaller_04() throws Exception {
+		SarlScript mas = file(multilineString(
+				"import io.sarl.lang.annotation.PrivateAPI",
+				"import foo.PrivateAPIObject2",
+				"",
+				"@PrivateAPI(isCallerOnly=true)",
+				"class Accessor {",
+				"  def doSomething(a : PrivateAPIObject2) {",
+				"    a.function",
+				"  }",
+				"}",
+				""));
+		validate(mas).assertNoErrors();
+	}
+
+	@Test
+	public void ambigousPrivateAPI_01() throws Exception {
+		SarlScript mas = file(multilineString(
+				"import io.sarl.lang.annotation.PrivateAPI",
+				"import foo.PrivateAPIObject2",
+				"import static extension foo.PrivateAPIObject3.*",
+				"",
+				"class Accessor {",
+				"  def doSomething(a : PrivateAPIObject2) {",
+				"    a.function",
+				"  }",
+				"}",
+				""));
+		validate(mas).assertNoErrors();
+	}
+
+	@Test
+	public void ambigousPrivateAPI_02() throws Exception {
+		SarlScript mas = file(multilineString(
+				"import io.sarl.lang.annotation.PrivateAPI",
+				"import foo.PrivateAPIObject2",
+				"import static extension foo.PrivateAPIObject3.*",
+				"",
+				"@PrivateAPI",
+				"class Accessor {",
+				"  def doSomething(a : PrivateAPIObject2) {",
+				"    a.function",
+				"  }",
+				"}",
+				""));
+		validate(mas).assertNoErrors();
+	}
+
+	@Test
+	public void ambigousPrivateAPI_03() throws Exception {
+		SarlScript mas = file(multilineString(
+				"import io.sarl.lang.annotation.PrivateAPI",
+				"import foo.PrivateAPIObject2",
+				"import static extension foo.PrivateAPIObject3.*",
+				"",
+				"@PrivateAPI(isCallerOnly=true)",
+				"class Accessor {",
+				"  def doSomething(a : PrivateAPIObject2) {",
+				"    a.function",
+				"  }",
+				"}",
+				""));
+		validate(mas).assertNoErrors();
+	}
+
+	@Test
+	public void ambigousPrivateAPI_04() throws Exception {
+		SarlScript mas = file(multilineString(
+				"import io.sarl.lang.annotation.PrivateAPI",
+				"import io.sarl.core.AgentTask",
+				"import io.sarl.core.Schedules",
+				"",
+				"agent Accessor {",
+				"  uses Schedules",
+				"  var t : AgentTask",
+				"  def action : void {",
+				"    this.t.name = \"hello\"",
 				"  }",
 				"}",
 				""));

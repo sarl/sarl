@@ -109,7 +109,7 @@ class AgentTask extends SRESpecificDataContainer {
 	 * @since 0.7, it is part of the private API.
 	 */
 	@PrivateAPI
-	def setName(name : String) : void {
+	def setTaskName(name : String) : void {
 		this.name = name
 	}
 

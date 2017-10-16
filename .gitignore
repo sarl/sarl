@@ -3,6 +3,7 @@
 **/io.sarl.eclipse/about.mappings
 **/io.sarl.lang.core/about.mappings
 **/io.sarl.lang.ui/about.mappings
+**/io.janusproject.eclipse/about.mappings
 **/io.janusproject.plugin/about.mappings
 **/io.sarl.experienceindex.plugin/about.mappings
 **/io.sarl.lang.updatesite/io.sarl.lang.product.copy

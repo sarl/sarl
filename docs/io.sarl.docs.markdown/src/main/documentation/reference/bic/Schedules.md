@@ -91,7 +91,7 @@ Example:
 				}
 
 				def action {
-					this.task.setName("newName")
+					this.t.[:setname!]("newName")
 				}
 				
 			}

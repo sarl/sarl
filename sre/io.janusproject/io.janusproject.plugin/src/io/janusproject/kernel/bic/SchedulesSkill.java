@@ -276,7 +276,7 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 		if (pair == null) {
 			final AgentTrait caller = Capacities.getCaller();
 			final AgentTask task = new AgentTask(caller);
-			task.setName(realName);
+			task.setTaskName(realName);
 			task.setGuard(AgentTask.TRUE_GUARD);
 			pair = new TaskDescription(task);
 			synchronized (getTaskListMutex()) {
@@ -311,7 +311,7 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 					++i;
 					nm = prefix + i;
 				}
-				task.setName(nm);
+				task.setTaskName(nm);
 				this.tasks.put(nm, desc);
 			}
 		}

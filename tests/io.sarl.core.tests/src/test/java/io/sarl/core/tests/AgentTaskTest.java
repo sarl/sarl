@@ -93,16 +93,16 @@ public class AgentTaskTest extends AbstractSarlTest {
 	public void getName() {
 		assertNull(this.task.getName());
 		String name = UUID.randomUUID().toString();
-		this.task.setName(name);
+		this.task.setTaskName(name);
 		assertSame(name, this.task.getName());
 	}
 
 	@Test
-	public void setName() {
+	public void setTaskName() {
 		String name = UUID.randomUUID().toString();
-		this.task.setName(name);
+		this.task.setTaskName(name);
 		assertSame(name, this.task.getName());
-		this.task.setName(null);
+		this.task.setTaskName(null);
 		assertNull(this.task.getName());
 	}
 

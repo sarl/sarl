@@ -149,7 +149,7 @@ public final class ShouldExtensions {
 	 * @return the validation status
 	 */
 	public static boolean shouldBeNumber(String actual) {
-		return shouldBeNumber(actual);
+		return shouldBeNumber(actual, null);
 	}
 
 	/** Ensure that the given string is a valid Maven version number.

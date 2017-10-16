@@ -302,6 +302,10 @@ public abstract class AbstractSarlTest {
 				}
 			}
 			//
+			if (isIgnorable(base, description)) {
+				throw new AssumptionViolatedException("This test is dynamically ignored.");
+			}
+			//
 			return super.apply(base, description);
 		}
 
@@ -343,6 +347,16 @@ public abstract class AbstractSarlTest {
 
 	};
 
+	/** Replies if the test could be ignored.
+	 *
+	 * @param base the base statement.
+	 * @param description the test description.
+	 * @return {@code true} if the test should be ignored.
+	 */
+	protected boolean isIgnorable(Statement base, Description description) {
+		return false;
+	}
+	
 	@Override
 	protected void finalize() throws Throwable {
 		this.injector = null;

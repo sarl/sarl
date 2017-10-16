@@ -1967,10 +1967,14 @@ of the task with a unique value.
 			import java.util.UUID
 			import io.sarl.core.AgentTask
 			import io.sarl.core.Schedules
+			import io.sarl.lang.annotation.PrivateAPI
 			class Task extends AgentTask {
 			}
 			abstract class Skill {
 			}
+			[:On]
+			@[:privateapi](PrivateAPI)(isCallerOnly = true)
+			[:Off]
 			abstract 
 			[:On]
 			class SchedulesSkill extends Skill implements Schedules {
@@ -1983,6 +1987,10 @@ of the task with a unique value.
 
 			}
 		[:End:]
+
+
+Note: [:privateapi:] is an annotation that gives you access to the functions that are within the private API of SARL.
+
 
 
 #### Scheduling an agent task
@@ -2017,11 +2025,13 @@ of tasks to be started at this time.
 			import io.sarl.lang.core.Agent
 			import io.sarl.core.AgentTask
 			import io.sarl.core.Schedules
+			import io.sarl.lang.annotation.PrivateAPI
 			class Task extends AgentTask {
 			}
 			interface TMSarlAgent {
 				def getSimulationTime(u : TimeUnit) : double
 			}
+			@PrivateAPI(isCallerOnly = true)
 			abstract class SchedulesSkill implements Schedules {
 				def getOwner : Agent { null }
 				[:On]
@@ -2105,12 +2115,14 @@ algorithm implies that these two types of execution approach will be the same on
 			import io.sarl.lang.core.Agent
 			import io.sarl.core.AgentTask
 			import io.sarl.core.Schedules
+			import io.sarl.lang.annotation.PrivateAPI
 			class Task extends AgentTask {
 				def setPeriod(per : long) { }
 			}
 			interface TMSarlAgent {
 				def getSimulationTime(u : TimeUnit) : double
 			}
+			@PrivateAPI(isCallerOnly = true)
 			abstract class SchedulesSkill implements Schedules {
 				def getOwner : Agent { null }
 				private def scheduleTask(at : long, task : AgentTask) { }
