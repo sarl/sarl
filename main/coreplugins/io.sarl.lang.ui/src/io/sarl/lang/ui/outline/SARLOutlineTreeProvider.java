@@ -98,9 +98,9 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 					true);
 		}
 		// Create the nodes for the import declarations.
-		if (modelElement.getImportSection() != null && !modelElement.getImportSection().getImportDeclarations().isEmpty()) {
+		/*if (modelElement.getImportSection() != null && !modelElement.getImportSection().getImportDeclarations().isEmpty()) {
 			createNode(parentNode, modelElement.getImportSection());
-		}
+		}*/
 		// Create a node per type declaration.
 		for (final XtendTypeDeclaration topElement : modelElement.getXtendTypes()) {
 			createNode(parentNode, topElement);
