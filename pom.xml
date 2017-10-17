@@ -720,6 +720,11 @@
 							<tag>
 								<name>model</name>
 								<placement>a</placement>
+								<head>Private API</head>
+							</tag>
+							<tag>
+								<name>privateapi</name>
+								<placement>a</placement>
 								<head>Model element</head>
 							</tag>
 							<tag>

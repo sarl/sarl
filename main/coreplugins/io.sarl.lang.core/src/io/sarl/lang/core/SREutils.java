@@ -50,6 +50,7 @@ import io.sarl.lang.util.ClearableReference;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 0.5
+ * @privateapi
  */
 @PrivateAPI
 public final class SREutils {
