@@ -143,7 +143,10 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				""));
-		validate(mas).assertNoErrors();
+		validate(mas).assertError(
+				XbasePackage.Literals.XMEMBER_FEATURE_CALL,
+				IssueCodes.FORBIDDEN_REFERENCE,
+				"Forbidden feature call");
 	}
 
 	@Test

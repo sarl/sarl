@@ -26,31 +26,25 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.eclipse.xtend.core.typesystem.XtendTypeComputer;
-import org.eclipse.xtend.core.xtend.XtendAnnotationTarget;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
 import org.eclipse.xtext.common.types.JvmAnnotationTarget;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.util.AnnotationLookup;
-import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XExpression;
-import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation;
-import org.eclipse.xtext.xbase.typesystem.computation.IConstructorLinkingCandidate;
-import org.eclipse.xtext.xbase.typesystem.computation.IFeatureLinkingCandidate;
 import org.eclipse.xtext.xbase.typesystem.computation.ILinkingCandidate;
 import org.eclipse.xtext.xbase.typesystem.computation.ITypeComputationState;
 import org.eclipse.xtext.xbase.typesystem.internal.AmbiguousFeatureLinkingCandidate;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
-import io.sarl.lang.annotation.PrivateAPI;
 import io.sarl.lang.sarl.SarlAssertExpression;
 import io.sarl.lang.sarl.SarlBreakExpression;
 import io.sarl.lang.sarl.SarlContinueExpression;
 
 /** Customized type computer for SARL specific expressions.
  *
- * <p>It resolves the ambiguous calls with an approach that is supporting {@link Deprecated} and {@link PrivateAPI}.
+ * <p>It resolves the ambiguous calls with an approach that is supporting {@link Deprecated}.
  *
  * <p>This candidate prefers the feature that is not marked with {@link Deprecated}.
  * Otherwise, its behavior is the same as the standard Xbase candidate implementation:
@@ -68,9 +62,6 @@ public class SARLTypeComputer extends XtendTypeComputer {
 
 	@Inject
 	private AnnotationLookup annotationLookup;
-
-	@Inject
-	private SARLAnnotationUtil sarlAnnotationUtil;
 
 	@Override
 	protected ILinkingCandidate getBestCandidate(List<? extends ILinkingCandidate> candidates) {
@@ -129,53 +120,6 @@ public class SARLTypeComputer extends XtendTypeComputer {
 				return true;
 			}
 		}
-		//
-		// @PrivateAPI
-		//
-		final XtendAnnotationTarget caller;
-		if (candidate instanceof IFeatureLinkingCandidate) {
-			caller = EcoreUtil2.getContainerOfType(
-					((IFeatureLinkingCandidate) candidate).getFeatureCall().eContainer(),
-					XtendAnnotationTarget.class);
-		} else if (candidate instanceof IConstructorLinkingCandidate) {
-			caller = EcoreUtil2.getContainerOfType(
-						((IConstructorLinkingCandidate) candidate).getConstructorCall().eContainer(),
-						XtendAnnotationTarget.class);
-		} else {
-			caller = null;
-		}
-		if (caller != null && !isCallerPrivate(caller)) {
-			if (isFeaturePrivate(feature)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private boolean isFeaturePrivate(JvmIdentifiableElement feature) {
-		JvmAnnotationTarget target = EcoreUtil2.getContainerOfType(feature, JvmAnnotationTarget.class);
-		while (target != null) {
-			final JvmAnnotationReference reference = this.annotationLookup.findAnnotation(target, PrivateAPI.class);
-			if (reference != null) {
-				// The called element is part of the private API
-				final Boolean isCaller = this.sarlAnnotationUtil.findBooleanValue(reference);
-				return isCaller == null || !isCaller.booleanValue();
-			}
-			target = EcoreUtil2.getContainerOfType(target.eContainer(), JvmAnnotationTarget.class);
-		}
-		return false;
-	}
-
-	private static boolean isCallerPrivate(XtendAnnotationTarget caller) {
-		XtendAnnotationTarget tmp = caller;
-		do {
-			for (final XAnnotation annot : tmp.getAnnotations()) {
-				if (Strings.equal(PrivateAPI.class.getName(), annot.getAnnotationType().getQualifiedName())) {
-					return true;
-				}
-			}
-			tmp = EcoreUtil2.getContainerOfType(tmp.eContainer(), XtendAnnotationTarget.class);
-		} while (tmp != null);
 		return false;
 	}
 
