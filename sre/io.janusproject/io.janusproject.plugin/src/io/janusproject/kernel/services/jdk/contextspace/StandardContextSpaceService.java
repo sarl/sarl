@@ -98,6 +98,8 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	 */
 	private ContextDMapListener dmapListener;
 
+	private AgentContext janusContext;
+
 	/**
 	 * Log service.
 	 */
@@ -108,6 +110,17 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	 */
 	public StandardContextSpaceService() {
 		//
+	}
+
+	/**
+	 * Change the Janus context of the kernel.
+	 *
+	 * @param janusContext the new janus kernel. It must be never <code>null</code>.
+	 */
+	@Inject
+	void setJanusContext(@io.janusproject.kernel.annotations.Kernel AgentContext janusContext) {
+		assert janusContext != null;
+		this.janusContext = janusContext;
 	}
 
 	@Override
@@ -277,6 +290,11 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 		synchronized (mutex()) {
 			return this.contexts.get(contextID);
 		}
+	}
+
+	@Override
+	public AgentContext getUniverseContext() {
+		return this.janusContext;
 	}
 
 	@Override

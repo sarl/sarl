@@ -152,6 +152,11 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 	}
 
 	@Override
+	public AgentContext getUniverseContext() {
+		return this.contextRepository.getUniverseContext();
+	}
+
+	@Override
 	public boolean join(UUID futureContext, UUID futureContextDefaultSpaceID) {
 		assert futureContext != null;
 		assert futureContextDefaultSpaceID != null;

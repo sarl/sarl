@@ -65,6 +65,17 @@ capacity ExternalContextAccess {
 	@Pure
 	def getContext(contextID : UUID): AgentContext
 
+	/**
+	 * Replies the AgentContext that is the root of all the contexts.
+	 * Usually, the Universe context is managed by the SARL run-time environment.
+	 * The agent may be a member of this context, or not.
+	 *
+	 * @return the context that is at the root of all the contexts.
+	 * @since 0.7
+	 */
+	@Pure
+	def getUniverseContext(): AgentContext
+
     /**
 	 * Joins a new parent context (a new super holon).
 	 * <p>

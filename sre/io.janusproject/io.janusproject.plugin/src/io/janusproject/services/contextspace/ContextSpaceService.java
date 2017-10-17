@@ -127,6 +127,13 @@ public interface ContextSpaceService extends DependentService {
 	AgentContext getContext(UUID contextID);
 
 	/**
+	 * Returns the {@link AgentContext} that is the root of all the contexts.
+	 *
+	 * @return the root {@link AgentContext}.
+	 */
+	AgentContext getUniverseContext();
+
+	/**
 	 * Add a listener on the context repository events.
 	 *
 	 * @param listener the listener on the context repository events.

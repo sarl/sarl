@@ -48,7 +48,7 @@ public class ExternalContextAccessTest extends AbstractSarlCoreTest<Capacity> {
 	 */
 	@Test
 	public void memberCount() {
-		assertEquals(9, this.type.getDeclaredMethods().length);
+		assertEquals(10, this.type.getDeclaredMethods().length);
 	}
 
 	/**
@@ -63,6 +63,13 @@ public class ExternalContextAccessTest extends AbstractSarlCoreTest<Capacity> {
 	@Test
 	public void getContext() {
 		assertMethod("getContext", AgentContext.class, UUID.class); //$NON-NLS-1$
+	}
+
+	/**
+	 */
+	@Test
+	public void getUniverseContext() {
+		assertMethod("getUniverseContext", AgentContext.class); //$NON-NLS-1$
 	}
 
 	/**

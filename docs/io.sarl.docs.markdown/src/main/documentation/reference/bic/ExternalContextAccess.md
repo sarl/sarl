@@ -11,6 +11,7 @@ top-right context in the figure above.
 		      documented --> 
 		[:Fact:]{typeof(io.sarl.core.[:externalcontextaccess!]).shouldHaveMethods(
 			"[:getcontext](getContext)(java.util.UUID) : io.sarl.lang.core.AgentContext",
+			"[:getuniversecontext](getUniverseContext) : io.sarl.lang.core.AgentContext",
 			"[:getallcontexts](getAllContexts) : io.sarl.lang.util.SynchronizedIterable",
 			"[:join](join)(java.util.UUID, java.util.UUID) : boolean",
 			"[:leave](leave)(java.util.UUID) : boolean",
@@ -56,6 +57,24 @@ may use its `[:getParentID](getParentID)` for accessing the context in which it 
 					id = getParentID
 					c = [:getcontext!](id)
 				}
+			}
+		[:End:]
+
+
+## Retrieving the Universe Context
+
+In all the SARL application, a default context exists. It's name is the Universe context.
+It is fully managed by the SARL run-time environment.
+For retrieving this particular context, this built-in capacity provides the following function:
+
+		[:Success:]
+			package io.sarl.docs.reference.bic
+			import io.sarl.lang.core.AgentContext
+			import java.util.UUID
+			interface Tmp {
+			[:On]
+				def [:getuniversecontext!]() : AgentContext
+			[:Off]
 			}
 		[:End:]
 
