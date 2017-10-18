@@ -1426,7 +1426,7 @@ with the event source identifier as argument.
 				}
 
 				def isInDefaultSpace(^event : Event) : boolean {
-					isDefaultSpace(^event.source.spaceId)
+					isDefaultSpace(^event.source.spaceID)
 				}
 
 			}

@@ -265,7 +265,7 @@ public class InnerContextSkillTest extends AbstractJanusTest {
 	public void isInInnerDefaultSpaceEvent_inside() {
 		Event event = mock(Event.class);
 		Address adr = mock(Address.class);
-		when(adr.getSpaceId()).thenReturn(this.innerSpaceID);
+		when(adr.getSpaceID()).thenReturn(this.innerSpaceID);
 		when(event.getSource()).thenReturn(adr);
 		//
 		assertTrue(this.skill.isInInnerDefaultSpace(event));
@@ -277,7 +277,7 @@ public class InnerContextSkillTest extends AbstractJanusTest {
 		SpaceID spaceId = mock(SpaceID.class);
 		when(spaceId.getID()).thenReturn(UUID.randomUUID());
 		Address adr = mock(Address.class);
-		when(adr.getSpaceId()).thenReturn(spaceId);
+		when(adr.getSpaceID()).thenReturn(spaceId);
 		when(event.getSource()).thenReturn(adr);
 		//
 		assertFalse(this.skill.isInInnerDefaultSpace(event));

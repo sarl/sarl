@@ -59,7 +59,7 @@ class AddressSerializer implements StreamSerializer<Address> {
 	@Override
 	public void write(ObjectDataOutput out, Address object) throws IOException {
 		out.writeObject(object.getUUID());
-		out.writeObject(object.getSpaceId());
+		out.writeObject(object.getSpaceID());
 
 	}
 

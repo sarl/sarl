@@ -274,7 +274,7 @@ public class DefaultContextInteractionsSkillTest extends AbstractJanusTest {
 		this.reflect.invoke(this.skill, "install");
 		SpaceID spaceID = new SpaceID(this.defaultSpaceID.getContextID(), UUID.randomUUID(), EventSpaceSpecification.class);
 		Address adr = mock(Address.class);
-		when(adr.getSpaceId()).thenReturn(spaceID);
+		when(adr.getSpaceID()).thenReturn(spaceID);
 		Event event = mock(Event.class);
 		when(event.getSource()).thenReturn(adr);
 		//

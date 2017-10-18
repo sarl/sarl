@@ -264,9 +264,9 @@ public class ZeroMQNetworkService extends AbstractNetworkingExecutionThreadServi
     @Override
     public synchronized void publish(Scope<?> scope, Event data) throws Exception {
         if (this.validatedURI == null) {
-            this.logger.debug(Messages.ZeroMQNetworkService_0, data.getSource().getSpaceId(), scope, data);
+            this.logger.debug(Messages.ZeroMQNetworkService_0, data.getSource().getSpaceID(), scope, data);
         } else if (!this.receptionSocketsPerRemoteKernel.isEmpty()) {
-            final SpaceID spaceID = data.getSource().getSpaceId();
+            final SpaceID spaceID = data.getSource().getSpaceID();
             final EventEnvelope env = this.serializer.serialize(new EventDispatch(spaceID, data, scope));
             send(env);
             this.logger.debug(Messages.ZeroMQNetworkService_1, spaceID, data);

@@ -74,7 +74,7 @@ public class AddressTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void getSpaceId() {
-		assertSame(this.spaceID, this.adr.getSpaceId());
+		assertSame(this.spaceID, this.adr.getSpaceID());
 	}
 
 	/**

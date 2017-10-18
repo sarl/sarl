@@ -259,12 +259,12 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 
 	@Override
 	public boolean isInSpace(Event event, SpaceID spaceID) {
-		return spaceID.equals(event.getSource().getSpaceId());
+		return spaceID.equals(event.getSource().getSpaceID());
 	}
 
 	@Override
 	public boolean isInSpace(Event event, UUID spaceID) {
-		return spaceID.equals(event.getSource().getSpaceId().getID());
+		return spaceID.equals(event.getSource().getSpaceID().getID());
 	}
 
 	@Override

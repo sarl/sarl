@@ -179,7 +179,7 @@ public class DefaultContextInteractionsSkill extends BuiltinSkill implements Def
 		if (event != null) {
 			final Address adr = event.getSource();
 			if (adr != null) {
-				return isDefaultSpace(adr.getSpaceId());
+				return isDefaultSpace(adr.getSpaceID());
 			}
 		}
 		return false;

@@ -310,7 +310,7 @@ public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 		when(space.getSpaceID()).thenReturn(spaceID);
 		Event event = mock(Event.class);
 		Address address = mock(Address.class);
-		when(address.getSpaceId()).thenReturn(spaceID);
+		when(address.getSpaceID()).thenReturn(spaceID);
 		when(event.getSource()).thenReturn(address);
 		//
 		assertTrue(this.skill.isInSpace(event, space));
@@ -328,7 +328,7 @@ public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 		SpaceID spaceID2 = mock(SpaceID.class);
 		when(spaceID2.getID()).thenReturn(UUID.randomUUID());
 		Address address = mock(Address.class);
-		when(address.getSpaceId()).thenReturn(spaceID2);
+		when(address.getSpaceID()).thenReturn(spaceID2);
 		when(event.getSource()).thenReturn(address);
 		//
 		assertFalse(this.skill.isInSpace(event, space));
@@ -360,7 +360,7 @@ public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 		when(spaceID.getID()).thenReturn(id);
 		Event event = mock(Event.class);
 		Address address = mock(Address.class);
-		when(address.getSpaceId()).thenReturn(spaceID);
+		when(address.getSpaceID()).thenReturn(spaceID);
 		when(event.getSource()).thenReturn(address);
 		//
 		assertTrue(this.skill.isInSpace(event, spaceID));
@@ -376,7 +376,7 @@ public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 		SpaceID spaceID2 = mock(SpaceID.class);
 		when(spaceID2.getID()).thenReturn(UUID.randomUUID());
 		Address address = mock(Address.class);
-		when(address.getSpaceId()).thenReturn(spaceID2);
+		when(address.getSpaceID()).thenReturn(spaceID2);
 		when(event.getSource()).thenReturn(address);
 		//
 		assertFalse(this.skill.isInSpace(event, spaceID));
@@ -408,7 +408,7 @@ public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 		when(spaceID.getID()).thenReturn(id);
 		Event event = mock(Event.class);
 		Address address = mock(Address.class);
-		when(address.getSpaceId()).thenReturn(spaceID);
+		when(address.getSpaceID()).thenReturn(spaceID);
 		when(event.getSource()).thenReturn(address);
 		//
 		assertTrue(this.skill.isInSpace(event, id));
@@ -422,7 +422,7 @@ public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 		SpaceID spaceID2 = mock(SpaceID.class);
 		when(spaceID2.getID()).thenReturn(UUID.randomUUID());
 		Address address = mock(Address.class);
-		when(address.getSpaceId()).thenReturn(spaceID2);
+		when(address.getSpaceID()).thenReturn(spaceID2);
 		when(event.getSource()).thenReturn(address);
 		//
 		assertFalse(this.skill.isInSpace(event, id));

@@ -129,7 +129,7 @@ public abstract class AbstractEventSpace extends SpaceBase {
 	public final void emit(UUID eventSource, Event event, Scope<Address> scope) {
 		assert event != null;
 		ensureEventSource(eventSource, event);
-		assert getSpaceID().equals(event.getSource().getSpaceId()) : "The source address must belong to this space"; //$NON-NLS-1$
+		assert getSpaceID().equals(event.getSource().getSpaceID()) : "The source address must belong to this space"; //$NON-NLS-1$
 		try {
 			final Scope<Address> scopeInstance = (scope == null) ? Scopes.<Address>allParticipants() : scope;
 			this.network.publish(scopeInstance, event);

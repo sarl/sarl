@@ -146,8 +146,8 @@ public class InnerContextSkill extends BuiltinSkill implements InnerContextAcces
 		if (this.innerContext == null) {
 			// Create the inner context.
 			this.innerContext = this.contextService.createContext(
-					this.agentAddressInInnerDefaultSpace.getSpaceId().getContextID(),
-					this.agentAddressInInnerDefaultSpace.getSpaceId().getID());
+					this.agentAddressInInnerDefaultSpace.getSpaceID().getContextID(),
+					this.agentAddressInInnerDefaultSpace.getSpaceID().getID());
 			// Register the agent in the default space
 			final EventListener listener = getInternalEventBusCapacitySkill().asEventListener();
 			final OpenEventSpace defSpace = (OpenEventSpace) this.innerContext.getDefaultSpace();
@@ -219,7 +219,7 @@ public class InnerContextSkill extends BuiltinSkill implements InnerContextAcces
 		if (event != null) {
 			final Address adr = event.getSource();
 			if (adr != null) {
-				return isInnerDefaultSpace(adr.getSpaceId());
+				return isInnerDefaultSpace(adr.getSpaceID());
 			}
 		}
 		return false;

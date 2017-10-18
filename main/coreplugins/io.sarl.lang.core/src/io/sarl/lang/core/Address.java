@@ -115,7 +115,7 @@ public class Address extends SRESpecificDataContainer implements Serializable, C
 	 */
 	@Pure
 	public boolean equals(Address address) {
-		return address != null && this.spaceId.equals(address.getSpaceId())
+		return address != null && this.spaceId.equals(address.getSpaceID())
 				&& this.agentId.equals(address.getUUID());
 	}
 
@@ -165,10 +165,22 @@ public class Address extends SRESpecificDataContainer implements Serializable, C
 	/** Replies the ID of the space related to this address.
 	 *
 	 * @return the space ID.
+	 * @since 0.7
 	 */
 	@Pure
-	public SpaceID getSpaceId() {
+	public SpaceID getSpaceID() {
 		return this.spaceId;
+	}
+
+	/** Replies the ID of the space related to this address.
+	 *
+	 * @return the space ID.
+	 * @deprecated since 0.7, see {@link #getSpaceID()} for replacement.
+	 */
+	@Pure
+	@Deprecated
+	public SpaceID getSpaceId() {
+		return getSpaceID();
 	}
 
 }
