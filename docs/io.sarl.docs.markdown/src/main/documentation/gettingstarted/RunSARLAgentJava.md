@@ -33,12 +33,11 @@ its `META-INF/services/[:bootstrap!]` file.
 ## Using the SRE Bootstrap
 
 In order to help you to use the bootstrap functions, the SARL API provides a static utility type, named [:sre:].
-In the following code, the [:sre:] utility type is used for retrieving the bootstrap.
+In the following Java code, the [:sre:] utility type is used for retrieving the bootstrap.
  
 		[:Success:]
 			package io.sarl.docs.bootstrap
 			import io.sarl.core.SRE
-			[:On]
 			class MyProgram {
 			
 				static def main(arguments : String*) {
@@ -46,11 +45,19 @@ In the following code, the [:sre:] utility type is used for retrieving the boots
 				}
 			
 			}
-			[:Off]
 		[:End:]
+		public class MyProgram {
+		
+			public static void main(String[] arguments) {
+				SREBootstrap bootstrap = [:sre!].getBootstrap();
+			}
+		
+		}
+
 
 Then, it is possible to use the bootstrap for launching an agent. In the following example, a agent of type
-[:myagent:] is launched.
+[:myagent:] is launched. Please note that you must not create an instance of an agent by yourself.
+It is the role of the SARL run-time environment to create this instance for you, with the proper initialization.
 
 		[:Success:]
 			package io.sarl.docs.bootstrap
@@ -60,14 +67,15 @@ Then, it is possible to use the bootstrap for launching an agent. In the followi
 			class MyProgram {
 			
 				static def main(arguments : String*) {
-					[:On]
-					var bootstrap = [:sre](SRE)::getBootstrap
+					var bootstrap = [:sre!]::getBootstrap
 					bootstrap.[:startfct](startAgent)(typeof([:myagent!]))
-					[:Off]
 				}
 			
 			}
 		[:End:]
+		SREBootstrap bootstrap = [:sre!].getBootstrap();
+		bootstrap.[:startfct!]([:myagent!].class)
+
 
 In the case you want to launch more than one agent programmatically,
 you could call the [:startfct:] function the number of times you need.
@@ -76,7 +84,7 @@ you could call the [:startfct:] function the number of times you need.
 ## Direct Access to the API of the Janus SRE
 
 
-Caution: using the API of Janus within your program is not recommended by the SARL team.
+Caution: using the API of Janus within your program is not recommended by the SARL team. Prefer to use the Bootstrap API.
 
 
 
@@ -99,7 +107,7 @@ pass with the [:initevent:] event to the launched agent.
 <importantnode>The Janus platform enables to launch a single agent at start-up.
 If you want to launch more agents, please read the next section.</importantnote>
 
-		[:Success:][:On]
+		[:Success:]
 			import io.janusproject.Boot
 			import myprogram.MyAgent
 			class MyProgram {
@@ -110,6 +118,13 @@ If you want to launch more agents, please read the next section.</importantnote>
 				}
 			}
 		[:End:]
+		import io.janusproject.Boot;
+		import myprogram.MyAgent;
+		public class MyProgram {
+		 	public static void main(String[] args) {
+				[:boot!].[:startjanus!]([:agenttype!].class, args);
+			}
+		}
 
 
 In  the case you want to launch more than one agent programmatically,
@@ -132,7 +147,7 @@ pass with the [:initevent] event to the launched agent.
 second agent is launched by the [:spawn:] function.</important>
 
 
-		[:Success:][:On]
+		[:Success:]
 			import io.janusproject.Boot
 			class MyProgram {
 				static def main(args : String*) {
@@ -145,6 +160,14 @@ second agent is launched by the [:spawn:] function.</important>
 			[:Off]
 			agent MyAgent {}
 		[:End:]
+		import io.janusproject.Boot;
+		import myprogram.MyAgent;
+		public class MyProgram {
+		 	public static void main(String[] args) {
+				[:boot!].[:startjanus!]([:agenttype!].class, args);
+				janusKernel.[:spawn!](MyAgent.class, args);
+			}
+		}
 
 
 ## What's next?
