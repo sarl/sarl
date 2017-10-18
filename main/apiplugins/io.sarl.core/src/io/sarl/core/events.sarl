@@ -28,10 +28,20 @@ import io.sarl.lang.core.SpaceID
 import io.sarl.lang.core.Address
 
 /**
- * Initialization event for an Agent.
+ * Initialization event.
  * The source of this event is the agent itself.
- * This event is only received by the agent's native behavior.
- * The other agent behaviors cannot receive this event because they are associated to the agent too late in the agent lifecycle.
+ *
+ * <h4>For an Agent</h4>
+ * This event is received by the agent's native behavior when the agent is spawned.
+ *
+ * <h4>For a Behavior</h4>
+ * Each Behavior instance within the agent receives this event when it is registered for the first time.
+ *
+ * <h4>For a Skill</h4>
+ * No skill receives this event.
+ *
+ * <h4>For Agent Members</h4>
+ * The member agents do not receive this event from the parent agent because they are not yet created when the agent is spawned.
  */
 final event Initialize {
 
@@ -74,19 +84,38 @@ final event Initialize {
 }
 
 /**
- * Notifies the Destruction of the agent.
+ * Notifies the destruction of an element.
  * The source of this event is the agent itself.
- * Usually, this event is fired after the agent has called the <code>killMe</code> action.
- * This event is only received by the agent's internal behaviors, not the member since to call <code>killMe</code> action it must remain any member.
- * <p>This event is marked as an early exit event. It means that any action that is firing this event is supposed to never return, e.g.
- * the <code>killMe</code> action.
+ * This event is marked as an early exit event. It means that any action that is firing this
+ * event is supposed to never return, e.g. the <code>killMe</code> action.
+ *
+ * <h4>For an Agent</h4>
+ * This event is received by the agent's native behavior when the agent is destroyed, usually after
+ * a call to {@code killMe}.
+ * All the agent behaviors of the agent are unregistered prior to the firing of this events.
+ * All the agent tasks are canceled prior to the firing of this events.
+ * Agent skills are uninstalled after the {@code Destroy} event handler is ran.
+ *
+ * <h4>For a Behavior</h4>
+ * Each Behavior instance within the agent receives this event when it is unregistered for the last time.
+ *
+ * <h4>For a Skill</h4>
+ * No skill receives this event, except if you have registered the skill as an event listener on the
+ * agent internal event bus. In the last case, the skill will receive the {@code Destroy} event because
+ * is will be uninstalled after its firing.
+ *
+ * <h4>For Agent Members</h4>
+ * The member agents do not receive this event from the parent agent because the parent agent cannot be
+ * destroyed if it has agent members.
  */
 @EarlyExit
 final event Destroy
 
 /**
- * Informs the creation of a new agent in a given context.
- * The context Id can be retrieved via <code>ev.getSource().getSpaceID().getContextID()</code>.
+ * Informs the creation of a new agent in a spawning context.
+ * The event is fired within the default space of the spawning context, i.e. the context in which the agent was created.
+ * The source of the event is the spawning agent.
+ * The context id can be retrieved via {@code ev.source.spaceID.contextID}.
  */
 final event AgentSpawned {
 
@@ -152,13 +181,14 @@ final event AgentSpawned {
 
 /**
  * Informs an agent has been killed.
- * The context Id can be retrieved via <code>ev.getSource().getSpaceID().getContextID()</code>.
+ * The event is fires within all the external contexts (including the default context) of the killed agent.
+ * The source of the event is the parent agent.
+ * The context id can be retrieved via {@code ev.source.spaceID.contextID}.
  */
 final event AgentKilled {
 
 	/** The identifier of the killed agent.
 	 */
-
 	val agentID : UUID
 
 	/** The fully qualified name of the type of the killed agent.
@@ -181,6 +211,9 @@ final event AgentKilled {
 
 /**
  * Informs the creation of a new space in a given context.
+ * The event is fired within the default space of the context in which the space was created.
+ * The source of the event is the parent agent.
+ * The context id can be retrieved via {@code ev.source.spaceID.contextID}.
  */
 final event SpaceCreated {
 
@@ -201,6 +234,9 @@ final event SpaceCreated {
 }
 
 /** Informs the destruction of a space in a given context.
+ * The event is fired within the default space of the context from  which the space was removed.
+ * The context id can be retrieved via {@code ev.source.spaceID.contextID}.
+ * The source of the event is the parent agent.
  */
 final event SpaceDestroyed {
 
@@ -222,11 +258,16 @@ final event SpaceDestroyed {
 
 /** Notifies other members the member with agentID has effectively 
  * integrated the holon context.
+ * The event is fired within the default space of the context in which the new agent entered.
+ * The source of the event is the parent agent.
+ * The context id can be retrieved via {@code ev.source.spaceID.contextID}.
  */
 final event MemberJoined {
 
 	/** The identifier of the context that the member joined.
+	 * @deprecated See the event source
 	 */
+	@Deprecated
 	val parentContextID : UUID
 
 	/** The identifier of the agent that has joined the context.
@@ -254,13 +295,17 @@ final event MemberJoined {
 }
 
 /** Notifies other members the member with agentID was 
- * excluded (forced to leave) the holon context
- * parentContextID.
+ * excluded (forced to leave) the holon context parentContextID.
+ * The event is fired within the default space of the context from which the agent was excluded.
+ * The source of the event is the parent agent.
+ * The context id can be retrieved via {@code ev.source.spaceID.contextID}.
  */
 final event MemberExcluded {
 
 	/** The identifier of the context from which the member was excluded.
+	 * @deprecated See source
 	 */
+	@Deprecated
 	val parentContextID : UUID
 
 	/** The identifier of the agent that was excluded from the context.
@@ -288,6 +333,9 @@ final event MemberExcluded {
 }
 
 /** Notifies other members the member with agentID has left the holon context.
+ * The event is fired within the default space of the context from which the agent has left.
+ * The source of the event is the parent agent.
+ * The context id can be retrieved via {@code ev.source.spaceID.contextID}.
  */
 final event MemberLeft {
 
@@ -313,12 +361,13 @@ final event MemberLeft {
 
 }
 
-/** Notifies behaviors the agent has joined a new superholon.
- * This event is received only by the agent which has joined the superholon.
+/** Notifies behaviors the agent has joined a new super-holon.
+ * The event is fired within the internal bus of the agent that have joined a super-holon.
+ * The source of the event is the agent itself.
  */
 final event ContextJoined {
 
-	/** The identifier of the context in the super holon.
+	/** The identifier of the context in the super-holon.
 	 */
 	val holonContextID : UUID
 
@@ -339,12 +388,13 @@ final event ContextJoined {
 }
 
 /**
- * Notifies behaviors the agent has left a superholon.
- * This event is received only by the agent which has left the superholon.
+ * Notifies behaviors the agent has left a super-holon.
+ * The event is fired within the internal bus of the agent that have left a super-holon.
+ * The source of the event is the agent itself.
  */
 final event ContextLeft {
 
-	/** The identifier of the context in the super holon.
+	/** The identifier of the context in the super-holon.
 	 */
 	val holonContextID : UUID
 
