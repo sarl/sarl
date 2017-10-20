@@ -986,6 +986,7 @@ The code is self-explaining.
 			import java.util.UUID
 			import java.util.logging.Logger
 			import io.sarl.core.Logging
+			import java.util.function.Supplier
 			interface AgentIdentifier {
 				def setStringRepresentation(a : String)
 				def getString() : String
@@ -1035,6 +1036,10 @@ The code is self-explaining.
 					}
 				}
 
+				def error(messageProvider : Supplier<String>) {
+					System::out.println("[" + getId.getString + "] ERROR: " + messageProvider.get)
+				}
+
 				def warning(message : Object, exception : Throwable = null, parameters : Object*) {
 					System::out.println("[" + getId.getString + "] WARNING: " + message)
 					if (exception !== null) {
@@ -1042,12 +1047,24 @@ The code is self-explaining.
 					}
 				}
 
+				def warning(messageProvider : Supplier<String>) {
+					System::out.println("[" + getId.getString + "] WARNING: " + messageProvider.get)
+				}
+
 				def info(message : Object, parameters : Object*) {
 					System::out.println("[" + getId.getString + "] INFO: " + message)
 				}
 
+				def info(messageProvider : Supplier<String>) {
+					System::out.println("[" + getId.getString + "] INFO: " + messageProvider.get)
+				}
+
 				def debug(message : Object, parameters : Object*) {
 					System::out.println("[" + getId.getString + "] DEBUG: " + message)
+				}
+
+				def debug(messageProvider : Supplier<String>) {
+					System::out.println("[" + getId.getString + "] DEBUG: " + messageProvider.get)
 				}
 
 			}

@@ -9,10 +9,14 @@ The built-in capacity `[:loggingcap]{Logging}` provides tools for printing messa
 		[:Fact:]{typeof(io.sarl.core.[:loggingcap!]).shouldHaveMethods(
 			"[:fcterror](error)(java.lang.Object, java.lang.Throwable, java.lang.Object[])",
 			"[:fcterror!](java.lang.Object, java.lang.Object[])",
+			"[:fcterror!](java.util.function.Supplier)",
 			"[:fctwarning](warning)(java.lang.Object, java.lang.Throwable, java.lang.Object[])",
 			"[:fctwarning!](java.lang.Object, java.lang.Object[])",
+			"[:fctwarning!](java.util.function.Supplier)",
 			"[:fctinfo](info)(java.lang.Object, java.lang.Object[])",
+			"[:fctinfo!](java.util.function.Supplier)",
 			"[:fctdebug](debug)(java.lang.Object, java.lang.Object[])",
+			"[:fctdebug!](java.util.function.Supplier)",
 			"[:fctgetlogger](getLogger) : java.util.logging.Logger",
 			"[:fctgetloglevel](getLogLevel) : int",
 			"[:fctsetloglevel](setLogLevel)(int)",
@@ -60,6 +64,21 @@ Examples:
 			}
 		[:End:]
 
+You could also give a text supplier, in the form of a lambda expression, to these logging functions in order to build the loggeable message dynamically.
+
+		[:Success:]
+			package io.sarl.docs.reference.bic
+			import io.sarl.core.Logging
+			[:On]
+			agent A {
+				uses [:loggingcap!]
+				def myaction {
+					[:fcterror!] [ "mymessage" ]
+					[:fctwarning!] [ "mymessage" ]
+				}
+			}
+		[:End:]
+
 
 ## Print an information message
 
@@ -91,6 +110,20 @@ Example:
 			}
 		[:End:]
 
+You could also give a text supplier, in the form of a lambda expression, to the logging function in order to build the loggeable message dynamically.
+
+		[:Success:]
+			package io.sarl.docs.reference.bic
+			import io.sarl.core.Logging
+			[:On]
+			agent A {
+				uses [:loggingcap!]
+				def myaction {
+					[:fctinfo!] [ "mymessage" ]
+				}
+			}
+		[:End:]
+
 
 ## Print a debugging message
 
@@ -118,6 +151,20 @@ Example:
 				uses [:loggingcap!]
 				def myaction {
 					[:fctdebug!]("mymessage")
+				}
+			}
+		[:End:]
+
+You could also give a text supplier, in the form of a lambda expression, to the logging function in order to build the loggeable message dynamically.
+
+		[:Success:]
+			package io.sarl.docs.reference.bic
+			import io.sarl.core.Logging
+			[:On]
+			agent A {
+				uses [:loggingcap!]
+				def myaction {
+					[:fctdebug!] [ "mymessage" ]
 				}
 			}
 		[:End:]
