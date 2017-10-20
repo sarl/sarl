@@ -586,10 +586,10 @@ public abstract class AbstractSarlTest {
 
 		if (!unexpectedElements.isEmpty()) {
 			fail("Unexpected elements:\n" + unexpectedElements.toString() + "\nActual elements are:\n" +
-					Iterables.toString(actual));
+					Iterables.toString(actual) + "\nExpected elements are:\n" + Iterables.toString(expected));
 		} else if (!le.isEmpty()) {
-			fail("Expecting the following elements:\n" + le.toString() + "\nbut was:\n" +
-					Iterables.toString(actual));
+			fail("Expecting the following elements:\n" + le.toString() + "\nActual elements are:\n" +
+					Iterables.toString(actual) + "\nExpected elements are:\n" + Iterables.toString(expected));
 		}
 	}
 
