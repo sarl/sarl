@@ -24,6 +24,7 @@ import java.text.MessageFormat
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 import java.util.logging.Logger
+import java.util.function.Supplier
 
 import io.sarl.core.AgentTask
 import io.sarl.lang.core.Address
@@ -863,6 +864,13 @@ capacity Logging {
 	 */
 	def error(message : Object, exception : Throwable=null, parameters : Object*)
 
+	/** Print the given message at error logging level.
+	 *
+	 * @param messageProvider provides the error message.
+	 * @since 0.7
+	 */
+	def error(messageProvider : Supplier<String>)
+	
 	/** Print the given message at warning logging level.
 	 *
 	 * @param message the elements to display. The format of the message must follow {@link MessageFormat}.
@@ -871,6 +879,13 @@ capacity Logging {
 	 */
 	def warning(message : Object, exception : Throwable=null, parameters : Object*)
 
+	/** Print the given message at warning logging level.
+	 *
+	 * @param messageProvider provides the warning message.
+	 * @since 0.7
+	 */
+	def warning(messageProvider : Supplier<String>)
+
 	/** Print the given message at information logging level.
 	 *
 	 * @param message the elements to display. The format of the message must follow {@link MessageFormat}.
@@ -878,12 +893,26 @@ capacity Logging {
 	 */
 	def info(message : Object, parameters : Object*)
 
+	/** Print the given message at information logging level.
+	 *
+	 * @param messageProvider provides the info message.
+	 * @since 0.7
+	 */
+	def info(messageProvider : Supplier<String>)
+
 	/** Print the given message at debug logging level.
 	 *
 	 * @param message the elements to display. The format of the message must follow {@link MessageFormat}.
 	 * @param parameters the values to dynamically insert into the message.
 	 */
 	def debug(message : Object, parameters : Object*)
+
+	/** Print the given message at debug logging level.
+	 *
+	 * @param messageProvider provides the debug message.
+	 * @since 0.7
+	 */
+	def debug(messageProvider : Supplier<String>)
 
 	/** Replies if the logging system is displaying the errors.
 	 *

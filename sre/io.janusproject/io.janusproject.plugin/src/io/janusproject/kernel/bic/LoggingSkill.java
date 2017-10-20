@@ -23,6 +23,7 @@ package io.janusproject.kernel.bic;
 
 import java.text.MessageFormat;
 import java.util.UUID;
+import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
@@ -122,6 +123,13 @@ public class LoggingSkill extends BuiltinSkill implements Logging {
 	}
 
 	@Override
+	public void error(Supplier<String> messageProvider) {
+		if (this.logger.isLoggable(Level.SEVERE) && messageProvider != null) {
+			this.logger.log(Level.SEVERE, messageProvider);
+		}
+	}
+
+	@Override
 	public void warning(Object message, Throwable exception, Object... parameters) {
 		if (this.logger.isLoggable(Level.WARNING) && message != null) {
 			final String loggeableMessage = message.toString();
@@ -149,6 +157,13 @@ public class LoggingSkill extends BuiltinSkill implements Logging {
 	}
 
 	@Override
+	public void warning(Supplier<String> messageProvider) {
+		if (this.logger.isLoggable(Level.WARNING) && messageProvider != null) {
+			this.logger.log(Level.WARNING, messageProvider);
+		}
+	}
+
+	@Override
 	public void info(Object message, Object... parameters) {
 		if (this.logger.isLoggable(Level.INFO) && message != null) {
 			final String loggeableMessage = message.toString();
@@ -159,12 +174,26 @@ public class LoggingSkill extends BuiltinSkill implements Logging {
 	}
 
 	@Override
+	public void info(Supplier<String> messageProvider) {
+		if (this.logger.isLoggable(Level.INFO) && messageProvider != null) {
+			this.logger.log(Level.INFO, messageProvider);
+		}
+	}
+
+	@Override
 	public void debug(Object message, Object... parameters) {
 		if (this.logger.isLoggable(Level.CONFIG) && message != null) {
 			final String loggeableMessage = message.toString();
 			if (!loggeableMessage.isEmpty()) {
 				this.logger.log(Level.CONFIG, loggeableMessage, parameters);
 			}
+		}
+	}
+
+	@Override
+	public void debug(Supplier<String> messageProvider) {
+		if (this.logger.isLoggable(Level.CONFIG) && messageProvider != null) {
+			this.logger.log(Level.CONFIG, messageProvider);
 		}
 	}
 
