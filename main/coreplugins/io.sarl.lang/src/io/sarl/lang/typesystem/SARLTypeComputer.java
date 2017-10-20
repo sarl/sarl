@@ -25,6 +25,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.core.typesystem.XtendTypeComputer;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
@@ -41,6 +42,7 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import io.sarl.lang.sarl.SarlAssertExpression;
 import io.sarl.lang.sarl.SarlBreakExpression;
 import io.sarl.lang.sarl.SarlContinueExpression;
+import io.sarl.lang.util.Utils;
 
 /** Customized type computer for SARL specific expressions.
  *
@@ -132,7 +134,12 @@ public class SARLTypeComputer extends XtendTypeComputer {
 		} else if (expression instanceof SarlAssertExpression) {
 			_computeTypes((SarlAssertExpression) expression, state);
 		} else {
-			super.computeTypes(expression, state);
+			try {
+				super.computeTypes(expression, state);
+			} catch (Throwable exception) {
+				final EObject resourceContent = expression.eResource().getContents().get(0);
+				throw new Error(Utils.dump(resourceContent), exception);
+			}
 		}
 	}
 

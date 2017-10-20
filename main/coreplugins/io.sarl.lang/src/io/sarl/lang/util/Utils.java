@@ -76,6 +76,7 @@ import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.serializer.ISerializer;
+import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.XtextVersion;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation;
@@ -1307,6 +1308,16 @@ public final class Utils {
 		/** The byte code (the class) of {@link SARLVersion} does not contains the expected field.
 		 */
 		INVALID_SARL_VERSION_BYTECODE,
+	}
+
+	/** Dump the object.
+	 *
+	 * @param object the object.
+	 * @return the string representation of the object.
+	 * @since 0.7
+	 */
+	public static String dump(EObject object) {
+		return EmfFormatter.objToStr(object);
 	}
 
 	/** Dump the object.
