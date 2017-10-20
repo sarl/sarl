@@ -114,6 +114,7 @@ final event Destroy
 /**
  * Informs the creation of a new agent in a spawning context.
  * The event is fired within the default space of the spawning context, i.e. the context in which the agent was created.
+ * The spawned agent does not receive this event.
  * The source of the event is the spawning agent.
  * The context id can be retrieved via {@code ev.source.spaceID.contextID}.
  */
@@ -122,7 +123,7 @@ final event AgentSpawned {
 	/** Identifier of the spawned agent.
 	 * It is the first identifier in {@link #agentIdentifiers}.
 	 *
-	 * @deprecated See {@link #agentIdentifiers}.
+	 * @deprecated since 0.5, See {@link #agentIdentifiers}.
 	 */
 	@Deprecated
 	val agentID : UUID
@@ -182,13 +183,16 @@ final event AgentSpawned {
 /**
  * Informs an agent has been killed.
  * The event is fires within all the external contexts (including the default context) of the killed agent.
- * The source of the event is the parent agent.
+ * The spawned agent does not receive this event.
+ * The source of the event is the killed agent.
  * The context id can be retrieved via {@code ev.source.spaceID.contextID}.
  */
 final event AgentKilled {
 
 	/** The identifier of the killed agent.
+	 * @deprecated since 0.7, See the event source.
 	 */
+	@Deprecated
 	val agentID : UUID
 
 	/** The fully qualified name of the type of the killed agent.
