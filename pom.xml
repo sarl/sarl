@@ -31,11 +31,15 @@
 		<!-- The versions of the following Xtext libraries are available at: https://eclipse.org/Xtext/documentation/350_continuous_integration.html -->
 
 		<!-- Version of the Xtext API -->
-		<xtext.version>2.12.0</xtext.version>
-		<xtext.version.next>2.12.1</xtext.version.next>
-		<!-- Version of the MWE2 library (used for accessing the mwe2 P2) -->
+		<xtext.version>2.13.0</xtext.version>
+		<xtext.version.next>2.13.1</xtext.version.next>
+		<!-- Version of the MWE2 library
+		    (used for accessing the mwe2 P2,
+		     see compositeContent.{xml,jar,xz,xml.xz} file) -->
 		<mwe2.version>2.9.0</mwe2.version>
-		<!-- Version of the Xpand library (used for accessing the Xpand P2) -->
+		<!-- Version of the Xpand library
+		     (used for accessing the Xpand P2,
+		     see compositeContent.{xml,jar,xz,xml.xz} file) -->
 		<xpand.version>R201605260315</xpand.version>
 
 		<!-- Version of the OSGi module that provides the NLS (package: osgi) -->
@@ -48,7 +52,9 @@
 		<javaxinject.version>1</javaxinject.version>
 		<!-- Version of the Tycho module -->
 		<tycho.version>1.0.0</tycho.version>
-		<!-- Java FX version (used for accessing the jfx P2) -->
+		<!-- Java FX version
+		     (used for accessing the jfx P2,
+		     see compositeContent.{xml,jar,xz,xml.xz} file) -->
 		<efxclipse.version>3.0.0</efxclipse.version>
 		<!-- Version of the ZeroMQ library -->
 		<zeromq.version>0.4.2</zeromq.version>

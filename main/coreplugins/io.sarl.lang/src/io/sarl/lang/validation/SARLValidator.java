@@ -2084,8 +2084,6 @@ public class SARLValidator extends AbstractSARLValidator {
 	 * <li>not generating an error when a return type is missed. Indeed, the return type if "void" by default.</li>
 	 * <li>generating a warning when "abstract" is missed.</li>
 	 * </ul>
-	 *
-	 * <p>FIXME: Xtext upgrade, Update this function with the code of the derived function.
 	 */
 	@Check
 	@Override

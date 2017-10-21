@@ -43,6 +43,7 @@ import org.osgi.framework.BundleContext;
  */
 public class LangActivator extends AbstractUIPlugin {
 
+	public static final String PLUGIN_ID = "io.sarl.lang.ui";
 	public static final String IO_SARL_LANG_SARL = "io.sarl.lang.SARL";
 	
 	private static final Logger logger = Logger.getLogger(LangActivator.class);
@@ -109,5 +110,6 @@ public class LangActivator extends AbstractUIPlugin {
 	protected Module getSharedStateModule() {
 		return new SharedStateModule();
 	}
+	
 	
 }

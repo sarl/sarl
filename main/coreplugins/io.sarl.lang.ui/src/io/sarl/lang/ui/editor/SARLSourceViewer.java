@@ -42,7 +42,6 @@ import org.eclipse.xtext.xbase.lib.Exceptions;
 /** Viewer of SARL code.
  *
  * <p>Based on the Xtend implementation, extended with the auto-formating feature when pasting.
- * FIXME: Xtext upgrade, Remove if Xtext accept the patch https://github.com/eclipse/xtext-eclipse/pull/63
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

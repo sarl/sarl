@@ -81,22 +81,18 @@ abstract class GenerationContext {
 
 	/** collection of the generated constructors.
 	 */
-	@SuppressWarnings("unchecked")
 	private final Map<ActionParameterTypes, JvmConstructor> generatedConstructors = CollectionLiterals.newTreeMap(null);
 
 	/** Collection of the inherited final operations.
 	 */
-	@SuppressWarnings("unchecked")
 	private final Map<ActionPrototype, JvmOperation> finalOperations = CollectionLiterals.newTreeMap(null);
 
 	/** Collection of the inherited overridable operations.
 	 */
-	@SuppressWarnings("unchecked")
 	private final Map<ActionPrototype, JvmOperation>  overridableOperations = CollectionLiterals.newTreeMap(null);
 
 	/** Collection of the inherited operations that have not been implemented.
 	 */
-	@SuppressWarnings("unchecked")
 	private final Map<ActionPrototype, JvmOperation>  operationsToImplement = CollectionLiterals.newTreeMap(null);
 
 	/** List of elements that must be generated at the end of the generation process.
@@ -110,7 +106,6 @@ abstract class GenerationContext {
 	/** Guard evaluators to generate. The keys are the event identifiers. The values are the code snipsets for
 	 * evaluating guards and returning the event handler runnables.
 	 */
-	@SuppressWarnings("unchecked")
 	private final Map<String, Pair<SarlBehaviorUnit, Collection<Procedure1<? super ITreeAppendable>>>> guardEvaluators
 			= CollectionLiterals.newHashMap();
 

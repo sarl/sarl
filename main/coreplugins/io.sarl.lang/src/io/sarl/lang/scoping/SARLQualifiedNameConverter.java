@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.bugfixes.unpublished.bug356;
+package io.sarl.lang.scoping;
 
 import com.google.common.base.Strings;
 import org.eclipse.xtext.naming.QualifiedName;
@@ -34,14 +34,14 @@ import io.sarl.lang.util.Utils;
  *
  * <p>This class provides a temporary workaround.
  *
- * <p>FIXME: Xtext upgrade, Remove this class when the Xtend is fixed.
+ * <p>FIXME: Xtext add, Remove this class when the Xtend is fixed.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class Bug356QualifiedNameConverter extends XbaseQualifiedNameConverter {
+public class SARLQualifiedNameConverter extends XbaseQualifiedNameConverter {
 
 	@Override
 	public QualifiedName toQualifiedName(String qualifiedNameAsString) {

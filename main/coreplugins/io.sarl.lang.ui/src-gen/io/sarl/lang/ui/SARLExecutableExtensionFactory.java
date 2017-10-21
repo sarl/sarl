@@ -25,6 +25,7 @@ package io.sarl.lang.ui;
 
 import com.google.inject.Injector;
 import io.sarl.lang.ui.internal.LangActivator;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.xtext.ui.guice.AbstractGuiceAwareExecutableExtensionFactory;
 import org.osgi.framework.Bundle;
 
@@ -36,12 +37,13 @@ public class SARLExecutableExtensionFactory extends AbstractGuiceAwareExecutable
 
 	@Override
 	protected Bundle getBundle() {
-		return LangActivator.getInstance().getBundle();
+		return Platform.getBundle(LangActivator.PLUGIN_ID);
 	}
 	
 	@Override
 	protected Injector getInjector() {
-		return LangActivator.getInstance().getInjector(LangActivator.IO_SARL_LANG_SARL);
+		LangActivator activator = LangActivator.getInstance();
+		return activator != null ? activator.getInjector(LangActivator.IO_SARL_LANG_SARL) : null;
 	}
-	
+
 }

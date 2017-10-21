@@ -36,8 +36,6 @@ import org.eclipse.xtext.xbase.lib.Exceptions;
 
 /** A service that enables to do auto-formatting when a document changed.
  *
- * <p>FIXME: Xtext upgrade, Remove if Xtext accept the patch https://github.com/eclipse/xtext-eclipse/pull/63
- *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

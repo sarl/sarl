@@ -94,6 +94,7 @@ import io.sarl.lang.sarl.SarlFactory;
 import io.sarl.lang.sarl.actionprototype.DefaultActionPrototypeProvider;
 import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.scoping.SARLImplicitlyImportedFeatures;
+import io.sarl.lang.scoping.SARLQualifiedNameConverter;
 import io.sarl.lang.scoping.SARLScopeProvider;
 import io.sarl.lang.scoping.SARLSerializerScopeProvider;
 import io.sarl.lang.serializer.SARLEcoreDocumentationSyntacticSequencer;
@@ -157,6 +158,7 @@ import org.eclipse.xtext.generator.IContextualOutputConfigurationProvider;
 import org.eclipse.xtext.generator.IOutputConfigurationProvider;
 import org.eclipse.xtext.generator.IShouldGenerate;
 import org.eclipse.xtext.linking.ILinker;
+import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.parser.IParser;
 import org.eclipse.xtext.parser.ITokenToStringConverter;
@@ -507,6 +509,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IEarlyExitComputer> bindIEarlyExitComputer() {
 		return SARLEarlyExitComputer.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends IQualifiedNameConverter> bindIQualifiedNameConverter() {
+		return SARLQualifiedNameConverter.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]

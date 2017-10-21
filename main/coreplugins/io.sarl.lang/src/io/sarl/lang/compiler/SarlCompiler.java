@@ -61,7 +61,6 @@ import org.eclipse.xtext.linking.ILinker;
 import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
-import org.eclipse.xtext.xbase.XAssignment;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XFeatureCall;
@@ -122,8 +121,6 @@ public class SarlCompiler extends XtendCompiler {
 	private static final String INLINE_VALUE_NAME = "value"; //$NON-NLS-1$
 
 	private static final String INLINE_IMPORTED_NAME = "imported"; //$NON-NLS-1$
-
-	private static final String CONSTANT_EXPRESSION_NAME = "constantExpression"; //$NON-NLS-1$
 
 	private static final Pattern INLINE_VARIABLE_PATTERN = Pattern.compile("\\" + INLINE_VARIABLE_PREFIX //$NON-NLS-1$
 			+ "(\\" + INLINE_VARIABLE_PREFIX + "|[0-9]+)"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -309,40 +306,6 @@ public class SarlCompiler extends XtendCompiler {
 		}
 		if (prevEnd != formatString.length()) {
 			target.append(formatString.substring(prevEnd));
-		}
-	}
-
-	private static boolean isConstantExpression(JvmAnnotationReference reference) {
-		//FIXME: Xtext upgrade, Remove when Xtext issue is fixed; https://github.com/eclipse/xtext-extras/pull/62
-		for (final JvmAnnotationValue annotationValue: reference.getValues()) {
-			if (CONSTANT_EXPRESSION_NAME.equals(annotationValue.getValueName())) {
-				return ((JvmBooleanAnnotationValue) annotationValue).getValues().get(0).booleanValue();
-			}
-		}
-		return false;
-	}
-
-	@Override
-	protected void featureCalltoJavaExpression(final XAbstractFeatureCall call, ITreeAppendable output,
-			boolean isExpressionContext) {
-		//FIXME: Xtext upgrade, Remove when Xtext issue is fixed; https://github.com/eclipse/xtext-extras/pull/62
-		if (call instanceof XAssignment) {
-			assignmentToJavaExpression((XAssignment) call, output, isExpressionContext);
-		} else {
-			if (needMultiAssignment(call)) {
-				appendLeftOperand(call, output, isExpressionContext).append(" = "); //$NON-NLS-1$
-			}
-
-			ITreeAppendable child = output;
-			final JvmAnnotationReference annotationRef = this.expressionHelper.findInlineAnnotation(call);
-			if (annotationRef == null || !isConstantExpression(annotationRef)) {
-				final boolean hasReceiver = appendReceiver(call, output, isExpressionContext);
-				if (hasReceiver) {
-					output.append("."); //$NON-NLS-1$
-					child = appendTypeArguments(call, output);
-				}
-			}
-			appendFeatureCall(call, child);
 		}
 	}
 

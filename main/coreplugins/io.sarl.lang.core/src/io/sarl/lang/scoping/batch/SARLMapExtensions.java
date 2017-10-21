@@ -46,7 +46,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * by the Xbase API.
  * The enhancement of Xbase is asked in <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=454319">this issue</a>.
  *
- * <p>FIXME: Xtext upgrade, Remove if Xbase or Xtend are providing these functions.
+ * <p>FIXME: Xtext add, No proposal within Xtext. Add a PR to Xbase or Xtend are providing these functions.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

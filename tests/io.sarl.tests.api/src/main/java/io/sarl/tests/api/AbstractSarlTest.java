@@ -1306,10 +1306,19 @@ public abstract class AbstractSarlTest {
 		return file(string, false);
 	}
 
+	/** Replies the parse helper.
+	 *
+	 * @return the parse helper.
+	 * @since 0.7
+	 */
+	protected ParseHelper<SarlScript> getParseHelper() {
+		return this.parser.get();
+	}
+	
 	/** Create an instance of class.
 	 */
 	protected SarlScript file(String string, boolean validate) throws Exception {
-		SarlScript script = this.parser.get().parse(string);
+		SarlScript script = getParseHelper().parse(string);
 		if (validate) {
 			Resource resource = script.eResource();
 			ResourceSet resourceSet = resource.getResourceSet();

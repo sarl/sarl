@@ -217,32 +217,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 		if (reference == null) {
 			return new StyledString("Object"); //$NON-NLS-1$
 		}
-		String name = this.uiStrings.referenceToString(reference, "Object"); //$NON-NLS-1$
-		//
-		// FIXME: Xtext upgrade, https://bugs.eclipse.org/bugs/show_bug.cgi?id=443131
-		final JvmType type = reference.getType();
-		if (type != null && type.eIsProxy() && reference.eResource() != null) {
-			// This case occurs when the reference is unknown:
-			// the found "name" is the fully qualified name of the type.
-			// So we should extract the simple name
-			int index = name.length() - 1;
-			final char dot = '.';
-			final char doll = '$';
-			final char dies = '#';
-			char ch;
-			while (index >= 0) {
-				ch = name.charAt(index);
-				if (ch == dot || ch == doll || ch == dies) {
-					name = name.substring(index + 1);
-					// break the loop
-					index = -1;
-				} else {
-					index--;
-				}
-			}
-		}
-		// END OF FIX
-		//
+		final String name = this.uiStrings.referenceToString(reference, "Object"); //$NON-NLS-1$
 		return convertToStyledString(name);
 	}
 

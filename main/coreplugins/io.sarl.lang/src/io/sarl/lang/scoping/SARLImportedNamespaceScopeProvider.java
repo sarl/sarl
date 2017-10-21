@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.bugfixes.unpublished.bug356;
+package io.sarl.lang.scoping;
 
 import java.util.List;
 
@@ -45,7 +45,7 @@ import org.eclipse.xtext.scoping.impl.MultimapBasedSelectable;
  *
  * <p>This class provides a temporary workaround.
  *
- * <p>FIXME: Xtext upgrade, Remove this class when the Xtend is fixed.
+ * <p>FIXME: Xtext add, Remove this class when the Xtend is fixed.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -53,7 +53,7 @@ import org.eclipse.xtext.scoping.impl.MultimapBasedSelectable;
  * @mavenartifactid $ArtifactId$
  */
 @Singleton
-public class Bug356ImportedNamespaceScopeProvider extends XtendImportedNamespaceScopeProvider {
+public class SARLImportedNamespaceScopeProvider extends XtendImportedNamespaceScopeProvider {
 
 	@Override
 	protected ISelectable internalGetAllDescriptions(final Resource resource) {

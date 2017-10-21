@@ -42,6 +42,7 @@ import io.sarl.lang.mwe2.codebuilder.config.*
 import io.sarl.lang.mwe2.keywords.* 
 import io.sarl.lang.mwe2.bugfixes.unpublished.* 
 
+
 var overallRootPath = "../../.."
 var rootPath = ".."
 
@@ -319,8 +320,6 @@ Workflow {
 			fileExtensions = file.extensions
 			// Specification of the injection that is used by MWE2 (not by the SARL compiler)
 			guiceModule = SarlLanguageGeneratorModule {}
-			// Do not generates the Xtend stubs
-			generateXtendStubs = false
 			
 			// Java API to access grammar elements (required by several other fragments)
 			fragment = grammarAccess.GrammarAccessFragment2 auto-inject {
@@ -577,6 +576,10 @@ Workflow {
     			runtime = {
     				bind = "io.sarl.lang.compiler.IGeneratorConfigProvider2"
     				to = "io.sarl.lang.compiler.GeneratorConfigProvider2"
+   				}
+    			runtime = {
+    				bind = "org.eclipse.xtext.naming.IQualifiedNameConverter"
+    				to = "io.sarl.lang.scoping.SARLQualifiedNameConverter"
    				}
 
     			ui = {

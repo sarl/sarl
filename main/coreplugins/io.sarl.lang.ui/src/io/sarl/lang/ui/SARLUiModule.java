@@ -27,12 +27,10 @@ import com.google.inject.Injector;
 import com.google.inject.Provider;
 import com.google.inject.name.Names;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.eclipse.xtext.builder.preferences.BuilderConfigurationBlock;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.eclipse.xtext.ui.editor.autoedit.AbstractEditStrategy;
 import org.eclipse.xtext.validation.IssueSeveritiesProvider;
 
-import io.sarl.lang.ui.bugfixes.pending.xtexteclipse282.Issue282BuilderConfigurationBlock;
 import io.sarl.lang.ui.validation.UIConfigurableIssueSeveritiesProvider;
 import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
 
@@ -106,14 +104,6 @@ public class SARLUiModule extends AbstractSARLUiModule {
 		// matches ID of org.eclipse.ui.contexts extension registered in plugin.xml
 		binder.bindConstant().annotatedWith(Names.named(XtextEditor.KEY_BINDING_SCOPE))
 		.to("io.sarl.lang.ui.scoping.SARLEditorScope"); //$NON-NLS-1$
-	}
-
-	/** FIXME: Xtext upgrade, Remove when xtext-eclipse/282 is fixed.
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Class<? extends BuilderConfigurationBlock> bindBuilderConfigurationBlock() {
-		return Issue282BuilderConfigurationBlock.class;
 	}
 
 }
