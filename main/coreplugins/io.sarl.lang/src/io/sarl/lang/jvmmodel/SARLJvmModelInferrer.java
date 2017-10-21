@@ -102,8 +102,6 @@ import org.eclipse.xtext.common.types.TypesFactory;
 import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.linking.ILinker;
-import org.eclipse.xtext.nodemodel.ICompositeNode;
-import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.xbase.XAssignment;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
@@ -971,17 +969,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		final GenerationContext context = openContext(source, inferredJvmType,
 				Collections.singleton(SarlEnumLiteral.class));
 		try {
-			// Initialize the context with inheriting features
-			//TODO: Remove the following call
-			Utils.populateInheritanceContext(
-					inferredJvmType,
-					context.getInheritedFinalOperations(),
-					context.getInheritedOverridableOperations(),
-					null,
-					context.getInheritedOperationsToImplement(),
-					null,
-					this.sarlSignatureProvider);
-
 			// Standard OOP generation
 			super.initialize(source, inferredJvmType);
 
@@ -1017,17 +1004,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		final GenerationContext context = openContext(source, inferredJvmType,
 				Collections.singleton(SarlField.class));
 		try {
-			// Initialize the context with inheriting features
-			//TODO: Remove the following call
-			Utils.populateInheritanceContext(
-					inferredJvmType,
-					context.getInheritedFinalOperations(),
-					context.getInheritedOverridableOperations(),
-					null,
-					context.getInheritedOperationsToImplement(),
-					null,
-					this.sarlSignatureProvider);
-
 			// Standard OOP generation
 			super.initialize(source, inferredJvmType);
 
@@ -1397,7 +1373,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		if (Strings.isNullOrEmpty(source.getName())) {
 			return;
 		}
-		// TODO: Generate the space
 	}
 
 	/** Initialize the SARL artifact type.
@@ -1413,7 +1388,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		if (Strings.isNullOrEmpty(source.getName())) {
 			return;
 		}
-		// TODO: Generate the artifact
 	}
 
 	@Override
@@ -1765,7 +1739,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 			// Detecting if the action is an early-exit action.
 			// If true, the Java code is annotated to be usable by the SARL validator.
-			//TODO: Generalize the detection of the EarlyExit
 			boolean isEarlyExitTmp = false;
 			final Iterator<JvmTypeReference> eventIterator = firedEvents.iterator();
 			while (!isEarlyExitTmp && eventIterator.hasNext()) {
@@ -1892,7 +1865,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 						// If the main action is an early-exit action, the additional operation
 						// is also an early-exit operation.
-						//TODO: Generalize the detection of the EarlyExit
 						if (isEarlyExit) {
 							addAnnotationSafe(
 									operation2, EarlyExit.class);
@@ -2263,7 +2235,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		//
 		// Fixing the behavior for determining the visibility of the dispatcher since
 		// it does not fit the SARL requirements.
-		// FIXME: Move to Xtend?
 		//
 		JvmVisibility higherVisibility = JvmVisibility.PRIVATE;
 		for (final JvmOperation jvmOperation : localOperations) {
@@ -2966,7 +2937,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					}
 					addAnnotationSafe(lastParam, DefaultValue.class, namePostPart);
 
-					final String rawCode = reentrantSerialize(defaultValue);
+					final String rawCode = Utils.getSarlCodeFor(defaultValue);
 					appendGeneratedAnnotation(field, context, rawCode);
 				}
 			}
@@ -3351,19 +3322,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			}
 		}
 		return clean;
-	}
-
-	@SuppressWarnings("static-method")
-	private String reentrantSerialize(EObject object) {
-		final ICompositeNode node = NodeModelUtils.getNode(object);
-		if (node != null) {
-			String text = node.getText();
-			if (text != null) {
-				text = text.trim();
-			}
-			return Strings.emptyToNull(text);
-		}
-		return null;
 	}
 
 	/** Copy the type parameters from a JvmOperation.

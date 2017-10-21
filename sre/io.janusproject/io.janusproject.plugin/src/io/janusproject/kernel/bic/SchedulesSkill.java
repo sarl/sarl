@@ -148,7 +148,6 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	@Override
 	public SynchronizedSet<String> getActiveTasks() {
 		synchronized (getTaskListMutex()) {
-			//TODO: Avoid copy of collection
 			return Collections3.unmodifiableSynchronizedSet(this.tasks.keySet(), getTaskListMutex());
 		}
 	}

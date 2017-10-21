@@ -45,8 +45,8 @@ import io.sarl.lang.services.SARLGrammarKeywordAccess;
 /**
  * UI Strings.
  *
- * <p>This class extends the standard Xtend serializer by replacing the example of code, written
- * in Java or Xtend, by the same example with the SARL syntax.
+ * <p>This class extends the standard XBase tool by replacing the example of code, written
+ * in Java or Xtend, by the same example in the SARL syntax.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

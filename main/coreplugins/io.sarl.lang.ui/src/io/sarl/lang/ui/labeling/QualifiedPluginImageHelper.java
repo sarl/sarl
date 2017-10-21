@@ -34,7 +34,7 @@ import org.eclipse.xtext.ui.PluginImageHelper;
  *
  * <p>The image ids could be qualified with the containing plugin id.
  *
- * <p>TODO: Remove this class when submitted and accepted by the Xtext project.
+ * <p>FIXME: Xtext add, Remove this class when submitted and accepted by the Xtext project.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

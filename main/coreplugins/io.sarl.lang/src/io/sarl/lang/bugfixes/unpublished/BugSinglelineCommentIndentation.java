@@ -33,7 +33,7 @@ import org.eclipse.xtext.formatting2.regionaccess.ITextRegionAccess;
 import org.eclipse.xtext.formatting2.regionaccess.ITextSegment;
 import org.eclipse.xtext.util.Strings;
 
-/** FIXME: Fixing a bug in Xtext Formatter2 API that avoid to have a good
+/** FIXME: Xtext upgrade, Fixing a bug in Xtext Formatter2 API that avoid to have a good
  * indentation for the last comment in a block.
  *
  * @author $Author: sgalland$

@@ -34,7 +34,7 @@ import io.sarl.lang.util.Utils;
  *
  * <p>This class provides a temporary workaround.
  *
- * <p>FIXME: Remove this class when the Xtend is fixed.
+ * <p>FIXME: Xtext upgrade, Remove this class when the Xtend is fixed.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

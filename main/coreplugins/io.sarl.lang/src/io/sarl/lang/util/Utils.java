@@ -72,9 +72,10 @@ import org.eclipse.xtext.common.types.JvmUpperBound;
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.common.types.JvmWildcardTypeReference;
 import org.eclipse.xtext.common.types.TypesFactory;
-import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.naming.QualifiedName;
+import org.eclipse.xtext.nodemodel.ICompositeNode;
+import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.serializer.ISerializer;
 import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.XtextVersion;
@@ -692,6 +693,33 @@ public final class Utils {
 		}
 	}
 
+	/** Replies the original code for the given Ecore object.
+	 *
+	 * <p>The replied code is the SARL code within the source file. It's format depends on
+	 * how the developer has input it.
+	 *
+	 * <p>This function does:<ul>
+	 * <li>replace any sequence of "new line" characters by a space character, and</li>
+	 * <li>trim the whitespaces.</li>
+	 * </ul>
+	 *
+	 * @param object the object to search the code for.
+	 * @return the SARL code for the given object, or {@code null} if no code was found.
+	 * @since 0.7
+	 */
+	public static String getSarlCodeFor(EObject object) {
+		final ICompositeNode node = NodeModelUtils.getNode(object);
+		if (node != null) {
+			String text = node.getText();
+			if (text != null) {
+				text = text.trim();
+				text = text.replaceAll("[\n\r\f]+", " "); //$NON-NLS-1$//$NON-NLS-2$
+			}
+			return Strings.emptyToNull(text);
+		}
+		return null;
+	}
+
 	/** This is a context-safe serializer of a signature.
 	 *
 	 * @param signature - the signature to serialize.
@@ -706,7 +734,6 @@ public final class Utils {
 			SARLGrammarKeywordAccess grammarAccess, ImportManager importManager) {
 		// Try the serializer
 		try {
-			//TODO: Check if there is a way to serialize without context
 			return serializer.serialize(signature);
 		} catch (Throwable exception) {
 			// No working, perhaps the context's of the signature is unknown
@@ -1182,28 +1209,6 @@ public final class Utils {
 		return qualifiedName != null && qualifiedName.startsWith(SARL_PACKAGE_PREFIX);
 	}
 
-	/** Replies if the given type is a primitive "void".
-	 *
-	 * <p>If the given parametr is <code>null</code>, this function returns <code>true</code>.
-	 *
-	 * @param type the type to test.
-	 * @return <code>true</code> if the type is void or <code>null</code>.
-	 */
-	public static boolean isPrimitiveVoid(JvmType type) {
-		// TODO: Is a utility class from Xbase providing this feature that is different from LightweightTypeReference.
-		return type == null || (type.eClass() == TypesPackage.Literals.JVM_VOID && !type.eIsProxy());
-	}
-
-	/** Replies if the given type is a primitive type.
-	 *
-	 * @param type the type to test.
-	 * @return <code>true</code> if the type is primitive.
-	 */
-	public static boolean isPrimitive(JvmType type) {
-		// TODO: Is a utility class from Xbase providing this feature that is different from LightweightTypeReference.
-		return type != null && type.eClass() == TypesPackage.Literals.JVM_PRIMITIVE_TYPE;
-	}
-
 	/** Replies if the given type is a functional interface.
 	 *
 	 * <p>This function does not test if the {@code @FunctionalInterface} is attached to the type.
@@ -1425,8 +1430,6 @@ public final class Utils {
 			JvmTypeReferenceBuilder typeParameterBuilder, JvmTypesBuilder typeBuilder,
 			TypeReferences typeReferences, TypesFactory jvmTypesFactory,
 			IJvmModelAssociator associator) {
-		// TODO: Is similar function exist in Xtext?
-
 		if (type == null) {
 			return typeParameterBuilder.typeRef(Object.class);
 		}

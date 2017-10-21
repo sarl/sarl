@@ -72,7 +72,7 @@ import io.sarl.lang.util.Utils;
  * <p><strong>Generate Java8 lambda expressions:</strong>
  * The Xtend reentrant type resolver does not provide a full support of Java 8 yet.
  * The PR was refused in Xtend project, see <a href="https://github.com/eclipse/xtext-xtend/pull/193">Xtend Issue 193</a>.
- * TODO: Remove this fix when Xtend support Java 8.
+ * FIXME: Xtext upgrade, Remove this fix when Xtend support Java 8.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

@@ -115,7 +115,7 @@ public class JreProxyInstaller implements ProxyInstaller {
 						list.add(processElement(entry, componentType));
 					} else if (excluder.isExcluded((Doc) entry)) {
 						if (excluder.isTranslatableToTag((Doc) entry)) {
-							// TODO
+							//
 						}
 					} else {
 						list.add(processElement(entry, componentType));

@@ -294,7 +294,6 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 				final Properties sarlSettings = new Properties();
 				try (FileInputStream stream = new FileInputStream(file)) {
 					sarlSettings.load(stream);
-					// TODO read SARL setup to compute the properties file loc and property name
 					final String sarlOutputDirProp = sarlSettings.getProperty("outlet.DEFAULT_OUTPUT.directory", null); //$NON-NLS-1$
 					if (sarlOutputDirProp != null) {
 						final File srcDir = new File(sourceDirectory);

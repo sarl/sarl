@@ -78,9 +78,13 @@ public class SARLBuilderConfigurationBlock extends XbaseBuilderConfigurationBloc
 
 	/** Replies the output configurations for the given project.
 	 *
+	 * <p>This function filters the output configurations in order to never reply one
+	 * associated to a extra language output.
+	 *
 	 * @param project the project.
 	 * @return the output configurations associated to the given project.
 	 */
+	@Override
 	protected Set<OutputConfiguration> getOutputConfigurations(IProject project) {
 		final Set<OutputConfiguration> original = this.configurationProvider.getOutputConfigurations(getProject());
 		return Sets.filter(original, (it) -> !ExtraLanguageOutputConfigurations.isExtraLanguageOutputConfiguration(it.getName()));

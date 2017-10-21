@@ -172,7 +172,6 @@ public abstract class AbstractEventSpace extends SpaceBase {
 		synchronized (listeners.mutex()) {
 			for (final EventListener agent : listeners) {
 				if (scope.matches(getAddress(agent))) {
-					// TODO Verify the agent is still alive and running
 					this.executorService.submit(new AsyncRunner(agent, event));
 				}
 			}

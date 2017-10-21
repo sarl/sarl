@@ -313,7 +313,7 @@ public class SarlCompiler extends XtendCompiler {
 	}
 
 	private static boolean isConstantExpression(JvmAnnotationReference reference) {
-		//TODO: Remove when Xtext issue is fixed; https://github.com/eclipse/xtext-extras/pull/62
+		//FIXME: Xtext upgrade, Remove when Xtext issue is fixed; https://github.com/eclipse/xtext-extras/pull/62
 		for (final JvmAnnotationValue annotationValue: reference.getValues()) {
 			if (CONSTANT_EXPRESSION_NAME.equals(annotationValue.getValueName())) {
 				return ((JvmBooleanAnnotationValue) annotationValue).getValues().get(0).booleanValue();
@@ -325,7 +325,7 @@ public class SarlCompiler extends XtendCompiler {
 	@Override
 	protected void featureCalltoJavaExpression(final XAbstractFeatureCall call, ITreeAppendable output,
 			boolean isExpressionContext) {
-		//TODO: Remove when Xtext issue is fixed; https://github.com/eclipse/xtext-extras/pull/62
+		//FIXME: Xtext upgrade, Remove when Xtext issue is fixed; https://github.com/eclipse/xtext-extras/pull/62
 		if (call instanceof XAssignment) {
 			assignmentToJavaExpression((XAssignment) call, output, isExpressionContext);
 		} else {

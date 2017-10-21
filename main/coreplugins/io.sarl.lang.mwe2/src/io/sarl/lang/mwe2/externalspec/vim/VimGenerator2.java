@@ -211,7 +211,7 @@ public class VimGenerator2 extends AbstractExternalHighlightingFragment2<IStyleA
 	 * @param punctuation the operators and punctuation.
 	 */
 	protected void generatePunctuation(IStyleAppendable it, Iterable<String> punctuation) {
-		// TODO Generation punctuation hilightning for Vim
+		//
 	}
 
 	/** Generate the keywords for the primitive types.

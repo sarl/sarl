@@ -39,7 +39,7 @@ import org.eclipse.xtext.formatting2.regionaccess.ITextReplacement;
 import org.eclipse.xtext.formatting2.regionaccess.ITextSegment;
 import org.eclipse.xtext.util.Strings;
 
-/** FIXME: Fixing a bug in Xtext Formatter2 API that avoid to have a good
+/** FIXME: Xtext upgrade, Fixing a bug in Xtext Formatter2 API that avoid to have a good
  * indentation for the first comment in a block.
  *
  * @author $Author: sgalland$
@@ -179,6 +179,11 @@ public class BugMultilineCommentIndentation {
 		@Override
 		public Iterable<ITextReplacement> getLocalReplacements() {
 			return this.context.getLocalReplacements();
+		}
+
+		@Override
+		public Iterable<ITextReplacement> getLocalReplacementsReverse() {
+			return this.context.getLocalReplacementsReverse();
 		}
 
 		@Override

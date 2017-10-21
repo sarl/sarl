@@ -95,7 +95,7 @@ public class ExtraLanguageImportManager extends ImportManager {
 
 	/** Replies the internal set that contains the qualified names of "this" type.
 	 *
-	 * <p>FIXME: Add into the super type (Xtext contribution).
+	 * <p>FIXME: Xtext add, Add into the super type (Xtext contribution).
 	 *
 	 * @return the internal set.
 	 */
@@ -115,7 +115,7 @@ public class ExtraLanguageImportManager extends ImportManager {
 
 	/** Replies the internal set that contains the simple names of "this" type.
 	 *
-	 * <p>FIXME: Add into the super type (Xtext contribution).
+	 * <p>FIXME: Xtext add, Add into the super type (Xtext contribution).
 	 *
 	 * @return the internal set.
 	 */
@@ -135,7 +135,7 @@ public class ExtraLanguageImportManager extends ImportManager {
 
 	/** Replies the internal import data structure.
 	 *
-	 * <p>FIXME: Add into the super type (Xtext contribution).
+	 * <p>FIXME: Xtext add, Add into the super type (Xtext contribution).
 	 *
 	 * @return the internal import data structure.
 	 */
@@ -155,7 +155,7 @@ public class ExtraLanguageImportManager extends ImportManager {
 
 	/** Replies the internal separator.
 	 *
-	 * <p>FIXME: Add into the super type (Xtext contribution).
+	 * <p>FIXME: Xtext add, Add into the super type (Xtext contribution).
 	 *
 	 * @return the internal separator.
 	 */

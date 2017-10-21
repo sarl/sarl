@@ -54,6 +54,8 @@ import io.sarl.lang.validation.SARLValidator;
  * <p>Issue is due to Xtend issue 191 (https://github.com/eclipse/xtext-xtend/pull/191),
  * and the associated PR 192 (https://github.com/eclipse/xtext-xtend/pull/192)
  *
+ * <p>Search for "START CHANGE" comment for finding the specific fixes of this class.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -163,15 +165,19 @@ public class Bug621SARLValidator extends SARLValidator {
 								getDeclaratorName(conflictingOperation.getDeclaration()) + "|"
 										+ EcoreUtil.getURI(conflictingOperation.getDeclaration()).toString()
 							};
+						// START CHANGE
 						if (!operation.getDeclaration().isAbstract() && !operation.getDeclaration().isDefault()
 							&& !conflictingOperation.getDeclaration().isAbstract() && !conflictingOperation.getDeclaration().isDefault()) {
+							//END
 							error("The type " + inferredType.getSimpleName()
 									+ " inherits multiple implementations of the method " + conflictingOperation.getSimpleSignature()
 									+ " from " + getDeclaratorName(conflictingOperation.getDeclaration())
 									+ " and " + getDeclaratorName(operation.getDeclaration()) + ".",
 									xtendType, XtendPackage.Literals.XTEND_TYPE_DECLARATION__NAME,
 									CONFLICTING_DEFAULT_METHODS, uris);
+							// START CHANGE
 						} else if (!operation.getDeclaration().isDefault() && !conflictingOperation.getDeclaration().isDefault()) {
+							//END
 							// At least one of the operations is non-abstract
 							IResolvedOperation abstractOp, nonabstractOp;
 							if (operation.getDeclaration().isAbstract()) {

@@ -433,9 +433,9 @@ public class SARLValidator extends AbstractSARLValidator {
 		return super.isValueExpectedRecursive(expr);
 	}
 
-	/** Copied from the Xtend validtor.
+	/** Copied from the Xtend validator.
 	 *
-	 * <p>TODO: Change the visilibility in the Xtend validator.
+	 * <p>FIXME: Xtext add, Change the visilibility in the Xtend validator.
 	 *
 	 * @param annotationTarget the target to test.
 	 * @return <code>true</code> if the annotation target is relevant for validation.
@@ -787,7 +787,7 @@ public class SARLValidator extends AbstractSARLValidator {
 		} else {
 			super.checkModifiers(oopClass);
 		}
-		// TODO remove this constraint when it is removed from the Xtend validator.
+		// FIXME Xtext upgrade, remove this constraint when it is removed from the Xtend validator.
 		if (!oopClass.isStatic()
 				&& ((econtainer instanceof SarlAgent)
 				|| (econtainer instanceof SarlBehavior)
@@ -959,7 +959,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	 * @param feature the syntactic feature related to the supertypes.
 	 * @param defaultSignatures the signatures of the default constructors for the given container.
 	 */
-	@SuppressWarnings({"unchecked", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity",
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity",
 			"checkstyle:nestedifdepth"})
 	protected void checkSuperConstructor(
 			XtendTypeDeclaration container,
@@ -1122,22 +1122,6 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check(CheckType.FAST)
 	public void checkForbiddenCalls(XAbstractFeatureCall expression) {
-		/* TODO: Remove the code in this comment because it seems to be already managed by the feature call validator
-		// specific message for System.exit
-		final JvmIdentifiableElement feature = expression.getFeature();
-		if (feature != null) {
-			final String id = feature.getQualifiedName();
-			if ("java.lang.System.exit".equals(id)) { //$NON-NLS-1$
-				error(
-						Messages.SARLValidator_35,
-						expression,
-						null,
-						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-						FORBIDDEN_REFERENCE);
-				return;
-			}
-		}
-		*/
 		if (this.featureCallValidator.isDisallowedCall(expression)) {
 			error(
 					MessageFormat.format(
@@ -1162,7 +1146,6 @@ public class SARLValidator extends AbstractSARLValidator {
 				&& this.featureCallValidator.isDiscouragedCall(expression)) {
 			addIssue(
 					MessageFormat.format(Messages.SARLValidator_37,
-					// FIXME: this.serializer.serialize(expression)
 					expression.getConcreteSyntaxFeatureName()),
 					expression,
 					DISCOURAGED_REFERENCE);
@@ -2002,7 +1985,6 @@ public class SARLValidator extends AbstractSARLValidator {
 	 *
 	 * @param uses the capacity use declaration.
 	 */
-	@SuppressWarnings("unchecked")
 	@Check(CheckType.NORMAL)
 	public void checkUnusedCapacities(SarlCapacityUses uses) {
 		if (!isIgnored(UNUSED_AGENT_CAPACITY)) {
@@ -2103,7 +2085,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	 * <li>generating a warning when "abstract" is missed.</li>
 	 * </ul>
 	 *
-	 * <p>XXX: Update this function with the code of the derived function.
+	 * <p>FIXME: Xtext upgrade, Update this function with the code of the derived function.
 	 */
 	@Check
 	@Override

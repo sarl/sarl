@@ -105,7 +105,7 @@ public class ZeroMQNetworkService extends AbstractNetworkingExecutionThreadServi
 
     private final Map<SpaceID, NetworkEventReceivingListener> messageRecvListeners = new TreeMap<>();
 
-    // TODO Change poller that can be stopped properly.
+    // Change poller that can be stopped properly.
     private Poller poller;
 
     private URI uriCandidate;
@@ -297,7 +297,7 @@ public class ZeroMQNetworkService extends AbstractNetworkingExecutionThreadServi
      *             if the envelope cannot be read from the network.
      */
     private static EventEnvelope extractEnvelope(Socket socket) throws IOException {
-        // TODO: Read the ZeroMQ socket via a NIO wrapper to support large data:
+        // To-Do: Read the ZeroMQ socket via a NIO wrapper to support large data:
         // indeed the arrays has a maximal size bounded by a native int value, and
         // the real data could be larger than this limit.
 
@@ -444,7 +444,7 @@ public class ZeroMQNetworkService extends AbstractNetworkingExecutionThreadServi
             // ensure that this thread does not take too much time.
             Thread.yield();
         }
-        // FIXME: May the poller be stopped?
+        // May the poller be stopped?
         // stopPoller();
     }
 
@@ -493,7 +493,7 @@ public class ZeroMQNetworkService extends AbstractNetworkingExecutionThreadServi
             this.kernelService.removeKernelDiscoveryServiceListener(this.serviceListener);
             this.spaceService.removeSpaceRepositoryListener(this.serviceListener);
 
-            // TODO this.poller.stop();
+            // this.poller.stop();
             // stopPoller();
 
             // this.publisher.close();

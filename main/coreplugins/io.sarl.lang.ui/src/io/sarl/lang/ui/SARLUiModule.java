@@ -49,8 +49,6 @@ import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
 @SuppressWarnings({"static-method", "javadoc", "checkstyle:javadocmethod"})
 public class SARLUiModule extends AbstractSARLUiModule {
 
-	//TODO private static final String AUTOMATIC_PROPOSAL_CHARACTERS = "."; //$NON-NLS-1$
-
 	/** Provider of {@link UIConfigurableIssueSeveritiesProvider}.
 	 *
 	 * @author $Author: sgalland$
@@ -89,9 +87,9 @@ public class SARLUiModule extends AbstractSARLUiModule {
 	public void configure(Binder binder) {
 		super.configure(binder);
 		// Configure the automatic auto-completion on specific characters: "." and ":"
-		//TODO binder.bind(String.class).annotatedWith(com.google.inject.name.Names.named(
+		//  binder.bind(String.class).annotatedWith(com.google.inject.name.Names.named(
 		//  XtextContentAssistProcessor.COMPLETION_AUTO_ACTIVATION_CHARS))
-		//	.toInstance(AUTOMATIC_PROPOSAL_CHARACTERS);
+		//	.toInstance(".");
 
 		// Configure a system singleton for issue severities provider
 		final UIConfigurableIssueSeveritiesProviderProvider provider = new UIConfigurableIssueSeveritiesProviderProvider();
@@ -110,7 +108,7 @@ public class SARLUiModule extends AbstractSARLUiModule {
 		.to("io.sarl.lang.ui.scoping.SARLEditorScope"); //$NON-NLS-1$
 	}
 
-	/** TODO: Remove when xtext-eclipse/282 is fixed.
+	/** FIXME: Xtext upgrade, Remove when xtext-eclipse/282 is fixed.
 	 * {@inheritDoc}
 	 */
 	@Override

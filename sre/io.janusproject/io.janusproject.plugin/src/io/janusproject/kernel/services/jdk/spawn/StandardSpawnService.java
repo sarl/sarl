@@ -84,10 +84,10 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 
 	private final ListenerCollection<?> globalListeners = new ListenerCollection<>();
 
-	// TODO The use of two maps is slowly the platform
+	// The use of two maps is decreasing the performances of the platform
 	private final Map<UUID, ListenerCollection<SpawnServiceListener>> agentLifecycleListeners = new TreeMap<>();
 
-	// TODO The use of two maps is slowly the platform
+	// The use of two maps is decreasing the performances of the platform
 	private final Map<UUID, Agent> agents = new TreeMap<>();
 
 	private final Injector injector;

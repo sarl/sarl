@@ -219,7 +219,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 		}
 		String name = this.uiStrings.referenceToString(reference, "Object"); //$NON-NLS-1$
 		//
-		// FIXME: https://bugs.eclipse.org/bugs/show_bug.cgi?id=443131
+		// FIXME: Xtext upgrade, https://bugs.eclipse.org/bugs/show_bug.cgi?id=443131
 		final JvmType type = reference.getType();
 		if (type != null && type.eIsProxy() && reference.eResource() != null) {
 			// This case occurs when the reference is unknown:

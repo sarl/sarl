@@ -57,7 +57,9 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtend.core.macro.ProcessorInstanceForJvmTypeProvider;
@@ -1623,6 +1625,110 @@ public abstract class AbstractSarlTest {
 				new InstanceOf.VarArgAware(type));
 		ArgumentMatcher<T> or = new Or(matchers);
 		return ArgumentMatchers.argThat(or);
+	}
+
+	/** Replies the string representation of issues.
+	 *
+	 * @param model the parsed model.
+	 * @param issues the issues.
+	 * @param result the result.
+	 * @return {@code result}.
+	 */
+	public static StringBuilder getIssuesAsString(EObject model, Iterable<Issue> issues, StringBuilder result) {
+		for(Issue issue : issues) {
+			URI uri = issue.getUriToProblem();
+			result.append(issue.getSeverity());
+			result.append(" (");
+			result.append(issue.getCode());
+			result.append(") '");
+			result.append(issue.getMessage());
+			result.append("'");
+			if (uri != null) {
+				EObject eObject = model.eResource().getResourceSet().getEObject(uri, true);
+				result.append(" on ");
+				result.append(eObject.eClass().getName());
+			}
+			result.append("\n");
+		}
+		return result;
+	}
+
+	/** Replies if the given issue has the given parts within its message.
+	 *
+	 * @param issue the issue to test.
+	 * @param messageParts the parts of the error message to search for.
+	 * @return {@code true} if all parts are found.
+	 */
+	public static boolean isIssueMessage(Issue issue, String... messageParts) {
+		for (String messagePart : messageParts) {
+			if (!issue.getMessage().toLowerCase().contains(messagePart.toLowerCase())) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/** Assert that the given issue is inside the list of issues.
+	 *
+	 * @param issues the list of issues.
+	 * @param severity the expected severity.
+	 * @param model the issued model.
+	 * @param objectType the type of the object.
+	 * @param code the issue code.
+	 * @param messageParts the parts of the issue message that are expected.
+	 */
+	public static void assertIssue(List<Issue> issues, Severity severity, EObject model,
+			EClass objectType, String code, String... messageParts) {
+		Iterator<Issue> iterator = issues.iterator();
+		while (iterator.hasNext()) {
+			Issue issue = iterator.next();
+			if (Objects.equal(issue.getCode(), code) && issue.getSeverity() == severity) {
+				EObject object = model.eResource().getResourceSet().getEObject(issue.getUriToProblem(), true);
+				if (objectType.isInstance(object)) {
+					if (isIssueMessage(issue, messageParts)) {
+						iterator.remove();
+						return;
+					}
+				}
+			}
+		}
+		StringBuilder message = new StringBuilder("Expected ");
+		message.append(severity);
+		message.append(" '");
+		message.append(code);
+		message.append("' on ");
+		message.append(objectType.getName());
+		message.append(" but got\n");
+		getIssuesAsString(model, issues, message);
+		fail(message.toString());
+	}
+
+	/** Assert that the given warning is inside the list of issues.
+	 *
+	 * @param issues the list of issues.
+	 * @param severity the expected severity.
+	 * @param model the issued model.
+	 * @param objectType the type of the object.
+	 * @param code the issue code.
+	 * @param messageParts the parts of the issue message that are expected.
+	 */
+	public static void assertWarning(List<Issue> issues, EObject model, EClass objectType, String code,
+			String... messageParts) {
+		assertIssue(issues, Severity.WARNING, model, objectType, code, messageParts);
+	}
+
+	/**
+	 * Assert there is no more issue in the list.
+	 *
+	 * @param issues the list of issues.
+	 * @param model the checked model.
+	 */
+	public static void assertNoMoreIssues(List<Issue> issues, EObject model) {
+		if (!issues.isEmpty()) {
+			StringBuilder message = new StringBuilder("Expecting no issue but got\n");
+			getIssuesAsString(model, issues, message);
+			fail(message.toString());
+		}
 	}
 
 	/** Validation helper on a specific resource.

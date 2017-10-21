@@ -173,15 +173,6 @@ public class AgentInternalEventsDispatcher {
 			}
 
 		}
-		/*
-		 * <p>If no {@code BehaviorGuardEvaluator} have been subscribed for {@code event}'s class, and {@code event} is not already a
-		 * {@link DeadEvent}, it will be wrapped in a DeadEvent and reposted.
-		 */
-		// XXX: not in the SARL specifications. Should we fire the DeadEvent?
-		/*else if (!(event instanceof DeadEvent)) {
-			// the event had no subscribers and was not itself a DeadEvent
-			immediateDispatch(new DeadEvent(event));
-		}*/
 	}
 
 	/**
@@ -212,15 +203,6 @@ public class AgentInternalEventsDispatcher {
 			}
 
 		}
-		/*
-		 * <p>If no {@code BehaviorGuardEvaluator} have been subscribed for {@code event}'s class, and {@code event} is not already a
-		 * {@link DeadEvent}, it will be wrapped in a DeadEvent and reposted.
-		 */
-		// XXX: not in the SARL specifications. Should we fire the DeadEvent?
-		/*else if (!(event instanceof DeadEvent)) {
-			// the event had no subscribers and was not itself a DeadEvent
-			immediateDispatch(new DeadEvent(event));
-		}*/
 	}
 
 	/**
@@ -248,11 +230,6 @@ public class AgentInternalEventsDispatcher {
 				}
 				executeAsynchronouslyBehaviorMethods(behaviorsMethodsToExecute);
 			}
-			// XXX: Not in the SAR specification, should we fire the DeadEvent?
-			/*else if (!(event instanceof DeadEvent)) {
-				// the event had no subscribers and was not itself a DeadEvent
-				asyncDispatch(new DeadEvent(event));
-			}*/
 		});
 	}
 
@@ -339,7 +316,6 @@ public class AgentInternalEventsDispatcher {
 		try {
 			doneSignal.await();
 		} catch (InterruptedException ex) {
-			// XXX: Improve because:
 			// This exception occurs when one of the launched task kills the agent before all the
 			// submitted tasks are finished. Keep in mind that killing an agent should kill the
 			// launched tasks.

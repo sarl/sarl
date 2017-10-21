@@ -112,7 +112,7 @@ public final class BundleUtil {
 	 * API breakage between 3.5 and 4.2.
 	 * So we do a bit EDV (Computer data processing) ;-)
 	 *
-	 * <p>FIXME: Use P2Utils or SimpleConfiguratorManipulator.
+	 * <p>Use P2Utils or SimpleConfiguratorManipulator, see Issue 777.
 	 *
 	 * @param bundle the bundle for which the source location must be computed.
 	 * @param bundleLocation the location of the bundle, as replied by {@link #getBundlePath(Bundle)}.
@@ -202,7 +202,7 @@ public final class BundleUtil {
 	 * API breakage between 3.5 and 4.2.
 	 * So we do a bit EDV (Computer data processing) ;-)
 	 *
-	 * <p>FIXME: Use P2Utils or SimpleConfiguratorManipulator.
+	 * <p>Use P2Utils or SimpleConfiguratorManipulator, see Issue 777.
 	 *
 	 * @param bundle the bundle for which the javadoc location must be computed.
 	 * @param bundleLocation the location of the bundle, as replied by {@link #getBundlePath(Bundle)}.
@@ -862,13 +862,13 @@ public final class BundleUtil {
 							if (copy != null && copy.length > 0) {
 								for (final IClasspathEntry cpentry : copy) {
 									if (cpentry.getEntryKind() == IClasspathEntry.CPE_CONTAINER) {
-										// FIXME do something if we have a
+										// Do something if we have a
 										// container, usually this is the JRE
 										// container
 										// already managed by the launch
 										// configuration, that's why we do nothing
 									} else if (cpentry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
-										// FIXME do something with package fragments
+										// Do something with package fragments
 									} else {
 										// Common entry type:
 										// CPE_PROJECT|CPE_LIBRARY|CPE_VARIABLE,
@@ -887,8 +887,8 @@ public final class BundleUtil {
 					}
 
 				} else if (entry.contains(DOT_JAR_EXTENSION)) {
-					// A jar inside the bundle
-					// FIXME we have an error at runtime to these referenced jars
+					// A jar inside the bundle.
+					// We have an error at runtime to these referenced jars.
 					try {
 						final URL bundleJARfileFullURL = new URL(bundleInstallURL.toExternalForm().concat(File.separator).concat(entry));
 						final File jarFile = Util.toLocalFile(bundleJARfileFullURL.toURI(), null);
