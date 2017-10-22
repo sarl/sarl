@@ -34,8 +34,6 @@ import io.sarl.lang.util.Utils;
  *
  * <p>This class provides a temporary workaround.
  *
- * <p>FIXME: Xtext add, Remove this class when the Xtend is fixed.
- *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

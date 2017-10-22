@@ -74,7 +74,7 @@ public class SARLMapExtensionsTest {
 	}
 
 	@Test
-	public void operator_addMapPair_0() {
+	public void operator_add_MapPair_0() {
 		String v = UUID.randomUUID().toString();
 		String o;
 
@@ -87,7 +87,7 @@ public class SARLMapExtensionsTest {
 	}
 
 	@Test
-	public void operator_addMapPair_1() {
+	public void operator_add_MapPair_1() {
 		String v = UUID.randomUUID().toString();
 		String o;
 
@@ -99,7 +99,7 @@ public class SARLMapExtensionsTest {
 	}
 
 	@Test
-	public void operator_removeMapPair_0() {
+	public void operator_remove_MapPair_0() {
 		String v = UUID.randomUUID().toString();
 		boolean o;
 
@@ -111,7 +111,7 @@ public class SARLMapExtensionsTest {
 	}
 
 	@Test
-	public void operator_removeMapPair_1() {
+	public void operator_remove_MapPair_1() {
 		String v = UUID.randomUUID().toString();
 		boolean o;
 
@@ -123,7 +123,7 @@ public class SARLMapExtensionsTest {
 	}
 
 	@Test
-	public void operator_removeMapPair_2() {
+	public void operator_remove_MapPair_2() {
 		String v = UUID.randomUUID().toString();
 		boolean o;
 
@@ -135,7 +135,7 @@ public class SARLMapExtensionsTest {
 	}
 
 	@Test
-	public void operator_plusMapPair_0() {
+	public void operator_plus_MapPair_0() {
 		String v = UUID.randomUUID().toString();
 		Map<String, String> o;
 
@@ -152,7 +152,7 @@ public class SARLMapExtensionsTest {
 	}
 
 	@Test
-	public void operator_plusMapPair_1() {
+	public void operator_plus_MapPair_1() {
 		String v = UUID.randomUUID().toString();
 		Map<String, String> o = operator_plus(this.map, new Pair<String, String>("k2", v));
 		assertNotNull(o);
@@ -168,7 +168,7 @@ public class SARLMapExtensionsTest {
 	}
 
 	@Test
-	public void operator_minusMapPair_0() {
+	public void operator_minus_MapPair_0() {
 		String v = UUID.randomUUID().toString();
 		Map<String, String> o;
 
@@ -189,7 +189,7 @@ public class SARLMapExtensionsTest {
 	}
 
 	@Test
-	public void operator_minusMapPair_1() {
+	public void operator_minus_MapPair_1() {
 		String v = UUID.randomUUID().toString();
 		Map<String, String> o = operator_minus(this.map, new Pair<String, String>("k2", v));
 		
@@ -201,14 +201,14 @@ public class SARLMapExtensionsTest {
 		assertEquals(this.value2, this.map.get("k2"));
 		assertNull(this.map.get("k3"));
 		
-		assertEquals(1, o.size());
+		assertEquals(2, o.size());
 		assertEquals(this.value1, o.get("k1"));
-		assertNull(o.get("k2"));
+		assertEquals(this.value2, o.get("k2"));
 		assertNull(o.get("k3"));
 	}
 
 	@Test
-	public void operator_minusMapPair_3() {
+	public void operator_minus_MapPair_2() {
 		String v = UUID.randomUUID().toString();
 		Map<String, String> o = operator_minus(this.map, new Pair<String, String>("k2", new String(this.value2)));
 		
@@ -227,7 +227,7 @@ public class SARLMapExtensionsTest {
 	}
 
 	@Test
-	public void operator_plusMapMap_0() {
+	public void operator_plus_MapMap_0() {
 		String v1 = UUID.randomUUID().toString();
 		String v2 = UUID.randomUUID().toString();
 		String v3 = UUID.randomUUID().toString();
@@ -258,7 +258,7 @@ public class SARLMapExtensionsTest {
 	}
 
 	@Test
-	public void operator_plusMapMap_1() {
+	public void operator_plus_MapMap_1() {
 		String v1 = UUID.randomUUID().toString();
 		String v2 = UUID.randomUUID().toString();
 		String v3 = UUID.randomUUID().toString();
@@ -289,7 +289,7 @@ public class SARLMapExtensionsTest {
 	}
 
 	@Test
-	public void operator_plusMapMap_2() {
+	public void operator_plus_MapMap_2() {
 		String v1 = UUID.randomUUID().toString();
 		String v2 = UUID.randomUUID().toString();
 		String v3 = UUID.randomUUID().toString();
@@ -311,7 +311,7 @@ public class SARLMapExtensionsTest {
 	}
 
 	@Test
-	public void operator_plusMapMap_3() {
+	public void operator_plus_MapMap_3() {
 		String v1 = UUID.randomUUID().toString();
 		String v2 = UUID.randomUUID().toString();
 		String v3 = UUID.randomUUID().toString();
@@ -333,7 +333,7 @@ public class SARLMapExtensionsTest {
 	}
 
 	@Test
-	public void operator_removeMapK_0() {
+	public void operator_remove_MapK_0() {
 		String o = operator_remove(this.map, "k0");
 		assertEquals(2, this.map.size());
 		assertEquals(this.value1, this.map.get("k1"));
@@ -342,7 +342,7 @@ public class SARLMapExtensionsTest {
 	}
 
 	@Test
-	public void operator_removeMapK_1() {
+	public void operator_remove_MapK_1() {
 		String o = operator_remove(this.map, "k1");
 		assertEquals(1, this.map.size());
 		assertNull(this.map.get("k1"));
@@ -351,7 +351,7 @@ public class SARLMapExtensionsTest {
 	}
 
 	@Test
-	public void operator_removeMapK_2() {
+	public void operator_remove_MapK_2() {
 		String o = operator_remove(this.map, "k2");
 		assertEquals(1, this.map.size());
 		assertEquals(this.value1, this.map.get("k1"));
@@ -360,7 +360,7 @@ public class SARLMapExtensionsTest {
 	}
 
 	@Test
-	public void operator_removeMapK_3() {
+	public void operator_remove_MapK_3() {
 		String o1 = operator_remove(this.map, "k2");
 		String o2 = operator_remove(this.map, "k1");
 		assertEquals(0, this.map.size());
@@ -371,7 +371,7 @@ public class SARLMapExtensionsTest {
 	}
 
 	@Test
-	public void operator_removeMapIterable() {
+	public void operator_remove_MapIterable() {
 		List<String> m = new ArrayList<String>();
 		m.add("k0");
 		m.add("k1");
@@ -382,7 +382,7 @@ public class SARLMapExtensionsTest {
 	}
 
 	@Test
-	public void operator_minusMapK_0() {
+	public void operator_minus_MapK_0() {
 		Map<String, String> o = operator_minus(this.map, "k0");
 		assertEquals(2, this.map.size());
 		assertEquals(this.value1, this.map.get("k1"));
@@ -395,7 +395,7 @@ public class SARLMapExtensionsTest {
 	}
 
 	@Test
-	public void operator_minusMapK_1() {
+	public void operator_minus_MapK_1() {
 		Map<String, String> o = operator_minus(this.map, "k2");
 		assertEquals(2, this.map.size());
 		assertEquals(this.value1, this.map.get("k1"));
@@ -408,7 +408,7 @@ public class SARLMapExtensionsTest {
 	}
 
 	@Test
-	public void operator_minusMapK_2() {
+	public void operator_minus_MapK_2() {
 		Map<String, String> o1 = operator_minus(this.map, "k2");
 		Map<String, String> o2 = operator_minus(o1, "k1");
 		assertEquals(2, this.map.size());

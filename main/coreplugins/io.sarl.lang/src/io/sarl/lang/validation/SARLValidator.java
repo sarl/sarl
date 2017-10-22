@@ -435,7 +435,7 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	/** Copied from the Xtend validator.
 	 *
-	 * <p>FIXME: Xtext add, Change the visilibility in the Xtend validator.
+	 * <p>FIXME: Xtext upgrade, Change the visilibility in the Xtend validator, https://github.com/eclipse/xtext-xtend/pull/288
 	 *
 	 * @param annotationTarget the target to test.
 	 * @return <code>true</code> if the annotation target is relevant for validation.
@@ -787,7 +787,7 @@ public class SARLValidator extends AbstractSARLValidator {
 		} else {
 			super.checkModifiers(oopClass);
 		}
-		// FIXME Xtext upgrade, remove this constraint when it is removed from the Xtend validator.
+		// This constraint should be never removed from Xtend: https://www.eclipse.org/forums/index.php/m/1774946/
 		if (!oopClass.isStatic()
 				&& ((econtainer instanceof SarlAgent)
 				|| (econtainer instanceof SarlBehavior)

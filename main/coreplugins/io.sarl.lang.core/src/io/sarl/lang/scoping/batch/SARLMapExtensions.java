@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.google.common.annotations.GwtCompatible;
@@ -46,8 +47,6 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * by the Xbase API.
  * The enhancement of Xbase is asked in <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=454319">this issue</a>.
  *
- * <p>FIXME: Xtext add, No proposal within Xtext. Add a PR to Xbase or Xtend are providing these functions.
- *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -64,6 +63,8 @@ public final class SARLMapExtensions {
 	 *
 	 * <p>If the pair key already exists in the map, its value is replaced
 	 * by the value in the pair, and the old value in the map is returned.
+	 *
+	 * <p>FIXME: Xtext upgrade, No proposal within Xtext. https://github.com/eclipse/xtext-lib/pull/63.
 	 *
 	 * @param <K> - type of the map keys.
 	 * @param <V> - type of the map values.
@@ -82,6 +83,8 @@ public final class SARLMapExtensions {
 	 * <p>If a key in the inputMap already exists in the outputMap, its value is
 	 * replaced in the outputMap by the value from the inputMap.
 	 *
+	 * <p>FIXME: Xtext upgrade, No proposal within Xtext. https://github.com/eclipse/xtext-lib/pull/63.
+	 *
 	 * @param <K> - type of the map keys.
 	 * @param <V> - type of the map values.
 	 * @param outputMap the map to update.
@@ -99,6 +102,8 @@ public final class SARLMapExtensions {
 	 *
 	 * <p>Even if the key of the right operand exists in the left operand, the value in the right operand is preferred.
 	 *
+	 * <p>FIXME: Xtext upgrade, No proposal within Xtext. https://github.com/eclipse/xtext-lib/pull/63.
+	 *
 	 * @param <K> - type of the map keys.
 	 * @param <V> - type of the map values.
 	 * @param left the map to consider.
@@ -107,7 +112,7 @@ public final class SARLMapExtensions {
 	 * @throws IllegalArgumentException - when the right operand key exists in the left operand.
 	 */
 	@Pure
-	@Inline(value = "SARLMapExtensions.union($1, Collections.singletonMap($2.getKey(), $2.getValue()))",
+	@Inline(value = "$3.union($1, $4.singletonMap($2.getKey(), $2.getValue()))",
 			imported = { SARLMapExtensions.class, Collections.class })
 	public static <K, V> Map<K, V> operator_plus(Map<K, V> left, final Pair<? extends K, ? extends V> right) {
 		return union(left, Collections.singletonMap(right.getKey(), right.getValue()));
@@ -120,6 +125,8 @@ public final class SARLMapExtensions {
 	 *
 	 * <p>If a key exists in the left and right operands, the value in the right operand is preferred.
 	 *
+	 * <p>FIXME: Xtext upgrade, No proposal within Xtext. https://github.com/eclipse/xtext-lib/pull/63.
+	 *
 	 * @param <K> - type of the map keys.
 	 * @param <V> - type of the map values.
 	 * @param left the left map.
@@ -128,12 +135,14 @@ public final class SARLMapExtensions {
 	 * @throws IllegalArgumentException - when a right operand key exists in the left operand.
 	 */
 	@Pure
-	@Inline(value = "SARLMapExtensions.union($1, $2)", imported = SARLMapExtensions.class)
+	@Inline(value = "$3.union($1, $2)", imported = SARLMapExtensions.class)
 	public static <K, V> Map<K, V> operator_plus(Map<K, V> left, Map<? extends K, ? extends V> right) {
 		return union(left, right);
 	}
 
 	/** Remove a key from the given map.
+	 *
+	 * <p>FIXME: Xtext upgrade, No proposal within Xtext. https://github.com/eclipse/xtext-lib/pull/63.
 	 *
 	 * @param <K> - type of the map keys.
 	 * @param <V> - type of the map values.
@@ -153,6 +162,8 @@ public final class SARLMapExtensions {
 	 * <p>If the given key is inside the map, but is not mapped to the given value, the
 	 * map will not be changed.
 	 *
+	 * <p>FIXME: Xtext upgrade, No proposal within Xtext. https://github.com/eclipse/xtext-lib/pull/63.
+	 *
 	 * @param <K> - type of the map keys.
 	 * @param <V> - type of the map values.
 	 * @param map the map to update.
@@ -166,6 +177,7 @@ public final class SARLMapExtensions {
 
 	/** Remove pairs with the given keys from the map.
 	 *
+	 * <p>FIXME: Xtext upgrade, No proposal within Xtext. https://github.com/eclipse/xtext-lib/pull/63.
 	 *
 	 * @param <K> - type of the map keys.
 	 * @param <V> - type of the map values.
@@ -180,8 +192,13 @@ public final class SARLMapExtensions {
 
 	/** Remove the given pair from a given map for obtaining a new map.
 	 *
+	 * <p>If the given key is inside the map, but is not mapped to the given value, the
+	 * map will not be changed.
+	 *
 	 * <p>The replied map is a view on the given map. It means that any change
 	 * in the original map is reflected to the result of this operation.
+	 *
+	 * <p>FIXME: Xtext upgrade, No proposal within Xtext. https://github.com/eclipse/xtext-lib/pull/63.
 	 *
 	 * @param <K> - type of the map keys.
 	 * @param <V> - type of the map values.
@@ -191,16 +208,21 @@ public final class SARLMapExtensions {
 	 * @throws IllegalArgumentException - when the right operand key exists in the left operand.
 	 */
 	@Pure
-	@Inline(value = "SARLMapExtensions.operator_minus($1, $2.getKey())",
-			imported = { SARLMapExtensions.class, Collections.class })
 	public static <K, V> Map<K, V> operator_minus(Map<K, V> left, final Pair<? extends K, ? extends V> right) {
-		return operator_minus(left, right.getKey());
+		return Maps.filterEntries(left, new Predicate<Entry<K, V>>() {
+			@Override
+			public boolean apply(Entry<K, V> input) {
+				return !Objects.equal(input.getKey(), right.getKey()) || !Objects.equal(input.getValue(), right.getValue());
+			}
+		});
 	}
 
 	/** Replies the elements of the given map except the pair with the given key.
 	 *
 	 * <p>The replied map is a view on the given map. It means that any change
 	 * in the original map is reflected to the result of this operation.
+	 *
+	 * <p>FIXME: Xtext upgrade, No proposal within Xtext. https://github.com/eclipse/xtext-lib/pull/63.
 	 *
 	 * @param <K> - type of the map keys.
 	 * @param <V> - type of the map values.
@@ -219,6 +241,8 @@ public final class SARLMapExtensions {
 	}
 
 	/** Replies the elements of the left map without the pairs in the right map.
+	 * If the pair's values differ from
+	 * the value within the map, the map entry is not removed.
 	 *
 	 * <p>The difference is an immutable
 	 * snapshot of the state of the maps at the time this method is called. It
@@ -228,6 +252,8 @@ public final class SARLMapExtensions {
 	 * the supplied maps must be well-behaved with respect to
 	 * {@link Object#equals} and {@link Object#hashCode}.
 	 *
+	 * <p>FIXME: Xtext upgrade, No proposal within Xtext. https://github.com/eclipse/xtext-lib/pull/63.
+	 *
 	 * @param <K> - type of the map keys.
 	 * @param <V> - type of the map values.
 	 * @param left the map to update.
@@ -235,15 +261,25 @@ public final class SARLMapExtensions {
 	 * @return the map with the content of the left map except the pairs of the right map.
 	 */
 	@Pure
-	@Inline(value = "SARLMapExtensions.operator_minus($0, $1.keySet())", imported = SARLMapExtensions.class)
 	public static <K, V> Map<K, V> operator_minus(Map<K, V> left, Map<? extends K, ? extends V> right) {
-		return operator_minus(left, right.keySet());
+		return Maps.filterEntries(left, new Predicate<Entry<K, V>>() {
+			@Override
+			public boolean apply(Entry<K, V> input) {
+				final V value = right.get(input.getKey());
+				if (value == null) {
+					return true;
+				}
+				return !Objects.equal(input.getValue(), value);
+			}
+		});
 	}
 
 	/** Replies the elements of the given map except the pairs with the given keys.
 	 *
 	 * <p>The replied map is a view on the given map. It means that any change
 	 * in the original map is reflected to the result of this operation.
+	 *
+	 * <p>FIXME: Xtext upgrade, No proposal within Xtext. https://github.com/eclipse/xtext-lib/pull/63.
 	 *
 	 * @param <K> - type of the map keys.
 	 * @param <V> - type of the map values.
@@ -283,6 +319,8 @@ public final class SARLMapExtensions {
 	 *
 	 * <p>The replied map is unmodifiable.
 	 *
+	 * <p>FIXME: Xtext upgrade, No proposal within Xtext. https://github.com/eclipse/xtext-lib/pull/63.
+	 *
 	 * @param <K> - type of the map keys.
 	 * @param <V> - type of the map values.
 	 * @param left the left map.
@@ -294,6 +332,8 @@ public final class SARLMapExtensions {
 	}
 
 	/** Map implementation that is merging two maps.
+	 *
+	 * <p>FIXME: Xtext upgrade, No proposal within Xtext. https://github.com/eclipse/xtext-lib/pull/63.
 	 *
 	 * @param <K> the type of the keys.
 	 * @param <V> the type of the values in the maps.
