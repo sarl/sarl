@@ -581,6 +581,19 @@ Workflow {
     				bind = "org.eclipse.xtext.naming.IQualifiedNameConverter"
     				to = "io.sarl.lang.scoping.SARLQualifiedNameConverter"
    				}
+    			runtime = {
+    				bind = "org.eclipse.xtext.scoping.IScopeProvider"
+    				annotatedWithName = "ref org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider.NAMED_DELEGATE"
+    				to = "io.sarl.lang.scoping.SARLImportedNamespaceScopeProvider"
+    				override = true
+    				functionName = "configureIScopeProviderDelegate"
+    			}
+    			runtime = {
+    				bind = "org.eclipse.xtext.generator.IGenerator2"
+    				annotatedWithName = "ref io.sarl.lang.compiler.extra.ExtraLanguageGeneratorSupport.MAIN_GENERATOR_NAME"
+    				to = "io.sarl.lang.compiler.SARLJvmGenerator"
+    				functionName = "configureIGenerator2ExtraLanguageMainGenerator"
+    			}
 
     			ui = {
     				bind = "org.eclipse.xtext.generator.IOutputConfigurationProvider"
