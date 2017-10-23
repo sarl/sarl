@@ -23,7 +23,6 @@ package io.sarl.lang.ui.labeling;
 
 import javax.inject.Singleton;
 
-import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -50,10 +49,6 @@ public class QualifiedPluginImageHelper extends PluginImageHelper {
 	 * @return the descriptor.
 	 */
 	protected ImageDescriptor findImage(String name) {
-		final ImageDescriptor descriptor = JavaPluginImages.getDescriptor(name);
-		if (descriptor != null) {
-			return descriptor;
-		}
 		if (name != null) {
 			final int extIndex = name.lastIndexOf('.');
 			if (extIndex > 0) {
