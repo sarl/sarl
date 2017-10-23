@@ -23,6 +23,7 @@ package io.sarl.maven.docs.markdown;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
@@ -36,6 +37,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -68,6 +70,7 @@ import io.sarl.maven.docs.parser.DynamicValidationComponent;
 import io.sarl.maven.docs.parser.DynamicValidationContext;
 import io.sarl.maven.docs.parser.SarlDocumentationParser;
 import io.sarl.maven.docs.parser.SectionNumber;
+import io.sarl.maven.docs.testing.ReflectExtensions;
 
 /** Markdown parser.
  *
@@ -95,6 +98,11 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	 */
 	public static final boolean DEFAULT_SECTION_NUMBERING = true;
 
+	/** Indicates if a hyperlinks to the operation should be created for each operation name,
+	 * that is generated.
+	 */
+	public static final boolean DEFAULT_ADD_LINK_TO_OPERATION_NAME = true;
+
 	/** Indicates the default name of the style for the outline.
 	 */
 	public static final String DEFAULT_OUTLINE_STYLE_ID = "page_outline"; //$NON-NLS-1$
@@ -121,6 +129,8 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 			"^(?:[#]+)\\s*((?:[0-9]+(?:\\.[0-9]+)*\\.?)?\\s*.*?\\s*(?:\\{\\s*([a-z\\-]+)\\s*\\})?)\\s*$"; //$NON-NLS-1$
 
 	private IntegerRange outlineDepthRange = new IntegerRange(DEFAULT_OUTLINE_TOP_LEVEL, DEFAULT_OUTLINE_TOP_LEVEL);
+
+	private boolean addLinkToOperationName = DEFAULT_ADD_LINK_TO_OPERATION_NAME;
 
 	private boolean sectionNumbering = DEFAULT_SECTION_NUMBERING;
 
@@ -437,6 +447,51 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	 */
 	public boolean isAutoSectionNumbering() {
 		return this.sectionNumbering;
+	}
+
+	/** Chagne the flag for the creation of a hyperlink to the operation documentation
+	 * to each generated operation name.
+	 *
+	 * @param enable {@code true} if the hyperlink is created.
+	 */
+	public void setAddLinkToOperationName(boolean enable) {
+		this.addLinkToOperationName = enable;
+	}
+
+	/** Replies if a hyperlink to the operation documentation should be added to each generated operation name.
+	 *
+	 * @return {@code true} if the hyperlink is created.
+	 */
+	public boolean isAddLinkToOperationName() {
+		return this.addLinkToOperationName;
+	}
+
+	/** Replies the hyperlink to the given operation.
+	 *
+	 * @param method the method.
+	 * @return the link, or {@code null} if not found.
+	 */
+	@SuppressWarnings("static-method")
+	protected URL findOperationLink(Method method) {
+		return null;
+	}
+
+	@Override
+	protected void preProcessingTransformation(CharSequence content, File inputFile, boolean validationOfInternalLinks) {
+		Function<Method, String> formatter = null;
+		if (isAddLinkToOperationName()) {
+			formatter = (it) -> {
+				final URL url = findOperationLink(it);
+				if (url != null) {
+					final StringBuilder name = new StringBuilder();
+					name.append("[").append(it.getName()).append("]("); //$NON-NLS-1$//$NON-NLS-2$
+					name.append(url.toExternalForm()).append(")"); //$NON-NLS-1$
+					return name.toString();
+				}
+				return it.getName();
+			};
+		}
+		ReflectExtensions.setDefaultNameFormatter(formatter);
 	}
 
 	@Override

@@ -107,6 +107,13 @@ public class GenerateMojo extends AbstractDocumentationMojo {
 	@Parameter(defaultValue = "false", required = false)
 	protected boolean addYamlHeader;
 
+	/**
+	 * Indicates if an hyperlink to the operation documentation should be
+	 * added to each generated operation name.
+	 */
+	@Parameter(defaultValue = "true", required = false)
+	protected boolean addLinkToOperationName;
+
 	@Override
 	protected String getSkippingMessage() {
 		return null;
@@ -118,6 +125,7 @@ public class GenerateMojo extends AbstractDocumentationMojo {
 		if (parser instanceof MarkdownParser) {
 			final MarkdownParser mdParser = (MarkdownParser) parser;
 			mdParser.setAutoSectionNumbering(this.autoSectionNumbering);
+			mdParser.setAddLinkToOperationName(this.addLinkToOperationName);
 			mdParser.setOutlineDepthRange(AbstractMarkerLanguageParser.parseRange(this.outlineDepth, 1));
 			mdParser.setMarkdownToHtmlReferenceTransformation(this.md2html);
 			mdParser.setPureHtmlReferenceTransformation(this.transformPureHtmlLinks);

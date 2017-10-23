@@ -211,6 +211,7 @@ public abstract class AbstractMarkerLanguageParser {
 	 * @return the raw file content.
 	 */
 	public String transform(File inputFile, boolean validationOfInternalLinks) {
+		preProcessingTransformation(null, inputFile, validationOfInternalLinks);
 		final String rawContent = getDocumentParser().transform(inputFile);
 		return postProcessingTransformation(rawContent, validationOfInternalLinks);
 	}
@@ -223,6 +224,7 @@ public abstract class AbstractMarkerLanguageParser {
 	 * @return the raw file content.
 	 */
 	public String transform(Reader reader, File inputFile, boolean validationOfInternalLinks) {
+		preProcessingTransformation(null, inputFile, validationOfInternalLinks);
 		final String rawContent = getDocumentParser().transform(reader, inputFile);
 		return postProcessingTransformation(rawContent, validationOfInternalLinks);
 	}
@@ -232,11 +234,22 @@ public abstract class AbstractMarkerLanguageParser {
 	 * @param content the content to parse.
 	 * @param inputFile the name of the input file for locating included features and formatting error messages.
 	 * @param validationOfInternalLinks indicates if the internal links should be validated.
-	 * @return the raw file content.
+	 * @return the file content.
 	 */
 	public String transform(CharSequence content, File inputFile, boolean validationOfInternalLinks) {
+		preProcessingTransformation(content, inputFile, validationOfInternalLinks);
 		final String rawContent = getDocumentParser().transform(content, inputFile);
 		return postProcessingTransformation(rawContent, validationOfInternalLinks);
+	}
+
+	/** Pre processing of a transformation.
+	 *
+	 * @param content the preloaded content.
+	 * @param inputFile the name of the input file for locating included features and formatting error messages.
+	 * @param validationOfInternalLinks indicates if the internal links should be validated.
+	 */
+	protected void preProcessingTransformation(CharSequence content, File inputFile, boolean validationOfInternalLinks) {
+		//
 	}
 
 	/** Post processing of the content for a transformation.

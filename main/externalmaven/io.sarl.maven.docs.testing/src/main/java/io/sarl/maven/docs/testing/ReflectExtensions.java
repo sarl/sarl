@@ -33,11 +33,13 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 
 import com.google.common.collect.Iterables;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.Functions;
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -57,10 +59,28 @@ import io.sarl.lang.util.Utils;
  */
 public final class ReflectExtensions {
 
+	private static Function<Method, String> defaultNameFormatter;
+	
 	private ReflectExtensions() {
 		//
 	}
+
+	/** Change the default name formatter.
+	 *
+	 * @param formatter the default name formatter.
+	 */
+	public static void setDefaultNameFormatter(Function<Method, String> formatter) {
+		defaultNameFormatter = formatter;
+	}
 	
+	/** Replies the default name formatter.
+	 *
+	 * @return the default name formatter.
+	 */
+	public static Function<Method, String> getDefaultNameFormatter() {
+		return defaultNameFormatter;
+	}
+
 	private static boolean isDeprecated(Method method) {
 		return Flags.isDeprecated(method.getModifiers()) || method.getAnnotation(Deprecated.class) != null;
 	}
@@ -72,9 +92,22 @@ public final class ReflectExtensions {
 	 * @return the code.
 	 */
 	@Pure
+	@Inline(value = "getPublicMethodsWithFormat($1, null, $2)", imported = ReflectExtensions.class)
 	public static String getPublicMethods(Class<?> type, Class<?>... otherTypes) {
+		return getPublicMethodsWithFormat(type, null);
+	}
+
+	/** Extract the public methods from the given types.
+	 *
+	 * @param type the first type to parse.
+	 * @param nameFormatter the formatter for the function's names. If {@code null}, no formatting is applied.
+	 * @param otherTypes the other types to parse.
+	 * @return the code.
+	 */
+	@Pure
+	public static String getPublicMethodsWithFormat(Class<?> type, Function<Method, String> nameFormatter, Class<?>... otherTypes) {
 		final StringBuilder it = new StringBuilder();
-		appendPublicMethods(it, false, IterableExtensions.flatten(
+		appendPublicMethods(it, false, nameFormatter, IterableExtensions.flatten(
 				Arrays.asList(
 						Collections.singletonList(type),
 						Arrays.asList(otherTypes))));
@@ -87,17 +120,20 @@ public final class ReflectExtensions {
 	 * @param indent indicates if the code should be indented.
 	 * @param types the types to parse.
 	 */
+	@Inline(value = "appendPublicMethods($1, $2, null, $4.asList($3))", imported = Arrays.class)
 	public static void appendPublicMethods(StringBuilder it, boolean indent, Class<?>... types) {
-		appendPublicMethods(it, indent, Arrays.asList(types));
+		appendPublicMethods(it, indent, null, Arrays.asList(types));
 	}
 
 	/** Extract the public methods from the given types.
 	 *
 	 * @param it the output.
 	 * @param indent indicates if the code should be indented.
+	 * @param nameFormatter the formatter for the function's names. If {@code null}, no formatting is applied.
 	 * @param types the types to parse.
 	 */
-	public static void appendPublicMethods(StringBuilder it, boolean indent, Iterable<? extends Class<?>> types) {
+	public static void appendPublicMethods(StringBuilder it, boolean indent, Function<Method, String> nameFormatter, 
+			Iterable<? extends Class<?>> types) {
 		final List<String> lines = new LinkedList<>();
 		for (final Class<?> type : types) {
 			for (final Method method : type.getDeclaredMethods()) {
@@ -108,7 +144,17 @@ public final class ReflectExtensions {
 					if (indent) {
 						line.append("\t"); //$NON-NLS-1$
 					}
-					line.append("def ").append(method.getName()); //$NON-NLS-1$
+					Function<Method, String> nformatter = nameFormatter;
+					if (nformatter == null) {
+						nformatter = getDefaultNameFormatter();
+					}
+					final String formattedName;
+					if (nformatter != null) {
+						formattedName = nformatter.apply(method);
+					} else {
+						formattedName = method.getName();
+					}
+					line.append("def ").append(formattedName); //$NON-NLS-1$
 					if (method.getParameterCount() > 0) {
 						line.append("("); //$NON-NLS-1$
 						boolean first = true;

@@ -188,6 +188,13 @@ public class SarlDocumentationParser {
 	 */
 	public static Function2<String, String, String> getFencedCodeBlockFormatter() {
 		return (languageName, content) -> {
+			/*final StringBuilder result = new StringBuilder();
+			result.append("<div class=\\\"highlight"); //$NON-NLS-1$
+			if (!Strings.isNullOrEmpty(languageName)) {
+				result.append(" highlight-").append(languageName); //$NON-NLS-1$
+			}
+			result.append("\"><pre>\n").append(content).append("</pre></div>\n"); //$NON-NLS-1$ //$NON-NLS-2$
+			return result.toString();*/
 			return "```" + Strings.nullToEmpty(languageName).toLowerCase() + "\n" //$NON-NLS-1$ //$NON-NLS-2$
 					+ content
 					+ "```\n"; //$NON-NLS-1$
