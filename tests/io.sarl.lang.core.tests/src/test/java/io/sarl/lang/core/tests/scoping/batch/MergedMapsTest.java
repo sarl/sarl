@@ -273,22 +273,22 @@ public class MergedMapsTest extends Assert {
 		this.map3.remove("zz");
 	}
 
-	@Test(expected = UnsupportedOperationException.class)
+	@Test(expected = NullPointerException.class)
 	public void putAll_map0() {
 		this.map0.putAll(null);
 	}
 
-	@Test(expected = UnsupportedOperationException.class)
+	@Test(expected = NullPointerException.class)
 	public void putAll_map1() {
 		this.map1.putAll(null);
 	}
 
-	@Test(expected = UnsupportedOperationException.class)
+	@Test(expected = NullPointerException.class)
 	public void putAll_map2() {
 		this.map2.putAll(null);
 	}
 
-	@Test(expected = UnsupportedOperationException.class)
+	@Test(expected = NullPointerException.class)
 	public void putAll_map3() {
 		this.map3.putAll(null);
 	}

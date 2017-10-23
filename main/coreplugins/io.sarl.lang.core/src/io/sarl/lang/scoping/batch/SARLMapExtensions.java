@@ -21,21 +21,15 @@
 
 package io.sarl.lang.scoping.batch;
 
-import java.lang.reflect.Array;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pair;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -315,7 +309,7 @@ public final class SARLMapExtensions {
 	/** Merge the given maps.
 	 *
 	 * <p>The replied map is a view on the given two maps.
-	 * If a key exsits in the two maps, the replied value is the value of the right operand.
+	 * If a key exists in the two maps, the replied value is the value of the right operand.
 	 *
 	 * <p>The replied map is unmodifiable.
 	 *
@@ -327,220 +321,10 @@ public final class SARLMapExtensions {
 	 * @param right the right map.
 	 * @return a map with the merged contents from the two maps.
 	 */
+	@Pure
+	@Inline(value = "(new $3<$5, $6>($1, $2))", imported = UnmodifiableMergingMapView.class, constantExpression = true)
 	public static <K, V> Map<K, V> union(Map<? extends K, ? extends V> left, Map<? extends K, ? extends V> right) {
-		return new MergingMap<>(left, right);
-	}
-
-	/** Map implementation that is merging two maps.
-	 *
-	 * <p>FIXME: Xtext upgrade, No proposal within Xtext. https://github.com/eclipse/xtext-lib/pull/63.
-	 *
-	 * @param <K> the type of the keys.
-	 * @param <V> the type of the values in the maps.
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	private static class MergingMap<K, V> implements Map<K, V> {
-
-		private final Map<? extends K, ? extends V> left;
-
-		private final Map<? extends K, ? extends V> filteredLeft;
-
-		private final Map<? extends K, ? extends V> right;
-
-		/** Construct the wrapping map.
-		 *
-		 * @param left the left operand to merge.
-		 * @param right the right operand to merge.
-		 */
-		MergingMap(Map<? extends K, ? extends V> left, Map<? extends K, ? extends V> right) {
-			this.left = left;
-			this.right = right;
-			this.filteredLeft = Maps.filterKeys(this.left, new Predicate<K>() {
-				@SuppressWarnings("synthetic-access")
-				@Override
-				public boolean apply(K input) {
-					return !MergingMap.this.right.containsKey(input);
-				}
-
-			});
-		}
-
-		@Override
-		public int size() {
-			return this.right.size() + this.filteredLeft.size();
-		}
-
-		@Override
-		public boolean isEmpty() {
-			return this.right.isEmpty() && this.left.isEmpty();
-		}
-
-		@Override
-		public boolean containsKey(Object key) {
-			return this.right.containsKey(key) || this.left.containsKey(key);
-		}
-
-		@Override
-		public boolean containsValue(Object value) {
-			if (this.right.containsValue(value)) {
-				return true;
-			}
-			return this.filteredLeft.containsValue(value);
-		}
-
-		@Override
-		public V get(Object key) {
-			if (this.right.containsKey(key)) {
-				return this.right.get(key);
-			}
-			return this.left.get(key);
-		}
-
-		@Override
-		public V put(K key, V value) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public V remove(Object key) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void putAll(Map<? extends K, ? extends V> map) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void clear() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public Set<K> keySet() {
-			return Sets.union(this.right.keySet(), this.filteredLeft.keySet());
-		}
-
-		@Override
-		public Collection<V> values() {
-			return new MergingCollection();
-		}
-
-		@SuppressWarnings({ "unchecked", "rawtypes" })
-		@Override
-		public Set<Entry<K, V>> entrySet() {
-			final Set ks1 = this.right.entrySet();
-			final Set ks2 = this.filteredLeft.entrySet();
-			return Sets.union(ks1, ks2);
-		}
-
-		/** Implementation of the collection of values in a map
-		 * that is representing the merging of two maps.
-		 *
-		 * @author $Author: sgalland$
-		 * @version $FullVersion$
-		 * @mavengroupid $GroupId$
-		 * @mavenartifactid $ArtifactId$
-		 */
-		@SuppressWarnings("synthetic-access")
-		private class MergingCollection implements Collection<V> {
-
-			MergingCollection() {
-				//
-			}
-
-			@Override
-			public int size() {
-				return MergingMap.this.size();
-			}
-
-			@Override
-			public boolean isEmpty() {
-				return MergingMap.this.isEmpty();
-			}
-
-			@Override
-			public boolean contains(Object object) {
-				return MergingMap.this.containsValue(object);
-			}
-
-			@Override
-			public Iterator<V> iterator() {
-				return Iterators.concat(
-						MergingMap.this.right.values().iterator(),
-						MergingMap.this.filteredLeft.values().iterator());
-			}
-
-			@Override
-			public Object[] toArray() {
-				final Object[] tab = new Object[MergingMap.this.size()];
-				final Iterator<?> iterator = iterator();
-				for (int i = 0; i < tab.length; ++i) {
-					tab[i] = iterator.next();
-				}
-				return tab;
-			}
-
-			@SuppressWarnings("unchecked")
-			@Override
-			public <T> T[] toArray(T[] output) {
-				T[] tab = output;
-				final int size = MergingMap.this.size();
-				if (tab == null || tab.length < size) {
-					tab = (T[]) Array.newInstance(Object.class, size);
-				}
-				final Iterator<?> iterator = iterator();
-				for (int i = 0; i < tab.length; ++i) {
-					tab[i] = (T) iterator.next();
-				}
-				return tab;
-			}
-
-			@Override
-			public boolean containsAll(Collection<?> collection) {
-				for (final Object o : collection) {
-					if (!MergingMap.this.containsValue(o)) {
-						return false;
-					}
-				}
-				return true;
-			}
-
-			@Override
-			public boolean add(V element) {
-				throw new UnsupportedOperationException();
-			}
-
-			@Override
-			public boolean remove(Object object) {
-				throw new UnsupportedOperationException();
-			}
-
-			@Override
-			public boolean addAll(Collection<? extends V> collection) {
-				throw new UnsupportedOperationException();
-			}
-
-			@Override
-			public boolean removeAll(Collection<?> collection) {
-				throw new UnsupportedOperationException();
-			}
-
-			@Override
-			public boolean retainAll(Collection<?> collection) {
-				throw new UnsupportedOperationException();
-			}
-
-			@Override
-			public void clear() {
-				throw new UnsupportedOperationException();
-			}
-
-		}
-
+		return new UnmodifiableMergingMapView<>(left, right);
 	}
 
 }
