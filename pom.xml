@@ -387,7 +387,8 @@
 			<dependency>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.7.0</version>
+				<!-- Version 3.7.0 depends on a library that is compiled with Java 9! -->
+				<version>3.6.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -473,7 +474,8 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.7.0</version>
+					<!-- Version 3.7.0 depends on a library that is compiled with Java 9! -->
+					<version>3.6.2</version>
 					<configuration>
 						<source>${compiler.level}</source>
 						<target>${compiler.level}</target>
