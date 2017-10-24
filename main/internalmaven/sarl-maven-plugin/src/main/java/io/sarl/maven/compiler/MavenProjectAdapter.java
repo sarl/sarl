@@ -24,7 +24,6 @@ package io.sarl.maven.compiler;
 import java.util.Iterator;
 
 import org.apache.maven.project.MavenProject;
-import org.arakhne.afc.vmutil.locale.Locale;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -55,7 +54,7 @@ final class MavenProjectAdapter extends AdapterImpl {
 				return ((MavenProjectAdapter) a).project;
 			}
 		}
-		throw new RuntimeException(Locale.getString(MavenProjectAdapter.class, "INVALID_LINK")); //$NON-NLS-1$
+		throw new RuntimeException(Messages.MavenProjectAdapter_0);
 	}
 
 	/** Install the adapter.

@@ -22,13 +22,13 @@
 package io.sarl.maven.compiler;
 
 import java.io.File;
+import java.text.MessageFormat;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.ResolutionScope;
-import org.arakhne.afc.vmutil.locale.Locale;
 
 /** Initialization mojo for the SARL Maven compiler.
  *
@@ -45,12 +45,12 @@ public class InitializeMojo extends AbstractSarlMojo {
 	protected void executeMojo() throws MojoExecutionException, MojoFailureException {
 		for (final File f : new File[] {getInput(), getOutput()}) {
 			final String absPath = f.getAbsolutePath();
-			getLog().info(Locale.getString(InitializeMojo.class, "ADD_SOURCE_FOLDERS", absPath)); //$NON-NLS-1$
+			getLog().info(MessageFormat.format(Messages.InitializeMojo_0, absPath));
 			this.mavenHelper.getSession().getCurrentProject().addCompileSourceRoot(absPath);
 		}
 		for (final File f : new File[] {getTestInput(), getTestOutput()}) {
 			final String absPath = f.getAbsolutePath();
-			getLog().info(Locale.getString(InitializeMojo.class, "ADD_TEST_SOURCE_FOLDERS", absPath)); //$NON-NLS-1$
+			getLog().info(MessageFormat.format(Messages.InitializeMojo_1, absPath));
 			this.mavenHelper.getSession().getCurrentProject().addTestCompileSourceRoot(absPath);
 		}
 	}

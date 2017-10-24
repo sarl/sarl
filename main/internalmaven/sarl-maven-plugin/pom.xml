@@ -36,10 +36,6 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.arakhne.afc.core</groupId>
-			<artifactId>vmutils</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-compiler-plugin</artifactId>
 		</dependency>

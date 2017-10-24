@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
@@ -51,7 +52,6 @@ import org.apache.maven.toolchain.Toolchain;
 import org.apache.maven.toolchain.ToolchainManager;
 import org.apache.maven.toolchain.ToolchainPrivate;
 import org.apache.maven.toolchain.java.JavaToolchain;
-import org.arakhne.afc.vmutil.locale.Locale;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.xtext.xbase.lib.util.ReflectExtensions;
 
@@ -92,7 +92,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 			this.reflect = this.injector.getInstance(ReflectExtensions.class);
 		}
 		if (this.sarlBatchCompilerProvider == null || this.reflect == null) {
-			throw new MojoExecutionException(Locale.getString(AbstractSarlBatchCompilerMojo.class, "INJECTION_ERROR")); //$NON-NLS-1$
+			throw new MojoExecutionException(Messages.AbstractSarlBatchCompilerMojo_0);
 		}
 	}
 
@@ -169,7 +169,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 		final Iterable<File> filtered = Iterables.filter(sourcePaths, (input) -> input.isDirectory());
 		if (Iterables.isEmpty(filtered)) {
 			final String dir = Iterables.toString(sourcePaths);
-			getLog().info(Locale.getString(AbstractSarlBatchCompilerMojo.class, "ERROR_0", dir)); //$NON-NLS-1$
+			getLog().info(MessageFormat.format(Messages.AbstractSarlBatchCompilerMojo_1, dir));
 			return;
 		}
 		final String baseDir = project.getBasedir().getAbsolutePath();
@@ -197,9 +197,9 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 			if (uriToProblem != null) {
 				filename = uriToProblem.toFileString();
 			} else {
-				filename = Locale.getString(AbstractSarlBatchCompilerMojo.class, "NO_FILE_NAME"); //$NON-NLS-1$
+				filename = Messages.AbstractSarlBatchCompilerMojo_2;
 			}
-			return Locale.getString(AbstractSarlBatchCompilerMojo.class, "ISSUE_MESSAGE", //$NON-NLS-1$
+			return MessageFormat.format(Messages.AbstractSarlBatchCompilerMojo_3,
 					filename, issue.getLineNumber(),
 					issue.getColumn(), issue.getMessage());
 		});
@@ -211,7 +211,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 				}
 				dir.append(file.getAbsolutePath());
 			}
-			throw new MojoFailureException(Locale.getString(AbstractSarlBatchCompilerMojo.class, "ERROR_1")); //$NON-NLS-1$
+			throw new MojoFailureException(Messages.AbstractSarlBatchCompilerMojo_4);
 		}
 	}
 
@@ -220,7 +220,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 		if (toolchain instanceof JavaToolchain && toolchain instanceof ToolchainPrivate) {
 			final JavaToolchain javaToolChain = (JavaToolchain) toolchain;
 			final ToolchainPrivate privateJavaToolChain = (ToolchainPrivate) toolchain;
-			getLog().info(Locale.getString(AbstractSarlBatchCompilerMojo.class, "USING_TOOLCHAIN", javaToolChain)); //$NON-NLS-1$
+			getLog().info(MessageFormat.format(Messages.AbstractSarlBatchCompilerMojo_5, javaToolChain));
 
 			String[] includes = {"jre/lib/*", "jre/lib/ext/*", "jre/lib/endorsed/*"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			String[] excludes = new String[0];
@@ -249,7 +249,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	}
 
 	private String scanBootclasspath(String javaHome, String[] includes, String[] excludes) {
-		getLog().debug(Locale.getString(AbstractSarlBatchCompilerMojo.class, "BOOTCLASSPATH", //$NON-NLS-1$
+		getLog().debug(MessageFormat.format(Messages.AbstractSarlBatchCompilerMojo_6,
 				javaHome, Arrays.toString(includes), Arrays.toString(excludes)));
 		final DirectoryScanner scanner = new DirectoryScanner();
 		scanner.setBasedir(new File(javaHome));
@@ -297,11 +297,11 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 					final String sarlOutputDirProp = sarlSettings.getProperty("outlet.DEFAULT_OUTPUT.directory", null); //$NON-NLS-1$
 					if (sarlOutputDirProp != null) {
 						final File srcDir = new File(sourceDirectory);
-						getLog().debug(Locale.getString(AbstractSarlBatchCompilerMojo.class, "SOURCE_DIR", //$NON-NLS-1$
+						getLog().debug(MessageFormat.format(Messages.AbstractSarlBatchCompilerMojo_7,
 								srcDir.getPath(), srcDir.exists()));
 						if (srcDir.exists() && srcDir.getParent() != null) {
 							final String path = new File(srcDir.getParent(), sarlOutputDirProp).getPath();
-							getLog().debug(Locale.getString(AbstractSarlBatchCompilerMojo.class, "APPLY_PROPERTY", sarlOutputDirProp)); //$NON-NLS-1$
+							getLog().debug(MessageFormat.format(Messages.AbstractSarlBatchCompilerMojo_8, sarlOutputDirProp));
 							return path;
 						}
 					}
@@ -311,7 +311,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 					getLog().warn(e);
 				}
 			} else {
-				getLog().debug(Locale.getString(AbstractSarlBatchCompilerMojo.class, "ERROR_2", this.propertiesFileLocation)); //$NON-NLS-1$
+				getLog().debug(MessageFormat.format(Messages.AbstractSarlBatchCompilerMojo_9, this.propertiesFileLocation));
 			}
 		}
 		return null;
@@ -341,7 +341,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 			if (file.exists()) {
 				files.add(file);
 			} else {
-				getLog().warn(Locale.getString(AbstractSarlBatchCompilerMojo.class, "ERROR_3", filename)); //$NON-NLS-1$
+				getLog().warn(MessageFormat.format(Messages.AbstractSarlBatchCompilerMojo_10, filename));
 			}
 		}
 		return files;

@@ -23,6 +23,7 @@ package io.sarl.maven.compiler;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +46,6 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
-import org.arakhne.afc.vmutil.locale.Locale;
 
 import io.sarl.lang.SARLVersion;
 
@@ -195,14 +195,12 @@ public class CompileMojo extends AbstractSarlBatchCompilerMojo {
 				compilerVersion.getMajorVersion() + "." //$NON-NLS-1$
 				+ (compilerVersion.getMinorVersion() + 1)
 				+ ".0"); //$NON-NLS-1$
-		getLog().info(Locale.getString(CompileMojo.class, "CHECK_SARL_SDK", compilerVersionString, //$NON-NLS-1$
-				maxCompilerVersion));
+		getLog().info(MessageFormat.format(Messages.CompileMojo_0, compilerVersionString, maxCompilerVersion));
 		final StringBuilder classpath = new StringBuilder();
 		final Set<String> foundVersions = findSARLLibrary(compilerVersion, maxCompilerVersion, classpath,
 				this.tycho);
 		if (foundVersions.isEmpty()) {
-			throw new MojoFailureException(Locale.getString(CompileMojo.class, "NO_SARL_LIBRARY", //$NON-NLS-1$
-					classpath.toString()));
+			throw new MojoFailureException(MessageFormat.format(Messages.CompileMojo_1, classpath.toString()));
 		}
 		final StringBuilder versions = new StringBuilder();
 		for (final String version : foundVersions) {
@@ -212,9 +210,9 @@ public class CompileMojo extends AbstractSarlBatchCompilerMojo {
 			versions.append(version);
 		}
 		if (foundVersions.size() > 1) {
-			getLog().info(Locale.getString(CompileMojo.class, "TOO_MUCH_SARL_VERSIONS", versions)); //$NON-NLS-1$
+			getLog().info(MessageFormat.format(Messages.CompileMojo_2, versions));
 		} else {
-			getLog().info(Locale.getString(CompileMojo.class, "DETECTED_SARL_VERSION", versions)); //$NON-NLS-1$
+			getLog().info(MessageFormat.format(Messages.CompileMojo_3, versions));
 		}
 	}
 
@@ -226,8 +224,7 @@ public class CompileMojo extends AbstractSarlBatchCompilerMojo {
 		final String sarlLibArtifactIdTycho = this.mavenHelper.getConfig("sarl-lib.osgiBundleId"); //$NON-NLS-1$
 		final Set<String> foundVersions = new TreeSet<>();
 		for (final Artifact dep : this.mavenHelper.getSession().getCurrentProject().getArtifacts()) {
-			getLog().debug(Locale.getString(CompileMojo.class, "SCANNING_DEPENDENCY", //$NON-NLS-1$
-					dep.getGroupId(), dep.getArtifactId(), dep.getVersion()));
+			getLog().debug(MessageFormat.format(Messages.CompileMojo_4, dep.getGroupId(), dep.getArtifactId(), dep.getVersion()));
 			if (classpath.length() > 0) {
 				classpath.append(":"); //$NON-NLS-1$
 			}
@@ -247,12 +244,10 @@ public class CompileMojo extends AbstractSarlBatchCompilerMojo {
 			if (gid != null && aid != null) {
 				final ArtifactVersion dependencyVersion = new DefaultArtifactVersion(dep.getVersion());
 				if (!containsVersion(dependencyVersion, compilerVersion, maxCompilerVersion)) {
-					final String shortMessage = Locale.getString(CompileMojo.class,
-							"INCOMPATIBLE_VERSION_SHORT", //$NON-NLS-1$
+					final String shortMessage = MessageFormat.format(Messages.CompileMojo_5,
 							gid, aid, dependencyVersion.toString(),
 							compilerVersion.toString(), maxCompilerVersion.toString());
-					final String longMessage = Locale.getString(CompileMojo.class,
-							"INCOMPATIBLE_VERSION_LONG", //$NON-NLS-1$
+					final String longMessage = MessageFormat.format(Messages.CompileMojo_6,
 							sarlLibGroupId, sarlLibArtifactId, dependencyVersion.toString(),
 							compilerVersion.toString(), maxCompilerVersion.toString());
 					throw new MojoFailureException(this, shortMessage, longMessage);
@@ -265,7 +260,7 @@ public class CompileMojo extends AbstractSarlBatchCompilerMojo {
 
 	@SuppressWarnings("unchecked")
 	private void validateDependencyVersions() throws MojoExecutionException, MojoFailureException {
-		getLog().info(Locale.getString(CompileMojo.class, "CHECK_DEPENDENCY_VERSIONS")); //$NON-NLS-1$
+		getLog().info(Messages.CompileMojo_7);
 		final String sarlSdkGroupId = this.mavenHelper.getConfig("sarl-sdk.groupId"); //$NON-NLS-1$
 		final String sarlSdkArtifactId = this.mavenHelper.getConfig("sarl-sdk.artifactId"); //$NON-NLS-1$
 
@@ -291,8 +286,7 @@ public class CompileMojo extends AbstractSarlBatchCompilerMojo {
 				if (dependencyArtifact != null) {
 					final ArtifactVersion dependencyVersion = new DefaultArtifactVersion(dependencyArtifact.getVersion());
 					if (entry.getValue().compareTo(dependencyVersion) > 0) {
-						final String message = Locale.getString(CompileMojo.class,
-								"INVALID_SARL_SDK_DEPENDENCY_VERSION", //$NON-NLS-1$
+						final String message = MessageFormat.format(Messages.CompileMojo_8,
 								dependencyArtifact.getGroupId(), dependencyArtifact.getArtifactId(),
 								dependencyArtifact.getVersion(), entry.getValue().toString());
 						getLog().error(message);
@@ -303,14 +297,14 @@ public class CompileMojo extends AbstractSarlBatchCompilerMojo {
 		}
 
 		if (hasError) {
-			throw new MojoFailureException(Locale.getString(CompileMojo.class, "INVALID_SARL_SDK_DEPENDENCY_VERSION_TITLE")); //$NON-NLS-1$
+			throw new MojoFailureException(Messages.CompileMojo_10);
 		}
 	}
 
 	private void compileSARL() throws MojoExecutionException, MojoFailureException {
 		final Log log = getLog();
 		File outputDirectory = getOutput();
-		log.info(Locale.getString(CompileMojo.class, "COMPILING_SARL")); //$NON-NLS-1$
+		log.info(Messages.CompileMojo_9);
 		if (log.isDebugEnabled()) {
 			final StringBuilder properties = new StringBuilder();
 			buildPropertyString(properties);
@@ -321,7 +315,7 @@ public class CompileMojo extends AbstractSarlBatchCompilerMojo {
 			final String settingsValue = readSarlEclipseSetting(getProject().getBuild().getSourceDirectory());
 			if (settingsValue != null && !settingsValue.isEmpty()) {
 				outputDirectory = new File(settingsValue);
-				getLog().info(Locale.getString(CompileMojo.class, "OUTPUT_DIR_UPDATE", outputDirectory)); //$NON-NLS-1$
+				getLog().info(MessageFormat.format(Messages.CompileMojo_11, outputDirectory));
 			}
 		}
 		final MavenProject project = getProject();

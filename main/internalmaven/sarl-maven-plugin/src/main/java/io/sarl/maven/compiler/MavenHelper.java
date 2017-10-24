@@ -23,6 +23,7 @@ package io.sarl.maven.compiler;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -52,7 +53,6 @@ import org.apache.maven.plugin.PluginManagerException;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.repository.RepositorySystem;
-import org.arakhne.afc.vmutil.locale.Locale;
 
 /** This class permits to support the incompatible Maven API
  * from the same Mojo code (says 3.0 and 3.1 APIs).
@@ -106,8 +106,7 @@ class MavenHelper {
 			}
 		}
 		if (method == null) {
-			throw new MojoExecutionException(Locale.getString(MavenHelper.class, "UNSUPPORTED_MAVEN_API"), //$NON-NLS-1$
-					new NoSuchMethodError("getRepositorySystem")); //$NON-NLS-1$
+			throw new MojoExecutionException(Messages.MavenHelper_0, new NoSuchMethodError("getRepositorySystem")); //$NON-NLS-1$
 		}
 		this.getRepositorySessionMethod = method;
 
@@ -119,8 +118,7 @@ class MavenHelper {
 			}
 		}
 		if (method == null) {
-			throw new MojoExecutionException(Locale.getString(MavenHelper.class, "UNSUPPORTED_MAVEN_API"), //$NON-NLS-1$
-					new NoSuchMethodError("loadPlugin")); //$NON-NLS-1$
+			throw new MojoExecutionException(Messages.MavenHelper_0, new NoSuchMethodError("loadPlugin")); //$NON-NLS-1$
 		}
 		this.loadPluginMethod = method;
 	}
@@ -160,8 +158,7 @@ class MavenHelper {
 		String value = resource.getString(key);
 		if (value == null || value.isEmpty()) {
 			value = Strings.nullToEmpty(value);
-			this.log.warn(Locale.getString(MavenHelper.class,
-					"NO_CONFIGURATION_ENTRY", key)); //$NON-NLS-1$
+			this.log.warn(MessageFormat.format(Messages.MavenHelper_1, key));
 		}
 		return value;
 	}
@@ -307,11 +304,9 @@ class MavenHelper {
 			if (version != null && !version.isEmpty()) {
 				return version;
 			}
-			throw new MojoExecutionException(Locale.getString(MavenHelper.class,
-					"UNKNOWN_PLUGIN_VERSION", key)); //$NON-NLS-1$
+			throw new MojoExecutionException(MessageFormat.format(Messages.MavenHelper_2, key));
 		}
-		throw new MojoExecutionException(Locale.getString(MavenHelper.class,
-				"PLUGIN_NOT_FOUND_IN_DEPS", key, deps)); //$NON-NLS-1$
+		throw new MojoExecutionException(MessageFormat.format(Messages.MavenHelper_3, key, deps));
 	}
 
 }

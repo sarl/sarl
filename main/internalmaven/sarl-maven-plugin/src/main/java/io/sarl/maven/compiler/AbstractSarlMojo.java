@@ -24,6 +24,7 @@ package io.sarl.maven.compiler;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -46,7 +47,6 @@ import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.repository.RepositorySystem;
-import org.arakhne.afc.vmutil.locale.Locale;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
@@ -238,17 +238,15 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 		plugin.setVersion(version);
 		plugin.setDependencies(Arrays.asList(dependencies));
 
-		getLog().debug(Locale.getString(AbstractSarlMojo.class, "LAUNCHING", plugin.getId())); //$NON-NLS-1$
+		getLog().debug(MessageFormat.format(Messages.AbstractSarlMojo_0, plugin.getId()));
 
 		final PluginDescriptor pluginDescriptor = this.mavenHelper.loadPlugin(plugin);
 		if (pluginDescriptor == null) {
-			throw new MojoExecutionException(Locale.getString(AbstractSarlMojo.class,
-					"PLUGIN_NOT_FOUND", plugin.getId())); //$NON-NLS-1$
+			throw new MojoExecutionException(MessageFormat.format(Messages.AbstractSarlMojo_1, plugin.getId()));
 		}
 		final MojoDescriptor mojoDescriptor = pluginDescriptor.getMojo(goal);
 		if (mojoDescriptor == null) {
-			throw new MojoExecutionException(Locale.getString(AbstractSarlMojo.class,
-					"GOAL_NOT_FOUND", goal)); //$NON-NLS-1$
+			throw new MojoExecutionException(MessageFormat.format(Messages.AbstractSarlMojo_2, goal));
 		}
 
 		final Xpp3Dom mojoXml;
@@ -275,8 +273,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 			configurationXml = mojoXml;
 		}
 
-		getLog().debug(Locale.getString(AbstractSarlMojo.class, "CONFIGURATION_FOR", //$NON-NLS-1$
-				plugin.getId(), configurationXml.toString()));
+		getLog().debug(MessageFormat.format(Messages.AbstractSarlMojo_3, plugin.getId(), configurationXml.toString()));
 
 		final MojoExecution execution = new MojoExecution(mojoDescriptor, configurationXml);
 
@@ -321,8 +318,8 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 				final String dependencyKey = ArtifactUtils.versionlessKey(dependencyGroupId, dependencyArtifactId);
 				final Dependency dependencyObject = pomDependencies.get(dependencyKey);
 				if (dependencyObject == null) {
-					throw new MojoExecutionException(Locale.getString(AbstractSarlMojo.class,
-							"ARTIFACT_NOT_FOUND", dependencyKey)); //$NON-NLS-1$
+					throw new MojoExecutionException(MessageFormat.format(
+							Messages.AbstractSarlMojo_4, dependencyKey));
 				}
 				dependencies.add(dependencyObject);
 			}
