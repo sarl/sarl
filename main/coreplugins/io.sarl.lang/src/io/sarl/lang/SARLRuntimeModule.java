@@ -30,8 +30,10 @@ import com.google.inject.name.Names;
 import org.eclipse.xtext.service.SingletonBinding;
 import org.eclipse.xtext.validation.CompositeEValidator;
 import org.eclipse.xtext.validation.IssueSeveritiesProvider;
+import org.eclipse.xtext.xbase.typesystem.override.OverrideHelper;
 
-import io.sarl.lang.bugfixes.pending.bug621.Bug621SARLValidator;
+import io.sarl.lang.bugfixes.pending.bug621.Bug621OverrideHelper;
+import io.sarl.lang.bugfixes.pending.bug621.Bug621Validator;
 import io.sarl.lang.validation.ConfigurableIssueSeveritiesProvider;
 import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
 import io.sarl.lang.validation.SARLValidator;
@@ -96,7 +98,12 @@ public class SARLRuntimeModule extends io.sarl.lang.AbstractSARLRuntimeModule {
 	@Override
 	@SingletonBinding(eager = true)
 	public Class<? extends SARLValidator> bindSARLValidator() {
-		return Bug621SARLValidator.class;
+		return Bug621Validator.class;
+	}
+
+	@SuppressWarnings({ "static-method", "javadoc" })
+	public Class<? extends OverrideHelper> bindOverrideHelper() {
+		return Bug621OverrideHelper.class;
 	}
 
 }
