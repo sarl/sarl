@@ -67,7 +67,6 @@ import com.sun.tools.javadoc.DocEnv;
 import com.sun.tools.javadoc.DocImpl;
 import com.sun.tools.javadoc.ExecutableMemberDocImpl;
 import com.sun.tools.javadoc.FieldDocImpl;
-import com.sun.tools.javadoc.JavaScriptScanner;
 import com.sun.tools.javadoc.MethodDocImpl;
 import com.sun.tools.javadoc.PackageDocImpl;
 import com.sun.tools.javadoc.ProgramElementDocImpl;
@@ -88,7 +87,6 @@ import io.sarl.docs.doclet.utils.Utils;
  * @mavenartifactid $ArtifactId$
  * @since 0.7
  */
-@SuppressWarnings("deprecation")
 public class ProgrammaticWrappingProxyInstaller implements ProxyInstaller {
 
 	private final SarlConfiguration configuration;
@@ -625,15 +623,6 @@ public class ProgrammaticWrappingProxyInstaller implements ProxyInstaller {
 		@Override
 		public void initDocLint(Collection<String> opts, Collection<String> customTagNames) {
 			this.delegate.initDocLint(opts, customTagNames);
-		}
-
-		/** {@inheritDoc}
-		 * @deprecated no info
-		 */
-		@Override
-		@Deprecated
-		public JavaScriptScanner initJavaScriptScanner(boolean arg0) {
-			return this.delegate.initJavaScriptScanner(arg0);
 		}
 
 		@Override
