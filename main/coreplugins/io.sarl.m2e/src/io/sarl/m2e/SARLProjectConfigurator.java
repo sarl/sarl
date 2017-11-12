@@ -153,7 +153,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	 * @param monitor the monitor.
 	 * @throws CoreException if cannot add the source folders.
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
+	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:npathcomplexity"})
 	protected void addSourceFolders(
 			IMavenProjectFacade facade, SARLConfiguration config,
 			IClasspathDescriptor classpath, IProgressMonitor monitor)

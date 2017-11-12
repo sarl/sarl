@@ -632,7 +632,8 @@
 						<dependency>
 							<groupId>com.puppycrawl.tools</groupId>
 							<artifactId>checkstyle</artifactId>
-							<version>7.6</version>
+							<!-- Same version as inside Eclipse IDE -->
+							<version>8.0</version>
 						</dependency>
 					</dependencies>
 				</plugin>

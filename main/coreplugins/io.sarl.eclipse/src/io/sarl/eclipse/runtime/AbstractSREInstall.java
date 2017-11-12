@@ -185,6 +185,7 @@ public abstract class AbstractSREInstall implements ISREInstall {
 	}
 
 	@Override
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	public IStatus getValidity(int ignoreCauses) {
 		if (isDirty()) {
 			return revalidate(ignoreCauses);

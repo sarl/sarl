@@ -220,7 +220,7 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 		assert skill != null : "the skill parameter must not be null"; //$NON-NLS-1$
 		skill.setOwner(this);
 		if (capacities == null || capacities.length == 0) {
-			runOnImplementedCapacities(skill, (capacity) -> {
+			runOnImplementedCapacities(skill, capacity -> {
 				final ClearableReference<Skill> oldS = $mapCapacityGetOld(capacity, skill);
 				skill.registerUse();
 				if (oldS != null) {
@@ -253,7 +253,7 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	}
 
 	private static void runOnImplementedCapacities(Skill skill, Procedure1<? super Class<? extends Capacity>> callback) {
-		TypeToken.of(skill.getClass()).getTypes().interfaces().stream().parallel().forEach((it) -> {
+		TypeToken.of(skill.getClass()).getTypes().interfaces().stream().parallel().forEach(it -> {
 			final Class<?> type = it.getRawType();
 			if (Capacity.class.isAssignableFrom(type) && !Capacity.class.equals(type)) {
 				callback.apply(type.asSubclass(Capacity.class));

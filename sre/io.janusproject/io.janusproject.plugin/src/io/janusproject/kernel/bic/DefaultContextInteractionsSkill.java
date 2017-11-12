@@ -135,7 +135,7 @@ public class DefaultContextInteractionsSkill extends BuiltinSkill implements Def
 		return this.defaultSpace;
 	}
 
-	/** {@inheritDoc}
+	/** {@inheritDoc}.
 	 * @deprecated see {@link #willReceive(UUID, Event)}
 	 */
 	@Deprecated

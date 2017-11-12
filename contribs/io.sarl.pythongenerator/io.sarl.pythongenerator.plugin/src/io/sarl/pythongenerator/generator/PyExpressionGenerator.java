@@ -932,7 +932,8 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 * @param type the type.
 	 * @return the default value.
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:booleanexpressioncomplexity" })
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity",
+		"checkstyle:booleanexpressioncomplexity", "checkstyle:npathcomplexity"})
 	public static String toDefaultValue(JvmTypeReference type) {
 		final String id = type.getIdentifier();
 		if (!"void".equals(id)) { //$NON-NLS-1$

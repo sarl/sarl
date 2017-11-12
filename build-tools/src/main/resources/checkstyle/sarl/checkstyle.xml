@@ -645,12 +645,12 @@
 		<!-- Restrict the number of decision points in the code. Less decision 
 			points means easier to test. -->
 		<module name="CyclomaticComplexity">
-			<property name="max" value="15" />
+			<property name="max" value="20" />
 		</module>
 
 		<!-- Number of paths in a code. 200 is a standard from AT&T. -->
 		<module name="NPathComplexity">
-			<property name="max" value="100" />
+			<property name="max" value="200" />
 		</module>
 
 		<!-- Array notation must follow the Java style (not the C style). -->

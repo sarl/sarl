@@ -55,6 +55,7 @@ public class JdkUncaughtExceptionHandler implements UncaughtExceptionHandler {
 		this.logger = logger;
 	}
 
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	private void log(Throwable exception, String taskId, String taskName) {
 		assert exception != null;
 		Throwable cause = exception;
