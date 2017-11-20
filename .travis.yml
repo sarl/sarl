@@ -33,7 +33,7 @@ matrix:
           - lib32ncurses5
           - genisoimage
       env:
-      - M2_HOME: "$HOME/.binaries/apache-maven-3.5.0"
+      - M2_HOME: "$HOME/.binaries/apache-maven-3.5.2"
       - PATH: "$M2_HOME/bin:$PATH"
       - DISPLAY: ":99.0"
       before_install:
