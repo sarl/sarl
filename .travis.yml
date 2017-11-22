@@ -42,7 +42,7 @@ matrix:
       - "sh -e /etc/init.d/xvfb start"
       - sleep 3 # give xvfb some time to start
     - os: osx
-      osx_image: xcode8.2 # see https://docs.travis-ci.com/user/osx-ci-environment/
+      osx_image: xcode8.3 # see https://docs.travis-ci.com/user/osx-ci-environment/
       before_install:
       - echo "MAVEN_OPTS=\"$MAVEN_OPTS\"" > $HOME/.mavenrc
 
