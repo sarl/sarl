@@ -33,7 +33,9 @@ import io.sarl.lang.core.Scope
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated since 0.7, replaced by closure expressions.
  */
+@Deprecated
 final class Scopes {
 
 	static val ALL : Scope<?> = new AlwaysTrueScope

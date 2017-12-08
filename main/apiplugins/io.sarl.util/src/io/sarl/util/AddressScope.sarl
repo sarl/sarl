@@ -33,8 +33,10 @@ import io.sarl.lang.core.Scope
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @Deprecated since 0.7, replaced by closure expressions.
  */
- class AddressScope implements Scope<Address> {
+@Deprecated
+class AddressScope implements Scope<Address> {
 
 	static val SCOPE_ID = "aid://"
 
@@ -67,7 +69,6 @@ import io.sarl.lang.core.Scope
 
 	override matches(address : Address) : boolean {
 		assert address !== null
-		// TODO Do dichotomic search.
 		for (element : this.addresses) {
 			if (element == address) {
 				return true
