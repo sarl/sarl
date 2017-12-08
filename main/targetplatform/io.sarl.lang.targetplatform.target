@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="io.sarl.lang.targetplatform" sequenceNumber="121">
+<?pde version="3.8"?><target name="io.sarl.lang.targetplatform" sequenceNumber="122">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.egit.feature.group" version="4.8.0.201706111038-r"/>
@@ -18,10 +18,10 @@
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="net.bytebuddy.byte-buddy" version="1.7.9"/>
-<unit id="org.arakhne.afc.core.references" version="15.0.0.20171112213157"/>
-<unit id="org.arakhne.afc.core.text" version="15.0.0.20171112213157"/>
-<unit id="org.arakhne.afc.core.util" version="15.0.0.20171112213157"/>
-<unit id="org.arakhne.afc.core.vmutils" version="15.0.0.20171112213157"/>
+<unit id="org.arakhne.afc.core.references" version="14.0.0"/>
+<unit id="org.arakhne.afc.core.text" version="14.0.0"/>
+<unit id="org.arakhne.afc.core.util" version="14.0.0"/>
+<unit id="org.arakhne.afc.core.vmutils" version="14.0.0"/>
 <unit id="org.mockito.mockito-core" version="2.12.0"/>
 <unit id="org.objenesis" version="2.6.0"/>
 <repository location="http://download.tuxfamily.org/arakhne/p2/"/>
