@@ -55,6 +55,8 @@ public class UnmodifiableMergingMapView<K, V> extends AbstractMap<K, V> {
 	 * @param right the right operand to merge.
 	 */
 	public UnmodifiableMergingMapView(Map<? extends K, ? extends V> left, Map<? extends K, ? extends V> right) {
+		assert left != null : "left must not be null"; //$NON-NLS-1$
+		assert right != null : "right must not be null"; //$NON-NLS-1$
 		this.left = left;
 		this.right = right;
 	}
@@ -62,7 +64,10 @@ public class UnmodifiableMergingMapView<K, V> extends AbstractMap<K, V> {
 	@Override
 	public Set<Entry<K, V>> entrySet() {
 		// A call to "Sets.union(ks1, ks2)" does not work because of the equals() definition on Map.Entry.
-		// This equality test break the unicity of the keys over the resulting Set.
+		// This equality test breaks the unicity of the keys over the resulting Set.
+		// In other words, "Sets.union(ks1, ks2)" replies all the entries that
+		// are different on their keys or values.
+
 		final Set<Entry<K, V>> diff =  difference(this.left, this.right);
 		return new AbstractEarlyFailingSet<Entry<K, V>>() {
 			@SuppressWarnings({ "unchecked", "rawtypes", "synthetic-access" })
@@ -80,12 +85,12 @@ public class UnmodifiableMergingMapView<K, V> extends AbstractMap<K, V> {
 	}
 
 	private static <K, V> Set<Entry<K, V>> difference(final Map<? extends K, ? extends V> left, final Map<? extends K, ? extends V> right) {
-		assert left != null : "left must not be null"; //$NON-NLS-1$
-		assert right != null : "right must not be null"; //$NON-NLS-1$
-
-		final Predicate<Entry<? extends K, ? extends V>> notInSet2 = new Predicate<Map.Entry<? extends K, ? extends V>>() {
+		final Predicate<Entry<? extends K, ? extends V>> notInSet = new Predicate<Map.Entry<? extends K, ? extends V>>() {
 			@Override
 			public boolean apply(Entry<? extends K, ? extends V> it) {
+				if (it == null) {
+					return false;
+				}
 				return !right.containsKey(it.getKey());
 			}
 		};
@@ -94,7 +99,7 @@ public class UnmodifiableMergingMapView<K, V> extends AbstractMap<K, V> {
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			@Override
 			public Iterator<Entry<K, V>> iterator() {
-				return Iterators.unmodifiableIterator((Iterator) Iterators.filter(left.entrySet().iterator(), notInSet2));
+				return Iterators.unmodifiableIterator((Iterator) Iterators.filter(left.entrySet().iterator(), notInSet));
 			}
 
 			@Override
@@ -117,24 +122,14 @@ public class UnmodifiableMergingMapView<K, V> extends AbstractMap<K, V> {
 	}
 
 	@Override
-	public V putIfAbsent(K key, V value) {
-		// Fail even if the set is empty.
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public V remove(Object key) {
 		// Fail even if the set is empty.
 		throw new UnsupportedOperationException();
 	}
 
-	@Override
-	public boolean remove(Object key, Object value) {
-		// Fail even if the set is empty.
-		throw new UnsupportedOperationException();
-	}
-
-	/** Abstract implements of a set that is failing as soon as possible when modifiers are called.
+	/**
+	 * Abstract implements of a set that is failing as soon as possible
+	 * when modifiers are called.
 	 *
 	 * @param <T> the type of the set elements.
 	 * @author $Author: sgalland$
@@ -162,12 +157,6 @@ public class UnmodifiableMergingMapView<K, V> extends AbstractMap<K, V> {
 
 		@Override
 		public boolean remove(Object element) {
-			// Fail even if the set is empty.
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public boolean removeIf(java.util.function.Predicate<? super T> filter) {
 			// Fail even if the set is empty.
 			throw new UnsupportedOperationException();
 		}

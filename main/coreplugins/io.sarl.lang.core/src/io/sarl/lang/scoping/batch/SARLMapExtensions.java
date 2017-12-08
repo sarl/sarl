@@ -291,21 +291,6 @@ public final class SARLMapExtensions {
 		});
 	}
 
-	/** Replies the value associated to the given key in the map.
-	 *
-	 * @param <K> - type of the map keys.
-	 * @param <V> - type of the map values.
-	 * @param map the map to consider.
-	 * @param key the key of the value.
-	 * @return the value associated to the key, or <code>null</code> if
-	 *     the key was not found.
-	 */
-	@Pure
-	@Inline(value = "$1.get($2)")
-	public static <K, V> V operator_mappedTo(Map<K, V> map, K key) {
-		return map.get(key);
-	}
-
 	/** Merge the given maps.
 	 *
 	 * <p>The replied map is a view on the given two maps.

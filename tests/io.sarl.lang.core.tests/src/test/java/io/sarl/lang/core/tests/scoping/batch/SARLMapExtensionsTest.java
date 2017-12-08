@@ -76,12 +76,20 @@ public class SARLMapExtensionsTest {
 						@Override
 						protected Map<String, String> create(Entry<String, String>[] source) {
 							Map<String, String> left = Maps.newHashMap();
-							for (Entry<String, String> entry : source) {
-								left.put(entry.getKey(), entry.getValue());
-							}
 							Map<String, String> right = Maps.newHashMap();
-							for (Entry<String, String> entry : source) {
-								right.put(entry.getKey(), entry.getValue());
+							for(int i = 0; i < source.length; i++) {
+								Entry<String, String> entry = source[i];
+								if (right.containsKey(entry.getKey())) {
+									left.put(entry.getKey(), right.get(entry.getKey()));
+									right.put(entry.getKey(), entry.getValue());
+								} else if (i % 2 != 0) {
+									left.put(entry.getKey(), entry.getValue());	
+								} else {
+									right.put(entry.getKey(), entry.getValue());
+									if (i % 4 != 0) {
+										left.put(entry.getKey(), "will be ignored");
+									}
+								}
 							}
 							return new UnmodifiableMergingMapView(left, right);
 						}
@@ -91,8 +99,9 @@ public class SARLMapExtensionsTest {
 							MapFeature.ALLOWS_NULL_VALUES,
 							MapFeature.ALLOWS_ANY_NULL_QUERIES,
 							MapFeature.FAILS_FAST_ON_CONCURRENT_MODIFICATION,
-							CollectionFeature.NONE,
-							CollectionSize.SEVERAL)
+							CollectionFeature.ALLOWS_NULL_QUERIES,
+							CollectionFeature.FAILS_FAST_ON_CONCURRENT_MODIFICATION,
+							CollectionSize.ANY)
 					.createTestSuite();
 		}
 	}
