@@ -46,13 +46,12 @@ import io.sarl.lang.util.Utils;
 
 /** Customized type computer for SARL specific expressions.
  *
- * <p>It resolves the ambiguous calls with an approach that is supporting {@link Deprecated}.
- *
- * <p>This candidate prefers the feature that is not marked with {@link Deprecated}.
- * Otherwise, its behavior is the same as the standard Xbase candidate implementation:
+ * <p>It resolves the ambiguous calls with an approach that is supporting {@link Deprecated}
+ * This type computer prefers the feature candidate that is not marked with {@link Deprecated}.
+ * Otherwise, its behavior is the same as the standard Xbase type computer implementation:
  * the first candidate is preferred, and a specific issue message is output.
  *
- * <p>This type computer resolves the types for the SARL keywords: break.
+ * <p>This type computer resolves the types for the SARL keywords: break, continue and assert.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

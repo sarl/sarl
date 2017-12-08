@@ -26,10 +26,16 @@ import com.google.inject.Singleton;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.core.jvmmodel.IXtendJvmAssociations;
 import org.eclipse.xtend.core.xtend.XtendClass;
+import org.eclipse.xtend.core.xtend.XtendConstructor;
+import org.eclipse.xtend.core.xtend.XtendField;
+import org.eclipse.xtend.core.xtend.XtendFunction;
+import org.eclipse.xtext.common.types.JvmConstructor;
+import org.eclipse.xtext.common.types.JvmField;
 import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.xbase.XExpression;
 
+import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlAnnotationType;
 import io.sarl.lang.sarl.SarlArtifact;
@@ -37,8 +43,10 @@ import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlClass;
+import io.sarl.lang.sarl.SarlConstructor;
 import io.sarl.lang.sarl.SarlEnumeration;
 import io.sarl.lang.sarl.SarlEvent;
+import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlInterface;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.sarl.SarlSpace;
@@ -135,6 +143,30 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 	 * @since 0.6
 	 */
 	SarlAnnotationType getSarlAnnotationType(JvmGenericType jvmType);
+
+	/** Replies the SARL constructor associated to the given JVM constructor.
+	 *
+	 * @param jvmConstructor the JVM constructor.
+	 * @return the SARL element.
+	 * @since 0.7
+	 */
+	SarlConstructor getSarlConstructor(JvmConstructor jvmConstructor);
+
+	/** Replies the SARL action associated to the given JVM operation.
+	 *
+	 * @param jvmOperation the JVM operation.
+	 * @return the SARL element.
+	 * @since 0.7
+	 */
+	SarlAction getSarlAction(JvmOperation jvmOperation);
+
+	/** Replies the SARL field associated to the given JVM operation.
+	 *
+	 * @param jvmfield the JVM field.
+	 * @return the SARL element.
+	 * @since 0.7
+	 */
+	SarlField getSarlField(JvmField jvmfield);
 
 	/** Replies the inferrer type for the given event.
 	 * @param obj the SARL object.
@@ -340,6 +372,81 @@ public interface SarlJvmModelAssociations extends IXtendJvmAssociations {
 				return (JvmOperation) primaryJvmElement;
 			}
 			return null;
+		}
+
+		@Override
+		public XtendFunction getXtendFunction(JvmOperation jvmOperation) {
+			XtendFunction fct = null;
+			try {
+				fct = super.getXtendFunction(jvmOperation);
+			} catch (Throwable exception) {
+				fct = null;
+			}
+			if (fct == null) {
+				for (final EObject obj : getSourceElements(jvmOperation)) {
+					if (obj instanceof XtendFunction) {
+						fct = (XtendFunction) obj;
+						break;
+					}
+				}
+			}
+			return fct;
+		}
+
+		@Override
+		public SarlAction getSarlAction(JvmOperation jvmOperation) {
+			final XtendFunction fct = getXtendFunction(jvmOperation);
+			return fct instanceof SarlAction ? (SarlAction) fct : null;
+		}
+
+		@Override
+		public XtendField getXtendField(JvmField jvmField) {
+			XtendField fld = null;
+			try {
+				fld = super.getXtendField(jvmField);
+			} catch (Throwable exception) {
+				fld = null;
+			}
+			if (fld == null) {
+				for (final EObject obj : getSourceElements(jvmField)) {
+					if (obj instanceof XtendField) {
+						fld = (XtendField) obj;
+						break;
+					}
+				}
+			}
+			return fld;
+		}
+
+		@Override
+		public SarlField getSarlField(JvmField jvmField) {
+			final XtendField fld = getXtendField(jvmField);
+			return fld instanceof SarlField ? (SarlField) fld : null;
+		}
+
+		@Override
+		public XtendConstructor getXtendConstructor(JvmConstructor jvmConstructor) {
+			XtendConstructor cons = null;
+			try {
+				cons = super.getXtendConstructor(jvmConstructor);
+			} catch (Throwable exception) {
+				cons = null;
+			}
+			if (cons == null) {
+				for (final EObject obj : getSourceElements(jvmConstructor)) {
+					if (obj instanceof XtendConstructor) {
+						cons = (XtendConstructor) obj;
+						break;
+					}
+				}
+			}
+			return cons;
+		}
+
+		@Override
+		public SarlConstructor getSarlConstructor(JvmConstructor jvmConstructor) {
+			final XtendConstructor cons = getXtendConstructor(jvmConstructor);
+			return cons instanceof SarlConstructor ? (SarlConstructor) cons : null;
 		}
 
 	}
