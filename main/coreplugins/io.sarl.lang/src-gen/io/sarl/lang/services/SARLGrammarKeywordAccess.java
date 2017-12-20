@@ -114,7 +114,7 @@ public class SARLGrammarKeywordAccess {
 	 * Source: io.sarl.lang.SARL
 	 */
 	public String getPercentSignKeyword() {
-		return this.grammarAccess.getOpMultiAccess().getPercentSignKeyword_3().getValue();
+		return this.grammarAccess.getOpMultiAccess().getPercentSignKeyword_2().getValue();
 	}
 
 	/** Keyword: {@code var}.
@@ -156,7 +156,7 @@ public class SARLGrammarKeywordAccess {
 	 * Source: io.sarl.lang.SARL
 	 */
 	public String getPlusSignKeyword() {
-		return this.grammarAccess.getOpUnaryAccess().getPlusSignKeyword_2().getValue();
+		return this.grammarAccess.getOpAddAccess().getPlusSignKeyword_0().getValue();
 	}
 
 	/** Keyword: {@code ,}.
@@ -170,7 +170,7 @@ public class SARLGrammarKeywordAccess {
 	 * Source: io.sarl.lang.SARL
 	 */
 	public String getHyphenMinusKeyword() {
-		return this.grammarAccess.getOpUnaryAccess().getHyphenMinusKeyword_1().getValue();
+		return this.grammarAccess.getOpAddAccess().getHyphenMinusKeyword_1().getValue();
 	}
 
 	/** Keyword: {@code enum}.
@@ -191,7 +191,7 @@ public class SARLGrammarKeywordAccess {
 	 * Source: io.sarl.lang.SARL
 	 */
 	public String getSolidusKeyword() {
-		return this.grammarAccess.getOpMultiAccess().getSolidusKeyword_2().getValue();
+		return this.grammarAccess.getOpMultiAccess().getSolidusKeyword_1().getValue();
 	}
 
 	/** Keyword: {@code as}.
@@ -271,18 +271,18 @@ public class SARLGrammarKeywordAccess {
 		return this.grammarAccess.getJvmWildcardTypeReferenceAccess().getQuestionMarkKeyword_1().getValue();
 	}
 
+	/** Keyword: {@code **}.
+	 * Source: io.sarl.lang.SARL
+	 */
+	public String getAsteriskAsteriskKeyword() {
+		return this.grammarAccess.getOpExponentAccess().getAsteriskAsteriskKeyword().getValue();
+	}
+
 	/** Keyword: {@code @}.
 	 * Source: io.sarl.lang.SARL
 	 */
 	public String getCommercialAtKeyword() {
 		return this.grammarAccess.getXAnnotationAccess().getCommercialAtKeyword_1().getValue();
-	}
-
-	/** Keyword: {@code **}.
-	 * Source: io.sarl.lang.SARL
-	 */
-	public String getAsteriskAsteriskKeyword() {
-		return this.grammarAccess.getOpMultiAccess().getAsteriskAsteriskKeyword_1().getValue();
 	}
 
 	/** Keyword: {@code ::}.

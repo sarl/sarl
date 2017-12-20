@@ -528,3 +528,47 @@ XSwitchExpression returns xbase::XExpression:
 	('default' ':' default=XExpression )?
 	'}'
 ;
+
+//-----------------------------------------------
+// BELOW THIS POINT, See Issue #793
+// FIXME Remove When issue 783 is fixed within Xbase
+
+@Override
+XMultiplicativeExpression returns xbase::XExpression:
+	XCastedExpression (=>({xbase::XBinaryOperation.leftOperand=current}
+		feature=[jvm::JvmIdentifiableElement|OpMulti]
+	) rightOperand=XCastedExpression)*
+;
+
+@Override
+OpMulti:
+	'*' | '/' | '%'
+;
+
+@Override
+XCastedExpression returns xbase::XExpression:
+	XUnaryOperation (=>({xbase::XCastedExpression.target=current} 'as') type=JvmTypeReference)*
+;
+
+@Override
+XUnaryOperation returns xbase::XExpression:
+	{xbase::XUnaryOperation} feature=[jvm::JvmIdentifiableElement|OpUnary] operand=XUnaryOperation
+	| XExponentExpression
+;
+
+@Override
+OpUnary:
+	"!" | "-" | "+"
+;
+
+XExponentExpression returns xbase::XExpression:
+	XPostfixOperation
+ 	(=>({xbase::XBinaryOperation.leftOperand=current} feature=[jvm::JvmIdentifiableElement|OpExponent])
+		rightOperand=XUnaryOperation
+	)*
+;
+
+OpExponent:
+	"**"
+;
+

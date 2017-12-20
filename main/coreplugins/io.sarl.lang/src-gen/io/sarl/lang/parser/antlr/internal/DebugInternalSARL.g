@@ -1243,6 +1243,82 @@ ruleXSwitchExpression:
 	'}'
 ;
 
+// Rule XMultiplicativeExpression
+ruleXMultiplicativeExpression:
+	ruleXCastedExpression
+	(
+		(
+			(ruleOpMulti
+			)=>
+			ruleOpMulti
+		)
+		ruleXCastedExpression
+	)*
+;
+
+// Rule OpMulti
+ruleOpMulti:
+	(
+		'*'
+		    |
+		'/'
+		    |
+		'%'
+	)
+;
+
+// Rule XCastedExpression
+ruleXCastedExpression:
+	ruleXUnaryOperation
+	(
+		(
+			('as'
+			)=>
+			'as'
+		)
+		ruleJvmTypeReference
+	)*
+;
+
+// Rule XUnaryOperation
+ruleXUnaryOperation:
+	(
+		ruleOpUnary
+		ruleXUnaryOperation
+		    |
+		ruleXExponentExpression
+	)
+;
+
+// Rule OpUnary
+ruleOpUnary:
+	(
+		'!'
+		    |
+		'-'
+		    |
+		'+'
+	)
+;
+
+// Rule XExponentExpression
+ruleXExponentExpression:
+	ruleXPostfixOperation
+	(
+		(
+			(ruleOpExponent
+			)=>
+			ruleOpExponent
+		)
+		ruleXUnaryOperation
+	)*
+;
+
+// Rule OpExponent
+ruleOpExponent:
+	'**'
+;
+
 // Rule XFunctionSuperTypeRef
 ruleXFunctionSuperTypeRef:
 	(
@@ -2009,66 +2085,6 @@ ruleOpAdd:
 		    |
 		'-'
 	)
-;
-
-// Rule XMultiplicativeExpression
-ruleXMultiplicativeExpression:
-	ruleXUnaryOperation
-	(
-		(
-			(ruleOpMulti
-			)=>
-			ruleOpMulti
-		)
-		ruleXUnaryOperation
-	)*
-;
-
-// Rule OpMulti
-ruleOpMulti:
-	(
-		'*'
-		    |
-		'**'
-		    |
-		'/'
-		    |
-		'%'
-	)
-;
-
-// Rule XUnaryOperation
-ruleXUnaryOperation:
-	(
-		ruleOpUnary
-		ruleXUnaryOperation
-		    |
-		ruleXCastedExpression
-	)
-;
-
-// Rule OpUnary
-ruleOpUnary:
-	(
-		'!'
-		    |
-		'-'
-		    |
-		'+'
-	)
-;
-
-// Rule XCastedExpression
-ruleXCastedExpression:
-	ruleXPostfixOperation
-	(
-		(
-			('as'
-			)=>
-			'as'
-		)
-		ruleJvmTypeReference
-	)*
 ;
 
 // Rule XPostfixOperation
