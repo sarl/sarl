@@ -305,6 +305,48 @@ reserved pseudo-variable, which does not need to be typed out since it is the de
 lambda expression. The lambda expression replies the value of `it`.
 
 
+## Operator Precedence
+
+The following table lists the precedence and associativity of SARL operators. Operators are listed top to bottom,
+in ascending precedence, i.e. from the lower priority to the higher priority.
+
+
+| Operator                              | Description                                | Associativity   |
+| ------------------------------------- | ------------------------------------------ | --------------- |
+| =, +=, -=, *=, /=, %=, <<=, >>=, >>>= | Assignment operators                       | right to left   |
+| &verbar;&verbar;                      | Boolean OR                                 | left to right   |
+| &amp;&amp;                            | Boolean AND                                | left to right   |
+| ==, !=, ===, !==                      | Equality                                   | left to right   |
+| >=, <=, <, >, <>, instanceof          | Relational operator                        | not associative |
+| .., >.., ..<, ->, =>, ?:              | Construction operators: range, pairs, etc. | not associative |
+| >>, <<, >>>, <<<                      | Shifting operators                         | left to right   |
+| +, -                                  | Addition and subtraction                   | left to right   |
+| *, /, %                               | Multiplication, division, modulo           | left to right   |
+| as                                    | Cast operator                              | right to left   |
+| !, +x, -x                             | Negation, positive, negative               | right to left   |
+| **                                    | Exponential operator                       | right to left   |
+| ++, --                                | Postfix operators                          | not associative |
+| x	                                    | Feature call                               |                 |
+
+
+When parsing an expression, an operator which is listed on some row of the table above with a precedence will
+be bound tighter (as if by parentheses) to its arguments than any operator that is listed on a row further 
+above it with a lower precedence.
+
+For example, the expressions `c << a == b` and `-p++` are parsed as `(c << a) == b` and `-(p++)`, and not as
+`c << (a == b)` or `(-p)++`.
+
+Operators that have the same precedence are bound to their arguments in the direction of their associativity.
+For example, the expression `a = b = c` is parsed as `a = (b = c)`, and not as `(a = b) = c` because of
+right-to-left associativity of assignment, but `a + b - c` is parsed `(a + b) - c` and not `a + (b - c)`
+because of left-to-right associativity of addition and subtraction.
+Associativity specification is redundant for unary operators and is only shown for completeness:
+unary postfix operators always associate left-to-right.
+Note that the associativity is meaningful for member access operators, even though they are grouped with
+unary postfix operators: `a.b++` is parsed `(a.b)++` and not `a.(b++)`.
+Operator precedence is unaffected by operator overloading.
+
+
 ## Operator Overloading
 
 In SARL, it is easy to overload or re-define an existing operator.
