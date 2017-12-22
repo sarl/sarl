@@ -258,24 +258,8 @@ for sending an event with a specific scope.
 [:Fact:]{typeof(io.sarl.lang.core.Address)}
 [:Fact:]{typeof(io.sarl.core.DefaultContextInteractions).shouldHaveMethod("emit(io.sarl.lang.core.Event, io.sarl.lang.core.Scope)")}
 
-The SARL SDK contains the class `AddressScope`. It is an implementation of a `Scope` on addresses
-(an address is the identifier of an agent in the default space). The creation
-of an instance of `AddressScope` is done with the utility function `Scopes.addresses(Address*)`,
-which is getting a collection of addresses for building the matching predicate in the scope.
-[:Fact:]{typeof(io.sarl.util.AddressScope)}
-[:Fact:]{typeof(io.sarl.util.Scopes)}
-[:Fact:]{typeof(io.sarl.util.Scopes).shouldHaveMethod("addresses(io.sarl.lang.core.Address[]) : io.sarl.lang.core.Scope")}
-
-The SARL SDK contains also the class `IdentifierScope`. It is another implementation of a `Scope` on addresses. The creation
-of an instance of `IdentifierScope` is done with the utility function `Scopes.identifiers(UUID*)`,
-which is getting a collection of identifiers for building the matching predicate in the scope.
-[:Fact:]{typeof(io.sarl.util.IdentifierScope)}
-[:Fact:]{typeof(io.sarl.util.Scopes)}
-[:Fact:]{typeof(io.sarl.util.Scopes).shouldHaveMethod("identifiers(java.util.UUID[]) : io.sarl.lang.core.Scope")}
-
-In the following code, we select the first type of scope. It permits to restrict to the initial sender
-of the [:pingevent:] event. Because, the address of the initial sender is known directly, it is easier to
-use `Scopes.addresses(Address*)` than Scopes.identifiers(UUID*)`.
+In the following code, we select the receiver of an event based on its address within the space.
+It permits to restrict to the initial sender of the [:pingevent:] event: [:scopingcode:]
 
 		[:Success:]
 			package io.sarl.docs.tutorials.pingpongspace
@@ -286,7 +270,6 @@ use `Scopes.addresses(Address*)` than Scopes.identifiers(UUID*)`.
 			import io.sarl.util.OpenEventSpace
 			import io.sarl.util.OpenEventSpaceSpecification
 			import io.sarl.core.Initialize
-			import io.sarl.util.Scopes
 			event Ping {
 				val index : int
 				new (i : int) {
@@ -313,9 +296,7 @@ use `Scopes.addresses(Address*)` than Scopes.identifiers(UUID*)`.
 
 				on Ping {
 					var evt = new Pong( occurrence.index )
-					^space.emit(
-						evt,
-						Scopes::addresses( occurrence.source ))
+					^space.emit(evt) [:scopingcode]{[ it == occurrence.source ]}
 				}
 			}
 		[:End:]
@@ -412,7 +393,6 @@ The receiving of the [:pingevent:] event is restricted to the sender of the
 			import io.sarl.util.OpenEventSpace
 			import io.sarl.util.OpenEventSpaceSpecification
 			import io.sarl.core.Initialize
-			import io.sarl.util.Scopes
 			event Ping {
 				val index : int
 				new (i : int) {
@@ -463,7 +443,6 @@ receiving the [:initevent:] event.
 			import io.sarl.util.OpenEventSpace
 			import io.sarl.util.OpenEventSpaceSpecification
 			import io.sarl.core.Initialize
-			import io.sarl.util.Scopes
 			event Ping {
 				val index : int
 				new (i : int) {
@@ -530,7 +509,6 @@ one agent belonging to the default space. If not, the agent is sending the initi
 			import io.sarl.util.OpenEventSpaceSpecification
 			import io.sarl.core.Initialize
 			import io.sarl.core.Schedules
-			import io.sarl.util.Scopes
 			event Ping {
 				val index : int
 				new (i : int) {

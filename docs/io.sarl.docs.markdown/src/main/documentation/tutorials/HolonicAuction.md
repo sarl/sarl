@@ -1,4 +1,4 @@
-# English Auction with Holons
+Ok# English Auction with Holons
 
 [:Outline:]
 
@@ -171,7 +171,6 @@ other sub-agents will receive this event.</cautionnote>
 			import io.sarl.core.Initialize
 			import io.sarl.core.DefaultContextInteractions
 			import io.sarl.core.Logging
-			import io.sarl.util.Scopes
 			event Price {
 				val price : float
 				new(price : float) {
@@ -237,7 +236,6 @@ Below, we update the bidding behavior by creating a scope, and providing it to t
 			import io.sarl.core.Initialize
 			import io.sarl.core.DefaultContextInteractions
 			import io.sarl.core.Logging
-			import io.sarl.util.Scopes
 			event Price {
 				val price : float
 				new(price : float) {
@@ -270,8 +268,7 @@ Below, we update the bidding behavior by creating a scope, and providing it to t
 							if (priceIncrease > 0) {
 								var newPrice = occurrence.price + priceIncrease
 								if (newPrice <= maxPrice) {
-									var superScope = Scopes::identifiers(defaultContext.ID)
-									emit(new Bid(newPrice), superScope)
+									emit(new Bid(newPrice)) [ it.UUID == defaultContext.ID]
 									myLastBid = newPrice
 								} else {
 									println(" I give up, this is beyond my resources : " + myLastBid)
@@ -640,7 +637,6 @@ This function is provided by the [:lifecyclecap:] capacity.
 			import io.sarl.core.Initialize
 			import io.sarl.core.DefaultContextInteractions
 			import io.sarl.core.Lifecycle
-			import io.sarl.util.Scopes
 			event Price {
 				val price : float
 				new(price : float) {
@@ -669,8 +665,7 @@ This function is provided by the [:lifecyclecap:] capacity.
 					if (priceIncrease > 0) {
 						var newPrice = occurrence.price + priceIncrease
 						if (newPrice <= maxPrice) {
-							var superScope = Scopes::identifiers(defaultContext.ID)
-							emit(new Bid(newPrice), superScope)
+							emit(new Bid(newPrice)) [ it.UUID == defaultContext.ID]
 						}
 					}
 				}

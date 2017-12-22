@@ -172,105 +172,71 @@ A scope is a predicates that is evaluated against the addresses of the receivers
 			}
 		[:End:]
 
-### Creation of scopes with the predefined API
+### Creation of scopes with Lambda expressions
 
-It is recommended using the SARL utility functions for creating scopes.
-They are defined in the class `[:scopes](io.sarl.util.[:scopesbn]$Scopes$)`. [:Fact:]{typeof([:scopes!])}
+It is recommended defining a lambda expression for creating a scope.
 The following example is equivalent to the feature call of [:emit:] without the scoping parameter:
 
 		[:Success:]
 			package io.sarl.docs.reference.bic
 			import io.sarl.core.DefaultContextInteractions
-			import [:scopes!]
 			event MyEvent
 			agent A {
 				uses DefaultContextInteractions
 				def myaction {
 					[:On]
-					emit(new MyEvent, [:scopesbn!]::allParticipants)
+					emit(new MyEvent) [ true ]
 					[:Off]
 				}
 			}
 		[:End:]
 
 
-A default implementation of a scope using addresses, of `Address` type is implemented in the class `[:addressscope](io.sarl.util.[:addressscopebn]$AddressScope$)`. [:Fact:]{typeof([:addressscope!])}
-The utility class [:scopesbn:] provides the [:addresses:] function for creating an instance of [:addressscopebn:].
+For scoping on the address of the receiving agent within the space, the first formal parameter, named [:scopeaddressit:]
+could be used for accessing to the value of the receiving agent's address.
+In the following code, the agents with addresses [:a1address:] and [:a2address:] will receive the event, and
+not the other agents.
 
 		[:Success:]
 			package io.sarl.docs.reference.bic
 			import io.sarl.core.DefaultContextInteractions
 			import io.sarl.lang.core.Address
-			import [:scopes!]
 			event MyEvent
 			agent A {
 				uses DefaultContextInteractions
 				def myaction {
-					var a1 : Address
-					var a2 : Address
+					var [:a1address](a1) : Address
+					var [:a2address](a2) : Address
 					[:On]
-					emit(new MyEvent, [:scopesbn!]::[:addresses](addresses)(a1, a2))
+					emit(new MyEvent) [ [:scopeaddressit](it) == [:a1address!] || [:scopeaddressit!] == [:a2address!] ]
 					[:Off]
 				}
 			}
 		[:End:]
 
-Another default implementation of a scope using identifiers, of `UUID` type is implemented in the class `[:identifierscope](io.sarl.util.[:identifierscopebn]$IdentifierScope$)`. [:Fact:]{typeof([:identifierscope!])}
-The utility class [:scopesbn:] provides the [:identifiers:] function for creating an instance of [:identifierscopebn:].
+Another way to scope is based on the test of the agent identifiers of `UUID` type.
+In the following example,
 
 		[:Success:]
 			package io.sarl.docs.reference.bic
 			import java.util.UUID
 			import io.sarl.core.DefaultContextInteractions
 			import io.sarl.lang.core.Address
-			import [:scopes!]
 			event MyEvent
 			agent A {
 				uses DefaultContextInteractions
 				def myaction {
-					var id1 : UUID
-					var id2 : UUID
+					var [:id1identifier](id1) : UUID
+					var [:id2identifier](id2) : UUID
 					[:On]
-					emit(new MyEvent, [:scopesbn!]::[:identifiers](identifiers)(id1, id2))
+					emit(new MyEvent) [ it.UUID == [:id1identifier!] || it.UUID == [:id2identifier!] ]
 					[:Off]
 				}
 			}
 		[:End:]
 
-The complete list of the functions that are provided by the [:scopesbn:] class is
-accessible on the [Scopes API documentation](http://www.sarl.io/docs/api/index.html?io/sarl/util/Scopes.html).
 
-### Creation of developer-specific scopes
-
-You are free to create new implementation of [:scope:] in order to filter the receivers of an
-event according to your own criteria. The easier approach is to write a lambda expression for the scope.
-The previous line of code becomes:
-
-		[:Success:]
-			package io.sarl.docs.reference.bic
-			import io.sarl.core.DefaultContextInteractions
-			import io.sarl.lang.core.Address
-			import [:scopes!]
-			event MyEvent
-			agent A {
-				uses DefaultContextInteractions
-				def myaction {
-					var a1 : Address
-					var a2 : Address
-					[:On]
-					emit(new MyEvent) [ it == a1 || it == a2 ]
-					[:Off]
-				}
-			}
-		[:End:]
-
-In the previous code, the lambda expression is written outside the list of the [:emit:] parameters.
-But it corresponds to the last formal parameter of type `[:scope!]<Address>`.
-The `it` variable in the lambda expression is the default name given to the formal parameter of 
-the [:matchesfct:] function, which is defined in the [:scope:] interface.
-
-
-### Inverted syntax for emiting an event.
+### Inverted syntax for emitting an event.
 
 According to the [extension method mechanism](../general/Extension.md), it is possible to call
 the [:emit:] function with the event instance as the receiver expression. The previous
@@ -298,7 +264,7 @@ In the previous code, the receiver of the event is given by the formal parameter
 The scope restricts the receiver according to this identifier.
 
 
-For an abstract point of view, the previous emiting call may be explained with "the event is emited to the receiver".
+For an abstract point of view, the previous emitting call may be explained with "the event is emitted to the receiver".
 Sometimes, the developer would like to write a code that corresponds to the sentence "the receiver will receive the event".
 In order to enable this approach to the developer, the SARL API provides the function:
 

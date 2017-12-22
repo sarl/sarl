@@ -182,20 +182,13 @@ for sending an event with a specific scope.
 [:Fact:]{typeof(io.sarl.lang.core.Address)}
 [:Fact:]{typeof(io.sarl.core.DefaultContextInteractions).shouldHaveMethod("emit(io.sarl.lang.core.Event, io.sarl.lang.core.Scope)")}
 
-The SARL SDK contains the class [:adrscope:]. It is an implementation of a `Scope` on addresses
-(an address is the identifier of an agent in the default space). The creation
-of an instance of [:adrscope:] is done with the utility function `[:scopestype!].[:adrfct!]([:adrtype!]*)`,
-which is getting a collection of addresses for building the matching predicate in the scope.
-[:Fact:]{typeof(io.sarl.util.[:adrscope](AddressScope))}
-[:Fact:]{typeof(io.sarl.util.[:scopestype](Scopes))}
-[:Fact:]{typeof(io.sarl.util.Scopes).shouldHaveMethod("[:adrfct](addresses)(io.sarl.lang.core.[:adrtype](Address)[]) : io.sarl.lang.core.Scope")}
-
-If you have to scope to a single address or a single identifier, you should prefer the lambda expression notation, as illustrated in the followig code. In this code, the scope permits to restrict to the initial sender of the [:pingevent:] event. 
+If you have to scope to a single address or a single identifier, you should use the lambda expression notation,
+as illustrated in the following code. In this code, the scope permits to restrict to the initial sender
+of the [:pingevent:] event. 
 
 		[:Success:]
 			package io.sarl.docs.tutorials.pingpong
 			import io.sarl.core.DefaultContextInteractions
-			import io.sarl.util.Scopes
 			event Ping {
 				val index : int
 				new (i : int) {
@@ -267,7 +260,6 @@ The receiving of the [:pingevent:] event is restricted to the sender of the
 		[:Success:]
 			package io.sarl.docs.tutorials.pingpong
 			import io.sarl.core.DefaultContextInteractions
-			import io.sarl.util.Scopes
 			event Ping {
 				val index : int
 				new (i : int) {
@@ -301,7 +293,6 @@ receiving the [:initevent:] event.
 			package io.sarl.docs.tutorials.pingpong
 			import io.sarl.core.DefaultContextInteractions
 			import io.sarl.core.Initialize
-			import io.sarl.util.Scopes
 			event Ping {
 				val index : int
 				new (i : int) {
@@ -353,7 +344,6 @@ one agent belonging to the default space. If not, the agent is sending the initi
 			import io.sarl.core.DefaultContextInteractions
 			import io.sarl.core.Initialize
 			import io.sarl.core.Schedules
-			import io.sarl.util.Scopes
 			event Ping {
 				val index : int
 				new (i : int) {

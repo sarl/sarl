@@ -1486,7 +1486,6 @@ The obtained code is:
 			import io.sarl.lang.core.EventSpace
 			import io.sarl.lang.core.Scope
 			import io.sarl.core.DefaultContextInteractions
-			import io.sarl.util.Scopes
 			abstract class DefaultContextInteractionsSkill implements DefaultContextInteractions {
 				def getDefaultSpace : EventSpace { null }
 				def getOwner : Agent { null }
@@ -1499,7 +1498,7 @@ The obtained code is:
 				}
 
 				def willReceive(receiver : UUID, ^event : Event) {
-					emit(^event, Scopes::identifiers(receiver))
+					emit(^event) [ it.UUID == receiver ]
 				}
 			[:Off]
 			}
