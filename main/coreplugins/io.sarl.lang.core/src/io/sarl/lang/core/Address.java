@@ -100,7 +100,7 @@ public class Address extends SRESpecificDataContainer implements Serializable, C
 			return false;
 		}
 
-		if (this.getClass() == obj.getClass()) {
+		if (obj instanceof Address) {
 			return equals((Address) obj);
 		}
 		return false;
@@ -115,8 +115,8 @@ public class Address extends SRESpecificDataContainer implements Serializable, C
 	 */
 	@Pure
 	public boolean equals(Address address) {
-		return address != null && this.spaceId.equals(address.getSpaceID())
-				&& this.agentId.equals(address.getUUID());
+		return address != null && this.agentId.equals(address.getUUID())
+				&& this.spaceId.equals(address.getSpaceID());
 	}
 
 	/**

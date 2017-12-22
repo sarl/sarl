@@ -31,6 +31,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * Unique Identifier for a {@link Space}.
  *
  * @author $Author: srodriguez$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -94,8 +95,8 @@ public class SpaceID extends SRESpecificDataContainer implements Serializable, C
 	@Pure
 	public int hashCode() {
 		int result = 1;
-		result = 31 * result + ((this.contextID == null) ? 0 : this.contextID.hashCode());
-		result = 31 * result + ((this.id == null) ? 0 : this.id.hashCode());
+		result = 31 * result + (this.contextID == null ? 0 : this.contextID.hashCode());
+		result = 31 * result + (this.id == null ? 0 : this.id.hashCode());
 		return result;
 	}
 
@@ -108,7 +109,7 @@ public class SpaceID extends SRESpecificDataContainer implements Serializable, C
 		if (obj == null) {
 			return false;
 		}
-		if (getClass() != obj.getClass()) {
+		if (!(obj instanceof SpaceID)) {
 			return false;
 		}
 
@@ -123,24 +124,16 @@ public class SpaceID extends SRESpecificDataContainer implements Serializable, C
 
 	private boolean equalsContext(SpaceID other) {
 		if (this.contextID == null) {
-			if (other.contextID != null) {
-				return false;
-			}
-		} else if (!this.contextID.equals(other.contextID)) {
-			return false;
+			return other.contextID == null;
 		}
-		return true;
+		return this.contextID.equals(other.contextID);
 	}
 
 	private boolean equalsID(SpaceID other) {
 		if (this.id == null) {
-			if (other.id != null) {
-				return false;
-			}
-		} else if (!this.id.equals(other.id)) {
-			return false;
+			return other.id == null;
 		}
-		return true;
+		return this.id.equals(other.id);
 	}
 
 	@Override
