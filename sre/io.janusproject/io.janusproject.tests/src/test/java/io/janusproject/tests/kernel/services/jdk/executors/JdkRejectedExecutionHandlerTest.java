@@ -21,6 +21,8 @@ package io.janusproject.tests.kernel.services.jdk.executors;
 
 import static org.junit.Assert.assertSame;
 
+import static org.mockito.Mockito.*;
+
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -50,24 +52,31 @@ public class JdkRejectedExecutionHandlerTest extends AbstractJanusTest {
 	private LogService logger;
 
 	@Nullable
+	private ThreadPoolExecutor executor;
+
+	@Nullable
 	private JdkRejectedExecutionHandler handler;
 
 	@Before
 	public void setUp() {
-		this.logger = Mockito.mock(LogService.class);
-		Mockito.when(this.logger.isLoggeable(ArgumentMatchers.any(Level.class))).thenReturn(true);
+		this.logger = mock(LogService.class);
+		when(this.logger.isLoggeable(ArgumentMatchers.any(Level.class))).thenReturn(true);
 
+		this.executor = mock(ThreadPoolExecutor.class);
+		when(this.executor.isShutdown()).thenReturn(false);
+		
 		this.handler = new JdkRejectedExecutionHandler(this.logger);
 	}
 
 	@Test
 	public void rejectedExecution() {
-		Runnable runnable = Mockito.mock(Runnable.class);
-		this.handler.rejectedExecution(runnable, null);
+		Runnable runnable = mock(Runnable.class);
+		this.handler.rejectedExecution(runnable, this.executor);
+
+		verify(runnable, only()).run();
 
 		ArgumentCaptor<LogRecord> argument = ArgumentCaptor.forClass(LogRecord.class);
-		Mockito.verify(this.logger).log(argument.capture());
-		assertSame(Level.SEVERE, argument.getValue().getLevel());
+		verify(this.logger, never()).log(argument.capture());
 	}
 
 }
