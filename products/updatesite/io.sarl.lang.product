@@ -265,10 +265,10 @@
       <feature id="io.sarl.pythongenerator.feature" version="0.7.0.qualifier"/>
       <feature id="io.sarl.examples.feature" version="0.7.0.qualifier"/>
       <feature id="io.sarl.experienceindex.feature" version="0.7.0.qualifier"/>
-      <feature id="org.eclipse.fx.ide.basic.feature" version="3.0.0.201705220750"/>
-      <feature id="org.eclipse.fx.runtime.min.feature" version="3.0.0.201705220748"/>
       <feature id="io.sarl.lib.source" version="0.7.0.qualifier"/>
       <feature id="io.janusproject.feature.source" version="0.7.0.qualifier"/>
+      <feature id="org.eclipse.fx.ide.basic.feature" version="3.0.0.201705220750"/>
+      <feature id="org.eclipse.fx.runtime.min.feature" version="3.0.0.201705220748"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.feature"/>
       <feature id="org.eclipse.help"/>
       <feature id="org.jboss.tools.m2e.jdt.feature"/>
@@ -283,6 +283,7 @@
       <feature id="org.eclipse.ecf.core.ssl.feature"/>
       <feature id="org.eclipse.xtend.sdk"/>
       <feature id="org.eclipse.ecf.filetransfer.ssl.feature"/>
+      <feature id="org.eclipse.userstorage"/>
       <feature id="org.eclipse.xsd"/>
       <feature id="org.eclipse.xtext.runtime"/>
       <feature id="org.eclipse.emf.ecore"/>
@@ -301,7 +302,6 @@
       <feature id="org.eclipse.platform"/>
       <feature id="org.eclipse.e4.rcp"/>
       <feature id="org.eclipse.wst.common_ui.feature"/>
-      <feature id="org.eclipse.userstorage"/>
    </features>
 
    <configurations>
