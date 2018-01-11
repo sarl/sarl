@@ -126,7 +126,7 @@ public class SARLLabelProvider extends XtendLabelProvider implements IQualifiedN
 	@Inject
 	private InheritanceHelper inheritanceHelper;
 
-	/**
+	/** Constructor.
 	 * @param delegate the original provider.
 	 */
 	@Inject

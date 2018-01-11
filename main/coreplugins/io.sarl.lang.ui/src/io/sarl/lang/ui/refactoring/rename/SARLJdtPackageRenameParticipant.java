@@ -98,7 +98,7 @@ public class SARLJdtPackageRenameParticipant extends AbstractProcessorBasedRenam
 			resourceObjects = Collections.emptyList();
 		}
 		return Iterators.filter(Iterators.filter(resourceObjects.iterator(), IFile.class),
-				(it) -> it.getName().endsWith(this.fileExtension));
+				it -> it.getName().endsWith(this.fileExtension));
 	}
 
 	@Override
@@ -120,7 +120,7 @@ public class SARLJdtPackageRenameParticipant extends AbstractProcessorBasedRenam
 				final ResourceSet resourceSet = this.resourceSetProvider.get(currentFile.getProject());
 				final Resource resource = resourceSet.getResource(resourceURI, true);
 				if (resource != null) {
-					final SarlScript sarlScript = (SarlScript) Iterables.find(resource.getContents(), (it) -> it instanceof SarlScript);
+					final SarlScript sarlScript = (SarlScript) Iterables.find(resource.getContents(), it -> it instanceof SarlScript);
 					if (sarlScript != null && this.nameConverter.toQualifiedName(sarlScript.getPackage()).startsWith(currentQualifiedName)) {
 						final XtextResource xtextResource = (XtextResource) resource;
 						final IRenameElementContext context = this.renameContextFactory.createRenameElementContext(
@@ -130,7 +130,7 @@ public class SARLJdtPackageRenameParticipant extends AbstractProcessorBasedRenam
 						final IPath newPath = Path.fromPortableString(filePath.toPortableString().replaceAll(
 								currentQualifiedName.toString(separator), newQualifiedName));
 						if (context instanceof IChangeRedirector.Aware) {
-							((IChangeRedirector.Aware) context).setChangeRedirector((source) ->
+							((IChangeRedirector.Aware) context).setChangeRedirector(source ->
 								Objects.equals(source, filePath) ? newPath : source);
 						}
 						contexts.add(context);

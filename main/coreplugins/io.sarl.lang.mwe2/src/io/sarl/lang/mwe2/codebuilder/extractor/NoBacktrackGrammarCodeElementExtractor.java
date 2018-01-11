@@ -58,8 +58,8 @@ public class NoBacktrackGrammarCodeElementExtractor extends AbstractCodeElementE
 		if (topRule != null) {
 			final EClassifier commonType = getGeneratedTypeFor(topRule);
 			final Iterable<Action> filteredElements = Iterables.filter(GrammarUtil.containedActions(topRule),
-					(it) -> !Strings.isEmpty(it.getFeature()));
-			return Iterables.transform(filteredElements, (it) -> {
+					it -> !Strings.isEmpty(it.getFeature()));
+			return Iterables.transform(filteredElements, it -> {
 				final EClassifier classifier = it.getType().getClassifier();
 				final String name = classifier.getName();
 				final Group container = GrammarUtil.containingGroup(it);
@@ -73,8 +73,7 @@ public class NoBacktrackGrammarCodeElementExtractor extends AbstractCodeElementE
 			Function4<? super CodeElementExtractor, ? super EObject, ? super EObject, ? super EClassifier, ? extends T> memberCallback) {
 		final Set<String> treatedMembers = new HashSet<>();
 		for (final Assignment nameAssignment : IterableExtensions.filter(
-				GrammarUtil.containedAssignments(container),
-				(passignment) -> getCodeBuilderConfig()
+				GrammarUtil.containedAssignments(container), passignment -> getCodeBuilderConfig()
 				.getMemberNameExtensionGrammarName().equals(passignment.getFeature()))) {
 			// Get the container of the name assignment
 			final EObject assignmentContainer = getContainerInRule(grammarContainer, nameAssignment);
@@ -96,8 +95,7 @@ public class NoBacktrackGrammarCodeElementExtractor extends AbstractCodeElementE
 			Function4<? super CodeElementExtractor, ? super EObject, ? super EObject, ? super EClassifier, ? extends T> memberCallback) {
 		final Set<String> treatedMembers = new HashSet<>();
 		for (final Assignment nameAssignment : IterableExtensions.filter(
-				GrammarUtil.containedAssignments(container),
-				(passignment) -> getCodeBuilderConfig()
+				GrammarUtil.containedAssignments(container), passignment -> getCodeBuilderConfig()
 				.getUnnamedMemberExtensionGrammarNames().contains(passignment.getFeature()))) {
 			// Get the container of the name assignment
 			final EObject assignmentContainer = getContainerInRule(grammarContainer, nameAssignment);
@@ -119,14 +117,13 @@ public class NoBacktrackGrammarCodeElementExtractor extends AbstractCodeElementE
 			Function4<? super CodeElementExtractor, ? super EObject, ? super EObject, ? super EClassifier, ? extends T> callback) {
 		final Set<String> treatedConstructors = new HashSet<>();
 		for (final Assignment expressionAssignment : IterableExtensions.filter(
-				GrammarUtil.containedAssignments(container),
-				(passignment) -> getCodeBuilderConfig()
+				GrammarUtil.containedAssignments(container), passignment -> getCodeBuilderConfig()
 				.getMemberBlockExpressionExtensionGrammarName().equals(passignment.getFeature()))) {
 			// Get the container of the name assignment
 			final EObject consContainer = getContainerInRule(grammarContainer, expressionAssignment);
 			if (consContainer != null
 				&& !IterableExtensions.exists(GrammarUtil.containedAssignments(consContainer),
-						(it) -> getCodeBuilderConfig()
+						it -> getCodeBuilderConfig()
 						.getMemberNameExtensionGrammarName().equals(it.getFeature()))) {
 				final EClassifier classifier = getGeneratedTypeFor(consContainer);
 				if (!treatedConstructors.contains(classifier.getName())) {

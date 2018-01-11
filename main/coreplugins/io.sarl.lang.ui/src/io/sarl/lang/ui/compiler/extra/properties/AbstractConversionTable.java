@@ -255,7 +255,7 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 		this.list.setContentProvider(createContentProvider());
 		this.list.setUseHashlookup(true);
 
-		this.list.addSelectionChangedListener((evt) -> enableButtons());
+		this.list.addSelectionChangedListener(evt -> enableButtons());
 
 		this.table.addKeyListener(new KeyAdapter() {
 			@SuppressWarnings("synthetic-access")
@@ -282,26 +282,26 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 				GridData.VERTICAL_ALIGN_BEGINNING, 0, 0);
 
 		final Button addButton = SWTFactory.createPushButton(buttons, Messages.AbstractConversionTable_0, null);
-		addButton.addListener(SWT.Selection, (evt) -> addTypeConversion(null, null, true));
+		addButton.addListener(SWT.Selection, evt -> addTypeConversion(null, null, true));
 
 		this.removeButton = SWTFactory.createPushButton(buttons, Messages.AbstractConversionTable_1, null);
-		this.removeButton.addListener(SWT.Selection, (evt) -> removeCurrentTypeConversion());
+		this.removeButton.addListener(SWT.Selection, evt -> removeCurrentTypeConversion());
 
 		this.clearButton = SWTFactory.createPushButton(buttons, Messages.AbstractConversionTable_2, null);
-		this.clearButton.addListener(SWT.Selection, (evt) -> removeAllTypeConversions());
+		this.clearButton.addListener(SWT.Selection, evt -> removeAllTypeConversions());
 
 		if (this.isSortedElements) {
 			this.moveTopButton = SWTFactory.createPushButton(buttons, Messages.AbstractConversionTable_3, null);
-			this.moveTopButton.addListener(SWT.Selection, (evt) -> moveSelectionTop());
+			this.moveTopButton.addListener(SWT.Selection, evt -> moveSelectionTop());
 
 			this.moveUpButton = SWTFactory.createPushButton(buttons, Messages.AbstractConversionTable_4, null);
-			this.moveUpButton.addListener(SWT.Selection, (evt) -> moveSelectionUp());
+			this.moveUpButton.addListener(SWT.Selection, evt -> moveSelectionUp());
 
 			this.moveDownButton = SWTFactory.createPushButton(buttons, Messages.AbstractConversionTable_5, null);
-			this.moveDownButton.addListener(SWT.Selection, (evt) -> moveSelectionDown());
+			this.moveDownButton.addListener(SWT.Selection, evt -> moveSelectionDown());
 
 			this.moveBottomButton = SWTFactory.createPushButton(buttons, Messages.AbstractConversionTable_6, null);
-			this.moveBottomButton.addListener(SWT.Selection, (evt) -> moveSelectionBottom());
+			this.moveBottomButton.addListener(SWT.Selection, evt -> moveSelectionBottom());
 		}
 
 		SWTFactory.createVerticalSpacer(parentComposite, 1);

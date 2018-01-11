@@ -1483,7 +1483,7 @@ public final class Utils {
 			typeParameterIdentifiers.put(typeParameter.getIdentifier(), typeParameter);
 		}
 
-		EcoreUtil.Copier copier = new EcoreUtil.Copier(false) {
+		final EcoreUtil.Copier copier = new EcoreUtil.Copier(false) {
 			private static final long serialVersionUID = 698510355384773254L;
 
 			@Override

@@ -499,8 +499,8 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 		protected FeatureCallGenerator(IExtraLanguageGeneratorContext context, IAppendable codeReceiver) {
 			this.context = context;
 			this.codeReceiver = codeReceiver;
-			this.referenceNameLambda = (expr) -> getReferenceName(expr);
-			this.referenceNameLambda2 = (expr) -> {
+			this.referenceNameLambda = expr -> getReferenceName(expr);
+			this.referenceNameLambda2 = expr -> {
 				if (this.codeReceiver.hasName(expr)) {
 					return this.codeReceiver.getName(expr);
 				}
@@ -520,12 +520,12 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 
 		private List<XExpression> getActualArguments(XAbstractFeatureCall expr) {
 			final List<XExpression> actualArguments = expr.getActualArguments();
-			return Lists.transform(actualArguments, (it)  -> normalizeBlockExpression(it));
+			return Lists.transform(actualArguments, it  -> normalizeBlockExpression(it));
 		}
 
 		private List<XExpression> getActualArguments(XConstructorCall expr) {
 			final List<XExpression> actualArguments = expr.getArguments();
-			return Lists.transform(actualArguments, (it)  -> normalizeBlockExpression(it));
+			return Lists.transform(actualArguments, it  -> normalizeBlockExpression(it));
 		}
 
 		/**  Generate a feature call.

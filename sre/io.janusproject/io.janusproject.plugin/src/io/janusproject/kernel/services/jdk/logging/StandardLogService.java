@@ -278,7 +278,7 @@ public class StandardLogService extends AbstractDependentService implements LogS
 
 		private final String className;
 
-		/**
+		/** Constructor.
 		 * @param className the type of the caller.
 		 * @param methodName the name of the called method.
 		 */

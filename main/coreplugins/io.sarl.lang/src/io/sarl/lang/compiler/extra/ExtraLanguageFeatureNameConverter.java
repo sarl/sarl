@@ -103,8 +103,8 @@ public class ExtraLanguageFeatureNameConverter {
 		this.initializer = initializer;
 		this.context = context;
 		this.pluginID = pluginID;
-		this.referenceNameLambda = (expr) -> null;
-		this.referenceNameLambda2 = (expr) -> null;
+		this.referenceNameLambda = expr -> null;
+		this.referenceNameLambda2 = expr -> null;
 	}
 
 	/** Build the mapping table.

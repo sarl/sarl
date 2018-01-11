@@ -248,7 +248,7 @@ public class AgentInternalEventsDispatcher {
 		final MultiCollection<Runnable> behaviorsMethodsToExecute = new MultiCollection<>();
 
 		try {
-			StreamSupport.stream(behaviorGuardEvaluators.spliterator(), true).forEach((evaluator) -> {
+			StreamSupport.stream(behaviorGuardEvaluators.spliterator(), true).forEach(evaluator -> {
 				final Collection<Runnable> behaviorsMethodsToExecutePerTarget = Lists.newLinkedList();
 				evaluator.evaluateGuard(event, behaviorsMethodsToExecutePerTarget);
 				synchronized (behaviorsMethodsToExecute) {

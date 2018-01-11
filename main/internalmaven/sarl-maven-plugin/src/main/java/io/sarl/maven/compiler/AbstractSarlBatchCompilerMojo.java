@@ -166,7 +166,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 		final SarlBatchCompiler compiler = getBatchCompiler();
 		final MavenProject project = getProject();
 		compiler.setResourceSetProvider(new MavenProjectResourceSetProvider(project));
-		final Iterable<File> filtered = Iterables.filter(sourcePaths, (input) -> input.isDirectory());
+		final Iterable<File> filtered = Iterables.filter(sourcePaths, input -> input.isDirectory());
 		if (Iterables.isEmpty(filtered)) {
 			final String dir = Iterables.toString(sourcePaths);
 			getLog().info(MessageFormat.format(Messages.AbstractSarlBatchCompilerMojo_1, dir));

@@ -95,7 +95,7 @@ public class SARLFileRenameParticipant extends AbstractProcessorBasedRenameParti
 										type, null, null, (XtextResource) resource);
 						if (renameElementContext instanceof IChangeRedirector.Aware) {
 							((IChangeRedirector.Aware) renameElementContext).setChangeRedirector(
-									(source) -> Objects.equals(source, filePath) ? newPath : filePath);
+									source -> Objects.equals(source, filePath) ? newPath : filePath);
 						}
 						return singletonList(renameElementContext);
 					}

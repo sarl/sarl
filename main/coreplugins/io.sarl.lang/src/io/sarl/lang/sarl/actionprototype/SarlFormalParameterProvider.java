@@ -45,7 +45,7 @@ class SarlFormalParameterProvider implements FormalParameterProvider {
 
 	private final List<? extends XtendParameter> parameters;
 
-	/**
+	/** Constructor.
 	 * @param parameters the list of the formal parameters.
 	 * @param references the utility for creating type references.
 	 */

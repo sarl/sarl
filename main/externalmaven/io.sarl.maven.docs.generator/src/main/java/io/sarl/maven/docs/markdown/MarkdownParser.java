@@ -480,7 +480,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	protected void preProcessingTransformation(CharSequence content, File inputFile, boolean validationOfInternalLinks) {
 		Function<Method, String> formatter = null;
 		if (isAddLinkToOperationName()) {
-			formatter = (it) -> {
+			formatter = it -> {
 				final URL url = findOperationLink(it);
 				if (url != null) {
 					final StringBuilder name = new StringBuilder();
@@ -518,7 +518,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 		final Node document = parser.parse(text);
 		final Pattern pattern = Pattern.compile(SECTION_PATTERN_AUTONUMBERING);
 		NodeVisitor visitor = new NodeVisitor(
-				new VisitHandler<>(Paragraph.class, (it) -> {
+				new VisitHandler<>(Paragraph.class, it -> {
 					final Matcher matcher = pattern.matcher(it.getContentChars());
 					if (matcher.find()) {
 						final String number = matcher.group(2);
@@ -531,7 +531,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 		visitor.visitChildren(document);
 
 		visitor = new NodeVisitor(
-				new VisitHandler<>(Heading.class, (it) -> {
+				new VisitHandler<>(Heading.class, it -> {
 					String key = it.getAnchorRefId();
 					final String title = it.getAnchorRefText();
 					final String key2 = computeHeaderId(null, title);
@@ -624,7 +624,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 		final Parser parser = Parser.builder(options).build();
 		final Node document = parser.parse(content);
 		final NodeVisitor visitor = new NodeVisitor(
-				new VisitHandler<>(Link.class, (it) -> {
+				new VisitHandler<>(Link.class, it -> {
 					URL url = FileSystem.convertStringToURL(it.getUrl().toString(), true);
 					url = transformURL(url, references);
 					if (url != null) {
@@ -984,14 +984,14 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 		}
 		final File currentFile = cfile;
 		final NodeVisitor visitor = new NodeVisitor(
-				new VisitHandler<>(Link.class, (it) -> {
+				new VisitHandler<>(Link.class, it -> {
 					final Iterable<DynamicValidationComponent> components = createValidatorComponents(it,
 							currentFile, context);
 					for (final DynamicValidationComponent component : components) {
 						validators.add(component);
 					}
 				}),
-				new VisitHandler<>(Image.class, (it) -> {
+				new VisitHandler<>(Image.class, it -> {
 					final Iterable<DynamicValidationComponent> components = createValidatorComponents(it,
 							currentFile, context);
 					for (final DynamicValidationComponent component : components) {

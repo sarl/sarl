@@ -79,7 +79,7 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 
 	private ClearableReference<Skill> skillBufferLogging;
 
-	/**
+	/** Constructor.
 	 * @param agent the owner of this skill.
 	 */
 	SchedulesSkill(Agent agent) {
@@ -159,7 +159,7 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 	 */
 	Collection<Future<?>> getActiveFutures() {
 		synchronized (getTaskListMutex()) {
-			return Lists.newArrayList(Iterables.transform(this.tasks.values(), (it) -> it.getFuture()));
+			return Lists.newArrayList(Iterables.transform(this.tasks.values(), it -> it.getFuture()));
 		}
 	}
 

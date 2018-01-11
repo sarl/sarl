@@ -682,7 +682,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 */
 	protected static Assignment findAssignmentFromFeatureName(EObject rule, String name) {
 		return IterableExtensions.findFirst(GrammarUtil.containedAssignments(rule),
-				(assignment) -> name.equals(assignment.getFeature()));
+				assignment -> name.equals(assignment.getFeature()));
 	}
 
 	/** Replies the first assignement with the given name in the given rule.
@@ -693,7 +693,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 */
 	protected static Assignment findAssignmentFromTerminalPattern(EObject rule, String pattern) {
 		return IterableExtensions.findFirst(GrammarUtil.containedAssignments(rule),
-				(assignment) -> nameMatches(assignment.getTerminal(), pattern));
+				assignment -> nameMatches(assignment.getTerminal(), pattern));
 	}
 
 	/** Binds the given descriptions according to the standard policy.

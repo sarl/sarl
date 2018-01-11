@@ -72,7 +72,7 @@ public class InnerContextSkill extends BuiltinSkill implements InnerContextAcces
 	@Inject
 	private ContextSpaceService contextService;
 
-	/**
+	/** Constructor.
 	 * @param agent owner of this skill.
 	 * @param agentAddressInInnerDefaultSpace address of the owner of this skill in its default space.
 	 */

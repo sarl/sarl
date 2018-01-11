@@ -97,7 +97,7 @@ public class SpaceRepository {
 	 */
 	private final Multimap<Class<? extends SpaceSpecification<?>>, SpaceID> spacesBySpec;
 
-	/**
+	/** Constructor.
 	 * @param distributedSpaceSetName the name used to identify distributed map over network
 	 * @param distributedDataStructureService distributed data structure service.
 	 * @param injector injector to used for creating new spaces.

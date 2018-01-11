@@ -64,7 +64,7 @@ public class EmbeddedVMRunner implements IVMRunner {
 		try {
 			final String[] classpath = configuration.getClassPath();
 			final URL[] classPathURLs = new URL[classpath.length];
-			Arrays.parallelSetAll(classPathURLs, (index) -> {
+			Arrays.parallelSetAll(classPathURLs, index -> {
 				String path = classpath[index];
 				final URL url = FileSystem.convertStringToURL(path, false);
 				path = url.getFile();

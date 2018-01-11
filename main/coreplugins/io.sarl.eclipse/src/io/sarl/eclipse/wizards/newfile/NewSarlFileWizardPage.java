@@ -56,7 +56,7 @@ public class NewSarlFileWizardPage extends WizardNewFileCreationPage {
 	@Inject
 	private XbaseValueConverterService converter;
 
-	/**
+	/** Constructor.
 	 * @param selection selection in the IDE.
 	 * @param fileExtension the extension of the file to create.
 	 */

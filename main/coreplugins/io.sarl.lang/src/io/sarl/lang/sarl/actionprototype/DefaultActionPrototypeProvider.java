@@ -441,7 +441,7 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 				}
 
 				final JvmField field = Iterables.find(target.getDeclaredFields(),
-						(it) -> Objects.equal(it.getSimpleName(), fieldName),
+						it -> Objects.equal(it.getSimpleName(), fieldName),
 						null);
 				if (field != null) {
 					final String value = this.annotationUtils.findStringValue(field, SarlSourceCode.class);

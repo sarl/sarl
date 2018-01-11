@@ -38,7 +38,7 @@ class SARLEObjectNode extends EObjectNode {
 
 	private boolean isStatic;
 
-	/**
+	/** Constructor.
 	 * @param object the object represented by the node.
 	 * @param parent the parent node.
 	 * @param imageDescriptor the descriptor of the image related to the node..

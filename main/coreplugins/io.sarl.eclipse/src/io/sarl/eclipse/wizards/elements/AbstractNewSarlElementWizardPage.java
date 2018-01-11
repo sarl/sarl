@@ -235,7 +235,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 
 	private boolean hasSuperInterfaceField;
 
-	/**
+	/** Constructor.
 	 * @param typeKind Signals the kind of the type to be created. Valid kinds are
 	 * {@link NewTypeWizardPage#CLASS_TYPE}, {@link NewTypeWizardPage#INTERFACE_TYPE},
 	 * {@link NewTypeWizardPage#ENUM_TYPE} and {@link NewTypeWizardPage#ANNOTATION_TYPE}.
@@ -1187,7 +1187,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 		final String objectType = Object.class.getName();
 		final String objectArrayType = objectType + "[]"; //$NON-NLS-1$
 		final JvmOperation infoMethod = Iterables.find(
-				((JvmDeclaredType) capacity.getType()).getDeclaredOperations(), (it) -> {
+				((JvmDeclaredType) capacity.getType()).getDeclaredOperations(), it -> {
 				if (Objects.equals(it.getSimpleName(), "info") //$NON-NLS-1$
 						&& it.getParameters().size() == 2) {
 					final String type1 = it.getParameters().get(0).getParameterType().getIdentifier();

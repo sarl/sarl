@@ -34,7 +34,7 @@ public class JanusRunnable implements Runnable {
 
 	private final Runnable runnable;
 
-	/**
+	/** Constructor.
 	 * @param runnable the wrapped task.
 	 */
 	public JanusRunnable(Runnable runnable) {

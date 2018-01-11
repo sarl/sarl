@@ -126,7 +126,7 @@ public class HazelcastDistributedDataStructureService extends AbstractDependentS
 		return null;
 	}
 
-	/**
+	/** Private implementation.
 	 * @param <K> - type of the keys.
 	 * @param <V> - type of the values.
 	 * @author $Author: sgalland$
@@ -240,7 +240,7 @@ public class HazelcastDistributedDataStructureService extends AbstractDependentS
 
 	}
 
-	/**
+	/** Private implementation.
 	 * @param <K> - type of the keys.
 	 * @param <V> - type of the values.
 	 * @author $Author: sgalland$

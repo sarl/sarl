@@ -45,7 +45,7 @@ public class QualifiedActionName implements Cloneable, Serializable, Comparable<
 
 	private String functionName;
 
-	/**
+	/** Constructor.
 	 * @param resourceID the name of the resource where the action is defined.
 	 * @param declaringType the declaring type of the action.
 	 * @param functionName the name of the action.

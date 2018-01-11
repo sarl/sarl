@@ -43,7 +43,7 @@ public class DMultiMapView<K, V> extends AbstractDMultiMapView<K, V> {
 
 	private final Multimap<K, V> map;
 
-	/**
+	/** Constructor.
 	 * @param name the name of the multimap.
 	 * @param map the multimap.
 	 */

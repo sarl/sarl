@@ -203,7 +203,7 @@ public final class Utils {
 	 */
 	@SuppressWarnings("checkstyle:nestedifdepth")
 	public static String getParameterDefaultValue(ExecutableMemberDoc member, Parameter param, SarlConfiguration configuration) {
-		final AnnotationDesc annotation = Utils.findFirst(param.annotations(), (it) ->
+		final AnnotationDesc annotation = Utils.findFirst(param.annotations(), it ->
 				qualifiedNameEquals(it.annotationType().qualifiedTypeName(), getKeywords().getDefaultValueAnnnotationName()));
 		if (annotation != null) {
 			final ElementValuePair[] pairs = annotation.elementValues();
@@ -219,7 +219,7 @@ public final class Utils {
 						fieldContainer = member.containingClass();
 					} else {
 						fieldContainer = findFirst(configuration.classDocCatalog.allClasses(getPackageName(referenceName)),
-								false, (it) -> false);
+								false, it -> false);
 						if (fieldContainer == null) {
 							fieldContainer = member.containingClass();
 						}
@@ -231,9 +231,9 @@ public final class Utils {
 				}
 
 				final FieldDoc field = Utils.findFirst(fieldContainer.fields(),
-						false, (it) -> simpleNameEquals(it.name(), fieldName));
+						false, it -> simpleNameEquals(it.name(), fieldName));
 				if (field != null) {
-					final AnnotationDesc valueAnnotation = Utils.findFirst(field.annotations(), (it) ->
+					final AnnotationDesc valueAnnotation = Utils.findFirst(field.annotations(), it ->
 							qualifiedNameEquals(it.annotationType().qualifiedTypeName(), getKeywords().getSarlSourceCodeAnnotationName()));
 					if (valueAnnotation != null) {
 						return valueAnnotation.elementValues()[0].value().value().toString();
@@ -251,7 +251,7 @@ public final class Utils {
 	 * @return the default value or {@code null}.
 	 */
 	public static boolean isDefaultValuedParameter(Parameter param, SarlConfiguration configuration) {
-		final AnnotationDesc annotation = Utils.findFirst(param.annotations(), (it) ->
+		final AnnotationDesc annotation = Utils.findFirst(param.annotations(), it ->
 				qualifiedNameEquals(it.annotationType().qualifiedTypeName(), getKeywords().getDefaultValueAnnnotationName()));
 		return annotation != null;
 	}
@@ -267,7 +267,7 @@ public final class Utils {
 	 * @return the SARL element type, or {@code null} if unknown.
 	 */
 	public static Integer getSarlClassification(ProgramElementDoc type) {
-		final AnnotationDesc annotation = Utils.findFirst(type.annotations(), (it) ->
+		final AnnotationDesc annotation = Utils.findFirst(type.annotations(), it ->
 				qualifiedNameEquals(it.annotationType().qualifiedTypeName(), getKeywords().getSarlElementTypeAnnotationName()));
 		if (annotation != null) {
 			final ElementValuePair[] pairs = annotation.elementValues();

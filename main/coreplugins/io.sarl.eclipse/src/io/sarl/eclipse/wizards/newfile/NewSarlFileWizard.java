@@ -56,7 +56,7 @@ public class NewSarlFileWizard extends Wizard implements INewWizard {
 	@Inject
 	private Injector injector;
 
-	/**
+	/** Constructor.
 	 * @param fileExtension the extension of the file.
 	 */
 	@Inject

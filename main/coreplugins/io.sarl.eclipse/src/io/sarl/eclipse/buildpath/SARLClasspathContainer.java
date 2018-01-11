@@ -53,7 +53,7 @@ public class SARLClasspathContainer extends AbstractSARLBasedClasspathContainer 
 		"org.eclipse.xtend.lib", //$NON-NLS-1$
 	};
 
-	/**
+	/** Constructor.
 	 * @param containerPath the path of the container, e.g. the project.
 	 */
 	public SARLClasspathContainer(IPath containerPath) {

@@ -48,7 +48,7 @@ public class JdkRejectedExecutionHandler implements RejectedExecutionHandler {
 
 	private final LogService logger;
 
-	/**
+	/** Constructor.
 	 * @param logger the logging service that must be used for output the errors.
 	 */
 	@Inject

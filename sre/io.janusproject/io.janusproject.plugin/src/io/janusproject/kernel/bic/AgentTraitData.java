@@ -93,8 +93,8 @@ class AgentTraitData {
 	 * @return the task list.
 	 */
 	protected static Iterable<AgentTask> getTaskList(List<WeakReference<AgentTask>> tasks) {
-		final Iterable<AgentTask> col = Iterables.transform(tasks, (it) -> it != null ? it.get() : null);
-		return Iterables.filter(col, (it) -> it != null);
+		final Iterable<AgentTask> col = Iterables.transform(tasks, it -> it != null ? it.get() : null);
+		return Iterables.filter(col, it -> it != null);
 	}
 
 }

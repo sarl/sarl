@@ -39,7 +39,7 @@ public class TimeSkill extends BuiltinSkill implements Time {
 
 	private static int installationOrder = -1;
 
-	/**
+	/** Constructor.
 	 * @param agent owner of this skill.
 	 */
 	TimeSkill(Agent agent) {

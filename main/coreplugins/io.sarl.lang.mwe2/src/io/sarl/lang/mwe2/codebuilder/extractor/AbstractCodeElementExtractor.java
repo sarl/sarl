@@ -130,7 +130,7 @@ public abstract class AbstractCodeElementExtractor implements CodeElementExtract
 		}
 		try {
 			return Iterables.find(GrammarUtil.containedActions(grammarElement),
-				(it) -> !Strings.isEmpty(it.getFeature())).getType().getClassifier();
+				it -> !Strings.isEmpty(it.getFeature())).getType().getClassifier();
 		} catch (NoSuchElementException e) {
 			return null;
 		}

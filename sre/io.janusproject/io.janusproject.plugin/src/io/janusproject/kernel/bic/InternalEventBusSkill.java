@@ -96,7 +96,7 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 
 	private ClearableReference<Skill> skillBufferLogging;
 
-	/**
+	/** Constructor.
 	 * @param agent reference to the owner of this skill.
 	 * @param addressInInnerDefaultSpace address of the owner of this skill in its inner default space.
 	 */
@@ -163,7 +163,7 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 		if (stage == UninstallationStage.POST_DESTROY_EVENT) {
 			final Destroy event = new Destroy();
 			event.setSource(getInnerDefaultSpaceAddress());
-			this.eventDispatcher.unregisterAll((subscriber) -> {
+			this.eventDispatcher.unregisterAll(subscriber -> {
 				if (subscriber != getOwner()) {
 					this.eventDispatcher.immediateDispatchTo(subscriber, event);
 				}
@@ -186,7 +186,7 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 		if (fireInitializeEvent) {
 			final OwnerState state = getOwnerState();
 			if (state == OwnerState.INITIALIZING || state == OwnerState.ALIVE) {
-				this.eventDispatcher.register(listener, filter, (subscriber) -> {
+				this.eventDispatcher.register(listener, filter, subscriber -> {
 					final Initialize event = new Initialize(getOwner().getID());
 					event.setSource(getInnerDefaultSpaceAddress());
 					this.eventDispatcher.immediateDispatchTo(subscriber, event);
@@ -214,7 +214,7 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 		if (fireDestroyEvent) {
 			final OwnerState state = getOwnerState();
 			if (state == OwnerState.INITIALIZING || state == OwnerState.ALIVE) {
-				this.eventDispatcher.unregister(listener, (subscriber) -> {
+				this.eventDispatcher.unregister(listener, subscriber -> {
 					final Destroy event = new Destroy();
 					event.setSource(getInnerDefaultSpaceAddress());
 					this.eventDispatcher.immediateDispatchTo(subscriber, event);

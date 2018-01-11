@@ -54,7 +54,7 @@ public class InferredStandardParameter {
 	 */
 	protected String defaultValueAnnotationValueBasename;
 
-	/**
+	/** Constructor.
 	 * @param source the original parameter.
 	 * @param name the name of the formal parameter.
 	 * @param type the type of the formal parameter.

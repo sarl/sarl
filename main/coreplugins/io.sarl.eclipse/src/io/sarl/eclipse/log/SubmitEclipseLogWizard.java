@@ -145,7 +145,7 @@ public class SubmitEclipseLogWizard extends Wizard {
 				final String description = this.detailPage.getIssueDescription();
 				final String login = this.detailPage.getGithubLogin();
 				final String password = this.detailPage.getGithubPassword();
-				final Job job = Job.create(Messages.SubmitEclipseLogWizard_0, (monitor) -> {
+				final Job job = Job.create(Messages.SubmitEclipseLogWizard_0, monitor -> {
 					try {
 						final SubMonitor subMonitor = SubMonitor.convert(monitor, 2);
 						subMonitor.setTaskName(Messages.SubmitEclipseLogWizard_1);

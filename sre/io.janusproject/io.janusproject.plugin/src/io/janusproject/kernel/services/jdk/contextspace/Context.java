@@ -183,7 +183,7 @@ public class Context implements AgentContext {
 
 		private final LogService logger;
 
-		/**
+		/** Constructor.
 		 * @param context the context that is owner this space listener.
 		 * @param logger the logging service to use.
 		 * @param relay the space repository listener to register at initialization time.
@@ -251,7 +251,7 @@ public class Context implements AgentContext {
 
 		private final LogService logger;
 
-		/**
+		/** Constructor.
 		 * @param injector instance of the injector to be used.
 		 * @param distributedDataStructure service that permits to obtain distributed data structure.
 		 * @param logger logging service.

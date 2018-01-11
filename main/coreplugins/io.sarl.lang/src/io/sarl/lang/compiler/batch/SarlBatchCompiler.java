@@ -1495,7 +1495,7 @@ public class SarlBatchCompiler {
 			return;
 		}
 		final Multimap<String, org.eclipse.emf.common.util.URI> pathes = pathTraverser.resolvePathes(sourcePathDirectories,
-				(input) -> nameBasedFilter.matches(input));
+				input -> nameBasedFilter.matches(input));
 		if (cancelIndicator.isCanceled()) {
 			return;
 		}
@@ -1794,7 +1794,7 @@ public class SarlBatchCompiler {
 	 */
 	@SuppressWarnings("static-method")
 	protected ClassLoader createClassLoader(Iterable<File> jarsAndFolders, ClassLoader parentClassLoader) {
-		return new URLClassLoader(Iterables.toArray(Iterables.transform(jarsAndFolders, (from) -> {
+		return new URLClassLoader(Iterables.toArray(Iterables.transform(jarsAndFolders, from -> {
 			try {
 				final URL url = from.toURI().toURL();
 				assert url != null;
@@ -1974,7 +1974,7 @@ public class SarlBatchCompiler {
 
 		private final CancelIndicator cancelIndicator;
 
-		/**
+		/** Constructor.
 		 * @param cancelIndicator the wrapped cancel indicator.
 		 */
 		CancelIndicatorWrapper(CancelIndicator cancelIndicator) {

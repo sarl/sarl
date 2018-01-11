@@ -46,7 +46,7 @@ public final class ExtendedTypeRemoveModification extends SARLSemanticModificati
 
 	private final RemovalType type;
 
-	/**
+	/** Constructor.
 	 * @param type the type of removal.
 	 */
 	private ExtendedTypeRemoveModification(RemovalType type) {

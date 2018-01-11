@@ -136,7 +136,7 @@ public class LaunchAgentShortcut implements ILaunchShortcut2 {
 		final ISelection selection = xtextEditor.getSelectionProvider().getSelection();
 		if (selection instanceof ITextSelection) {
 			final ITextSelection sel = (ITextSelection) selection;
-			final EObject obj = xtextEditor.getDocument().readOnly((resource) -> {
+			final EObject obj = xtextEditor.getDocument().readOnly(resource -> {
 				final IParseResult parseRes = resource.getParseResult();
 				if (parseRes == null) {
 					return null;
@@ -245,7 +245,7 @@ public class LaunchAgentShortcut implements ILaunchShortcut2 {
 	private List<AgentDescription> findAgents(Object[] elements, IProgressService progress)
 			throws InvocationTargetException, InterruptedException {
 		final List<AgentDescription> descs = new ArrayList<>();
-		progress.busyCursorWhile((monitor) -> {
+		progress.busyCursorWhile(monitor -> {
 			try {
 				monitor.beginTask(Messages.SARLLaunchShortcut_5, elements.length);
 				for (final Object element : elements) {

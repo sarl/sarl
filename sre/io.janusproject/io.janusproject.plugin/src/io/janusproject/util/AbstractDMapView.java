@@ -51,9 +51,8 @@ public abstract class AbstractDMapView<K, V> extends AbstractMapView<K, V> imple
 
     private final String name;
 
-    /**
-     * @param name
-     *            - the name of the map.
+    /** Constructor.
+     * @param name the name of the map.
      */
     public AbstractDMapView(String name) {
         this.name = name;
@@ -184,9 +183,8 @@ public abstract class AbstractDMapView<K, V> extends AbstractMapView<K, V> imple
 
         private final Set<Entry<K, V>> entries;
 
-        /**
-         * @param data
-         *            - the set.
+        /** Constructor.
+         * @param data the set.
          */
         public EntryView(Set<Entry<K, V>> data) {
             this.entries = data;
@@ -278,9 +276,8 @@ public abstract class AbstractDMapView<K, V> extends AbstractMapView<K, V> imple
 
         private final Set<Entry<K, V>> entries;
 
-        /**
-         * @param data
-         *            - the set.
+        /** Constructor.
+         * @param data the set.
          */
         public KeyView(Set<Entry<K, V>> data) {
             this.entries = data;
@@ -372,9 +369,8 @@ public abstract class AbstractDMapView<K, V> extends AbstractMapView<K, V> imple
 
         private final Set<Entry<K, V>> entries;
 
-        /**
-         * @param data
-         *            - the set.
+        /** Constructor.
+         * @param data the set.
          */
         public ValueView(Set<Entry<K, V>> data) {
             this.entries = data;

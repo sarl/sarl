@@ -102,7 +102,7 @@ public class SREConfigurationBlock {
 
 	private boolean notify = true;
 
-	/**
+	/** Constructor.
 	 * @param enableSystemWideSelector indicates if the system-wide configuration selector must be enabled.
 	 * @param project the provider of the project that may be associated to the block. If <code>null</code> the components
 	 *     related to the project are hidden.
@@ -115,7 +115,7 @@ public class SREConfigurationBlock {
 		this(null, enableSystemWideSelector, project, projectProviderFactories);
 	}
 
-	/**
+	/** Constructor.
 	 * @param title the title of the group.
 	 * @param enableSystemWideSelector indicates if the system-wide configuration selector must be enabled.
 	 * @param project the provider of the project that may be associated to the block. If <code>null</code> the components

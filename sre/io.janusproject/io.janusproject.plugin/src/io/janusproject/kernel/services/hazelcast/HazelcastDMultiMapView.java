@@ -60,7 +60,7 @@ public class HazelcastDMultiMapView<K, V> extends AbstractDMultiMapView<K, V> im
 
 	private final Multimap<K, V> map;
 
-	/**
+	/** Constructor.
 	 * @param map the multimap.
 	 */
 	public HazelcastDMultiMapView(MultiMap<K, V> map) {
@@ -323,7 +323,7 @@ public class HazelcastDMultiMapView<K, V> extends AbstractDMultiMapView<K, V> im
 
 		private final Collection<Entry<K, V>> entries;
 
-		/**
+		/** Constructor.
 		 * @param entries the entries in the multimap.
 		 */
 		public EntryCollectionView(Collection<Entry<K, V>> entries) {

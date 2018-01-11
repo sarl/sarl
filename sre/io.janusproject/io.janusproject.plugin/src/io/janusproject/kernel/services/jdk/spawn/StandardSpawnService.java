@@ -192,7 +192,7 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 				}
 				// Fire the general spawning event
 				fireAgentSpawnedOutsideAgent(spawningAgent, parent, agentClazz, agents, params);
-				return Collections.unmodifiableList(Lists.transform(agents, (it) -> it.getID()));
+				return Collections.unmodifiableList(Lists.transform(agents, it -> it.getID()));
 			} catch (Throwable e) {
 				throw new CannotSpawnException(agentClazz, e);
 			}
@@ -222,7 +222,7 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 				spawningAgent == null ? context.getID() : spawningAgent);
 		assert source != null;
 		final AgentSpawned event = new AgentSpawned(source, agentClazz.getName(),
-				Collections2.transform(agents, (it) -> it.getID()));
+				Collections2.transform(agents, it -> it.getID()));
 		defSpace.emit(
 				// No need to give an event source because it is explicitly set above.
 				null,
@@ -498,7 +498,7 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 
 		private static final long serialVersionUID = -380402400888610762L;
 
-		/**
+		/** Constructor.
 		 * @param parentID
 		 *            - the identifier of the parent entity that is creating the agent.
 		 * @param agentClazz
@@ -522,7 +522,7 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 
 		private static final long serialVersionUID = 8104012713598435249L;
 
-		/**
+		/** Constructor.
 		 * @param agentID
 		 *            - the identifier of the agent.
 		 */
@@ -544,7 +544,7 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 
 		private static final long serialVersionUID = -3194494637438344108L;
 
-		/**
+		/** Constructor.
 		 * @param agentType
 		 *            the invalid type of agent.
 		 */
@@ -566,7 +566,7 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 
 		private static final long serialVersionUID = -380402400888610762L;
 
-		/**
+		/** Constructor.
 		 * @param agentClazz
 		 *            - the type of the agent to spawn.
 		 * @param cause

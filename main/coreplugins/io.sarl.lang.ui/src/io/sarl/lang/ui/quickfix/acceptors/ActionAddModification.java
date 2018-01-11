@@ -49,7 +49,7 @@ public final class ActionAddModification extends SARLSemanticModification {
 
 	private final String actionName;
 
-	/**
+	/** Constructor.
 	 * @param actionName the name of the action.
 	 */
 	private ActionAddModification(String actionName) {

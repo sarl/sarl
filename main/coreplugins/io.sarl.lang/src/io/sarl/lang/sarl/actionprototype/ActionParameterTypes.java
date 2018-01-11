@@ -41,9 +41,9 @@ public class ActionParameterTypes extends BasicEList<String> implements Comparab
 
 	private final boolean isVarargs;
 
-	/**
+	/** Constructor.
 	 * @param isVarArgs indicates if this signature has the varargs flag.
-	 * @param initialCapacity initional capacity of the array.
+	 * @param initialCapacity initial capacity of the array.
 	 */
 	public ActionParameterTypes(boolean isVarArgs, int initialCapacity) {
 		super(initialCapacity);

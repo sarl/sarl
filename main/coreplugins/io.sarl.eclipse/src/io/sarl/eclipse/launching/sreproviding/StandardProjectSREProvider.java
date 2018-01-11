@@ -50,7 +50,7 @@ public class StandardProjectSREProvider implements ProjectSREProvider {
 
 	private final String projectSRE;
 
-	/**
+	/** Constructor.
 	 * @param project the project.
 	 */
 	public StandardProjectSREProvider(IProject project) {

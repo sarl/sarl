@@ -82,7 +82,7 @@ public class EcorePackageRenameStrategy implements DefaultRenameStrategyProvider
 		if (targetEObject instanceof SarlScript) {
 			final SarlScript script = (SarlScript) targetEObject;
 			this.currentPackageName = Strings.emptyIfNull(script.getPackage());
-			this.uriProvider = (it) -> renameElementContext.getTargetElementURI();
+			this.uriProvider = it -> renameElementContext.getTargetElementURI();
 			return true;
 		}
 		return false;

@@ -48,7 +48,7 @@ class JvmFormalParameterProvider implements FormalParameterProvider {
 
 	private final WeakReference<IActionPrototypeProvider> prototypeProvider;
 
-	/**
+	/** Constructor.
 	 * @param parameters the list of the formal parameters.
 	 * @param annotationFinder the finder of annotations.
 	 * @param prototypeProvider the provider of prototype which generates this parameter provider.

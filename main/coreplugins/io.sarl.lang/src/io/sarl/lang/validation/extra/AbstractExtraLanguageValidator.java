@@ -91,7 +91,7 @@ public abstract class AbstractExtraLanguageValidator {
 
 	private volatile Set<MethodWrapper> checkMethods;
 
-	private final SimpleCache<Class<?>, List<MethodWrapper>> methodsForType = new SimpleCache<>((it) -> updateMethodCache(it));
+	private final SimpleCache<Class<?>, List<MethodWrapper>> methodsForType = new SimpleCache<>(it -> updateMethodCache(it));
 
 	private List<MethodWrapper> updateMethodCache(Class<?> parameterType) {
 		final List<MethodWrapper> result = new ArrayList<>();
@@ -427,7 +427,7 @@ public abstract class AbstractExtraLanguageValidator {
 		final XAbstractFeatureCall rootFeatureCall;
 		if (container instanceof XMemberFeatureCall || container instanceof XFeatureCall) {
 			rootFeatureCall = (XAbstractFeatureCall) Utils.getFirstContainerForPredicate(featureCall,
-					(it) -> it.eContainer() != null && !(it.eContainer() instanceof XMemberFeatureCall || it.eContainer() instanceof XFeatureCall));
+					it -> it.eContainer() != null && !(it.eContainer() instanceof XMemberFeatureCall || it.eContainer() instanceof XFeatureCall));
 		} else {
 			rootFeatureCall = featureCall;
 		}

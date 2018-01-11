@@ -53,7 +53,7 @@ public class DefaultApidocExcluder implements ApidocExcluder {
 			if (element.containingPackage().tags(EXCLUDE_FROM_JAVADOC_TAG).length > 0) {
 				return true;
 			}
-			if (Utils.findFirst(element.annotations(), (it) ->
+			if (Utils.findFirst(element.annotations(), it ->
 				Utils.qualifiedNameEquals(
 						Utils.getKeywords().getSyntheticMemberAnnotationName(),
 						it.annotationType().qualifiedName())) != null) {
@@ -68,7 +68,7 @@ public class DefaultApidocExcluder implements ApidocExcluder {
 	public boolean isTranslatableToTag(Doc doc) {
 		if (doc instanceof ProgramElementDoc) {
 			final ProgramElementDoc element = (ProgramElementDoc) doc;
-			if (Utils.findFirst(element.annotations(), (it) ->
+			if (Utils.findFirst(element.annotations(), it ->
 				Utils.qualifiedNameEquals(
 						Utils.getKeywords().getSyntheticMemberAnnotationName(),
 						it.annotationType().qualifiedName())) != null) {

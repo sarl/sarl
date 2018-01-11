@@ -86,7 +86,7 @@ public final class PyInitializers {
 	 * @return the initializer.
 	 */
 	public static IExtraLanguageConversionInitializer getTypeConverterInitializer() {
-		return (it) -> {
+		return it -> {
 			final List<Pair<String, String>> properties = loadPropertyFile(TYPE_CONVERSION_FILENAME);
 			if (!properties.isEmpty()) {
 				for (final Pair<String, String> entry : properties) {
@@ -110,7 +110,7 @@ public final class PyInitializers {
 	 * @return the initializer.
 	 */
 	public static IExtraLanguageConversionInitializer getFeatureNameConverterInitializer() {
-		return (it) -> {
+		return it -> {
 			final List<Pair<String, String>> properties = loadPropertyFile(FEATURE_CONVERSION_FILENAME);
 			if (!properties.isEmpty()) {
 				for (final Pair<String, String> entry : properties) {

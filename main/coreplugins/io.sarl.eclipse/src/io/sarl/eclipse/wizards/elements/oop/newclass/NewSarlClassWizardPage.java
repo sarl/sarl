@@ -95,7 +95,7 @@ public class NewSarlClassWizardPage extends AbstractNewSarlElementWizardPage {
 				clazz.getSarlClass(),
 				true,
 				() -> clazz.addSarlConstructor(),
-				(name) -> clazz.addOverrideSarlAction(name),
+				name -> clazz.addOverrideSarlAction(name),
 				getSuperClass(),
 				getSuperInterfaces());
 		mon.worked(2);

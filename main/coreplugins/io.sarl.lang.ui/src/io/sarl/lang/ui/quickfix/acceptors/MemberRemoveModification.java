@@ -43,7 +43,7 @@ public final class MemberRemoveModification extends SARLSemanticModification {
 
 	private final Class<? extends XtendMember> type;
 
-	/**
+	/** Constructor.
 	 * @param type the type of the element to remove.
 	 */
 	private MemberRemoveModification(Class<? extends XtendMember> type) {

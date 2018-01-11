@@ -279,7 +279,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	 */
 	protected List<Map<String, ?>> generateAnnotations() {
 		final List<Map<String, ?>> list = new ArrayList<>();
-		list.add(pattern((it) -> {
+		list.add(pattern(it -> {
 			it.matches("\\@[_a-zA-Z$][_0-9a-zA-Z$]*"); //$NON-NLS-1$
 			it.style(ANNOTATION_STYLE);
 			it.comment("Annotations"); //$NON-NLS-1$
@@ -294,19 +294,19 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	protected List<Map<String, ?>> generateComments() {
 		final List<Map<String, ?>> list = new ArrayList<>();
 		// Block comment
-		list.add(pattern((it) -> {
+		list.add(pattern(it -> {
 			it.delimiters("(/\\*+)", "(\\*/)"); //$NON-NLS-1$ //$NON-NLS-2$
 			it.style(BLOCK_COMMENT_STYLE);
 			it.beginStyle(BLOCK_COMMENT_DELIMITER_STYLE);
 			it.endStyle(BLOCK_COMMENT_DELIMITER_STYLE);
-			it.pattern((it2) -> {
+			it.pattern(it2 -> {
 				it2.matches("^\\s*(\\*)(?!/)"); //$NON-NLS-1$
 				it2.style(BLOCK_COMMENT_DELIMITER_STYLE);
 			});
 			it.comment("Multiline comments"); //$NON-NLS-1$
 		}));
 		// Line comment
-		list.add(pattern((it) -> {
+		list.add(pattern(it -> {
 			it.matches("\\s*(//)(.*)$"); //$NON-NLS-1$
 			it.substyle(1, LINE_COMMENT_DELIMITER_STYLE);
 			it.substyle(2, LINE_COMMENT_STYLE);
@@ -322,24 +322,24 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	protected List<Map<String, ?>> generateStrings() {
 		final List<Map<String, ?>> list = new ArrayList<>();
 		// Double quote
-		list.add(pattern((it) -> {
+		list.add(pattern(it -> {
 			it.delimiters("\"", "\""); //$NON-NLS-1$ //$NON-NLS-2$
 			it.style(DOUBLE_QUOTE_STRING_STYLE);
 			it.beginStyle(STRING_BEGIN_STYLE);
 			it.endStyle(STRING_END_STYLE);
-			it.pattern((it2) -> {
+			it.pattern(it2 -> {
 				it2.matches("\\\\."); //$NON-NLS-1$
 				it2.style(ESCAPE_CHARACTER_STYLE);
 			});
 			it.comment("Double quoted strings of characters"); //$NON-NLS-1$
 		}));
 		// Single quote
-		list.add(pattern((it) -> {
+		list.add(pattern(it -> {
 			it.delimiters("'", "'"); //$NON-NLS-1$ //$NON-NLS-2$
 			it.style(SINGLE_QUOTE_STRING_STYLE);
 			it.beginStyle(STRING_BEGIN_STYLE);
 			it.endStyle(STRING_END_STYLE);
-			it.pattern((it2) -> {
+			it.pattern(it2 -> {
 				it2.matches("\\\\."); //$NON-NLS-1$
 				it2.style(ESCAPE_CHARACTER_STYLE);
 			});
@@ -354,7 +354,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	 */
 	protected List<Map<String, ?>> generateNumericConstants() {
 		final List<Map<String, ?>> list = new ArrayList<>();
-		list.add(pattern((it) -> {
+		list.add(pattern(it -> {
 			it.matches(
 					"(?:" //$NON-NLS-1$
 					+ "[0-9][0-9]*\\.[0-9]+([eE][0-9]+)?[fFdD]?" //$NON-NLS-1$
@@ -377,7 +377,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	protected List<Map<String, ?>> generatePrimitiveTypes(Set<String> primitiveTypes) {
 		final List<Map<String, ?>> list = new ArrayList<>();
 		if (!primitiveTypes.isEmpty()) {
-			list.add(pattern((it) -> {
+			list.add(pattern(it -> {
 				it.matches(keywordRegex(primitiveTypes) + "(?:\\s*\\[\\s*\\])*"); //$NON-NLS-1$
 				it.style(PRIMITIVE_TYPE_STYLE);
 				it.comment("Primitive types"); //$NON-NLS-1$
@@ -394,7 +394,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	protected List<Map<String, ?>> generateLiterals(Set<String> literals) {
 		final List<Map<String, ?>> list = new ArrayList<>();
 		if (!literals.isEmpty()) {
-			list.add(pattern((it) -> {
+			list.add(pattern(it -> {
 				it.matches(keywordRegex(literals));
 				it.style(LITERAL_STYLE);
 				it.comment("SARL Literals and Constants"); //$NON-NLS-1$
@@ -411,7 +411,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	protected List<Map<String, ?>> generatePunctuation(Set<String> punctuation) {
 		final List<Map<String, ?>> list = new ArrayList<>();
 		if (!punctuation.isEmpty()) {
-			list.add(pattern((it) -> {
+			list.add(pattern(it -> {
 				it.matches(orRegex(punctuation));
 				it.style(PUNCTUATION_STYLE);
 				it.comment("Operators and Punctuations"); //$NON-NLS-1$
@@ -428,7 +428,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	protected List<Map<String, ?>> generateModifiers(Set<String> modifiers) {
 		final List<Map<String, ?>> list = new ArrayList<>();
 		if (!modifiers.isEmpty()) {
-			list.add(pattern((it) -> {
+			list.add(pattern(it -> {
 				it.matches(keywordRegex(modifiers));
 				it.style(MODIFIER_STYLE);
 				it.comment("Modifiers"); //$NON-NLS-1$
@@ -445,7 +445,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	protected List<Map<String, ?>> generateSpecialKeywords(Set<String> keywords) {
 		final List<Map<String, ?>> list = new ArrayList<>();
 		if (!keywords.isEmpty()) {
-			list.add(pattern((it) -> {
+			list.add(pattern(it -> {
 				it.matches(keywordRegex(keywords));
 				it.style(SPECIAL_KEYWORD_STYLE);
 				it.comment("Special Keywords"); //$NON-NLS-1$
@@ -462,7 +462,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	protected List<Map<String, ?>> generateStandardKeywords(Set<String> keywords) {
 		final List<Map<String, ?>> list = new ArrayList<>();
 		if (!keywords.isEmpty()) {
-			list.add(pattern((it) -> {
+			list.add(pattern(it -> {
 				it.matches(keywordRegex(keywords));
 				it.style(KEYWORD_STYLE);
 				it.comment("Standard Keywords"); //$NON-NLS-1$
@@ -479,7 +479,7 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 	protected List<Map<String, ?>> generateTypeDeclarations(Set<String> declarators) {
 		final List<Map<String, ?>> list = new ArrayList<>();
 		if (!declarators.isEmpty()) {
-			list.add(pattern((it) -> {
+			list.add(pattern(it -> {
 				it.matches(keywordRegex(declarators));
 				it.style(TYPE_DECLARATION_STYLE);
 				it.comment("Type Declarations"); //$NON-NLS-1$

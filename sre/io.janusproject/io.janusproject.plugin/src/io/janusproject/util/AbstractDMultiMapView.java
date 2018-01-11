@@ -65,7 +65,7 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 
 	private transient Map<K, Collection<V>> map;
 
-	/**
+	/** Constructor.
 	 * @param name the name of the map.
 	 */
 	public AbstractDMultiMapView(String name) {
@@ -299,7 +299,7 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 
 		private final List<V> values;
 
-		/**
+		/** Constructor.
 		 * @param key the key of the values.
 		 * @param values the values.
 		 */
@@ -413,7 +413,7 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 
 		private final Set<V> values;
 
-		/**
+		/** Constructor.
 		 * @param key the key of the values.
 		 * @param values the values.
 		 */
@@ -520,7 +520,7 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 
 		private final Set<K> keys;
 
-		/**
+		/** Constructor.
 		 * @param keys the keys in the multimap.
 		 */
 		public KeySetView(Set<K> keys) {
@@ -616,7 +616,7 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 
 		private final Collection<Entry<K, V>> entries;
 
-		/**
+		/** Constructor.
 		 * @param entries the entries in the multimap.
 		 */
 		public EntryCollectionView(Collection<Entry<K, V>> entries) {
@@ -714,7 +714,7 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 
 		private final Collection<Entry<K, V>> entries;
 
-		/**
+		/** Constructor.
 		 * @param entries the entries in the multimap.
 		 */
 		public ValueCollectionView(Collection<Entry<K, V>> entries) {
@@ -807,7 +807,7 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 
 		private final Map<K, Collection<V>> backedMap;
 
-		/**
+		/** Constructor.
 		 * @param backedMap the backed map.
 		 */
 		public MapView(Map<K, Collection<V>> backedMap) {
@@ -886,7 +886,7 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 
 			private final Set<Entry<K, Collection<V>>> backedSet;
 
-			/**
+			/** Constructor.
 			 * @param backedSet the backed set.
 			 */
 			EntrySet(Set<Entry<K, Collection<V>>> backedSet) {
@@ -917,7 +917,7 @@ public abstract class AbstractDMultiMapView<K, V> extends AbstractMapView<K, V>
 
 				private Entry<K, Collection<V>> entry;
 
-				/**
+				/** Constructor.
 				 * @param iterator the iterator.
 				 */
 				EntryIterator(Iterator<Entry<K, Collection<V>>> iterator) {

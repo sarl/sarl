@@ -413,8 +413,8 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 	 */
 	protected static List<Grammar> getEffectivelyUsedGrammars(final Grammar grammar) {
 		final List<AbstractRule> allRules = GrammarUtil.allRules(grammar);
-		final List<Grammar> map = ListExtensions.<AbstractRule, Grammar>map(allRules, (it) -> GrammarUtil.getGrammar(it));
-		final Iterable<Grammar> filter = IterableExtensions.<Grammar>filter(map, (it) -> Boolean.valueOf(it != grammar));
+		final List<Grammar> map = ListExtensions.<AbstractRule, Grammar>map(allRules, it -> GrammarUtil.getGrammar(it));
+		final Iterable<Grammar> filter = IterableExtensions.<Grammar>filter(map, it -> Boolean.valueOf(it != grammar));
 		final Set<Grammar> set = IterableExtensions.<Grammar>toSet(filter);
 		return IterableExtensions.<Grammar>toList(set);
 	}

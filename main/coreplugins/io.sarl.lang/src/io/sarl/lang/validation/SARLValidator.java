@@ -2329,7 +2329,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	@Check
 	public void checkBreakKeywordUse(SarlBreakExpression expression) {
 		final EObject container = Utils.getFirstContainerForPredicate(expression,
-				(it) -> !(it instanceof XExpression) || it instanceof XAbstractWhileExpression
+				it -> !(it instanceof XExpression) || it instanceof XAbstractWhileExpression
 				|| it instanceof XBasicForLoopExpression || it instanceof XForLoopExpression);
 		if (container instanceof XExpression) {
 			if (!isIgnored(IssueCodes.DISCOURAGED_LOOP_BREAKING_KEYWORD_USE)
@@ -2358,7 +2358,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	@Check
 	public void checkContinueKeywordUse(SarlContinueExpression expression) {
 		final EObject container = Utils.getFirstContainerForPredicate(expression,
-				(it) -> !(it instanceof XExpression) || it instanceof XAbstractWhileExpression
+				it -> !(it instanceof XExpression) || it instanceof XAbstractWhileExpression
 				|| it instanceof XBasicForLoopExpression || it instanceof XForLoopExpression);
 		if (container instanceof XExpression) {
 			if (!isIgnored(IssueCodes.DISCOURAGED_LOOP_BREAKING_KEYWORD_USE)
@@ -2489,7 +2489,7 @@ public class SARLValidator extends AbstractSARLValidator {
 			return false;
 		}
 		for (final XtendConstructor staticConstructor : Iterables.filter(Iterables.filter(
-				declaringType.getMembers(), XtendConstructor.class), (it) -> it.isStatic())) {
+				declaringType.getMembers(), XtendConstructor.class), it -> it.isStatic())) {
 			if (staticConstructor.getExpression() != null) {
 				for (final XAssignment assign : EcoreUtil2.getAllContentsOfType(staticConstructor.getExpression(), XAssignment.class)) {
 					if (assign.isStatic() && Strings.equal(input.getIdentifier(), assign.getFeature().getIdentifier())) {
@@ -2533,7 +2533,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	@SuppressWarnings("checkstyle:nestedifdepth")
 	public void checkDefaultSkillAnnotation(SarlCapacity capacity) {
 		final String annotationId = DefaultSkill.class.getName();
-		final XAnnotation annotation = IterableExtensions.findFirst(capacity.getAnnotations(), (it) -> {
+		final XAnnotation annotation = IterableExtensions.findFirst(capacity.getAnnotations(), it -> {
 			return Strings.equal(annotationId, it.getAnnotationType().getIdentifier());
 		});
 		if (annotation != null) {
@@ -2640,7 +2640,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	protected final class SARLModifierValidator extends ModifierValidator {
 
-		/**
+		/** Constructor.
 		 * @param modifiers the list of the supported modifiers.
 		 */
 		private SARLModifierValidator(

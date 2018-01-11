@@ -80,7 +80,7 @@ class MavenHelper {
 
 	private final ResolutionErrorHandler resolutionErrorHandler;
 
-	/**
+	/** Constructor.
 	 * @param session the Maven session.
 	 * @param buildPluginManager the Maven build plugin manager.
 	 * @param repositorySystem the Repository system.

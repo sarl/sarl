@@ -503,7 +503,7 @@ public class Jdt2Ecore {
 					final ISarlConstructorBuilder cons = codeBuilder.addConstructor();
 					// Create parameters
 					final IFormalParameterBuilder[] sarlParams = createFormalParametersWith(
-							(name) -> cons.addParameter(name), constructor);
+							name -> cons.addParameter(name), constructor);
 					// Create the block
 					final IBlockExpressionBuilder block = cons.getExpression();
 					// Create thre super-call expression
@@ -544,7 +544,7 @@ public class Jdt2Ecore {
 					final ISarlActionBuilder action = codeBuilder.addAction(operation.getElementName());
 					action.setReturnType(Signature.toString(operation.getReturnType()));
 					final IFormalParameterBuilder[] sarlParams = createFormalParametersWith(
-							(name) -> action.addParameter(name), operation);
+							name -> action.addParameter(name), operation);
 					if (context != null) {
 						final JvmType type = this.typeReferences.findDeclaredType(
 								operation.getDeclaringType().getFullyQualifiedName(),
@@ -622,7 +622,7 @@ public class Jdt2Ecore {
 
 		private IType current;
 
-		/**
+		/** Constructor.
 		 * @param typeFinder the type finder to be used for finding the type definitions.
 		 * @param isInterface indicates if the exploration is for interfaces or for classes.
 		 * @param typeNames the initial types.
@@ -631,7 +631,7 @@ public class Jdt2Ecore {
 			this(typeFinder, isInterface, Arrays.asList(typeNames));
 		}
 
-		/**
+		/** Constructor.
 		 * @param typeFinder the type finder to be used for finding the type definitions.
 		 * @param isInterface indicates if the exploration is for interfaces or for classes.
 		 * @param typeNames the initial types.
@@ -739,7 +739,7 @@ public class Jdt2Ecore {
 
 		private final String[] types;
 
-		/**
+		/** Constructor.
 		 * @param operation the operation.
 		 * @throws JavaModelException if the parameters cannot be retreived.
 		 */

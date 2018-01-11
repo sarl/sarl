@@ -255,7 +255,7 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 	protected OutputConfiguration getOutputConfiguration() {
 		final Set<OutputConfiguration> outputConfigurations = this.configurationProvider.getOutputConfigurations(getProject());
 		final String expectedName = ExtraLanguageOutputConfigurations.createOutputConfigurationName(getPluginID());
-		return Iterables.find(outputConfigurations, (it) -> expectedName.equals(it.getName()));
+		return Iterables.find(outputConfigurations, it -> expectedName.equals(it.getName()));
 	}
 
 	/**

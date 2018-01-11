@@ -43,7 +43,7 @@ public class HazelcastDMapView<K, V> extends AbstractDMapView<K, V> {
 
 	private final IMap<K, V> map;
 
-	/**
+	/** Constructor.
 	 * @param map the underground map to use.
 	 */
 	public HazelcastDMapView(IMap<K, V> map) {

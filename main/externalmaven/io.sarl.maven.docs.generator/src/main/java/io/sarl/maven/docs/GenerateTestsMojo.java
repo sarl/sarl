@@ -215,7 +215,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		final DynamicValidationContext validationContext = new DynamicValidationContext();
 		validationContext.setSourceRoots(this.session.getCurrentProject().getCompileSourceRoots());
 		validationContext.setResourceRoots(Lists.transform(this.session.getCurrentProject().getResources(),
-				(it) -> it.getDirectory()));
+				it -> it.getDirectory()));
 		validationContext.setDestinationRoots(
 				Collections.singletonList(this.session.getCurrentProject().getBuild().getOutputDirectory()));
 		final List<DynamicValidationComponent> specificComponents = parser.getMarkerSpecificValidationComponents(

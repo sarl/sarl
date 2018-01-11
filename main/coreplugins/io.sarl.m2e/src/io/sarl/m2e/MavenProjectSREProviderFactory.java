@@ -98,7 +98,7 @@ public class MavenProjectSREProviderFactory implements ProjectSREProviderFactory
 
 		private final IPath artifactFile;
 
-		/**
+		/** Constructor.
 		 * @param id the identifier of the SRE.
 		 * @param artifactFile the file of the artifact.
 		 */

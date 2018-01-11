@@ -713,7 +713,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 
 		private VMRunnerConfiguration runConfig;
 
-		/**
+		/** Constructor.
 		 * @param configuration the launch configuration.
 		 * @param mode the launching mode.
 		 * @param launch the launching

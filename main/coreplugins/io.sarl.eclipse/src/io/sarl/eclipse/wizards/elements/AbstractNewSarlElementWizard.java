@@ -51,7 +51,7 @@ public abstract class AbstractNewSarlElementWizard extends NewElementWizard {
 
 	private final AbstractNewSarlElementWizardPage page;
 
-	/**
+	/** Constructor.
 	 * @param imgHelper the helper for getting images.
 	 * @param page the wizard page.
 	 * @param title the title of the wizard.

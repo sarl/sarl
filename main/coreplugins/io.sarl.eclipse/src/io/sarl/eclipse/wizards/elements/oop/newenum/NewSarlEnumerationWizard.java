@@ -37,7 +37,7 @@ import io.sarl.eclipse.wizards.elements.AbstractNewSarlElementWizard;
  */
 public class NewSarlEnumerationWizard extends AbstractNewSarlElementWizard {
 
-	/**
+	/** Constructor.
 	 * @param imgHelper the helper for getting images.
 	 * @param page the page of the wizard.
 	 */

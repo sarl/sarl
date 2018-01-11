@@ -43,8 +43,7 @@ public final class LoggerCreator {
 
 	private static final String FORMAT_PROPERTY_KEY = "java.util.logging.SimpleFormatter.format"; //$NON-NLS-1$
 
-	/**
-	 * The parameters for the format string are:
+	/** Default format of a log message within Janus. The parameters for the format string are:
 	 * <ul>
 	 * <li><code>%1</code>: the date,</li>
 	 * <li><code>%2</code>: the name of the calling function,</li>

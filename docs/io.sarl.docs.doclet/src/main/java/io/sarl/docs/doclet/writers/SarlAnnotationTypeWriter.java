@@ -41,7 +41,7 @@ import io.sarl.docs.doclet.SarlConfiguration;
  */
 public class SarlAnnotationTypeWriter extends AnnotationTypeWriterImpl {
 
-	/**
+	/** Constructor.
 	 * @param configuration the configuration.
 	 * @param annotationType the type.
 	 * @param prevType the previous type.

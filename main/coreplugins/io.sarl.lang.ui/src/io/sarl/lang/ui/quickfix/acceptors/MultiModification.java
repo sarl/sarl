@@ -46,7 +46,7 @@ public final class MultiModification extends SARLSemanticModification {
 
 	private final Map<Class<?>, Class<? extends SARLSemanticModification>> modificationTypes = new HashMap<>();
 
-	/**
+	/** Constructor.
 	 * @param provider the quick fix provider.
 	 * @param issue the issue to fix.
 	 * @param acceptor the quick fix acceptor.

@@ -38,14 +38,14 @@ public class GoogleServiceManager implements IServiceManager {
 
 	private final ServiceManager sm;
 
-	/**
+	/** Constructor.
 	 * @param sm the Google service to use.
 	 */
 	public GoogleServiceManager(ServiceManager sm) {
 		this.sm = sm;
 	}
 
-	/**
+	/** Constructor.
 	 * @param services the services to manager.
 	 */
 	public GoogleServiceManager(Iterable<? extends Service> services) {

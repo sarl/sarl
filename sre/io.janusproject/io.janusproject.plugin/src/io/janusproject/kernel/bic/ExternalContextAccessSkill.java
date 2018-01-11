@@ -75,7 +75,7 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 
 	private ClearableReference<Skill> skillBufferBehaviors;
 
-	/**
+	/** Constructor.
 	 * @param agent owner of the skill.
 	 */
 	ExternalContextAccessSkill(Agent agent) {

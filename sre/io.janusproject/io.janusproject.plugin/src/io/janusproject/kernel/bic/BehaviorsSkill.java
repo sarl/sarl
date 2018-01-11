@@ -63,7 +63,7 @@ public class BehaviorsSkill extends BuiltinSkill implements Behaviors {
 
 	private ClearableReference<Skill> skillBufferSchedules;
 
-	/**
+	/** Constructor.
 	 * @param agent owner of this skill.
 	 * @param agentAddressInInnerDefaultSpace address of the owner of this skill in its inner default space.
 	 */

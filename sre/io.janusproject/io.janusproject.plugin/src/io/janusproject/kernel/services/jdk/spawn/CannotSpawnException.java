@@ -37,7 +37,7 @@ public class CannotSpawnException extends RuntimeException {
 
 	private static final long serialVersionUID = -380402400888610762L;
 
-	/**
+	/** Constructor.
 	 * @param agentClazz
 	 *            - the type of the agent to spawn.
 	 * @param cause

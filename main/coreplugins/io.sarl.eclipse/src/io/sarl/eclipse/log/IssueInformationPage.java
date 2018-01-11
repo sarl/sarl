@@ -138,16 +138,16 @@ public class IssueInformationPage extends WizardPage {
 		this.trackerPassword.setEchoChar(ECHO_CHAR);
 
 		//add the listeners now to prevent them from monkeying with initialized settings
-		this.titleField.addModifyListener((listeningEvent) -> {
+		this.titleField.addModifyListener(listeningEvent -> {
 			updatePageStatus();
 		});
-		this.descriptionField.addModifyListener((listeningEvent) -> {
+		this.descriptionField.addModifyListener(listeningEvent -> {
 			updatePageStatus();
 		});
-		this.trackerLogin.addModifyListener((listeningEvent) -> {
+		this.trackerLogin.addModifyListener(listeningEvent -> {
 			updatePageStatus();
 		});
-		this.trackerPassword.addModifyListener((listeningEvent) -> {
+		this.trackerPassword.addModifyListener(listeningEvent -> {
 			updatePageStatus();
 		});
 

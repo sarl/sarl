@@ -98,19 +98,19 @@ public class SARLFormatter extends XtendFormatter {
 	 */
 	public static final String COMMENT_PREFIX_NAME = "io.sarl.lang.formatting2.COMMENT_PREFIX"; //$NON-NLS-1$
 
-	private static final Procedure1<? super IHiddenRegionFormatter> ONE_SPACE = (it) -> {
+	private static final Procedure1<? super IHiddenRegionFormatter> ONE_SPACE = it -> {
 		it.oneSpace();
 	};
 
-	private static final Procedure1<? super IHiddenRegionFormatter> NO_SPACE = (it) -> {
+	private static final Procedure1<? super IHiddenRegionFormatter> NO_SPACE = it -> {
 		it.noSpace();
 	};
 
-	private static final Procedure1<? super IHiddenRegionFormatter> NEW_LINE = (it) -> {
+	private static final Procedure1<? super IHiddenRegionFormatter> NEW_LINE = it -> {
 		it.newLine();
 	};
 
-	private static final Procedure1<? super IHiddenRegionFormatter> INDENT = (it) -> {
+	private static final Procedure1<? super IHiddenRegionFormatter> INDENT = it -> {
 		it.indent();
 	};
 

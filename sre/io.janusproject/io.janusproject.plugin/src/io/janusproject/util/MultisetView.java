@@ -58,7 +58,7 @@ public class MultisetView<K, V> extends AbstractCollection<K> implements Multise
 
 	private transient EntrySet entrySet;
 
-	/**
+	/** Constructor.
 	 * @param map the backed map.
 	 */
 	public MultisetView(Multimap<K, V> map) {
@@ -537,7 +537,7 @@ public class MultisetView<K, V> extends AbstractCollection<K> implements Multise
 	private abstract class TransformedIterator implements Iterator<K> {
 		final Iterator<? extends Entry<K>> backingIterator;
 
-		/**
+		/** Constructor.
 		 * @param backingIterator the iterator.
 		 */
 		TransformedIterator(Iterator<? extends Entry<K>> backingIterator) {

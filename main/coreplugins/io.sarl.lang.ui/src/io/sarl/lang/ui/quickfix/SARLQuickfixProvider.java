@@ -519,7 +519,7 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 		if (container.getMembers().isEmpty()) {
 			final ICompositeNode node = NodeModelUtils.findActualNodeFor(container);
 			final ILeafNode openingBraceNode = IterableExtensions.findFirst(node.getLeafNodes(),
-					(lnode) -> "{".equals(lnode.getText())); //$NON-NLS-1$
+					lnode -> "{".equals(lnode.getText())); //$NON-NLS-1$
 			if (openingBraceNode != null) {
 				return openingBraceNode.getOffset() + 1;
 			}

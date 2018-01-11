@@ -38,7 +38,7 @@ public class InferredValuedParameter extends InferredStandardParameter {
 	 */
 	protected final String argument;
 
-	/**
+	/** Constructor.
 	 * @param source the original parameter.
 	 * @param name the name of the formal parameter.
 	 * @param type the type of the formal parameter.

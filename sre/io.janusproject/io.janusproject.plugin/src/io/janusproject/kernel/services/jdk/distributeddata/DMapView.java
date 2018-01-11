@@ -43,7 +43,7 @@ public class DMapView<K, V> extends AbstractDMapView<K, V> {
 
 	private final Map<K, V> map;
 
-	/**
+	/** Constructor.
 	 * @param name the name of the map.
 	 * @param map the underground map to use.
 	 */

@@ -37,7 +37,7 @@ public class JanusCallable<T> implements Callable<T> {
 
 	private final Callable<T> callable;
 
-	/**
+	/** Constructor.
 	 * @param callable the wrapped task.
 	 */
 	public JanusCallable(Callable<T> callable) {

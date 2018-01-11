@@ -46,7 +46,7 @@ import io.sarl.docs.doclet.utils.Utils;
  */
 public class SarlClassWriter extends ClassWriterImpl {
 
-	/**
+	/** Constructor.
 	 * @param configuration the configuration.
 	 * @param classDoc the documentation.
 	 * @param prevClass the previous class.

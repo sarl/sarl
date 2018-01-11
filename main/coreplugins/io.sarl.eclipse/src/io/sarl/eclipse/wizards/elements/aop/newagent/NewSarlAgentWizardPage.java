@@ -95,8 +95,8 @@ public class NewSarlAgentWizardPage extends AbstractNewSarlElementWizardPage {
 		agent.setDocumentation(comment);
 		mon.worked(1);
 		createStandardSARLEventTemplates(Messages.NewSarlAgentWizardPage_3,
-				(name) -> agent.addSarlBehaviorUnit(name),
-				(name) -> agent.addSarlCapacityUses(name));
+				name -> agent.addSarlBehaviorUnit(name),
+				name -> agent.addSarlCapacityUses(name));
 		mon.worked(2);
 		if (agent.getSarlAgent().getExtends() != null) {
 			createInheritedMembers(
@@ -104,7 +104,7 @@ public class NewSarlAgentWizardPage extends AbstractNewSarlElementWizardPage {
 					agent.getSarlAgent(),
 					true,
 					() -> agent.addSarlConstructor(),
-					(name) -> agent.addOverrideSarlAction(name),
+					name -> agent.addOverrideSarlAction(name),
 					getSuperClass());
 		}
 		mon.worked(3);
