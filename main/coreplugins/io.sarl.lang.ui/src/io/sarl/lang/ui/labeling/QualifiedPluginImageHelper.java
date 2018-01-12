@@ -43,22 +43,24 @@ import org.eclipse.xtext.ui.PluginImageHelper;
 @Singleton
 public class QualifiedPluginImageHelper extends PluginImageHelper {
 
+	private static final String PLATFORM_URL_PREFIX = "platform:/plugin/"; //$NON-NLS-1$
+
+	private static final String PLATFORM_URL_SEPARATOR = "/"; //$NON-NLS-1$
+
 	/** Find the descriptor of the image with the given id.
 	 *
 	 * @param name the identifier of the image. It may be qualified with the plugin's id.
 	 * @return the descriptor.
 	 */
 	protected ImageDescriptor findImage(String name) {
-		if (name != null) {
-			final int extIndex = name.lastIndexOf('.');
-			if (extIndex > 0) {
-				final int index = name.lastIndexOf('.', extIndex - 1);
-				if (index > 0) {
-					final String pluginId = name.substring(0, index);
-					final String imageId = name.substring(index + 1);
-					return AbstractUIPlugin.imageDescriptorFromPlugin(pluginId,
+		if (name != null && name.startsWith(PLATFORM_URL_PREFIX)) {
+			final int index = name.indexOf(PLATFORM_URL_SEPARATOR, PLATFORM_URL_PREFIX.length());
+			if (index >= 0) {
+				final String pluginId = name.substring(
+					PLATFORM_URL_PREFIX.length(), index);
+				final String imageId = name.substring(index + 1);
+				return AbstractUIPlugin.imageDescriptorFromPlugin(pluginId,
 							getPathSuffix() + imageId);
-				}
 			}
 		}
 		return null;
