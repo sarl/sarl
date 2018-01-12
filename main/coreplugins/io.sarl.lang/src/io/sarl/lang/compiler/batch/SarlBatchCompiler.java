@@ -28,6 +28,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -99,6 +101,7 @@ import org.eclipse.xtext.xbase.compiler.IGeneratorConfigProvider;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.resource.BatchLinkableResource;
+import org.eclipse.xtext.xbase.resource.BatchLinkableResourceStorageWritable;
 
 import io.sarl.lang.SARLConfig;
 import io.sarl.lang.compiler.GeneratorConfig2;
@@ -1039,6 +1042,7 @@ public class SarlBatchCompiler {
 			if (hasError || cancel.isCanceled()) {
 				return false;
 			}
+			overrideXtextInternalLoggers();
 			generateJavaFiles(validatedResources, cancel);
 			if (cancel.isCanceled()) {
 				return false;
@@ -1059,6 +1063,29 @@ public class SarlBatchCompiler {
 			}
 		}
 		return true;
+	}
+
+	/** Change the loggers that are internally used by Xtext.
+	 */
+	protected void overrideXtextInternalLoggers() {
+		final Logger logger = getLogger();
+		setStaticField(BatchLinkableResourceStorageWritable.class, "LOG", logger); //$NON-NLS-1$
+		setStaticField(BatchLinkableResource.class, "log", logger); //$NON-NLS-1$
+	}
+
+	private void setStaticField(Class<?> type, String name, Logger logger) {
+		try {
+			final Field field = type.getDeclaredField(name);
+			field.setAccessible(true);
+			if ((field.getModifiers() & Modifier.FINAL) == Modifier.FINAL) {
+                final Field modifiersField = Field.class.getDeclaredField("modifiers"); //$NON-NLS-1$
+                modifiersField.setAccessible(true);
+                modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+            }
+			field.set(null, logger);
+		} catch (Exception exception) {
+			getLogger().error(exception.getLocalizedMessage(), exception);
+		}
 	}
 
 	/** Create a message for the issue.
