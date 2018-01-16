@@ -18,25 +18,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.maven.compiler;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+package foo.bug799;
 
-import java.io.InputStream;
-import java.net.URL;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-
-import org.apache.maven.it.VerificationException;
-
-import org.apache.maven.it.Verifier;
-import org.apache.maven.plugin.MojoFailureException;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import io.sarl.lang.annotation.SarlElementType;
+import io.sarl.lang.core.Capacity;
+import io.sarl.lang.core.SpaceID;
 
 /**
  * @author $Author: sgalland$
@@ -44,17 +31,10 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SarlElementType(19)
 @SuppressWarnings("all")
-public class CompileMojoTest extends AbstractMojoTest {
+public interface Cap extends Capacity {
 
-	@Test
-	public void invalidXtext() throws Exception {
-		executeMojo("prj1", "compile");
-	}
-
-	@Test(expected = VerificationException.class)
-	public void invalidSdk() throws Exception {
-		executeMojo("prj2", "compile");
-	}
+	public abstract void act_connectToSimulator(String address, int port);
 
 }

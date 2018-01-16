@@ -1,0 +1,5 @@
+package io.sarl.maven.bug799
+
+capacity Cap {
+	def act_connectToSimulator(address : String, port : int)
+}

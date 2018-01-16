@@ -1,3 +1,0 @@
-package io.sarl.maven.bug526
-
-event MyEvent

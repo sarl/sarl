@@ -29,9 +29,11 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Properties;
 
+import org.apache.maven.it.VerificationException;
 import org.apache.maven.it.Verifier;
 import org.apache.maven.shared.utils.cli.CommandLineUtils;
 import org.apache.maven.shared.utils.io.FileUtils;
@@ -208,6 +210,23 @@ public abstract class AbstractMojoTest {
 			}
 		}
 		return defaultMavenHome;
+	}
+
+	/** Read the content of the given file.
+	 *
+	 * @param verifier the Maven verifier to use for obtaining the context.
+	 * @param file the file to read, relatively to the context base dir.
+	 * @return the file content.
+	 * @throws VerificationException if the file cannot be loaded.
+	 * @since 0.7
+	 */
+	protected static String readFile(Verifier verifier, Path file) throws VerificationException {
+		verifier.assertFilePresent(file.toString());
+		StringBuilder buffer = new StringBuilder();
+		for (final String line : verifier.loadFile(verifier.getBasedir(), file.toString(), false)) {
+			buffer.append(line).append("\n"); //$NON-NLS-1$
+		}
+		return buffer.toString();
 	}
 
 }

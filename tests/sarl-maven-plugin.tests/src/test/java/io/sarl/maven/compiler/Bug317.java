@@ -38,17 +38,9 @@ import org.junit.Test;
 @SuppressWarnings("all")
 public class Bug317 extends AbstractMojoTest {
 
-	@BeforeClass
-	public static void setUp() throws Exception {
-		// The test can be run only if SARL is available online.
-		touchSarlWebSites();
-		// The test can be run only if Janus is available online.
-		touchRemotePage("http://maven.janusproject.io/io.janusproject/io.janusproject.kernel/0.3.1-SNAPSHOT", false);
-	}
-	
 	@Test
 	public void compile() throws Exception {
-		Verifier verifier = executeMojo("prj3", "compile");
+		Verifier verifier = executeMojo("bug317", "compile");
 		Path path = FileSystems.getDefault().getPath(
 				"src", "main", "generated-sources", "sarl",
 				"io", "sarl", "maven", "compiler", "tests", "MyAgent.java");

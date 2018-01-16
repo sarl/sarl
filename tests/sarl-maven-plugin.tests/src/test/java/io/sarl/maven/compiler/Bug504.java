@@ -43,12 +43,6 @@ import io.sarl.lang.SARLVersion;
 @SuppressWarnings("all")
 public class Bug504 extends AbstractMojoTest {
 
-	@BeforeClass
-	public static void setUp() throws Exception {
-		// The test can be run only if SARL is available online.
-		touchSarlWebSites();
-	}
-
 	@Test
 	public void compile() throws Exception {
 		Verifier verifier = executeMojo("bug504", "compile");
@@ -64,16 +58,20 @@ public class Bug504 extends AbstractMojoTest {
 				"",
 				"import io.sarl.elevatorsim.SimulatorPush;",
 				"import io.sarl.elevatorsim.events.SendCarAction;",
+				"import io.sarl.lang.annotation.SarlElementType;",
 				"import io.sarl.lang.annotation.SarlSpecification;",
 				"import io.sarl.lang.annotation.SyntheticMember;",
 				"import io.sarl.lang.core.Agent;",
 				"import io.sarl.lang.core.Skill;",
 				"import java.io.IOException;",
 				"import org.eclipse.xtext.xbase.lib.Exceptions;",
+				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+				"@SarlElementType(21)",
 				"@SuppressWarnings(\"all\")",
 				"public class SimulatorInteraction extends Skill implements SimulatorPush {",
+				"  @Pure",
 				"  public void sendCar(final int a, final int b, final int c, final Object d, final Object e) {",
 				"  }",
 				"  ",
@@ -92,21 +90,14 @@ public class Bug504 extends AbstractMojoTest {
 				"    }",
 				"  }",
 				"  ",
-				"  /**",
-				"   * Construct a skill. The owning agent is unknown.",
-				"   */",
 				"  @SyntheticMember",
 				"  public SimulatorInteraction() {",
 				"    super();",
 				"  }",
 				"  ",
-				"  /**",
-				"   * Construct a skill.",
-				"   * @param owner agent that is owning this skill.",
-				"   */",
 				"  @SyntheticMember",
-				"  public SimulatorInteraction(final Agent owner) {",
-				"    super(owner);",
+				"  public SimulatorInteraction(final Agent arg0) {",
+				"    super(arg0);",
 				"  }",
 				"}"), fileContent);
 	}

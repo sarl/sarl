@@ -13,6 +13,7 @@ The steps for releasing SARL are:
 
 ** Upgrade the Eclipse target platform
 ** Synchronize the versions in the pom files (plugins and dependencies) with the same version numbers as in the Eclipse target platform.
+** Synchronize the versions in the pom files within the `tests/sarl-maven-plugin.tests/src/test/resources/projects` folder.
 
 === 1.2) Compiling locally without error
 

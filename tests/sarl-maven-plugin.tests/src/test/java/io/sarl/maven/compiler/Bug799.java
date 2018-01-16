@@ -20,16 +20,17 @@
  */
 package io.sarl.maven.compiler;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
-import org.apache.maven.it.VerificationException;
 import org.apache.maven.it.Verifier;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import io.sarl.lang.SARLVersion;
 
 /**
  * @author $Author: sgalland$
@@ -38,34 +39,45 @@ import org.junit.Test;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-public class Bug526 extends AbstractMojoTest {
+public class Bug799 extends AbstractMojoTest {
 
-	@BeforeClass
-	public static void setUp() throws Exception {
-		// The test can be run only if SARL is available online.
-		touchSarlWebSites();
-	}
-
-	@Test(expected = VerificationException.class)
-	public void invalidGuavaAndXtextLibraries() throws Exception {
-		executeMojo("bug526ko1", "compile");
-		fail("Expecting failure");
-	}
-
-	@Test(expected = VerificationException.class)
-	public void invalidXtextLibraries() throws Exception {
-		executeMojo("bug526ko2", "compile");
-		fail("Expecting failure");
-	}
-
+	private static final String EXPECTED_A = multilineString(
+			"package io.sarl.maven.bug799;",
+			"import io.sarl.lang.annotation.SarlElementType;",
+			"import io.sarl.lang.annotation.SarlSpecification;",
+			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.Agent;",
+			"import io.sarl.lang.core.Skill;",
+			"import io.sarl.maven.bug799.Cap;",
+			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+			"@SarlElementType(21)",
+			"@SuppressWarnings(\"all\")",
+			"public class A extends Skill implements Cap {",
+			"@Pure",
+			"public void act_connectToSimulator(final String address, final int port) {",
+			"while (true) {",
+			"}",
+			"}",
+			"@SyntheticMember",
+			"public A() {",
+			"super();",
+			"}",
+			"@SyntheticMember",
+			"public A(final Agent arg0) {",
+			"super(arg0);",
+			"}",
+			"}");
+	
 	@Test
 	public void compile() throws Exception {
-		Verifier verifier = executeMojo("bug526ok", "compile");
+		Verifier verifier = executeMojo("bug799", "compile");
 		Path path = FileSystems.getDefault().getPath(
 				"src", "main", "generated-sources", "sarl",
-				"io", "sarl", "maven", "bug526", "MyEvent.java");
+				"io", "sarl", "maven", "bug799", "A.java");
 		assertNotNull(path);
 		verifier.assertFilePresent(path.toString());
+		assertEquals(EXPECTED_A, readFile(verifier, path));
 	}
 
 }
