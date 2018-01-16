@@ -45,4 +45,5 @@ Export-Package: io.sarl.lang,
  io.sarl.lang.util,
  io.sarl.lang.validation,
  io.sarl.lang.validation.extra
-Import-Package: org.apache.log4j
+Import-Package: org.apache.log4j,
+ org.apache.log4j.spi

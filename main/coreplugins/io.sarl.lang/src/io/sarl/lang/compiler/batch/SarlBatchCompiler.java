@@ -58,6 +58,7 @@ import com.google.common.collect.Multimap;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import org.apache.log4j.Logger;
+import org.apache.log4j.spi.LoggerFactory;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jdt.core.compiler.CompilationProgress;
@@ -107,6 +108,7 @@ import io.sarl.lang.SARLConfig;
 import io.sarl.lang.compiler.GeneratorConfig2;
 import io.sarl.lang.compiler.GeneratorConfigProvider2;
 import io.sarl.lang.compiler.IGeneratorConfigProvider2;
+import io.sarl.lang.compiler.batch.InternalLogger.InternalLoggerFactory;
 import io.sarl.lang.util.Utils;
 import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
 
@@ -1069,8 +1071,11 @@ public class SarlBatchCompiler {
 	 */
 	protected void overrideXtextInternalLoggers() {
 		final Logger logger = getLogger();
-		setStaticField(BatchLinkableResourceStorageWritable.class, "LOG", logger); //$NON-NLS-1$
-		setStaticField(BatchLinkableResource.class, "log", logger); //$NON-NLS-1$
+		final LoggerFactory factory = new InternalLoggerFactory(logger);
+		final Logger internalLogger = Logger.getLogger(
+				MessageFormat.format(Messages.SarlBatchCompiler_40, logger.getName()), factory);
+		setStaticField(BatchLinkableResourceStorageWritable.class, "LOG", internalLogger); //$NON-NLS-1$
+		setStaticField(BatchLinkableResource.class, "log", internalLogger); //$NON-NLS-1$
 	}
 
 	private void setStaticField(Class<?> type, String name, Logger logger) {
