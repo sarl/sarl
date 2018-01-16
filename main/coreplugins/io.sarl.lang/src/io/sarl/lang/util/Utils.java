@@ -44,7 +44,6 @@ import java.util.regex.Pattern;
 import com.google.common.base.Strings;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.xtend.core.jvmmodel.XtendJvmModelInferrer;
@@ -67,6 +66,7 @@ import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeConstraint;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
+import org.eclipse.xtext.common.types.JvmTypeParameterDeclarator;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.JvmUpperBound;
 import org.eclipse.xtext.common.types.JvmVisibility;
@@ -83,7 +83,6 @@ import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationElementValuePair;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
-import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociator;
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder;
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
@@ -1393,43 +1392,21 @@ public final class Utils {
 	 * related to the type parameter of the type container.
 	 *
 	 * @param type the source type.
-	 * @param forOperation the operation that will contain the result type.
+	 * @param executableTypeParameters the type parameters of the executable component that will contain the result type.
+	 * @param superTypeParameterMapping the mapping from the type parameters inherited from the super types.
 	 * @param typeParameterBuilder the builder if type parameter.
 	 * @param typeBuilder the builder of type.
 	 * @param typeReferences the builder of type references.
 	 * @param jvmTypesFactory the factory of Jvm types.
-	 * @param associator the associator to use, or {@code null} if none.
 	 * @return the result type, i.e. a copy of the source type.
 	 * @since 0.6
 	 */
-	public static JvmTypeReference cloneWithTypeParametersAndProxies(JvmTypeReference type, JvmOperation forOperation,
+	public static JvmTypeReference cloneWithTypeParametersAndProxies(
+			JvmTypeReference type,
+			Iterable<JvmTypeParameter> executableTypeParameters,
+			Map<String, JvmTypeReference> superTypeParameterMapping,
 			JvmTypeReferenceBuilder typeParameterBuilder, JvmTypesBuilder typeBuilder,
-			TypeReferences typeReferences, TypesFactory jvmTypesFactory,
-			IJvmModelAssociator associator) {
-		return cloneWithTypeParametersAndProxies(type, forOperation.getTypeParameters(),
-				typeParameterBuilder, typeBuilder, typeReferences, jvmTypesFactory, associator);
-	}
-
-	/** Clone the given type reference that for being link to the given operation.
-	 *
-	 * <p>The proxies are not resolved, and the type parameters are clone when they are
-	 * related to the type parameter of the type container.
-	 *
-	 * @param type the source type.
-	 * @param typeParameters the type parameters of the operation that will contain the result type.
-	 * @param typeParameterBuilder the builder if type parameter.
-	 * @param typeBuilder the builder of type.
-	 * @param typeReferences the builder of type references.
-	 * @param jvmTypesFactory the factory of Jvm types.
-	 * @param associator the associator to use, or {@code null} if none.
-	 * @return the result type, i.e. a copy of the source type.
-	 * @since 0.6
-	 */
-	public static JvmTypeReference cloneWithTypeParametersAndProxies(JvmTypeReference type,
-			List<JvmTypeParameter> typeParameters,
-			JvmTypeReferenceBuilder typeParameterBuilder, JvmTypesBuilder typeBuilder,
-			TypeReferences typeReferences, TypesFactory jvmTypesFactory,
-			IJvmModelAssociator associator) {
+			TypeReferences typeReferences, TypesFactory jvmTypesFactory) {
 		if (type == null) {
 			return typeParameterBuilder.typeRef(Object.class);
 		}
@@ -1438,23 +1415,30 @@ public final class Utils {
 		JvmTypeReference typeCandidate = type;
 
 		// Use also cloneType as a flag that indicates if the type was already found in type parameters.
-		if (!typeParameters.isEmpty() && cloneType) {
+		if ((executableTypeParameters.iterator().hasNext() || !superTypeParameterMapping.isEmpty()) && cloneType) {
+			final Map<String, JvmTypeParameter> typeParameterIdentifiers = new TreeMap<>();
+			for (final JvmTypeParameter typeParameter : executableTypeParameters) {
+				typeParameterIdentifiers.put(typeParameter.getIdentifier(), typeParameter);
+			}
+
 			if (type instanceof JvmParameterizedTypeReference) {
 				// Try to clone the type parameters.
 				cloneType = false;
-				typeCandidate = cloneAndAssociate(type, typeParameters, typeParameterBuilder,
-						typeReferences, jvmTypesFactory, associator);
+				typeCandidate = cloneAndAssociate(type, typeParameterIdentifiers, superTypeParameterMapping,
+						typeParameterBuilder, typeReferences, jvmTypesFactory);
 			} else if (type instanceof XFunctionTypeRef) {
 				// Try to clone the function reference.
 				final XFunctionTypeRef functionRef = (XFunctionTypeRef) type;
 				cloneType = false;
 				final XFunctionTypeRef cloneReference = XtypeFactory.eINSTANCE.createXFunctionTypeRef();
 				for (final JvmTypeReference paramType : functionRef.getParamTypes()) {
-					cloneReference.getParamTypes().add(cloneAndAssociate(paramType, typeParameters, typeParameterBuilder,
-							typeReferences, jvmTypesFactory, associator));
+					cloneReference.getParamTypes().add(cloneAndAssociate(
+							paramType, typeParameterIdentifiers, superTypeParameterMapping,
+							typeParameterBuilder, typeReferences, jvmTypesFactory));
 				}
-				cloneReference.setReturnType(cloneAndAssociate(functionRef.getReturnType(), typeParameters,
-						typeParameterBuilder, typeReferences, jvmTypesFactory, associator));
+				cloneReference.setReturnType(cloneAndAssociate(
+						functionRef.getReturnType(), typeParameterIdentifiers, superTypeParameterMapping,
+						typeParameterBuilder, typeReferences, jvmTypesFactory));
 				cloneReference.setInstanceContext(functionRef.isInstanceContext());
 				typeCandidate = cloneReference;
 			}
@@ -1473,33 +1457,18 @@ public final class Utils {
 
 	private static JvmTypeReference cloneAndAssociate(
 			final JvmTypeReference type,
-			final List<JvmTypeParameter> typeParameters,
+			final Map<String, JvmTypeParameter> typeParameterIdentifiers,
+			Map<String, JvmTypeReference> superTypeParameterMapping,
 			JvmTypeReferenceBuilder typeParameterBuilder,
 			TypeReferences typeReferences,
-			TypesFactory jvmTypesFactory,
-			IJvmModelAssociator associator) {
-		final Map<String, JvmTypeParameter> typeParameterIdentifiers = new TreeMap<>();
-		for (final JvmTypeParameter typeParameter : typeParameters) {
-			typeParameterIdentifiers.put(typeParameter.getIdentifier(), typeParameter);
-		}
-
+			TypesFactory jvmTypesFactory) {
 		final EcoreUtil.Copier copier = new EcoreUtil.Copier(false) {
 			private static final long serialVersionUID = 698510355384773254L;
 
 			@Override
-			protected EObject createCopy(EObject eobject) {
-				final EObject result = super.createCopy(eobject);
-				if (result != null && eobject != null && !eobject.eIsProxy()) {
-					if (associator != null) {
-						associator.associate(eobject, result);
-					}
-				}
-				return result;
-			}
-
-			@Override
 			public EObject copy(EObject eobject) {
 				final String id;
+				// Try to override the type parameters
 				if (eobject instanceof JvmTypeReference) {
 					id = ((JvmTypeReference) eobject).getIdentifier();
 				} else if (eobject instanceof JvmIdentifiableElement) {
@@ -1511,6 +1480,10 @@ public final class Utils {
 					final JvmTypeParameter param = typeParameterIdentifiers.get(id);
 					if (param != null) {
 						return typeReferences.createTypeRef(param);
+					}
+					final JvmTypeReference superTypeReference = superTypeParameterMapping.get(id);
+					if (superTypeReference != null) {
+						return typeReferences.createDelegateTypeReference(superTypeReference);
 					}
 				}
 				final EObject result = super.copy(eobject);
@@ -1533,15 +1506,51 @@ public final class Utils {
 				}
 				return result;
 			}
-
-			@Override
-			protected void copyReference(EReference ereference, EObject eobject, EObject copyEObject) {
-				super.copyReference(ereference, eobject, copyEObject);
-			}
 		};
 		final JvmTypeReference copy = (JvmTypeReference) copier.copy(type);
 		copier.copyReferences();
 		return copy;
+	}
+
+	/** Extract the mapping between the type parameters declared within the super types and the
+	 * type parameters arguments that are declared within the given type.
+	 *
+	 * <p>For example, consider the following code:
+	 * <pre><code>
+	 * interface X&lt;T&gt; {
+	 *   def a(p1 : T, p2 : U) with U
+	 * }
+	 * interface Y&lt;T&gt; {
+	 * }
+	 * class Z&lt;TT&gt; implements X&lt;TT&gt;, Y&lt;TT&gt; {
+	 *   def a(p1 : TT, p2 : W) with W { }
+	 * }
+	 * </code></pre>
+	 * The mapping is:
+	 * <pre><code>
+	 * X.T =&gt; TT
+	 * Y.T =&gt; TT
+	 * </code></pre>
+	 *
+	 * @param type the type to analyze.
+	 * @param mapping the map to fill with the mapping.
+	 * @since 0.7
+	 */
+	public static void getSuperTypeParameterMap(JvmDeclaredType type, Map<String, JvmTypeReference> mapping) {
+		for (final JvmTypeReference superTypeReference : type.getSuperTypes()) {
+			if (superTypeReference instanceof JvmParameterizedTypeReference) {
+				final JvmParameterizedTypeReference parameterizedTypeReference = (JvmParameterizedTypeReference) superTypeReference;
+				final JvmType st = superTypeReference.getType();
+				if (st instanceof JvmTypeParameterDeclarator) {
+					final JvmTypeParameterDeclarator superType = (JvmTypeParameterDeclarator) st;
+					int i = 0;
+					for (final JvmTypeParameter typeParameter : superType.getTypeParameters()) {
+						mapping.put(typeParameter.getIdentifier(), parameterizedTypeReference.getArguments().get(i));
+						++i;
+					}
+				}
+			}
+		}
 	}
 
 	/** Copy the type parameters from a JvmOperation.
@@ -1550,8 +1559,8 @@ public final class Utils {
 	 * org.eclipse.xtext.common.types.JvmTypeParameterDeclarator)}
 	 * and {@link XtendJvmModelInferrer#copyTypeParameters(List, org.eclipse.xtext.common.types.JvmTypeParameterDeclarator)}
 	 * in the fact that the type parameters were already generated and fixed. The current function supper generic types by
-	 * clone the types references with {@link #cloneWithTypeParametersAndProxies(JvmTypeReference, JvmOperation,
-	 * JvmTypeReferenceBuilder, JvmTypesBuilder, TypeReferences, TypesFactory, IJvmModelAssociator)}.
+	 * clone the types references with {@link #cloneWithTypeParametersAndProxies(JvmTypeReference, Iterable, Map, JvmTypeReferenceBuilder,
+	 * JvmTypesBuilder, TypeReferences, TypesFactory)}.
 	 *
 	 * @param fromOperation the operation from which the type parameters are copied.
 	 * @param toOperation the operation that will receives the new type parameters.
@@ -1559,17 +1568,19 @@ public final class Utils {
 	 * @param typeBuilder the builder of type.
 	 * @param typeReferences the builder of type references.
 	 * @param jvmTypesFactory the factory of Jvm types.
-	 * @param associator the associator to use, or {@code null} if none.
 	 * @since 0.6
 	 */
 	public static void copyTypeParametersFromJvmOperation(JvmOperation fromOperation, JvmOperation toOperation,
 			JvmTypeReferenceBuilder typeParameterBuilder, JvmTypesBuilder typeBuilder,
-			TypeReferences typeReferences, TypesFactory jvmTypesFactory,
-			IJvmModelAssociator associator) {
+			TypeReferences typeReferences, TypesFactory jvmTypesFactory) {
+		// Get the type parameter mapping that is a consequence of the super type extension within the container.
+		final Map<String, JvmTypeReference> superTypeParameterMapping = new HashMap<>();
+		Utils.getSuperTypeParameterMap(toOperation.getDeclaringType(), superTypeParameterMapping);
 		copyTypeParametersFromJvmOperation(
 				fromOperation.getTypeParameters(),
 				toOperation.getTypeParameters(),
-				typeParameterBuilder, typeBuilder, typeReferences, jvmTypesFactory, associator);
+				superTypeParameterMapping,
+				typeParameterBuilder, typeBuilder, typeReferences, jvmTypesFactory);
 	}
 
 	/** Copy the type parameters from a JvmOperation.
@@ -1578,23 +1589,23 @@ public final class Utils {
 	 * org.eclipse.xtext.common.types.JvmTypeParameterDeclarator)}
 	 * and {@link XtendJvmModelInferrer#copyTypeParameters(List, org.eclipse.xtext.common.types.JvmTypeParameterDeclarator)}
 	 * in the fact that the type parameters were already generated and fixed. The current function supper generic types by
-	 * clone the types references with {@link #cloneWithTypeParametersAndProxies(JvmTypeReference, JvmOperation,
-	 * JvmTypeReferenceBuilder, JvmTypesBuilder, TypeReferences, TypesFactory, IJvmModelAssociator)}.
+	 * clone the types references with {@link #cloneWithTypeParametersAndProxies(JvmTypeReference, Iterable, Map, JvmTypeReferenceBuilder,
+	 * JvmTypesBuilder, TypeReferences, TypesFactory)}.
 	 *
 	 * @param inputParameters the type parameters in the source operation.
 	 * @param outputParameters the list of type parameters to be filled out.
+	 * @param superTypeParameterMapping the mapping from the type parameters inherited from the super types.
 	 * @param typeParameterBuilder the builder if type parameter.
 	 * @param typeBuilder the builder of type.
 	 * @param typeReferences the builder of type references.
 	 * @param jvmTypesFactory the factory of Jvm types.
-	 * @param associator the associator to use, or {@code null} if none.
 	 * @since 0.6
 	 */
 	public static void copyTypeParametersFromJvmOperation(List<JvmTypeParameter> inputParameters,
 			List<JvmTypeParameter> outputParameters,
+			Map<String, JvmTypeReference> superTypeParameterMapping,
 			JvmTypeReferenceBuilder typeParameterBuilder, JvmTypesBuilder typeBuilder,
-			TypeReferences typeReferences, TypesFactory jvmTypesFactory,
-			IJvmModelAssociator associator) {
+			TypeReferences typeReferences, TypesFactory jvmTypesFactory) {
 		// Copy the generic types in two steps: first step is the name's copy.
 		for (final JvmTypeParameter typeParameter : inputParameters) {
 			final JvmTypeParameter typeParameterCopy = jvmTypesFactory.createJvmTypeParameter();
@@ -1617,8 +1628,8 @@ public final class Utils {
 					cst.setTypeReference(cloneWithTypeParametersAndProxies(
 							constraint.getTypeReference(),
 							outputParameters,
-							typeParameterBuilder, typeBuilder, typeReferences, jvmTypesFactory,
-							associator));
+							superTypeParameterMapping,
+							typeParameterBuilder, typeBuilder, typeReferences, jvmTypesFactory));
 				}
 			}
 		}

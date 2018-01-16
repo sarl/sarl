@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -56,6 +57,7 @@ import com.google.inject.Singleton;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.jvmmodel.SyntheticNameClashResolver;
 import org.eclipse.xtend.core.jvmmodel.XtendJvmModelInferrer;
@@ -75,7 +77,6 @@ import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.EcoreUtil2;
-import org.eclipse.xtext.LanguageInfo;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
 import org.eclipse.xtext.common.types.JvmAnnotationTarget;
 import org.eclipse.xtext.common.types.JvmAnnotationType;
@@ -320,9 +321,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	@Inject
 	private JvmVisibilityComparator visibilityComparator;
-
-	@Inject
-	private LanguageInfo languageInfo;
 
 	@Inject
 	private SARLGrammarKeywordAccess grammarKeywordAccess;
@@ -837,7 +835,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			} finally {
 				closeContext(context);
 			}
-		} catch (InternalError internalError) {
+		} catch (AssertionError | InternalError internalError) {
 			throw internalError;
 		} catch (Exception exception) {
 			logInternalError(exception);
@@ -1650,33 +1648,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			}
 
 			// Infer the return type
-			final XExpression expression = source.getExpression();
-			JvmTypeReference returnType = null;
-			if (source.getReturnType() != null) {
-				returnType = source.getReturnType();
-			} else if (context != null) {
-				if (inheritedOperation != null) {
-					returnType = inheritedOperation.getReturnType();
-				}
-				if (returnType == null
-						&& expression != null
-						&& ((!(expression instanceof XBlockExpression))
-								|| (!((XBlockExpression) expression).getExpressions().isEmpty()))) {
-					returnType = inferFunctionReturnType(expression);
-				}
-			} else if (expression != null
-					&& ((!(expression instanceof XBlockExpression))
-							|| (!((XBlockExpression) expression).getExpressions().isEmpty()))) {
-				returnType = inferFunctionReturnType(expression);
-			}
-			final JvmTypeReference selectedReturnType;
-			if (returnType == null) {
-				selectedReturnType = this._typeReferenceBuilder.typeRef(Void.TYPE);
-			} else if (InferredTypeIndicator.isInferred(returnType)) {
-				selectedReturnType = returnType;
-			} else {
-				selectedReturnType = this.typeBuilder.cloneWithProxies(returnType);
-			}
+			final JvmTypeReference selectedReturnType = inferFunctionReturnType(source, operation, inheritedOperation);
 			operation.setReturnType(selectedReturnType);
 
 			// Exceptions
@@ -1686,7 +1658,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 			// Add the body
 			if (enableFunctionBody) {
-				setBody(operation, expression);
+				setBody(operation, source.getExpression());
 			}
 
 			// User Annotations
@@ -2097,6 +2069,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				// Generate the buffer field
 				final String fieldName = Utils.createNameForHiddenCapacityImplementationAttribute(capacityType.getIdentifier());
 				final JvmField field = this.typesFactory.createJvmField();
+				container.getMembers().add(field);
 				field.setVisibility(JvmVisibility.PRIVATE);
 				field.setSimpleName(fieldName);
 				field.setTransient(true);
@@ -2113,12 +2086,11 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						Collections.singletonList(capacityType)));
 				appendGeneratedAnnotation(field, getContext(container));
 
-				container.getMembers().add(field);
-
 				// Generate the calling function
 				final String methodName = Utils.createNameForHiddenCapacityImplementationCallingMethodFromFieldName(
 						fieldName);
 				final JvmOperation operation = this.typesFactory.createJvmOperation();
+				container.getMembers().add(operation);
 				operation.setVisibility(JvmVisibility.PRIVATE);
 				operation.setReturnType(cloneWithTypeParametersAndProxies(capacityType, operation));
 				operation.setSimpleName(methodName);
@@ -2161,8 +2133,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				if (context.getGeneratorConfig2().isGeneratePureAnnotation()) {
 					addAnnotationSafe(operation, Pure.class);
 				}
-
-				container.getMembers().add(operation);
 
 				context.addGeneratedCapacityUseField(capacityType.getIdentifier());
 				context.incrementSerial(capacityType.getIdentifier().hashCode());
@@ -2981,7 +2951,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					owner.getParameters().add(lastParam);
 					lastParam.setName(paramName);
 					if (owner instanceof JvmOperation) {
-						lastParam.setParameterType(cloneWithTypeParametersAndProxies(paramType, (JvmOperation) owner));
+						lastParam.setParameterType(cloneWithTypeParametersAndProxies(paramType, owner));
 					} else {
 						lastParam.setParameterType(this.typeBuilder.cloneWithProxies(paramType));
 					}
@@ -3233,24 +3203,67 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		return result;
 	}
 
-	/** Clone the given type reference that for being link to the given operation.
+	/** Clone the given type reference that for being link to the given executable component.
 	 *
 	 * <p>The proxies are not resolved, and the type parameters are clone when they are
-	 * related to the type parameter of the type container.
+	 * related to the type parameter of the executable or the type container.
 	 *
 	 * @param type the source type.
-	 * @param forOperation the operation that will contain the result type.
+	 * @param forExecutable the executable component that will contain the result type.
 	 * @return the result type, i.e. a copy of the source type.
 	 */
-	protected JvmTypeReference cloneWithTypeParametersAndProxies(JvmTypeReference type, JvmOperation forOperation) {
-		final boolean canAssociate = this.languageInfo.isLanguage(type.eResource());
-		return Utils.cloneWithTypeParametersAndProxies(type, forOperation,
+	protected JvmTypeReference cloneWithTypeParametersAndProxies(JvmTypeReference type, JvmExecutable forExecutable) {
+		// Ensure that the executable is inside a container. Otherwise, the cloning function will fail.
+		assert forExecutable.getDeclaringType() != null;
+		// Get the type parameter mapping that is a consequence of the super type extension within the container.
+		final Map<String, JvmTypeReference> superTypeParameterMapping = new HashMap<>();
+		Utils.getSuperTypeParameterMap(forExecutable.getDeclaringType(), superTypeParameterMapping);
+		// Do the cloning
+		return Utils.cloneWithTypeParametersAndProxies(
+				type,
+				forExecutable.getTypeParameters(),
+				superTypeParameterMapping,
 				this._typeReferenceBuilder,
-				this.typeBuilder, this.typeReferences, this.typesFactory,
-				canAssociate ? this.associator : null);
+				this.typeBuilder, this.typeReferences, this.typesFactory);
 	}
 
-	/** Copy and clean the given documentation by removing any unecessary <code>@param</code>.
+	/** Clone the given type reference that is associated to another Xtext resource.
+	 *
+	 * <p>This function ensures that the resource of the reference clone is not pointing
+	 * to the resource of the original reference.
+	 *
+	 * <p>This function calls {@link JvmTypesBuilder#cloneWithProxies(JvmTypeReference)} or
+	 * {@link #cloneWithTypeParametersAndProxies(JvmTypeReference, JvmExecutable)} if the
+	 * {@code target} is {@code null} for the first, and not {@code null} for the second.
+	 *
+	 * @param type the source type.
+	 * @param target the operation for which the type is clone, or {@code null} if not relevant.
+	 * @return the result type, i.e. a copy of the source type.
+	 */
+	protected JvmTypeReference cloneWithProxiesFromOtherResource(JvmTypeReference type, JvmOperation target) {
+		if (type == null) {
+			return this._typeReferenceBuilder.typeRef(Void.TYPE);
+		}
+		// Do not clone inferred types because they are not yet resolved and it is located within the current resource.
+		if (InferredTypeIndicator.isInferred(type)) {
+			return type;
+		}
+		// Do not clone primitive types because the associated resource to the type reference will not be correct.
+		final String id = type.getIdentifier();
+		if (Objects.equal(id, Void.TYPE.getName())) {
+			return this._typeReferenceBuilder.typeRef(Void.TYPE);
+		}
+		if (this.services.getPrimitives().isPrimitive(type)) {
+			return this._typeReferenceBuilder.typeRef(id);
+		}
+		// Clone the type
+		if (target != null) {
+			return cloneWithTypeParametersAndProxies(type, target);
+		}
+		return this.typeBuilder.cloneWithProxies(type);
+	}
+
+	/** Copy and clean the given documentation by removing any unnecessary <code>@param</code>.
 	 *
 	 * @param sourceOperation the source for the documentation.
 	 * @param targetOperation the target for the documentation.
@@ -3296,7 +3309,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		return true;
 	}
 
-	/** Copy and clean the given documentation by removing any unecessary <code>@param</code>.
+	/** Copy and clean the given documentation by removing any unnecessary <code>@param</code>.
 	 *
 	 * @param sourceParameters the parameters of the source.
 	 * @param targetParameters the parameters of the target.
@@ -3330,17 +3343,17 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * <p>This function differs from {@link #copyAndFixTypeParameters(List, org.eclipse.xtext.common.types.JvmTypeParameterDeclarator)}
 	 * and {@link #copyTypeParameters(List, org.eclipse.xtext.common.types.JvmTypeParameterDeclarator)}
 	 * in the fact that the type parameters were already generated and fixed. The current function supper generic types by
-	 * clone the types references with {@link #cloneWithTypeParametersAndProxies(JvmTypeReference, JvmOperation)}.
+	 * clone the types references with {@link #cloneWithTypeParametersAndProxies(JvmTypeReference, JvmExecutable)}.
 	 *
 	 * @param fromOperation the operation from which the type parameters are copied.
 	 * @param toOperation the operation that will receives the new type parameters.
 	 * @see Utils#copyTypeParametersFromJvmOperation(JvmOperation, JvmOperation,
 	 *     org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder, JvmTypesBuilder, TypeReferences,
-	 *     TypesFactory, IJvmModelAssociator)
+	 *     TypesFactory)
 	 */
 	protected void copyTypeParametersFromJvmOperation(JvmOperation fromOperation, JvmOperation toOperation) {
 		Utils.copyTypeParametersFromJvmOperation(fromOperation, toOperation,
-				this._typeReferenceBuilder, this.typeBuilder, this.typeReferences, this.typesFactory, this.associator);
+				this._typeReferenceBuilder, this.typeBuilder, this.typeReferences, this.typesFactory);
 	}
 
 	/** Copy the JVM operations from the source to the destination.
@@ -3440,28 +3453,38 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			if (createdConstructors.add(pair.getValue())) {
 				final JvmConstructor constructor = pair.getKey();
 				final JvmConstructor newCons = this.typesFactory.createJvmConstructor();
+				newCons.setDeprecated(constructor.isDeprecated());
+				newCons.setSimpleName(target.getSimpleName());
+				target.getMembers().add(newCons);
 
 				for (final JvmFormalParameter parameter : constructor.getParameters()) {
 					final JvmFormalParameter newParam = this.typesFactory.createJvmFormalParameter();
 					newParam.setName(parameter.getSimpleName());
-					newParam.setParameterType(this.typeBuilder.cloneWithProxies(parameter.getParameterType()));
+					newCons.getParameters().add(newParam);
+
+					final JvmTypeReference originalParamTypeReference = parameter.getParameterType();
+					final JvmTypeReference paramType = cloneWithTypeParametersAndProxies(originalParamTypeReference, newCons);
+					assert originalParamTypeReference != paramType;
+					newParam.setParameterType(paramType);
+
 					for (final JvmAnnotationReference annotationReference : parameter.getAnnotations()) {
 						if (this.annotationUtils.findAnnotation(newParam, annotationReference.getAnnotation().getQualifiedName()) == null) {
 							final JvmAnnotationReference annotation = EcoreUtil.copy(annotationReference);
 							if (annotation != null) {
 								newParam.getAnnotations().add(annotation);
+								this.associator.removeAllAssociation(annotation);
 							}
 						}
 					}
-					newCons.getParameters().add(newParam);
+
+					this.associator.removeAllAssociation(paramType);
+					this.associator.removeAllAssociation(newParam);
 				}
 
-				newCons.setDeprecated(constructor.isDeprecated());
-				newCons.setSimpleName(target.getSimpleName());
 				newCons.setVarArgs(constructor.isVarArgs());
 
 				JvmVisibility visibility = constructor.getVisibility();
-				if (minimalVisibility != null && minimalVisibility.compareTo(visibility) > 0) {
+				if (visibility != null && minimalVisibility != null && minimalVisibility.compareTo(visibility) > 0) {
 					visibility = minimalVisibility;
 				}
 				newCons.setVisibility(visibility);
@@ -3494,7 +3517,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					}
 				}
 
-				target.getMembers().add(newCons);
+				this.associator.removeAllAssociation(newCons);
 			}
 		}
 	}
@@ -3526,6 +3549,55 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			return this._typeReferenceBuilder.typeRef(Void.TYPE);
 		}
 		return this.typeBuilder.inferredType(body);
+	}
+
+	/** Infer the return type for the given source function.
+	 *
+	 * @param source the source function.
+	 * @param target the target operation.
+	 * @param overriddenOperation reference to the overridden operation.
+	 * @return the inferred return type.
+	 * @since 0.7
+	 */
+	protected JvmTypeReference inferFunctionReturnType(XtendFunction source, JvmOperation target, JvmOperation overriddenOperation) {
+		// The return type is explicitly given
+		if (source.getReturnType() != null) {
+			return ensureValidType(source.eResource(), source.getReturnType());
+		}
+
+		// An super operation was detected => reuse its return type.
+		if (overriddenOperation != null) {
+			final JvmTypeReference type = overriddenOperation.getReturnType();
+			return cloneWithProxiesFromOtherResource(type, target);
+		}
+
+		// Return type is inferred from the operation's expression.
+		final XExpression expression = source.getExpression();
+		JvmTypeReference returnType = null;
+		if (expression != null
+				&& ((!(expression instanceof XBlockExpression))
+						|| (!((XBlockExpression) expression).getExpressions().isEmpty()))) {
+			returnType = inferFunctionReturnType(expression);
+		}
+		return ensureValidType(source.eResource(), returnType);
+	}
+
+	private JvmTypeReference ensureValidType(Resource targetResource, JvmTypeReference returnType) {
+		// No return type could be inferred => assume "void"
+		if (returnType == null) {
+			return this._typeReferenceBuilder.typeRef(Void.TYPE);
+		}
+		// The given type is not associated to the target resource => force relocation.
+		final Resource returnTypeResource = returnType.eResource();
+		if (returnTypeResource != null && !Objects.equal(returnType.eResource(), targetResource)) {
+			return this.typeBuilder.cloneWithProxies(returnType);
+		}
+		// A return type was inferred => use it as-is because it is not yet resolved to the concrete type.
+		if (InferredTypeIndicator.isInferred(returnType)) {
+			return returnType;
+		}
+		// A return was inferred and resolved => use it.
+		return this.typeBuilder.cloneWithProxies(returnType);
 	}
 
 	/** Initialize the SARL capacity context-aware wrapper.

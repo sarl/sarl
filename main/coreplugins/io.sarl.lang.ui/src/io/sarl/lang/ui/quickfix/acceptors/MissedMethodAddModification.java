@@ -22,6 +22,7 @@
 package io.sarl.lang.ui.quickfix.acceptors;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -176,7 +177,7 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 				builder.setBodyGenerator(null);
 
 				builder.setVisibility(operation.getVisibility());
-				builder.setTypeParameters(cloneTypeParameters(operation));
+				builder.setTypeParameters(cloneTypeParameters(operation, declaringType));
 
 				final QualifiedActionName qualifiedActionName = this.actionPrototypeProvider.createQualifiedActionName(
 						declaringType,
@@ -311,7 +312,7 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 		return type.getQualifiedName();
 	}
 
-	/** Clone the given types by applying thee type parameter mapping when necessary.
+	/** Clone the given types by applying the type parameter mapping when necessary.
 	 *
 	 * @param types the types to clone.
 	 * @param typeParameterMap the type parameter mapping.
@@ -332,17 +333,21 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 		return Utils.toLightweightTypeReference(mappedReference, this.services);
 	}
 
-	private List<JvmTypeParameter> cloneTypeParameters(JvmOperation fromOperation) {
+	private List<JvmTypeParameter> cloneTypeParameters(JvmOperation fromOperation, JvmDeclaredType declaringType) {
 		final SARLQuickfixProvider tools = getTools();
 		final JvmTypeReferenceBuilder builder1 = tools.getJvmTypeParameterBuilder();
 		final JvmTypesBuilder builder2 = tools.getJvmTypeBuilder();
 		final TypeReferences builder3 = tools.getTypeServices().getTypeReferences();
 		final TypesFactory builder4 = tools.getTypeServices().getTypesFactory();
 		final List<JvmTypeParameter> outParameters = new ArrayList<>();
+		// Get the type parameter mapping that is a consequence of the super type extension within the container.
+		final Map<String, JvmTypeReference> superTypeParameterMapping = new HashMap<>();
+		Utils.getSuperTypeParameterMap(declaringType, superTypeParameterMapping);
 		Utils.copyTypeParametersFromJvmOperation(
 				fromOperation.getTypeParameters(),
 				outParameters,
-				builder1, builder2, builder3, builder4, null);
+				superTypeParameterMapping,
+				builder1, builder2, builder3, builder4);
 		return outParameters;
 	}
 
