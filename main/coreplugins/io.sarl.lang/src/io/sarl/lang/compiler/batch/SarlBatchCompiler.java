@@ -1206,12 +1206,13 @@ public class SarlBatchCompiler {
 		assert cancelIndicator != null;
 		boolean hasError = false;
 		final List<Resource> resources = new LinkedList<>(resourceSet.getResources());
+		this.logger.info(Messages.SarlBatchCompiler_38);
 		for (final Resource resource : resources) {
 			if (cancelIndicator.isCanceled()) {
 				return false;
 			}
 			if (isSourceFile(resource)) {
-				this.logger.info(MessageFormat.format(Messages.SarlBatchCompiler_22, resource.getURI().lastSegment()));
+				this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_22, resource.getURI().lastSegment()));
 				final IResourceServiceProvider resourceServiceProvider = IResourceServiceProvider.Registry.INSTANCE
 						.getResourceServiceProvider(resource.getURI());
 				if (resourceServiceProvider != null) {
@@ -1234,10 +1235,12 @@ public class SarlBatchCompiler {
 					hasError |= hasValidationError;
 					if (!hasValidationError) {
 						if (!issues.isEmpty()) {
+							this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_39, resource.getURI().lastSegment()));
 							reportIssues(issues);
 						}
 						validResources.add(resource);
 					} else {
+						this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_39, resource.getURI().lastSegment()));
 						reportIssues(issues);
 					}
 				}
