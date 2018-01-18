@@ -159,6 +159,13 @@
 			</roles>
 		</contributor>
 		<contributor>
+			<name>Greg Bowering</name>
+			<url>https://github.com/gb96</url>
+			<roles>
+				<role>Fixes for localization support within the fireworks example</role>
+			</roles>
+		</contributor>
+		<contributor>
 			<name>Mohamed Ezzat</name>
 			<email>mohamed.ezzat@devfactory.com</email>
 			<url>https://github.com/m-ezzat</url>
