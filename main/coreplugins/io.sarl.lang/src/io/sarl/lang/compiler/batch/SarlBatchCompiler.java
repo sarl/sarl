@@ -1076,6 +1076,7 @@ public class SarlBatchCompiler {
 				MessageFormat.format(Messages.SarlBatchCompiler_40, logger.getName()), factory);
 		setStaticField(BatchLinkableResourceStorageWritable.class, "LOG", internalLogger); //$NON-NLS-1$
 		setStaticField(BatchLinkableResource.class, "log", internalLogger); //$NON-NLS-1$
+		setStaticField(ProcessorInstanceForJvmTypeProvider.class, "logger", internalLogger); //$NON-NLS-1$
 	}
 
 	private void setStaticField(Class<?> type, String name, Logger logger) {
