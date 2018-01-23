@@ -50,6 +50,7 @@ public class DocumentationImplicitlyImportedFeatures extends SARLImplicitlyImpor
 		xtextList.add(0, MarkdownExtensions.class);
 		xtextList.add(0, FactExtensions.class);
 		xtextList.add(0, ShouldExtensions.class);
+		xtextList.add(0, OperatorExtensions.class);
 		return xtextList;
 	}
 

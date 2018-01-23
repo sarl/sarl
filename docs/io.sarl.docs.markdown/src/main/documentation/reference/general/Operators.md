@@ -311,22 +311,38 @@ The following table lists the precedence and associativity of SARL operators. Op
 in ascending precedence, i.e. from the lower priority to the higher priority.
 
 
-| Operator                              | Description                                | Associativity   |
-| ------------------------------------- | ------------------------------------------ | --------------- |
-| =, +=, -=, *=, /=, %=, <<=, >>=, >>>= | Assignment operators                       | right to left   |
-| &verbar;&verbar;                      | Boolean OR                                 | left to right   |
-| &amp;&amp;                            | Boolean AND                                | left to right   |
-| ==, !=, ===, !==                      | Equality                                   | left to right   |
-| >=, <=, <, >, <>, instanceof          | Relational operator                        | not associative |
-| .., >.., ..<, ->, =>, ?:              | Construction operators: range, pairs, etc. | not associative |
-| >>, <<, >>>, <<<                      | Shifting operators                         | left to right   |
-| +, -                                  | Addition and subtraction                   | left to right   |
-| *, /, %                               | Multiplication, division, modulo           | left to right   |
-| as                                    | Cast operator                              | right to left   |
-| !, +x, -x                             | Negation, positive, negative               | right to left   |
-| **                                    | Exponential operator                       | right to left   |
-| ++, --                                | Postfix operators                          | not associative |
-| x	                                    | Feature call                               |                 |
+| Operators                                           | Associativity   |
+| --------------------------------------------------- | --------------- |
+| =                                                   | right to left   |
+| ||                                                  | left to right   |
+| &&                                                  | left to right   |
+| ==, !=, ===, !==                                    | left to right   |
+| >=, <=, <, >                                        | left to right   |
+| instanceof                                          | not associative |
+| <=>, <>, .., >.., ..<, ->, =>, ?:, >>, <<, >>>, <<< | left to right   |
+| +, -                                                | left to right   |
+| *, /, %                                             | left to right   |
+| as                                                  | left to right   |
+| !, - (unary), **                                    | right to left   |
+| ++, --                                              | not associative |
+
+
+[:Fact:]{
+	#[
+		#[ "$v=$i" ],
+		#[ "$i||$i" ],
+		#[ "$i&&$i" ],
+		#[ "$i==$i", "$i!=$i", "$i===$i", "$i!==$i" ],
+		#[ "$i>=$i", "$i<=$i", "$i<$i", "$i>$i" ],
+		#[ "$o instanceof $t" ],
+		#[ "$i<=>$i", "$i<>$i", "$i..$i", "$i>..$i", "$i..<$i", "$i->$i", "$i=>$i", "$i?:$i", "$i>>$i", "$i<<$i", "$i>>>$i", "$i<<<$i" ],
+		#[ "$i+$i", "$i-$i" ],
+		#[ "$i*$i", "$i/$i", "$i%$i" ],
+		#[ "$L as $t" ],
+		#[ "!$R", "-$R", "$i**$i" ],
+		#[ "$v++", "$v--" ]
+	].validateOperatorOrder
+}
 
 
 When parsing an expression, an operator which is listed on some row of the table above with a precedence will

@@ -147,13 +147,15 @@ public class SarlScriptExecutor implements ScriptExecutor {
 		compiler.setWarningSeverity(IssueCodes.DEPRECATED_MEMBER_REFERENCE, Severity.ERROR);
 		compiler.setJavaCompilerVerbose(false);
 		compiler.getLogger().setLevel(Level.OFF);
-		compiler.addIssueMessageListener((issue, uri, message) -> {
-			if (issue.isSyntaxError() || issue.getSeverity() == Severity.ERROR) {
-				final Integer line = issue.getLineNumber();
-				final int issueLine = (line == null ? 0 : line.intValue()) + lineno;
-				issues.add(message + "(line " + issueLine + ")"); //$NON-NLS-1$ //$NON-NLS-2$
-			}
-		});
+		if (issues != null) {
+			compiler.addIssueMessageListener((issue, uri, message) -> {
+				if (issue.isSyntaxError() || issue.getSeverity() == Severity.ERROR) {
+					final Integer line = issue.getLineNumber();
+					final int issueLine = (line == null ? 0 : line.intValue()) + lineno;
+					issues.add(message + "(line " + issueLine + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+				}
+			});
+		}
 		if (receiver != null) {
 			compiler.addCompiledResourceReceiver(receiver);
 		}
@@ -172,10 +174,10 @@ public class SarlScriptExecutor implements ScriptExecutor {
 					resources.add(it);
 				});
 		try {
+			assertNoIssue(lineno, issues);
 			if (resources.isEmpty()) {
 				throw new IllegalStateException("No Xtext resource created [line:" + lineno + "]"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
-			assertNoIssue(lineno, issues);
 			for (Resource resource : resources) {
 				SarlScript script = (SarlScript) resource.getContents().get(0);
 				SarlClass clazz = (SarlClass) script.getXtendTypes().get(0);
