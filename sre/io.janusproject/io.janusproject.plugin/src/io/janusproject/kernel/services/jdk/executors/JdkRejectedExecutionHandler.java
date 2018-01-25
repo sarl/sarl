@@ -62,7 +62,7 @@ public class JdkRejectedExecutionHandler implements RejectedExecutionHandler {
 		if (!runRejectedTask(task, executor)) {
 			final LogRecord record = new LogRecord(Level.FINE,
 					MessageFormat.format(Messages.JdkRejectedExecutionHandler_0, task.toString()));
-			this.logger.log(record);
+			this.logger.getKernelLogger().log(record);
 		}
 	}
 

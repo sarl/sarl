@@ -302,7 +302,7 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 				throw new Error(Messages.StandardSpawnService_9, e);
 			}
 		} else {
-			this.logger.warning(warningMessage);
+			this.logger.getKernelLogger().warning(warningMessage);
 		}
 
 		return false;

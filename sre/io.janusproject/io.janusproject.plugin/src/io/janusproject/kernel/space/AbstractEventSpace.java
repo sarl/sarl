@@ -21,6 +21,7 @@
 
 package io.janusproject.kernel.space;
 
+import java.text.MessageFormat;
 import java.util.UUID;
 
 import com.google.inject.Inject;
@@ -135,7 +136,7 @@ public abstract class AbstractEventSpace extends SpaceBase {
 			this.network.publish(scopeInstance, event);
 			doEmit(event, scopeInstance);
 		} catch (Throwable e) {
-			this.logger.error(Messages.AbstractEventSpace_0, event, scope, e);
+			this.logger.getKernelLogger().severe(MessageFormat.format(Messages.AbstractEventSpace_0, event, scope, e));
 		}
 
 	}
@@ -194,7 +195,7 @@ public abstract class AbstractEventSpace extends SpaceBase {
 		try {
 			AbstractEventSpace.this.doEmit(event, (Scope<Address>) scope);
 		} catch (Exception e) {
-			this.logger.error(Messages.AbstractEventSpace_1, e);
+			this.logger.getKernelLogger().severe(MessageFormat.format(Messages.AbstractEventSpace_1, e));
 		}
 	}
 

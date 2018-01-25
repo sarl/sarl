@@ -72,31 +72,32 @@ public final class LoggerCreator {
 	}
 
 	/**
-	 * Create a logger with the given name.
+	 * Create a logger with the given name for the platform.
 	 *
-	 * <p>The level of logging is influence by {@link JanusConfig#VERBOSE_LEVEL_NAME}.
+	 * <p>The platform logger has the level {@link Level#ALL}. It override the
+	 * output handlers with handlers for the standard output and standard error.
+	 * The platform logger is a root logger.
 	 *
-	 * @param name
-	 *            - the name of the new logger.
 	 * @return the logger.
 	 */
-	public static Logger createLogger(String name) {
-		final Logger logger = Logger.getLogger(name);
-		final Handler stderr = new StandardErrorOutputConsoleHandler();
-		final Handler stdout = new StandardOutputConsoleHandler();
+	public static Logger createPlatformLogger() {
+		final Logger logger = Logger.getAnonymousLogger();
 		for (final Handler handler : logger.getHandlers()) {
 			logger.removeHandler(handler);
 		}
+		final Handler stderr = new StandardErrorOutputConsoleHandler();
+		stderr.setLevel(Level.ALL);
+		final Handler stdout = new StandardOutputConsoleHandler();
+		stdout.setLevel(Level.ALL);
 		logger.addHandler(stderr);
 		logger.addHandler(stdout);
 		logger.setUseParentHandlers(false);
-		final Level level = getLoggingLevelFromProperties();
-		logger.setLevel(level);
+		logger.setLevel(Level.ALL);
 		return logger;
 	}
 
 	/**
-	 * Create a logger with the given name.
+	 * Create a logger with the given name for a module (kernel or agent).
 	 *
 	 * <p>The level of logging is influence by {@link JanusConfig#VERBOSE_LEVEL_NAME}.
 	 *
@@ -106,15 +107,14 @@ public final class LoggerCreator {
 	 *            - the parent logger.
 	 * @return the logger.
 	 */
-	public static Logger createLogger(String name, Logger parent) {
+	public static Logger createModuleLogger(String name, Logger parent) {
 		final Logger logger = Logger.getLogger(name);
 		if (parent != null) {
 			logger.setParent(parent);
 		}
 		logger.setUseParentHandlers(true);
-		if (parent != null) {
-			logger.setLevel(parent.getLevel());
-		}
+		final Level level = getLoggingLevelFromProperties();
+		logger.setLevel(level);
 		return logger;
 	}
 

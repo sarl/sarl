@@ -19,13 +19,10 @@
  */
 package io.janusproject.tests.testutils;
 
-import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Filter;
 import java.util.logging.Level;
-import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import com.google.common.util.concurrent.AbstractService;
@@ -45,14 +42,12 @@ import io.janusproject.services.logging.LogService;
  */
 public class ExceptionLogService extends AbstractService implements LogService {
 
-	private final List<Object> results;
 	private final Logger logger;
 
 	/**
 	 * @param results the results of the run.
 	 */
 	public ExceptionLogService(List<Object> results) {
-		this.results = results;
 		this.logger = Logger.getLogger(ExceptionLogService.class.getName());
 	}
 
@@ -80,107 +75,6 @@ public class ExceptionLogService extends AbstractService implements LogService {
 	}
 
 	@Override
-	public void info(String message, Object... params) {
-		//
-	}
-
-	@Override
-	public void fineInfo(String message, Object... params) {
-		//
-	}
-
-	@Override
-	public void finerInfo(String message, Object... params) {
-		//
-	}
-
-	@Override
-	public void debug(String message, Object... params) {
-		//
-	}
-
-	@Override
-	public void warning(String message, Object... params) {
-		//
-	}
-
-	@Override
-	public void warning(Throwable exception) {
-		//
-	}
-
-	@Override
-	public void error(String message, Object... params) {
-		final Exception ex = new LoggedException(MessageFormat.format(message, params));
-		error(ex);
-	}
-
-	@Override
-	public void error(Throwable exception) {
-		synchronized(getResultMutex()) {
-			this.results.add(exception);
-		}
-		this.logger.log(Level.SEVERE, exception.getMessage(), exception);
-	}
-
-	@Override
-	public void log(LogRecord record) {
-		if (record.getLevel() == Level.SEVERE) {
-			final Exception ex = new LoggedException(record.getMessage(), record.getThrown());
-			synchronized(getResultMutex()) {
-				this.results.add(ex);
-			}
-			this.logger.log(Level.SEVERE, ex.getMessage(), ex);
-		}
-	}
-
-	@Override
-	public void log(Level level, String message, Object... params) {
-		if (level == Level.SEVERE) {
-			final Exception ex = new LoggedException(message);
-			synchronized(getResultMutex()) {
-				this.results.add(ex);
-			}
-			this.logger.log(Level.SEVERE, ex.getMessage(), ex);
-		}
-	}
-
-	@Override
-	public Logger getLogger() {
-		return this.logger;
-	}
-
-	@Override
-	public void setLogger(Logger logger) {
-		//
-	}
-
-	@Override
-	public void setFilter(Filter filter) {
-		//
-	}
-
-	@Override
-	public Filter getFilter() {
-		return null;
-	}
-
-	@Override
-	public boolean isLoggeable(Level level) {
-		return level.intValue() <= Level.SEVERE.intValue();
-	}
-
-	@Override
-	public Level getLevel() {
-		return Level.SEVERE;
-	}
-
-	@Override
-	public void setLevel(Level level) {
-		//
-	}
-
-	@Override
 	protected void doStart() {
 		this.logger.setLevel(Level.SEVERE);
 		notifyStarted();
@@ -190,6 +84,16 @@ public class ExceptionLogService extends AbstractService implements LogService {
 	protected void doStop() {
 		//this.logger.setLevel(Level.OFF);
 		notifyStopped();
+	}
+
+	@Override
+	public Logger getPlatformLogger() {
+		return this.logger;
+	}
+
+	@Override
+	public Logger getKernelLogger() {
+		return this.logger;
 	}
 
 	/**

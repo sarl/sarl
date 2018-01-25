@@ -21,6 +21,7 @@
 
 package io.janusproject.kernel.services.jdk.contextspace;
 
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -307,7 +308,7 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	 */
 	protected void fireContextCreated(AgentContext context) {
 		final ContextRepositoryListener[] ilisteners = this.listeners.getListeners(ContextRepositoryListener.class);
-		this.logger.info(Messages.StandardContextSpaceService_0, context.getID());
+		this.logger.getKernelLogger().info(MessageFormat.format(Messages.StandardContextSpaceService_0, context.getID()));
 		for (final ContextRepositoryListener listener : ilisteners) {
 			listener.contextCreated(context);
 		}
@@ -320,7 +321,7 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	 */
 	protected void fireContextDestroyed(AgentContext context) {
 		final ContextRepositoryListener[] ilisteners = this.listeners.getListeners(ContextRepositoryListener.class);
-		this.logger.info(Messages.StandardContextSpaceService_1, context.getID());
+		this.logger.getKernelLogger().info(MessageFormat.format(Messages.StandardContextSpaceService_1, context.getID()));
 		for (final ContextRepositoryListener listener : ilisteners) {
 			listener.contextDestroyed(context);
 		}

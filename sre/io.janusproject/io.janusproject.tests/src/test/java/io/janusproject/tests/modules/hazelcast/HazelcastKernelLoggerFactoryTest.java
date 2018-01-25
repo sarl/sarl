@@ -23,9 +23,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
+import static org.mockito.Mockito.*;
+
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 import com.hazelcast.logging.ILogger;
 import io.janusproject.modules.hazelcast.HazelcastKernelLoggerFactory;
@@ -62,14 +65,17 @@ public class HazelcastKernelLoggerFactoryTest extends AbstractJanusTest {
 
 	@Test
 	public void setLogService() {
-		LogService serv = Mockito.mock(LogService.class);
+		LogService serv = mock(LogService.class);
+		when(serv.getPlatformLogger()).thenReturn(mock(Logger.class));
 		HazelcastKernelLoggerFactory.setLogService(serv);
 		assertSame(serv, HazelcastKernelLoggerFactory.getLogService());
 	}
 
 	@Test
 	public void createLogger() throws Exception {
-		LogService serv = Mockito.mock(LogService.class);
+		LogService serv = mock(LogService.class);
+		Logger logger = mock(Logger.class);
+		when(serv.getKernelLogger()).thenReturn(logger);
 
 		ILogger log = (ILogger) this.reflect.invoke(this.factory, "createLogger", UUID.randomUUID().toString());
 		assertNotNull(log);
@@ -81,7 +87,7 @@ public class HazelcastKernelLoggerFactoryTest extends AbstractJanusTest {
 		log.severe("Test"); //$NON-NLS-1$
 
 		ArgumentCaptor<LogRecord> argument = ArgumentCaptor.forClass(LogRecord.class);
-		Mockito.verify(serv).log(argument.capture());
+		Mockito.verify(logger).log(argument.capture());
 		assertEquals(Level.SEVERE, argument.getValue().getLevel());
 		assertEquals("Test", argument.getValue().getMessage()); //$NON-NLS-1$
 	}

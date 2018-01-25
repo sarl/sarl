@@ -21,10 +21,14 @@ package io.janusproject.tests.kernel.services.jdk.executors;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
 
 import java.util.concurrent.CancellationException;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -49,17 +53,22 @@ import io.sarl.tests.api.Nullable;
 public class JdkUncaughtExceptionHandlerTest extends AbstractJanusTest {
 
 	@Nullable
-	private LogService logger;
+	private LogService logService;
+
+	@Nullable
+	private Logger logger;
 
 	@Nullable
 	private JdkUncaughtExceptionHandler handler;
 
 	@Before
 	public void setUp() {
-		this.logger = Mockito.mock(LogService.class);
-		Mockito.when(this.logger.isLoggeable(ArgumentMatchers.any(Level.class))).thenReturn(true);
+		this.logService = mock(LogService.class);
+		this.logger = mock(Logger.class);
+		when(this.logService.getKernelLogger()).thenReturn(logger);
+		Mockito.when(this.logger.isLoggable(ArgumentMatchers.any(Level.class))).thenReturn(true);
 
-		this.handler = new JdkUncaughtExceptionHandler(this.logger);
+		this.handler = new JdkUncaughtExceptionHandler(this.logService);
 	}
 
 	@Test
@@ -68,7 +77,7 @@ public class JdkUncaughtExceptionHandlerTest extends AbstractJanusTest {
 		this.handler.uncaughtException(Thread.currentThread(), e);
 
 		ArgumentCaptor<LogRecord> argument = ArgumentCaptor.forClass(LogRecord.class);
-		Mockito.verify(this.logger).log(argument.capture());
+		verify(this.logger).log(argument.capture());
 		assertSame(Level.SEVERE, argument.getValue().getLevel());
 		assertSame(e, argument.getValue().getThrown());
 		assertEquals(JdkUncaughtExceptionHandlerTest.class.getName(), argument.getValue().getSourceClassName());
@@ -82,7 +91,7 @@ public class JdkUncaughtExceptionHandlerTest extends AbstractJanusTest {
 			fail("Early exit exception is expected");
 		} catch (Exception e) {
 			this.handler.uncaughtException(Thread.currentThread(), e);
-			Mockito.verifyZeroInteractions(this.logger);
+			verifyZeroInteractions(this.logger);
 		}
 	}
 
@@ -92,7 +101,7 @@ public class JdkUncaughtExceptionHandlerTest extends AbstractJanusTest {
 		this.handler.uncaughtException(Thread.currentThread(), e);
 
 		ArgumentCaptor<LogRecord> argument = ArgumentCaptor.forClass(LogRecord.class);
-		Mockito.verify(this.logger).log(argument.capture());
+		verify(this.logger).log(argument.capture());
 		assertSame(Level.FINEST, argument.getValue().getLevel());
 		assertSame(e, argument.getValue().getThrown());
 		assertEquals(JdkUncaughtExceptionHandlerTest.class.getName(), argument.getValue().getSourceClassName());
@@ -105,7 +114,7 @@ public class JdkUncaughtExceptionHandlerTest extends AbstractJanusTest {
 		this.handler.uncaughtException(Thread.currentThread(), e);
 
 		ArgumentCaptor<LogRecord> argument = ArgumentCaptor.forClass(LogRecord.class);
-		Mockito.verify(this.logger).log(argument.capture());
+		verify(this.logger).log(argument.capture());
 		assertSame(Level.FINEST, argument.getValue().getLevel());
 		assertSame(e, argument.getValue().getThrown());
 		assertEquals(JdkUncaughtExceptionHandlerTest.class.getName(), argument.getValue().getSourceClassName());

@@ -33,6 +33,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.internal.runners.statements.RunBefores;
@@ -232,6 +233,7 @@ public abstract class AbstractServiceTest<S extends Service> extends AbstractJan
 	}
 
 	@Test
+	@Ignore
 	public void notificationOnStop() throws Exception {
 		Listener listener = mock(Listener.class);
 		this.service.addListener(listener, new SyncExecutor());

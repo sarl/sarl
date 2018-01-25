@@ -38,7 +38,6 @@ import com.google.inject.multibindings.Multibinder;
 import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
 
-import io.janusproject.JanusConfig;
 import io.janusproject.kernel.services.jdk.contextspace.StandardContextSpaceService;
 import io.janusproject.kernel.services.jdk.logging.StandardLogService;
 import io.janusproject.kernel.services.jdk.spawn.StandardSpawnService;
@@ -118,7 +117,7 @@ public class StandardCoreModule extends AbstractModule {
 		 * Construct.
 		 */
 		LoggerMemberListener() {
-			this.rootLogger = LoggerCreator.createLogger(JanusConfig.JANUS_DEFAULT_PLATFORM_NAME);
+			this.rootLogger = LoggerCreator.createPlatformLogger();
 		}
 
 		@Override

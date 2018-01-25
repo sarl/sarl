@@ -49,9 +49,16 @@ import io.sarl.lang.core.Agent;
  */
 public class LoggingSkill extends BuiltinSkill implements Logging {
 
+	private static final Level DEBUG_LEVEL = Level.FINE;
+
+	private static final Level INFO_LEVEL = Level.INFO;
+
+	private static final Level WARNING_LEVEL = Level.WARNING;
+
+	private static final Level ERROR_LEVEL = Level.SEVERE;
+
 	private static int installationOrder = -1;
 
-	@Inject
 	private LogService logService;
 
 	private Logger logger;
@@ -76,22 +83,43 @@ public class LoggingSkill extends BuiltinSkill implements Logging {
 		return this.logger;
 	}
 
+	/** Change the reference to the logging service.
+	 *
+	 * @param service the service.
+	 */
+	@Inject
+	public void setLoggingService(LogService service) {
+		assert service != null;
+		this.logService = service;
+	}
+
+	/** Change the internal logger.
+	 *
+	 * @param logger the logger.
+	 */
+	public void setLogger(Logger logger) {
+		assert logger != null;
+		this.logger = logger;
+	}
+
 	@Override
 	protected void install() {
 		final UUID agentId = getOwner().getID();
 		final String loggerName = MessageFormat.format(Messages.LoggingSkill_0, agentId);
-		this.logger = LoggerCreator.createLogger(loggerName, this.logService.getLogger());
+		final Logger logger = this.logService.createAgentLogger(loggerName);
+		setLogger(logger);
 	}
 
 	@Override
 	public void setLoggingName(String name) {
-		String loggingName = name;
-		if (loggingName == null || loggingName.isEmpty()) {
-			loggingName = MessageFormat.format(Messages.LoggingSkill_0, getOwner().getID());
+		String loggerName = name;
+		if (loggerName == null || loggerName.isEmpty()) {
+			loggerName = MessageFormat.format(Messages.LoggingSkill_0, getOwner().getID());
 		}
-		final Level level = this.logger.getLevel();
-		this.logger = LoggerCreator.createLogger(loggingName, this.logService.getLogger());
-		this.logger.setLevel(level);
+		Logger logger = getLogger();
+		final Level level = logger != null ? logger.getLevel() : null;
+		logger = this.logService.createAgentLogger(loggerName, level);
+		setLogger(logger);
 	}
 
 	@Override
@@ -101,46 +129,50 @@ public class LoggingSkill extends BuiltinSkill implements Logging {
 
 	@Override
 	public void error(Object message, Throwable exception, Object... parameters) {
-		if (this.logger.isLoggable(Level.SEVERE) && message != null) {
+		final Logger logger = getLogger();
+		if (logger.isLoggable(ERROR_LEVEL) && message != null) {
 			final String loggeableMessage = message.toString();
 			if (exception != null) {
-				final LogRecord lr = new LogRecord(Level.SEVERE, loggeableMessage);
+				final LogRecord lr = new LogRecord(ERROR_LEVEL, loggeableMessage);
 		        lr.setParameters(parameters);
 		        lr.setThrown(Throwables.getRootCause(exception));
-				this.logger.log(lr);
+				logger.log(lr);
 			} else {
-				this.logger.log(Level.SEVERE, loggeableMessage, parameters);
+				logger.log(ERROR_LEVEL, loggeableMessage, parameters);
 			}
 		}
 	}
 
 	@Override
 	public void error(Object message, Object... parameters) {
-		if (this.logger.isLoggable(Level.SEVERE) && message != null) {
+		final Logger logger = getLogger();
+		if (logger.isLoggable(ERROR_LEVEL) && message != null) {
 			final String loggeableMessage = message.toString();
-			this.logger.log(Level.SEVERE, loggeableMessage, parameters);
+			logger.log(ERROR_LEVEL, loggeableMessage, parameters);
 		}
 	}
 
 	@Override
 	public void error(Supplier<String> messageProvider) {
-		if (this.logger.isLoggable(Level.SEVERE) && messageProvider != null) {
-			this.logger.log(Level.SEVERE, messageProvider);
+		final Logger logger = getLogger();
+		if (logger.isLoggable(ERROR_LEVEL) && messageProvider != null) {
+			logger.log(ERROR_LEVEL, messageProvider);
 		}
 	}
 
 	@Override
 	public void warning(Object message, Throwable exception, Object... parameters) {
-		if (this.logger.isLoggable(Level.WARNING) && message != null) {
+		final Logger logger = getLogger();
+		if (logger.isLoggable(WARNING_LEVEL) && message != null) {
 			final String loggeableMessage = message.toString();
 			if (!loggeableMessage.isEmpty()) {
 				if (exception != null) {
-					final LogRecord lr = new LogRecord(Level.WARNING, loggeableMessage);
+					final LogRecord lr = new LogRecord(WARNING_LEVEL, loggeableMessage);
 			        lr.setParameters(parameters);
 			        lr.setThrown(exception);
-					this.logger.log(lr);
+					logger.log(lr);
 				} else {
-					this.logger.log(Level.WARNING, loggeableMessage, parameters);
+					logger.log(WARNING_LEVEL, loggeableMessage, parameters);
 				}
 			}
 		}
@@ -148,83 +180,90 @@ public class LoggingSkill extends BuiltinSkill implements Logging {
 
 	@Override
 	public void warning(Object message, Object... parameters) {
-		if (this.logger.isLoggable(Level.WARNING) && message != null) {
+		final Logger logger = getLogger();
+		if (logger.isLoggable(WARNING_LEVEL) && message != null) {
 			final String loggeableMessage = message.toString();
 			if (!loggeableMessage.isEmpty()) {
-				this.logger.log(Level.WARNING, loggeableMessage, parameters);
+				logger.log(WARNING_LEVEL, loggeableMessage, parameters);
 			}
 		}
 	}
 
 	@Override
 	public void warning(Supplier<String> messageProvider) {
-		if (this.logger.isLoggable(Level.WARNING) && messageProvider != null) {
-			this.logger.log(Level.WARNING, messageProvider);
+		final Logger logger = getLogger();
+		if (logger.isLoggable(WARNING_LEVEL) && messageProvider != null) {
+			logger.log(WARNING_LEVEL, messageProvider);
 		}
 	}
 
 	@Override
 	public void info(Object message, Object... parameters) {
-		if (this.logger.isLoggable(Level.INFO) && message != null) {
+		final Logger logger = getLogger();
+		if (logger.isLoggable(INFO_LEVEL) && message != null) {
 			final String loggeableMessage = message.toString();
 			if (!loggeableMessage.isEmpty()) {
-				this.logger.log(Level.INFO, loggeableMessage, parameters);
+				logger.log(INFO_LEVEL, loggeableMessage, parameters);
 			}
 		}
 	}
 
 	@Override
 	public void info(Supplier<String> messageProvider) {
-		if (this.logger.isLoggable(Level.INFO) && messageProvider != null) {
-			this.logger.log(Level.INFO, messageProvider);
+		final Logger logger = getLogger();
+		if (logger.isLoggable(INFO_LEVEL) && messageProvider != null) {
+			logger.log(INFO_LEVEL, messageProvider);
 		}
 	}
 
 	@Override
 	public void debug(Object message, Object... parameters) {
-		if (this.logger.isLoggable(Level.CONFIG) && message != null) {
+		final Logger logger = getLogger();
+		if (logger.isLoggable(DEBUG_LEVEL) && message != null) {
 			final String loggeableMessage = message.toString();
 			if (!loggeableMessage.isEmpty()) {
-				this.logger.log(Level.CONFIG, loggeableMessage, parameters);
+				logger.log(DEBUG_LEVEL, loggeableMessage, parameters);
 			}
 		}
 	}
 
 	@Override
 	public void debug(Supplier<String> messageProvider) {
-		if (this.logger.isLoggable(Level.CONFIG) && messageProvider != null) {
-			this.logger.log(Level.CONFIG, messageProvider);
+		final Logger logger = getLogger();
+		if (logger.isLoggable(DEBUG_LEVEL) && messageProvider != null) {
+			logger.log(DEBUG_LEVEL, messageProvider);
 		}
 	}
 
 	@Override
 	public boolean isErrorLogEnabled() {
-		return this.logger.isLoggable(Level.SEVERE);
+		return getLogger().isLoggable(ERROR_LEVEL);
 	}
 
 	@Override
 	public boolean isWarningLogEnabled() {
-		return this.logger.isLoggable(Level.WARNING);
+		return getLogger().isLoggable(WARNING_LEVEL);
 	}
 
 	@Override
 	public boolean isInfoLogEnabled() {
-		return this.logger.isLoggable(Level.INFO);
+		return getLogger().isLoggable(INFO_LEVEL);
 	}
 
 	@Override
 	public boolean isDebugLogEnabled() {
-		return this.logger.isLoggable(Level.CONFIG);
+		return getLogger().isLoggable(DEBUG_LEVEL);
 	}
 
 	@Override
 	public int getLogLevel() {
-		return LoggerCreator.toInt(this.logger.getLevel());
+		return LoggerCreator.toInt(getLogger().getLevel());
 	}
 
 	@Override
 	public void setLogLevel(int level) {
-		this.logger.setLevel(LoggerCreator.fromInt(level));
+		final Level lvl = LoggerCreator.fromInt(level);
+		getLogger().setLevel(lvl);
 	}
 
 }

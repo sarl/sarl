@@ -68,20 +68,20 @@ public class JdkUncaughtExceptionHandler implements UncaughtExceptionHandler {
 			return;
 		}
 		if (cause instanceof CancellationException || exception instanceof CancellationException) {
-			// Avoid too much processing if the error is not loggeable
-			if (!this.logger.isLoggeable(Level.FINEST)) {
+			// Avoid too much processing if the error is not loggable
+			if (!this.logger.getKernelLogger().isLoggable(Level.FINEST)) {
 				return;
 			}
 			record = new LogRecord(Level.FINEST, MessageFormat.format(Messages.JdkUncaughtExceptionHandler_0, taskId, taskName));
 		} else if (cause instanceof InterruptedException || exception instanceof InterruptedException) {
-			// Avoid too much processing if the error is not loggeable
-			if (!this.logger.isLoggeable(Level.FINEST)) {
+			// Avoid too much processing if the error is not loggable
+			if (!this.logger.getKernelLogger().isLoggable(Level.FINEST)) {
 				return;
 			}
 			record = new LogRecord(Level.FINEST, MessageFormat.format(Messages.JdkUncaughtExceptionHandler_1, taskId, taskName));
 		} else {
-			// Avoid too much processing if the error is not loggeable
-			if (!this.logger.isLoggeable(Level.SEVERE)) {
+			// Avoid too much processing if the error is not loggable
+			if (!this.logger.getKernelLogger().isLoggable(Level.SEVERE)) {
 				return;
 			}
 			record = new LogRecord(Level.SEVERE, MessageFormat.format(Messages.JdkUncaughtExceptionHandler_2,
@@ -96,7 +96,7 @@ public class JdkUncaughtExceptionHandler implements UncaughtExceptionHandler {
 			record.setSourceClassName(elt.getClassName());
 			record.setSourceMethodName(elt.getMethodName());
 		}
-		this.logger.log(record);
+		this.logger.getKernelLogger().log(record);
 	}
 
 	@Override

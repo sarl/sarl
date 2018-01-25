@@ -19,19 +19,20 @@
  */
 package io.janusproject.tests.kernel.services.jdk.executors;
 
-import static org.junit.Assert.assertSame;
-
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.only;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
-import org.mockito.Mockito;
 
 import io.janusproject.kernel.services.jdk.executors.JdkRejectedExecutionHandler;
 import io.janusproject.services.logging.LogService;
@@ -49,7 +50,10 @@ import io.sarl.tests.api.Nullable;
 public class JdkRejectedExecutionHandlerTest extends AbstractJanusTest {
 
 	@Nullable
-	private LogService logger;
+	private LogService logService;
+
+	@Nullable
+	private Logger logger;
 
 	@Nullable
 	private ThreadPoolExecutor executor;
@@ -59,13 +63,15 @@ public class JdkRejectedExecutionHandlerTest extends AbstractJanusTest {
 
 	@Before
 	public void setUp() {
-		this.logger = mock(LogService.class);
-		when(this.logger.isLoggeable(ArgumentMatchers.any(Level.class))).thenReturn(true);
+		this.logService = mock(LogService.class);
+		this.logger = mock(Logger.class);
+		when(this.logService.getPlatformLogger()).thenReturn(logger);
+		when(this.logger.isLoggable(ArgumentMatchers.any(Level.class))).thenReturn(true);
 
 		this.executor = mock(ThreadPoolExecutor.class);
 		when(this.executor.isShutdown()).thenReturn(false);
 		
-		this.handler = new JdkRejectedExecutionHandler(this.logger);
+		this.handler = new JdkRejectedExecutionHandler(this.logService);
 	}
 
 	@Test

@@ -23,6 +23,7 @@ package io.janusproject.modules.hazelcast;
 
 import java.net.InetAddress;
 import java.net.URI;
+import java.text.MessageFormat;
 
 import com.google.common.util.concurrent.Service;
 import com.google.inject.AbstractModule;
@@ -107,7 +108,7 @@ public class HazelcastModule extends AbstractModule {
 			try {
 				adr = NetworkUtil.toInetAddress(uri);
 			} catch (Throwable e) {
-				logService.error("INVALID_PUB_URI", e); //$NON-NLS-1$
+				logService.getKernelLogger().severe(MessageFormat.format("INVALID_PUB_URI", e)); //$NON-NLS-1$
 			}
 		}
 

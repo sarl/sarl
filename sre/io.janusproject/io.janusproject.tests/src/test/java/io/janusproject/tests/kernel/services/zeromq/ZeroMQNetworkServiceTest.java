@@ -19,8 +19,11 @@
  */
 package io.janusproject.tests.kernel.services.zeromq;
 
+import static org.mockito.Mockito.*;
+
 import java.net.InetAddress;
 import java.net.URI;
+import java.util.logging.Logger;
 
 import io.janusproject.kernel.services.zeromq.ZeroMQNetworkService;
 import io.janusproject.services.contextspace.ContextSpaceService;
@@ -51,11 +54,11 @@ public class ZeroMQNetworkServiceTest extends AbstractDependentServiceTest<ZeroM
 	@Nullable
 	private URI uri;
 
-	@Mock
+	@Nullable
 	private LogService logService;
 
-	@Mock
-	private LogService logger;
+	@Nullable
+	private Logger logger;
 
 	@Mock
 	private KernelDiscoveryService kernelService;
@@ -77,6 +80,9 @@ public class ZeroMQNetworkServiceTest extends AbstractDependentServiceTest<ZeroM
 
 	@Before
 	public void setUp() {
+		this.logger = mock(Logger.class);
+		this.logService = mock(LogService.class);
+		when(this.logService.getKernelLogger()).thenReturn(this.logger);
 		InetAddress adr = NetworkUtil.getLoopbackAddress();
 		this.uri = NetworkUtil.toURI(adr, -1);
 	}

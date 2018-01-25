@@ -23,6 +23,7 @@ package io.janusproject.kernel.services.hazelcast;
 
 import java.net.InetSocketAddress;
 import java.net.URI;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -170,7 +171,7 @@ public class HazelcastKernelDiscoveryService extends AbstractDependentService
 	 * @param uri URI of the discovered kernel.
 	 */
 	protected void fireKernelDiscovered(URI uri) {
-		this.logger.info(Messages.HazelcastKernelDiscoveryService_0, uri, getCurrentKernel());
+		this.logger.getKernelLogger().info(MessageFormat.format(Messages.HazelcastKernelDiscoveryService_0, uri, getCurrentKernel()));
 		for (final KernelDiscoveryServiceListener listener : this.listeners.getListeners(KernelDiscoveryServiceListener.class)) {
 			listener.kernelDiscovered(uri);
 		}
@@ -182,7 +183,7 @@ public class HazelcastKernelDiscoveryService extends AbstractDependentService
 	 * @param uri URI of the disconnected kernel.
 	 */
 	protected void fireKernelDisconnected(URI uri) {
-		this.logger.info(Messages.HazelcastKernelDiscoveryService_1, uri, getCurrentKernel());
+		this.logger.getKernelLogger().info(MessageFormat.format(Messages.HazelcastKernelDiscoveryService_1, uri, getCurrentKernel()));
 		for (final KernelDiscoveryServiceListener listener : this.listeners.getListeners(KernelDiscoveryServiceListener.class)) {
 			listener.kernelDisconnected(uri);
 		}

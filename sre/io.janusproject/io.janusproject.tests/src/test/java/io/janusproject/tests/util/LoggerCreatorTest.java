@@ -144,19 +144,17 @@ public class LoggerCreatorTest extends AbstractJanusTest {
 	}
 
 	@Test
-	public void createLogger() {
-		String name = UUID.randomUUID().toString();
-		Level expectedLevel = LoggerCreator.getLoggingLevelFromProperties();
-		Logger logger = LoggerCreator.createLogger(name);
-		assertEquals(expectedLevel, logger.getLevel());
+	public void createPlatformLogger() {
+		Logger logger = LoggerCreator.createPlatformLogger();
+		assertEquals(Level.ALL, logger.getLevel());
 	}
 
 	@Test
-	public void createLoggerWithParent() {
-		Logger parent = LoggerCreator.createLogger("parent"); //$NON-NLS-1$
+	public void createAgentLogger() {
+		Logger parent = LoggerCreator.createPlatformLogger();
 		String name = UUID.randomUUID().toString();
 		Level expectedLevel = LoggerCreator.getLoggingLevelFromProperties();
-		Logger logger = LoggerCreator.createLogger(name, parent);
+		Logger logger = LoggerCreator.createModuleLogger(name, parent);
 		assertEquals(expectedLevel, logger.getLevel());
 	}
 

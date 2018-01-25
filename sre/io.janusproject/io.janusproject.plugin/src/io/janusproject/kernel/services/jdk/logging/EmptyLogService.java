@@ -23,9 +23,7 @@ package io.janusproject.kernel.services.jdk.logging;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.logging.Filter;
 import java.util.logging.Level;
-import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import com.google.common.util.concurrent.AbstractService;
@@ -52,7 +50,8 @@ public class EmptyLogService extends AbstractService implements LogService {
 	 * Construct.
 	 */
 	public EmptyLogService() {
-		this.logger = LoggerCreator.createLogger(EmptyLogService.class.getName());
+		this.logger = LoggerCreator.createPlatformLogger();
+		this.logger.setLevel(Level.OFF);
 	}
 
 	@Override
@@ -71,91 +70,6 @@ public class EmptyLogService extends AbstractService implements LogService {
 	}
 
 	@Override
-	public void info(String message, Object... params) {
-		//
-	}
-
-	@Override
-	public void fineInfo(String message, Object... params) {
-		//
-	}
-
-	@Override
-	public void finerInfo(String message, Object... params) {
-		//
-	}
-
-	@Override
-	public void debug(String message, Object... params) {
-		//
-	}
-
-	@Override
-	public void warning(String message, Object... params) {
-		//
-	}
-
-	@Override
-	public void warning(Throwable exception) {
-		//
-	}
-
-	@Override
-	public void error(String message, Object... params) {
-		//
-	}
-
-	@Override
-	public void error(Throwable exception) {
-		//
-	}
-
-	@Override
-	public void log(LogRecord record) {
-		//
-	}
-
-	@Override
-	public void log(Level level, String message, Object... params) {
-		//
-	}
-
-	@Override
-	public Logger getLogger() {
-		return this.logger;
-	}
-
-	@Override
-	public void setLogger(Logger logger) {
-		//
-	}
-
-	@Override
-	public void setFilter(Filter filter) {
-		//
-	}
-
-	@Override
-	public Filter getFilter() {
-		return null;
-	}
-
-	@Override
-	public boolean isLoggeable(Level level) {
-		return false;
-	}
-
-	@Override
-	public Level getLevel() {
-		return Level.OFF;
-	}
-
-	@Override
-	public void setLevel(Level level) {
-		//
-	}
-
-	@Override
 	protected void doStart() {
 		this.logger.setLevel(Level.OFF);
 		notifyStarted();
@@ -165,6 +79,16 @@ public class EmptyLogService extends AbstractService implements LogService {
 	protected void doStop() {
 		this.logger.setLevel(Level.OFF);
 		notifyStopped();
+	}
+
+	@Override
+	public Logger getPlatformLogger() {
+		return this.logger;
+	}
+
+	@Override
+	public Logger getKernelLogger() {
+		return this.logger;
 	}
 
 }

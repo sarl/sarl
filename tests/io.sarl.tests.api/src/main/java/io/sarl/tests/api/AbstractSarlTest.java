@@ -2231,4 +2231,22 @@ public abstract class AbstractSarlTest {
 
 	}
 
+	/** Assert all the elements within the given collection are different.
+	 *
+	 * @param collection the collection to test.
+	 */
+	public static void assertAllDifferents(List<?> collection) {
+		final int len = collection.size();
+		final int penulvian = collection.size() - 1;
+		for (int i = 0; i < penulvian; ++i) {
+			final Object obj1 = collection.get(i);
+			for (int j = i + 1; j < len; ++j) {
+				final Object obj2 = collection.get(j);
+				if (Objects.equal(obj1, obj2)) {
+					fail("Same objects at positions " + i + " and " + j);
+				}
+			}
+		}
+	}
+
 }

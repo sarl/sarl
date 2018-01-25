@@ -23,7 +23,6 @@ package io.janusproject.util;
 
 import org.arakhne.afc.vmutil.ClassLoaderFinder;
 
-import io.janusproject.kernel.services.jdk.logging.StandardLogService.LoggerCallerProvider;
 import io.janusproject.services.logging.LogService;
 
 /**
@@ -42,7 +41,7 @@ public final class ClassFinder {
     }
 
     /**
-     * Find the class with a search policiy.
+     * Find the class with a search policy.
      *
      * @param classname the name of the class.
      * @return the class.
@@ -71,8 +70,7 @@ public final class ClassFinder {
 				//
 			}
 		}
-		if (type != null && !LogService.class.isAssignableFrom(type)
-				&& !LoggerCallerProvider.class.isAssignableFrom(type)) {
+		if (type != null && !LogService.class.isAssignableFrom(type)) {
 			return type;
 		}
 		return null;

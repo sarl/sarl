@@ -23,6 +23,7 @@ package io.janusproject.modules.hazelcast;
 
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 import com.hazelcast.logging.AbstractLogger;
 import com.hazelcast.logging.ILogger;
@@ -98,14 +99,17 @@ public class HazelcastKernelLoggerFactory extends LoggerFactorySupport {
 		public void log(Level level, String message) {
 			final LogService serv = getLogService();
 			if (serv != null) {
-				serv.log(new LogRecord(level, message));
+				final Logger log = serv.getKernelLogger();
+				if (log != null) {
+					log.log(new LogRecord(level, message));
+				}
 			}
 		}
 
 		@Override
 		public void log(Level level, String message, Throwable thrown) {
 			final LogService serv = getLogService();
-			if (serv != null && serv.isLoggeable(level)) {
+			if (serv != null && serv.getKernelLogger().isLoggable(level)) {
 				final StackTraceElement elt = getCaller();
 				assert elt != null;
 				final LogRecord record = new LogRecord(level, message);
@@ -114,7 +118,7 @@ public class HazelcastKernelLoggerFactory extends LoggerFactorySupport {
 				}
 				record.setSourceClassName(elt.getClassName());
 				record.setSourceMethodName(elt.getMethodName());
-				serv.log(record);
+				serv.getKernelLogger().log(record);
 			}
 		}
 
@@ -122,7 +126,7 @@ public class HazelcastKernelLoggerFactory extends LoggerFactorySupport {
 		public void log(LogEvent logEvent) {
 			final LogService serv = getLogService();
 			if (serv != null) {
-				serv.log(logEvent.getLogRecord());
+				serv.getKernelLogger().log(logEvent.getLogRecord());
 			}
 		}
 
@@ -130,7 +134,7 @@ public class HazelcastKernelLoggerFactory extends LoggerFactorySupport {
 		public Level getLevel() {
 			final LogService serv = getLogService();
 			if (serv != null) {
-				return serv.getLevel();
+				return serv.getKernelLogger().getLevel();
 			}
 			return Level.OFF;
 		}
@@ -139,7 +143,7 @@ public class HazelcastKernelLoggerFactory extends LoggerFactorySupport {
 		public boolean isLoggable(Level level) {
 			final LogService serv = getLogService();
 			if (serv != null) {
-				return serv.isLoggeable(level);
+				return serv.getKernelLogger().isLoggable(level);
 			}
 			return false;
 		}

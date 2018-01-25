@@ -38,14 +38,12 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.Singleton;
 
-import io.janusproject.JanusConfig;
 import io.janusproject.kernel.services.jdk.spawn.CannotSpawnException;
 import io.janusproject.services.IServiceManager;
 import io.janusproject.services.Services;
 import io.janusproject.services.logging.LogService;
 import io.janusproject.services.spawn.KernelAgentSpawnListener;
 import io.janusproject.services.spawn.SpawnService;
-import io.janusproject.util.LoggerCreator;
 import io.janusproject.util.TwoStepConstruction;
 
 import io.sarl.lang.core.Agent;
@@ -79,11 +77,6 @@ public class Kernel {
 	private final SpawnService spawnService;
 
 	private final LogService loggingService;
-
-	/**
-	 * Logger used by the kernel, but not linked to the logging kernel's service.
-	 */
-	private Logger rawLogger;
 
 	private final AtomicBoolean isRunning = new AtomicBoolean(true);
 
@@ -200,14 +193,7 @@ public class Kernel {
 	 * @return the logger of the kernel.
 	 */
 	public Logger getLogger() {
-		Logger log = this.loggingService.getLogger();
-		if (log == null) {
-			if (this.rawLogger == null) {
-				this.rawLogger = LoggerCreator.createLogger(JanusConfig.JANUS_DEFAULT_PLATFORM_NAME);
-			}
-			log = this.rawLogger;
-		}
-		return log;
+		return this.loggingService.getKernelLogger();
 	}
 
 	/**

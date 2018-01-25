@@ -21,6 +21,7 @@
 
 package io.janusproject.kernel.bic;
 
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Queue;
 import java.util.UUID;
@@ -248,7 +249,7 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 			} else {
 				final LogRecord record = new LogRecord(Level.SEVERE, Messages.InternalEventBusSkill_3);
 		        record.setThrown(Throwables.getRootCause(e));
-				this.logger.log(record);
+				this.logger.getKernelLogger().log(record);
 			}
 			// If we have an exception within the agent's initialization, we kill the agent.
 			setOwnerState(OwnerState.ALIVE);
@@ -278,7 +279,7 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 			} else {
 				final LogRecord record = new LogRecord(Level.SEVERE, Messages.InternalEventBusSkill_4);
 		        record.setThrown(Throwables.getRootCause(e));
-				this.logger.log(record);
+				this.logger.getKernelLogger().log(record);
 			}
 		}
 	}
@@ -384,7 +385,7 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 			case DEAD:
 				// Dropping messages since agent is dying
 				assert !getOwnerState().isEventHandling();
-				InternalEventBusSkill.this.logger.debug(Messages.InternalEventBusSkill_1, event);
+				InternalEventBusSkill.this.logger.getKernelLogger().fine(MessageFormat.format(Messages.InternalEventBusSkill_1, event));
 				break;
 			default:
 				throw new IllegalStateException();
