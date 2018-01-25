@@ -77,7 +77,7 @@ public class BootModule extends AbstractModule {
      */
     @Provides
     @Named(JanusConfig.DEFAULT_CONTEXT_ID_NAME)
-    private static UUID getContextID() {
+    public static UUID getContextID() {
         String str = JanusConfig.getSystemProperty(JanusConfig.DEFAULT_CONTEXT_ID_NAME);
         if (Strings.isNullOrEmpty(str)) {
             Boolean v;
@@ -122,7 +122,7 @@ public class BootModule extends AbstractModule {
      */
     @Provides
     @Named(JanusConfig.DEFAULT_SPACE_ID_NAME)
-    private static UUID getSpaceID() {
+    public static UUID getSpaceID() {
         final String v = JanusConfig.getSystemProperty(JanusConfig.DEFAULT_SPACE_ID_NAME, JanusConfig.DEFAULT_SPACE_ID_VALUE);
         return UUID.fromString(v);
     }
@@ -134,7 +134,7 @@ public class BootModule extends AbstractModule {
      */
     @Provides
     @Named(JanusConfig.PUB_URI)
-    private static URI getPubURIAsURI() {
+    public static URI getPubURIAsURI() {
         final String v = getPUBURIAsString();
         try {
             return NetworkUtil.toURI(v);

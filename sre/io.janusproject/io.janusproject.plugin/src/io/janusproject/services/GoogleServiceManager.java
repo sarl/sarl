@@ -49,7 +49,7 @@ public class GoogleServiceManager implements IServiceManager {
 	 * @param services the services to manager.
 	 */
 	public GoogleServiceManager(Iterable<? extends Service> services) {
-		this.sm = new ServiceManager(services);
+		this(new ServiceManager(services));
 	}
 
 	@Override

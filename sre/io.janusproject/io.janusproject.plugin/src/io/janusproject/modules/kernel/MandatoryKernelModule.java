@@ -83,26 +83,43 @@ public class MandatoryKernelModule extends AbstractModule {
 				.in(Singleton.class);
 	}
 
+	/** Construct the root agent context within the Janus platform.
+	 *
+	 * @param contextService the service for managing the contexts.
+	 * @param janusContextID the root context's id.
+	 * @param defaultJanusSpaceId the id of the space within the root context.
+	 * @return the root context.
+	 */
 	@Provides
 	@io.janusproject.kernel.annotations.Kernel
 	@Singleton
-	private static AgentContext getKernel(ContextSpaceService contextService,
+	public static AgentContext getKernel(ContextSpaceService contextService,
 			@Named(JanusConfig.DEFAULT_CONTEXT_ID_NAME) UUID janusContextID,
 			@Named(JanusConfig.DEFAULT_SPACE_ID_NAME) UUID defaultJanusSpaceId) {
 		return contextService.createContext(janusContextID, defaultJanusSpaceId);
 	}
 
+	/** Create an instance of the event dispatcher for an agent.
+	 *
+	 * @param injector the injector.
+	 * @return the event dispatcher.
+	 */
 	@Provides
-	private static AgentInternalEventsDispatcher createAgentInternalEventsDispatcher(Injector injector) {
+	public static AgentInternalEventsDispatcher createAgentInternalEventsDispatcher(Injector injector) {
 		final AgentInternalEventsDispatcher aeb = new AgentInternalEventsDispatcher(injector.getInstance(ExecutorService.class));
 		// to be able to inject the ExecutorService and SubscriberFindingStrategy
 		injector.injectMembers(aeb);
 		return aeb;
 	}
 
+	/** Create the service manager for the Janus platform.
+	 *
+	 * @param services the services to be managed.
+	 * @return the service manager.
+	 */
 	@Provides
 	@Singleton
-	private static IServiceManager createServiceManager(Set<Service> services) {
+	public static IServiceManager createServiceManager(Set<Service> services) {
 		return new GoogleServiceManager(services);
 	}
 

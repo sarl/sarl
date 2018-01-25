@@ -411,9 +411,9 @@ public class BootTest {
 			assertNullProperty("io.janusproject.tests.MY_PROPERTY_0");
 			assertNullProperty("io.janusproject.tests.MY_PROPERTY_1");
 			assertNullProperty("io.janusproject.tests.MY_PROPERTY_2");
-			verify(this.logger, times(2)).write(ArgumentMatchers.any(byte[].class), ArgumentMatchers.anyInt(), ArgumentMatchers.anyInt());
-			verify(this.logger, times(2)).flush();
-			verify(this.logger, times(1)).close();
+			verify(this.logger, times(3)).write(ArgumentMatchers.any(byte[].class), ArgumentMatchers.anyInt(), ArgumentMatchers.anyInt());
+			verify(this.logger, times(3)).flush();
+			verify(this.logger, times(2)).close();
 			verifyNoMoreInteractions(this.logger);
 			verify(this.exiter, only()).exit();
 		}

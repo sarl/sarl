@@ -107,20 +107,19 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 
 	/**
 	 * Constructs <code>ContextRepository</code>.
-	 */
-	public StandardContextSpaceService() {
-		//
-	}
-
-	/**
-	 * Change the Janus context of the kernel.
 	 *
-	 * @param janusContext the new janus kernel. It must be never <code>null</code>.
+	 * @param janusID injected identifier.
+	 * @param dataStructureService service that permits to obtain distributed data structure.
+	 * @param logService service of logging.
+	 * @param injector the injector to use.
 	 */
 	@Inject
-	void setJanusContext(@io.janusproject.kernel.annotations.Kernel AgentContext janusContext) {
-		assert janusContext != null;
-		this.janusContext = janusContext;
+	public StandardContextSpaceService(@Named(JanusConfig.DEFAULT_CONTEXT_ID_NAME) UUID janusID,
+			DistributedDataStructureService dataStructureService, LogService logService, Injector injector) {
+		this.logger = logService;
+		setContextFactory(new DefaultContextFactory());
+		setSpaceRepositoryFactory(new Context.DefaultSpaceRepositoryFactory(injector, dataStructureService, logService));
+		this.defaultSpaces = dataStructureService.getMap(janusID.toString(), null);
 	}
 
 	@Override
@@ -180,20 +179,14 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	}
 
 	/**
-	 * Initialize this service with injected objects.
+	 * Change the Janus context of the kernel.
 	 *
-	 * @param janusID injected identifier.
-	 * @param dataStructureService service that permits to obtain distributed data structure.
-	 * @param logService service of logging.
-	 * @param injector the injector to use.
+	 * @param janusContext the new janus kernel. It must be never <code>null</code>.
 	 */
 	@Inject
-	void postConstruction(@Named(JanusConfig.DEFAULT_CONTEXT_ID_NAME) UUID janusID,
-			DistributedDataStructureService dataStructureService, LogService logService, Injector injector) {
-		this.logger = logService;
-		this.contextFactory = new DefaultContextFactory();
-		this.spaceRepositoryFactory = new Context.DefaultSpaceRepositoryFactory(injector, dataStructureService, logService);
-		this.defaultSpaces = dataStructureService.getMap(janusID.toString(), null);
+	void setJanusContext(@io.janusproject.kernel.annotations.Kernel AgentContext janusContext) {
+		assert janusContext != null;
+		this.janusContext = janusContext;
 	}
 
 	@Override
