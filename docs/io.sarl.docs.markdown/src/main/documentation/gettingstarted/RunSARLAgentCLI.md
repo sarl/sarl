@@ -38,6 +38,16 @@ The janus command-line tool provides options that will enable you to tune the la
 	[:januscmd!] --help
 
 
+One of the command-line options that is usually mandatory is the [:janusjaroption](--jar) option, which enables you to specify the jar files that contains your application:
+
+
+	[:januscmd!] [:janusjaroption!] path/to/myapp.jar [:janusagent!]
+
+
+If the [:januscmd:] script indicates to you an error "agent not found", most of the time it is because your application's jar file is not on the class path.
+The [:janusjaroption!] option becomes mandatory for specifying the jar file.
+
+
 ## Use the standard java method
 
 ### Boot of Janus
