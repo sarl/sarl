@@ -363,6 +363,10 @@ capacity Lifecycle {
 	 * This action must automatically register the newly created agent
 	 * within the default space of the context.
 	 *
+	 * <p>Caution: when this function returns, it replies the UUID of the spawned agent.
+	 * But, there is no warranty that the agent with this id is initialized at the time of the return.
+	 * Indeed, agent spawning is done in parallel to the calling thread.
+	 *
 	 * <p>This function does nothing if one of the following conditions evaluates to true:
 	 * <ul>
 	 * <li>the agent is not alive.</li>
@@ -380,6 +384,10 @@ capacity Lifecycle {
 	 * Spawns a group of agents inside the default context of this agent.
 	 * This action must automatically register the newly created agents
 	 * within the default space of the context.
+	 *
+	 * <p>Caution: when this function returns, it replies the UUIDs of the spawned agents.
+	 * But, there is no warranty that the agents with th ids are initialized at the time of the return.
+	 * Indeed, agent spawning is done in parallel to the calling thread.
 	 *
 	 * <p>This function does nothing if one of the following conditions evaluates to true:
 	 * <ul>
@@ -399,6 +407,10 @@ capacity Lifecycle {
 	/**
 	 * Spawns a new member agent in the parent's context (parentID).
 	 *
+	 * <p>Caution: when this function returns, it replies the UUID of the spawned agent.
+	 * But, there is no warranty that the agent with this id is initialized at the time of the return.
+	 * Indeed, agent spawning is done in parallel to the calling thread.
+	 *
 	 * <p>This function does nothing if one of the following conditions evaluates to true:
 	 * <ul>
 	 * <li>the agent is not alive.</li>
@@ -414,6 +426,10 @@ capacity Lifecycle {
 	
 	/**
 	 * Spawns a group of agents in the parent's context (parentID).
+	 *
+	 * <p>Caution: when this function returns, it replies the UUIDs of the spawned agents.
+	 * But, there is no warranty that the agents with th ids are initialized at the time of the return.
+	 * Indeed, agent spawning is done in parallel to the calling thread.
 	 *
 	 * <p>This function does nothing if one of the following conditions evaluates to true:
 	 * <ul>
@@ -433,6 +449,10 @@ capacity Lifecycle {
 
 	/**
 	 * Spawns a new member agent in the parent's context (parentID).
+	 *
+	 * <p>Caution: when this function returns, it replies the UUID of the spawned agent.
+	 * But, there is no warranty that the agent with this id is initialized at the time of the return.
+	 * Indeed, agent spawning is done in parallel to the calling thread.
 	 *
 	 * <p>This function does nothing if one of the following conditions evaluates to true:
 	 * <ul>
