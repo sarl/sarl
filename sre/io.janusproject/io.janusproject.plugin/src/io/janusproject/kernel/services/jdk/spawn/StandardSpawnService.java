@@ -597,14 +597,14 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 
 		private final UUID parentID;
 
-		private final UUID agentID;
+		private UUID agentID;
 
 		JustInTimeAgentInjectionModule(Class<? extends Agent> agentType, UUID parentID, UUID agentID) {
 			assert agentType != null;
 			assert parentID != null;
 			this.agentType = agentType;
 			this.parentID = parentID;
-			this.agentID = (agentID == null) ? UUID.randomUUID() : agentID;
+			this.agentID = agentID;
 			Constructor<? extends Agent> cons;
 			Exception e1 = null;
 			try {
@@ -634,12 +634,17 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 
 		@Override
 		public Agent get() {
+			UUID agId = this.agentID;
+			this.agentID = null;
+			if (agId == null) {
+				agId = UUID.randomUUID();
+			}
 			assert this.constructor1 != null || this.constructor2 != null;
 			try {
 				if (this.constructor1 != null) {
-					return this.constructor1.newInstance(this.parentID, this.agentID);
+					return this.constructor1.newInstance(this.parentID, agId);
 				}
-				return this.constructor2.newInstance(null, this.parentID, this.agentID);
+				return this.constructor2.newInstance(null, this.parentID, agId);
 			} catch (InstantiationException | IllegalAccessException | InvocationTargetException exception) {
 				throw new CannotSpawnException(this.agentType, exception);
 			}
