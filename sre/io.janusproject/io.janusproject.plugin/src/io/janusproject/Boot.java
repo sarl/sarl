@@ -245,10 +245,10 @@ public final class Boot {
 				}
 				switch (optName) {
 				case CLI_OPTION_HELP_LONG:
-					showHelp();
+					showHelp(true);
 					return null;
 				case CLI_OPTION_VERSION:
-					showVersion();
+					showVersion(true);
 					return null;
 				case CLI_OPTION_SHOWDEFAULTS_LONG:
 					showDefaults();
@@ -262,7 +262,7 @@ public final class Boot {
 				case CLI_OPTION_FILE_LONG:
 					final String rawFilename = opt.getValue();
 					if (rawFilename == null || "".equals(rawFilename)) { //$NON-NLS-1$
-						showHelp();
+						showHelp(true);
 					}
 					final File file = new File(rawFilename);
 					if (!file.canRead()) {
@@ -316,7 +316,7 @@ public final class Boot {
 
 			// Show the help when there is no argument.
 			if (cmd.getArgs().length == 0) {
-				showHelp();
+				showHelp(true);
 				return null;
 			}
 
@@ -567,18 +567,21 @@ public final class Boot {
 			}
 			logger.println();
 			logger.flush();
-			showHelp(logger);
+			showHelp(logger, false);
+			showVersion(true);
 		}
 	}
 
 	/**
-	 * Show the help message on the standard console. This function never returns.
+	 * Show the help message on the standard console.
+	 *
+	 * @param exit if {@code true}, this function never returns.
 	 */
-	public static void showHelp() {
-		showHelp(new PrintWriter(getConsoleLogger()));
+	public static void showHelp(boolean exit) {
+		showHelp(new PrintWriter(getConsoleLogger()), exit);
 	}
 
-	private static void showHelp(PrintWriter logger) {
+	private static void showHelp(PrintWriter logger, boolean exit) {
 		final HelpFormatter formatter = new HelpFormatter();
 		formatter.printHelp(logger, HelpFormatter.DEFAULT_WIDTH,
 				getProgramName() + " " //$NON-NLS-1$
@@ -586,7 +589,9 @@ public final class Boot {
 				"", //$NON-NLS-1$
 				getOptions(), HelpFormatter.DEFAULT_LEFT_PAD, HelpFormatter.DEFAULT_DESC_PAD, ""); //$NON-NLS-1$
 		logger.flush();
-		getExiter().exit();
+		if (exit) {
+			getExiter().exit();
+		}
 	}
 
 	/** Replies the name of the program.
@@ -635,15 +640,19 @@ public final class Boot {
 	}
 
 	/**
-	 * Show the version of Janus. This function never returns.
+	 * Show the version of Janus.
+	 *
+	 * @param exit if {@code true}, this function never returns.
 	 */
-	public static void showVersion() {
+	public static void showVersion(boolean exit) {
 		try (PrintWriter logger = new PrintWriter(getConsoleLogger())) {
 			logger.println(MessageFormat.format(Messages.Boot_26, JanusVersion.JANUS_RELEASE_VERSION));
 			logger.println(MessageFormat.format(Messages.Boot_27, SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING));
 			logger.flush();
 		}
-		getExiter().exit();
+		if (exit) {
+			getExiter().exit();
+		}
 	}
 
 	/**
