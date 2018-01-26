@@ -23,6 +23,7 @@ package io.sarl.lang.controlflow;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 
 import javax.inject.Inject;
 
@@ -37,6 +38,7 @@ import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.controlflow.DefaultEarlyExitComputer;
 
 import io.sarl.lang.annotation.EarlyExit;
+import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlBreakExpression;
 import io.sarl.lang.sarl.SarlContinueExpression;
 
@@ -84,6 +86,19 @@ public class SARLEarlyExitComputer extends DefaultEarlyExitComputer implements I
 	@Override
 	public boolean isEarlyExitLoop(XExpression expression) {
 		return expression instanceof SarlBreakExpression || expression instanceof SarlContinueExpression;
+	}
+
+	@Override
+	public boolean isEarlyExitOperation(SarlAction operation) {
+		if (operation != null) {
+			final Iterator<JvmTypeReference> eventIterator = operation.getFiredEvents().iterator();
+			while (eventIterator.hasNext()) {
+				if (isEarlyExitEvent(eventIterator.next())) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 }

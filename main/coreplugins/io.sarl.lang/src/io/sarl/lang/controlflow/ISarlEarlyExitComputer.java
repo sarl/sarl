@@ -25,6 +25,8 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.controlflow.IEarlyExitComputer;
 
+import io.sarl.lang.sarl.SarlAction;
+
 /** Compute the early-exit flag for the SARL statements.
  *
  * @author $Author: sgalland$
@@ -59,6 +61,15 @@ public interface ISarlEarlyExitComputer extends IEarlyExitComputer {
 	 * @since 0.5
 	 */
 	boolean isEarlyExitLoop(XExpression expression);
+
+	/** Replies if the given operation causes an early exist within its caller.
+	 *
+	 * @param operation the operation.
+	 * @return <code>true</code> if the operation causes early exit of the caller,
+	 *     otherwise <code>false</code>.
+	 * @since 0.7
+	 */
+	boolean isEarlyExitOperation(SarlAction operation);
 
 }
 

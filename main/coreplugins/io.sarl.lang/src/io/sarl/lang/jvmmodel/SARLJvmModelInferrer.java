@@ -1702,26 +1702,23 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				addDynamicPureAnnotationGenerator = false;
 			}
 
-			final List<JvmTypeReference> firedEvents;
-			if (source instanceof SarlAction) {
-				firedEvents = ((SarlAction) source).getFiredEvents();
-			} else {
-				firedEvents = Collections.emptyList();
-			}
-
 			// Detecting if the action is an early-exit action.
 			// If true, the Java code is annotated to be usable by the SARL validator.
-			boolean isEarlyExitTmp = false;
-			final Iterator<JvmTypeReference> eventIterator = firedEvents.iterator();
-			while (!isEarlyExitTmp && eventIterator.hasNext()) {
-				if (this.earlyExitComputer.isEarlyExitEvent(eventIterator.next())) {
+			final List<JvmTypeReference> firedEvents;
+			final boolean isEarlyExit;
+			if (source instanceof SarlAction) {
+				final SarlAction action = (SarlAction) source;
+				firedEvents = action.getFiredEvents();
+				isEarlyExit = this.earlyExitComputer.isEarlyExitOperation(action);
+				if (isEarlyExit) {
 					addAnnotationSafe(operation, EarlyExit.class);
-					isEarlyExitTmp = true;
 				}
+			} else {
+				firedEvents = Collections.emptyList();
+				isEarlyExit = false;
 			}
-			final boolean isEarlyExit = isEarlyExitTmp;
 
-			// Put the fired SARL events as Java annotations for beeing usable by the SARL validator.
+			// Put the fired SARL events as Java annotations for being usable by the SARL validator.
 			if (!firedEvents.isEmpty()) {
 				operation.getAnnotations().add(annotationClassRef(FiredEvent.class, firedEvents));
 			}
