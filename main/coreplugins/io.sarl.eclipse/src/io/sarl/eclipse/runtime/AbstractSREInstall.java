@@ -64,8 +64,6 @@ public abstract class AbstractSREInstall implements ISREInstall {
 
 	private String bootstrap;
 
-	private boolean isStandalone;
-
 	private List<IRuntimeClasspathEntry> classPathEntries;
 
 	private Map<String, String> attributeMap;
@@ -192,10 +190,6 @@ public abstract class AbstractSREInstall implements ISREInstall {
 		}
 		IStatus status = null;
 		try {
-			if (!isStandalone() && (ignoreCauses & CODE_STANDALONE_SRE) == 0) {
-				return SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, CODE_STANDALONE_SRE,
-						Messages.AbstractSREInstall_5);
-			}
 			final String iMainClass = getMainClass();
 			if (Strings.isNullOrEmpty(iMainClass) && (ignoreCauses & CODE_MAIN_CLASS) == 0) {
 				return SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, CODE_MAIN_CLASS,
@@ -492,31 +486,6 @@ public abstract class AbstractSREInstall implements ISREInstall {
 				SARLRuntime.fireSREChanged(event);
 			}
 		}
-	}
-
-	@Override
-	public void setStandalone(boolean isStandalone) {
-		if (isDirty()) {
-			setDirty(false);
-			resolveDirtyFields(true);
-		}
-		if (isStandalone != this.isStandalone) {
-			final PropertyChangeEvent event = new PropertyChangeEvent(
-					this, ISREInstallChangedListener.PROPERTY_STANDALONE_SRE, this.isStandalone, isStandalone);
-			this.isStandalone = isStandalone;
-			if (this.notify) {
-				SARLRuntime.fireSREChanged(event);
-			}
-		}
-	}
-
-	@Override
-	public boolean isStandalone() {
-		if (isDirty()) {
-			setDirty(false);
-			resolveDirtyFields(true);
-		}
-		return this.isStandalone;
 	}
 
 	/** Replies the string representation of a command-line option.

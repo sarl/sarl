@@ -225,14 +225,6 @@ public class StandardSREInstall extends AbstractSREInstall {
 					throw new SREException(Messages.StandardSREInstall_1);
 				}
 				//
-				// Stand-alone SRE
-				final String strStandalone = sarlSection.getValue(SREConstants.MANIFEST_STANDALONE_SRE);
-				boolean isStandalone = false;
-				if (strStandalone != null && !strStandalone.isEmpty()) {
-					isStandalone = Boolean.parseBoolean(strStandalone);
-				}
-				setStandalone(isStandalone);
-				//
 				// SARL version
 				final String sarlVersion = sarlSection.getValue(SREConstants.MANIFEST_SARL_SPEC_VERSION);
 				String minVersion = null;
@@ -406,7 +398,6 @@ public class StandardSREInstall extends AbstractSREInstall {
 			resolveDirtyFields(true);
 		}
 		final IPath path = getJarFile();
-		element.setAttribute(SREConstants.XML_STANDALONE_SRE, Boolean.toString(isStandalone()));
 		element.setAttribute(SREConstants.XML_LIBRARY_PATH, path.toPortableString());
 		final String name = Strings.nullToEmpty(getName());
 		if (!name.equals(this.manifestName)) {
@@ -452,13 +443,6 @@ public class StandardSREInstall extends AbstractSREInstall {
 		try {
 			if (path != null) {
 				setJarFile(path);
-
-				final String strStandalone = element.getAttribute(SREConstants.XML_STANDALONE_SRE);
-				boolean isStandalone = false;
-				if (strStandalone != null && !strStandalone.isEmpty()) {
-					isStandalone = Boolean.parseBoolean(strStandalone);
-				}
-				setStandalone(isStandalone);
 
 				final String name = element.getAttribute(SREConstants.XML_SRE_NAME);
 				if (!Strings.isNullOrEmpty(name)) {

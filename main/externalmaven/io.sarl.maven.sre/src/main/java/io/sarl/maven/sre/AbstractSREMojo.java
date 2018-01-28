@@ -112,8 +112,10 @@ public abstract class AbstractSREMojo extends AbstractMojo {
 	 * If this parameter is <code>false</code>, the SRE needs another Maven artifact to be used.
 	 *
 	 * <p>By default, a SRE is assued to be standalone.
+	 * @deprecated since 0.7, no replacement
 	 */
 	@Parameter(defaultValue = "true")
+	@Deprecated
 	private boolean standaloneSRE;
 
 	private ManifestUpdater manifestUpdater;
@@ -284,22 +286,6 @@ public abstract class AbstractSREMojo extends AbstractMojo {
 		return this.commandLineOptions;
 	}
 
-	/** Replies if the SRE is standalone.
-	 *
-	 * @return <code>true</code> if the SRE is standalone.
-	 */
-	protected boolean isStandaloneSRE() {
-		return this.standaloneSRE;
-	}
-
-	/** Change if the SRE is standalone.
-	 *
-	 * @param standalone <code>true</code> if the SRE is standalone.
-	 */
-	protected void setStandaloneSRE(boolean standalone) {
-		this.standaloneSRE = standalone;
-	}
-
 	/** Create the manifest of the SRE.
 	 *
 	 * @param filename the name of the manifest; or <code>null</code> if default.
@@ -454,7 +440,6 @@ public abstract class AbstractSREMojo extends AbstractMojo {
 
 		updater.addSREAttribute(SREConstants.MANIFEST_SARL_SPEC_VERSION, getSarlSpecificationVersion());
 		updater.addSREAttribute(SREConstants.MANIFEST_SRE_NAME, name);
-		updater.addSREAttribute(SREConstants.MANIFEST_STANDALONE_SRE, Boolean.toString(isStandaloneSRE()));
 		updater.addSREAttribute(SREConstants.MANIFEST_CLI_SRE_OFFLINE, cmd.getOffline());
 		updater.addSREAttribute(SREConstants.MANIFEST_CLI_RANDOM_CONTEXT_ID, cmd.getRandomContextId());
 		updater.addSREAttribute(SREConstants.MANIFEST_CLI_BOOT_AGENT_CONTEXT_ID, cmd.getBootAgentContextId());

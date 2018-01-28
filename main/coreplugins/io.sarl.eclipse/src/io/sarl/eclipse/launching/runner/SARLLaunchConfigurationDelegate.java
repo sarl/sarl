@@ -562,10 +562,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			throw new CoreException(SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
 					MessageFormat.format(io.sarl.eclipse.launching.dialog.Messages.RuntimeEnvironmentTab_6, runtime)));
 		}
-		int ignoreCode = 0;
-		if (!onlyStandalone) {
-			ignoreCode = ISREInstall.CODE_STANDALONE_SRE;
-		}
+		final int ignoreCode = 0;
 		if (!sre.getValidity(ignoreCode).isOK()) {
 			throw new CoreException(SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, MessageFormat.format(
 					io.sarl.eclipse.launching.dialog.Messages.RuntimeEnvironmentTab_5,

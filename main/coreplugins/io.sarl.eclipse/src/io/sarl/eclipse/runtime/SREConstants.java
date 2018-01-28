@@ -59,10 +59,6 @@ public final class SREConstants {
 	 */
 	public static final String MANIFEST_PROGRAM_ARGUMENTS = "Program-Arguments"; //$NON-NLS-1$
 
-	/** Field name for the boolean flag in the manifest file that indicates if it is a standalone SRE.
-	 */
-	public static final String MANIFEST_STANDALONE_SRE = "Standalone-SRE"; //$NON-NLS-1$
-
 	/** Field name for CLI option for showing the SRE logo.
 	 */
 	public static final String MANIFEST_CLI_SHOW_LOGO = "CLI-Show-Logo"; //$NON-NLS-1$
@@ -138,10 +134,6 @@ public final class SREConstants {
 	/** Attribute name of javadoc path of the SRE's library.
 	 */
 	public static final String XML_JAVADOC_PATH = "javadoc"; //$NON-NLS-1$
-
-	/** Attribute name indicating if the SRE is standalone.
-	 */
-	public static final String XML_STANDALONE_SRE = "standalone"; //$NON-NLS-1$
 
 	private static final String SERVICE_PATH = "META-INF/services/"; //$NON-NLS-1$
 

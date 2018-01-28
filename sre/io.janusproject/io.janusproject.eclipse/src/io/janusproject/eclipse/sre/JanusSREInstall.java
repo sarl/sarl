@@ -115,15 +115,6 @@ public class JanusSREInstall extends AbstractSREInstall {
 	}
 
 	@Override
-	public boolean isStandalone() {
-		// Must return true to pass the test done by the SRE
-		// AbstractSREInstall#getValidity
-		// But the jar of this plugin is not standalone that why in the manifest
-		// standalone=false
-		return true;
-	}
-
-	@Override
 	public String getSREArguments() {
 		return ""; //$NON-NLS-1$
 	}
