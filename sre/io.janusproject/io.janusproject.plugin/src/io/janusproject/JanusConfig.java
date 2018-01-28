@@ -30,6 +30,7 @@ import io.janusproject.modules.hazelcast.HazelcastKernelLoggerFactory;
  * Constants for the Janus configuration.
  *
  * @author $Author: srodriguez$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

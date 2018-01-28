@@ -3216,7 +3216,7 @@ programmatically without having a specific SRE library into the *compilation cla
 
 The [:bootstrapname:] service provides the following functions:
 
-		[:ShowType:]([:bootstrapqname]{io.sarl.core.[:bootstrapname]$SREBootstrap$})
+		[:ShowType:]([:bootstrapqname]{io.sarl.bootstrap.[:bootstrapname]$SREBootstrap$})
 
 
 ### Configuration by hand

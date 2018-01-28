@@ -18,7 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.core.tests;
+package io.sarl.bootstrap.tests;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -33,8 +33,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import io.sarl.core.SRE;
-import io.sarl.core.SREBootstrap;
+import io.sarl.bootstrap.SRE;
+import io.sarl.bootstrap.SREBootstrap;
 import io.sarl.lang.core.Agent;
 import io.sarl.tests.api.AbstractSarlTest;
 

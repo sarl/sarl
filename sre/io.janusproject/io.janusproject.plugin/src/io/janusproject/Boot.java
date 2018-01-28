@@ -57,8 +57,8 @@ import io.janusproject.services.executor.ExecutorService;
 import io.janusproject.services.network.NetworkConfig;
 import io.janusproject.util.LoggerCreator;
 
-import io.sarl.core.SRE;
-import io.sarl.core.SREBootstrap;
+import io.sarl.bootstrap.SRE;
+import io.sarl.bootstrap.SREBootstrap;
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.core.Agent;
 

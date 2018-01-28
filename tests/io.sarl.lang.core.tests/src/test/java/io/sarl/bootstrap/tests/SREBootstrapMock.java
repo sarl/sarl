@@ -18,11 +18,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.core.tests;
+package io.sarl.bootstrap.tests;
 
 import java.util.UUID;
 
-import io.sarl.core.SREBootstrap;
+import io.sarl.bootstrap.SREBootstrap;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
 

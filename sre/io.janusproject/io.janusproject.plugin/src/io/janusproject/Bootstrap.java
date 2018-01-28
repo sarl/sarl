@@ -27,7 +27,7 @@ import java.util.UUID;
 
 import io.janusproject.kernel.Kernel;
 
-import io.sarl.core.SREBootstrap;
+import io.sarl.bootstrap.SREBootstrap;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
 

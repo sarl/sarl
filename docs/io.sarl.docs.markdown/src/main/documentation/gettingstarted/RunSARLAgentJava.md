@@ -21,7 +21,7 @@ application classpath.
 
 The SARL API defines a SRE bootstrap as:
 
-		[:ShowType:]([:bootstrap]$io.sarl.core.SREBootstrap$)
+		[:ShowType:]([:bootstrap]$io.sarl.bootstrap.SREBootstrap$)
 
 
 A run-time environment, such as [Janus](http://www.janusproject.io) must provide a service implementing this bootstrap interface.
@@ -37,7 +37,7 @@ In the following Java code, the [:sre:] utility type is used for retrieving the 
  
 		[:Success:]
 			package io.sarl.docs.bootstrap
-			import io.sarl.core.SRE
+			import io.sarl.bootstrap.SRE
 			class MyProgram {
 			
 				static def main(arguments : String*) {
@@ -61,7 +61,7 @@ It is the role of the SARL run-time environment to create this instance for you,
 
 		[:Success:]
 			package io.sarl.docs.bootstrap
-			import io.sarl.core.SRE
+			import io.sarl.bootstrap.SRE
 			agent [:myagent](MyAgent) {
 			}
 			class MyProgram {
