@@ -22,12 +22,14 @@
 package io.sarl.eclipse.runtime;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -43,6 +45,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
+import java.util.zip.ZipEntry;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -894,23 +897,29 @@ public final class SARLRuntime {
 	 * @see #isPackedSRE(File)
 	 */
 	public static boolean isUnpackedSRE(IPath directory) {
-		final IFile location = ResourcesPlugin.getWorkspace().getRoot().getFile(directory);
-		if (location != null) {
-			final IPath path = location.getLocation();
-			if (path != null) {
-				final File file = path.toFile();
-				if (file.exists()) {
-					if (file.isDirectory()) {
-						return isUnpackedSRE(file);
+		try {
+			final IFile location = ResourcesPlugin.getWorkspace().getRoot().getFile(directory);
+			if (location != null) {
+				final IPath path = location.getLocation();
+				if (path != null) {
+					final File file = path.toFile();
+					if (file.exists()) {
+						if (file.isDirectory()) {
+							return isUnpackedSRE(file);
+						}
+						return false;
 					}
-					return false;
 				}
 			}
+			return isUnpackedSRE(directory.makeAbsolute().toFile());
+		} catch (Exception exception) {
+			return false;
 		}
-		return isUnpackedSRE(directory.makeAbsolute().toFile());
 	}
 
 	/** Replies if the given JAR file contains a SRE.
+	 *
+	 * <p>The SRE detection is based on the content of the manifest.
 	 *
 	 * @param jarFile the JAR file to test.
 	 * @return <code>true</code> if the given directory contains a SRE. Otherwise <code>false</code>.
@@ -938,6 +947,8 @@ public final class SARLRuntime {
 	}
 
 	/** Replies if the given JAR file contains a SRE.
+	 *
+	 * <p>The SRE detection is based on the content of the manifest.
 	 *
 	 * @param jarFile the JAR file to test.
 	 * @return <code>true</code> if the given directory contains a SRE. Otherwise <code>false</code>.
