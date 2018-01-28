@@ -187,7 +187,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 
 	@Override
 	public String getName() {
-		String nam = super.getName();
+		String nam = getNameNoDefault();
 		if (Strings.isNullOrEmpty(nam)) {
 			final IPath path = getJarFile();
 			if (path != null) {
@@ -197,11 +197,6 @@ public class StandardSREInstall extends AbstractSREInstall {
 			}
 		}
 		return nam;
-	}
-
-	@Override
-	public String getNameNoDefault() {
-		return super.getName();
 	}
 
 	@SuppressWarnings({ "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity" })

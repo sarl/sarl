@@ -262,7 +262,7 @@ public abstract class AbstractSREInstall implements ISREInstall {
 	}
 
 	@Override
-	public String getName() {
+	public String getNameNoDefault() {
 		if (isDirty()) {
 			setDirty(false);
 			resolveDirtyFields(true);

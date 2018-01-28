@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import org.eclipse.core.runtime.IPath;
 import org.w3c.dom.Document;
@@ -84,8 +85,12 @@ public class JanusSREInstall extends AbstractSREInstall {
 	}
 
 	@Override
-	public String getNameNoDefault() {
-		return Messages.JanusSREInstall_0;
+	public String getName() {
+		final String name = getNameNoDefault();
+		if (Strings.isNullOrEmpty(name)) {
+			return Messages.JanusSREInstall_0;
+		}
+		return name;
 	}
 
 	@Override
