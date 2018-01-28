@@ -165,20 +165,18 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 	 * @param config the config to load the runtime environment from
 	 */
 	protected void selectSREFromConfig(ILaunchConfiguration config) {
-		final String sreId = this.accessor.getSREId(config);
-		final ISREInstall sre = SARLRuntime.getSREFromId(Strings.nullToEmpty(sreId));
 		final boolean notify = this.sreBlock.getNotify();
-		boolean changed;
+		final boolean changed;
 		try {
 			this.sreBlock.setNotify(false);
-			changed = this.sreBlock.selectSpecificSRE(sre);
-
 			if (this.accessor.getUseSystemSREFlag(config)) {
 				changed = this.sreBlock.selectSystemWideSRE();
-			}
-
-			if (this.accessor.getUseProjectSREFlag(config)) {
+			} else if (this.accessor.getUseProjectSREFlag(config)) {
 				changed = this.sreBlock.selectProjectSRE();
+			} else {
+				final String sreId = this.accessor.getSREId(config);
+				final ISREInstall sre = SARLRuntime.getSREFromId(Strings.nullToEmpty(sreId));
+				changed = this.sreBlock.selectSpecificSRE(sre);
 			}
 		} finally {
 			this.sreBlock.setNotify(notify);

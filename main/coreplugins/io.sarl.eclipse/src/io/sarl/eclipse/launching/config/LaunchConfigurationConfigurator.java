@@ -209,8 +209,8 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	@Override
 	public void setRuntimeConfiguration(ILaunchConfigurationWorkingCopy configuration, ISREInstall sre,
 			Boolean useSystemSre, Boolean useProjectSre) {
-		boolean project = useSystemSre == null ? DEFAULT_USE_SYSTEM_SRE : useSystemSre.booleanValue();
-		boolean system = useProjectSre == null ? DEFAULT_USE_PROJECT_SRE : useProjectSre.booleanValue();
+		boolean system = useSystemSre == null ? DEFAULT_USE_SYSTEM_SRE : useSystemSre.booleanValue();
+		boolean project = useProjectSre == null ? DEFAULT_USE_PROJECT_SRE : useProjectSre.booleanValue();
 		if (system && project) {
 			system = true;
 			project = false;
@@ -233,10 +233,8 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 			configuration.removeAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME);
 		}
 		// Save the boolean configuration flags
-		configuration.setAttribute(ATTR_USE_SYSTEM_SARL_RUNTIME_ENVIRONMENT,
-				Boolean.valueOf(system).toString());
-		configuration.setAttribute(ATTR_USE_PROJECT_SARL_RUNTIME_ENVIRONMENT,
-				Boolean.valueOf(project).toString());
+		configuration.setAttribute(ATTR_USE_SYSTEM_SARL_RUNTIME_ENVIRONMENT, system);
+		configuration.setAttribute(ATTR_USE_PROJECT_SARL_RUNTIME_ENVIRONMENT, project);
 		// Use the default JRE
 		configuration.setAttribute(IJavaLaunchConfigurationConstants.ATTR_JRE_CONTAINER_PATH, (String) null);
 	}
@@ -310,7 +308,14 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 		try {
 			return configuration.getAttribute(ATTR_USE_SYSTEM_SARL_RUNTIME_ENVIRONMENT, DEFAULT_USE_SYSTEM_SRE);
 		} catch (CoreException e) {
-			return DEFAULT_USE_SYSTEM_SRE;
+			// For backward compatibility
+			try {
+				final String value = configuration.getAttribute(ATTR_USE_SYSTEM_SARL_RUNTIME_ENVIRONMENT,
+						Boolean.toString(DEFAULT_USE_SYSTEM_SRE));
+				return Boolean.valueOf(value);
+			} catch (Throwable e2) {
+				return DEFAULT_USE_SYSTEM_SRE;
+			}
 		}
 	}
 
@@ -319,7 +324,14 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 		try {
 			return configuration.getAttribute(ATTR_USE_PROJECT_SARL_RUNTIME_ENVIRONMENT, DEFAULT_USE_PROJECT_SRE);
 		} catch (CoreException e) {
-			return DEFAULT_USE_PROJECT_SRE;
+			// For backward compatibility
+			try {
+				final String value = configuration.getAttribute(ATTR_USE_PROJECT_SARL_RUNTIME_ENVIRONMENT,
+						Boolean.toString(DEFAULT_USE_PROJECT_SRE));
+				return Boolean.valueOf(value);
+			} catch (Throwable e2) {
+				return DEFAULT_USE_PROJECT_SRE;
+			}
 		}
 	}
 

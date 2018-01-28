@@ -408,7 +408,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 							return null;
 						}
 						if (verify) {
-							verifySREValidity(sre, sre.getId(), false);
+							verifySREValidity(sre, sre.getId());
 						}
 						return sre;
 					}
@@ -444,14 +444,14 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			sre = provider.getProjectSREInstall();
 			if (sre != null) {
 				if (verify) {
-					verifySREValidity(sre, sre.getId(), true);
+					verifySREValidity(sre, sre.getId());
 				}
 				return sre;
 			}
 		}
 		final ISREInstall sre = SARLRuntime.getDefaultSREInstall();
 		if (verify) {
-			verifySREValidity(sre, (sre == null) ? Messages.SARLLaunchConfigurationDelegate_8 : sre.getId(), true);
+			verifySREValidity(sre, (sre == null) ? Messages.SARLLaunchConfigurationDelegate_8 : sre.getId());
 		}
 		return sre;
 	}
@@ -464,15 +464,15 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 	 */
 	private ISREInstall getSREInstallFor(ILaunchConfiguration configuration) throws CoreException {
 		final ISREInstall sre;
-		if (this.accessor.getUseSystemSREFlag(configuration)) {
-			sre = SARLRuntime.getDefaultSREInstall();
-			verifySREValidity(sre, sre.getId(), true);
-		} else if (this.accessor.getUseProjectSREFlag(configuration)) {
+		if (this.accessor.getUseProjectSREFlag(configuration)) {
 			sre = getProjectSpecificSRE(configuration, true);
+		} else if (this.accessor.getUseSystemSREFlag(configuration)) {
+			sre = SARLRuntime.getDefaultSREInstall();
+			verifySREValidity(sre, sre.getId());
 		} else  {
 			final String runtime = this.accessor.getSREId(configuration);
 			sre = SARLRuntime.getSREFromId(runtime);
-			verifySREValidity(sre, runtime, true);
+			verifySREValidity(sre, runtime);
 		}
 
 		if (sre == null) {
@@ -557,7 +557,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		return entries;
 	}
 
-	private static void verifySREValidity(ISREInstall sre, String runtime, boolean onlyStandalone) throws CoreException {
+	private static void verifySREValidity(ISREInstall sre, String runtime) throws CoreException {
 		if (sre == null) {
 			throw new CoreException(SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
 					MessageFormat.format(io.sarl.eclipse.launching.dialog.Messages.RuntimeEnvironmentTab_6, runtime)));
@@ -583,6 +583,9 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		final ISREInstall sre = getSREInstallFor(configuration);
 		assert sre != null;
 
+		// Retreive the classname of the boot agent.
+		final String bootAgent = getAgentName(configuration);
+
 		final IStringVariableManager substitutor = VariablesPlugin.getDefault().getStringVariableManager();
 
 		// Retreive the SRE arguments from the SRE configuration
@@ -590,9 +593,6 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 
 		// Retreive the SRE arguments from the launch configuration
 		final String sreArgs2 = substitutor.performStringSubstitution(this.accessor.getSRELaunchingArguments(configuration));
-
-		// Retreive the classname of the boot agent.
-		final String bootAgent = getAgentName(configuration);
 
 		// Add the options corresponding to the general setting of the launch configuration.
 		final Map<String, String> cliOptions = sre.getAvailableCommandLineOptions();
