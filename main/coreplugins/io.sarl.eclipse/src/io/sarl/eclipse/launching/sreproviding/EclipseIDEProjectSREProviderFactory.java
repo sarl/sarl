@@ -27,26 +27,26 @@ import io.sarl.eclipse.runtime.ProjectSREProvider;
 import io.sarl.eclipse.runtime.ProjectSREProviderFactory;
 
 /** Factory of the default implementation of a project SRE provider.
- * This provider is reading the properties associated to the project and
+ * This provider is reading the Eclipse IDE properties associated to the project and
  * determine the corresponding SRE.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @see StandardProjectSREProviderFactory
+ * @see EclipseIDEProjectSREProvider
  */
-public class StandardProjectSREProviderFactory implements ProjectSREProviderFactory {
+public class EclipseIDEProjectSREProviderFactory implements ProjectSREProviderFactory {
 
 	/** Construct a factory of SRE provider.
 	 */
-	public StandardProjectSREProviderFactory() {
+	public EclipseIDEProjectSREProviderFactory() {
 		//
 	}
 
 	@Override
 	public ProjectSREProvider getProjectSREProvider(IProject project) {
-		return new StandardProjectSREProvider(project);
+		return new EclipseIDEProjectSREProvider(project);
 	}
 
 }

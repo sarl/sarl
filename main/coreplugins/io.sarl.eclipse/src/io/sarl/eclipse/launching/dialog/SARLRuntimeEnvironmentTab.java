@@ -52,7 +52,7 @@ import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.launching.config.ILaunchConfigurationAccessor;
 import io.sarl.eclipse.launching.config.ILaunchConfigurationConfigurator;
-import io.sarl.eclipse.launching.sreproviding.StandardProjectSREProviderFactory;
+import io.sarl.eclipse.launching.sreproviding.EclipseIDEProjectSREProviderFactory;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.ProjectProvider;
 import io.sarl.eclipse.runtime.ProjectSREProviderFactory;
@@ -126,7 +126,7 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 
 		final ProjectProvider projectProvider = new ProjectAdapter();
 		final List<ProjectSREProviderFactory> sreProviderFactories = getProviderFromExtension();
-		sreProviderFactories.add(new StandardProjectSREProviderFactory());
+		sreProviderFactories.add(new EclipseIDEProjectSREProviderFactory());
 
 		this.sreBlock = new SREConfigurationBlock(true, projectProvider, sreProviderFactories);
 		this.sreBlock.createControl(parent);

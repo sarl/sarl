@@ -65,7 +65,7 @@ import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
 import io.sarl.eclipse.launching.config.ILaunchConfigurationAccessor;
 import io.sarl.eclipse.launching.config.RootContextIdentifierType;
-import io.sarl.eclipse.launching.sreproviding.StandardProjectSREProvider;
+import io.sarl.eclipse.launching.sreproviding.EclipseIDEProjectSREProvider;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.ProjectSREProvider;
 import io.sarl.eclipse.runtime.ProjectSREProviderFactory;
@@ -440,7 +440,7 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			}
 
 			// Get the SRE from the default project configuration
-			final ProjectSREProvider provider = new StandardProjectSREProvider(prj);
+			final ProjectSREProvider provider = new EclipseIDEProjectSREProvider(prj);
 			sre = provider.getProjectSREInstall();
 			if (sre != null) {
 				if (verify) {

@@ -34,15 +34,16 @@ import io.sarl.eclipse.runtime.ProjectSREProvider;
 import io.sarl.eclipse.runtime.SARLRuntime;
 
 /** Default implementation of a project SRE provider.
- * This provider is reading the properties associated to the project and
+ * This provider is reading the Eclipse IDE properties associated to the project and
  * determine the corresponding SRE.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @see EclipseIDEProjectSREProviderFactory
  */
-public class StandardProjectSREProvider implements ProjectSREProvider {
+public class EclipseIDEProjectSREProvider implements ProjectSREProvider {
 
 	private final boolean projectSpecificConfiguration;
 
@@ -53,7 +54,7 @@ public class StandardProjectSREProvider implements ProjectSREProvider {
 	/** Constructor.
 	 * @param project the project.
 	 */
-	public StandardProjectSREProvider(IProject project) {
+	public EclipseIDEProjectSREProvider(IProject project) {
 		boolean tmpSpecific = false;
 		boolean tmpUseSystem = false;
 		String tmpSRE = null;
