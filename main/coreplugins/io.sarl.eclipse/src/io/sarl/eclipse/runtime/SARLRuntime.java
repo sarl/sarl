@@ -975,4 +975,215 @@ public final class SARLRuntime {
 		}
 	}
 
+	/** Replies if the given directory contains a SRE bootstrap.
+	 *
+	 * <p>The SRE bootstrap detection is based on the service definition within META-INF folder.
+	 *
+	 * @param directory the directory.
+	 * @return <code>true</code> if the given directory contains a SRE. Otherwise <code>false</code>.=
+	 * @since 0.7
+	 * @see #containsPackedBootstrap(File)
+	 */
+	public static boolean containsUnpackedBootstrap(File directory) {
+		final String[] elements = SREConstants.SERVICE_SRE_BOOTSTRAP.split("/"); //$NON-NLS-1$
+		File serviceFile = directory;
+		for (final String element : elements) {
+			serviceFile = new File(serviceFile, element);
+		}
+		if (serviceFile.isFile() && serviceFile.canRead()) {
+			try (InputStream is = new FileInputStream(serviceFile)) {
+				try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
+					String line = reader.readLine();
+					if (line != null) {
+						line = line.trim();
+						if (!line.isEmpty()) {
+							return true;
+						}
+					}
+				}
+			} catch (Throwable exception) {
+				//
+			}
+		}
+		return false;
+	}
+
+	/** Replies if the given directory contains a SRE bootstrap.
+	 *
+	 * <p>The SRE bootstrap detection is based on the service definition within META-INF folder.
+	 *
+	 * @param directory the directory.
+	 * @return <code>true</code> if the given directory contains a SRE. Otherwise <code>false</code>.
+	 * @since 0.7
+	 * @see #containsPackedBootstrap(File)
+	 * @see #getDeclaredBootstrap(IPath)
+	 */
+	public static boolean containsUnpackedBootstrap(IPath directory) {
+		final IFile location = ResourcesPlugin.getWorkspace().getRoot().getFile(directory);
+		if (location != null) {
+			final IPath path = location.getLocation();
+			if (path != null) {
+				final File file = path.toFile();
+				if (file.exists()) {
+					if (file.isDirectory()) {
+						return containsUnpackedBootstrap(file);
+					}
+					return false;
+				}
+			}
+		}
+		return containsUnpackedBootstrap(directory.makeAbsolute().toFile());
+	}
+
+	/** Replies if the given JAR file contains a SRE bootstrap.
+	 *
+	 * <p>The SRE bootstrap detection is based on the service definition within META-INF folder.
+	 *
+	 * @param jarFile the JAR file to test.
+	 * @return <code>true</code> if the given directory contains a SRE. Otherwise <code>false</code>.
+	 * @since 0.7
+	 * @see #containsUnpackedBootstrap(File)
+	 */
+	public static boolean containsPackedBootstrap(File jarFile) {
+		try (JarFile jFile = new JarFile(jarFile)) {
+			final ZipEntry jEntry = jFile.getEntry(SREConstants.SERVICE_SRE_BOOTSTRAP);
+			if (jEntry != null) {
+				try (InputStream is = jFile.getInputStream(jEntry)) {
+					try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
+						String line = reader.readLine();
+						if (line != null) {
+							line = line.trim();
+							if (!line.isEmpty()) {
+								return true;
+							}
+						}
+					}
+				}
+			}
+		} catch (IOException exception) {
+			//
+		}
+		return false;
+	}
+
+	/** Replies if the given JAR file contains a SRE bootstrap.
+	 *
+	 * <p>The SRE bootstrap detection is based on the service definition within META-INF folder.
+	 *
+	 * @param jarFile the JAR file to test.
+	 * @return <code>true</code> if the given directory contains a SRE. Otherwise <code>false</code>.
+	 * @since 0.7
+	 * @see #containsUnpackedBootstrap(File)
+	 * @see #getDeclaredBootstrap(IPath)
+	 */
+	public static boolean containsPackedBootstrap(IPath jarFile) {
+		try {
+			final IFile location = ResourcesPlugin.getWorkspace().getRoot().getFile(jarFile);
+			if (location != null) {
+				final IPath path = location.getLocation();
+				if (path != null) {
+					final File file = path.toFile();
+					if (file.exists()) {
+						if (file.isFile()) {
+							return containsPackedBootstrap(file);
+						}
+						return false;
+					}
+				}
+			}
+			return containsPackedBootstrap(jarFile.makeAbsolute().toFile());
+		} catch (Exception exception) {
+			return false;
+		}
+	}
+
+	/** Replies the bootstrap name declared within the given path, corresponding to a JAR file or a folder.
+	 *
+	 * <p>The SRE bootstrap detection is based on the service definition within META-INF folder.
+	 *
+	 * @param path the path to test.
+	 * @return the bootstrap or {@code null} if none.
+	 * @since 0.7
+	 * @see #containsPackedBootstrap(IPath)
+	 * @see #containsUnpackedBootstrap(IPath)
+	 */
+	public static String getDeclaredBootstrap(IPath path) {
+		try {
+			final IFile location = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
+			if (location != null) {
+				final IPath pathLocation = location.getLocation();
+				if (pathLocation != null) {
+					final File file = pathLocation.toFile();
+					if (file.exists()) {
+						if (file.isDirectory()) {
+							return getDeclaredBootstrapInFolder(file);
+						}
+						if (file.isFile()) {
+							return getDeclaredBootstrapInJar(file);
+						}
+						return null;
+					}
+				}
+			}
+			final File file = path.makeAbsolute().toFile();
+			if (file.exists()) {
+				if (file.isDirectory()) {
+					return getDeclaredBootstrapInJar(file);
+				}
+				if (file.isFile()) {
+					return getDeclaredBootstrapInFolder(file);
+				}
+			}
+		} catch (Exception exception) {
+			//
+		}
+		return null;
+	}
+
+	private static String getDeclaredBootstrapInJar(File jarFile) {
+		try (JarFile jFile = new JarFile(jarFile)) {
+			final ZipEntry jEntry = jFile.getEntry(SREConstants.SERVICE_SRE_BOOTSTRAP);
+			if (jEntry != null) {
+				try (InputStream is = jFile.getInputStream(jEntry)) {
+					try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
+						String line = reader.readLine();
+						if (line != null) {
+							line = line.trim();
+							if (!line.isEmpty()) {
+								return line;
+							}
+						}
+					}
+				}
+			}
+		} catch (IOException exception) {
+			//
+		}
+		return null;
+	}
+
+	private static String getDeclaredBootstrapInFolder(File directory) {
+		final String[] elements = SREConstants.SERVICE_SRE_BOOTSTRAP.split("/"); //$NON-NLS-1$
+		File serviceFile = directory;
+		for (final String element : elements) {
+			serviceFile = new File(serviceFile, element);
+		}
+		if (serviceFile.isFile() && serviceFile.canRead()) {
+			try (InputStream is = new FileInputStream(serviceFile)) {
+				try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
+					String line = reader.readLine();
+					if (line != null) {
+						line = line.trim();
+						if (!line.isEmpty()) {
+							return line;
+						}
+					}
+				}
+			} catch (Throwable exception) {
+				//
+			}
+		}
+		return null;
+	}
+
 }

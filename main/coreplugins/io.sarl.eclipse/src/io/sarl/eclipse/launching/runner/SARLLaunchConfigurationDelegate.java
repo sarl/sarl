@@ -60,6 +60,7 @@ import org.eclipse.jdt.launching.LibraryLocation;
 import org.eclipse.jdt.launching.VMRunnerConfiguration;
 import org.eclipse.xtext.xbase.lib.Pair;
 
+import io.sarl.bootstrap.SRE;
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
@@ -585,6 +586,11 @@ public class SARLLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 
 		// Retreive the classname of the boot agent.
 		final String bootAgent = getAgentName(configuration);
+
+		// Special case: the boot class is a simple one provided within the SARL library.
+		if (Objects.equals(sre.getMainClass(), SRE.class.getName())) {
+			return join(bootAgent, bootAgentArgs);
+		}
 
 		final IStringVariableManager substitutor = VariablesPlugin.getDefault().getStringVariableManager();
 

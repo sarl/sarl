@@ -139,7 +139,7 @@ public final class SREConstants {
 
 	/** Path of the file that contains the SRE bootstrap definition.
 	 */
-	public static final String SERVICE_SRE_BOOTSTRAP = SERVICE_PATH + "io.sarl.core.SREBootstrap"; //$NON-NLS-1$
+	public static final String SERVICE_SRE_BOOTSTRAP = SERVICE_PATH + "io.sarl.bootstrap.SREBootstrap"; //$NON-NLS-1$
 
 	private SREConstants() {
 		//

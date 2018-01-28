@@ -651,4 +651,12 @@
       </classpathProvider>
    </extension>
 
+   <!-- Add a provider of SRE based on the standard JRE service API. -->
+   <extension
+         point="io.sarl.eclipse.projectSREProviderFactory">
+     <projectSREProviderFactory
+           class="io.sarl.eclipse.launching.sreproviding.JreServiceProjectSREProviderFactory">
+     </projectSREProviderFactory>
+   </extension>
+
 </plugin>
