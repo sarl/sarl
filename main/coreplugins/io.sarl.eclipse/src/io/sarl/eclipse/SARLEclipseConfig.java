@@ -119,6 +119,12 @@ public final class SARLEclipseConfig {
 	 */
 	public static final String SARL_LOGO_IMAGE = "icons/sarl_16.png"; //$NON-NLS-1$
 
+	/** Filename of the image that is the SARL logo with an icon size (16x16).
+	 *
+	 * @since 0.7
+	 */
+	public static final String SARL_APPLICATION_IMAGE = "icons/sarl_application_16.png"; //$NON-NLS-1$
+
 	/**
 	 * Extension point identifier for contributions of a wizard page that for a ISREInstall
 	 * (value <code>"sreInstallPage"</code>).
