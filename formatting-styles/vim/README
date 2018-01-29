@@ -5,5 +5,5 @@ Fox Unix:
 * Copy the content of the 'ftdetect' folder into $HOME/vimfiles/ftdetect
 
 Fox Windows:
-* Copy the content of the 'syntax' folder into $HOME/.vim/syntax
-* Copy the content of the 'ftdetect' folder into $HOME/.vim/ftdetect
+* Copy the content of the 'syntax' folder into C:\Document and Settings\User\.vim\syntax
+* Copy the content of the 'ftdetect' folder into C:\Document and Settings\User\.vim\ftdetect
