@@ -37,6 +37,7 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.internal.launching.JavaMigrationDelegate;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
+import org.eclipse.jdt.launching.IRuntimeClasspathProvider;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.runtime.ISREInstall;
@@ -124,10 +125,15 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	 */
 	public static final String ATTR_ENABLE_ASSERTIONS_IN_RUN_MODE = SARLEclipsePlugin.PLUGIN_ID + ".ENABLE_ASSERTIONS_RUN"; //$NON-NLS-1$
 
-	/** Identifier of the type of launch configuration dedicated to SARL
+	/** Identifier of the type of launch configuration dedicated to SARL agents
 	 * (value <code>io.sarl.eclipse.debug.LaunchConfigType</code>).
 	 */
-	public static final String SARL_LAUNCH_CONFIG_TYPE = "io.sarl.eclipse.debug.LaunchConfigType"; //$NON-NLS-1$
+	public static final String SARL_AGENT_LAUNCH_CONFIG_TYPE = "io.sarl.eclipse.debug.AgentLaunchConfigType"; //$NON-NLS-1$
+
+	/** Identifier of the type of launch configuration dedicated to SARL applications
+	 * (value <code>io.sarl.eclipse.debug.LaunchConfigType</code>).
+	 */
+	public static final String SARL_APPLICATION_LAUNCH_CONFIG_TYPE = "io.sarl.eclipse.debug.ApplicationLaunchConfigType"; //$NON-NLS-1$
 
 	private static final boolean DEFAULT_SHOW_LOGO = false;
 
@@ -146,8 +152,13 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	private static final boolean DEFAULT_ENABLE_ASSERTIONS_IN_RUN_MODE = false;
 
 	@Override
-	public String getLaunchConfigurationType() {
-		return SARL_LAUNCH_CONFIG_TYPE;
+	public String getAgentLaunchConfigurationType() {
+		return SARL_AGENT_LAUNCH_CONFIG_TYPE;
+	}
+
+	@Override
+	public String getApplicationLaunchConfigurationType() {
+		return SARL_APPLICATION_LAUNCH_CONFIG_TYPE;
 	}
 
 	private static String simpleName(String fullName) {
@@ -161,22 +172,59 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	}
 
 	@Override
-	public ILaunchConfiguration newConfiguration(String projectName, String fullyQualifiedNameOfAgent)
+	public ILaunchConfiguration newAgentLaunchConfiguration(String projectName, String fullyQualifiedNameOfAgent)
 			throws CoreException {
-		final ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
-		final ILaunchConfigurationType configType = launchManager.getLaunchConfigurationType(SARL_LAUNCH_CONFIG_TYPE);
-		final ILaunchConfigurationWorkingCopy wc = configType.newInstance(null, launchManager.generateLaunchConfigurationName(
-				simpleName(fullyQualifiedNameOfAgent)));
-
-		setProjectName(wc, projectName);
+		final ILaunchConfigurationWorkingCopy wc = initLaunchConfiguration(getAgentLaunchConfigurationType(), projectName,
+				simpleName(fullyQualifiedNameOfAgent), true);
 		setAgent(wc, fullyQualifiedNameOfAgent);
+		return wc.doSave();
+	}
+
+	@Override
+	public ILaunchConfiguration newApplicationLaunchConfiguration(String projectName, String fullyQualifiedNameOfClass,
+			Class<? extends IRuntimeClasspathProvider> classPathProvider) throws CoreException {
+		final ILaunchConfigurationWorkingCopy wc = initLaunchConfiguration(getApplicationLaunchConfigurationType(), projectName,
+				simpleName(fullyQualifiedNameOfClass), false);
+		setMainJavaClass(wc, fullyQualifiedNameOfClass);
+		if (classPathProvider != null) {
+			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH_PROVIDER, classPathProvider.getName());
+		}
+		return wc.doSave();
+	}
+
+	/** Change the main java class within the given configuration.
+	 *
+	 * @param wc the configuration to change.
+	 * @param name the qualified name of the main Java class.
+	 * @since 0.7
+	 */
+	protected static void setMainJavaClass(ILaunchConfigurationWorkingCopy wc, String name) {
+		wc.setAttribute(
+				IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME,
+				name);
+	}
+
+	/** initialize the launch configuration.
+	 *
+	 * @param configurationType the name of the configuration type to create.
+	 * @param projectName the name of the project.
+	 * @param id the identifier of the launch configuration.
+	 * @param resetJavaMainClass indicates if the JAva main class should be reset from the SRE configuration.
+	 * @return the created launch configuration.
+	 * @throws CoreException if the configuration cannot be created.
+	 * @since 0.7
+	 */
+	protected ILaunchConfigurationWorkingCopy initLaunchConfiguration(String configurationType, String projectName,
+			String id, boolean resetJavaMainClass) throws CoreException {
+		final ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
+		final ILaunchConfigurationType configType = launchManager.getLaunchConfigurationType(configurationType);
+		final ILaunchConfigurationWorkingCopy wc = configType.newInstance(null, launchManager.generateLaunchConfigurationName(id));
+		setProjectName(wc, projectName);
 		setDefaultContextIdentifier(wc, null);
 		setLaunchingFlags(wc, DEFAULT_SHOW_LOGO, DEFAULT_SHOW_LOG_INFO, DEFAULT_OFFLINE);
-		setRuntimeConfiguration(wc, SARLRuntime.getDefaultSREInstall(), DEFAULT_USE_SYSTEM_SRE, DEFAULT_USE_PROJECT_SRE, true);
-
+		setRuntimeConfiguration(wc, SARLRuntime.getDefaultSREInstall(), DEFAULT_USE_SYSTEM_SRE, DEFAULT_USE_PROJECT_SRE, resetJavaMainClass);
 		JavaMigrationDelegate.updateResourceMapping(wc);
-
-		return wc.doSave();
+		return wc;
 	}
 
 	@Override
@@ -225,9 +273,7 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 				if (Strings.isNullOrEmpty(mainClass)) {
 					configuration.removeAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME);
 				} else {
-					configuration.setAttribute(
-							IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME,
-							mainClass);
+					setMainJavaClass(configuration, mainClass);
 				}
 			}
 		} else {

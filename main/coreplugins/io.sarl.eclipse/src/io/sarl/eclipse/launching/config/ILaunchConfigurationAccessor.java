@@ -36,11 +36,20 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 public interface ILaunchConfigurationAccessor {
 
 	/**
+	 * Returns the launch configuration type for SARL agents.
+	 *
+	 * @return the launch configuration type, never null.
+	 * @since 0.7
+	 */
+	String getAgentLaunchConfigurationType();
+
+	/**
 	 * Returns the launch configuration type for SARL applications.
 	 *
 	 * @return the launch configuration type, never null.
+	 * @since 0.7
 	 */
-	String getLaunchConfigurationType();
+	String getApplicationLaunchConfigurationType();
 
 	/** Replies the identifier of the SRE to be used by the launch configuration.
 	 *

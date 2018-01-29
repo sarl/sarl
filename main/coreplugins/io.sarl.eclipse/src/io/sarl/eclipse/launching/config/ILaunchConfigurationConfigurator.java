@@ -26,6 +26,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.jdt.launching.IRuntimeClasspathProvider;
 
 import io.sarl.eclipse.runtime.ISREInstall;
 
@@ -41,22 +42,45 @@ import io.sarl.eclipse.runtime.ISREInstall;
 public interface ILaunchConfigurationConfigurator {
 
 	/**
+	 * Returns the launch configuration type for SARL agents.
+	 *
+	 * @return the launch configuration type, never null.
+	 * @since 0.7
+	 */
+	String getAgentLaunchConfigurationType();
+
+	/**
 	 * Returns the launch configuration type for SARL applications.
 	 *
 	 * @return the launch configuration type, never null.
+	 * @since 0.7
 	 */
-	String getLaunchConfigurationType();
+	String getApplicationLaunchConfigurationType();
 
-	/** Create a default launch configuration for SARL applications.
+	/** Create a default launch configuration for SARL agents.
 	 *
 	 * <p>The launch configuration is attached to the given project.
 	 *
-	 * @param projectName the name of the project that containt the main class.
+	 * @param projectName the name of the project that contains the main class.
 	 * @param fullyQualifiedNameOfAgent the fully qualified name of the agent to be launched.
 	 * @return the launch configuration.
 	 * @throws CoreException if something is going wrong.
 	 */
-	ILaunchConfiguration newConfiguration(String projectName, String fullyQualifiedNameOfAgent)
+	ILaunchConfiguration newAgentLaunchConfiguration(String projectName, String fullyQualifiedNameOfAgent)
+			throws CoreException;
+
+	/** Create a default launch configuration for SARL agents.
+	 *
+	 * <p>The launch configuration is attached to the given project.
+	 *
+	 * @param projectName the name of the project that contains the main class.
+	 * @param fullyQualifiedNameOfClass the fully qualified name of the class that contains the main function.
+	 * @param classPathProvider type of the class path provider to use for launching the application.
+	 * @return the launch configuration.
+	 * @throws CoreException if something is going wrong.
+	 */
+	ILaunchConfiguration newApplicationLaunchConfiguration(String projectName, String fullyQualifiedNameOfClass,
+			Class<? extends IRuntimeClasspathProvider> classPathProvider)
 			throws CoreException;
 
 	/** Change the runtime configuration of the given launch configuration.

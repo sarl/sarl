@@ -278,9 +278,9 @@
  	<extension
          point="org.eclipse.debug.ui.launchShortcuts">
       <shortcut
-        class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.launching.shortcuts.LaunchAgentShortcut"
+        class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.launching.shortcuts.AgentLaunchShortcut"
         icon="icons/sarl_16.png"
-        id="io.sarl.eclipse.launching.shortcuts.LaunchAgentShortcut"
+        id="io.sarl.eclipse.launching.shortcuts.AgentLaunchShortcut"
         label="%launch.agent"
         modes="run,debug">
         <contextualLaunch>
@@ -305,7 +305,7 @@
          </description>
       </shortcut>
       <shortcut
-        class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.launching.shortcuts.LaunchMainShortcut"
+        class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.launching.shortcuts.ApplicationLaunchShortcut"
         icon="icons/sarl_application_16.png"
         id="io.sarl.eclipse.launching.shortcuts.LaunchJavaApplicationShortcut"
         label="%launch.application"
@@ -323,9 +323,6 @@
 	           </with>
 	       </enablement>
         </contextualLaunch>
-        <configurationType
-               id="org.eclipse.jdt.launching.localJavaApplication">
-         </configurationType>
          <description
        			description="%launch.application.runas.description"
                mode="run">
