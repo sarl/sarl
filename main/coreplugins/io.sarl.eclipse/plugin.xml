@@ -184,6 +184,13 @@
               public="true"
               sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer">
         </launchConfigurationType>
+        <launchConfigurationType
+              delegate="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.launching.runner.SARLApplicationLaunchConfigurationDelegate"
+              delegateDescription="%launch.application.description"
+              delegateName="%launch.application"
+              id="io.sarl.eclipse.debug.ApplicationLaunchConfigType"
+              modes="debug, run"
+              name="%launch.application"
               public="true"
               sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer">
         </launchConfigurationType>
@@ -194,6 +201,10 @@
             configTypeID="io.sarl.eclipse.debug.AgentLaunchConfigType"
             icon="icons/sarl_16.png"
             id="io.sarl.eclipse.debug.AgentLaunchConfigTypeImage" />
+        <launchConfigurationTypeImage
+            configTypeID="io.sarl.eclipse.debug.ApplicationLaunchConfigType"
+            icon="icons/sarl_application_16.png"
+            id="io.sarl.eclipse.debug.ApplicationLaunchConfigTypeImage" />
     </extension>
     
 	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
@@ -202,6 +213,11 @@
             description="%launch.agent.description"
             id="io.sarl.eclipse.debug.AgentLaunchConfigTabGroup"
             type="io.sarl.eclipse.debug.AgentLaunchConfigType" />
+         <launchConfigurationTabGroup
+            class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.launching.dialog.SARLApplicationLaunchConfigurationTabGroup"
+            description="%launch.application.description"
+            id="io.sarl.eclipse.debug.ApplicationLaunchConfigTabGroup"
+            type="io.sarl.eclipse.debug.ApplicationLaunchConfigType" />
     </extension>
 
 	<!-- Adapters for the application launchers -->
