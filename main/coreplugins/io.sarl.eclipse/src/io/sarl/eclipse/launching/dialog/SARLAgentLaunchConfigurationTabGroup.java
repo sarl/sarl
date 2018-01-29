@@ -21,50 +21,34 @@
 
 package io.sarl.eclipse.launching.dialog;
 
-import javax.inject.Inject;
-
-import com.google.inject.Injector;
-import org.eclipse.debug.ui.AbstractLaunchConfigurationTabGroup;
 import org.eclipse.debug.ui.CommonTab;
 import org.eclipse.debug.ui.EnvironmentTab;
 import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.debug.ui.sourcelookup.SourceLookupTab;
-import org.eclipse.jdt.debug.ui.launchConfigurations.JavaClasspathTab;
 
 /**
- * Tab group object for SARL Launch Config type.
+ * Tab group object for configuration the run of an agent.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SARLLaunchConfigurationTabGroup extends AbstractLaunchConfigurationTabGroup {
-
-	@Inject
-	private Injector injector;
-
-	/** Construct a group of tabs for being used in launch config.
-	 */
-	public SARLLaunchConfigurationTabGroup() {
-		//
-	}
+public class SARLAgentLaunchConfigurationTabGroup extends AbstractSARLLaunchConfigurationTabGroup {
 
 	@Override
 	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
 		final ILaunchConfigurationTab[] tabs = new ILaunchConfigurationTab[] {
-			new SARLMainLaunchConfigurationTab(),
+			new SARLAgentMainLaunchConfigurationTab(),
 			new SARLArgumentsTab(),
-			new SARLRuntimeEnvironmentTab(),
-			new JavaClasspathTab(),
+			new SARLRuntimeEnvironmentTab(true),
+			getClasspathTab(dialog),
 			new SourceLookupTab(),
 			new EnvironmentTab(),
 			new CommonTab(),
 		};
-		for (final ILaunchConfigurationTab tab : tabs) {
-			this.injector.injectMembers(tab);
-		}
 		setTabs(tabs);
 	}
+
 }

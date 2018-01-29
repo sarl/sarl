@@ -172,7 +172,7 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 		setAgent(wc, fullyQualifiedNameOfAgent);
 		setDefaultContextIdentifier(wc, null);
 		setLaunchingFlags(wc, DEFAULT_SHOW_LOGO, DEFAULT_SHOW_LOG_INFO, DEFAULT_OFFLINE);
-		setRuntimeConfiguration(wc, SARLRuntime.getDefaultSREInstall(), DEFAULT_USE_SYSTEM_SRE, DEFAULT_USE_PROJECT_SRE);
+		setRuntimeConfiguration(wc, SARLRuntime.getDefaultSREInstall(), DEFAULT_USE_SYSTEM_SRE, DEFAULT_USE_PROJECT_SRE, true);
 
 		JavaMigrationDelegate.updateResourceMapping(wc);
 
@@ -208,7 +208,7 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 
 	@Override
 	public void setRuntimeConfiguration(ILaunchConfigurationWorkingCopy configuration, ISREInstall sre,
-			Boolean useSystemSre, Boolean useProjectSre) {
+			Boolean useSystemSre, Boolean useProjectSre, boolean resetJavaMainClass) {
 		boolean system = useSystemSre == null ? DEFAULT_USE_SYSTEM_SRE : useSystemSre.booleanValue();
 		boolean project = useProjectSre == null ? DEFAULT_USE_PROJECT_SRE : useProjectSre.booleanValue();
 		if (system && project) {
@@ -221,16 +221,20 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 					ATTR_SARL_RUNTIME_ENVIRONMENT,
 					sre.getId());
 			final String mainClass = sre.getMainClass();
-			if (Strings.isNullOrEmpty(mainClass)) {
-				configuration.removeAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME);
-			} else {
-				configuration.setAttribute(
-						IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME,
-						mainClass);
+			if (resetJavaMainClass) {
+				if (Strings.isNullOrEmpty(mainClass)) {
+					configuration.removeAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME);
+				} else {
+					configuration.setAttribute(
+							IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME,
+							mainClass);
+				}
 			}
 		} else {
 			configuration.removeAttribute(ATTR_SARL_RUNTIME_ENVIRONMENT);
-			configuration.removeAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME);
+			if (resetJavaMainClass) {
+				configuration.removeAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME);
+			}
 		}
 		// Save the boolean configuration flags
 		configuration.setAttribute(ATTR_USE_SYSTEM_SARL_RUNTIME_ENVIRONMENT, system);

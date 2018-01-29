@@ -67,8 +67,11 @@ import io.sarl.lang.SARLVersion;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @see JavaJRETab
  */
 public class SARLRuntimeEnvironmentTab extends JavaJRETab {
+
+	private final boolean resetJvaMainClass;
 
 	private SREConfigurationBlock sreBlock;
 
@@ -81,9 +84,11 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 	private ILaunchConfigurationAccessor accessor;
 
 	/** Construct the tab for configuration the SRE.
+	 *
+	 * @param resetJavaMainClass indicates if this tab should reset the Java main class within the configuration.
 	 */
-	public SARLRuntimeEnvironmentTab() {
-		//
+	public SARLRuntimeEnvironmentTab(boolean resetJavaMainClass) {
+		this.resetJvaMainClass = resetJavaMainClass;
 	}
 
 	@Override
@@ -272,13 +277,14 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 		final ISREInstall sre = this.sreBlock.getSelectedSRE();
 		this.configurator.setRuntimeConfiguration(configuration, sre,
 				this.sreBlock.isSystemWideDefaultSRE(),
-				this.sreBlock.isProjectSRE());
+				this.sreBlock.isProjectSRE(),
+				this.resetJvaMainClass);
 	}
 
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy config) {
 		super.setDefaults(config);
-		this.configurator.setRuntimeConfiguration(config, SARLRuntime.getDefaultSREInstall(), null, null);
+		this.configurator.setRuntimeConfiguration(config, SARLRuntime.getDefaultSREInstall(), null, null, this.resetJvaMainClass);
 	}
 
 	/** Adapter that permits to provide a reference on a SARL project to the configuration

@@ -175,12 +175,15 @@
 
  	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
         <launchConfigurationType
-              delegate="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.launching.runner.SARLLaunchConfigurationDelegate"
-              delegateDescription="%launch.sarlLauncherDescription"
-              delegateName="%launch.sarlLauncher"
-              id="io.sarl.eclipse.debug.LaunchConfigType"
+              delegate="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.launching.runner.SARLAgentLaunchConfigurationDelegate"
+              delegateDescription="%launch.agent.description"
+              delegateName="%launch.agent"
+              id="io.sarl.eclipse.debug.AgentLaunchConfigType"
               modes="debug, run"
-              name="%launch.sarlApplication"
+              name="%launch.agent"
+              public="true"
+              sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer">
+        </launchConfigurationType>
               public="true"
               sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer">
         </launchConfigurationType>
@@ -188,17 +191,17 @@
     
     <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
         <launchConfigurationTypeImage
-            configTypeID="io.sarl.eclipse.debug.LaunchConfigType"
+            configTypeID="io.sarl.eclipse.debug.AgentLaunchConfigType"
             icon="icons/sarl_16.png"
-            id="io.sarl.eclipse.debug.LaunchConfigTypeImage" />
+            id="io.sarl.eclipse.debug.AgentLaunchConfigTypeImage" />
     </extension>
     
 	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
          <launchConfigurationTabGroup
-            class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.launching.dialog.SARLLaunchConfigurationTabGroup"
-            description="%launch.sarlApplication"
-            id="io.sarl.eclipse.debug.LaunchConfigTabGroup"
-            type="io.sarl.eclipse.debug.LaunchConfigType" />
+            class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.launching.dialog.SARLAgentLaunchConfigurationTabGroup"
+            description="%launch.agent.description"
+            id="io.sarl.eclipse.debug.AgentLaunchConfigTabGroup"
+            type="io.sarl.eclipse.debug.AgentLaunchConfigType" />
     </extension>
 
 	<!-- Adapters for the application launchers -->

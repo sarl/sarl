@@ -72,14 +72,14 @@ import io.sarl.eclipse.util.Utilities;
  * The main launch configuration tab.
  *
  * <p>This configuration tab enables to enter the name of the agent to launch,
- * the launching parameters, and the SRE.
+ * the launching parameters.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
+public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab {
 
 	private volatile SoftReference<Image> image;
 
@@ -115,9 +115,9 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 	@Inject
 	private ILaunchConfigurationAccessor accessor;
 
-	/** Construct a main configuration tab for SARL project.
+	/** Construct a main configuration tab for SARL agent.
 	 */
-	public SARLMainLaunchConfigurationTab() {
+	public SARLAgentMainLaunchConfigurationTab() {
 		//
 	}
 
@@ -168,7 +168,7 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 			@SuppressWarnings("synthetic-access")
 			@Override
 			public void modifyText(ModifyEvent event) {
-				SARLMainLaunchConfigurationTab.this.lastAgentNameError = null;
+				SARLAgentMainLaunchConfigurationTab.this.lastAgentNameError = null;
 				updateLaunchConfigurationDialog();
 			}
 		});
@@ -307,7 +307,7 @@ public class SARLMainLaunchConfigurationTab extends AbstractJavaMainTab {
 				&& isValidContextIdentifierType() && isValidLaunchOptions();
 	}
 
-	/** Replies if the context identfiier type is valid.
+	/** Replies if the context identifier type is valid.
 	 *
 	 * @return the validity state.
 	 */
