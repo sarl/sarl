@@ -1,0 +1,43 @@
+package io.sarl.template.javafx.ui;
+
+import io.sarl.javafx.FxViewerController
+import io.sarl.template.javafx.agents.MyAgent
+import io.sarl.template.javafx.agents.SetupSettings
+import java.util.UUID
+import javafx.fxml.FXML
+import javafx.scene.control.Button
+
+/** JavaFX controller for the JavaFX application.
+ */
+class MyAppFxViewerController extends FxViewerController {
+
+	var launched = false
+
+	var launchedAgent : UUID
+
+	@FXML
+	var launch_button : Button
+
+	/** Launch the agent application. It should be linked to
+	 * a UI component within the JavaFX UI definition.
+	 */
+	@FXML
+	protected def actionLaunch {
+		// Prepare the initialization event
+		var ^event = new SetupSettings
+		
+		// Launching of the agent-side of the application
+		if (!this.launched) {
+			// First launch => start the agent framework with an agent of type MyAgent.
+			this.launch_button.disable = false
+			this.launched = true
+			this.launchedAgent = startAgentApplication(typeof(MyAgent)) [
+				^event.emitToAgents
+			]
+		} else {
+			// Agent framework was already launched => emit the initialization event.
+			^event.emitToAgents
+		}
+	}
+
+}

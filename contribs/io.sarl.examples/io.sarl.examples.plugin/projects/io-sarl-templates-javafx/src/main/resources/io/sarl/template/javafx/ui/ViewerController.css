@@ -1,0 +1,14 @@
+S// Nice white #F9FAFB
+// Nice black #2B2B2B
+
+#mainPane {
+	-fx-background-color: #2B2B2B;
+}
+
+.button {
+	-fx-background-radius: 0em;
+	-fx-background-inserts: 0, 0, 0;
+	-fx-focus-color: transparent;
+	-fx-text-fill: #2B2B2B;
+	-fx-background-color: rgb(169, 169, 169);
+}

@@ -1,0 +1,8 @@
+package io.sarl.template.javafx.agents
+
+/** This event is fired when the first agent within the application
+ * should be initialized.
+ */
+event SetupSettings {
+	// TODO Add fields that representing the values of the UI parameters.
+}

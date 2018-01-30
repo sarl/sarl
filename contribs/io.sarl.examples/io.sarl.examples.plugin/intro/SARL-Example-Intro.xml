@@ -4,6 +4,18 @@
 	<extensionContent id="io.sarl.examples.introExtension"
 		name="SARL Overview Extension" path="samples/@">
 
+		<html src="./templates_intro.html"/>
+
+	<group style-id="quick-links" id="quick-links">
+		<link style-id="content-link" label="SARL application with JavaFX user interface"
+			url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.templates.javafx%29"
+			id="io.sarl.examples.myexample">
+			<text>
+				This template provides the base implementation of a SARL software that is using a JavaFX user interface.
+			</text>
+		</link>
+	</group>
+
 		<html src="./examples_intro.html"/>
 
 		<group style-id="quick-links" id="quick-links">
