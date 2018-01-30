@@ -1,6 +1,6 @@
 package io.sarl.demos.sierpinskiFractals.gui
 
-import io.sarl.demos.sierpinskiFractals.gui.fx.FxApplication
+import io.sarl.javafx.FxApplication
 import java.util.ResourceBundle
 import javafx.fxml.FXMLLoader
 import javafx.fxml.JavaFXBuilderFactory

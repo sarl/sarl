@@ -1,0 +1,81 @@
+/** 
+ * 
+ */
+package io.sarl.demos.sierpinskiFractals.agents
+
+import io.sarl.core.InnerContextAccess
+import io.sarl.core.Lifecycle
+import io.sarl.demos.sierpinskiFractals.events.Multiply
+import io.sarl.demos.sierpinskiFractals.events.Refresh
+import io.sarl.demos.sierpinskiFractals.objects.Positions
+import io.sarl.demos.sierpinskiFractals.objects.Square
+import io.sarl.demos.sierpinskiFractals.objects.Triangle
+import io.sarl.demos.sierpinskiFractals.objects.Vector2D
+import io.sarl.core.ExternalContextAccess
+
+/*
+ * Abstract implementation of a fractal agent
+ */
+abstract agent AbstractFractal {
+
+	uses InnerContextAccess, Lifecycle, ExternalContextAccess
+
+	protected var triangle : Triangle
+	protected var screenSurface : Square
+	protected var screenWidth : double
+	protected var positions : Positions
+
+	abstract def doRefresh
+
+	/** 
+	 * Generate triangle points
+	 */
+	def generatePoints {
+		triangle = new Triangle(
+			screenSurface.bottomLeft,
+			screenSurface.bottomRight,
+			new Vector2D(screenSurface.bottomLeft.x + screenWidth / 2, screenSurface.topLeft.y)
+		)
+		synchronized (positions) {
+			positions.addTriangle(triangle)
+		}
+	}
+	/** 
+	 * Multiply itself and create child Fractal
+	 */
+	def multiplication {
+		val screen1 = new Square(triangle.bottomLeft, screenWidth / 2)
+		spawnInContext(typeof(ChildFractal), innerContext, screen1, positions)
+		
+		val screen2 = new Square(
+			new Vector2D(screenSurface.bottomLeft.x + screenWidth / 4, screenSurface.bottomLeft.y + screenWidth / 2),
+			screenWidth / 2)
+		spawnInContext(typeof(ChildFractal), innerContext, screen2, positions)
+		
+		val screen3 = new Square(new Vector2D(triangle.top.x, screenSurface.bottomLeft.y), screenWidth / 2)
+		spawnInContext(typeof(ChildFractal), innerContext, screen3, positions)
+	}
+	/* 
+	 * Create and emit Multiply signal
+	 */
+	def emitMultiply {
+		var m = new Multiply
+		innerContext.defaultSpace.emit(m)
+	}
+
+	on Refresh [!isFromMe] {
+		doRefresh
+	}
+
+	/* 
+	 * Multiply itself if signal comes from the GUI and have no member agent
+	 */
+	on Multiply [!isFromMe] {
+		if (hasMemberAgent) {
+			emitMultiply
+		} else {
+			multiplication
+		}
+	}
+
+}

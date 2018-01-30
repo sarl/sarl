@@ -1,8 +1,12 @@
 package io.sarl.demos.sierpinskiFractals.gui;
 
+import io.sarl.demos.sierpinskiFractals.agents.RootFractal
 import io.sarl.demos.sierpinskiFractals.events.Multiply
-import io.sarl.demos.sierpinskiFractals.gui.fx.FxViewerController
+import io.sarl.demos.sierpinskiFractals.events.Refresh
 import io.sarl.demos.sierpinskiFractals.objects.Positions
+import io.sarl.demos.sierpinskiFractals.objects.Square
+import io.sarl.demos.sierpinskiFractals.objects.Vector2D
+import io.sarl.javafx.FxViewerController
 import java.util.concurrent.atomic.AtomicBoolean
 import javafx.animation.PauseTransition
 import javafx.fxml.FXML
@@ -29,12 +33,18 @@ class SierpinskiFractalsFxViewerController extends FxViewerController {
 	def getPositions : Positions {
 		this.positions
 	}
-	
-	override safeExit {
-		if (started.get) {
-			this.multiplyButton.disable = true
+
+	def getSquare : Square {
+		new Square(new Vector2D(0, 0), this.drawZone.width)
+	}
+
+	@FXML
+	def initialize {
+		if (!started.getAndSet(true)) {
+			startAgentApplication(typeof(RootFractal)) [
+				//
+			]
 		}
-		super.safeExit
 	}
 
 	/* 
@@ -42,36 +52,42 @@ class SierpinskiFractalsFxViewerController extends FxViewerController {
 	 */
 	@FXML
 	def actionMultiply {
-		var evt = new Multiply
-		if (!started.getAndSet(true)) {
-			startAgentApplication() [
-				emitToAgents(evt)
-			]
-		} else {
-			emitToAgents(evt)
-		}
+		new Multiply().emitToAgents
 	}
 	
-	/* 
-	 * Draw fractals on canvas
+	/**
+	 * Draw fractals on the canvas.
 	 */
-	def draw {
-		var gc = drawZone.graphicsContext2D
-		var wait = new PauseTransition(0.03.seconds)
+	protected def draw {
+		val gc = drawZone.graphicsContext2D
+		var wait = new PauseTransition(30.millis)
 
-		gc.setStroke(Color::ORANGERED)
-		gc.setLineWidth(3)
+		gc.stroke = Color::ORANGERED
+		gc.lineWidth = 3
 
-		wait.setOnFinished [ e |
+		wait.setOnFinished [
 			gc.clearRect(0, 0, drawZone.width, drawZone.height)
-			positions.triangles.forEach [ t |
-				gc.strokeLine(t.bottomLeft.x, t.bottomLeft.y, t.top.x, t.top.y)
-				gc.strokeLine(t.top.x, t.top.y, t.bottomRight.x, t.bottomRight.y)
-				gc.strokeLine(t.bottomRight.x, t.bottomRight.y, t.bottomLeft.x, t.bottomLeft.y)
-			]
+			synchronized (positions) {
+				for (t : positions.triangles) {
+					gc.beginPath
+					gc.moveTo(t.bottomLeft.x, t.bottomLeft.y)
+					gc.lineTo(t.top.x, t.top.y)
+					gc.lineTo(t.bottomRight.x, t.bottomRight.y)
+					gc.closePath
+					gc.stroke()
+				}
+			}
 			wait.playFromStart
 		]
 		wait.play
+	}
+
+	/** Invoked when an event is fired within an agent and received by the JavaFX user interface.
+	 * 
+	 * @param event the occurrence fired by an agent.
+	 */
+	dispatch def receiveEvent(^event : Refresh) {
+		draw
 	}
 	
 }

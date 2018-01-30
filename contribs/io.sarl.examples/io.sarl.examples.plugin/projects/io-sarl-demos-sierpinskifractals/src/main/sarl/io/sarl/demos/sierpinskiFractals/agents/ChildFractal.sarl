@@ -1,0 +1,41 @@
+/** 
+ * 
+ */
+package io.sarl.demos.sierpinskiFractals.agents
+
+import io.sarl.core.Behaviors
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
+import io.sarl.demos.sierpinskiFractals.events.Refresh
+import io.sarl.demos.sierpinskiFractals.objects.Positions
+import io.sarl.demos.sierpinskiFractals.objects.Square
+import io.sarl.javafx.FXKillSupportBehavior
+
+/*
+ * Child fractal agent.
+ * Contains other Fractal agent in its inner context.
+ */
+agent ChildFractal extends AbstractFractal {
+
+	uses Behaviors, DefaultContextInteractions
+		
+	/* 
+	 * Initialization step for smaller fractals
+	 */
+	on Initialize {
+		var javafxBehavior = new FXKillSupportBehavior(this)
+		javafxBehavior.registerBehavior
+		
+		screenSurface = occurrence.parameters.get(0) as Square
+		positions = occurrence.parameters.get(1) as Positions
+		screenWidth = screenSurface.width
+
+		generatePoints
+		doRefresh
+	}
+
+	def doRefresh {
+		new Refresh().emit[it.UUID == parentID]
+	}
+	
+}

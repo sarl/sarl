@@ -1,0 +1,49 @@
+/** 
+ * 
+ */
+package io.sarl.demos.sierpinskiFractals.agents
+
+import io.sarl.core.Behaviors
+import io.sarl.core.Initialize
+import io.sarl.demos.sierpinskiFractals.events.Refresh
+import io.sarl.demos.sierpinskiFractals.gui.SierpinskiFractalsFxViewerController
+import io.sarl.javafx.FXBehavior
+import io.sarl.core.ExternalContextAccess
+
+/*
+ * Root fractal agent.
+ * Can communicate with the GUI if not contained in an other agent.
+ * Contains other Fractal agent in its inner context.
+ */
+agent RootFractal extends AbstractFractal {
+
+	uses Behaviors, ExternalContextAccess
+
+	var javafxBehavior : FXBehavior
+
+	/* 
+	 * Initialization step for the root fractal
+	 */
+	on Initialize {
+		var fxcontroller = occurrence.parameters.get(0) as SierpinskiFractalsFxViewerController
+
+		positions = fxcontroller.positions
+		screenSurface = fxcontroller.square
+		screenWidth = screenSurface.width
+
+		// The agent learns how to use the UI with a new behavior.
+		// This new behavior needs to have a reference to the JavaFX controller
+		this.javafxBehavior = new FXBehavior(this, fxcontroller)
+		this.javafxBehavior.registerBehavior
+
+		// You could use the JavaFX controller
+		// fxcontroller.doSomething
+		generatePoints
+		doRefresh
+	}
+	
+	def doRefresh {
+		this.javafxBehavior.UISpace.emit(new Refresh())
+	}
+
+}
