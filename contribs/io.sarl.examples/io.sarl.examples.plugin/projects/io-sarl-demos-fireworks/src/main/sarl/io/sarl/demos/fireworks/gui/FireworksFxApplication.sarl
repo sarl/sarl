@@ -1,6 +1,6 @@
 package io.sarl.demos.fireworks.gui
 
-import io.sarl.demos.fireworks.gui.fx.FxApplication
+import io.sarl.javafx.FxApplication
 import java.util.ResourceBundle
 import javafx.fxml.FXMLLoader
 import javafx.fxml.JavaFXBuilderFactory

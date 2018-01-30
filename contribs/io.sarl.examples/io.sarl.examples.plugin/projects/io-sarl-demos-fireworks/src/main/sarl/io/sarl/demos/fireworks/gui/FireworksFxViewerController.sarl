@@ -1,10 +1,12 @@
 package io.sarl.demos.fireworks.gui;
 
+import io.sarl.demos.fireworks.agents.LaunchingArea
 import io.sarl.demos.fireworks.environment.Positions
 import io.sarl.demos.fireworks.events.CreateArea
 import io.sarl.demos.fireworks.events.Freeze
 import io.sarl.demos.fireworks.events.SetupSettings
-import io.sarl.demos.fireworks.gui.fx.FxViewerController
+import io.sarl.javafx.FxViewerController
+import java.util.UUID
 import javafx.animation.PauseTransition
 import javafx.fxml.FXML
 import javafx.scene.canvas.Canvas
@@ -21,6 +23,8 @@ class FireworksFxViewerController extends FxViewerController {
 	var launched = false
 	var areaCreated = false
 
+	var launchedAgent : UUID
+
 	@FXML var draw_zone : Canvas
 	@FXML var gravity_display : Label
 	@FXML var rocket_quantity_display : Label
@@ -35,29 +39,29 @@ class FireworksFxViewerController extends FxViewerController {
 	/** Get gravity.
 	 */
 	def getGravity : double {
-		gravity_input.value
+		this.gravity_input.value
 	}
 
 	/**  Get rocket quantity.
 	 */
 	def getRocketQuantity : int {
-		rocket_quantity_input.value as int
+		this.rocket_quantity_input.value as int
 	}
 
 	/** Get fire quantity.
 	 */
 	def getFireQuantity : int {
-		fire_quantity_input.value as int
+		this.fire_quantity_input.value as int
 	}
 
 	/** Draw every positions on the main canvas.
 	 */
 	def listenAndDraw(grid : Positions) {
-		var gc = draw_zone.graphicsContext2D
+		var gc = this.draw_zone.graphicsContext2D
 		var wait = new PauseTransition(0.03.seconds)
 
 		wait.onFinished = [
-			gc.clearRect(0, 0, draw_zone.width, draw_zone.height)
+			gc.clearRect(0, 0, this.draw_zone.width, this.draw_zone.height)
 			grid.rockets([rocket|!rocket.hidden]) [rocket |
 				gc.fill = rocket.color
 				gc.fillOval(rocket.position.get(0), rocket.position.get(1), 10, 10)
@@ -80,65 +84,65 @@ class FireworksFxViewerController extends FxViewerController {
 	@FXML protected def actionSetup {
 		var ^event = new SetupSettings(this.rocketQuantity, this.fireQuantity,
 			this.gravity, this.draw_zone.width)
-		if (!launched) {
-			startAgentApplication() [
-				emitToAgents(^event)
+		if (!this.launched) {
+			this.launchedAgent = startAgentApplication(typeof(LaunchingArea)) [
+				^event.emitToAgents
 			]
-			launch_button.disable = false
-			launched = true
-			areaCreated = false
-			gravity_input.disable = true
-			fire_quantity_input.disable = true
-			rocket_quantity_input.disable = true
-			setup_button.disable = true
+			this.launch_button.disable = false
+			this.launched = true
+			this.areaCreated = false
+			this.gravity_input.disable = true
+			this.fire_quantity_input.disable = true
+			this.rocket_quantity_input.disable = true
+			this.setup_button.disable = true
 		} else {
-			emitToAgents(^event)
+			^event.emitToAgents
 		}
 	}
 
 	/** Launch fireworks.
 	 */
 	@FXML protected def actionLaunch {
-		launch_button.disable = true
-		stop_button.disable = false
-		setup_button.disable = true
-		if (!areaCreated) {
-			emitToAgents(new CreateArea)
+		this.launch_button.disable = true
+		this.stop_button.disable = false
+		this.setup_button.disable = true
+		if (!this.areaCreated) {
+			new CreateArea().emitToAgents
 			this.areaCreated = true
 		} else {
-			emitToAgents(new Freeze(false))
+			new Freeze(false).emitToAgents
 		}
 	}
 
 	/** Stop fireworks.
 	 */
 	@FXML protected def actionStop {
-		stop_button.disable = true
-		launch_button.disable = false
-		emitToAgents(new Freeze(true))
+		this.stop_button.disable = true
+		this.launch_button.disable = false
+		new Freeze(true).emitToAgents
 	}
 
 	/** Add a listener on gravity.
 	 */
 	@FXML protected def actionGravityDisplay {
-		gravity_input.valueProperty.addListener [
-			gravity_display.text = String::format("%.1f", gravity_input.value)
+		this.gravity_input.valueProperty.addListener [
+			this.gravity_display.text = String::format("%.1f", this.gravity_input.value)
 		]
 	}
 
 	/* Add a listener on rocket quantity.
 	 */
 	@FXML protected def actionRocketQuantityDisplay {
-		rocket_quantity_input.valueProperty().addListener [
-			rocket_quantity_display.setText(String.format("%.0f", rocket_quantity_input.getValue()));
+		this.rocket_quantity_input.valueProperty().addListener [
+			this.rocket_quantity_display.setText(String.format("%.0f", this.rocket_quantity_input.getValue()));
 		];
 	}
 
 	/* Add a listener on fire quantity.
 	 */
 	@FXML protected def actionFireQuantityDisplay() {
-		fire_quantity_input.valueProperty.addListener [
-			fire_quantity_display.text = String::format("%.0f", fire_quantity_input.value)
+		this.fire_quantity_input.valueProperty.addListener [
+			this.fire_quantity_display.text = String::format("%.0f", this.fire_quantity_input.value)
 		]
 	}
 

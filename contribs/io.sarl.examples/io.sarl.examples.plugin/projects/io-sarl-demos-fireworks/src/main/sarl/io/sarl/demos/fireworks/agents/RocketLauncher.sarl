@@ -11,7 +11,7 @@ import io.sarl.demos.fireworks.environment.Positions
 import io.sarl.demos.fireworks.events.Freeze
 import io.sarl.demos.fireworks.events.Launch
 import io.sarl.demos.fireworks.events.RocketReady
-import io.sarl.demos.fireworks.gui.fx.AppExit
+import io.sarl.javafx.AppExit
 
 /** A rocket launcher that own a rocket in it's inner context.
  */

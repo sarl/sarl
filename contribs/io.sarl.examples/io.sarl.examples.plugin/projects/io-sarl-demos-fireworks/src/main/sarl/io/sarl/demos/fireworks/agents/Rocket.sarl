@@ -16,7 +16,7 @@ import io.sarl.demos.fireworks.events.Explode
 import io.sarl.demos.fireworks.events.FireReady
 import io.sarl.demos.fireworks.events.Freeze
 import io.sarl.demos.fireworks.events.UpdateRocketPosition
-import io.sarl.demos.fireworks.gui.fx.AppExit
+import io.sarl.javafx.AppExit
 import java.util.Random
 import java.util.UUID
 import java.util.Vector

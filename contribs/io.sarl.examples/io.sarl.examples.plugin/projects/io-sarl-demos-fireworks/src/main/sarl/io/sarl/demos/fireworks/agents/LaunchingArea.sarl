@@ -12,9 +12,9 @@ import io.sarl.demos.fireworks.events.Freeze
 import io.sarl.demos.fireworks.events.Launch
 import io.sarl.demos.fireworks.events.SetupSettings
 import io.sarl.demos.fireworks.gui.FireworksFxViewerController
-import io.sarl.demos.fireworks.gui.fx.AppExit
-import java.util.Random
+import io.sarl.javafx.AppExit
 import io.sarl.lang.core.Address
+import java.util.Random
 
 /*
  * The main agent able to communicate with the GUI

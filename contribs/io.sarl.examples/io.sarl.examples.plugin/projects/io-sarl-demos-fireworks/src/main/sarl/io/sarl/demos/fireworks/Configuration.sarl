@@ -1,6 +1,6 @@
 package io.sarl.demos.fireworks
 
-/** General confiuration.
+/** General configuration.
  */
 final class Configuration {
 
@@ -22,7 +22,7 @@ final class Configuration {
 	 */
 	public static val FIRE_LIFECYCLE_SCHEDULING_RATE = 30
 	
-	private new() {
+	private new {
 	}
 
 }

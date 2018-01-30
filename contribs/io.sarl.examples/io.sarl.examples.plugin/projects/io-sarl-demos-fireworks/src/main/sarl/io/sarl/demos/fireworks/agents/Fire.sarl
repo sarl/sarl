@@ -12,7 +12,7 @@ import io.sarl.demos.fireworks.environment.Positions
 import io.sarl.demos.fireworks.events.FireReady
 import io.sarl.demos.fireworks.events.Freeze
 import io.sarl.demos.fireworks.events.UpdateFirePosition
-import io.sarl.demos.fireworks.gui.fx.AppExit
+import io.sarl.javafx.AppExit
 import java.util.ArrayList
 import java.util.List
 import java.util.UUID
