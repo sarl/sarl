@@ -44,6 +44,12 @@ public final class Bootstrap implements SREBootstrap {
 
 	private volatile Kernel kernel;
 
+	/** Construct a bootstrap with the default initialization values for the bootstrap.
+	 */
+	public Bootstrap() {
+		setOffline(JanusConfig.DEFAULT_OFFLINE_FLAG_FOR_BOOTSTRAP);
+	}
+
 	/** Change the current kernel.
 	 *
 	 * @param kernel the kernel.
@@ -97,6 +103,31 @@ public final class Bootstrap implements SREBootstrap {
 			}
 		}
 		return kern.getJanusContext();
+	}
+
+	@Override
+	public void setOffline(boolean isOffline) {
+		Boot.setOffline(isOffline);
+	}
+
+	@Override
+	public void setRandomContextUUID() {
+		Boot.setRandomContextUUID();
+	}
+
+	@Override
+	public void setBootAgentTypeContextUUID() {
+		Boot.setBootAgentTypeContextUUID();
+	}
+
+	@Override
+	public void setDefaultContextUUID() {
+		Boot.setDefaultContextUUID();
+	}
+
+	@Override
+	public void setVerboseLevel(int level) {
+		Boot.setVerboseLevel(level);
 	}
 
 }

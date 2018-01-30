@@ -95,4 +95,62 @@ public interface SREBootstrap {
 		return true;
 	}
 
+	/**
+	 * Set offline flag of the agent platform before it is launched.
+	 *
+	 * <p>This function has no effect if the agent framework is already launched.
+	 *
+	 * @param isOffline the offline flag.
+	 * @since 0.7
+	 */
+	default void setOffline(boolean isOffline) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * Force the Janus platform to use a random identifier for its default context.
+	 *
+	 * <p>This function has no effect if the agent framework is already launched.
+	 *
+	 * @since 0.7
+	 */
+	default void setRandomContextUUID() {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * Force the Janus platform to use a default context identifier that tis build upon the classname of the boot agent. It means
+	 * that the UUID is always the same for a given classname.
+	 *
+	 * <p>This function has no effect if the agent framework is already launched.
+	 *
+	 * @since 0.7
+	 */
+	default void setBootAgentTypeContextUUID() {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * Force the Janus platform to use the identifier hard-coded in the source code for its default context.
+	 *
+	 * <p>This function has no effect if the agent framework is already launched.
+	 *
+	 * @since 0.7
+	 */
+	default void setDefaultContextUUID() {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * Force the verbosity level.
+	 *
+	 * <p>This function has no effect if the agent framework is already launched.
+	 *
+	 * @param level the verbosity level.
+	 * @since 0.7
+	 */
+	default void setVerboseLevel(int level) {
+		throw new UnsupportedOperationException();
+	}
+
 }

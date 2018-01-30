@@ -21,11 +21,50 @@
 
 package io.sarl.javafx
 
+import java.util.concurrent.atomic.AtomicBoolean
+
 import io.sarl.lang.core.Agent
-import io.sarl.core.AgentKilled
 import io.sarl.core.Behaviors
+import io.sarl.core.Destroy
+import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
+import io.sarl.core.MemberLeft
+import io.sarl.util.OpenEventSpace
+
+/** Specific behavior for an agent that supports killing from a JavaFX application.  
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.7
+ */
+behavior FXKillSupportBehavior {
+
+	uses Lifecycle, InnerContextAccess, Behaviors
+
+	val exited = new AtomicBoolean(false)
+
+	/** Kill itself on Exit signal when no inner agent.
+	 */
+	on AppExit [!hasMemberAgent] {
+		exited.set(true)
+		killMe
+	}
+
+	/** Transmit Exit signal to all inner agent.
+	 */
+	on AppExit [!exited.get && hasMemberAgent] {
+		exited.set(true)
+		innerContext.defaultSpace.emit(ID, new AppExit)
+	}
+
+	on MemberLeft [exited.get && it.inInnerDefaultSpace && !hasMemberAgent] {
+		killMe
+	}
+
+}
 
 /** Specific behavior for an agent that enables it to interact with
  * a JavaFX user interface.  
@@ -36,11 +75,11 @@ import io.sarl.core.Lifecycle
  * @mavenartifactid $ArtifactId$
  * @since 0.7
  */
-behavior FXBehavior {
+behavior FXBehavior extends FXKillSupportBehavior {
 
 	uses Lifecycle, InnerContextAccess, Behaviors
 
-	var exited = false
+	var uiSpace : OpenEventSpace
 	
 	/** Constructor.
 	 *
@@ -48,25 +87,26 @@ behavior FXBehavior {
 	 */
 	new (owner : Agent, controller : FxViewerController) {
 		super(owner)
-		controller.UISpace.register(asEventListener)
+		this.uiSpace = controller.UISpace
 	}
-
-
-	/** Kill itself on Exit signal when no inner agent.
+	
+	/** Installation.
 	 */
-	on AppExit [!hasMemberAgent] {
-		killMe
+	on Initialize {
+		this.uiSpace.register(asEventListener)
 	}
 
-	/** Transmit Exit signal to all inner agent.
+	/** Uninstallation.
+	on Destroy {
+		this.uiSpace.unregister(asEventListener)
+	}
+
+	/** Replies the space that is dedicated to the UI.
+	 *
+	 * @return the space for UI.
 	 */
-	on AppExit [!exited && hasMemberAgent] {
-		exited = true
-		innerContext.defaultSpace.emit(ID, new AppExit)
-	}
-
-	on AgentKilled [exited && it.inInnerDefaultSpace && !hasMemberAgent] {
-		killMe
+	public def getUISpace : OpenEventSpace {
+		this.uiSpace
 	}
 
 }

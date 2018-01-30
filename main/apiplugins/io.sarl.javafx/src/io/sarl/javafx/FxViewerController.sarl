@@ -134,7 +134,7 @@ abstract class FxViewerController implements EventListener {
 	 *
 	 * @param event the occurrence fired by an agent.
 	 */
-	def receiveEvent(^event : Event) {
+	dispatch def receiveEvent(^event : Event) {
 		// Handle all events
 	}
 

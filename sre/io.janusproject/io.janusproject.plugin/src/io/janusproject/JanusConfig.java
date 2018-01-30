@@ -149,6 +149,12 @@ public final class JanusConfig {
     public static final String OFFLINE = "janus.network.offline"; //$NON-NLS-1$
 
     /**
+     * Default value of the offline flag for the Janus bootstrap.
+     * @since 0.7
+     */
+    public static final boolean DEFAULT_OFFLINE_FLAG_FOR_BOOTSTRAP = true;
+
+    /**
      * Name of the property that contains the classname of the boot agent.
      */
     public static final String BOOT_AGENT = "janus.boot.agent"; //$NON-NLS-1$

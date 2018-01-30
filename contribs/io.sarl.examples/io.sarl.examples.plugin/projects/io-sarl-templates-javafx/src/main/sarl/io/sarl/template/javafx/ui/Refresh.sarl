@@ -1,0 +1,5 @@
+package io.sarl.template.javafx.ui
+
+/** Request for refreshing the JavaFX screen.
+ */
+event Refresh
