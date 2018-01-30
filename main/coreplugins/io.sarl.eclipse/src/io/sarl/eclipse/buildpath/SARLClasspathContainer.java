@@ -21,6 +21,7 @@
 
 package io.sarl.eclipse.buildpath;
 
+import java.text.MessageFormat;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IPath;
@@ -28,6 +29,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.osgi.framework.Bundle;
 
+import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.util.BundleUtil;
 
 /** Classpath container dedicated to the SARL environment.
@@ -47,8 +49,9 @@ public class SARLClasspathContainer extends AbstractSARLBasedClasspathContainer 
 	 */
 	public static final String[] SARL_ROOT_BUNDLE_NAMES = {
 		"io.sarl.lang.core", //$NON-NLS-1$
-		"io.sarl.util", //$NON-NLS-1$
 		"io.sarl.core", //$NON-NLS-1$
+		"io.sarl.util", //$NON-NLS-1$
+		"io.sarl.javafx", //$NON-NLS-1$
 		// For active annotations
 		"org.eclipse.xtend.lib", //$NON-NLS-1$
 	};
@@ -75,6 +78,9 @@ public class SARLClasspathContainer extends AbstractSARLBasedClasspathContainer 
 				for (final String symbolicName : BundleUtil.resolveBundleDependencies(bundle).getTransitiveSymbolicNames(true)) {
 					entries.add(symbolicName);
 				}
+			} else {
+				SARLEclipsePlugin.getDefault().logErrorMessage(MessageFormat.format(
+						Messages.SARLClasspathContainer_1, rootBundleName));
 			}
 		}
 	}
@@ -87,6 +93,9 @@ public class SARLClasspathContainer extends AbstractSARLBasedClasspathContainer 
 				for (final IClasspathEntry entry : BundleUtil.resolveBundleDependencies(bundle).getTransitiveClasspathEntries(true)) {
 					entries.add(entry);
 				}
+			} else {
+				SARLEclipsePlugin.getDefault().logErrorMessage(MessageFormat.format(
+						Messages.SARLClasspathContainer_1, rootBundleName));
 			}
 		}
 	}

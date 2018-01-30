@@ -19,31 +19,30 @@
  * limitations under the License.
  */
 
-package io.sarl.eclipse.buildpath;
+package io.sarl.javafx
 
-import org.eclipse.osgi.util.NLS;
+import org.eclipse.osgi.util.NLS
 
-/** Localized Messages.
- *
+/** Messages.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @ExcludeFromApidoc
+ * @since 0.7
  */
-@SuppressWarnings("all")
-public class Messages extends NLS {
-	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
-	public static String SARLClasspathContainer_0;
-	public static String SARLClasspathContainer_1;
-	public static String SARLClasspathContainerInitializer_0;
-	public static String SARLContainerWizardPage_0;
-	public static String SARLContainerWizardPage_1;
-	static {
+final class Messages extends NLS {
+
+	private static val BUNDLE_NAME = {
+		val name = typeof(Messages).getPackage.name + ".messages"
 		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+		NLS.initializeMessages(name, typeof(Messages))
+		name
 	}
 
-	private Messages() {
+	public static var FxViewerController_0 : String
+
+	private new {
 	}
+
 }

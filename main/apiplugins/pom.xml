@@ -22,6 +22,7 @@
 			<modules>
 				<module>io.sarl.core</module>
 				<module>io.sarl.util</module>
+				<module>io.sarl.javafx</module>
 			</modules>
 		</profile>
 		<profile>

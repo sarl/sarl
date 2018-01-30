@@ -15,6 +15,9 @@
 **/io.sarl.util/xtend-gen/
 **/io.sarl.util/src-gen/
 **/io.sarl.util/src/main/generated-sources/
+**/io.sarl.javafx/xtend-gen/
+**/io.sarl.javafx/src-gen/
+**/io.sarl.javafx/src/main/generated-sources/
 **/io.sarl.lang.ui/xtend-gen/
 **/io.sarl.lang.ui/src/main/xtend-gen/
 **/io.sarl.lang.ui/src/main/generated-sources/

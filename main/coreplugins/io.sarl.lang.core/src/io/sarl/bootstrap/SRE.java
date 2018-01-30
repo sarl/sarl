@@ -22,8 +22,12 @@
 package io.sarl.bootstrap;
 
 import java.lang.ref.SoftReference;
+import java.net.URL;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.ServiceLoader;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.UUID;
 
 import org.eclipse.xtext.xbase.lib.Inline;
@@ -51,6 +55,8 @@ import io.sarl.lang.core.AgentContext;
  * @see ServiceLoader
  */
 public final class SRE {
+
+	private static final String PREFIX = "META-INF/services/"; //$NON-NLS-1$
 
 	private static SREBootstrap currentSRE;
 
@@ -100,6 +106,28 @@ public final class SRE {
 			}
 			return sl;
 		}
+	}
+
+	/** Replies all the libraries that contains a SRE bootstrap.
+	 *
+	 * @return the set of libraries.
+	 * @since 0.7
+	 */
+	public static Set<URL> getBootstrappedLibraries() {
+		final String name = PREFIX + SREBootstrap.class.getName();
+		final Set<URL> result = new TreeSet<>();
+		try {
+			final Enumeration<URL> enumr = ClassLoader.getSystemResources(name);
+			while (enumr.hasMoreElements()) {
+				final URL url = enumr.nextElement();
+				if (url != null) {
+					result.add(url);
+				}
+			}
+		} catch (Exception exception) {
+			//
+		}
+        return result;
 	}
 
 	/** Change the current SRE.

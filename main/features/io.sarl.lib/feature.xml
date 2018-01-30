@@ -224,8 +224,8 @@
    <requires>
       <import plugin="io.sarl.lang.core" version="0.7.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.osgi" version="3.12.50" match="greaterOrEqual"/>
-      <import plugin="javax.inject" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.xbase.lib" version="2.13.0" match="greaterOrEqual"/>
+      <import plugin="javax.inject" version="1.0.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
@@ -258,6 +258,13 @@
 
    <plugin
          id="javax.inject"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="io.sarl.javafx"
          download-size="0"
          install-size="0"
          version="0.0.0"

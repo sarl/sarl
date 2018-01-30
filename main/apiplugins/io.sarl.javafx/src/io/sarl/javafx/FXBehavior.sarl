@@ -1,0 +1,72 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2018 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.javafx
+
+import io.sarl.lang.core.Agent
+import io.sarl.core.AgentKilled
+import io.sarl.core.Behaviors
+import io.sarl.core.InnerContextAccess
+import io.sarl.core.Lifecycle
+
+/** Specific behavior for an agent that enables it to interact with
+ * a JavaFX user interface.  
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.7
+ */
+behavior FXBehavior {
+
+	uses Lifecycle, InnerContextAccess, Behaviors
+
+	var exited = false
+	
+	/** Constructor.
+	 *
+	 * @param controller the JavaFX controller to be linked to.
+	 */
+	new (owner : Agent, controller : FxViewerController) {
+		super(owner)
+		controller.UISpace.register(asEventListener)
+	}
+
+
+	/** Kill itself on Exit signal when no inner agent.
+	 */
+	on AppExit [!hasMemberAgent] {
+		killMe
+	}
+
+	/** Transmit Exit signal to all inner agent.
+	 */
+	on AppExit [!exited && hasMemberAgent] {
+		exited = true
+		innerContext.defaultSpace.emit(ID, new AppExit)
+	}
+
+	on AgentKilled [exited && it.inInnerDefaultSpace && !hasMemberAgent] {
+		killMe
+	}
+
+}
