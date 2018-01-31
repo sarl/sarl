@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.eclipse.launching.shortcuts;
+package io.sarl.eclipse.typehierarchy;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -34,14 +34,9 @@ import org.eclipse.osgi.util.NLS;
 @SuppressWarnings("all")
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
-	public static String AbstractSarlLaunchShortcut_0;
-	public static String AbstractSarlLaunchShortcut_1;
-	public static String AgentLaunchShortcut_0;
-	public static String AgentLaunchShortcut_1;
-	public static String AgentLaunchShortcut_2;
-	public static String ApplicationLaunchShortcut_0;
-	public static String ApplicationLaunchShortcut_1;
-	public static String ApplicationLaunchShortcut_2;
+	public static String SarlScriptTypeSelector_0;
+	public static String SarlScriptTypeSelector_1;
+	public static String SarlScriptTypeSelector_2;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

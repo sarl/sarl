@@ -23,6 +23,7 @@ package io.sarl.eclipse.launching.shortcuts;
 
 import javax.inject.Inject;
 
+import com.google.common.base.Strings;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.emf.common.util.URI;
@@ -100,9 +101,30 @@ public class AgentLaunchShortcut extends AbstractSarlLaunchShortcut<SarlAgent, A
 			return this.configurator.newAgentLaunchConfiguration(projectName, fullyQualifiedNameOfAgent);
 		} catch (CoreException exception) {
 			SARLEclipsePlugin.getDefault().openError(getShell(),
-					Messages.SARLLaunchShortcut_0, exception.getStatus().getMessage(), exception);
+					io.sarl.eclipse.util.Messages.AbstractSarlScriptInteractiveSelector_1,
+					exception.getStatus().getMessage(), exception);
 			return null;
 		}
+	}
+
+	@Override
+	protected boolean isSelectableElement(SarlAgent element) {
+		return element != null && !Strings.isNullOrEmpty(element.getName());
+	}
+
+	@Override
+	protected String getElementLabel() {
+		return Messages.AgentLaunchShortcut_0;
+	}
+
+	@Override
+	protected String getElementsLabel() {
+		return Messages.AgentLaunchShortcut_1;
+	}
+
+	@Override
+	protected String getElementLongLabel() {
+		return Messages.AgentLaunchShortcut_2;
 	}
 
 }

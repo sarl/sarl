@@ -675,4 +675,36 @@
      </projectSREProviderFactory>
    </extension>
 
+   <!-- Add "Open Type Hierarchy" shortcut. -->
+   <extension point="org.eclipse.ui.commands">
+      <command
+            id="io.sarl.eclipse.popup.openTypeHierarchy"
+            categoryId="org.eclipse.ui.category.navigate"
+            name="%menu.open.type.hierarchy">
+      </command>
+   </extension>
+   <extension point="org.eclipse.ui.handlers">
+      <handler
+            class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.typehierarchy.OpenTypeHierarchyHandler"
+            commandId="io.sarl.eclipse.popup.openTypeHierarchy">
+      </handler>
+   </extension>
+   <extension point="org.eclipse.ui.menus">
+      <menuContribution locationURI="popup:io.sarl.eclipse.explorer.PackageExplorer?after=group.open">
+         <command commandId="io.sarl.eclipse.popup.openTypeHierarchy"
+                  label="%menu.open.type.hierarchy"
+                  style="push">
+             <visibleWhen>
+             	<with variable="selection">
+					<iterate ifEmpty="false">
+						<adapt type="org.eclipse.core.resources.IResource">
+							<test property="org.eclipse.core.resources.name" value="*.sarl" />
+						</adapt>
+					</iterate>
+				</with>
+             </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+
 </plugin>
