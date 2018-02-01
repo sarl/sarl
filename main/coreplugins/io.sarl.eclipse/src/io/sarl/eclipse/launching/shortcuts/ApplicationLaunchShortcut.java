@@ -61,7 +61,7 @@ public class ApplicationLaunchShortcut extends AbstractSarlLaunchShortcut<SarlCl
 	}
 
 	@Override
-	protected Image getElementImage() {
+	protected Image getElementImage(Object element) {
 		return JavaPluginImages.DESC_OBJS_CLASS.createImage();
 	}
 

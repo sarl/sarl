@@ -100,8 +100,10 @@ public abstract class AbstractSarlScriptInteractiveSelector<ET extends EObject, 
 	@Inject
 	protected Jdt2Ecore jdt;
 
+	/** Provider of labels and icons.
+	 */
 	@Inject
-	private ILabelProvider labelProvider;
+	protected ILabelProvider labelProvider;
 
 	/** Replies if the given resource could be considered for discovering an agent to be launched.
 	 *
@@ -268,18 +270,21 @@ public abstract class AbstractSarlScriptInteractiveSelector<ET extends EObject, 
 	/** Search the elements based on the given scope, and select one.
 	 * If more than one element was found, the user selects interactively one.
 	 *
+	 * @param showEmptySelectionError indicates if this function shows an error when the selection is empty.
 	 * @param scope the elements to consider for an element type that can be launched.
-	 * @return the selected element.
+	 * @return the selected element; or {@code null} if there is no selection.
 	 */
-	public ElementDescription searchAndSelect(Object... scope) {
+	public ElementDescription searchAndSelect(boolean showEmptySelectionError, Object... scope) {
 		try {
 			final List<ElementDescription> elements = findElements(scope, PlatformUI.getWorkbench().getProgressService());
 			ElementDescription element = null;
-			if (elements.isEmpty()) {
-				SARLEclipsePlugin.getDefault().openError(getShell(),
-						Messages.AbstractSarlScriptInteractiveSelector_1,
-						MessageFormat.format(Messages.AbstractSarlScriptInteractiveSelector_2, getElementLabel()),
-						null);
+			if (elements == null || elements.isEmpty()) {
+				if (showEmptySelectionError) {
+					SARLEclipsePlugin.getDefault().openError(getShell(),
+							Messages.AbstractSarlScriptInteractiveSelector_1,
+							MessageFormat.format(Messages.AbstractSarlScriptInteractiveSelector_2, getElementLabel()),
+							null);
+				}
 			} else if (elements.size() > 1) {
 				element = chooseElement(elements);
 			}  else {
@@ -336,9 +341,10 @@ public abstract class AbstractSarlScriptInteractiveSelector<ET extends EObject, 
 
 	/** Replies the icon associated to the elements.
 	 *
+	 * @param element the element for which the icon should be replied, or {@code null} if it is unknown.
 	 * @return the icon.
 	 */
-	protected abstract Image getElementImage();
+	protected abstract Image getElementImage(Object element);
 
 	/** Description of an element to launch.
 	 *
@@ -391,7 +397,6 @@ public abstract class AbstractSarlScriptInteractiveSelector<ET extends EObject, 
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	@SuppressWarnings("synthetic-access")
 	private class LabelProvider implements ILabelProvider {
 
 		/** Constructor.
@@ -423,7 +428,7 @@ public abstract class AbstractSarlScriptInteractiveSelector<ET extends EObject, 
 		@Override
 		public Image getImage(Object element) {
 			if (element instanceof ElementDescription) {
-				return getElementImage();
+				return getElementImage(((ElementDescription) element).element);
 			}
 			return AbstractSarlScriptInteractiveSelector.this.labelProvider.getImage(element);
 		}

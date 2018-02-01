@@ -29,8 +29,9 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.internal.ui.util.OpenTypeHierarchyUtil;
-import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jdt.ui.actions.OpenTypeHierarchyAction;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
@@ -62,9 +63,9 @@ public class OpenTypeHierarchyHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		final ISelection activeSelection = HandlerUtil.getActiveMenuSelection(event);
-		if (activeSelection instanceof IStructuredSelection) {
-			final ElementDescription selectedElement = this.typeSelector.searchAndSelect(((IStructuredSelection) activeSelection).toArray());
+		final IStructuredSelection activeSelection = HandlerUtil.getCurrentStructuredSelection(event);
+		if (activeSelection != null && activeSelection != StructuredSelection.EMPTY) {
+			final ElementDescription selectedElement = this.typeSelector.searchAndSelect(false, activeSelection.toArray());
 			if (selectedElement != null) {
 				IJavaElement realJavaElement = null;
 				if (selectedElement.element instanceof IJavaElement) {
@@ -78,6 +79,9 @@ public class OpenTypeHierarchyHandler extends AbstractHandler {
 				if (realJavaElement != null) {
 					OpenTypeHierarchyUtil.open(realJavaElement, PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 				}
+			} else {
+				final OpenTypeHierarchyAction jdtTool = new OpenTypeHierarchyAction(HandlerUtil.getActiveSite(event));
+				jdtTool.run(activeSelection);
 			}
 		}
 		return null;

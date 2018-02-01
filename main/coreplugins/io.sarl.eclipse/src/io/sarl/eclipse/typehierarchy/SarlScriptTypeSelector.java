@@ -86,7 +86,13 @@ class SarlScriptTypeSelector extends AbstractSarlScriptInteractiveSelector<Xtend
 	}
 
 	@Override
-	protected Image getElementImage() {
+	protected Image getElementImage(Object element) {
+		if (element != null) {
+			final Image img = this.labelProvider.getImage(element);
+			if (img != null) {
+				return img;
+			}
+		}
 		return JavaPluginImages.DESC_OBJS_UNKNOWN.createImage();
 	}
 

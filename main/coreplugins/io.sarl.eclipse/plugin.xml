@@ -675,12 +675,13 @@
      </projectSREProviderFactory>
    </extension>
 
-   <!-- Add "Open Type Hierarchy" shortcut. -->
+   <!-- Add "Open Type Hierarchy" shortcut. https://www.eclipse.org/forums/index.php/t/157754/ -->
    <extension point="org.eclipse.ui.commands">
       <command
             id="io.sarl.eclipse.popup.openTypeHierarchy"
             categoryId="org.eclipse.ui.category.navigate"
-            name="%menu.open.type.hierarchy">
+            name="%menu.open.type.hierarchy"
+            helpContextId="org.eclipse.jdt.ui.open_type_action">
       </command>
    </extension>
    <extension point="org.eclipse.ui.handlers">
@@ -693,10 +694,11 @@
       <menuContribution locationURI="popup:io.sarl.eclipse.explorer.PackageExplorer?after=group.open">
          <command commandId="io.sarl.eclipse.popup.openTypeHierarchy"
                   label="%menu.open.type.hierarchy"
+                  mnemonic="n"
                   style="push">
              <visibleWhen>
              	<with variable="selection">
-					<iterate ifEmpty="false">
+					<iterate ifEmpty="false" operator="or">
 						<adapt type="org.eclipse.core.resources.IResource">
 							<test property="org.eclipse.core.resources.name" value="*.sarl" />
 						</adapt>
@@ -706,5 +708,17 @@
          </command>
       </menuContribution>
    </extension>
-
+   <extension point="org.eclipse.ui.bindings">
+      <scheme
+            id="io.sarl.eclipse.defaultAcceleratorConfiguration"
+            name="%key.scheme.name"
+            parentId="org.eclipse.ui.defaultAcceleratorConfiguration">
+      </scheme>
+      <key
+            sequence="F4"
+            schemeId="io.sarl.eclipse.defaultAcceleratorConfiguration"
+            contextId="io.sarl.eclipse.explorer.PackageExplorer"
+            commandId="io.sarl.eclipse.popup.openTypeHierarchy">
+      </key>
+   </extension>
 </plugin>

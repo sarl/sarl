@@ -217,7 +217,7 @@ public abstract class AbstractSarlLaunchShortcut<ET extends EObject, JT>
 	 * @param scope the elements to consider for an element type that can be launched.
 	 */
 	private void searchAndLaunch(String mode, Object... scope) {
-		final ElementDescription element = searchAndSelect(scope);
+		final ElementDescription element = searchAndSelect(true, scope);
 		if (element != null) {
 			try {
 				launch(element.projectName, element.elementName, mode);

@@ -36,6 +36,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.xtext.xbase.lib.util.ReflectExtensions;
 
 /**
@@ -73,6 +74,8 @@ public class SARLPackageExplorerPart extends PackageExplorerPart {
 	 * @see org.eclipse.ui.IWorkbenchPage#showView(java.lang.String)
 	 */
 	public static final String ID_PACKAGES = "io.sarl.eclipse.explorer.PackageExplorer"; //$NON-NLS-1$
+
+	private static final String CONTEXT_ID = ID_PACKAGES;
 
 	private static final String TAG_LAYOUT = "layout"; //$NON-NLS-1$
 
@@ -165,7 +168,10 @@ public class SARLPackageExplorerPart extends PackageExplorerPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-		// Overriden for setting the label provider, which is set in a private function in the super type.
+		// Open the context
+		final IContextService contextService = getSite().getService(IContextService.class);
+		contextService.activateContext(CONTEXT_ID);
+		// Overridden for setting the label provider, which is set in a private function in the super type.
 		super.createPartControl(parent);
 		internalResetLabelProvider();
 		restoreFilterAndSorter();
@@ -181,7 +187,7 @@ public class SARLPackageExplorerPart extends PackageExplorerPart {
 
 	@Override
 	public void rootModeChanged(int newMode) {
-		// Overriden for setting the label provider, which is set in a private function in the super type.
+		// Overridden for setting the label provider, which is set in a private function in the super type.
 		super.rootModeChanged(newMode);
 		internalResetLabelProvider();
 	}

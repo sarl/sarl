@@ -91,7 +91,7 @@ public class AgentLaunchShortcut extends AbstractSarlLaunchShortcut<SarlAgent, A
 	}
 
 	@Override
-	protected Image getElementImage() {
+	protected Image getElementImage(Object element) {
 		return this.images.forAgent(JvmVisibility.PRIVATE, 0).createImage();
 	}
 
