@@ -615,7 +615,9 @@
 	</extension>
 
 
-	<!-- The following elements are added by hand for the SARL project. -->
+	<!-- *******************************************************
+		 The following elements are added by hand for the SARL project.
+	     ******************************************************* -->
 
    <extension
          point="org.eclipse.ui.contexts">
@@ -664,5 +666,38 @@
    </extension>
 
    <extension-point id="extraGenerators" name="%extraGenerators" schema="schema/extraGenerators.exsd"/>
+ 
+ 	<!-- Correct indentation feature within the SARL editor -->
+   <extension point="org.eclipse.ui.commands">
+      <command
+            id="io.sarl.lang.ui.editor.correctIndentation"
+            name="Correct indentation">
+      </command>
+   </extension>
+   <extension point="org.eclipse.ui.handlers">
+      <handler
+            class="io.sarl.lang.ui.SARLExecutableExtensionFactory:io.sarl.lang.ui.editor.CorrectIndentationHandler"
+            commandId="io.sarl.lang.ui.editor.correctIndentation">
+      </handler>
+   </extension>
+   <extension point="org.eclipse.ui.menus">
+      <menuContribution allPopups="true" locationURI="popup:xtext.ui.SourceMenu?after=org.eclipse.xtext.ui.FormatAction">
+         <command commandId="io.sarl.lang.ui.editor.correctIndentation"
+                  label="Correct indentation"
+                  style="push">
+               <visibleWhen checkEnabled="false">
+                  <reference
+                        definitionId="isActiveEditorAnInstanceOfXtextEditor">
+                  </reference>
+               </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+   <extension point="org.eclipse.ui.bindings">
+    <key sequence="M1+I"
+      contextId="org.eclipse.xtext.ui.XtextEditorScope"
+      commandId="io.sarl.lang.ui.editor.correctIndentation"
+      schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+   </extension>
  
  </plugin>
