@@ -42,6 +42,10 @@ import io.sarl.lang.documentation.IDocumentationFormatter;
  */
 public class SARLMultilineCommentReplacer extends CommentReplacer {
 
+	private static final int NUMBER_OF_LINES_BEFORE_COMMENT = 1;
+
+	private static final int NUMBER_OF_LINES_AFTER_COMMENT = 0;
+
 	@Inject
 	private IDocumentationFormatter formatter;
 
@@ -59,17 +63,25 @@ public class SARLMultilineCommentReplacer extends CommentReplacer {
 	@Override
 	public void configureWhitespace(WhitespaceReplacer leading, WhitespaceReplacer trailing) {
 		if (leading.getRegion().getOffset() > 0) {
+			final int nb = NUMBER_OF_LINES_BEFORE_COMMENT + 1;
 			final IHiddenRegionFormatting formatting = leading.getFormatting();
-			formatting.setNewLinesDefault(1);
-			formatting.setNewLinesMin(1);
-			formatting.setNewLinesMax(1);
+			formatting.setNewLinesDefault(nb);
+			formatting.setNewLinesMin(nb);
+			formatting.setNewLinesMax(nb);
+			formatting.setNoIndentation(false);
+		} else {
+			final IHiddenRegionFormatting formatting = leading.getFormatting();
+			formatting.setNewLinesDefault(0);
+			formatting.setNewLinesMin(0);
+			formatting.setNewLinesMax(0);
 			formatting.setNoIndentation(false);
 		}
 		if (trailing.getRegion().getOffset() > 0) {
+			final int nb = NUMBER_OF_LINES_AFTER_COMMENT + 1;
 			final IHiddenRegionFormatting formatting = trailing.getFormatting();
-			formatting.setNewLinesDefault(1);
-			formatting.setNewLinesMin(1);
-			formatting.setNewLinesMax(1);
+			formatting.setNewLinesDefault(nb);
+			formatting.setNewLinesMin(nb);
+			formatting.setNewLinesMax(nb);
 			formatting.setNoIndentation(false);
 		}
 	}

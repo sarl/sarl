@@ -56,7 +56,11 @@ public class SARLSinglelineCommentReplacer extends CommentReplacer {
 
 	@Override
 	public void configureWhitespace(WhitespaceReplacer leading, WhitespaceReplacer trailing) {
-		//
+		// Do not configure the whitespaces before and after the single line comment in order
+		// to let the developer to write them as s/he want.
+
+		// The whitespace replacers are lready configured for the current context.
+		// It means that line lines may be added around the single line comment.
 	}
 
 	@Override

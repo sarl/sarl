@@ -79,8 +79,8 @@ public abstract class AbstractMemberFormatterTest extends AbstractSarlTest {
 	 * @param line the line of code.
 	 * @return the unformatted code with the prefix and postfix.
 	 */
-	protected String unformattedCode(String code) {
-		return prefix() + code + postfix();
+	protected String unformattedCode(String... code) {
+		return prefix() + multilineString(code) + postfix();
 	}
 
 	/** Build a formatted code.
