@@ -13,14 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.tests.modules.formatting2;
+package io.sarl.lang.tests.modules.formatting2.members;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-/** Tests for formatting behavior units.
+import io.sarl.lang.tests.modules.formatting2.AbstractMemberFormatterTest;
+
+/** Tests for formatting fields.
  *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
@@ -29,10 +31,10 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-	BehaviorUnitFormatterTest.FormatterAPITest.class,
+	VariableFieldFormatterTest.FormatterAPITest.class,
 })
 @SuppressWarnings("all")
-public class BehaviorUnitFormatterTest {
+public class VariableFieldFormatterTest {
 
 	/**
 	 * @author $Author: sgalland$
@@ -43,51 +45,82 @@ public class BehaviorUnitFormatterTest {
 	public static class FormatterAPITest extends AbstractMemberFormatterTest {
 
 		@Test
-		public void simple() throws Exception {
-			String source = unformattedCode("on Event{System.out.println(occurrence)}");
-			String expected = formattedCode(
-					"	on Event {",
-					"		System.out.println(occurrence)",
-					"	}");
+		public void type() throws Exception {
+			String source = unformattedCode("var xxx:int");
+			String expected = formattedCode("	var xxx : int");
 			assertFormatted(source, expected);
 		}
 
 		@Test
-		public void trueGuard() throws Exception {
-			String source = unformattedCode("on Event[true]{System.out.println(occurrence)}");
+		public void types() throws Exception {
+			String source = unformattedCode("var xxx:int var yyy:boolean");
 			String expected = formattedCode(
-					"	on Event [true] {",
-					"		System.out.println(occurrence)",
-					"	}");
+					"	var xxx : int",
+					"	var yyy : boolean");
 			assertFormatted(source, expected);
 		}
 
 		@Test
-		public void falseGuard() throws Exception {
-			String source = unformattedCode("on Event[false]{System.out.println(occurrence)}");
-			String expected = formattedCode(
-					"	on Event [false] {",
-					"		System.out.println(occurrence)",
-					"	}");
+		public void initialValue() throws Exception {
+			String source = unformattedCode("var xxx=5");
+			String expected = formattedCode("	var xxx = 5");
 			assertFormatted(source, expected);
 		}
 
 		@Test
-		public void guard() throws Exception {
-			String source = unformattedCode("on Event[occurrence.forMe]{System.out.println(occurrence)}");
+		public void initialValues() throws Exception {
+			String source = unformattedCode("var xxx=5 var yyy=true");
 			String expected = formattedCode(
-					"	on Event [occurrence.forMe] {",
-					"		System.out.println(occurrence)",
-					"	}");
+					"	var xxx = 5",
+					"	var yyy = true");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void initialValueType() throws Exception {
+			String source = unformattedCode("var xxx=5 var yyy : boolean");
+			String expected = formattedCode(
+					"	var xxx = 5",
+					"	var yyy : boolean");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void typeInitialValue() throws Exception {
+			String source = unformattedCode("var xxx:int var yyy=true");
+			String expected = formattedCode(
+					"	var xxx : int",
+					"	var yyy = true");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void typeComaType() throws Exception {
+			String source = unformattedCode("var xxx:int  ;  var yyy:boolean");
+			String expected = formattedCode(
+					"	var xxx : int;",
+					"	var yyy : boolean");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void typeInit() throws Exception {
+			String source = unformattedCode("var xxx:int=45");
+			String expected = formattedCode("	var xxx : int = 45");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void modifiers() throws Exception {
+			String source = unformattedCode("protected   final    var xxx:int=45");
+			String expected = formattedCode("	protected final var xxx : int = 45");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void twoAnnotations() throws Exception {
-			String source = unformattedCode("@Pure@Beta on Event{}");
-			String expected = formattedCode(
-					"	@Pure @Beta on Event {",
-					"	}");
+			String source = unformattedCode("@Pure@Beta var xxx:int=45");
+			String expected = formattedCode("	@Pure @Beta var xxx : int = 45");
 			assertFormatted(source, expected);
 		}
 
@@ -95,29 +128,24 @@ public class BehaviorUnitFormatterTest {
 		public void threeAnnotations() throws Exception {
 			String source = unformattedCode(multilineString(
 					"@Pure@Beta",
-					"@Hello on Event{}"));
+					"@Hello var xxx:int=45"));
 			String expected = formattedCode(
 					"	@Pure @Beta",
-					"	@Hello on Event {",
-					"	}");
+					"	@Hello var xxx : int = 45");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void annotationValue() throws Exception {
-			String source = unformattedCode("@SuppressWarnings(        value= \"name\"   )on Event{}");
-			String expected = formattedCode(
-					"	@SuppressWarnings(value = \"name\") on Event {",
-					"	}");
+			String source = unformattedCode("@SuppressWarnings(        value= \"name\"   )var xxx:int=45");
+			String expected = formattedCode("	@SuppressWarnings(value = \"name\") var xxx : int = 45");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void annotationImplicitValue() throws Exception {
-			String source = unformattedCode("@SuppressWarnings(   \"name\"   )on Event{}");
-			String expected = formattedCode(
-					"	@SuppressWarnings(\"name\") on Event {",
-					"	}");
+			String source = unformattedCode("@SuppressWarnings(   \"name\"   )var xxx:int=45");
+			String expected = formattedCode("	@SuppressWarnings(\"name\") var xxx : int = 45");
 			assertFormatted(source, expected);
 		}
 
@@ -126,13 +154,12 @@ public class BehaviorUnitFormatterTest {
 			String source = unformattedCode(multilineString(
 					"/*Hello world.",
 					"* That's the second line.",
-					"*/on Event{}"));
+					"*/var xxx:int=45"));
 			String expected = formattedCode(
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
-					"\ton Event {",
-					"\t}");
+					"\tvar xxx : int = 45");
 			assertFormatted(source, expected);
 		}
 
@@ -140,13 +167,12 @@ public class BehaviorUnitFormatterTest {
 		public void mlStandardComment2() throws Exception {
 			String source = unformattedCode(multilineString(
 					"/*Hello world.",
-					"That's the second line.*/on Event{}"));
+					"That's the second line.*/var xxx:int=45"));
 			String expected = formattedCode(
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
-					"\ton Event {",
-					"\t}");
+					"\tvar xxx : int = 45");
 			assertFormatted(source, expected);
 		}
 
@@ -154,17 +180,15 @@ public class BehaviorUnitFormatterTest {
 		public void mlStandardComment3() throws Exception {
 			String source = unformattedCode(multilineString(
 					"/*Hello world.",
-					"That's the second line.*/on Event{}/*Second comment.*/on Event{}"));
+					"That's the second line.*/var xxx:int=45 /*Second comment.*/var yyy:int"));
 			String expected = formattedCode(
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
-					"\ton Event {",
-					"\t}",
+					"\tvar xxx : int = 45",
 					"\t/* Second comment.",
 					"\t */",
-					"\ton Event {",
-					"\t}");
+					"\tvar yyy : int");
 			assertFormatted(source, expected);
 		}
 
@@ -172,13 +196,12 @@ public class BehaviorUnitFormatterTest {
 		public void mlStandardComment4() throws Exception {
 			String source = unformattedCode(multilineString(
 					"/*Hello world.",
-					"That's the second line.*/on Event{}/*Second comment.*/"));
+					"That's the second line.*/var xxx:int=45/*Second comment.*/"));
 			String expected = formattedCode(
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
-					"\ton Event {",
-					"\t}",
+					"\tvar xxx : int = 45",
 					"\t/* Second comment.",
 					"\t */");
 			assertFormatted(source, expected);
@@ -188,13 +211,12 @@ public class BehaviorUnitFormatterTest {
 		public void mlJavaComment() throws Exception {
 			String source = unformattedCode(multilineString(
 					"/**Hello world.",
-					"That's the second line.*/on Event{}"));
+					"That's the second line.*/var xxx:int=45"));
 			String expected = formattedCode(
 					"\t/** Hello world.",
 					"\t * That's the second line.",
 					"\t */",
-					"\ton Event {",
-					"\t}");
+					"\tvar xxx : int = 45");
 			assertFormatted(source, expected);
 		}
 
@@ -203,11 +225,10 @@ public class BehaviorUnitFormatterTest {
 			String source = unformattedCode(multilineString(
 					"",
 					"//Hello world.",
-					"on Event{}"));
+					"var xxx:int=45"));
 			String expected = formattedCode(
 					"\t// Hello world.",
-					"\ton Event {",
-					"\t}");
+					"\tvar xxx : int = 45");
 			assertFormatted(source, expected);
 		}
 
@@ -216,11 +237,10 @@ public class BehaviorUnitFormatterTest {
 			String source = unformattedCode(multilineString(
 					"",
 					"//      Hello world.",
-					"on Event{}"));
+					"var xxx:int=45"));
 			String expected = formattedCode(
 					"\t// Hello world.",
-					"\ton Event {",
-					"\t}");
+					"\tvar xxx : int = 45");
 			assertFormatted(source, expected);
 		}
 
@@ -229,11 +249,10 @@ public class BehaviorUnitFormatterTest {
 			String source = unformattedCode(multilineString(
 					"",
 					"// Hello world.",
-					"on Event{}"));
+					"var xxx:int=45"));
 			String expected = formattedCode(
 					"\t// Hello world.",
-					"\ton Event {",
-					"\t}");
+					"\tvar xxx : int = 45");
 			assertFormatted(source, expected);
 		}
 
@@ -242,13 +261,12 @@ public class BehaviorUnitFormatterTest {
 			String source = unformattedCode(multilineString(
 					"",
 					"// Hello world.",
-					"on Event{}",
+					"var xxx:int=45",
 					"//Second comment",
 					""));
 			String expected = formattedCode(
 					"\t// Hello world.",
-					"\ton Event {",
-					"\t}",
+					"\tvar xxx : int = 45",
 					"\t// Second comment");
 			assertFormatted(source, expected);
 		}
@@ -258,17 +276,14 @@ public class BehaviorUnitFormatterTest {
 			String source = unformattedCode(multilineString(
 					"",
 					"// Hello world.",
-					"on Event{}",
+					"var xxx:int=45",
 					"//Second comment",
-					"on Event{}"));
+					"var yyy:int=67"));
 			String expected = formattedCode(
 					"\t// Hello world.",
-					"\ton Event {",
-					"\t}",
-					"",
+					"\tvar xxx : int = 45",
 					"\t// Second comment",
-					"\ton Event {",
-					"\t}");
+					"\tvar yyy : int = 67");
 			assertFormatted(source, expected);
 		}
 

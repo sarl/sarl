@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.tests.modules.formatting2;
+package io.sarl.lang.tests.modules.formatting2.members;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
+
+import io.sarl.lang.tests.modules.formatting2.AbstractMemberFormatterTest;
 
 /** Tests for formatting fields.
  *
@@ -29,10 +31,10 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-	VariableFieldFormatterTest.FormatterAPITest.class,
+	ValueFieldFormatterTest.FormatterAPITest.class,
 })
 @SuppressWarnings("all")
-public class VariableFieldFormatterTest {
+public class ValueFieldFormatterTest {
 
 	/**
 	 * @author $Author: sgalland$
@@ -44,81 +46,90 @@ public class VariableFieldFormatterTest {
 
 		@Test
 		public void type() throws Exception {
-			String source = unformattedCode("var xxx:int");
-			String expected = formattedCode("	var xxx : int");
+			String source = unformattedCode("val xxx:int");
+			String expected = formattedCode("	val xxx : int");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void types() throws Exception {
-			String source = unformattedCode("var xxx:int var yyy:boolean");
+			String source = unformattedCode("val xxx:int val yyy:boolean");
 			String expected = formattedCode(
-					"	var xxx : int",
-					"	var yyy : boolean");
+					"	val xxx : int",
+					"	val yyy : boolean");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void initialValue() throws Exception {
-			String source = unformattedCode("var xxx=5");
-			String expected = formattedCode("	var xxx = 5");
+			String source = unformattedCode("val xxx=5");
+			String expected = formattedCode("	val xxx = 5");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void initialValues() throws Exception {
-			String source = unformattedCode("var xxx=5 var yyy=true");
+			String source = unformattedCode("val xxx=5 val yyy=true");
 			String expected = formattedCode(
-					"	var xxx = 5",
-					"	var yyy = true");
+					"	val xxx = 5",
+					"	val yyy = true");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void initialValueType() throws Exception {
-			String source = unformattedCode("var xxx=5 var yyy : boolean");
+			String source = unformattedCode("val xxx=5 val yyy : boolean");
 			String expected = formattedCode(
-					"	var xxx = 5",
-					"	var yyy : boolean");
+					"	val xxx = 5",
+					"	val yyy : boolean");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void typeInitialValue() throws Exception {
-			String source = unformattedCode("var xxx:int var yyy=true");
+			String source = unformattedCode("val xxx:int val yyy=true");
 			String expected = formattedCode(
-					"	var xxx : int",
-					"	var yyy = true");
+					"	val xxx : int",
+					"	val yyy = true");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void typeType() throws Exception {
+			String source = unformattedCode("val xxx:int    val yyy:boolean");
+			String expected = formattedCode(
+					"	val xxx : int",
+					"	val yyy : boolean");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void typeComaType() throws Exception {
-			String source = unformattedCode("var xxx:int  ;  var yyy:boolean");
+			String source = unformattedCode("val xxx:int  ;  val yyy:boolean");
 			String expected = formattedCode(
-					"	var xxx : int;",
-					"	var yyy : boolean");
+					"	val xxx : int;",
+					"	val yyy : boolean");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void typeInit() throws Exception {
-			String source = unformattedCode("var xxx:int=45");
-			String expected = formattedCode("	var xxx : int = 45");
+			String source = unformattedCode("val xxx:int=45");
+			String expected = formattedCode("	val xxx : int = 45");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void modifiers() throws Exception {
-			String source = unformattedCode("protected   final    var xxx:int=45");
-			String expected = formattedCode("	protected final var xxx : int = 45");
+			String source = unformattedCode("protected   final    val xxx:int=45");
+			String expected = formattedCode("	protected final val xxx : int = 45");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void twoAnnotations() throws Exception {
-			String source = unformattedCode("@Pure@Beta var xxx:int=45");
-			String expected = formattedCode("	@Pure @Beta var xxx : int = 45");
+			String source = unformattedCode("@Pure@Beta val xxx:int=45");
+			String expected = formattedCode("	@Pure @Beta val xxx : int = 45");
 			assertFormatted(source, expected);
 		}
 
@@ -126,24 +137,24 @@ public class VariableFieldFormatterTest {
 		public void threeAnnotations() throws Exception {
 			String source = unformattedCode(multilineString(
 					"@Pure@Beta",
-					"@Hello var xxx:int=45"));
+					"@Hello val xxx:int=45"));
 			String expected = formattedCode(
 					"	@Pure @Beta",
-					"	@Hello var xxx : int = 45");
+					"	@Hello val xxx : int = 45");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void annotationValue() throws Exception {
-			String source = unformattedCode("@SuppressWarnings(        value= \"name\"   )var xxx:int=45");
-			String expected = formattedCode("	@SuppressWarnings(value = \"name\") var xxx : int = 45");
+			String source = unformattedCode("@SuppressWarnings(        value= \"name\"   )val xxx:int=45");
+			String expected = formattedCode("	@SuppressWarnings(value = \"name\") val xxx : int = 45");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void annotationImplicitValue() throws Exception {
-			String source = unformattedCode("@SuppressWarnings(   \"name\"   )var xxx:int=45");
-			String expected = formattedCode("	@SuppressWarnings(\"name\") var xxx : int = 45");
+			String source = unformattedCode("@SuppressWarnings(   \"name\"   )val xxx:int=45");
+			String expected = formattedCode("	@SuppressWarnings(\"name\") val xxx : int = 45");
 			assertFormatted(source, expected);
 		}
 
@@ -152,12 +163,12 @@ public class VariableFieldFormatterTest {
 			String source = unformattedCode(multilineString(
 					"/*Hello world.",
 					"* That's the second line.",
-					"*/var xxx:int=45"));
+					"*/val xxx:int=45"));
 			String expected = formattedCode(
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
-					"\tvar xxx : int = 45");
+					"\tval xxx : int = 45");
 			assertFormatted(source, expected);
 		}
 
@@ -165,12 +176,12 @@ public class VariableFieldFormatterTest {
 		public void mlStandardComment2() throws Exception {
 			String source = unformattedCode(multilineString(
 					"/*Hello world.",
-					"That's the second line.*/var xxx:int=45"));
+					"That's the second line.*/val xxx:int=45"));
 			String expected = formattedCode(
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
-					"\tvar xxx : int = 45");
+					"\tval xxx : int = 45");
 			assertFormatted(source, expected);
 		}
 
@@ -178,15 +189,15 @@ public class VariableFieldFormatterTest {
 		public void mlStandardComment3() throws Exception {
 			String source = unformattedCode(multilineString(
 					"/*Hello world.",
-					"That's the second line.*/var xxx:int=45 /*Second comment.*/var yyy:int"));
+					"That's the second line.*/val xxx:int=45 /*Second comment.*/val yyy:int"));
 			String expected = formattedCode(
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
-					"\tvar xxx : int = 45",
+					"\tval xxx : int = 45",
 					"\t/* Second comment.",
 					"\t */",
-					"\tvar yyy : int");
+					"\tval yyy : int");
 			assertFormatted(source, expected);
 		}
 
@@ -194,12 +205,12 @@ public class VariableFieldFormatterTest {
 		public void mlStandardComment4() throws Exception {
 			String source = unformattedCode(multilineString(
 					"/*Hello world.",
-					"That's the second line.*/var xxx:int=45/*Second comment.*/"));
+					"That's the second line.*/val xxx:int=45/*Second comment.*/"));
 			String expected = formattedCode(
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
-					"\tvar xxx : int = 45",
+					"\tval xxx : int = 45",
 					"\t/* Second comment.",
 					"\t */");
 			assertFormatted(source, expected);
@@ -209,12 +220,12 @@ public class VariableFieldFormatterTest {
 		public void mlJavaComment() throws Exception {
 			String source = unformattedCode(multilineString(
 					"/**Hello world.",
-					"That's the second line.*/var xxx:int=45"));
+					"That's the second line.*/val xxx:int=45"));
 			String expected = formattedCode(
 					"\t/** Hello world.",
 					"\t * That's the second line.",
 					"\t */",
-					"\tvar xxx : int = 45");
+					"\tval xxx : int = 45");
 			assertFormatted(source, expected);
 		}
 
@@ -223,10 +234,10 @@ public class VariableFieldFormatterTest {
 			String source = unformattedCode(multilineString(
 					"",
 					"//Hello world.",
-					"var xxx:int=45"));
+					"val xxx:int=45"));
 			String expected = formattedCode(
 					"\t// Hello world.",
-					"\tvar xxx : int = 45");
+					"\tval xxx : int = 45");
 			assertFormatted(source, expected);
 		}
 
@@ -235,10 +246,10 @@ public class VariableFieldFormatterTest {
 			String source = unformattedCode(multilineString(
 					"",
 					"//      Hello world.",
-					"var xxx:int=45"));
+					"val xxx:int=45"));
 			String expected = formattedCode(
 					"\t// Hello world.",
-					"\tvar xxx : int = 45");
+					"\tval xxx : int = 45");
 			assertFormatted(source, expected);
 		}
 
@@ -247,10 +258,10 @@ public class VariableFieldFormatterTest {
 			String source = unformattedCode(multilineString(
 					"",
 					"// Hello world.",
-					"var xxx:int=45"));
+					"val xxx:int=45"));
 			String expected = formattedCode(
 					"\t// Hello world.",
-					"\tvar xxx : int = 45");
+					"\tval xxx : int = 45");
 			assertFormatted(source, expected);
 		}
 
@@ -259,12 +270,12 @@ public class VariableFieldFormatterTest {
 			String source = unformattedCode(multilineString(
 					"",
 					"// Hello world.",
-					"var xxx:int=45",
+					"val xxx:int=45",
 					"//Second comment",
 					""));
 			String expected = formattedCode(
 					"\t// Hello world.",
-					"\tvar xxx : int = 45",
+					"\tval xxx : int = 45",
 					"\t// Second comment");
 			assertFormatted(source, expected);
 		}
@@ -274,17 +285,17 @@ public class VariableFieldFormatterTest {
 			String source = unformattedCode(multilineString(
 					"",
 					"// Hello world.",
-					"var xxx:int=45",
+					"val xxx:int=45",
 					"//Second comment",
-					"var yyy:int=67"));
+					"val yyy:int=67"));
 			String expected = formattedCode(
 					"\t// Hello world.",
-					"\tvar xxx : int = 45",
+					"\tval xxx : int = 45",
 					"\t// Second comment",
-					"\tvar yyy : int = 67");
+					"\tval yyy : int = 67");
 			assertFormatted(source, expected);
 		}
 
 	}
 
-}
+}	

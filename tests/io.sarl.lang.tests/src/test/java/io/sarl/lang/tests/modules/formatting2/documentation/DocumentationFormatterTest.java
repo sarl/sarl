@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.tests.modules.formatting2;
+package io.sarl.lang.tests.modules.formatting2.documentation;
 
 import com.google.inject.Inject;
 import org.eclipse.xtext.util.Strings;

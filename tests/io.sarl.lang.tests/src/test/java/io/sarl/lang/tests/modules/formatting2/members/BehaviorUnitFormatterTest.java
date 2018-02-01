@@ -13,14 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.tests.modules.formatting2;
+package io.sarl.lang.tests.modules.formatting2.members;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-/** Tests for formatting fields.
+import io.sarl.lang.tests.modules.formatting2.AbstractMemberFormatterTest;
+
+/** Tests for formatting behavior units.
  *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
@@ -29,10 +31,10 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-	ValueFieldFormatterTest.FormatterAPITest.class,
+	BehaviorUnitFormatterTest.FormatterAPITest.class,
 })
 @SuppressWarnings("all")
-public class ValueFieldFormatterTest {
+public class BehaviorUnitFormatterTest {
 
 	/**
 	 * @author $Author: sgalland$
@@ -43,91 +45,51 @@ public class ValueFieldFormatterTest {
 	public static class FormatterAPITest extends AbstractMemberFormatterTest {
 
 		@Test
-		public void type() throws Exception {
-			String source = unformattedCode("val xxx:int");
-			String expected = formattedCode("	val xxx : int");
-			assertFormatted(source, expected);
-		}
-
-		@Test
-		public void types() throws Exception {
-			String source = unformattedCode("val xxx:int val yyy:boolean");
+		public void simple() throws Exception {
+			String source = unformattedCode("on Event{System.out.println(occurrence)}");
 			String expected = formattedCode(
-					"	val xxx : int",
-					"	val yyy : boolean");
+					"	on Event {",
+					"		System.out.println(occurrence)",
+					"	}");
 			assertFormatted(source, expected);
 		}
 
 		@Test
-		public void initialValue() throws Exception {
-			String source = unformattedCode("val xxx=5");
-			String expected = formattedCode("	val xxx = 5");
-			assertFormatted(source, expected);
-		}
-
-		@Test
-		public void initialValues() throws Exception {
-			String source = unformattedCode("val xxx=5 val yyy=true");
+		public void trueGuard() throws Exception {
+			String source = unformattedCode("on Event[true]{System.out.println(occurrence)}");
 			String expected = formattedCode(
-					"	val xxx = 5",
-					"	val yyy = true");
+					"	on Event [true] {",
+					"		System.out.println(occurrence)",
+					"	}");
 			assertFormatted(source, expected);
 		}
 
 		@Test
-		public void initialValueType() throws Exception {
-			String source = unformattedCode("val xxx=5 val yyy : boolean");
+		public void falseGuard() throws Exception {
+			String source = unformattedCode("on Event[false]{System.out.println(occurrence)}");
 			String expected = formattedCode(
-					"	val xxx = 5",
-					"	val yyy : boolean");
+					"	on Event [false] {",
+					"		System.out.println(occurrence)",
+					"	}");
 			assertFormatted(source, expected);
 		}
 
 		@Test
-		public void typeInitialValue() throws Exception {
-			String source = unformattedCode("val xxx:int val yyy=true");
+		public void guard() throws Exception {
+			String source = unformattedCode("on Event[occurrence.forMe]{System.out.println(occurrence)}");
 			String expected = formattedCode(
-					"	val xxx : int",
-					"	val yyy = true");
-			assertFormatted(source, expected);
-		}
-
-		@Test
-		public void typeType() throws Exception {
-			String source = unformattedCode("val xxx:int    val yyy:boolean");
-			String expected = formattedCode(
-					"	val xxx : int",
-					"	val yyy : boolean");
-			assertFormatted(source, expected);
-		}
-
-		@Test
-		public void typeComaType() throws Exception {
-			String source = unformattedCode("val xxx:int  ;  val yyy:boolean");
-			String expected = formattedCode(
-					"	val xxx : int;",
-					"	val yyy : boolean");
-			assertFormatted(source, expected);
-		}
-
-		@Test
-		public void typeInit() throws Exception {
-			String source = unformattedCode("val xxx:int=45");
-			String expected = formattedCode("	val xxx : int = 45");
-			assertFormatted(source, expected);
-		}
-
-		@Test
-		public void modifiers() throws Exception {
-			String source = unformattedCode("protected   final    val xxx:int=45");
-			String expected = formattedCode("	protected final val xxx : int = 45");
+					"	on Event [occurrence.forMe] {",
+					"		System.out.println(occurrence)",
+					"	}");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void twoAnnotations() throws Exception {
-			String source = unformattedCode("@Pure@Beta val xxx:int=45");
-			String expected = formattedCode("	@Pure @Beta val xxx : int = 45");
+			String source = unformattedCode("@Pure@Beta on Event{}");
+			String expected = formattedCode(
+					"	@Pure @Beta on Event {",
+					"	}");
 			assertFormatted(source, expected);
 		}
 
@@ -135,24 +97,29 @@ public class ValueFieldFormatterTest {
 		public void threeAnnotations() throws Exception {
 			String source = unformattedCode(multilineString(
 					"@Pure@Beta",
-					"@Hello val xxx:int=45"));
+					"@Hello on Event{}"));
 			String expected = formattedCode(
 					"	@Pure @Beta",
-					"	@Hello val xxx : int = 45");
+					"	@Hello on Event {",
+					"	}");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void annotationValue() throws Exception {
-			String source = unformattedCode("@SuppressWarnings(        value= \"name\"   )val xxx:int=45");
-			String expected = formattedCode("	@SuppressWarnings(value = \"name\") val xxx : int = 45");
+			String source = unformattedCode("@SuppressWarnings(        value= \"name\"   )on Event{}");
+			String expected = formattedCode(
+					"	@SuppressWarnings(value = \"name\") on Event {",
+					"	}");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void annotationImplicitValue() throws Exception {
-			String source = unformattedCode("@SuppressWarnings(   \"name\"   )val xxx:int=45");
-			String expected = formattedCode("	@SuppressWarnings(\"name\") val xxx : int = 45");
+			String source = unformattedCode("@SuppressWarnings(   \"name\"   )on Event{}");
+			String expected = formattedCode(
+					"	@SuppressWarnings(\"name\") on Event {",
+					"	}");
 			assertFormatted(source, expected);
 		}
 
@@ -161,12 +128,13 @@ public class ValueFieldFormatterTest {
 			String source = unformattedCode(multilineString(
 					"/*Hello world.",
 					"* That's the second line.",
-					"*/val xxx:int=45"));
+					"*/on Event{}"));
 			String expected = formattedCode(
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
-					"\tval xxx : int = 45");
+					"\ton Event {",
+					"\t}");
 			assertFormatted(source, expected);
 		}
 
@@ -174,12 +142,13 @@ public class ValueFieldFormatterTest {
 		public void mlStandardComment2() throws Exception {
 			String source = unformattedCode(multilineString(
 					"/*Hello world.",
-					"That's the second line.*/val xxx:int=45"));
+					"That's the second line.*/on Event{}"));
 			String expected = formattedCode(
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
-					"\tval xxx : int = 45");
+					"\ton Event {",
+					"\t}");
 			assertFormatted(source, expected);
 		}
 
@@ -187,15 +156,17 @@ public class ValueFieldFormatterTest {
 		public void mlStandardComment3() throws Exception {
 			String source = unformattedCode(multilineString(
 					"/*Hello world.",
-					"That's the second line.*/val xxx:int=45 /*Second comment.*/val yyy:int"));
+					"That's the second line.*/on Event{}/*Second comment.*/on Event{}"));
 			String expected = formattedCode(
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
-					"\tval xxx : int = 45",
+					"\ton Event {",
+					"\t}",
 					"\t/* Second comment.",
 					"\t */",
-					"\tval yyy : int");
+					"\ton Event {",
+					"\t}");
 			assertFormatted(source, expected);
 		}
 
@@ -203,12 +174,13 @@ public class ValueFieldFormatterTest {
 		public void mlStandardComment4() throws Exception {
 			String source = unformattedCode(multilineString(
 					"/*Hello world.",
-					"That's the second line.*/val xxx:int=45/*Second comment.*/"));
+					"That's the second line.*/on Event{}/*Second comment.*/"));
 			String expected = formattedCode(
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
-					"\tval xxx : int = 45",
+					"\ton Event {",
+					"\t}",
 					"\t/* Second comment.",
 					"\t */");
 			assertFormatted(source, expected);
@@ -218,12 +190,13 @@ public class ValueFieldFormatterTest {
 		public void mlJavaComment() throws Exception {
 			String source = unformattedCode(multilineString(
 					"/**Hello world.",
-					"That's the second line.*/val xxx:int=45"));
+					"That's the second line.*/on Event{}"));
 			String expected = formattedCode(
 					"\t/** Hello world.",
 					"\t * That's the second line.",
 					"\t */",
-					"\tval xxx : int = 45");
+					"\ton Event {",
+					"\t}");
 			assertFormatted(source, expected);
 		}
 
@@ -232,10 +205,11 @@ public class ValueFieldFormatterTest {
 			String source = unformattedCode(multilineString(
 					"",
 					"//Hello world.",
-					"val xxx:int=45"));
+					"on Event{}"));
 			String expected = formattedCode(
 					"\t// Hello world.",
-					"\tval xxx : int = 45");
+					"\ton Event {",
+					"\t}");
 			assertFormatted(source, expected);
 		}
 
@@ -244,10 +218,11 @@ public class ValueFieldFormatterTest {
 			String source = unformattedCode(multilineString(
 					"",
 					"//      Hello world.",
-					"val xxx:int=45"));
+					"on Event{}"));
 			String expected = formattedCode(
 					"\t// Hello world.",
-					"\tval xxx : int = 45");
+					"\ton Event {",
+					"\t}");
 			assertFormatted(source, expected);
 		}
 
@@ -256,10 +231,11 @@ public class ValueFieldFormatterTest {
 			String source = unformattedCode(multilineString(
 					"",
 					"// Hello world.",
-					"val xxx:int=45"));
+					"on Event{}"));
 			String expected = formattedCode(
 					"\t// Hello world.",
-					"\tval xxx : int = 45");
+					"\ton Event {",
+					"\t}");
 			assertFormatted(source, expected);
 		}
 
@@ -268,12 +244,13 @@ public class ValueFieldFormatterTest {
 			String source = unformattedCode(multilineString(
 					"",
 					"// Hello world.",
-					"val xxx:int=45",
+					"on Event{}",
 					"//Second comment",
 					""));
 			String expected = formattedCode(
 					"\t// Hello world.",
-					"\tval xxx : int = 45",
+					"\ton Event {",
+					"\t}",
 					"\t// Second comment");
 			assertFormatted(source, expected);
 		}
@@ -283,17 +260,20 @@ public class ValueFieldFormatterTest {
 			String source = unformattedCode(multilineString(
 					"",
 					"// Hello world.",
-					"val xxx:int=45",
+					"on Event{}",
 					"//Second comment",
-					"val yyy:int=67"));
+					"on Event{}"));
 			String expected = formattedCode(
 					"\t// Hello world.",
-					"\tval xxx : int = 45",
+					"\ton Event {",
+					"\t}",
+					"",
 					"\t// Second comment",
-					"\tval yyy : int = 67");
+					"\ton Event {",
+					"\t}");
 			assertFormatted(source, expected);
 		}
 
 	}
 
-}	
+}

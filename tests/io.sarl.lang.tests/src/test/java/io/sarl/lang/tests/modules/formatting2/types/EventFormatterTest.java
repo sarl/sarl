@@ -13,14 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.tests.modules.formatting2;
+package io.sarl.lang.tests.modules.formatting2.types;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-/** Tests for formatting enumerations.
+import io.sarl.lang.tests.modules.formatting2.AbstractFormatterTest;
+
+/** Tests for formatting events.
  *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
@@ -29,10 +31,10 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-	EnumFormatterTest.FormatterAPITest.class,
+	EventFormatterTest.FormatterAPITest.class,
 })
 @SuppressWarnings("all")
-public class EnumFormatterTest {
+public class EventFormatterTest {
 
 	/**
 	 * @author $Author: sgalland$
@@ -44,10 +46,9 @@ public class EnumFormatterTest {
 
 		@Test
 		public void empty() throws Exception {
-			String source = "enum  EntityX{CONST}";
+			String source = "event  EntityX{}";
 			String expected = multilineString(
-					"enum EntityX {",
-					"	CONST",
+					"event EntityX {",
 					"}",
 					"");
 			assertFormatted(source, expected);
@@ -55,10 +56,9 @@ public class EnumFormatterTest {
 
 		@Test
 		public void modifiers() throws Exception {
-			String source = "public    static    enum EntityX{CONST}";
+			String source = "public    static    event EntityX{}";
 			String expected = multilineString(
-					"public static enum EntityX {",
-					"	CONST",
+					"public static event EntityX {",
 					"}",
 					"");
 			assertFormatted(source, expected);
@@ -66,10 +66,9 @@ public class EnumFormatterTest {
 
 		@Test
 		public void twoAnnotations() throws Exception {
-			String source = "@Pure@Beta    enum EntityX{CONST}";
+			String source = "@Pure@Beta    event EntityX{}";
 			String expected = multilineString(
-					"@Pure @Beta enum EntityX {",
-					"	CONST",
+					"@Pure @Beta event EntityX {",
 					"}",
 					"");
 			assertFormatted(source, expected);
@@ -79,11 +78,10 @@ public class EnumFormatterTest {
 		public void threeAnnotations() throws Exception {
 			String source = multilineString(
 					"@Pure@Beta",
-					"@Hello    enum EntityX{CONST}");
+					"@Hello    event EntityX{}");
 			String expected = multilineString(
 					"@Pure @Beta",
-					"@Hello enum EntityX {",
-					"	CONST",
+					"@Hello event EntityX {",
 					"}",
 					"");
 			assertFormatted(source, expected);
@@ -91,10 +89,9 @@ public class EnumFormatterTest {
 
 		@Test
 		public void annotationValue() throws Exception {
-			String source = "@SuppressWarnings(        value= \"name\"   )enum EntityX{CONST}";
+			String source = "@SuppressWarnings(        value= \"name\"   )event EntityX{}";
 			String expected = multilineString(
-					"@SuppressWarnings(value = \"name\") enum EntityX {",
-					"	CONST",
+					"@SuppressWarnings(value = \"name\") event EntityX {",
 					"}",
 					"");
 			assertFormatted(source, expected);
@@ -102,23 +99,30 @@ public class EnumFormatterTest {
 
 		@Test
 		public void annotationImplicitValue() throws Exception {
-			String source = "@SuppressWarnings(   \"name\"   )enum EntityX{CONST}";
+			String source = "@SuppressWarnings(   \"name\"   )event EntityX{}";
 			String expected = multilineString(
-					"@SuppressWarnings(\"name\") enum EntityX {",
-					"	CONST",
+					"@SuppressWarnings(\"name\") event EntityX {",
 					"}",
 					"");
 			assertFormatted(source, expected);
 		}
 
 		@Test
-		public void multipleLiterals() throws Exception {
-			String source = "enum EntityX{CONST1,CONST2,CONST3}";
+		public void extend() throws Exception {
+			String source = "event EntityX    extends    EntityY {}";
 			String expected = multilineString(
-					"enum EntityX {",
-					"	CONST1,",
-					"	CONST2,",
-					"	CONST3",
+					"event EntityX extends EntityY {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void memberIndent() throws Exception {
+			String source = "event EntityX{var x:int}";
+			String expected = multilineString(
+					"event EntityX {",
+					"	var x : int",
 					"}",
 					"");
 			assertFormatted(source, expected);
@@ -129,14 +133,12 @@ public class EnumFormatterTest {
 			String source = multilineString(
 					"/*Hello world.",
 					"* That's the second line.",
-					"*/enum A{CONST1}");
+					"*/event A");
 			String expected = multilineString(
 					"/* Hello world.",
 					" * That's the second line.",
 					" */",
-					"enum A {",
-					"\tCONST1",
-					"}",
+					"event A",
 					"");
 			assertFormatted(source, expected);
 		}
@@ -145,41 +147,36 @@ public class EnumFormatterTest {
 		public void mlStandardComment2() throws Exception {
 			String source = multilineString(
 					"/*Hello world.",
-					"That's the second line.*/enum A{CONST1}");
+					"That's the second line.*/event A");
 			String expected = multilineString(
 					"/* Hello world.",
 					" * That's the second line.",
 					" */",
-					"enum A {",
-					"\tCONST1",
-					"}",
+					"event A",
 					"");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void mlStandardComment3() throws Exception {
-			String source = "/*      Hello world.      */enum A{CONST1}";
+			String source = "/*     Hello world.     */event A";
 			String expected = multilineString(
 					"/* Hello world.",
 					" */",
-					"enum A {",
-					"\tCONST1",
-					"}",
+					"event A",
 					"");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void mlStandardComment4() throws Exception {
-			String source = "/*      Hello world.      */enum A{/*Second comment*/CONST1}";
+			String source = "/*     Hello world.     */event A{/*Second comment*/}";
 			String expected = multilineString(
 					"/* Hello world.",
 					" */",
-					"enum A {",
+					"event A {",
 					"\t/* Second comment",
 					"\t */",
-					"\tCONST1",
 					"}",
 					"");
 			assertFormatted(source, expected);
@@ -189,14 +186,12 @@ public class EnumFormatterTest {
 		public void mlJavaComment() throws Exception {
 			String source = multilineString(
 					"/**Hello world.",
-					"That's the second line.*/enum A{CONST1}");
+					"That's the second line.*/event A");
 			String expected = multilineString(
 					"/** Hello world.",
 					" * That's the second line.",
 					" */",
-					"enum A {",
-					"\tCONST1",
-					"}",
+					"event A",
 					"");
 			assertFormatted(source, expected);
 		}
@@ -206,12 +201,10 @@ public class EnumFormatterTest {
 			String source = multilineString(
 					"",
 					"//Hello world.",
-					"enum A{CONST1}");
+					"event A");
 			String expected = multilineString(
 					"// Hello world.",
-					"enum A {",
-					"\tCONST1",
-					"}",
+					"event A",
 					"");
 			assertFormatted(source, expected);
 		}

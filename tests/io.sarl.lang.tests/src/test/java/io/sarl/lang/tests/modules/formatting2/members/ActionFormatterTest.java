@@ -13,14 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.tests.modules.formatting2;
+package io.sarl.lang.tests.modules.formatting2.members;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-/** Tests for formatting constructors.
+import io.sarl.lang.tests.modules.formatting2.AbstractMemberFormatterTest;
+
+/** Tests for formatting actions.
  *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
@@ -29,10 +31,10 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-	ConstructorFormatterTest.FormatterAPITest.class,
+	ActionFormatterTest.FormatterAPITest.class,
 })
 @SuppressWarnings("all")
-public class ConstructorFormatterTest {
+public class ActionFormatterTest {
 
 	/**
 	 * @author $Author: sgalland$
@@ -42,183 +44,222 @@ public class ConstructorFormatterTest {
 	 */
 	public static class FormatterAPITest extends AbstractMemberFormatterTest {
 
+		@Override
+		protected String declarationKeyword() {
+			return "class";
+		}
+
 		@Test
-		public void noParam() throws Exception {
-			String source = unformattedCode("new {System.out.println(\"abc\")}");
+		public void noParamNoReturn() throws Exception {
+			String source = unformattedCode("def myfct {System.out.println(\"abc\")}");
 			String expected = formattedCode(
-					"	new {",
+					"	def myfct {",
 					"		System.out.println(\"abc\")",
 					"	}");
 			assertFormatted(source, expected);
 		}
 
 		@Test
-		public void param() throws Exception {
-			String source = unformattedCode("new(a:int){System.out.println(a)}");
+		public void noParamReturn() throws Exception {
+			String source = unformattedCode("def myfct:boolean{return true}");
 			String expected = formattedCode(
-					"	new(a : int) {",
+					"	def myfct : boolean {",
+					"		return true",
+					"	}");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void paramNoReturn() throws Exception {
+			String source = unformattedCode("def myfct(a:int){System.out.println(a)}");
+			String expected = formattedCode(
+					"	def myfct(a : int) {",
 					"		System.out.println(a)",
 					"	}");
 			assertFormatted(source, expected);
 		}
 
 		@Test
-		public void params() throws Exception {
-			String source = unformattedCode("new(a:int,b:boolean){System.out.println(a)}");
+		public void paramsNoReturn() throws Exception {
+			String source = unformattedCode("def myfct(a:int,b:boolean){System.out.println(a)}");
 			String expected = formattedCode(
-					"	new(a : int, b : boolean) {",
+					"	def myfct(a : int, b : boolean) {",
 					"		System.out.println(a)",
 					"	}");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void paramReturn() throws Exception {
+			String source = unformattedCode("def myfct(a:int):boolean{a==2}");
+			String expected = formattedCode(
+					"	def myfct(a : int) : boolean {",
+					"		a == 2",
+					"	}");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void paramsReturn() throws Exception {
+			String source = unformattedCode("def myfct(a:int,b:boolean):boolean{b}");
+			String expected = formattedCode(
+					"	def myfct(a : int, b : boolean) : boolean {",
+					"		b",
+					"	}");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void noParamNoBody() throws Exception {
+			String source = unformattedCode("def myfct ;");
+			String expected = formattedCode("	def myfct;");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void paramNoBody() throws Exception {
+			String source = unformattedCode("def myfct(a:int);");
+			String expected = formattedCode("	def myfct(a : int);");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void paramsNoBody() throws Exception {
+			String source = unformattedCode("def myfct(a:int,b:boolean);");
+			String expected = formattedCode("	def myfct(a : int, b : boolean);");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void defaultValuedParam() throws Exception {
-			String source = unformattedCode("new(a:int=5){System.out.println(a)}");
-			String expected = formattedCode(
-					"	new(a : int = 5) {",
-					"		System.out.println(a)",
-					"	}");
+			String source = unformattedCode("def myfct(a:int=5);");
+			String expected = formattedCode("	def myfct(a : int = 5);");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void defaultValuedParams() throws Exception {
-			String source = unformattedCode("new(a:int=5,b:boolean=false){System.out.println(a)}");
-			String expected = formattedCode(
-					"	new(a : int = 5, b : boolean = false) {",
-					"		System.out.println(a)",
-					"	}");
+			String source = unformattedCode("def myfct(a:int=5,b:boolean=false);");
+			String expected = formattedCode("	def myfct(a : int = 5, b : boolean = false);");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void varArg() throws Exception {
-			String source = unformattedCode("new(a:int  * ){System.out.println(a)}");
-			String expected = formattedCode(
-					"	new(a : int*) {",
-					"		System.out.println(a)",
-					"	}");
+			String source = unformattedCode("def myfct(a:int  * );");
+			String expected = formattedCode("	def myfct(a : int*);");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void javaGeneric() throws Exception {
-			String source = unformattedCode("new<T>(a:T){System.out.println(a)}");
-			String expected = formattedCode(
-					"	new <T> (a : T) {",
-					"		System.out.println(a)",
-					"	}");
+			String source = unformattedCode("def<T>myfct(a:T);");
+			String expected = formattedCode("	def <T> myfct(a : T);");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void javaGenerics() throws Exception {
-			String source = unformattedCode("new<T,TT extends T>(a:T,b:TT){System.out.println(a)}");
-			String expected = formattedCode(
-					"	new <T, TT extends T> (a : T, b : TT) {",
-					"		System.out.println(a)",
-					"	}");
+			String source = unformattedCode("def<T,TT extends T>myfct(a:T,b:TT);");
+			String expected = formattedCode("	def <T, TT extends T> myfct(a : T, b : TT);");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void sarlGeneric() throws Exception {
-			String source = unformattedCode("new(a:T)with T{System.out.println(a)}");
-			String expected = formattedCode(
-					"	new(a : T) with T {",
-					"		System.out.println(a)",
-					"	}");
+			String source = unformattedCode("def myfct(a:T)with T;");
+			String expected = formattedCode("	def myfct(a : T) with T;");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void sarlGenerics() throws Exception {
-			String source = unformattedCode("new(a:T,b:TT)with T,TT extends T{System.out.println(a)}");
-			String expected = formattedCode(
-					"	new(a : T, b : TT) with T, TT extends T {",
-					"		System.out.println(a)",
-					"	}");
+			String source = unformattedCode("def myfct(a:T,b:TT)with T,TT extends T;");
+			String expected = formattedCode("	def myfct(a : T, b : TT) with T, TT extends T;");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void exceptionNoParam() throws Exception {
-			String source = unformattedCode("new throws Exception{System.out.println(a)}");
-			String expected = formattedCode(
-					"	new throws Exception {",
-					"		System.out.println(a)",
-					"	}");
+			String source = unformattedCode("def myfct throws Exception;");
+			String expected = formattedCode("	def myfct throws Exception;");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void exceptionsNoParam() throws Exception {
-			String source = unformattedCode("new throws Exception,Exception{System.out.println(a)}");
-			String expected = formattedCode(
-					"	new throws Exception, Exception {",
-					"		System.out.println(a)",
-					"	}");
+			String source = unformattedCode("def myfct throws Exception,Exception;");
+			String expected = formattedCode("	def myfct throws Exception, Exception;");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void exceptionEmptyParam() throws Exception {
-			String source = unformattedCode("new()throws Exception{System.out.println(a)}");
-			String expected = formattedCode(
-					"	new() throws Exception {",
-					"		System.out.println(a)",
-					"	}");
+			String source = unformattedCode("def myfct()throws Exception;");
+			String expected = formattedCode("	def myfct() throws Exception;");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void exceptionsEmptyParam() throws Exception {
-			String source = unformattedCode("new()throws Exception,Exception{System.out.println(a)}");
-			String expected = formattedCode(
-					"	new() throws Exception, Exception {",
-					"		System.out.println(a)",
-					"	}");
+			String source = unformattedCode("def myfct()throws Exception,Exception;");
+			String expected = formattedCode("	def myfct() throws Exception, Exception;");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void eventNoParam() throws Exception {
+			String source = unformattedCode("def myfct fires Event;");
+			String expected = formattedCode("	def myfct fires Event;");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void eventsNoParam() throws Exception {
+			String source = unformattedCode("def myfct fires Event,Event;");
+			String expected = formattedCode("	def myfct fires Event, Event;");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void eventEmptyParam() throws Exception {
+			String source = unformattedCode("def myfct()fires Event;");
+			String expected = formattedCode("	def myfct() fires Event;");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void eventsEmptyParam() throws Exception {
+			String source = unformattedCode("def myfct()fires Event,Event;");
+			String expected = formattedCode("	def myfct() fires Event, Event;");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void modifiers() throws Exception {
-			String source = unformattedCode("public    new {System.out.println(a)}");
-			String expected = formattedCode(
-					"	public new {",
-					"		System.out.println(a)",
-					"	}");
+			String source = unformattedCode("public   static   def myfct;");
+			String expected = formattedCode("	public static def myfct;");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void annotation() throws Exception {
-			String source = unformattedCode("@Annotation new{System.out.println(a)}");
-			String expected = formattedCode(
-					"	@Annotation new {",
-					"		System.out.println(a)",
-					"	}");
+			String source = unformattedCode("@Annotation def myfct;");
+			String expected = formattedCode("	@Annotation def myfct;");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void annotations() throws Exception {
-			String source = unformattedCode("@Annotation@Beta new{System.out.println(a)}");
-			String expected = formattedCode(
-					"	@Annotation @Beta new {",
-					"		System.out.println(a)",
-					"	}");
+			String source = unformattedCode("@Annotation@Beta def myfct;");
+			String expected = formattedCode("	@Annotation @Beta def myfct;");
 			assertFormatted(source, expected);
 		}
 
 		@Test
 		public void annotationValue() throws Exception {
-			String source = unformattedCode("@SuppressWarnings(\"name\")new{System.out.println(a)}");
-			String expected = formattedCode(
-					"	@SuppressWarnings(\"name\") new {",
-					"		System.out.println(a)",
-					"	}");
+			String source = unformattedCode("@SuppressWarnings(\"name\")def myfct;");
+			String expected = formattedCode("	@SuppressWarnings(\"name\") def myfct;");
 			assertFormatted(source, expected);
 		}
 
@@ -227,14 +268,12 @@ public class ConstructorFormatterTest {
 			String source = unformattedCode(multilineString(
 					"/*Hello world.",
 					"* That's the second line.",
-					"*/new{System.out.println(a)}"));
+					"*/def myfct"));
 			String expected = formattedCode(
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
-					"\tnew {",
-					"\t\tSystem.out.println(a)",
-					"\t}");
+					"\tdef myfct");
 			assertFormatted(source, expected);
 		}
 
@@ -242,14 +281,12 @@ public class ConstructorFormatterTest {
 		public void mlStandardComment2() throws Exception {
 			String source = unformattedCode(multilineString(
 					"/*Hello world.",
-					"That's the second line.*/new{System.out.println(a)}"));
+					"That's the second line.*/def myfct"));
 			String expected = formattedCode(
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
-					"\tnew {",
-					"\t\tSystem.out.println(a)",
-					"\t}");
+					"\tdef myfct");
 			assertFormatted(source, expected);
 		}
 
@@ -257,19 +294,15 @@ public class ConstructorFormatterTest {
 		public void mlStandardComment3() throws Exception {
 			String source = unformattedCode(multilineString(
 					"/*Hello world.",
-					"That's the second line.*/new{System.out.println(a)}/*Second comment.*/new(a:int){System.out.println(a)}"));
+					"That's the second line.*/def myfct /*Second comment.*/def myfct2"));
 			String expected = formattedCode(
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
-					"\tnew {",
-					"\t\tSystem.out.println(a)",
-					"\t}",
+					"\tdef myfct",
 					"\t/* Second comment.",
 					"\t */",
-					"\tnew(a : int) {",
-					"\t\tSystem.out.println(a)",
-					"\t}");
+					"\tdef myfct2");
 			assertFormatted(source, expected);
 		}
 
@@ -277,14 +310,12 @@ public class ConstructorFormatterTest {
 		public void mlStandardComment4() throws Exception {
 			String source = unformattedCode(multilineString(
 					"/*Hello world.",
-					"That's the second line.*/new{System.out.println(a)}/*Second comment.*/"));
+					"That's the second line.*/def myfct /*Second comment.*/"));
 			String expected = formattedCode(
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
-					"\tnew {",
-					"\t\tSystem.out.println(a)",
-					"\t}",
+					"\tdef myfct",
 					"\t/* Second comment.",
 					"\t */");
 			assertFormatted(source, expected);
@@ -294,14 +325,12 @@ public class ConstructorFormatterTest {
 		public void mlJavaComment() throws Exception {
 			String source = unformattedCode(multilineString(
 					"/**Hello world.",
-					"That's the second line.*/new{System.out.println(a)}"));
+					"That's the second line.*/def myfct"));
 			String expected = formattedCode(
 					"\t/** Hello world.",
 					"\t * That's the second line.",
 					"\t */",
-					"\tnew {",
-					"\t\tSystem.out.println(a)",
-					"\t}");
+					"\tdef myfct");
 			assertFormatted(source, expected);
 		}
 
@@ -310,12 +339,10 @@ public class ConstructorFormatterTest {
 			String source = unformattedCode(multilineString(
 					"",
 					"//Hello world.",
-					"new{System.out.println(a)}"));
+					"def myfct"));
 			String expected = formattedCode(
 					"\t// Hello world.",
-					"\tnew {",
-					"\t\tSystem.out.println(a)",
-					"\t}");
+					"\tdef myfct");
 			assertFormatted(source, expected);
 		}
 
@@ -324,12 +351,10 @@ public class ConstructorFormatterTest {
 			String source = unformattedCode(multilineString(
 					"",
 					"//      Hello world.",
-					"new{System.out.println(a)}"));
+					"def myfct"));
 			String expected = formattedCode(
 					"\t// Hello world.",
-					"\tnew {",
-					"\t\tSystem.out.println(a)",
-					"\t}");
+					"\tdef myfct");
 			assertFormatted(source, expected);
 		}
 
@@ -338,12 +363,10 @@ public class ConstructorFormatterTest {
 			String source = unformattedCode(multilineString(
 					"",
 					"// Hello world.",
-					"new{System.out.println(a)}"));
+					"def myfct"));
 			String expected = formattedCode(
 					"\t// Hello world.",
-					"\tnew {",
-					"\t\tSystem.out.println(a)",
-					"\t}");
+					"\tdef myfct");
 			assertFormatted(source, expected);
 		}
 
@@ -352,14 +375,12 @@ public class ConstructorFormatterTest {
 			String source = unformattedCode(multilineString(
 					"",
 					"// Hello world.",
-					"new{System.out.println(a)}",
+					"def myfct",
 					"//Second comment",
 					""));
 			String expected = formattedCode(
 					"\t// Hello world.",
-					"\tnew {",
-					"\t\tSystem.out.println(a)",
-					"\t}",
+					"\tdef myfct",
 					"\t// Second comment");
 			assertFormatted(source, expected);
 		}
@@ -369,19 +390,15 @@ public class ConstructorFormatterTest {
 			String source = unformattedCode(multilineString(
 					"",
 					"// Hello world.",
-					"new{System.out.println(a)}",
+					"def myfct",
 					"//Second comment",
-					"new(a:int){System.out.println(a)}"));
+					"def myfct2"));
 			String expected = formattedCode(
 					"\t// Hello world.",
-					"\tnew {",
-					"\t\tSystem.out.println(a)",
-					"\t}",
+					"\tdef myfct",
 					"",
 					"\t// Second comment",
-					"\tnew(a : int) {",
-					"\t\tSystem.out.println(a)",
-					"\t}");
+					"\tdef myfct2");
 			assertFormatted(source, expected);
 		}
 

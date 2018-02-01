@@ -13,14 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.tests.modules.formatting2;
+package io.sarl.lang.tests.modules.formatting2.types;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-/** Tests for formatting enumerations.
+import io.sarl.lang.tests.modules.formatting2.AbstractFormatterTest;
+
+/** Tests for formatting interfaces.
  *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
@@ -29,10 +31,10 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-	AnnotationTypeFormatterTest.FormatterAPITest.class,
+	InterfaceFormatterTest.FormatterAPITest.class,
 })
 @SuppressWarnings("all")
-public class AnnotationTypeFormatterTest {
+public class InterfaceFormatterTest {
 
 	/**
 	 * @author $Author: sgalland$
@@ -44,9 +46,9 @@ public class AnnotationTypeFormatterTest {
 
 		@Test
 		public void empty() throws Exception {
-			String source = "annotation  EntityX{}";
+			String source = "interface  EntityX{}";
 			String expected = multilineString(
-					"annotation EntityX {",
+					"interface EntityX {",
 					"}",
 					"");
 			assertFormatted(source, expected);
@@ -54,9 +56,9 @@ public class AnnotationTypeFormatterTest {
 
 		@Test
 		public void modifiers() throws Exception {
-			String source = "public    static    annotation EntityX{}";
+			String source = "public    static    interface EntityX{}";
 			String expected = multilineString(
-					"public static annotation EntityX {",
+					"public static interface EntityX {",
 					"}",
 					"");
 			assertFormatted(source, expected);
@@ -64,9 +66,9 @@ public class AnnotationTypeFormatterTest {
 
 		@Test
 		public void twoAnnotations() throws Exception {
-			String source = "@Pure@Beta    annotation EntityX{}";
+			String source = "@Pure@Beta    interface EntityX{}";
 			String expected = multilineString(
-					"@Pure @Beta annotation EntityX {",
+					"@Pure @Beta interface EntityX {",
 					"}",
 					"");
 			assertFormatted(source, expected);
@@ -76,10 +78,10 @@ public class AnnotationTypeFormatterTest {
 		public void threeAnnotations() throws Exception {
 			String source = multilineString(
 					"@Pure@Beta",
-					"@Hello    annotation EntityX{}");
+					"@Hello    interface EntityX{}");
 			String expected = multilineString(
 					"@Pure @Beta",
-					"@Hello annotation EntityX {",
+					"@Hello interface EntityX {",
 					"}",
 					"");
 			assertFormatted(source, expected);
@@ -87,9 +89,9 @@ public class AnnotationTypeFormatterTest {
 
 		@Test
 		public void annotationValue() throws Exception {
-			String source = "@SuppressWarnings(        value= \"name\"   )annotation EntityX{}";
+			String source = "@SuppressWarnings(        value= \"name\"   )interface EntityX{}";
 			String expected = multilineString(
-					"@SuppressWarnings(value = \"name\") annotation EntityX {",
+					"@SuppressWarnings(value = \"name\") interface EntityX {",
 					"}",
 					"");
 			assertFormatted(source, expected);
@@ -97,9 +99,89 @@ public class AnnotationTypeFormatterTest {
 
 		@Test
 		public void annotationImplicitValue() throws Exception {
-			String source = "@SuppressWarnings(   \"name\"   )annotation EntityX{}";
+			String source = "@SuppressWarnings(   \"name\"   )interface EntityX{}";
 			String expected = multilineString(
-					"@SuppressWarnings(\"name\") annotation EntityX {",
+					"@SuppressWarnings(\"name\") interface EntityX {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void typeParameter() throws Exception {
+			String source = "interface EntityX    <  T   > {}";
+			String expected = multilineString(
+					"interface EntityX<T> {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void typeParameters() throws Exception {
+			String source = "interface EntityX    <  T , TT   extends T  > {}";
+			String expected = multilineString(
+					"interface EntityX<T, TT extends T> {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void extend() throws Exception {
+			String source = "interface EntityX    extends    EntityY {}";
+			String expected = multilineString(
+					"interface EntityX extends EntityY {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void extendGeneric() throws Exception {
+			String source = "interface EntityX    extends    EntityY <   Boolean > {}";
+			String expected = multilineString(
+					"interface EntityX extends EntityY<Boolean> {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void genericExtendGeneric() throws Exception {
+			String source = "interface EntityX  < T   >    extends    EntityY <   T >{}";
+			String expected = multilineString(
+					"interface EntityX<T> extends EntityY<T> {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void twoExtends() throws Exception {
+			String source = "interface EntityX    extends    EntityY,   EntityZ{}";
+			String expected = multilineString(
+					"interface EntityX extends EntityY, EntityZ {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void twoExtendsGeneric() throws Exception {
+			String source = "interface EntityX    extends    EntityY <   Boolean >,   EntityZ{}";
+			String expected = multilineString(
+					"interface EntityX extends EntityY<Boolean>, EntityZ {",
+					"}",
+					"");
+			assertFormatted(source, expected);
+		}
+
+		@Test
+		public void genericTwoExtendsGeneric() throws Exception {
+			String source = "interface EntityX  < T   >    extends    EntityY <   T >,   EntityZ{}";
+			String expected = multilineString(
+					"interface EntityX<T> extends EntityY<T>, EntityZ {",
 					"}",
 					"");
 			assertFormatted(source, expected);
@@ -107,10 +189,10 @@ public class AnnotationTypeFormatterTest {
 
 		@Test
 		public void memberIndent() throws Exception {
-			String source = "annotation EntityX{var value:int}";
+			String source = "interface EntityX{def x:int}";
 			String expected = multilineString(
-					"annotation EntityX {",
-					"	var value : int",
+					"interface EntityX {",
+					"	def x : int",
 					"}",
 					"");
 			assertFormatted(source, expected);
@@ -121,12 +203,12 @@ public class AnnotationTypeFormatterTest {
 			String source = multilineString(
 					"/*Hello world.",
 					"* That's the second line.",
-					"*/annotation A{}");
+					"*/interface A{}");
 			String expected = multilineString(
 					"/* Hello world.",
 					" * That's the second line.",
 					" */",
-					"annotation A {",
+					"interface A {",
 					"}",
 					"");
 			assertFormatted(source, expected);
@@ -136,12 +218,12 @@ public class AnnotationTypeFormatterTest {
 		public void mlStandardComment2() throws Exception {
 			String source = multilineString(
 					"/*Hello world.",
-					"That's the second line.*/annotation A{}");
+					"That's the second line.*/interface A{}");
 			String expected = multilineString(
 					"/* Hello world.",
 					" * That's the second line.",
 					" */",
-					"annotation A {",
+					"interface A {",
 					"}",
 					"");
 			assertFormatted(source, expected);
@@ -149,11 +231,11 @@ public class AnnotationTypeFormatterTest {
 
 		@Test
 		public void mlStandardComment3() throws Exception {
-			String source = "/*     Hello world.     */annotation A{}";
+			String source = "/*     Hello world.     */interface A{}";
 			String expected = multilineString(
 					"/* Hello world.",
 					" */",
-					"annotation A {",
+					"interface A {",
 					"}",
 					"");
 			assertFormatted(source, expected);
@@ -161,11 +243,11 @@ public class AnnotationTypeFormatterTest {
 
 		@Test
 		public void mlStandardComment4() throws Exception {
-			String source = "/*     Hello world.     */annotation A{/*Second comment*/}";
+			String source = "/*     Hello world.     */interface A{/*Second comment*/}";
 			String expected = multilineString(
 					"/* Hello world.",
 					" */",
-					"annotation A {",
+					"interface A {",
 					"\t/* Second comment",
 					"\t */",
 					"}",
@@ -177,12 +259,12 @@ public class AnnotationTypeFormatterTest {
 		public void mlJavaComment() throws Exception {
 			String source = multilineString(
 					"/**Hello world.",
-					"That's the second line.*/annotation A{}");
+					"That's the second line.*/interface A{}");
 			String expected = multilineString(
 					"/** Hello world.",
 					" * That's the second line.",
 					" */",
-					"annotation A {",
+					"interface A {",
 					"}",
 					"");
 			assertFormatted(source, expected);
@@ -193,10 +275,10 @@ public class AnnotationTypeFormatterTest {
 			String source = multilineString(
 					"",
 					"//Hello world.",
-					"annotation A{}");
+					"interface A{}");
 			String expected = multilineString(
 					"// Hello world.",
-					"annotation A {",
+					"interface A {",
 					"}",
 					"");
 			assertFormatted(source, expected);

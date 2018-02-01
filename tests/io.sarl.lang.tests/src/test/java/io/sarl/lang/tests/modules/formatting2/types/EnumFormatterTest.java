@@ -13,14 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.tests.modules.formatting2;
+package io.sarl.lang.tests.modules.formatting2.types;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-/** Tests for formatting agents.
+import io.sarl.lang.tests.modules.formatting2.AbstractFormatterTest;
+
+/** Tests for formatting enumerations.
  *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
@@ -29,10 +31,10 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-	BehaviorFormatterTest.FormatterAPITest.class,
+	EnumFormatterTest.FormatterAPITest.class,
 })
 @SuppressWarnings("all")
-public class BehaviorFormatterTest {
+public class EnumFormatterTest {
 
 	/**
 	 * @author $Author: sgalland$
@@ -44,9 +46,10 @@ public class BehaviorFormatterTest {
 
 		@Test
 		public void empty() throws Exception {
-			String source = "behavior  EntityX{}";
+			String source = "enum  EntityX{CONST}";
 			String expected = multilineString(
-					"behavior EntityX {",
+					"enum EntityX {",
+					"	CONST",
 					"}",
 					"");
 			assertFormatted(source, expected);
@@ -54,9 +57,10 @@ public class BehaviorFormatterTest {
 
 		@Test
 		public void modifiers() throws Exception {
-			String source = "public    static    behavior EntityX{}";
+			String source = "public    static    enum EntityX{CONST}";
 			String expected = multilineString(
-					"public static behavior EntityX {",
+					"public static enum EntityX {",
+					"	CONST",
 					"}",
 					"");
 			assertFormatted(source, expected);
@@ -64,9 +68,10 @@ public class BehaviorFormatterTest {
 
 		@Test
 		public void twoAnnotations() throws Exception {
-			String source = "@Pure@Beta    behavior EntityX{}";
+			String source = "@Pure@Beta    enum EntityX{CONST}";
 			String expected = multilineString(
-					"@Pure @Beta behavior EntityX {",
+					"@Pure @Beta enum EntityX {",
+					"	CONST",
 					"}",
 					"");
 			assertFormatted(source, expected);
@@ -76,10 +81,11 @@ public class BehaviorFormatterTest {
 		public void threeAnnotations() throws Exception {
 			String source = multilineString(
 					"@Pure@Beta",
-					"@Hello    behavior EntityX{}");
+					"@Hello    enum EntityX{CONST}");
 			String expected = multilineString(
 					"@Pure @Beta",
-					"@Hello behavior EntityX {",
+					"@Hello enum EntityX {",
+					"	CONST",
 					"}",
 					"");
 			assertFormatted(source, expected);
@@ -87,9 +93,10 @@ public class BehaviorFormatterTest {
 
 		@Test
 		public void annotationValue() throws Exception {
-			String source = "@SuppressWarnings(        value= \"name\"   )behavior EntityX{}";
+			String source = "@SuppressWarnings(        value= \"name\"   )enum EntityX{CONST}";
 			String expected = multilineString(
-					"@SuppressWarnings(value = \"name\") behavior EntityX {",
+					"@SuppressWarnings(value = \"name\") enum EntityX {",
+					"	CONST",
 					"}",
 					"");
 			assertFormatted(source, expected);
@@ -97,30 +104,23 @@ public class BehaviorFormatterTest {
 
 		@Test
 		public void annotationImplicitValue() throws Exception {
-			String source = "@SuppressWarnings(   \"name\"   )behavior EntityX{}";
+			String source = "@SuppressWarnings(   \"name\"   )enum EntityX{CONST}";
 			String expected = multilineString(
-					"@SuppressWarnings(\"name\") behavior EntityX {",
+					"@SuppressWarnings(\"name\") enum EntityX {",
+					"	CONST",
 					"}",
 					"");
 			assertFormatted(source, expected);
 		}
 
 		@Test
-		public void extend() throws Exception {
-			String source = "behavior EntityX    extends    EntityY {}";
+		public void multipleLiterals() throws Exception {
+			String source = "enum EntityX{CONST1,CONST2,CONST3}";
 			String expected = multilineString(
-					"behavior EntityX extends EntityY {",
-					"}",
-					"");
-			assertFormatted(source, expected);
-		}
-
-		@Test
-		public void memberIndent() throws Exception {
-			String source = "behavior EntityX{var x:int}";
-			String expected = multilineString(
-					"behavior EntityX {",
-					"	var x : int",
+					"enum EntityX {",
+					"	CONST1,",
+					"	CONST2,",
+					"	CONST3",
 					"}",
 					"");
 			assertFormatted(source, expected);
@@ -131,12 +131,13 @@ public class BehaviorFormatterTest {
 			String source = multilineString(
 					"/*Hello world.",
 					"* That's the second line.",
-					"*/behavior A{}");
+					"*/enum A{CONST1}");
 			String expected = multilineString(
 					"/* Hello world.",
 					" * That's the second line.",
 					" */",
-					"behavior A {",
+					"enum A {",
+					"\tCONST1",
 					"}",
 					"");
 			assertFormatted(source, expected);
@@ -146,12 +147,13 @@ public class BehaviorFormatterTest {
 		public void mlStandardComment2() throws Exception {
 			String source = multilineString(
 					"/*Hello world.",
-					"That's the second line.*/behavior A{}");
+					"That's the second line.*/enum A{CONST1}");
 			String expected = multilineString(
 					"/* Hello world.",
 					" * That's the second line.",
 					" */",
-					"behavior A {",
+					"enum A {",
+					"\tCONST1",
 					"}",
 					"");
 			assertFormatted(source, expected);
@@ -159,11 +161,12 @@ public class BehaviorFormatterTest {
 
 		@Test
 		public void mlStandardComment3() throws Exception {
-			String source = "/*     Hello world.     */behavior A{}";
+			String source = "/*      Hello world.      */enum A{CONST1}";
 			String expected = multilineString(
 					"/* Hello world.",
 					" */",
-					"behavior A {",
+					"enum A {",
+					"\tCONST1",
 					"}",
 					"");
 			assertFormatted(source, expected);
@@ -171,13 +174,14 @@ public class BehaviorFormatterTest {
 
 		@Test
 		public void mlStandardComment4() throws Exception {
-			String source = "/*     Hello world.     */behavior A{/*Second comment*/}";
+			String source = "/*      Hello world.      */enum A{/*Second comment*/CONST1}";
 			String expected = multilineString(
 					"/* Hello world.",
 					" */",
-					"behavior A {",
+					"enum A {",
 					"\t/* Second comment",
 					"\t */",
+					"\tCONST1",
 					"}",
 					"");
 			assertFormatted(source, expected);
@@ -187,12 +191,13 @@ public class BehaviorFormatterTest {
 		public void mlJavaComment() throws Exception {
 			String source = multilineString(
 					"/**Hello world.",
-					"That's the second line.*/behavior A{}");
+					"That's the second line.*/enum A{CONST1}");
 			String expected = multilineString(
 					"/** Hello world.",
 					" * That's the second line.",
 					" */",
-					"behavior A {",
+					"enum A {",
+					"\tCONST1",
 					"}",
 					"");
 			assertFormatted(source, expected);
@@ -203,10 +208,11 @@ public class BehaviorFormatterTest {
 			String source = multilineString(
 					"",
 					"//Hello world.",
-					"behavior A{}");
+					"enum A{CONST1}");
 			String expected = multilineString(
 					"// Hello world.",
-					"behavior A {",
+					"enum A {",
+					"\tCONST1",
 					"}",
 					"");
 			assertFormatted(source, expected);
