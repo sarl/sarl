@@ -691,7 +691,7 @@
       </handler>
    </extension>
    <extension point="org.eclipse.ui.menus">
-      <menuContribution locationURI="popup:io.sarl.eclipse.explorer.PackageExplorer?after=group.open">
+      <menuContribution locationURI="popup:io.sarl.eclipse.explorer.PackageExplorer?endof=group.open">
          <command commandId="io.sarl.eclipse.popup.openTypeHierarchy"
                   label="%menu.open.type.hierarchy"
                   mnemonic="n"
