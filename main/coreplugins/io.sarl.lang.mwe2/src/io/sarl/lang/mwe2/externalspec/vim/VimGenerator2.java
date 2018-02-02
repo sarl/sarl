@@ -562,12 +562,12 @@ public class VimGenerator2 extends AbstractExternalHighlightingFragment2<IStyleA
 				"1. MANUAL INSTALLATION", //$NON-NLS-1$
 				"", //$NON-NLS-1$
 				"Fox Unix:", //$NON-NLS-1$
-				"* Copy the content of the 'syntax' folder into $HOME/vimfiles/syntax", //$NON-NLS-1$
-				"* Copy the content of the 'ftdetect' folder into $HOME/vimfiles/ftdetect", //$NON-NLS-1$
+				"* Copy the content of the 'syntax' folder into $HOME/.vim/syntax", //$NON-NLS-1$
+				"* Copy the content of the 'ftdetect' folder into $HOME/.vim/ftdetect", //$NON-NLS-1$
 				"", //$NON-NLS-1$
 				"Fox Windows:", //$NON-NLS-1$
-				"* Copy the content of the 'syntax' folder into $HOME/.vim/syntax", //$NON-NLS-1$
-				"* Copy the content of the 'ftdetect' folder into $HOME/.vim/ftdetect"); //$NON-NLS-1$
+				"* Copy the content of the 'syntax' folder into C:\\Document and Settings\\User\\vimfiles\\syntax", //$NON-NLS-1$
+				"* Copy the content of the 'ftdetect' folder into C:\\Document and Settings\\User\\vimfiles\\ftdetect"); //$NON-NLS-1$
 	}
 
 	@Override

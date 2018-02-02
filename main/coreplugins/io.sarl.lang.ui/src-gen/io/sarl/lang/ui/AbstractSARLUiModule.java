@@ -184,8 +184,6 @@ import org.eclipse.xtext.ui.editor.contentassist.antlr.DelegatingContentAssistCo
 import org.eclipse.xtext.ui.editor.doubleClicking.DoubleClickStrategyProvider;
 import org.eclipse.xtext.ui.editor.findrefs.FindReferencesHandler;
 import org.eclipse.xtext.ui.editor.findrefs.ReferenceQueryExecutor;
-import org.eclipse.xtext.ui.editor.formatting.IContentFormatterFactory;
-import org.eclipse.xtext.ui.editor.formatting2.ContentFormatterFactory;
 import org.eclipse.xtext.ui.editor.hover.IEObjectHoverProvider;
 import org.eclipse.xtext.ui.editor.hyperlinking.HyperlinkLabelProvider;
 import org.eclipse.xtext.ui.editor.hyperlinking.IHyperlinkHelper;
@@ -305,28 +303,6 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 		binder.bind(InternalSARLLexer.class).toProvider(LexerProvider.create(InternalSARLLexer.class));
 	}
 	
-	// contributed by org.eclipse.xtext.xtext.generator.formatting.Formatter2Fragment2
-	public Class<? extends IContentFormatterFactory> bindIContentFormatterFactory() {
-		return ContentFormatterFactory.class;
-	}
-	
-	// contributed by org.eclipse.xtext.xtext.generator.generator.GeneratorFragment2
-	public Class<? extends IXtextBuilderParticipant> bindIXtextBuilderParticipant() {
-		return BuilderParticipant.class;
-	}
-	
-	// contributed by org.eclipse.xtext.xtext.generator.generator.GeneratorFragment2
-	public IWorkspaceRoot bindIWorkspaceRootToInstance() {
-		return ResourcesPlugin.getWorkspace().getRoot();
-	}
-	
-	// contributed by org.eclipse.xtext.xtext.generator.generator.GeneratorFragment2
-	public void configureBuilderPreferenceStoreInitializer(Binder binder) {
-		binder.bind(IPreferenceStoreInitializer.class)
-			.annotatedWith(Names.named("builderPreferenceInitializer"))
-			.to(BuilderPreferenceAccess.Initializer.class);
-	}
-	
 	// contributed by org.eclipse.xtext.xtext.generator.builder.BuilderIntegrationFragment2
 	public void configureIResourceDescriptionsBuilderScope(Binder binder) {
 		binder.bind(IResourceDescriptions.class).annotatedWith(Names.named(ResourceDescriptionsProvider.NAMED_BUILDER_SCOPE)).to(CurrentDescriptions.ResourceSetAware.class);
@@ -347,9 +323,21 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 		return PersistentDataAwareDirtyResource.class;
 	}
 	
-	// contributed by org.eclipse.xtext.xtext.generator.ui.quickfix.QuickfixProviderFragment2
-	public Class<? extends IssueResolutionProvider> bindIssueResolutionProvider() {
-		return SARLQuickfixProvider.class;
+	// contributed by org.eclipse.xtext.xtext.generator.generator.GeneratorFragment2
+	public Class<? extends IXtextBuilderParticipant> bindIXtextBuilderParticipant() {
+		return BuilderParticipant.class;
+	}
+	
+	// contributed by org.eclipse.xtext.xtext.generator.generator.GeneratorFragment2
+	public IWorkspaceRoot bindIWorkspaceRootToInstance() {
+		return ResourcesPlugin.getWorkspace().getRoot();
+	}
+	
+	// contributed by org.eclipse.xtext.xtext.generator.generator.GeneratorFragment2
+	public void configureBuilderPreferenceStoreInitializer(Binder binder) {
+		binder.bind(IPreferenceStoreInitializer.class)
+			.annotatedWith(Names.named("builderPreferenceInitializer"))
+			.to(BuilderPreferenceAccess.Initializer.class);
 	}
 	
 	// contributed by org.eclipse.xtext.xtext.generator.ui.labeling.LabelProviderFragment2
@@ -372,14 +360,9 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 		return SARLOutlineTreeProvider.class;
 	}
 	
-	// contributed by org.eclipse.xtext.xtext.generator.ui.compare.CompareFragment2
-	public Class<? extends IViewerCreator> bindIViewerCreator() {
-		return DefaultViewerCreator.class;
-	}
-	
-	// contributed by org.eclipse.xtext.xtext.generator.ui.compare.CompareFragment2
-	public void configureCompareViewerTitle(Binder binder) {
-		binder.bind(String.class).annotatedWith(Names.named(UIBindings.COMPARE_VIEWER_TITLE)).toInstance("SARL Compare");
+	// contributed by org.eclipse.xtext.xtext.generator.ui.quickfix.QuickfixProviderFragment2
+	public Class<? extends IssueResolutionProvider> bindIssueResolutionProvider() {
+		return SARLQuickfixProvider.class;
 	}
 	
 	// contributed by org.eclipse.xtext.xtext.generator.ui.contentAssist.ContentAssistFragment2
@@ -494,6 +477,16 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by org.eclipse.xtext.xtext.generator.ui.templates.CodetemplatesGeneratorFragment2
 	public Class<? extends IPartialEditingContentAssistContextFactory> bindIPartialEditingContentAssistContextFactory() {
 		return PartialEditingContentAssistContextFactory.class;
+	}
+	
+	// contributed by org.eclipse.xtext.xtext.generator.ui.compare.CompareFragment2
+	public Class<? extends IViewerCreator> bindIViewerCreator() {
+		return DefaultViewerCreator.class;
+	}
+	
+	// contributed by org.eclipse.xtext.xtext.generator.ui.compare.CompareFragment2
+	public void configureCompareViewerTitle(Binder binder) {
+		binder.bind(String.class).annotatedWith(Names.named(UIBindings.COMPARE_VIEWER_TITLE)).toInstance("SARL Compare");
 	}
 	
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2

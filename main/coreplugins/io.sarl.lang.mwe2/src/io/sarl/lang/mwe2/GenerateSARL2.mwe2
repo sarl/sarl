@@ -307,7 +307,7 @@ Workflow {
 		}
 		
 		// Generator for SARL
-		language = auto-inject {
+		language = StandardLanguage auto-inject {
 			// Set of resources
 			resourceSet = XtextResourceSet : resourceSet {}
 			// SARL depends on the Xtend model
@@ -321,16 +321,8 @@ Workflow {
 			// Specification of the injection that is used by MWE2 (not by the SARL compiler)
 			guiceModule = SarlLanguageGeneratorModule {}
 			
-			// Java API to access grammar elements (required by several other fragments)
-			fragment = grammarAccess.GrammarAccessFragment2 auto-inject {
-			}
-
-			// Resource factory
-			fragment = resourceFactory.ResourceFactoryFragment2 auto-inject {
-			}
-
 			// Lexer
-			fragment = parser.antlr.XtextAntlrGeneratorFragment2 auto-inject {
+			parserGenerator = auto-inject {
 				removeBacktrackingGuards = true
 				lookaheadThreshold = '5'
 				partialParsing = true
@@ -341,84 +333,38 @@ Workflow {
 			}
 
 			// SARL Validator
-			fragment = validation.ValidatorFragment2 auto-inject {
-				generateStub = true
-				inheritImplementation = true
+			validator = auto-inject {
     			composedCheck = "org.eclipse.xtend.core.validation.AnnotationValidation"
 			}
 
 			// SARL serializer
-			fragment = serializer.SerializerFragment2 auto-inject {
-				generateDebugData = false // If true, generates plenty of ".dot" files for analyzing the grammar.
+			serializer = auto-inject {
 				generateStub = false
-			}
-
-			// SARL Formatter
-			fragment = formatting.Formatter2Fragment2 auto-inject {
-				generateStub = true
-			}
-
-			// Compiler 
-			fragment = generator.GeneratorFragment2 auto-inject {
-			}
-
-			// Scoping
-			fragment = scoping.ImportNamespacesScopingFragment2 auto-inject {
-				generateStub = true
-			}
-
-			// SARL compiler as an Eclipse builder.
-			fragment = builder.BuilderIntegrationFragment2 auto-inject {
-			}
-
-			// Quick fixes
-			fragment = ui.quickfix.QuickfixProviderFragment2 auto-inject {
-				generateStub = true
-				inheritImplementation = true
-			}
-
-			// Label and icon providers
-			fragment = ui.labeling.LabelProviderFragment2 auto-inject {
-				generateStub = true
-			}
-
-			// Outline view
-			fragment = ui.outline.OutlineTreeProviderFragment2 auto-inject {
-				generateStub = true
-			}
-			fragment = ui.outline.QuickOutlineFragment2 auto-inject {
-			}
-
-			// Code comparator
-			fragment = ui.compare.CompareFragment2 auto-inject {
-			}
-
-			// Content assist - Bug fixed
-			fragment = ContentAssistFragment2 auto-inject {
 			}
 
 			// Refactoring
-			fragment = ui.refactoring.RefactorElementNameFragment2 auto-inject {
+			renameRefactoring = auto-inject {
 				useJdtRefactoring = true
 			}
 
-			// Type resolver
-			fragment = types.TypesGeneratorFragment2 auto-inject {
-			}
-
     		// Generates the required bindings only if the grammar inherits from Xbase
-			fragment = xbase.XbaseGeneratorFragment2 auto-inject {
+			xbaseSupport = auto-inject {
 				generateXtendInferrer = false
 			}
 
-    		// Code templates
-			fragment = ui.templates.CodetemplatesGeneratorFragment2 auto-inject {
-			}
-
     		// Testing infrastructure
-			fragment = junit.Junit4Fragment2 auto-inject {
+			junitSupport = auto-inject {
 				generateStub = false
 			}
+			
+			// Content assist - Bug fixed for avoiding compilation error due to an
+			// invalid qualified name for the XtendProposalProvider
+			contentAssist = ContentAssistFragment2 auto-inject {
+			}
+
+			// ***********************************
+			// Fragments that are specific to SARL
+			// ***********************************
 			
 			// Generate an helpful creator of Ecore elements.
 			fragment = CodeBuilderFragment2 auto-inject {

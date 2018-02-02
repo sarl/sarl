@@ -28,6 +28,8 @@ import com.google.inject.name.Names;
 import io.sarl.lang.ide.contentassist.antlr.SARLParser;
 import io.sarl.lang.ide.contentassist.antlr.internal.InternalSARLLexer;
 import org.eclipse.xtext.ide.LexerIdeBindings;
+import org.eclipse.xtext.ide.editor.contentassist.FQNPrefixMatcher;
+import org.eclipse.xtext.ide.editor.contentassist.IPrefixMatcher;
 import org.eclipse.xtext.ide.editor.contentassist.IProposalConflictHelper;
 import org.eclipse.xtext.ide.editor.contentassist.antlr.AntlrProposalConflictHelper;
 import org.eclipse.xtext.ide.editor.contentassist.antlr.ContentAssistContextFactory;
@@ -65,6 +67,11 @@ public abstract class AbstractSARLIdeModule extends DefaultXbaseIdeModule {
 	// contributed by org.eclipse.xtext.xtext.generator.parser.antlr.XtextAntlrGeneratorFragment2
 	public Class<? extends ContentAssistContextFactory> bindContentAssistContextFactory() {
 		return PartialContentAssistContextFactory.class;
+	}
+	
+	// contributed by org.eclipse.xtext.xtext.generator.exporting.QualifiedNamesFragment2
+	public Class<? extends IPrefixMatcher> bindIPrefixMatcher() {
+		return FQNPrefixMatcher.class;
 	}
 	
 	// contributed by org.eclipse.xtext.xtext.generator.ui.refactoring.RefactorElementNameFragment2

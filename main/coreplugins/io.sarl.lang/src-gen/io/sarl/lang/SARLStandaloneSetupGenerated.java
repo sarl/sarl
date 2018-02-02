@@ -25,6 +25,8 @@ package io.sarl.lang;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import io.sarl.lang.sarl.SarlPackage;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend.core.XtendStandaloneSetup;
 import org.eclipse.xtext.ISetup;
@@ -48,6 +50,9 @@ public class SARLStandaloneSetupGenerated implements ISetup {
 	}
 	
 	public void register(Injector injector) {
+		if (!EPackage.Registry.INSTANCE.containsKey("http://www.sarl.io/lang/SARL")) {
+			EPackage.Registry.INSTANCE.put("http://www.sarl.io/lang/SARL", SarlPackage.eINSTANCE);
+		}
 		IResourceFactory resourceFactory = injector.getInstance(IResourceFactory.class);
 		IResourceServiceProvider serviceProvider = injector.getInstance(IResourceServiceProvider.class);
 		

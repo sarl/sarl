@@ -83,7 +83,6 @@ import io.sarl.lang.documentation.EcoreDocumentationBuilder;
 import io.sarl.lang.documentation.IDocumentationFormatter;
 import io.sarl.lang.documentation.IEcoreDocumentationBuilder;
 import io.sarl.lang.documentation.SarlDocumentationProvider;
-import io.sarl.lang.formatting2.SARLFormatter;
 import io.sarl.lang.formatting2.SARLFormatterPreferenceKeys;
 import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
@@ -152,9 +151,6 @@ import org.eclipse.xtext.documentation.IEObjectDocumentationProviderExtension;
 import org.eclipse.xtext.documentation.IFileHeaderProvider;
 import org.eclipse.xtext.findReferences.TargetURICollector;
 import org.eclipse.xtext.formatting2.FormatterPreferenceKeys;
-import org.eclipse.xtext.formatting2.FormatterPreferenceValuesProvider;
-import org.eclipse.xtext.formatting2.FormatterPreferences;
-import org.eclipse.xtext.formatting2.IFormatter2;
 import org.eclipse.xtext.generator.IContextualOutputConfigurationProvider;
 import org.eclipse.xtext.generator.IGenerator2;
 import org.eclipse.xtext.generator.IOutputConfigurationProvider;
@@ -176,7 +172,6 @@ import org.eclipse.xtext.parser.antlr.LexerBindings;
 import org.eclipse.xtext.parser.antlr.LexerProvider;
 import org.eclipse.xtext.parser.antlr.SyntaxErrorMessageProvider;
 import org.eclipse.xtext.parser.antlr.UnorderedGroupHelper;
-import org.eclipse.xtext.preferences.IPreferenceValuesProvider;
 import org.eclipse.xtext.resource.EObjectAtOffsetHelper;
 import org.eclipse.xtext.resource.IContainer;
 import org.eclipse.xtext.resource.IDefaultResourceDescriptionStrategy;
@@ -262,6 +257,16 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 		return SARLGrammarAccess.class;
 	}
 	
+	// contributed by org.eclipse.xtext.xtext.generator.serializer.SerializerFragment2
+	public Class<? extends ISemanticSequencer> bindISemanticSequencer() {
+		return SARLSemanticSequencer.class;
+	}
+	
+	// contributed by org.eclipse.xtext.xtext.generator.serializer.SerializerFragment2
+	public Class<? extends ISerializer> bindISerializer() {
+		return Serializer.class;
+	}
+	
 	// contributed by org.eclipse.xtext.xtext.generator.parser.antlr.XtextAntlrGeneratorFragment2
 	public Class<? extends IParser> bindIParser() {
 		return SARLParser.class;
@@ -308,26 +313,6 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	@SingletonBinding(eager=true)
 	public Class<? extends SARLValidator> bindSARLValidator() {
 		return SARLValidator.class;
-	}
-	
-	// contributed by org.eclipse.xtext.xtext.generator.serializer.SerializerFragment2
-	public Class<? extends ISemanticSequencer> bindISemanticSequencer() {
-		return SARLSemanticSequencer.class;
-	}
-	
-	// contributed by org.eclipse.xtext.xtext.generator.serializer.SerializerFragment2
-	public Class<? extends ISerializer> bindISerializer() {
-		return Serializer.class;
-	}
-	
-	// contributed by org.eclipse.xtext.xtext.generator.formatting.Formatter2Fragment2
-	public Class<? extends IFormatter2> bindIFormatter2() {
-		return SARLFormatter.class;
-	}
-	
-	// contributed by org.eclipse.xtext.xtext.generator.formatting.Formatter2Fragment2
-	public void configureFormatterPreferences(Binder binder) {
-		binder.bind(IPreferenceValuesProvider.class).annotatedWith(FormatterPreferences.class).to(FormatterPreferenceValuesProvider.class);
 	}
 	
 	// contributed by org.eclipse.xtext.xtext.generator.scoping.ImportNamespacesScopingFragment2
