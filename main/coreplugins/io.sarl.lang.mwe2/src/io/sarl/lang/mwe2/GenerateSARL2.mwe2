@@ -362,6 +362,11 @@ Workflow {
 			contentAssist = ContentAssistFragment2 auto-inject {
 			}
 
+			// Formatter - this fragment should be explicitly defined otherwise the SARLFormatter is not injected. Bug?
+			formatter = auto-inject {	
+				generateStub = true	
+			}
+
 			// ***********************************
 			// Fragments that are specific to SARL
 			// ***********************************
