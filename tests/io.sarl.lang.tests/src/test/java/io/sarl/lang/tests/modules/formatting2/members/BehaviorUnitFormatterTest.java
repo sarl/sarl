@@ -130,6 +130,7 @@ public class BehaviorUnitFormatterTest {
 					"* That's the second line.",
 					"*/on Event{}"));
 			String expected = formattedCode(
+					"",
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
@@ -144,6 +145,7 @@ public class BehaviorUnitFormatterTest {
 					"/*Hello world.",
 					"That's the second line.*/on Event{}"));
 			String expected = formattedCode(
+					"",
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
@@ -158,11 +160,13 @@ public class BehaviorUnitFormatterTest {
 					"/*Hello world.",
 					"That's the second line.*/on Event{}/*Second comment.*/on Event{}"));
 			String expected = formattedCode(
+					"",
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
 					"\ton Event {",
 					"\t}",
+					"",
 					"\t/* Second comment.",
 					"\t */",
 					"\ton Event {",
@@ -176,11 +180,13 @@ public class BehaviorUnitFormatterTest {
 					"/*Hello world.",
 					"That's the second line.*/on Event{}/*Second comment.*/"));
 			String expected = formattedCode(
+					"",
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
 					"\ton Event {",
 					"\t}",
+					"",
 					"\t/* Second comment.",
 					"\t */");
 			assertFormatted(source, expected);
@@ -192,6 +198,7 @@ public class BehaviorUnitFormatterTest {
 					"/**Hello world.",
 					"That's the second line.*/on Event{}"));
 			String expected = formattedCode(
+					"",
 					"\t/** Hello world.",
 					"\t * That's the second line.",
 					"\t */",

@@ -248,6 +248,7 @@ public class InterfaceFormatterTest {
 					"/* Hello world.",
 					" */",
 					"interface A {",
+					"",
 					"\t/* Second comment",
 					"\t */",
 					"}",

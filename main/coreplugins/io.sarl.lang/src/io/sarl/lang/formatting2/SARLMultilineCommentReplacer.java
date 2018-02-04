@@ -42,7 +42,9 @@ import io.sarl.lang.documentation.IDocumentationFormatter;
  */
 public class SARLMultilineCommentReplacer extends CommentReplacer {
 
-	private static final int NUMBER_OF_LINES_BEFORE_COMMENT = 1;
+	private static final int MIN_NUMBER_OF_LINES_BEFORE_COMMENT = 1;
+
+	private static final int MAX_NUMBER_OF_LINES_BEFORE_COMMENT = 1;
 
 	private static final int NUMBER_OF_LINES_AFTER_COMMENT = 0;
 
@@ -63,11 +65,12 @@ public class SARLMultilineCommentReplacer extends CommentReplacer {
 	@Override
 	public void configureWhitespace(WhitespaceReplacer leading, WhitespaceReplacer trailing) {
 		if (leading.getRegion().getOffset() > 0) {
-			final int nb = NUMBER_OF_LINES_BEFORE_COMMENT + 1;
+			final int nbMin = MIN_NUMBER_OF_LINES_BEFORE_COMMENT + 1;
+			final int nbMax = MAX_NUMBER_OF_LINES_BEFORE_COMMENT + 1;
 			final IHiddenRegionFormatting formatting = leading.getFormatting();
-			formatting.setNewLinesDefault(nb);
-			formatting.setNewLinesMin(nb);
-			formatting.setNewLinesMax(nb);
+			formatting.setNewLinesDefault(nbMax);
+			formatting.setNewLinesMin(nbMin);
+			formatting.setNewLinesMax(nbMax);
 			formatting.setNoIndentation(false);
 		} else {
 			final IHiddenRegionFormatting formatting = leading.getFormatting();

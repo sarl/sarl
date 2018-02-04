@@ -179,6 +179,7 @@ public class EnumFormatterTest {
 					"/* Hello world.",
 					" */",
 					"enum A {",
+					"",
 					"\t/* Second comment",
 					"\t */",
 					"\tCONST1",

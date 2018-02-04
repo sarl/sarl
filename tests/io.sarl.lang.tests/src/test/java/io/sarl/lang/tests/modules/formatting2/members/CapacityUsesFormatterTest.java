@@ -90,6 +90,7 @@ public class CapacityUsesFormatterTest {
 					"* That's the second line.",
 					"*/uses Capacity1"));
 			String expected = formattedCode(
+					"",
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
@@ -103,6 +104,7 @@ public class CapacityUsesFormatterTest {
 					"/*Hello world.",
 					"That's the second line.*/uses Capacity1"));
 			String expected = formattedCode(
+					"",
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
@@ -116,10 +118,12 @@ public class CapacityUsesFormatterTest {
 					"/*Hello world.",
 					"That's the second line.*/uses Capacity1 /*Second comment.*/uses Capacity2"));
 			String expected = formattedCode(
+					"",
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
 					"\tuses Capacity1",
+					"",
 					"\t/* Second comment.",
 					"\t */",
 					"\tuses Capacity2");
@@ -132,10 +136,12 @@ public class CapacityUsesFormatterTest {
 					"/*Hello world.",
 					"That's the second line.*/uses Capacity1/*Second comment.*/"));
 			String expected = formattedCode(
+					"",
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
 					"\tuses Capacity1",
+					"",
 					"\t/* Second comment.",
 					"\t */");
 			assertFormatted(source, expected);
@@ -147,6 +153,7 @@ public class CapacityUsesFormatterTest {
 					"/**Hello world.",
 					"That's the second line.*/uses Capacity1"));
 			String expected = formattedCode(
+					"",
 					"\t/** Hello world.",
 					"\t * That's the second line.",
 					"\t */",

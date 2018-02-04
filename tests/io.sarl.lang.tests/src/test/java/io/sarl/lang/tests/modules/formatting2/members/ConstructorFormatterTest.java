@@ -231,6 +231,7 @@ public class ConstructorFormatterTest {
 					"* That's the second line.",
 					"*/new{System.out.println(a)}"));
 			String expected = formattedCode(
+					"",
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
@@ -246,6 +247,7 @@ public class ConstructorFormatterTest {
 					"/*Hello world.",
 					"That's the second line.*/new{System.out.println(a)}"));
 			String expected = formattedCode(
+					"",
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
@@ -261,12 +263,14 @@ public class ConstructorFormatterTest {
 					"/*Hello world.",
 					"That's the second line.*/new{System.out.println(a)}/*Second comment.*/new(a:int){System.out.println(a)}"));
 			String expected = formattedCode(
+					"",
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
 					"\tnew {",
 					"\t\tSystem.out.println(a)",
 					"\t}",
+					"",
 					"\t/* Second comment.",
 					"\t */",
 					"\tnew(a : int) {",
@@ -281,12 +285,14 @@ public class ConstructorFormatterTest {
 					"/*Hello world.",
 					"That's the second line.*/new{System.out.println(a)}/*Second comment.*/"));
 			String expected = formattedCode(
+					"",
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
 					"\tnew {",
 					"\t\tSystem.out.println(a)",
 					"\t}",
+					"",
 					"\t/* Second comment.",
 					"\t */");
 			assertFormatted(source, expected);
@@ -298,6 +304,7 @@ public class ConstructorFormatterTest {
 					"/**Hello world.",
 					"That's the second line.*/new{System.out.println(a)}"));
 			String expected = formattedCode(
+					"",
 					"\t/** Hello world.",
 					"\t * That's the second line.",
 					"\t */",

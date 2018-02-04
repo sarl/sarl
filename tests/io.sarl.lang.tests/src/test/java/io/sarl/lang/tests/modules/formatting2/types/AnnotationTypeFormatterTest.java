@@ -168,6 +168,7 @@ public class AnnotationTypeFormatterTest {
 					"/* Hello world.",
 					" */",
 					"annotation A {",
+					"",
 					"\t/* Second comment",
 					"\t */",
 					"}",

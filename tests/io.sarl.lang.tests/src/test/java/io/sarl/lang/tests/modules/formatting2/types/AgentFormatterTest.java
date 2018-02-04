@@ -178,6 +178,7 @@ public class AgentFormatterTest {
 					"/* Hello world.",
 					" */",
 					"agent A {",
+					"",
 					"\t/* Second comment",
 					"\t */",
 					"}",

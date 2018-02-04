@@ -188,6 +188,7 @@ public class CapacityFormatterTest {
 					"/* Hello world.",
 					" */",
 					"capacity A {",
+					"",
 					"\t/* Second comment",
 					"\t */",
 					"}",

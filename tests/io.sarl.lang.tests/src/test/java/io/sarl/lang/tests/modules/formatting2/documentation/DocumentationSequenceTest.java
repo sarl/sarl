@@ -36,7 +36,7 @@ public class DocumentationSequenceTest extends AbstractMemberFormatterTest {
 	}
 
 	@Test
-	public void multilineComments() throws Exception {
+	public void multilineComments01() throws Exception {
 		String source = unformattedCode(
 				"uses Logging, Schedules, Lifecycle",
 				"/**",
@@ -71,6 +71,124 @@ public class DocumentationSequenceTest extends AbstractMemberFormatterTest {
 				"\t * @param x",
 				"\t * @return x",
 				"\t */",
+				"\tdef fct1 {",
+				"\t\tSystem.out.println(\"Z\")",
+				"\t}",
+				"",
+				"\tdef fct2 {",
+				"\t\tSystem.out.println(\"Z\")",
+				"\t}");
+		assertFormatted(source, expected);
+	}
+
+	@Test
+	public void multilineComments02() throws Exception {
+		String source = unformattedCode(
+				"uses Logging, Schedules, Lifecycle",
+				"/**",
+				" * Hello",
+				" *     @param x",
+				" *  @return     x",
+				" */",
+				"def fct0 {",
+				"  System.out.println(\"Z\")",
+				"}",
+				"/** Hello",
+				"*    @param x",
+				" *  @return x",
+				"*/",
+				"def fct1 {",
+				"  System.out.println(\"Z\")",
+				"}",
+				"def fct2 { System.out.println(\"Z\") }");
+		String expected = formattedCode(
+				"\tuses Logging, Schedules, Lifecycle",
+				"",
+				"\t/** ",
+				"\t * Hello",
+				"\t * @param x",
+				"\t * @return     x",
+				"\t */",
+				"\tdef fct0 {",
+				"\t\tSystem.out.println(\"Z\")",
+				"\t}",
+				"",
+				"\t/** Hello",
+				"\t * @param x",
+				"\t * @return x",
+				"\t */",
+				"\tdef fct1 {",
+				"\t\tSystem.out.println(\"Z\")",
+				"\t}",
+				"",
+				"\tdef fct2 {",
+				"\t\tSystem.out.println(\"Z\")",
+				"\t}");
+		assertFormatted(source, expected);
+	}
+
+	@Test
+	public void multilineComments03() throws Exception {
+		String source = unformattedCode(
+				"/**",
+				" * Hello",
+				" *     @param x",
+				" *  @return     x",
+				" */",
+				"def fct0 {",
+				"  System.out.println(\"Z\")",
+				"}",
+				"/** Hello",
+				"*    @param x",
+				" *  @return x",
+				"*/",
+				"def fct1 {",
+				"  System.out.println(\"Z\")",
+				"}",
+				"def fct2 { System.out.println(\"Z\") }");
+		String expected = formattedCode(
+				"",
+				"\t/** ",
+				"\t * Hello",
+				"\t * @param x",
+				"\t * @return     x",
+				"\t */",
+				"\tdef fct0 {",
+				"\t\tSystem.out.println(\"Z\")",
+				"\t}",
+				"",
+				"\t/** Hello",
+				"\t * @param x",
+				"\t * @return x",
+				"\t */",
+				"\tdef fct1 {",
+				"\t\tSystem.out.println(\"Z\")",
+				"\t}",
+				"",
+				"\tdef fct2 {",
+				"\t\tSystem.out.println(\"Z\")",
+				"\t}");
+		assertFormatted(source, expected);
+	}
+
+	@Test
+	public void noComments01() throws Exception {
+		String source = unformattedCode(
+				"uses Logging, Schedules, Lifecycle",
+				"def fct0 {",
+				"  System.out.println(\"Z\")",
+				"}",
+				"def fct1 {",
+				"  System.out.println(\"Z\")",
+				"}",
+				"def fct2 { System.out.println(\"Z\") }");
+		String expected = formattedCode(
+				"\tuses Logging, Schedules, Lifecycle",
+				"",
+				"\tdef fct0 {",
+				"\t\tSystem.out.println(\"Z\")",
+				"\t}",
+				"",
 				"\tdef fct1 {",
 				"\t\tSystem.out.println(\"Z\")",
 				"\t}",

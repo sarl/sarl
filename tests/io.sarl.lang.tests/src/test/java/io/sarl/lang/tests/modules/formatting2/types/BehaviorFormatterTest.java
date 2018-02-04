@@ -178,6 +178,7 @@ public class BehaviorFormatterTest {
 					"/* Hello world.",
 					" */",
 					"behavior A {",
+					"",
 					"\t/* Second comment",
 					"\t */",
 					"}",

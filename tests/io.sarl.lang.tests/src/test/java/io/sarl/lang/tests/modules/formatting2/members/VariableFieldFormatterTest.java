@@ -156,6 +156,7 @@ public class VariableFieldFormatterTest {
 					"* That's the second line.",
 					"*/var xxx:int=45"));
 			String expected = formattedCode(
+					"",
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
@@ -169,6 +170,7 @@ public class VariableFieldFormatterTest {
 					"/*Hello world.",
 					"That's the second line.*/var xxx:int=45"));
 			String expected = formattedCode(
+					"",
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
@@ -182,10 +184,12 @@ public class VariableFieldFormatterTest {
 					"/*Hello world.",
 					"That's the second line.*/var xxx:int=45 /*Second comment.*/var yyy:int"));
 			String expected = formattedCode(
+					"",
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
 					"\tvar xxx : int = 45",
+					"",
 					"\t/* Second comment.",
 					"\t */",
 					"\tvar yyy : int");
@@ -198,10 +202,12 @@ public class VariableFieldFormatterTest {
 					"/*Hello world.",
 					"That's the second line.*/var xxx:int=45/*Second comment.*/"));
 			String expected = formattedCode(
+					"",
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
 					"\tvar xxx : int = 45",
+					"",
 					"\t/* Second comment.",
 					"\t */");
 			assertFormatted(source, expected);
@@ -213,6 +219,7 @@ public class VariableFieldFormatterTest {
 					"/**Hello world.",
 					"That's the second line.*/var xxx:int=45"));
 			String expected = formattedCode(
+					"",
 					"\t/** Hello world.",
 					"\t * That's the second line.",
 					"\t */",

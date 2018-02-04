@@ -2631,6 +2631,17 @@ public class SARLValidator extends AbstractSARLValidator {
 				|| Strings.equal(FinalFieldsConstructor.class.getName(), name);
 	}
 
+	/** Check if a field needs to be synchronized.
+	 *
+	 * @param field the field.
+	 * @since 0.7
+	 */
+	@Check(CheckType.EXPENSIVE)
+	public void checkUnsynchronizedField(XtendField field) {
+		//System.out.println("isRead(" + field.getName() + ")=" + this.readAndWriteTracking.isRead(field));
+		//System.out.println("isInitialized(" + field.getName() + ")=" + this.readAndWriteTracking.isInitialized(field, null));
+	}
+
 	/** The modifier validator for constructors.
 	 *
 	 * @author $Author: sgalland$

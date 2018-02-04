@@ -258,6 +258,7 @@ public class ClassFormatterTest {
 					"/* Hello world.",
 					" */",
 					"class A {",
+					"",
 					"\t/* Second comment",
 					"\t */",
 					"}",
@@ -276,6 +277,7 @@ public class ClassFormatterTest {
 			String expected = multilineString(
 					"class X {",
 					"}",
+					"",
 					"/* Hello world.",
 					" * That's the second line.",
 					" */",

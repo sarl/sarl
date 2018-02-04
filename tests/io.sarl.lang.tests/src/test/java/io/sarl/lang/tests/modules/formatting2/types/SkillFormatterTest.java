@@ -198,6 +198,7 @@ public class SkillFormatterTest {
 					"/* Hello world.",
 					" */",
 					"skill A implements B {",
+					"",
 					"\t/* Second comment",
 					"\t */",
 					"}",

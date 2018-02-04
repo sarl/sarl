@@ -270,6 +270,7 @@ public class ActionFormatterTest {
 					"* That's the second line.",
 					"*/def myfct"));
 			String expected = formattedCode(
+					"",
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
@@ -283,6 +284,7 @@ public class ActionFormatterTest {
 					"/*Hello world.",
 					"That's the second line.*/def myfct"));
 			String expected = formattedCode(
+					"",
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
@@ -296,10 +298,12 @@ public class ActionFormatterTest {
 					"/*Hello world.",
 					"That's the second line.*/def myfct /*Second comment.*/def myfct2"));
 			String expected = formattedCode(
+					"",
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
 					"\tdef myfct",
+					"",
 					"\t/* Second comment.",
 					"\t */",
 					"\tdef myfct2");
@@ -312,10 +316,12 @@ public class ActionFormatterTest {
 					"/*Hello world.",
 					"That's the second line.*/def myfct /*Second comment.*/"));
 			String expected = formattedCode(
+					"",
 					"\t/* Hello world.",
 					"\t * That's the second line.",
 					"\t */",
 					"\tdef myfct",
+					"",
 					"\t/* Second comment.",
 					"\t */");
 			assertFormatted(source, expected);
@@ -327,6 +333,7 @@ public class ActionFormatterTest {
 					"/**Hello world.",
 					"That's the second line.*/def myfct"));
 			String expected = formattedCode(
+					"",
 					"\t/** Hello world.",
 					"\t * That's the second line.",
 					"\t */",

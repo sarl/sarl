@@ -175,6 +175,7 @@ public class EventFormatterTest {
 					"/* Hello world.",
 					" */",
 					"event A {",
+					"",
 					"\t/* Second comment",
 					"\t */",
 					"}",
