@@ -20,6 +20,9 @@
  */
 package io.sarl.tests.api;
 
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Iterables.any;
+import static com.google.common.collect.Iterables.isEmpty;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -358,7 +361,7 @@ public abstract class AbstractSarlTest {
 	protected boolean isIgnorable(Statement base, Description description) {
 		return false;
 	}
-	
+
 	@Override
 	protected void finalize() throws Throwable {
 		this.injector = null;
@@ -576,7 +579,7 @@ public abstract class AbstractSarlTest {
 		Iterables.addAll(le, expected);
 
 		final SortedSet<String> unexpectedElements = new TreeSet<>();
-		
+
 		Iterator<?> it1 = la.iterator();
 		while (it1.hasNext()) {
 			Object ac = it1.next();
@@ -1000,11 +1003,11 @@ public abstract class AbstractSarlTest {
 	 * @since 0.5
 	 */
 	public static String getLineSeparator() {
-		 final String nl = System.getProperty("line.separator");
-		 if (Strings.isNullOrEmpty(nl)) {
-			 return "\n";
-		 }
-		 return nl;
+		final String nl = System.getProperty("line.separator");
+		if (Strings.isNullOrEmpty(nl)) {
+			return "\n";
+		}
+		return nl;
 	}
 
 	/** Helper for writting a multiline string in unit tests, which supports the
@@ -1314,7 +1317,7 @@ public abstract class AbstractSarlTest {
 	protected ParseHelper<SarlScript> getParseHelper() {
 		return this.parser.get();
 	}
-	
+
 	/** Create an instance of class.
 	 */
 	protected SarlScript file(String string, boolean validate) throws Exception {
@@ -1604,8 +1607,8 @@ public abstract class AbstractSarlTest {
 			fail("Unexpected null value");
 		}
 		if (expected.getMajor() == actual.getMajor()
-			&& expected.getMinor() == actual.getMinor()
-			&& expected.getMicro() == actual.getMicro()) {
+				&& expected.getMinor() == actual.getMinor()
+				&& expected.getMicro() == actual.getMicro()) {
 			if (!Strings.isNullOrEmpty(expected.getQualifier())) {
 				final String expectedQualifier = expected.getQualifier();
 				if ("qualifier".equals(expectedQualifier)) {
@@ -1710,6 +1713,35 @@ public abstract class AbstractSarlTest {
 		message.append(" but got\n");
 		getIssuesAsString(model, issues, message);
 		fail(message.toString());
+	}
+
+	/** Assert that the given object was compiled with at least one error.
+	 *
+	 * @param source the compiled object from which errors should be retrieved.
+	 * @param codes the list of the error codes to be ignored.
+	 * @since 0.7
+	 */
+	public void assertAnyError(EObject source, String... codes) {
+		final List<String> codeSet = Arrays.asList(codes);
+		final List<Issue> validate = this.validationHelper.get().validate(source);
+		if (!any(validate, input -> Severity.ERROR == input.getSeverity() && !codeSet.contains(input.getCode()))) {
+			fail("Expected an error, but got nothing");
+		}
+	}
+
+	/** Assert that the given object was compiled without any error except the ones with the specified codes.
+	 *
+	 * @param source the compiled object from which errors should be retrieved.
+	 * @param codes the list of the error codes to be ignored.
+	 * @since 0.7
+	 */
+	public void assertNoErrorsExcept(EObject source, String... codes) {
+		final List<String> codeSet = Arrays.asList(codes);
+		final List<Issue> validate = this.validationHelper.get().validate(source);
+		final Predicate<Issue> pred = input -> Severity.ERROR == input.getSeverity() && !codeSet.contains(input.getCode());
+		if (any(validate, pred)) {
+			fail("Expected no error, found: " + filter(validate, pred));
+		}
 	}
 
 	/** Assert that the given warning is inside the list of issues.

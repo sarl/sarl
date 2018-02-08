@@ -1467,35 +1467,43 @@ public class SARLValidator extends AbstractSARLValidator {
 		}
 	}
 
-	private boolean checkRedundantInterface(
+	private boolean checkRedundantInterfaceInSameType(
 			XtendTypeDeclaration element,
 			EReference structuralElement,
 			LightweightTypeReference lightweightInterfaceReference,
 			List<LightweightTypeReference> knownInterfaces) {
-		int index = 0;
+		final String iid = lightweightInterfaceReference.getUniqueIdentifier();
+		int index = 1;
 		for (final LightweightTypeReference previousInterface : knownInterfaces) {
-			if (memberOfTypeHierarchy(previousInterface, lightweightInterfaceReference)) {
+			final String pid = previousInterface.getUniqueIdentifier();
+			if (Objects.equal(iid, pid)) {
 				error(MessageFormat.format(
 						Messages.SARLValidator_50,
 						canonicalName(lightweightInterfaceReference)),
 						element,
 						structuralElement,
 						// The index of the element to highlight in the super-types
-						knownInterfaces.size(),
+						index,
 						REDUNDANT_INTERFACE_IMPLEMENTATION,
 						canonicalName(lightweightInterfaceReference),
 						"pre"); //$NON-NLS-1$
 				return true;
-			} else if (memberOfTypeHierarchy(lightweightInterfaceReference, previousInterface)) {
-				error(MessageFormat.format(
-						Messages.SARLValidator_50,
-						canonicalName(previousInterface)),
-						element,
-						structuralElement,
-						index,
-						REDUNDANT_INTERFACE_IMPLEMENTATION,
-						canonicalName(previousInterface),
-						"post"); //$NON-NLS-1$
+			}
+			if (!isIgnored(REDUNDANT_INTERFACE_IMPLEMENTATION, element)) {
+				if (memberOfTypeHierarchy(previousInterface, lightweightInterfaceReference)) {
+					addIssue(MessageFormat.format(
+							Messages.SARLValidator_52,
+							canonicalName(lightweightInterfaceReference),
+							canonicalName(previousInterface)),
+							element,
+							structuralElement,
+							// The index of the element to highlight in the super-types
+							index,
+							REDUNDANT_INTERFACE_IMPLEMENTATION,
+							canonicalName(lightweightInterfaceReference),
+							"pre"); //$NON-NLS-1$
+					return true;
+				}
 			}
 			++index;
 		}
@@ -1510,8 +1518,8 @@ public class SARLValidator extends AbstractSARLValidator {
 		final List<LightweightTypeReference> knownInterfaces = CollectionLiterals.newArrayList();
 		for (final JvmTypeReference interfaceRef : interfaces) {
 			final LightweightTypeReference lightweightInterfaceReference = toLightweightTypeReference(interfaceRef);
-			// Check the interface against the other interfaces
-			if (!checkRedundantInterface(
+			// Detect if an interface is specified two types for the same type.
+			if (!checkRedundantInterfaceInSameType(
 					element, structuralElement,
 					lightweightInterfaceReference,
 					knownInterfaces)) {
@@ -2638,8 +2646,19 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check(CheckType.EXPENSIVE)
 	public void checkUnsynchronizedField(XtendField field) {
-		//System.out.println("isRead(" + field.getName() + ")=" + this.readAndWriteTracking.isRead(field));
-		//System.out.println("isInitialized(" + field.getName() + ")=" + this.readAndWriteTracking.isInitialized(field, null));
+		/*if (!field.isFinal() && !field.isVolatile()) {
+			// Test
+			final XtendTypeDeclaration declaringType = field.getDeclaringType();
+			if (declaringType instanceof SarlAgent || declaringType instanceof SarlSkill
+					|| declaringType instanceof SarlBehavior) {
+
+			}
+			//final JvmField jvmField = this.associations.getJvmField(field);
+		}
+		//if (jvmField != null) {
+			//System.out.println("isRead(" + field.getName() + ")=" + this.readAndWriteTracking.isRead(jvmField));
+			//System.out.println("isInitialized(" + field.getName() + ")=" + this.readAndWriteTracking.isInitialized(field, null));
+		//}*/
 	}
 
 	/** The modifier validator for constructors.

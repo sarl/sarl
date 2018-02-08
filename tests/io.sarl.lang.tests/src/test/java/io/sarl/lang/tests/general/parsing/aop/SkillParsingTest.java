@@ -125,10 +125,10 @@ public class SkillParsingTest {
 					"skill S1 implements C1 { }",
 					"skill S2 extends S1 implements C3, C2 { }"
 					));
-			validate(mas).assertError(
+			validate(mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION,
-					"Duplicate implemented feature 'C2'");
+					"The feature 'C2' is already implemented by the super-type 'C3'.");
 		}
 
 		@Test
