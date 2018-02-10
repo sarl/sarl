@@ -331,6 +331,13 @@ Workflow {
 					//backtrack = true
 				}
 			}
+			
+			// EMF Generator
+			emfGenerator = auto-inject {
+				// Do not update the build.properties in order to avoid the path "model/generated"
+				// within the "bin.includes" definition.
+				updateBuildProperties = false
+			}
 
 			// SARL Validator
 			validator = auto-inject {
@@ -1001,6 +1008,7 @@ Workflow {
  	}
  
    	// SARL Ecore generator
+   	// Update the GenModel file with the changes applied by this script.
 	component = org.eclipse.emf.mwe2.ecore.EcoreGenerator auto-inject {
 		resourceSet = resourceSet
 		genModel = "platform:/resource/${runtimeProjectName}/model/SARL.genmodel"
