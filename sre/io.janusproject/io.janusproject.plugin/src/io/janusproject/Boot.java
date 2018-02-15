@@ -28,12 +28,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -50,6 +52,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.arakhne.afc.vmutil.FileSystem;
+import org.arakhne.afc.vmutil.URISchemeType;
 
 import io.janusproject.kernel.Kernel;
 import io.janusproject.services.executor.EarlyExitException;
@@ -212,6 +215,8 @@ public final class Boot {
 
 	private static final int ERROR_EXIT_CODE = 255;
 
+	private static URLClassLoader dynamicClassLoader;
+
 	private static PrintStream consoleLogger;
 
 	private static Exiter applicationExiter;
@@ -234,6 +239,7 @@ public final class Boot {
 
 			boolean noLogo = false;
 			boolean embedded = false;
+			boolean userClasspath = false;
 			int verbose = LoggerCreator.toInt(JanusConfig.VERBOSE_LEVEL_VALUE);
 
 			final Iterator<Option> optIterator = cmd.iterator();
@@ -254,6 +260,7 @@ public final class Boot {
 					showDefaults();
 					return null;
 				case CLI_OPTION_SHOWCLASSPATH:
+					setDefaultClasspath(userClasspath);
 					showClasspath();
 					return null;
 				case CLI_OPTION_SHOWCLIARGUMENTS_LONG:
@@ -273,6 +280,7 @@ public final class Boot {
 					setPropertiesFrom(file);
 					break;
 				case CLI_OPTION_CLASSPATH_LONG:
+					userClasspath = true;
 					addToSystemClasspath(opt.getValue());
 					break;
 				case CLI_OPTION_OFFLINE_LONG:
@@ -314,6 +322,8 @@ public final class Boot {
 				}
 			}
 
+			setDefaultClasspath(userClasspath);
+
 			// Show the help when there is no argument.
 			if (cmd.getArgs().length == 0) {
 				showHelp(true);
@@ -341,50 +351,105 @@ public final class Boot {
 		}
 	}
 
+	/**
+	 * Replies the current class path.
+	 *
+	 * @return the current class path.
+	 * @since 0.7
+	 */
+	public static String getCurrentClasspath() {
+		final StringBuilder path = new StringBuilder();
+		for (final URL url : getCurrentClassLoader().getURLs()) {
+			if (path.length() > 0) {
+				path.append(File.pathSeparator);
+			}
+			final File file = FileSystem.convertURLToFile(url);
+			if (file != null) {
+				path.append(file.getAbsolutePath());
+			}
+		}
+		return path.toString();
+	}
+
+	/**
+	 * Replies the current class loader.
+	 *
+	 * @return the current class loader.
+	 * @since 0.7
+	 */
+	private static URLClassLoader getCurrentClassLoader() {
+		synchronized (Boot.class) {
+			if (dynamicClassLoader == null) {
+				final ClassLoader cl = ClassLoader.getSystemClassLoader();
+				if (cl instanceof URLClassLoader) {
+					dynamicClassLoader = (URLClassLoader) cl;
+				} else {
+					dynamicClassLoader = URLClassLoader.newInstance(new URL[0], cl);
+				}
+			}
+			return dynamicClassLoader;
+		}
+	}
+
 	/** Add the given entries to the system classpath.
 	 *
 	 * @param entries the new classpath entries. The format of the value is the same as for the <code>-cp</code>
 	 *      command-line option of the <code>java</code> tool.
 	 */
+	@SuppressWarnings("checkstyle:nestedifdepth")
 	public static void addToSystemClasspath(String entries) {
 		if (!Strings.isNullOrEmpty(entries)) {
+			final List<URL> cp = new ArrayList<>();
 			final String[] individualEntries = entries.split(Pattern.quote(File.pathSeparator));
-			final ClassLoader sysloader = ClassLoader.getSystemClassLoader();
-			if (sysloader instanceof URLClassLoader) {
-				final Method method;
-				try {
-					method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class); //$NON-NLS-1$
-					method.setAccessible(true);
-				} catch (Throwable t) {
-					showError(t.getLocalizedMessage(), t);
-					return;
-				}
-				for (final String entry : individualEntries) {
-					if (!Strings.isNullOrEmpty(entry)) {
-						final URL url = FileSystem.convertStringToURL(entry, false);
-						if (url != null) {
-							try {
-								method.invoke(sysloader, url);
-							} catch (Throwable t) {
-								showError(t.getLocalizedMessage(), t);
+			for (final String entry : individualEntries) {
+				if (!Strings.isNullOrEmpty(entry)) {
+					URL url = FileSystem.convertStringToURL(entry, false);
+					if (url != null) {
+						// Normalize the folder name in order to have a "/" at the end of the name.
+						// Without this "/" the class loader cannot find the resources.
+						if (URISchemeType.FILE.isURL(url)) {
+							final File file = FileSystem.convertURLToFile(url);
+							if (file != null && file.isDirectory()) {
+								try {
+									url = new URL(URISchemeType.FILE.name(), "", file.getAbsolutePath() + "/"); //$NON-NLS-1$//$NON-NLS-2$
+								} catch (MalformedURLException e) {
+									//
+								}
 							}
 						}
+						cp.add(url);
 					}
 				}
 			}
+			final URL[] newcp = new URL[cp.size()];
+			cp.toArray(newcp);
+			synchronized (Boot.class) {
+				dynamicClassLoader = URLClassLoader.newInstance(newcp, ClassLoader.getSystemClassLoader());
+			}
+		}
+	}
+
+	private static void setDefaultClasspath(boolean hasUserClasspath) {
+		if (!hasUserClasspath) {
+			// Force the current directory to be inside the class path (since 0.7)
+			String path = System.getProperty("user.dir"); //$NON-NLS-1$
+			if (!path.endsWith(File.separator)) {
+				path = path + File.separator;
+			}
+			addToSystemClasspath(path);
 		}
 	}
 
 	private static Class<? extends Agent> loadAgentClass(String fullyQualifiedName) {
 		final Class<?> type;
 		try {
-			type = Class.forName(fullyQualifiedName);
+			type = getCurrentClassLoader().loadClass(fullyQualifiedName);
 		} catch (Exception e) {
 			showError(MessageFormat.format(
 					Messages.Boot_1,
-					fullyQualifiedName, System.getProperty("java.class.path")), //$NON-NLS-1$
+					fullyQualifiedName, getCurrentClasspath()),
 					e);
-			// Event if showError never returns, add the return statement for
+			// Even if showError never returns, add the return statement for
 			// avoiding compilation error.
 			return null;
 		}
@@ -412,6 +477,7 @@ public final class Boot {
 	public static void main(String[] args) {
 		try {
 			Object[] freeArgs = parseCommandLine(args);
+
 			if (JanusConfig.getSystemPropertyAsBoolean(JanusConfig.JANUS_LOGO_SHOW_NAME,
 					JanusConfig.JANUS_LOGO_SHOW.booleanValue())) {
 				showJanusLogo();
@@ -626,9 +692,9 @@ public final class Boot {
 	/**
 	 * Show the classpath of the system properties. This function never returns.
 	 */
-	@SuppressWarnings({ "checkstyle:regexp", "resource" })
+	@SuppressWarnings({ "resource" })
 	public static void showClasspath() {
-		final String cp = System.getProperty("java.class.path"); //$NON-NLS-1$
+		final String cp = getCurrentClasspath();
 		if (!Strings.isNullOrEmpty(cp)) {
 			final PrintStream ps = getConsoleLogger();
 			for (final String entry : cp.split(Pattern.quote(File.pathSeparator))) {
