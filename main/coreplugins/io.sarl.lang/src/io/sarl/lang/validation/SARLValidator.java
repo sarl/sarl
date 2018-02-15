@@ -2494,7 +2494,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	 * @param field the field.
 	 * @since 0.7
 	 */
-	@Check(CheckType.EXPENSIVE)
+	@Check
 	@SuppressWarnings({"checkstyle:nestedifdepth", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	public void checkUnsynchronizedField(XtendField field) {
 		if (doCheckValidMemberName(field) && !isIgnored(IssueCodes.POTENTIAL_FIELD_SYNCHRONIZATION_PROBLEM)) {
