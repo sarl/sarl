@@ -116,6 +116,10 @@ public class SARLConfigurableIssueCodesProvider extends XtendConfigurableIssueCo
 		acceptor.accept(create(
 				IssueCodes.DISCOURAGED_LOOP_BREAKING_KEYWORD_USE,
 				SeverityConverter.SEVERITY_WARNING));
+
+		acceptor.accept(create(
+				IssueCodes.POTENTIAL_FIELD_SYNCHRONIZATION_PROBLEM,
+				SeverityConverter.SEVERITY_WARNING));
 	}
 
 }

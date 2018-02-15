@@ -86,6 +86,7 @@ import io.sarl.lang.documentation.SarlDocumentationProvider;
 import io.sarl.lang.formatting2.SARLFormatter;
 import io.sarl.lang.formatting2.SARLFormatterPreferenceKeys;
 import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
+import io.sarl.lang.jvmmodel.SARLReadAndWriteTracking;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.parser.antlr.SARLAntlrTokenFileProvider;
 import io.sarl.lang.parser.antlr.SARLParser;
@@ -228,6 +229,7 @@ import org.eclipse.xtext.xbase.util.XExpressionHelper;
 import org.eclipse.xtext.xbase.validation.EarlyExitValidator;
 import org.eclipse.xtext.xbase.validation.FeatureNameValidator;
 import org.eclipse.xtext.xbase.validation.ImplicitReturnFinder;
+import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking;
 
 /**
  * Manual modifications go to {@link SARLRuntimeModule}.
@@ -575,6 +577,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends FormatterPreferenceKeys> bindFormatterPreferenceKeys() {
 		return SARLFormatterPreferenceKeys.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends ReadAndWriteTracking> bindReadAndWriteTracking() {
+		return SARLReadAndWriteTracking.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]

@@ -85,6 +85,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -162,6 +163,7 @@ import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.XForLoopExpression;
 import org.eclipse.xtext.xbase.XMemberFeatureCall;
+import org.eclipse.xtext.xbase.XSynchronizedExpression;
 import org.eclipse.xtext.xbase.XTypeLiteral;
 import org.eclipse.xtext.xbase.XVariableDeclaration;
 import org.eclipse.xtext.xbase.XbasePackage;
@@ -178,7 +180,6 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReferenceFac
 import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner;
 import org.eclipse.xtext.xbase.util.XbaseUsageCrossReferencer;
 import org.eclipse.xtext.xbase.validation.FeatureNameValidator;
-import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.annotation.EarlyExit;
@@ -188,6 +189,7 @@ import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.DefaultSkill;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Skill;
+import io.sarl.lang.jvmmodel.SARLReadAndWriteTracking;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
@@ -381,7 +383,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	private IQualifiedNameConverter qualifiedNameConverter;
 
 	@Inject
-	private ReadAndWriteTracking readAndWriteTracking;
+	private SARLReadAndWriteTracking readAndWriteTracking;
 
 	// Update the annotation target information
 	{
@@ -2487,6 +2489,119 @@ public class SARLValidator extends AbstractSARLValidator {
 		}
 	}
 
+	/** Check if a field needs to be synchronized.
+	 *
+	 * @param field the field.
+	 * @since 0.7
+	 */
+	@Check(CheckType.EXPENSIVE)
+	@SuppressWarnings({"checkstyle:nestedifdepth", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
+	public void checkUnsynchronizedField(XtendField field) {
+		if (doCheckValidMemberName(field) && !isIgnored(IssueCodes.POTENTIAL_FIELD_SYNCHRONIZATION_PROBLEM)) {
+			final JvmField jvmField = this.associations.getJvmField(field);
+			if (jvmField == null || jvmField.eContainer() == null || jvmField.isConstant() || jvmField.isFinal()) {
+				return;
+			}
+			final EObject scope = getOutermostType(field);
+			if ((scope instanceof SarlAgent || scope instanceof SarlBehavior
+					|| scope instanceof SarlSkill) && isLocallyAssigned(jvmField, scope)) {
+				final Collection<Setting> usages = XbaseUsageCrossReferencer.find(jvmField, scope);
+				final Set<XtendMember> blocks = new HashSet<>();
+				boolean isAccessibleFromOutside = jvmField.getVisibility() != JvmVisibility.PRIVATE;
+				final Collection<Setting> pbUsages = new ArrayList<>();
+				for (final Setting usage : usages) {
+					final XtendMember member = EcoreUtil2.getContainerOfType(usage.getEObject(), XtendMember.class);
+					if (member instanceof XtendFunction) {
+						final XtendFunction fct = (XtendFunction) member;
+						blocks.add(member);
+						if (member.getVisibility() != JvmVisibility.PRIVATE) {
+							isAccessibleFromOutside = true;
+						}
+						if (!fct.isSynchonized()) {
+							pbUsages.add(usage);
+						}
+					} else if (member instanceof SarlBehaviorUnit) {
+						blocks.add(member);
+						isAccessibleFromOutside = true;
+						pbUsages.add(usage);
+					}
+				}
+				for (final Setting usage : pbUsages) {
+					boolean synchronizationIssue = false;
+					if (isAccessibleFromOutside || blocks.size() > 1) {
+						synchronizationIssue = true;
+					} else {
+						// TODO: Refine the function call detection
+						synchronizationIssue = true;
+					}
+					// Check if the field is already locally synchronized
+					if (synchronizationIssue) {
+						final XSynchronizedExpression syncExpr = EcoreUtil2.getContainerOfType(
+								usage.getEObject(), XSynchronizedExpression.class);
+						if (syncExpr != null) {
+							synchronizationIssue = false;
+						}
+					}
+					if (synchronizationIssue) {
+						addIssue(
+								MessageFormat.format(Messages.SARLValidator_91, field.getName()),
+								usage.getEObject(),
+								usage.getEStructuralFeature(),
+								IssueCodes.POTENTIAL_FIELD_SYNCHRONIZATION_PROBLEM);
+					}
+				}
+			}
+		}
+	}
+
+	// TODO: Remove when Xtend PR 365 is merged, https://github.com/eclipse/xtext-xtend/pull/365
+	private static EObject getOutermostType(XtendMember member) {
+		XtendTypeDeclaration result = EcoreUtil2.getContainerOfType(member, XtendTypeDeclaration.class);
+		if (result == null) {
+			return member.eContainer();
+		}
+		while (!(result.eContainer() instanceof XtendFile)) {
+			final XtendTypeDeclaration next = EcoreUtil2.getContainerOfType(result.eContainer(), XtendTypeDeclaration.class);
+			if (next == null) {
+				return result;
+			}
+			result = next;
+		}
+		return result;
+	}
+
+	/** Replies if the given object is locally assigned.
+	 *
+	 * <p>An object is locally assigned when it is the left operand of an assignment operation.
+	 *
+	 * @param target the object to test.
+	 * @param containerToFindUsage the container in which the usages should be find.
+	 * @return {@code true} if the given object is assigned.
+	 * @since 0.7
+	 */
+	protected boolean isLocallyAssigned(EObject target, EObject containerToFindUsage) {
+		if (this.readAndWriteTracking.isAssigned(target)) {
+			return true;
+		}
+		final Collection<Setting> usages = XbaseUsageCrossReferencer.find(target, containerToFindUsage);
+		// field are assigned when they are not used as the left operand of an assignment operator.
+		for (final Setting usage : usages) {
+			EObject object = usage.getEObject();
+			while (object instanceof XMemberFeatureCall) {
+				object = ((XMemberFeatureCall) object).eContainer();
+			}
+			if (object instanceof XAssignment) {
+				final XAssignment assignment = (XAssignment) object;
+				if (assignment.getFeature() == target) {
+					// Mark the field as assigned in order to be faster during the next assignment test.
+					this.readAndWriteTracking.markAssignmentAccess(target);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	@Override
 	protected boolean isInitialized(JvmField input) {
 		if (super.isInitialized(input)) {
@@ -2689,28 +2804,6 @@ public class SARLValidator extends AbstractSARLValidator {
 		final String name = annotation.getAnnotationType().getQualifiedName();
 		return Strings.equal(EqualsHashCode.class.getName(), name)
 				|| Strings.equal(FinalFieldsConstructor.class.getName(), name);
-	}
-
-	/** Check if a field needs to be synchronized.
-	 *
-	 * @param field the field.
-	 * @since 0.7
-	 */
-	@Check(CheckType.EXPENSIVE)
-	public void checkUnsynchronizedField(XtendField field) {
-		/*if (!field.isFinal() && !field.isVolatile()) {
-			// Test
-			final XtendTypeDeclaration declaringType = field.getDeclaringType();
-			if (declaringType instanceof SarlAgent || declaringType instanceof SarlSkill
-					|| declaringType instanceof SarlBehavior) {
-
-			}
-			//final JvmField jvmField = this.associations.getJvmField(field);
-		}
-		//if (jvmField != null) {
-			//System.out.println("isRead(" + field.getName() + ")=" + this.readAndWriteTracking.isRead(jvmField));
-			//System.out.println("isInitialized(" + field.getName() + ")=" + this.readAndWriteTracking.isInitialized(field, null));
-		//}*/
 	}
 
 	/** The modifier validator for constructors.

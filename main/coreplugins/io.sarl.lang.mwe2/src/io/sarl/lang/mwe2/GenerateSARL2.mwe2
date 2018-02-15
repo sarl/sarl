@@ -552,6 +552,10 @@ Workflow {
     				to = "io.sarl.lang.compiler.SARLJvmGenerator"
     				functionName = "configureIGenerator2ExtraLanguageMainGenerator"
     			}
+    			runtime = {
+    				bind = "org.eclipse.xtext.xbase.validation.ReadAndWriteTracking"
+    				to = "io.sarl.lang.jvmmodel.SARLReadAndWriteTracking"
+   				}
 
     			ui = {
     				bind = "org.eclipse.xtext.generator.IOutputConfigurationProvider"

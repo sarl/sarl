@@ -101,6 +101,8 @@ public class SARLValidatorConfigurationBlock extends XtendValidatorConfiguration
 				Messages.SARLValidatorConfigurationBlock_16);
 		builder.addComboBox(IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE,
 				Messages.SARLValidatorConfigurationBlock_6);
+		builder.addComboBox(IssueCodes.POTENTIAL_FIELD_SYNCHRONIZATION_PROBLEM,
+				Messages.SARLValidatorConfigurationBlock_18);
 	}
 
 	@Override

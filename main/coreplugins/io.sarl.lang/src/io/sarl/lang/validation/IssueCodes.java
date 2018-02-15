@@ -204,6 +204,13 @@ public final class IssueCodes {
 	public static final String INVALID_DEFAULT_SKILL_ANNOTATION =
 			ISSUE_CODE_PREFIX + "invalid_default_skill_annotation"; //$NON-NLS-1$
 
+	/**
+	 * A synchronization problem may be encountered on the field.
+	 * @since 0.7
+	 */
+	public static final String POTENTIAL_FIELD_SYNCHRONIZATION_PROBLEM =
+			ISSUE_CODE_PREFIX + "potential_field_synchronization_problem"; //$NON-NLS-1$
+
 	private IssueCodes() {
 		//
 	}
