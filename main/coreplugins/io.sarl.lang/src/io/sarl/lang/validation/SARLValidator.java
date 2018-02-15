@@ -105,8 +105,10 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.typesystem.LocalClassAwareTypeNames;
 import org.eclipse.xtend.core.validation.ModifierValidator;
 import org.eclipse.xtend.core.validation.XtendValidator;
@@ -138,6 +140,7 @@ import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import org.eclipse.xtext.naming.QualifiedName;
@@ -158,6 +161,7 @@ import org.eclipse.xtext.xbase.XConstructorCall;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.XForLoopExpression;
+import org.eclipse.xtext.xbase.XMemberFeatureCall;
 import org.eclipse.xtext.xbase.XTypeLiteral;
 import org.eclipse.xtext.xbase.XVariableDeclaration;
 import org.eclipse.xtext.xbase.XbasePackage;
@@ -172,6 +176,7 @@ import org.eclipse.xtext.xbase.typesystem.override.IResolvedOperation;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReferenceFactory;
 import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner;
+import org.eclipse.xtext.xbase.util.XbaseUsageCrossReferencer;
 import org.eclipse.xtext.xbase.validation.FeatureNameValidator;
 import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking;
 
@@ -2506,6 +2511,53 @@ public class SARLValidator extends AbstractSARLValidator {
 						return true;
 					}
 				}
+			}
+		}
+		return false;
+	}
+
+	@SuppressWarnings("checkstyle:npathcomplexity")
+	@Override
+	protected boolean isLocallyUsed(EObject target, EObject containerToFindUsage) {
+		// FIXME: See issue #809. Remove when Xtext PR is merged: https://github.com/eclipse/xtext-extras/pull/232.
+		if (this.readAndWriteTracking.isRead(target)) {
+			return true;
+		}
+		final Collection<Setting> usages = XbaseUsageCrossReferencer.find(target, containerToFindUsage);
+		// field are used when they are not used as the left operand of an assignment operator.
+		if (target instanceof JvmField) {
+			for (final Setting usage : usages) {
+				EObject object = usage.getEObject();
+				while (object instanceof XMemberFeatureCall) {
+					object = ((XMemberFeatureCall) object).eContainer();
+				}
+				if (object instanceof XAssignment) {
+					final XAssignment assignment = (XAssignment) object;
+					if (assignment.getFeature() != target) {
+						return true;
+					}
+				} else {
+					return true;
+				}
+			}
+			return false;
+		}
+		// for non-private members it is enough to check that there are usages
+		if (!(target instanceof JvmOperation) || ((JvmOperation) target).getVisibility() != JvmVisibility.PRIVATE) {
+			return !usages.isEmpty();
+		}
+		// for private members it has to be checked if all usages are within the operation
+		final EObject targetSourceElem = this.associations.getPrimarySourceElement(target);
+		for (final Setting s : usages) {
+			if (s.getEObject() instanceof XAbstractFeatureCall) {
+				final XAbstractFeatureCall fc = (XAbstractFeatureCall) s.getEObject();
+				// when the feature call does not call itself or the call is
+				// from another function, then it is locally used
+				if (fc.getFeature() != target || !EcoreUtil.isAncestor(targetSourceElem, fc)) {
+					return true;
+				}
+			} else {
+				return true;
 			}
 		}
 		return false;
