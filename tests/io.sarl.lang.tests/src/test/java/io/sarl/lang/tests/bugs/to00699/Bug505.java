@@ -16,19 +16,23 @@
 package io.sarl.lang.tests.bugs.to00699;
 
 import com.google.inject.Inject;
+import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.junit.Test;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.validation.IssueCodes;
 import io.sarl.tests.api.AbstractSarlTest;
 
-/**
+/** Text for issue 505: Reference instance methods or fields in abstract class.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @see "https://github.com/sarl/sarl/issues/505"
  */
 @SuppressWarnings("all")
 public class Bug505 extends AbstractSarlTest {
@@ -94,7 +98,7 @@ public class Bug505 extends AbstractSarlTest {
 	@Test
 	public void snipset1() throws Exception {
 		SarlScript mas = file(snippet1);
-		validate(mas).assertNoIssues();
+		validate(mas).assertNoErrors();
 	}
 
 	@Test
@@ -288,7 +292,9 @@ public class Bug505 extends AbstractSarlTest {
 	@Test
 	public void snipset5() throws Exception {
 		SarlScript mas = file(snippet5);
-		validate(mas).assertNoIssues();
+		validate(mas).assertWarning(
+				XbasePackage.eINSTANCE.getXAssignment(),
+				IssueCodes.POTENTIAL_FIELD_SYNCHRONIZATION_PROBLEM);
 	}
 
 	@Test

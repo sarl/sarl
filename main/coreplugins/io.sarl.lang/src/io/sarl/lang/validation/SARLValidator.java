@@ -162,7 +162,6 @@ import org.eclipse.xtext.xbase.XConstructorCall;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.XForLoopExpression;
-import org.eclipse.xtext.xbase.XMemberFeatureCall;
 import org.eclipse.xtext.xbase.XSynchronizedExpression;
 import org.eclipse.xtext.xbase.XTypeLiteral;
 import org.eclipse.xtext.xbase.XVariableDeclaration;
@@ -2570,38 +2569,6 @@ public class SARLValidator extends AbstractSARLValidator {
 		return result;
 	}
 
-	/** Replies if the given object is locally assigned.
-	 *
-	 * <p>An object is locally assigned when it is the left operand of an assignment operation.
-	 *
-	 * @param target the object to test.
-	 * @param containerToFindUsage the container in which the usages should be find.
-	 * @return {@code true} if the given object is assigned.
-	 * @since 0.7
-	 */
-	protected boolean isLocallyAssigned(EObject target, EObject containerToFindUsage) {
-		if (this.readAndWriteTracking.isAssigned(target)) {
-			return true;
-		}
-		final Collection<Setting> usages = XbaseUsageCrossReferencer.find(target, containerToFindUsage);
-		// field are assigned when they are not used as the left operand of an assignment operator.
-		for (final Setting usage : usages) {
-			EObject object = usage.getEObject();
-			while (object instanceof XMemberFeatureCall) {
-				object = ((XMemberFeatureCall) object).eContainer();
-			}
-			if (object instanceof XAssignment) {
-				final XAssignment assignment = (XAssignment) object;
-				if (assignment.getFeature() == target) {
-					// Mark the field as assigned in order to be faster during the next assignment test.
-					this.readAndWriteTracking.markAssignmentAccess(target);
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
 	@Override
 	protected boolean isInitialized(JvmField input) {
 		if (super.isInitialized(input)) {
@@ -2631,6 +2598,35 @@ public class SARLValidator extends AbstractSARLValidator {
 		return false;
 	}
 
+	/** Replies if the given object is locally assigned.
+	 *
+	 * <p>An object is locally assigned when it is the left operand of an assignment operation.
+	 *
+	 * @param target the object to test.
+	 * @param containerToFindUsage the container in which the usages should be find.
+	 * @return {@code true} if the given object is assigned.
+	 * @since 0.7
+	 */
+	protected boolean isLocallyAssigned(EObject target, EObject containerToFindUsage) {
+		if (this.readAndWriteTracking.isAssigned(target)) {
+			return true;
+		}
+		final Collection<Setting> usages = XbaseUsageCrossReferencer.find(target, containerToFindUsage);
+		// field are assigned when they are not used as the left operand of an assignment operator.
+		for (final Setting usage : usages) {
+			final EObject object = usage.getEObject();
+			if (object instanceof XAssignment) {
+				final XAssignment assignment = (XAssignment) object;
+				if (assignment.getFeature() == target) {
+					// Mark the field as assigned in order to be faster during the next assignment test.
+					this.readAndWriteTracking.markAssignmentAccess(target);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	@SuppressWarnings("checkstyle:npathcomplexity")
 	@Override
 	protected boolean isLocallyUsed(EObject target, EObject containerToFindUsage) {
@@ -2639,13 +2635,10 @@ public class SARLValidator extends AbstractSARLValidator {
 			return true;
 		}
 		final Collection<Setting> usages = XbaseUsageCrossReferencer.find(target, containerToFindUsage);
-		// field are used when they are not used as the left operand of an assignment operator.
-		if (target instanceof JvmField) {
+		// field and local variables are used when they are not used as the left operand of an assignment operator.
+		if (target instanceof XVariableDeclaration || target instanceof JvmField) {
 			for (final Setting usage : usages) {
-				EObject object = usage.getEObject();
-				while (object instanceof XMemberFeatureCall) {
-					object = ((XMemberFeatureCall) object).eContainer();
-				}
+				final EObject object = usage.getEObject();
 				if (object instanceof XAssignment) {
 					final XAssignment assignment = (XAssignment) object;
 					if (assignment.getFeature() != target) {

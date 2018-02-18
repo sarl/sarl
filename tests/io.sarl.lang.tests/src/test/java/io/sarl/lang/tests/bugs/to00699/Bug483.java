@@ -421,7 +421,9 @@ public class Bug483 extends AbstractSarlTest {
 			"       x = 1",
 			"    }",
 			"}"));
-		validate(mas).assertNoIssues();
+		validate(mas).assertWarning(
+				XbasePackage.eINSTANCE.getXVariableDeclaration(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.UNUSED_LOCAL_VARIABLE);
 	}
 
 	@Test

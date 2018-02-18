@@ -33,14 +33,15 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @see "https://github.com/sarl/sarl/issues/208"
+ * @see "https://github.com/sarl/sarl/issues/810"
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-	Bug208.WithProblem.class,
-	Bug208.WithoutProblem.class,
+	Bug208And810.WithProblem.class,
+	Bug208And810.WithoutProblem.class,
 })
 @SuppressWarnings("all")
-public class Bug208 {
+public class Bug208And810 {
 	
 	public static class WithProblem extends AbstractSarlTest {
 		
