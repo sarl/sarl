@@ -54,7 +54,7 @@ abstract class FxViewerController implements EventListener {
 
 	/** Emit a kill signal when the application is exited.
 	 */
-	def safeExit {
+	def safeExit : void {
 		emitToAgents(new AppExit)
 		this.UISpace = null
 	}
@@ -64,7 +64,7 @@ abstract class FxViewerController implements EventListener {
 	 * @param space the event space that is used for supporting the interaction between
 	 *     the SARL agents and the user interface.
 	 */
-	def setUISpace(^space : OpenEventSpace) {
+	def setUISpace(^space : OpenEventSpace) : void {
 		var s = this.^space
 		s?.unregister(this)
 		s = this.^space = ^space
@@ -94,7 +94,6 @@ abstract class FxViewerController implements EventListener {
 	/** Start the agent application.
 	 *
 	 * @param agentType the type of the agent to launch.
-	 * @param parameters the parameters to pass to the started agents.
 	 * @param whenAgentLaunched the lambda that is called when the agent is really launched.
 	 * @return the identifier of the launched agent.
 	 */

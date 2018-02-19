@@ -1632,11 +1632,10 @@ public abstract class AbstractSarlTest {
 	 * @return the default value for the given type.
 	 */
 	public static <T> T anyInstanceOrNull(Class<T> type) {
-		List<ArgumentMatcher> matchers = Arrays.asList(
-				Null.NULL,
-				new InstanceOf.VarArgAware(type));
-		ArgumentMatcher<T> or = new Or(matchers);
-		return ArgumentMatchers.argThat(or);
+		final ArgumentMatcher matcher = new InstanceOf.VarArgAware(type);
+		return ArgumentMatchers.argThat((it) -> {
+			return it == null || matcher.matches(it);
+		});
 	}
 
 	/** Replies the string representation of issues.

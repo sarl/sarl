@@ -83,6 +83,7 @@ behavior FXBehavior extends FXKillSupportBehavior {
 	
 	/** Constructor.
 	 *
+	 * @param owner the owner (agent) of the behavior.
 	 * @param controller the JavaFX controller to be linked to.
 	 */
 	new (owner : Agent, controller : FxViewerController) {
