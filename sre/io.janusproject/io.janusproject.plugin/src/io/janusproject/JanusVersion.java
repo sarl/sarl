@@ -36,7 +36,7 @@ public final class JanusVersion {
 
 	/** The version number of the current release of the Janus platform.
 	 */
-	public static final String JANUS_RELEASE_VERSION = "2.0.7.0"; //$NON-NLS-1$
+	public static final String JANUS_RELEASE_VERSION = "2.0.8.0"; //$NON-NLS-1$
 
 	/** Flag that indicates if the current Janus platform is a stable release.
 	 *

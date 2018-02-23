@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="%product.name" uid="io.sarl.lang.product" id="io.sarl.eclipse.io_sarl_lang_product" application="org.eclipse.ui.ide.workbench" version="0.7.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="%product.name" uid="io.sarl.lang.product" id="io.sarl.eclipse.io_sarl_lang_product" application="org.eclipse.ui.ide.workbench" version="0.8.0.qualifier" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/io.sarl.eclipse/icons/eclipse-about-banner.png"/>
@@ -257,16 +257,16 @@
    </plugins>
 
    <features>
-      <feature id="io.sarl.compiler" version="0.7.0.qualifier"/>
-      <feature id="io.sarl.ide" version="0.7.0.qualifier"/>
-      <feature id="io.sarl.lib" version="0.7.0.qualifier"/>
-      <feature id="io.sarl.baseplatform" version="0.7.0.qualifier"/>
-      <feature id="io.janusproject.feature" version="0.7.0.qualifier"/>
-      <feature id="io.sarl.pythongenerator.feature" version="0.7.0.qualifier"/>
-      <feature id="io.sarl.examples.feature" version="0.7.0.qualifier"/>
-      <feature id="io.sarl.experienceindex.feature" version="0.7.0.qualifier"/>
-      <feature id="io.sarl.lib.source" version="0.7.0.qualifier"/>
-      <feature id="io.janusproject.feature.source" version="0.7.0.qualifier"/>
+      <feature id="io.sarl.compiler" version="0.8.0.qualifier"/>
+      <feature id="io.sarl.ide" version="0.8.0.qualifier"/>
+      <feature id="io.sarl.lib" version="0.8.0.qualifier"/>
+      <feature id="io.sarl.baseplatform" version="0.8.0.qualifier"/>
+      <feature id="io.janusproject.feature" version="0.8.0.qualifier"/>
+      <feature id="io.sarl.pythongenerator.feature" version="0.8.0.qualifier"/>
+      <feature id="io.sarl.examples.feature" version="0.8.0.qualifier"/>
+      <feature id="io.sarl.experienceindex.feature" version="0.8.0.qualifier"/>
+      <feature id="io.sarl.lib.source" version="0.8.0.qualifier"/>
+      <feature id="io.janusproject.feature.source" version="0.8.0.qualifier"/>
       <feature id="org.eclipse.fx.ide.basic.feature" version="3.0.0.201705220750"/>
       <feature id="org.eclipse.fx.runtime.min.feature" version="3.0.0.201705220748"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.feature"/>
