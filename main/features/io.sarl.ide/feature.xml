@@ -2,7 +2,7 @@
 <feature
       id="io.sarl.ide"
       label="SARL Development Environment"
-      version="0.7.0"
+      version="0.7.0.qualifier"
       plugin="io.sarl.eclipse">
 
    <description url="http://www.sarl.io/about/">
