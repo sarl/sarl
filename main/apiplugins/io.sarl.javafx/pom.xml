@@ -53,15 +53,6 @@
 					<generateTraceFiles>true</generateTraceFiles>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<configuration>
-					<sourceDirectories>
-						<sourceDirectory>src</sourceDirectory>
-					</sourceDirectories>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
 
