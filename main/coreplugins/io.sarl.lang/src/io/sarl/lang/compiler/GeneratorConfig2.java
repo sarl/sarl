@@ -34,20 +34,39 @@ import org.eclipse.xtext.xbase.lib.Pure;
  */
 public class GeneratorConfig2 {
 
+	/** Default value for the generation of the inline annotation flag.
+	 *
+	 * @since 0.8
+	 */
+	public static final boolean DEFAULT_GENERATE_INLINE_ANNOTATION = false;
+
+	/** Default value for the flag that indicates if the expression interpreter should be used when
+	 * generating inline annotations.
+	 *
+	 * @since 0.8
+	 */
+	public static final boolean DEFAULT_USE_EXPRESSION_INTERPRETER_FOR_INLINE_ANNOTATION = true;
+
+	/** Default value for the generation of the pure annotation flag.
+	 *
+	 * @since 0.8
+	 */
+	public static final boolean DEFAULT_GENERATE_PURE_ANNOTATION = true;
+
 	/**
 	 * Whether <code>@Inline</code> shall be generated.
 	 */
-	private boolean generateInlineAnnotation = true;
+	private boolean generateInlineAnnotation = DEFAULT_GENERATE_INLINE_ANNOTATION;
 
 	/**
 	 * Whether constant expression interpreter shall be called for generated <code>@Inline</code>.
 	 */
-	private boolean useExpressionInterpreterForInlineAnnotation = true;
+	private boolean useExpressionInterpreterForInlineAnnotation = DEFAULT_USE_EXPRESSION_INTERPRETER_FOR_INLINE_ANNOTATION;
 
 	/**
 	 * Whether <code>@Pure</code> shall be generated.
 	 */
-	private boolean generatePureAnnotation = true;
+	private boolean generatePureAnnotation = DEFAULT_GENERATE_PURE_ANNOTATION;
 
 	/** Replies if the <code>@Inline</code> shall be generated.
 	 *
