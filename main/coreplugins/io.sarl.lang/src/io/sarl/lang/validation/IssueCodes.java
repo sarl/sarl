@@ -211,6 +211,13 @@ public final class IssueCodes {
 	public static final String POTENTIAL_FIELD_SYNCHRONIZATION_PROBLEM =
 			ISSUE_CODE_PREFIX + "potential_field_synchronization_problem"; //$NON-NLS-1$
 
+	/**
+	 * Internal error.
+	 * @since 0.8
+	 */
+	public static final String INTERNAL_ERROR =
+			ISSUE_CODE_PREFIX + "internal_error"; //$NON-NLS-1$
+
 	private IssueCodes() {
 		//
 	}

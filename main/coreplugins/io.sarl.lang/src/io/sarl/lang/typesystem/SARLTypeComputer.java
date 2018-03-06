@@ -25,7 +25,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.eclipse.emf.ecore.EObject;
+import com.google.common.base.Throwables;
 import org.eclipse.xtend.core.typesystem.XtendTypeComputer;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
@@ -33,6 +33,8 @@ import org.eclipse.xtext.common.types.JvmAnnotationTarget;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.util.AnnotationLookup;
+import org.eclipse.xtext.diagnostics.Severity;
+import org.eclipse.xtext.validation.EObjectDiagnosticImpl;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.typesystem.computation.ILinkingCandidate;
 import org.eclipse.xtext.xbase.typesystem.computation.ITypeComputationState;
@@ -42,7 +44,7 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import io.sarl.lang.sarl.SarlAssertExpression;
 import io.sarl.lang.sarl.SarlBreakExpression;
 import io.sarl.lang.sarl.SarlContinueExpression;
-import io.sarl.lang.util.Utils;
+import io.sarl.lang.validation.IssueCodes;
 
 /** Customized type computer for SARL specific expressions.
  *
@@ -136,8 +138,15 @@ public class SARLTypeComputer extends XtendTypeComputer {
 			try {
 				super.computeTypes(expression, state);
 			} catch (Throwable exception) {
-				final EObject resourceContent = expression.eResource().getContents().get(0);
-				throw new Error(Utils.dump(resourceContent), exception);
+				final Throwable cause = Throwables.getRootCause(exception);
+				state.addDiagnostic(new EObjectDiagnosticImpl(
+						Severity.ERROR,
+						IssueCodes.INTERNAL_ERROR,
+						cause.getLocalizedMessage(),
+						expression,
+						null,
+						-1,
+						null));
 			}
 		}
 	}
