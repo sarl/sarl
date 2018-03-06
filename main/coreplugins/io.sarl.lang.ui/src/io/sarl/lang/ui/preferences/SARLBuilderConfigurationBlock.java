@@ -54,26 +54,41 @@ public class SARLBuilderConfigurationBlock extends XbaseBuilderConfigurationBloc
 	@Inject
 	private EclipseOutputConfigurationProvider configurationProvider;
 
+	private Button generateInlineButton;
+
+	private Button useExpressionInterpreter;
+
 	@Override
 	protected void createGeneralSectionItems(Composite composite) {
 		super.createGeneralSectionItems(composite);
 
-		final Button generateInlineButton = addCheckBox(composite, Messages.SARLBuilderConfigurationBlock_0,
+		this.generateInlineButton = addCheckBox(composite, Messages.SARLBuilderConfigurationBlock_0,
 				PREF_GENERATE_INLINE, BOOLEAN_VALUES, 0);
 
-		final Button useExpressionInterpreter = addCheckBox(composite, Messages.SARLBuilderConfigurationBlock_1,
+		this.useExpressionInterpreter = addCheckBox(composite, Messages.SARLBuilderConfigurationBlock_1,
 				PREF_USE_EXPRESSION_INTERPRETER, BOOLEAN_VALUES, INDENT_AMOUNT);
-		useExpressionInterpreter.setEnabled(generateInlineButton.getSelection());
+		this.useExpressionInterpreter.setEnabled(this.generateInlineButton.getSelection());
 
 		addCheckBox(composite, Messages.SARLBuilderConfigurationBlock_2,
 				PREF_GENERATE_PURE, BOOLEAN_VALUES, 0);
 
-		generateInlineButton.addSelectionListener(new SelectionAdapter() {
+		this.generateInlineButton.addSelectionListener(new SelectionAdapter() {
+			@SuppressWarnings("synthetic-access")
 			@Override
 			public void widgetSelected(SelectionEvent event) {
-				useExpressionInterpreter.setEnabled(generateInlineButton.getSelection());
+				SARLBuilderConfigurationBlock.this.useExpressionInterpreter.setEnabled(
+						SARLBuilderConfigurationBlock.this.generateInlineButton.getSelection());
 			}
 		});
+	}
+
+	@Override
+	protected void updateControls() {
+		super.updateControls();
+		// Force the enable state of the buttons.
+		if (this.useExpressionInterpreter != null && this.generateInlineButton != null) {
+			this.useExpressionInterpreter.setEnabled(this.generateInlineButton.getSelection());
+		}
 	}
 
 	/** Replies the output configurations for the given project.
