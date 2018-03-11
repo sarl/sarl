@@ -15,11 +15,21 @@
  */
 package io.sarl.lang.tests.general.compilation.general;
 
+import java.io.IOException;
+
 import com.google.inject.Inject;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.xtext.resource.FileExtensionProvider;
+import org.eclipse.xtext.util.IAcceptor;
+import org.eclipse.xtext.xbase.lib.Pair;
 import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
+import org.eclipse.xtext.xbase.testing.CompilationTestHelper.Result;
 import org.junit.Test;
 
 import io.sarl.lang.SARLVersion;
+import io.sarl.lang.compiler.GeneratorConfig2;
+import io.sarl.lang.compiler.GeneratorConfigProvider2;
+import io.sarl.lang.compiler.IGeneratorConfigProvider2;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.tests.api.AbstractSarlTest;
 
@@ -34,8 +44,27 @@ import io.sarl.tests.api.AbstractSarlTest;
 public class InlineFunctionTest extends AbstractSarlTest {
 
 	@Inject
-	private CompilationTestHelper compiler;
+	private CompilationTestHelper sarlCompiler;
 
+	@Inject
+	private FileExtensionProvider extensionProvider;
+	
+	@Inject
+	private IGeneratorConfigProvider2 generatorConfigProvider2;
+
+	private GeneratorConfig2 config;
+
+	private void compileWithInline(CharSequence source, IAcceptor<Result> acceptor) throws IOException {
+		String fileName = "MyFile." + extensionProvider.getPrimaryFileExtension();
+		ResourceSet set = this.sarlCompiler.resourceSet(new Pair<String, CharSequence>(fileName, source));
+		if (this.config == null) {
+			this.config = this.generatorConfigProvider2.get(null);
+			((GeneratorConfigProvider2) this.generatorConfigProvider2).install(set, config);
+		}
+		this.config.setGenerateInlineAnnotation(true);
+		this.sarlCompiler.compile(set, acceptor);
+	}
+	
 	@Test
 	public void noInlineWithStaticInheritedAnnotation() throws Exception {
 		String source = multilineString(
@@ -75,7 +104,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"}",
 				""
 				);
-		this.compiler.compile(source, (r) -> {
+		compileWithInline(source, (r) -> {
 			assertEquals(expectedC3, r.getGeneratedCode("C3"));
 		});
 	}
@@ -118,7 +147,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"}",
 				""
 				);
-		this.compiler.compile(source, (r) -> {
+		compileWithInline(source, (r) -> {
 			assertEquals(expectedC2, r.getGeneratedCode("C2"));
 		});
 	}
@@ -164,7 +193,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"}",
 				""
 				);
-		this.compiler.compile(source, (r) -> {
+		compileWithInline(source, (r) -> {
 			assertEquals(expectedC3, r.getGeneratedCode("C3"));
 		});
 	}
@@ -207,7 +236,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"}",
 				""
 				);
-		this.compiler.compile(source, (r) -> {
+		compileWithInline(source, (r) -> {
 			assertEquals(expectedC2, r.getGeneratedCode("C2"));
 		});
 	}
@@ -250,7 +279,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"}",
 				""
 				);
-		this.compiler.compile(source, (r) -> {
+		compileWithInline(source, (r) -> {
 			assertEquals(expectedC2, r.getGeneratedCode("C2"));
 		});
 	}
@@ -286,7 +315,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"}",
 				""
 				);
-		this.compiler.compile(source, (r) -> {
+		compileWithInline(source, (r) -> {
 			assertEquals(expectedC1, r.getGeneratedCode("C1"));
 		});
 	}
@@ -322,7 +351,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"}",
 				""
 				);
-		this.compiler.compile(source, (r) -> {
+		compileWithInline(source, (r) -> {
 			assertEquals(expectedC1, r.getGeneratedCode("C1"));
 		});
 	}
@@ -358,7 +387,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"}",
 				""
 				);
-		this.compiler.compile(source, (r) -> {
+		compileWithInline(source, (r) -> {
 			assertEquals(expectedC1, r.getGeneratedCode("C1"));
 		});
 	}
@@ -394,7 +423,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"}",
 				""
 				);
-		this.compiler.compile(source, (r) -> {
+		compileWithInline(source, (r) -> {
 			assertEquals(expectedC1, r.getGeneratedCode("C1"));
 		});
 	}
@@ -430,7 +459,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"}",
 				""
 				);
-		this.compiler.compile(source, (r) -> {
+		compileWithInline(source, (r) -> {
 			assertEquals(expectedC1, r.getGeneratedCode("C1"));
 		});
 	}
@@ -466,7 +495,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"}",
 				""
 				);
-		this.compiler.compile(source, (r) -> {
+		compileWithInline(source, (r) -> {
 			assertEquals(expectedC1, r.getGeneratedCode("C1"));
 		});
 	}
@@ -500,7 +529,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"}",
 				""
 				);
-		this.compiler.compile(source, (r) -> {
+		compileWithInline(source, (r) -> {
 			assertEquals(expectedC1, r.getGeneratedCode("C1"));
 		});
 	}
@@ -536,7 +565,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"}",
 				""
 				);
-		this.compiler.compile(source, (r) -> {
+		compileWithInline(source, (r) -> {
 			assertEquals(expectedC1, r.getGeneratedCode("C1"));
 		});
 	}
@@ -572,7 +601,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"}",
 				""
 				);
-		this.compiler.compile(source, (r) -> {
+		compileWithInline(source, (r) -> {
 			assertEquals(expectedC1, r.getGeneratedCode("C1"));
 		});
 	}
@@ -608,7 +637,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"}",
 				""
 				);
-		this.compiler.compile(source, (r) -> {
+		compileWithInline(source, (r) -> {
 			assertEquals(expectedC1, r.getGeneratedCode("C1"));
 		});
 	}
@@ -644,7 +673,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"}",
 				""
 				);
-		this.compiler.compile(source, (r) -> {
+		compileWithInline(source, (r) -> {
 			assertEquals(expectedC1, r.getGeneratedCode("C1"));
 		});
 	}
@@ -680,7 +709,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"}",
 				""
 				);
-		this.compiler.compile(source, (r) -> {
+		compileWithInline(source, (r) -> {
 			assertEquals(expectedC1, r.getGeneratedCode("C1"));
 		});
 	}
@@ -716,7 +745,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"}",
 				""
 				);
-		this.compiler.compile(source, (r) -> {
+		compileWithInline(source, (r) -> {
 			assertEquals(expectedC1, r.getGeneratedCode("C1"));
 		});
 	}
