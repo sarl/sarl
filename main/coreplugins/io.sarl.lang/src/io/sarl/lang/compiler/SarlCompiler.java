@@ -408,7 +408,11 @@ public class SarlCompiler extends XtendCompiler {
 							}
 							final JvmTypeReference localVariableType = getType(localVariable.getValue());
 							appendable.append("final ").append(toLightweight(localVariableType, assertExpression)); //$NON-NLS-1$
-							appendable.append(" ").append(localVariable.getKey().getName()); //$NON-NLS-1$
+							String referenceName = getReferenceName(localVariable.getValue(), appendable);
+							if (Strings.isEmpty(referenceName)) {
+								referenceName = localVariable.getKey().getName();
+							}
+							appendable.append(" ").append(referenceName); //$NON-NLS-1$
 						}
 						appendable.append(") {"); //$NON-NLS-1$
 						appendable.increaseIndentation();
@@ -424,13 +428,17 @@ public class SarlCompiler extends XtendCompiler {
 						appendable.newLine();
 						appendable.append("assert new ").append(className).append("("); //$NON-NLS-1$ //$NON-NLS-2$
 						first = true;
-						for (final XVariableDeclaration localVariable : localVariables.keySet()) {
+						for (final Entry<XVariableDeclaration, XFeatureCall> localVariable : localVariables.entrySet()) {
 							if (first) {
 								first = false;
 							} else {
 								appendable.append(", "); //$NON-NLS-1$
 							}
-							appendable.append(localVariable.getName());
+							String referenceName = getReferenceName(localVariable.getValue(), appendable);
+							if (Strings.isEmpty(referenceName)) {
+								referenceName = localVariable.getKey().getName();
+							}
+							appendable.append(referenceName);
 						}
 						appendable.append(").$$result"); //$NON-NLS-1$
 					} finally {
