@@ -2,7 +2,7 @@
 <feature
       id="io.sarl.pythongenerator.feature"
       label="Python Generator for SARL"
-      version="0.8.0.qualifier"
+      version="0.7.1"
       plugin="io.sarl.pythongenerator.plugin">
 
    <description url="http://www.sarl.io/about/">
@@ -222,9 +222,9 @@
    </url>
 
    <requires>
-      <import plugin="io.sarl.lang" version="0.8.0" match="greaterOrEqual"/>
-      <import plugin="io.sarl.lang.ui" version="0.8.0" match="greaterOrEqual"/>
-      <import plugin="io.sarl.eclipse" version="0.8.0" match="greaterOrEqual"/>
+      <import plugin="io.sarl.lang" version="0.7.1" match="greaterOrEqual"/>
+      <import plugin="io.sarl.lang.ui" version="0.7.1" match="greaterOrEqual"/>
+      <import plugin="io.sarl.eclipse" version="0.7.1" match="greaterOrEqual"/>
       <import plugin="javax.inject" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.osgi" version="3.12.50" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.forms" version="3.7.101" match="greaterOrEqual"/>
