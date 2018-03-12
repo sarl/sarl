@@ -150,18 +150,24 @@ public abstract class AbstractSARLLaunchConfigurationDelegate extends AbstractJa
 	/** Replies the SRE installation to be used for the given configuration.
 	 *
 	 * @param configuration the configuration to check.
+	 * @param configAccessor the accessor to the SRE configuration.
+	 * @param projectAccessor the accessor to the Java project.
 	 * @return the SRE install.
 	 * @throws CoreException if impossible to get the SRE.
 	 */
-	protected ISREInstall getSREInstallFor(ILaunchConfiguration configuration) throws CoreException {
+	protected static ISREInstall getSREInstallFor(ILaunchConfiguration configuration,
+			ILaunchConfigurationAccessor configAccessor,
+			IJavaProjectAccessor projectAccessor) throws CoreException {
+		assert configAccessor != null;
+		assert projectAccessor != null;
 		final ISREInstall sre;
-		if (getConfigurationAccessor().getUseProjectSREFlag(configuration)) {
-			sre = getProjectSpecificSRE(configuration, true);
-		} else if (getConfigurationAccessor().getUseSystemSREFlag(configuration)) {
+		if (configAccessor.getUseProjectSREFlag(configuration)) {
+			sre = getProjectSpecificSRE(configuration, true, projectAccessor);
+		} else if (configAccessor.getUseSystemSREFlag(configuration)) {
 			sre = SARLRuntime.getDefaultSREInstall();
 			verifySREValidity(sre, sre.getId());
 		} else  {
-			final String runtime = getConfigurationAccessor().getSREId(configuration);
+			final String runtime = configAccessor.getSREId(configuration);
 			sre = SARLRuntime.getSREFromId(runtime);
 			verifySREValidity(sre, runtime);
 		}
@@ -178,11 +184,14 @@ public abstract class AbstractSARLLaunchConfigurationDelegate extends AbstractJa
 	 *
 	 * @param configuration the configuration to read.
 	 * @param verify  if true verify the SRE validity, do nothing otherwise
+	 * @param projectAccessor the accessor to the Java project.
 	 * @return the project SRE or <code>null</code>.
 	 * @throws CoreException Some error occurs when accessing to the ecore elements.
 	 */
-	private ISREInstall getProjectSpecificSRE(ILaunchConfiguration configuration, boolean verify) throws CoreException {
-		final IJavaProject jprj = getJavaProject(configuration);
+	private static ISREInstall getProjectSpecificSRE(ILaunchConfiguration configuration, boolean verify,
+			IJavaProjectAccessor projectAccessor) throws CoreException {
+		assert projectAccessor != null;
+		final IJavaProject jprj = projectAccessor.get(configuration);
 		if (jprj != null) {
 			final IProject prj = jprj.getProject();
 			assert prj != null;
@@ -263,7 +272,7 @@ public abstract class AbstractSARLLaunchConfigurationDelegate extends AbstractJa
 	@Override
 	public String getVMArguments(ILaunchConfiguration configuration) throws CoreException {
 		final String launchConfigArgs = super.getVMArguments(configuration);
-		final ISREInstall sre = getSREInstallFor(configuration);
+		final ISREInstall sre = getSREInstallFor(configuration, this.configAccessor, cfg -> getJavaProject(cfg));
 		assert sre != null;
 		final IStringVariableManager substitutor = VariablesPlugin.getDefault().getStringVariableManager();
 		final String sreArgs = substitutor.performStringSubstitution(sre.getJVMArguments());
@@ -291,7 +300,7 @@ public abstract class AbstractSARLLaunchConfigurationDelegate extends AbstractJa
 		final String standardProgramArguments = super.getProgramArguments(configuration);
 
 		// Get the specific SRE arguments
-		final ISREInstall sre = getSREInstallFor(configuration);
+		final ISREInstall sre = getSREInstallFor(configuration, this.configAccessor, cfg -> getJavaProject(cfg));
 		assert sre != null;
 
 		return getProgramArguments(configuration, sre, standardProgramArguments);
@@ -316,14 +325,14 @@ public abstract class AbstractSARLLaunchConfigurationDelegate extends AbstractJa
 	}
 
 	/** Copied from JDT's super class, and patched for invoking
-	 * {@link #computeUnresolvedSARLRuntimeClasspath(ILaunchConfiguration)}.
+	 * {@link #getOrComputeUnresolvedSARLRuntimeClasspath(ILaunchConfiguration)}.
 	 * {@inheritDoc}
 	 */
 	@Override
 	public String[][] getBootpathExt(ILaunchConfiguration configuration)
 			throws CoreException {
 		final String[][] bootpathInfo = new String[3][];
-		final IRuntimeClasspathEntry[] entries = computeUnresolvedSARLRuntimeClasspath(configuration);
+		final IRuntimeClasspathEntry[] entries = getOrComputeUnresolvedSARLRuntimeClasspath(configuration);
 		final List<IRuntimeClasspathEntry> bootEntriesPrepend = new ArrayList<>();
 		final IRuntimeClasspathEntry jreEntry;
 		final int index;
@@ -355,7 +364,7 @@ public abstract class AbstractSARLLaunchConfigurationDelegate extends AbstractJa
 	}
 
 	/** Copied from JDT's super class, and patched for invoking
-	 * {@link #computeUnresolvedSARLRuntimeClasspath(ILaunchConfiguration)}.
+	 * {@link #getOrComputeUnresolvedSARLRuntimeClasspath(ILaunchConfiguration)}.
 	 * {@inheritDoc}
 	 */
 	@Override
@@ -368,7 +377,7 @@ public abstract class AbstractSARLLaunchConfigurationDelegate extends AbstractJa
 			// default
 			return null;
 		}
-		IRuntimeClasspathEntry[] entries = computeUnresolvedSARLRuntimeClasspath(configuration);
+		IRuntimeClasspathEntry[] entries = getOrComputeUnresolvedSARLRuntimeClasspath(configuration);
 		entries = JavaRuntime.resolveRuntimeClasspath(entries, configuration);
 		final List<String> bootEntries = new ArrayList<>(entries.length);
 		boolean empty = true;
@@ -394,7 +403,7 @@ public abstract class AbstractSARLLaunchConfigurationDelegate extends AbstractJa
 	}
 
 	/** Copied from JDT's super class, and patched for invoking
-	 * {@link #computeUnresolvedSARLRuntimeClasspath(ILaunchConfiguration)}.
+	 * {@link #getOrComputeUnresolvedSARLRuntimeClasspath(ILaunchConfiguration)}.
 	 * {@inheritDoc}
 	 */
 	@Override
@@ -409,7 +418,7 @@ public abstract class AbstractSARLLaunchConfigurationDelegate extends AbstractJa
 			return userEntries;
 		}
 
-		IRuntimeClasspathEntry[] entries = computeUnresolvedSARLRuntimeClasspath(configuration);
+		IRuntimeClasspathEntry[] entries = getOrComputeUnresolvedSARLRuntimeClasspath(configuration);
 		entries = JavaRuntime.resolveRuntimeClasspath(entries, configuration);
 
 		final boolean isMavenProject = getJavaProject(configuration).getProject().hasNature(SARLEclipseConfig.MAVEN_NATURE_ID);
@@ -433,7 +442,8 @@ public abstract class AbstractSARLLaunchConfigurationDelegate extends AbstractJa
 
 		if (needSREEntry) {
 			int insertIndex = 0;
-			for (final IRuntimeClasspathEntry entry : getSREClasspathEntries(configuration)) {
+			for (final IRuntimeClasspathEntry entry : getSREClasspathEntries(configuration,
+					this.configAccessor, cfg -> getJavaProject(cfg))) {
 				if (entry.getClasspathProperty() == IRuntimeClasspathEntry.USER_CLASSES) {
 					final String location = entry.getLocation();
 					if (location != null && !set.contains(location)) {
@@ -458,7 +468,7 @@ public abstract class AbstractSARLLaunchConfigurationDelegate extends AbstractJa
 	 * @return the filtered entries.
 	 * @throws CoreException if impossible to get the classpath.
 	 */
-	private IRuntimeClasspathEntry[] computeUnresolvedSARLRuntimeClasspath(ILaunchConfiguration configuration)
+	private IRuntimeClasspathEntry[] getOrComputeUnresolvedSARLRuntimeClasspath(ILaunchConfiguration configuration)
 			throws CoreException {
 		// Get the buffered entries
 		IRuntimeClasspathEntry[] entries = null;
@@ -471,22 +481,7 @@ public abstract class AbstractSARLLaunchConfigurationDelegate extends AbstractJa
 			return entries;
 		}
 		// Get the classpath from the configuration.
-		entries = JavaRuntime.computeUnresolvedRuntimeClasspath(configuration);
-		//
-		final List<IRuntimeClasspathEntry> filteredEntries = new ArrayList<>();
-		List<IRuntimeClasspathEntry> sreClasspathEntries = null;
-		// Filtering the entries by replacing the "SARL Libraries" with the SARL runtime environment.
-		for (final IRuntimeClasspathEntry entry : entries) {
-			if (entry.getPath().equals(SARLClasspathContainerInitializer.CONTAINER_ID)) {
-				if (sreClasspathEntries == null) {
-					sreClasspathEntries = getSREClasspathEntries(configuration);
-				}
-				filteredEntries.addAll(sreClasspathEntries);
-			} else {
-				filteredEntries.add(entry);
-			}
-		}
-		entries = filteredEntries.toArray(new IRuntimeClasspathEntry[filteredEntries.size()]);
+		entries = computeUnresolvedSARLRuntimeClasspath(configuration, this.configAccessor, cfg -> getJavaProject(cfg));
 		//
 		synchronized (this) {
 			this.unresolvedClasspathEntries = new SoftReference<>(entries);
@@ -494,15 +489,49 @@ public abstract class AbstractSARLLaunchConfigurationDelegate extends AbstractJa
 		return entries;
 	}
 
+	/** Compute the class path for the given launch configuration.
+	 *
+	 * @param configuration the configuration that provides the classpath.
+	 * @param configAccessor the accessor to the SRE configuration.
+	 * @param projectAccessor the accessor to the Java project.
+	 * @return the filtered entries.
+	 * @throws CoreException if impossible to get the classpath.
+	 */
+	public static IRuntimeClasspathEntry[] computeUnresolvedSARLRuntimeClasspath(ILaunchConfiguration configuration,
+			ILaunchConfigurationAccessor configAccessor,
+			IJavaProjectAccessor projectAccessor) throws CoreException {
+		// Get the classpath from the configuration.
+		final IRuntimeClasspathEntry[] entries = JavaRuntime.computeUnresolvedRuntimeClasspath(configuration);
+		//
+		final List<IRuntimeClasspathEntry> filteredEntries = new ArrayList<>();
+		List<IRuntimeClasspathEntry> sreClasspathEntries = null;
+		// Filtering the entries by replacing the "SARL Libraries" with the SARL runtime environment.
+		for (final IRuntimeClasspathEntry entry : entries) {
+			if (entry.getPath().equals(SARLClasspathContainerInitializer.CONTAINER_ID)) {
+				if (sreClasspathEntries == null) {
+					sreClasspathEntries = getSREClasspathEntries(configuration, configAccessor, projectAccessor);
+				}
+				filteredEntries.addAll(sreClasspathEntries);
+			} else {
+				filteredEntries.add(entry);
+			}
+		}
+		return filteredEntries.toArray(new IRuntimeClasspathEntry[filteredEntries.size()]);
+	}
+
 	/** Replies the classpath entries associated to the SRE of the given configuration.
 	 *
 	 * @param configuration the configuration to read.
+	 * @param configAccessor the accessor to the SRE configuration.
+	 * @param projectAccessor the accessor to the Java project.
 	 * @return the classpath entries for the SRE associated to the configuration.
 	 * @throws CoreException if impossible to determine the classpath entries.
 	 */
-	private List<IRuntimeClasspathEntry> getSREClasspathEntries(
-			ILaunchConfiguration configuration) throws CoreException {
-		final ISREInstall sre = getSREInstallFor(configuration);
+	private static List<IRuntimeClasspathEntry> getSREClasspathEntries(
+			ILaunchConfiguration configuration,
+			ILaunchConfigurationAccessor configAccessor,
+			IJavaProjectAccessor projectAccessor) throws CoreException {
+		final ISREInstall sre = getSREInstallFor(configuration, configAccessor, projectAccessor);
 		return sre.getClassPathEntries();
 	}
 
@@ -931,6 +960,7 @@ public abstract class AbstractSARLLaunchConfigurationDelegate extends AbstractJa
 		 * @param monitor the progress monitor.
 		 * @throws CoreException if a parameter cannot be extracted.
 		 */
+		@SuppressWarnings("synthetic-access")
 		private void postValidation(IProgressMonitor monitor) throws CoreException {
 			monitor.subTask(
 					Messages.SARLLaunchConfigurationDelegate_7);
@@ -938,7 +968,9 @@ public abstract class AbstractSARLLaunchConfigurationDelegate extends AbstractJa
 				// This case occurs when the launch configuration is using
 				// a SRE that is inside the class path.
 				// The name of the main class is then no saved in the launch configuration properties.
-				final ISREInstall sre = getSREInstallFor(this.configuration);
+				final ISREInstall sre = getSREInstallFor(this.configuration,
+						AbstractSARLLaunchConfigurationDelegate.this.configAccessor,
+						cfg -> getJavaProject(cfg));
 				if (sre != null) {
 					setMainTypeName(sre.getMainClass());
 				}
@@ -1013,6 +1045,25 @@ public abstract class AbstractSARLLaunchConfigurationDelegate extends AbstractJa
 			getRunner().run(getVirtualMachineRunnerConfiguration(), this.launch, monitor);
 		}
 
+	}
+
+	/** Accessor to a Java project.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.8
+	 */
+	@FunctionalInterface
+	public interface IJavaProjectAccessor {
+		/** Replies the Java project associated to the configuration.
+		 *
+		 * @param configuration the launch configuration.
+		 * @return the java project.
+		 * @throws CoreException  if the java project cannot be retrieved.
+		 */
+		IJavaProject get(ILaunchConfiguration configuration) throws CoreException;
 	}
 
 	/** Steps of preparation in the launching process.

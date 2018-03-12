@@ -721,4 +721,32 @@
             commandId="io.sarl.eclipse.popup.openTypeHierarchy">
       </key>
    </extension>
+
+   <!-- Add the "SARL" category within the export sections -->
+   <extension
+         point="org.eclipse.ui.exportWizards">
+      <category
+	     name="%category.name"
+	     id="io.sarl.eclipse.category.wizards">
+	  </category>
+   </extension>
+
+   <!-- Add "Export as: SARL runnable application" -->
+   <extension
+         point="org.eclipse.ui.exportWizards">
+      <wizard
+            name="%wizard.name.exportSarlApp"
+            icon="platform:/plugin/org.eclipse.jdt.ui/icons/full/etool16/exportrunnablejar_wiz.png"
+            class="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.wizards.sarlapp.ExportSarlApplicationWizard"
+            category="io.sarl.eclipse.category.wizards"
+            id="io.sarl.eclipse.wizard.exportSarlApplication">
+         <description>
+            %wizard.description.exportSarlApp
+         </description>
+         <selection
+               class="org.eclipse.core.resources.IResource">
+         </selection>
+         <keywordReference id="org.eclipse.jdt.ui.jarpackager"/>
+      </wizard>
+   </extension>
 </plugin>
