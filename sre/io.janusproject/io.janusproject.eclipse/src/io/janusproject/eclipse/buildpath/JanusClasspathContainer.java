@@ -91,7 +91,7 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 	 * @return the classpath.
 	 */
 	public static IBundleDependencies getJanusPlatformClasspath() {
-		final Bundle bundle = Platform.getBundle(JanusEclipsePlugin.PLUGIN_ID);
+		final Bundle bundle = Platform.getBundle(JanusEclipsePlugin.JANUS_KERNEL_PLUGIN_ID);
 		return BundleUtil.resolveBundleDependencies(bundle,
 				new JanusBundleJavadocURLMappings(),
 				JANUS_ROOT_BUNDLE_NAMES);
