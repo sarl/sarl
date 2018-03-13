@@ -347,6 +347,21 @@ public class SarlCompiler extends XtendCompiler {
 		}
 	}
 
+	@Override
+	protected void _toJavaStatement(XVariableDeclaration varDeclaration, ITreeAppendable appendable, boolean isReferenced) {
+		// FIXME: Remove with text is patched: https://github.com/eclipse/xtext-extras/issues/237
+		if (varDeclaration.getRight() != null) {
+			internalToJavaStatement(varDeclaration.getRight(), appendable, true);
+		}
+		appendable.newLine();
+		final LightweightTypeReference type = appendVariableTypeAndName(varDeclaration, appendable);
+		if (varDeclaration.getRight() != null) {
+			appendable.append(" = "); //$NON-NLS-1$
+			internalToConvertedExpression(varDeclaration.getRight(), appendable, type);
+		}
+		appendable.append(";"); //$NON-NLS-1$
+	}
+
 	/** Generate the Java code related to the preparation statements for the break keyword.
 	 *
 	 * @param breakExpression the expression.
