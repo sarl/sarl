@@ -24,6 +24,11 @@
 * [Agent Communication with the Ping Pong Agents](./tutorials/PingPong.md)
 * [Agent Communication in Sub-Space with the Ping Pong Agents](./tutorials/PingPongSpace.md)
 
+### Parallel Execution
+
+* [Parallel execution within the agents](./tutorials/ParallelExecution.md)
+* [Initialization of a multiagent system](./tutorials/MASInitialization.md)
+
 ### Organizational Patterns
 
 * [English Auction with Holons](./tutorials/HolonicAuction.md)
