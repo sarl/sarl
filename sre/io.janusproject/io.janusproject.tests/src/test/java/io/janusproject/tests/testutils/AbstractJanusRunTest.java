@@ -249,7 +249,32 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	 */
 	protected void runJanus(Class<? extends TestingAgent> type, boolean enableLogging, boolean offline, int timeout)
 			throws Exception {
-		setupTheJanusKernel(type, enableLogging, offline);
+		runJanus(type, enableLogging, offline, timeout, getDefaultJanusModule());
+	}
+
+	/** Replies the injection module to be used for running the Janus platform.
+	 *
+	 * @return the module.
+	 * @since 0.8
+	 */
+	protected Module getDefaultJanusModule() {
+		return new StandardJanusPlatformModule();
+	}
+
+	/**
+	 * Start the Janus platform.
+	 * 
+	 * @param type the type of the agent to launch at start-up.
+	 * @param enableLogging indicates if the logging is enable or not.
+	 * @param offline indicates if the Janus platform is offline
+	 * @param timeout the maximum waiting time in seconds, or <code>-1</code> to ignore the timeout.
+	 *     See {@link #STANDARD_TIMEOUT}, {@link #EXTRA_TIMEOUT} or {@link #NO_TIMEOUT}.
+	 * @throws Exception - if the kernel cannot be launched.
+	 */
+	protected void runJanus(Class<? extends TestingAgent> type, boolean enableLogging, boolean offline, int timeout,
+			Module module)
+			throws Exception {
+		setupTheJanusKernel(type, enableLogging, offline, module);
 		waitForTheKernel(timeout);
 	}
 
@@ -259,13 +284,14 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	 * @param type the type of the agent to launch at start-up.
 	 * @param enableLogging indicates if the logging is enable or not.
 	 * @param offline indicates if the Janus platform is offline
+	 * @param module the injection module to be used.
 	 * @return the kernel.
 	 * @throws Exception - if the kernel cannot be launched.
 	 */
-	protected Kernel setupTheJanusKernel(Class<? extends TestingAgent> type, boolean enableLogging, boolean offline)
+	protected Kernel setupTheJanusKernel(Class<? extends TestingAgent> type, boolean enableLogging, boolean offline,
+			Module module)
 			throws Exception {
 		assertNull("Janus already launched.", this.janusKernel);
-		Module module = new StandardJanusPlatformModule();
 		Boot.setConsoleLogger(new PrintStream(new OutputStream() {
 			@Override
 			public void write(int b) throws IOException {
@@ -281,13 +307,14 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 			}
 		}));
 		this.results = new ArrayList<>();
+		Module injectionModule = module;
 		if (!enableLogging) {
-			module = Modules.override(new StandardJanusPlatformModule()).with(new NoLogTestingModule());
+			injectionModule = Modules.override(injectionModule).with(new NoLogTestingModule());
 		} else {
-			module = Modules.override(new StandardJanusPlatformModule()).with(new ErrorLogTestingModule(this.results));
+			injectionModule = Modules.override(injectionModule).with(new ErrorLogTestingModule(this.results));
 		}
 		Boot.setOffline(offline);
-		this.janusKernel = Boot.startJanusWithModule(module, type, getAgentInitializationParameters());
+		this.janusKernel = Boot.startJanusWithModule(injectionModule, type, getAgentInitializationParameters());
 		Logger current = this.janusKernel.getLogger();
 		while (current.getParent() != null && current.getParent() != current) {
 			current = current.getParent();
