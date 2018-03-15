@@ -150,7 +150,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"@SuppressWarnings(\"all\")",
 				"public class A1 extends Agent {",
 				"  protected void myaction() {",
-				"    List<Integer> i;",
+				"    List<Integer> i = null;",
 				"    int j = 45;",
 				"    double k = 45;",
 				"    System.out.println(i);",
