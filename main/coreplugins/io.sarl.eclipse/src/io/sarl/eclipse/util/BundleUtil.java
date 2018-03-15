@@ -112,11 +112,9 @@ public final class BundleUtil {
 	 * API breakage between 3.5 and 4.2.
 	 * So we do a bit EDV (Computer data processing) ;-)
 	 *
-	 * <p>Use P2Utils or SimpleConfiguratorManipulator, see Issue 777.
-	 *
 	 * @param bundle the bundle for which the source location must be computed.
 	 * @param bundleLocation the location of the bundle, as replied by {@link #getBundlePath(Bundle)}.
-	 * @return the path to the source folder of the bundle, or <code>null</code> if undefined.
+	 * @return the path to the source folder of the bundle, or {@code null} if undefined.
 	 * @see #getBundlePath(Bundle)
 	 */
 	public static IPath getSourceBundlePath(Bundle bundle, IPath bundleLocation) {
@@ -141,6 +139,7 @@ public final class BundleUtil {
 		} catch (Throwable t) {
 			throw new RuntimeException(t);
 		}
+
 		return sourcesPath;
 	}
 
@@ -202,11 +201,9 @@ public final class BundleUtil {
 	 * API breakage between 3.5 and 4.2.
 	 * So we do a bit EDV (Computer data processing) ;-)
 	 *
-	 * <p>Use P2Utils or SimpleConfiguratorManipulator, see Issue 777.
-	 *
 	 * @param bundle the bundle for which the javadoc location must be computed.
 	 * @param bundleLocation the location of the bundle, as replied by {@link #getBundlePath(Bundle)}.
-	 * @return the path to the javadoc folder of the bundle, or <code>null</code> if undefined.
+	 * @return the path to the javadoc folder of the bundle, or {@code null} if undefined.
 	 * @see #getBundlePath(Bundle)
 	 */
 	public static IPath getJavadocBundlePath(Bundle bundle, IPath bundleLocation) {
@@ -385,7 +382,7 @@ public final class BundleUtil {
 		/** Replies the dependencies of the bundle.
 		 * The bundle itself is included in the replied list if it is not a directory (no transitivity).
 		 *
-		 * @return the bundle dependencies, or <code>null</code> if the dependencies cannot be computed.
+		 * @return the bundle dependencies, or {@code null} if the dependencies cannot be computed.
 		 */
 		List<BundleDependency> getDirectDependencies();
 
@@ -417,7 +414,7 @@ public final class BundleUtil {
 		 * The bundle itself is included in the replied list if it is not a directory.
 		 *
 		 * @param includeFragments indicates if bundle fragments should be replied also.
-		 * @return the bundle dependencies, or <code>null</code> if the dependencies cannot be computed.
+		 * @return the bundle dependencies, or {@code null} if the dependencies cannot be computed.
 		 */
 		Iterable<BundleDependency> getTransitiveDependencies(boolean includeFragments);
 
@@ -447,7 +444,7 @@ public final class BundleUtil {
 
 		/** Change the version of the dependency.
 		 *
-		 * @param version the new version. if <code>null</code>, the version does not change.
+		 * @param version the new version. if {@code null}, the version does not change.
 		 */
 		public void setVersion(Version version) {
 			if (version != null) {
@@ -726,8 +723,8 @@ public final class BundleUtil {
 		 *
 		 * <p>This function add the classpath entry for the bundle, and the related fragments.
 		 *
-		 * @param bundle the bundle to point to. Never <code>null</code>.
-		 * @param entry the classpath entry to add to. Never <code>null</code>.
+		 * @param bundle the bundle to point to. Never {@code null}.
+		 * @param entry the classpath entry to add to. Never {@code null}.
 		 * @param entries the list of entries to add to.
 		 * @return the main added dependency.
 		 */
@@ -804,7 +801,7 @@ public final class BundleUtil {
 		 * Explore the various entries of a bundle to find its .classpath file, parse it and update accordingly the {@code classpathEntries}
 		 * collection of this bundle.
 		 *
-		 * @param parent if not <code>null</code> it is the bundle that depends on the current bundle.
+		 * @param parent if not {@code null} it is the bundle that depends on the current bundle.
 		 * @param bundle the bundle to explore
 		 * @param bundleInstallURL the URL where the specified bundle is stored
 		 * @return the Path to the output folder used to store .class file if any (if we are in an eclipse project (debug mode))
@@ -926,7 +923,7 @@ public final class BundleUtil {
 			private final Iterator<BundleDependency> iterator;
 
 			/** Constructor.
-			 * @param dependencies the dependencies or <code>null</code>
+			 * @param dependencies the dependencies or {@code null}
 			 */
 			SymbolicNameIterator(Iterable<BundleDependency> dependencies) {
 				if (dependencies == null) {
@@ -961,7 +958,7 @@ public final class BundleUtil {
 			private final Iterator<BundleDependency> iterator;
 
 			/** Constructor.
-			 * @param dependencies the dependencies or <code>null</code>
+			 * @param dependencies the dependencies or {@code null}
 			 */
 			ClasspathEntryIterator(Iterable<BundleDependency> dependencies) {
 				if (dependencies == null) {
@@ -996,7 +993,7 @@ public final class BundleUtil {
 			private final Iterator<BundleDependency> iterator;
 
 			/** Constructor.
-			 * @param dependencies the dependencies or <code>null</code>
+			 * @param dependencies the dependencies or {@code null}
 			 */
 			RuntimeClasspathEntryIterator(Iterable<BundleDependency> dependencies) {
 				if (dependencies == null) {
@@ -1039,7 +1036,7 @@ public final class BundleUtil {
 			private BundleDependency current;
 
 			/** Constructor.
-			 * @param dependencies the dependencies or <code>null</code>
+			 * @param dependencies the dependencies or {@code null}
 			 * @param includeFragments indicates if bundle fragments must be included.
 			 */
 			TransitiveDependencyIterator(Iterable<BundleDependency> dependencies, boolean includeFragments) {
@@ -1065,7 +1062,7 @@ public final class BundleUtil {
 					while (this.current == null && this.currentIterator != null && this.currentIterator.hasNext()) {
 						final BundleDependency dep = this.currentIterator.next();
 						if (!this.repliedBundles.contains(dep.getBundle().getSymbolicName())
-							&& (this.includeFragments || !dep.isFragment())) {
+								&& (this.includeFragments || !dep.isFragment())) {
 							this.current = dep;
 						}
 					}
