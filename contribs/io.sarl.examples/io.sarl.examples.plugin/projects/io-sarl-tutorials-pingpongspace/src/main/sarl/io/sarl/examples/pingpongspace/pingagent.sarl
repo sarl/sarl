@@ -3,28 +3,23 @@ package io.sarl.examples.pingpongspace
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
 import io.sarl.core.Schedules
-import io.sarl.util.Scopes
 import io.sarl.core.Behaviors
 import io.sarl.util.OpenEventSpace
 import io.sarl.util.OpenEventSpaceSpecification
+import io.sarl.core.ExternalContextAccess
 import java.util.UUID
 import io.sarl.core.Logging
 
 agent PingAgent {
 
-	uses DefaultContextInteractions, Schedules, Behaviors, Logging
+	uses DefaultContextInteractions, Schedules, Behaviors, Logging, ExternalContextAccess
 
 	var comspace : OpenEventSpace
 
 	on Pong {
 		info("Receiving Pong #" + occurrence.index)
 		info("Sending Ping #" + (occurrence.index + 1))
-		var evt = new Ping(occurrence.index + 1)
-		evt.source = comspace.getAddress(getID())
-		comspace.emit(
-			evt,
-			Scopes.addresses(occurrence.source)
-		)
+		comspace.emit(new Ping(occurrence.index + 1)) [it == occurrence.source]
 	}
 
 	on Initialize {

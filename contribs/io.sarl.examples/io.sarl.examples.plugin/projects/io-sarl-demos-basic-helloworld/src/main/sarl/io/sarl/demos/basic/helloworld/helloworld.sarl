@@ -52,11 +52,11 @@ agent HelloAgent {
 
 	/* A new agent has been spawn in our context */
 	on AgentSpawned {
-		info("AgentSpawned, agentID:" + occurrence.agentID + " AgentType: " + occurrence.agentType)
+		info("AgentSpawned, agentID:" + occurrence.agentIdentifiers + " AgentType: " + occurrence.agentType)
 	}
 	
 	/* An agent has been killed in our context */
 	on AgentKilled {
-		info("AgentKilled, agentID:" + occurrence.agentID)	
+		info("AgentKilled, agentID:" + occurrence.source.UUID)	
 	}
 }

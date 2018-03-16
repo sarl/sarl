@@ -43,7 +43,10 @@ import org.arakhne.afc.vmutil.ClasspathUtil;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.util.Strings;
+import org.eclipse.xtext.xbase.validation.IssueCodes;
+import org.junit.After;
 import org.junit.Assume;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ComparisonFailure;
 import org.junit.Test;
@@ -123,7 +126,7 @@ public class ExamplesTest extends AbstractSarlTest {
 
 	private final File exampleFolder;
 
-	static SarlBatchCompiler compiler;
+	private SarlBatchCompiler compiler;
 
 	/** Constructor.
 	 *
@@ -135,10 +138,15 @@ public class ExamplesTest extends AbstractSarlTest {
 		this.exampleFolder = exampleFolder.getAbsoluteFile();
 	}
 
-	@BeforeClass
-	public static void setupClass() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		Injector injector = SARLStandaloneSetup.doSetup();
-		compiler = injector.getInstance(SarlBatchCompiler.class);
+		this.compiler = injector.getInstance(SarlBatchCompiler.class);
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		this.compiler = null;
 	}
 
 	@Override
@@ -181,6 +189,7 @@ public class ExamplesTest extends AbstractSarlTest {
 		compiler.setClassPath(getClasspath());
 		compiler.setJavaSourceVersion(SARLVersion.MINIMAL_JDK_VERSION);
 		compiler.setAllWarningSeverities(Severity.IGNORE);
+		compiler.setWarningSeverity(IssueCodes.DEPRECATED_MEMBER_REFERENCE, Severity.ERROR);
 		compiler.setJavaCompilerVerbose(false);
 		compiler.getLogger().setLevel(Level.OFF);
 		compiler.addIssueMessageListener((issue, uri, message) -> {

@@ -3,7 +3,6 @@ package io.sarl.examples.pingpong
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
 import io.sarl.core.Schedules
-import io.sarl.util.Scopes
 import io.sarl.core.Logging
 
 agent PingAgent {
@@ -13,10 +12,7 @@ agent PingAgent {
 	on Pong {
 		info("Receiving Pong #" + occurrence.index)
 		info("Sending Ping #" + (occurrence.index + 1))
-		emit(
-			new Ping( occurrence.index + 1 ),
-			Scopes.addresses( occurrence.source )
-		)
+		emit(new Ping( occurrence.index + 1 )) [it == occurrence.source]
 	}
 
 	on Initialize {

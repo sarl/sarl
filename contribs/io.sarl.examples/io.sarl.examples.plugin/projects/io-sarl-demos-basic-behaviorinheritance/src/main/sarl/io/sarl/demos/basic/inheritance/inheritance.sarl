@@ -11,6 +11,7 @@ import io.sarl.core.Logging
 import io.sarl.core.MemberJoined
 import io.sarl.core.MemberLeft
 import io.sarl.core.Schedules
+import org.eclipse.xtext.xbase.lib.util.ToStringBuilder
 
 agent AbstractAgent {
 
@@ -83,27 +84,27 @@ agent HelloChildAgent extends AbstractAgent{
 	
 	
 	on ContextJoined {
-		info("ContextJoined, contextID:"+occurrence.holonContextID+" SpaceID: "+occurrence.defaultSpaceID)
+		info("ContextJoined, contextID:" + occurrence.holonContextID + " SpaceID: " + occurrence.defaultSpaceID)
 	}
 	
 	on ContextLeft {
-		info("ContextLeft, contextID:"+occurrence.holonContextID)
+		info("ContextLeft, contextID:" + occurrence.holonContextID)
 	}
 	
 	on MemberJoined {
-		info("MemberJoined, agentID:"+occurrence.agentID)
+		info("MemberJoined, agentID:" + occurrence.agentID)
 	}
 	
 	on MemberLeft {
-		info("MemberLeft, agentID:"+occurrence.agentID)		
+		info("MemberLeft, agentID:" + occurrence.agentID)		
 	}
 	
 	on AgentSpawned {
-		info("AgentSpawned, agentID:"+occurrence.agentID+" AgentType: "+occurrence.agentType)		
+		info("AgentSpawned, agentID:" + occurrence.agentIdentifiers + " AgentType: " + occurrence.agentType)		
 	}
 	
 	on AgentKilled {
-		info("AgentKilled, agentID:"+occurrence.agentID)	
+		info("AgentKilled, agentID:" + occurrence.source.UUID)	
 	}
 	
 }

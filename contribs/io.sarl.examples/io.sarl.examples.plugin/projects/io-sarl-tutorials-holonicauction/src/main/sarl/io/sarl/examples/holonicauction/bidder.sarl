@@ -3,7 +3,6 @@ package io.sarl.examples.holonicauction
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
-import io.sarl.util.Scopes
 import io.sarl.core.Logging
 import java.util.Random
 
@@ -34,8 +33,7 @@ agent Bidder {
 					info("My new price is: " + newPrice)
 					if(newPrice <= maxPrice) {
 						info("Send my bid: " + newPrice)
-						var superScope = Scopes.addresses(defaultSpace.getAddress(defaultContext.getID))
-						emit(new Bid(newPrice), superScope)
+						emit(new Bid(newPrice)) [it.UUID == defaultContext.getID]
 						myLastBid = newPrice
 					} else {
 						info(" I give up, this is beyond my resources : " + myLastBid)
