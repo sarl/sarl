@@ -247,9 +247,6 @@ tools upon the Eclipse IDE.
       <import plugin="io.sarl.eclipse" version="0.8.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.runtime" version="3.13.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.resources" version="3.12.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.m2e.maven.runtime" version="1.8.2" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.m2e.core" version="1.8.2" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.m2e.jdt" version="1.8.2" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.expressions" version="3.4.0" match="compatible"/>
       <import plugin="org.eclipse.core.variables" version="3.2.800" match="compatible"/>
       <import plugin="org.eclipse.ui" version="3.5.0" match="compatible"/>
@@ -268,6 +265,9 @@ tools upon the Eclipse IDE.
       <import plugin="org.eclipse.xtext.ui" version="2.13.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.xbase.ui" version="2.13.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.common.types.ui" version="2.13.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.m2e.maven.runtime" version="1.8.3" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.m2e.core" version="1.8.3" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.m2e.jdt" version="1.8.3" match="greaterOrEqual"/>
    </requires>
 
    <plugin

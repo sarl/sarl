@@ -574,7 +574,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		/** Validate the versions of the libraries that are in the project dependencies have compatible versions
 		 * with the specific dependencies of the SARL library.
 		 *
-		 * <p>The nearest-win strategy of the dependency resolver may select invalid version selection for artifacts
+		 * <p>The nearest-win strategy of the dependency resolver may select invalid version for artifacts
 		 * that are used by the SARL libraries.
 		 *
 		 * @param monitor the progress monitor.
@@ -584,8 +584,9 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 			final SubMonitor subm = SubMonitor.convert(monitor, 3);
 
 			final Map<String, String> neededArtifactVersions = new TreeMap<>();
+			final IMavenProjectFacade facade = getMavenProjectFacade();
 			final DependencyNode root = MavenPlugin.getMavenModelManager().readDependencyTree(
-					getMavenProjectFacade(), getMavenProjectFacade().getMavenProject(),
+					facade, facade.getMavenProject(),
 					Artifact.SCOPE_COMPILE,
 					subm.newChild(1));
 			final DependencyNode[] sarlNode = new DependencyNode[] {null};
