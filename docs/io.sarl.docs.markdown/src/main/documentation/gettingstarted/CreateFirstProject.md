@@ -115,16 +115,21 @@ invoked.</important>
 
 ### Configuration of a runtime environment (optional)
 
-For executing your SARL program, you must use a [runtime environment]([:sarlUrl!]/runtime/index.html).
-
-The runtime environment that is recommended by the developers of SARL is [Janus](http://www.janusproject.io). 
+For executing your SARL program, a [run-time environment]([:sarlUrl!]/runtime/index.html) should be used.
+By default, the SARL development environment replaces any reference to the SARL libraries by the run-time environment's libraries
+when the SARL program is launched within the SARL environment or when a runnable Jar library is created.
 
 In several specific cases, you may want to include the runtime environment into the Maven dependencies of your project. In
 this case, you could replace the Maven dependency to the SARL sdk (as defined in the previous section) by a Maven dependency
-to the runtime environment.
+to the runtime environment library.
 
-Replace the version number ([:janus.version:]) of the [Janus platform](http://www.janusproject.io) with the one you want to use.
-You could search on the [Maven Central Repository](http://central.sonatype.org/) for the last available version.
+<caution>Replacing the SARL sdk library by the run-time environment library within the Maven dependencies is not the
+recommended approach by the SARL core developers.</caution>
+
+The runtime environment that is recommended by the developers of SARL is [Janus](http://www.janusproject.io). 
+
+Replace the version number ([:janus.version2:]) of the [Janus platform](http://www.janusproject.io) with the one you want to use.
+You could search on the [Maven Central Repository](http://search.maven.org/) for the last available version.
 
 
 ```xml
@@ -132,7 +137,7 @@ You could search on the [Maven Central Repository](http://central.sonatype.org/)
    ...
     <properties>
        ...
-       <janus.version>[:janus.version!]</janus.version>
+       <janus.version>[:janus.version2!]</janus.version>
     </properties>
     ...
     <build>
