@@ -72,6 +72,8 @@
 		<!-- Java Configuration -->
 		<compiler.level>1.8</compiler.level>
 		<jre.environment>JavaSE-1.8</jre.environment>
+		<!-- Maven API version. This version should be supported by m2e -->
+		<maven.api.version>3.3.9</maven.api.version>
 		<!-- String to put after the copyright sign -->
 		<copyrighters>the original authors or authors</copyrighters>
 		<!-- URL of the Maven repositories of SARL (use in POM and documentation) -->
@@ -389,7 +391,7 @@
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-core</artifactId>
-				<version>3.5.3</version>
+				<version>${maven.api.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -426,7 +428,7 @@
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-plugin-api</artifactId>
-				<version>3.5.3</version>
+				<version>${maven.api.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.mockito</groupId>
