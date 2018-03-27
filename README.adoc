@@ -52,7 +52,7 @@ toc::[]
 == 1. Requirements
 
 * Java Development Toolkit (JDK) 1.8.
-* You may encountering isues if your are using Java 1.9 with SARL.
+* You may encountering issues if your are using Java 1.9 with SARL.
 
 == 2. Using SARL
 
