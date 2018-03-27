@@ -12,7 +12,8 @@
 	<groupId>io.sarl.docs</groupId>
 	<artifactId>io.sarl.docs.markdown</artifactId>
 	<packaging>jar</packaging>
-	<name>Mardown Documentation</name>
+	<name>Markdown Documentation</name>
+	<description>Official documentation of SARL (markdown files).</description>
 
 	<properties>
 		<!-- URL of the maven repository of Janus -->
