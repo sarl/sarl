@@ -1336,17 +1336,17 @@ public class SarlBatchCompiler {
 	 * @param sourcePathDirectories the source directories.
 	 * @param classPathEntries classpath entries.
 	 * @param enableCompilerOutput indicates if the Java compiler output is displayed.
-	 * @param cancelIndicator monitor for cancelling the compilation.
+	 * @param cancelIndicator monitor for canceling the compilation.
 	 * @return the success status. Replies <code>false</code> if the activity is canceled.
 	 */
 	@SuppressWarnings({ "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity", "resource" })
 	protected boolean runJavaCompiler(File classDirectory, Iterable<File> sourcePathDirectories,
 			Iterable<File> classPathEntries, boolean enableCompilerOutput, CancelIndicator cancelIndicator) {
 		assert cancelIndicator != null;
-		final List<String> commandLine = Lists.newArrayList();
-		commandLine.add("-nowarn"); //$NON-NLS-1$
+		final List<String> commandLineArguments = Lists.newArrayList();
+		commandLineArguments.add("-nowarn"); //$NON-NLS-1$
 		if (isJavaCompilerVerbose()) {
-			commandLine.add("-verbose"); //$NON-NLS-1$
+			commandLineArguments.add("-verbose"); //$NON-NLS-1$
 		}
 		if (cancelIndicator.isCanceled()) {
 			return false;
@@ -1356,72 +1356,81 @@ public class SarlBatchCompiler {
 			return false;
 		}
 		if (!bootClassPathEntries.isEmpty()) {
-			final StringBuilder cmd = new StringBuilder("-bootclasspath \""); //$NON-NLS-1$
+			final StringBuilder cmd = new StringBuilder();
 			boolean first = true;
 			for (final File entry : bootClassPathEntries) {
 				if (cancelIndicator.isCanceled()) {
 					return false;
 				}
-				if (first) {
-					first = false;
-				} else {
-					cmd.append(File.pathSeparator);
+				if (entry.exists()) {
+					if (first) {
+						first = false;
+					} else {
+						cmd.append(File.pathSeparator);
+					}
+					cmd.append(entry.getAbsolutePath());
 				}
-				cmd.append(entry.getAbsolutePath());
 			}
-			cmd.append("\""); //$NON-NLS-1$
-			commandLine.add(cmd.toString());
+			if (cmd.length() > 0) {
+				commandLineArguments.add("-bootclasspath"); //$NON-NLS-1$
+				commandLineArguments.add(cmd.toString());
+			}
 		}
 		final Iterator<File> classPathIterator = classPathEntries.iterator();
 		if (classPathIterator.hasNext()) {
-			final StringBuilder cmd = new StringBuilder("-cp \""); //$NON-NLS-1$
+			final StringBuilder cmd = new StringBuilder();
 			boolean first = true;
 			while (classPathIterator.hasNext()) {
+				final File classpathPath = classPathIterator.next();
 				if (cancelIndicator.isCanceled()) {
 					return false;
 				}
-				if (first) {
-					first = false;
-				} else {
-					cmd.append(File.pathSeparator);
+				if (classpathPath.exists()) {
+					if (first) {
+						first = false;
+					} else {
+						cmd.append(File.pathSeparator);
+					}
+					cmd.append(classpathPath.getAbsolutePath());
 				}
-				cmd.append(classPathIterator.next().getAbsolutePath());
 			}
-			cmd.append("\""); //$NON-NLS-1$
-			commandLine.add(cmd.toString());
+			if (cmd.length() > 0) {
+				commandLineArguments.add("-cp"); //$NON-NLS-1$
+				commandLineArguments.add(cmd.toString());
+			}
 		}
 		if (cancelIndicator.isCanceled()) {
 			return false;
 		}
-		commandLine.add("-d \"" + classDirectory.getAbsolutePath() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
-		commandLine.add("-" + getJavaSourceVersion()); //$NON-NLS-1$
-		commandLine.add("-proceedOnError"); //$NON-NLS-1$
+		if (!classDirectory.exists()) {
+			classDirectory.mkdirs();
+		}
+		commandLineArguments.add("-d"); //$NON-NLS-1$
+		commandLineArguments.add(classDirectory.getAbsolutePath());
+		commandLineArguments.add("-" + getJavaSourceVersion()); //$NON-NLS-1$
+		commandLineArguments.add("-proceedOnError"); //$NON-NLS-1$
 		if (this.encodingProvider.getDefaultEncoding() != null) {
-			commandLine.add("-encoding \"" + this.encodingProvider.getDefaultEncoding() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+			commandLineArguments.add("-encoding"); //$NON-NLS-1$
+			commandLineArguments.add(this.encodingProvider.getDefaultEncoding());
 		}
 		if (cancelIndicator.isCanceled()) {
 			return false;
 		}
 
-		final StringBuilder cmd = new StringBuilder();
-		boolean first = true;
 		for (final File sourceFolder : sourcePathDirectories) {
 			if (cancelIndicator.isCanceled()) {
 				return false;
 			}
-			if (first) {
-				first = false;
-			} else {
-				cmd.append(" "); //$NON-NLS-1$
+			if (sourceFolder.exists()) {
+				commandLineArguments.add(sourceFolder.getAbsolutePath());
 			}
-			cmd.append("\""); //$NON-NLS-1$
-			cmd.append(sourceFolder.getAbsolutePath().replaceAll(Pattern.quote("\""), "\\\""));  //$NON-NLS-1$//$NON-NLS-2$
-			cmd.append("\""); //$NON-NLS-1$
 		}
-		commandLine.add(cmd.toString());
+
+		final String[] arguments = new String[commandLineArguments.size()];
+		commandLineArguments.toArray(arguments);
 
 		if (this.logger.isDebugEnabled()) {
-			this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_6, Strings.concat(" ", commandLine))); //$NON-NLS-1$
+			this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_6, Strings.concat("\n", commandLineArguments))); //$NON-NLS-1$
 		}
 
 		if (cancelIndicator.isCanceled()) {
@@ -1438,9 +1447,15 @@ public class SarlBatchCompiler {
 		if (cancelIndicator.isCanceled()) {
 			return false;
 		}
-		return BatchCompiler.compile(Strings.concat(" ", commandLine), outWriter, errWriter, //$NON-NLS-1$
+		return BatchCompiler.compile(arguments, outWriter, errWriter,
 				new CancelIndicatorWrapper(cancelIndicator));
 	}
+
+	/*public static void main(String[] args) throws Exception {
+		BatchCompiler.compile("-help", //$NON-NLS-1$
+				new PrintWriter(System.out), new PrintWriter(System.err),
+				new CancelIndicatorWrapper(CancelIndicator.NullImpl));
+	}*/
 
 	private PrintWriter getStubCompilerOutputWriter() {
 		final Writer debugWriter = new Writer() {
