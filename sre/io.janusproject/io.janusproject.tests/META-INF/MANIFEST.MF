@@ -2,14 +2,14 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: io.janusproject.tests;singleton:=true
-Bundle-Version: 0.8.0.qualifier
+Bundle-Version: 0.7.2
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Require-Bundle: io.sarl.core;bundle-version="0.8.0",
- io.sarl.util;bundle-version="0.8.0",
- io.sarl.tests.api;bundle-version="0.8.0",
- io.sarl.eclipse;bundle-version="0.8.0",
- io.janusproject.plugin;bundle-version="0.8.0",
+Require-Bundle: io.sarl.core;bundle-version="0.7.2",
+ io.sarl.util;bundle-version="0.7.2",
+ io.sarl.tests.api;bundle-version="0.7.2",
+ io.sarl.eclipse;bundle-version="0.7.2",
+ io.janusproject.plugin;bundle-version="0.7.2",
  org.objenesis;bundle-version="2.4.0",
  net.bytebuddy.byte-buddy;bundle-version="1.4.17",
  com.hazelcast;bundle-version="3.8.0",
