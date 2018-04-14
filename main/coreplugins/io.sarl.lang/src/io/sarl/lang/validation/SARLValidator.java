@@ -2541,7 +2541,9 @@ public class SARLValidator extends AbstractSARLValidator {
 							synchronizationIssue = false;
 						}
 					}
-					if (synchronizationIssue) {
+					if (synchronizationIssue
+							&& !isIgnored(IssueCodes.POTENTIAL_FIELD_SYNCHRONIZATION_PROBLEM,
+									usage.getEObject())) {
 						addIssue(
 								MessageFormat.format(Messages.SARLValidator_91, field.getName()),
 								usage.getEObject(),
