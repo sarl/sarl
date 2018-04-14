@@ -9,7 +9,7 @@ The architecture presented in this tutorial may be used for designing a system i
 taken after arbitration among components. 
 
 <div class="bt-download">
-<a href="[:githublnk](https://github.com/sarl/sarl/tree/master/contribs/io.sarl.examples/io.sarl.examples.plugin/projects/io-sarl-demos-holonicauction)"><img alt="See the code" src="[:sarlUrl!]/images/download-icon.png"/></a>
+<a href="[:githublnk](https://github.com/sarl/sarl/tree/master/contribs/io.sarl.examples/io.sarl.examples.plugin/projects/io-sarl-tutorials-holonicauction/src/main/sarl/io/sarl/examples/holonicauction)"><img alt="See the code" src="[:sarlUrl!]/images/download-icon.png"/></a>
 </div>
 According to the vocabulary used in the SARL project, all the agents are holons. In the rest of this tutorial,
 the terms "agent" and "holon" are synonymous. 

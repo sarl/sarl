@@ -8,7 +8,7 @@ Before reading this document, it is recommended reading the
 [General Syntax Reference](../reference/GeneralSyntax.md).
 
 <div class="bt-download">
-<a href="[:githublnk](https://github.com/sarl/sarl/tree/master/contribs/io.sarl.examples/io.sarl.examples.plugin/projects/io-sarl-demos-pingpongspace)"><img alt="See the code" src="[:sarlUrl!]/images/download-icon.png"/></a>
+<a href="[:githublnk](https://github.com/sarl/sarl/tree/master/contribs/io.sarl.examples/io.sarl.examples.plugin/projects/io-sarl-tutorials-pingpongspace/src/main/sarl/io/sarl/examples/pingpongspace)"><img alt="See the code" src="[:sarlUrl!]/images/download-icon.png"/></a>
 </div>
 The elements that are explained in this tutorial are:
 
