@@ -53,6 +53,11 @@ public class SARLBuilderPreferenceAccess {
 	 */
 	public static final String PREF_GENERATE_PURE = "io.sarl.builder.generatePureAnnotation"; //$NON-NLS-1$
 
+	/**
+	 * Preference identifier for generating the equality test functions.
+	 */
+	public static final String PREF_GENERATE_EQUALITY_TEST_FUNCTIONS = "io.sarl.builder.generateEqualityTestFunctions"; //$NON-NLS-1$
+
 	/** Load the generator configuration from the preferences.
 	 *
 	 * @param generatorConfig the configuration to set up.
@@ -73,6 +78,9 @@ public class SARLBuilderPreferenceAccess {
 			if (preferenceStore.contains(PREF_GENERATE_PURE)) {
 				generatorConfig.setGeneratePureAnnotation(preferenceStore.getBoolean(PREF_GENERATE_PURE));
 			}
+			if (preferenceStore.contains(PREF_GENERATE_EQUALITY_TEST_FUNCTIONS)) {
+				generatorConfig.setGenerateEqualityTestFunctions(preferenceStore.getBoolean(PREF_GENERATE_EQUALITY_TEST_FUNCTIONS));
+			}
 		}
 	}
 
@@ -91,6 +99,7 @@ public class SARLBuilderPreferenceAccess {
 			store.setDefault(PREF_GENERATE_INLINE, GeneratorConfig2.DEFAULT_GENERATE_INLINE_ANNOTATION);
 			store.setDefault(PREF_USE_EXPRESSION_INTERPRETER, GeneratorConfig2.DEFAULT_USE_EXPRESSION_INTERPRETER_FOR_INLINE_ANNOTATION);
 			store.setDefault(PREF_GENERATE_PURE, GeneratorConfig2.DEFAULT_GENERATE_PURE_ANNOTATION);
+			store.setDefault(PREF_GENERATE_EQUALITY_TEST_FUNCTIONS, GeneratorConfig2.DEFAULT_GENERATE_EQUALITY_TEST_FUNCTIONS);
 		}
 
 	}

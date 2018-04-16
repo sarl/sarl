@@ -135,6 +135,7 @@ import io.sarl.lang.annotation.DefaultValueUse;
 import io.sarl.lang.annotation.EarlyExit;
 import io.sarl.lang.annotation.FiredEvent;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
+import io.sarl.lang.annotation.NoEqualityTestFunctionsGeneration;
 import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSourceCode;
@@ -2548,6 +2549,27 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		}
 	}
 
+	private boolean isAppendComparisonFunctionsEnable(GenerationContext context, JvmGenericType target) {
+		if (context.getGeneratorConfig2().isGenerateEqualityTestFunctions()) {
+			JvmGenericType current = target;
+			do {
+				if (this.annotationFinder.findAnnotation(current, NoEqualityTestFunctionsGeneration.class) != null) {
+					return false;
+				}
+				final JvmTypeReference superType = current.getExtendedClass();
+				current = null;
+				if (superType != null) {
+					final JvmType type = superType.getType();
+					if (type instanceof JvmGenericType) {
+						current = (JvmGenericType) type;
+					}
+				}
+			} while (current != null);
+			return true;
+		}
+		return false;
+	}
+
 	/** Create the functions that permits to compare the object.
 	 * The comparaison functions are {@link #equals(Object)} and {@link #hashCode()}.
 	 *
@@ -2559,64 +2581,66 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		"checkstyle:nestedifdepth"})
 	protected void appendComparisonFunctions(GenerationContext context, XtendTypeDeclaration source,
 			JvmGenericType target) {
-		boolean isEqualsUserDefined = false;
-		boolean isHashCodeUserDefined = false;
-		for (final JvmOperation operation : target.getDeclaredOperations()) {
-			if (Objects.equal(EQUALS_FUNCTION_NAME, operation.getSimpleName())
-					&& operation.getParameters().size() == 1
-					&& Objects.equal(Object.class.getName(),
-							operation.getParameters().get(0).getParameterType().getIdentifier())) {
-				isEqualsUserDefined = true;
-			} else if (Objects.equal(HASHCODE_FUNCTION_NAME, operation.getSimpleName())
-					&& operation.getParameters().isEmpty()) {
-				isHashCodeUserDefined = true;
-			}
-		}
-
-		if (!isEqualsUserDefined || !isHashCodeUserDefined) {
-			// Create a list of the declared non-static fields.
-			final List<JvmField> declaredInstanceFields = new ArrayList<>();
-			for (final JvmField field : target.getDeclaredFields()) {
-				if (isEqualityTestValidField(field)) {
-					declaredInstanceFields.add(field);
+		if (isAppendComparisonFunctionsEnable(context, target)) {
+			boolean isEqualsUserDefined = false;
+			boolean isHashCodeUserDefined = false;
+			for (final JvmOperation operation : target.getDeclaredOperations()) {
+				if (Objects.equal(EQUALS_FUNCTION_NAME, operation.getSimpleName())
+						&& operation.getParameters().size() == 1
+						&& Objects.equal(Object.class.getName(),
+								operation.getParameters().get(0).getParameterType().getIdentifier())) {
+					isEqualsUserDefined = true;
+				} else if (Objects.equal(HASHCODE_FUNCTION_NAME, operation.getSimpleName())
+						&& operation.getParameters().isEmpty()) {
+					isHashCodeUserDefined = true;
 				}
 			}
 
-			if (!declaredInstanceFields.isEmpty()) {
-				final Map<ActionPrototype, JvmOperation> finalOperations = new TreeMap<>();
-				Utils.populateInheritanceContext(
-						target, finalOperations, null, null, null, null, this.sarlSignatureProvider);
-
-				boolean couldCreateEqualsFunction = true;
-				if (!isEqualsUserDefined) {
-					final ActionPrototype prototype = new ActionPrototype(EQUALS_FUNCTION_NAME,
-							this.sarlSignatureProvider.createParameterTypesFromString(Object.class.getName()), false);
-					couldCreateEqualsFunction = !finalOperations.containsKey(prototype);
+			if (!isEqualsUserDefined || !isHashCodeUserDefined) {
+				// Create a list of the declared non-static fields.
+				final List<JvmField> declaredInstanceFields = new ArrayList<>();
+				for (final JvmField field : target.getDeclaredFields()) {
+					if (isEqualityTestValidField(field)) {
+						declaredInstanceFields.add(field);
+					}
 				}
 
-				boolean couldCreateHashCodeFunction = true;
-				if (!isHashCodeUserDefined) {
-					final ActionPrototype prototype = new ActionPrototype(HASHCODE_FUNCTION_NAME,
-							this.sarlSignatureProvider.createParameterTypesForVoid(), false);
-					couldCreateHashCodeFunction = !finalOperations.containsKey(prototype);
-				}
+				if (!declaredInstanceFields.isEmpty()) {
+					final Map<ActionPrototype, JvmOperation> finalOperations = new TreeMap<>();
+					Utils.populateInheritanceContext(
+							target, finalOperations, null, null, null, null, this.sarlSignatureProvider);
 
-				if (couldCreateEqualsFunction && couldCreateHashCodeFunction) {
+					boolean couldCreateEqualsFunction = true;
 					if (!isEqualsUserDefined) {
-						final JvmOperation op = toEqualsMethod(source, target, declaredInstanceFields,
-								context.getGeneratorConfig2().isGeneratePureAnnotation());
-						if (op != null) {
-							appendGeneratedAnnotation(op, context);
-							target.getMembers().add(op);
-						}
+						final ActionPrototype prototype = new ActionPrototype(EQUALS_FUNCTION_NAME,
+								this.sarlSignatureProvider.createParameterTypesFromString(Object.class.getName()), false);
+						couldCreateEqualsFunction = !finalOperations.containsKey(prototype);
 					}
 
+					boolean couldCreateHashCodeFunction = true;
 					if (!isHashCodeUserDefined) {
-						final JvmOperation op = toHashCodeMethod(source, declaredInstanceFields,
-								context.getGeneratorConfig2().isGeneratePureAnnotation());
-						if (op != null) {
-							appendGeneratedAnnotation(op, context);
-							target.getMembers().add(op);
+						final ActionPrototype prototype = new ActionPrototype(HASHCODE_FUNCTION_NAME,
+								this.sarlSignatureProvider.createParameterTypesForVoid(), false);
+						couldCreateHashCodeFunction = !finalOperations.containsKey(prototype);
+					}
+
+					if (couldCreateEqualsFunction && couldCreateHashCodeFunction) {
+						if (!isEqualsUserDefined) {
+							final JvmOperation op = toEqualsMethod(source, target, declaredInstanceFields,
+									context.getGeneratorConfig2().isGeneratePureAnnotation());
+							if (op != null) {
+								appendGeneratedAnnotation(op, context);
+								target.getMembers().add(op);
+							}
+						}
+
+						if (!isHashCodeUserDefined) {
+							final JvmOperation op = toHashCodeMethod(source, declaredInstanceFields,
+									context.getGeneratorConfig2().isGeneratePureAnnotation());
+							if (op != null) {
+								appendGeneratedAnnotation(op, context);
+								target.getMembers().add(op);
+							}
 						}
 					}
 				}
@@ -3001,9 +3025,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		return Collections.emptyList();
 	}
 
-	@SuppressWarnings("static-method")
 	private boolean isEqualityTestValidField(JvmField field) {
-		return !field.isStatic() && !Utils.isHiddenMember(field.getSimpleName());
+		return !field.isStatic() && !Utils.isHiddenMember(field.getSimpleName())
+				&& this.annotationFinder.findAnnotation(field, NoEqualityTestFunctionsGeneration.class) == null;
 	}
 
 	@SuppressWarnings({"checkstyle:booleanexpressioncomplexity", "checkstyle:cyclomaticcomplexity"})

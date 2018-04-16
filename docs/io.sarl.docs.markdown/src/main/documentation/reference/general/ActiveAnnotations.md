@@ -272,6 +272,47 @@ The previous code is equivalent to:
 		[:End:]
 
 
+## @NoEqualityTestFunctionsGeneration
+
+The [:noeqtestannon:] annotation disables the generation the equality test functions, i.e. `equals()` and `hashCode()` from
+the field declarations.
+
+By default, the SARL compiler generates the equality test functions from the type's fields. In several cases, this automatic
+behavior should be avoiding because the standard equality test that is provided by the Java run-time environment should be used.
+In this case, [:noeqtestannon:] annotation may be used to mark a type or a field for being excluded of the equality test generation. 
+
+The annotation may mark a type, as in the following example.
+In this case, no equality test function is generated within the marked type and all its subtypes.
+
+		[:Success:]
+			import io.sarl.lang.annotation.NoEqualityTestFunctionsGeneration
+			[:On]
+			[:noeqtestannon](@NoEqualityTestFunctionsGeneration)
+			class MyClass {
+			  var field1 : int
+			  var field2 : String
+			}
+			[:Off]
+		[:End:]
+
+The annotation may mark a specific field in order to exclude it from the equality test generation.
+In the following example, the [:noeqtestfield2:] field is marked with the annotation. Consequently, it
+is not included within the equality test within the `equals()` function, and the hash code replied
+by the `hashCode()` function does not include the hash code of the [:noeqtestfield2:] field.
+
+		[:Success:]
+			import io.sarl.lang.annotation.NoEqualityTestFunctionsGeneration
+			[:On]
+			class MyClass {
+			  var field1 : int
+			  [:noeqtestannon!]
+			  var [:noeqtestfield2](field2) : String
+			}
+			[:Off]
+		[:End:]
+
+
+
 ## @ToString
 
 The [:tostringannon:] annotation enables to generate the function that replies the string representation

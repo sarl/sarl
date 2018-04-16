@@ -21,6 +21,7 @@
 
 package io.sarl.lang.ui.preferences;
 
+import static io.sarl.lang.ui.preferences.SARLBuilderPreferenceAccess.PREF_GENERATE_EQUALITY_TEST_FUNCTIONS;
 import static io.sarl.lang.ui.preferences.SARLBuilderPreferenceAccess.PREF_GENERATE_INLINE;
 import static io.sarl.lang.ui.preferences.SARLBuilderPreferenceAccess.PREF_GENERATE_PURE;
 import static io.sarl.lang.ui.preferences.SARLBuilderPreferenceAccess.PREF_USE_EXPRESSION_INTERPRETER;
@@ -71,6 +72,9 @@ public class SARLBuilderConfigurationBlock extends XbaseBuilderConfigurationBloc
 
 		addCheckBox(composite, Messages.SARLBuilderConfigurationBlock_2,
 				PREF_GENERATE_PURE, BOOLEAN_VALUES, 0);
+
+		addCheckBox(composite, Messages.SARLBuilderConfigurationBlock_3,
+				PREF_GENERATE_EQUALITY_TEST_FUNCTIONS, BOOLEAN_VALUES, 0);
 
 		this.generateInlineButton.addSelectionListener(new SelectionAdapter() {
 			@SuppressWarnings("synthetic-access")

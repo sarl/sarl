@@ -47,11 +47,17 @@ public class GeneratorConfig2 {
 	 */
 	public static final boolean DEFAULT_USE_EXPRESSION_INTERPRETER_FOR_INLINE_ANNOTATION = true;
 
-	/** Default value for the generation of the pure annotation flag.
+	/** Default value for the generation flag of the pure annotations.
 	 *
 	 * @since 0.8
 	 */
 	public static final boolean DEFAULT_GENERATE_PURE_ANNOTATION = true;
+
+	/** Default value for the generation flag of the equality test functions.
+	 *
+	 * @since 0.8
+	 */
+	public static final boolean DEFAULT_GENERATE_EQUALITY_TEST_FUNCTIONS = true;
 
 	/**
 	 * Whether <code>@Inline</code> shall be generated.
@@ -67,6 +73,11 @@ public class GeneratorConfig2 {
 	 * Whether <code>@Pure</code> shall be generated.
 	 */
 	private boolean generatePureAnnotation = DEFAULT_GENERATE_PURE_ANNOTATION;
+
+	/**
+	 * Whether the equality test functions shall be generated.
+	 */
+	private boolean generateEqualityTestFunctions = DEFAULT_GENERATE_EQUALITY_TEST_FUNCTIONS;
 
 	/** Replies if the <code>@Inline</code> shall be generated.
 	 *
@@ -117,6 +128,25 @@ public class GeneratorConfig2 {
 	 */
 	public void setGeneratePureAnnotation(final boolean generatePureAnnotation) {
 		this.generatePureAnnotation = generatePureAnnotation;
+	}
+
+	/** Replies if the equality test functions shall be generated.
+	 *
+	 * @return <code>true</code> if the functions shall be generated.
+	 * @since 0.8
+	 */
+	@Pure
+	public boolean isGenerateEqualityTestFunctions() {
+		return this.generateEqualityTestFunctions;
+	}
+
+	/** Set if the equality test functions shall be generated.
+	 *
+	 * @param generateFunctions <code>true</code> if functions shall be generated.
+	 * @since 0.8
+	 */
+	public void setGenerateEqualityTestFunctions(final boolean generateFunctions) {
+		this.generateEqualityTestFunctions = generateFunctions;
 	}
 
 }

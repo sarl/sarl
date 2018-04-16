@@ -881,6 +881,25 @@ public class SarlBatchCompiler {
 		getGeneratorConfig2().setGeneratePureAnnotation(generatePureAnnotation);
 	}
 
+	/** Replies if the equality test functions shall be generated.
+	 *
+	 * @return <code>true</code> if the functions shall be generated.
+	 * @since 0.8
+	 */
+	@Pure
+	public boolean isGenerateEqualityTestFunctions() {
+		return getGeneratorConfig2().isGenerateEqualityTestFunctions();
+	}
+
+	/** Set if the equality test functions shall be generated.
+	 *
+	 * @param generateFunctions <code>true</code> if the functions shall be generated.
+	 * @since 0.8
+	 */
+	public void setGenerateEqualityTestFunctions(final boolean generateFunctions) {
+		getGeneratorConfig2().setGenerateEqualityTestFunctions(generateFunctions);
+	}
+
 	/** Change the source path.
 	 *
 	 * <p>The source path is a list the names of folders that are separated by {@link File#pathSeparator}.
