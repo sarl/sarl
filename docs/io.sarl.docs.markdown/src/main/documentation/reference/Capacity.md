@@ -166,7 +166,41 @@ Details on the use of the Capacities may be found in the following:
 * [Agent](./Agent.md)
 * [Behavior](./Behavior.md)
 
+## Associating a default skill to a capacity
 
+As described within the previous section, when a capacity's function is invoked, the function's implementation is retreived from
+the [skill](./Skill.md) that was associated to the capacity.
+
+The standard way for associating a capacity and a skill is to call the `setSkill` function within an agent or a behavior, as
+detailed in the [agent's documentation](./Agent.md).
+
+Nevertheless, let the case in which we would like to bind a capacity to a default skill.
+In other words, we would like to specify that a skill should be associated by default to a capacity if the `setSkill` function
+is not invoked.
+
+The way to realize this it is to the [:defaultskillannon:].
+This annotation may be attached to a capacity's declaration in order to specify the skill that should be binded by default to
+the capacity.  
+
+In the following example, the [:mycapacitydecl:] capacity and the [:myskilldecl:] skill are declared.
+The [:defaultskillannon] annotation specifies that an instance of [:myskilldecl:] should be binded to the
+[:mycapacitydecl:] capacity if the developer does not change the binding programmatically.
+
+Examples:
+
+		[:Success:]
+			package io.sarl.docs.reference.cr
+			import io.sarl.lang.core.DefaultSkill
+			[:On]
+			[:defaultskillannon](@DefaultSkill)(typeof(MySkill))
+			capacity [:mycapacitydecl](MyCapacity) {
+				def myfunction
+			}
+			skill [:myskilldecl](MySkill) implements MyCapacity {
+				def myfunction {
+				}
+			}
+		[:End:]
 
 
 [:Include:](../legal.inc)
