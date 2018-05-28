@@ -117,6 +117,7 @@ public class SarlCapacityBuilderImpl extends AbstractBuilder implements ISarlCap
 			JvmTypeReference baseTypeRef = findType(this.sarlCapacity, Capacity.class.getCanonicalName());
 			if (isSubTypeOf(this.sarlCapacity, superTypeRef, baseTypeRef)) {
 				this.sarlCapacity.getExtends().add(superTypeRef);
+				return;
 			}
 		}
 	}

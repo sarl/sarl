@@ -131,6 +131,7 @@ public class SarlClassBuilderImpl extends AbstractBuilder implements ISarlClassB
 		if (!Strings.isEmpty(superType)) {
 			JvmParameterizedTypeReference superTypeRef = newTypeRef(this.container, superType);
 			this.sarlClass.setExtends(superTypeRef);
+			return;
 		}
 		this.sarlClass.setExtends(null);
 	}

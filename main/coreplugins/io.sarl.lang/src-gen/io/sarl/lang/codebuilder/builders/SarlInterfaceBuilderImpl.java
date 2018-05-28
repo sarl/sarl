@@ -130,6 +130,7 @@ public class SarlInterfaceBuilderImpl extends AbstractBuilder implements ISarlIn
 		if (!Strings.isEmpty(superType)) {
 			JvmParameterizedTypeReference superTypeRef = newTypeRef(this.container, superType);
 			this.sarlInterface.getExtends().add(superTypeRef);
+			return;
 		}
 	}
 

@@ -1375,10 +1375,12 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 								it.append(".setExtends(superTypeRef);"); //$NON-NLS-1$
 							}
 							it.newLine();
-							if (!Strings.isEmpty(defaultType) && !isExtendsKeywordFound.get()) {
+							if (!Strings.isEmpty(defaultType)) {
 								it.append("\t\t\t\treturn;"); //$NON-NLS-1$
-								it.newLine();
+							} else {
+								it.append("\t\t\treturn;"); //$NON-NLS-1$
 							}
+							it.newLine();
 							if (!Strings.isEmpty(defaultType)) {
 								it.append("\t\t\t}"); //$NON-NLS-1$
 								it.newLine();
