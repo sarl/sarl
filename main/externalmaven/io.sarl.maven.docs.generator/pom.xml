@@ -47,6 +47,10 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-plugin-plugin</artifactId>
+				<configuration>
+					<!-- No dependency is scanned for extracting mojo -->
+					<mojoDependencies/>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
