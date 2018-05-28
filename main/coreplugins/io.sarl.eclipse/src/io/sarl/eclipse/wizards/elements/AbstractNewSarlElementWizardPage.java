@@ -1151,17 +1151,17 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 		this.injector.injectMembers(extension);
 		final AbstractSuperTypeSelectionDialog<?> dialog = createSuperClassSelectionDialog(getShell(),
 				getWizard().getContainer(), project, extension, false);
-		if (dialog != null) {
-			this.injector.injectMembers(dialog);
-			dialog.setTitle(NewWizardMessages.NewTypeWizardPage_SuperClassDialog_title);
-			dialog.setMessage(NewWizardMessages.NewTypeWizardPage_SuperClassDialog_message);
-			dialog.setInitialPattern(getSuperClass());
+		if (dialog == null) {
+			return super.chooseSuperClass();
+		}
 
-			if (dialog.open() == Window.OK) {
-				return (IType) dialog.getFirstResult();
-			}
-		} else {
-			super.chooseSuperClass();
+		this.injector.injectMembers(dialog);
+		dialog.setTitle(NewWizardMessages.NewTypeWizardPage_SuperClassDialog_title);
+		dialog.setMessage(NewWizardMessages.NewTypeWizardPage_SuperClassDialog_message);
+		dialog.setInitialPattern(getSuperClass());
+
+		if (dialog.open() == Window.OK) {
+			return (IType) dialog.getFirstResult();
 		}
 		return null;
 	}

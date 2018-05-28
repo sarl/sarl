@@ -679,10 +679,10 @@ public class Jdt2Ecore {
 
 		@Override
 		public IType next() {
-			if (this.current == null) {
+			final IType c = this.current;
+			if (c == null) {
 				throw new NoSuchElementException();
 			}
-			final IType c = this.current;
 			final String name = c.getFullyQualifiedName();
 			this.encountered.add(name);
 			try {
@@ -693,12 +693,14 @@ public class Jdt2Ecore {
 					superTypes = new String[] {c.getSuperclassTypeSignature()};
 				}
 				for (final String signature : superTypes) {
-					final String resolvedSignature = resolveType(c, signature);
-					if (!Strings.isNullOrEmpty(resolvedSignature)) {
-						this.queue.add(resolvedSignature);
+					if (!Strings.isNullOrEmpty(signature)) {
+						final String resolvedSignature = resolveType(c, signature);
+						if (!Strings.isNullOrEmpty(resolvedSignature)) {
+							this.queue.add(resolvedSignature);
+						}
 					}
 				}
-			} catch (JavaModelException exception) {
+			} catch (Exception exception) {
 				//
 			}
 			updateCurrent();
