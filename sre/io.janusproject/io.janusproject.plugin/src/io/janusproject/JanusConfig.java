@@ -181,7 +181,7 @@ public final class JanusConfig {
      *
      * @see #MAX_NUMBER_OF_THREADS_IN_EXECUTOR_NAME
      */
-    public static final int MAX_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE = 512;
+    public static final int MAX_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE = 32;
 
     /**
      * Name of the property that contains the minimal number of threads in the pool.
@@ -195,7 +195,7 @@ public final class JanusConfig {
      *
      * @see #MIN_NUMBER_OF_THREADS_IN_EXECUTOR_NAME
      */
-    public static final int MIN_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE = 16;
+    public static final int MIN_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE = 2;
 
     /**
      * Name of the property that contains the duration for keeping the iddle threads alive (in seconds).
