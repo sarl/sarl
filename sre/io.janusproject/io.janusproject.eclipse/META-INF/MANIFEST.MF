@@ -2,6 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: io.janusproject.eclipse;singleton:=true
+Automatic-Module-Name: io.janusproject.eclipse
 Bundle-Version: 0.8.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: io.janusproject.plugin;bundle-version="0.8.0";visibility:=reexport,
