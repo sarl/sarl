@@ -2552,7 +2552,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	private boolean isAppendComparisonFunctionsEnable(GenerationContext context, JvmGenericType target) {
 		if (context.getGeneratorConfig2().isGenerateEqualityTestFunctions()) {
 			JvmGenericType current = target;
+			final Set<String> encounteredTypes = new TreeSet<>();
 			do {
+				encounteredTypes.add(current.getIdentifier());
 				if (this.annotationFinder.findAnnotation(current, NoEqualityTestFunctionsGeneration.class) != null) {
 					return false;
 				}
@@ -2562,6 +2564,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					final JvmType type = superType.getType();
 					if (type instanceof JvmGenericType) {
 						current = (JvmGenericType) type;
+						if (encounteredTypes.contains(current.getIdentifier())) {
+							current = null;
+						}
 					}
 				}
 			} while (current != null);
