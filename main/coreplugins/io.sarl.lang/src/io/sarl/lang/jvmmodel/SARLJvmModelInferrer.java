@@ -2575,6 +2575,18 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		return false;
 	}
 
+	private static boolean isAppendToStringFunctionsEnable(GenerationContext context) {
+		return context.getGeneratorConfig2().isGenerateToStringFunctions();
+	}
+
+	private static boolean isAppendCloneFunctionsEnable(GenerationContext context) {
+		return context.getGeneratorConfig2().isGenerateCloneFunctions();
+	}
+
+	private static boolean isAppendSerialNumbersEnable(GenerationContext context) {
+		return context.getGeneratorConfig2().isGenerateSerialNumberFields();
+	}
+
 	/** Create the functions that permits to compare the object.
 	 * The comparaison functions are {@link #equals(Object)} and {@link #hashCode()}.
 	 *
@@ -2661,6 +2673,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 */
 	protected void appendToStringFunctions(GenerationContext context, XtendTypeDeclaration source,
 			final JvmGenericType target) {
+		if (!isAppendToStringFunctionsEnable(context)) {
+			return;
+		}
 		// Create a list of the declared non-static fields.
 		final List<JvmField> declaredInstanceFields = new ArrayList<>();
 		for (final JvmField field : target.getDeclaredFields()) {
@@ -2716,6 +2731,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @see #appendSerialNumberIfSerializable(GenerationContext, XtendTypeDeclaration, JvmGenericType)
 	 */
 	protected void appendSerialNumber(GenerationContext context, XtendTypeDeclaration source, JvmGenericType target) {
+		if (!isAppendSerialNumbersEnable(context)) {
+			return;
+		}
 		for (final JvmField field : target.getDeclaredFields()) {
 			if (SERIAL_FIELD_NAME.equals(field.getSimpleName())) {
 				return;
@@ -2763,6 +2781,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @see #appendCloneFunctionIfCloneable(GenerationContext, XtendTypeDeclaration, JvmGenericType)
 	 */
 	protected void appendCloneFunction(GenerationContext context, XtendTypeDeclaration source, JvmGenericType target) {
+		if (!isAppendCloneFunctionsEnable(context)) {
+			return;
+		}
 		for (final JvmOperation operation : target.getDeclaredOperations()) {
 			if (CLONE_FUNCTION_NAME.equals(operation.getSimpleName())) {
 				return;

@@ -900,6 +900,63 @@ public class SarlBatchCompiler {
 		getGeneratorConfig2().setGenerateEqualityTestFunctions(generateFunctions);
 	}
 
+	/** Replies if the toString functions shall be generated.
+	 *
+	 * @return <code>true</code> if the functions shall be generated.
+	 * @since 0.8
+	 */
+	@Pure
+	public boolean isGenerateToStringFunctions() {
+		return getGeneratorConfig2().isGenerateToStringFunctions();
+	}
+
+	/** Set if the toString functions shall be generated.
+	 *
+	 * @param generateFunctions <code>true</code> if the functions shall be generated.
+	 * @since 0.8
+	 */
+	public void setGenerateToStringFunctions(final boolean generateFunctions) {
+		getGeneratorConfig2().setGenerateToStringFunctions(generateFunctions);
+	}
+
+	/** Replies if the clone functions shall be generated.
+	 *
+	 * @return <code>true</code> if the functions shall be generated.
+	 * @since 0.8
+	 */
+	@Pure
+	public boolean isGenerateCloneFunctions() {
+		return getGeneratorConfig2().isGenerateCloneFunctions();
+	}
+
+	/** Set if the clone functions shall be generated.
+	 *
+	 * @param generateFunctions <code>true</code> if the functions shall be generated.
+	 * @since 0.8
+	 */
+	public void setGenerateCloneFunctions(final boolean generateFunctions) {
+		getGeneratorConfig2().setGenerateCloneFunctions(generateFunctions);
+	}
+
+	/** Replies if the serial number fields shall be generated.
+	 *
+	 * @return <code>true</code> if the fields shall be generated.
+	 * @since 0.8
+	 */
+	@Pure
+	public boolean isGenerateSerialNumberFields() {
+		return getGeneratorConfig2().isGenerateSerialNumberFields();
+	}
+
+	/** Set if the serial number fields shall be generated.
+	 *
+	 * @param generateFields <code>true</code> if the fields shall be generated.
+	 * @since 0.8
+	 */
+	public void setGenerateSerialNumberFields(final boolean generateFields) {
+		getGeneratorConfig2().setGenerateSerialNumberFields(generateFields);
+	}
+
 	/** Change the source path.
 	 *
 	 * <p>The source path is a list the names of folders that are separated by {@link File#pathSeparator}.

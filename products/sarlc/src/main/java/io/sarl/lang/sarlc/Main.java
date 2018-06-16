@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.compiler.batch;
+package io.sarl.lang.sarlc;
 
 import java.io.PrintWriter;
 import java.text.MessageFormat;
@@ -42,6 +42,7 @@ import org.eclipse.xtext.util.Strings;
 
 import io.sarl.lang.SARLStandaloneSetup;
 import io.sarl.lang.SARLVersion;
+import io.sarl.lang.compiler.batch.SarlBatchCompiler;
 
 /** Main entry point for the SARL batch compiler.
  *
@@ -110,6 +111,12 @@ public final class Main {
 	private static final String CLI_OPTION_GENERATE_PURES = "pures"; //$NON-NLS-1$
 
 	private static final String CLI_OPTION_GENERATE_EQUALITY_TEST_FUNCTIONS = "equalsFunctions"; //$NON-NLS-1$
+
+	private static final String CLI_OPTION_GENERATE_TOSTRING_FUNCTIONS = "toStringFunctions"; //$NON-NLS-1$
+
+	private static final String CLI_OPTION_GENERATE_CLONE_FUNCTIONS = "cloneFunctions"; //$NON-NLS-1$
+
+	private static final String CLI_OPTION_GENERATE_SERIAL_NUMBER_FIELDS = "serialNumberFields"; //$NON-NLS-1$
 
 	private static final String CLI_OPTION_NOWARNING = "nowarn"; //$NON-NLS-1$
 
@@ -280,6 +287,15 @@ public final class Main {
 				case CLI_OPTION_GENERATE_EQUALITY_TEST_FUNCTIONS:
 					compiler.setGenerateEqualityTestFunctions(getBooleanValue(opt));
 					break;
+				case CLI_OPTION_GENERATE_TOSTRING_FUNCTIONS:
+					compiler.setGenerateToStringFunctions(getBooleanValue(opt));
+					break;
+				case CLI_OPTION_GENERATE_CLONE_FUNCTIONS:
+					compiler.setGenerateCloneFunctions(getBooleanValue(opt));
+					break;
+				case CLI_OPTION_GENERATE_SERIAL_NUMBER_FIELDS:
+					compiler.setGenerateSerialNumberFields(getBooleanValue(opt));
+					break;
 				case CLI_OPTION_NOWARNING:
 					compiler.setAllWarningSeverities(Severity.IGNORE);
 					break;
@@ -390,6 +406,14 @@ public final class Main {
 				Messages.Main_20);
 		final Option wloption = new Option(CLI_OPTION_WARNING_LEVEL_SHORT, CLI_OPTION_WARNING_LEVEL_LONG, true,
 				Messages.Main_21);
+		options.addOption(CLI_OPTION_GENERATE_EQUALITY_TEST_FUNCTIONS, true,
+				Messages.Main_22);
+		options.addOption(CLI_OPTION_GENERATE_TOSTRING_FUNCTIONS, true,
+				Messages.Main_23);
+		options.addOption(CLI_OPTION_GENERATE_CLONE_FUNCTIONS, true,
+				Messages.Main_24);
+		options.addOption(CLI_OPTION_GENERATE_SERIAL_NUMBER_FIELDS, true,
+				Messages.Main_25);
 		wloption.setArgs(2);
 		wloption.setOptionalArg(false);
 		wloption.setValueSeparator('=');

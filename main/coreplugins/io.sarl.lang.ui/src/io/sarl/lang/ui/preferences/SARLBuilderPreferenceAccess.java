@@ -58,6 +58,24 @@ public class SARLBuilderPreferenceAccess {
 	 */
 	public static final String PREF_GENERATE_EQUALITY_TEST_FUNCTIONS = "io.sarl.builder.generateEqualityTestFunctions"; //$NON-NLS-1$
 
+	/**
+	 * Preference identifier for generating the toString functions.
+	 * @since 0.8
+	 */
+	public static final String PREF_GENERATE_TOSTRING_FUNCTIONS = "io.sarl.builder.generateToStringFunctions"; //$NON-NLS-1$
+
+	/**
+	 * Preference identifier for generating the clone  functions.
+	 * @since 0.8
+	 */
+	public static final String PREF_GENERATE_CLONE_FUNCTIONS = "io.sarl.builder.generateCloneFunctions"; //$NON-NLS-1$
+
+	/**
+	 * Preference identifier for generating the serial number fields.
+	 * @since 0.8
+	 */
+	public static final String PREF_GENERATE_SERIAL_NUMBER_FIELDS = "io.sarl.builder.generateSerialNumberFields"; //$NON-NLS-1$
+
 	/** Load the generator configuration from the preferences.
 	 *
 	 * @param generatorConfig the configuration to set up.
@@ -81,6 +99,15 @@ public class SARLBuilderPreferenceAccess {
 			if (preferenceStore.contains(PREF_GENERATE_EQUALITY_TEST_FUNCTIONS)) {
 				generatorConfig.setGenerateEqualityTestFunctions(preferenceStore.getBoolean(PREF_GENERATE_EQUALITY_TEST_FUNCTIONS));
 			}
+			if (preferenceStore.contains(PREF_GENERATE_TOSTRING_FUNCTIONS)) {
+				generatorConfig.setGenerateToStringFunctions(preferenceStore.getBoolean(PREF_GENERATE_TOSTRING_FUNCTIONS));
+			}
+			if (preferenceStore.contains(PREF_GENERATE_CLONE_FUNCTIONS)) {
+				generatorConfig.setGenerateCloneFunctions(preferenceStore.getBoolean(PREF_GENERATE_CLONE_FUNCTIONS));
+			}
+			if (preferenceStore.contains(PREF_GENERATE_SERIAL_NUMBER_FIELDS)) {
+				generatorConfig.setGenerateSerialNumberFields(preferenceStore.getBoolean(PREF_GENERATE_SERIAL_NUMBER_FIELDS));
+			}
 		}
 	}
 
@@ -100,6 +127,9 @@ public class SARLBuilderPreferenceAccess {
 			store.setDefault(PREF_USE_EXPRESSION_INTERPRETER, GeneratorConfig2.DEFAULT_USE_EXPRESSION_INTERPRETER_FOR_INLINE_ANNOTATION);
 			store.setDefault(PREF_GENERATE_PURE, GeneratorConfig2.DEFAULT_GENERATE_PURE_ANNOTATION);
 			store.setDefault(PREF_GENERATE_EQUALITY_TEST_FUNCTIONS, GeneratorConfig2.DEFAULT_GENERATE_EQUALITY_TEST_FUNCTIONS);
+			store.setDefault(PREF_GENERATE_TOSTRING_FUNCTIONS, GeneratorConfig2.DEFAULT_GENERATE_TOSTRING_FUNCTION);
+			store.setDefault(PREF_GENERATE_CLONE_FUNCTIONS, GeneratorConfig2.DEFAULT_GENERATE_CLONE_FUNCTION);
+			store.setDefault(PREF_GENERATE_SERIAL_NUMBER_FIELDS, GeneratorConfig2.DEFAULT_GENERATE_SERIAL_NUMBER_FIELD);
 		}
 
 	}

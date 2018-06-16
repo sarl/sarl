@@ -14,7 +14,7 @@
 
 	<properties>
 		<cliCompilerName>sarlc</cliCompilerName>
-		<cliCompilerMainClass>io.sarl.lang.compiler.batch.Main</cliCompilerMainClass>
+		<cliCompilerMainClass>io.sarl.lang.sarlc.Main</cliCompilerMainClass>
 	</properties>
 
 	<dependencies>

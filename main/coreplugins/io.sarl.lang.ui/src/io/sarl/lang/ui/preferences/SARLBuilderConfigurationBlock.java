@@ -21,9 +21,12 @@
 
 package io.sarl.lang.ui.preferences;
 
+import static io.sarl.lang.ui.preferences.SARLBuilderPreferenceAccess.PREF_GENERATE_CLONE_FUNCTIONS;
 import static io.sarl.lang.ui.preferences.SARLBuilderPreferenceAccess.PREF_GENERATE_EQUALITY_TEST_FUNCTIONS;
 import static io.sarl.lang.ui.preferences.SARLBuilderPreferenceAccess.PREF_GENERATE_INLINE;
 import static io.sarl.lang.ui.preferences.SARLBuilderPreferenceAccess.PREF_GENERATE_PURE;
+import static io.sarl.lang.ui.preferences.SARLBuilderPreferenceAccess.PREF_GENERATE_SERIAL_NUMBER_FIELDS;
+import static io.sarl.lang.ui.preferences.SARLBuilderPreferenceAccess.PREF_GENERATE_TOSTRING_FUNCTIONS;
 import static io.sarl.lang.ui.preferences.SARLBuilderPreferenceAccess.PREF_USE_EXPRESSION_INTERPRETER;
 
 import java.util.Set;
@@ -75,6 +78,15 @@ public class SARLBuilderConfigurationBlock extends XbaseBuilderConfigurationBloc
 
 		addCheckBox(composite, Messages.SARLBuilderConfigurationBlock_3,
 				PREF_GENERATE_EQUALITY_TEST_FUNCTIONS, BOOLEAN_VALUES, 0);
+
+		addCheckBox(composite, Messages.SARLBuilderConfigurationBlock_4,
+				PREF_GENERATE_TOSTRING_FUNCTIONS, BOOLEAN_VALUES, 0);
+
+		addCheckBox(composite, Messages.SARLBuilderConfigurationBlock_5,
+				PREF_GENERATE_CLONE_FUNCTIONS, BOOLEAN_VALUES, 0);
+
+		addCheckBox(composite, Messages.SARLBuilderConfigurationBlock_6,
+				PREF_GENERATE_SERIAL_NUMBER_FIELDS, BOOLEAN_VALUES, 0);
 
 		this.generateInlineButton.addSelectionListener(new SelectionAdapter() {
 			@SuppressWarnings("synthetic-access")

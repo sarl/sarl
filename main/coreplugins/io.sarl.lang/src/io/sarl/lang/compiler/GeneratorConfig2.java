@@ -59,6 +59,24 @@ public class GeneratorConfig2 {
 	 */
 	public static final boolean DEFAULT_GENERATE_EQUALITY_TEST_FUNCTIONS = true;
 
+	/** Default value for the generation flag of the serial number field.
+	 *
+	 * @since 0.8
+	 */
+	public static final boolean DEFAULT_GENERATE_SERIAL_NUMBER_FIELD = true;
+
+	/** Default value for the generation flag of the toString function.
+	 *
+	 * @since 0.8
+	 */
+	public static final boolean DEFAULT_GENERATE_TOSTRING_FUNCTION = true;
+
+	/** Default value for the generation flag of the clone function.
+	 *
+	 * @since 0.8
+	 */
+	public static final boolean DEFAULT_GENERATE_CLONE_FUNCTION = true;
+
 	/**
 	 * Whether <code>@Inline</code> shall be generated.
 	 */
@@ -71,13 +89,33 @@ public class GeneratorConfig2 {
 
 	/**
 	 * Whether <code>@Pure</code> shall be generated.
+	 * @since 0.8
 	 */
 	private boolean generatePureAnnotation = DEFAULT_GENERATE_PURE_ANNOTATION;
 
 	/**
 	 * Whether the equality test functions shall be generated.
+	 * @since 0.8
 	 */
 	private boolean generateEqualityTestFunctions = DEFAULT_GENERATE_EQUALITY_TEST_FUNCTIONS;
+
+	/**
+	 * Whether the serial number fields shall be generated.
+	 * @since 0.8
+	 */
+	private boolean generateSerialNumberField = DEFAULT_GENERATE_SERIAL_NUMBER_FIELD;
+
+	/**
+	 * Whether the toString function shall be generated.
+	 * @since 0.8
+	 */
+	private boolean generateToStringFunction = DEFAULT_GENERATE_TOSTRING_FUNCTION;
+
+	/**
+	 * Whether the clone function shall be generated.
+	 * @since 0.8
+	 */
+	private boolean generateCloneFunction = DEFAULT_GENERATE_CLONE_FUNCTION;
 
 	/** Replies if the <code>@Inline</code> shall be generated.
 	 *
@@ -147,6 +185,63 @@ public class GeneratorConfig2 {
 	 */
 	public void setGenerateEqualityTestFunctions(final boolean generateFunctions) {
 		this.generateEqualityTestFunctions = generateFunctions;
+	}
+
+	/** Replies if the toString functions shall be generated.
+	 *
+	 * @return <code>true</code> if the functions shall be generated.
+	 * @since 0.8
+	 */
+	@Pure
+	public boolean isGenerateToStringFunctions() {
+		return this.generateToStringFunction;
+	}
+
+	/** Set if the toString functions shall be generated.
+	 *
+	 * @param generateFunctions <code>true</code> if functions shall be generated.
+	 * @since 0.8
+	 */
+	public void setGenerateToStringFunctions(final boolean generateFunctions) {
+		this.generateToStringFunction = generateFunctions;
+	}
+
+	/** Replies if the clone functions shall be generated.
+	 *
+	 * @return <code>true</code> if the functions shall be generated.
+	 * @since 0.8
+	 */
+	@Pure
+	public boolean isGenerateCloneFunctions() {
+		return this.generateCloneFunction;
+	}
+
+	/** Set if the clone functions shall be generated.
+	 *
+	 * @param generateFunctions <code>true</code> if functions shall be generated.
+	 * @since 0.8
+	 */
+	public void setGenerateCloneFunctions(final boolean generateFunctions) {
+		this.generateCloneFunction = generateFunctions;
+	}
+
+	/** Replies if the serial number field shall be generated.
+	 *
+	 * @return <code>true</code> if the functions shall be generated.
+	 * @since 0.8
+	 */
+	@Pure
+	public boolean isGenerateSerialNumberFields() {
+		return this.generateSerialNumberField;
+	}
+
+	/** Set if the clone functions shall be generated.
+	 *
+	 * @param generateFields <code>true</code> if fields shall be generated.
+	 * @since 0.8
+	 */
+	public void setGenerateSerialNumberFields(final boolean generateFields) {
+		this.generateSerialNumberField = generateFields;
 	}
 
 }
