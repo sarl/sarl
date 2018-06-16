@@ -52,13 +52,13 @@ import io.sarl.lang.ui.contentassist.imports.SARLImportingTypesProposalProvider;
 import io.sarl.lang.ui.contentassist.javadoc.SARLJavaDocContentAssistProcessor;
 import io.sarl.lang.ui.contentassist.templates.SARLTemplateContextType;
 import io.sarl.lang.ui.contentassist.templates.SARLTemplateProposalProvider;
+import io.sarl.lang.ui.editor.SARLEditor;
 import io.sarl.lang.ui.editor.SARLSourceViewer;
 import io.sarl.lang.ui.highlighting.SARLHighlightingCalculator;
 import io.sarl.lang.ui.hover.SARLHoverSerializer;
 import io.sarl.lang.ui.hover.SARLHoverSignatureProvider;
 import io.sarl.lang.ui.hover.SARLHoverUIStrings;
 import io.sarl.lang.ui.labeling.IQualifiedNameImageProvider;
-import io.sarl.lang.ui.labeling.QualifiedPluginImageHelper;
 import io.sarl.lang.ui.labeling.SARLDescriptionLabelProvider;
 import io.sarl.lang.ui.labeling.SARLDiagnosticLabelDecorator;
 import io.sarl.lang.ui.labeling.SARLHyperLinkingLabelProvider;
@@ -155,6 +155,7 @@ import org.eclipse.xtext.service.SingletonBinding;
 import org.eclipse.xtext.tasks.ITaskTagProvider;
 import org.eclipse.xtext.ui.IImageHelper;
 import org.eclipse.xtext.ui.LanguageSpecific;
+import org.eclipse.xtext.ui.PluginImageHelper;
 import org.eclipse.xtext.ui.UIBindings;
 import org.eclipse.xtext.ui.codetemplates.ui.AccessibleCodetemplatesActivator;
 import org.eclipse.xtext.ui.codetemplates.ui.partialEditing.IPartialEditingContentAssistContextFactory;
@@ -221,7 +222,6 @@ import org.eclipse.xtext.ui.validation.AbstractValidatorConfigurationBlock;
 import org.eclipse.xtext.xbase.annotations.ui.DefaultXbaseWithAnnotationsUiModule;
 import org.eclipse.xtext.xbase.imports.IUnresolvedTypeResolver;
 import org.eclipse.xtext.xbase.ui.editor.XbaseDocumentProvider;
-import org.eclipse.xtext.xbase.ui.editor.XbaseEditor;
 import org.eclipse.xtext.xbase.ui.editor.XbaseResourceForEditorInputFactory;
 import org.eclipse.xtext.xbase.ui.generator.trace.XbaseOpenGeneratedFileHandler;
 import org.eclipse.xtext.xbase.ui.hover.HoverUiStrings;
@@ -252,11 +252,6 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by org.eclipse.xtext.xtext.generator.ImplicitFragment
 	public Provider<? extends IAllContainersState> provideIAllContainersState() {
 		return Access.getJavaProjectsState();
-	}
-	
-	// contributed by org.eclipse.xtext.xtext.generator.ImplicitFragment
-	public Class<? extends XtextEditor> bindXtextEditor() {
-		return XbaseEditor.class;
 	}
 	
 	// contributed by org.eclipse.xtext.xtext.generator.ImplicitFragment
@@ -455,6 +450,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 		return InteractiveUnresolvedTypeResolver.class;
 	}
 	
+	// contributed by org.eclipse.xtext.xtext.generator.xbase.XbaseGeneratorFragment2
+	public Class<? extends XtextEditor> bindXtextEditor() {
+		return SARLEditor.class;
+	}
+	
 	// contributed by org.eclipse.xtext.xtext.generator.ui.templates.CodetemplatesGeneratorFragment2
 	public Provider<? extends TemplatesLanguageConfiguration> provideTemplatesLanguageConfiguration() {
 		return AccessibleCodetemplatesActivator.getTemplatesLanguageConfigurationProvider();
@@ -523,7 +523,7 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IImageHelper.IImageDescriptorHelper> bindIImageDescriptorHelper() {
-		return QualifiedPluginImageHelper.class;
+		return PluginImageHelper.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
@@ -588,7 +588,7 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IImageHelper> bindIImageHelper() {
-		return QualifiedPluginImageHelper.class;
+		return PluginImageHelper.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]

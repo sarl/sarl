@@ -21,7 +21,6 @@
 
 package io.sarl.lang.validation;
 
-import static com.google.common.collect.Iterables.any;
 import static com.google.common.collect.Iterables.toArray;
 import static com.google.common.collect.Lists.newArrayList;
 import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_AGENT__EXTENDS;
@@ -94,7 +93,6 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
@@ -109,7 +107,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.typesystem.LocalClassAwareTypeNames;
 import org.eclipse.xtend.core.validation.ModifierValidator;
 import org.eclipse.xtend.core.validation.XtendValidator;
@@ -441,22 +438,6 @@ public class SARLValidator extends AbstractSARLValidator {
 			return true;
 		}
 		return super.isValueExpectedRecursive(expr);
-	}
-
-	/** Copied from the Xtend validator.
-	 *
-	 * <p>FIXME: Xtext upgrade, Change the visilibility in the Xtend validator, https://github.com/eclipse/xtext-xtend/pull/288
-	 *
-	 * @param annotationTarget the target to test.
-	 * @return <code>true</code> if the annotation target is relevant for validation.
-	 */
-	protected boolean isRelevantAnnotationTarget(final XtendAnnotationTarget annotationTarget) {
-		return any(this.targetInfos.keySet(), new Predicate<Class<?>>() {
-			@Override
-			public boolean apply(Class<?> input) {
-				return input.isInstance(annotationTarget);
-			}
-		});
 	}
 
 	@Override
@@ -2536,22 +2517,6 @@ public class SARLValidator extends AbstractSARLValidator {
 		}
 	}
 
-	// TODO: Remove when Xtend PR 365 is merged, https://github.com/eclipse/xtext-xtend/pull/365
-	private static EObject getOutermostType(XtendMember member) {
-		XtendTypeDeclaration result = EcoreUtil2.getContainerOfType(member, XtendTypeDeclaration.class);
-		if (result == null) {
-			return member.eContainer();
-		}
-		while (!(result.eContainer() instanceof XtendFile)) {
-			final XtendTypeDeclaration next = EcoreUtil2.getContainerOfType(result.eContainer(), XtendTypeDeclaration.class);
-			if (next == null) {
-				return result;
-			}
-			result = next;
-		}
-		return result;
-	}
-
 	@Override
 	protected boolean isInitialized(JvmField input) {
 		if (super.isInitialized(input)) {
@@ -2605,50 +2570,6 @@ public class SARLValidator extends AbstractSARLValidator {
 					this.readAndWriteTracking.markAssignmentAccess(target);
 					return true;
 				}
-			}
-		}
-		return false;
-	}
-
-	@SuppressWarnings("checkstyle:npathcomplexity")
-	@Override
-	protected boolean isLocallyUsed(EObject target, EObject containerToFindUsage) {
-		// FIXME: See issue #809. Remove when Xtext PR is merged: https://github.com/eclipse/xtext-extras/pull/232.
-		if (this.readAndWriteTracking.isRead(target)) {
-			return true;
-		}
-		final Collection<Setting> usages = XbaseUsageCrossReferencer.find(target, containerToFindUsage);
-		// field and local variables are used when they are not used as the left operand of an assignment operator.
-		if (target instanceof XVariableDeclaration || target instanceof JvmField) {
-			for (final Setting usage : usages) {
-				final EObject object = usage.getEObject();
-				if (object instanceof XAssignment) {
-					final XAssignment assignment = (XAssignment) object;
-					if (assignment.getFeature() != target) {
-						return true;
-					}
-				} else {
-					return true;
-				}
-			}
-			return false;
-		}
-		// for non-private members it is enough to check that there are usages
-		if (!(target instanceof JvmOperation) || ((JvmOperation) target).getVisibility() != JvmVisibility.PRIVATE) {
-			return !usages.isEmpty();
-		}
-		// for private members it has to be checked if all usages are within the operation
-		final EObject targetSourceElem = this.associations.getPrimarySourceElement(target);
-		for (final Setting s : usages) {
-			if (s.getEObject() instanceof XAbstractFeatureCall) {
-				final XAbstractFeatureCall fc = (XAbstractFeatureCall) s.getEObject();
-				// when the feature call does not call itself or the call is
-				// from another function, then it is locally used
-				if (fc.getFeature() != target || !EcoreUtil.isAncestor(targetSourceElem, fc)) {
-					return true;
-				}
-			} else {
-				return true;
 			}
 		}
 		return false;

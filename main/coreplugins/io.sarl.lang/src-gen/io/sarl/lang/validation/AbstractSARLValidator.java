@@ -44,5 +44,4 @@ public abstract class AbstractSARLValidator extends XtendValidator {
 		result.add(EPackage.Registry.INSTANCE.getEPackage("http://www.eclipse.org/Xtext/Xbase/XAnnotations"));
 		return result;
 	}
-	
 }

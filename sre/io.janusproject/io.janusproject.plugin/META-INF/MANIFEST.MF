@@ -8,7 +8,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: io.sarl.core;bundle-version="0.8.0",
  io.sarl.util;bundle-version="0.8.0",
  io.sarl.javafx;bundle-version="0.8.0",
- org.eclipse.osgi;bundle-version="3.12.50",
+ org.eclipse.osgi;bundle-version="3.12.100",
  com.hazelcast;bundle-version="3.9.0",
  org.zeromq.jeromq;bundle-version="0.4.2",
  com.google.inject;bundle-version="4.1.0",

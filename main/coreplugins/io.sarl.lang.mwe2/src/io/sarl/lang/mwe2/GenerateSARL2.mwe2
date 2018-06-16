@@ -340,7 +340,7 @@ Workflow {
 			}
 
 			// SARL Validator
-			validator = auto-inject {
+			validator = ValidatorFragment2 auto-inject {
     			composedCheck = "org.eclipse.xtend.core.validation.AnnotationValidation"
 			}
 
@@ -446,7 +446,7 @@ Workflow {
     			}
     			runtime = {
     				bind = "org.eclipse.xtext.validation.ConfigurableIssueCodesProvider"
-    				to = "io.sarl.lang.validation.SARLConfigurableIssueCodesProvider"
+    				to = "io.sarl.lang.validation.StandardSarlConfigurableIssueCodesProvider"
     			}
     			runtime = {
     				bind = "org.eclipse.xtext.xbase.validation.EarlyExitValidator"
@@ -671,12 +671,12 @@ Workflow {
     			}
     			ui = {
     				bind = "org.eclipse.xtext.ui.IImageHelper"
-    				to = "io.sarl.lang.ui.labeling.QualifiedPluginImageHelper"
+    				to = "org.eclipse.xtext.ui.PluginImageHelper"
     				override = true
     			}
     			ui = {
     				bind = "org.eclipse.xtext.ui.IImageHelper$IImageDescriptorHelper"
-    				to = "io.sarl.lang.ui.labeling.QualifiedPluginImageHelper"
+    				to = "org.eclipse.xtext.ui.PluginImageHelper"
     				override = true
     				functionName = "bindIImageDescriptorHelper"
     			}

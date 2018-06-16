@@ -21,10 +21,6 @@
 
 package io.sarl.lang.compiler.extra;
 
-import java.lang.reflect.Field;
-import java.util.Map;
-import java.util.Set;
-
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmPrimitiveType;
 import org.eclipse.xtext.common.types.JvmType;
@@ -43,14 +39,6 @@ import org.eclipse.xtext.xbase.compiler.ImportManager;
 public class ExtraLanguageImportManager extends ImportManager {
 
 	private final ExtraLanguageTypeConverter converter;
-
-	private Map<String, String> wrappedImports;
-
-	private Character wrappedInternalSeparator;
-
-	private Set<String> wrappedThisTypeSimpleNames;
-
-	private Set<String> wrappedThisTypeQualifiedNames;
 
 	/** Constructor.
 	 *
@@ -91,85 +79,6 @@ public class ExtraLanguageImportManager extends ImportManager {
 			JvmDeclaredType thisType, char innerSeparator) {
 		super(true, thisType, innerSeparator);
 		this.converter = converter;
-	}
-
-	/** Replies the internal set that contains the qualified names of "this" type.
-	 *
-	 * <p>FIXME: Xtext upgrade, https://github.com/eclipse/xtext-extras/pull/191
-	 *
-	 * @return the internal set.
-	 */
-	@SuppressWarnings("unchecked")
-	protected final Set<String> internalGetThisTypeQualifiedNames() {
-		if (this.wrappedThisTypeQualifiedNames == null) {
-			try {
-				final Field field = ImportManager.class.getDeclaredField("thisTypeQualifiedNames"); //$NON-NLS-1$
-				field.setAccessible(true);
-				this.wrappedThisTypeQualifiedNames = (Set<String>) field.get(this);
-			} catch (Exception exception) {
-				throw new Error(exception);
-			}
-		}
-		return this.wrappedThisTypeQualifiedNames;
-	}
-
-	/** Replies the internal set that contains the simple names of "this" type.
-	 *
-	 * <p>FIXME: Xtext upgrade, https://github.com/eclipse/xtext-extras/pull/191
-	 *
-	 * @return the internal set.
-	 */
-	@SuppressWarnings("unchecked")
-	protected final Set<String> internalGetThisTypeSimpleNames() {
-		if (this.wrappedThisTypeSimpleNames == null) {
-			try {
-				final Field field = ImportManager.class.getDeclaredField("thisTypeSimpleNames"); //$NON-NLS-1$
-				field.setAccessible(true);
-				this.wrappedThisTypeSimpleNames = (Set<String>) field.get(this);
-			} catch (Exception exception) {
-				throw new Error(exception);
-			}
-		}
-		return this.wrappedThisTypeSimpleNames;
-	}
-
-	/** Replies the internal import data structure.
-	 *
-	 * <p>FIXME: Xtext upgrade, https://github.com/eclipse/xtext-extras/pull/191
-	 *
-	 * @return the internal import data structure.
-	 */
-	@SuppressWarnings("unchecked")
-	protected final Map<String, String> internalGetImports() {
-		if (this.wrappedImports == null) {
-			try {
-				final Field field = ImportManager.class.getDeclaredField("imports"); //$NON-NLS-1$
-				field.setAccessible(true);
-				this.wrappedImports = (Map<String, String>) field.get(this);
-			} catch (Exception exception) {
-				throw new Error(exception);
-			}
-		}
-		return this.wrappedImports;
-	}
-
-	/** Replies the internal separator.
-	 *
-	 * <p>FIXME: Xtext upgrade, https://github.com/eclipse/xtext-extras/pull/191
-	 *
-	 * @return the internal separator.
-	 */
-	protected final char getInnerTypeSeparator() {
-		if (this.wrappedInternalSeparator == null) {
-			try {
-				final Field field = ImportManager.class.getDeclaredField("innerTypeSeparator"); //$NON-NLS-1$
-				field.setAccessible(true);
-				this.wrappedInternalSeparator = (Character) field.get(this);
-			} catch (Exception exception) {
-				throw new Error(exception);
-			}
-		}
-		return this.wrappedInternalSeparator.charValue();
 	}
 
 	/** Convert the given qualified name.
@@ -234,8 +143,8 @@ public class ExtraLanguageImportManager extends ImportManager {
 				}
 				if (type != outerContainer) {
 					outerShortName =  outerContainer.getSimpleName();
-					if (!internalGetThisTypeQualifiedNames().contains(outerContainer.getCanonicalName())
-							&& internalGetThisTypeSimpleNames().contains(outerShortName)) {
+					if (!getThisTypeQualifiedNames().contains(outerContainer.getCanonicalName())
+							&& getThisTypeSimpleNames().contains(outerShortName)) {
 						outerShortName = qualifiedName;
 						shortName = qualifiedName;
 					} else {
@@ -268,8 +177,8 @@ public class ExtraLanguageImportManager extends ImportManager {
 				}
 				if (type != outerContainer) {
 					outerShortName = outerContainer.getSimpleName();
-					if (!internalGetThisTypeQualifiedNames().contains(outerContainer.getQualifiedName(getInnerTypeSeparator()))
-							&& internalGetThisTypeSimpleNames().contains(outerShortName)) {
+					if (!getThisTypeQualifiedNames().contains(outerContainer.getQualifiedName(getInnerTypeSeparator()))
+							&& getThisTypeSimpleNames().contains(outerShortName)) {
 						outerShortName = qualifiedName;
 						shortName = qualifiedName;
 					} else {

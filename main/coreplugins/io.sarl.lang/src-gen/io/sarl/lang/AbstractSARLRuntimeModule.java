@@ -112,6 +112,7 @@ import io.sarl.lang.validation.SARLEarlyExitValidator;
 import io.sarl.lang.validation.SARLFeatureNameValidator;
 import io.sarl.lang.validation.SARLSyntaxErrorMessageProvider;
 import io.sarl.lang.validation.SARLValidator;
+import io.sarl.lang.validation.StandardSarlConfigurableIssueCodesProvider;
 import java.util.Properties;
 import org.eclipse.xtend.core.compiler.UnicodeAwarePostProcessor;
 import org.eclipse.xtend.core.conversion.IntUnderscoreValueConverter;
@@ -137,6 +138,7 @@ import org.eclipse.xtend.core.scoping.AnonymousClassConstructorScopes;
 import org.eclipse.xtend.core.typesystem.LocalClassAwareTypeNames;
 import org.eclipse.xtend.core.typesystem.TypeDeclarationAwareBatchTypeResolver;
 import org.eclipse.xtend.core.validation.CachingResourceValidatorImpl;
+import org.eclipse.xtend.core.validation.XtendConfigurableIssueCodes;
 import org.eclipse.xtend.core.validation.XtendImplicitReturnFinder;
 import org.eclipse.xtend.core.xtend.XtendFactory;
 import org.eclipse.xtend.lib.macro.file.MutableFileSystemSupport;
@@ -320,6 +322,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	@SingletonBinding(eager=true)
 	public Class<? extends SARLValidator> bindSARLValidator() {
 		return SARLValidator.class;
+	}
+	
+	// contributed by org.eclipse.xtext.xtext.generator.validation.ValidatorFragment2
+	public Class<? extends XtendConfigurableIssueCodes> bindXtendConfigurableIssueCodes() {
+		return SARLConfigurableIssueCodesProvider.class;
 	}
 	
 	// contributed by org.eclipse.xtext.xtext.generator.scoping.ImportNamespacesScopingFragment2
@@ -631,7 +638,7 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends ConfigurableIssueCodesProvider> bindConfigurableIssueCodesProvider() {
-		return SARLConfigurableIssueCodesProvider.class;
+		return StandardSarlConfigurableIssueCodesProvider.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
