@@ -2191,25 +2191,6 @@ public class SkillParsingTest {
 		}
 
 		@Test
-		public void invalidCapacityTypeForRequires() throws Exception {
-			SarlScript mas = file(multilineString(
-					"capacity C1 {",
-					"	def myaction(a : int) : float",
-					"}",
-					"event E1 {",
-					"	var abc : int",
-					"}",
-					"behavior B1 {",
-					"	requires C1, E1",
-					"}"
-					));
-			validate(mas).assertError(
-					TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
-					IssueCodes.INVALID_CAPACITY_TYPE,
-					"Invalid type: 'E1'. Only capacities can be used after the keyword 'requires'");
-		}
-
-		@Test
 		public void agentUnsuedCapacity_0() throws Exception {
 			SarlScript mas = file(multilineString(
 					"capacity C1 {",

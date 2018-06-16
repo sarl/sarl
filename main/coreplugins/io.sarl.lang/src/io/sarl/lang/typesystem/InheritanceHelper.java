@@ -33,6 +33,11 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
 import io.sarl.lang.annotation.SarlElementType;
+import io.sarl.lang.core.Agent;
+import io.sarl.lang.core.Behavior;
+import io.sarl.lang.core.Capacity;
+import io.sarl.lang.core.Event;
+import io.sarl.lang.core.Skill;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.util.Utils;
@@ -215,6 +220,20 @@ public class InheritanceHelper {
 		return 0;
 	}
 
+	/** Extract and replies the Ecore type, provided by {@link SarlPackage} for the given JvmElement.
+	 *
+	 * @param type the JVM type to test.
+	 * @return the code of the type, see {@link SarlPackage}; or {@code 0} if the code is unknown.
+	 * @since 0.8
+	 */
+	public int getSarlElementEcoreType(LightweightTypeReference type) {
+		final JvmType jvmType = type.getType();
+		if (jvmType instanceof JvmGenericType) {
+			return getSarlElementEcoreType((JvmGenericType) jvmType);
+		}
+		return 0;
+	}
+
 	/** Replies if the given JVM element is a SARL agent.
 	 *
 	 * @param type the JVM type to test.
@@ -223,6 +242,17 @@ public class InheritanceHelper {
 	 */
 	public boolean isSarlAgent(JvmGenericType type) {
 		return !type.isInterface() && getSarlElementEcoreType(type) == SarlPackage.SARL_AGENT;
+	}
+
+	/** Replies if the given JVM element is a SARL agent.
+	 *
+	 * @param type the JVM type to test.
+	 * @return {@code true} if the given type is a SARL agent, or not.
+	 * @since 0.8
+	 */
+	public boolean isSarlAgent(LightweightTypeReference type) {
+		return !type.isInterfaceType() && (getSarlElementEcoreType(type) == SarlPackage.SARL_AGENT
+				|| type.isSubtypeOf(Agent.class));
 	}
 
 	/** Replies if the given JVM element is a SARL behavior.
@@ -235,6 +265,17 @@ public class InheritanceHelper {
 		return !type.isInterface() && getSarlElementEcoreType(type) == SarlPackage.SARL_BEHAVIOR;
 	}
 
+	/** Replies if the given JVM element is a SARL behavior.
+	 *
+	 * @param type the JVM type to test.
+	 * @return {@code true} if the given type is a SARL behavior, or not.
+	 * @since 0.8
+	 */
+	public boolean isSarlBehavior(LightweightTypeReference type) {
+		return !type.isInterfaceType() && (getSarlElementEcoreType(type) == SarlPackage.SARL_BEHAVIOR
+				|| type.isSubtypeOf(Behavior.class));
+	}
+
 	/** Replies if the given JVM element is a SARL capacity.
 	 *
 	 * @param type the JVM type to test.
@@ -243,6 +284,17 @@ public class InheritanceHelper {
 	 */
 	public boolean isSarlCapacity(JvmGenericType type) {
 		return type.isInterface() && getSarlElementEcoreType(type) == SarlPackage.SARL_CAPACITY;
+	}
+
+	/** Replies if the given JVM element is a SARL capacity.
+	 *
+	 * @param type the JVM type to test.
+	 * @return {@code true} if the given type is a SARL capacity, or not.
+	 * @since 0.8
+	 */
+	public boolean isSarlCapacity(LightweightTypeReference type) {
+		return type.isInterfaceType() && (getSarlElementEcoreType(type) == SarlPackage.SARL_CAPACITY
+				|| type.isSubtypeOf(Capacity.class));
 	}
 
 	/** Replies if the given JVM element is a SARL event.
@@ -255,6 +307,17 @@ public class InheritanceHelper {
 		return !type.isInterface() && getSarlElementEcoreType(type) == SarlPackage.SARL_EVENT;
 	}
 
+	/** Replies if the given JVM element is a SARL event.
+	 *
+	 * @param type the JVM type to test.
+	 * @return {@code true} if the given type is a SARL event, or not.
+	 * @since 0.8
+	 */
+	public boolean isSarlEvent(LightweightTypeReference type) {
+		return !type.isInterfaceType() && (getSarlElementEcoreType(type) == SarlPackage.SARL_EVENT
+				|| type.isSubtypeOf(Event.class));
+	}
+
 	/** Replies if the given JVM element is a SARL skill.
 	 *
 	 * @param type the JVM type to test.
@@ -263,6 +326,17 @@ public class InheritanceHelper {
 	 */
 	public boolean isSarlSkill(JvmGenericType type) {
 		return !type.isInterface() && getSarlElementEcoreType(type) == SarlPackage.SARL_SKILL;
+	}
+
+	/** Replies if the given JVM element is a SARL skill.
+	 *
+	 * @param type the JVM type to test.
+	 * @return {@code true} if the given type is a SARL skill, or not.
+	 * @since 0.8
+	 */
+	public boolean isSarlSkill(LightweightTypeReference type) {
+		return !type.isInterfaceType() && (getSarlElementEcoreType(type) == SarlPackage.SARL_SKILL
+				|| type.isSubtypeOf(Skill.class));
 	}
 
 }

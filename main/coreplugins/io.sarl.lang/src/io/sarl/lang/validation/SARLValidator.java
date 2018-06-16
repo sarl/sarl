@@ -216,6 +216,7 @@ import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
 import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
 import io.sarl.lang.typesystem.IOperationHelper;
+import io.sarl.lang.typesystem.InheritanceHelper;
 import io.sarl.lang.typesystem.SARLExpressionHelper;
 import io.sarl.lang.util.OutParameter;
 import io.sarl.lang.util.Utils;
@@ -383,6 +384,9 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	@Inject
 	private SARLReadAndWriteTracking readAndWriteTracking;
+
+	@Inject
+	private InheritanceHelper inheritanceHelper;
 
 	// Update the annotation target information
 	{
@@ -1651,7 +1655,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	public void checkCapacityTypeForUses(SarlCapacityUses uses) {
 		for (final JvmParameterizedTypeReference usedType : uses.getCapacities()) {
 			final LightweightTypeReference ref = toLightweightTypeReference(usedType);
-			if (ref != null && !ref.isSubtypeOf(Capacity.class)) {
+			if (ref != null && !this.inheritanceHelper.isSarlCapacity(ref)) {
 				error(MessageFormat.format(
 						Messages.SARLValidator_57,
 						usedType.getQualifiedName(),
@@ -1666,29 +1670,6 @@ public class SARLValidator extends AbstractSARLValidator {
 		}
 	}
 
-	/** Check the types of the "requires" statement.
-	 *
-	 * @param requires the "requires" statement.
-	 */
-	@Check(CheckType.FAST)
-	public void checkCapacityTypeForRequires(SarlRequiredCapacity requires) {
-		for (final JvmParameterizedTypeReference requiredType : requires.getCapacities()) {
-			final LightweightTypeReference ref = toLightweightTypeReference(requiredType);
-			if (ref != null && !ref.isSubtypeOf(Capacity.class)) {
-				error(MessageFormat.format(
-						Messages.SARLValidator_57,
-						requiredType.getQualifiedName(),
-						Messages.SARLValidator_58,
-						this.grammarAccess.getRequiresKeyword()),
-						requiredType,
-						null,
-						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-						INVALID_CAPACITY_TYPE,
-						requiredType.getSimpleName());
-			}
-		}
-	}
-
 	/** Check the types of the parameters of the "fires" statement.
 	 *
 	 * @param action the signature that contains the "fires" statement.
@@ -1697,7 +1678,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	public void checkActionFires(SarlAction action) {
 		for (final JvmTypeReference event : action.getFiredEvents()) {
 			final LightweightTypeReference ref = toLightweightTypeReference(event);
-			if (ref != null && !ref.isSubtypeOf(Event.class)) {
+			if (ref != null && !this.inheritanceHelper.isSarlEvent(ref)) {
 				error(MessageFormat.format(
 						Messages.SARLValidator_57,
 						event.getQualifiedName(),
@@ -1963,7 +1944,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	public void checkBehaviorUnitEventType(SarlBehaviorUnit behaviorUnit) {
 		final JvmTypeReference event = behaviorUnit.getName();
 		final LightweightTypeReference ref = toLightweightTypeReference(event);
-		if (ref == null || ref.isInterfaceType() || !ref.isSubtypeOf(Event.class)) {
+		if (ref == null || !this.inheritanceHelper.isSarlEvent(ref)) {
 			error(MessageFormat.format(
 					Messages.SARLValidator_75,
 					event.getQualifiedName(),
@@ -2714,7 +2695,7 @@ public class SARLValidator extends AbstractSARLValidator {
 				if (type != null && !type.eIsProxy()) {
 					final LightweightTypeReference reference = toLightweightTypeReference(type, capacity);
 					// Validating by the annotation value's type.
-					if (reference.isSubtypeOf(Skill.class)) {
+					if (this.inheritanceHelper.isSarlSkill(reference)) {
 						final EObject element = this.associations.getPrimaryJvmElement(capacity);
 						assert element instanceof JvmType;
 						if (!reference.isSubtypeOf((JvmType) element)) {
