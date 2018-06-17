@@ -191,6 +191,15 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 		return makeAbsolute(unix2os(SARLConfig.FOLDER_SOURCE_GENERATED));
 	}
 
+	/** Replies the default output folder for tests.
+	 *
+	 * @return the default output folder for tests.
+	 * @since 0.8
+	 */
+	protected File getDefaultTestOutput() {
+		return makeAbsolute(unix2os(SARLConfig.FOLDER_TEST_SOURCE_GENERATED));
+	}
+
 	/** Replies the test input folder.
 	 *
 	 * @return the test input folder.

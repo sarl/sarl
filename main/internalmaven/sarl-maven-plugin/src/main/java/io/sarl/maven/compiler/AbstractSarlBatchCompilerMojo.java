@@ -186,11 +186,13 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	 *
 	 * @param classPath the classpath
 	 * @param sourcePaths the source paths.
-	 * @param outputPath the output path.
+	 * @param sarlOutputPath the output path for receiving the SARL code.
+	 * @param classOutputPath the output path for receiving the Java class files.
 	 * @throws MojoExecutionException if error.
 	 * @throws MojoFailureException if failure.
 	 */
-	protected void compile(List<File> classPath, List<File> sourcePaths, File outputPath) throws MojoExecutionException, MojoFailureException {
+	protected void compile(List<File> classPath, List<File> sourcePaths, File sarlOutputPath,
+			File classOutputPath) throws MojoExecutionException, MojoFailureException {
 		final SarlBatchCompiler compiler = getBatchCompiler();
 		final MavenProject project = getProject();
 		compiler.setResourceSetProvider(new MavenProjectResourceSetProvider(project));
@@ -202,7 +204,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 		}
 		final String baseDir = project.getBasedir().getAbsolutePath();
 		compiler.setJavaPostCompilationEnable(getPostRunningOfJavaCompiler());
-		compiler.setClassOutputPath(makeAbsolute(new File(getProject().getBuild().getOutputDirectory())));
+		compiler.setClassOutputPath(classOutputPath);
 		compiler.setJavaSourceVersion(getSourceVersion());
 		compiler.setBasePath(baseDir);
 		compiler.setTempDirectory(getTempDirectory());
@@ -212,7 +214,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 		compiler.setBootClassPath(bootClassPath);
 		final List<File> filteredSourcePaths = Lists.newArrayList(filtered);
 		compiler.setSourcePath(filteredSourcePaths);
-		compiler.setOutputPath(outputPath);
+		compiler.setOutputPath(sarlOutputPath);
 		compiler.setFileEncoding(getEncoding());
 		compiler.setWriteTraceFiles(getGenerateTraceFiles());
 		compiler.setWriteStorageFiles(getGenerateStorageFiles());
