@@ -26,6 +26,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreAccess;
 import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreInitializer;
 
+import io.sarl.lang.SARLConfig;
 import io.sarl.lang.compiler.GeneratorConfig2;
 
 /** Accessors to the preferences for the SARL builder.
@@ -36,6 +37,12 @@ import io.sarl.lang.compiler.GeneratorConfig2;
  * @mavenartifactid $ArtifactId$
  */
 public class SARLBuilderPreferenceAccess {
+
+	/**
+	 * Preference identifier for the folder name in which unit test sources are generated.
+	 * @since 0.8
+	 */
+	public static final String PREF_GENERATED_TEST_SOURCE_FOLDER = "io.sarl.builder.generatedTestSourceFolder"; //$NON-NLS-1$
 
 	/**
 	 * Preference identifier for generating <code>@Inline</code>.
@@ -81,10 +88,13 @@ public class SARLBuilderPreferenceAccess {
 	 * @param generatorConfig the configuration to set up.
 	 * @param context the context of the building.
 	 */
-	@SuppressWarnings("static-method")
+	@SuppressWarnings({"static-method", "checkstyle:npathcomplexity"})
 	public void loadBuilderPreferences(GeneratorConfig2 generatorConfig, IProject context) {
 		final IPreferenceStore preferenceStore = SARLPreferences.getSARLPreferencesFor(context);
 		if (preferenceStore != null) {
+			if (preferenceStore.contains(PREF_GENERATED_TEST_SOURCE_FOLDER)) {
+				generatorConfig.setGeneratedTestSourceFolder(preferenceStore.getString(PREF_GENERATED_TEST_SOURCE_FOLDER));
+			}
 			if (preferenceStore.contains(PREF_GENERATE_INLINE)) {
 				generatorConfig.setGenerateInlineAnnotation(preferenceStore.getBoolean(PREF_GENERATE_INLINE));
 			}
@@ -123,6 +133,7 @@ public class SARLBuilderPreferenceAccess {
 		@Override
 		public void initialize(IPreferenceStoreAccess preferenceStoreAccess) {
 			final IPreferenceStore store = preferenceStoreAccess.getWritablePreferenceStore();
+			store.setDefault(PREF_GENERATED_TEST_SOURCE_FOLDER, SARLConfig.FOLDER_TEST_SOURCE_GENERATED);
 			store.setDefault(PREF_GENERATE_INLINE, GeneratorConfig2.DEFAULT_GENERATE_INLINE_ANNOTATION);
 			store.setDefault(PREF_USE_EXPRESSION_INTERPRETER, GeneratorConfig2.DEFAULT_USE_EXPRESSION_INTERPRETER_FOR_INLINE_ANNOTATION);
 			store.setDefault(PREF_GENERATE_PURE, GeneratorConfig2.DEFAULT_GENERATE_PURE_ANNOTATION);
