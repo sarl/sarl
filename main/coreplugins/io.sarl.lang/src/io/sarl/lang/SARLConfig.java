@@ -52,6 +52,12 @@ public final class SARLConfig {
 	 */
 	public static final String FOLDER_TEST_SOURCE_GENERATED = "src/test/generated-sources/sarl"; //$NON-NLS-1$
 
+	/** Name of the output configuration that is dedicated to tests.
+	 *
+	 * @since 0.8
+	 */
+	public static final String TEST_OUTPUT_CONFIGURATION = "DEFAULT_TEST_OUTPUT"; //$NON-NLS-1$
+
 	/** Path of the generated source files that should be no more used when creating
 	 * new projects. This value is the default generation folder form Xtext.
 	 */

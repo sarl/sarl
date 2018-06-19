@@ -23,6 +23,7 @@ package io.sarl.lang.compiler;
 
 import static com.google.common.collect.Sets.newHashSet;
 
+import java.util.Collections;
 import java.util.Set;
 
 import com.google.inject.Singleton;
@@ -45,6 +46,27 @@ public class SarlOutputConfigurationProvider extends OutputConfigurationProvider
 
 	@Override
 	public Set<OutputConfiguration> getOutputConfigurations() {
+		final OutputConfiguration defaultOutput = createStandardOutputConfiguration();
+		final OutputConfiguration testOutput = createTestOutputConfiguration();
+		if (defaultOutput != null) {
+			if (testOutput != null) {
+				return newHashSet(defaultOutput, testOutput);
+			}
+			return newHashSet(defaultOutput);
+		}
+		if (testOutput != null) {
+			return newHashSet(testOutput);
+		}
+		return Collections.emptySet();
+	}
+
+	/** Create the standard output configuration.
+	 *
+	 * @return the configuration, never {@code null}.
+	 * @since 0.8
+	 */
+	@SuppressWarnings("static-method")
+	protected OutputConfiguration createStandardOutputConfiguration() {
 		final OutputConfiguration defaultOutput = new OutputConfiguration(IFileSystemAccess.DEFAULT_OUTPUT);
 		defaultOutput.setDescription(Messages.SarlOutputConfigurationProvider_0);
 		defaultOutput.setOutputDirectory(SARLConfig.FOLDER_SOURCE_GENERATED);
@@ -54,7 +76,26 @@ public class SarlOutputConfigurationProvider extends OutputConfigurationProvider
 		defaultOutput.setCleanUpDerivedResources(true);
 		defaultOutput.setSetDerivedProperty(true);
 		defaultOutput.setKeepLocalHistory(false);
-		return newHashSet(defaultOutput);
+		return defaultOutput;
+	}
+
+	/** Create the unit test output configuration.
+	 *
+	 * @return the configuration, never {@code null}.
+	 * @since 0.8
+	 */
+	@SuppressWarnings("static-method")
+	protected OutputConfiguration createTestOutputConfiguration() {
+		final OutputConfiguration testOutput = new OutputConfiguration(SARLConfig.TEST_OUTPUT_CONFIGURATION);
+		testOutput.setDescription(Messages.SarlOutputConfigurationProvider_1);
+		testOutput.setOutputDirectory(SARLConfig.FOLDER_TEST_SOURCE_GENERATED);
+		testOutput.setOverrideExistingResources(true);
+		testOutput.setCreateOutputDirectory(true);
+		testOutput.setCanClearOutputDirectory(false);
+		testOutput.setCleanUpDerivedResources(true);
+		testOutput.setSetDerivedProperty(true);
+		testOutput.setKeepLocalHistory(false);
+		return testOutput;
 	}
 
 }

@@ -39,6 +39,7 @@ public final class Messages extends NLS {
 	public static String GeneratorConfigProvider2_0;
 
 	public static String SarlOutputConfigurationProvider_0;
+	public static String SarlOutputConfigurationProvider_1;
 
 	static {
 		// initialize resource bundle

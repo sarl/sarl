@@ -23,14 +23,22 @@ package io.sarl.lang.compiler;
 
 import javax.inject.Inject;
 
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend.core.compiler.XtendGenerator;
+import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.util.AnnotationLookup;
+import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.linking.ILinker;
+import org.eclipse.xtext.util.Strings;
+import org.eclipse.xtext.xbase.compiler.DisableCodeGenerationAdapter;
 import org.eclipse.xtext.xbase.compiler.GeneratorConfig;
+import org.eclipse.xtext.xbase.compiler.IGeneratorConfigProvider;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import io.sarl.lang.SARLConfig;
 import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
 import io.sarl.lang.typesystem.IOperationHelper;
 import io.sarl.lang.util.Utils;
@@ -41,7 +49,8 @@ import io.sarl.lang.util.Utils;
  * <p>This generator:<ul>
  * <li>forces the JvmOperation to be annotated with <code>@Pure</code>
  * dynamically.</li>
- * <li>Generate static initialization block from a static constructor.</li>
+ * <li>Generate static initialization block from a static constructor;</li>
+ * <li>Generate the files into the standard output folder or the unit test output folder.</li>
  * </ul>
  *
  * <p>The roles of the different generation tools are:<ul>
@@ -64,6 +73,9 @@ public class SARLJvmGenerator extends XtendGenerator {
 
 	@Inject
 	private AnnotationLookup annotations;
+
+	@Inject
+	private IGeneratorConfigProvider generatorConfigProvider;
 
 	@Override
 	protected ITreeAppendable _generateMember(JvmOperation it, ITreeAppendable appendable, GeneratorConfig config) {
@@ -121,6 +133,42 @@ public class SARLJvmGenerator extends XtendGenerator {
 		tracedAppendable.append("static "); //$NON-NLS-1$
 		generateExecutableBody(it, tracedAppendable, config);
 		return appendable;
+	}
+
+	@Override
+	protected void _internalDoGenerate(JvmDeclaredType type, IFileSystemAccess fsa) {
+		if (DisableCodeGenerationAdapter.isDisabled(type)) {
+			return;
+		}
+		final String qn = type.getQualifiedName();
+		if (!Strings.isEmpty(qn)) {
+			final String fn = qn.replace('.', '/') + ".java"; //$NON-NLS-1$
+			final CharSequence content = generateType(type, this.generatorConfigProvider.get(type));
+			final String outputConfigurationName;
+			if (isInsideTestFolder(type.eResource())) {
+				outputConfigurationName = SARLConfig.TEST_OUTPUT_CONFIGURATION;
+			} else {
+				outputConfigurationName = IFileSystemAccess.DEFAULT_OUTPUT;
+			}
+			fsa.generateFile(fn, outputConfigurationName, content);
+		}
+	}
+
+	/** Replies if the given resource is inside a unit test folder.
+	 *
+	 * @param resource the resource to test.
+	 * @return {@code true} if the given resource is inside unit test folder.
+	 */
+	@SuppressWarnings("static-method")
+	protected boolean isInsideTestFolder(Resource resource) {
+		final URI uri = resource.getURI();
+		assert uri != null;
+		final String path = uri.path();
+		if (!Strings.isEmpty(path)
+			&& path.contains("/" + SARLConfig.FOLDER_TEST_SOURCE_SARL + "/")) { //$NON-NLS-1$ //$NON-NLS-2$
+			return true;
+		}
+		return false;
 	}
 
 }

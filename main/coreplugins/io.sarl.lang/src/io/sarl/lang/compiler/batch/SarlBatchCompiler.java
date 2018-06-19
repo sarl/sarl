@@ -72,6 +72,7 @@ import org.eclipse.xtext.common.types.descriptions.IStubGenerator;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.generator.GeneratorContext;
 import org.eclipse.xtext.generator.GeneratorDelegate;
+import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IOutputConfigurationProvider;
 import org.eclipse.xtext.generator.JavaIoFileSystemAccess;
 import org.eclipse.xtext.generator.OutputConfiguration;
@@ -1832,7 +1833,9 @@ public class SarlBatchCompiler {
 		}
 		final CharMatcher slash = CharMatcher.is('/');
 		final String relativeTargetFolder = slash.trimTrailingFrom(relativizedTarget.getPath());
-		this.outputConfiguration = this.outputConfigurationProvider.getOutputConfigurations().iterator().next();
+		this.outputConfiguration = Iterables.find(
+				this.outputConfigurationProvider.getOutputConfigurations(),
+				it -> Strings.equal(it.getName(), IFileSystemAccess.DEFAULT_OUTPUT));
 		this.outputConfiguration.setOutputDirectory(relativeTargetFolder);
 		for (final File source : sourceFolders) {
 			if (cancelIndicator.isCanceled()) {
