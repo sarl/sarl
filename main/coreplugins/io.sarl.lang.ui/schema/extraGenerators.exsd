@@ -113,7 +113,7 @@
          Following is an example definition of an execution environment and analyzer.
 &lt;p&gt;
 &lt;pre&gt;
-&lt;extension point=&quot;io.sarl.lang.extraGenerators&quot;&gt;
+&lt;extension point=&quot;io.sarl.lang.ui.extraGenerators&quot;&gt;
       &lt;extraGenerator
             class=&quot;com.example.MyGenerator&quot;/&gt;
 &lt;/extension&gt;

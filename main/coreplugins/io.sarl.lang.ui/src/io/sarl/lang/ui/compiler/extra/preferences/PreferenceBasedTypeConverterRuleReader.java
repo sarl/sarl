@@ -30,7 +30,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 
 import io.sarl.lang.compiler.extra.ExtraLanguageTypeConverter.TypeConverterRuleReader;
 import io.sarl.lang.compiler.extra.IExtraLanguageGeneratorContext;
-import io.sarl.lang.ui.compiler.extra.ProjectAdapter;
+import io.sarl.lang.ui.compiler.ProjectAdapter;
 
 /** Reader of the type conversion rules from the preferences.
  *

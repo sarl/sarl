@@ -394,7 +394,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		forceMavenCompilerConfiguration(request.getMavenProjectFacade(), config);
 		subMonitor.worked(1);
 		io.sarl.eclipse.natures.SARLProjectConfigurator.addSarlNatures(
-				request.getMavenProjectFacade().getProject(),
+				request.getProject(),
 				subMonitor.newChild(1));
 	}
 

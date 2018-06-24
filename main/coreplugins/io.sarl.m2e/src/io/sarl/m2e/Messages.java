@@ -43,6 +43,7 @@ public class Messages extends NLS {
 	}
 
 	public static String SARLMavenEclipsePlugin_0;
+	public static String MavenProjectAdapter_0;
 	public static String SARLProjectConfigurator_0;
 	public static String SARLProjectConfigurator_1;
 	public static String SARLProjectConfigurator_2;

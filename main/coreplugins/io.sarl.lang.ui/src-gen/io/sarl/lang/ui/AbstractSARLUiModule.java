@@ -27,6 +27,7 @@ import com.google.inject.Binder;
 import com.google.inject.Provider;
 import com.google.inject.name.Names;
 import io.sarl.lang.compiler.IGeneratorConfigProvider2;
+import io.sarl.lang.compiler.IResourceTypeDetector;
 import io.sarl.lang.compiler.extra.ExtraLanguageFeatureNameConverter;
 import io.sarl.lang.compiler.extra.ExtraLanguageGeneratorSupport;
 import io.sarl.lang.compiler.extra.ExtraLanguageTypeConverter;
@@ -40,6 +41,7 @@ import io.sarl.lang.ui.codebuilder.SarlFieldBuilder;
 import io.sarl.lang.ui.codebuilder.SarlMethodBuilder;
 import io.sarl.lang.ui.codebuilder.SarlParameterBuilder;
 import io.sarl.lang.ui.compiler.EclipseGeneratorConfigProvider2;
+import io.sarl.lang.ui.compiler.EclipseResourceTypeDetector;
 import io.sarl.lang.ui.compiler.ProjectRelativeFileSystemAccess;
 import io.sarl.lang.ui.compiler.extra.ExtensionPointExtraLanguageGeneratorProvider;
 import io.sarl.lang.ui.compiler.extra.ExtensionPointExtraLanguageOutputConfigurationProvider;
@@ -574,6 +576,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IGeneratorConfigProvider2> bindIGeneratorConfigProvider2() {
 		return EclipseGeneratorConfigProvider2.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends IResourceTypeDetector> bindIResourceTypeDetector() {
+		return EclipseResourceTypeDetector.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]

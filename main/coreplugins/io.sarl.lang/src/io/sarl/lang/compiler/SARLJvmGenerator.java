@@ -23,8 +23,6 @@ package io.sarl.lang.compiler;
 
 import javax.inject.Inject;
 
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend.core.compiler.XtendGenerator;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmOperation;
@@ -76,6 +74,9 @@ public class SARLJvmGenerator extends XtendGenerator {
 
 	@Inject
 	private IGeneratorConfigProvider generatorConfigProvider;
+
+	@Inject
+	private IResourceTypeDetector resourceTypeDetector;
 
 	@Override
 	protected ITreeAppendable _generateMember(JvmOperation it, ITreeAppendable appendable, GeneratorConfig config) {
@@ -145,30 +146,14 @@ public class SARLJvmGenerator extends XtendGenerator {
 			final String fn = qn.replace('.', '/') + ".java"; //$NON-NLS-1$
 			final CharSequence content = generateType(type, this.generatorConfigProvider.get(type));
 			final String outputConfigurationName;
-			if (isInsideTestFolder(type.eResource())) {
+			final Boolean isTest = this.resourceTypeDetector.isTestResource(type.eResource());
+			if (isTest != null && isTest.booleanValue()) {
 				outputConfigurationName = SARLConfig.TEST_OUTPUT_CONFIGURATION;
 			} else {
 				outputConfigurationName = IFileSystemAccess.DEFAULT_OUTPUT;
 			}
 			fsa.generateFile(fn, outputConfigurationName, content);
 		}
-	}
-
-	/** Replies if the given resource is inside a unit test folder.
-	 *
-	 * @param resource the resource to test.
-	 * @return {@code true} if the given resource is inside unit test folder.
-	 */
-	@SuppressWarnings("static-method")
-	protected boolean isInsideTestFolder(Resource resource) {
-		final URI uri = resource.getURI();
-		assert uri != null;
-		final String path = uri.path();
-		if (!Strings.isEmpty(path)
-			&& path.contains("/" + SARLConfig.FOLDER_TEST_SOURCE_SARL + "/")) { //$NON-NLS-1$ //$NON-NLS-2$
-			return true;
-		}
-		return false;
 	}
 
 }
