@@ -35,6 +35,10 @@
 			<groupId>io.janusproject</groupId>
 			<artifactId>io.janusproject.kernel</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>io.sarl</groupId>
+			<artifactId>io.sarl.lang.sarlc</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
