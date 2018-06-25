@@ -27,8 +27,6 @@ import org.eclipse.debug.internal.ui.SWTFactory;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -87,6 +85,7 @@ public class SarlEditorPreferencePage extends PreferencePage implements IWorkben
 	@Override
 	protected Control createContents(Composite parent) {
 		initializeDialogUnits(parent);
+		//noDefaultAndApplyButton();
 
 		// define container & its gridding
 		final Composite pageComponent = new Composite(parent, SWT.NULL);
@@ -104,35 +103,14 @@ public class SarlEditorPreferencePage extends PreferencePage implements IWorkben
 		this.autoformattingButton = SWTFactory.createCheckButton(pageComponent,
 				Messages.SarlEditorPreferencePage_0,
 				null,
-				getPreferenceStore().getBoolean(SARLSourceViewerPreferenceAccess.AUTOFORMATTING_PROPERTY),
+				getPreferenceAccessor().isAutoFormattingEnabled(),
 				1);
-		this.autoformattingButton.addSelectionListener(new SelectionListener() {
-			@Override
-			public void widgetSelected(SelectionEvent event) {
-				updateValidity();
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent event) {
-				//
-			}
-		});
 
 		SWTFactory.createVerticalSpacer(pageComponent, 1);
 
 		applyDialogFont(parent);
 
-		updateValidity();
-
 		return parent;
-	}
-
-	/** Update the validity flag from the widgets' contents.
-	 */
-	protected void updateValidity() {
-		final boolean isValid;
-		isValid = this.autoformattingButton.getSelection() != getPreferenceAccessor().isAutoFormattingEnabled();
-		setValid(isValid);
 	}
 
 	@Override
