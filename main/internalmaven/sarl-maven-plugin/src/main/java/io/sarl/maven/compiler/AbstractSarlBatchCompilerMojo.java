@@ -351,10 +351,11 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 		return null;
 	}
 
-	/** Replies the current classpath.
+	/** Replies the classpath for the standard code.
 	 *
 	 * @return the current classpath.
 	 * @throws MojoExecutionException on failure.
+	 * @see #getTestClassPath()
 	 */
 	protected List<File> getClassPath() throws MojoExecutionException {
 		final Set<String> classPath = new LinkedHashSet<>();
@@ -369,6 +370,37 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 			classPath.add(dep.getFile().getAbsolutePath());
 		}
 		classPath.remove(project.getBuild().getOutputDirectory());
+		final List<File> files = new ArrayList<>();
+		for (final String filename : classPath) {
+			final File file = new File(filename);
+			if (file.exists()) {
+				files.add(file);
+			} else {
+				getLog().warn(MessageFormat.format(Messages.AbstractSarlBatchCompilerMojo_10, filename));
+			}
+		}
+		return files;
+	}
+
+	/** Replies the classpath for the test code.
+	 *
+	 * @return the current classpath.
+	 * @throws MojoExecutionException on failure.
+	 * @since 0.8
+	 * @see #getClassPath()
+	 */
+	protected List<File> getTestClassPath() throws MojoExecutionException {
+		final Set<String> classPath = new LinkedHashSet<>();
+		final MavenProject project = getProject();
+		classPath.add(project.getBuild().getTestSourceDirectory());
+		try {
+			classPath.addAll(project.getTestClasspathElements());
+		} catch (DependencyResolutionRequiredException e) {
+			throw new MojoExecutionException(e.getLocalizedMessage(), e);
+		}
+		for (final Artifact dep : project.getArtifacts()) {
+			classPath.add(dep.getFile().getAbsolutePath());
+		}
 		final List<File> files = new ArrayList<>();
 		for (final String filename : classPath) {
 			final File file = new File(filename);

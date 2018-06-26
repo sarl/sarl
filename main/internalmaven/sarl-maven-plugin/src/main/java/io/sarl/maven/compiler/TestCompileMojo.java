@@ -74,7 +74,7 @@ public class TestCompileMojo extends AbstractCompileMojo {
 				compileSourceRoots.add(file);
 			}
 		}
-		final List<File> classPath = getClassPath();
+		final List<File> classPath = getTestClassPath();
 		project.addTestCompileSourceRoot(outputDirectory.getAbsolutePath());
 		compile(classPath, compileSourceRoots, outputDirectory,
 				makeAbsolute(new File(getProject().getBuild().getTestOutputDirectory())));
