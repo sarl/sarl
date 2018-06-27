@@ -2,7 +2,7 @@
 
 [:Outline:]
 
-[:Fact:]{(io.sarl.lang.compiler.batch.Main)::getCompilerProgramName == '[:name](sarlc)'}
+[:Fact:]{(io.sarl.lang.sarlc.Main)::getCompilerProgramName == '[:name](sarlc)'}
 
 A command-line compiler is a tool that could be invoked from the command-line shell in order to compiler a language source file.
 [:name:] is the command-line compiler for the SARL language.
@@ -33,9 +33,8 @@ The complete list of the options is:
 | Option | Description |
 | ------ | ----------- |
 [:Dynamic:]{
-	io.sarl.lang.compiler.batch.Main::getOptions.renderToMarkdown
+	io.sarl.lang.sarlc.Main::getOptions.renderToMarkdown
 }
-
 
 
 [:Include:](../legal.inc)

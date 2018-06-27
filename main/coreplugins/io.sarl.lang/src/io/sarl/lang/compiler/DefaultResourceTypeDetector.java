@@ -21,31 +21,34 @@
 
 package io.sarl.lang.compiler;
 
-import org.eclipse.osgi.util.NLS;
+import com.google.inject.Singleton;
+import org.eclipse.emf.ecore.resource.Resource;
 
-/** Localized Messages.
+import io.sarl.lang.SARLConfig;
+
+
+/** Detect the type of a folder.
+ *
+ * <p>A resource may be inside a standard source folder or a folder that is dedicated
+ * to test code. Detecting in which case a resource is the purpose of this interface.
+ *
+ * <p>This detector does not make any assumption on the proejct structure. Consequently,
+ * it cannot detect the type of the resource.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @ExcludeFromApidoc
+ * @since 0.8
+ * @see SARLConfig#FOLDER_TEST_SOURCE_SARL
+ * @see SARLConfig#FOLDER_TEST_SOURCE_GENERATED
  */
-@SuppressWarnings("all")
-public final class Messages extends NLS {
+@Singleton
+public class DefaultResourceTypeDetector extends AbstractResourceTypeDetector {
 
-	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages";
-
-	public static String GeneratorConfigProvider2_0;
-
-	public static String SarlOutputConfigurationProvider_0;
-	public static String SarlOutputConfigurationProvider_1;
-
-	static {
-		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+	@Override
+	public Boolean isTestResource(Resource resource) {
+		return null;
 	}
 
-	private Messages() {
-	}
 }

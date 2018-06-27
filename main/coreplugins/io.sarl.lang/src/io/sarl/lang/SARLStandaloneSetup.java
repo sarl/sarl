@@ -21,7 +21,11 @@
 
 package io.sarl.lang;
 
+import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Module;
+import com.google.inject.util.Modules;
+import org.eclipse.xtend.core.XtendStandaloneSetup;
 
 /**
  * Initialization support for running Xtext languages
@@ -41,6 +45,43 @@ public class SARLStandaloneSetup extends SARLStandaloneSetupGenerated {
 	 */
 	public static Injector doSetup() {
 		return new SARLStandaloneSetup().createInjectorAndDoEMFRegistration();
+	}
+
+	/** Set up the EMF modules for the SARL language.
+	 *
+	 * @param modules the injection modules that are overriding the standard SARL module.
+	 * @return the injector.
+	 * @since 0.8
+	 * @see SARLRuntimeModule
+	 */
+	public static Injector doSetup(Module... modules) {
+		return new SARLStandaloneSetup().createInjectorAndDoEMFRegistration(modules);
+	}
+
+	/** Create the injector based on the given set of modules and prepare the EMF infrastructure.
+	 *
+	 * @param modules the injection modules that are overriding the standard SARL module.
+	 * @return the injector.
+	 * @since 0.8
+	 * @see SARLRuntimeModule
+	 */
+	public Injector createInjectorAndDoEMFRegistration(Module... modules) {
+		XtendStandaloneSetup.doSetup();
+		final Injector injector = createInjector(modules);
+		register(injector);
+		return injector;
+	}
+
+	/** Create the injectors based on the given set of modules.
+	 *
+	 * @param modules the injection modules that are overriding the standard SARL module.
+	 * @return the injector.
+	 * @since 0.8
+	 * @see SARLRuntimeModule
+	 */
+	@SuppressWarnings("static-method")
+	public Injector createInjector(Module... modules) {
+		return Guice.createInjector(Modules.override(new SARLRuntimeModule()).with(modules));
 	}
 
 }

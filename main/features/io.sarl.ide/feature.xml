@@ -231,6 +231,10 @@ tools upon the Eclipse IDE.
       <import plugin="org.eclipse.core.net" version="1.3.100" match="greaterOrEqual"/>
       <import plugin="org.eclipse.debug.ui" version="3.12.50" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.navigator" version="3.7.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.core" version="3.13.100" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.ui" version="3.13.51" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.launching" version="3.9.51" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.debug.ui" version="3.8.51" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.expressions" version="3.6.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.search" version="3.11.100" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.console" version="3.7.1" match="greaterOrEqual"/>

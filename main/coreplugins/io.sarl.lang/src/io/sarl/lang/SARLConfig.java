@@ -32,25 +32,41 @@ package io.sarl.lang;
  */
 public final class SARLConfig {
 
+	/** Path of the main source files within a Maven project.
+	 * @since 0.8
+	 */
+	public static final String FOLDER_MAVEN_MAIN_PREFIX = "src/main"; //$NON-NLS-1$
+
 	/** Path of the Java source files.
 	 */
-	public static final String FOLDER_SOURCE_JAVA = "src/main/java"; //$NON-NLS-1$
+	public static final String FOLDER_SOURCE_JAVA = FOLDER_MAVEN_MAIN_PREFIX + "/java"; //$NON-NLS-1$
 
 	/** Path of the SARL source files.
 	 */
-	public static final String FOLDER_SOURCE_SARL = "src/main/sarl"; //$NON-NLS-1$
+	public static final String FOLDER_SOURCE_SARL = FOLDER_MAVEN_MAIN_PREFIX + "/sarl"; //$NON-NLS-1$
 
 	/** Path of the generated source files.
 	 */
-	public static final String FOLDER_SOURCE_GENERATED = "src/main/generated-sources/sarl"; //$NON-NLS-1$
+	public static final String FOLDER_SOURCE_GENERATED = FOLDER_MAVEN_MAIN_PREFIX + "/generated-sources/sarl"; //$NON-NLS-1$
+
+	/** Path of the test source files within a Maven project.
+	 * @since 0.8
+	 */
+	public static final String FOLDER_MAVEN_TEST_PREFIX = "src/test"; //$NON-NLS-1$
 
 	/** Path of the Java source files.
 	 */
-	public static final String FOLDER_TEST_SOURCE_SARL = "src/test/sarl"; //$NON-NLS-1$
+	public static final String FOLDER_TEST_SOURCE_SARL = FOLDER_MAVEN_TEST_PREFIX + "/sarl"; //$NON-NLS-1$
 
 	/** Path of the SARL source files.
 	 */
-	public static final String FOLDER_TEST_SOURCE_GENERATED = "src/test/generated-sources/sarl"; //$NON-NLS-1$
+	public static final String FOLDER_TEST_SOURCE_GENERATED = FOLDER_MAVEN_TEST_PREFIX + "/generated-sources/sarl"; //$NON-NLS-1$
+
+	/** Name of the output configuration that is dedicated to tests.
+	 *
+	 * @since 0.8
+	 */
+	public static final String TEST_OUTPUT_CONFIGURATION = "DEFAULT_TEST_OUTPUT"; //$NON-NLS-1$
 
 	/** Path of the generated source files that should be no more used when creating
 	 * new projects. This value is the default generation folder form Xtext.

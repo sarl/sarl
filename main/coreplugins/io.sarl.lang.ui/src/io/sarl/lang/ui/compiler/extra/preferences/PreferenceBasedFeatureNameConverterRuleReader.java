@@ -36,7 +36,7 @@ import io.sarl.lang.compiler.extra.ExtraLanguageFeatureNameConverter.FeatureName
 import io.sarl.lang.compiler.extra.ExtraLanguageFeatureNameConverter.FeaturePattern;
 import io.sarl.lang.compiler.extra.ExtraLanguageFeatureNameConverter.FeatureReplacement;
 import io.sarl.lang.compiler.extra.IExtraLanguageGeneratorContext;
-import io.sarl.lang.ui.compiler.extra.ProjectAdapter;
+import io.sarl.lang.ui.compiler.ProjectAdapter;
 
 /** Reader of the feature name conversion rules from the preferences.
  *

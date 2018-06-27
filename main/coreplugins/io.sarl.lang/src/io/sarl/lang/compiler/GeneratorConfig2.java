@@ -23,6 +23,8 @@ package io.sarl.lang.compiler;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import io.sarl.lang.SARLConfig;
+
 
 /** Configuration for the SARL generator.
  *
@@ -116,6 +118,12 @@ public class GeneratorConfig2 {
 	 * @since 0.8
 	 */
 	private boolean generateCloneFunction = DEFAULT_GENERATE_CLONE_FUNCTION;
+
+	/**
+	 * Name of the folder in which the generated test source code is written.
+	 * @since 0.8
+	 */
+	private String generatedTestSourceCodeFolder = SARLConfig.FOLDER_TEST_SOURCE_GENERATED;
 
 	/** Replies if the <code>@Inline</code> shall be generated.
 	 *
@@ -242,6 +250,25 @@ public class GeneratorConfig2 {
 	 */
 	public void setGenerateSerialNumberFields(final boolean generateFields) {
 		this.generateSerialNumberField = generateFields;
+	}
+
+	/** Replies the folder in which the generated test source in written.
+	 *
+	 * @return the name of the folder.
+	 * @since 0.8
+	 */
+	public String getGeneratedTestSourceFolder() {
+		return this.generatedTestSourceCodeFolder;
+	}
+
+	/** Set the folder in which the generated test source in written.
+	 *
+	 * @param folder the name of the folder.
+	 * @since 0.8
+	 */
+	public void setGeneratedTestSourceFolder(String folder) {
+		assert folder != null;
+		this.generatedTestSourceCodeFolder = folder;
 	}
 
 }

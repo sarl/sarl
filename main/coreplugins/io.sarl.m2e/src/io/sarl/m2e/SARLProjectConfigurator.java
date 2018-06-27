@@ -199,7 +199,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		}
 		classpath.addSourceEntry(
 				testInputPath,
-				facade.getOutputLocation(),
+				facade.getTestOutputLocation(),
 				true);
 		subMonitor.worked(1);
 
@@ -210,7 +210,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		}
 		descriptor = classpath.addSourceEntry(
 				testOutputPath,
-				facade.getOutputLocation(),
+				facade.getTestOutputLocation(),
 				true);
 		descriptor.setClasspathAttribute(IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS, Boolean.TRUE.toString());
 		subMonitor.done();
@@ -394,7 +394,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		forceMavenCompilerConfiguration(request.getMavenProjectFacade(), config);
 		subMonitor.worked(1);
 		io.sarl.eclipse.natures.SARLProjectConfigurator.addSarlNatures(
-				request.getMavenProjectFacade().getProject(),
+				request.getProject(),
 				subMonitor.newChild(1));
 	}
 

@@ -24,13 +24,19 @@ package io.sarl.lang.compiler;
 import javax.inject.Inject;
 
 import org.eclipse.xtend.core.compiler.XtendGenerator;
+import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.util.AnnotationLookup;
+import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.linking.ILinker;
+import org.eclipse.xtext.util.Strings;
+import org.eclipse.xtext.xbase.compiler.DisableCodeGenerationAdapter;
 import org.eclipse.xtext.xbase.compiler.GeneratorConfig;
+import org.eclipse.xtext.xbase.compiler.IGeneratorConfigProvider;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import io.sarl.lang.SARLConfig;
 import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
 import io.sarl.lang.typesystem.IOperationHelper;
 import io.sarl.lang.util.Utils;
@@ -41,7 +47,8 @@ import io.sarl.lang.util.Utils;
  * <p>This generator:<ul>
  * <li>forces the JvmOperation to be annotated with <code>@Pure</code>
  * dynamically.</li>
- * <li>Generate static initialization block from a static constructor.</li>
+ * <li>Generate static initialization block from a static constructor;</li>
+ * <li>Generate the files into the standard output folder or the unit test output folder.</li>
  * </ul>
  *
  * <p>The roles of the different generation tools are:<ul>
@@ -64,6 +71,12 @@ public class SARLJvmGenerator extends XtendGenerator {
 
 	@Inject
 	private AnnotationLookup annotations;
+
+	@Inject
+	private IGeneratorConfigProvider generatorConfigProvider;
+
+	@Inject
+	private IResourceTypeDetector resourceTypeDetector;
 
 	@Override
 	protected ITreeAppendable _generateMember(JvmOperation it, ITreeAppendable appendable, GeneratorConfig config) {
@@ -121,6 +134,26 @@ public class SARLJvmGenerator extends XtendGenerator {
 		tracedAppendable.append("static "); //$NON-NLS-1$
 		generateExecutableBody(it, tracedAppendable, config);
 		return appendable;
+	}
+
+	@Override
+	protected void _internalDoGenerate(JvmDeclaredType type, IFileSystemAccess fsa) {
+		if (DisableCodeGenerationAdapter.isDisabled(type)) {
+			return;
+		}
+		final String qn = type.getQualifiedName();
+		if (!Strings.isEmpty(qn)) {
+			final String fn = qn.replace('.', '/') + ".java"; //$NON-NLS-1$
+			final CharSequence content = generateType(type, this.generatorConfigProvider.get(type));
+			final String outputConfigurationName;
+			final Boolean isTest = this.resourceTypeDetector.isTestResource(type.eResource());
+			if (isTest != null && isTest.booleanValue()) {
+				outputConfigurationName = SARLConfig.TEST_OUTPUT_CONFIGURATION;
+			} else {
+				outputConfigurationName = IFileSystemAccess.DEFAULT_OUTPUT;
+			}
+			fsa.generateFile(fn, outputConfigurationName, content);
+		}
 	}
 
 }

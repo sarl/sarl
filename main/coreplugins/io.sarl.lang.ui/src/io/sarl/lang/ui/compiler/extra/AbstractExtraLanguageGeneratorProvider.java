@@ -35,6 +35,7 @@ import org.eclipse.xtext.generator.IGeneratorContext;
 
 import io.sarl.lang.compiler.extra.IExtraLanguageGeneratorProvider;
 import io.sarl.lang.compiler.extra.IRootGenerator;
+import io.sarl.lang.ui.compiler.ProjectAdapter;
 import io.sarl.lang.ui.compiler.extra.preferences.ExtraLanguagePreferenceAccess;
 
 /** Abstract implementation of a generator provider.

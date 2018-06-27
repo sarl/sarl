@@ -21,9 +21,11 @@
 
 package io.sarl.lang.ui.preferences;
 
+import java.util.Objects;
 import java.util.Set;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Iterables;
 import com.google.inject.Injector;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
@@ -31,11 +33,13 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.xtext.builder.EclipseOutputConfigurationProvider;
 import org.eclipse.xtext.builder.preferences.BuilderPreferenceAccess;
+import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IOutputConfigurationProvider;
 import org.eclipse.xtext.generator.OutputConfiguration;
 import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreAccess;
 import org.eclipse.xtext.ui.preferences.OptionsConfigurationBlock;
 
+import io.sarl.lang.SARLConfig;
 import io.sarl.lang.ui.internal.LangActivator;
 
 /** Utilities related to the preferences related to SARL.
@@ -187,7 +191,34 @@ public final class SARLPreferences {
 		final Injector injector = LangActivator.getInstance().getInjector(LangActivator.IO_SARL_LANG_SARL);
 		final IOutputConfigurationProvider configurationProvider =
 				injector.getInstance(IOutputConfigurationProvider.class);
-		for (final OutputConfiguration config : configurationProvider.getOutputConfigurations()) {
+		final OutputConfiguration config = Iterables.find(
+				configurationProvider.getOutputConfigurations(),
+				it -> Objects.equals(it.getName(), IFileSystemAccess.DEFAULT_OUTPUT));
+		if (config != null) {
+			final String path = config.getOutputDirectory();
+			if (!Strings.isNullOrEmpty(path)) {
+				final IPath pathObject = Path.fromOSString(path);
+				if (pathObject != null) {
+					return pathObject;
+				}
+			}
+		}
+		throw new IllegalStateException("No global preferences found for SARL."); //$NON-NLS-1$
+	}
+
+	/** Replies the SARL output path for test in the global preferences.
+	 *
+	 * @return the output path for SARL compiler in the global preferences.
+	 * @since 0.8
+	 */
+	public static IPath getGlobalSARLTestOutputPath() {
+		final Injector injector = LangActivator.getInstance().getInjector(LangActivator.IO_SARL_LANG_SARL);
+		final IOutputConfigurationProvider configurationProvider =
+				injector.getInstance(IOutputConfigurationProvider.class);
+		final OutputConfiguration config = Iterables.find(
+				configurationProvider.getOutputConfigurations(),
+				it -> Objects.equals(it.getName(), SARLConfig.TEST_OUTPUT_CONFIGURATION));
+		if (config != null) {
 			final String path = config.getOutputDirectory();
 			if (!Strings.isNullOrEmpty(path)) {
 				final IPath pathObject = Path.fromOSString(path);

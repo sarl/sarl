@@ -19,33 +19,24 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.compiler;
+package io.sarl.m2e;
 
-import org.eclipse.osgi.util.NLS;
+import org.osgi.framework.Bundle;
 
-/** Localized Messages.
+import io.sarl.eclipse.SARLEclipseExecutableExtensionFactory;
+
+/** Factory for injecting SARL instances.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @ExcludeFromApidoc
  */
-@SuppressWarnings("all")
-public final class Messages extends NLS {
+public class SARLMavenExecutableExtensionFactory extends SARLEclipseExecutableExtensionFactory {
 
-	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages";
-
-	public static String GeneratorConfigProvider2_0;
-
-	public static String SarlOutputConfigurationProvider_0;
-	public static String SarlOutputConfigurationProvider_1;
-
-	static {
-		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+	@Override
+	protected Bundle getBundle() {
+		return SARLMavenEclipsePlugin.getDefault().getBundle();
 	}
 
-	private Messages() {
-	}
 }

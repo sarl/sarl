@@ -7,15 +7,13 @@
    <extension
         point="org.eclipse.m2e.core.projectConfigurators">
      <configurator
-           class="io.sarl.m2e.SARLProjectConfigurator"
+           class="io.sarl.m2e.SARLMavenExecutableExtensionFactory:io.sarl.m2e.SARLProjectConfigurator"
            id="io.sarl.m2e.sarlConfigurator"
-           name="%m2e.sarlconfigurator.name">
-     </configurator>
+           name="%m2e.sarlconfigurator.name"/>
   </extension>
    <extension
          point="io.sarl.eclipse.projectSREProviderFactory">
      <projectSREProviderFactory
-           class="io.sarl.m2e.MavenProjectSREProviderFactory">
-     </projectSREProviderFactory>
+           class="io.sarl.m2e.MavenProjectSREProviderFactory"/>
    </extension>
 </plugin>

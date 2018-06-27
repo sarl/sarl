@@ -755,6 +755,10 @@ Workflow {
     				bind = "io.sarl.lang.compiler.extra.ExtraLanguageFeatureNameConverter$FeatureNameConverterRuleReader"
     				to = "io.sarl.lang.ui.compiler.extra.preferences.PreferenceBasedFeatureNameConverterRuleReader"
    				}
+    			ui = {
+    				bind = "io.sarl.lang.compiler.IResourceTypeDetector"
+    				to = "io.sarl.lang.ui.compiler.EclipseResourceTypeDetector"
+   				}
     		}
 
     		// Xtend-extension bindings
