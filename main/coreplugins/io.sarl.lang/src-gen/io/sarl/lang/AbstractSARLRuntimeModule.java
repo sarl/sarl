@@ -120,6 +120,7 @@ import org.eclipse.xtend.core.conversion.JavaIDValueConverter;
 import org.eclipse.xtend.core.conversion.StringValueConverter;
 import org.eclipse.xtend.core.conversion.XtendValueConverterService;
 import org.eclipse.xtend.core.documentation.XtendFileHeaderProvider;
+import org.eclipse.xtend.core.findReferences.XtendReferenceFinder;
 import org.eclipse.xtend.core.imports.XtendImportedTypesUsageCollector;
 import org.eclipse.xtend.core.imports.XtendImportsConfiguration;
 import org.eclipse.xtend.core.imports.XtendTypeUsageCollector;
@@ -153,6 +154,7 @@ import org.eclipse.xtext.conversion.impl.STRINGValueConverter;
 import org.eclipse.xtext.documentation.IEObjectDocumentationProvider;
 import org.eclipse.xtext.documentation.IEObjectDocumentationProviderExtension;
 import org.eclipse.xtext.documentation.IFileHeaderProvider;
+import org.eclipse.xtext.findReferences.ReferenceFinder;
 import org.eclipse.xtext.findReferences.TargetURICollector;
 import org.eclipse.xtext.formatting2.FormatterPreferenceKeys;
 import org.eclipse.xtext.formatting2.FormatterPreferenceValuesProvider;
@@ -561,6 +563,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public void configureSerializerIScopeProvider(Binder binder) {
+		binder.bind(IScopeProvider.class).annotatedWith(SerializerScopeProviderBinding.class).to(SARLSerializerScopeProvider.class);
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IQualifiedNameConverter> bindIQualifiedNameConverter() {
 		return SARLQualifiedNameConverter.class;
 	}
@@ -714,11 +721,6 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
-	public void configureSerializerIScopeProvider(Binder binder) {
-		binder.bind(IScopeProvider.class).annotatedWith(SerializerScopeProviderBinding.class).to(SARLSerializerScopeProvider.class);
-	}
-	
-	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
 	public Class<? extends IImportsConfiguration> bindIImportsConfiguration() {
 		return XtendImportsConfiguration.class;
 	}
@@ -726,6 +728,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
 	public Class<? extends MutableFileSystemSupport> bindMutableFileSystemSupport() {
 		return JavaIOFileSystemSupport.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
+	public Class<? extends ReferenceFinder> bindReferenceFinder() {
+		return XtendReferenceFinder.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]

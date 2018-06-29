@@ -556,6 +556,12 @@ Workflow {
     				bind = "org.eclipse.xtext.xbase.validation.ReadAndWriteTracking"
     				to = "io.sarl.lang.jvmmodel.SARLReadAndWriteTracking"
    				}
+    			runtime = {
+    				bind = "org.eclipse.xtext.scoping.IScopeProvider"
+    				annotatedWith = "org.eclipse.xtext.serializer.tokens.SerializerScopeProviderBinding"
+    				to = "io.sarl.lang.scoping.SARLSerializerScopeProvider"
+    				functionName = "configureSerializerIScopeProvider"
+   				}
 
     			ui = {
     				bind = "org.eclipse.xtext.generator.IOutputConfigurationProvider"
@@ -766,8 +772,8 @@ Workflow {
     			comment = "Bindings required by extended Xtend API"
 
     			runtime = {
-    				bind = "org.eclipse.xtend.core.macro.AbstractFileSystemSupport"
-    				to = "org.eclipse.xtend.core.macro.JavaIOFileSystemSupport"
+    				bind = "org.eclipse.xtext.findReferences.ReferenceFinder"
+    				to = "org.eclipse.xtend.core.findReferences.XtendReferenceFinder"
     			}
     			runtime = {
     				bind = "org.eclipse.xtext.xbase.scoping.batch.ConstructorScopes"
@@ -853,12 +859,6 @@ Workflow {
     				override = true
    				}
     			runtime = {
-    				bind = "org.eclipse.xtext.scoping.IScopeProvider"
-    				annotatedWith = "org.eclipse.xtext.serializer.tokens.SerializerScopeProviderBinding"
-    				to = "io.sarl.lang.scoping.SARLSerializerScopeProvider"
-    				functionName = "configureSerializerIScopeProvider"
-   				}
-    			runtime = {
     				bind = "org.eclipse.xtext.generator.IShouldGenerate"
     				to = "org.eclipse.xtext.generator.IShouldGenerate$Always"
  				}
@@ -882,6 +882,14 @@ Workflow {
     				bind = "org.eclipse.xtext.findReferences.TargetURICollector"
     				to = "org.eclipse.xtext.xbase.jvmmodel.JvmModelTargetURICollector"
    				}
+//    			runtime = {// FIXME
+//    				bind = "org.eclipse.xtext.parser.impl.TokenRegionProvider"
+//    				to = "org.eclipse.xtext.parser.impl.TokenRegionProvider"
+//   				}
+//    			runtime = {// FIXME
+//    				bind = "org.eclipse.xtext.parser.antlr.TokenSourceProvider"
+//    				to = "org.eclipse.xtend.core.parser.antlr.XtendTokenSourceProvider"
+//   				}
     			runtime = {
     				bind = "org.eclipse.xtext.xbase.compiler.output.TraceAwarePostProcessor"
     				to = "org.eclipse.xtend.core.compiler.UnicodeAwarePostProcessor"
@@ -901,6 +909,10 @@ Workflow {
     				to = "XtendFactory.eINSTANCE"
     				singleton = true
     				instance = true
+    			}
+    			runtime = {
+    				bind = "org.eclipse.xtend.core.macro.AbstractFileSystemSupport"
+    				to = "org.eclipse.xtend.core.macro.JavaIOFileSystemSupport"
     			}
     			runtime = {
     				bind = "org.eclipse.xtext.parser.antlr.ISyntaxErrorMessageProvider"
@@ -1010,7 +1022,9 @@ Workflow {
 
 	    	// Injection recommender for recommending missed injections in the SARL module
     		fragment = InjectionRecommender2 auto-inject {
-    			enable = false
+    			enable = true
+    			showRuntimeRecommendations = true
+    			showUiRecommendations = false
     		}
 		}
  	}
