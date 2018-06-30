@@ -1782,8 +1782,6 @@ public class DocumentationBuilderFragment extends AbstractSubCodeBuilderFragment
 				it.newLine();
 				it.append("\t\t\t\t} else {"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t\t\t\t\tfinal int len = replacement.getOffset() - offset;"); //$NON-NLS-1$
-				it.newLine();
 				it.append("\t\t\t\t\tassert offset >= 0;"); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t\t\t\t\tassert replacement.getOffset() <= text.length();"); //$NON-NLS-1$

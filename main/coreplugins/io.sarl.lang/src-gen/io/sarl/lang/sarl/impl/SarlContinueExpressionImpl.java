@@ -14,6 +14,7 @@ import org.eclipse.xtext.xbase.impl.XExpressionImpl;
  * An implementation of the model object '<em><b>Continue Expression</b></em>'.
  * <!-- end-user-doc -->
  *
+ * @since 0.7
  * @generated
  */
 public class SarlContinueExpressionImpl extends XExpressionImpl implements SarlContinueExpression

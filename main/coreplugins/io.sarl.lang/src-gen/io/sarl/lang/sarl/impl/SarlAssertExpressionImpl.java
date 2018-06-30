@@ -30,6 +30,7 @@ import org.eclipse.xtext.xbase.impl.XExpressionImpl;
  *   <li>{@link io.sarl.lang.sarl.impl.SarlAssertExpressionImpl#isIsStatic <em>Is Static</em>}</li>
  * </ul>
  *
+ * @since 0.6
  * @generated
  */
 public class SarlAssertExpressionImpl extends XExpressionImpl implements SarlAssertExpression
@@ -311,7 +312,7 @@ public class SarlAssertExpressionImpl extends XExpressionImpl implements SarlAss
 	{
 		if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (message: ");
 		result.append(message);
 		result.append(", isStatic: ");

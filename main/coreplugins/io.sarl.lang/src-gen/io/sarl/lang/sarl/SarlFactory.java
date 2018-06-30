@@ -45,6 +45,7 @@ public interface SarlFactory extends EFactory
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return a new object of class '<em>Break Expression</em>'.
+	 * @since 0.5
 	 * @generated
 	 */
 	SarlBreakExpression createSarlBreakExpression();
@@ -54,6 +55,7 @@ public interface SarlFactory extends EFactory
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return a new object of class '<em>Continue Expression</em>'.
+	 * @since 0.7
 	 * @generated
 	 */
 	SarlContinueExpression createSarlContinueExpression();
@@ -63,6 +65,7 @@ public interface SarlFactory extends EFactory
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return a new object of class '<em>Assert Expression</em>'.
+	 * @since 0.6
 	 * @generated
 	 */
 	SarlAssertExpression createSarlAssertExpression();

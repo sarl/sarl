@@ -117,6 +117,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @since 0.5
 	 * @generated
 	 */
 	public SarlBreakExpression createSarlBreakExpression()
@@ -128,6 +129,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @since 0.7
 	 * @generated
 	 */
 	public SarlContinueExpression createSarlContinueExpression()
@@ -139,6 +141,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @since 0.6
 	 * @generated
 	 */
 	public SarlAssertExpression createSarlAssertExpression()

@@ -589,7 +589,6 @@ public class DocumentationFormatter implements IDocumentationFormatter {
 				if (replacement.getOffset() < offset) {
 					appendable.append("<<<Conflicting replacements>>>");
 				} else {
-					final int len = replacement.getOffset() - offset;
 					assert offset >= 0;
 					assert replacement.getOffset() <= text.length();
 					String notReplacedString = text.substring(offset, replacement.getOffset());

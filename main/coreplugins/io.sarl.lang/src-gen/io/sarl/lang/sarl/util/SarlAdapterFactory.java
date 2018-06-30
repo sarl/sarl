@@ -341,6 +341,7 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
 	 * @see io.sarl.lang.sarl.SarlBreakExpression
+	 * @since 0.5
 	 * @generated
 	 */
 	public Adapter createSarlBreakExpressionAdapter()
@@ -356,6 +357,7 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
 	 * @see io.sarl.lang.sarl.SarlContinueExpression
+	 * @since 0.7
 	 * @generated
 	 */
 	public Adapter createSarlContinueExpressionAdapter()
@@ -371,6 +373,7 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
 	 * @see io.sarl.lang.sarl.SarlAssertExpression
+	 * @since 0.6
 	 * @generated
 	 */
 	public Adapter createSarlAssertExpressionAdapter()
@@ -716,6 +719,7 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
 	 * @see org.eclipse.xtext.xbase.XExpression
+	 * @since 2.7
 	 * @generated
 	 */
 	public Adapter createXExpressionAdapter()
