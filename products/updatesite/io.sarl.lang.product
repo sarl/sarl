@@ -267,8 +267,8 @@
       <feature id="io.sarl.experienceindex.feature" version="0.8.0.qualifier"/>
       <feature id="io.sarl.lib.source" version="0.8.0.qualifier"/>
       <feature id="io.janusproject.feature.source" version="0.8.0.qualifier"/>
-      <feature id="org.eclipse.fx.ide.basic.feature" version="3.0.0.201705220750"/>
-      <feature id="org.eclipse.fx.runtime.min.feature" version="3.0.0.201705220748"/>
+      <feature id="org.eclipse.fx.ide.basic.feature" version="3.3.0.201805280700"/>
+      <feature id="org.eclipse.fx.runtime.min.feature" version="3.3.0.201805280500"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.feature"/>
       <feature id="org.eclipse.help"/>
       <feature id="org.jboss.tools.m2e.jdt.feature"/>

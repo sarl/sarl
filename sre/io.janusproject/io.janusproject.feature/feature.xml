@@ -224,7 +224,7 @@
    <requires>
       <import plugin="io.sarl.core" version="0.8.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.util" version="0.8.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.osgi" version="3.12.50" match="greaterOrEqual"/>
+      <import plugin="io.sarl.javafx" version="0.8.0" match="greaterOrEqual"/>
       <import plugin="com.hazelcast" version="3.9.0" match="greaterOrEqual"/>
       <import plugin="org.zeromq.jeromq" version="0.4.2" match="greaterOrEqual"/>
       <import plugin="com.google.inject" version="4.1.0" match="greaterOrEqual"/>
@@ -236,14 +236,14 @@
       <import plugin="aopalliance" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="io.janusproject.plugin" version="0.8.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.eclipse" version="0.8.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.core" version="3.13.100" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.runtime" version="3.13.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.workbench" version="3.110.1" match="greaterOrEqual"/>
-      <import plugin="io.sarl.javafx" version="0.8.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jdt.core" version="3.13.100" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jdt.ui" version="3.13.51" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jface" version="3.13.2" match="greaterOrEqual"/>
       <import plugin="org.eclipse.swt" version="3.106.2" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jdt.launching" version="3.9.51" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.osgi" version="3.13.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
