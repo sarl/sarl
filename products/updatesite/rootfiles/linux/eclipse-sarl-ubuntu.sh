@@ -5,15 +5,10 @@ echo "MYSELF=$MYSELF"
 CDIR=`dirname "$MYSELF"`
 echo "CDIR=$CDIR"
 
-if [ -r "$HOME/.eclipse/eclipserc" ]
-then
-	echo "Loading user configuration"
-	. "$HOME/.eclipse/eclipserc"
-elif [ -r "$HOME/.eclipserc" ]
-then
-	echo "Loading user configuration"
-	. "$HOME/.eclipserc"
-fi
+#Gtk3 forced:
+export SWT_GTK3=1
+#Gtk2 forced:
+#export SWT_GTK3=0
 
 # Bug fix for Ubuntu menu proxy
 export UBUNTU_MENUPROXY=0
@@ -29,5 +24,14 @@ export LD_LIBRARY_PATH=`echo "$LD_LIBRARY_PATH" | perl -p -e 's!(/usr/lib/jni:)|
 #export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/lib/jni"
 #echo "Native Library Path: $LD_LIBRARY_PATH"
 
-echo "Launching SARL IDE ${project.version}"
-exec "$CDIR/eclipse-sarl" $VMARGS "$@"
+if [ -r "$HOME/.eclipse/eclipserc" ]
+then
+	echo "Loading user configuration"
+	. "$HOME/.eclipse/eclipserc"
+elif [ -r "$HOME/.eclipserc" ]
+then
+	echo "Loading user configuration"
+	. "$HOME/.eclipserc"
+fi
+
+exec "$CDIR/eclipse" $VMARGS "$@"

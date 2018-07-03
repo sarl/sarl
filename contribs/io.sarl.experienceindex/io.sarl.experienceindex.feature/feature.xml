@@ -225,13 +225,13 @@
       <import plugin="io.sarl.lang.core" version="0.8.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.eclipse" version="0.8.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.lang.ui" version="0.8.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.commands" version="3.9.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.runtime" version="3.13.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jface" version="3.13.2" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui" version="3.109.0" match="greaterOrEqual"/>
-      <import plugin="com.google.inject" version="4.1.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.ui" version="2.14.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.osgi" version="3.12.100" match="greaterOrEqual"/>
+      <import plugin="com.google.inject" version="4.1.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.osgi" version="3.13.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.commands" version="3.9.100" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.runtime" version="3.14.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jface" version="3.14.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui" version="3.109.100" match="greaterOrEqual"/>
    </requires>
 
    <plugin

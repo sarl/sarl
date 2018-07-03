@@ -14,6 +14,7 @@ import org.eclipse.xtext.xbase.impl.XExpressionImpl;
  * An implementation of the model object '<em><b>Break Expression</b></em>'.
  * <!-- end-user-doc -->
  *
+ * @since 0.5
  * @generated
  */
 public class SarlBreakExpressionImpl extends XExpressionImpl implements SarlBreakExpression

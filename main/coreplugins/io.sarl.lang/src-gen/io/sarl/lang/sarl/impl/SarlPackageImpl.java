@@ -70,6 +70,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @since 0.5
 	 * @generated
 	 */
 	private EClass sarlBreakExpressionEClass = null;
@@ -77,6 +78,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @since 0.7
 	 * @generated
 	 */
 	private EClass sarlContinueExpressionEClass = null;
@@ -84,6 +86,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @since 0.6
 	 * @generated
 	 */
 	private EClass sarlAssertExpressionEClass = null;
@@ -243,7 +246,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 
 	/**
 	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-	 * 
+	 *
 	 * <p>This method is used to initialize {@link SarlPackage#eINSTANCE} when that field is accessed.
 	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
 	 * <!-- begin-user-doc -->
@@ -258,7 +261,8 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 		if (isInited) return (SarlPackage)EPackage.Registry.INSTANCE.getEPackage(SarlPackage.eNS_URI);
 
 		// Obtain or create and register package
-		SarlPackageImpl theSarlPackage = (SarlPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof SarlPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new SarlPackageImpl());
+		Object registeredSarlPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+		SarlPackageImpl theSarlPackage = registeredSarlPackage instanceof SarlPackageImpl ? (SarlPackageImpl)registeredSarlPackage : new SarlPackageImpl();
 
 		isInited = true;
 
@@ -278,7 +282,6 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 		// Mark meta-data to indicate it can't be changed
 		theSarlPackage.freeze();
 
-  
 		// Update the registry and return the package
 		EPackage.Registry.INSTANCE.put(SarlPackage.eNS_URI, theSarlPackage);
 		return theSarlPackage;
@@ -307,6 +310,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @since 0.5
 	 * @generated
 	 */
 	public EClass getSarlBreakExpression()
@@ -317,6 +321,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @since 0.7
 	 * @generated
 	 */
 	public EClass getSarlContinueExpression()
@@ -327,6 +332,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @since 0.6
 	 * @generated
 	 */
 	public EClass getSarlAssertExpression()
@@ -337,6 +343,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @since 0.6
 	 * @generated
 	 */
 	public EReference getSarlAssertExpression_Condition()
@@ -347,6 +354,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @since 0.6
 	 * @generated
 	 */
 	public EAttribute getSarlAssertExpression_Message()
@@ -357,6 +365,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @since 0.6
 	 * @generated
 	 */
 	public EAttribute getSarlAssertExpression_IsStatic()

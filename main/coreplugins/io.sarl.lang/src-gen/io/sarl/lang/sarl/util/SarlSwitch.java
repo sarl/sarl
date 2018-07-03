@@ -358,6 +358,7 @@ public class SarlSwitch<T> extends Switch<T>
 	 * @param object the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Break Expression</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @since 0.5
 	 * @generated
 	 */
 	public T caseSarlBreakExpression(SarlBreakExpression object)
@@ -374,6 +375,7 @@ public class SarlSwitch<T> extends Switch<T>
 	 * @param object the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Continue Expression</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @since 0.7
 	 * @generated
 	 */
 	public T caseSarlContinueExpression(SarlContinueExpression object)
@@ -390,6 +392,7 @@ public class SarlSwitch<T> extends Switch<T>
 	 * @param object the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Assert Expression</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @since 0.6
 	 * @generated
 	 */
 	public T caseSarlAssertExpression(SarlAssertExpression object)
@@ -758,6 +761,7 @@ public class SarlSwitch<T> extends Switch<T>
 	 * @param object the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>XExpression</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @since 2.7
 	 * @generated
 	 */
 	public T caseXExpression(XExpression object)

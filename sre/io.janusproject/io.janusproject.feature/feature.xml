@@ -243,7 +243,7 @@
       <import plugin="org.eclipse.jface" version="3.13.2" match="greaterOrEqual"/>
       <import plugin="org.eclipse.swt" version="3.106.2" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jdt.launching" version="3.9.51" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.osgi" version="3.12.100" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.osgi" version="3.13.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin

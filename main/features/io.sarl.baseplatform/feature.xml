@@ -233,11 +233,11 @@
          version="0.0.0"/>
 
    <includes
-         id="org.eclipse.platform"
+         id="org.eclipse.jdt"
          version="0.0.0"/>
 
    <includes
-         id="org.eclipse.jdt"
+         id="org.eclipse.platform"
          version="0.0.0"/>
 
    <includes
@@ -249,15 +249,15 @@
          version="0.0.0"/>
 
    <includes
+         id="org.eclipse.fx.ide.m2e.feature"
+         version="0.0.0"/>
+
+   <includes
          id="org.eclipse.m2e.feature"
          version="0.0.0"/>
 
    <includes
          id="org.jboss.tools.m2e.jdt.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.jgit"
          version="0.0.0"/>
 
    <includes
@@ -273,82 +273,39 @@
          version="0.0.0"/>
 
    <includes
+         id="org.eclipse.wst.xml_ui.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.jgit"
+         version="0.0.0"/>
+
+   <includes
          id="org.eclipse.xsd"
          version="0.0.0"/>
 
+   <includes
+         id="org.eclipse.xtext.xbase"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.xtext.xbase.lib"
+         version="0.0.0"/>
+
    <requires>
-      <import plugin="org.eclipse.xtext.ide"/>
-      <import plugin="org.eclipse.xtext.xbase"/>
-      <import plugin="org.eclipse.xtext.xbase.lib" version="2.14.0" match="greaterOrEqual"/>
-      <import plugin="org.objectweb.asm" version="6.1.1" match="equivalent"/>
-      <import plugin="org.antlr.runtime" version="3.2.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.runtime" version="3.5.0" match="compatible"/>
-      <import plugin="org.eclipse.core.resources" version="3.5.0" match="compatible"/>
-      <import plugin="org.eclipse.ui.ide" version="3.5.0" match="compatible"/>
-      <import plugin="org.eclipse.emf.ecore.xmi" version="2.13.0" match="compatible"/>
-      <import plugin="org.eclipse.emf.ecore.edit" version="2.9.0" match="compatible"/>
-      <import plugin="org.eclipse.emf.edit.ui" version="2.13.0" match="compatible"/>
-      <import plugin="org.eclipse.jface.text" version="3.5.0" match="compatible"/>
-      <import plugin="org.eclipse.emf.common" version="2.13.0" match="compatible"/>
-      <import plugin="org.eclipse.emf.ecore" version="2.13.0" match="compatible"/>
-      <import plugin="org.eclipse.ui.views" version="3.4.0" match="compatible"/>
-      <import plugin="org.eclipse.ui.workbench" version="3.5.0" match="compatible"/>
-      <import plugin="org.eclipse.emf.edit" version="2.12.0" match="compatible"/>
-      <import plugin="org.eclipse.emf.common.ui" version="2.12.0" match="compatible"/>
-      <import plugin="org.antlr.runtime" version="3.2.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.mwe2.runtime" version="2.9.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext"/>
-      <import plugin="org.eclipse.xtext.builder.standalone"/>
-      <import plugin="com.google.guava" version="14.0.0"/>
-      <import plugin="com.google.inject" version="3.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.ui.testing"/>
-      <import plugin="org.eclipse.ui" version="3.5.0" match="compatible"/>
+      <import plugin="org.eclipse.draw2d" version="3.7.0" match="compatible"/>
+      <import plugin="org.eclipse.core.runtime" version="3.5.0" match="compatible"/>
+      <import plugin="org.eclipse.ui.workbench" version="3.2.0" match="compatible"/>
+      <import plugin="org.eclipse.jface" version="3.2.0" match="compatible"/>
+      <import plugin="org.eclipse.xsd" version="2.14.0" match="compatible"/>
       <import plugin="org.eclipse.core.runtime" version="3.4.0" match="compatible"/>
       <import plugin="org.eclipse.core.resources" version="3.4.0" match="compatible"/>
       <import plugin="org.eclipse.core.expressions" version="3.4.0" match="compatible"/>
-      <import plugin="org.eclipse.draw2d" version="3.7.0" match="compatible"/>
-      <import plugin="org.eclipse.ui.workbench" version="3.2.0" match="compatible"/>
-      <import plugin="org.eclipse.jface" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.swt" version="3.4.0" match="compatible"/>
-      <import plugin="org.eclipse.ui.ide" version="3.13.0" match="compatible"/>
-      <import plugin="org.eclipse.jface.text" version="3.10.0" match="compatible"/>
-      <import plugin="org.eclipse.debug.ui" version="3.11.0" match="compatible"/>
-      <import plugin="org.eclipse.debug.core" version="3.10.0" match="compatible"/>
-      <import plugin="org.eclipse.ui.editors" version="3.11.0" match="compatible"/>
-      <import plugin="org.eclipse.search" version="3.11.0" match="compatible"/>
-      <import plugin="org.eclipse.ui" version="3.109.0" match="compatible"/>
-      <import plugin="org.eclipse.ui.workbench.texteditor" version="3.10.0" match="compatible"/>
-      <import plugin="org.eclipse.ui.forms" version="3.7.0" match="compatible"/>
-      <import plugin="org.eclipse.ui.views" version="3.8.0" match="compatible"/>
-      <import plugin="org.eclipse.wst.sse.core" version="1.1.1000" match="equivalent"/>
-      <import plugin="org.eclipse.core.runtime" version="3.13.0" match="compatible"/>
-      <import plugin="org.eclipse.core.resources" version="3.12.0" match="compatible"/>
-      <import plugin="org.eclipse.wst.validation" version="1.2.700" match="equivalent"/>
-      <import plugin="org.eclipse.emf.common" version="2.12.0" match="compatible"/>
-      <import plugin="org.eclipse.core.expressions" version="3.5.0" match="compatible"/>
-      <import plugin="org.eclipse.ui.ide" version="3.12.0" match="compatible"/>
-      <import plugin="org.eclipse.wst.sse.ui" version="1.3.500" match="equivalent"/>
-      <import plugin="org.eclipse.wst.sse.core" version="1.1.900" match="equivalent"/>
-      <import plugin="org.eclipse.ui" version="3.107.0" match="compatible"/>
-      <import plugin="org.eclipse.core.resources" version="3.11.0" match="compatible"/>
-      <import plugin="org.eclipse.core.runtime" version="3.12.0" match="compatible"/>
-      <import plugin="org.eclipse.wst.common.uriresolver" version="1.2.200" match="compatible"/>
-      <import plugin="org.eclipse.wst.xml.core" version="1.1.1100" match="equivalent"/>
-      <import plugin="org.eclipse.wst.common.ui" version="1.1.500" match="equivalent"/>
-      <import plugin="org.eclipse.wst.validation.ui"/>
-      <import plugin="org.eclipse.core.filesystem" version="1.6.0" match="compatible"/>
-      <import plugin="org.eclipse.core.net" version="1.2.0" match="compatible"/>
-      <import plugin="org.eclipse.equinox.common" version="3.3.0" match="compatible"/>
-      <import plugin="org.eclipse.equinox.security" version="1.0.0" match="compatible"/>
-      <import plugin="org.apache.httpcomponents.httpclient" version="4.3.0" match="compatible"/>
-      <import plugin="org.apache.httpcomponents.httpcore" version="4.3.0" match="compatible"/>
-      <import plugin="org.apache.commons.logging" version="1.0.0" match="compatible"/>
-      <import plugin="org.apache.commons.codec" version="1.6.0" match="compatible"/>
-      <import plugin="org.eclipse.jface" version="3.6.0" match="compatible"/>
-      <import plugin="org.eclipse.ui" version="3.6.0" match="compatible"/>
-      <import plugin="org.eclipse.userstorage" version="1.0.0" match="compatible"/>
-      <import plugin="org.eclipse.core.runtime" version="3.2.0" match="compatible"/>
-      <import plugin="org.eclipse.ui" version="3.3.0" match="compatible"/>
+      <import plugin="org.eclipse.core.databinding" version="1.3.0" match="compatible"/>
+      <import plugin="org.eclipse.core.databinding.property" version="1.3.0" match="compatible"/>
+      <import plugin="org.eclipse.emf.databinding" version="1.4.0" match="compatible"/>
       <import plugin="org.eclipse.core.runtime" version="3.11.0" match="compatible"/>
       <import plugin="org.eclipse.core.resources" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.jdt.core" version="3.2.0" match="compatible"/>
@@ -358,7 +315,7 @@
       <import plugin="org.eclipse.jdt.launching" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.core.filebuffers" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.core.variables" version="3.1.0" match="compatible"/>
-      <import plugin="org.eclipse.pde.build" version="3.2.0" match="compatible"/>
+      <import plugin="org.eclipse.pde.build" version="3.10.0" match="compatible"/>
       <import plugin="org.eclipse.ant.core" version="3.1.0" match="compatible"/>
       <import plugin="org.eclipse.equinox.simpleconfigurator.manipulator" version="2.0.0" match="compatible"/>
       <import plugin="org.eclipse.equinox.frameworkadmin" version="2.0.0" match="compatible"/>
@@ -374,25 +331,15 @@
       <import plugin="org.eclipse.equinox.p2.garbagecollector" version="1.0.100" match="compatible"/>
       <import plugin="org.eclipse.equinox.p2.touchpoint.eclipse" version="2.0.0" match="compatible"/>
       <import plugin="org.eclipse.core.filesystem" version="1.0.0" match="compatible"/>
+      <import plugin="org.eclipse.core.runtime" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.ant.core" version="3.1.100" match="compatible"/>
       <import plugin="org.eclipse.osgi" version="3.3.0" match="compatible"/>
       <import plugin="org.eclipse.equinox.p2.jarprocessor" version="1.0.1" match="compatible"/>
       <import plugin="org.eclipse.equinox.p2.publisher" version="1.1.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.equinox.p2.director.app" version="1.0.200" match="greaterOrEqual"/>
       <import plugin="org.eclipse.equinox.p2.publisher.eclipse" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.databinding" version="1.2.0" match="compatible"/>
-      <import plugin="org.eclipse.core.databinding.property" version="1.2.0" match="compatible"/>
-      <import plugin="org.eclipse.emf.databinding" version="1.3.0" match="compatible"/>
-      <import plugin="org.eclipse.userstorage" version="1.1.0" match="compatible"/>
-      <import plugin="org.eclipse.userstorage.ui" version="1.0.2" match="compatible"/>
-   </requires>
 
-   <plugin
-         id="org.eclipse.xtext.xbase.ide"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   </requires>
 
    <plugin
          id="org.objectweb.asm"
@@ -402,7 +349,28 @@
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.emf.ecore"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.emf.ecore.edit"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.emf.ecore.editor"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.emf.ecore.xmi"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -444,13 +412,6 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.emf.mwe.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.emf.mwe.utils"
          download-size="0"
          install-size="0"
@@ -458,14 +419,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.xtext.junit4"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.xtext.xbase.junit"
+         id="org.eclipse.emf.common"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -479,14 +433,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.emf.ecore.edit"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.wst.common.project.facet.core"
+         id="org.eclipse.emf.mwe.core"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -521,49 +468,35 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.userstorage"
+         id="org.eclipse.wst.common.project.facet.core"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.userstorage.ui"
+         id="com.google.gson"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.apache.commons.cli"
+         id="org.eclipse.draw2d"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.emf.mwe2.runtime"
+         id="org.eclipse.emf.databinding"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.arakhne.afc.core.vmutils"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.ui.views.log"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="aopalliance"
+         id="org.eclipse.emf.databinding.edit"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -583,14 +516,14 @@
          version="0.0.0"/>
 
    <plugin
-         id="org.eclipse.emf.databinding"
+         id="org.apache.commons.cli"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.emf.databinding.edit"
+         id="org.eclipse.emf.mwe2.runtime"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -604,28 +537,28 @@
          unpack="false"/>
 
    <plugin
-         id="org.apache.aries.spifly.dynamic.bundle"
+         id="org.arakhne.afc.core.text"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.apache.aries.spifly.org.apache.aries.spifly.core-internal"
+         id="org.arakhne.afc.core.util"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.apache.aries.util"
+         id="org.arakhne.afc.core.vmutils"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.objectweb.asm.all.debug"
+         id="org.eclipse.equinox.concurrent"
          download-size="0"
          install-size="0"
          version="0.0.0"
