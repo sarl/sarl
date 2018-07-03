@@ -306,7 +306,7 @@
       <import plugin="org.eclipse.ui.views" version="3.5.0" match="compatible"/>
       <import plugin="org.eclipse.ui.workbench" version="3.6.0" match="compatible"/>
       <import plugin="org.eclipse.emf.common.ui" version="2.13.0" match="compatible"/>
-      <import plugin="org.antlr.runtime" version="3.2.0" match="perfect"/>
+      <import plugin="org.antlr.runtime" version="3.2.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui" version="3.6.0" match="compatible"/>
       <import plugin="org.eclipse.emf.mwe2.runtime" version="2.9.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.draw2d" version="3.7.0" match="compatible"/>
