@@ -5137,114 +5137,6 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//MultiTypeReference
 		public RuleCall getParameterTypeMultiTypeReferenceParserRuleCall_3_0() { return cParameterTypeMultiTypeReferenceParserRuleCall_3_0; }
 	}
-	public class MultiTypeReferenceElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "io.sarl.lang.SARL.MultiTypeReference");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final RuleCall cJvmTypeReferenceParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
-		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
-		private final Action cJvmSynonymTypeReferenceReferencesAction_1_0 = (Action)cGroup_1.eContents().get(0);
-		private final Group cGroup_1_1 = (Group)cGroup_1.eContents().get(1);
-		private final Keyword cVerticalLineKeyword_1_1_0 = (Keyword)cGroup_1_1.eContents().get(0);
-		private final Assignment cReferencesAssignment_1_1_1 = (Assignment)cGroup_1_1.eContents().get(1);
-		private final RuleCall cReferencesJvmTypeReferenceParserRuleCall_1_1_1_0 = (RuleCall)cReferencesAssignment_1_1_1.eContents().get(0);
-		
-		//@Override
-		//MultiTypeReference jvm::JvmTypeReference:
-		//	JvmTypeReference ({jvm::JvmSynonymTypeReference.references+=current} ('|' references+=JvmTypeReference)+)?;
-		@Override public ParserRule getRule() { return rule; }
-		
-		//JvmTypeReference ({jvm::JvmSynonymTypeReference.references+=current} ('|' references+=JvmTypeReference)+)?
-		public Group getGroup() { return cGroup; }
-		
-		//JvmTypeReference
-		public RuleCall getJvmTypeReferenceParserRuleCall_0() { return cJvmTypeReferenceParserRuleCall_0; }
-		
-		//({jvm::JvmSynonymTypeReference.references+=current} ('|' references+=JvmTypeReference)+)?
-		public Group getGroup_1() { return cGroup_1; }
-		
-		//{jvm::JvmSynonymTypeReference.references+=current}
-		public Action getJvmSynonymTypeReferenceReferencesAction_1_0() { return cJvmSynonymTypeReferenceReferencesAction_1_0; }
-		
-		//('|' references+=JvmTypeReference)+
-		public Group getGroup_1_1() { return cGroup_1_1; }
-		
-		//'|'
-		public Keyword getVerticalLineKeyword_1_1_0() { return cVerticalLineKeyword_1_1_0; }
-		
-		//references+=JvmTypeReference
-		public Assignment getReferencesAssignment_1_1_1() { return cReferencesAssignment_1_1_1; }
-		
-		//JvmTypeReference
-		public RuleCall getReferencesJvmTypeReferenceParserRuleCall_1_1_1_0() { return cReferencesJvmTypeReferenceParserRuleCall_1_1_1_0; }
-	}
-	public class XCasePartElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "io.sarl.lang.SARL.XCasePart");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cXCasePartAction_0 = (Action)cGroup.eContents().get(0);
-		private final Assignment cTypeGuardAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cTypeGuardMultiTypeReferenceParserRuleCall_1_0 = (RuleCall)cTypeGuardAssignment_1.eContents().get(0);
-		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
-		private final Keyword cCaseKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
-		private final Assignment cCaseAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
-		private final RuleCall cCaseXExpressionParserRuleCall_2_1_0 = (RuleCall)cCaseAssignment_2_1.eContents().get(0);
-		private final Alternatives cAlternatives_3 = (Alternatives)cGroup.eContents().get(3);
-		private final Group cGroup_3_0 = (Group)cAlternatives_3.eContents().get(0);
-		private final Keyword cColonKeyword_3_0_0 = (Keyword)cGroup_3_0.eContents().get(0);
-		private final Assignment cThenAssignment_3_0_1 = (Assignment)cGroup_3_0.eContents().get(1);
-		private final RuleCall cThenXExpressionParserRuleCall_3_0_1_0 = (RuleCall)cThenAssignment_3_0_1.eContents().get(0);
-		private final Assignment cFallThroughAssignment_3_1 = (Assignment)cAlternatives_3.eContents().get(1);
-		private final Keyword cFallThroughCommaKeyword_3_1_0 = (Keyword)cFallThroughAssignment_3_1.eContents().get(0);
-		
-		//@Override
-		//XCasePart xbase::XCasePart:
-		//	{xbase::XCasePart} typeGuard=MultiTypeReference? ('case' case=XExpression)? (':' then=XExpression | fallThrough?=',');
-		@Override public ParserRule getRule() { return rule; }
-		
-		//{xbase::XCasePart} typeGuard=MultiTypeReference? ('case' case=XExpression)? (':' then=XExpression | fallThrough?=',')
-		public Group getGroup() { return cGroup; }
-		
-		//{xbase::XCasePart}
-		public Action getXCasePartAction_0() { return cXCasePartAction_0; }
-		
-		//typeGuard=MultiTypeReference?
-		public Assignment getTypeGuardAssignment_1() { return cTypeGuardAssignment_1; }
-		
-		//MultiTypeReference
-		public RuleCall getTypeGuardMultiTypeReferenceParserRuleCall_1_0() { return cTypeGuardMultiTypeReferenceParserRuleCall_1_0; }
-		
-		//('case' case=XExpression)?
-		public Group getGroup_2() { return cGroup_2; }
-		
-		//'case'
-		public Keyword getCaseKeyword_2_0() { return cCaseKeyword_2_0; }
-		
-		//case=XExpression
-		public Assignment getCaseAssignment_2_1() { return cCaseAssignment_2_1; }
-		
-		//XExpression
-		public RuleCall getCaseXExpressionParserRuleCall_2_1_0() { return cCaseXExpressionParserRuleCall_2_1_0; }
-		
-		//':' then=XExpression | fallThrough?=','
-		public Alternatives getAlternatives_3() { return cAlternatives_3; }
-		
-		//':' then=XExpression
-		public Group getGroup_3_0() { return cGroup_3_0; }
-		
-		//':'
-		public Keyword getColonKeyword_3_0_0() { return cColonKeyword_3_0_0; }
-		
-		//then=XExpression
-		public Assignment getThenAssignment_3_0_1() { return cThenAssignment_3_0_1; }
-		
-		//XExpression
-		public RuleCall getThenXExpressionParserRuleCall_3_0_1_0() { return cThenXExpressionParserRuleCall_3_0_1_0; }
-		
-		//fallThrough?=','
-		public Assignment getFallThroughAssignment_3_1() { return cFallThroughAssignment_3_1; }
-		
-		//','
-		public Keyword getFallThroughCommaKeyword_3_1_0() { return cFallThroughCommaKeyword_3_1_0; }
-	}
 	public class XForLoopExpressionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "io.sarl.lang.SARL.XForLoopExpression");
 		private final Group cGroup = (Group)rule.eContents().get(1);
@@ -5784,8 +5676,6 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	private final XVariableDeclarationElements pXVariableDeclaration;
 	private final JvmFormalParameterElements pJvmFormalParameter;
 	private final FullJvmFormalParameterElements pFullJvmFormalParameter;
-	private final MultiTypeReferenceElements pMultiTypeReference;
-	private final XCasePartElements pXCasePart;
 	private final XForLoopExpressionElements pXForLoopExpression;
 	private final SarlXLoopFormalParameterElements pSarlXLoopFormalParameter;
 	private final XSwitchExpressionElements pXSwitchExpression;
@@ -5835,8 +5725,6 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		this.pXVariableDeclaration = new XVariableDeclarationElements();
 		this.pJvmFormalParameter = new JvmFormalParameterElements();
 		this.pFullJvmFormalParameter = new FullJvmFormalParameterElements();
-		this.pMultiTypeReference = new MultiTypeReferenceElements();
-		this.pXCasePart = new XCasePartElements();
 		this.pXForLoopExpression = new XForLoopExpressionElements();
 		this.pSarlXLoopFormalParameter = new SarlXLoopFormalParameterElements();
 		this.pXSwitchExpression = new XSwitchExpressionElements();
@@ -6227,28 +6115,6 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//@Override
-	//MultiTypeReference jvm::JvmTypeReference:
-	//	JvmTypeReference ({jvm::JvmSynonymTypeReference.references+=current} ('|' references+=JvmTypeReference)+)?;
-	public MultiTypeReferenceElements getMultiTypeReferenceAccess() {
-		return pMultiTypeReference;
-	}
-	
-	public ParserRule getMultiTypeReferenceRule() {
-		return getMultiTypeReferenceAccess().getRule();
-	}
-	
-	//@Override
-	//XCasePart xbase::XCasePart:
-	//	{xbase::XCasePart} typeGuard=MultiTypeReference? ('case' case=XExpression)? (':' then=XExpression | fallThrough?=',');
-	public XCasePartElements getXCasePartAccess() {
-		return pXCasePart;
-	}
-	
-	public ParserRule getXCasePartRule() {
-		return getXCasePartAccess().getRule();
-	}
-	
-	//@Override
 	//XForLoopExpression xbase::XExpression:
 	//	=> ({xbase::XForLoopExpression}
 	//	'for' '(' declaredParam=SarlXLoopFormalParameter ':') forExpression=XExpression ')' (eachExpression=XExpression |
@@ -6573,6 +6439,16 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getXbaseConstructorCallAccess().getRule();
 	}
 	
+	//MultiTypeReference types::JvmTypeReference:
+	//	JvmTypeReference ({types::JvmSynonymTypeReference.references+=current} ('|' references+=JvmTypeReference)+)?;
+	public XtendGrammarAccess.MultiTypeReferenceElements getMultiTypeReferenceAccess() {
+		return gaXtend.getMultiTypeReferenceAccess();
+	}
+	
+	public ParserRule getMultiTypeReferenceRule() {
+		return getMultiTypeReferenceAccess().getRule();
+	}
+	
 	//@Override
 	//XStringLiteral xbase::XExpression:
 	//	SimpleStringLiteral | RichString;
@@ -6582,6 +6458,17 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getXStringLiteralRule() {
 		return getXStringLiteralAccess().getRule();
+	}
+	
+	//@Override
+	//XCasePart xbase::XCasePart:
+	//	{xbase::XCasePart} typeGuard=MultiTypeReference? ('case' case=XExpression)? (':' then=XExpression | fallThrough?=',');
+	public XtendGrammarAccess.XCasePartElements getXCasePartAccess() {
+		return gaXtend.getXCasePartAccess();
+	}
+	
+	public ParserRule getXCasePartRule() {
+		return getXCasePartAccess().getRule();
 	}
 	
 	//XExpressionOrSimpleConstructorCall xbase::XExpression:

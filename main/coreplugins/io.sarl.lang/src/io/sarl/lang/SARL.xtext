@@ -503,20 +503,6 @@ FullJvmFormalParameter returns xtend::XtendFormalParameter:
 	extension?='extension'? name=ValidID ':' parameterType=MultiTypeReference
 ;
 
-// TODO Xtext upgrade, remove when Xtend issue #474 is fixed (https://github.com/eclipse/xtext-xtend/issues/474) 
-@Override 
-MultiTypeReference returns jvm::JvmTypeReference:
-	JvmTypeReference ({jvm::JvmSynonymTypeReference.references+=current} ('|' references+=JvmTypeReference)+)?
-;
-
-// TODO Xtext upgrade, remove when Xtend issue #474 is fixed (https://github.com/eclipse/xtext-xtend/issues/474) 
-@Override
-XCasePart returns xbase::XCasePart:
-	{xbase::XCasePart}
-	typeGuard=MultiTypeReference? ('case' case=XExpression)?
-		(':' then=XExpression | fallThrough?=',') 
-;
-
 // The type of the for-loop's variable is following the SARL syntax (not the Xtext/Xtend)
 @Override 
 XForLoopExpression returns xbase::XExpression:

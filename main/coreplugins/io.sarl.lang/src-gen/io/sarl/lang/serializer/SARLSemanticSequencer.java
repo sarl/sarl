@@ -373,9 +373,9 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 				}
 				else break;
 			case TypesPackage.JVM_INNER_TYPE_REFERENCE:
-				if (rule == grammarAccess.getMultiTypeReferenceRule()
+				if (rule == grammarAccess.getJvmSuperTypeReferenceRule()
+						|| rule == grammarAccess.getMultiTypeReferenceRule()
 						|| action == grammarAccess.getMultiTypeReferenceAccess().getJvmSynonymTypeReferenceReferencesAction_1_0()
-						|| rule == grammarAccess.getJvmSuperTypeReferenceRule()
 						|| rule == grammarAccess.getJvmTypeReferenceRule()
 						|| action == grammarAccess.getJvmTypeReferenceAccess().getJvmGenericArrayTypeReferenceComponentTypeAction_0_1_0_0()
 						|| rule == grammarAccess.getJvmParameterizedTypeReferenceRule()
@@ -407,9 +407,9 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 					sequence_JvmParameterizedTypeReference_JvmInnerTypeReference_1_4_0_0_0(context, (JvmParameterizedTypeReference) semanticObject); 
 					return; 
 				}
-				else if (rule == grammarAccess.getMultiTypeReferenceRule()
+				else if (rule == grammarAccess.getJvmSuperTypeReferenceRule()
+						|| rule == grammarAccess.getMultiTypeReferenceRule()
 						|| action == grammarAccess.getMultiTypeReferenceAccess().getJvmSynonymTypeReferenceReferencesAction_1_0()
-						|| rule == grammarAccess.getJvmSuperTypeReferenceRule()
 						|| rule == grammarAccess.getJvmTypeReferenceRule()
 						|| action == grammarAccess.getJvmTypeReferenceAccess().getJvmGenericArrayTypeReferenceComponentTypeAction_0_1_0_0()
 						|| rule == grammarAccess.getJvmParameterizedTypeReferenceRule()
@@ -847,9 +847,9 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 					sequence_XFunctionSuperTypeRef(context, (XFunctionTypeRef) semanticObject); 
 					return; 
 				}
-				else if (rule == grammarAccess.getMultiTypeReferenceRule()
+				else if (rule == grammarAccess.getTypeReferenceWithTypeArgsRule()
+						|| rule == grammarAccess.getMultiTypeReferenceRule()
 						|| action == grammarAccess.getMultiTypeReferenceAccess().getJvmSynonymTypeReferenceReferencesAction_1_0()
-						|| rule == grammarAccess.getTypeReferenceWithTypeArgsRule()
 						|| rule == grammarAccess.getJvmTypeReferenceRule()
 						|| rule == grammarAccess.getXFunctionTypeRefRule()
 						|| rule == grammarAccess.getJvmArgumentTypeReferenceRule()) {
@@ -1601,18 +1601,6 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	
 	/**
 	 * Contexts:
-	 *     MultiTypeReference returns JvmSynonymTypeReference
-	 *
-	 * Constraint:
-	 *     (references+=MultiTypeReference_JvmSynonymTypeReference_1_0 references+=JvmTypeReference+)
-	 */
-	protected void sequence_MultiTypeReference(ISerializationContext context, JvmSynonymTypeReference semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
 	 *     Parameter returns SarlFormalParameter
 	 *
 	 * Constraint:
@@ -1887,18 +1875,6 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     )
 	 */
 	protected void sequence_XAdditiveExpression_XAndExpression_XAssignment_XEqualityExpression_XExponentExpression_XMultiplicativeExpression_XOrExpression_XOtherOperatorExpression_XRelationalExpression(ISerializationContext context, XBinaryOperation semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     XCasePart returns XCasePart
-	 *
-	 * Constraint:
-	 *     (typeGuard=MultiTypeReference? case=XExpression? (then=XExpression | fallThrough?=','))
-	 */
-	protected void sequence_XCasePart(ISerializationContext context, XCasePart semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	

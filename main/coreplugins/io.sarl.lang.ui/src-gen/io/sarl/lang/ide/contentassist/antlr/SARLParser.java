@@ -78,7 +78,6 @@ public class SARLParser extends AbstractPartialContentAssistParser {
 			builder.put(grammarAccess.getXVariableDeclarationAccess().getAlternatives_0_0_1(), "rule__XVariableDeclaration__Alternatives_0_0_1");
 			builder.put(grammarAccess.getXVariableDeclarationAccess().getAlternatives_0_0_1_0_0(), "rule__XVariableDeclaration__Alternatives_0_0_1_0_0");
 			builder.put(grammarAccess.getXVariableDeclarationAccess().getAlternatives_0_0_1_1_1(), "rule__XVariableDeclaration__Alternatives_0_0_1_1_1");
-			builder.put(grammarAccess.getXCasePartAccess().getAlternatives_3(), "rule__XCasePart__Alternatives_3");
 			builder.put(grammarAccess.getXForLoopExpressionAccess().getAlternatives_3(), "rule__XForLoopExpression__Alternatives_3");
 			builder.put(grammarAccess.getXSwitchExpressionAccess().getAlternatives_2(), "rule__XSwitchExpression__Alternatives_2");
 			builder.put(grammarAccess.getOpMultiAccess().getAlternatives(), "rule__OpMulti__Alternatives");
@@ -96,6 +95,7 @@ public class SARLParser extends AbstractPartialContentAssistParser {
 			builder.put(grammarAccess.getInnerVarIDAccess().getAlternatives(), "rule__InnerVarID__Alternatives");
 			builder.put(grammarAccess.getXbaseConstructorCallAccess().getAlternatives_4_1(), "rule__XbaseConstructorCall__Alternatives_4_1");
 			builder.put(grammarAccess.getXStringLiteralAccess().getAlternatives(), "rule__XStringLiteral__Alternatives");
+			builder.put(grammarAccess.getXCasePartAccess().getAlternatives_3(), "rule__XCasePart__Alternatives_3");
 			builder.put(grammarAccess.getXExpressionOrSimpleConstructorCallAccess().getAlternatives(), "rule__XExpressionOrSimpleConstructorCall__Alternatives");
 			builder.put(grammarAccess.getRichStringAccess().getAlternatives_1(), "rule__RichString__Alternatives_1");
 			builder.put(grammarAccess.getRichStringLiteralInbetweenAccess().getAlternatives_1(), "rule__RichStringLiteralInbetween__Alternatives_1");
@@ -336,12 +336,6 @@ public class SARLParser extends AbstractPartialContentAssistParser {
 			builder.put(grammarAccess.getJvmFormalParameterAccess().getGroup(), "rule__JvmFormalParameter__Group__0");
 			builder.put(grammarAccess.getJvmFormalParameterAccess().getGroup_2(), "rule__JvmFormalParameter__Group_2__0");
 			builder.put(grammarAccess.getFullJvmFormalParameterAccess().getGroup(), "rule__FullJvmFormalParameter__Group__0");
-			builder.put(grammarAccess.getMultiTypeReferenceAccess().getGroup(), "rule__MultiTypeReference__Group__0");
-			builder.put(grammarAccess.getMultiTypeReferenceAccess().getGroup_1(), "rule__MultiTypeReference__Group_1__0");
-			builder.put(grammarAccess.getMultiTypeReferenceAccess().getGroup_1_1(), "rule__MultiTypeReference__Group_1_1__0");
-			builder.put(grammarAccess.getXCasePartAccess().getGroup(), "rule__XCasePart__Group__0");
-			builder.put(grammarAccess.getXCasePartAccess().getGroup_2(), "rule__XCasePart__Group_2__0");
-			builder.put(grammarAccess.getXCasePartAccess().getGroup_3_0(), "rule__XCasePart__Group_3_0__0");
 			builder.put(grammarAccess.getXForLoopExpressionAccess().getGroup(), "rule__XForLoopExpression__Group__0");
 			builder.put(grammarAccess.getXForLoopExpressionAccess().getGroup_0(), "rule__XForLoopExpression__Group_0__0");
 			builder.put(grammarAccess.getXForLoopExpressionAccess().getGroup_0_0(), "rule__XForLoopExpression__Group_0_0__0");
@@ -400,6 +394,12 @@ public class SARLParser extends AbstractPartialContentAssistParser {
 			builder.put(grammarAccess.getXbaseConstructorCallAccess().getGroup_4(), "rule__XbaseConstructorCall__Group_4__0");
 			builder.put(grammarAccess.getXbaseConstructorCallAccess().getGroup_4_1_1(), "rule__XbaseConstructorCall__Group_4_1_1__0");
 			builder.put(grammarAccess.getXbaseConstructorCallAccess().getGroup_4_1_1_1(), "rule__XbaseConstructorCall__Group_4_1_1_1__0");
+			builder.put(grammarAccess.getMultiTypeReferenceAccess().getGroup(), "rule__MultiTypeReference__Group__0");
+			builder.put(grammarAccess.getMultiTypeReferenceAccess().getGroup_1(), "rule__MultiTypeReference__Group_1__0");
+			builder.put(grammarAccess.getMultiTypeReferenceAccess().getGroup_1_1(), "rule__MultiTypeReference__Group_1_1__0");
+			builder.put(grammarAccess.getXCasePartAccess().getGroup(), "rule__XCasePart__Group__0");
+			builder.put(grammarAccess.getXCasePartAccess().getGroup_2(), "rule__XCasePart__Group_2__0");
+			builder.put(grammarAccess.getXCasePartAccess().getGroup_3_0(), "rule__XCasePart__Group_3_0__0");
 			builder.put(grammarAccess.getSimpleStringLiteralAccess().getGroup(), "rule__SimpleStringLiteral__Group__0");
 			builder.put(grammarAccess.getRichStringAccess().getGroup(), "rule__RichString__Group__0");
 			builder.put(grammarAccess.getRichStringAccess().getGroup_1_1(), "rule__RichString__Group_1_1__0");
@@ -869,11 +869,6 @@ public class SARLParser extends AbstractPartialContentAssistParser {
 			builder.put(grammarAccess.getFullJvmFormalParameterAccess().getExtensionAssignment_0(), "rule__FullJvmFormalParameter__ExtensionAssignment_0");
 			builder.put(grammarAccess.getFullJvmFormalParameterAccess().getNameAssignment_1(), "rule__FullJvmFormalParameter__NameAssignment_1");
 			builder.put(grammarAccess.getFullJvmFormalParameterAccess().getParameterTypeAssignment_3(), "rule__FullJvmFormalParameter__ParameterTypeAssignment_3");
-			builder.put(grammarAccess.getMultiTypeReferenceAccess().getReferencesAssignment_1_1_1(), "rule__MultiTypeReference__ReferencesAssignment_1_1_1");
-			builder.put(grammarAccess.getXCasePartAccess().getTypeGuardAssignment_1(), "rule__XCasePart__TypeGuardAssignment_1");
-			builder.put(grammarAccess.getXCasePartAccess().getCaseAssignment_2_1(), "rule__XCasePart__CaseAssignment_2_1");
-			builder.put(grammarAccess.getXCasePartAccess().getThenAssignment_3_0_1(), "rule__XCasePart__ThenAssignment_3_0_1");
-			builder.put(grammarAccess.getXCasePartAccess().getFallThroughAssignment_3_1(), "rule__XCasePart__FallThroughAssignment_3_1");
 			builder.put(grammarAccess.getXForLoopExpressionAccess().getDeclaredParamAssignment_0_0_3(), "rule__XForLoopExpression__DeclaredParamAssignment_0_0_3");
 			builder.put(grammarAccess.getXForLoopExpressionAccess().getForExpressionAssignment_1(), "rule__XForLoopExpression__ForExpressionAssignment_1");
 			builder.put(grammarAccess.getXForLoopExpressionAccess().getEachExpressionAssignment_3_0(), "rule__XForLoopExpression__EachExpressionAssignment_3_0");
@@ -918,6 +913,11 @@ public class SARLParser extends AbstractPartialContentAssistParser {
 			builder.put(grammarAccess.getXbaseConstructorCallAccess().getArgumentsAssignment_4_1_1_0(), "rule__XbaseConstructorCall__ArgumentsAssignment_4_1_1_0");
 			builder.put(grammarAccess.getXbaseConstructorCallAccess().getArgumentsAssignment_4_1_1_1_1(), "rule__XbaseConstructorCall__ArgumentsAssignment_4_1_1_1_1");
 			builder.put(grammarAccess.getXbaseConstructorCallAccess().getArgumentsAssignment_5(), "rule__XbaseConstructorCall__ArgumentsAssignment_5");
+			builder.put(grammarAccess.getMultiTypeReferenceAccess().getReferencesAssignment_1_1_1(), "rule__MultiTypeReference__ReferencesAssignment_1_1_1");
+			builder.put(grammarAccess.getXCasePartAccess().getTypeGuardAssignment_1(), "rule__XCasePart__TypeGuardAssignment_1");
+			builder.put(grammarAccess.getXCasePartAccess().getCaseAssignment_2_1(), "rule__XCasePart__CaseAssignment_2_1");
+			builder.put(grammarAccess.getXCasePartAccess().getThenAssignment_3_0_1(), "rule__XCasePart__ThenAssignment_3_0_1");
+			builder.put(grammarAccess.getXCasePartAccess().getFallThroughAssignment_3_1(), "rule__XCasePart__FallThroughAssignment_3_1");
 			builder.put(grammarAccess.getSimpleStringLiteralAccess().getValueAssignment_1(), "rule__SimpleStringLiteral__ValueAssignment_1");
 			builder.put(grammarAccess.getRichStringAccess().getExpressionsAssignment_1_0(), "rule__RichString__ExpressionsAssignment_1_0");
 			builder.put(grammarAccess.getRichStringAccess().getExpressionsAssignment_1_1_0(), "rule__RichString__ExpressionsAssignment_1_1_0");

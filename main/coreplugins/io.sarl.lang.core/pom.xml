@@ -63,7 +63,7 @@
 								</replacement>
 								<replacement>
 									<token>@minimalxtextversion@</token>
-									<value>${xtext.version}</value>
+									<value>${xtext.version.current}</value>
 								</replacement>
 							</replacements>
 						</configuration>

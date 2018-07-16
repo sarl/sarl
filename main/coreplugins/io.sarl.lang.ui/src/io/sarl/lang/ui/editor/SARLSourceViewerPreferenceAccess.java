@@ -26,7 +26,6 @@ import org.eclipse.jdt.internal.ui.preferences.OptionsConfigurationBlock;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreAccess;
 import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreInitializer;
-import org.eclipse.xtext.ui.editor.preferences.PreferenceStoreAccessImpl;
 
 /** Preferences for the SARL Source viewer.
  *
@@ -50,7 +49,7 @@ public class SARLSourceViewerPreferenceAccess {
 	 */
 	public static final boolean AUTOFORMATTING_DEFAULT_VALUE = true;
 
-	private PreferenceStoreAccessImpl preferenceStoreAccess;
+	private IPreferenceStoreAccess preferenceStoreAccess;
 
 	/** Change the preference accessor.
 	 *
@@ -60,7 +59,7 @@ public class SARLSourceViewerPreferenceAccess {
 	 * @param preferenceStoreAccess the accessor.
 	 */
 	@Inject
-	public void setPreferenceStoreAccess(PreferenceStoreAccessImpl preferenceStoreAccess) {
+	public void setPreferenceStoreAccess(IPreferenceStoreAccess preferenceStoreAccess) {
 		this.preferenceStoreAccess = preferenceStoreAccess;
 	}
 

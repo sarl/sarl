@@ -40,12 +40,6 @@
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
 		</dependency>
-		<!-- FIXME: Workaround for bug: https://www.eclipse.org/forums/index.php/t/1093971/ -->
-		<dependency>
-		    <groupId>org.eclipse.platform</groupId>
-		    <artifactId>org.eclipse.equinox.common</artifactId>
-		    <version>3.10.0</version>
-		</dependency>
 	</dependencies>
 
 	<!-- ======================================= -->

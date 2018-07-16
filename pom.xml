@@ -31,8 +31,9 @@
 		<!-- The versions of the following Xtext libraries are available at: https://eclipse.org/Xtext/documentation/350_continuous_integration.html -->
 
 		<!-- Version of the Xtext API -->
-		<xtext.version>2.14.0</xtext.version>
-		<xtext.version.next>2.14.1</xtext.version.next>
+		<xtext.version>2.15.0-SNAPSHOT</xtext.version>
+		<xtext.version.current>2.15.0</xtext.version.current>
+		<xtext.version.next>2.15.1</xtext.version.next>
 		<!-- Version of the MWE2 library
 		    (used for accessing the mwe2 P2 http://download.eclipse.org/modeling/emft/mwe/updates/releases/,
 		     see compositeContent.{xml,jar,xz,xml.xz} file) -->
@@ -1161,5 +1162,19 @@
 			</build>
 		</profile>
 	</profiles>
+
+	<repositories>
+		<!-- FIXME: Remove this repository when the stable version of Xtenxt 2.15 is released -->
+		<repository>
+			<id>org.eclipse.xtext-snapshot</id>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</repository>
+	</repositories>
 
 </project>

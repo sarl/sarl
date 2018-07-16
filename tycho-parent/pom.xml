@@ -73,14 +73,14 @@
 							<type>eclipse-plugin</type>
 							<id>org.eclipse.xtext.xbase.lib</id>
 							<restrictTo>
-								<versionRange>[${xtext.version},${xtext.version.next})</versionRange>
+								<versionRange>[${xtext.version.current},${xtext.version.next})</versionRange>
 							</restrictTo>
 						</filter>
 						<filter>
 							<type>eclipse-plugin</type>
 							<id>org.eclipse.xtext.xbase</id>
 							<restrictTo>
-								<versionRange>[${xtext.version},${xtext.version.next})</versionRange>
+								<versionRange>[${xtext.version.current},${xtext.version.next})</versionRange>
 							</restrictTo>
 						</filter>
 						<filter>
@@ -99,7 +99,7 @@
 							<requirement>
 								<type>eclipse-feature</type>
 								<id>org.eclipse.xtext.xbase.lib</id>
-								<versionRange>[${xtext.version},${xtext.version.next})</versionRange>
+								<versionRange>[${xtext.version.current},${xtext.version.next})</versionRange>
 							</requirement>
 							<!-- to get the org.eclipse.osgi.compatibility.state plugin iff 
 							the targeted Eclipse version (e.g., Luna) has it
@@ -237,7 +237,9 @@
 		<repository>
 			<id>org.eclipse.modeling.tmf.xtext.updates</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/modeling/tmf/xtext/updates/releases/${xtext.version}/</url>
+			<!-- FIXME: Replace by the repository for the stable Xtext 2.15 -->
+			<url>http://download.eclipse.org/modeling/tmf/xtext/updates/composite/latest/</url>
+			<!-- <url>http://download.eclipse.org/modeling/tmf/xtext/updates/releases/${xtext.version.current}/</url> -->
 		</repository>
 		<!-- Eclipse and related libraries -->
 		<repository>

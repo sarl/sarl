@@ -87,7 +87,6 @@ import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder;
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
-import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.typesystem.conformance.TypeConformanceComputationArgument;
 import org.eclipse.xtext.xbase.typesystem.override.OverrideHelper;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
@@ -659,11 +658,13 @@ public final class Utils {
 	 *     positive integer of <code>v1</code> is greater than <code>v2</code>;
 	 *     {@code 0} if they are strictly equal.
 	 */
-	@Inline(value = "Version.parseVersion($1).compareTo(Version.parseVersion($2))",
-			imported = {Version.class})
 	public static int compareVersions(String v1, String v2) {
-		final Version vobject1 = Version.parseVersion(v1);
-		final Version vobject2 = Version.parseVersion(v2);
+		// FIXME: Remove when the version of Xtext is a stable version
+		final String fixedv1 = v1.replaceFirst("-SNAPSHOT$", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		final String fixedv2 = v2.replaceFirst("-SNAPSHOT$", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		//
+		final Version vobject1 = Version.parseVersion(fixedv1);
+		final Version vobject2 = Version.parseVersion(fixedv2);
 		return vobject1.compareTo(vobject2);
 	}
 

@@ -7,8 +7,7 @@
     <package 
        uri = "http://www.sarl.io/lang/SARL" 
        class = "io.sarl.lang.sarl.SarlPackage"
-       genModel = "model/SARL.genmodel" /> 
-	
+       genModel = "model/SARL.genmodel" />
   </extension>
 
 </plugin>

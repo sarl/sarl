@@ -950,6 +950,10 @@ Workflow {
     				to = "io.sarl.lang.ui.editor.SARLSourceViewer$Factory"
    				}
     			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.XtextSourceViewerConfiguration"
+    				to = "org.eclipse.xtend.ide.editor.XtendSourceViewerConfiguration"
+   				}
+    			ui = {
     				bind = "org.eclipse.xtext.ui.editor.actions.IActionContributor"
     				annotatedWithName = "OverrideIndicatorRulerAction"
     				to = "org.eclipse.xtend.ide.editor.OverrideIndicatorRulerAction"
@@ -1022,7 +1026,7 @@ Workflow {
 
 	    	// Injection recommender for recommending missed injections in the SARL module
     		fragment = InjectionRecommender2 auto-inject {
-    			enable = true
+    			enable = false
     			showRuntimeRecommendations = true
     			showUiRecommendations = false
     		}

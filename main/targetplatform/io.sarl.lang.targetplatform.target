@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="io.sarl.lang.targetplatform" sequenceNumber="129">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><?pde version="3.8"?><target name="io.sarl.lang.targetplatform" sequenceNumber="129">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="epp.package.java" version="4.8.0.20180619-1200"/>
@@ -36,9 +35,9 @@
 <repository location="http://download.jboss.org/jbosstools/updates/m2e-extensions/m2e-jdt-compiler/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.xtend.sdk.feature.group" version="2.14.0.v20180523-0937"/>
-<unit id="org.eclipse.xtext.sdk.feature.group" version="2.14.0.v20180523-0937"/>
-<repository location="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/"/>
+<repository location="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/latest/"/>
+	<unit id="org.eclipse.xtend.sdk.feature.group" version="2.15.0.v20180714-0209"/>
+	<unit id="org.eclipse.xtext.sdk.feature.group" version="2.15.0.v20180714-0209"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="aopalliance" version="1.0.0"/>
