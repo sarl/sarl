@@ -22,6 +22,7 @@ module io.sarl.lang.GenerateSARL2
 import org.eclipse.emf.mwe.utils.*
 import org.eclipse.xtext.xtext.generator.*
 import org.eclipse.xtext.xtext.generator.model.project.*
+import org.eclipse.xtext.xtext.generator.ui.codemining.*
 import org.eclipse.xtext.generator.*
 import org.eclipse.xtext.ui.generator.*
 import org.eclipse.xtext.generator.parser.antlr.*
@@ -372,6 +373,11 @@ Workflow {
 			// Formatter - this fragment should be explicitly defined otherwise the SARLFormatter is not injected. Bug?
 			formatter = auto-inject {	
 				generateStub = true	
+			}
+
+			// Code mining
+			fragment = CodeMiningFragment auto-inject {
+				generateStub = true
 			}
 
 			// ***********************************
@@ -952,6 +958,11 @@ Workflow {
     			ui = {
     				bind = "org.eclipse.xtext.ui.editor.XtextSourceViewerConfiguration"
     				to = "org.eclipse.xtend.ide.editor.XtendSourceViewerConfiguration"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.XtextEditor"
+    				to = "io.sarl.lang.ui.editor.SARLStandardEditor"
+    				override = true
    				}
     			ui = {
     				bind = "org.eclipse.xtext.ui.editor.actions.IActionContributor"

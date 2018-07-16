@@ -32,6 +32,7 @@ import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreInitializer;
 import org.eclipse.xtext.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.xtext.validation.ConfigurableIssueCodesProvider;
 
+import io.sarl.lang.ui.codemining.SARLCodeminingPreferenceAccess;
 import io.sarl.lang.ui.compiler.extra.ExtensionPointExtraLanguagePreferenceInitializer;
 import io.sarl.lang.ui.editor.SARLSourceViewerPreferenceAccess;
 
@@ -56,6 +57,9 @@ public class SARLPreferenceStoreInitializer implements IPreferenceStoreInitializ
 	@Inject
 	private SARLSourceViewerPreferenceAccess.Initializer sourceViewerInitializer;
 
+	@Inject
+	private SARLCodeminingPreferenceAccess.Initializer codeminingInitializer;
+
 	@Override
 	public void initialize(IPreferenceStoreAccess preferenceStoreAccess) {
 		this.preferenceStoreAccess = preferenceStoreAccess;
@@ -73,6 +77,7 @@ public class SARLPreferenceStoreInitializer implements IPreferenceStoreInitializ
 
 		// Initialize the editor preferences
 		setupSourceViewerDefaults(preferenceStoreAccess);
+		setupCodeminingDefaults(preferenceStoreAccess);
 
 		// Initialize the generators for the extra languages.
 		setupExtraLanguageGeneratorDefaults(preferenceStoreAccess);
@@ -91,6 +96,10 @@ public class SARLPreferenceStoreInitializer implements IPreferenceStoreInitializ
 
 	private void setupSourceViewerDefaults(IPreferenceStoreAccess preferenceStoreAccess) {
 		this.sourceViewerInitializer.initialize(preferenceStoreAccess);
+	}
+
+	private void setupCodeminingDefaults(IPreferenceStoreAccess preferenceStoreAccess) {
+		this.codeminingInitializer.initialize(preferenceStoreAccess);
 	}
 
 	@Override

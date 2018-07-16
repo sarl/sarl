@@ -55,8 +55,8 @@ import io.sarl.lang.ui.contentassist.imports.SARLImportingTypesProposalProvider;
 import io.sarl.lang.ui.contentassist.javadoc.SARLJavaDocContentAssistProcessor;
 import io.sarl.lang.ui.contentassist.templates.SARLTemplateContextType;
 import io.sarl.lang.ui.contentassist.templates.SARLTemplateProposalProvider;
-import io.sarl.lang.ui.editor.SARLEditor;
 import io.sarl.lang.ui.editor.SARLSourceViewer;
+import io.sarl.lang.ui.editor.SARLStandardEditor;
 import io.sarl.lang.ui.highlighting.SARLHighlightingCalculator;
 import io.sarl.lang.ui.hover.SARLHoverSerializer;
 import io.sarl.lang.ui.hover.SARLHoverSignatureProvider;
@@ -113,6 +113,7 @@ import org.eclipse.xtend.ide.editor.OverrideIndicatorRulerAction;
 import org.eclipse.xtend.ide.editor.RichStringAwareToggleCommentAction;
 import org.eclipse.xtend.ide.editor.SingleLineCommentHelper;
 import org.eclipse.xtend.ide.editor.XtendDoubleClickStrategyProvider;
+import org.eclipse.xtend.ide.editor.XtendSourceViewerConfiguration;
 import org.eclipse.xtend.ide.highlighting.XtendHighlightingConfiguration;
 import org.eclipse.xtend.ide.hover.XtendAnnotationHover;
 import org.eclipse.xtend.ide.hover.XtendHoverProvider;
@@ -176,6 +177,7 @@ import org.eclipse.xtext.ui.editor.IURIEditorOpener;
 import org.eclipse.xtext.ui.editor.IXtextEditorCallback;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.eclipse.xtext.ui.editor.XtextSourceViewer;
+import org.eclipse.xtext.ui.editor.XtextSourceViewerConfiguration;
 import org.eclipse.xtext.ui.editor.actions.IActionContributor;
 import org.eclipse.xtext.ui.editor.autoedit.AbstractEditStrategyProvider;
 import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
@@ -454,11 +456,6 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by org.eclipse.xtext.xtext.generator.xbase.XbaseGeneratorFragment2
 	public Class<? extends IUnresolvedTypeResolver> bindIUnresolvedTypeResolver() {
 		return InteractiveUnresolvedTypeResolver.class;
-	}
-	
-	// contributed by org.eclipse.xtext.xtext.generator.xbase.XbaseGeneratorFragment2
-	public Class<? extends XtextEditor> bindXtextEditor() {
-		return SARLEditor.class;
 	}
 	
 	// contributed by org.eclipse.xtext.xtext.generator.ui.templates.CodetemplatesGeneratorFragment2
@@ -753,6 +750,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
+	public Class<? extends XtextEditor> bindXtextEditor() {
+		return SARLStandardEditor.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
 	public Class<? extends AbstractFileSystemSupport> bindAbstractFileSystemSupport() {
 		return EclipseFileSystemSupportImpl.class;
 	}
@@ -836,6 +838,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
 	public Class<? extends ToggleSLCommentAction.Factory> bindToggleSLCommentAction$Factory() {
 		return RichStringAwareToggleCommentAction.Factory.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
+	public Class<? extends XtextSourceViewerConfiguration> bindXtextSourceViewerConfiguration() {
+		return XtendSourceViewerConfiguration.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]

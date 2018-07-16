@@ -31,6 +31,7 @@ Export-Package: io.sarl.lang.ide,
  io.sarl.lang.ide.contentassist.antlr.internal,
  io.sarl.lang.ui,
  io.sarl.lang.ui.codebuilder,
+ io.sarl.lang.ui.codemining,
  io.sarl.lang.ui.compiler,
  io.sarl.lang.ui.compiler.extra,
  io.sarl.lang.ui.compiler.extra.preferences,
@@ -52,5 +53,7 @@ Export-Package: io.sarl.lang.ide,
  io.sarl.lang.ui.refactoring.rename,
  io.sarl.lang.ui.tasks,
  io.sarl.lang.ui.validation,
- io.sarl.lang.ui.validation.extra
-Import-Package: org.apache.log4j
+ io.sarl.lang.ui.validation.extra,
+ io.sarl.lang.validation
+Import-Package: org.apache.log4j,
+ org.eclipse.xtext.ui.codemining;resolution:=optional

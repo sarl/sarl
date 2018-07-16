@@ -412,6 +412,31 @@
     <fileTypes extension="sarl" type="text">
 		</fileTypes>
   </extension>
+	<!-- code mining -->
+	<extension point="org.eclipse.ui.workbench.texteditor.codeMiningProviders">
+		<codeMiningProvider
+			class="io.sarl.lang.ui.SARLExecutableExtensionFactory:org.eclipse.jface.text.codemining.ICodeMiningProvider"
+			id="io.sarl.lang.SARL.CodeMiningProvider"
+			label="%codemining.name">
+			<enabledWhen>
+				<with variable="editorInput">
+					<adapt type="org.eclipse.core.resources.IFile">
+						<test
+							property="org.eclipse.core.resources.contentTypeId"
+							value="io.sarl.lang.SARL.contenttype">
+						</test>
+					</adapt>
+				</with>
+			</enabledWhen>
+		</codeMiningProvider>
+	</extension>
+	<extension
+      point="org.eclipse.ui.genericeditor.reconcilers">
+	   <reconciler
+	         class="org.eclipse.jface.text.codemining.CodeMiningReconciler"
+	         contentType="io.sarl.lang.SARL.contenttype">
+	   </reconciler>
+	</extension>
 
 
 

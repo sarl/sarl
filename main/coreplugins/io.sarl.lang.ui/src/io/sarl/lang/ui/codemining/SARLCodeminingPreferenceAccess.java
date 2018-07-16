@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.ui.editor;
+package io.sarl.lang.ui.codemining;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreAccess;
@@ -27,72 +27,72 @@ import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreInitializer;
 
 import io.sarl.lang.ui.preferences.AbstractPreferenceAccess;
 
-/** Preferences for the SARL Source viewer.
+/** Preferences for the code mining support of SARL.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.7
+ * @since 0.8
  */
-public class SARLSourceViewerPreferenceAccess extends AbstractPreferenceAccess {
+public class SARLCodeminingPreferenceAccess extends AbstractPreferenceAccess {
 
 	/** Prefix for the preference keys.
 	 */
-	public static final String PREFIX = SARLSourceViewerPreferenceAccess.class.getPackage().getName() + "."; //$NON-NLS-1$
+	public static final String PREFIX = SARLCodeminingPreferenceAccess.class.getPackage().getName() + "."; //$NON-NLS-1$
 
-	/** Key for saving the enabling state of the auto-formatting feature.
+	/** Key for saving the enabling state of the codemining feature.
 	 */
-	public static final String AUTOFORMATTING_PROPERTY =  PREFIX + "sarlAutoFormatting"; //$NON-NLS-1$
+	public static final String CODEMINING_PROPERTY =  PREFIX + "codemining"; //$NON-NLS-1$
 
-	/** Default value for saving the enabling state of the auto-formatting feature.
+	/** Default value for saving the enabling state of the codemining feature.
 	 */
-	public static final boolean AUTOFORMATTING_DEFAULT_VALUE = true;
+	public static final boolean CODEMINING_DEFAULT_VALUE = true;
 
-	/** Replies if the auto-formatting feature is enable into the SARL editor.
+
+	/** Replies if the codemining feature is enable into the SARL editor.
 	 *
 	 * @return {@code true} if it is enabled.
 	 */
-	public boolean isAutoFormattingEnabled() {
+	public boolean isCodeminingEnabled() {
 		final IPreferenceStore store = getWritablePreferenceStore(null);
-		return store.getBoolean(AUTOFORMATTING_PROPERTY);
+		return store.getBoolean(CODEMINING_PROPERTY);
 	}
 
-
-	/** Enable or disable the auto-formatting feature into the SARL editor.
+	/** Enable or disable the codemining feature into the SARL editor.
 	 *
 	 * @param enable is {@code true} if it is enabled; {@code false} if it is disable; {@code null}
 	 *     to restore the default value.
 	 * @since 0.8
 	 * @see #getWritablePreferenceStore(Object)
 	 */
-	public void setAutoFormattingEnabled(Boolean enable) {
+	public void setCodeminingEnabled(Boolean enable) {
 		final IPreferenceStore store = getWritablePreferenceStore(null);
 		if (enable == null) {
-			store.setToDefault(AUTOFORMATTING_PROPERTY);
+			store.setToDefault(CODEMINING_PROPERTY);
 		} else {
-			store.setValue(AUTOFORMATTING_PROPERTY, enable.booleanValue());
+			store.setValue(CODEMINING_PROPERTY, enable.booleanValue());
 		}
 	}
 
 	@Override
 	public void setToDefault(Object context) {
 		final IPreferenceStore store = getWritablePreferenceStore(context);
-		store.setToDefault(AUTOFORMATTING_PROPERTY);
+		store.setToDefault(CODEMINING_PROPERTY);
 	}
 
-	/** Initializer of the preferences for the SARL Source viewer.
+	/** Initializer of the preferences for the SARL codemining feature.
 	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
-	 * @since 0.7
+	 * @since 0.8
 	 */
 	public static class Initializer implements IPreferenceStoreInitializer {
 		@Override
 		public void initialize(IPreferenceStoreAccess access) {
-			access.getWritablePreferenceStore().setDefault(AUTOFORMATTING_PROPERTY, AUTOFORMATTING_DEFAULT_VALUE);
+			access.getWritablePreferenceStore().setDefault(CODEMINING_PROPERTY, CODEMINING_DEFAULT_VALUE);
 		}
 	}
 
