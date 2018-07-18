@@ -22,10 +22,23 @@
 			<groupId>io.sarl.maven</groupId>
 			<artifactId>io.sarl.maven.batchcompiler</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>io.sarl.maven</groupId>
+			<artifactId>io.sarl.maven.bqextension</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<configuration>
+					<sourceDirectories>
+						<sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
+					</sourceDirectories>
+				</configuration>
+			</plugin>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<executions>

@@ -20,6 +20,7 @@
 	<modules>
 		<module>io.sarl.maven.baselib</module>
 		<module>io.sarl.maven.batchcompiler</module>
+		<module>io.sarl.maven.bqextension</module>
 		<module>sarl-maven-plugin</module>
 	</modules>
 

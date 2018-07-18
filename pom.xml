@@ -297,6 +297,11 @@
 			</dependency>
 			<dependency>
 				<groupId>io.sarl.maven</groupId>
+				<artifactId>io.sarl.maven.bqextension</artifactId>
+				<version>${sarl.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.sarl.maven</groupId>
 				<artifactId>io.sarl.maven.docs.generator</artifactId>
 				<version>${sarl.version}</version>
 			</dependency>
@@ -381,6 +386,11 @@
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava-testlib</artifactId>
 				<version>${guava.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.bootique</groupId>
+				<artifactId>bootique</artifactId>
+				<version>0.25</version>
 			</dependency>
 			<dependency>
 				<groupId>org.javassist</groupId>

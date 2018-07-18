@@ -58,6 +58,35 @@ public class SARLStandaloneSetup extends SARLStandaloneSetupGenerated {
 		return new SARLStandaloneSetup().createInjectorAndDoEMFRegistration(modules);
 	}
 
+	/** Run the pre-setup task.
+	 *
+	 * <p>This function is provided in order to let the caller to create the injector by hand.
+	 * It is recommended to invoke {@link #doSetup()} in place of this function.
+	 *
+	 * @since 0.8
+	 * @see #doSetup()
+	 * @see #doSetup(Module...)
+	 */
+	public static void doPreSetup() {
+		XtendStandaloneSetup.doSetup();
+	}
+
+	/** Run the post-setup task.
+	 *
+	 * <p>This function is provided in order to let the caller to create the injector by hand.
+	 * It is recommended to invoke {@link #doSetup()} in place of this function.
+	 *
+	 * @param injector the injector to be used.
+	 * @return the injector.
+	 * @since 0.8
+	 * @see #doSetup()
+	 * @see #doSetup(Module...)
+	 */
+	public static Injector doPostSetup(Injector injector) {
+		new SARLStandaloneSetup().register(injector);
+		return injector;
+	}
+
 	/** Create the injector based on the given set of modules and prepare the EMF infrastructure.
 	 *
 	 * @param modules the injection modules that are overriding the standard SARL module.
@@ -66,7 +95,7 @@ public class SARLStandaloneSetup extends SARLStandaloneSetupGenerated {
 	 * @see SARLRuntimeModule
 	 */
 	public Injector createInjectorAndDoEMFRegistration(Module... modules) {
-		XtendStandaloneSetup.doSetup();
+		doPreSetup();
 		final Injector injector = createInjector(modules);
 		register(injector);
 		return injector;
