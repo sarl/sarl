@@ -53,6 +53,7 @@ import io.sarl.lang.SARLVersion;
 import io.sarl.lang.compiler.GeneratorConfig2;
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
 import io.sarl.lang.sarlc.commands.CompilerCommand;
+import io.sarl.lang.sarlc.commands.PathDetector;
 import io.sarl.lang.sarlc.configs.CompilerConfig;
 import io.sarl.lang.sarlc.configs.LoggingConfig;
 import io.sarl.lang.sarlc.configs.SarlcConfig;
@@ -190,14 +191,15 @@ public class CompilerModule extends AbstractConfigModule {
 	 *
 	 * @param compiler the compiler.
 	 * @param configuration the SARLC configuration.
+	 * @param pathDetector the detector of paths.
 	 * @return the command.
 	 */
 	@SuppressWarnings("static-method")
 	@Provides
 	@Singleton
 	public CompilerCommand provideSarlcCompilerCommand(Provider<SarlBatchCompiler> compiler,
-			Provider<SarlcConfig> configuration) {
-		return new CompilerCommand(compiler, configuration);
+			Provider<SarlcConfig> configuration, Provider<PathDetector> pathDetector) {
+		return new CompilerCommand(compiler, configuration, pathDetector);
 	}
 
 	/** Replies the SARL batch compiler.
