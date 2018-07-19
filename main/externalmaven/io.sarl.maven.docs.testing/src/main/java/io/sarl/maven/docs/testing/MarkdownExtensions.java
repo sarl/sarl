@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import io.bootique.help.HelpOption;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 
@@ -52,7 +53,26 @@ public final class MarkdownExtensions {
 	 * @param options the options.
 	 * @return the markdown table.
 	 */
-	public static String renderToMarkdown(Options options) {
+	@SuppressWarnings("unchecked")
+	public static String renderToMarkdown(Object options) {
+		if (options instanceof Options) {
+			return _renderToMarkdown((Options) options);
+		}
+		if (options instanceof List<?>) {
+			Object element = ((List<?>) options).get(0);
+			if (element instanceof HelpOption) {
+				return _renderToMarkdown((List<? extends HelpOption>) options);
+			}
+		}
+		return ""; //$NON-NLS-1$
+	}
+
+	/** Render the option help to a Mardown table.
+	 *
+	 * @param options the options.
+	 * @return the markdown table.
+	 */
+	protected static String _renderToMarkdown(Options options) {
 		if (options == null) {
 			return ""; //$NON-NLS-1$
 		}
@@ -82,6 +102,84 @@ public final class MarkdownExtensions {
 
 			if (option.getDescription() != null) {
 				String text = option.getDescription().replaceAll("[ \t\n\r\f]+", " "); //$NON-NLS-1$ //$NON-NLS-2$
+				text = text.replaceAll("\\<", "&lt;");  //$NON-NLS-1$//$NON-NLS-2$
+				text = text.replaceAll("\\>", "&gt;");  //$NON-NLS-1$//$NON-NLS-2$
+				buffer.append(text);
+			}
+
+			buffer.append(" |\n"); //$NON-NLS-1$
+		}
+
+		return buffer.toString();
+	}
+
+	/** Render the option help to a Mardown table.
+	 *
+	 * @param options the options.
+	 * @return the markdown table.
+	 */
+	@SuppressWarnings("checkstyle:npathcomplexity")
+	protected static String _renderToMarkdown(Iterable<? extends HelpOption> options) {
+		if (options == null) {
+			return ""; //$NON-NLS-1$
+		}
+		final StringBuilder buffer = new StringBuilder();
+		for (final HelpOption option : options) {
+			buffer.append("| "); //$NON-NLS-1$
+
+			String valueName = option.getOption().getValueName();
+			if (valueName == null || valueName.length() == 0) {
+				valueName = "val"; //$NON-NLS-1$
+			}
+
+			if (option.isShortNameAllowed()) {
+				buffer.append("`-"); //$NON-NLS-1$
+				buffer.append(String.valueOf(option.getOption().getShortName()));
+
+				switch (option.getOption().getValueCardinality()) {
+				case REQUIRED:
+					buffer.append(" "); //$NON-NLS-1$
+					buffer.append(valueName);
+					break;
+				case OPTIONAL:
+					buffer.append(" ["); //$NON-NLS-1$
+					buffer.append(valueName);
+					buffer.append("]"); //$NON-NLS-1$
+					break;
+				case NONE:
+				default:
+				}
+				buffer.append("`"); //$NON-NLS-1$
+			}
+
+			if (option.isLongNameAllowed()) {
+
+				if (option.isShortNameAllowed()) {
+					buffer.append(", "); //$NON-NLS-1$
+				}
+				buffer.append("`--"); //$NON-NLS-1$
+				buffer.append(option.getOption().getName());
+				switch (option.getOption().getValueCardinality()) {
+				case REQUIRED:
+					buffer.append("="); //$NON-NLS-1$
+					buffer.append(valueName);
+					break;
+				case OPTIONAL:
+					buffer.append("[="); //$NON-NLS-1$
+					buffer.append(valueName);
+					buffer.append("]"); //$NON-NLS-1$
+					break;
+				case NONE:
+				default:
+				}
+				buffer.append("`"); //$NON-NLS-1$
+			}
+
+			buffer.append(" | "); //$NON-NLS-1$
+
+           final String description = option.getOption().getDescription();
+			if (description != null) {
+				String text = description.replaceAll("[ \t\n\r\f]+", " "); //$NON-NLS-1$ //$NON-NLS-2$
 				text = text.replaceAll("\\<", "&lt;");  //$NON-NLS-1$//$NON-NLS-2$
 				text = text.replaceAll("\\>", "&gt;");  //$NON-NLS-1$//$NON-NLS-2$
 				buffer.append(text);

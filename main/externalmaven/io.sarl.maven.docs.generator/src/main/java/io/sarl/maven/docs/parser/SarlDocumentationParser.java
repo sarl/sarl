@@ -794,7 +794,7 @@ public class SarlDocumentationParser {
 				}
 			}
 		});
-		final ParsingContext rootContextForReplacements = new ParsingContext(true);
+		final ParsingContext rootContextForReplacements = new ParsingContext(true, true);
 		initializeContext(rootContextForReplacements);
 		parse(content, inputFile, 0, Stage.FIRST, rootContextForReplacements, interceptor);
 		//
@@ -979,7 +979,7 @@ public class SarlDocumentationParser {
 		System.arraycopy(parameter, 0, args, 3, parameter.length);
 		final String msg = MessageFormat.format(message, args);
 		if (cause != null) {
-			throw new ParsingException(msg, file, lineno, cause);
+			throw new ParsingException(msg, file, lineno, Throwables.getRootCause(cause));
 		}
 		throw new ParsingException(msg, file, lineno);
 	}
@@ -998,7 +998,7 @@ public class SarlDocumentationParser {
 		}
 		final String msg = MessageFormat.format(message, parameters);
 		if (cause != null) {
-			throw new ParsingException(msg, null, 1, cause);
+			throw new ParsingException(msg, null, 1, Throwables.getRootCause(cause));
 		}
 		throw new ParsingException(msg, null, 1);
 	}
@@ -1196,6 +1196,8 @@ public class SarlDocumentationParser {
 
 		private ScriptExecutor scriptExecutor;
 
+		private boolean isTestingPhase;
+
 		/** Constructor with standard visibility configuration.
 		 */
 		public ParsingContext() {
@@ -1207,9 +1209,11 @@ public class SarlDocumentationParser {
 		 * @param forceVisibility forces all the elements to be visible. The visiblilty tags such as
 		 *     {@link Tag#ON} and {@link Tag#OFF} will have no effect if the value of this argument is
 		 *     {@code true}.
+		 * @param isTestingPhase indicates if the context is created for testing phase.
 		 */
-		public ParsingContext(boolean forceVisibility) {
+		public ParsingContext(boolean forceVisibility, boolean isTestingPhase) {
 			this.forceVisibility = forceVisibility;
+			this.isTestingPhase = isTestingPhase;
 		}
 
 		/** Change the script executor.
@@ -1313,6 +1317,16 @@ public class SarlDocumentationParser {
 			return !isInBlock() || this.isVisibleInblock || this.forceVisibility;
 		}
 
+		/** Replies if the context is created within a testing phase.
+		 *
+		 * <p>Usually, no code for generated the marker language is run during a testing phase.
+		 *
+		 * @return {@code true} if the content is outside a block or the visibility flag is on.
+		 */
+		public boolean isTestingPhase() {
+			return this.isTestingPhase;
+		}
+
 		/** Set the flag that indicates if the parser is on.
 		 *
 		 * @param enable {@code true} if parser is on.
@@ -1377,6 +1391,7 @@ public class SarlDocumentationParser {
 			this.isParsing = parentContext.isParsing;
 			this.isVisibleInblock = parentContext.isVisibleInblock;
 			this.forceVisibility = parentContext.forceVisibility;
+			this.isTestingPhase = parentContext.isTestingPhase;
 			this.lineno = parentContext.lineno;
 			this.scriptExecutor = parentContext.scriptExecutor;
 		}
@@ -1934,9 +1949,11 @@ public class SarlDocumentationParser {
 			@Override
 			public String passThrough(ParsingContext context, String dynamicTag, String parameter, String blockValue) {
 				context.getParserInterceptor().outline(context);
-				final String tag = context.getOutlineOutputTag();
-				if (!Strings.isNullOrEmpty(tag)) {
-					return Strings.nullToEmpty(context.getOutlineOutputTag());
+				if (!context.isTestingPhase()) {
+					final String tag = context.getOutlineOutputTag();
+					if (!Strings.isNullOrEmpty(tag)) {
+						return Strings.nullToEmpty(context.getOutlineOutputTag());
+					}
 				}
 				return ""; //$NON-NLS-1$
 			}
@@ -2103,21 +2120,23 @@ public class SarlDocumentationParser {
 					reportError(context, Messages.SarlDocumentationParser_5, name());
 					return null;
 				}
-				String code = parameter;
-				if (Strings.isNullOrEmpty(code)) {
-					code = blockValue;
-				}
-				if (!Strings.isNullOrEmpty(code)) {
-					final ScriptExecutor executor = context.getScriptExecutor();
-					if (executor != null) {
-						try {
-							final Object result = executor.execute(context.getLineNo(), code);
-							if (result != null) {
-								final String stringResult = Strings.nullToEmpty(Objects.toString(result));
-								return stringResult;
+				if (!context.isTestingPhase()) {
+					String code = parameter;
+					if (Strings.isNullOrEmpty(code)) {
+						code = blockValue;
+					}
+					if (!Strings.isNullOrEmpty(code)) {
+						final ScriptExecutor executor = context.getScriptExecutor();
+						if (executor != null) {
+							try {
+								final Object result = executor.execute(context.getLineNo(), code);
+								if (result != null) {
+									final String stringResult = Strings.nullToEmpty(Objects.toString(result));
+									return stringResult;
+								}
+							} catch (Exception exception) {
+								Throwables.propagate(exception);
 							}
-						} catch (Exception exception) {
-							Throwables.propagate(exception);
 						}
 					}
 				}
@@ -2171,21 +2190,23 @@ public class SarlDocumentationParser {
 					reportError(context, Messages.SarlDocumentationParser_5, name());
 					return null;
 				}
-				String code = blockValue;
-				if (Strings.isNullOrEmpty(code)) {
-					code = parameter;
-				}
-				if (!Strings.isNullOrEmpty(code)) {
-					final ScriptExecutor executor = context.getScriptExecutor();
-					if (executor != null) {
-						try {
-							final Object result = executor.execute(context.getLineNo(), code);
-							if (result != null) {
-								final String stringResult = Strings.nullToEmpty(Objects.toString(result));
-								return formatBlockText(stringResult, context.getOutputLanguage(), context.getBlockCodeFormat());
+				if (!context.isTestingPhase()) {
+					String code = blockValue;
+					if (Strings.isNullOrEmpty(code)) {
+						code = parameter;
+					}
+					if (!Strings.isNullOrEmpty(code)) {
+						final ScriptExecutor executor = context.getScriptExecutor();
+						if (executor != null) {
+							try {
+								final Object result = executor.execute(context.getLineNo(), code);
+								if (result != null) {
+									final String stringResult = Strings.nullToEmpty(Objects.toString(result));
+									return formatBlockText(stringResult, context.getOutputLanguage(), context.getBlockCodeFormat());
+								}
+							} catch (Exception exception) {
+								Throwables.propagate(exception);
 							}
-						} catch (Exception exception) {
-							Throwables.propagate(exception);
 						}
 					}
 				}
@@ -2470,24 +2491,27 @@ public class SarlDocumentationParser {
 					reportError(context, Messages.SarlDocumentationParser_5, name());
 					return null;
 				}
-				final Class<?> javaType;
-				try {
-					javaType = ReflectionUtil.forName(parameter);
-				} catch (ClassNotFoundException exception) {
-					reportError(context, Messages.SarlDocumentationParser_0, exception);
-					return null;
+				if (!context.isTestingPhase()) {
+					final Class<?> javaType;
+					try {
+						javaType = ReflectionUtil.forName(parameter);
+					} catch (ClassNotFoundException exception) {
+						reportError(context, Messages.SarlDocumentationParser_0, exception);
+						return null;
+					}
+					final String block;
+					if (javaType.isInterface()) {
+						block = extractInterface(javaType);
+					} else if (javaType.isEnum()) {
+						block = extractEnumeration(javaType);
+					} else if (javaType.isAnnotation()) {
+						block = extractAnnotation(javaType);
+					} else {
+						block = extractClass(javaType);
+					}
+					return formatBlockText(block, context.getOutputLanguage(), context.getBlockCodeFormat());
 				}
-				final String block;
-				if (javaType.isInterface()) {
-					block = extractInterface(javaType);
-				} else if (javaType.isEnum()) {
-					block = extractEnumeration(javaType);
-				} else if (javaType.isAnnotation()) {
-					block = extractAnnotation(javaType);
-				} else {
-					block = extractClass(javaType);
-				}
-				return formatBlockText(block, context.getOutputLanguage(), context.getBlockCodeFormat());
+				return ""; //$NON-NLS-1$
 			}
 
 			private String extractInterface(Class<?> type) {

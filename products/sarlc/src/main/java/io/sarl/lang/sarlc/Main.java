@@ -21,11 +21,15 @@
 
 package io.sarl.lang.sarlc;
 
+import java.util.List;
+
 import com.google.common.base.Throwables;
 import com.google.inject.Injector;
 import com.google.inject.ProvisionException;
 import io.bootique.BQRuntime;
 import io.bootique.Bootique;
+import io.bootique.help.HelpOption;
+import io.bootique.help.HelpOptions;
 import io.bootique.meta.application.ApplicationMetadata;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
@@ -133,6 +137,33 @@ public final class Main {
 		root.removeAllAppenders();
 		root.addAppender(new ConsoleAppender(
 				new PatternLayout(Constants.LOGGER_PATTERN)));
+	}
+
+	/** Replies the default name of the program.
+	 *
+	 * @return the default name of the program.
+	 */
+	public static String getDefaultCompilerProgramName() {
+		return SarlcConfig.COMPILER_PROGRAM_VALUE;
+	}
+
+	/** Replies the options of the program.
+	 *
+	 * @return the options of the program.
+	 */
+	public static List<HelpOption> getOptions() {
+		final BQRuntime runtime = createRuntime();
+		final ApplicationMetadata application = runtime.getInstance(ApplicationMetadata.class);
+		final HelpOptions helpOptions = new HelpOptions();
+
+		application.getCommands().forEach(c -> {
+			helpOptions.add(c.asOption());
+			c.getOptions().forEach(o -> helpOptions.add(o));
+		});
+
+		application.getOptions().forEach(o -> helpOptions.add(o));
+
+		return helpOptions.getOptions();
 	}
 
 }

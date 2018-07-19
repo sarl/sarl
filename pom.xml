@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
@@ -34,17 +35,15 @@
 		<xtext.version>2.15.0-SNAPSHOT</xtext.version>
 		<xtext.version.current>2.15.0</xtext.version.current>
 		<xtext.version.next>2.15.1</xtext.version.next>
-		<!-- Version of the MWE2 library
-		    (used for accessing the mwe2 P2 http://download.eclipse.org/modeling/emft/mwe/updates/releases/,
-		     see compositeContent.{xml,jar,xz,xml.xz} file) -->
+		<!-- Version of the MWE2 library (used for accessing the mwe2 P2 http://download.eclipse.org/modeling/emft/mwe/updates/releases/, 
+			see compositeContent.{xml,jar,xz,xml.xz} file) -->
 		<mwe2.version>2.9.0</mwe2.version>
-		<!-- Version of the Xpand library
-		     (used for accessing the Xpand P2 http://download.eclipse.org/modeling/m2t/xpand/updates/releases/,
-		     see compositeContent.{xml,jar,xz,xml.xz} file) -->
+		<!-- Version of the Xpand library (used for accessing the Xpand P2 http://download.eclipse.org/modeling/m2t/xpand/updates/releases/, 
+			see compositeContent.{xml,jar,xz,xml.xz} file) -->
 		<xpand.version>R201605260315</xpand.version>
 
-		<!-- Guice after 4.1.0 depends on Guava with too high version.
-		     Xbase requires up to 19.0. New guice requires 23.0. -->
+		<!-- Guice after 4.1.0 depends on Guava with too high version. Xbase requires 
+			up to 19.0. New guice requires 23.0. -->
 		<guice.version>4.1.0</guice.version>
 		<!-- Version of the OSGi module that provides the NLS (package: osgi) -->
 		<osgi.nls.version>3.10.0-v20140606-1445</osgi.nls.version>
@@ -54,7 +53,8 @@
 		<guava.version>18.0</guava.version>
 		<!-- Version of the javax.inject module -->
 		<javaxinject.version>1</javaxinject.version>
-		<!-- Version of the Tycho module, (search for tycho-maven-plugin on Maven central) -->
+		<!-- Version of the Tycho module, (search for tycho-maven-plugin on Maven 
+			central) -->
 		<tycho.version>1.2.0</tycho.version>
 		<!-- Version of the ZeroMQ library -->
 		<zeromq.version>0.4.2</zeromq.version>
@@ -72,9 +72,8 @@
 		<!-- Java Configuration -->
 		<compiler.level>1.8</compiler.level>
 		<jre.environment>JavaSE-1.8</jre.environment>
-		<!-- Maven API version.
-		     This version should be supported by m2e.
-		     Search for maven-core on central. -->
+		<!-- Maven API version. This version should be supported by m2e. Search 
+			for maven-core on central. -->
 		<maven.api.version>3.5.3</maven.api.version>
 		<!-- String to put after the copyright sign -->
 		<copyrighters>the original authors or authors</copyrighters>
@@ -353,8 +352,8 @@
 			<dependency>
 				<groupId>com.google.inject</groupId>
 				<artifactId>guice</artifactId>
-				<!-- Guice after 4.1.0 depends on Guava with too high version.
-				     Xbase requires up to 19.0. New guice requires 23.0. -->
+				<!-- Guice after 4.1.0 depends on Guava with too high version. Xbase 
+					requires up to 19.0. New guice requires 23.0. -->
 				<version>${guice.version}</version>
 			</dependency>
 			<dependency>
@@ -1174,7 +1173,8 @@
 	</profiles>
 
 	<repositories>
-		<!-- FIXME: Remove this repository when the stable version of Xtenxt 2.15 is released -->
+		<!-- FIXME: Remove this repository when the stable version of Xtenxt 2.15 
+			is released -->
 		<repository>
 			<id>org.eclipse.xtext-snapshot</id>
 			<snapshots>
