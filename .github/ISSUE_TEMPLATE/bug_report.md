@@ -20,16 +20,20 @@ A clear and concise description of what you expected to happen.
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
-
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+**System configuration:**
+-- SARL version:	
+-- SARL compiler:	
+-  - [x] Eclipse compiler without Maven	
+-  - [ ] Eclipse compiler with Maven	
+-  - [ ] Maven compiler on the command line	
+-  - [ ] sarlc compiler	
+-- Java JDK version (with the manufacturer name):	
+-- Operating System:	
+-  - [x] Linux 64bits	
+-  - [ ] Linux 32bits	
+-  - [ ] Windows 64bits	
+-  - [ ] Windows 32bits	
+-  - [ ] MacOS 64bits	
 
 **Additional context**
 Add any other context about the problem here.
