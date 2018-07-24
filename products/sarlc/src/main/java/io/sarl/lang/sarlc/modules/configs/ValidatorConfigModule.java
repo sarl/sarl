@@ -56,7 +56,7 @@ public class ValidatorConfigModule extends AbstractModule {
 
 		VariableDecls.extend(binder()).declareVar(ALL_ERRORS_NAME);
 		extend(binder()).addOption(OptionMetadata.builder(
-				"werr", Messages.ValidatorConfigModule_1) //$NON-NLS-1$
+				"werror", Messages.ValidatorConfigModule_1) //$NON-NLS-1$
 				.configPath(ALL_ERRORS_NAME)
 				.build());
 	}

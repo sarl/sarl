@@ -67,9 +67,6 @@ public class SarlBatchCompilerModule extends AbstractModule {
 		final SarlBatchCompiler compiler = new SarlBatchCompiler();
 		injector.injectMembers(compiler);
 
-		//final Logger logger = injector.getInstance(Logger.class);
-		//compiler.setLogger(logger);
-
 		if (!Strings.isEmpty(sarlcConfig.getClasspath())) {
 			compiler.setClassPath(sarlcConfig.getClasspath());
 		}

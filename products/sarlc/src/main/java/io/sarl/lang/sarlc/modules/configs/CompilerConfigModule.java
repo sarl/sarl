@@ -55,12 +55,14 @@ import io.sarl.lang.compiler.GeneratorConfig2;
  */
 public class CompilerConfigModule extends AbstractModule {
 
+	private static final String ENCODING_OPTION = "encoding"; //$NON-NLS-1$
+
 	@Override
 	protected void configure() {
 		VariableDecls.extend(binder()).declareVar(FILE_ENCODING_NAME);
 		extend(binder()).addOption(OptionMetadata.builder(
-				"encoding", //$NON-NLS-1$
-				MessageFormat.format(Messages.CompilerConfigModule_0, Charset.defaultCharset().displayName()))
+				ENCODING_OPTION,
+				MessageFormat.format(Messages.CompilerConfigModule_0, ENCODING_OPTION))
 				.configPath(FILE_ENCODING_NAME)
 				.valueOptional(Messages.CompilerConfigModule_1)
 				.defaultValue(Charset.defaultCharset().displayName())
@@ -68,8 +70,8 @@ public class CompilerConfigModule extends AbstractModule {
 
 		VariableDecls.extend(binder()).declareVar(JAVA_VERSION_NAME);
 		extend(binder()).addOption(OptionMetadata.builder(
-				"javaversion", //$NON-NLS-1$
-				MessageFormat.format(Messages.CompilerConfigModule_2, SARLVersion.MINIMAL_JDK_VERSION))
+				"javasource", //$NON-NLS-1$
+				Messages.CompilerConfigModule_2)
 				.configPath(JAVA_VERSION_NAME)
 				.valueOptional(Messages.CompilerConfigModule_3)
 				.defaultValue(SARLVersion.MINIMAL_JDK_VERSION)
@@ -79,7 +81,7 @@ public class CompilerConfigModule extends AbstractModule {
 		final String trueFalseValues = MessageFormat.format(Messages.CompilerConfigModule_5,
 				Boolean.TRUE, Boolean.FALSE);
 		extend(binder()).addOption(OptionMetadata.builder(
-				"javacompiler", //$NON-NLS-1$
+				"enablejavacompiler", //$NON-NLS-1$
 				MessageFormat.format(Messages.CompilerConfigModule_4, Boolean.TRUE))
 				.configPath(JAVA_COMPILER_NAME)
 				.valueOptional(trueFalseValues)
