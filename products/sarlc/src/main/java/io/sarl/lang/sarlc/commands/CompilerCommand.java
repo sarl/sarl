@@ -21,6 +21,7 @@
 
 package io.sarl.lang.sarlc.commands;
 
+import com.google.common.base.Strings;
 import com.google.inject.Provider;
 import io.bootique.cli.Cli;
 import io.bootique.command.CommandOutcome;
@@ -30,6 +31,7 @@ import io.bootique.meta.application.CommandMetadata;
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
 import io.sarl.lang.sarlc.Constants;
 import io.sarl.lang.sarlc.configs.SarlConfig;
+import io.sarl.lang.util.OutParameter;
 
 /**
  * Command for compiling with SARL.
@@ -88,8 +90,15 @@ public class CompilerCommand extends CommandWithMetadata {
 			comp.addSourcePath(cliArg);
 		}
 
+		final OutParameter<String> firstErrorMessage = new OutParameter<>();
+		comp.addIssueMessageListener((issue, uri, message) -> {
+			if (firstErrorMessage.get() == null) {
+				firstErrorMessage.set(message);
+			}
+		});
+
 		if (!comp.compile()) {
-			return CommandOutcome.failed(Constants.ERROR_CODE, ""); //$NON-NLS-1$
+			return CommandOutcome.failed(Constants.ERROR_CODE, Strings.nullToEmpty(firstErrorMessage.get()));
 		}
 		return CommandOutcome.succeeded();
 	}
