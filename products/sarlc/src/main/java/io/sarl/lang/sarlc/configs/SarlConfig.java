@@ -26,13 +26,12 @@ import java.io.File;
 import io.bootique.annotation.BQConfig;
 import io.bootique.annotation.BQConfigProperty;
 import io.bootique.config.ConfigurationFactory;
-import org.eclipse.xtext.util.Strings;
 
-import io.sarl.maven.bqextension.configs.Config;
-import io.sarl.maven.bqextension.configs.Configs;
+import io.sarl.lang.sarlc.configs.subconfigs.CompilerConfig;
+import io.sarl.lang.sarlc.configs.subconfigs.ValidatorConfig;
 
 /**
- * Configuration for the sarlc tool.
+ * Configuration for the sarl tool.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -41,12 +40,12 @@ import io.sarl.maven.bqextension.configs.Configs;
  * @since 0.8
  */
 @BQConfig("Configuration of the SARLC tool")
-public class SarlcConfig implements Config {
+public class SarlConfig {
 
 	/**
 	 * Prefix for the configuration entries of the path modules.
 	 */
-	public static final String PREFIX = Configs.SARL_ROOT_PROPERTY_PREFIX + "sarlc"; //$NON-NLS-1$
+	public static final String PREFIX = "sarl"; //$NON-NLS-1$
 
 	/**
 	 * Name of the property that contains the output path for the SARL code.
@@ -73,16 +72,6 @@ public class SarlcConfig implements Config {
 	 */
 	public static final String BOOT_CLASSPATH_NAME = PREFIX + ".bootclasspath"; //$NON-NLS-1$
 
-	/**
-	 * Name of the property that indicates the name of the compiler program.
-	 */
-	public static final String COMPILER_PROGRAM_NAME = PREFIX + ".compilerProgramName"; //$NON-NLS-1$
-
-	/**
-	 * Default value of the property that indicates the name of the compiler program.
-	 */
-	public static final String COMPILER_PROGRAM_VALUE = "sarlc"; //$NON-NLS-1$
-
 	private String classpath;
 
 	private String bootClasspath;
@@ -93,7 +82,19 @@ public class SarlcConfig implements Config {
 
 	private File workingPath;
 
-	private String compilerProgramName = COMPILER_PROGRAM_VALUE;
+	private CompilerConfig compilerConfig;
+
+	private ValidatorConfig validatorConfig;
+
+	/** Replies the configuration factory for the logging.
+	 *
+	 * @param configFactory the general configuration factory.
+	 * @return the logging configuration factory.
+	 */
+	public static SarlConfig getConfiguration(ConfigurationFactory configFactory) {
+		assert configFactory != null;
+		return configFactory.config(SarlConfig.class, PREFIX);
+	}
 
 	/** Replies the classpath.
 	 *
@@ -180,35 +181,44 @@ public class SarlcConfig implements Config {
 		this.workingPath = path;
 	}
 
-	/** Replies the name of the compiler program.
+	/** Replies the compiler configuration.
 	 *
-	 * @return the name of the program.
+	 * @return the compiler configuration.
 	 */
-	public String getCompilerProgramName() {
-		return this.compilerProgramName;
-	}
-
-	/** Change the name of the compiler program name.
-	 *
-	 * @param name the name.
-	 */
-	@BQConfigProperty("Name of the compiler program")
-	public void setCompilerProgramName(String name) {
-		if (Strings.isEmpty(name)) {
-			this.compilerProgramName = COMPILER_PROGRAM_VALUE;
-		} else {
-			this.compilerProgramName = name;
+	public CompilerConfig getCompiler() {
+		if (this.compilerConfig == null) {
+			this.compilerConfig = new CompilerConfig();
 		}
+		return this.compilerConfig;
 	}
 
-	/** Replies the configuration factory for the logging.
+	/** Change the compiler configuration.
 	 *
-	 * @param configFactory the general configuration factory.
-	 * @return the logging configuration factory.
+	 * @param config the compiler configuration.
 	 */
-	public static SarlcConfig getConfiguration(ConfigurationFactory configFactory) {
-		assert configFactory != null;
-		return configFactory.config(SarlcConfig.class, PREFIX);
+	@BQConfigProperty("Configuration of the SARL compiler")
+	public void setCompiler(CompilerConfig config) {
+		this.compilerConfig = config;
+	}
+
+	/** Replies the validator configuration.
+	 *
+	 * @return the validator configuration.
+	 */
+	public ValidatorConfig getValidator() {
+		if (this.validatorConfig == null) {
+			this.validatorConfig = new ValidatorConfig();
+		}
+		return this.validatorConfig;
+	}
+
+	/** Change the validator configuration.
+	 *
+	 * @param config the validator configuration.
+	 */
+	@BQConfigProperty("Configuration of the SARL validator")
+	public void setValidator(ValidatorConfig config) {
+		this.validatorConfig = config;
 	}
 
 }

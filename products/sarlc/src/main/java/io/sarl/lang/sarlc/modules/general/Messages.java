@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.sarlc.modules;
+package io.sarl.lang.sarlc.modules.general;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -34,34 +34,13 @@ import org.eclipse.osgi.util.NLS;
 @SuppressWarnings("all")
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
-	public static String LoggingModule_0;
-	public static String LoggingModule_1;
-	public static String LoggingModule_2;
-	public static String SarlcModule_0;
-	public static String SarlcModule_1;
-	public static String SarlcModule_2;
-	public static String SarlcModule_3;
-	public static String SarlcModule_4;
-	public static String SarlcModule_5;
-	public static String SarlcModule_6;
-	public static String SarlcModule_7;
-	public static String CompilerModule_0;
-	public static String CompilerModule_1;
-	public static String CompilerModule_2;
-	public static String CompilerModule_3;
-	public static String CompilerModule_4;
-	public static String CompilerModule_5;
-	public static String CompilerModule_6;
-	public static String CompilerModule_7;
-	public static String CompilerModule_8;
-	public static String CompilerModule_9;
-	public static String CompilerModule_10;
-	public static String CompilerModule_11;
-	public static String CompilerModule_12;
-	public static String CompilerModule_13;
-	public static String ValidatorModule_0;
-	public static String ValidatorModule_1;
-	public static String ValidatorModule_2;
+	public static String SarlBatchCompilerModuleProvider_0;
+	public static String SarlcDefaultCommandModuleProvider_0;
+	public static String SARLRuntimeModuleProvider_0;
+	public static String SarlcApplicationModule_0;
+	public static String SarlcApplicationModule_1;
+	public static String SarlcApplicationModule_2;
+	public static String SarlcApplicationModuleProvider_0;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

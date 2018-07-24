@@ -28,8 +28,8 @@ import io.bootique.command.CommandWithMetadata;
 import io.bootique.meta.application.CommandMetadata;
 
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
-import io.sarl.lang.sarlc.configs.SarlcConfig;
-import io.sarl.maven.bqextension.Constants;
+import io.sarl.lang.sarlc.Constants;
+import io.sarl.lang.sarlc.configs.SarlConfig;
 
 /**
  * Command for compiling with SARL.
@@ -44,7 +44,7 @@ public class CompilerCommand extends CommandWithMetadata {
 
 	private final Provider<SarlBatchCompiler> compiler;
 
-	private final Provider<SarlcConfig> configuration;
+	private final Provider<SarlConfig> configuration;
 
 	private final Provider<PathDetector> pathDetector;
 
@@ -54,7 +54,7 @@ public class CompilerCommand extends CommandWithMetadata {
 	 * @param configuration the configuration of the tool.
 	 * @param pathDetector the detector of path.
 	 */
-	public CompilerCommand(Provider<SarlBatchCompiler> compiler, Provider<SarlcConfig> configuration,
+	public CompilerCommand(Provider<SarlBatchCompiler> compiler, Provider<SarlConfig> configuration,
 			Provider<PathDetector> pathDetector) {
 		super(CommandMetadata
 				.builder(CompilerCommand.class)
@@ -71,7 +71,7 @@ public class CompilerCommand extends CommandWithMetadata {
 			return CommandOutcome.failed(Constants.ERROR_CODE, Messages.CompilerCommand_1);
 		}
 
-		final SarlcConfig config = this.configuration.get();
+		final SarlConfig config = this.configuration.get();
 		final PathDetector paths = this.pathDetector.get();
 		paths.setSarlOutputPath(config.getOutputPath());
 		paths.setClassOutputPath(config.getClassOutputPath());

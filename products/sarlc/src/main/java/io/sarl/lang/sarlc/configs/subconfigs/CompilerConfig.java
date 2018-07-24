@@ -19,18 +19,16 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.sarlc.configs;
+package io.sarl.lang.sarlc.configs.subconfigs;
 
 import java.nio.charset.Charset;
 
 import io.bootique.annotation.BQConfig;
 import io.bootique.annotation.BQConfigProperty;
-import io.bootique.config.ConfigurationFactory;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.compiler.GeneratorConfig2;
-import io.sarl.maven.bqextension.configs.Config;
-import io.sarl.maven.bqextension.configs.Configs;
+import io.sarl.lang.sarlc.configs.SarlConfig;
 
 /**
  * Configuration for the compiler.
@@ -42,12 +40,12 @@ import io.sarl.maven.bqextension.configs.Configs;
  * @since 0.8
  */
 @BQConfig("Configuration of the SARL compiler")
-public class CompilerConfig implements Config {
+public class CompilerConfig {
 
 	/**
 	 * Prefix for the configuration entries of the path modules.
 	 */
-	public static final String PREFIX = Configs.SARL_ROOT_PROPERTY_PREFIX + "compiler"; //$NON-NLS-1$
+	public static final String PREFIX = SarlConfig.PREFIX + ".compiler"; //$NON-NLS-1$
 
 	/**
 	 * Name of the property that contains the file encoding.
@@ -109,26 +107,6 @@ public class CompilerConfig implements Config {
 	 * compiling the inline expressions.
 	 */
 	public static final String COMPRESS_INLINE_EXPRESSIONS_NAME = PREFIX + ".compressInlineExpressions"; //$NON-NLS-1$
-
-	/**
-	 * Name of the property that indicates if warnings are ignored.
-	 */
-	public static final String IGNORE_WARNINGS_NAME = PREFIX + ".ignoreWarnings"; //$NON-NLS-1$
-
-	/**
-	 * Name of the property that indicates if all warnings are printed out.
-	 */
-	public static final String ALL_WARNINGS_NAME = PREFIX + ".allWarnings"; //$NON-NLS-1$
-
-	/**
-	 * Name of the property that indicates if warnings are errors.
-	 */
-	public static final String ALL_ERRORS_NAME = PREFIX + ".allErrors"; //$NON-NLS-1$
-
-	/**
-	 * Name of the property that indicates the levels of specific warnings.
-	 */
-	public static final String WARNING_LEVELS_NAME = PREFIX + ".warningLevels"; //$NON-NLS-1$
 
 	private String fileEcoding = Charset.defaultCharset().displayName();
 
@@ -356,16 +334,6 @@ public class CompilerConfig implements Config {
 	@BQConfigProperty("Version of Java to be used (1.8 or higher)")
 	public void setJavaVersion(String version) {
 		this.javaVersion = version;
-	}
-
-	/** Replies the configuration factory for the logging.
-	 *
-	 * @param configFactory the general configuration factory.
-	 * @return the logging configuration factory.
-	 */
-	public static CompilerConfig getConfiguration(ConfigurationFactory configFactory) {
-		assert configFactory != null;
-		return configFactory.config(CompilerConfig.class, PREFIX);
 	}
 
 }

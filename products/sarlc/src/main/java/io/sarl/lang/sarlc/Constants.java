@@ -19,30 +19,36 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.sarlc.commands;
+package io.sarl.lang.sarlc;
 
-import org.eclipse.osgi.util.NLS;
-
-/** Messages for the SARL batch compiler.
+/** Constants for sarlc.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @ExcludeFromApidoc
+ * @since 0.8
  */
-@SuppressWarnings("all")
-public class Messages extends NLS {
-	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
-	public static String CompilerCommand_0;
-	public static String CompilerCommand_1;
-	public static String VersionCommand_0;
-	public static String VersionCommand_1;
-	static {
-		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+public final class Constants {
+
+	/** Return code when failure.
+	 */
+	public static final int ERROR_CODE = 255;
+
+	/** Default name of the sarlc program.
+	 */
+	public static final String PROGRAM_NAME = "sarlc"; //$NON-NLS-1$
+
+	/** Name of the option for defining the output directory from SARL to Java, without the {@code -} and the {@code /} prefixes.
+	 */
+	public static final String SARL_OUTPUT_DIRECTORY_OPTION = "directory"; //$NON-NLS-1$
+
+	/** Name of the option for defining the output directory for the Java class files, without the {@code -} and the {@code /} prefixes.
+	 */
+	public static final String JAVA_OUTPUT_DIRECTORY_OPTION = "outputdir"; //$NON-NLS-1$
+
+	private Constants() {
+		//
 	}
 
-	private Messages() {
-	}
 }

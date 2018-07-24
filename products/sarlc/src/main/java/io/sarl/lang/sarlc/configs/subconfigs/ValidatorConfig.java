@@ -19,18 +19,16 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.sarlc.configs;
+package io.sarl.lang.sarlc.configs.subconfigs;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import io.bootique.annotation.BQConfig;
 import io.bootique.annotation.BQConfigProperty;
-import io.bootique.config.ConfigurationFactory;
 import org.eclipse.xtext.diagnostics.Severity;
 
-import io.sarl.maven.bqextension.configs.Config;
-import io.sarl.maven.bqextension.configs.Configs;
+import io.sarl.lang.sarlc.configs.SarlConfig;
 
 /**
  * Configuration for the validator.
@@ -42,12 +40,12 @@ import io.sarl.maven.bqextension.configs.Configs;
  * @since 0.8
  */
 @BQConfig("Configuration of the SARL validator")
-public class ValidatorConfig implements Config {
+public class ValidatorConfig {
 
 	/**
 	 * Prefix for the configuration entries of the path modules.
 	 */
-	public static final String PREFIX = Configs.SARL_ROOT_PROPERTY_PREFIX + "validator"; //$NON-NLS-1$
+	public static final String PREFIX = SarlConfig.PREFIX + ".validator"; //$NON-NLS-1$
 
 	/**
 	 * Name of the property that indicates if warnings are ignored.
@@ -147,16 +145,6 @@ public class ValidatorConfig implements Config {
 	@BQConfigProperty("Ignore warnings")
 	public void setIgnoreWarnings(boolean ignore) {
 		this.ignoreWarnings = ignore;
-	}
-
-	/** Replies the configuration factory for the logging.
-	 *
-	 * @param configFactory the general configuration factory.
-	 * @return the logging configuration factory.
-	 */
-	public static ValidatorConfig getConfiguration(ConfigurationFactory configFactory) {
-		assert configFactory != null;
-		return configFactory.config(ValidatorConfig.class, PREFIX);
 	}
 
 }

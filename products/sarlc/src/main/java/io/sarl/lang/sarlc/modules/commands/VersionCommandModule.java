@@ -19,21 +19,18 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.sarlc.modules;
+package io.sarl.lang.sarlc.modules.commands;
 
-import java.util.Set;
+import static io.bootique.BQCoreModule.extend;
 
-import com.google.inject.Provider;
+import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import io.bootique.log.BootLogger;
 
-import io.sarl.lang.sarlc.commands.PrintConfigCommand;
-import io.sarl.maven.bqextension.configs.Config;
-import io.sarl.maven.bqextension.modules.AbstractConfigModule;
-import io.sarl.maven.bqextension.modules.BQModule;
+import io.sarl.lang.sarlc.commands.VersionCommand;
 
-/** Module for the sarlc tool.
+/** Module for the command for printing out the sarlc version.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -41,25 +38,23 @@ import io.sarl.maven.bqextension.modules.BQModule;
  * @mavenartifactid $ArtifactId$
  * @since 0.8
  */
-@BQModule("The runtime for printed out the current Yaml configuration.")
-public class PrintConfigModule extends AbstractConfigModule {
+public class VersionCommandModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		associateCommand(PrintConfigCommand.class);
+		extend(binder()).addCommand(VersionCommand.class);
 	}
 
-	/** Provide the command for running the compiler.
+	/** Provide the command for displaying the sarlc version.
 	 *
-	 * @param bootLogger the boot logger.
-	 * @param configs the configurations.
+	 * @param bootLogger the logger.
 	 * @return the command.
 	 */
 	@SuppressWarnings("static-method")
 	@Provides
 	@Singleton
-	public PrintConfigCommand providePrintConfigCommand(BootLogger bootLogger, Provider<Set<Config>> configs) {
-		return new PrintConfigCommand(bootLogger, configs);
+	public VersionCommand provideSarlcVersionCommand(BootLogger bootLogger) {
+		return new VersionCommand(bootLogger);
 	}
 
 }

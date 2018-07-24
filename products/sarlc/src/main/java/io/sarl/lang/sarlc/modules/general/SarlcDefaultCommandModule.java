@@ -19,17 +19,15 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.sarlc.modules;
+package io.sarl.lang.sarlc.modules.general;
 
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
-import io.bootique.log.BootLogger;
+import static io.bootique.BQCoreModule.extend;
 
-import io.sarl.lang.sarlc.commands.VersionCommand;
-import io.sarl.maven.bqextension.modules.AbstractConfigModule;
-import io.sarl.maven.bqextension.modules.BQModule;
+import com.google.inject.AbstractModule;
 
-/** Module for the sarlc specific commands.
+import io.sarl.lang.sarlc.commands.CompilerCommand;
+
+/** Module for configuring the sarlc default command.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -37,24 +35,11 @@ import io.sarl.maven.bqextension.modules.BQModule;
  * @mavenartifactid $ArtifactId$
  * @since 0.8
  */
-@BQModule("The tools for printed out the sarlc version.")
-public class VersionModule extends AbstractConfigModule {
+public class SarlcDefaultCommandModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		associateCommand(VersionCommand.class);
-	}
-
-	/** Provide the command for displaying the sarlc version.
-	 *
-	 * @param bootLogger the logger.
-	 * @return the command.
-	 */
-	@SuppressWarnings("static-method")
-	@Provides
-	@Singleton
-	public VersionCommand provideSarlcVersionCommand(BootLogger bootLogger) {
-		return new VersionCommand(bootLogger);
+		extend(binder()).setDefaultCommand(CompilerCommand.class);
 	}
 
 }
