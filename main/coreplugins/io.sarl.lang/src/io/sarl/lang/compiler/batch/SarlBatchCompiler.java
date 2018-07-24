@@ -57,8 +57,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import org.apache.log4j.Logger;
-import org.apache.log4j.spi.LoggerFactory;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jdt.core.compiler.CompilationProgress;
@@ -104,12 +102,14 @@ import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.resource.BatchLinkableResource;
 import org.eclipse.xtext.xbase.resource.BatchLinkableResourceStorageWritable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.sarl.lang.SARLConfig;
 import io.sarl.lang.compiler.GeneratorConfig2;
 import io.sarl.lang.compiler.GeneratorConfigProvider2;
 import io.sarl.lang.compiler.IGeneratorConfigProvider2;
-import io.sarl.lang.compiler.batch.InternalLogger.InternalLoggerFactory;
+import io.sarl.lang.compiler.batch.InternalXtextLogger.InternalXtextLoggerFactory;
 import io.sarl.lang.util.Utils;
 import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
 
@@ -238,7 +238,7 @@ public class SarlBatchCompiler {
 	/** Constructor the batch compiler.
 	 */
 	public SarlBatchCompiler() {
-		this.logger = Logger.getLogger(getClass().getName());
+		this.logger = LoggerFactory.getLogger(getClass());
 	}
 
 	/** Set the comparator of issues that is used for sorting the issues before they are logged.
@@ -364,7 +364,7 @@ public class SarlBatchCompiler {
 	 * @param logger the logger.
 	 */
 	public void setLogger(Logger logger) {
-		this.logger = logger == null ? Logger.getLogger(getClass().getName()) : logger;
+		this.logger = logger == null ? LoggerFactory.getLogger(getClass()) : logger;
 	}
 
 	/** Set the provider of resource sets.
@@ -1132,6 +1132,7 @@ public class SarlBatchCompiler {
 					return false;
 				}
 			}
+			this.logger.info(Messages.SarlBatchCompiler_41);
 		} finally {
 			destroyClassLoader(this.jvmTypesClassLoader);
 			destroyClassLoader(this.annotationProcessingClassLoader);
@@ -1148,15 +1149,15 @@ public class SarlBatchCompiler {
 	 */
 	protected void overrideXtextInternalLoggers() {
 		final Logger logger = getLogger();
-		final LoggerFactory factory = new InternalLoggerFactory(logger);
-		final Logger internalLogger = Logger.getLogger(
+		final org.apache.log4j.spi.LoggerFactory factory = new InternalXtextLoggerFactory(logger);
+		final org.apache.log4j.Logger internalLogger = org.apache.log4j.Logger.getLogger(
 				MessageFormat.format(Messages.SarlBatchCompiler_40, logger.getName()), factory);
 		setStaticField(BatchLinkableResourceStorageWritable.class, "LOG", internalLogger); //$NON-NLS-1$
 		setStaticField(BatchLinkableResource.class, "log", internalLogger); //$NON-NLS-1$
 		setStaticField(ProcessorInstanceForJvmTypeProvider.class, "logger", internalLogger); //$NON-NLS-1$
 	}
 
-	private void setStaticField(Class<?> type, String name, Logger logger) {
+	private void setStaticField(Class<?> type, String name, org.apache.log4j.Logger logger) {
 		try {
 			final Field field = type.getDeclaredField(name);
 			field.setAccessible(true);

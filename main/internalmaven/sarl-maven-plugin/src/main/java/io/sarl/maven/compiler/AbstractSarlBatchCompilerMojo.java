@@ -39,7 +39,6 @@ import javax.inject.Provider;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.inject.Injector;
-import org.apache.log4j.Logger;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -54,10 +53,12 @@ import org.apache.maven.toolchain.ToolchainPrivate;
 import org.apache.maven.toolchain.java.JavaToolchain;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.xtext.xbase.lib.util.ReflectExtensions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.impl.StaticLoggerBinder;
 
 import io.sarl.lang.SARLStandaloneSetup;
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
-import io.sarl.maven.compiler.MavenLogger.MavenLoggerFactory;
 
 /** Abstract mojo that is able to use the SARL batch compiler.
  *
@@ -224,7 +225,8 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 		compiler.setGenerateToStringFunctions(getGenerateToStringFunctions());
 		compiler.setGenerateCloneFunctions(getGenerateCloneFunctions());
 		compiler.setGenerateSerialNumberFields(getGenerateSerialNumberFields());
-		final Logger logger = Logger.getLogger(getClass().getName(), new MavenLoggerFactory(getLog()));
+		StaticLoggerBinder.getSingleton().registerMavenLogger(getLog());
+		final Logger logger = LoggerFactory.getLogger(getClass());
 		compiler.setLogger(logger);
 		compiler.setIssueMessageFormatter((issue, uriToProblem) -> {
 			final String filename;

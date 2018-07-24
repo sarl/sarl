@@ -79,6 +79,8 @@
 		<copyrighters>the original authors or authors</copyrighters>
 		<!-- URL of the Maven repositories of SARL (use in POM and documentation) -->
 		<sarl.maven.repository.url>http://maven.sarl.io</sarl.maven.repository.url>
+		<!--  Version of the SLF4J Logging API -->
+		<slf4j.version>1.7.25</slf4j.version>
 	</properties>
 
 	<!-- ======================================= -->
@@ -345,6 +347,10 @@
 				<version>${afc.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.arakhne.afc.slf4j</groupId>
+				<artifactId>slf4j-maven</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
 				<groupId>org.arakhne.afc.core</groupId>
 				<artifactId>util</artifactId>
 				<version>${afc.version}</version>
@@ -477,6 +483,26 @@
 				<groupId>com.google.errorprone</groupId>
 				<artifactId>error_prone_annotations</artifactId>
 				<version>2.3.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-nop</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>jul-to-slf4j</artifactId>
+				<version>${slf4j.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
