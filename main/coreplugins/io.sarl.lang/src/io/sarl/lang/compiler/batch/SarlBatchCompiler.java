@@ -57,6 +57,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jdt.core.compiler.CompilationProgress;
@@ -1027,120 +1029,194 @@ public class SarlBatchCompiler {
 	 *
 	 * @return success status.
 	 */
-	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
-	@Inline("compile(null)")
+	@Inline(value = "compile((IProgressMonitor) null)", imported = {IProgressMonitor.class})
 	public boolean compile() {
-		return compile(null);
+		return compile((IProgressMonitor) null);
 	}
 
 	/** Run the compilation.
 	 *
-	 * @param cancelIndicator monitor for cancelling the compilation.
+	 * @param cancel is the tool for canceling the compilation.
 	 * @return success status.
 	 */
-	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity", "checkstyle:returncount"})
-	public boolean compile(CancelIndicator cancelIndicator) {
-		final CancelIndicator cancel = cancelIndicator == null ? CancelIndicator.NullImpl : cancelIndicator;
+	public boolean compile(CancelIndicator cancel) {
+		return compile(new IProgressMonitor() {
+			@Override
+			public void worked(int work) {
+				//
+			}
+
+			@Override
+			public void subTask(String name) {
+				//
+			}
+
+			@Override
+			public void setTaskName(String name) {
+				//
+			}
+
+			@Override
+			public void setCanceled(boolean value) {
+				//
+			}
+
+			@Override
+			public boolean isCanceled() {
+				return cancel.isCanceled();
+			}
+
+			@Override
+			public void internalWorked(double work) {
+				//
+			}
+
+			@Override
+			public void done() {
+				//
+			}
+
+			@Override
+			public void beginTask(String name, int totalWork) {
+				//
+			}
+		});
+	}
+
+	/** Run the compilation.
+	 *
+	 * @param progress monitor of the progress of the compilation.
+	 * @return success status.
+	 * @since 0.8
+	 */
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity",
+		"checkstyle:returncount", "checkstyle:magicnumber"})
+	public boolean compile(IProgressMonitor progress) {
+		final IProgressMonitor monitor = progress == null ? new NullProgressMonitor() : progress;
 		try {
-			if (!checkConfiguration(cancel)) {
+			monitor.beginTask(Messages.SarlBatchCompiler_42, 18);
+			if (!checkConfiguration(monitor)) {
 				return false;
 			}
+			monitor.worked(1);
 			final ResourceSet resourceSet = this.resourceSetProvider.get();
-			if (!configureWorkspace(resourceSet, cancel)) {
+			if (!configureWorkspace(resourceSet, monitor)) {
 				return false;
 			}
-			if (this.logger.isDebugEnabled()) {
-				this.logger.debug(Utils.dump(getGeneratorConfig(), false));
+			if (getLogger().isDebugEnabled()) {
+				getLogger().debug(Utils.dump(getGeneratorConfig(), false));
 			}
+			monitor.worked(2);
+			monitor.subTask(Messages.SarlBatchCompiler_43);
 			if (this.generatorConfigProvider instanceof GeneratorConfigProvider) {
 				((GeneratorConfigProvider) this.generatorConfigProvider).install(resourceSet, getGeneratorConfig());
 			}
-			if (cancel.isCanceled()) {
+			if (monitor.isCanceled()) {
 				return false;
 			}
 			if (this.generatorConfigProvider2 instanceof GeneratorConfigProvider2) {
 				((GeneratorConfigProvider2) this.generatorConfigProvider2).install(resourceSet, getGeneratorConfig2());
 			}
-			if (this.logger.isDebugEnabled()) {
-				this.logger.debug(Utils.dump(getGeneratorConfig2(), false));
+			if (getLogger().isDebugEnabled()) {
+				getLogger().debug(Utils.dump(getGeneratorConfig2(), false));
 			}
-			if (cancel.isCanceled()) {
+			if (monitor.isCanceled()) {
 				return false;
 			}
+			monitor.worked(3);
+			monitor.subTask(Messages.SarlBatchCompiler_44);
 			final File stubClassDirectory = createTempDir(BINCLASS_FOLDER_PREFIX);
-			if (cancel.isCanceled()) {
+			if (monitor.isCanceled()) {
 				return false;
 			}
+			monitor.worked(4);
 			try {
+				monitor.subTask(Messages.SarlBatchCompiler_45);
 				this.compilerPhases.setIndexing(resourceSet, true);
-				if (cancel.isCanceled()) {
+				if (monitor.isCanceled()) {
 					return false;
 				}
+				monitor.worked(5);
 				// install a type provider without index lookup for the first phase
-				installJvmTypeProvider(resourceSet, stubClassDirectory, true, cancel);
-				if (cancel.isCanceled()) {
+				installJvmTypeProvider(resourceSet, stubClassDirectory, true, monitor);
+				if (monitor.isCanceled()) {
 					return false;
 				}
-				loadSARLFiles(resourceSet, cancel);
-				if (cancel.isCanceled()) {
+				monitor.worked(6);
+				loadSARLFiles(resourceSet, monitor);
+				if (monitor.isCanceled()) {
 					return false;
 				}
-				final File stubSourceDirectory = createStubs(resourceSet, cancel);
-				if (cancel.isCanceled()) {
+				monitor.worked(7);
+				final File stubSourceDirectory = createStubs(resourceSet, monitor);
+				if (monitor.isCanceled()) {
 					return false;
 				}
-				if (!preCompileStubs(stubSourceDirectory, stubClassDirectory, cancel)) {
-					if (cancel.isCanceled()) {
+				monitor.worked(8);
+				if (!preCompileStubs(stubSourceDirectory, stubClassDirectory, monitor)) {
+					if (monitor.isCanceled()) {
 						return false;
 					}
-					this.logger.warn(Messages.SarlBatchCompiler_2);
+					getLogger().warn(Messages.SarlBatchCompiler_2);
 				}
-				if (!preCompileJava(stubSourceDirectory, stubClassDirectory, cancel)) {
-					if (cancel.isCanceled()) {
+				monitor.worked(9);
+				if (!preCompileJava(stubSourceDirectory, stubClassDirectory, monitor)) {
+					if (monitor.isCanceled()) {
 						return false;
 					}
-					this.logger.debug(Messages.SarlBatchCompiler_3);
+					getLogger().debug(Messages.SarlBatchCompiler_3);
 				}
+				monitor.worked(10);
 			} finally {
+				monitor.subTask(Messages.SarlBatchCompiler_46);
 				this.compilerPhases.setIndexing(resourceSet, false);
-				if (cancel.isCanceled()) {
+				if (monitor.isCanceled()) {
 					return false;
 				}
 			}
+			monitor.worked(11);
 			// install a fresh type provider for the second phase, so we clear all previously cached classes and misses.
-			installJvmTypeProvider(resourceSet, stubClassDirectory, false, cancel);
-			if (cancel.isCanceled()) {
+			installJvmTypeProvider(resourceSet, stubClassDirectory, false, monitor);
+			if (monitor.isCanceled()) {
 				return false;
 			}
-			generateJvmElements(resourceSet, cancel);
-			if (cancel.isCanceled()) {
+			monitor.worked(12);
+			generateJvmElements(resourceSet, monitor);
+			if (monitor.isCanceled()) {
 				return false;
 			}
+			monitor.worked(13);
 			final List<Resource> validatedResources = new ArrayList<>();
-			final boolean hasError = validate(resourceSet, validatedResources, cancel);
-			if (hasError || cancel.isCanceled()) {
+			final boolean hasError = validate(resourceSet, validatedResources, monitor);
+			if (hasError || monitor.isCanceled()) {
 				return false;
 			}
+			monitor.worked(14);
 			overrideXtextInternalLoggers();
-			generateJavaFiles(validatedResources, cancel);
-			if (cancel.isCanceled()) {
+			generateJavaFiles(validatedResources, monitor);
+			if (monitor.isCanceled()) {
 				return false;
 			}
+			monitor.worked(15);
 			if (isJavaPostCompilationEnable()) {
-				postCompileJava(cancel);
-				if (cancel.isCanceled()) {
+				postCompileJava(monitor);
+				if (monitor.isCanceled()) {
 					return false;
 				}
 			}
-			this.logger.info(Messages.SarlBatchCompiler_41);
+			monitor.worked(16);
 		} finally {
+			monitor.subTask(Messages.SarlBatchCompiler_47);
 			destroyClassLoader(this.jvmTypesClassLoader);
 			destroyClassLoader(this.annotationProcessingClassLoader);
 			if (isDeleteTempDirectory()) {
+				monitor.subTask(Messages.SarlBatchCompiler_48);
 				for (final File file : this.tempFolders) {
 					cleanFolder(file, ACCEPT_ALL_FILTER, true, true);
 				}
 			}
+			monitor.done();
+			getLogger().info(Messages.SarlBatchCompiler_41);
 		}
 		return true;
 	}
@@ -1203,13 +1279,13 @@ public class SarlBatchCompiler {
 			final String issueMessage = createIssueMessage(issue);
 			switch (issue.getSeverity()) {
 			case ERROR:
-				this.logger.error(issueMessage);
+				getLogger().error(issueMessage);
 				break;
 			case WARNING:
-				this.logger.warn(issueMessage);
+				getLogger().warn(issueMessage);
 				break;
 			case INFO:
-				this.logger.info(issueMessage);
+				getLogger().info(issueMessage);
 				break;
 			case IGNORE:
 			default:
@@ -1222,30 +1298,31 @@ public class SarlBatchCompiler {
 	/** Generate the Java files from the SARL scripts.
 	 *
 	 * @param validatedResources the validatedResources for which the Java files could be generated.
-	 * @param cancelIndicator monitor for cancelling the compilation.
+	 * @param progress monitor of the progress of the compilation.
 	 */
-	protected void generateJavaFiles(Iterable<Resource> validatedResources, CancelIndicator cancelIndicator) {
-		assert cancelIndicator != null;
-		this.logger.info(MessageFormat.format(Messages.SarlBatchCompiler_28, getOutputPath()));
+	protected void generateJavaFiles(Iterable<Resource> validatedResources, IProgressMonitor progress) {
+		assert progress != null;
+		progress.subTask(Messages.SarlBatchCompiler_49);
+		getLogger().info(Messages.SarlBatchCompiler_28, getOutputPath());
 		final JavaIoFileSystemAccess javaIoFileSystemAccess = this.javaIoFileSystemAccessProvider.get();
 		javaIoFileSystemAccess.setOutputPath(getOutputPath().getAbsolutePath());
 		javaIoFileSystemAccess.setWriteTrace(isWriteTraceFiles());
-		if (cancelIndicator.isCanceled()) {
+		if (progress.isCanceled()) {
 			return;
 		}
 
 		final GeneratorContext context = new GeneratorContext();
-		context.setCancelIndicator(cancelIndicator);
+		context.setCancelIndicator(() -> progress.isCanceled());
 		for (final Resource resource : validatedResources) {
-			if (cancelIndicator.isCanceled()) {
+			if (progress.isCanceled()) {
 				return;
 			}
-			this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_23, resource.getURI().lastSegment()));
+			getLogger().debug(Messages.SarlBatchCompiler_23, resource.getURI().lastSegment());
 			if (isWriteStorageFiles() && resource instanceof StorageAwareResource) {
 				final StorageAwareResource storageAwareResource = (StorageAwareResource) resource;
 				storageAwareResource.getResourceStorageFacade().saveResource(storageAwareResource, javaIoFileSystemAccess);
 			}
-			if (cancelIndicator.isCanceled()) {
+			if (progress.isCanceled()) {
 				return;
 			}
 			this.generator.generate(resource, javaIoFileSystemAccess, context);
@@ -1255,25 +1332,26 @@ public class SarlBatchCompiler {
 
 	/** Generate the JVM model elements.
 	 *
-	 * @param cancelIndicator monitor for cancelling the compilation.
+	 * @param progress monitor of the progress of the compilation.
 	 * @param resourceSet the container of the scripts.
 	 */
-	protected void generateJvmElements(ResourceSet resourceSet, CancelIndicator cancelIndicator) {
-		assert cancelIndicator != null;
-		this.logger.info(Messages.SarlBatchCompiler_21);
+	protected void generateJvmElements(ResourceSet resourceSet, IProgressMonitor progress) {
+		assert progress != null;
+		progress.subTask(Messages.SarlBatchCompiler_21);
+		getLogger().info(Messages.SarlBatchCompiler_21);
 		final List<Resource> resources = new LinkedList<>(resourceSet.getResources());
 		for (final Resource resource : resources) {
-			if (cancelIndicator.isCanceled()) {
+			if (progress.isCanceled()) {
 				return;
 			}
-			this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_26, resource.getURI().lastSegment()));
+			getLogger().debug(Messages.SarlBatchCompiler_26, resource.getURI().lastSegment());
 			resource.getContents();
 		}
 		for (final Resource resource : resources) {
-			if (cancelIndicator.isCanceled()) {
+			if (progress.isCanceled()) {
 				return;
 			}
-			this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_27, resource.getURI().lastSegment()));
+			getLogger().debug(Messages.SarlBatchCompiler_27, resource.getURI().lastSegment());
 			EcoreUtil2.resolveLazyCrossReferences(resource, CancelIndicator.NullImpl);
 		}
 	}
@@ -1282,33 +1360,34 @@ public class SarlBatchCompiler {
 	 *
 	 * @param resourceSet the container of the scripts.
 	 * @param validResources will be filled by this function with the collection of resources that was successfully validated.
-	 * @param cancelIndicator monitor for cancelling the compilation.
+	 * @param progress monitor of the progress of the compilation.
 	 * @return <code>true</code> if an error exists in the issues. Replies <code>false</code> if the activity is canceled.
 	 */
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
-	protected boolean validate(ResourceSet resourceSet, Collection<Resource> validResources, CancelIndicator cancelIndicator) {
-		assert cancelIndicator != null;
+	protected boolean validate(ResourceSet resourceSet, Collection<Resource> validResources, IProgressMonitor progress) {
+		assert progress != null;
+		progress.subTask(Messages.SarlBatchCompiler_38);
+		getLogger().info(Messages.SarlBatchCompiler_38);
 		boolean hasError = false;
 		final List<Resource> resources = new LinkedList<>(resourceSet.getResources());
-		this.logger.info(Messages.SarlBatchCompiler_38);
 		for (final Resource resource : resources) {
-			if (cancelIndicator.isCanceled()) {
+			if (progress.isCanceled()) {
 				return false;
 			}
 			if (isSourceFile(resource)) {
-				this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_22, resource.getURI().lastSegment()));
+				getLogger().debug(Messages.SarlBatchCompiler_22, resource.getURI().lastSegment());
 				final IResourceServiceProvider resourceServiceProvider = IResourceServiceProvider.Registry.INSTANCE
 						.getResourceServiceProvider(resource.getURI());
 				if (resourceServiceProvider != null) {
 					final IResourceValidator resourceValidator = resourceServiceProvider.getResourceValidator();
 					final List<Issue> result = resourceValidator.validate(resource, CheckMode.ALL, null);
-					if (cancelIndicator.isCanceled()) {
+					if (progress.isCanceled()) {
 						return false;
 					}
 					final SortedSet<Issue> issues = new TreeSet<>(getIssueComparator());
 					boolean hasValidationError = false;
 					for (final Issue issue : result) {
-						if (cancelIndicator.isCanceled()) {
+						if (progress.isCanceled()) {
 							return false;
 						}
 						if (issue.isSyntaxError() || issue.getSeverity() == Severity.ERROR) {
@@ -1319,12 +1398,12 @@ public class SarlBatchCompiler {
 					hasError |= hasValidationError;
 					if (!hasValidationError) {
 						if (!issues.isEmpty()) {
-							this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_39, resource.getURI().lastSegment()));
+							getLogger().debug(Messages.SarlBatchCompiler_39, resource.getURI().lastSegment());
 							reportIssues(issues);
 						}
 						validResources.add(resource);
 					} else {
-						this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_39, resource.getURI().lastSegment()));
+						getLogger().debug(Messages.SarlBatchCompiler_39, resource.getURI().lastSegment());
 						reportIssues(issues);
 					}
 				}
@@ -1350,51 +1429,54 @@ public class SarlBatchCompiler {
 	 *
 	 * @param sourceDirectory the source directory where stubs are stored.
 	 * @param classDirectory the output directory, where stub binary files should be generated.
-	 * @param cancelIndicator monitor for cancelling the compilation.
+	 * @param progress monitor of the progress of the compilation.
 	 * @return the success status. Replies <code>false</code> if the activity is canceled.
 	 */
-	protected boolean preCompileStubs(File sourceDirectory, File classDirectory, CancelIndicator cancelIndicator) {
-		assert cancelIndicator != null;
+	protected boolean preCompileStubs(File sourceDirectory, File classDirectory, IProgressMonitor progress) {
+		assert progress != null;
+		progress.subTask(Messages.SarlBatchCompiler_50);
 		return runJavaCompiler(classDirectory, Collections.singletonList(sourceDirectory), getClassPath(), false,
-				cancelIndicator);
+				progress);
 	}
 
 	/** Compile the java files before the compilation of the project's files.
 	 *
 	 * @param sourceDirectory the source directory where java files are stored.
 	 * @param classDirectory the output directory, where binary files should be generated.
-	 * @param cancelIndicator monitor for cancelling the compilation.
+	 * @param progress monitor of the progress of the compilation.
 	 * @return the success status. Replies <code>false</code> if the activity is canceled.
 	 */
-	protected boolean preCompileJava(File sourceDirectory, File classDirectory, CancelIndicator cancelIndicator) {
-		assert cancelIndicator != null;
+	protected boolean preCompileJava(File sourceDirectory, File classDirectory, IProgressMonitor progress) {
+		assert progress != null;
+		progress.subTask(Messages.SarlBatchCompiler_51);
 		return runJavaCompiler(classDirectory, getSourcePaths(),
 				Iterables.concat(Collections.singleton(sourceDirectory), getClassPath()),
-				false, cancelIndicator);
+				false, progress);
 	}
 
 	/** Compile the java files after the compilation of the project's files.
 	 *
-	 * @param cancelIndicator monitor for cancelling the compilation.
+	 * @param progress monitor of the progress of the compilation.
 	 * @return the success status. Replies <code>false</code> if the activity is canceled.
 	 */
-	protected boolean postCompileJava(CancelIndicator cancelIndicator) {
-		assert cancelIndicator != null;
+	protected boolean postCompileJava(IProgressMonitor progress) {
+		assert progress != null;
+		progress.subTask(Messages.SarlBatchCompiler_52);
 		final File classOutputPath = getClassOutputPath();
 		if (classOutputPath == null) {
-			this.logger.info(Messages.SarlBatchCompiler_24);
+			getLogger().info(Messages.SarlBatchCompiler_24);
 			return true;
 		}
-		this.logger.info(Messages.SarlBatchCompiler_25);
+		getLogger().info(Messages.SarlBatchCompiler_25);
 		final Iterable<File> sources = Iterables.concat(getSourcePaths(), Collections.singleton(getOutputPath()));
-		if (this.logger.isDebugEnabled()) {
-			this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_29, toPathString(sources)));
+		if (getLogger().isDebugEnabled()) {
+			getLogger().debug(Messages.SarlBatchCompiler_29, toPathString(sources));
 		}
 		final List<File> classpath = getClassPath();
-		if (this.logger.isDebugEnabled()) {
-			this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_30, toPathString(classpath)));
+		if (getLogger().isDebugEnabled()) {
+			getLogger().debug(Messages.SarlBatchCompiler_30, toPathString(classpath));
 		}
-		return runJavaCompiler(classOutputPath, sources, classpath, true, cancelIndicator);
+		return runJavaCompiler(classOutputPath, sources, classpath, true, progress);
 	}
 
 	private static String toPathString(Iterable<File> files) {
@@ -1414,30 +1496,30 @@ public class SarlBatchCompiler {
 	 * @param sourcePathDirectories the source directories.
 	 * @param classPathEntries classpath entries.
 	 * @param enableCompilerOutput indicates if the Java compiler output is displayed.
-	 * @param cancelIndicator monitor for canceling the compilation.
+	 * @param progress monitor of the progress of the compilation.
 	 * @return the success status. Replies <code>false</code> if the activity is canceled.
 	 */
 	@SuppressWarnings({ "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity", "resource" })
 	protected boolean runJavaCompiler(File classDirectory, Iterable<File> sourcePathDirectories,
-			Iterable<File> classPathEntries, boolean enableCompilerOutput, CancelIndicator cancelIndicator) {
-		assert cancelIndicator != null;
+			Iterable<File> classPathEntries, boolean enableCompilerOutput, IProgressMonitor progress) {
+		assert progress != null;
 		final List<String> commandLineArguments = Lists.newArrayList();
 		commandLineArguments.add("-nowarn"); //$NON-NLS-1$
 		if (isJavaCompilerVerbose()) {
 			commandLineArguments.add("-verbose"); //$NON-NLS-1$
 		}
-		if (cancelIndicator.isCanceled()) {
+		if (progress.isCanceled()) {
 			return false;
 		}
 		final List<File> bootClassPathEntries = getBootClassPath();
-		if (cancelIndicator.isCanceled()) {
+		if (progress.isCanceled()) {
 			return false;
 		}
 		if (!bootClassPathEntries.isEmpty()) {
 			final StringBuilder cmd = new StringBuilder();
 			boolean first = true;
 			for (final File entry : bootClassPathEntries) {
-				if (cancelIndicator.isCanceled()) {
+				if (progress.isCanceled()) {
 					return false;
 				}
 				if (entry.exists()) {
@@ -1460,7 +1542,7 @@ public class SarlBatchCompiler {
 			boolean first = true;
 			while (classPathIterator.hasNext()) {
 				final File classpathPath = classPathIterator.next();
-				if (cancelIndicator.isCanceled()) {
+				if (progress.isCanceled()) {
 					return false;
 				}
 				if (classpathPath.exists()) {
@@ -1477,7 +1559,7 @@ public class SarlBatchCompiler {
 				commandLineArguments.add(cmd.toString());
 			}
 		}
-		if (cancelIndicator.isCanceled()) {
+		if (progress.isCanceled()) {
 			return false;
 		}
 		if (!classDirectory.exists()) {
@@ -1491,12 +1573,12 @@ public class SarlBatchCompiler {
 			commandLineArguments.add("-encoding"); //$NON-NLS-1$
 			commandLineArguments.add(this.encodingProvider.getDefaultEncoding());
 		}
-		if (cancelIndicator.isCanceled()) {
+		if (progress.isCanceled()) {
 			return false;
 		}
 
 		for (final File sourceFolder : sourcePathDirectories) {
-			if (cancelIndicator.isCanceled()) {
+			if (progress.isCanceled()) {
 				return false;
 			}
 			if (sourceFolder.exists()) {
@@ -1507,11 +1589,11 @@ public class SarlBatchCompiler {
 		final String[] arguments = new String[commandLineArguments.size()];
 		commandLineArguments.toArray(arguments);
 
-		if (this.logger.isDebugEnabled()) {
-			this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_6, Strings.concat("\n", commandLineArguments))); //$NON-NLS-1$
+		if (getLogger().isDebugEnabled()) {
+			getLogger().debug(Messages.SarlBatchCompiler_6, Strings.concat("\n", commandLineArguments)); //$NON-NLS-1$
 		}
 
-		if (cancelIndicator.isCanceled()) {
+		if (progress.isCanceled()) {
 			return false;
 		}
 
@@ -1522,26 +1604,19 @@ public class SarlBatchCompiler {
 		} else {
 			errWriter = getStubCompilerOutputWriter();
 		}
-		if (cancelIndicator.isCanceled()) {
+		if (progress.isCanceled()) {
 			return false;
 		}
 		return BatchCompiler.compile(arguments, outWriter, errWriter,
-				new CancelIndicatorWrapper(cancelIndicator));
+				new ProgressMonitorCompilationProgress(progress));
 	}
-
-	/*public static void main(String[] args) throws Exception {
-		BatchCompiler.compile("-help", //$NON-NLS-1$
-				new PrintWriter(System.out), new PrintWriter(System.err),
-				new CancelIndicatorWrapper(CancelIndicator.NullImpl));
-	}*/
 
 	private PrintWriter getStubCompilerOutputWriter() {
 		final Writer debugWriter = new Writer() {
-			@SuppressWarnings("synthetic-access")
 			@Override
 			public void write(char[] data, int offset, int count) throws IOException {
 				final String message = String.copyValueOf(data, offset, count);
-				SarlBatchCompiler.this.logger.debug(message);
+				getLogger().debug(message);
 			}
 
 			@Override
@@ -1559,11 +1634,10 @@ public class SarlBatchCompiler {
 
 	private PrintWriter getErrorCompilerOutputWriter() {
 		final Writer debugWriter = new Writer() {
-			@SuppressWarnings("synthetic-access")
 			@Override
 			public void write(char[] data, int offset, int count) throws IOException {
 				final String message = String.copyValueOf(data, offset, count);
-				SarlBatchCompiler.this.logger.error(message);
+				getLogger().error(message);
 			}
 
 			@Override
@@ -1582,26 +1656,28 @@ public class SarlBatchCompiler {
 	/** Create the stubs.
 	 *
 	 * @param resourceSet the input resource set.
-	 * @param cancelIndicator monitor for cancelling the compilation.
+	 * @param progress monitor of the progress of the compilation.
 	 * @return the folder in which the stubs are located. Replies <code>null</code> if the activity is canceled.
 	 */
-	protected File createStubs(ResourceSet resourceSet, CancelIndicator cancelIndicator) {
+	protected File createStubs(ResourceSet resourceSet, IProgressMonitor progress) {
+		assert progress != null;
+		progress.subTask(Messages.SarlBatchCompiler_53);
 		final File outputDirectory = createTempDir(STUB_FOLDER_PREFIX);
-		if (cancelIndicator.isCanceled()) {
+		if (progress.isCanceled()) {
 			return null;
 		}
-		this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_19, outputDirectory));
+		getLogger().debug(Messages.SarlBatchCompiler_19, outputDirectory);
 		final JavaIoFileSystemAccess fileSystemAccess = this.javaIoFileSystemAccessProvider.get();
-		if (cancelIndicator.isCanceled()) {
+		if (progress.isCanceled()) {
 			return null;
 		}
 		fileSystemAccess.setOutputPath(outputDirectory.toString());
 		final List<Resource> resources = new ArrayList<>(resourceSet.getResources());
 		for (final Resource resource : resources) {
-			if (cancelIndicator.isCanceled()) {
+			if (progress.isCanceled()) {
 				return null;
 			}
-			this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_20, resource.getURI()));
+			getLogger().debug(Messages.SarlBatchCompiler_20, resource.getURI());
 			final IResourceDescription description = this.resourceDescriptionManager.getResourceDescription(resource);
 			this.stubGenerator.doGenerateStubs(fileSystemAccess, description);
 		}
@@ -1610,32 +1686,31 @@ public class SarlBatchCompiler {
 
 	/** Load the SARL files in the given resource set.
 	 *
-	 * @param cancelIndicator monitor for cancelling the compilation.
+	 * @param progress monitor of the progress of the compilation.
 	 * @param resourceSet the resource set to load from.
 	 */
-	protected void loadSARLFiles(ResourceSet resourceSet, CancelIndicator cancelIndicator) {
-		assert cancelIndicator != null;
+	protected void loadSARLFiles(ResourceSet resourceSet, IProgressMonitor progress) {
+		assert progress != null;
+		progress.subTask(Messages.SarlBatchCompiler_54);
 		this.encodingProvider.setDefaultEncoding(getFileEncoding());
 		final NameBasedFilter nameBasedFilter = new NameBasedFilter();
 		nameBasedFilter.setExtension(this.fileExtensionProvider.getPrimaryFileExtension());
 		final PathTraverser pathTraverser = new PathTraverser();
 		final List<String> sourcePathDirectories = getSourcePathStrings();
-		if (cancelIndicator.isCanceled()) {
+		if (progress.isCanceled()) {
 			return;
 		}
 		final Multimap<String, org.eclipse.emf.common.util.URI> pathes = pathTraverser.resolvePathes(sourcePathDirectories,
 				input -> nameBasedFilter.matches(input));
-		if (cancelIndicator.isCanceled()) {
+		if (progress.isCanceled()) {
 			return;
 		}
 		for (final String source : pathes.keySet()) {
 			for (final org.eclipse.emf.common.util.URI uri : pathes.get(source)) {
-				if (cancelIndicator.isCanceled()) {
+				if (progress.isCanceled()) {
 					return;
 				}
-				if (this.logger.isDebugEnabled()) {
-					this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_7, uri));
-				}
+				getLogger().debug(Messages.SarlBatchCompiler_7, uri);
 				resourceSet.getResource(uri, true);
 			}
 		}
@@ -1668,7 +1743,7 @@ public class SarlBatchCompiler {
 	protected boolean cleanFolder(File parentFolder, FileFilter filter, boolean continueOnError,
 			boolean deleteParentFolder) {
 		try {
-			this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_9, parentFolder.toString()));
+			getLogger().debug(Messages.SarlBatchCompiler_9, parentFolder.toString());
 			return Files.cleanFolder(parentFolder, null, continueOnError, deleteParentFolder);
 		} catch (FileNotFoundException e) {
 			return true;
@@ -1677,31 +1752,31 @@ public class SarlBatchCompiler {
 
 	/** Check the compiler configuration; and logs errors.
 	 *
-	 * @param cancelIndicator monitor for cancelling the compilation.
+	 * @param progress monitor of the progress of the compilation.
 	 * @return success status. Replies <code>false</code> if the operation is canceled.
 	 */
-	protected boolean checkConfiguration(CancelIndicator cancelIndicator) {
-		assert cancelIndicator != null;
+	protected boolean checkConfiguration(IProgressMonitor progress) {
+		assert progress != null;
+		progress.subTask(Messages.SarlBatchCompiler_55);
 		final File output = getOutputPath();
-		this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_35, output));
+		getLogger().debug(Messages.SarlBatchCompiler_35, output);
 		if (output == null) {
-			this.logger.error(Messages.SarlBatchCompiler_36);
+			getLogger().error(Messages.SarlBatchCompiler_36);
 			return false;
 		}
+		progress.subTask(Messages.SarlBatchCompiler_56);
 		for (final File sourcePath : getSourcePaths()) {
-			if (cancelIndicator.isCanceled()) {
+			if (progress.isCanceled()) {
 				return false;
 			}
 			try {
-				this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_37, sourcePath));
+				getLogger().debug(Messages.SarlBatchCompiler_37, sourcePath);
 				if (isContainedIn(output.getCanonicalFile(), sourcePath.getCanonicalFile())) {
-					this.logger.error(MessageFormat.format(
-							Messages.SarlBatchCompiler_10,
-							output, sourcePath));
+					getLogger().error(Messages.SarlBatchCompiler_10, output, sourcePath);
 					return false;
 				}
 			} catch (IOException e) {
-				this.logger.error(Messages.SarlBatchCompiler_11, e);
+				getLogger().error(Messages.SarlBatchCompiler_11, e);
 			}
 		}
 		return true;
@@ -1718,12 +1793,12 @@ public class SarlBatchCompiler {
 		return false;
 	}
 
-	private static LinkedList<String> splitFile(File file, CancelIndicator cancelIndicator) {
-		assert cancelIndicator != null;
+	private static LinkedList<String> splitFile(File file, IProgressMonitor progress) {
+		assert progress != null;
 		final LinkedList<String> elements = new LinkedList<>();
 		File current = file;
 		do {
-			if (cancelIndicator.isCanceled()) {
+			if (progress.isCanceled()) {
 				return null;
 			}
 			elements.addFirst(current.getName());
@@ -1733,37 +1808,37 @@ public class SarlBatchCompiler {
 	}
 
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
-	private File determineCommonRoot(File outputFile, List<File> sourceFileList, CancelIndicator cancelIndicator) {
-		assert cancelIndicator != null;
+	private File determineCommonRoot(File outputFile, List<File> sourceFileList, IProgressMonitor progress) {
+		assert progress != null;
 
 		if (this.baseUri != null) {
 			if (this.baseUri.isFile()) {
-				this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_32, this.baseUri));
+				getLogger().debug(Messages.SarlBatchCompiler_32, this.baseUri);
 				return new File(this.baseUri.toFileString());
 			}
-			this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_33, this.baseUri));
+			getLogger().debug(Messages.SarlBatchCompiler_33, this.baseUri);
 		}
 
 		LinkedList<String> longuestPrefix = null;
 
 		for (final File file : Iterables.concat(sourceFileList, Collections.singleton(outputFile))) {
-			if (cancelIndicator.isCanceled()) {
+			if (progress.isCanceled()) {
 				return null;
 			}
-			final LinkedList<String> components = splitFile(file, cancelIndicator);
+			final LinkedList<String> components = splitFile(file, progress);
 			if (longuestPrefix == null) {
 				longuestPrefix = components;
 			} else {
 				int i = 0;
 				while (i < longuestPrefix.size() && i < components.size()
 						&& Strings.equal(longuestPrefix.get(i), components.get(i))) {
-					if (cancelIndicator.isCanceled()) {
+					if (progress.isCanceled()) {
 						return null;
 					}
 					++i;
 				}
 				while (i < longuestPrefix.size()) {
-					if (cancelIndicator.isCanceled()) {
+					if (progress.isCanceled()) {
 						return null;
 					}
 					longuestPrefix.removeLast();
@@ -1774,13 +1849,13 @@ public class SarlBatchCompiler {
 			}
 		}
 
-		if (longuestPrefix == null || cancelIndicator.isCanceled()) {
+		if (longuestPrefix == null || progress.isCanceled()) {
 			return null;
 		}
 
 		File prefix = null;
 		for (final String component : longuestPrefix) {
-			if (cancelIndicator.isCanceled()) {
+			if (progress.isCanceled()) {
 				return null;
 			}
 			if (prefix == null) {
@@ -1794,42 +1869,43 @@ public class SarlBatchCompiler {
 	}
 
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
-	private boolean configureWorkspace(ResourceSet resourceSet, CancelIndicator cancelIndicator) {
-		assert cancelIndicator != null;
+	private boolean configureWorkspace(ResourceSet resourceSet, IProgressMonitor progress) {
+		assert progress != null;
+		progress.subTask(Messages.SarlBatchCompiler_57);
 		final List<File> sourceFolders = getSourcePaths();
 		final File outputFile = getOutputPath();
-		if (sourceFolders == null || sourceFolders.isEmpty() || outputFile == null || cancelIndicator.isCanceled()) {
+		if (sourceFolders == null || sourceFolders.isEmpty() || outputFile == null || progress.isCanceled()) {
 			return false;
 		}
 
-		this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_31, this.baseUri));
+		getLogger().debug(Messages.SarlBatchCompiler_31, this.baseUri);
 
-		final File commonRoot = determineCommonRoot(outputFile, sourceFolders, cancelIndicator);
-		if (cancelIndicator.isCanceled()) {
+		final File commonRoot = determineCommonRoot(outputFile, sourceFolders, progress);
+		if (progress.isCanceled()) {
 			return false;
 		}
 
-		this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_34, commonRoot));
+		getLogger().debug(Messages.SarlBatchCompiler_34, commonRoot);
 		if (commonRoot == null) {
-			this.logger.error(Messages.SarlBatchCompiler_12);
+			getLogger().error(Messages.SarlBatchCompiler_12);
 			for (final File sourceFile : sourceFolders) {
-				this.logger.error(MessageFormat.format(Messages.SarlBatchCompiler_13, sourceFile));
+				getLogger().error(Messages.SarlBatchCompiler_13, sourceFile);
 			}
-			this.logger.error(MessageFormat.format(Messages.SarlBatchCompiler_14, outputFile));
+			getLogger().error(Messages.SarlBatchCompiler_14, outputFile);
 			return false;
 		}
 		this.projectConfig = new FileProjectConfig(commonRoot, commonRoot.getName());
-		if (cancelIndicator.isCanceled()) {
+		if (progress.isCanceled()) {
 			return false;
 		}
 
 		final URI commonURI = commonRoot.toURI();
 		final URI relativizedTarget = commonURI.relativize(outputFile.toURI());
-		if (cancelIndicator.isCanceled()) {
+		if (progress.isCanceled()) {
 			return false;
 		}
 		if (relativizedTarget.isAbsolute()) {
-			this.logger.error(MessageFormat.format(Messages.SarlBatchCompiler_15, outputFile, commonRoot));
+			getLogger().error(Messages.SarlBatchCompiler_15, outputFile, commonRoot);
 			return false;
 		}
 		final CharMatcher slash = CharMatcher.is('/');
@@ -1839,12 +1915,12 @@ public class SarlBatchCompiler {
 				it -> Strings.equal(it.getName(), IFileSystemAccess.DEFAULT_OUTPUT));
 		this.outputConfiguration.setOutputDirectory(relativeTargetFolder);
 		for (final File source : sourceFolders) {
-			if (cancelIndicator.isCanceled()) {
+			if (progress.isCanceled()) {
 				return false;
 			}
 			final URI relSource = commonURI.relativize(source.toURI());
 			if (relSource.isAbsolute()) {
-				this.logger.error(MessageFormat.format(Messages.SarlBatchCompiler_16, source, commonRoot));
+				getLogger().error(Messages.SarlBatchCompiler_16, source, commonRoot);
 				return false;
 			}
 			this.projectConfig.addSourceFolder(slash.trimTrailingFrom(relSource.getPath()));
@@ -1853,7 +1929,7 @@ public class SarlBatchCompiler {
 		outputConfigurations.put(this.languageName, Collections.singleton(this.outputConfiguration));
 		ProjectConfigAdapter.install(resourceSet, this.projectConfig);
 		resourceSet.eAdapters().add(new OutputConfigurationAdapter(outputConfigurations));
-		if (cancelIndicator.isCanceled()) {
+		if (progress.isCanceled()) {
 			return false;
 		}
 		return true;
@@ -1870,8 +1946,9 @@ public class SarlBatchCompiler {
 	 */
 	@SuppressWarnings({ "resource", "unused", "checkstyle:npathcomplexity" })
 	private void installJvmTypeProvider(ResourceSet resourceSet, File temporaryClassDirectory, boolean skipIndexLookup,
-			CancelIndicator cancelIndicator) {
-		assert cancelIndicator != null;
+			IProgressMonitor progress) {
+		assert progress != null;
+		progress.subTask(Messages.SarlBatchCompiler_58);
 		final Iterable<File> classpath;
 		if (temporaryClassDirectory != null) {
 			classpath = Iterables.concat(getClassPath(), getSourcePaths(),
@@ -1879,10 +1956,8 @@ public class SarlBatchCompiler {
 		} else {
 			classpath = Iterables.concat(getClassPath(), getSourcePaths());
 		}
-		if (this.logger.isDebugEnabled()) {
-			this.logger.debug(MessageFormat.format(Messages.SarlBatchCompiler_17, classpath));
-		}
-		if (cancelIndicator.isCanceled()) {
+		getLogger().debug(Messages.SarlBatchCompiler_17, classpath);
+		if (progress.isCanceled()) {
 			return;
 		}
 		final ClassLoader parentClassLoader;
@@ -1893,25 +1968,26 @@ public class SarlBatchCompiler {
 		} else {
 			parentClassLoader = new AlternateJdkLoader(getBootClassPath());
 		}
-		if (cancelIndicator.isCanceled()) {
+		if (progress.isCanceled()) {
 			return;
 		}
 		this.jvmTypesClassLoader = createClassLoader(classpath, parentClassLoader);
-		if (cancelIndicator.isCanceled()) {
+		if (progress.isCanceled()) {
 			return;
 		}
 		new ClasspathTypeProvider(this.jvmTypesClassLoader, resourceSet, skipIndexLookup ? null : this.indexedJvmTypeAccess, null);
-		if (cancelIndicator.isCanceled()) {
+		if (progress.isCanceled()) {
 			return;
 		}
 		((XtextResourceSet) resourceSet).setClasspathURIContext(this.jvmTypesClassLoader);
-		if (cancelIndicator.isCanceled()) {
+		if (progress.isCanceled()) {
 			return;
 		}
 
 		// for annotation processing we need to have the compiler's classpath as a parent.
+		progress.subTask(Messages.SarlBatchCompiler_59);
 		this.annotationProcessingClassLoader = createClassLoader(classpath, getCurrentClassLoader());
-		if (cancelIndicator.isCanceled()) {
+		if (progress.isCanceled()) {
 			return;
 		}
 		resourceSet.eAdapters().add(new ProcessorInstanceForJvmTypeProvider.ProcessorClassloaderAdapter(this.annotationProcessingClassLoader));
@@ -1945,7 +2021,7 @@ public class SarlBatchCompiler {
 			try {
 				((Closeable) classLoader).close();
 			} catch (Exception e) {
-				this.logger.warn(Messages.SarlBatchCompiler_18, e);
+				getLogger().warn(Messages.SarlBatchCompiler_18, e);
 			}
 		}
 	}
@@ -2094,23 +2170,23 @@ public class SarlBatchCompiler {
 
 	}
 
-	/** Wrap a cancel indicator into a compilation progress.
+	/** Wrap a Eclipse IProgressMonitor into a JDT compilation progress.
 	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private static class CancelIndicatorWrapper extends CompilationProgress {
+	private static class ProgressMonitorCompilationProgress extends CompilationProgress {
 
-		private final CancelIndicator cancelIndicator;
+		private final IProgressMonitor monitor;
 
 		/** Constructor.
-		 * @param cancelIndicator the wrapped cancel indicator.
+		 * @param monitor the progress monitor.
 		 */
-		CancelIndicatorWrapper(CancelIndicator cancelIndicator) {
-			assert cancelIndicator != null;
-			this.cancelIndicator = cancelIndicator;
+		ProgressMonitorCompilationProgress(IProgressMonitor monitor) {
+			assert monitor != null;
+			this.monitor = monitor;
 		}
 
 		@Override
@@ -2125,12 +2201,12 @@ public class SarlBatchCompiler {
 
 		@Override
 		public boolean isCanceled() {
-			return this.cancelIndicator.isCanceled();
+			return this.monitor.isCanceled();
 		}
 
 		@Override
 		public void setTaskName(String name) {
-			//
+			this.monitor.subTask(name);
 		}
 
 		@Override
