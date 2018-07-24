@@ -35,15 +35,6 @@ import io.bootique.meta.application.ApplicationMetadata;
 import org.apache.log4j.Logger;
 
 import io.sarl.lang.SARLStandaloneSetup;
-import io.sarl.lang.sarlc.modules.commands.CompilerCommandModuleProvider;
-import io.sarl.lang.sarlc.modules.commands.VersionCommandModuleProvider;
-import io.sarl.lang.sarlc.modules.configs.CompilerConfigModuleProvider;
-import io.sarl.lang.sarlc.modules.configs.SarlcConfigModuleProvider;
-import io.sarl.lang.sarlc.modules.configs.ValidatorConfigModuleProvider;
-import io.sarl.lang.sarlc.modules.general.SARLRuntimeModuleProvider;
-import io.sarl.lang.sarlc.modules.general.SarlBatchCompilerModuleProvider;
-import io.sarl.lang.sarlc.modules.general.SarlcApplicationModuleProvider;
-import io.sarl.lang.sarlc.modules.general.SarlcDefaultCommandModuleProvider;
 
 /** Class that implements the standard main function for running a SARL application
  * with bootique modules.
@@ -64,21 +55,7 @@ public class BootiqueSarlcMain {
 	@SuppressWarnings("static-method")
 	protected BQRuntime createRuntime(String... args) {
 		SARLStandaloneSetup.doPreSetup();
-		Bootique bootique = Bootique.app(args);
-		// Configuration modules
-		bootique.module(new SarlcConfigModuleProvider())
-				.module(new CompilerConfigModuleProvider())
-				.module(new ValidatorConfigModuleProvider());
-		// Command modules
-		bootique.module(new VersionCommandModuleProvider())
-				.module(new CompilerCommandModuleProvider());
-		// Core modules
-		bootique.module(new SARLRuntimeModuleProvider())
-				.module(new SarlBatchCompilerModuleProvider())
-				.module(new SarlcDefaultCommandModuleProvider())
-				.module(new SarlcApplicationModuleProvider());
-		bootique = bootique.autoLoadModules();
-		final BQRuntime runtime = bootique.createRuntime();
+		final BQRuntime runtime = Bootique.app(args).autoLoadModules().createRuntime();
 		SARLStandaloneSetup.doPostSetup(runtime.getInstance(Injector.class));
 		return runtime;
 	}
