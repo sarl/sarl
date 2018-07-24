@@ -52,6 +52,8 @@ import org.apache.maven.toolchain.ToolchainManager;
 import org.apache.maven.toolchain.ToolchainPrivate;
 import org.apache.maven.toolchain.java.JavaToolchain;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
+import org.eclipse.xtext.diagnostics.Severity;
+import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.util.ReflectExtensions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -239,6 +241,12 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 					filename, issue.getLineNumber(),
 					issue.getColumn(), issue.getMessage());
 		});
+		final String[] errorMessage = new String[] {null};
+		compiler.addIssueMessageListener((issue, uri, message) -> {
+			if ((issue.isSyntaxError() || issue.getSeverity() == Severity.ERROR) && (Strings.isEmpty(errorMessage[0]))) {
+				errorMessage[0] = message;
+			}
+		});
 		if (!compiler.compile()) {
 			final StringBuilder dir = new StringBuilder();
 			for (final File file : filtered) {
@@ -247,7 +255,10 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 				}
 				dir.append(file.getAbsolutePath());
 			}
-			throw new MojoFailureException(Messages.AbstractSarlBatchCompilerMojo_4);
+			if (Strings.isEmpty(errorMessage[0])) {
+				throw new MojoFailureException(Messages.AbstractSarlBatchCompilerMojo_4);
+			}
+			throw new MojoFailureException(errorMessage[0]);
 		}
 	}
 
