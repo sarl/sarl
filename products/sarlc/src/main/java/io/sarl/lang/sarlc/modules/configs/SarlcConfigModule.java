@@ -93,7 +93,7 @@ public class SarlcConfigModule extends AbstractModule {
 				.build());
 	}
 
-	/** Replies the instance of the path configuration.
+	/** Replies the instance of the sarl configuration.
 	 *
 	 * @param configFactory accessor to the bootique factory.
 	 * @param injector the current injector.

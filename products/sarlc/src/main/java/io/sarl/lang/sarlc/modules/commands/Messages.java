@@ -35,6 +35,7 @@ import org.eclipse.osgi.util.NLS;
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 	public static String CompilerCommandModuleProvider_0;
+	public static String CompilerCommandModule_0;
 	public static String VersionCommandModuleProvider_0;
 	static {
 		// initialize resource bundle

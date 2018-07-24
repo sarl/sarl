@@ -21,9 +21,15 @@
 
 package io.sarl.lang.sarlc.modules.commands;
 
+import java.lang.reflect.Type;
+import java.util.Collections;
+import java.util.Map;
+
 import com.google.inject.Module;
 import io.bootique.BQModule;
 import io.bootique.BQModuleProvider;
+
+import io.sarl.lang.sarlc.configs.ProgressBarConfig;
 
 /** Provider of the module for the compiler command.
  *
@@ -38,6 +44,11 @@ public class CompilerCommandModuleProvider implements BQModuleProvider {
 	@Override
 	public Module module() {
 		return new CompilerCommandModule();
+	}
+
+	@Override
+	public Map<String, Type> configs() {
+		return Collections.singletonMap(ProgressBarConfig.PREFIX, ProgressBarConfig.class);
 	}
 
 	@Override
