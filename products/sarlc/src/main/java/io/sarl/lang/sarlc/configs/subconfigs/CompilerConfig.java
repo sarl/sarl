@@ -108,7 +108,7 @@ public class CompilerConfig {
 	 */
 	public static final String COMPRESS_INLINE_EXPRESSIONS_NAME = PREFIX + ".compressInlineExpressions"; //$NON-NLS-1$
 
-	private String fileEcoding = Charset.defaultCharset().displayName();
+	private String fileEncoding;
 
 	private String javaVersion = SARLVersion.MINIMAL_JDK_VERSION;
 
@@ -307,16 +307,21 @@ public class CompilerConfig {
 	 * @return the file encoding
 	 */
 	public String getFileEncoding() {
-		return this.fileEcoding;
+		if (this.fileEncoding == null) {
+			this.fileEncoding = Charset.defaultCharset().displayName();
+		}
+		return this.fileEncoding;
 	}
 
 	/** Change the file encoding.
 	 *
 	 * @param encoding the file encoding.
 	 */
-	@BQConfigProperty("Encoding of the files")
+	@BQConfigProperty("Specify the character encoding of the files. If it is not specified, the value of "
+			+ "the system property \"file.encoding\" is used. If this system property was not set, the default "
+			+ "encoding is used (usually UTF-8).")
 	public void setFileEncoding(String encoding) {
-		this.fileEcoding = encoding;
+		this.fileEncoding = encoding;
 	}
 
 	/** Replies the java version.

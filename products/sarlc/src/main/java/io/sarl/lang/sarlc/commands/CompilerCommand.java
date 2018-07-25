@@ -36,6 +36,7 @@ import io.sarl.lang.compiler.batch.SarlBatchCompiler;
 import io.sarl.lang.sarlc.Constants;
 import io.sarl.lang.sarlc.configs.ProgressBarConfig;
 import io.sarl.lang.sarlc.configs.SarlConfig;
+import io.sarl.lang.sarlc.tools.PathDetector;
 import io.sarl.lang.util.OutParameter;
 
 /**

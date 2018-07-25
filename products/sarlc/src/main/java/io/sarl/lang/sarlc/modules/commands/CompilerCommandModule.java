@@ -37,9 +37,9 @@ import org.apache.log4j.Logger;
 
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
 import io.sarl.lang.sarlc.commands.CompilerCommand;
-import io.sarl.lang.sarlc.commands.PathDetector;
 import io.sarl.lang.sarlc.configs.ProgressBarConfig;
 import io.sarl.lang.sarlc.configs.SarlConfig;
+import io.sarl.lang.sarlc.tools.PathDetector;
 
 /** Module for the compiler command.
  *

@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.sarlc.commands;
+package io.sarl.lang.sarlc.tools;
 
 import java.io.File;
 import java.util.List;

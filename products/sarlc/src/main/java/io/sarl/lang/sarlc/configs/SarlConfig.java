@@ -108,7 +108,7 @@ public class SarlConfig {
 	 *
 	 * @param path the class path.
 	 */
-	@BQConfigProperty("Class path for the SARL compiler")
+	@BQConfigProperty("Class path for the SARL compiler.")
 	public void setClasspath(String  path) {
 		this.classpath = path;
 	}
@@ -125,7 +125,7 @@ public class SarlConfig {
 	 *
 	 * @param path the boot class path.
 	 */
-	@BQConfigProperty("Boot class path for the SARL compiler")
+	@BQConfigProperty("SARL boot class path for the SARL compiler.")
 	public void setBootClasspath(String  path) {
 		this.bootClasspath = path;
 	}
@@ -142,7 +142,7 @@ public class SarlConfig {
 	 *
 	 * @param path the class output path.
 	 */
-	@BQConfigProperty("Byte code's output path for the SARL compiler")
+	@BQConfigProperty("Byte code's output path for the SARL compiler.")
 	public void setClassOutputPath(File path) {
 		this.classOutputPath = path;
 	}
@@ -159,7 +159,7 @@ public class SarlConfig {
 	 *
 	 * @param path the output path.
 	 */
-	@BQConfigProperty("Output path for the SARL compiler")
+	@BQConfigProperty("Output path for the SARL compiler.")
 	public void setOutputPath(File path) {
 		this.outputPath = path;
 	}
@@ -176,7 +176,7 @@ public class SarlConfig {
 	 *
 	 * @param path the working path.
 	 */
-	@BQConfigProperty("Working/temporary path for the SARL compiler")
+	@BQConfigProperty("Working/temporary path for the SARL compiler.")
 	public void setWorkingPath(File path) {
 		this.workingPath = path;
 	}
@@ -196,7 +196,7 @@ public class SarlConfig {
 	 *
 	 * @param config the compiler configuration.
 	 */
-	@BQConfigProperty("Configuration of the SARL compiler")
+	@BQConfigProperty("Configuration of the SARL compiler.")
 	public void setCompiler(CompilerConfig config) {
 		this.compilerConfig = config;
 	}
@@ -216,7 +216,7 @@ public class SarlConfig {
 	 *
 	 * @param config the validator configuration.
 	 */
-	@BQConfigProperty("Configuration of the SARL validator")
+	@BQConfigProperty("Configuration of the SARL validator.")
 	public void setValidator(ValidatorConfig config) {
 		this.validatorConfig = config;
 	}
