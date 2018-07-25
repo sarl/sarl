@@ -1256,7 +1256,10 @@ public class SarlBatchCompiler {
 		final IssueMessageFormatter formatter = getIssueMessageFormatter();
 		final org.eclipse.emf.common.util.URI uriToProblem = issue.getUriToProblem();
 		if (formatter != null) {
-			return formatter.format(issue, uriToProblem);
+			final String message = formatter.format(issue, uriToProblem);
+			if (message != null) {
+				return message;
+			}
 		}
 		if (uriToProblem != null) {
 			final org.eclipse.emf.common.util.URI resourceUri = uriToProblem.trimFragment();
@@ -2062,7 +2065,7 @@ public class SarlBatchCompiler {
 		 *
 		 * @param issue the issue.
 		 * @param uri URI to the problem.
-		 * @return the message.
+		 * @return the message; or {@code null} for using the default formatter.
 		 */
 		String format(Issue issue, org.eclipse.emf.common.util.URI uri);
 
