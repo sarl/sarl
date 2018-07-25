@@ -68,13 +68,20 @@ public class SarlConfig {
 	public static final String CLASSPATH_NAME = PREFIX + ".classpath"; //$NON-NLS-1$
 
 	/**
-	 * Name of the property that contains the boot classpath.
+	 * Name of the property that contains the Java boot classpath.
+	 */
+	public static final String JAVA_BOOT_CLASSPATH_NAME = PREFIX + ".javabootclasspath"; //$NON-NLS-1$
+
+	/**
+	 * Name of the property that contains the SARL boot classpath.
 	 */
 	public static final String BOOT_CLASSPATH_NAME = PREFIX + ".bootclasspath"; //$NON-NLS-1$
 
 	private String classpath;
 
 	private String bootClasspath;
+
+	private String javaBootClasspath;
 
 	private File outputPath;
 
@@ -128,6 +135,23 @@ public class SarlConfig {
 	@BQConfigProperty("SARL boot class path for the SARL compiler.")
 	public void setBootClasspath(String  path) {
 		this.bootClasspath = path;
+	}
+
+	/** Replies the Java boot classpath.
+	 *
+	 * @return the Java boot classpath
+	 */
+	public String  getJavaBootClasspath() {
+		return this.javaBootClasspath;
+	}
+
+	/** Change the Java boot class path.
+	 *
+	 * @param path the Java boot class path.
+	 */
+	@BQConfigProperty("Java boot class path for the SARL compiler.")
+	public void setJavaBootClasspath(String  path) {
+		this.javaBootClasspath = path;
 	}
 
 	/** Replies the class output path.

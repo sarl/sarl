@@ -26,8 +26,8 @@ import static io.bootique.BQCoreModule.extend;
 import java.text.MessageFormat;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.Singleton;
 import org.arakhne.afc.bootique.applicationdata2.annotations.DefaultApplicationName;
 import org.arakhne.afc.bootique.synopsishelp.annotations.ApplicationArgumentSynopsis;
 import org.arakhne.afc.bootique.synopsishelp.annotations.ApplicationDetailedDescription;
@@ -47,10 +47,14 @@ public class SarlcApplicationModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
+		// Name of the application.
 		bind(String.class).annotatedWith(DefaultApplicationName.class).toInstance(Constants.PROGRAM_NAME);
-		bind(String.class).annotatedWith(ApplicationArgumentSynopsis.class).toInstance(Messages.SarlcApplicationModule_1);
-		bind(String.class).annotatedWith(ApplicationDetailedDescription.class).toProvider(LongDescriptionProvider.class);
+		// Short description of the application.
 		extend(binder()).setApplicationDescription(Messages.SarlcApplicationModule_0);
+		// Long description of the application.
+		bind(String.class).annotatedWith(ApplicationDetailedDescription.class).toProvider(LongDescriptionProvider.class).in(Singleton.class);
+		// Synopsis of the application's arguments.
+		bind(String.class).annotatedWith(ApplicationArgumentSynopsis.class).toInstance(Messages.SarlcApplicationModule_1);
 	}
 
 	/** Provider of the long description of the application.
@@ -62,14 +66,6 @@ public class SarlcApplicationModule extends AbstractModule {
 	 * @since 0.8
 	 */
 	private static class LongDescriptionProvider implements Provider<String> {
-
-		/** Constructor.
-		 *
-		 */
-		@Inject
-		LongDescriptionProvider() {
-			//
-		}
 
 		@Override
 		public String get() {

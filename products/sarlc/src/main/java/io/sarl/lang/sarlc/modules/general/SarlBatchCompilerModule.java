@@ -26,6 +26,7 @@ import java.util.Map.Entry;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
+import com.google.inject.Provider;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import org.eclipse.xtext.diagnostics.Severity;
@@ -36,6 +37,7 @@ import io.sarl.lang.compiler.batch.SarlBatchCompiler.IssueMessageFormatter;
 import io.sarl.lang.sarlc.configs.SarlConfig;
 import io.sarl.lang.sarlc.configs.subconfigs.CompilerConfig;
 import io.sarl.lang.sarlc.configs.subconfigs.ValidatorConfig;
+import io.sarl.lang.sarlc.tools.SARLBootClasspathProvider;
 
 /** Module for creating the SARL batch compiler with the configuration provided by bootique modules.
  *
@@ -78,20 +80,28 @@ public class SarlBatchCompilerModule extends AbstractModule {
 	@Provides
 	@Singleton
 	public SarlBatchCompiler provideSarlBatchCompiler(
-			Injector injector, SarlConfig config, @BootClasspath String defaultBootClasspath,
-			IssueMessageFormatter issueMessageFormater) {
-		final CompilerConfig compilerConfig = config.getCompiler();
-		final ValidatorConfig validatorConfig = config.getValidator();
+			Injector injector, Provider<SarlConfig> config, Provider<SARLBootClasspathProvider> defaultBootClasspath,
+			Provider<IssueMessageFormatter> issueMessageFormater) {
+		final SarlConfig cfg = config.get();
+		final CompilerConfig compilerConfig = cfg.getCompiler();
+		final ValidatorConfig validatorConfig = cfg.getValidator();
 
 		final SarlBatchCompiler compiler = new SarlBatchCompiler();
 		injector.injectMembers(compiler);
 
-		if (!Strings.isEmpty(sarlcConfig.getClasspath())) {
-			compiler.setClassPath(sarlcConfig.getClasspath());
+		String fullClassPath = cfg.getBootClasspath();
+		if (Strings.isEmpty(fullClassPath)) {
+			fullClassPath = defaultBootClasspath.get().getClasspath();
 		}
 
-		if (!Strings.isEmpty(sarlcConfig.getBootClasspath())) {
-			compiler.setBootClassPath(sarlcConfig.getBootClasspath());
+		final String userClassPath = cfg.getClasspath();
+		if (!Strings.isEmpty(userClassPath) && !Strings.isEmpty(fullClassPath)) {
+			fullClassPath = fullClassPath + File.pathSeparator + userClassPath;
+		}
+		compiler.setClassPath(fullClassPath);
+
+		if (!Strings.isEmpty(cfg.getJavaBootClasspath())) {
+			compiler.setBootClassPath(cfg.getJavaBootClasspath());
 		}
 
 		if (!Strings.isEmpty(compilerConfig.getFileEncoding())) {
@@ -124,7 +134,7 @@ public class SarlBatchCompilerModule extends AbstractModule {
 			compiler.setWarningSeverity(entry.getKey(), entry.getValue());
 		}
 
-		compiler.setIssueMessageFormatter(issueMessageFormater);
+		compiler.setIssueMessageFormatter(issueMessageFormater.get());
 
 		return compiler;
 	}
