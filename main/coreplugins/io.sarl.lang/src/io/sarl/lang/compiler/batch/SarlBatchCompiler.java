@@ -1216,7 +1216,6 @@ public class SarlBatchCompiler {
 				}
 			}
 			monitor.done();
-			getLogger().info(Messages.SarlBatchCompiler_41);
 		}
 		return true;
 	}
