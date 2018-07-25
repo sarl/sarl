@@ -122,6 +122,9 @@ public class CompilerCommand extends CommandWithMetadata {
 			}
 		});
 
+		final AtomicInteger nbFiles = new AtomicInteger(0);
+		comp.addCompiledResourceReceiver(it -> nbFiles.incrementAndGet());
+
 		final ProgressBarConfig commandConfig = this.commandConfig.get();
 		final boolean compilationResult;
 		if (commandConfig.getEnable()) {
@@ -130,14 +133,14 @@ public class CompilerCommand extends CommandWithMetadata {
 			compilationResult = comp.compile();
 		}
 		if (!compilationResult) {
-			showErrorAndWarningCount(comp, nbErrors.longValue(), nbWarnings.longValue());
+			showErrorAndWarningCount(comp, nbErrors.longValue(), nbWarnings.longValue(), nbFiles.longValue());
 			return CommandOutcome.failed(Constants.ERROR_CODE, Strings.nullToEmpty(firstErrorMessage.get()));
 		}
-		showWarningCount(comp, nbWarnings.longValue());
+		showWarningCount(comp, nbWarnings.longValue(), nbFiles.longValue());
 		return CommandOutcome.succeeded();
 	}
 
-	private static void showErrorAndWarningCount(SarlBatchCompiler comp, Number errs, Number warns) {
+	private static void showErrorAndWarningCount(SarlBatchCompiler comp, Number errs, Number warns, Number files) {
 		final long errValue = errs.longValue();
 		if (errValue > 0) {
 			final long warnValue = warns.longValue();
@@ -161,21 +164,23 @@ public class CompilerCommand extends CommandWithMetadata {
 			}
 			comp.getLogger().info(MessageFormat.format(msg, errValue, warnValue));
 		} else {
-			showWarningCount(comp, warns);
+			showWarningCount(comp, warns, files);
 		}
 	}
 
-	private static void showWarningCount(SarlBatchCompiler comp, Number warns) {
+	private static void showWarningCount(SarlBatchCompiler comp, Number warns, Number files) {
 		final long value = warns.longValue();
+		final String msg;
 		if (value > 0) {
-			final String msg;
 			if (value > 1) {
 				msg = Messages.CompilerCommand_8;
 			} else {
 				msg = Messages.CompilerCommand_9;
 			}
-			comp.getLogger().info(MessageFormat.format(msg, value));
+		} else {
+			msg = Messages.CompilerCommand_10;
 		}
+		comp.getLogger().info(MessageFormat.format(msg, value, files.longValue()));
 	}
 
 	/** Progress monitor that outputs on the console.
