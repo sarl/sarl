@@ -21,6 +21,7 @@
 
 package io.sarl.lang.sarlc.modules.general;
 
+import java.io.File;
 import java.util.Map.Entry;
 
 import com.google.inject.AbstractModule;
@@ -31,6 +32,7 @@ import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.util.Strings;
 
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
+import io.sarl.lang.compiler.batch.SarlBatchCompiler.IssueMessageFormatter;
 import io.sarl.lang.sarlc.configs.SarlConfig;
 import io.sarl.lang.sarlc.configs.subconfigs.CompilerConfig;
 import io.sarl.lang.sarlc.configs.subconfigs.ValidatorConfig;
@@ -50,19 +52,36 @@ public class SarlBatchCompilerModule extends AbstractModule {
 		//
 	}
 
-	/** Replies the SARL batch compiler.
+	/** Replies the formatter of the issue messages.
 	 *
-	 * @param injector the current injector.
-	 * @param sarlcConfig the configuration for the paths.
-	 * @return the SARL batch compiler
+	 * @return the formatter
 	 */
 	@SuppressWarnings("static-method")
 	@Provides
 	@Singleton
+	public IssueMessageFormatter provideIssueMessageFormatter() {
+		return (issue, uriToProblem) -> {
+			// Use the default formatter.
+			return null;
+		};
+	}
+
+	/** Replies the SARL batch compiler.
+	 *
+	 * @param injector the current injector.
+	 * @param config the configuration for the paths.
+	 * @param defaultBootClasspath the SARL boot class path that must be used by default.
+	 * @param issueMessageFormater the formatter of the issue messages.
+	 * @return the SARL batch compiler
+	 */
+	@SuppressWarnings({"static-method", "checkstyle:npathcomplexity"})
+	@Provides
+	@Singleton
 	public SarlBatchCompiler provideSarlBatchCompiler(
-			Injector injector, SarlConfig sarlcConfig) {
-		final CompilerConfig compilerConfig = sarlcConfig.getCompiler();
-		final ValidatorConfig validatorConfig = sarlcConfig.getValidator();
+			Injector injector, SarlConfig config, @BootClasspath String defaultBootClasspath,
+			IssueMessageFormatter issueMessageFormater) {
+		final CompilerConfig compilerConfig = config.getCompiler();
+		final ValidatorConfig validatorConfig = config.getValidator();
 
 		final SarlBatchCompiler compiler = new SarlBatchCompiler();
 		injector.injectMembers(compiler);
@@ -104,6 +123,8 @@ public class SarlBatchCompilerModule extends AbstractModule {
 		for (final Entry<String, Severity> entry : validatorConfig.getWarningLevels().entrySet()) {
 			compiler.setWarningSeverity(entry.getKey(), entry.getValue());
 		}
+
+		compiler.setIssueMessageFormatter(issueMessageFormater);
 
 		return compiler;
 	}
