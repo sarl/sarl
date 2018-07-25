@@ -36,6 +36,14 @@ public class Messages extends NLS {
 	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 	public static String CompilerCommand_0;
 	public static String CompilerCommand_1;
+	public static String CompilerCommand_2;
+	public static String CompilerCommand_3;
+	public static String CompilerCommand_4;
+	public static String CompilerCommand_5;
+	public static String CompilerCommand_6;
+	public static String CompilerCommand_7;
+	public static String CompilerCommand_8;
+	public static String CompilerCommand_9;
 	public static String VersionCommand_0;
 	public static String VersionCommand_1;
 	static {

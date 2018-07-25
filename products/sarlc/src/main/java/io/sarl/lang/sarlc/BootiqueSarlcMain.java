@@ -71,7 +71,7 @@ public class BootiqueSarlcMain {
 		try {
 			final BQRuntime runtime = createRuntime(args);
 			final CommandOutcome outcome = runtime.run();
-			if (!outcome.isSuccess()) {
+			if (!outcome.isSuccess() && outcome.getException() != null) {
 				Logger.getRootLogger().error(outcome.getMessage(), outcome.getException());
 			}
 			return outcome.getExitCode();

@@ -21,6 +21,9 @@
 
 package io.sarl.lang.sarlc.commands;
 
+import java.text.MessageFormat;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import com.google.common.base.Strings;
 import com.google.inject.Provider;
 import io.bootique.cli.Cli;
@@ -31,6 +34,7 @@ import me.tongfei.progressbar.ProgressBar;
 import me.tongfei.progressbar.ProgressBarBuilder;
 import me.tongfei.progressbar.ProgressBarStyle;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.xtext.diagnostics.Severity;
 
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
 import io.sarl.lang.sarlc.Constants;
@@ -105,9 +109,16 @@ public class CompilerCommand extends CommandWithMetadata {
 		}
 
 		final OutParameter<String> firstErrorMessage = new OutParameter<>();
+		final AtomicInteger nbErrors = new AtomicInteger(0);
+		final AtomicInteger nbWarnings = new AtomicInteger(0);
 		comp.addIssueMessageListener((issue, uri, message) -> {
 			if (firstErrorMessage.get() == null) {
 				firstErrorMessage.set(message);
+			}
+			if (issue.isSyntaxError() || issue.getSeverity() == Severity.ERROR) {
+				nbErrors.incrementAndGet();
+			} else if (issue.getSeverity() == Severity.WARNING) {
+				nbWarnings.incrementAndGet();
 			}
 		});
 
@@ -119,9 +130,52 @@ public class CompilerCommand extends CommandWithMetadata {
 			compilationResult = comp.compile();
 		}
 		if (!compilationResult) {
+			showErrorAndWarningCount(comp, nbErrors.longValue(), nbWarnings.longValue());
 			return CommandOutcome.failed(Constants.ERROR_CODE, Strings.nullToEmpty(firstErrorMessage.get()));
 		}
+		showWarningCount(comp, nbWarnings.longValue());
 		return CommandOutcome.succeeded();
+	}
+
+	private static void showErrorAndWarningCount(SarlBatchCompiler comp, Number errs, Number warns) {
+		final long errValue = errs.longValue();
+		if (errValue > 0) {
+			final long warnValue = warns.longValue();
+			final String msg;
+			if (errValue > 1) {
+				if (warnValue > 1) {
+					msg = Messages.CompilerCommand_2;
+				} else if (warnValue == 1) {
+					msg = Messages.CompilerCommand_3;
+				} else {
+					msg = Messages.CompilerCommand_4;
+				}
+			} else {
+				if (warnValue > 1) {
+					msg = Messages.CompilerCommand_5;
+				} else if (warnValue == 1) {
+					msg = Messages.CompilerCommand_6;
+				} else {
+					msg = Messages.CompilerCommand_7;
+				}
+			}
+			comp.getLogger().info(MessageFormat.format(msg, errValue, warnValue));
+		} else {
+			showWarningCount(comp, warns);
+		}
+	}
+
+	private static void showWarningCount(SarlBatchCompiler comp, Number warns) {
+		final long value = warns.longValue();
+		if (value > 0) {
+			final String msg;
+			if (value > 1) {
+				msg = Messages.CompilerCommand_8;
+			} else {
+				msg = Messages.CompilerCommand_9;
+			}
+			comp.getLogger().info(MessageFormat.format(msg, value));
+		}
 	}
 
 	/** Progress monitor that outputs on the console.
