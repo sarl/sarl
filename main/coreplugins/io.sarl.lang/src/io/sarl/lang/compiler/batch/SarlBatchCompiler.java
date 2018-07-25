@@ -1263,10 +1263,10 @@ public class SarlBatchCompiler {
 			return MessageFormat.format(Messages.SarlBatchCompiler_4,
 					issue.getSeverity(), resourceUri.lastSegment(),
 					resourceUri.isFile() ? resourceUri.toFileString() : "", //$NON-NLS-1$
-							issue.getLineNumber(), issue.getMessage());
+							issue.getLineNumber(), issue.getColumn(), issue.getCode(), issue.getMessage());
 		}
 		return MessageFormat.format(Messages.SarlBatchCompiler_5,
-				issue.getSeverity(), issue.getLineNumber(), issue.getMessage());
+				issue.getSeverity(), issue.getLineNumber(), issue.getColumn(), issue.getCode(), issue.getMessage());
 	}
 
 	/** Output the given issues.
