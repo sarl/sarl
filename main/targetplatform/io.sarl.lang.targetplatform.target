@@ -1,20 +1,24 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="io.sarl.lang.targetplatform" sequenceNumber="125">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><?pde version="3.8"?><target name="io.sarl.lang.targetplatform" sequenceNumber="129">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.egit.feature.group" version="4.9.2.201712150930-r"/>
-<unit id="org.eclipse.epp.mpc.feature.group" version="1.6.4.v20180214-1810"/>
-<unit id="org.eclipse.equinox.executable.feature.group" version="3.7.2.v20171108-1834"/>
-<unit id="org.eclipse.jdt.feature.group" version="3.13.4.v20180330-0919"/>
-<unit id="org.eclipse.m2e.feature.feature.group" version="1.8.3.20180227-2137"/>
-<unit id="org.eclipse.pde.source.feature.group" version="3.13.4.v20180330-0640"/>
-<unit id="org.eclipse.platform.feature.group" version="4.7.3.v20180330-0640"/>
-<unit id="org.eclipse.platform.ide" version="4.7.3.M20180330-0640"/>
-<unit id="org.eclipse.wst.common_core.feature.feature.group" version="3.9.1.v201803221834"/>
-<unit id="org.eclipse.wst.common_ui.feature.feature.group" version="3.9.1.v201803221834"/>
-<unit id="org.eclipse.wst.xml_core.feature.feature.group" version="3.9.2.v201711080222"/>
-<unit id="org.eclipse.xsd.feature.group" version="2.13.0.v20170609-0928"/>
-<repository location="http://download.eclipse.org/releases/oxygen"/>
+<unit id="epp.package.java" version="4.8.0.20180619-1200"/>
+<unit id="org.eclipse.egit.feature.group" version="5.0.0.201806131550-r"/>
+<unit id="org.eclipse.egit.mylyn.feature.group" version="5.0.0.201806131550-r"/>
+<unit id="org.eclipse.epp.mpc.feature.group" version="1.7.0.v20180613-1243"/>
+<unit id="org.eclipse.equinox.executable.feature.group" version="3.8.0.v20180518-2029"/>
+<unit id="org.eclipse.fx.ide.feature.feature.group" version="3.3.0.201805280700"/>
+<unit id="org.eclipse.fx.ide.m2e.feature.feature.group" version="3.3.0.201805280700"/>
+<unit id="org.eclipse.jdt.feature.group" version="3.14.0.v20180611-0500"/>
+<unit id="org.eclipse.m2e.feature.feature.group" version="1.9.0.20180606-2036"/>
+<unit id="org.eclipse.pde.source.feature.group" version="3.13.100.v20180611-0826"/>
+<unit id="org.eclipse.platform.feature.group" version="4.8.0.v20180611-0656"/>
+<unit id="org.eclipse.platform.ide" version="4.8.0.I20180611-0500"/>
+<unit id="org.eclipse.wst.common_core.feature.feature.group" version="3.9.1.v201803151712"/>
+<unit id="org.eclipse.wst.common_ui.feature.feature.group" version="3.9.2.v201803040536"/>
+<unit id="org.eclipse.wst.xml_core.feature.feature.group" version="3.10.0.v201805022129"/>
+<unit id="org.eclipse.xsd.feature.group" version="2.14.0.v20180127-0547"/>
+<unit id="org.sonatype.m2e.mavenarchiver.feature.feature.group" version="0.17.2.201606141937-signed-20160830073346"/>
+<repository location="http://download.eclipse.org/releases/photon"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="net.bytebuddy.byte-buddy" version="1.7.9"/>
@@ -31,13 +35,9 @@
 <repository location="http://download.jboss.org/jbosstools/updates/m2e-extensions/m2e-jdt-compiler/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.xtend.sdk.feature.group" version="2.13.0.v20171020-0920"/>
-<unit id="org.eclipse.xtext.sdk.feature.group" version="2.13.0.v20171020-0920"/>
-<repository location="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.fx.ide.feature.feature.group" version="3.0.0.201705220750"/>
-<repository location="http://download.eclipse.org/efxclipse/updates-released/3.0.0/site"/>
+<repository location="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/latest/"/>
+	<unit id="org.eclipse.xtend.sdk.feature.group" version="2.15.0.v20180723-0209"/>
+	<unit id="org.eclipse.xtext.sdk.feature.group" version="2.15.0.v20180723-0209"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="aopalliance" version="1.0.0"/>

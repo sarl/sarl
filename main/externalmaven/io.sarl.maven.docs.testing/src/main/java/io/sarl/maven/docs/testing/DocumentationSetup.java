@@ -25,6 +25,7 @@ import com.google.inject.Binder;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import com.google.inject.Singleton;
 import com.google.inject.util.Modules;
 import org.eclipse.xtext.xbase.scoping.batch.ImplicitlyImportedFeatures;
 
@@ -79,9 +80,9 @@ public class DocumentationSetup extends SARLStandaloneSetup {
 
 		@Override
 		public void configure(Binder binder) {
-			binder.bind(ImplicitlyImportedFeatures.class).to(DocumentationImplicitlyImportedFeatures.class);
+			binder.bind(ImplicitlyImportedFeatures.class).to(DocumentationImplicitlyImportedFeatures.class).in(Singleton.class);
 		}
-
+		
 	}
 
 }

@@ -22,7 +22,9 @@
 package io.sarl.lang.mwe2.externalspec.textmate;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,10 +34,10 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 
+import com.google.common.io.Files;
 import com.google.inject.Injector;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.generator.IGeneratorFragment;
-import org.eclipse.xtext.util.Files;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
@@ -231,7 +233,11 @@ public class TextMateGenerator2 extends AbstractExternalHighlightingFragment2<IT
 		final URL url = getClass().getResource(LICENSE_FILE);
 		if (url != null) {
 			final File filename = new File(url.getPath());
-			return Files.readFileIntoString(filename.getAbsolutePath());
+			try {
+				return Files.toString(filename, Charset.defaultCharset());
+			} catch (IOException exception) {
+				throw new RuntimeException(exception);
+			}
 		}
 		return null;
 	}

@@ -500,7 +500,7 @@ JvmFormalParameter returns xtend::XtendFormalParameter:
 // Formal parameter declaration according to the SARL syntax (not the Xtext/Xtend)
 @Override 
 FullJvmFormalParameter returns xtend::XtendFormalParameter:
-	extension?='extension'? name=ValidID ':' parameterType=JvmTypeReference
+	extension?='extension'? name=ValidID ':' parameterType=MultiTypeReference
 ;
 
 // The type of the for-loop's variable is following the SARL syntax (not the Xtext/Xtend)
@@ -531,7 +531,7 @@ XSwitchExpression returns xbase::XExpression:
 
 //-----------------------------------------------
 // BELOW THIS POINT, See Issue #793
-// FIXME Remove When issue 783 is fixed within Xbase
+// FIXME Remove When issue 68 is fixed within Xbase, https://github.com/eclipse/xtext-lib/issues/68
 
 @Override
 XMultiplicativeExpression returns xbase::XExpression:

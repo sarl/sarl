@@ -53,6 +53,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+import org.slf4j.helpers.NOPLogger;
 
 import io.sarl.lang.SARLStandaloneSetup;
 import io.sarl.lang.SARLVersion;
@@ -191,7 +192,7 @@ public class ExamplesTest extends AbstractSarlTest {
 		compiler.setAllWarningSeverities(Severity.IGNORE);
 		compiler.setWarningSeverity(IssueCodes.DEPRECATED_MEMBER_REFERENCE, Severity.ERROR);
 		compiler.setJavaCompilerVerbose(false);
-		compiler.getLogger().setLevel(Level.OFF);
+		compiler.setLogger(NOPLogger.NOP_LOGGER);
 		compiler.addIssueMessageListener((issue, uri, message) -> {
 			if (issue.isSyntaxError() || issue.getSeverity().compareTo(Severity.ERROR) >= 0) {
 				final Integer line = issue.getLineNumber();

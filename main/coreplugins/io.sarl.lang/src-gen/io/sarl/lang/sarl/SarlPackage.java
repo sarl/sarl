@@ -194,6 +194,7 @@ public interface SarlPackage extends EPackage
 	 * <!-- end-user-doc -->
 	 * @see io.sarl.lang.sarl.impl.SarlBreakExpressionImpl
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlBreakExpression()
+	 * @since 0.5
 	 * @generated
 	 */
 	int SARL_BREAK_EXPRESSION = 2;
@@ -202,6 +203,7 @@ public interface SarlPackage extends EPackage
 	 * The number of structural features of the '<em>Break Expression</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @since 0.5
 	 * @generated
 	 * @ordered
 	 */
@@ -213,6 +215,7 @@ public interface SarlPackage extends EPackage
 	 * <!-- end-user-doc -->
 	 * @see io.sarl.lang.sarl.impl.SarlContinueExpressionImpl
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlContinueExpression()
+	 * @since 0.7
 	 * @generated
 	 */
 	int SARL_CONTINUE_EXPRESSION = 3;
@@ -221,6 +224,7 @@ public interface SarlPackage extends EPackage
 	 * The number of structural features of the '<em>Continue Expression</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @since 0.7
 	 * @generated
 	 * @ordered
 	 */
@@ -232,6 +236,7 @@ public interface SarlPackage extends EPackage
 	 * <!-- end-user-doc -->
 	 * @see io.sarl.lang.sarl.impl.SarlAssertExpressionImpl
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlAssertExpression()
+	 * @since 0.6
 	 * @generated
 	 */
 	int SARL_ASSERT_EXPRESSION = 4;
@@ -240,6 +245,7 @@ public interface SarlPackage extends EPackage
 	 * The feature id for the '<em><b>Condition</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @since 0.6
 	 * @generated
 	 * @ordered
 	 */
@@ -249,6 +255,7 @@ public interface SarlPackage extends EPackage
 	 * The feature id for the '<em><b>Message</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @since 0.6
 	 * @generated
 	 * @ordered
 	 */
@@ -258,6 +265,7 @@ public interface SarlPackage extends EPackage
 	 * The feature id for the '<em><b>Is Static</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @since 0.6
 	 * @generated
 	 * @ordered
 	 */
@@ -267,6 +275,7 @@ public interface SarlPackage extends EPackage
 	 * The number of structural features of the '<em>Assert Expression</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @since 0.6
 	 * @generated
 	 * @ordered
 	 */
@@ -1784,6 +1793,7 @@ public interface SarlPackage extends EPackage
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Break Expression</em>'.
 	 * @see io.sarl.lang.sarl.SarlBreakExpression
+	 * @since 0.5
 	 * @generated
 	 */
 	EClass getSarlBreakExpression();
@@ -1794,6 +1804,7 @@ public interface SarlPackage extends EPackage
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Continue Expression</em>'.
 	 * @see io.sarl.lang.sarl.SarlContinueExpression
+	 * @since 0.7
 	 * @generated
 	 */
 	EClass getSarlContinueExpression();
@@ -1804,6 +1815,7 @@ public interface SarlPackage extends EPackage
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Assert Expression</em>'.
 	 * @see io.sarl.lang.sarl.SarlAssertExpression
+	 * @since 0.6
 	 * @generated
 	 */
 	EClass getSarlAssertExpression();
@@ -1815,6 +1827,7 @@ public interface SarlPackage extends EPackage
 	 * @return the meta object for the containment reference '<em>Condition</em>'.
 	 * @see io.sarl.lang.sarl.SarlAssertExpression#getCondition()
 	 * @see #getSarlAssertExpression()
+	 * @since 0.6
 	 * @generated
 	 */
 	EReference getSarlAssertExpression_Condition();
@@ -1826,6 +1839,7 @@ public interface SarlPackage extends EPackage
 	 * @return the meta object for the attribute '<em>Message</em>'.
 	 * @see io.sarl.lang.sarl.SarlAssertExpression#getMessage()
 	 * @see #getSarlAssertExpression()
+	 * @since 0.6
 	 * @generated
 	 */
 	EAttribute getSarlAssertExpression_Message();
@@ -1837,6 +1851,7 @@ public interface SarlPackage extends EPackage
 	 * @return the meta object for the attribute '<em>Is Static</em>'.
 	 * @see io.sarl.lang.sarl.SarlAssertExpression#isIsStatic()
 	 * @see #getSarlAssertExpression()
+	 * @since 0.6
 	 * @generated
 	 */
 	EAttribute getSarlAssertExpression_IsStatic();
@@ -2235,6 +2250,7 @@ public interface SarlPackage extends EPackage
 		 * <!-- end-user-doc -->
 		 * @see io.sarl.lang.sarl.impl.SarlBreakExpressionImpl
 		 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlBreakExpression()
+		 * @since 0.5
 		 * @generated
 		 */
 		EClass SARL_BREAK_EXPRESSION = eINSTANCE.getSarlBreakExpression();
@@ -2245,6 +2261,7 @@ public interface SarlPackage extends EPackage
 		 * <!-- end-user-doc -->
 		 * @see io.sarl.lang.sarl.impl.SarlContinueExpressionImpl
 		 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlContinueExpression()
+		 * @since 0.7
 		 * @generated
 		 */
 		EClass SARL_CONTINUE_EXPRESSION = eINSTANCE.getSarlContinueExpression();
@@ -2255,6 +2272,7 @@ public interface SarlPackage extends EPackage
 		 * <!-- end-user-doc -->
 		 * @see io.sarl.lang.sarl.impl.SarlAssertExpressionImpl
 		 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlAssertExpression()
+		 * @since 0.6
 		 * @generated
 		 */
 		EClass SARL_ASSERT_EXPRESSION = eINSTANCE.getSarlAssertExpression();
@@ -2263,6 +2281,7 @@ public interface SarlPackage extends EPackage
 		 * The meta object literal for the '<em><b>Condition</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
+		 * @since 0.6
 		 * @generated
 		 */
 		EReference SARL_ASSERT_EXPRESSION__CONDITION = eINSTANCE.getSarlAssertExpression_Condition();
@@ -2271,6 +2290,7 @@ public interface SarlPackage extends EPackage
 		 * The meta object literal for the '<em><b>Message</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
+		 * @since 0.6
 		 * @generated
 		 */
 		EAttribute SARL_ASSERT_EXPRESSION__MESSAGE = eINSTANCE.getSarlAssertExpression_Message();
@@ -2279,6 +2299,7 @@ public interface SarlPackage extends EPackage
 		 * The meta object literal for the '<em><b>Is Static</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
+		 * @since 0.6
 		 * @generated
 		 */
 		EAttribute SARL_ASSERT_EXPRESSION__IS_STATIC = eINSTANCE.getSarlAssertExpression_IsStatic();

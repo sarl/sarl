@@ -73,7 +73,14 @@
 							<type>eclipse-plugin</type>
 							<id>org.eclipse.xtext.xbase.lib</id>
 							<restrictTo>
-								<versionRange>[${xtext.version},${xtext.version.next})</versionRange>
+								<versionRange>[${xtext.version.current},${xtext.version.next})</versionRange>
+							</restrictTo>
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.eclipse.xtext.xbase</id>
+							<restrictTo>
+								<versionRange>[${xtext.version.current},${xtext.version.next})</versionRange>
 							</restrictTo>
 						</filter>
 						<filter>
@@ -88,6 +95,12 @@
 					     product on MacOS  -->
 					<dependency-resolution>
 						<extraRequirements>
+							<!-- to ensure that the generated product is not using the bad Xtext version. -->
+							<requirement>
+								<type>eclipse-feature</type>
+								<id>org.eclipse.xtext.xbase.lib</id>
+								<versionRange>[${xtext.version.current},${xtext.version.next})</versionRange>
+							</requirement>
 							<!-- to get the org.eclipse.osgi.compatibility.state plugin iff 
 							the targeted Eclipse version (e.g., Luna) has it
 							(backwards compatible with kepler and previous versions) -->
@@ -224,23 +237,15 @@
 		<repository>
 			<id>org.eclipse.modeling.tmf.xtext.updates</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/modeling/tmf/xtext/updates/releases/${xtext.version}/</url>
-		</repository>
-		<repository>
-			<id>org.eclipse.modeling.emft.mwe.updates</id>
-			<layout>p2</layout>
-			<url>http://download.eclipse.org/modeling/emft/mwe/updates/releases/${mwe2.version}/</url>
-		</repository>
-		<repository>
-			<id>org.eclipse.modeling.m2t.xpand.updates</id>
-			<layout>p2</layout>
-			<url>http://download.eclipse.org/modeling/m2t/xpand/updates/releases/${xpand.version}/</url>
+			<!-- FIXME: Replace by the repository for the stable Xtext 2.15 -->
+			<url>http://download.eclipse.org/modeling/tmf/xtext/updates/composite/latest/</url>
+			<!-- <url>http://download.eclipse.org/modeling/tmf/xtext/updates/releases/${xtext.version.current}/</url> -->
 		</repository>
 		<!-- Eclipse and related libraries -->
 		<repository>
-			<id>org.eclipse.ide.oxygen</id>
+			<id>org.eclipse.ide.photon</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/oxygen/</url>
+			<url>http://download.eclipse.org/releases/photon/</url>
 		</repository>
 		<repository>
 			<id>org.jboss.m2e-jdt-compiler.update.lastest</id>
@@ -258,12 +263,6 @@
 			<id>io.sarl.dependencies</id>
 			<layout>p2</layout>
 			<url>http://dependencies.sarl.io</url>
-		</repository>
-		<!-- JavaFX libraries -->
-		<repository>
-			<id>org.eclipse.efxeclipse.updates</id>
-			<layout>p2</layout>
-			<url>http://download.eclipse.org/efxclipse/updates-released/${efxclipse.version}/site</url>
 		</repository>
 	</repositories>
 

@@ -33,7 +33,6 @@ import javax.inject.Inject;
 import com.google.common.io.Files;
 import com.google.inject.Injector;
 import com.google.inject.Provider;
-import org.apache.log4j.Level;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.diagnostics.Severity;
@@ -43,6 +42,7 @@ import org.eclipse.xtext.xbase.interpreter.IEvaluationResult;
 import org.eclipse.xtext.xbase.interpreter.IExpressionInterpreter;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 import org.junit.ComparisonFailure;
+import org.slf4j.helpers.NOPLogger;
 
 import io.sarl.lang.compiler.batch.ICompilatedResourceReceiver;
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
@@ -146,7 +146,7 @@ public class SarlScriptExecutor implements ScriptExecutor {
 		compiler.setAllWarningSeverities(Severity.IGNORE);
 		compiler.setWarningSeverity(IssueCodes.DEPRECATED_MEMBER_REFERENCE, Severity.ERROR);
 		compiler.setJavaCompilerVerbose(false);
-		compiler.getLogger().setLevel(Level.OFF);
+		compiler.setLogger(NOPLogger.NOP_LOGGER);
 		if (issues != null) {
 			compiler.addIssueMessageListener((issue, uri, message) -> {
 				if (issue.isSyntaxError() || issue.getSeverity() == Severity.ERROR) {

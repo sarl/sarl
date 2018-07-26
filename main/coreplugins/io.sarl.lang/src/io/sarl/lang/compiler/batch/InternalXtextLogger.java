@@ -21,11 +21,11 @@
 
 package io.sarl.lang.compiler.batch;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
+import java.util.Objects;
 
+import org.apache.log4j.Priority;
 import org.apache.log4j.spi.LoggerFactory;
+import org.slf4j.Logger;
 
 /** Apache logger that is converting info messages to debug messages.
  *
@@ -35,7 +35,7 @@ import org.apache.log4j.spi.LoggerFactory;
  * @mavenartifactid $ArtifactId$
  * @since 0.7
  */
-final class InternalLogger extends Logger {
+final class InternalXtextLogger extends org.apache.log4j.Logger {
 
 	private final Logger logger;
 
@@ -44,17 +44,41 @@ final class InternalLogger extends Logger {
 	 * @param name the logger's name.
 	 * @param logger the original logger.
 	 */
-	InternalLogger(String name, Logger logger) {
+	InternalXtextLogger(String name, Logger logger) {
 		super(name);
 		this.logger = logger;
 	}
 
 	@Override
 	protected void forcedLog(String fqcn, Priority level, Object message, Throwable exception) {
-		if (level.toInt() == Priority.INFO_INT) {
-			this.logger.log(fqcn, Level.DEBUG, message, exception);
-		} else {
-			this.logger.log(fqcn, level, message, exception);
+		switch (level.toInt()) {
+		case Priority.OFF_INT:
+			break;
+		case Priority.FATAL_INT:
+		case Priority.ERROR_INT:
+			if (exception != null) {
+				this.logger.error(Objects.toString(message), exception);
+			} else {
+				this.logger.error(Objects.toString(message));
+			}
+			break;
+		case Priority.WARN_INT:
+			if (exception != null) {
+				this.logger.warn(Objects.toString(message), exception);
+			} else {
+				this.logger.warn(Objects.toString(message));
+			}
+			break;
+		case Priority.ALL_INT:
+		case Priority.INFO_INT:
+		case Priority.DEBUG_INT:
+		default:
+			if (exception != null) {
+				this.logger.debug(Objects.toString(message), exception);
+			} else {
+				this.logger.debug(Objects.toString(message));
+			}
+			break;
 		}
 	}
 
@@ -66,7 +90,7 @@ final class InternalLogger extends Logger {
 	 * @mavenartifactid $ArtifactId$
 	 * @since 0.7
 	 */
-	public static class InternalLoggerFactory implements LoggerFactory {
+	public static class InternalXtextLoggerFactory implements LoggerFactory {
 
 		private final Logger logger;
 
@@ -74,13 +98,13 @@ final class InternalLogger extends Logger {
 		 *
 		 * @param logger the original logger.
 		 */
-		InternalLoggerFactory(Logger logger) {
+		InternalXtextLoggerFactory(Logger logger) {
 			this.logger = logger;
 		}
 
 		@Override
-		public Logger makeNewLoggerInstance(String name) {
-			return new InternalLogger(name, this.logger);
+		public org.apache.log4j.Logger makeNewLoggerInstance(String name) {
+			return new InternalXtextLogger(name, this.logger);
 		}
 
 	}

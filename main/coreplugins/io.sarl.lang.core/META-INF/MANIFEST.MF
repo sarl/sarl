@@ -6,7 +6,7 @@ Automatic-Module-Name: io.sarl.lang.core
 Bundle-Version: 0.8.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: %Bundle-Vendor
-Require-Bundle: org.eclipse.xtext.xbase.lib;bundle-version="2.13.0";visibility:=reexport,
+Require-Bundle: org.eclipse.xtext.xbase.lib;bundle-version="2.15.0";visibility:=reexport,
  javax.inject;bundle-version="1.0.0"
 Export-Package: io.sarl.bootstrap,
  io.sarl.lang,

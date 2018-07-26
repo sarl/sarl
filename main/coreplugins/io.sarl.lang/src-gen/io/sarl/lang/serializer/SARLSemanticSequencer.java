@@ -73,6 +73,7 @@ import org.eclipse.xtext.common.types.JvmGenericArrayTypeReference;
 import org.eclipse.xtext.common.types.JvmInnerTypeReference;
 import org.eclipse.xtext.common.types.JvmLowerBound;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmSynonymTypeReference;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmUpperBound;
 import org.eclipse.xtext.common.types.JvmWildcardTypeReference;
@@ -350,7 +351,9 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 		else if (epackage == TypesPackage.eINSTANCE)
 			switch (semanticObject.eClass().getClassifierID()) {
 			case TypesPackage.JVM_GENERIC_ARRAY_TYPE_REFERENCE:
-				if (rule == grammarAccess.getJvmTypeReferenceRule()
+				if (rule == grammarAccess.getMultiTypeReferenceRule()
+						|| action == grammarAccess.getMultiTypeReferenceAccess().getJvmSynonymTypeReferenceReferencesAction_1_0()
+						|| rule == grammarAccess.getJvmTypeReferenceRule()
 						|| action == grammarAccess.getJvmTypeReferenceAccess().getJvmGenericArrayTypeReferenceComponentTypeAction_0_1_0_0()
 						|| rule == grammarAccess.getJvmArgumentTypeReferenceRule()) {
 					sequence_JvmTypeReference(context, (JvmGenericArrayTypeReference) semanticObject); 
@@ -371,6 +374,8 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 				else break;
 			case TypesPackage.JVM_INNER_TYPE_REFERENCE:
 				if (rule == grammarAccess.getJvmSuperTypeReferenceRule()
+						|| rule == grammarAccess.getMultiTypeReferenceRule()
+						|| action == grammarAccess.getMultiTypeReferenceAccess().getJvmSynonymTypeReferenceReferencesAction_1_0()
 						|| rule == grammarAccess.getJvmTypeReferenceRule()
 						|| action == grammarAccess.getJvmTypeReferenceAccess().getJvmGenericArrayTypeReferenceComponentTypeAction_0_1_0_0()
 						|| rule == grammarAccess.getJvmParameterizedTypeReferenceRule()
@@ -403,6 +408,8 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 					return; 
 				}
 				else if (rule == grammarAccess.getJvmSuperTypeReferenceRule()
+						|| rule == grammarAccess.getMultiTypeReferenceRule()
+						|| action == grammarAccess.getMultiTypeReferenceAccess().getJvmSynonymTypeReferenceReferencesAction_1_0()
 						|| rule == grammarAccess.getJvmTypeReferenceRule()
 						|| action == grammarAccess.getJvmTypeReferenceAccess().getJvmGenericArrayTypeReferenceComponentTypeAction_0_1_0_0()
 						|| rule == grammarAccess.getJvmParameterizedTypeReferenceRule()
@@ -423,6 +430,9 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 					return; 
 				}
 				else break;
+			case TypesPackage.JVM_SYNONYM_TYPE_REFERENCE:
+				sequence_MultiTypeReference(context, (JvmSynonymTypeReference) semanticObject); 
+				return; 
 			case TypesPackage.JVM_TYPE_PARAMETER:
 				sequence_JvmTypeParameter(context, (JvmTypeParameter) semanticObject); 
 				return; 
@@ -838,6 +848,8 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 					return; 
 				}
 				else if (rule == grammarAccess.getTypeReferenceWithTypeArgsRule()
+						|| rule == grammarAccess.getMultiTypeReferenceRule()
+						|| action == grammarAccess.getMultiTypeReferenceAccess().getJvmSynonymTypeReferenceReferencesAction_1_0()
 						|| rule == grammarAccess.getJvmTypeReferenceRule()
 						|| rule == grammarAccess.getXFunctionTypeRefRule()
 						|| rule == grammarAccess.getJvmArgumentTypeReferenceRule()) {
@@ -1418,7 +1430,7 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     FullJvmFormalParameter returns XtendFormalParameter
 	 *
 	 * Constraint:
-	 *     (extension?='extension'? name=ValidID parameterType=JvmTypeReference)
+	 *     (extension?='extension'? name=ValidID parameterType=MultiTypeReference)
 	 */
 	protected void sequence_FullJvmFormalParameter(ISerializationContext context, XtendFormalParameter semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

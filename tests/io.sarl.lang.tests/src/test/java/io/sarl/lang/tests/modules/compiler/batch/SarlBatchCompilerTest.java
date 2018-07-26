@@ -51,7 +51,6 @@ public class SarlBatchCompilerTest extends AbstractBatchCompilerTest {
 		compiler.setTempDirectory(tempFolder);
 		compiler.setJavaCompilerVerbose(false);
 		compiler.setGenerateInlineAnnotation(false);
-		compiler.getLogger().setLevel(Level.ERROR);
 		if (!compiler.compile()) {
 			throw new RuntimeException("Compilation error");
 		}

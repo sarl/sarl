@@ -21,12 +21,11 @@
 
 package io.sarl.lang.ui.editor;
 
-import com.google.inject.Inject;
-import org.eclipse.jdt.internal.ui.preferences.OptionsConfigurationBlock;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreAccess;
 import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreInitializer;
-import org.eclipse.xtext.ui.editor.preferences.PreferenceStoreAccessImpl;
+
+import io.sarl.lang.ui.preferences.AbstractPreferenceAccess;
 
 /** Preferences for the SARL Source viewer.
  *
@@ -36,7 +35,7 @@ import org.eclipse.xtext.ui.editor.preferences.PreferenceStoreAccessImpl;
  * @mavenartifactid $ArtifactId$
  * @since 0.7
  */
-public class SARLSourceViewerPreferenceAccess {
+public class SARLSourceViewerPreferenceAccess extends AbstractPreferenceAccess {
 
 	/** Prefix for the preference keys.
 	 */
@@ -50,54 +49,36 @@ public class SARLSourceViewerPreferenceAccess {
 	 */
 	public static final boolean AUTOFORMATTING_DEFAULT_VALUE = true;
 
-	private PreferenceStoreAccessImpl preferenceStoreAccess;
-
-	/** Change the preference accessor.
-	 *
-	 * <p>The parameter is a preference store implementation in order to have access to the correct preference set.
-	 * It is an implementation choice from {@link OptionsConfigurationBlock}.
-	 *
-	 * @param preferenceStoreAccess the accessor.
-	 */
-	@Inject
-	public void setPreferenceStoreAccess(PreferenceStoreAccessImpl preferenceStoreAccess) {
-		this.preferenceStoreAccess = preferenceStoreAccess;
-	}
-
-	/** Replies the preference accessor.
-	 *
-	 * @return the accessor.
-	 */
-	@Inject
-	public IPreferenceStoreAccess getPreferenceStoreAccess() {
-		return this.preferenceStoreAccess;
-	}
-
-	/** Replies the writable preference store to be used for the SARL editor.
-	 *
-	 * @return the modifiable preference store.
-	 * @see #getPreferenceStore()
-	 */
-	public IPreferenceStore getWritablePreferenceStore() {
-		return getPreferenceStoreAccess().getWritablePreferenceStore();
-	}
-
-	/** Replies the readable preference store to be used for the SARL editor.
-	 *
-	 * @return the unmodifiable preference store.
-	 * @see #getWritablePreferenceStore()
-	 */
-	public IPreferenceStore getPreferenceStore() {
-		return getPreferenceStoreAccess().getPreferenceStore();
-	}
-
 	/** Replies if the auto-formatting feature is enable into the SARL editor.
 	 *
 	 * @return {@code true} if it is enabled.
 	 */
 	public boolean isAutoFormattingEnabled() {
-		final IPreferenceStore store = getPreferenceStore();
+		final IPreferenceStore store = getWritablePreferenceStore(null);
 		return store.getBoolean(AUTOFORMATTING_PROPERTY);
+	}
+
+
+	/** Enable or disable the auto-formatting feature into the SARL editor.
+	 *
+	 * @param enable is {@code true} if it is enabled; {@code false} if it is disable; {@code null}
+	 *     to restore the default value.
+	 * @since 0.8
+	 * @see #getWritablePreferenceStore(Object)
+	 */
+	public void setAutoFormattingEnabled(Boolean enable) {
+		final IPreferenceStore store = getWritablePreferenceStore(null);
+		if (enable == null) {
+			store.setToDefault(AUTOFORMATTING_PROPERTY);
+		} else {
+			store.setValue(AUTOFORMATTING_PROPERTY, enable.booleanValue());
+		}
+	}
+
+	@Override
+	public void setToDefault(Object context) {
+		final IPreferenceStore store = getWritablePreferenceStore(context);
+		store.setToDefault(AUTOFORMATTING_PROPERTY);
 	}
 
 	/** Initializer of the preferences for the SARL Source viewer.
@@ -113,13 +94,6 @@ public class SARLSourceViewerPreferenceAccess {
 		public void initialize(IPreferenceStoreAccess access) {
 			access.getWritablePreferenceStore().setDefault(AUTOFORMATTING_PROPERTY, AUTOFORMATTING_DEFAULT_VALUE);
 		}
-	}
-
-	/** Set the values of the preferences to the default values.
-	 */
-	public void setToDefault() {
-		final IPreferenceStore store = getWritablePreferenceStore();
-		store.setToDefault(AUTOFORMATTING_PROPERTY);
 	}
 
 }

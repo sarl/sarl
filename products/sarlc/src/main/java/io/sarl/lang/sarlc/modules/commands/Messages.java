@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.sarlc;
+package io.sarl.lang.sarlc.modules.commands;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -34,32 +34,9 @@ import org.eclipse.osgi.util.NLS;
 @SuppressWarnings("all")
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
-	public static String Main_0;
-	public static String Main_1;
-	public static String Main_10;
-	public static String Main_11;
-	public static String Main_12;
-	public static String Main_13;
-	public static String Main_14;
-	public static String Main_15;
-	public static String Main_16;
-	public static String Main_17;
-	public static String Main_18;
-	public static String Main_19;
-	public static String Main_2;
-	public static String Main_20;
-	public static String Main_21;
-	public static String Main_22;
-	public static String Main_23;
-	public static String Main_24;
-	public static String Main_25;
-	public static String Main_3;
-	public static String Main_4;
-	public static String Main_5;
-	public static String Main_6;
-	public static String Main_7;
-	public static String Main_8;
-	public static String Main_9;
+	public static String CompilerCommandModuleProvider_0;
+	public static String CompilerCommandModule_0;
+	public static String VersionCommandModuleProvider_0;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

@@ -143,7 +143,7 @@ public class RuntimeEnvironmentPropertyPage extends PropertyAndPreferencePage {
 	 * used.
 	 *
 	 * @param project the project.
-	 * @param useSpecificOptions indicates if the specifi options must be used.
+	 * @param useSpecificOptions indicates if the specific options must be used.
 	 * @return <code>true</code> if the property was saved successfully.
 	 */
 	@SuppressWarnings("static-method")

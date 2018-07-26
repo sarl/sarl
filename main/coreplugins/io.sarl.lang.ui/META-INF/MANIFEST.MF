@@ -7,23 +7,23 @@ Bundle-SymbolicName: io.sarl.lang.ui; singleton:=true
 Automatic-Module-Name: io.sarl.lang.ui
 Bundle-ActivationPolicy: lazy
 Require-Bundle: io.sarl.lang;bundle-version="0.8.0";visibility:=reexport,
- org.eclipse.xtext.ui;bundle-version="2.13.0",
- org.eclipse.xtext.ui.shared;bundle-version="2.13.0",
- org.eclipse.xtext.ui.codetemplates.ui;bundle-version="2.13.0",
- org.eclipse.xtext.xbase.ui;bundle-version="2.13.0",
- org.eclipse.xtext.builder;bundle-version="2.13.0",
- org.eclipse.xtend.ide;bundle-version="2.13.0",
- org.eclipse.xtend.core;bundle-version="2.13.0",
- org.eclipse.xtext.common.types.ui;bundle-version="2.13.0",
+ org.eclipse.xtext.ui;bundle-version="2.15.0",
+ org.eclipse.xtext.ui.shared;bundle-version="2.15.0",
+ org.eclipse.xtext.ui.codetemplates.ui;bundle-version="2.15.0",
+ org.eclipse.xtext.xbase.ui;bundle-version="2.15.0",
+ org.eclipse.xtext.builder;bundle-version="2.15.0",
+ org.eclipse.xtend.ide;bundle-version="2.15.0",
+ org.eclipse.xtend.core;bundle-version="2.15.0",
+ org.eclipse.xtext.common.types.ui;bundle-version="2.15.0",
  org.apache.log4j;bundle-version="1.2.15",
- org.eclipse.jdt.core;bundle-version="3.13.100",
- org.eclipse.jdt.ui;bundle-version="3.13.51",
- org.eclipse.compare;bundle-version="3.7.101",
- org.eclipse.jdt.debug.ui;bundle-version="3.8.51",
- org.eclipse.ui;bundle-version="3.109.0",
- org.eclipse.ui.editors;bundle-version="3.11.0",
+ org.eclipse.jdt.core;bundle-version="3.14.0",
+ org.eclipse.jdt.ui;bundle-version="3.14.0",
+ org.eclipse.compare;bundle-version="3.7.200",
+ org.eclipse.jdt.debug.ui;bundle-version="3.9.0",
+ org.eclipse.ui;bundle-version="3.109.100",
+ org.eclipse.ui.editors;bundle-version="3.11.100",
  org.antlr.runtime;bundle-version="3.2.0",
- org.eclipse.ui.forms;bundle-version="3.7.101"
+ org.eclipse.ui.forms;bundle-version="3.7.200"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Activator: io.sarl.lang.ui.internal.LangActivator
 Export-Package: io.sarl.lang.ide,
@@ -31,6 +31,7 @@ Export-Package: io.sarl.lang.ide,
  io.sarl.lang.ide.contentassist.antlr.internal,
  io.sarl.lang.ui,
  io.sarl.lang.ui.codebuilder,
+ io.sarl.lang.ui.codemining,
  io.sarl.lang.ui.compiler,
  io.sarl.lang.ui.compiler.extra,
  io.sarl.lang.ui.compiler.extra.preferences,
@@ -52,5 +53,7 @@ Export-Package: io.sarl.lang.ide,
  io.sarl.lang.ui.refactoring.rename,
  io.sarl.lang.ui.tasks,
  io.sarl.lang.ui.validation,
- io.sarl.lang.ui.validation.extra
-Import-Package: org.apache.log4j
+ io.sarl.lang.ui.validation.extra,
+ io.sarl.lang.validation
+Import-Package: org.apache.log4j,
+ org.eclipse.xtext.ui.codemining;resolution:=optional

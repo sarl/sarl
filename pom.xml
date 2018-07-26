@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
@@ -31,31 +32,30 @@
 		<!-- The versions of the following Xtext libraries are available at: https://eclipse.org/Xtext/documentation/350_continuous_integration.html -->
 
 		<!-- Version of the Xtext API -->
-		<xtext.version>2.13.0</xtext.version>
-		<xtext.version.next>2.13.1</xtext.version.next>
-		<!-- Version of the MWE2 library
-		    (used for accessing the mwe2 P2,
-		     see compositeContent.{xml,jar,xz,xml.xz} file) -->
+		<xtext.version>2.15.0-SNAPSHOT</xtext.version>
+		<xtext.version.current>2.15.0</xtext.version.current>
+		<xtext.version.next>2.15.1</xtext.version.next>
+		<!-- Version of the MWE2 library (used for accessing the mwe2 P2 http://download.eclipse.org/modeling/emft/mwe/updates/releases/, 
+			see compositeContent.{xml,jar,xz,xml.xz} file) -->
 		<mwe2.version>2.9.0</mwe2.version>
-		<!-- Version of the Xpand library
-		     (used for accessing the Xpand P2,
-		     see compositeContent.{xml,jar,xz,xml.xz} file) -->
+		<!-- Version of the Xpand library (used for accessing the Xpand P2 http://download.eclipse.org/modeling/m2t/xpand/updates/releases/, 
+			see compositeContent.{xml,jar,xz,xml.xz} file) -->
 		<xpand.version>R201605260315</xpand.version>
 
+		<!-- Guice after 4.1.0 depends on Guava with too high version. Xbase requires 
+			up to 19.0. New guice requires 23.0. -->
+		<guice.version>4.1.0</guice.version>
 		<!-- Version of the OSGi module that provides the NLS (package: osgi) -->
 		<osgi.nls.version>3.10.0-v20140606-1445</osgi.nls.version>
 		<!-- Version of the Arakhne Foundation classes -->
-		<afc.version>14.0</afc.version>
+		<afc.version>15.0</afc.version>
 		<!-- Version of the Guava API -->
 		<guava.version>18.0</guava.version>
 		<!-- Version of the javax.inject module -->
 		<javaxinject.version>1</javaxinject.version>
-		<!-- Version of the Tycho module -->
-		<tycho.version>1.1.0</tycho.version>
-		<!-- Java FX version
-		     (used for accessing the jfx P2,
-		     see compositeContent.{xml,jar,xz,xml.xz} file) -->
-		<efxclipse.version>3.0.0</efxclipse.version>
+		<!-- Version of the Tycho module, (search for tycho-maven-plugin on Maven 
+			central) -->
+		<tycho.version>1.2.0</tycho.version>
 		<!-- Version of the ZeroMQ library -->
 		<zeromq.version>0.4.2</zeromq.version>
 
@@ -72,12 +72,15 @@
 		<!-- Java Configuration -->
 		<compiler.level>1.8</compiler.level>
 		<jre.environment>JavaSE-1.8</jre.environment>
-		<!-- Maven API version. This version should be supported by m2e -->
-		<maven.api.version>3.3.9</maven.api.version>
+		<!-- Maven API version. This version should be supported by m2e. Search 
+			for maven-core on central. -->
+		<maven.api.version>3.5.3</maven.api.version>
 		<!-- String to put after the copyright sign -->
 		<copyrighters>the original authors or authors</copyrighters>
 		<!-- URL of the Maven repositories of SARL (use in POM and documentation) -->
 		<sarl.maven.repository.url>http://maven.sarl.io</sarl.maven.repository.url>
+		<!--  Version of the SLF4J Logging API -->
+		<slf4j.version>1.7.25</slf4j.version>
 	</properties>
 
 	<!-- ======================================= -->
@@ -339,6 +342,36 @@
 				<version>${afc.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.arakhne.afc.slf4j</groupId>
+				<artifactId>slf4j-maven</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.arakhne.afc.bootique</groupId>
+				<artifactId>bootique-synopsishelp</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.arakhne.afc.bootique</groupId>
+				<artifactId>bootique-log4j</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.arakhne.afc.bootique</groupId>
+				<artifactId>bootique-variables</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.arakhne.afc.bootique</groupId>
+				<artifactId>bootique-applicationdata2</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.arakhne.afc.bootique</groupId>
+				<artifactId>bootique-printconfig</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.arakhne.afc.core</groupId>
 				<artifactId>util</artifactId>
 				<version>${afc.version}</version>
@@ -346,12 +379,14 @@
 			<dependency>
 				<groupId>com.google.inject</groupId>
 				<artifactId>guice</artifactId>
-				<version>4.1.0</version>
+				<!-- Guice after 4.1.0 depends on Guava with too high version. Xbase 
+					requires up to 19.0. New guice requires 23.0. -->
+				<version>${guice.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.inject.extensions</groupId>
 				<artifactId>guice-multibindings</artifactId>
-				<version>4.1.0</version>
+				<version>${guice.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-cli</groupId>
@@ -371,7 +406,7 @@
 			<dependency>
 				<groupId>com.google.code.gson</groupId>
 				<artifactId>gson</artifactId>
-				<version>2.8.2</version>
+				<version>2.8.5</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.guava</groupId>
@@ -379,14 +414,19 @@
 				<version>${guava.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>io.bootique</groupId>
+				<artifactId>bootique</artifactId>
+				<version>0.25</version>
+			</dependency>
+			<dependency>
 				<groupId>org.javassist</groupId>
 				<artifactId>javassist</artifactId>
-				<version>3.22.0-GA</version>
+				<version>3.23.0-GA</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven.plugin-tools</groupId>
 				<artifactId>maven-plugin-annotations</artifactId>
-				<version>3.5.1</version>
+				<version>3.5.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
@@ -396,7 +436,7 @@
 			<dependency>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
-				<version>3.0.0</version>
+				<version>3.1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -407,7 +447,7 @@
 			<dependency>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.0.2</version>
+				<version>3.1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>junit</groupId>
@@ -433,17 +473,17 @@
 			<dependency>
 				<groupId>org.mockito</groupId>
 				<artifactId>mockito-core</artifactId>
-				<version>2.16.0</version>
+				<version>2.19.0</version>
 			</dependency>
 			<dependency>
 				<groupId>com.vladsch.flexmark</groupId>
 				<artifactId>flexmark</artifactId>
-				<version>0.32.16</version>
+				<version>0.34.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.jsoup</groupId>
 				<artifactId>jsoup</artifactId>
-				<version>1.11.2</version>
+				<version>1.11.3</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.commons</groupId>
@@ -463,7 +503,27 @@
 			<dependency>
 				<groupId>com.google.errorprone</groupId>
 				<artifactId>error_prone_annotations</artifactId>
-				<version>2.2.0</version>
+				<version>2.3.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-nop</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>jul-to-slf4j</artifactId>
+				<version>${slf4j.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -477,7 +537,7 @@
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
 				<artifactId>wagon-webdav-jackrabbit</artifactId>
-				<version>3.0.0</version>
+				<version>3.1.0</version>
 			</extension>
 		</extensions>
 		<pluginManagement>
@@ -525,7 +585,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>3.0.2</version>
+					<version>3.1.0</version>
 				</plugin>
 
 
@@ -538,7 +598,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-clean-plugin</artifactId>
-					<version>3.0.0</version>
+					<version>3.1.0</version>
 				</plugin>
 
 				<plugin>
@@ -568,7 +628,7 @@
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>wagon-maven-plugin</artifactId>
-					<version>1.0</version>
+					<version>2.0.0</version>
 				</plugin>
 
 				<plugin>
@@ -599,7 +659,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.21.0</version>
+					<version>2.22.0</version>
 				</plugin>
 
 				<plugin>
@@ -611,7 +671,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-plugin-plugin</artifactId>
-					<version>3.5.1</version>
+					<version>3.5.2</version>
 					<executions>
 						<execution>
 							<id>generated-helpmojo</id>
@@ -625,7 +685,7 @@
 				<plugin>
 					<groupId>com.akathist.maven.plugins.launch4j</groupId>
 					<artifactId>launch4j-maven-plugin</artifactId>
-					<version>1.7.21</version>
+					<version>1.7.22</version>
 				</plugin>
 
 				<plugin>
@@ -663,7 +723,7 @@
 							<groupId>com.puppycrawl.tools</groupId>
 							<artifactId>checkstyle</artifactId>
 							<!-- Same version as inside Eclipse IDE -->
-							<version>8.8</version>
+							<version>8.10</version>
 						</dependency>
 					</dependencies>
 				</plugin>
@@ -694,7 +754,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>3.0.0</version>
+					<version>3.0.1</version>
 					<configuration>
 						<doclet>io.sarl.docs.doclet.SarlDoclet</doclet>
 						<docletArtifact>
@@ -1158,5 +1218,20 @@
 			</build>
 		</profile>
 	</profiles>
+
+	<repositories>
+		<!-- FIXME: Remove this repository when the stable version of Xtenxt 2.15 
+			is released -->
+		<repository>
+			<id>org.eclipse.xtext-snapshot</id>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</repository>
+	</repositories>
 
 </project>

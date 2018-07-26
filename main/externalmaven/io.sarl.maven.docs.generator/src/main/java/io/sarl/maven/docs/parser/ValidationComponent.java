@@ -123,4 +123,9 @@ public class ValidationComponent {
 		return this.code;
 	}
 
+	@Override
+	public String toString() {
+		return getCode();
+	}
+
 }

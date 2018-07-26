@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
+import io.sarl.lang.ui.codemining.SARLCodeminingPreferenceAccess;
 import io.sarl.lang.ui.editor.SARLSourceViewerPreferenceAccess;
 
 /** Preference page for the SARL editors.
@@ -53,9 +54,14 @@ public class SarlEditorPreferencePage extends PreferencePage implements IWorkben
 	public static final String ID = "io.sarl.eclipse.preferences.SarlEditorPreferencePage"; //$NON-NLS-1$
 
 	@Inject
-	private SARLSourceViewerPreferenceAccess preferences;
+	private SARLSourceViewerPreferenceAccess sourceViewerPreferences;
+
+	@Inject
+	private SARLCodeminingPreferenceAccess codeminingPreferences;
 
 	private Button autoformattingButton;
+
+	private Button codeminingButton;
 
 	/**
 	 * Constructor.
@@ -69,17 +75,26 @@ public class SarlEditorPreferencePage extends PreferencePage implements IWorkben
 		//
 	}
 
-	/** Replies the preference accessor.
+	/** Replies the preferences for the source viewer.
 	 *
 	 * @return the preference accessor.
 	 */
-	protected SARLSourceViewerPreferenceAccess getPreferenceAccessor() {
-		return this.preferences;
+	protected SARLSourceViewerPreferenceAccess getSourceViewerPreferenceAccessor() {
+		return this.sourceViewerPreferences;
+	}
+
+	/** Replies the preferences for the codemining.
+	 *
+	 * @return the preference accessor.
+	 * @since 0.8
+	 */
+	protected SARLCodeminingPreferenceAccess getCodeminingPreferenceAccessor() {
+		return this.codeminingPreferences;
 	}
 
 	@Override
 	protected IPreferenceStore doGetPreferenceStore() {
-		return getPreferenceAccessor().getWritablePreferenceStore();
+		return getCodeminingPreferenceAccessor().getWritablePreferenceStore(null);
 	}
 
 	@Override
@@ -99,12 +114,22 @@ public class SarlEditorPreferencePage extends PreferencePage implements IWorkben
 		data.horizontalAlignment = GridData.FILL;
 		pageComponent.setLayoutData(data);
 
+		// ensure all the accessors use the same preference store (because only one
+		// store is saved when closing the dialog box).
+		getSourceViewerPreferenceAccessor().setWritablePreferenceStore(getPreferenceStore());
+		getCodeminingPreferenceAccessor().setWritablePreferenceStore(getPreferenceStore());
+
 		// create the content
 		this.autoformattingButton = SWTFactory.createCheckButton(pageComponent,
 				Messages.SarlEditorPreferencePage_0,
 				null,
-				getPreferenceAccessor().isAutoFormattingEnabled(),
-				1);
+				getSourceViewerPreferenceAccessor().isAutoFormattingEnabled(),
+				2);
+		this.codeminingButton = SWTFactory.createCheckButton(pageComponent,
+				Messages.SarlEditorPreferencePage_1,
+				null,
+				getCodeminingPreferenceAccessor().isCodeminingEnabled(),
+				2);
 
 		SWTFactory.createVerticalSpacer(pageComponent, 1);
 
@@ -116,15 +141,14 @@ public class SarlEditorPreferencePage extends PreferencePage implements IWorkben
 	@Override
 	protected void performDefaults() {
 		this.autoformattingButton.setSelection(SARLSourceViewerPreferenceAccess.AUTOFORMATTING_DEFAULT_VALUE);
+		this.codeminingButton.setSelection(SARLCodeminingPreferenceAccess.CODEMINING_DEFAULT_VALUE);
 		super.performDefaults();
 	}
 
 	@Override
 	public boolean performOk() {
-		final IPreferenceStore store = getPreferenceStore();
-		store.setValue(
-				SARLSourceViewerPreferenceAccess.AUTOFORMATTING_PROPERTY,
-				this.autoformattingButton.getSelection());
+		getSourceViewerPreferenceAccessor().setAutoFormattingEnabled(this.autoformattingButton.getSelection());
+		getCodeminingPreferenceAccessor().setCodeminingEnabled(this.codeminingButton.getSelection());
 		return super.performOk();
 	}
 

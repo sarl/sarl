@@ -87,6 +87,21 @@ public class BindingElement {
 		return MessageFormat.format("{0} => {1}", getBind(), getTo()); //$NON-NLS-1$
 	}
 
+	/** Replies the string representation of the binding key.
+	 *
+	 * @return the string representation of the binding key.
+	 * @since 0.8
+	 */
+	public String getKeyString() {
+		if (!Strings.isEmpty(getAnnotatedWith())) {
+			return MessageFormat.format("@{1} {0}", getBind(), getAnnotatedWith()); //$NON-NLS-1$
+		}
+		if (!Strings.isEmpty(getAnnotatedWithName())) {
+			return MessageFormat.format("@Named({1}) {0}", getBind(), getAnnotatedWithName()); //$NON-NLS-1$
+		}
+		return MessageFormat.format("{0}", getBind()); //$NON-NLS-1$
+	}
+
 	/** Set the element could override a previously defined element.
 	 *
 	 * @param override <code>true</code> for overriding.

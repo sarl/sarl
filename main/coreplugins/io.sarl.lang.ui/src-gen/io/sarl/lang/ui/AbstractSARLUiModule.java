@@ -40,6 +40,7 @@ import io.sarl.lang.ui.codebuilder.SarlConstructorBuilder;
 import io.sarl.lang.ui.codebuilder.SarlFieldBuilder;
 import io.sarl.lang.ui.codebuilder.SarlMethodBuilder;
 import io.sarl.lang.ui.codebuilder.SarlParameterBuilder;
+import io.sarl.lang.ui.codemining.SARLCodeMiningProvider;
 import io.sarl.lang.ui.compiler.EclipseGeneratorConfigProvider2;
 import io.sarl.lang.ui.compiler.EclipseResourceTypeDetector;
 import io.sarl.lang.ui.compiler.ProjectRelativeFileSystemAccess;
@@ -55,12 +56,12 @@ import io.sarl.lang.ui.contentassist.javadoc.SARLJavaDocContentAssistProcessor;
 import io.sarl.lang.ui.contentassist.templates.SARLTemplateContextType;
 import io.sarl.lang.ui.contentassist.templates.SARLTemplateProposalProvider;
 import io.sarl.lang.ui.editor.SARLSourceViewer;
+import io.sarl.lang.ui.editor.SARLStandardEditor;
 import io.sarl.lang.ui.highlighting.SARLHighlightingCalculator;
 import io.sarl.lang.ui.hover.SARLHoverSerializer;
 import io.sarl.lang.ui.hover.SARLHoverSignatureProvider;
 import io.sarl.lang.ui.hover.SARLHoverUIStrings;
 import io.sarl.lang.ui.labeling.IQualifiedNameImageProvider;
-import io.sarl.lang.ui.labeling.QualifiedPluginImageHelper;
 import io.sarl.lang.ui.labeling.SARLDescriptionLabelProvider;
 import io.sarl.lang.ui.labeling.SARLDiagnosticLabelDecorator;
 import io.sarl.lang.ui.labeling.SARLHyperLinkingLabelProvider;
@@ -85,6 +86,7 @@ import io.sarl.lang.validation.extra.IExtraLanguageValidatorProvider;
 import org.eclipse.compare.IViewerCreator;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.jface.text.codemining.ICodeMiningProvider;
 import org.eclipse.jface.text.source.IAnnotationHover;
 import org.eclipse.jface.viewers.ILabelDecorator;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -111,6 +113,7 @@ import org.eclipse.xtend.ide.editor.OverrideIndicatorRulerAction;
 import org.eclipse.xtend.ide.editor.RichStringAwareToggleCommentAction;
 import org.eclipse.xtend.ide.editor.SingleLineCommentHelper;
 import org.eclipse.xtend.ide.editor.XtendDoubleClickStrategyProvider;
+import org.eclipse.xtend.ide.editor.XtendSourceViewerConfiguration;
 import org.eclipse.xtend.ide.highlighting.XtendHighlightingConfiguration;
 import org.eclipse.xtend.ide.hover.XtendAnnotationHover;
 import org.eclipse.xtend.ide.hover.XtendHoverProvider;
@@ -157,7 +160,9 @@ import org.eclipse.xtext.service.SingletonBinding;
 import org.eclipse.xtext.tasks.ITaskTagProvider;
 import org.eclipse.xtext.ui.IImageHelper;
 import org.eclipse.xtext.ui.LanguageSpecific;
+import org.eclipse.xtext.ui.PluginImageHelper;
 import org.eclipse.xtext.ui.UIBindings;
+import org.eclipse.xtext.ui.codemining.XtextCodeMiningReconcileStrategy;
 import org.eclipse.xtext.ui.codetemplates.ui.AccessibleCodetemplatesActivator;
 import org.eclipse.xtext.ui.codetemplates.ui.partialEditing.IPartialEditingContentAssistContextFactory;
 import org.eclipse.xtext.ui.codetemplates.ui.partialEditing.PartialEditingContentAssistContextFactory;
@@ -172,6 +177,7 @@ import org.eclipse.xtext.ui.editor.IURIEditorOpener;
 import org.eclipse.xtext.ui.editor.IXtextEditorCallback;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.eclipse.xtext.ui.editor.XtextSourceViewer;
+import org.eclipse.xtext.ui.editor.XtextSourceViewerConfiguration;
 import org.eclipse.xtext.ui.editor.actions.IActionContributor;
 import org.eclipse.xtext.ui.editor.autoedit.AbstractEditStrategyProvider;
 import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
@@ -201,6 +207,7 @@ import org.eclipse.xtext.ui.editor.outline.impl.OutlineFilterAndSorter;
 import org.eclipse.xtext.ui.editor.outline.impl.OutlineNodeElementOpener;
 import org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreInitializer;
 import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionProvider;
+import org.eclipse.xtext.ui.editor.reconciler.IReconcileStrategyFactory;
 import org.eclipse.xtext.ui.editor.syntaxcoloring.IHighlightingConfiguration;
 import org.eclipse.xtext.ui.editor.templates.XtextTemplateContextType;
 import org.eclipse.xtext.ui.editor.templates.XtextTemplatePreferencePage;
@@ -223,7 +230,6 @@ import org.eclipse.xtext.ui.validation.AbstractValidatorConfigurationBlock;
 import org.eclipse.xtext.xbase.annotations.ui.DefaultXbaseWithAnnotationsUiModule;
 import org.eclipse.xtext.xbase.imports.IUnresolvedTypeResolver;
 import org.eclipse.xtext.xbase.ui.editor.XbaseDocumentProvider;
-import org.eclipse.xtext.xbase.ui.editor.XbaseEditor;
 import org.eclipse.xtext.xbase.ui.editor.XbaseResourceForEditorInputFactory;
 import org.eclipse.xtext.xbase.ui.generator.trace.XbaseOpenGeneratedFileHandler;
 import org.eclipse.xtext.xbase.ui.hover.HoverUiStrings;
@@ -254,11 +260,6 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by org.eclipse.xtext.xtext.generator.ImplicitFragment
 	public Provider<? extends IAllContainersState> provideIAllContainersState() {
 		return Access.getJavaProjectsState();
-	}
-	
-	// contributed by org.eclipse.xtext.xtext.generator.ImplicitFragment
-	public Class<? extends XtextEditor> bindXtextEditor() {
-		return XbaseEditor.class;
 	}
 	
 	// contributed by org.eclipse.xtext.xtext.generator.ImplicitFragment
@@ -498,6 +499,19 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 		binder.bind(String.class).annotatedWith(Names.named(UIBindings.COMPARE_VIEWER_TITLE)).toInstance("SARL Compare");
 	}
 	
+	// contributed by org.eclipse.xtext.xtext.generator.ui.codemining.CodeMiningFragment
+	public void configureCodeMinding(Binder binder) {
+		try {
+			Class.forName("org.eclipse.jface.text.codemining.ICodeMiningProvider");
+			binder.bind(ICodeMiningProvider.class)
+				.to(SARLCodeMiningProvider.class);
+			binder.bind(IReconcileStrategyFactory.class).annotatedWith(Names.named("codeMinding"))
+				.to(XtextCodeMiningReconcileStrategy.Factory.class);
+		} catch(ClassNotFoundException ignore) {
+			// no bindings if code mining is not available at runtime
+		}
+	}
+	
 	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
 	public void configureconfigureAbstractTypeScopeProviderForSourceAppender(Binder binder) {
 		binder.bind(AbstractTypeScopeProvider.class).annotatedWith(Names.named("io.sarl.lang.codebuilder.appenders.SourceAppender.providerType")).to(JdtBasedSimpleTypeScopeProvider.class);
@@ -525,7 +539,7 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IImageHelper.IImageDescriptorHelper> bindIImageDescriptorHelper() {
-		return QualifiedPluginImageHelper.class;
+		return PluginImageHelper.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
@@ -595,7 +609,7 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IImageHelper> bindIImageHelper() {
-		return QualifiedPluginImageHelper.class;
+		return PluginImageHelper.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
@@ -736,6 +750,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
+	public Class<? extends XtextEditor> bindXtextEditor() {
+		return SARLStandardEditor.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
 	public Class<? extends AbstractFileSystemSupport> bindAbstractFileSystemSupport() {
 		return EclipseFileSystemSupportImpl.class;
 	}
@@ -819,6 +838,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
 	public Class<? extends ToggleSLCommentAction.Factory> bindToggleSLCommentAction$Factory() {
 		return RichStringAwareToggleCommentAction.Factory.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
+	public Class<? extends XtextSourceViewerConfiguration> bindXtextSourceViewerConfiguration() {
+		return XtendSourceViewerConfiguration.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]

@@ -1171,7 +1171,7 @@ ruleFullJvmFormalParameter:
 	?
 	ruleValidID
 	':'
-	ruleJvmTypeReference
+	ruleMultiTypeReference
 ;
 
 // Rule XForLoopExpression
@@ -1628,12 +1628,39 @@ ruleXbaseConstructorCall:
 	)?
 ;
 
+// Rule MultiTypeReference
+ruleMultiTypeReference:
+	ruleJvmTypeReference
+	(
+		(
+			'|'
+			ruleJvmTypeReference
+		)+
+	)?
+;
+
 // Rule XStringLiteral
 ruleXStringLiteral:
 	(
 		ruleSimpleStringLiteral
 		    |
 		ruleRichString
+	)
+;
+
+// Rule XCasePart
+ruleXCasePart:
+	ruleMultiTypeReference
+	?
+	(
+		'case'
+		ruleXExpression
+	)?
+	(
+		':'
+		ruleXExpression
+		    |
+		','
 	)
 ;
 
@@ -2335,22 +2362,6 @@ ruleXIfExpression:
 		)
 		ruleXExpression
 	)?
-;
-
-// Rule XCasePart
-ruleXCasePart:
-	ruleJvmTypeReference
-	?
-	(
-		'case'
-		ruleXExpression
-	)?
-	(
-		':'
-		ruleXExpression
-		    |
-		','
-	)
 ;
 
 // Rule XBasicForLoopExpression

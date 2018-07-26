@@ -36,6 +36,7 @@ import org.eclipse.xtext.service.SingletonBinding;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.AbstractXtextGeneratorFragment;
+import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess;
 import org.eclipse.xtext.xtext.generator.model.GuiceModuleAccess.Binding;
 
 /**
@@ -69,6 +70,10 @@ public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {
 
 	private boolean enable = true;
 
+	private boolean runtimeEnable = true;
+
+	private boolean uiEnable = true;
+
 	/** Enable or disable the recommendations.
 	 *
 	 * @param enable <code>true</code> if enable.
@@ -83,6 +88,38 @@ public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {
 	 */
 	public boolean isEnable() {
 		return this.enable;
+	}
+
+	/** Enable or disable the runtime recommendations.
+	 *
+	 * @param enable <code>true</code> if enable.
+	 */
+	public void setShowRuntimeRecommendations(boolean enable) {
+		this.runtimeEnable = enable;
+	}
+
+	/** Replies if the runtime recommendations were enabled.
+	 *
+	 * @return <code>true</code> if enable.
+	 */
+	public boolean isShowRuntimeRecommendations() {
+		return this.runtimeEnable;
+	}
+
+	/** Enable or disable the UI recommendations.
+	 *
+	 * @param enable <code>true</code> if enable.
+	 */
+	public void setShowUiRecommendations(boolean enable) {
+		this.uiEnable = enable;
+	}
+
+	/** Replies if the UI recommendations were enabled.
+	 *
+	 * @return <code>true</code> if enable.
+	 */
+	public boolean isShowUiRecommendations() {
+		return this.uiEnable;
 	}
 
 	/** Change the comment for the injection fragment.
@@ -123,6 +160,15 @@ public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {
 		return type.getName();
 	}
 
+	/** Replies if the type is ignorable within the recommendations.
+	 *
+	 * @param typeName the name of the type.
+	 * @return {@code true} if the type could be ignored.
+	 */
+	protected static boolean isIgnorableType(String typeName) {
+		return "FileExtensions".equals(typeName) || "LanguageName".equals(typeName); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
 	private static void fillFrom(Set<BindingElement> bindings, Class<?> type) {
 		for (final Method declaredMethod : type.getDeclaredMethods()) {
 			final String methodName = declaredMethod.getName();
@@ -140,10 +186,10 @@ public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {
 					} else {
 						typeName = getTypeName(returnType);
 					}
-					if (!Strings.isEmpty(typeName)) {
+					if (!Strings.isEmpty(typeName) && !isIgnorableType(typeName)) {
 						final BindingElement element = new BindingElement();
 						element.setBind(typeName);
-						element.setTo(typeName);
+						element.setTo(Object.class.getName());
 						final SingletonBinding singleton = declaredMethod.getAnnotation(SingletonBinding.class);
 						if (singleton != null) {
 							element.setSingleton(true);
@@ -153,10 +199,10 @@ public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {
 					}
 				} else if (methodName.startsWith(CONFIGURE_PREFIX)) {
 					final String typeName = methodName.substring(CONFIGURE_PREFIX.length());
-					if (!Strings.isEmpty(typeName)) {
+					if (!Strings.isEmpty(typeName) && !isIgnorableType(typeName)) {
 						final BindingElement element = new BindingElement();
 						element.setBind(typeName);
-						element.setTo(typeName);
+						element.setTo(Object.class.getName());
 						element.setFunctionName(methodName);
 						bindings.add(element);
 					}
@@ -173,33 +219,54 @@ public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {
 	 */
 	protected void recommendFrom(String label, Set<BindingElement> source, Set<Binding> current) {
 		this.bindingFactory.setName(getName());
+		boolean hasRecommend = false;
 		for (final BindingElement sourceElement : source) {
 			final Binding wrapElement = this.bindingFactory.toBinding(sourceElement);
 			if (!current.contains(wrapElement)) {
-				LOG.info(MessageFormat.format("Recommended injection from {0}: {1}", //$NON-NLS-1$
-						label, sourceElement.toString()));
+				if (!hasRecommend) {
+					LOG.info(MessageFormat.format("Begin recommendations for {0}", //$NON-NLS-1$
+							label));
+					hasRecommend = true;
+				}
+				LOG.warn(MessageFormat.format("\t{1}", //$NON-NLS-1$
+						label, sourceElement.getKeyString()));
 			}
 		}
+		if (hasRecommend) {
+			LOG.info(MessageFormat.format("End recommendations for {0}", //$NON-NLS-1$
+					label));
+		} else {
+			LOG.info(MessageFormat.format("No recommendation for {0}", //$NON-NLS-1$
+					label));
+		}
+	}
+
+	/** Provide the recommendations for the given module.
+	 *
+	 * @param superModule the super module to extract definitions from.
+	 * @param currentModuleAccess the accessor to the the current module's definition.
+	 */
+	protected void recommend(Class<?> superModule, GuiceModuleAccess currentModuleAccess) {
+		LOG.info(MessageFormat.format("Building injection configuration from {0}", //$NON-NLS-1$
+				superModule.getName()));
+		final Set<BindingElement> superBindings = new LinkedHashSet<>();
+		fillFrom(superBindings, superModule.getSuperclass());
+		fillFrom(superBindings, superModule);
+
+		final Set<Binding> currentBindings = currentModuleAccess.getBindings();
+
+		recommendFrom(superModule.getName(), superBindings, currentBindings);
 	}
 
 	@Override
 	public void generate() {
 		if (isEnable()) {
-			final Set<BindingElement> xtendRtBindings = new LinkedHashSet<>();
-			fillFrom(xtendRtBindings, XtendRuntimeModule.class.getSuperclass());
-			fillFrom(xtendRtBindings, XtendRuntimeModule.class);
-
-			final Set<Binding> currentRtBindings = getLanguage().getRuntimeGenModule().getBindings();
-
-			recommendFrom("XtendRuntimeModule", xtendRtBindings, currentRtBindings); //$NON-NLS-1$
-
-			final Set<BindingElement> xtendUiBindings = new LinkedHashSet<>();
-			fillFrom(xtendUiBindings, XtendUiModule.class.getSuperclass());
-			fillFrom(xtendUiBindings, XtendUiModule.class);
-
-			final Set<Binding> currentUiBindings = getLanguage().getRuntimeGenModule().getBindings();
-
-			recommendFrom("XtendUiModule", xtendUiBindings, currentUiBindings); //$NON-NLS-1$
+			if (isShowRuntimeRecommendations()) {
+				recommend(XtendRuntimeModule.class, getLanguage().getRuntimeGenModule());
+			}
+			if (isShowUiRecommendations()) {
+				recommend(XtendUiModule.class, getLanguage().getIdeGenModule());
+			}
 		}
 	}
 

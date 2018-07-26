@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
@@ -22,10 +23,49 @@
 			<groupId>io.sarl.maven</groupId>
 			<artifactId>io.sarl.maven.batchcompiler</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.arakhne.afc.bootique</groupId>
+			<artifactId>bootique-applicationdata2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.arakhne.afc.bootique</groupId>
+			<artifactId>bootique-synopsishelp</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.arakhne.afc.bootique</groupId>
+			<artifactId>bootique-printconfig</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.arakhne.afc.bootique</groupId>
+			<artifactId>bootique-variables</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.arakhne.afc.bootique</groupId>
+			<artifactId>bootique-log4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>me.tongfei</groupId>
+			<artifactId>progressbar</artifactId>
+			<version>0.7.0</version>
+		</dependency>
+		<!--  The following dependency is included in order to have the SDK available on the class path by default -->
+		<dependency>
+			<groupId>io.sarl.maven</groupId>
+			<artifactId>io.sarl.maven.sdk</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<configuration>
+					<sourceDirectories>
+						<sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
+					</sourceDirectories>
+				</configuration>
+			</plugin>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<executions>
@@ -99,12 +139,16 @@
 							<target>
 								<property name="sarlc.linux.input"
 									value="${project.basedir}/src-templates/sarlc.sh" />
-								<property name="sarlc.linux.output" value="${project.build.directory}/sarlc.tmp" />
-								<property name="sarlc.linux.output.full" value="${project.build.directory}/sarlc" />
-								<copy overwrite="true" file="${sarlc.linux.input}" tofile="${sarlc.linux.output}" />
-								<replace file="${sarlc.linux.output}" token="{cliCompilerMainClass}"
-									value="${cliCompilerMainClass}" />
-								<replace file="${sarlc.linux.output}" token="{project.build.finalName}"
+								<property name="sarlc.linux.output"
+									value="${project.build.directory}/sarlc.tmp" />
+								<property name="sarlc.linux.output.full"
+									value="${project.build.directory}/sarlc" />
+								<copy overwrite="true" file="${sarlc.linux.input}"
+									tofile="${sarlc.linux.output}" />
+								<replace file="${sarlc.linux.output}"
+									token="{cliCompilerMainClass}" value="${cliCompilerMainClass}" />
+								<replace file="${sarlc.linux.output}"
+									token="{project.build.finalName}"
 									value="${project.build.finalName}" />
 								<concat dest="${sarlc.linux.output.full}" binary="yes">
 									<fileset file="${sarlc.linux.output}" />

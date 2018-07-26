@@ -219,7 +219,7 @@ public class SARLGrammarKeywordAccess {
 	 * Source: io.sarl.lang.SARL
 	 */
 	public String getColonKeyword() {
-		return this.grammarAccess.getXCasePartAccess().getColonKeyword_3_0_0().getValue();
+		return this.grammarAccess.getRichStringForLoopAccess().getColonKeyword_3().getValue();
 	}
 
 	/** Keyword: {@code ;}.
@@ -425,18 +425,18 @@ public class SARLGrammarKeywordAccess {
 		return this.grammarAccess.getXBlockExpressionAccess().getLeftCurlyBracketKeyword_1().getValue();
 	}
 
-	/** Keyword: {@code ..<}.
-	 * Source: io.sarl.lang.SARL
-	 */
-	public String getFullStopFullStopLessThanSignKeyword() {
-		return this.grammarAccess.getOpOtherAccess().getFullStopFullStopLessThanSignKeyword_1().getValue();
-	}
-
 	/** Keyword: {@code |}.
 	 * Source: io.sarl.lang.SARL
 	 */
 	public String getExplicitSyntaxVerticalLineKeyword() {
 		return this.grammarAccess.getXShortClosureAccess().getExplicitSyntaxVerticalLineKeyword_0_0_2_0().getValue();
+	}
+
+	/** Keyword: {@code ..<}.
+	 * Source: io.sarl.lang.SARL
+	 */
+	public String getFullStopFullStopLessThanSignKeyword() {
+		return this.grammarAccess.getOpOtherAccess().getFullStopFullStopLessThanSignKeyword_1().getValue();
 	}
 
 	/** Keyword: {@code }}.

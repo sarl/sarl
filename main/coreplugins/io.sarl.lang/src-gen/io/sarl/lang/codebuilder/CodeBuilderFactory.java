@@ -28,7 +28,6 @@ import com.google.inject.Binding;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Key;
-import com.google.inject.Module;
 import io.sarl.lang.codebuilder.appenders.BlockExpressionSourceAppender;
 import io.sarl.lang.codebuilder.appenders.ExpressionSourceAppender;
 import io.sarl.lang.codebuilder.appenders.SarlActionSourceAppender;
@@ -202,7 +201,7 @@ public class CodeBuilderFactory {
 	 * @param modules the overriding modules.
 	 * @return the new injector.
 	 */
-	public static Injector createOverridingInjector(Injector originalInjector, Module module) {
+	public static Injector createOverridingInjector(Injector originalInjector, com.google.inject.Module module) {
 		final Map<Key<?>, Binding<?>> bindings = originalInjector.getBindings();
 		return Guice.createInjector(Modules2.mixin((binder) -> {
 			for(Binding<?> binding: bindings.values()) {

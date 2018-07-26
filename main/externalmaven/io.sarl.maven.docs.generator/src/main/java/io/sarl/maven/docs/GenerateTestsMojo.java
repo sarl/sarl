@@ -33,6 +33,7 @@ import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -194,13 +195,17 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		return super.internalExecute(files, outputFolder);
 	}
 
-	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity", "all"})
 	@Override
 	protected void internalExecute(File sourceFolder, File inputFile, File relativeInputFile, File outputFolder,
 			AbstractMarkerLanguageParser parser) throws IOException {
+		getLog().debug(MessageFormat.format(Messages.GenerateTestsMojo_0, inputFile.getName()));
 		final List<ValidationComponent> successCompilationComponents = new ArrayList<>();
 		final List<ValidationComponent> failureCompilationComponents = new ArrayList<>();
 		final List<ValidationComponent> factualComponents = new ArrayList<>();
+		if (inputFile.getName().endsWith("Sarlc.md")) {
+			System.out.println("DBG");
+		}
 		for (final ValidationComponent component : parser.getStandardValidationComponents(inputFile)) {
 			if (component.isCompilable()) {
 				if (component.isExecutable()) {
@@ -242,6 +247,8 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 
 		int i = 0;
 		for (final ValidationComponent component : successCompilationComponents) {
+			getLog().debug(MessageFormat.format(Messages.GenerateTestsMojo_1,
+					inputFile.getName(), component.getLineno(), component.getCode()));
 			final String actionName = "success_" + component.getLineno() + "_" + i; //$NON-NLS-1$ //$NON-NLS-2$
 			it.newLine();
 			it.append("@").append(Test.class); //$NON-NLS-1$
@@ -261,6 +268,8 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 
 		i = 0;
 		for (final ValidationComponent component : failureCompilationComponents) {
+			getLog().debug(MessageFormat.format(Messages.GenerateTestsMojo_2,
+					inputFile.getName(), component.getLineno(), component.getCode()));
 			final String actionName = "failure_" + component.getLineno() + "_" + i; //$NON-NLS-1$ //$NON-NLS-2$
 			it.newLine();
 			it.append("@").append(Test.class); //$NON-NLS-1$
@@ -280,6 +289,8 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 
 		i = 0;
 		for (final ValidationComponent component : factualComponents) {
+			getLog().debug(MessageFormat.format(Messages.GenerateTestsMojo_3,
+					inputFile.getName(), component.getLineno(), component.getCode()));
 			final String actionName = "fact_" + component.getLineno() + "_" + i; //$NON-NLS-1$ //$NON-NLS-2$
 			it.newLine();
 			it.append("@").append(Test.class); //$NON-NLS-1$
@@ -334,6 +345,8 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 
 		i = 0;
 		for (final DynamicValidationComponent component : specificComponents) {
+			getLog().debug(MessageFormat.format(Messages.GenerateTestsMojo_4,
+					inputFile.getName(), component.functionName() + i));
 			final String actionName = component.functionName() + i;
 			it.newLine();
 			it.append("@").append(Test.class); //$NON-NLS-1$
