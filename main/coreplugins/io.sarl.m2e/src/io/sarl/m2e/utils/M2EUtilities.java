@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.m2e;
+package io.sarl.m2e.utils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

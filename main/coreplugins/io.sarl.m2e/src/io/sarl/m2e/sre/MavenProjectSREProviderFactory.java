@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.m2e;
+package io.sarl.m2e.sre;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -37,6 +37,7 @@ import io.sarl.eclipse.runtime.ProjectSREProvider;
 import io.sarl.eclipse.runtime.ProjectSREProviderFactory;
 import io.sarl.eclipse.runtime.SARLRuntime;
 import io.sarl.eclipse.runtime.StandardSREInstall;
+import io.sarl.m2e.SARLMavenEclipsePlugin;
 
 /** Factory of project SRE provider for the Maven projects.
  *

@@ -111,6 +111,7 @@ import io.sarl.eclipse.natures.SARLProjectConfigurator;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.SREConfigurationBlock;
 import io.sarl.lang.SARLConfig;
+import io.sarl.lang.SARLVersion;
 
 /**
  * The first page of the SARL new project wizard. Most part of the code of this class
@@ -858,8 +859,8 @@ public class MainProjectWizardPage extends WizardPage {
 				@Override
 				public int compare(IVMInstall i0, IVMInstall i1) {
 					if (i1 instanceof IVMInstall2 && i0 instanceof IVMInstall2) {
-						final String cc0 = JavaModelUtil.getCompilerCompliance((IVMInstall2) i0, JavaCore.VERSION_1_4);
-						final String cc1 = JavaModelUtil.getCompilerCompliance((IVMInstall2) i1, JavaCore.VERSION_1_4);
+						final String cc0 = JavaModelUtil.getCompilerCompliance((IVMInstall2) i0, SARLVersion.MINIMAL_JDK_VERSION);
+						final String cc1 = JavaModelUtil.getCompilerCompliance((IVMInstall2) i1, SARLVersion.MINIMAL_JDK_VERSION);
 						final int result = cc1.compareTo(cc0);
 						if (result != 0) {
 							return result;
@@ -881,9 +882,9 @@ public class MainProjectWizardPage extends WizardPage {
 				if (this.installedJVMs[i] instanceof IVMInstall2) {
 					this.jreCompliance[i] = JavaModelUtil.getCompilerCompliance(
 							(IVMInstall2) this.installedJVMs[i],
-							JavaCore.VERSION_1_4);
+							SARLVersion.MINIMAL_JDK_VERSION);
 				} else {
-					this.jreCompliance[i] = JavaCore.VERSION_1_4;
+					this.jreCompliance[i] = SARLVersion.MINIMAL_JDK_VERSION;
 				}
 			}
 			comboField.setItems(jreLabels);
@@ -968,9 +969,9 @@ public class MainProjectWizardPage extends WizardPage {
 
 			final String defaultCC;
 			if (defaultVM instanceof IVMInstall2) {
-				defaultCC = JavaModelUtil.getCompilerCompliance((IVMInstall2) defaultVM, JavaCore.VERSION_1_4);
+				defaultCC = JavaModelUtil.getCompilerCompliance((IVMInstall2) defaultVM, SARLVersion.MINIMAL_JDK_VERSION);
 			} else {
-				defaultCC = JavaCore.VERSION_1_4;
+				defaultCC = SARLVersion.MINIMAL_JDK_VERSION;
 			}
 
 			for (int i = 0; i < environments.length; i++) {
@@ -1272,9 +1273,9 @@ public class MainProjectWizardPage extends WizardPage {
 			if (selectedJVM == null) {
 				selectedJVM = JavaRuntime.getDefaultVMInstall();
 			}
-			String jvmCompliance = JavaCore.VERSION_1_4;
+			String jvmCompliance = SARLVersion.MINIMAL_JDK_VERSION;
 			if (selectedJVM instanceof IVMInstall2) {
-				jvmCompliance = JavaModelUtil.getCompilerCompliance((IVMInstall2) selectedJVM, JavaCore.VERSION_1_4);
+				jvmCompliance = JavaModelUtil.getCompilerCompliance((IVMInstall2) selectedJVM, SARLVersion.MINIMAL_JDK_VERSION);
 			}
 			if (!selectedCompliance.equals(jvmCompliance)
 					&& (JavaModelUtil.is50OrHigher(selectedCompliance)

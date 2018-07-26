@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.m2e;
+package io.sarl.m2e.config;
 
 import java.io.File;
 import java.text.MessageFormat;
@@ -73,6 +73,7 @@ import io.sarl.eclipse.util.Utilities;
 import io.sarl.lang.SARLConfig;
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.ui.preferences.SARLPreferences;
+import io.sarl.m2e.utils.M2EUtilities;
 
 /** Project configuration for the M2E.
  *

@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.m2e;
+package io.sarl.m2e.config;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -42,5 +42,13 @@ public class Messages extends NLS {
 	private Messages() {
 	}
 
-	public static String SARLMavenEclipsePlugin_0;
+	public static String SARLProjectConfigurator_0;
+	public static String SARLProjectConfigurator_1;
+	public static String SARLProjectConfigurator_2;
+	public static String SARLProjectConfigurator_3;
+	public static String SARLProjectConfigurator_4;
+	public static String SARLProjectConfigurator_5;
+	public static String SARLProjectConfigurator_6;
+	public static String SARLProjectConfigurator_7;
+	public static String SARLProjectConfigurator_8;
 }

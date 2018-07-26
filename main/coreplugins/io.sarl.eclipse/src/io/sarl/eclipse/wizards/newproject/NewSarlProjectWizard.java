@@ -21,9 +21,18 @@
 
 package io.sarl.eclipse.wizards.newproject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.text.MessageFormat;
+import java.util.regex.Pattern;
 
+import com.google.common.base.Strings;
+import org.arakhne.afc.vmutil.Resources;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -35,7 +44,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.packageview.PackageExplorerPart;
@@ -54,6 +62,8 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkingSet;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
+import org.eclipse.xtext.util.RuntimeIOException;
+import org.eclipse.xtext.util.StringInputStream;
 
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
@@ -62,6 +72,7 @@ import io.sarl.eclipse.properties.RuntimeEnvironmentPropertyPage;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.util.Utilities;
 import io.sarl.lang.SARLConfig;
+import io.sarl.lang.SARLVersion;
 import io.sarl.lang.ui.preferences.SARLPreferences;
 
 /**
@@ -165,11 +176,10 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 
 	/** Validate the SARL properties of the new projects.
 	 *
-	 * @param element the created element
+	 * @param javaProject the created element
 	 * @return validity
 	 */
-	protected boolean validateSARLSpecificElements(IJavaElement element) {
-		final IJavaProject javaProject = (IJavaProject) element;
+	protected boolean validateSARLSpecificElements(IJavaProject javaProject) {
 		// Check if the "SARL" generation directory is a source folder.
 		final IPath outputPath = SARLPreferences.getSARLOutputPathFor(javaProject.getProject());
 
@@ -211,6 +221,9 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 				return false;
 			}
 
+			// Create the default Maven pom.xml
+			createDefaultMavenPom(newElement, this.firstPage.getCompilerCompliance());
+
 			// Force SARL configuration
 			SARLProjectConfigurator.configureSARLProject(newElement.getProject(),
 					false, false, new NullProgressMonitor());
@@ -246,6 +259,69 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 			});
 		}
 		return res;
+	}
+
+	/** Create the default Maven pom file for the project.
+	 *
+	 * <p>Even if the project has not the Maven nature when it is created with this wizard,
+	 * the pom file is created in order to let the developer to switch to the Maven nature easily.
+	 *
+	 * @param project the new project.
+	 * @param compilerCompliance the Java version that is supported by the project.
+	 */
+	protected void createDefaultMavenPom(IJavaProject project, String compilerCompliance) {
+		// Get the template resource.
+		final URL templateUrl = Resources.getResource(getClass(), "pom_template.xml"); //$NON-NLS-1$
+		if (templateUrl != null) {
+			final String compliance = Strings.isNullOrEmpty(compilerCompliance) ? SARLVersion.MINIMAL_JDK_VERSION : compilerCompliance;
+			final String groupId = getDefaultMavenGroupId();
+			// Read the template and do string replacement.
+			final StringBuilder content = new StringBuilder();
+			try (BufferedReader reader = new BufferedReader(new InputStreamReader(templateUrl.openStream()))) {
+				String line = reader.readLine();
+				while (line != null) {
+					line = line.replaceAll(Pattern.quote("%%GROUP_ID%%"), groupId); //$NON-NLS-1$
+					line = line.replaceAll(Pattern.quote("%%PROJECT_NAME%%"), project.getElementName()); //$NON-NLS-1$
+					line = line.replaceAll(Pattern.quote("%%SARL_VERSION%%"), SARLVersion.SARL_RELEASE_VERSION_MAVEN); //$NON-NLS-1$
+					line = line.replaceAll(Pattern.quote("%%JAVA_VERSION%%"), compliance); //$NON-NLS-1$
+					line = line.replaceAll(Pattern.quote("%%FILE_ENCODING%%"), Charset.defaultCharset().displayName()); //$NON-NLS-1$
+					content.append(line).append("\n"); //$NON-NLS-1$
+					line = reader.readLine();
+				}
+			} catch (IOException exception) {
+				throw new RuntimeIOException(exception);
+			}
+			// Write the pom
+			final IFile pomFile = project.getProject().getFile("pom.xml"); //$NON-NLS-1$
+			try (StringInputStream is = new StringInputStream(content.toString())) {
+				pomFile.create(is, true, new NullProgressMonitor());
+			} catch (CoreException exception) {
+				throw new RuntimeException(exception);
+			} catch (IOException exception) {
+				throw new RuntimeIOException(exception);
+			}
+		}
+	}
+
+	/** Replies the default group id for a maven project.
+	 *
+	 * @return the default group id, never {@code null} nor empty string.
+	 */
+	@SuppressWarnings("static-method")
+	protected String getDefaultMavenGroupId() {
+		final String userdomain = System.getenv("userdomain"); //$NON-NLS-1$
+		if (Strings.isNullOrEmpty(userdomain)) {
+			return "com.foo"; //$NON-NLS-1$
+		}
+		final String[] elements = userdomain.split(Pattern.quote(".")); //$NON-NLS-1$
+		final StringBuilder groupId = new StringBuilder();
+		for (int i = elements.length - 1; i >= 0; --i) {
+			if (groupId.length() > 0) {
+				groupId.append("."); //$NON-NLS-1$
+			}
+			groupId.append(elements[i]);
+		}
+		return groupId.toString();
 	}
 
 	/** Replies the active part in the workbench.
