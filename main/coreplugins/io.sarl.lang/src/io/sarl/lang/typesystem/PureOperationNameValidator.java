@@ -49,15 +49,15 @@ public class PureOperationNameValidator implements IPureOperationNameValidator {
 	 */
 	public static final String[] SPECIAL_PURE_FUNCTION_NAME_PATTERNS = {
 		"clone", //$NON-NLS-1$
-		"contains(?:[A-Z1-9].*)?", //$NON-NLS-1$
+		"contains(?:[A-Z1-9_][a-zA-Z1-9_]*)?", //$NON-NLS-1$
 		"equals", //$NON-NLS-1$
-		"get(?:[A-Z1-9].*)?", //$NON-NLS-1$
-		"has[A-Z1-9].*", //$NON-NLS-1$
+		"get(?:[A-Z1-9_][a-zA-Z1-9_]*)?", //$NON-NLS-1$
+		"has[A-Z1-9_][a-zA-Z1-9_]*", //$NON-NLS-1$
 		"hashCode", //$NON-NLS-1$
-		"is[A-Z].*", //$NON-NLS-1$
+		"is[A-Z1-9_][a-zA-Z1-9_]*", //$NON-NLS-1$
 		"iterator", //$NON-NLS-1$
 		"length", //$NON-NLS-1$
-		"to[A-Z1-9].*", //$NON-NLS-1$
+		"to[A-Z1-9_][a-zA-Z1-9_]*", //$NON-NLS-1$
 		"size", //$NON-NLS-1$
 	};
 
