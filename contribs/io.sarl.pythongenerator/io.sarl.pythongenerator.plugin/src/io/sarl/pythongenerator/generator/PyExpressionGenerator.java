@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.eclipse.xtend.core.xtend.AnonymousClass;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
@@ -90,6 +92,17 @@ import io.sarl.pythongenerator.PyGeneratorPlugin;
 @SuppressWarnings("checkstyle:classfanoutcomplexity")
 public class PyExpressionGenerator extends AbstractExpressionGenerator {
 
+	private static final String SELF_KEYWORD = "self"; //$NON-NLS-1$
+
+	/** Constructor.
+	 *
+	 * @param keywordProvider the provider of Python keywords.
+	 */
+	@Inject
+	public PyExpressionGenerator(PyKeywordProvider keywordProvider) {
+		super(keywordProvider);
+	}
+
 	@Override
 	protected String getGeneratorPluginID() {
 		return PyGeneratorPlugin.PLUGIN_ID;
@@ -113,6 +126,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 
 	@Override
 	protected void before(XExpression expression, IAppendable output, IExtraLanguageGeneratorContext context) {
+		//FIXME:
 		if (!(expression instanceof XClosure) && !(expression instanceof AnonymousClass)) {
 			// Generate the closure definitions before their usage in the expressions
 			for (final XClosure closure : EcoreUtil2.getAllContentsOfType(expression, XClosure.class)) {
@@ -135,7 +149,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 		if (!it.hasName(closure)) {
 			final String closureName = it.declareSyntheticVariable(closure, "__closure"); //$NON-NLS-1$
 			it.openPseudoScope();
-			it.append("def ").append(closureName).append("(self");  //$NON-NLS-1$//$NON-NLS-2$
+			it.append("def ").append(closureName).append("(").append(SELF_KEYWORD); //$NON-NLS-1$//$NON-NLS-2$
 			for (final JvmFormalParameter param : closure.getFormalParameters()) {
 				it.append(", "); //$NON-NLS-1$
 				final String name = it.declareUniqueNameVariable(param, param.getName());
@@ -210,6 +224,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 */
 	@SuppressWarnings("static-method")
 	protected XExpression _generate(AnonymousClass anonClass, IAppendable it, IExtraLanguageGeneratorContext context) {
+		//FIXME:
 		if (it.hasName(anonClass)) {
 			appendReturnIfExpectedReturnedExpression(it, context);
 			it.append(it.getName(anonClass));
@@ -226,6 +241,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 */
 	@SuppressWarnings("static-method")
 	protected XExpression _generate(XClosure closure, IAppendable it, IExtraLanguageGeneratorContext context) {
+		//FIXME:
 		if (it.hasName(closure)) {
 			appendReturnIfExpectedReturnedExpression(it, context);
 			it.append(it.getName(closure));
@@ -241,6 +257,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 * @return the last expression in the block or {@code null}.
 	 */
 	protected XExpression _generate(XBlockExpression block, IAppendable it, IExtraLanguageGeneratorContext context) {
+		//FIXME:
 		XExpression last = block;
 		if (block.getExpressions().isEmpty()) {
 			it.append("pass"); //$NON-NLS-1$
@@ -296,6 +313,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 */
 	@SuppressWarnings("static-method")
 	protected XExpression _generate(XStringLiteral literal, IAppendable it, IExtraLanguageGeneratorContext context) {
+		//FIXME:
 		appendReturnIfExpectedReturnedExpression(it, context);
 		it.append("u\"").append(Strings.convertToJavaString(literal.getValue())).append("\""); //$NON-NLS-1$//$NON-NLS-2$
 		return literal;
@@ -343,6 +361,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 * @return the statement.
 	 */
 	protected XExpression _generate(SarlAssertExpression assertStatement, IAppendable it, IExtraLanguageGeneratorContext context) {
+		//FIXME:
 		final boolean haveAssert = !assertStatement.isIsStatic() && assertStatement.getCondition() != null;
 		if (haveAssert) {
 			it.append("assert (lambda:"); //$NON-NLS-1$
@@ -368,6 +387,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 * @return the assignment.
 	 */
 	protected XExpression _generate(XAssignment assignment, IAppendable it, IExtraLanguageGeneratorContext context) {
+		//FIXME:
 		appendReturnIfExpectedReturnedExpression(it, context);
 		newFeatureCallGenerator(context, it).generate(assignment);
 		it.append(" = "); //$NON-NLS-1$
@@ -384,6 +404,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 */
 	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	protected XExpression _generate(XBinaryOperation operation, IAppendable it, IExtraLanguageGeneratorContext context) {
+		//FIXME:
 		appendReturnIfExpectedReturnedExpression(it, context);
 		final String operator = getOperatorSymbol(operation);
 		if (operator != null) {
@@ -437,6 +458,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 * @return the feature call.
 	 */
 	protected XExpression _generate(XFeatureCall call, IAppendable it, IExtraLanguageGeneratorContext context) {
+		//FIXME:
 		appendReturnIfExpectedReturnedExpression(it, context);
 		newFeatureCallGenerator(context, it).generate(call);
 		return call;
@@ -450,6 +472,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 * @return the feature call.
 	 */
 	protected XExpression _generate(XMemberFeatureCall call, IAppendable it, IExtraLanguageGeneratorContext context) {
+		//FIXME:
 		appendReturnIfExpectedReturnedExpression(it, context);
 		newFeatureCallGenerator(context, it).generate(call);
 		return call;
@@ -463,6 +486,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 * @return the operation.
 	 */
 	protected XExpression _generate(XPostfixOperation operation, IAppendable it, IExtraLanguageGeneratorContext context) {
+		//FIXME:
 		appendReturnIfExpectedReturnedExpression(it, context);
 		final String operator = getOperatorSymbol(operation);
 		if (operator != null) {
@@ -490,6 +514,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 * @return the operation.
 	 */
 	protected XExpression _generate(XUnaryOperation operation, IAppendable it, IExtraLanguageGeneratorContext context) {
+		//FIXME:
 		appendReturnIfExpectedReturnedExpression(it, context);
 		final String operator = getOperatorSymbol(operation);
 		if (operator != null) {
@@ -516,6 +541,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 * @return the constructor call.
 	 */
 	protected XExpression _generate(XConstructorCall call, IAppendable it, IExtraLanguageGeneratorContext context) {
+		//FIXME:
 		appendReturnIfExpectedReturnedExpression(it, context);
 		newFeatureCallGenerator(context, it).generate(call);
 		return call;
@@ -529,6 +555,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 * @return the last statement in the loop or {@code null}.
 	 */
 	protected XExpression _generate(XWhileExpression whileLoop, IAppendable it, IExtraLanguageGeneratorContext context) {
+		//FIXME:
 		it.append("while "); //$NON-NLS-1$
 		generate(whileLoop.getPredicate(), it, context);
 		it.append(":"); //$NON-NLS-1$
@@ -546,6 +573,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 * @return the last statement in the loop or {@code null}.
 	 */
 	protected XExpression _generate(XDoWhileExpression whileLoop, IAppendable it, IExtraLanguageGeneratorContext context) {
+		//FIXME:
 		generate(whileLoop.getBody(), it, context);
 		it.newLine();
 		it.append("while "); //$NON-NLS-1$
@@ -565,6 +593,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 * @return the statement.
 	 */
 	protected XExpression _generate(XForLoopExpression forLoop, IAppendable it, IExtraLanguageGeneratorContext context) {
+		//FIXME:
 		it.append("for "); //$NON-NLS-1$
 		final String varName = it.declareUniqueNameVariable(forLoop.getDeclaredParam(), forLoop.getDeclaredParam().getSimpleName());
 		it.append(varName);
@@ -585,6 +614,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 * @return the last statement in the loop or {@code null}.
 	 */
 	protected XExpression _generate(XBasicForLoopExpression forLoop, IAppendable it, IExtraLanguageGeneratorContext context) {
+		//FIXME:
 		for (final XExpression expr : forLoop.getInitExpressions()) {
 			generate(expr, it, context);
 			it.newLine();
@@ -624,6 +654,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 * @return the expression.
 	 */
 	protected XExpression _generate(XCastedExpression castOperator, IAppendable it, IExtraLanguageGeneratorContext context) {
+		//FIXME:
 		return generate(castOperator.getTarget(), context.getExpectedExpressionType(), it, context);
 	}
 
@@ -635,6 +666,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 * @return the literal.
 	 */
 	protected XExpression _generate(XListLiteral literal, IAppendable it, IExtraLanguageGeneratorContext context) {
+		//FIXME:
 		appendReturnIfExpectedReturnedExpression(it, context);
 		it.append("["); //$NON-NLS-1$
 		boolean first = true;
@@ -658,6 +690,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 * @return the literal.
 	 */
 	protected XExpression _generate(XSetLiteral literal, IAppendable it, IExtraLanguageGeneratorContext context) {
+		//FIXME:
 		appendReturnIfExpectedReturnedExpression(it, context);
 		it.append("{"); //$NON-NLS-1$
 		boolean first = true;
@@ -681,6 +714,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 * @return the statement.
 	 */
 	protected XExpression _generate(XIfExpression ifStatement, IAppendable it, IExtraLanguageGeneratorContext context) {
+		//FIXME:
 		it.append("if "); //$NON-NLS-1$
 		generate(ifStatement.getIf(), it, context);
 		it.append(":"); //$NON-NLS-1$
@@ -716,6 +750,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 * @return the expression.
 	 */
 	protected XExpression _generate(XInstanceOfExpression operator, IAppendable it, IExtraLanguageGeneratorContext context) {
+		//FIXME:
 		appendReturnIfExpectedReturnedExpression(it, context);
 		it.append("isinstance("); //$NON-NLS-1$
 		generate(operator.getExpression(), it, context);
@@ -748,6 +783,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 * @return the statement.
 	 */
 	protected XExpression _generate(XReturnExpression returnStatement, IAppendable it, IExtraLanguageGeneratorContext context) {
+		//FIXME:
 		it.append("return "); //$NON-NLS-1$
 		generate(returnStatement.getExpression(), it, context);
 		return returnStatement;
@@ -762,6 +798,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 */
 	@SuppressWarnings({ "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity" })
 	protected XExpression _generate(XSwitchExpression switchStatement, IAppendable it, IExtraLanguageGeneratorContext context) {
+		//FIXME:
 		final String varName;
 		if (switchStatement.getDeclaredParam() != null) {
 			varName = it.declareUniqueNameVariable(switchStatement.getDeclaredParam(),
@@ -841,6 +878,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 * @return the statement.
 	 */
 	protected XExpression _generate(XSynchronizedExpression synchronizedStatement, IAppendable it, IExtraLanguageGeneratorContext context) {
+		//FIXME:
 		return generate(synchronizedStatement.getExpression(), context.getExpectedExpressionType(), it, context);
 	}
 
@@ -852,6 +890,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 * @return the statement.
 	 */
 	protected XExpression _generate(XThrowExpression throwStatement, IAppendable it, IExtraLanguageGeneratorContext context) {
+		//FIXME:
 		it.append("raise "); //$NON-NLS-1$
 		generate(throwStatement.getExpression(), it, context);
 		return throwStatement;
@@ -865,6 +904,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 * @return the statement.
 	 */
 	protected XExpression _generate(XTryCatchFinallyExpression tryStatement, IAppendable it, IExtraLanguageGeneratorContext context) {
+		//FIXME:
 		it.append("try:"); //$NON-NLS-1$
 		it.increaseIndentation().newLine();
 		generate(tryStatement.getExpression(), context.getExpectedExpressionType(), it, context);
@@ -910,6 +950,7 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 	 * @return the statement.
 	 */
 	protected XExpression _generate(XVariableDeclaration varDeclaration, IAppendable it, IExtraLanguageGeneratorContext context) {
+		//FIXME:
 		final String name = it.declareUniqueNameVariable(varDeclaration, varDeclaration.getName());
 		it.append(name);
 		it.append(" = "); //$NON-NLS-1$
@@ -1041,11 +1082,6 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 			if (beginOfBlock != null) {
 				this.codeReceiver.decreaseIndentation().newLine();
 			}
-		}
-
-		@Override
-		protected String nullKeyword() {
-			return "None"; //$NON-NLS-1$
 		}
 
 	}

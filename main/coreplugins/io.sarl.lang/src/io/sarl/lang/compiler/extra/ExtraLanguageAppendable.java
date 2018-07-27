@@ -103,7 +103,7 @@ public class ExtraLanguageAppendable extends AbstractStringBuilderBasedAppendabl
 	}
 
 	/** {@inheritDoc}
-	 * @deprecated no replacement.
+	 * @deprecated {@link #getImportManager()}.{@link ImportManager#getImports()}.
 	 */
 	@Deprecated
 	@Override

@@ -61,7 +61,6 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.util.XExpressionHelper;
 
 import io.sarl.lang.compiler.extra.ExtraLanguageFeatureNameConverter.ConversionResult;
-import io.sarl.lang.services.SARLGrammarKeywordAccess;
 
 /** Abstract Generator of XExpression.
  *
@@ -83,8 +82,6 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 
 	private TypeReferences typeReferences;
 
-	private SARLGrammarKeywordAccess keywords;
-
 	private XExpressionHelper expressionHelper;
 
 	private IdentifiableSimpleNameProvider featureNameProvider;
@@ -95,12 +92,18 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 
 	private Injector injector;
 
+	private final IExtraLanguageKeywordProvider keywords;
+
 	/** Constructor.
+	 *
+	 * @param keywordProvider the provider of extra-language keywords.
 	 */
-	public AbstractExpressionGenerator() {
+	public AbstractExpressionGenerator(IExtraLanguageKeywordProvider keywordProvider) {
+		assert keywordProvider != null;
 		this.generateDispatcher = new PolymorphicDispatcher<>(
 				"_generate", 3, 3, //$NON-NLS-1$
 				Collections.singletonList(this));
+		this.keywords = keywordProvider;
 	}
 
 	/** Change the injector.
@@ -110,6 +113,14 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 	@Inject
 	public void setInjector(Injector injector) {
 		this.injector = injector;
+	}
+
+	/** Replies the provider of the extra-language keywords.
+	 *
+	 * @return the provider.
+	 */
+	public IExtraLanguageKeywordProvider getExtraLanguageKeywordProvider() {
+		return this.keywords;
 	}
 
 	/** Change the type resolver for expressions.
@@ -161,23 +172,6 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 	 */
 	public IdentifiableSimpleNameProvider getFeatureNameProvider() {
 		return this.featureNameProvider;
-	}
-
-	/** Change the SARL keyword accessor.
-	 *
-	 * @param keywords the keyword accessor.
-	 */
-	@Inject
-	public void setKeywordAccessor(SARLGrammarKeywordAccess keywords) {
-		this.keywords = keywords;
-	}
-
-	/** Replies the SARL keyword accessor.
-	 *
-	 * @return the keyword accessor.
-	 */
-	public SARLGrammarKeywordAccess getKeywordAccessor() {
-		return this.keywords;
 	}
 
 	/** Change the expression helper.
@@ -311,12 +305,11 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 	 * @param context the generation context.
 	 * @return the feature name converter.
 	 */
-	@SuppressWarnings("static-method")
 	protected ExtraLanguageFeatureNameConverter createFeatureNameConverterInstance(
 			IExtraLanguageConversionInitializer initializer,
 			String pluginID,
 			IExtraLanguageGeneratorContext context) {
-		return new ExtraLanguageFeatureNameConverter(initializer, pluginID, context);
+		return new ExtraLanguageFeatureNameConverter(initializer, pluginID, context, getExtraLanguageKeywordProvider());
 	}
 
 	@Override
@@ -376,17 +369,20 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 	/** Compute the simple name for the called feature.
 	 *
 	 * @param featureCall the feature call.
-	 * @param keywords the keyword accessor.
 	 * @param logicalContainerProvider the provider of logicial container.
 	 * @param featureNameProvider the provider of feature name.
 	 * @param nullKeyword the null-equivalent keyword.
+	 * @param thisKeyword the this-equivalent keyword.
+	 * @param superKeyword the super-equivalent keyword.
 	 * @param referenceNameLambda replies the reference name or {@code null} if none.
 	 * @return the simple name.
 	 */
-	public static String getCallSimpleName(XAbstractFeatureCall featureCall, SARLGrammarKeywordAccess keywords,
+	public static String getCallSimpleName(XAbstractFeatureCall featureCall,
 			ILogicalContainerProvider logicalContainerProvider,
 			IdentifiableSimpleNameProvider featureNameProvider,
-			String nullKeyword,
+			Function0<? extends String> nullKeyword,
+			Function0<? extends String> thisKeyword,
+			Function0<? extends String> superKeyword,
 			Function1<? super JvmIdentifiableElement, ? extends String> referenceNameLambda) {
 		String name = null;
 		final JvmIdentifiableElement calledFeature = featureCall.getFeature();
@@ -395,9 +391,9 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 			final JvmIdentifiableElement logicalContainer = logicalContainerProvider.getNearestLogicalContainer(featureCall);
 			final JvmDeclaredType contextType = ((JvmMember) logicalContainer).getDeclaringType();
 			if (contextType == constructorContainer) {
-				name = keywords.getThisKeyword();
+				name = thisKeyword.apply();
 			} else {
-				name = keywords.getSuperKeyword();
+				name = superKeyword.apply();
 			}
 		} else if (calledFeature != null) {
 			final String referenceName = referenceNameLambda.apply(calledFeature);
@@ -410,7 +406,7 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 			}
 		}
 		if (name == null) {
-			return nullKeyword;
+			return nullKeyword.apply();
 		}
 		return name;
 	}
@@ -484,8 +480,6 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 		/** Receiver of code.
 		 */
 		protected final IAppendable codeReceiver;
-
-		private final Function0<? extends String> thisKeyworkLambda = () -> getKeywordAccessor().getThisKeyword();
 
 		private final Function1<? super XExpression, ? extends String> referenceNameLambda;
 
@@ -589,7 +583,8 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 				output.add(this.codeReceiver.getName(feature));
 				return;
 			}
-			buildCallReceiver(leftOperand, this.thisKeyworkLambda, this.referenceNameLambda, output);
+			buildCallReceiver(leftOperand, getExtraLanguageKeywordProvider().getThisKeywordLambda(),
+					this.referenceNameLambda, output);
 			output.add(feature.getSimpleName());
 		}
 
@@ -600,7 +595,8 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 				buildLeftOperand(call, leftOperand);
 			}
 			final List<Object> receiver = new ArrayList<>();
-			buildCallReceiver(call, this.thisKeyworkLambda, this.referenceNameLambda, receiver);
+			buildCallReceiver(call, getExtraLanguageKeywordProvider().getThisKeywordLambda(),
+					this.referenceNameLambda, receiver);
 			final JvmIdentifiableElement feature = call.getFeature();
 			List<XExpression> args = null;
 			if (feature instanceof JvmExecutable) {
@@ -608,10 +604,11 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 			}
 			final String name = getCallSimpleName(
 					call,
-					getKeywordAccessor(),
 					getLogicalContainerProvider(),
 					getFeatureNameProvider(),
-					nullKeyword(),
+					getExtraLanguageKeywordProvider().getNullKeywordLambda(),
+					getExtraLanguageKeywordProvider().getThisKeywordLambda(),
+					getExtraLanguageKeywordProvider().getSuperKeywordLambda(),
 					this.referenceNameLambda2);
 			internalAppendCall(feature, leftOperand, receiver, name, args, beginOfBlock);
 		}
@@ -655,12 +652,6 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 		protected abstract void appendCall(JvmIdentifiableElement calledFeature, List<Object> leftOperand,
 				List<Object> receiver, String name, List<XExpression> args,
 				Function0<? extends XExpression> beginOfBlock);
-
-		/** Replies the null keyword.
-		 *
-		 * @return the keyword.
-		 */
-		protected abstract String nullKeyword();
 
 	}
 

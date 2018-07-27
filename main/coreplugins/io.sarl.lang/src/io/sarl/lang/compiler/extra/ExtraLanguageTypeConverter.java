@@ -21,11 +21,13 @@
 
 package io.sarl.lang.compiler.extra;
 
-import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.regex.Pattern;
 
 import javax.inject.Inject;
+
+import io.sarl.lang.core.Agent;
 
 /** Converter from Jvm type to the extra language type.
  *
@@ -36,6 +38,10 @@ import javax.inject.Inject;
  * @since 0.6
  */
 public final class ExtraLanguageTypeConverter {
+
+	private static final String PACKAGE_SEPARATOR = "."; //$NON-NLS-1$
+
+	private static final String IMPLICIT_PACKAGE;
 
 	private final IExtraLanguageConversionInitializer initializer;
 
@@ -48,6 +54,17 @@ public final class ExtraLanguageTypeConverter {
 
 	private Map<String, String> mapping;
 
+	private boolean isImplicitTypes = true;
+
+	static {
+		final String[] basePackage = Agent.class.getPackage().getName().split(Pattern.quote(PACKAGE_SEPARATOR));
+		final StringBuilder name = new StringBuilder();
+		for (int i = 0; i < 2 && i < basePackage.length; ++i) {
+			name.append(basePackage[i]).append(PACKAGE_SEPARATOR);
+		}
+		IMPLICIT_PACKAGE = name.toString();
+	}
+
 	/** Constructor.
 	 *
 	 * @param initializer the initializer.
@@ -59,6 +76,24 @@ public final class ExtraLanguageTypeConverter {
 		this.initializer = initializer;
 		this.context = context;
 		this.pluginID = pluginID;
+	}
+
+	/** Replies if implicit types are supported by this converter.
+	 *
+	 * @return {@code true} if the implicit types are converted. {@code false} if no implicit type is converted.
+	 * @since 0.8
+	 */
+	public boolean isImplicitTypes() {
+		return this.isImplicitTypes;
+	}
+
+	/** Set if implicit types are supported by this converter.
+	 *
+	 * @param enable {@code true} if the implicit types are converted. {@code false} if no implicit type is converted.
+	 * @since 0.8
+	 */
+	public void setImplicitTypes(boolean enable) {
+		this.isImplicitTypes = enable;
 	}
 
 	/** Reset the mapping definition to its default content.
@@ -81,23 +116,15 @@ public final class ExtraLanguageTypeConverter {
 		return map;
 	}
 
-	/** Replies the type mapping.
-	 *
-	 * @return unmodifiable map of the type mapping.
-	 */
-	public Map<String, String> getMapping() {
-		if (this.mapping == null) {
-			this.mapping = initMapping();
-		}
-		return Collections.unmodifiableMap(this.mapping);
-	}
-
 	/** Indicates if the given name has a mapping to the extra language.
 	 *
 	 * @param type the type to convert.
 	 * @return {@code true} if the mapping exists.
 	 */
 	public boolean hasConversion(String type) {
+		if (isImplicitTypes() && type.startsWith(IMPLICIT_PACKAGE)) {
+			return true;
+		}
 		if (this.mapping == null) {
 			this.mapping = initMapping();
 		}
@@ -110,6 +137,9 @@ public final class ExtraLanguageTypeConverter {
 	 * @return the conversion result, or {@code null} if no equivalent exist.
 	 */
 	public String convert(String type) {
+		if (isImplicitTypes() && type.startsWith(IMPLICIT_PACKAGE)) {
+			return type;
+		}
 		if (this.mapping == null) {
 			this.mapping = initMapping();
 		}

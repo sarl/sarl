@@ -63,6 +63,7 @@ import io.sarl.lang.compiler.extra.ExtraLanguageFeatureNameConverter.ConversionT
 import io.sarl.lang.compiler.extra.ExtraLanguageTypeConverter;
 import io.sarl.lang.compiler.extra.IExtraLanguageConversionInitializer;
 import io.sarl.lang.compiler.extra.IExtraLanguageGeneratorContext;
+import io.sarl.lang.compiler.extra.IExtraLanguageKeywordProvider;
 import io.sarl.lang.util.Utils;
 import io.sarl.lang.validation.IssueCodes;
 
@@ -92,6 +93,27 @@ public abstract class AbstractExtraLanguageValidator {
 	private volatile Set<MethodWrapper> checkMethods;
 
 	private final SimpleCache<Class<?>, List<MethodWrapper>> methodsForType = new SimpleCache<>(it -> updateMethodCache(it));
+
+	private final IExtraLanguageKeywordProvider keywords;
+
+	/** Constructor.
+	 *
+	 * @param keywordProvider the provider of extra-language keywords.
+	 * @since 0.8
+	 */
+	public AbstractExtraLanguageValidator(IExtraLanguageKeywordProvider keywordProvider) {
+		assert keywordProvider != null;
+		this.keywords = keywordProvider;
+	}
+
+	/** Replies the provider of the extra-language keywords.
+	 *
+	 * @return the provider.
+	 * @since 0.8
+	 */
+	public IExtraLanguageKeywordProvider getExtraLanguageKeywordProvider() {
+		return this.keywords;
+	}
 
 	private List<MethodWrapper> updateMethodCache(Class<?> parameterType) {
 		final List<MethodWrapper> result = new ArrayList<>();
@@ -350,12 +372,11 @@ public abstract class AbstractExtraLanguageValidator {
 	 * @param context the genetation context.
 	 * @return the feature name converter.
 	 */
-	@SuppressWarnings("static-method")
 	protected ExtraLanguageFeatureNameConverter createFeatureNameConverterInstance(
 			IExtraLanguageConversionInitializer initializer,
 			String pluginID,
 			IExtraLanguageGeneratorContext context) {
-		return new ExtraLanguageFeatureNameConverter(initializer, pluginID, context);
+		return new ExtraLanguageFeatureNameConverter(initializer, pluginID, context, getExtraLanguageKeywordProvider());
 	}
 
 	/** Do a type mapping check.

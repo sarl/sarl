@@ -22,7 +22,6 @@
 package io.sarl.lang.compiler.extra;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -44,14 +43,12 @@ import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.XMemberFeatureCall;
 import org.eclipse.xtext.xbase.featurecalls.IdentifiableSimpleNameProvider;
 import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider;
-import org.eclipse.xtext.xbase.lib.Functions.Function0;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.Pair;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.sarl.SarlAction;
-import io.sarl.lang.services.SARLGrammarKeywordAccess;
 
 /** Converter from Jvm feature name to the extra language feature name.
  *
@@ -76,17 +73,14 @@ public class ExtraLanguageFeatureNameConverter {
 	private SarlJvmModelAssociations associations;
 
 	@Inject
-	private SARLGrammarKeywordAccess keywords;
-
-	@Inject
 	private IdentifiableSimpleNameProvider simpleNameProvider;
 
 	@Inject
 	private ILogicalContainerProvider logicalContainerProvider;
 
-	private Map<Character, List<Pair<FeaturePattern, FeatureReplacement>>> conversions;
+	private final IExtraLanguageKeywordProvider keywords;
 
-	private final Function0<? extends String> thisKeyworkLambda = () -> this.keywords.getThisKeyword();
+	private Map<Character, List<Pair<FeaturePattern, FeatureReplacement>>> conversions;
 
 	private final Function1<? super XExpression, ? extends String> referenceNameLambda;
 
@@ -97,14 +91,16 @@ public class ExtraLanguageFeatureNameConverter {
 	 * @param initializer the initializer.
 	 * @param pluginID the identifier of the generator's plugin.
 	 * @param context the generation context.
+	 * @param keywords the provider of extra-language keywords.
 	 */
 	public ExtraLanguageFeatureNameConverter(IExtraLanguageConversionInitializer initializer, String pluginID,
-			IExtraLanguageGeneratorContext context) {
+			IExtraLanguageGeneratorContext context, IExtraLanguageKeywordProvider keywords) {
 		this.initializer = initializer;
 		this.context = context;
 		this.pluginID = pluginID;
 		this.referenceNameLambda = expr -> null;
 		this.referenceNameLambda2 = expr -> null;
+		this.keywords = keywords;
 	}
 
 	/** Build the mapping table.
@@ -147,17 +143,6 @@ public class ExtraLanguageFeatureNameConverter {
 		return Character.toLowerCase(name.charAt(0));
 	}
 
-	/** Replies the type mapping.
-	 *
-	 * @return unmodifiable map of the type mapping.
-	 */
-	public Map<Character, List<Pair<FeaturePattern, FeatureReplacement>>> getMapping() {
-		if (this.conversions == null) {
-			this.conversions = initMapping();
-		}
-		return Collections.unmodifiableMap(this.conversions);
-	}
-
 	/** Replies the type of conversion for the given feature call.
 	 *
 	 * @param featureCall the feature call.
@@ -170,15 +155,16 @@ public class ExtraLanguageFeatureNameConverter {
 		final List<Object> receiver = new ArrayList<>();
 		AbstractExpressionGenerator.buildCallReceiver(
 				featureCall,
-				this.thisKeyworkLambda,
+				this.keywords.getThisKeywordLambda(),
 				this.referenceNameLambda,
 				receiver);
 		final String simpleName = AbstractExpressionGenerator.getCallSimpleName(
 				featureCall,
-				this.keywords,
 				this.logicalContainerProvider,
 				this.simpleNameProvider,
-				this.keywords.getNullKeyword(),
+				this.keywords.getNullKeywordLambda(),
+				this.keywords.getThisKeywordLambda(),
+				this.keywords.getSuperKeywordLambda(),
 				this.referenceNameLambda2);
 		final List<Pair<FeaturePattern, FeatureReplacement>> struct = this.conversions.get(getKey(simpleName));
 		if (struct != null) {

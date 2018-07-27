@@ -47,6 +47,7 @@ import io.sarl.lang.compiler.extra.IExtraLanguageConversionInitializer;
 import io.sarl.lang.validation.extra.AbstractExtraLanguageValidator;
 import io.sarl.pythongenerator.PyGeneratorPlugin;
 import io.sarl.pythongenerator.generator.PyInitializers;
+import io.sarl.pythongenerator.generator.PyKeywordProvider;
 
 /** The validator from SARL to the Python target language.
  *
@@ -93,6 +94,15 @@ public class PyValidator extends AbstractExtraLanguageValidator {
 
 	@Inject
 	private IdentifiableSimpleNameProvider simpleNameProvider;
+
+	/** Constructor.
+	 *
+	 * @param keywordProvider the provider of Python keywords.
+	 */
+	@Inject
+	public PyValidator(PyKeywordProvider keywordProvider) {
+		super(keywordProvider);
+	}
 
 	@Override
 	protected IExtraLanguageConversionInitializer getTypeConverterInitializer() {

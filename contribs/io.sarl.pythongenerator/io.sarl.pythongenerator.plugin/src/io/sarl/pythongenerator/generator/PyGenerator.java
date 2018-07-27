@@ -48,6 +48,7 @@ import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.xtext.xbase.compiler.IAppendable;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
 import org.eclipse.xtext.xbase.lib.Pair;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure2;
@@ -301,6 +302,42 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 		return false;
 	}
 
+	/** Generate the given enumeration declaration.
+	 *
+	 * @param enumeration the enumeration.
+	 * @param appendable the receiver of the generated code.
+	 * @param context the context.
+	 * @return {@code true} if a declaration was generated. {@code false} if no enumeration was generated.
+	 * @since 0.8
+	 */
+	protected boolean generateEnumerationDeclaration(SarlEnumeration enumeration, IAppendable appendable, IExtraLanguageGeneratorContext context) {
+		if (!Strings.isEmpty(enumeration.getName())) {
+			appendable.append("class ").append(enumeration.getName()); //$NON-NLS-1$
+			appendable.append("(Enum"); //$NON-NLS-1$
+			appendable.append(newType("enum.Enum")); //$NON-NLS-1$
+			appendable.append("):"); //$NON-NLS-1$
+			appendable.increaseIndentation().newLine();
+			//
+			int i = 0;
+			for (final XtendMember item : enumeration.getMembers()) {
+				if (context.getCancelIndicator().isCanceled()) {
+					return false;
+				}
+				if (item instanceof XtendEnumLiteral) {
+					final XtendEnumLiteral literal = (XtendEnumLiteral) item;
+					appendable.append(literal.getName()).append(" = "); //$NON-NLS-1$
+					appendable.append(Integer.toString(i));
+					appendable.newLine();
+					++i;
+				}
+			}
+			//
+			appendable.decreaseIndentation().newLine().newLine();
+			return true;
+		}
+		return false;
+	}
+
 	/** Generate the constructors for a Python class.
 	 *
 	 * @param members the members to be added.
@@ -398,7 +435,7 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 		boolean firstParam = true;
 		if (appendSelf) {
 			firstParam = false;
-			it.append("self"); //$NON-NLS-1$
+			it.append(getExpressionGenerator().getExtraLanguageKeywordProvider().getThisKeywordLambda().apply());
 		}
 		for (final XtendParameter parameter : executable.getParameters()) {
 			if (firstParam) {
@@ -581,31 +618,8 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 	 * @param context the context.
 	 */
 	protected void _generate(SarlEnumeration enumeration, IExtraLanguageGeneratorContext context) {
-		if (!Strings.isEmpty(enumeration.getName())) {
-			final PyAppendable appendable = createAppendable(context);
-			//
-			appendable.append("class ").append(enumeration.getName()); //$NON-NLS-1$
-			appendable.append("(Enum"); //$NON-NLS-1$
-			appendable.append(newType("enum.Enum")); //$NON-NLS-1$
-			appendable.append("):"); //$NON-NLS-1$
-			appendable.increaseIndentation().newLine();
-			//
-			int i = 0;
-			for (final XtendMember item : enumeration.getMembers()) {
-				if (context.getCancelIndicator().isCanceled()) {
-					return;
-				}
-				if (item instanceof XtendEnumLiteral) {
-					final XtendEnumLiteral literal = (XtendEnumLiteral) item;
-					appendable.append(literal.getName()).append(" = "); //$NON-NLS-1$
-					appendable.append(Integer.toString(i));
-					appendable.newLine();
-					++i;
-				}
-			}
-			//
-			appendable.decreaseIndentation().newLine().newLine();
-			//
+		final PyAppendable appendable = createAppendable(context);
+		if (generateEnumerationDeclaration(enumeration, appendable, context)) {
 			final QualifiedName name = getQualifiedNameProvider().getFullyQualifiedName(enumeration);
 			writeFile(name, appendable, context);
 		}
@@ -733,6 +747,50 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 	//----------------------------------------
 	// Members
 	//----------------------------------------
+
+	/** Generate the given object.
+	 *
+	 * @param clazz the class.
+	 * @param it the target for the generated content.
+	 * @param context the context.
+	 */
+	protected void _generate(SarlClass clazz, PyAppendable it, IExtraLanguageGeneratorContext context) {
+		generateTypeDeclaration(clazz.getName(), clazz.isAbstract(),
+				getSuperTypes(clazz.getExtends(), clazz.getImplements()), true,
+				clazz.getMembers(), it, context, null);
+	}
+
+	/** Generate the given object.
+	 *
+	 * @param interf the interface.
+	 * @param it the target for the generated content.
+	 * @param context the context.
+	 */
+	protected void _generate(SarlInterface interf, PyAppendable it, IExtraLanguageGeneratorContext context) {
+		generateTypeDeclaration(interf.getName(), true, interf.getExtends(), true,
+				interf.getMembers(), it, context, null);
+	}
+
+	/** Generate the given object.
+	 *
+	 * @param enumeration the enumeration.
+	 * @param it the target for the generated content.
+	 * @param context the context.
+	 */
+	protected void _generate(SarlEnumeration enumeration, PyAppendable it, IExtraLanguageGeneratorContext context) {
+		generateEnumerationDeclaration(enumeration, it, context);
+	}
+
+	/** Generate the given object.
+	 *
+	 * @param annotation the annotation.
+	 * @param it the target for the generated content.
+	 * @param context the context.
+	 */
+	protected void _generate(SarlAnnotationType annotation, PyAppendable it, IExtraLanguageGeneratorContext context) {
+		generateTypeDeclaration(annotation.getName(), false, Collections.emptyList(), true,
+				annotation.getMembers(), it, context, null);
+	}
 
 	/** Generate the given object.
 	 *
