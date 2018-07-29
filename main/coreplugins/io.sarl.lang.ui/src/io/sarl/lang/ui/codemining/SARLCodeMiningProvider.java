@@ -33,6 +33,7 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.codemining.ICodeMining;
+import org.eclipse.xtend.core.xtend.AnonymousClass;
 import org.eclipse.xtend.core.xtend.XtendField;
 import org.eclipse.xtend.core.xtend.XtendFunction;
 import org.eclipse.xtend.core.xtend.XtendVariableDeclaration;
@@ -172,8 +173,14 @@ public class SARLCodeMiningProvider extends AbstractXtextCodeMiningProvider {
 	 */
 	protected LightweightTypeReference getLightweightType(XExpression expr) {
 		final IResolvedTypes resolvedTypes = getResolvedTypes(expr);
-		final LightweightTypeReference actualType = resolvedTypes.getActualType(expr);
-		return actualType;
+		final LightweightTypeReference expressionType = resolvedTypes.getActualType(expr);
+		if (expr instanceof AnonymousClass) {
+			final List<LightweightTypeReference> superTypes = expressionType.getSuperTypes();
+			if (superTypes.size() == 1) {
+				return superTypes.get(0);
+			}
+		}
+		return expressionType;
 	}
 
 	/** Replies the type for a variable declaration that is initialized with the given expression.
