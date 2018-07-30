@@ -38,25 +38,33 @@ public abstract class AbstractExtraControl implements IExtraControl {
 
 	private final WeakReference<IExtraControlController> controller;
 
-	private final String pluginID;
-
 	private final Image languageImage;
 
 	private final IPreferenceStore preferenceStore;
 
+	private final String preferenceContainerID;
+
 	/** Constructor.
 	 *
 	 * @param controller the controller.
-	 * @param pluginID the identifier of the plugin.
 	 * @param languageImage for the target language (16x16).
 	 * @param preferenceStore the preference store to be used.
+	 * @param preferenceContainerID the identifier of the generator's preference container.
 	 */
-	public AbstractExtraControl(IExtraControlController controller, String pluginID, Image languageImage,
-			IPreferenceStore preferenceStore) {
+	public AbstractExtraControl(IExtraControlController controller, Image languageImage,
+			IPreferenceStore preferenceStore, String preferenceContainerID) {
 		this.controller = new WeakReference<>(controller);
-		this.pluginID = pluginID;
 		this.languageImage = languageImage;
 		this.preferenceStore = preferenceStore;
+		this.preferenceContainerID = preferenceContainerID;
+	}
+
+	/** Replies the identifier of the container of the generator's preferences.
+	 *
+	 * @return the identifier.
+	 */
+	protected String getPreferenceContainerID() {
+		return this.preferenceContainerID;
 	}
 
 	/** Replies the controller of this widget.
@@ -81,14 +89,6 @@ public abstract class AbstractExtraControl implements IExtraControl {
 	 */
 	protected Image getLanguageImage() {
 		return this.languageImage;
-	}
-
-	/** Replies the identifier of the plugin.
-	 *
-	 * @return the identifier.
-	 */
-	protected String getPluginID() {
-		return this.pluginID;
 	}
 
 	/** Replies the preference store.

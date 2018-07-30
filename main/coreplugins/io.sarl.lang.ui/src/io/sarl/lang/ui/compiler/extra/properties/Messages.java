@@ -49,11 +49,11 @@ public class Messages extends NLS {
 	public static String AbstractGeneratorConfigurationBlock_5;
 	public static String AbstractGeneratorConfigurationBlock_6;
 	public static String AbstractGeneratorConfigurationBlock_7;
-	public static String TypeConversionTable_8;
-	public static String TypeConversionTable_9;
+	public static String TypeConversionTable_0;
+	public static String TypeConversionTable_1;
 	public static String FeatureNameConversionTable_0;
-	public static String FeatureNameConversionTable_8;
-	public static String FeatureNameConversionTable_9;
+	public static String FeatureNameConversionTable_1;
+	public static String FeatureNameConversionTable_2;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

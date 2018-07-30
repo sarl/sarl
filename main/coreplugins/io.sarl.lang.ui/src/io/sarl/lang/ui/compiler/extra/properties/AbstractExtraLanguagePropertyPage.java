@@ -87,16 +87,16 @@ public abstract class AbstractExtraLanguagePropertyPage extends PropertyAndPrefe
 	 *
 	 * @return the identifier.
 	 */
-	protected abstract String getGeneratorPageID();
+	protected abstract String getPreferenceContainerID();
 
 	@Override
 	protected String getPreferencePageID() {
-		return this.languageName + ".compiler.extra." + getGeneratorPageID() + ".preferencePage"; //$NON-NLS-1$//$NON-NLS-2$
+		return this.languageName + ".compiler.extra." + getPreferenceContainerID() + ".preferencePage"; //$NON-NLS-1$//$NON-NLS-2$
 	}
 
 	@Override
 	protected String getPropertyPageID() {
-		return this.languageName + ".compiler.extra." + getGeneratorPageID() + ".propertyPage"; //$NON-NLS-1$//$NON-NLS-2$
+		return this.languageName + ".compiler.extra." + getPreferenceContainerID() + ".propertyPage"; //$NON-NLS-1$//$NON-NLS-2$
 	}
 
 	@Override

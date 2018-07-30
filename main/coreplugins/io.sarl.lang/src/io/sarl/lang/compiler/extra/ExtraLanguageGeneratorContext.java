@@ -24,8 +24,11 @@ package io.sarl.lang.compiler.extra;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
 
@@ -50,6 +53,8 @@ public class ExtraLanguageGeneratorContext implements IExtraLanguageGeneratorCon
 
 	private final Date generationDate;
 
+	private final String preferenceId;
+
 	private final IGeneratorContext delegate;
 
 	private final WeakReference<IRootGenerator> rootGenerator;
@@ -68,11 +73,13 @@ public class ExtraLanguageGeneratorContext implements IExtraLanguageGeneratorCon
 	 * @param fileSystemAccess the file system access.
 	 * @param generator the root generator.
 	 * @param resource the resource.
+	 * @param preferenceId the identifier of the container of the generator's preferences.
 	 */
 	public ExtraLanguageGeneratorContext(IGeneratorContext delegate, IFileSystemAccess2 fileSystemAccess,
-			IRootGenerator generator, Resource resource) {
+			IRootGenerator generator, Resource resource, String preferenceId) {
 		this.identifier = UUID.randomUUID();
 		this.generationDate = new Date();
+		this.preferenceId = preferenceId;
 		this.delegate = delegate;
 		this.fileSystemAccess = fileSystemAccess;
 		this.resource = resource;
@@ -87,6 +94,11 @@ public class ExtraLanguageGeneratorContext implements IExtraLanguageGeneratorCon
 	@Override
 	public Date getGenerationDate() {
 		return this.generationDate;
+	}
+
+	@Override
+	public String getPreferenceID() {
+		return this.preferenceId;
 	}
 
 	@Override
@@ -163,20 +175,75 @@ public class ExtraLanguageGeneratorContext implements IExtraLanguageGeneratorCon
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> List<T> getListData(String id, Class<T> type) {
-		List<T> list = null;
-		if (!Strings.isEmpty(id) && this.temporaryData != null) {
-			final Object obj = this.temporaryData.get(id);
-			if (obj instanceof List) {
-				list = (List<T>) obj;
-			}
+	public <T> List<T> getListData(String id) {
+		if (this.temporaryData == null) {
+			this.temporaryData = new TreeMap<>();
 		}
+		List<T> list = (List<T>) this.temporaryData.get(id);
 		if (list == null) {
 			list = new ArrayList<>();
-			if (this.temporaryData == null) {
-				this.temporaryData = new TreeMap<>();
-			}
 			this.temporaryData.put(id, list);
+		}
+		return list;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <T> Set<T> getSetData(String id) {
+		if (this.temporaryData == null) {
+			this.temporaryData = new TreeMap<>();
+		}
+		Set<T> set = (Set<T>) this.temporaryData.get(id);
+		if (set == null) {
+			set = new HashSet<>();
+			this.temporaryData.put(id, set);
+		}
+		return set;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <K, V> Map<K, V> getMapData(String id) {
+		if (this.temporaryData == null) {
+			this.temporaryData = new TreeMap<>();
+		}
+		Map<K, V> map = (Map<K, V>) this.temporaryData.get(id);
+		if (map == null) {
+			map = new HashMap<>();
+			this.temporaryData.put(id, map);
+		}
+		return map;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <K, V> Map<K, List<V>> getMultimapData(String id) {
+		if (this.temporaryData == null) {
+			this.temporaryData = new TreeMap<>();
+		}
+		Map<K, List<V>> multimap = (Map<K, List<V>>) this.temporaryData.get(id);
+		if (multimap == null) {
+			multimap = new HashMap<>();
+			this.temporaryData.put(id, multimap);
+		}
+		return multimap;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <K, V> List<V> getMultimapValues(String id, K multimapKey) {
+		if (this.temporaryData == null) {
+			this.temporaryData = new TreeMap<>();
+		}
+		Map<K, List<V>> multimap = (Map<K, List<V>>) this.temporaryData.get(id);
+		if (multimap == null) {
+			multimap = new HashMap<>();
+			this.temporaryData.put(id, multimap);
+		}
+		List<V> list = multimap.get(multimapKey);
+		if (list == null) {
+			list = new ArrayList<>();
+			multimap.put(multimapKey, list);
 		}
 		return list;
 	}

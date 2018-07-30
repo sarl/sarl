@@ -52,6 +52,7 @@ import org.eclipse.xtext.xbase.XMemberFeatureCall;
 import org.eclipse.xtext.xbase.compiler.IAppendable;
 import org.eclipse.xtext.xbase.featurecalls.IdentifiableSimpleNameProvider;
 import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider;
+import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder;
 import org.eclipse.xtext.xbase.lib.Functions.Function0;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.scoping.featurecalls.OperatorMapping;
@@ -90,6 +91,8 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 
 	private IBatchTypeResolver typeResolver;
 
+	private JvmTypesBuilder jvmTypesBuilder;
+
 	private Injector injector;
 
 	private final IExtraLanguageKeywordProvider keywords;
@@ -104,6 +107,23 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 				"_generate", 3, 3, //$NON-NLS-1$
 				Collections.singletonList(this));
 		this.keywords = keywordProvider;
+	}
+
+	/** Change the type builder.
+	 *
+	 * @param builder the builder.
+	 */
+	@Inject
+	public void setTypeBuilder(JvmTypesBuilder builder) {
+		this.jvmTypesBuilder = builder;
+	}
+
+	/** Replies the type builder.
+	 *
+	 * @return the builder.
+	 */
+	public JvmTypesBuilder getTypeBuilder() {
+		return this.jvmTypesBuilder;
 	}
 
 	/** Change the injector.
@@ -245,17 +265,11 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 		return null;
 	}
 
-	/** Replies the identifier of the generator's plugin.
-	 *
-	 * @return the plugin's identifier.
-	 */
-	protected abstract String getGeneratorPluginID();
-
 	@Override
 	public ExtraLanguageTypeConverter getTypeConverter(IExtraLanguageGeneratorContext context) {
 		ExtraLanguageTypeConverter converter = context.getData(TYPE_CONVERTER_INSTANCE, ExtraLanguageTypeConverter.class);
 		if (converter == null) {
-			converter = createTypeConverterInstance(getTypeConverterInitializer(), getGeneratorPluginID(), context);
+			converter = createTypeConverterInstance(getTypeConverterInitializer(), context);
 			this.injector.injectMembers(converter);
 			context.setData(TYPE_CONVERTER_INSTANCE, converter);
 		}
@@ -265,16 +279,14 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 	/** Create the instance of the type converter.
 	 *
 	 * @param initializer the converter initializer.
-	 * @param pluginID the identifier of the generator's plugin.
 	 * @param context the genetation context.
 	 * @return the type converter.
 	 */
 	@SuppressWarnings("static-method")
 	protected ExtraLanguageTypeConverter createTypeConverterInstance(
 			IExtraLanguageConversionInitializer initializer,
-			String pluginID,
 			IExtraLanguageGeneratorContext context) {
-		return new ExtraLanguageTypeConverter(initializer, pluginID, context);
+		return new ExtraLanguageTypeConverter(initializer, context);
 	}
 
 	/** Replies the initializer for the feature name converter.
@@ -291,7 +303,7 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 		ExtraLanguageFeatureNameConverter converter = context.getData(FEATURE_NAME_CONVERTER_INSTANCE,
 				ExtraLanguageFeatureNameConverter.class);
 		if (converter == null) {
-			converter = createFeatureNameConverterInstance(getFeatureNameConverterInitializer(), getGeneratorPluginID(), context);
+			converter = createFeatureNameConverterInstance(getFeatureNameConverterInitializer(), context);
 			this.injector.injectMembers(converter);
 			context.setData(TYPE_CONVERTER_INSTANCE, converter);
 		}
@@ -301,15 +313,13 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 	/** Create the instance of the feature name converter.
 	 *
 	 * @param initializer the converter initializer.
-	 * @param pluginID the identifier of the generator's plugin.
 	 * @param context the generation context.
 	 * @return the feature name converter.
 	 */
 	protected ExtraLanguageFeatureNameConverter createFeatureNameConverterInstance(
 			IExtraLanguageConversionInitializer initializer,
-			String pluginID,
 			IExtraLanguageGeneratorContext context) {
-		return new ExtraLanguageFeatureNameConverter(initializer, pluginID, context, getExtraLanguageKeywordProvider());
+		return new ExtraLanguageFeatureNameConverter(initializer, context, getExtraLanguageKeywordProvider());
 	}
 
 	@Override
@@ -479,7 +489,7 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 
 		/** Receiver of code.
 		 */
-		protected final IAppendable codeReceiver;
+		protected final ExtraLanguageAppendable codeReceiver;
 
 		private final Function1<? super XExpression, ? extends String> referenceNameLambda;
 
@@ -490,7 +500,7 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 		 * @param context the generation context.
 		 * @param codeReceiver the receiver for the target language code.
 		 */
-		protected FeatureCallGenerator(IExtraLanguageGeneratorContext context, IAppendable codeReceiver) {
+		protected FeatureCallGenerator(IExtraLanguageGeneratorContext context, ExtraLanguageAppendable codeReceiver) {
 			this.context = context;
 			this.codeReceiver = codeReceiver;
 			this.referenceNameLambda = expr -> getReferenceName(expr);
@@ -551,6 +561,7 @@ public abstract class AbstractExpressionGenerator implements IExpressionGenerato
 			final JvmConstructor feature = expr.getConstructor();
 			final List<XExpression> args = getActualArguments(expr);
 			final JvmType type = expr.getConstructor().getDeclaringType();
+			this.codeReceiver.getImportManager().addImportFor(type);
 			internalAppendCall(feature, leftOperand, receiver, type.getSimpleName(), args, null);
 		}
 

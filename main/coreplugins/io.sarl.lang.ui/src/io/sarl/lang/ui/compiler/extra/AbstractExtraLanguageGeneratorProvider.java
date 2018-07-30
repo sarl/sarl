@@ -66,17 +66,17 @@ public abstract class AbstractExtraLanguageGeneratorProvider<T extends IRootGene
 	 */
 	protected abstract T createGeneratorInstance(Injector injector);
 
-	/** Replies the plugin identifier.
+	/** Replies the identifier of the container of the generator's preferences.
 	 *
-	 * @return the plugin identifier.
+	 * @return the identifier.
 	 */
-	protected abstract String getPluginID();
+	protected abstract String getPreferenceID();
 
 	@Override
 	public Iterable<IGenerator2> getGenerators(IGeneratorContext context, Resource resource) {
 		final IProject project = ProjectAdapter.getProject(resource);
 		if (this.preferences.isGeneratorEnabled(
-				getPluginID(),
+				getPreferenceID(),
 				project)) {
 			T gen;
 			synchronized (this) {

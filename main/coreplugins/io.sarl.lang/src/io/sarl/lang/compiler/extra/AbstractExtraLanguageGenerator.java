@@ -23,6 +23,7 @@ package io.sarl.lang.compiler.extra;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -31,10 +32,12 @@ import com.google.inject.Injector;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.common.types.JvmConstructor;
+import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmMember;
 import org.eclipse.xtext.common.types.JvmTypeReference;
@@ -402,7 +405,7 @@ public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator i
 	 * @return {@code true} if the file was written.
 	 */
 	protected boolean writeFile(QualifiedName name, ExtraLanguageAppendable appendable, IExtraLanguageGeneratorContext context) {
-		final ExtraLanguageAppendable fileAppendable = createAppendable(context);
+		final ExtraLanguageAppendable fileAppendable = createAppendable(null, context);
 		generateFileHeader(name, fileAppendable, context);
 
 		final ImportManager importManager = appendable.getImportManager();
@@ -430,6 +433,12 @@ public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator i
 		return false;
 	}
 
+	/** Replies the identifier of the container of the generator's preferences.
+	 *
+	 * @return the identifier.
+	 */
+	protected abstract String getPreferenceID();
+
 	@Override
 	public void beforeGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		final IExtraLanguageGeneratorContext generatorContext = createGeneratorContext(fsa, context, input);
@@ -437,13 +446,29 @@ public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator i
 		for (final EObject obj : contents) {
 			if (canGenerateFor(obj)) {
 				before(obj, generatorContext);
+				final Iterator<EObject> iterator = EcoreUtil.getAllContents(obj, false);
+				while (iterator.hasNext()) {
+					final EObject subobj = iterator.next();
+					before(subobj, generatorContext);
+				}
 			}
 		}
+	}
+
+	/** Initialize the given context. This function in invoked when the generator is called with a resource and
+	 * before the generation on the resource's content is started.
+	 *
+	 * @param generatorContext the context to initialize.
+	 * @since 0.8
+	 */
+	protected void initializeContext(IExtraLanguageGeneratorContext generatorContext) {
+		//
 	}
 
 	@Override
 	public void doGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		final IExtraLanguageGeneratorContext generatorContext = createGeneratorContext(fsa, context, input);
+		initializeContext(generatorContext);
 		final EList<EObject> contents = input.getContents();
 		for (final EObject obj : contents) {
 			if (canGenerateFor(obj)) {
@@ -478,6 +503,11 @@ public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator i
 		final EList<EObject> contents = input.getContents();
 		for (final EObject obj : contents) {
 			if (canGenerateFor(obj)) {
+				final Iterator<EObject> iterator = EcoreUtil.getAllContents(obj, false);
+				while (iterator.hasNext()) {
+					final EObject subobj = iterator.next();
+					after(subobj, generatorContext);
+				}
 				after(obj, generatorContext);
 			}
 		}
@@ -495,21 +525,17 @@ public abstract class AbstractExtraLanguageGenerator extends AbstractGenerator i
 		if (context instanceof IExtraLanguageGeneratorContext) {
 			return (IExtraLanguageGeneratorContext) context;
 		}
-		return new ExtraLanguageGeneratorContext(context, fsa, this, resource);
+		return new ExtraLanguageGeneratorContext(context, fsa, this, resource, getPreferenceID());
 	}
-
-	/** Replies the identifier of the plugin which defines the generator.
-	 *
-	 * @return the plugin identifier.
-	 */
-	public abstract String getPluginID();
 
 	/** Create the appendable object.
 	 *
+	 * @param thisType the current type for which the appendable should be created. If it is {@code null}, the import manager
+	 *     of the appendable is not associated to a "this" type.
 	 * @param context the generation context.
 	 * @return the appendable object.
 	 */
-	protected abstract ExtraLanguageAppendable createAppendable(IExtraLanguageGeneratorContext context);
+	protected abstract ExtraLanguageAppendable createAppendable(JvmDeclaredType thisType, IExtraLanguageGeneratorContext context);
 
 	/** Replies if this generator can generate resources from the given element.
 	 *

@@ -125,14 +125,14 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 	/** Constructor.
 	 *
 	 * @param controller the controller.
-	 * @param pluginID the identifier of the plugin.
 	 * @param languageImage for the target language (16x16).
 	 * @param preferenceStore the preference store to be used.
+	 * @param preferenceContainerID the identifier of the generator's preference container.
 	 * @param sortedElements indicates if the elements in the table should be sorted.
 	 */
-	AbstractConversionTable(IExtraControlController controller, String pluginID, Image languageImage,
-			IPreferenceStore preferenceStore, boolean sortedElements) {
-		super(controller, pluginID, languageImage, preferenceStore);
+	AbstractConversionTable(IExtraControlController controller, Image languageImage,
+			IPreferenceStore preferenceStore, String preferenceContainerID, boolean sortedElements) {
+		super(controller, languageImage, preferenceStore, preferenceContainerID);
 		this.isSortedElements = sortedElements;
 	}
 
@@ -661,7 +661,7 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 		for (int i = 0; i < columnCount; i++) {
 			int width = -1;
 			try {
-				width = settings.getInt(getPluginID() + getColumnWidthDialogSettingsKey() + i);
+				width = settings.getInt(getPreferenceContainerID() + getColumnWidthDialogSettingsKey() + i);
 			} catch (NumberFormatException exception) {
 				//
 			}
@@ -692,7 +692,7 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 		if (!this.isSortedElements) {
 			this.sort = Column.SOURCE;
 			try {
-				final String columnName = settings.get(getPluginID() + getColumnSortCriteraDialogSettingsKey());
+				final String columnName = settings.get(getPreferenceContainerID() + getColumnSortCriteraDialogSettingsKey());
 				if (!Strings.isEmpty(columnName)) {
 					this.sort = Column.valueOf(columnName);
 					if (this.sort == null) {

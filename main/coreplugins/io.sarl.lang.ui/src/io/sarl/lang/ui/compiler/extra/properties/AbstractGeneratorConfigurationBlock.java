@@ -121,7 +121,7 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 	@Override
 	public final String getPropertyPrefix() {
 		if (this.propertyPrefix == null) {
-			this.propertyPrefix = ExtraLanguagePreferenceAccess.getPropertyPrefix(getPluginID());
+			this.propertyPrefix = ExtraLanguagePreferenceAccess.getPropertyPrefix(getPreferenceID());
 		}
 		return this.propertyPrefix;
 	}
@@ -221,11 +221,15 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 		othersComposite.setLayout(new GridLayout(columns, false));
 		createGeneralSectionItems(othersComposite);
 
+		createAdditionalSectionsBeforeOutputConfiguration(composite);
+
 		excomposite = createStyleSection(composite, Messages.AbstractGeneratorConfigurationBlock_6, columns);
 		othersComposite = new Composite(excomposite, SWT.NONE);
 		excomposite.setClient(othersComposite);
 		othersComposite.setLayout(new GridLayout(columns, false));
 		createOutputSectionItems(othersComposite, getOutputConfiguration());
+
+		createAdditionalSectionsAfterOutputConfiguration(composite);
 
 		excomposite = createStyleSection(composite, Messages.AbstractGeneratorConfigurationBlock_5, columns);
 		othersComposite = SWTFactory.createComposite(excomposite, parent.getFont(), 2, 1, GridData.FILL_BOTH);
@@ -237,7 +241,7 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 		excomposite.setClient(othersComposite);
 		createFeatureConversionSectionItems(othersComposite);
 
-		createAdditionalSections(composite);
+		createAdditionalSectionsAfterTypeConversionTables(composite);
 
 		registerKey(getIsProjectSpecificPropertyKey(getPropertyPrefix()));
 		IDialogSettings section = getDialogSettings().getSection(SETTINGS_SECTION_NAME);
@@ -254,7 +258,7 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 	 */
 	protected OutputConfiguration getOutputConfiguration() {
 		final Set<OutputConfiguration> outputConfigurations = this.configurationProvider.getOutputConfigurations(getProject());
-		final String expectedName = ExtraLanguageOutputConfigurations.createOutputConfigurationName(getPluginID());
+		final String expectedName = ExtraLanguageOutputConfigurations.createOutputConfigurationName(getPreferenceID());
 		return Iterables.find(outputConfigurations, it -> expectedName.equals(it.getName()));
 	}
 
@@ -267,17 +271,34 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 	 */
 	public abstract IDialogSettings getDialogSettings();
 
-	/** Replies the identifier of the plugin that is associated to this configuration block.
+	/** Replies the identifier of the container of the generator's preferences.
 	 *
-	 * @return the dialog settings
+	 * @return the identifier.
 	 */
-	public abstract String getPluginID();
+	public abstract String getPreferenceID();
 
-	/** Add additional section in the dialog.
+	/** Add additional sections in the dialog before the controls for output configuration.
 	 *
 	 * @param composite the parent.
 	 */
-	protected void createAdditionalSections(Composite composite) {
+	protected void createAdditionalSectionsBeforeOutputConfiguration(Composite composite) {
+		//
+	}
+
+	/** Add additional sections in the dialog between the controls for output configuration and
+	 * the ones for type conversion.
+	 *
+	 * @param composite the parent.
+	 */
+	protected void createAdditionalSectionsAfterOutputConfiguration(Composite composite) {
+		//
+	}
+
+	/** Add additional sections in the dialog after the controls for type conversions.
+	 *
+	 * @param composite the parent.
+	 */
+	protected void createAdditionalSectionsAfterTypeConversionTables(Composite composite) {
 		//
 	}
 
@@ -293,8 +314,8 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 	 */
 	protected void createTypeConversionSectionItems(Composite parentComposite) {
 		final TypeConversionTable typeConversionTable = new TypeConversionTable(
-				this, getPluginID(), getTargetLanguageImage(),
-				getPreferenceStore());
+				this, getTargetLanguageImage(),
+				getPreferenceStore(), getPreferenceID());
 		typeConversionTable.doCreate(parentComposite, getDialogSettings());
 		makeScrollableCompositeAware(typeConversionTable.getControl());
 		addExtraControl(typeConversionTable);
@@ -328,8 +349,8 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 	 */
 	protected void createFeatureConversionSectionItems(Composite parentComposite) {
 		final FeatureNameConversionTable typeConversionTable = new FeatureNameConversionTable(
-				this, getPluginID(), getTargetLanguageImage(),
-				getPreferenceStore());
+				this, getTargetLanguageImage(),
+				getPreferenceStore(), getPreferenceID());
 		typeConversionTable.doCreate(parentComposite, getDialogSettings());
 		makeScrollableCompositeAware(typeConversionTable.getControl());
 		addExtraControl(typeConversionTable);
@@ -391,7 +412,7 @@ public abstract class AbstractGeneratorConfigurationBlock extends OptionsConfigu
 	 */
 	protected void createGeneralSectionItems(Composite composite) {
 		addCheckBox(composite, getActivationText(),
-				ExtraLanguagePreferenceAccess.getPrefixedKey(getPluginID(),
+				ExtraLanguagePreferenceAccess.getPrefixedKey(getPreferenceID(),
 						ExtraLanguagePreferenceAccess.ENABLED_PROPERTY),
 				BOOLEAN_VALUES, 0);
 	}

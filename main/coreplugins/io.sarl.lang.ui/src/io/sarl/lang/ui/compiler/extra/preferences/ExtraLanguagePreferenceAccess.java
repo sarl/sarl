@@ -93,57 +93,94 @@ public class ExtraLanguagePreferenceAccess {
 
 	/** Create a preference key according to the Xtext option block standards.
 	 *
-	 * @param pluginID the identifier of the plugin of the generator.
+	 * @param preferenceContainerID the identifier of the generator's preference container.
 	 * @param preferenceName the name of the preference.
 	 * @return the key.
 	 */
-	private static String getXtextKey(String pluginID, String preferenceName) {
-		return GENERATOR_PREFERENCE_TAG + PreferenceConstants.SEPARATOR + pluginID
+	private static String getXtextKey(String preferenceContainerID, String preferenceName) {
+		return GENERATOR_PREFERENCE_TAG + PreferenceConstants.SEPARATOR + preferenceContainerID
 				+ PreferenceConstants.SEPARATOR + preferenceName;
 	}
 
 	/** Create a preference key.
 	 *
-	 * @param pluginID the identifier of the plugin of the generator.
+	 * @param preferenceContainerID the identifier of the generator's preference container.
 	 * @param preferenceName the name of the preference.
 	 * @return the key.
 	 */
-	public static String getPrefixedKey(String pluginID, String preferenceName) {
-		return getXtextKey(getPropertyPrefix(pluginID), preferenceName);
+	public static String getPrefixedKey(String preferenceContainerID, String preferenceName) {
+		return getXtextKey(getPropertyPrefix(preferenceContainerID), preferenceName);
 	}
 
 	/** Replies the preference value from the given store.
 	 *
 	 * @param store the preference storE.
-	 * @param pluginID the identifier of the plugin of the generator.
+	 * @param preferenceContainerID the identifier of the generator's preference container.
 	 * @param preferenceName the name of the preference.
 	 * @return the key.
 	 */
-	public static String getString(IPreferenceStore store, String pluginID, String preferenceName) {
-		return store.getString(getPrefixedKey(pluginID, preferenceName));
+	public static String getString(IPreferenceStore store, String preferenceContainerID, String preferenceName) {
+		return store.getString(getPrefixedKey(preferenceContainerID, preferenceName));
+	}
+
+	/** Replies the preference value.
+	 *
+	 * <p>This function takes care of the specific options that are associated to the given project.
+	 * If the given project is {@code null} or has no specific options, according to
+	 * {@link #ifSpecificConfiguration(String, IProject)}, then the global preferences are used.
+	 *
+	 * @param preferenceContainerID the identifier of the generator's preference container.
+	 * @param project the context. If {@code null}, the global context is assumed.
+	 * @param preferenceName the name of the preference.
+	 * @return the value.
+	 * @since 0.8
+	 */
+	public String getString(String preferenceContainerID, IProject project, String preferenceName) {
+		final IProject prj = ifSpecificConfiguration(preferenceContainerID, project);
+		final IPreferenceStore store = getPreferenceStore(prj);
+		return getString(store, preferenceContainerID, preferenceName);
 	}
 
 	/** Replies the preference value from the given store.
 	 *
 	 * @param store the preference storE.
-	 * @param pluginID the identifier of the plugin of the generator.
+	 * @param preferenceContainerID the identifier of the generator's preference container.
 	 * @param preferenceName the name of the preference.
 	 * @return the key.
 	 */
-	public static boolean getBoolean(IPreferenceStore store, String pluginID, String preferenceName) {
-		return store.getBoolean(getPrefixedKey(pluginID, preferenceName));
+	public static boolean getBoolean(IPreferenceStore store, String preferenceContainerID, String preferenceName) {
+		return store.getBoolean(getPrefixedKey(preferenceContainerID, preferenceName));
+	}
+
+	/** Replies the preference value.
+	 *
+	 * <p>This function takes care of the specific options that are associated to the given project.
+	 * If the given project is {@code null} or has no specific options, according to
+	 * {@link #ifSpecificConfiguration(String, IProject)}, then the global preferences are used.
+	 *
+	 * @param preferenceContainerID the identifier of the generator's preference container.
+	 * @param project the context. If {@code null}, the global context is assumed.
+	 * @param preferenceName the name of the preference.
+	 * @return the value.
+	 * @since 0.8
+	 */
+	public boolean getBoolean(String preferenceContainerID, IProject project, String preferenceName) {
+		assert preferenceName != null;
+		final IProject prj = ifSpecificConfiguration(preferenceContainerID, project);
+		final IPreferenceStore store = getPreferenceStore(prj);
+		return getBoolean(store, preferenceContainerID, preferenceName);
 	}
 
 	/** Compute a property prefix.
 	 *
-	 * @param pluginID the plugin ID.
+	 * @param preferenceContainerID the identifier of the generator's preference container.
 	 * @return the property prefix.
 	 */
-	public static String getPropertyPrefix(String pluginID) {
-		if (pluginID == null) {
+	public static String getPropertyPrefix(String preferenceContainerID) {
+		if (preferenceContainerID == null) {
 			return null;
 		}
-		return pluginID.replaceAll("[^a-zA-Z0-9_.]+", "_"); //$NON-NLS-1$ //$NON-NLS-2$
+		return preferenceContainerID.replaceAll("[^a-zA-Z0-9_.]+", "_"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/** Replies the writable preference store to be used for the extra language generators.
@@ -172,21 +209,21 @@ public class ExtraLanguagePreferenceAccess {
 		return getPreferenceStoreAccess().getContextPreferenceStore(project);
 	}
 
-	/** Replies if the project has specific configuration for extra language generation provided by the given plugin.
+	/** Replies if the project has specific configuration for extra language generation provided by the given container.
 	 *
 	 * <p>This code is copied from {@link AbstractGeneratorConfigurationBlock} and its super types.
 	 *
-	 * @param pluginID the identifier of the extra language generator plugin.
+	 * @param preferenceContainerID the identifier of the generator's preference container.
 	 * @param project the context.
 	 * @return {@code true} if the given project has a specific configuration. {@code false} if
 	 *     the general configuration should be used.
 	 */
-	public boolean hasProjectSpecificOptions(String pluginID, IProject project) {
+	public boolean hasProjectSpecificOptions(String preferenceContainerID, IProject project) {
 		final IPreferenceStore store = getWritablePreferenceStore(project);
 		// Compute the key
 		String key = IS_PROJECT_SPECIFIC;
-		if (pluginID != null) {
-			key = getPropertyPrefix(pluginID) + "." + IS_PROJECT_SPECIFIC; //$NON-NLS-1$
+		if (preferenceContainerID != null) {
+			key = getPropertyPrefix(preferenceContainerID) + "." + IS_PROJECT_SPECIFIC; //$NON-NLS-1$
 		}
 		// backward compatibility
 		final boolean oldSettingsUsed = store.getBoolean(IS_PROJECT_SPECIFIC);
@@ -203,12 +240,12 @@ public class ExtraLanguagePreferenceAccess {
 	 * <p>If the given project has a specific configuration, it is replied.
 	 * Otherwise, {@code null} is replied.
 	 *
-	 * @param pluginID the identifier of the extra language generator plugin.
+	 * @param preferenceContainerID the identifier of the generator's preference container.
 	 * @param project the context. If {@code null}, the global context is assumed.
 	 * @return the unmodifiable preference store.
 	 */
-	public IProject ifSpecificConfiguration(String pluginID, IProject project) {
-		if (project != null && hasProjectSpecificOptions(pluginID, project)) {
+	public IProject ifSpecificConfiguration(String preferenceContainerID, IProject project) {
+		if (project != null && hasProjectSpecificOptions(preferenceContainerID, project)) {
 			return project;
 		}
 		return null;
@@ -216,14 +253,12 @@ public class ExtraLanguagePreferenceAccess {
 
 	/** Replies if the extr language generator is enabled.
 	 *
-	 * @param pluginID the identifier of the plugin that is associated to the generator.
+	 * @param preferenceContainerID the identifier of the generator's preference container.
 	 * @param project the context.
 	 * @return {@code true} if it is enabled.
 	 */
-	public boolean isGeneratorEnabled(String pluginID, IProject project) {
-		final IProject prj = ifSpecificConfiguration(pluginID, project);
-		final IPreferenceStore store = getPreferenceStore(prj);
-		return getBoolean(store, pluginID, ENABLED_PROPERTY);
+	public boolean isGeneratorEnabled(String preferenceContainerID, IProject project) {
+		return getBoolean(preferenceContainerID, project, ENABLED_PROPERTY);
 	}
 
 	/** Parse the given input which is the preference string representation.

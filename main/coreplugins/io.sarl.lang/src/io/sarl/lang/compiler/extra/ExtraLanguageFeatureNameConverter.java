@@ -22,6 +22,7 @@
 package io.sarl.lang.compiler.extra;
 
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -49,6 +50,7 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.sarl.SarlAction;
+import io.sarl.lang.services.SARLGrammarKeywordAccess;
 
 /** Converter from Jvm feature name to the extra language feature name.
  *
@@ -64,8 +66,6 @@ public class ExtraLanguageFeatureNameConverter {
 
 	private final IExtraLanguageGeneratorContext context;
 
-	private final String pluginID;
-
 	@Inject
 	private FeatureNameConverterRuleReader ruleReader;
 
@@ -78,6 +78,9 @@ public class ExtraLanguageFeatureNameConverter {
 	@Inject
 	private ILogicalContainerProvider logicalContainerProvider;
 
+	@Inject
+	private SARLGrammarKeywordAccess sarlKeywords;
+
 	private final IExtraLanguageKeywordProvider keywords;
 
 	private Map<Character, List<Pair<FeaturePattern, FeatureReplacement>>> conversions;
@@ -89,15 +92,13 @@ public class ExtraLanguageFeatureNameConverter {
 	/** Constructor.
 	 *
 	 * @param initializer the initializer.
-	 * @param pluginID the identifier of the generator's plugin.
 	 * @param context the generation context.
 	 * @param keywords the provider of extra-language keywords.
 	 */
-	public ExtraLanguageFeatureNameConverter(IExtraLanguageConversionInitializer initializer, String pluginID,
+	public ExtraLanguageFeatureNameConverter(IExtraLanguageConversionInitializer initializer,
 			IExtraLanguageGeneratorContext context, IExtraLanguageKeywordProvider keywords) {
 		this.initializer = initializer;
 		this.context = context;
-		this.pluginID = pluginID;
 		this.referenceNameLambda = expr -> null;
 		this.referenceNameLambda2 = expr -> null;
 		this.keywords = keywords;
@@ -109,7 +110,7 @@ public class ExtraLanguageFeatureNameConverter {
 	 */
 	protected Map<Character, List<Pair<FeaturePattern, FeatureReplacement>>> initMapping() {
 		final Map<Character, List<Pair<FeaturePattern, FeatureReplacement>>> map = new TreeMap<>();
-		if (!this.ruleReader.initializeConversions(map, this.pluginID, this.context) && this.initializer != null) {
+		if (!this.ruleReader.initializeConversions(map, this.context) && this.initializer != null) {
 			this.initializer.initializeConversions((simpleName, source, target) -> {
 				final char c = getKey(simpleName);
 				if (c == FeaturePattern.ALL_PATTERN_CHAR) {
@@ -168,11 +169,14 @@ public class ExtraLanguageFeatureNameConverter {
 				this.referenceNameLambda2);
 		final List<Pair<FeaturePattern, FeatureReplacement>> struct = this.conversions.get(getKey(simpleName));
 		if (struct != null) {
-			final FeatureReplacement replacement = matchFirstPattern(struct, featureCall.getFeature().getIdentifier(), receiver);
+			final String replacementId = featureCall.getFeature().getIdentifier();
+			final FeatureReplacement replacement = matchFirstPattern(struct, replacementId, simpleName, receiver);
 			if (replacement != null) {
-				return ConversionType.EXPLICIT;
+				if (replacement.hasReplacement()) {
+					return ConversionType.EXPLICIT;
+				}
+				return ConversionType.FORBIDDEN_CONVERSION;
 			}
-			return ConversionType.FORBIDDEN_CONVERSION;
 		}
 		return ConversionType.IMPLICIT;
 	}
@@ -195,7 +199,8 @@ public class ExtraLanguageFeatureNameConverter {
 		}
 		final List<Pair<FeaturePattern, FeatureReplacement>> struct = this.conversions.get(getKey(simpleName));
 		if (struct != null) {
-			final FeatureReplacement replacement = matchFirstPattern(struct, calledFeature.getIdentifier(), receiver);
+			final String replacementId = calledFeature.getIdentifier();
+			final FeatureReplacement replacement = matchFirstPattern(struct, replacementId, simpleName, receiver);
 			if (replacement != null) {
 				if (replacement.hasReplacement()) {
 					return replacement.replace(calledFeature, leftOperand, receiver, arguments);
@@ -217,16 +222,28 @@ public class ExtraLanguageFeatureNameConverter {
 		}
 	}
 
-	private static FeatureReplacement matchFirstPattern(List<Pair<FeaturePattern, FeatureReplacement>> patterns,
-			String source, List<Object> receiver) {
+	private FeatureReplacement matchFirstPattern(List<Pair<FeaturePattern, FeatureReplacement>> patterns,
+			String source, String simpleName, List<Object> receiver) {
 		final LinkedList<String> sourceFeature = new LinkedList<>();
 		for (final Object obj : receiver) {
 			loopReceiver(sourceFeature, obj);
 		}
 		sourceFeature.add(source);
+		final boolean isSarlKeyword = this.sarlKeywords.getThisKeyword().equals(simpleName) || this.sarlKeywords.getSuperKeyword().equals(simpleName);
+		final Deque<String> sarlKeyword;
+		if (isSarlKeyword) {
+			sarlKeyword = new LinkedList<>();
+			sarlKeyword.add(simpleName);
+		} else {
+			sarlKeyword = null;
+		}
 		for (final Pair<FeaturePattern, FeatureReplacement> patternMatching : patterns) {
 			final FeaturePattern pattern = patternMatching.getKey();
-			if (!pattern.isNameReplacement() && pattern.matches(sourceFeature)) {
+			if (pattern.isNameReplacement()) {
+				if (isSarlKeyword && pattern.matches(sarlKeyword)) {
+					return patternMatching.getValue();
+				}
+			} else if (pattern.matches(sourceFeature)) {
 				return patternMatching.getValue();
 			}
 		}
@@ -349,13 +366,12 @@ public class ExtraLanguageFeatureNameConverter {
 		/** initialize the conversions mapping.
 		 *
 		 * @param result the result.
-		 * @param pluginID the identifier of the generator's plugin.
 		 * @param context the generation context.
 		 * @return {@code true} if rules are read.
 		 */
 		@SuppressWarnings("static-method")
 		public boolean initializeConversions(Map<Character, List<Pair<FeaturePattern, FeatureReplacement>>> result,
-				String pluginID, IExtraLanguageGeneratorContext context) {
+				IExtraLanguageGeneratorContext context) {
 			return false;
 		}
 
@@ -465,7 +481,7 @@ public class ExtraLanguageFeatureNameConverter {
 		 * @param feature the feature to test.
 		 * @return {@code true} if the pattern matches.
 		 */
-		public boolean matches(LinkedList<String> feature) {
+		public boolean matches(Deque<String> feature) {
 			boolean match;
 			if (this.rawFeature != null) {
 				match = this.rawFeature.equals(feature.getLast());

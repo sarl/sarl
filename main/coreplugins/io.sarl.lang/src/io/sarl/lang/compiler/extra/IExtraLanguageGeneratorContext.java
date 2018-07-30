@@ -23,6 +23,8 @@ package io.sarl.lang.compiler.extra;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.emf.ecore.resource.Resource;
@@ -51,6 +53,13 @@ public interface IExtraLanguageGeneratorContext extends IGeneratorContext {
 	 * @return the date.
 	 */
 	Date getGenerationDate();
+
+	/** Replies an identifier for the container of the generator's preferences.
+	 *
+	 * @return the identifier.
+	 * @since 0.8
+	 */
+	String getPreferenceID();
 
 	/** Replies the delegate.
 	 *
@@ -133,9 +142,52 @@ public interface IExtraLanguageGeneratorContext extends IGeneratorContext {
 	 *
 	 * @param <T> the type of the data.
 	 * @param id the identifier.
-	 * @param type the type of the data.
 	 * @return the data or the default value.
 	 */
-	<T> List<T> getListData(String id, Class<T> type);
+	<T> List<T> getListData(String id);
+
+	/** Replies the stored data with the given identifier.
+	 * If the data was not found, the default value is replied.
+	 *
+	 * @param <T> the type of the data.
+	 * @param id the identifier.
+	 * @return the data or the default value.
+	 * @since 0.8
+	 */
+	<T> Set<T> getSetData(String id);
+
+	/** Replies the stored data with the given identifier.
+	 * If the data was not found, the default value is replied.
+	 *
+	 * @param <K> the type of the keys.
+	 * @param <V> the type of the values.
+	 * @param id the identifier.
+	 * @return the data or the default value.
+	 * @since 0.8
+	 */
+	<K, V> Map<K, V> getMapData(String id);
+
+	/** Replies the stored data with the given identifier.
+	 * If the data was not found, the default value is replied.
+	 *
+	 * @param <K> the type of the keys.
+	 * @param <V> the type of the values.
+	 * @param id the identifier.
+	 * @return the data or the default value.
+	 * @since 0.8
+	 */
+	<K, V> Map<K, List<V>> getMultimapData(String id);
+
+	/** Replies the stored data with the given identifier.
+	 * If the data was not found, the default value is replied.
+	 *
+	 * @param <K> the type of the keys.
+	 * @param <V> the type of the values.
+	 * @param id the identifier of the multimap.
+	 * @param multimapKey the key within the multimap.
+	 * @return the data or the default value.
+	 * @since 0.8
+	 */
+	<K, V> List<V> getMultimapValues(String id, K multimapKey);
 
 }

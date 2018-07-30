@@ -47,11 +47,11 @@ public class PreferenceBasedTypeConverterRuleReader extends TypeConverterRuleRea
 
 	@Override
 	public boolean initializeConversions(Map<String, String> result,
-			String pluginID, IExtraLanguageGeneratorContext context) {
+			IExtraLanguageGeneratorContext context) {
 		if (context != null) {
 			final IProject project = ProjectAdapter.getProject(context.getResource());
 			final IPreferenceStore store = this.preferences.getPreferenceStore(project);
-			final String rawValue = ExtraLanguagePreferenceAccess.getString(store, pluginID,
+			final String rawValue = ExtraLanguagePreferenceAccess.getString(store, context.getPreferenceID(),
 							ExtraLanguagePreferenceAccess.TYPE_CONVERSION_PROPERTY);
 			return ExtraLanguagePreferenceAccess.parseConverterPreferenceValue(rawValue,
 					(source, target) -> result.put(source, target));

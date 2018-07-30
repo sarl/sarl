@@ -147,6 +147,7 @@ import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.util.XtextVersion;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.CheckType;
+import org.eclipse.xtext.validation.ComposedChecks;
 import org.eclipse.xtext.validation.IssueSeverities;
 import org.eclipse.xtext.validation.ValidationMessageAcceptor;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
@@ -218,6 +219,7 @@ import io.sarl.lang.typesystem.SARLExpressionHelper;
 import io.sarl.lang.util.OutParameter;
 import io.sarl.lang.util.Utils;
 import io.sarl.lang.util.Utils.SarlLibraryErrorCode;
+import io.sarl.lang.validation.extra.ExtraLanguageValidatorSupport;
 
 /**
  * Validator for the SARL elements.
@@ -235,6 +237,7 @@ import io.sarl.lang.util.Utils.SarlLibraryErrorCode;
  * @see "https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation"
  */
 @SuppressWarnings({"checkstyle:classfanoutcomplexity", "checkstyle:methodcount"})
+@ComposedChecks(validators = {ExtraLanguageValidatorSupport.class})
 public class SARLValidator extends AbstractSARLValidator {
 
 	@SuppressWarnings("synthetic-access")

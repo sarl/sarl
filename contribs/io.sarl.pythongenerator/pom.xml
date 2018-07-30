@@ -14,9 +14,9 @@
 	<name>Python Generator for SARL Compiler</name>
 
 	<modules>
-		<module>io.sarl.pythongenerator.plugin</module>
+		<module>io.sarl.pythongenerator.generator</module>
+		<module>io.sarl.pythongenerator.ui</module>
 		<module>io.sarl.pythongenerator.feature</module>
-<!-- 		<module>io.sarl.pythongenerator.tests</module> -->
 	</modules>
 
 </project>

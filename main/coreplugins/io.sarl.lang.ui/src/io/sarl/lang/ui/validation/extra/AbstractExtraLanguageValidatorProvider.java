@@ -65,17 +65,17 @@ public abstract class AbstractExtraLanguageValidatorProvider<T extends AbstractE
 	 */
 	protected abstract T createValidatorInstance(Injector injector);
 
-	/** Replies the plugin identifier.
+	/** Replies the identifier of the container of preferences.
 	 *
-	 * @return the plugin identifier.
+	 * @return the identifier.
 	 */
-	protected abstract String getPluginID();
+	protected abstract String getPreferenceID();
 
 	@Override
 	public List<AbstractExtraLanguageValidator> getValidators(Resource resource) {
 		final IProject project = ProjectAdapter.getProject(resource);
 		if (this.preferences.isGeneratorEnabled(
-				getPluginID(),
+				getPreferenceID(),
 				project)) {
 			T val;
 			synchronized (this) {

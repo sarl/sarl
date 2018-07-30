@@ -53,11 +53,11 @@ public class PreferenceBasedFeatureNameConverterRuleReader extends FeatureNameCo
 
 	@Override
 	public boolean initializeConversions(Map<Character, List<Pair<FeaturePattern, FeatureReplacement>>> result,
-			String pluginID, IExtraLanguageGeneratorContext context) {
+			IExtraLanguageGeneratorContext context) {
 		if (context != null) {
 			final IProject project = ProjectAdapter.getProject(context.getResource());
 			final IPreferenceStore store = this.preferences.getPreferenceStore(project);
-			final String rawValue = ExtraLanguagePreferenceAccess.getString(store, pluginID,
+			final String rawValue = ExtraLanguagePreferenceAccess.getString(store, context.getPreferenceID(),
 							ExtraLanguagePreferenceAccess.FEATURE_NAME_CONVERSION_PROPERTY);
 			return ExtraLanguagePreferenceAccess.parseConverterPreferenceValue(rawValue, (source, target) -> {
 				final String shortName = FeaturePattern.simpleName(source);

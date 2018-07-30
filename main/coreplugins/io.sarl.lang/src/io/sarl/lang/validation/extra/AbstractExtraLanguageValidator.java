@@ -142,6 +142,16 @@ public abstract class AbstractExtraLanguageValidator {
 		return this.currentContext.get();
 	}
 
+	/** Initialize the given context. This function in invoked when the validator is called with a resource and
+	 * before the validation on the resource's content is started.
+	 *
+	 * @param validatorContext the context to initialize.
+	 * @since 0.8
+	 */
+	protected void initializeContext(Context validatorContext) {
+		//
+	}
+
 	/** Validate the given resource.
 	 *
 	 * @param validationState the current validation state.
@@ -153,6 +163,7 @@ public abstract class AbstractExtraLanguageValidator {
 				for (final MethodWrapper method : getMethods(validationState.getState().currentObject)) {
 					final Context ctx = new Context(validationState, this, method, messageAcceptor);
 					this.currentContext.set(ctx);
+					initializeContext(ctx);
 					method.invoke(ctx);
 				}
 			} finally {
@@ -316,12 +327,6 @@ public abstract class AbstractExtraLanguageValidator {
 	 */
 	protected abstract IExtraLanguageConversionInitializer getFeatureConverterInitializer();
 
-	/** Replies the identifier of the generator's plugin.
-	 *
-	 * @return the plugin's identifier.
-	 */
-	protected abstract String getGeneratorPluginID();
-
 	/** Replies the type converter.
 	 *
 	 * @return the type converter.
@@ -329,7 +334,7 @@ public abstract class AbstractExtraLanguageValidator {
 	public ExtraLanguageTypeConverter getTypeConverter() {
 		ExtraLanguageTypeConverter converter = this.typeConverter;
 		if (converter == null) {
-			converter = createTypeConverterInstance(getTypeConverterInitializer(), getGeneratorPluginID(), null);
+			converter = createTypeConverterInstance(getTypeConverterInitializer(), null);
 			this.injector.injectMembers(converter);
 			this.typeConverter = converter;
 		}
@@ -339,16 +344,14 @@ public abstract class AbstractExtraLanguageValidator {
 	/** Create the instance of the type converter.
 	 *
 	 * @param initializer the converter initializer.
-	 * @param pluginID the identifier of the generator's plugin.
-	 * @param context the genetation context.
+	 * @param context the generation context.
 	 * @return the type converter.
 	 */
 	@SuppressWarnings("static-method")
 	protected ExtraLanguageTypeConverter createTypeConverterInstance(
 			IExtraLanguageConversionInitializer initializer,
-			String pluginID,
 			IExtraLanguageGeneratorContext context) {
-		return new ExtraLanguageTypeConverter(initializer, pluginID, context);
+		return new ExtraLanguageTypeConverter(initializer, context);
 	}
 
 	/** Replies the feature name converter.
@@ -358,7 +361,7 @@ public abstract class AbstractExtraLanguageValidator {
 	public ExtraLanguageFeatureNameConverter getFeatureNameConverter() {
 		ExtraLanguageFeatureNameConverter converter = this.featureConverter;
 		if (converter == null) {
-			converter = createFeatureNameConverterInstance(getFeatureConverterInitializer(), getGeneratorPluginID(), null);
+			converter = createFeatureNameConverterInstance(getFeatureConverterInitializer(), null);
 			this.injector.injectMembers(converter);
 			this.featureConverter = converter;
 		}
@@ -368,15 +371,13 @@ public abstract class AbstractExtraLanguageValidator {
 	/** Create the instance of the feature name converter.
 	 *
 	 * @param initializer the converter initializer.
-	 * @param pluginID the identifier of the generator's plugin.
-	 * @param context the genetation context.
+	 * @param context the generation context.
 	 * @return the feature name converter.
 	 */
 	protected ExtraLanguageFeatureNameConverter createFeatureNameConverterInstance(
 			IExtraLanguageConversionInitializer initializer,
-			String pluginID,
 			IExtraLanguageGeneratorContext context) {
-		return new ExtraLanguageFeatureNameConverter(initializer, pluginID, context, getExtraLanguageKeywordProvider());
+		return new ExtraLanguageFeatureNameConverter(initializer, context, getExtraLanguageKeywordProvider());
 	}
 
 	/** Do a type mapping check.

@@ -45,23 +45,23 @@ public class TypeConversionTable extends AbstractConversionTable {
 	/** Constructor.
 	 *
 	 * @param controller the controller.
-	 * @param pluginID the identifier of the plugin.
 	 * @param languageImage for the target language (16x16).
 	 * @param preferenceStore the preference store to be used.
+	 * @param preferenceContainerID the identifier of the generator's preference container.
 	 */
-	TypeConversionTable(IExtraControlController controller, String pluginID, Image languageImage,
-			IPreferenceStore preferenceStore) {
-		super(controller, pluginID, languageImage, preferenceStore, false);
+	TypeConversionTable(IExtraControlController controller, Image languageImage,
+			IPreferenceStore preferenceStore, String preferenceContainerID) {
+		super(controller, languageImage, preferenceStore, preferenceContainerID, false);
 	}
 
 	@Override
 	protected String getSourceColumnLabel() {
-		return Messages.TypeConversionTable_8;
+		return Messages.TypeConversionTable_0;
 	}
 
 	@Override
 	protected String getTargetColumnLabel() {
-		return Messages.TypeConversionTable_9;
+		return Messages.TypeConversionTable_1;
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class TypeConversionTable extends AbstractConversionTable {
 
 	@Override
 	protected String getPreferenceKey() {
-		return ExtraLanguagePreferenceAccess.getPrefixedKey(getPluginID(),
+		return ExtraLanguagePreferenceAccess.getPrefixedKey(getPreferenceContainerID(),
 				ExtraLanguagePreferenceAccess.TYPE_CONVERSION_PROPERTY);
 	}
 

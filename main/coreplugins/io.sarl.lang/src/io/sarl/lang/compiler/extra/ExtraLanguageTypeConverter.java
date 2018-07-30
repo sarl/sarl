@@ -47,14 +47,14 @@ public final class ExtraLanguageTypeConverter {
 
 	private final IExtraLanguageGeneratorContext context;
 
-	private final String pluginID;
-
 	@Inject
 	private TypeConverterRuleReader converterReader;
 
 	private Map<String, String> mapping;
 
-	private boolean isImplicitTypes = true;
+	private boolean isImplicitSarlTypes = true;
+
+	private boolean isImplicitJvmTypes;
 
 	static {
 		final String[] basePackage = Agent.class.getPackage().getName().split(Pattern.quote(PACKAGE_SEPARATOR));
@@ -68,32 +68,51 @@ public final class ExtraLanguageTypeConverter {
 	/** Constructor.
 	 *
 	 * @param initializer the initializer.
-	 * @param pluginID the identifier of the generator's plugin.
-	 * @param context the generation ccontext.
+	 * @param context the generation context.
 	 */
-	public ExtraLanguageTypeConverter(IExtraLanguageConversionInitializer initializer,
-			String pluginID, IExtraLanguageGeneratorContext context) {
+	public ExtraLanguageTypeConverter(IExtraLanguageConversionInitializer initializer, IExtraLanguageGeneratorContext context) {
 		this.initializer = initializer;
 		this.context = context;
-		this.pluginID = pluginID;
 	}
 
-	/** Replies if implicit types are supported by this converter.
+	/** Replies if the SARL types ({@code io.sarl.*}) are implicitly supported by this converter.
 	 *
 	 * @return {@code true} if the implicit types are converted. {@code false} if no implicit type is converted.
 	 * @since 0.8
+	 * @see #isImplicitSarlTypes()
 	 */
-	public boolean isImplicitTypes() {
-		return this.isImplicitTypes;
+	public boolean isImplicitSarlTypes() {
+		return this.isImplicitSarlTypes;
 	}
 
-	/** Set if implicit types are supported by this converter.
+	/** Set if the SARL types ({@code io.sarl.*}) are implicitly supported by this converter.
 	 *
 	 * @param enable {@code true} if the implicit types are converted. {@code false} if no implicit type is converted.
 	 * @since 0.8
+	 * @see #setImplicitJvmTypes(boolean)
 	 */
-	public void setImplicitTypes(boolean enable) {
-		this.isImplicitTypes = enable;
+	public void setImplicitSarlTypes(boolean enable) {
+		this.isImplicitSarlTypes = enable;
+	}
+
+	/** Replies if the JVM types (not in {@code io.sarl.*}) are implicitly supported by this converter.
+	 *
+	 * @return {@code true} if the implicit types are converted. {@code false} if no implicit type is converted.
+	 * @since 0.8
+	 * @see #isImplicitSarlTypes()
+	 */
+	public boolean isImplicitJvmTypes() {
+		return this.isImplicitJvmTypes;
+	}
+
+	/** Set if the JVM types (not in {@code io.sarl.*}) are implicitly supported by this converter.
+	 *
+	 * @param enable {@code true} if the implicit types are converted. {@code false} if no implicit type is converted.
+	 * @since 0.8
+	 * @see #setImplicitSarlTypes(boolean)
+	 */
+	public void setImplicitJvmTypes(boolean enable) {
+		this.isImplicitJvmTypes = enable;
 	}
 
 	/** Reset the mapping definition to its default content.
@@ -108,7 +127,7 @@ public final class ExtraLanguageTypeConverter {
 	 */
 	protected Map<String, String> initMapping() {
 		final Map<String, String> map = new TreeMap<>();
-		if (!this.converterReader.initializeConversions(map, this.pluginID, this.context) && this.initializer != null) {
+		if (!this.converterReader.initializeConversions(map, this.context) && this.initializer != null) {
 			this.initializer.initializeConversions((simpleName, source, target) -> {
 				map.put(source,  target);
 			});
@@ -122,7 +141,8 @@ public final class ExtraLanguageTypeConverter {
 	 * @return {@code true} if the mapping exists.
 	 */
 	public boolean hasConversion(String type) {
-		if (isImplicitTypes() && type.startsWith(IMPLICIT_PACKAGE)) {
+		if ((isImplicitSarlTypes() && type.startsWith(IMPLICIT_PACKAGE))
+			|| isImplicitJvmTypes()) {
 			return true;
 		}
 		if (this.mapping == null) {
@@ -137,7 +157,8 @@ public final class ExtraLanguageTypeConverter {
 	 * @return the conversion result, or {@code null} if no equivalent exist.
 	 */
 	public String convert(String type) {
-		if (isImplicitTypes() && type.startsWith(IMPLICIT_PACKAGE)) {
+		if ((isImplicitSarlTypes() && type.startsWith(IMPLICIT_PACKAGE))
+			|| isImplicitJvmTypes()) {
 			return type;
 		}
 		if (this.mapping == null) {
@@ -150,7 +171,7 @@ public final class ExtraLanguageTypeConverter {
 			}
 			return map;
 		}
-		return type;
+		return null;
 	}
 
 	/** Reader of the conversion rules.
@@ -166,13 +187,11 @@ public final class ExtraLanguageTypeConverter {
 		/** initialize the conversions mapping.
 		 *
 		 * @param result the result.
-		 * @param pluginID the identifier of the generator's plugin.
 		 * @param context the generation context.
 		 * @return {@code true} if rules are read.
 		 */
 		@SuppressWarnings("static-method")
-		public boolean initializeConversions(Map<String, String> result, String pluginID,
-				IExtraLanguageGeneratorContext context) {
+		public boolean initializeConversions(Map<String, String> result, IExtraLanguageGeneratorContext context) {
 			return false;
 		}
 

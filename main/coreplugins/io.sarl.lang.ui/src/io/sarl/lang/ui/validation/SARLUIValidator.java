@@ -33,13 +33,10 @@ import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtend.ide.validator.XtendUIValidator;
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.validation.Check;
-import org.eclipse.xtext.validation.ComposedChecks;
 import org.eclipse.xtext.validation.ValidationMessageAcceptor;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationsPackage;
 import org.eclipse.xtext.xtype.XtypePackage;
-
-import io.sarl.lang.validation.extra.ExtraLanguageValidatorSupport;
 
 /** Validator based on the Eclipse UI.
  *
@@ -48,7 +45,6 @@ import io.sarl.lang.validation.extra.ExtraLanguageValidatorSupport;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@ComposedChecks(validators = {ExtraLanguageValidatorSupport.class})
 public class SARLUIValidator extends XtendUIValidator {
 
 	@Override
