@@ -202,44 +202,6 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void ambigousPrivateAPI_01() throws Exception {
-		String source = multilineString(
-				"import io.sarl.lang.annotation.PrivateAPI",
-				"import foo.PrivateAPIObject2",
-				"import static extension foo.PrivateAPIObject3.*",
-				"",
-				"class Accessor {",
-				"  def doSomething(a : PrivateAPIObject2) {",
-				"    a.function",
-				"  }",
-				"}",
-				"");
-		final String expectedAccessor = multilineString(
-				"import foo.PrivateAPIObject2;",
-				"import io.sarl.lang.annotation.SarlElementType;",
-				"import io.sarl.lang.annotation.SarlSpecification;",
-				"import io.sarl.lang.annotation.SyntheticMember;",
-				"",
-				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-				"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
-				"@SuppressWarnings(\"all\")",
-				"public class Accessor {",
-				"  public void doSomething(final PrivateAPIObject2 a) {",
-				"    a.function();",
-				"  }",
-				"  ",
-				"  @SyntheticMember",
-				"  public Accessor() {",
-				"    super();",
-				"  }",
-				"}",
-				"");
-		this.compiler.compile(source, (r) -> {
-			assertEquals(expectedAccessor, r.getGeneratedCode("Accessor"));
-		});
-	}
-
-	@Test
 	public void ambigousPrivateAPI_02() throws Exception {
 		String source = multilineString(
 				"import io.sarl.lang.annotation.PrivateAPI",

@@ -539,7 +539,7 @@ public class ClassCompilerTest {
 
 		@Test
 		public void variable() throws Exception {
-			String source = "class Container { class C1 { var v = 45 } }";
+			String source = "class Container { static class C1 { var v = 45 } }";
 			String expected = multilineString(
 					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
@@ -552,7 +552,7 @@ public class ClassCompilerTest {
 					"public class Container {",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"  @SarlElementType(" + SarlPackage.SARL_CLASS + ")",
-					"  public class C1 {",
+					"  public static class C1 {",
 					"    private int v = 45;",
 					"    ",
 					"    @Override",
@@ -599,7 +599,7 @@ public class ClassCompilerTest {
 
 		@Test
 		public void value() throws Exception {
-			String source = "class Container { class C1 { val v = 45 } }";
+			String source = "class Container { static class C1 { val v = 45 } }";
 			String expected = multilineString(
 					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
@@ -612,7 +612,7 @@ public class ClassCompilerTest {
 					"public class Container {",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"  @SarlElementType(" + SarlPackage.SARL_CLASS + ")",
-					"  public class C1 {",
+					"  public static class C1 {",
 					"    private final int v = 45;",
 					"    ",
 					"    @Override",
@@ -833,7 +833,7 @@ public class ClassCompilerTest {
 
 		@Test
 		public void basic() throws Exception {
-			String source = "agent Container { class C1 { } }";
+			String source = "agent Container { static class C1 { } }";
 			String expected = multilineString(
 					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
@@ -850,7 +850,7 @@ public class ClassCompilerTest {
 					"public class Container extends Agent {",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"  @SarlElementType(" + SarlPackage.SARL_CLASS + ")",
-					"  protected class C1 {",
+					"  protected static class C1 {",
 					"    @SyntheticMember",
 					"    public C1() {",
 					"      super();",
@@ -882,7 +882,7 @@ public class ClassCompilerTest {
 
 		@Test
 		public void variable() throws Exception {
-			String source = "agent Container { class C1 { var v = 45 } }";
+			String source = "agent Container { static class C1 { var v = 45 } }";
 			String expected = multilineString(
 					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
@@ -900,7 +900,7 @@ public class ClassCompilerTest {
 					"public class Container extends Agent {",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"  @SarlElementType(" + SarlPackage.SARL_CLASS + ")",
-					"  protected class C1 {",
+					"  protected static class C1 {",
 					"    private int v = 45;",
 					"    ",
 					"    @Override",
@@ -960,7 +960,7 @@ public class ClassCompilerTest {
 
 		@Test
 		public void value() throws Exception {
-			String source = "agent Container { class C1 { val v = 45 } }";
+			String source = "agent Container { static class C1 { val v = 45 } }";
 			String expected = multilineString(
 					"import io.sarl.lang.annotation.SarlElementType;",
 					"import io.sarl.lang.annotation.SarlSpecification;",
@@ -978,7 +978,7 @@ public class ClassCompilerTest {
 					"public class Container extends Agent {",
 					"  @SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 					"  @SarlElementType(" + SarlPackage.SARL_CLASS + ")",
-					"  protected class C1 {",
+					"  protected static class C1 {",
 					"    private final int v = 45;",
 					"    ",
 					"    @Override",

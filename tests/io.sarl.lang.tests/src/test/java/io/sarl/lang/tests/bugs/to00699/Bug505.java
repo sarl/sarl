@@ -52,28 +52,28 @@ public class Bug505 extends AbstractSarlTest {
 
 	private String snippet2 = multilineString(
 			"abstract class TestClass {",
-			"\tpublic def testMethod1 {",
+			"\tdef testMethod1 {",
 			"\t\tthis.testMethod2()",
 			"\t}",
-			"\tpublic def testMethod2 { }",
+			"\tdef testMethod2 { }",
 			"}");
 
 	private String snippet3 = multilineString(
 			"abstract class TestClass {",
-			"\tpublic def testMethod1 {",
+			"\tdef testMethod1 {",
 			"\t\ttestMethod2()",
 			"\t}",
-			"\tpublic def testMethod2 { }",
+			"\tdef testMethod2 { }",
 			"}");
 
 	private String snippet4 = multilineString(
 			"class TestClass {",
-			"\tprivate var testString : String;",
-			"\tpublic new(testString : String)",
+			"\tvar testString : String;",
+			"\tnew(testString : String)",
 			"\t{",
 			"\t\tthis.testString = testString;",
 			"\t}",
-			"\tpublic def getTestString() : String",
+			"\tdef getTestString() : String",
 			"\t{",
 			"\t\treturn this.testString;",
 			"\t}",

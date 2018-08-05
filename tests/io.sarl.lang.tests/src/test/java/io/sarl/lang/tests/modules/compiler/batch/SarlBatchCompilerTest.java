@@ -21,11 +21,14 @@
 package io.sarl.lang.tests.modules.compiler.batch;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
 
-import org.apache.log4j.Level;
+import org.eclipse.xtext.diagnostics.Severity;
+import org.eclipse.xtext.validation.Issue;
 
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
 
@@ -48,11 +51,17 @@ public class SarlBatchCompilerTest extends AbstractBatchCompilerTest {
 		compiler.setBasePath(basePath.getAbsolutePath());
 		compiler.setSourcePath(sourcePath.getAbsolutePath());
 		compiler.setOutputPath(sarlcOutputFolder);
+		compiler.setClassOutputPath(javacOutputFolder);
 		compiler.setTempDirectory(tempFolder);
 		compiler.setJavaCompilerVerbose(false);
 		compiler.setGenerateInlineAnnotation(false);
+		compiler.setReportInternalProblemsAsIssues(true);
+		final List<Issue> issues = new ArrayList<>();
+		compiler.addIssueMessageListener((issue, uri, message) -> {
+			issues.add(issue);
+		});
 		if (!compiler.compile()) {
-			throw new RuntimeException("Compilation error");
+			throw new RuntimeException("Compilation error: " + issues.toString());
 		}
 	}
 
