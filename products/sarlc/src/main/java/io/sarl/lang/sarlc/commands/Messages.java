@@ -45,6 +45,7 @@ public class Messages extends NLS {
 	public static String CompilerCommand_8;
 	public static String CompilerCommand_9;
 	public static String CompilerCommand_10;
+	public static String ExtraLanguageListCommand_0;
 	public static String VersionCommand_0;
 	public static String VersionCommand_1;
 	static {

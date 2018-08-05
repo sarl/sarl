@@ -53,7 +53,8 @@ public class CompilerCommandModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		extend(binder()).addOption(OptionMetadata.builder(
+		extend(binder())
+			.addOption(OptionMetadata.builder(
 				CompilerCommand.PROGRESS_OPTION_NAME, Messages.CompilerCommandModule_0)
 				.configPath(ProgressBarConfig.ENABLE)
 				.defaultValue(Boolean.TRUE.toString())

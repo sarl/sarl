@@ -64,24 +64,24 @@ public class CompilerCommand extends CommandWithMetadata {
 
 	private final Provider<PathDetector> pathDetector;
 
-	private final Provider<ProgressBarConfig> commandConfig;
+	private final Provider<ProgressBarConfig> progressConfig;
 
 	/** Constructor.
 	 *
 	 * @param compiler the SARL batch compiler.
 	 * @param configuration the configuration of the tool.
 	 * @param pathDetector the detector of path.
-	 * @param commandConfig the configuration of the command.
+	 * @param progressConfig the configuration of the progress bar.
 	 */
 	public CompilerCommand(Provider<SarlBatchCompiler> compiler, Provider<SarlConfig> configuration,
-			Provider<PathDetector> pathDetector, Provider<ProgressBarConfig> commandConfig) {
+			Provider<PathDetector> pathDetector, Provider<ProgressBarConfig> progressConfig) {
 		super(CommandMetadata
 				.builder(CompilerCommand.class)
 				.description(Messages.CompilerCommand_0));
 		this.compiler = compiler;
 		this.configuration = configuration;
 		this.pathDetector = pathDetector;
-		this.commandConfig = commandConfig;
+		this.progressConfig = progressConfig;
 	}
 
 	@Override
@@ -125,10 +125,21 @@ public class CompilerCommand extends CommandWithMetadata {
 		final AtomicInteger nbFiles = new AtomicInteger(0);
 		comp.addCompiledResourceReceiver(it -> nbFiles.incrementAndGet());
 
-		final ProgressBarConfig commandConfig = this.commandConfig.get();
+		// Configuration of the extra-language generators
+		final String extraGenerators = config.getExtraGenerators();
+		if (!Strings.isNullOrEmpty(extraGenerators)) {
+			comp.setExtraLanguageGenerators(extraGenerators);
+		}
+
+		return runCompiler(comp, firstErrorMessage, nbErrors, nbWarnings, nbFiles);
+	}
+
+	private CommandOutcome runCompiler(SarlBatchCompiler comp, OutParameter<String> firstErrorMessage,
+			AtomicInteger nbErrors, AtomicInteger nbWarnings, AtomicInteger nbFiles) {
+		final ProgressBarConfig progressConfig = this.progressConfig.get();
 		final boolean compilationResult;
-		if (commandConfig.getEnable()) {
-			compilationResult = comp.compile(new ConsoleProgressMonitor(commandConfig.getStyle()));
+		if (progressConfig.getEnable()) {
+			compilationResult = comp.compile(new ConsoleProgressMonitor(progressConfig.getStyle()));
 		} else {
 			compilationResult = comp.compile();
 		}

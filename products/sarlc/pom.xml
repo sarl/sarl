@@ -46,12 +46,16 @@
 		<dependency>
 			<groupId>me.tongfei</groupId>
 			<artifactId>progressbar</artifactId>
-			<version>0.7.0</version>
 		</dependency>
 		<!--  The following dependency is included in order to have the SDK available on the class path by default -->
 		<dependency>
 			<groupId>io.sarl.maven</groupId>
 			<artifactId>io.sarl.maven.sdk</artifactId>
+		</dependency>
+		<!--  The following dependency is included in order to have extra-language generators -->
+		<dependency>
+			<groupId>io.sarl.pythongenerator</groupId>
+			<artifactId>io.sarl.pythongenerator.generator</artifactId>
 		</dependency>
 	</dependencies>
 

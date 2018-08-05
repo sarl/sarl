@@ -25,6 +25,7 @@ import static io.bootique.BQCoreModule.extend;
 import static io.sarl.lang.sarlc.configs.SarlConfig.BOOT_CLASSPATH_NAME;
 import static io.sarl.lang.sarlc.configs.SarlConfig.CLASSPATH_NAME;
 import static io.sarl.lang.sarlc.configs.SarlConfig.CLASS_OUTPUT_PATH_NAME;
+import static io.sarl.lang.sarlc.configs.SarlConfig.EXTRA_GENERATOR_NAME;
 import static io.sarl.lang.sarlc.configs.SarlConfig.OUTPUT_PATH_NAME;
 import static io.sarl.lang.sarlc.configs.SarlConfig.WORKING_PATH_NAME;
 
@@ -43,6 +44,7 @@ import org.eclipse.core.runtime.Path;
 
 import io.sarl.lang.SARLConfig;
 import io.sarl.lang.sarlc.Constants;
+import io.sarl.lang.sarlc.commands.ExtraLanguageListCommand;
 import io.sarl.lang.sarlc.configs.SarlConfig;
 
 /**
@@ -111,6 +113,17 @@ public class SarlcConfigModule extends AbstractModule {
 				.configPath(BOOT_CLASSPATH_NAME)
 				.valueRequired(Messages.SarlcConfigModule_4)
 				.build());
+
+		VariableDecls.extend(binder()).declareVar(EXTRA_GENERATOR_NAME);
+		extend(binder()).addOption(OptionMetadata.builder(
+				"generator", //$NON-NLS-1$
+				MessageFormat.format(Messages.SarlcConfigModule_7,
+						ExtraLanguageListCommand.EXTRA_LANGUAGE_LIST_OPTION_SHORT_NAME,
+						File.pathSeparator))
+				.configPath(EXTRA_GENERATOR_NAME)
+				.valueRequired(Messages.SarlcConfigModule_8)
+				.build());
+
 	}
 
 	/** Replies the instance of the sarl configuration.

@@ -60,7 +60,7 @@ public class SarlConfig {
 	/**
 	 * Name of the property that contains the output path for the Java byte code.
 	 */
-	public static final String CLASS_OUTPUT_PATH_NAME = PREFIX + ".classOutputPath"; //$NON-NLS-1$
+	public static final String CLASS_OUTPUT_PATH_NAME = PREFIX + ".classutputPath"; //$NON-NLS-1$
 
 	/**
 	 * Name of the property that contains the classpath.
@@ -70,12 +70,17 @@ public class SarlConfig {
 	/**
 	 * Name of the property that contains the Java boot classpath.
 	 */
-	public static final String JAVA_BOOT_CLASSPATH_NAME = PREFIX + ".javabootclasspath"; //$NON-NLS-1$
+	public static final String JAVA_BOOT_CLASSPATH_NAME = PREFIX + ".javaBootClasspath"; //$NON-NLS-1$
 
 	/**
 	 * Name of the property that contains the SARL boot classpath.
 	 */
-	public static final String BOOT_CLASSPATH_NAME = PREFIX + ".bootclasspath"; //$NON-NLS-1$
+	public static final String BOOT_CLASSPATH_NAME = PREFIX + ".bootClasspath"; //$NON-NLS-1$
+
+	/**
+	 * Name of the property that contains the list of the extra-language generators.
+	 */
+	public static final String EXTRA_GENERATOR_NAME = PREFIX + ".extraGenerators"; //$NON-NLS-1$
 
 	private String classpath;
 
@@ -92,6 +97,8 @@ public class SarlConfig {
 	private CompilerConfig compilerConfig;
 
 	private ValidatorConfig validatorConfig;
+
+	private String extraGenerators;
 
 	/** Replies the configuration factory for the logging.
 	 *
@@ -243,6 +250,23 @@ public class SarlConfig {
 	@BQConfigProperty("Configuration of the SARL validator.")
 	public void setValidator(ValidatorConfig config) {
 		this.validatorConfig = config;
+	}
+
+	/** Replies the enabled extra generators.
+	 *
+	 * @return the identifiers of the extra generators, separator by {@link File#pathSeparator}.
+	 */
+	public String getExtraGenerators() {
+		return this.extraGenerators;
+	}
+
+	/** Change the list of the enabled extra generators.
+	 *
+	 * @param identifiers the extra generators, separated by {@link File#pathSeparator}.
+	 */
+	@BQConfigProperty("List of the enable extra-language generators.")
+	public void setExtraGenerators(String identifiers) {
+		this.extraGenerators = identifiers;
 	}
 
 }
