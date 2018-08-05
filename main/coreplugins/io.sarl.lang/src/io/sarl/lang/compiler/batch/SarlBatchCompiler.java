@@ -35,6 +35,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -45,7 +46,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 import javax.inject.Provider;
@@ -112,6 +115,8 @@ import io.sarl.lang.compiler.GeneratorConfig2;
 import io.sarl.lang.compiler.GeneratorConfigProvider2;
 import io.sarl.lang.compiler.IGeneratorConfigProvider2;
 import io.sarl.lang.compiler.batch.InternalXtextLogger.InternalXtextLoggerFactory;
+import io.sarl.lang.extralanguage.IExtraLanguageContribution;
+import io.sarl.lang.extralanguage.IExtraLanguageContributions;
 import io.sarl.lang.util.Utils;
 import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
 
@@ -132,12 +137,16 @@ public class SarlBatchCompiler {
 
 	private static final String STUB_FOLDER_PREFIX = "stubs"; //$NON-NLS-1$
 
+	private static final String INTERNAL_ERROR_CODE = SarlBatchCompiler.class.getName() + ".internal_error"; //$NON-NLS-1$
+
 	private static final FileFilter ACCEPT_ALL_FILTER = new FileFilter() {
 		@Override
 		public boolean accept(File pathname) {
 			return true;
 		}
 	};
+
+	private static final Predicate<IExtraLanguageContribution> DISABLER = it -> false;
 
 	/** The provider of resource sets.
 	 */
@@ -173,7 +182,7 @@ public class SarlBatchCompiler {
 
 	private FileProjectConfig projectConfig;
 
-	private OutputConfiguration outputConfiguration;
+	private Map<String, OutputConfiguration> outputConfigurations;
 
 	private ClassLoader currentClassLoader;
 
@@ -218,6 +227,9 @@ public class SarlBatchCompiler {
 	private IConfigurableIssueSeveritiesProvider issueSeverityProvider;
 
 	@Inject
+	private IExtraLanguageContributions extraLanguageContributions;
+
+	@Inject
 	@Named(Constants.LANGUAGE_NAME)
 	private String languageName;
 
@@ -237,10 +249,56 @@ public class SarlBatchCompiler {
 
 	private GeneratorConfig2 currentGeneratorConfiguration2;
 
+	private String enabledExtraLanguageContributions;
+
+	private boolean reportInternalProblemsAsIssues;
+
 	/** Constructor the batch compiler.
 	 */
 	public SarlBatchCompiler() {
 		this.logger = LoggerFactory.getLogger(getClass());
+	}
+
+	/** Change the flag that permits to report the compiler's internal problems as issues.
+	 *
+	 * @param reportAsIssues {@code true} if the internal errors are reported as issues.
+	 * @since 0.8
+	 * @see #addIssueMessageListener(IssueMessageListener)
+	 */
+	public void setReportInternalProblemsAsIssues(boolean reportAsIssues) {
+		this.reportInternalProblemsAsIssues = reportAsIssues;
+	}
+
+	/** Replies the flag that indicates to report the compiler's internal problems as issues.
+	 *
+	 * @return {@code true} if the internal errors are reported as issues.
+	 * @since 0.8
+	 * @see #addIssueMessageListener(IssueMessageListener)
+	 */
+	public boolean getReportInternalProblemsAsIssues() {
+		return this.reportInternalProblemsAsIssues;
+	}
+
+	/** Change the extra languages' generators that should be enabled.
+	 *
+	 * @param identifiers the identifier, the identifiers (separated by {@link File#pathSeparator} of the
+	 *     extra languages' generator(s) to be enabled. If this parameter is {@code null}, all the extra
+	 *     languages' generator are disabled.
+	 * @since 0.8
+	 */
+	public void setExtraLanguageGenerators(String identifiers) {
+		this.enabledExtraLanguageContributions = Strings.emptyIfNull(identifiers);
+	}
+
+	/** Replies the extra languages' generators that should be enabled.
+	 *
+	 * @return the identifier, the identifiers (separated by {@link File#pathSeparator} of the
+	 *     extra languages' generator(s) to be enabled. If this parameter is {@code null}, all the extra
+	 *     languages' generator are disabled.
+	 * @since 0.8
+	 */
+	public String getExtraLanguageGenerators() {
+		return this.enabledExtraLanguageContributions;
 	}
 
 	/** Set the comparator of issues that is used for sorting the issues before they are logged.
@@ -1025,6 +1083,27 @@ public class SarlBatchCompiler {
 		return list;
 	}
 
+	private void configureExtraLanguageGenerators() {
+		final String generators = getExtraLanguageGenerators();
+		if (Strings.isEmpty(generators)) {
+			this.extraLanguageContributions.setContributionChecker(DISABLER);
+		} else {
+			final String[] identifiers = generators.split("\\s*" + Pattern.quote(File.pathSeparator) + "\\s*"); //$NON-NLS-1$ //$NON-NLS-2$
+			this.extraLanguageContributions.setContributionChecker(it -> {
+				for (final String id : identifiers) {
+					if (it.isAcceptedIdentifier(id)) {
+						return true;
+					}
+				}
+				return false;
+			});
+		}
+	}
+
+	private void unconfigureExtraLanguageGenerators() {
+		this.extraLanguageContributions.setContributionChecker(null);
+	}
+
 	/** Run the compilation.
 	 *
 	 * @return success status.
@@ -1100,6 +1179,7 @@ public class SarlBatchCompiler {
 			}
 			monitor.worked(1);
 			final ResourceSet resourceSet = this.resourceSetProvider.get();
+			configureExtraLanguageGenerators();
 			if (!configureWorkspace(resourceSet, monitor)) {
 				return false;
 			}
@@ -1157,7 +1237,7 @@ public class SarlBatchCompiler {
 					if (monitor.isCanceled()) {
 						return false;
 					}
-					getLogger().warn(Messages.SarlBatchCompiler_2);
+					reportWarning(Messages.SarlBatchCompiler_2);
 				}
 				monitor.worked(9);
 				if (!preCompileJava(stubSourceDirectory, stubClassDirectory, monitor)) {
@@ -1215,6 +1295,7 @@ public class SarlBatchCompiler {
 					cleanFolder(file, ACCEPT_ALL_FILTER, true, true);
 				}
 			}
+			unconfigureExtraLanguageGenerators();
 			monitor.done();
 		}
 		return true;
@@ -1237,13 +1318,13 @@ public class SarlBatchCompiler {
 			final Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
 			if ((field.getModifiers() & Modifier.FINAL) == Modifier.FINAL) {
-                final Field modifiersField = Field.class.getDeclaredField("modifiers"); //$NON-NLS-1$
-                modifiersField.setAccessible(true);
-                modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-            }
+				final Field modifiersField = Field.class.getDeclaredField("modifiers"); //$NON-NLS-1$
+				modifiersField.setAccessible(true);
+				modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+			}
 			field.set(null, logger);
 		} catch (Exception exception) {
-			getLogger().error(exception.getLocalizedMessage(), exception);
+			reportError(exception.getLocalizedMessage(), exception);
 		}
 	}
 
@@ -1297,6 +1378,81 @@ public class SarlBatchCompiler {
 		}
 	}
 
+	/** Reports the given warning message.
+	 *
+	 * @param message the warning message.
+	 * @since 0.8
+	 */
+	protected void reportWarning(String message) {
+		getLogger().warn(message);
+		if (getReportInternalProblemsAsIssues()) {
+			final org.eclipse.emf.common.util.URI uri  = null;
+			final Issue.IssueImpl issue = new Issue.IssueImpl();
+			issue.setCode(INTERNAL_ERROR_CODE);
+			issue.setMessage(message);
+			issue.setUriToProblem(uri);
+			issue.setSeverity(Severity.WARNING);
+			notifiesIssueMessageListeners(issue, uri, message);
+		}
+	}
+
+	/** Reports the given warning message.
+	 *
+	 * @param message the warning message.
+	 * @param exception the source of the exception.
+	 * @since 0.8
+	 */
+	protected void reportWarning(String message, Throwable exception) {
+		getLogger().warn(message, exception);
+		if (getReportInternalProblemsAsIssues()) {
+			final org.eclipse.emf.common.util.URI uri  = null;
+			final Issue.IssueImpl issue = new Issue.IssueImpl();
+			issue.setCode(INTERNAL_ERROR_CODE);
+			issue.setMessage(message);
+			issue.setUriToProblem(uri);
+			issue.setSeverity(Severity.WARNING);
+			notifiesIssueMessageListeners(issue, uri, message);
+		}
+	}
+
+	/** Reports the given error message.
+	 *
+	 * @param message the warning message.
+	 * @param exception the source of the exception.
+	 * @since 0.8
+	 */
+	protected void reportError(String message, Throwable exception) {
+		getLogger().error(message, exception);
+		if (getReportInternalProblemsAsIssues()) {
+			final org.eclipse.emf.common.util.URI uri  = null;
+			final Issue.IssueImpl issue = new Issue.IssueImpl();
+			issue.setCode(INTERNAL_ERROR_CODE);
+			issue.setMessage(message);
+			issue.setUriToProblem(uri);
+			issue.setSeverity(Severity.ERROR);
+			notifiesIssueMessageListeners(issue, uri, message);
+		}
+	}
+
+	/** Reports the given error message.
+	 *
+	 * @param message the warning message.
+	 * @param parameters the values of the parameters that must be dynamically replaced within the message text.
+	 * @since 0.8
+	 */
+	protected void reportError(String message, Object... parameters) {
+		getLogger().error(message, parameters);
+		if (getReportInternalProblemsAsIssues()) {
+			final org.eclipse.emf.common.util.URI uri  = null;
+			final Issue.IssueImpl issue = new Issue.IssueImpl();
+			issue.setCode(INTERNAL_ERROR_CODE);
+			issue.setMessage(message);
+			issue.setUriToProblem(uri);
+			issue.setSeverity(Severity.ERROR);
+			notifiesIssueMessageListeners(issue, uri, message);
+		}
+	}
+
 	/** Generate the Java files from the SARL scripts.
 	 *
 	 * @param validatedResources the validatedResources for which the Java files could be generated.
@@ -1307,7 +1463,9 @@ public class SarlBatchCompiler {
 		progress.subTask(Messages.SarlBatchCompiler_49);
 		getLogger().info(Messages.SarlBatchCompiler_28, getOutputPath());
 		final JavaIoFileSystemAccess javaIoFileSystemAccess = this.javaIoFileSystemAccessProvider.get();
-		javaIoFileSystemAccess.setOutputPath(getOutputPath().getAbsolutePath());
+		javaIoFileSystemAccess.setOutputConfigurations(this.outputConfigurations);
+		// The function configureWorkspace should set the output paths with absolute paths.
+		//javaIoFileSystemAccess.setOutputPath(getOutputPath().getAbsolutePath());
 		javaIoFileSystemAccess.setWriteTrace(isWriteTraceFiles());
 		if (progress.isCanceled()) {
 			return;
@@ -1639,7 +1797,7 @@ public class SarlBatchCompiler {
 			@Override
 			public void write(char[] data, int offset, int count) throws IOException {
 				final String message = String.copyValueOf(data, offset, count);
-				getLogger().error(message);
+				reportError(message);
 			}
 
 			@Override
@@ -1763,7 +1921,7 @@ public class SarlBatchCompiler {
 		final File output = getOutputPath();
 		getLogger().debug(Messages.SarlBatchCompiler_35, output);
 		if (output == null) {
-			getLogger().error(Messages.SarlBatchCompiler_36);
+			reportError(Messages.SarlBatchCompiler_36);
 			return false;
 		}
 		progress.subTask(Messages.SarlBatchCompiler_56);
@@ -1774,11 +1932,11 @@ public class SarlBatchCompiler {
 			try {
 				getLogger().debug(Messages.SarlBatchCompiler_37, sourcePath);
 				if (isContainedIn(output.getCanonicalFile(), sourcePath.getCanonicalFile())) {
-					getLogger().error(Messages.SarlBatchCompiler_10, output, sourcePath);
+					reportError(Messages.SarlBatchCompiler_10, output, sourcePath);
 					return false;
 				}
 			} catch (IOException e) {
-				getLogger().error(Messages.SarlBatchCompiler_11, e);
+				reportError(Messages.SarlBatchCompiler_11, e);
 			}
 		}
 		return true;
@@ -1810,7 +1968,7 @@ public class SarlBatchCompiler {
 	}
 
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
-	private File determineCommonRoot(File outputFile, List<File> sourceFileList, IProgressMonitor progress) {
+	private File determineCommonRoot(Iterable<File> files, IProgressMonitor progress) {
 		assert progress != null;
 
 		if (this.baseUri != null) {
@@ -1823,30 +1981,32 @@ public class SarlBatchCompiler {
 
 		LinkedList<String> longuestPrefix = null;
 
-		for (final File file : Iterables.concat(sourceFileList, Collections.singleton(outputFile))) {
+		for (final File file : files) {
 			if (progress.isCanceled()) {
 				return null;
 			}
-			final LinkedList<String> components = splitFile(file, progress);
-			if (longuestPrefix == null) {
-				longuestPrefix = components;
-			} else {
-				int i = 0;
-				while (i < longuestPrefix.size() && i < components.size()
-						&& Strings.equal(longuestPrefix.get(i), components.get(i))) {
-					if (progress.isCanceled()) {
+			if (file != null) {
+				final LinkedList<String> components = splitFile(file, progress);
+				if (longuestPrefix == null) {
+					longuestPrefix = components;
+				} else {
+					int i = 0;
+					while (i < longuestPrefix.size() && i < components.size()
+							&& Strings.equal(longuestPrefix.get(i), components.get(i))) {
+						if (progress.isCanceled()) {
+							return null;
+						}
+						++i;
+					}
+					while (i < longuestPrefix.size()) {
+						if (progress.isCanceled()) {
+							return null;
+						}
+						longuestPrefix.removeLast();
+					}
+					if (longuestPrefix.isEmpty()) {
 						return null;
 					}
-					++i;
-				}
-				while (i < longuestPrefix.size()) {
-					if (progress.isCanceled()) {
-						return null;
-					}
-					longuestPrefix.removeLast();
-				}
-				if (longuestPrefix.isEmpty()) {
-					return null;
 				}
 			}
 		}
@@ -1870,30 +2030,43 @@ public class SarlBatchCompiler {
 		return prefix;
 	}
 
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity", "checkstyle:returncount"})
 	private boolean configureWorkspace(ResourceSet resourceSet, IProgressMonitor progress) {
 		assert progress != null;
 		progress.subTask(Messages.SarlBatchCompiler_57);
 		final List<File> sourceFolders = getSourcePaths();
-		final File outputFile = getOutputPath();
-		if (sourceFolders == null || sourceFolders.isEmpty() || outputFile == null || progress.isCanceled()) {
+		final File javaOutputFile = getOutputPath();
+		final File classOutputFile = getClassOutputPath();
+		if (sourceFolders == null || sourceFolders.isEmpty() || javaOutputFile == null
+				|| classOutputFile == null || progress.isCanceled()) {
+			if (sourceFolders == null || sourceFolders.isEmpty()) {
+				reportError(Messages.SarlBatchCompiler_60);
+			}
+			if (javaOutputFile == null) {
+				reportError(Messages.SarlBatchCompiler_61);
+			}
+			if (classOutputFile == null) {
+				reportError(Messages.SarlBatchCompiler_62);
+			}
 			return false;
 		}
 
 		getLogger().debug(Messages.SarlBatchCompiler_31, this.baseUri);
 
-		final File commonRoot = determineCommonRoot(outputFile, sourceFolders, progress);
+		final File commonRoot = determineCommonRoot(
+				Iterables.concat(sourceFolders, Arrays.asList(javaOutputFile, classOutputFile)),
+				progress);
 		if (progress.isCanceled()) {
 			return false;
 		}
 
 		getLogger().debug(Messages.SarlBatchCompiler_34, commonRoot);
 		if (commonRoot == null) {
-			getLogger().error(Messages.SarlBatchCompiler_12);
+			reportError(Messages.SarlBatchCompiler_12);
 			for (final File sourceFile : sourceFolders) {
-				getLogger().error(Messages.SarlBatchCompiler_13, sourceFile);
+				reportError(Messages.SarlBatchCompiler_13, sourceFile);
 			}
-			getLogger().error(Messages.SarlBatchCompiler_14, outputFile);
+			reportError(Messages.SarlBatchCompiler_14, javaOutputFile);
 			return false;
 		}
 		this.projectConfig = new FileProjectConfig(commonRoot, commonRoot.getName());
@@ -1902,33 +2075,53 @@ public class SarlBatchCompiler {
 		}
 
 		final URI commonURI = commonRoot.toURI();
-		final URI relativizedTarget = commonURI.relativize(outputFile.toURI());
+		final URI relativizedTarget = commonURI.relativize(javaOutputFile.toURI());
 		if (progress.isCanceled()) {
 			return false;
 		}
 		if (relativizedTarget.isAbsolute()) {
-			getLogger().error(Messages.SarlBatchCompiler_15, outputFile, commonRoot);
+			reportError(Messages.SarlBatchCompiler_15, javaOutputFile, commonRoot);
 			return false;
 		}
 		final CharMatcher slash = CharMatcher.is('/');
 		final String relativeTargetFolder = slash.trimTrailingFrom(relativizedTarget.getPath());
-		this.outputConfiguration = Iterables.find(
-				this.outputConfigurationProvider.getOutputConfigurations(),
-				it -> Strings.equal(it.getName(), IFileSystemAccess.DEFAULT_OUTPUT));
-		this.outputConfiguration.setOutputDirectory(relativeTargetFolder);
+		final Set<OutputConfiguration> allOutputConfigurations = this.outputConfigurationProvider.getOutputConfigurations();
+		if (progress.isCanceled()) {
+			return false;
+		}
+		this.outputConfigurations = new TreeMap<>();
+		for (final OutputConfiguration configuration : allOutputConfigurations) {
+			if (progress.isCanceled()) {
+				return false;
+			}
+			this.outputConfigurations.put(configuration.getName(), configuration);
+			if (Strings.equal(configuration.getName(), IFileSystemAccess.DEFAULT_OUTPUT)) {
+				configuration.setOutputDirectory(new File(commonRoot, relativeTargetFolder).getAbsolutePath());
+			} else {
+				File outFile = new File(configuration.getOutputDirectory());
+				outFile = new File(commonRoot, outFile.getPath());
+				configuration.setOutputDirectory(outFile.getAbsolutePath());
+			}
+		}
+		if (progress.isCanceled()) {
+			return false;
+		}
 		for (final File source : sourceFolders) {
 			if (progress.isCanceled()) {
 				return false;
 			}
 			final URI relSource = commonURI.relativize(source.toURI());
 			if (relSource.isAbsolute()) {
-				getLogger().error(Messages.SarlBatchCompiler_16, source, commonRoot);
+				reportError(Messages.SarlBatchCompiler_16, source, commonRoot);
 				return false;
 			}
 			this.projectConfig.addSourceFolder(slash.trimTrailingFrom(relSource.getPath()));
 		}
+		if (progress.isCanceled()) {
+			return false;
+		}
 		final Map<String, Set<OutputConfiguration>> outputConfigurations = new HashMap<>();
-		outputConfigurations.put(this.languageName, Collections.singleton(this.outputConfiguration));
+		outputConfigurations.put(this.languageName, allOutputConfigurations);
 		ProjectConfigAdapter.install(resourceSet, this.projectConfig);
 		resourceSet.eAdapters().add(new OutputConfigurationAdapter(outputConfigurations));
 		if (progress.isCanceled()) {
@@ -2023,7 +2216,7 @@ public class SarlBatchCompiler {
 			try {
 				((Closeable) classLoader).close();
 			} catch (Exception e) {
-				getLogger().warn(Messages.SarlBatchCompiler_18, e);
+				reportWarning(Messages.SarlBatchCompiler_18, e);
 			}
 		}
 	}

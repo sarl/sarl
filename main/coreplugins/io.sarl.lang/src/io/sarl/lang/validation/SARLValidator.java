@@ -23,6 +23,7 @@ package io.sarl.lang.validation;
 
 import static com.google.common.collect.Iterables.toArray;
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Sets.newHashSet;
 import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_AGENT__EXTENDS;
 import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_BEHAVIOR__EXTENDS;
 import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_CAPACITY_USES__CAPACITIES;
@@ -67,6 +68,7 @@ import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_FUNCTION_
 import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_INTERFACE__EXTENDS;
 import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_TYPE_DECLARATION__NAME;
 import static org.eclipse.xtext.util.JavaVersion.JAVA8;
+import static org.eclipse.xtext.util.Strings.equal;
 import static org.eclipse.xtext.xbase.validation.IssueCodes.DISCOURAGED_REFERENCE;
 import static org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE;
 import static org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE;
@@ -186,6 +188,8 @@ import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.DefaultSkill;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Skill;
+import io.sarl.lang.extralanguage.validator.ExtraLanguageValidatorSupport;
+import io.sarl.lang.jvmmodel.IDefaultVisibilityProvider;
 import io.sarl.lang.jvmmodel.SARLReadAndWriteTracking;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.sarl.SarlAction;
@@ -219,7 +223,6 @@ import io.sarl.lang.typesystem.SARLExpressionHelper;
 import io.sarl.lang.util.OutParameter;
 import io.sarl.lang.util.Utils;
 import io.sarl.lang.util.Utils.SarlLibraryErrorCode;
-import io.sarl.lang.validation.extra.ExtraLanguageValidatorSupport;
 
 /**
  * Validator for the SARL elements.
@@ -387,6 +390,9 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	@Inject
 	private InheritanceHelper inheritanceHelper;
+
+	@Inject
+	private IDefaultVisibilityProvider defaultVisibilityProvider;
 
 	// Update the annotation target information
 	{
@@ -2715,22 +2721,184 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	protected final class SARLModifierValidator extends ModifierValidator {
 
+		private final Set<String> allowedModifiers;
+
+		private final String allowedModifiersAsString;
+
 		/** Constructor.
 		 * @param modifiers the list of the supported modifiers.
 		 */
-		private SARLModifierValidator(
-				List<String> modifiers) {
+		private SARLModifierValidator(List<String> modifiers) {
 			super(modifiers, SARLValidator.this);
+			this.allowedModifiers = newHashSet(modifiers);
+			final StringBuffer buffer = new StringBuffer(modifiers.get(0));
+			for (int i = 1; i < modifiers.size() - 1; ++i) {
+				buffer.append(", ").append(modifiers.get(i)); //$NON-NLS-1$
+			}
+			if (modifiers.size() > 1)  {
+				buffer.append(" & ").append(modifiers.get(modifiers.size() - 1)); //$NON-NLS-1$
+			}
+			this.allowedModifiersAsString = buffer.toString();
 		}
 
 		/** Make this function visible for the enclosing class.
+		 *
+		 * <p>FIXME: Remove when Xtend PR is applied: https://github.com/eclipse/xtext-xtend/pull/527
 		 *
 		 * @param member the member to check.
 		 * @param memberName the name of the member, usually for the issue message.
 		 */
 		@Override
+		@SuppressWarnings("all")
 		protected void checkModifiers(XtendMember member, String memberName) {
-			super.checkModifiers(member, memberName);
+			Set<String> seenModifiers = newHashSet();
+			boolean visibilitySeen = false;
+			boolean abstractSeen = false;
+			boolean defSeen = false;
+			boolean staticSeen = false;
+			boolean finalSeen = false;
+			boolean varSeen = false;
+			int defKeywordIndex = -1;
+			int finalKeywordIndex = -1;
+
+			for(int i=0; i<member.getModifiers().size(); ++i) {
+				String modifier = member.getModifiers().get(i);
+				if(!allowedModifiers.contains(modifier)) { 
+					error("Illegal modifier for the " + memberName + "; only " + allowedModifiersAsString + " are permitted", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							member, i);
+				}
+				if(seenModifiers.contains(modifier)) 
+					error("Duplicate modifier for the " + memberName,  //$NON-NLS-1$
+							member, i);
+				else {
+					seenModifiers.add(modifier);
+					if(visibilityModifers.contains(modifier)) {
+						if(visibilitySeen) 
+							error("The " + memberName +" can only set one of public / package / protected / private",  //$NON-NLS-1$ //$NON-NLS-2$
+									member, i);
+						visibilitySeen = true;
+						if("private".equals(modifier) && privateByDefault(member)) { //$NON-NLS-1$
+							unnecessaryModifierIssue("private", memberName, member, i); //$NON-NLS-1$
+						}
+						if("protected".equals(modifier) && protectedByDefault(member)) { //$NON-NLS-1$
+							unnecessaryModifierIssue("protected", memberName, member, i); //$NON-NLS-1$
+						}
+						if("package".equals(modifier) && packageByDefault(member)) { //$NON-NLS-1$
+							unnecessaryModifierIssue("package", memberName, member, i); //$NON-NLS-1$
+						}
+						if("public".equals(modifier) && publicByDefault(member)) { //$NON-NLS-1$
+							unnecessaryModifierIssue("public", memberName, member, i); //$NON-NLS-1$
+						}
+					}
+				} 
+				if(equal(modifier, "abstract")) { //$NON-NLS-1$
+					if(finalSeen) {
+						error("The " + memberName + " can either be abstract or final, not both", //$NON-NLS-1$ //$NON-NLS-2$
+								member, i);
+					}
+					if(staticSeen && !(member instanceof XtendTypeDeclaration)) {
+						error("The " + memberName + " can either be abstract or static, not both", //$NON-NLS-1$ //$NON-NLS-2$
+								member, i);
+					}
+					abstractSeen = true;
+				} else if(equal(modifier, "static")) { //$NON-NLS-1$
+					if(abstractSeen && !(member instanceof XtendTypeDeclaration)) {
+						error("The " + memberName + " can either be abstract or static, not both", //$NON-NLS-1$ //$NON-NLS-2$
+								member, i);
+					}
+					staticSeen = true;
+				} else if(equal(modifier, "final") || equal(modifier, "val")) { //$NON-NLS-1$ //$NON-NLS-2$
+					if(abstractSeen) {
+						error("The " + memberName + " can either be abstract or final, not both", //$NON-NLS-1$ //$NON-NLS-2$
+								member, i);
+					}
+					if(varSeen) {
+						error("The " + memberName + " can either be var or val / final, not both", //$NON-NLS-1$ //$NON-NLS-2$
+								member, i);
+					}
+					if(equal(modifier, "final")) { //$NON-NLS-1$
+						finalKeywordIndex = i;
+					}
+					if(finalSeen) {
+						/*
+						 * Independent of the order of the keywords (such as 'final val' or 'val final'), 
+						 * the 'final' keyword should be marked with the issue marker
+						 */
+						unnecessaryModifierIssue("final", memberName, member, finalKeywordIndex); //$NON-NLS-1$
+					}
+					finalSeen = true;
+				} else if(equal(modifier, "var")) { //$NON-NLS-1$
+					if(finalSeen) {
+						error("The " + memberName + " can either be var or val / final, not both", //$NON-NLS-1$ //$NON-NLS-2$
+								member, i);
+					}
+					varSeen = true;
+				} else if ((equal(modifier, "def") || equal(modifier, "override")) && member instanceof XtendFunction) { //$NON-NLS-1$ //$NON-NLS-2$
+					if(equal(modifier, "def")) { //$NON-NLS-1$
+						defKeywordIndex = i;					
+					}
+					if(defSeen) {
+						/*
+						 * Independent of the order of the keywords (such as 'override def' or 'def override'), 
+						 * the 'def' keyword should be marked with the issue marker
+						 */
+						unnecessaryModifierIssue("def", memberName, member, defKeywordIndex); //$NON-NLS-1$
+					}
+					defSeen = true;
+				}
+			}
+		}
+
+		/** Replies if the "private" modifier is implicit when declaring the given member.
+		 *
+		 * <p>This function is defined for being overriding by subclasses.
+		 *
+		 * @param member the member to test.
+		 * @return {@code true} if the "private" modifier is implicit.
+		 */
+		@SuppressWarnings("synthetic-access")
+		protected boolean privateByDefault(XtendMember member) {
+			final JvmVisibility defaultVisibility = SARLValidator.this.defaultVisibilityProvider.getDefaultJvmVisibility(member);
+			return defaultVisibility == JvmVisibility.PRIVATE;
+		}
+
+		/** Replies if the "protected" modifier is implicit when declaring the given member.
+		 *
+		 * <p>This function is defined for being overriding by subclasses.
+		 *
+		 * @param member the member to test.
+		 * @return {@code true} if the "protected" modifier is implicit.
+		 */
+		@SuppressWarnings("synthetic-access")
+		protected boolean protectedByDefault(XtendMember member) {
+			final JvmVisibility defaultVisibility = SARLValidator.this.defaultVisibilityProvider.getDefaultJvmVisibility(member);
+			return defaultVisibility == JvmVisibility.PROTECTED;
+		}
+
+		/** Replies if the "package" modifier is implicit when declaring the given member.
+		 *
+		 * <p>This function is defined for being overriding by subclasses.
+		 *
+		 * @param member the member to test.
+		 * @return {@code true} if the "package" modifier is implicit.
+		 */
+		@SuppressWarnings("synthetic-access")
+		protected boolean packageByDefault(XtendMember member) {
+			final JvmVisibility defaultVisibility = SARLValidator.this.defaultVisibilityProvider.getDefaultJvmVisibility(member);
+			return defaultVisibility == JvmVisibility.DEFAULT;
+		}
+
+		/** Replies if the "public" modifier is implicit when declaring the given member.
+		 *
+		 * <p>This function is defined for being overriding by subclasses.
+		 *
+		 * @param member the member to test.
+		 * @return {@code true} if the "public" modifier is implicit.
+		 */
+		@SuppressWarnings("synthetic-access")
+		protected boolean publicByDefault(XtendMember member) {
+			final JvmVisibility defaultVisibility = SARLValidator.this.defaultVisibilityProvider.getDefaultJvmVisibility(member);
+			return defaultVisibility == JvmVisibility.PUBLIC;
 		}
 
 	}

@@ -23,7 +23,7 @@ package io.sarl.pythongenerator.ui.configuration;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 
-import io.sarl.lang.ui.compiler.extra.preferences.ExtraLanguagePreferenceAccess;
+import io.sarl.lang.ui.extralanguage.preferences.ExtraLanguagePreferenceAccess;
 import io.sarl.pythongenerator.generator.PyGeneratorPlugin;
 import io.sarl.pythongenerator.generator.configuration.PyGeneratorConfiguration;
 

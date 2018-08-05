@@ -54,15 +54,15 @@ import org.eclipse.xtext.xbase.lib.Pair;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure2;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
-import io.sarl.lang.compiler.extra.AbstractExtraLanguageGenerator;
-import io.sarl.lang.compiler.extra.ExtraLanguageAppendable;
-import io.sarl.lang.compiler.extra.ExtraLanguageTypeConverter;
-import io.sarl.lang.compiler.extra.IExtraLanguageGeneratorContext;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Skill;
+import io.sarl.lang.extralanguage.compiler.AbstractExtraLanguageGenerator;
+import io.sarl.lang.extralanguage.compiler.ExtraLanguageAppendable;
+import io.sarl.lang.extralanguage.compiler.ExtraLanguageTypeConverter;
+import io.sarl.lang.extralanguage.compiler.IExtraLanguageGeneratorContext;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlAnnotationType;
@@ -522,19 +522,19 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 				it.append("*"); //$NON-NLS-1$
 			}
 			final String pname = it.declareUniqueNameVariable(parameter, parameter.getName());
-			it.append(pname);
+			it.append(pname).append(" : ").append(parameter.getParameterType().getType()); //$NON-NLS-1$
 		}
-		it.append("):"); //$NON-NLS-1$
+		final LightweightTypeReference actualReturnType = getExpectedType(executable, returnType);
+		it.append(")"); //$NON-NLS-1$
+		if (actualReturnType != null) {
+			it.append(" -> ").append(actualReturnType); //$NON-NLS-1$
+		}
+		it.append(":"); //$NON-NLS-1$
 		it.increaseIndentation().newLine();
 		generateDocString(comment, it);
 		if (executable.getExpression() != null) {
-			LightweightTypeReference needReturn = null;
-			if (returnType != null && !"void".equals(returnType.getIdentifier()) //$NON-NLS-1$
-					&& !getEarlyExitComputer().isEarlyExit(executable.getExpression())) {
-				needReturn = getExpectedType(executable.getExpression());
-			}
 			it.openScope();
-			generate(executable.getExpression(), needReturn, it, context);
+			generate(executable.getExpression(), actualReturnType, it, context);
 			it.closeScope();
 		} else if (isAbstract) {
 			it.append("raise Exception(\"Unimplemented function\")"); //$NON-NLS-1$
@@ -560,12 +560,16 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 					if (((XtendParameter) parameter.getParameter()).isVarArg()) {
 						it.append("*"); //$NON-NLS-1$
 					}
-					it.append(parameter.getName());
+					it.append(parameter.getName()).append(" : ").append(parameter.getType().getType()); //$NON-NLS-1$
 				}
 			}
-			it.append("):"); //$NON-NLS-1$
+			it.append(")"); //$NON-NLS-1$
+			if (actualReturnType != null) {
+				it.append(" -> ").append(actualReturnType); //$NON-NLS-1$
+			}
+			it.append(":"); //$NON-NLS-1$
 			it.increaseIndentation().newLine();
-			if (returnType != null && !"void".equals(returnType.getIdentifier())) { //$NON-NLS-1$
+			if (actualReturnType != null) {
 				it.append("return "); //$NON-NLS-1$
 			}
 			it.append("self.").append(name).append("("); //$NON-NLS-1$ //$NON-NLS-2$

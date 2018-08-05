@@ -21,22 +21,16 @@
 
 package io.sarl.pythongenerator.generator.generator;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.xtext.xbase.lib.Pair;
 
-import io.sarl.lang.compiler.extra.IExtraLanguageConversionInitializer;
+import io.sarl.lang.extralanguage.compiler.AbstractExtraLanguageGenerator;
+import io.sarl.lang.extralanguage.compiler.IExtraLanguageConversionInitializer;
 import io.sarl.pythongenerator.generator.PyGeneratorPlugin;
 
 /** Initializers for Python 3.
@@ -67,18 +61,10 @@ public final class PyInitializers {
 	}
 
 	private static List<Pair<String, String>> loadPropertyFile(String filename) {
-		final URL url = FileLocator.find(
-				PyGeneratorPlugin.getDefault().getBundle(),
-				Path.fromPortableString(filename),
-				null);
-		final OrderedProperties properties = new OrderedProperties();
-		try (InputStream is = url.openStream()) {
-			properties.load(is);
-		} catch (IOException exception) {
-			PyGeneratorPlugin.getDefault().getLog().log(
-					PyGeneratorPlugin.getDefault().createStatus(IStatus.ERROR, exception));
-		}
-		return properties.getOrderedProperties();
+		return AbstractExtraLanguageGenerator.loadPropertyFile(filename,
+				PyGeneratorPlugin.getDefault(),
+				PyInitializers.class,
+				exception -> PyGeneratorPlugin.getDefault().createStatus(IStatus.ERROR, exception));
 	}
 
 	/** Replies the initializer for the type converter.
@@ -127,40 +113,6 @@ public final class PyInitializers {
 				}
 			}
 		};
-	}
-
-	/** Specific properties with reading order.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 0.6
-	 */
-	private static class OrderedProperties extends Properties {
-
-		private static final long serialVersionUID = 162949168401947298L;
-
-		private final List<Pair<String, String>> orderedElements = new ArrayList<>();
-
-		OrderedProperties() {
-			//
-		}
-
-		@Override
-		public synchronized Object put(Object key, Object value) {
-			this.orderedElements.add(new Pair<>(Objects.toString(key), Objects.toString(value)));
-			return super.put(key, value);
-		}
-
-		/** Replies the ordered elements.
-		 *
-		 * @return the ordered elements.
-		 */
-		public List<Pair<String, String>> getOrderedProperties() {
-			return this.orderedElements;
-		}
-
 	}
 
 }

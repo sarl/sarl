@@ -4,10 +4,11 @@
    <extension
          point="io.sarl.lang.ui.extraGenerators">
       <extraGenerator
-            configuration="io.sarl.pythongenerator.ui.PyExecutableExtensionFactory:io.sarl.pythongenerator.generator.configuration.PyOutputConfigurationProvider"
+            preferences="io.sarl.pythongenerator.ui.PyExecutableExtensionFactory:io.sarl.pythongenerator.ui.configuration.PyPreferenceInitializer"
             generator="io.sarl.pythongenerator.ui.PyExecutableExtensionFactory:io.sarl.pythongenerator.ui.generator.PyGeneratorProvider"
             validator="io.sarl.pythongenerator.ui.PyExecutableExtensionFactory:io.sarl.pythongenerator.ui.validator.PyValidatorProvider"
-            preferences="io.sarl.pythongenerator.ui.PyExecutableExtensionFactory:io.sarl.pythongenerator.ui.configuration.PyPreferenceInitializer">
+            outputConfiguration="io.sarl.pythongenerator.ui.PyExecutableExtensionFactory:io.sarl.pythongenerator.generator.configuration.PyOutputConfigurationProvider"
+            keywords="io.sarl.pythongenerator.ui.PyExecutableExtensionFactory:io.sarl.pythongenerator.generator.generator.PyKeywordProvider">
       </extraGenerator>
    </extension>
 

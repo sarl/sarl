@@ -23,9 +23,9 @@ package io.sarl.pythongenerator.generator.generator;
 
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 
-import io.sarl.lang.compiler.extra.ExtraLanguageAppendable;
-import io.sarl.lang.compiler.extra.ExtraLanguageImportManager;
-import io.sarl.lang.compiler.extra.ExtraLanguageTypeConverter;
+import io.sarl.lang.extralanguage.compiler.ExtraLanguageAppendable;
+import io.sarl.lang.extralanguage.compiler.ExtraLanguageImportManager;
+import io.sarl.lang.extralanguage.compiler.ExtraLanguageTypeConverter;
 
 /** Appendable dedicated to Python.
  *

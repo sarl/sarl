@@ -79,11 +79,11 @@ import org.eclipse.xtext.xbase.typesystem.references.FunctionTypeReference;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
-import io.sarl.lang.compiler.extra.AbstractExpressionGenerator;
-import io.sarl.lang.compiler.extra.ExtraLanguageAppendable;
-import io.sarl.lang.compiler.extra.IExtraLanguageConversionInitializer;
-import io.sarl.lang.compiler.extra.IExtraLanguageGeneratorContext;
-import io.sarl.lang.compiler.extra.IRootGenerator;
+import io.sarl.lang.extralanguage.compiler.AbstractExpressionGenerator;
+import io.sarl.lang.extralanguage.compiler.ExtraLanguageAppendable;
+import io.sarl.lang.extralanguage.compiler.IExtraLanguageConversionInitializer;
+import io.sarl.lang.extralanguage.compiler.IExtraLanguageGeneratorContext;
+import io.sarl.lang.extralanguage.compiler.IRootGenerator;
 import io.sarl.lang.sarl.SarlAssertExpression;
 import io.sarl.lang.sarl.SarlBreakExpression;
 import io.sarl.lang.sarl.SarlContinueExpression;

@@ -25,7 +25,7 @@ import javax.inject.Singleton;
 
 import org.eclipse.xtext.xbase.lib.Functions.Function0;
 
-import io.sarl.lang.compiler.extra.IExtraLanguageKeywordProvider;
+import io.sarl.lang.extralanguage.compiler.IExtraLanguageKeywordProvider;
 
 /** Provider of the Python keywords.
  *

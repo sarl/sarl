@@ -25,8 +25,8 @@ import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
-import io.sarl.lang.ui.compiler.extra.preferences.ExtraLanguagePreferenceAccess;
-import io.sarl.lang.ui.compiler.extra.properties.AbstractGeneratorConfigurationBlock;
+import io.sarl.lang.ui.extralanguage.preferences.ExtraLanguagePreferenceAccess;
+import io.sarl.lang.ui.extralanguage.properties.AbstractGeneratorConfigurationBlock;
 import io.sarl.pythongenerator.generator.PyGeneratorPlugin;
 import io.sarl.pythongenerator.ui.PyGeneratorUiPlugin;
 import io.sarl.pythongenerator.ui.configuration.PyPreferenceAccess;

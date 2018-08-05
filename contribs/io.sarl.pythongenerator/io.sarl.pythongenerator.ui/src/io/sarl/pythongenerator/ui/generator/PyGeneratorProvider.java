@@ -24,7 +24,7 @@ package io.sarl.pythongenerator.ui.generator;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
 
-import io.sarl.lang.ui.compiler.extra.AbstractExtraLanguageGeneratorProvider;
+import io.sarl.lang.ui.extralanguage.compiler.AbstractExtraLanguageGeneratorProvider;
 import io.sarl.pythongenerator.generator.PyGeneratorPlugin;
 import io.sarl.pythongenerator.generator.configuration.IPyGeneratorConfigurationProvider;
 import io.sarl.pythongenerator.generator.generator.PyGenerator;
@@ -39,7 +39,7 @@ import io.sarl.pythongenerator.ui.configuration.PyGeneratorUiConfigurationProvid
  * @since 0.6
  */
 @Singleton
-public class PyGeneratorProvider extends AbstractExtraLanguageGeneratorProvider<PyGenerator> {
+public class PyGeneratorProvider extends AbstractExtraLanguageGeneratorProvider {
 
 	@Override
 	protected PyGenerator createGeneratorInstance(Injector injector) {

@@ -23,7 +23,6 @@ package io.sarl.lang.compiler;
 
 import static com.google.common.collect.Sets.newHashSet;
 
-import java.util.Collections;
 import java.util.Set;
 
 import com.google.inject.Singleton;
@@ -57,7 +56,7 @@ public class SarlOutputConfigurationProvider extends OutputConfigurationProvider
 		if (testOutput != null) {
 			return newHashSet(testOutput);
 		}
-		return Collections.emptySet();
+		return newHashSet();
 	}
 
 	/** Create the standard output configuration.

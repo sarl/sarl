@@ -28,7 +28,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 import io.sarl.lang.ui.compiler.ProjectAdapter;
-import io.sarl.lang.ui.compiler.extra.preferences.ExtraLanguagePreferenceAccess;
+import io.sarl.lang.ui.extralanguage.preferences.ExtraLanguagePreferenceAccess;
 import io.sarl.pythongenerator.generator.PyGeneratorPlugin;
 import io.sarl.pythongenerator.generator.configuration.PyGeneratorConfiguration;
 import io.sarl.pythongenerator.generator.configuration.PyGeneratorConfigurationProvider;

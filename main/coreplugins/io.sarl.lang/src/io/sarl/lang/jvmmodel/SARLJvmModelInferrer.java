@@ -91,6 +91,7 @@ import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmIntAnnotationValue;
+import org.eclipse.xtext.common.types.JvmMember;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
@@ -331,6 +332,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	@Inject
 	private InheritanceHelper inheritanceHelper;
+
+	@Inject
+	private IDefaultVisibilityProvider defaultVisibilityProvider;
 
 	/** Generation contexts.
 	 */
@@ -779,6 +783,14 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		}
 	}
 
+	private void setVisibility(JvmMember jvmMember, XtendMember member) {
+		JvmVisibility visibility = member.getVisibility();
+		if (visibility == null) {
+			visibility = this.defaultVisibilityProvider.getDefaultJvmVisibility(member);
+		}
+		jvmMember.setVisibility(visibility);
+	}
+
 	/** {@inheritDoc}.
 	 *
 	 * <p>The function is overridden in order to interleave the instructions from Xtend and the ones needed
@@ -804,7 +816,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			inferredJvmType.setSimpleName(localClassName);
 			inferredJvmType.setAnonymous(!hasAdditionalMembers(anonymousClass));
 			inferredJvmType.setFinal(true);
-			inferredJvmType.setVisibility(JvmVisibility.DEFAULT);
+			setVisibility(inferredJvmType, anonymousClass);
 			inferredJvmType.getSuperTypes().add(this.typeBuilder.inferredType(anonymousClass));
 			container.getLocalClasses().add(inferredJvmType);
 			this.associator.associatePrimary(anonymousClass, inferredJvmType);
@@ -873,6 +885,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 			// Standard OOP generation
 			super.initialize(source, inferredJvmType);
+			// Override the visibility
+			setVisibility(inferredJvmType, source);
 
 			// Add SARL synthetic functions
 			appendSyntheticDefaultValuedParameterMethods(
@@ -932,6 +946,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 			// Standard OOP generation
 			super.initialize(source, inferredJvmType);
+			// Override the visibility
+			setVisibility(inferredJvmType, source);
 
 			// Add SARL synthetic functions
 			appendSyntheticDefaultValuedParameterMethods(
@@ -970,6 +986,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		try {
 			// Standard OOP generation
 			super.initialize(source, inferredJvmType);
+			// Override the visibility
+			setVisibility(inferredJvmType, source);
 
 			// Add SARL synthetic functions
 			appendSyntheticDefaultValuedParameterMethods(
@@ -1005,6 +1023,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		try {
 			// Standard OOP generation
 			super.initialize(source, inferredJvmType);
+			// Override the visibility
+			setVisibility(inferredJvmType, source);
 
 			// Add SARL synthetic functions
 			appendSyntheticDefaultValuedParameterMethods(
@@ -1045,7 +1065,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Change the modifiers on the generated type.
 			inferredJvmType.setStatic(false);
 			inferredJvmType.setStrictFloatingPoint(false);
-			inferredJvmType.setVisibility(source.getVisibility());
+			setVisibility(inferredJvmType, source);
 			final boolean isAbstract = source.isAbstract() || Utils.hasAbstractMember(source);
 			inferredJvmType.setAbstract(isAbstract);
 			inferredJvmType.setFinal(!isAbstract && source.isFinal());
@@ -1111,7 +1131,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			this.typeBuilder.copyDocumentationTo(source, inferredJvmType);
 
 			// Change the modifiers on the generated type.
-			inferredJvmType.setVisibility(source.getVisibility());
+			setVisibility(inferredJvmType, source);
 			inferredJvmType.setStatic(false);
 			final boolean isAbstract = source.isAbstract() || Utils.hasAbstractMember(source);
 			inferredJvmType.setAbstract(isAbstract);
@@ -1178,7 +1198,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			this.typeBuilder.copyDocumentationTo(source, inferredJvmType);
 
 			// Change the modifiers on the generated type.
-			inferredJvmType.setVisibility(source.getVisibility());
+			setVisibility(inferredJvmType, source);
 			inferredJvmType.setStatic(false);
 			inferredJvmType.setAbstract(false);
 			inferredJvmType.setStrictFloatingPoint(false);
@@ -1250,7 +1270,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			this.typeBuilder.copyDocumentationTo(source, inferredJvmType);
 
 			// Change the modifiers on the generated type.
-			inferredJvmType.setVisibility(source.getVisibility());
+			setVisibility(inferredJvmType, source);
 			inferredJvmType.setStatic(false);
 			final boolean isAbstract = source.isAbstract() || Utils.hasAbstractMember(source);
 			inferredJvmType.setAbstract(isAbstract);
@@ -1320,7 +1340,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Change the modifiers on the generated type.
 			inferredJvmType.setInterface(true);
 			inferredJvmType.setAbstract(true);
-			inferredJvmType.setVisibility(source.getVisibility());
+			setVisibility(inferredJvmType, source);
 			inferredJvmType.setStatic(false);
 			inferredJvmType.setStrictFloatingPoint(false);
 			inferredJvmType.setFinal(false);
@@ -1448,9 +1468,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		final JvmConstructor constructor = this.typesFactory.createJvmConstructor();
 		container.getMembers().add(constructor);
 		this.associator.associatePrimary(source, constructor);
-		final JvmVisibility visibility = source.getVisibility();
 		constructor.setSimpleName(constructorName);
-		constructor.setVisibility(visibility);
+		setVisibility(constructor, source);
 		constructor.setVarArgs(isVarArgs);
 
 		// Generate the parameters
@@ -1492,9 +1511,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					final JvmConstructor constructor2 = SARLJvmModelInferrer.this.typesFactory.createJvmConstructor();
 					container.getMembers().add(constructor2);
 					copyAndCleanDocumentationTo(source, constructor2);
-					final JvmVisibility vis = source.getVisibility();
 					constructor2.setSimpleName(container.getSimpleName());
-					constructor2.setVisibility(vis);
+					constructor2.setVisibility(constructor.getVisibility());
 					constructor2.setVarArgs(isVarArgs);
 
 					final List<String> args = translateSarlFormalParametersForSyntheticOperation(
@@ -1535,6 +1553,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	@Override
 	protected void transform(XtendField source, JvmGenericType container) {
 		super.transform(source, container);
+		// Override the visibility
+		final JvmField field = (JvmField) this.sarlAssociations.getPrimaryJvmElement(source);
+		setVisibility(field, source);
+
 		final GenerationContext context = getContext(container);
 		if (context != null) {
 			final String name = source.getName();
@@ -1569,16 +1591,11 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			}
 			final String sourceName = sourceNameBuffer.toString();
 
-			JvmVisibility visibility = source.getVisibility();
-			if (visibility == null) {
-				visibility = JvmVisibility.DEFAULT;
-			}
-
 			// Create the main function
 			final JvmOperation operation = this.typesFactory.createJvmOperation();
 			container.getMembers().add(operation);
 			operation.setSimpleName(sourceName);
-			operation.setVisibility(visibility);
+			setVisibility(operation, source);
 			operation.setStrictFloatingPoint(source.isStrictFloatingPoint());
 			operation.setStatic(source.isStatic());
 			operation.setSynchronized(source.isSynchonized());
@@ -2209,8 +2226,10 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			final Iterable<XtendFunction> xtendFunctions = Iterables.filter(
 					this.sarlAssociations.getSourceElements(jvmOperation), XtendFunction.class);
 			for (final XtendFunction func : xtendFunctions) {
-				final JvmVisibility visibility = func.getVisibility();
-				assert visibility != null;
+				JvmVisibility visibility = func.getVisibility();
+				if (visibility == null) {
+					visibility = this.defaultVisibilityProvider.getDefaultJvmVisibility(func);
+				}
 				if (this.visibilityComparator.compare(visibility, higherVisibility) > 0) {
 					higherVisibility = visibility;
 				}

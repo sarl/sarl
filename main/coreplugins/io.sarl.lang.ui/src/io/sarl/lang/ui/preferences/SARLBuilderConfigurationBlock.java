@@ -42,7 +42,7 @@ import org.eclipse.xtext.builder.EclipseOutputConfigurationProvider;
 import org.eclipse.xtext.generator.OutputConfiguration;
 import org.eclipse.xtext.xbase.ui.builder.XbaseBuilderConfigurationBlock;
 
-import io.sarl.lang.compiler.extra.ExtraLanguageOutputConfigurations;
+import io.sarl.lang.extralanguage.compiler.ExtraLanguageOutputConfigurations;
 
 /** Preference page that permits to configure the SARL builder.
  *

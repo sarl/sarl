@@ -49,39 +49,6 @@
 
    <element name="extraGenerator">
       <complexType>
-         <attribute name="generator" type="string" use="required">
-            <annotation>
-               <documentation>
-                  Fully qualified name of the class that implements an extra language generator, sub-type of IExtraLanguageGeneratorProvider.
-                  The class name may be prefixed by the plugin factory.
-               </documentation>
-               <appInfo>
-                  <meta.attribute kind="java" basedOn=":io.sarl.lang.generator.extra.IExtraLanguageGeneratorProvider"/>
-               </appInfo>
-            </annotation>
-         </attribute>
-         <attribute name="validator" type="string">
-            <annotation>
-               <documentation>
-                  Fully qualified name of the class that implements an extra language validator, sub-type of IExtraLanguageValidatorProvider.
-                  The class name may be prefixed by the plugin factory.
-               </documentation>
-               <appInfo>
-                  <meta.attribute kind="java" basedOn=":io.sarl.lang.validation.extra.IExtraLanguageValidatorProvider"/>
-               </appInfo>
-            </annotation>
-         </attribute>
-         <attribute name="configuration" type="string" use="required">
-            <annotation>
-               <documentation>
-                  Fully qualified name of the class that implements an extra language configuration provider, sub-type of IOutputConfigurationProvider.
-                  The class name may be prefixed by the plugin factory.
-               </documentation>
-               <appInfo>
-                  <meta.attribute kind="java" basedOn=":org.eclipse.xtext.generator.IOutputConfigurationProvider"/>
-               </appInfo>
-            </annotation>
-         </attribute>
          <attribute name="preferences" type="string">
             <annotation>
                <documentation>
@@ -90,6 +57,46 @@
                </documentation>
                <appInfo>
                   <meta.attribute kind="java" basedOn=":org.eclipse.xtext.ui.editor.preferences.IPreferenceStoreInitializer"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="generator" type="string">
+            <annotation>
+               <documentation>
+                  Fully qualified name of the provider of a extra-language generator.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn=":io.sarl.lang.extralanguage.compiler.IExtraLanguageGeneratorProvider"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="validator" type="string">
+            <annotation>
+               <documentation>
+                  Fully qualified name of a provider of a extra-language validator.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn=":io.sarl.lang.extralanguage.validator.IExtraLanguageValidatorProvider"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="outputConfiguration" type="string">
+            <annotation>
+               <documentation>
+                  Fully qualified name of a provider of an extra-language output configuration.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.xtext.generator.IOutputConfigurationProvider"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="keywords" type="string">
+            <annotation>
+               <documentation>
+                  Fully qualified name of a provider of extra-language keywords.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn=":io.sarl.lang.extralanguage.compiler.IExtraLanguageKeywordProvider"/>
                </appInfo>
             </annotation>
          </attribute>

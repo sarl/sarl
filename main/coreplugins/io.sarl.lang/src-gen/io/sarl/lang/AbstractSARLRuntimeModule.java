@@ -74,7 +74,6 @@ import io.sarl.lang.compiler.IGeneratorConfigProvider2;
 import io.sarl.lang.compiler.SARLGeneratorConfigProvider;
 import io.sarl.lang.compiler.SARLJvmGenerator;
 import io.sarl.lang.compiler.SarlCompiler;
-import io.sarl.lang.compiler.SarlOutputConfigurationProvider;
 import io.sarl.lang.controlflow.ExtendedSARLEarlyExitComputer;
 import io.sarl.lang.controlflow.ISarlEarlyExitComputer;
 import io.sarl.lang.controlflow.SARLEarlyExitComputer;
@@ -83,6 +82,14 @@ import io.sarl.lang.documentation.EcoreDocumentationBuilder;
 import io.sarl.lang.documentation.IDocumentationFormatter;
 import io.sarl.lang.documentation.IEcoreDocumentationBuilder;
 import io.sarl.lang.documentation.SarlDocumentationProvider;
+import io.sarl.lang.extralanguage.ContributionBasedExtraLanguageGeneratorProvider;
+import io.sarl.lang.extralanguage.ContributionBasedExtraLanguageValidatorProvider;
+import io.sarl.lang.extralanguage.ContributionBasedOutputConfigurationProvider;
+import io.sarl.lang.extralanguage.IExtraLanguageContributions;
+import io.sarl.lang.extralanguage.JavaPluginExtraLanguageContributions;
+import io.sarl.lang.extralanguage.compiler.ExtraLanguageGeneratorSupport;
+import io.sarl.lang.extralanguage.compiler.IExtraLanguageGeneratorProvider;
+import io.sarl.lang.extralanguage.validator.IExtraLanguageValidatorProvider;
 import io.sarl.lang.formatting2.SARLFormatter;
 import io.sarl.lang.formatting2.SARLFormatterPreferenceKeys;
 import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
@@ -161,6 +168,7 @@ import org.eclipse.xtext.formatting2.FormatterPreferenceValuesProvider;
 import org.eclipse.xtext.formatting2.FormatterPreferences;
 import org.eclipse.xtext.formatting2.IFormatter2;
 import org.eclipse.xtext.generator.IContextualOutputConfigurationProvider;
+import org.eclipse.xtext.generator.IGenerator;
 import org.eclipse.xtext.generator.IGenerator2;
 import org.eclipse.xtext.generator.IOutputConfigurationProvider;
 import org.eclipse.xtext.generator.IShouldGenerate;
@@ -549,12 +557,22 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IOutputConfigurationProvider> bindIOutputConfigurationProvider() {
-		return SarlOutputConfigurationProvider.class;
+		return ContributionBasedOutputConfigurationProvider.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IContextualOutputConfigurationProvider> bindIContextualOutputConfigurationProvider() {
-		return SarlOutputConfigurationProvider.class;
+		return ContributionBasedOutputConfigurationProvider.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends IExtraLanguageContributions> bindIExtraLanguageContributions() {
+		return JavaPluginExtraLanguageContributions.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends IExtraLanguageValidatorProvider> bindIExtraLanguageValidatorProvider() {
+		return ContributionBasedExtraLanguageValidatorProvider.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
@@ -604,8 +622,13 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends IExtraLanguageGeneratorProvider> bindIExtraLanguageGeneratorProvider() {
+		return ContributionBasedExtraLanguageGeneratorProvider.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public void configureIGenerator2ExtraLanguageMainGenerator(Binder binder) {
-		binder.bind(IGenerator2.class).annotatedWith(Names.named(io.sarl.lang.compiler.extra.ExtraLanguageGeneratorSupport.MAIN_GENERATOR_NAME)).to(SARLJvmGenerator.class);
+		binder.bind(IGenerator2.class).annotatedWith(Names.named(io.sarl.lang.extralanguage.compiler.ExtraLanguageGeneratorSupport.MAIN_GENERATOR_NAME)).to(SARLJvmGenerator.class);
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
@@ -646,6 +669,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends ConfigurableIssueCodesProvider> bindConfigurableIssueCodesProvider() {
 		return StandardSarlConfigurableIssueCodesProvider.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends IGenerator> bindIGenerator() {
+		return ExtraLanguageGeneratorSupport.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]

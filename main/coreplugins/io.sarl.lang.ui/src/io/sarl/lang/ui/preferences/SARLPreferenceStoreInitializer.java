@@ -33,8 +33,8 @@ import org.eclipse.xtext.ui.editor.preferences.PreferenceConstants;
 import org.eclipse.xtext.validation.ConfigurableIssueCodesProvider;
 
 import io.sarl.lang.ui.codemining.SARLCodeminingPreferenceAccess;
-import io.sarl.lang.ui.compiler.extra.ExtensionPointExtraLanguagePreferenceInitializer;
 import io.sarl.lang.ui.editor.SARLSourceViewerPreferenceAccess;
+import io.sarl.lang.ui.extralanguage.preferences.ExtensionPointExtraLanguagePreferenceInitializer;
 
 /** Initialize the preference store with SARL specific information.
  *

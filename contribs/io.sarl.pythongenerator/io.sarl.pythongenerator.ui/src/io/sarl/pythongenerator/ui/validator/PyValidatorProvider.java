@@ -24,7 +24,7 @@ package io.sarl.pythongenerator.ui.validator;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
 
-import io.sarl.lang.ui.validation.extra.AbstractExtraLanguageValidatorProvider;
+import io.sarl.lang.ui.extralanguage.validation.AbstractExtraLanguageValidatorProvider;
 import io.sarl.pythongenerator.generator.PyGeneratorPlugin;
 import io.sarl.pythongenerator.generator.configuration.IPyGeneratorConfigurationProvider;
 import io.sarl.pythongenerator.generator.validator.PyValidator;
@@ -39,7 +39,7 @@ import io.sarl.pythongenerator.ui.configuration.PyGeneratorUiConfigurationProvid
  * @since 0.6
  */
 @Singleton
-public class PyValidatorProvider extends AbstractExtraLanguageValidatorProvider<PyValidator> {
+public class PyValidatorProvider extends AbstractExtraLanguageValidatorProvider {
 
 	@Override
 	protected PyValidator createValidatorInstance(Injector injector) {

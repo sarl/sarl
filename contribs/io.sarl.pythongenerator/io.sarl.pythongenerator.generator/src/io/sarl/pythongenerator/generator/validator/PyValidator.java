@@ -44,9 +44,9 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure3;
 import org.eclipse.xtext.xtype.XImportDeclaration;
 import org.eclipse.xtext.xtype.XtypePackage;
 
-import io.sarl.lang.compiler.extra.ExtraLanguageTypeConverter;
-import io.sarl.lang.compiler.extra.IExtraLanguageConversionInitializer;
-import io.sarl.lang.validation.extra.AbstractExtraLanguageValidator;
+import io.sarl.lang.extralanguage.compiler.ExtraLanguageTypeConverter;
+import io.sarl.lang.extralanguage.compiler.IExtraLanguageConversionInitializer;
+import io.sarl.lang.extralanguage.validator.AbstractExtraLanguageValidator;
 import io.sarl.pythongenerator.generator.configuration.IPyGeneratorConfigurationProvider;
 import io.sarl.pythongenerator.generator.configuration.PyGeneratorConfiguration;
 import io.sarl.pythongenerator.generator.generator.PyInitializers;
