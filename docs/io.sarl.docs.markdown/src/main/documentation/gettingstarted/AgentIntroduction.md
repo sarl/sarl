@@ -170,7 +170,7 @@ call [:emit:].
 
 ## What's next?
 
-In the next section, we will learn how to start a SARL agent on the command line.
+In the next section, we will learn how to start a SARL agent in the Eclipse IDE.
 
 [Next>](./RunSARLAgentEclipse.md)
 
