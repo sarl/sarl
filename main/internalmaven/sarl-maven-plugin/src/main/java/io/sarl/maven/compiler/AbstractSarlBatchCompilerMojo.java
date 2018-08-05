@@ -185,6 +185,13 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	 */
 	protected abstract boolean getGenerateSerialNumberFields();
 
+	/** Replies the list of the extra-language generators' identifiers that should be enabled.
+	 *
+	 * @return the list of extra-language generators' identifiers.
+	 * @since 0.8
+	 */
+	protected abstract String[] getExtraGenerators();
+
 	/** Run compilation.
 	 *
 	 * @param classPath the classpath
@@ -194,6 +201,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	 * @throws MojoExecutionException if error.
 	 * @throws MojoFailureException if failure.
 	 */
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	protected void compile(List<File> classPath, List<File> sourcePaths, File sarlOutputPath,
 			File classOutputPath) throws MojoExecutionException, MojoFailureException {
 		final SarlBatchCompiler compiler = getBatchCompiler();
@@ -227,6 +235,16 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 		compiler.setGenerateToStringFunctions(getGenerateToStringFunctions());
 		compiler.setGenerateCloneFunctions(getGenerateCloneFunctions());
 		compiler.setGenerateSerialNumberFields(getGenerateSerialNumberFields());
+
+		final StringBuilder builder = new StringBuilder();
+		for (final String identifier : getExtraGenerators()) {
+			if (builder.length() > 0) {
+				builder.append(File.pathSeparator);
+			}
+			builder.append(identifier);
+		}
+		compiler.setExtraLanguageGenerators(builder.toString());
+
 		StaticLoggerBinder.getSingleton().registerMavenLogger(getLog());
 		final Logger logger = LoggerFactory.getLogger(getClass());
 		compiler.setLogger(logger);

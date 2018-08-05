@@ -53,6 +53,11 @@
 			<groupId>io.sarl.maven</groupId>
 			<artifactId>io.sarl.maven.batchcompiler</artifactId>
 		</dependency>
+		<!--  The following dependency is included in order to have extra-language generators -->
+		<dependency>
+			<groupId>io.sarl.pythongenerator</groupId>
+			<artifactId>io.sarl.pythongenerator.generator</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

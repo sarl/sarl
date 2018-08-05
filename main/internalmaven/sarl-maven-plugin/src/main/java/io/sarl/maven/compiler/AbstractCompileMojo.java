@@ -124,6 +124,21 @@ public abstract class AbstractCompileMojo extends AbstractSarlBatchCompilerMojo 
 	@Parameter(defaultValue = "false", required = false)
 	private boolean tycho;
 
+	/** Indicates if the extra-language generators to be enabled.
+	 *
+	 * @since 0.8
+	 */
+	@Parameter(required = false)
+	private String[] extraGenerators;
+
+	@Override
+	protected String[] getExtraGenerators() {
+		if (this.extraGenerators == null) {
+			this.extraGenerators = new String[0];
+		}
+		return this.extraGenerators;
+	}
+
 	@Override
 	protected String getSourceVersion() {
 		return this.source;
