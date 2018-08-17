@@ -8810,11 +8810,11 @@ ruleXCastedExpression returns [EObject current=null]
 }:
 	(
 		{
-			newCompositeNode(grammarAccess.getXCastedExpressionAccess().getXUnaryOperationParserRuleCall_0());
+			newCompositeNode(grammarAccess.getXCastedExpressionAccess().getXExponentExpressionParserRuleCall_0());
 		}
-		this_XUnaryOperation_0=ruleXUnaryOperation
+		this_XExponentExpression_0=ruleXExponentExpression
 		{
-			$current = $this_XUnaryOperation_0.current;
+			$current = $this_XExponentExpression_0.current;
 			afterParserOrEnumRuleCall();
 		}
 		(
@@ -8862,114 +8862,6 @@ ruleXCastedExpression returns [EObject current=null]
 	)
 ;
 
-// Entry rule entryRuleXUnaryOperation
-entryRuleXUnaryOperation returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getXUnaryOperationRule()); }
-	iv_ruleXUnaryOperation=ruleXUnaryOperation
-	{ $current=$iv_ruleXUnaryOperation.current; }
-	EOF;
-
-// Rule XUnaryOperation
-ruleXUnaryOperation returns [EObject current=null]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	(
-		(
-			(
-				{
-					$current = forceCreateModelElement(
-						grammarAccess.getXUnaryOperationAccess().getXUnaryOperationAction_0_0(),
-						$current);
-				}
-			)
-			(
-				(
-					{
-						if ($current==null) {
-							$current = createModelElement(grammarAccess.getXUnaryOperationRule());
-						}
-					}
-					{
-						newCompositeNode(grammarAccess.getXUnaryOperationAccess().getFeatureJvmIdentifiableElementCrossReference_0_1_0());
-					}
-					ruleOpUnary
-					{
-						afterParserOrEnumRuleCall();
-					}
-				)
-			)
-			(
-				(
-					{
-						newCompositeNode(grammarAccess.getXUnaryOperationAccess().getOperandXUnaryOperationParserRuleCall_0_2_0());
-					}
-					lv_operand_2_0=ruleXUnaryOperation
-					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getXUnaryOperationRule());
-						}
-						set(
-							$current,
-							"operand",
-							lv_operand_2_0,
-							"io.sarl.lang.SARL.XUnaryOperation");
-						afterParserOrEnumRuleCall();
-					}
-				)
-			)
-		)
-		    |
-		{
-			newCompositeNode(grammarAccess.getXUnaryOperationAccess().getXExponentExpressionParserRuleCall_1());
-		}
-		this_XExponentExpression_3=ruleXExponentExpression
-		{
-			$current = $this_XExponentExpression_3.current;
-			afterParserOrEnumRuleCall();
-		}
-	)
-;
-
-// Entry rule entryRuleOpUnary
-entryRuleOpUnary returns [String current=null]:
-	{ newCompositeNode(grammarAccess.getOpUnaryRule()); }
-	iv_ruleOpUnary=ruleOpUnary
-	{ $current=$iv_ruleOpUnary.current.getText(); }
-	EOF;
-
-// Rule OpUnary
-ruleOpUnary returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	(
-		kw='!'
-		{
-			$current.merge(kw);
-			newLeafNode(kw, grammarAccess.getOpUnaryAccess().getExclamationMarkKeyword_0());
-		}
-		    |
-		kw='-'
-		{
-			$current.merge(kw);
-			newLeafNode(kw, grammarAccess.getOpUnaryAccess().getHyphenMinusKeyword_1());
-		}
-		    |
-		kw='+'
-		{
-			$current.merge(kw);
-			newLeafNode(kw, grammarAccess.getOpUnaryAccess().getPlusSignKeyword_2());
-		}
-	)
-;
-
 // Entry rule entryRuleXExponentExpression
 entryRuleXExponentExpression returns [EObject current=null]:
 	{ newCompositeNode(grammarAccess.getXExponentExpressionRule()); }
@@ -8987,11 +8879,11 @@ ruleXExponentExpression returns [EObject current=null]
 }:
 	(
 		{
-			newCompositeNode(grammarAccess.getXExponentExpressionAccess().getXPostfixOperationParserRuleCall_0());
+			newCompositeNode(grammarAccess.getXExponentExpressionAccess().getXUnaryOperationParserRuleCall_0());
 		}
-		this_XPostfixOperation_0=ruleXPostfixOperation
+		this_XUnaryOperation_0=ruleXUnaryOperation
 		{
-			$current = $this_XPostfixOperation_0.current;
+			$current = $this_XUnaryOperation_0.current;
 			afterParserOrEnumRuleCall();
 		}
 		(
@@ -9075,6 +8967,114 @@ ruleOpExponent returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToke
 		$current.merge(kw);
 		newLeafNode(kw, grammarAccess.getOpExponentAccess().getAsteriskAsteriskKeyword());
 	}
+;
+
+// Entry rule entryRuleXUnaryOperation
+entryRuleXUnaryOperation returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getXUnaryOperationRule()); }
+	iv_ruleXUnaryOperation=ruleXUnaryOperation
+	{ $current=$iv_ruleXUnaryOperation.current; }
+	EOF;
+
+// Rule XUnaryOperation
+ruleXUnaryOperation returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			(
+				{
+					$current = forceCreateModelElement(
+						grammarAccess.getXUnaryOperationAccess().getXUnaryOperationAction_0_0(),
+						$current);
+				}
+			)
+			(
+				(
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getXUnaryOperationRule());
+						}
+					}
+					{
+						newCompositeNode(grammarAccess.getXUnaryOperationAccess().getFeatureJvmIdentifiableElementCrossReference_0_1_0());
+					}
+					ruleOpUnary
+					{
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getXUnaryOperationAccess().getOperandXUnaryOperationParserRuleCall_0_2_0());
+					}
+					lv_operand_2_0=ruleXUnaryOperation
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getXUnaryOperationRule());
+						}
+						set(
+							$current,
+							"operand",
+							lv_operand_2_0,
+							"io.sarl.lang.SARL.XUnaryOperation");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+		)
+		    |
+		{
+			newCompositeNode(grammarAccess.getXUnaryOperationAccess().getXPostfixOperationParserRuleCall_1());
+		}
+		this_XPostfixOperation_3=ruleXPostfixOperation
+		{
+			$current = $this_XPostfixOperation_3.current;
+			afterParserOrEnumRuleCall();
+		}
+	)
+;
+
+// Entry rule entryRuleOpUnary
+entryRuleOpUnary returns [String current=null]:
+	{ newCompositeNode(grammarAccess.getOpUnaryRule()); }
+	iv_ruleOpUnary=ruleOpUnary
+	{ $current=$iv_ruleOpUnary.current.getText(); }
+	EOF;
+
+// Rule OpUnary
+ruleOpUnary returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		kw='!'
+		{
+			$current.merge(kw);
+			newLeafNode(kw, grammarAccess.getOpUnaryAccess().getExclamationMarkKeyword_0());
+		}
+		    |
+		kw='-'
+		{
+			$current.merge(kw);
+			newLeafNode(kw, grammarAccess.getOpUnaryAccess().getHyphenMinusKeyword_1());
+		}
+		    |
+		kw='+'
+		{
+			$current.merge(kw);
+			newLeafNode(kw, grammarAccess.getOpUnaryAccess().getPlusSignKeyword_2());
+		}
+	)
 ;
 
 // Entry rule entryRuleXFunctionSuperTypeRef

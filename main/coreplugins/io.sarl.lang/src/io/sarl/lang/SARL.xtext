@@ -530,8 +530,9 @@ XSwitchExpression returns xbase::XExpression:
 ;
 
 //-----------------------------------------------
-// BELOW THIS POINT, See Issue #793
+// BELOW THIS POINT, See Issue #793 and #846
 // FIXME Remove When issue 68 is fixed within Xbase, https://github.com/eclipse/xtext-lib/issues/68
+// FIXME Remove when issue 67 is fixed within Xbase, https://github.com/eclipse/xtext-lib/issues/67
 
 @Override
 XMultiplicativeExpression returns xbase::XExpression:
@@ -547,22 +548,11 @@ OpMulti:
 
 @Override
 XCastedExpression returns xbase::XExpression:
-	XUnaryOperation (=>({xbase::XCastedExpression.target=current} 'as') type=JvmTypeReference)*
-;
-
-@Override
-XUnaryOperation returns xbase::XExpression:
-	{xbase::XUnaryOperation} feature=[jvm::JvmIdentifiableElement|OpUnary] operand=XUnaryOperation
-	| XExponentExpression
-;
-
-@Override
-OpUnary:
-	"!" | "-" | "+"
+	XExponentExpression (=>({xbase::XCastedExpression.target=current} 'as') type=JvmTypeReference)*
 ;
 
 XExponentExpression returns xbase::XExpression:
-	XPostfixOperation
+	XUnaryOperation
  	(=>({xbase::XBinaryOperation.leftOperand=current} feature=[jvm::JvmIdentifiableElement|OpExponent])
 		rightOperand=XUnaryOperation
 	)*
@@ -570,5 +560,16 @@ XExponentExpression returns xbase::XExpression:
 
 OpExponent:
 	"**"
+;
+
+@Override
+XUnaryOperation returns xbase::XExpression:
+	{xbase::XUnaryOperation} feature=[jvm::JvmIdentifiableElement|OpUnary] operand=XUnaryOperation
+	| XPostfixOperation
+;
+
+@Override
+OpUnary:
+	"!" | "-" | "+"
 ;
 

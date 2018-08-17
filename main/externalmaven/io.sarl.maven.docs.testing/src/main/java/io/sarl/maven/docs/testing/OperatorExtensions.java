@@ -100,8 +100,8 @@ public final class OperatorExtensions {
 				"$i+$i", "$i-$i", //$NON-NLS-1$ //$NON-NLS-2$
 				"$i*$i", "$i/$i", "$i%$i", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				"$L as $t", //$NON-NLS-1$
-				"!$R", "-$R", //$NON-NLS-1$ //$NON-NLS-2$
 				"$i**$i", //$NON-NLS-1$
+				"!$R", "-$R", "+$R", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				"$v++", "$v--"); //$NON-NLS-1$ //$NON-NLS-2$
 		System.out.println(generateOperatorPrecedenceMarkdownTable(operators));
 	}
@@ -199,34 +199,52 @@ public final class OperatorExtensions {
 			flatOperators.addAll(ops);
 		}
 
+		final java.util.logging.Logger logger = getInjector().getInstance(java.util.logging.Logger.class);
+
 		final Map<String, Associativity> associativities = new HashMap<>();
 		final Map<String, String> labels = new HashMap<>();
 		final List<List<String>> precedenceGroups = new ArrayList<>();
 		try {
 			buildOperatorInfo(flatOperators, associativities, labels, precedenceGroups);
 		} catch (Exception exception) {
-			throw new RuntimeException(exception);
+			logger.log(java.util.logging.Level.SEVERE, exception.getLocalizedMessage(), exception);
+			return false;
 		}
 
 		Iterator<List<String>> iterator = operators.iterator();
 		for (final List<String> actualGroup : precedenceGroups) {
 			if (!iterator.hasNext()) {
+				error(logger, "Expected operator precedence is missed.", operators, precedenceGroups); //$NON-NLS-1$
 				return false;
 			}
-			final List<String> expectedGroup = new ArrayList<>(iterator.next());
+			final List<String> originalExpectedGroup = iterator.next();
+			final List<String> expectedGroup = new ArrayList<>(originalExpectedGroup);
 			if (expectedGroup.size() != actualGroup.size()) {
+				error(logger, "Not same groups.\nActual: " + actualGroup //$NON-NLS-1$
+						+ ".\nExpected: " + originalExpectedGroup + ".", operators, precedenceGroups); //$NON-NLS-1$ //$NON-NLS-2$
 				return false;
 			}
 			for (final String actualOp : actualGroup) {
 				if (!expectedGroup.remove(actualOp)) {
+					error(logger, "Not same groups.\nActual: " + actualGroup //$NON-NLS-1$
+							+ ".\nExpected: " + originalExpectedGroup + ".", operators, precedenceGroups); //$NON-NLS-1$ //$NON-NLS-2$
 					return false;
 				}
 			}
 			if (!expectedGroup.isEmpty()) {
+				error(logger, "Not same groups.\nActual: " + actualGroup //$NON-NLS-1$
+						+ ".\nExpected: " + originalExpectedGroup + ".", operators, precedenceGroups); //$NON-NLS-1$ //$NON-NLS-2$
 				return false;
 			}
 		}
 		return true;
+	}
+
+	private static void error(java.util.logging.Logger logger, String message, List<List<String>> expectedPrecedence,
+			List<List<String>> actualPrecedence) {
+		logger.severe(message);
+		logger.severe("EXPECTED:\n" + expectedPrecedence); //$NON-NLS-1$
+		logger.severe("ACTUAL:\n" + actualPrecedence); //$NON-NLS-1$
 	}
 
 	private static Injector getInjector() {
@@ -447,7 +465,7 @@ public final class OperatorExtensions {
 			}
 			if (assoc != null) {
 				if (leftDepth.get() > 1) {
-					assoc.set(Associativity.RIGHT_TO_LEFT);
+					assoc.set(Associativity.LEFT_TO_RIGHT);
 				} else {
 					assoc.set(Associativity.NONE);
 				}

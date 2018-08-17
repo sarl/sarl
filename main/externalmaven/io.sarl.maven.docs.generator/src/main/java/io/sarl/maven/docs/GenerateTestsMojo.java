@@ -203,9 +203,6 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		final List<ValidationComponent> successCompilationComponents = new ArrayList<>();
 		final List<ValidationComponent> failureCompilationComponents = new ArrayList<>();
 		final List<ValidationComponent> factualComponents = new ArrayList<>();
-		if (inputFile.getName().endsWith("Sarlc.md")) {
-			System.out.println("DBG");
-		}
 		for (final ValidationComponent component : parser.getStandardValidationComponents(inputFile)) {
 			if (component.isCompilable()) {
 				if (component.isExecutable()) {

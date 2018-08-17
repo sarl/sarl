@@ -5482,7 +5482,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	public class XCastedExpressionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "io.sarl.lang.SARL.XCastedExpression");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final RuleCall cXUnaryOperationParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
+		private final RuleCall cXExponentExpressionParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
 		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
 		private final Group cGroup_1_0 = (Group)cGroup_1.eContents().get(0);
 		private final Group cGroup_1_0_0 = (Group)cGroup_1_0.eContents().get(0);
@@ -5493,14 +5493,14 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//@Override
 		//XCastedExpression xbase::XExpression:
-		//	XUnaryOperation (=> ({xbase::XCastedExpression.target=current} 'as') type=JvmTypeReference)*;
+		//	XExponentExpression (=> ({xbase::XCastedExpression.target=current} 'as') type=JvmTypeReference)*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//XUnaryOperation (=> ({xbase::XCastedExpression.target=current} 'as') type=JvmTypeReference)*
+		//XExponentExpression (=> ({xbase::XCastedExpression.target=current} 'as') type=JvmTypeReference)*
 		public Group getGroup() { return cGroup; }
 		
-		//XUnaryOperation
-		public RuleCall getXUnaryOperationParserRuleCall_0() { return cXUnaryOperationParserRuleCall_0; }
+		//XExponentExpression
+		public RuleCall getXExponentExpressionParserRuleCall_0() { return cXExponentExpressionParserRuleCall_0; }
 		
 		//(=> ({xbase::XCastedExpression.target=current} 'as') type=JvmTypeReference)*
 		public Group getGroup_1() { return cGroup_1; }
@@ -5523,79 +5523,10 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//JvmTypeReference
 		public RuleCall getTypeJvmTypeReferenceParserRuleCall_1_1_0() { return cTypeJvmTypeReferenceParserRuleCall_1_1_0; }
 	}
-	public class XUnaryOperationElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "io.sarl.lang.SARL.XUnaryOperation");
-		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
-		private final Group cGroup_0 = (Group)cAlternatives.eContents().get(0);
-		private final Action cXUnaryOperationAction_0_0 = (Action)cGroup_0.eContents().get(0);
-		private final Assignment cFeatureAssignment_0_1 = (Assignment)cGroup_0.eContents().get(1);
-		private final CrossReference cFeatureJvmIdentifiableElementCrossReference_0_1_0 = (CrossReference)cFeatureAssignment_0_1.eContents().get(0);
-		private final RuleCall cFeatureJvmIdentifiableElementOpUnaryParserRuleCall_0_1_0_1 = (RuleCall)cFeatureJvmIdentifiableElementCrossReference_0_1_0.eContents().get(1);
-		private final Assignment cOperandAssignment_0_2 = (Assignment)cGroup_0.eContents().get(2);
-		private final RuleCall cOperandXUnaryOperationParserRuleCall_0_2_0 = (RuleCall)cOperandAssignment_0_2.eContents().get(0);
-		private final RuleCall cXExponentExpressionParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
-		
-		//@Override
-		//XUnaryOperation xbase::XExpression:
-		//	{xbase::XUnaryOperation} feature=[jvm::JvmIdentifiableElement|OpUnary] operand=XUnaryOperation
-		//	| XExponentExpression;
-		@Override public ParserRule getRule() { return rule; }
-		
-		//{xbase::XUnaryOperation} feature=[jvm::JvmIdentifiableElement|OpUnary] operand=XUnaryOperation | XExponentExpression
-		public Alternatives getAlternatives() { return cAlternatives; }
-		
-		//{xbase::XUnaryOperation} feature=[jvm::JvmIdentifiableElement|OpUnary] operand=XUnaryOperation
-		public Group getGroup_0() { return cGroup_0; }
-		
-		//{xbase::XUnaryOperation}
-		public Action getXUnaryOperationAction_0_0() { return cXUnaryOperationAction_0_0; }
-		
-		//feature=[jvm::JvmIdentifiableElement|OpUnary]
-		public Assignment getFeatureAssignment_0_1() { return cFeatureAssignment_0_1; }
-		
-		//[jvm::JvmIdentifiableElement|OpUnary]
-		public CrossReference getFeatureJvmIdentifiableElementCrossReference_0_1_0() { return cFeatureJvmIdentifiableElementCrossReference_0_1_0; }
-		
-		//OpUnary
-		public RuleCall getFeatureJvmIdentifiableElementOpUnaryParserRuleCall_0_1_0_1() { return cFeatureJvmIdentifiableElementOpUnaryParserRuleCall_0_1_0_1; }
-		
-		//operand=XUnaryOperation
-		public Assignment getOperandAssignment_0_2() { return cOperandAssignment_0_2; }
-		
-		//XUnaryOperation
-		public RuleCall getOperandXUnaryOperationParserRuleCall_0_2_0() { return cOperandXUnaryOperationParserRuleCall_0_2_0; }
-		
-		//XExponentExpression
-		public RuleCall getXExponentExpressionParserRuleCall_1() { return cXExponentExpressionParserRuleCall_1; }
-	}
-	public class OpUnaryElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "io.sarl.lang.SARL.OpUnary");
-		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
-		private final Keyword cExclamationMarkKeyword_0 = (Keyword)cAlternatives.eContents().get(0);
-		private final Keyword cHyphenMinusKeyword_1 = (Keyword)cAlternatives.eContents().get(1);
-		private final Keyword cPlusSignKeyword_2 = (Keyword)cAlternatives.eContents().get(2);
-		
-		//@Override
-		//OpUnary:
-		//	"!" | "-" | "+";
-		@Override public ParserRule getRule() { return rule; }
-		
-		//"!" | "-" | "+"
-		public Alternatives getAlternatives() { return cAlternatives; }
-		
-		//"!"
-		public Keyword getExclamationMarkKeyword_0() { return cExclamationMarkKeyword_0; }
-		
-		//"-"
-		public Keyword getHyphenMinusKeyword_1() { return cHyphenMinusKeyword_1; }
-		
-		//"+"
-		public Keyword getPlusSignKeyword_2() { return cPlusSignKeyword_2; }
-	}
 	public class XExponentExpressionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "io.sarl.lang.SARL.XExponentExpression");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final RuleCall cXPostfixOperationParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
+		private final RuleCall cXUnaryOperationParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
 		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
 		private final Group cGroup_1_0 = (Group)cGroup_1.eContents().get(0);
 		private final Group cGroup_1_0_0 = (Group)cGroup_1_0.eContents().get(0);
@@ -5607,16 +5538,16 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cRightOperandXUnaryOperationParserRuleCall_1_1_0 = (RuleCall)cRightOperandAssignment_1_1.eContents().get(0);
 		
 		//XExponentExpression xbase::XExpression:
-		//	XPostfixOperation (=> ({xbase::XBinaryOperation.leftOperand=current} feature=[jvm::JvmIdentifiableElement|OpExponent])
+		//	XUnaryOperation (=> ({xbase::XBinaryOperation.leftOperand=current} feature=[jvm::JvmIdentifiableElement|OpExponent])
 		//	rightOperand=XUnaryOperation)*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//XPostfixOperation (=> ({xbase::XBinaryOperation.leftOperand=current} feature=[jvm::JvmIdentifiableElement|OpExponent])
+		//XUnaryOperation (=> ({xbase::XBinaryOperation.leftOperand=current} feature=[jvm::JvmIdentifiableElement|OpExponent])
 		//rightOperand=XUnaryOperation)*
 		public Group getGroup() { return cGroup; }
 		
-		//XPostfixOperation
-		public RuleCall getXPostfixOperationParserRuleCall_0() { return cXPostfixOperationParserRuleCall_0; }
+		//XUnaryOperation
+		public RuleCall getXUnaryOperationParserRuleCall_0() { return cXUnaryOperationParserRuleCall_0; }
 		
 		//(=> ({xbase::XBinaryOperation.leftOperand=current} feature=[jvm::JvmIdentifiableElement|OpExponent])
 		//rightOperand=XUnaryOperation)*
@@ -5657,6 +5588,75 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//"**"
 		public Keyword getAsteriskAsteriskKeyword() { return cAsteriskAsteriskKeyword; }
 	}
+	public class XUnaryOperationElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "io.sarl.lang.SARL.XUnaryOperation");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final Group cGroup_0 = (Group)cAlternatives.eContents().get(0);
+		private final Action cXUnaryOperationAction_0_0 = (Action)cGroup_0.eContents().get(0);
+		private final Assignment cFeatureAssignment_0_1 = (Assignment)cGroup_0.eContents().get(1);
+		private final CrossReference cFeatureJvmIdentifiableElementCrossReference_0_1_0 = (CrossReference)cFeatureAssignment_0_1.eContents().get(0);
+		private final RuleCall cFeatureJvmIdentifiableElementOpUnaryParserRuleCall_0_1_0_1 = (RuleCall)cFeatureJvmIdentifiableElementCrossReference_0_1_0.eContents().get(1);
+		private final Assignment cOperandAssignment_0_2 = (Assignment)cGroup_0.eContents().get(2);
+		private final RuleCall cOperandXUnaryOperationParserRuleCall_0_2_0 = (RuleCall)cOperandAssignment_0_2.eContents().get(0);
+		private final RuleCall cXPostfixOperationParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		
+		//@Override
+		//XUnaryOperation xbase::XExpression:
+		//	{xbase::XUnaryOperation} feature=[jvm::JvmIdentifiableElement|OpUnary] operand=XUnaryOperation
+		//	| XPostfixOperation;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//{xbase::XUnaryOperation} feature=[jvm::JvmIdentifiableElement|OpUnary] operand=XUnaryOperation | XPostfixOperation
+		public Alternatives getAlternatives() { return cAlternatives; }
+		
+		//{xbase::XUnaryOperation} feature=[jvm::JvmIdentifiableElement|OpUnary] operand=XUnaryOperation
+		public Group getGroup_0() { return cGroup_0; }
+		
+		//{xbase::XUnaryOperation}
+		public Action getXUnaryOperationAction_0_0() { return cXUnaryOperationAction_0_0; }
+		
+		//feature=[jvm::JvmIdentifiableElement|OpUnary]
+		public Assignment getFeatureAssignment_0_1() { return cFeatureAssignment_0_1; }
+		
+		//[jvm::JvmIdentifiableElement|OpUnary]
+		public CrossReference getFeatureJvmIdentifiableElementCrossReference_0_1_0() { return cFeatureJvmIdentifiableElementCrossReference_0_1_0; }
+		
+		//OpUnary
+		public RuleCall getFeatureJvmIdentifiableElementOpUnaryParserRuleCall_0_1_0_1() { return cFeatureJvmIdentifiableElementOpUnaryParserRuleCall_0_1_0_1; }
+		
+		//operand=XUnaryOperation
+		public Assignment getOperandAssignment_0_2() { return cOperandAssignment_0_2; }
+		
+		//XUnaryOperation
+		public RuleCall getOperandXUnaryOperationParserRuleCall_0_2_0() { return cOperandXUnaryOperationParserRuleCall_0_2_0; }
+		
+		//XPostfixOperation
+		public RuleCall getXPostfixOperationParserRuleCall_1() { return cXPostfixOperationParserRuleCall_1; }
+	}
+	public class OpUnaryElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "io.sarl.lang.SARL.OpUnary");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final Keyword cExclamationMarkKeyword_0 = (Keyword)cAlternatives.eContents().get(0);
+		private final Keyword cHyphenMinusKeyword_1 = (Keyword)cAlternatives.eContents().get(1);
+		private final Keyword cPlusSignKeyword_2 = (Keyword)cAlternatives.eContents().get(2);
+		
+		//@Override
+		//OpUnary:
+		//	"!" | "-" | "+";
+		@Override public ParserRule getRule() { return rule; }
+		
+		//"!" | "-" | "+"
+		public Alternatives getAlternatives() { return cAlternatives; }
+		
+		//"!"
+		public Keyword getExclamationMarkKeyword_0() { return cExclamationMarkKeyword_0; }
+		
+		//"-"
+		public Keyword getHyphenMinusKeyword_1() { return cHyphenMinusKeyword_1; }
+		
+		//"+"
+		public Keyword getPlusSignKeyword_2() { return cPlusSignKeyword_2; }
+	}
 	
 	
 	private final SarlScriptElements pSarlScript;
@@ -5682,10 +5682,10 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	private final XMultiplicativeExpressionElements pXMultiplicativeExpression;
 	private final OpMultiElements pOpMulti;
 	private final XCastedExpressionElements pXCastedExpression;
-	private final XUnaryOperationElements pXUnaryOperation;
-	private final OpUnaryElements pOpUnary;
 	private final XExponentExpressionElements pXExponentExpression;
 	private final OpExponentElements pOpExponent;
+	private final XUnaryOperationElements pXUnaryOperation;
+	private final OpUnaryElements pOpUnary;
 	
 	private final Grammar grammar;
 	
@@ -5731,10 +5731,10 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		this.pXMultiplicativeExpression = new XMultiplicativeExpressionElements();
 		this.pOpMulti = new OpMultiElements();
 		this.pXCastedExpression = new XCastedExpressionElements();
-		this.pXUnaryOperation = new XUnaryOperationElements();
-		this.pOpUnary = new OpUnaryElements();
 		this.pXExponentExpression = new XExponentExpressionElements();
 		this.pOpExponent = new OpExponentElements();
+		this.pXUnaryOperation = new XUnaryOperationElements();
+		this.pOpUnary = new OpUnaryElements();
 	}
 	
 	protected Grammar internalFindGrammar(GrammarProvider grammarProvider) {
@@ -6179,7 +6179,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//@Override
 	//XCastedExpression xbase::XExpression:
-	//	XUnaryOperation (=> ({xbase::XCastedExpression.target=current} 'as') type=JvmTypeReference)*;
+	//	XExponentExpression (=> ({xbase::XCastedExpression.target=current} 'as') type=JvmTypeReference)*;
 	public XCastedExpressionElements getXCastedExpressionAccess() {
 		return pXCastedExpression;
 	}
@@ -6188,31 +6188,8 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getXCastedExpressionAccess().getRule();
 	}
 	
-	//@Override
-	//XUnaryOperation xbase::XExpression:
-	//	{xbase::XUnaryOperation} feature=[jvm::JvmIdentifiableElement|OpUnary] operand=XUnaryOperation
-	//	| XExponentExpression;
-	public XUnaryOperationElements getXUnaryOperationAccess() {
-		return pXUnaryOperation;
-	}
-	
-	public ParserRule getXUnaryOperationRule() {
-		return getXUnaryOperationAccess().getRule();
-	}
-	
-	//@Override
-	//OpUnary:
-	//	"!" | "-" | "+";
-	public OpUnaryElements getOpUnaryAccess() {
-		return pOpUnary;
-	}
-	
-	public ParserRule getOpUnaryRule() {
-		return getOpUnaryAccess().getRule();
-	}
-	
 	//XExponentExpression xbase::XExpression:
-	//	XPostfixOperation (=> ({xbase::XBinaryOperation.leftOperand=current} feature=[jvm::JvmIdentifiableElement|OpExponent])
+	//	XUnaryOperation (=> ({xbase::XBinaryOperation.leftOperand=current} feature=[jvm::JvmIdentifiableElement|OpExponent])
 	//	rightOperand=XUnaryOperation)*;
 	public XExponentExpressionElements getXExponentExpressionAccess() {
 		return pXExponentExpression;
@@ -6230,6 +6207,29 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getOpExponentRule() {
 		return getOpExponentAccess().getRule();
+	}
+	
+	//@Override
+	//XUnaryOperation xbase::XExpression:
+	//	{xbase::XUnaryOperation} feature=[jvm::JvmIdentifiableElement|OpUnary] operand=XUnaryOperation
+	//	| XPostfixOperation;
+	public XUnaryOperationElements getXUnaryOperationAccess() {
+		return pXUnaryOperation;
+	}
+	
+	public ParserRule getXUnaryOperationRule() {
+		return getXUnaryOperationAccess().getRule();
+	}
+	
+	//@Override
+	//OpUnary:
+	//	"!" | "-" | "+";
+	public OpUnaryElements getOpUnaryAccess() {
+		return pOpUnary;
+	}
+	
+	public ParserRule getOpUnaryRule() {
+		return getOpUnaryAccess().getRule();
 	}
 	
 	//File XtendFile:

@@ -1269,7 +1269,7 @@ ruleOpMulti:
 
 // Rule XCastedExpression
 ruleXCastedExpression:
-	ruleXUnaryOperation
+	ruleXExponentExpression
 	(
 		(
 			('as'
@@ -1280,30 +1280,9 @@ ruleXCastedExpression:
 	)*
 ;
 
-// Rule XUnaryOperation
-ruleXUnaryOperation:
-	(
-		ruleOpUnary
-		ruleXUnaryOperation
-		    |
-		ruleXExponentExpression
-	)
-;
-
-// Rule OpUnary
-ruleOpUnary:
-	(
-		'!'
-		    |
-		'-'
-		    |
-		'+'
-	)
-;
-
 // Rule XExponentExpression
 ruleXExponentExpression:
-	ruleXPostfixOperation
+	ruleXUnaryOperation
 	(
 		(
 			(ruleOpExponent
@@ -1317,6 +1296,27 @@ ruleXExponentExpression:
 // Rule OpExponent
 ruleOpExponent:
 	'**'
+;
+
+// Rule XUnaryOperation
+ruleXUnaryOperation:
+	(
+		ruleOpUnary
+		ruleXUnaryOperation
+		    |
+		ruleXPostfixOperation
+	)
+;
+
+// Rule OpUnary
+ruleOpUnary:
+	(
+		'!'
+		    |
+		'-'
+		    |
+		'+'
+	)
 ;
 
 // Rule XFunctionSuperTypeRef

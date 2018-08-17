@@ -323,7 +323,8 @@ in ascending precedence, i.e. from the lower priority to the higher priority.
 | +, -                                                | left to right   |
 | *, /, %                                             | left to right   |
 | as                                                  | left to right   |
-| !, - (unary), **                                    | right to left   |
+| **                                                  | left to right   |
+| !, - (unary), + (unrary)                            | right to left   |
 | ++, --                                              | not associative |
 
 
@@ -339,7 +340,8 @@ in ascending precedence, i.e. from the lower priority to the higher priority.
 		#[ "$i+$i", "$i-$i" ],
 		#[ "$i*$i", "$i/$i", "$i%$i" ],
 		#[ "$L as $t" ],
-		#[ "!$R", "-$R", "$i**$i" ],
+		#[ "$i**$i" ],
+		#[ "!$R", "-$R", "+$R" ],
 		#[ "$v++", "$v--" ]
 	].validateOperatorOrder
 }
