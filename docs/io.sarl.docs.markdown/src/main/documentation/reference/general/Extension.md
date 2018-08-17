@@ -174,8 +174,7 @@ The following functions are provided for extended the standard collection API:
 		org.eclipse.xtext.xbase.lib.IterableExtensions,
 		org.eclipse.xtext.xbase.lib.IteratorExtensions,
 		org.eclipse.xtext.xbase.lib.ListExtensions,
-		org.eclipse.xtext.xbase.lib.MapExtensions,
-		io.sarl.lang.scoping.batch.SARLMapExtensions)}
+		org.eclipse.xtext.xbase.lib.MapExtensions)}
 
 
 ### Number Category
