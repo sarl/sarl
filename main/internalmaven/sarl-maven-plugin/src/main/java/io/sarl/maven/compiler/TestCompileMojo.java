@@ -45,6 +45,11 @@ import org.apache.maven.project.MavenProject;
 		requiresDependencyResolution = ResolutionScope.TEST)
 public class TestCompileMojo extends AbstractCompileMojo {
 
+	@Override
+	protected boolean isTestContext() {
+		return true;
+	}
+
 	private boolean isValidSourceDirectory(File file, File outputDirectory) {
 		return !file.equals(outputDirectory) && !file.equals(getInput());
 	}

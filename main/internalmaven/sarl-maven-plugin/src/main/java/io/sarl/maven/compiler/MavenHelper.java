@@ -21,11 +21,11 @@
 
 package io.sarl.maven.compiler;
 
+import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.MessageFormat;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.MissingResourceException;
@@ -53,6 +53,10 @@ import org.apache.maven.plugin.PluginManagerException;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.repository.RepositorySystem;
+import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.configuration.PlexusConfigurationException;
+import org.codehaus.plexus.util.xml.Xpp3Dom;
+import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 
 /** This class permits to support the incompatible Maven API
  * from the same Mojo code (says 3.0 and 3.1 APIs).
@@ -62,7 +66,7 @@ import org.apache.maven.repository.RepositorySystem;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class MavenHelper {
+public class MavenHelper {
 
 	private Map<String, Dependency> pluginDependencies;
 
@@ -176,7 +180,7 @@ class MavenHelper {
 			return (PluginDescriptor) this.loadPluginMethod.invoke(
 					this.buildPluginManager,
 					plugin,
-					Collections.EMPTY_LIST,
+					getSession().getCurrentProject().getRemotePluginRepositories(),
 					repositorySessionObject);
 		} catch (IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException e) {
@@ -242,6 +246,54 @@ class MavenHelper {
 		return this.pluginDependencies;
 	}
 
+	/** Resolve an artifact.
+	 *
+	 * @param request the definition of the resolution request.
+	 * @return the result.
+	 * @throws MojoExecutionException if the resolution cannot be done.
+	 * @since 0.8
+	 */
+	public ArtifactResolutionResult resolve(ArtifactResolutionRequest request) throws MojoExecutionException {
+		return this.repositorySystem.resolve(request);
+	}
+
+	/** Resolve the artifacts with the given key.
+	 *
+	 * @param groupId the group identifier.
+	 * @param artifactId the artifact identifier.
+	 * @return the discovered artifacts.
+	 * @throws MojoExecutionException if resolution cannot be done.
+	 * @since 0.8
+	 */
+	public Set<Artifact> resolve(String groupId, String artifactId) throws MojoExecutionException {
+		final ArtifactResolutionRequest request = new ArtifactResolutionRequest();
+		request.setResolveRoot(true);
+		request.setResolveTransitively(true);
+		request.setLocalRepository(getSession().getLocalRepository());
+		request.setRemoteRepositories(getSession().getCurrentProject().getRemoteArtifactRepositories());
+		request.setOffline(getSession().isOffline());
+		request.setForceUpdate(getSession().getRequest().isUpdateSnapshots());
+		request.setServers(getSession().getRequest().getServers());
+		request.setMirrors(getSession().getRequest().getMirrors());
+		request.setProxies(getSession().getRequest().getProxies());
+		request.setArtifact(createArtifact(groupId, artifactId));
+
+		final ArtifactResolutionResult result = resolve(request);
+
+		return result.getArtifacts();
+	}
+
+	/** Create an instance of artifact with a version range that corresponds to all versions.
+	 *
+	 * @param groupId the group identifier.
+	 * @param artifactId the artifact identifier.
+	 * @return the artifact descriptor.
+	 * @since 0.8
+	 */
+	public Artifact createArtifact(String groupId, String artifactId) {
+		return this.repositorySystem.createArtifact(groupId, artifactId, "RELEASE", "jar"); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
 	/** Replies the dependencies for the given artifact.
 	 *
 	 * @param artifactId the artifact identifier.
@@ -262,6 +314,7 @@ class MavenHelper {
 		request.setResolveRoot(false);
 		request.setResolveTransitively(true);
 		request.setLocalRepository(getSession().getLocalRepository());
+		request.setRemoteRepositories(getSession().getCurrentProject().getRemoteArtifactRepositories());
 		request.setOffline(getSession().isOffline());
 		request.setForceUpdate(getSession().getRequest().isUpdateSnapshots());
 		request.setServers(getSession().getRequest().getServers());
@@ -269,7 +322,7 @@ class MavenHelper {
 		request.setProxies(getSession().getRequest().getProxies());
 		request.setArtifact(pluginArtifact);
 
-		final ArtifactResolutionResult result = this.repositorySystem.resolve(request);
+		final ArtifactResolutionResult result = resolve(request);
 
 		try {
 			this.resolutionErrorHandler.throwErrors(request, result);
@@ -307,6 +360,46 @@ class MavenHelper {
 			throw new MojoExecutionException(MessageFormat.format(Messages.MavenHelper_2, key));
 		}
 		throw new MojoExecutionException(MessageFormat.format(Messages.MavenHelper_3, key, deps));
+	}
+
+	/** Convert a Plexus configuration to its XML equivalent.
+	 *
+	 * @param config the Plexus configuration.
+	 * @return the XML configuration.
+	 * @throws PlexusConfigurationException in case of problem.
+	 * @since 0.8
+	 */
+	public Xpp3Dom toXpp3Dom(PlexusConfiguration config) throws PlexusConfigurationException {
+		final Xpp3Dom result = new Xpp3Dom(config.getName());
+		result.setValue(config.getValue(null));
+		for (final String name : config.getAttributeNames()) {
+			result.setAttribute(name, config.getAttribute(name));
+		}
+		for (final PlexusConfiguration child : config.getChildren()) {
+			result.addChild(toXpp3Dom(child));
+		}
+		return result;
+	}
+
+	/** Parse the given string for extracting an XML tree.
+	 *
+	 * @param content the text to parse.
+	 * @param logger the logger to use for printing out the parsing errors. May be {@code null}.
+	 * @return the XML tree, or {@code null} if empty.
+	 * @since 0.8
+	 */
+	@SuppressWarnings("static-method")
+	public Xpp3Dom toXpp3Dom(String content, Log logger) {
+		if (content != null && !content.isEmpty()) {
+			try (StringReader sr = new StringReader(content)) {
+				return Xpp3DomBuilder.build(sr);
+			} catch (Exception exception) {
+				if (logger != null) {
+					logger.debug(exception);
+				}
+			}
+		}
+		return null;
 	}
 
 }

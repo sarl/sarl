@@ -22,8 +22,6 @@
 package io.sarl.maven.compiler;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.StringReader;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,12 +45,9 @@ import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.repository.RepositorySystem;
-import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
-import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.codehaus.plexus.util.xml.Xpp3DomUtils;
-import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import io.sarl.lang.SARLConfig;
 
@@ -87,27 +82,24 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	@Component
 	private ResolutionErrorHandler resolutionErrorHandler;
 
-	/** Output directory.
+	/** The directory in which the Java code files are generated from the standard SARL code files.
 	 */
-	@Parameter
+	@Parameter(defaultValue = SARLConfig.FOLDER_SOURCE_GENERATED)
 	private File output;
 
-	/**
-	 * Input directory.
+	/** The directory in which the standard SARL code files are located.
 	 */
-	@Parameter
+	@Parameter(defaultValue = SARLConfig.FOLDER_SOURCE_SARL)
 	private File input;
 
-	/**
-	 * Output directory for tests.
+	/** The directory in which the Java code files are generated from the test SARL code files.
 	 */
-	@Parameter
+	@Parameter(defaultValue = SARLConfig.FOLDER_TEST_SOURCE_GENERATED)
 	private File testOutput;
 
-	/**
-	 * Input directory for tests.
+	/** The directory in which the test SARL code files are located.
 	 */
-	@Parameter
+	@Parameter(defaultValue = SARLConfig.FOLDER_TEST_SOURCE_SARL)
 	private File testInput;
 
 	@Override
@@ -260,20 +252,11 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 
 		final Xpp3Dom mojoXml;
 		try {
-			mojoXml = toXpp3Dom(mojoDescriptor.getMojoConfiguration());
+			mojoXml = this.mavenHelper.toXpp3Dom(mojoDescriptor.getMojoConfiguration());
 		} catch (PlexusConfigurationException e1) {
 			throw new MojoExecutionException(e1.getLocalizedMessage(), e1);
 		}
-		Xpp3Dom configurationXml = null;
-		if (configuration != null && !configuration.isEmpty()) {
-			try (StringReader sr = new StringReader(configuration)) {
-				try {
-					configurationXml = Xpp3DomBuilder.build(sr);
-				} catch (XmlPullParserException | IOException e) {
-					getLog().debug(e);
-				}
-			}
-		}
+		Xpp3Dom configurationXml = this.mavenHelper.toXpp3Dom(configuration, getLog());
 		if (configurationXml != null) {
 			configurationXml = Xpp3DomUtils.mergeXpp3Dom(
 					configurationXml,
@@ -287,18 +270,6 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 		final MojoExecution execution = new MojoExecution(mojoDescriptor, configurationXml);
 
 		this.mavenHelper.executeMojo(execution);
-	}
-
-	private Xpp3Dom toXpp3Dom(PlexusConfiguration config) throws PlexusConfigurationException {
-		final Xpp3Dom result = new Xpp3Dom(config.getName());
-		result.setValue(config.getValue(null));
-		for (final String name : config.getAttributeNames()) {
-			result.setAttribute(name, config.getAttribute(name));
-		}
-		for (final PlexusConfiguration child : config.getChildren()) {
-			result.addChild(toXpp3Dom(child));
-		}
-		return result;
 	}
 
 	/** Extract the dependencies that are declared for a Maven plugin.
