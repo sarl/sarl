@@ -28,6 +28,7 @@ import io.bootique.annotation.BQConfigProperty;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.compiler.GeneratorConfig2;
+import io.sarl.lang.compiler.batch.OptimizationLevel;
 import io.sarl.lang.sarlc.configs.SarlConfig;
 
 /**
@@ -61,6 +62,12 @@ public class CompilerConfig {
 	 * Name of the property that contains the enabling flag for the Java compiler.
 	 */
 	public static final String JAVA_COMPILER_NAME = PREFIX + ".javaCompiler"; //$NON-NLS-1$
+
+	/**
+	 * Name of the property that contains the optimization level for the compilers, mostly the
+	 * Java compiler.
+	 */
+	public static final String OPTIMIZATION_LEVEL_NAME = PREFIX + ".optimizationLevel"; //$NON-NLS-1$
 
 	/**
 	 * Name of the property that indicates if the trace files should be generated.
@@ -112,7 +119,9 @@ public class CompilerConfig {
 
 	private String javaVersion = SARLVersion.MINIMAL_JDK_VERSION;
 
-	private boolean javaCompiler = true;
+	private JavaCompiler javaCompiler;
+
+	private OptimizationLevel optimizationLevel;
 
 	private boolean traceFiles = true;
 
@@ -285,21 +294,56 @@ public class CompilerConfig {
 		this.storageFiles = enable;
 	}
 
-	/** Replies if the Java compiler is run after the Java code is generated..
+	/** Replies the Java compiler that is run after the Java code is generated..
 	 *
-	 * @return {@code true} if the Java compiler is run.
+	 * @return the Java compiler to run.
 	 */
-	public boolean getJavaCompiler() {
+	public JavaCompiler getJavaCompiler() {
+		if (this.javaCompiler == null) {
+			this.javaCompiler = JavaCompiler.getDefault();
+		}
 		return this.javaCompiler;
 	}
 
-	/** Change the flag that indicates if the Java compiler is run after the Java code is generated..
+	/** Change the Java compiler that is run after the Java code is generated..
 	 *
-	 * @param enable {@code true} if the Java compiler is run.
+	 * @param compiler the Java compiler to run. If {@code null}, the default compiler is assumed.
 	 */
-	@BQConfigProperty("Enable or disable the Java compiler")
-	public void setJavaCompiler(boolean enable) {
-		this.javaCompiler = enable;
+	@BQConfigProperty("Specify the Java compiler to run")
+	public void setJavaCompiler(JavaCompiler compiler) {
+		this.javaCompiler = compiler;
+	}
+
+	/** Replies the optimization level for the compilers, incl. the Java compiler.
+	 *
+	 * @return the optimization level.
+	 * @since 0.8
+	 */
+	public OptimizationLevel getOptimizationLevel() {
+		if (this.optimizationLevel == null) {
+			this.optimizationLevel = OptimizationLevel.getDefault();
+		}
+		return this.optimizationLevel;
+	}
+
+	/** Change the optimization level for the compilers, incl. the Java compiler.
+	 *
+	 * @param level the optimization level. If {@code null}, the default optimization level is assumed.
+	 * @since 0.8
+	 */
+	public void setOptimizationLevel(OptimizationLevel level) {
+		this.optimizationLevel = level;
+	}
+
+	/** Change the optimization level for the compilers, incl. the Java compiler.
+	 *
+	 * @param level the optimization level. If {@code null}, the default optimization level is assumed.
+	 * @since 0.8
+	 */
+	@BQConfigProperty("Specify the level of optimization for the compilers. Possible values are g0 (no"
+			+ " optimization), g1 (for basic optimizations), etc.")
+	public void setOptimizationLevel(String level) {
+		this.optimizationLevel = OptimizationLevel.valueOfCaseInsensitive(level);
 	}
 
 	/** Replies the file encoding.

@@ -32,10 +32,12 @@ import com.google.inject.Singleton;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.util.Strings;
 
+import io.sarl.lang.compiler.batch.IJavaBatchCompiler;
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
 import io.sarl.lang.compiler.batch.SarlBatchCompiler.IssueMessageFormatter;
 import io.sarl.lang.sarlc.configs.SarlConfig;
 import io.sarl.lang.sarlc.configs.subconfigs.CompilerConfig;
+import io.sarl.lang.sarlc.configs.subconfigs.JavaCompiler;
 import io.sarl.lang.sarlc.configs.subconfigs.ValidatorConfig;
 import io.sarl.lang.sarlc.tools.SARLBootClasspathProvider;
 
@@ -74,6 +76,7 @@ public class SarlBatchCompilerModule extends AbstractModule {
 	 * @param config the configuration for the paths.
 	 * @param defaultBootClasspath the SARL boot class path that must be used by default.
 	 * @param issueMessageFormater the formatter of the issue messages.
+	 * @param javaCompilerProvider a provider of Java batch compiler.
 	 * @return the SARL batch compiler
 	 */
 	@SuppressWarnings({"static-method", "checkstyle:npathcomplexity"})
@@ -81,7 +84,8 @@ public class SarlBatchCompilerModule extends AbstractModule {
 	@Singleton
 	public SarlBatchCompiler provideSarlBatchCompiler(
 			Injector injector, Provider<SarlConfig> config, Provider<SARLBootClasspathProvider> defaultBootClasspath,
-			Provider<IssueMessageFormatter> issueMessageFormater) {
+			Provider<IssueMessageFormatter> issueMessageFormater,
+			Provider<IJavaBatchCompiler> javaCompilerProvider) {
 		final SarlConfig cfg = config.get();
 		final CompilerConfig compilerConfig = cfg.getCompiler();
 		final ValidatorConfig validatorConfig = cfg.getValidator();
@@ -112,7 +116,10 @@ public class SarlBatchCompilerModule extends AbstractModule {
 			compiler.setJavaSourceVersion(compilerConfig.getJavaVersion());
 		}
 
-		compiler.setJavaPostCompilationEnable(compilerConfig.getJavaCompiler());
+		final JavaCompiler jcompiler = compilerConfig.getJavaCompiler();
+		compiler.setJavaPostCompilationEnable(jcompiler != JavaCompiler.NONE);
+		compiler.setJavaCompiler(javaCompilerProvider.get());
+		compiler.setOptimizationLevel(cfg.getCompiler().getOptimizationLevel());
 		compiler.setWriteTraceFiles(compilerConfig.getOutputTraceFiles());
 		compiler.setWriteStorageFiles(compilerConfig.getOutputTraceFiles());
 

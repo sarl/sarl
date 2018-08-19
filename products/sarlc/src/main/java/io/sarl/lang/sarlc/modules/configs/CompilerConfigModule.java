@@ -39,11 +39,18 @@ import java.nio.charset.Charset;
 import java.text.MessageFormat;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Injector;
+import com.google.inject.Provider;
+import com.google.inject.Provides;
+import com.google.inject.Singleton;
 import io.bootique.meta.application.OptionMetadata;
 import org.arakhne.afc.bootique.variables.VariableDecls;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.compiler.GeneratorConfig2;
+import io.sarl.lang.compiler.batch.IJavaBatchCompiler;
+import io.sarl.lang.sarlc.configs.SarlConfig;
+import io.sarl.lang.sarlc.configs.subconfigs.JavaCompiler;
 
 /** Module for creating and configuring the sarlc compiler.
  *
@@ -78,16 +85,25 @@ public class CompilerConfigModule extends AbstractModule {
 				.build());
 
 		VariableDecls.extend(binder()).declareVar(JAVA_COMPILER_NAME);
-		final String trueFalseValues = MessageFormat.format(Messages.CompilerConfigModule_5,
-				Boolean.TRUE, Boolean.FALSE);
+		String jcompilerValues = null;
+		for (final JavaCompiler jc : JavaCompiler.values()) {
+			if (jcompilerValues == null) {
+				jcompilerValues = jc.toJsonString();
+			} else {
+				jcompilerValues = MessageFormat.format(Messages.CompilerConfigModule_5,
+						jcompilerValues, jc.toJsonString());
+			}
+		}
 		extend(binder()).addOption(OptionMetadata.builder(
-				"enablejavacompiler", //$NON-NLS-1$
-				MessageFormat.format(Messages.CompilerConfigModule_4, Boolean.TRUE))
+				"javacompiler", //$NON-NLS-1$
+				MessageFormat.format(Messages.CompilerConfigModule_4, JavaCompiler.getDefault().toJsonString()))
 				.configPath(JAVA_COMPILER_NAME)
-				.valueOptional(trueFalseValues)
-				.defaultValue(Boolean.TRUE.toString())
+				.valueOptional(jcompilerValues)
+				.defaultValue(JavaCompiler.getDefault().toJsonString())
 				.build());
 
+		final String trueFalseValues = MessageFormat.format(Messages.CompilerConfigModule_5,
+				Boolean.TRUE.toString(), Boolean.FALSE.toString());
 		VariableDecls.extend(binder()).declareVar(OUTPUT_TRACES_NAME);
 		extend(binder()).addOption(OptionMetadata.builder(
 				"writetraces", //$NON-NLS-1$
@@ -162,6 +178,23 @@ public class CompilerConfigModule extends AbstractModule {
 				.valueOptional(trueFalseValues)
 				.defaultValue(Boolean.toString(GeneratorConfig2.DEFAULT_GENERATE_SERIAL_NUMBER_FIELD))
 				.build());
+	}
+
+	/** Provide a Java batch compiler based on the Bootique configuration.
+	 *
+	 * @param injector the injector.
+	 * @param config the bootique configuration.
+	 * @return the batch compiler.
+	 * @since 0.8
+	 */
+	@SuppressWarnings("static-method")
+	@Provides
+	@Singleton
+	public IJavaBatchCompiler providesJavaBatchCompiler(Injector injector, Provider<SarlConfig> config) {
+		final SarlConfig cfg = config.get();
+		final IJavaBatchCompiler compiler = cfg.getCompiler().getJavaCompiler().newCompilerInstance();
+		injector.injectMembers(compiler);
+		return compiler;
 	}
 
 }
