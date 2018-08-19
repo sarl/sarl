@@ -65,7 +65,7 @@ Follow the steps of the project creation wizard, and finally click on the **Fini
 Open the file `pom.xml`, and edit it for obtaining a content similar to the configuration below.
 
 Replace the version number [:sarl.version:] of SARL with the one you want to use. You could search on the
-[Maven Central Repository](http://central.sonatype.org/) for the last available version.
+[Maven Central Repository](http://search.maven.org/) for the last available version.
 
 ```xml
  <project>
@@ -79,8 +79,8 @@ Replace the version number [:sarl.version:] of SARL with the one you want to use
        <plugins>
           ...
           <plugin>
-             <groupId>io.sarl.maven</groupId>
-             <artifactId>sarl-maven-plugin</artifactId>
+             <groupId>[:plugingroupid](io.sarl.maven)</groupId>
+             <artifactId>[:pluginname](sarl-maven-plugin)</artifactId>
              <version>${sarl.version}</version>
              <extensions>true</extensions>
              <configuration>
@@ -105,11 +105,14 @@ Replace the version number [:sarl.version:] of SARL with the one you want to use
  </project>
 ```
 
+[:Fact:]{(io.sarl.maven.compiler.Utils).getSarlMavenPluginGroupId == '[:plugingroupid!]'}
 
-The Maven configuration is based on the use of `sarl-maven-plugin`. This plugin is in charge of compiling the SARL and
-the Java files.
+[:Fact:]{(io.sarl.maven.compiler.Utils).getSarlMavenPluginArtifactId == '[:pluginname!]'}
 
-<important>You must set the `extensions` tag to true for the `sarl-maven-plugin` plugin. If you missed to set it, the plugin
+The Maven configuration is based on the use of [:pluginname:]. This plugin is in charge of compiling the SARL and
+the Java files. Details about the [:pluginname:] may be found on [this page](../tools/MavenSarlPlugin.md).
+
+<important>You must set the `extensions` tag to true for the [:pluginname:] plugin. If you missed to set it, the plugin
 will not able to be integrated in the Maven life-cycle. The consequence will be that only the Java compiler will be
 invoked.</important>
 
@@ -144,8 +147,8 @@ You could search on the [Maven Central Repository](http://search.maven.org/) for
        <plugins>
           ...
           <plugin>
-             <groupId>io.sarl.maven</groupId>
-             <artifactId>sarl-maven-plugin</artifactId>
+             <groupId>[:plugingroupid!]</groupId>
+             <artifactId>[:pluginname!]</artifactId>
              <version>${sarl.version}</version>
              <extensions>true</extensions>
              <configuration>

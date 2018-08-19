@@ -59,15 +59,23 @@ public final class MarkdownExtensions {
 			return _renderToMarkdown((Options) options);
 		}
 		if (options instanceof List<?>) {
-			Object element = ((List<?>) options).get(0);
-			if (element instanceof HelpOption) {
-				return _renderToMarkdown((List<? extends HelpOption>) options);
+			final List<?> rootList = (List<?>) options;
+			if (!rootList.isEmpty()) {
+				Object element = rootList.get(0);
+				if (element instanceof HelpOption) {
+					return _renderToMarkdown((List<? extends HelpOption>) options);
+				}
+				if (element instanceof List<?>) {
+					return _renderToMarkdown((List<List<String>>) options);
+				}
+			} else {
+				return _renderToMarkdown((List<List<String>>) options);
 			}
 		}
 		return ""; //$NON-NLS-1$
 	}
 
-	/** Render the option help to a Mardown table.
+	/** Render the option help to a Markdown table.
 	 *
 	 * @param options the options.
 	 * @return the markdown table.
@@ -113,7 +121,7 @@ public final class MarkdownExtensions {
 		return buffer.toString();
 	}
 
-	/** Render the option help to a Mardown table.
+	/** Render the option help to a Markdown table.
 	 *
 	 * @param options the options.
 	 * @return the markdown table.
@@ -177,7 +185,7 @@ public final class MarkdownExtensions {
 
 			buffer.append(" | "); //$NON-NLS-1$
 
-           final String description = option.getOption().getDescription();
+			final String description = option.getOption().getDescription();
 			if (description != null) {
 				String text = description.replaceAll("[ \t\n\r\f]+", " "); //$NON-NLS-1$ //$NON-NLS-2$
 				text = text.replaceAll("\\<", "&lt;");  //$NON-NLS-1$//$NON-NLS-2$
@@ -188,6 +196,39 @@ public final class MarkdownExtensions {
 			buffer.append(" |\n"); //$NON-NLS-1$
 		}
 
+		return buffer.toString();
+	}
+
+	/** Render the table to a Markdown table.
+	 *
+	 * @param table the table content.
+	 * @return the markdown table.
+	 */
+	protected static String _renderToMarkdown(List<List<String>> table) {
+		if (table == null || table.isEmpty()) {
+			return ""; //$NON-NLS-1$
+		}
+		final StringBuilder buffer = new StringBuilder();
+		for (final List<String> line : table) {
+			buffer.append("| "); //$NON-NLS-1$
+			if (line != null) {
+				boolean first = true;
+				for (final String column : line) {
+					if (first) {
+						first = false;
+					} else {
+						buffer.append(" | "); //$NON-NLS-1$
+					}
+					if (column != null) {
+						String text = column.replaceAll("[ \t\n\r\f]+", " "); //$NON-NLS-1$ //$NON-NLS-2$
+						text = text.replaceAll("\\<", "&lt;");  //$NON-NLS-1$//$NON-NLS-2$
+						text = text.replaceAll("\\>", "&gt;");  //$NON-NLS-1$//$NON-NLS-2$
+						buffer.append(text);
+					}
+				}
+			}
+			buffer.append(" |\n"); //$NON-NLS-1$
+		}
 		return buffer.toString();
 	}
 

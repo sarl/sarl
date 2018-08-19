@@ -168,8 +168,11 @@ public class SarlScriptExecutor implements ScriptExecutor {
 	public Object execute(int lineno, String code) throws Exception {
 		final List<String> issues = new ArrayList<>();
 		final Collection<Resource> resources = new ArrayList<>();
+
 		final CompiledFile outFile = compile(lineno,
-				"package x.x.x; class ____Fake_Class____ { var __fake_attr__ : Object = { " + code + " }; }", //$NON-NLS-1$ //$NON-NLS-2$
+				"package x.x.x;\n" //$NON-NLS-1$
+				+ "class ____Fake_Class____ {\nstatic var __fake_attr__ : Object = {\n" //$NON-NLS-1$
+				+ code + ";\n};\n}", //$NON-NLS-1$
 				issues, (it) -> {
 					resources.add(it);
 				});

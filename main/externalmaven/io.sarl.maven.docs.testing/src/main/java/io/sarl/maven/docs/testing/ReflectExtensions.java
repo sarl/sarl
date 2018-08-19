@@ -21,6 +21,7 @@
 
 package io.sarl.maven.docs.testing;
 
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Method;
@@ -28,12 +29,19 @@ import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 import java.util.function.Function;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import com.google.common.collect.Iterables;
 import org.eclipse.jdt.core.Flags;
@@ -43,6 +51,10 @@ import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures;
 import org.eclipse.xtext.xbase.lib.Pure;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import io.sarl.lang.annotation.DefaultValue;
 import io.sarl.lang.annotation.SarlSourceCode;
@@ -59,8 +71,11 @@ import io.sarl.lang.util.Utils;
  */
 public final class ReflectExtensions {
 
+	private static final String PLUGIN_HELP_PATH =
+			"/META-INF/maven/%s/%s/plugin-help.xml"; //$NON-NLS-1$
+
 	private static Function<Method, String> defaultNameFormatter;
-	
+
 	private ReflectExtensions() {
 		//
 	}
@@ -72,11 +87,12 @@ public final class ReflectExtensions {
 	public static void setDefaultNameFormatter(Function<Method, String> formatter) {
 		defaultNameFormatter = formatter;
 	}
-	
+
 	/** Replies the default name formatter.
 	 *
 	 * @return the default name formatter.
 	 */
+	@Pure
 	public static Function<Method, String> getDefaultNameFormatter() {
 		return defaultNameFormatter;
 	}
@@ -305,6 +321,133 @@ public final class ReflectExtensions {
 		if (isVarArg) {
 			it.append("*"); //$NON-NLS-1$
 		}
+	}
+
+	/** Replies the configuration description for a maven plugin.
+	 *
+	 * @param mavenPluginGroupId the group id of the Maven plugin.
+	 * @param mavenPluginArtifactId the artifact id of the Maven plugin.
+	 * @return the configuration.
+	 * @since 0.8
+	 */
+	@Pure
+	@Inline(
+			value = "getMavenPluginConfiguration($1, $2, $3.class)",
+			imported = ReflectExtensions.class)
+	public static List<List<String>> getMavenPluginConfiguration(String mavenPluginGroupId, String mavenPluginArtifactId) {
+		return getMavenPluginConfiguration(mavenPluginGroupId, mavenPluginArtifactId, ReflectExtensions.class);
+	}
+
+	/** Replies the configuration description for a maven plugin.
+	 *
+	 * @param mavenPluginGroupId the group id of the Maven plugin.
+	 * @param mavenPluginArtifactId the artifact id of the Maven plugin.
+	 * @param classContext the context in which the help resource may be found.
+	 * @return the configuration.
+	 * @since 0.8
+	 */
+	@Pure
+	public static List<List<String>> getMavenPluginConfiguration(String mavenPluginGroupId, String mavenPluginArtifactId, Class<?> classContext) {
+		assert mavenPluginGroupId != null;
+		assert mavenPluginArtifactId != null;
+		assert classContext != null;
+		final String resourceName = String.format(PLUGIN_HELP_PATH, mavenPluginGroupId, mavenPluginArtifactId);
+		final URL url = classContext.getResource(resourceName);
+		if (url != null) {
+			try (InputStream is = url.openStream()) {
+				final DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+				final DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+				final Document document = dBuilder.parse(is);
+				final Node pluginNode = getSingleChild(document, "plugin"); //$NON-NLS-1$
+				final Node mojosNode = getSingleChild(pluginNode, "mojos"); //$NON-NLS-1$
+
+				final Map<String, List<String>> documentation = new TreeMap<>();
+
+				for (final Node mojoNode : findNamedChild(mojosNode, "mojo")) { //$NON-NLS-1$
+					final String mojoName = getValue(mojoNode, "goal"); //$NON-NLS-1$
+					final Node parametersNode = getSingleChild(mojoNode, "parameters"); //$NON-NLS-1$
+					final Node configurationNode = getSingleChild(mojoNode, "configuration"); //$NON-NLS-1$
+					for (final Node parameterNode : findNamedChild(parametersNode, "parameter")) { //$NON-NLS-1$
+						if (Strings.isEmpty(getValue(parameterNode, "deprecated")) //$NON-NLS-1$
+								&& getBoolean(parameterNode, "editable")) { //$NON-NLS-1$
+							final String name = getValue(parameterNode, "name"); //$NON-NLS-1$
+							List<String> columns = documentation.get(name);
+							if (columns == null) {
+								columns = new ArrayList<>();
+								documentation.put(name, columns);
+								columns.add(name);
+								columns.add(mojoName);
+								columns.add(nullIfEmpty(getValue(parameterNode, "type"))); //$NON-NLS-1$
+								columns.add(nullIfEmpty(getValue(parameterNode, "description"))); //$NON-NLS-1$
+								columns.add(nullIfEmpty(getDefaultValue(configurationNode, name)));
+							} else {
+								columns.set(1, columns.get(1) + ", " + mojoName); //$NON-NLS-1$
+							}
+						}
+					}
+				}
+
+				return new ArrayList<>(documentation.values());
+			} catch (Exception exception) {
+				//
+			}
+		}
+		return Collections.emptyList();
+	}
+
+	private static String nullIfEmpty(String value) {
+		return value == null ? "" : value; //$NON-NLS-1$
+	}
+
+	private static String getDefaultValue(Node node, String parameterName) {
+		final Node parameterNode = getSingleChild(node, parameterName);
+		if (parameterNode instanceof Element) {
+			return Strings.emptyIfNull(((Element) parameterNode).getAttribute("default-value")); //$NON-NLS-1$
+		}
+		return null;
+	}
+
+	private static String getValue(Node node, String elementName)  {
+		final Node elementNode = getSingleChild(node, elementName);
+		if (elementNode != null) {
+			return elementNode.getTextContent();
+		}
+		return null;
+	}
+
+	private static boolean getBoolean(Node node, String elementName)  {
+		final String value = getValue(node, elementName);
+		if (!Strings.isEmpty(value)) {
+			try {
+				return Boolean.parseBoolean(value);
+			} catch (Exception exception) {
+				//
+			}
+		}
+		return false;
+	}
+
+	private static Node getSingleChild(Node node, String elementName) {
+		final List<Node> namedChild = findNamedChild(node, elementName);
+		if (namedChild.isEmpty()) {
+			return null;
+		}
+		if (namedChild.size() > 1) {
+			return null;
+		}
+		return namedChild.get(0);
+	}
+
+	private static List<Node> findNamedChild(Node node, String elementName) {
+		final List<Node> result = new ArrayList<>();
+		final NodeList childNodes = node.getChildNodes();
+		for (int i = 0; i < childNodes.getLength(); ++i) {
+			final Node item = childNodes.item(i);
+			if (elementName.equals(item.getNodeName())) {
+				result.add(item);
+			}
+		}
+		return result;
 	}
 
 }

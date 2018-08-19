@@ -43,14 +43,22 @@ public class DocumentationImplicitlyImportedFeatures extends SARLImplicitlyImpor
 	}
 
 	@Override
+	protected List<Class<?>> getStaticImportClasses() {
+		final List<Class<?>> xtextList = super.getStaticImportClasses();
+		// Insert at the beginning for ensuring the SARL extension is selected before any Xtext extension.
+		xtextList.add(0, ReflectExtensions.class);
+		return xtextList;
+	}
+
+	@Override
 	protected List<Class<?>> getExtensionClasses() {
 		final List<Class<?>> xtextList = super.getExtensionClasses();
 		// Insert at the beginning for ensuring the SARL extension is selected before any Xtext extension.
-		xtextList.add(0, ReflectExtensions.class);
 		xtextList.add(0, MarkdownExtensions.class);
 		xtextList.add(0, FactExtensions.class);
 		xtextList.add(0, ShouldExtensions.class);
 		xtextList.add(0, OperatorExtensions.class);
+		xtextList.add(0, ReflectExtensions.class);
 		return xtextList;
 	}
 

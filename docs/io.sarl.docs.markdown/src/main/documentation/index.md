@@ -100,6 +100,10 @@
 
 * [Syntax highlighting styles for SARL inside other tools](./tools/SyntaxHighlightning.md)
 
+### Apache Maven
+
+* [maven-sarl-plugin](./tools/MavenSarlPlugin.md): the Maven plugin for the SARL compiler.
+
 ### Command Line Tools
 
 * [sarlc](./tools/Sarlc.md): command-line SARL compiler.
