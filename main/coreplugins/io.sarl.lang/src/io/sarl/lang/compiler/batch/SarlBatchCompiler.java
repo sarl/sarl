@@ -40,7 +40,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -56,16 +55,14 @@ import javax.inject.Provider;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
+import com.google.inject.ImplementedBy;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.jdt.core.compiler.CompilationProgress;
-import org.eclipse.jdt.core.compiler.batch.BatchCompiler;
 import org.eclipse.xtend.core.macro.ProcessorInstanceForJvmTypeProvider;
 import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.EcoreUtil2;
@@ -147,6 +144,8 @@ public class SarlBatchCompiler {
 	};
 
 	private static final Predicate<IExtraLanguageContribution> DISABLER = it -> false;
+
+	private static Class<? extends IJavaBatchCompiler> defaultJavaBatchCompiler;
 
 	/** The provider of resource sets.
 	 */
@@ -233,6 +232,8 @@ public class SarlBatchCompiler {
 	@Named(Constants.LANGUAGE_NAME)
 	private String languageName;
 
+	private IJavaBatchCompiler javaCompiler;
+
 	private Logger logger;
 
 	private IssueMessageFormatter messageFormatter;
@@ -257,6 +258,51 @@ public class SarlBatchCompiler {
 	 */
 	public SarlBatchCompiler() {
 		this.logger = LoggerFactory.getLogger(getClass());
+	}
+
+	/** Change the Java compiler.
+	 *
+	 * @param compiler the Java compiler
+	 * @since 0.8
+	 */
+	@Inject
+	public void setJavaCompiler(IJavaBatchCompiler compiler) {
+		assert compiler != null;
+		this.javaCompiler = compiler;
+	}
+
+	/** Create a default Java batch compiler, without injection.
+	 *
+	 * @return the Java batch compiler.
+	 * @since 0.8
+	 */
+	public static IJavaBatchCompiler newDefaultJavaBatchCompiler() {
+		try {
+			synchronized (SarlBatchCompiler.class) {
+				if (defaultJavaBatchCompiler == null) {
+					final ImplementedBy annotation = IJavaBatchCompiler.class.getAnnotation(ImplementedBy.class);
+					assert annotation != null;
+					final Class<?> type = annotation.value();
+					assert type != null;
+					defaultJavaBatchCompiler = type.asSubclass(IJavaBatchCompiler.class);
+				}
+				return defaultJavaBatchCompiler.newInstance();
+			}
+		} catch (Exception exception) {
+			throw new RuntimeException(exception);
+		}
+	}
+
+	/** Replies the Java compiler.
+	 *
+	 * @return the Java compiler
+	 * @since 0.8
+	 */
+	public IJavaBatchCompiler getJavaCompiler() {
+		if (this.javaCompiler == null) {
+			this.javaCompiler = newDefaultJavaBatchCompiler();
+		}
+		return this.javaCompiler;
 	}
 
 	/** Change the flag that permits to report the compiler's internal problems as issues.
@@ -1595,8 +1641,8 @@ public class SarlBatchCompiler {
 	protected boolean preCompileStubs(File sourceDirectory, File classDirectory, IProgressMonitor progress) {
 		assert progress != null;
 		progress.subTask(Messages.SarlBatchCompiler_50);
-		return runJavaCompiler(classDirectory, Collections.singletonList(sourceDirectory), getClassPath(), false,
-				progress);
+		return runJavaCompiler(classDirectory, Collections.singletonList(sourceDirectory), getClassPath(),
+				false, false, progress);
 	}
 
 	/** Compile the java files before the compilation of the project's files.
@@ -1611,7 +1657,7 @@ public class SarlBatchCompiler {
 		progress.subTask(Messages.SarlBatchCompiler_51);
 		return runJavaCompiler(classDirectory, getSourcePaths(),
 				Iterables.concat(Collections.singleton(sourceDirectory), getClassPath()),
-				false, progress);
+				false, true, progress);
 	}
 
 	/** Compile the java files after the compilation of the project's files.
@@ -1636,7 +1682,7 @@ public class SarlBatchCompiler {
 		if (getLogger().isDebugEnabled()) {
 			getLogger().debug(Messages.SarlBatchCompiler_30, toPathString(classpath));
 		}
-		return runJavaCompiler(classOutputPath, sources, classpath, true, progress);
+		return runJavaCompiler(classOutputPath, sources, classpath, true, true, progress);
 	}
 
 	private static String toPathString(Iterable<File> files) {
@@ -1656,107 +1702,22 @@ public class SarlBatchCompiler {
 	 * @param sourcePathDirectories the source directories.
 	 * @param classPathEntries classpath entries.
 	 * @param enableCompilerOutput indicates if the Java compiler output is displayed.
+	 * @param enableOptimization indicates if the Java compiler must applied optimization flags.
 	 * @param progress monitor of the progress of the compilation.
 	 * @return the success status. Replies <code>false</code> if the activity is canceled.
+	 * @see IJavaBatchCompiler
 	 */
-	@SuppressWarnings({ "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity", "resource" })
+	@SuppressWarnings({ "resource" })
 	protected boolean runJavaCompiler(File classDirectory, Iterable<File> sourcePathDirectories,
-			Iterable<File> classPathEntries, boolean enableCompilerOutput, IProgressMonitor progress) {
-		assert progress != null;
-		final List<String> commandLineArguments = Lists.newArrayList();
-		commandLineArguments.add("-nowarn"); //$NON-NLS-1$
-		if (isJavaCompilerVerbose()) {
-			commandLineArguments.add("-verbose"); //$NON-NLS-1$
+			Iterable<File> classPathEntries, boolean enableCompilerOutput,
+			boolean enableOptimization, IProgressMonitor progress) {
+		String encoding = this.encodingProvider.getDefaultEncoding();
+		if (Strings.isEmpty(encoding)) {
+			encoding = null;
 		}
 		if (progress.isCanceled()) {
 			return false;
 		}
-		final List<File> bootClassPathEntries = getBootClassPath();
-		if (progress.isCanceled()) {
-			return false;
-		}
-		if (!bootClassPathEntries.isEmpty()) {
-			final StringBuilder cmd = new StringBuilder();
-			boolean first = true;
-			for (final File entry : bootClassPathEntries) {
-				if (progress.isCanceled()) {
-					return false;
-				}
-				if (entry.exists()) {
-					if (first) {
-						first = false;
-					} else {
-						cmd.append(File.pathSeparator);
-					}
-					cmd.append(entry.getAbsolutePath());
-				}
-			}
-			if (cmd.length() > 0) {
-				commandLineArguments.add("-bootclasspath"); //$NON-NLS-1$
-				commandLineArguments.add(cmd.toString());
-			}
-		}
-		final Iterator<File> classPathIterator = classPathEntries.iterator();
-		if (classPathIterator.hasNext()) {
-			final StringBuilder cmd = new StringBuilder();
-			boolean first = true;
-			while (classPathIterator.hasNext()) {
-				final File classpathPath = classPathIterator.next();
-				if (progress.isCanceled()) {
-					return false;
-				}
-				if (classpathPath.exists()) {
-					if (first) {
-						first = false;
-					} else {
-						cmd.append(File.pathSeparator);
-					}
-					cmd.append(classpathPath.getAbsolutePath());
-				}
-			}
-			if (cmd.length() > 0) {
-				commandLineArguments.add("-cp"); //$NON-NLS-1$
-				commandLineArguments.add(cmd.toString());
-			}
-		}
-		if (progress.isCanceled()) {
-			return false;
-		}
-		if (!classDirectory.exists()) {
-			classDirectory.mkdirs();
-		}
-		commandLineArguments.add("-d"); //$NON-NLS-1$
-		commandLineArguments.add(classDirectory.getAbsolutePath());
-		commandLineArguments.add("-" + getJavaSourceVersion()); //$NON-NLS-1$
-		commandLineArguments.add("-proceedOnError"); //$NON-NLS-1$
-		if (this.encodingProvider.getDefaultEncoding() != null) {
-			commandLineArguments.add("-encoding"); //$NON-NLS-1$
-			commandLineArguments.add(this.encodingProvider.getDefaultEncoding());
-		}
-		if (progress.isCanceled()) {
-			return false;
-		}
-
-		for (final File sourceFolder : sourcePathDirectories) {
-			if (progress.isCanceled()) {
-				return false;
-			}
-			if (sourceFolder.exists()) {
-				commandLineArguments.add(sourceFolder.getAbsolutePath());
-			}
-		}
-
-		final String[] arguments = new String[commandLineArguments.size()];
-		commandLineArguments.toArray(arguments);
-
-		if (getLogger().isDebugEnabled()) {
-			getLogger().debug(Messages.SarlBatchCompiler_6, Strings.concat("\n", commandLineArguments)); //$NON-NLS-1$
-		}
-
-		if (progress.isCanceled()) {
-			return false;
-		}
-
 		final PrintWriter outWriter = getStubCompilerOutputWriter();
 		final PrintWriter errWriter;
 		if (enableCompilerOutput) {
@@ -1767,8 +1728,19 @@ public class SarlBatchCompiler {
 		if (progress.isCanceled()) {
 			return false;
 		}
-		return BatchCompiler.compile(arguments, outWriter, errWriter,
-				new ProgressMonitorCompilationProgress(progress));
+		return getJavaCompiler().compile(
+				classDirectory,
+				sourcePathDirectories,
+				classPathEntries,
+				getBootClassPath(),
+				getJavaSourceVersion(),
+				encoding,
+				isJavaCompilerVerbose(),
+				enableOptimization ? getOptimizationLevel() : null,
+				outWriter,
+				errWriter,
+				getLogger(),
+				progress);
 	}
 
 	private PrintWriter getStubCompilerOutputWriter() {
@@ -2361,52 +2333,6 @@ public class SarlBatchCompiler {
 				return cmp;
 			}
 			return Integer.compare(System.identityHashCode(issue1), System.identityHashCode(issue2));
-		}
-
-	}
-
-	/** Wrap a Eclipse IProgressMonitor into a JDT compilation progress.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	private static class ProgressMonitorCompilationProgress extends CompilationProgress {
-
-		private final IProgressMonitor monitor;
-
-		/** Constructor.
-		 * @param monitor the progress monitor.
-		 */
-		ProgressMonitorCompilationProgress(IProgressMonitor monitor) {
-			assert monitor != null;
-			this.monitor = monitor;
-		}
-
-		@Override
-		public void begin(int remainingWork) {
-			//
-		}
-
-		@Override
-		public void done() {
-			//
-		}
-
-		@Override
-		public boolean isCanceled() {
-			return this.monitor.isCanceled();
-		}
-
-		@Override
-		public void setTaskName(String name) {
-			this.monitor.subTask(name);
-		}
-
-		@Override
-		public void worked(int workIncrement, int remainingWork) {
-			//
 		}
 
 	}

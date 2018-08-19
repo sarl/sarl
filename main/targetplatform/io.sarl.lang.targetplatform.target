@@ -36,7 +36,7 @@
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <repository location="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/latest/"/>
-	<unit id="org.eclipse.xtext.sdk.feature.group" version="2.15.0.v20180815-0209"/>
+	<unit id="org.eclipse.xtext.sdk.feature.group" version="2.15.0.v20180817-0209"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="aopalliance" version="1.0.0"/>
