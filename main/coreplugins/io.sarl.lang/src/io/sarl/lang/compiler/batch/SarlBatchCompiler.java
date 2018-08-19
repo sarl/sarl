@@ -254,6 +254,8 @@ public class SarlBatchCompiler {
 
 	private boolean reportInternalProblemsAsIssues;
 
+	private OptimizationLevel optimizationLevel;
+
 	/** Constructor the batch compiler.
 	 */
 	public SarlBatchCompiler() {
@@ -303,6 +305,27 @@ public class SarlBatchCompiler {
 			this.javaCompiler = newDefaultJavaBatchCompiler();
 		}
 		return this.javaCompiler;
+	}
+
+	/** Change the optimization level that should be applied to the generated Java byte code.
+	 *
+	 * @param level the optimization level.
+	 * @since 0.8
+	 */
+	public void setOptimizationLevel(OptimizationLevel level) {
+		this.optimizationLevel = level;
+	}
+
+	/** Replies the optimization level that should be applied to the generated Java byte code.
+	 *
+	 * @return the optimization level.
+	 * @since 0.8
+	 */
+	public OptimizationLevel getOptimizationLevel() {
+		if (this.optimizationLevel == null) {
+			this.optimizationLevel = OptimizationLevel.getDefault();
+		}
+		return this.optimizationLevel;
 	}
 
 	/** Change the flag that permits to report the compiler's internal problems as issues.
