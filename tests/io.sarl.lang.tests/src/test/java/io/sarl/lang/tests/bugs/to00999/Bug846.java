@@ -16,34 +16,16 @@
 
 package io.sarl.lang.tests.bugs.to00999;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-
 import com.google.inject.Inject;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jdt.core.dom.Type;
-import org.eclipse.xtend.core.xtend.XtendClass;
-import org.eclipse.xtext.common.types.JvmTypeReference;
-import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.diagnostics.Diagnostic;
-import org.eclipse.xtext.testing.util.ParseHelper;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
-import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
-import org.eclipse.xtext.xbase.validation.UIStrings;
-import org.eclipse.xtext.xtype.XtypePackage;
 import org.junit.Test;
 
 import io.sarl.lang.SARLVersion;
-import io.sarl.lang.annotation.SarlSpecification;
-import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.util.Utils;
-import io.sarl.lang.validation.IssueCodes;
 import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.AbstractSarlTest.Validator;
 
 /** Testing class for issue: Check power operator's priority over unrary minus operator.
  *

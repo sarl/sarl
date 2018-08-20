@@ -1262,6 +1262,48 @@ public final class Utils {
 	}
 
 	/**
+	 * Returns the closest {@link EObject#eContainer() container object} that is of one of the requested type.
+	 *
+	 * @param element the element to start from.
+	 * @param container the container.
+	 * @param directContainerChild the child of the container that is or contains the given element.
+	 * @param types the unexpected types.
+	 * @return {@code true} if the container was found.
+	 * @since 0.8
+	 * @see EcoreUtil2#getContainerOfType(EObject, Class)
+	 */
+	@SafeVarargs
+	public static boolean getContainerOfType(EObject element,
+			OutParameter<EObject> container, OutParameter<EObject> directContainerChild,
+			Class<? extends EObject>... types) {
+		EObject previous = element;
+		EObject elt = element.eContainer();
+		while (elt != null) {
+			if (isInstance(types, elt)) {
+				if (directContainerChild != null) {
+					directContainerChild.set(previous);
+				}
+				if (container != null) {
+					container.set(elt);
+				}
+				return true;
+			}
+			previous = elt;
+			elt = elt.eContainer();
+		}
+		return false;
+	}
+
+	private static boolean isInstance(Class<? extends EObject>[] types, Object element) {
+		for (final Class<? extends EObject> type : types) {
+			if (type.isInstance(element)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Returns the closest {@link EObject#eContainer() container object} that is validating the predicate.
 	 *
 	 * @param element the element to start from.

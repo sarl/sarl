@@ -102,7 +102,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -133,7 +132,9 @@ import org.eclipse.xtend.lib.annotations.ToString;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
+import org.eclipse.xtext.common.types.JvmExecutable;
 import org.eclipse.xtext.common.types.JvmField;
+import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
@@ -162,6 +163,8 @@ import org.eclipse.xtext.xbase.XConstructorCall;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.XForLoopExpression;
+import org.eclipse.xtext.xbase.XMemberFeatureCall;
+import org.eclipse.xtext.xbase.XPostfixOperation;
 import org.eclipse.xtext.xbase.XSynchronizedExpression;
 import org.eclipse.xtext.xbase.XTypeLiteral;
 import org.eclipse.xtext.xbase.XVariableDeclaration;
@@ -171,6 +174,7 @@ import org.eclipse.xtext.xbase.compiler.GeneratorConfig;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 import org.eclipse.xtext.xbase.typesystem.override.IOverrideCheckResult.OverrideCheckDetails;
 import org.eclipse.xtext.xbase.typesystem.override.IResolvedOperation;
@@ -217,6 +221,7 @@ import io.sarl.lang.sarl.SarlSpace;
 import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
 import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
+import io.sarl.lang.typesystem.IImmutableTypeValidator;
 import io.sarl.lang.typesystem.IOperationHelper;
 import io.sarl.lang.typesystem.InheritanceHelper;
 import io.sarl.lang.typesystem.SARLExpressionHelper;
@@ -254,42 +259,42 @@ public class SARLValidator extends AbstractSARLValidator {
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator agentModifierValidator = new SARLModifierValidator(
 			newArrayList("public", "package", "abstract", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-			"final")); //$NON-NLS-1$
+					"final")); //$NON-NLS-1$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator methodInAgentModifierValidator = new SARLModifierValidator(
 			newArrayList(
-			"package",  //$NON-NLS-1$
-			"protected", "private", "static", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-			"abstract", "dispatch", "final", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-			"def", "override", "synchronized")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					"package",  //$NON-NLS-1$
+					"protected", "private", "static", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					"abstract", "dispatch", "final", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					"def", "override", "synchronized")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator fieldInAgentModifierValidator = new SARLModifierValidator(
 			newArrayList(
-			"package",  //$NON-NLS-1$
-			"protected", "private", //$NON-NLS-1$//$NON-NLS-2$
-			"final", "val", "var")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					"package",  //$NON-NLS-1$
+					"protected", "private", //$NON-NLS-1$//$NON-NLS-2$
+					"final", "val", "var")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator behaviorModifierValidator = new SARLModifierValidator(
 			newArrayList("public", "package", "abstract", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-			"final")); //$NON-NLS-1$
+					"final")); //$NON-NLS-1$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator methodInBehaviorModifierValidator = new SARLModifierValidator(
 			newArrayList(
-			"public", "package", //$NON-NLS-1$ //$NON-NLS-2$
-			"protected", "private", //$NON-NLS-1$//$NON-NLS-2$
-			"abstract", "dispatch", "final", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-			"def", "override", "synchronized")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					"public", "package", //$NON-NLS-1$ //$NON-NLS-2$
+					"protected", "private", //$NON-NLS-1$//$NON-NLS-2$
+					"abstract", "dispatch", "final", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					"def", "override", "synchronized")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator fieldInBehaviorModifierValidator = new SARLModifierValidator(
 			newArrayList(
-			"package",  //$NON-NLS-1$
-			"protected", "private", //$NON-NLS-1$//$NON-NLS-2$
-			"final", "val", "var")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					"package",  //$NON-NLS-1$
+					"protected", "private", //$NON-NLS-1$//$NON-NLS-2$
+					"final", "val", "var")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator capacityModifierValidator = new SARLModifierValidator(
@@ -298,7 +303,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator methodInCapacityModifierValidator = new SARLModifierValidator(
 			newArrayList(
-			"public", "def", "override")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					"public", "def", "override")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator eventModifierValidator = new SARLModifierValidator(
@@ -307,53 +312,53 @@ public class SARLValidator extends AbstractSARLValidator {
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator fieldInEventModifierValidator = new SARLModifierValidator(
 			newArrayList(
-			"public", //$NON-NLS-1$
-			"final", "val", "var")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					"public", //$NON-NLS-1$
+					"final", "val", "var")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator skillModifierValidator = new SARLModifierValidator(
 			newArrayList("public", "package", "abstract", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-			"final")); //$NON-NLS-1$
+					"final")); //$NON-NLS-1$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator methodInSkillModifierValidator = new SARLModifierValidator(
 			newArrayList(
-			"public", "package", //$NON-NLS-1$ //$NON-NLS-2$
-			"protected", "private", //$NON-NLS-1$//$NON-NLS-2$
-			"abstract", "dispatch", "final", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-			"def", "override", "synchronized")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					"public", "package", //$NON-NLS-1$ //$NON-NLS-2$
+					"protected", "private", //$NON-NLS-1$//$NON-NLS-2$
+					"abstract", "dispatch", "final", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					"def", "override", "synchronized")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator fieldInSkillModifierValidator = new SARLModifierValidator(
 			newArrayList(
-			"public", "package", //$NON-NLS-1$ //$NON-NLS-2$
-			"protected", "private", //$NON-NLS-1$//$NON-NLS-2$
-			"final", "val", "var")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+					"public", "package", //$NON-NLS-1$ //$NON-NLS-2$
+					"protected", "private", //$NON-NLS-1$//$NON-NLS-2$
+					"final", "val", "var")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator nestedClassInAgentModifierValidator = new SARLModifierValidator(
 			newArrayList(
-			"package", "protected", //$NON-NLS-1$ //$NON-NLS-2$
-			"private", "static", "final", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			"abstract")); //$NON-NLS-1$
+					"package", "protected", //$NON-NLS-1$ //$NON-NLS-2$
+					"private", "static", "final", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"abstract")); //$NON-NLS-1$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator nestedInterfaceInAgentModifierValidator = new SARLModifierValidator(
 			newArrayList(
-			"package", "protected", "private", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			"static", "abstract")); //$NON-NLS-1$ //$NON-NLS-2$
+					"package", "protected", "private", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"static", "abstract")); //$NON-NLS-1$ //$NON-NLS-2$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator nestedEnumerationInAgentModifierValidator = new SARLModifierValidator(
 			newArrayList(
-			"package", "protected", "private", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			"static")); //$NON-NLS-1$
+					"package", "protected", "private", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"static")); //$NON-NLS-1$
 
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator nestedAnnotationTypeInAgentModifierValidator = new SARLModifierValidator(
 			newArrayList(
-			"package", "protected", "private", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			"static", "abstract")); //$NON-NLS-1$ //$NON-NLS-2$
+					"package", "protected", "private", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"static", "abstract")); //$NON-NLS-1$ //$NON-NLS-2$
 
 	@Inject
 	private SarlJvmModelAssociations associations;
@@ -393,6 +398,9 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	@Inject
 	private IDefaultVisibilityProvider defaultVisibilityProvider;
+
+	@Inject
+	private IImmutableTypeValidator immutableTypeValidator;
 
 	// Update the annotation target information
 	{
@@ -490,10 +498,10 @@ public class SARLValidator extends AbstractSARLValidator {
 	@Check
 	public void checkSpaceUse(SarlSpace space) {
 		error(MessageFormat.format(
-					Messages.SARLValidator_0,
-					this.grammarAccess.getSpaceKeyword()),
-					space,
-					null);
+				Messages.SARLValidator_0,
+				this.grammarAccess.getSpaceKeyword()),
+				space,
+				null);
 	}
 
 	/** Artifact keyword is reserved.
@@ -503,10 +511,10 @@ public class SARLValidator extends AbstractSARLValidator {
 	@Check
 	public void checkArtifactUse(SarlArtifact artifact) {
 		error(MessageFormat.format(
-					Messages.SARLValidator_0,
-					this.grammarAccess.getSpaceKeyword()),
-					artifact,
-					null);
+				Messages.SARLValidator_0,
+				this.grammarAccess.getSpaceKeyword()),
+				artifact,
+				null);
 	}
 
 	/** Emit a warning when the "fires" keyword is used.
@@ -564,8 +572,8 @@ public class SARLValidator extends AbstractSARLValidator {
 			final JavaVersion javaVersion = JavaVersion.fromQualifier(SARLVersion.MINIMAL_JDK_VERSION);
 			final JavaVersion generatorVersion = generatorConfiguration.getJavaSourceVersion();
 			if (generatorVersion == null
-				|| javaVersion == null
-				|| !generatorVersion.isAtLeast(javaVersion)) {
+					|| javaVersion == null
+					|| !generatorVersion.isAtLeast(javaVersion)) {
 				error(
 						MessageFormat.format(
 								Messages.SARLValidator_4,
@@ -634,7 +642,7 @@ public class SARLValidator extends AbstractSARLValidator {
 		} else if (!Utils.isCompatibleSARLLibraryVersion(sarlLibraryVersion.get())) {
 			error(
 					MessageFormat.format(Messages.SARLValidator_8,
-					sarlLibraryVersion.get(), SARLVersion.SPECIFICATION_RELEASE_VERSION),
+							sarlLibraryVersion.get(), SARLVersion.SPECIFICATION_RELEASE_VERSION),
 					sarlScript,
 					XtendPackage.Literals.XTEND_FILE__PACKAGE,
 					io.sarl.lang.validation.IssueCodes.INVALID_SARL_LIB_ON_CLASSPATH);
@@ -790,8 +798,8 @@ public class SARLValidator extends AbstractSARLValidator {
 		// This constraint should be never removed from Xtend: https://www.eclipse.org/forums/index.php/m/1774946/
 		if (!oopClass.isStatic()
 				&& ((econtainer instanceof SarlAgent)
-				|| (econtainer instanceof SarlBehavior)
-				|| (econtainer instanceof SarlSkill))) {
+						|| (econtainer instanceof SarlBehavior)
+						|| (econtainer instanceof SarlSkill))) {
 			error(Messages.SARLValidator_25, XTEND_TYPE_DECLARATION__NAME, -1, MISSING_STATIC_MODIFIER);
 		}
 	}
@@ -960,7 +968,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	 * @param defaultSignatures the signatures of the default constructors for the given container.
 	 */
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity",
-			"checkstyle:nestedifdepth"})
+		"checkstyle:nestedifdepth"})
 	protected void checkSuperConstructor(
 			XtendTypeDeclaration container,
 			EStructuralFeature feature,
@@ -1125,8 +1133,8 @@ public class SARLValidator extends AbstractSARLValidator {
 		if (this.featureCallValidator.isDisallowedCall(expression)) {
 			error(
 					MessageFormat.format(
-						Messages.SARLValidator_36,
-						expression.getFeature().getIdentifier()),
+							Messages.SARLValidator_36,
+							expression.getFeature().getIdentifier()),
 					expression,
 					null,
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
@@ -1146,7 +1154,7 @@ public class SARLValidator extends AbstractSARLValidator {
 				&& this.featureCallValidator.isDiscouragedCall(expression)) {
 			addIssue(
 					MessageFormat.format(Messages.SARLValidator_37,
-					expression.getConcreteSyntaxFeatureName()),
+							expression.getConcreteSyntaxFeatureName()),
 					expression,
 					DISCOURAGED_REFERENCE);
 		}
@@ -1819,7 +1827,7 @@ public class SARLValidator extends AbstractSARLValidator {
 				skill.getImplements(),
 				Capacity.class,
 				nbSuperTypes > 0 ? 0 : 1,
-				true);
+						true);
 	}
 
 	/** Check if the supertype of the given event is a subtype of Event.
@@ -1889,7 +1897,7 @@ public class SARLValidator extends AbstractSARLValidator {
 			final LightweightTypeReference  ref = toLightweightTypeReference(superType);
 			if (ref != null
 					&& (!ref.isInterfaceType() || !ref.isSubtypeOf(expectedType)
-					|| (onlySubTypes && ref.isType(expectedType)))) {
+							|| (onlySubTypes && ref.isType(expectedType)))) {
 				final String msg;
 				if (onlySubTypes) {
 					msg = Messages.SARLValidator_72;
@@ -2210,86 +2218,186 @@ public class SARLValidator extends AbstractSARLValidator {
 		}
 	}
 
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:nestedifdepth"})
-	private void checkUnmodifiableEventAccess(boolean enable1, XFeatureCall child) {
-		EObject previous = child;
-		EObject elt = child.eContainer();
-		EObject container = null;
-		while (elt != null && container == null) {
-			final EClass type = elt.eClass();
-			if (XbasePackage.Literals.XASSIGNMENT.equals(type)) {
-				final XAssignment assign = (XAssignment) elt;
-				if (previous == assign.getActualReceiver()) {
-					error(Messages.SARLValidator_2,
-							child,
+	/** Replies the member feature call that is the root of a sequence of member feature calls.
+	 *
+	 * <p>While the current feature call is the actual receiver of a member feature call, the sequence is still active.
+	 * Otherwise, the sequence is stopped.
+	 *
+	 * @param leaf the expression at the leaf of the feature call.
+	 * @param container the top most container that cannot be part of the sequence. Could be {@code null}.
+	 * @param feedback the function that is invoked on each discovered member feature call within the sequence. Could be {@code null}.
+	 * @return the root of a member feature call sequence.
+	 */
+	protected static XMemberFeatureCall getRootOfMemberFeatureCallSequence(EObject leaf, EObject container,
+			Procedure1<XMemberFeatureCall> feedback) {
+		EObject call = leaf;
+		EObject obj = EcoreUtil2.getContainerOfType(leaf.eContainer(), XExpression.class);
+		while (obj != null && (container == null || obj != container)) {
+			if (!(obj instanceof XMemberFeatureCall)) {
+				obj = null;
+			} else {
+				final EObject previous = call;
+				final XMemberFeatureCall fcall = (XMemberFeatureCall) obj;
+				call = fcall;
+				if (fcall.getActualReceiver() == previous) {
+					if (feedback != null) {
+						feedback.apply(fcall);
+					}
+					obj = EcoreUtil2.getContainerOfType(call.eContainer(), XExpression.class);
+				} else {
+					obj = null;
+				}
+			}
+		}
+		return call instanceof XMemberFeatureCall ? (XMemberFeatureCall) call : null;
+	}
+
+	@SuppressWarnings({"checkstyle:nestedifdepth", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
+	private void checkUnmodifiableFeatureAccess(boolean enableWarning, EObject readOnlyKeyword, String keywordName) {
+		final OutParameter<EObject> container = new OutParameter<>();
+		final OutParameter<EObject> directContainerChild = new OutParameter<>();
+
+		final OutParameter<Boolean> failure = new OutParameter<>(false);
+		final XMemberFeatureCall sequence = getRootOfMemberFeatureCallSequence(readOnlyKeyword, null, it -> {
+			// Function call: if one of the functions called on the read-only keyword is not pure => WARNING
+			if (getExpressionHelper().hasSideEffects(it)) {
+				addIssue(MessageFormat.format(Messages.SARLValidator_11, keywordName),
+						it,
+						IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE);
+				failure.set(true);
+			}
+		});
+		if (failure.get().booleanValue()) {
+			return;
+		}
+		final EObject expression = sequence == null ? readOnlyKeyword : sequence;
+
+		if (Utils.getContainerOfType(expression, container, directContainerChild,
+				XAssignment.class, XVariableDeclaration.class)) {
+			if (container.get() instanceof XAssignment) {
+				// Assignment: occurrence in left side => ERROR
+				final XAssignment assignment = (XAssignment) container.get();
+				if (directContainerChild.get() == assignment.getActualReceiver()) {
+					error(MessageFormat.format(Messages.SARLValidator_2, keywordName),
+							readOnlyKeyword,
 							null,
 							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 							IssueCodes.INVALID_OCCURRENCE_READONLY_USE);
 					return;
 				}
-				container = elt;
-			} else if (XbasePackage.Literals.XBINARY_OPERATION.equals(type)
-					|| XbasePackage.Literals.XUNARY_OPERATION.equals(type)
-					|| XbasePackage.Literals.XPOSTFIX_OPERATION.equals(type)) {
-				if (enable1 && getExpressionHelper().hasSideEffects((XExpression) elt)) {
-					addIssue(Messages.SARLValidator_11,
-							elt,
-							null,
-							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-							IssueCodes.DISCOURAGED_BOOLEAN_EXPRESSION);
-					return;
-				}
-				container = elt;
-			} else if (elt instanceof XAbstractFeatureCall) {
-				final XAbstractFeatureCall featureCall = (XAbstractFeatureCall) elt;
-				if (featureCall.getFeature() instanceof JvmOperation && featureCall instanceof XFeatureCall) {
-					if (enable1) {
-						final XFeatureCall xfeatureCall = (XFeatureCall) featureCall;
-						final JvmOperation operation = (JvmOperation) featureCall.getFeature();
-						boolean stopCheck = false;
-						int paramIndex = 0;
-						for (final XExpression arg : xfeatureCall.getActualArguments()) {
-							if (arg == previous) {
-								final LightweightTypeReference paramType = getActualType(operation.getParameters().get(paramIndex));
-								if (!paramType.isPrimitive()) {
-									addIssue(
-											Messages.SARLValidator_12,
-											arg,
-											IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE);
-									stopCheck = true;
-								}
-							}
-							++paramIndex;
-						}
-						if (stopCheck) {
+			} else if (enableWarning && container.get() instanceof XVariableDeclaration) {
+				final XVariableDeclaration declaration = (XVariableDeclaration) container.get();
+				if (directContainerChild.get() == declaration.getRight()) {
+					// Inside the initial value of a variable.
+					// If the variable has a primitive type => No problem.
+					// If the keyword is used in member feature calls => Warning
+					final LightweightTypeReference variableType = getActualType(sequence);
+					if (!this.immutableTypeValidator.isImmutable(variableType)) {
+						if (expression == null || expression == declaration.getRight()) {
+							addIssue(MessageFormat.format(Messages.SARLValidator_12, keywordName),
+									sequence,
+									IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE);
 							return;
 						}
 					}
-					container = elt;
-				} else {
-					if (enable1 && getExpressionHelper().hasSideEffects(featureCall)) {
-						addIssue(
-								Messages.SARLValidator_13,
-								elt,
-								IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE);
-						return;
-					}
-					previous = elt;
-					elt = elt.eContainer();
 				}
-			} else {
-				container = elt;
 			}
 		}
-		if (container instanceof XVariableDeclaration && previous instanceof XExpression) {
-			final LightweightTypeReference variableType = getActualType((XExpression) previous);
-			if (!variableType.isPrimitive()) {
-				addIssue(
-						Messages.SARLValidator_12,
-						previous,
-						IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE);
+
+		if (enableWarning) {
+			if (Utils.getContainerOfType(expression, container, directContainerChild,
+					XFeatureCall.class, XMemberFeatureCall.class, XConstructorCall.class,
+					XPostfixOperation.class)) {
+				// Side effect Operator: occurrence in one of the operands => WARNING
+				if (container.get() instanceof XPostfixOperation) {
+					error(MessageFormat.format(Messages.SARLValidator_13, keywordName),
+							readOnlyKeyword,
+							null,
+							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+							IssueCodes.INVALID_OCCURRENCE_READONLY_USE);
+					return;
+				}
+				// Function argument: direct passing, if function has side effect => WARNING
+				final List<XExpression> arguments;
+				final List<LightweightTypeReference> parameters;
+				final boolean hasSideEffects;
+				final boolean isVariadic;
+				if (container.get() instanceof XConstructorCall) {
+					final XConstructorCall cons = (XConstructorCall) container.get();
+					arguments = cons.getArguments();
+					final JvmConstructor constructor = cons.getConstructor();
+					parameters = getParamTypeReferences(constructor, false, true);
+					hasSideEffects = false;
+					isVariadic = constructor.isVarArgs();
+				} else {
+					final XAbstractFeatureCall call = (XAbstractFeatureCall) container.get();
+					if (call.getFeature() instanceof JvmOperation) {
+						arguments = call.getActualArguments();
+						final JvmOperation operation = (JvmOperation) call.getFeature();
+						parameters = getParamTypeReferences(operation, false, true);
+						hasSideEffects = getExpressionHelper().hasSideEffects(call);
+						isVariadic = operation.isVarArgs();
+					} else {
+						arguments = null;
+						parameters = null;
+						hasSideEffects = false;
+						isVariadic = false;
+					}
+				}
+				if (arguments != null && hasSideEffects) {
+					assert parameters != null;
+					final int index = arguments.indexOf(directContainerChild.get());
+					if (index >= 0 && !parameters.isEmpty()) {
+						final boolean isPrimitive;
+						final int endIndex = parameters.size() - 1;
+						if (index < endIndex || (!isVariadic && index == endIndex)) {
+							isPrimitive = this.immutableTypeValidator.isImmutable(parameters.get(index));
+						} else if (isVariadic && index == endIndex) {
+							// Assume argument for the variadic parameter.
+							LightweightTypeReference parameter = parameters.get(endIndex);
+							assert parameter.isArray();
+							parameter = parameter.getComponentType().getWrapperTypeIfPrimitive();
+							isPrimitive = this.immutableTypeValidator.isImmutable(parameter);
+						} else {
+							// Problem in the calling syntax: invalid number of arguments.
+							// Avoid to output the warning.
+							isPrimitive = true;
+						}
+						if (!isPrimitive) {
+							addIssue(MessageFormat.format(Messages.SARLValidator_92, keywordName),
+									sequence,
+									IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE);
+							return;
+						}
+					}
+				}
 			}
 		}
+	}
+
+	/** Retrieve the types of the formal parameters of the given JVM executable object.
+	 *
+	 * @param jvmExecutable the JVM executable.
+	 * @param wrapFromPrimitives indicates if the primitive types must be wrapped to object type equivalent.
+	 * @param wrapToPrimitives indicates if the object types must be wrapped to primitive type equivalent.
+	 * @return the list of types.
+	 * @since 0.8
+	 * @see #getParamTypes(JvmOperation, boolean)
+	 */
+	protected List<LightweightTypeReference> getParamTypeReferences(JvmExecutable jvmExecutable,
+			boolean wrapFromPrimitives, boolean wrapToPrimitives) {
+		assert (wrapFromPrimitives && !wrapToPrimitives) || (wrapToPrimitives && !wrapFromPrimitives);
+		final List<LightweightTypeReference> types = newArrayList();
+		for (final JvmFormalParameter parameter : jvmExecutable.getParameters()) {
+			LightweightTypeReference typeReference = toLightweightTypeReference(parameter.getParameterType());
+			if (wrapFromPrimitives) {
+				typeReference = typeReference.getWrapperTypeIfPrimitive();
+			} else if (wrapToPrimitives) {
+				typeReference = typeReference.getPrimitiveIfWrapperType();
+			}
+			types.add(typeReference);
+		}
+		return types;
 	}
 
 	/** Check for usage of the event functions in the behavior units.
@@ -2300,9 +2408,10 @@ public class SARLValidator extends AbstractSARLValidator {
 	public void checkUnmodifiableEventAccess(SarlBehaviorUnit unit) {
 		final boolean enable1 = !isIgnored(IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE);
 		final XExpression root = unit.getExpression();
+		final String occurrenceKw = this.grammarAccess.getOccurrenceKeyword();
 		for (final XFeatureCall child : EcoreUtil2.getAllContentsOfType(root, XFeatureCall.class)) {
-			if (this.grammarAccess.getOccurrenceKeyword().equals(child.getFeature().getIdentifier())) {
-				checkUnmodifiableEventAccess(enable1, child);
+			if (occurrenceKw.equals(child.getFeature().getIdentifier())) {
+				checkUnmodifiableFeatureAccess(enable1, child, occurrenceKw);
 			}
 		}
 	}
@@ -2597,7 +2706,7 @@ public class SARLValidator extends AbstractSARLValidator {
 				if (container != null && container instanceof JvmOperation) {
 					final JvmOperation operation = (JvmOperation) container;
 					if (operation.isStatic() && field.getDeclaringType() == operation.getDeclaringType()
-						&& Utils.STATIC_CONSTRUCTOR_NAME.equals(operation.getSimpleName())) {
+							&& Utils.STATIC_CONSTRUCTOR_NAME.equals(operation.getSimpleName())) {
 						return;
 					}
 				}

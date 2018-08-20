@@ -127,7 +127,9 @@ public class Bug483 extends AbstractSarlTest {
 			"agent TestAgent {",
 			"    on E1 {",
 			"        var x = occurrence.attr.setValue(1)",
+			"        fct(p)",
 			"    }",
+			"    def fct(p : int) {}",
 			"}"));
 		validate(mas).assertWarning(
 				XbasePackage.eINSTANCE.getXMemberFeatureCall(),
@@ -195,6 +197,28 @@ public class Bug483 extends AbstractSarlTest {
 	}
 
 	@Test
+	public void updateObjectGetter_03() throws Exception {
+		SarlScript mas = file(multilineString(
+			"package io.sarl.lang.tests.bug483",
+			"class XXX {",
+			"  def getValue() : Object { null }",
+			"}",
+			"event E1 {",
+			"  var attr : XXX",
+			"}",
+			"agent TestAgent {",
+			"    on E1 {",
+			"        var x = occurrence.attr.value",
+			"        myfct(x)",
+			"    }",
+			"    def myfct(a : Object) { }",
+			"}"));
+		validate(mas).assertWarning(
+				XbasePackage.eINSTANCE.getXMemberFeatureCall(),
+				IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE);
+	}
+
+	@Test
 	public void updateObjectSetter_05() throws Exception {
 		SarlScript mas = file(multilineString(
 			"package io.sarl.lang.tests.bug483",
@@ -232,6 +256,84 @@ public class Bug483 extends AbstractSarlTest {
 		validate(mas).assertWarning(
 				XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 				IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE);
+	}
+
+	@Test
+	public void updateObjectSetter_07() throws Exception {
+		SarlScript mas = file(multilineString(
+			"package io.sarl.lang.tests.bug483",
+			"class XXX {",
+			"  def getValue() : int { 0 }",
+			"}",
+			"event E1 {",
+			"  var attr : XXX",
+			"}",
+			"agent TestAgent {",
+			"    on E1 {",
+			"       myfct(occurrence.attr.value);",
+			"    }",
+			"    def myfct(p : Integer) { }",
+			"}"));
+		validate(mas).assertNoIssues();
+	}
+
+	@Test
+	public void updateObjectSetter_08() throws Exception {
+		SarlScript mas = file(multilineString(
+			"package io.sarl.lang.tests.bug483",
+			"class XXX {",
+			"  def getValue() : String { null }",
+			"}",
+			"event E1 {",
+			"  var attr : XXX",
+			"}",
+			"agent TestAgent {",
+			"    on E1 {",
+			"       myfct(occurrence.attr.value);",
+			"    }",
+			"    def myfct(p : String) { }",
+			"}"));
+		validate(mas).assertNoIssues();
+	}
+
+	@Test
+	public void updateObjectSetter_09() throws Exception {
+		SarlScript mas = file(multilineString(
+			"package io.sarl.lang.tests.bug483",
+			"import java.math.BigInteger",
+			"class XXX {",
+			"  def getValue() : BigInteger { null }",
+			"}",
+			"event E1 {",
+			"  var attr : XXX",
+			"}",
+			"agent TestAgent {",
+			"    on E1 {",
+			"       myfct(occurrence.attr.value);",
+			"    }",
+			"    def myfct(p : BigInteger) { }",
+			"}"));
+		validate(mas).assertNoIssues();
+	}
+
+	@Test
+	public void updateObjectSetter_10() throws Exception {
+		SarlScript mas = file(multilineString(
+			"package io.sarl.lang.tests.bug483",
+			"enum MyEnum { CST1, CST2 }",
+			"class XXX {",
+			"  def getValue() : MyEnum { MyEnum.CST2 }",
+			"}",
+			"event E1 {",
+			"  var attr : XXX",
+			"}",
+			"agent TestAgent {",
+			"    on E1 {",
+			"       myfct(occurrence.attr.value);",
+			"    }",
+			"    def myfct(p : MyEnum) { }",
+			"}"));
+		validate(mas).assertNoIssues();
 	}
 
 	@Test
