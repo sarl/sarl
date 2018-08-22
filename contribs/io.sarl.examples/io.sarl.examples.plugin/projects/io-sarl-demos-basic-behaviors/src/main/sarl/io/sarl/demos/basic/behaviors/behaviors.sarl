@@ -1,3 +1,24 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-@RELEASE_YEAR@ the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.sarl.demos.basic.behaviors
 
 import io.sarl.core.Behaviors
@@ -6,21 +27,30 @@ import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 
-/*
- * Declaration of a simple Factorial event with two internal variables
+/**
+ * Declaration of a simple Factorial event with two internal variables.
+ *
+ * @author Nicolas Gaud
+ * @author Stephane Galland
  */
 event Factorial {
 	var number : Long
 	var value : Long
 } 
 
-/*
- * Declaration of a simple BehaviorInitialize event without any data
+/**
+ * Declaration of a simple BehaviorInitialize event without any data.
+ *
+ * @author Nicolas Gaud
+ * @author Stephane Galland
  */
 event BehaviorInitialize {}
 
-/*
- * Declaration of a new behavior
+/**
+ * Declaration of a new behavior.
+ *
+ * @author Nicolas Gaud
+ * @author Stephane Galland
  */
 behavior FactorialBehavior {
 	uses Lifecycle, Behaviors, Logging /* the list of capacities used by this behavior */
@@ -48,8 +78,11 @@ behavior FactorialBehavior {
 	}
 }
 
-/*
+/**
  * A simple agent executing/adopting a externally defined behavior.
+ *
+ * @author Nicolas Gaud
+ * @author Stephane Galland
  */
 agent BehaviorPlayer {
 	
