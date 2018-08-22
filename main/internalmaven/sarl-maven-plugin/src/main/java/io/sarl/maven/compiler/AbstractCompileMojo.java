@@ -206,19 +206,21 @@ public abstract class AbstractCompileMojo extends AbstractSarlBatchCompilerMojo 
 	@Override
 	protected OptimizationLevel getOptimization() {
 		if (this.optimizationInstance == null) {
-			this.optimizationInstance = OptimizationLevel.valueOfCaseInsensitive(this.optimization);
-			if (this.optimizationInstance == null) {
-				String values = null;
-				for (final OptimizationLevel lvl : OptimizationLevel.values()) {
-					if (values == null) {
-						values = lvl.getCaseInsensitiveName();
-					} else {
-						values = MessageFormat.format(Messages.AbstractCompileMojo_1, values,
-								lvl.getCaseInsensitiveName());
+			if (!Strings.isNullOrEmpty(this.optimization)) {
+				this.optimizationInstance = OptimizationLevel.valueOfCaseInsensitive(this.optimization);
+				if (this.optimizationInstance == null) {
+					String values = null;
+					for (final OptimizationLevel lvl : OptimizationLevel.values()) {
+						if (values == null) {
+							values = lvl.getCaseInsensitiveName();
+						} else {
+							values = MessageFormat.format(Messages.AbstractCompileMojo_1, values,
+									lvl.getCaseInsensitiveName());
+						}
 					}
+					getLog().warn(MessageFormat.format(Messages.AbstractCompileMojo_2, this.optimization,
+							values, OptimizationLevel.getDefault().getCaseInsensitiveName()));
 				}
-				getLog().warn(MessageFormat.format(Messages.AbstractCompileMojo_2, this.optimization,
-						values, OptimizationLevel.getDefault().getCaseInsensitiveName()));
 			}
 			if (this.optimizationInstance == null) {
 				this.optimizationInstance = OptimizationLevel.getDefault();
