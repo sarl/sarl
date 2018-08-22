@@ -28,6 +28,7 @@ import javax.inject.Inject;
 import com.google.inject.Singleton;
 import org.eclipse.xtext.xbase.scoping.batch.ImplicitlyImportedFeatures;
 
+import io.sarl.lang.bugfixes.pending.pr106.PR106ArrayExtensions;
 import io.sarl.lang.bugfixes.pending.pr106.PR106ArrayLiterals;
 import io.sarl.lang.scoping.batch.SARLTimeExtensions;
 import io.sarl.lang.scoping.numbers.NumberCastImplicitlyImportedFeatures;
@@ -68,6 +69,7 @@ public class SARLImplicitlyImportedFeatures extends ImplicitlyImportedFeatures {
 	protected List<Class<?>> getExtensionClasses() {
 		final List<Class<?>> xtextList = super.getExtensionClasses();
 		// Insert at the beginning for ensuring the SARL extension is selected before any Xtext extension.
+		xtextList.add(0, PR106ArrayExtensions.class);
 		xtextList.add(0, SARLTimeExtensions.class);
 
 		// Add features related to numbers.
