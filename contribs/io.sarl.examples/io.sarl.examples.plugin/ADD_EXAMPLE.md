@@ -100,9 +100,12 @@ Add into the `SARL-Example-Intro.xml` file:
 
 ## 6. Update the building script
 
-Add into the `build.xml` file:
+Add into the `src-templates/build.xml` file:
 
 
 	<zip_example name="io-sarl-demos-myexample" />
 
+## 7. Regenerate files
+
+Run: `mvn clean install`
 

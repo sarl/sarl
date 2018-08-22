@@ -33,7 +33,7 @@
 		<attribute name="target" default="${target_folder}" />
 		<attribute name="source" default="${source_folder}" />
 		<attribute name="archive" default="${archive_folder}" />
-		<attribute name="pomtemplate" default="${pom_template_folder}/io/sarl/eclipse/wizards/newproject/pom_template.xml" />
+		<attribute name="pomtemplate" default="${pom_template_folder}/%pomtemplaterelativepath%" />
 		<attribute name="excludes" default="bin,bin/**,**/*._trace,.antlr-generator*.jar,component.def,${specific_pom_config}" />
 		<sequential>
 			<copy todir="@{archive}/@{name}" overwrite="true" force="true" encoding="UTF-8">
@@ -41,11 +41,11 @@
 				<filterset>
 					<filter token="GROUP_ID" value="@{group}"/>
 					<filter token="PROJECT_NAME" value="@{name}"/>
-					<filter token="PROJECT_VERSION" value="0.8.0-SNAPSHOT"/>
-					<filter token="SARL_VERSION" value="0.8.0-SNAPSHOT"/>
-					<filter token="FILE_ENCODING" value="UTF-8"/>
-					<filter token="JAVA_VERSION" value="1.8"/>
-					<filter token="RELEASE_YEAR" value="2018"/>
+					<filter token="PROJECT_VERSION" value="%sarlversion%"/>
+					<filter token="SARL_VERSION" value="%sarlversion%"/>
+					<filter token="FILE_ENCODING" value="%encoding%"/>
+					<filter token="JAVA_VERSION" value="%compilerlevel%"/>
+					<filter token="RELEASE_YEAR" value="%releaseyear%"/>
 				</filterset>
 			</copy>
 			<copy file="@{pomtemplate}" tofile="@{archive}/@{name}/pom.xml" overwrite="false"
@@ -53,11 +53,11 @@
 				<filterset>
 					<filter token="GROUP_ID" value="@{group}"/>
 					<filter token="PROJECT_NAME" value="@{name}"/>
-					<filter token="PROJECT_VERSION" value="0.8.0-SNAPSHOT"/>
-					<filter token="SARL_VERSION" value="0.8.0-SNAPSHOT"/>
-					<filter token="FILE_ENCODING" value="UTF-8"/>
-					<filter token="JAVA_VERSION" value="1.8"/>
-					<filter token="RELEASE_YEAR" value="2018"/>
+					<filter token="PROJECT_VERSION" value="%sarlversion%"/>
+					<filter token="SARL_VERSION" value="%sarlversion%"/>
+					<filter token="FILE_ENCODING" value="%encoding%"/>
+					<filter token="JAVA_VERSION" value="%compilerlevel%"/>
+					<filter token="RELEASE_YEAR" value="%releaseyear%"/>
 				</filterset>
 			</copy>
 			<delete file="@{target}/@{name}.zip" />
@@ -66,7 +66,7 @@
 	</macrodef>
 
 	<target name="retrieve_pom_template">
-			<copy file="../../../main/coreplugins/io.sarl.eclipse/src/io/sarl/eclipse/wizards/newproject/pom_template.xml" tofile="${pom_template_folder}/io/sarl/eclipse/wizards/newproject/pom_template.xml"
+			<copy file="%pomtemplatefile%/%pomtemplaterelativepath%" tofile="${pom_template_folder}/%pomtemplaterelativepath%"
 			      overwrite="true" force="true" encoding="UTF-8" />
 	</target>
 
