@@ -87,6 +87,15 @@ import io.sarl.lang.ui.preferences.SARLPreferences;
  */
 public class NewSarlProjectWizard extends NewElementWizard implements IExecutableExtension {
 
+	/** The base name of the file that contains a template of a pom file.
+	 *
+	 * @since 0.8
+	 * @see #getPomTemplateLocation()
+	 */
+	public static final String POM_TEMPLATE_BASENAME = "pom_template.xml"; //$NON-NLS-1$
+
+	private static final String DEFAULT_MAVEN_PROJECT_VERSION = "0.0.1-SNAPSHOT"; //$NON-NLS-1$
+
 	private MainProjectWizardPage firstPage;
 
 	private BuildSettingWizardPage secondPage;
@@ -99,7 +108,6 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 		this(null, null);
 	}
 
-
 	/** Construct a new wizard for creating a SARL project.
 	 *
 	 * @param pageOne reference to the first page of the wizard.
@@ -109,6 +117,18 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 		setDialogSettings(JavaPlugin.getDefault().getDialogSettings());
 		this.firstPage = pageOne;
 		this.secondPage = pageTwo;
+	}
+
+	/** Replies the location of a template for the pom files.
+	 *
+	 * @return the location. Should be never {@code null}.
+	 * @since 0.8
+	 * @see #POM_TEMPLATE_BASENAME
+	 */
+	public static URL getPomTemplateLocation() {
+		final URL url = Resources.getResource(NewSarlProjectWizard.class, POM_TEMPLATE_BASENAME);
+		assert url != null;
+		return url;
 	}
 
 	@Override
@@ -226,7 +246,7 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 
 			// Force SARL configuration
 			SARLProjectConfigurator.configureSARLProject(newElement.getProject(),
-					false, false, new NullProgressMonitor());
+					true, false, false, new NullProgressMonitor());
 
 			// Validate the SARL specific elements
 			if (!validateSARLSpecificElements(newElement)) {
@@ -271,7 +291,7 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 	 */
 	protected void createDefaultMavenPom(IJavaProject project, String compilerCompliance) {
 		// Get the template resource.
-		final URL templateUrl = Resources.getResource(getClass(), "pom_template.xml"); //$NON-NLS-1$
+		final URL templateUrl = getPomTemplateLocation();
 		if (templateUrl != null) {
 			final String compliance = Strings.isNullOrEmpty(compilerCompliance) ? SARLVersion.MINIMAL_JDK_VERSION : compilerCompliance;
 			final String groupId = getDefaultMavenGroupId();
@@ -280,11 +300,12 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 			try (BufferedReader reader = new BufferedReader(new InputStreamReader(templateUrl.openStream()))) {
 				String line = reader.readLine();
 				while (line != null) {
-					line = line.replaceAll(Pattern.quote("%%GROUP_ID%%"), groupId); //$NON-NLS-1$
-					line = line.replaceAll(Pattern.quote("%%PROJECT_NAME%%"), project.getElementName()); //$NON-NLS-1$
-					line = line.replaceAll(Pattern.quote("%%SARL_VERSION%%"), SARLVersion.SARL_RELEASE_VERSION_MAVEN); //$NON-NLS-1$
-					line = line.replaceAll(Pattern.quote("%%JAVA_VERSION%%"), compliance); //$NON-NLS-1$
-					line = line.replaceAll(Pattern.quote("%%FILE_ENCODING%%"), Charset.defaultCharset().displayName()); //$NON-NLS-1$
+					line = line.replaceAll(Pattern.quote("@GROUP_ID@"), groupId); //$NON-NLS-1$
+					line = line.replaceAll(Pattern.quote("@PROJECT_NAME@"), project.getElementName()); //$NON-NLS-1$
+					line = line.replaceAll(Pattern.quote("@PROJECT_VERSION@"), DEFAULT_MAVEN_PROJECT_VERSION); //$NON-NLS-1$
+					line = line.replaceAll(Pattern.quote("@SARL_VERSION@"), SARLVersion.SARL_RELEASE_VERSION_MAVEN); //$NON-NLS-1$
+					line = line.replaceAll(Pattern.quote("@JAVA_VERSION@"), compliance); //$NON-NLS-1$
+					line = line.replaceAll(Pattern.quote("@FILE_ENCODING@"), Charset.defaultCharset().displayName()); //$NON-NLS-1$
 					content.append(line).append("\n"); //$NON-NLS-1$
 					line = reader.readLine();
 				}

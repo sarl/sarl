@@ -81,6 +81,10 @@ public final class SARLConfig {
 	 */
 	public static final String FOLDER_BIN = "target/classes"; //$NON-NLS-1$
 
+	/** Path of the binary test files.
+	 */
+	public static final String FOLDER_TEST_BIN = "target/test-classes"; //$NON-NLS-1$
+
 	/** Path of the temporary files.
 	 */
 	public static final String FOLDER_TMP = "target/sarl-build"; //$NON-NLS-1$
