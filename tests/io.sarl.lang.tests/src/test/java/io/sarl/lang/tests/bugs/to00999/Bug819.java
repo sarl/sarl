@@ -109,7 +109,6 @@ public class Bug819 extends AbstractSarlTest {
 			"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 			"@SuppressWarnings(\"all\")",
 			"public class Agent3 extends Agent {",
-			"  @SyntheticMember",
 			"  private void $behaviorUnit$Initialize$0(final Initialize occurrence) {",
 			"    UUID id = null;",
 			"    Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$castSkill(Lifecycle.class, (this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE == null || this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE.get() == null) ? (this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE = this.$getSkill(Lifecycle.class)) : this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE);",

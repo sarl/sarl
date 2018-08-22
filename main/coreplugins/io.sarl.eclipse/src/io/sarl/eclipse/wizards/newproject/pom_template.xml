@@ -24,22 +24,11 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.6.2</version>
-				<configuration>
-					<source>${compiler.level}</source>
-					<target>${compiler.level}</target>
-					<encoding>${project.build.sourceEncoding}</encoding>
-				</configuration>
-			</plugin>
-			<plugin>
 				<groupId>io.sarl.maven</groupId>
 				<artifactId>sarl-maven-plugin</artifactId>
 				<version>${sarl.version}</version>
 				<extensions>true</extensions>
 				<configuration>
-					<compiler>maven</compiler>
 					<source>${compiler.level}</source>
 					<target>${compiler.level}</target>
 					<encoding>${project.build.sourceEncoding}</encoding>

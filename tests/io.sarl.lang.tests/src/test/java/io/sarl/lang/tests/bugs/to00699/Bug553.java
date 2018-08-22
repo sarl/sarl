@@ -62,7 +62,6 @@ public class Bug553 extends AbstractSarlTest {
 			"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 			"@SuppressWarnings(\"all\")",
 			"public class TestAgent extends Agent {",
-			"  @SyntheticMember",
 			"  private void $behaviorUnit$MyEvent$0(final MyEvent occurrence) {",
 			"    long ms = (5) * 1000;",
 			"  }",
