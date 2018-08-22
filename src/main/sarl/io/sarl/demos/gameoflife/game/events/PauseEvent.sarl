@@ -19,41 +19,9 @@
  * limitations under the License.
  */
 
-package io.sarl.demos.gameoflife.gui
+package io.sarl.demos.gameoflife.game.events
 
 /**
- * The listener on UI events.
- *
  * @author Maxime PINARD
  */
-interface GUIListener {
-
-	/**
-	 * Play button pushed.
-	 */
-	def play
-
-	/**
-	 * Pause button pushed.
-	 */
-	def pause
-
-	/**
-	 * GUI stopped.
-	 */
-	def stop
-
-	/**
-	 * Setup button pushed.
-	 *
-	 * @param width value of the width field
-	 * @param height value of the height field
-	 */
-	def setup(width : int, height : int)
-
-	/**
-	 * Period was updated.
-	 */
-	def periodUpdated(period : int)
-
-}
+event PauseEvent

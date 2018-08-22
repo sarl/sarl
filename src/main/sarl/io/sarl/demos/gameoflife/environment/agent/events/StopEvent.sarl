@@ -1,8 +1,0 @@
-package io.sarl.demos.gameoflife.environment.^agent.events
-
-/**
- * TODO: doc
- *
- * @author Maxime PINARD
- */
-event StopEvent

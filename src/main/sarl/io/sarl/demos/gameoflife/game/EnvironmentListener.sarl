@@ -19,41 +19,31 @@
  * limitations under the License.
  */
 
-package io.sarl.demos.gameoflife.gui
+package io.sarl.demos.gameoflife.game;
+
+import java.util.EventListener
+import java.util.UUID
 
 /**
- * The listener on UI events.
+ * Listener on events that occur within the environment.
  *
  * @author Maxime PINARD
+ * @author Stephane GALLAND
  */
-interface GUIListener {
+interface EnvironmentListener extends EventListener {
 
 	/**
-	 * Play button pushed.
-	 */
-	def play
-
-	/**
-	 * Pause button pushed.
-	 */
-	def pause
-
-	/**
-	 * GUI stopped.
-	 */
-	def stop
-
-	/**
-	 * Setup button pushed.
+	 * Handle grid update.
 	 *
-	 * @param width value of the width field
-	 * @param height value of the height field
+	 * @param grid the grid
 	 */
-	def setup(width : int, height : int)
+	def handleGridUpdate(grid : Pair<UUID, Boolean>[][])
 
 	/**
-	 * Period was updated.
+	 * Setup progress information updater.
+	 *
+	 * @param progress the progress
 	 */
-	def periodUpdated(period : int)
+	def setupProgress(progress : double)
 
 }

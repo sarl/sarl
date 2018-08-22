@@ -19,41 +19,34 @@
  * limitations under the License.
  */
 
-package io.sarl.demos.gameoflife.gui
+package io.sarl.demos.gameoflife.game
 
-/**
- * The listener on UI events.
- *
+import org.arakhne.afc.math.geometry.d2.i.Point2i
+
+/** 
+ * @author Jerome BOULMIER
  * @author Maxime PINARD
  */
-interface GUIListener {
+class AgentBody {
 
-	/**
-	 * Play button pushed.
-	 */
-	def play
+	var alive : boolean
+	val position : Point2i
 
-	/**
-	 * Pause button pushed.
-	 */
-	def pause
+	new(position : Point2i, alive : boolean) {
+		this.position = position
+		this.alive = alive
+	}
 
-	/**
-	 * GUI stopped.
-	 */
-	def stop
+	def isAlive : boolean {
+		alive
+	}
 
-	/**
-	 * Setup button pushed.
-	 *
-	 * @param width value of the width field
-	 * @param height value of the height field
-	 */
-	def setup(width : int, height : int)
+	def getPosition : Point2i {
+		position
+	}
 
-	/**
-	 * Period was updated.
-	 */
-	def periodUpdated(period : int)
+	def setAlive(alive : boolean) {
+		this.alive = alive
+	}
 
 }

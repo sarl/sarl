@@ -1,33 +1,53 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-@RELEASE_YEAR@ the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.sarl.demos.gameoflife
 
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
-import io.sarl.demos.gameoflife.environment.^agent.Controller
-import io.sarl.demos.gameoflife.environment.^agent.Environment
-import io.sarl.demos.gameoflife.environment.^agent.events.AgentReadyForGame
-import io.sarl.demos.gameoflife.environment.^agent.events.PauseEvent
-import io.sarl.demos.gameoflife.environment.^agent.events.PlayEvent
-import io.sarl.demos.gameoflife.environment.^agent.events.RunBeginingOfStep
-import io.sarl.demos.gameoflife.environment.^agent.events.StepFinished
-import io.sarl.demos.gameoflife.environment.^agent.events.StopEvent
+import io.sarl.demos.gameoflife.game.Controller
+import io.sarl.demos.gameoflife.game.Environment
+import io.sarl.demos.gameoflife.game.events.AgentReadyForGame
+import io.sarl.demos.gameoflife.game.events.GameIsDead
+import io.sarl.demos.gameoflife.game.events.PauseEvent
+import io.sarl.demos.gameoflife.game.events.PeriodUpdatedEvent
+import io.sarl.demos.gameoflife.game.events.PlayEvent
+import io.sarl.demos.gameoflife.game.events.RunBeginingOfStep
+import io.sarl.demos.gameoflife.game.events.SetupEvent
+import io.sarl.demos.gameoflife.game.events.StepFinished
+import io.sarl.demos.gameoflife.game.events.StopEvent
 import io.sarl.demos.gameoflife.gui.GUI
-import io.sarl.lang.core.Address
-import io.sarl.util.Scopes
 import java.util.UUID
 import java.util.concurrent.locks.ReentrantLock
 import javafx.application.Platform
-import io.sarl.demos.gameoflife.environment.^agent.events.GameIsDead
-import io.sarl.demos.gameoflife.environment.^agent.events.SetupEvent
-import io.sarl.demos.gameoflife.environment.^agent.events.PeriodUpdatedEvent
+import org.arakhne.afc.vmutil.locale.Locale
 
 /**
- * TODO: doc
- *
  * @author Jérôme BOULMIER
  * @author Maxime PINARD
+ * @author Stephane GALLAND
  */
+@SuppressWarnings("potential_field_synchronization_problem")
 agent Boot {
 
 	uses DefaultContextInteractions, Lifecycle, Logging;
@@ -43,23 +63,20 @@ agent Boot {
 	var environmentReady = false
 	var paused = false
 	var gameRunning = false
-	var newSetup = false
 
 	val lock = new ReentrantLock
-	val environmentUUID = UUID.randomUUID
+	val environmentUUID = UUID::randomUUID
 
 	on Initialize {
-		gui = GUI.getGUI();
-		controller = new Controller(defaultSpace, new Address(defaultSpace.spaceID, getID()),
-			environmentUUID);
-		gui.addGUIListener(controller);
-		controller.addControllerListener(gui);
+		gui = GUI.GUI
+		controller = new Controller(defaultSpace, ID)
+		gui.addGUIListener(controller)
+		controller.addControllerListener(gui)
 
-		Platform.runLater([gui.launchGUI()])
-		controller.setReadyToSetup(true);
-		/*numberOfAgent = width * height + 1;
-		info("There is " + numberOfAgent + " agents.")
-		spawnInContextWithID(Environment, environmentUUID, defaultContext, width, height, gui, defaultAddress);*/
+		Platform.runLater [
+			gui.launchGUI
+			controller.readyToSetup = true
+		]
 	}
 
 	on AgentReadyForGame {
@@ -73,13 +90,13 @@ agent Boot {
 			lock.unlock
 		}
 
-		//info("Entity loaded: " + tmp)
-
 		if (tmp == numberOfAgent) {
-			info("Running GUI")
-			Platform.runLater([gui.setupGUI(width, height)])
-			environmentReady = true
-			controller.setReadyToPlay(true);
+			info(Locale.getString("RUNNING"))
+			Platform.runLater [
+				gui.setupGUI(width, height)
+				environmentReady = true
+				controller.readyToPlay = true
+			]
 		}
 	}
 
@@ -87,13 +104,13 @@ agent Boot {
 		lock.lock
 		try {
 			if (environmentReady) {
-				controller.setReadyToPause(true);
-				controller.setReadyToSetup(false);
-				controller.setReadyToPlay(false);
-				info("Starting the game.")
+				controller.readyToPause = true
+				controller.readyToSetup = false
+				controller.readyToPlay = false
+				info(Locale.getString("START_GAME"))
 				paused = false
 				gameRunning = true
-				emit(new RunBeginingOfStep, Scopes::addresses(new Address(defaultSpace.spaceID, environmentUUID)))
+				emit(new RunBeginingOfStep) [it.UUID == environmentUUID]
 			}
 		} finally {
 			lock.unlock
@@ -101,13 +118,13 @@ agent Boot {
 	}
 
 	on PauseEvent {
-		info("Pause Event handled")
+		info(Locale.getString("PAUSE"))
 
 		lock.lock
 		try {
-			controller.setReadyToPlay(true);
-			controller.setReadyToPause(false);
-			controller.setReadyToSetup(true);
+			controller.readyToPlay = true
+			controller.readyToPause = false
+			controller.readyToSetup = true
 			paused = true
 		} finally {
 			lock.unlock
@@ -115,7 +132,7 @@ agent Boot {
 	}
 
 	on StopEvent {
-		info("Stop Event handled")
+		info(Locale.getString("STOP"))
 
 		lock.lock
 		try {
@@ -133,11 +150,9 @@ agent Boot {
 	on StepFinished {
 		lock.lock
 		try {
-			//info("Step Finished: running:" + gameRunning + ", paused:" + paused)
-
 			if (gameRunning && !paused) {
 				Thread.sleep(period)
-				emit(new RunBeginingOfStep, Scopes::addresses(new Address(defaultSpace.spaceID, environmentUUID)))
+				emit(new RunBeginingOfStep) [it.UUID == environmentUUID]
 			} else if (!gameRunning) {
 				emit(new GameIsDead)
 				killMe
@@ -149,35 +164,37 @@ agent Boot {
 
 	on SetupEvent {
 		lock.lock
+		try {
+			if (gameRunning && !paused) {
+				error(Locale.getString("INVALID_SETUP"))
+			}
 
-		if (gameRunning && !paused) {
-			error("Try to setup a new grid without pausing the game.")
+			width = occurrence.width
+			height = occurrence.height
+			numberOfAgent = occurrence.width * occurrence.height + 1
+			emit(new GameIsDead)
+			info(Locale.getString("AGENTS", numberOfAgent))
+			spawnInContextWithID(Environment, environmentUUID, defaultContext, width, height, gui, ID)
+		} finally {
+			lock.unlock
 		}
-
-		width = occurrence.width
-		height = occurrence.height
-		numberOfAgent = occurrence.width * occurrence.height + 1
-		emit(new GameIsDead)
-		info("There is " + numberOfAgent + " agents.")
-		spawnInContextWithID(Environment, environmentUUID, defaultContext, width, height, gui, defaultAddress)
-
-		lock.unlock
 	}
 
 	on PeriodUpdatedEvent {
 		lock.lock
-		info("Period updated")
-		period = occurrence.period
-
-		lock.unlock
+		try {
+			info(Locale.getString("END_PERIOD"))
+			period = occurrence.period
+		} finally {
+			lock.unlock
+		}
 	}
 
 	on GameIsDead {
-		controller.setReadyToPlay(false)
-		controller.setReadyToPause(false);
-		controller.setReadyToSetup(true);
+		controller.readyToPlay = false
+		controller.readyToPause = false
+		controller.readyToSetup = true
 		paused = true
 	}
 
 }
-

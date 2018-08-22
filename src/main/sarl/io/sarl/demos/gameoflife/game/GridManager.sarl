@@ -19,41 +19,58 @@
  * limitations under the License.
  */
 
-package io.sarl.demos.gameoflife.gui
+package io.sarl.demos.gameoflife.game
+
+import java.util.List
+import java.util.Set
+import java.util.UUID
+import org.arakhne.afc.math.geometry.d2.i.Point2i
 
 /**
- * The listener on UI events.
- *
- * @author Maxime PINARD
+ * @author Jerome Boulmier
  */
-interface GUIListener {
+capacity GridManager {
 
 	/**
-	 * Play button pushed.
+	 * Initialize the grid using random.
 	 */
-	def play
+	def setup
 
 	/**
-	 * Pause button pushed.
-	 */
-	def pause
-
-	/**
-	 * GUI stopped.
-	 */
-	def stop
-
-	/**
-	 * Setup button pushed.
+	 * Replies the agents perceptions
 	 *
-	 * @param width value of the width field
-	 * @param height value of the height field
 	 */
-	def setup(width : int, height : int)
+	def getPerceptions : List<Pair<UUID, Set<Point2i>>>
 
 	/**
-	 * Period was updated.
+	 * Replies the width of the grid.
 	 */
-	def periodUpdated(period : int)
+	def getWidth : int
+
+	/**
+	 * Replies the height of the grid.
+	 */
+	def getHeight : int
+
+	/**
+	 * Applies the changes of state of the cells
+	 */
+	def applyActions(actions : List<Action>)
+
+	/**
+	 * Replies true if the cell is alive.
+	 */
+	def isAlive(uuid : UUID) : boolean
+
+	/**
+	 * Replies the position of the cell
+	 */
+	def getPosition(uuid : UUID) : Point2i
+
+	/**
+	 * Replies the grid
+	 */
+	def getGrid : Pair<UUID, Boolean>[][]
 
 }
+
