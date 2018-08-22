@@ -110,7 +110,7 @@ public final class SARLPreferences {
 		// Force to use a specific configuration for the SARL
 		preferenceStore.setValue(IS_PROJECT_SPECIFIC, true);
 
-		// Loop on the Xtext configurations embeded in the SARL compiler.
+		// Loop on the Xtext configurations embedded in the SARL compiler.
 		String key;
 		for (final OutputConfiguration projectConfiguration : getXtextConfigurationsFor(project)) {
 			//

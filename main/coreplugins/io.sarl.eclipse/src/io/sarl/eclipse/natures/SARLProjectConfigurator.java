@@ -31,6 +31,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import com.google.common.base.Strings;
 import com.google.inject.Injector;
@@ -47,6 +48,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -70,6 +72,7 @@ import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
 import io.sarl.eclipse.util.BundleUtil;
 import io.sarl.lang.SARLConfig;
 import io.sarl.lang.ui.preferences.SARLPreferences;
+import io.sarl.lang.util.OutParameter;
 
 /**
  * Configurator for a SARL project.
@@ -144,7 +147,7 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 	@Override
 	public void configure(IProject project, Set<IPath> ignoredPaths, IProgressMonitor monitor) {
 		try {
-			configureSARLProject(project, true, true, monitor);
+			configureSARLProject(project, true, true, true, monitor);
 			safeRefresh(project, monitor);
 		} finally {
 			monitor.done();
@@ -200,55 +203,160 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 		}
 	}
 
+	/** Replies the list of the standard source folders for a SARL project.
+	 *
+	 * @return the list of the standard source folders.
+	 * @since 0.8
+	 */
+	public static String[] getSARLProjectSourceFolders() {
+		return new String[] {
+			SARLConfig.FOLDER_SOURCE_SARL,
+			SARLConfig.FOLDER_SOURCE_JAVA,
+			SARLConfig.FOLDER_RESOURCES,
+			SARLConfig.FOLDER_TEST_SOURCE_SARL,
+			SARLConfig.FOLDER_SOURCE_GENERATED,
+			SARLConfig.FOLDER_TEST_SOURCE_GENERATED,
+		};
+	}
+
+	/** Replies the list of the standard binary folders for a SARL project.
+	 *
+	 * @return the list of the standard binary folders.
+	 * @since 0.8
+	 */
+	public static String[] getSARLProjectBinFolders() {
+		return new String[] {
+			SARLConfig.FOLDER_BIN,
+			SARLConfig.FOLDER_TEST_BIN,
+		};
+	}
+
 	/** Configure the SARL project.
 	 *
+	 * <p>This function does the following:<ul>
+	 * <li>Add the SARL nature to the project;</li>
+	 * <li>Create the standard SARL folders if {@code createFolders} is evaluated to true;</li>
+	 * <li>Set the output configuration of the project from the
+	 * {@link SARLPreferences#setSpecificSARLConfigurationFor(IProject, IPath) general SARL configuration};</li>
+	 * <li>Reset the Java configuration in order to follow the SARL configuration, if {@code configureJabvaNature}
+	 * is evaluated to true.</li>
+	 * </ul>
+	 *
 	 * @param project the project.
+	 * @param addNatures indicates if the natures must be added to the project by calling {@link #addSarlNatures(IProject, IProgressMonitor)}.
 	 * @param configureJavaNature indicates if the Java configuration elements must be configured.
 	 * @param createFolders indicates if the folders must be created or not.
 	 * @param monitor the monitor.
+	 * @see #addSarlNatures(IProject, IProgressMonitor)
+	 * @see #configureSARLSourceFolders(IProject, boolean, IProgressMonitor)
 	 */
-	public static void configureSARLProject(IProject project, boolean configureJavaNature, boolean createFolders,
-			IProgressMonitor monitor) {
+	public static void configureSARLProject(IProject project, boolean addNatures,
+			boolean configureJavaNature, boolean createFolders, IProgressMonitor monitor) {
 		try {
 			final SubMonitor subMonitor = SubMonitor.convert(monitor, 11);
 			// Add Natures
-			final IStatus status = addSarlNatures(project, subMonitor.newChild(1));
-			if (status != null && !status.isOK()) {
-				SARLEclipsePlugin.getDefault().getLog().log(status);
+			final IStatus status = Status.OK_STATUS;
+			if (addNatures) {
+				addSarlNatures(project, subMonitor.newChild(1));
+				if (status != null && !status.isOK()) {
+					SARLEclipsePlugin.getDefault().getLog().log(status);
+				}
 			}
 
 			// Ensure SARL specific folders.
-			final IFolder sourceSarlFolder = ensureSourceFolder(project,
-					SARLConfig.FOLDER_SOURCE_SARL, true, createFolders, subMonitor.newChild(1));
-			final IFolder sourceJavaFolder = ensureSourceFolder(project,
-					SARLConfig.FOLDER_SOURCE_JAVA, false, createFolders, subMonitor.newChild(1));
-			final IFolder resourcesFolder = ensureSourceFolder(project,
-					SARLConfig.FOLDER_RESOURCES, false, createFolders, subMonitor.newChild(1));
-			final IFolder testSourceSarlFolder = ensureSourceFolder(project,
-					SARLConfig.FOLDER_TEST_SOURCE_SARL, false, createFolders, subMonitor.newChild(1));
-			final IFolder generationFolder = ensureGeneratedSourceFolder(project,
-					SARLConfig.FOLDER_SOURCE_GENERATED, true, createFolders, subMonitor.newChild(1));
-			final IFolder testGenerationFolder = ensureGeneratedSourceFolder(project,
-					SARLConfig.FOLDER_TEST_SOURCE_GENERATED, false, createFolders, subMonitor.newChild(1));
-			final IFolder outputFolder = ensureOutputFolder(project,
-					SARLConfig.FOLDER_BIN, true, createFolders, subMonitor.newChild(1));
+			final OutParameter<IFolder[]> sourceFolders = new OutParameter<>();
+			final OutParameter<IFolder[]> generationFolders = new OutParameter<>();
+			final OutParameter<IFolder> generationFolder = new OutParameter<>();
+			final OutParameter<IFolder> outputFolder = new OutParameter<>();
+			ensureSourceFolders(project, createFolders, subMonitor, sourceFolders, generationFolders, generationFolder, outputFolder);
 
 			// SARL specific configuration
-			SARLPreferences.setSpecificSARLConfigurationFor(project, generationFolder.getProjectRelativePath());
+			SARLPreferences.setSpecificSARLConfigurationFor(project, generationFolder.get().getProjectRelativePath());
 			subMonitor.worked(1);
 
 			// Create the Java project
 			if (configureJavaNature) {
+
+				if (!addNatures) {
+					addNatures(project, subMonitor.newChild(1), JavaCore.NATURE_ID);
+				}
+
 				final IJavaProject javaProject = JavaCore.create(project);
 				subMonitor.worked(1);
 
 				// Build path
 				BuildPathsBlock.flush(
 						buildClassPathEntries(javaProject,
-								new IFolder[] {sourceSarlFolder, sourceJavaFolder, resourcesFolder, testSourceSarlFolder},
-								new IFolder[] {generationFolder, testGenerationFolder}),
-						outputFolder.getFullPath(), javaProject, null, subMonitor.newChild(1));
+								sourceFolders.get(),
+								generationFolders.get(), false, true),
+						outputFolder.get().getFullPath(), javaProject, null, subMonitor.newChild(1));
 			}
+			subMonitor.done();
+		} catch (CoreException exception) {
+			SARLEclipsePlugin.getDefault().log(exception);
+		}
+	}
+
+	private static void ensureSourceFolders(IProject project, boolean createFolders, SubMonitor monitor,
+			OutParameter<IFolder[]> sourcePaths, OutParameter<IFolder[]> generationPaths,
+			OutParameter<IFolder> standardGenerationFolder,
+			OutParameter<IFolder> classOutput) throws CoreException {
+		final IFolder sourceSarlFolder = ensureSourceFolder(project,
+				SARLConfig.FOLDER_SOURCE_SARL, true, createFolders, monitor.newChild(1));
+		final IFolder sourceJavaFolder = ensureSourceFolder(project,
+				SARLConfig.FOLDER_SOURCE_JAVA, false, createFolders, monitor.newChild(1));
+		final IFolder resourcesFolder = ensureSourceFolder(project,
+				SARLConfig.FOLDER_RESOURCES, false, createFolders, monitor.newChild(1));
+		final IFolder testSourceSarlFolder = ensureSourceFolder(project,
+				SARLConfig.FOLDER_TEST_SOURCE_SARL, false, createFolders, monitor.newChild(1));
+		final IFolder generationFolder = ensureGeneratedSourceFolder(project,
+				SARLConfig.FOLDER_SOURCE_GENERATED, true, createFolders, monitor.newChild(1));
+		final IFolder testGenerationFolder = ensureGeneratedSourceFolder(project,
+				SARLConfig.FOLDER_TEST_SOURCE_GENERATED, false, createFolders, monitor.newChild(1));
+		final IFolder outputFolder = ensureOutputFolder(project,
+				SARLConfig.FOLDER_BIN, true, createFolders, monitor.newChild(1));
+		if (sourcePaths != null) {
+			sourcePaths.set(new IFolder[] {sourceSarlFolder, sourceJavaFolder, resourcesFolder, testSourceSarlFolder});
+		}
+		if (generationPaths != null) {
+			generationPaths.set(new IFolder[] {generationFolder, testGenerationFolder});
+		}
+		if (standardGenerationFolder != null) {
+			standardGenerationFolder.set(generationFolder);
+		}
+		if (classOutput != null) {
+			classOutput.set(outputFolder);
+		}
+	}
+
+	/** Configure the source folders for a SARL project.
+	 *
+	 *
+	 * @param project the project.
+	 * @param createFolders indicates if the folders must be created or not.
+	 * @param monitor the monitor.
+	 * @since 0.8
+	 * @see #addSarlNatures(IProject, IProgressMonitor)
+	 * @see #configureSARLProject(IProject, boolean, boolean, boolean, IProgressMonitor)
+	 */
+	public static void configureSARLSourceFolders(IProject project, boolean createFolders, IProgressMonitor monitor) {
+		try {
+			final SubMonitor subMonitor = SubMonitor.convert(monitor, 8);
+
+			final OutParameter<IFolder[]> sourceFolders = new OutParameter<>();
+			final OutParameter<IFolder[]> generationFolders = new OutParameter<>();
+			ensureSourceFolders(project, createFolders, subMonitor, sourceFolders, generationFolders, null, null);
+
+			final IJavaProject javaProject = JavaCore.create(project);
+			subMonitor.worked(1);
+
+			// Build path
+			BuildPathsBlock.flush(
+					buildClassPathEntries(javaProject,
+							sourceFolders.get(),
+							generationFolders.get(), true, false),
+					javaProject.getOutputLocation(), javaProject, null, subMonitor.newChild(1));
+
 			subMonitor.done();
 		} catch (CoreException exception) {
 			SARLEclipsePlugin.getDefault().log(exception);
@@ -302,42 +410,67 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 		}
 	}
 
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	private static List<CPListElement> buildClassPathEntries(IJavaProject project, IFolder[] sourcePaths,
-			IFolder[] generationPaths) {
+			IFolder[] generationPaths, boolean keepProjectClasspath, boolean addSarllLibraries) {
 		final List<CPListElement> list = new ArrayList<>();
+
+		final Set<String> added = new TreeSet<>();
 
 		for (final IFolder sourcePath : sourcePaths) {
 			if (sourcePath != null) {
-				list.add(new CPListElement(project, IClasspathEntry.CPE_SOURCE,
-						sourcePath.getFullPath().makeAbsolute(), sourcePath));
+				final IPath filename = sourcePath.getFullPath().makeAbsolute();
+				if (added.add(filename.toPortableString())) {
+					list.add(new CPListElement(project, IClasspathEntry.CPE_SOURCE,
+							filename, sourcePath));
+				}
 			}
 		}
 
 		for (final IFolder sourcePath : generationPaths) {
 			if (sourcePath != null) {
-				final IClasspathAttribute attr = JavaCore.newClasspathAttribute(
-						IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS,
-						Boolean.TRUE.toString());
-				final IClasspathEntry entry = JavaCore.newSourceEntry(
-						sourcePath.getFullPath().makeAbsolute(),
-						ClasspathEntry.INCLUDE_ALL,
-						ClasspathEntry.EXCLUDE_NONE,
-						null /*output location*/,
-						new IClasspathAttribute[] {attr});
-				list.add(CPListElement.create(entry, false, project));
+				final IPath filename = sourcePath.getFullPath().makeAbsolute();
+				if (added.add(filename.toPortableString())) {
+					final IClasspathAttribute attr = JavaCore.newClasspathAttribute(
+							IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS,
+							Boolean.TRUE.toString());
+					final IClasspathEntry entry = JavaCore.newSourceEntry(
+							filename,
+							ClasspathEntry.INCLUDE_ALL,
+							ClasspathEntry.EXCLUDE_NONE,
+							null /*output location*/,
+							new IClasspathAttribute[] {attr});
+					list.add(CPListElement.create(entry, false, project));
+				}
 			}
 		}
 
-		for (final IClasspathEntry current : PreferenceConstants.getDefaultJRELibrary()) {
-			if (current != null) {
-				list.add(CPListElement.create(current, true, project));
-				break;
+		if (addSarllLibraries) {
+			for (final IClasspathEntry current : PreferenceConstants.getDefaultJRELibrary()) {
+				if (current != null && added.add(current.getPath().toPortableString())) {
+					list.add(CPListElement.create(current, true, project));
+					break;
+				}
+			}
+
+			if (added.add(SARLClasspathContainerInitializer.CONTAINER_ID.toPortableString())) {
+				list.add(CPListElement.create(
+						JavaCore.newContainerEntry(SARLClasspathContainerInitializer.CONTAINER_ID),
+						true, project));
 			}
 		}
 
-		list.add(CPListElement.create(
-				JavaCore.newContainerEntry(SARLClasspathContainerInitializer.CONTAINER_ID),
-				true, project));
+		if (keepProjectClasspath) {
+			try {
+				for (final IClasspathEntry entry : project.getRawClasspath()) {
+					if (added.add(entry.getPath().toPortableString())) {
+						list.add(CPListElement.create(entry, false, project));
+					}
+				}
+			} catch (Exception exception) {
+				SARLEclipsePlugin.getDefault().log(exception);
+			}
+		}
 
 		return list;
 	}
@@ -485,30 +618,27 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 		return null;
 	}
 
-	/** Add the SARL natures to the given project.
+	/** Add the natures to the given project.
 	 *
 	 * @param project the project.
 	 * @param monitor the monitor.
+	 * @param natureIdentifiers the identifiers of the natures to add to the project.
 	 * @return the status if the operation.
+	 * @since 0.8
 	 */
-	public static IStatus addSarlNatures(IProject project, IProgressMonitor monitor) {
-		if (project != null) {
+	public static IStatus addNatures(IProject project, IProgressMonitor monitor, String... natureIdentifiers) {
+		if (project != null && natureIdentifiers != null && natureIdentifiers.length > 0) {
 			try {
-				final SubMonitor subMonitor = SubMonitor.convert(monitor, 5);
+				final SubMonitor subMonitor = SubMonitor.convert(monitor, natureIdentifiers.length + 2);
 				final IProjectDescription description = project.getDescription();
 				final List<String> natures = new LinkedList<>(Arrays.asList(description.getNatureIds()));
-				if (!natures.contains(JavaCore.NATURE_ID)) {
-					natures.add(0, JavaCore.NATURE_ID);
+
+				for (final String natureIdentifier : natureIdentifiers) {
+					if (!Strings.isNullOrEmpty(natureIdentifier) && !natures.contains(natureIdentifier)) {
+						natures.add(0, natureIdentifier);
+					}
+					subMonitor.worked(1);
 				}
-				subMonitor.worked(1);
-				if (!natures.contains(SARLEclipseConfig.XTEXT_NATURE_ID)) {
-					natures.add(0, SARLEclipseConfig.XTEXT_NATURE_ID);
-				}
-				subMonitor.worked(1);
-				if (!natures.contains(SARLEclipseConfig.NATURE_ID)) {
-					natures.add(0, SARLEclipseConfig.NATURE_ID);
-				}
-				subMonitor.worked(1);
 
 				final String[] newNatures = natures.toArray(new String[natures.size()]);
 				final IStatus status = ResourcesPlugin.getWorkspace().validateNatureSet(newNatures);
@@ -526,6 +656,24 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 			}
 		}
 		return SARLEclipsePlugin.getDefault().createOkStatus();
+	}
+
+	/** Replies the SARL natures that could be added to a project.
+	 *
+	 * @return the SARL project natures.
+	 */
+	public static String[] getSarlNatures() {
+		return new String[] {JavaCore.NATURE_ID, SARLEclipseConfig.XTEXT_NATURE_ID, SARLEclipseConfig.NATURE_ID};
+	}
+
+	/** Add the SARL natures to the given project.
+	 *
+	 * @param project the project.
+	 * @param monitor the monitor.
+	 * @return the status if the operation.
+	 */
+	public static IStatus addSarlNatures(IProject project, IProgressMonitor monitor) {
+		return addNatures(project, monitor, getSarlNatures());
 	}
 
 }

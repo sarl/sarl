@@ -42,6 +42,7 @@ public class SarlJavaElementDelegateAdapterFactory extends JavaElementDelegateAd
 	@Inject
 	private Provider<SarlJavaElementDelegateMainLaunch> mainDelegateProvider;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object getAdapter(Object adaptableObject, @SuppressWarnings("rawtypes")  Class adapterType) {
 		JavaElementDelegate result = null;
