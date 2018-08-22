@@ -52,6 +52,18 @@
 							</includes>
 						</configuration>
 					</execution>
+					<execution>
+						<id>prepare-pom-template</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<file>${project.basedir}/src-templates/pom_template.xml</file>
+							<outputFile>${project.basedir}/src/io/sarl/eclipse/wizards/newproject/pom_template.xml</outputFile>
+						</configuration>
+					</execution>
 				</executions>
 				<configuration>
 					<replacements>
@@ -78,6 +90,10 @@
 						<replacement>
 							<token>%sarlspecificationreleasedate%</token>
 							<value>${sarl.specification.release_date}</value>
+						</replacement>
+						<replacement>
+							<token>%mavencompilerversion%</token>
+							<value>${mavencompiler.version}</value>
 						</replacement>
 					</replacements>
 				</configuration>
