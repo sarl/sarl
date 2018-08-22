@@ -1970,7 +1970,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			setBody(bodyOperation, source.getExpression());
 			// Annotations
 			translateAnnotationsTo(source.getAnnotations(), bodyOperation);
-			appendGeneratedAnnotation(bodyOperation, context);
 			if (context.getGeneratorConfig2().isGeneratePureAnnotation()
 					&& !this.services.getExpressionHelper().hasSideEffects(source.getExpression())) {
 				addAnnotationSafe(bodyOperation, Pure.class);
