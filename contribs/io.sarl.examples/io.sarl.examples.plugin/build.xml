@@ -46,6 +46,7 @@
 					<filter token="FILE_ENCODING" value="UTF-8"/>
 					<filter token="JAVA_VERSION" value="1.8"/>
 					<filter token="RELEASE_YEAR" value="2018"/>
+					<filter token="MAVEN_COMPILER_VERSION" value="3.6.2"/>
 				</filterset>
 			</copy>
 			<copy file="@{pomtemplate}" tofile="@{archive}/@{name}/pom.xml" overwrite="false"
@@ -58,6 +59,7 @@
 					<filter token="FILE_ENCODING" value="UTF-8"/>
 					<filter token="JAVA_VERSION" value="1.8"/>
 					<filter token="RELEASE_YEAR" value="2018"/>
+					<filter token="MAVEN_COMPILER_VERSION" value="3.6.2"/>
 				</filterset>
 			</copy>
 			<delete file="@{target}/@{name}.zip" />

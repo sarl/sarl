@@ -125,6 +125,10 @@
 									<token>%pomtemplatefile%</token>
 									<value>${path_to_pom_template_jar}</value>
 								</replacement>
+								<replacement>
+									<token>%mavencompilerversion%</token>
+									<value>${mavencompiler.version}</value>
+								</replacement>
 							</replacements>
 						</configuration>
 					</execution>

@@ -46,6 +46,7 @@
 					<filter token="FILE_ENCODING" value="%encoding%"/>
 					<filter token="JAVA_VERSION" value="%compilerlevel%"/>
 					<filter token="RELEASE_YEAR" value="%releaseyear%"/>
+					<filter token="MAVEN_COMPILER_VERSION" value="%mavencompilerversion%"/>
 				</filterset>
 			</copy>
 			<copy file="@{pomtemplate}" tofile="@{archive}/@{name}/pom.xml" overwrite="false"
@@ -58,6 +59,7 @@
 					<filter token="FILE_ENCODING" value="%encoding%"/>
 					<filter token="JAVA_VERSION" value="%compilerlevel%"/>
 					<filter token="RELEASE_YEAR" value="%releaseyear%"/>
+					<filter token="MAVEN_COMPILER_VERSION" value="%mavencompilerversion%"/>
 				</filterset>
 			</copy>
 			<delete file="@{target}/@{name}.zip" />

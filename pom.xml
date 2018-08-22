@@ -75,6 +75,9 @@
 		<!-- Maven API version. This version should be supported by m2e. Search 
 			for maven-core on central. -->
 		<maven.api.version>3.5.3</maven.api.version>
+		<!-- Version of the Maven Java compiler.
+		     Version 3.7.0 depends on a library that is compiled with Java 9! -->
+		<mavencompiler.version>3.6.2</mavencompiler.version>
 		<!-- String to put after the copyright sign -->
 		<copyrighters>the original authors or authors</copyrighters>
 		<!-- URL of the Maven repositories of SARL (use in POM and documentation) -->
@@ -459,8 +462,7 @@
 			<dependency>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<!-- Version 3.7.0 depends on a library that is compiled with Java 9! -->
-				<version>3.6.2</version>
+				<version>${mavencompiler.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven.plugins</groupId>
