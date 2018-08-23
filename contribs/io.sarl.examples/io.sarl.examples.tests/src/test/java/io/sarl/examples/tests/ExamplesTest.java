@@ -22,10 +22,12 @@
 
 package io.sarl.examples.tests;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,16 +40,15 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import com.google.inject.Injector;
-import org.apache.log4j.Level;
 import org.arakhne.afc.vmutil.ClasspathUtil;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.util.Strings;
+import org.eclipse.xtext.xbase.lib.Pair;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.ComparisonFailure;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -77,6 +78,8 @@ public class ExamplesTest extends AbstractSarlTest {
 
 	private static final File DEFAULT_RELATIVE_PATH = FileSystem.convertStringToFile("file:../io.sarl.examples.plugin"); //$NON-NLS-1$
 
+	private static final String CONTENTS_FOLDER_NAME = "contents"; //$NON-NLS-1$
+
 	private static final String PROJECTS_FOLDER_NAME = "projects"; //$NON-NLS-1$
 
 	/** Replies the archives for the examples.
@@ -87,7 +90,7 @@ public class ExamplesTest extends AbstractSarlTest {
 	@Parameters(name = "Example {1}")
 	public static Collection<Object[]> getExampleArchives() throws Exception {
 		final Set<String> names = new TreeSet<>();
-		final Map<String, File> rawSources = new TreeMap<>();
+		final Map<String, Pair<File, File>> rawSources = new TreeMap<>();
 
 		File rootPath = null;
 		final String projectdir = System.getProperty(ROOT_TEST_FOLDER_PROPERTY);
@@ -98,12 +101,15 @@ public class ExamplesTest extends AbstractSarlTest {
 			rootPath = DEFAULT_RELATIVE_PATH;
 		}
 
-		final File projectFolder = new File(rootPath, PROJECTS_FOLDER_NAME);
+		final File sourceFolder = new File(rootPath, PROJECTS_FOLDER_NAME);
+		final File projectFolder = new File(rootPath, CONTENTS_FOLDER_NAME);
 		if (projectFolder.isDirectory()) {
 			for (File child : projectFolder.listFiles()) {
-				if (child.isDirectory()) {
+				if (child.isFile()) {
 					final String basename = child.getName();
-					rawSources.putIfAbsent(basename, child);
+					final String sbasename = FileSystem.shortBasename(child);
+					rawSources.putIfAbsent(basename, Pair.of(child,
+							new File(sourceFolder, sbasename)));
 					names.add(basename);
 				}
 			}
@@ -116,8 +122,10 @@ public class ExamplesTest extends AbstractSarlTest {
 		final List<Object[]> list = new ArrayList<>();
 
 		for (final String name : names) {
-			final File folder = rawSources.get(name);
-			list.add(new Object[] {name, folder});
+			final Pair<File, File> pair = rawSources.get(name);
+			final File zipFile = pair.getKey();
+			final File projectSourceFolder = pair.getValue();
+			list.add(new Object[] {name, zipFile, projectSourceFolder});
 		}
 
 		return list;
@@ -125,18 +133,21 @@ public class ExamplesTest extends AbstractSarlTest {
 
 	private final String name;
 
-	private final File exampleFolder;
+	private final File exampleZipFile;
+
+	private final File exampleSourceFile;
 
 	private SarlBatchCompiler compiler;
 
 	/** Constructor.
 	 *
 	 * @param name the name of the test.
-	 * @param exampleFolder the folder to open.
+	 * @param exampleZipFile the path to the zip file to open.
 	 */
-	public ExamplesTest(String name, File exampleFolder) {
+	public ExamplesTest(String name, File exampleZipFile, File exampleSourceFile) {
 		this.name = name;
-		this.exampleFolder = exampleFolder.getAbsoluteFile();
+		this.exampleZipFile = exampleZipFile.getAbsoluteFile();
+		this.exampleSourceFile = exampleSourceFile.getAbsoluteFile();
 	}
 
 	@Before
@@ -157,23 +168,63 @@ public class ExamplesTest extends AbstractSarlTest {
 
 	@Test
 	public void path() {
-		assertNotNull(this.exampleFolder);
+		assertNotNull(this.exampleZipFile);
 	}
 
 	@Test
 	public void compilation() throws Exception {
-		Assume.assumeTrue(this.exampleFolder != null);
+		Assume.assumeTrue(this.exampleZipFile != null);
 		final File projectRoot = createProject(); 
-		final List<File> installedFiles = copyFiles(projectRoot);
+		final List<File> installedFiles = unpackFiles(projectRoot);
 		assertFalse("No installed file in " + projectRoot, installedFiles.isEmpty());
-		List<String> issues = compileFiles(projectRoot, installedFiles);
-		assertNoIssue(issues);
+		if (isMavenProject()) {
+			// Maven compilation
+			final String errors = compileMaven(projectRoot);
+			assertTrue(errors, Strings.isEmpty(errors));
+		} else {
+			// Standard SARL compilation
+			List<String> issues = compileFiles(projectRoot, installedFiles);
+			assertNoIssue(issues);
+		}
+	}
+
+	private boolean isMavenProject() {
+		if (this.exampleSourceFile != null) {
+			final File pomFile = new File(this.exampleSourceFile, "pom.xml");
+			return pomFile.exists();
+		}
+		return false;
 	}
 
 	private void assertNoIssue(List<String> issues) {
 		if (!issues.isEmpty()) {
 			throw new ComparisonFailure("Errors in the example code", "", Strings.concat("\n", issues));
 		}
+	}
+
+	private String compileMaven(File root) throws Exception {
+		final String[] command = new String[] {
+				"mvn", "-q", "clean", "package"
+		};
+		final Process p = Runtime.getRuntime().exec(command, null, root);
+		p.waitFor();
+		final StringBuilder output = new StringBuilder();
+		final BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+		String line = reader.readLine();
+		while (line != null) {
+			output.append(line + "\n");
+			line = reader.readLine();
+		}
+		final BufferedReader readerErr = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+		line = reader.readLine();
+		while (line != null) {
+			output.append(line + "\n");
+			line = reader.readLine();
+		}
+		if (p.exitValue() != 0) {
+			return output.toString();
+		}
+		return null;
 	}
 
 	private List<String> compileFiles(File root, List<File> installedFiles) throws Exception {
@@ -221,10 +272,12 @@ public class ExamplesTest extends AbstractSarlTest {
 		return classpath;
 	}
 
-	private List<File> copyFiles(File root) throws Exception {
+	private List<File> unpackFiles(File root) throws Exception {
+		FileSystem.unzipFile(this.exampleZipFile, root);
+
 		final List<File> installedFiles = new ArrayList<>();
 		final List<File> folders = new ArrayList<>();
-		folders.add(this.exampleFolder);
+		folders.add(root);
 		while (!folders.isEmpty()) {
 			final File folder = folders.remove(0);
 			for (final File file : folder.listFiles()) {
@@ -232,11 +285,10 @@ public class ExamplesTest extends AbstractSarlTest {
 					folders.add(file);
 				} else if (file.isFile()) {
 					if (!isIgnorableFile(file)) {
-						final File relPathFile = FileSystem.makeRelative(file, this.exampleFolder);
-						final File targetFile = FileSystem.join(root, relPathFile);
-						targetFile.getParentFile().mkdirs();
-						FileSystem.copy(file, targetFile);
+						final File relPathFile = FileSystem.makeRelative(file, root);
 						installedFiles.add(relPathFile);
+					} else {
+						file.delete();
 					}
 				}
 			}
