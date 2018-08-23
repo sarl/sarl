@@ -1,8 +1,7 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<groupId>@GROUP_ID@</groupId>
 	<artifactId>@PROJECT_NAME@</artifactId>
 	<version>@PROJECT_VERSION@</version>
@@ -12,8 +11,15 @@
 		<compiler.level>@JAVA_VERSION@</compiler.level>
 		<project.build.sourceEncoding>@FILE_ENCODING@</project.build.sourceEncoding>
 	</properties>
-
+	
 	<dependencies>
+		<dependency>
+			<groupId>javafx</groupId>
+			<artifactId>jfxrt</artifactId>
+			<version>${java.version}</version>
+			<scope>system</scope>
+			<systemPath>${java.home}/lib/ext/jfxrt.jar</systemPath>
+		</dependency>
 		<dependency>
 			<groupId>io.sarl.maven</groupId>
 			<artifactId>io.sarl.maven.sdk</artifactId>
@@ -26,7 +32,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.6.2</version>
+				<version>@MAVEN_COMPILER_VERSION@</version>
 				<configuration>
 					<source>${compiler.level}</source>
 					<target>${compiler.level}</target>
