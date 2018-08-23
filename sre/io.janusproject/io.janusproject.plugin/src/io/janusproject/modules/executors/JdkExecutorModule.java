@@ -32,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
+import com.google.common.base.Strings;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 
@@ -95,25 +96,42 @@ public class JdkExecutorModule extends AbstractModule {
 			this.rejectedExecutionHandler = handler;
 		}
 
-		@SuppressWarnings("cast")
 		@Override
 		public java.util.concurrent.ExecutorService get() {
-			final int minPoolSize = JanusConfig.getSystemPropertyAsInteger(JanusConfig.MIN_NUMBER_OF_THREADS_IN_EXECUTOR_NAME,
-					JanusConfig.MIN_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE);
-			final int maxPoolSize = JanusConfig.getSystemPropertyAsInteger(JanusConfig.MAX_NUMBER_OF_THREADS_IN_EXECUTOR_NAME,
-					JanusConfig.MAX_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE);
-			final int keepAliveDuration = JanusConfig.getSystemPropertyAsInteger(JanusConfig.THREAD_KEEP_ALIVE_DURATION_NAME,
-					JanusConfig.THREAD_KEEP_ALIVE_DURATION_VALUE);
-			final ThreadPoolExecutor executor = new ThreadPoolExecutor(
-					Math.max(0, Math.min(minPoolSize, maxPoolSize)),
-					Math.max(1, Math.max(minPoolSize, maxPoolSize)),
-					keepAliveDuration, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
-			//final java.util.concurrent.ExecutorService executor = Executors.newWorkStealingPool(minPoolSize);
+			final String maxNumberOfThreadsStr = JanusConfig.getSystemProperty(JanusConfig.MAX_NUMBER_OF_THREADS_IN_EXECUTOR_NAME, null);
+			final java.util.concurrent.ExecutorService executor;
+			if (!Strings.isNullOrEmpty(maxNumberOfThreadsStr)) {
+				// Use a special executor service if Janus was launched with a max number of threads.
+				final int minPoolSize = JanusConfig.getSystemPropertyAsInteger(JanusConfig.MIN_NUMBER_OF_THREADS_IN_EXECUTOR_NAME,
+						JanusConfig.MIN_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE);
+				final int maxPoolSize = toInt(maxNumberOfThreadsStr, JanusConfig.MAX_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE);
+				final int keepAliveDuration = JanusConfig.getSystemPropertyAsInteger(JanusConfig.THREAD_KEEP_ALIVE_DURATION_NAME,
+						JanusConfig.THREAD_KEEP_ALIVE_DURATION_VALUE);
+				executor = new ThreadPoolExecutor(
+						Math.max(0, Math.min(minPoolSize, maxPoolSize)),
+						Math.max(1, Math.max(minPoolSize, maxPoolSize)),
+						keepAliveDuration, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
+			} else {
+				// Use the default behavior
+				executor = Executors.newCachedThreadPool();
+			}
+
 			if (this.rejectedExecutionHandler != null && executor instanceof ThreadPoolExecutor) {
 				((ThreadPoolExecutor) executor).setRejectedExecutionHandler(this.rejectedExecutionHandler);
 			}
 			return executor;
 		}
+
+	    private static int toInt(String value, int defaultValue) {
+	        if (value != null) {
+	            try {
+	                return Integer.parseInt(value);
+	            } catch (Throwable exception) {
+	                //
+	            }
+	        }
+	        return defaultValue;
+	    }
 
 	}
 
