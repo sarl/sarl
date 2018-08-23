@@ -24,6 +24,7 @@
 		<zip_example name="io-sarl-tutorials-pingpongspace" />
 		<zip_example name="io-sarl-demos-fireworks" />
 		<zip_example name="io-sarl-demos-sierpinskifractals" />
+		<zip_example name="io-sarl-demos-gameoflife" />
 		<zip_example name="io-sarl-templates-javafx" />
 	</target>
 
@@ -43,6 +44,7 @@
 					<filter token="PROJECT_NAME" value="@{name}"/>
 					<filter token="PROJECT_VERSION" value="%sarlversion%"/>
 					<filter token="SARL_VERSION" value="%sarlversion%"/>
+					<filter token="AFC_VERSION" value="%afcversion%"/>
 					<filter token="FILE_ENCODING" value="%encoding%"/>
 					<filter token="JAVA_VERSION" value="%compilerlevel%"/>
 					<filter token="RELEASE_YEAR" value="%releaseyear%"/>
@@ -56,6 +58,7 @@
 					<filter token="PROJECT_NAME" value="@{name}"/>
 					<filter token="PROJECT_VERSION" value="%sarlversion%"/>
 					<filter token="SARL_VERSION" value="%sarlversion%"/>
+					<filter token="AFC_VERSION" value="%afcversion%"/>
 					<filter token="FILE_ENCODING" value="%encoding%"/>
 					<filter token="JAVA_VERSION" value="%compilerlevel%"/>
 					<filter token="RELEASE_YEAR" value="%releaseyear%"/>

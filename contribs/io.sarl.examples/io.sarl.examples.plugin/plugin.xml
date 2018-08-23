@@ -422,6 +422,36 @@
 		</example>
 	</extension>
 
+	<!-- ========= io-sarl-demos-gameoflife Example ========= -->
+	<extension point="org.eclipse.ui.newWizards">
+		<wizard id="io.sarl.demos.gameoflife"
+			name="%io_sarl_demos_gameoflife_Name"
+			class="io.sarl.examples.wizard.SarlExampleInstallerWizard"
+			category="org.eclipse.ui.Examples/io.sarl.JavaFXExamples"
+			icon="/icons/io-sarl-demos-gameoflife.png"
+			project="true">
+			<description>%io_sarl_demos_gameoflife_Description</description>
+		</wizard>
+	</extension>
+	
+	<extension point="org.eclipse.ui.newWizards">
+		<wizard id="io.sarl.demos.gameoflife"
+			name="%io_sarl_demos_gameoflife_Name"
+			class="io.sarl.examples.wizard.SarlExampleInstallerWizard"
+			category="io.sarl.eclipse.category.wizards/io.sarl.project.JavaFXExamples"
+			icon="/icons/io-sarl-demos-gameoflife.png"
+			project="true">
+			<description>%io_sarl_demos_gameoflife_Description</description>
+		</wizard>
+	</extension>
+	
+	<extension point="org.eclipse.emf.common.ui.examples">
+		<example wizardID="io.sarl.demos.gameoflife" pageImage="/icons/io-sarl-demos-gameoflife.png">
+			<projectDescriptor name="io-sarl-demos-gameoflife" contentURI="contents/io-sarl-demos-gameoflife.zip" description="%io_sarl_demos_gameoflife_Description"/>
+			<fileToOpen location="io-sarl-demos-gameoflife/src/main/sarl/io/sarl/demos/gameoflife/Boot.sarl"/>
+		</example>
+	</extension>
+
 	<!-- ========= io-sarl-templates-javafx Template ========= -->
 	
 	<extension point="org.eclipse.ui.newWizards">
@@ -506,5 +536,16 @@
 	         icon="/icons/io-sarl-demos-sierpinskifractals.png">
 	      </command>
 	</extension>
-		
+
+	<!-- adding a new quicklink for the Game of Life example -->
+	<extension
+	      point="org.eclipse.ui.intro.quicklinks">
+	      <command
+	       	id="org.eclipse.ui.newWizard(newWizardId=io.sarl.demos.gameoflife)"
+	         description="%io_sarl_demos_gameoflife_Description"
+	         label="%io_sarl_demos_gameoflife_Name"
+	         icon="/icons/io-sarl-demos-gameoflife.png">
+	      </command>
+	</extension>
+
 </plugin>

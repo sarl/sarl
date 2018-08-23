@@ -167,6 +167,13 @@
 			</roles>
 		</contributor>
 		<contributor>
+			<name>J&eacute;r&ocirc;me Boulmier</name>
+			<url>https://github.com/Lomadriel/</url>
+			<roles>
+				<role>Game of Life example</role>
+			</roles>
+		</contributor>
+		<contributor>
 			<name>Greg Bowering</name>
 			<url>https://github.com/gb96</url>
 			<roles>
@@ -203,6 +210,13 @@
 			<url>https://github.com/RyuzakiKK</url>
 			<roles>
 				<role>Documentation Contributor</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>Maxime Pinard</name>
+			<url>https://github.com/pinam45/</url>
+			<roles>
+				<role>Game of Life example</role>
 			</roles>
 		</contributor>
 		<contributor>

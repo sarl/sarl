@@ -102,6 +102,16 @@
  			</link>
  		</group>
  
+ 		<group style-id="quick-links" id="quick-links">
+ 			<link style-id="content-link" label="Game of Life in SARL"
+ 				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.demos.gameoflife%29"
+ 				id="JavaFX-GameOfLife-Sample">
+ 				<text>
+ 					A JavaFX application showing the Game of Life on the screen.
+ 				</text>
+ 			</link>
+ 		</group>
+
  		<html src="./tutorials_intro.html"/>
 
 		<group style-id="quick-links" id="quick-links">
