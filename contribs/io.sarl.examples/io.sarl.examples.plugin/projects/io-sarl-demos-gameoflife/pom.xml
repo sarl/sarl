@@ -2,15 +2,15 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>io.sarl.examples.projects</groupId>
-	<artifactId>io-sarl-demos-gameoflife</artifactId>
-	<version>0.8.0-SNAPSHOT</version>
+	<groupId>@GROUP_ID@</groupId>
+	<artifactId>@PROJECT_NAME@</artifactId>
+	<version>@PROJECT_VERSION@</version>
 
 	<properties>
-		<sarl.version>0.8.0-SNAPSHOT</sarl.version>
-		<afc.version>15.0</afc.version>
-		<compiler.level>1.8</compiler.level>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<sarl.version>@SARL_VERSION@</sarl.version>
+		<afc.version>@AFC_VERSION@</afc.version>
+		<compiler.level>@JAVA_VERSION@</compiler.level>
+		<project.build.sourceEncoding>@FILE_ENCODING@</project.build.sourceEncoding>
 	</properties>
 	
 	<dependencies>
@@ -46,6 +46,16 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>@MAVEN_COMPILER_VERSION@</version>
+				<configuration>
+					<source>${compiler.level}</source>
+					<target>${compiler.level}</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>io.sarl.maven</groupId>
 				<artifactId>sarl-maven-plugin</artifactId>
 				<version>${sarl.version}</version>
@@ -58,4 +68,5 @@
 			</plugin>
 		</plugins>
 	</build>
+
 </project>
