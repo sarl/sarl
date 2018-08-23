@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.sarl.demos.gameoflife.gui.RestrictedNumberTextField?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      prefHeight="900.0" prefWidth="1200.0"
+      xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="io.sarl.demos.gameoflife.gui.SimulationViewController">
+    <children>
+        <AnchorPane prefHeight="200.0" prefWidth="300.0">
+            <children>
+                <VBox maxHeight="-Infinity" maxWidth="+Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                      prefHeight="400.0" prefWidth="300.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                      AnchorPane.topAnchor="0.0">
+                    <children>
+                        <TitledPane animated="false" maxHeight="250.0" prefWidth="300.0" text="%grid.settings">
+                            <content>
+                                <VBox maxHeight="140.0" maxWidth="300.0" minHeight="140.0" minWidth="200.0"
+                                      prefHeight="140.0" prefWidth="200.0">
+                                    <children>
+                                        <HBox minHeight="30.0" prefHeight="100.0" prefWidth="300.0">
+                                            <children>
+                                                <Label prefHeight="17.0" prefWidth="60.0" text="%width" />
+                                                <RestrictedNumberTextField fx:id="widthTextField" defaultValue="10"
+                                                                           minValue="1" maxValue="100"/>
+                                            </children>
+                                        </HBox>
+                                        <HBox minHeight="30.0" prefHeight="100.0" prefWidth="300.0">
+                                            <children>
+                                                <Label prefHeight="17.0" prefWidth="63.0" text="%height" />
+                                                <RestrictedNumberTextField fx:id="heightTextField" defaultValue="10"
+                                                                           minValue="1" maxValue="100"/>
+                                            </children>
+                                        </HBox>
+                                        <StackPane maxHeight="40.0" minHeight="40.0" prefHeight="40.0" prefWidth="300.0">
+                                            <children>
+                                                <Button fx:id="setupButton" mnemonicParsing="false" text="%setup" />
+                                            </children>
+                                        </StackPane>
+                              <StackPane maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="300.0">
+                                 <children>
+                                    <ProgressBar fx:id="setupProgressBar" prefWidth="200.0" progress="0.0" visible="false" />
+                                 </children>
+                              </StackPane>
+                                    </children>
+                                </VBox>
+                            </content>
+                        </TitledPane>
+                        <TitledPane animated="false" maxHeight="250.0" text="%simulation.settings">
+                            <content>
+                                <VBox maxHeight="110.0" maxWidth="200.0" minHeight="110.0" minWidth="200.0"
+                                      prefHeight="110.0" prefWidth="200.0">
+                                    <children>
+                                        <AnchorPane maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="200.0">
+                                            <children>
+                                                <Label text="%game.step.interval" AnchorPane.leftAnchor="0.0" />
+                                                <Label fx:id="timeIntervalLabel" text="%undef" AnchorPane.rightAnchor="20.0" />
+                                                <Label text="%ms" AnchorPane.rightAnchor="0.0" />
+                                            </children>
+                                        </AnchorPane>
+                                        <Slider fx:id="timeIntervalSlider" minHeight="30.0" />
+                                        <StackPane prefHeight="40.0" prefWidth="200.0">
+                                            <children>
+                                                <Button fx:id="timeIntervalButton" mnemonicParsing="false" text="%apply" />
+                                            </children>
+                                        </StackPane>
+                                    </children>
+                                </VBox>
+                            </content>
+                        </TitledPane>
+                        <TitledPane animated="false" maxHeight="250.0" text="%simulation.controls">
+                            <content>
+                                <VBox maxHeight="110.0" maxWidth="200.0" minHeight="110.0" minWidth="200.0"
+                                      prefHeight="200.0" prefWidth="100.0">
+                                    <children>
+                                        <HBox maxHeight="40.0" minHeight="40.0" prefHeight="40.0" prefWidth="200.0">
+                                            <children>
+                                                <StackPane prefHeight="150.0" prefWidth="200.0">
+                                                    <children>
+                                                        <Button fx:id="playButton" mnemonicParsing="false" text="%play" />
+                                                    </children>
+                                                </StackPane>
+                                                <StackPane prefHeight="150.0" prefWidth="200.0">
+                                                    <children>
+                                                        <Button fx:id="pauseButton" mnemonicParsing="false" text="%pause" />
+                                                    </children>
+                                                </StackPane>
+                                            </children>
+                                        </HBox>
+                                        <StackPane maxHeight="40.0" minHeight="40.0" prefHeight="40.0" prefWidth="200.0">
+                                            <children>
+                                                <Button fx:id="exitButton" mnemonicParsing="false" text="%exit" />
+                                            </children>
+                                        </StackPane>
+                                    </children>
+                                </VBox>
+                            </content>
+                        </TitledPane>
+                    </children>
+                </VBox>
+            </children>
+        </AnchorPane>
+        <Pane fx:id="simulationPane" prefHeight="100000.0" prefWidth="100000.0" style="-fx-background-color: #cdcdcd;" />
+    </children>
+</HBox>
