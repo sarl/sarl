@@ -269,9 +269,11 @@
       <feature id="io.janusproject.feature.source" version="0.8.0.qualifier"/>
       <feature id="org.eclipse.fx.ide.basic.feature" version="3.3.0.201805280700"/>
       <feature id="org.eclipse.fx.runtime.min.feature" version="3.3.0.201805280500"/>
+      <feature id="org.eclipse.m2e.feature" version="1.9.0.20180606-2036"/>
+      <feature id="org.jboss.tools.m2e.jdt.feature" version="1.0.1.201209200903"/>
+      <feature id="org.eclipse.fx.ide.m2e.feature" version="3.3.0.201805280700"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.feature"/>
       <feature id="org.eclipse.help"/>
-      <feature id="org.jboss.tools.m2e.jdt.feature"/>
       <feature id="org.eclipse.xtext.redist"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.ssl.feature"/>
       <feature id="org.eclipse.jdt"/>
@@ -290,9 +292,7 @@
       <feature id="org.eclipse.emf.ecore"/>
       <feature id="org.eclipse.equinox.p2.user.ui"/>
       <feature id="org.eclipse.xtext.xbase"/>
-      <feature id="org.eclipse.fx.ide.m2e.feature"/>
       <feature id="org.eclipse.equinox.p2.extras.feature"/>
-      <feature id="org.eclipse.m2e.feature"/>
       <feature id="org.eclipse.rcp"/>
       <feature id="org.eclipse.ecf.core.feature"/>
       <feature id="org.eclipse.jgit"/>

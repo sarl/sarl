@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.m2e.wizards;
+package io.sarl.m2e.wizards.newproject;
 
 import java.nio.charset.Charset;
 
@@ -59,7 +59,7 @@ import io.sarl.lang.SARLVersion;
  * @mavenartifactid $ArtifactId$
  * @since 0.8
  */
-public final class MavenSarlProjectWizard extends MavenProjectWizard {
+public final class NewMavenSarlProjectWizard extends MavenProjectWizard {
 
 	private static final String SARL_VERSION_PROPERTY = "sarl.version"; //$NON-NLS-1$
 
@@ -180,13 +180,13 @@ public final class MavenSarlProjectWizard extends MavenProjectWizard {
 			@SuppressWarnings({ "deprecation", "synthetic-access" })
 			@Override
 			public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-				final Model model = MavenSarlProjectWizard.this.lastModel;
+				final Model model = NewMavenSarlProjectWizard.this.lastModel;
 				if (model != null) {
 					final Plugin plugin = Iterables.find(model.getBuild().getPlugins(), it -> PLUGIN_ARTIFACT_ID.equals(it.getArtifactId()));
 					plugin.setExtensions(true);
 					final IWorkspace workspace = ResourcesPlugin.getWorkspace();
 					final IWorkspaceRoot root = workspace.getRoot();
-					final IProject project = MavenSarlProjectWizard.this.importConfiguration.getProject(root, model);
+					final IProject project = NewMavenSarlProjectWizard.this.importConfiguration.getProject(root, model);
 					// Fixing the "extensions" within the pom file
 					final IFile pomFile = project.getFile(IMavenConstants.POM_FILE_NAME);
 					pomFile.delete(true, new NullProgressMonitor());

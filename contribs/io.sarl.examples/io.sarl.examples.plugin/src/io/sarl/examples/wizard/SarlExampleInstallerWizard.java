@@ -43,7 +43,7 @@ import org.eclipse.ui.intro.IIntroPart;
 import org.eclipse.ui.wizards.datatransfer.ImportOperation;
 
 import io.sarl.eclipse.natures.SARLProjectConfigurator;
-import io.sarl.m2e.utils.M2EUtilities;
+import io.sarl.m2e.wizards.importproject.MavenImportUtils;
 
 /** Wizard for importing SARL samples.
  *
@@ -98,7 +98,7 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 				projectDescriptionFile.delete();
 			}
 			// Import
-			M2EUtilities.importMavenProject(
+			MavenImportUtils.importMavenProject(
 					project.getWorkspace().getRoot(),
 					projectDescriptor.getName(),
 					true,

@@ -1,6 +1,12 @@
 <?eclipse version="3.0"?>
 
 <plugin>
+	<extension point="org.eclipse.ui.importWizards">
+		<category
+			id="io.sarl.eclipse.category.wizards"
+			name="%category.name">
+		</category>
+	</extension>
 	<extension point="org.eclipse.ui.newWizards">
 		<category
 			id="io.sarl.eclipse.category.wizards"

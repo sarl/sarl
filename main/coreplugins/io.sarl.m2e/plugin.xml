@@ -21,15 +21,42 @@
 	<extension point="org.eclipse.ui.newWizards">
 		  <wizard
 		        category="io.sarl.eclipse.category.wizards"
-		        class="io.sarl.m2e.wizards.MavenSarlProjectWizard"
+		        class="io.sarl.m2e.wizards.newproject.NewMavenSarlProjectWizard"
 		        icon="icons/new_m2_sarl_project.png"
-		        id="io.sarl.m2e.wizard.newSarlMavenProject"
+		        id="io.sarl.m2e.wizard.newSarlMavenProject.1"
 		        name="%wizard.name.newSarlMavenProject"
 		        finalPerspective="io.sarl.eclipse.perspective.devel"
 		        preferredPerspectives="io.sarl.eclipse.perspective.devel,org.eclipse.jdt.ui.JavaPerspective,org.eclipse.jdt.ui.JavaBrowsingPerspective"
 		        project="true">
 				<description>%wizard.description.newSarlMavenProject.short"</description>
 		  </wizard>
+		  <wizard
+		        category="org.eclipse.m2e"
+		        class="io.sarl.m2e.wizards.newproject.NewMavenSarlProjectWizard"
+		        icon="icons/new_m2_sarl_project.png"
+		        id="io.sarl.m2e.wizard.newSarlMavenProject.2"
+		        name="%wizard.name.newSarlMavenProject"
+		        finalPerspective="io.sarl.eclipse.perspective.devel"
+		        preferredPerspectives="io.sarl.eclipse.perspective.devel,org.eclipse.jdt.ui.JavaPerspective,org.eclipse.jdt.ui.JavaBrowsingPerspective"
+		        project="true">
+				<description>%wizard.description.newSarlMavenProject.short"</description>
+		  </wizard>
+	</extension>
+	<extension point="org.eclipse.ui.importWizards">
+     <wizard id="io.sarl.m2e.wizard.importSarlMavenProject.1"
+             class="io.sarl.m2e.wizards.importproject.ImportMavenSarlProjectWizard"
+             icon="icons/import_m2_sarl_project.png"
+             category="io.sarl.eclipse.category.wizards"
+             name="%wizard.name.importSarlMavenProject">
+        <description>%wizard.description.importwSarlMavenProject.short</description>
+     </wizard>
+     <wizard id="io.sarl.m2e.wizard.importSarlMavenProject.2"
+             class="io.sarl.m2e.wizards.importproject.ImportMavenSarlProjectWizard"
+             icon="icons/import_m2_sarl_project.png"
+             category="org.eclipse.m2e"
+             name="%wizard.name.importSarlMavenProject">
+        <description>%wizard.description.importwSarlMavenProject.short</description>
+     </wizard>
 	</extension>
    <extension point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension
