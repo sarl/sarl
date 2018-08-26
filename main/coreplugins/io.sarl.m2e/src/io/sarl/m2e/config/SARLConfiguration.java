@@ -36,9 +36,13 @@ class SARLConfiguration {
 
 	private File output;
 
+	private File binOutput;
+
 	private File testInput;
 
 	private File testOutput;
+
+	private File testBinOutput;
 
 	private String inputCompliance;
 
@@ -58,11 +62,17 @@ class SARLConfiguration {
 		if (this.output == null) {
 			this.output = config.getOutput();
 		}
+		if (this.binOutput == null) {
+			this.binOutput = config.getBinOutput();
+		}
 		if (this.testInput == null) {
 			this.testInput = config.getTestInput();
 		}
 		if (this.testOutput == null) {
 			this.testOutput = config.getTestOutput();
+		}
+		if (this.testBinOutput == null) {
+			this.testBinOutput = config.getTestBinOutput();
 		}
 		if (this.inputCompliance == null) {
 			this.inputCompliance = config.getInputCompliance();
@@ -107,6 +117,24 @@ class SARLConfiguration {
 		this.output = output;
 	}
 
+	/** Replies the binary output file.
+	 *
+	 * @return the binary output
+	 * @since 0.8
+	 */
+	public File getBinOutput() {
+		return this.binOutput;
+	}
+
+	/** Set the binary output file.
+	 *
+	 * @param output the binary output to set
+	 * @since 0.8
+	 */
+	public void setBinOutput(File output) {
+		this.binOutput = output;
+	}
+
 	/** Replies the input file for tests.
 	 *
 	 * @return the testInput
@@ -137,6 +165,24 @@ class SARLConfiguration {
 	 */
 	public void setTestOutput(File testOutput) {
 		this.testOutput = testOutput;
+	}
+
+	/** Replies the binary output file for tests.
+	 *
+	 * @return the testOutput
+	 * @since 0.8
+	 */
+	public File getTestBinOutput() {
+		return this.testBinOutput;
+	}
+
+	/** Set the binary output file for tests.
+	 *
+	 * @param testOutput the testOutput to set
+	 * @since 0.8
+	 */
+	public void setTestBinOutput(File testOutput) {
+		this.testBinOutput = testOutput;
 	}
 
 	/** Replies the input's Java compliance.

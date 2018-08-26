@@ -168,42 +168,51 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 
 		final SubMonitor subMonitor = SubMonitor.convert(monitor, 4);
 
+		//
 		// Add the source folders
+		//
+		// Input folder, e.g. "src/main/sarl"
 		final IPath inputPath = makeFullPath(facade, config.getInput());
 		final IFolder inputFolder = ensureFolderExists(facade, inputPath, false, subMonitor);
 		if (encoding != null && inputFolder != null && inputFolder.exists()) {
 			inputFolder.setDefaultCharset(encoding, monitor);
 		}
-		classpath.addSourceEntry(
+		IClasspathEntryDescriptor descriptor = classpath.addSourceEntry(
 				inputPath,
 				facade.getOutputLocation(),
-				true);
+				false);
+		descriptor.setPomDerived(true);
 		subMonitor.worked(1);
 
+		// Input folder, e.g. "src/main/generated-sources/sarl"
 		final IPath outputPath = makeFullPath(facade, config.getOutput());
 		final IFolder outputFolder = ensureFolderExists(facade, outputPath, true, subMonitor);
 		if (encoding != null && outputFolder != null && outputFolder.exists()) {
 			outputFolder.setDefaultCharset(encoding, monitor);
 		}
-		IClasspathEntryDescriptor descriptor = classpath.addSourceEntry(
+		descriptor = classpath.addSourceEntry(
 				outputPath,
 				facade.getOutputLocation(),
-				true);
+				false);
+		descriptor.setPomDerived(true);
 		descriptor.setClasspathAttribute(IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS, Boolean.TRUE.toString());
 		subMonitor.worked(1);
 
-		// Add the test folders
+		// Test input folder, e.g. "src/test/sarl"
 		final IPath testInputPath = makeFullPath(facade, config.getTestInput());
 		final IFolder testInputFolder = ensureFolderExists(facade, testInputPath, false, subMonitor);
 		if (encoding != null && testInputFolder != null && testInputFolder.exists()) {
 			testInputFolder.setDefaultCharset(encoding, monitor);
 		}
-		classpath.addSourceEntry(
+		descriptor = classpath.addSourceEntry(
 				testInputPath,
 				facade.getTestOutputLocation(),
 				true);
+		descriptor.setPomDerived(true);
+		descriptor.setClasspathAttribute(IClasspathAttribute.TEST, Boolean.TRUE.toString());
 		subMonitor.worked(1);
 
+		// Test input folder, e.g. "src/test/generated-sources/sarl"
 		final IPath testOutputPath = makeFullPath(facade, config.getTestOutput());
 		final IFolder testOutputFolder = ensureFolderExists(facade, testOutputPath, true, subMonitor);
 		if (encoding != null && testOutputFolder != null && testOutputFolder.exists()) {
@@ -213,7 +222,9 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 				testOutputPath,
 				facade.getTestOutputLocation(),
 				true);
+		descriptor.setPomDerived(true);
 		descriptor.setClasspathAttribute(IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS, Boolean.TRUE.toString());
+		descriptor.setClasspathAttribute(IClasspathAttribute.TEST, Boolean.TRUE.toString());
 		subMonitor.done();
 	}
 
@@ -291,15 +302,21 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 				new File(SARLConfig.FOLDER_SOURCE_SARL));
 		final File output = getParameterValue(project, "output", File.class, mojo, monitor, //$NON-NLS-1$
 				new File(SARLConfig.FOLDER_SOURCE_GENERATED));
+		final File binOutput = getParameterValue(project, "binOutput", File.class, mojo, monitor, //$NON-NLS-1$
+				new File(SARLConfig.FOLDER_BIN));
 		final File testInput = getParameterValue(project, "testInput", File.class, mojo, monitor, //$NON-NLS-1$
 				new File(SARLConfig.FOLDER_TEST_SOURCE_SARL));
 		final File testOutput = getParameterValue(project, "testOutput", File.class, mojo, monitor, //$NON-NLS-1$
 				new File(SARLConfig.FOLDER_TEST_SOURCE_GENERATED));
+		final File testBinOutput = getParameterValue(project, "testBinOutput", File.class, mojo, monitor, //$NON-NLS-1$
+				new File(SARLConfig.FOLDER_TEST_BIN));
 
 		config.setInput(input);
 		config.setOutput(output);
+		config.setBinOutput(binOutput);
 		config.setTestInput(testInput);
 		config.setTestOutput(testOutput);
+		config.setTestBinOutput(testBinOutput);
 
 		return config;
 	}
@@ -321,13 +338,17 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 
 		final File input = getParameterValue(project, "input", File.class, mojo, monitor); //$NON-NLS-1$
 		final File output = getParameterValue(project, "output", File.class, mojo, monitor); //$NON-NLS-1$
+		final File binOutput = getParameterValue(project, "binOutput", File.class, mojo, monitor); //$NON-NLS-1$
 		final File testInput = getParameterValue(project, "testInput", File.class, mojo, monitor); //$NON-NLS-1$
 		final File testOutput = getParameterValue(project, "testOutput", File.class, mojo, monitor); //$NON-NLS-1$
+		final File testBinOutput = getParameterValue(project, "testBinOutput", File.class, mojo, monitor); //$NON-NLS-1$
 
 		config.setInput(input);
 		config.setOutput(output);
+		config.setBinOutput(binOutput);
 		config.setTestInput(testInput);
 		config.setTestOutput(testOutput);
+		config.setTestBinOutput(testBinOutput);
 
 		final String inputCompliance = getParameterValue(project, "source", String.class, mojo, monitor); //$NON-NLS-1$
 		final String outputCompliance = getParameterValue(project, "target", String.class, mojo, monitor); //$NON-NLS-1$

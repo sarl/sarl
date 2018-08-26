@@ -265,10 +265,17 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 
 			// Ensure SARL specific folders.
 			final OutParameter<IFolder[]> sourceFolders = new OutParameter<>();
+			final OutParameter<IFolder[]> testSourceFolders = new OutParameter<>();
 			final OutParameter<IFolder[]> generationFolders = new OutParameter<>();
+			final OutParameter<IFolder[]> testGenerationFolders = new OutParameter<>();
 			final OutParameter<IFolder> generationFolder = new OutParameter<>();
 			final OutParameter<IFolder> outputFolder = new OutParameter<>();
-			ensureSourceFolders(project, createFolders, subMonitor, sourceFolders, generationFolders, generationFolder, outputFolder);
+			final OutParameter<IFolder> testOutputFolder = new OutParameter<>();
+			ensureSourceFolders(project, createFolders, subMonitor,
+					sourceFolders, testSourceFolders,
+					generationFolders, testGenerationFolders,
+					generationFolder,
+					outputFolder, testOutputFolder);
 
 			// SARL specific configuration
 			SARLPreferences.setSpecificSARLConfigurationFor(project, generationFolder.get().getProjectRelativePath());
@@ -288,7 +295,11 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 				BuildPathsBlock.flush(
 						buildClassPathEntries(javaProject,
 								sourceFolders.get(),
-								generationFolders.get(), false, true),
+								testSourceFolders.get(),
+								generationFolders.get(),
+								testGenerationFolders.get(),
+								testOutputFolder.get().getFullPath(),
+								false, true),
 						outputFolder.get().getFullPath(), javaProject, null, subMonitor.newChild(1));
 			}
 			subMonitor.done();
@@ -297,10 +308,15 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 		}
 	}
 
+	@SuppressWarnings("checkstyle:parameternumber")
 	private static void ensureSourceFolders(IProject project, boolean createFolders, SubMonitor monitor,
-			OutParameter<IFolder[]> sourcePaths, OutParameter<IFolder[]> generationPaths,
+			OutParameter<IFolder[]> sourcePaths,
+			OutParameter<IFolder[]> testSourcePaths,
+			OutParameter<IFolder[]> generationPaths,
+			OutParameter<IFolder[]> testGenerationPaths,
 			OutParameter<IFolder> standardGenerationFolder,
-			OutParameter<IFolder> classOutput) throws CoreException {
+			OutParameter<IFolder> classOutput,
+			OutParameter<IFolder> testClassOutput) throws CoreException {
 		final IFolder sourceSarlFolder = ensureSourceFolder(project,
 				SARLConfig.FOLDER_SOURCE_SARL, true, createFolders, monitor.newChild(1));
 		final IFolder sourceJavaFolder = ensureSourceFolder(project,
@@ -315,17 +331,28 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 				SARLConfig.FOLDER_TEST_SOURCE_GENERATED, false, createFolders, monitor.newChild(1));
 		final IFolder outputFolder = ensureOutputFolder(project,
 				SARLConfig.FOLDER_BIN, true, createFolders, monitor.newChild(1));
+		final IFolder testOutputFolder = ensureOutputFolder(project,
+				SARLConfig.FOLDER_TEST_BIN, true, createFolders, monitor.newChild(1));
 		if (sourcePaths != null) {
-			sourcePaths.set(new IFolder[] {sourceSarlFolder, sourceJavaFolder, resourcesFolder, testSourceSarlFolder});
+			sourcePaths.set(new IFolder[] {sourceSarlFolder, sourceJavaFolder, resourcesFolder});
+		}
+		if (testSourcePaths != null) {
+			testSourcePaths.set(new IFolder[] {testSourceSarlFolder});
 		}
 		if (generationPaths != null) {
-			generationPaths.set(new IFolder[] {generationFolder, testGenerationFolder});
+			generationPaths.set(new IFolder[] {generationFolder});
+		}
+		if (testGenerationPaths != null) {
+			testGenerationPaths.set(new IFolder[] {testGenerationFolder});
 		}
 		if (standardGenerationFolder != null) {
 			standardGenerationFolder.set(generationFolder);
 		}
 		if (classOutput != null) {
 			classOutput.set(outputFolder);
+		}
+		if (testClassOutput != null) {
+			testClassOutput.set(testOutputFolder);
 		}
 	}
 
@@ -344,8 +371,16 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 			final SubMonitor subMonitor = SubMonitor.convert(monitor, 8);
 
 			final OutParameter<IFolder[]> sourceFolders = new OutParameter<>();
+			final OutParameter<IFolder[]> testSourceFolders = new OutParameter<>();
 			final OutParameter<IFolder[]> generationFolders = new OutParameter<>();
-			ensureSourceFolders(project, createFolders, subMonitor, sourceFolders, generationFolders, null, null);
+			final OutParameter<IFolder[]> testGenerationFolders = new OutParameter<>();
+			final OutParameter<IFolder> testOutputFolder = new OutParameter<>();
+			ensureSourceFolders(project, createFolders, subMonitor,
+					sourceFolders, testSourceFolders,
+					generationFolders, testGenerationFolders,
+					null,
+					null,
+					testOutputFolder);
 
 			final IJavaProject javaProject = JavaCore.create(project);
 			subMonitor.worked(1);
@@ -354,7 +389,11 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 			BuildPathsBlock.flush(
 					buildClassPathEntries(javaProject,
 							sourceFolders.get(),
-							generationFolders.get(), true, false),
+							testSourceFolders.get(),
+							generationFolders.get(),
+							testGenerationFolders.get(),
+							testOutputFolder.get().getFullPath(),
+							true, false),
 					javaProject.getOutputLocation(), javaProject, null, subMonitor.newChild(1));
 
 			subMonitor.done();
@@ -411,8 +450,11 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 	}
 
 	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
-	private static List<CPListElement> buildClassPathEntries(IJavaProject project, IFolder[] sourcePaths,
-			IFolder[] generationPaths, boolean keepProjectClasspath, boolean addSarllLibraries) {
+	private static List<CPListElement> buildClassPathEntries(IJavaProject project,
+			IFolder[] sourcePaths, IFolder[] testSourcePaths,
+			IFolder[] generationPaths, IFolder[] testGenerationPaths,
+			IPath testOutputPath,
+			boolean keepProjectClasspath, boolean addSarllLibraries) {
 		final List<CPListElement> list = new ArrayList<>();
 
 		final Set<String> added = new TreeSet<>();
@@ -421,8 +463,30 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 			if (sourcePath != null) {
 				final IPath filename = sourcePath.getFullPath().makeAbsolute();
 				if (added.add(filename.toPortableString())) {
-					list.add(new CPListElement(project, IClasspathEntry.CPE_SOURCE,
-							filename, sourcePath));
+					final IClasspathEntry entry = JavaCore.newSourceEntry(
+							filename,
+							ClasspathEntry.INCLUDE_ALL,
+							ClasspathEntry.EXCLUDE_NONE,
+							null /*output location*/);
+					list.add(CPListElement.create(entry, false, project));
+				}
+			}
+		}
+
+		for (final IFolder sourcePath : testSourcePaths) {
+			if (sourcePath != null) {
+				final IPath filename = sourcePath.getFullPath().makeAbsolute();
+				if (added.add(filename.toPortableString())) {
+					final IClasspathAttribute attr0 = JavaCore.newClasspathAttribute(
+							IClasspathAttribute.TEST,
+							Boolean.TRUE.toString());
+					final IClasspathEntry entry = JavaCore.newSourceEntry(
+							filename,
+							ClasspathEntry.INCLUDE_ALL,
+							ClasspathEntry.EXCLUDE_NONE,
+							testOutputPath,
+							new IClasspathAttribute[] {attr0});
+					list.add(CPListElement.create(entry, false, project));
 				}
 			}
 		}
@@ -440,6 +504,27 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 							ClasspathEntry.EXCLUDE_NONE,
 							null /*output location*/,
 							new IClasspathAttribute[] {attr});
+					list.add(CPListElement.create(entry, false, project));
+				}
+			}
+		}
+
+		for (final IFolder sourcePath : testGenerationPaths) {
+			if (sourcePath != null) {
+				final IPath filename = sourcePath.getFullPath().makeAbsolute();
+				if (added.add(filename.toPortableString())) {
+					final IClasspathAttribute attr0 = JavaCore.newClasspathAttribute(
+							IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS,
+							Boolean.TRUE.toString());
+					final IClasspathAttribute attr1 = JavaCore.newClasspathAttribute(
+							IClasspathAttribute.TEST,
+							Boolean.TRUE.toString());
+					final IClasspathEntry entry = JavaCore.newSourceEntry(
+							filename,
+							ClasspathEntry.INCLUDE_ALL,
+							ClasspathEntry.EXCLUDE_NONE,
+							testOutputPath,
+							new IClasspathAttribute[] {attr0, attr1});
 					list.add(CPListElement.create(entry, false, project));
 				}
 			}

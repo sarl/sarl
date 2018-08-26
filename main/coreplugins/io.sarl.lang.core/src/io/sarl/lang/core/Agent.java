@@ -338,19 +338,19 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	@Override
 	@Pure
 	protected boolean isMe(Address address) {
-		return (address != null) && (this.id.equals(address.getUUID()));
+		return address != null && isMe(address.getUUID());
 	}
 
 	@Override
 	@Pure
 	protected boolean isMe(UUID uID) {
-		return (uID != null) && (this.id.equals(uID));
+		return uID != null && this.id.equals(uID);
 	}
 
 	@Override
 	@Pure
 	protected boolean isFromMe(Event event) {
-		return (event != null) && isMe(event.getSource());
+		return event != null && isMe(event.getSource());
 	}
 
 }
