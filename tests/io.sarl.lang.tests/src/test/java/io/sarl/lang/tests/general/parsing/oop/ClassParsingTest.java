@@ -309,6 +309,23 @@ public class ClassParsingTest {
 				"The class C1 can only set one of public / package / protected / private");
 		}
 
+		@Test
+		public void duplicateTypeNames() throws Exception {
+			SarlScript mas = file(multilineString(
+				"package io.sarl.lang.tests.test",
+				"class B1 {",
+				"}",
+				"class B2 {",
+				"}",
+				"class B1 {",
+				"}"
+			));
+			validate(mas).assertError(
+				SarlPackage.eINSTANCE.getSarlClass(),
+				org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_TYPE_NAME,
+				"Duplicate type B1");
+		}
+
 	}
 
 	public static class InsideClassTest extends AbstractSarlTest {

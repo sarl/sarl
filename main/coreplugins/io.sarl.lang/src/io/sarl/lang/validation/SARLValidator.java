@@ -49,6 +49,7 @@ import static org.eclipse.xtend.core.validation.IssueCodes.CLASS_EXPECTED;
 import static org.eclipse.xtend.core.validation.IssueCodes.CREATE_FUNCTIONS_MUST_NOT_BE_ABSTRACT;
 import static org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE;
 import static org.eclipse.xtend.core.validation.IssueCodes.DISPATCH_FUNCTIONS_MUST_NOT_BE_ABSTRACT;
+import static org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_TYPE_NAME;
 import static org.eclipse.xtend.core.validation.IssueCodes.INTERFACE_EXPECTED;
 import static org.eclipse.xtend.core.validation.IssueCodes.INVALID_MEMBER_NAME;
 import static org.eclipse.xtend.core.validation.IssueCodes.JDK_NOT_ON_CLASSPATH;
@@ -93,10 +94,12 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.google.common.base.Objects;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import org.eclipse.emf.common.notify.Notifier;
@@ -214,6 +217,7 @@ import io.sarl.lang.sarl.SarlFormalParameter;
 import io.sarl.lang.sarl.SarlInterface;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
+import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.sarl.SarlSpace;
 import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
@@ -2817,6 +2821,33 @@ public class SARLValidator extends AbstractSARLValidator {
 		final String name = annotation.getAnnotationType().getQualifiedName();
 		return Strings.equal(EqualsHashCode.class.getName(), name)
 				|| Strings.equal(FinalFieldsConstructor.class.getName(), name);
+	}
+
+	/** Check the top elements within a script are not duplicated.
+	 *
+	 * @param script the SARL script
+	 */
+	@Check
+	public void checkTopElementsAreUnique(SarlScript script) {
+		final Multimap<String, XtendTypeDeclaration> name2type = HashMultimap.create();
+		for (final XtendTypeDeclaration declaration : script.getXtendTypes()) {
+			final String name = declaration.getName();
+			if (!Strings.isEmpty(name)) {
+				name2type.put(name, declaration);
+			}
+		}
+		for (final String name: name2type.keySet()) {
+			final Collection<XtendTypeDeclaration> types = name2type.get(name);
+			if (types.size() > 1) {
+				for (final XtendTypeDeclaration type: types) {
+					error(
+							MessageFormat.format(Messages.SARLValidator_93, name),
+							type,
+							XtendPackage.Literals.XTEND_TYPE_DECLARATION__NAME,
+							DUPLICATE_TYPE_NAME);
+				}
+			}
+		}
 	}
 
 	/** The modifier validator for constructors.

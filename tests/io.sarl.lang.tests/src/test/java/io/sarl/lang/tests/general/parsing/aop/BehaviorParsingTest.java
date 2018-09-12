@@ -161,7 +161,7 @@ public class BehaviorParsingTest {
 			validate(mas).assertError(
 				SarlPackage.eINSTANCE.getSarlBehavior(),
 				org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_TYPE_NAME,
-				"The type B1 is already defined");
+				"Duplicate type B1");
 		}
 
 		@Test
