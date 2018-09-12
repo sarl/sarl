@@ -32,7 +32,7 @@
 		<!-- The versions of the following Xtext libraries are available at: https://eclipse.org/Xtext/documentation/350_continuous_integration.html -->
 
 		<!-- Version of the Xtext API -->
-		<xtext.version>2.15.0-SNAPSHOT</xtext.version>
+		<xtext.version>2.15.0</xtext.version>
 		<xtext.version.current>2.15.0</xtext.version.current>
 		<xtext.version.next>2.15.1</xtext.version.next>
 		<!-- Version of the MWE2 library (used for accessing the mwe2 P2 http://download.eclipse.org/modeling/emft/mwe/updates/releases/, 
@@ -1258,9 +1258,7 @@
 		</profile>
 	</profiles>
 
-	<repositories>
-		<!-- FIXME: Remove this repository when the stable version of Xtenxt 2.15 
-			is released -->
+	<!--<repositories>
 		<repository>
 			<id>org.eclipse.xtext-snapshot</id>
 			<snapshots>
@@ -1270,6 +1268,29 @@
 				<enabled>true</enabled>
 			</releases>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</repository>
+	</repositories>-->
+
+	<repositories>
+		<repository>
+			<id>org.maven.xtend.staging</id>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<url>https://oss.sonatype.org/content/repositories/orgeclipsextend-1066</url>
+		</repository>
+		<repository>
+			<id>org.maven.xtext.staging</id>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<url>https://oss.sonatype.org/content/repositories/orgeclipsextext-1096</url>
 		</repository>
 	</repositories>
 

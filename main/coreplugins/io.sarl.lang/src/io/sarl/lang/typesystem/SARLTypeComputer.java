@@ -68,6 +68,8 @@ public class SARLTypeComputer extends XtendTypeComputer {
 
 	@Override
 	protected ILinkingCandidate getBestCandidate(List<? extends ILinkingCandidate> candidates) {
+		// Implementation of ignorable features:
+		// For example, this function is ignore the deprecated features when a not-deprecated feature is available.
 		if (candidates.size() == 1) {
 			return candidates.get(0);
 		}

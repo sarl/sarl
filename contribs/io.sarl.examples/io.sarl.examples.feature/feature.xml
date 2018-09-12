@@ -228,6 +228,8 @@
       <import plugin="org.eclipse.emf.common.ui" version="2.13.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.ide" version="3.14.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.resources" version="3.13.0" match="greaterOrEqual"/>
+      <import plugin="io.sarl.m2e" version="0.8.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.debug.ui" version="3.13.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin

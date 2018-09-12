@@ -888,14 +888,14 @@ Workflow {
     				bind = "org.eclipse.xtext.findReferences.TargetURICollector"
     				to = "org.eclipse.xtext.xbase.jvmmodel.JvmModelTargetURICollector"
    				}
-//    			runtime = {// FIXME
-//    				bind = "org.eclipse.xtext.parser.impl.TokenRegionProvider"
-//    				to = "org.eclipse.xtext.parser.impl.TokenRegionProvider"
-//   				}
-//    			runtime = {// FIXME
-//    				bind = "org.eclipse.xtext.parser.antlr.TokenSourceProvider"
-//    				to = "org.eclipse.xtend.core.parser.antlr.XtendTokenSourceProvider"
-//   				}
+    			runtime = {
+    				bind = "org.eclipse.xtext.parser.impl.TokenRegionProvider"
+    				to = "org.eclipse.xtext.parser.impl.TokenRegionProvider"
+   				}
+    			runtime = {
+    				bind = "org.eclipse.xtext.parser.antlr.TokenSourceProvider"
+    				to = "org.eclipse.xtend.core.parser.antlr.XtendTokenSourceProvider"
+   				}
     			runtime = {
     				bind = "org.eclipse.xtext.xbase.compiler.output.TraceAwarePostProcessor"
     				to = "org.eclipse.xtend.core.compiler.UnicodeAwarePostProcessor"

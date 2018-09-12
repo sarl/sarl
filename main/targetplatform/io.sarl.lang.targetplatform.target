@@ -35,8 +35,8 @@
 <repository location="http://download.jboss.org/jbosstools/updates/m2e-extensions/m2e-jdt-compiler/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<repository location="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/latest/"/>
-	<unit id="org.eclipse.xtext.sdk.feature.group" version="2.15.0.v20180825-0209"/>
+<repository location="http://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.15.0/"/>
+	<unit id="org.eclipse.xtext.sdk.feature.group" version="2.15.0.v20180904-1101"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="aopalliance" version="1.0.0"/>
