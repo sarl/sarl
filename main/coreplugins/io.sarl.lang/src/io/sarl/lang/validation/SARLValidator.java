@@ -2222,8 +2222,8 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	/** Replies the member feature call that is the root of a sequence of member feature calls.
 	 *
-	 * <p>While the current feature call is the actual receiver of a member feature call, the sequence is still active.
-	 * Otherwise, the sequence is stopped.
+	 * <p>While the current feature call is the actual receiver of a member feature call, and not an argument,
+	 * the sequence is still active. Otherwise, the sequence is stopped.
 	 *
 	 * @param leaf the expression at the leaf of the feature call.
 	 * @param container the top most container that cannot be part of the sequence. Could be {@code null}.
@@ -2242,10 +2242,15 @@ public class SARLValidator extends AbstractSARLValidator {
 				final XMemberFeatureCall fcall = (XMemberFeatureCall) obj;
 				call = fcall;
 				if (fcall.getActualReceiver() == previous) {
+					// Sequence of calls, with the '.' char.
 					if (feedback != null) {
 						feedback.apply(fcall);
 					}
 					obj = EcoreUtil2.getContainerOfType(call.eContainer(), XExpression.class);
+				} else if (fcall.getActualArguments().contains(previous)) {
+					// The sequence is an argument of a function call.
+					call = previous;
+					obj = null;
 				} else {
 					obj = null;
 				}
@@ -2279,7 +2284,8 @@ public class SARLValidator extends AbstractSARLValidator {
 			if (container.get() instanceof XAssignment) {
 				// Assignment: occurrence in left side => ERROR
 				final XAssignment assignment = (XAssignment) container.get();
-				if (directContainerChild.get() == assignment.getActualReceiver()) {
+				final EObject leftMember = directContainerChild.get();
+				if (expression == leftMember && leftMember == assignment.getActualReceiver()) {
 					error(MessageFormat.format(Messages.SARLValidator_2, keywordName),
 							readOnlyKeyword,
 							null,

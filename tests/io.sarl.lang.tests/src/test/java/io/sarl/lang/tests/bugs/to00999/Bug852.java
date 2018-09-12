@@ -40,7 +40,7 @@ import io.sarl.tests.api.AbstractSarlTest;
 public class Bug852 extends AbstractSarlTest {
 
 	private static final String SNIPSET01 = multilineString(
-			"package io.sarl.lang.tests.bug847",
+			"package io.sarl.lang.tests.bug852",
 			"agent SomeAgent{",
 			"   def mytest(value : Integer) : void{",
 			"       if (value == null) {}",
@@ -48,7 +48,7 @@ public class Bug852 extends AbstractSarlTest {
 			"}");
 
 	private static final String EXPECTED01 = multilineString(
-			"package io.sarl.lang.tests.bug847;",
+			"package io.sarl.lang.tests.bug852;",
 			"",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
@@ -91,7 +91,7 @@ public class Bug852 extends AbstractSarlTest {
 			"");
 
 	private static final String SNIPSET02 = multilineString(
-			"package io.sarl.lang.tests.bug847",
+			"package io.sarl.lang.tests.bug852",
 			"agent SomeAgent{",
 			"   def mytest(value : Integer) : void{",
 			"       if (value == 2.0l) {}",
@@ -99,7 +99,7 @@ public class Bug852 extends AbstractSarlTest {
 			"}");
 
 	private static final String EXPECTED02 = multilineString(
-			"package io.sarl.lang.tests.bug847;",
+			"package io.sarl.lang.tests.bug852;",
 			"",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
@@ -142,7 +142,7 @@ public class Bug852 extends AbstractSarlTest {
 			"");
 
 	private static final String SNIPSET03 = multilineString(
-			"package io.sarl.lang.tests.bug847",
+			"package io.sarl.lang.tests.bug852",
 			"agent SomeAgent{",
 			"   def mytest(value : Integer, value2 : Integer) : void{",
 			"       if (value == value2) {}",
@@ -150,7 +150,7 @@ public class Bug852 extends AbstractSarlTest {
 			"}");
 
 	private static final String EXPECTED03 = multilineString(
-			"package io.sarl.lang.tests.bug847;",
+			"package io.sarl.lang.tests.bug852;",
 			"",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
@@ -193,7 +193,7 @@ public class Bug852 extends AbstractSarlTest {
 			"");
 
 	private static final String SNIPSET04 = multilineString(
-			"package io.sarl.lang.tests.bug847",
+			"package io.sarl.lang.tests.bug852",
 			"agent SomeAgent{",
 			"   def mytest(value : Integer, value2 : Integer) : void{",
 			"       if (value <= value2) {}",
@@ -201,7 +201,7 @@ public class Bug852 extends AbstractSarlTest {
 			"}");
 
 	private static final String EXPECTED04 = multilineString(
-			"package io.sarl.lang.tests.bug847;",
+			"package io.sarl.lang.tests.bug852;",
 			"",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
@@ -244,7 +244,7 @@ public class Bug852 extends AbstractSarlTest {
 			"");
 
 	private static final String SNIPSET05 = multilineString(
-			"package io.sarl.lang.tests.bug847",
+			"package io.sarl.lang.tests.bug852",
 			"agent SomeAgent{",
 			"   def mytest(value : Integer, value2 : Integer) : int {",
 			"       value + value2",
@@ -252,7 +252,7 @@ public class Bug852 extends AbstractSarlTest {
 			"}");
 
 	private static final String EXPECTED05 = multilineString(
-			"package io.sarl.lang.tests.bug847;",
+			"package io.sarl.lang.tests.bug852;",
 			"",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
@@ -294,7 +294,7 @@ public class Bug852 extends AbstractSarlTest {
 			"");
 
 	private static final String SNIPSET06 = multilineString(
-			"package io.sarl.lang.tests.bug847",
+			"package io.sarl.lang.tests.bug852",
 			"agent SomeAgent{",
 			"   def mytest(value : Integer, value2 : long) : long {",
 			"       value + value2",
@@ -302,7 +302,7 @@ public class Bug852 extends AbstractSarlTest {
 			"}");
 
 	private static final String EXPECTED06 = multilineString(
-			"package io.sarl.lang.tests.bug847;",
+			"package io.sarl.lang.tests.bug852;",
 			"",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
@@ -344,7 +344,7 @@ public class Bug852 extends AbstractSarlTest {
 			"");
 
 	private static final String SNIPSET07 = multilineString(
-			"package io.sarl.lang.tests.bug847",
+			"package io.sarl.lang.tests.bug852",
 			"agent SomeAgent{",
 			"   def mytest(value : Integer, value2 : Number) : double {",
 			"       value + value2",
@@ -352,7 +352,7 @@ public class Bug852 extends AbstractSarlTest {
 			"}");
 
 	private static final String EXPECTED07 = multilineString(
-			"package io.sarl.lang.tests.bug847;",
+			"package io.sarl.lang.tests.bug852;",
 			"",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
@@ -394,7 +394,7 @@ public class Bug852 extends AbstractSarlTest {
 			"");
 
 	private static final String SNIPSET08 = multilineString(
-			"package io.sarl.lang.tests.bug847",
+			"package io.sarl.lang.tests.bug852",
 			"agent SomeAgent{",
 			"   def mytest(value : Byte) : float {",
 			"       5.0f + value",
@@ -402,7 +402,7 @@ public class Bug852 extends AbstractSarlTest {
 			"}");
 
 	private static final String EXPECTED08 = multilineString(
-			"package io.sarl.lang.tests.bug847;",
+			"package io.sarl.lang.tests.bug852;",
 			"",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
@@ -444,7 +444,7 @@ public class Bug852 extends AbstractSarlTest {
 			"");
 
 	private static final String SNIPSET09 = multilineString(
-			"package io.sarl.lang.tests.bug847",
+			"package io.sarl.lang.tests.bug852",
 			"agent SomeAgent{",
 			"   def mytest(value : Number) : double {",
 			"       5.0f + value",
@@ -452,7 +452,7 @@ public class Bug852 extends AbstractSarlTest {
 			"}");
 
 	private static final String EXPECTED09 = multilineString(
-			"package io.sarl.lang.tests.bug847;",
+			"package io.sarl.lang.tests.bug852;",
 			"",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
@@ -494,7 +494,7 @@ public class Bug852 extends AbstractSarlTest {
 			"");
 
 	private static final String SNIPSET10 = multilineString(
-			"package io.sarl.lang.tests.bug847",
+			"package io.sarl.lang.tests.bug852",
 			"agent SomeAgent{",
 			"   def mytest(value : Integer) : void{",
 			"       if (null == value) {}",
@@ -514,7 +514,7 @@ public class Bug852 extends AbstractSarlTest {
 	@Test
 	public void compiling_01() throws Exception {
 		this.compiler.compile(SNIPSET01, (it) -> {
-			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug847.SomeAgent");
+			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug852.SomeAgent");
 			assertEquals(EXPECTED01, actual);
 		});
 	}
@@ -529,7 +529,7 @@ public class Bug852 extends AbstractSarlTest {
 	@Test
 	public void compiling_02() throws Exception {
 		this.compiler.compile(SNIPSET02, (it) -> {
-			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug847.SomeAgent");
+			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug852.SomeAgent");
 			assertEquals(EXPECTED02, actual);
 		});
 	}
@@ -544,7 +544,7 @@ public class Bug852 extends AbstractSarlTest {
 	@Test
 	public void compiling_03() throws Exception {
 		this.compiler.compile(SNIPSET03, (it) -> {
-			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug847.SomeAgent");
+			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug852.SomeAgent");
 			assertEquals(EXPECTED03, actual);
 		});
 	}
@@ -559,7 +559,7 @@ public class Bug852 extends AbstractSarlTest {
 	@Test
 	public void compiling_04() throws Exception {
 		this.compiler.compile(SNIPSET04, (it) -> {
-			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug847.SomeAgent");
+			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug852.SomeAgent");
 			assertEquals(EXPECTED04, actual);
 		});
 	}
@@ -574,7 +574,7 @@ public class Bug852 extends AbstractSarlTest {
 	@Test
 	public void compiling_05() throws Exception {
 		this.compiler.compile(SNIPSET05, (it) -> {
-			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug847.SomeAgent");
+			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug852.SomeAgent");
 			assertEquals(EXPECTED05, actual);
 		});
 	}
@@ -589,7 +589,7 @@ public class Bug852 extends AbstractSarlTest {
 	@Test
 	public void compiling_06() throws Exception {
 		this.compiler.compile(SNIPSET06, (it) -> {
-			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug847.SomeAgent");
+			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug852.SomeAgent");
 			assertEquals(EXPECTED06, actual);
 		});
 	}
@@ -604,7 +604,7 @@ public class Bug852 extends AbstractSarlTest {
 	@Test
 	public void compiling_07() throws Exception {
 		this.compiler.compile(SNIPSET07, (it) -> {
-			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug847.SomeAgent");
+			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug852.SomeAgent");
 			assertEquals(EXPECTED07, actual);
 		});
 	}
@@ -619,7 +619,7 @@ public class Bug852 extends AbstractSarlTest {
 	@Test
 	public void compiling_08() throws Exception {
 		this.compiler.compile(SNIPSET08, (it) -> {
-			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug847.SomeAgent");
+			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug852.SomeAgent");
 			assertEquals(EXPECTED08, actual);
 		});
 	}
@@ -634,7 +634,7 @@ public class Bug852 extends AbstractSarlTest {
 	@Test
 	public void compiling_09() throws Exception {
 		this.compiler.compile(SNIPSET09, (it) -> {
-			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug847.SomeAgent");
+			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug852.SomeAgent");
 			assertEquals(EXPECTED09, actual);
 		});
 	}
