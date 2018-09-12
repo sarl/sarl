@@ -19,13 +19,15 @@
  */
 package io.janusproject.tests.testutils;
 
-import io.janusproject.services.logging.LogService;
-
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+
+import io.janusproject.services.logging.LogService;
 
 /**
  * The injection module for unit tests.
@@ -37,12 +39,12 @@ import com.google.inject.Singleton;
  */
 public class ErrorLogTestingModule extends AbstractModule {
 
-	private final List<Object> results;
+	private final Map<UUID, List<Object>> results;
 
 	/**
 	 * @param results the results to fill.
 	 */
-	public ErrorLogTestingModule(List<Object> results) {
+	public ErrorLogTestingModule(Map<UUID, List<Object>> results) {
 		this.results = results;
 	}
 

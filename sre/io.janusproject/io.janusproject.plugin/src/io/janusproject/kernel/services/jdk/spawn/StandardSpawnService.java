@@ -61,6 +61,7 @@ import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.SREutils;
+import io.sarl.lang.core.Scope;
 import io.sarl.lang.util.SynchronizedIterable;
 import io.sarl.lang.util.SynchronizedSet;
 import io.sarl.sarlspecification.SarlSpecificationChecker;
@@ -218,15 +219,21 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 		// Send the event in the default space.
 		final EventSpace defSpace = context.getDefaultSpace();
 		assert defSpace != null : "A context does not contain a default space"; //$NON-NLS-1$
-		final Address source = new Address(defSpace.getSpaceID(),
-				spawningAgent == null ? context.getID() : spawningAgent);
+		final UUID spawner = spawningAgent == null ? context.getID() : spawningAgent;
+		final Address source = new Address(defSpace.getSpaceID(), spawner);
 		assert source != null;
-		final AgentSpawned event = new AgentSpawned(source, agentClazz.getName(),
-				Collections2.transform(agents, it -> it.getID()));
+		final Collection<UUID> spawnedAgentIds = Collections2.transform(agents, it -> it.getID());
+		final AgentSpawned event = new AgentSpawned(source, agentClazz.getName(), spawnedAgentIds);
+		final Scope<Address> scope = address -> {
+			final UUID receiver = address.getUUID();
+			return !spawnedAgentIds.parallelStream().anyMatch(it -> it.equals(receiver));
+		};
+		// Event must not be received by the spawned agent.
 		defSpace.emit(
 				// No need to give an event source because it is explicitly set above.
 				null,
-				event);
+				event,
+				scope);
 	}
 
 	/** Notify the agent's listeners about its spawning.
@@ -237,7 +244,7 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 	 * @param initializationParameters the initialization parameters.
 	 */
 	protected void fireAgentSpawnedInAgent(UUID spawningAgent, AgentContext context, Agent agent, Object... initializationParameters) {
-		// Notify the listeners on the lifecycle events on
+		// Notify the listeners on the lifecycle events inside
 		// the just spawned agent.
 		// Usually, only BICs and the AgentLifeCycleSupport in
 		// io.janusproject.kernel.bic.StandardBuiltinCapacitiesProvider

@@ -33,6 +33,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.UUID;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
@@ -97,7 +99,10 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	protected Kernel janusKernel;
 
 	@Nullable
-	private List<Object> results;
+	private Map<UUID, List<Object>> results;
+
+	@Nullable
+	private UUID bootAgent;
 
 	@Rule
 	public TestWatcher janusRunWatcher = new TestWatcher() {
@@ -121,13 +126,38 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 		}
 	};
 
+	/** Replies the identifier of the lastly booted agent.
+	 *
+	 * @return the identifier or {@code null} if no agent was booted.
+	 */
+	protected UUID getBootAgent() {
+		return this.bootAgent;
+	}
+
 	/**
 	 * Replies the number of results provided by the ran platform.
 	 *
 	 * @return the number of results.
 	 */
 	protected int getNumberOfResults() {
-		return this.results.size();
+		return getNumberOfResults(getBootAgent());
+	}
+
+	/**
+	 * Replies the number of results provided by the ran platform.
+	 *
+	 * @param agentID the identifier of the agent that provides the results.
+	 * @return the number of results.
+	 * @since 0.8
+	 */
+	protected int getNumberOfResults(UUID agentID) {
+		if (this.results != null) {
+			final List<Object> res = this.results.get(agentID);
+			if (res != null) {
+				return res.size();
+			}
+		}
+		return 0;
 	}
 
 	/**
@@ -147,11 +177,27 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	 * @return the value; or <code>null</code> if no result.
 	 */
 	protected <T> T getResult(Class<T> type, int index) {
+		return getResult(getBootAgent(), type, index);
+	}
+
+	/**
+	 * Replies result at the given index of the run of the agent.
+	 * 
+	 * @param agentId the identifier of the agent that provides the result.
+	 * @param type the type of the result.
+	 * @param index the index of the result.
+	 * @return the value; or <code>null</code> if no result.
+	 * @since 0.8
+	 */
+	protected <T> T getResult(UUID agentId, Class<T> type, int index) {
 		if (this.results != null) {
-			try {
-				return type.cast(this.results.get(index));
-			} catch (Throwable exception) {
-				//
+			final List<Object> res = this.results.get(agentId);
+			if (res != null) {
+				try {
+					return type.cast(res.get(index));
+				} catch (Throwable exception) {
+					//
+				}
 			}
 		}
 		return null;
@@ -162,8 +208,29 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	 * @return the results.
 	 */
 	protected List<Object> getResults() {
-		if (this.results != null) {
-			return Collections.unmodifiableList(this.results);
+		return getResults(getBootAgent());
+	}
+
+	/**
+	 * Replies result at the given index of the run of the agent.
+	 * @return the results.
+	 * @since 0.8
+	 */
+	protected Map<UUID, List<Object>> getAllResults() {
+		return this.results == null ? Collections.emptyMap() : Collections.unmodifiableMap(this.results);
+	}
+
+	/**
+	 * Replies result at the given index of the run of the agent.
+	 * @return the results.
+	 * @since 0.8
+	 */
+	protected List<Object> getResults(UUID agentID) {
+		if (this.results != null && agentID != null) {
+			final List<Object> res = this.results.get(agentID);
+			if (res != null) {
+				return Collections.unmodifiableList(res);
+			}
 		}
 		return Collections.emptyList();
 	}
@@ -306,7 +373,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 				//
 			}
 		}));
-		this.results = new ArrayList<>();
+		this.results = new TreeMap<>();
 		Module injectionModule = module;
 		if (!enableLogging) {
 			injectionModule = Modules.override(injectionModule).with(new NoLogTestingModule());
@@ -315,6 +382,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 		}
 		Boot.setOffline(offline);
 		this.janusKernel = Boot.startJanusWithModule(injectionModule, type, getAgentInitializationParameters());
+		this.bootAgent = Boot.getBootAgentIdentifier();
 		Logger current = this.janusKernel.getLogger();
 		while (current.getParent() != null && current.getParent() != current) {
 			current = current.getParent();
@@ -358,7 +426,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	 * @param predicate the predicate to use as stop condition.
 	 * @throws Exception - if the kernel cannot be launched.
 	 */
-	public void waitForTheKernel(int timeout, Function1<List<Object>, Boolean> predicate) throws Exception {
+	public void waitForTheKernel(int timeout, Function1<Map<UUID, List<Object>>, Boolean> predicate) throws Exception {
 		long endTime;
 		if (timeout >= 0) {
 			endTime = System.currentTimeMillis() + timeout * 1000;
@@ -415,7 +483,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	 */
 	protected static abstract class TestingAgent extends Agent {
 
-		private List<Object> results;
+		private Map<UUID, List<Object>> results;
 
 		private Object[] initializationParameters;
 
@@ -442,7 +510,12 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 		 * @param result the result.
 		 */
 		protected synchronized void addResult(Object result) {
-			this.results.add(result);
+			List<Object> res = this.results.get(getID());
+			if (res == null) {
+				res = new ArrayList<>();
+				this.results.put(getID(), res);
+			}
+			res.add(result);
 		}
 		
 		/**
@@ -451,7 +524,8 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 		 * @return the number of results.
 		 */
 		protected int getNumberOfResults() {
-			return this.results.size();
+			final List<Object> res = this.results.get(getID());
+			return res == null ? 0 : res.size();
 		}
 
 		/**
@@ -460,7 +534,12 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 		 * @param result the result.
 		 */
 		protected synchronized void addResults(Collection<?> results) {
-			this.results.addAll(results);
+			List<Object> res = this.results.get(getID());
+			if (res == null) {
+				res = new ArrayList<>();
+				this.results.put(getID(), res);
+			}
+			res.addAll(results);
 		}
 
 		/**
@@ -469,7 +548,10 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 		 */
 		protected synchronized List<Object> getResults() {
 			if (this.results != null) {
-				return Collections.unmodifiableList(this.results);
+				final List<Object> res = this.results.get(getID());
+				if (res != null) {
+					return Collections.unmodifiableList(res);
+				}
 			}
 			return Collections.emptyList();
 		}
@@ -496,7 +578,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 		 */
 		private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
 			this.initializationParameters = occurrence.parameters;
-			this.results = (List<Object>) occurrence.parameters[0];
+			this.results = (Map<UUID, List<Object>>) occurrence.parameters[0];
 			try {
 				if (runAgentTest()) {
 					getSkill(Schedules.class).in(1000, (it) -> forceKillMe());

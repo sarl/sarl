@@ -22,6 +22,8 @@ package io.janusproject.tests.testutils;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -47,7 +49,7 @@ public class ExceptionLogService extends AbstractService implements LogService {
 	/**
 	 * @param results the results of the run.
 	 */
-	public ExceptionLogService(List<Object> results) {
+	public ExceptionLogService(Map<UUID, List<Object>> results) {
 		this.logger = Logger.getLogger(ExceptionLogService.class.getName());
 	}
 
