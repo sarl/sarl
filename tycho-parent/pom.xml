@@ -237,9 +237,8 @@
 		<repository>
 			<id>org.eclipse.modeling.tmf.xtext.updates</id>
 			<layout>p2</layout>
-			<!-- FIXME: Replace by the repository for the stable Xtext 2.15 -->
-			<url>http://download.eclipse.org/modeling/tmf/xtext/updates/composite/latest/</url>
-			<!-- <url>http://download.eclipse.org/modeling/tmf/xtext/updates/releases/${xtext.version.current}/</url> -->
+			<url>http://download.eclipse.org/modeling/tmf/xtext/updates/releases/${xtext.version.current}/</url>
+			<!--<url>http://download.eclipse.org/modeling/tmf/xtext/updates/composite/latest/</url>-->
 		</repository>
 		<!-- Eclipse and related libraries -->
 		<repository>
