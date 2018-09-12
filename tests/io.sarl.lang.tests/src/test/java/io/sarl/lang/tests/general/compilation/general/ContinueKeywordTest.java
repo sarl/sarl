@@ -259,7 +259,7 @@ public class ContinueKeywordTest extends AbstractSarlTest {
 				"  protected void fct(final int a) {",
 				"    IntegerRange _upTo = new IntegerRange(0, a);",
 				"    for (final Integer b : _upTo) {",
-				"      if (((b).intValue() == 5)) {",
+				"      if ((b != null ? (b.intValue() == 5) : false)) {",
 				"        continue;",
 				"      }",
 				"    }",

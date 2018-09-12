@@ -31,8 +31,9 @@ import org.eclipse.xtext.xbase.scoping.batch.ImplicitlyImportedFeatures;
 import io.sarl.lang.bugfixes.pending.pr106.PR106ArrayExtensions;
 import io.sarl.lang.bugfixes.pending.pr106.PR106ArrayLiterals;
 import io.sarl.lang.scoping.batch.SARLTimeExtensions;
-import io.sarl.lang.scoping.numbers.NumberCastImplicitlyImportedFeatures;
-import io.sarl.lang.scoping.numbers.NumberOperatorImplicitlyImportedFeatures;
+import io.sarl.lang.scoping.numbers.arithmetic.NumberArithmeticImplicitlyImportedFeatures;
+import io.sarl.lang.scoping.numbers.casts.NumberCastImplicitlyImportedFeatures;
+import io.sarl.lang.scoping.numbers.comparison.NumberComparisonImplicitlyImportedFeatures;
 
 
 /** Provider of the implicitly imported features in the SARL language.
@@ -46,7 +47,10 @@ import io.sarl.lang.scoping.numbers.NumberOperatorImplicitlyImportedFeatures;
 public class SARLImplicitlyImportedFeatures extends ImplicitlyImportedFeatures {
 
 	@Inject
-	private NumberOperatorImplicitlyImportedFeatures numberOperatorFeatures;
+	private NumberComparisonImplicitlyImportedFeatures numberComparisonFeatures;
+
+	@Inject
+	private NumberArithmeticImplicitlyImportedFeatures numberArithmeticFeatures;
 
 	@Inject
 	private NumberCastImplicitlyImportedFeatures numberCastFeatures;
@@ -73,7 +77,8 @@ public class SARLImplicitlyImportedFeatures extends ImplicitlyImportedFeatures {
 		xtextList.add(0, SARLTimeExtensions.class);
 
 		// Add features related to numbers.
-		this.numberOperatorFeatures.getImportedFeatures(xtextList);
+		this.numberComparisonFeatures.getImportedFeatures(xtextList);
+		this.numberArithmeticFeatures.getImportedFeatures(xtextList);
 		this.numberCastFeatures.getImportedFeatures(xtextList);
 
 		return xtextList;
