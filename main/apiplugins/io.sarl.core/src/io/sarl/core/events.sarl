@@ -183,7 +183,7 @@ final event AgentSpawned {
 /**
  * Informs an agent has been killed.
  * The event is fires within all the external contexts (including the default context) of the killed agent.
- * The spawned agent does not receive this event.
+ * The killed agent does not receive this event.
  * The source of the event is the killed agent.
  * The context id can be retrieved via {@code ev.source.spaceID.contextID}.
  */

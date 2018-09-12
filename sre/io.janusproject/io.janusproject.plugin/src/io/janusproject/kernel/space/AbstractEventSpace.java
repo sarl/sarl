@@ -171,11 +171,11 @@ public abstract class AbstractEventSpace extends SpaceBase {
 		final UniqueAddressParticipantRepository<Address> particips = getParticipantInternalDataStructure();
 		final SynchronizedCollection<EventListener> listeners = particips.getListeners();
 		synchronized (listeners.mutex()) {
-			for (final EventListener agent : listeners) {
-				if (scope.matches(getAddress(agent))) {
+			listeners.stream()
+				.filter(agent -> scope.matches(getAddress(agent)))
+				.forEach(agent -> {
 					this.executorService.submit(new AsyncRunner(agent, event));
-				}
-			}
+				});
 		}
 	}
 

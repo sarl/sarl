@@ -38,6 +38,7 @@ import org.junit.Test;
 
 import io.janusproject.tests.testutils.AbstractJanusRunTest;
 
+import io.sarl.core.AgentKilled;
 import io.sarl.core.AgentSpawned;
 import io.sarl.core.DefaultContextInteractions;
 import io.sarl.core.Lifecycle;
@@ -170,6 +171,97 @@ public class Bug848 extends AbstractJanusRunTest {
 		assertEquals(bootAgent, spawnEvents1.getB());
 		assertEquals(1, spawnEvents1.getC().size());
 		assertEquals(childAgent, spawnEvents1.getC().iterator().next());
+
+		assertEquals(0, getNumberOfResults(childAgent));
+	}
+
+	/**
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	@SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
+	public static class TAgent2a extends TestingAgent {
+
+		public TAgent2a(UUID parentID, UUID agentID) {
+			super(parentID, agentID);
+		}
+
+		@Override
+		protected boolean runAgentTest() {
+			final UUID child = getSkill(Lifecycle.class).spawn(TAgent2b.class, getAgentInitializationParameters());
+			addResult(child);
+			return false;
+		}
+
+		private void onAgentKilled(AgentKilled occurrence) {
+			Pair<Boolean, UUID> pair = Pair.of(isFromMe(occurrence), occurrence.getSource().getUUID());
+			addResult(pair);
+			forceKillMe();
+		}
+
+		@PerceptGuardEvaluator
+		private void guard$AgentKilled(AgentKilled occurrence, Collection<Runnable> handlers) {
+			handlers.add(() -> onAgentKilled(occurrence));
+		}
+
+	}
+
+	/**
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	@SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
+	public static class TAgent2b extends TestingAgent {
+
+		public TAgent2b(UUID parentID, UUID agentID) {
+			super(parentID, agentID);
+		}
+
+		@Override
+		protected boolean runAgentTest() {
+			stop();
+			return false;
+		}
+
+		private void onAgentKilled(AgentKilled occurrence) {
+			Pair<Boolean, UUID> pair = Pair.of(isFromMe(occurrence), occurrence.getSource().getUUID());
+			addResult(pair);
+			stop();
+		}
+
+		private void stop() {
+			getSkill(Schedules.class).in(1000, (it) -> {
+				forceKillMe();
+			});
+		}
+
+		@PerceptGuardEvaluator
+		private void guard$AgentKilled(AgentKilled occurrence, Collection<Runnable> handlers) {
+			if (!occurrence.agentType.equals(TAgent2a.class.getName())) {
+				handlers.add(() -> onAgentKilled(occurrence));
+			} else {
+				handlers.add(() -> stop());
+			}
+		}
+
+	}
+
+	@Test
+	public void agentKilledReceiving_01() throws Exception {
+		runJanus(TAgent2a.class, false);
+
+		UUID bootAgent = getBootAgent();
+		assertEquals(2, getNumberOfResults(bootAgent));
+		final UUID childAgent = getResult(bootAgent, UUID.class, 0);
+		assertNotNull(childAgent);
+		final Pair<Boolean, UUID> killEvents1 = getResult(bootAgent, Pair.class, 1);
+		assertNotNull(killEvents1);
+		assertFalse(killEvents1.getKey().booleanValue());
+		assertEquals(childAgent, killEvents1.getValue());
 
 		assertEquals(0, getNumberOfResults(childAgent));
 	}

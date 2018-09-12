@@ -454,12 +454,18 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 		try {
 			final SynchronizedIterable<AgentContext> sc = BuiltinCapacityUtil.getContextsOf(agent);
 			synchronized (sc.mutex()) {
+				final UUID killedAgentId = agent.getID();
+				final Scope<Address> scope = address -> {
+					final UUID receiver = address.getUUID();
+					return !receiver.equals(killedAgentId);
+				};
 				for (final AgentContext context : sc) {
 					final EventSpace defSpace = context.getDefaultSpace();
 					defSpace.emit(
 							// No need to give an event source because it is explicitly set below.
 							null,
-							new AgentKilled(defSpace.getAddress(agent.getID()), agent.getID(), agent.getClass().getName()));
+							new AgentKilled(defSpace.getAddress(agent.getID()), agent.getID(), agent.getClass().getName()),
+							scope);
 				}
 			}
 		} catch (RuntimeException e) {
