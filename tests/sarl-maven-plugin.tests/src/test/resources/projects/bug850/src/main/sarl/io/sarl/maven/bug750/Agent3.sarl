@@ -1,0 +1,12 @@
+package io.sarl.maven.bug850
+
+agent Agent3 {
+
+	def prologAssert(a : String, b : int, c : String) {
+	}
+
+	on CarRequestPercept {
+		prologAssert("request(@I, @S)", occurrence.floor, occurrence.direction.toString().toLowerCase())
+	}
+
+}

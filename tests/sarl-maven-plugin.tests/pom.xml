@@ -34,12 +34,54 @@
 	</dependencies>
 
 	<build>
-		<resources>
-			<resource>
-				<directory>src/test/resources</directory>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
+		<plugins>
+			<plugin>
+				<groupId>com.google.code.maven-replacer-plugin</groupId>
+				<artifactId>replacer</artifactId>
+				<executions>
+					<execution>
+						<id>prepare-test-resources</id>
+						<phase>process-test-resources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<basedir>${project.basedir}/test-resource-templates</basedir>
+							<includes>
+								<include>*/**/pom.xml</include>
+							</includes>
+							<outputBasedir>${project.basedir}</outputBasedir>
+							<outputDir>src/test/resources/</outputDir>
+						</configuration>
+					</execution>
+				</executions>
+				<configuration>
+					<replacements>
+						<replacement>
+							<token>%javaversion%</token>
+							<value>${compiler.level}</value>
+						</replacement>
+						<replacement>
+							<token>%fileencoding%</token>
+							<value>${project.build.sourceEncoding}</value>
+						</replacement>
+						<replacement>
+							<token>%sarlreleaseversion%</token>
+							<value>${sarl.version}</value>
+						</replacement>
+						<replacement>
+							<token>%janusreleaseversion%</token>
+							<value>${janus.version}</value>
+						</replacement>
+						<replacement>
+							<token>%mavencompilerversion%</token>
+							<value>${mavencompiler.version}</value>
+						</replacement>
+					</replacements>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
 
 </project>

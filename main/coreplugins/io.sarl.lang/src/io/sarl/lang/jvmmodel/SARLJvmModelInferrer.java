@@ -1811,8 +1811,14 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 									.cloneWithProxies(exception));
 						}
 
-						operation2.setReturnType(
-								cloneWithTypeParametersAndProxies(selectedReturnType, operation2));
+						operation2.setReturnType(cloneWithTypeParametersAndProxies(selectedReturnType, operation2));
+						//operation2.setReturnType(this.typeReferences.createDelegateTypeReference(selectedReturnType));
+						/* FIXME: Remove if the line above works
+						if (selectedReturnType instanceof XComputedTypeReference) {
+							operation2.setReturnType(this.typeReferences.createDelegateTypeReference(selectedReturnType));
+						} else {
+							operation2.setReturnType(cloneWithTypeParametersAndProxies(selectedReturnType, operation2));
+						}*/
 
 						translateAnnotationsTo(source.getAnnotations(), operation2);
 						if (source.isOverride()

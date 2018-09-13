@@ -6,18 +6,13 @@
 
 	<groupId>io.sarl.maven.compiler.tests</groupId>
 	<artifactId>this-is-for-test-only</artifactId>
-	<version>0.8.0-SNAPSHOT</version>
+	<version>%sarlreleaseversion%</version>
 	<name>This is for Test ONLY</name>
 	
-	<properties>
-        <compiler.level>1.8</compiler.level>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
 	<dependencies>
 		<dependency>
-			<groupId>io.sarl.maven</groupId>
-			<artifactId>io.sarl.maven.sdk</artifactId>
+			<groupId>io.sarl.lang</groupId>
+			<artifactId>io.sarl.lang.core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
@@ -26,23 +21,18 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.6.2</version>
+				<version>%mavencompilerversion%</version>
 				<configuration>
-					<source>${compiler.level}</source>
-					<target>${compiler.level}</target>
-					<encoding>${project.build.sourceEncoding}</encoding>
+					<source>%javaversion%</source>
+					<target>%javaversion%</target>
+					<encoding>%fileencoding%</encoding>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>io.sarl.maven</groupId>
 				<artifactId>sarl-maven-plugin</artifactId>
-				<version>0.8.0-SNAPSHOT</version>
+				<version>${project.version}</version>
 				<extensions>true</extensions>
-				<configuration>
-					<source>${compiler.level}</source>
-					<target>${compiler.level}</target>
-					<encoding>${project.build.sourceEncoding}</encoding>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>

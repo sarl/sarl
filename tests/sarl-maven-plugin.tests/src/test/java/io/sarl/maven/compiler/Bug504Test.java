@@ -41,7 +41,7 @@ import io.sarl.lang.SARLVersion;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-public class Bug504 extends AbstractMojoTest {
+public class Bug504Test extends AbstractMojoTest {
 
 	@Test
 	public void compile() throws Exception {

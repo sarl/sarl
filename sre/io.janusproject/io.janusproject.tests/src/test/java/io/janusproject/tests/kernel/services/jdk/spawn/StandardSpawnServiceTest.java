@@ -68,6 +68,7 @@ import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventSpace;
+import io.sarl.lang.core.Scope;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.util.SynchronizedSet;
@@ -241,10 +242,12 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 		//
 		ArgumentCaptor<UUID> argument4 = ArgumentCaptor.forClass(UUID.class);
 		ArgumentCaptor<Event> argument5 = ArgumentCaptor.forClass(Event.class);
-		Mockito.verify(this.defaultSpace, new Times(1)).emit(argument4.capture(), argument5.capture());
+		ArgumentCaptor<Scope<Address>> argument6 = ArgumentCaptor.forClass(Scope.class);
+		Mockito.verify(this.defaultSpace, new Times(1)).emit(argument4.capture(), argument5.capture(), argument6.capture());
 		assertNull(argument4.getValue());
 		assertTrue(argument5.getValue() instanceof AgentSpawned);
 		assertContainsCollection(((AgentSpawned) argument5.getValue()).agentIdentifiers, agentIds);
+		assertNotNull(argument6.getValue());
 	}
 
 	@AvoidServiceStartForTest
@@ -294,10 +297,12 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 		//
 		ArgumentCaptor<UUID> argument5 = ArgumentCaptor.forClass(UUID.class);
 		ArgumentCaptor<Event> argument6 = ArgumentCaptor.forClass(Event.class);
-		Mockito.verify(this.defaultSpace, new Times(2)).emit(argument5.capture(), argument6.capture());
+		ArgumentCaptor<Scope<Address>> argument7 = ArgumentCaptor.forClass(Scope.class);
+		Mockito.verify(this.defaultSpace, new Times(2)).emit(argument5.capture(), argument6.capture(), argument7.capture());
 		assertNull(argument5.getValue());
 		assertTrue(argument6.getValue() instanceof AgentKilled);
 		assertEquals(agentIds.get(0), ((AgentKilled) argument6.getValue()).agentID);
+		assertNotNull(argument7.getValue());
 		//
 		Mockito.verify(this.kernelListener, new Times(1)).kernelAgentDestroy();
 	}

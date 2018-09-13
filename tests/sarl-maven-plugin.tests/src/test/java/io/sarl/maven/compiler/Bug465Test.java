@@ -42,7 +42,7 @@ import io.sarl.lang.annotation.SarlSpecification;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-public class Bug465 extends AbstractMojoTest {
+public class Bug465Test extends AbstractMojoTest {
 
 	@Test
 	public void compile() throws Exception {
@@ -79,7 +79,6 @@ public class Bug465 extends AbstractMojoTest {
 				"@SarlElementType(18)",
 				"@SuppressWarnings(\"all\")",
 				"public class MyAgent extends Agent {",
-				"@SyntheticMember",
 				"private void $behaviorUnit$Initialize$0(final Initialize occurrence) {",
 				"Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER = this.$castSkill(Schedules.class, (this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES == null || this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES.get() == null) ? (this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES = this.$getSkill(Schedules.class)) : this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES);",
 				"Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_1 = this.$castSkill(Schedules.class, (this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES == null || this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES.get() == null) ? (this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES = this.$getSkill(Schedules.class)) : this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES);",

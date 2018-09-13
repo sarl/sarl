@@ -36,7 +36,7 @@ import org.junit.Test;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-public class Bug317 extends AbstractMojoTest {
+public class Bug317Test extends AbstractMojoTest {
 
 	@Test
 	public void compile() throws Exception {

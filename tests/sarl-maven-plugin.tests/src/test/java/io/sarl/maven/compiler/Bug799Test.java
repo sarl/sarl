@@ -39,7 +39,7 @@ import io.sarl.lang.SARLVersion;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-public class Bug799 extends AbstractMojoTest {
+public class Bug799Test extends AbstractMojoTest {
 
 	private static final String EXPECTED_A = multilineString(
 			"package io.sarl.maven.bug799;",
