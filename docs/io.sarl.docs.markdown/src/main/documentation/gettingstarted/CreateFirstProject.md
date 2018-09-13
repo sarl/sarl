@@ -73,8 +73,8 @@ Replace the version number [:sarl.version:] of SARL with the one you want to use
     <properties>
        ...
        <sarl.version>[:sarl.version!]</sarl.version>
-		<compiler.level>[:java.version!]</compiler.level>
-		<project.build.sourceEncoding>[:file.encoding!]</project.build.sourceEncoding>
+	   <compiler.level>[:compiler.level!]</compiler.level>
+	   <project.build.sourceEncoding>[:project.encoding!]</project.build.sourceEncoding>
     </properties>
     ...
     <build>
@@ -83,7 +83,7 @@ Replace the version number [:sarl.version:] of SARL with the one you want to use
 		  <plugin>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-compiler-plugin</artifactId>
-			<version>[:maven.compiler.version!]</version>
+			<version>[:mavencompiler.version!]</version>
 			<configuration>
 				<source>${compiler.level}</source>
 				<target>${compiler.level}</target>
@@ -96,9 +96,9 @@ Replace the version number [:sarl.version:] of SARL with the one you want to use
              <version>${sarl.version}</version>
              <extensions>true</extensions>
              <configuration>
-                <source>[:compiler.level!]</source>
-                <target>[:compiler.level!]</target>
-                <encoding>[:project.encoding!]</encoding>
+                <source>${compiler.level}</source>
+                <target>${compiler.level}</target>
+                <encoding>${project.build.sourceEncoding}</encoding>
              </configuration>
           </plugin>
        </plugins>

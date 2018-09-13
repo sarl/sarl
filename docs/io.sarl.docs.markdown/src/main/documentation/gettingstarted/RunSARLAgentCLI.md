@@ -124,7 +124,7 @@ you may use the Maven execution plugin for classing this booting class.
 The typical command line is:
 
 
-	mvn exec:exec [:mavencliexec](-Dexec.executable)=java [:mavenclisargs](-Dexec.args)="-cp %classpath io.janusproject.Boot"
+	mvn exec:exec [:mavencliexec](-Dexec.executable)=java [:mavencliargs](-Dexec.args)="-cp %classpath io.janusproject.Boot"
 
 
 [:Fact:](io.janusproject.Boot)
