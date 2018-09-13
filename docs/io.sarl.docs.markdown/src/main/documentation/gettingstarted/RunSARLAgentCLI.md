@@ -124,11 +124,16 @@ you may use the Maven execution plugin for classing this booting class.
 The typical command line is:
 
 
-	mvn exec:java [:mainclasscli](-Dexec.mainClass)="io.janusproject.Boot"
+	mvn exec:exec [:mavencliexec](-Dexec.executable)=java [:mavenclisargs](-Dexec.args)="-cp %classpath io.janusproject.Boot"
+
 
 [:Fact:](io.janusproject.Boot)
 
-The option [:mainclasscli:] specifies the fully qualified name of [:fullbootclass:].
+The option [:mavencliexec:] specifies the Java executable.
+
+The option [:mavencliargs:] contains the command line arguments to pass to Java.
+The first argument is the classpath of the project. You must not change `%classpath` because it will be dynamically
+replaced by the Maven plugin. 
 
 
 ### Specify the Agent to Launch
@@ -138,9 +143,8 @@ Indeed, it is mandatory to specify the fully qualified name
 of the agent to launch:
 
 
-	mvn exec:java -Dexec.mainClass="io.janusproject.Boot" -Dexec.args=myapp.MyAgent
+	mvn exec:exec -Dexec.executable=java -Dexec.args="-cp %classpath io.janusproject.Boot <qualified_name_of_the_agent>"
 
-[:Fact:](io.janusproject.Boot)
 
 <veryimportant>The Janus platform allows to start only one agent from the command line.
 If you want to start a collection of agents, you must select
@@ -157,9 +161,8 @@ The Janus platform provides a collection of command line options.
 For obtaining the list of these options, you should type:
 
 
-	mvn exec:java -Dexec.mainClass="io.janusproject.Boot" -Dexec.args=--help
+	mvn exec:exec -Dexec.executable=java -Dexec.args="-cp %classpath io.janusproject.Boot --help"
 
-[:Fact:](io.janusproject.Boot)
 
 
 ## What's next?
