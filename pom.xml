@@ -1280,7 +1280,7 @@
 			<releases>
 				<enabled>true</enabled>
 			</releases>
-			<url>https://oss.sonatype.org/content/repositories/orgeclipsextend-1066</url>
+			<url>https://oss.sonatype.org/content/repositories/orgeclipsextend-1067</url>
 		</repository>
 		<repository>
 			<id>org.maven.xtext.staging</id>
@@ -1290,7 +1290,7 @@
 			<releases>
 				<enabled>true</enabled>
 			</releases>
-			<url>https://oss.sonatype.org/content/repositories/orgeclipsextext-1096</url>
+			<url>https://oss.sonatype.org/content/repositories/orgeclipsextext-1097</url>
 		</repository>
 	</repositories>
 
