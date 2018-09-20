@@ -1273,9 +1273,25 @@ public class BehaviorParsingTest {
 					"behavior B1 {",
 					"	public var field : int",
 					"}"), false);
-			validate(mas).assertError(
-					SarlPackage.eINSTANCE.getSarlField(),
-					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
+			assertEquals(1, mas.getXtendTypes().size());
+			//
+			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
+			//
+			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
+			assertEquals("B1", beh.getName());
+			assertNull(beh.getExtends());
+			assertEquals(1, beh.getMembers().size());
+			//
+			SarlField attr1 = (SarlField) beh.getMembers().get(0);
+			assertEquals("field", attr1.getName());
+			assertTypeReferenceIdentifier(attr1.getType(), "int");
+			assertNull(attr1.getInitialValue());
+			assertEquals(JvmVisibility.PUBLIC, attr1.getVisibility());
+			assertFalse(attr1.isExtension());
+			assertFalse(attr1.isFinal());
+			assertFalse(attr1.isStatic());
+			assertFalse(attr1.isTransient());
+			assertFalse(attr1.isVolatile());
 		}
 
 		@Test

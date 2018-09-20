@@ -294,7 +294,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	@SuppressWarnings("synthetic-access")
 	private final SARLModifierValidator fieldInBehaviorModifierValidator = new SARLModifierValidator(
 			newArrayList(
-					"package",  //$NON-NLS-1$
+					"public", "package", //$NON-NLS-1$//$NON-NLS-2$
 					"protected", "private", //$NON-NLS-1$//$NON-NLS-2$
 					"final", "val", "var")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 

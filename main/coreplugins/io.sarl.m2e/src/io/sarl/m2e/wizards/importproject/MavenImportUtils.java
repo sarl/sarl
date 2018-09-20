@@ -83,7 +83,7 @@ public final class MavenImportUtils {
 	 */
 	public static void importMavenProject(IWorkspaceRoot workspaceRoot, String projectName,
 			boolean addSarlSpecificSourceFolders, IProgressMonitor monitor) {
-		// TODO: The m2e plugin seems to have an issue for creating a fresh project with the SARL plugin as an extension.
+		// XXX: The m2e plugin seems to have an issue for creating a fresh project with the SARL plugin as an extension.
 		// Solution: Create a simple project, and switch to a real SARL project.
 
 		final WorkspaceJob bugFixJob = new WorkspaceJob("Creating Simple Maven project") { //$NON-NLS-1$

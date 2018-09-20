@@ -96,7 +96,7 @@ public class ImportMavenSarlProjectWizard extends MavenImportWizard {
 		final WorkspaceJob importJob = createImportJob(projects);
 		final WorkspaceJob globalJob;
 
-		// TODO: The m2e plugin seems to have an issue for creating a fresh project with the SARL plugin as an extension.
+		// XXX: The m2e plugin seems to have an issue for creating a fresh project with the SARL plugin as an extension.
 		// Solution: Create a simple project, and switch to a real SARL project.
 		if (!projects.isEmpty()) {
 			globalJob = new WorkspaceJob("Force simple Maven project") { //$NON-NLS-1$

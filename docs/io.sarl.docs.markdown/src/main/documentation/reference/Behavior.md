@@ -179,6 +179,7 @@ Examples:
 The modifiers for the fields in a behavior are:
 
 * Access modifiers:
+	* [:publicmodifier:]: the field is accessible from everywhere;
 	* [:protectedmodifier:]: the field is accessible within the same package, and derived agents;
 	* [:packagemodifier:]: the field is accessible only within the same package of its agent;
 	* [:privatemodifier:]: the field is accessible only within its agent (default).
@@ -189,6 +190,7 @@ Examples:
 			package io.sarl.docs.reference.br
 			behavior MyBehavior {
 			[:On]
+				[:publicmodifier](public) var example0 : Object
 				[:protectedmodifier](protected) var example1 : Object
 				package var example2 : Object
 				[:privatemodifier](private) var example3 : Object
