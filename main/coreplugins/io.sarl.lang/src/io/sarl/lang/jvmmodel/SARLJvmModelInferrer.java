@@ -1620,8 +1620,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				operation.setAbstract(!enableFunctionBody);
 				operation.setFinal(enableFunctionBody && source.isFinal());
 			}
-			//final boolean isAbstractOperation = source.isAbstract() || container.isInterface();
-			//operation.setAbstract(isAbstractOperation);
 			this.associator.associatePrimary(source, operation);
 
 			// Type parameters
@@ -1702,20 +1700,19 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 			// Add @Pure annotation
 			final boolean addDynamicPureAnnotationGenerator;
+			final boolean hasExplicitPureAnnotation = this.annotationFinder.findAnnotation(operation, Pure.class) != null;
 			if (context != null && context.getGeneratorConfig2().isGeneratePureAnnotation()
-					&& this.typeReferences.findDeclaredType(Pure.class, source) != null) {
+					&& !hasExplicitPureAnnotation && this.typeReferences.findDeclaredType(Pure.class, source) != null) {
 				addDynamicPureAnnotationGenerator = inheritedOperation == null;
-				this.operationHelper.attachPureAnnotationAdapter(operation, (op, helper) -> {
-					boolean addPureAnnotation = false;
-					if (inheritedOperation != null) {
-						if (helper.isPureOperation(inheritedOperation)) {
-							addPureAnnotation = true;
-						}
-					} else if (helper.isPurableOperation(source)) {
-						addPureAnnotation = true;
-					}
-					return addPureAnnotation;
-				});
+				if (addDynamicPureAnnotationGenerator) {
+					this.operationHelper.attachPureAnnotationAdapter(operation, (op, helper) -> {
+						return helper.isPurableOperation(source);
+					});
+				} else {
+					this.operationHelper.attachPureAnnotationAdapter(operation, (op, helper) -> {
+						return helper.isPureOperation(inheritedOperation);
+					});
+				}
 			} else {
 				addDynamicPureAnnotationGenerator = false;
 			}
@@ -1820,16 +1817,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 							operation2.setReturnType(cloneWithTypeParametersAndProxies(selectedReturnType, operation2));
 						}*/
 
-						translateAnnotationsTo(source.getAnnotations(), operation2);
-						if (source.isOverride()
-								&& SARLJvmModelInferrer.this.annotationFinder.findAnnotation(operation,
-								Override.class) == null
-								&& SARLJvmModelInferrer.this.typeReferences.findDeclaredType(
-										Override.class, source) != null) {
-							addAnnotationSafe(
-									operation, Override.class);
-						}
-
 						final List<String> args = translateSarlFormalParametersForSyntheticOperation(
 								operation2, container, isVarArgs, otherSignature.getValue());
 
@@ -1851,11 +1838,23 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 							operation2.setAbstract(true);
 						}
 
+						// @Override annotation
+						if (source.isOverride()
+								&& SARLJvmModelInferrer.this.annotationFinder.findAnnotation(operation,
+								Override.class) == null
+								&& SARLJvmModelInferrer.this.typeReferences.findDeclaredType(
+										Override.class, source) != null) {
+							addAnnotationSafe(
+									operation, Override.class);
+						}
+
+						// @DefaultValueUse annotation
 						addAnnotationSafe(
 								operation2, DefaultValueUse.class,
 								actionSignatures.getFormalParameterTypes().toString());
 						appendGeneratedAnnotation(operation2, context);
 
+						// @EarlyExit annotation
 						// If the main action is an early-exit action, the additional operation
 						// is also an early-exit operation.
 						if (isEarlyExit) {
@@ -1863,20 +1862,33 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 									operation2, EarlyExit.class);
 						}
 
-						// Put the fired SARL events as Java annotations for beeing usable by the SARL validator.
+						// @FiredEvent annotation
+						// Put the fired SARL events as Java annotations for being usable by the SARL validator.
 						if (!firedEvents.isEmpty()) {
 							operation2.getAnnotations().add(
 									annotationClassRef(FiredEvent.class, firedEvents));
 						}
 
-						// Copy the other annotations from the original operations
+						// @Pure annotation
+						if (addDynamicPureAnnotationGenerator) {
+							this.operationHelper.attachPureAnnotationAdapter(operation2, (op, helper) -> {
+								return helper.isPureOperation(operation);
+							});
+						} else if (hasExplicitPureAnnotation) {
+							addAnnotationSafe(
+									operation2, Pure.class);
+						}
+
+						// Copy the annotations from the original operations, and that are not overridden above
 						for (final JvmAnnotationReference annotation : operation.getAnnotations()) {
 							final String id = annotation.getAnnotation().getIdentifier();
-							if ((!DefaultValueSource.class.getName().equals(id)
-									&& (!EarlyExit.class.getName().equals(id)))
-									&& (!FiredEvent.class.getName().equals(id))
-									&& (!Inline.class.getName().equals(id))
-									&& (!Generated.class.getName().equals(id))) {
+							if (!DefaultValueSource.class.getName().equals(id)
+									&& !DefaultValueUse.class.getName().equals(id)
+									&& !Pure.class.getName().equals(id)
+									&& !EarlyExit.class.getName().equals(id)
+									&& !FiredEvent.class.getName().equals(id)
+									&& !Inline.class.getName().equals(id)
+									&& !Generated.class.getName().equals(id)) {
 								try {
 									final JvmAnnotationReference clone = SARLJvmModelInferrer.this._annotationTypesBuilder
 											.annotationRef(id);
@@ -1888,11 +1900,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 									// ignore
 								}
 							}
-						}
-						if (addDynamicPureAnnotationGenerator) {
-							this.operationHelper.attachPureAnnotationAdapter(operation2, (op, helper) -> {
-								return helper.isPureOperation(operation);
-							});
 						}
 
 						// Copy and clean the documentation
