@@ -36,6 +36,7 @@ import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.controlflow.DefaultEarlyExitComputer;
+import org.eclipse.xtext.xbase.controlflow.IEarlyExitComputer;
 
 import io.sarl.lang.annotation.EarlyExit;
 import io.sarl.lang.sarl.SarlAction;
@@ -63,7 +64,7 @@ public class SARLEarlyExitComputer extends DefaultEarlyExitComputer implements I
 		}
 		final JvmIdentifiableElement element = expression.getFeature();
 		if (isEarlyExitAnnotatedElement(element)) {
-			return Collections.<ExitPoint>singletonList(new ExitPoint(expression, true));
+			return Collections.<ExitPoint>singletonList(new SarlExitPoint(expression, false));
 		}
 		return Collections.emptyList();
 	}
@@ -99,6 +100,43 @@ public class SARLEarlyExitComputer extends DefaultEarlyExitComputer implements I
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public boolean isEarlyExitInJava(XExpression expression) {
+		final Collection<IEarlyExitComputer.ExitPoint> exitPoints = getExitPoints(expression);
+		if (isNotEmpty(exitPoints)) {
+			for (final IEarlyExitComputer.ExitPoint exitPoint : exitPoints) {
+				if (exitPoint instanceof SarlExitPoint) {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Exit point that is specific to SARL, not Xbase/Java.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.8
+	 */
+	public static class SarlExitPoint extends ExitPoint {
+
+		/**
+		 * Constructor.
+		 *
+		 * @param expression the expression that is an exit point.
+		 * @param exceptionalExit {@code true} if the exit is exceptional (exception, etc.).
+		 */
+		public SarlExitPoint(XExpression expression, boolean exceptionalExit) {
+			super(expression, exceptionalExit);
+		}
+
 	}
 
 }

@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -61,6 +62,7 @@ import org.eclipse.xtext.linking.ILinker;
 import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
+import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XFeatureCall;
@@ -75,6 +77,7 @@ import org.eclipse.xtext.xbase.typesystem.IResolvedTypes;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.util.XExpressionHelper;
 
+import io.sarl.lang.controlflow.ISarlEarlyExitComputer;
 import io.sarl.lang.jvmmodel.Messages;
 import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
 import io.sarl.lang.sarl.SarlAssertExpression;
@@ -99,6 +102,9 @@ import io.sarl.lang.typesystem.SARLExpressionHelper;
  *
  * <p>This compiler catches exceptions when generating statements for expressions in order to let the compiler
  * to generate as much as possible.
+ *
+ * <p>The compiler adds a return statement when the early exit statement in SARL is not an early exist statement
+ * in Java. In this case a Java "return" statement must be added impliclitly.
  *
  * <p>The roles of the different generation tools are:<ul>
  * <li>{@link SARLJvmModelInferrer}: Generating the expected Java Ecore model from the SARL Ecore model.</li>
@@ -139,6 +145,11 @@ public class SarlCompiler extends XtendCompiler {
 
 	@Inject
 	private SARLExpressionHelper sarlExpressionHelper;
+
+	@Inject
+	private ISarlEarlyExitComputer earlyExit;
+
+	private volatile boolean isOnJavaEarlyExit;
 
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	private static String getAnnotationStringValue(JvmAnnotationValue value) {
@@ -557,6 +568,31 @@ public class SarlCompiler extends XtendCompiler {
 		if (exception != null && this.log.isLoggable(Level.FINEST)) {
 			this.log.log(Level.FINEST, Messages.SARLJvmModelInferrer_0, exception);
 		}
+	}
+
+	@Override
+	protected boolean isEarlyExit(XExpression expr) {
+		// This function is redefined in order to take care about the SARL early exit statements
+		// that are not Java early exit statements.
+		// In this case, a Java "return" statement must be applied.
+		if (this.isOnJavaEarlyExit) {
+			this.isOnJavaEarlyExit = false;
+			return this.earlyExit.isEarlyExitInJava(expr);
+		}
+		return this.earlyExit.isEarlyExit(expr);
+	}
+
+	@Override
+	public ITreeAppendable compile(XExpression expr, ITreeAppendable parentAppendable,
+			LightweightTypeReference expectedReturnType, Set<JvmTypeReference> declaredExceptions) {
+		// This function is redefined in order to take care about the SARL early exit statements
+		// that are not Java early exit statements.
+		// In this case, a Java "return" statement must be applied.
+		final boolean isPrimitiveVoidExpected = expectedReturnType.isPrimitiveVoid();
+		if (!isPrimitiveVoidExpected && expr instanceof XBlockExpression) {
+			this.isOnJavaEarlyExit = true;
+		}
+		return super.compile(expr, parentAppendable, expectedReturnType, declaredExceptions);
 	}
 
 }

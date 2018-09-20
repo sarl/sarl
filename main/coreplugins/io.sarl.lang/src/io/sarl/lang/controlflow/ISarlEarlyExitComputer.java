@@ -71,5 +71,17 @@ public interface ISarlEarlyExitComputer extends IEarlyExitComputer {
 	 */
 	boolean isEarlyExitOperation(SarlAction operation);
 
+	/**
+	 * An expression is considered to be left early if all branches end with an explicit
+	 * termination, e.g. a return or throw expression.
+	 * This functions take care only of the Java and Xbase early exit, not the SARL-specific
+	 * early exist expressions.
+	 *
+	 * @param expression the expression to test.
+	 * @return <code>true</code> if the given expression will definitely exit early in Java or Xbase.
+	 * @since 0.8
+	 */
+	boolean isEarlyExitInJava(XExpression expression);
+
 }
 
