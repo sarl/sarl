@@ -659,6 +659,10 @@ Workflow {
     				functionName = "bindIdeSemanticHighlightingCalculator"
     			}
     			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.syntaxcoloring.IHighlightingConfiguration"
+    				to = "io.sarl.lang.ui.highlighting.SARLHighlightingConfiguration"
+   				}
+    			ui = {
     				bind = "org.eclipse.xtext.tasks.ITaskTagProvider"
     				to = "io.sarl.lang.ui.tasks.SarlTaskTagProvider"
     			}
@@ -981,10 +985,6 @@ Workflow {
     			ui = {
     				bind = "org.eclipse.xtext.ui.editor.hover.IEObjectHoverProvider"
     				to = "org.eclipse.xtend.ide.hover.XtendHoverProvider"
-   				}
-    			ui = {
-    				bind = "org.eclipse.xtext.ui.editor.syntaxcoloring.IHighlightingConfiguration"
-    				to = "org.eclipse.xtend.ide.highlighting.XtendHighlightingConfiguration"
    				}
     			ui = {
     				bind = "org.eclipse.xtext.ui.editor.hyperlinking.IHyperlinkHelper"

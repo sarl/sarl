@@ -114,7 +114,6 @@ import io.sarl.lang.typesystem.SARLReentrantTypeResolver;
 import io.sarl.lang.typesystem.SARLTypeComputer;
 import io.sarl.lang.validation.DefaultFeatureCallValidator;
 import io.sarl.lang.validation.IFeatureCallValidator;
-import io.sarl.lang.validation.SARLConfigurableIssueCodesProvider;
 import io.sarl.lang.validation.SARLEarlyExitValidator;
 import io.sarl.lang.validation.SARLFeatureNameValidator;
 import io.sarl.lang.validation.SARLSyntaxErrorMessageProvider;
@@ -139,6 +138,7 @@ import org.eclipse.xtend.core.macro.declaration.IResourceChangeRegistry;
 import org.eclipse.xtend.core.macro.declaration.NopResourceChangeRegistry;
 import org.eclipse.xtend.core.naming.XtendQualifiedNameProvider;
 import org.eclipse.xtend.core.parser.XtendPartialParsingHelper;
+import org.eclipse.xtend.core.parser.antlr.XtendTokenSourceProvider;
 import org.eclipse.xtend.core.resource.XtendLocationInFileProvider;
 import org.eclipse.xtend.core.resource.XtendResourceDescriptionManager;
 import org.eclipse.xtend.core.resource.XtendResourceDescriptionStrategy;
@@ -146,7 +146,6 @@ import org.eclipse.xtend.core.scoping.AnonymousClassConstructorScopes;
 import org.eclipse.xtend.core.typesystem.LocalClassAwareTypeNames;
 import org.eclipse.xtend.core.typesystem.TypeDeclarationAwareBatchTypeResolver;
 import org.eclipse.xtend.core.validation.CachingResourceValidatorImpl;
-import org.eclipse.xtend.core.validation.XtendConfigurableIssueCodes;
 import org.eclipse.xtend.core.validation.XtendImplicitReturnFinder;
 import org.eclipse.xtend.core.xtend.XtendFactory;
 import org.eclipse.xtend.lib.macro.file.MutableFileSystemSupport;
@@ -188,7 +187,9 @@ import org.eclipse.xtext.parser.antlr.Lexer;
 import org.eclipse.xtext.parser.antlr.LexerBindings;
 import org.eclipse.xtext.parser.antlr.LexerProvider;
 import org.eclipse.xtext.parser.antlr.SyntaxErrorMessageProvider;
+import org.eclipse.xtext.parser.antlr.TokenSourceProvider;
 import org.eclipse.xtext.parser.antlr.UnorderedGroupHelper;
+import org.eclipse.xtext.parser.impl.TokenRegionProvider;
 import org.eclipse.xtext.preferences.IPreferenceValuesProvider;
 import org.eclipse.xtext.resource.EObjectAtOffsetHelper;
 import org.eclipse.xtext.resource.IContainer;
@@ -332,11 +333,6 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	@SingletonBinding(eager=true)
 	public Class<? extends SARLValidator> bindSARLValidator() {
 		return SARLValidator.class;
-	}
-	
-	// contributed by org.eclipse.xtext.xtext.generator.validation.ValidatorFragment2
-	public Class<? extends XtendConfigurableIssueCodes> bindXtendConfigurableIssueCodes() {
-		return SARLConfigurableIssueCodesProvider.class;
 	}
 	
 	// contributed by org.eclipse.xtext.xtext.generator.scoping.ImportNamespacesScopingFragment2
@@ -712,6 +708,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
+	public Class<? extends TokenRegionProvider> bindTokenRegionProvider() {
+		return TokenRegionProvider.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
 	public Class<? extends EObjectAtOffsetHelper> bindEObjectAtOffsetHelper() {
 		return XtendEObjectAtOffsetHelper.class;
 	}
@@ -746,6 +747,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
 	public Class<? extends IResourceDescription.Manager> bindIResourceDescription$Manager() {
 		return XtendResourceDescriptionManager.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
+	public Class<? extends TokenSourceProvider> bindTokenSourceProvider() {
+		return XtendTokenSourceProvider.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]

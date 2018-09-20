@@ -56,6 +56,7 @@ import io.sarl.lang.ui.extralanguage.ExtensionPointExtraLanguageContributions;
 import io.sarl.lang.ui.extralanguage.preferences.PreferenceBasedFeatureNameConverterRuleReader;
 import io.sarl.lang.ui.extralanguage.preferences.PreferenceBasedTypeConverterRuleReader;
 import io.sarl.lang.ui.highlighting.SARLHighlightingCalculator;
+import io.sarl.lang.ui.highlighting.SARLHighlightingConfiguration;
 import io.sarl.lang.ui.hover.SARLHoverSerializer;
 import io.sarl.lang.ui.hover.SARLHoverSignatureProvider;
 import io.sarl.lang.ui.hover.SARLHoverUIStrings;
@@ -110,7 +111,6 @@ import org.eclipse.xtend.ide.editor.RichStringAwareToggleCommentAction;
 import org.eclipse.xtend.ide.editor.SingleLineCommentHelper;
 import org.eclipse.xtend.ide.editor.XtendDoubleClickStrategyProvider;
 import org.eclipse.xtend.ide.editor.XtendSourceViewerConfiguration;
-import org.eclipse.xtend.ide.highlighting.XtendHighlightingConfiguration;
 import org.eclipse.xtend.ide.hover.XtendAnnotationHover;
 import org.eclipse.xtend.ide.hover.XtendHoverProvider;
 import org.eclipse.xtend.ide.hover.XtendHoverSerializer;
@@ -685,6 +685,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends IHighlightingConfiguration> bindIHighlightingConfiguration() {
+		return SARLHighlightingConfiguration.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends XtendFieldBuilder> bindXtendFieldBuilder() {
 		return SarlFieldBuilder.class;
 	}
@@ -758,11 +763,6 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
 	public Class<? extends IProposalConflictHelper> bindIProposalConflictHelper() {
 		return FlexProposalConflictHelper.class;
-	}
-	
-	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
-	public Class<? extends IHighlightingConfiguration> bindIHighlightingConfiguration() {
-		return XtendHighlightingConfiguration.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]

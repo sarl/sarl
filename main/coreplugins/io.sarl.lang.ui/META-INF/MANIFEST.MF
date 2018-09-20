@@ -53,7 +53,6 @@ Export-Package: io.sarl.lang.ide,
  io.sarl.lang.ui.quickfix.acceptors,
  io.sarl.lang.ui.refactoring.rename,
  io.sarl.lang.ui.tasks,
- io.sarl.lang.ui.validation,
- io.sarl.lang.validation
+ io.sarl.lang.ui.validation
 Import-Package: org.apache.log4j,
  org.eclipse.xtext.ui.codemining;resolution:=optional
