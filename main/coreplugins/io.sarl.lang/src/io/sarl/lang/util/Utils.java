@@ -659,12 +659,13 @@ public final class Utils {
 	 *     {@code 0} if they are strictly equal.
 	 */
 	public static int compareVersions(String v1, String v2) {
-		// FIXME: Remove when the version of Xtext is a stable version
-		final String fixedv1 = v1.replaceFirst("-SNAPSHOT$", ""); //$NON-NLS-1$ //$NON-NLS-2$
-		final String fixedv2 = v2.replaceFirst("-SNAPSHOT$", ""); //$NON-NLS-1$ //$NON-NLS-2$
-		//
-		final Version vobject1 = Version.parseVersion(fixedv1);
-		final Version vobject2 = Version.parseVersion(fixedv2);
+		// Remove the SNAPSHOT version.
+		//final String fixedv1 = v1.replaceFirst("-SNAPSHOT$", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		//final String fixedv2 = v2.replaceFirst("-SNAPSHOT$", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		//final Version vobject1 = Version.parseVersion(fixedv1);
+		//final Version vobject2 = Version.parseVersion(fixedv2);
+		final Version vobject1 = Version.parseVersion(v1);
+		final Version vobject2 = Version.parseVersion(v2);
 		return vobject1.compareTo(vobject2);
 	}
 
