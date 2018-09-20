@@ -337,21 +337,21 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 
 	@Override
 	@Pure
-	@Inline(value = "($1 != null && $0.isMe($1.getUUID()))")
+	@Inline(value = "($1 != null && $0getID().equals($1.getUUID())", constantExpression = true)
 	protected boolean isMe(Address address) {
 		return address != null && isMe(address.getUUID());
 	}
 
 	@Override
 	@Pure
-	@Inline(value = "($1 != null && $0.getID().equals($1))")
+	@Inline(value = "getID().equals($1)")
 	protected boolean isMe(UUID uID) {
 		return uID != null && getID().equals(uID);
 	}
 
 	@Override
 	@Pure
-	@Inline(value = "($1 != null && $0.isMe($1.getSource()))")
+	@Inline(value = "($1 != null && $0getID().equals($1.getSource().getUUID())", constantExpression = true)
 	protected boolean isFromMe(Event event) {
 		return event != null && isMe(event.getSource());
 	}
