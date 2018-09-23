@@ -25,6 +25,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
@@ -131,10 +132,14 @@ public class BehaviorsSkillTest extends AbstractJanusTest {
 		ArgumentCaptor<Behavior> argument1 = ArgumentCaptor.forClass(Behavior.class);
 		ArgumentCaptor<Boolean> argument2 = ArgumentCaptor.forClass(Boolean.class);
 		ArgumentCaptor<Function1<? super Event, ? extends Boolean>> argument3 = ArgumentCaptor.forClass(Function1.class);
-		Mockito.verify(this.busCapacity).registerEventListener(argument1.capture(), argument2.capture(), argument3.capture());
+		ArgumentCaptor<Object> argument4 = ArgumentCaptor.forClass(Object[].class);
+		Mockito.verify(this.busCapacity).registerEventListener(argument1.capture(), argument2.capture(), argument3.capture(), argument4.capture());
 		assertSame(b, argument1.getValue());
 		assertTrue(argument2.getValue());
 		assertNull(argument3.getValue());
+		final List<Object> values = argument4.getAllValues();
+		assertNotNull(values);
+		assertTrue(values.isEmpty());
 	}
 
 	@Test
@@ -145,10 +150,56 @@ public class BehaviorsSkillTest extends AbstractJanusTest {
 		ArgumentCaptor<Behavior> argument1 = ArgumentCaptor.forClass(Behavior.class);
 		ArgumentCaptor<Boolean> argument2 = ArgumentCaptor.forClass(Boolean.class);
 		ArgumentCaptor<Function1<? super Event, ? extends Boolean>> argument3 = ArgumentCaptor.forClass(Function1.class);
-		Mockito.verify(this.busCapacity).registerEventListener(argument1.capture(), argument2.capture(), argument3.capture());
+		ArgumentCaptor<Object> argument4 = ArgumentCaptor.forClass(Object.class);
+		Mockito.verify(this.busCapacity).registerEventListener(argument1.capture(), argument2.capture(), argument3.capture(), argument4.capture());
 		assertSame(b, argument1.getValue());
 		assertTrue(argument2.getValue());
 		assertNull(argument3.getValue());
+		final List<Object> values = argument4.getAllValues();
+		assertNotNull(values);
+		final Object[] valuesTab = new Object[values.size()];
+		values.toArray(valuesTab);
+		assertArrayEquals(new Object[] {null}, valuesTab);
+	}
+
+	@Test
+	public void registerBehavior_null_null() {
+		Behavior b = new TestBehavior(this.agent);
+		b = spy(b);
+		assertSame(b, this.skill.registerBehavior(b, null, null));
+		ArgumentCaptor<Behavior> argument1 = ArgumentCaptor.forClass(Behavior.class);
+		ArgumentCaptor<Boolean> argument2 = ArgumentCaptor.forClass(Boolean.class);
+		ArgumentCaptor<Function1<? super Event, ? extends Boolean>> argument3 = ArgumentCaptor.forClass(Function1.class);
+		ArgumentCaptor<Object> argument4 = ArgumentCaptor.forClass(Object.class);
+		Mockito.verify(this.busCapacity).registerEventListener(argument1.capture(), argument2.capture(), argument3.capture(), argument4.capture());
+		assertSame(b, argument1.getValue());
+		assertTrue(argument2.getValue());
+		assertNull(argument3.getValue());
+		final List<Object> values = argument4.getAllValues();
+		assertNotNull(values);
+		final Object[] valuesTab = new Object[values.size()];
+		values.toArray(valuesTab);
+		assertArrayEquals(new Object[] {null}, valuesTab);
+	}
+
+	@Test
+	public void registerBehavior_initParameters() {
+		Behavior b = new TestBehavior(this.agent);
+		b = spy(b);
+		assertSame(b, this.skill.registerBehavior(b, "1", 2, '3'));
+		ArgumentCaptor<Behavior> argument1 = ArgumentCaptor.forClass(Behavior.class);
+		ArgumentCaptor<Boolean> argument2 = ArgumentCaptor.forClass(Boolean.class);
+		ArgumentCaptor<Function1<? super Event, ? extends Boolean>> argument3 = ArgumentCaptor.forClass(Function1.class);
+		ArgumentCaptor<Object> argument4 = ArgumentCaptor.forClass(Object.class);
+		Mockito.verify(this.busCapacity).registerEventListener(argument1.capture(), argument2.capture(), argument3.capture(), argument4.capture());
+		assertSame(b, argument1.getValue());
+		assertTrue(argument2.getValue());
+		assertNull(argument3.getValue());
+		final List<Object> values = argument4.getAllValues();
+		assertNotNull(values);
+		final Object[] valuesTab = new Object[values.size()];
+		values.toArray(valuesTab);
+		assertArrayEquals(new Object[] {"1", 2, '3'}, valuesTab);
 	}
 
 	@Test
@@ -160,10 +211,14 @@ public class BehaviorsSkillTest extends AbstractJanusTest {
 		ArgumentCaptor<Behavior> argument1 = ArgumentCaptor.forClass(Behavior.class);
 		ArgumentCaptor<Boolean> argument2 = ArgumentCaptor.forClass(Boolean.class);
 		ArgumentCaptor<Function1<? super Event, ? extends Boolean>> argument3 = ArgumentCaptor.forClass(Function1.class);
-		Mockito.verify(this.busCapacity).registerEventListener(argument1.capture(), argument2.capture(), argument3.capture());
+		ArgumentCaptor<Object> argument4 = ArgumentCaptor.forClass(Object[].class);
+		Mockito.verify(this.busCapacity).registerEventListener(argument1.capture(), argument2.capture(), argument3.capture(), argument4.capture());
 		assertSame(b, argument1.getValue());
 		assertTrue(argument2.getValue());
 		assertSame(filter, argument3.getValue());
+		final List<Object> values = argument4.getAllValues();
+		assertNotNull(values);
+		assertTrue(values.isEmpty());
 	}
 
 	@Test
@@ -175,10 +230,14 @@ public class BehaviorsSkillTest extends AbstractJanusTest {
 		ArgumentCaptor<Behavior> argument1 = ArgumentCaptor.forClass(Behavior.class);
 		ArgumentCaptor<Boolean> argument2 = ArgumentCaptor.forClass(Boolean.class);
 		ArgumentCaptor<Function1<? super Event, ? extends Boolean>> argument3 = ArgumentCaptor.forClass(Function1.class);
-		Mockito.verify(this.busCapacity).registerEventListener(argument1.capture(), argument2.capture(), argument3.capture());
+		ArgumentCaptor<Object> argument4 = ArgumentCaptor.forClass(Object[].class);
+		Mockito.verify(this.busCapacity).registerEventListener(argument1.capture(), argument2.capture(), argument3.capture(), argument4.capture());
 		assertSame(b, argument1.getValue());
 		assertTrue(argument2.getValue());
 		assertSame(filter, argument3.getValue());
+		final List<Object> values = argument4.getAllValues();
+		assertNotNull(values);
+		assertTrue(values.isEmpty());
 	}
 
 	@Test

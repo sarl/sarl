@@ -20,6 +20,7 @@
  */
 package io.sarl.core.tests;
 
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -61,7 +62,7 @@ public class BehaviorsTest extends AbstractSarlCoreTest<Capacity> {
 
 	@Test
 	public void registerBehavior() {
-		assertMethod("registerBehavior", Behavior.class, Behavior.class); //$NON-NLS-1$
+		assertMethod("registerBehavior", Behavior.class, Behavior.class, Function1.class, Object[].class); //$NON-NLS-1$
 	}
 
 	@Test

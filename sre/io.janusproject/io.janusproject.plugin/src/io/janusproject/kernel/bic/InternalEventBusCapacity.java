@@ -56,7 +56,7 @@ public interface InternalEventBusCapacity extends Capacity {
 	 * Register the given object on the event bus for receiving any event.
 	 *
 	 * @param listener the listener on the SARL events.
-	 * @deprecated see {@link #registerEventListener(Object, boolean, Function1)}.
+	 * @deprecated see {@link #registerEventListener(Object, boolean, Function1, Object[])}.
 	 */
 	@Deprecated
 	void registerEventListener(Object listener);
@@ -71,9 +71,12 @@ public interface InternalEventBusCapacity extends Capacity {
 	 * @param listener the listener on the SARL events.
 	 * @param fireInitializeEvent indicates if the {@code Initialize} event should be fired to the listener if the agent is alive.
 	 * @param filter the filter function.
-	 * @since 0.5
+	 * @param initializationParameters the parameters to pass to the behavior for its initialization.
+	 * @since 0.8
 	 */
-	void registerEventListener(Object listener, boolean fireInitializeEvent, Function1<? super Event, ? extends Boolean> filter);
+	void registerEventListener(Object listener, boolean fireInitializeEvent,
+			Function1<? super Event, ? extends Boolean> filter,
+			Object... initializationParameters);
 
 	/**
 	 * Unregister the given object on the event bus for receiving any event.
@@ -249,10 +252,11 @@ public interface InternalEventBusCapacity extends Capacity {
 
 		@Override
 		public void registerEventListener(Object listener, boolean fireInitializeEvent,
-				Function1<? super Event, ? extends Boolean> filter) {
+				Function1<? super Event, ? extends Boolean> filter,
+				Object... initializationParameters) {
 			try {
 				ensureCallerInLocalThread();
-				this.capacity.registerEventListener(listener, fireInitializeEvent, filter);
+				this.capacity.registerEventListener(listener, fireInitializeEvent, filter, initializationParameters);
 			} finally {
 				resetCallerInLocalThread();
 			}

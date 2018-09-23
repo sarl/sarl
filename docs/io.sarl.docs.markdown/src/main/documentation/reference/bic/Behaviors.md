@@ -16,9 +16,9 @@ Please read the [Behavior Reference](../Behavior.md) for details.
 		<!--- Test that all the documented functions are defined in the capacity, and no function is missed to be
 		      documented --> 
 		[:Fact:]{typeof(io.sarl.core.[:behaviors!]).shouldHaveMethods(
-			"[:registerbehavior](registerBehavior)(io.sarl.lang.core.Behavior) : io.sarl.lang.core.Behavior",
+			"[:registerbehavior](registerBehavior)(io.sarl.lang.core.Behavior, org.eclipse.xtext.xbase.lib.Functions$Function1, java.lang.Object[]) : io.sarl.lang.core.Behavior",
+			"[:registerbehavior](registerBehavior)(io.sarl.lang.core.Behavior, java.lang.Object[]) : io.sarl.lang.core.Behavior",
 			"[:unregisterbehavior](unregisterBehavior)(io.sarl.lang.core.Behavior) : io.sarl.lang.core.Behavior",
-			"registerBehavior(io.sarl.lang.core.Behavior, org.eclipse.xtext.xbase.lib.Functions$Function1) : io.sarl.lang.core.Behavior",
 			"[:wake](wake)(io.sarl.lang.core.Event, io.sarl.lang.core.Scope)",
 			"wake(io.sarl.lang.core.Event)",
 			"[:aseventlistener](asEventListener) : io.sarl.lang.core.EventListener",

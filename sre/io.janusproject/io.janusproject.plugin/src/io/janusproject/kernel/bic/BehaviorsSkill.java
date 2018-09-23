@@ -126,13 +126,9 @@ public class BehaviorsSkill extends BuiltinSkill implements Behaviors {
 	}
 
 	@Override
-	public synchronized Behavior registerBehavior(Behavior attitude) {
-		return registerBehavior(attitude, null);
-	}
-
-	@Override
-	public Behavior registerBehavior(Behavior attitude, Function1<? super Event, ? extends Boolean> filter) {
-		getInternalEventBusCapacitySkill().registerEventListener(attitude, true, filter);
+	public Behavior registerBehavior(Behavior attitude, Function1<? super Event, ? extends Boolean> filter,
+			Object... initializationParameters) {
+		getInternalEventBusCapacitySkill().registerEventListener(attitude, true, filter, initializationParameters);
 		return attitude;
 	}
 

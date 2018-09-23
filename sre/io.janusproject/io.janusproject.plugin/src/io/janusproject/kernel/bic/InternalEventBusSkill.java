@@ -174,7 +174,7 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 
 	/**
 	 * {@inheritDoc}
-	 * @deprecated see {@link #registerEventListener(Object, boolean, Function1)}.
+	 * @deprecated see {@link #registerEventListener(Object, boolean, Function1, Object[])}.
 	 */
 	@Override
 	@Deprecated
@@ -183,12 +183,14 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 	}
 
 	@Override
-	public void registerEventListener(Object listener, boolean fireInitializeEvent, Function1<? super Event, ? extends Boolean> filter) {
+	public void registerEventListener(Object listener, boolean fireInitializeEvent,
+			Function1<? super Event, ? extends Boolean> filter,
+			Object... initiallizationParameters) {
 		if (fireInitializeEvent) {
 			final OwnerState state = getOwnerState();
 			if (state == OwnerState.INITIALIZING || state == OwnerState.ALIVE) {
 				this.eventDispatcher.register(listener, filter, subscriber -> {
-					final Initialize event = new Initialize(getOwner().getID());
+					final Initialize event = new Initialize(getOwner().getID(), initiallizationParameters);
 					event.setSource(getInnerDefaultSpaceAddress());
 					this.eventDispatcher.immediateDispatchTo(subscriber, event);
 				});

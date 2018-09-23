@@ -311,10 +311,11 @@ capacity Behaviors {
 	 *
 	 * @param attitude the behavior to add to the agent.
 	 * @param filter the filter that enables to indicates if an event is accepted by a behavior.
+	 * @param initializationParameters the set of parameters to pass to the behavior within the {@code Initialize} event.
 	 * @return the given behavior.
 	 * @since 0.5 for the {@code filter} parameter.
 	 */
-	def registerBehavior(attitude : Behavior, filter : (Event) => boolean = null) : Behavior
+	def registerBehavior(attitude : Behavior, filter : (Event) => boolean = null, initializationParameters : Object*) : Behavior
 	
 	/**
 	 * Unregisters a behavior for the owner agent.
