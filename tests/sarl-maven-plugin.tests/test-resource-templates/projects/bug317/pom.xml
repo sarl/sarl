@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.sarl.demos</groupId>
     <artifactId>harms-demo</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
 
     <name>HARMS Demo of the SARL Agent Oriented Programming Language</name>
 

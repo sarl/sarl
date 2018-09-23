@@ -2,7 +2,7 @@
 <feature
       id="io.sarl.lib"
       label="Running Libraries for SARL"
-      version="0.8.0.qualifier"
+      version="0.8.0"
       plugin="io.sarl.lang.core">
 
    <description url="http://www.sarl.io/about/">

@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>io.sarl.docs</artifactId>
 		<groupId>io.sarl</groupId>
-		<version>0.8.0-SNAPSHOT</version>
+		<version>0.8.0</version>
 	</parent>
 
 	<groupId>io.sarl.docs</groupId>
@@ -136,14 +136,14 @@
 						<sarl.specification.release_version>0.0</sarl.specification.release_version>
 						<sarl.release_version>0.0.0</sarl.release_version>
 						<sarl.release_version.osgi>0.0.0.qualifier</sarl.release_version.osgi>
-						<sarl.release_version.maven>0.0.0-SNAPSHOT</sarl.release_version.maven>
+						<sarl.release_version.maven>0.0.0</sarl.release_version.maven>
 						<sarl.specification.release_date>0000-00-00</sarl.specification.release_date>
 						<sarl.specification.release_status>Draft Release</sarl.specification.release_status>
 						<sarl.is_stable_version>false</sarl.is_stable_version>
-						<janus.version>0.0.0-SNAPSHOT</janus.version>
+						<janus.version>0.0.0</janus.version>
 						<janus.release_version>0.0.0.0</janus.release_version>
-						<janus.version2>0.0.0.0-SNAPSHOT</janus.version2>
-						<mavencompiler.version>0.0.0.0-SNAPSHOT</mavencompiler.version>
+						<janus.version2>0.0.0.0</janus.version2>
+						<mavencompiler.version>0.0.0.0</mavencompiler.version>
  					</propertyDefaultValues>
 				</configuration>
 			</plugin>
