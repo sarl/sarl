@@ -106,6 +106,59 @@ A lambda expression with zero arguments is written with a bar after the opening 
 		[:End:]
 
 
+## Short notation of a Lambda Expression
+
+When the lamda expression is passed to a single-parameter function, the brackets that are enclosing the lambda
+declaration could be missed. It specific syntax is called the short notation of a lambda expression. 
+
+Consider the following definition of a function with lambda expression as a single parameter:
+
+		[:Success:]
+			package io.sarl.docs.reference.gsr
+			agent A {
+				[:On]
+				def aFunction(aParameter : (Object) => Object) {
+				}
+				[:Off]
+			}
+		[:End:]
+
+
+The call to the previously defined function with the short notation is:
+
+		[:Success:]
+			package io.sarl.docs.reference.gsr
+			agent A {
+				def aFunction(aParameter : (Object) => Object) {
+				}
+				def caller {
+					[:On]
+					aFunction(a | new Object)
+					[:Off]
+				}
+			}
+		[:End:]
+
+
+This call is equivalent to the following one, with the standard notation:
+
+		[:Success:]
+			package io.sarl.docs.reference.gsr
+			agent A {
+				def aFunction(aParameter : (Object) => Object) {
+				}
+				def caller {
+					[:On]
+					aFunction([a | new Object])
+					[:Off]
+				}
+			}
+		[:End:]
+
+
+As for the standard notation, the parameter and the bar could be missed when their is no formal parameter.
+
+
 ## Lambda as the Last Parameter of a Method
 
 When the last argument of a method call is a lambda, it can be passed right after the argument list.
