@@ -115,6 +115,56 @@ It is possible to declare methods in the Skill in addition to those specified by
 		[:End:]
 
 
+### Initialization of a skill
+
+Several elements of the skill can be used only after the skill is attached to its owning agent.
+For example, the value returned by the function [:getownerfct:] is not `null` only when the skill is
+attached to an agent, i.e. its owner. 
+
+In order to enable the developer to write a code that is run when the skill is attached, the function
+[:installfct:] could be defined and implemented. The code below provides an example in which the value
+returned by [:getownerfct:] is checked.
+
+		[:Success:]
+			package io.sarl.docs.reference.sr
+			import java.util.logging.Logger
+			capacity Logging {
+				def info(text : String)
+			}
+			skill StandardJavaLogging implements Logging {
+				def info(text : String) {}
+			[:On]
+				def [:installfct](install) {
+					// Initialization of the skill
+					assert [:getownerfct](getOwner) !== null
+				}
+			[:Off]
+			}
+		[:End:]
+
+
+### Uninitialization of a skill
+
+In a similar way as [:installfct:], it is possible to execute a code when the skill is detached from it owning agent.
+For this purpose, the [:uninstallfct:] function should be defined, as illustrated below: 
+
+		[:Success:]
+			package io.sarl.docs.reference.sr
+			import java.util.logging.Logger
+			capacity Logging {
+				def info(text : String)
+			}
+			skill StandardJavaLogging implements Logging {
+				def info(text : String) {}
+			[:On]
+				def [:uninstallfct](uninstall) {
+					// Do uninstallation statements
+				}
+			[:Off]
+			}
+		[:End:]
+
+
 ### Constructor Definition
 
 It is not necessary to specify a constructor for Skills unless a value will be initialized.
