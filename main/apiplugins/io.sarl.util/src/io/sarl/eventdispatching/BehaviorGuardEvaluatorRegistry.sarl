@@ -580,7 +580,8 @@ class BehaviorGuardEvaluatorRegistry {
 	 * Gets an iterator representing an immutable snapshot of all BehaviorGuardEvaluators of the given listener
 	 * to the given event at the time this method is called.
 	 *
-	 * <p>Caution: This function does not apply filtering function given to {@link #register(Object, Function1, Procedure1)}.
+	 * <p>Caution: This function does not apply filtering function given to
+	 * {@link #register(Object, Function1, Procedure1)}.
 	 *
 	 * @param event -the event to process
 	 * @param listener the owner of the BehaviorGuardEvaluators (never {@code null}).

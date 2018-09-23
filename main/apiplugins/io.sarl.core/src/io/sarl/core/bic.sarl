@@ -330,7 +330,9 @@ capacity Behaviors {
 	 *
 	 * <p>Note that the scope parameter could be used only for filtering the agents (the current receiving agent)
 	 * in order to determine the ones that will receive the event.
-	 * The behaviors of the current agent (registered with {@link #registerBehavior(Behavior)} will always
+	 * The behaviors of the current agent (registered with
+	 * {@link #registerBehavior(Behavior, Function1, Object[])}
+	 * will always
 	 * receive the event if the current agent is not discarded. Because the behaviors have no associated address,
 	 * they cannot be filtered individually.
 	 *
