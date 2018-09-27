@@ -243,6 +243,7 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 			} finally {
 				setOwnerState(OwnerState.ALIVE);
 			}
+			this.agentAsEventListener.fireEnqueuedEvents(this);
 		} catch (Exception e) {
 			// Log the exception
 			final Logging loggingCapacity = getLoggingSkill();
@@ -396,7 +397,7 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 		}
 
 		@SuppressWarnings("synthetic-access")
-		private void fireEnqueuedEvents(InternalEventBusSkill skill) {
+		void fireEnqueuedEvents(InternalEventBusSkill skill) {
 			final Queue<Event> queue = this.buffer;
 			if (queue != null && !queue.isEmpty()) {
 				this.buffer = null;

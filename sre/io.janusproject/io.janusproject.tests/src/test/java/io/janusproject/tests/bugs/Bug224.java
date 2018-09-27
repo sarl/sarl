@@ -143,7 +143,7 @@ public class Bug224 extends AbstractJanusRunTest {
 	@SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
 	public static class RegisteredInInitializeAgent extends TestingAgent {
 
-		public MyBehavior behavior = new MyBehavior(this);
+		public MyBehavior behavior;
 
 
 		public RegisteredInInitializeAgent(BuiltinCapacitiesProvider provider, UUID parentID, UUID agentID) {
@@ -153,6 +153,7 @@ public class Bug224 extends AbstractJanusRunTest {
 		@Override
 		protected boolean runAgentTest() {
 			addResult(this);
+			this.behavior = new MyBehavior(this);
 			getSkill(Behaviors.class).registerBehavior(this.behavior);
 			getSkill(Schedules.class).in(TIMEOUT, (agent) -> 
 				getSkill(Lifecycle.class).killMe());
@@ -164,7 +165,7 @@ public class Bug224 extends AbstractJanusRunTest {
 	@SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
 	public static class RegisteredInHandlerAgent extends TestingAgent {
 
-		public MyBehavior behavior = new MyBehavior(this);
+		public MyBehavior behavior;
 
 		public RegisteredInHandlerAgent(BuiltinCapacitiesProvider provider, UUID parentID, UUID agentID) {
 			super(provider, parentID, agentID);
@@ -173,6 +174,7 @@ public class Bug224 extends AbstractJanusRunTest {
 		@Override
 		protected boolean runAgentTest() {
 			addResult(this);
+			this.behavior = new MyBehavior(this);
 			getSkill(DefaultContextInteractions.class).emit(new MyEvent());
 			getSkill(Schedules.class).in(TIMEOUT, (agent) -> getSkill(Lifecycle.class).killMe());
 			return false;
@@ -192,7 +194,7 @@ public class Bug224 extends AbstractJanusRunTest {
 	@SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
 	public static class RegisteredInDestroyAgent extends TestingAgent {
 
-		public MyBehavior behavior = new MyBehavior(this);
+		public MyBehavior behavior;
 
 		public RegisteredInDestroyAgent(BuiltinCapacitiesProvider provider, UUID parentID, UUID agentID) {
 			super(provider, parentID, agentID);
@@ -201,6 +203,7 @@ public class Bug224 extends AbstractJanusRunTest {
 		@Override
 		protected boolean runAgentTest() {
 			addResult(this);
+			this.behavior = new MyBehavior(this);
 			return true;
 		}
 
@@ -218,7 +221,7 @@ public class Bug224 extends AbstractJanusRunTest {
 	@SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
 	public static class UnregisteredInInitializeAgent extends TestingAgent {
 
-		public MyBehavior behavior = new MyBehavior(this);
+		public MyBehavior behavior;
 
 
 		public UnregisteredInInitializeAgent(BuiltinCapacitiesProvider provider, UUID parentID, UUID agentID) {
@@ -228,6 +231,7 @@ public class Bug224 extends AbstractJanusRunTest {
 		@Override
 		protected boolean runAgentTest() {
 			addResult(this);
+			this.behavior = new MyBehavior(this);
 			getSkill(Behaviors.class).registerBehavior(this.behavior);
 			getSkill(Behaviors.class).unregisterBehavior(this.behavior);
 			getSkill(Schedules.class).in(TIMEOUT, (agent) -> getSkill(Lifecycle.class).killMe());
@@ -239,7 +243,7 @@ public class Bug224 extends AbstractJanusRunTest {
 	@SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
 	public static class UnregisteredInHandlerAgent extends TestingAgent {
 
-		public MyBehavior behavior = new MyBehavior(this);
+		public MyBehavior behavior;
 
 		public UnregisteredInHandlerAgent(BuiltinCapacitiesProvider provider, UUID parentID, UUID agentID) {
 			super(provider, parentID, agentID);
@@ -248,6 +252,7 @@ public class Bug224 extends AbstractJanusRunTest {
 		@Override
 		protected boolean runAgentTest() {
 			addResult(this);
+			this.behavior = new MyBehavior(this);
 			getSkill(Behaviors.class).registerBehavior(this.behavior);
 			getSkill(DefaultContextInteractions.class).emit(new MyEvent());
 			getSkill(Schedules.class).in(TIMEOUT, (agent) -> getSkill(Lifecycle.class).killMe());
@@ -268,7 +273,7 @@ public class Bug224 extends AbstractJanusRunTest {
 	@SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
 	public static class UnregisteredInDestroyAgent extends TestingAgent {
 
-		public MyBehavior behavior = new MyBehavior(this);
+		public MyBehavior behavior;
 
 		public UnregisteredInDestroyAgent(BuiltinCapacitiesProvider provider, UUID parentID, UUID agentID) {
 			super(provider, parentID, agentID);
@@ -277,6 +282,7 @@ public class Bug224 extends AbstractJanusRunTest {
 		@Override
 		protected boolean runAgentTest() {
 			addResult(this);
+			this.behavior = new MyBehavior(this);
 			return true;
 		}
 

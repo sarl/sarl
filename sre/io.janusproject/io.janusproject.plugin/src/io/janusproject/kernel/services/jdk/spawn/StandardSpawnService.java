@@ -655,8 +655,10 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 			assert this.constructor1 != null || this.constructor2 != null;
 			try {
 				if (this.constructor1 != null) {
+					this.constructor1.setAccessible(true);
 					return this.constructor1.newInstance(this.parentID, agId);
 				}
+				this.constructor2.setAccessible(true);
 				return this.constructor2.newInstance(null, this.parentID, agId);
 			} catch (InstantiationException | IllegalAccessException | InvocationTargetException exception) {
 				throw new CannotSpawnException(this.agentType, exception);
