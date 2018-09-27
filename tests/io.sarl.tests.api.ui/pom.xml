@@ -10,6 +10,5 @@
 
 	<artifactId>io.sarl.tests.api.ui</artifactId>
 	<name>API for UI Tests</name>
-	<packaging>eclipse-plugin</packaging>
 
 </project>

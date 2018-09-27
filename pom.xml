@@ -45,12 +45,12 @@
 		<!-- Guice after 4.1.0 depends on Guava with too high version. Xbase requires 
 			up to 19.0. New guice requires 23.0. -->
 		<guice.version>4.1.0</guice.version>
-		<!-- Version of the OSGi module that provides the NLS (package: osgi) -->
+		<!-- Version of the cat mv	OSGi module that provides the NLS (package: osgi) -->
 		<osgi.nls.version>3.10.0-v20140606-1445</osgi.nls.version>
 		<!-- Version of the Arakhne Foundation classes -->
 		<afc.version>15.0</afc.version>
 		<!-- Version of the Guava API -->
-		<guava.version>18.0</guava.version>
+		<guava.version>20.0</guava.version>
 		<!-- Version of the javax.inject module -->
 		<javaxinject.version>1</javaxinject.version>
 		<!-- Version of the Tycho module, (search for tycho-maven-plugin on Maven 
@@ -74,7 +74,7 @@
 		<jre.environment>JavaSE-1.8</jre.environment>
 		<!-- Maven API version. This version should be supported by m2e. Search 
 			for maven-core on central. -->
-		<maven.api.version>3.5.3</maven.api.version>
+		<maven.api.version>3.5.4</maven.api.version>
 		<!-- Version of the Maven Java compiler.
 		     Version 3.7.0 depends on a library that is compiled with Java 9! -->
 		<mavencompiler.version>3.6.2</mavencompiler.version>
@@ -167,7 +167,7 @@
 			</roles>
 		</contributor>
 		<contributor>
-			<name>J&eacute;r&ocirc;me Boulmier</name>
+			<name>J&amp;eacute;r&amp;ocirc;me Boulmier</name>
 			<url>https://github.com/Lomadriel/</url>
 			<roles>
 				<role>Game of Life example</role>
@@ -414,8 +414,6 @@
 			<dependency>
 				<groupId>com.google.inject</groupId>
 				<artifactId>guice</artifactId>
-				<!-- Guice after 4.1.0 depends on Guava with too high version. Xbase 
-					requires up to 19.0. New guice requires 23.0. -->
 				<version>${guice.version}</version>
 			</dependency>
 			<dependency>
@@ -456,7 +454,7 @@
 			<dependency>
 				<groupId>org.javassist</groupId>
 				<artifactId>javassist</artifactId>
-				<version>3.23.0-GA</version>
+				<version>3.23.1-GA</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven.plugin-tools</groupId>
@@ -507,12 +505,12 @@
 			<dependency>
 				<groupId>org.mockito</groupId>
 				<artifactId>mockito-core</artifactId>
-				<version>2.19.0</version>
+				<version>2.22.0</version>
 			</dependency>
 			<dependency>
 				<groupId>com.vladsch.flexmark</groupId>
 				<artifactId>flexmark</artifactId>
-				<version>0.34.2</version>
+				<version>0.34.32</version>
 			</dependency>
 			<dependency>
 				<groupId>org.jsoup</groupId>
@@ -522,7 +520,7 @@
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
-				<version>3.7</version>
+				<version>3.8.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven.shared</groupId>
@@ -562,7 +560,7 @@
 			<dependency>
 				<groupId>me.tongfei</groupId>
 				<artifactId>progressbar</artifactId>
-				<version>0.7.0</version>
+				<version>0.7.1</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -602,8 +600,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<!-- Version 3.7.0 depends on a library that is compiled with Java 9! -->
-					<version>3.6.2</version>
+					<version>${mavencompiler.version}</version>
 					<configuration>
 						<source>${compiler.level}</source>
 						<target>${compiler.level}</target>
@@ -643,7 +640,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
-					<version>3.0.2</version>
+					<version>3.1.0</version>
 				</plugin>
 
 				<plugin>
@@ -724,7 +721,7 @@
 				<plugin>
 					<groupId>com.akathist.maven.plugins.launch4j</groupId>
 					<artifactId>launch4j-maven-plugin</artifactId>
-					<version>1.7.22</version>
+					<version>1.7.23</version>
 				</plugin>
 
 				<plugin>
@@ -762,7 +759,7 @@
 							<groupId>com.puppycrawl.tools</groupId>
 							<artifactId>checkstyle</artifactId>
 							<!-- Same version as inside Eclipse IDE -->
-							<version>8.10</version>
+							<version>8.12</version>
 						</dependency>
 					</dependencies>
 				</plugin>
@@ -1184,7 +1181,7 @@
 				<module>sre</module>
 				<!-- Developer contributions -->
 				<module>contribs</module>
-				<!-- Products aand update site -->
+				<!-- Products and update site -->
 				<module>products</module>
 				<!-- Documentation -->
 				<module>docs</module>

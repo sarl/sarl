@@ -31,6 +31,16 @@
 			<artifactId>io.sarl.maven.batchcompiler</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- The following dependency is included in order to be sure that correct version is used
+		     due to a conflict between the base libs for SARL and maven-core -->
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

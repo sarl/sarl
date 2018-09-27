@@ -223,11 +223,11 @@
 
    <requires>
       <import plugin="io.sarl.lang.core" version="0.9.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.osgi" version="3.13.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.xbase.lib" version="2.15.0" match="greaterOrEqual"/>
       <import plugin="javax.inject" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.util" version="0.9.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.core" version="0.9.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.xbase.lib" version="2.15.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.osgi" version="3.13.100" match="greaterOrEqual"/>
    </requires>
 
    <plugin
@@ -255,7 +255,7 @@
          id="com.google.guava"
          download-size="0"
          install-size="0"
-         version="18.0.0"
+         version="20.0.0"
          unpack="false"/>
 
    <plugin

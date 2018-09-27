@@ -10,14 +10,13 @@
     <properties>
         <compiler.level>1.8</compiler.level>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <janus.version>2.0.9.0-SNAPSHOT</janus.version>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>io.janusproject</groupId>
-            <artifactId>io.janusproject.kernel</artifactId>
-            <version>${janus.version}</version>
+			<groupId>io.sarl.maven</groupId>
+			<artifactId>io.sarl.maven.sdk</artifactId>
+			<version>0.9.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

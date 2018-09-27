@@ -10,7 +10,6 @@
 
 	<groupId>io.sarl.lang</groupId>
 	<artifactId>io.sarl.lang.ui.tests</artifactId>
-	<packaging>eclipse-test-plugin</packaging>
 
 	<name>Language UI Library Tests</name>
 

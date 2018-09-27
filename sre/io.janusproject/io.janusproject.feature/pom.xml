@@ -18,12 +18,14 @@
 				<artifactId>tycho-source-feature-plugin</artifactId>
 				<configuration>
 					<excludes>
+						<plugin id="aopalliance"/>
 						<plugin id="org.apache.commons.cli"/>
 						<plugin id="org.arakhne.afc.core.util"/>
 						<plugin id="org.arakhne.afc.core.vmutils"/>
-						<plugin id="com.google.code.gson"/>
+						<plugin id="com.google.gson"/>
 						<plugin id="com.google.guava"/>
 						<plugin id="com.google.inject"/>
+						<plugin id="com.google.inject.multibindings"/>
 						<plugin id="com.hazelcast"/>
 						<plugin id="org.zeromq.jeromq"/>
 					</excludes>

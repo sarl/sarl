@@ -218,7 +218,7 @@ public final class Bug526 extends AbstractSarlMavenTest {
 				"		<dependency>",
 				"			<groupId>com.google.guava</groupId>",
 				"			<artifactId>guava</artifactId>",
-				"			<version>18.0</version>",
+				"			<version>20.0</version>",
 				"		</dependency>",
 				"	</dependencies>",
 				"</dependencyManagement>",
