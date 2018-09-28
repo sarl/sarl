@@ -23,7 +23,6 @@ package io.janusproject.kernel.space;
 
 import java.text.MessageFormat;
 import java.util.UUID;
-import java.util.stream.StreamSupport;
 
 import com.google.inject.Inject;
 
@@ -172,11 +171,12 @@ public abstract class AbstractEventSpace extends SpaceBase {
 		final UniqueAddressParticipantRepository<Address> particips = getParticipantInternalDataStructure();
 		final SynchronizedCollection<EventListener> listeners = particips.getListeners();
 		synchronized (listeners.mutex()) {
-			StreamSupport.stream(listeners.spliterator(), true)
-				.filter(agent -> scope.matches(getAddress(agent)))
-				.forEach(agent -> {
-					this.executorService.submit(new AsyncRunner(agent, event));
-				});
+			for (final EventListener listener : listeners) {
+				final Address adr = getAddress(listener);
+				if (scope.matches(adr)) {
+					this.executorService.submit(new AsyncRunner(listener, event));
+				}
+			}
 		}
 	}
 
