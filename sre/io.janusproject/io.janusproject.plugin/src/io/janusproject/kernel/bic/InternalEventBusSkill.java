@@ -244,6 +244,9 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 				setOwnerState(OwnerState.ALIVE);
 			}
 			this.agentAsEventListener.fireEnqueuedEvents(this);
+			if (this.agentAsEventListener.isKilled.get()) {
+				this.agentAsEventListener.killOwner(InternalEventBusSkill.this);
+			}
 		} catch (Exception e) {
 			// Log the exception
 			final Logging loggingCapacity = getLoggingSkill();
@@ -344,7 +347,9 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 
 		private final UUID aid;
 
-		private final AtomicBoolean isKilled = new AtomicBoolean(false);
+		/** Indicates if the agent has requested to be killed.
+		 */
+		final AtomicBoolean isKilled = new AtomicBoolean(false);
 
 		@SuppressWarnings("synthetic-access")
 		AgentEventListener() {
@@ -408,7 +413,7 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 		}
 
 		@SuppressWarnings("synthetic-access")
-		private boolean killOwner(InternalEventBusSkill skill) {
+		boolean killOwner(InternalEventBusSkill skill) {
 			return skill.spawnService.killAgent(this.aid);
 		}
 

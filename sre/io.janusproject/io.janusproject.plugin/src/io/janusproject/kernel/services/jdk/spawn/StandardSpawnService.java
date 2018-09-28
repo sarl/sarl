@@ -283,7 +283,8 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 					warningMessage = Messages.StandardSpawnService_7;
 				}
 			} else {
-				warningMessage = Messages.StandardSpawnService_8;
+				this.logger.getKernelLogger().finer(Messages.StandardSpawnService_8);
+				return false;
 			}
 		}
 
