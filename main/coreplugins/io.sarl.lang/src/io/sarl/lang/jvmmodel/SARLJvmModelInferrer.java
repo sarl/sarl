@@ -128,6 +128,7 @@ import org.eclipse.xtext.xbase.typesystem.InferredTypeIndicator;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking;
+import org.eclipse.xtext.xtype.XComputedTypeReference;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.annotation.DefaultValue;
@@ -1808,14 +1809,11 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 									.cloneWithProxies(exception));
 						}
 
-						operation2.setReturnType(cloneWithTypeParametersAndProxies(selectedReturnType, operation2));
-						//operation2.setReturnType(this.typeReferences.createDelegateTypeReference(selectedReturnType));
-						/* FIXME: Remove if the line above works
 						if (selectedReturnType instanceof XComputedTypeReference) {
 							operation2.setReturnType(this.typeReferences.createDelegateTypeReference(selectedReturnType));
 						} else {
 							operation2.setReturnType(cloneWithTypeParametersAndProxies(selectedReturnType, operation2));
-						}*/
+						}
 
 						final List<String> args = translateSarlFormalParametersForSyntheticOperation(
 								operation2, container, isVarArgs, otherSignature.getValue());
@@ -3646,7 +3644,8 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		// An super operation was detected => reuse its return type.
 		if (overriddenOperation != null) {
 			final JvmTypeReference type = overriddenOperation.getReturnType();
-			return cloneWithProxiesFromOtherResource(type, target);
+			//return cloneWithProxiesFromOtherResource(type, target);
+			return this.typeReferences.createDelegateTypeReference(type);
 		}
 
 		// Return type is inferred from the operation's expression.

@@ -343,13 +343,13 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 	 */
 	private class AgentEventListener implements EventListener {
 
-		private Queue<Event> buffer = Queues.newConcurrentLinkedQueue();
-
-		private final UUID aid;
-
 		/** Indicates if the agent has requested to be killed.
 		 */
 		final AtomicBoolean isKilled = new AtomicBoolean(false);
+
+		private Queue<Event> buffer = Queues.newConcurrentLinkedQueue();
+
+		private final UUID aid;
 
 		@SuppressWarnings("synthetic-access")
 		AgentEventListener() {
