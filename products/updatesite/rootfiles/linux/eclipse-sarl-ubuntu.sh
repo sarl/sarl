@@ -34,4 +34,4 @@ then
 	. "$HOME/.eclipserc"
 fi
 
-exec "$CDIR/eclipse" $VMARGS "$@"
+exec "$CDIR/eclipse-sarl" $VMARGS "$@"
