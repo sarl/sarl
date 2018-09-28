@@ -2,11 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: io.sarl.tests.testdata;singleton:=true
 Automatic-Module-Name: io.sarl.tests.testdata
-Bundle-Version: 0.9.0.qualifier
+Bundle-Version: 0.8.1
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Name: %Bundle-Name
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: io.sarl.lang.core;bundle-version="0.9.0"
+Require-Bundle: io.sarl.lang.core;bundle-version="0.8.1"
 Export-Package: foo,
  foo.ecore,
  foo.unpackedJAR,
