@@ -254,8 +254,9 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 				loggingCapacity.error(Messages.InternalEventBusSkill_3, e);
 			} else {
 				final LogRecord record = new LogRecord(Level.SEVERE, Messages.InternalEventBusSkill_3);
-		        record.setThrown(Throwables.getRootCause(e));
-				this.logger.getKernelLogger().log(record);
+				this.logger.getKernelLogger().log(
+						this.logger.prepareLogRecord(record, this.logger.getKernelLogger().getName(),
+								Throwables.getRootCause(e)));
 			}
 			// If we have an exception within the agent's initialization, we kill the agent.
 			setOwnerState(OwnerState.ALIVE);
@@ -284,8 +285,9 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 				loggingCapacity.error(Messages.InternalEventBusSkill_4, e);
 			} else {
 				final LogRecord record = new LogRecord(Level.SEVERE, Messages.InternalEventBusSkill_4);
-		        record.setThrown(Throwables.getRootCause(e));
-				this.logger.getKernelLogger().log(record);
+				this.logger.getKernelLogger().log(
+						this.logger.prepareLogRecord(record, this.logger.getKernelLogger().getName(),
+								Throwables.getRootCause(e)));
 			}
 		}
 	}

@@ -26,7 +26,9 @@ import java.text.MessageFormat;
 import java.util.concurrent.CancellationException;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -44,19 +46,36 @@ import io.janusproject.services.logging.LogService;
 @Singleton
 public class JdkUncaughtExceptionHandler implements UncaughtExceptionHandler {
 
-	private final LogService logger;
+	private LogService logger;
 
 	/** Constructor.
 	 * @param logger the logging service that must be used for output the errors.
+	 * @deprecated Since 0.9; Use the default constructor and {@link #setLogService(LogService)}.
 	 */
-	@Inject
+	@Deprecated
 	public JdkUncaughtExceptionHandler(LogService logger) {
 		assert logger != null;
 		this.logger = logger;
 	}
 
+	/** Constructor.
+	 */
+	public JdkUncaughtExceptionHandler() {
+		//
+	}
+
+	/** Set the log service that must be used for logging the messages.
+	 *
+	 * @param logger the logging service that must be used for output the errors.
+	 */
+	@Inject
+	public void setLogService(LogService logger) {
+		assert logger != null;
+		this.logger = logger;
+	}
+
 	@SuppressWarnings("checkstyle:npathcomplexity")
-	private void log(Throwable exception, String taskId, String taskName) {
+	private void log(Throwable exception, String taskId, String taskName, String loggerName) {
 		assert exception != null;
 		Throwable cause = exception;
 		while (cause.getCause() != null && cause.getCause() != cause) {
@@ -64,7 +83,6 @@ public class JdkUncaughtExceptionHandler implements UncaughtExceptionHandler {
 		}
 		final LogRecord record;
 		if (cause instanceof EarlyExitException || exception instanceof EarlyExitException) {
-			// Chuck Norris cannot be catched!
 			return;
 		}
 		if (cause instanceof CancellationException || exception instanceof CancellationException) {
@@ -88,20 +106,20 @@ public class JdkUncaughtExceptionHandler implements UncaughtExceptionHandler {
 					cause.getLocalizedMessage(), taskId, taskName));
 		}
 
-		record.setThrown(cause);
-		final StackTraceElement[] trace = cause.getStackTrace();
-		if (trace != null && trace.length > 0) {
-			final StackTraceElement elt = trace[0];
-			assert elt != null;
-			record.setSourceClassName(elt.getClassName());
-			record.setSourceMethodName(elt.getMethodName());
+		final Logger backLogger = this.logger.getKernelLogger();
+		final String name;
+		if (!Strings.isNullOrEmpty(loggerName)) {
+			name = loggerName;
+		} else {
+			name = backLogger.getName();
 		}
-		this.logger.getKernelLogger().log(record);
+
+		backLogger.log(this.logger.prepareLogRecord(record, name, cause));
 	}
 
 	@Override
 	public void uncaughtException(Thread thread, Throwable exception) {
-		log(exception, Long.toString(thread.getId()), thread.getName());
+		log(exception, Long.toString(thread.getId()), thread.getName(), null);
 	}
 
 }

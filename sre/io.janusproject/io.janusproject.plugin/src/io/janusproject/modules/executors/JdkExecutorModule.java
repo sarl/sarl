@@ -89,11 +89,11 @@ public class JdkExecutorModule extends AbstractModule {
 
 		/** Change the handler for rejected executions.
 		 *
-		 * @param handler the handler.
+		 * @param rejectionHandler the handler of rejected tasks.
 		 */
 		@Inject
-		public void setRejectedExecutionHandler(RejectedExecutionHandler handler) {
-			this.rejectedExecutionHandler = handler;
+		public void setRejectedExecutionHandler(RejectedExecutionHandler rejectionHandler) {
+			this.rejectedExecutionHandler = rejectionHandler;
 		}
 
 		@Override
@@ -112,7 +112,7 @@ public class JdkExecutorModule extends AbstractModule {
 						Math.max(1, Math.max(minPoolSize, maxPoolSize)),
 						keepAliveDuration, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
 			} else {
-				// Use the default behavior
+				// Use the default thread executor
 				executor = Executors.newCachedThreadPool();
 			}
 

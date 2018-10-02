@@ -22,6 +22,7 @@
 package io.janusproject.services.logging;
 
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import io.janusproject.services.DependentService;
@@ -84,5 +85,16 @@ public interface LogService extends DependentService {
 	 * @see #getPlatformLogger()
 	 */
 	Logger getKernelLogger();
+
+	/**
+	 * Ensure that the log record has the minimum set of information for a useful logging message.
+	 *
+	 * @param record the record to prepare.
+	 * @param loggerName the name of the logger.
+	 * @param exception the cause of the log.
+	 * @return the {@code record}.
+	 * @since 0.9
+	 */
+	LogRecord prepareLogRecord(LogRecord record, String loggerName, Throwable exception);
 
 }

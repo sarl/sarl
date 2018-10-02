@@ -21,8 +21,10 @@
 
 package io.janusproject.kernel.services.jdk.logging;
 
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
+import com.google.common.base.Strings;
 import com.google.common.util.concurrent.Service;
 
 import io.janusproject.JanusConfig;
@@ -87,6 +89,29 @@ public class StandardLogService extends AbstractDependentService implements LogS
 			this.kernelLogger = LoggerCreator.createModuleLogger(JanusConfig.JANUS_DEFAULT_PLATFORM_NAME, getPlatformLogger());
 		}
 		return this.kernelLogger;
+	}
+
+	@Override
+	public LogRecord prepareLogRecord(LogRecord record, String loggerName, Throwable exception) {
+		final String name = record.getLoggerName();
+		if (Strings.isNullOrEmpty(name)) {
+			if (!Strings.isNullOrEmpty(loggerName)) {
+				record.setLoggerName(loggerName);
+			} else {
+				record.setLoggerName(JanusConfig.JANUS_DEFAULT_PLATFORM_NAME);
+			}
+		}
+		if (exception != null) {
+			record.setThrown(exception);
+			final StackTraceElement[] trace = exception.getStackTrace();
+			if (trace != null && trace.length > 0) {
+				final StackTraceElement elt = trace[0];
+				assert elt != null;
+				record.setSourceClassName(elt.getClassName());
+				record.setSourceMethodName(elt.getMethodName());
+			}
+		}
+		return record;
 	}
 
 	@Override

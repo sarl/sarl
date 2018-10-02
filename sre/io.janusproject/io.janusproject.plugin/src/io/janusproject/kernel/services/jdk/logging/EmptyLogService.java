@@ -24,6 +24,7 @@ package io.janusproject.kernel.services.jdk.logging;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import com.google.common.util.concurrent.AbstractService;
@@ -89,6 +90,11 @@ public class EmptyLogService extends AbstractService implements LogService {
 	@Override
 	public Logger getKernelLogger() {
 		return this.logger;
+	}
+
+	@Override
+	public LogRecord prepareLogRecord(LogRecord record, String loggerName, Throwable exception) {
+		return record;
 	}
 
 }
