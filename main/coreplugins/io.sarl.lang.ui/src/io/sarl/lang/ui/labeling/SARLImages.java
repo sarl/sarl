@@ -25,6 +25,7 @@ import static org.eclipse.jdt.internal.ui.viewsupport.JavaElementImageProvider.g
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.internal.ui.viewsupport.JavaElementImageProvider;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -49,12 +50,12 @@ public class SARLImages extends XtendImages {
 
 	static {
 		IMAGE_NAMES = new String[SarlElementType.values().length];
-		IMAGE_NAMES[SarlElementType.AGENT.ordinal()] = "sarl-agent.png"; //$NON-NLS-1$
-		IMAGE_NAMES[SarlElementType.BEHAVIOR.ordinal()] = "sarl-behavior.png"; //$NON-NLS-1$
-		IMAGE_NAMES[SarlElementType.CAPACITY.ordinal()] = "sarl-capacity.png"; //$NON-NLS-1$
-		IMAGE_NAMES[SarlElementType.SKILL.ordinal()] = "sarl-skill.png"; //$NON-NLS-1$
-		IMAGE_NAMES[SarlElementType.EVENT.ordinal()] = "sarl-event.png"; //$NON-NLS-1$
-		IMAGE_NAMES[SarlElementType.BEHAVIOR_UNIT.ordinal()] = "sarl-behavior-unit.png"; //$NON-NLS-1$
+		IMAGE_NAMES[SarlElementType.AGENT.ordinal()] = "sarl-agent"; //$NON-NLS-1$
+		IMAGE_NAMES[SarlElementType.BEHAVIOR.ordinal()] = "sarl-behavior"; //$NON-NLS-1$
+		IMAGE_NAMES[SarlElementType.CAPACITY.ordinal()] = "sarl-capacity"; //$NON-NLS-1$
+		IMAGE_NAMES[SarlElementType.SKILL.ordinal()] = "sarl-skill"; //$NON-NLS-1$
+		IMAGE_NAMES[SarlElementType.EVENT.ordinal()] = "sarl-event"; //$NON-NLS-1$
+		IMAGE_NAMES[SarlElementType.BEHAVIOR_UNIT.ordinal()] = "sarl-behavior-unit"; //$NON-NLS-1$
 	}
 
 	@Inject
@@ -72,10 +73,22 @@ public class SARLImages extends XtendImages {
 	public ImageDescriptor getTypeImageDescriptor(
 			SarlElementType type,
 			boolean isInner, boolean isInInterfaceOrAnnotation, int flags, boolean useLightIcons) {
+		final ImageDescriptor desc;
 		if (type != null) {
-			return this.imageHelper.getImageDescriptor(IMAGE_NAMES[type.ordinal()]);
+			final StringBuilder iconName = new StringBuilder(IMAGE_NAMES[type.ordinal()]);
+			if (Flags.isPackageDefault(flags)) {
+				iconName.append("_package"); //$NON-NLS-1$
+			} else if (Flags.isProtected(flags)) {
+				iconName.append("_protected"); //$NON-NLS-1$
+			} else if (Flags.isPrivate(flags)) {
+				iconName.append("_private"); //$NON-NLS-1$
+			}
+			iconName.append(".png"); //$NON-NLS-1$
+			desc = this.imageHelper.getImageDescriptor(iconName.toString());
+		} else {
+			desc = JavaElementImageProvider.getTypeImageDescriptor(isInner, isInInterfaceOrAnnotation, flags, useLightIcons);
 		}
-		return JavaElementImageProvider.getTypeImageDescriptor(isInner, isInInterfaceOrAnnotation, flags, useLightIcons);
+		return desc;
 	}
 
 	/** Replies the image descriptor for the given element.
