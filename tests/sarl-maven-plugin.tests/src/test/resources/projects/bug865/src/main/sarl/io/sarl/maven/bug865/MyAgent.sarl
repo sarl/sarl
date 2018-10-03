@@ -1,0 +1,12 @@
+package io.sarl.maven.bug865
+
+import java.util.List
+import com.google.common.primitives.Booleans
+
+agent MyAgent {
+
+	def buildList(values : boolean*) : List<Boolean> {
+		Booleans::asList(values)
+	}
+
+}
