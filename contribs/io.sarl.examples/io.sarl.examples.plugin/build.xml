@@ -7,6 +7,7 @@
 	<property name="target_folder" location="contents" />
 
 	<target name="zip_all_examples" depends="retrieve_pom_template">
+		<mkdir dir="${target_folder}" />
 		<delete includeEmptyDirs="true">
 			<fileset dir="${target_folder}" includes="**/*" />
 		</delete>
@@ -37,6 +38,7 @@
 		<attribute name="pomtemplate" default="${pom_template_folder}/io/sarl/eclipse/wizards/newproject/pom_template.xml" />
 		<attribute name="excludes" default="bin,bin/**,**/*._trace,.antlr-generator*.jar,component.def,${specific_pom_config}" />
 		<sequential>
+			<mkdir dir="@{archive}/@{name}" />
 			<copy todir="@{archive}/@{name}" overwrite="true" force="true" encoding="UTF-8">
 				<fileset dir="@{source}/@{name}" />
 				<filterset>
@@ -65,13 +67,16 @@
 					<filter token="MAVEN_COMPILER_VERSION" value="3.6.2"/>
 				</filterset>
 			</copy>
+			<mkdir dir="@{target}" />
 			<delete file="@{target}/@{name}.zip" />
 			<zip destfile="@{target}/@{name}.zip" basedir="@{archive}/@{name}" excludes="@{excludes}" />
 		</sequential>
 	</macrodef>
 
 	<target name="retrieve_pom_template">
-			<copy file="../../../main/coreplugins/io.sarl.eclipse/src/io/sarl/eclipse/wizards/newproject/pom_template.xml" tofile="${pom_template_folder}/io/sarl/eclipse/wizards/newproject/pom_template.xml"
+	        <mkdir dir="${pom_template_folder}" />
+			<copy file="../../../main/coreplugins/io.sarl.eclipse/src/io/sarl/eclipse/wizards/newproject/pom_template.xml"
+			      tofile="${pom_template_folder}/io/sarl/eclipse/wizards/newproject/pom_template.xml"
 			      overwrite="true" force="true" encoding="UTF-8" />
 	</target>
 
