@@ -10,6 +10,7 @@ env:
   global:
     - MAVEN_OPTS: "-XX:+CMSClassUnloadingEnabled -Xmx3g" #-Dorg.slf4j.simpleLogger.defaultLogLevel=warn 
     - MAVEN_COMPILATION_OPTS: "\"-e -P!generateproduct -Dmaven.test.skip=true -Dio.sarl.docs.tests.skip=true\""
+    - MAVEN_TEST_OPTS: "\"-e -P!generateproduct\""
     - MAVEN_DEPLOYMENT_SETTING: "./build-tools/src/main/resources/maven/deploy-settings.xml"
     - MAVEN_DEPLOYMENT_OPTS: "\"-DskipTests -Dmaven.test.skip=true -Dcheckstyle.skip=true\""
     - HTTPS_KEYSTORE_FILE: "./build-tools/keyring/https.jks"
@@ -50,11 +51,11 @@ install: true
 
 script: "mvn -B $MAVEN_COMPILATION_OPTS clean install"
 
-# Deployment of the SNAPSHOT version.
-after_success:
-  - "sh -e ./build-tools/scripts/travis-maven-deploy.sh"
+#after_success: "mvn -B $MAVEN_TEST_OPTS test"
 
-#after_failure: "sh -e ./build-tools/scripts/print-surefire-reports.sh"
+deploy:
+  provider: script
+  script: "sh -e ./build-tools/scripts/travis-maven-deploy.sh"
 
 cache:
   directories:
