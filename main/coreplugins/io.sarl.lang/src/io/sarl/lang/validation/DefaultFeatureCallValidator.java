@@ -33,6 +33,7 @@ import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmMember;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider;
+import org.eclipse.xtext.xbase.lib.InputOutput;
 
 import io.sarl.lang.annotation.PrivateAPI;
 import io.sarl.lang.typesystem.SARLAnnotationUtil;
@@ -135,7 +136,10 @@ public class DefaultFeatureCallValidator implements IFeatureCallValidator {
 				case "java.lang.System.exit": //$NON-NLS-1$
 					return isInsideOOTypeDeclaration(call);
 				default:
-					if (id.startsWith("org.eclipse.xtext.xbase.lib.InputOutput")) { //$NON-NLS-1$
+					if (id.startsWith(InputOutput.class.getName())) {
+						return true;
+					}
+					if (id.startsWith(Thread.class.getName())) {
 						return true;
 					}
 				}
