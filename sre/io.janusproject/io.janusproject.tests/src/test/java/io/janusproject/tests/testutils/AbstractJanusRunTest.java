@@ -72,10 +72,19 @@ import io.sarl.tests.api.Nullable;
 @SuppressWarnings("all")
 public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 
+	/** Short timeout in seconds.
+	 *
+	 * @see #STANDARD_TIMEOUT
+	 * @see #EXTRA_TIMEOUT
+	 * @see #NO_TIMEOUT
+	 */
+	public static final int SHORT_TIMEOUT = 10;
+
 	/** Standard timeout in seconds.
 	 *
 	 * @see #EXTRA_TIMEOUT
 	 * @see #NO_TIMEOUT
+	 * @see #SHORT_TIMEOUT
 	 */
 	public static final int STANDARD_TIMEOUT = 40;
 	
@@ -83,6 +92,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	 *
 	 * @see #STANDARD_TIMEOUT
 	 * @see #NO_TIMEOUT
+	 * @see #SHORT_TIMEOUT
 	 */
 	public static final int EXTRA_TIMEOUT = 240;
 
@@ -90,6 +100,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	 *
 	 * @see #STANDARD_TIMEOUT
 	 * @see #EXTRA_TIMEOUT
+	 * @see #SHORT_TIMEOUT
 	 */
 	public static final int NO_TIMEOUT = -1;
 
@@ -345,6 +356,13 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 		waitForTheKernel(timeout);
 	}
 
+	/**
+	 * Forget any reference to a Janus kernel.
+	 */
+	protected void forgetTheKernel() {
+		this.janusKernel = null;
+	}
+	
 	/**
 	 * Set-up the Janus platform.
 	 * 
