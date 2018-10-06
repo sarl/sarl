@@ -76,4 +76,24 @@ public class TimeSkill extends BuiltinSkill implements Time {
 		return 1;
 	}
 
+	@Override
+	public double toOSTime(double timeValue) {
+		return timeValue;
+	}
+
+	@Override
+	public double fromOSTime(double timeValue) {
+		return timeValue;
+	}
+
+	@Override
+	public double toOSDuration(double timeDuration) {
+		return timeDuration;
+	}
+
+	@Override
+	public double fromOSDuration(double timeDuration) {
+		return timeDuration;
+	}
+
 }

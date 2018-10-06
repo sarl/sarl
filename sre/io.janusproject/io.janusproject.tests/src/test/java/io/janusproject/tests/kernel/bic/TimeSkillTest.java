@@ -80,6 +80,26 @@ public class TimeSkillTest extends AbstractJanusTest {
 		assertEpsilonEquals(1, this.skill.getOSTimeFactor());
 	}
 
+	@Test
+	public void toOSTime() {
+		assertEpsilonEquals(123.456, this.skill.toOSTime(123.456));
+	}
+
+	@Test
+	public void fromOSTime() {
+		assertEpsilonEquals(123.456, this.skill.fromOSTime(123.456));
+	}
+
+	@Test
+	public void toOSDuration() {
+		assertEpsilonEquals(123.456, this.skill.toOSDuration(123.456));
+	}
+
+	@Test
+	public void fromOSDuration() {
+		assertEpsilonEquals(123.456, this.skill.fromOSDuration(123.456));
+	}
+
 	public static class TestAgent extends Agent {
 
 		private final TimeSkillTest test;

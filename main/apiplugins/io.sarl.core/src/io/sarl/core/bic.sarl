@@ -1019,4 +1019,44 @@ capacity Time {
 	 */
 	def getOSTimeFactor : double
 
+	/** Convert the given time from the time scale of this builtin capacity to the operating
+	 * system time scale. It means that the "SRE" milliseconds are converted to
+	 * operating system milliseconds.
+	 *
+	 * @param timeValue the value to convert.
+	 * @return the number of milleseconds in the OS that correspond to the given number in the SRE.
+	 * @since 0.9
+	 */
+	def toOSTime(timeValue : double) : double
+
+	/** Convert the given time from the operating system time scale to the time scale of this
+	 * builtin capacity. It means that the operating system milliseconds are converted to
+	 * "SRE" milliseconds.
+	 *
+	 * @param timeValue the value to convert.
+	 * @return the number of milleseconds in the SRE that correspond to the given number in the OS.
+	 * @since 0.9
+	 */
+	def fromOSTime(timeValue : double) : double
+
+	/** Convert the given duration from the time scale of this builtin capacity to the operating
+	 * system time scale. It means that the "SRE" milliseconds are converted to
+	 * operating system milliseconds.
+	 *
+	 * @param timeDuration the value to convert.
+	 * @return the number of milleseconds in the OS that correspond to the given number in the SRE.
+	 * @since 0.9
+	 */
+	def toOSDuration(timeDuration : double) : double
+
+	/** Convert the given duration from the operating system time scale to the time scale of this
+	 * builtin capacity. It means that the operating system milliseconds are converted to
+	 * "SRE" milliseconds.
+	 *
+	 * @param timeDuration the value to convert.
+	 * @return the number of milleseconds in the SRE that correspond to the given number in the OS.
+	 * @since 0.9
+	 */
+	def fromOSDuration(timeDuration : double) : double
+
 }
