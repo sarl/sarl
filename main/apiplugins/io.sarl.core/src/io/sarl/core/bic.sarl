@@ -687,6 +687,35 @@ capacity Schedules {
 	 */
 	def execute(task : AgentTask = null, procedure : (Agent) => void ) : AgentTask
 
+	/**
+	 * Schedule a given task to be executed at the given time.
+	 *
+	 * <p>If the given time is passed, according to {@link Time} then the task is not executed.
+	 *
+	 * <p>The given procedure takes one parameter: the agent associated to the task. It is name <code>it</code> by default.
+	 *
+	 * <p>The given time is expressed in milliseconds according to the time scale of the SRE.
+	 * It means that the given number of milliseconds may be not real milliseconds, depending
+	 * on the definition of the builtin capacity {@link Time}.
+	 *
+	 * <p>If this function is invoked from a {@code Behavior} and there is no provided task,
+	 * the created task will be associated to the behavior instance. It means that the task will
+	 * be automatically canceled when the behavior instance is unregistered from the the owning agent.
+	 *
+	 * <p>This function does nothing if one of the following conditions evaluates to true:
+	 * <ul>
+	 * <li>the agent is not alive.</li>
+	 * </ul>
+	 *
+	 * @param task the task that will run the given closure. If <code>null</code>, a new task is created.
+	 * @param time the time in milliseconds at which to start the procedure execution.
+	 * @param procedure the closure to execute.
+	 * @return the task is given, or a new task if the procedure is schedule, or
+	 *     {@code null} if the procedure is not scheduled.
+	 * @since 0.9
+	 */
+	def at(task : AgentTask = null, time : long, procedure : (Agent) => void) : AgentTask
+
 }
 
 

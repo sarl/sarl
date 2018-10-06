@@ -49,6 +49,7 @@ import io.janusproject.services.executor.JanusRunnable;
 import io.sarl.core.AgentTask;
 import io.sarl.core.Logging;
 import io.sarl.core.Schedules;
+import io.sarl.core.Time;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentTrait;
 import io.sarl.lang.core.Behavior;
@@ -79,6 +80,8 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 
 	private ClearableReference<Skill> skillBufferLogging;
 
+	private ClearableReference<Skill> skillBufferTime;
+
 	/** Constructor.
 	 * @param agent the owner of this skill.
 	 */
@@ -95,6 +98,17 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 			this.skillBufferLogging = $getSkill(Logging.class);
 		}
 		return $castSkill(Logging.class, this.skillBufferLogging);
+	}
+
+	/** Replies the Time skill as fast as possible.
+	 *
+	 * @return the skill
+	 */
+	protected final Time getTimeSkill() {
+		if (this.skillBufferTime == null || this.skillBufferTime.get() == null) {
+			this.skillBufferTime = $getSkill(Time.class);
+		}
+		return $castSkill(Time.class, this.skillBufferTime);
 	}
 
 	/** Replies the mutex for synchronizing on the task list.
@@ -230,6 +244,15 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 			pair = postRunTask(pair, task, sf);
 		}
 		return pair.getTask();
+	}
+
+	@Override
+	public AgentTask at(AgentTask task, long time, Procedure1<? super Agent> procedure) {
+		final long delay = Math.round(time - getTimeSkill().getTime());
+		if (delay > 0.) {
+			return in(task, delay, procedure);
+		}
+		return task;
 	}
 
 	private TaskDescription preRunTask(AgentTask task, Procedure1<? super Agent> procedure) {

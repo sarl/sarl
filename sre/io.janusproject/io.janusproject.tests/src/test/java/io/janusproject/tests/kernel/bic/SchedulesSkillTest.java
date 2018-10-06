@@ -26,6 +26,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import static org.mockito.Mockito.*;
+
 import java.util.Collection;
 import java.util.UUID;
 import java.util.concurrent.ScheduledFuture;
@@ -50,6 +52,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import io.janusproject.kernel.bic.SchedulesSkill;
+import io.janusproject.kernel.bic.TimeSkill;
 import io.janusproject.services.executor.ExecutorService;
 import io.janusproject.services.logging.LogService;
 import io.janusproject.tests.testutils.AbstractJanusRunTest;
@@ -61,12 +64,15 @@ import io.sarl.core.Destroy;
 import io.sarl.core.Initialize;
 import io.sarl.core.Lifecycle;
 import io.sarl.core.Schedules;
+import io.sarl.core.Time;
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
+import io.sarl.lang.core.SREutils;
+import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.Skill.UninstallationStage;
 import io.sarl.tests.api.Nullable;
 
@@ -89,22 +95,72 @@ public class SchedulesSkillTest {
 		@Nullable
 		private UUID agentId;
 
+		@InjectMocks
+		private SchedulesSkill skill;
+
 		@Mock
 		private ExecutorService executorService;
 
 		@Mock
-		private Agent agent;
-
-		@Mock
 		private LogService logger;
 
-		@InjectMocks
-		private SchedulesSkill skill;
+		private Agent agent;
 
+		private Skill timeSkill;
+
+		/**
+		 * @author $Author: sgalland$
+		 * @version $FullVersion$
+		 * @mavengroupid $GroupId$
+		 * @mavenartifactid $ArtifactId$
+		 */
+		private static class TimeSkillMock extends Skill implements Time {
+			
+			public TimeSkillMock(Agent agent) {
+				super(agent);
+			}
+
+			@Override
+			public double getTime(TimeUnit timeUnit) {
+				return 0;
+			}
+
+			@Override
+			public double getOSTimeFactor() {
+				return 1;
+			}
+
+			@Override
+			public double toOSTime(double timeValue) {
+				return timeValue;
+			}
+
+			@Override
+			public double fromOSTime(double timeValue) {
+				return timeValue;
+			}
+
+			@Override
+			public double toOSDuration(double timeDuration) {
+				return timeDuration;
+			}
+
+			@Override
+			public double fromOSDuration(double timeDuration) {
+				return timeDuration;
+			}
+			
+		}
+		
 		@Before
 		public void setUp() throws Exception {
 			this.agentId = UUID.randomUUID();
-			Mockito.when(this.agent.getID()).thenReturn(this.agentId);
+			this.agent = new Agent(UUID.randomUUID(), this.agentId);
+			this.agent = spy(this.agent);
+			this.timeSkill = new TimeSkillMock(this.agent);
+			this.timeSkill = spy(this.timeSkill);
+			SREutils.createSkillMapping(this.agent, Time.class, this.timeSkill);
+			this.reflect.invoke(this.skill, "setOwner", this.agent);
 			Mockito.when(this.executorService.schedule(ArgumentMatchers.any(Runnable.class), ArgumentMatchers.any(long.class),
 					ArgumentMatchers.any(TimeUnit.class))).thenAnswer(new Answer<ScheduledFuture>() {
 						@Override
@@ -233,6 +289,95 @@ public class SchedulesSkillTest {
 			assertEquals(new Long(0), argument2.getValue());
 			assertEquals(new Long(5), argument3.getValue());
 			assertSame(TimeUnit.MILLISECONDS, argument4.getValue());
+		}
+
+		@Test
+		public void atLongProcedure1_inTheFuture() {
+			Procedure1 procedure = Mockito.mock(Procedure1.class);
+			AgentTask task = this.skill.at(5, procedure);
+			assertNotNull(task);
+			assertSame(procedure, task.getProcedure());
+			ArgumentCaptor<Runnable> argument1 = ArgumentCaptor.forClass(Runnable.class);
+			ArgumentCaptor<Long> argument2 = ArgumentCaptor.forClass(Long.class);
+			ArgumentCaptor<TimeUnit> argument3 = ArgumentCaptor.forClass(TimeUnit.class);
+			Mockito.verify(this.executorService, new Times(1)).schedule(argument1.capture(), argument2.capture(),
+					argument3.capture());
+			assertNotNull(argument1.getValue());
+			assertEquals(new Long(5), argument2.getValue());
+			assertSame(TimeUnit.MILLISECONDS, argument3.getValue());
+		}
+
+		@Test
+		public void atLongProcedure1_now() {
+			Procedure1 procedure = Mockito.mock(Procedure1.class);
+			AgentTask task = this.skill.at(0, procedure);
+			assertNull(task);
+			ArgumentCaptor<Runnable> argument1 = ArgumentCaptor.forClass(Runnable.class);
+			ArgumentCaptor<Long> argument2 = ArgumentCaptor.forClass(Long.class);
+			ArgumentCaptor<TimeUnit> argument3 = ArgumentCaptor.forClass(TimeUnit.class);
+			Mockito.verify(this.executorService, never()).schedule(argument1.capture(), argument2.capture(),
+					argument3.capture());
+		}
+
+		@Test
+		public void atLongProcedure1_inThePast() {
+			Procedure1 procedure = Mockito.mock(Procedure1.class);
+			AgentTask task = this.skill.at(-5, procedure);
+			assertNull(task);
+			ArgumentCaptor<Runnable> argument1 = ArgumentCaptor.forClass(Runnable.class);
+			ArgumentCaptor<Long> argument2 = ArgumentCaptor.forClass(Long.class);
+			ArgumentCaptor<TimeUnit> argument3 = ArgumentCaptor.forClass(TimeUnit.class);
+			Mockito.verify(this.executorService, never()).schedule(argument1.capture(), argument2.capture(),
+					argument3.capture());
+		}
+
+		@Test
+		public void atAgentTaskLongProcedure1_inTheFuture() {
+			AgentTask task = Mockito.mock(AgentTask.class);
+			Mockito.when(task.getName()).thenReturn("thetask"); //$NON-NLS-1$
+			Procedure1 procedure = Mockito.mock(Procedure1.class);
+			AgentTask t = this.skill.at(task, 5, procedure);
+			assertSame(task, t);
+			ArgumentCaptor<Procedure1> argument0 = ArgumentCaptor.forClass(Procedure1.class);
+			Mockito.verify(task, new Times(1)).setProcedure(argument0.capture());
+			assertSame(procedure, argument0.getValue());
+			ArgumentCaptor<Runnable> argument1 = ArgumentCaptor.forClass(Runnable.class);
+			ArgumentCaptor<Long> argument2 = ArgumentCaptor.forClass(Long.class);
+			ArgumentCaptor<TimeUnit> argument3 = ArgumentCaptor.forClass(TimeUnit.class);
+			Mockito.verify(this.executorService, new Times(1)).schedule(argument1.capture(), argument2.capture(),
+					argument3.capture());
+			assertNotNull(argument1.getValue());
+			assertEquals(new Long(5), argument2.getValue());
+			assertSame(TimeUnit.MILLISECONDS, argument3.getValue());
+		}
+
+		@Test
+		public void atAgentTaskLongProcedure1_now() {
+			AgentTask task = Mockito.mock(AgentTask.class);
+			Mockito.when(task.getName()).thenReturn("thetask"); //$NON-NLS-1$
+			Procedure1 procedure = Mockito.mock(Procedure1.class);
+			AgentTask t = this.skill.at(task, 0, procedure);
+			assertSame(task, t);
+			ArgumentCaptor<Runnable> argument1 = ArgumentCaptor.forClass(Runnable.class);
+			ArgumentCaptor<Long> argument2 = ArgumentCaptor.forClass(Long.class);
+			ArgumentCaptor<TimeUnit> argument3 = ArgumentCaptor.forClass(TimeUnit.class);
+			Mockito.verify(this.executorService, never()).schedule(argument1.capture(), argument2.capture(),
+					argument3.capture());
+		}
+
+		@Test
+		public void atAgentTaskLongProcedure1_inThePast() {
+			AgentTask task = Mockito.mock(AgentTask.class);
+			Mockito.when(task.getName()).thenReturn("thetask"); //$NON-NLS-1$
+			Procedure1 procedure = Mockito.mock(Procedure1.class);
+			AgentTask t = this.skill.at(task, -5, procedure);
+			assertSame(task, t);
+			assertSame(task, t);
+			ArgumentCaptor<Runnable> argument1 = ArgumentCaptor.forClass(Runnable.class);
+			ArgumentCaptor<Long> argument2 = ArgumentCaptor.forClass(Long.class);
+			ArgumentCaptor<TimeUnit> argument3 = ArgumentCaptor.forClass(TimeUnit.class);
+			Mockito.verify(this.executorService, never()).schedule(argument1.capture(), argument2.capture(),
+					argument3.capture());
 		}
 
 		@Test
