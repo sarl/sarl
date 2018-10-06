@@ -236,10 +236,11 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 		synchronized (getTaskListMutex()) {
 			pair = preRunTask(task, procedure);
 		}
+		final long osDelay = Math.round(getTimeSkill().getOSTimeFactor() * delay);
 		final AgentTask runnableTask = pair != null ? pair.getTask() : task;
 		final ScheduledFuture<?> sf = this.executorService.schedule(
 				new AgentTaskRunner(runnableTask, false),
-				delay, TimeUnit.MILLISECONDS);
+				osDelay, TimeUnit.MILLISECONDS);
 		synchronized (getTaskListMutex()) {
 			pair = postRunTask(pair, task, sf);
 		}
@@ -413,10 +414,11 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 		synchronized (getTaskListMutex()) {
 			description = preRunTask(task, procedure);
 		}
+		final long osPeriod = Math.round(getTimeSkill().getOSTimeFactor() * period);
 		final AgentTask runnableTask = description != null ? description.getTask() : task;
 		final ScheduledFuture<?> sf = this.executorService.scheduleAtFixedRate(
 				new AgentTaskRunner(runnableTask, true),
-				0, period, TimeUnit.MILLISECONDS);
+				0, osPeriod, TimeUnit.MILLISECONDS);
 		synchronized (getTaskListMutex()) {
 			description = postRunTask(description, task, sf);
 		}
@@ -436,12 +438,13 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 		}
 		final AgentTask runnableTask = description != null ? description.getTask() : task;
 		final Future<?> future;
-		if (delay <= 0) {
+		final long osDelay = Math.round(getTimeSkill().getOSTimeFactor() * delay);
+		if (osDelay <= 0) {
 			future = this.executorService.submit(new AgentInfiniteLoopTask(runnableTask));
 		} else {
 			future = this.executorService.scheduleWithFixedDelay(
 					new AgentTaskRunner(runnableTask, true),
-					0, delay, TimeUnit.MILLISECONDS);
+					0, osDelay, TimeUnit.MILLISECONDS);
 		}
 		synchronized (getTaskListMutex()) {
 			description = postRunTask(description, task, future);

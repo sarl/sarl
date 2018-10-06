@@ -509,6 +509,10 @@ capacity Schedules {
 	 *
 	 * <p>The given procedure takes one parameter: the agent associated to the task. It is name <code>it</code> by default.
 	 *
+	 * <p>The given delay is expressed in milliseconds according to the time scale of the SRE.
+	 * It means that the given number of milliseconds may be not real milliseconds, depending
+	 * on the definition of the builtin capacity {@link Time}.
+	 *
 	 * <p>If this function is invoked from a {@code Behavior} and there is no provided task,
 	 * the created task will be associated to the behavior instance. It means that the task will
 	 * be automatically canceled when the behavior instance is unregistered from the the owning agent.
@@ -612,6 +616,10 @@ capacity Schedules {
 	 *
 	 * <p>The given procedure takes one parameter: the agent associated to the task. It is name <code>it</code> by default.
 	 *
+	 * <p>The given period is expressed in milliseconds according to the time scale of the SRE.
+	 * It means that the given number of milliseconds may be not real milliseconds, depending
+	 * on the definition of the builtin capacity {@link Time}.
+	 *
 	 * <p>If this function is invoked from a {@code Behavior} and there is no provided task,
 	 * the created task will be associated to the behavior instance. It means that the task will
 	 * be automatically canceled when the behavior instance is unregistered from the the owning agent.
@@ -652,7 +660,11 @@ capacity Schedules {
 	 *
 	 * <p>The given procedure takes one parameter: the agent associated to the task. It is name <code>it</code> by default.
 	 *
-	 * <p>It is recommended that the SRAL run-time environment, which is providing the implementation
+	 * <p>The given delay is expressed in milliseconds according to the time scale of the SRE.
+	 * It means that the given number of milliseconds may be not real milliseconds, depending
+	 * on the definition of the builtin capacity {@link Time}.
+	 *
+	 * <p>It is recommended that the SARL run-time environment, which is providing the implementation
 	 * of this function to provide an efficient implementation in the case the argument
 	 * {@code delay} is equal to zero. Indeed, if the {@code delay} is equal to zero, the task
 	 * should be run in an infinite loop until it is canceled, or the owning agent is killed.
