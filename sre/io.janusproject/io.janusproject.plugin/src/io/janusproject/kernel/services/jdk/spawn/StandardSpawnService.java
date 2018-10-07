@@ -41,6 +41,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
+import org.eclipse.xtext.xbase.lib.Pair;
 
 import io.janusproject.kernel.bic.BuiltinCapacityUtil;
 import io.janusproject.services.AbstractDependentService;
@@ -305,7 +306,11 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 		if (killAgent != null) {
 			try {
 				final Logging skill = SREutils.getInternalSkill(killAgent, Logging.class);
-				skill.warning(warningMessage);
+				if (skill != null) {
+					skill.warning(warningMessage);
+				} else {
+					this.logger.getKernelLogger().warning(warningMessage);
+				}
 			} catch (Exception e) {
 				throw new Error(Messages.StandardSpawnService_9, e);
 			}
@@ -439,6 +444,7 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 	 * @param agent
 	 *            - the destroyed agent.
 	 */
+	@SuppressWarnings({"checkstyle:npathcomplexity"})
 	protected void fireAgentDestroyed(Agent agent) {
 		final ListenerCollection<SpawnServiceListener> list;
 		synchronized (getAgentLifecycleListenerMutex()) {
@@ -451,22 +457,15 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 			ilisteners = null;
 		}
 		final SpawnServiceListener[] ilisteners2 = this.globalListeners.getListeners(SpawnServiceListener.class);
-
+		// Retrieve the agent's contexts
+		final List<Pair<AgentContext, Address>> contextRegistrations = new ArrayList<>();
 		try {
-			final SynchronizedIterable<AgentContext> sc = BuiltinCapacityUtil.getContextsOf(agent);
-			synchronized (sc.mutex()) {
-				final UUID killedAgentId = agent.getID();
-				final Scope<Address> scope = address -> {
-					final UUID receiver = address.getUUID();
-					return !receiver.equals(killedAgentId);
-				};
-				for (final AgentContext context : sc) {
+			final SynchronizedIterable<AgentContext> allContexts = BuiltinCapacityUtil.getContextsOf(agent);
+			synchronized (allContexts.mutex()) {
+				for (final AgentContext context : allContexts) {
 					final EventSpace defSpace = context.getDefaultSpace();
-					defSpace.emit(
-							// No need to give an event source because it is explicitly set below.
-							null,
-							new AgentKilled(defSpace.getAddress(agent.getID()), agent.getID(), agent.getClass().getName()),
-							scope);
+					final Address address = defSpace.getAddress(agent.getID());
+					contextRegistrations.add(Pair.of(context, address));
 				}
 			}
 		} catch (RuntimeException e) {
@@ -474,7 +473,7 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-
+		// Local agent and framework destruction
 		if (ilisteners != null) {
 			for (final SpawnServiceListener l : ilisteners) {
 				l.agentDestroy(agent);
@@ -482,6 +481,28 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 		}
 		for (final SpawnServiceListener l : ilisteners2) {
 			l.agentDestroy(agent);
+		}
+		// Fire AgentKilled into the associated contexts
+		try {
+			final UUID killedAgentId = agent.getID();
+			final Scope<Address> scope = address -> {
+				final UUID receiver = address.getUUID();
+				return !receiver.equals(killedAgentId);
+			};
+			final String killedAgentType = agent.getClass().getName();
+			for (final Pair<AgentContext, Address> registration : contextRegistrations) {
+				final EventSpace defSpace = registration.getKey().getDefaultSpace();
+				defSpace.emit(
+						// No need to give an event source because it is explicitly set below.
+						null,
+						new AgentKilled(
+								registration.getValue(), killedAgentId, killedAgentType),
+						scope);
+			}
+		} catch (RuntimeException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 	}
 
