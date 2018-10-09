@@ -49,7 +49,7 @@ matrix:
 
 install: true
 
-script: "mvn -B $MAVEN_COMPILATION_OPTS clean install"
+script: "sh -e ./build-tools/scripts/travis-maven-compile.sh"
 
 #after_success: "mvn -B $MAVEN_TEST_OPTS test"
 
