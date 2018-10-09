@@ -66,6 +66,18 @@
 							</sources>
 						</configuration>
 					</execution>
+					<execution>
+						<id>add-test-source</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>add-test-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>target/generated-documentation-sources</source>
+							</sources>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 			<plugin>

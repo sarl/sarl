@@ -258,7 +258,7 @@ events.</veryimportantnote>
 
 Two types of reserved events exist:
 
-* the events reserved in the SARL Core Specification for the [agent's life cycle](./Agent.md#4-behaviors-of-an-agent); and
+* the events reserved in the SARL Core Specification for the [agent's life cycle](./Agent.md#behaviors-of-an-agent); and
 * the events supported by the [Built-in Capacities](./BIC.md).
 
 
