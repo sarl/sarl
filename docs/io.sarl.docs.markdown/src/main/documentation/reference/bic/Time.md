@@ -13,7 +13,11 @@ it may be the operating system time, or a simulator time.
 		[:Fact:]{typeof(io.sarl.core.[:timecap](Time)).shouldHaveMethods(
 			"[:fctgettime](getTime)(java.util.concurrent.TimeUnit) : double",
 			"getTime : double",
-			"[:fctgetostimefactor](getOSTimeFactor) : double")
+			"[:fctgetostimefactor](getOSTimeFactor) : double",
+			"[:fcttoostime](toOSTime)(double) : double",
+			"[:fctfromostime](fromOSTime)(double) : double",
+			"[:fcttoosduration](toOSDuration)(double) : double",
+			"[:fctfromosduration](fromOSDuration)(double) : double")
 		}
 
 
@@ -53,7 +57,21 @@ the values will be expressed in seconds.
 		[:End:]
 
 
-## Get the Factor for Mapping to Operating-System Time
+
+## Convertion from Operating System Time to the SARL Run-time Time
+
+At least, there is two different time scales:
+
+* Operating System (OS) Time: it is the time of the operating system, and accessible from objects provided by the Java virtual machine for example.
+* SARL Run-time Time: it is the time that is considered by the SARL run-time environment, and accessible from the `Time` capacity.
+
+
+The function [:fctgetostimefactor:] provides the multiplication factor between these two time scales.
+The functions [:fcttoostime:] and [:fctfromostime:] do the convertion of a time between these two scales.
+The functions [:fcttoosduration:] and [:fctfromosduration:] do the convertion of a duration between these two scales.
+
+
+### Get the Factor for Mapping to Operating-System Time
 
 For the time replied by the [:fctgettime:] function may be not the operating-system time, e.g. a simulation time.
 In order to map the time replied by the [:fctgettime:] function and the operating-system time, the
@@ -85,6 +103,57 @@ The provided function is:
 			}
 		[:End:]
 
+
+### Convertion of a Time
+
+For converting a time, you have access to two functions:
+
+* [:fcttoostime:]: converts a OS time to its equivalent time into the SARL run-time environment. 
+* [:fctfromostime:] converts a SARL run-time time to its equivalent into the OS.
+
+		[:Success:]
+			package io.sarl.docs.reference.bic
+			import io.sarl.core.Time
+			agent Tmp {
+				uses Time
+				def action {
+					var operatingSystemTime = 1.0
+					var sreTime = 1.0
+			[:On]
+					// Convertion from OS to SRE
+					sreTime = fromOSTime(operatingSystemTime)
+					// Convertion from SRE to OS
+					operatingSystemTime = toOSTime(sreTime)
+			[:Off]
+				}
+			}
+		[:End:]
+
+
+### Convertion of a Duration
+
+For converting a duration, you have access to two functions:
+
+* [:fcttoosduration:]: converts a OS duration to its equivalent time into the SARL run-time environment. 
+* [:fctfromosduration:] converts a SARL run-time duration to its equivalent into the OS.
+
+		[:Success:]
+			package io.sarl.docs.reference.bic
+			import io.sarl.core.Time
+			agent Tmp {
+				uses Time
+				def action {
+					var operatingSystemTime = 1.0
+					var sreTime = 1.0
+			[:On]
+					// Convertion from OS to SRE
+					sreTime = fromOSDuration(operatingSystemTime)
+					// Convertion from SRE to OS
+					operatingSystemTime = toOSDuration(sreTime)
+			[:Off]
+				}
+			}
+		[:End:]
 
 
 [:Include:](../../legal.inc)

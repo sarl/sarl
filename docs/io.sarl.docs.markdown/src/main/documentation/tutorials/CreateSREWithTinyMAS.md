@@ -2341,6 +2341,22 @@ tinyMAS time manager that is accessible from the agent owning the capacity.
 					(owner as TMSarlAgent).getSimulationStepDuration(TimeUnit::SECONDS)
 				}
 
+				def fromOSTime(time : double) : double {
+					time / getOSTimeFactor
+				}
+
+				def toOSTime(time : double) : double {
+					time * getOSTimeFactor
+				}
+
+				def fromOSDuration(duration : double) : double {
+					duration / getOSTimeFactor
+				}
+
+				def toOSDuration(duration : double) : double {
+					duration * getOSTimeFactor
+				}
+
 			}
 		[:End:]
 
