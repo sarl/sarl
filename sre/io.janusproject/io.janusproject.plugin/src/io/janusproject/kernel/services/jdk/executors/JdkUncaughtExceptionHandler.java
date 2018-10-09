@@ -114,7 +114,8 @@ public class JdkUncaughtExceptionHandler implements UncaughtExceptionHandler {
 			name = backLogger.getName();
 		}
 
-		backLogger.log(this.logger.prepareLogRecord(record, name, cause));
+		final LogRecord preparedLogRecord = this.logger.prepareLogRecord(record, name, cause);
+		backLogger.log(preparedLogRecord);
 	}
 
 	@Override
