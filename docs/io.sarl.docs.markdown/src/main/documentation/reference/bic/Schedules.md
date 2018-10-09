@@ -17,6 +17,8 @@ The built-in capacity `[:schedules](Schedules)` enables the agent to schedule ta
 			"every(long, org.eclipse.xtext.xbase.lib.Procedures$Procedure1) : io.sarl.core.AgentTask",
 			"[:atfixeddelay](atFixedDelay)(io.sarl.core.AgentTask, long, org.eclipse.xtext.xbase.lib.Procedures$Procedure1) : io.sarl.core.AgentTask",
 			"atFixedDelay(long, org.eclipse.xtext.xbase.lib.Procedures$Procedure1) : io.sarl.core.AgentTask",
+			"[:at](at)(io.sarl.core.AgentTask, long, org.eclipse.xtext.xbase.lib.Procedures$Procedure1) : io.sarl.core.AgentTask",
+			"at(long, org.eclipse.xtext.xbase.lib.Procedures$Procedure1) : io.sarl.core.AgentTask",
 			"[:cancel](cancel)(io.sarl.core.AgentTask, boolean) : boolean",
 			"cancel(io.sarl.core.AgentTask) : boolean",
 			"[:iscanceled](isCanceled)(io.sarl.core.AgentTask) : boolean",
@@ -205,6 +207,63 @@ Example:
 		[:End:]
 
 
+
+## Launching a Task at a Specific Time
+
+For running a task at a specific time, the following function is provided:
+
+		[:Success:]
+			package io.sarl.docs.reference.bic
+			import io.sarl.core.AgentTask
+			import io.sarl.lang.core.Agent
+			interface Tmp {
+			[:On]
+				def [:at!](task : AgentTask = null, time : long, procedure : (Agent) => void) : AgentTask
+			[:Off]
+			}
+		[:End:]
+
+Without its optional argument, the function submits the given procedure (a lambda expression as defined in
+the [General Syntax Reference](../GeneralSyntax.md)) to an executor provided by the runtime
+platform. The execution of the procedure will start at the provided time.
+If the given time is not in the futur, the task is not run.
+This function replies the agent task for controlling its execution.
+
+With its optional argument, the function behaves in a similar way as the first, except that it
+accepts an agent task as parameter. This task will attach to the given procedure. The replied task
+is the same as the task given as parameter.
+
+
+Example:
+
+		[:Success:]
+			package io.sarl.docs.reference.bic
+			import io.sarl.core.Logging
+			import io.sarl.core.Schedules
+			import io.sarl.core.AgentTask
+			import io.sarl.lang.core.Agent
+			[:On]
+			agent A {
+				uses Schedules, Logging
+
+				var t1 : AgentTask
+				var t2 : AgentTask
+
+				def myaction {
+					t1 = at(1000) [ a : Agent |
+						info(a)
+					]
+					
+					t1 = t2.at(1000) [ a : Agent |
+						info(a)
+					]
+				}
+			}
+			[:Off]
+		[:End:]
+
+
+
 ## Launching a Periodic Task at a Fixed Rate
 
 For running a periodic task with a fixed starting rate, the following function is provided:
@@ -221,13 +280,13 @@ For running a periodic task with a fixed starting rate, the following function i
 		[:End:]
 
 
-The first function submits the given procedure (a lambda expression as defined in
+The function without the default parameter submits the given procedure (a lambda expression as defined in
 the [General Syntax Reference](../GeneralSyntax.md)) to
 an executor provided by the runtime platform. The execution of the procedure
 will be launched periodically with a period of the given number of milliseconds.
 This function replies the agent task for controlling its execution.
 
-The second function behaves in a similar way as the first, except that it
+The function with the default parameter behaves in a similar way as the first, except that it
 accepts an agent task as parameter. This task will attach to the given
 procedure. The replied task is the same as the task given as parameter.
 
