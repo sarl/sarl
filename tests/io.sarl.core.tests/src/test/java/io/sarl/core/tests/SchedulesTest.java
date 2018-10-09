@@ -43,7 +43,7 @@ public class SchedulesTest extends AbstractSarlCoreTest<Capacity> {
 
 	@Test
 	public void memberCount() {
-		assertEquals(14, this.type.getDeclaredMethods().length);
+		assertEquals(16, this.type.getDeclaredMethods().length);
 	}
 
 	@Test
@@ -54,6 +54,16 @@ public class SchedulesTest extends AbstractSarlCoreTest<Capacity> {
 	@Test
 	public void inAgentTaskLongProcedure1() {
 		assertMethod("in", AgentTask.class, AgentTask.class, long.class, Procedure1.class); //$NON-NLS-1$
+	}
+
+	@Test
+	public void atLongProcedure1() {
+		assertMethod("at", AgentTask.class, long.class, Procedure1.class); //$NON-NLS-1$
+	}
+
+	@Test
+	public void atAgentTaskLongProcedure1() {
+		assertMethod("at", AgentTask.class, AgentTask.class, long.class, Procedure1.class); //$NON-NLS-1$
 	}
 
 	@Test
