@@ -43,7 +43,7 @@ import io.sarl.lang.sarlc.configs.subconfigs.ValidatorConfig;
 public class SarlConfig {
 
 	/**
-	 * Prefix for the configuration entries of the path modules.
+	 * Prefix for the configuration entries of the modules.
 	 */
 	public static final String PREFIX = "sarl"; //$NON-NLS-1$
 
@@ -60,7 +60,7 @@ public class SarlConfig {
 	/**
 	 * Name of the property that contains the output path for the Java byte code.
 	 */
-	public static final String CLASS_OUTPUT_PATH_NAME = PREFIX + ".classutputPath"; //$NON-NLS-1$
+	public static final String CLASS_OUTPUT_PATH_NAME = PREFIX + ".classOutputPath"; //$NON-NLS-1$
 
 	/**
 	 * Name of the property that contains the classpath.
@@ -100,10 +100,10 @@ public class SarlConfig {
 
 	private String extraGenerators;
 
-	/** Replies the configuration factory for the logging.
+	/** Replies the configuration for SARLC.
 	 *
 	 * @param configFactory the general configuration factory.
-	 * @return the logging configuration factory.
+	 * @return the SARLC configuration.
 	 */
 	public static SarlConfig getConfiguration(ConfigurationFactory configFactory) {
 		assert configFactory != null;
