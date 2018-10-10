@@ -32,7 +32,7 @@ import com.google.inject.ImplementedBy;
  * @mavenartifactid $ArtifactId$
  * @since 0.8
  */
-@ImplementedBy(SarlEmbddedSdkBootClasspathProvider.class)
+@ImplementedBy(SarlEmbededSdkBootClasspathProvider.class)
 public interface SARLBootClasspathProvider {
 
 	/** Replies the class path that must be used for compiling a SARL program.

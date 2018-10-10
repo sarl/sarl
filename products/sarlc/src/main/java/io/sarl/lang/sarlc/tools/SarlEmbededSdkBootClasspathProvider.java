@@ -33,7 +33,7 @@ import com.google.inject.Singleton;
  * @since 0.8
  */
 @Singleton
-public class SarlEmbddedSdkBootClasspathProvider implements SARLBootClasspathProvider {
+public class SarlEmbededSdkBootClasspathProvider implements SARLBootClasspathProvider {
 
 	@Override
 	public String getClasspath() {
