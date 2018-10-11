@@ -28,6 +28,9 @@ import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_CONSTRUCT
 import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_FIELD;
 import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_FILE__PACKAGE;
 import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_FUNCTION;
+import static org.eclipse.xtext.common.types.TypesPackage.Literals.JVM_CONSTRUCTOR;
+import static org.eclipse.xtext.common.types.TypesPackage.Literals.JVM_FIELD;
+import static org.eclipse.xtext.common.types.TypesPackage.Literals.JVM_OPERATION;
 import static org.eclipse.xtext.xtype.XtypePackage.Literals.XIMPORT_SECTION;
 
 import org.eclipse.emf.ecore.EClass;
@@ -83,6 +86,56 @@ public class SARLOutlineNodeComparator extends DefaultComparator {
 		//
 	}
 
+	/** Replies if the given type corresponds to a field.
+	 *
+	 * @param type the type.
+	 * @return {@code true} if the type corresponds to a SARL, Xtend or JVM field.
+	 * @since 0.9
+	 */
+	public static boolean isField(EClass type) {
+		return XTEND_FIELD.isSuperTypeOf(type) || JVM_FIELD.isSuperTypeOf(type);
+	}
+
+	/** Replies if the given type corresponds to an action.
+	 *
+	 * @param type the type.
+	 * @return {@code true} if the type corresponds to a SARL, Xtend or JVM action/method/operation.
+	 * @since 0.9
+	 */
+	public static boolean isAction(EClass type) {
+		return XTEND_FUNCTION.isSuperTypeOf(type) || JVM_OPERATION.isSuperTypeOf(type);
+	}
+
+	/** Replies if the given type corresponds to a constructor.
+	 *
+	 * @param type the type.
+	 * @return {@code true} if the type corresponds to a SARL, Xtend or JVM constructor.
+	 * @since 0.9
+	 */
+	public static boolean isConstructor(EClass type) {
+		return XTEND_CONSTRUCTOR.isSuperTypeOf(type) || JVM_CONSTRUCTOR.isSuperTypeOf(type);
+	}
+
+	/** Replies if the given type corresponds to a behavior unit.
+	 *
+	 * @param type the type.
+	 * @return {@code true} if the type corresponds to a SARL behavior unit.
+	 * @since 0.9
+	 */
+	public static boolean isBehaviorUnit(EClass type) {
+		return SARL_BEHAVIOR_UNIT.isSuperTypeOf(type);
+	}
+
+	/** Replies if the given type corresponds to a capacity use.
+	 *
+	 * @param type the type.
+	 * @return {@code true} if the type corresponds to a SARL capacity use.
+	 * @since 0.9
+	 */
+	public static boolean isCapacityUses(EClass type) {
+		return SARL_CAPACITY_USES.isSuperTypeOf(type);
+	}
+
 	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:returncount",
 			"checkstyle:cyclomaticcomplexity"})
 	@Override
@@ -108,34 +161,31 @@ public class SARLOutlineNodeComparator extends DefaultComparator {
 				}
 				return INNER_TYPE_PRIORITY;
 			}
-			if (SARL_CAPACITY_USES.isSuperTypeOf(objectNodeType)) {
+			if (isCapacityUses(objectNodeType)) {
 				return CAPACITY_USE_PRIORITY;
 			}
 			if (SARL_REQUIRED_CAPACITY.isSuperTypeOf(objectNodeType)) {
 				return CAPACITY_REQUIREMENT_PRIORITY;
 			}
-			if (XTEND_FIELD.isSuperTypeOf(objectNodeType)) {
+			if (isField(objectNodeType)) {
 				if (isStatic(objectNode)) {
 					return STATIC_FIELD_PRIORITY;
 				}
 				return FIELD_PRIORITY;
 			}
-			if (XTEND_FUNCTION.isSuperTypeOf(objectNodeType)) {
+			if (isAction(objectNodeType)) {
 				if (isStatic(objectNode)) {
 					return STATIC_METHOD_PRIORITY;
 				}
 				return METHOD_PRIORITY;
 			}
-			if (XTEND_CONSTRUCTOR.isSuperTypeOf(objectNodeType)) {
+			if (isConstructor(objectNodeType)) {
 				if (isStatic(objectNode)) {
 					return STATIC_CONSTRUCTOR;
 				}
 				return CONSTRUCTOR_PRIORITY;
 			}
-			if (TypesPackage.Literals.JVM_CONSTRUCTOR.isSuperTypeOf(objectNodeType)) {
-				return CONSTRUCTOR_PRIORITY;
-			}
-			if (SARL_BEHAVIOR_UNIT.isSuperTypeOf(objectNodeType)) {
+			if (isBehaviorUnit(objectNodeType)) {
 				return BEHAVIOR_UNIT_PRIORITY;
 			}
 		}

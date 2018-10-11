@@ -21,12 +21,9 @@
 
 package io.sarl.lang.ui.outline;
 
-import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_ACTION;
-import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_CONSTRUCTOR;
-import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_FUNCTION;
+import static io.sarl.lang.ui.outline.SARLOutlineNodeComparator.isAction;
 
 import com.google.inject.Inject;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.jface.action.Action;
 import org.eclipse.xtext.ui.IImageHelper.IImageDescriptorHelper;
 import org.eclipse.xtext.ui.editor.outline.IOutlineNode;
@@ -57,24 +54,13 @@ public class SARLOperationOutlineFilter extends AbstractFilterOutlineContributio
 	@Inject
 	private IImageDescriptorHelper imageHelper;
 
-	/** Replies if the given type is for a SARL operation.
-	 *
-	 * @param type the type to test.
-	 * @return <code>true</code> if the given type is for a SARL operation; <code>false</code> otherwise.
-	 */
-	protected static boolean isOperation(EClass type) {
-		return type == SARL_ACTION
-				|| type == XTEND_FUNCTION
-				|| type == XTEND_CONSTRUCTOR;
-	}
-
 	@Override
 	protected boolean apply(IOutlineNode node) {
 		if (node instanceof EObjectNode) {
-			return !isOperation(((EObjectNode) node).getEClass());
+			return !isAction(((EObjectNode) node).getEClass());
 		}
 		if (node instanceof EStructuralFeatureNode) {
-			return !isOperation(((EStructuralFeatureNode) node).getEStructuralFeature().eClass());
+			return !isAction(((EStructuralFeatureNode) node).getEStructuralFeature().eClass());
 		}
 		return true;
 	}

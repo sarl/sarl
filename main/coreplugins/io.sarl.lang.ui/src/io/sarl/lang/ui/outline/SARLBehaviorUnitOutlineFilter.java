@@ -21,10 +21,9 @@
 
 package io.sarl.lang.ui.outline;
 
-import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_BEHAVIOR_UNIT;
+import static io.sarl.lang.ui.outline.SARLOutlineNodeComparator.isBehaviorUnit;
 
 import com.google.inject.Inject;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.jface.action.Action;
 import org.eclipse.xtext.ui.IImageHelper.IImageDescriptorHelper;
 import org.eclipse.xtext.ui.editor.outline.IOutlineNode;
@@ -52,16 +51,8 @@ public class SARLBehaviorUnitOutlineFilter extends AbstractFilterOutlineContribu
 	 */
 	public static final String ICON_BASENAME = "hide_behavior_units.png"; //$NON-NLS-1$
 
-	@Inject private IImageDescriptorHelper imageHelper;
-
-	/** Replies if the given type is a behavior unit.
-	 *
-	 * @param type the type to test.
-	 * @return <code>true</code> if the given type is for a behavior unit; <code>false</code> otherwise.
-	 */
-	protected static boolean isBehaviorUnit(EClass type) {
-		return type == SARL_BEHAVIOR_UNIT;
-	}
+	@Inject
+	private IImageDescriptorHelper imageHelper;
 
 	@Override
 	protected boolean apply(IOutlineNode node) {

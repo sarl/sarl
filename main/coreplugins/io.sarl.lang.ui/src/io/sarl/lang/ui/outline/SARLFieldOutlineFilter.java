@@ -21,10 +21,9 @@
 
 package io.sarl.lang.ui.outline;
 
-import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_FIELD;
+import static io.sarl.lang.ui.outline.SARLOutlineNodeComparator.isField;
 
 import com.google.inject.Inject;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.jface.action.Action;
 import org.eclipse.xtext.ui.IImageHelper.IImageDescriptorHelper;
 import org.eclipse.xtext.ui.editor.outline.IOutlineNode;
@@ -54,15 +53,6 @@ public class SARLFieldOutlineFilter extends AbstractFilterOutlineContribution {
 
 	@Inject
 	private IImageDescriptorHelper imageHelper;
-
-	/** Replies if the given type is for a SARL field.
-	 *
-	 * @param type the type to test.
-	 * @return <code>true</code> if the given type is for SARL fields, <code>false</code> otherwise.
-	 */
-	protected static boolean isField(EClass type) {
-		return type == XTEND_FIELD;
-	}
 
 	@Override
 	protected boolean apply(IOutlineNode node) {
