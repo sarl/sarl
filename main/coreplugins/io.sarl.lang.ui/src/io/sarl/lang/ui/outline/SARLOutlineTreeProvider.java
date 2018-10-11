@@ -23,6 +23,7 @@ package io.sarl.lang.ui.outline;
 
 import javax.inject.Named;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
@@ -32,19 +33,29 @@ import org.eclipse.xtend.core.xtend.XtendClass;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
+import org.eclipse.xtend.lib.annotations.AccessorType;
+import org.eclipse.xtend.lib.annotations.Accessors;
+import org.eclipse.xtext.common.types.JvmAnnotationReference;
+import org.eclipse.xtext.common.types.JvmAnnotationValue;
 import org.eclipse.xtext.common.types.JvmConstructor;
+import org.eclipse.xtext.common.types.JvmCustomAnnotationValue;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmFeature;
+import org.eclipse.xtext.common.types.JvmField;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
+import org.eclipse.xtext.common.types.JvmMember;
+import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.nodemodel.ICompositeNode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.ui.editor.outline.IOutlineNode;
 import org.eclipse.xtext.ui.editor.outline.impl.DocumentRootNode;
 import org.eclipse.xtext.ui.editor.outline.impl.EObjectNode;
 import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode;
+import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.annotations.ui.outline.XbaseWithAnnotationsOutlineTreeProvider;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
@@ -79,6 +90,9 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 
 	@Inject
 	private CommonTypeComputationServices services;
+
+	@Inject
+	private AnnotationLookup annotationFinder;
 
 	/** Create a node for the SARL script.
 	 *
@@ -141,8 +155,11 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 				if (feature instanceof SarlConstructor) {
 					hasConstructor = true;
 					createNode(elementNode, feature);
-				} else if (feature instanceof SarlField
-						|| feature instanceof SarlAction
+				} else if (feature instanceof SarlField) {
+					final SarlField field = (SarlField) feature;
+					createNode(elementNode, field);
+					createAutomaticAccessors(elementNode, field);
+				} else if (feature instanceof SarlAction
 						|| feature instanceof SarlBehaviorUnit
 						|| feature instanceof XtendTypeDeclaration) {
 					createNode(elementNode, feature);
@@ -157,6 +174,88 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 		if (!hasConstructor && modelElement instanceof XtendClass) {
 			createInheritedConstructors(elementNode, (XtendClass) modelElement);
 		}
+	}
+
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity", "checkstyle:nestedifdepth"})
+	private void createAutomaticAccessors(EStructuralFeatureNode elementNode, SarlField field) {
+		final JvmField jvmField = this.associations.getJvmField(field);
+		if (jvmField != null) {
+			final JvmAnnotationReference annotation = this.annotationFinder.findAnnotation(jvmField, Accessors.class);
+			if (annotation != null && !annotation.getValues().isEmpty()) {
+				for (final JvmAnnotationValue value : annotation.getValues()) {
+					if (value instanceof JvmCustomAnnotationValue) {
+						final JvmCustomAnnotationValue annotationValue = (JvmCustomAnnotationValue) value;
+						boolean hasGetter = false;
+						boolean hasSetter = false;
+						for (final EObject rvalue : annotationValue.getValues()) {
+							if (rvalue instanceof XFeatureCall) {
+								final XFeatureCall call = (XFeatureCall) rvalue;
+								final String id = call.getFeature().getSimpleName();
+								try {
+									final AccessorType acc = AccessorType.valueOf(id);
+									assert acc != null;
+									switch (acc) {
+									case PACKAGE_GETTER:
+									case PRIVATE_GETTER:
+									case PROTECTED_GETTER:
+									case PUBLIC_GETTER:
+										hasGetter = true;
+										break;
+									case PACKAGE_SETTER:
+									case PRIVATE_SETTER:
+									case PROTECTED_SETTER:
+									case PUBLIC_SETTER:
+										hasSetter = true;
+										break;
+									case NONE:
+										hasGetter = false;
+										hasSetter = false;
+										break;
+									default:
+									}
+								} catch (Throwable exception) {
+									// Ignore
+								}
+							}
+						}
+						if (hasGetter || hasSetter) {
+							final JvmDeclaredType container = jvmField.getDeclaringType();
+							final String basename = org.eclipse.xtext.util.Strings.toFirstUpper(field.getName());
+							if (hasGetter) {
+								JvmOperation operation = findMethod(container, "get" + basename); //$NON-NLS-1$
+								if (operation == null) {
+									operation = findMethod(container, "is" + basename); //$NON-NLS-1$
+									if (operation == null) {
+										operation = findMethod(container, "has" + basename); //$NON-NLS-1$
+									}
+								}
+								if (operation != null) {
+									createNode(elementNode, operation);
+								}
+							}
+							if (hasSetter) {
+								final JvmOperation operation = findMethod(container, "set" + basename); //$NON-NLS-1$
+								if (operation != null) {
+									createNode(elementNode, operation);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private static JvmOperation findMethod(JvmDeclaredType container, String name) {
+		for (final JvmMember member : container.getMembers()) {
+			if (member instanceof JvmOperation) {
+				final JvmOperation operation = (JvmOperation) member;
+				if (Objects.equal(name, operation.getSimpleName())) {
+					return operation;
+				}
+			}
+		}
+		return null;
 	}
 
 	private void createInheritedConstructors(EStructuralFeatureNode elementNode, XtendClass modelElement) {
