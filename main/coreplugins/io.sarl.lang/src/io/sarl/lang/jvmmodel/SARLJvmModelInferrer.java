@@ -3115,7 +3115,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		}
 
 		final JvmOperation result = this.typeBuilder.toMethod(sarlElement, EQUALS_FUNCTION_NAME,
-				this._typeReferenceBuilder.typeRef(Boolean.TYPE), null);
+				this._typeReferenceBuilder.typeRef(boolean.class), null);
 		if (result == null) {
 			return null;
 		}
@@ -3226,7 +3226,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			return null;
 		}
 		final JvmOperation result = this.typeBuilder.toMethod(sarlElement, HASHCODE_FUNCTION_NAME,
-				this._typeReferenceBuilder.typeRef(Integer.TYPE), null);
+				this._typeReferenceBuilder.typeRef(int.class), null);
 		if (result == null) {
 			return null;
 		}

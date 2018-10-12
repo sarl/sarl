@@ -1389,17 +1389,6 @@ public class SARLValidator extends AbstractSARLValidator {
 		}
 	}
 
-	private String returnType(EObject source) {
-		if (source instanceof XtendFunction) {
-			final XtendFunction fct = (XtendFunction) source;
-			final JvmTypeReference type = fct.getReturnType();
-			if (type != null) {
-				return type.getIdentifier();
-			}
-		}
-		return this.grammarAccess.getVoidKeyword();
-	}
-
 	/** Caution: This function is overridden for translating the MISSING_OVERRIDE error into a warning,
 	 * and emit a warning when a return type should be specified.
 	 *
@@ -1429,13 +1418,18 @@ public class SARLValidator extends AbstractSARLValidator {
 					}
 					exceptionMismatch.add(inherited);
 				} else if (details.contains(OverrideCheckDetails.RETURN_MISMATCH)) {
+					final JvmTypeReference inheritedReturnType = inherited.getOverrideCheckResult().getGivenOperation().getReturnType();
+					final LightweightTypeReference resolvedReturnType = inherited.getOverrideCheckResult().getThisOperation().getResolvedReturnType();
+					final String signature = inherited.getSimpleSignature();
+					final EStructuralFeature sourceReturnTypeFeature = returnTypeFeature(sourceElement);
 					error(MessageFormat.format(Messages.SARLValidator_45,
-							inherited.getSimpleSignature(),
-							inherited.getResolvedReturnType().getIdentifier(),
-							returnType(sourceElement)),
+							signature,
+							resolvedReturnType.getIdentifier(),
+							inheritedReturnType.getIdentifier()),
 							sourceElement,
-							returnTypeFeature(sourceElement), INCOMPATIBLE_RETURN_TYPE,
-							inherited.getResolvedReturnType().getIdentifier());
+							sourceReturnTypeFeature,
+							INCOMPATIBLE_RETURN_TYPE,
+							resolvedReturnType.getIdentifier());
 				}
 			} else if (!isIgnored(RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED, sourceElement)
 					&& sourceElement instanceof SarlAction) {
