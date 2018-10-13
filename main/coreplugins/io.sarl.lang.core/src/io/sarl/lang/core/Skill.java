@@ -83,7 +83,7 @@ public abstract class Skill extends AgentTrait {
 	 */
 	void registerUse() {
 		final int value = this.uses.getAndIncrement();
-		if (value <= 0) {
+		if (value == 0) {
 			install();
 		}
 	}
@@ -92,7 +92,7 @@ public abstract class Skill extends AgentTrait {
 	 */
 	void unregisterUse() {
 		final int value = this.uses.decrementAndGet();
-		if (value <= 0) {
+		if (value == 0) {
 			uninstall(UninstallationStage.PRE_DESTROY_EVENT);
 			uninstall(UninstallationStage.POST_DESTROY_EVENT);
 		}

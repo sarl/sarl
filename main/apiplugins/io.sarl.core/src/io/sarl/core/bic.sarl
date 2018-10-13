@@ -1021,9 +1021,9 @@ capacity Logging {
 
 	/** Set the logging level.
 	 *
-	 * @param level <code>0</code> for no logging, <code>1</code> for error,
+	 * @param level <code>0</code> or lower for no logging, <code>1</code> for error,
 	 *         <code>2</code> for warning, <code>3</code> for info,
-	 *         <code>5</code> for debug.
+	 *         <code>4</code> or higher for debug.
 	 */
 	def setLogLevel(level : int)
 
