@@ -1975,20 +1975,17 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     XExpressionOrVarDeclaration returns SarlCastedExpression
 	 *
 	 * Constraint:
-	 *     (target=XCastedExpression_SarlCastedExpression_1_0_0_0 feature=[JvmIdentifiableElement|OpCast] type=JvmTypeReference)
+	 *     (target=XCastedExpression_SarlCastedExpression_1_0_0_0 type=JvmTypeReference)
 	 */
 	protected void sequence_XCastedExpression(ISerializationContext context, SarlCastedExpression semanticObject) {
 		if (errorAcceptor != null) {
 			if (transientValues.isValueTransient(semanticObject, XbasePackage.Literals.XCASTED_EXPRESSION__TARGET) == ValueTransient.YES)
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XbasePackage.Literals.XCASTED_EXPRESSION__TARGET));
-			if (transientValues.isValueTransient(semanticObject, SarlPackage.Literals.SARL_CASTED_EXPRESSION__FEATURE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, SarlPackage.Literals.SARL_CASTED_EXPRESSION__FEATURE));
 			if (transientValues.isValueTransient(semanticObject, XbasePackage.Literals.XCASTED_EXPRESSION__TYPE) == ValueTransient.YES)
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, XbasePackage.Literals.XCASTED_EXPRESSION__TYPE));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
 		feeder.accept(grammarAccess.getXCastedExpressionAccess().getSarlCastedExpressionTargetAction_1_0_0_0(), semanticObject.getTarget());
-		feeder.accept(grammarAccess.getXCastedExpressionAccess().getFeatureJvmIdentifiableElementOpCastParserRuleCall_1_0_0_1_0_1(), semanticObject.eGet(SarlPackage.Literals.SARL_CASTED_EXPRESSION__FEATURE, false));
 		feeder.accept(grammarAccess.getXCastedExpressionAccess().getTypeJvmTypeReferenceParserRuleCall_1_1_0(), semanticObject.getType());
 		feeder.finish();
 	}

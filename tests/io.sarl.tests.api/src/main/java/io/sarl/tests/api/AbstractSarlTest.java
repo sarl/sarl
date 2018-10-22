@@ -1314,12 +1314,24 @@ public abstract class AbstractSarlTest extends Assert {
 	/** Create an instance of class.
 	 */
 	protected SarlScript file(String string, boolean validate) throws Exception {
-		SarlScript script = getParseHelper().parse(string);
+		return file(string, null, validate);
+	}
+
+	/** Create an instance of class.
+	 * @since 0.9
+	 */
+	protected SarlScript file(String string, ResourceSet resourceSet, boolean validate) throws Exception {
+		SarlScript script;
+		if (resourceSet == null) {
+			script = getParseHelper().parse(string);
+		} else {
+			script = getParseHelper().parse(string, resourceSet);
+		}
 		if (validate) {
 			Resource resource = script.eResource();
-			ResourceSet resourceSet = resource.getResourceSet();
-			if (resourceSet instanceof XtextResourceSet) {
-				((XtextResourceSet) resourceSet).setClasspathURIContext(getClass());
+			ResourceSet resourceSet0 = resource.getResourceSet();
+			if (resourceSet0 instanceof XtextResourceSet) {
+				((XtextResourceSet) resourceSet0).setClasspathURIContext(getClass());
 			}
 			assertEquals(resource.getErrors().toString(), 0, resource.getErrors().size());
 			Collection<Issue> issues = Collections2.filter(issues(resource), new Predicate<Issue>() {
@@ -1354,7 +1366,7 @@ public abstract class AbstractSarlTest extends Assert {
 	/** Validate the given resource and reply the validator.
 	 */
 	protected Validator validate(Resource resource) {
-		Validator validator = new XtextValidator(resource);
+		Validator validator = new XtextValidator(resource, this.validationHelper);
 		this.injector.injectMembers(validator);
 		return validator;
 	}
@@ -1808,18 +1820,20 @@ public abstract class AbstractSarlTest extends Assert {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private class XtextValidator implements Validator {
+	static class XtextValidator implements Validator {
 
 		private Resource resource;
 
 		private ValidationTestHelper testHelper;
 
-		/**
+		/** Constructor.
+		 *
 		 * @param resource the resource to validate.
+		 * @param testHelper the validator.
 		 */
-		private XtextValidator(Resource resource) {
+		XtextValidator(Resource resource, ValidationTestHelper testHelper) {
 			this.resource = resource;
-			this.testHelper = AbstractSarlTest.this.validationHelper;
+			this.testHelper = testHelper;
 		}
 
 		@Override

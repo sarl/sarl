@@ -190,7 +190,7 @@ public class Bug846 extends AbstractSarlTest {
 			"@SuppressWarnings(\"all\")",
 			"public class SomeAgent extends Agent {",
 			"  private void $behaviorUnit$Initialize$0(final Initialize occurrence) {",
-			"    double result = Math.pow(((double) (-1)), 2);",
+			"    double result = Math.pow((-1), 2);",
 			"  }",
 			"  ",
 			"  @SyntheticMember",

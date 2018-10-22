@@ -33,7 +33,7 @@ public class SARLFeatureAccess {
 
 	/** Internal id for the agent type.
 	 */
-	public static final int SARL_AGENT = 18;
+	public static final int SARL_AGENT = 19;
 
 	/** Internal id for the event type.
 	 */
@@ -41,23 +41,23 @@ public class SARLFeatureAccess {
 
 	/** Internal id for the behavior type.
 	 */
-	public static final int SARL_BEHAVIOR = 20;
+	public static final int SARL_BEHAVIOR = 21;
 
 	/** Internal id for the capacity type.
 	 */
-	public static final int SARL_CAPACITY = 19;
+	public static final int SARL_CAPACITY = 20;
 
 	/** Internal id for the skill type.
 	 */
-	public static final int SARL_SKILL = 21;
+	public static final int SARL_SKILL = 22;
 
 	/** Internal id for the space type.
 	 */
-	public static final int SARL_SPACE = 16;
+	public static final int SARL_SPACE = 17;
 
 	/** Internal id for the artifact type.
 	 */
-	public static final int SARL_ARTIFACT = 17;
+	public static final int SARL_ARTIFACT = 18;
 
 	/** The "def" keyword.
 	 *

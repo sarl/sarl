@@ -371,10 +371,10 @@ In SARL, it is easy to overload or re-define an existing operator.
 
 You should define the operator mapping function (see the previous sections for a comprehensive list of them).
 
- the following example, the addition operator [:plusop] for two [:pairtype:] objects is defined.
- The function that is defining the operator must be named with the [:operatorprefix:] prefix, and have one parameter
- for each operand associated with the operator. In the example, the addition of two pairs [:pair1:] and [:pair2:].
- gives the pair (a,d).
+The following example, the addition operator [:plusop] for two [:pairtype:] objects is defined.
+The function that is defining the operator must be named with the [:operatorprefix:] prefix, and have one parameter
+for each operand associated with the operator. In the example, the addition of two pairs [:pair1:] and [:pair2:].
+gives the pair (a,d).
  
  		[:Success:]
  			package io.sarl.docs.reference.gsr

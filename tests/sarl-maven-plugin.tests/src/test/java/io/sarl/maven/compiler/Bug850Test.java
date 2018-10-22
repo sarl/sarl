@@ -31,6 +31,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import io.sarl.lang.SARLVersion;
+import io.sarl.lang.sarl.SarlPackage;
 
 /** Test for issue #850: CLI Compile error when using {@code occurrence.xxxx}.
  * 
@@ -67,7 +68,7 @@ public class Bug850Test extends AbstractMojoTest {
 			"import javax.inject.Inject;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-			"@SarlElementType(18)",
+			"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 			"@SuppressWarnings(\"all\")",
 			"public class Agent1 extends Agent {",
 			"@Pure",
@@ -128,7 +129,7 @@ public class Bug850Test extends AbstractMojoTest {
 			"import javax.inject.Inject;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-			"@SarlElementType(18)",
+			"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 			"@SuppressWarnings(\"all\")",
 			"public class Agent2 extends Agent {",
 			"@Pure",
@@ -190,7 +191,7 @@ public class Bug850Test extends AbstractMojoTest {
 			"import javax.inject.Inject;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-			"@SarlElementType(18)",
+			"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 			"@SuppressWarnings(\"all\")",
 			"public class Agent3 extends Agent {",
 			"@Pure",
@@ -250,7 +251,7 @@ public class Bug850Test extends AbstractMojoTest {
 			"import javax.inject.Inject;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-			"@SarlElementType(18)",
+			"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 			"@SuppressWarnings(\"all\")",
 			"public class Agent4 extends Agent {",
 			"@Pure",

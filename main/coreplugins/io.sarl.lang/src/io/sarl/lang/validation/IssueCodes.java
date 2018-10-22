@@ -218,6 +218,13 @@ public final class IssueCodes {
 	public static final String INTERNAL_ERROR =
 			ISSUE_CODE_PREFIX + "internal_error"; //$NON-NLS-1$
 
+	/**
+	 * The cast operator is linked to a method for converting a value that may be inefficient.
+	 * @since 0.9
+	 */
+	public static final String POTENTIAL_INEFFICIENT_VALUE_CONVERSION =
+			ISSUE_CODE_PREFIX + "potential_inefficient_value_conversion"; //$NON-NLS-1$
+
 	private IssueCodes() {
 		//
 	}

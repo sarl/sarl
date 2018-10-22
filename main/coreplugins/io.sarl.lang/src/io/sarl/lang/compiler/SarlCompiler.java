@@ -46,6 +46,7 @@ import org.eclipse.xtext.common.types.JvmBooleanAnnotationValue;
 import org.eclipse.xtext.common.types.JvmByteAnnotationValue;
 import org.eclipse.xtext.common.types.JvmCharAnnotationValue;
 import org.eclipse.xtext.common.types.JvmCustomAnnotationValue;
+import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmDoubleAnnotationValue;
 import org.eclipse.xtext.common.types.JvmEnumAnnotationValue;
 import org.eclipse.xtext.common.types.JvmExecutable;
@@ -54,24 +55,36 @@ import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmIntAnnotationValue;
 import org.eclipse.xtext.common.types.JvmLongAnnotationValue;
+import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmShortAnnotationValue;
 import org.eclipse.xtext.common.types.JvmStringAnnotationValue;
+import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.linking.ILinker;
 import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
+import org.eclipse.xtext.xbase.XAssignment;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
+import org.eclipse.xtext.xbase.XCastedExpression;
+import org.eclipse.xtext.xbase.XCollectionLiteral;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XFeatureCall;
+import org.eclipse.xtext.xbase.XMemberFeatureCall;
+import org.eclipse.xtext.xbase.XNullLiteral;
 import org.eclipse.xtext.xbase.XNumberLiteral;
+import org.eclipse.xtext.xbase.XSetLiteral;
 import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.XTypeLiteral;
 import org.eclipse.xtext.xbase.XVariableDeclaration;
+import org.eclipse.xtext.xbase.XbaseFactory;
+import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.compiler.IGeneratorConfigProvider;
+import org.eclipse.xtext.xbase.compiler.Later;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
+import org.eclipse.xtext.xbase.featurecalls.IdentifiableSimpleNameProvider;
 import org.eclipse.xtext.xbase.typesystem.IBatchTypeResolver;
 import org.eclipse.xtext.xbase.typesystem.IResolvedTypes;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
@@ -82,6 +95,7 @@ import io.sarl.lang.jvmmodel.Messages;
 import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
 import io.sarl.lang.sarl.SarlAssertExpression;
 import io.sarl.lang.sarl.SarlBreakExpression;
+import io.sarl.lang.sarl.SarlCastedExpression;
 import io.sarl.lang.sarl.SarlContinueExpression;
 import io.sarl.lang.typesystem.SARLExpressionHelper;
 
@@ -148,6 +162,9 @@ public class SarlCompiler extends XtendCompiler {
 
 	@Inject
 	private ISarlEarlyExitComputer earlyExit;
+
+	@Inject
+	private IdentifiableSimpleNameProvider featureNameProvider;
 
 	private volatile boolean isOnJavaEarlyExit;
 
@@ -218,7 +235,22 @@ public class SarlCompiler extends XtendCompiler {
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	protected synchronized void appendInlineFeatureCall(XAbstractFeatureCall call, ITreeAppendable target) {
 		// Overridden for fixing the @Inline behavior
-		final JvmAnnotationReference inlineAnnotation = this.expressionHelper.findInlineAnnotation(call);
+		appendInlineFeatureCall(call, call, target);
+	}
+
+	/** Append the inline version for the given call.
+	 *
+	 * <p>This function supports the specific semantic of the inline expression that is defined into the SARL specification.
+	 *
+	 * @param featureCall the feature to call.
+	 * @param context the context for finding types.
+	 * @param target the receiver.
+	 */
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
+	protected synchronized void appendInlineFeatureCall(XAbstractFeatureCall featureCall,
+			EObject context, ITreeAppendable target) {
+		// Overridden for fixing the @Inline behavior
+		final JvmAnnotationReference inlineAnnotation = this.expressionHelper.findInlineAnnotation(featureCall);
 
 		String formatString = null;
 		final List<JvmTypeReference> importedTypes = Lists.newArrayListWithCapacity(2);
@@ -245,10 +277,10 @@ public class SarlCompiler extends XtendCompiler {
 			throw new IllegalStateException();
 		}
 
-		final IResolvedTypes resolvedTypes = this.batchTypeResolver.resolveTypes(call);
+		final IResolvedTypes resolvedTypes = this.batchTypeResolver.resolveTypes(context);
 
-		final List<XExpression> arguments = getActualArguments(call);
-		final JvmIdentifiableElement calledFeature = call.getFeature();
+		final List<XExpression> arguments = getActualArguments(featureCall);
+		final JvmIdentifiableElement calledFeature = featureCall.getFeature();
 		int numberVariadicParameter = 0;
 		final int numberFormalParameters;
 		JvmFormalParameter formalVariadicParameter = null;
@@ -280,7 +312,7 @@ public class SarlCompiler extends XtendCompiler {
 				final int index = Integer.parseInt(indexOrDollar) - 1;
 				// Treat the $0 parameter in the inline expression
 				if (index < 0) {
-					final boolean hasReceiver = appendReceiver(call, target, true);
+					final boolean hasReceiver = appendReceiver(featureCall, target, true);
 					if (hasReceiver) {
 						target.append("."); //$NON-NLS-1$
 					}
@@ -296,13 +328,13 @@ public class SarlCompiler extends XtendCompiler {
 							appendArgument(argument, target, true);
 						}
 					} else if (index > numberFormalParametersImports) {
-						final List<LightweightTypeReference> typeArguments = resolvedTypes.getActualTypeArguments(call);
+						final List<LightweightTypeReference> typeArguments = resolvedTypes.getActualTypeArguments(featureCall);
 						final LightweightTypeReference typeArgument = typeArguments.get(index - numberFormalParametersImports - 1);
-						serialize(typeArgument.getRawTypeReference().toTypeReference(), call, target);
+						serialize(typeArgument.getRawTypeReference().toTypeReference(), context, target);
 					} else if (index >= numberFormalParameters && index < numberFormalParametersImports) {
-						serialize(importedTypes.get(index - numberFormalParameters), call, target);
+						serialize(importedTypes.get(index - numberFormalParameters), context, target);
 					} else if (index == numberFormalParametersImports) {
-						appendTypeArguments(call, target);
+						appendTypeArguments(featureCall, target);
 					} else if (index < arguments.size()) {
 						final XExpression argument = arguments.get(index);
 						appendArgument(argument, target, index > 0);
@@ -466,6 +498,11 @@ public class SarlCompiler extends XtendCompiler {
 		}
 	}
 
+	@Override
+	protected void _toJavaStatement(XCastedExpression expr, ITreeAppendable appendable, boolean isReferenced) {
+		internalToJavaStatement(expr.getTarget(), appendable, isReferenced);
+	}
+
 	/** Replies all the variables that are referenced into the given expression.
 	 *
 	 * @param expression the expression.
@@ -527,6 +564,167 @@ public class SarlCompiler extends XtendCompiler {
 		if (!assertExpression.isIsStatic() && isAtLeastJava8(assertExpression)) {
 			appendable.append("/* error - couldn't compile nested assert */"); //$NON-NLS-1$
 		}
+	}
+
+	@Override
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:nestedifdepth"})
+	protected void _toJavaExpression(XCastedExpression expr, ITreeAppendable appendable) {
+		final LightweightTypeReference targetType = toLightweight(getType(expr.getTarget()), expr);
+		final LightweightTypeReference expectedType = toLightweight(expr.getType(), expr);
+		if (expr instanceof SarlCastedExpression) {
+			final SarlCastedExpression cast = (SarlCastedExpression) expr;
+			final JvmOperation operation = cast.getFeature();
+			if (operation != null) {
+				final boolean hasNullInputTest = !targetType.isPrimitive() && !targetType.isPrimitiveVoid()
+						&& !isLiteral(expr.getTarget());
+
+				final XExpression receiver = cast.getReceiver();
+				final XExpression argument = cast.getArgument();
+
+				if (hasNullInputTest) {
+					appendable.append("("); //$NON-NLS-1$
+					internalToConvertedExpression(expr.getTarget(), appendable, targetType);
+					appendable.append(" == null ? "); //$NON-NLS-1$
+					appendDefaultLiteral(appendable, expectedType);
+					appendable.append(" : "); //$NON-NLS-1$
+				}
+
+				final Later callGeneration = it -> {
+					final JvmAnnotationReference inlineAnnotation = this.expressionHelper.findInlineAnnotation(operation);
+					if (inlineAnnotation != null) {
+						final XAbstractFeatureCall call;
+						if (operation.isStatic()) {
+							final XFeatureCall mcall = XbaseFactory.eINSTANCE.createXFeatureCall();
+							mcall.setFeature(operation);
+							mcall.getActualArguments().add(EcoreUtil.copy(argument));
+							mcall.eContainer();
+							call = mcall;
+						} else {
+							final XMemberFeatureCall mcall = XbaseFactory.eINSTANCE.createXMemberFeatureCall();
+							mcall.setFeature(operation);
+							if (operation.getParameters().isEmpty()) {
+								mcall.setMemberCallTarget(EcoreUtil.copy(argument));
+								call = mcall;
+							} else {
+								mcall.setMemberCallTarget(receiver);
+								mcall.getActualArguments().add(EcoreUtil.copy(argument));
+								call = mcall;
+							}
+						}
+						appendInlineFeatureCall(call, cast, appendable);
+					} else {
+						if (operation.isStatic()) {
+							final JvmDeclaredType operationContainer = operation.getDeclaringType();
+							final JvmTypeReference operationContainerType = getTypeComputationServices()
+									.getTypeReferences().createTypeRef(operationContainer);
+							serialize(operationContainerType, expr, it);
+							it.append("."); //$NON-NLS-1$
+						} else if (receiver != null) {
+							final LightweightTypeReference receiverType;
+							if (receiver == expr.getTarget()) {
+								receiverType = targetType;
+							} else {
+								receiverType = toLightweight(getType(receiver), expr);
+							}
+							if (receiverType.isPrimitive() || receiverType.isPrimitiveVoid()) {
+								internalToConvertedExpression(receiver, it, receiverType.getWrapperTypeIfPrimitive());
+							} else {
+								internalToJavaExpression(receiver, it);
+							}
+							it.append("."); //$NON-NLS-1$
+						}
+
+						String name = null;
+						if (it.hasName(operation)) {
+							name = it.getName(operation);
+						} else {
+							name = this.featureNameProvider.getSimpleName(operation);
+						}
+						if (name == null) {
+							name = "/* name is null */"; //$NON-NLS-1$
+						}
+
+						it.trace(expr, XbasePackage.Literals.XABSTRACT_FEATURE_CALL__FEATURE, 0).append(name);
+						it.append("("); //$NON-NLS-1$
+
+						if (argument != null) {
+							if (argument == expr.getTarget()) {
+								internalToConvertedExpression(expr.getTarget(), it, targetType);
+							} else {
+								appendArgument(argument, it, false);
+							}
+						}
+
+						it.append(")"); //$NON-NLS-1$
+					}
+				};
+
+				final LightweightTypeReference concreteType = toLightweight(operation.getReturnType(), expr);
+				doConversion(expectedType, concreteType, appendable, expr, callGeneration);
+
+				if (hasNullInputTest) {
+					appendable.append(")"); //$NON-NLS-1$
+				}
+
+				return;
+			}
+		}
+		// Generate the standard Java cast operator
+		if (expectedType.isAssignableFrom(targetType)) {
+			internalToConvertedExpression(expr.getTarget(), appendable, expectedType);
+		} else {
+			super._toJavaExpression(expr, appendable);
+		}
+	}
+
+	private static boolean isLiteral(XExpression expr) {
+		return expr instanceof XBooleanLiteral || expr instanceof XStringLiteral
+				|| expr instanceof XNumberLiteral || expr instanceof XCollectionLiteral
+				|| expr instanceof XSetLiteral || expr instanceof XNullLiteral || expr instanceof XTypeLiteral;
+	}
+
+	/** Generate the Java expression for the given JVM operation.
+	 *
+	 * @param sourceObject the object into the source tree that is the source for the call.
+	 * @param operation the JVM operation to call.
+	 * @param receiver the receiver of the call.
+	 * @param arguments the arguments to pass to the called operation.
+	 * @param appendable the receiver of the Java code.
+	 */
+	protected void jvmOperationCallToJavaExpression(final XExpression sourceObject, final JvmOperation operation,
+			XExpression receiver, List<XExpression> arguments, ITreeAppendable appendable) {
+		String name = null;
+		assert operation != null;
+		if (appendable.hasName(operation)) {
+			name = appendable.getName(operation);
+		} else {
+			name = this.featureNameProvider.getSimpleName(operation);
+		}
+		if (name == null) {
+			name = "/* name is null */"; //$NON-NLS-1$
+		}
+		if (operation.isStatic()) {
+			final JvmDeclaredType operationContainer = operation.getDeclaringType();
+			final JvmIdentifiableElement container = getLogicalContainerProvider().getNearestLogicalContainer(sourceObject);
+			final JvmType containerType = EcoreUtil2.getContainerOfType(container, JvmType.class);
+			final LightweightTypeReference reference = newTypeReferenceOwner(sourceObject)
+					.toLightweightTypeReference(operationContainer);
+			if (!reference.isAssignableFrom(containerType)) {
+				appendable.append(operationContainer);
+				appendable.append("."); //$NON-NLS-1$
+			}
+		} else if (receiver != null) {
+			internalToJavaExpression(receiver, appendable);
+			appendable.append("."); //$NON-NLS-1$
+		} else {
+			appendable.append("this."); //$NON-NLS-1$
+		}
+		appendable.trace(sourceObject, XbasePackage.Literals.XABSTRACT_FEATURE_CALL__FEATURE, 0).append(name);
+		appendable.append("("); //$NON-NLS-1$
+		if (arguments != null && !arguments.isEmpty()) {
+			appendArguments(arguments, appendable, true);
+		}
+		appendable.append(")"); //$NON-NLS-1$
 	}
 
 	@Override
@@ -593,6 +791,52 @@ public class SarlCompiler extends XtendCompiler {
 			this.isOnJavaEarlyExit = true;
 		}
 		return super.compile(expr, parentAppendable, expectedReturnType, declaredExceptions);
+	}
+
+	/** Replies if the given annotation reference has an associated boolean value defined into
+	 * {@code constantExpression}.
+	 *
+	 * @param reference the annotation reference.
+	 * @return {@code true} if the annotation has the {@code constantExpression} value evaluted to {@code true};
+	 *     otherwise {@code false}.
+	 */
+	private static boolean isConstantExpression(JvmAnnotationReference reference) {
+		// FIXME: Remove when Issue is fixed (https://github.com/eclipse/xtext-extras/pull/324)
+		for (final JvmAnnotationValue annotationValue: reference.getValues()) {
+			if ("constantExpression".equals(annotationValue.getValueName())) { //$NON-NLS-1$
+				if (annotationValue instanceof JvmBooleanAnnotationValue) {
+					return ((JvmBooleanAnnotationValue) annotationValue).getValues().get(0).booleanValue();
+				} else if (annotationValue instanceof JvmCustomAnnotationValue) {
+					final EObject value = ((JvmCustomAnnotationValue) annotationValue).getValues().get(0);
+					if (value instanceof XBooleanLiteral) {
+						return ((XBooleanLiteral) value).isIsTrue();
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	@Override
+	protected void featureCalltoJavaExpression(final XAbstractFeatureCall call, ITreeAppendable appendable, boolean isExpressionContext) {
+		// FIXME: Remove when Issue is fixed (https://github.com/eclipse/xtext-extras/pull/324)
+		if (call instanceof XAssignment) {
+			assignmentToJavaExpression((XAssignment) call, appendable, isExpressionContext);
+		} else {
+			if (needMultiAssignment(call)) {
+				appendLeftOperand(call, appendable, isExpressionContext).append(" = "); //$NON-NLS-1$
+			}
+			final JvmAnnotationReference annotationRef = this.expressionHelper.findInlineAnnotation(call);
+			ITreeAppendable app = appendable;
+			if (annotationRef == null || !isConstantExpression(annotationRef)) {
+				final boolean hasReceiver = appendReceiver(call, app, isExpressionContext);
+				if (hasReceiver) {
+					app.append("."); //$NON-NLS-1$
+					app = appendTypeArguments(call, app);
+				}
+			}
+			appendFeatureCall(call, app);
+		}
 	}
 
 }

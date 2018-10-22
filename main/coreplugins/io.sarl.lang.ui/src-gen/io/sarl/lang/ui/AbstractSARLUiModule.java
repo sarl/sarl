@@ -59,6 +59,7 @@ import io.sarl.lang.ui.extralanguage.preferences.PreferenceBasedFeatureNameConve
 import io.sarl.lang.ui.extralanguage.preferences.PreferenceBasedTypeConverterRuleReader;
 import io.sarl.lang.ui.highlighting.SARLHighlightingCalculator;
 import io.sarl.lang.ui.highlighting.SARLHighlightingConfiguration;
+import io.sarl.lang.ui.hover.SARLHoverProvider;
 import io.sarl.lang.ui.hover.SARLHoverSerializer;
 import io.sarl.lang.ui.hover.SARLHoverSignatureProvider;
 import io.sarl.lang.ui.hover.SARLHoverUIStrings;
@@ -114,7 +115,6 @@ import org.eclipse.xtend.ide.editor.SingleLineCommentHelper;
 import org.eclipse.xtend.ide.editor.XtendDoubleClickStrategyProvider;
 import org.eclipse.xtend.ide.editor.XtendSourceViewerConfiguration;
 import org.eclipse.xtend.ide.hover.XtendAnnotationHover;
-import org.eclipse.xtend.ide.hover.XtendHoverProvider;
 import org.eclipse.xtend.ide.hover.XtendHoverSerializer;
 import org.eclipse.xtend.ide.hyperlinking.XtendHyperlinkHelper;
 import org.eclipse.xtend.ide.macro.EclipseFileSystemSupportImpl;
@@ -701,6 +701,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends IEObjectHoverProvider> bindIEObjectHoverProvider() {
+		return SARLHoverProvider.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public void configureIPreferenceStoreInitializer(Binder binder) {
 		binder.bind(IPreferenceStoreInitializer.class).annotatedWith(Names.named("RefactoringPreferences")).to(SARLPreferenceStoreInitializer.class);
 	}
@@ -769,11 +774,6 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
 	public Class<? extends IProposalConflictHelper> bindIProposalConflictHelper() {
 		return FlexProposalConflictHelper.class;
-	}
-	
-	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
-	public Class<? extends IEObjectHoverProvider> bindIEObjectHoverProvider() {
-		return XtendHoverProvider.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]

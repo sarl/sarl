@@ -21,6 +21,8 @@
 
 package io.sarl.lang.ui.hover;
 
+import java.text.MessageFormat;
+
 import javax.inject.Inject;
 
 import org.eclipse.emf.ecore.EObject;
@@ -30,17 +32,23 @@ import org.eclipse.xtend.core.xtend.XtendFunction;
 import org.eclipse.xtend.ide.hover.XtendHoverSignatureProvider;
 import org.eclipse.xtext.common.types.JvmAnyTypeReference;
 import org.eclipse.xtext.common.types.JvmConstructor;
+import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmField;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
+import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
+import org.eclipse.xtext.xbase.XCastedExpression;
 import org.eclipse.xtext.xbase.XConstructorCall;
+import org.eclipse.xtext.xbase.typesystem.references.ITypeReferenceOwner;
+import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner;
 
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlArtifact;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlCapacity;
+import io.sarl.lang.sarl.SarlCastedExpression;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlSkill;
 import io.sarl.lang.sarl.SarlSpace;
@@ -51,6 +59,8 @@ import io.sarl.lang.services.SARLGrammarKeywordAccess;
  *
  * <p>This class extends the standard Xtend serializer by replacing the example of code, written
  * in Java or Xtend, by the same example with the SARL syntax.
+ *
+ * <p>This class enables the hovers on the XCastedExpression.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -224,6 +234,51 @@ public class SARLHoverSignatureProvider extends XtendHoverSignatureProvider {
 			return signature + " " + this.keywords.getColonKeyword() + " " + returnTypeString + postSignature; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return returnTypeString + " " + enrichWithDeclarator(signature, jvmOperation) + postSignature; //$NON-NLS-1$
+	}
+
+	/** Replies the hover for a SARL casted expression.
+	 *
+	 * @param castExpression the casted expression.
+	 * @param typeAtEnd indicates if the type should be put at end.
+	 * @return the string representation into the hover.
+	 */
+	protected String _signature(XCastedExpression castExpression, boolean typeAtEnd) {
+		if (castExpression instanceof SarlCastedExpression) {
+			final JvmOperation delegate = ((SarlCastedExpression) castExpression).getFeature();
+			if (delegate != null) {
+				return _signature(delegate, typeAtEnd);
+			}
+		}
+		return MessageFormat.format(Messages.SARLHoverSignatureProvider_0,
+				getTypeName(castExpression.getType()));
+	}
+
+	@Override
+	public String getImageTag(final EObject object) {
+		if (object instanceof SarlCastedExpression) {
+			final SarlCastedExpression expr = (SarlCastedExpression) object;
+			final JvmOperation delegate = expr.getFeature();
+			if (delegate != null) {
+				return getImageTag(delegate);
+			}
+		}
+		return super.getImageTag(object);
+	}
+
+	/** Replies the type name for the given type.
+	 *
+	 * @param type the type.
+	 * @return the string representation of the given type.
+	 */
+	protected String getTypeName(JvmType type) {
+		if (type != null) {
+			if (type instanceof JvmDeclaredType) {
+				final ITypeReferenceOwner owner = new StandardTypeReferenceOwner(this.services, type);
+				return owner.toLightweightTypeReference(type).getHumanReadableName();
+			}
+			return type.getSimpleName();
+		}
+		return Messages.SARLHoverSignatureProvider_1;
 	}
 
 }

@@ -120,6 +120,10 @@ public class StandardSarlConfigurableIssueCodesProvider extends XtendConfigurabl
 		acceptor.accept(create(
 				IssueCodes.POTENTIAL_FIELD_SYNCHRONIZATION_PROBLEM,
 				SeverityConverter.SEVERITY_WARNING));
+
+		acceptor.accept(create(
+				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
+				SeverityConverter.SEVERITY_WARNING));
 	}
 
 }

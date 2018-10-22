@@ -730,6 +730,10 @@ Workflow {
     				to = "io.sarl.lang.ui.hover.SARLHoverSignatureProvider"
    				}
     			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.hover.IEObjectHoverProvider"
+    				to = "io.sarl.lang.ui.hover.SARLHoverProvider"
+   				}
+    			ui = {
     				bind = "org.eclipse.xtext.xbase.ui.hover.HoverUiStrings"
     				to = "io.sarl.lang.ui.hover.SARLHoverUIStrings"
    				}
@@ -991,10 +995,6 @@ Workflow {
     				bind = "org.eclipse.xtext.ide.editor.bracketmatching.IBracePairProvider"
     				to = "org.eclipse.xtend.ide.common.editor.bracketmatching.XtendBracePairProvider"
     				singleton = true
-   				}
-    			ui = {
-    				bind = "org.eclipse.xtext.ui.editor.hover.IEObjectHoverProvider"
-    				to = "org.eclipse.xtend.ide.hover.XtendHoverProvider"
    				}
     			ui = {
     				bind = "org.eclipse.xtext.ui.editor.hyperlinking.IHyperlinkHelper"

@@ -7698,11 +7698,7 @@ ruleXCastedExpression returns [EObject current=null]
 				((
 					(
 					)
-					(
-						(
-							ruleOpCast
-						)
-					)
+					'as'
 				)
 				)=>
 				(
@@ -7713,22 +7709,10 @@ ruleXCastedExpression returns [EObject current=null]
 								$current);
 						}
 					)
-					(
-						(
-							{
-								if ($current==null) {
-									$current = createModelElement(grammarAccess.getXCastedExpressionRule());
-								}
-							}
-							{
-								newCompositeNode(grammarAccess.getXCastedExpressionAccess().getFeatureJvmIdentifiableElementCrossReference_1_0_0_1_0());
-							}
-							ruleOpCast
-							{
-								afterParserOrEnumRuleCall();
-							}
-						)
-					)
+					otherlv_2='as'
+					{
+						newLeafNode(otherlv_2, grammarAccess.getXCastedExpressionAccess().getAsKeyword_1_0_0_1());
+					}
 				)
 			)
 			(
@@ -7752,28 +7736,6 @@ ruleXCastedExpression returns [EObject current=null]
 			)
 		)*
 	)
-;
-
-// Entry rule entryRuleOpCast
-entryRuleOpCast returns [String current=null]:
-	{ newCompositeNode(grammarAccess.getOpCastRule()); }
-	iv_ruleOpCast=ruleOpCast
-	{ $current=$iv_ruleOpCast.current.getText(); }
-	EOF;
-
-// Rule OpCast
-ruleOpCast returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	kw='as'
-	{
-		$current.merge(kw);
-		newLeafNode(kw, grammarAccess.getOpCastAccess().getAsKeyword());
-	}
 ;
 
 // Entry rule entryRuleXPrimaryExpression

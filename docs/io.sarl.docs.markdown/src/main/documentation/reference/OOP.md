@@ -419,7 +419,7 @@ its behavior. The [:overridemodifier:] keyword is specified for clearly marking 
 implementation of [:getfullnamefct:] as an override of the parent's implementation.
 
 <note>The return type of the [:getfullnamefct:] method (called with the name [:fullnamefct:],
-according to the [property access syntax](./general/MemberAccess.md#1-property-syntax))
+according to the [property access syntax](./general/MemberAccess.md#property-syntax))
 is not specified in the overriding prototype since it could be inferred by the SARL compiler.</note>
 
 For preventing a function to be overridden, you should add the [:finalmodifier:] modifier in the signature of
@@ -1194,7 +1194,7 @@ Method calls are bound based on the static types of arguments.
 Sometimes this is not what you want. Especially in the context of extension methods
 you would like to have polymorphic behavior.
 
-The [:dispatchmodifier:] modifier permits defining a [dispatch method](./general/FuncDecls.md#7-dispatch-function).
+The [:dispatchmodifier:] modifier permits defining a [dispatch method](./general/FuncDecls.md#dispatch-function).
 For a set of visible dispatch methods in the current type hierarchy with the same name and
 the same number of arguments, the compiler infers a synthetic dispatcher method.
 This dispatcher uses the common super type of all declared arguments.

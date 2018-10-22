@@ -14,13 +14,13 @@ agent-oriented paradigm holds the keys to effectively meet this challenge.
 
 Syntactically and semantically SARL has its roots in the Java programming language but improves on many aspects:
 
-* [Agent specific statements](../index.md#5-2-agent-oriented-programming) - provide specific statements for agent programming
+* [Agent specific statements](../index.md#agent-oriented-programming) - provide specific statements for agent programming
 * [Type inference](../reference/GeneralSyntax.md) - you rarely need to write down type signatures anymore
 * [Lambda expressions](../reference/general/Lambda.md) - concise syntax for anonymous function literals
 * [Operator overloading](../reference/general/Operators.md) - make your libraries even more expressive
 * [Extension methods](../reference/general/Extension.md) - enhance closed types with new functionality
 * [Powerful switch expressions](../reference/general/SwitchExpression.md) - type based switching with implicit casts
-* [No statements](../reference/GeneralSyntax.md#4-details-on-the-sarl-language-elements) - everything is an expression
+* [No statements](../reference/GeneralSyntax.md#details-on-the-sarl-language-elements) - everything is an expression
 * Full support for Java generics - including all conformance and conversion rules
 * Translates to Java not bytecode - understand what is going on and use your code for platforms such as Android or GWT
 
@@ -29,7 +29,7 @@ Unlike other JVM languages, SARL has zero interoperability issues with Java: eve
 __The language is platform- and architecture-independent.__
 
 For a brief comparison between SARL, Java and Xtend languages, see the Section
-"[Comparison between SARL and other languages](../reference/OOP.md#1-comparison-between-sarl-and-other-languages)".
+"[Comparison between SARL and other languages](../reference/OOP.md#comparison-between-sarl-and-other-languages)".
 
 
 ### Can I use SARL to make agent-based software?

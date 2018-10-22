@@ -697,7 +697,7 @@ public class InlineFunctionTest extends AbstractSarlTest {
 				"  @Inline(value = \"(Integer)null\", constantExpression = true)",
 				"  @Pure",
 				"  public static Integer fct() {",
-				"    return ((Integer) null);",
+				"    return null;",
 				"  }",
 				"  ",
 				"  @SyntheticMember",

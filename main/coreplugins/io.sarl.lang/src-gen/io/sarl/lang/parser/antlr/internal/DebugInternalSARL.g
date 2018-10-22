@@ -1053,17 +1053,12 @@ ruleXCastedExpression:
 	ruleXExponentExpression
 	(
 		(
-			(ruleOpCast
+			('as'
 			)=>
-			ruleOpCast
+			'as'
 		)
 		ruleJvmTypeReference
 	)*
-;
-
-// Rule OpCast
-ruleOpCast:
-	'as'
 ;
 
 // Rule XPrimaryExpression

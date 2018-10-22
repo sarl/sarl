@@ -453,11 +453,7 @@ SarlCastedExpression returns xbase::XCastedExpression:
 @Override
 XCastedExpression returns xbase::XExpression:
 	// The inheritance and fields of SarlCastedExpression is manually defined into the Ecore model.
-	XExponentExpression (=>({SarlCastedExpression.target=current} feature=[jvm::JvmIdentifiableElement|OpCast]) type=JvmTypeReference)*
-;
-
-OpCast:
-	'as'
+	XExponentExpression (=>({SarlCastedExpression.target=current} 'as') type=JvmTypeReference)*
 ;
 
 //-----------------------------------------------

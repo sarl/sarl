@@ -420,31 +420,6 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-// Entry rule entryRuleOpCast
-entryRuleOpCast
-:
-{ before(grammarAccess.getOpCastRule()); }
-	 ruleOpCast
-{ after(grammarAccess.getOpCastRule()); } 
-	 EOF 
-;
-
-// Rule OpCast
-ruleOpCast 
-	@init {
-		int stackSize = keepStackSize();
-	}
-	:
-	(
-		{ before(grammarAccess.getOpCastAccess().getAsKeyword()); }
-		'as'
-		{ after(grammarAccess.getOpCastAccess().getAsKeyword()); }
-	)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
 // Entry rule entryRuleXPrimaryExpression
 entryRuleXPrimaryExpression
 :
@@ -24117,9 +24092,9 @@ rule__XCastedExpression__Group_1_0_0__1__Impl
 	}
 :
 (
-	{ before(grammarAccess.getXCastedExpressionAccess().getFeatureAssignment_1_0_0_1()); }
-	(rule__XCastedExpression__FeatureAssignment_1_0_0_1)
-	{ after(grammarAccess.getXCastedExpressionAccess().getFeatureAssignment_1_0_0_1()); }
+	{ before(grammarAccess.getXCastedExpressionAccess().getAsKeyword_1_0_0_1()); }
+	'as'
+	{ after(grammarAccess.getXCastedExpressionAccess().getAsKeyword_1_0_0_1()); }
 )
 ;
 finally {
@@ -45531,25 +45506,6 @@ rule__AssumeExpression__MessageAssignment_3_1
 		{ before(grammarAccess.getAssumeExpressionAccess().getMessageSTRINGTerminalRuleCall_3_1_0()); }
 		RULE_STRING
 		{ after(grammarAccess.getAssumeExpressionAccess().getMessageSTRINGTerminalRuleCall_3_1_0()); }
-	)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__XCastedExpression__FeatureAssignment_1_0_0_1
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	(
-		{ before(grammarAccess.getXCastedExpressionAccess().getFeatureJvmIdentifiableElementCrossReference_1_0_0_1_0()); }
-		(
-			{ before(grammarAccess.getXCastedExpressionAccess().getFeatureJvmIdentifiableElementOpCastParserRuleCall_1_0_0_1_0_1()); }
-			ruleOpCast
-			{ after(grammarAccess.getXCastedExpressionAccess().getFeatureJvmIdentifiableElementOpCastParserRuleCall_1_0_0_1_0_1()); }
-		)
-		{ after(grammarAccess.getXCastedExpressionAccess().getFeatureJvmIdentifiableElementCrossReference_1_0_0_1_0()); }
 	)
 ;
 finally {

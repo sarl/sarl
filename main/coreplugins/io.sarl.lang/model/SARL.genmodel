@@ -39,6 +39,8 @@
     <genClasses ecoreClass="SARL.ecore#//SarlEvent">
     <genClasses ecoreClass="SARL.ecore#//SarlCastedExpression">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlCastedExpression/feature"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlCastedExpression/receiver"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlCastedExpression/argument"/>
     </genClasses>
     <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlEvent/extends"/>
       <genOperations ecoreOperation="SARL.ecore#//SarlEvent/isAbstract"/>

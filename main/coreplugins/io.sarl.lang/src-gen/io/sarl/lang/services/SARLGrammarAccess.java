@@ -4862,64 +4862,43 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup_1_0 = (Group)cGroup_1.eContents().get(0);
 		private final Group cGroup_1_0_0 = (Group)cGroup_1_0.eContents().get(0);
 		private final Action cSarlCastedExpressionTargetAction_1_0_0_0 = (Action)cGroup_1_0_0.eContents().get(0);
-		private final Assignment cFeatureAssignment_1_0_0_1 = (Assignment)cGroup_1_0_0.eContents().get(1);
-		private final CrossReference cFeatureJvmIdentifiableElementCrossReference_1_0_0_1_0 = (CrossReference)cFeatureAssignment_1_0_0_1.eContents().get(0);
-		private final RuleCall cFeatureJvmIdentifiableElementOpCastParserRuleCall_1_0_0_1_0_1 = (RuleCall)cFeatureJvmIdentifiableElementCrossReference_1_0_0_1_0.eContents().get(1);
+		private final Keyword cAsKeyword_1_0_0_1 = (Keyword)cGroup_1_0_0.eContents().get(1);
 		private final Assignment cTypeAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
 		private final RuleCall cTypeJvmTypeReferenceParserRuleCall_1_1_0 = (RuleCall)cTypeAssignment_1_1.eContents().get(0);
 		
 		//@Override
 		//XCastedExpression xbase::XExpression:
-		//	XExponentExpression (=> ({SarlCastedExpression.target=current} feature=[jvm::JvmIdentifiableElement|OpCast])
-		//	type=JvmTypeReference)*;
+		//	XExponentExpression (=> ({SarlCastedExpression.target=current} 'as') type=JvmTypeReference)*;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//// The inheritance and fields of SarlCastedExpression is manually defined into the Ecore model.
-		//XExponentExpression (=> ({SarlCastedExpression.target=current} feature=[jvm::JvmIdentifiableElement|OpCast])
-		//type=JvmTypeReference)*
+		//XExponentExpression (=> ({SarlCastedExpression.target=current} 'as') type=JvmTypeReference)*
 		public Group getGroup() { return cGroup; }
 		
 		//// The inheritance and fields of SarlCastedExpression is manually defined into the Ecore model.
 		//XExponentExpression
 		public RuleCall getXExponentExpressionParserRuleCall_0() { return cXExponentExpressionParserRuleCall_0; }
 		
-		//(=> ({SarlCastedExpression.target=current} feature=[jvm::JvmIdentifiableElement|OpCast]) type=JvmTypeReference)*
+		//(=> ({SarlCastedExpression.target=current} 'as') type=JvmTypeReference)*
 		public Group getGroup_1() { return cGroup_1; }
 		
-		//=> ({SarlCastedExpression.target=current} feature=[jvm::JvmIdentifiableElement|OpCast])
+		//=> ({SarlCastedExpression.target=current} 'as')
 		public Group getGroup_1_0() { return cGroup_1_0; }
 		
-		//{SarlCastedExpression.target=current} feature=[jvm::JvmIdentifiableElement|OpCast]
+		//{SarlCastedExpression.target=current} 'as'
 		public Group getGroup_1_0_0() { return cGroup_1_0_0; }
 		
 		//{SarlCastedExpression.target=current}
 		public Action getSarlCastedExpressionTargetAction_1_0_0_0() { return cSarlCastedExpressionTargetAction_1_0_0_0; }
 		
-		//feature=[jvm::JvmIdentifiableElement|OpCast]
-		public Assignment getFeatureAssignment_1_0_0_1() { return cFeatureAssignment_1_0_0_1; }
-		
-		//[jvm::JvmIdentifiableElement|OpCast]
-		public CrossReference getFeatureJvmIdentifiableElementCrossReference_1_0_0_1_0() { return cFeatureJvmIdentifiableElementCrossReference_1_0_0_1_0; }
-		
-		//OpCast
-		public RuleCall getFeatureJvmIdentifiableElementOpCastParserRuleCall_1_0_0_1_0_1() { return cFeatureJvmIdentifiableElementOpCastParserRuleCall_1_0_0_1_0_1; }
+		//'as'
+		public Keyword getAsKeyword_1_0_0_1() { return cAsKeyword_1_0_0_1; }
 		
 		//type=JvmTypeReference
 		public Assignment getTypeAssignment_1_1() { return cTypeAssignment_1_1; }
 		
 		//JvmTypeReference
 		public RuleCall getTypeJvmTypeReferenceParserRuleCall_1_1_0() { return cTypeJvmTypeReferenceParserRuleCall_1_1_0; }
-	}
-	public class OpCastElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "io.sarl.lang.SARL.OpCast");
-		private final Keyword cAsKeyword = (Keyword)rule.eContents().get(1);
-		
-		//OpCast:
-		//	'as';
-		@Override public ParserRule getRule() { return rule; }
-		
-		//'as'
-		public Keyword getAsKeyword() { return cAsKeyword; }
 	}
 	public class XPrimaryExpressionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "io.sarl.lang.SARL.XPrimaryExpression");
@@ -5724,7 +5703,6 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	private final AssumeExpressionElements pAssumeExpression;
 	private final SarlCastedExpressionElements pSarlCastedExpression;
 	private final XCastedExpressionElements pXCastedExpression;
-	private final OpCastElements pOpCast;
 	private final XPrimaryExpressionElements pXPrimaryExpression;
 	private final XVariableDeclarationElements pXVariableDeclaration;
 	private final JvmFormalParameterElements pJvmFormalParameter;
@@ -5775,7 +5753,6 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		this.pAssumeExpression = new AssumeExpressionElements();
 		this.pSarlCastedExpression = new SarlCastedExpressionElements();
 		this.pXCastedExpression = new XCastedExpressionElements();
-		this.pOpCast = new OpCastElements();
 		this.pXPrimaryExpression = new XPrimaryExpressionElements();
 		this.pXVariableDeclaration = new XVariableDeclarationElements();
 		this.pJvmFormalParameter = new JvmFormalParameterElements();
@@ -6131,24 +6108,13 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//@Override
 	//XCastedExpression xbase::XExpression:
-	//	XExponentExpression (=> ({SarlCastedExpression.target=current} feature=[jvm::JvmIdentifiableElement|OpCast])
-	//	type=JvmTypeReference)*;
+	//	XExponentExpression (=> ({SarlCastedExpression.target=current} 'as') type=JvmTypeReference)*;
 	public XCastedExpressionElements getXCastedExpressionAccess() {
 		return pXCastedExpression;
 	}
 	
 	public ParserRule getXCastedExpressionRule() {
 		return getXCastedExpressionAccess().getRule();
-	}
-	
-	//OpCast:
-	//	'as';
-	public OpCastElements getOpCastAccess() {
-		return pOpCast;
-	}
-	
-	public ParserRule getOpCastRule() {
-		return getOpCastAccess().getRule();
 	}
 	
 	//@Override

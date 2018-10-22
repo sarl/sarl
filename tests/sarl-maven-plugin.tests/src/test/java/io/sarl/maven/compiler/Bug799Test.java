@@ -31,6 +31,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import io.sarl.lang.SARLVersion;
+import io.sarl.lang.sarl.SarlPackage;
 
 /**
  * @author $Author: sgalland$
@@ -51,7 +52,7 @@ public class Bug799Test extends AbstractMojoTest {
 			"import io.sarl.maven.bug799.Cap;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-			"@SarlElementType(21)",
+			"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",
 			"@SuppressWarnings(\"all\")",
 			"public class A extends Skill implements Cap {",
 			"@Pure",

@@ -587,6 +587,28 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @since 0.9
+	 * @generated
+	 */
+	public EReference getSarlCastedExpression_Receiver()
+	{
+		return (EReference)sarlCastedExpressionEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @since 0.9
+	 * @generated
+	 */
+	public EReference getSarlCastedExpression_Argument()
+	{
+		return (EReference)sarlCastedExpressionEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EClass getSarlSpace()
@@ -808,6 +830,8 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 
 		sarlCastedExpressionEClass = createEClass(SARL_CASTED_EXPRESSION);
 		createEReference(sarlCastedExpressionEClass, SARL_CASTED_EXPRESSION__FEATURE);
+		createEReference(sarlCastedExpressionEClass, SARL_CASTED_EXPRESSION__RECEIVER);
+		createEReference(sarlCastedExpressionEClass, SARL_CASTED_EXPRESSION__ARGUMENT);
 
 		sarlSpaceEClass = createEClass(SARL_SPACE);
 		createEReference(sarlSpaceEClass, SARL_SPACE__EXTENDS);
@@ -937,7 +961,9 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 		addEOperation(sarlEventEClass, ecorePackage.getEBoolean(), "isAbstract", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(sarlCastedExpressionEClass, SarlCastedExpression.class, "SarlCastedExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getSarlCastedExpression_Feature(), theTypesPackage.getJvmIdentifiableElement(), null, "feature", null, 0, 1, SarlCastedExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getSarlCastedExpression_Feature(), theTypesPackage.getJvmOperation(), null, "feature", null, 0, 1, SarlCastedExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getSarlCastedExpression_Receiver(), theXbasePackage.getXExpression(), null, "receiver", null, 0, 1, SarlCastedExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getSarlCastedExpression_Argument(), theXbasePackage.getXExpression(), null, "argument", null, 0, 1, SarlCastedExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(sarlSpaceEClass, SarlSpace.class, "SarlSpace", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getSarlSpace_Extends(), theTypesPackage.getJvmParameterizedTypeReference(), null, "extends", null, 0, 1, SarlSpace.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

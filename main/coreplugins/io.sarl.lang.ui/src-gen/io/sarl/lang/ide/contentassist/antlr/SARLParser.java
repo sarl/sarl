@@ -858,7 +858,6 @@ public class SARLParser extends AbstractPartialContentAssistParser {
 			builder.put(grammarAccess.getAssumeExpressionAccess().getConditionAssignment_2(), "rule__AssumeExpression__ConditionAssignment_2");
 			builder.put(grammarAccess.getAssumeExpressionAccess().getMessageAssignment_3_1(), "rule__AssumeExpression__MessageAssignment_3_1");
 			builder.put(grammarAccess.getSarlCastedExpressionAccess().getFeatureAssignment_1(), "rule__SarlCastedExpression__FeatureAssignment_1");
-			builder.put(grammarAccess.getXCastedExpressionAccess().getFeatureAssignment_1_0_0_1(), "rule__XCastedExpression__FeatureAssignment_1_0_0_1");
 			builder.put(grammarAccess.getXCastedExpressionAccess().getTypeAssignment_1_1(), "rule__XCastedExpression__TypeAssignment_1_1");
 			builder.put(grammarAccess.getXVariableDeclarationAccess().getWriteableAssignment_0_0_1_0_0_0(), "rule__XVariableDeclaration__WriteableAssignment_0_0_1_0_0_0");
 			builder.put(grammarAccess.getXVariableDeclarationAccess().getExtensionAssignment_0_0_1_0_1(), "rule__XVariableDeclaration__ExtensionAssignment_0_0_1_0_1");

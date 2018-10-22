@@ -43,6 +43,17 @@ public final class PrimitiveShortCastExtensions {
 		//
 	}
 
+	/** Convert the given value to {@code String}.
+	 *
+	 * @param number a number of {@code short} type.
+	 * @return the equivalent value to {@code number} of {@code String} type.
+	 */
+	@Pure
+	@Inline(value = "$2.toString($1)", imported = Short.class)
+	public static String toString(short number) {
+		return Short.toString(number);
+	}
+
 	/** Convert the given value to {@code AtomicLong}.
 	 *
 	 * @param number a number of {@code short} type.
@@ -74,6 +85,61 @@ public final class PrimitiveShortCastExtensions {
 	@Inline(value = "new $2($1)", imported = AtomicDouble.class)
 	public static AtomicDouble toAtomicDouble(short number) {
 		return new AtomicDouble(number);
+	}
+
+	/** Convert the given value to {@code Byte}.
+	 *
+	 * @param number a number of {@code short} type.
+	 * @return the equivalent value to {@code number} of {@code Byte} type.
+	 */
+	@Pure
+	@Inline(value = "$2.valueOf(($3) $1)", imported = {Byte.class, byte.class})
+	public static Byte toByte(short number) {
+		return Byte.valueOf((byte) number);
+	}
+
+	/** Convert the given value to {@code Long}.
+	 *
+	 * @param number a number of {@code short} type.
+	 * @return the equivalent value to {@code number} of {@code Long} type.
+	 */
+	@Pure
+	@Inline(value = "$2.valueOf($1)", imported = Long.class)
+	public static Long toLong(short number) {
+		return Long.valueOf(number);
+	}
+
+	/** Convert the given value to {@code Integer}.
+	 *
+	 * @param number a number of {@code short} type.
+	 * @return the equivalent value to {@code number} of {@code Integer} type.
+	 */
+	@Pure
+	@Inline(value = "$2.valueOf($1)", imported = Integer.class)
+	public static Integer toInteger(short number) {
+		return Integer.valueOf(number);
+	}
+
+	/** Convert the given value to {@code Float}.
+	 *
+	 * @param number a number of {@code short} type.
+	 * @return the equivalent value to {@code number} of {@code Float} type.
+	 */
+	@Pure
+	@Inline(value = "$2.valueOf($1)", imported = Float.class)
+	public static Float toFloat(short number) {
+		return Float.valueOf(number);
+	}
+
+	/** Convert the given value to {@code Double}.
+	 *
+	 * @param number a number of {@code short} type.
+	 * @return the equivalent value to {@code number} of {@code Double} type.
+	 */
+	@Pure
+	@Inline(value = "$2.valueOf($1)", imported = Double.class)
+	public static Double toDouble(short number) {
+		return Double.valueOf(number);
 	}
 
 }
