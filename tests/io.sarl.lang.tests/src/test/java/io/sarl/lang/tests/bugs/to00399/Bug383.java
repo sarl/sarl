@@ -66,9 +66,6 @@ public class Bug383 {
 	}
 
 	public static class CompilerTest extends AbstractSarlTest {
-
-		@Inject
-		private CompilationTestHelper compiler;
 		
 		@Test
 		public void compilation() throws Exception {
@@ -143,7 +140,7 @@ public class Bug383 {
 					"}",
 					"");
 
-			this.compiler.compile(snippet, 
+			getCompileHelper().compile(snippet, 
 					(r) -> assertEquals(expected, r.getGeneratedCode("A1")));
 		}
 

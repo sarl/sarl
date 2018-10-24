@@ -155,9 +155,6 @@ public class Bug646 extends AbstractSarlTest {
 			"}",
 			"");
 
-	@Inject
-	private CompilationTestHelper compiler;
-
 	@Test
 	public void parsing_01() throws Exception {
 		SarlScript mas = file(SNIPSET1);
@@ -167,7 +164,7 @@ public class Bug646 extends AbstractSarlTest {
 
 	@Test
 	public void compiling_01() throws Exception {
-		this.compiler.compile(SNIPSET1, (it) -> {
+		getCompileHelper().compile(SNIPSET1, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug646.FrustumNodeIterator");
 			assertEquals(EXPECTED, actual);
 		});

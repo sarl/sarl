@@ -48,9 +48,6 @@ import org.junit.ComparisonFailure;
 public abstract class AbstractExtraLanguageGeneratorTest extends AbstractSarlTest {
 
 	@Inject
-	private CompilationTestHelper compiler;
-	
-	@Inject
 	private IOutputConfigurationProvider outputConfigurationProvider;
 
 	protected abstract String getOutputConfigurationName();
@@ -70,7 +67,7 @@ public abstract class AbstractExtraLanguageGeneratorTest extends AbstractSarlTes
 	
 	protected GeneratorTest compile(String source) throws IOException {
 		final Result[] result = new Result[1];
-		this.compiler.compile(source, (it) -> {
+		getCompileHelper().compile(source, (it) -> {
 			result[0] = it;
 		});
 		return new GeneratorTest(result[0]);

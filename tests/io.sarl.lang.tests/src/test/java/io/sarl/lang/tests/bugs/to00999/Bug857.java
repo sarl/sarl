@@ -40,9 +40,6 @@ import io.sarl.tests.api.AbstractSarlTest;
 @SuppressWarnings("all")
 public class Bug857 extends AbstractSarlTest {
 
-	@Inject
-	private CompilationTestHelper compiler;
-
 	private static final String SNIPSET01 = multilineString(
 			"package io.sarl.lang.tests.bug857",
 			"import io.sarl.core.Lifecycle",
@@ -129,7 +126,7 @@ public class Bug857 extends AbstractSarlTest {
 
 	@Test
 	public void compiling_01() throws Exception {
-		this.compiler.compile(SNIPSET01, (it) -> {
+		getCompileHelper().compile(SNIPSET01, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug857.SomeAgent");
 			assertEquals(EXPECTED01, actual);
 		});
@@ -218,7 +215,7 @@ public class Bug857 extends AbstractSarlTest {
 
 	@Test
 	public void compiling_02() throws Exception {
-		this.compiler.compile(SNIPSET02, (it) -> {
+		getCompileHelper().compile(SNIPSET02, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug857.SomeAgent");
 			assertEquals(EXPECTED02, actual);
 		});

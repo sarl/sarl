@@ -85,6 +85,7 @@ import org.eclipse.xtext.xbase.XNullLiteral;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
+import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.AssumptionViolatedException;
@@ -142,7 +143,7 @@ import io.sarl.lang.sarl.SarlSkill;
 @SuppressWarnings("all")
 @RunWith(XtextRunner.class)
 @InjectWith(ExtendedSARLInjectorProvider.class)
-public abstract class AbstractSarlTest {
+public abstract class AbstractSarlTest extends Assert {
 
 	/** URL of the Maven central repository.
 	 */
@@ -167,6 +168,9 @@ public abstract class AbstractSarlTest {
 
 	@Inject
 	private Provider<ParseHelper<SarlScript>> parser;
+
+	@Inject
+	private Provider<CompilationTestHelper> compiler;
 
 	@Inject
 	private Provider<SarlJvmModelAssociations> associations;
@@ -372,7 +376,7 @@ public abstract class AbstractSarlTest {
 		this.rootSarlWatchter = null;
 	}
 
-	/** Helpfer for setting a field, even if it is not visible.
+	/** Helper for setting a field, even if it is not visible.
 	 *
 	 * @param instance the object.
 	 * @param fieldType the type of the field.
@@ -400,26 +404,6 @@ public abstract class AbstractSarlTest {
 			}
 		}
 		throw new NoSuchFieldError(fieldName);
-	}
-
-	/** Assert the values are equal.
-	 *
-	 * @param expected the expected value.
-	 * @param actual the actual value.
-	 * @param epsilon the precision.
-	 */
-	public static void assertEquals(float expected, float actual, float precision) {
-		Assert.assertEquals(expected, actual, precision);
-	}
-
-	/** Assert the values are equal.
-	 *
-	 * @param expected the expected value.
-	 * @param actual the actual value.
-	 * @param epsilon the precision.
-	 */
-	public static void assertEquals(double expected, double actual, double precision) {
-		Assert.assertEquals(expected, actual, precision);
 	}
 
 	/** Assert the values are equal.
@@ -1316,6 +1300,16 @@ public abstract class AbstractSarlTest {
 	 */
 	protected ParseHelper<SarlScript> getParseHelper() {
 		return this.parser.get();
+	}
+
+	/** Replies the compile helper.
+	 *
+	 * @return the compile helper.
+	 * @since 0.9
+	 */
+	protected CompilationTestHelper getCompileHelper() {
+		final CompilationTestHelper helper = this.compiler.get();
+		return helper;
 	}
 
 	/** Create an instance of class.

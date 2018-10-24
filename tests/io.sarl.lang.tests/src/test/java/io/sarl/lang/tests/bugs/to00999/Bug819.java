@@ -55,10 +55,6 @@ import io.sarl.tests.api.AbstractSarlTest.Validator;
 @SuppressWarnings("all")
 public class Bug819 extends AbstractSarlTest {
 
-	@Inject
-	private CompilationTestHelper compiler;
-
-
 	private static final String SNIPSET01 = multilineString(
 			"import io.sarl.core.Logging",
 			"import io.sarl.core.Initialize",
@@ -204,7 +200,7 @@ public class Bug819 extends AbstractSarlTest {
 
 	@Test
 	public void compiling_01() throws Exception {
-		this.compiler.compile(SNIPSET01, (it) -> {
+		getCompileHelper().compile(SNIPSET01, (it) -> {
 			String actual = it.getGeneratedCode("Agent3");
 			assertEquals(EXPECTED01, actual);
 		});

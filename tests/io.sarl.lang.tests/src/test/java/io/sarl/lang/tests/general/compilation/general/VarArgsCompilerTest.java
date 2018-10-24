@@ -47,9 +47,6 @@ public class VarArgsCompilerTest {
 
 	public static class ActionTest extends AbstractSarlTest {
 
-		@Inject
-		private CompilationTestHelper compiler;
-
 		@Test
 		public void action_singleParam() throws Exception {
 			String source = multilineString(
@@ -97,7 +94,7 @@ public class VarArgsCompilerTest {
 					"}",
 					""
 					);
-			this.compiler.assertCompilesTo(source, expected);
+			getCompileHelper().assertCompilesTo(source, expected);
 		}
 
 		@Test
@@ -147,15 +144,12 @@ public class VarArgsCompilerTest {
 					"}",
 					""
 					);
-			this.compiler.assertCompilesTo(source, expected);
+			getCompileHelper().assertCompilesTo(source, expected);
 		}
 
 	}
 
 	public static class BehaviorTest extends AbstractSarlTest {
-
-		@Inject
-		private CompilationTestHelper compiler;
 
 		@Test
 		public void action_singleParam() throws Exception {
@@ -188,7 +182,7 @@ public class VarArgsCompilerTest {
 					"}",
 					""
 					);
-			this.compiler.assertCompilesTo(source, expected);
+			getCompileHelper().assertCompilesTo(source, expected);
 		}
 
 		@Test
@@ -222,7 +216,7 @@ public class VarArgsCompilerTest {
 					"}",
 					""
 					);
-			this.compiler.assertCompilesTo(source, expected);
+			getCompileHelper().assertCompilesTo(source, expected);
 		}
 
 		@Test
@@ -251,7 +245,7 @@ public class VarArgsCompilerTest {
 					"}",
 					""
 					);
-			this.compiler.assertCompilesTo(source, expected);
+			getCompileHelper().assertCompilesTo(source, expected);
 		}
 
 		@Test
@@ -280,15 +274,12 @@ public class VarArgsCompilerTest {
 					"}",
 					""
 					);
-			this.compiler.assertCompilesTo(source, expected);
+			getCompileHelper().assertCompilesTo(source, expected);
 		}
 
 	}
 
 	public static class CapacityTest extends AbstractSarlTest {
-
-		@Inject
-		private CompilationTestHelper compiler;
 
 		@Test
 		public void action_singleParam() throws Exception {
@@ -330,7 +321,7 @@ public class VarArgsCompilerTest {
 					"}",
 					""
 					);
-			this.compiler.assertCompilesTo(source, expected);
+			getCompileHelper().assertCompilesTo(source, expected);
 		}
 
 		@Test
@@ -373,15 +364,12 @@ public class VarArgsCompilerTest {
 					"}",
 					""
 					);
-			this.compiler.assertCompilesTo(source, expected);
+			getCompileHelper().assertCompilesTo(source, expected);
 		}
 
 	}
 
 	public static class EventTest extends AbstractSarlTest {
-
-		@Inject
-		private CompilationTestHelper compiler;
 
 		@Test
 		public void action_singleParam() throws Exception {
@@ -411,7 +399,7 @@ public class VarArgsCompilerTest {
 					"}",
 					""
 					);
-			this.compiler.assertCompilesTo(source, expected);
+			getCompileHelper().assertCompilesTo(source, expected);
 		}
 
 		@Test
@@ -442,15 +430,12 @@ public class VarArgsCompilerTest {
 					"}",
 					""
 					);
-			this.compiler.assertCompilesTo(source, expected);
+			getCompileHelper().assertCompilesTo(source, expected);
 		}
 
 	}
 
 	public static class SkillTest extends AbstractSarlTest {
-
-		@Inject
-		private CompilationTestHelper compiler;
 
 		@Test
 		public void action_singleParam() throws Exception {
@@ -510,7 +495,7 @@ public class VarArgsCompilerTest {
 					"}",
 					""
 					);
-			this.compiler.compile(source, (r) -> {
+			getCompileHelper().compile(source, (r) -> {
 					assertEquals(expectedC1,r.getGeneratedCode("C1"));
 					assertEquals(expectedS1,r.getGeneratedCode("S1"));
 				});
@@ -553,7 +538,7 @@ public class VarArgsCompilerTest {
 					"}",
 					""
 					);
-			this.compiler.compile(source, new IAcceptor<Result>() {
+			getCompileHelper().compile(source, new IAcceptor<Result>() {
 				@Override
 				public void accept(Result r) {
 					assertEquals(expectedS1,r.getGeneratedCode("S1"));
@@ -586,7 +571,7 @@ public class VarArgsCompilerTest {
 					"}",
 					""
 					);
-			this.compiler.compile(source, new IAcceptor<Result>() {
+			getCompileHelper().compile(source, new IAcceptor<Result>() {
 				@Override
 				public void accept(Result r) {
 					assertEquals(expectedS1,r.getGeneratedCode("S1"));
@@ -619,7 +604,7 @@ public class VarArgsCompilerTest {
 					"}",
 					""
 					);
-			this.compiler.compile(source, new IAcceptor<CompilationTestHelper.Result>() {
+			getCompileHelper().compile(source, new IAcceptor<CompilationTestHelper.Result>() {
 				@Override
 				public void accept(Result r) {
 					assertEquals(expected,r.getGeneratedCode("S1"));

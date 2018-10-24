@@ -43,9 +43,6 @@ public class EnumCompilerTest {
 
 	public static class TopLevelTest extends AbstractSarlTest {
 
-		@Inject
-		private CompilationTestHelper compiler;
-
 		@Test
 		public void basic() throws Exception {
 			String source = "enum E1 { CST1, CST2 }";
@@ -63,15 +60,12 @@ public class EnumCompilerTest {
 					"}",
 					""
 					);
-			this.compiler.assertCompilesTo(source, expected);
+			getCompileHelper().assertCompilesTo(source, expected);
 		}
 
 	}
 
 	public static class InClassTest extends AbstractSarlTest {
-
-		@Inject
-		private CompilationTestHelper compiler;
 
 		@Test
 		public void basic() throws Exception {
@@ -100,15 +94,12 @@ public class EnumCompilerTest {
 					"}",
 					""
 					);
-			this.compiler.assertCompilesTo(source, expected);
+			getCompileHelper().assertCompilesTo(source, expected);
 		}
 
 	}
 
 	public static class InAgentTest extends AbstractSarlTest {
-
-		@Inject
-		private CompilationTestHelper compiler;
 
 		@Test
 		public void basic() throws Exception {
@@ -155,7 +146,7 @@ public class EnumCompilerTest {
 					"}",
 					""
 					);
-			this.compiler.assertCompilesTo(source, expected);
+			getCompileHelper().assertCompilesTo(source, expected);
 		}
 
 	}

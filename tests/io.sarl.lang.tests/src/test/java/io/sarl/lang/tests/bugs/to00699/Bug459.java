@@ -83,12 +83,9 @@ public class Bug459 {
 
 	public static class Compilation extends AbstractSarlTest {
 
-		@Inject
-		private CompilationTestHelper compiler;
-
 		@Test
 		public void withoutFunction() throws Exception {
-			this.compiler.assertCompilesTo(SNIPSET1,
+			getCompileHelper().assertCompilesTo(SNIPSET1,
 					multilineString(
 							"package io.sarl.lang.bug459;",
 							"",
@@ -115,7 +112,7 @@ public class Bug459 {
 
 		@Test
 		public void withFunction() throws Exception {
-			this.compiler.assertCompilesTo(SNIPSET2,
+			getCompileHelper().assertCompilesTo(SNIPSET2,
 					multilineString(
 							"package io.sarl.lang.bug459;",
 							"",
@@ -181,7 +178,7 @@ public class Bug459 {
 
 		@Test
 		public void singleInheritanceWithoutFunction() throws Exception {
-			this.compiler.compile(SNIPSET3,
+			getCompileHelper().compile(SNIPSET3,
 					(it) -> {
 						assertEquals(multilineString(
 							"package io.sarl.lang.bug459;",
@@ -210,7 +207,7 @@ public class Bug459 {
 
 		@Test
 		public void singleInheritanceWithFunction() throws Exception {
-			this.compiler.compile(SNIPSET4,
+			getCompileHelper().compile(SNIPSET4,
 					(it) -> {
 						assertEquals(multilineString(
 							"package io.sarl.lang.bug459;",
@@ -278,7 +275,7 @@ public class Bug459 {
 
 		@Test
 		public void multiInheritanceWithoutFunction() throws Exception {
-			this.compiler.compile(SNIPSET5,
+			getCompileHelper().compile(SNIPSET5,
 					(it) -> {
 						assertEquals(multilineString(
 							"package io.sarl.lang.bug459;",
@@ -317,7 +314,7 @@ public class Bug459 {
 
 		@Test
 		public void multiInheritanceWithFunction() throws Exception {
-			this.compiler.compile(SNIPSET6,
+			getCompileHelper().compile(SNIPSET6,
 					(it) -> {
 						assertEquals(multilineString(
 								"package io.sarl.lang.bug459;",
@@ -395,7 +392,7 @@ public class Bug459 {
 
 		@Test
 		public void withVarArg() throws Exception {
-			this.compiler.assertCompilesTo(SNIPSET7,
+			getCompileHelper().assertCompilesTo(SNIPSET7,
 					multilineString(
 							"package io.sarl.lang.bug459;",
 							"",

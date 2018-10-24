@@ -93,8 +93,6 @@ public class Bug553 extends AbstractSarlTest {
 			"  }",
 			"}",
 			"");
-	@Inject
-	private CompilationTestHelper compiler;
 	
 	@Test
 	public void validation() throws Exception {
@@ -105,7 +103,7 @@ public class Bug553 extends AbstractSarlTest {
 
 	@Test
 	public void compilation() throws Exception {
-		this.compiler.compile(SNIPSET, (it) -> {
+		getCompileHelper().compile(SNIPSET, (it) -> {
 			assertEquals(EXPECTED, it.getGeneratedCode("io.sarl.lang.tests.bug553.TestAgent"));
 		});
 	}

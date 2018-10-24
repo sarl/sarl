@@ -46,9 +46,6 @@ import com.google.inject.Inject;
 @SuppressWarnings("all")
 public class AssertKeywordTest extends AbstractSarlTest {
 
-	@Inject
-	private CompilationTestHelper compiler;
-
 	@Test
 	public void assertTrue() throws Exception {
 		String source = multilineString(
@@ -99,7 +96,7 @@ public class AssertKeywordTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.assertCompilesTo(source, expected);
+		getCompileHelper().assertCompilesTo(source, expected);
 	}
 
 	@Test
@@ -152,7 +149,7 @@ public class AssertKeywordTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.assertCompilesTo(source, expected);
+		getCompileHelper().assertCompilesTo(source, expected);
 	}
 
 	@Test
@@ -205,7 +202,7 @@ public class AssertKeywordTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.assertCompilesTo(source, expected);
+		getCompileHelper().assertCompilesTo(source, expected);
 	}
 
 	@Test
@@ -258,7 +255,7 @@ public class AssertKeywordTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.assertCompilesTo(source, expected);
+		getCompileHelper().assertCompilesTo(source, expected);
 	}
 
 	@Test
@@ -317,7 +314,7 @@ public class AssertKeywordTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.assertCompilesTo(source, expected);
+		getCompileHelper().assertCompilesTo(source, expected);
 	}
 
 	@Test
@@ -378,7 +375,7 @@ public class AssertKeywordTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.assertCompilesTo(source, expected);
+		getCompileHelper().assertCompilesTo(source, expected);
 	}
 
 	@Test
@@ -431,7 +428,7 @@ public class AssertKeywordTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.assertCompilesTo(source, expected);
+		getCompileHelper().assertCompilesTo(source, expected);
 	}
 
 	@Test
@@ -492,7 +489,7 @@ public class AssertKeywordTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.assertCompilesTo(source, expected);
+		getCompileHelper().assertCompilesTo(source, expected);
 	}
 
 	@Test
@@ -564,7 +561,7 @@ public class AssertKeywordTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.assertCompilesTo(source, expected);
+		getCompileHelper().assertCompilesTo(source, expected);
 	}
 
 	@Test
@@ -644,7 +641,7 @@ public class AssertKeywordTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.assertCompilesTo(source, expected);
+		getCompileHelper().assertCompilesTo(source, expected);
 	}
 
 	@Test
@@ -738,7 +735,7 @@ public class AssertKeywordTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.assertCompilesTo(source, expected);
+		getCompileHelper().assertCompilesTo(source, expected);
 	}
 
 	@Test
@@ -843,7 +840,7 @@ public class AssertKeywordTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.assertCompilesTo(source, expected);
+		getCompileHelper().assertCompilesTo(source, expected);
 	}
 
 }

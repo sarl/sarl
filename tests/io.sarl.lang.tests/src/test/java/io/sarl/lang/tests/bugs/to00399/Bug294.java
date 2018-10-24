@@ -78,9 +78,6 @@ public class Bug294 {
 	 */
 	public static class CompilerTests extends AbstractSarlTest {
 
-		@Inject
-		private CompilationTestHelper compiler;
-
 		@Test
 		public void testCompiler() throws Exception {
 			final String expectedPhysicEnvironment = multilineString(
@@ -312,7 +309,7 @@ public class Bug294 {
 					"}",
 					"");
 
-			this.compiler.compile(multilineString(capacityCode, skillCode), (r) -> {
+			getCompileHelper().compile(multilineString(capacityCode, skillCode), (r) -> {
 					assertEquals(expectedPhysicEnvironment, r.getGeneratedCode("PhysicEnvironment"));
 					assertEquals(expectedStandardPhysicEnvironment, r.getGeneratedCode("StandardPhysicEnvironment"));
 				});

@@ -206,9 +206,6 @@ public class Bug558 extends AbstractSarlTest {
 			"    myfunction3",
 			"  }",
 			"}");
-
-	@Inject
-	private CompilationTestHelper compiler;
 	
 	@Test
 	public void snipset1() throws Exception {

@@ -195,9 +195,6 @@ public class Bug600 {
 				"  }",
 				"}");
 
-		@Inject
-		private CompilationTestHelper compiler;
-
 		@Test
 		public void parsing_01() throws Exception {
 			SarlScript mas = file(SNIPSET1);
@@ -207,7 +204,7 @@ public class Bug600 {
 
 		@Test
 		public void compiling_01() throws Exception {
-			this.compiler.assertCompilesTo(SNIPSET1, multilineString(
+			getCompileHelper().assertCompilesTo(SNIPSET1, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
 					"import io.sarl.lang.annotation.SarlElementType;",
@@ -248,7 +245,7 @@ public class Bug600 {
 
 		@Test
 		public void compiling_02() throws Exception {
-			this.compiler.assertCompilesTo(SNIPSET2, multilineString(
+			getCompileHelper().assertCompilesTo(SNIPSET2, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
 					"import io.sarl.lang.annotation.SarlElementType;",
@@ -289,7 +286,7 @@ public class Bug600 {
 
 		@Test
 		public void compiling_03() throws Exception {
-			this.compiler.assertCompilesTo(SNIPSET3, multilineString(
+			getCompileHelper().assertCompilesTo(SNIPSET3, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
 					"import io.sarl.lang.annotation.SarlElementType;",
@@ -330,7 +327,7 @@ public class Bug600 {
 
 		@Test
 		public void compiling_04() throws Exception {
-			this.compiler.assertCompilesTo(SNIPSET4, multilineString(
+			getCompileHelper().assertCompilesTo(SNIPSET4, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
 					"import io.sarl.lang.annotation.SarlElementType;",
@@ -371,7 +368,7 @@ public class Bug600 {
 
 		@Test
 		public void compiling_05() throws Exception {
-			this.compiler.assertCompilesTo(SNIPSET5, multilineString(
+			getCompileHelper().assertCompilesTo(SNIPSET5, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
 					"import io.sarl.lang.annotation.SarlElementType;",
@@ -412,7 +409,7 @@ public class Bug600 {
 
 		@Test
 		public void compiling_06() throws Exception {
-			this.compiler.assertCompilesTo(SNIPSET6, multilineString(
+			getCompileHelper().assertCompilesTo(SNIPSET6, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
 					"import io.sarl.lang.annotation.SarlElementType;",
@@ -453,7 +450,7 @@ public class Bug600 {
 
 		@Test
 		public void compiling_07() throws Exception {
-			this.compiler.assertCompilesTo(SNIPSET7, multilineString(
+			getCompileHelper().assertCompilesTo(SNIPSET7, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
 					"import io.sarl.lang.annotation.SarlElementType;",
@@ -494,7 +491,7 @@ public class Bug600 {
 
 		@Test
 		public void compiling_08() throws Exception {
-			this.compiler.assertCompilesTo(SNIPSET8, multilineString(
+			getCompileHelper().assertCompilesTo(SNIPSET8, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
 					"import io.sarl.lang.annotation.SarlElementType;",
@@ -674,9 +671,6 @@ public class Bug600 {
 				"  }",
 				"}");
 
-		@Inject
-		private CompilationTestHelper compiler;
-
 		@Test
 		public void parsing_01() throws Exception {
 			SarlScript mas = file(SNIPSET1);
@@ -686,7 +680,7 @@ public class Bug600 {
 
 		@Test
 		public void compiling_01() throws Exception {
-			this.compiler.assertCompilesTo(SNIPSET1, multilineString(
+			getCompileHelper().assertCompilesTo(SNIPSET1, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
 					"import io.sarl.lang.annotation.SarlElementType;",
@@ -735,7 +729,7 @@ public class Bug600 {
 
 		@Test
 		public void compiling_02() throws Exception {
-			this.compiler.assertCompilesTo(SNIPSET2, multilineString(
+			getCompileHelper().assertCompilesTo(SNIPSET2, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
 					"import io.sarl.lang.annotation.SarlElementType;",
@@ -784,7 +778,7 @@ public class Bug600 {
 
 		@Test
 		public void compiling_03() throws Exception {
-			this.compiler.assertCompilesTo(SNIPSET3, multilineString(
+			getCompileHelper().assertCompilesTo(SNIPSET3, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
 					"import io.sarl.lang.annotation.SarlElementType;",
@@ -833,7 +827,7 @@ public class Bug600 {
 
 		@Test
 		public void compiling_04() throws Exception {
-			this.compiler.assertCompilesTo(SNIPSET4, multilineString(
+			getCompileHelper().assertCompilesTo(SNIPSET4, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
 					"import io.sarl.lang.annotation.SarlElementType;",
@@ -882,7 +876,7 @@ public class Bug600 {
 
 		@Test
 		public void compiling_05() throws Exception {
-			this.compiler.assertCompilesTo(SNIPSET5, multilineString(
+			getCompileHelper().assertCompilesTo(SNIPSET5, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
 					"import io.sarl.lang.annotation.SarlElementType;",
@@ -931,7 +925,7 @@ public class Bug600 {
 
 		@Test
 		public void compiling_06() throws Exception {
-			this.compiler.assertCompilesTo(SNIPSET6, multilineString(
+			getCompileHelper().assertCompilesTo(SNIPSET6, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
 					"import io.sarl.lang.annotation.SarlElementType;",
@@ -980,7 +974,7 @@ public class Bug600 {
 
 		@Test
 		public void compiling_07() throws Exception {
-			this.compiler.assertCompilesTo(SNIPSET7, multilineString(
+			getCompileHelper().assertCompilesTo(SNIPSET7, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
 					"import io.sarl.lang.annotation.SarlElementType;",
@@ -1029,7 +1023,7 @@ public class Bug600 {
 
 		@Test
 		public void compiling_08() throws Exception {
-			this.compiler.assertCompilesTo(SNIPSET8, multilineString(
+			getCompileHelper().assertCompilesTo(SNIPSET8, multilineString(
 					"package io.sarl.lang.tests.bug600;",
 					"",
 					"import io.sarl.lang.annotation.SarlElementType;",

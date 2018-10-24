@@ -33,9 +33,6 @@ import io.sarl.tests.api.AbstractSarlTest;
 @SuppressWarnings("all")
 public class GeneralSyntaxTest extends AbstractSarlTest {
 
-	@Inject
-	private CompilationTestHelper compiler;
-
 	@Test
 	public void noParamNoReturnActionInClass() throws Exception {
 		String source = multilineString(
@@ -64,7 +61,7 @@ public class GeneralSyntaxTest extends AbstractSarlTest {
 				"}",
 				""
 				);
-		this.compiler.assertCompilesTo(source, expected);
+		getCompileHelper().assertCompilesTo(source, expected);
 	}
 
 	@Test
@@ -89,7 +86,7 @@ public class GeneralSyntaxTest extends AbstractSarlTest {
 				"}",
 				""
 				);
-		this.compiler.assertCompilesTo(source, expected);
+		getCompileHelper().assertCompilesTo(source, expected);
 	}
 
 }
