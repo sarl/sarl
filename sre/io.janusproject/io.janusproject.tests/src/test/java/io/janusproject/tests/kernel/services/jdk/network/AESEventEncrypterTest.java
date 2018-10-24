@@ -19,14 +19,13 @@
  */
 package io.janusproject.tests.kernel.services.jdk.network;
 
-import static org.junit.Assert.assertArrayEquals;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import io.janusproject.kernel.services.jdk.network.AESEventEncrypter;
 import io.janusproject.services.network.EventEnvelope;
 import io.janusproject.tests.testutils.AbstractJanusTest;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  * @author $Author: sgalland$

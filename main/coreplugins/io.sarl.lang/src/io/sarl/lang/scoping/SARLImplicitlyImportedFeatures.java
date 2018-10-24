@@ -30,10 +30,10 @@ import org.eclipse.xtext.xbase.scoping.batch.ImplicitlyImportedFeatures;
 
 import io.sarl.lang.bugfixes.pending.pr106.PR106ArrayExtensions;
 import io.sarl.lang.bugfixes.pending.pr106.PR106ArrayLiterals;
-import io.sarl.lang.scoping.batch.SARLTimeExtensions;
-import io.sarl.lang.scoping.numbers.arithmetic.NumberArithmeticImplicitlyImportedFeatures;
-import io.sarl.lang.scoping.numbers.casts.NumberCastImplicitlyImportedFeatures;
-import io.sarl.lang.scoping.numbers.comparison.NumberComparisonImplicitlyImportedFeatures;
+import io.sarl.lang.scoping.extensions.numbers.arithmetic.NumberArithmeticImplicitlyImportedFeatures;
+import io.sarl.lang.scoping.extensions.numbers.cast.NumberCastImplicitlyImportedFeatures;
+import io.sarl.lang.scoping.extensions.numbers.comparison.NumberComparisonImplicitlyImportedFeatures;
+import io.sarl.lang.scoping.extensions.time.TimeExtensions;
 
 
 /** Provider of the implicitly imported features in the SARL language.
@@ -74,7 +74,7 @@ public class SARLImplicitlyImportedFeatures extends ImplicitlyImportedFeatures {
 		final List<Class<?>> xtextList = super.getExtensionClasses();
 		// Insert at the beginning for ensuring the SARL extension is selected before any Xtext extension.
 		xtextList.add(0, PR106ArrayExtensions.class);
-		xtextList.add(0, SARLTimeExtensions.class);
+		xtextList.add(0, TimeExtensions.class);
 
 		// Add features related to numbers.
 		this.numberComparisonFeatures.getImportedFeatures(xtextList);

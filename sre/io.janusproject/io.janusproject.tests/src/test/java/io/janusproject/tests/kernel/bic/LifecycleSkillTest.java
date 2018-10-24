@@ -19,11 +19,6 @@
  */
 package io.janusproject.tests.kernel.bic;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -47,7 +42,6 @@ import io.janusproject.services.spawn.SpawnService;
 import io.janusproject.tests.testutils.AbstractJanusTest;
 
 import io.sarl.core.DefaultContextInteractions;
-import io.sarl.core.Lifecycle;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
@@ -120,7 +114,7 @@ public class LifecycleSkillTest extends AbstractJanusTest {
 		ArgumentCaptor<Object> argument5 = ArgumentCaptor.forClass(Object.class);
 		verify(this.spawnService, times(1)).spawn(argument0.capture(), argument1.capture(), argument2.capture(),
 				argument3.capture(), argument4.capture(), argument5.capture());
-		assertEquals(1, argument0.getValue());
+		assertEquals(1, argument0.getValue().intValue());
 		assertSame(this.agentID, argument1.getValue());
 		assertSame(this.context, argument2.getValue());
 		assertNull(argument3.getValue());
@@ -140,7 +134,7 @@ public class LifecycleSkillTest extends AbstractJanusTest {
 		ArgumentCaptor<Object> argument5 = ArgumentCaptor.forClass(Object.class);
 		verify(this.spawnService, times(1)).spawn(argument0.capture(), argument1.capture(), argument2.capture(),
 				argument3.capture(), argument4.capture(), argument5.capture());
-		assertEquals(1, argument0.getValue());
+		assertEquals(1, argument0.getValue().intValue());
 		assertEquals(this.agentID, argument1.getValue());
 		assertSame(this.context, argument2.getValue());
 		assertNull(argument3.getValue());
@@ -161,7 +155,7 @@ public class LifecycleSkillTest extends AbstractJanusTest {
 		ArgumentCaptor<Object> argument5 = ArgumentCaptor.forClass(Object.class);
 		verify(this.spawnService, times(1)).spawn(argument0.capture(), argument1.capture(), argument2.capture(),
 				argument3.capture(), argument4.capture(), argument5.capture());
-		assertEquals(1, argument0.getValue());
+		assertEquals(1, argument0.getValue().intValue());
 		assertSame(this.agentID, argument1.getValue());
 		assertSame(this.context, argument2.getValue());
 		assertSame(this.agentID, argument3.getValue());
