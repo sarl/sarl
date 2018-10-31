@@ -25,6 +25,7 @@ import java.net.InetAddress;
 import java.net.URI;
 import java.text.MessageFormat;
 
+import com.google.common.base.Strings;
 import com.google.common.util.concurrent.Service;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -56,11 +57,14 @@ import io.sarl.lang.core.SpaceID;
  * {@link StandardJanusPlatformModule}.
  *
  * @author $Author: srodriguez$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 public class HazelcastModule extends AbstractModule {
+
+	private static final String HAZELCAST_LOCAL_ADDRESS = "hazelcast.local.localAddress"; //$NON-NLS-1$
 
 	@Override
 	protected void configure() {
@@ -123,7 +127,15 @@ public class HazelcastModule extends AbstractModule {
 
 		assert adr != null;
 		final String hostname = adr.getHostAddress();
-		config.setProperty("hazelcast.local.localAddress", hostname); //$NON-NLS-1$
+
+		final String hazelcastConfigVariable = JanusConfig.getSystemProperty(HAZELCAST_LOCAL_ADDRESS, null);
+		if (!Strings.isNullOrEmpty(hazelcastConfigVariable) && !hazelcastConfigVariable.equals(hostname)) {
+			logService.getKernelLogger().warning(MessageFormat.format("UNSUPPORTED_HAZELCAST_ADDRESS", //$NON-NLS-1$
+					HAZELCAST_LOCAL_ADDRESS, hazelcastConfigVariable,
+					JanusConfig.PUB_URI, uri.toString()));
+		}
+
+		config.setProperty(HAZELCAST_LOCAL_ADDRESS, hostname);
 
 		final NetworkConfig networkConfig = config.getNetworkConfig();
 		final MulticastConfig multicastConfig = networkConfig.getJoin().getMulticastConfig();
