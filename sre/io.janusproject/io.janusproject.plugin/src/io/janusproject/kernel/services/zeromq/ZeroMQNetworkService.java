@@ -87,7 +87,6 @@ public class ZeroMQNetworkService extends AbstractNetworkingExecutionThreadServi
     @Inject
     private KernelDiscoveryService kernelService;
 
-    @Inject
     private ContextSpaceService spaceService;
 
     @Inject
@@ -127,6 +126,21 @@ public class ZeroMQNetworkService extends AbstractNetworkingExecutionThreadServi
     public ZeroMQNetworkService(@Named(JanusConfig.PUB_URI) URI uri) {
         assert uri != null : "Injected URI must be not null nor empty"; //$NON-NLS-1$
         this.uriCandidate = uri;
+    }
+
+    /** Set the reference to the space service.
+     *
+     * @param service the service.
+     */
+    @Inject
+    public void setSpaceService(ContextSpaceService service) {
+    	if (this.spaceService != null) {
+    		this.spaceService.removeSpaceRepositoryListener(this.serviceListener);
+    	}
+    	this.spaceService = service;
+    	if (this.spaceService != null) {
+    		this.spaceService.addSpaceRepositoryListener(this.serviceListener);
+    	}
     }
 
     @Override
@@ -474,7 +488,6 @@ public class ZeroMQNetworkService extends AbstractNetworkingExecutionThreadServi
             this.poller = this.context.createPoller(1);
 
             this.kernelService.addKernelDiscoveryServiceListener(this.serviceListener);
-            this.spaceService.addSpaceRepositoryListener(this.serviceListener);
         }
         for (final BufferedConnection t : connections.values()) {
             connectToRemoteSpaces(t.getPeerURI(), t.getSpaceID(), t.getListener());

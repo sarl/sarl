@@ -39,7 +39,7 @@ import io.sarl.lang.core.SpaceID;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class AddressSerializer implements StreamSerializer<Address> {
+public class AddressSerializer implements StreamSerializer<Address> {
 
 	/**
 	 * Unique identifier for the {@link Address} type.

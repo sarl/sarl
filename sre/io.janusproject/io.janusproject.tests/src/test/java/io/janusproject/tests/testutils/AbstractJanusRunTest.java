@@ -345,6 +345,22 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	 * @param type the type of the agent to launch at start-up.
 	 * @param enableLogging indicates if the logging is enable or not.
 	 * @param offline indicates if the Janus platform is offline
+	 * @throws Exception - if the kernel cannot be launched.
+	 */
+	protected void startJanusWithDefaultProcess(Class<? extends TestingAgent> type, boolean enableLogging, boolean offline,
+			Module module)
+			throws Exception {
+		final Module injectionModule = prepareJanus(enableLogging, offline, module);
+		startJanusKernel(injectionModule, type);
+		postKernelLaunch(enableLogging, Boot.getBootAgentIdentifier());
+	}
+
+	/**
+	 * Start the Janus platform.
+	 * 
+	 * @param type the type of the agent to launch at start-up.
+	 * @param enableLogging indicates if the logging is enable or not.
+	 * @param offline indicates if the Janus platform is offline
 	 * @param timeout the maximum waiting time in seconds, or <code>-1</code> to ignore the timeout.
 	 *     See {@link #STANDARD_TIMEOUT}, {@link #EXTRA_TIMEOUT} or {@link #NO_TIMEOUT}.
 	 * @throws Exception - if the kernel cannot be launched.
@@ -352,7 +368,7 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	protected void runJanus(Class<? extends TestingAgent> type, boolean enableLogging, boolean offline, int timeout,
 			Module module)
 			throws Exception {
-		setupTheJanusKernel(type, enableLogging, offline, module);
+		startJanusWithDefaultProcess(type, enableLogging, offline, module);
 		waitForTheKernel(timeout);
 	}
 
@@ -364,19 +380,15 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 	}
 	
 	/**
-	 * Set-up the Janus platform.
+	 * Prepare the Janus platform for launching
 	 * 
-	 * @param type the type of the agent to launch at start-up.
 	 * @param enableLogging indicates if the logging is enable or not.
 	 * @param offline indicates if the Janus platform is offline
 	 * @param module the injection module to be used.
-	 * @return the kernel.
+	 * @return the injection module
 	 * @throws Exception - if the kernel cannot be launched.
 	 */
-	protected Kernel setupTheJanusKernel(Class<? extends TestingAgent> type, boolean enableLogging, boolean offline,
-			Module module)
-			throws Exception {
-		assertNull("Janus already launched.", this.janusKernel);
+	protected Module prepareJanus(boolean enableLogging, boolean offline, Module module) throws Exception {
 		Boot.setConsoleLogger(new PrintStream(new OutputStream() {
 			@Override
 			public void write(int b) throws IOException {
@@ -399,8 +411,41 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 			injectionModule = Modules.override(injectionModule).with(new ErrorLogTestingModule(this.results));
 		}
 		Boot.setOffline(offline);
+		return injectionModule;
+	}
+	
+	/**
+	 * Start the Janus platform.
+	 * 
+	 * @param module the injection module to be used.
+	 * @param type the type of the agent to launch at start-up.
+	 * @throws Exception - if the kernel cannot be launched.
+	 */
+	protected void startJanusKernel(Module injectionModule, Class<? extends TestingAgent> type) throws Exception {
+		assertNull("Janus already launched.", this.janusKernel);
 		this.janusKernel = Boot.startJanusWithModule(injectionModule, type, getAgentInitializationParameters());
-		this.bootAgent = Boot.getBootAgentIdentifier();
+	}
+	
+	/**
+	 * Start the Janus platform.
+	 * 
+	 * @param module the injection module to be used.
+	 * @param type the type of the agent to launch at start-up.
+	 * @throws Exception - if the kernel cannot be launched.
+	 */
+	protected void startJanusKernel(Module injectionModule) throws Exception {
+		assertNull("Janus already launched.", this.janusKernel);
+		this.janusKernel = Boot.startWithoutAgent(injectionModule);
+	}
+
+	/**
+	 * Post starting stage.
+	 * 
+	 * @param enableLogging indicates if the logging is enable or not.
+	 * @throws Exception - if the kernel cannot be launched.
+	 */
+	protected void postKernelLaunch(boolean enableLogging, UUID bootAgent) {
+		this.bootAgent = bootAgent;
 		Logger current = this.janusKernel.getLogger();
 		while (current.getParent() != null && current.getParent() != current) {
 			current = current.getParent();
@@ -408,9 +453,8 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 		if (current != null) {
 			current.setLevel(enableLogging ? Level.SEVERE : Level.OFF);
 		}
-		return this.janusKernel;
 	}
-
+	
 	/**
 	 * Wait for the end of the Janus platform.
 	 * 

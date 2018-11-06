@@ -19,12 +19,18 @@
  */
 package io.janusproject.tests.testutils;
 
+import java.io.IOError;
+import java.net.InetAddress;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Properties;
 
-import io.janusproject.JanusConfig;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
+
+import io.janusproject.JanusConfig;
+import io.janusproject.services.network.NetworkUtil;
 
 import io.sarl.tests.api.AbstractSarlTest;
 
@@ -66,6 +72,51 @@ public abstract class AbstractJanusTest extends AbstractSarlTest {
 		for (Object name : tmp.keySet()) {
 			props.remove(name);
 		}
+	}
+
+	/**
+	 * Inject the PUB_URI as a real {@link URI}.
+	 *
+	 * @param readEnvironmentVariable indicates if the environment variable should be read.
+	 * @param writeEnvironmentVariable indicates if the environment variable should be overwritten.
+	 * @return the PUB_URI
+	 * @since 0.9
+	 */
+	public static URI getPubURIAsURI(boolean readEnvironmentVariable, boolean writeEnvironmentVariable) {
+		final String v = getPUBURIAsString(readEnvironmentVariable, writeEnvironmentVariable);
+		try {
+			return NetworkUtil.toURI(v);
+		} catch (URISyntaxException e) {
+			throw new IOError(e);
+		}
+	}
+
+	/**
+	 * Extract the current value of the PUB_URI from the system's property or form the platform default value.
+	 *
+	 * @param readEnvironmentVariable indicates if the environment variable should be read.
+	 * @param writeEnvironmentVariable indicates if the environment variable should be overwritten.
+	 * @return the current PUB_URI
+	 * @since 0.9
+	 */
+	public static String getPUBURIAsString(boolean readEnvironmentVariable, boolean writeEnvironmentVariable) {
+		String pubUri = null;
+		if (readEnvironmentVariable) {
+			pubUri = JanusConfig.getSystemProperty(JanusConfig.PUB_URI);
+		}
+		if (pubUri == null || pubUri.isEmpty()) {
+			InetAddress a = NetworkUtil.getPrimaryAddress();
+			if (a == null) {
+				a = NetworkUtil.getLoopbackAddress();
+			}
+			if (a != null) {
+				pubUri = NetworkUtil.toURI(a, -1).toString();
+				if (writeEnvironmentVariable) {
+					System.setProperty(JanusConfig.PUB_URI, pubUri);
+				}
+			}
+		}
+		return pubUri;
 	}
 
 }

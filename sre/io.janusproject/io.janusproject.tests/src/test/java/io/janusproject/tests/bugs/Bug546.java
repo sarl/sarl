@@ -89,10 +89,10 @@ public class Bug546 {
 
 		@Test
 		public void waitAgentKilled() throws Exception {
-			Kernel kernel = setupTheJanusKernel(KillWaiterAgent.class, false, true, getDefaultJanusModule());
+			startJanusWithDefaultProcess(KillWaiterAgent.class, false, true, getDefaultJanusModule());
 			List<UUID> ids = new ArrayList<>(NB_AGENTS);
 			for (int i = 0; i < NB_AGENTS; ++i) {
-				UUID id = spawn(kernel);
+				UUID id = spawn(this.janusKernel);
 				ids.add(id);
 			}
 			try {
@@ -351,8 +351,8 @@ public class Bug546 {
 
 		@Test
 		public void sendEvents() throws Exception {
-			Kernel kernel = setupTheJanusKernel(ReceivingAgent.class, false, true, getDefaultJanusModule());
-			kernel.spawn(SendingAgent.class);
+			startJanusWithDefaultProcess(ReceivingAgent.class, false, true, getDefaultJanusModule());
+			this.janusKernel.spawn(SendingAgent.class);
 			try {
 				waitForTheKernel(EXTRA_TIMEOUT);
 			} catch (TimeoutException e) {

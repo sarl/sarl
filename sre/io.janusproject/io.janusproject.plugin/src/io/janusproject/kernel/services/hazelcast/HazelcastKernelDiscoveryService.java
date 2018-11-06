@@ -278,8 +278,7 @@ public class HazelcastKernelDiscoveryService extends AbstractDependentService
 
 		private void fireDisconnected(EntryEvent<URI, URI> event) {
 			final URI oldPeer = event.getValue();
-			assert oldPeer != null;
-			if (!oldPeer.equals(getCurrentKernel())) {
+			if (oldPeer != null && !oldPeer.equals(getCurrentKernel())) {
 				fireKernelDisconnected(oldPeer);
 			}
 		}
