@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>io.sarl</groupId>
 		<artifactId>io.sarl.products</artifactId>
-		<version>0.9.0-SNAPSHOT</version>
+		<version>0.8.5</version>
 	</parent>
 
 	<artifactId>io.sarl.lang.sarlc</artifactId>
@@ -53,10 +53,10 @@
 			<artifactId>io.sarl.maven.sdk</artifactId>
 		</dependency>
 		<!--  The following dependency is included in order to have extra-language generators -->
-		<dependency>
+		<!--<dependency>
 			<groupId>io.sarl.pythongenerator</groupId>
 			<artifactId>io.sarl.pythongenerator.generator</artifactId>
-		</dependency>
+		</dependency>-->
 	</dependencies>
 
 	<build>

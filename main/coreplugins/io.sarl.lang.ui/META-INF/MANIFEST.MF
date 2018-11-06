@@ -2,11 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-Vendor: %Bundle-Vendor
-Bundle-Version: 0.9.0.qualifier
+Bundle-Version: 0.8.5
 Bundle-SymbolicName: io.sarl.lang.ui; singleton:=true
 Automatic-Module-Name: io.sarl.lang.ui
 Bundle-ActivationPolicy: lazy
-Require-Bundle: io.sarl.lang;bundle-version="0.9.0";visibility:=reexport,
+Require-Bundle: io.sarl.lang;bundle-version="0.8.5";visibility:=reexport,
  org.eclipse.xtext.ui;bundle-version="2.15.0",
  org.eclipse.xtext.ui.shared;bundle-version="2.15.0",
  org.eclipse.xtext.ui.codetemplates.ui;bundle-version="2.15.0",
