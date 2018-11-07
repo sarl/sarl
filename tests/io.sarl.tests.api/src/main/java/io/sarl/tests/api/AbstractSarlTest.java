@@ -164,13 +164,13 @@ public abstract class AbstractSarlTest extends Assert {
 	private Injector injector;
 
 	@Inject
-	private Provider<ValidationTestHelper> validationHelper;
+	private ValidationTestHelper validationHelper;
 
 	@Inject
-	private Provider<ParseHelper<SarlScript>> parser;
+	private ParseHelper<SarlScript> parser;
 
 	@Inject
-	private Provider<CompilationTestHelper> compiler;
+	private CompilationTestHelper compiler;
 
 	@Inject
 	private Provider<SarlJvmModelAssociations> associations;
@@ -1299,7 +1299,7 @@ public abstract class AbstractSarlTest extends Assert {
 	 * @since 0.7
 	 */
 	protected ParseHelper<SarlScript> getParseHelper() {
-		return this.parser.get();
+		return this.parser;
 	}
 
 	/** Replies the compile helper.
@@ -1308,8 +1308,7 @@ public abstract class AbstractSarlTest extends Assert {
 	 * @since 0.9
 	 */
 	protected CompilationTestHelper getCompileHelper() {
-		final CompilationTestHelper helper = this.compiler.get();
-		return helper;
+		return this.compiler;
 	}
 
 	/** Create an instance of class.
@@ -1343,7 +1342,7 @@ public abstract class AbstractSarlTest extends Assert {
 	/** Validate the given resource and reply the issues.
 	 */
 	protected List<Issue> issues(Resource resource) {
-		return this.validationHelper.get().validate(resource);
+		return this.validationHelper.validate(resource);
 	}
 
 	/** Validate the given file and reply the validator.
@@ -1716,7 +1715,7 @@ public abstract class AbstractSarlTest extends Assert {
 	 */
 	public void assertAnyError(EObject source, String... codes) {
 		final List<String> codeSet = Arrays.asList(codes);
-		final List<Issue> validate = this.validationHelper.get().validate(source);
+		final List<Issue> validate = this.validationHelper.validate(source);
 		if (!any(validate, input -> Severity.ERROR == input.getSeverity() && !codeSet.contains(input.getCode()))) {
 			fail("Expected an error, but got nothing");
 		}
@@ -1730,7 +1729,7 @@ public abstract class AbstractSarlTest extends Assert {
 	 */
 	public void assertNoErrorsExcept(EObject source, String... codes) {
 		final List<String> codeSet = Arrays.asList(codes);
-		final List<Issue> validate = this.validationHelper.get().validate(source);
+		final List<Issue> validate = this.validationHelper.validate(source);
 		final Predicate<Issue> pred = input -> Severity.ERROR == input.getSeverity() && !codeSet.contains(input.getCode());
 		if (any(validate, pred)) {
 			fail("Expected no error, found: " + filter(validate, pred));
@@ -1820,7 +1819,7 @@ public abstract class AbstractSarlTest extends Assert {
 		 */
 		private XtextValidator(Resource resource) {
 			this.resource = resource;
-			this.testHelper = AbstractSarlTest.this.validationHelper.get();
+			this.testHelper = AbstractSarlTest.this.validationHelper;
 		}
 
 		@Override
