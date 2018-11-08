@@ -42,6 +42,7 @@ public class Messages extends NLS {
 	public static String ZeroMQNetworkService_14;
 	public static String ZeroMQNetworkService_15;
 	public static String ZeroMQNetworkService_16;
+	public static String ZeroMQNetworkService_17;
 	public static String ZeroMQNetworkService_2;
 	public static String ZeroMQNetworkService_20;
 	public static String ZeroMQNetworkService_3;

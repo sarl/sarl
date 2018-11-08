@@ -64,7 +64,7 @@ public class Bug883 extends AbstractJanusRunTest {
 	}
 
 	@SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
-	@SarlElementType(SarlPackage.SARL_AGENT)
+	@SarlElementType(SarlPackage.SARL_EVENT)
 	static class TestEvent extends Event {
 	}
 

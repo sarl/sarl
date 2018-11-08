@@ -279,10 +279,17 @@ public class ZeroMQNetworkService extends AbstractNetworkingExecutionThreadServi
         if (this.validatedURI == null) {
             this.logger.getKernelLogger().fine(MessageFormat.format(Messages.ZeroMQNetworkService_0, data.getSource().getSpaceID(), scope, data));
         } else if (!this.receptionSocketsPerRemoteKernel.isEmpty()) {
-            final SpaceID spaceID = data.getSource().getSpaceID();
-            final EventEnvelope env = this.serializer.serialize(new EventDispatch(spaceID, data, scope));
-            send(env);
-            this.logger.getKernelLogger().fine(MessageFormat.format(Messages.ZeroMQNetworkService_1, spaceID, data));
+        	// Send asynchronously
+        	this.executorService.execute(() -> {
+        		try {
+	                final SpaceID spaceID = data.getSource().getSpaceID();
+	                final EventEnvelope env = this.serializer.serialize(new EventDispatch(spaceID, data, scope));
+	                send(env);
+	                this.logger.getKernelLogger().fine(MessageFormat.format(Messages.ZeroMQNetworkService_1, spaceID, data));
+        		} catch (Exception exception) {
+	                this.logger.getKernelLogger().severe(MessageFormat.format(Messages.ZeroMQNetworkService_17, data, scope, exception));
+        		}
+        	});
         }
     }
 
