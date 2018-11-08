@@ -223,7 +223,8 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 		final UUID spawner = spawningAgent == null ? context.getID() : spawningAgent;
 		final Address source = new Address(defSpace.getSpaceID(), spawner);
 		assert source != null;
-		final Collection<UUID> spawnedAgentIds = Collections2.transform(agents, it -> it.getID());
+		final Collection<UUID> spawnedAgentIds = Collections3.serializableCollection(
+				Collections2.transform(agents, it -> it.getID()));
 		final AgentSpawned event = new AgentSpawned(source, agentClazz.getName(), spawnedAgentIds);
 		final Scope<Address> scope = address -> {
 			final UUID receiver = address.getUUID();

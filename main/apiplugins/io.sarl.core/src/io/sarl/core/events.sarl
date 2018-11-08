@@ -20,12 +20,14 @@
  */
 package io.sarl.core
 
+import java.util.Arrays
 import java.util.Collection
 import java.util.Collections
 import java.util.UUID
 import io.sarl.lang.^annotation.EarlyExit
 import io.sarl.lang.core.SpaceID
 import io.sarl.lang.core.Address
+import io.sarl.util.Collections3
 
 /**
  * Initialization event.
@@ -160,7 +162,7 @@ final event AgentSpawned {
 	 */
 	new (source : Address, agentType : String,  agentID : UUID*) {
 		setSource(source)
-		this.agentIdentifiers = newImmutableList(agentID)
+		this.agentIdentifiers = Collections::unmodifiableCollection(Arrays::asList(agentID))
 		this.agentID = agentID.get(0)
 		this.agentType = agentType
 	}
@@ -173,7 +175,7 @@ final event AgentSpawned {
 	 */
 	new (source : Address, agentType : String,  agentID : Collection<UUID>) {
 		setSource(source)
-		this.agentIdentifiers = Collections::unmodifiableCollection(agentID)
+		this.agentIdentifiers = Collections::unmodifiableCollection(Collections3::serializableCollection(agentID))
 		this.agentID = agentID.iterator.next
 		this.agentType = agentType
 	}

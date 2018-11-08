@@ -23,9 +23,12 @@ package io.sarl.util
 import io.sarl.lang.util.SynchronizedCollection
 import io.sarl.lang.util.SynchronizedIterable
 import io.sarl.lang.util.SynchronizedSet
+import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.io.Serializable
+import java.util.AbstractCollection
 import java.util.AbstractSet
+import java.util.ArrayList
 import java.util.Collection
 import java.util.Collections
 import java.util.Iterator
@@ -59,7 +62,7 @@ final class Collections3 {
 	 */
 	private static class EmptySet extends AbstractSet<Object> implements SynchronizedSet<Object>, Serializable {
 
-		val mutex = new Object
+		transient var mutex = new Object
 
 		package new {
 		}
@@ -74,6 +77,21 @@ final class Collections3 {
 
 		override size : int {
 			0
+		}
+
+		@SuppressWarnings("unused_private_member")
+		private def writeObject(stream : ObjectOutputStream) {
+			synchronized (this.mutex) {
+				stream.defaultWriteObject
+			}
+		}
+
+		@SuppressWarnings("unused_private_member")
+		private def readObject(stream : ObjectInputStream) {
+			synchronized (this.mutex) {
+				stream.defaultReadObject
+				this.mutex = new Object
+			}
 		}
 
 	}
@@ -94,7 +112,7 @@ final class Collections3 {
 
 		/** Object on which to synchronize.
 		 */
-		package val mutex : Object
+		package transient var mutex : Object
 
 		new (collection : Collection<E>, mutex : Object) {
 			this.collection = collection
@@ -203,6 +221,14 @@ final class Collections3 {
 		private def writeObject(stream : ObjectOutputStream) {
 			synchronized (this.mutex) {
 				stream.defaultWriteObject
+			}
+		}
+
+		@SuppressWarnings("unused_private_member")
+		private def readObject(stream : ObjectInputStream) {
+			synchronized (this.mutex) {
+				stream.defaultReadObject
+				this.mutex = new Object
 			}
 		}
 
@@ -565,6 +591,7 @@ final class Collections3 {
 	static def unmodifiableSynchronizedIterable(elements : Iterable<T>, mutex : Object) : SynchronizedIterable<T> with T {
 		new UnmodifiableSynchronizedIterableWrapper(elements, mutex)
 	}
+
 	/** Unmodifiable synchronized iterable.
 	 * 
 	 * @param <E> the type of the elements in the collection.
@@ -577,7 +604,7 @@ final class Collections3 {
 
 		val iterable : Iterable<E>
 
-		val mutex : Object
+		transient var mutex : Object
 
 		package new (iterable : Iterable<E>, mutex : Object) {
 			this.iterable = iterable
@@ -592,5 +619,84 @@ final class Collections3 {
 			return this.mutex
 		}
 
+		@SuppressWarnings("unused_private_member")
+		private def writeObject(stream : ObjectOutputStream) {
+			synchronized (this.mutex) {
+				stream.defaultWriteObject
+			}
+		}
+
+		@SuppressWarnings("unused_private_member")
+		private def readObject(stream : ObjectInputStream) {
+			synchronized (this.mutex) {
+				stream.defaultReadObject
+				this.mutex = new Object
+			}
+		}
+
 	}
+
+	/** Replies a serializable collection.
+	 * If the wrapped collection is serializable, it is replied itself without wrapping.
+	 * If the wrapped collection is not serializable, it is wrapped into a collection
+	 * that supports serialization of the collection elements.
+	 *
+	 * @param <T> - type of the elements in the collection.
+	 * @param elements the set to transform as unmodifiable collection.
+	 * @return an unmodifiable synchronized set.
+	 * @since 0.8.6
+	 */
+	static def serializableCollection(elements : Collection<T>) : Collection<T> with T {
+		if (elements instanceof Serializable) {
+			return elements
+		}
+		return new SerializableCollectionWrapper(elements)
+	}
+
+	/** Unmodifiable synchronized iterable.
+	 * 
+	 * @param <E> the type of the elements in the collection.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.8.6
+	 */
+	private static class SerializableCollectionWrapper<E> extends AbstractCollection<E> implements Serializable {
+
+		transient var collection : Collection<E>
+
+		package new (collection : Collection<E>) {
+			this.collection = collection
+		}
+
+		override iterator : Iterator<E> {
+			this.collection.iterator
+		}
+
+		override size : int {
+			this.collection.size
+		}
+
+		@SuppressWarnings("unused_private_member")
+		private def writeObject(stream : ObjectOutputStream) {
+			stream.defaultWriteObject
+			stream.writeInt(collection.size);
+			for (element : this.collection) {
+				stream.writeObject(element);
+			}
+		}
+
+		@SuppressWarnings("unused_private_member")
+		private def readObject(stream : ObjectInputStream) {
+			stream.defaultReadObject
+			val s = stream.readInt
+			this.collection = new ArrayList(s)
+			for (var i = 0; i < s; i++) {
+				this.collection.add(stream.readObject as E)
+			}
+		}
+
+	}
+
 }

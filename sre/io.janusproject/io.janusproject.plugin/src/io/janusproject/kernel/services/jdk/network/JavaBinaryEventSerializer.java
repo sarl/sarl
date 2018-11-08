@@ -62,6 +62,8 @@ import io.sarl.lang.core.SpaceSpecification;
  */
 public class JavaBinaryEventSerializer extends AbstractEventSerializer {
 
+	private static final String SPACE_SPECIFICATION_HEADER = "x-java-spacespec-class"; //$NON-NLS-1$
+
 	/**
 	 * Constructs an GsonEventSerializer. The {@link EventEncrypter} is injected.
 	 *
@@ -84,13 +86,18 @@ public class JavaBinaryEventSerializer extends AbstractEventSerializer {
 
 		final Map<String, String> headers = dispatch.getCustomHeaders();
 		assert headers != null;
-		headers.put("x-java-spacespec-class", //$NON-NLS-1$
+		headers.put(SPACE_SPECIFICATION_HEADER,
 				spaceID.getSpaceSpecification().getName());
 
 		final Scope<?> scope = dispatch.getScope();
 
-		final EventEnvelope envelope = new EventEnvelope(NetworkUtil.toByteArray(spaceID.getContextID()),
-				NetworkUtil.toByteArray(spaceID.getID()), toBytes(scope), toBytes(dispatch.getCustomHeaders()), toBytes(event));
+		final byte[] serializedContextID = NetworkUtil.toByteArray(spaceID.getContextID());
+		final byte[] serializedSpaceID = NetworkUtil.toByteArray(spaceID.getID());
+		final byte[] serializedScope = toBytes(scope);
+		final byte[] serializedHeaders = toBytes(dispatch.getCustomHeaders());
+		final byte[] serializedEvent = toBytes(event);
+		final EventEnvelope envelope = new EventEnvelope(
+				serializedContextID, serializedSpaceID, serializedScope, serializedHeaders, serializedEvent);
 
 		this.encrypter.encrypt(envelope);
 
@@ -117,7 +124,7 @@ public class JavaBinaryEventSerializer extends AbstractEventSerializer {
 		assert headers != null;
 
 		Class<?> spaceSpec = null;
-		final String classname = headers.get("x-java-spacespec-class"); //$NON-NLS-1$
+		final String classname = headers.get(SPACE_SPECIFICATION_HEADER);
 		if (classname != null) {
 			try {
 				spaceSpec = Class.forName(classname);
