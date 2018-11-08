@@ -36,6 +36,7 @@ public class Messages extends NLS {
 	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 	public static String AbstractEventSpace_0;
 	public static String AbstractEventSpace_1;
+	public static String AbstractEventSpace_2;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

@@ -133,7 +133,11 @@ public abstract class AbstractEventSpace extends SpaceBase {
 		assert getSpaceID().equals(event.getSource().getSpaceID()) : "The source address must belong to this space"; //$NON-NLS-1$
 		try {
 			final Scope<Address> scopeInstance = (scope == null) ? Scopes.<Address>allParticipants() : scope;
-			this.network.publish(scopeInstance, event);
+			try {
+				this.network.publish(scopeInstance, event);
+			} catch (Throwable e) {
+				this.logger.getKernelLogger().severe(MessageFormat.format(Messages.AbstractEventSpace_2, event, scope, e));
+			}
 			doEmit(event, scopeInstance);
 		} catch (Throwable e) {
 			this.logger.getKernelLogger().severe(MessageFormat.format(Messages.AbstractEventSpace_0, event, scope, e));
