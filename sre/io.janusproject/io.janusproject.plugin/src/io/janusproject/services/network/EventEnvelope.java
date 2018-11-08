@@ -22,7 +22,8 @@
 package io.janusproject.services.network;
 
 import java.io.Serializable;
-import java.util.Arrays;
+
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /**
  * Envelope of a message that is exchanged other the network.
@@ -173,13 +174,12 @@ public class EventEnvelope implements Serializable {
 
 	@Override
 	public String toString() {
-		return "EventEnvelope {\n  context=" //$NON-NLS-1$
-				+ Arrays.toString(this.contextId) + "\n  scope=" //$NON-NLS-1$
-				+ Arrays.toString(this.scope) + ",\n  spaceID=" //$NON-NLS-1$
-				+ Arrays.toString(this.spaceId) + ",\n  headers=" //$NON-NLS-1$
-				+ Arrays.toString(this.customHeaders) + ",\n  body=" //$NON-NLS-1$
-				+ Arrays.toString(this.body) + "\n}"; //$NON-NLS-1$
-
+		return JsonBuffer.toString(
+				"context", getContextId(), //$NON-NLS-1$
+				"scope", getScope(), //$NON-NLS-1$
+				"spaceID", getSpaceId(), //$NON-NLS-1$
+				"headers", getCustomHeaders(), //$NON-NLS-1$
+				"body", getBody()); //$NON-NLS-1$
 	}
 
 }

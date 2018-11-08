@@ -25,6 +25,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.arakhne.afc.vmutil.json.JsonBuffer;
+
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Scope;
 import io.sarl.lang.core.SpaceID;
@@ -85,10 +87,11 @@ public class EventDispatch implements Serializable {
 
 	@Override
 	public String toString() {
-		return "EventDispatch [scope=" + this.scope //$NON-NLS-1$
-				+ ", event=" + this.event //$NON-NLS-1$
-				+ ", spaceID=" + this.spaceID + ", headers=" //$NON-NLS-1$//$NON-NLS-2$
-				+ this.headers + "]"; //$NON-NLS-1$
+		return JsonBuffer.toString(
+				"scope", getScope(), //$NON-NLS-1$
+				"event", getEvent(), //$NON-NLS-1$
+				"spaceID", getSpaceID(), //$NON-NLS-1$
+				"headers", getCustomHeaders()); //$NON-NLS-1$
 	}
 
 	/**
