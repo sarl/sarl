@@ -65,8 +65,13 @@ public class NetworkEventModule extends AbstractModule {
 
 	@Provides
 	private static Gson createGson() {
-		return new GsonBuilder().registerTypeAdapter(Class.class, new GsonEventSerializer.ClassTypeAdapter()).setPrettyPrinting()
-				.create();
+		final GsonBuilder builder = new GsonBuilder()
+				.registerTypeAdapter(Class.class, new GsonEventSerializer.ClassTypeAdapter());
+		// Make the serializer pretty when the application is launched in debug mode (ie. with assertions enabled).
+		if (NetworkEventModule.class.desiredAssertionStatus()) {
+			builder.setPrettyPrinting();
+		}
+		return builder.create();
 	}
 
 	@Provides

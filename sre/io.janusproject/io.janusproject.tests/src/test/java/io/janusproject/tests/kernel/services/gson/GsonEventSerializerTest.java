@@ -35,6 +35,7 @@ import io.janusproject.kernel.services.gson.GsonEventSerializer;
 import io.janusproject.kernel.services.jdk.network.PlainTextEventEncrypter;
 import io.janusproject.services.network.EventDispatch;
 import io.janusproject.services.network.EventEnvelope;
+import io.janusproject.services.network.NetworkConfig;
 import io.janusproject.tests.testutils.AbstractJanusTest;
 import org.arakhne.afc.vmutil.ClassLoaderFinder;
 import org.junit.After;
@@ -112,28 +113,38 @@ public class GsonEventSerializerTest extends AbstractJanusTest {
 		this.rawSimpleHeader.put("a", "b"); //$NON-NLS-1$//$NON-NLS-2$
 		this.rawAutofilledHeader = new HashMap<>();
 		this.rawAutofilledHeader.putAll(this.rawSimpleHeader);
+		this.rawAutofilledHeader.put("x-encoding", //$NON-NLS-1$
+				NetworkConfig.getStringEncodingCharset().name());
 		this.rawAutofilledHeader.put("x-java-event-class", //$NON-NLS-1$
 				EventMock.class.getName());
 		this.rawAutofilledHeader.put("x-java-scope-class", //$NON-NLS-1$
 				ScopeMock.class.getName());
 		this.rawAutofilledHeader.put("x-java-spacespec-class", //$NON-NLS-1$
 				OpenEventSpaceSpecification.class.getName());
-		this.serializedHeader = new byte[] { 123, 10, 32, 32, 34, 120, 45, 106, 97, 118, 97, 45, 115, 99, 111,
-				112, 101, 45, 99, 108, 97, 115, 115, 34, 58, 32, 34, 105, 111, 46, 106, 97, 110, 117, 115,
-				112, 114, 111, 106, 101, 99, 116, 46, 116, 101, 115, 116, 115, 46, 107, 101, 114, 110, 101,
-				108, 46, 115, 101, 114, 118, 105, 99, 101, 115, 46, 103, 115, 111, 110, 46, 71, 115, 111,
-				110, 69, 118, 101, 110, 116, 83, 101, 114, 105, 97, 108, 105, 122, 101, 114, 84, 101, 115,
-				116, 36, 83, 99, 111, 112, 101, 77, 111, 99, 107, 34, 44, 10, 32, 32, 34, 97, 34, 58, 32,
-				34, 98, 34, 44, 10, 32, 32, 34, 120, 45, 106, 97, 118, 97, 45, 115, 112, 97, 99, 101, 115,
-				112, 101, 99, 45, 99, 108, 97, 115, 115, 34, 58, 32, 34, 105, 111, 46, 115, 97, 114, 108,
-				46, 117, 116, 105, 108, 46, 79, 112, 101, 110, 69, 118, 101, 110, 116, 83, 112, 97, 99,
-				101, 83, 112, 101, 99, 105, 102, 105, 99, 97, 116, 105, 111, 110, 34, 44, 10, 32, 32, 34,
-				120, 45, 106, 97, 118, 97, 45, 101, 118, 101, 110, 116, 45, 99, 108, 97, 115, 115, 34, 58,
-				32, 34, 105, 111, 46, 106, 97, 110, 117, 115, 112, 114, 111, 106, 101, 99, 116, 46, 116,
-				101, 115, 116, 115, 46, 107, 101, 114, 110, 101, 108, 46, 115, 101, 114, 118, 105, 99, 101, 115,
-				46, 103, 115, 111, 110, 46, 71, 115, 111, 110, 69, 118, 101, 110, 116, 83, 101, 114, 105, 97,
-				108, 105, 122, 101, 114, 84, 101, 115, 116, 36, 69, 118, 101, 110, 116, 77, 111, 99, 107, 34,
-				10, 125  };
+		this.serializedHeader = new byte[] {
+				123, 10, 32, 32, 34, 120, 45, 106, 97, 118, 97, 45, 115, 99, 111,
+				112, 101, 45, 99, 108, 97, 115, 115, 34, 58, 32, 34, 105, 111, 46,
+				106, 97, 110, 117, 115, 112, 114, 111, 106, 101, 99, 116, 46, 116,
+				101, 115, 116, 115, 46, 107, 101, 114, 110, 101, 108, 46, 115, 101,
+				114, 118, 105, 99, 101, 115, 46, 103, 115, 111, 110, 46, 71, 115,
+				111, 110, 69, 118, 101, 110, 116, 83, 101, 114, 105, 97, 108, 105,
+				122, 101, 114, 84, 101, 115, 116, 36, 83, 99, 111, 112, 101, 77,
+				111, 99, 107, 34, 44, 10, 32, 32, 34, 97, 34, 58, 32, 34, 98, 34,
+				44, 10, 32, 32, 34, 120, 45, 101, 110, 99, 111, 100, 105, 110, 103,
+				34, 58, 32, 34, 85, 84, 70, 45, 56, 34, 44, 10, 32, 32, 34, 120,
+				45, 106, 97, 118, 97, 45, 115, 112, 97, 99, 101, 115, 112, 101,
+				99, 45, 99, 108, 97, 115, 115, 34, 58, 32, 34, 105, 111, 46, 115,
+				97, 114, 108, 46, 117, 116, 105, 108, 46, 79, 112, 101, 110, 69,
+				118, 101, 110, 116, 83, 112, 97, 99, 101, 83, 112, 101, 99, 105,
+				102, 105, 99, 97, 116, 105, 111, 110, 34, 44, 10, 32, 32, 34, 120,
+				45, 106, 97, 118, 97, 45, 101, 118, 101, 110, 116, 45, 99, 108, 97,
+				115, 115, 34, 58, 32, 34, 105, 111, 46, 106, 97, 110, 117, 115,
+				112, 114, 111, 106, 101, 99, 116, 46, 116, 101, 115, 116, 115, 46,
+				107, 101, 114, 110, 101, 108, 46, 115, 101, 114, 118, 105, 99,
+				101, 115, 46, 103, 115, 111, 110, 46, 71, 115, 111, 110, 69, 118,
+				101, 110, 116, 83, 101, 114, 105, 97, 108, 105, 122, 101, 114, 84,
+				101, 115, 116, 36, 69, 118, 101, 110, 116, 77, 111, 99, 107, 34,
+				10, 125 };
 
 		this.rawEvent = new EventMock();
 		this.serializedEvent = new byte[] { 123, 125 };
@@ -168,6 +179,8 @@ public class GsonEventSerializerTest extends AbstractJanusTest {
 
 		assertArrayEquals(this.serializedScope, e.getScope());
 
+		System.out.println(Arrays.toString(e.getCustomHeaders()));
+		
 		assertArrayEquals(this.serializedHeader, e.getCustomHeaders());
 
 		assertArrayEquals(this.serializedEvent, e.getBody());

@@ -22,10 +22,12 @@
 package io.janusproject.kernel.services.gson;
 
 import java.lang.reflect.Type;
+import java.nio.charset.Charset;
 import java.text.MessageFormat;
 import java.util.Map;
 import java.util.UUID;
 
+import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -64,6 +66,14 @@ import io.sarl.lang.core.SpaceSpecification;
  */
 public class GsonEventSerializer extends AbstractEventSerializer {
 
+	private static final String X_ENCODING = "x-encoding"; //$NON-NLS-1$
+
+	private static final String X_SPACESPEC_CLASS = "x-java-spacespec-class"; //$NON-NLS-1$
+
+	private static final String X_EVENT_CLASS = "x-java-event-class"; //$NON-NLS-1$
+
+	private static final String X_SCOPE_CLASS = "x-java-scope-class"; //$NON-NLS-1$
+
 	/**
 	 * Gson serializer.
 	 */
@@ -97,18 +107,24 @@ public class GsonEventSerializer extends AbstractEventSerializer {
 		final Map<String, String> headers = dispatch.getCustomHeaders();
 		assert headers != null;
 
-		headers.put("x-java-event-class", //$NON-NLS-1$
+		final Charset encoding = NetworkConfig.getStringEncodingCharset();
+
+		headers.put(X_ENCODING,
+				encoding.name());
+		headers.put(X_EVENT_CLASS,
 				event.getClass().getName());
-		headers.put("x-java-scope-class", //$NON-NLS-1$
+		headers.put(X_SCOPE_CLASS,
 				scope.getClass().getName());
-		headers.put("x-java-spacespec-class", //$NON-NLS-1$
+		headers.put(X_SPACESPEC_CLASS,
 				spaceID.getSpaceSpecification().getName());
 
-		final EventEnvelope envelope = new EventEnvelope(NetworkUtil.toByteArray(spaceID.getContextID()),
-				NetworkUtil.toByteArray(spaceID.getID()),
-				this.gson.toJson(scope).getBytes(NetworkConfig.getStringEncodingCharset()),
-				this.gson.toJson(dispatch.getCustomHeaders()).getBytes(NetworkConfig.getStringEncodingCharset()),
-				this.gson.toJson(event).getBytes(NetworkConfig.getStringEncodingCharset()));
+		final byte[] serializedContextID = NetworkUtil.toByteArray(spaceID.getContextID());
+		final byte[] serializedSpaceID = NetworkUtil.toByteArray(spaceID.getID());
+		final byte[] serializedHeaders = this.gson.toJson(dispatch.getCustomHeaders()).getBytes(encoding);
+		final byte[] serializedScope = this.gson.toJson(scope).getBytes(encoding);
+		final byte[] serializedEvent = this.gson.toJson(event).getBytes(encoding);
+		final EventEnvelope envelope = new EventEnvelope(
+				serializedContextID, serializedSpaceID, serializedScope, serializedHeaders, serializedEvent);
 
 		this.encrypter.encrypt(envelope);
 
@@ -139,15 +155,29 @@ public class GsonEventSerializer extends AbstractEventSerializer {
 		final Map<String, String> headers = getHeadersFromString(
 				new String(envelope.getCustomHeaders(), NetworkConfig.getStringEncodingCharset()));
 
-		final Class<? extends SpaceSpecification> spaceSpec = extractClass("x-java-spacespec-class", headers, SpaceSpecification.class); //$NON-NLS-1$
-		final Class<? extends Event> eventClazz = extractClass("x-java-event-class", headers, Event.class); //$NON-NLS-1$
-		final Class<? extends Scope> scopeClazz = extractClass("x-java-scope-class", headers, Scope.class); //$NON-NLS-1$
+		final String encodingName = headers.get(X_ENCODING);
+		Charset encoding = null;
+		if (!Strings.isNullOrEmpty(encodingName)) {
+			try {
+				encoding = Charset.forName(encodingName);
+			} catch (Throwable exception) {
+				//
+			}
+		}
+		if (encoding == null) {
+			encoding = NetworkConfig.getStringEncodingCharset();
+		}
+
+		final Class<? extends SpaceSpecification> spaceSpec = extractClass(X_SPACESPEC_CLASS, headers, SpaceSpecification.class);
+		final Class<? extends Event> eventClazz = extractClass(X_EVENT_CLASS, headers, Event.class);
+		final Class<? extends Scope> scopeClazz = extractClass(X_SCOPE_CLASS, headers, Scope.class);
 
 		final SpaceID spaceID = new SpaceID(contextId, spaceId, (Class<? extends SpaceSpecification<?>>) spaceSpec);
 
-		final Event event = this.gson.fromJson(new String(envelope.getBody(), NetworkConfig.getStringEncodingCharset()), eventClazz);
+		final Event event = this.gson.fromJson(new String(envelope.getBody(), encoding), eventClazz);
 		assert event != null;
-		final Scope scope = this.gson.fromJson(new String(envelope.getScope(), NetworkConfig.getStringEncodingCharset()), scopeClazz);
+
+		final Scope scope = this.gson.fromJson(new String(envelope.getScope(), encoding), scopeClazz);
 		assert scope != null;
 
 		return new EventDispatch(spaceID, event, scope, headers);
@@ -161,8 +191,11 @@ public class GsonEventSerializer extends AbstractEventSerializer {
 		if (classname != null) {
 			type = ClassFinder.findClass(classname);
 		}
-		if (type == null || !expectedType.isAssignableFrom(type)) {
-			throw new ClassCastException(MessageFormat.format(Messages.GsonEventSerializer_0, type));
+		if (type == null) {
+			throw new RuntimeException(new ClassNotFoundException(MessageFormat.format(Messages.GsonEventSerializer_0, classname)));
+		}
+		if (!expectedType.isAssignableFrom(type)) {
+			throw new ClassCastException(MessageFormat.format(Messages.GsonEventSerializer_1, classname, expectedType.getName()));
 		}
 		assert type != null;
 		return type.asSubclass(expectedType);
@@ -172,6 +205,7 @@ public class GsonEventSerializer extends AbstractEventSerializer {
 	 * Json adapter for supporting the {@link Class} type.
 	 *
 	 * @author $Author: ngaud$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -186,11 +220,12 @@ public class GsonEventSerializer extends AbstractEventSerializer {
 		@Override
 		public Class<?> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 				throws JsonParseException {
-			try {
-				return Class.forName(json.getAsString());
-			} catch (ClassNotFoundException e) {
-				throw new JsonParseException(e);
+			final String className = json.getAsString();
+			final Class<?> type = ClassFinder.findClass(className);
+			if (type == null) {
+				throw new JsonParseException(new ClassNotFoundException(className));
 			}
+			return type;
 		}
 
 	}
