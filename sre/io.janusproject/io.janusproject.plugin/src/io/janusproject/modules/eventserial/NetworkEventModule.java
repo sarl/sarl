@@ -21,6 +21,7 @@
 
 package io.janusproject.modules.eventserial;
 
+import java.text.DateFormat;
 import java.util.Properties;
 
 import com.google.gson.Gson;
@@ -48,14 +49,18 @@ import io.janusproject.services.network.NetworkConfig;
  */
 public class NetworkEventModule extends AbstractModule {
 
+	private static final Class<? extends EventSerializer> DEFAULT_EVENT_SERIALIZER = GsonEventSerializer.class;
+
+	private static final Class<? extends EventEncrypter> DEFAULT_EVENT_ENCRYPTER = PlainTextEventEncrypter.class;
+
 	/**
 	 * Replies the default values for the properties supported by Janus config.
 	 *
 	 * @param defaultValues filled with the default values supported by the Janus platform.
 	 */
 	public static void getDefaultValues(Properties defaultValues) {
-		defaultValues.put(NetworkConfig.SERIALIZER_CLASSNAME, GsonEventSerializer.class.getName());
-		defaultValues.put(NetworkConfig.ENCRYPTER_CLASSNAME, PlainTextEventEncrypter.class.getName());
+		defaultValues.put(NetworkConfig.SERIALIZER_CLASSNAME, DEFAULT_EVENT_SERIALIZER.getName());
+		defaultValues.put(NetworkConfig.ENCRYPTER_CLASSNAME, DEFAULT_EVENT_ENCRYPTER.getName());
 	}
 
 	@Override
@@ -66,6 +71,9 @@ public class NetworkEventModule extends AbstractModule {
 	@Provides
 	private static Gson createGson() {
 		final GsonBuilder builder = new GsonBuilder()
+				.enableComplexMapKeySerialization()
+				.serializeSpecialFloatingPointValues()
+				.setDateFormat(DateFormat.SHORT, DateFormat.FULL)
 				.registerTypeAdapter(Class.class, new GsonEventSerializer.ClassTypeAdapter());
 		// Make the serializer pretty when the application is launched in debug mode (ie. with assertions enabled).
 		if (NetworkEventModule.class.desiredAssertionStatus()) {
@@ -76,7 +84,7 @@ public class NetworkEventModule extends AbstractModule {
 
 	@Provides
 	private static EventSerializer createEventSerializer(Injector injector) {
-		Class<? extends EventSerializer> serializerType = GsonEventSerializer.class;
+		Class<? extends EventSerializer> serializerType = DEFAULT_EVENT_SERIALIZER;
 		final String serializerClassname = JanusConfig.getSystemProperty(NetworkConfig.SERIALIZER_CLASSNAME);
 		if (serializerClassname != null && !serializerClassname.isEmpty()) {
 			final Class<?> type;
@@ -113,7 +121,7 @@ public class NetworkEventModule extends AbstractModule {
 			if (aesKey != null && !aesKey.isEmpty()) {
 				encrypterType = AESEventEncrypter.class;
 			} else {
-				encrypterType = PlainTextEventEncrypter.class;
+				encrypterType = DEFAULT_EVENT_ENCRYPTER;
 			}
 		}
 		assert injector != null;
