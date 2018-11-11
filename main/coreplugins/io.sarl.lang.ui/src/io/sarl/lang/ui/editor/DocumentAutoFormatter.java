@@ -112,13 +112,17 @@ public class DocumentAutoFormatter implements IDocumentAutoFormatter {
 	 */
 	protected void formatRegion(IXtextDocument document, int offset, int length) {
 		try {
-			final int startRegionOffset = document.getLineInformationOfOffset(
-					previousSiblingChar(document, offset)).getOffset();
-			final IRegion endLine = document.getLineInformationOfOffset(offset + length);
-			final int endRegionOffset = endLine.getOffset() + endLine.getLength();
-			final int regionLength = endRegionOffset - startRegionOffset;
-			for (final IRegion region : document.computePartitioning(startRegionOffset, regionLength)) {
-				this.contentFormatter.format(document, region);
+			final int startLineIndex = document.getLineOfOffset(previousSiblingChar(document, offset));
+			final int endLineIndex = document.getLineOfOffset(offset + length);
+			int regionLength = 0;
+			for (int i = startLineIndex; i <= endLineIndex; ++i) {
+				regionLength += document.getLineLength(i);
+			}
+			if (regionLength > 0) {
+				final int startOffset = document.getLineOffset(startLineIndex);
+				for (final IRegion region : document.computePartitioning(startOffset, regionLength)) {
+					this.contentFormatter.format(document, region);
+				}
 			}
 		} catch (BadLocationException exception) {
 			Exceptions.sneakyThrow(exception);
@@ -130,7 +134,7 @@ public class DocumentAutoFormatter implements IDocumentAutoFormatter {
 		while (off >= 0 && Character.isWhitespace(document.getChar(off))) {
 			--off;
 		}
-		return off;
+		return Math.max(0, off);
 	}
 
 	/** Request for formatting a region.
