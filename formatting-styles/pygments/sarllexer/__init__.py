@@ -22,7 +22,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# Style for SARL 0.8
+# Style for SARL 0.9
 
 
 __all__ = [ ]
