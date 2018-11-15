@@ -50,6 +50,7 @@ import io.sarl.lang.ui.contentassist.imports.SARLImportingTypesProposalProvider;
 import io.sarl.lang.ui.contentassist.javadoc.SARLJavaDocContentAssistProcessor;
 import io.sarl.lang.ui.contentassist.templates.SARLTemplateContextType;
 import io.sarl.lang.ui.contentassist.templates.SARLTemplateProposalProvider;
+import io.sarl.lang.ui.editor.SARLEditorErrorTickUpdater;
 import io.sarl.lang.ui.editor.SARLNatureAddingEditorCallback;
 import io.sarl.lang.ui.editor.SARLSourceViewer;
 import io.sarl.lang.ui.editor.SARLStandardEditor;
@@ -111,7 +112,6 @@ import org.eclipse.xtend.ide.editor.OverrideIndicatorRulerAction;
 import org.eclipse.xtend.ide.editor.RichStringAwareToggleCommentAction;
 import org.eclipse.xtend.ide.editor.SingleLineCommentHelper;
 import org.eclipse.xtend.ide.editor.XtendDoubleClickStrategyProvider;
-import org.eclipse.xtend.ide.editor.XtendEditorErrorTickUpdater;
 import org.eclipse.xtend.ide.editor.XtendSourceViewerConfiguration;
 import org.eclipse.xtend.ide.hover.XtendAnnotationHover;
 import org.eclipse.xtend.ide.hover.XtendHoverProvider;
@@ -594,6 +594,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public void configureXtextEditorErrorTickUpdater(Binder binder) {
+		binder.bind(IXtextEditorCallback.class).annotatedWith(Names.named("IXtextEditorCallBack")).to(SARLEditorErrorTickUpdater.class);
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public void configureDiagnosticDecorator(Binder binder) {
 		binder.bind(ILabelDecorator.class).annotatedWith(Names.named("DiagnosticDecorator")).to(SARLDiagnosticLabelDecorator.class);
 	}
@@ -738,11 +743,6 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
 	public Class<? extends XtextEditor> bindXtextEditor() {
 		return SARLStandardEditor.class;
-	}
-	
-	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
-	public void configureXtextEditorErrorTickUpdater(Binder binder) {
-		binder.bind(IXtextEditorCallback.class).annotatedWith(Names.named("IXtextEditorCallBack")).to(XtendEditorErrorTickUpdater.class);
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]

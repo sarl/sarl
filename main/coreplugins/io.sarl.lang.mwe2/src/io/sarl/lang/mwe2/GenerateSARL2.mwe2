@@ -779,6 +779,12 @@ Workflow {
     				bind = "org.eclipse.xtext.ui.editor.IXtextEditorCallback"
     				to = "io.sarl.lang.ui.editor.SARLNatureAddingEditorCallback"
    				}
+    			ui = {
+    				bind = "org.eclipse.xtext.ui.editor.IXtextEditorCallback"
+    				annotatedWithName = "IXtextEditorCallBack"
+    				to = "io.sarl.lang.ui.editor.SARLEditorErrorTickUpdater"
+    				functionName = "configureXtextEditorErrorTickUpdater"
+   				}
     		}
 
     		// Xtend-extension bindings
@@ -1036,12 +1042,6 @@ Workflow {
     				bind = "org.eclipse.xtext.ui.editor.contentassist.IProposalConflictHelper"
     				to = "org.eclipse.xtend.ide.contentassist.antlr.FlexProposalConflictHelper"
     				override = true
-   				}
-    			ui = {
-    				bind = "org.eclipse.xtext.ui.editor.IXtextEditorCallback"
-    				annotatedWithName = "IXtextEditorCallBack"
-    				to = "org.eclipse.xtend.ide.editor.XtendEditorErrorTickUpdater"
-    				functionName = "configureXtextEditorErrorTickUpdater"
    				}
     		}
 
