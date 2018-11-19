@@ -170,6 +170,16 @@ public interface SarlFactory extends EFactory
 	SarlEvent createSarlEvent();
 
 	/**
+	 * Returns a new object of class '<em>Casted Expression</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Casted Expression</em>'.
+	 * @since 0.9
+	 * @generated
+	 */
+	SarlCastedExpression createSarlCastedExpression();
+
+	/**
 	 * Returns a new object of class '<em>Space</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

@@ -26,6 +26,7 @@ import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 
+import org.eclipse.xtext.xbase.XCastedExpression;
 import org.eclipse.xtext.xbase.XExpression;
 
 /**
@@ -172,6 +173,11 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
 				return createSarlEventAdapter();
 			}
 			@Override
+			public Adapter caseSarlCastedExpression(SarlCastedExpression object)
+			{
+				return createSarlCastedExpressionAdapter();
+			}
+			@Override
 			public Adapter caseSarlSpace(SarlSpace object)
 			{
 				return createSarlSpaceAdapter();
@@ -275,6 +281,11 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
 			public Adapter caseXtendEnumLiteral(XtendEnumLiteral object)
 			{
 				return createXtendEnumLiteralAdapter();
+			}
+			@Override
+			public Adapter caseXCastedExpression(XCastedExpression object)
+			{
+				return createXCastedExpressionAdapter();
 			}
 			@Override
 			public Adapter caseXtendParameter(XtendParameter object)
@@ -542,6 +553,22 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createSarlEventAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link io.sarl.lang.sarl.SarlCastedExpression <em>Casted Expression</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see io.sarl.lang.sarl.SarlCastedExpression
+	 * @since 0.9
+	 * @generated
+	 */
+	public Adapter createSarlCastedExpressionAdapter()
 	{
 		return null;
 	}
@@ -858,6 +885,22 @@ public class SarlAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createXtendEnumLiteralAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.xtext.xbase.XCastedExpression <em>XCasted Expression</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.xtext.xbase.XCastedExpression
+	 * @since 2.7
+	 * @generated
+	 */
+	public Adapter createXCastedExpressionAdapter()
 	{
 		return null;
 	}

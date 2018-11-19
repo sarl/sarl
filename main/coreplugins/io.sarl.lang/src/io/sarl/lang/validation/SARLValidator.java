@@ -160,6 +160,7 @@ import org.eclipse.xtext.xbase.XAssignment;
 import org.eclipse.xtext.xbase.XBasicForLoopExpression;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
+import org.eclipse.xtext.xbase.XCastedExpression;
 import org.eclipse.xtext.xbase.XConstructorCall;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XFeatureCall;
@@ -1422,14 +1423,19 @@ public class SARLValidator extends AbstractSARLValidator {
 					final LightweightTypeReference resolvedReturnType = inherited.getOverrideCheckResult().getThisOperation().getResolvedReturnType();
 					final String signature = inherited.getSimpleSignature();
 					final EStructuralFeature sourceReturnTypeFeature = returnTypeFeature(sourceElement);
-					error(MessageFormat.format(Messages.SARLValidator_45,
-							signature,
-							resolvedReturnType.getIdentifier(),
-							inheritedReturnType.getIdentifier()),
-							sourceElement,
-							sourceReturnTypeFeature,
-							INCOMPATIBLE_RETURN_TYPE,
-							resolvedReturnType.getIdentifier());
+					// FIXME: The following test is due to the fact that the resource sets of the two types may be different.
+					final String resolvedIdentifier = resolvedReturnType.getIdentifier();
+					final String inheritedIdentifier = inheritedReturnType.getIdentifier();
+					if (!Objects.equal(resolvedIdentifier, inheritedIdentifier)) {
+						error(MessageFormat.format(Messages.SARLValidator_45,
+								signature,
+								resolvedIdentifier,
+								inheritedIdentifier),
+								sourceElement,
+								sourceReturnTypeFeature,
+								INCOMPATIBLE_RETURN_TYPE,
+								resolvedIdentifier);
+					}
 				}
 			} else if (!isIgnored(RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED, sourceElement)
 					&& sourceElement instanceof SarlAction) {
@@ -2900,6 +2906,10 @@ public class SARLValidator extends AbstractSARLValidator {
 			return defaultVisibility == JvmVisibility.PUBLIC;
 		}
 
+	}
+
+	@Check
+	public void checkCasts(XCastedExpression cast) {
 	}
 
 }

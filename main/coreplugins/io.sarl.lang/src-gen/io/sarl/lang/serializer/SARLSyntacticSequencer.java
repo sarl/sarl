@@ -632,9 +632,9 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     (rule start) (ambiguity) value=Number
 	 *     (rule start) (ambiguity) value=STRING
 	 *     (rule start) (ambiguity) {AnonymousClass.constructorCall=}
+	 *     (rule start) (ambiguity) {SarlCastedExpression.target=}
 	 *     (rule start) (ambiguity) {XAssignment.assignable=}
 	 *     (rule start) (ambiguity) {XBinaryOperation.leftOperand=}
-	 *     (rule start) (ambiguity) {XCastedExpression.target=}
 	 *     (rule start) (ambiguity) {XInstanceOfExpression.expression=}
 	 *     (rule start) (ambiguity) {XMemberFeatureCall.memberCallTarget=}
 	 *     (rule start) (ambiguity) {XPostfixOperation.operand=}
@@ -691,9 +691,9 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     (rule start) (ambiguity) value=Number
 	 *     (rule start) (ambiguity) value=STRING
 	 *     (rule start) (ambiguity) {AnonymousClass.constructorCall=}
+	 *     (rule start) (ambiguity) {SarlCastedExpression.target=}
 	 *     (rule start) (ambiguity) {XAssignment.assignable=}
 	 *     (rule start) (ambiguity) {XBinaryOperation.leftOperand=}
-	 *     (rule start) (ambiguity) {XCastedExpression.target=}
 	 *     (rule start) (ambiguity) {XInstanceOfExpression.expression=}
 	 *     (rule start) (ambiguity) {XMemberFeatureCall.memberCallTarget=}
 	 *     (rule start) (ambiguity) {XPostfixOperation.operand=}

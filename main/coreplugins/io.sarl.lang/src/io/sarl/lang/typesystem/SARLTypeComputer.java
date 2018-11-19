@@ -21,28 +21,55 @@
 
 package io.sarl.lang.typesystem;
 
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import com.google.common.base.Throwables;
+import com.google.common.collect.Lists;
 import org.eclipse.xtend.core.typesystem.XtendTypeComputer;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
 import org.eclipse.xtext.common.types.JvmAnnotationTarget;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.diagnostics.Severity;
+import org.eclipse.xtext.naming.QualifiedName;
+import org.eclipse.xtext.resource.IEObjectDescription;
+import org.eclipse.xtext.scoping.IScope;
+import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.validation.EObjectDiagnosticImpl;
+import org.eclipse.xtext.xbase.XCastedExpression;
 import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.xtext.xbase.XbasePackage;
+import org.eclipse.xtext.xbase.lib.util.ReflectExtensions;
+import org.eclipse.xtext.xbase.scoping.batch.IFeatureNames;
+import org.eclipse.xtext.xbase.scoping.batch.IIdentifiableElementDescription;
+import org.eclipse.xtext.xbase.typesystem.IResolvedTypes;
+import org.eclipse.xtext.xbase.typesystem.computation.IApplicableCandidate;
 import org.eclipse.xtext.xbase.typesystem.computation.ILinkingCandidate;
+import org.eclipse.xtext.xbase.typesystem.computation.ITypeComputationResult;
 import org.eclipse.xtext.xbase.typesystem.computation.ITypeComputationState;
+import org.eclipse.xtext.xbase.typesystem.computation.ITypeExpectation;
+import org.eclipse.xtext.xbase.typesystem.conformance.ConformanceHint;
+import org.eclipse.xtext.xbase.typesystem.internal.AbstractPendingLinkingCandidate;
+import org.eclipse.xtext.xbase.typesystem.internal.AbstractTypeComputationState;
 import org.eclipse.xtext.xbase.typesystem.internal.AmbiguousFeatureLinkingCandidate;
+import org.eclipse.xtext.xbase.typesystem.internal.ExpressionAwareStackedResolvedTypes;
+import org.eclipse.xtext.xbase.typesystem.internal.ExpressionTypeComputationState;
+import org.eclipse.xtext.xbase.typesystem.internal.ForwardingResolvedTypes;
+import org.eclipse.xtext.xbase.typesystem.internal.ForwardingTypeComputationState;
+import org.eclipse.xtext.xbase.typesystem.internal.ScopeProviderAccess;
+import org.eclipse.xtext.xbase.typesystem.internal.StackedResolvedTypes;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
 import io.sarl.lang.sarl.SarlAssertExpression;
 import io.sarl.lang.sarl.SarlBreakExpression;
+import io.sarl.lang.sarl.SarlCastedExpression;
 import io.sarl.lang.sarl.SarlContinueExpression;
 import io.sarl.lang.validation.IssueCodes;
 
@@ -69,7 +96,7 @@ public class SARLTypeComputer extends XtendTypeComputer {
 	@Override
 	protected ILinkingCandidate getBestCandidate(List<? extends ILinkingCandidate> candidates) {
 		// Implementation of ignorable features:
-		// For example, this function is ignore the deprecated features when a not-deprecated feature is available.
+		// For example, this function is ignoring the deprecated features when a not-deprecated feature is available.
 		if (candidates.size() == 1) {
 			return candidates.get(0);
 		}
@@ -181,6 +208,219 @@ public class SARLTypeComputer extends XtendTypeComputer {
 	 */
 	protected void _computeTypes(SarlAssertExpression object, ITypeComputationState state) {
 		state.withExpectation(getTypeForName(Boolean.class, state)).computeTypes(object.getCondition());
+	}
+
+	/** Compute the type of an assert expression.
+	 *
+	 * @param object the expression.
+	 * @param state the state of the type resolver.
+	 */
+	@Override
+	protected void _computeTypes(XCastedExpression object, ITypeComputationState state) {
+		// Set the linked feature
+		try {
+			if (object instanceof SarlCastedExpression && state instanceof AbstractTypeComputationState) {
+				final CastedExpressionTypeComputationState astate = new CastedExpressionTypeComputationState((AbstractTypeComputationState) state);
+				final SarlCastedExpression cast = (SarlCastedExpression) object;
+				final List<? extends ILinkingCandidate> candidates = astate.getLinkingCandidates(cast);
+				if (!candidates.isEmpty()) {
+					final ILinkingCandidate best = getBestCandidate(candidates);
+					if (best != null) {
+						best.applyToComputationState();
+						return;
+					}
+				}
+			}
+		} catch (Throwable exception) {
+			exception.printStackTrace();
+		}
+		// Standard type computation
+		super._computeTypes(object, state);
+	}
+
+	/** State for type computation associated to the cast operator.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.9
+	 */
+	private static class CastedExpressionTypeComputationState extends ForwardingTypeComputationState {
+
+		private final ReflectExtensions ref = new ReflectExtensions();
+
+		/** Constructor.
+		 * @param delegate the original state.
+		 */
+		CastedExpressionTypeComputationState(AbstractTypeComputationState delegate) {
+			super(delegate);
+		}
+
+		@SuppressWarnings("unchecked")
+		private <T> T invoke(Object receiver, String functionName, Object... args) {
+			try {
+				return (T) this.ref.invoke(receiver, functionName, args);
+			} catch (Throwable exception) {
+				throw new Error(exception);
+			}
+		}
+
+		@Override
+		protected AbstractTypeComputationState getDelegate() {
+			return (AbstractTypeComputationState) super.getDelegate();
+		}
+
+		/** Compute the best candidate for the feature behind the cast operator.
+		 *
+		 * @param cast the cast operator.
+		 * @return the candidates.
+		 */
+		public List<? extends ILinkingCandidate> getLinkingCandidates(SarlCastedExpression cast) {
+			final AbstractTypeComputationState astate = getDelegate();
+			final StackedResolvedTypes demandComputedTypes = invoke(astate.getResolvedTypes(), "pushTypes"); //$NON-NLS-1$
+			final AbstractTypeComputationState forked = invoke(astate, "withNonVoidExpectation", demandComputedTypes); //$NON-NLS-1$
+			final ForwardingResolvedTypes demandResolvedTypes = new ForwardingResolvedTypes() {
+				@Override
+				protected IResolvedTypes delegate() {
+					return forked.getResolvedTypes();
+				}
+
+				@Override
+				public LightweightTypeReference getActualType(XExpression expression) {
+					final LightweightTypeReference type = super.getActualType(expression);
+					if (type == null) {
+						final ITypeComputationResult result = forked.computeTypes(expression);
+						return result.getActualExpressionType();
+					}
+					return type;
+				}
+			};
+			final IScope scope = astate.getFeatureScopeSession().getScope(cast.getTarget(),
+					XbasePackage.Literals.XABSTRACT_FEATURE_CALL__FEATURE, demandResolvedTypes);
+			final List<ILinkingCandidate> resultList = Lists.newArrayList();
+			final JvmTypeReference type = cast.getType();
+			final String featureName = "to" + Strings.toFirstUpper(type.getSimpleName()); //$NON-NLS-1$
+			final Iterable<IEObjectDescription> descriptions = scope.getElements(QualifiedName.create(featureName));
+			for (final IEObjectDescription description: descriptions) {
+				final IIdentifiableElementDescription idesc = invoke(astate, "toIdentifiableDescription", description);  //$NON-NLS-1$
+				final ILinkingCandidate candidate = createCandidate(cast, astate, type, idesc);
+				if (candidate != null) {
+					resultList.add(candidate);
+				}
+			}
+			return resultList;
+		}
+
+		protected ILinkingCandidate createCandidate(SarlCastedExpression cast,
+				AbstractTypeComputationState astate, JvmTypeReference type,
+				IIdentifiableElementDescription description) {
+			final ExpressionAwareStackedResolvedTypes resolvedTypes = invoke(astate.getResolvedTypes(), "pushTypes", cast); //$NON-NLS-1$
+			final ExpressionTypeComputationState state = invoke(astate, "createExpressionComputationState", cast, resolvedTypes); //$NON-NLS-1$
+			if (!(description instanceof ScopeProviderAccess.ErrorDescription) && (description.getNumberOfParameters() == 0)) {
+				final JvmIdentifiableElement element = description.getElementOrProxy();
+				final LightweightTypeReference returnTypeReference = astate.getResolvedTypes().getActualType(element);
+				if (returnTypeReference != null && returnTypeReference.isSubtypeOf(type.getType())) {
+					return new CastOperatorLinkingCandidate(cast, description,
+							invoke(getDelegate(), "getSingleExpectation", state), //$NON-NLS-1$
+							state);
+				}
+			}
+			return null;
+		}
+
+		@Override
+		public void acceptCandidate(XExpression expression, IApplicableCandidate candidate) {
+			getDelegate().acceptCandidate(expression, candidate);
+		}
+
+		@Override
+		public void acceptActualType(LightweightTypeReference type, ConformanceHint... hints) {
+			getDelegate().acceptActualType(type, hints);
+		}
+
+		@Override
+		public void acceptActualType(LightweightTypeReference type, EnumSet<ConformanceHint> hints) {
+			getDelegate().acceptActualType(type, hints);
+		}
+
+		@Override
+		protected ForwardingTypeComputationState newForwardingTypeComputationState(ITypeComputationState delegate) {
+			if (delegate instanceof AbstractTypeComputationState) {
+				return new CastedExpressionTypeComputationState((AbstractTypeComputationState) delegate);
+			}
+			throw new IllegalArgumentException();
+		}
+
+	}
+
+	/** Linking candidate for cast operator.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.9
+	 */
+	private static class CastOperatorLinkingCandidate extends AbstractPendingLinkingCandidate<XCastedExpression> implements IFeatureNames {
+
+		/** Constructor.
+		 *
+		 * @param expression the expression.
+		 * @param description the description of the linked element.
+		 * @param expectation the type expectation.
+		 * @param state the state of the type computation.
+		 */
+		CastOperatorLinkingCandidate(XCastedExpression expression,
+				IIdentifiableElementDescription description, ITypeExpectation expectation,
+				ExpressionTypeComputationState state) {
+			super(expression, description, expectation, state);
+		}
+
+		@Override
+		public boolean isExtension() {
+			return this.description.isExtension();
+		}
+
+		@Override
+		public boolean isTypeLiteral() {
+			return this.description.isTypeLiteral();
+		}
+
+		@Override
+		protected boolean hasReceiver() {
+			return !this.description.isStatic();
+		}
+
+		@Override
+		protected String getFeatureTypeName() {
+			return "cast"; //$NON-NLS-1$
+		}
+
+		@Override
+		protected List<XExpression> getArguments() {
+			return Collections.emptyList();
+		}
+
+		@Override
+		protected List<JvmTypeReference> getPlainSyntacticTypeArguments() {
+			return Collections.emptyList();
+		}
+
+		@Override
+		protected ILinkingCandidate createAmbiguousLinkingCandidate(AbstractPendingLinkingCandidate<?> second) {
+			return this;
+		}
+
+		@Override
+		public void applyToModel(IResolvedTypes resolvedTypes) {
+			resolveLinkingProxy(XbasePackage.Literals.XABSTRACT_FEATURE_CALL__FEATURE, XbasePackage.XABSTRACT_FEATURE_CALL__FEATURE);
+			final XCastedExpression expr = getExpression();
+			if (expr instanceof SarlCastedExpression) {
+				((SarlCastedExpression) expr).setFeature(getFeature());
+			}
+		}
+
 	}
 
 }
