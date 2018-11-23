@@ -85,6 +85,7 @@ import org.eclipse.xtext.xbase.XNullLiteral;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
+import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.AssumptionViolatedException;
@@ -142,7 +143,7 @@ import io.sarl.lang.sarl.SarlSkill;
 @SuppressWarnings("all")
 @RunWith(XtextRunner.class)
 @InjectWith(ExtendedSARLInjectorProvider.class)
-public abstract class AbstractSarlTest {
+public abstract class AbstractSarlTest extends Assert {
 
 	/** URL of the Maven central repository.
 	 */
@@ -163,10 +164,13 @@ public abstract class AbstractSarlTest {
 	private Injector injector;
 
 	@Inject
-	private Provider<ValidationTestHelper> validationHelper;
+	private ValidationTestHelper validationHelper;
 
 	@Inject
-	private Provider<ParseHelper<SarlScript>> parser;
+	private ParseHelper<SarlScript> parser;
+
+	@Inject
+	private CompilationTestHelper compiler;
 
 	@Inject
 	private Provider<SarlJvmModelAssociations> associations;
@@ -372,7 +376,7 @@ public abstract class AbstractSarlTest {
 		this.rootSarlWatchter = null;
 	}
 
-	/** Helpfer for setting a field, even if it is not visible.
+	/** Helper for setting a field, even if it is not visible.
 	 *
 	 * @param instance the object.
 	 * @param fieldType the type of the field.
@@ -400,26 +404,6 @@ public abstract class AbstractSarlTest {
 			}
 		}
 		throw new NoSuchFieldError(fieldName);
-	}
-
-	/** Assert the values are equal.
-	 *
-	 * @param expected the expected value.
-	 * @param actual the actual value.
-	 * @param epsilon the precision.
-	 */
-	public static void assertEquals(float expected, float actual, float precision) {
-		Assert.assertEquals(expected, actual, precision);
-	}
-
-	/** Assert the values are equal.
-	 *
-	 * @param expected the expected value.
-	 * @param actual the actual value.
-	 * @param epsilon the precision.
-	 */
-	public static void assertEquals(double expected, double actual, double precision) {
-		Assert.assertEquals(expected, actual, precision);
 	}
 
 	/** Assert the values are equal.
@@ -1315,7 +1299,16 @@ public abstract class AbstractSarlTest {
 	 * @since 0.7
 	 */
 	protected ParseHelper<SarlScript> getParseHelper() {
-		return this.parser.get();
+		return this.parser;
+	}
+
+	/** Replies the compile helper.
+	 *
+	 * @return the compile helper.
+	 * @since 0.9
+	 */
+	protected CompilationTestHelper getCompileHelper() {
+		return this.compiler;
 	}
 
 	/** Create an instance of class.
@@ -1349,7 +1342,7 @@ public abstract class AbstractSarlTest {
 	/** Validate the given resource and reply the issues.
 	 */
 	protected List<Issue> issues(Resource resource) {
-		return this.validationHelper.get().validate(resource);
+		return this.validationHelper.validate(resource);
 	}
 
 	/** Validate the given file and reply the validator.
@@ -1722,7 +1715,7 @@ public abstract class AbstractSarlTest {
 	 */
 	public void assertAnyError(EObject source, String... codes) {
 		final List<String> codeSet = Arrays.asList(codes);
-		final List<Issue> validate = this.validationHelper.get().validate(source);
+		final List<Issue> validate = this.validationHelper.validate(source);
 		if (!any(validate, input -> Severity.ERROR == input.getSeverity() && !codeSet.contains(input.getCode()))) {
 			fail("Expected an error, but got nothing");
 		}
@@ -1736,7 +1729,7 @@ public abstract class AbstractSarlTest {
 	 */
 	public void assertNoErrorsExcept(EObject source, String... codes) {
 		final List<String> codeSet = Arrays.asList(codes);
-		final List<Issue> validate = this.validationHelper.get().validate(source);
+		final List<Issue> validate = this.validationHelper.validate(source);
 		final Predicate<Issue> pred = input -> Severity.ERROR == input.getSeverity() && !codeSet.contains(input.getCode());
 		if (any(validate, pred)) {
 			fail("Expected no error, found: " + filter(validate, pred));
@@ -1826,7 +1819,7 @@ public abstract class AbstractSarlTest {
 		 */
 		private XtextValidator(Resource resource) {
 			this.resource = resource;
-			this.testHelper = AbstractSarlTest.this.validationHelper.get();
+			this.testHelper = AbstractSarlTest.this.validationHelper;
 		}
 
 		@Override

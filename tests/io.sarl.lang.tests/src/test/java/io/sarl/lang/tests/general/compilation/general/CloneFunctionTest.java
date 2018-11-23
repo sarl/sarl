@@ -46,9 +46,6 @@ import com.google.inject.Inject;
 @SuppressWarnings("all")
 public class CloneFunctionTest extends AbstractSarlTest {
 
-	@Inject
-	private CompilationTestHelper compiler;
-
 	@Test
 	public void noClone_noInheritance_noGeneric() throws Exception {
 		String source = multilineString(
@@ -82,7 +79,7 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.assertCompilesTo(source, expected);
+		getCompileHelper().assertCompilesTo(source, expected);
 	}
 
 	@Test
@@ -113,7 +110,7 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.assertCompilesTo(source, expected);
+		getCompileHelper().assertCompilesTo(source, expected);
 	}
 
 	@Test
@@ -152,7 +149,7 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.compile(source, (it) -> {
+		getCompileHelper().compile(source, (it) -> {
 			assertEquals(expected, it.getGeneratedCode("C1"));
 		});
 	}
@@ -188,7 +185,7 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.compile(source, (it) -> {
+		getCompileHelper().compile(source, (it) -> {
 			assertEquals(expected, it.getGeneratedCode("C1"));
 		});
 	}
@@ -226,7 +223,7 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.assertCompilesTo(source, expected);
+		getCompileHelper().assertCompilesTo(source, expected);
 	}
 
 	@Test
@@ -257,7 +254,7 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.assertCompilesTo(source, expected);
+		getCompileHelper().assertCompilesTo(source, expected);
 	}
 
 	@Test
@@ -296,7 +293,7 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.compile(source, (it) -> {
+		getCompileHelper().compile(source, (it) -> {
 			assertEquals(expected, it.getGeneratedCode("C1"));
 		});
 	}
@@ -332,7 +329,7 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.compile(source, (it) -> {
+		getCompileHelper().compile(source, (it) -> {
 			assertEquals(expected, it.getGeneratedCode("C1"));
 		});
 	}
@@ -361,7 +358,7 @@ public class CloneFunctionTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.compile(source, (it) -> {
+		getCompileHelper().compile(source, (it) -> {
 			assertEquals(expected, it.getGeneratedCode("C1"));
 		});
 	}

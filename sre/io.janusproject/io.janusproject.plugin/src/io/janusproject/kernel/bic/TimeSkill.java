@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.sarl.core.Time;
 import io.sarl.lang.core.Agent;
-import io.sarl.lang.scoping.batch.SARLTimeExtensions;
+import io.sarl.lang.scoping.extensions.time.TimeExtensions;
 
 /**
  * Janus implementation of SARL's {@link Time} built-in capacity.
@@ -58,17 +58,17 @@ public class TimeSkill extends BuiltinSkill implements Time {
 	public double getTime(TimeUnit timeUnit) {
 		final double currentTime = System.currentTimeMillis();
 		if (timeUnit == null || timeUnit == TimeUnit.SECONDS) {
-			return System.currentTimeMillis() / (double) SARLTimeExtensions.MILLIS_IN_SECOND;
+			return System.currentTimeMillis() / (double) TimeExtensions.MILLIS_IN_SECOND;
 		}
 		if (timeUnit == TimeUnit.MILLISECONDS) {
 			return currentTime;
 		}
-		return SARLTimeExtensions.convertFromTo(currentTime, TimeUnit.MILLISECONDS, timeUnit);
+		return TimeExtensions.convertFromTo(currentTime, TimeUnit.MILLISECONDS, timeUnit);
 	}
 
 	@Override
 	public double getTime() {
-		return System.currentTimeMillis() / (double) SARLTimeExtensions.MILLIS_IN_SECOND;
+		return System.currentTimeMillis() / (double) TimeExtensions.MILLIS_IN_SECOND;
 	}
 
 	@Override

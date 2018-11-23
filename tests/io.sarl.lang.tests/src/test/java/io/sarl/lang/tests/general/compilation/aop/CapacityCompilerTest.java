@@ -33,9 +33,6 @@ import io.sarl.tests.api.AbstractSarlTest;
 @SuppressWarnings("all")
 public class CapacityCompilerTest extends AbstractSarlTest {
 
-	@Inject
-	private CompilationTestHelper compiler;
-
 	@Test
 	public void basicCapacityCompile() throws Exception {
 		String source = "capacity C1 { }";
@@ -60,12 +57,12 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 				"}",
 				""
 				);
-		this.compiler.assertCompilesTo(source, expected);
+		getCompileHelper().assertCompilesTo(source, expected);
 	}
 
 	@Test
 	public void capacitymodifier_none() throws Exception {
-		this.compiler.assertCompilesTo(
+		getCompileHelper().assertCompilesTo(
 			multilineString(
 				"capacity C1 { }"
 			),
@@ -94,7 +91,7 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 
 	@Test
 	public void capacitymodifier_public() throws Exception {
-		this.compiler.assertCompilesTo(
+		getCompileHelper().assertCompilesTo(
 			multilineString(
 				"public capacity C1 { }"
 			),
@@ -123,7 +120,7 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 
 	@Test
 	public void capacitymodifier_private() throws Exception {
-		this.compiler.assertCompilesTo(
+		getCompileHelper().assertCompilesTo(
 			multilineString(
 				"private capacity C1 { }"
 			),
@@ -227,7 +224,7 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 				"}",
 				""
 			);
-		this.compiler.compile(source, (r) -> {
+		getCompileHelper().compile(source, (r) -> {
 				assertEquals(expectedC1, r.getGeneratedCode("C1"));
 				assertEquals(expectedC2, r.getGeneratedCode("C2"));
 			});
@@ -235,7 +232,7 @@ public class CapacityCompilerTest extends AbstractSarlTest {
 
 	@Test
 	public void actionmodifier_none() throws Exception {
-		this.compiler.assertCompilesTo(
+		getCompileHelper().assertCompilesTo(
 			multilineString(
 				"capacity C1 {",
 				"	def name {}",

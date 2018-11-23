@@ -67,9 +67,6 @@ import io.sarl.lang.util.ClearableReference;
 @SuppressWarnings("all")
 public class Bug861 extends AbstractJanusRunTest {
 
-	@Inject
-	private CompilationTestHelper compiler;
-
 	private static final String SNIPSET01 = multilineString(
 			"package io.sarl.lang.tests.bug861",
 			"import io.sarl.core.DefaultContextInteractions",
@@ -396,7 +393,7 @@ public class Bug861 extends AbstractJanusRunTest {
 
 	@Test
 	public void compiling_01() throws Exception {
-		this.compiler.compile(SNIPSET01, (it) -> {
+		getCompileHelper().compile(SNIPSET01, (it) -> {
 			String actual;
 
 			actual = it.getGeneratedCode("io.sarl.lang.tests.bug861.BootAgent");

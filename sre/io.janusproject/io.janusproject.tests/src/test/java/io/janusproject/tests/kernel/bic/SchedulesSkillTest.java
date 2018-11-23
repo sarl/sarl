@@ -19,14 +19,7 @@
  */
 package io.janusproject.tests.kernel.bic;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.never;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -52,7 +45,6 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import io.janusproject.kernel.bic.SchedulesSkill;
-import io.janusproject.kernel.bic.TimeSkill;
 import io.janusproject.services.executor.ExecutorService;
 import io.janusproject.services.logging.LogService;
 import io.janusproject.tests.testutils.AbstractJanusRunTest;
@@ -603,24 +595,24 @@ public class SchedulesSkillTest {
 		public void every() throws Exception {
 			runJanus(SchedulesRunTestAgent1.class, false);
 			assertEquals(2, getNumberOfResults());
-			assertEquals(0, getResult(Integer.class, 0));
-			assertEquals(1, getResult(Integer.class, 1));
+			assertEquals(0, getResult(Integer.class, 0).intValue());
+			assertEquals(1, getResult(Integer.class, 1).intValue());
 		}
 
 		@Test
 		public void atFixedDelay() throws Exception {
 			runJanus(SchedulesRunTestAgent2.class, false);
 			assertEquals(2, getNumberOfResults());
-			assertEquals(0, getResult(Integer.class, 0));
-			assertEquals(1, getResult(Integer.class, 1));
+			assertEquals(0, getResult(Integer.class, 0).intValue());
+			assertEquals(1, getResult(Integer.class, 1).intValue());
 		}
 
 		@Test
 		public void atFixedDelay_zeroDelay() throws Exception {
 			runJanus(SchedulesRunTestAgent3.class, false);
 			assertEquals(2, getNumberOfResults());
-			assertEquals(0, getResult(Integer.class, 0));
-			assertEquals(1, getResult(Integer.class, 1));
+			assertEquals(0, getResult(Integer.class, 0).intValue());
+			assertEquals(1, getResult(Integer.class, 1).intValue());
 		}
 
 		@Test
@@ -634,16 +626,16 @@ public class SchedulesSkillTest {
 		public void cancel_infiniteLoop() throws Exception {
 			runJanus(SchedulesRunTestAgent5.class, false);
 			assertEquals(2, getNumberOfResults());
-			assertEquals(0, getResult(Integer.class, 0));
-			assertEquals(1, getResult(Integer.class, 1));
+			assertEquals(0, getResult(Integer.class, 0).intValue());
+			assertEquals(1, getResult(Integer.class, 1).intValue());
 		}
 
 		@Test
 		public void cancel_everyTask() throws Exception {
 			runJanus(SchedulesRunTestAgent6.class, false);
 			assertEquals(2, getNumberOfResults());
-			assertEquals(0, getResult(Integer.class, 0));
-			assertEquals(1, getResult(Integer.class, 1));
+			assertEquals(0, getResult(Integer.class, 0).intValue());
+			assertEquals(1, getResult(Integer.class, 1).intValue());
 		}
 
 		@Test

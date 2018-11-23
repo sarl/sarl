@@ -125,9 +125,6 @@ public class Bug589 extends AbstractSarlTest {
 			"  }",
 			"}");
 
-	@Inject
-	private CompilationTestHelper compiler;
-
 	@Test
 	public void snipset1() throws Exception {
 		SarlScript mas = file(SNIPSET1);

@@ -72,9 +72,6 @@ public class Bug599 extends AbstractSarlTest {
 			"  }",
 			"}");
 
-	@Inject
-	private CompilationTestHelper compiler;
-
 	@Test
 	public void parsing_01() throws Exception {
 		SarlScript mas = file(SNIPSET1);
@@ -84,7 +81,7 @@ public class Bug599 extends AbstractSarlTest {
 
 	@Test
 	public void compiling_01() throws Exception {
-		this.compiler.assertCompilesTo(SNIPSET1, multilineString(
+		getCompileHelper().assertCompilesTo(SNIPSET1, multilineString(
 				"package io.sarl.lang.tests.bug599;",
 				"",
 				"import io.sarl.lang.annotation.SarlElementType;",
@@ -120,7 +117,7 @@ public class Bug599 extends AbstractSarlTest {
 
 	@Test
 	public void compiling_02() throws Exception {
-		this.compiler.assertCompilesTo(SNIPSET2, multilineString(
+		getCompileHelper().assertCompilesTo(SNIPSET2, multilineString(
 				"package io.sarl.lang.tests.bug599;",
 				"",
 				"import io.sarl.lang.annotation.SarlElementType;",

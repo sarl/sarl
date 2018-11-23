@@ -46,9 +46,6 @@ import com.google.inject.Inject;
 @SuppressWarnings("all")
 public class ContinueKeywordTest extends AbstractSarlTest {
 
-	@Inject
-	private CompilationTestHelper compiler;
-
 	@Test
 	public void insideWhileWithBranch() throws Exception {
 		String source = multilineString(
@@ -107,7 +104,7 @@ public class ContinueKeywordTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.assertCompilesTo(source, expected);
+		getCompileHelper().assertCompilesTo(source, expected);
 	}
 
 	@Test
@@ -168,7 +165,7 @@ public class ContinueKeywordTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.assertCompilesTo(source, expected);
+		getCompileHelper().assertCompilesTo(source, expected);
 	}
 
 	@Test
@@ -225,7 +222,7 @@ public class ContinueKeywordTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.assertCompilesTo(source, expected);
+		getCompileHelper().assertCompilesTo(source, expected);
 	}
 
 	@Test
@@ -259,7 +256,7 @@ public class ContinueKeywordTest extends AbstractSarlTest {
 				"  protected void fct(final int a) {",
 				"    IntegerRange _upTo = new IntegerRange(0, a);",
 				"    for (final Integer b : _upTo) {",
-				"      if ((b != null ? (b.intValue() == 5) : false)) {",
+				"      if ((b != null && (b.intValue() == 5))) {",
 				"        continue;",
 				"      }",
 				"    }",
@@ -284,7 +281,7 @@ public class ContinueKeywordTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.assertCompilesTo(source, expected);
+		getCompileHelper().assertCompilesTo(source, expected);
 	}
 
 	@Test
@@ -337,7 +334,7 @@ public class ContinueKeywordTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.assertCompilesTo(source, expected);
+		getCompileHelper().assertCompilesTo(source, expected);
 	}
 
 	@Test
@@ -392,7 +389,7 @@ public class ContinueKeywordTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.assertCompilesTo(source, expected);
+		getCompileHelper().assertCompilesTo(source, expected);
 	}
 
 }

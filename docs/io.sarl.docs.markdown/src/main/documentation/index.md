@@ -74,6 +74,7 @@
 	* [Assertions](./reference/general/Assertion.md)
 * Meta-programming:
 	* [Active annotations](./reference/general/ActiveAnnotations.md)
+* [Comparison between SARL and other Languages](./reference/LanguageComparison.md)
 
 ### Agent-Oriented Programming
 
@@ -88,6 +89,7 @@
 ### Object-Oriented Programming
 
 * [Basic Object-Oriented Programming Support](./reference/OOP.md)
+* [Comparison between SARL and other Languages](./reference/LanguageComparison.md)
 
 ## Compilation and Generation Infrastructure
 

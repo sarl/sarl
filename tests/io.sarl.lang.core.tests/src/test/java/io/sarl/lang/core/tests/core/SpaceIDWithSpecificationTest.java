@@ -20,11 +20,6 @@
  */
 package io.sarl.lang.core.tests.core;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-
 import java.util.UUID;
 
 import org.junit.Before;

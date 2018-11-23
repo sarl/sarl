@@ -20,8 +20,6 @@
  */
 package io.sarl.core.tests;
 
-import static org.junit.Assert.assertSame;
-
 import java.util.UUID;
 
 import org.junit.Before;

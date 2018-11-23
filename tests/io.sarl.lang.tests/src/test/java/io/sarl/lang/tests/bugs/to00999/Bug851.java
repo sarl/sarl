@@ -262,9 +262,6 @@ public class Bug851 extends AbstractSarlTest {
 			"  }",
 			"}");
 
-	@Inject
-	private CompilationTestHelper compiler;
-
 	@Test
 	public void parsing_01() throws Exception {
 		SarlScript mas = file(SNIPSET01);
@@ -274,7 +271,7 @@ public class Bug851 extends AbstractSarlTest {
 
 	@Test
 	public void compiling_01() throws Exception {
-		this.compiler.compile(SNIPSET01, (it) -> {
+		getCompileHelper().compile(SNIPSET01, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug851.SomeAgent");
 			assertEquals(EXPECTED01, actual);
 		});
@@ -289,7 +286,7 @@ public class Bug851 extends AbstractSarlTest {
 
 	@Test
 	public void compiling_02() throws Exception {
-		this.compiler.compile(SNIPSET02, (it) -> {
+		getCompileHelper().compile(SNIPSET02, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug851.SomeAgent");
 			assertEquals(EXPECTED02, actual);
 		});

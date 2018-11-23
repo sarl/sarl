@@ -38,9 +38,6 @@ import org.junit.Test;
 @SuppressWarnings("all")
 public class PrivateAPIAccessTest extends AbstractSarlTest {
 
-	@Inject
-	private CompilationTestHelper compiler;
-
 	@Test
 	public void privateFunctionPrivateCaller_01() throws Exception {
 		String source = multilineString(
@@ -76,7 +73,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.compile(source, (r) -> {
+		getCompileHelper().compile(source, (r) -> {
 			assertEquals(expectedAccessor, r.getGeneratedCode("Accessor"));
 		});
 	}
@@ -116,7 +113,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.compile(source, (r) -> {
+		getCompileHelper().compile(source, (r) -> {
 			assertEquals(expectedAccessor, r.getGeneratedCode("Accessor"));
 		});
 	}
@@ -156,7 +153,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.compile(source, (r) -> {
+		getCompileHelper().compile(source, (r) -> {
 			assertEquals(expectedAccessor, r.getGeneratedCode("Accessor"));
 		});
 	}
@@ -196,7 +193,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.compile(source, (r) -> {
+		getCompileHelper().compile(source, (r) -> {
 			assertEquals(expectedAccessor, r.getGeneratedCode("Accessor"));
 		});
 	}
@@ -237,7 +234,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.compile(source, (r) -> {
+		getCompileHelper().compile(source, (r) -> {
 			assertEquals(expectedAccessor, r.getGeneratedCode("Accessor"));
 		});
 	}
@@ -278,7 +275,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.compile(source, (r) -> {
+		getCompileHelper().compile(source, (r) -> {
 			assertEquals(expectedAccessor, r.getGeneratedCode("Accessor"));
 		});
 	}
@@ -377,7 +374,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				"");
-		this.compiler.compile(source, (r) -> {
+		getCompileHelper().compile(source, (r) -> {
 			assertEquals(expectedAccessor, r.getGeneratedCode("Accessor"));
 		});
 	}

@@ -23,6 +23,10 @@ be typed after the expression and before the casting type.
 In the first example, the [:a:] expression is casted to [:integer:].
 In the second example, the [:b:] expression is casted to [:integer:] too.
 
+## Implicit Conversions
+
+Coming soon.
+
 
 
 [:Include:](../generalsyntaxref.inc)

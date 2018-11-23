@@ -44,9 +44,6 @@ import io.sarl.tests.api.AbstractSarlTest;
 public class InlineFunctionTest extends AbstractSarlTest {
 
 	@Inject
-	private CompilationTestHelper sarlCompiler;
-
-	@Inject
 	private FileExtensionProvider extensionProvider;
 	
 	@Inject
@@ -56,13 +53,14 @@ public class InlineFunctionTest extends AbstractSarlTest {
 
 	private void compileWithInline(CharSequence source, IAcceptor<Result> acceptor) throws IOException {
 		String fileName = "MyFile." + extensionProvider.getPrimaryFileExtension();
-		ResourceSet set = this.sarlCompiler.resourceSet(new Pair<String, CharSequence>(fileName, source));
+		CompilationTestHelper compiler = getCompileHelper();
+		ResourceSet set = compiler.resourceSet(new Pair<String, CharSequence>(fileName, source));
 		if (this.config == null) {
 			this.config = this.generatorConfigProvider2.get(null);
 			((GeneratorConfigProvider2) this.generatorConfigProvider2).install(set, config);
 		}
 		this.config.setGenerateInlineAnnotation(true);
-		this.sarlCompiler.compile(set, acceptor);
+		compiler.compile(set, acceptor);
 	}
 	
 	@Test

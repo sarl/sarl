@@ -54,9 +54,6 @@ import io.sarl.tests.api.AbstractSarlTest.Validator;
 @SuppressWarnings("all")
 public class Bug799 extends AbstractSarlTest {
 
-	@Inject
-	private CompilationTestHelper compiler;
-
 
 	private static final String SNIPSET01 = multilineString(
 			"package foo.bug799",
@@ -142,7 +139,7 @@ public class Bug799 extends AbstractSarlTest {
 
 	@Test
 	public void compiling_01() throws Exception {
-		this.compiler.compile(SNIPSET01, (it) -> {
+		getCompileHelper().compile(SNIPSET01, (it) -> {
 			String actual = it.getGeneratedCode("foo.bug799.A");
 			assertEquals(EXPECTED01a, actual);
 			actual = it.getGeneratedCode("foo.bug799.B");

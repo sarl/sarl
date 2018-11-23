@@ -51,9 +51,6 @@ public class Bug312 {
 				"    def move(direction2 : Vector2i, changeHeading2 : boolean = false)",
 				"}");
 
-		@Inject
-		private CompilationTestHelper compiler;
-
 		@Test
 		public void bug312() throws Exception {
 			SarlScript mas = file(snippet);
@@ -155,7 +152,7 @@ public class Bug312 {
 					"  }",
 					"}",
 					"");
-			this.compiler.compile(this.snippet, (r) -> assertEquals(expected, r.getGeneratedCode("C1")));
+			getCompileHelper().compile(this.snippet, (r) -> assertEquals(expected, r.getGeneratedCode("C1")));
 		}
 
 	}

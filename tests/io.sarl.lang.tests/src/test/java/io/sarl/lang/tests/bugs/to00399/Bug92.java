@@ -45,9 +45,6 @@ import io.sarl.tests.api.AbstractSarlTest;
 @SuppressWarnings("all")
 public class Bug92 extends AbstractSarlTest {
 
-	@Inject
-	private CompilationTestHelper compiler;
-
 	protected static void assertInstance(Class<?> expected, Object actual) {
 		if (actual != null && !expected.isInstance(actual)) {
 			fail("Unexpected type of object. The object must be a " + expected.getName() + " but it is: " + actual);
@@ -140,7 +137,7 @@ public class Bug92 extends AbstractSarlTest {
 
 	@Test
 	public void attributeDeclarationCompiler_inferredDouble() throws Exception {
-		this.compiler.assertCompilesTo(
+		getCompileHelper().assertCompilesTo(
 				multilineString(
 						"agent A1 {",
 						"  var myDouble = 0d",
@@ -212,7 +209,7 @@ public class Bug92 extends AbstractSarlTest {
 
 	@Test
 	public void attributeDeclarationCompiler_Double() throws Exception {
-		this.compiler.assertCompilesTo(
+		getCompileHelper().assertCompilesTo(
 				multilineString(
 						"agent A1 {",
 						"  var myDouble : Double = 0d",
@@ -284,7 +281,7 @@ public class Bug92 extends AbstractSarlTest {
 
 	@Test
 	public void attributeDeclarationCompiler_double() throws Exception {
-		this.compiler.assertCompilesTo(
+		getCompileHelper().assertCompilesTo(
 				multilineString(
 						"agent A1 {",
 						"  var myDouble : double = 0d",
@@ -532,7 +529,7 @@ public class Bug92 extends AbstractSarlTest {
 				"}",
 				"");
 
-		this.compiler.compile(source, (r) -> {
+		getCompileHelper().compile(source, (r) -> {
 				assertEquals(expected1,r.getGeneratedCode("ComputeEnergyCapacity"));
 				assertEquals(expected2,r.getGeneratedCode("DeviceAgent"));
 				assertEquals(expected3,r.getGeneratedCode("EntityAgent"));
@@ -717,7 +714,7 @@ public class Bug92 extends AbstractSarlTest {
 				"}",
 				"");
 
-		this.compiler.compile(source, (r) -> {
+		getCompileHelper().compile(source, (r) -> {
 				assertEquals(expected1,r.getGeneratedCode("ComputeEnergyCapacity"));
 				assertEquals(expected2,r.getGeneratedCode("DeviceAgent"));
 				assertEquals(expected3,r.getGeneratedCode("EntityAgent"));
