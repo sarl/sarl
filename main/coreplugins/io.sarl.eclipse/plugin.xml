@@ -175,6 +175,7 @@
               modes="debug, run"
               name="%launch.agent"
               public="true"
+              sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
               sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer">
         </launchConfigurationType>
         <launchConfigurationType
@@ -185,6 +186,7 @@
               modes="debug, run"
               name="%launch.application"
               public="true"
+              sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
               sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer">
         </launchConfigurationType>
     </extension>
