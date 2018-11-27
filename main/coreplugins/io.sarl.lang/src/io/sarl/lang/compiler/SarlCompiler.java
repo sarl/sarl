@@ -857,9 +857,9 @@ public class SarlCompiler extends XtendCompiler {
 			final LightweightTypeReference returnType = getClosureOperationReturnType(type, operation);
 			appendable.append("new ").append(type).append("() {"); //$NON-NLS-1$ //$NON-NLS-2$
 			appendable.increaseIndentation();
+			String selfVariable = null;
 			try {
 				appendable.openScope();
-				String selfVariable = null;
 				if (needSyntheticSelfVariable(closure, type)) {
 					appendable.newLine().append("final "); //$NON-NLS-1$
 					appendable.append(type).append(" "); //$NON-NLS-1$
@@ -916,6 +916,12 @@ public class SarlCompiler extends XtendCompiler {
 			}
 			appendable.newLine().append("private ").append(Object.class).append(" writeReplace() throws ");  //$NON-NLS-1$//$NON-NLS-2$
 			appendable.append(ObjectStreamException.class).append(" {").increaseIndentation().newLine(); //$NON-NLS-1$
+			if (selfVariable == null) {
+				reassignThisInClosure(appendable, type.getType());
+			} else {
+				// We have already assigned the closure type to _self, so don't assign it again
+				reassignThisInClosure(appendable, null);
+			}
 			appendable.append("return new ").append(SerializableProxy.class); //$NON-NLS-1$
 			appendable.append("(").append(appendable.getName(type)).append(".class"); //$NON-NLS-1$ //$NON-NLS-2$
 			for (final XAbstractFeatureCall call : localReferences) {
