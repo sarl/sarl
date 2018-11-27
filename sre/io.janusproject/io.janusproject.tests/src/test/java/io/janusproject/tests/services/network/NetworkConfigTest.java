@@ -27,7 +27,7 @@ import org.junit.Test;
 
 import com.google.common.base.Charsets;
 
-import io.janusproject.kernel.services.gson.GsonEventSerializer;
+import io.janusproject.kernel.services.jdk.network.JavaBinaryEventSerializer;
 import io.janusproject.kernel.services.jdk.network.PlainTextEventEncrypter;
 import io.janusproject.services.network.NetworkConfig;
 import io.janusproject.tests.testutils.AbstractJanusTest;
@@ -48,7 +48,7 @@ public class NetworkConfigTest extends AbstractJanusTest {
 
 		// Use hard-coded string to ensure retro compatibility
 		assertEquals("", defs.get("network.encrypter.aes.key")); //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals(GsonEventSerializer.class.getName(), defs.get("network.serializer.class")); //$NON-NLS-1$
+		assertEquals(JavaBinaryEventSerializer.class.getName(), defs.get("network.serializer.class")); //$NON-NLS-1$
 		assertEquals(PlainTextEventEncrypter.class.getName(), defs.get("network.encrypter.class")); //$NON-NLS-1$
 		assertEquals(Charsets.UTF_8.name(), defs.get("network.serializer.charset")); //$NON-NLS-1$
 	}

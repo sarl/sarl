@@ -246,7 +246,7 @@ public abstract class AbstractExtraLanguageValidator {
 	protected boolean isResponsible(Map<Object, Object> context, EObject eObject) {
 		// Skip the validation of an feature call if one of its container was validated previously
 		if (eObject instanceof XMemberFeatureCall || eObject instanceof XFeatureCall) {
-			final XAbstractFeatureCall rootFeatureCall = getRootFeatureCall((XAbstractFeatureCall) eObject);
+			final XAbstractFeatureCall rootFeatureCall = Utils.getRootFeatureCall((XAbstractFeatureCall) eObject);
 			return !isCheckedFeatureCall(context, rootFeatureCall);
 		}
 		return true;
@@ -432,7 +432,7 @@ public abstract class AbstractExtraLanguageValidator {
 	protected void doCheckMemberFeatureCallMapping(XAbstractFeatureCall featureCall,
 			Procedure3<? super EObject, ? super JvmType, ? super String> typeErrorHandler,
 			Function2<? super EObject, ? super JvmIdentifiableElement, ? extends Boolean> featureErrorHandler) {
-		final XAbstractFeatureCall rootFeatureCall = getRootFeatureCall(featureCall);
+		final XAbstractFeatureCall rootFeatureCall = Utils.getRootFeatureCall(featureCall);
 		final Map<Object, Object> context = getContext().getContext();
 		if (isCheckedFeatureCall(context, rootFeatureCall)) {
 			// One of the containing expressions was already checked.
@@ -442,18 +442,6 @@ public abstract class AbstractExtraLanguageValidator {
 		setCheckedFeatureCall(context, rootFeatureCall);
 		// Validate the current call.
 		internalCheckMemberFeaturCallMapping(rootFeatureCall, typeErrorHandler, featureErrorHandler);
-	}
-
-	private static XAbstractFeatureCall getRootFeatureCall(XAbstractFeatureCall featureCall) {
-		final EObject container = featureCall.eContainer();
-		final XAbstractFeatureCall rootFeatureCall;
-		if (container instanceof XMemberFeatureCall || container instanceof XFeatureCall) {
-			rootFeatureCall = (XAbstractFeatureCall) Utils.getFirstContainerForPredicate(featureCall,
-					it -> it.eContainer() != null && !(it.eContainer() instanceof XMemberFeatureCall || it.eContainer() instanceof XFeatureCall));
-		} else {
-			rootFeatureCall = featureCall;
-		}
-		return rootFeatureCall;
 	}
 
 	private boolean internalCheckMemberFeaturCallMapping(XAbstractFeatureCall featureCall,

@@ -54,6 +54,7 @@ import io.sarl.lang.core.SpaceSpecification;
 
 /**
  * Serialize the {@link EventDispatch} content using GSON to generate the corresponding {@link EventEnvelope}.
+ * Caution: the Gson serializer is not able to serialize lambda expressions.
  *
  * <p>This implementation assumes that an {@link EventEncrypter} and {@link Gson} are injected.
  *

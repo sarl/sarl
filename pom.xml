@@ -205,6 +205,14 @@
 			</roles>
 		</contributor>
 		<contributor>
+			<name>Alexandre Lombard</name>
+			<email>alexandre.lombard@utbm.fr</email>
+			<url>https://github.com/alexandrelombard</url>
+			<roles>
+				<role>Unit Tests</role>
+			</roles>
+		</contributor>
+		<contributor>
 			<name>Ludovico de Nittis</name>
 			<email>aasonykk@gmail.com</email>
 			<url>https://github.com/RyuzakiKK</url>

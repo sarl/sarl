@@ -179,7 +179,7 @@ public class GsonEventSerializerTest extends AbstractJanusTest {
 
 		assertArrayEquals(this.serializedScope, e.getScope());
 
-		System.out.println(Arrays.toString(e.getCustomHeaders()));
+		//System.out.println(Arrays.toString(e.getCustomHeaders()));
 		
 		assertArrayEquals(this.serializedHeader, e.getCustomHeaders());
 
