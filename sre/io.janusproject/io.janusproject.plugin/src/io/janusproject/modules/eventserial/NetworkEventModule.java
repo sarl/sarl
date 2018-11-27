@@ -33,6 +33,7 @@ import com.google.inject.Provides;
 import io.janusproject.JanusConfig;
 import io.janusproject.kernel.services.gson.GsonEventSerializer;
 import io.janusproject.kernel.services.jdk.network.AESEventEncrypter;
+import io.janusproject.kernel.services.jdk.network.JavaBinaryEventSerializer;
 import io.janusproject.kernel.services.jdk.network.PlainTextEventEncrypter;
 import io.janusproject.services.network.EventEncrypter;
 import io.janusproject.services.network.EventSerializer;
@@ -49,7 +50,7 @@ import io.janusproject.services.network.NetworkConfig;
  */
 public class NetworkEventModule extends AbstractModule {
 
-	private static final Class<? extends EventSerializer> DEFAULT_EVENT_SERIALIZER = GsonEventSerializer.class;
+	private static final Class<? extends EventSerializer> DEFAULT_EVENT_SERIALIZER = JavaBinaryEventSerializer.class;
 
 	private static final Class<? extends EventEncrypter> DEFAULT_EVENT_ENCRYPTER = PlainTextEventEncrypter.class;
 
