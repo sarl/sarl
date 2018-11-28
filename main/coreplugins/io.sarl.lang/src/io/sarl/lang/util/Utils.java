@@ -42,6 +42,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Iterables;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -80,7 +81,11 @@ import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.serializer.ISerializer;
 import org.eclipse.xtext.util.EmfFormatter;
 import org.eclipse.xtext.util.XtextVersion;
+import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.xtext.xbase.XFeatureCall;
+import org.eclipse.xtext.xbase.XMemberFeatureCall;
+import org.eclipse.xtext.xbase.XVariableDeclaration;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationElementValuePair;
 import org.eclipse.xtext.xbase.compiler.ImportManager;
@@ -1680,6 +1685,7 @@ public final class Utils {
 		}
 	}
 
+
 	/** Set the given structure feature with the given value.
 	 *
 	 * @param object the object that contains the feature.
@@ -1696,4 +1702,97 @@ public final class Utils {
 		}
 	}
 
+	/** Replies the root feature call into a sequence of feature calls.
+	 *
+	 * @param featureCall the leaf feature call.
+	 * @return the root feature call.
+	 * @since 0.8.6
+	 * @see #getRootFeatureCall(XAbstractFeatureCall, XExpression, List)
+	 */
+	public static XAbstractFeatureCall getRootFeatureCall(XAbstractFeatureCall featureCall) {
+		final EObject container = featureCall.eContainer();
+		final XAbstractFeatureCall rootFeatureCall;
+		if (container instanceof XMemberFeatureCall || container instanceof XFeatureCall) {
+			rootFeatureCall = (XAbstractFeatureCall) getFirstContainerForPredicate(featureCall,
+					it -> it.eContainer() != null && !(it.eContainer() instanceof XMemberFeatureCall || it.eContainer() instanceof XFeatureCall));
+		} else {
+			rootFeatureCall = featureCall;
+		}
+		return rootFeatureCall;
+	}
+
+	/** Replies the root feature call into a sequence of feature calls that has
+	 * not reference to elements declared within the container, and that are
+	 * not one of the container's parameters.
+	 *
+	 * @param featureCall the leaf feature call.
+	 * @param container the container of the feature call.
+	 * @param containerParameters the parameters of the container.
+	 * @return the root feature call, or {@code null} if there is no root feature call.
+	 * @since 0.8.6
+	 * @see #getRootFeatureCall(XAbstractFeatureCall)
+	 */
+	public static XAbstractFeatureCall getRootFeatureCall(XAbstractFeatureCall featureCall,
+			XExpression container, List<JvmFormalParameter> containerParameters) {
+		if (hasLocalParameters(featureCall, container, containerParameters)
+				|| !(featureCall instanceof XMemberFeatureCall || featureCall instanceof XFeatureCall)) {
+			return null;
+		}
+		XAbstractFeatureCall current = featureCall;
+		EObject currentContainer = current.eContainer();
+		while (currentContainer != null) {
+			if (currentContainer instanceof XMemberFeatureCall || currentContainer instanceof XFeatureCall) {
+				final XAbstractFeatureCall c = (XAbstractFeatureCall) currentContainer;
+				if (hasLocalParameters(c, container, containerParameters)) {
+					return current;
+				}
+				current = c;
+				currentContainer = current.eContainer();
+			} else {
+				return current;
+			}
+		}
+		return current;
+	}
+
+	private static boolean hasLocalParameters(EObject current, XExpression container, List<JvmFormalParameter> containerParameters) {
+		if (current instanceof XAbstractFeatureCall) {
+			final XAbstractFeatureCall featureCall = (XAbstractFeatureCall) current;
+			if (isLocalEntity(featureCall, container, containerParameters)) {
+				return true;
+			}
+			for (final XExpression argument : featureCall.getActualArguments()) {
+				final Iterable<XAbstractFeatureCall> iterable;
+				if (argument instanceof XAbstractFeatureCall) {
+					iterable = Iterables.concat(
+							Collections.singletonList((XAbstractFeatureCall) argument),
+							EcoreUtil2.getAllContentsOfType(argument, XAbstractFeatureCall.class));
+				} else {
+					iterable = EcoreUtil2.getAllContentsOfType(argument, XAbstractFeatureCall.class);
+				}
+				for (final XAbstractFeatureCall c : iterable) {
+					if (isLocalEntity(c, container, containerParameters)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	private static boolean isLocalEntity(XAbstractFeatureCall featureCall, XExpression container, List<JvmFormalParameter> containerParameters) {
+		final JvmIdentifiableElement feature = featureCall.getFeature();
+		if (feature instanceof JvmFormalParameter) {
+			if (containerParameters.contains(feature)) {
+				return true;
+			}
+		} else if (feature instanceof XVariableDeclaration) {
+			if (EcoreUtil.isAncestor(container, feature)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 }
+

@@ -32,6 +32,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtext.common.types.JvmConstructor;
+import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.xbase.compiler.GeneratorConfig;
@@ -57,7 +58,7 @@ import io.sarl.lang.sarl.actionprototype.ActionPrototype;
  */
 abstract class GenerationContext {
 
-	private final String identifier;
+	private final JvmDeclaredType target;
 
 	/** Compute serial number for serializable objects.
 	 */
@@ -138,10 +139,10 @@ abstract class GenerationContext {
 	/** Construct a information about the generation.
 	 *
 	 * @param owner the object for which the context is created.
-	 * @param identifier the identifier of the type for which the context is opened.
+	 * @param target the target type for which the context is opened.
 	 */
-	GenerationContext(EObject owner, String identifier) {
-		this.identifier = identifier;
+	GenerationContext(EObject owner, JvmDeclaredType target) {
+		this.target = target;
 		this.contextObject = owner;
 	}
 
@@ -173,7 +174,16 @@ abstract class GenerationContext {
 	 * @return the identifier of the context's type.
 	 */
 	public String getTypeIdentifier() {
-		return this.identifier;
+		return this.target.getIdentifier();
+	}
+
+	/** Replies the associated type.
+	 *
+	 * @return the context's type.
+	 * @since 0.8.6
+	 */
+	public JvmDeclaredType getType() {
+		return this.target;
 	}
 
 	/** Replies the generator configuration.
