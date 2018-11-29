@@ -80,4 +80,26 @@
             icon="platform:/plugin/org.eclipse.ui.intro.universal/themes/solstice/graphics/icons/ctool/new-project.png">
          </command>
    </extension>
+   
+   <extension point="org.eclipse.ui.popupMenus"> 
+	  <objectContribution id="io.sarl.m2e.enableSarlMavenNatureAction"
+	                      objectClass="org.eclipse.core.resources.IProject"
+	                      adaptable="true">
+	     <action id="io.sarl.m2e.enableSarlMavenNatureAction"
+	             class="io.sarl.m2e.wizards.importproject.EnableSarlMavenNatureAction"
+	             label="%action.name.converttosarlmaven"
+	             style="push"
+	             menubarPath="org.eclipse.ui.projectConfigure/additions"
+	             enablesFor="+"/>
+	     <visibility>
+	       <and>
+	         <objectState name="open" value="true"/>
+	         <not>
+	           <objectState name="nature" value="io.sarl.eclipse.natures.SARLProjectNature"/>
+	         </not>
+	       </and>
+	     </visibility>
+	  </objectContribution>
+   </extension> 
+
 </plugin>
