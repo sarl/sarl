@@ -886,29 +886,6 @@ public class CompilerTest extends AbstractSarlTest {
 			"  }",
 			"}");
 
-	private static final String AS_UUID_OBJECT_JAVA = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import java.util.UUID;",
-			"import org.eclipse.xtext.xbase.lib.Pure;",
-			"",
-			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
-			"@SuppressWarnings(\"all\")",
-			"public class A {",
-			"  @Pure",
-			"  public UUID fct(final int left) {",
-			"    return ((UUID) Integer.valueOf(left));",
-			"  }",
-			"  ",
-			"  @SyntheticMember",
-			"  public A() {",
-			"    super();",
-			"  }",
-			"}",
-			"");
-
 	@Test
 	public void as_UUID_issues() throws Exception {
 		validate(file(AS_UUID_OBJECT_SARL))
@@ -922,11 +899,6 @@ public class CompilerTest extends AbstractSarlTest {
 		.assertNoWarnings(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION);
-	}
-
-	@CompilationTest
-	public static void as_UUID(Context ctx) throws Exception {
-		ctx.compileTo(AS_UUID_OBJECT_SARL, AS_UUID_OBJECT_JAVA);
 	}
 
 }

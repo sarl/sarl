@@ -30,6 +30,7 @@ import org.eclipse.xtext.xbase.scoping.batch.ImplicitlyImportedFeatures;
 
 import io.sarl.lang.bugfixes.pending.pr106.PR106ArrayExtensions;
 import io.sarl.lang.bugfixes.pending.pr106.PR106ArrayLiterals;
+import io.sarl.lang.scoping.extensions.cast.GeneralCastImplicitlyImportedFeatures;
 import io.sarl.lang.scoping.extensions.numbers.arithmetic.NumberArithmeticImplicitlyImportedFeatures;
 import io.sarl.lang.scoping.extensions.numbers.cast.NumberCastImplicitlyImportedFeatures;
 import io.sarl.lang.scoping.extensions.numbers.comparison.NumberComparisonImplicitlyImportedFeatures;
@@ -54,6 +55,9 @@ public class SARLImplicitlyImportedFeatures extends ImplicitlyImportedFeatures {
 
 	@Inject
 	private NumberCastImplicitlyImportedFeatures numberCastFeatures;
+
+	@Inject
+	private GeneralCastImplicitlyImportedFeatures generalCastFeatures;
 
 	/** Construct the provider.
 	 */
@@ -80,6 +84,7 @@ public class SARLImplicitlyImportedFeatures extends ImplicitlyImportedFeatures {
 		this.numberComparisonFeatures.getImportedFeatures(xtextList);
 		this.numberArithmeticFeatures.getImportedFeatures(xtextList);
 		this.numberCastFeatures.getImportedFeatures(xtextList);
+		this.generalCastFeatures.getImportedFeatures(xtextList);
 
 		return xtextList;
 	}

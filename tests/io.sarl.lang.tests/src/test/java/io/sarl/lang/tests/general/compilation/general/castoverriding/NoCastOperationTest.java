@@ -40,17 +40,13 @@ import io.sarl.tests.api.MassiveCompilationSuite.Context;
 public class NoCastOperationTest extends AbstractSarlTest {
 
 	private static final String PRIMITIVE_PRIMITIVE_SARL_00 = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding",
 			"class A0 {",
 			"  def fct(x : double) : long {",
 			"    return x as long",
 			"  }",
-			"}"
-			);
+			"}");
 
 	private static final String PRIMITIVE_PRIMITIVE_JAVA_00 = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding;",
-			"",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
@@ -85,7 +81,6 @@ public class NoCastOperationTest extends AbstractSarlTest {
 	}
 
 	private static final String PRIMITIVE_PRIMITIVE_SARL_01 = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding",
 			"class A0 {",
 			"  def fct(x : long) : double {",
 			"    return x as double",
@@ -94,8 +89,6 @@ public class NoCastOperationTest extends AbstractSarlTest {
 			);
 
 	private static final String PRIMITIVE_PRIMITIVE_JAVA_01 = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding;",
-			"",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
@@ -134,7 +127,6 @@ public class NoCastOperationTest extends AbstractSarlTest {
 	}
 
 	private static final String SUBTYPE_TYPE_SARL_00 = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding",
 			"class A0 {}",
 			"class A1 extends A0 {}",
 			"class A2 {",
@@ -145,13 +137,11 @@ public class NoCastOperationTest extends AbstractSarlTest {
 			);
 
 	private static final String SUBTYPE_TYPE_JAVA_00 = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding;",
-			"",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.tests.castoperatoroverriding.A0;",
-			"import io.sarl.lang.tests.castoperatoroverriding.A1;",
+			"import io.sarl.lang.core.tests.compileSubtypeType00.A0;",
+			"import io.sarl.lang.core.tests.compileSubtypeType00.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -187,7 +177,6 @@ public class NoCastOperationTest extends AbstractSarlTest {
 	}
 
 	private static final String PRIMITIVE_WRAPPER_SARL_00 = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding",
 			"class A0 {",
 			"  def fct(x : double) : Double {",
 			"    return x as Double",
@@ -196,8 +185,6 @@ public class NoCastOperationTest extends AbstractSarlTest {
 			);
 
 	private static final String PRIMITIVE_WRAPPER_JAVA_00 = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding;",
-			"",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
@@ -236,7 +223,6 @@ public class NoCastOperationTest extends AbstractSarlTest {
 	}
 
 	private static final String WRAPPER_PRIMITIVE_SARL_00 = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding",
 			"class A0 {",
 			"  def fct(x : Double) : double {",
 			"    return x as double",
@@ -245,8 +231,6 @@ public class NoCastOperationTest extends AbstractSarlTest {
 			);
 
 	private static final String WRAPPER_PRIMITIVE_JAVA_00 = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding;",
-			"",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",

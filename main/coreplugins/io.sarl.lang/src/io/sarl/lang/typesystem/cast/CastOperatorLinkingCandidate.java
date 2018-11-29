@@ -172,7 +172,7 @@ public class CastOperatorLinkingCandidate extends AbstractPendingLinkingCandidat
 		final LightweightTypeReference leftTargetType = getOperationReturnType(this);
 		final LightweightTypeReference rightTargetType = getOperationReturnType(right);
 
-		/*if ("byte".equals(sourceType.getSimpleName()) && "Short".equals(targetType.getSimpleName())) {
+		/*if ("boolean".equals(sourceType.getSimpleName()) && "String".equals(targetType.getSimpleName())) {
 			System.out.println(sourceType.getHumanReadableName() + " -> " + targetType.getHumanReadableName());
 			System.out.println("\t" + this.getValidationDescription() + " / (" + leftSourceType.getHumanReadableName()
 				+ ") -> " + leftTargetType.getHumanReadableName());

@@ -16,6 +16,7 @@
 package io.sarl.lang.tests.general.compilation.general.castoverriding;
 
 import org.eclipse.xtext.common.types.TypesPackage;
+import org.eclipse.xtext.xbase.XbasePackage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -41,7 +42,6 @@ import io.sarl.tests.api.MassiveCompilationSuite.Context;
 public class ToPrimitiveTypeTest extends AbstractSarlTest {
 
 	private static final String NO_OPERATOR_SARL = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding",
 			"class A1 {",
 			"}",
 			"class A2 {",
@@ -63,7 +63,6 @@ public class ToPrimitiveTypeTest extends AbstractSarlTest {
 	}
 
 	private static final String TYPE_SARL_00 = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding",
 			"class A1 {",
 			"  def doubleValue : double { 0.0 }",
 			"}",
@@ -76,12 +75,10 @@ public class ToPrimitiveTypeTest extends AbstractSarlTest {
 			);
 
 	private static final String TYPE_JAVA_00 = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding;",
-			"",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.tests.castoperatoroverriding.A1;",
+			"import io.sarl.lang.core.tests.compileLocal00.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -105,9 +102,13 @@ public class ToPrimitiveTypeTest extends AbstractSarlTest {
 	public void parseLocal00() throws Exception {
 		SarlScript mas = file(TYPE_SARL_00);
 		Validator val = validate(mas);
-		val.assertNoErrors();
-		val.assertWarning(
-				SarlPackage.eINSTANCE.getSarlCastedExpression(),
+		val
+			.assertNoErrors()
+			.assertNoWarnings(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
+			.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
 				"'doubleValue'");
 	}
@@ -118,7 +119,6 @@ public class ToPrimitiveTypeTest extends AbstractSarlTest {
 	}
 
 	private static final String TYPE_SARL_01 = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding",
 			"class A1 {",
 			"  def doubleValue : Double { 0.0 }",
 			"}",
@@ -141,7 +141,6 @@ public class ToPrimitiveTypeTest extends AbstractSarlTest {
 	}
 
 	private static final String TYPE_SARL_02 = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding",
 			"class A1 {",
 			"  def toDouble : Double { 0.0 }",
 			"}",
@@ -154,12 +153,10 @@ public class ToPrimitiveTypeTest extends AbstractSarlTest {
 			);
 
 	private static final String TYPE_JAVA_02 = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding;",
-			"",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.tests.castoperatoroverriding.A1;",
+			"import io.sarl.lang.core.tests.compileLocal02.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -183,9 +180,13 @@ public class ToPrimitiveTypeTest extends AbstractSarlTest {
 	public void parseLocal02() throws Exception {
 		SarlScript mas = file(TYPE_SARL_02);
 		Validator val = validate(mas);
-		val.assertNoErrors();
-		val.assertWarning(
-				SarlPackage.eINSTANCE.getSarlCastedExpression(),
+		val
+			.assertNoErrors()
+			.assertNoWarnings(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
+			.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
 				"'toDouble'");
 	}
@@ -196,7 +197,6 @@ public class ToPrimitiveTypeTest extends AbstractSarlTest {
 	}
 
 	private static final String TYPE_SARL_03 = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding",
 			"class A1 {",
 			"  def toDouble : double { 0.0 }",
 			"}",

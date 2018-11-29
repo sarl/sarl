@@ -36,7 +36,9 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import com.google.common.base.Predicate;
+import com.google.common.base.Throwables;
 import com.google.common.collect.Collections2;
+import com.google.inject.Inject;
 import com.google.inject.Injector;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -44,6 +46,7 @@ import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.testing.IInjectorProvider;
+import org.eclipse.xtext.testing.IRegistryConfigurator;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.internal.InjectorProviders;
 import org.eclipse.xtext.testing.util.ParseHelper;
@@ -80,73 +83,98 @@ public class MassiveCompilationSuite extends Suite {
 
 	private final List<Runner> runners;
 
+	@Inject
+	private ParseHelper<SarlScript> parser;
+
+	@Inject
+	private CompilationTestHelper compiler;
+
+	@Inject
+	private ValidationTestHelper validator;
+
+
 	/**
 	 * @param testedType the tested type.
 	 * @throws InitializationError in case of error.
 	 */
-	@SuppressWarnings("unchecked")
 	public MassiveCompilationSuite(Class<?> testedType) throws InitializationError {
 		super(testedType, Collections.emptyList());
 		//
+		this.runners = new ArrayList<>();
 		final IInjectorProvider injectorProvider = InjectorProviders.getOrCreateInjectorProvider(getTestClass());
 		assert injectorProvider != null;
-		final Injector injector = injectorProvider.getInjector();
-		assert injector != null;
-		final ParseHelper<SarlScript> parser = injector.getInstance(ParseHelper.class);
-		final CompilationTestHelper compiler = injector.getInstance(CompilationTestHelper.class);
-		final ValidationTestHelper validator = injector.getInstance(ValidationTestHelper.class);
-		//
-		this.runners = new ArrayList<>();
-		final Context context = new Context(injector, parser, validator);
-		Class<?> type = testedType;
-		boolean hasMassiveMethod = false;
-		while (type != null && !Object.class.equals(type)) {
-			for (final Method meth : type.getDeclaredMethods()) {
-				if (meth.isAnnotationPresent(CompilationTest.class)) {
-					if (!Modifier.isStatic(meth.getModifiers())) {
-						throw new InitializationError("Function must be declared with the static modifier."); //$NON-NLS-1$
-					}
-					if (meth.getParameterCount() != 1
-							|| !meth.getParameters()[0].getType().isAssignableFrom(Context.class)) {
-						throw new InitializationError("Function must have one formal parameter of type " + Context.class.getSimpleName()); //$NON-NLS-1$
-					}
-					hasMassiveMethod = true;
-					context.setCurrentMethod(meth);
-					try {
-						meth.invoke(null, context);
-					} catch (Exception exception) {
-						this.runners.add(new MassiveCompilationErrorRunner(testedType, formatFunctionName(meth.getName()), exception));
-					}
-				}
-			}
-			type = type.getSuperclass();
-		}
-		if (!hasMassiveMethod) {
-			throw new InitializationError("Unable to find a method that is contributing to the massive compilation process."); //$NON-NLS-1$
-		}
-		//
-		final ResourceSet rs = context.getResourceSet();
-		assert rs != null;
-		assert compiler != null;
 		try {
-			compiler.compile(rs, it -> {
-				for (final Entry<String, String> entry : context.getExpectedResults().entrySet()) {
-					final String actual = it.getGeneratedCode(entry.getKey());
-					try {
-						final int index1 = entry.getKey().lastIndexOf('.');
-						final int index0 = entry.getKey().lastIndexOf('.', index1 - 1) + 1;
-						final String functionName = entry.getKey().substring(index0, index1);
-						this.runners.add(new MassiveCompilationRunner(testedType, formatFunctionName(functionName), entry.getValue(), actual));
-					} catch (InitializationError e) {
-						throw new RuntimeException(e);
-					}
-				}
-			});
-		} catch (RuntimeException exception) {
-			if (exception.getCause() instanceof InitializationError) {
-				throw (InitializationError) exception.getCause();
+			if (injectorProvider instanceof IRegistryConfigurator) {
+				final IRegistryConfigurator registryConfigurator = (IRegistryConfigurator) injectorProvider;
+				registryConfigurator.setupRegistry();
 			}
-			throw exception;
+			final Injector injector = injectorProvider.getInjector();
+			assert injector != null;
+			injector.injectMembers(this);
+			//
+			final Context context = new Context(injector, this.parser, this.validator);
+			Class<?> type = testedType;
+			boolean hasMassiveMethod = false;
+			try {
+				while (type != null && !Object.class.equals(type)) {
+					for (final Method meth : type.getDeclaredMethods()) {
+						if (meth.isAnnotationPresent(CompilationTest.class)) {
+							if (!Modifier.isStatic(meth.getModifiers())) {
+								throw new InitializationError("Function must be declared with the static modifier."); //$NON-NLS-1$
+							}
+							if (meth.getParameterCount() != 1
+									|| !meth.getParameters()[0].getType().isAssignableFrom(Context.class)) {
+								throw new InitializationError("Function must have one formal parameter of type " + Context.class.getSimpleName()); //$NON-NLS-1$
+							}
+							hasMassiveMethod = true;
+							context.setCurrentMethod(meth);
+							try {
+								meth.invoke(null, context);
+							} catch (Exception exception) {
+								Throwable source = Throwables.getRootCause(exception);
+								if (source instanceof CompilationStop) {
+									throw new CompilationStop();
+								}
+								this.runners.add(new MassiveCompilationErrorRunner(testedType, formatFunctionName(meth.getName()), source));
+							}
+						}
+					}
+					type = type.getSuperclass();
+				}
+				final ResourceSet rs = context.getResourceSet();
+				if (!hasMassiveMethod || rs == null) {
+					throw new InitializationError("Unable to find a method that is contributing to the massive compilation process."); //$NON-NLS-1$
+				}
+				//
+				assert this.compiler != null;
+				try {
+					this.compiler.compile(rs, it -> {
+						for (final Entry<String, String> entry : context.getExpectedResults().entrySet()) {
+							final String actual = it.getGeneratedCode(entry.getKey());
+							try {
+								final int index1 = entry.getKey().lastIndexOf('.');
+								final int index0 = entry.getKey().lastIndexOf('.', index1 - 1) + 1;
+								final String functionName = entry.getKey().substring(index0, index1);
+								this.runners.add(new MassiveCompilationRunner(testedType, formatFunctionName(functionName), entry.getValue(), actual));
+							} catch (InitializationError e) {
+								throw new RuntimeException(e);
+							}
+						}
+					});
+				} catch (RuntimeException exception) {
+					if (exception.getCause() instanceof InitializationError) {
+						throw (InitializationError) exception.getCause();
+					}
+					throw exception;
+				}
+			} catch (CompilationStop exception) {
+				//
+			}
+		} finally {
+			if (injectorProvider instanceof IRegistryConfigurator) {
+				final IRegistryConfigurator registryConfigurator = (IRegistryConfigurator) injectorProvider;
+				registryConfigurator.restoreRegistry();
+			}
 		}
 		//
 		final AllDefaultPossibilitiesBuilder builder = new AllDefaultPossibilitiesBuilder(false) {
@@ -183,13 +211,13 @@ public class MassiveCompilationSuite extends Suite {
 			protected JUnit4Builder junit4Builder() {
 				return new JUnit4Builder() {
 					@Override
-				    public Runner runnerForClass(Class<?> testClass) throws Throwable {
-				        try {
-				        	return new BlockJUnit4ClassRunner(testClass);
-				        } catch (Exception exception) {
-				        	return null;
-				        }
-				    }
+					public Runner runnerForClass(Class<?> testClass) throws Throwable {
+						try {
+							return new BlockJUnit4ClassRunner(testClass);
+						} catch (Exception exception) {
+							return null;
+						}
+					}
 				};
 			}
 
@@ -301,6 +329,13 @@ public class MassiveCompilationSuite extends Suite {
 			return this.currentMethod.getName();
 		}
 
+		/** Stop massive compilation.
+		 */
+		@SuppressWarnings("static-method")
+		public void doNothing() {
+			throw new CompilationStop();
+		}
+
 		/** Assert that a single type is correctly generated.
 		 * Correctly means that the expected Java code is generated and equals to the expected code.
 		 *
@@ -311,15 +346,10 @@ public class MassiveCompilationSuite extends Suite {
 		public void compileTo(String sarlExpression, String javaExpression) throws Exception {
 			final String packageName = "io.sarl.lang.core.tests." + this.currentMethod.getName(); //$NON-NLS-1$
 			final String inputCode = "package " + packageName + "\n" + sarlExpression; //$NON-NLS-1$ //$NON-NLS-2$
-			final SarlScript script;
-			if (this.resourceSet == null) {
-				script = this.parser.parse(inputCode);
-				this.resourceSet = script.eResource().getResourceSet();
-			} else {
-				script = this.parser.parse(inputCode, this.resourceSet);
-			}
+			final SarlScript script = file(inputCode, false, true);
 			final String qualifiedName = packageName + "." + script.getXtendTypes().get(script.getXtendTypes().size() - 1).getName(); //$NON-NLS-1$
-			this.expectedJava.put(qualifiedName, "package " + packageName + ";\n\n" + javaExpression); //$NON-NLS-1$ //$NON-NLS-2$
+			final String expectedJava = "package " + packageName + ";\n\n" + javaExpression; //$NON-NLS-1$ //$NON-NLS-2$
+			this.expectedJava.put(qualifiedName, expectedJava);
 		}
 
 		/** Assert that a single type is correctly generated.
@@ -353,25 +383,27 @@ public class MassiveCompilationSuite extends Suite {
 		public void compileToUnexpectedCastError(String sarlExpression) throws Exception {
 			final String packageName = "io.sarl.lang.core.tests." + this.currentMethod.getName(); //$NON-NLS-1$
 			final String inputCode = "package " + packageName + "\n" + sarlExpression; //$NON-NLS-1$ //$NON-NLS-2$
-			validate(file(inputCode, true).eResource()).assertError(
+			validate(file(inputCode, true, true).eResource()).assertError(
 					TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 					IssueCodes.INVALID_CAST);
 		}
 
-		private SarlScript file(String code, boolean validate) throws Exception {
+		private SarlScript file(String code, boolean validate, boolean updateResourceSet) throws Exception {
 			SarlScript script;
 			if (this.resourceSet == null) {
 				script = this.parser.parse(code);
+				if (updateResourceSet) {
+					this.resourceSet = script.eResource().getResourceSet();
+				}
 			} else {
 				script = this.parser.parse(code, this.resourceSet);
 			}
+			if (this.resourceSet instanceof XtextResourceSet) {
+				((XtextResourceSet) this.resourceSet).setClasspathURIContext(getClass());
+			}
+			Resource resource = script.eResource();
+			Assert.assertEquals(resource.getErrors().toString(), 0, resource.getErrors().size());
 			if (validate) {
-				Resource resource = script.eResource();
-				ResourceSet resourceSet0 = resource.getResourceSet();
-				if (resourceSet0 instanceof XtextResourceSet) {
-					((XtextResourceSet) resourceSet0).setClasspathURIContext(getClass());
-				}
-				Assert.assertEquals(resource.getErrors().toString(), 0, resource.getErrors().size());
 				Collection<Issue> issues = Collections2.filter(this.validator.validate(resource), new Predicate<Issue>() {
 					@Override
 					public boolean apply(Issue input) {
@@ -387,6 +419,25 @@ public class MassiveCompilationSuite extends Suite {
 			Validator validator = new AbstractSarlTest.XtextValidator(resource, this.validator);
 			this.injector.injectMembers(validator);
 			return validator;
+		}
+
+	}
+
+	/**
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.9
+	 */
+	private static class CompilationStop extends RuntimeException {
+
+		private static final long serialVersionUID = -1262393392111225428L;
+
+		/** Constructor.
+		 */
+		CompilationStop() {
+			//
 		}
 
 	}
@@ -426,15 +477,15 @@ public class MassiveCompilationSuite extends Suite {
 
 		@Override
 		public void run(RunNotifier notifier) {
-	        final Description description = getDescription();
-	        notifier.fireTestStarted(description);
+			final Description description = getDescription();
+			notifier.fireTestStarted(description);
 			try {
 				AbstractSarlTest.assertEquals(this.functionName, this.expected, this.actual);
 			} catch (Throwable exception) {
-		        final Failure failure = new Failure(description, exception);
-		        notifier.fireTestFailure(failure);
+				final Failure failure = new Failure(description, exception);
+				notifier.fireTestFailure(failure);
 			} finally {
-		        notifier.fireTestFinished(description);
+				notifier.fireTestFinished(description);
 			}
 		}
 

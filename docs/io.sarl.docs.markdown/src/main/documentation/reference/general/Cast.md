@@ -26,7 +26,7 @@ In SARL, you can perform the following kinds of conversions:
 
 * **Implicit conversions:** No special syntax is required because the conversion is type safe and no data will be lost.
   Examples include conversions from smaller to larger number types, and conversions from derived classes to base classes.
-* **Explicit conversions (casts):** Explicit conversions require a cast operator. Casting is required when information
+* **Explicit conversions (casts):** Explicit conversions require a casting operator. Casting is required when information
   might be lost in the conversion, or when the conversion might not succeed for other reasons. Typical examples include
   numeric conversion to a type that has less precision or a smaller range, and conversion of a base-class instance to a
   derived class.
@@ -61,54 +61,26 @@ The following table shows the predefined implicit conversions between SARL types
 
 | From          | To                                                                                                       |
 | ------------- | -------------------------------------------------------------------------------------------------------- |
-| array[]       |                                                                                                          |
-| AtomicDouble  |                                                                                                          |
-| AtomicInteger |                                                                                                          |
-| AtomicLong    |                                                                                                          |
-| BigDecimal    |                                                                                                          |
-| BigInteger    |                                                                                                          |
-| boolean       |                                                                                                          |
-| Boolean       |                                                                                                          |
-| byte          |                                                                                                          |
-| Byte          |                                                                                                          |
-| char          |                                                                                                          |
-| Character     |                                                                                                          |
-| double        |                                                                                                          |
-| Double        |                                                                                                          |
-| float         |                                                                                                          |
-| Float         |                                                                                                          |
-| int           |                                                                                                          |
-| Integer       |                                                                                                          |
-| List<?>       |                                                                                                          |
-| long          |                                                                                                          |
-| Long          |                                                                                                          |
-| short         |                                                                                                          |
-| Short         |                                                                                                          |
-| String        |                                                                                                          |
+| T[]           | List<T>                                                                                                  |
+| boolean       | Boolean                                                                                                  |
+| Boolean       | boolean                                                                                                  |
+| byte          | Byte, short, int, long, float, double                                                                    |
+| Byte          | byte, short, int, long, float, double                                                                    |
+| char          | Character, String                                                                                        |
+| Character     | char, String                                                                                             |
+| double        | Double                                                                                                   |
+| Double        | double                                                                                                   |
+| float         | Float, double                                                                                            |
+| Float         | float, double                                                                                            |
+| int           | Integer, long, float, double                                                                             |
+| Integer       | int, long, float, double                                                                                 |
+| List<T>       | T[]                                                                                                      |
+| long          | Long, float, double                                                                                      |
+| Long          | long, float, double                                                                                      |
+| short         | Short, int, long, float, double                                                                          |
+| Short         | short, int, long, float, double                                                                          |
+| String        | char, Character (if string length is 1)                                                                  |
 
-
-
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			class A {
-				def fct(x : byte) : Object {
-					var v1 = x as short
-					var v2 = x as int
-					var v3 = x as long
-					var v4 = x as float
-					var v5 = x as double
-					var v6 = x as Byte
-					var v7 = x as Short
-					var v8 = x as Integer
-					var v9 = x as Long
-					var v10 = x as Float
-					var v11 = x as Double
-					var v12 = x as BigInteger
-					var v13 = x as BigDecimal;
-					null
-				}
-			}
-		[:End:]
 
 
 ## Explicit Conversions
@@ -150,7 +122,7 @@ For object types, an explicit cast is required if you need to convert from a bas
 			class Animal {}
 			class Giraffe extends Animal {}
 			class Test {
-			    static def Main : [:inttype!] {
+			    static def Main : Object {
 			    	[:On]
 			    	// Create a new derived type
 			        var g = new Giraffe
@@ -161,14 +133,15 @@ For object types, an explicit cast is required if you need to convert from a bas
 			        // Explicit conversion is required to cast back to derived type.
 			        // Note: This will compile but will throw an exception at run time if the right-side
 			        // object is not in fact a Giraffe.
-			        var g2 : Giraffe = a as Giraffe
+			        var g2 : Giraffe
+			        g2 = a as Giraffe
 			        [:Off]
 			    }
 			}
 		[:End:]
 
 
-A cast operation between reference types does not change the run-time type of the underlying object; it only changes
+A casting operation between reference types does not change the run-time type of the underlying object; it only changes
 the type of the value that is being used as a reference to that object.
 
 
@@ -176,7 +149,7 @@ the type of the value that is being used as a reference to that object.
 ## Type Conversion Exceptions at Run Time
 
 In some reference type conversions, the compiler cannot determine whether a cast will be valid. It is possible for
-a cast operation that compiles correctly to fail at run time. As shown in the following example, a type cast
+a castinng operation that compiles correctly to fail at run time. As shown in the following example, a type cast
 that fails at run time will cause an [:classcastexception:] to be thrown.
 
 		[:Success:]
@@ -195,7 +168,8 @@ that fails at run time will cause an [:classcastexception:] to be thrown.
 				static def test(a : Animal) {
 					// Cause a [:classcastexception](ClassCastException) at run time
 					// because [:mammaltype!] is not convertible to [:reptiletype].
-					var r : Reptile = a as Reptile
+					var r : Reptile
+					r = a as Reptile
 				}
 			}
 	        [:Off]
@@ -228,23 +202,24 @@ type to which the result of [:exprvar:] is to be converted. The [:instanceofoper
 
 SARL enables programmers to declare conversions on classes or basic types so that classes or basic types can
 be converted to and/or from other classes or basic types. Conversions are associated to the `as`
-[casting operator](./Cast.md). When the compiler cannot proceed an implicit nor explicit casting, it tries
+type casting operator. When the compiler cannot proceed an implicit nor explicit casting, it tries
 to find within the current code scope the definition of a casting operator function.
 Depending on the category of the type to cast to, the name of this casting operator function is different:
 
 * **Object type:** the casting operator function's name must have the prefix `to` followed by the simple name
-  (first letter upper case) of the cast type.
+  (first letter upper case) of the cast type, e.g. `toString`.
 * **Basic type:** the casting operator function's name must start with the name of the basic type (all lower
-  case) following by the post-fix `Value`.
+  case) following by the post-fix `Value`, e.g. `intValue`.
 
-Additionnally, the return type of the casting operator function must be the cast type.
+Additionnally, the return type of the casting operator function must be the cast type, and not a sub-type of the
+type specified as right operand of the casting operator.
 
 A single parameter may be specified or not. It it is specified, it must corresponds to the expression to cast.
-It means that the type of formal parameter is the expected type of the expression.
+It means that the type of the formal parameter is the expected type of the expression.
 If the formal parameter is ommitted, the current object (`this`) is assumed to be converted.
 
-In the following example, the function [:tointegerfct:] if defined for converting a [:typetype:] to [:integertype:].
-When the expression [:castexpr1:] is evaluated by the compiler, the function [:tointegerfct] is discovered and used
+In the following example, the function [:tointegerfct:] is defined for converting a [:typetype:] to [:integertype:].
+When the expression [:castexpr1:] is evaluated by the compiler, the function [:tointegerfct:] is discovered and used
 for proceeding the cast.
  
 		[:Success:]
@@ -255,15 +230,15 @@ for proceeding the cast.
 			class Test {
 			    def main {
 			    	var obj : Type
-			    	var val = [:castexpr1](obj as Integer)
+			    	var value = [:castexpr1](obj as Integer)
 			    }
 			}
 			[:Off]
 		[:End:]
 
-In the second example below, the function [:tointegerfct:] if defined in the same class as the one where the cast operator is
+In the second example below, the function [:tointegerfct:] is defined in the same class as the one where the cast operator is
 defined.
-When the expression [:castexpr1:] is evaluated by the compiler, the function [:tointegerfct] is discovered and used
+When the expression [:castexpr1:] is evaluated by the compiler, the function [:tointegerfct:] is discovered and used
 for proceeding the cast.
  
 		[:Success:]
@@ -273,7 +248,7 @@ for proceeding the cast.
 			class Test {
 			    def main {
 			    	var obj : Type
-			    	var val = obj as Integer
+			    	var value = obj as Integer
 			    }
 				def [:tointegerfct!](v : Type) : [:integertype](Integer) { 0 }
 			}
@@ -296,7 +271,7 @@ The declarations of the [:tointegerfct:] are replaced by declarations of [:intva
 			class Test {
 			    def main {
 			    	var obj : Type
-			    	var val = obj as int
+			    	var value = obj as int
 			    }
 			}
 			[:Off]
@@ -310,16 +285,12 @@ The declarations of the [:tointegerfct:] are replaced by declarations of [:intva
 			class Test {
 			    def main {
 			    	var obj : Type
-			    	var val r = obj as int
+			    	var value = obj as int
 			    }
 				def [:intvaluefct!](v : Type) : [:inttype!] { 0 }
 			}
 	    	[:Off]
 		[:End:]
-
-## Implicit Conversions
-
-Coming soon.
 
 
 

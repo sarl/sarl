@@ -76,21 +76,17 @@ import org.eclipse.xtext.xbase.XAssignment;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
 import org.eclipse.xtext.xbase.XCastedExpression;
+import org.eclipse.xtext.xbase.XClosure;
 import org.eclipse.xtext.xbase.XCollectionLiteral;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.XMemberFeatureCall;
 import org.eclipse.xtext.xbase.XNullLiteral;
-import org.eclipse.xtext.xbase.XClosure;
-import org.eclipse.xtext.xbase.XExpression;
-import org.eclipse.xtext.xbase.XFeatureCall;
-import org.eclipse.xtext.xbase.XMemberFeatureCall;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XSetLiteral;
 import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.XTypeLiteral;
 import org.eclipse.xtext.xbase.XVariableDeclaration;
-import org.eclipse.xtext.xbase.XbaseFactory;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.compiler.IGeneratorConfigProvider;
 import org.eclipse.xtext.xbase.compiler.Later;
@@ -256,22 +252,7 @@ public class SarlCompiler extends XtendCompiler {
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	protected synchronized void appendInlineFeatureCall(XAbstractFeatureCall call, ITreeAppendable target) {
 		// Overridden for fixing the @Inline behavior
-		appendInlineFeatureCall(call, call, target);
-	}
-
-	/** Append the inline version for the given call.
-	 *
-	 * <p>This function supports the specific semantic of the inline expression that is defined into the SARL specification.
-	 *
-	 * @param featureCall the feature to call.
-	 * @param context the context for finding types.
-	 * @param target the receiver.
-	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
-	protected synchronized void appendInlineFeatureCall(XAbstractFeatureCall featureCall,
-			EObject context, ITreeAppendable target) {
-		// Overridden for fixing the @Inline behavior
-		final JvmAnnotationReference inlineAnnotation = this.expressionHelper.findInlineAnnotation(featureCall);
+		final JvmAnnotationReference inlineAnnotation = this.expressionHelper.findInlineAnnotation(call);
 
 		String formatString = null;
 		final List<JvmTypeReference> importedTypes = Lists.newArrayListWithCapacity(2);
@@ -298,10 +279,10 @@ public class SarlCompiler extends XtendCompiler {
 			throw new IllegalStateException();
 		}
 
-		final IResolvedTypes resolvedTypes = this.batchTypeResolver.resolveTypes(context);
+		final IResolvedTypes resolvedTypes = this.batchTypeResolver.resolveTypes(call);
 
-		final List<XExpression> arguments = getActualArguments(featureCall);
-		final JvmIdentifiableElement calledFeature = featureCall.getFeature();
+		final List<XExpression> arguments = getActualArguments(call);
+		final JvmIdentifiableElement calledFeature = call.getFeature();
 		int numberVariadicParameter = 0;
 		final int numberFormalParameters;
 		JvmFormalParameter formalVariadicParameter = null;
@@ -333,7 +314,7 @@ public class SarlCompiler extends XtendCompiler {
 				final int index = Integer.parseInt(indexOrDollar) - 1;
 				// Treat the $0 parameter in the inline expression
 				if (index < 0) {
-					final boolean hasReceiver = appendReceiver(featureCall, target, true);
+					final boolean hasReceiver = appendReceiver(call, target, true);
 					if (hasReceiver) {
 						target.append("."); //$NON-NLS-1$
 					}
@@ -349,13 +330,13 @@ public class SarlCompiler extends XtendCompiler {
 							appendArgument(argument, target, true);
 						}
 					} else if (index > numberFormalParametersImports) {
-						final List<LightweightTypeReference> typeArguments = resolvedTypes.getActualTypeArguments(featureCall);
+						final List<LightweightTypeReference> typeArguments = resolvedTypes.getActualTypeArguments(call);
 						final LightweightTypeReference typeArgument = typeArguments.get(index - numberFormalParametersImports - 1);
-						serialize(typeArgument.getRawTypeReference().toTypeReference(), context, target);
+						serialize(typeArgument.getRawTypeReference().toTypeReference(), call, target);
 					} else if (index >= numberFormalParameters && index < numberFormalParametersImports) {
-						serialize(importedTypes.get(index - numberFormalParameters), context, target);
+						serialize(importedTypes.get(index - numberFormalParameters), call, target);
 					} else if (index == numberFormalParametersImports) {
-						appendTypeArguments(featureCall, target);
+						appendTypeArguments(call, target);
 					} else if (index < arguments.size()) {
 						final XExpression argument = arguments.get(index);
 						appendArgument(argument, target, index > 0);
@@ -370,6 +351,133 @@ public class SarlCompiler extends XtendCompiler {
 		}
 		if (prevEnd != formatString.length()) {
 			target.append(formatString.substring(prevEnd));
+		}
+	}
+
+	/** Append the inline version for the given call.
+	 *
+	 * <p>This function supports the specific semantic of the inline expression that is defined into the SARL specification.
+	 *
+	 * @param inlineAnnotation the inline annotation.
+	 * @param calledFeature the called feature.
+	 * @param receiver the receiver of the call: {@code getActualReceiver(call)}.
+	 * @param arguments the call's argument: {@code getActualArguments(call)}.
+	 * @param context the context for finding types.
+	 * @param appendable the receiver.
+	 */
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity", "checkstyle:nestedifdepth"})
+	private void appendInlineFeatureCallForCastedExpression(
+			JvmAnnotationReference inlineAnnotation,
+			JvmIdentifiableElement calledFeature,
+			XExpression receiver,
+			List<XExpression> arguments,
+			EObject context,
+			ITreeAppendable appendable) {
+		// Overridden for fixing the @Inline behavior
+		String formatString = null;
+		final List<JvmTypeReference> importedTypes = Lists.newArrayListWithCapacity(2);
+		for (final JvmAnnotationValue annotationValue: inlineAnnotation.getValues()) {
+			final String valueName = annotationValue.getValueName();
+			if (Strings.isEmpty(valueName)) {
+				// Special case: the annotation value as no associated operation.
+				// If it appends, we could assumes that the operation is "value()"
+				if (!Strings.isEmpty(formatString)) {
+					throw new IllegalStateException();
+				}
+				formatString = getAnnotationStringValue(annotationValue);
+			} else if (INLINE_VALUE_NAME.equals(valueName)) {
+				if (!Strings.isEmpty(formatString)) {
+					throw new IllegalStateException();
+				}
+				formatString = getAnnotationStringValue(annotationValue);
+			} else if (INLINE_IMPORTED_NAME.equals(valueName)) {
+				importedTypes.addAll(getAnnotationTypeValue(annotationValue));
+			}
+		}
+
+		if (formatString == null) {
+			throw new IllegalStateException();
+		}
+
+		int numberVariadicParameter = 0;
+		final int numberFormalParameters;
+		JvmFormalParameter formalVariadicParameter = null;
+		if (calledFeature instanceof JvmExecutable) {
+			final JvmExecutable jvmexec = (JvmExecutable) calledFeature;
+			numberFormalParameters = jvmexec.getParameters().size();
+			if (numberFormalParameters > 0) {
+				formalVariadicParameter = jvmexec.getParameters().get(numberFormalParameters - 1);
+				if (jvmexec.isVarArgs()) {
+					numberVariadicParameter = 1;
+				}
+			}
+		} else {
+			numberFormalParameters = arguments.size();
+		}
+		final Matcher matcher = INLINE_VARIABLE_PATTERN.matcher(formatString);
+		int prevEnd = 0;
+
+
+		while (matcher.find()) {
+			final int start = matcher.start();
+			if (start != prevEnd) {
+				appendable.append(formatString.substring(prevEnd, start));
+			}
+			final String indexOrDollar = matcher.group(1);
+			if (INLINE_VARIABLE_PREFIX.equals(indexOrDollar)) {
+				appendable.append(INLINE_VARIABLE_PREFIX);
+			} else {
+				final int index = Integer.parseInt(indexOrDollar) - 1;
+				// Treat the $0 parameter in the inline expression
+				if (index < 0) {
+					boolean hasReceiver = true;
+					if (receiver != null) {
+						internalToJavaExpression(receiver, appendable);
+						if (receiver instanceof XAbstractFeatureCall) {
+							if (((XAbstractFeatureCall) receiver).getFeature() instanceof JvmType) {
+								final String referenceName = getReferenceName(receiver, appendable);
+								if (referenceName != null && referenceName.length() == 0) {
+									hasReceiver = false;
+								}
+							}
+						}
+					} else {
+						hasReceiver = false;
+					}
+					if (hasReceiver) {
+						appendable.append("."); //$NON-NLS-1$
+					}
+				} else {
+					final int numberImports = importedTypes.size();
+					final int numberFormalParametersImports = numberFormalParameters + numberImports;
+					if (numberVariadicParameter != 0 && index < arguments.size() && index == (numberFormalParameters - 1)) {
+						XExpression argument = arguments.get(index);
+						appendArgument(argument, appendable, index > 0);
+						for (int i = index + 1; i < arguments.size(); ++i) {
+							appendable.append(", "); //$NON-NLS-1$
+							argument = arguments.get(i);
+							appendArgument(argument, appendable, true);
+						}
+					} else if (index > numberFormalParametersImports) {
+						throw new IllegalStateException();
+					} else if (index >= numberFormalParameters && index < numberFormalParametersImports) {
+						serialize(importedTypes.get(index - numberFormalParameters), context, appendable);
+					} else if (index == numberFormalParametersImports) {
+						throw new IllegalStateException();
+					} else if (index < arguments.size()) {
+						final XExpression argument = arguments.get(index);
+						appendArgument(argument, appendable, index > 0);
+					} else if (formalVariadicParameter != null) {
+						appendNullValue(formalVariadicParameter.getParameterType(), calledFeature, appendable);
+					} else {
+						throw new IllegalStateException();
+					}
+				}
+			}
+			prevEnd = matcher.end();
+		}
+		if (prevEnd != formatString.length()) {
+			appendable.append(formatString.substring(prevEnd));
 		}
 	}
 
@@ -603,13 +711,18 @@ public class SarlCompiler extends XtendCompiler {
 	@Override
 	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:nestedifdepth"})
 	protected void _toJavaExpression(XCastedExpression expr, ITreeAppendable appendable) {
-		final LightweightTypeReference targetType = toLightweight(getType(expr.getTarget()), expr);
-		final LightweightTypeReference expectedType = toLightweight(expr.getType(), expr);
+		final LightweightTypeReference fromType = toLightweight(getType(expr.getTarget()), expr);
+		final LightweightTypeReference toType = toLightweight(expr.getType(), expr);
 		if (expr instanceof SarlCastedExpression) {
 			final SarlCastedExpression cast = (SarlCastedExpression) expr;
 			final JvmOperation operation = cast.getFeature();
 			if (operation != null) {
-				final boolean hasNullInputTest = !targetType.isPrimitive() && !targetType.isPrimitiveVoid()
+
+				/*if ("A0".equals(fromType.getSimpleName()) && "String".equals(toType.getSimpleName())) {
+					System.out.println(fromType.getHumanReadableName() + " -> " + toType.getHumanReadableName());
+				}*/
+
+				final boolean hasNullInputTest = !fromType.isPrimitive() && !fromType.isPrimitiveVoid()
 						&& !isLiteral(expr.getTarget());
 
 				final XExpression receiver = cast.getReceiver();
@@ -617,35 +730,29 @@ public class SarlCompiler extends XtendCompiler {
 
 				if (hasNullInputTest) {
 					appendable.append("("); //$NON-NLS-1$
-					internalToConvertedExpression(expr.getTarget(), appendable, targetType);
+					internalToConvertedExpression(expr.getTarget(), appendable, fromType);
 					appendable.append(" == null ? "); //$NON-NLS-1$
-					appendDefaultLiteral(appendable, expectedType);
+					appendDefaultLiteral(appendable, toType);
 					appendable.append(" : "); //$NON-NLS-1$
 				}
 
 				final Later callGeneration = it -> {
 					final JvmAnnotationReference inlineAnnotation = this.expressionHelper.findInlineAnnotation(operation);
 					if (inlineAnnotation != null) {
-						final XAbstractFeatureCall call;
+						final XExpression concreteReceiver;
 						if (operation.isStatic()) {
-							final XFeatureCall mcall = XbaseFactory.eINSTANCE.createXFeatureCall();
-							mcall.setFeature(operation);
-							mcall.getActualArguments().add(EcoreUtil.copy(argument));
-							mcall.eContainer();
-							call = mcall;
+							concreteReceiver = null;
 						} else {
-							final XMemberFeatureCall mcall = XbaseFactory.eINSTANCE.createXMemberFeatureCall();
-							mcall.setFeature(operation);
 							if (operation.getParameters().isEmpty()) {
-								mcall.setMemberCallTarget(EcoreUtil.copy(argument));
-								call = mcall;
+								concreteReceiver = argument;
 							} else {
-								mcall.setMemberCallTarget(receiver);
-								mcall.getActualArguments().add(EcoreUtil.copy(argument));
-								call = mcall;
+								concreteReceiver = receiver;
 							}
 						}
-						appendInlineFeatureCall(call, cast, appendable);
+						appendInlineFeatureCallForCastedExpression(inlineAnnotation, operation,
+								concreteReceiver,
+								Collections.singletonList(argument),
+								cast, appendable);
 					} else {
 						if (operation.isStatic()) {
 							final JvmDeclaredType operationContainer = operation.getDeclaringType();
@@ -656,7 +763,7 @@ public class SarlCompiler extends XtendCompiler {
 						} else if (receiver != null) {
 							final LightweightTypeReference receiverType;
 							if (receiver == expr.getTarget()) {
-								receiverType = targetType;
+								receiverType = fromType;
 							} else {
 								receiverType = toLightweight(getType(receiver), expr);
 							}
@@ -683,7 +790,7 @@ public class SarlCompiler extends XtendCompiler {
 
 						if (argument != null) {
 							if (argument == expr.getTarget()) {
-								internalToConvertedExpression(expr.getTarget(), it, targetType);
+								internalToConvertedExpression(expr.getTarget(), it, fromType);
 							} else {
 								appendArgument(argument, it, false);
 							}
@@ -694,7 +801,7 @@ public class SarlCompiler extends XtendCompiler {
 				};
 
 				final LightweightTypeReference concreteType = toLightweight(operation.getReturnType(), expr);
-				doConversion(expectedType, concreteType, appendable, expr, callGeneration);
+				doConversion(toType, concreteType, appendable, expr, callGeneration);
 
 				if (hasNullInputTest) {
 					appendable.append(")"); //$NON-NLS-1$
@@ -704,8 +811,8 @@ public class SarlCompiler extends XtendCompiler {
 			}
 		}
 		// Generate the standard Java cast operator
-		if (expectedType.isAssignableFrom(targetType)) {
-			internalToConvertedExpression(expr.getTarget(), appendable, expectedType);
+		if (toType.isAssignableFrom(fromType)) {
+			internalToConvertedExpression(expr.getTarget(), appendable, toType);
 		} else {
 			super._toJavaExpression(expr, appendable);
 		}
@@ -1203,7 +1310,6 @@ public class SarlCompiler extends XtendCompiler {
 		// the implemented interface is serializable. In this case, it will avoid issue for serialization and
 		// deserialization of  the closure.
 		return !typeRef.isSubtypeOf(Serializable.class) && super.canCompileToJavaLambda(closure, typeRef, operation);
->>>>>>> 5e0114f6c8efe96683d1e41a974d1265d7d9ead2
 	}
 
 }

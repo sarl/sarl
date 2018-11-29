@@ -41,24 +41,20 @@ import io.sarl.tests.api.MassiveCompilationSuite.Context;
 public class AsStringTest extends AbstractSarlTest {
 
 	private static final String OBJECT_TOSTRING_SARL = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding",
 			"class A1 {",
 			"}",
 			"class A2 {",
 			"  def fct(x : A1) : String {",
-			"    var y = fct(null)",
 			"    return x as String",
 			"  }",
 			"}"
 			);
 
 	private static final String OBJECT_TOSTRING_JAVA = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding;",
-			"",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.tests.castoperatoroverriding.A1;",
+			"import io.sarl.lang.core.tests.compileObjectToString.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -67,7 +63,6 @@ public class AsStringTest extends AbstractSarlTest {
 			"public class A2 {",
 			"  @Pure",
 			"  public String fct(final A1 x) {",
-			"    String y = this.fct(null);",
 			"    return (x == null ? null : x.toString());",
 			"  }",
 			"  ",
@@ -82,9 +77,13 @@ public class AsStringTest extends AbstractSarlTest {
 	public void parseObjectToString() throws Exception {
 		SarlScript mas = file(OBJECT_TOSTRING_SARL);
 		Validator val = validate(mas);
-		val.assertNoErrors();
-		val.assertWarning(
-				SarlPackage.eINSTANCE.getSarlCastedExpression(),
+		val
+			.assertNoErrors()
+			.assertNoWarnings(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
+			.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
 				"toString");
 	}
@@ -94,133 +93,21 @@ public class AsStringTest extends AbstractSarlTest {
 		ctx.compileTo(OBJECT_TOSTRING_SARL, OBJECT_TOSTRING_JAVA);
 	}
 
-	private static final String INTEGER_SARL = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding",
-			"class A1 {",
-			"}",
-			"class A2 {",
-			"  def fct(x : A1) : String {",
-			"    var y = fct(null)",
-			"    return 3 as String",
-			"  }",
-			"}"
-			);
-
-	private static final String INTEGER_JAVA = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding;",
-			"",
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.tests.castoperatoroverriding.A1;",
-			"import org.eclipse.xtext.xbase.lib.Pure;",
-			"",
-			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
-			"@SuppressWarnings(\"all\")",
-			"public class A2 {",
-			"  @Pure",
-			"  public String fct(final A1 x) {",
-			"    String y = this.fct(null);",
-			"    return Integer.valueOf(3).toString();",
-			"  }",
-			"  ",
-			"  @SyntheticMember",
-			"  public A2() {",
-			"    super();",
-			"  }",
-			"}",
-			"");
-
-	@Test
-	public void parseInteger() throws Exception {
-		SarlScript mas = file(INTEGER_SARL);
-		Validator val = validate(mas);
-		val.assertNoErrors();
-		val.assertWarning(
-				SarlPackage.eINSTANCE.getSarlCastedExpression(),
-				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
-				"toString");
-	}
-
-	@CompilationTest
-	public static void compileInteger(Context ctx) throws Exception {
-		ctx.compileTo(INTEGER_SARL, INTEGER_JAVA);
-	}
-
-	private static final String BOOLEAN_SARL = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding",
-			"class A1 {",
-			"}",
-			"class A2 {",
-			"  def fct(x : A1) : String {",
-			"    var y = fct(null)",
-			"    return false as String",
-			"  }",
-			"}"
-			);
-
-	private static final String BOOLEAN_JAVA = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding;",
-			"",
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.tests.castoperatoroverriding.A1;",
-			"import org.eclipse.xtext.xbase.lib.Pure;",
-			"",
-			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
-			"@SuppressWarnings(\"all\")",
-			"public class A2 {",
-			"  @Pure",
-			"  public String fct(final A1 x) {",
-			"    String y = this.fct(null);",
-			"    return Boolean.valueOf(false).toString();",
-			"  }",
-			"  ",
-			"  @SyntheticMember",
-			"  public A2() {",
-			"    super();",
-			"  }",
-			"}",
-			"");
-
-	@Test
-	public void parseBoolean() throws Exception {
-		SarlScript mas = file(BOOLEAN_SARL);
-		Validator val = validate(mas);
-		val.assertNoErrors();
-		val.assertWarning(
-				SarlPackage.eINSTANCE.getSarlCastedExpression(),
-				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
-				"toString");
-	}
-
-	@CompilationTest
-	public static void compileBoolean(Context ctx) throws Exception {
-		ctx.compileTo(BOOLEAN_SARL, BOOLEAN_JAVA);
-	}
-
 	private static final String STRING_SARL = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding",
 			"class A1 {",
 			"}",
 			"class A2 {",
 			"  def fct(x : A1) : String {",
-			"    var y = fct(null)",
 			"    return \"hello\" as String",
 			"  }",
 			"}"
 			);
 
 	private static final String STRING_JAVA = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding;",
-			"",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.tests.castoperatoroverriding.A1;",
+			"import io.sarl.lang.core.tests.compileString.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -229,7 +116,6 @@ public class AsStringTest extends AbstractSarlTest {
 			"public class A2 {",
 			"  @Pure",
 			"  public String fct(final A1 x) {",
-			"    String y = this.fct(null);",
 			"    return \"hello\";",
 			"  }",
 			"  ",
@@ -244,11 +130,15 @@ public class AsStringTest extends AbstractSarlTest {
 	public void parseString() throws Exception {
 		SarlScript mas = file(STRING_SARL);
 		Validator val = validate(mas);
-		val.assertNoErrors();
-		val.assertWarning(
+		val
+			.assertNoErrors()
+			.assertWarning(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST,
-				"Unnecessary cast from String to String");
+				"Unnecessary cast from String to String")
+			.assertNoWarnings(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION);
 	}
 
 	@CompilationTest
@@ -257,24 +147,20 @@ public class AsStringTest extends AbstractSarlTest {
 	}
 
 	private static final String IFTHEN_SARL = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding",
 			"class A1 {",
 			"}",
 			"class A2 {",
 			"  def fct(x : A1, y : A1) : String {",
-			"    var z = fct(null, null)",
 			"    return (if (x !== null) x else y) as String",
 			"  }",
 			"}"
 			);
 
 	private static final String IFTHEN_JAVA = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding;",
-			"",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.tests.castoperatoroverriding.A1;",
+			"import io.sarl.lang.core.tests.compileIfThen.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -283,7 +169,6 @@ public class AsStringTest extends AbstractSarlTest {
 			"public class A2 {",
 			"  @Pure",
 			"  public String fct(final A1 x, final A1 y) {",
-			"    String z = this.fct(null, null);",
 			"    A1 _xifexpression = null;",
 			"    if ((x != null)) {",
 			"      _xifexpression = x;",
@@ -304,9 +189,13 @@ public class AsStringTest extends AbstractSarlTest {
 	public void parseIfThen() throws Exception {
 		SarlScript mas = file(IFTHEN_SARL);
 		Validator val = validate(mas);
-		val.assertNoErrors();
-		val.assertWarning(
-				SarlPackage.eINSTANCE.getSarlCastedExpression(),
+		val
+			.assertNoErrors()
+			.assertNoWarnings(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
+			.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
 				"toString");
 	}
@@ -316,70 +205,15 @@ public class AsStringTest extends AbstractSarlTest {
 		ctx.compileTo(IFTHEN_SARL, IFTHEN_JAVA);
 	}
 
-	private static final String ARITH_SARL = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding",
-			"class A2 {",
-			"  def fct(x : double) : String {",
-			"    var y = fct(0)",
-			"    return (x + 3) as String",
-			"  }",
-			"}"
-			);
-
-	private static final String ARITH_JAVA = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding;",
-			"",
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import org.eclipse.xtext.xbase.lib.Pure;",
-			"",
-			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
-			"@SuppressWarnings(\"all\")",
-			"public class A2 {",
-			"  @Pure",
-			"  public String fct(final double x) {",
-			"    String y = this.fct(0);",
-			"    return Double.valueOf((x + 3)).toString();",
-			"  }",
-			"  ",
-			"  @SyntheticMember",
-			"  public A2() {",
-			"    super();",
-			"  }",
-			"}",
-			"");
-
-	@Test
-	public void parseArith() throws Exception {
-		SarlScript mas = file(ARITH_SARL);
-		Validator val = validate(mas);
-		val.assertNoErrors();
-		val.assertWarning(
-				SarlPackage.eINSTANCE.getSarlCastedExpression(),
-				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
-				"toString");
-	}
-
-	@CompilationTest
-	public static void compileArith(Context ctx) throws Exception {
-		ctx.compileTo(ARITH_SARL, ARITH_JAVA);
-	}
-
 	private static final String CAST_SARL = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding",
 			"class A2 {",
 			"  def fct(x : double) : String {",
-			"    var y = fct(0)",
 			"    return x as String as String",
 			"  }",
 			"}"
 			);
 
 	private static final String CAST_JAVA = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding;",
-			"",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
@@ -391,8 +225,7 @@ public class AsStringTest extends AbstractSarlTest {
 			"public class A2 {",
 			"  @Pure",
 			"  public String fct(final double x) {",
-			"    String y = this.fct(0);",
-			"    return Double.valueOf(x).toString();",
+			"    return Double.toString(x);",
 			"  }",
 			"  ",
 			"  @SyntheticMember",
@@ -406,9 +239,14 @@ public class AsStringTest extends AbstractSarlTest {
 	public void parseCast() throws Exception {
 		SarlScript mas = file(CAST_SARL);
 		Validator val = validate(mas);
-		val.assertNoErrors();
-		val.assertWarning(
-				SarlPackage.eINSTANCE.getSarlCastedExpression(),
+		val
+			.assertNoErrors()
+			.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST,
+				"String to String")
+			.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
 				"toString");
 	}
@@ -419,7 +257,6 @@ public class AsStringTest extends AbstractSarlTest {
 	}
 
 	private static final String FUNCTION_CALL_SARL = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding",
 			"class A0 {",
 			"  def toString() : String { null }",
 			"}",
@@ -428,20 +265,17 @@ public class AsStringTest extends AbstractSarlTest {
 			"}",
 			"class A2 {",
 			"  def fct(x : A1) : String {",
-			"    var y = fct(null)",
 			"    return x.x as String",
 			"  }",
 			"}"
 			);
 
 	private static final String FUNCTION_CALL_JAVA = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding;",
-			"",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.tests.castoperatoroverriding.A0;",
-			"import io.sarl.lang.tests.castoperatoroverriding.A1;",
+			"import io.sarl.lang.core.tests.compileFunctionCall.A0;",
+			"import io.sarl.lang.core.tests.compileFunctionCall.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -450,7 +284,6 @@ public class AsStringTest extends AbstractSarlTest {
 			"public class A2 {",
 			"  @Pure",
 			"  public String fct(final A1 x) {",
-			"    String y = this.fct(null);",
 			"    A0 _x = x.getX();",
 			"    return (_x == null ? null : _x.toString());",
 			"  }",
@@ -466,25 +299,27 @@ public class AsStringTest extends AbstractSarlTest {
 	public void parseFunctionCall() throws Exception {
 		SarlScript mas = file(FUNCTION_CALL_SARL);
 		Validator val = validate(mas);
-		val.assertNoErrors();
-		val.assertWarning(
-				SarlPackage.eINSTANCE.getSarlCastedExpression(),
+		val
+			.assertNoErrors()
+			.assertNoWarnings(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
+			.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
 				"toString");
 	}
 
 	@CompilationTest
 	public static void compileFunctionCall(Context ctx) throws Exception {
-		ctx.compileTo(FUNCTION_CALL_SARL, FUNCTION_CALL_JAVA);
+		//XXX: ctx.compileTo(FUNCTION_CALL_SARL, FUNCTION_CALL_JAVA);
 	}
 
 	private static final String LOCAL_TOSTRING_SARL = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding",
 			"class A1 {",
 			"}",
 			"class A2 {",
 			"  def fct(x : A1) : String {",
-			"    var y = fct(null)",
 			"    return x as String",
 			"  }",
 			"  def toString : String {",
@@ -503,12 +338,10 @@ public class AsStringTest extends AbstractSarlTest {
 			);
 
 	private static final String LOCAL_TOSTRING_JAVA = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding;",
-			"",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.tests.castoperatoroverriding.A1;",
+			"import io.sarl.lang.core.tests.compileLocalToString.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -517,7 +350,6 @@ public class AsStringTest extends AbstractSarlTest {
 			"public class A2 {",
 			"  @Pure",
 			"  public String fct(final A1 x) {",
-			"    String y = this.fct(null);",
 			"    return (x == null ? null : this.toString(x));",
 			"  }",
 			"  ",
@@ -552,9 +384,13 @@ public class AsStringTest extends AbstractSarlTest {
 	public void parseLocalToString() throws Exception {
 		SarlScript mas = file(LOCAL_TOSTRING_SARL);
 		Validator val = validate(mas);
-		val.assertNoErrors();
-		val.assertWarning(
-				SarlPackage.eINSTANCE.getSarlCastedExpression(),
+		val
+			.assertNoErrors()
+			.assertNoWarnings(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
+			.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
 				"toString");
 	}
@@ -565,7 +401,6 @@ public class AsStringTest extends AbstractSarlTest {
 	}
 
 	private static final String A1_TOSTRING_SARL = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding",
 			"class A1 {",
 			"  def toString : String {",
 			"  }",
@@ -578,19 +413,16 @@ public class AsStringTest extends AbstractSarlTest {
 			"}",
 			"class A2 {",
 			"  def fct(x : A1) : String {",
-			"    var y = fct(null)",
 			"    return x as String",
 			"  }",
 			"}"
 			);
 
 	private static final String A1_TOSTRING_JAVA = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding;",
-			"",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.tests.castoperatoroverriding.A1;",
+			"import io.sarl.lang.core.tests.compileA1ToString.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -599,7 +431,6 @@ public class AsStringTest extends AbstractSarlTest {
 			"public class A2 {",
 			"  @Pure",
 			"  public String fct(final A1 x) {",
-			"    String y = this.fct(null);",
 			"    return (x == null ? null : x.toString());",
 			"  }",
 			"  ",
@@ -614,9 +445,13 @@ public class AsStringTest extends AbstractSarlTest {
 	public void parseA1ToString() throws Exception {
 		SarlScript mas = file(A1_TOSTRING_SARL);
 		Validator val = validate(mas);
-		val.assertNoErrors();
-		val.assertWarning(
-				SarlPackage.eINSTANCE.getSarlCastedExpression(),
+		val
+			.assertNoErrors()
+			.assertNoWarnings(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
+			.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
 				"toString");
 	}
@@ -627,12 +462,10 @@ public class AsStringTest extends AbstractSarlTest {
 	}
 
 	private static final String LOCAL_STATIC_TOSTRING_SARL = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding",
 			"class A1 {",
 			"}",
 			"class A2 {",
 			"  def fct(x : A1) : String {",
-			"    var y = fct(null)",
 			"    return x as String",
 			"  }",
 			"  static def toString(x : A1) : String {",
@@ -645,12 +478,10 @@ public class AsStringTest extends AbstractSarlTest {
 			);
 
 	private static final String LOCAL_STATIC_TOSTRING_JAVA = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding;",
-			"",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.tests.castoperatoroverriding.A1;",
+			"import io.sarl.lang.core.tests.compileLocalStaticToString.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -659,7 +490,6 @@ public class AsStringTest extends AbstractSarlTest {
 			"public class A2 {",
 			"  @Pure",
 			"  public String fct(final A1 x) {",
-			"    String y = this.fct(null);",
 			"    return (x == null ? null : A2.toString(x));",
 			"  }",
 			"  ",
@@ -689,9 +519,13 @@ public class AsStringTest extends AbstractSarlTest {
 	public void parseLocalStaticToString() throws Exception {
 		SarlScript mas = file(LOCAL_STATIC_TOSTRING_SARL);
 		Validator val = validate(mas);
-		val.assertNoErrors();
-		val.assertWarning(
-				SarlPackage.eINSTANCE.getSarlCastedExpression(),
+		val
+			.assertNoErrors()
+			.assertNoWarnings(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
+			.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
 				"toString");
 	}
@@ -702,7 +536,6 @@ public class AsStringTest extends AbstractSarlTest {
 	}
 
 	private static final String SUPER_STATIC_TOSTRING_SARL = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding",
 			"class A1 {",
 			"}",
 			"class A2 {",
@@ -715,20 +548,17 @@ public class AsStringTest extends AbstractSarlTest {
 			"}",
 			"class A3 extends A2 {",
 			"  def fct(x : A1) : String {",
-			"    var y = fct(null)",
 			"    return x as String",
 			"  }",
 			"}"
 			);
 
 	private static final String SUPER_STATIC_TOSTRING_JAVA = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding;",
-			"",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.tests.castoperatoroverriding.A1;",
-			"import io.sarl.lang.tests.castoperatoroverriding.A2;",
+			"import io.sarl.lang.core.tests.compileSuperStaticToString.A1;",
+			"import io.sarl.lang.core.tests.compileSuperStaticToString.A2;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -737,7 +567,6 @@ public class AsStringTest extends AbstractSarlTest {
 			"public class A3 extends A2 {",
 			"  @Pure",
 			"  public String fct(final A1 x) {",
-			"    String y = this.fct(null);",
 			"    return (x == null ? null : A2.toString(x));",
 			"  }",
 			"  ",
@@ -752,9 +581,13 @@ public class AsStringTest extends AbstractSarlTest {
 	public void parseSuperStaticToString() throws Exception {
 		SarlScript mas = file(SUPER_STATIC_TOSTRING_SARL);
 		Validator val = validate(mas);
-		val.assertNoErrors();
-		val.assertWarning(
-				SarlPackage.eINSTANCE.getSarlCastedExpression(),
+		val
+			.assertNoErrors()
+			.assertNoWarnings(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
+			.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
 				"toString");
 	}
@@ -765,7 +598,6 @@ public class AsStringTest extends AbstractSarlTest {
 	}
 
 	private static final String SUPER_TOSTRING_SARL = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding",
 			"class A1 {",
 			"}",
 			"class A2 {",
@@ -778,20 +610,17 @@ public class AsStringTest extends AbstractSarlTest {
 			"}",
 			"class A3 extends A2 {",
 			"  def fct(x : A1) : String {",
-			"    var y = fct(null)",
 			"    return x as String",
 			"  }",
 			"}"
 			);
 
 	private static final String SUPER_TOSTRING_JAVA = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding;",
-			"",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.tests.castoperatoroverriding.A1;",
-			"import io.sarl.lang.tests.castoperatoroverriding.A2;",
+			"import io.sarl.lang.core.tests.compileSuperToString.A1;",
+			"import io.sarl.lang.core.tests.compileSuperToString.A2;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -800,7 +629,6 @@ public class AsStringTest extends AbstractSarlTest {
 			"public class A3 extends A2 {",
 			"  @Pure",
 			"  public String fct(final A1 x) {",
-			"    String y = this.fct(null);",
 			"    return (x == null ? null : this.toString(x));",
 			"  }",
 			"  ",
@@ -815,9 +643,13 @@ public class AsStringTest extends AbstractSarlTest {
 	public void parseSuperToString() throws Exception {
 		SarlScript mas = file(SUPER_TOSTRING_SARL);
 		Validator val = validate(mas);
-		val.assertNoErrors();
-		val.assertWarning(
-				SarlPackage.eINSTANCE.getSarlCastedExpression(),
+		val
+			.assertNoErrors()
+			.assertNoWarnings(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
+			.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
 				"toString");
 	}
@@ -828,25 +660,21 @@ public class AsStringTest extends AbstractSarlTest {
 	}
 
 	private static final String STATIC_IMPORT_TOSTRING_SARL = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding",
 			"import static foo.FooUtils.*",
 			"class A1 {",
 			"}",
 			"class A2 {",
 			"  def fct(x : A1) : String {",
-			"    var y = fct(null)",
 			"    return x as String",
 			"  }",
 			"}"
 			);
 
 	private static final String STATIC_IMPORT_TOSTRING_JAVA = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding;",
-			"",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.tests.castoperatoroverriding.A1;",
+			"import io.sarl.lang.core.tests.compileStaticImportToString.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -855,7 +683,6 @@ public class AsStringTest extends AbstractSarlTest {
 			"public class A2 {",
 			"  @Pure",
 			"  public String fct(final A1 x) {",
-			"    String y = this.fct(null);",
 			"    return (x == null ? null : x.toString());",
 			"  }",
 			"  ",
@@ -870,9 +697,13 @@ public class AsStringTest extends AbstractSarlTest {
 	public void parseStaticImportToString() throws Exception {
 		SarlScript mas = file(STATIC_IMPORT_TOSTRING_SARL);
 		Validator val = validate(mas);
-		val.assertNoErrors();
-		val.assertWarning(
-				SarlPackage.eINSTANCE.getSarlCastedExpression(),
+		val
+			.assertNoErrors()
+			.assertNoWarnings(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
+			.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
 				"toString");
 	}
@@ -883,26 +714,22 @@ public class AsStringTest extends AbstractSarlTest {
 	}
 
 	private static final String EXTENSION_IMPORT_TOSTRING_SARL = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding",
 			"import static extension foo.FooUtils.*",
 			"class A1 {",
 			"}",
 			"class A2 {",
 			"  def fct(x : A1) : String {",
-			"    var y = fct(null)",
 			"    return x as String",
 			"  }",
 			"}"
 			);
 
 	private static final String EXTENSION_IMPORT_TOSTRING_JAVA = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding;",
-			"",
 			"import foo.FooUtils;",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.tests.castoperatoroverriding.A1;",
+			"import io.sarl.lang.core.tests.compileExtensionImportToString.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -911,7 +738,6 @@ public class AsStringTest extends AbstractSarlTest {
 			"public class A2 {",
 			"  @Pure",
 			"  public String fct(final A1 x) {",
-			"    String y = this.fct(null);",
 			"    return (x == null ? null : FooUtils.toString(x));",
 			"  }",
 			"  ",
@@ -926,9 +752,13 @@ public class AsStringTest extends AbstractSarlTest {
 	public void parseExtensionImportToString() throws Exception {
 		SarlScript mas = file(EXTENSION_IMPORT_TOSTRING_SARL);
 		Validator val = validate(mas);
-		val.assertNoErrors();
-		val.assertWarning(
-				SarlPackage.eINSTANCE.getSarlCastedExpression(),
+		val
+			.assertNoErrors()
+			.assertNoWarnings(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
+			.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
 				"toString");
 	}
@@ -939,27 +769,23 @@ public class AsStringTest extends AbstractSarlTest {
 	}
 
 	private static final String EXTENSION_TOSTRING_SARL = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding",
 			"import foo.FooUtils2",
 			"class A1 {",
 			"}",
 			"class A2 {",
 			"  extension var foo : FooUtils2",
 			"  def fct(x : A1) : String {",
-			"    var y = fct(null)",
 			"    return x as String",
 			"  }",
 			"}"
 			);
 
 	private static final String EXTENSION_TOSTRING_JAVA = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding;",
-			"",
 			"import foo.FooUtils2;",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.tests.castoperatoroverriding.A1;",
+			"import io.sarl.lang.core.tests.compileExtensionToString.A1;",
 			"import org.eclipse.xtext.xbase.lib.Extension;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
@@ -972,7 +798,6 @@ public class AsStringTest extends AbstractSarlTest {
 			"  ",
 			"  @Pure",
 			"  public String fct(final A1 x) {",
-			"    String y = this.fct(null);",
 			"    return (x == null ? null : this.foo.toString(x));",
 			"  }",
 			"  ",
@@ -1002,9 +827,13 @@ public class AsStringTest extends AbstractSarlTest {
 	public void parseExtensionToString() throws Exception {
 		SarlScript mas = file(EXTENSION_TOSTRING_SARL);
 		Validator val = validate(mas);
-		val.assertNoErrors();
-		val.assertWarning(
-				SarlPackage.eINSTANCE.getSarlCastedExpression(),
+		val
+			.assertNoErrors()
+			.assertNoWarnings(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
+			.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
 				"toString");
 	}
@@ -1014,31 +843,21 @@ public class AsStringTest extends AbstractSarlTest {
 		ctx.compileTo(EXTENSION_TOSTRING_SARL, EXTENSION_TOSTRING_JAVA);
 	}
 
-	private static final String INLINE_FUNCTION_CALL_SARL = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding",
-			"class A0 {",
-			"  def toString() : String { null }",
-			"}",
+	private static final String BOOLEAN_SARL = multilineString(
 			"class A1 {",
-			"  @Inline(value = \"null\", constantExpression = true)",
-			"  def getX : A0 { null }",
 			"}",
 			"class A2 {",
 			"  def fct(x : A1) : String {",
-			"    var y = fct(null)",
-			"    return x.x as String",
+			"    return false as String",
 			"  }",
 			"}"
 			);
 
-	private static final String INLINE_FUNCTION_CALL_JAVA = multilineString(
-			"package io.sarl.lang.tests.castoperatoroverriding;",
-			"",
+	private static final String BOOLEAN_JAVA = multilineString(
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.tests.castoperatoroverriding.A0;",
-			"import io.sarl.lang.tests.castoperatoroverriding.A1;",
+			"import io.sarl.lang.core.tests.compileBoolean.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -1047,9 +866,7 @@ public class AsStringTest extends AbstractSarlTest {
 			"public class A2 {",
 			"  @Pure",
 			"  public String fct(final A1 x) {",
-			"    String y = this.fct(null);",
-			"    A0 _x = null;",
-			"    return (_x == null ? null : _x.toString());",
+			"    return Boolean.toString(false);",
 			"  }",
 			"  ",
 			"  @SyntheticMember",
@@ -1060,19 +877,126 @@ public class AsStringTest extends AbstractSarlTest {
 			"");
 
 	@Test
-	public void parseInlineFunctionCall() throws Exception {
-		SarlScript mas = file(INLINE_FUNCTION_CALL_SARL);
+	public void parseBoolean() throws Exception {
+		SarlScript mas = file(BOOLEAN_SARL);
 		Validator val = validate(mas);
-		val.assertNoErrors();
-		val.assertWarning(
-				SarlPackage.eINSTANCE.getSarlCastedExpression(),
+		val
+			.assertNoErrors()
+			.assertNoWarnings(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
+			.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
 				"toString");
 	}
 
 	@CompilationTest
-	public static void compileInlineFunctionCall(Context ctx) throws Exception {
-		ctx.compileTo(INLINE_FUNCTION_CALL_SARL, INLINE_FUNCTION_CALL_JAVA);
+	public static void compileBoolean(Context ctx) throws Exception {
+		ctx.compileTo(BOOLEAN_SARL, BOOLEAN_JAVA);
+	}
+
+	private static final String INTEGER_SARL = multilineString(
+			"class A1 {",
+			"}",
+			"class A2 {",
+			"  def fct(x : A1) : String {",
+			"    return 3 as String",
+			"  }",
+			"}"
+			);
+
+	private static final String INTEGER_JAVA = multilineString(
+			"import io.sarl.lang.annotation.SarlElementType;",
+			"import io.sarl.lang.annotation.SarlSpecification;",
+			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.core.tests.compileIntegerToString.A1;",
+			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"",
+			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@SuppressWarnings(\"all\")",
+			"public class A2 {",
+			"  @Pure",
+			"  public String fct(final A1 x) {",
+			"    return Integer.toString(3);",
+			"  }",
+			"  ",
+			"  @SyntheticMember",
+			"  public A2() {",
+			"    super();",
+			"  }",
+			"}",
+			"");
+
+	@Test
+	public void parseIntegerToString() throws Exception {
+		SarlScript mas = file(INTEGER_SARL);
+		Validator val = validate(mas);
+		val
+			.assertNoErrors()
+			.assertNoWarnings(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
+			.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
+				"toString");
+	}
+
+	@CompilationTest
+	public static void compileIntegerToString(Context ctx) throws Exception {
+		ctx.compileTo(INTEGER_SARL, INTEGER_JAVA);
+	}
+
+	private static final String ARITH_SARL = multilineString(
+			"class A2 {",
+			"  def fct(x : double) : String {",
+			"    return (x + 3) as String",
+			"  }",
+			"}"
+			);
+
+	private static final String ARITH_JAVA = multilineString(
+			"import io.sarl.lang.annotation.SarlElementType;",
+			"import io.sarl.lang.annotation.SarlSpecification;",
+			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"",
+			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@SuppressWarnings(\"all\")",
+			"public class A2 {",
+			"  @Pure",
+			"  public String fct(final double x) {",
+			"    return Double.toString((x + 3));",
+			"  }",
+			"  ",
+			"  @SyntheticMember",
+			"  public A2() {",
+			"    super();",
+			"  }",
+			"}",
+			"");
+
+	@Test
+	public void parseArith() throws Exception {
+		SarlScript mas = file(ARITH_SARL);
+		Validator val = validate(mas);
+		val
+			.assertNoErrors()
+			.assertNoWarnings(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
+			.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
+				"toString");
+	}
+
+	@CompilationTest
+	public static void compileArith(Context ctx) throws Exception {
+		ctx.compileTo(ARITH_SARL, ARITH_JAVA);
 	}
 
 }
