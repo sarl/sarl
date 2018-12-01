@@ -57,6 +57,8 @@ public class BindingElement {
 
 	private boolean overridePreviousDefinition;
 
+	private boolean provider;
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof BindingElement) {
@@ -117,6 +119,23 @@ public class BindingElement {
 	@Pure
 	public boolean isOverride() {
 		return this.overridePreviousDefinition;
+	}
+
+	/** Set the element is a provider.
+	 *
+	 * @param provider <code>true</code> if a provider.
+	 */
+	public void setProvider(boolean provider) {
+		this.provider = provider;
+	}
+
+	/** Replies if the element is a provider.
+	 *
+	 * @return <code>true</code> if it is a provider.
+	 */
+	@Pure
+	public boolean isProvider() {
+		return this.provider;
 	}
 
 	/** Set the function name.

@@ -95,6 +95,9 @@ import io.sarl.lang.formatting2.SARLFormatterPreferenceKeys;
 import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
 import io.sarl.lang.jvmmodel.SARLReadAndWriteTracking;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
+import io.sarl.lang.macro.SarlActiveAnnotationContextProvider;
+import io.sarl.lang.macro.SarlCompilationUnitProvider;
+import io.sarl.lang.macro.SarlProcessorInstanceForJvmTypeProvider;
 import io.sarl.lang.parser.antlr.SARLAntlrTokenFileProvider;
 import io.sarl.lang.parser.antlr.SARLParser;
 import io.sarl.lang.parser.antlr.internal.InternalSARLLexer;
@@ -133,7 +136,10 @@ import org.eclipse.xtend.core.imports.XtendTypeUsageCollector;
 import org.eclipse.xtend.core.linking.RuntimeLinker;
 import org.eclipse.xtend.core.linking.XtendEObjectAtOffsetHelper;
 import org.eclipse.xtend.core.macro.AbstractFileSystemSupport;
+import org.eclipse.xtend.core.macro.ActiveAnnotationContextProvider;
 import org.eclipse.xtend.core.macro.JavaIOFileSystemSupport;
+import org.eclipse.xtend.core.macro.ProcessorInstanceForJvmTypeProvider;
+import org.eclipse.xtend.core.macro.declaration.CompilationUnitImpl;
 import org.eclipse.xtend.core.macro.declaration.IResourceChangeRegistry;
 import org.eclipse.xtend.core.macro.declaration.NopResourceChangeRegistry;
 import org.eclipse.xtend.core.naming.XtendQualifiedNameProvider;
@@ -527,6 +533,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends ProcessorInstanceForJvmTypeProvider> bindProcessorInstanceForJvmTypeProvider() {
+		return SarlProcessorInstanceForJvmTypeProvider.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IActionPrototypeProvider> bindIActionPrototypeProvider() {
 		return DefaultActionPrototypeProvider.class;
 	}
@@ -554,6 +565,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IOutputConfigurationProvider> bindIOutputConfigurationProvider() {
 		return ContributionBasedOutputConfigurationProvider.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends ActiveAnnotationContextProvider> bindActiveAnnotationContextProvider() {
+		return SarlActiveAnnotationContextProvider.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
@@ -595,6 +611,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends XbaseCompiler> bindXbaseCompiler() {
 		return SarlCompiler.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public void configureCompilationUnitImpl(Binder binder) {
+		binder.bind(CompilationUnitImpl.class).toProvider(SarlCompilationUnitProvider.class);
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]

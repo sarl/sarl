@@ -2769,17 +2769,29 @@ public class SARLValidator extends AbstractSARLValidator {
 					null,
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 					org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE);
-		} else if (isOOActiveAnnotation(annotation)) {
+		} else if (isOOActiveAnnotation(annotation) || isAOActiveAnnotation(annotation)) {
 			XtendTypeDeclaration container = EcoreUtil2.getContainerOfType(annotation.eContainer(), XtendTypeDeclaration.class);
 			while (container != null && (container.isAnonymous() || container.getName() == null)) {
 				container = EcoreUtil2.getContainerOfType(container.eContainer(), XtendTypeDeclaration.class);
 			}
-			if (!isOOType(container)) {
-				error(Messages.SARLValidator_90,
-						annotation,
-						null,
-						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-						org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE);
+			if (container != null) {
+				if (isOOType(container)) {
+					if (!isOOActiveAnnotation(annotation)) {
+						error(MessageFormat.format(Messages.SARLValidator_90, container.getName()),
+								annotation,
+								null,
+								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+								org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE);
+					}
+				} else {
+					if (!isAOActiveAnnotation(annotation) || !isAOActiveAnnotationReceiver(container)) {
+						error(MessageFormat.format(Messages.SARLValidator_90, container.getName()),
+								annotation,
+								null,
+								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+								org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE);
+					}
+				}
 			}
 		}
 	}
@@ -2801,6 +2813,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	 *
 	 * @param annotation the annotation.
 	 * @return {@code true} if the annotation should be used only for OO elements.
+	 * @see #isAOActiveAnnotation(XAnnotation)
 	 */
 	@SuppressWarnings("static-method")
 	protected boolean isOOActiveAnnotation(XAnnotation annotation) {
@@ -2809,6 +2822,33 @@ public class SARLValidator extends AbstractSARLValidator {
 				|| Strings.equal(Data.class.getName(), name)
 				|| Strings.equal(Delegate.class.getName(), name)
 				|| Strings.equal(ToString.class.getName(), name);
+	}
+
+	/** Replies if the given container can receive an active annotation.
+	 *
+	 * @param annotation the annotation.
+	 * @return {@code true} if the annotation should be used only for OO elements.
+	 * @see #isOOActiveAnnotation(XAnnotation)
+	 * @see #isAOActiveAnnotationReceiver(XtendTypeDeclaration)
+	 */
+	@SuppressWarnings("static-method")
+	protected boolean isAOActiveAnnotation(XAnnotation annotation) {
+		final String name = annotation.getAnnotationType().getQualifiedName();
+		return Strings.equal(Accessors.class.getName(), name);
+	}
+
+	/** Replies if the given annotation is an active annotation for agent-oriented elements.
+	 *
+	 * @param container the container to test.
+	 * @return {@code true} if the container could receive an active annotation.
+	 * @see #isOOActiveAnnotation(XAnnotation)
+	 * @see #isAOActiveAnnotation(XAnnotation)
+	 */
+	@SuppressWarnings("static-method")
+	protected boolean isAOActiveAnnotationReceiver(XtendTypeDeclaration container) {
+		return container instanceof SarlAgent
+				|| container instanceof SarlBehavior
+				|| container instanceof SarlSkill;
 	}
 
 	/** Replies if the given annotation is a forbidden active annotation.

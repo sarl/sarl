@@ -268,27 +268,42 @@ public class BindingFactory {
 	 * @param functionName the name of the binding function. It may be <code>null</code> for the default name.
 	 * @param to the concrete type.
 	 * @param isSingleton indicates if the instance is a singleton.
-	 * @param isEager indicates if the instance is an eager singleton
+	 * @param isEager indicates if the instance is an eager singleton.
+	 * @param isProvider indicates if the binding is for a provider.
 	 * @return the binding element.
 	 */
 	protected Binding bindToType(
 			TypeReference bind, String functionName, TypeReference to,
-			boolean isSingleton, boolean isEager) {
+			boolean isSingleton, boolean isEager, boolean isProvider) {
 		final BindKey type;
 		final BindValue value;
 		if (!Strings.isEmpty(functionName) && functionName.startsWith(CONFIGURE_PREFIX)) {
 			final String fname = functionName.substring(CONFIGURE_PREFIX.length());
 			type = new GuiceModuleAccess.BindKey(Strings.toFirstUpper(fname), null, false, false);
-			final StringConcatenationClient client = new StringConcatenationClient() {
-				@Override
-				protected void appendTo(TargetStringConcatenation builder) {
-					builder.append("binder.bind("); //$NON-NLS-1$
-					builder.append(bind);
-					builder.append(".class).to("); //$NON-NLS-1$
-					builder.append(to);
-					builder.append(".class);"); //$NON-NLS-1$
-				}
-			};
+			final StringConcatenationClient client;
+			if (isProvider) {
+				client = new StringConcatenationClient() {
+					@Override
+					protected void appendTo(TargetStringConcatenation builder) {
+						builder.append("binder.bind("); //$NON-NLS-1$
+						builder.append(bind);
+						builder.append(".class).toProvider("); //$NON-NLS-1$
+						builder.append(to);
+						builder.append(".class);"); //$NON-NLS-1$
+					}
+				};
+			} else {
+				client = new StringConcatenationClient() {
+					@Override
+					protected void appendTo(TargetStringConcatenation builder) {
+						builder.append("binder.bind("); //$NON-NLS-1$
+						builder.append(bind);
+						builder.append(".class).to("); //$NON-NLS-1$
+						builder.append(to);
+						builder.append(".class);"); //$NON-NLS-1$
+					}
+				};
+			}
 			value = new BindValue(null, null, false, Collections.singletonList(client));
 		} else {
 			String fname = functionName;
@@ -424,7 +439,8 @@ public class BindingFactory {
 					element.getFunctionName(),
 					typeReference2,
 					element.isSingleton(),
-					element.isEager());
+					element.isEager(),
+					element.isProvider());
 	}
 
 }

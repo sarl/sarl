@@ -584,6 +584,20 @@ Workflow {
     				bind = "io.sarl.lang.extralanguage.validator.IExtraLanguageValidatorProvider"
     				to = "io.sarl.lang.extralanguage.ContributionBasedExtraLanguageValidatorProvider"
    				}
+    			runtime = {
+    				bind = "org.eclipse.xtend.core.macro.ActiveAnnotationContextProvider"
+    				to = "io.sarl.lang.macro.SarlActiveAnnotationContextProvider"
+   				}
+    			runtime = {
+    				bind = "org.eclipse.xtend.core.macro.ProcessorInstanceForJvmTypeProvider"
+    				to = "io.sarl.lang.macro.SarlProcessorInstanceForJvmTypeProvider"
+   				}
+    			runtime = {
+    				bind = "org.eclipse.xtend.core.macro.declaration.CompilationUnitImpl"
+    				to = "io.sarl.lang.macro.SarlCompilationUnitProvider"
+    				provider = true
+    				functionName = "configureCompilationUnitImpl"
+   				}
 
     			ui = {
     				bind = "io.sarl.lang.extralanguage.IExtraLanguageContributions"
@@ -784,6 +798,10 @@ Workflow {
     				annotatedWithName = "IXtextEditorCallBack"
     				to = "io.sarl.lang.ui.editor.SARLEditorErrorTickUpdater"
     				functionName = "configureXtextEditorErrorTickUpdater"
+   				}
+    			ui = {
+    				bind = "org.eclipse.xtend.core.macro.ProcessorInstanceForJvmTypeProvider"
+    				to = "io.sarl.lang.ui.macro.SarlJdtProcessorInstanceForJvmTypeProvider"
    				}
     		}
 

@@ -204,11 +204,11 @@ public class Bug891 extends AbstractSarlTest {
 			"    public Y() {",
 			"      super();",
 			"    }",
-			/*"    ",
+			"    ",
 			"    @Pure",
 			"    public int getField() {",
 			"      return this.field;",
-			"    }",*/
+			"    }",
 			"  }",
 			"  ",
 			"  @Pure",

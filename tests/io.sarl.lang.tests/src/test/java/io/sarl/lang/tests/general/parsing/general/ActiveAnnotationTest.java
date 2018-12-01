@@ -113,10 +113,9 @@ public class ActiveAnnotationTest {
 					"	@Accessors var field : double = 0",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(mas).assertNoErrors(
 					XAnnotationsPackage.eINSTANCE.getXAnnotation(),
-					org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE,
-					"Forbidden annotation");
+					org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE);
 		}
 
 		@Test
@@ -128,10 +127,9 @@ public class ActiveAnnotationTest {
 					"	@Accessors(PROTECTED_SETTER) var field : double = 0",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(mas).assertNoErrors(
 					XAnnotationsPackage.eINSTANCE.getXAnnotation(),
-					org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE,
-					"Forbidden annotation");
+					org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE);
 		}
 
 		@Test
@@ -142,10 +140,9 @@ public class ActiveAnnotationTest {
 					"	var field : double = 0",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(mas).assertNoErrors(
 					XAnnotationsPackage.eINSTANCE.getXAnnotation(),
-					org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE,
-					"Forbidden annotation");
+					org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE);
 		}
 
 		@Test
@@ -157,10 +154,9 @@ public class ActiveAnnotationTest {
 					"	var field : double = 0",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(mas).assertNoErrors(
 					XAnnotationsPackage.eINSTANCE.getXAnnotation(),
-					org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE,
-					"Forbidden annotation");
+					org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE);
 		}
 
 		@Test
@@ -171,10 +167,9 @@ public class ActiveAnnotationTest {
 					"	@Accessors var field : double = 0",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(mas).assertNoErrors(
 					XAnnotationsPackage.eINSTANCE.getXAnnotation(),
-					org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE,
-					"Forbidden annotation");
+					org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE);
 		}
 
 		@Test
@@ -186,10 +181,9 @@ public class ActiveAnnotationTest {
 					"	@Accessors(PROTECTED_SETTER) var field : double = 0",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(mas).assertNoErrors(
 					XAnnotationsPackage.eINSTANCE.getXAnnotation(),
-					org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE,
-					"Forbidden annotation");
+					org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE);
 		}
 
 		@Test
@@ -200,10 +194,9 @@ public class ActiveAnnotationTest {
 					"	var field : double = 0",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(mas).assertNoErrors(
 					XAnnotationsPackage.eINSTANCE.getXAnnotation(),
-					org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE,
-					"Forbidden annotation");
+					org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE);
 		}
 
 		@Test
@@ -215,10 +208,9 @@ public class ActiveAnnotationTest {
 					"	var field : double = 0",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(mas).assertNoErrors(
 					XAnnotationsPackage.eINSTANCE.getXAnnotation(),
-					org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE,
-					"Forbidden annotation");
+					org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE);
 		}
 
 		@Test
@@ -230,10 +222,9 @@ public class ActiveAnnotationTest {
 					"	@Accessors var field : double = 0",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(mas).assertNoErrors(
 					XAnnotationsPackage.eINSTANCE.getXAnnotation(),
-					org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE,
-					"Forbidden annotation");
+					org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE);
 		}
 
 		@Test
@@ -246,10 +237,9 @@ public class ActiveAnnotationTest {
 					"	@Accessors(PROTECTED_SETTER) var field : double = 0",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(mas).assertNoErrors(
 					XAnnotationsPackage.eINSTANCE.getXAnnotation(),
-					org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE,
-					"Forbidden annotation");
+					org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE);
 		}
 
 		@Test
@@ -261,10 +251,9 @@ public class ActiveAnnotationTest {
 					"	var field : double = 0",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(mas).assertNoErrors(
 					XAnnotationsPackage.eINSTANCE.getXAnnotation(),
-					org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE,
-					"Forbidden annotation");
+					org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE);
 		}
 
 		@Test
@@ -277,10 +266,9 @@ public class ActiveAnnotationTest {
 					"	var field : double = 0",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(mas).assertNoErrors(
 					XAnnotationsPackage.eINSTANCE.getXAnnotation(),
-					org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE,
-					"Forbidden annotation");
+					org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE);
 		}
 
 		@Test

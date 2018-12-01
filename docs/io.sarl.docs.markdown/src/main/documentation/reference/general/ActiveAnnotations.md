@@ -13,7 +13,36 @@ The following sections describe there annotations.
 ## @Accessors
 
 If you want to add getter and or setter methods for your fields, [:accessorsannon:] is your friend.
-This annotation can be applied to object-oriented types. The agent-oriented types cannot be annotated.
+This annotation can be applied to either object-oriented types and several agent-oriented types.
+The agent-oriented types in which you could uses the [:accessorsannon:] annotation are the agents,
+the behaviors and the skills.
+
+		[:Success:]
+			import org.eclipse.xtend.lib.annotations.Accessors
+			agent MyAgent {
+				[:accessorsannon!] var name : String
+			}
+		[:End:]
+		[:Success:]
+			import org.eclipse.xtend.lib.annotations.Accessors
+			behavior MyBehavior {
+				[:accessorsannon!] var name : String
+			}
+		[:End:]
+		[:Success:]
+			import org.eclipse.xtend.lib.annotations.Accessors
+			capacity MyCap { }
+			skill MySkill implements MyCap {
+				[:accessorsannon!] var name : String
+			}
+		[:End:]
+		[:Failure:]
+			import org.eclipse.xtend.lib.annotations.Accessors
+			event MyEvent {
+				[:accessorsannon!] var name : String
+			}
+		[:End:]
+
 Let's a basic example.
 
 		[:Success:]
@@ -24,14 +53,8 @@ Let's a basic example.
 				[:Off]
 			}
 		[:End:]
-		[:Failure:]
-			import org.eclipse.xtend.lib.annotations.Accessors
-			agent MyAgent {
-				[:accessorsannon!] var name : String
-			}
-		[:End:]
 
-will compile to the code:
+It is compiled to the code:
 
 		[:Success:]
 			import org.eclipse.xtend.lib.annotations.Accessors
@@ -51,9 +74,31 @@ will compile to the code:
 		[:End:]
 
 
-By default a public getter and a public setter method is created. The [:accessorsannon:] can be configured to tell
-that you only want one or the other and to change the visibility. This is done by passing the visibility types
-as parameters to the annotation.
+By default, a public getter and a public setter method is created. The [:accessorsannon:] can be configured to tell
+that you only want one or the other, and to change the visibility. This is done by passing one or more values of
+type [:accessorparamtype:] for representing the visibility categories
+as parameters to the annotation: [:accessorpublicgetterparam:], [:accessorprotectedgetterparam:], [:accessorpackagegetterparam:],
+[:accessorprivategetterparam:], [:accessorpublicsetterparam:], [:accessorprotectedsetterparam:], [:accessorpackagesetterparam:],
+[:accessorprivatesetterparam:], [:accessornoneparam:].
+
+		[:Success:]
+			import org.eclipse.xtend.lib.annotations.AccessorType
+			class MyClass {
+				private var t1 = [:accessorparamtype](AccessorType)::[:accessorpublicgetterparam](PUBLIC_GETTER)
+				private var t2 = AccessorType::[:accessorprotectedgetterparam](PROTECTED_GETTER)
+				private var t3 = AccessorType::[:accessorpackagegetterparam](PACKAGE_GETTER)
+				private var t4 = AccessorType::[:accessorprivategetterparam](PRIVATE_GETTER)
+
+				private var t5 = AccessorType::[:accessorpublicsetterparam](PUBLIC_SETTER)
+				private var t6 = AccessorType::[:accessorprotectedsetterparam](PROTECTED_SETTER)
+				private var t7 = AccessorType::[:accessorpackagesetterparam](PACKAGE_SETTER)
+				private var t8 = AccessorType::[:accessorprivatesetterparam](PRIVATE_SETTER)
+
+				private var t9 = AccessorType::[:accessornoneparam](NONE)
+			}
+		[:End:]
+
+
 You can also use the annotation on class level to do the same for all fields.
 
 Here is a more complex example, that shows how it works:
@@ -70,7 +115,7 @@ Here is a more complex example, that shows how it works:
 			[:Off]
 		[:End:]
  
-will compile to the code:
+It is compiled to the code:
 
 		[:Success:]
 			import org.eclipse.xtend.lib.annotations.Accessors
