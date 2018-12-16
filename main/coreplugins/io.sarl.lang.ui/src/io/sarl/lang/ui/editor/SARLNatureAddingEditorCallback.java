@@ -31,7 +31,7 @@ import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.eclipse.xtext.ui.resource.IStorage2UriMapper;
 import org.eclipse.xtext.ui.resource.UriValidator;
 
-/** Editor for SARL code.
+/** Callback associated to the editor for configuring the SARL editor.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

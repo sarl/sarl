@@ -115,7 +115,7 @@ public class SARLEditorErrorTickUpdater extends XtendEditorErrorTickUpdater {
 		super.modelChanged(model);
 		//FIXME: for helping to resolve #661
 		final XtextEditor editor = getEditor();
-		if (editor != null && editor.getInternalSourceViewer() != null) {
+		if (editor != null && !editor.isDirty() && editor.getInternalSourceViewer() != null) {
 			final IAnnotationModel currentModel = editor.getInternalSourceViewer().getAnnotationModel();
 			if (currentModel != null && currentModel == model) {
 				final Resource resource = getXtextResource();
