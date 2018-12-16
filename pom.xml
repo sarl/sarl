@@ -48,7 +48,7 @@
 		<!-- Version of the cat mv	OSGi module that provides the NLS (package: osgi) -->
 		<osgi.nls.version>3.10.0-v20140606-1445</osgi.nls.version>
 		<!-- Version of the Arakhne Foundation classes -->
-		<afc.version>15.0</afc.version>
+		<afc.version>15.1</afc.version>
 		<!-- Version of the Guava API -->
 		<guava.version>20.0</guava.version>
 		<!-- Version of the javax.inject module -->
