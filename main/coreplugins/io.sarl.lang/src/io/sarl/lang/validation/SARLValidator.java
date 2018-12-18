@@ -61,6 +61,7 @@ import static org.eclipse.xtend.core.validation.IssueCodes.MUST_INVOKE_SUPER_CON
 import static org.eclipse.xtend.core.validation.IssueCodes.OBSOLETE_OVERRIDE;
 import static org.eclipse.xtend.core.validation.IssueCodes.OVERRIDDEN_FINAL;
 import static org.eclipse.xtend.core.validation.IssueCodes.OVERRIDE_REDUCES_VISIBILITY;
+import static org.eclipse.xtend.core.validation.IssueCodes.UNUSED_PRIVATE_MEMBER;
 import static org.eclipse.xtend.core.validation.IssueCodes.XBASE_LIB_NOT_ON_CLASSPATH;
 import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_CLASS__IMPLEMENTS;
 import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_FIELD__NAME;
@@ -123,6 +124,7 @@ import org.eclipse.xtend.core.xtend.XtendFunction;
 import org.eclipse.xtend.core.xtend.XtendInterface;
 import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendPackage;
+import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtend.lib.annotations.Accessors;
 import org.eclipse.xtend.lib.annotations.Data;
@@ -184,6 +186,7 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReferenceFac
 import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner;
 import org.eclipse.xtext.xbase.util.XbaseUsageCrossReferencer;
 import org.eclipse.xtext.xbase.validation.FeatureNameValidator;
+import org.eclipse.xtext.xbase.validation.UIStrings;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.annotation.EarlyExit;
@@ -403,6 +406,9 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	@Inject
 	private IImmutableTypeValidator immutableTypeValidator;
+
+	@Inject
+	private UIStrings uiStrings;
 
 	// Update the annotation target information
 	{
@@ -969,8 +975,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	 * @param feature the syntactic feature related to the supertypes.
 	 * @param defaultSignatures the signatures of the default constructors for the given container.
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity",
-		"checkstyle:nestedifdepth"})
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity", "checkstyle:nestedifdepth"})
 	protected void checkSuperConstructor(
 			XtendTypeDeclaration container,
 			EStructuralFeature feature,
@@ -2885,6 +2890,56 @@ public class SARLValidator extends AbstractSARLValidator {
 							type,
 							XtendPackage.Literals.XTEND_TYPE_DECLARATION__NAME,
 							DUPLICATE_TYPE_NAME);
+				}
+			}
+		}
+	}
+
+	/** Replies if the given function has a default value for one of its parameters.
+	 *
+	 * @param function the function to test.
+	 * @return {@code true} if one parameter has a default value.
+	 */
+	@SuppressWarnings("static-method")
+	protected boolean isDefaultValuedParameterFunction(XtendFunction function) {
+		for (final XtendParameter parameter : function.getParameters()) {
+			if (parameter instanceof SarlFormalParameter) {
+				final SarlFormalParameter sarlParameter = (SarlFormalParameter) parameter;
+				if (sarlParameter.getDefaultValue() != null) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	@Check
+	@Override
+	public void checkLocalUsageOfDeclaredXtendFunction(XtendFunction function) {
+		if (doCheckValidMemberName(function) && !isIgnored(UNUSED_PRIVATE_MEMBER)) {
+			final JvmOperation mainOperation;
+			if (function.isDispatch()) {
+				mainOperation = this.associations.getDispatchOperation(function);
+			} else {
+				mainOperation = this.associations.getDirectlyInferredOperation(function);
+			}
+			if (mainOperation != null && mainOperation.getVisibility() == JvmVisibility.PRIVATE) {
+				final EObject outerType = getOutermostType(function);
+				boolean isUsed = isLocallyUsed(mainOperation, outerType);
+				if (!isUsed && isDefaultValuedParameterFunction(function)) {
+					for (final EObject jvmElement : this.associations.getJvmElements(function)) {
+						if (jvmElement != mainOperation && jvmElement instanceof JvmOperation
+								&& isLocallyUsed(jvmElement, outerType)) {
+							isUsed = true;
+							// break the loop
+							break;
+						}
+					}
+				}
+				if (!isUsed) {
+					final String message = MessageFormat.format(Messages.SARLValidator_94,
+							mainOperation.getSimpleName(), this.uiStrings.parameters(mainOperation), getDeclaratorName(mainOperation));
+					addIssueToState(UNUSED_PRIVATE_MEMBER, message, XtendPackage.Literals.XTEND_FUNCTION__NAME);
 				}
 			}
 		}

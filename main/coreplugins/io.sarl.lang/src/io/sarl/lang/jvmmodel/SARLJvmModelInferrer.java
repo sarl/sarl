@@ -1801,6 +1801,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						operation2.setNative(false);
 						operation2.setStrictFloatingPoint(false);
 						operation2.setSynchronized(false);
+						this.associator.associate(source, operation2);
 
 						copyTypeParametersFromJvmOperation(operation, operation2);
 
