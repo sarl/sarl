@@ -108,7 +108,7 @@ public interface SREBootstrap {
 	}
 
 	/**
-	 * Force the Janus platform to use a random identifier for its default context.
+	 * Force the SRE platform to use a random identifier for its default context.
 	 *
 	 * <p>This function has no effect if the agent framework is already launched.
 	 *
@@ -119,7 +119,7 @@ public interface SREBootstrap {
 	}
 
 	/**
-	 * Force the Janus platform to use a default context identifier that tis build upon the classname of the boot agent. It means
+	 * Force the SRE platform to use a default context identifier that tis build upon the classname of the boot agent. It means
 	 * that the UUID is always the same for a given classname.
 	 *
 	 * <p>This function has no effect if the agent framework is already launched.
@@ -131,13 +131,75 @@ public interface SREBootstrap {
 	}
 
 	/**
-	 * Force the Janus platform to use the identifier hard-coded in the source code for its default context.
+	 * Force the SRE platform to use the identifier hard-coded in the source code for its default context.
 	 *
 	 * <p>This function has no effect if the agent framework is already launched.
 	 *
 	 * @since 0.7
 	 */
 	default void setDefaultContextUUID() {
+	/**
+	 * Force the SRE platform to use the identifier hard-coded in the source code for its default context.
+	 *
+	 * <p>This function has no effect if the agent framework is already launched.
+	 *
+	 * @since 0.9
+	 * @see #setUniverseContextUUID(UUID)
+	 * @see #getUniverseContextUUID()
+	 * @see #setUniverseSpaceUUID(UUID)
+	 * @see #getUniverseSpaceUUID()
+	 */
+	default void setSpecificContextUUID() {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * Force the identifier of the root/universe context in case the SRE is run when the {@link #setDefaultContextUUID() default
+	 * identifier mode is enabled}.
+	 *
+	 * <p>This function has no effect if the agent framework is already launched.
+	 *
+	 * @param id the identifier, or {@code null} if the default identifier should be used.
+	 * @since 0.9
+	 */
+	default void setUniverseContextUUID(UUID id) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * Replies the UUID of the root/universe context that is given by the user of the bootstrap.
+	 *
+	 * <p>This function has no effect if the agent framework is already launched.
+	 *
+	 * @return the identifier, or {@code null} if no identifier is provided by the user and the default identifier should be used.
+	 * @since 0.9
+	 */
+	default UUID getUniverseContextUUID() {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * Force the identifier of the root/universe default space in case the SRE is run when the {@link #setDefaultContextUUID() default
+	 * identifier mode is enabled}.
+	 *
+	 * <p>This function has no effect if the agent framework is already launched.
+	 *
+	 * @param id the identifier, or {@code null} if the default identifier should be used.
+	 * @since 0.9
+	 */
+	default void setUniverseSpaceUUID(UUID id) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * Replies the UUID of the root/universe default space that is given by the user of the bootstrap.
+	 *
+	 * <p>This function has no effect if the agent framework is already launched.
+	 *
+	 * @return the identifier, or {@code null} if no identifier is provided by the user and the default identifier should be used.
+	 * @since 0.9
+	 */
+	default UUID getUniverseSpaceUUID() {
 		throw new UnsupportedOperationException();
 	}
 
