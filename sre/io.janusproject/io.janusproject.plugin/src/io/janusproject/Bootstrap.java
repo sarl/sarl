@@ -121,7 +121,7 @@ public final class Bootstrap implements SREBootstrap {
 	}
 
 	@Override
-	public void setDefaultContextUUID() {
+	public void setSpecificContextUUID() {
 		Boot.setDefaultContextUUID();
 	}
 

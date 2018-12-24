@@ -136,8 +136,17 @@ public interface SREBootstrap {
 	 * <p>This function has no effect if the agent framework is already launched.
 	 *
 	 * @since 0.7
+	 * @see #setUniverseContextUUID(UUID)
+	 * @see #getUniverseContextUUID()
+	 * @see #setUniverseSpaceUUID(UUID)
+	 * @see #getUniverseSpaceUUID()
+	 * @deprecated see {@link #setSpecificContextUUID()}
 	 */
+	@Deprecated
 	default void setDefaultContextUUID() {
+		setSpecificContextUUID();
+	}
+
 	/**
 	 * Force the SRE platform to use the identifier hard-coded in the source code for its default context.
 	 *
