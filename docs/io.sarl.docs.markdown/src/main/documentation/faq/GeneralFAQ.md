@@ -225,6 +225,26 @@ For enabling the SARL product content assist, we recommend to change its shortcu
 ![Content assist shortcut change](./ctrlspaceprefs.png)
 
 
+## Implementation of SARL Applications
+
+
+### Is it possible to obtain examples of SARL code for applications?
+
+__Yes__.
+
+The SARL development environment contains a collection of SARL applications that may be used for creating your own applications.
+They are called the "SARL examples".
+
+In order to create a fresh project based on of these SARL examples, you have to use the menu `File > New > Example`.
+This menu opens a dialog box with a list of examples from which you may select one for creating your fresh project.
+The SARL examples have been put into several categories:
+
+* SARL Tutorials: the SARL code that is associated to one of the tutorial from the official documentation pages.
+* SARL Examples without user interface: a collection of fully-featured applications without graphical user interface.
+* SARL Examples with JavaFX: a collection of fully-featured applications with a JavaFX-based user interface.
+* SARL Templates of applications: a collection of templates for creating a fresh SARL application.
+
+
 ## Contribute to SARL
 
 ### Where are the sources for SARL?
