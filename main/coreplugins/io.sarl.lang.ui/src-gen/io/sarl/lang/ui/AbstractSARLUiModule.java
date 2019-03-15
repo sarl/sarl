@@ -80,6 +80,7 @@ import io.sarl.lang.ui.preferences.SARLPreferenceStoreInitializer;
 import io.sarl.lang.ui.preferences.SARLValidatorConfigurationBlock;
 import io.sarl.lang.ui.quickfix.SARLQuickfixProvider;
 import io.sarl.lang.ui.refactoring.rename.SARLRenameStrategyProvider;
+import io.sarl.lang.ui.tasks.SarlTaskFinder;
 import io.sarl.lang.ui.tasks.SarlTaskTagProvider;
 import io.sarl.lang.ui.validation.SARLUIStrings;
 import io.sarl.lang.ui.validation.SARLUIValidator;
@@ -155,6 +156,7 @@ import org.eclipse.xtext.resource.IResourceDescriptions;
 import org.eclipse.xtext.resource.containers.IAllContainersState;
 import org.eclipse.xtext.resource.impl.ResourceDescriptionsProvider;
 import org.eclipse.xtext.service.SingletonBinding;
+import org.eclipse.xtext.tasks.ITaskFinder;
 import org.eclipse.xtext.tasks.ITaskTagProvider;
 import org.eclipse.xtext.ui.IImageHelper;
 import org.eclipse.xtext.ui.LanguageSpecific;
@@ -705,6 +707,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends XtendFieldBuilder> bindXtendFieldBuilder() {
 		return SarlFieldBuilder.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends ITaskFinder> bindITaskFinder() {
+		return SarlTaskFinder.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]

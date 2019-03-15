@@ -111,6 +111,7 @@ public class SarlAssertExpressionImpl extends XExpressionImpl implements SarlAss
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public XExpression getCondition()
 	{
 		return condition;
@@ -138,6 +139,7 @@ public class SarlAssertExpressionImpl extends XExpressionImpl implements SarlAss
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setCondition(XExpression newCondition)
 	{
 		if (newCondition != condition)
@@ -159,6 +161,7 @@ public class SarlAssertExpressionImpl extends XExpressionImpl implements SarlAss
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getMessage()
 	{
 		return message;
@@ -169,6 +172,7 @@ public class SarlAssertExpressionImpl extends XExpressionImpl implements SarlAss
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMessage(String newMessage)
 	{
 		String oldMessage = message;
@@ -182,6 +186,7 @@ public class SarlAssertExpressionImpl extends XExpressionImpl implements SarlAss
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isIsStatic()
 	{
 		return isStatic;
@@ -192,6 +197,7 @@ public class SarlAssertExpressionImpl extends XExpressionImpl implements SarlAss
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setIsStatic(boolean newIsStatic)
 	{
 		boolean oldIsStatic = isStatic;

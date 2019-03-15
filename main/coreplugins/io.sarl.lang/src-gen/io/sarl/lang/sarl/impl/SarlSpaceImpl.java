@@ -68,6 +68,7 @@ public class SarlSpaceImpl extends XtendTypeDeclarationImplCustom implements Sar
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public JvmParameterizedTypeReference getExtends()
 	{
 		return extends_;
@@ -95,6 +96,7 @@ public class SarlSpaceImpl extends XtendTypeDeclarationImplCustom implements Sar
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setExtends(JvmParameterizedTypeReference newExtends)
 	{
 		if (newExtends != extends_)
@@ -116,6 +118,7 @@ public class SarlSpaceImpl extends XtendTypeDeclarationImplCustom implements Sar
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isAbstract()
 	{
 		// TODO: implement this method

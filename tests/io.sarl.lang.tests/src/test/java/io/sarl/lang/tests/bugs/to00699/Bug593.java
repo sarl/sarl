@@ -108,7 +108,7 @@ public class Bug593 {
 					"  }",
 					"  ",
 					"  @SyntheticMember",
-					"  private final static long serialVersionUID = 1L;",
+					"  private static final long serialVersionUID = 1L;",
 					"}",
 					""));
 		}
@@ -152,7 +152,7 @@ public class Bug593 {
 					"  }",
 					"  ",
 					"  @SyntheticMember",
-					"  private final static long serialVersionUID = 1L;",
+					"  private static final long serialVersionUID = 1L;",
 					"}",
 					""));
 		}
@@ -196,7 +196,7 @@ public class Bug593 {
 					"  }",
 					"  ",
 					"  @SyntheticMember",
-					"  private final static long serialVersionUID = 1L;",
+					"  private static final long serialVersionUID = 1L;",
 					"}",
 					""));
 		}
@@ -240,7 +240,7 @@ public class Bug593 {
 					"  }",
 					"  ",
 					"  @SyntheticMember",
-					"  private final static long serialVersionUID = 1L;",
+					"  private static final long serialVersionUID = 1L;",
 					"}",
 					""));
 		}
@@ -344,7 +344,7 @@ public class Bug593 {
 					"  }",
 					"  ",
 					"  @SyntheticMember",
-					"  private final static long serialVersionUID = 1L;",
+					"  private static final long serialVersionUID = 1L;",
 					"}",
 					""));
 		}
@@ -399,7 +399,7 @@ public class Bug593 {
 					"  }",
 					"  ",
 					"  @SyntheticMember",
-					"  private final static long serialVersionUID = 1L;",
+					"  private static final long serialVersionUID = 1L;",
 					"}",
 					""));
 		}
@@ -461,7 +461,7 @@ public class Bug593 {
 					"  }",
 					"  ",
 					"  @SyntheticMember",
-					"  private final static long serialVersionUID = 1L;",
+					"  private static final long serialVersionUID = 1L;",
 					"}",
 					""));
 		}
@@ -505,7 +505,7 @@ public class Bug593 {
 					"  }",
 					"  ",
 					"  @SyntheticMember",
-					"  private final static long serialVersionUID = 1L;",
+					"  private static final long serialVersionUID = 1L;",
 					"}",
 					""));
 		}
@@ -553,7 +553,7 @@ public class Bug593 {
 					"  }",
 					"  ",
 					"  @SyntheticMember",
-					"  private final static long serialVersionUID = -844578811L;",
+					"  private static final long serialVersionUID = -844578811L;",
 					"}",
 					""));
 		}
@@ -601,7 +601,7 @@ public class Bug593 {
 					"  }",
 					"  ",
 					"  @SyntheticMember",
-					"  private final static long serialVersionUID = -844578811L;",
+					"  private static final long serialVersionUID = -844578811L;",
 					"}",
 					""));
 		}
@@ -756,7 +756,7 @@ public class Bug593 {
 					"  }",
 					"  ",
 					"  @SyntheticMember",
-					"  private final static long serialVersionUID = 107525711L;",
+					"  private static final long serialVersionUID = 107525711L;",
 					"}",
 					""));
 		}
@@ -833,7 +833,7 @@ public class Bug593 {
 					"  }",
 					"  ",
 					"  @SyntheticMember",
-					"  private final static long serialVersionUID = 107525711L;",
+					"  private static final long serialVersionUID = 107525711L;",
 					"}",
 					""));
 		}

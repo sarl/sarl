@@ -68,6 +68,7 @@ public class SarlFormalParameterImpl extends XtendParameterImpl implements SarlF
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public XExpression getDefaultValue()
 	{
 		return defaultValue;
@@ -95,6 +96,7 @@ public class SarlFormalParameterImpl extends XtendParameterImpl implements SarlF
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setDefaultValue(XExpression newDefaultValue)
 	{
 		if (newDefaultValue != defaultValue)

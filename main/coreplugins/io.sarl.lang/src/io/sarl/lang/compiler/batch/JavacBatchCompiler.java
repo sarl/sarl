@@ -37,6 +37,7 @@ import com.google.common.collect.Lists;
 import com.google.inject.Singleton;
 import org.apache.commons.io.output.WriterOutputStream;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.Strings;
 import org.slf4j.Logger;
 
@@ -88,25 +89,28 @@ public class JavacBatchCompiler implements IJavaBatchCompiler {
 		if (progress.isCanceled()) {
 			return false;
 		}
-		if (!bootClassPathEntries.isEmpty()) {
-			final StringBuilder cmd = new StringBuilder();
-			boolean first = true;
-			for (final File entry : bootClassPathEntries) {
-				if (progress.isCanceled()) {
-					return false;
-				}
-				if (entry.exists()) {
-					if (first) {
-						first = false;
-					} else {
-						cmd.append(File.pathSeparator);
+		if (!bootClassPathEntries.isEmpty() && !Strings.isEmpty(javaVersion)) {
+			final JavaVersion jversion = JavaVersion.fromQualifier(javaVersion);
+			if (!jversion.isAtLeast(JavaVersion.JAVA9)) {
+				final StringBuilder cmd = new StringBuilder();
+				boolean first = true;
+				for (final File entry : bootClassPathEntries) {
+					if (progress.isCanceled()) {
+						return false;
 					}
-					cmd.append(entry.getAbsolutePath());
+					if (entry.exists()) {
+						if (first) {
+							first = false;
+						} else {
+							cmd.append(File.pathSeparator);
+						}
+						cmd.append(entry.getAbsolutePath());
+					}
 				}
-			}
-			if (cmd.length() > 0) {
-				commandLineArguments.add("-bootclasspath"); //$NON-NLS-1$
-				commandLineArguments.add(cmd.toString());
+				if (cmd.length() > 0) {
+					commandLineArguments.add("-bootclasspath"); //$NON-NLS-1$
+					commandLineArguments.add(cmd.toString());
+				}
 			}
 		}
 		final Iterator<File> classPathIterator = classPathEntries.iterator();

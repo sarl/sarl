@@ -466,4 +466,39 @@ public class HzMapMock<K, V> extends HashMap<K, V> implements IMap<K, V> {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
+	public V put(K arg0, V arg1, long arg2, TimeUnit arg3, long arg4, TimeUnit arg5) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public ICompletableFuture<V> putAsync(K arg0, V arg1, long arg2, TimeUnit arg3, long arg4, TimeUnit arg5) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public V putIfAbsent(K arg0, V arg1, long arg2, TimeUnit arg3, long arg4, TimeUnit arg5) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void putTransient(K arg0, V arg1, long arg2, TimeUnit arg3, long arg4, TimeUnit arg5) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void set(K arg0, V arg1, long arg2, TimeUnit arg3, long arg4, TimeUnit arg5) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public ICompletableFuture<Void> setAsync(K arg0, V arg1, long arg2, TimeUnit arg3, long arg4, TimeUnit arg5) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public boolean setTtl(K arg0, long arg1, TimeUnit arg2) {
+		throw new UnsupportedOperationException();
+	}
+
 }

@@ -2347,7 +2347,7 @@ public class SkillCompilerTest {
 					"   */",
 					"  @SyntheticMember",
 					"  @SarlSourceCode(\"5\")",
-					"  public final static int $DEFAULT_VALUE$FUNC1_0 = 5;",
+					"  public static final int $DEFAULT_VALUE$FUNC1_0 = 5;",
 					"  ",
 					"  @DefaultValueUse(\"int\")",
 					"  @SyntheticMember",

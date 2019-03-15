@@ -3500,7 +3500,7 @@ public class Bug885 extends AbstractSarlTest {
 			"    }",
 			"    ",
 			"    @SyntheticMember",
-			"    private final static long serialVersionUID = 2117806963L;",
+			"    private static final long serialVersionUID = 2117806963L;",
 			"    ",
 			"    @Pure",
 			"    public UUID getUuid() {",

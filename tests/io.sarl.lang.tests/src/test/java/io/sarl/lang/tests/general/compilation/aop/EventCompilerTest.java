@@ -64,7 +64,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"  }",
 				"  ",
 				"  @SyntheticMember",
-				"  private final static long serialVersionUID = 588368462L;",
+				"  private static final long serialVersionUID = 588368462L;",
 				"}",
 				""
 				);
@@ -96,7 +96,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"  }",
 				"  ",
 				"  @SyntheticMember",
-				"  private final static long serialVersionUID = 588368462L;",
+				"  private static final long serialVersionUID = 588368462L;",
 				"}",
 				""
 				);
@@ -174,7 +174,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"  }",
 				"  ",
 				"  @SyntheticMember",
-				"  private final static long serialVersionUID = 1787001662L;",
+				"  private static final long serialVersionUID = 1787001662L;",
 				"}",
 				""
 				);
@@ -212,7 +212,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"  }",
 				"  ",
 				"  @SyntheticMember",
-				"  private final static long serialVersionUID = 2189L;",
+				"  private static final long serialVersionUID = 2189L;",
 				"}",
 				""
 				);
@@ -291,7 +291,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"  }",
 				"  ",
 				"  @SyntheticMember",
-				"  private final static long serialVersionUID = 598944340L;",
+				"  private static final long serialVersionUID = 598944340L;",
 				"}",
 				""
 				);
@@ -326,7 +326,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"  }",
 				"  ",
 				"  @SyntheticMember",
-				"  private final static long serialVersionUID = 588368462L;",
+				"  private static final long serialVersionUID = 588368462L;",
 				"}",
 				""));
 	}
@@ -359,7 +359,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"  }",
 				"  ",
 				"  @SyntheticMember",
-				"  private final static long serialVersionUID = 588368462L;",
+				"  private static final long serialVersionUID = 588368462L;",
 				"}",
 				""));
 	}
@@ -392,7 +392,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"  }",
 				"  ",
 				"  @SyntheticMember",
-				"  private final static long serialVersionUID = 588368462L;",
+				"  private static final long serialVersionUID = 588368462L;",
 				"}",
 				""));
 	}
@@ -425,7 +425,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"  }",
 				"  ",
 				"  @SyntheticMember",
-				"  private final static long serialVersionUID = 588368462L;",
+				"  private static final long serialVersionUID = 588368462L;",
 				"}",
 				""));
 	}
@@ -500,7 +500,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"  }",
 				"  ",
 				"  @SyntheticMember",
-				"  private final static long serialVersionUID = 685900599L;",
+				"  private static final long serialVersionUID = 685900599L;",
 				"}",
 				""));
 	}
@@ -575,7 +575,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"  }",
 				"  ",
 				"  @SyntheticMember",
-				"  private final static long serialVersionUID = 685900599L;",
+				"  private static final long serialVersionUID = 685900599L;",
 				"}",
 				""));
 	}
@@ -603,7 +603,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"  }",
 				"  ",
 				"  @SyntheticMember",
-				"  private final static long serialVersionUID = 588370691L;",
+				"  private static final long serialVersionUID = 588370691L;",
 				"}",
 				""));
 	}
@@ -631,7 +631,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"  }",
 				"  ",
 				"  @SyntheticMember",
-				"  private final static long serialVersionUID = 588370691L;",
+				"  private static final long serialVersionUID = 588370691L;",
 				"}",
 				""));
 	}
@@ -659,7 +659,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"  }",
 				"  ",
 				"  @SyntheticMember",
-				"  private final static long serialVersionUID = 588370691L;",
+				"  private static final long serialVersionUID = 588370691L;",
 				"}",
 				""));
 	}
@@ -687,7 +687,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"  }",
 				"  ",
 				"  @SyntheticMember",
-				"  private final static long serialVersionUID = 588370691L;",
+				"  private static final long serialVersionUID = 588370691L;",
 				"}",
 				""));
 	}
@@ -715,7 +715,7 @@ public class EventCompilerTest extends AbstractSarlTest {
 				"  }",
 				"  ",
 				"  @SyntheticMember",
-				"  private final static long serialVersionUID = 588370691L;",
+				"  private static final long serialVersionUID = 588370691L;",
 				"}",
 				""));
 	}

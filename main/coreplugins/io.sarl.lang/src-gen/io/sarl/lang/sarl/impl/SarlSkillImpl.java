@@ -86,6 +86,7 @@ public class SarlSkillImpl extends XtendTypeDeclarationImplCustom implements Sar
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public JvmParameterizedTypeReference getExtends()
 	{
 		return extends_;
@@ -113,6 +114,7 @@ public class SarlSkillImpl extends XtendTypeDeclarationImplCustom implements Sar
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setExtends(JvmParameterizedTypeReference newExtends)
 	{
 		if (newExtends != extends_)
@@ -134,6 +136,7 @@ public class SarlSkillImpl extends XtendTypeDeclarationImplCustom implements Sar
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<JvmParameterizedTypeReference> getImplements()
 	{
 		if (implements_ == null)
@@ -148,6 +151,7 @@ public class SarlSkillImpl extends XtendTypeDeclarationImplCustom implements Sar
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isAbstract()
 	{
 		// TODO: implement this method
@@ -160,6 +164,7 @@ public class SarlSkillImpl extends XtendTypeDeclarationImplCustom implements Sar
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isStrictFloatingPoint()
 	{
 		// TODO: implement this method

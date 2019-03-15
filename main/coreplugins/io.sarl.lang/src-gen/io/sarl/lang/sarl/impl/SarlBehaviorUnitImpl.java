@@ -92,6 +92,7 @@ public class SarlBehaviorUnitImpl extends XtendMemberImplCustom implements SarlB
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public JvmParameterizedTypeReference getName()
 	{
 		return name;
@@ -119,6 +120,7 @@ public class SarlBehaviorUnitImpl extends XtendMemberImplCustom implements SarlB
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setName(JvmParameterizedTypeReference newName)
 	{
 		if (newName != name)
@@ -140,6 +142,7 @@ public class SarlBehaviorUnitImpl extends XtendMemberImplCustom implements SarlB
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public XExpression getGuard()
 	{
 		return guard;
@@ -167,6 +170,7 @@ public class SarlBehaviorUnitImpl extends XtendMemberImplCustom implements SarlB
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setGuard(XExpression newGuard)
 	{
 		if (newGuard != guard)
@@ -188,6 +192,7 @@ public class SarlBehaviorUnitImpl extends XtendMemberImplCustom implements SarlB
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public XExpression getExpression()
 	{
 		return expression;
@@ -215,6 +220,7 @@ public class SarlBehaviorUnitImpl extends XtendMemberImplCustom implements SarlB
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setExpression(XExpression newExpression)
 	{
 		if (newExpression != expression)

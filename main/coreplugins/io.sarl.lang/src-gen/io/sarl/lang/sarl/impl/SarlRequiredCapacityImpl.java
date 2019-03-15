@@ -72,6 +72,7 @@ public class SarlRequiredCapacityImpl extends XtendMemberImplCustom implements S
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<JvmParameterizedTypeReference> getCapacities()
 	{
 		if (capacities == null)

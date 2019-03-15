@@ -57,6 +57,7 @@ import org.apache.maven.toolchain.ToolchainPrivate;
 import org.apache.maven.toolchain.java.JavaToolchain;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.xtext.diagnostics.Severity;
+import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.util.ReflectExtensions;
 import org.slf4j.Logger;
@@ -88,6 +89,8 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 
 	@Parameter(readonly = true, defaultValue = "${basedir}/.settings/io.sarl.lang.SARL.prefs")
 	private String propertiesFileLocation;
+
+	private List<File> bufferedClasspath;
 
 	@Override
 	public void prepareExecution() throws MojoExecutionException {
@@ -305,6 +308,14 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	}
 
 	private String getBootClassPath() throws MojoExecutionException {
+		// Bootclasspath is only supported on Java8 and older
+		final String sourceVersionStr = getSourceVersion();
+		if (!Strings.isEmpty(sourceVersionStr)) {
+			final JavaVersion sourceVersion = JavaVersion.fromQualifier(sourceVersionStr);
+			if (sourceVersion != null && sourceVersion.isAtLeast(JavaVersion.JAVA9)) {
+				return ""; //$NON-NLS-1$
+			}
+		}
 		final Toolchain toolchain = this.toolchainManager.getToolchainFromBuildContext("jdk", this.mavenHelper.getSession()); //$NON-NLS-1$
 		if (toolchain instanceof JavaToolchain && toolchain instanceof ToolchainPrivate) {
 			final JavaToolchain javaToolChain = (JavaToolchain) toolchain;
@@ -413,28 +424,31 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	 * @see #getTestClassPath()
 	 */
 	protected List<File> getClassPath() throws MojoExecutionException {
-		final Set<String> classPath = new LinkedHashSet<>();
-		final MavenProject project = getProject();
-		classPath.add(project.getBuild().getSourceDirectory());
-		try {
-			classPath.addAll(project.getCompileClasspathElements());
-		} catch (DependencyResolutionRequiredException e) {
-			throw new MojoExecutionException(e.getLocalizedMessage(), e);
-		}
-		for (final Artifact dep : project.getArtifacts()) {
-			classPath.add(dep.getFile().getAbsolutePath());
-		}
-		classPath.remove(project.getBuild().getOutputDirectory());
-		final List<File> files = new ArrayList<>();
-		for (final String filename : classPath) {
-			final File file = new File(filename);
-			if (file.exists()) {
-				files.add(file);
-			} else {
-				getLog().warn(MessageFormat.format(Messages.AbstractSarlBatchCompilerMojo_10, filename));
+		if (this.bufferedClasspath == null) {
+			final Set<String> classPath = new LinkedHashSet<>();
+			final MavenProject project = getProject();
+			classPath.add(project.getBuild().getSourceDirectory());
+			try {
+				classPath.addAll(project.getCompileClasspathElements());
+			} catch (DependencyResolutionRequiredException e) {
+				throw new MojoExecutionException(e.getLocalizedMessage(), e);
 			}
+			for (final Artifact dep : project.getArtifacts()) {
+				classPath.add(dep.getFile().getAbsolutePath());
+			}
+			classPath.remove(project.getBuild().getOutputDirectory());
+			final List<File> files = new ArrayList<>();
+			for (final String filename : classPath) {
+				final File file = new File(filename);
+				if (file.exists()) {
+					files.add(file);
+				} else {
+					getLog().warn(MessageFormat.format(Messages.AbstractSarlBatchCompilerMojo_10, filename));
+				}
+			}
+			this.bufferedClasspath = files;
 		}
-		return files;
+		return this.bufferedClasspath;
 	}
 
 	/** Replies the classpath for the test code.

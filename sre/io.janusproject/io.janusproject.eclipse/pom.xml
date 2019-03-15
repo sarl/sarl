@@ -26,6 +26,24 @@
  				<artifactId>tycho-source-plugin</artifactId>
  			</plugin>
 
+			<!-- FIXME: This extra classpath element is defined for fixing a bug into the Maven's Tycho compiler
+				 that avoids to load the SWT bundle fragment into the classpath. It causes a class not found
+				 exception for a SWT widget. -->
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-compiler-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<extraClasspathElements>
+						<extraClasspathElement>
+							<groupId>org.eclipse.platform</groupId>
+							<artifactId>org.eclipse.swt.gtk.linux.x86_64</artifactId>
+							<version>${swt.version}</version>
+						</extraClasspathElement>
+					</extraClasspathElements>
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<groupId>com.google.code.maven-replacer-plugin</groupId>
 				<artifactId>replacer</artifactId>

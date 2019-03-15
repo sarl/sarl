@@ -148,7 +148,7 @@ public class Bug590 extends AbstractSarlTest {
 				"  }",
 				"  ",
 				"  @SyntheticMember",
-				"  private final static long serialVersionUID = -211302830L;",
+				"  private static final long serialVersionUID = -211302830L;",
 				"}",
 				""));
 	}
@@ -204,7 +204,7 @@ public class Bug590 extends AbstractSarlTest {
 				"  }",
 				"  ",
 				"  @SyntheticMember",
-				"  private final static long serialVersionUID = -211302830L;",
+				"  private static final long serialVersionUID = -211302830L;",
 				"}",
 				""),
 				it.getGeneratedCode("io.sarl.lang.tests.bug590.LocaleMessageFormat"));
@@ -244,7 +244,7 @@ public class Bug590 extends AbstractSarlTest {
 					"  }",
 					"  ",
 					"  @SyntheticMember",
-					"  private final static long serialVersionUID = 1L;",
+					"  private static final long serialVersionUID = 1L;",
 					"}",
 					""),
 					it.getGeneratedCode("io.sarl.lang.tests.bug590.LocaleMessageFormat2"));
@@ -302,7 +302,7 @@ public class Bug590 extends AbstractSarlTest {
 				"  }",
 				"  ",
 				"  @SyntheticMember",
-				"  private final static long serialVersionUID = -211302830L;",
+				"  private static final long serialVersionUID = -211302830L;",
 				"}",
 				""),
 				it.getGeneratedCode("io.sarl.lang.tests.bug590.LocaleMessageFormat"));
@@ -342,7 +342,7 @@ public class Bug590 extends AbstractSarlTest {
 					"  }",
 					"  ",
 					"  @SyntheticMember",
-					"  private final static long serialVersionUID = 1L;",
+					"  private static final long serialVersionUID = 1L;",
 					"}",
 					""),
 					it.getGeneratedCode("io.sarl.lang.tests.bug590.LocaleMessageFormat2"));
@@ -402,7 +402,7 @@ public class Bug590 extends AbstractSarlTest {
 				"  }",
 				"  ",
 				"  @SyntheticMember",
-				"  private final static long serialVersionUID = -211300601L;",
+				"  private static final long serialVersionUID = -211300601L;",
 				"}",
 				""));
 	}

@@ -140,7 +140,7 @@ public class Bug856 extends AbstractSarlTest {
 			"   */",
 			"  @SyntheticMember",
 			"  @SarlSourceCode(\"null\")",
-			"  private final static UUID $DEFAULT_VALUE$GETRESULTS_0 = null;",
+			"  private static final UUID $DEFAULT_VALUE$GETRESULTS_0 = null;",
 			"  ",
 			"  @DefaultValueUse(\"java.util.UUID\")",
 			"  @SyntheticMember",

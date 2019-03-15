@@ -128,7 +128,7 @@ public class Bug23 extends AbstractSarlTest {
 				"  }",
 				"  ",
 				"  @SyntheticMember",
-				"  private final static long serialVersionUID = -201217093L;",
+				"  private static final long serialVersionUID = -201217093L;",
 				"}",
 				""
 				);

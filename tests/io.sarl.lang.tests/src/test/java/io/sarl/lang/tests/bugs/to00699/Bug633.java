@@ -93,7 +93,7 @@ public class Bug633 extends AbstractSarlTest {
 				"   */",
 				"  @SyntheticMember",
 				"  @SarlSourceCode(\"null\")",
-				"  private final static Object $DEFAULT_VALUE$F2_0 = null;",
+				"  private static final Object $DEFAULT_VALUE$F2_0 = null;",
 				"  ",
 				"  @DefaultValueUse(\"java.lang.Object\")",
 				"  @SyntheticMember",

@@ -14,6 +14,14 @@
 	<name>Tycho Module Parent</name>
 	<packaging>pom</packaging>
 
+	<!-- ================ -->
+	<!-- ==== Modules === -->
+	<!-- ================ -->
+
+	<modules>
+		<module>tycho-parent-ui</module>
+	</modules>
+
 	<!-- ======================================= -->
 	<!-- ==== Plugins Dependency Management === -->
 	<!-- ======================================= -->
@@ -157,6 +165,12 @@
 
 				<plugin>
 					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-p2-plugin</artifactId>
+					<version>${tycho.version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
 					<artifactId>tycho-source-plugin</artifactId>
 					<version>${tycho.version}</version>
 					<executions>
@@ -225,7 +239,7 @@
 				</property>
 			</activation>
 		</profile>
-	</profiles>
+  	</profiles>
 
 	<!-- ===================== -->
 	<!-- ==== Repositories === -->
@@ -236,17 +250,16 @@
 		     The list of the available P2 repositories is available at:
 		     https://eclipse.org/Xtext/documentation/350_continuous_integration.html
 		     -->
-		<repository>
+		<!-- <repository>
 			<id>org.eclipse.modeling.tmf.xtext.updates</id>
 			<layout>p2</layout>
 			<url>http://download.eclipse.org/modeling/tmf/xtext/updates/releases/${xtext.version.current}/</url>
-			<!--<url>http://download.eclipse.org/modeling/tmf/xtext/updates/composite/latest/</url>-->
-		</repository>
+		</repository> -->
 		<!-- Eclipse and related libraries -->
 		<repository>
 			<id>org.eclipse.ide.photon</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/2018-09/</url>
+			<url>http://download.eclipse.org/releases/2019-03/</url>
 		</repository>
 		<repository>
 			<id>org.jboss.m2e-jdt-compiler.update.lastest</id>

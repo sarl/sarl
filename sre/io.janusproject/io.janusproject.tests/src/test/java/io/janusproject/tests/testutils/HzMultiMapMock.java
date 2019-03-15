@@ -194,6 +194,11 @@ public class HzMultiMapMock<K, V> implements MultiMap<K, V> {
 	}
 
 	@Override
+	public void delete(Object arg0) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
 	public void lock(K key) {
 		throw new UnsupportedOperationException();
 	}
