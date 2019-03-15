@@ -83,6 +83,7 @@ import org.eclipse.xtext.xbase.XVariableDeclaration;
 import org.eclipse.xtext.xbase.compiler.IGeneratorConfigProvider;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.lib.util.ReflectExtensions;
+import org.eclipse.xtext.xbase.scoping.batch.IFeatureNames;
 import org.eclipse.xtext.xbase.typesystem.IBatchTypeResolver;
 import org.eclipse.xtext.xbase.typesystem.IResolvedTypes;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
@@ -647,6 +648,7 @@ public class SarlCompiler extends XtendCompiler {
 				XAbstractFeatureCall selected = null;
 				boolean forceNaming = false;
 				XAbstractFeatureCall root = null;
+				JvmOperation operationToTest = null;
 				if (feature instanceof JvmFormalParameter) {
 					if (!exclusion.contains(feature)) {
 						selected = featureCall;
@@ -661,14 +663,23 @@ public class SarlCompiler extends XtendCompiler {
 					selected = featureCall;
 					forceNaming = true;
 				} else if (featureCall instanceof XFeatureCall) {
-					selected = featureCall;
-				} else if (featureCall instanceof XMemberFeatureCall && feature instanceof JvmOperation) {
-					final JvmOperation operation = (JvmOperation) feature;
-					if (operation.isStatic()) {
-						root = Utils.getRootFeatureCall(featureCall, expression, exclusion);
-						if (root != null && root != featureCall) {
-							selected = featureCall;
+					// Special case: the XFeatureCall could be considered as a XMemberFeatureCall
+					// with an implicit "it". In this case, the standard treatment
+					// for XMemberFeatureCall must be applied
+					if (isReferenceToIt((XFeatureCall) featureCall)) {
+						if (feature instanceof JvmOperation) {
+							operationToTest = (JvmOperation) feature;
 						}
+					} else {
+						selected = featureCall;
+					}
+				} else if (featureCall instanceof XMemberFeatureCall && feature instanceof JvmOperation) {
+					operationToTest = (JvmOperation) feature;
+				}
+				if (operationToTest != null && operationToTest.isStatic()) {
+					root = Utils.getRootFeatureCall(featureCall, expression, exclusion);
+					if (root != null && root != featureCall) {
+						selected = featureCall;
 					}
 				}
 				if (selected != null) {
@@ -689,6 +700,39 @@ public class SarlCompiler extends XtendCompiler {
 			}
 		}
 		return references;
+	}
+
+	/** Replies if the given feature call has an implicit reference to the {@code it} variable.
+	 *
+	 * @param featureCall the feature call to test.
+	 * @return {@code true} if the given feature call has an implicit reference to the
+	 *     {@code it} variable.
+	 * @since 0.9
+	 */
+	@SuppressWarnings("static-method")
+	protected boolean isReferenceToIt(XFeatureCall featureCall) {
+		assert featureCall != null;
+		if (!featureCall.isTypeLiteral() && !featureCall.isPackageFragment()) {
+			final String itKeyword = IFeatureNames.IT.getFirstSegment();
+			XFeatureCall theFeatureCall = featureCall;
+			do {
+				String name =  theFeatureCall.getConcreteSyntaxFeatureName();
+				if (Strings.equal(itKeyword, name)) {
+					return true;
+				}
+				name =  theFeatureCall.getFeature().getSimpleName();
+				if (Strings.equal(itKeyword, name)) {
+					return true;
+				}
+				final XExpression expr = featureCall.getImplicitReceiver();
+				if (expr instanceof XFeatureCall) {
+					theFeatureCall = (XFeatureCall) expr;
+				} else {
+					theFeatureCall = null;
+				}
+			} while (theFeatureCall != null);
+		}
+		return false;
 	}
 
 	private static void updateReferenceList(List<XAbstractFeatureCall> references, Set<String> identifiers,
