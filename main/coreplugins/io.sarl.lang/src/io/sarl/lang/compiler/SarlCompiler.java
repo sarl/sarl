@@ -716,11 +716,7 @@ public class SarlCompiler extends XtendCompiler {
 			final String itKeyword = IFeatureNames.IT.getFirstSegment();
 			XFeatureCall theFeatureCall = featureCall;
 			do {
-				String name =  theFeatureCall.getConcreteSyntaxFeatureName();
-				if (Strings.equal(itKeyword, name)) {
-					return true;
-				}
-				name =  theFeatureCall.getFeature().getSimpleName();
+				final String name =  theFeatureCall.getFeature().getSimpleName();
 				if (Strings.equal(itKeyword, name)) {
 					return true;
 				}
