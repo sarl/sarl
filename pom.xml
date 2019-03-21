@@ -437,7 +437,7 @@
 			<dependency>
 				<groupId>com.hazelcast</groupId>
 				<artifactId>hazelcast</artifactId>
-				<version>3.9-EA</version>
+				<version>3.11.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.zeromq</groupId>

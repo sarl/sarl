@@ -28,10 +28,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.ByteOrder;
 
+import com.hazelcast.internal.serialization.InternalSerializationService;
 import com.hazelcast.nio.ObjectDataInput;
 import com.hazelcast.nio.ObjectDataOutput;
 import com.hazelcast.nio.serialization.Data;
 import com.hazelcast.nio.serialization.StreamSerializer;
+import com.hazelcast.spi.serialization.SerializationService;
 import com.hazelcast.version.Version;
 
 import io.janusproject.tests.testutils.AbstractJanusTest;
@@ -206,6 +208,11 @@ abstract class AbstractSerializerTest extends AbstractJanusTest {
 				}
 			}
 			return content;
+		}
+
+		@Override
+		public SerializationService getSerializationService() {
+			throw new UnsupportedOperationException();
 		}
 
 	}
@@ -383,6 +390,11 @@ abstract class AbstractSerializerTest extends AbstractJanusTest {
 		@Override
 		public Version getVersion() {
 			return Version.UNKNOWN;
+		}
+
+		@Override
+		public InternalSerializationService getSerializationService() {
+			throw new UnsupportedOperationException();
 		}
 
 	}
