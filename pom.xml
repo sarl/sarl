@@ -32,9 +32,9 @@
 		<!-- The versions of the following Xtext libraries are available at: https://eclipse.org/Xtext/documentation/350_continuous_integration.html -->
 
 		<!-- Version of the Xtext API -->
-		<xtext.version>2.15.0</xtext.version>
-		<xtext.version.current>2.15.0</xtext.version.current>
-		<xtext.version.next>2.15.1</xtext.version.next>
+		<xtext.version>2.17.0</xtext.version>
+		<xtext.version.current>2.17.0</xtext.version.current>
+		<xtext.version.next>2.17.1</xtext.version.next>
 		<!-- Version of the MWE2 library (used for accessing the mwe2 P2 http://download.eclipse.org/modeling/emft/mwe/updates/releases/, 
 			see compositeContent.{xml,jar,xz,xml.xz} file) -->
 		<mwe2.version>2.9.0</mwe2.version>
@@ -610,6 +610,7 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>${mavencompiler.version}</version>
 					<configuration>
+						<compilerId>jdt</compilerId>
 						<source>${compiler.level}</source>
 						<target>${compiler.level}</target>
 						<testSource>${compiler.level}</testSource>
@@ -618,6 +619,13 @@
 						<showDeprecation>false</showDeprecation>
 						<showWarnings>false</showWarnings>
 					</configuration>
+					<dependencies>
+						<dependency>
+							<groupId>org.eclipse.tycho</groupId>
+							<artifactId>tycho-compiler-jdt</artifactId>
+							<version>1.3.0</version>
+						</dependency>
+					</dependencies>
 				</plugin>
 
 				<plugin>
@@ -767,7 +775,7 @@
 							<groupId>com.puppycrawl.tools</groupId>
 							<artifactId>checkstyle</artifactId>
 							<!-- Same version as inside Eclipse IDE -->
-							<version>8.12</version>
+							<version>8.18</version>
 						</dependency>
 					</dependencies>
 				</plugin>

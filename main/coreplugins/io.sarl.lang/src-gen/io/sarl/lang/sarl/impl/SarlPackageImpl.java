@@ -292,6 +292,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getSarlScript()
 	{
 		return sarlScriptEClass;
@@ -302,6 +303,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getSarlField()
 	{
 		return sarlFieldEClass;
@@ -313,6 +315,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * @since 0.5
 	 * @generated
 	 */
+	@Override
 	public EClass getSarlBreakExpression()
 	{
 		return sarlBreakExpressionEClass;
@@ -324,6 +327,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * @since 0.7
 	 * @generated
 	 */
+	@Override
 	public EClass getSarlContinueExpression()
 	{
 		return sarlContinueExpressionEClass;
@@ -335,6 +339,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * @since 0.6
 	 * @generated
 	 */
+	@Override
 	public EClass getSarlAssertExpression()
 	{
 		return sarlAssertExpressionEClass;
@@ -346,6 +351,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * @since 0.6
 	 * @generated
 	 */
+	@Override
 	public EReference getSarlAssertExpression_Condition()
 	{
 		return (EReference)sarlAssertExpressionEClass.getEStructuralFeatures().get(0);
@@ -357,6 +363,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * @since 0.6
 	 * @generated
 	 */
+	@Override
 	public EAttribute getSarlAssertExpression_Message()
 	{
 		return (EAttribute)sarlAssertExpressionEClass.getEStructuralFeatures().get(1);
@@ -368,6 +375,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * @since 0.6
 	 * @generated
 	 */
+	@Override
 	public EAttribute getSarlAssertExpression_IsStatic()
 	{
 		return (EAttribute)sarlAssertExpressionEClass.getEStructuralFeatures().get(2);
@@ -378,6 +386,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getSarlAction()
 	{
 		return sarlActionEClass;
@@ -388,6 +397,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getSarlAction_FiredEvents()
 	{
 		return (EReference)sarlActionEClass.getEStructuralFeatures().get(0);
@@ -398,6 +408,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getSarlConstructor()
 	{
 		return sarlConstructorEClass;
@@ -408,6 +419,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getSarlBehaviorUnit()
 	{
 		return sarlBehaviorUnitEClass;
@@ -418,6 +430,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getSarlBehaviorUnit_Name()
 	{
 		return (EReference)sarlBehaviorUnitEClass.getEStructuralFeatures().get(0);
@@ -428,6 +441,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getSarlBehaviorUnit_Guard()
 	{
 		return (EReference)sarlBehaviorUnitEClass.getEStructuralFeatures().get(1);
@@ -438,6 +452,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getSarlBehaviorUnit_Expression()
 	{
 		return (EReference)sarlBehaviorUnitEClass.getEStructuralFeatures().get(2);
@@ -448,6 +463,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getSarlCapacityUses()
 	{
 		return sarlCapacityUsesEClass;
@@ -458,6 +474,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getSarlCapacityUses_Capacities()
 	{
 		return (EReference)sarlCapacityUsesEClass.getEStructuralFeatures().get(0);
@@ -468,6 +485,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getSarlRequiredCapacity()
 	{
 		return sarlRequiredCapacityEClass;
@@ -478,6 +496,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getSarlRequiredCapacity_Capacities()
 	{
 		return (EReference)sarlRequiredCapacityEClass.getEStructuralFeatures().get(0);
@@ -488,6 +507,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getSarlClass()
 	{
 		return sarlClassEClass;
@@ -498,6 +518,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getSarlInterface()
 	{
 		return sarlInterfaceEClass;
@@ -508,6 +529,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getSarlEnumeration()
 	{
 		return sarlEnumerationEClass;
@@ -518,6 +540,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getSarlAnnotationType()
 	{
 		return sarlAnnotationTypeEClass;
@@ -528,6 +551,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getSarlEnumLiteral()
 	{
 		return sarlEnumLiteralEClass;
@@ -538,6 +562,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getSarlEvent()
 	{
 		return sarlEventEClass;
@@ -548,6 +573,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getSarlEvent_Extends()
 	{
 		return (EReference)sarlEventEClass.getEStructuralFeatures().get(0);
@@ -558,6 +584,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getSarlSpace()
 	{
 		return sarlSpaceEClass;
@@ -568,6 +595,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getSarlSpace_Extends()
 	{
 		return (EReference)sarlSpaceEClass.getEStructuralFeatures().get(0);
@@ -578,6 +606,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getSarlArtifact()
 	{
 		return sarlArtifactEClass;
@@ -588,6 +617,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getSarlArtifact_Extends()
 	{
 		return (EReference)sarlArtifactEClass.getEStructuralFeatures().get(0);
@@ -598,6 +628,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getSarlAgent()
 	{
 		return sarlAgentEClass;
@@ -608,6 +639,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getSarlAgent_Extends()
 	{
 		return (EReference)sarlAgentEClass.getEStructuralFeatures().get(0);
@@ -618,6 +650,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getSarlCapacity()
 	{
 		return sarlCapacityEClass;
@@ -628,6 +661,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getSarlCapacity_Extends()
 	{
 		return (EReference)sarlCapacityEClass.getEStructuralFeatures().get(0);
@@ -638,6 +672,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getSarlBehavior()
 	{
 		return sarlBehaviorEClass;
@@ -648,6 +683,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getSarlBehavior_Extends()
 	{
 		return (EReference)sarlBehaviorEClass.getEStructuralFeatures().get(0);
@@ -658,6 +694,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getSarlSkill()
 	{
 		return sarlSkillEClass;
@@ -668,6 +705,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getSarlSkill_Extends()
 	{
 		return (EReference)sarlSkillEClass.getEStructuralFeatures().get(0);
@@ -678,6 +716,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getSarlSkill_Implements()
 	{
 		return (EReference)sarlSkillEClass.getEStructuralFeatures().get(1);
@@ -688,6 +727,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getSarlFormalParameter()
 	{
 		return sarlFormalParameterEClass;
@@ -698,6 +738,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getSarlFormalParameter_DefaultValue()
 	{
 		return (EReference)sarlFormalParameterEClass.getEStructuralFeatures().get(0);
@@ -708,6 +749,7 @@ public class SarlPackageImpl extends EPackageImpl implements SarlPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public SarlFactory getSarlFactory()
 	{
 		return (SarlFactory)getEFactoryInstance();

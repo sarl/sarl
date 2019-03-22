@@ -97,6 +97,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public SarlScript createSarlScript()
 	{
 		SarlScriptImpl sarlScript = new SarlScriptImpl();
@@ -108,6 +109,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public SarlField createSarlField()
 	{
 		SarlFieldImplCustom sarlField = new SarlFieldImplCustom();
@@ -120,6 +122,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	 * @since 0.5
 	 * @generated
 	 */
+	@Override
 	public SarlBreakExpression createSarlBreakExpression()
 	{
 		SarlBreakExpressionImpl sarlBreakExpression = new SarlBreakExpressionImpl();
@@ -132,6 +135,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	 * @since 0.7
 	 * @generated
 	 */
+	@Override
 	public SarlContinueExpression createSarlContinueExpression()
 	{
 		SarlContinueExpressionImpl sarlContinueExpression = new SarlContinueExpressionImpl();
@@ -144,6 +148,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	 * @since 0.6
 	 * @generated
 	 */
+	@Override
 	public SarlAssertExpression createSarlAssertExpression()
 	{
 		SarlAssertExpressionImpl sarlAssertExpression = new SarlAssertExpressionImpl();
@@ -155,6 +160,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public SarlAction createSarlAction()
 	{
 		SarlActionImplCustom sarlAction = new SarlActionImplCustom();
@@ -166,6 +172,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public SarlConstructor createSarlConstructor()
 	{
 		SarlConstructorImpl sarlConstructor = new SarlConstructorImpl();
@@ -177,6 +184,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public SarlBehaviorUnit createSarlBehaviorUnit()
 	{
 		SarlBehaviorUnitImpl sarlBehaviorUnit = new SarlBehaviorUnitImpl();
@@ -188,6 +196,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public SarlCapacityUses createSarlCapacityUses()
 	{
 		SarlCapacityUsesImpl sarlCapacityUses = new SarlCapacityUsesImpl();
@@ -199,6 +208,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public SarlRequiredCapacity createSarlRequiredCapacity()
 	{
 		SarlRequiredCapacityImpl sarlRequiredCapacity = new SarlRequiredCapacityImpl();
@@ -210,6 +220,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public SarlClass createSarlClass()
 	{
 		SarlClassImplCustom sarlClass = new SarlClassImplCustom();
@@ -221,6 +232,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public SarlInterface createSarlInterface()
 	{
 		SarlInterfaceImplCustom sarlInterface = new SarlInterfaceImplCustom();
@@ -232,6 +244,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public SarlEnumeration createSarlEnumeration()
 	{
 		SarlEnumerationImplCustom sarlEnumeration = new SarlEnumerationImplCustom();
@@ -243,6 +256,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public SarlAnnotationType createSarlAnnotationType()
 	{
 		SarlAnnotationTypeImplCustom sarlAnnotationType = new SarlAnnotationTypeImplCustom();
@@ -254,6 +268,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public SarlEnumLiteral createSarlEnumLiteral()
 	{
 		SarlEnumLiteralImpl sarlEnumLiteral = new SarlEnumLiteralImpl();
@@ -265,6 +280,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public SarlEvent createSarlEvent()
 	{
 		SarlEventImplCustom sarlEvent = new SarlEventImplCustom();
@@ -276,6 +292,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public SarlSpace createSarlSpace()
 	{
 		SarlSpaceImpl sarlSpace = new SarlSpaceImpl();
@@ -287,6 +304,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public SarlArtifact createSarlArtifact()
 	{
 		SarlArtifactImpl sarlArtifact = new SarlArtifactImpl();
@@ -298,6 +316,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public SarlAgent createSarlAgent()
 	{
 		SarlAgentImplCustom sarlAgent = new SarlAgentImplCustom();
@@ -309,6 +328,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public SarlCapacity createSarlCapacity()
 	{
 		SarlCapacityImpl sarlCapacity = new SarlCapacityImpl();
@@ -320,6 +340,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public SarlBehavior createSarlBehavior()
 	{
 		SarlBehaviorImplCustom sarlBehavior = new SarlBehaviorImplCustom();
@@ -331,6 +352,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public SarlSkill createSarlSkill()
 	{
 		SarlSkillImplCustom sarlSkill = new SarlSkillImplCustom();
@@ -342,6 +364,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public SarlFormalParameter createSarlFormalParameter()
 	{
 		SarlFormalParameterImpl sarlFormalParameter = new SarlFormalParameterImpl();
@@ -353,6 +376,7 @@ public class SarlFactoryImpl extends EFactoryImpl implements SarlFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public SarlPackage getSarlPackage()
 	{
 		return (SarlPackage)getEPackage();

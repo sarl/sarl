@@ -265,10 +265,8 @@
       <feature id="io.sarl.lib" version="0.9.0.qualifier"/>
       <feature id="io.sarl.pythongenerator.feature" version="0.9.0.qualifier"/>
       <feature id="io.janusproject.feature" version="0.9.0.qualifier"/>
-      <feature id="org.eclipse.fx.ide.basic.feature" version="3.3.0.201809010700"/>
-      <feature id="org.eclipse.fx.runtime.min.feature" version="3.3.0.201809010500"/>
-      <feature id="org.eclipse.fx.ide.m2e.feature" version="3.3.0.201809010700"/>
-      <feature id="org.eclipse.m2e.feature" version="1.9.1.20180912-1601"/>
+      <feature id="org.eclipse.fx.runtime.min.feature" version="3.5.0.201902220600"/>
+      <feature id="org.eclipse.m2e.feature" version="1.11.0.20190220-2119"/>
       <feature id="org.jboss.tools.m2e.jdt.feature" version="1.0.1.201209200903"/>
       <feature id="io.sarl.lib.source" version="0.9.0.qualifier"/>
       <feature id="io.janusproject.feature.source" version="0.9.0.qualifier"/>
@@ -280,7 +278,6 @@
       <feature id="org.eclipse.xtext.xbase.lib"/>
       <feature id="org.eclipse.emf.common"/>
       <feature id="org.eclipse.equinox.p2.core.feature"/>
-      <feature id="org.eclipse.wst.xml_ui.feature"/>
       <feature id="org.eclipse.wst.xml_core.feature"/>
       <feature id="org.eclipse.wst.common_core.feature"/>
       <feature id="org.eclipse.ecf.core.ssl.feature"/>
@@ -302,7 +299,6 @@
       <feature id="org.eclipse.xtext.ui"/>
       <feature id="org.eclipse.epp.mpc"/>
       <feature id="org.eclipse.platform"/>
-      <feature id="org.eclipse.wst.xml_userdoc.feature"/>
       <feature id="org.eclipse.e4.rcp"/>
       <feature id="org.eclipse.wst.common_ui.feature"/>
    </features>

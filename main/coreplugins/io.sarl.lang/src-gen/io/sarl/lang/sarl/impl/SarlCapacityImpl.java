@@ -72,6 +72,7 @@ public class SarlCapacityImpl extends XtendTypeDeclarationImplCustom implements 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<JvmParameterizedTypeReference> getExtends()
 	{
 		if (extends_ == null)

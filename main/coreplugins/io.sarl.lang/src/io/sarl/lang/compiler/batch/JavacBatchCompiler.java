@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.nio.charset.Charset;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -173,7 +174,7 @@ public class JavacBatchCompiler implements IJavaBatchCompiler {
 			return false;
 		}
 
-		final OutputStream stdout = new WriterOutputStream(outWriter);
+		final OutputStream stdout = new WriterOutputStream(outWriter, Charset.defaultCharset());
 
 		final OutputStream stderr = new JavacErrorStream(errWriter, logger);
 
@@ -242,7 +243,7 @@ public class JavacBatchCompiler implements IJavaBatchCompiler {
 		 * @param logger the logger to use for printing out special messages.
 		 */
 		JavacErrorStream(PrintWriter writer, Logger logger) {
-			super(writer);
+			super(writer, Charset.defaultCharset());
 			this.logger = logger;
 		}
 

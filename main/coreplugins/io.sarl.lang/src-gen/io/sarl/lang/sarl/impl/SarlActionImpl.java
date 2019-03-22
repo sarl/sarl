@@ -72,6 +72,7 @@ public class SarlActionImpl extends XtendFunctionImplCustom implements SarlActio
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<JvmTypeReference> getFiredEvents()
 	{
 		if (firedEvents == null)

@@ -21,7 +21,6 @@
 
 package io.sarl.lang.ui.editor;
 
-import com.google.inject.ImplementedBy;
 import org.eclipse.jface.text.formatter.IContentFormatter;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 
@@ -32,7 +31,6 @@ import org.eclipse.xtext.ui.editor.model.IXtextDocument;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@ImplementedBy(DocumentAutoFormatter.class)
 public interface IDocumentAutoFormatter {
 
 	/** Create an instance of document auto formatter.

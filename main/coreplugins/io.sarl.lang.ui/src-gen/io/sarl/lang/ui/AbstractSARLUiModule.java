@@ -50,6 +50,8 @@ import io.sarl.lang.ui.contentassist.imports.SARLImportingTypesProposalProvider;
 import io.sarl.lang.ui.contentassist.javadoc.SARLJavaDocContentAssistProcessor;
 import io.sarl.lang.ui.contentassist.templates.SARLTemplateContextType;
 import io.sarl.lang.ui.contentassist.templates.SARLTemplateProposalProvider;
+import io.sarl.lang.ui.editor.DocumentAutoFormatter;
+import io.sarl.lang.ui.editor.IDocumentAutoFormatter;
 import io.sarl.lang.ui.editor.SARLEditorErrorTickUpdater;
 import io.sarl.lang.ui.editor.SARLNatureAddingEditorCallback;
 import io.sarl.lang.ui.editor.SARLSourceViewer;
@@ -578,6 +580,11 @@ public abstract class AbstractSARLUiModule extends DefaultXbaseWithAnnotationsUi
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IXtextEditorCallback> bindIXtextEditorCallback() {
 		return SARLNatureAddingEditorCallback.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends IDocumentAutoFormatter> bindIDocumentAutoFormatter() {
+		return DocumentAutoFormatter.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]

@@ -332,6 +332,10 @@ Workflow {
 					//backtrack = true
 				}
 			}
+			/*fragment = parser.antlr.XtextAntlrGeneratorComparisonFragment auto-inject {
+				registerAdvice = "org::eclipse::xtend::core::parser::AntlrGrammarWithTokens"
+				registerAdvice = "org::eclipse::xtend::core::parser::ContentAssistAntlrGrammarWithTokens"
+			}*/
 			
 			// EMF Generator
 			emfGenerator = auto-inject {
@@ -803,6 +807,10 @@ Workflow {
     				bind = "org.eclipse.xtend.core.macro.ProcessorInstanceForJvmTypeProvider"
     				to = "io.sarl.lang.ui.macro.SarlJdtProcessorInstanceForJvmTypeProvider"
    				}
+    			ui = {
+    				bind = "io.sarl.lang.ui.editor.IDocumentAutoFormatter"
+    				to = "io.sarl.lang.ui.editor.DocumentAutoFormatter"
+    			}
     		}
 
     		// Xtend-extension bindings

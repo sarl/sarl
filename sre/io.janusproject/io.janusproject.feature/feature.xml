@@ -225,7 +225,8 @@
       <import plugin="io.sarl.core" version="0.9.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.util" version="0.9.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.javafx" version="0.9.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.osgi" version="3.13.100" match="greaterOrEqual"/>
+      <import plugin="com.hazelcast" version="3.11.2" match="greaterOrEqual"/>
+      <import plugin="org.zeromq.jeromq" version="0.5.0" match="greaterOrEqual"/>
       <import plugin="com.google.inject" version="4.1.0" match="greaterOrEqual"/>
       <import plugin="org.apache.commons.cli" version="1.4.0" match="greaterOrEqual"/>
       <import plugin="org.arakhne.afc.core.vmutils" version="15.2.0" match="greaterOrEqual"/>
@@ -235,15 +236,14 @@
       <import plugin="aopalliance" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="io.janusproject.plugin" version="0.9.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.eclipse" version="0.9.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jdt.core" version="3.15.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.runtime" version="3.15.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui.workbench" version="3.112.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jdt.ui" version="3.15.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jface" version="3.14.100" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.swt" version="3.108.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jdt.launching" version="3.11.0" match="greaterOrEqual"/>
-      <import plugin="com.hazelcast" version="3.11.2" match="greaterOrEqual"/>
-      <import plugin="org.zeromq.jeromq" version="0.5.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.osgi" version="3.13.300" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.core" version="3.17.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.runtime" version="3.15.200" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.workbench" version="3.113.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.ui" version="3.17.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jface" version="3.15.100" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.swt" version="3.110.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.launching" version="3.13.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
