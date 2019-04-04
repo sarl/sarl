@@ -65,7 +65,7 @@ public abstract class AbstractMassiveCompilationTest extends AbstractSarlTest {
 	 */
 	protected void diffSingleTypeCompileTo(String sarlExpression, String javaExpression) throws Exception {
 		final String packageName = "io.sarl.lang.core.tests." + this.currentMethod; //$NON-NLS-1$
-		final String inputCode = "package " + packageName + "\n" + sarlExpression; //$NON-NLS-1$ //$NON-NLS-2$
+		final String inputCode = "package " + packageName + System.lineSeparator() + sarlExpression; //$NON-NLS-1$ //$NON-NLS-2$
 		final SarlScript script;
 		if (this.resourceSet == null) {
 			script = getParseHelper().parse(inputCode);
@@ -74,7 +74,7 @@ public abstract class AbstractMassiveCompilationTest extends AbstractSarlTest {
 			script = getParseHelper().parse(inputCode, this.resourceSet);
 		}
 		final String qualifiedName = packageName + "." + script.getXtendTypes().get(0).getName(); //$NON-NLS-1$
-		this.differedTests.put(qualifiedName, "package " + packageName + ";\n\n" + javaExpression); //$NON-NLS-1$ //$NON-NLS-2$
+		this.differedTests.put(qualifiedName, "package " + packageName + ";" + System.lineSeparator() + System.lineSeparator() + javaExpression); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/** Assert that a single type is not correctly generated due to invalid implementation of the Xbase API.
@@ -85,7 +85,7 @@ public abstract class AbstractMassiveCompilationTest extends AbstractSarlTest {
 	 */
 	protected void diffSingleTypeCompileTo_unexpectedCastError(String sarlExpression) throws Exception {
 		final String packageName = "io.sarl.lang.core.tests." + this.currentMethod; //$NON-NLS-1$
-		final String inputCode = "package " + packageName + "\n" + sarlExpression; //$NON-NLS-1$ //$NON-NLS-2$
+		final String inputCode = "package " + packageName + System.lineSeparator() + sarlExpression; //$NON-NLS-1$ //$NON-NLS-2$
 		validate(file(inputCode)).assertError(
 						TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 						IssueCodes.INVALID_CAST);
