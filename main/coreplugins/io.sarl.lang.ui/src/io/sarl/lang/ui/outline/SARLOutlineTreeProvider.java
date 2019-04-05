@@ -79,6 +79,7 @@ import io.sarl.lang.util.Utils;
  * @mavenartifactid $ArtifactId$
  * @see "https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#outline"
  */
+@SuppressWarnings("checkstyle:classfanoutcomplexity")
 public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProvider {
 
 	@Inject

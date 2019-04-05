@@ -284,6 +284,10 @@
          id="org.eclipse.xtext.xbase.lib"
          version="0.0.0"/>
 
+   <includes
+         id="org.eclipse.equinox.executable"
+         version="0.0.0"/>
+
    <requires>
       <import plugin="org.eclipse.emf.common" version="2.15.0" match="compatible"/>
       <import plugin="org.eclipse.emf.ecore" version="2.17.0" match="compatible"/>
@@ -525,13 +529,6 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.emf.databinding.edit"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.pde.core"
          download-size="0"
          install-size="0"
@@ -588,13 +585,6 @@
 
    <plugin
          id="org.eclipse.equinox.concurrent"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.xsd.edit"
          download-size="0"
          install-size="0"
          version="0.0.0"

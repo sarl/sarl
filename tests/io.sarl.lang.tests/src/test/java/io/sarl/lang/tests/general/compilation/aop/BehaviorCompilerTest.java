@@ -85,7 +85,7 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"  }",
 				"  ",
 				"  @SyntheticMember",
-				"  private final static long serialVersionUID = 588368462L;",
+				"  private static final long serialVersionUID = 588368462L;",
 				"}",
 				""
 				);
@@ -159,7 +159,7 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"  }",
 				"  ",
 				"  @SyntheticMember",
-				"  private final static long serialVersionUID = 588368462L;",
+				"  private static final long serialVersionUID = 588368462L;",
 				"}",
 				""
 				);
@@ -259,7 +259,7 @@ public class BehaviorCompilerTest extends AbstractSarlTest {
 				"  }",
 				"  ",
 				"  @SyntheticMember",
-				"  private final static long serialVersionUID = 588472998L;",
+				"  private static final long serialVersionUID = 588472998L;",
 				"}",
 				""
 				);

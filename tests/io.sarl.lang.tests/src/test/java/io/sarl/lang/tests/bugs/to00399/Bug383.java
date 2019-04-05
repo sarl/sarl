@@ -110,7 +110,7 @@ public class Bug383 {
 					"   */",
 					"  @SyntheticMember",
 					"  @SarlSourceCode(\"null\")",
-					"  private final static String $DEFAULT_VALUE$GETINSTANCE_0 = null;",
+					"  private static final String $DEFAULT_VALUE$GETINSTANCE_0 = null;",
 					"  ",
 					"  /**",
 					"   * Testing documentation generator.",

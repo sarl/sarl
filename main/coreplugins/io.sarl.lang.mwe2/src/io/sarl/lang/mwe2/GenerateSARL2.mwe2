@@ -602,6 +602,11 @@ Workflow {
     				provider = true
     				functionName = "configureCompilationUnitImpl"
    				}
+    			runtime = {
+    				bind = "org.eclipse.xtext.parser.antlr.IPartialParsingHelper"
+    				to = "io.sarl.lang.compiler.SarlPartialParserHelper"
+    				functionName = "bindIPartialParserHelper"
+   				}
 
     			ui = {
     				bind = "io.sarl.lang.extralanguage.IExtraLanguageContributions"
@@ -683,6 +688,10 @@ Workflow {
     			ui = {
     				bind = "org.eclipse.xtext.tasks.ITaskTagProvider"
     				to = "io.sarl.lang.ui.tasks.SarlTaskTagProvider"
+    			}
+    			ui = {
+    				bind = "org.eclipse.xtext.tasks.ITaskFinder"
+    				to = "io.sarl.lang.ui.tasks.SarlTaskFinder"
     			}
     			ui = {
     				bind = "org.eclipse.xtext.ui.editor.outline.impl.OutlineFilterAndSorter$IComparator"
@@ -874,11 +883,6 @@ Workflow {
     			runtime = {
     				bind = "org.eclipse.xtext.xbase.conversion.XbaseValueConverterService$IntUnderscoreValueConverter"
     				to = "org.eclipse.xtend.core.conversion.IntUnderscoreValueConverter"
-   				}
-    			runtime = {
-    				bind = "org.eclipse.xtext.parser.antlr.IPartialParsingHelper"
-    				to = "org.eclipse.xtend.core.parser.XtendPartialParsingHelper"
-    				functionName = "bindIPartialParserHelper"
    				}
     			runtime = {
     				bind = "org.eclipse.xtext.naming.IQualifiedNameProvider"

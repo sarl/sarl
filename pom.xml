@@ -28,6 +28,7 @@
 		<!-- Version of the SARL API -->
 		<sarl.version>0.9.0-SNAPSHOT</sarl.version>
 		<janus.version>2.${sarl.version}</janus.version>
+		<sarl.maven.compiler.version>0.8.6</sarl.maven.compiler.version>
 
 		<!-- The versions of the following Xtext libraries are available at: https://eclipse.org/Xtext/documentation/350_continuous_integration.html -->
 
@@ -58,6 +59,8 @@
 		<tycho.version>1.3.0</tycho.version>
 		<!-- Version of the ZeroMQ library -->
 		<zeromq.version>0.5.0</zeromq.version>
+		<!-- Version of the SWT library -->
+		<swt.version>3.110.0</swt.version>
 
 		<!-- Build ID Format (used in Eclipse about dialog) -->
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
@@ -332,7 +335,7 @@
 			<dependency>
 				<groupId>io.sarl.maven</groupId>
 				<artifactId>sarl-maven-plugin</artifactId>
-				<version>${sarl.version}</version>
+				<version>${sarl.maven.compiler.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>io.sarl.maven</groupId>
@@ -590,7 +593,7 @@
 				<plugin>
 					<groupId>io.sarl.maven</groupId>
 					<artifactId>sarl-maven-plugin</artifactId>
-					<version>${sarl.version}</version>
+					<version>${sarl.maven.compiler.version}</version>
 				</plugin>
 
 				<plugin>

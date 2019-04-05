@@ -19,11 +19,7 @@
  * limitations under the License.
  */
 
-
 package io.sarl.examples.tests;
-
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNotNull;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -62,7 +58,7 @@ import io.sarl.lang.compiler.batch.SarlBatchCompiler;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /** Class for testing the examples.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

@@ -400,7 +400,7 @@ public class VarArgsCompilerTest {
 					"  }",
 					"  ",
 					"  @SyntheticMember",
-					"  private final static long serialVersionUID = -595401426L;",
+					"  private static final long serialVersionUID = -595401426L;",
 					"}",
 					""
 					);
@@ -431,7 +431,7 @@ public class VarArgsCompilerTest {
 					"  }",
 					"  ",
 					"  @SyntheticMember",
-					"  private final static long serialVersionUID = 2202902528L;",
+					"  private static final long serialVersionUID = 2202902528L;",
 					"}",
 					""
 					);

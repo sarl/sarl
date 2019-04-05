@@ -74,6 +74,7 @@ import io.sarl.lang.compiler.IGeneratorConfigProvider2;
 import io.sarl.lang.compiler.SARLGeneratorConfigProvider;
 import io.sarl.lang.compiler.SARLJvmGenerator;
 import io.sarl.lang.compiler.SarlCompiler;
+import io.sarl.lang.compiler.SarlPartialParserHelper;
 import io.sarl.lang.controlflow.ExtendedSARLEarlyExitComputer;
 import io.sarl.lang.controlflow.ISarlEarlyExitComputer;
 import io.sarl.lang.controlflow.SARLEarlyExitComputer;
@@ -143,7 +144,6 @@ import org.eclipse.xtend.core.macro.declaration.CompilationUnitImpl;
 import org.eclipse.xtend.core.macro.declaration.IResourceChangeRegistry;
 import org.eclipse.xtend.core.macro.declaration.NopResourceChangeRegistry;
 import org.eclipse.xtend.core.naming.XtendQualifiedNameProvider;
-import org.eclipse.xtend.core.parser.XtendPartialParsingHelper;
 import org.eclipse.xtend.core.parser.antlr.XtendTokenSourceProvider;
 import org.eclipse.xtend.core.resource.XtendLocationInFileProvider;
 import org.eclipse.xtend.core.resource.XtendResourceDescriptionManager;
@@ -694,6 +694,11 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	public Class<? extends IPartialParsingHelper> bindIPartialParserHelper() {
+		return SarlPartialParserHelper.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IGeneratorConfigProvider> bindIGeneratorConfigProvider() {
 		return SARLGeneratorConfigProvider.class;
 	}
@@ -865,11 +870,6 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
 	public Class<? extends HumanReadableTypeNames> bindHumanReadableTypeNames() {
 		return LocalClassAwareTypeNames.class;
-	}
-	
-	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
-	public Class<? extends IPartialParsingHelper> bindIPartialParserHelper() {
-		return XtendPartialParsingHelper.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]

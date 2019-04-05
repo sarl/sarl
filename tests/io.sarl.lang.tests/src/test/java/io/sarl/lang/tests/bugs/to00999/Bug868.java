@@ -939,7 +939,7 @@ public class Bug868 extends AbstractSarlTest {
 			"  }",
 			"  ",
 			"  @SyntheticMember",
-			"  private final static long serialVersionUID = 2103681291L;",
+			"  private static final long serialVersionUID = 2103681291L;",
 			"}",
 			"");
 

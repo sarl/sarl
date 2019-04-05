@@ -19,47 +19,25 @@
  * limitations under the License.
  */
 
-package io.sarl.maven.compiler;
+package io.sarl.lang.compiler;
 
-import javax.inject.Provider;
+import org.eclipse.xtend.core.parser.XtendPartialParsingHelper;
 
-import org.apache.maven.project.MavenProject;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.xtext.resource.XtextResourceSet;
 
-/** provider of resource sets when comilig with Maven.
+/** A customized partial parsing helper that falls eagerly back to a full parse
+ * as soon as the new token sequence would be different from the old one.
+ * This approach allows to benefit from partial parsing whenever a token content
+ * is edited (e.g. the content of a comment, identifier or string literal)
+ * while not producing bogus lookahead information.
+ *
+ * <p>Mostly copied and refactored from the default implementation.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.9
  */
-class MavenProjectResourceSetProvider implements Provider<ResourceSet> {
-
-	private final MavenProject project;
-
-	private ResourceSet resourceSet;
-
-	/** Constructor.
-	 *
-	 * @param project the compiled project.
-	 */
-	MavenProjectResourceSetProvider(MavenProject project) {
-		super();
-		assert project != null;
-		this.project = project;
-	}
-
-	@Override
-	public ResourceSet get() {
-		ResourceSet rs = this.resourceSet;
-		if (rs == null) {
-			rs = new XtextResourceSet();
-			MavenProjectAdapter.install(rs, this.project);
-			this.resourceSet = rs;
-		}
-		assert rs != null;
-		return rs;
-	}
-
+public class SarlPartialParserHelper extends XtendPartialParsingHelper {
+	//
 }

@@ -98,6 +98,7 @@ import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeAnnotationValue;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.common.types.JvmUnknownTypeReference;
 import org.eclipse.xtext.common.types.JvmUpperBound;
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.common.types.TypesFactory;
@@ -2428,7 +2429,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		}
 		if (!explicitType) {
 			final JvmTypeReference type = this._typeReferenceBuilder.typeRef(defaultJvmType);
-			owner.getSuperTypes().add(type);
+			if (!(type instanceof JvmUnknownTypeReference)) {
+				owner.getSuperTypes().add(type);
+			}
 			context.incrementSerial(type.getIdentifier().hashCode());
 		}
 	}

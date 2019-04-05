@@ -88,7 +88,7 @@ public class Bug643 extends AbstractSarlTest {
 			"   */",
 			"  @SyntheticMember",
 			"  @SarlSourceCode(\"null\")",
-			"  private final static TreeNode $DEFAULT_VALUE$NEW_0 = null;",
+			"  private static final TreeNode $DEFAULT_VALUE$NEW_0 = null;",
 			"  ",
 			"  @DefaultValueUse(\"io.sarl.lang.tests.bug643.TreeNode<T>,io.sarl.lang.tests.bug643.Shape2f\")",
 			"  @SyntheticMember",
