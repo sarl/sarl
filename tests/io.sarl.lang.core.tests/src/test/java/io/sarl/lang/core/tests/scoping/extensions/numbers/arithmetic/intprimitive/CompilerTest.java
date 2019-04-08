@@ -21,6 +21,7 @@
 
 package io.sarl.lang.core.tests.scoping.extensions.numbers.arithmetic.intprimitive;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -28,6 +29,8 @@ import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.tests.api.AbstractMassiveCompilationTest;
 
 /**
+ * <p>FIXME: Enable when the speed issue of implicitly imported functions is solved.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -35,6 +38,7 @@ import io.sarl.tests.api.AbstractMassiveCompilationTest;
  * @see "https://github.com/eclipse/xtext-extras/issues/186"
  */
 @SuppressWarnings("all")
+@Ignore
 public class CompilerTest extends AbstractMassiveCompilationTest {
 
 	@DifferedTest

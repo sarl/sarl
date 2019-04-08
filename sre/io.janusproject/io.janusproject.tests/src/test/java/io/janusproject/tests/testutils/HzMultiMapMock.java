@@ -42,6 +42,7 @@ import com.hazelcast.monitor.LocalMultiMapStats;
  * A mock of {@link IMap}.
  * 
  * @author $Author: sgalland$
+ * @author $Author: alombard$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

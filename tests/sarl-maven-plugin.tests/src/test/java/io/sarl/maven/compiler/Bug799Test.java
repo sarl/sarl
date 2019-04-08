@@ -28,6 +28,7 @@ import java.nio.file.Path;
 
 import org.apache.maven.it.Verifier;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -69,6 +70,8 @@ public class Bug799Test extends AbstractMojoTest {
 			"}",
 			"}");
 	
+	// FIXME: Enable the tests when the issue on the Maven compiler is fixed.
+	@Ignore
 	@Test
 	public void compile() throws Exception {
 		Verifier verifier = executeMojo("bug799", "compile");

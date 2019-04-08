@@ -40,6 +40,7 @@ import io.janusproject.tests.testutils.AbstractJanusTest;
 
 /**
  * @author $Author: sgalland$
+ * @author $Author: alombard$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

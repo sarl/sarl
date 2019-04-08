@@ -158,6 +158,20 @@
 				<role>Developer</role>
 			</roles>
 		</developer>
+		<developer>
+			<id>alombard</id>
+			<name>Alexandre Lombard</name>
+			<email>alexandre.lombard@utbm.fr</email>
+			<url>https://github.com/alexandrelombard</url>
+			<organization>
+				Universit&amp;eacute; de Bourgogne Franche-Comt&amp;eacute;.
+				Universit&amp;eacute; de Technologie de Belfort-Montb&amp;eacute;liard.
+			</organization>
+			<organizationUrl>http://www.multiagent.fr</organizationUrl>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
 	</developers>
 
 	<contributors>
@@ -205,14 +219,6 @@
 			<url>https://github.com/jjst</url>
 			<roles>
 				<role>Documentation Contributor</role>
-			</roles>
-		</contributor>
-		<contributor>
-			<name>Alexandre Lombard</name>
-			<email>alexandre.lombard@utbm.fr</email>
-			<url>https://github.com/alexandrelombard</url>
-			<roles>
-				<role>Unit Tests</role>
 			</roles>
 		</contributor>
 		<contributor>

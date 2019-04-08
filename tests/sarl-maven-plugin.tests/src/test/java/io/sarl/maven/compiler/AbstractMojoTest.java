@@ -41,7 +41,7 @@ import org.junit.Assume;
 import org.junit.internal.Throwables;
 
 /** Abstract test of Maven Mojo.
- *
+ * 
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

@@ -63,6 +63,7 @@ import io.sarl.maven.docs.testing.ScriptExecutor;
 /** Generator of the marker language files for the modified marker language for SARL.
  *
  * @author $Author: sgalland$
+ * @author $Author: alombard$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
