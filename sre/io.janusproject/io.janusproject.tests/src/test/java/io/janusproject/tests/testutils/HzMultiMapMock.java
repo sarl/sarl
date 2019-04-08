@@ -256,11 +256,6 @@ public class HzMultiMapMock<K, V> implements MultiMap<K, V> {
 		throw new UnsupportedOperationException();
 	}
 
-	@Override
-	public void delete(Object arg0) {
-		throw new UnsupportedOperationException();
-	}
-
 	/**
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
