@@ -215,11 +215,6 @@ abstract class AbstractSerializerTest extends AbstractJanusTest {
 			return content;
 		}
 
-		@Override
-		public SerializationService getSerializationService() {
-			throw new UnsupportedOperationException();
-		}
-
 	}
 
 	/**
