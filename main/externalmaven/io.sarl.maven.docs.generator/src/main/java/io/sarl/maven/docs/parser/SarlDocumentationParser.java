@@ -63,6 +63,7 @@ import io.sarl.maven.docs.testing.ScriptExecutor;
 /** Generator of the marker language files for the modified marker language for SARL.
  *
  * @author $Author: sgalland$
+ * @author $Author: alombard$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -2134,6 +2135,9 @@ public class SarlDocumentationParser {
 									final String stringResult = Strings.nullToEmpty(Objects.toString(result));
 									return stringResult;
 								}
+							} catch (IllegalStateException e) {
+								// Triggered when a documentation file does not contain Xtext code
+								// It is ignored
 							} catch (Exception exception) {
 								Throwables.propagate(exception);
 							}
@@ -2204,6 +2208,9 @@ public class SarlDocumentationParser {
 									final String stringResult = Strings.nullToEmpty(Objects.toString(result));
 									return formatBlockText(stringResult, context.getOutputLanguage(), context.getBlockCodeFormat());
 								}
+							} catch (IllegalStateException e) {
+								// Triggered when a documentation file does not contain Xtext code
+								// It is ignored
 							} catch (Exception exception) {
 								Throwables.propagate(exception);
 							}

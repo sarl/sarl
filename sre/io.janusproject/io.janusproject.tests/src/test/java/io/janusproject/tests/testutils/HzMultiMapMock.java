@@ -42,6 +42,7 @@ import com.hazelcast.monitor.LocalMultiMapStats;
  * A mock of {@link IMap}.
  * 
  * @author $Author: sgalland$
+ * @author $Author: alombard$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -253,11 +254,6 @@ public class HzMultiMapMock<K, V> implements MultiMap<K, V> {
 	@Override
 	public <SuppliedValue, Result> Result aggregate(com.hazelcast.mapreduce.aggregation.Supplier<K, V, SuppliedValue> supplier,
 			Aggregation<K, SuppliedValue, Result> aggregation, JobTracker jobTracker) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public void delete(Object arg0) {
 		throw new UnsupportedOperationException();
 	}
 

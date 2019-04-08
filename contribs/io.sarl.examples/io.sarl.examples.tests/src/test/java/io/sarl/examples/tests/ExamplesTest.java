@@ -46,6 +46,7 @@ import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.ComparisonFailure;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -162,11 +163,15 @@ public class ExamplesTest extends AbstractSarlTest {
 		return this.name;
 	}
 
+	// FIXME: Enable when the issue related to the Maven SARL compiler is fixed.
+	@Ignore
 	@Test
 	public void path() {
 		assertNotNull(this.exampleZipFile);
 	}
 
+	// FIXME: Enable when the issue related to the Maven SARL compiler is fixed.
+	@Ignore
 	@Test
 	public void compilation() throws Exception {
 		Assume.assumeTrue(this.exampleZipFile != null);
