@@ -56,7 +56,7 @@
 		<javaxinject.version>1</javaxinject.version>
 		<!-- Version of the Tycho module, (search for tycho-maven-plugin on Maven 
 			central) -->
-		<tycho.version>1.3.0</tycho.version>
+		<tycho.version>1.4.0</tycho.version>
 		<!-- Version of the ZeroMQ library -->
 		<zeromq.version>0.5.0</zeromq.version>
 		<!-- Version of the SWT library -->
