@@ -240,11 +240,11 @@
 		     The list of the available P2 repositories is available at:
 		     https://eclipse.org/Xtext/documentation/350_continuous_integration.html
 		     -->
-		<!-- <repository>
+		<repository>
 			<id>org.eclipse.modeling.tmf.xtext.updates</id>
 			<layout>p2</layout>
 			<url>http://download.eclipse.org/modeling/tmf/xtext/updates/releases/${xtext.version.current}/</url>
-		</repository> -->
+		</repository>
 		<!-- Eclipse and related libraries -->
 		<repository>
 			<id>org.eclipse.ide.photon</id>

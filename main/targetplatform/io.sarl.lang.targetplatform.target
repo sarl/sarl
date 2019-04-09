@@ -16,7 +16,6 @@
 			<unit id="org.eclipse.wst.common_core.feature.feature.group" version="3.10.0.v201811122225"/>
 			<unit id="org.eclipse.wst.common_ui.feature.feature.group" version="3.10.0.v201811170421"/>
 			<unit id="org.eclipse.wst.xml_core.feature.feature.group" version="3.13.0.v201901310548"/>
-			<unit id="org.eclipse.xtext.sdk.feature.group" version="2.17.0.v20190304-1445"/>
 			<unit id="org.eclipse.xsd.feature.group" version="2.16.0.v20181220-0848"/>
 			<unit id="org.sonatype.m2e.mavenarchiver.feature.feature.group" version="0.17.2.201606141937-signed-20160830073346"/>
 		</location>
@@ -45,6 +44,10 @@
 			<unit id="org.zeromq.jeromq" version="0.5.0"/>
 			<unit id="javax.inject" version="1.0.0"/>
 			<repository location="http://dependencies.sarl.io"/>
+		</location>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+			<unit id="org.eclipse.xtext.sdk.feature.group" version="2.17.1.v20190403-0733"/>
+			<repository location="http://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.17.1"/>
 		</location>
 	</locations>
 	<targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>

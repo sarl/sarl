@@ -33,9 +33,9 @@
 		<!-- The versions of the following Xtext libraries are available at: https://eclipse.org/Xtext/documentation/350_continuous_integration.html -->
 
 		<!-- Version of the Xtext API -->
-		<xtext.version>2.17.0</xtext.version>
-		<xtext.version.current>2.17.0</xtext.version.current>
-		<xtext.version.next>2.17.1</xtext.version.next>
+		<xtext.version>2.17.1</xtext.version>
+		<xtext.version.current>2.17.1</xtext.version.current>
+		<xtext.version.next>2.17.2</xtext.version.next>
 		<!-- Version of the MWE2 library (used for accessing the mwe2 P2 http://download.eclipse.org/modeling/emft/mwe/updates/releases/, 
 			see compositeContent.{xml,jar,xz,xml.xz} file) -->
 		<mwe2.version>2.9.0</mwe2.version>

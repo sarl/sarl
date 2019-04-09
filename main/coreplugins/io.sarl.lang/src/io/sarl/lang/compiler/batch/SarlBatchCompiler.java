@@ -2219,8 +2219,9 @@ public class SarlBatchCompiler {
 		progress.subTask(Messages.SarlBatchCompiler_58);
 		final Iterable<File> classpath;
 		if (temporaryClassDirectory != null) {
-			classpath = Iterables.concat(getClassPath(), getSourcePaths(),
-					Collections.singletonList(temporaryClassDirectory));
+			classpath = Iterables.concat(
+					Collections.singletonList(temporaryClassDirectory),
+					getClassPath(), getSourcePaths());
 		} else {
 			classpath = Iterables.concat(getClassPath(), getSourcePaths());
 		}
