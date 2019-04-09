@@ -38,6 +38,26 @@
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
 		</dependency>
+		<!-- Force the version of ASM -->
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm</artifactId>
+		</dependency>
+		<!-- Force the version of ASM -->
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm-tree</artifactId>
+		</dependency>
+		<!-- Force the version of ASM -->
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm-commons</artifactId>
+		</dependency>
+		<!-- Force the version of ASM -->
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm-analysis</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>

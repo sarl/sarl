@@ -44,8 +44,6 @@ import io.sarl.lang.SARLVersion;
 @SuppressWarnings("all")
 public class Bug504Test extends AbstractMojoTest {
 
-	// FIXME: Enable the tests when the issue on the Maven compiler is fixed.
-	@Ignore
 	@Test
 	public void compile() throws Exception {
 		Verifier verifier = executeMojo("bug504", "compile");

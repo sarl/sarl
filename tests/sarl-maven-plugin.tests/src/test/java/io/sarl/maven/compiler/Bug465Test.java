@@ -45,8 +45,6 @@ import io.sarl.lang.annotation.SarlSpecification;
 @SuppressWarnings("all")
 public class Bug465Test extends AbstractMojoTest {
 
-	// FIXME: Enable the tests when the issue on the Maven compiler is fixed.
-	@Ignore
 	@Test
 	public void compile() throws Exception {
 		Verifier verifier = executeMojo("bug465", "compile");

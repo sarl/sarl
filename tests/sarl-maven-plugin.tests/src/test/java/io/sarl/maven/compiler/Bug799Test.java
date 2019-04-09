@@ -50,12 +50,10 @@ public class Bug799Test extends AbstractMojoTest {
 			"import io.sarl.lang.core.Agent;",
 			"import io.sarl.lang.core.Skill;",
 			"import io.sarl.maven.bug799.Cap;",
-			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
 			"@SarlElementType(21)",
 			"@SuppressWarnings(\"all\")",
 			"public class A extends Skill implements Cap {",
-			"@Pure",
 			"public void act_connectToSimulator(final String address, final int port) {",
 			"while (true) {",
 			"}",
@@ -70,8 +68,6 @@ public class Bug799Test extends AbstractMojoTest {
 			"}",
 			"}");
 	
-	// FIXME: Enable the tests when the issue on the Maven compiler is fixed.
-	@Ignore
 	@Test
 	public void compile() throws Exception {
 		Verifier verifier = executeMojo("bug799", "compile");

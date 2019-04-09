@@ -92,8 +92,6 @@ public class Bug865Test extends AbstractMojoTest {
 			"}",
 			"}");
 
-	// FIXME: Enable the tests when the issue on the Maven compiler is fixed.
-	@Ignore
 	@Test
 	public void compile01() throws Exception {
 		Verifier verifier = doCompile();

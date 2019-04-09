@@ -47,15 +47,11 @@ import org.junit.Test;
 @SuppressWarnings("all")
 public class CompileMojoTest extends AbstractMojoTest {
 
-	// FIXME: Enable the tests when the issue on the Maven compiler is fixed.
-	@Ignore
 	@Test
 	public void invalidXtext() throws Exception {
 		executeMojo("prj1", "compile");
 	}
 
-	// FIXME: Enable the tests when the issue on the Maven compiler is fixed.
-	@Ignore
 	@Test(expected = VerificationException.class)
 	public void invalidSdk() throws Exception {
 		executeMojo("prj2", "compile");

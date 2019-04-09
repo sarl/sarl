@@ -693,7 +693,7 @@ public class SarlBatchCompiler {
 	public void setBootClassPath(String bootClasspath) {
 		final JavaVersion version = JavaVersion.fromQualifier(getJavaSourceVersion());
 		if (version.isAtLeast(JavaVersion.JAVA9)) {
-			reportWarning(MessageFormat.format(Messages.SarlBatchCompiler_63, bootClasspath));
+			reportInternalWarning(MessageFormat.format(Messages.SarlBatchCompiler_63, bootClasspath));
 		}
 		if (Strings.isEmpty(bootClasspath)) {
 			this.bootClasspath = null;
@@ -714,7 +714,7 @@ public class SarlBatchCompiler {
 	public void setBootClassPath(Collection<File> bootClasspath) {
 		final JavaVersion version = JavaVersion.fromQualifier(getJavaSourceVersion());
 		if (version.isAtLeast(JavaVersion.JAVA9)) {
-			reportWarning(MessageFormat.format(Messages.SarlBatchCompiler_63,
+			reportInternalWarning(MessageFormat.format(Messages.SarlBatchCompiler_63,
 					Joiner.on(File.pathSeparator).join(bootClasspath)));
 		}
 		if (bootClasspath == null || bootClasspath.isEmpty()) {
@@ -1200,7 +1200,7 @@ public class SarlBatchCompiler {
 	 *
 	 * @return success status.
 	 */
-	@Inline(value = "compile((IProgressMonitor) null)", imported = {IProgressMonitor.class})
+	@Inline(value = "compile(($1) null)", imported = {IProgressMonitor.class})
 	public boolean compile() {
 		return compile((IProgressMonitor) null);
 	}
@@ -1211,47 +1211,13 @@ public class SarlBatchCompiler {
 	 * @return success status.
 	 */
 	public boolean compile(CancelIndicator cancel) {
-		return compile(new IProgressMonitor() {
-			@Override
-			public void worked(int work) {
-				//
-			}
-
-			@Override
-			public void subTask(String name) {
-				//
-			}
-
-			@Override
-			public void setTaskName(String name) {
-				//
-			}
-
-			@Override
-			public void setCanceled(boolean value) {
-				//
-			}
-
-			@Override
-			public boolean isCanceled() {
-				return cancel.isCanceled();
-			}
-
-			@Override
-			public void internalWorked(double work) {
-				//
-			}
-
-			@Override
-			public void done() {
-				//
-			}
-
-			@Override
-			public void beginTask(String name, int totalWork) {
-				//
-			}
-		});
+		final IProgressMonitor monitor;
+		if (cancel != null) {
+			monitor = new CancelIndicatorProgressMonitor(cancel);
+		} else {
+			monitor = null;
+		}
+		return compile(monitor);
 	}
 
 	/** Run the compilation.
@@ -1329,7 +1295,7 @@ public class SarlBatchCompiler {
 					if (monitor.isCanceled()) {
 						return false;
 					}
-					reportWarning(Messages.SarlBatchCompiler_2);
+					reportInternalWarning(Messages.SarlBatchCompiler_2);
 				}
 				monitor.worked(9);
 				if (!preCompileJava(stubSourceDirectory, stubClassDirectory, monitor)) {
@@ -1366,8 +1332,9 @@ public class SarlBatchCompiler {
 				return false;
 			}
 			if (!issues.isEmpty()) {
-				reportIssues(issues);
-				return false;
+				if (reportCompilationIssues(issues)) {
+					return false;
+				}
 			}
 			monitor.worked(14);
 			overrideXtextInternalLoggers();
@@ -1422,7 +1389,7 @@ public class SarlBatchCompiler {
 			}
 			field.set(null, logger);
 		} catch (Exception exception) {
-			reportError(exception.getLocalizedMessage(), exception);
+			reportInternalError(exception.getLocalizedMessage(), exception);
 		}
 	}
 
@@ -1451,15 +1418,19 @@ public class SarlBatchCompiler {
 				issue.getSeverity(), issue.getLineNumber(), issue.getColumn(), issue.getCode(), issue.getMessage());
 	}
 
-	/** Output the given issues.
+	/** Output the given issues that result from the compilation of the SARL code.
 	 *
 	 * @param issues the issues to report.
+	 * @return {@code true} if at least one error was reported, {@code false} if
+	 *      no error was reported.
 	 */
-	protected void reportIssues(Iterable<Issue> issues) {
+	protected boolean reportCompilationIssues(Iterable<Issue> issues) {
+		boolean hasError = false;
 		for (final Issue issue : issues) {
 			final String issueMessage = createIssueMessage(issue);
 			switch (issue.getSeverity()) {
 			case ERROR:
+				hasError = true;
 				getLogger().error(issueMessage);
 				break;
 			case WARNING:
@@ -1474,6 +1445,7 @@ public class SarlBatchCompiler {
 			}
 			notifiesIssueMessageListeners(issue, issue.getUriToProblem(), issueMessage);
 		}
+		return hasError;
 	}
 
 	/** Reports the given warning message.
@@ -1481,7 +1453,7 @@ public class SarlBatchCompiler {
 	 * @param message the warning message.
 	 * @since 0.8
 	 */
-	protected void reportWarning(String message) {
+	protected void reportInternalWarning(String message) {
 		getLogger().warn(message);
 		if (getReportInternalProblemsAsIssues()) {
 			final org.eclipse.emf.common.util.URI uri  = null;
@@ -1500,7 +1472,7 @@ public class SarlBatchCompiler {
 	 * @param exception the source of the exception.
 	 * @since 0.8
 	 */
-	protected void reportWarning(String message, Throwable exception) {
+	protected void reportInternalWarning(String message, Throwable exception) {
 		getLogger().warn(message, exception);
 		if (getReportInternalProblemsAsIssues()) {
 			final org.eclipse.emf.common.util.URI uri  = null;
@@ -1519,7 +1491,7 @@ public class SarlBatchCompiler {
 	 * @param exception the source of the exception.
 	 * @since 0.8
 	 */
-	protected void reportError(String message, Throwable exception) {
+	protected void reportInternalError(String message, Throwable exception) {
 		getLogger().error(message, exception);
 		if (getReportInternalProblemsAsIssues()) {
 			final org.eclipse.emf.common.util.URI uri  = null;
@@ -1538,7 +1510,7 @@ public class SarlBatchCompiler {
 	 * @param parameters the values of the parameters that must be dynamically replaced within the message text.
 	 * @since 0.8
 	 */
-	protected void reportError(String message, Object... parameters) {
+	protected void reportInternalError(String message, Object... parameters) {
 		getLogger().error(message, parameters);
 		if (getReportInternalProblemsAsIssues()) {
 			final org.eclipse.emf.common.util.URI uri  = null;
@@ -1617,19 +1589,9 @@ public class SarlBatchCompiler {
 			if (getLogger().isDebugEnabled()) {
 				getLogger().debug(Messages.SarlBatchCompiler_26, resource.getURI().lastSegment());
 			}
-			//TODO resource.getContents();
 			EcoreUtil.resolveAll(resource);
 			EcoreUtil2.resolveLazyCrossReferences(resource, CancelIndicator.NullImpl);
 		}
-		/*TODO for (final Resource resource : toBeResolved) {
-			if (progress.isCanceled()) {
-				return;
-			}
-			if (getLogger().isDebugEnabled()) {
-				getLogger().debug(Messages.SarlBatchCompiler_27, resource.getURI().lastSegment());
-			}
-			EcoreUtil2.resolveLazyCrossReferences(resource, CancelIndicator.NullImpl);
-		}*/
 	}
 
 	/** Generate the JVM model elements, and validate generated elements.
@@ -1644,7 +1606,6 @@ public class SarlBatchCompiler {
 		assert progress != null;
 		progress.subTask(Messages.SarlBatchCompiler_38);
 		getLogger().info(Messages.SarlBatchCompiler_38);
-		//TODO: boolean hasError = false;
 		final List<Resource> resources = new LinkedList<>(resourceSet.getResources());
 		final List<Issue> issuesToReturn = new ArrayList<>();
 		for (final Resource resource : resources) {
@@ -1674,13 +1635,11 @@ public class SarlBatchCompiler {
 						}
 						issues.add(issue);
 					}
-					//TODO hasError |= hasValidationError;
 					if (!hasValidationError) {
 						if (!issues.isEmpty()) {
 							if (getLogger().isDebugEnabled()) {
 								getLogger().debug(Messages.SarlBatchCompiler_39, resource.getURI().lastSegment());
 							}
-							//TODO: reportIssues(issues);
 							issuesToReturn.addAll(issues);
 						}
 						validResources.add(resource);
@@ -1688,7 +1647,6 @@ public class SarlBatchCompiler {
 						if (getLogger().isDebugEnabled()) {
 							getLogger().debug(Messages.SarlBatchCompiler_39, resource.getURI().lastSegment());
 						}
-						//reportIssues(issues);
 						issuesToReturn.addAll(issues);
 					}
 				}
@@ -1850,7 +1808,7 @@ public class SarlBatchCompiler {
 			@Override
 			public void write(char[] data, int offset, int count) throws IOException {
 				final String message = String.copyValueOf(data, offset, count);
-				reportError(message);
+				reportInternalError(message);
 			}
 
 			@Override
@@ -1984,7 +1942,7 @@ public class SarlBatchCompiler {
 			getLogger().debug(Messages.SarlBatchCompiler_35, output);
 		}
 		if (output == null) {
-			reportError(Messages.SarlBatchCompiler_36);
+			reportInternalError(Messages.SarlBatchCompiler_36);
 			return false;
 		}
 		progress.subTask(Messages.SarlBatchCompiler_56);
@@ -1997,11 +1955,11 @@ public class SarlBatchCompiler {
 					getLogger().debug(Messages.SarlBatchCompiler_37, sourcePath);
 				}
 				if (isContainedIn(output.getCanonicalFile(), sourcePath.getCanonicalFile())) {
-					reportError(Messages.SarlBatchCompiler_10, output, sourcePath);
+					reportInternalError(Messages.SarlBatchCompiler_10, output, sourcePath);
 					return false;
 				}
 			} catch (IOException e) {
-				reportError(Messages.SarlBatchCompiler_11, e);
+				reportInternalError(Messages.SarlBatchCompiler_11, e);
 			}
 		}
 		return true;
@@ -2109,13 +2067,13 @@ public class SarlBatchCompiler {
 		if (sourceFolders == null || sourceFolders.isEmpty() || javaOutputFile == null
 				|| classOutputFile == null || progress.isCanceled()) {
 			if (sourceFolders == null || sourceFolders.isEmpty()) {
-				reportError(Messages.SarlBatchCompiler_60);
+				reportInternalError(Messages.SarlBatchCompiler_60);
 			}
 			if (javaOutputFile == null) {
-				reportError(Messages.SarlBatchCompiler_61);
+				reportInternalError(Messages.SarlBatchCompiler_61);
 			}
 			if (classOutputFile == null) {
-				reportError(Messages.SarlBatchCompiler_62);
+				reportInternalError(Messages.SarlBatchCompiler_62);
 			}
 			return false;
 		}
@@ -2135,11 +2093,11 @@ public class SarlBatchCompiler {
 			getLogger().debug(Messages.SarlBatchCompiler_34, commonRoot);
 		}
 		if (commonRoot == null) {
-			reportError(Messages.SarlBatchCompiler_12);
+			reportInternalError(Messages.SarlBatchCompiler_12);
 			for (final File sourceFile : sourceFolders) {
-				reportError(Messages.SarlBatchCompiler_13, sourceFile);
+				reportInternalError(Messages.SarlBatchCompiler_13, sourceFile);
 			}
-			reportError(Messages.SarlBatchCompiler_14, javaOutputFile);
+			reportInternalError(Messages.SarlBatchCompiler_14, javaOutputFile);
 			return false;
 		}
 		this.projectConfig = new FileProjectConfig(commonRoot, commonRoot.getName());
@@ -2153,7 +2111,7 @@ public class SarlBatchCompiler {
 			return false;
 		}
 		if (relativizedTarget.isAbsolute()) {
-			reportError(Messages.SarlBatchCompiler_15, javaOutputFile, commonRoot);
+			reportInternalError(Messages.SarlBatchCompiler_15, javaOutputFile, commonRoot);
 			return false;
 		}
 		final CharMatcher slash = CharMatcher.is('/');
@@ -2185,7 +2143,7 @@ public class SarlBatchCompiler {
 			}
 			final URI relSource = commonURI.relativize(source.toURI());
 			if (relSource.isAbsolute()) {
-				reportError(Messages.SarlBatchCompiler_16, source, commonRoot);
+				reportInternalError(Messages.SarlBatchCompiler_16, source, commonRoot);
 				return false;
 			}
 			this.projectConfig.addSourceFolder(slash.trimTrailingFrom(relSource.getPath()));
@@ -2292,7 +2250,7 @@ public class SarlBatchCompiler {
 			try {
 				((Closeable) classLoader).close();
 			} catch (Exception e) {
-				reportWarning(Messages.SarlBatchCompiler_18, e);
+				reportInternalWarning(Messages.SarlBatchCompiler_18, e);
 			}
 		}
 	}

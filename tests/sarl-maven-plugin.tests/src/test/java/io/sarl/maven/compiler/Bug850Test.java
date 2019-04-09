@@ -101,8 +101,6 @@ public class Bug850Test extends AbstractMojoTest {
 			"}",
 			"}");
 
-	// FIXME: Enable the tests when the issue on the Maven compiler is fixed.
-	@Ignore
 	@Test
 	public void compile01() throws Exception {
 		Verifier verifier = doCompile();
@@ -165,8 +163,6 @@ public class Bug850Test extends AbstractMojoTest {
 			"}",
 			"}");
 
-	// FIXME: Enable the tests when the issue on the Maven compiler is fixed.
-	@Ignore
 	@Test
 	public void compile02() throws Exception {
 		Verifier verifier = doCompile();
@@ -228,8 +224,6 @@ public class Bug850Test extends AbstractMojoTest {
 			"}",
 			"}");
 
-	// FIXME: Enable the tests when the issue on the Maven compiler is fixed.
-	@Ignore
 	@Test
 	public void compile03() throws Exception {
 		Verifier verifier = doCompile();
@@ -291,8 +285,6 @@ public class Bug850Test extends AbstractMojoTest {
 			"}",
 			"}");
 
-	// FIXME: Enable the tests when the issue on the Maven compiler is fixed.
-	@Ignore
 	@Test
 	public void compile04() throws Exception {
 		Verifier verifier = doCompile();
