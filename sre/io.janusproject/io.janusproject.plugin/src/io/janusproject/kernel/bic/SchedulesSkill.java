@@ -28,9 +28,12 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
@@ -659,12 +662,16 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 		private Future<?> future;
 
 		TaskDescription(AgentTask task) {
-			this.task = task;
+			this(task, null);
 		}
 
 		TaskDescription(AgentTask task, Future<?> future) {
 			this.task = task;
-			this.future = future;
+			if (future == null) {
+				this.future = new FutureReceiver();
+			} else {
+				this.future = future;
+			}
 		}
 
 		@Override
@@ -680,12 +687,82 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 			this.task = task;
 		}
 
-		public Future<?> getFuture() {
+		public synchronized Future<?> getFuture() {
 			return this.future;
 		}
 
-		public void setFuture(Future<?> future) {
-			this.future = future;
+		public synchronized void setFuture(Future<?> future) {
+			if (future != null) {
+				final FutureReceiver receiver;
+				if (this.future instanceof FutureReceiver) {
+					receiver = (FutureReceiver) this.future;
+				} else {
+					receiver = null;
+				}
+				this.future = future;
+				if (receiver != null) {
+					receiver.apply(this.future);
+				}
+			}
+		}
+
+		/**
+		 * A future definition that enables to interact with the future
+		 * object's even if it is not already provided by the thread manager.
+		 * This receiver will be replaced by the real future object as soon
+		 * as it is provided by the thread manager. Then, any interaction with
+		 * the receiver will be propagated to the real future.
+		 *
+		 * @author $Author: sgalland$
+		 * @version $Name$ $Revision$ $Date$
+		 * @mavengroupid $GroupId$
+		 * @mavenartifactid $ArtifactId$
+		 * @since 0.9
+		 */
+		private static class FutureReceiver implements Future<Object> {
+
+			private final AtomicBoolean cancelFlag = new AtomicBoolean();
+
+			private final AtomicBoolean mayInterruptIfRunningFlag = new AtomicBoolean();
+
+			FutureReceiver() {
+				//
+			}
+
+			void apply(Future<?> future) {
+				if (future != null && !future.isCancelled() && !future.isDone() && this.cancelFlag.get()) {
+					future.cancel(this.mayInterruptIfRunningFlag.get());
+				}
+			}
+
+			@Override
+			public boolean cancel(boolean mayInterruptIfRunning) {
+				this.mayInterruptIfRunningFlag.set(mayInterruptIfRunning);
+				this.cancelFlag.set(true);
+				return true;
+			}
+
+			@Override
+			public boolean isCancelled() {
+				return this.cancelFlag.get();
+			}
+
+			@Override
+			public boolean isDone() {
+				return false;
+			}
+
+			@Override
+			public Object get() throws InterruptedException, ExecutionException {
+				throw new ExecutionException(new UnsupportedOperationException());
+			}
+
+			@Override
+			public Object get(long timeout, TimeUnit unit)
+					throws InterruptedException, ExecutionException, TimeoutException {
+				throw new ExecutionException(new UnsupportedOperationException());
+			}
+
 		}
 
 	}
