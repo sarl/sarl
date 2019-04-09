@@ -22,12 +22,12 @@
 package io.sarl.lang.macro;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtend.core.macro.ActiveAnnotationContextProvider;
 import org.eclipse.xtext.common.types.JvmAnnotationType;
 import org.eclipse.xtext.util.IAcceptor;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation;
 import org.eclipse.xtext.xbase.lib.Pair;
 
-import io.sarl.lang.bugfixes.pending.bug868.Bug868ActiveAnnotationContextProvider;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
 import io.sarl.lang.sarl.SarlSkill;
@@ -42,7 +42,7 @@ import io.sarl.lang.sarl.SarlSkill;
  * @mavenartifactid $ArtifactId$
  * @since 0.9
  */
-public class SarlActiveAnnotationContextProvider extends Bug868ActiveAnnotationContextProvider {
+public class SarlActiveAnnotationContextProvider extends ActiveAnnotationContextProvider {
 
 	@Override
 	protected void searchAnnotatedElements(final EObject element, final IAcceptor<Pair<JvmAnnotationType, XAnnotation>> acceptor) {

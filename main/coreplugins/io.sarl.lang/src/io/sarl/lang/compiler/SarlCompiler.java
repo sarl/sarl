@@ -82,7 +82,6 @@ import org.eclipse.xtext.xbase.XTypeLiteral;
 import org.eclipse.xtext.xbase.XVariableDeclaration;
 import org.eclipse.xtext.xbase.compiler.IGeneratorConfigProvider;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
-import org.eclipse.xtext.xbase.lib.util.ReflectExtensions;
 import org.eclipse.xtext.xbase.scoping.batch.IFeatureNames;
 import org.eclipse.xtext.xbase.typesystem.IBatchTypeResolver;
 import org.eclipse.xtext.xbase.typesystem.IResolvedTypes;
@@ -165,10 +164,6 @@ public class SarlCompiler extends XtendCompiler {
 
 	@Inject
 	private ISarlEarlyExitComputer earlyExit;
-
-	//FIXME: Remove according to https://github.com/eclipse/xtext-extras/pull/331
-	@Inject
-	private ReflectExtensions reflect;
 
 	private volatile boolean isOnJavaEarlyExit;
 
@@ -819,8 +814,7 @@ public class SarlCompiler extends XtendCompiler {
 				final LightweightTypeReference returnType = getClosureOperationReturnType(type, operation);
 				appendOperationVisibility(appendable, operation);
 				if (!operation.getTypeParameters().isEmpty()) {
-					//FIXME: Remove reflect according to https://github.com/eclipse/xtext-extras/pull/331
-					this.reflect.invoke(this, "appendTypeParameters", appendable, operation, type); //$NON-NLS-1$
+					appendTypeParameters(appendable, operation, type);
 				}
 				appendable.append(returnType);
 				appendable.append(" ").append(operation.getSimpleName()); //$NON-NLS-1$
@@ -856,8 +850,7 @@ public class SarlCompiler extends XtendCompiler {
 				compile(closure.getExpression(),
 						contextAppendable,
 						returnType, newHashSet(operation.getExceptions()));
-				//FIXME: Remove reflect according to https://github.com/eclipse/xtext-extras/pull/331
-				this.reflect.invoke(this, "closeBlock", appendable); //$NON-NLS-1$
+				closeBlock(appendable);
 			} catch (Exception exception) {
 				throw new RuntimeException(exception);
 			} finally {
@@ -909,8 +902,7 @@ public class SarlCompiler extends XtendCompiler {
 				}
 				appendOperationVisibility(appendable, operation);
 				if (!operation.getTypeParameters().isEmpty()) {
-					//FIXME: Remove reflect according to https://github.com/eclipse/xtext-extras/pull/331
-					this.reflect.invoke(this, "appendTypeParameters", appendable, operation, type); //$NON-NLS-1$
+					appendTypeParameters(appendable, operation, type);
 				}
 				appendable.append(returnType);
 				appendable.append(" ").append(operation.getSimpleName()); //$NON-NLS-1$
@@ -947,8 +939,7 @@ public class SarlCompiler extends XtendCompiler {
 					reassignThisInClosure(appendable, null);
 				}
 				compile(closure.getExpression(), appendable, returnType, newHashSet(operation.getExceptions()));
-				//FIXME: Remove reflect according to https://github.com/eclipse/xtext-extras/pull/331
-				this.reflect.invoke(this, "closeBlock", appendable); //$NON-NLS-1$
+				closeBlock(appendable);
 			} catch (Exception exception) {
 				throw new RuntimeException(exception);
 			} finally {
