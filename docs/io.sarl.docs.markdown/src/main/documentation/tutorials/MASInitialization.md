@@ -46,8 +46,7 @@ For starting the system, we could define a booting agent that starts 100 agents 
 			import io.sarl.core.Initialize
 			import io.sarl.core.Lifecycle
 			event MyEvent
-			agent MyAgent {
-			}
+			agent MyAgent {}
 			[:On]agent BootAgent {
 				uses Lifecycle
 				on Initialize {
@@ -75,7 +74,7 @@ For 100 agents, the number of logged messages should be 5,050, not 10,000.
 
 
 Moreover, According to the expected [agent spawning's parallel execution](./ParallelExecution.md), the calls to the
-[:spawnfct:] function form a sequence of 100 calls; And, each call to the [:spawnfct:] function starts a spawning task that is run within a separated thread.
+[:spawnfct:] function form a sequence of 100 calls; And, each call to the [:spawnfct:] function starts a spawning task that is run within a separate thread.
 Consequently, the general behavior of the system is not deterministic.
 We cannot infer the number of messages that will be logged because some event may be fired by agents when several
 other agents are still waiting for their spawns. The only one fact is that the number of logged messages is lower than or equal to f(100).
@@ -119,13 +118,14 @@ The booting agent becomes:
 			import io.sarl.core.Lifecycle
 			import io.sarl.core.AgentSpawned
 			import io.sarl.core.DefaultContextInteractions
+			import java.util.concurrent.atomic.AtomicInteger
 			event StartApplication
-			agent MyAgent {
-			}
-			[:On]agent BootAgent {
+			agent MyAgent {}
+			[:On]
+			agent BootAgent {
 				uses Lifecycle, DefaultContextInteractions
 				
-				var count = 0
+				var count = new AtomicInteger
 				
 				on Initialize {
 					for (i : 1..100) {
@@ -134,9 +134,9 @@ The booting agent becomes:
 				}
 				
 				on [:agentspawnedevent](AgentSpawned) [!it.agentIdentifiers.contains(ID)] {
-					count++
-					if (count == 100) {
-						emit(new StartApplication) [it.UUID != ID]
+					var n = this.count.incrementAndGet
+					if (n === 100) {
+						emit(new StartApplication)
 						killMe
 					}
 				}
