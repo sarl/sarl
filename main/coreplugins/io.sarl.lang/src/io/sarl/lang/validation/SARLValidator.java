@@ -190,6 +190,7 @@ import org.eclipse.xtext.xbase.validation.UIStrings;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.annotation.EarlyExit;
+import io.sarl.lang.controlflow.ISarlEarlyExitComputer;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.Capacity;
@@ -410,6 +411,9 @@ public class SARLValidator extends AbstractSARLValidator {
 	@Inject
 	private UIStrings uiStrings;
 
+	@Inject
+	private ISarlEarlyExitComputer earlyExitComputer;
+
 	// Update the annotation target information
 	{
 		final ImmutableMultimap.Builder<Class<?>, ElementType> result = ImmutableMultimap.builder();
@@ -525,18 +529,23 @@ public class SARLValidator extends AbstractSARLValidator {
 				null);
 	}
 
-	/** Emit a warning when the "fires" keyword is used.
+	/** Emit a warning when the events after the "fires" keyword are not early-exit events.
 	 *
 	 * @param action the action to check.
 	 */
 	@Check
-	public void checkFiresKeywordUse(SarlAction action) {
-		if (!action.getFiredEvents().isEmpty()) {
-			warning(MessageFormat.format(
-					Messages.SARLValidator_1,
-					this.grammarAccess.getFiresKeyword()),
-					action,
-					SarlPackage.eINSTANCE.getSarlAction_FiredEvents());
+	public void checkEarlyExitEventInFires(SarlAction action) {
+		int i = 0;
+		for (final JvmTypeReference event : action.getFiredEvents()) {
+			if (!this.earlyExitComputer.isEarlyExitEvent(event)) {
+				warning(MessageFormat.format(
+						Messages.SARLValidator_95,
+						event.getSimpleName()),
+						action,
+						SarlPackage.eINSTANCE.getSarlAction_FiredEvents(),
+						i);
+			}
+			++i;
 		}
 	}
 
