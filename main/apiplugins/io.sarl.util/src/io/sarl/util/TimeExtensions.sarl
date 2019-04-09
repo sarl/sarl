@@ -31,7 +31,7 @@ package io.sarl.util
  * @deprecated see {@link io.sarl.lang.scoping.extensions.time.TimeExtensions}
  */
 @Deprecated
-public final class TimeExtensions {
+final class TimeExtensions {
 
 	static val MILLIS_IN_SECOND = 1000l
 

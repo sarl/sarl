@@ -152,7 +152,8 @@ class BehaviorGuardEvaluatorRegistry {
 		try {
 			PERCEPT_GUARD_EVALUATOR_METHOD_CACHE.getUnchecked(listenerType)
 		} catch (ex : Exception) {
-			throw Throwables::propagate(ex)
+			Throwables::throwIfUnchecked(ex)
+			throw new RuntimeException(ex)
 		}
 	}
 
@@ -681,7 +682,8 @@ class BehaviorGuardEvaluatorRegistry {
 		try {
 			FLATTEN_HIERARCHY_CACHE.getUnchecked(concreteClass)
 		} catch (e : Exception) {
-			throw Throwables.propagate(e.cause)
+			Throwables::throwIfUnchecked(e.cause)
+			throw new RuntimeException(e.cause)
 		}
 	}
 

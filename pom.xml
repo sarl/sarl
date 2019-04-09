@@ -28,7 +28,7 @@
 		<!-- Version of the SARL API -->
 		<sarl.version>0.9.0-SNAPSHOT</sarl.version>
 		<janus.version>2.${sarl.version}</janus.version>
-		<sarl.maven.compiler.version>0.8.6</sarl.maven.compiler.version>
+		<sarl.maven.compiler.version>${sarl.version}</sarl.maven.compiler.version>
 
 		<!-- The versions of the following Xtext libraries are available at: https://eclipse.org/Xtext/documentation/350_continuous_integration.html -->
 

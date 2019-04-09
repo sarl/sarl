@@ -42,7 +42,7 @@ import io.sarl.util.OpenEventSpace
  */
 behavior FXKillSupportBehavior {
 
-	uses Lifecycle, InnerContextAccess, Behaviors
+	uses Lifecycle, InnerContextAccess
 
 	val exited = new AtomicBoolean(false)
 
@@ -77,9 +77,9 @@ behavior FXKillSupportBehavior {
  */
 behavior FXBehavior extends FXKillSupportBehavior {
 
-	uses Lifecycle, InnerContextAccess, Behaviors
+	uses Behaviors
 
-	var uiSpace : OpenEventSpace
+	val uiSpace : OpenEventSpace
 	
 	/** Constructor.
 	 *
@@ -106,7 +106,7 @@ behavior FXBehavior extends FXKillSupportBehavior {
 	 *
 	 * @return the space for UI.
 	 */
-	public def getUISpace : OpenEventSpace {
+	def getUISpace : OpenEventSpace {
 		this.uiSpace
 	}
 
