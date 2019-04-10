@@ -2446,7 +2446,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	 *
 	 * @param unit the unit to analyze.
 	 */
-	@Check(CheckType.EXPENSIVE)
+	@Check
 	public void checkUnmodifiableEventAccess(SarlBehaviorUnit unit) {
 		final boolean enable1 = !isIgnored(DISCOURAGED_OCCURRENCE_READONLY_USE);
 		final XExpression root = unit.getExpression();
