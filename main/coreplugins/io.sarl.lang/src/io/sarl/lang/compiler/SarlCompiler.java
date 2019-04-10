@@ -715,7 +715,7 @@ public class SarlCompiler extends XtendCompiler {
 				if (Strings.equal(itKeyword, name)) {
 					return true;
 				}
-				final XExpression expr = featureCall.getImplicitReceiver();
+				final XExpression expr = theFeatureCall.getImplicitReceiver();
 				if (expr instanceof XFeatureCall) {
 					theFeatureCall = (XFeatureCall) expr;
 				} else {
