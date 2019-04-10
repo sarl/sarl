@@ -102,7 +102,7 @@ environment (Eclipse, IntelliJ...)
 			<td style="background: orange; color: white;">No</td>
 			<td style="background: orange; color: white;">No</td>
 			<td style="background: green; color: white;">Yes</td></tr>
-<tr><td><a href="./general/Operators.md#operator-overloading">Operator overloading (except assignment and type casting operators)</a></td>
+<tr><td><a href="./general/Operators.md#operator-overloading">Operator overloading (except assignment and casting, see below)</a></td>
 			<td style="background: green; color: white;">Yes</td>
 			<td style="background: orange; color: white;">No</td>
 			<td style="background: green; color: white;">Yes</td>
@@ -144,7 +144,7 @@ environment (Eclipse, IntelliJ...)
 			<td style="background: orange; color: white;">No</td>
 			<td style="background: green; color: white;">Yes</td></tr>
 <tr><td><a href="./general/Cast.md#implicit-conversions">Implicit typecasting between number values</a>, including <code>AtomicInteger</code>, <code>AtomicLong</code>, <code>AtomicDouble</code>, <code>BigInteger</code>, and <code>BigDecimal</code></td>
-			<td style="background: yellow; color: black;">Partial: <a href="./general/Types.md#primitive-types">primitive</a> to <a href="./general/Types.md#primitive-types">primitive</a> types, primitive to object <a href="./general/Types.md#primitive-types">wrapper</a> types, and object <a href="./general/Types.md#primitive-types">wrapper</a> to <a href="./general/Types.md#primitive-types">primitive</a> types</td>
+			<td style="background: green; color: white;">Yes</td>
 			<td style="background: yellow; color: black;">Partial: <a href="./general/Types.md#primitive-types">primitive</a> to <a href="./general/Types.md#primitive-types">primitive</a> types, primitive to object <a href="./general/Types.md#primitive-types">wrapper</a> types, and object <a href="./general/Types.md#primitive-types">wrapper</a> to <a href="./general/Types.md#primitive-types">primitive</a> types</td>
 			<td style="background: yellow; color: black;">Partial: <a href="./general/Types.md#primitive-types">primitive</a> to <a href="./general/Types.md#primitive-types">primitive</a> types, primitive to object <a href="./general/Types.md#primitive-types">wrapper</a> types, and object <a href="./general/Types.md#primitive-types">wrapper</a> to <a href="./general/Types.md#primitive-types">primitive</a> types</td>
 			<td style="background: green; color: white;">Yes</td></tr>

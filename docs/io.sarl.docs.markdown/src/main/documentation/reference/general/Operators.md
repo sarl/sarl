@@ -406,6 +406,9 @@ gives the pair (a,d).
 			}
  		[:End:]
 
+In addition to the overloading of the operators that are described on this page, it 
+is possible to overload the casting operator. See [details](./Cast.md).
+
 
 [:Include:](../generalsyntaxref.inc)
 
