@@ -154,6 +154,44 @@ the event handlers in parallel. The real order of execution depends on
 how the Java executor is running the handlers on the threads.
 
 
+
+### How events are treated by the run-time environment?
+
+When the event `e` is received by an agent the following algorithm is applied:
+```
+if "on Initialize" is currently running then
+   add e to a buffer of events.
+else if "on Destroy" is currently running then
+   ignore the event.
+else
+   [:firefct]{fire(e)}
+fi
+```
+The function [:firefct:] retrieves all the `on E` and runs them in parallel, and
+there is a synchronization point after the running of all the `on E` if `E` is
+`Initialize` or `Destroy` (for forcing synchronous execution of `on Initialize`
+and `on Destroy`). At the end of the `on Initialize` (after synchronization point),
+all the buffered events are fired.
+
+Observe that if the event is fired from within the `on Initialize`, the same algorithm
+is applied whatever the receiving agent.
+
+
+
+### How the spawn function is run by the run-time environment?
+
+Regarding `spawn()`, the function runs in two parts:
+
+1. First, the spawn agent is created. This part is run in the same thread as the
+   caller of spawn, so the spawn call blocks.
+2. Once the spawn agent has been created, the initialization process runs
+   within a separated thread from the spawner agent. So, the call `spawn()` is
+   not locked. Then, the created thread runs all the initialization process,
+   including the synchronous execution of `on Initialize` (see previous question).
+   Consequently, the `on Initialize` of the spawn agent will not block the spawn caller.
+
+
+
 ### Must I configure the Janus kernels to be connected to other Janus kernels?
 
 __No__.

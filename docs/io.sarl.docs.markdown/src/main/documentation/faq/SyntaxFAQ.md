@@ -143,6 +143,20 @@ For solving this problem, two choices: i) add a type expression between
 		[:End:]
 
 
+### Why can not a static field be defined in an agent type declaration (agent, skill, behavior)?
+
+This is a design choice given that our entities are agents and as such they should not
+"share" data unless done explicitly in an agent-oriented manner, for example via
+resources or communication channels.
+Having static fields in agents or skills would break the "independency" of agents,
+also known as their autonomy.
+
+It is most probable that such static data can be seen as a resource outside the skill
+or agent, and as such it should be managed outside it (for example by using the artifact
+meta-model).
+
+
+
 ### How can I create instances of anonymous classes?
 
 In SARL, the creation of anonymous classes (interface implementation...)
@@ -257,6 +271,162 @@ capacity [:c1:] should be called:
 				}
 			}
 		[:End:]
+
+### Why is an error or a warning put on the occurrence keyword?
+
+
+Consider this code:
+
+        [:Success:]
+            package io.sarl.docs.faq.syntax
+            import java.util.UUID
+	        import java.util.Map
+            event CarArrivedPercept {
+                var car : UUID
+                var floor : int
+            }
+            class CarDescription {
+                def getFloor : int {0}
+                def setFloor(n : int) {}
+            }
+            agent X {
+                var cars : Map<UUID, CarDescription>
+                [:On]
+                on CarArrivedPercept {
+                    cars.[:getfct](get)([:occcar](occurrence.car)).floor = [:occkw](occurrence).floor
+                }
+                [:Off]
+            }
+        [:End:]
+
+We know that [:occkw:] is static, so cannot be changed. However, in the above code,
+[:occcar:], is not being changed/assigned, but just used to refer to another entity
+where assignment is performed.
+However, SARL compiler will think that [:occcar:] may be changed due to a border effect
+of the [:getfct:], and complain with warning.
+
+Consider this code:
+
+        [:Failure:]
+            package io.sarl.docs.faq.syntax
+            import java.util.UUID
+            import java.util.Map
+            event CarArrivedPercept {
+                var car : UUID
+                var floor : int
+            }
+            class CarDescription {
+                def getFloor : int {0}
+                def setFloor(n : int) {}
+            }
+            agent X {
+                var cars : Map<UUID, CarDescription>
+                [:On]
+                on CarArrivedPercept {
+                    [:occfloorerror](occurrence.floor = 1)
+                }
+                [:Off]
+            }
+        [:End:]
+
+The line [:occfloorerror:] generates an error because in this case the SARL compiler
+is sure that the [:occkw:] instance is changed.
+
+
+In order to avoid the warning above, you could write the code as:
+
+        [:Success:]
+            package io.sarl.docs.faq.syntax
+            import java.util.UUID
+            import java.util.Map
+            event CarArrivedPercept {
+                var car : UUID
+                var floor : int
+            }
+            class CarDescription {
+                def getFloor : int {0}
+                def setFloor(n : int) {}
+            }
+            agent X {
+                var cars : Map<UUID, CarDescription>
+                [:On]
+                on CarArrivedPercept {
+                    var c = occurrence.car
+                    cars.get(c).floor = occurrence.floor
+                }
+                [:Off]
+            }
+        [:End:]
+
+
+### Can we document SARL code for JavaDoc?
+
+Yes. Since the SARL compiler generates valid Java code including the documentation,
+you could generate the documentation of your SARL program with the standard javadoc
+tool applied on the generated Java files.
+
+
+### How do I control the log-level of the Logging built-in capacity?
+
+Use `setLogLevel()` of the `Logging` capacity, as explained here in the
+[API documentation](http://www.sarl.io/docs/official/reference/bic/Logging.html).
+
+You could also control the general configuration of the log level from the options
+of your SARL Run-time Environment, such as [Janus](../tools/Janus.md).
+
+
+### Equality and identity comparison (`==`, `===`, `!=`, `!==`) in SARL and checking for null: same as Java?
+
+The mapping of the operator from SARL to Java are:
+* `a === b` becomes `a == b`
+* `a !== b` becomes `a != b`
+* `a == b` becomes `a == null ? (b == null) : a.equals(b)`
+* `a != b` becomes `!Objects.equals(a,b)`. This is null-safe (part of Google API)
+  and the code of the function is `a == b || (a != null && a.equals(b))`.
+
+It is always better to test valid against `null` with the `===` or `!==` operators.
+
+Because the SARL `==` operator is mapped to the Java `equals()` function, and the
+`===` and `!==` operators to the Java `==` and `!=` operators, it is better/safer,
+and a best practice, to use `===` and `!==` when one of the operands is of primitive
+type, e.g. `null`, number constants, primitive type variables. These operators are
+not replaced neither `operator_equals` nor `operator_notEquals` within the Java code.
+
+Usually, the SARL compiler generates a warning to push you to use `===` in place of `==`.
+But with `null == value`, an ambiguous call error occurs before the warning is generated.
+In fact, the SARL compiler tries to find an overloading function for the `==` operator.
+Since `null` has not a specific type, the SARL compiler find multiple overloading functions.
+Check the [documentation](http://www.sarl.io/docs/official/reference/general/Operators.html#3-comparison-operators) 
+for details on the overloading mechanism of SARL.
+
+
+### How to return two values?
+
+SARL comes with a `Pair<A,B>` class to build an object for storing two values, nicknamed "key" and "value". It comes useful when a method has
+to return two values instead of just one. For example, the following function returns the next floor and direction that an elevator has to serve:
+
+        [:Success:]
+            package io.sarl.docs.faq.syntax
+            agent X {
+                [:On]
+                def kb_getNextJob() : Pair<Integer, Double> {
+                    //...
+                }
+                [:Off]
+            }
+        [:End:]
+
+As of Java 8, and as part of JavaFX, Java provides this `Pair<A,B>` class; check [here](https://www.geeksforgeeks.org/pair-class-in-java/) and
+[here](https://docs.oracle.com/javase/8/javafx/api/javafx/util/Pair.html). Note Pairs are different from `Map`, which can be seen as a collection
+of Pairs and with a proper key/value semantics.
+
+There exist more advanced implementations of `Pair`, for example from Apache. See [here](https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/tuple/package-summary.html),
+[here](https://www.baeldung.com/java-pairs) and [here](https://gangmax.me/blog/2017/10/10/how-to-return-multiple-values-from-a-java-method/).
+
+SARL itself have compact syntax do deal with `Pair`, by using `a -> b` to create a `Pair` object `(a,b)`. There are also compact ways of manipulating Collection and Maps.
+
+Check SARL documentation on that [here](../reference/general/Operators.html#8-collection-operators).
+
 
 
 [:Include:](../legal.inc)
