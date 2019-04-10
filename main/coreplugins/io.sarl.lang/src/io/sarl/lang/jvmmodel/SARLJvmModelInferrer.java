@@ -2196,20 +2196,21 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				null,
 				this.sarlSignatureProvider);
 
+		final List<XtendMember> delayedMembers = new LinkedList<>();
+
 		for (final XtendMember feature : container.getMembers()) {
-			if (context.isSupportedMember(feature)
-					&& (!(feature instanceof SarlCapacityUses))
-					&& (!(feature instanceof SarlRequiredCapacity))) {
-				transform(feature, featureContainerType, true);
+			if (context.isSupportedMember(feature)) {
+				if ((feature instanceof SarlCapacityUses)
+						|| (feature instanceof SarlRequiredCapacity)) {
+					delayedMembers.add(feature);
+				} else {
+					transform(feature, featureContainerType, true);
+				}
 			}
 		}
 
-		for (final XtendMember feature : container.getMembers()) {
-			if (context.isSupportedMember(feature)
-					&& ((feature instanceof SarlCapacityUses)
-							|| (feature instanceof SarlRequiredCapacity))) {
-				transform(feature, featureContainerType, false);
-			}
+		for (final XtendMember feature : delayedMembers) {
+			transform(feature, featureContainerType, false);
 		}
 
 		// Add event handlers
