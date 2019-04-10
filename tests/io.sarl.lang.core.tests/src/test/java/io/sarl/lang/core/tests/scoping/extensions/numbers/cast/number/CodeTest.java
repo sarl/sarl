@@ -21,9 +21,7 @@
 
 package io.sarl.lang.core.tests.scoping.extensions.numbers.cast.number;
 
-import static io.sarl.lang.scoping.extensions.numbers.cast.NumberCastExtensions.toAtomicDouble;
-import static io.sarl.lang.scoping.extensions.numbers.cast.NumberCastExtensions.toAtomicInteger;
-import static io.sarl.lang.scoping.extensions.numbers.cast.NumberCastExtensions.toAtomicLong;
+import static io.sarl.lang.scoping.extensions.numbers.cast.NumberCastExtensions.*;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -46,15 +44,57 @@ public class CodeTest extends AbstractSarlTest {
 	private static Number left = new AtomicDouble(4);
 
 	@Test
-	public void toAtomicLong_Number() {
-		AtomicLong value = toAtomicLong(left);
+	public void toByte_Number() {
+		Byte value = toByte(left);
 		assertNotNull(value);
-		assertEpsilonEquals(4., value.doubleValue());
+		assertEquals((byte) 4, value.byteValue());
+	}
+
+	@Test
+	public void toShort_Number() {
+		Short value = toShort(left);
+		assertNotNull(value);
+		assertEquals((short) 4, value.shortValue());
+	}
+
+	@Test
+	public void toInteger_Number() {
+		Integer value = toInteger(left);
+		assertNotNull(value);
+		assertEquals(4, value.intValue());
 	}
 
 	@Test
 	public void toAtomicInteger_Number() {
 		AtomicInteger value = toAtomicInteger(left);
+		assertNotNull(value);
+		assertEquals(4, value.intValue());
+	}
+
+	@Test
+	public void toLong_Number() {
+		Long value = toLong(left);
+		assertNotNull(value);
+		assertEquals(4l, value.longValue());
+	}
+
+	@Test
+	public void toAtomicLong_Number() {
+		AtomicLong value = toAtomicLong(left);
+		assertNotNull(value);
+		assertEquals(4l, value.longValue());
+	}
+
+	@Test
+	public void toFloat_Number() {
+		Float value = toFloat(left);
+		assertNotNull(value);
+		assertEpsilonEquals(4f, value.floatValue());
+	}
+
+	@Test
+	public void toDouble_Number() {
+		Double value = toDouble(left);
 		assertNotNull(value);
 		assertEpsilonEquals(4., value.doubleValue());
 	}

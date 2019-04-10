@@ -1048,6 +1048,19 @@ ruleAssumeExpression:
 	)?
 ;
 
+// Rule XCastedExpression
+ruleXCastedExpression:
+	ruleXExponentExpression
+	(
+		(
+			('as'
+			)=>
+			'as'
+		)
+		ruleJvmTypeReference
+	)*
+;
+
 // Rule XPrimaryExpression
 ruleXPrimaryExpression:
 	(
@@ -1265,19 +1278,6 @@ ruleOpMulti:
 		    |
 		'%'
 	)
-;
-
-// Rule XCastedExpression
-ruleXCastedExpression:
-	ruleXExponentExpression
-	(
-		(
-			('as'
-			)=>
-			'as'
-		)
-		ruleJvmTypeReference
-	)*
 ;
 
 // Rule XExponentExpression

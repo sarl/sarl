@@ -446,6 +446,16 @@ AssumeExpression returns xbase::XExpression :
 	isStatic?='assume' (->condition=XExpression) (->',' message=STRING)?
 ;
 
+SarlCastedExpression returns xbase::XCastedExpression:
+	{SarlCastedExpression} feature = [jvm::JvmIdentifiableElement|IdOrSuper]?
+;
+
+@Override
+XCastedExpression returns xbase::XExpression:
+	// The inheritance and fields of SarlCastedExpression is manually defined into the Ecore model.
+	XExponentExpression (=>({SarlCastedExpression.target=current} 'as') type=JvmTypeReference)*
+;
+
 //-----------------------------------------------
 // BELOW THIS POINT, THE RULES FROM XTEXT ARE OVERLOADED
 
@@ -534,6 +544,7 @@ XSwitchExpression returns xbase::XExpression:
 // FIXME Remove When issue 68 is fixed within Xbase, https://github.com/eclipse/xtext-lib/issues/68
 // FIXME Remove when issue 67 is fixed within Xbase, https://github.com/eclipse/xtext-lib/issues/67
 
+// CAUTION: The rule XCastedExpression is redefined above for the support of the SARL cast operator.
 @Override
 XMultiplicativeExpression returns xbase::XExpression:
 	XCastedExpression (=>({xbase::XBinaryOperation.leftOperand=current}
@@ -544,11 +555,6 @@ XMultiplicativeExpression returns xbase::XExpression:
 @Override
 OpMulti:
 	'*' | '/' | '%'
-;
-
-@Override
-XCastedExpression returns xbase::XExpression:
-	XExponentExpression (=>({xbase::XCastedExpression.target=current} 'as') type=JvmTypeReference)*
 ;
 
 XExponentExpression returns xbase::XExpression:

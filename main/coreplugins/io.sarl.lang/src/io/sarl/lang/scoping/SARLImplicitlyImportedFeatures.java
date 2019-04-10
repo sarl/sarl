@@ -28,6 +28,7 @@ import javax.inject.Inject;
 import com.google.inject.Singleton;
 import org.eclipse.xtext.xbase.scoping.batch.ImplicitlyImportedFeatures;
 
+import io.sarl.lang.scoping.extensions.cast.GeneralCastImplicitlyImportedFeatures;
 import io.sarl.lang.scoping.extensions.numbers.cast.NumberCastImplicitlyImportedFeatures;
 import io.sarl.lang.scoping.extensions.numbers.comparison.NumberComparisonImplicitlyImportedFeatures;
 import io.sarl.lang.scoping.extensions.time.TimeExtensions;
@@ -52,6 +53,9 @@ public class SARLImplicitlyImportedFeatures extends ImplicitlyImportedFeatures {
 	@Inject
 	private NumberCastImplicitlyImportedFeatures numberCastFeatures;
 
+	@Inject
+	private GeneralCastImplicitlyImportedFeatures generalCastFeatures;
+
 	/** Construct the provider.
 	 */
 	public SARLImplicitlyImportedFeatures() {
@@ -68,6 +72,7 @@ public class SARLImplicitlyImportedFeatures extends ImplicitlyImportedFeatures {
 		this.numberComparisonFeatures.getImportedFeatures(xtextList);
 		//TODO: this.numberArithmeticFeatures.getImportedFeatures(xtextList);
 		this.numberCastFeatures.getImportedFeatures(xtextList);
+		this.generalCastFeatures.getImportedFeatures(xtextList);
 
 		return xtextList;
 	}

@@ -14,7 +14,7 @@ Three methods could be used for launching an agent with Janus:
 
 
 
-## Use the [:januscmd!] command-line tool
+## Use the Janus command-line tool
 
 The SARL project provides a [command-line tool for launching agents](../tools/Janus.md) on the Janus runtime environment.
 

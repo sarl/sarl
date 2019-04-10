@@ -21,6 +21,9 @@
 
 package io.sarl.lang.scoping.extensions.numbers.cast;
 
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+
 import com.google.common.util.concurrent.AtomicDouble;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -40,70 +43,81 @@ public final class AtomicDoubleCastExtensions {
 		//
 	}
 
-	/** Convert the given value to {@code float}. This function is not null-safe.
+	/** Convert the given value to {@code Byte}. This function is not null-safe
 	 *
 	 * @param number a number of {@code AtomicDouble} type.
-	 * @return the equivalent value to {@code number} of {@code float} type.
+	 * @return the equivalent value to {@code number} of {@code Byte} type.
 	 */
 	@Pure
-	@Inline(value = "$1.floatValue()")
-	public static float toFloat(AtomicDouble number) {
-		return number.floatValue();
+	@Inline(value = "$2.valueOf($1.byteValue())", imported = Byte.class)
+	public static Byte toByte(AtomicDouble number) {
+		return Byte.valueOf(number.byteValue());
 	}
 
-	/** Convert the given value to {@code byte}. This function is not null-safe
+	/** Convert the given value to {@code Short}. This function is not null-safe.
 	 *
 	 * @param number a number of {@code AtomicDouble} type.
-	 * @return the equivalent value to {@code number} of {@code byte} type.
+	 * @return the equivalent value to {@code number} of {@code Short} type.
 	 */
 	@Pure
-	@Inline(value = "$1.byteValue()")
-	public static byte toByte(AtomicDouble number) {
-		return number.byteValue();
+	@Inline(value = "$2.valueOf($1.shortValue())", imported = Short.class)
+	public static Short toShort(AtomicDouble number) {
+		return Short.valueOf(number.shortValue());
 	}
 
-	/** Convert the given value to {@code long}. This function is not null-safe.
+	/** Convert the given value to {@code Integer}. This function is not null-safe.
 	 *
 	 * @param number a number of {@code AtomicDouble} type.
-	 * @return the equivalent value to {@code number} of {@code long} type.
+	 * @return the equivalent value to {@code number} of {@code Integer} type.
 	 */
 	@Pure
-	@Inline(value = "$1.longValue()")
-	public static long toLong(AtomicDouble number) {
-		return number.longValue();
+	@Inline(value = "$2.valueOf($1.intValue())", imported = Integer.class)
+	public static Integer toInteger(AtomicDouble number) {
+		return Integer.valueOf(number.intValue());
 	}
 
-	/** Convert the given value to {@code double}. This function is not null-safe.
+	/** Convert the given value to {@code AtomicInteger}. This function is not null-safe.
 	 *
 	 * @param number a number of {@code AtomicDouble} type.
-	 * @return the equivalent value to {@code number} of {@code double} type.
+	 * @return the equivalent value to {@code number} of {@code AtomicInteger} type.
 	 */
 	@Pure
-	@Inline(value = "$1.doubleValue()")
-	public static double toDouble(AtomicDouble number) {
-		return number.doubleValue();
+	@Inline(value = "new $2($1.intValue())", imported = AtomicInteger.class)
+	public static AtomicInteger toAtomicInteger(AtomicDouble number) {
+		return new AtomicInteger(number.intValue());
 	}
 
-	/** Convert the given value to {@code short}. This function is not null-safe.
+	/** Convert the given value to {@code Long}. This function is not null-safe.
 	 *
 	 * @param number a number of {@code AtomicDouble} type.
-	 * @return the equivalent value to {@code number} of {@code short} type.
+	 * @return the equivalent value to {@code number} of {@code Long} type.
 	 */
 	@Pure
-	@Inline(value = "$1.shortValue()")
-	public static short toShort(AtomicDouble number) {
-		return number.shortValue();
+	@Inline(value = "$2.valueOf($1.longValue())", imported = Long.class)
+	public static Long toLong(AtomicDouble number) {
+		return Long.valueOf(number.longValue());
 	}
 
-	/** Convert the given value to {@code int}. This function is not null-safe.
+	/** Convert the given value to {@code AtomicLong}. This function is not null-safe.
 	 *
 	 * @param number a number of {@code AtomicDouble} type.
-	 * @return the equivalent value to {@code number} of {@code int} type.
+	 * @return the equivalent value to {@code number} of {@code AtomicLong} type.
 	 */
 	@Pure
-	@Inline(value = "$1.intValue()")
-	public static int toInt(AtomicDouble number) {
-		return number.intValue();
+	@Inline(value = "new $2($1.longValue())", imported = AtomicLong.class)
+	public static AtomicLong toAtomicLong(AtomicDouble number) {
+		return new AtomicLong(number.longValue());
+	}
+
+	/** Convert the given value to {@code Float}. This function is not null-safe.
+	 *
+	 * @param number a number of {@code AtomicDouble} type.
+	 * @return the equivalent value to {@code number} of {@code Float} type.
+	 */
+	@Pure
+	@Inline(value = "$2.valueOf($1.floatValue())", imported = Float.class)
+	public static Float toFloat(AtomicDouble number) {
+		return Float.valueOf(number.floatValue());
 	}
 
 	/** Convert the given value to {@code Double}. This function is not null-safe.
@@ -112,8 +126,8 @@ public final class AtomicDoubleCastExtensions {
 	 * @return the equivalent value to {@code number} of {@code Double} type.
 	 */
 	@Pure
-	@Inline(value = "$2.valueOf($1.longValue())", imported = {Long.class})
-	public static Double toDoubleObject(AtomicDouble number) {
+	@Inline(value = "$2.valueOf($1.doubleValue())", imported = Double.class)
+	public static Double toDouble(AtomicDouble number) {
 		return Double.valueOf(number.doubleValue());
 	}
 

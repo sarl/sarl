@@ -25,11 +25,14 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
+import com.google.common.base.Throwables;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
@@ -65,7 +68,7 @@ public abstract class AbstractMassiveCompilationTest extends AbstractSarlTest {
 	 */
 	protected void diffSingleTypeCompileTo(String sarlExpression, String javaExpression) throws Exception {
 		final String packageName = "io.sarl.lang.core.tests." + this.currentMethod; //$NON-NLS-1$
-		final String inputCode = "package " + packageName + System.lineSeparator() + sarlExpression; //$NON-NLS-1$ //$NON-NLS-2$
+		final String inputCode = "package " + packageName + System.lineSeparator() + sarlExpression; //$NON-NLS-1$
 		final SarlScript script;
 		if (this.resourceSet == null) {
 			script = getParseHelper().parse(inputCode);
@@ -85,7 +88,7 @@ public abstract class AbstractMassiveCompilationTest extends AbstractSarlTest {
 	 */
 	protected void diffSingleTypeCompileTo_unexpectedCastError(String sarlExpression) throws Exception {
 		final String packageName = "io.sarl.lang.core.tests." + this.currentMethod; //$NON-NLS-1$
-		final String inputCode = "package " + packageName + System.lineSeparator() + sarlExpression; //$NON-NLS-1$ //$NON-NLS-2$
+		final String inputCode = "package " + packageName + System.lineSeparator() + sarlExpression; //$NON-NLS-1$
 		validate(file(inputCode)).assertError(
 						TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 						IssueCodes.INVALID_CAST);
@@ -93,15 +96,20 @@ public abstract class AbstractMassiveCompilationTest extends AbstractSarlTest {
 
 	/** Run the differed tests.
 	 *
-	 * @throws Exception in case of error.
+	 * @throws Throwable in case of error.
 	 */
 	@Test
-	public void testAll() throws Exception {
+	public void testAll() throws Throwable {
 		this.differedTests = new TreeMap<>();
 		for (final Method meth : getClass().getDeclaredMethods()) {
 			if (meth.isAnnotationPresent(DifferedTest.class)) {
 				this.currentMethod = meth.getName();
-				meth.invoke(this);
+				try {
+					meth.invoke(this);
+				} catch (InvocationTargetException exception) {
+					final Throwable cause = Throwables.getRootCause(exception);
+					throw new DifferedException(meth, cause);
+				}
 			}
 		}
 		assertNotNull(this.resourceSet);
@@ -127,4 +135,44 @@ public abstract class AbstractMassiveCompilationTest extends AbstractSarlTest {
 		//
 	}
 	
+	/** Exception in the differed called function.
+	 * 
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.9
+	 */
+	public static class DifferedException extends Exception {
+
+		private static final long serialVersionUID = 8240031883925453664L;
+
+		/** Constructor.
+		 *
+		 * @param meth the method in which the error occurs.
+		 * @param cause the cause.
+		 */
+		public DifferedException(Method meth, Throwable cause) {
+			super(buildMessage(meth, cause), cause);
+		}
+
+		private static String buildMessage(Method meth, Throwable cause) {
+			final StringBuilder name = new StringBuilder();
+			name.append(meth.getName());
+			name.append("("); //$NON-NLS-1$
+			boolean first = true;
+			for (final Parameter param : meth.getParameters()) {
+				if (first) {
+					first = false;
+				} else {
+					name.append(","); //$NON-NLS-1$
+				}
+				name.append(param.getType().toGenericString());
+			}
+			name.append(")"); //$NON-NLS-1$
+			return name.toString() + " => " + cause.getLocalizedMessage(); //$NON-NLS-1$
+		}
+
+	}
+
 }

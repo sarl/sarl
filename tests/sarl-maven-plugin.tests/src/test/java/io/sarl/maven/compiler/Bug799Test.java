@@ -32,6 +32,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import io.sarl.lang.SARLVersion;
+import io.sarl.lang.sarl.SarlPackage;
 
 /**
  * @author $Author: sgalland$
@@ -51,7 +52,7 @@ public class Bug799Test extends AbstractMojoTest {
 			"import io.sarl.lang.core.Skill;",
 			"import io.sarl.maven.bug799.Cap;",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-			"@SarlElementType(21)",
+			"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",
 			"@SuppressWarnings(\"all\")",
 			"public class A extends Skill implements Cap {",
 			"public void act_connectToSimulator(final String address, final int port) {",

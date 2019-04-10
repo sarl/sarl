@@ -33,6 +33,7 @@ import org.junit.Test;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.annotation.SarlSpecification;
+import io.sarl.lang.sarl.SarlPackage;
 
 /** Test for issue #865: Maven complains on guava version in 0.8.2.
  * 
@@ -68,7 +69,7 @@ public class Bug865Test extends AbstractMojoTest {
 			"import javax.inject.Inject;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-			"@SarlElementType(18)",
+			"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 			"@SuppressWarnings(\"all\")",
 			"public class MyAgent extends Agent {",
 			"@Pure",

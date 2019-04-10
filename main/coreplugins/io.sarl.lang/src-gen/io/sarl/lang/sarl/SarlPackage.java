@@ -1193,6 +1193,77 @@ public interface SarlPackage extends EPackage
 	int SARL_EVENT_FEATURE_COUNT = XtendPackage.XTEND_TYPE_DECLARATION_FEATURE_COUNT + 1;
 
 	/**
+	 * The meta object id for the '{@link io.sarl.lang.sarl.impl.SarlCastedExpressionImpl <em>Casted Expression</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see io.sarl.lang.sarl.impl.SarlCastedExpressionImpl
+	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlCastedExpression()
+	 * @since 0.9
+	 * @generated
+	 */
+	int SARL_CASTED_EXPRESSION = 16;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @since 2.7
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_CASTED_EXPRESSION__TYPE = XbasePackage.XCASTED_EXPRESSION__TYPE;
+
+	/**
+	 * The feature id for the '<em><b>Target</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @since 2.7
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_CASTED_EXPRESSION__TARGET = XbasePackage.XCASTED_EXPRESSION__TARGET;
+
+	/**
+	 * The feature id for the '<em><b>Feature</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @since 0.9
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_CASTED_EXPRESSION__FEATURE = XbasePackage.XCASTED_EXPRESSION_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Receiver</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @since 0.9
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_CASTED_EXPRESSION__RECEIVER = XbasePackage.XCASTED_EXPRESSION_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Argument</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @since 0.9
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_CASTED_EXPRESSION__ARGUMENT = XbasePackage.XCASTED_EXPRESSION_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of structural features of the '<em>Casted Expression</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @since 0.9
+	 * @generated
+	 * @ordered
+	 */
+	int SARL_CASTED_EXPRESSION_FEATURE_COUNT = XbasePackage.XCASTED_EXPRESSION_FEATURE_COUNT + 3;
+
+	/**
 	 * The meta object id for the '{@link io.sarl.lang.sarl.impl.SarlSpaceImpl <em>Space</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1200,7 +1271,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlSpace()
 	 * @generated
 	 */
-	int SARL_SPACE = 16;
+	int SARL_SPACE = 17;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -1282,7 +1353,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlArtifact()
 	 * @generated
 	 */
-	int SARL_ARTIFACT = 17;
+	int SARL_ARTIFACT = 18;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -1364,7 +1435,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlAgent()
 	 * @generated
 	 */
-	int SARL_AGENT = 18;
+	int SARL_AGENT = 19;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -1446,7 +1517,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlCapacity()
 	 * @generated
 	 */
-	int SARL_CAPACITY = 19;
+	int SARL_CAPACITY = 20;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -1528,7 +1599,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlBehavior()
 	 * @generated
 	 */
-	int SARL_BEHAVIOR = 20;
+	int SARL_BEHAVIOR = 21;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -1610,7 +1681,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlSkill()
 	 * @generated
 	 */
-	int SARL_SKILL = 21;
+	int SARL_SKILL = 22;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -1701,7 +1772,7 @@ public interface SarlPackage extends EPackage
 	 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlFormalParameter()
 	 * @generated
 	 */
-	int SARL_FORMAL_PARAMETER = 22;
+	int SARL_FORMAL_PARAMETER = 23;
 
 	/**
 	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -2042,6 +2113,53 @@ public interface SarlPackage extends EPackage
 	 * @generated
 	 */
 	EReference getSarlEvent_Extends();
+
+	/**
+	 * Returns the meta object for class '{@link io.sarl.lang.sarl.SarlCastedExpression <em>Casted Expression</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Casted Expression</em>'.
+	 * @see io.sarl.lang.sarl.SarlCastedExpression
+	 * @since 0.9
+	 * @generated
+	 */
+	EClass getSarlCastedExpression();
+
+	/**
+	 * Returns the meta object for the reference '{@link io.sarl.lang.sarl.SarlCastedExpression#getFeature <em>Feature</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Feature</em>'.
+	 * @see io.sarl.lang.sarl.SarlCastedExpression#getFeature()
+	 * @see #getSarlCastedExpression()
+	 * @since 0.9
+	 * @generated
+	 */
+	EReference getSarlCastedExpression_Feature();
+
+	/**
+	 * Returns the meta object for the reference '{@link io.sarl.lang.sarl.SarlCastedExpression#getReceiver <em>Receiver</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Receiver</em>'.
+	 * @see io.sarl.lang.sarl.SarlCastedExpression#getReceiver()
+	 * @see #getSarlCastedExpression()
+	 * @since 0.9
+	 * @generated
+	 */
+	EReference getSarlCastedExpression_Receiver();
+
+	/**
+	 * Returns the meta object for the reference '{@link io.sarl.lang.sarl.SarlCastedExpression#getArgument <em>Argument</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Argument</em>'.
+	 * @see io.sarl.lang.sarl.SarlCastedExpression#getArgument()
+	 * @see #getSarlCastedExpression()
+	 * @since 0.9
+	 * @generated
+	 */
+	EReference getSarlCastedExpression_Argument();
 
 	/**
 	 * Returns the meta object for class '{@link io.sarl.lang.sarl.SarlSpace <em>Space</em>}'.
@@ -2469,6 +2587,44 @@ public interface SarlPackage extends EPackage
 		 * @generated
 		 */
 		EReference SARL_EVENT__EXTENDS = eINSTANCE.getSarlEvent_Extends();
+
+		/**
+		 * The meta object literal for the '{@link io.sarl.lang.sarl.impl.SarlCastedExpressionImpl <em>Casted Expression</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see io.sarl.lang.sarl.impl.SarlCastedExpressionImpl
+		 * @see io.sarl.lang.sarl.impl.SarlPackageImpl#getSarlCastedExpression()
+		 * @since 0.9
+		 * @generated
+		 */
+		EClass SARL_CASTED_EXPRESSION = eINSTANCE.getSarlCastedExpression();
+
+		/**
+		 * The meta object literal for the '<em><b>Feature</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @since 0.9
+		 * @generated
+		 */
+		EReference SARL_CASTED_EXPRESSION__FEATURE = eINSTANCE.getSarlCastedExpression_Feature();
+
+		/**
+		 * The meta object literal for the '<em><b>Receiver</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @since 0.9
+		 * @generated
+		 */
+		EReference SARL_CASTED_EXPRESSION__RECEIVER = eINSTANCE.getSarlCastedExpression_Receiver();
+
+		/**
+		 * The meta object literal for the '<em><b>Argument</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @since 0.9
+		 * @generated
+		 */
+		EReference SARL_CASTED_EXPRESSION__ARGUMENT = eINSTANCE.getSarlCastedExpression_Argument();
 
 		/**
 		 * The meta object literal for the '{@link io.sarl.lang.sarl.impl.SarlSpaceImpl <em>Space</em>}' class.

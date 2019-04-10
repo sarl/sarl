@@ -83,6 +83,7 @@ public class SARLValidatorConfigurationBlock extends XtendValidatorConfiguration
 		builder.addComboBox(IssueCodes.UNUSED_AGENT_CAPACITY, Messages.SARLValidatorConfigurationBlock_11);
 		builder.addComboBox(IssueCodes.DISCOURAGED_FUNCTION_NAME, Messages.SARLValidatorConfigurationBlock_12);
 		builder.addComboBox(IssueCodes.DISCOURAGED_LOOP_BREAKING_KEYWORD_USE, Messages.SARLValidatorConfigurationBlock_17);
+		builder.addComboBox(IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION, Messages.SARLValidatorConfigurationBlock_19);
 	}
 
 	@Override

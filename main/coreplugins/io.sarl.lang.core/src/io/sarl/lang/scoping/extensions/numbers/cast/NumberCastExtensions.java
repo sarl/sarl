@@ -43,26 +43,92 @@ public final class NumberCastExtensions {
 		//
 	}
 
+	/** Convert the given value to {@code Byte}. This function is not null-safe.
+	 *
+	 * @param number a number.
+	 * @return the equivalent value to {@code number} of {@code Byte} type.
+	 */
+	@Pure
+	@Inline(value = "($1 instanceof $2 ? ($2) $1 : $2.valueOf($1.byteValue()))", imported = Byte.class)
+	public static Byte toByte(Number number) {
+		return number instanceof Byte ? (Byte) number : Byte.valueOf(number.byteValue());
+	}
+
+	/** Convert the given value to {@code Short}. This function is not null-safe.
+	 *
+	 * @param number a number.
+	 * @return the equivalent value to {@code number} of {@code Short} type.
+	 */
+	@Pure
+	@Inline(value = "($1 instanceof $2 ? ($2) $1 : $2.valueOf($1.shortValue()))", imported = Short.class)
+	public static Short toShort(Number number) {
+		return number instanceof Short ? (Short) number : Short.valueOf(number.shortValue());
+	}
+
+	/** Convert the given value to {@code Integer}. This function is not null-safe.
+	 *
+	 * @param number a number.
+	 * @return the equivalent value to {@code number} of {@code Integer} type.
+	 */
+	@Pure
+	@Inline(value = "($1 instanceof $2 ? ($2) $1 : $2.valueOf($1.intValue()))", imported = Integer.class)
+	public static Integer toInteger(Number number) {
+		return number instanceof Integer ? (Integer) number : Integer.valueOf(number.intValue());
+	}
+
+	/** Convert the given value to {@code AtomicInteger}. This function is not null-safe.
+	 *
+	 * @param number a number.
+	 * @return the equivalent value to {@code number} of {@code AtomicInteger} type.
+	 */
+	@Pure
+	@Inline(value = "($1 instanceof $2 ? ($2) $1 : new $2($1.intValue()))", imported = AtomicInteger.class)
+	public static AtomicInteger toAtomicInteger(Number number) {
+		return number instanceof AtomicInteger ? (AtomicInteger) number : new AtomicInteger(number.intValue());
+	}
+
+	/** Convert the given value to {@code Long}. This function is not null-safe.
+	 *
+	 * @param number a number.
+	 * @return the equivalent value to {@code number} of {@code Long} type.
+	 */
+	@Pure
+	@Inline(value = "($1 instanceof $2 ? ($2) $1 : $2.valueOf($1.longValue()))", imported = Long.class)
+	public static Long toLong(Number number) {
+		return number instanceof Long ? (Long) number : Long.valueOf(number.longValue());
+	}
+
 	/** Convert the given value to {@code AtomicLong}. This function is not null-safe.
 	 *
 	 * @param number a number of {@code Byte} type.
 	 * @return the equivalent value to {@code number} of {@code AtomicLong} type.
 	 */
 	@Pure
-	@Inline(value = "($1 instanceof $2 ? ($2) a : new $2($1.longValue()))", imported = AtomicLong.class)
+	@Inline(value = "($1 instanceof $2 ? ($2) $1 : new $2($1.longValue()))", imported = AtomicLong.class)
 	public static AtomicLong toAtomicLong(Number number) {
 		return number instanceof AtomicLong ? (AtomicLong) number : new AtomicLong(number.longValue());
 	}
 
-	/** Convert the given value to {@code AtomicInteger}. This function is not null-safe.
+	/** Convert the given value to {@code Float}. This function is not null-safe.
 	 *
-	 * @param number a number of {@code Byte} type.
-	 * @return the equivalent value to {@code number} of {@code AtomicInteger} type.
+	 * @param number a number.
+	 * @return the equivalent value to {@code number} of {@code Float} type.
 	 */
 	@Pure
-	@Inline(value = "($1 instanceof $2 ? ($2) a : new $2($1.intValue()))", imported = AtomicInteger.class)
-	public static AtomicInteger toAtomicInteger(Number number) {
-		return number instanceof AtomicInteger ? (AtomicInteger) number : new AtomicInteger(number.intValue());
+	@Inline(value = "($1 instanceof $2 ? ($2) $1 : $2.valueOf($1.floatValue()))", imported = Float.class)
+	public static Float toFloat(Number number) {
+		return number instanceof Float ? (Float) number : Float.valueOf(number.longValue());
+	}
+
+	/** Convert the given value to {@code Double}. This function is not null-safe.
+	 *
+	 * @param number a number.
+	 * @return the equivalent value to {@code number} of {@code Double} type.
+	 */
+	@Pure
+	@Inline(value = "($1 instanceof $2 ? ($2) $1 : $2.valueOf($1.doubleValue()))", imported = Double.class)
+	public static Double toDouble(Number number) {
+		return number instanceof Double ? (Double) number : Double.valueOf(number.doubleValue());
 	}
 
 	/** Convert the given value to {@code AtomicInteger}. This function is not null-safe.
@@ -71,7 +137,7 @@ public final class NumberCastExtensions {
 	 * @return the equivalent value to {@code number} of {@code AtomicInteger} type.
 	 */
 	@Pure
-	@Inline(value = "($1 instanceof $2 ? ($2) a : new $2($1.doubleValue()))", imported = AtomicDouble.class)
+	@Inline(value = "($1 instanceof $2 ? ($2) $1 : new $2($1.doubleValue()))", imported = AtomicDouble.class)
 	public static AtomicDouble toAtomicDouble(Number number) {
 		return number instanceof AtomicDouble ? (AtomicDouble) number : new AtomicDouble(number.doubleValue());
 	}

@@ -21,16 +21,12 @@
 
 package io.sarl.lang.core.tests.scoping.extensions.numbers.cast.atomicinteger;
 
-import static io.sarl.lang.scoping.extensions.numbers.cast.AtomicIntegerCastExtensions.toByte;
-import static io.sarl.lang.scoping.extensions.numbers.cast.AtomicIntegerCastExtensions.toDouble;
-import static io.sarl.lang.scoping.extensions.numbers.cast.AtomicIntegerCastExtensions.toFloat;
-import static io.sarl.lang.scoping.extensions.numbers.cast.AtomicIntegerCastExtensions.toInt;
-import static io.sarl.lang.scoping.extensions.numbers.cast.AtomicIntegerCastExtensions.toInteger;
-import static io.sarl.lang.scoping.extensions.numbers.cast.AtomicIntegerCastExtensions.toLong;
-import static io.sarl.lang.scoping.extensions.numbers.cast.AtomicIntegerCastExtensions.toShort;
+import static io.sarl.lang.scoping.extensions.numbers.cast.AtomicIntegerCastExtensions.*;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
+import com.google.common.util.concurrent.AtomicDouble;
 import org.junit.Test;
 
 import io.sarl.tests.api.AbstractSarlTest;
@@ -48,40 +44,43 @@ public class CodeTest extends AbstractSarlTest {
 	private static AtomicInteger left = new AtomicInteger(4);
 
 	@Test
-	public void toFloat_AtomicInteger() {
-		assertEpsilonEquals(4, toFloat(left));
-	}
-
-	@Test
 	public void toByte_AtomicInteger() {
-		assertEquals(4, toByte(left));
-	}
-
-	@Test
-	public void toLong_AtomicInteger() {
-		assertEquals(4, toLong(left));
-	}
-
-	@Test
-	public void toDouble_AtomicInteger() {
-		assertEpsilonEquals(4, toDouble(left));
+		assertEquals(Byte.valueOf((byte) 4), toByte(left));
 	}
 
 	@Test
 	public void toShort_AtomicInteger() {
-		assertEquals(4, toShort(left));
-	}
-
-	@Test
-	public void toInt_AtomicInteger() {
-		assertEquals(4, toInt(left));
+		assertEquals(Short.valueOf((short) 4), toShort(left));
 	}
 
 	@Test
 	public void toInteger_AtomicInteger() {
-		Integer value = toInteger(left);
-		assertNotNull(value);
-		assertEquals(4, value.intValue());
+		assertEquals(4, toInteger(left).intValue());
+	}
+
+	@Test
+	public void toLong_AtomicInteger() {
+		assertEquals(Long.valueOf(4), toLong(left));
+	}
+
+	@Test
+	public void toAtomicLong_AtomicInteger() {
+		assertEquals(4l, toAtomicLong(left).longValue());
+	}
+
+	@Test
+	public void toFloat_AtomicInteger() {
+		assertEpsilonEquals(Float.valueOf(4), toFloat(left));
+	}
+
+	@Test
+	public void toDouble_AtomicInteger() {
+		assertEpsilonEquals(Double.valueOf(4), toDouble(left));
+	}
+
+	@Test
+	public void toAtomicDouble_AtomicInteger() {
+		assertEpsilonEquals(4., toAtomicDouble(left).doubleValue());
 	}
 
 }

@@ -35,6 +35,7 @@ import org.junit.Test;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.annotation.SarlSpecification;
+import io.sarl.lang.sarl.SarlPackage;
 
 /**
  * @author $Author: sgalland$
@@ -77,7 +78,7 @@ public class Bug465Test extends AbstractMojoTest {
 				"import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;",
 				"import org.eclipse.xtext.xbase.lib.Pure;",
 				"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-				"@SarlElementType(18)",
+				"@SarlElementType(" + SarlPackage.SARL_AGENT + ")",
 				"@SuppressWarnings(\"all\")",
 				"public class MyAgent extends Agent {",
 				"private void $behaviorUnit$Initialize$0(final Initialize occurrence) {",
