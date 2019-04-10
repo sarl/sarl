@@ -47,6 +47,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.inject.Provider;
 
@@ -2273,4 +2275,85 @@ public abstract class AbstractSarlTest extends Assert {
 		}
 	}
 
+	/** Start a time out on the operation.
+	 *
+	 * @return the time out manager.
+	 * @since 0.9
+	 */
+	protected TimeOutHandler startTimeOut() {
+		final TimeOutHandler handler = new TimeOutHandler();
+		handler.start();
+		return handler;
+	}
+
+	/** An object for managing the time out of operations.
+	 * 
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.9
+	 */
+	protected static class TimeOutHandler {
+
+		private static final int TIME_OUT = 10000;
+		
+		private Thread thread;
+
+		private Thread threadToBreak;
+
+		private final AtomicBoolean continueLoop = new AtomicBoolean(true);
+		
+		private final AtomicBoolean timeout = new AtomicBoolean();
+
+		/** Constructor.
+		 */
+		TimeOutHandler() {
+			//
+		}
+
+		/** Start the time out process.
+		 */
+		void start() {
+			this.threadToBreak = Thread.currentThread();
+			this.thread = new Thread() {
+				@Override
+				public void run() {
+					final long endTime = System.currentTimeMillis() + TIME_OUT;
+					while (TimeOutHandler.this.continueLoop.get()
+							&& System.currentTimeMillis() <= endTime) {
+						Thread.yield();
+					}
+					if (TimeOutHandler.this.continueLoop.get()) {
+						TimeOutHandler.this.timeout.set(true);
+						TimeOutHandler.this.stop();
+					}
+				}
+			};
+			this.thread.setDaemon(true);
+			this.thread.setName("Test TimeOut Manager");
+			this.thread.start();
+		}
+
+		/** Stop the time out process.
+		 */
+		public synchronized void stop() {
+			this.continueLoop.set(false);
+			if (this.thread != null) {
+				this.thread = null;
+				if (this.threadToBreak != null) {
+					try {
+						this.threadToBreak.stop();
+					} catch (ThreadDeath exception) {
+						if (this.timeout.get()) {
+							throw new RuntimeException(new TimeoutException());
+						}
+					} finally {
+						this.threadToBreak = null;
+					}
+				}
+			}
+		}
+
+	}
 }
