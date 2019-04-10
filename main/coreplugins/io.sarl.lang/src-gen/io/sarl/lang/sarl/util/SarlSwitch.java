@@ -24,6 +24,7 @@ import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 
+import org.eclipse.xtext.xbase.XCastedExpression;
 import org.eclipse.xtext.xbase.XExpression;
 
 /**
@@ -241,6 +242,15 @@ public class SarlSwitch<T> extends Switch<T>
 				if (result == null) result = caseXtendTypeDeclaration(sarlEvent);
 				if (result == null) result = caseXtendMember(sarlEvent);
 				if (result == null) result = caseXtendAnnotationTarget(sarlEvent);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case SarlPackage.SARL_CASTED_EXPRESSION:
+			{
+				SarlCastedExpression sarlCastedExpression = (SarlCastedExpression)theEObject;
+				T result = caseSarlCastedExpression(sarlCastedExpression);
+				if (result == null) result = caseXCastedExpression(sarlCastedExpression);
+				if (result == null) result = caseXExpression(sarlCastedExpression);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -572,6 +582,23 @@ public class SarlSwitch<T> extends Switch<T>
 	 * @generated
 	 */
 	public T caseSarlEvent(SarlEvent object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Casted Expression</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Casted Expression</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @since 0.9
+	 * @generated
+	 */
+	public T caseSarlCastedExpression(SarlCastedExpression object)
 	{
 		return null;
 	}
@@ -909,6 +936,23 @@ public class SarlSwitch<T> extends Switch<T>
 	 * @generated
 	 */
 	public T caseXtendEnumLiteral(XtendEnumLiteral object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>XCasted Expression</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>XCasted Expression</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @since 2.7
+	 * @generated
+	 */
+	public T caseXCastedExpression(XCastedExpression object)
 	{
 		return null;
 	}

@@ -4827,6 +4827,79 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//STRING
 		public RuleCall getMessageSTRINGTerminalRuleCall_3_1_0() { return cMessageSTRINGTerminalRuleCall_3_1_0; }
 	}
+	public class SarlCastedExpressionElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "io.sarl.lang.SARL.SarlCastedExpression");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cSarlCastedExpressionAction_0 = (Action)cGroup.eContents().get(0);
+		private final Assignment cFeatureAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final CrossReference cFeatureJvmIdentifiableElementCrossReference_1_0 = (CrossReference)cFeatureAssignment_1.eContents().get(0);
+		private final RuleCall cFeatureJvmIdentifiableElementIdOrSuperParserRuleCall_1_0_1 = (RuleCall)cFeatureJvmIdentifiableElementCrossReference_1_0.eContents().get(1);
+		
+		//SarlCastedExpression xbase::XCastedExpression:
+		//	{SarlCastedExpression} feature=[jvm::JvmIdentifiableElement|IdOrSuper]?;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//{SarlCastedExpression} feature=[jvm::JvmIdentifiableElement|IdOrSuper]?
+		public Group getGroup() { return cGroup; }
+		
+		//{SarlCastedExpression}
+		public Action getSarlCastedExpressionAction_0() { return cSarlCastedExpressionAction_0; }
+		
+		//feature=[jvm::JvmIdentifiableElement|IdOrSuper]?
+		public Assignment getFeatureAssignment_1() { return cFeatureAssignment_1; }
+		
+		//[jvm::JvmIdentifiableElement|IdOrSuper]
+		public CrossReference getFeatureJvmIdentifiableElementCrossReference_1_0() { return cFeatureJvmIdentifiableElementCrossReference_1_0; }
+		
+		//IdOrSuper
+		public RuleCall getFeatureJvmIdentifiableElementIdOrSuperParserRuleCall_1_0_1() { return cFeatureJvmIdentifiableElementIdOrSuperParserRuleCall_1_0_1; }
+	}
+	public class XCastedExpressionElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "io.sarl.lang.SARL.XCastedExpression");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final RuleCall cXExponentExpressionParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
+		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
+		private final Group cGroup_1_0 = (Group)cGroup_1.eContents().get(0);
+		private final Group cGroup_1_0_0 = (Group)cGroup_1_0.eContents().get(0);
+		private final Action cSarlCastedExpressionTargetAction_1_0_0_0 = (Action)cGroup_1_0_0.eContents().get(0);
+		private final Keyword cAsKeyword_1_0_0_1 = (Keyword)cGroup_1_0_0.eContents().get(1);
+		private final Assignment cTypeAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
+		private final RuleCall cTypeJvmTypeReferenceParserRuleCall_1_1_0 = (RuleCall)cTypeAssignment_1_1.eContents().get(0);
+		
+		//@Override
+		//XCastedExpression xbase::XExpression:
+		//	XExponentExpression (=> ({SarlCastedExpression.target=current} 'as') type=JvmTypeReference)*;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//// The inheritance and fields of SarlCastedExpression is manually defined into the Ecore model.
+		//XExponentExpression (=> ({SarlCastedExpression.target=current} 'as') type=JvmTypeReference)*
+		public Group getGroup() { return cGroup; }
+		
+		//// The inheritance and fields of SarlCastedExpression is manually defined into the Ecore model.
+		//XExponentExpression
+		public RuleCall getXExponentExpressionParserRuleCall_0() { return cXExponentExpressionParserRuleCall_0; }
+		
+		//(=> ({SarlCastedExpression.target=current} 'as') type=JvmTypeReference)*
+		public Group getGroup_1() { return cGroup_1; }
+		
+		//=> ({SarlCastedExpression.target=current} 'as')
+		public Group getGroup_1_0() { return cGroup_1_0; }
+		
+		//{SarlCastedExpression.target=current} 'as'
+		public Group getGroup_1_0_0() { return cGroup_1_0_0; }
+		
+		//{SarlCastedExpression.target=current}
+		public Action getSarlCastedExpressionTargetAction_1_0_0_0() { return cSarlCastedExpressionTargetAction_1_0_0_0; }
+		
+		//'as'
+		public Keyword getAsKeyword_1_0_0_1() { return cAsKeyword_1_0_0_1; }
+		
+		//type=JvmTypeReference
+		public Assignment getTypeAssignment_1_1() { return cTypeAssignment_1_1; }
+		
+		//JvmTypeReference
+		public RuleCall getTypeJvmTypeReferenceParserRuleCall_1_1_0() { return cTypeJvmTypeReferenceParserRuleCall_1_1_0; }
+	}
 	public class XPrimaryExpressionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "io.sarl.lang.SARL.XPrimaryExpression");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
@@ -5479,50 +5552,6 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		//'%'
 		public Keyword getPercentSignKeyword_2() { return cPercentSignKeyword_2; }
 	}
-	public class XCastedExpressionElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "io.sarl.lang.SARL.XCastedExpression");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final RuleCall cXExponentExpressionParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
-		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
-		private final Group cGroup_1_0 = (Group)cGroup_1.eContents().get(0);
-		private final Group cGroup_1_0_0 = (Group)cGroup_1_0.eContents().get(0);
-		private final Action cXCastedExpressionTargetAction_1_0_0_0 = (Action)cGroup_1_0_0.eContents().get(0);
-		private final Keyword cAsKeyword_1_0_0_1 = (Keyword)cGroup_1_0_0.eContents().get(1);
-		private final Assignment cTypeAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
-		private final RuleCall cTypeJvmTypeReferenceParserRuleCall_1_1_0 = (RuleCall)cTypeAssignment_1_1.eContents().get(0);
-		
-		//@Override
-		//XCastedExpression xbase::XExpression:
-		//	XExponentExpression (=> ({xbase::XCastedExpression.target=current} 'as') type=JvmTypeReference)*;
-		@Override public ParserRule getRule() { return rule; }
-		
-		//XExponentExpression (=> ({xbase::XCastedExpression.target=current} 'as') type=JvmTypeReference)*
-		public Group getGroup() { return cGroup; }
-		
-		//XExponentExpression
-		public RuleCall getXExponentExpressionParserRuleCall_0() { return cXExponentExpressionParserRuleCall_0; }
-		
-		//(=> ({xbase::XCastedExpression.target=current} 'as') type=JvmTypeReference)*
-		public Group getGroup_1() { return cGroup_1; }
-		
-		//=> ({xbase::XCastedExpression.target=current} 'as')
-		public Group getGroup_1_0() { return cGroup_1_0; }
-		
-		//{xbase::XCastedExpression.target=current} 'as'
-		public Group getGroup_1_0_0() { return cGroup_1_0_0; }
-		
-		//{xbase::XCastedExpression.target=current}
-		public Action getXCastedExpressionTargetAction_1_0_0_0() { return cXCastedExpressionTargetAction_1_0_0_0; }
-		
-		//'as'
-		public Keyword getAsKeyword_1_0_0_1() { return cAsKeyword_1_0_0_1; }
-		
-		//type=JvmTypeReference
-		public Assignment getTypeAssignment_1_1() { return cTypeAssignment_1_1; }
-		
-		//JvmTypeReference
-		public RuleCall getTypeJvmTypeReferenceParserRuleCall_1_1_0() { return cTypeJvmTypeReferenceParserRuleCall_1_1_0; }
-	}
 	public class XExponentExpressionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "io.sarl.lang.SARL.XExponentExpression");
 		private final Group cGroup = (Group)rule.eContents().get(1);
@@ -5672,6 +5701,8 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	private final ContinueExpressionElements pContinueExpression;
 	private final AssertExpressionElements pAssertExpression;
 	private final AssumeExpressionElements pAssumeExpression;
+	private final SarlCastedExpressionElements pSarlCastedExpression;
+	private final XCastedExpressionElements pXCastedExpression;
 	private final XPrimaryExpressionElements pXPrimaryExpression;
 	private final XVariableDeclarationElements pXVariableDeclaration;
 	private final JvmFormalParameterElements pJvmFormalParameter;
@@ -5681,7 +5712,6 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	private final XSwitchExpressionElements pXSwitchExpression;
 	private final XMultiplicativeExpressionElements pXMultiplicativeExpression;
 	private final OpMultiElements pOpMulti;
-	private final XCastedExpressionElements pXCastedExpression;
 	private final XExponentExpressionElements pXExponentExpression;
 	private final OpExponentElements pOpExponent;
 	private final XUnaryOperationElements pXUnaryOperation;
@@ -5721,6 +5751,8 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		this.pContinueExpression = new ContinueExpressionElements();
 		this.pAssertExpression = new AssertExpressionElements();
 		this.pAssumeExpression = new AssumeExpressionElements();
+		this.pSarlCastedExpression = new SarlCastedExpressionElements();
+		this.pXCastedExpression = new XCastedExpressionElements();
 		this.pXPrimaryExpression = new XPrimaryExpressionElements();
 		this.pXVariableDeclaration = new XVariableDeclarationElements();
 		this.pJvmFormalParameter = new JvmFormalParameterElements();
@@ -5730,7 +5762,6 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		this.pXSwitchExpression = new XSwitchExpressionElements();
 		this.pXMultiplicativeExpression = new XMultiplicativeExpressionElements();
 		this.pOpMulti = new OpMultiElements();
-		this.pXCastedExpression = new XCastedExpressionElements();
 		this.pXExponentExpression = new XExponentExpressionElements();
 		this.pOpExponent = new OpExponentElements();
 		this.pXUnaryOperation = new XUnaryOperationElements();
@@ -6065,6 +6096,27 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 		return getAssumeExpressionAccess().getRule();
 	}
 	
+	//SarlCastedExpression xbase::XCastedExpression:
+	//	{SarlCastedExpression} feature=[jvm::JvmIdentifiableElement|IdOrSuper]?;
+	public SarlCastedExpressionElements getSarlCastedExpressionAccess() {
+		return pSarlCastedExpression;
+	}
+	
+	public ParserRule getSarlCastedExpressionRule() {
+		return getSarlCastedExpressionAccess().getRule();
+	}
+	
+	//@Override
+	//XCastedExpression xbase::XExpression:
+	//	XExponentExpression (=> ({SarlCastedExpression.target=current} 'as') type=JvmTypeReference)*;
+	public XCastedExpressionElements getXCastedExpressionAccess() {
+		return pXCastedExpression;
+	}
+	
+	public ParserRule getXCastedExpressionRule() {
+		return getXCastedExpressionAccess().getRule();
+	}
+	
 	//@Override
 	//XPrimaryExpression xbase::XExpression:
 	//	BreakExpression | ContinueExpression | AssertExpression | AssumeExpression | XConstructorCall | XBlockExpression |
@@ -6175,17 +6227,6 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getOpMultiRule() {
 		return getOpMultiAccess().getRule();
-	}
-	
-	//@Override
-	//XCastedExpression xbase::XExpression:
-	//	XExponentExpression (=> ({xbase::XCastedExpression.target=current} 'as') type=JvmTypeReference)*;
-	public XCastedExpressionElements getXCastedExpressionAccess() {
-		return pXCastedExpression;
-	}
-	
-	public ParserRule getXCastedExpressionRule() {
-		return getXCastedExpressionAccess().getRule();
 	}
 	
 	//XExponentExpression xbase::XExpression:

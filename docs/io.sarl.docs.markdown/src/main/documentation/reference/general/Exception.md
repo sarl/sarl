@@ -3,7 +3,7 @@
 SARL supports exception throwing and catching. The mechanism is similar to the one in Java.
 
 For a description of the exceptions that may be thrown by a function,
-please see [how to declare exceptions in a function prototype](./FuncDecls.md#2-declare-exceptions-in-the-function-prototype).
+please see [how to declare exceptions in a function prototype](./FuncDecls.md#declare-exceptions-in-the-function-prototype).
 
 
 ## Throwing Exceptions

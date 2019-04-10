@@ -7,15 +7,15 @@
     editorPluginID="io.sarl.lang.editor" runtimeVersion="2.11" usedGenPackages="../../org.eclipse.xtend.core/model/Xtend.genmodel#//xtend ../../org.eclipse.xtext.common.types/model/JavaVMTypes.genmodel#//types ../../org.eclipse.xtext.xbase/model/Xbase.genmodel#//xbase ../../org.eclipse.xtext.xbase/model/Xbase.genmodel#//xtype ../../org.eclipse.xtext.xbase/model/Xbase.genmodel#//xAnnotations">
   <genPackages prefix="Sarl" basePackage="io.sarl.lang" disposableProviderFactory="true"
       fileExtensions="sarl" ecorePackage="SARL.ecore#/">
+    <genClasses ecoreClass="SARL.ecore#//SarlScript"/>
+    <genClasses ecoreClass="SARL.ecore#//SarlField"/>
     <genClasses ecoreClass="SARL.ecore#//SarlBreakExpression"/>
     <genClasses ecoreClass="SARL.ecore#//SarlContinueExpression"/>
     <genClasses ecoreClass="SARL.ecore#//SarlAssertExpression">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlAssertExpression/condition"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlAssertExpression/message"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlAssertExpression/isStatic"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute SARL.ecore#//SarlAssertExpression/message"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute SARL.ecore#//SarlAssertExpression/isStatic"/>
     </genClasses>
-    <genClasses ecoreClass="SARL.ecore#//SarlScript"/>
-    <genClasses ecoreClass="SARL.ecore#//SarlField"/>
     <genClasses ecoreClass="SARL.ecore#//SarlAction">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlAction/firedEvents"/>
     </genClasses>
@@ -36,6 +36,23 @@
     <genClasses ecoreClass="SARL.ecore#//SarlEnumeration"/>
     <genClasses ecoreClass="SARL.ecore#//SarlAnnotationType"/>
     <genClasses ecoreClass="SARL.ecore#//SarlEnumLiteral"/>
+    <genClasses ecoreClass="SARL.ecore#//SarlEvent">
+    <genClasses ecoreClass="SARL.ecore#//SarlCastedExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlCastedExpression/feature"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlCastedExpression/receiver"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlCastedExpression/argument"/>
+    </genClasses>
+    <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlEvent/extends"/>
+      <genOperations ecoreOperation="SARL.ecore#//SarlEvent/isAbstract"/>
+    </genClasses>
+    <genClasses ecoreClass="SARL.ecore#//SarlSpace">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlSpace/extends"/>
+      <genOperations ecoreOperation="SARL.ecore#//SarlSpace/isAbstract"/>
+    </genClasses>
+    <genClasses ecoreClass="SARL.ecore#//SarlArtifact">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlArtifact/extends"/>
+      <genOperations ecoreOperation="SARL.ecore#//SarlArtifact/isAbstract"/>
+    </genClasses>
     <genClasses ecoreClass="SARL.ecore#//SarlAgent">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlAgent/extends"/>
       <genOperations ecoreOperation="SARL.ecore#//SarlAgent/isAbstract"/>
@@ -57,18 +74,6 @@
     </genClasses>
     <genClasses ecoreClass="SARL.ecore#//SarlFormalParameter">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlFormalParameter/defaultValue"/>
-    </genClasses>
-    <genClasses ecoreClass="SARL.ecore#//SarlEvent">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlEvent/extends"/>
-      <genOperations ecoreOperation="SARL.ecore#//SarlEvent/isAbstract"/>
-    </genClasses>
-    <genClasses ecoreClass="SARL.ecore#//SarlSpace">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlSpace/extends"/>
-      <genOperations ecoreOperation="SARL.ecore#//SarlSpace/isAbstract"/>
-    </genClasses>
-    <genClasses ecoreClass="SARL.ecore#//SarlArtifact">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SARL.ecore#//SarlArtifact/extends"/>
-      <genOperations ecoreOperation="SARL.ecore#//SarlArtifact/isAbstract"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

@@ -45,6 +45,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.xtend.core.jvmmodel.XtendJvmModelInferrer;
@@ -1684,6 +1685,23 @@ public final class Utils {
 		}
 	}
 
+
+	/** Set the given structure feature with the given value.
+	 *
+	 * @param object the object that contains the feature.
+	 * @param property the feature to change.
+	 * @param value the value of the feature.
+	 */
+	public static void setStructuralFeature(EObject object, EStructuralFeature property, Object value) {
+		assert object != null;
+		assert property != null;
+		if (value == null) {
+			object.eUnset(property);
+		} else {
+			object.eSet(property, value);
+		}
+	}
+
 	/** Replies the root feature call into a sequence of feature calls.
 	 *
 	 * @param featureCall the leaf feature call.
@@ -1777,3 +1795,4 @@ public final class Utils {
 	}
 
 }
+

@@ -43,6 +43,17 @@ public final class PrimitiveByteCastExtensions {
 		//
 	}
 
+	/** Convert the given value to {@code String}.
+	 *
+	 * @param number a number of {@code byte} type.
+	 * @return the equivalent value to {@code number} of {@code String} type.
+	 */
+	@Pure
+	@Inline(value = "$2.toString($1)", imported = Byte.class)
+	public static String toString(byte number) {
+		return Byte.toString(number);
+	}
+
 	/** Convert the given value to {@code AtomicLong}.
 	 *
 	 * @param number a number of {@code byte} type.
@@ -74,6 +85,61 @@ public final class PrimitiveByteCastExtensions {
 	@Inline(value = "new $2($1)", imported = AtomicDouble.class)
 	public static AtomicDouble toAtomicDouble(byte number) {
 		return new AtomicDouble(number);
+	}
+
+	/** Convert the given value to {@code Short}.
+	 *
+	 * @param number a number of {@code byte} type.
+	 * @return the equivalent value to {@code number} of {@code Short} type.
+	 */
+	@Pure
+	@Inline(value = "$2.valueOf($1)", imported = Short.class)
+	public static Short toShort(byte number) {
+		return Short.valueOf(number);
+	}
+
+	/** Convert the given value to {@code Long}.
+	 *
+	 * @param number a number of {@code byte} type.
+	 * @return the equivalent value to {@code number} of {@code Long} type.
+	 */
+	@Pure
+	@Inline(value = "$2.valueOf($1)", imported = Long.class)
+	public static Long toLong(byte number) {
+		return Long.valueOf(number);
+	}
+
+	/** Convert the given value to {@code Integer}.
+	 *
+	 * @param number a number of {@code byte} type.
+	 * @return the equivalent value to {@code number} of {@code Integer} type.
+	 */
+	@Pure
+	@Inline(value = "$2.valueOf($1)", imported = Integer.class)
+	public static Integer toInteger(byte number) {
+		return Integer.valueOf(number);
+	}
+
+	/** Convert the given value to {@code Float}.
+	 *
+	 * @param number a number of {@code byte} type.
+	 * @return the equivalent value to {@code number} of {@code Float} type.
+	 */
+	@Pure
+	@Inline(value = "$2.valueOf($1)", imported = Float.class)
+	public static Float toFloat(byte number) {
+		return Float.valueOf(number);
+	}
+
+	/** Convert the given value to {@code Double}.
+	 *
+	 * @param number a number of {@code byte} type.
+	 * @return the equivalent value to {@code number} of {@code Double} type.
+	 */
+	@Pure
+	@Inline(value = "$2.valueOf($1)", imported = Double.class)
+	public static Double toDouble(byte number) {
+		return Double.valueOf(number);
 	}
 
 }

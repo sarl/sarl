@@ -21,16 +21,12 @@
 
 package io.sarl.lang.core.tests.scoping.extensions.numbers.cast.atomiclong;
 
-import static io.sarl.lang.scoping.extensions.numbers.cast.AtomicLongCastExtensions.toByte;
-import static io.sarl.lang.scoping.extensions.numbers.cast.AtomicLongCastExtensions.toDouble;
-import static io.sarl.lang.scoping.extensions.numbers.cast.AtomicLongCastExtensions.toFloat;
-import static io.sarl.lang.scoping.extensions.numbers.cast.AtomicLongCastExtensions.toInt;
-import static io.sarl.lang.scoping.extensions.numbers.cast.AtomicLongCastExtensions.toLong;
-import static io.sarl.lang.scoping.extensions.numbers.cast.AtomicLongCastExtensions.toLongInteger;
-import static io.sarl.lang.scoping.extensions.numbers.cast.AtomicLongCastExtensions.toShort;
+import static io.sarl.lang.scoping.extensions.numbers.cast.AtomicLongCastExtensions.*;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
+import com.google.common.util.concurrent.AtomicDouble;
 import org.junit.Test;
 
 import io.sarl.tests.api.AbstractSarlTest;
@@ -48,40 +44,43 @@ public class CodeTest extends AbstractSarlTest {
 	private static AtomicLong left = new AtomicLong(4);
 
 	@Test
-	public void toFloat_AtomicLong() {
-		assertEpsilonEquals(4, toFloat(left));
+	public void toByte_AtomicInteger() {
+		assertEquals(Byte.valueOf((byte) 4), toByte(left));
 	}
 
 	@Test
-	public void toByte_AtomicLong() {
-		assertEquals(4, toByte(left));
+	public void toShort_AtomicInteger() {
+		assertEquals(Short.valueOf((short) 4), toShort(left));
 	}
 
 	@Test
-	public void toLong_AtomicLong() {
-		assertEquals(4, toLong(left));
+	public void toInteger_AtomicInteger() {
+		assertEquals(Integer.valueOf(4), toInteger(left));
 	}
 
 	@Test
-	public void toDouble_AtomicLong() {
-		assertEpsilonEquals(4, toDouble(left));
+	public void toAtomicInteger_AtomicInteger() {
+		assertEquals(4, toAtomicInteger(left).intValue());
 	}
 
 	@Test
-	public void toShort_AtomicLong() {
-		assertEquals(4, toShort(left));
+	public void toLong_AtomicInteger() {
+		assertEquals(Long.valueOf(4), toLong(left));
 	}
 
 	@Test
-	public void toInt_AtomicLong() {
-		assertEquals(4, toInt(left));
+	public void toFloat_AtomicInteger() {
+		assertEpsilonEquals(Float.valueOf(4), toFloat(left));
 	}
 
 	@Test
-	public void toIntegerInteger_AtomicLong() {
-		Long value = toLongInteger(left);
-		assertNotNull(value);
-		assertEquals(4, value.longValue());
+	public void toDouble_AtomicInteger() {
+		assertEpsilonEquals(Double.valueOf(4), toDouble(left));
+	}
+
+	@Test
+	public void toAtomicDouble_AtomicInteger() {
+		assertEpsilonEquals(4., toAtomicDouble(left).doubleValue());
 	}
 
 }

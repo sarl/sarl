@@ -198,7 +198,7 @@ public class SARLGrammarKeywordAccess {
 	 * Source: io.sarl.lang.SARL
 	 */
 	public String getAsKeyword() {
-		return this.grammarAccess.getXCastedExpressionAccess().getAsKeyword_1_0_0_1().getValue();
+		return this.grammarAccess.getSarlXLoopFormalParameterAccess().getAsKeyword_3_0().getValue();
 	}
 
 	/** Keyword: {@code fires}.

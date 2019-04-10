@@ -54,7 +54,7 @@
 'agent'=33
 'annotation'=44
 'artifact'=38
-'as'=67
+'as'=64
 'assert'=62
 'assume'=63
 'behavior'=34
@@ -78,7 +78,7 @@
 'final'=84
 'finally'=141
 'fires'=53
-'for'=66
+'for'=67
 'if'=129
 'implements'=36
 'import'=96
@@ -109,8 +109,8 @@
 'try'=140
 'typeof'=137
 'uses'=57
-'val'=65
-'var'=64
+'val'=66
+'var'=65
 'volatile'=87
 'while'=131
 'with'=52

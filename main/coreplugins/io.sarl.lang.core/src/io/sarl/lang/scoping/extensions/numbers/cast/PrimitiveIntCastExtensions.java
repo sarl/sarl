@@ -43,6 +43,17 @@ public final class PrimitiveIntCastExtensions {
 		//
 	}
 
+	/** Convert the given value to {@code String}.
+	 *
+	 * @param number a number of {@code int} type.
+	 * @return the equivalent value to {@code number} of {@code String} type.
+	 */
+	@Pure
+	@Inline(value = "$2.toString($1)", imported = Integer.class)
+	public static String toString(int number) {
+		return Integer.toString(number);
+	}
+
 	/** Convert the given value to {@code AtomicLong}.
 	 *
 	 * @param number a number of {@code int} type.
@@ -74,6 +85,61 @@ public final class PrimitiveIntCastExtensions {
 	@Inline(value = "new $2($1)", imported = AtomicDouble.class)
 	public static AtomicDouble toAtomicDouble(int number) {
 		return new AtomicDouble(number);
+	}
+
+	/** Convert the given value to {@code Byte}.
+	 *
+	 * @param number a number of {@code int} type.
+	 * @return the equivalent value to {@code number} of {@code Byte} type.
+	 */
+	@Pure
+	@Inline(value = "$2.valueOf(($3) $1)", imported = {Byte.class, byte.class})
+	public static Byte toByte(int number) {
+		return Byte.valueOf((byte) number);
+	}
+
+	/** Convert the given value to {@code Integer}.
+	 *
+	 * @param number a number of {@code int} type.
+	 * @return the equivalent value to {@code number} of {@code Integer} type.
+	 */
+	@Pure
+	@Inline(value = "$2.valueOf(($3) $1)", imported = {Short.class, short.class})
+	public static Short toShort(int number) {
+		return Short.valueOf((short) number);
+	}
+
+	/** Convert the given value to {@code Long}.
+	 *
+	 * @param number a number of {@code int} type.
+	 * @return the equivalent value to {@code number} of {@code Long} type.
+	 */
+	@Pure
+	@Inline(value = "$2.valueOf($1)", imported = Long.class)
+	public static Long toLong(int number) {
+		return Long.valueOf(number);
+	}
+
+	/** Convert the given value to {@code Float}.
+	 *
+	 * @param number a number of {@code int} type.
+	 * @return the equivalent value to {@code number} of {@code Float} type.
+	 */
+	@Pure
+	@Inline(value = "$2.valueOf($1)", imported = Float.class)
+	public static Float toFloat(int number) {
+		return Float.valueOf(number);
+	}
+
+	/** Convert the given value to {@code Doube}.
+	 *
+	 * @param number a number of {@code int} type.
+	 * @return the equivalent value to {@code number} of {@code Double} type.
+	 */
+	@Pure
+	@Inline(value = "$2.valueOf($1)", imported = Double.class)
+	public static Double toDouble(int number) {
+		return Double.valueOf(number);
 	}
 
 }

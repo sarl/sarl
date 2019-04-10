@@ -7669,6 +7669,75 @@ ruleAssumeExpression returns [EObject current=null]
 	)
 ;
 
+// Entry rule entryRuleXCastedExpression
+entryRuleXCastedExpression returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getXCastedExpressionRule()); }
+	iv_ruleXCastedExpression=ruleXCastedExpression
+	{ $current=$iv_ruleXCastedExpression.current; }
+	EOF;
+
+// Rule XCastedExpression
+ruleXCastedExpression returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		{
+			newCompositeNode(grammarAccess.getXCastedExpressionAccess().getXExponentExpressionParserRuleCall_0());
+		}
+		this_XExponentExpression_0=ruleXExponentExpression
+		{
+			$current = $this_XExponentExpression_0.current;
+			afterParserOrEnumRuleCall();
+		}
+		(
+			(
+				((
+					(
+					)
+					'as'
+				)
+				)=>
+				(
+					(
+						{
+							$current = forceCreateModelElementAndSet(
+								grammarAccess.getXCastedExpressionAccess().getSarlCastedExpressionTargetAction_1_0_0_0(),
+								$current);
+						}
+					)
+					otherlv_2='as'
+					{
+						newLeafNode(otherlv_2, grammarAccess.getXCastedExpressionAccess().getAsKeyword_1_0_0_1());
+					}
+				)
+			)
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getXCastedExpressionAccess().getTypeJvmTypeReferenceParserRuleCall_1_1_0());
+					}
+					lv_type_3_0=ruleJvmTypeReference
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getXCastedExpressionRule());
+						}
+						set(
+							$current,
+							"type",
+							lv_type_3_0,
+							"org.eclipse.xtext.xbase.Xtype.JvmTypeReference");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+		)*
+	)
+;
+
 // Entry rule entryRuleXPrimaryExpression
 entryRuleXPrimaryExpression returns [EObject current=null]:
 	{ newCompositeNode(grammarAccess.getXPrimaryExpressionRule()); }
@@ -8790,75 +8859,6 @@ ruleOpMulti returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()
 			$current.merge(kw);
 			newLeafNode(kw, grammarAccess.getOpMultiAccess().getPercentSignKeyword_2());
 		}
-	)
-;
-
-// Entry rule entryRuleXCastedExpression
-entryRuleXCastedExpression returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getXCastedExpressionRule()); }
-	iv_ruleXCastedExpression=ruleXCastedExpression
-	{ $current=$iv_ruleXCastedExpression.current; }
-	EOF;
-
-// Rule XCastedExpression
-ruleXCastedExpression returns [EObject current=null]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	(
-		{
-			newCompositeNode(grammarAccess.getXCastedExpressionAccess().getXExponentExpressionParserRuleCall_0());
-		}
-		this_XExponentExpression_0=ruleXExponentExpression
-		{
-			$current = $this_XExponentExpression_0.current;
-			afterParserOrEnumRuleCall();
-		}
-		(
-			(
-				((
-					(
-					)
-					'as'
-				)
-				)=>
-				(
-					(
-						{
-							$current = forceCreateModelElementAndSet(
-								grammarAccess.getXCastedExpressionAccess().getXCastedExpressionTargetAction_1_0_0_0(),
-								$current);
-						}
-					)
-					otherlv_2='as'
-					{
-						newLeafNode(otherlv_2, grammarAccess.getXCastedExpressionAccess().getAsKeyword_1_0_0_1());
-					}
-				)
-			)
-			(
-				(
-					{
-						newCompositeNode(grammarAccess.getXCastedExpressionAccess().getTypeJvmTypeReferenceParserRuleCall_1_1_0());
-					}
-					lv_type_3_0=ruleJvmTypeReference
-					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getXCastedExpressionRule());
-						}
-						set(
-							$current,
-							"type",
-							lv_type_3_0,
-							"org.eclipse.xtext.xbase.Xtype.JvmTypeReference");
-						afterParserOrEnumRuleCall();
-					}
-				)
-			)
-		)*
 	)
 ;
 

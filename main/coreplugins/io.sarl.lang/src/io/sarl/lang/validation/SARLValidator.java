@@ -34,18 +34,34 @@ import static io.sarl.lang.sarl.SarlPackage.Literals.SARL_SKILL__IMPLEMENTS;
 import static io.sarl.lang.validation.IssueCodes.DISCOURAGED_BOOLEAN_EXPRESSION;
 import static io.sarl.lang.validation.IssueCodes.DISCOURAGED_CAPACITY_DEFINITION;
 import static io.sarl.lang.validation.IssueCodes.DISCOURAGED_FUNCTION_NAME;
+import static io.sarl.lang.validation.IssueCodes.DISCOURAGED_LOOP_BREAKING_KEYWORD_USE;
+import static io.sarl.lang.validation.IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE;
 import static io.sarl.lang.validation.IssueCodes.INVALID_CAPACITY_TYPE;
+import static io.sarl.lang.validation.IssueCodes.INVALID_DEFAULT_SKILL_ANNOTATION;
 import static io.sarl.lang.validation.IssueCodes.INVALID_EXTENDED_TYPE;
 import static io.sarl.lang.validation.IssueCodes.INVALID_FIRING_EVENT_TYPE;
 import static io.sarl.lang.validation.IssueCodes.INVALID_IMPLEMENTED_TYPE;
 import static io.sarl.lang.validation.IssueCodes.INVALID_NESTED_DEFINITION;
+import static io.sarl.lang.validation.IssueCodes.INVALID_OCCURRENCE_READONLY_USE;
+import static io.sarl.lang.validation.IssueCodes.INVALID_SARL_LIB_ON_CLASSPATH;
+import static io.sarl.lang.validation.IssueCodes.INVALID_USE_OF_LOOP_BREAKING_KEYWORD;
+import static io.sarl.lang.validation.IssueCodes.MANUAL_INLINE_DEFINITION;
+import static io.sarl.lang.validation.IssueCodes.MISSING_BODY;
+import static io.sarl.lang.validation.IssueCodes.POTENTIAL_FIELD_SYNCHRONIZATION_PROBLEM;
+import static io.sarl.lang.validation.IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION;
 import static io.sarl.lang.validation.IssueCodes.REDUNDANT_CAPACITY_USE;
 import static io.sarl.lang.validation.IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION;
 import static io.sarl.lang.validation.IssueCodes.RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED;
+import static io.sarl.lang.validation.IssueCodes.SARL_LIB_NOT_ON_CLASSPATH;
+import static io.sarl.lang.validation.IssueCodes.UNEXPECTED_EXCEPTION_THROW;
+import static io.sarl.lang.validation.IssueCodes.UNEXPECTED_FORMAL_PARAMETER;
 import static io.sarl.lang.validation.IssueCodes.UNREACHABLE_BEHAVIOR_UNIT;
 import static io.sarl.lang.validation.IssueCodes.UNUSED_AGENT_CAPACITY;
+import static io.sarl.lang.validation.IssueCodes.USED_RESERVED_SARL_ANNOTATION;
 import static org.eclipse.xtend.core.validation.IssueCodes.ABSTRACT_METHOD_WITH_BODY;
+import static org.eclipse.xtend.core.validation.IssueCodes.ANNOTATION_WRONG_TARGET;
 import static org.eclipse.xtend.core.validation.IssueCodes.CLASS_EXPECTED;
+import static org.eclipse.xtend.core.validation.IssueCodes.CONSTRUCTOR_TYPE_PARAMS_NOT_SUPPORTED;
 import static org.eclipse.xtend.core.validation.IssueCodes.CREATE_FUNCTIONS_MUST_NOT_BE_ABSTRACT;
 import static org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE;
 import static org.eclipse.xtend.core.validation.IssueCodes.DISPATCH_FUNCTIONS_MUST_NOT_BE_ABSTRACT;
@@ -73,7 +89,10 @@ import static org.eclipse.xtext.xbase.validation.IssueCodes.DISCOURAGED_REFERENC
 import static org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE;
 import static org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE;
 import static org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_INNER_EXPRESSION;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_TYPE;
 import static org.eclipse.xtext.xbase.validation.IssueCodes.MISSING_TYPE;
+import static org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST;
 import static org.eclipse.xtext.xbase.validation.IssueCodes.TYPE_BOUNDS_MISMATCH;
 import static org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED;
 import static org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING;
@@ -162,6 +181,7 @@ import org.eclipse.xtext.xbase.XAssignment;
 import org.eclipse.xtext.xbase.XBasicForLoopExpression;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
+import org.eclipse.xtext.xbase.XCastedExpression;
 import org.eclipse.xtext.xbase.XConstructorCall;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XFeatureCall;
@@ -211,6 +231,7 @@ import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.SarlBreakExpression;
 import io.sarl.lang.sarl.SarlCapacity;
 import io.sarl.lang.sarl.SarlCapacityUses;
+import io.sarl.lang.sarl.SarlCastedExpression;
 import io.sarl.lang.sarl.SarlClass;
 import io.sarl.lang.sarl.SarlConstructor;
 import io.sarl.lang.sarl.SarlContinueExpression;
@@ -655,14 +676,14 @@ public class SARLValidator extends AbstractSARLValidator {
 					MessageFormat.format(Messages.SARLValidator_7, errorCode.name(), classPath.toString(), fields.toString()),
 					sarlScript,
 					XtendPackage.Literals.XTEND_FILE__PACKAGE,
-					io.sarl.lang.validation.IssueCodes.SARL_LIB_NOT_ON_CLASSPATH);
+					SARL_LIB_NOT_ON_CLASSPATH);
 		} else if (!Utils.isCompatibleSARLLibraryVersion(sarlLibraryVersion.get())) {
 			error(
 					MessageFormat.format(Messages.SARLValidator_8,
 							sarlLibraryVersion.get(), SARLVersion.SPECIFICATION_RELEASE_VERSION),
 					sarlScript,
 					XtendPackage.Literals.XTEND_FILE__PACKAGE,
-					io.sarl.lang.validation.IssueCodes.INVALID_SARL_LIB_ON_CLASSPATH);
+					INVALID_SARL_LIB_ON_CLASSPATH);
 		}
 	}
 
@@ -1194,7 +1215,7 @@ public class SARLValidator extends AbstractSARLValidator {
 						param,
 						XtendPackage.Literals.XTEND_PARAMETER__PARAMETER_TYPE,
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-						org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_TYPE);
+						INVALID_TYPE);
 				return;
 			}
 			LightweightTypeReference fromType = getExpectedType(defaultValue);
@@ -1207,7 +1228,7 @@ public class SARLValidator extends AbstractSARLValidator {
 							param,
 							SARL_FORMAL_PARAMETER__DEFAULT_VALUE,
 							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-							org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_TYPE);
+							INVALID_TYPE);
 					return;
 				}
 			}
@@ -1436,14 +1457,19 @@ public class SARLValidator extends AbstractSARLValidator {
 					final LightweightTypeReference resolvedReturnType = inherited.getOverrideCheckResult().getThisOperation().getResolvedReturnType();
 					final String signature = inherited.getSimpleSignature();
 					final EStructuralFeature sourceReturnTypeFeature = returnTypeFeature(sourceElement);
-					error(MessageFormat.format(Messages.SARLValidator_45,
-							signature,
-							resolvedReturnType.getIdentifier(),
-							inheritedReturnType.getIdentifier()),
-							sourceElement,
-							sourceReturnTypeFeature,
-							INCOMPATIBLE_RETURN_TYPE,
-							resolvedReturnType.getIdentifier());
+					// FIXME: The following test is due to the fact that the resource sets of the two types may be different.
+					final String resolvedIdentifier = resolvedReturnType.getIdentifier();
+					final String inheritedIdentifier = inheritedReturnType.getIdentifier();
+					if (!Objects.equal(resolvedIdentifier, inheritedIdentifier)) {
+						error(MessageFormat.format(Messages.SARLValidator_45,
+								signature,
+								resolvedIdentifier,
+								inheritedIdentifier),
+								sourceElement,
+								sourceReturnTypeFeature,
+								INCOMPATIBLE_RETURN_TYPE,
+								resolvedIdentifier);
+					}
 				}
 			} else if (!isIgnored(RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED, sourceElement)
 					&& sourceElement instanceof SarlAction) {
@@ -1618,7 +1644,7 @@ public class SARLValidator extends AbstractSARLValidator {
 						guard,
 						null,
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-						org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_INNER_EXPRESSION);
+						INVALID_INNER_EXPRESSION);
 				return;
 			}
 			if (guard instanceof XBooleanLiteral) {
@@ -2170,7 +2196,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check
 	public void checkReservedAnnotation(XtendAnnotationTarget annotationTarget) {
-		if (!isIgnored(IssueCodes.USED_RESERVED_SARL_ANNOTATION)) {
+		if (!isIgnored(USED_RESERVED_SARL_ANNOTATION)) {
 			if (annotationTarget.getAnnotations().isEmpty() || !isRelevantAnnotationTarget(annotationTarget)) {
 				return;
 			}
@@ -2186,7 +2212,7 @@ public class SARLValidator extends AbstractSARLValidator {
 							addIssue(
 									MessageFormat.format(Messages.SARLValidator_87, type.getSimpleName()),
 									annotation,
-									IssueCodes.USED_RESERVED_SARL_ANNOTATION);
+									USED_RESERVED_SARL_ANNOTATION);
 						}
 					} else {
 						final QualifiedName annotationName = this.qualifiedNameConverter.toQualifiedName(
@@ -2195,7 +2221,7 @@ public class SARLValidator extends AbstractSARLValidator {
 							addIssue(
 									MessageFormat.format(Messages.SARLValidator_87, type.getSimpleName()),
 									annotation,
-									IssueCodes.USED_RESERVED_SARL_ANNOTATION);
+									USED_RESERVED_SARL_ANNOTATION);
 						}
 					}
 				}
@@ -2209,7 +2235,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check
 	public void checkManualInlineDefinition(XtendAnnotationTarget annotationTarget) {
-		if (!isIgnored(IssueCodes.MANUAL_INLINE_DEFINITION)) {
+		if (!isIgnored(MANUAL_INLINE_DEFINITION)) {
 			if (annotationTarget.getAnnotations().isEmpty() || !isRelevantAnnotationTarget(annotationTarget)) {
 				return;
 			}
@@ -2221,7 +2247,7 @@ public class SARLValidator extends AbstractSARLValidator {
 						addIssue(
 								Messages.SARLValidator_16,
 								annotation,
-								IssueCodes.MANUAL_INLINE_DEFINITION);
+								MANUAL_INLINE_DEFINITION);
 					}
 				}
 			}
@@ -2278,7 +2304,7 @@ public class SARLValidator extends AbstractSARLValidator {
 			if (getExpressionHelper().hasSideEffects(it)) {
 				addIssue(MessageFormat.format(Messages.SARLValidator_11, keywordName),
 						it,
-						IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE);
+						DISCOURAGED_OCCURRENCE_READONLY_USE);
 				failure.set(true);
 			}
 		});
@@ -2298,7 +2324,7 @@ public class SARLValidator extends AbstractSARLValidator {
 							readOnlyKeyword,
 							null,
 							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-							IssueCodes.INVALID_OCCURRENCE_READONLY_USE);
+							INVALID_OCCURRENCE_READONLY_USE);
 					return;
 				}
 			} else if (enableWarning && container.get() instanceof XVariableDeclaration) {
@@ -2312,7 +2338,7 @@ public class SARLValidator extends AbstractSARLValidator {
 						if (expression == null || expression == declaration.getRight()) {
 							addIssue(MessageFormat.format(Messages.SARLValidator_12, keywordName),
 									sequence,
-									IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE);
+									DISCOURAGED_OCCURRENCE_READONLY_USE);
 							return;
 						}
 					}
@@ -2330,7 +2356,7 @@ public class SARLValidator extends AbstractSARLValidator {
 							readOnlyKeyword,
 							null,
 							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-							IssueCodes.INVALID_OCCURRENCE_READONLY_USE);
+							INVALID_OCCURRENCE_READONLY_USE);
 					return;
 				}
 				// Function argument: direct passing, if function has side effect => WARNING
@@ -2382,7 +2408,7 @@ public class SARLValidator extends AbstractSARLValidator {
 						if (!isPrimitive) {
 							addIssue(MessageFormat.format(Messages.SARLValidator_92, keywordName),
 									sequence,
-									IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE);
+									DISCOURAGED_OCCURRENCE_READONLY_USE);
 							return;
 						}
 					}
@@ -2422,7 +2448,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check(CheckType.EXPENSIVE)
 	public void checkUnmodifiableEventAccess(SarlBehaviorUnit unit) {
-		final boolean enable1 = !isIgnored(IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE);
+		final boolean enable1 = !isIgnored(DISCOURAGED_OCCURRENCE_READONLY_USE);
 		final XExpression root = unit.getExpression();
 		final String occurrenceKw = this.grammarAccess.getOccurrenceKeyword();
 		for (final XFeatureCall child : EcoreUtil2.getAllContentsOfType(root, XFeatureCall.class)) {
@@ -2442,21 +2468,21 @@ public class SARLValidator extends AbstractSARLValidator {
 				it -> !(it instanceof XExpression) || it instanceof XAbstractWhileExpression
 				|| it instanceof XBasicForLoopExpression || it instanceof XForLoopExpression);
 		if (container instanceof XExpression) {
-			if (!isIgnored(IssueCodes.DISCOURAGED_LOOP_BREAKING_KEYWORD_USE)
+			if (!isIgnored(DISCOURAGED_LOOP_BREAKING_KEYWORD_USE)
 					&& container instanceof XBasicForLoopExpression) {
 				addIssue(
 						MessageFormat.format(Messages.SARLValidator_17, this.grammarAccess.getBreakKeyword()),
 						expression,
 						null,
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-						IssueCodes.DISCOURAGED_LOOP_BREAKING_KEYWORD_USE);
+						DISCOURAGED_LOOP_BREAKING_KEYWORD_USE);
 			}
 		} else {
 			error(MessageFormat.format(Messages.SARLValidator_18, this.grammarAccess.getBreakKeyword()),
 					expression,
 					null,
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-					IssueCodes.INVALID_USE_OF_LOOP_BREAKING_KEYWORD);
+					INVALID_USE_OF_LOOP_BREAKING_KEYWORD);
 		}
 	}
 
@@ -2471,21 +2497,21 @@ public class SARLValidator extends AbstractSARLValidator {
 				it -> !(it instanceof XExpression) || it instanceof XAbstractWhileExpression
 				|| it instanceof XBasicForLoopExpression || it instanceof XForLoopExpression);
 		if (container instanceof XExpression) {
-			if (!isIgnored(IssueCodes.DISCOURAGED_LOOP_BREAKING_KEYWORD_USE)
+			if (!isIgnored(DISCOURAGED_LOOP_BREAKING_KEYWORD_USE)
 					&& container instanceof XBasicForLoopExpression) {
 				addIssue(
 						MessageFormat.format(Messages.SARLValidator_17, this.grammarAccess.getContinueKeyword()),
 						expression,
 						null,
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-						IssueCodes.DISCOURAGED_LOOP_BREAKING_KEYWORD_USE);
+						DISCOURAGED_LOOP_BREAKING_KEYWORD_USE);
 			}
 		} else {
 			error(MessageFormat.format(Messages.SARLValidator_18, this.grammarAccess.getContinueKeyword()),
 					expression,
 					null,
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-					IssueCodes.INVALID_USE_OF_LOOP_BREAKING_KEYWORD);
+					INVALID_USE_OF_LOOP_BREAKING_KEYWORD);
 		}
 	}
 
@@ -2551,35 +2577,35 @@ public class SARLValidator extends AbstractSARLValidator {
 						constructor,
 						XtendPackage.eINSTANCE.getXtendAnnotationTarget_Annotations(),
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-						org.eclipse.xtend.core.validation.IssueCodes.ANNOTATION_WRONG_TARGET);
+						ANNOTATION_WRONG_TARGET);
 			}
 			if (!constructor.getTypeParameters().isEmpty()) {
 				error(Messages.SARLValidator_24,
 						constructor,
 						XtendPackage.eINSTANCE.getXtendExecutable_TypeParameters(),
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-						org.eclipse.xtend.core.validation.IssueCodes.CONSTRUCTOR_TYPE_PARAMS_NOT_SUPPORTED);
+						CONSTRUCTOR_TYPE_PARAMS_NOT_SUPPORTED);
 			}
 			if (!constructor.getParameters().isEmpty()) {
 				error(Messages.SARLValidator_26,
 						constructor,
 						XtendPackage.eINSTANCE.getXtendExecutable_Parameters(),
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-						IssueCodes.UNEXPECTED_FORMAL_PARAMETER);
+						UNEXPECTED_FORMAL_PARAMETER);
 			}
 			if (!constructor.getExceptions().isEmpty()) {
 				error(Messages.SARLValidator_27,
 						constructor,
 						XtendPackage.eINSTANCE.getXtendExecutable_Parameters(),
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-						IssueCodes.UNEXPECTED_EXCEPTION_THROW);
+						UNEXPECTED_EXCEPTION_THROW);
 			}
 			if (constructor.getExpression() == null) {
 				error(Messages.SARLValidator_83,
 						constructor,
 						XtendPackage.eINSTANCE.getXtendExecutable_Expression(),
 						ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-						IssueCodes.MISSING_BODY);
+						MISSING_BODY);
 			}
 		}
 	}
@@ -2592,7 +2618,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	@Check
 	@SuppressWarnings({"checkstyle:nestedifdepth", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	public void checkUnsynchronizedField(XtendField field) {
-		if (doCheckValidMemberName(field) && !isIgnored(IssueCodes.POTENTIAL_FIELD_SYNCHRONIZATION_PROBLEM)) {
+		if (doCheckValidMemberName(field) && !isIgnored(POTENTIAL_FIELD_SYNCHRONIZATION_PROBLEM)) {
 			final JvmField jvmField = this.associations.getJvmField(field);
 			if (jvmField == null || jvmField.eContainer() == null || jvmField.isConstant() || jvmField.isFinal()) {
 				return;
@@ -2638,13 +2664,13 @@ public class SARLValidator extends AbstractSARLValidator {
 						}
 					}
 					if (synchronizationIssue
-							&& !isIgnored(IssueCodes.POTENTIAL_FIELD_SYNCHRONIZATION_PROBLEM,
+							&& !isIgnored(POTENTIAL_FIELD_SYNCHRONIZATION_PROBLEM,
 									usage.getEObject())) {
 						addIssue(
 								MessageFormat.format(Messages.SARLValidator_91, field.getName()),
 								usage.getEObject(),
 								usage.getEStructuralFeature(),
-								IssueCodes.POTENTIAL_FIELD_SYNCHRONIZATION_PROBLEM);
+								POTENTIAL_FIELD_SYNCHRONIZATION_PROBLEM);
 					}
 				}
 			}
@@ -2760,7 +2786,7 @@ public class SARLValidator extends AbstractSARLValidator {
 									expr,
 									null,
 									ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-									IssueCodes.INVALID_DEFAULT_SKILL_ANNOTATION);
+									INVALID_DEFAULT_SKILL_ANNOTATION);
 						}
 						return;
 					}
@@ -2770,7 +2796,7 @@ public class SARLValidator extends AbstractSARLValidator {
 					expr,
 					null,
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-					IssueCodes.INVALID_DEFAULT_SKILL_ANNOTATION);
+					INVALID_DEFAULT_SKILL_ANNOTATION);
 		}
 	}
 
@@ -2782,7 +2808,7 @@ public class SARLValidator extends AbstractSARLValidator {
 					annotation,
 					null,
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-					org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE);
+					FORBIDDEN_REFERENCE);
 		} else if (isOOActiveAnnotation(annotation) || isAOActiveAnnotation(annotation)) {
 			XtendTypeDeclaration container = EcoreUtil2.getContainerOfType(annotation.eContainer(), XtendTypeDeclaration.class);
 			while (container != null && (container.isAnonymous() || container.getName() == null)) {
@@ -2947,10 +2973,70 @@ public class SARLValidator extends AbstractSARLValidator {
 				}
 				if (!isUsed) {
 					final String message = MessageFormat.format(Messages.SARLValidator_94,
-							mainOperation.getSimpleName(), this.uiStrings.parameters(mainOperation), getDeclaratorName(mainOperation));
+							mainOperation.getSimpleName(), this.uiStrings.parameters(mainOperation),
+							getDeclaratorName(mainOperation));
 					addIssueToState(UNUSED_PRIVATE_MEMBER, message, XtendPackage.Literals.XTEND_FUNCTION__NAME);
 				}
 			}
+		}
+	}
+
+	@SuppressWarnings("checkstyle:nestedifdepth")
+	@Override
+	@Check
+	public void checkCasts(XCastedExpression cast) {
+		// Validation of the casting according to the SARL specification of this operator.
+		if (cast instanceof SarlCastedExpression) {
+			final SarlCastedExpression sarlCast = (SarlCastedExpression) cast;
+			final JvmOperation operation = sarlCast.getFeature();
+			if (operation != null) {
+				// We have to test the unnecessary cast because because it is tested into the standard process
+				final JvmTypeReference concreteSyntax = sarlCast.getType();
+				if (concreteSyntax != null) {
+					final LightweightTypeReference toType = toLightweightTypeReference(cast.getType());
+					reportCastWarnings(
+							concreteSyntax,
+							toType,
+							getActualType(cast.getTarget()));
+
+					if (!isIgnored(POTENTIAL_INEFFICIENT_VALUE_CONVERSION)) {
+						final LightweightTypeReference fromType = toLightweightTypeReference(operation.getReturnType());
+						final String message;
+						if (Strings.equal(concreteSyntax.getIdentifier(), fromType.getIdentifier())) {
+							message = MessageFormat.format(Messages.SARLValidator_97, operation.getSimpleName());
+						} else {
+							message = MessageFormat.format(Messages.SARLValidator_98, operation.getSimpleName(),
+									toType.getHumanReadableName(), fromType.getHumanReadableName());
+						}
+						addIssue(message, concreteSyntax, POTENTIAL_INEFFICIENT_VALUE_CONVERSION);
+					}
+				}
+
+				// Break to avoid the standard validation for casted expressions
+				return;
+			}
+		}
+		// Standard check of the types.
+		super.checkCasts(cast);
+	}
+
+	@Override
+	protected void checkCast(JvmTypeReference concreteSyntax, LightweightTypeReference toType, LightweightTypeReference fromType) {
+		super.checkCast(concreteSyntax, toType, fromType);
+		// FIXME: Remove when PR is merged ()
+		reportCastWarnings(concreteSyntax, toType, fromType);
+	}
+
+	/** Report the warnings associated to the casted expressions.
+	 *
+	 * @param concreteSyntax the type specified into the casted expression.
+	 * @param toType the type specified into the casted expression.
+	 * @param fromType the type of the source expression.
+	 */
+	protected void reportCastWarnings(JvmTypeReference concreteSyntax, LightweightTypeReference toType, LightweightTypeReference fromType) {
+		if (!isIgnored(OBSOLETE_CAST) && toType.isAssignableFrom(fromType)) {
+			addIssue(MessageFormat.format(Messages.SARLValidator_96, fromType.getHumanReadableName(),
+					toType.getHumanReadableName()), concreteSyntax, OBSOLETE_CAST);
 		}
 	}
 

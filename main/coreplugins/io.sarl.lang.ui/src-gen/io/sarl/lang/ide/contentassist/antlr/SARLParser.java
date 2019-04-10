@@ -326,6 +326,11 @@ public class SARLParser extends AbstractPartialContentAssistParser {
 			builder.put(grammarAccess.getAssertExpressionAccess().getGroup_3(), "rule__AssertExpression__Group_3__0");
 			builder.put(grammarAccess.getAssumeExpressionAccess().getGroup(), "rule__AssumeExpression__Group__0");
 			builder.put(grammarAccess.getAssumeExpressionAccess().getGroup_3(), "rule__AssumeExpression__Group_3__0");
+			builder.put(grammarAccess.getSarlCastedExpressionAccess().getGroup(), "rule__SarlCastedExpression__Group__0");
+			builder.put(grammarAccess.getXCastedExpressionAccess().getGroup(), "rule__XCastedExpression__Group__0");
+			builder.put(grammarAccess.getXCastedExpressionAccess().getGroup_1(), "rule__XCastedExpression__Group_1__0");
+			builder.put(grammarAccess.getXCastedExpressionAccess().getGroup_1_0(), "rule__XCastedExpression__Group_1_0__0");
+			builder.put(grammarAccess.getXCastedExpressionAccess().getGroup_1_0_0(), "rule__XCastedExpression__Group_1_0_0__0");
 			builder.put(grammarAccess.getXVariableDeclarationAccess().getGroup(), "rule__XVariableDeclaration__Group__0");
 			builder.put(grammarAccess.getXVariableDeclarationAccess().getGroup_0(), "rule__XVariableDeclaration__Group_0__0");
 			builder.put(grammarAccess.getXVariableDeclarationAccess().getGroup_0_0(), "rule__XVariableDeclaration__Group_0_0__0");
@@ -353,10 +358,6 @@ public class SARLParser extends AbstractPartialContentAssistParser {
 			builder.put(grammarAccess.getXMultiplicativeExpressionAccess().getGroup_1(), "rule__XMultiplicativeExpression__Group_1__0");
 			builder.put(grammarAccess.getXMultiplicativeExpressionAccess().getGroup_1_0(), "rule__XMultiplicativeExpression__Group_1_0__0");
 			builder.put(grammarAccess.getXMultiplicativeExpressionAccess().getGroup_1_0_0(), "rule__XMultiplicativeExpression__Group_1_0_0__0");
-			builder.put(grammarAccess.getXCastedExpressionAccess().getGroup(), "rule__XCastedExpression__Group__0");
-			builder.put(grammarAccess.getXCastedExpressionAccess().getGroup_1(), "rule__XCastedExpression__Group_1__0");
-			builder.put(grammarAccess.getXCastedExpressionAccess().getGroup_1_0(), "rule__XCastedExpression__Group_1_0__0");
-			builder.put(grammarAccess.getXCastedExpressionAccess().getGroup_1_0_0(), "rule__XCastedExpression__Group_1_0_0__0");
 			builder.put(grammarAccess.getXExponentExpressionAccess().getGroup(), "rule__XExponentExpression__Group__0");
 			builder.put(grammarAccess.getXExponentExpressionAccess().getGroup_1(), "rule__XExponentExpression__Group_1__0");
 			builder.put(grammarAccess.getXExponentExpressionAccess().getGroup_1_0(), "rule__XExponentExpression__Group_1_0__0");
@@ -856,6 +857,8 @@ public class SARLParser extends AbstractPartialContentAssistParser {
 			builder.put(grammarAccess.getAssumeExpressionAccess().getIsStaticAssignment_1(), "rule__AssumeExpression__IsStaticAssignment_1");
 			builder.put(grammarAccess.getAssumeExpressionAccess().getConditionAssignment_2(), "rule__AssumeExpression__ConditionAssignment_2");
 			builder.put(grammarAccess.getAssumeExpressionAccess().getMessageAssignment_3_1(), "rule__AssumeExpression__MessageAssignment_3_1");
+			builder.put(grammarAccess.getSarlCastedExpressionAccess().getFeatureAssignment_1(), "rule__SarlCastedExpression__FeatureAssignment_1");
+			builder.put(grammarAccess.getXCastedExpressionAccess().getTypeAssignment_1_1(), "rule__XCastedExpression__TypeAssignment_1_1");
 			builder.put(grammarAccess.getXVariableDeclarationAccess().getWriteableAssignment_0_0_1_0_0_0(), "rule__XVariableDeclaration__WriteableAssignment_0_0_1_0_0_0");
 			builder.put(grammarAccess.getXVariableDeclarationAccess().getExtensionAssignment_0_0_1_0_1(), "rule__XVariableDeclaration__ExtensionAssignment_0_0_1_0_1");
 			builder.put(grammarAccess.getXVariableDeclarationAccess().getExtensionAssignment_0_0_1_1_0(), "rule__XVariableDeclaration__ExtensionAssignment_0_0_1_1_0");
@@ -883,7 +886,6 @@ public class SARLParser extends AbstractPartialContentAssistParser {
 			builder.put(grammarAccess.getXSwitchExpressionAccess().getDefaultAssignment_5_2(), "rule__XSwitchExpression__DefaultAssignment_5_2");
 			builder.put(grammarAccess.getXMultiplicativeExpressionAccess().getFeatureAssignment_1_0_0_1(), "rule__XMultiplicativeExpression__FeatureAssignment_1_0_0_1");
 			builder.put(grammarAccess.getXMultiplicativeExpressionAccess().getRightOperandAssignment_1_1(), "rule__XMultiplicativeExpression__RightOperandAssignment_1_1");
-			builder.put(grammarAccess.getXCastedExpressionAccess().getTypeAssignment_1_1(), "rule__XCastedExpression__TypeAssignment_1_1");
 			builder.put(grammarAccess.getXExponentExpressionAccess().getFeatureAssignment_1_0_0_1(), "rule__XExponentExpression__FeatureAssignment_1_0_0_1");
 			builder.put(grammarAccess.getXExponentExpressionAccess().getRightOperandAssignment_1_1(), "rule__XExponentExpression__RightOperandAssignment_1_1");
 			builder.put(grammarAccess.getXUnaryOperationAccess().getFeatureAssignment_0_1(), "rule__XUnaryOperation__FeatureAssignment_0_1");

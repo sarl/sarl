@@ -23,27 +23,31 @@ package io.sarl.lang.typesystem;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import com.google.common.base.Throwables;
+import com.google.inject.Inject;
 import org.eclipse.xtend.core.typesystem.XtendTypeComputer;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
 import org.eclipse.xtext.common.types.JvmAnnotationTarget;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.validation.EObjectDiagnosticImpl;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.typesystem.computation.ILinkingCandidate;
 import org.eclipse.xtext.xbase.typesystem.computation.ITypeComputationState;
+import org.eclipse.xtext.xbase.typesystem.internal.AbstractTypeComputationState;
 import org.eclipse.xtext.xbase.typesystem.internal.AmbiguousFeatureLinkingCandidate;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
 import io.sarl.lang.sarl.SarlAssertExpression;
 import io.sarl.lang.sarl.SarlBreakExpression;
+import io.sarl.lang.sarl.SarlCastedExpression;
 import io.sarl.lang.sarl.SarlContinueExpression;
+import io.sarl.lang.typesystem.cast.CastedExpressionTypeComputationState;
+import io.sarl.lang.typesystem.cast.ICastOperationCandidateSelector;
 import io.sarl.lang.validation.IssueCodes;
 
 /** Customized type computer for SARL specific expressions.
@@ -66,10 +70,13 @@ public class SARLTypeComputer extends XtendTypeComputer {
 	@Inject
 	private AnnotationLookup annotationLookup;
 
+	@Inject
+	private ICastOperationCandidateSelector castOperationValidator;
+
 	@Override
 	protected ILinkingCandidate getBestCandidate(List<? extends ILinkingCandidate> candidates) {
 		// Implementation of ignorable features:
-		// For example, this function is ignore the deprecated features when a not-deprecated feature is available.
+		// For example, this function is ignoring the deprecated features when a not-deprecated feature is available.
 		if (candidates.size() == 1) {
 			return candidates.get(0);
 		}
@@ -136,6 +143,8 @@ public class SARLTypeComputer extends XtendTypeComputer {
 			_computeTypes((SarlContinueExpression) expression, state);
 		} else if (expression instanceof SarlAssertExpression) {
 			_computeTypes((SarlAssertExpression) expression, state);
+		} else if (expression instanceof SarlCastedExpression) {
+			_computeTypes((SarlCastedExpression) expression, state);
 		} else {
 			try {
 				super.computeTypes(expression, state);
@@ -181,6 +190,54 @@ public class SARLTypeComputer extends XtendTypeComputer {
 	 */
 	protected void _computeTypes(SarlAssertExpression object, ITypeComputationState state) {
 		state.withExpectation(getTypeForName(Boolean.class, state)).computeTypes(object.getCondition());
+	}
+
+	/** Compute the type of a casted expression.
+	 *
+	 * @param cast the expression.
+	 * @param state the state of the type resolver.
+	 */
+	@SuppressWarnings("checkstyle:nestedifdepth")
+	protected void _computeTypes(SarlCastedExpression cast, ITypeComputationState state) {
+		if (state instanceof AbstractTypeComputationState) {
+			final JvmTypeReference type = cast.getType();
+			if (type != null) {
+				state.withNonVoidExpectation().computeTypes(cast.getTarget());
+				// Set the linked feature
+				try {
+					final AbstractTypeComputationState computationState = (AbstractTypeComputationState) state;
+					final CastedExpressionTypeComputationState astate = new CastedExpressionTypeComputationState(
+							cast,
+							computationState,
+							this.castOperationValidator);
+					astate.resetFeature(cast);
+					if (astate.isCastOperatorLinkingEnabled(cast)) {
+						final List<? extends ILinkingCandidate> candidates = astate.getLinkingCandidates(cast);
+						if (!candidates.isEmpty()) {
+							final ILinkingCandidate best = getBestCandidate(candidates);
+							if (best != null) {
+								best.applyToModel(computationState.getResolvedTypes());
+							}
+						}
+					}
+				} catch (Throwable exception) {
+					final Throwable cause = Throwables.getRootCause(exception);
+					state.addDiagnostic(new EObjectDiagnosticImpl(
+							Severity.ERROR,
+							IssueCodes.INTERNAL_ERROR,
+							cause.getLocalizedMessage(),
+							cast,
+							null,
+							-1,
+							null));
+				}
+				state.acceptActualType(state.getReferenceOwner().toLightweightTypeReference(type));
+			} else {
+				state.computeTypes(cast.getTarget());
+			}
+		} else {
+			super._computeTypes(cast, state);
+		}
 	}
 
 }

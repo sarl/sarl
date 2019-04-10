@@ -99,7 +99,7 @@ type [:exceptioninstance:].
 ## Generic Function
 
 Generic functions are methods that introduce their own type parameters. This is similar to declaring a
-[generic type](../OOP.md#2-3-define-a-generic-class),
+[generic type](../OOP.md#define-a-generic-class),
 but the type parameter's scope is limited to the function where it is declared.
 Static and non-static generic functions are allowed.
 
