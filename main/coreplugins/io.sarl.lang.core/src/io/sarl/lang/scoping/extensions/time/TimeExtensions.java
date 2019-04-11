@@ -88,7 +88,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in <code>milis</code>.
 	 */
 	@Pure
-	@Inline(value = "($1)")
+	@Inline(value = "(long) ($1)")
 	public static long milliseconds(byte milis) {
 		return milis;
 	}
@@ -99,7 +99,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in <code>milis</code>.
 	 */
 	@Pure
-	@Inline(value = "($1)")
+	@Inline(value = "(long) ($1)")
 	public static long milliseconds(short milis) {
 		return milis;
 	}
@@ -110,7 +110,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in <code>milis</code>.
 	 */
 	@Pure
-	@Inline(value = "($1)")
+	@Inline(value = "(long) ($1)")
 	public static long milliseconds(int milis) {
 		return milis;
 	}
@@ -121,7 +121,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in <code>milis</code>.
 	 */
 	@Pure
-	@Inline(value = "($1)")
+	@Inline(value = "(long) ($1)")
 	public static long milliseconds(long milis) {
 		return milis;
 	}
@@ -154,7 +154,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in seconds.
 	 */
 	@Pure
-	@Inline(value = "(long) (($1).doubleValue() * 1000)")
+	@Inline(value = "(long) (($1).doubleValue() * $2.MILLIS_IN_SECOND)", imported = {TimeExtensions.class})
 	public static long seconds(Number secs) {
 		return (long) (secs.doubleValue() * MILLIS_IN_SECOND);
 	}
@@ -165,7 +165,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in seconds.
 	 */
 	@Pure
-	@Inline(value = "($1) * 1000")
+	@Inline(value = "($1) * $2.MILLIS_IN_SECOND", imported = {TimeExtensions.class})
 	public static long seconds(byte secs) {
 		return secs * MILLIS_IN_SECOND;
 	}
@@ -176,7 +176,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in seconds.
 	 */
 	@Pure
-	@Inline(value = "($1) * 1000")
+	@Inline(value = "($1) * $2.MILLIS_IN_SECOND", imported = {TimeExtensions.class})
 	public static long seconds(short secs) {
 		return secs * MILLIS_IN_SECOND;
 	}
@@ -187,7 +187,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in seconds.
 	 */
 	@Pure
-	@Inline(value = "($1) * 1000")
+	@Inline(value = "($1) * $2.MILLIS_IN_SECOND", imported = {TimeExtensions.class})
 	public static long seconds(int secs) {
 		return secs * MILLIS_IN_SECOND;
 	}
@@ -198,7 +198,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in seconds.
 	 */
 	@Pure
-	@Inline(value = "($1) * 1000")
+	@Inline(value = "($1) * $2.MILLIS_IN_SECOND", imported = {TimeExtensions.class})
 	public static long seconds(long secs) {
 		return secs * MILLIS_IN_SECOND;
 	}
@@ -209,7 +209,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in seconds.
 	 */
 	@Pure
-	@Inline(value = "(long) (($1) * 1000)")
+	@Inline(value = "(long) (($1) * $2.MILLIS_IN_SECOND)", imported = {TimeExtensions.class})
 	public static long seconds(float secs) {
 		return (long) (secs * MILLIS_IN_SECOND);
 	}
@@ -220,7 +220,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in seconds.
 	 */
 	@Pure
-	@Inline(value = "(long) (($1) * 1000)")
+	@Inline(value = "(long) (($1) * $2.MILLIS_IN_SECOND)", imported = {TimeExtensions.class})
 	public static long seconds(double secs) {
 		return (long) (secs * MILLIS_IN_SECOND);
 	}
@@ -231,7 +231,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in <code>mins</code>
 	 */
 	@Pure
-	@Inline(value = "(long) (($1).doubleValue() * 60000)")
+	@Inline(value = "(long) (($1).doubleValue() * $2.MILLIS_IN_MINUTE)", imported = {TimeExtensions.class})
 	public static long minutes(Number mins) {
 		return (long) (mins.doubleValue() * MILLIS_IN_MINUTE);
 	}
@@ -242,7 +242,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in <code>mins</code>
 	 */
 	@Pure
-	@Inline(value = "($1) * 60000")
+	@Inline(value = "($1) * $2.MILLIS_IN_MINUTE", imported = {TimeExtensions.class})
 	public static long minutes(byte mins) {
 		return mins * MILLIS_IN_MINUTE;
 	}
@@ -253,7 +253,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in <code>mins</code>
 	 */
 	@Pure
-	@Inline(value = "($1) * 60000")
+	@Inline(value = "($1) * $2.MILLIS_IN_MINUTE", imported = {TimeExtensions.class})
 	public static long minutes(short mins) {
 		return mins * MILLIS_IN_MINUTE;
 	}
@@ -264,7 +264,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in <code>mins</code>
 	 */
 	@Pure
-	@Inline(value = "($1) * 60000")
+	@Inline(value = "($1) * $2.MILLIS_IN_MINUTE", imported = {TimeExtensions.class})
 	public static long minutes(int mins) {
 		return mins * MILLIS_IN_MINUTE;
 	}
@@ -275,7 +275,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in <code>mins</code>
 	 */
 	@Pure
-	@Inline(value = "($1) * 60000")
+	@Inline(value = "($1) * $2.MILLIS_IN_MINUTE", imported = {TimeExtensions.class})
 	public static long minutes(long mins) {
 		return mins * MILLIS_IN_MINUTE;
 	}
@@ -286,7 +286,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in <code>mins</code>
 	 */
 	@Pure
-	@Inline(value = "(long) (($1) * 60000)")
+	@Inline(value = "(long) (($1) * $2.MILLIS_IN_MINUTE)", imported = {TimeExtensions.class})
 	public static long minutes(float mins) {
 		return (long) (mins * MILLIS_IN_MINUTE);
 	}
@@ -297,7 +297,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in <code>mins</code>
 	 */
 	@Pure
-	@Inline(value = "(long) (($1) * 60000)")
+	@Inline(value = "(long) (($1) * $2.MILLIS_IN_MINUTE)", imported = {TimeExtensions.class})
 	public static long minutes(double mins) {
 		return (long) (mins * MILLIS_IN_MINUTE);
 	}
@@ -308,7 +308,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in <code>hours</code>
 	 */
 	@Pure
-	@Inline(value = "(long) (($1).doubleValue() * 3600000)")
+	@Inline(value = "(long) (($1).doubleValue() * $2.MILLIS_IN_HOUR)", imported = {TimeExtensions.class})
 	public static long hours(Number hours) {
 		return (long) (hours.doubleValue() * MILLIS_IN_HOUR);
 	}
@@ -319,7 +319,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in <code>hours</code>
 	 */
 	@Pure
-	@Inline(value = "($1) * 3600000")
+	@Inline(value = "($1) * $2.MILLIS_IN_HOUR", imported = {TimeExtensions.class})
 	public static long hours(byte hours) {
 		return hours * MILLIS_IN_HOUR;
 	}
@@ -330,7 +330,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in <code>hours</code>
 	 */
 	@Pure
-	@Inline(value = "($1) * 3600000")
+	@Inline(value = "($1) * $2.MILLIS_IN_HOUR", imported = {TimeExtensions.class})
 	public static long hours(short hours) {
 		return hours * MILLIS_IN_HOUR;
 	}
@@ -341,7 +341,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in <code>hours</code>
 	 */
 	@Pure
-	@Inline(value = "($1) * 3600000")
+	@Inline(value = "($1) * $2.MILLIS_IN_HOUR", imported = {TimeExtensions.class})
 	public static long hours(int hours) {
 		return hours * MILLIS_IN_HOUR;
 	}
@@ -352,7 +352,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in <code>hours</code>
 	 */
 	@Pure
-	@Inline(value = "($1) * 3600000")
+	@Inline(value = "($1) * $2.MILLIS_IN_HOUR", imported = {TimeExtensions.class})
 	public static long hours(long hours) {
 		return hours * MILLIS_IN_HOUR;
 	}
@@ -363,7 +363,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in <code>hours</code>
 	 */
 	@Pure
-	@Inline(value = "(long) (($1) * 3600000)")
+	@Inline(value = "(long) (($1) * $2.MILLIS_IN_HOUR)", imported = {TimeExtensions.class})
 	public static long hours(float hours) {
 		return (long) (hours * MILLIS_IN_HOUR);
 	}
@@ -374,7 +374,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in <code>hours</code>
 	 */
 	@Pure
-	@Inline(value = "(long) (($1) * 3600000)")
+	@Inline(value = "(long) (($1) * $2.MILLIS_IN_HOUR)", imported = {TimeExtensions.class})
 	public static long hours(double hours) {
 		return (long) (hours * MILLIS_IN_HOUR);
 	}
@@ -385,7 +385,7 @@ public final class TimeExtensions {
 	 * @return the number of days in <code>days</code>
 	 */
 	@Pure
-	@Inline(value = "(long) (($1).doubleValue() * 86400000)")
+	@Inline(value = "(long) (($1).doubleValue() * $2.MILLIS_IN_DAY)", imported = {TimeExtensions.class})
 	public static long days(Number days) {
 		return (long) (days.doubleValue() * MILLIS_IN_DAY);
 	}
@@ -396,7 +396,7 @@ public final class TimeExtensions {
 	 * @return the number of days in <code>days</code>
 	 */
 	@Pure
-	@Inline(value = "($1) * 86400000")
+	@Inline(value = "($1) * $2.MILLIS_IN_DAY", imported = {TimeExtensions.class})
 	public static long days(byte days) {
 		return days * MILLIS_IN_DAY;
 	}
@@ -407,7 +407,7 @@ public final class TimeExtensions {
 	 * @return the number of days in <code>days</code>
 	 */
 	@Pure
-	@Inline(value = "($1) * 86400000")
+	@Inline(value = "($1) * $2.MILLIS_IN_DAY", imported = {TimeExtensions.class})
 	public static long days(short days) {
 		return days * MILLIS_IN_DAY;
 	}
@@ -418,7 +418,7 @@ public final class TimeExtensions {
 	 * @return the number of days in <code>days</code>
 	 */
 	@Pure
-	@Inline(value = "($1) * 86400000")
+	@Inline(value = "($1) * $2.MILLIS_IN_DAY", imported = {TimeExtensions.class})
 	public static long days(int days) {
 		return days * MILLIS_IN_DAY;
 	}
@@ -429,7 +429,7 @@ public final class TimeExtensions {
 	 * @return the number of days in <code>days</code>
 	 */
 	@Pure
-	@Inline(value = "($1) * 86400000")
+	@Inline(value = "($1) * $2.MILLIS_IN_DAY", imported = {TimeExtensions.class})
 	public static long days(long days) {
 		return days * MILLIS_IN_DAY;
 	}
@@ -440,7 +440,7 @@ public final class TimeExtensions {
 	 * @return the number of days in <code>days</code>
 	 */
 	@Pure
-	@Inline(value = "(long) (($1) * 86400000)")
+	@Inline(value = "(long) (($1) * $2.MILLIS_IN_DAY)", imported = {TimeExtensions.class})
 	public static long days(float days) {
 		return (long) (days * MILLIS_IN_DAY);
 	}
@@ -451,7 +451,7 @@ public final class TimeExtensions {
 	 * @return the number of days in <code>days</code>
 	 */
 	@Pure
-	@Inline(value = "(long) (($1) * 86400000)")
+	@Inline(value = "(long) (($1) * $2.MILLIS_IN_DAY)", imported = {TimeExtensions.class})
 	public static long days(double days) {
 		return (long) (days * MILLIS_IN_DAY);
 	}
@@ -462,7 +462,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in <code>weeks</code>
 	 */
 	@Pure
-	@Inline(value = "(long) (($1).doubleValue() * 604800000)")
+	@Inline(value = "(long) (($1).doubleValue() * $2.MILLIS_IN_WEEK)", imported = {TimeExtensions.class})
 	public static long weeks(Number weeks) {
 		return (long) (weeks.doubleValue() * MILLIS_IN_WEEK);
 	}
@@ -473,7 +473,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in <code>weeks</code>
 	 */
 	@Pure
-	@Inline(value = "($1) * 604800000")
+	@Inline(value = "($1) * $2.MILLIS_IN_WEEK", imported = {TimeExtensions.class})
 	public static long weeks(byte weeks) {
 		return weeks * MILLIS_IN_WEEK;
 	}
@@ -484,7 +484,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in <code>weeks</code>
 	 */
 	@Pure
-	@Inline(value = "($1) * 604800000")
+	@Inline(value = "($1) * $2.MILLIS_IN_WEEK", imported = {TimeExtensions.class})
 	public static long weeks(short weeks) {
 		return weeks * MILLIS_IN_WEEK;
 	}
@@ -495,7 +495,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in <code>weeks</code>
 	 */
 	@Pure
-	@Inline(value = "($1) * 604800000")
+	@Inline(value = "($1) * $2.MILLIS_IN_WEEK", imported = {TimeExtensions.class})
 	public static long weeks(int weeks) {
 		return weeks * MILLIS_IN_WEEK;
 	}
@@ -506,7 +506,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in <code>weeks</code>
 	 */
 	@Pure
-	@Inline(value = "($1) * 604800000")
+	@Inline(value = "($1) * $2.MILLIS_IN_WEEK", imported = {TimeExtensions.class})
 	public static long weeks(long weeks) {
 		return weeks * MILLIS_IN_WEEK;
 	}
@@ -517,7 +517,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in <code>weeks</code>
 	 */
 	@Pure
-	@Inline(value = "(long) (($1) * 604800000)")
+	@Inline(value = "(long) (($1) * $2.MILLIS_IN_WEEK)", imported = {TimeExtensions.class})
 	public static long weeks(float weeks) {
 		return (long) (weeks * MILLIS_IN_WEEK);
 	}
@@ -528,7 +528,7 @@ public final class TimeExtensions {
 	 * @return the number of milliseconds in <code>weeks</code>
 	 */
 	@Pure
-	@Inline(value = "(long) (($1) * 604800000)")
+	@Inline(value = "(long) (($1) * $2.MILLIS_IN_WEEK)", imported = {TimeExtensions.class})
 	public static long weeks(double weeks) {
 		return (long) (weeks * MILLIS_IN_WEEK);
 	}
