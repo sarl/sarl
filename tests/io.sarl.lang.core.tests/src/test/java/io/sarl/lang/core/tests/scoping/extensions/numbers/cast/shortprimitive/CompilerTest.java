@@ -779,6 +779,106 @@ public class CompilerTest extends AbstractSarlTest {
 		ctx.compileTo(AS_ATOMICDOUBLE_OBJECT_SARL, AS_ATOMICDOUBLE_OBJECT_JAVA);
 	}
 
+	private static final String AS_BIGINTEGER_OBJECT_SARL = multilineString(
+			"import java.math.BigInteger",
+			"class A {",
+			"  def fct(left : short) : BigInteger {",
+			"    left as BigInteger",
+			"  }",
+			"}");
+
+	private static final String AS_BIGINTEGER_OBJECT_JAVA = multilineString(
+			"import io.sarl.lang.annotation.SarlElementType;",
+			"import io.sarl.lang.annotation.SarlSpecification;",
+			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import java.math.BigInteger;",
+			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"",
+			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@SuppressWarnings(\"all\")",
+			"public class A {",
+			"  @Pure",
+			"  public BigInteger fct(final short left) {",
+			"    return BigInteger.valueOf(left);",
+			"  }",
+			"  ",
+			"  @SyntheticMember",
+			"  public A() {",
+			"    super();",
+			"  }",
+			"}",
+			"");
+
+	@Test
+	public void as_BigInteger_issues() throws Exception {
+		validate(file(AS_BIGINTEGER_OBJECT_SARL))
+		.assertNoErrors(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
+		.assertNoWarnings(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
+		.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION);
+	}
+
+	@CompilationTest
+	public static void as_BigInteger(Context ctx) throws Exception {
+		ctx.compileTo(AS_BIGINTEGER_OBJECT_SARL, AS_BIGINTEGER_OBJECT_JAVA);
+	}
+
+	private static final String AS_BIGDECIMAL_OBJECT_SARL = multilineString(
+			"import java.math.BigDecimal",
+			"class A {",
+			"  def fct(left : short) : BigDecimal {",
+			"    left as BigDecimal",
+			"  }",
+			"}");
+
+	private static final String AS_BIGDECIMAL_OBJECT_JAVA = multilineString(
+			"import io.sarl.lang.annotation.SarlElementType;",
+			"import io.sarl.lang.annotation.SarlSpecification;",
+			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import java.math.BigDecimal;",
+			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"",
+			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@SuppressWarnings(\"all\")",
+			"public class A {",
+			"  @Pure",
+			"  public BigDecimal fct(final short left) {",
+			"    return BigDecimal.valueOf(left);",
+			"  }",
+			"  ",
+			"  @SyntheticMember",
+			"  public A() {",
+			"    super();",
+			"  }",
+			"}",
+			"");
+
+	@Test
+	public void as_BigDecimal_issues() throws Exception {
+		validate(file(AS_BIGDECIMAL_OBJECT_SARL))
+		.assertNoErrors(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
+		.assertNoWarnings(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
+		.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION);
+	}
+
+	@CompilationTest
+	public static void as_BigDecimal(Context ctx) throws Exception {
+		ctx.compileTo(AS_BIGDECIMAL_OBJECT_SARL, AS_BIGDECIMAL_OBJECT_JAVA);
+	}
+
 	private static final String AS_NUMBER_OBJECT_SARL = multilineString(
 			"class A {",
 			"  def fct(left : short) : Number {",

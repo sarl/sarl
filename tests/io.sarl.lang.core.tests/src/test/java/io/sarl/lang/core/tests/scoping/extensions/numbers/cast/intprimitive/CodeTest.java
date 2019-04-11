@@ -24,7 +24,11 @@ package io.sarl.lang.core.tests.scoping.extensions.numbers.cast.intprimitive;
 import static io.sarl.lang.scoping.extensions.numbers.cast.PrimitiveIntCastExtensions.toAtomicDouble;
 import static io.sarl.lang.scoping.extensions.numbers.cast.PrimitiveIntCastExtensions.toAtomicInteger;
 import static io.sarl.lang.scoping.extensions.numbers.cast.PrimitiveIntCastExtensions.toAtomicLong;
+import static io.sarl.lang.scoping.extensions.numbers.cast.PrimitiveIntCastExtensions.toBigDecimal;
+import static io.sarl.lang.scoping.extensions.numbers.cast.PrimitiveIntCastExtensions.toBigInteger;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -62,6 +66,20 @@ public class CodeTest extends AbstractSarlTest {
 	@Test
 	public void toAtomicDouble_int() {
 		AtomicDouble value = toAtomicDouble(left);
+		assertNotNull(value);
+		assertEpsilonEquals(4., value.doubleValue());
+	}
+
+	@Test
+	public void toBigInteger_int() {
+		BigInteger value = toBigInteger(left);
+		assertNotNull(value);
+		assertEpsilonEquals(4., value.doubleValue());
+	}
+
+	@Test
+	public void toBigDecimal_int() {
+		BigDecimal value = toBigDecimal(left);
 		assertNotNull(value);
 		assertEpsilonEquals(4., value.doubleValue());
 	}

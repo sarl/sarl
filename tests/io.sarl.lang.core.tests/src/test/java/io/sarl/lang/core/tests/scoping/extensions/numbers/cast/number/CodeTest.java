@@ -21,8 +21,20 @@
 
 package io.sarl.lang.core.tests.scoping.extensions.numbers.cast.number;
 
-import static io.sarl.lang.scoping.extensions.numbers.cast.NumberCastExtensions.*;
+import static io.sarl.lang.scoping.extensions.numbers.cast.NumberCastExtensions.toAtomicDouble;
+import static io.sarl.lang.scoping.extensions.numbers.cast.NumberCastExtensions.toAtomicInteger;
+import static io.sarl.lang.scoping.extensions.numbers.cast.NumberCastExtensions.toAtomicLong;
+import static io.sarl.lang.scoping.extensions.numbers.cast.NumberCastExtensions.toBigDecimal;
+import static io.sarl.lang.scoping.extensions.numbers.cast.NumberCastExtensions.toBigInteger;
+import static io.sarl.lang.scoping.extensions.numbers.cast.NumberCastExtensions.toByte;
+import static io.sarl.lang.scoping.extensions.numbers.cast.NumberCastExtensions.toDouble;
+import static io.sarl.lang.scoping.extensions.numbers.cast.NumberCastExtensions.toFloat;
+import static io.sarl.lang.scoping.extensions.numbers.cast.NumberCastExtensions.toInteger;
+import static io.sarl.lang.scoping.extensions.numbers.cast.NumberCastExtensions.toLong;
+import static io.sarl.lang.scoping.extensions.numbers.cast.NumberCastExtensions.toShort;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -102,6 +114,20 @@ public class CodeTest extends AbstractSarlTest {
 	@Test
 	public void toAtomicDouble_Number() {
 		AtomicDouble value = toAtomicDouble(left);
+		assertNotNull(value);
+		assertEpsilonEquals(4., value.doubleValue());
+	}
+
+	@Test
+	public void toBigInteger_Number() {
+		BigInteger value = toBigInteger(left);
+		assertNotNull(value);
+		assertEpsilonEquals(4., value.doubleValue());
+	}
+
+	@Test
+	public void toBigDecimal_Number() {
+		BigDecimal value = toBigDecimal(left);
 		assertNotNull(value);
 		assertEpsilonEquals(4., value.doubleValue());
 	}

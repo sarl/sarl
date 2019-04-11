@@ -46,6 +46,8 @@ public class NumberCastImplicitlyImportedFeatures {
 		features.add(AtomicLongCastExtensions.class);
 		features.add(AtomicIntegerCastExtensions.class);
 		features.add(AtomicDoubleCastExtensions.class);
+		features.add(BigIntegerCastExtensions.class);
+		features.add(BigDecimalCastExtensions.class);
 		features.add(NumberCastExtensions.class);
 		features.add(PrimitiveByteCastExtensions.class);
 		features.add(PrimitiveDoubleCastExtensions.class);

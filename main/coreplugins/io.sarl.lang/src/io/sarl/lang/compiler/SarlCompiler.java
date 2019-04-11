@@ -107,7 +107,6 @@ import io.sarl.lang.sarl.SarlCastedExpression;
 import io.sarl.lang.sarl.SarlContinueExpression;
 import io.sarl.lang.typesystem.SARLExpressionHelper;
 import io.sarl.lang.util.ContextAwareTreeAppendable;
-import io.sarl.lang.util.OutParameter;
 import io.sarl.lang.util.SerializableProxy;
 import io.sarl.lang.util.Utils;
 
@@ -1308,28 +1307,28 @@ public class SarlCompiler extends XtendCompiler {
 		// This function overrides the super one in order to enables a NULL-SAFE conversion
 		// from a wrapper to a primitive type.
 		if (left.isPrimitive() && !right.isPrimitive()) {
-			final OutParameter<EObject> container = new OutParameter<>();
-			if (Utils.getContainerOfType(context, container, null, XExpression.class)
-					&& container.get() instanceof XCastedExpression) {
-				if (right.isAny()) {
-					convertNullSafeWrapperToPrimitive(left, left, context, appendable, expression);
-				} else {
-					convertNullSafeWrapperToPrimitive(right, right.getPrimitiveIfWrapperType(), context, appendable, expression);
-				}
-				return;
+			if (right.isAny()) {
+				convertNullSafeWrapperToPrimitive(left, left, context, appendable, expression);
+			} else {
+				convertNullSafeWrapperToPrimitive(right, right.getPrimitiveIfWrapperType(), context, appendable, expression);
 			}
+			return;
 		}
 		// Standard behavior
 		super.doConversion(left, right, appendable, context, expression);
 	}
 
-	// TODO: Copy-paste of the convertSafeWrapperToPrimitive function from the super type.
+	// TODO: See Xtext PR, Copy-paste of the convertSafeWrapperToPrimitive function from the super type.
+	// Rename when the super function access is fixed (https://github.com/eclipse/xtext-extras/pull/411)
 	private void convertNullSafeWrapperToPrimitive(
 			LightweightTypeReference wrapper,
 			LightweightTypeReference primitive,
 			XExpression context,
 			ITreeAppendable appendable,
 			Later expression) {
+		// BEGIN Specific
+		final String defaultValue = primitive.isType(boolean.class) ? "false" : "0"; //$NON-NLS-1$ //$NON-NLS-2$
+		// END Specific
 		final XExpression normalized = normalizeBlockExpression(context);
 		if (normalized instanceof XAbstractFeatureCall && !(context.eContainer() instanceof XAbstractFeatureCall)) {
 			// Avoid javac bug
@@ -1343,7 +1342,9 @@ public class SarlCompiler extends XtendCompiler {
 						// BEGIN Specific
 						appendable.append("(("); //$NON-NLS-1$
 						expression.exec(appendable);
-						appendable.append(") == null ? 0 : "); //$NON-NLS-1$
+						appendable.append(") == null ? "); //$NON-NLS-1$
+						appendable.append(defaultValue);
+						appendable.append(" : "); //$NON-NLS-1$
 						// END Specific
 						appendable.append("("); //$NON-NLS-1$
 						appendable.append(primitive);
@@ -1361,7 +1362,9 @@ public class SarlCompiler extends XtendCompiler {
 		// BEGIN Specific
 		appendable.append("(("); //$NON-NLS-1$
 		expression.exec(appendable);
-		appendable.append(") == null ? 0 : "); //$NON-NLS-1$
+		appendable.append(") == null ? "); //$NON-NLS-1$
+		appendable.append(defaultValue);
+		appendable.append(" : "); //$NON-NLS-1$
 		// END Specific
 		final boolean mustInsertTypeCast;
 		try {

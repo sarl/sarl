@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.core.tests.scoping.extensions.numbers.cast.atomicdouble;
+package io.sarl.lang.core.tests.scoping.extensions.numbers.cast.biginteger;
 
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.junit.Test;
@@ -39,25 +39,24 @@ import io.sarl.tests.api.MassiveCompilationSuite.Context;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @see "https://github.com/eclipse/xtext-extras/issues/186"
  */
 @RunWith(MassiveCompilationSuite.class)
 @SuppressWarnings("all")
 public class CompilerTest extends AbstractSarlTest {
 
 	private static final String AS_BYTE_SARL = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble",
+			"import java.math.BigInteger",
 			"class A {",
-			"  def fct(left : AtomicDouble) : byte {",
+			"  def fct(left : BigInteger) : byte {",
 			"    left as byte",
 			"  }",
 			"}");
 
 	private static final String AS_BYTE_JAVA = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble;",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import java.math.BigInteger;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -65,7 +64,7 @@ public class CompilerTest extends AbstractSarlTest {
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
-			"  public byte fct(final AtomicDouble left) {",
+			"  public byte fct(final BigInteger left) {",
 			"    return (left == null ? 0 : left.byteValue());",
 			"  }",
 			"  ",
@@ -97,18 +96,18 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	private static final String AS_SHORT_SARL = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble",
+			"import java.math.BigInteger",
 			"class A {",
-			"  def fct(left : AtomicDouble) : short {",
+			"  def fct(left : BigInteger) : short {",
 			"    left as short",
 			"  }",
 			"}");
 
 	private static final String AS_SHORT_JAVA = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble;",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import java.math.BigInteger;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -116,7 +115,7 @@ public class CompilerTest extends AbstractSarlTest {
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
-			"  public short fct(final AtomicDouble left) {",
+			"  public short fct(final BigInteger left) {",
 			"    return (left == null ? 0 : left.shortValue());",
 			"  }",
 			"  ",
@@ -148,18 +147,18 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	private static final String AS_INT_SARL = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble",
+			"import java.math.BigInteger",
 			"class A {",
-			"  def fct(left : AtomicDouble) : int {",
+			"  def fct(left : BigInteger) : int {",
 			"    left as int",
 			"  }",
 			"}");
 
 	private static final String AS_INT_JAVA = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble;",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import java.math.BigInteger;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -167,7 +166,7 @@ public class CompilerTest extends AbstractSarlTest {
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
-			"  public int fct(final AtomicDouble left) {",
+			"  public int fct(final BigInteger left) {",
 			"    return (left == null ? 0 : left.intValue());",
 			"  }",
 			"  ",
@@ -199,18 +198,18 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	private static final String AS_LONG_SARL = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble",
+			"import java.math.BigInteger",
 			"class A {",
-			"  def fct(left : AtomicDouble) : long {",
+			"  def fct(left : BigInteger) : long {",
 			"    left as long",
 			"  }",
 			"}");
 
 	private static final String AS_LONG_JAVA = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble;",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import java.math.BigInteger;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -218,7 +217,7 @@ public class CompilerTest extends AbstractSarlTest {
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
-			"  public long fct(final AtomicDouble left) {",
+			"  public long fct(final BigInteger left) {",
 			"    return (left == null ? 0 : left.longValue());",
 			"  }",
 			"  ",
@@ -250,18 +249,18 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	private static final String AS_FLOAT_SARL = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble",
+			"import java.math.BigInteger",
 			"class A {",
-			"  def fct(left : AtomicDouble) : float {",
+			"  def fct(left : BigInteger) : float {",
 			"    left as float",
 			"  }",
 			"}");
 
 	private static final String AS_FLOAT_JAVA = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble;",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import java.math.BigInteger;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -269,7 +268,7 @@ public class CompilerTest extends AbstractSarlTest {
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
-			"  public float fct(final AtomicDouble left) {",
+			"  public float fct(final BigInteger left) {",
 			"    return (left == null ? 0 : left.floatValue());",
 			"  }",
 			"  ",
@@ -301,18 +300,18 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	private static final String AS_DOUBLE_SARL = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble",
+			"import java.math.BigInteger",
 			"class A {",
-			"  def fct(left : AtomicDouble) : double {",
+			"  def fct(left : BigInteger) : double {",
 			"    left as double",
 			"  }",
 			"}");
 
 	private static final String AS_DOUBLE_JAVA = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble;",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import java.math.BigInteger;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -320,7 +319,7 @@ public class CompilerTest extends AbstractSarlTest {
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
-			"  public double fct(final AtomicDouble left) {",
+			"  public double fct(final BigInteger left) {",
 			"    return (left == null ? 0 : left.doubleValue());",
 			"  }",
 			"  ",
@@ -351,18 +350,18 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	private static final String AS_BYTE_OBJECT_SARL = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble",
+			"import java.math.BigInteger",
 			"class A {",
-			"  def fct(left : AtomicDouble) : Byte {",
+			"  def fct(left : BigInteger) : Byte {",
 			"    left as Byte",
 			"  }",
 			"}");
 
 	private static final String AS_BYTE_OBJECT_JAVA = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble;",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import java.math.BigInteger;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -370,7 +369,7 @@ public class CompilerTest extends AbstractSarlTest {
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
-			"  public Byte fct(final AtomicDouble left) {",
+			"  public Byte fct(final BigInteger left) {",
 			"    return (left == null ? null : Byte.valueOf(left.byteValue()));",
 			"  }",
 			"  ",
@@ -402,18 +401,18 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	private static final String AS_SHORT_OBJECT_SARL = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble",
+			"import java.math.BigInteger",
 			"class A {",
-			"  def fct(left : AtomicDouble) : Short {",
+			"  def fct(left : BigInteger) : Short {",
 			"    left as Short",
 			"  }",
 			"}");
 
 	private static final String AS_SHORT_OBJECT_JAVA = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble;",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import java.math.BigInteger;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -421,7 +420,7 @@ public class CompilerTest extends AbstractSarlTest {
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
-			"  public Short fct(final AtomicDouble left) {",
+			"  public Short fct(final BigInteger left) {",
 			"    return (left == null ? null : Short.valueOf(left.shortValue()));",
 			"  }",
 			"  ",
@@ -453,18 +452,18 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	private static final String AS_INTEGER_OBJECT_SARL = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble",
+			"import java.math.BigInteger",
 			"class A {",
-			"  def fct(left : AtomicDouble) : Integer {",
+			"  def fct(left : BigInteger) : Integer {",
 			"    left as Integer",
 			"  }",
 			"}");
 
 	private static final String AS_INTEGER_OBJECT_JAVA = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble;",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import java.math.BigInteger;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -472,7 +471,7 @@ public class CompilerTest extends AbstractSarlTest {
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
-			"  public Integer fct(final AtomicDouble left) {",
+			"  public Integer fct(final BigInteger left) {",
 			"    return (left == null ? null : Integer.valueOf(left.intValue()));",
 			"  }",
 			"  ",
@@ -504,18 +503,18 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	private static final String AS_LONG_OBJECT_SARL = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble",
+			"import java.math.BigInteger",
 			"class A {",
-			"  def fct(left : AtomicDouble) : Long {",
+			"  def fct(left : BigInteger) : Long {",
 			"    left as Long",
 			"  }",
 			"}");
 
 	private static final String AS_LONG_OBJECT_JAVA = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble;",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import java.math.BigInteger;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -523,7 +522,7 @@ public class CompilerTest extends AbstractSarlTest {
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
-			"  public Long fct(final AtomicDouble left) {",
+			"  public Long fct(final BigInteger left) {",
 			"    return (left == null ? null : Long.valueOf(left.longValue()));",
 			"  }",
 			"  ",
@@ -556,18 +555,18 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	private static final String AS_FLOAT_OBJECT_SARL = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble",
+			"import java.math.BigInteger",
 			"class A {",
-			"  def fct(left : AtomicDouble) : Float {",
+			"  def fct(left : BigInteger) : Float {",
 			"    left as Float",
 			"  }",
 			"}");
 
 	private static final String AS_FLOAT_OBJECT_JAVA = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble;",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import java.math.BigInteger;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -575,7 +574,7 @@ public class CompilerTest extends AbstractSarlTest {
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
-			"  public Float fct(final AtomicDouble left) {",
+			"  public Float fct(final BigInteger left) {",
 			"    return (left == null ? null : Float.valueOf(left.floatValue()));",
 			"  }",
 			"  ",
@@ -607,18 +606,18 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	private static final String AS_DOUBLE_OBJECT_SARL = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble",
+			"import java.math.BigInteger",
 			"class A {",
-			"  def fct(left : AtomicDouble) : Double {",
+			"  def fct(left : BigInteger) : Double {",
 			"    left as Double",
 			"  }",
 			"}");
 
 	private static final String AS_DOUBLE_OBJECT_JAVA = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble;",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import java.math.BigInteger;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -626,7 +625,7 @@ public class CompilerTest extends AbstractSarlTest {
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
-			"  public Double fct(final AtomicDouble left) {",
+			"  public Double fct(final BigInteger left) {",
 			"    return (left == null ? null : Double.valueOf(left.doubleValue()));",
 			"  }",
 			"  ",
@@ -658,19 +657,19 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	private static final String AS_ATOMICINTEGER_OBJECT_SARL = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble",
 			"import java.util.concurrent.atomic.AtomicInteger",
+			"import java.math.BigInteger",
 			"class A {",
-			"  def fct(left : AtomicDouble) : AtomicInteger {",
+			"  def fct(left : BigInteger) : AtomicInteger {",
 			"    left as AtomicInteger",
 			"  }",
 			"}");
 
 	private static final String AS_ATOMICINTEGER_OBJECT_JAVA = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble;",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import java.math.BigInteger;",
 			"import java.util.concurrent.atomic.AtomicInteger;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
@@ -679,7 +678,7 @@ public class CompilerTest extends AbstractSarlTest {
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
-			"  public AtomicInteger fct(final AtomicDouble left) {",
+			"  public AtomicInteger fct(final BigInteger left) {",
 			"    return (left == null ? null : new AtomicInteger(left.intValue()));",
 			"  }",
 			"  ",
@@ -710,20 +709,19 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	private static final String AS_ATOMICLONG_OBJECT_SARL = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble",
-			"import java.util.concurrent.atomic.AtomicInteger",
+			"import java.math.BigInteger",
 			"import java.util.concurrent.atomic.AtomicLong",
 			"class A {",
-			"  def fct(left : AtomicDouble) : AtomicLong {",
+			"  def fct(left : BigInteger) : AtomicLong {",
 			"    left as AtomicLong",
 			"  }",
 			"}");
 
 	private static final String AS_ATOMICLONG_OBJECT_JAVA = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble;",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import java.math.BigInteger;",
 			"import java.util.concurrent.atomic.AtomicLong;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
@@ -732,7 +730,7 @@ public class CompilerTest extends AbstractSarlTest {
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
-			"  public AtomicLong fct(final AtomicDouble left) {",
+			"  public AtomicLong fct(final BigInteger left) {",
 			"    return (left == null ? null : new AtomicLong(left.longValue()));",
 			"  }",
 			"  ",
@@ -763,9 +761,10 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	private static final String AS_ATOMICDOUBLE_OBJECT_SARL = multilineString(
+			"import java.math.BigInteger",
 			"import com.google.common.util.concurrent.AtomicDouble",
 			"class A {",
-			"  def fct(left : AtomicDouble) : AtomicDouble {",
+			"  def fct(left : BigInteger) : AtomicDouble {",
 			"    left as AtomicDouble",
 			"  }",
 			"}");
@@ -775,6 +774,7 @@ public class CompilerTest extends AbstractSarlTest {
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import java.math.BigInteger;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -782,8 +782,8 @@ public class CompilerTest extends AbstractSarlTest {
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
-			"  public AtomicDouble fct(final AtomicDouble left) {",
-			"    return left;",
+			"  public AtomicDouble fct(final BigInteger left) {",
+			"    return (left == null ? null : new AtomicDouble(left.doubleValue()));",
 			"  }",
 			"  ",
 			"  @SyntheticMember",
@@ -799,10 +799,10 @@ public class CompilerTest extends AbstractSarlTest {
 		.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
-		.assertWarning(
+		.assertNoWarnings(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
-		.assertNoWarnings(
+		.assertWarning(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION);
 	}
@@ -813,16 +813,14 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	private static final String AS_BIGINTEGER_OBJECT_SARL = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble",
 			"import java.math.BigInteger",
 			"class A {",
-			"  def fct(left : AtomicDouble) : BigInteger {",
+			"  def fct(left : BigInteger) : BigInteger {",
 			"    left as BigInteger",
 			"  }",
 			"}");
 
 	private static final String AS_BIGINTEGER_OBJECT_JAVA = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble;",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
@@ -834,8 +832,8 @@ public class CompilerTest extends AbstractSarlTest {
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
-			"  public BigInteger fct(final AtomicDouble left) {",
-			"    return (left == null ? null : BigInteger.valueOf(left.longValue()));",
+			"  public BigInteger fct(final BigInteger left) {",
+			"    return left;",
 			"  }",
 			"  ",
 			"  @SyntheticMember",
@@ -851,10 +849,10 @@ public class CompilerTest extends AbstractSarlTest {
 		.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
-		.assertNoWarnings(
+		.assertWarning(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
-		.assertWarning(
+		.assertNoWarnings(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION);
 	}
@@ -865,20 +863,20 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	private static final String AS_BIGDECIMAL_OBJECT_SARL = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble",
 			"import java.math.BigDecimal",
+			"import java.math.BigInteger",
 			"class A {",
-			"  def fct(left : AtomicDouble) : BigDecimal {",
+			"  def fct(left : BigInteger) : BigDecimal {",
 			"    left as BigDecimal",
 			"  }",
 			"}");
 
 	private static final String AS_BIGDECIMAL_OBJECT_JAVA = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble;",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
 			"import java.math.BigDecimal;",
+			"import java.math.BigInteger;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -886,8 +884,8 @@ public class CompilerTest extends AbstractSarlTest {
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
-			"  public BigDecimal fct(final AtomicDouble left) {",
-			"    return (left == null ? null : BigDecimal.valueOf(left.doubleValue()));",
+			"  public BigDecimal fct(final BigInteger left) {",
+			"    return (left == null ? null : new BigDecimal(left));",
 			"  }",
 			"  ",
 			"  @SyntheticMember",
@@ -917,18 +915,18 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	private static final String AS_NUMBER_OBJECT_SARL = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble",
+			"import java.math.BigInteger",
 			"class A {",
-			"  def fct(left : AtomicDouble) : Number {",
+			"  def fct(left : BigInteger) : Number {",
 			"    left as Number",
 			"  }",
 			"}");
 
 	private static final String AS_NUMBER_OBJECT_JAVA = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble;",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import java.math.BigInteger;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -936,7 +934,7 @@ public class CompilerTest extends AbstractSarlTest {
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
-			"  public Number fct(final AtomicDouble left) {",
+			"  public Number fct(final BigInteger left) {",
 			"    return left;",
 			"  }",
 			"  ",
@@ -956,7 +954,7 @@ public class CompilerTest extends AbstractSarlTest {
 		.assertWarning(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST,
-				"AtomicDouble to Number")
+				"BigInteger to Number")
 		.assertNoWarnings(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION);
@@ -968,18 +966,18 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	private static final String AS_STRING_OBJECT_SARL = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble",
+			"import java.math.BigInteger",
 			"class A {",
-			"  def fct(left : AtomicDouble) : String {",
+			"  def fct(left : BigInteger) : String {",
 			"    left as String",
 			"  }",
 			"}");
 
 	private static final String AS_STRING_OBJECT_JAVA = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble;",
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import java.math.BigInteger;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -987,7 +985,7 @@ public class CompilerTest extends AbstractSarlTest {
 			"@SuppressWarnings(\"all\")",
 			"public class A {",
 			"  @Pure",
-			"  public String fct(final AtomicDouble left) {",
+			"  public String fct(final BigInteger left) {",
 			"    return (left == null ? null : left.toString());",
 			"  }",
 			"  ",
@@ -1019,10 +1017,10 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 	private static final String AS_UUID_OBJECT_SARL = multilineString(
-			"import com.google.common.util.concurrent.AtomicDouble",
+			"import java.math.BigInteger",
 			"import java.util.UUID",
 			"class A {",
-			"  def fct(left : AtomicDouble) : UUID {",
+			"  def fct(left : BigInteger) : UUID {",
 			"    left as UUID",
 			"  }",
 			"}");
@@ -1033,7 +1031,7 @@ public class CompilerTest extends AbstractSarlTest {
 		.assertError(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST,
-				"AtomicDouble to UUID")
+				"BigInteger to UUID")
 		.assertNoWarnings(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)

@@ -166,7 +166,7 @@ public class ToPrimitiveTypeTest extends AbstractSarlTest {
 			"  @Pure",
 			"  public double fct(final A1 x) {",
 			"    double y = this.fct(null);",
-			"    return (x == null ? 0 : (x.toDouble()).doubleValue());",
+			"    return (x == null ? 0 : ((x.toDouble()) == null ? 0 : (x.toDouble()).doubleValue()));",
 			"  }",
 			"  ",
 			"  @SyntheticMember",

@@ -358,7 +358,7 @@ public class CompilerTest extends AbstractSarlTest {
 			"public class A {",
 			"  @Pure",
 			"  public Byte fct(final Number left) {",
-			"    return (left == null ? null : (left instanceof Byte ? (Byte) left : Byte.valueOf(left.byteValue())));",
+			"    return (left == null ? null : Byte.valueOf(left.byteValue()));",
 			"  }",
 			"  ",
 			"  @SyntheticMember",
@@ -407,7 +407,7 @@ public class CompilerTest extends AbstractSarlTest {
 			"public class A {",
 			"  @Pure",
 			"  public Short fct(final Number left) {",
-			"    return (left == null ? null : (left instanceof Short ? (Short) left : Short.valueOf(left.shortValue())));",
+			"    return (left == null ? null : Short.valueOf(left.shortValue()));",
 			"  }",
 			"  ",
 			"  @SyntheticMember",
@@ -456,7 +456,7 @@ public class CompilerTest extends AbstractSarlTest {
 			"public class A {",
 			"  @Pure",
 			"  public Integer fct(final Number left) {",
-			"    return (left == null ? null : (left instanceof Integer ? (Integer) left : Integer.valueOf(left.intValue())));",
+			"    return (left == null ? null : Integer.valueOf(left.intValue()));",
 			"  }",
 			"  ",
 			"  @SyntheticMember",
@@ -505,7 +505,7 @@ public class CompilerTest extends AbstractSarlTest {
 			"public class A {",
 			"  @Pure",
 			"  public Long fct(final Number left) {",
-			"    return (left == null ? null : (left instanceof Long ? (Long) left : Long.valueOf(left.longValue())));",
+			"    return (left == null ? null : Long.valueOf(left.longValue()));",
 			"  }",
 			"  ",
 			"  @SyntheticMember",
@@ -554,7 +554,7 @@ public class CompilerTest extends AbstractSarlTest {
 			"public class A {",
 			"  @Pure",
 			"  public Float fct(final Number left) {",
-			"    return (left == null ? null : (left instanceof Float ? (Float) left : Float.valueOf(left.floatValue())));",
+			"    return (left == null ? null : Float.valueOf(left.floatValue()));",
 			"  }",
 			"  ",
 			"  @SyntheticMember",
@@ -603,7 +603,7 @@ public class CompilerTest extends AbstractSarlTest {
 			"public class A {",
 			"  @Pure",
 			"  public Double fct(final Number left) {",
-			"    return (left == null ? null : (left instanceof Double ? (Double) left : Double.valueOf(left.doubleValue())));",
+			"    return (left == null ? null : Double.valueOf(left.doubleValue()));",
 			"  }",
 			"  ",
 			"  @SyntheticMember",
@@ -654,7 +654,7 @@ public class CompilerTest extends AbstractSarlTest {
 			"public class A {",
 			"  @Pure",
 			"  public AtomicInteger fct(final Number left) {",
-			"    return (left == null ? null : (left instanceof AtomicInteger ? (AtomicInteger) left : new AtomicInteger(left.intValue())));",
+			"    return (left == null ? null : new AtomicInteger(left.intValue()));",
 			"  }",
 			"  ",
 			"  @SyntheticMember",
@@ -704,7 +704,7 @@ public class CompilerTest extends AbstractSarlTest {
 			"public class A {",
 			"  @Pure",
 			"  public AtomicLong fct(final Number left) {",
-			"    return (left == null ? null : (left instanceof AtomicLong ? (AtomicLong) left : new AtomicLong(left.longValue())));",
+			"    return (left == null ? null : new AtomicLong(left.longValue()));",
 			"  }",
 			"  ",
 			"  @SyntheticMember",
@@ -755,7 +755,7 @@ public class CompilerTest extends AbstractSarlTest {
 			"public class A {",
 			"  @Pure",
 			"  public AtomicDouble fct(final Number left) {",
-			"    return (left == null ? null : (left instanceof AtomicDouble ? (AtomicDouble) left : new AtomicDouble(left.doubleValue())));",
+			"    return (left == null ? null : new AtomicDouble(left.doubleValue()));",
 			"  }",
 			"  ",
 			"  @SyntheticMember",
@@ -782,6 +782,106 @@ public class CompilerTest extends AbstractSarlTest {
 	@CompilationTest
 	public static void as_AtomicDouble(Context ctx) throws Exception {
 		ctx.compileTo(AS_ATOMICDOUBLE_OBJECT_SARL, AS_ATOMICDOUBLE_OBJECT_JAVA);
+	}
+
+	private static final String AS_BIGINTEGER_OBJECT_SARL = multilineString(
+			"import java.math.BigInteger",
+			"class A {",
+			"  def fct(left : Number) : BigInteger {",
+			"    left as BigInteger",
+			"  }",
+			"}");
+
+	private static final String AS_BIGINTEGER_OBJECT_JAVA = multilineString(
+			"import io.sarl.lang.annotation.SarlElementType;",
+			"import io.sarl.lang.annotation.SarlSpecification;",
+			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import java.math.BigInteger;",
+			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"",
+			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@SuppressWarnings(\"all\")",
+			"public class A {",
+			"  @Pure",
+			"  public BigInteger fct(final Number left) {",
+			"    return (left == null ? null : BigInteger.valueOf(left.longValue()));",
+			"  }",
+			"  ",
+			"  @SyntheticMember",
+			"  public A() {",
+			"    super();",
+			"  }",
+			"}",
+			"");
+
+	@Test
+	public void as_BigInteger_issues() throws Exception {
+		validate(file(AS_BIGINTEGER_OBJECT_SARL))
+		.assertNoErrors(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
+		.assertNoWarnings(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
+		.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION);
+	}
+
+	@CompilationTest
+	public static void as_BigInteger(Context ctx) throws Exception {
+		ctx.compileTo(AS_BIGINTEGER_OBJECT_SARL, AS_BIGINTEGER_OBJECT_JAVA);
+	}
+
+	private static final String AS_BIGDECIMAL_OBJECT_SARL = multilineString(
+			"import java.math.BigDecimal",
+			"class A {",
+			"  def fct(left : Number) : BigDecimal {",
+			"    left as BigDecimal",
+			"  }",
+			"}");
+
+	private static final String AS_BIGDECIMAL_OBJECT_JAVA = multilineString(
+			"import io.sarl.lang.annotation.SarlElementType;",
+			"import io.sarl.lang.annotation.SarlSpecification;",
+			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import java.math.BigDecimal;",
+			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"",
+			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@SuppressWarnings(\"all\")",
+			"public class A {",
+			"  @Pure",
+			"  public BigDecimal fct(final Number left) {",
+			"    return (left == null ? null : BigDecimal.valueOf(left.doubleValue()));",
+			"  }",
+			"  ",
+			"  @SyntheticMember",
+			"  public A() {",
+			"    super();",
+			"  }",
+			"}",
+			"");
+
+	@Test
+	public void as_BigDecimal_issues() throws Exception {
+		validate(file(AS_BIGDECIMAL_OBJECT_SARL))
+		.assertNoErrors(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
+		.assertNoWarnings(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
+		.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION);
+	}
+
+	@CompilationTest
+	public static void as_BigDecimal(Context ctx) throws Exception {
+		ctx.compileTo(AS_BIGDECIMAL_OBJECT_SARL, AS_BIGDECIMAL_OBJECT_JAVA);
 	}
 
 	private static final String AS_NUMBER_OBJECT_SARL = multilineString(

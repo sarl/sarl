@@ -24,6 +24,7 @@ package io.sarl.lang.core.tests.scoping.extensions.numbers.cast.integerobject;
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.tests.api.AbstractMassiveCompilationTest;
+import io.sarl.tests.api.AbstractMassiveCompilationTest.DifferedTest;
 
 /**
  * @author $Author: sgalland$
@@ -241,7 +242,7 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						"public class A {",
 						"  @Pure",
 						"  public Byte fct(final Integer left) {",
-						"    return (left == null ? null : (left instanceof Byte ? (Byte) left : Byte.valueOf(left.byteValue())));",
+						"    return (left == null ? null : Byte.valueOf(left.byteValue()));",
 						"  }",
 						"  ",
 						"  @SyntheticMember",
@@ -272,7 +273,7 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						"public class A {",
 						"  @Pure",
 						"  public Short fct(final Integer left) {",
-						"    return (left == null ? null : (left instanceof Short ? (Short) left : Short.valueOf(left.shortValue())));",
+						"    return (left == null ? null : Short.valueOf(left.shortValue()));",
 						"  }",
 						"  ",
 						"  @SyntheticMember",
@@ -334,7 +335,7 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						"public class A {",
 						"  @Pure",
 						"  public Long fct(final Integer left) {",
-						"    return (left == null ? null : (left instanceof Long ? (Long) left : Long.valueOf(left.longValue())));",
+						"    return (left == null ? null : Long.valueOf(left.longValue()));",
 						"  }",
 						"  ",
 						"  @SyntheticMember",
@@ -365,7 +366,7 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						"public class A {",
 						"  @Pure",
 						"  public Float fct(final Integer left) {",
-						"    return (left == null ? null : (left instanceof Float ? (Float) left : Float.valueOf(left.floatValue())));",
+						"    return (left == null ? null : Float.valueOf(left.floatValue()));",
 						"  }",
 						"  ",
 						"  @SyntheticMember",
@@ -396,7 +397,7 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						"public class A {",
 						"  @Pure",
 						"  public Double fct(final Integer left) {",
-						"    return (left == null ? null : (left instanceof Double ? (Double) left : Double.valueOf(left.doubleValue())));",
+						"    return (left == null ? null : Double.valueOf(left.doubleValue()));",
 						"  }",
 						"  ",
 						"  @SyntheticMember",
@@ -429,7 +430,7 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						"public class A {",
 						"  @Pure",
 						"  public AtomicInteger fct(final Integer left) {",
-						"    return (left == null ? null : (left instanceof AtomicInteger ? (AtomicInteger) left : new AtomicInteger(left.intValue())));",
+						"    return (left == null ? null : new AtomicInteger(left.intValue()));",
 						"  }",
 						"  ",
 						"  @SyntheticMember",
@@ -462,7 +463,7 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						"public class A {",
 						"  @Pure",
 						"  public AtomicLong fct(final Integer left) {",
-						"    return (left == null ? null : (left instanceof AtomicLong ? (AtomicLong) left : new AtomicLong(left.longValue())));",
+						"    return (left == null ? null : new AtomicLong(left.longValue()));",
 						"  }",
 						"  ",
 						"  @SyntheticMember",
@@ -495,7 +496,73 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						"public class A {",
 						"  @Pure",
 						"  public AtomicDouble fct(final Integer left) {",
-						"    return (left == null ? null : (left instanceof AtomicDouble ? (AtomicDouble) left : new AtomicDouble(left.doubleValue())));",
+						"    return (left == null ? null : new AtomicDouble(left.doubleValue()));",
+						"  }",
+						"  ",
+						"  @SyntheticMember",
+						"  public A() {",
+						"    super();",
+						"  }",
+						"}",
+						""));
+	}
+
+	@DifferedTest
+	public void as_BigInteger() throws Exception {
+		diffSingleTypeCompileTo(multilineString(
+				"import java.math.BigInteger",
+				"class A {",
+				"  def fct(left : Integer) : BigInteger {",
+				"    left as BigInteger",
+				"  }",
+				"}"),
+				multilineString(
+						"import io.sarl.lang.annotation.SarlElementType;",
+						"import io.sarl.lang.annotation.SarlSpecification;",
+						"import io.sarl.lang.annotation.SyntheticMember;",
+						"import java.math.BigInteger;",
+						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"",
+						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@SuppressWarnings(\"all\")",
+						"public class A {",
+						"  @Pure",
+						"  public BigInteger fct(final Integer left) {",
+						"    return (left == null ? null : BigInteger.valueOf(left.longValue()));",
+						"  }",
+						"  ",
+						"  @SyntheticMember",
+						"  public A() {",
+						"    super();",
+						"  }",
+						"}",
+						""));
+	}
+
+	@DifferedTest
+	public void as_BigDecimal() throws Exception {
+		diffSingleTypeCompileTo(multilineString(
+				"import java.math.BigDecimal",
+				"class A {",
+				"  def fct(left : Integer) : BigDecimal {",
+				"    left as BigDecimal",
+				"  }",
+				"}"),
+				multilineString(
+						"import io.sarl.lang.annotation.SarlElementType;",
+						"import io.sarl.lang.annotation.SarlSpecification;",
+						"import io.sarl.lang.annotation.SyntheticMember;",
+						"import java.math.BigDecimal;",
+						"import org.eclipse.xtext.xbase.lib.Pure;",
+						"",
+						"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+						"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+						"@SuppressWarnings(\"all\")",
+						"public class A {",
+						"  @Pure",
+						"  public BigDecimal fct(final Integer left) {",
+						"    return (left == null ? null : BigDecimal.valueOf(left.doubleValue()));",
 						"  }",
 						"  ",
 						"  @SyntheticMember",

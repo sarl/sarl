@@ -21,6 +21,8 @@
 
 package io.sarl.lang.scoping.extensions.numbers.cast;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -129,6 +131,28 @@ public final class AtomicDoubleCastExtensions {
 	@Inline(value = "$2.valueOf($1.doubleValue())", imported = Double.class)
 	public static Double toDouble(AtomicDouble number) {
 		return Double.valueOf(number.doubleValue());
+	}
+
+	/** Convert the given value to {@code BigInteger}.
+	 *
+	 * @param number a number of {@code AtomicDouble} type.
+	 * @return the equivalent value to {@code number} of {@code BigInteger} type.
+	 */
+	@Pure
+	@Inline(value = "$2.valueOf($1.longValue())", imported = {BigInteger.class})
+	public static BigInteger toBigInteger(AtomicDouble number) {
+		return BigInteger.valueOf(number.longValue());
+	}
+
+	/** Convert the given value to {@code BigDecimal}.
+	 *
+	 * @param number a number of {@code AtomicDouble} type.
+	 * @return the equivalent value to {@code number} of {@code BigDecimal} type.
+	 */
+	@Pure
+	@Inline(value = "$2.valueOf($1.doubleValue())", imported = BigDecimal.class)
+	public static BigDecimal toBigDecimal(AtomicDouble number) {
+		return BigDecimal.valueOf(number.doubleValue());
 	}
 
 }

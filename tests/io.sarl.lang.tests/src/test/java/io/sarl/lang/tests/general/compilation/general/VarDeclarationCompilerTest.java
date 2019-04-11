@@ -640,7 +640,7 @@ public class VarDeclarationCompilerTest extends AbstractSarlTest {
 				"public class A1 extends Agent {",
 				"  protected float mycall(final int a, final Function2<? super Float, ? super Integer, ? extends Float> f) {",
 				"    Float _apply = f.apply(Float.valueOf(5.45f), Integer.valueOf(6));",
-				"    return (a + (_apply).floatValue());",
+				"    return (a + ((_apply) == null ? 0 : (_apply).floatValue()));",
 				"  }",
 				"  ",
 				"  protected void myaction() {",
