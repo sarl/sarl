@@ -28,7 +28,7 @@ package io.sarl.demos.sierpinskiFractals.objects
  * @author Antoine Bartuccio
  * @author Nicolas Gaud
  */
-public class Vector2D {
+class Vector2D {
 	
 	var y: double
 	var x: double

@@ -52,7 +52,7 @@ abstract agent AbstractFractal {
 	 * Generate triangle points
 	 */
 	def generatePoints {
-		triangle = new Triangle(
+		this.triangle = new Triangle(
 			screenSurface.bottomLeft,
 			screenSurface.bottomRight,
 			new Vector2D(screenSurface.bottomLeft.x + screenWidth / 2, screenSurface.topLeft.y)
@@ -65,7 +65,7 @@ abstract agent AbstractFractal {
 	 * Multiply itself and create child Fractal
 	 */
 	def multiplication {
-		val screen1 = new Square(triangle.bottomLeft, screenWidth / 2)
+		val screen1 = new Square(this.triangle.bottomLeft, screenWidth / 2)
 		spawnInContext(typeof(ChildFractal), innerContext, screen1, positions)
 		
 		val screen2 = new Square(
@@ -73,7 +73,7 @@ abstract agent AbstractFractal {
 			screenWidth / 2)
 		spawnInContext(typeof(ChildFractal), innerContext, screen2, positions)
 		
-		val screen3 = new Square(new Vector2D(triangle.top.x, screenSurface.bottomLeft.y), screenWidth / 2)
+		val screen3 = new Square(new Vector2D(this.triangle.top.x, screenSurface.bottomLeft.y), screenWidth / 2)
 		spawnInContext(typeof(ChildFractal), innerContext, screen3, positions)
 	}
 	/* 

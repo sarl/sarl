@@ -21,13 +21,13 @@
 
 package io.sarl.demos.sierpinskiFractals.agents
 
-import io.sarl.core.Behaviors
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
 import io.sarl.demos.sierpinskiFractals.events.Refresh
 import io.sarl.demos.sierpinskiFractals.objects.Positions
 import io.sarl.demos.sierpinskiFractals.objects.Square
 import io.sarl.javafx.FXKillSupportBehavior
+import io.sarl.core.Behaviors
 
 /**
  * Child fractal agent.
@@ -38,7 +38,7 @@ import io.sarl.javafx.FXKillSupportBehavior
  */
 agent ChildFractal extends AbstractFractal {
 
-	uses Behaviors, DefaultContextInteractions
+	uses DefaultContextInteractions, Behaviors
 		
 	/* 
 	 * Initialization step for smaller fractals
