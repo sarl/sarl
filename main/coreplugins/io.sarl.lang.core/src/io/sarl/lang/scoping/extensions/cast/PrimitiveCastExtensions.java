@@ -21,6 +21,12 @@
 
 package io.sarl.lang.scoping.extensions.cast;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+
+import com.google.common.util.concurrent.AtomicDouble;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -58,6 +64,314 @@ public final class PrimitiveCastExtensions {
 	@Inline(value = "$2.toString($1)", imported = Character.class)
 	public static String toString(char value) {
 		return Character.toString(value);
+	}
+
+	/** Decodes a {@code CharSequence} into a {@code byte}.
+	 *
+	 * <p>In opposite to the functions of {@link Byte}, this function is
+	 * null-safe and does not generate a {@link NumberFormatException}.
+	 * If the given string cannot by parsed, {@code 0} is replied.
+	 *
+	 * <p>See {@link Byte#decode(String)} for details on the accepted formats
+	 * for the input string of characters.
+	 *
+	 * @param value a value of {@code CharSequence} type.
+	 * @return the equivalent value to {@code value} of {@code byte} type.
+	 * @since 0.9
+	 * @see Byte#decode(String)
+	 */
+	@Pure
+	public static byte byteValue(CharSequence value) {
+		try {
+			return Byte.decode(value.toString());
+		} catch (Throwable exception) {
+			// Silent exception.
+		}
+		return 0;
+	}
+
+	/** Decodes a {@code CharSequence} into a {@code short}.
+	 *
+	 * <p>In opposite to the functions of {@link Short}, this function is
+	 * null-safe and does not generate a {@link NumberFormatException}.
+	 * If the given string cannot by parsed, {@code 0} is replied.
+	 *
+	 * <p>See {@link Short#decode(String)} for details on the accepted formats
+	 * for the input string of characters.
+	 *
+	 * @param value a value of {@code CharSequence} type.
+	 * @return the equivalent value to {@code value} of {@code short} type.
+	 * @since 0.9
+	 * @see Short#decode(String)
+	 */
+	@Pure
+	public static short shortValue(CharSequence value) {
+		try {
+			return Short.decode(value.toString());
+		} catch (Throwable exception) {
+			// Silent exception.
+		}
+		return 0;
+	}
+
+	/** Decodes a {@code CharSequence} into a {@code int}.
+	 *
+	 * <p>In opposite to the functions of {@link Integer}, this function is
+	 * null-safe and does not generate a {@link NumberFormatException}.
+	 * If the given string cannot by parsed, {@code 0} is replied.
+	 *
+	 * <p>See {@link Integer#decode(String)} for details on the accepted formats
+	 * for the input string of characters.
+	 *
+	 * @param value a value of {@code CharSequence} type.
+	 * @return the equivalent value to {@code value} of {@code int} type.
+	 * @since 0.9
+	 * @see Integer#decode(String)
+	 */
+	@Pure
+	public static int intValue(CharSequence value) {
+		try {
+			return Integer.decode(value.toString());
+		} catch (Throwable exception) {
+			// Silent exception.
+		}
+		return 0;
+	}
+
+	/** Decodes a {@code CharSequence} into a {@code long}.
+	 *
+	 * <p>In opposite to the functions of {@link Long}, this function is
+	 * null-safe and does not generate a {@link NumberFormatException}.
+	 * If the given string cannot by parsed, {@code 0} is replied.
+	 *
+	 * <p>See {@link Long#decode(String)} for details on the accepted formats
+	 * for the input string of characters.
+	 *
+	 * @param value a value of {@code CharSequence} type.
+	 * @return the equivalent value to {@code value} of {@code long} type.
+	 * @since 0.9
+	 * @see Long#decode(String)
+	 */
+	@Pure
+	public static long longValue(CharSequence value) {
+		try {
+			return Long.decode(value.toString());
+		} catch (Throwable exception) {
+			// Silent exception.
+		}
+		return 0;
+	}
+
+	/** Decodes a {@code CharSequence} into a {@code float}.
+	 *
+	 * <p>In opposite to the functions of {@link Float}, this function is
+	 * null-safe and does not generate a {@link NumberFormatException}.
+	 * If the given string cannot by parsed, {@code 0} is replied.
+	 *
+	 * <p>See {@link Float#valueOf(String)} for details on the accepted formats
+	 * for the input string of characters.
+	 *
+	 * @param value a value of {@code CharSequence} type.
+	 * @return the equivalent value to {@code value} of {@code float} type.
+	 * @since 0.9
+	 * @see Float#valueOf(String)
+	 */
+	@Pure
+	public static float floatValue(CharSequence value) {
+		try {
+			return Float.parseFloat(value.toString());
+		} catch (Throwable exception) {
+			// Silent exception.
+		}
+		return 0;
+	}
+
+	/** Decodes a {@code CharSequence} into a {@code double}.
+	 *
+	 * <p>In opposite to the functions of {@link Double}, this function is
+	 * null-safe and does not generate a {@link NumberFormatException}.
+	 * If the given string cannot by parsed, {@code 0} is replied.
+	 *
+	 * <p>See {@link Double#valueOf(String)} for details on the accepted formats
+	 * for the input string of characters.
+	 *
+	 * @param value a value of {@code CharSequence} type.
+	 * @return the equivalent value to {@code value} of {@code double} type.
+	 * @since 0.9
+	 * @see Double#valueOf(String)
+	 */
+	@Pure
+	public static double doubleValue(CharSequence value) {
+		try {
+			return Double.parseDouble(value.toString());
+		} catch (Throwable exception) {
+			// Silent exception.
+		}
+		return 0;
+	}
+
+	/** Decodes a {@code CharSequence} into a {@code AtomicInteger}.
+	 *
+	 * <p>In opposite to the functions of {@link Integer}, this function is
+	 * null-safe and does not generate a {@link NumberFormatException}.
+	 * If the given string cannot by parsed, {@code 0} is replied.
+	 *
+	 * <p>See {@link #intValue(CharSequence)} for details on the accepted formats
+	 * for the input string of characters.
+	 *
+	 * @param value a value of {@code CharSequence} type.
+	 * @return the equivalent value to {@code value} of {@code AtomicInteger} type.
+	 * @since 0.9
+	 * @see #intValue(CharSequence)
+	 */
+	@Pure
+	@Inline(value = "new $2($3.intValue($1))", imported = {AtomicInteger.class, PrimitiveCastExtensions.class})
+	public static AtomicInteger toAtomicInteger(CharSequence value) {
+		return new AtomicInteger(intValue(value));
+	}
+
+	/** Decodes a {@code CharSequence} into a {@code AtomicLong}.
+	 *
+	 * <p>In opposite to the functions of {@link Long}, this function is
+	 * null-safe and does not generate a {@link NumberFormatException}.
+	 * If the given string cannot by parsed, {@code 0} is replied.
+	 *
+	 * <p>See {@link #longValue(CharSequence)} for details on the accepted formats
+	 * for the input string of characters.
+	 *
+	 * @param value a value of {@code CharSequence} type.
+	 * @return the equivalent value to {@code value} of {@code AtomicLong} type.
+	 * @since 0.9
+	 * @see #longValue(CharSequence)
+	 */
+	@Pure
+	@Inline(value = "new $2($3.longValue($1))", imported = {AtomicLong.class, PrimitiveCastExtensions.class})
+	public static AtomicLong toAtomicLong(CharSequence value) {
+		return new AtomicLong(longValue(value));
+	}
+
+	/** Decodes a {@code CharSequence} into a {@code AtomicDouble}.
+	 *
+	 * <p>In opposite to the functions of {@link Double}, this function is
+	 * null-safe and does not generate a {@link NumberFormatException}.
+	 * If the given string cannot by parsed, {@code 0} is replied.
+	 *
+	 * <p>See {@link #doubleValue(CharSequence)} for details on the accepted formats
+	 * for the input string of characters.
+	 *
+	 * @param value a value of {@code CharSequence} type.
+	 * @return the equivalent value to {@code value} of {@code AtomicDouble} type.
+	 * @since 0.9
+	 * @see #doubleValue(CharSequence)
+	 */
+	@Pure
+	@Inline(value = "new $2($3.doubleValue($1))", imported = {AtomicDouble.class, PrimitiveCastExtensions.class})
+	public static AtomicDouble toAtomicDouble(CharSequence value) {
+		return new AtomicDouble(doubleValue(value));
+	}
+
+	private static boolean startsWith(CharSequence value, String prefix, int index) {
+		if (value == null) {
+			return prefix == null;
+		}
+		final int prefixLength = prefix.length();
+		if (value.length() == 0) {
+			return prefixLength == 0;
+		}
+		final int eoffset = index + prefixLength;
+		if (eoffset > value.length()) {
+			return false;
+		}
+		int idx0 = index;
+		for (int idx1 = 0; idx1 < prefixLength; ++idx1, ++idx0) {
+			if (value.charAt(idx0) != prefix.charAt(idx1)) {
+				return false;
+			}
+		}
+        return true;
+	}
+
+	/** Decodes a {@code CharSequence} into a {@code BigInteger}.
+	 *
+	 * <p>In opposite to the functions of {@link Integer}, this function is
+	 * null-safe and does not generate a {@link NumberFormatException}.
+	 * If the given string cannot by parsed, {@code 0} is replied.
+	 *
+	 * <p>See {@link BigInteger#BigInteger(String)} for details on the accepted formats
+	 * for the input string of characters.
+	 *
+	 * @param value a value of {@code CharSequence} type.
+	 * @return the equivalent value to {@code value} of {@code BigInteger} type.
+	 * @since 0.9
+	 * @see #intValue(CharSequence)
+	 */
+	@Pure
+	@SuppressWarnings("checkstyle:magicnumber")
+	public static BigInteger toBigInteger(CharSequence value) {
+		try {
+			boolean negative = false;
+			int index = 0;
+			final char firstChar = value.charAt(0);
+
+			// Handle sign, if present
+			if (firstChar == '-') {
+				negative = true;
+				++index;
+			} else if (firstChar == '+') {
+				++index;
+			}
+
+			// Handle radix specifier, if present
+			int radix = 10;
+			if (startsWith(value, "0x", index) || startsWith(value, "0X", index)) { //$NON-NLS-1$ //$NON-NLS-2$
+				index += 2;
+				radix = 16;
+			} else if (startsWith(value, "#", index)) { //$NON-NLS-1$
+				++index;
+				radix = 16;
+			} else if (startsWith(value, "0", index) && value.length() > 1 + index) { //$NON-NLS-1$
+				++index;
+				radix = 8;
+			}
+			final CharSequence endValue;
+			if (index > 0) {
+				endValue = value.subSequence(index, value.length());
+			} else {
+				endValue = value;
+			}
+			final BigInteger number = new BigInteger(endValue.toString(), radix);
+			if (negative) {
+				return number.negate();
+			}
+			return number;
+		} catch (Throwable exception) {
+			// Silent error
+		}
+		return BigInteger.valueOf(0);
+	}
+
+	/** Decodes a {@code CharSequence} into a {@code BigDecimal}.
+	 *
+	 * <p>In opposite to the functions of {@link Double}, this function is
+	 * null-safe and does not generate a {@link NumberFormatException}.
+	 * If the given string cannot by parsed, {@code 0} is replied.
+	 *
+	 * <p>See {@link BigDecimal#BigDecimal(String)} for details on the accepted formats
+	 * for the input string of characters.
+	 *
+	 * @param value a value of {@code CharSequence} type.
+	 * @return the equivalent value to {@code value} of {@code BigInteger} type.
+	 * @since 0.9
+	 * @see #intValue(CharSequence)
+	 */
+	@Pure
+	public static BigDecimal toBigDecimal(CharSequence value) {
+		try {
+			return new BigDecimal(value.toString());
+		} catch (Throwable exception) {
+			// Silent error
+		}
+		return BigDecimal.valueOf(0.);
 	}
 
 }
