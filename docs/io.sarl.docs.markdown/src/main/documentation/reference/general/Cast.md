@@ -145,6 +145,25 @@ A casting operation between reference types does not change the run-time type of
 the type of the value that is being used as a reference to that object.
 
 
+The following table shows the predefined explicit conversions that are predefined into 
+SARL.
+
+
+| From          | To                                                                                                       |
+| ------------- | -------------------------------------------------------------------------------------------------------- |
+| boolean       | String                                                                                                   |
+| byte          | byte, short, int, long, float, double, AtomicInteger, AtomicLong, AtomicDouble, BigInteger, BigDecimal   |
+| char          | String                                                                                                   |
+| double        | byte, short, int, long, float, double, AtomicInteger, AtomicLong, AtomicDouble, BigInteger, BigDecimal   |
+| float         | byte, short, int, long, float, double, AtomicInteger, AtomicLong, AtomicDouble, BigInteger, BigDecimal   |
+| int           | byte, short, int, long, float, double, AtomicInteger, AtomicLong, AtomicDouble, BigInteger, BigDecimal   |
+| long          | byte, short, int, long, float, double, AtomicInteger, AtomicLong, AtomicDouble, BigInteger, BigDecimal   |
+| Number        | byte, short, int, long, float, double, AtomicInteger, AtomicLong, AtomicDouble, BigInteger, BigDecimal   |
+| Object        | String                                                                                                   |
+| short         | byte, short, int, long, float, double, AtomicInteger, AtomicLong, AtomicDouble, BigInteger, BigDecimal   |
+| String        | boolean, char, byte, short, int, long, float, double, AtomicInteger,  AtomicLong, AtomicDouble           |
+|               | BigInteger, BigDecimal                                                                                   |
+
 
 ## Type Conversion Exceptions at Run Time
 
