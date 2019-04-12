@@ -365,6 +365,11 @@ Yes. Since the SARL compiler generates valid Java code including the documentati
 you could generate the documentation of your SARL program with the standard javadoc
 tool applied on the generated Java files.
 
+Additionnally, you could use a specific Javadoc doclet in order to generate a documentation 
+that follows the SARL syntax, intead of the Java syntax.
+
+You could find details on the page dedicated to the [Maven documentation plugin](../tools/APIDocumentation.md). 
+
 
 ### How do I control the log-level of the Logging built-in capacity?
 

@@ -36,6 +36,7 @@
 		<xtext.version>2.17.1</xtext.version>
 		<xtext.version.current>2.17.1</xtext.version.current>
 		<xtext.version.next>2.17.2</xtext.version.next>
+		<xtext.version.javadoc>2.17</xtext.version.javadoc>
 		<!-- Version of the MWE2 library (used for accessing the mwe2 P2 http://download.eclipse.org/modeling/emft/mwe/updates/releases/, 
 			see compositeContent.{xml,jar,xz,xml.xz} file) -->
 		<mwe2.version>2.9.0</mwe2.version>
@@ -849,7 +850,7 @@
 						<show>protected</show>
 						<detectJavaApiLink>true</detectJavaApiLink>
 						<links>
-							<link>http://download.eclipse.org/modeling/tmf/xtext/javadoc/2.9/</link>
+							<link>http://download.eclipse.org/modeling/tmf/xtext/javadoc/${xtext.version.javadoc}/</link>
 						</links>
 						<docfilessubdirs>true</docfilessubdirs>
 						<excludePackageNames></excludePackageNames>
