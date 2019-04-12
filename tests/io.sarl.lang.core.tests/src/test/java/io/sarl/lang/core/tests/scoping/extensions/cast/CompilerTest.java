@@ -55,7 +55,6 @@ public class CompilerTest extends AbstractSarlTest {
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.scoping.extensions.cast.PrimitiveCastExtensions;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
