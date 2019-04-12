@@ -44,6 +44,20 @@ public final class PrimitiveCastExtensions {
 		//
 	}
 
+	/** Convert the given value to {@code boolean}.
+	 *
+	 * <p>See {@link Integer#decode(String)} for details on the accepted formats
+	 * for the input string of characters.
+	 *
+	 * @param value a value of {@code CharSequence} type.
+	 * @return the equivalent value to {@code value} of {@code boolean} type.
+	 */
+	@Pure
+	@Inline(value = "$2.parseBoolean(($1).toString())", imported = Boolean.class)
+	public static boolean booleanValue(CharSequence value) {
+		return value != null && Boolean.parseBoolean(value.toString());
+	}
+
 	/** Convert the given value to {@code String}.
 	 *
 	 * @param value a value of {@code boolean} type.

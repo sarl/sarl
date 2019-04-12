@@ -44,6 +44,56 @@ import io.sarl.tests.api.MassiveCompilationSuite.Context;
 @SuppressWarnings("all")
 public class CompilerTest extends AbstractSarlTest {
 
+	private static final String STRING_AS_BOOLEAN_SARL = multilineString(
+			"class A {",
+			"  def fct(left : String) : boolean {",
+			"    left as boolean",
+			"  }",
+			"}");
+
+	private static final String STRING_AS_BOOLEAN_JAVA = multilineString(
+			"import io.sarl.lang.annotation.SarlElementType;",
+			"import io.sarl.lang.annotation.SarlSpecification;",
+			"import io.sarl.lang.annotation.SyntheticMember;",
+			"import io.sarl.lang.scoping.extensions.cast.PrimitiveCastExtensions;",
+			"import org.eclipse.xtext.xbase.lib.Pure;",
+			"",
+			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
+			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@SuppressWarnings(\"all\")",
+			"public class A {",
+			"  @Pure",
+			"  public boolean fct(final String left) {",
+			"    return (left == null ? false : Boolean.parseBoolean((left).toString()));",
+			"  }",
+			"  ",
+			"  @SyntheticMember",
+			"  public A() {",
+			"    super();",
+			"  }",
+			"}",
+			"");
+
+	@Test
+	public void string_as_boolean_issues() throws Exception {
+		validate(file(STRING_AS_BOOLEAN_SARL))
+		.assertNoErrors(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
+		.assertNoWarnings(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				org.eclipse.xtext.xbase.validation.IssueCodes.OBSOLETE_CAST)
+		.assertWarning(
+				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
+				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION,
+				"'booleanValue'");
+	}
+
+	@CompilationTest
+	public static void string_as_boolean(Context ctx) throws Exception {
+		ctx.compileTo(STRING_AS_BOOLEAN_SARL, STRING_AS_BOOLEAN_JAVA);
+	}
+
 	private static final String BOOLEAN_AS_STRING_SARL = multilineString(
 			"class A {",
 			"  def fct(left : boolean) : String {",

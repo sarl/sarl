@@ -36,6 +36,25 @@ import io.sarl.tests.api.AbstractSarlTest;
 public class CodeTest extends AbstractSarlTest {
 
 	@Test
+	public void booleanValue_CharSequence() {
+		assertFalse(PrimitiveCastExtensions.booleanValue("4"));
+		assertFalse(PrimitiveCastExtensions.booleanValue("0xa"));
+		assertFalse(PrimitiveCastExtensions.booleanValue("-4"));
+		assertFalse(PrimitiveCastExtensions.booleanValue("-0xa"));
+		assertFalse(PrimitiveCastExtensions.booleanValue(""));
+		assertFalse(PrimitiveCastExtensions.booleanValue("z"));
+		assertFalse(PrimitiveCastExtensions.booleanValue(null));
+		assertTrue(PrimitiveCastExtensions.booleanValue("true"));
+		assertTrue(PrimitiveCastExtensions.booleanValue("tRue"));
+		assertFalse(PrimitiveCastExtensions.booleanValue("false"));
+		assertFalse(PrimitiveCastExtensions.booleanValue("fAlse"));
+		assertFalse(PrimitiveCastExtensions.booleanValue("yes"));
+		assertFalse(PrimitiveCastExtensions.booleanValue("no"));
+		assertFalse(PrimitiveCastExtensions.booleanValue("oui"));
+		assertFalse(PrimitiveCastExtensions.booleanValue("non"));
+	}
+
+	@Test
 	public void toString_boolean() {
 		assertEquals(Boolean.TRUE.toString(), PrimitiveCastExtensions.toString(true));
 		assertEquals(Boolean.FALSE.toString(), PrimitiveCastExtensions.toString(false));
