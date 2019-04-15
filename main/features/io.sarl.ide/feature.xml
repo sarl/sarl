@@ -2,7 +2,7 @@
 <feature
       id="io.sarl.ide"
       label="SARL IDE"
-      version="0.9.0.qualifier"
+      version="0.9.0"
       plugin="io.sarl.eclipse">
 
    <description url="http://www.sarl.io/about/">

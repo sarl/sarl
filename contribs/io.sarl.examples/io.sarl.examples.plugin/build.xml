@@ -44,8 +44,8 @@
 				<filterset>
 					<filter token="GROUP_ID" value="@{group}"/>
 					<filter token="PROJECT_NAME" value="@{name}"/>
-					<filter token="PROJECT_VERSION" value="0.9.0-SNAPSHOT"/>
-					<filter token="SARL_VERSION" value="0.9.0-SNAPSHOT"/>
+					<filter token="PROJECT_VERSION" value="0.9.0"/>
+					<filter token="SARL_VERSION" value="0.9.0"/>
 					<filter token="AFC_VERSION" value="15.2"/>
 					<filter token="FILE_ENCODING" value="UTF-8"/>
 					<filter token="JAVA_VERSION" value="1.8"/>
@@ -58,8 +58,8 @@
 				<filterset>
 					<filter token="GROUP_ID" value="@{group}"/>
 					<filter token="PROJECT_NAME" value="@{name}"/>
-					<filter token="PROJECT_VERSION" value="0.9.0-SNAPSHOT"/>
-					<filter token="SARL_VERSION" value="0.9.0-SNAPSHOT"/>
+					<filter token="PROJECT_VERSION" value="0.9.0"/>
+					<filter token="SARL_VERSION" value="0.9.0"/>
 					<filter token="AFC_VERSION" value="15.2"/>
 					<filter token="FILE_ENCODING" value="UTF-8"/>
 					<filter token="JAVA_VERSION" value="1.8"/>

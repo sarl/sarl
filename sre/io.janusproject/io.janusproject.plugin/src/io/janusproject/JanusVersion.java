@@ -42,7 +42,7 @@ public final class JanusVersion {
 	 *
 	 * <p>A stable release is a platform that will be not more compiled and generated.
 	 */
-	public static final boolean IS_STABLE = false;
+	public static final boolean IS_STABLE = true;
 
 	private JanusVersion() {
 		//
