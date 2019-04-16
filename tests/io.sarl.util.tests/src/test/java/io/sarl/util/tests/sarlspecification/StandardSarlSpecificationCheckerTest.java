@@ -20,7 +20,7 @@
  */
 package io.sarl.util.tests.sarlspecification;
 
-import static io.sarl.tests.api.AbstractSarlTest.assertNaN;
+import static io.sarl.tests.api.AbstractSarlTest.*;
 import static io.sarl.tests.api.AbstractSarlTest.assertStrictlyNegative;
 import static io.sarl.tests.api.AbstractSarlTest.assertStrictlyPositive;
 import static io.sarl.tests.api.AbstractSarlTest.assertZero;
@@ -31,6 +31,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.osgi.framework.Version;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.annotation.SarlSpecification;
@@ -59,12 +60,17 @@ public class StandardSarlSpecificationCheckerTest {
 	}
 
 	@Test
-	public void getSarlSpecificationVersion() {
-		assertNaN(this.checker.getSarlSpecificationVersion(Type1.class));
-		assertNaN(this.checker.getSarlSpecificationVersion(Type2.class));
-		assertEquals(0.1f, this.checker.getSarlSpecificationVersion(Type3.class), 0f);
-		assertEquals(SARLVersion.SPECIFICATION_RELEASE_VERSION, this.checker.getSarlSpecificationVersion(Type4.class), 0f);
-		assertEquals(10000000f, this.checker.getSarlSpecificationVersion(Type5.class), 0f);
+	public void getSarlSpecificationVersionObject() {
+		assertNull(this.checker.getSarlSpecificationVersionObject(Type1.class));
+		assertNull(this.checker.getSarlSpecificationVersionObject(Type2.class));
+		assertEquals(Version.parseVersion("0.1"), this.checker.getSarlSpecificationVersionObject(Type3.class));
+		assertEquals(Version.parseVersion("0.1.0"), this.checker.getSarlSpecificationVersionObject(Type3.class));
+		assertEquals(Version.parseVersion(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING), this.checker.getSarlSpecificationVersionObject(Type4.class));
+		assertEquals(Version.parseVersion("10000000"), this.checker.getSarlSpecificationVersionObject(Type5.class));
+		assertEquals(Version.parseVersion("10000000.0"), this.checker.getSarlSpecificationVersionObject(Type5.class));
+		assertEquals(Version.parseVersion("10000000.0.0"), this.checker.getSarlSpecificationVersionObject(Type5.class));
+		assertEquals(Version.parseVersion("0.10"), this.checker.getSarlSpecificationVersionObject(Type6.class));
+		assertEquals(Version.parseVersion("0.10.0"), this.checker.getSarlSpecificationVersionObject(Type6.class));
 	}
 
 	@Test
@@ -107,6 +113,11 @@ public class StandardSarlSpecificationCheckerTest {
 	@SarlSpecification("10000000.0")
 	public static class Type5 {
 		// Greater SARL specification marker
+	}
+
+	@SarlSpecification("0.10")
+	public static class Type6 {
+		// Leading zero
 	}
 
 }

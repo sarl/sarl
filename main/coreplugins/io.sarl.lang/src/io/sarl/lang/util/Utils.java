@@ -1076,8 +1076,19 @@ public final class Utils {
 	 *     Otherwise <code>false</code>.
 	 */
 	public static boolean isCompatibleJREVersion(String version) {
-		return version != null && !version.isEmpty()
-				&& compareVersions(version, SARLVersion.MINIMAL_JDK_VERSION) >= 0;
+		if (version != null && !version.isEmpty()) {
+			final Version current = Version.parseVersion(version);
+			if (current != null) {
+				final Version minJdk = Version.parseVersion(SARLVersion.MINIMAL_JDK_VERSION);
+				assert minJdk != null;
+				if (current.compareTo(minJdk) >= 0) {
+					final Version maxJdk = Version.parseVersion(SARLVersion.MAXIMAL_JDK_VERSION);
+					assert maxJdk != null;
+					return current.compareTo(maxJdk) <= 0;
+				}
+			}
+		}
+		return false;
 	}
 
 	/** Check if a version of the current JRE is compatible with the SARL library.

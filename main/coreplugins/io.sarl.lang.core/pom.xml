@@ -62,6 +62,10 @@
 									<value>${compiler.level}</value>
 								</replacement>
 								<replacement>
+									<token>@maximaljdkversion@</token>
+									<value>${compiler.level.max}</value>
+								</replacement>
+								<replacement>
 									<token>@minimalxtextversion@</token>
 									<value>${xtext.version.current}</value>
 								</replacement>

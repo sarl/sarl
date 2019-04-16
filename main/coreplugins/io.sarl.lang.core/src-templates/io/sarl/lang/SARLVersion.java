@@ -95,6 +95,12 @@ public final class SARLVersion {
 	 */
 	public static final String MINIMAL_JDK_VERSION = "@minimaljdkversion@"; //$NON-NLS-1$
 
+	/** The maximal JDK version to use SARL features.
+	 *
+	 * @since 0.10
+	 */
+	public static final String MAXIMAL_JDK_VERSION = "@maximaljdkversion@"; //$NON-NLS-1$
+
 	/** The minimal Xtext version to use SARL features.
 	 */
 	public static final String MINIMAL_XTEXT_VERSION = "@minimalxtextversion@"; //$NON-NLS-1$

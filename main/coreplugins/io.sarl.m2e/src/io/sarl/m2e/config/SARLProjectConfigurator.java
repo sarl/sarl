@@ -381,7 +381,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		classpath.addEntry(entry);
 	}
 
-	private static void setVersion(Properties props, String propName, String value, String minValue) {
+	private static void setVersion(Properties props, String propName, String value, String minValue, String maxValue) {
 		final String currentVersion = props.getProperty(propName);
 		String newVersion = value;
 
@@ -391,6 +391,8 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 
 		if (M2EUtilities.compareOsgiVersions(newVersion, minValue) < 0) {
 			props.setProperty(propName, minValue);
+		} else if (M2EUtilities.compareOsgiVersions(newVersion, maxValue) > 0) {
+			props.setProperty(propName, maxValue);
 		} else {
 			props.setProperty(propName, newVersion);
 		}
@@ -399,9 +401,9 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	private static void forceMavenCompilerConfiguration(IMavenProjectFacade facade, SARLConfiguration config) {
 		final Properties props = facade.getMavenProject().getProperties();
 		setVersion(props, "maven.compiler.source", config.getInputCompliance(), //$NON-NLS-1$
-				SARLVersion.MINIMAL_JDK_VERSION);
+				SARLVersion.MINIMAL_JDK_VERSION, SARLVersion.MAXIMAL_JDK_VERSION);
 		setVersion(props, "maven.compiler.target", config.getOutputCompliance(), //$NON-NLS-1$
-				SARLVersion.MINIMAL_JDK_VERSION);
+				SARLVersion.MINIMAL_JDK_VERSION, SARLVersion.MAXIMAL_JDK_VERSION);
 		final String encoding = config.getEncoding();
 		if (encoding != null && !encoding.isEmpty()) {
 			props.setProperty("maven.compiler.encoding", encoding); //$NON-NLS-1$

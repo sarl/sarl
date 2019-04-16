@@ -42,7 +42,6 @@ import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Pair;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
-import io.sarl.lang.SARLVersion;
 import io.sarl.lang.compiler.GeneratorConfig2;
 import io.sarl.lang.compiler.IGeneratorConfigProvider2;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
@@ -413,8 +412,7 @@ abstract class GenerationContext {
 	 * @return <code>true</code> if the compiler uses Java8 or higher. Otherwise <code>false</code>.
 	 */
 	public boolean isAtLeastJava8() {
-		final JavaVersion javaVersion = JavaVersion.fromQualifier(SARLVersion.MINIMAL_JDK_VERSION);
-		return javaVersion != null && getGeneratorConfig().getJavaSourceVersion().isAtLeast(javaVersion);
+		return getGeneratorConfig().getJavaSourceVersion().isAtLeast(JavaVersion.JAVA8);
 	}
 
 }

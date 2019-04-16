@@ -601,22 +601,22 @@ public class SARLValidator extends AbstractSARLValidator {
 					MessageFormat.format(
 							Messages.SARLValidator_3,
 							System.getProperty("java.specification.version"), //$NON-NLS-1$
-							SARLVersion.MINIMAL_JDK_VERSION),
+							SARLVersion.MINIMAL_JDK_VERSION,
+							SARLVersion.MAXIMAL_JDK_VERSION),
 					sarlScript,
 					XtendPackage.Literals.XTEND_FILE__PACKAGE,
 					JDK_NOT_ON_CLASSPATH);
 		} else {
 			final GeneratorConfig generatorConfiguration = getGeneratorConfig(sarlScript);
-			final JavaVersion javaVersion = JavaVersion.fromQualifier(SARLVersion.MINIMAL_JDK_VERSION);
 			final JavaVersion generatorVersion = generatorConfiguration.getJavaSourceVersion();
 			if (generatorVersion == null
-					|| javaVersion == null
-					|| !generatorVersion.isAtLeast(javaVersion)) {
+					|| !Utils.isCompatibleJREVersion(generatorVersion.getQualifier())) {
 				error(
 						MessageFormat.format(
 								Messages.SARLValidator_4,
 								generatorVersion,
-								SARLVersion.MINIMAL_JDK_VERSION),
+								SARLVersion.MINIMAL_JDK_VERSION,
+								SARLVersion.MAXIMAL_JDK_VERSION),
 						sarlScript,
 						XtendPackage.Literals.XTEND_FILE__PACKAGE,
 						JDK_NOT_ON_CLASSPATH);

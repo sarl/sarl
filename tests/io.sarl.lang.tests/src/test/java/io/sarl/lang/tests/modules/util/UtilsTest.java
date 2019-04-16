@@ -232,10 +232,11 @@ public class UtilsTest extends AbstractSarlTest {
 		assertFalse(Utils.isCompatibleJREVersion("1.6"));
 		assertFalse(Utils.isCompatibleJREVersion("1.7"));
 		assertTrue(Utils.isCompatibleJREVersion("1.8"));
-		assertTrue(Utils.isCompatibleJREVersion("1.9"));
-		assertTrue(Utils.isCompatibleJREVersion("9"));
-		assertTrue(Utils.isCompatibleJREVersion("10"));
-		assertTrue(Utils.isCompatibleJREVersion("11"));
+		assertFalse(Utils.isCompatibleJREVersion("1.8.1"));
+		assertFalse(Utils.isCompatibleJREVersion("1.9"));
+		assertFalse(Utils.isCompatibleJREVersion("9"));
+		assertFalse(Utils.isCompatibleJREVersion("10"));
+		assertFalse(Utils.isCompatibleJREVersion("11"));
 	}
 
 	@Test

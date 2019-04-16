@@ -46,7 +46,6 @@ import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.PlatformUI;
-import org.osgi.framework.Version;
 
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
@@ -59,6 +58,7 @@ import io.sarl.eclipse.runtime.ProjectSREProviderFactory;
 import io.sarl.eclipse.runtime.SARLRuntime;
 import io.sarl.eclipse.runtime.SREConfigurationBlock;
 import io.sarl.lang.SARLVersion;
+import io.sarl.lang.util.Utils;
 
 /**
  * Configuration tab for the JRE and the SARL runtime environment.
@@ -256,14 +256,13 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 						Messages.RuntimeEnvironmentTab_3, install.getName()));
 				return false;
 			}
-			final Version jreVersion = Version.parseVersion(version);
-			final Version minVersion = Version.parseVersion(SARLVersion.MINIMAL_JDK_VERSION);
-			if (jreVersion.compareTo(minVersion) < 0) {
+			if (!Utils.isCompatibleJREVersion(version)) {
 				setErrorMessage(MessageFormat.format(
 						Messages.RuntimeEnvironmentTab_4,
 						install.getName(),
 						version,
-						SARLVersion.MINIMAL_JDK_VERSION));
+						SARLVersion.MINIMAL_JDK_VERSION,
+						SARLVersion.MAXIMAL_JDK_VERSION));
 				return false;
 			}
 		}

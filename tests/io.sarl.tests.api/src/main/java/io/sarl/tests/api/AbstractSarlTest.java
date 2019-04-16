@@ -265,6 +265,10 @@ public abstract class AbstractSarlTest extends Assert {
 			if (!cVersion.isAtLeast(mVersion)) {
 				throw new Error("You must use JDK " + SARLVersion.MINIMAL_JDK_VERSION + " for running the tests.");
 			}
+			final JavaVersion xVersion = JavaVersion.fromQualifier(SARLVersion.MAXIMAL_JDK_VERSION);
+			if (!mVersion.isAtLeast(cVersion)) {
+				throw new Error("You must use JDK not higher that " + SARLVersion.MAXIMAL_JDK_VERSION + " for running the tests.");
+			}
 			//
 			if (isMockable()) {
 				MockitoAnnotations.initMocks(AbstractSarlTest.this);
