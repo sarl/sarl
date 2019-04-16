@@ -38,7 +38,10 @@ public final class SARLVersion {
 	 *
 	 * <p>The version number is usually composed of two digits that
 	 * represent the version of the SARL specification and tools.
+	 *
+	 * @deprecated since 0.10, see #SPECIFICATION_RELEASE_VERSION_STRING
 	 */
+	@Deprecated
 	public static final float SPECIFICATION_RELEASE_VERSION = (float) (@sarlspecificationreleaseversion@);
 
 	/** Version number of the SARL specification.
@@ -50,7 +53,7 @@ public final class SARLVersion {
 
 	/** The version number of the current release of the SARL library.
 	 *
-	 * <p>Usually, the two first digits are the same as the ones of {@link #SPECIFICATION_RELEASE_VERSION}.
+	 * <p>Usually, the two first digits are the same as the ones of {@link #SPECIFICATION_RELEASE_VERSION_STRING}.
 	 *
 	 * @see #SARL_RELEASE_VERSION_OSGI
 	 * @see #SARL_RELEASE_VERSION_MAVEN
@@ -59,7 +62,7 @@ public final class SARLVersion {
 
 	/** The version number in OSGI format of the current release of the SARL library.
 	 *
-	 * <p>Usually, the two first digits are the same as the ones of {@link #SPECIFICATION_RELEASE_VERSION}.
+	 * <p>Usually, the two first digits are the same as the ones of {@link #SPECIFICATION_RELEASE_VERSION_STRING}.
 	 *
 	 * @see #SARL_RELEASE_VERSION
 	 * @see #SARL_RELEASE_VERSION_MAVEN
@@ -68,7 +71,7 @@ public final class SARLVersion {
 
 	/** The version number in Maven format of the current release of the SARL library.
 	 *
-	 * <p>Usually, the two first digits are the same as the ones of {@link #SPECIFICATION_RELEASE_VERSION}.
+	 * <p>Usually, the two first digits are the same as the ones of {@link #SPECIFICATION_RELEASE_VERSION_STRING}.
 	 *
 	 * @see #SARL_RELEASE_VERSION
 	 * @see #SARL_RELEASE_VERSION_OSGI

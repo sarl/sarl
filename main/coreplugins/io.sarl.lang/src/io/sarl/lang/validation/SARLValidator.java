@@ -680,7 +680,7 @@ public class SARLValidator extends AbstractSARLValidator {
 		} else if (!Utils.isCompatibleSARLLibraryVersion(sarlLibraryVersion.get())) {
 			error(
 					MessageFormat.format(Messages.SARLValidator_8,
-							sarlLibraryVersion.get(), SARLVersion.SPECIFICATION_RELEASE_VERSION),
+							sarlLibraryVersion.get(), SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING),
 					sarlScript,
 					XtendPackage.Literals.XTEND_FILE__PACKAGE,
 					INVALID_SARL_LIB_ON_CLASSPATH);

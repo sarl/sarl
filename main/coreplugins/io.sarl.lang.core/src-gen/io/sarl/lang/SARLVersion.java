@@ -38,42 +38,45 @@ public final class SARLVersion {
 	 *
 	 * <p>The version number is usually composed of two digits that
 	 * represent the version of the SARL specification and tools.
+	 *
+	 * @deprecated since 0.10, see #SPECIFICATION_RELEASE_VERSION_STRING
 	 */
-	public static final float SPECIFICATION_RELEASE_VERSION = (float) (0.9);
+	@Deprecated
+	public static final float SPECIFICATION_RELEASE_VERSION = (float) (0.10);
 
 	/** Version number of the SARL specification.
 	 *
 	 * <p>The version number is usually composed of two digits that
 	 * represent the version of the SARL specification and tools.
 	 */
-	public static final String SPECIFICATION_RELEASE_VERSION_STRING = "0.9"; //$NON-NLS-1$
+	public static final String SPECIFICATION_RELEASE_VERSION_STRING = "0.10"; //$NON-NLS-1$
 
 	/** The version number of the current release of the SARL library.
 	 *
-	 * <p>Usually, the two first digits are the same as the ones of {@link #SPECIFICATION_RELEASE_VERSION}.
+	 * <p>Usually, the two first digits are the same as the ones of {@link #SPECIFICATION_RELEASE_VERSION_STRING}.
 	 *
 	 * @see #SARL_RELEASE_VERSION_OSGI
 	 * @see #SARL_RELEASE_VERSION_MAVEN
 	 */
-	public static final String SARL_RELEASE_VERSION = "0.9.0"; //$NON-NLS-1$
+	public static final String SARL_RELEASE_VERSION = "0.10.0"; //$NON-NLS-1$
 
 	/** The version number in OSGI format of the current release of the SARL library.
 	 *
-	 * <p>Usually, the two first digits are the same as the ones of {@link #SPECIFICATION_RELEASE_VERSION}.
+	 * <p>Usually, the two first digits are the same as the ones of {@link #SPECIFICATION_RELEASE_VERSION_STRING}.
 	 *
 	 * @see #SARL_RELEASE_VERSION
 	 * @see #SARL_RELEASE_VERSION_MAVEN
 	 */
-	public static final String SARL_RELEASE_VERSION_OSGI = "0.9.0.qualifier"; //$NON-NLS-1$
+	public static final String SARL_RELEASE_VERSION_OSGI = "0.10.0.qualifier"; //$NON-NLS-1$
 
 	/** The version number in Maven format of the current release of the SARL library.
 	 *
-	 * <p>Usually, the two first digits are the same as the ones of {@link #SPECIFICATION_RELEASE_VERSION}.
+	 * <p>Usually, the two first digits are the same as the ones of {@link #SPECIFICATION_RELEASE_VERSION_STRING}.
 	 *
 	 * @see #SARL_RELEASE_VERSION
 	 * @see #SARL_RELEASE_VERSION_OSGI
 	 */
-	public static final String SARL_RELEASE_VERSION_MAVEN = "0.9.0-SNAPSHOT"; //$NON-NLS-1$
+	public static final String SARL_RELEASE_VERSION_MAVEN = "0.10.0-SNAPSHOT"; //$NON-NLS-1$
 
 	/** The status of the SARL specification.
 	 *

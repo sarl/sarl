@@ -42,25 +42,32 @@ interface SarlSpecificationChecker {
 	 * @return The SARL specification version. The version is a floating-point number, as for
 	 *     {@link SARLVersion#SPECIFICATION_RELEASE_VERSION}. The value {@link Float#NaN} is replied
 	 *     if the given type has no marker related to the SARL specification version.
+	 * @deprecated since 0.10, see #getSarlSpecificationVersionObject(Class)
 	 */
+	@Deprecated
 	def getSarlSpecificationVersion(type : Class<?>) : float {
+		throw new UnsupportedOperationException
+	}
+
+	/** Replies the supported SARL specification version of the given type.
+	 *
+	 * @param type the type from which the SARL specification version should be extracted.
+	 * @return The SARL specification version. The version is a {@code Version}, as for
+	 *     {@link SARLVersion#SPECIFICATION_RELEASE_VERSION_STRING}. The value {@code null} is replied
+	 *     if the given type has no marker related to the SARL specification version.
+	 */
+	def getSarlSpecificationVersionObject(type : Class<?>) : Version {
 		if (type !== null) {
 			var annotationInstance = type.getAnnotation(typeof(SarlSpecification))
 			if (annotationInstance !== null) {
 				val versionString = annotationInstance.value
 				val version = Version::parseVersion(versionString)
 				if (Version::emptyVersion != version) {
-					var minor = version.minor
-					var factor = 1f
-					while (minor > 0) {
-						factor *= 10
-						minor /= 10
-					}
-					return version.major + version.minor / factor
+					return version
 				}
 			}
 		}
-		return Float::NaN
+		return null
 	}
 
 	/** Compare the SARL specification version associated to the given type to the version of the
@@ -72,7 +79,7 @@ interface SarlSpecificationChecker {
 	 *     than the version of the current SARL.
 	 */
 	def compareToSarlSpecificationVersion(type : Class<?>) : int {
-		type.sarlSpecificationVersion <=> SARLVersion::SPECIFICATION_RELEASE_VERSION
+		type.sarlSpecificationVersionObject <=> Version::parseVersion(SARLVersion::SPECIFICATION_RELEASE_VERSION_STRING)
 	}
 
 	/** Replies if the given type is a SARL element that is following the specification of the current SARL version.
@@ -82,7 +89,7 @@ interface SarlSpecificationChecker {
 	 */
 	def isValidSarlElement(type : Class<?>) : boolean {
 		// TODO: Unless we have reach the version 1.0, all the versions are incompatible.
-		type.sarlSpecificationVersion == SARLVersion::SPECIFICATION_RELEASE_VERSION
+		type.sarlSpecificationVersionObject.toString == SARLVersion::SPECIFICATION_RELEASE_VERSION_STRING
 	}
 
 }

@@ -26,15 +26,12 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.BitSet;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeMap;
@@ -157,8 +154,6 @@ public final class Utils {
 	private static final String SARL_PACKAGE_PREFIX;
 
 	private static final String SARL_VERSION_FIELD_NAME_STR = "SPECIFICATION_RELEASE_VERSION_STRING"; //$NON-NLS-1$
-
-	private static final String SARL_VERSION_FIELD_NAME_FLOAT = "SPECIFICATION_RELEASE_VERSION"; //$NON-NLS-1$
 
 	private static boolean checkSarlVersionClass = true;
 
@@ -1065,7 +1060,13 @@ public final class Utils {
 	 *     Otherwise <code>false</code>.
 	 */
 	public static boolean isCompatibleSARLLibraryVersion(String version) {
-		return org.eclipse.xtext.util.Strings.equal(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING, version);
+		if (version != null) {
+			final Version currentVersion = Version.parseVersion(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING);
+			final Version paramVersion = Version.parseVersion(version);
+			return currentVersion.getMajor() == paramVersion.getMajor()
+					&& currentVersion.getMinor() == paramVersion.getMinor();
+		}
+		return false;
 	}
 
 	/** Check if a version of the JRE is compatible with the SARL library.
@@ -1144,13 +1145,12 @@ public final class Utils {
 		if (checkSarlVersionClass) {
 			checkSarlVersionClass = false;
 			try {
-				SARLVersion.class.getDeclaredField(SARL_VERSION_FIELD_NAME_STR);
-			} catch (Exception e) {
-				try {
-					SARLVersion.class.getDeclaredField(SARL_VERSION_FIELD_NAME_FLOAT);
-				} catch (Exception ex) {
+				final Object v = SARLVersion.class.getDeclaredField(SARL_VERSION_FIELD_NAME_STR);
+				if (v == null) {
 					return SarlLibraryErrorCode.INVALID_SARL_VERSION_BYTECODE;
 				}
+			} catch (Throwable e) {
+				return SarlLibraryErrorCode.INVALID_SARL_VERSION_BYTECODE;
 			}
 		}
 		final JvmType type;
@@ -1167,27 +1167,17 @@ public final class Utils {
 		}
 		final JvmDeclaredType sarlVersionType = (JvmDeclaredType) type;
 		JvmField versionField = null;
-		boolean isString = true;
 		final Iterator<JvmField> iterator = sarlVersionType.getDeclaredFields().iterator();
 		while (versionField == null && iterator.hasNext()) {
 			final JvmField field = iterator.next();
 			if (SARL_VERSION_FIELD_NAME_STR.equals(field.getSimpleName())) {
 				versionField = field;
-			} else if (SARL_VERSION_FIELD_NAME_FLOAT.equals(field.getSimpleName())) {
-				versionField = field;
-				isString = false;
 			}
 		}
 		if (versionField == null) {
 			return SarlLibraryErrorCode.NO_SARL_VERSION_FIELD;
 		}
-		final String value;
-		if (isString) {
-			value = versionField.getConstantValueAsString();
-		} else {
-			final DecimalFormat format = new DecimalFormat("0.0", DecimalFormatSymbols.getInstance(Locale.US)); //$NON-NLS-1$
-			value = format.format(versionField.getConstantValueAsFloat());
-		}
+		final String value = versionField.getConstantValueAsString();
 		if (Strings.isNullOrEmpty(value)) {
 			return SarlLibraryErrorCode.NO_SARL_VERSION_VALUE;
 		}
