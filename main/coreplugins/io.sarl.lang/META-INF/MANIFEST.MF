@@ -2,12 +2,12 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-Vendor: %Bundle-Vendor
-Bundle-Version: 0.9.0.qualifier
+Bundle-Version: 0.10.0.qualifier
 Bundle-SymbolicName: io.sarl.lang; singleton:=true
 Automatic-Module-Name: io.sarl.lang
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: io.sarl.lang.core;bundle-version="0.9.0";visibility:=reexport,
+Require-Bundle: io.sarl.lang.core;bundle-version="0.10.0";visibility:=reexport,
  org.eclipse.xtend.core;bundle-version="2.17.1",
  org.eclipse.xtext;bundle-version="2.17.1",
  org.eclipse.xtext.xbase;bundle-version="2.17.1",
@@ -52,6 +52,7 @@ Export-Package: io.sarl.lang,
  io.sarl.lang.serializer,
  io.sarl.lang.services,
  io.sarl.lang.typesystem,
+ io.sarl.lang.typesystem.cast,
  io.sarl.lang.util,
  io.sarl.lang.validation
 Import-Package: org.apache.log4j,

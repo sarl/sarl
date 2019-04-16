@@ -72,7 +72,7 @@ A typical command-line to launch is:
 
 ```
 javadoc [:docletoption](-doclet) io.sarl.docs.doclet.SarlDoclet
-        [:cpoption](-cp) [:docletjarfile](doclet-0.9.0-SNAPSHOT.jar):path_to_sources
+        [:cpoption](-cp) [:docletjarfile](doclet-[:sarl.specification.release_version!].jar):path_to_sources
         -source 1.8
         -sourcepath path_to_sources
         -d path_to_documentation
