@@ -1,0 +1,284 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2019 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sarldoc.configs.subconfigs;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.common.base.Strings;
+import io.bootique.annotation.BQConfig;
+import io.bootique.annotation.BQConfigProperty;
+import org.apache.commons.lang3.SystemUtils;
+import org.arakhne.afc.vmutil.FileSystem;
+import org.arakhne.afc.vmutil.OperatingSystem;
+
+import io.sarl.docs.doclet.SarlDoclet;
+import io.sarl.lang.sarlc.configs.SarlConfig;
+
+/**
+ * Configuration for the SARL API documentation generator.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.10
+ */
+@BQConfig("Configuration of sarldoc")
+public class SarldocConfig {
+
+	/**
+	 * Prefix for the configuration entries of the path modules.
+	 */
+	public static final String PREFIX = SarlConfig.PREFIX + ".sarldoc"; //$NON-NLS-1$
+
+	/**
+	 * Name of the property that contains the path to the javadoc executable.
+	 */
+	public static final String JAVADOC_EXECUTABLE_NAME = PREFIX + ".javadocExecutable"; //$NON-NLS-1$
+
+	/**
+	 * Name of the property that contains the minimum amount of memory to allocate to the JVM.
+	 */
+	public static final String MINIMUM_MEMORY_NAME = PREFIX + ".minMemory"; //$NON-NLS-1$
+
+	/**
+	 * Name of the property that contains the maximum amount of memory to allocate to the JVM.
+	 */
+	public static final String MAXIMUM_MEMORY_NAME = PREFIX + ".maxMemory"; //$NON-NLS-1$
+
+	/**
+	 * Name of the property that contains the proxy definitions.
+	 */
+	public static final String PROXY_NAME = PREFIX + ".proxy"; //$NON-NLS-1$
+
+	/**
+	 * Name of the property that contains the proxy definitions.
+	 */
+	public static final String DOCLET_NAME = PREFIX + ".doclet"; //$NON-NLS-1$
+
+	/**
+	 * Default doclet.
+	 */
+	public static final String DOCLET_VALUE = SarlDoclet.class.getName();
+
+	/**
+	 * Name of the property that contains additional JOptions.
+	 */
+	public static final String JOPTIONS_NAME = PREFIX + ".joption"; //$NON-NLS-1$
+
+	private static final String BIN_FOLDER = "bin"; //$NON-NLS-1$
+
+	private static final String JAVADOC_BIN_WIN = "javadoc.exe"; //$NON-NLS-1$
+
+	private static final String JAVADOC_BIN_UNIX = "javadoc"; //$NON-NLS-1$
+
+	private static final String JAVA_HOME_PROPERTY_NAME = "JAVA_HOME"; //$NON-NLS-1$
+
+	private String javadocExecutable;
+
+	private String minMemory;
+
+	private String maxMemory;
+
+	private List<String> proxy;
+
+	private List<String> joption;
+
+	private String doclet;
+
+	/** Replies the path to the executable of javadoc.
+	 *
+	 * @return the path to javadoc.
+	 */
+	public String getJavadocExecutable() {
+		if (this.javadocExecutable == null) {
+			this.javadocExecutable = findJavadocExecutable();
+		}
+		return this.javadocExecutable;
+	}
+
+	/** Change the path to the javadoc executable.
+	 *
+	 * @param javadocExecutable the path.
+	 */
+	@BQConfigProperty("Specify the path to the executable of Javadoc. If it is not specified, the value will "
+			+ "be inferred from the current installation of the Java environment.")
+	public void setJavadocExecutable(String javadocExecutable) {
+		this.javadocExecutable = javadocExecutable;
+	}
+
+	/**
+	 * Get the path of the Javadoc tool executable depending the user entry or try to find it depending the OS
+	 * or the <code>java.home</code> system property or the <code>JAVA_HOME</code> environment variable.
+	 *
+	 * <p>This function is copied from the {@code maven-javadoc-plugin}.
+	 *
+	 * @return the path of the Javadoc tool.
+	 */
+	public static String findJavadocExecutable() {
+		final String javadocCommand;
+		if (OperatingSystem.getCurrentOS() == OperatingSystem.WIN) {
+			javadocCommand = JAVADOC_BIN_WIN;
+		} else {
+			javadocCommand = JAVADOC_BIN_UNIX;
+		}
+
+		// ----------------------------------------------------------------------
+		// Try to find javadocExe from System.getProperty( "java.home" )
+		// By default, System.getProperty( "java.home" ) = JRE_HOME and JRE_HOME
+		// should be in the JDK_HOME
+		// ----------------------------------------------------------------------
+		File javadocExe = FileSystem.join(SystemUtils.getJavaHome(), FileSystem.PARENT_DIRECTORY, BIN_FOLDER, javadocCommand);
+
+		// ----------------------------------------------------------------------
+		// Try to find javadocExe from JAVA_HOME environment variable
+		// ----------------------------------------------------------------------
+		if (!javadocExe.exists() || !javadocExe.isFile()) {
+			final String javaHome = SystemUtils.getEnvironmentVariable(JAVA_HOME_PROPERTY_NAME, null);
+			if (Strings.isNullOrEmpty(javaHome)) {
+				throw new RuntimeException(Messages.SarldocConfig_0);
+			}
+			try {
+				final File javaHomeDirectory = FileSystem.convertStringToFile(javaHome).getCanonicalFile();
+				if (!javaHomeDirectory.exists() || javaHomeDirectory.isFile()) {
+					throw new RuntimeException(MessageFormat.format(Messages.SarldocConfig_1, javaHome));
+				}
+
+				javadocExe = FileSystem.join(javaHomeDirectory, BIN_FOLDER, javadocCommand);
+			} catch (IOException exception) {
+				throw new RuntimeException(exception);
+			}
+		}
+
+		try {
+			final File javadocExeCanon = javadocExe.getCanonicalFile();
+			if (!javadocExeCanon.exists() || !javadocExeCanon.isFile()) {
+				throw new RuntimeException(MessageFormat.format(Messages.SarldocConfig_2, javadocExe));
+			}
+		} catch (IOException exception) {
+			throw new RuntimeException(exception);
+		}
+		return javadocExe.getAbsolutePath();
+	}
+
+	/** Replies the minimum amount of memory to allocate to the JVM.
+	 *
+	 * @return the minimum amount of memory.
+	 */
+	public String getMinMemory() {
+		return this.minMemory;
+	}
+
+	/** Change the minimum amount of memory to allocate to the JVM.
+	 *
+	 * @param memory the minimum amount of memory to allocate to the JVM.
+	 */
+	@BQConfigProperty("Specify the minimum amount of memory to allocate to the JVM. If it is not specified, "
+			+ "the default JVM value is used.")
+	public void setMinMemory(String memory) {
+		this.minMemory = memory;
+	}
+
+	/** Replies the maximum amount of memory to allocate to the JVM.
+	 *
+	 * @return the maximum amount of memory.
+	 */
+	public String getMaxMemory() {
+		return this.maxMemory;
+	}
+
+	/** Change the maximum amount of memory to allocate to the JVM.
+	 *
+	 * @param memory the maximum amount of memory to allocate to the JVM.
+	 */
+	@BQConfigProperty("Specify the maximum amount of memory to allocate to the JVM. If it is not specified, "
+			+ "the default JVM value is used.")
+	public void setMaxMemory(String memory) {
+		this.maxMemory = memory;
+	}
+
+	/** Replies the proxy definitions.
+	 *
+	 * @return the proxy definitions.
+	 */
+	public List<String> getProxy() {
+		if (this.proxy == null) {
+			this.proxy = new ArrayList<>();
+		}
+		return this.proxy;
+	}
+
+	/** Change the proxy definitions.
+	 *
+	 * @param proxy the proxy defintiions.
+	 */
+	@BQConfigProperty("Specify the network proxies.")
+	public void setProxy(List<String> proxy) {
+		this.proxy = proxy;
+	}
+
+	/** Replies the additional JOptions.
+	 *
+	 * @return the additional JOptions.
+	 */
+	public List<String> getJOption() {
+		if (this.joption == null) {
+			this.joption = new ArrayList<>();
+		}
+		return this.joption;
+	}
+
+	/** Change the additional JOptions.
+	 *
+	 * @param options the additional JOptions.
+	 */
+	@BQConfigProperty("Specify the additional JOptions.")
+	public void setJOptions(List<String> options) {
+		this.joption = options;
+	}
+
+	/** Replies the doclet.
+	 *
+	 * @return the classname of the doclet.
+	 */
+	public String getDoclet() {
+		if (Strings.isNullOrEmpty(this.doclet)) {
+			this.doclet = DOCLET_VALUE;
+		}
+		return this.doclet;
+	}
+
+	/** Change the doclet.
+	 *
+	 * @param doclet the classname of the doclet.
+	 */
+	@BQConfigProperty("Specify the class name of the doclet to use. If it is not specified, "
+			+ "the default SARL doclet is used.")
+	public void setDoclet(String doclet) {
+		this.doclet = doclet;
+	}
+
+}
