@@ -383,6 +383,7 @@ of your SARL Run-time Environment, such as [Janus](../tools/Janus.md).
 ### Equality and identity comparison (`==`, `===`, `!=`, `!==`) in SARL and checking for null: same as Java?
 
 The mapping of the operator from SARL to Java are:
+
 * `a === b` becomes `a == b`
 * `a !== b` becomes `a != b`
 * `a == b` becomes `a == null ? (b == null) : a.equals(b)`
@@ -401,8 +402,7 @@ Usually, the SARL compiler generates a warning to push you to use `===` in place
 But with `null == value`, an ambiguous call error occurs before the warning is generated.
 In fact, the SARL compiler tries to find an overloading function for the `==` operator.
 Since `null` has not a specific type, the SARL compiler find multiple overloading functions.
-Check the [documentation](http://www.sarl.io/docs/official/reference/general/Operators.html#3-comparison-operators) 
-for details on the overloading mechanism of SARL.
+Check the [documentation](http://www.sarl.io/docs/official/reference/general/Operators.html#3-comparison-operators) for details on the overloading mechanism of SARL.
 
 
 ### How to return two values?
