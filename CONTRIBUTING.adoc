@@ -76,10 +76,10 @@ According to the link:https://github.com/lukaszlenart/launch4j-maven-plugin/issu
 For setting up the development environment, you should follow the steps:
 
 * Download the *Eclipse IDE for Java and DSL Developers* from https://eclipse.org/downloads/eclipse-packages/. This version of Eclipse includes the Java tools *and* the Xtext tools.
-** Version: `Oxygen`.
+** Version: `2019-03`.
 * Launch the *Eclipse IDE for Java and DSL Developers*, and configure it (look&feel, etc.)
 * Install the Checkstyle CS-Eclipse plugin.
-** Version: `8.0.0`.
+** Version: `8.18`.
 * Import the Eclipse preferences for SARL developers, which are stored into the `dev-tools` folder.
 * Import the SARL project: `Menu File > Import > Maven > Existing Maven Project`
 ** Select the folder in which you have cloned the SARL project (see Section 2.1);
