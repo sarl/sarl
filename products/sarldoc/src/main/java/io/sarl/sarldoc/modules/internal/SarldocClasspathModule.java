@@ -19,30 +19,26 @@
  * limitations under the License.
  */
 
-package io.sarl.sarldoc.commands;
+package io.sarl.sarldoc.modules.internal;
 
-import org.eclipse.osgi.util.NLS;
+import com.google.inject.AbstractModule;
 
-/** Messages for the SARL batch compiler.
+import io.sarl.lang.sarlc.tools.SARLBootClasspathProvider;
+import io.sarl.sarldoc.utils.DefaultSarldocBootClasspath;
+
+/** Module for providing the classpath for sarldoc.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @ExcludeFromApidoc
+ * @since 0.10
  */
-@SuppressWarnings("all")
-public class Messages extends NLS {
-	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
-	public static String SarldocCommand_0;
-	public static String SarldocCommand_1;
-	public static String SarldocCommand_2;
-	public static String SarldocCommand_3;
-	static {
-		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+public class SarldocClasspathModule extends AbstractModule {
+
+	@Override
+	protected void configure() {
+		bind(SARLBootClasspathProvider.class).to(DefaultSarldocBootClasspath.class);
 	}
 
-	private Messages() {
-	}
 }

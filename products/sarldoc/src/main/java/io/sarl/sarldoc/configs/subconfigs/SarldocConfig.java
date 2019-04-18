@@ -23,19 +23,26 @@ package io.sarl.sarldoc.configs.subconfigs;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import com.google.common.base.Strings;
 import io.bootique.annotation.BQConfig;
 import io.bootique.annotation.BQConfigProperty;
 import org.apache.commons.lang3.SystemUtils;
+import org.arakhne.afc.vmutil.ClasspathUtil;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.arakhne.afc.vmutil.OperatingSystem;
 
 import io.sarl.docs.doclet.SarlDoclet;
 import io.sarl.lang.sarlc.configs.SarlConfig;
+import io.sarl.sarldoc.utils.SystemPath;
 
 /**
  * Configuration for the SARL API documentation generator.
@@ -75,7 +82,7 @@ public class SarldocConfig {
 	public static final String PROXY_NAME = PREFIX + ".proxy"; //$NON-NLS-1$
 
 	/**
-	 * Name of the property that contains the proxy definitions.
+	 * Name of the property that contains the class name of the doclet.
 	 */
 	public static final String DOCLET_NAME = PREFIX + ".doclet"; //$NON-NLS-1$
 
@@ -85,9 +92,64 @@ public class SarldocConfig {
 	public static final String DOCLET_VALUE = SarlDoclet.class.getName();
 
 	/**
+	 * Name of the property that contains the class path for the doclet.
+	 */
+	public static final String DOCLET_PATH_NAME = PREFIX + ".docletPath"; //$NON-NLS-1$
+
+	/**
+	 * Name of the property that contains the destination folder for the generated HTML documentation.
+	 */
+	public static final String DOC_OUTPUT_DIRECTORY_NAME = PREFIX + ".outputDirectory"; //$NON-NLS-1$
+
+	/**
 	 * Name of the property that contains additional JOptions.
 	 */
 	public static final String JOPTIONS_NAME = PREFIX + ".joption"; //$NON-NLS-1$
+
+	/**
+	 * Name of the property that contains options to javadoc.
+	 */
+	public static final String JAVADOC_OPTION_NAME = PREFIX + ".javadocOption"; //$NON-NLS-1$
+
+	/**
+	 * Name of the property that indicates if {@code @version} should be included into the documentation.
+	 */
+	public static final String ENABLE_VERSION_TAG_NAME = PREFIX + ".enableVesionTag"; //$NON-NLS-1$
+
+	/**
+	 * Name of the property that indicates if {@code @author} should be included into the documentation.
+	 */
+	public static final String ENABLE_AUTHOR_TAG_NAME = PREFIX + ".enableAuthorTag"; //$NON-NLS-1$
+
+	/**
+	 * Name of the property that indicates if {@code @deprecated} should be included into the documentation.
+	 */
+	public static final String ENABLE_DEPRECATED_TAG_NAME = PREFIX + ".enableDeprecatedTag"; //$NON-NLS-1$
+
+	/**
+	 * Name of the property that indicates if {@code @since} should be included into the documentation.
+	 */
+	public static final String ENABLE_SINCE_TAG_NAME = PREFIX + ".enableSinceTag"; //$NON-NLS-1$
+
+	/**
+	 * Name of the property that is the title of the documentation.
+	 */
+	public static final String TITLE_NAME = PREFIX + ".title"; //$NON-NLS-1$
+
+	/**
+	 * Name of the property that indicates the visiblity of the elements to put into the documentation.
+	 */
+	public static final String VISIBILITY_NAME = PREFIX + ".visibility"; //$NON-NLS-1$
+
+	/**
+	 * Name of the property that contains the encoding of the documentation.
+	 */
+	public static final String ENCODING_NAME = PREFIX + ".encoding"; //$NON-NLS-1$
+
+	/**
+	 * Name of the property that contains the names of the excluded packages.
+	 */
+	public static final String EXCLUDED_PACKAGES_NAME = PREFIX + ".excludedPackages"; //$NON-NLS-1$
 
 	private static final String BIN_FOLDER = "bin"; //$NON-NLS-1$
 
@@ -107,7 +169,29 @@ public class SarldocConfig {
 
 	private List<String> joption;
 
+	private List<String> javadocOption;
+
 	private String doclet;
+
+	private String docletPath;
+
+	private File outputDirectory;
+
+	private boolean enableVesionTag = true;
+
+	private boolean enableAuthorTag = true;
+
+	private boolean enableDeprecatedTag = true;
+
+	private boolean enableSinceTag = true;
+
+	private String title;
+
+	private String encoding;
+
+	private Visibility visibility;
+
+	private Set<String> excludedPackages;
 
 	/** Replies the path to the executable of javadoc.
 	 *
@@ -260,6 +344,26 @@ public class SarldocConfig {
 		this.joption = options;
 	}
 
+	/** Replies the options to pass to Javadoc.
+	 *
+	 * @return the options to pass to Javadoc.
+	 */
+	public List<String> getJavadocOption() {
+		if (this.javadocOption == null) {
+			this.javadocOption = new ArrayList<>();
+		}
+		return this.javadocOption;
+	}
+
+	/** Change the options to pass to Javadoc.
+	 *
+	 * @param options the options to pass to Javadoc.
+	 */
+	@BQConfigProperty("Specify the command-line options to pass directly to Javadoc.")
+	public void setJavadocOptions(List<String> options) {
+		this.javadocOption = options;
+	}
+
 	/** Replies the doclet.
 	 *
 	 * @return the classname of the doclet.
@@ -275,10 +379,209 @@ public class SarldocConfig {
 	 *
 	 * @param doclet the classname of the doclet.
 	 */
-	@BQConfigProperty("Specify the class name of the doclet to use. If it is not specified, "
-			+ "the default SARL doclet is used.")
+	@BQConfigProperty("Specify the class name of the doclet to use. If it is not specified, the default SARL doclet is used.")
 	public void setDoclet(String doclet) {
 		this.doclet = doclet;
+	}
+
+	/** Replies the class path for the doclet.
+	 *
+	 * @return the class path for the doclet.
+	 */
+	public String getDocletPath() {
+		if (Strings.isNullOrEmpty(this.docletPath)) {
+			final SystemPath path = new SystemPath();
+			final Iterator<URL> iterator = ClasspathUtil.getClasspath();
+			while (iterator.hasNext()) {
+				final URL classpathEntry = iterator.next();
+				final File entry = FileSystem.convertURLToFile(classpathEntry);
+				path.add(entry);
+			}
+			this.docletPath = path.toString();
+		}
+		return this.docletPath;
+	}
+
+	/** Change the class path for the doclet.
+	 *
+	 * @param path the class path for the doclet.
+	 */
+	@BQConfigProperty("Specify the class path for the doclet. If it is not specified, the class path of this command is used.")
+	public void setDocletPath(String path) {
+		this.docletPath = path;
+	}
+
+	/** Replies the output directory for the generated HTML documentation.
+	 *
+	 * @return the output directory
+	 */
+	public File getOutputDirectory() {
+		if (this.outputDirectory == null) {
+			this.outputDirectory = FileSystem.join(new File("target"), "site", "apidocs"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+		}
+		return this.outputDirectory;
+	}
+
+	/** Change the output directory for the generated HTML documentation.
+	 *
+	 * @param outputDirectory the output directory.
+	 */
+	@BQConfigProperty("Specify the output folder into which the generated HTML documentation will be copied. "
+			+ "If it is not specified, the default sarldoc folder is used.")
+	public void setOutputDirectory(File outputDirectory) {
+		this.outputDirectory = outputDirectory;
+	}
+
+	/** Replies if {@code @version} should be included into the documentation.
+	 *
+	 * @return {@code true} if {@code @version} are included.
+	 */
+	public boolean getEnableVersionTag() {
+		return this.enableVesionTag;
+	}
+
+	/** Change the flag that indicates if {@code @version} should be included into the documentation.
+	 *
+	 * @param enable is {@code true} for enabling the {@code @version} tags.
+	 */
+	@BQConfigProperty("Specify if the @version tags are enabled into the documentation. "
+			+ "If it is not specified, the default is true.")
+	public void setEnableVersionTag(boolean enable) {
+		this.enableVesionTag = enable;
+	}
+
+	/** Replies if {@code @author} should be included into the documentation.
+	 *
+	 * @return {@code true} if {@code @author} are included.
+	 */
+	public boolean getEnableAuthorTag() {
+		return this.enableAuthorTag;
+	}
+
+	/** Change the flag that indicates if {@code @author} should be included into the documentation.
+	 *
+	 * @param enable is {@code true} for enabling the {@code @author} tags.
+	 */
+	@BQConfigProperty("Specify if the @author tags are enabled into the documentation. "
+			+ "If it is not specified, the default is true.")
+	public void setEnableAuthorTag(boolean enable) {
+		this.enableAuthorTag = enable;
+	}
+
+	/** Replies if {@code @deprecated} should be included into the documentation.
+	 *
+	 * @return {@code true} if {@code @deprecated} are included.
+	 */
+	public boolean getEnableDeprecatedTag() {
+		return this.enableDeprecatedTag;
+	}
+
+	/** Change the flag that indicates if {@code @deprecated} should be included into the documentation.
+	 *
+	 * @param enable is {@code true} for enabling the {@code @deprecated} tags.
+	 */
+	@BQConfigProperty("Specify if the @deprecated tags are enabled into the documentation. "
+			+ "If it is not specified, the default is true.")
+	public void setEnableDeprecatedTag(boolean enable) {
+		this.enableDeprecatedTag = enable;
+	}
+
+	/** Replies if {@code @since} should be included into the documentation.
+	 *
+	 * @return {@code true} if {@code @since} are included.
+	 */
+	public boolean getEnableSinceTag() {
+		return this.enableSinceTag;
+	}
+
+	/** Change the flag that indicates if {@code @since} should be included into the documentation.
+	 *
+	 * @param enable is {@code true} for enabling the {@code @since} tags.
+	 */
+	@BQConfigProperty("Specify if the @since tags are enabled into the documentation. "
+			+ "If it is not specified, the default is true.")
+	public void setEnableSinceTag(boolean enable) {
+		this.enableSinceTag = enable;
+	}
+
+	/** Replies the title of the documentation.
+	 *
+	 * @return the title.
+	 */
+	public String getTitle() {
+		return this.title;
+	}
+
+	/** Change the title of the documentation.
+	 *
+	 * @param title the title.
+	 */
+	@BQConfigProperty("Specify the title of the documentation.")
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	/** Replies the documentation encoding.
+	 *
+	 * @return the documentation encoding
+	 */
+	public String getEncoding() {
+		if (this.encoding == null) {
+			this.encoding = Charset.defaultCharset().displayName();
+		}
+		return this.encoding;
+	}
+
+	/** Change the documentation encoding.
+	 *
+	 * @param encoding the documentation encoding.
+	 */
+	@BQConfigProperty("Specify the character encoding of the documentation. If it is not specified, the value of "
+			+ "the system property \"file.encoding\" is used. If this system property was not set, the default "
+			+ "encoding is used (usually UTF-8).")
+	public void setFileEncoding(String encoding) {
+		this.encoding = encoding;
+	}
+
+	/** Replies the visibility of the elements to put into the documentation.
+	 *
+	 * @return the visibility.
+	 */
+	public Visibility getVisibility() {
+		if (this.visibility == null) {
+			this.visibility = Visibility.getDefault();
+		}
+		return this.visibility;
+	}
+
+	/** Change the visibility of the elements to appear into the documentation. 
+	 *
+	 * @param visibility the visibility.
+	 */
+	@BQConfigProperty("Specify the visibiltiy of the elements that should appear into the documentation. If it is "
+			+ "not specified, the protected visibility is assumed.")
+	public void setVisibility(Visibility visibility) {
+		this.visibility = visibility;
+	}
+
+	/** Replies the list of the excluded packages from the documentation.
+	 *
+	 * @return the excluded packages
+	 */
+	public Set<String> getExcludedPackages() {
+		if (this.excludedPackages == null) {
+			this.excludedPackages = new HashSet<>();
+		}
+		return this.excludedPackages;
+	}
+
+	/** Change the excluded packages.
+	 *
+	 * @param excludedPackages the excluded packages.
+	 */
+	@BQConfigProperty("Specify the list of the excluded packages.")
+	public void setExcludedPackages(Set<String> excludedPackages) {
+		this.excludedPackages= excludedPackages;
 	}
 
 }

@@ -39,6 +39,7 @@ public class Messages extends NLS {
 	public static String SarldocApplicationModule_1;
 	public static String SarldocApplicationModule_2;
 	public static String SarldocApplicationModuleProvider_0;
+	public static String SarldocClasspathModuleProvider_0;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

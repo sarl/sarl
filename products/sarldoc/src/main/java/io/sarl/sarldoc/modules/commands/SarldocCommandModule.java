@@ -31,6 +31,8 @@ import io.bootique.command.CommandManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.sarl.lang.sarlc.tools.PathDetector;
+import io.sarl.lang.sarlc.tools.SARLBootClasspathProvider;
 import io.sarl.sarldoc.commands.SarldocCommand;
 import io.sarl.sarldoc.configs.SarlConfig;
 
@@ -53,13 +55,16 @@ public class SarldocCommandModule extends AbstractModule {
 	 *
 	 * @param manager the provider of the manager of the commands.
 	 * @param config the provider of configuration.
+	 * @param defaultBootClasspath the provider of the default boot class path.
+	 * @param pathDetector the provider of path detector.
 	 * @return the command.
 	 */
 	@Provides
 	@Singleton
-	public SarldocCommand provideSarldocCommand(Provider<CommandManager> manager, Provider<SarlConfig> config) {
+	public SarldocCommand provideSarldocCommand(Provider<CommandManager> manager, Provider<SarlConfig> config,
+			Provider<SARLBootClasspathProvider> defaultBootClasspath, Provider<PathDetector> pathDetector) {
 		final Logger logger = LoggerFactory.getLogger(getClass());
-		return new SarldocCommand(manager, logger, config);
+		return new SarldocCommand(manager, logger, config, defaultBootClasspath, pathDetector);
 	}
 
 }

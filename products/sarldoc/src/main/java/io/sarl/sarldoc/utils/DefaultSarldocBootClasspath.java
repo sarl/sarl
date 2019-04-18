@@ -19,30 +19,37 @@
  * limitations under the License.
  */
 
-package io.sarl.sarldoc.commands;
+package io.sarl.sarldoc.utils;
 
-import org.eclipse.osgi.util.NLS;
+import java.io.File;
+import java.net.URL;
+import java.util.Iterator;
 
-/** Messages for the SARL batch compiler.
- *
+import org.arakhne.afc.vmutil.ClasspathUtil;
+import org.arakhne.afc.vmutil.FileSystem;
+
+import io.sarl.lang.sarlc.tools.SARLBootClasspathProvider;
+
+/** A provider of the boot classpath for the sarldoc tool. 
+ * 
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @ExcludeFromApidoc
+ * @since 0.10
  */
-@SuppressWarnings("all")
-public class Messages extends NLS {
-	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
-	public static String SarldocCommand_0;
-	public static String SarldocCommand_1;
-	public static String SarldocCommand_2;
-	public static String SarldocCommand_3;
-	static {
-		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+public class DefaultSarldocBootClasspath implements SARLBootClasspathProvider {
+
+	@Override
+	public String getClasspath() {
+		final SystemPath path = new SystemPath();
+		final Iterator<URL> iterator = ClasspathUtil.getClasspath();
+		while (iterator.hasNext()) {
+			final URL classpathEntry = iterator.next();
+			final File entry = FileSystem.convertURLToFile(classpathEntry);
+			path.add(entry);
+		}
+		return path.toString();
 	}
 
-	private Messages() {
-	}
 }

@@ -19,30 +19,35 @@
  * limitations under the License.
  */
 
-package io.sarl.sarldoc.commands;
+package io.sarl.sarldoc.modules.internal;
 
-import org.eclipse.osgi.util.NLS;
+import com.google.inject.Module;
+import io.bootique.BQModule;
+import io.bootique.BQModuleProvider;
 
-/** Messages for the SARL batch compiler.
+/** Provider of the module for the sarldoc classpath.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @ExcludeFromApidoc
+ * @since 0.10
  */
-@SuppressWarnings("all")
-public class Messages extends NLS {
-	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
-	public static String SarldocCommand_0;
-	public static String SarldocCommand_1;
-	public static String SarldocCommand_2;
-	public static String SarldocCommand_3;
-	static {
-		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+public class SarldocClasspathModuleProvider implements BQModuleProvider {
+
+	@Override
+	public Module module() {
+		return new SarldocClasspathModule();
 	}
 
-	private Messages() {
-	}
+	@Override
+    public BQModule.Builder moduleBuilder() {
+        return BQModule
+                .builder(module())
+                .overrides(overrides())
+                .providerName(name())
+                .configs(configs())
+                .description(Messages.SarldocClasspathModuleProvider_0);
+    }
+
 }

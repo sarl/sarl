@@ -21,15 +21,22 @@
 
 package io.sarl.sarldoc.commands;
 
+import java.io.File;
 import java.io.IOException;
-import java.net.Proxy;
 import java.net.URI;
+import java.text.MessageFormat;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Multimap;
 import com.google.inject.Provider;
 import io.bootique.cli.Cli;
 import io.bootique.command.CommandManager;
@@ -39,13 +46,18 @@ import io.bootique.command.ManagedCommand;
 import io.bootique.meta.application.CommandMetadata;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
+import org.arakhne.afc.vmutil.FileSystem;
+import org.eclipse.xtext.mwe.PathTraverser;
 import org.slf4j.Logger;
 
 import io.sarl.lang.sarlc.Constants;
 import io.sarl.lang.sarlc.commands.CompilerCommand;
+import io.sarl.lang.sarlc.tools.PathDetector;
+import io.sarl.lang.sarlc.tools.SARLBootClasspathProvider;
 import io.sarl.sarldoc.configs.SarlConfig;
 import io.sarl.sarldoc.configs.subconfigs.SarldocConfig;
+import io.sarl.sarldoc.utils.SystemPath;
 
 /**
  * Command for launching sarldoc.
@@ -62,6 +74,10 @@ public class SarldocCommand extends CommandWithMetadata {
 
 	private final Provider<SarlConfig> config;
 
+	private final Provider<SARLBootClasspathProvider> defaultBootClasspath;
+
+	private final Provider<PathDetector> pathDetector;
+
 	private final Logger logger;
 
 	/** Constructor.
@@ -69,21 +85,27 @@ public class SarldocCommand extends CommandWithMetadata {
 	 * @param commandManager the provider of the manager of the commands.
 	 * @param logger the logger to be used by the command.
 	 * @param config the sarldoc configuration provider.
+	 * @param defaultBootClasspath the provider of default boot classpath.
+	 * @param pathDetector the detector of paths.
 	 */
-	public SarldocCommand(Provider<CommandManager> commandManager, Logger logger, Provider<SarlConfig> config) {
+	public SarldocCommand(Provider<CommandManager> commandManager, Logger logger, Provider<SarlConfig> config,
+			Provider<SARLBootClasspathProvider> defaultBootClasspath, Provider<PathDetector> pathDetector) {
 		super(CommandMetadata
 				.builder(SarldocCommand.class)
 				.description(Messages.SarldocCommand_0));
 		this.commandManagerProvider = commandManager;
 		this.logger = logger;
 		this.config = config;
+		this.defaultBootClasspath = defaultBootClasspath;
+		this.pathDetector = pathDetector;
 	}
 
 	@Override
 	public CommandOutcome run(Cli cli) {
+		final SarlConfig genconfig = this.config.get();
 		CommandOutcome outcome = runSarlc(cli);
 		if (outcome.isSuccess()) {
-			runJavadoc(cli);
+			runJavadoc(cli, genconfig);
 		}
 		return outcome;
 	}
@@ -131,50 +153,96 @@ public class SarldocCommand extends CommandWithMetadata {
 	 */
 	private static String parseJavadocMemory(String memory) throws IllegalArgumentException {
 		if (Strings.isNullOrEmpty(memory)) {
-			throw new IllegalArgumentException("The memory could not be null.");
+			return null;
 		}
 
-		Pattern p = Pattern.compile("^\\s*(\\d+)\\s*?\\s*$");
+		Pattern p = Pattern.compile("^\\s*(\\d+)\\s*?\\s*$"); //$NON-NLS-1$
 		Matcher m = p.matcher(memory);
 		if (m.matches()) {
-			return m.group(1) + "m";
+			return m.group(1) + "m"; //$NON-NLS-1$
 		}
 
-		p = Pattern.compile("^\\s*(\\d+)\\s*k(b)?\\s*$", Pattern.CASE_INSENSITIVE);
+		p = Pattern.compile("^\\s*(\\d+)\\s*k(b)?\\s*$", Pattern.CASE_INSENSITIVE); //$NON-NLS-1$
 		m = p.matcher(memory);
 		if (m.matches()) {
-			return m.group(1) + "k";
+			return m.group(1) + "k"; //$NON-NLS-1$
 		}
 
-		p = Pattern.compile("^\\s*(\\d+)\\s*m(b)?\\s*$", Pattern.CASE_INSENSITIVE);
+		p = Pattern.compile("^\\s*(\\d+)\\s*m(b)?\\s*$", Pattern.CASE_INSENSITIVE); //$NON-NLS-1$
 		m = p.matcher(memory);
 		if (m.matches()) {
-			return m.group(1) + "m";
+			return m.group(1) + "m"; //$NON-NLS-1$
 		}
 
-		p = Pattern.compile("^\\s*(\\d+)\\s*g(b)?\\s*$", Pattern.CASE_INSENSITIVE);
+		p = Pattern.compile("^\\s*(\\d+)\\s*g(b)?\\s*$", Pattern.CASE_INSENSITIVE); //$NON-NLS-1$
 		m = p.matcher(memory);
 		if (m.matches()) {
-			return (Integer.parseInt(m.group(1)) * 1024) + "m";
+			return (Integer.parseInt(m.group(1)) * 1024) + "m"; //$NON-NLS-1$
 		}
 
-		p = Pattern.compile("^\\s*(\\d+)\\s*t(b)?\\s*$", Pattern.CASE_INSENSITIVE);
+		p = Pattern.compile("^\\s*(\\d+)\\s*t(b)?\\s*$", Pattern.CASE_INSENSITIVE); //$NON-NLS-1$
 		m = p.matcher(memory);
 		if (m.matches()) {
-			return ( Integer.parseInt(m.group(1)) * 1024 * 1024) + "m";
+			return ( Integer.parseInt(m.group(1)) * 1024 * 1024) + "m"; //$NON-NLS-1$
 		}
 
-		throw new IllegalArgumentException("Could convert not to a memory size: " + memory);
+		throw new IllegalArgumentException(MessageFormat.format(Messages.SarldocCommand_3, memory));
 	}
 
-	private void addJOption(CommandLine cmd, String arg) throws IllegalArgumentException {
-		if (!Strings.isNullOrEmpty(arg)) {
-			cmd.addArgument("-J" + arg);
+	private static boolean addJOption(CommandLine cmd, String arg) throws IllegalArgumentException {
+		final String opt = mergeIfNotNull("-J", arg); //$NON-NLS-1$
+		if (!Strings.isNullOrEmpty(opt)) {
+			cmd.addArgument(opt);
+			return true;
+		}
+		return false;
+	}
+
+	private static String mergeIfNotNull(String base, String value) {
+		if (!Strings.isNullOrEmpty(value)) {
+			return base + value;
+		}
+		return null;
+	}
+
+	private static void addProxyFromProperty(Map<String, URI> activeProxies, String protocol, String hostVar, String portVar) {
+		String host = System.getProperty(hostVar, null);
+		if (!Strings.isNullOrEmpty(host)) {
+			String port = System.getProperty(portVar, null);
+			final URI uri;
+			try {
+				if (Strings.isNullOrEmpty(port)) {
+					uri = new URI(protocol + "://" + host); //$NON-NLS-1$
+				} else {
+					uri = new URI(protocol + "://" + host + ":" + port); //$NON-NLS-1$ //$NON-NLS-2$
+				}
+				activeProxies.putIfAbsent(protocol, uri);
+			} catch (Throwable exception) {
+				// Silent error
+			}
 		}
 	}
 
-	private void addProxyArg(CommandLine cmd, SarldocConfig config) {
+	private static void addProxyFromEnvironment(Map<String, URI> activeProxies, String protocol, String var) {
+		String host = SystemUtils.getEnvironmentVariable(var, null);
+		if (!Strings.isNullOrEmpty(host)) {
+			try {
+				final URI uri = new URI(host);
+				activeProxies.putIfAbsent(protocol, uri);
+			} catch (Throwable exception) {
+				// Silent error
+			}
+		}
+	}
+
+	private static void addProxyArg(CommandLine cmd, SarldocConfig config) {
 		final Map<String, URI> activeProxies = new HashMap<>();
+
+		addProxyFromProperty(activeProxies, "http", "http.proxyHost", "http.proxyPort"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+		addProxyFromProperty(activeProxies, "https", "https.proxyHost", "https.proxyPort"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+
+		addProxyFromEnvironment(activeProxies, "http", "http_proxy"); //$NON-NLS-1$//$NON-NLS-2$
+		addProxyFromEnvironment(activeProxies, "https", "https_proxy"); //$NON-NLS-1$//$NON-NLS-2$
 
 		for (final String proxyDefinition : config.getProxy()) {
 			try {
@@ -187,57 +255,147 @@ public class SarldocCommand extends CommandWithMetadata {
 			}
 		}
 
-		URI uri = activeProxies.get("https");
+		URI uri = activeProxies.get("https"); //$NON-NLS-1$
+		boolean hasHttps = false;
 		if (uri != null) {
-			addJOption(cmd, "-Dhttps.proxyHost=" + uri.getHost());
-			addJOption(cmd, "-Dhttps.proxyPort=" + uri.getPort());
+			hasHttps = addJOption(cmd, mergeIfNotNull("-Dhttps.proxyHost=", uri.getHost())); //$NON-NLS-1$
+			if (hasHttps && uri.getPort() != 0) {
+				addJOption(cmd, "-Dhttps.proxyPort=" + uri.getPort()); //$NON-NLS-1$
+			}
 		}
 
-		uri = activeProxies.get("http");
+		uri = activeProxies.get("http"); //$NON-NLS-1$
 		if (uri != null) {
-			addJOption(cmd, "-Dhttp.proxyHost=" + uri.getHost());
-			addJOption(cmd, "-Dhttp.proxyPort=" + uri.getPort());
+			final boolean hasHttp = addJOption(cmd, mergeIfNotNull("-Dhttp.proxyHost=", uri.getHost())); //$NON-NLS-1$
+			if (hasHttp && uri.getPort() != 0) {
+				addJOption(cmd, "-Dhttp.proxyPort=" + uri.getPort()); //$NON-NLS-1$
+			}
+			if (!hasHttps && hasHttp) {
+				hasHttps = addJOption(cmd, mergeIfNotNull("-Dhttps.proxyHost=", uri.getHost())); //$NON-NLS-1$
+				if (hasHttps && uri.getPort() != 0) {
+					addJOption(cmd, "-Dhttps.proxyPort=" + uri.getPort()); //$NON-NLS-1$
+				}
+			}
 		}
 	}
 
-	private CommandOutcome runJavadoc(Cli cli) throws IllegalArgumentException {
+	private static String or(String a, String b) {
+		if (Strings.isNullOrEmpty(a)) {
+			return b;
+		}
+		return a;
+	}
+
+	private CommandOutcome runJavadoc(Cli cli, SarlConfig genconfig) throws IllegalArgumentException {
 		this.logger.info(Messages.SarldocCommand_2);
-		final SarldocConfig docconfig = this.config.get().getSarldoc();
+		final SarldocConfig docconfig = genconfig.getSarldoc();
 		String javadocExecutable = docconfig.getJavadocExecutable();
 		CommandLine cmd = new CommandLine(javadocExecutable);
 
-		addJOption( cmd, "-Xmx" + parseJavadocMemory(docconfig.getMaxMemory()));
-		addJOption( cmd, "-Xms" + parseJavadocMemory(docconfig.getMinMemory()));
+		// Memory Options
+		addJOption( cmd, mergeIfNotNull("-Xmx", parseJavadocMemory(docconfig.getMaxMemory()))); //$NON-NLS-1$
+		addJOption( cmd, mergeIfNotNull("-Xms", parseJavadocMemory(docconfig.getMinMemory()))); //$NON-NLS-1$
 
+		// Proxy Options
 		addProxyArg(cmd, docconfig);
 
+		// -J Options
 		for (final String option : docconfig.getJOption()) {
 			addJOption(cmd, option);
 		}
 
-		// Wrap Standard doclet Options
-		cmd.addArgument("-doclet").addArgument(docconfig.getDoclet());
-
-		// ----------------------------------------------------------------------
-		// Wrap Javadoc options
-		// ----------------------------------------------------------------------
-		List<String> javadocArguments = new ArrayList<>();
-
-		addJavadocOptions( javadocOutputDirectory, javadocArguments, sourcePaths, offlineLinks );
-
-		// ----------------------------------------------------------------------
-		// Write options file and include it in the command line
-		// ----------------------------------------------------------------------
-
-		List<String> arguments = new ArrayList<>( javadocArguments.size() + standardDocletArguments.size() );
-		arguments.addAll( javadocArguments );
-		arguments.addAll( standardDocletArguments );
-
-		if ( arguments.size() > 0 )
-		{
-			addCommandLineOptions( cmd, arguments, javadocOutputDirectory );
+		// Javadoc Options
+		for (final String option : docconfig.getJavadocOption()) {
+			cmd.addArgument(option);
+		}
+		
+		// Java version
+		final String javaVersion = genconfig.getCompiler().getJavaVersion();
+		if (!Strings.isNullOrEmpty(javaVersion)) {
+			cmd.addArgument("-source").addArgument(javaVersion); //$NON-NLS-1$
 		}
 
+		// Standard Doclet Options
+		final String title = docconfig.getTitle();
+		if (!Strings.isNullOrEmpty(title)) {
+			cmd.addArgument("-doctitle").addArgument(title); //$NON-NLS-1$
+		}
+
+		if (!docconfig.getEnableDeprecatedTag()) {
+			cmd.addArgument("-nodeprecated").addArgument("-nodeprecatedlist"); //$NON-NLS-1$//$NON-NLS-2$
+		}
+
+		if (!docconfig.getEnableSinceTag()) {
+			cmd.addArgument("-nosince"); //$NON-NLS-1$
+		}
+
+		if (docconfig.getEnableVersionTag()) {
+			cmd.addArgument("-version"); //$NON-NLS-1$
+		}
+
+		if (docconfig.getEnableAuthorTag()) {
+			cmd.addArgument("-author"); //$NON-NLS-1$
+		}
+
+		cmd.addArgument("-docencoding").addArgument(docconfig.getEncoding()); //$NON-NLS-1$
+
+		// Visibility of the elements
+		switch (docconfig.getVisibility()) {
+		case PUBLIC:
+			cmd.addArgument("-public"); //$NON-NLS-1$
+			break;
+		case PROTECTED:
+			cmd.addArgument("-protected"); //$NON-NLS-1$
+			break;
+		case PACKAGE:
+			cmd.addArgument("-package"); //$NON-NLS-1$
+			break;
+		case PRIVATE:
+			cmd.addArgument("-private"); //$NON-NLS-1$
+			break;
+		default:
+			throw new IllegalStateException();
+		}
+
+		// Path detection
+		final PathDetector paths = this.pathDetector.get();
+		paths.setSarlOutputPath(genconfig.getOutputPath());
+		paths.setClassOutputPath(genconfig.getClassOutputPath());
+		paths.setWorkingPath(genconfig.getWorkingPath());
+		paths.resolve(cli.standaloneArguments());
+
+		// Source folder
+		final SystemPath sourcePath = new SystemPath();
+		for (final String path : cli.standaloneArguments()) {
+			sourcePath.add(path);
+		}
+		if (paths.getSarlOutputPath() != null) {
+			sourcePath.add(paths.getSarlOutputPath());
+		}
+		cmd.addArgument("-sourcepath").addArgument(sourcePath.toString()); //$NON-NLS-1$
+
+		// Class path
+		final SystemPath fullClassPath = new SystemPath();
+		fullClassPath.add(or(genconfig.getBootClasspath(), this.defaultBootClasspath.get().getClasspath()));
+		fullClassPath.add(genconfig.getClasspath());
+		fullClassPath.add(paths.getClassOutputPath());
+		cmd.addArgument("-classpath").addArgument(fullClassPath.toString()); //$NON-NLS-1$
+
+		// Output folder
+		
+		cmd.addArgument("-d").addArgument(docconfig.getOutputDirectory().getAbsolutePath()); //$NON-NLS-1$
+
+		// Doclet
+		cmd.addArgument("-doclet").addArgument(docconfig.getDoclet()); //$NON-NLS-1$
+		cmd.addArgument("-docletpath").addArgument(docconfig.getDocletPath()); //$NON-NLS-1$
+
+		// Add source files
+		final Collection<String> files = getSourceFiles(sourcePath, docconfig);
+		for (final String sourceFile : files) {
+			cmd.addArgument(sourceFile);
+		}
+		
+		// Execute the Javadoc
 		final DefaultExecutor executor = new DefaultExecutor();
 		try {
 			final int code = executor.execute(cmd);
@@ -251,5 +409,48 @@ public class SarldocCommand extends CommandWithMetadata {
 		}
 	}
 
+	private static boolean isExcludedPackage(File file, SarldocConfig config) {
+		if (file == null) {
+			return true;
+		}
+		final Set<String> excl = config.getExcludedPackages();
+		if (excl.isEmpty()) {
+			return false;
+		}
+		final StringBuilder name = new StringBuilder();
+		File f = file.getParentFile();
+		boolean first = true;
+		while (f != null && !Objects.equals(f.getName(), FileSystem.CURRENT_DIRECTORY) && !Objects.equals(f.getName(), FileSystem.PARENT_DIRECTORY)) {
+			if (first) {
+				first = false;
+			} else {
+				name.insert(0, "."); //$NON-NLS-1$
+			}
+			name.insert(0, f.getName());
+			f = f.getParentFile();
+		}
+		return !excl.contains(name.toString());
+	}
+
+	private static Collection<String> getSourceFiles(SystemPath sourcePaths, SarldocConfig config) {
+		final Set<String> allFiles = new TreeSet<>();
+		final PathTraverser pathTraverser = new PathTraverser();
+		final Multimap<String, org.eclipse.emf.common.util.URI> pathes = pathTraverser.resolvePathes(
+				sourcePaths.getElements(),
+				input -> Objects.equals("java", input.fileExtension())); //$NON-NLS-1$
+		for (final Entry<String, org.eclipse.emf.common.util.URI> entry : pathes.entries()) {
+			final String filename = entry.getValue().toFileString();
+			final File file = FileSystem.convertStringToFile(filename);
+			final File root = FileSystem.convertStringToFile(entry.getKey());
+			try {
+				if (!isExcludedPackage(FileSystem.makeRelative(file, root), config)) {
+					allFiles.add(filename);
+				}
+			} catch (Throwable exception) {
+				// Silent exception
+			}
+		}
+		return allFiles;
+	}
 
 }
