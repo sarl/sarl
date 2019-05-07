@@ -37,7 +37,7 @@ public class ValidatorConfigModuleProvider implements BQModuleProvider {
 
 	@Override
 	public Module module() {
-		return new SarlcConfigModule();
+		return new ValidatorConfigModule();
 	}
 
 	@Override

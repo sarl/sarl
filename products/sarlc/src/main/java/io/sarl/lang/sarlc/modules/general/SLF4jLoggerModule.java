@@ -21,35 +21,38 @@
 
 package io.sarl.lang.sarlc.modules.general;
 
-import com.google.inject.Module;
-import io.bootique.BQModule;
-import io.bootique.BQModuleProvider;
+import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
+import com.google.inject.Singleton;
+import org.arakhne.afc.bootique.applicationdata2.annotations.DefaultApplicationName;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import io.sarl.lang.SARLRuntimeModule;
-
-/** Provider of the module for the SARL compiler runtime.
+/** Module for creating the SARL SLF4J loggers.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.8
+ * @since 0.10
  */
-public class SARLRuntimeModuleProvider implements BQModuleProvider {
+public class SLF4jLoggerModule extends AbstractModule {
 
 	@Override
-	public Module module() {
-		return new SARLRuntimeModule();
+	protected void configure() {
+		//
 	}
 
-	@Override
-    public BQModule.Builder moduleBuilder() {
-        return BQModule
-                .builder(module())
-                .overrides(overrides())
-                .providerName(name())
-                .configs(configs())
-                .description(Messages.SARLRuntimeModuleProvider_0);
-    }
+	/** Provide the SLF4J logger.
+	 *
+	 * @param applicationName the name of the application.
+	 * @return the logger.
+	 */
+	@SuppressWarnings("static-method")
+	@Provides
+	@Singleton
+	public Logger provideSlf4jLogger(@DefaultApplicationName String applicationName) {
+		return LoggerFactory.getLogger(applicationName);
+	}
 
 }

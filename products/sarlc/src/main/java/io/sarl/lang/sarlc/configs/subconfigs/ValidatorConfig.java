@@ -28,7 +28,7 @@ import io.bootique.annotation.BQConfig;
 import io.bootique.annotation.BQConfigProperty;
 import org.eclipse.xtext.diagnostics.Severity;
 
-import io.sarl.lang.sarlc.configs.SarlConfig;
+import io.sarl.lang.sarlc.configs.SarlcConfig;
 
 /**
  * Configuration for the validator.
@@ -45,7 +45,7 @@ public class ValidatorConfig {
 	/**
 	 * Prefix for the configuration entries of the path modules.
 	 */
-	public static final String PREFIX = SarlConfig.PREFIX + ".validator"; //$NON-NLS-1$
+	public static final String PREFIX = SarlcConfig.PREFIX + ".validator"; //$NON-NLS-1$
 
 	/**
 	 * Name of the property that indicates if warnings are ignored.

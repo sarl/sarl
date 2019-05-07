@@ -10,7 +10,7 @@ if [ -n "$JAVA_HOME" ]; then
 fi
 
 if ( which $JAVA 2>&1 > /dev/null ); then
-  exec $JAVA -Dsarlc.programName="$PROGRAMNAME" -jar "$MYSELF" "$@"
+  exec $JAVA -Dsarlc.programName="$PROGRAMNAME" -cp "$MYSELF" "{cliCompilerMainClass}" "$@"
 else
   echo "Cannot find Java, please set your JAVA_HOME"
 fi

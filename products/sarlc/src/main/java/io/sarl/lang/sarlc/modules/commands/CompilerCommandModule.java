@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
 import io.sarl.lang.sarlc.commands.CompilerCommand;
 import io.sarl.lang.sarlc.configs.ProgressBarConfig;
-import io.sarl.lang.sarlc.configs.SarlConfig;
+import io.sarl.lang.sarlc.configs.SarlcConfig;
 import io.sarl.lang.sarlc.tools.PathDetector;
 
 /** Module for the compiler command.
@@ -78,7 +78,7 @@ public class CompilerCommandModule extends AbstractModule {
 	@Provides
 	@Singleton
 	public CompilerCommand provideSarlcCompilerCommand(Provider<SarlBatchCompiler> compiler,
-			Provider<SarlConfig> configuration, Provider<PathDetector> pathDetector,
+			Provider<SarlcConfig> configuration, Provider<PathDetector> pathDetector,
 			Provider<ProgressBarConfig> commandConfig) {
 		return new CompilerCommand(compiler, configuration, pathDetector, commandConfig);
 	}

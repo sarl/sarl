@@ -21,46 +21,48 @@
 	<dependencies>
 		<dependency>
 			<groupId>io.sarl.maven</groupId>
-			<artifactId>io.sarl.maven.batchcompiler</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.arakhne.afc.bootique</groupId>
-			<artifactId>bootique-applicationdata2</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.arakhne.afc.bootique</groupId>
-			<artifactId>bootique-synopsishelp</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.arakhne.afc.bootique</groupId>
-			<artifactId>bootique-printconfig</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.arakhne.afc.bootique</groupId>
-			<artifactId>bootique-variables</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.arakhne.afc.bootique</groupId>
-			<artifactId>bootique-log4j</artifactId>
+			<artifactId>io.sarl.maven.bootiqueapp</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>me.tongfei</groupId>
 			<artifactId>progressbar</artifactId>
 		</dependency>
-		<!--  The following dependency is included in order to have the SDK available on the class path by default -->
 		<dependency>
 			<groupId>io.sarl.maven</groupId>
 			<artifactId>io.sarl.maven.sdk</artifactId>
 		</dependency>
-		<!--  The following dependency is included in order to have extra-language generators -->
-		<!-- <dependency>
-			<groupId>io.sarl.pythongenerator</groupId>
-			<artifactId>io.sarl.pythongenerator.generator</artifactId>
-		</dependency> -->
 	</dependencies>
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>com.google.code.maven-replacer-plugin</groupId>
+				<artifactId>replacer</artifactId>
+				<executions>
+					<execution>
+						<id>generate-sarlcconstants-class</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<basedir>${project.basedir}/src-templates</basedir>
+							<outputDir>../src/main/java</outputDir>
+							<includes>
+								<include>**/*.java</include>
+							</includes>
+							<replacements>
+								<replacement>
+									<token>@sarlccompilername@</token>
+									<value>${cliCompilerName}</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
@@ -70,27 +72,44 @@
 					</sourceDirectories>
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<executions>
 					<execution>
+						<id>cli-application</id>
 						<phase>package</phase>
 						<goals>
 							<goal>single</goal>
 						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>with-dependencies.xml</descriptor>
+							</descriptors>
+							<archive>
+								<manifest>
+									<mainClass>${cliCompilerMainClass}</mainClass>
+								</manifest>
+							</archive>
+							<attach>false</attach>
+						</configuration>
+					</execution>
+					<execution>
+						<id>cli-embedded-sdk</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<finalName>embedded</finalName>
+							<outputDirectory>${project.build.outputDirectory}</outputDirectory>
+							<descriptors>
+								<descriptor>sdk-libs.xml</descriptor>
+							</descriptors>
+							<attach>false</attach>
+						</configuration>
 					</execution>
 				</executions>
-				<configuration>
-					<descriptors>
-						<descriptor>with-dependencies.xml</descriptor>
-					</descriptors>
-					<archive>
-						<manifest>
-							<mainClass>${cliCompilerMainClass}</mainClass>
-						</manifest>
-					</archive>
-					<attach>false</attach>
-				</configuration>
 			</plugin>
 
 			<plugin>
@@ -114,6 +133,7 @@
 							</classPath>
 							<jre>
 								<minVersion>${compiler.level}.0</minVersion>
+								<maxVersion>${compiler.level.max.after}.0</maxVersion>
 								<jdkPreference>jdkOnly</jdkPreference>
 								<runtimeBits>64/32</runtimeBits>
 							</jre>

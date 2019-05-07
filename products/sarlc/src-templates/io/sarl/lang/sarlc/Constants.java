@@ -19,13 +19,9 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.sarlc.modules.commands;
+package io.sarl.lang.sarlc;
 
-import com.google.inject.Module;
-import io.bootique.BQModule;
-import io.bootique.BQModuleProvider;
-
-/** Provider of the module for the version command.
+/** Constants for sarlc.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -33,21 +29,22 @@ import io.bootique.BQModuleProvider;
  * @mavenartifactid $ArtifactId$
  * @since 0.8
  */
-public class VersionCommandModuleProvider implements BQModuleProvider {
+public final class Constants {
 
-	@Override
-	public Module module() {
-		return new VersionCommandModule();
+	/** Default name of the sarlc program.
+	 */
+	public static final String PROGRAM_NAME = "@sarlccompilername@"; //$NON-NLS-1$
+
+	/** Name of the option for defining the output directory from SARL to Java, without the {@code -} and the {@code /} prefixes.
+	 */
+	public static final String SARL_OUTPUT_DIRECTORY_OPTION = "directory"; //$NON-NLS-1$
+
+	/** Name of the option for defining the output directory for the Java class files, without the {@code -} and the {@code /} prefixes.
+	 */
+	public static final String JAVA_OUTPUT_DIRECTORY_OPTION = "outputdir"; //$NON-NLS-1$
+
+	private Constants() {
+		//
 	}
-
-	@Override
-    public BQModule.Builder moduleBuilder() {
-        return BQModule
-                .builder(module())
-                .overrides(overrides())
-                .providerName(name())
-                .configs(configs())
-                .description(Messages.VersionCommandModuleProvider_0);
-    }
 
 }

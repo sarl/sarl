@@ -46,8 +46,6 @@ public class Messages extends NLS {
 	public static String CompilerCommand_9;
 	public static String CompilerCommand_10;
 	public static String ExtraLanguageListCommand_0;
-	public static String VersionCommand_0;
-	public static String VersionCommand_1;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

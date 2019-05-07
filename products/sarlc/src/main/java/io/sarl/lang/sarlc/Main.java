@@ -25,6 +25,9 @@ import java.util.List;
 
 import io.bootique.help.HelpOption;
 
+import io.sarl.lang.sarlc.modules.general.SarlcApplicationModuleProvider;
+import io.sarl.maven.bootiqueapp.BootiqueMain;
+
 /** Main entry point for the SARL batch compiler.
  *
  * @author $Author: sgalland$
@@ -44,7 +47,7 @@ public final class Main {
 	 * @param args the command line arguments.
 	 */
 	public static void main(String[] args) {
-		final int retCode = createMainObject().runCompiler(args);
+		final int retCode = createMainObject().runCommand(args);
 		System.exit(retCode);
 	}
 
@@ -60,8 +63,8 @@ public final class Main {
 	 *
 	 * @return the main launcher.
 	 */
-	protected static BootiqueSarlcMain createMainObject() {
-		return new BootiqueSarlcMain();
+	protected static BootiqueMain createMainObject() {
+		return new BootiqueMain(new SarlcApplicationModuleProvider());
 	}
 
 	/** Replies the options of the program.

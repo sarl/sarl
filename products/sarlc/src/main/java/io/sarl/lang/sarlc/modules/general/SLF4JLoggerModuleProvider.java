@@ -25,19 +25,19 @@ import com.google.inject.Module;
 import io.bootique.BQModule;
 import io.bootique.BQModuleProvider;
 
-/** Provider of the module for the default sarlc command.
+/** Provider of the module for the SLF4J logger.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.8
+ * @since 0.10
  */
-public class SarlcDefaultCommandModuleProvider implements BQModuleProvider {
+public class SLF4JLoggerModuleProvider implements BQModuleProvider {
 
 	@Override
 	public Module module() {
-		return new SarlcDefaultCommandModule();
+		return new SLF4jLoggerModule();
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class SarlcDefaultCommandModuleProvider implements BQModuleProvider {
                 .overrides(overrides())
                 .providerName(name())
                 .configs(configs())
-                .description(Messages.SarlcDefaultCommandModuleProvider_0);
+                .description(Messages.SLF4JLoggerModuleProvider_0);
     }
 
 }

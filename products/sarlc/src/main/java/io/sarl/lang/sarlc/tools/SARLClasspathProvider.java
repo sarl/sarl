@@ -21,10 +21,13 @@
 
 package io.sarl.lang.sarlc.tools;
 
-import com.google.inject.Singleton;
+import com.google.inject.ImplementedBy;
+import org.slf4j.Logger;
+
+import io.sarl.maven.bootiqueapp.utils.SystemPath;
 
 /**
- * Provider of the SARL SDK class path.
+ * A provider of the class path that must be used for compiling a SARL program.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -32,12 +35,23 @@ import com.google.inject.Singleton;
  * @mavenartifactid $ArtifactId$
  * @since 0.8
  */
-@Singleton
-public class SarlEmbededSdkBootClasspathProvider implements SARLBootClasspathProvider {
+@ImplementedBy(SarlEmbededSdkClasspathProvider.class)
+public interface SARLClasspathProvider {
 
-	@Override
-	public String getClasspath() {
-		return ""; //$NON-NLS-1$
-	}
+	/** Replies the boot class path that must be used for compiling a SARL program.
+	 *
+	 * @param path the classpath to fill.
+	 * @param logger the logger to use for notifying about the process of the task.
+	 * @since 0.10
+	 */
+	void getBootClasspath(SystemPath path, Logger logger);
+
+	/** Replies the class path that must be used for compiling a SARL program.
+	 *
+	 * @param path the classpath to fill.
+	 * @param logger the logger to use for notifying about the process of the task.
+	 * @since 0.10
+	 */
+	void getClasspath(SystemPath path, Logger logger);
 
 }
