@@ -19,35 +19,36 @@
  * limitations under the License.
  */
 
-package io.sarl.sarldoc.modules.internal;
+package io.sarl.sarldoc.modules.configs;
 
-import java.util.Collection;
+import java.lang.reflect.Type;
 import java.util.Collections;
+import java.util.Map;
 
 import com.google.inject.Module;
 import io.bootique.BQModule;
 import io.bootique.BQModuleProvider;
 
-import io.sarl.lang.sarlc.modules.general.SarlcDefaultCommandModule;
+import io.sarl.sarldoc.configs.SarldocConfig;
 
-/** Provider of the module for the default sarlc command.
+/** Provider of the module for the general sarldoc specific configuration.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.8
+ * @since 0.10
  */
-public class SarldocDefaultCommandModuleProvider implements BQModuleProvider {
+public class SarldocConfigModuleProvider implements BQModuleProvider {
 
 	@Override
 	public Module module() {
-		return new SarldocDefaultCommandModule();
+		return new SarldocConfigModule();
 	}
 
 	@Override
-	public Collection<Class<? extends Module>> overrides() {
-		return Collections.singletonList(SarlcDefaultCommandModule.class);
+	public Map<String, Type> configs() {
+		return Collections.singletonMap(SarldocConfig.PREFIX, SarldocConfig.class);
 	}
 
 	@Override
@@ -57,7 +58,7 @@ public class SarldocDefaultCommandModuleProvider implements BQModuleProvider {
                 .overrides(overrides())
                 .providerName(name())
                 .configs(configs())
-                .description(Messages.SarldocDefaultCommandModuleProvider_0);
+                .description(Messages.SarldocConfigModuleProvider_0);
     }
 
 }

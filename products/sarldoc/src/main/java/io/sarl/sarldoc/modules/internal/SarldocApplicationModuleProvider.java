@@ -21,14 +21,9 @@
 
 package io.sarl.sarldoc.modules.internal;
 
-import java.util.Collection;
-import java.util.Collections;
-
 import com.google.inject.Module;
 import io.bootique.BQModule;
 import io.bootique.BQModuleProvider;
-
-import io.sarl.lang.sarlc.modules.general.SarlcApplicationModule;
 
 /** Provider of the module for the sarldoc application information.
  *
@@ -43,11 +38,6 @@ public class SarldocApplicationModuleProvider implements BQModuleProvider {
 	@Override
 	public Module module() {
 		return new SarldocApplicationModule();
-	}
-
-	@Override
-	public Collection<Class<? extends Module>> overrides() {
-		return Collections.singletonList(SarlcApplicationModule.class);
 	}
 
 	@Override

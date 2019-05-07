@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.sarldoc.configs.subconfigs;
+package io.sarl.sarldoc.configs;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,22 +27,24 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import com.google.common.base.Strings;
 import io.bootique.annotation.BQConfig;
 import io.bootique.annotation.BQConfigProperty;
+import io.bootique.config.ConfigurationFactory;
 import org.apache.commons.lang3.SystemUtils;
 import org.arakhne.afc.vmutil.ClasspathUtil;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.arakhne.afc.vmutil.OperatingSystem;
 
 import io.sarl.docs.doclet.SarlDoclet;
-import io.sarl.lang.sarlc.configs.SarlConfig;
-import io.sarl.sarldoc.utils.SystemPath;
+import io.sarl.maven.bootiqueapp.utils.SystemPath;
 
 /**
  * Configuration for the SARL API documentation generator.
@@ -59,7 +61,7 @@ public class SarldocConfig {
 	/**
 	 * Prefix for the configuration entries of the path modules.
 	 */
-	public static final String PREFIX = SarlConfig.PREFIX + ".sarldoc"; //$NON-NLS-1$
+	public static final String PREFIX = "sarldoc"; //$NON-NLS-1$
 
 	/**
 	 * Name of the property that contains the path to the javadoc executable.
@@ -147,9 +149,24 @@ public class SarldocConfig {
 	public static final String ENCODING_NAME = PREFIX + ".encoding"; //$NON-NLS-1$
 
 	/**
+	 * Name of the property that contains the locale of the documentation.
+	 */
+	public static final String LOCALE_NAME = PREFIX + ".locale"; //$NON-NLS-1$
+
+	/**
+	 * Default locale for Sarldoc.
+	 */
+	public static final Locale LOCALE_DEFAULT = Locale.US;
+
+	/**
 	 * Name of the property that contains the names of the excluded packages.
 	 */
 	public static final String EXCLUDED_PACKAGES_NAME = PREFIX + ".excludedPackages"; //$NON-NLS-1$
+
+	/**
+	 * Name of the property that contains the custom tags.
+	 */
+	public static final String TAGS_NAME = PREFIX + ".tags"; //$NON-NLS-1$
 
 	private static final String BIN_FOLDER = "bin"; //$NON-NLS-1$
 
@@ -175,6 +192,8 @@ public class SarldocConfig {
 
 	private String docletPath;
 
+	private String locale;
+
 	private File outputDirectory;
 
 	private boolean enableVesionTag = true;
@@ -192,6 +211,18 @@ public class SarldocConfig {
 	private Visibility visibility;
 
 	private Set<String> excludedPackages;
+
+	private List<Tag> customTags;
+
+	/** Replies the configuration for SARLC.
+	 *
+	 * @param configFactory the general configuration factory.
+	 * @return the SARLC configuration.
+	 */
+	public static SarldocConfig getConfiguration(ConfigurationFactory configFactory) {
+		assert configFactory != null;
+		return configFactory.config(SarldocConfig.class, PREFIX);
+	}
 
 	/** Replies the path to the executable of javadoc.
 	 *
@@ -222,6 +253,7 @@ public class SarldocConfig {
 	 *
 	 * @return the path of the Javadoc tool.
 	 */
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	public static String findJavadocExecutable() {
 		final String javadocCommand;
 		if (OperatingSystem.getCurrentOS() == OperatingSystem.WIN) {
@@ -265,7 +297,11 @@ public class SarldocConfig {
 		} catch (IOException exception) {
 			throw new RuntimeException(exception);
 		}
-		return javadocExe.getAbsolutePath();
+		try {
+			return javadocExe.getCanonicalPath();
+		} catch (IOException exception) {
+			throw new RuntimeException(exception);
+		}
 	}
 
 	/** Replies the minimum amount of memory to allocate to the JVM.
@@ -554,7 +590,7 @@ public class SarldocConfig {
 		return this.visibility;
 	}
 
-	/** Change the visibility of the elements to appear into the documentation. 
+	/** Change the visibility of the elements to appear into the documentation.
 	 *
 	 * @param visibility the visibility.
 	 */
@@ -581,7 +617,66 @@ public class SarldocConfig {
 	 */
 	@BQConfigProperty("Specify the list of the excluded packages.")
 	public void setExcludedPackages(Set<String> excludedPackages) {
-		this.excludedPackages= excludedPackages;
+		this.excludedPackages = excludedPackages;
+	}
+
+	/** Replies the list of the custom tags.
+	 *
+	 * @return the custom tags.
+	 */
+	public List<Tag> getCustomTags() {
+		if (this.customTags == null) {
+			return Collections.emptyList();
+		}
+		return Collections.unmodifiableList(this.customTags);
+	}
+
+	/** Change the custom tags from a list of tags.
+	 *
+	 * @param customTags the definitions of the custom tags.
+	 */
+	@BQConfigProperty("Specify the custom tags to be recognized by the documentation generator.")
+	public void setCustomTags(List<Tag> customTags) {
+		if (customTags == null || customTags.isEmpty()) {
+			this.customTags = null;
+		} else {
+			this.customTags = new ArrayList<>(customTags);
+		}
+	}
+
+	/** Change the custom tags from a string specification.
+	 *
+	 * @param customTags the definitions of the custom tags.
+	 * @see #setCustomTags(List)
+	 * @see #getCustomTags()
+	 */
+	@BQConfigProperty("Specify the custom tags to be recognized by the documentation generator.")
+	public void setTags(String customTags) {
+		if (Strings.isNullOrEmpty(customTags)) {
+			this.customTags = null;
+		} else {
+			this.customTags = Tag.valuesOf(customTags);
+		}
+	}
+
+	/** Replies the locale of the documentation.
+	 *
+	 * @return the locale, or {@code null}.
+	 */
+	public String getLocale() {
+		if (this.locale == null) {
+			this.locale = LOCALE_DEFAULT.toString();
+		}
+		return this.locale;
+	}
+
+	/** Change the locale of the documentation.
+	 *
+	 * @param locale the locale.
+	 */
+	@BQConfigProperty("Specify the locale of the documentation.")
+	public void setLocale(String locale) {
+		this.locale = locale;
 	}
 
 }

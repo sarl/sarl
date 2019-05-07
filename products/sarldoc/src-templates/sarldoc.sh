@@ -10,7 +10,11 @@ if [ -n "$JAVA_HOME" ]; then
 fi
 
 if ( which $JAVA 2>&1 > /dev/null ); then
-  exec $JAVA -Dsarldoc.programName="$PROGRAMNAME" -jar "$MYSELF" "$@"
+  J_DIR=`which "$JAVA"`
+  J_DIR=`dirname "$J_DIR"`
+  J_DIR=`dirname "$J_DIR"`
+  J_DIR="$J_DIR/lib/tools.jar"
+  exec $JAVA -Dsarldoc.programName="$PROGRAMNAME" -cp "$J_DIR:$MYSELF" "{cliToolMainClass}" "$@"
 else
   echo "Cannot find Java, please set your JAVA_HOME"
 fi

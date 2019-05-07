@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.sarldoc.configs.subconfigs;
+package io.sarl.sarldoc.configs;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -58,11 +58,11 @@ public enum Visibility {
 	public static Visibility getDefault() {
 		return PROTECTED;
 	}
-	
-	/** Parse the given case insensitive string for obtaining the progress bar style.
+
+	/** Parse the given case insensitive string for obtaining the visibility.
 	 *
 	 * @param name the string to parse.
-	 * @return the progress bar style.
+	 * @return the visibility.
 	 */
 	@JsonCreator
 	public static Visibility valueOfCaseInsensitive(String name) {
@@ -72,7 +72,7 @@ public enum Visibility {
 		return valueOf(name.toUpperCase());
 	}
 
-	/** Replies the Json string representation of this progress bar style.
+	/** Replies the Json string representation of this visibility.
 	 *
 	 * @return the Json string representation.
 	 */

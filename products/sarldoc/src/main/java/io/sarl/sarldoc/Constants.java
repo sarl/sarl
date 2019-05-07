@@ -21,7 +21,7 @@
 
 package io.sarl.sarldoc;
 
-/** Constants for sarldoc.
+/** Constants for sarlc.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -31,9 +31,13 @@ package io.sarl.sarldoc;
  */
 public final class Constants {
 
-	/** Default name of the sarlc program.
+	/** Default name of the sarldoc program.
 	 */
 	public static final String PROGRAM_NAME = "sarldoc"; //$NON-NLS-1$
+
+	/** Name of the option for defining the output directory for HTML documentation, without the {@code -} and the {@code /} prefixes.
+	 */
+	public static final String DOCUMENTATION_OUTPUT_DIRECTORY_OPTION = "docdirectory"; //$NON-NLS-1$
 
 	private Constants() {
 		//

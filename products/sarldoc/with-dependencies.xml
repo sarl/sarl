@@ -15,4 +15,19 @@
       <scope>runtime</scope>
     </dependencySet>
   </dependencySets>
+
+  <containerDescriptorHandlers>
+		<!-- Merge service description's files in a proper way -->
+		<containerDescriptorHandler>
+			<handlerName>metaInf-services</handlerName>
+		</containerDescriptorHandler>
+		<!-- Merge plugin description's files in a proper way -->
+		<containerDescriptorHandler>
+			<handlerName>file-aggregator</handlerName>
+			<configuration>
+				<filePattern>plugin.properties</filePattern>
+				<outputPath>plugin.properties</outputPath>
+			</configuration>
+		</containerDescriptorHandler>
+  </containerDescriptorHandlers>
 </assembly>

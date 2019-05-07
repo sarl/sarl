@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.sarldoc.configs.subconfigs;
+package io.sarl.sarldoc.configs;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -34,6 +34,14 @@ import org.eclipse.osgi.util.NLS;
 @SuppressWarnings("all")
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
+	public static String Placement_0;
+	public static String Placement_1;
+	public static String Placement_2;
+	public static String Placement_3;
+	public static String Placement_4;
+	public static String Placement_5;
+	public static String Placement_6;
+	public static String Placement_7;
 	public static String SarldocConfig_0;
 	public static String SarldocConfig_1;
 	public static String SarldocConfig_2;

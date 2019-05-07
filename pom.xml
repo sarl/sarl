@@ -347,6 +347,16 @@
 				<version>${sarl.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>io.sarl</groupId>
+				<artifactId>io.sarl.sarldoc</artifactId>
+				<version>${sarl.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.sarl.docs</groupId>
+				<artifactId>io.sarl.docs.doclet</artifactId>
+				<version>${sarl.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>io.sarl.maven</groupId>
 				<artifactId>sarl-maven-plugin</artifactId>
 				<version>${sarl.maven.compiler.version}</version>

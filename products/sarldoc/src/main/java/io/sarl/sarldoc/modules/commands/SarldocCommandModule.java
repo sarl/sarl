@@ -29,12 +29,12 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import io.bootique.command.CommandManager;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import io.sarl.lang.sarlc.configs.SarlcConfig;
 import io.sarl.lang.sarlc.tools.PathDetector;
-import io.sarl.lang.sarlc.tools.SARLBootClasspathProvider;
+import io.sarl.lang.sarlc.tools.SARLClasspathProvider;
 import io.sarl.sarldoc.commands.SarldocCommand;
-import io.sarl.sarldoc.configs.SarlConfig;
+import io.sarl.sarldoc.configs.SarldocConfig;
 
 /** Module for the sarldoc command.
  *
@@ -54,17 +54,20 @@ public class SarldocCommandModule extends AbstractModule {
 	/** Provide the command for running sarldoc.
 	 *
 	 * @param manager the provider of the manager of the commands.
-	 * @param config the provider of configuration.
+	 * @param dconfig the provider of sarldoc configuration.
+	 * @param cconfig the provider of sarlc configuration.
 	 * @param defaultBootClasspath the provider of the default boot class path.
 	 * @param pathDetector the provider of path detector.
+	 * @param loggerProvider the provider of SLF4J logger.
 	 * @return the command.
 	 */
+	@SuppressWarnings("static-method")
 	@Provides
 	@Singleton
-	public SarldocCommand provideSarldocCommand(Provider<CommandManager> manager, Provider<SarlConfig> config,
-			Provider<SARLBootClasspathProvider> defaultBootClasspath, Provider<PathDetector> pathDetector) {
-		final Logger logger = LoggerFactory.getLogger(getClass());
-		return new SarldocCommand(manager, logger, config, defaultBootClasspath, pathDetector);
+	public SarldocCommand provideSarldocCommand(Provider<CommandManager> manager, Provider<SarldocConfig> dconfig,
+			Provider<SarlcConfig> cconfig, Provider<SARLClasspathProvider> defaultBootClasspath,
+			Provider<PathDetector> pathDetector, Provider<Logger> loggerProvider) {
+		return new SarldocCommand(manager, loggerProvider, dconfig, cconfig, defaultBootClasspath, pathDetector);
 	}
 
 }

@@ -23,6 +23,8 @@ package io.sarl.sarldoc.modules.internal;
 
 import static io.bootique.BQCoreModule.extend;
 
+import java.text.MessageFormat;
+
 import com.google.inject.AbstractModule;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
@@ -30,7 +32,11 @@ import org.arakhne.afc.bootique.applicationdata2.annotations.DefaultApplicationN
 import org.arakhne.afc.bootique.synopsishelp.annotations.ApplicationArgumentSynopsis;
 import org.arakhne.afc.bootique.synopsishelp.annotations.ApplicationDetailedDescription;
 
+import io.sarl.lang.SARLConfig;
+import io.sarl.maven.bootiqueapp.utils.SystemProperties;
 import io.sarl.sarldoc.Constants;
+import io.sarl.sarldoc.commands.SarldocCommand;
+import io.sarl.sarldoc.configs.SarldocConfig;
 
 /** Module for configuring the sarldoc application information.
  *
@@ -45,13 +51,16 @@ public class SarldocApplicationModule extends AbstractModule {
 	@Override
 	protected void configure() {
 		// Name of the application.
-		bind(String.class).annotatedWith(DefaultApplicationName.class).toInstance(Constants.PROGRAM_NAME);
+		bind(String.class).annotatedWith(DefaultApplicationName.class).toInstance(
+				SystemProperties.getValue(SarldocConfig.PREFIX + ".programName", Constants.PROGRAM_NAME)); //$NON-NLS-1$
 		// Short description of the application.
 		extend(binder()).setApplicationDescription(Messages.SarldocApplicationModule_0);
 		// Long description of the application.
 		bind(String.class).annotatedWith(ApplicationDetailedDescription.class).toProvider(LongDescriptionProvider.class).in(Singleton.class);
 		// Synopsis of the application's arguments.
 		bind(String.class).annotatedWith(ApplicationArgumentSynopsis.class).toInstance(Messages.SarldocApplicationModule_1);
+		// Default command
+		extend(binder()).setDefaultCommand(SarldocCommand.class);
 	}
 
 	/** Provider of the long description of the application.
@@ -66,7 +75,16 @@ public class SarldocApplicationModule extends AbstractModule {
 
 		@Override
 		public String get() {
-			return Messages.SarldocApplicationModule_2;
+			final String sarlOutputDirectory = SARLConfig.FOLDER_SOURCE_GENERATED;
+			final String sarlOutputDirectoryOption = "--" + io.sarl.lang.sarlc.Constants.SARL_OUTPUT_DIRECTORY_OPTION; //$NON-NLS-1$
+			final String javaOutputDirectory = SARLConfig.FOLDER_BIN;
+			final String javaOutputDirectoryOption = "--" + io.sarl.lang.sarlc.Constants.JAVA_OUTPUT_DIRECTORY_OPTION; //$NON-NLS-1$
+			final String docOutputDirectory = SARLConfig.FOLDER_BIN;
+			final String docOutputDirectoryOption = "--" + Constants.DOCUMENTATION_OUTPUT_DIRECTORY_OPTION; //$NON-NLS-1$
+			return MessageFormat.format(Messages.SarldocApplicationModule_2,
+					sarlOutputDirectory, sarlOutputDirectoryOption,
+					javaOutputDirectory, javaOutputDirectoryOption,
+					docOutputDirectory, docOutputDirectoryOption);
 		}
 
 	}

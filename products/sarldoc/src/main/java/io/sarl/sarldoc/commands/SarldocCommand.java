@@ -23,41 +23,48 @@ package io.sarl.sarldoc.commands;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.net.URI;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Multimap;
 import com.google.inject.Provider;
+import com.sun.tools.doclets.standard.Standard;
+import com.sun.tools.javadoc.Main;
 import io.bootique.cli.Cli;
 import io.bootique.command.CommandManager;
 import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;
 import io.bootique.command.ManagedCommand;
 import io.bootique.meta.application.CommandMetadata;
-import org.apache.commons.exec.CommandLine;
-import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.lang3.SystemUtils;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.xtext.mwe.PathTraverser;
 import org.slf4j.Logger;
 
-import io.sarl.lang.sarlc.Constants;
 import io.sarl.lang.sarlc.commands.CompilerCommand;
+import io.sarl.lang.sarlc.configs.SarlcConfig;
+import io.sarl.lang.sarlc.tools.ClassPathUtils;
 import io.sarl.lang.sarlc.tools.PathDetector;
-import io.sarl.lang.sarlc.tools.SARLBootClasspathProvider;
-import io.sarl.sarldoc.configs.SarlConfig;
-import io.sarl.sarldoc.configs.subconfigs.SarldocConfig;
-import io.sarl.sarldoc.utils.SystemPath;
+import io.sarl.lang.sarlc.tools.SARLClasspathProvider;
+import io.sarl.maven.bootiqueapp.BootiqueMain;
+import io.sarl.maven.bootiqueapp.utils.SystemPath;
+import io.sarl.sarldoc.configs.SarldocConfig;
+import io.sarl.sarldoc.configs.Tag;
 
 /**
  * Command for launching sarldoc.
@@ -72,48 +79,68 @@ public class SarldocCommand extends CommandWithMetadata {
 
 	private final Provider<CommandManager> commandManagerProvider;
 
-	private final Provider<SarlConfig> config;
+	private final Provider<SarldocConfig> config;
 
-	private final Provider<SARLBootClasspathProvider> defaultBootClasspath;
+	private final Provider<SarlcConfig> sarlcConfig;
+
+	private final Provider<SARLClasspathProvider> defaultClasspath;
 
 	private final Provider<PathDetector> pathDetector;
 
-	private final Logger logger;
+	private final Provider<Logger> logger;
 
 	/** Constructor.
 	 *
 	 * @param commandManager the provider of the manager of the commands.
 	 * @param logger the logger to be used by the command.
 	 * @param config the sarldoc configuration provider.
-	 * @param defaultBootClasspath the provider of default boot classpath.
+	 * @param sarlcConfig the sarlc configuration provider.
+	 * @param defaultClasspath the provider of default classpaths.
 	 * @param pathDetector the detector of paths.
 	 */
-	public SarldocCommand(Provider<CommandManager> commandManager, Logger logger, Provider<SarlConfig> config,
-			Provider<SARLBootClasspathProvider> defaultBootClasspath, Provider<PathDetector> pathDetector) {
+	public SarldocCommand(Provider<CommandManager> commandManager, Provider<Logger> logger, Provider<SarldocConfig> config,
+			Provider<SarlcConfig> sarlcConfig, Provider<SARLClasspathProvider> defaultClasspath,
+			Provider<PathDetector> pathDetector) {
 		super(CommandMetadata
 				.builder(SarldocCommand.class)
 				.description(Messages.SarldocCommand_0));
 		this.commandManagerProvider = commandManager;
 		this.logger = logger;
 		this.config = config;
-		this.defaultBootClasspath = defaultBootClasspath;
+		this.sarlcConfig = sarlcConfig;
+		this.defaultClasspath = defaultClasspath;
 		this.pathDetector = pathDetector;
 	}
 
 	@Override
 	public CommandOutcome run(Cli cli) {
-		final SarlConfig genconfig = this.config.get();
-		CommandOutcome outcome = runSarlc(cli);
+		final Logger logger = this.logger.get();
+		CommandOutcome outcome = runSarlc(cli, logger);
 		if (outcome.isSuccess()) {
-			runJavadoc(cli, genconfig);
+			final SarldocConfig dconfig = this.config.get();
+			final SarlcConfig cconfig = this.sarlcConfig.get();
+			final AtomicInteger errorCount = new AtomicInteger();
+			final AtomicInteger warningCount = new AtomicInteger();
+			outcome = runJavadoc(cli, dconfig, cconfig, logger, errorCount, warningCount);
+			if (outcome == null || outcome.isSuccess()) {
+				if (warningCount.get() > 0) {
+					if (warningCount.get() > 1) {
+						logger.info(MessageFormat.format(Messages.SarldocCommand_7, warningCount.get()));
+					} else {
+						logger.info(MessageFormat.format(Messages.SarldocCommand_6, warningCount.get()));
+					}
+				} else {
+					logger.info(Messages.SarldocCommand_4);
+				}
+			}
 		}
 		return outcome;
 	}
 
-	private CommandOutcome runSarlc(Cli cli) {
+	private CommandOutcome runSarlc(Cli cli, Logger logger) {
 		CommandOutcome outcome;
 		try {
-			this.logger.info(Messages.SarldocCommand_1);
+			logger.info(Messages.SarldocCommand_1);
 			final CommandManager cmdManager = this.commandManagerProvider.get();
 			final ManagedCommand compilerCommand = cmdManager.lookupByType(CompilerCommand.class);
 			outcome = compilerCommand.getCommand().run(cli);
@@ -151,48 +178,49 @@ public class SarldocCommand extends CommandWithMetadata {
 	 *         <code>m</code>.
 	 * @throws IllegalArgumentException if the <code>memory</code> parameter is null or doesn't match any pattern.
 	 */
+	@SuppressWarnings("checkstyle:magicnumber")
 	private static String parseJavadocMemory(String memory) throws IllegalArgumentException {
 		if (Strings.isNullOrEmpty(memory)) {
 			return null;
 		}
 
-		Pattern p = Pattern.compile("^\\s*(\\d+)\\s*?\\s*$"); //$NON-NLS-1$
-		Matcher m = p.matcher(memory);
-		if (m.matches()) {
-			return m.group(1) + "m"; //$NON-NLS-1$
+		Pattern pattern = Pattern.compile("^\\s*(\\d+)\\s*?\\s*$"); //$NON-NLS-1$
+		Matcher matcher = pattern.matcher(memory);
+		if (matcher.matches()) {
+			return matcher.group(1) + "m"; //$NON-NLS-1$
 		}
 
-		p = Pattern.compile("^\\s*(\\d+)\\s*k(b)?\\s*$", Pattern.CASE_INSENSITIVE); //$NON-NLS-1$
-		m = p.matcher(memory);
-		if (m.matches()) {
-			return m.group(1) + "k"; //$NON-NLS-1$
+		pattern = Pattern.compile("^\\s*(\\d+)\\s*k(b)?\\s*$", Pattern.CASE_INSENSITIVE); //$NON-NLS-1$
+		matcher = pattern.matcher(memory);
+		if (matcher.matches()) {
+			return matcher.group(1) + "k"; //$NON-NLS-1$
 		}
 
-		p = Pattern.compile("^\\s*(\\d+)\\s*m(b)?\\s*$", Pattern.CASE_INSENSITIVE); //$NON-NLS-1$
-		m = p.matcher(memory);
-		if (m.matches()) {
-			return m.group(1) + "m"; //$NON-NLS-1$
+		pattern = Pattern.compile("^\\s*(\\d+)\\s*m(b)?\\s*$", Pattern.CASE_INSENSITIVE); //$NON-NLS-1$
+		matcher = pattern.matcher(memory);
+		if (matcher.matches()) {
+			return matcher.group(1) + "m"; //$NON-NLS-1$
 		}
 
-		p = Pattern.compile("^\\s*(\\d+)\\s*g(b)?\\s*$", Pattern.CASE_INSENSITIVE); //$NON-NLS-1$
-		m = p.matcher(memory);
-		if (m.matches()) {
-			return (Integer.parseInt(m.group(1)) * 1024) + "m"; //$NON-NLS-1$
+		pattern = Pattern.compile("^\\s*(\\d+)\\s*g(b)?\\s*$", Pattern.CASE_INSENSITIVE); //$NON-NLS-1$
+		matcher = pattern.matcher(memory);
+		if (matcher.matches()) {
+			return (Integer.parseInt(matcher.group(1)) * 1024) + "m"; //$NON-NLS-1$
 		}
 
-		p = Pattern.compile("^\\s*(\\d+)\\s*t(b)?\\s*$", Pattern.CASE_INSENSITIVE); //$NON-NLS-1$
-		m = p.matcher(memory);
-		if (m.matches()) {
-			return ( Integer.parseInt(m.group(1)) * 1024 * 1024) + "m"; //$NON-NLS-1$
+		pattern = Pattern.compile("^\\s*(\\d+)\\s*t(b)?\\s*$", Pattern.CASE_INSENSITIVE); //$NON-NLS-1$
+		matcher = pattern.matcher(memory);
+		if (matcher.matches()) {
+			return (Integer.parseInt(matcher.group(1)) * 1024 * 1024) + "m"; //$NON-NLS-1$
 		}
 
 		throw new IllegalArgumentException(MessageFormat.format(Messages.SarldocCommand_3, memory));
 	}
 
-	private static boolean addJOption(CommandLine cmd, String arg) throws IllegalArgumentException {
+	private static boolean addJOption(List<String> cmd, String arg) throws IllegalArgumentException {
 		final String opt = mergeIfNotNull("-J", arg); //$NON-NLS-1$
 		if (!Strings.isNullOrEmpty(opt)) {
-			cmd.addArgument(opt);
+			cmd.add(opt);
 			return true;
 		}
 		return false;
@@ -206,9 +234,9 @@ public class SarldocCommand extends CommandWithMetadata {
 	}
 
 	private static void addProxyFromProperty(Map<String, URI> activeProxies, String protocol, String hostVar, String portVar) {
-		String host = System.getProperty(hostVar, null);
+		final String host = System.getProperty(hostVar, null);
 		if (!Strings.isNullOrEmpty(host)) {
-			String port = System.getProperty(portVar, null);
+			final String port = System.getProperty(portVar, null);
 			final URI uri;
 			try {
 				if (Strings.isNullOrEmpty(port)) {
@@ -224,7 +252,7 @@ public class SarldocCommand extends CommandWithMetadata {
 	}
 
 	private static void addProxyFromEnvironment(Map<String, URI> activeProxies, String protocol, String var) {
-		String host = SystemUtils.getEnvironmentVariable(var, null);
+		final String host = SystemUtils.getEnvironmentVariable(var, null);
 		if (!Strings.isNullOrEmpty(host)) {
 			try {
 				final URI uri = new URI(host);
@@ -235,7 +263,8 @@ public class SarldocCommand extends CommandWithMetadata {
 		}
 	}
 
-	private static void addProxyArg(CommandLine cmd, SarldocConfig config) {
+	@SuppressWarnings("checkstyle:npathcomplexity")
+	private static void addProxyArg(List<String> cmd, SarldocConfig config) {
 		final Map<String, URI> activeProxies = new HashMap<>();
 
 		addProxyFromProperty(activeProxies, "http", "http.proxyHost", "http.proxyPort"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
@@ -279,22 +308,27 @@ public class SarldocCommand extends CommandWithMetadata {
 		}
 	}
 
-	private static String or(String a, String b) {
-		if (Strings.isNullOrEmpty(a)) {
-			return b;
-		}
-		return a;
-	}
+	@SuppressWarnings("checkstyle:npathcomplexity")
+	private CommandOutcome runJavadoc(Cli cli, SarldocConfig docconfig, SarlcConfig cconfig, Logger logger,
+			AtomicInteger errorCount, AtomicInteger warningCount) throws IllegalArgumentException {
+		logger.info(Messages.SarldocCommand_2);
+		final String javadocExecutable = docconfig.getJavadocExecutable();
+		final List<String> cmd = new ArrayList<>();
 
-	private CommandOutcome runJavadoc(Cli cli, SarlConfig genconfig) throws IllegalArgumentException {
-		this.logger.info(Messages.SarldocCommand_2);
-		final SarldocConfig docconfig = genconfig.getSarldoc();
-		String javadocExecutable = docconfig.getJavadocExecutable();
-		CommandLine cmd = new CommandLine(javadocExecutable);
+		// Locale
+		cmd.add("-locale"); //$NON-NLS-1$
+		cmd.add(docconfig.getLocale());
+
+		// Encoding
+		final String encoding = docconfig.getEncoding();
+		cmd.add("-docencoding"); //$NON-NLS-1$
+		cmd.add(encoding);
+		cmd.add("-encoding"); //$NON-NLS-1$
+		cmd.add(encoding);
 
 		// Memory Options
-		addJOption( cmd, mergeIfNotNull("-Xmx", parseJavadocMemory(docconfig.getMaxMemory()))); //$NON-NLS-1$
-		addJOption( cmd, mergeIfNotNull("-Xms", parseJavadocMemory(docconfig.getMinMemory()))); //$NON-NLS-1$
+		addJOption(cmd, mergeIfNotNull("-Xmx", parseJavadocMemory(docconfig.getMaxMemory()))); //$NON-NLS-1$
+		addJOption(cmd, mergeIfNotNull("-Xms", parseJavadocMemory(docconfig.getMinMemory()))); //$NON-NLS-1$
 
 		// Proxy Options
 		addProxyArg(cmd, docconfig);
@@ -306,52 +340,54 @@ public class SarldocCommand extends CommandWithMetadata {
 
 		// Javadoc Options
 		for (final String option : docconfig.getJavadocOption()) {
-			cmd.addArgument(option);
-		}
-		
-		// Java version
-		final String javaVersion = genconfig.getCompiler().getJavaVersion();
-		if (!Strings.isNullOrEmpty(javaVersion)) {
-			cmd.addArgument("-source").addArgument(javaVersion); //$NON-NLS-1$
+			cmd.add(option);
 		}
 
-		// Standard Doclet Options
+		// Java version
+		final String javaVersion = cconfig.getCompiler().getJavaVersion();
+		if (!Strings.isNullOrEmpty(javaVersion)) {
+			cmd.add("-source"); //$NON-NLS-1$
+			cmd.add(javaVersion);
+		}
+
+		// Documentation title
 		final String title = docconfig.getTitle();
 		if (!Strings.isNullOrEmpty(title)) {
-			cmd.addArgument("-doctitle").addArgument(title); //$NON-NLS-1$
+			cmd.add("-doctitle"); //$NON-NLS-1$
+			cmd.add(title);
 		}
 
+		// Special tags
 		if (!docconfig.getEnableDeprecatedTag()) {
-			cmd.addArgument("-nodeprecated").addArgument("-nodeprecatedlist"); //$NON-NLS-1$//$NON-NLS-2$
+			cmd.add("-nodeprecated"); //$NON-NLS-1$
+			cmd.add("-nodeprecatedlist"); //$NON-NLS-1$
 		}
 
 		if (!docconfig.getEnableSinceTag()) {
-			cmd.addArgument("-nosince"); //$NON-NLS-1$
+			cmd.add("-nosince"); //$NON-NLS-1$
 		}
 
 		if (docconfig.getEnableVersionTag()) {
-			cmd.addArgument("-version"); //$NON-NLS-1$
+			cmd.add("-version"); //$NON-NLS-1$
 		}
 
 		if (docconfig.getEnableAuthorTag()) {
-			cmd.addArgument("-author"); //$NON-NLS-1$
+			cmd.add("-author"); //$NON-NLS-1$
 		}
-
-		cmd.addArgument("-docencoding").addArgument(docconfig.getEncoding()); //$NON-NLS-1$
 
 		// Visibility of the elements
 		switch (docconfig.getVisibility()) {
 		case PUBLIC:
-			cmd.addArgument("-public"); //$NON-NLS-1$
+			cmd.add("-public"); //$NON-NLS-1$
 			break;
 		case PROTECTED:
-			cmd.addArgument("-protected"); //$NON-NLS-1$
+			cmd.add("-protected"); //$NON-NLS-1$
 			break;
 		case PACKAGE:
-			cmd.addArgument("-package"); //$NON-NLS-1$
+			cmd.add("-package"); //$NON-NLS-1$
 			break;
 		case PRIVATE:
-			cmd.addArgument("-private"); //$NON-NLS-1$
+			cmd.add("-private"); //$NON-NLS-1$
 			break;
 		default:
 			throw new IllegalStateException();
@@ -359,9 +395,9 @@ public class SarldocCommand extends CommandWithMetadata {
 
 		// Path detection
 		final PathDetector paths = this.pathDetector.get();
-		paths.setSarlOutputPath(genconfig.getOutputPath());
-		paths.setClassOutputPath(genconfig.getClassOutputPath());
-		paths.setWorkingPath(genconfig.getWorkingPath());
+		paths.setSarlOutputPath(cconfig.getOutputPath());
+		paths.setClassOutputPath(cconfig.getClassOutputPath());
+		paths.setWorkingPath(cconfig.getWorkingPath());
 		paths.resolve(cli.standaloneArguments());
 
 		// Source folder
@@ -372,40 +408,65 @@ public class SarldocCommand extends CommandWithMetadata {
 		if (paths.getSarlOutputPath() != null) {
 			sourcePath.add(paths.getSarlOutputPath());
 		}
-		cmd.addArgument("-sourcepath").addArgument(sourcePath.toString()); //$NON-NLS-1$
+		cmd.add("-sourcepath"); //$NON-NLS-1$
+		cmd.add(sourcePath.toString());
 
 		// Class path
-		final SystemPath fullClassPath = new SystemPath();
-		fullClassPath.add(or(genconfig.getBootClasspath(), this.defaultBootClasspath.get().getClasspath()));
-		fullClassPath.add(genconfig.getClasspath());
-		fullClassPath.add(paths.getClassOutputPath());
-		cmd.addArgument("-classpath").addArgument(fullClassPath.toString()); //$NON-NLS-1$
+		final SARLClasspathProvider classpathProvider = this.defaultClasspath.get();
+		final SystemPath fullClassPath = ClassPathUtils.buildClassPath(classpathProvider, cconfig, logger);
+		cmd.add("-classpath"); //$NON-NLS-1$
+		cmd.add(fullClassPath.toString());
 
 		// Output folder
-		
-		cmd.addArgument("-d").addArgument(docconfig.getOutputDirectory().getAbsolutePath()); //$NON-NLS-1$
+		cmd.add("-d"); //$NON-NLS-1$
+		cmd.add(docconfig.getOutputDirectory().getAbsolutePath());
 
 		// Doclet
-		cmd.addArgument("-doclet").addArgument(docconfig.getDoclet()); //$NON-NLS-1$
-		cmd.addArgument("-docletpath").addArgument(docconfig.getDocletPath()); //$NON-NLS-1$
+		cmd.add("-doclet"); //$NON-NLS-1$
+		cmd.add(docconfig.getDoclet());
+		cmd.add("-docletpath"); //$NON-NLS-1$
+		cmd.add(docconfig.getDocletPath());
+
+		// Add custom tags
+		for (final Tag tag : docconfig.getCustomTags()) {
+			cmd.add("-tag"); //$NON-NLS-1$
+			cmd.add(tag.toString());
+		}
 
 		// Add source files
 		final Collection<String> files = getSourceFiles(sourcePath, docconfig);
 		for (final String sourceFile : files) {
-			cmd.addArgument(sourceFile);
+			cmd.add(sourceFile);
 		}
-		
-		// Execute the Javadoc
-		final DefaultExecutor executor = new DefaultExecutor();
-		try {
-			final int code = executor.execute(cmd);
 
-			if (code == 0) {
-				return CommandOutcome.succeeded();
+		// Execute the Javadoc
+		try {
+			// Delete target directory
+			logger.info(MessageFormat.format(Messages.SarldocCommand_5, docconfig.getOutputDirectory().getAbsolutePath()));
+			FileSystem.delete(docconfig.getOutputDirectory().getAbsoluteFile());
+
+			// Run Javadoc
+			final String[] args = new String[cmd.size()];
+			cmd.toArray(args);
+			try (PrintWriter errWriter = new PrintWriter(new ErrorWriter(logger, errorCount))) {
+				try (PrintWriter warnWriter = new PrintWriter(new WarningWriter(logger, warningCount))) {
+					try (PrintWriter infoWriter = new PrintWriter(new InformationWriter(logger, warningCount))) {
+						final int code = Main.execute(
+								javadocExecutable,
+								errWriter,
+								warnWriter,
+								infoWriter,
+								Standard.class.getName(),
+								args);
+						if (code == 0) {
+							return CommandOutcome.succeeded();
+						}
+						return CommandOutcome.failed(BootiqueMain.ERROR_CODE, ""); //$NON-NLS-1$
+					}
+				}
 			}
-			return CommandOutcome.failed(Constants.ERROR_CODE, ""); //$NON-NLS-1$
 		} catch (IOException exception) {
-			return CommandOutcome.failed(Constants.ERROR_CODE, exception);
+			return CommandOutcome.failed(BootiqueMain.ERROR_CODE, exception);
 		}
 	}
 
@@ -418,16 +479,17 @@ public class SarldocCommand extends CommandWithMetadata {
 			return false;
 		}
 		final StringBuilder name = new StringBuilder();
-		File f = file.getParentFile();
+		File cfile = file.getParentFile();
 		boolean first = true;
-		while (f != null && !Objects.equals(f.getName(), FileSystem.CURRENT_DIRECTORY) && !Objects.equals(f.getName(), FileSystem.PARENT_DIRECTORY)) {
+		while (cfile != null && !Objects.equals(cfile.getName(), FileSystem.CURRENT_DIRECTORY)
+				&& !Objects.equals(cfile.getName(), FileSystem.PARENT_DIRECTORY)) {
 			if (first) {
 				first = false;
 			} else {
 				name.insert(0, "."); //$NON-NLS-1$
 			}
-			name.insert(0, f.getName());
-			f = f.getParentFile();
+			name.insert(0, cfile.getName());
+			cfile = cfile.getParentFile();
 		}
 		return !excl.contains(name.toString());
 	}
@@ -436,7 +498,7 @@ public class SarldocCommand extends CommandWithMetadata {
 		final Set<String> allFiles = new TreeSet<>();
 		final PathTraverser pathTraverser = new PathTraverser();
 		final Multimap<String, org.eclipse.emf.common.util.URI> pathes = pathTraverser.resolvePathes(
-				sourcePaths.getElements(),
+				sourcePaths.toFilenameList(),
 				input -> Objects.equals("java", input.fileExtension())); //$NON-NLS-1$
 		for (final Entry<String, org.eclipse.emf.common.util.URI> entry : pathes.entries()) {
 			final String filename = entry.getValue().toFileString();
@@ -451,6 +513,150 @@ public class SarldocCommand extends CommandWithMetadata {
 			}
 		}
 		return allFiles;
+	}
+
+	/** Print writer that is able to output message with the logger.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.10
+	 */
+	private abstract static class LogWriter extends Writer {
+
+		/** Logger.
+		 */
+		protected final Logger logger;
+
+		/** Number of errors.
+		 */
+		protected final AtomicInteger errorCount;
+
+		/** Number of errors.
+		 */
+		protected final AtomicInteger warningCount;
+
+		/** Constructor.
+		 *
+		 * @param logger the logger.
+		 * @param errorCount the counter of errors.
+		 * @param warningCount the counter of warnings.
+		 */
+		LogWriter(Logger logger, AtomicInteger errorCount, AtomicInteger warningCount) {
+			this.logger = logger;
+			this.errorCount = errorCount;
+			this.warningCount = warningCount;
+		}
+
+		@Override
+		public final void flush() throws IOException {
+			//
+		}
+
+		@Override
+		public final void close() throws IOException {
+			//
+		}
+
+		@Override
+		public final void write(char[] cbuf, int off, int len) throws IOException {
+			String message = new String(cbuf, off, len);
+			message = message.trim();
+			if (!Strings.isNullOrEmpty(message)) {
+				log(message);
+			}
+		}
+
+		protected abstract void log(String message);
+
+	}
+
+	/** Print writer that is able to output information with the logger.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.10
+	 */
+	private static class InformationWriter extends LogWriter {
+
+		private static final String NOTE_PREFIX = "Note:"; //$NON-NLS-1$
+
+		/** Constructor.
+		 *
+		 * @param logger the logger.
+		 * @param warningCount the counter of warnings.
+		 */
+		InformationWriter(Logger logger, AtomicInteger warningCount) {
+			super(logger, null, warningCount);
+		}
+
+		@Override
+		protected void log(String message) {
+			if (message.startsWith(NOTE_PREFIX)) {
+				this.logger.warn(message.substring(NOTE_PREFIX.length()).trim());
+				this.warningCount.incrementAndGet();
+			} else {
+				this.logger.info(message);
+			}
+		}
+
+	}
+
+	/** Print writer that is able to output warning message with the logger.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.10
+	 */
+	private static class WarningWriter extends LogWriter {
+
+		/** Constructor.
+		 *
+		 * @param logger the logger.
+		 * @param warningCount the counter of warnings.
+		 */
+		WarningWriter(Logger logger, AtomicInteger warningCount) {
+			super(logger, null, warningCount);
+		}
+
+		@Override
+		protected void log(String message) {
+			this.logger.warn(message);
+			this.warningCount.incrementAndGet();
+		}
+
+	}
+
+	/** Print writer that is able to output error message with the logger.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.10
+	 */
+	private static class ErrorWriter extends LogWriter {
+
+		/** Constructor.
+		 *
+		 * @param logger the logger.
+		 * @param errorCount the counter of errors.
+		 */
+		ErrorWriter(Logger logger, AtomicInteger errorCount) {
+			super(logger, errorCount, null);
+		}
+
+		@Override
+		protected void log(String message) {
+			this.logger.error(message);
+			this.errorCount.incrementAndGet();
+		}
+
 	}
 
 }

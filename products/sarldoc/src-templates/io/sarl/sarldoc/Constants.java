@@ -19,37 +19,28 @@
  * limitations under the License.
  */
 
-package io.sarl.sarldoc.utils;
+package io.sarl.sarldoc;
 
-import java.io.File;
-import java.net.URL;
-import java.util.Iterator;
-
-import org.arakhne.afc.vmutil.ClasspathUtil;
-import org.arakhne.afc.vmutil.FileSystem;
-
-import io.sarl.lang.sarlc.tools.SARLBootClasspathProvider;
-
-/** A provider of the boot classpath for the sarldoc tool. 
- * 
+/** Constants for sarlc.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 0.10
  */
-public class DefaultSarldocBootClasspath implements SARLBootClasspathProvider {
+public final class Constants {
 
-	@Override
-	public String getClasspath() {
-		final SystemPath path = new SystemPath();
-		final Iterator<URL> iterator = ClasspathUtil.getClasspath();
-		while (iterator.hasNext()) {
-			final URL classpathEntry = iterator.next();
-			final File entry = FileSystem.convertURLToFile(classpathEntry);
-			path.add(entry);
-		}
-		return path.toString();
+	/** Default name of the sarldoc program.
+	 */
+	public static final String PROGRAM_NAME = "@sarldoctoolname@"; //$NON-NLS-1$
+
+	/** Name of the option for defining the output directory for HTML documentation, without the {@code -} and the {@code /} prefixes.
+	 */
+	public static final String DOCUMENTATION_OUTPUT_DIRECTORY_OPTION = "docdirectory"; //$NON-NLS-1$
+
+	private Constants() {
+		//
 	}
 
 }

@@ -1,5 +1,2 @@
-io.sarl.sarldoc.modules.configs.SarlConfigModuleProvider
+io.sarl.sarldoc.modules.configs.SarldocConfigModuleProvider
 io.sarl.sarldoc.modules.commands.SarldocCommandModuleProvider
-io.sarl.sarldoc.modules.internal.SarldocDefaultCommandModuleProvider
-io.sarl.sarldoc.modules.internal.SarldocApplicationModuleProvider
-io.sarl.sarldoc.modules.internal.SarldocClasspathModuleProvider
