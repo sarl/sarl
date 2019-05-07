@@ -60,9 +60,6 @@
 		</plugins>
 	</build>
 
-	<!-- ======================================= -->
-	<!-- ==== Release Management === -->
-	<!-- ======================================= -->
 	<profiles>
 		<profile>
 			<id>javadoc-default-profile</id>

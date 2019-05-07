@@ -109,6 +109,7 @@
 ### Command Line Tools
 
 * [sarlc](./tools/Sarlc.md): command-line SARL compiler.
+* [sarldoc](./tools/Sarldoc.md): command-line SARL documentation generator.
 * [janus](./tools/Janus.md): launching SARL agents with the Janus platform.
 
 ## Documentation Format
