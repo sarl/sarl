@@ -27,6 +27,10 @@
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.arakhne.afc.core</groupId>
+			<artifactId>util</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>
@@ -40,24 +44,6 @@
 		<dependency>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-compiler-plugin</artifactId>
-		</dependency>
-		<!-- FIXME: Remove asap if the project compile without -->
-		<dependency>
-			<groupId>org.eclipse.jdt</groupId>
-			<artifactId>org.eclipse.jdt.core</artifactId>
-			<version>3.12.2</version>
-		</dependency>
-		<!-- FIXME: Remove asap if the project compile without -->
-		<dependency>
-			<groupId>org.eclipse.platform</groupId>
-			<artifactId>org.eclipse.core.runtime</artifactId>
-			<version>3.12.0</version>
-		</dependency>
-		<!-- FIXME: Remove asap if the project compile without -->
-		<dependency>
-			<groupId>org.eclipse.platform</groupId>
-			<artifactId>org.eclipse.equinox.common</artifactId>
-			<version>3.8.0</version>
 		</dependency>
 	</dependencies>
 	<build>
