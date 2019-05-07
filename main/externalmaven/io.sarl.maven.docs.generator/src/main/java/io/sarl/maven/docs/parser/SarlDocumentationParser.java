@@ -2139,7 +2139,8 @@ public class SarlDocumentationParser {
 								// Triggered when a documentation file does not contain Xtext code
 								// It is ignored
 							} catch (Exception exception) {
-								Throwables.propagate(exception);
+								Throwables.throwIfUnchecked(exception);
+							    throw new RuntimeException(exception);
 							}
 						}
 					}
@@ -2212,7 +2213,8 @@ public class SarlDocumentationParser {
 								// Triggered when a documentation file does not contain Xtext code
 								// It is ignored
 							} catch (Exception exception) {
-								Throwables.propagate(exception);
+								Throwables.throwIfUnchecked(exception);
+							    throw new RuntimeException(exception);
 							}
 						}
 					}
