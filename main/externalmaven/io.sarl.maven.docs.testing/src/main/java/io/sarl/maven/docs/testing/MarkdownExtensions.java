@@ -48,7 +48,7 @@ public final class MarkdownExtensions {
 		//
 	}
 
-	/** Render the option help to a Mardown table.
+	/** Render the option help to a Markdown table.
 	 *
 	 * @param options the options.
 	 * @return the markdown table.
