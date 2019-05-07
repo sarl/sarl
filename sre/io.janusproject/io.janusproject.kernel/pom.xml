@@ -136,6 +136,7 @@
 							</classPath>
 							<jre>
 								<minVersion>${compiler.level}.0</minVersion>
+								<maxVersion>${compiler.level.max.after}.0</maxVersion>
 								<jdkPreference>preferJre</jdkPreference>
 								<runtimeBits>64/32</runtimeBits>
 							</jre>

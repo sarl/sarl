@@ -76,6 +76,7 @@
 		<!-- Java Configuration -->
 		<compiler.level>1.8</compiler.level>
 		<compiler.level.max>1.8</compiler.level.max>
+		<compiler.level.max.after>1.9</compiler.level.max.after>
 		<jre.environment>JavaSE-1.8</jre.environment>
 		<!-- Maven API version. This version should be supported by m2e. Search 
 			for maven-core on central. -->
