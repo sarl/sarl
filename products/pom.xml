@@ -15,7 +15,6 @@
 
 	<modules>
 		<module>sarlc</module>
-		<module>sarldoc</module>
 	</modules>
 
 	<profiles>
