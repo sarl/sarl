@@ -69,16 +69,6 @@ public class SarldocConfig {
 	public static final String JAVADOC_EXECUTABLE_NAME = PREFIX + ".javadocExecutable"; //$NON-NLS-1$
 
 	/**
-	 * Name of the property that contains the minimum amount of memory to allocate to the JVM.
-	 */
-	public static final String MINIMUM_MEMORY_NAME = PREFIX + ".minMemory"; //$NON-NLS-1$
-
-	/**
-	 * Name of the property that contains the maximum amount of memory to allocate to the JVM.
-	 */
-	public static final String MAXIMUM_MEMORY_NAME = PREFIX + ".maxMemory"; //$NON-NLS-1$
-
-	/**
 	 * Name of the property that contains the proxy definitions.
 	 */
 	public static final String PROXY_NAME = PREFIX + ".proxy"; //$NON-NLS-1$
@@ -102,11 +92,6 @@ public class SarldocConfig {
 	 * Name of the property that contains the destination folder for the generated HTML documentation.
 	 */
 	public static final String DOC_OUTPUT_DIRECTORY_NAME = PREFIX + ".outputDirectory"; //$NON-NLS-1$
-
-	/**
-	 * Name of the property that contains additional JOptions.
-	 */
-	public static final String JOPTIONS_NAME = PREFIX + ".joption"; //$NON-NLS-1$
 
 	/**
 	 * Name of the property that contains options to javadoc.
@@ -176,15 +161,19 @@ public class SarldocConfig {
 
 	private static final String JAVA_HOME_PROPERTY_NAME = "JAVA_HOME"; //$NON-NLS-1$
 
+	private static final String DEFAULT_NON_PROXY_HOSTS = "localhost|127.*.*.*|10.*.*.*"; //$NON-NLS-1$
+
+	private static final char NO_PROXY_HOST_SEPARATOR = '|';
+
+	private static final String NO_PROXY_HOST_SEPARATOR_STRING = "|"; //$NON-NLS-1$
+
 	private String javadocExecutable;
-
-	private String minMemory;
-
-	private String maxMemory;
 
 	private List<String> proxy;
 
-	private List<String> joption;
+	private List<String> httpNoProxyHosts;
+
+	private List<String> httpsNoProxyHosts;
 
 	private List<String> javadocOption;
 
@@ -304,42 +293,6 @@ public class SarldocConfig {
 		}
 	}
 
-	/** Replies the minimum amount of memory to allocate to the JVM.
-	 *
-	 * @return the minimum amount of memory.
-	 */
-	public String getMinMemory() {
-		return this.minMemory;
-	}
-
-	/** Change the minimum amount of memory to allocate to the JVM.
-	 *
-	 * @param memory the minimum amount of memory to allocate to the JVM.
-	 */
-	@BQConfigProperty("Specify the minimum amount of memory to allocate to the JVM. If it is not specified, "
-			+ "the default JVM value is used.")
-	public void setMinMemory(String memory) {
-		this.minMemory = memory;
-	}
-
-	/** Replies the maximum amount of memory to allocate to the JVM.
-	 *
-	 * @return the maximum amount of memory.
-	 */
-	public String getMaxMemory() {
-		return this.maxMemory;
-	}
-
-	/** Change the maximum amount of memory to allocate to the JVM.
-	 *
-	 * @param memory the maximum amount of memory to allocate to the JVM.
-	 */
-	@BQConfigProperty("Specify the maximum amount of memory to allocate to the JVM. If it is not specified, "
-			+ "the default JVM value is used.")
-	public void setMaxMemory(String memory) {
-		this.maxMemory = memory;
-	}
-
 	/** Replies the proxy definitions.
 	 *
 	 * @return the proxy definitions.
@@ -360,24 +313,78 @@ public class SarldocConfig {
 		this.proxy = proxy;
 	}
 
-	/** Replies the additional JOptions.
+	/** Replies the hosts to which an HTTP proxy should not be used.
 	 *
-	 * @return the additional JOptions.
+	 * @return the no proxy definitions for HTTP.
 	 */
-	public List<String> getJOption() {
-		if (this.joption == null) {
-			this.joption = new ArrayList<>();
+	public List<String> getHttpNoProxyHosts() {
+		if (this.httpNoProxyHosts == null) {
+			this.httpNoProxyHosts = new ArrayList<>();
+			for (final String host : org.eclipse.xtext.util.Strings.split(DEFAULT_NON_PROXY_HOSTS, NO_PROXY_HOST_SEPARATOR)) {
+				if (!Strings.isNullOrEmpty(host)) {
+					this.httpNoProxyHosts.add(host);
+				}
+			}
 		}
-		return this.joption;
+		return this.httpNoProxyHosts;
 	}
 
-	/** Change the additional JOptions.
+	/** Replies the hosts to which an HTTP proxy should not be used.
 	 *
-	 * @param options the additional JOptions.
+	 * @return the no proxy definitions for HTTP, or {@code null} if none.
 	 */
-	@BQConfigProperty("Specify the additional JOptions.")
-	public void setJOptions(List<String> options) {
-		this.joption = options;
+	public String getHttpNoProxyHostsString() {
+		final List<String> hosts = getHttpNoProxyHosts();
+		if (hosts.isEmpty()) {
+			return null;
+		}
+		return org.eclipse.xtext.util.Strings.concat(NO_PROXY_HOST_SEPARATOR_STRING, hosts);
+	}
+
+	/** Change the hosts to which an HTTP proxy should not be used.
+	 *
+	 * @param noProxyHosts the no proxy definitions for HTTP.
+	 */
+	@BQConfigProperty("Specify the host names for which the HTTP proxy should not be used. The character '*' may be used as a wildcard.")
+	public void setHttpNoProxyHostsProxy(List<String> noProxyHosts) {
+		this.httpNoProxyHosts = noProxyHosts;
+	}
+
+	/** Replies the hosts to which an HTTPS proxy should not be used.
+	 *
+	 * @return the no proxy definitions for HTTPS.
+	 */
+	public List<String> getHttpsNoProxyHosts() {
+		if (this.httpsNoProxyHosts == null) {
+			this.httpsNoProxyHosts = new ArrayList<>();
+			for (final String host : org.eclipse.xtext.util.Strings.split(DEFAULT_NON_PROXY_HOSTS, NO_PROXY_HOST_SEPARATOR)) {
+				if (!Strings.isNullOrEmpty(host)) {
+					this.httpsNoProxyHosts.add(host);
+				}
+			}
+		}
+		return this.httpsNoProxyHosts;
+	}
+
+	/** Replies the hosts to which an HTTPS proxy should not be used.
+	 *
+	 * @return the no proxy definitions for HTTPS, or {@code null} if none.
+	 */
+	public String getHttpsNoProxyHostsString() {
+		final List<String> hosts = getHttpsNoProxyHosts();
+		if (hosts.isEmpty()) {
+			return null;
+		}
+		return org.eclipse.xtext.util.Strings.concat(NO_PROXY_HOST_SEPARATOR_STRING, hosts);
+	}
+
+	/** Change the hosts to which an HTTPS proxy should not be used.
+	 *
+	 * @param noProxyHosts the no proxy definitions for HTTPS.
+	 */
+	@BQConfigProperty("Specify the host names for which the HTTPS proxy should not be used. The character '*' may be used as a wildcard.")
+	public void setHttpsNoProxyHostsProxy(List<String> noProxyHosts) {
+		this.httpsNoProxyHosts = noProxyHosts;
 	}
 
 	/** Replies the options to pass to Javadoc.

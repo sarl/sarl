@@ -37,8 +37,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Multimap;
@@ -76,6 +74,78 @@ import io.sarl.sarldoc.configs.Tag;
  * @since 0.10
  */
 public class SarldocCommand extends CommandWithMetadata {
+
+	private static final String HTTP_PROTOCOL_NAME = "http"; //$NON-NLS-1$
+
+	private static final String HTTP_HOST_PROPERTY_NAME = "http.proxyHost"; //$NON-NLS-1$
+
+	private static final String HTTP_HOST_VARIABLE_NAME = "http_proxy"; //$NON-NLS-1$
+
+	private static final String HTTP_NONPROXYHOST_PROPERTY_NAME = "http.nonProxyHosts"; //$NON-NLS-1$
+
+	private static final String HTTP_PORT_PROPERTY_NAME = "http.proxyPort"; //$NON-NLS-1$
+
+	private static final String HTTPS_PROTOCOL_NAME = "https"; //$NON-NLS-1$
+
+	private static final String HTTPS_HOST_PROPERTY_NAME = "https.proxyHost"; //$NON-NLS-1$
+
+	private static final String HTTPS_HOST_VARIABLE_NAME = "https_proxy"; //$NON-NLS-1$
+
+	private static final String HTTPS_NONPROXYHOST_PROPERTY_NAME = "https.nonProxyHosts"; //$NON-NLS-1$
+
+	private static final String HTTPS_PORT_PROPERTY_NAME = "https.proxyPort"; //$NON-NLS-1$
+
+	private static final String SIMPLE_URL_PATTERN = "%s://%s"; //$NON-NLS-1$
+
+	private static final String PORT_URL_PATTERN = "%s://%s:%s"; //$NON-NLS-1$
+
+	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
+
+	private static final String PACKAGE_SEPARATOR = "."; //$NON-NLS-1$
+
+	private static final String JAVA_FILE_EXTENSION = "java"; //$NON-NLS-1$
+
+	private static final String JAVADOC_NOTE_PREFIX = "Note:";  //$NON-NLS-1$
+
+	private static final String LOCALE_FLAG = "-locale"; //$NON-NLS-1$
+
+	private static final String DOCENCODING_FLAG = "-docencoding"; //$NON-NLS-1$
+
+	private static final String ENCODING_FLAG = "-encoding"; //$NON-NLS-1$
+
+	private static final String SOURCE_FLAG = "-source"; //$NON-NLS-1$
+
+	private static final String DOCTITLE_FLAG = "-doctitle"; //$NON-NLS-1$
+
+	private static final String NODEPRECATED_FLAG = "-nodeprecated"; //$NON-NLS-1$
+
+	private static final String NODEPRECATEDLIST_FLAG = "-nodeprecatedlist"; //$NON-NLS-1$
+
+	private static final String NOSINCE_FLAG = "-nosince"; //$NON-NLS-1$
+
+	private static final String AUTHOR_FLAG = "-author"; //$NON-NLS-1$
+
+	private static final String VERSION_FLAG = "-version"; //$NON-NLS-1$
+
+	private static final String PUBLIC_FLAG = "-public"; //$NON-NLS-1$
+
+	private static final String PROTECTED_FLAG = "-protected"; //$NON-NLS-1$
+
+	private static final String PACKAGE_FLAG = "-package"; //$NON-NLS-1$
+
+	private static final String PRIVATE_FLAG = "-private"; //$NON-NLS-1$
+
+	private static final String SOURCEPATH_FLAG = "-sourcepath"; //$NON-NLS-1$
+
+	private static final String CLASSPATH_FLAG = "-classpath"; //$NON-NLS-1$
+
+	private static final String SMALLD_FLAG = "-d"; //$NON-NLS-1$
+
+	private static final String DOCLET_FLAG = "-doclet"; //$NON-NLS-1$
+
+	private static final String DOCLETPATH_FLAG = "-docletpath"; //$NON-NLS-1$
+
+	private static final String TAG_FLAG = "-tag"; //$NON-NLS-1$
 
 	private final Provider<CommandManager> commandManagerProvider;
 
@@ -115,9 +185,13 @@ public class SarldocCommand extends CommandWithMetadata {
 	@Override
 	public CommandOutcome run(Cli cli) {
 		final Logger logger = this.logger.get();
+		final SarldocConfig dconfig = this.config.get();
+		// Force proxy definition
+		forceProxyDefinition(dconfig, logger);
+		// Run sarlc
 		CommandOutcome outcome = runSarlc(cli, logger);
 		if (outcome.isSuccess()) {
-			final SarldocConfig dconfig = this.config.get();
+			// Run sarldoc
 			final SarlcConfig cconfig = this.sarlcConfig.get();
 			final AtomicInteger errorCount = new AtomicInteger();
 			final AtomicInteger warningCount = new AtomicInteger();
@@ -150,89 +224,6 @@ public class SarldocCommand extends CommandWithMetadata {
 		return outcome;
 	}
 
-	/**
-	 * Parse a memory string which be used in the JVM arguments <code>-Xms</code> or <code>-Xmx</code>. <br>
-	 * Here are some supported memory string depending the JDK used:
-	 * <table summary="Memory argument support per JDK">
-	 * <tr>
-	 * <th>JDK</th>
-	 * <th>Memory argument support for <code>-Xms</code> or <code>-Xmx</code></th>
-	 * </tr>
-	 * <tr>
-	 * <td>SUN</td>
-	 * <td>1024k | 128m | 1g | 1t</td>
-	 * </tr>
-	 * <tr>
-	 * <td>IBM</td>
-	 * <td>1024k | 1024b | 128m | 128mb | 1g | 1gb</td>
-	 * </tr>
-	 * <tr>
-	 * <td>BEA</td>
-	 * <td>1024k | 1024kb | 128m | 128mb | 1g | 1gb</td>
-	 * </tr>
-	 * </table>
-	 *
-	 * @param memory the memory to be parsed, not null.
-	 * @return the memory parsed with a supported unit. If no unit specified in the <code>memory</code> parameter, the
-	 *         default unit is <code>m</code>. The units <code>g | gb</code> or <code>t | tb</code> will be converted in
-	 *         <code>m</code>.
-	 * @throws IllegalArgumentException if the <code>memory</code> parameter is null or doesn't match any pattern.
-	 */
-	@SuppressWarnings("checkstyle:magicnumber")
-	private static String parseJavadocMemory(String memory) throws IllegalArgumentException {
-		if (Strings.isNullOrEmpty(memory)) {
-			return null;
-		}
-
-		Pattern pattern = Pattern.compile("^\\s*(\\d+)\\s*?\\s*$"); //$NON-NLS-1$
-		Matcher matcher = pattern.matcher(memory);
-		if (matcher.matches()) {
-			return matcher.group(1) + "m"; //$NON-NLS-1$
-		}
-
-		pattern = Pattern.compile("^\\s*(\\d+)\\s*k(b)?\\s*$", Pattern.CASE_INSENSITIVE); //$NON-NLS-1$
-		matcher = pattern.matcher(memory);
-		if (matcher.matches()) {
-			return matcher.group(1) + "k"; //$NON-NLS-1$
-		}
-
-		pattern = Pattern.compile("^\\s*(\\d+)\\s*m(b)?\\s*$", Pattern.CASE_INSENSITIVE); //$NON-NLS-1$
-		matcher = pattern.matcher(memory);
-		if (matcher.matches()) {
-			return matcher.group(1) + "m"; //$NON-NLS-1$
-		}
-
-		pattern = Pattern.compile("^\\s*(\\d+)\\s*g(b)?\\s*$", Pattern.CASE_INSENSITIVE); //$NON-NLS-1$
-		matcher = pattern.matcher(memory);
-		if (matcher.matches()) {
-			return (Integer.parseInt(matcher.group(1)) * 1024) + "m"; //$NON-NLS-1$
-		}
-
-		pattern = Pattern.compile("^\\s*(\\d+)\\s*t(b)?\\s*$", Pattern.CASE_INSENSITIVE); //$NON-NLS-1$
-		matcher = pattern.matcher(memory);
-		if (matcher.matches()) {
-			return (Integer.parseInt(matcher.group(1)) * 1024 * 1024) + "m"; //$NON-NLS-1$
-		}
-
-		throw new IllegalArgumentException(MessageFormat.format(Messages.SarldocCommand_3, memory));
-	}
-
-	private static boolean addJOption(List<String> cmd, String arg) throws IllegalArgumentException {
-		final String opt = mergeIfNotNull("-J", arg); //$NON-NLS-1$
-		if (!Strings.isNullOrEmpty(opt)) {
-			cmd.add(opt);
-			return true;
-		}
-		return false;
-	}
-
-	private static String mergeIfNotNull(String base, String value) {
-		if (!Strings.isNullOrEmpty(value)) {
-			return base + value;
-		}
-		return null;
-	}
-
 	private static void addProxyFromProperty(Map<String, URI> activeProxies, String protocol, String hostVar, String portVar) {
 		final String host = System.getProperty(hostVar, null);
 		if (!Strings.isNullOrEmpty(host)) {
@@ -240,9 +231,9 @@ public class SarldocCommand extends CommandWithMetadata {
 			final URI uri;
 			try {
 				if (Strings.isNullOrEmpty(port)) {
-					uri = new URI(protocol + "://" + host); //$NON-NLS-1$
+					uri = new URI(String.format(SIMPLE_URL_PATTERN, protocol, host));
 				} else {
-					uri = new URI(protocol + "://" + host + ":" + port); //$NON-NLS-1$ //$NON-NLS-2$
+					uri = new URI(String.format(PORT_URL_PATTERN, protocol, host, port));
 				}
 				activeProxies.putIfAbsent(protocol, uri);
 			} catch (Throwable exception) {
@@ -263,15 +254,30 @@ public class SarldocCommand extends CommandWithMetadata {
 		}
 	}
 
+	private static String ifNotEmpty(String value) {
+		if (Strings.isNullOrEmpty(value)) {
+			return null;
+		}
+		return value;
+	}
+
+	private static String ifNotZero(int value) {
+		if (value == 0) {
+			return null;
+		}
+		return ifNotEmpty(Integer.toString(value));
+	}
+
 	@SuppressWarnings("checkstyle:npathcomplexity")
-	private static void addProxyArg(List<String> cmd, SarldocConfig config) {
+	private static void forceProxyDefinition(SarldocConfig config, Logger logger) {
 		final Map<String, URI> activeProxies = new HashMap<>();
 
-		addProxyFromProperty(activeProxies, "http", "http.proxyHost", "http.proxyPort"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-		addProxyFromProperty(activeProxies, "https", "https.proxyHost", "https.proxyPort"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+		// Read the proxy definitions from the OS environment, the VM properties, and the sarldoc configuration in that order
+		addProxyFromEnvironment(activeProxies, HTTP_PROTOCOL_NAME, HTTP_HOST_VARIABLE_NAME);
+		addProxyFromEnvironment(activeProxies, HTTPS_PROTOCOL_NAME, HTTPS_HOST_VARIABLE_NAME);
 
-		addProxyFromEnvironment(activeProxies, "http", "http_proxy"); //$NON-NLS-1$//$NON-NLS-2$
-		addProxyFromEnvironment(activeProxies, "https", "https_proxy"); //$NON-NLS-1$//$NON-NLS-2$
+		addProxyFromProperty(activeProxies, HTTP_PROTOCOL_NAME, HTTP_HOST_PROPERTY_NAME, HTTP_PORT_PROPERTY_NAME);
+		addProxyFromProperty(activeProxies, HTTPS_PROTOCOL_NAME, HTTPS_HOST_PROPERTY_NAME, HTTPS_PORT_PROPERTY_NAME);
 
 		for (final String proxyDefinition : config.getProxy()) {
 			try {
@@ -284,27 +290,73 @@ public class SarldocCommand extends CommandWithMetadata {
 			}
 		}
 
-		URI uri = activeProxies.get("https"); //$NON-NLS-1$
+		// Extract HTTPS configuration
+		URI uri = activeProxies.get(HTTPS_PROTOCOL_NAME);
 		boolean hasHttps = false;
+		String httpsHost = null;
+		String httpsPort = null;
+		String httpsNoProxy = config.getHttpsNoProxyHostsString();
 		if (uri != null) {
-			hasHttps = addJOption(cmd, mergeIfNotNull("-Dhttps.proxyHost=", uri.getHost())); //$NON-NLS-1$
-			if (hasHttps && uri.getPort() != 0) {
-				addJOption(cmd, "-Dhttps.proxyPort=" + uri.getPort()); //$NON-NLS-1$
+			httpsHost = ifNotEmpty(uri.getHost());
+			hasHttps = !Strings.isNullOrEmpty(httpsHost);
+			if (hasHttps) {
+				httpsNoProxy = System.getProperty(HTTPS_NONPROXYHOST_PROPERTY_NAME, httpsNoProxy);
+				if (uri.getPort() != 0) {
+					httpsPort = ifNotZero(uri.getPort());
+				}
 			}
 		}
 
-		uri = activeProxies.get("http"); //$NON-NLS-1$
+		// Extract HTTP configuration, and if not HTTPS was provided, assumes HTTPS is the same as HTTP.
+		uri = activeProxies.get(HTTP_PROTOCOL_NAME);
+		boolean hasHttp = false;
+		String httpHost = null;
+		String httpPort = null;
+		String httpNoProxy = config.getHttpNoProxyHostsString();
 		if (uri != null) {
-			final boolean hasHttp = addJOption(cmd, mergeIfNotNull("-Dhttp.proxyHost=", uri.getHost())); //$NON-NLS-1$
-			if (hasHttp && uri.getPort() != 0) {
-				addJOption(cmd, "-Dhttp.proxyPort=" + uri.getPort()); //$NON-NLS-1$
-			}
-			if (!hasHttps && hasHttp) {
-				hasHttps = addJOption(cmd, mergeIfNotNull("-Dhttps.proxyHost=", uri.getHost())); //$NON-NLS-1$
-				if (hasHttps && uri.getPort() != 0) {
-					addJOption(cmd, "-Dhttps.proxyPort=" + uri.getPort()); //$NON-NLS-1$
+			httpHost = ifNotEmpty(uri.getHost());
+			hasHttp = !Strings.isNullOrEmpty(httpHost);
+			if (hasHttp) {
+				httpNoProxy = System.getProperty(HTTP_NONPROXYHOST_PROPERTY_NAME, httpNoProxy);
+				if (uri.getPort() != 0) {
+					httpPort = ifNotZero(uri.getPort());
 				}
 			}
+			if (!hasHttps && hasHttp) {
+				httpsHost = httpHost;
+				httpsPort = httpPort;
+				httpsNoProxy = httpNoProxy;
+				hasHttps = true;
+			}
+		}
+
+		// Overrive the proxy configurations
+		if (hasHttp) {
+			final String url;
+			if (Strings.isNullOrEmpty(httpPort)) {
+				url = String.format(SIMPLE_URL_PATTERN, HTTP_PROTOCOL_NAME, httpHost);
+			} else {
+				url = String.format(PORT_URL_PATTERN, HTTP_PROTOCOL_NAME, httpHost, httpPort);
+			}
+			logger.info(MessageFormat.format(Messages.SarldocCommand_8, HTTP_PROTOCOL_NAME, url));
+			System.setProperty(HTTP_HOST_PROPERTY_NAME, httpHost);
+			System.setProperty(HTTP_PORT_PROPERTY_NAME, httpPort);
+			logger.debug(MessageFormat.format(Messages.SarldocCommand_9, HTTP_PROTOCOL_NAME, httpNoProxy));
+			System.setProperty(HTTP_NONPROXYHOST_PROPERTY_NAME, httpNoProxy);
+		}
+
+		if (hasHttps) {
+			final String url;
+			if (Strings.isNullOrEmpty(httpsPort)) {
+				url = String.format(SIMPLE_URL_PATTERN, HTTPS_PROTOCOL_NAME, httpsHost);
+			} else {
+				url = String.format(PORT_URL_PATTERN, HTTPS_PROTOCOL_NAME, httpsHost, httpsPort);
+			}
+			logger.info(MessageFormat.format(Messages.SarldocCommand_8, HTTPS_PROTOCOL_NAME, url));
+			System.setProperty(HTTPS_HOST_PROPERTY_NAME, httpsHost);
+			System.setProperty(HTTPS_PORT_PROPERTY_NAME, httpsPort);
+			logger.debug(MessageFormat.format(Messages.SarldocCommand_9, HTTPS_PROTOCOL_NAME, httpsNoProxy));
+			System.setProperty(HTTPS_NONPROXYHOST_PROPERTY_NAME, httpsNoProxy);
 		}
 	}
 
@@ -316,27 +368,15 @@ public class SarldocCommand extends CommandWithMetadata {
 		final List<String> cmd = new ArrayList<>();
 
 		// Locale
-		cmd.add("-locale"); //$NON-NLS-1$
+		cmd.add(LOCALE_FLAG);
 		cmd.add(docconfig.getLocale());
 
 		// Encoding
 		final String encoding = docconfig.getEncoding();
-		cmd.add("-docencoding"); //$NON-NLS-1$
+		cmd.add(DOCENCODING_FLAG);
 		cmd.add(encoding);
-		cmd.add("-encoding"); //$NON-NLS-1$
+		cmd.add(ENCODING_FLAG);
 		cmd.add(encoding);
-
-		// Memory Options
-		addJOption(cmd, mergeIfNotNull("-Xmx", parseJavadocMemory(docconfig.getMaxMemory()))); //$NON-NLS-1$
-		addJOption(cmd, mergeIfNotNull("-Xms", parseJavadocMemory(docconfig.getMinMemory()))); //$NON-NLS-1$
-
-		// Proxy Options
-		addProxyArg(cmd, docconfig);
-
-		// -J Options
-		for (final String option : docconfig.getJOption()) {
-			addJOption(cmd, option);
-		}
 
 		// Javadoc Options
 		for (final String option : docconfig.getJavadocOption()) {
@@ -346,48 +386,48 @@ public class SarldocCommand extends CommandWithMetadata {
 		// Java version
 		final String javaVersion = cconfig.getCompiler().getJavaVersion();
 		if (!Strings.isNullOrEmpty(javaVersion)) {
-			cmd.add("-source"); //$NON-NLS-1$
+			cmd.add(SOURCE_FLAG);
 			cmd.add(javaVersion);
 		}
 
 		// Documentation title
 		final String title = docconfig.getTitle();
 		if (!Strings.isNullOrEmpty(title)) {
-			cmd.add("-doctitle"); //$NON-NLS-1$
+			cmd.add(DOCTITLE_FLAG);
 			cmd.add(title);
 		}
 
 		// Special tags
 		if (!docconfig.getEnableDeprecatedTag()) {
-			cmd.add("-nodeprecated"); //$NON-NLS-1$
-			cmd.add("-nodeprecatedlist"); //$NON-NLS-1$
+			cmd.add(NODEPRECATED_FLAG);
+			cmd.add(NODEPRECATEDLIST_FLAG);
 		}
 
 		if (!docconfig.getEnableSinceTag()) {
-			cmd.add("-nosince"); //$NON-NLS-1$
+			cmd.add(NOSINCE_FLAG);
 		}
 
 		if (docconfig.getEnableVersionTag()) {
-			cmd.add("-version"); //$NON-NLS-1$
+			cmd.add(VERSION_FLAG);
 		}
 
 		if (docconfig.getEnableAuthorTag()) {
-			cmd.add("-author"); //$NON-NLS-1$
+			cmd.add(AUTHOR_FLAG);
 		}
 
 		// Visibility of the elements
 		switch (docconfig.getVisibility()) {
 		case PUBLIC:
-			cmd.add("-public"); //$NON-NLS-1$
+			cmd.add(PUBLIC_FLAG);
 			break;
 		case PROTECTED:
-			cmd.add("-protected"); //$NON-NLS-1$
+			cmd.add(PROTECTED_FLAG);
 			break;
 		case PACKAGE:
-			cmd.add("-package"); //$NON-NLS-1$
+			cmd.add(PACKAGE_FLAG);
 			break;
 		case PRIVATE:
-			cmd.add("-private"); //$NON-NLS-1$
+			cmd.add(PRIVATE_FLAG);
 			break;
 		default:
 			throw new IllegalStateException();
@@ -408,28 +448,28 @@ public class SarldocCommand extends CommandWithMetadata {
 		if (paths.getSarlOutputPath() != null) {
 			sourcePath.add(paths.getSarlOutputPath());
 		}
-		cmd.add("-sourcepath"); //$NON-NLS-1$
+		cmd.add(SOURCEPATH_FLAG);
 		cmd.add(sourcePath.toString());
 
 		// Class path
 		final SARLClasspathProvider classpathProvider = this.defaultClasspath.get();
 		final SystemPath fullClassPath = ClassPathUtils.buildClassPath(classpathProvider, cconfig, logger);
-		cmd.add("-classpath"); //$NON-NLS-1$
+		cmd.add(CLASSPATH_FLAG);
 		cmd.add(fullClassPath.toString());
 
 		// Output folder
-		cmd.add("-d"); //$NON-NLS-1$
+		cmd.add(SMALLD_FLAG);
 		cmd.add(docconfig.getOutputDirectory().getAbsolutePath());
 
 		// Doclet
-		cmd.add("-doclet"); //$NON-NLS-1$
+		cmd.add(DOCLET_FLAG);
 		cmd.add(docconfig.getDoclet());
-		cmd.add("-docletpath"); //$NON-NLS-1$
+		cmd.add(DOCLETPATH_FLAG);
 		cmd.add(docconfig.getDocletPath());
 
 		// Add custom tags
 		for (final Tag tag : docconfig.getCustomTags()) {
-			cmd.add("-tag"); //$NON-NLS-1$
+			cmd.add(TAG_FLAG);
 			cmd.add(tag.toString());
 		}
 
@@ -461,7 +501,7 @@ public class SarldocCommand extends CommandWithMetadata {
 						if (code == 0) {
 							return CommandOutcome.succeeded();
 						}
-						return CommandOutcome.failed(BootiqueMain.ERROR_CODE, ""); //$NON-NLS-1$
+						return CommandOutcome.failed(BootiqueMain.ERROR_CODE, EMPTY_STRING);
 					}
 				}
 			}
@@ -486,7 +526,7 @@ public class SarldocCommand extends CommandWithMetadata {
 			if (first) {
 				first = false;
 			} else {
-				name.insert(0, "."); //$NON-NLS-1$
+				name.insert(0, PACKAGE_SEPARATOR);
 			}
 			name.insert(0, cfile.getName());
 			cfile = cfile.getParentFile();
@@ -499,7 +539,7 @@ public class SarldocCommand extends CommandWithMetadata {
 		final PathTraverser pathTraverser = new PathTraverser();
 		final Multimap<String, org.eclipse.emf.common.util.URI> pathes = pathTraverser.resolvePathes(
 				sourcePaths.toFilenameList(),
-				input -> Objects.equals("java", input.fileExtension())); //$NON-NLS-1$
+				input -> Objects.equals(JAVA_FILE_EXTENSION, input.fileExtension()));
 		for (final Entry<String, org.eclipse.emf.common.util.URI> entry : pathes.entries()) {
 			final String filename = entry.getValue().toFileString();
 			final File file = FileSystem.convertStringToFile(filename);
@@ -582,8 +622,6 @@ public class SarldocCommand extends CommandWithMetadata {
 	 */
 	private static class InformationWriter extends LogWriter {
 
-		private static final String NOTE_PREFIX = "Note:"; //$NON-NLS-1$
-
 		/** Constructor.
 		 *
 		 * @param logger the logger.
@@ -595,8 +633,8 @@ public class SarldocCommand extends CommandWithMetadata {
 
 		@Override
 		protected void log(String message) {
-			if (message.startsWith(NOTE_PREFIX)) {
-				this.logger.warn(message.substring(NOTE_PREFIX.length()).trim());
+			if (message.startsWith(JAVADOC_NOTE_PREFIX)) {
+				this.logger.warn(message.substring(JAVADOC_NOTE_PREFIX.length()).trim());
 				this.warningCount.incrementAndGet();
 			} else {
 				this.logger.info(message);

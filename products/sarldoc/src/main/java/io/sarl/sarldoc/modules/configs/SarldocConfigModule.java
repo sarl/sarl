@@ -30,8 +30,6 @@ import static io.sarl.sarldoc.configs.SarldocConfig.ENABLE_VERSION_TAG_NAME;
 import static io.sarl.sarldoc.configs.SarldocConfig.JAVADOC_EXECUTABLE_NAME;
 import static io.sarl.sarldoc.configs.SarldocConfig.LOCALE_DEFAULT;
 import static io.sarl.sarldoc.configs.SarldocConfig.LOCALE_NAME;
-import static io.sarl.sarldoc.configs.SarldocConfig.MAXIMUM_MEMORY_NAME;
-import static io.sarl.sarldoc.configs.SarldocConfig.MINIMUM_MEMORY_NAME;
 import static io.sarl.sarldoc.configs.SarldocConfig.TAGS_NAME;
 import static io.sarl.sarldoc.configs.SarldocConfig.TITLE_NAME;
 import static io.sarl.sarldoc.configs.SarldocConfig.VISIBILITY_NAME;
@@ -112,22 +110,6 @@ public class SarldocConfigModule extends AbstractModule {
 						LOCALE_DEFAULT.toString()))
 				.configPath(LOCALE_NAME)
 				.valueRequired(Messages.SarldocConfigModule_11)
-				.build());
-
-		VariableDecls.extend(binder()).declareVar(MINIMUM_MEMORY_NAME);
-		extend(binder()).addOption(OptionMetadata.builder(
-				"Xmn", //$NON-NLS-1$
-				Messages.SarldocConfigModule_12)
-				.configPath(MINIMUM_MEMORY_NAME)
-				.valueRequired(Messages.SarldocConfigModule_14)
-				.build());
-
-		VariableDecls.extend(binder()).declareVar(MAXIMUM_MEMORY_NAME);
-		extend(binder()).addOption(OptionMetadata.builder(
-				"Xmx", //$NON-NLS-1$
-				Messages.SarldocConfigModule_13)
-				.configPath(MAXIMUM_MEMORY_NAME)
-				.valueRequired(Messages.SarldocConfigModule_14)
 				.build());
 
 		final String truefalseString = Boolean.TRUE.toString() + "|" + Boolean.FALSE.toString(); //$NON-NLS-1$
