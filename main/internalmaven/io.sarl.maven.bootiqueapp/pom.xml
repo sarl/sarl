@@ -1,0 +1,81 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>io.sarl.maven</groupId>
+		<artifactId>io.sarl.maven.internal</artifactId>
+		<version>0.10.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>io.sarl.maven.bootiqueapp</artifactId>
+	<packaging>jar</packaging>
+	<name>Base for Bootique Application</name>
+	<description>The base library for the building bootique applications.</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.arakhne.afc.bootique</groupId>
+			<artifactId>bootique-applicationdata2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.arakhne.afc.bootique</groupId>
+			<artifactId>bootique-synopsishelp</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.arakhne.afc.bootique</groupId>
+			<artifactId>bootique-printconfig</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.arakhne.afc.bootique</groupId>
+			<artifactId>bootique-variables</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.arakhne.afc.bootique</groupId>
+			<artifactId>bootique-log4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.sarl.maven</groupId>
+			<artifactId>io.sarl.maven.batchcompiler</artifactId>
+		</dependency>
+	</dependencies>
+
+	<!-- ======================================= -->
+	<!-- ==== Release Management === -->
+	<!-- ======================================= -->
+	<profiles>
+		<profile>
+			<id>maven-release-of-maven-bootiqueapp</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.arakhne.afc.maven</groupId>
+							<artifactId>tag-replacer</artifactId>
+							<configuration>
+								<sources>
+									<source>${project.basedir}/src/main/java</source>
+								</sources>
+							</configuration>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-javadoc-plugin</artifactId>
+							<configuration>
+								<sourcepath>${project.build.directory}/generated-sources/java</sourcepath>
+							</configuration>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+	</profiles>
+
+</project>

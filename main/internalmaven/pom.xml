@@ -21,6 +21,7 @@
 		<module>io.sarl.maven.baselib</module>
 		<module>io.sarl.maven.batchcompiler</module>
 		<module>sarl-maven-plugin</module>
+		<module>io.sarl.maven.bootiqueapp</module>
 	</modules>
 
 </project>
