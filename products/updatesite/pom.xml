@@ -77,6 +77,24 @@
 									<destFileName>sarlc.exe</destFileName>
 								</artifactItem>
 								<artifactItem>
+									<groupId>io.sarl</groupId>
+									<artifactId>io.sarl.sarldoc</artifactId>
+									<version>${sarl.version}</version>
+									<type>sh</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${productPath.linux.64}</outputDirectory>
+									<destFileName>sarldoc</destFileName>
+								</artifactItem>
+								<artifactItem>
+									<groupId>io.sarl</groupId>
+									<artifactId>io.sarl.sarldoc</artifactId>
+									<version>${sarl.version}</version>
+									<type>exe</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${productPath.win.64}</outputDirectory>
+									<destFileName>sarldoc.exe</destFileName>
+								</artifactItem>
+								<artifactItem>
 									<groupId>io.janusproject</groupId>
 									<artifactId>io.janusproject.kernel</artifactId>
 									<version>${janus.version2}</version>

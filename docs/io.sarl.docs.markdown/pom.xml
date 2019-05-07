@@ -40,6 +40,10 @@
 			<artifactId>io.sarl.lang.sarlc</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>io.sarl</groupId>
+			<artifactId>io.sarl.sarldoc</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>io.sarl.maven</groupId>
 			<artifactId>sarl-maven-plugin</artifactId>
 		</dependency>
