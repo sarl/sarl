@@ -76,6 +76,7 @@
 		<!-- Java Configuration -->
 		<compiler.level>1.8</compiler.level>
 		<compiler.level.max>1.8</compiler.level.max>
+		<compiler.level.max.after>1.9</compiler.level.max.after>
 		<jre.environment>JavaSE-1.8</jre.environment>
 		<!-- Maven API version. This version should be supported by m2e. Search 
 			for maven-core on central. -->
@@ -326,6 +327,11 @@
 				<version>${sarl.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>io.sarl.maven</groupId>
+				<artifactId>io.sarl.maven.bootiqueapp</artifactId>
+				<version>${sarl.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>io.sarl</groupId>
 				<artifactId>io.sarl.tests.api</artifactId>
 				<version>${sarl.version}</version>
@@ -338,6 +344,11 @@
 			<dependency>
 				<groupId>io.sarl</groupId>
 				<artifactId>io.sarl.lang.sarlc</artifactId>
+				<version>${sarl.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.sarl.docs</groupId>
+				<artifactId>io.sarl.docs.doclet</artifactId>
 				<version>${sarl.version}</version>
 			</dependency>
 			<dependency>
@@ -968,6 +979,19 @@
 									</pluginExecutionFilter>
 									<action>
 										<execute></execute>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-assembly-plugin</artifactId>
+										<versionRange>[0.0.1,)</versionRange>
+										<goals>
+											<goal>single</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
 									</action>
 								</pluginExecution>
 								<pluginExecution>

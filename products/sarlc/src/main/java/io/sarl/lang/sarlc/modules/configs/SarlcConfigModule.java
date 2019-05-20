@@ -22,12 +22,12 @@
 package io.sarl.lang.sarlc.modules.configs;
 
 import static io.bootique.BQCoreModule.extend;
-import static io.sarl.lang.sarlc.configs.SarlConfig.BOOT_CLASSPATH_NAME;
-import static io.sarl.lang.sarlc.configs.SarlConfig.CLASSPATH_NAME;
-import static io.sarl.lang.sarlc.configs.SarlConfig.CLASS_OUTPUT_PATH_NAME;
-import static io.sarl.lang.sarlc.configs.SarlConfig.EXTRA_GENERATOR_NAME;
-import static io.sarl.lang.sarlc.configs.SarlConfig.OUTPUT_PATH_NAME;
-import static io.sarl.lang.sarlc.configs.SarlConfig.WORKING_PATH_NAME;
+import static io.sarl.lang.sarlc.configs.SarlcConfig.BOOT_CLASSPATH_NAME;
+import static io.sarl.lang.sarlc.configs.SarlcConfig.CLASSPATH_NAME;
+import static io.sarl.lang.sarlc.configs.SarlcConfig.CLASS_OUTPUT_PATH_NAME;
+import static io.sarl.lang.sarlc.configs.SarlcConfig.EXTRA_GENERATOR_NAME;
+import static io.sarl.lang.sarlc.configs.SarlcConfig.OUTPUT_PATH_NAME;
+import static io.sarl.lang.sarlc.configs.SarlcConfig.WORKING_PATH_NAME;
 
 import java.io.File;
 import java.text.MessageFormat;
@@ -45,7 +45,7 @@ import org.eclipse.core.runtime.Path;
 import io.sarl.lang.SARLConfig;
 import io.sarl.lang.sarlc.Constants;
 import io.sarl.lang.sarlc.commands.ExtraLanguageListCommand;
-import io.sarl.lang.sarlc.configs.SarlConfig;
+import io.sarl.lang.sarlc.configs.SarlcConfig;
 
 /**
  * Module for creating and configuring the general/root sarlc configuration.
@@ -135,8 +135,8 @@ public class SarlcConfigModule extends AbstractModule {
 	@SuppressWarnings("static-method")
 	@Provides
 	@Singleton
-	public SarlConfig getSarlcConfig(ConfigurationFactory configFactory, Injector injector) {
-		final SarlConfig config = SarlConfig.getConfiguration(configFactory);
+	public SarlcConfig getSarlcConfig(ConfigurationFactory configFactory, Injector injector) {
+		final SarlcConfig config = SarlcConfig.getConfiguration(configFactory);
 		injector.injectMembers(config);
 		return config;
 	}

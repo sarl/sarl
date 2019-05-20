@@ -19,15 +19,13 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.sarlc.modules.general;
+package io.sarl.maven.bootiqueapp.version;
 
-import static io.bootique.BQCoreModule.extend;
+import com.google.inject.Module;
+import io.bootique.BQModule;
+import io.bootique.BQModuleProvider;
 
-import com.google.inject.AbstractModule;
-
-import io.sarl.lang.sarlc.commands.CompilerCommand;
-
-/** Module for configuring the sarlc default command.
+/** Provider of the module for the version command.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -35,11 +33,21 @@ import io.sarl.lang.sarlc.commands.CompilerCommand;
  * @mavenartifactid $ArtifactId$
  * @since 0.8
  */
-public class SarlcDefaultCommandModule extends AbstractModule {
+public class VersionCommandModuleProvider implements BQModuleProvider {
 
 	@Override
-	protected void configure() {
-		extend(binder()).setDefaultCommand(CompilerCommand.class);
+	public Module module() {
+		return new VersionCommandModule();
 	}
+
+	@Override
+    public BQModule.Builder moduleBuilder() {
+        return BQModule
+                .builder(module())
+                .overrides(overrides())
+                .providerName(name())
+                .configs(configs())
+                .description(Messages.VersionCommandModuleProvider_0);
+    }
 
 }

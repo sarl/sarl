@@ -19,12 +19,16 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.sarlc.tools;
+package io.sarl.maven.bootiqueapp.version;
 
+import static io.bootique.BQCoreModule.extend;
+
+import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import io.bootique.log.BootLogger;
 
-/**
- * Provider of the SARL SDK class path.
+/** Module for the command for printing out the version.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -32,12 +36,23 @@ import com.google.inject.Singleton;
  * @mavenartifactid $ArtifactId$
  * @since 0.8
  */
-@Singleton
-public class SarlEmbededSdkBootClasspathProvider implements SARLBootClasspathProvider {
+public class VersionCommandModule extends AbstractModule {
 
 	@Override
-	public String getClasspath() {
-		return ""; //$NON-NLS-1$
+	protected void configure() {
+		extend(binder()).addCommand(VersionCommand.class);
+	}
+
+	/** Provide the command for displaying the version.
+	 *
+	 * @param bootLogger the logger.
+	 * @return the command.
+	 */
+	@SuppressWarnings("static-method")
+	@Provides
+	@Singleton
+	public VersionCommand provideSarlcVersionCommand(BootLogger bootLogger) {
+		return new VersionCommand(bootLogger);
 	}
 
 }

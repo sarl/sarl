@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.sarlc.commands;
+package io.sarl.maven.bootiqueapp.version;
 
 import java.text.MessageFormat;
 

@@ -699,7 +699,7 @@ public class SarlBatchCompiler {
 			this.bootClasspath = null;
 		} else {
 			this.bootClasspath = new ArrayList<>();
-			for (final String path : Strings.split(bootClasspath, Pattern.quote(File.pathSeparator))) {
+			for (final String path : Strings.split(bootClasspath, File.pathSeparator)) {
 				this.bootClasspath.add(normalizeFile(path));
 			}
 		}
@@ -746,7 +746,7 @@ public class SarlBatchCompiler {
 	 */
 	public void setClassPath(String classpath) {
 		this.classpath = new ArrayList<>();
-		for (final String path : Strings.split(classpath, Pattern.quote(File.pathSeparator))) {
+		for (final String path : Strings.split(classpath, File.pathSeparator)) {
 			this.classpath.add(normalizeFile(path));
 		}
 	}
@@ -1118,7 +1118,7 @@ public class SarlBatchCompiler {
 	 */
 	public void setSourcePath(String sourcePath) {
 		this.sourcePath = new ArrayList<>();
-		for (final String path : Strings.split(sourcePath, Pattern.quote(File.pathSeparator))) {
+		for (final String path : Strings.split(sourcePath, File.pathSeparator)) {
 			this.sourcePath.add(normalizeFile(path));
 		}
 	}

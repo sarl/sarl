@@ -29,7 +29,7 @@ import com.google.inject.Module;
 import io.bootique.BQModule;
 import io.bootique.BQModuleProvider;
 
-import io.sarl.lang.sarlc.configs.SarlConfig;
+import io.sarl.lang.sarlc.configs.SarlcConfig;
 
 /** Provider of the module for the sarlc configuration.
  *
@@ -48,7 +48,7 @@ public class SarlcConfigModuleProvider implements BQModuleProvider {
 
 	@Override
 	public Map<String, Type> configs() {
-		return Collections.singletonMap(SarlConfig.PREFIX, SarlConfig.class);
+		return Collections.singletonMap(SarlcConfig.PREFIX, SarlcConfig.class);
 	}
 
 	@Override

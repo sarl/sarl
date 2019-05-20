@@ -1,10 +1,8 @@
-io.sarl.lang.sarlc.modules.configs.SarlcConfigModuleProvider
-io.sarl.lang.sarlc.modules.configs.CompilerConfigModuleProvider
-io.sarl.lang.sarlc.modules.configs.ValidatorConfigModuleProvider
-io.sarl.lang.sarlc.modules.commands.VersionCommandModuleProvider
-io.sarl.lang.sarlc.modules.commands.ExtraLanguageListCommandModuleProvider
-io.sarl.lang.sarlc.modules.commands.CompilerCommandModuleProvider
-io.sarl.lang.sarlc.modules.general.SARLRuntimeModuleProvider
+io.sarl.maven.bootiqueapp.lang.SARLRuntimeModuleProvider
+io.sarl.lang.sarlc.modules.general.SLF4JLoggerModuleProvider
 io.sarl.lang.sarlc.modules.general.SarlBatchCompilerModuleProvider
-io.sarl.lang.sarlc.modules.general.SarlcDefaultCommandModuleProvider
-io.sarl.lang.sarlc.modules.general.SarlcApplicationModuleProvider
+io.sarl.lang.sarlc.modules.configs.CompilerConfigModuleProvider
+io.sarl.lang.sarlc.modules.configs.SarlcConfigModuleProvider
+io.sarl.lang.sarlc.modules.configs.ValidatorConfigModuleProvider
+io.sarl.lang.sarlc.modules.commands.CompilerCommandModuleProvider
+io.sarl.lang.sarlc.modules.commands.ExtraLanguageListCommandModuleProvider

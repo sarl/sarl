@@ -247,7 +247,7 @@
 		</repository>
 		<!-- Eclipse and related libraries -->
 		<repository>
-			<id>org.eclipse.ide.photon</id>
+			<id>org.eclipse.ide.lastest</id>
 			<layout>p2</layout>
 			<url>http://download.eclipse.org/releases/2019-03/</url>
 		</repository>

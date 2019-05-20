@@ -19,35 +19,32 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.sarlc.modules.general;
+package io.sarl.lang.sarlc.tools;
 
-import com.google.inject.Module;
-import io.bootique.BQModule;
-import io.bootique.BQModuleProvider;
+import org.eclipse.osgi.util.NLS;
 
-/** Provider of the module for the default sarlc command.
+/** Messages for the SARL batch compiler.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.8
+ * @ExcludeFromApidoc
  */
-public class SarlcDefaultCommandModuleProvider implements BQModuleProvider {
-
-	@Override
-	public Module module() {
-		return new SarlcDefaultCommandModule();
+@SuppressWarnings("all")
+public class Messages extends NLS {
+	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
+	public static String ClassPathUtils_0;
+	public static String ClassPathUtils_1;
+	public static String SarlEmbededSdkClasspathProvider_0;
+	public static String SarlEmbededSdkClasspathProvider_1;
+	public static String SarlEmbededSdkClasspathProvider_2;
+	public static String SarlEmbededSdkClasspathProvider_3;
+	static {
+		// initialize resource bundle
+		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
 	}
 
-	@Override
-    public BQModule.Builder moduleBuilder() {
-        return BQModule
-                .builder(module())
-                .overrides(overrides())
-                .providerName(name())
-                .configs(configs())
-                .description(Messages.SarlcDefaultCommandModuleProvider_0);
-    }
-
+	private Messages() {
+	}
 }

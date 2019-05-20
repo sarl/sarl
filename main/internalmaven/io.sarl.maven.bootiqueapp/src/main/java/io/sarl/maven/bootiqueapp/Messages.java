@@ -19,35 +19,27 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.sarlc.modules.commands;
+package io.sarl.maven.bootiqueapp;
 
-import com.google.inject.Module;
-import io.bootique.BQModule;
-import io.bootique.BQModuleProvider;
+import org.eclipse.osgi.util.NLS;
 
-/** Provider of the module for the version command.
+/** Messages for the SARL batch compiler.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.8
+ * @ExcludeFromApidoc
  */
-public class VersionCommandModuleProvider implements BQModuleProvider {
-
-	@Override
-	public Module module() {
-		return new VersionCommandModule();
+@SuppressWarnings("all")
+public class Messages extends NLS {
+	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
+	public static String BootiqueMain_0;
+	static {
+		// initialize resource bundle
+		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
 	}
 
-	@Override
-    public BQModule.Builder moduleBuilder() {
-        return BQModule
-                .builder(module())
-                .overrides(overrides())
-                .providerName(name())
-                .configs(configs())
-                .description(Messages.VersionCommandModuleProvider_0);
-    }
-
+	private Messages() {
+	}
 }

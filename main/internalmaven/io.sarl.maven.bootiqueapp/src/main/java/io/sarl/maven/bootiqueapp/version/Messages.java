@@ -19,37 +19,29 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.sarlc.modules.general;
+package io.sarl.maven.bootiqueapp.version;
 
-import com.google.inject.Module;
-import io.bootique.BQModule;
-import io.bootique.BQModuleProvider;
+import org.eclipse.osgi.util.NLS;
 
-import io.sarl.lang.SARLRuntimeModule;
-
-/** Provider of the module for the SARL compiler runtime.
+/** Messages for the SARL batch compiler.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.8
+ * @ExcludeFromApidoc
  */
-public class SARLRuntimeModuleProvider implements BQModuleProvider {
-
-	@Override
-	public Module module() {
-		return new SARLRuntimeModule();
+@SuppressWarnings("all")
+public class Messages extends NLS {
+	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
+	public static String VersionCommand_0;
+	public static String VersionCommand_1;
+	public static String VersionCommandModuleProvider_0;
+	static {
+		// initialize resource bundle
+		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
 	}
 
-	@Override
-    public BQModule.Builder moduleBuilder() {
-        return BQModule
-                .builder(module())
-                .overrides(overrides())
-                .providerName(name())
-                .configs(configs())
-                .description(Messages.SARLRuntimeModuleProvider_0);
-    }
-
+	private Messages() {
+	}
 }

@@ -19,18 +19,15 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.sarlc.modules.commands;
+package io.sarl.lang.sarlc.tools;
 
-import static io.bootique.BQCoreModule.extend;
+import com.google.inject.ImplementedBy;
+import org.slf4j.Logger;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
-import io.bootique.log.BootLogger;
+import io.sarl.maven.bootiqueapp.utils.SystemPath;
 
-import io.sarl.lang.sarlc.commands.VersionCommand;
-
-/** Module for the command for printing out the sarlc version.
+/**
+ * A provider of the class path that must be used for compiling a SARL program.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -38,23 +35,23 @@ import io.sarl.lang.sarlc.commands.VersionCommand;
  * @mavenartifactid $ArtifactId$
  * @since 0.8
  */
-public class VersionCommandModule extends AbstractModule {
+@ImplementedBy(SarlEmbededSdkClasspathProvider.class)
+public interface SARLClasspathProvider {
 
-	@Override
-	protected void configure() {
-		extend(binder()).addCommand(VersionCommand.class);
-	}
-
-	/** Provide the command for displaying the sarlc version.
+	/** Replies the boot class path that must be used for compiling a SARL program.
 	 *
-	 * @param bootLogger the logger.
-	 * @return the command.
+	 * @param path the classpath to fill.
+	 * @param logger the logger to use for notifying about the process of the task.
+	 * @since 0.10
 	 */
-	@SuppressWarnings("static-method")
-	@Provides
-	@Singleton
-	public VersionCommand provideSarlcVersionCommand(BootLogger bootLogger) {
-		return new VersionCommand(bootLogger);
-	}
+	void getBootClasspath(SystemPath path, Logger logger);
+
+	/** Replies the class path that must be used for compiling a SARL program.
+	 *
+	 * @param path the classpath to fill.
+	 * @param logger the logger to use for notifying about the process of the task.
+	 * @since 0.10
+	 */
+	void getClasspath(SystemPath path, Logger logger);
 
 }

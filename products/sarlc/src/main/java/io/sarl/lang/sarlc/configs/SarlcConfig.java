@@ -40,12 +40,12 @@ import io.sarl.lang.sarlc.configs.subconfigs.ValidatorConfig;
  * @since 0.8
  */
 @BQConfig("Configuration of the SARLC tool")
-public class SarlConfig {
+public class SarlcConfig {
 
 	/**
 	 * Prefix for the configuration entries of the modules.
 	 */
-	public static final String PREFIX = "sarl"; //$NON-NLS-1$
+	public static final String PREFIX = "sarlc"; //$NON-NLS-1$
 
 	/**
 	 * Name of the property that contains the output path for the SARL code.
@@ -105,9 +105,9 @@ public class SarlConfig {
 	 * @param configFactory the general configuration factory.
 	 * @return the SARLC configuration.
 	 */
-	public static SarlConfig getConfiguration(ConfigurationFactory configFactory) {
+	public static SarlcConfig getConfiguration(ConfigurationFactory configFactory) {
 		assert configFactory != null;
-		return configFactory.config(SarlConfig.class, PREFIX);
+		return configFactory.config(SarlcConfig.class, PREFIX);
 	}
 
 	/** Replies the classpath.

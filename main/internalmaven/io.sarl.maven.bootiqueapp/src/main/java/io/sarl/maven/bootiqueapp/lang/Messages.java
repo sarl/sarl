@@ -19,26 +19,27 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.sarlc.tools;
+package io.sarl.maven.bootiqueapp.lang;
 
-import com.google.inject.ImplementedBy;
+import org.eclipse.osgi.util.NLS;
 
-/**
- * A provider of the class path that must be used for compiling a SARL program.
+/** Messages for the SARL batch compiler.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.8
+ * @ExcludeFromApidoc
  */
-@ImplementedBy(SarlEmbededSdkBootClasspathProvider.class)
-public interface SARLBootClasspathProvider {
+@SuppressWarnings("all")
+public class Messages extends NLS {
+	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
+	public static String SARLRuntimeModuleProvider_0;
+	static {
+		// initialize resource bundle
+		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+	}
 
-	/** Replies the class path that must be used for compiling a SARL program.
-	 *
-	 * @return the classpath.
-	 */
-	String getClasspath();
-
+	private Messages() {
+	}
 }

@@ -31,10 +31,6 @@ package io.sarl.lang.sarlc;
  */
 public final class Constants {
 
-	/** Return code when failure.
-	 */
-	public static final int ERROR_CODE = 255;
-
 	/** Default name of the sarlc program.
 	 */
 	public static final String PROGRAM_NAME = "sarlc"; //$NON-NLS-1$

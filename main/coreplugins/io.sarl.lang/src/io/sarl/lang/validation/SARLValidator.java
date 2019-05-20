@@ -78,7 +78,6 @@ import static org.eclipse.xtend.core.validation.IssueCodes.OBSOLETE_OVERRIDE;
 import static org.eclipse.xtend.core.validation.IssueCodes.OVERRIDDEN_FINAL;
 import static org.eclipse.xtend.core.validation.IssueCodes.OVERRIDE_REDUCES_VISIBILITY;
 import static org.eclipse.xtend.core.validation.IssueCodes.UNUSED_PRIVATE_MEMBER;
-import static org.eclipse.xtend.core.validation.IssueCodes.XBASE_LIB_NOT_ON_CLASSPATH;
 import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_CLASS__IMPLEMENTS;
 import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_FIELD__NAME;
 import static org.eclipse.xtend.core.xtend.XtendPackage.Literals.XTEND_FUNCTION__NAME;
@@ -169,7 +168,6 @@ import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.Strings;
-import org.eclipse.xtext.util.XtextVersion;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.CheckType;
 import org.eclipse.xtext.validation.ComposedChecks;
@@ -198,7 +196,6 @@ import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 import org.eclipse.xtext.xbase.typesystem.override.IOverrideCheckResult.OverrideCheckDetails;
 import org.eclipse.xtext.xbase.typesystem.override.IResolvedOperation;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
@@ -620,28 +617,6 @@ public class SARLValidator extends AbstractSARLValidator {
 						sarlScript,
 						XtendPackage.Literals.XTEND_FILE__PACKAGE,
 						JDK_NOT_ON_CLASSPATH);
-			}
-		}
-
-		if (!Utils.isCompatibleXtextVersion()) {
-			error(
-					MessageFormat.format(
-							Messages.SARLValidator_5,
-							XtextVersion.getCurrent(),
-							SARLVersion.MINIMAL_XTEXT_VERSION),
-					sarlScript,
-					XtendPackage.Literals.XTEND_FILE__PACKAGE,
-					XBASE_LIB_NOT_ON_CLASSPATH);
-		} else {
-			final JvmType type = typeReferences.findDeclaredType(ToStringBuilder.class.getName(), sarlScript);
-			if (type == null) {
-				error(
-						MessageFormat.format(
-								Messages.SARLValidator_6,
-								SARLVersion.MINIMAL_XTEXT_VERSION),
-						sarlScript,
-						XtendPackage.Literals.XTEND_FILE__PACKAGE,
-						XBASE_LIB_NOT_ON_CLASSPATH);
 			}
 		}
 

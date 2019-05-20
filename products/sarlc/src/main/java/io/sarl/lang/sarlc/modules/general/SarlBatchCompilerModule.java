@@ -21,7 +21,6 @@
 
 package io.sarl.lang.sarlc.modules.general;
 
-import java.io.File;
 import java.util.Map.Entry;
 
 import com.google.inject.AbstractModule;
@@ -31,15 +30,18 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.util.Strings;
+import org.slf4j.Logger;
 
 import io.sarl.lang.compiler.batch.IJavaBatchCompiler;
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
 import io.sarl.lang.compiler.batch.SarlBatchCompiler.IssueMessageFormatter;
-import io.sarl.lang.sarlc.configs.SarlConfig;
+import io.sarl.lang.sarlc.configs.SarlcConfig;
 import io.sarl.lang.sarlc.configs.subconfigs.CompilerConfig;
 import io.sarl.lang.sarlc.configs.subconfigs.JavaCompiler;
 import io.sarl.lang.sarlc.configs.subconfigs.ValidatorConfig;
-import io.sarl.lang.sarlc.tools.SARLBootClasspathProvider;
+import io.sarl.lang.sarlc.tools.ClassPathUtils;
+import io.sarl.lang.sarlc.tools.SARLClasspathProvider;
+import io.sarl.maven.bootiqueapp.utils.SystemPath;
 
 /** Module for creating the SARL batch compiler with the configuration provided by bootique modules.
  *
@@ -74,35 +76,31 @@ public class SarlBatchCompilerModule extends AbstractModule {
 	 *
 	 * @param injector the current injector.
 	 * @param config the configuration for the paths.
-	 * @param defaultBootClasspath the SARL boot class path that must be used by default.
+	 * @param defaultClasspath the SARL boot class path that must be used by default.
 	 * @param issueMessageFormater the formatter of the issue messages.
 	 * @param javaCompilerProvider a provider of Java batch compiler.
+	 * @param logger the logger.
 	 * @return the SARL batch compiler
 	 */
 	@SuppressWarnings({"static-method", "checkstyle:npathcomplexity"})
 	@Provides
 	@Singleton
 	public SarlBatchCompiler provideSarlBatchCompiler(
-			Injector injector, Provider<SarlConfig> config, Provider<SARLBootClasspathProvider> defaultBootClasspath,
+			Injector injector, Provider<SarlcConfig> config, Provider<SARLClasspathProvider> defaultClasspath,
 			Provider<IssueMessageFormatter> issueMessageFormater,
-			Provider<IJavaBatchCompiler> javaCompilerProvider) {
-		final SarlConfig cfg = config.get();
+			Provider<IJavaBatchCompiler> javaCompilerProvider,
+			Provider<Logger> logger) {
+		final SarlcConfig cfg = config.get();
 		final CompilerConfig compilerConfig = cfg.getCompiler();
 		final ValidatorConfig validatorConfig = cfg.getValidator();
 
 		final SarlBatchCompiler compiler = new SarlBatchCompiler();
 		injector.injectMembers(compiler);
 
-		String fullClassPath = cfg.getBootClasspath();
-		if (Strings.isEmpty(fullClassPath)) {
-			fullClassPath = defaultBootClasspath.get().getClasspath();
-		}
-
-		final String userClassPath = cfg.getClasspath();
-		if (!Strings.isEmpty(userClassPath) && !Strings.isEmpty(fullClassPath)) {
-			fullClassPath = fullClassPath + File.pathSeparator + userClassPath;
-		}
-		compiler.setClassPath(fullClassPath);
+		final SARLClasspathProvider classpathProvider = defaultClasspath.get();
+		final SystemPath fullClassPath;
+		fullClassPath = ClassPathUtils.buildClassPath(classpathProvider, cfg, logger.get());
+		compiler.setClassPath(fullClassPath.toFileList());
 
 		if (!Strings.isEmpty(cfg.getJavaBootClasspath())) {
 			compiler.setBootClassPath(cfg.getJavaBootClasspath());
@@ -119,7 +117,7 @@ public class SarlBatchCompilerModule extends AbstractModule {
 		final JavaCompiler jcompiler = compilerConfig.getJavaCompiler();
 		compiler.setJavaPostCompilationEnable(jcompiler != JavaCompiler.NONE);
 		compiler.setJavaCompiler(javaCompilerProvider.get());
-		compiler.setOptimizationLevel(cfg.getCompiler().getOptimizationLevel());
+		compiler.setOptimizationLevel(cfg.getCompiler().getOptimizationLevelObject());
 		compiler.setWriteTraceFiles(compilerConfig.getOutputTraceFiles());
 		compiler.setWriteStorageFiles(compilerConfig.getOutputTraceFiles());
 

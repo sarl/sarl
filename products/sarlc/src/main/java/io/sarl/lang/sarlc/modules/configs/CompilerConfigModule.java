@@ -49,7 +49,7 @@ import org.arakhne.afc.bootique.variables.VariableDecls;
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.compiler.GeneratorConfig2;
 import io.sarl.lang.compiler.batch.IJavaBatchCompiler;
-import io.sarl.lang.sarlc.configs.SarlConfig;
+import io.sarl.lang.sarlc.configs.SarlcConfig;
 import io.sarl.lang.sarlc.configs.subconfigs.JavaCompiler;
 
 /** Module for creating and configuring the sarlc compiler.
@@ -190,8 +190,8 @@ public class CompilerConfigModule extends AbstractModule {
 	@SuppressWarnings("static-method")
 	@Provides
 	@Singleton
-	public IJavaBatchCompiler providesJavaBatchCompiler(Injector injector, Provider<SarlConfig> config) {
-		final SarlConfig cfg = config.get();
+	public IJavaBatchCompiler providesJavaBatchCompiler(Injector injector, Provider<SarlcConfig> config) {
+		final SarlcConfig cfg = config.get();
 		final IJavaBatchCompiler compiler = cfg.getCompiler().getJavaCompiler().newCompilerInstance();
 		injector.injectMembers(compiler);
 		return compiler;

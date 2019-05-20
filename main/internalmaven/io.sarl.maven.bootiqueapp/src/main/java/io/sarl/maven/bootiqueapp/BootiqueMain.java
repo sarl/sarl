@@ -19,13 +19,14 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.sarlc;
+package io.sarl.maven.bootiqueapp;
 
 import java.util.List;
 
 import com.google.common.base.Throwables;
 import com.google.inject.Injector;
 import com.google.inject.ProvisionException;
+import io.bootique.BQModuleProvider;
 import io.bootique.BQRuntime;
 import io.bootique.Bootique;
 import io.bootique.command.CommandOutcome;
@@ -45,30 +46,74 @@ import io.sarl.lang.SARLStandaloneSetup;
  * @mavenartifactid $ArtifactId$
  * @since 0.8
  */
-public class BootiqueSarlcMain {
+public class BootiqueMain {
+
+	/** Return code when failure.
+	 */
+	public static final int ERROR_CODE = 255;
+
+	private final BQModuleProvider[] providers;
+
+	private final boolean experimental;
+
+	/** Constructor.
+	 *
+	 * @param providers the providers of module that injects application-specific components.
+	 */
+	public BootiqueMain(BQModuleProvider... providers) {
+		this(false, providers);
+	}
+
+	/** Constructor.
+	 *
+	 * @param experimental indicates if the application is experimental.
+	 * @param providers the providers of module that injects application-specific components.
+	 */
+	public BootiqueMain(boolean experimental, BQModuleProvider... providers) {
+		this.experimental = experimental;
+		this.providers = providers;
+	}
+
+	/** Replies if this application is an experimental application.
+	 *
+	 * <p>Usually a warning message is displayed at launch time when the application is experimental.
+	 *
+	 * @return {@code true} if experimental.
+	 */
+	public boolean isExperimental() {
+		return this.experimental;
+	}
 
 	/** Create the compiler runtime.
 	 *
 	 * @param args the command line arguments.
 	 * @return the runtime.
 	 */
-	@SuppressWarnings("static-method")
 	protected BQRuntime createRuntime(String... args) {
 		SARLStandaloneSetup.doPreSetup();
-		final BQRuntime runtime = Bootique.app(args).autoLoadModules().createRuntime();
+		Bootique bootique = Bootique.app(args).autoLoadModules();
+		if (this.providers != null) {
+			for (final BQModuleProvider provider : this.providers) {
+				bootique = bootique.module(provider);
+			}
+		}
+		final BQRuntime runtime = bootique.createRuntime();
 		SARLStandaloneSetup.doPostSetup(runtime.getInstance(Injector.class));
 		return runtime;
 	}
 
-	/** Run the batch compiler.
+	/** Run the associated commands.
 	 *
-	 * <p>This function runs the compiler and exits with the return code.
+	 * <p>This function runs the command and exits with the return code.
 	 *
 	 * @param args the command line arguments.
 	 * @return the exit code.
 	 */
-	public int runCompiler(String... args) {
+	public int runCommand(String... args) {
 		try {
+			if (isExperimental()) {
+				Logger.getRootLogger().warn(Messages.BootiqueMain_0);
+			}
 			final BQRuntime runtime = createRuntime(args);
 			final CommandOutcome outcome = runtime.run();
 			if (!outcome.isSuccess() && outcome.getException() != null) {
@@ -85,7 +130,7 @@ public class BootiqueSarlcMain {
 		} catch (Throwable exception) {
 			Logger.getRootLogger().error(exception.getLocalizedMessage());
 		}
-		return Constants.ERROR_CODE;
+		return ERROR_CODE;
 	}
 
 	/** Replies the options of the program.

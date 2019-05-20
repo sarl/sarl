@@ -13,9 +13,7 @@
 	<name>Update Site and Products</name>
 
 	<properties>
-		<productPath.linux.32>${project.basedir}/target/products/io.sarl.lang.product/linux/gtk/x86</productPath.linux.32>
 		<productPath.linux.64>${project.basedir}/target/products/io.sarl.lang.product/linux/gtk/x86_64</productPath.linux.64>
-		<productPath.win.32>${project.basedir}/target/products/io.sarl.lang.product/win32/win32/x86</productPath.win.32>
 		<productPath.win.64>${project.basedir}/target/products/io.sarl.lang.product/win32/win32/x86_64</productPath.win.64>
 	</properties>
 
@@ -29,23 +27,6 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
 				<executions>
-					<execution>
-						<id>copy-linux32-root-files</id>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${productPath.linux.32}</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${project.basedir}/rootfiles/linux</directory>
-									<filtering>true</filtering>
-								</resource>
-							</resources>
-							<overwrite>true</overwrite>
-						</configuration>
-					</execution>
 					<execution>
 						<id>copy-linux64-root-files</id>
 						<phase>generate-resources</phase>
@@ -83,26 +64,8 @@
 									<version>${sarl.version}</version>
 									<type>sh</type>
 									<overWrite>true</overWrite>
-									<outputDirectory>${productPath.linux.32}</outputDirectory>
-									<destFileName>sarlc</destFileName>
-								</artifactItem>
-								<artifactItem>
-									<groupId>io.sarl</groupId>
-									<artifactId>io.sarl.lang.sarlc</artifactId>
-									<version>${sarl.version}</version>
-									<type>sh</type>
-									<overWrite>true</overWrite>
 									<outputDirectory>${productPath.linux.64}</outputDirectory>
 									<destFileName>sarlc</destFileName>
-								</artifactItem>
-								<artifactItem>
-									<groupId>io.sarl</groupId>
-									<artifactId>io.sarl.lang.sarlc</artifactId>
-									<version>${sarl.version}</version>
-									<type>exe</type>
-									<overWrite>true</overWrite>
-									<outputDirectory>${productPath.win.32}</outputDirectory>
-									<destFileName>sarlc.exe</destFileName>
 								</artifactItem>
 								<artifactItem>
 									<groupId>io.sarl</groupId>
@@ -119,26 +82,8 @@
 									<version>${janus.version2}</version>
 									<type>sh</type>
 									<overWrite>true</overWrite>
-									<outputDirectory>${productPath.linux.32}</outputDirectory>
-									<destFileName>janus</destFileName>
-								</artifactItem>
-								<artifactItem>
-									<groupId>io.janusproject</groupId>
-									<artifactId>io.janusproject.kernel</artifactId>
-									<version>${janus.version2}</version>
-									<type>sh</type>
-									<overWrite>true</overWrite>
 									<outputDirectory>${productPath.linux.64}</outputDirectory>
 									<destFileName>janus</destFileName>
-								</artifactItem>
-								<artifactItem>
-									<groupId>io.janusproject</groupId>
-									<artifactId>io.janusproject.kernel</artifactId>
-									<version>${janus.version2}</version>
-									<type>exe</type>
-									<overWrite>true</overWrite>
-									<outputDirectory>${productPath.win.32}</outputDirectory>
-									<destFileName>janus.exe</destFileName>
 								</artifactItem>
 								<artifactItem>
 									<groupId>io.janusproject</groupId>
