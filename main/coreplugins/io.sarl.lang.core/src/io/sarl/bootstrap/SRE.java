@@ -113,6 +113,7 @@ public final class SRE {
 	 * @return the set of libraries.
 	 * @since 0.7
 	 */
+	@Pure
 	public static Set<URL> getBootstrappedLibraries() {
 		final String name = PREFIX + SREBootstrap.class.getName();
 		final Set<URL> result = new TreeSet<>();

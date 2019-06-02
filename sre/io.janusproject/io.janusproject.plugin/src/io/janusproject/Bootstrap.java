@@ -24,6 +24,7 @@ package io.janusproject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 import io.janusproject.kernel.Kernel;
 
@@ -103,6 +104,18 @@ public final class Bootstrap implements SREBootstrap {
 			}
 		}
 		return kern.getJanusContext();
+	}
+
+	@Override
+	public Logger getKernelLogger() {
+		final Kernel kern;
+		synchronized (this) {
+			kern = this.kernel;
+		}
+		if (kern != null) {
+			return kern.getLogger();
+		}
+		return null;
 	}
 
 	@Override

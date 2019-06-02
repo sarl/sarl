@@ -22,6 +22,9 @@
 package io.sarl.bootstrap;
 
 import java.util.UUID;
+import java.util.logging.Logger;
+
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
@@ -83,6 +86,7 @@ public interface SREBootstrap {
 	 * @return the identifier of the boot agent, or <code>null</code> if it is unknown.
 	 * @see #startAgent(int, Class, Object...)
 	 */
+	@Pure
 	UUID getBootAgentIdentifier();
 
 	/** Replies if the bootstrap could be used.
@@ -91,6 +95,7 @@ public interface SREBootstrap {
 	 *
 	 * @return {@code true} if the bootstrap could be used. {@code false} if it cannot be used.
 	 */
+	@Pure
 	default boolean isActive() {
 		return true;
 	}
@@ -183,6 +188,7 @@ public interface SREBootstrap {
 	 * @return the identifier, or {@code null} if no identifier is provided by the user and the default identifier should be used.
 	 * @since 0.9
 	 */
+	@Pure
 	default UUID getUniverseContextUUID() {
 		throw new UnsupportedOperationException();
 	}
@@ -208,6 +214,7 @@ public interface SREBootstrap {
 	 * @return the identifier, or {@code null} if no identifier is provided by the user and the default identifier should be used.
 	 * @since 0.9
 	 */
+	@Pure
 	default UUID getUniverseSpaceUUID() {
 		throw new UnsupportedOperationException();
 	}
@@ -222,6 +229,18 @@ public interface SREBootstrap {
 	 */
 	default void setVerboseLevel(int level) {
 		throw new UnsupportedOperationException();
+	}
+
+	/** Replies the logger used by the SRE.
+	 *
+	 * <p>This function replies a not {@code null} value only if the kernel was launched.
+	 *
+	 * @return the logger, or {@code null} if the kernel was not launched or has no logger.
+	 * @since 0.10
+	 */
+	@Pure
+	default Logger getKernelLogger() {
+		return null;
 	}
 
 }
