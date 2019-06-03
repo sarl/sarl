@@ -80,6 +80,17 @@ public interface SREBootstrap {
 	Iterable<UUID> startAgent(int nbAgents, Class<? extends Agent> agentCls, Object... params) throws Exception;
 
 	/**
+	 * Launch the SRE and the first agent in the kernel and assigning a specific UUID.
+	 *
+	 * @param agentCls type of the first agent to launch.
+	 * @param agentID the identifier of the agent to be created.
+	 * @param params parameters to pass to the agent as its initialization parameters.
+	 * @throws Exception - if it is impossible to start the platform.
+	 * @since 0.10
+	 */
+	void startAgentWithID(Class<? extends Agent> agentCls, UUID agentID, Object... params) throws Exception;
+
+	/**
 	 * Replies the identifier of the boot agent from the system's properties. The boot agent is launched with
 	 * {@link #startAgent(int, Class, Object...)}.
 	 *

@@ -906,14 +906,14 @@ public final class Boot {
 	 * function is called, it is assumed that all the system's properties are correctly set.
 	 *
 	 * <p>The platformModule parameter permits to specify the injection module to use. The injection module is in change of
-	 * creating/injecting all the components of the platform. The default injection module is retreived from the system property
+	 * creating/injecting all the components of the platform. The default injection module is retrieved from the system property
 	 * with the name stored in {@link JanusConfig#INJECTION_MODULE_NAME}. The default type for the injection module is stored in
 	 * the constant {@link JanusConfig#INJECTION_MODULE_NAME_VALUE}.
 	 *
-	 * <p>The function {@link #getBootAgentIdentifier()} permits to retreive the identifier of the launched agent.
+	 * <p>The function {@link #getBootAgentIdentifier()} permits to retrieve the identifier of the launched agent.
 	 *
 	 * @param agentCls type of the first agent to launch.
-	 * @param params parameters to pass to the agent as its initliazation parameters.
+	 * @param params parameters to pass to the agent as its initialization parameters.
 	 * @return the kernel that was launched.
 	 * @throws Exception - if it is impossible to start the platform.
 	 * @see #main(String[])
@@ -925,22 +925,44 @@ public final class Boot {
 	}
 
 	/**
+	 * Launch the Janus kernel and the first agent in the kernel, and associate a specific UUID to the launched agent.
+	 *
+	 * <p>Thus function does not parse the command line. See {@link #main(String[])} for the command line management. When this
+	 * function is called, it is assumed that all the system's properties are correctly set.
+	 *
+	 * @param agentId the identifier of the agent.
+	 * @param agentCls type of the first agent to launch.
+	 * @param params parameters to pass to the agent as its initialization parameters.
+	 * @return the kernel that was launched.
+	 * @throws Exception - if it is impossible to start the platform.
+	 * @since 0.10
+	 * @see #main(String[])
+	 */
+	public static Kernel startJanusWithID(UUID agentId, Class<? extends Agent> agentCls, Object... params)
+			throws Exception {
+		final Class<? extends Module> startupModule = JanusConfig.getSystemPropertyAsClass(Module.class, JanusConfig.INJECTION_MODULE_NAME,
+					JanusConfig.INJECTION_MODULE_NAME_VALUE);
+		assert startupModule != null : "No platform injection module"; //$NON-NLS-1$
+		return internalStartJanus(startupModule.newInstance(), agentId, agentCls, params);
+	}
+
+	/**
 	 * Launch the Janus kernel and the first agent in the kernel.
 	 *
 	 * <p>Thus function does not parse the command line. See {@link #main(String[])} for the command line management. When this
 	 * function is called, it is assumed that all the system's properties are correctly set.
 	 *
 	 * <p>The platformModule parameter permits to specify the injection module to use. The injection module is in change of
-	 * creating/injecting all the components of the platform. The default injection module is retreived from the system property
+	 * creating/injecting all the components of the platform. The default injection module is retrieved from the system property
 	 * with the name stored in {@link JanusConfig#INJECTION_MODULE_NAME}. The default type for the injection module is stored in
 	 * the constant {@link JanusConfig#INJECTION_MODULE_NAME_VALUE}.
 	 *
-	 * <p>The function {@link #getBootAgentIdentifier()} permits to retreive the identifier of the launched agent.
+	 * <p>The function {@link #getBootAgentIdentifier()} permits to retrieve the identifier of the launched agent.
 	 *
 	 * @param platformModule type of the injection module to use for initializing the platform, if <code>null</code> the default
 	 *        module will be used.
 	 * @param agentCls type of the first agent to launch.
-	 * @param params parameters to pass to the agent as its initliazation parameters.
+	 * @param params parameters to pass to the agent as its initialization parameters.
 	 * @return the kernel that was launched.
 	 * @throws Exception - if it is impossible to start the platform.
 	 * @since 0.5
@@ -955,7 +977,7 @@ public final class Boot {
 					JanusConfig.INJECTION_MODULE_NAME_VALUE);
 		}
 		assert startupModule != null : "No platform injection module"; //$NON-NLS-1$
-		return startJanusWithModule(startupModule.newInstance(), agentCls, params);
+		return internalStartJanus(startupModule.newInstance(), null, agentCls, params);
 	}
 
 	/**
@@ -965,15 +987,15 @@ public final class Boot {
 	 * function is called, it is assumed that all the system's properties are correctly set.
 	 *
 	 * <p>The startupModule parameter permits to specify the injection module to use. The injection module is in change of
-	 * creating/injecting all the components of the platform. The default injection module is retreived from the system property
+	 * creating/injecting all the components of the platform. The default injection module is retrieved from the system property
 	 * with the name stored in {@link JanusConfig#INJECTION_MODULE_NAME}. The default type for the injection module is stored in
 	 * the constant {@link JanusConfig#INJECTION_MODULE_NAME_VALUE}.
 	 *
-	 * <p>The function {@link #getBootAgentIdentifier()} permits to retreive the identifier of the launched agent.
+	 * <p>The function {@link #getBootAgentIdentifier()} permits to retrieve the identifier of the launched agent.
 	 *
 	 * @param startupModule the injection module to use for initializing the platform.
 	 * @param agentCls type of the first agent to launch.
-	 * @param params parameters to pass to the agent as its initliazation parameters.
+	 * @param params parameters to pass to the agent as its initialization parameters.
 	 * @return the kernel that was launched.
 	 * @throws Exception - if it is impossible to start the platform.
 	 * @since 0.5
@@ -981,6 +1003,10 @@ public final class Boot {
 	 * @see #getBootAgentIdentifier()
 	 */
 	public static Kernel startJanusWithModule(Module startupModule, Class<? extends Agent> agentCls, Object... params) throws Exception {
+		return internalStartJanus(startupModule, null, agentCls, params);
+	}
+
+	private static Kernel internalStartJanus(Module startupModule, UUID agentId, Class<? extends Agent> agentCls, Object... params) {
 		// Set the boot agent classname
 		System.setProperty(JanusConfig.BOOT_AGENT, agentCls.getName());
 		// Get the start-up injection module
@@ -989,7 +1015,12 @@ public final class Boot {
 		if (logger != null) {
 			logger.info(MessageFormat.format(Messages.Boot_22, agentCls.getName()));
 		}
-		final UUID id = k.spawn(agentCls, params);
+		final UUID id;
+		if (agentId == null) {
+			id = k.spawn(agentCls, params);
+		} else {
+			id = k.spawn(agentId, agentCls, params);
+		}
 		if (id != null) {
 			System.setProperty(JanusConfig.BOOT_AGENT_ID, id.toString());
 		} else {

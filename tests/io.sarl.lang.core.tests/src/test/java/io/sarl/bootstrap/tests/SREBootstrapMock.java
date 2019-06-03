@@ -45,6 +45,11 @@ public class SREBootstrapMock implements SREBootstrap {
 	}
 
 	@Override
+	public void startAgentWithID(Class<? extends Agent> agentCls, UUID agentID, Object... params) throws Exception {
+		throw new IllegalStateException();
+	}
+
+	@Override
 	public UUID getBootAgentIdentifier() {
 		throw new IllegalStateException();
 	}

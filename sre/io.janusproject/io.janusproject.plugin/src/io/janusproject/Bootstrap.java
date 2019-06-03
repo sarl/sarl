@@ -90,6 +90,18 @@ public final class Bootstrap implements SREBootstrap {
 	}
 
 	@Override
+	public void startAgentWithID(Class<? extends Agent> agentCls, UUID agentId, Object... params) throws Exception {
+		final Kernel kern = this.kernel;
+		if (kern == null) {
+			synchronized (this) {
+				this.kernel = Boot.startJanus(agentCls, params);
+				return;
+			}
+		}
+		kern.spawn(agentId, agentCls, params);
+	}
+
+	@Override
 	public UUID getBootAgentIdentifier() {
 		return Boot.getBootAgentIdentifier();
 	}

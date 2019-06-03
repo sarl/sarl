@@ -214,6 +214,11 @@ public final class SRE {
 		}
 
 		@Override
+		public void startAgentWithID(Class<? extends Agent> agentCls, UUID agentID, Object... params) throws Exception {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
 		public UUID getBootAgentIdentifier() {
 			throw new UnsupportedOperationException();
 		}
