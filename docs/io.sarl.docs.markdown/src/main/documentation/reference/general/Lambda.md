@@ -31,7 +31,7 @@ Like a method declaration, a lambda expression may declare parameters.
 			}
 		[:End:]
 
-The lambda above has one parameter called e which is of type [:actionevent:].
+The lambda above has one parameter called [:e:] which is of type [:actionevent:].
 The code after the [:tube:] operator is the internal code of the lambda expression.
 
 
@@ -61,7 +61,9 @@ For example, when using inferred type, the code in the previous section becomes:
 The type of [:e:] is inferred according to its usage.
 
 
-## Implicit Parameters: it
+## Implicit Parameters
+
+### Case of a single parameter: it
 
 As lambdas with one parameter are a common case, there  a special short hand notation
 for these parameters, which is to leave the declaration including the vertical bar out.
@@ -87,6 +89,45 @@ The name of the single parameter becomes [:it:].
 			}
 		[:End:]
 
+### Case of multiple parameters
+
+When a lambda has multiple parameters, and no name is provided by the SARL developer, 
+the compiler generates default names for each of the formal parameters.
+The implicit name for the first parameter is `$0`, `$1` for the second,
+`$2` for the third, etc.
+
+Let the following interface declaration:
+
+        [:Success:]
+            package io.sarl.docs.reference.gsr
+            [:On]
+            interface [:MyInterfacename](MyInterface) {
+                def [:MyInterfacenamefct](myfct)(a : int, b : int, c : int)
+            }
+            [:Off]
+        [:End:]
+
+The following code is a lambda expression implementing the [:MyInterfacename:] interface.
+Because the [:MyInterfacenamefct:] function has four formal parameters, the lambda expression 
+has four parameters with implicit the following implicit names: `$0`, `$1`, and `$2`.
+
+        [:Success:]
+            package io.sarl.docs.reference.gsr
+            interface MyInterface {
+                def myfct(a : int, b : int, c : int) : int
+            }
+            agent A {
+                def called(p : MyInterface) {}
+                def example {
+                    called(
+                    [:On]
+                    [
+                        $0 + $1 + $2
+                    ]
+                    [:Off])
+                }
+            }
+        [:End:]
 
 ## Empty List of Parameters
 

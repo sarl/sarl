@@ -180,6 +180,7 @@ import org.eclipse.xtext.xbase.XBasicForLoopExpression;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
 import org.eclipse.xtext.xbase.XCastedExpression;
+import org.eclipse.xtext.xbase.XClosure;
 import org.eclipse.xtext.xbase.XConstructorCall;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XFeatureCall;
@@ -388,7 +389,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	private SarlJvmModelAssociations associations;
 
 	@Inject
-	private FeatureNameValidator featureNames;
+	private FeatureNameValidator featureNames_;
 
 	@Inject
 	private IActionPrototypeProvider sarlActionSignatures;
@@ -1263,6 +1264,25 @@ public class SARLValidator extends AbstractSARLValidator {
 		}
 	}
 
+	/** This functions checks of the given name is disallowed.
+	 * The {@link SARLFeatureNameValidator} provides the basic conditions.
+	 * It is not detecting the implicit lambda's parameter names. This specific
+	 * function does.
+	 *
+	 * @param name the name to test.
+	 * @return {@code true} if the name is really disallowed.
+	 */
+	private boolean isReallyDisallowedName(QualifiedName name) {
+		if (this.featureNames_.isDisallowedName(name)) {
+			return true;
+		}
+		final String base = name.getLastSegment();
+		if (Utils.isHiddenMember(base) && Utils.isImplicitLambdaParameterName(base)) {
+			return true;
+		}
+		return false;
+	}
+
 	/** Check if the given action has a valid name.
 	 *
 	 * @param action the action to test.
@@ -1270,9 +1290,9 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check(CheckType.FAST)
 	public void checkActionName(SarlAction action) {
-		final JvmOperation inferredType = this.associations.getDirectlyInferredOperation(action);
-		final QualifiedName name = QualifiedName.create(inferredType.getQualifiedName('.').split("\\.")); //$NON-NLS-1$
-		if (this.featureNames.isDisallowedName(name)) {
+		final JvmOperation inferredOperation = this.associations.getDirectlyInferredOperation(action);
+		final QualifiedName name = QualifiedName.create(inferredOperation.getQualifiedName('.').split("\\.")); //$NON-NLS-1$
+		if (isReallyDisallowedName(name)) {
 			final String validName = Utils.fixHiddenMember(action.getName());
 			error(MessageFormat.format(
 					Messages.SARLValidator_39,
@@ -1283,7 +1303,7 @@ public class SARLValidator extends AbstractSARLValidator {
 					INVALID_MEMBER_NAME,
 					validName);
 		} else if (!isIgnored(DISCOURAGED_FUNCTION_NAME)
-				&& this.featureNames.isDiscouragedName(name)) {
+				&& this.featureNames_.isDiscouragedName(name)) {
 			warning(MessageFormat.format(
 					Messages.SARLValidator_39,
 					action.getName()),
@@ -1301,9 +1321,9 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check(CheckType.FAST)
 	public void checkFieldName(SarlField field) {
-		final JvmField inferredType = this.associations.getJvmField(field);
-		final QualifiedName name = Utils.getQualifiedName(inferredType);
-		if (this.featureNames.isDisallowedName(name)) {
+		final JvmField inferredField = this.associations.getJvmField(field);
+		final QualifiedName name = Utils.getQualifiedName(inferredField);
+		if (isReallyDisallowedName(name)) {
 			final String validName = Utils.fixHiddenMember(field.getName());
 			error(MessageFormat.format(
 					Messages.SARLValidator_41,
@@ -1370,7 +1390,17 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check(CheckType.FAST)
 	public void checkParameterName(SarlFormalParameter parameter) {
-		if (this.grammarAccess.getOccurrenceKeyword().equals(parameter.getName())) {
+		final JvmFormalParameter inferredParam = this.associations.getJvmParameter(parameter);
+		final QualifiedName name = Utils.getQualifiedName(inferredParam);
+		if (isReallyDisallowedName(name)) {
+			error(MessageFormat.format(
+					Messages.SARLValidator_14,
+					parameter.getName()),
+					parameter,
+					XtendPackage.Literals.XTEND_PARAMETER__NAME,
+					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+					VARIABLE_NAME_DISALLOWED);
+		} else if (this.grammarAccess.getOccurrenceKeyword().equals(parameter.getName())) {
 			error(MessageFormat.format(
 					Messages.SARLValidator_14,
 					this.grammarAccess.getOccurrenceKeyword()),
@@ -1381,14 +1411,54 @@ public class SARLValidator extends AbstractSARLValidator {
 		}
 	}
 
+	/** Check if the closure parameters have a valid name.
+	 *
+	 * @param closure the closure to test.
+	 * @see SARLFeatureNameValidator
+	 */
+	@Check(CheckType.NORMAL)
+	public void checkParameterName(XClosure closure) {
+		int index = 0;
+		for (final JvmFormalParameter param : closure.getDeclaredFormalParameters()) {
+			final QualifiedName name = Utils.getQualifiedName(param);
+			if (isReallyDisallowedName(name)) {
+				error(MessageFormat.format(
+						Messages.SARLValidator_14,
+						param.getName()),
+						closure,
+						XbasePackage.Literals.XCLOSURE__DECLARED_FORMAL_PARAMETERS,
+						index,
+						VARIABLE_NAME_DISALLOWED);
+			} else if (this.grammarAccess.getOccurrenceKeyword().equals(param.getName())) {
+				error(MessageFormat.format(
+						Messages.SARLValidator_14,
+						this.grammarAccess.getOccurrenceKeyword()),
+						closure,
+						XbasePackage.Literals.XCLOSURE__DECLARED_FORMAL_PARAMETERS,
+						index,
+						VARIABLE_NAME_DISALLOWED);
+			}
+			++index;
+		}
+	}
+
 	/** Check if the given local variable has a valid name.
 	 *
 	 * @param variable the variable to test.
 	 * @see SARLFeatureNameValidator
 	 */
 	@Check(CheckType.FAST)
-	public void checkParameterName(XVariableDeclaration variable) {
-		if (this.grammarAccess.getOccurrenceKeyword().equals(variable.getName())) {
+	public void checkVariableName(XVariableDeclaration variable) {
+		final QualifiedName name = QualifiedName.create(variable.getQualifiedName('.').split("\\.")); //$NON-NLS-1$
+		if (isReallyDisallowedName(name)) {
+			error(MessageFormat.format(
+					Messages.SARLValidator_15,
+					variable.getName()),
+					variable,
+					XbasePackage.Literals.XVARIABLE_DECLARATION__NAME,
+					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+					VARIABLE_NAME_DISALLOWED);
+		} else if (this.grammarAccess.getOccurrenceKeyword().equals(variable.getName())) {
 			error(MessageFormat.format(
 					Messages.SARLValidator_15,
 					this.grammarAccess.getOccurrenceKeyword()),
@@ -2796,7 +2866,7 @@ public class SARLValidator extends AbstractSARLValidator {
 								annotation,
 								null,
 								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-								org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE);
+								FORBIDDEN_REFERENCE);
 					}
 				} else {
 					if (!isAOActiveAnnotation(annotation) || !isAOActiveAnnotationReceiver(container)) {
@@ -2804,7 +2874,7 @@ public class SARLValidator extends AbstractSARLValidator {
 								annotation,
 								null,
 								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-								org.eclipse.xtext.xbase.validation.IssueCodes.FORBIDDEN_REFERENCE);
+								FORBIDDEN_REFERENCE);
 					}
 				}
 			}

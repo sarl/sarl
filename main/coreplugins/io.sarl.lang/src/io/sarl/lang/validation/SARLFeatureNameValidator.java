@@ -44,7 +44,7 @@ public class SARLFeatureNameValidator extends LogicalContainerAwareFeatureNameVa
 	@Override
 	public boolean isDisallowedName(QualifiedName name) {
 		final String id = name.getLastSegment();
-		return Utils.isHiddenMember(id) || super.isDisallowedName(name);
+		return super.isDisallowedName(name) || (Utils.isHiddenMember(id) && !Utils.isImplicitLambdaParameterName(id));
 	}
 
 }

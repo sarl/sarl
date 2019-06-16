@@ -23,15 +23,18 @@ package io.sarl.lang.validation;
 
 import javax.inject.Inject;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend.core.xtend.XtendAnnotationType;
 import org.eclipse.xtend.core.xtend.XtendClass;
 import org.eclipse.xtend.core.xtend.XtendEnum;
 import org.eclipse.xtend.core.xtend.XtendInterface;
+import org.eclipse.xtend.core.xtend.XtendMember;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmMember;
 import org.eclipse.xtext.xbase.XAbstractFeatureCall;
+import org.eclipse.xtext.xbase.XClosure;
 import org.eclipse.xtext.xbase.jvmmodel.ILogicalContainerProvider;
 import org.eclipse.xtext.xbase.lib.InputOutput;
 
@@ -79,8 +82,10 @@ public class DefaultFeatureCallValidator implements IFeatureCallValidator {
 				return !isInsideOOTypeDeclaration(call);
 			}
 			// Avoid any call to the hidden functions (function name contains "$" character).
-			if (Utils.isHiddenMember(feature.getSimpleName())
-				&& !Utils.isNameForHiddenCapacityImplementationCallingMethod(feature.getSimpleName())) {
+			final String simpleName = feature.getSimpleName();
+			if (Utils.isHiddenMember(simpleName)
+				&& !Utils.isNameForHiddenCapacityImplementationCallingMethod(simpleName)
+				&& (!Utils.isImplicitLambdaParameterName(simpleName) || !isInsideClosure(call))) {
 				return true;
 			}
 			// Avoid any reference to private API.
@@ -89,6 +94,13 @@ public class DefaultFeatureCallValidator implements IFeatureCallValidator {
 			}
 		}
 		return false;
+	}
+
+	private static boolean isInsideClosure(XAbstractFeatureCall call) {
+		final EObject container = Utils.getFirstContainerForPredicate(call, it -> {
+			return it instanceof XClosure || it instanceof XtendMember;
+		});
+		return container instanceof XClosure;
 	}
 
 	private boolean isPrivateAPI(JvmIdentifiableElement element) {

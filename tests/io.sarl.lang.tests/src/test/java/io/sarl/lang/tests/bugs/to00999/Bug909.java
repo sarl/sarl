@@ -70,9 +70,6 @@ public class Bug909 extends AbstractSarlTest {
 			"  }",
 			"}");
 
-	private static final String JAVA_CODE = multilineString(
-			"");
-
 	@Test
 	public void parsing() throws Exception {
 		SarlScript mas = file(SARL_CODE);
