@@ -285,6 +285,7 @@
       <feature id="org.eclipse.ecf.filetransfer.ssl.feature" installMode="root"/>
       <feature id="org.eclipse.userstorage" installMode="root"/>
       <feature id="org.eclipse.xsd" installMode="root"/>
+      <feature id="org.eclipse.equinox.executable" installMode="root"/>
       <feature id="org.eclipse.xtext.runtime" installMode="root"/>
       <feature id="org.eclipse.emf.ecore" installMode="root"/>
       <feature id="org.eclipse.equinox.p2.user.ui" installMode="root"/>
@@ -301,7 +302,6 @@
       <feature id="org.eclipse.platform" installMode="root"/>
       <feature id="org.eclipse.e4.rcp" installMode="root"/>
       <feature id="org.eclipse.wst.common_ui.feature" installMode="root"/>
-      <feature id="org.eclipse.equinox.executable" installMode="root"/>
    </features>
 
    <configurations>
@@ -310,11 +310,12 @@
       <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
+      <property name="org.eclipse.update.reconcile" value="false" />
    </configurations>
 
    <repositories>
       <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
-      <repository location="http://updates.sarl.io/composite/releases/" enabled="false" />
+      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
    </repositories>
 
    <preferencesInfo>

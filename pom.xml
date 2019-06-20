@@ -484,12 +484,12 @@
 			<dependency>
 				<groupId>org.javassist</groupId>
 				<artifactId>javassist</artifactId>
-				<version>3.23.1-GA</version>
+				<version>3.25.0-GA</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven.plugin-tools</groupId>
 				<artifactId>maven-plugin-annotations</artifactId>
-				<version>3.5.2</version>
+				<version>3.6.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
@@ -509,7 +509,8 @@
 			<dependency>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.1.0</version>
+				<!-- Caution: version 3.1.2 causes problems with m2e into the SARL product -->
+				<version>3.1.1</version>
 			</dependency>
 			<dependency>
 				<groupId>junit</groupId>
@@ -535,7 +536,7 @@
 			<dependency>
 				<groupId>org.mockito</groupId>
 				<artifactId>mockito-core</artifactId>
-				<version>2.22.0</version>
+				<version>2.28.2</version>
 			</dependency>
 			<dependency>
 				<groupId>com.vladsch.flexmark</groupId>
@@ -545,12 +546,12 @@
 			<dependency>
 				<groupId>org.jsoup</groupId>
 				<artifactId>jsoup</artifactId>
-				<version>1.11.3</version>
+				<version>1.12.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
-				<version>3.8.1</version>
+				<version>3.9</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven.shared</groupId>
@@ -565,7 +566,7 @@
 			<dependency>
 				<groupId>com.google.errorprone</groupId>
 				<artifactId>error_prone_annotations</artifactId>
-				<version>2.3.1</version>
+				<version>2.3.3</version>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
@@ -590,7 +591,7 @@
 			<dependency>
 				<groupId>me.tongfei</groupId>
 				<artifactId>progressbar</artifactId>
-				<version>0.7.1</version>
+				<version>0.7.4</version>
 			</dependency>
 			<dependency>
 				<groupId>org.ow2.asm</groupId>
@@ -624,7 +625,7 @@
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
 				<artifactId>wagon-webdav-jackrabbit</artifactId>
-				<version>3.1.0</version>
+				<version>3.3.3</version>
 			</extension>
 		</extensions>
 		<pluginManagement>
@@ -665,7 +666,7 @@
 						<dependency>
 							<groupId>org.eclipse.tycho</groupId>
 							<artifactId>tycho-compiler-jdt</artifactId>
-							<version>1.3.0</version>
+							<version>1.4.0</version>
 						</dependency>
 					</dependencies>
 				</plugin>
@@ -679,14 +680,15 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>3.1.0</version>
+					<!-- Caution: version 3.1.2 causes problems with m2e into the SARL product -->
+					<version>3.1.1</version>
 				</plugin>
 
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
-					<version>3.1.0</version>
+					<version>3.1.1</version>
 				</plugin>
 
 				<plugin>
@@ -704,13 +706,13 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-source-plugin</artifactId>
-					<version>3.0.1</version>
+					<version>3.1.0</version>
 				</plugin>
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-deploy-plugin</artifactId>
-					<version>2.8.2</version>
+					<version>3.0.0-M1</version>
 				</plugin>
 
 				<plugin>
@@ -753,7 +755,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.22.0</version>
+					<version>3.0.0-M3</version>
 				</plugin>
 
 				<plugin>
@@ -765,7 +767,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-plugin-plugin</artifactId>
-					<version>3.5.2</version>
+					<version>3.6.0</version>
 					<executions>
 						<execution>
 							<id>generated-helpmojo</id>
@@ -779,13 +781,13 @@
 				<plugin>
 					<groupId>com.akathist.maven.plugins.launch4j</groupId>
 					<artifactId>launch4j-maven-plugin</artifactId>
-					<version>1.7.23</version>
+					<version>1.7.25</version>
 				</plugin>
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-checkstyle-plugin</artifactId>
-					<version>3.0.0</version>
+					<version>3.1.0</version>
 					<executions>
 						<execution>
 							<phase>process-classes</phase>
