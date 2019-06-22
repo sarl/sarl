@@ -25,11 +25,13 @@ import static org.mockito.Mockito.when;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
 import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Sets;
 import com.google.common.util.concurrent.Service;
 import com.google.common.util.concurrent.Service.State;
 import javassist.Modifier;
@@ -50,6 +52,7 @@ import io.janusproject.util.TwoStepConstruction;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.tests.api.Nullable;
+import io.sarl.util.Collections3;
 
 /**
  * @author $Author: sgalland$
@@ -230,6 +233,41 @@ public class KernelTest extends AbstractJanusTest {
 				}
 			}
 		}
+	}
+
+	@Test
+	public void getAgentCount_0() throws Exception {
+		when(this.spawnService.getAgents()).thenReturn(Collections3.synchronizedSet(Collections.emptySet(), this));
+		UUID aId = UUID.fromString(this.uuid.toString());
+		int nb = this.kernel.getAgentCount();
+		assertEquals(0, nb);
+	}
+
+	@Test
+	public void getAgentCount_1() throws Exception {
+		when(this.spawnService.getAgents()).thenReturn(Collections3.synchronizedSet(
+				Collections.singleton(UUID.randomUUID()), this));
+		UUID aId = UUID.fromString(this.uuid.toString());
+		int nb = this.kernel.getAgentCount();
+		assertEquals(1, nb);
+	}
+
+	@Test
+	public void getAgentCount_2() throws Exception {
+		when(this.spawnService.getAgents()).thenReturn(Collections3.synchronizedSet(
+				Sets.newHashSet(UUID.randomUUID(), UUID.randomUUID()), this));
+		UUID aId = UUID.fromString(this.uuid.toString());
+		int nb = this.kernel.getAgentCount();
+		assertEquals(2, nb);
+	}
+
+	@Test
+	public void getAgentCount_3() throws Exception {
+		when(this.spawnService.getAgents()).thenReturn(Collections3.synchronizedSet(
+				Sets.newHashSet(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID()), this));
+		UUID aId = UUID.fromString(this.uuid.toString());
+		int nb = this.kernel.getAgentCount();
+		assertEquals(3, nb);
 	}
 
 }

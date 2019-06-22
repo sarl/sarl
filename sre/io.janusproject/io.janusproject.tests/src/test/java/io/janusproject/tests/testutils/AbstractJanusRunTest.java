@@ -48,6 +48,7 @@ import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 
 import io.janusproject.Boot;
+import io.janusproject.Bootstrap;
 import io.janusproject.kernel.Kernel;
 import io.janusproject.modules.StandardJanusPlatformModule;
 import io.janusproject.services.executor.EarlyExitException;
@@ -504,6 +505,16 @@ public abstract class AbstractJanusRunTest extends AbstractJanusTest {
 		if (isJanusRunning) {
 			throw new TimeoutException();
 		}
+	}
+
+	protected Bootstrap getTestingBootstrap() {
+		Bootstrap b = new Bootstrap();
+		b.setKernel(getTestingKernel());
+		return b;
+	}
+	
+	protected final Kernel getTestingKernel() {
+		return this.janusKernel;
 	}
 
 	/**

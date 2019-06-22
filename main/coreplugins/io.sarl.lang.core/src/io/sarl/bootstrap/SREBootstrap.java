@@ -45,7 +45,7 @@ public interface SREBootstrap {
 
 	/**
 	 * Start the SRE without an agent.
-	 This function prepare the default context.
+	 * This function prepare the default context.
 	 *
 	 * @return the context that is created by the bootstrap. If {@code null} there is no context created.
 	 * @since 0.7
@@ -253,5 +253,31 @@ public interface SREBootstrap {
 	default Logger getKernelLogger() {
 		return null;
 	}
+
+	/**
+	 * Stop the SRE without an agent.
+	 * This function may cause the agents to stop during the run of a behavior.
+	 * This function returns when the kernel and all its services are stopped.
+	 *
+	 * @throws InterruptedException the shutdown process is interrupted.
+	 * @since 0.10
+	 * @see #shutdown(boolean)
+	 */
+	default void shutdown() throws InterruptedException {
+		shutdown(true);
+	}
+
+	/**
+	 * Stop the SRE without an agent.
+	 * This function may cause the agents to stop during the run of a behavior.
+	 *
+	 * @param blocking indicates if the functions is blocked until the shutdown task is finished.
+	 *     If it is {@code true}, the function returns when the kernel is down. If it is
+	 *     {@code false}, the function could return before the kernel is down.
+	 * @throws InterruptedException the shutdown process is interrupted.
+	 * @since 0.10
+	 * @see #shutdown()
+	 */
+	void shutdown(boolean blocking) throws InterruptedException;
 
 }

@@ -264,7 +264,7 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 	}
 
 	@Override
-	public boolean killAgent(UUID agentID) {
+	public boolean killAgent(UUID agentID, boolean forceKilling) {
 		final boolean error = !isRunning();
 
 		// We should check if it is possible to kill the agent BEFORE killing it.
@@ -276,7 +276,7 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 			final Agent agent = this.agents.get(agentID);
 			foundAgent = agent != null;
 			if (foundAgent) {
-				if (canKillAgent(agent)) {
+				if (forceKilling || canKillAgent(agent)) {
 					this.agents.remove(agentID);
 					isLast = this.agents.isEmpty();
 					killAgent = agent;
@@ -322,11 +322,7 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 		return false;
 	}
 
-	/**
-	 * Replies the registered agents.
-	 *
-	 * @return the registered agents.
-	 */
+	@Override
 	public SynchronizedSet<UUID> getAgents() {
 		final Object mutex = getAgentRepositoryMutex();
 		synchronized (mutex) {

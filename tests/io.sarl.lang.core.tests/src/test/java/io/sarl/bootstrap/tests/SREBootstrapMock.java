@@ -59,4 +59,9 @@ public class SREBootstrapMock implements SREBootstrap {
 		throw new IllegalStateException();
 	}
 
+	@Override
+	public void shutdown(boolean blocking) throws InterruptedException {
+		throw new IllegalStateException();
+	}
+
 }

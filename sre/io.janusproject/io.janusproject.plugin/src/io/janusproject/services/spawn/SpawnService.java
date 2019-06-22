@@ -28,6 +28,7 @@ import io.janusproject.services.DependentService;
 
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
+import io.sarl.lang.util.SynchronizedSet;
 
 /**
  * This service provides the tools to manage the life-cycle of the agents.
@@ -61,7 +62,20 @@ public interface SpawnService extends DependentService {
 	 * @return {@code true} if the agent was killed by this call; {@code false} if the agent
 	 *     is unknown or already killed.
 	 */
-	boolean killAgent(UUID agentID);
+	default boolean killAgent(UUID agentID) {
+		return killAgent(agentID, false);
+	}
+
+	/**
+	 * Kill the agent with the given identifier.
+	 *
+	 * @param agentID the identifier of the agent to kill.
+	 * @param forceKilling indicates if the kill of the agent must be forced when it is possible.
+	 * @return {@code true} if the agent was killed by this call; {@code false} if the agent
+	 *     is unknown or already killed.
+	 * @since 0.10
+	 */
+	boolean killAgent(UUID agentID, boolean forceKilling);
 
 	/**
 	 * Add a listener on the changes in the current state of an agent.
@@ -106,5 +120,13 @@ public interface SpawnService extends DependentService {
 	 * @param listener listener on the spawning events in the local kernel.
 	 */
 	void removeKernelAgentSpawnListener(KernelAgentSpawnListener listener);
+
+	/**
+	 * Replies the registered agents.
+	 *
+	 * @return the registered agents.
+	 * @since 0.10
+	 */
+	SynchronizedSet<UUID> getAgents();
 
 }

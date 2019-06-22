@@ -87,7 +87,6 @@ public class SchedulesSkillTest {
 		@Nullable
 		private UUID agentId;
 
-		@InjectMocks
 		private SchedulesSkill skill;
 
 		@Mock
@@ -151,6 +150,8 @@ public class SchedulesSkillTest {
 			this.agent = spy(this.agent);
 			this.timeSkill = new TimeSkillMock(this.agent);
 			this.timeSkill = spy(this.timeSkill);
+			this.skill = this.reflect.newInstance(SchedulesSkill.class, this.agent);
+			this.reflect.set(this.skill, "executorService", this.executorService);
 			SREutils.createSkillMapping(this.agent, Time.class, this.timeSkill);
 			this.reflect.invoke(this.skill, "setOwner", this.agent);
 			Mockito.when(this.executorService.schedule(ArgumentMatchers.any(Runnable.class), ArgumentMatchers.any(long.class),

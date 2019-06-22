@@ -22,6 +22,7 @@
 package io.janusproject.kernel;
 
 import java.lang.Thread.UncaughtExceptionHandler;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Executors;
@@ -48,6 +49,7 @@ import io.janusproject.util.TwoStepConstruction;
 
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
+import io.sarl.lang.util.SynchronizedSet;
 
 /**
  * This class represents the Kernel of the Janus platform.
@@ -120,12 +122,58 @@ public class Kernel {
 	}
 
 	/**
+	 * Replies a behavior that stops the kernel.
+	 *
+	 * @return the logger of the kernel.
+	 * @since 0.10
+	 */
+	public Runnable getStopBehavior() {
+		return () -> {
+			final SpawnService service = getService(SpawnService.class);
+			if (service != null) {
+				final SynchronizedSet<UUID> agents = service.getAgents();
+				final List<UUID> agentIds;
+				synchronized (agents.mutex()) {
+					agentIds = new ArrayList<>(agents);
+				}
+				boolean killed = false;
+				for (final UUID agentId : agentIds) {
+					if (service.killAgent(agentId, true)) {
+						killed = true;
+					}
+				}
+				if (!killed) {
+					new StopTheKernel().startAsync();
+				}
+			}
+		};
+	}
+
+	/**
 	 * Replies if the kernel is running or not.
 	 *
 	 * @return <code>true</code> if the kernel is running; <code>false</code> otherwise.
 	 */
 	public boolean isRunning() {
 		return this.isRunning.get();
+	}
+
+	/**
+	 * Replies the number of agents that are registered on this kernel.
+	 * This function does not consider the agents that are on remote kernels.
+	 *
+	 * @return the number of agents on this local kernel.
+	 * @since 0.10
+	 */
+	public int getAgentCount() {
+		final SpawnService service = getService(SpawnService.class);
+		if (service != null) {
+			final SynchronizedSet<UUID> agents = service.getAgents();
+			synchronized (agents.mutex()) {
+				return agents.size();
+			}
+		}
+		return 0;
 	}
 
 	/**
@@ -248,7 +296,7 @@ public class Kernel {
 			// THIS AVOID THE STOP FUNCTION TO BE INTERRUPTED
 			// BECAUSE THE EXECUTORSERVICE WAS SHUTTED DOWN.
 			final StopTheKernel t = new StopTheKernel();
-			t.start();
+			t.startAsync();
 		}
 	}
 
@@ -271,10 +319,14 @@ public class Kernel {
 
 		/**
 		 * Start the thread.
+		 * The thread invokes the {@link #run()} function asynchronously.
+		 *
+		 * @return the thread.
 		 */
-		public void start() {
+		public Thread startAsync() {
 			final Thread t = newThread(this);
 			t.start();
+			return t;
 		}
 
 		@SuppressWarnings("synthetic-access")

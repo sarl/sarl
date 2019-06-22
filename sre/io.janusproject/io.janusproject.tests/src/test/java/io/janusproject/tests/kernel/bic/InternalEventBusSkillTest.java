@@ -33,6 +33,7 @@ import javax.inject.Inject;
 
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
@@ -67,10 +68,10 @@ public class InternalEventBusSkillTest extends AbstractJanusTest {
 	@Inject
 	private ReflectExtensions reflect;
 
-	@Mock
+	@Mock(name="eventDispatcher")
 	private AgentInternalEventsDispatcher eventBus;
 
-	@Mock
+	@Mock(name="logger")
 	private LogService logger;
 
 	@Mock
@@ -79,9 +80,15 @@ public class InternalEventBusSkillTest extends AbstractJanusTest {
 	@Mock
 	private Address innerAddress;
 
-	@InjectMocks
 	private InternalEventBusSkill skill;
 
+	@Before
+	public void setUp() throws Exception {
+		this.skill = this.reflect.newInstance(InternalEventBusSkill.class, this.agent, this.innerAddress);
+		this.reflect.set(this.skill, "eventDispatcher", this.eventBus);
+		this.reflect.set(this.skill, "logger", this.logger);
+	}
+	
 	@Test
 	public void asEventListener() {
 		assertNotNull(this.skill.asEventListener());
@@ -233,6 +240,7 @@ public class InternalEventBusSkillTest extends AbstractJanusTest {
 	@Test
 	public void unregisterEventListener_enableDestroyFiring_running() throws Exception {
 		EventListener eventListener = Mockito.mock(EventListener.class);
+		this.reflect.invoke(this.skill, "setOwnerState", InternalEventBusCapacity.OwnerState.ALIVE);
 		this.reflect.invoke(this.skill, "setOwnerState", InternalEventBusCapacity.OwnerState.ALIVE);
 		this.skill.registerEventListener(eventListener, false, null);
 		//

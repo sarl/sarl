@@ -75,7 +75,6 @@ public class LifecycleSkillTest extends AbstractJanusTest {
 	@Mock
 	private DefaultContextInteractionsSkill defaultContextInteractions;
 
-	@InjectMocks
 	private LifecycleSkill skill;
 
 	@Before
@@ -99,7 +98,8 @@ public class LifecycleSkillTest extends AbstractJanusTest {
 				return LifecycleSkillTest.this.agentID;
 			}
 		};
-		this.reflect.invoke(this.skill, "setOwner", agent);
+		this.skill = this.reflect.newInstance(LifecycleSkill.class, agent);
+		this.reflect.set(this.skill, "spawnService", this.spawnService);
 	}
 
 	@Test

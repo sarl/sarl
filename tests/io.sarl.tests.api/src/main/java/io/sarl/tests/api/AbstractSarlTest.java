@@ -20,14 +20,8 @@
  */
 package io.sarl.tests.api;
 
-import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.any;
-import static com.google.common.collect.Iterables.isEmpty;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static com.google.common.collect.Iterables.filter;
 
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
@@ -60,6 +54,7 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.MembersInjector;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.eclipse.emf.common.util.URI;
@@ -67,7 +62,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.xtend.core.macro.ProcessorInstanceForJvmTypeProvider;
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtend.core.xtend.XtendTypeDeclaration;
 import org.eclipse.xtext.common.types.JvmConstructor;
@@ -80,7 +74,6 @@ import org.eclipse.xtext.testing.XtextRunner;
 import org.eclipse.xtext.testing.util.ParseHelper;
 import org.eclipse.xtext.testing.validation.ValidationTestHelper;
 import org.eclipse.xtext.util.JavaVersion;
-import org.eclipse.xtext.util.ReflectionUtil;
 import org.eclipse.xtext.validation.Issue;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XNullLiteral;
@@ -104,8 +97,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.internal.matchers.InstanceOf;
-import org.mockito.internal.matchers.Null;
-import org.mockito.internal.matchers.Or;
 import org.mockito.internal.util.Primitives;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -177,6 +168,15 @@ public abstract class AbstractSarlTest extends Assert {
 	@Inject
 	private Provider<SarlJvmModelAssociations> associations;
 
+	/** Replies the injector.
+	 *
+	 * @return the injector.
+	 * @since 0.10
+	 */
+	protected Injector getInjector() {
+		return this.injector;
+	}
+	
 	/** Temporary fixing a bug in the class loading of Mockito 2.
 	 * 
 	 * @param type the type to mock.
@@ -240,22 +240,23 @@ public abstract class AbstractSarlTest extends Assert {
 	 */
 	@Rule
 	public TestWatcher rootSarlWatchter = new TestWatcher() {
-		private boolean isMockable() {
-			boolean isMockable = false;
+		private int getMockableFeatures() {
+			int features = 0;
 			Class<?> type = AbstractSarlTest.this.getClass();
 			while (type != null && !AbstractSarlTest.class.equals(type)) {
 				if (type.getAnnotation(ManualMocking.class) != null) {
-					return false;
+					return 0;
 				}
 				for (Field field : type.getDeclaredFields()) {
-					if (field.getAnnotation(Mock.class) != null
-							|| field.getAnnotation(InjectMocks.class) != null) {
-						isMockable = true;
+					if (field.getAnnotation(Mock.class) != null) {
+						features |= 0x1;
+					} else if (field.getAnnotation(InjectMocks.class) != null) {
+						features |= 0x2;
 					}
 				}
 				type = type.getSuperclass();
 			}
-			return isMockable;
+			return features;
 		}
 		@Override
 		protected void starting(Description description) {
@@ -270,10 +271,12 @@ public abstract class AbstractSarlTest extends Assert {
 				throw new Error("You must use JDK not higher that " + SARLVersion.MAXIMAL_JDK_VERSION + " for running the tests.");
 			}
 			//
-			if (isMockable()) {
+			final int mockFeaturing = getMockableFeatures();
+			if (mockFeaturing != 0) {
 				MockitoAnnotations.initMocks(AbstractSarlTest.this);
 			}
 		}
+
 		@Override
 		public Statement apply(Statement base, Description description) {
 			setGlobalLogLevel(Level.WARN);
@@ -2295,13 +2298,25 @@ public abstract class AbstractSarlTest extends Assert {
 
 	/** Start a time out on the operation.
 	 *
+	 * @param enable programmatic flag for enabling the time out.
+	 * @return the time out manager.
+	 * @since 0.10
+	 */
+	protected TimeOutHandler startTimeOut(boolean enable) {
+		final TimeOutHandler handler = new TimeOutHandler();
+		if (enable) {
+			handler.start();
+		}
+		return handler;
+	}
+
+	/** Start a time out on the operation.
+	 *
 	 * @return the time out manager.
 	 * @since 0.9
 	 */
 	protected TimeOutHandler startTimeOut() {
-		final TimeOutHandler handler = new TimeOutHandler();
-		handler.start();
-		return handler;
+		return startTimeOut(true);
 	}
 
 	/** An object for managing the time out of operations.

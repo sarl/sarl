@@ -29,6 +29,7 @@ import java.util.logging.Logger;
 import io.janusproject.kernel.Kernel;
 
 import io.sarl.bootstrap.SREBootstrap;
+import io.sarl.lang.annotation.PrivateAPI;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
 
@@ -55,8 +56,27 @@ public final class Bootstrap implements SREBootstrap {
 	 *
 	 * @param kernel the kernel.
 	 */
-	void setKernel(Kernel kernel) {
+	@PrivateAPI
+	public void setKernel(Kernel kernel) {
 		this.kernel = kernel;
+	}
+
+	@Override
+	public void shutdown(boolean blocking) throws InterruptedException {
+		final Kernel kern;
+		synchronized (this) {
+			kern = this.kernel;
+			this.kernel = null;
+		}
+		if (kern != null) {
+			final Runnable stop = kern.getStopBehavior();
+			stop.run();
+			if (blocking) {
+				while (kern.isRunning()) {
+					Thread.yield();
+				}
+			}
+		}
 	}
 
 	@Override

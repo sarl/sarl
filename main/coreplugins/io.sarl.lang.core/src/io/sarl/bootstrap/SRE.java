@@ -228,6 +228,11 @@ public final class SRE {
 			return false;
 		}
 
+		@Override
+		public void shutdown(boolean blocking) {
+			throw new UnsupportedOperationException();
+		}
+
 	}
 
 }
