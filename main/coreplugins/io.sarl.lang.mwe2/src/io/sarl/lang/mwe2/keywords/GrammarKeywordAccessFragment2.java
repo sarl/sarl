@@ -236,10 +236,9 @@ public class GrammarKeywordAccessFragment2 extends AbstractXtextGeneratorFragmen
 		for (final Keyword grammarKeyword : getAllKeywords(grammar)) {
 			final String keyword = grammarKeyword.getValue().trim();
 			if (!keyword.isEmpty()) {
-				final String id = keyword.toLowerCase();
-				if (!addedKeywords.contains(id) && !this.configuration.getIgnoredKeywords().contains(keyword)) {
+				if (!addedKeywords.contains(keyword) && !this.configuration.getIgnoredKeywords().contains(keyword)) {
 					clients.add(generateKeyword(grammarKeyword, grammar.getName(), getters));
-					addedKeywords.add(id);
+					addedKeywords.add(keyword);
 				}
 			}
 		}

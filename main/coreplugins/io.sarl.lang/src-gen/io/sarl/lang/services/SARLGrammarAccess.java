@@ -6455,6 +6455,70 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//@Override
+	//XAssignment xbase::XExpression:
+	//	{xbase::XAssignment} feature=[types::JvmIdentifiableElement|FeatureCallID] OpSingleAssign value=XAssignment |
+	//	XConditionalExpression (=> ({xbase::XBinaryOperation.leftOperand=current}
+	//	feature=[types::JvmIdentifiableElement|OpMultiAssign]) rightOperand=XAssignment)?;
+	public XtendGrammarAccess.XAssignmentElements getXAssignmentAccess() {
+		return gaXtend.getXAssignmentAccess();
+	}
+	
+	public ParserRule getXAssignmentRule() {
+		return getXAssignmentAccess().getRule();
+	}
+	
+	//XConditionalExpression xbase::XExpression:
+	//	XOrExpression (
+	//	// The java grammar does only allow other XConditionalExpression after the colon, but we can be more relaxed
+	//	-> ({xbase::XIfExpression.if=current} conditionalExpression?='?') then=XExpression (-> ':' else=XExpression)?)?;
+	public XtendGrammarAccess.XConditionalExpressionElements getXConditionalExpressionAccess() {
+		return gaXtend.getXConditionalExpressionAccess();
+	}
+	
+	public ParserRule getXConditionalExpressionRule() {
+		return getXConditionalExpressionAccess().getRule();
+	}
+	
+	//@Override
+	//XTryCatchFinallyExpression xbase::XExpression:
+	//	{xbase::XTryCatchFinallyExpression}
+	//	'try' ('(' resources+=InitializedVariableDeclaration (';' resources+=InitializedVariableDeclaration)* ';'? ')'
+	//	expression=XExpression
+	//	-> (catchClauses+=XCatchClause+ (=> 'finally' finallyExpression=XExpression)?
+	//	| 'finally' finallyExpression=XExpression)?
+	//	| expression=XExpression (catchClauses+=XCatchClause+ (=> 'finally' finallyExpression=XExpression)?
+	//	| 'finally' finallyExpression=XExpression));
+	public XtendGrammarAccess.XTryCatchFinallyExpressionElements getXTryCatchFinallyExpressionAccess() {
+		return gaXtend.getXTryCatchFinallyExpressionAccess();
+	}
+	
+	public ParserRule getXTryCatchFinallyExpressionRule() {
+		return getXTryCatchFinallyExpressionAccess().getRule();
+	}
+	
+	//InitializedVariableDeclaration XtendVariableDeclaration:
+	//	{XtendVariableDeclaration} VariableModifier (=> (type=JvmTypeReference name=InnerVarID) | name=InnerVarID) '='
+	//	right=XExpression;
+	public XtendGrammarAccess.InitializedVariableDeclarationElements getInitializedVariableDeclarationAccess() {
+		return gaXtend.getInitializedVariableDeclarationAccess();
+	}
+	
+	public ParserRule getInitializedVariableDeclarationRule() {
+		return getInitializedVariableDeclarationAccess().getRule();
+	}
+	
+	//fragment VariableModifier *:
+	//	(writeable?='var' | 'val') extension?='extension'?
+	//	| extension?='extension' (writeable?='var' | 'val');
+	public XtendGrammarAccess.VariableModifierElements getVariableModifierAccess() {
+		return gaXtend.getVariableModifierAccess();
+	}
+	
+	public ParserRule getVariableModifierRule() {
+		return getVariableModifierAccess().getRule();
+	}
+	
+	//@Override
 	//XConstructorCall xbase::XExpression:
 	//	XbaseConstructorCall (=> ({AnonymousClass.constructorCall=current} '{') members+=super::Member* '}')?;
 	public XtendGrammarAccess.XConstructorCallElements getXConstructorCallAccess() {
@@ -7217,25 +7281,13 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//XExpression:
-	//	XAssignment;
+	//	super::XAssignment;
 	public XbaseGrammarAccess.XExpressionElements getXExpressionAccess() {
 		return gaXbase.getXExpressionAccess();
 	}
 	
 	public ParserRule getXExpressionRule() {
 		return getXExpressionAccess().getRule();
-	}
-	
-	//XAssignment XExpression:
-	//	{XAssignment} feature=[types::JvmIdentifiableElement|super::FeatureCallID] OpSingleAssign value=XAssignment |
-	//	XOrExpression (=> ({XBinaryOperation.leftOperand=current} feature=[types::JvmIdentifiableElement|OpMultiAssign])
-	//	rightOperand=XAssignment)?;
-	public XbaseGrammarAccess.XAssignmentElements getXAssignmentAccess() {
-		return gaXbase.getXAssignmentAccess();
-	}
-	
-	public ParserRule getXAssignmentRule() {
-		return getXAssignmentAccess().getRule();
 	}
 	
 	//OpSingleAssign:
@@ -7415,7 +7467,7 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//XMemberFeatureCall XExpression:
 	//	super::XPrimaryExpression (=> ({XAssignment.assignable=current} ('.' | explicitStatic?="::")
-	//	feature=[types::JvmIdentifiableElement|super::FeatureCallID] OpSingleAssign) value=XAssignment
+	//	feature=[types::JvmIdentifiableElement|super::FeatureCallID] OpSingleAssign) value=super::XAssignment
 	//	| => ({XMemberFeatureCall.memberCallTarget=current} ("." | nullSafe?="?." | explicitStatic?="::")) ('<'
 	//	typeArguments+=JvmArgumentTypeReference (',' typeArguments+=JvmArgumentTypeReference)* '>')?
 	//	feature=[types::JvmIdentifiableElement|IdOrSuper] (=> explicitOperationCall?='(' (memberCallArguments+=XShortClosure
@@ -7671,19 +7723,6 @@ public class SARLGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getXReturnExpressionRule() {
 		return getXReturnExpressionAccess().getRule();
-	}
-	
-	//XTryCatchFinallyExpression XExpression:
-	//	{XTryCatchFinallyExpression}
-	//	'try'
-	//	expression=XExpression (catchClauses+=XCatchClause+ (=> 'finally' finallyExpression=XExpression)?
-	//	| 'finally' finallyExpression=XExpression);
-	public XbaseGrammarAccess.XTryCatchFinallyExpressionElements getXTryCatchFinallyExpressionAccess() {
-		return gaXbase.getXTryCatchFinallyExpressionAccess();
-	}
-	
-	public ParserRule getXTryCatchFinallyExpressionRule() {
-		return getXTryCatchFinallyExpressionAccess().getRule();
 	}
 	
 	//XSynchronizedExpression XExpression:

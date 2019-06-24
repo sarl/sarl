@@ -103,7 +103,7 @@ public final class SARLVersion {
 
 	/** The minimal Xtext version to use SARL features.
 	 */
-	public static final String MINIMAL_XTEXT_VERSION = "2.17.1"; //$NON-NLS-1$
+	public static final String MINIMAL_XTEXT_VERSION = "2.18.0"; //$NON-NLS-1$
 
 	private SARLVersion() {
 		//

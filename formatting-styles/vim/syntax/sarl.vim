@@ -1,6 +1,6 @@
 " Vim syntax file
 " Language: SARL
-" Version: 0.9
+" Version: 0.10
 " 
 "  $Id$
 " 
@@ -94,11 +94,11 @@ syn keyword sarlTypeDeclaration agent annotation artifact behavior capacity clas
 syn cluster sarlTop add=sarlTypeDeclaration
 
 " keywords for the 'sarlModifier' family.
-syn keyword sarlModifier abstract def dispatch final native override private protected public static strictfp synchronized transient val var volatile
+syn keyword sarlModifier abstract def dispatch extension final native override private protected public static strictfp synchronized transient val var volatile
 syn cluster sarlTop add=sarlModifier
 
 " keywords for the 'sarlKeyword' family.
-syn keyword sarlKeyword as assert assume break case catch continue default do else extends extension finally fires for if implements instanceof new on requires return super switch throw throws try typeof uses while with
+syn keyword sarlKeyword as assert assume break case catch continue default do else extends finally fires for if implements instanceof new on requires return super switch throw throws try typeof uses while with
 syn cluster sarlTop add=sarlKeyword
 
 " catch errors caused by wrong parenthesis

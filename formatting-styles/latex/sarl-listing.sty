@@ -22,7 +22,7 @@
 % limitations under the License.
 %
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
-\ProvidesPackage{sarl-listing}[2019/04/10]
+\ProvidesPackage{sarl-listing}[2019/06/24]
 \newif\ifusesarlcolors\usesarlcolorstrue
 \DeclareOption{sarlcolors}{\global\usesarlcolorstrue}
 \DeclareOption{nosarlcolors}{\global\usesarlcolorsfalse}
@@ -67,5 +67,5 @@
 }
 \newcommand{\code}[1]{\ifmmode\text{\lstinline[basicstyle=\normalcolor]{#1}}\else\lstinline[basicstyle=\normalcolor]{#1}\fi}
 \newcommand{\sarl}{\mbox{SARL}\xspace}
-\newcommand{\sarlversion}{0.9}
+\newcommand{\sarlversion}{0.10}
 \endinput

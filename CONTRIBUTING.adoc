@@ -76,7 +76,7 @@ According to the link:https://github.com/lukaszlenart/launch4j-maven-plugin/issu
 For setting up the development environment, you should follow the steps:
 
 * Download the *Eclipse IDE for Java and DSL Developers* from https://eclipse.org/downloads/eclipse-packages/. This version of Eclipse includes the Java tools *and* the Xtext tools.
-** Version: `2019-03`.
+** Version: `2019-06`.
 * Launch the *Eclipse IDE for Java and DSL Developers*, and configure it (look&feel, etc.)
 * Install the Checkstyle CS-Eclipse plugin.
 ** Version: `8.18`.
@@ -87,7 +87,7 @@ For setting up the development environment, you should follow the steps:
 * Set the Eclipse target platform, i.e. the definition of the Eclipse plugins to be imported by the project.
 ** Open the target platform file `io.sarl.lang.targetplatform.target` in the project `io.sarl.lang.targetplatform`;
 ** Wait for all the entries in the target file to be refreshed, i.e each location must contains the list of the features to be imported;
-** Click on `Set as Target Platform` at the upper right corner of the file editor.
+** Click on `Set as Target Platform` or `Reload Target Platform` at the upper right corner of the file editor.
 * Sometimes, the Maven Eclipse Plugin (a.k.a. m2e) does not have its connector installed by default. In this case, errors should appears in the `pom.xml` files. After displaying the popup window of the error, click on `Discover m2e connector` and follow the instructions.
 * The Checkstyle plugin may need to install specific connectors. Do an action that is similar as the one in the previous step.
 * Clean and compile the project: `Menu Project > Clean`. 

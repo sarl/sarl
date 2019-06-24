@@ -181,6 +181,10 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 						|| rule == grammarAccess.getXExponentExpressionRule()
 						|| action == grammarAccess.getXExponentExpressionAccess().getXBinaryOperationLeftOperandAction_1_0_0_0()
 						|| rule == grammarAccess.getXUnaryOperationRule()
+						|| rule == grammarAccess.getXAssignmentRule()
+						|| action == grammarAccess.getXAssignmentAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0()
+						|| rule == grammarAccess.getXConditionalExpressionRule()
+						|| action == grammarAccess.getXConditionalExpressionAccess().getXIfExpressionIfAction_1_0_0_0()
 						|| rule == grammarAccess.getXExpressionOrSimpleConstructorCallRule()
 						|| rule == grammarAccess.getRichStringPartRule()
 						|| rule == grammarAccess.getXAnnotationElementValueOrCommaListRule()
@@ -188,8 +192,6 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 						|| rule == grammarAccess.getXAnnotationElementValueRule()
 						|| rule == grammarAccess.getXAnnotationOrExpressionRule()
 						|| rule == grammarAccess.getXExpressionRule()
-						|| rule == grammarAccess.getXAssignmentRule()
-						|| action == grammarAccess.getXAssignmentAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0()
 						|| rule == grammarAccess.getXOrExpressionRule()
 						|| action == grammarAccess.getXOrExpressionAccess().getXBinaryOperationLeftOperandAction_1_0_0_0()
 						|| rule == grammarAccess.getXAndExpressionRule()
@@ -250,6 +252,10 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 						|| rule == grammarAccess.getXExponentExpressionRule()
 						|| action == grammarAccess.getXExponentExpressionAccess().getXBinaryOperationLeftOperandAction_1_0_0_0()
 						|| rule == grammarAccess.getXUnaryOperationRule()
+						|| rule == grammarAccess.getXAssignmentRule()
+						|| action == grammarAccess.getXAssignmentAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0()
+						|| rule == grammarAccess.getXConditionalExpressionRule()
+						|| action == grammarAccess.getXConditionalExpressionAccess().getXIfExpressionIfAction_1_0_0_0()
 						|| rule == grammarAccess.getXExpressionOrSimpleConstructorCallRule()
 						|| rule == grammarAccess.getRichStringPartRule()
 						|| rule == grammarAccess.getXAnnotationElementValueOrCommaListRule()
@@ -257,8 +263,6 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 						|| rule == grammarAccess.getXAnnotationElementValueRule()
 						|| rule == grammarAccess.getXAnnotationOrExpressionRule()
 						|| rule == grammarAccess.getXExpressionRule()
-						|| rule == grammarAccess.getXAssignmentRule()
-						|| action == grammarAccess.getXAssignmentAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0()
 						|| rule == grammarAccess.getXOrExpressionRule()
 						|| action == grammarAccess.getXOrExpressionAccess().getXBinaryOperationLeftOperandAction_1_0_0_0()
 						|| rule == grammarAccess.getXAndExpressionRule()
@@ -525,6 +529,10 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 						|| rule == grammarAccess.getXExponentExpressionRule()
 						|| action == grammarAccess.getXExponentExpressionAccess().getXBinaryOperationLeftOperandAction_1_0_0_0()
 						|| rule == grammarAccess.getXUnaryOperationRule()
+						|| rule == grammarAccess.getXAssignmentRule()
+						|| action == grammarAccess.getXAssignmentAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0()
+						|| rule == grammarAccess.getXConditionalExpressionRule()
+						|| action == grammarAccess.getXConditionalExpressionAccess().getXIfExpressionIfAction_1_0_0_0()
 						|| rule == grammarAccess.getXExpressionOrSimpleConstructorCallRule()
 						|| rule == grammarAccess.getRichStringPartRule()
 						|| rule == grammarAccess.getXAnnotationElementValueOrCommaListRule()
@@ -532,8 +540,6 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 						|| rule == grammarAccess.getXAnnotationElementValueRule()
 						|| rule == grammarAccess.getXAnnotationOrExpressionRule()
 						|| rule == grammarAccess.getXExpressionRule()
-						|| rule == grammarAccess.getXAssignmentRule()
-						|| action == grammarAccess.getXAssignmentAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0()
 						|| rule == grammarAccess.getXOrExpressionRule()
 						|| action == grammarAccess.getXOrExpressionAccess().getXBinaryOperationLeftOperandAction_1_0_0_0()
 						|| rule == grammarAccess.getXAndExpressionRule()
@@ -581,6 +587,10 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 						|| rule == grammarAccess.getXExponentExpressionRule()
 						|| action == grammarAccess.getXExponentExpressionAccess().getXBinaryOperationLeftOperandAction_1_0_0_0()
 						|| rule == grammarAccess.getXUnaryOperationRule()
+						|| rule == grammarAccess.getXAssignmentRule()
+						|| action == grammarAccess.getXAssignmentAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0()
+						|| rule == grammarAccess.getXConditionalExpressionRule()
+						|| action == grammarAccess.getXConditionalExpressionAccess().getXIfExpressionIfAction_1_0_0_0()
 						|| rule == grammarAccess.getXExpressionOrSimpleConstructorCallRule()
 						|| rule == grammarAccess.getRichStringPartRule()
 						|| rule == grammarAccess.getXAnnotationElementValueOrCommaListRule()
@@ -588,8 +598,6 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 						|| rule == grammarAccess.getXAnnotationElementValueRule()
 						|| rule == grammarAccess.getXAnnotationOrExpressionRule()
 						|| rule == grammarAccess.getXExpressionRule()
-						|| rule == grammarAccess.getXAssignmentRule()
-						|| action == grammarAccess.getXAssignmentAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0()
 						|| rule == grammarAccess.getXOrExpressionRule()
 						|| action == grammarAccess.getXOrExpressionAccess().getXBinaryOperationLeftOperandAction_1_0_0_0()
 						|| rule == grammarAccess.getXAndExpressionRule()
@@ -633,8 +641,53 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 				sequence_XForLoopExpression(context, (XForLoopExpression) semanticObject); 
 				return; 
 			case XbasePackage.XIF_EXPRESSION:
-				sequence_XIfExpression(context, (XIfExpression) semanticObject); 
-				return; 
+				if (rule == grammarAccess.getXCastedExpressionRule()
+						|| action == grammarAccess.getXCastedExpressionAccess().getSarlCastedExpressionTargetAction_1_0_0_0()
+						|| rule == grammarAccess.getXPrimaryExpressionRule()
+						|| rule == grammarAccess.getXMultiplicativeExpressionRule()
+						|| action == grammarAccess.getXMultiplicativeExpressionAccess().getXBinaryOperationLeftOperandAction_1_0_0_0()
+						|| rule == grammarAccess.getXExponentExpressionRule()
+						|| action == grammarAccess.getXExponentExpressionAccess().getXBinaryOperationLeftOperandAction_1_0_0_0()
+						|| rule == grammarAccess.getXUnaryOperationRule()
+						|| rule == grammarAccess.getXAssignmentRule()
+						|| action == grammarAccess.getXAssignmentAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0()
+						|| rule == grammarAccess.getXConditionalExpressionRule()
+						|| action == grammarAccess.getXConditionalExpressionAccess().getXIfExpressionIfAction_1_0_0_0()
+						|| rule == grammarAccess.getXExpressionOrSimpleConstructorCallRule()
+						|| rule == grammarAccess.getRichStringPartRule()
+						|| rule == grammarAccess.getXAnnotationElementValueOrCommaListRule()
+						|| action == grammarAccess.getXAnnotationElementValueOrCommaListAccess().getXListLiteralElementsAction_1_1_0()
+						|| rule == grammarAccess.getXAnnotationElementValueRule()
+						|| rule == grammarAccess.getXAnnotationOrExpressionRule()
+						|| rule == grammarAccess.getXExpressionRule()
+						|| rule == grammarAccess.getXOrExpressionRule()
+						|| action == grammarAccess.getXOrExpressionAccess().getXBinaryOperationLeftOperandAction_1_0_0_0()
+						|| rule == grammarAccess.getXAndExpressionRule()
+						|| action == grammarAccess.getXAndExpressionAccess().getXBinaryOperationLeftOperandAction_1_0_0_0()
+						|| rule == grammarAccess.getXEqualityExpressionRule()
+						|| action == grammarAccess.getXEqualityExpressionAccess().getXBinaryOperationLeftOperandAction_1_0_0_0()
+						|| rule == grammarAccess.getXRelationalExpressionRule()
+						|| action == grammarAccess.getXRelationalExpressionAccess().getXInstanceOfExpressionExpressionAction_1_0_0_0_0()
+						|| action == grammarAccess.getXRelationalExpressionAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0()
+						|| rule == grammarAccess.getXOtherOperatorExpressionRule()
+						|| action == grammarAccess.getXOtherOperatorExpressionAccess().getXBinaryOperationLeftOperandAction_1_0_0_0()
+						|| rule == grammarAccess.getXAdditiveExpressionRule()
+						|| action == grammarAccess.getXAdditiveExpressionAccess().getXBinaryOperationLeftOperandAction_1_0_0_0()
+						|| rule == grammarAccess.getXPostfixOperationRule()
+						|| action == grammarAccess.getXPostfixOperationAccess().getXPostfixOperationOperandAction_1_0_0()
+						|| rule == grammarAccess.getXMemberFeatureCallRule()
+						|| action == grammarAccess.getXMemberFeatureCallAccess().getXAssignmentAssignableAction_1_0_0_0_0()
+						|| action == grammarAccess.getXMemberFeatureCallAccess().getXMemberFeatureCallMemberCallTargetAction_1_1_0_0_0()
+						|| rule == grammarAccess.getXParenthesizedExpressionRule()
+						|| rule == grammarAccess.getXExpressionOrVarDeclarationRule()) {
+					sequence_XConditionalExpression_XIfExpression(context, (XIfExpression) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getXIfExpressionRule()) {
+					sequence_XIfExpression(context, (XIfExpression) semanticObject); 
+					return; 
+				}
+				else break;
 			case XbasePackage.XINSTANCE_OF_EXPRESSION:
 				sequence_XRelationalExpression(context, (XInstanceOfExpression) semanticObject); 
 				return; 
@@ -655,13 +708,15 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 						|| rule == grammarAccess.getXExponentExpressionRule()
 						|| action == grammarAccess.getXExponentExpressionAccess().getXBinaryOperationLeftOperandAction_1_0_0_0()
 						|| rule == grammarAccess.getXUnaryOperationRule()
+						|| rule == grammarAccess.getXAssignmentRule()
+						|| action == grammarAccess.getXAssignmentAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0()
+						|| rule == grammarAccess.getXConditionalExpressionRule()
+						|| action == grammarAccess.getXConditionalExpressionAccess().getXIfExpressionIfAction_1_0_0_0()
 						|| rule == grammarAccess.getXExpressionOrSimpleConstructorCallRule()
 						|| rule == grammarAccess.getRichStringPartRule()
 						|| action == grammarAccess.getXAnnotationElementValueOrCommaListAccess().getXListLiteralElementsAction_1_1_0()
 						|| rule == grammarAccess.getXAnnotationOrExpressionRule()
 						|| rule == grammarAccess.getXExpressionRule()
-						|| rule == grammarAccess.getXAssignmentRule()
-						|| action == grammarAccess.getXAssignmentAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0()
 						|| rule == grammarAccess.getXOrExpressionRule()
 						|| action == grammarAccess.getXOrExpressionAccess().getXBinaryOperationLeftOperandAction_1_0_0_0()
 						|| rule == grammarAccess.getXAndExpressionRule()
@@ -753,6 +808,10 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 						|| rule == grammarAccess.getXExponentExpressionRule()
 						|| action == grammarAccess.getXExponentExpressionAccess().getXBinaryOperationLeftOperandAction_1_0_0_0()
 						|| rule == grammarAccess.getXUnaryOperationRule()
+						|| rule == grammarAccess.getXAssignmentRule()
+						|| action == grammarAccess.getXAssignmentAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0()
+						|| rule == grammarAccess.getXConditionalExpressionRule()
+						|| action == grammarAccess.getXConditionalExpressionAccess().getXIfExpressionIfAction_1_0_0_0()
 						|| rule == grammarAccess.getXStringLiteralRule()
 						|| rule == grammarAccess.getXExpressionOrSimpleConstructorCallRule()
 						|| rule == grammarAccess.getRichStringRule()
@@ -762,8 +821,6 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 						|| rule == grammarAccess.getXAnnotationElementValueRule()
 						|| rule == grammarAccess.getXAnnotationOrExpressionRule()
 						|| rule == grammarAccess.getXExpressionRule()
-						|| rule == grammarAccess.getXAssignmentRule()
-						|| action == grammarAccess.getXAssignmentAccess().getXBinaryOperationLeftOperandAction_1_1_0_0_0()
 						|| rule == grammarAccess.getXOrExpressionRule()
 						|| action == grammarAccess.getXOrExpressionAccess().getXBinaryOperationLeftOperandAction_1_0_0_0()
 						|| rule == grammarAccess.getXAndExpressionRule()
@@ -879,8 +936,17 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 				sequence_Type_SarlAgent_2_2_0_SarlAnnotationType_2_10_0_SarlArtifact_2_6_0_SarlBehavior_2_3_0_SarlCapacity_2_1_0_SarlClass_2_7_0_SarlEnumeration_2_9_0_SarlEvent_2_0_0_SarlInterface_2_8_0_SarlSkill_2_4_0_SarlSpace_2_5_0(context, (XtendTypeDeclaration) semanticObject); 
 				return; 
 			case XtendPackage.XTEND_VARIABLE_DECLARATION:
-				sequence_XVariableDeclaration(context, (XtendVariableDeclaration) semanticObject); 
-				return; 
+				if (rule == grammarAccess.getInitializedVariableDeclarationRule()) {
+					sequence_InitializedVariableDeclaration_VariableModifier(context, (XtendVariableDeclaration) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getXVariableDeclarationRule()
+						|| rule == grammarAccess.getRichStringPartRule()
+						|| rule == grammarAccess.getXExpressionOrVarDeclarationRule()) {
+					sequence_XVariableDeclaration(context, (XtendVariableDeclaration) semanticObject); 
+					return; 
+				}
+				else break;
 			}
 		else if (epackage == XtypePackage.eINSTANCE)
 			switch (semanticObject.eClass().getClassifierID()) {
@@ -1213,6 +1279,10 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     XExponentExpression returns SarlAssertExpression
 	 *     XExponentExpression.XBinaryOperation_1_0_0_0 returns SarlAssertExpression
 	 *     XUnaryOperation returns SarlAssertExpression
+	 *     XAssignment returns SarlAssertExpression
+	 *     XAssignment.XBinaryOperation_1_1_0_0_0 returns SarlAssertExpression
+	 *     XConditionalExpression returns SarlAssertExpression
+	 *     XConditionalExpression.XIfExpression_1_0_0_0 returns SarlAssertExpression
 	 *     XExpressionOrSimpleConstructorCall returns SarlAssertExpression
 	 *     RichStringPart returns SarlAssertExpression
 	 *     XAnnotationElementValueOrCommaList returns SarlAssertExpression
@@ -1220,8 +1290,6 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     XAnnotationElementValue returns SarlAssertExpression
 	 *     XAnnotationOrExpression returns SarlAssertExpression
 	 *     XExpression returns SarlAssertExpression
-	 *     XAssignment returns SarlAssertExpression
-	 *     XAssignment.XBinaryOperation_1_1_0_0_0 returns SarlAssertExpression
 	 *     XOrExpression returns SarlAssertExpression
 	 *     XOrExpression.XBinaryOperation_1_0_0_0 returns SarlAssertExpression
 	 *     XAndExpression returns SarlAssertExpression
@@ -1286,6 +1354,10 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     XExponentExpression returns SarlBreakExpression
 	 *     XExponentExpression.XBinaryOperation_1_0_0_0 returns SarlBreakExpression
 	 *     XUnaryOperation returns SarlBreakExpression
+	 *     XAssignment returns SarlBreakExpression
+	 *     XAssignment.XBinaryOperation_1_1_0_0_0 returns SarlBreakExpression
+	 *     XConditionalExpression returns SarlBreakExpression
+	 *     XConditionalExpression.XIfExpression_1_0_0_0 returns SarlBreakExpression
 	 *     XExpressionOrSimpleConstructorCall returns SarlBreakExpression
 	 *     RichStringPart returns SarlBreakExpression
 	 *     XAnnotationElementValueOrCommaList returns SarlBreakExpression
@@ -1293,8 +1365,6 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     XAnnotationElementValue returns SarlBreakExpression
 	 *     XAnnotationOrExpression returns SarlBreakExpression
 	 *     XExpression returns SarlBreakExpression
-	 *     XAssignment returns SarlBreakExpression
-	 *     XAssignment.XBinaryOperation_1_1_0_0_0 returns SarlBreakExpression
 	 *     XOrExpression returns SarlBreakExpression
 	 *     XOrExpression.XBinaryOperation_1_0_0_0 returns SarlBreakExpression
 	 *     XAndExpression returns SarlBreakExpression
@@ -1374,6 +1444,10 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     XExponentExpression returns SarlContinueExpression
 	 *     XExponentExpression.XBinaryOperation_1_0_0_0 returns SarlContinueExpression
 	 *     XUnaryOperation returns SarlContinueExpression
+	 *     XAssignment returns SarlContinueExpression
+	 *     XAssignment.XBinaryOperation_1_1_0_0_0 returns SarlContinueExpression
+	 *     XConditionalExpression returns SarlContinueExpression
+	 *     XConditionalExpression.XIfExpression_1_0_0_0 returns SarlContinueExpression
 	 *     XExpressionOrSimpleConstructorCall returns SarlContinueExpression
 	 *     RichStringPart returns SarlContinueExpression
 	 *     XAnnotationElementValueOrCommaList returns SarlContinueExpression
@@ -1381,8 +1455,6 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     XAnnotationElementValue returns SarlContinueExpression
 	 *     XAnnotationOrExpression returns SarlContinueExpression
 	 *     XExpression returns SarlContinueExpression
-	 *     XAssignment returns SarlContinueExpression
-	 *     XAssignment.XBinaryOperation_1_1_0_0_0 returns SarlContinueExpression
 	 *     XOrExpression returns SarlContinueExpression
 	 *     XOrExpression.XBinaryOperation_1_0_0_0 returns SarlContinueExpression
 	 *     XAndExpression returns SarlContinueExpression
@@ -1886,6 +1958,10 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     XExponentExpression returns XBinaryOperation
 	 *     XExponentExpression.XBinaryOperation_1_0_0_0 returns XBinaryOperation
 	 *     XUnaryOperation returns XBinaryOperation
+	 *     XAssignment returns XBinaryOperation
+	 *     XAssignment.XBinaryOperation_1_1_0_0_0 returns XBinaryOperation
+	 *     XConditionalExpression returns XBinaryOperation
+	 *     XConditionalExpression.XIfExpression_1_0_0_0 returns XBinaryOperation
 	 *     XExpressionOrSimpleConstructorCall returns XBinaryOperation
 	 *     RichStringPart returns XBinaryOperation
 	 *     XAnnotationElementValueOrCommaList returns XBinaryOperation
@@ -1893,8 +1969,6 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     XAnnotationElementValue returns XBinaryOperation
 	 *     XAnnotationOrExpression returns XBinaryOperation
 	 *     XExpression returns XBinaryOperation
-	 *     XAssignment returns XBinaryOperation
-	 *     XAssignment.XBinaryOperation_1_1_0_0_0 returns XBinaryOperation
 	 *     XOrExpression returns XBinaryOperation
 	 *     XOrExpression.XBinaryOperation_1_0_0_0 returns XBinaryOperation
 	 *     XAndExpression returns XBinaryOperation
@@ -1944,6 +2018,10 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     XExponentExpression returns SarlCastedExpression
 	 *     XExponentExpression.XBinaryOperation_1_0_0_0 returns SarlCastedExpression
 	 *     XUnaryOperation returns SarlCastedExpression
+	 *     XAssignment returns SarlCastedExpression
+	 *     XAssignment.XBinaryOperation_1_1_0_0_0 returns SarlCastedExpression
+	 *     XConditionalExpression returns SarlCastedExpression
+	 *     XConditionalExpression.XIfExpression_1_0_0_0 returns SarlCastedExpression
 	 *     XExpressionOrSimpleConstructorCall returns SarlCastedExpression
 	 *     RichStringPart returns SarlCastedExpression
 	 *     XAnnotationElementValueOrCommaList returns SarlCastedExpression
@@ -1951,8 +2029,6 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     XAnnotationElementValue returns SarlCastedExpression
 	 *     XAnnotationOrExpression returns SarlCastedExpression
 	 *     XExpression returns SarlCastedExpression
-	 *     XAssignment returns SarlCastedExpression
-	 *     XAssignment.XBinaryOperation_1_1_0_0_0 returns SarlCastedExpression
 	 *     XOrExpression returns SarlCastedExpression
 	 *     XOrExpression.XBinaryOperation_1_0_0_0 returns SarlCastedExpression
 	 *     XAndExpression returns SarlCastedExpression
@@ -2002,6 +2078,10 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     XExponentExpression returns XForLoopExpression
 	 *     XExponentExpression.XBinaryOperation_1_0_0_0 returns XForLoopExpression
 	 *     XUnaryOperation returns XForLoopExpression
+	 *     XAssignment returns XForLoopExpression
+	 *     XAssignment.XBinaryOperation_1_1_0_0_0 returns XForLoopExpression
+	 *     XConditionalExpression returns XForLoopExpression
+	 *     XConditionalExpression.XIfExpression_1_0_0_0 returns XForLoopExpression
 	 *     XExpressionOrSimpleConstructorCall returns XForLoopExpression
 	 *     RichStringPart returns XForLoopExpression
 	 *     XAnnotationElementValueOrCommaList returns XForLoopExpression
@@ -2009,8 +2089,6 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     XAnnotationElementValue returns XForLoopExpression
 	 *     XAnnotationOrExpression returns XForLoopExpression
 	 *     XExpression returns XForLoopExpression
-	 *     XAssignment returns XForLoopExpression
-	 *     XAssignment.XBinaryOperation_1_1_0_0_0 returns XForLoopExpression
 	 *     XOrExpression returns XForLoopExpression
 	 *     XOrExpression.XBinaryOperation_1_0_0_0 returns XForLoopExpression
 	 *     XAndExpression returns XForLoopExpression
@@ -2051,6 +2129,10 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     XExponentExpression returns XSwitchExpression
 	 *     XExponentExpression.XBinaryOperation_1_0_0_0 returns XSwitchExpression
 	 *     XUnaryOperation returns XSwitchExpression
+	 *     XAssignment returns XSwitchExpression
+	 *     XAssignment.XBinaryOperation_1_1_0_0_0 returns XSwitchExpression
+	 *     XConditionalExpression returns XSwitchExpression
+	 *     XConditionalExpression.XIfExpression_1_0_0_0 returns XSwitchExpression
 	 *     XExpressionOrSimpleConstructorCall returns XSwitchExpression
 	 *     RichStringPart returns XSwitchExpression
 	 *     XAnnotationElementValueOrCommaList returns XSwitchExpression
@@ -2058,8 +2140,6 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     XAnnotationElementValue returns XSwitchExpression
 	 *     XAnnotationOrExpression returns XSwitchExpression
 	 *     XExpression returns XSwitchExpression
-	 *     XAssignment returns XSwitchExpression
-	 *     XAssignment.XBinaryOperation_1_1_0_0_0 returns XSwitchExpression
 	 *     XOrExpression returns XSwitchExpression
 	 *     XOrExpression.XBinaryOperation_1_0_0_0 returns XSwitchExpression
 	 *     XAndExpression returns XSwitchExpression
@@ -2103,6 +2183,10 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     XExponentExpression returns XUnaryOperation
 	 *     XExponentExpression.XBinaryOperation_1_0_0_0 returns XUnaryOperation
 	 *     XUnaryOperation returns XUnaryOperation
+	 *     XAssignment returns XUnaryOperation
+	 *     XAssignment.XBinaryOperation_1_1_0_0_0 returns XUnaryOperation
+	 *     XConditionalExpression returns XUnaryOperation
+	 *     XConditionalExpression.XIfExpression_1_0_0_0 returns XUnaryOperation
 	 *     XExpressionOrSimpleConstructorCall returns XUnaryOperation
 	 *     RichStringPart returns XUnaryOperation
 	 *     XAnnotationElementValueOrCommaList returns XUnaryOperation
@@ -2110,8 +2194,6 @@ public class SARLSemanticSequencer extends XtendSemanticSequencer {
 	 *     XAnnotationElementValue returns XUnaryOperation
 	 *     XAnnotationOrExpression returns XUnaryOperation
 	 *     XExpression returns XUnaryOperation
-	 *     XAssignment returns XUnaryOperation
-	 *     XAssignment.XBinaryOperation_1_1_0_0_0 returns XUnaryOperation
 	 *     XOrExpression returns XUnaryOperation
 	 *     XOrExpression.XBinaryOperation_1_0_0_0 returns XUnaryOperation
 	 *     XAndExpression returns XUnaryOperation

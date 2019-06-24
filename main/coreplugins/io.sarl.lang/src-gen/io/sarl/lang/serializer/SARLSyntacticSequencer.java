@@ -70,6 +70,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected AbstractElementAlias match_XImportDeclaration_SemicolonKeyword_2_q;
 	protected AbstractElementAlias match_XParenthesizedExpression_LeftParenthesisKeyword_0_a;
 	protected AbstractElementAlias match_XParenthesizedExpression_LeftParenthesisKeyword_0_p;
+	protected AbstractElementAlias match_XTryCatchFinallyExpression_SemicolonKeyword_2_0_3_q;
 	
 	@Inject
 	protected void init(IGrammarAccess access) {
@@ -103,6 +104,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 		match_XImportDeclaration_SemicolonKeyword_2_q = new TokenAlias(false, true, grammarAccess.getXImportDeclarationAccess().getSemicolonKeyword_2());
 		match_XParenthesizedExpression_LeftParenthesisKeyword_0_a = new TokenAlias(true, true, grammarAccess.getXParenthesizedExpressionAccess().getLeftParenthesisKeyword_0());
 		match_XParenthesizedExpression_LeftParenthesisKeyword_0_p = new TokenAlias(true, false, grammarAccess.getXParenthesizedExpressionAccess().getLeftParenthesisKeyword_0());
+		match_XTryCatchFinallyExpression_SemicolonKeyword_2_0_3_q = new TokenAlias(false, true, grammarAccess.getXTryCatchFinallyExpressionAccess().getSemicolonKeyword_2_0_3());
 	}
 	
 	@Override
@@ -122,7 +124,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected String getArrayBracketsToken(EObject semanticObject, RuleCall ruleCall, INode node) {
 		if (node != null)
 			return getTokenText(node);
-		return "[]";
+		return "[ ]";
 	}
 	
 	/**
@@ -200,6 +202,8 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 				emit_XParenthesizedExpression_LeftParenthesisKeyword_0_a(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_XParenthesizedExpression_LeftParenthesisKeyword_0_p.equals(syntax))
 				emit_XParenthesizedExpression_LeftParenthesisKeyword_0_p(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if (match_XTryCatchFinallyExpression_SemicolonKeyword_2_0_3_q.equals(syntax))
+				emit_XTryCatchFinallyExpression_SemicolonKeyword_2_0_3_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else acceptNodes(getLastNavigableState(), syntaxNodes);
 		}
 	}
@@ -617,6 +621,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     (rule start) (ambiguity) 'switch' switch=XExpression
 	 *     (rule start) (ambiguity) 'synchronized' '(' param=XExpression
 	 *     (rule start) (ambiguity) 'throw' expression=XExpression
+	 *     (rule start) (ambiguity) 'try' '(' resources+=InitializedVariableDeclaration
 	 *     (rule start) (ambiguity) 'try' expression=XExpression
 	 *     (rule start) (ambiguity) 'typeof' '(' type=[JvmType|QualifiedName]
 	 *     (rule start) (ambiguity) 'while' '(' predicate=XExpression
@@ -635,6 +640,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     (rule start) (ambiguity) {SarlCastedExpression.target=}
 	 *     (rule start) (ambiguity) {XAssignment.assignable=}
 	 *     (rule start) (ambiguity) {XBinaryOperation.leftOperand=}
+	 *     (rule start) (ambiguity) {XIfExpression.if=}
 	 *     (rule start) (ambiguity) {XInstanceOfExpression.expression=}
 	 *     (rule start) (ambiguity) {XMemberFeatureCall.memberCallTarget=}
 	 *     (rule start) (ambiguity) {XPostfixOperation.operand=}
@@ -676,6 +682,7 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     (rule start) (ambiguity) 'switch' switch=XExpression
 	 *     (rule start) (ambiguity) 'synchronized' '(' param=XExpression
 	 *     (rule start) (ambiguity) 'throw' expression=XExpression
+	 *     (rule start) (ambiguity) 'try' '(' resources+=InitializedVariableDeclaration
 	 *     (rule start) (ambiguity) 'try' expression=XExpression
 	 *     (rule start) (ambiguity) 'typeof' '(' type=[JvmType|QualifiedName]
 	 *     (rule start) (ambiguity) 'while' '(' predicate=XExpression
@@ -694,11 +701,23 @@ public class SARLSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     (rule start) (ambiguity) {SarlCastedExpression.target=}
 	 *     (rule start) (ambiguity) {XAssignment.assignable=}
 	 *     (rule start) (ambiguity) {XBinaryOperation.leftOperand=}
+	 *     (rule start) (ambiguity) {XIfExpression.if=}
 	 *     (rule start) (ambiguity) {XInstanceOfExpression.expression=}
 	 *     (rule start) (ambiguity) {XMemberFeatureCall.memberCallTarget=}
 	 *     (rule start) (ambiguity) {XPostfixOperation.operand=}
 	 */
 	protected void emit_XParenthesizedExpression_LeftParenthesisKeyword_0_p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Ambiguous syntax:
+	 *     ';'?
+	 *
+	 * This ambiguous syntax occurs at:
+	 *     resources+=InitializedVariableDeclaration (ambiguity) ')' expression=XExpression
+	 */
+	protected void emit_XTryCatchFinallyExpression_SemicolonKeyword_2_0_3_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	

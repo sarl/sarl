@@ -22,7 +22,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# Style for SARL 0.9
+# Style for SARL 0.10
 
 
 import re
@@ -34,7 +34,7 @@ class SarlLexer(RegexLexer):
 	"""
 	For `SARL <http://www.sarl.io>`_ source code.
 	
-	.. versionadded:: 0.9
+	.. versionadded:: 0.10
 	"""
 	
 	name = 'SARL'
@@ -55,9 +55,9 @@ class SarlLexer(RegexLexer):
 			(r'//.*?\n', Comment.Single),
 			(r'/\*.*?\*/', Comment.Multiline),
 			(r'@[a-zA-Z_][\w.]*', Name.Decorator),
-			(r'(as|assert|assume|break|case|catch|continue|default|do|else|extends|extension|finally|fires|for|if|implements|instanceof|new|on|requires|return|super|switch|throw|throws|try|typeof|uses|while|with)\b',
+			(r'(as|assert|assume|break|case|catch|continue|default|do|else|extends|finally|fires|for|if|implements|instanceof|new|on|requires|return|super|switch|throw|throws|try|typeof|uses|while|with)\b',
 			 Keyword),
-			(r'(abstract|def|dispatch|final|native|override|private|protected|public|static|strictfp|synchronized|transient|val|var|volatile)\b', Keyword.Declaration),
+			(r'(abstract|def|dispatch|extension|final|native|override|private|protected|public|static|strictfp|synchronized|transient|val|var|volatile)\b', Keyword.Declaration),
 			 (r'(boolean|byte|char|double|float|int|long|short|void)\b',
 			  Keyword.Type),
 			 (r'(package)(\s+)', bygroups(Keyword.Namespace, Text)),

@@ -33,13 +33,13 @@
 		<!-- The versions of the following Xtext libraries are available at: https://eclipse.org/Xtext/documentation/350_continuous_integration.html -->
 
 		<!-- Version of the Xtext API -->
-		<xtext.version>2.17.1</xtext.version>
-		<xtext.version.current>2.17.1</xtext.version.current>
-		<xtext.version.next>2.17.2</xtext.version.next>
-		<xtext.version.javadoc>2.17</xtext.version.javadoc>
+		<xtext.version>2.18.0</xtext.version>
+		<xtext.version.current>2.18.0</xtext.version.current>
+		<xtext.version.next>2.18.1</xtext.version.next>
+		<xtext.version.javadoc>2.18</xtext.version.javadoc>
 		<!-- Version of the MWE2 library (used for accessing the mwe2 P2 http://download.eclipse.org/modeling/emft/mwe/updates/releases/, 
 			see compositeContent.{xml,jar,xz,xml.xz} file) -->
-		<mwe2.version>2.9.0</mwe2.version>
+		<mwe2.version>2.11.0</mwe2.version>
 		<!-- Version of the Xpand library (used for accessing the Xpand P2 http://download.eclipse.org/modeling/m2t/xpand/updates/releases/, 
 			see compositeContent.{xml,jar,xz,xml.xz} file) -->
 		<xpand.version>R201605260315</xpand.version>
@@ -47,7 +47,7 @@
 		<!-- Guice after 4.1.0 depends on Guava with too high version. Xbase requires 
 			up to 19.0. New guice requires 23.0. -->
 		<guice.version>4.1.0</guice.version>
-		<!-- Version of the cat mv	OSGi module that provides the NLS (package: osgi) -->
+		<!-- Version of the OSGi module that provides the NLS (package: osgi) -->
 		<osgi.nls.version>3.10.0-v20140606-1445</osgi.nls.version>
 		<!-- Version of the Arakhne Foundation classes -->
 		<afc.version>15.2</afc.version>
@@ -60,8 +60,8 @@
 		<tycho.version>1.4.0</tycho.version>
 		<!-- Version of the ZeroMQ library -->
 		<zeromq.version>0.5.0</zeromq.version>
-		<!-- Version of the SWT library -->
-		<swt.version>3.110.0</swt.version>
+		<!-- Version of the SWT library (search for  org.eclipse.platform:org.eclipse.swt.gtk.linux.x86_64) -->
+		<swt.version>3.111.0</swt.version>
 
 		<!-- Build ID Format (used in Eclipse about dialog) -->
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
@@ -515,7 +515,7 @@
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>4.12</version>
+				<version>4.13-beta-3</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
@@ -850,7 +850,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>3.0.1</version>
+					<version>3.1.0</version>
 					<configuration>
 						<doclet>io.sarl.docs.doclet.SarlDoclet</doclet>
 						<docletArtifact>

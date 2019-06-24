@@ -93,7 +93,7 @@ public class SARLGrammarKeywordAccess {
 	 * Source: io.sarl.lang.SARL
 	 */
 	public String getValKeyword() {
-		return this.grammarAccess.getFieldModifierAccess().getValKeyword_0().getValue();
+		return this.grammarAccess.getVariableModifierAccess().getValKeyword_1_1_1().getValue();
 	}
 
 	/** Keyword: {@code !}.
@@ -120,8 +120,8 @@ public class SARLGrammarKeywordAccess {
 	/** Keyword: {@code var}.
 	 * Source: io.sarl.lang.SARL
 	 */
-	public String getVarKeyword() {
-		return this.grammarAccess.getFieldModifierAccess().getVarKeyword_1().getValue();
+	public String getWriteableVarKeyword() {
+		return this.grammarAccess.getVariableModifierAccess().getWriteableVarKeyword_1_1_0_0().getValue();
 	}
 
 	/** Keyword: {@code &}.
@@ -576,7 +576,7 @@ public class SARLGrammarKeywordAccess {
 	 * Source: io.sarl.lang.SARL
 	 */
 	public String getFinallyKeyword() {
-		return this.grammarAccess.getXTryCatchFinallyExpressionAccess().getFinallyKeyword_3_1_0().getValue();
+		return this.grammarAccess.getXTryCatchFinallyExpressionAccess().getFinallyKeyword_2_1_1_1_0().getValue();
 	}
 
 	/** Keyword: {@code strictfp}.
@@ -864,6 +864,7 @@ public class SARLGrammarKeywordAccess {
 			kws.add(getRequiresKeyword());
 			kws.add(getFalseKeyword());
 			kws.add(getWithKeyword());
+			kws.add(getWriteableVarKeyword());
 			kws.add(getItKeyword());
 			kws.add(getSwitchKeyword());
 			kws.add(getExtendsKeyword());
@@ -886,7 +887,6 @@ public class SARLGrammarKeywordAccess {
 			kws.add(getOnKeyword());
 			kws.add(getCapacityKeyword());
 			kws.add(getEventKeyword());
-			kws.add(getVarKeyword());
 			kws.add(getImportKeyword());
 			kws.add(getAgentKeyword());
 			kws.add(getTransientKeyword());
@@ -950,6 +950,7 @@ public class SARLGrammarKeywordAccess {
 			kws.add(getAsKeyword());
 			kws.add(getRequiresKeyword());
 			kws.add(getWithKeyword());
+			kws.add(getWriteableVarKeyword());
 			kws.add(getItKeyword());
 			kws.add(getArtifactKeyword());
 			kws.add(getAnnotationKeyword());
@@ -957,7 +958,6 @@ public class SARLGrammarKeywordAccess {
 			kws.add(getOnKeyword());
 			kws.add(getCapacityKeyword());
 			kws.add(getEventKeyword());
-			kws.add(getVarKeyword());
 			kws.add(getAgentKeyword());
 			kws.add(getDispatchKeyword());
 			kws.add(getUsesKeyword());

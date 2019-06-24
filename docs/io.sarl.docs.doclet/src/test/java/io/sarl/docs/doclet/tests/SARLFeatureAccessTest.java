@@ -172,7 +172,7 @@ public final class SARLFeatureAccessTest {
 
 	@Test
 	public void testVar() {
-		assertEquals(original.getVarKeyword(), access.getVarKeyword());
+		assertEquals(original.getWriteableVarKeyword(), access.getVarKeyword());
 	}
 
 	@Test

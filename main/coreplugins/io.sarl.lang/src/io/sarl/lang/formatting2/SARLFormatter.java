@@ -510,7 +510,7 @@ public class SARLFormatter extends XtendFormatter {
 		final ISemanticRegionsFinder regionFor = this.textRegionExtensions.regionFor(expr);
 		document.append(regionFor.keyword(this.keywords.getExtensionExtensionKeyword()), ONE_SPACE);
 		document.append(regionFor.keyword(this.keywords.getValKeyword()), ONE_SPACE);
-		document.append(regionFor.keyword(this.keywords.getVarKeyword()), ONE_SPACE);
+		document.append(regionFor.keyword(this.keywords.getWriteableVarKeyword()), ONE_SPACE);
 		document.surround(regionFor.keyword(this.keywords.getColonKeyword()), ONE_SPACE);
 		document.surround(regionFor.keyword(this.keywords.getEqualsSignKeyword()), ONE_SPACE);
 		document.format(expr.getType());

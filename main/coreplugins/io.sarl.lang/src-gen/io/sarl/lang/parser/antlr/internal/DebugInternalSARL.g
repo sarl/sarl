@@ -1562,6 +1562,135 @@ ruleInnerVarID:
 	)
 ;
 
+// Rule XAssignment
+ruleXAssignment:
+	(
+		ruleFeatureCallID
+		ruleOpSingleAssign
+		ruleXAssignment
+		    |
+		ruleXConditionalExpression
+		(
+			(
+				(ruleOpMultiAssign
+				)=>
+				ruleOpMultiAssign
+			)
+			ruleXAssignment
+		)?
+	)
+;
+
+// Rule XConditionalExpression
+ruleXConditionalExpression:
+	ruleXOrExpression
+	(
+		(
+			('?')=>
+			'?'
+		)
+		ruleXExpression
+		(
+			(
+				(':')=>
+				':'
+			)
+			ruleXExpression
+		)?
+	)?
+;
+
+// Rule XTryCatchFinallyExpression
+ruleXTryCatchFinallyExpression:
+	'try'
+	(
+		'('
+		ruleInitializedVariableDeclaration
+		(
+			';'
+			ruleInitializedVariableDeclaration
+		)*
+		';'?
+		')'
+		ruleXExpression
+		(
+			('catch' | 'finally')=>
+			(
+				(
+					('catch')=>
+					ruleXCatchClause
+				)+
+				(
+					(
+						('finally')=>
+						'finally'
+					)
+					ruleXExpression
+				)?
+				    |
+				'finally'
+				ruleXExpression
+			)
+		)?
+		    |
+		ruleXExpression
+		(
+			(
+				('catch')=>
+				ruleXCatchClause
+			)+
+			(
+				(
+					('finally')=>
+					'finally'
+				)
+				ruleXExpression
+			)?
+			    |
+			'finally'
+			ruleXExpression
+		)
+	)
+;
+
+// Rule InitializedVariableDeclaration
+ruleInitializedVariableDeclaration:
+	ruleVariableModifier
+	(
+		(
+			(ruleJvmTypeReference
+			ruleInnerVarID
+			)=>
+			ruleJvmTypeReference
+			ruleInnerVarID
+		)
+		    |
+		ruleInnerVarID
+	)
+	'='
+	ruleXExpression
+;
+
+// Rule VariableModifier
+ruleVariableModifier:
+	(
+		(
+			'var'
+			    |
+			'val'
+		)
+		'extension'
+		?
+		    |
+		'extension'
+		(
+			'var'
+			    |
+			'val'
+		)
+	)
+;
+
 // Rule XConstructorCall
 ruleXConstructorCall:
 	ruleXbaseConstructorCall
@@ -1886,25 +2015,6 @@ ruleXAnnotationOrExpression:
 // Rule XExpression
 ruleXExpression:
 	ruleXAssignment
-;
-
-// Rule XAssignment
-ruleXAssignment:
-	(
-		ruleFeatureCallID
-		ruleOpSingleAssign
-		ruleXAssignment
-		    |
-		ruleXOrExpression
-		(
-			(
-				(ruleOpMultiAssign
-				)=>
-				ruleOpMultiAssign
-			)
-			ruleXAssignment
-		)?
-	)
 ;
 
 // Rule OpSingleAssign
@@ -2545,28 +2655,6 @@ ruleXReturnExpression:
 		('abstract' | 'annotation' | 'class' | 'create' | 'def' | 'dispatch' | 'enum' | 'extends' | 'final' | 'implements' | 'import' | 'interface' | 'override' | 'package' | 'public' | 'private' | 'protected' | 'static' | 'throws' | 'strictfp' | 'native' | 'volatile' | 'synchronized' | 'transient' | 'AFTER' | 'BEFORE' | 'SEPARATOR' | 'extension' | '!' | '-' | '+' | 'break' | 'continue' | 'assert' | 'assume' | 'new' | '{' | 'switch' | '<' | 'super' | '#' | '[' | 'false' | 'true' | 'null' | 'typeof' | 'if' | 'for' | 'while' | 'do' | 'throw' | 'return' | 'try' | '(' | RULE_ID | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_STRING | RULE_RICH_TEXT | RULE_RICH_TEXT_START)=>
 		ruleXExpression
 	)?
-;
-
-// Rule XTryCatchFinallyExpression
-ruleXTryCatchFinallyExpression:
-	'try'
-	ruleXExpression
-	(
-		(
-			('catch')=>
-			ruleXCatchClause
-		)+
-		(
-			(
-				('finally')=>
-				'finally'
-			)
-			ruleXExpression
-		)?
-		    |
-		'finally'
-		ruleXExpression
-	)
 ;
 
 // Rule XSynchronizedExpression
