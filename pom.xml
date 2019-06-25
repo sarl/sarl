@@ -45,14 +45,14 @@
 		<xpand.version>R201605260315</xpand.version>
 
 		<!-- Guice after 4.1.0 depends on Guava with too high version. Xbase requires 
-			up to 19.0. New guice requires 23.0. -->
+			up to 21.0. New guice requires 23.0. -->
 		<guice.version>4.1.0</guice.version>
 		<!-- Version of the OSGi module that provides the NLS (package: osgi) -->
 		<osgi.nls.version>3.10.0-v20140606-1445</osgi.nls.version>
 		<!-- Version of the Arakhne Foundation classes -->
 		<afc.version>15.2</afc.version>
 		<!-- Version of the Guava API -->
-		<guava.version>20.0</guava.version>
+		<guava.version>21.0</guava.version>
 		<!-- Version of the javax.inject module -->
 		<javaxinject.version>1</javaxinject.version>
 		<!-- Version of the Tycho module, (search for tycho-maven-plugin on Maven 
