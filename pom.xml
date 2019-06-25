@@ -50,7 +50,7 @@
 		<!-- Version of the OSGi module that provides the NLS (package: osgi) -->
 		<osgi.nls.version>3.10.0-v20140606-1445</osgi.nls.version>
 		<!-- Version of the Arakhne Foundation classes -->
-		<afc.version>15.2</afc.version>
+		<afc.version>16.0-SNAPSHOT</afc.version>
 		<!-- Version of the Guava API -->
 		<guava.version>21.0</guava.version>
 		<!-- Version of the javax.inject module -->
@@ -1328,8 +1328,8 @@
 		</profile>
 	</profiles>
 
-	<!--<repositories>
-		<repository>
+	<repositories>
+		<!--<repository>
 			<id>org.eclipse.xtext-snapshot</id>
 			<snapshots>
 				<enabled>true</enabled>
@@ -1338,7 +1338,17 @@
 				<enabled>true</enabled>
 			</releases>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</repository>-->
+		<repository>
+			<id>org.arakhne-snapshot</id>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<url>http://download.tuxfamily.org/arakhne/maven</url>
 		</repository>
-	</repositories>-->
+	</repositories>
 
 </project>
