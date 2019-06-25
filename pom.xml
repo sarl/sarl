@@ -478,7 +478,7 @@
 			<dependency>
 				<groupId>io.bootique</groupId>
 				<artifactId>bootique</artifactId>
-				<version>0.25</version>
+				<version>1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.javassist</groupId>

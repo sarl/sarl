@@ -62,6 +62,12 @@ public class SarlcConfigModule extends AbstractModule {
 
 	private static final String CLASSPATH_SHORT_OPTION = "cp"; //$NON-NLS-1$
 
+	private static final String WORKING_DIR_OPTION = "workingdir"; //$NON-NLS-1$
+
+	private static final String BOOTCLASSPATH_OPTION = "bootclasspath"; //$NON-NLS-1$
+
+	private static final String GENERATOR_OPTION = "generator"; //$NON-NLS-1$
+
 	@Override
 	protected void configure() {
 		VariableDecls.extend(binder()).declareVar(OUTPUT_PATH_NAME);
@@ -70,9 +76,9 @@ public class SarlcConfigModule extends AbstractModule {
 				MessageFormat.format(Messages.SarlcConfigModule_0, Constants.PROGRAM_NAME,
 						Constants.SARL_OUTPUT_DIRECTORY_OPTION,
 						Path.fromPortableString(SARLConfig.FOLDER_SOURCE_GENERATED).toFile().getPath()))
-				.configPath(OUTPUT_PATH_NAME)
 				.valueRequired(Messages.SarlcConfigModule_1)
-				.build());
+				.build())
+			.mapConfigPath(Constants.SARL_OUTPUT_DIRECTORY_OPTION, OUTPUT_PATH_NAME);
 
 		VariableDecls.extend(binder()).declareVar(CLASS_OUTPUT_PATH_NAME);
 		extend(binder()).addOption(OptionMetadata.builder(
@@ -80,50 +86,49 @@ public class SarlcConfigModule extends AbstractModule {
 				MessageFormat.format(Messages.SarlcConfigModule_6, Constants.PROGRAM_NAME,
 						Constants.JAVA_OUTPUT_DIRECTORY_OPTION,
 						Path.fromPortableString(SARLConfig.FOLDER_BIN).toFile().getPath()))
-				.configPath(CLASS_OUTPUT_PATH_NAME)
 				.valueRequired(Messages.SarlcConfigModule_1)
-				.build());
+				.build())
+			.mapConfigPath(Constants.JAVA_OUTPUT_DIRECTORY_OPTION, CLASS_OUTPUT_PATH_NAME);
 
 		VariableDecls.extend(binder()).declareVar(WORKING_PATH_NAME);
 		extend(binder()).addOption(OptionMetadata.builder(
-				"workingdir", Messages.SarlcConfigModule_2) //$NON-NLS-1$
-				.configPath(WORKING_PATH_NAME)
+				WORKING_DIR_OPTION, Messages.SarlcConfigModule_2)
 				.valueRequired(Messages.SarlcConfigModule_1)
-				.build());
+				.build())
+			.mapConfigPath(WORKING_DIR_OPTION, WORKING_PATH_NAME);
 
 		VariableDecls.extend(binder()).declareVar(CLASSPATH_NAME);
 		final String cpDescription = MessageFormat.format(Messages.SarlcConfigModule_3,
 				VariableNames.toEnvironmentVariableName(CLASSPATH_NAME), CLASSPATH_SHORT_OPTION,
 				CLASSPATH_LONG_OPTION);
-		extend(binder()).addOptions(OptionMetadata.builder(
+		extend(binder()).addOption(OptionMetadata.builder(
 				CLASSPATH_LONG_OPTION, cpDescription)
-				.configPath(CLASSPATH_NAME)
 				.valueRequired(Messages.SarlcConfigModule_4)
-				.build(),
-				OptionMetadata.builder(
+				.build())
+			.mapConfigPath(CLASSPATH_LONG_OPTION, CLASSPATH_NAME);
+		extend(binder()).addOption(OptionMetadata.builder(
 				CLASSPATH_SHORT_OPTION, cpDescription)
-				.configPath(CLASSPATH_NAME)
 				.valueRequired(Messages.SarlcConfigModule_4)
-				.build());
+				.build())
+			.mapConfigPath(CLASSPATH_SHORT_OPTION, CLASSPATH_NAME);
 
 		VariableDecls.extend(binder()).declareVar(BOOT_CLASSPATH_NAME);
 		extend(binder()).addOption(OptionMetadata.builder(
-				"bootclasspath", //$NON-NLS-1$
+				BOOTCLASSPATH_OPTION,
 				MessageFormat.format(Messages.SarlcConfigModule_5, File.pathSeparator))
-				.configPath(BOOT_CLASSPATH_NAME)
 				.valueRequired(Messages.SarlcConfigModule_4)
-				.build());
+				.build())
+			.mapConfigPath(BOOTCLASSPATH_OPTION, BOOT_CLASSPATH_NAME);
 
 		VariableDecls.extend(binder()).declareVar(EXTRA_GENERATOR_NAME);
 		extend(binder()).addOption(OptionMetadata.builder(
-				"generator", //$NON-NLS-1$
+				GENERATOR_OPTION,
 				MessageFormat.format(Messages.SarlcConfigModule_7,
 						ExtraLanguageListCommand.EXTRA_LANGUAGE_LIST_OPTION_SHORT_NAME,
 						File.pathSeparator))
-				.configPath(EXTRA_GENERATOR_NAME)
 				.valueRequired(Messages.SarlcConfigModule_8)
-				.build());
-
+				.build())
+			.mapConfigPath(GENERATOR_OPTION, EXTRA_GENERATOR_NAME);
 	}
 
 	/** Replies the instance of the sarl configuration.

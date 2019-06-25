@@ -56,9 +56,9 @@ public class CompilerCommandModule extends AbstractModule {
 		extend(binder())
 			.addOption(OptionMetadata.builder(
 				CompilerCommand.PROGRESS_OPTION_NAME, Messages.CompilerCommandModule_0)
-				.configPath(ProgressBarConfig.ENABLE)
-				.defaultValue(Boolean.TRUE.toString())
-				.build());
+				.valueOptionalWithDefault(Boolean.TRUE.toString())
+				.build())
+			.mapConfigPath(CompilerCommand.PROGRESS_OPTION_NAME, ProgressBarConfig.ENABLE);
 
 		extend(binder()).addCommand(CompilerCommand.class);
 

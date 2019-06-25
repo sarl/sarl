@@ -64,25 +64,43 @@ public class CompilerConfigModule extends AbstractModule {
 
 	private static final String ENCODING_OPTION = "encoding"; //$NON-NLS-1$
 
+	private static final String JAVASOURCE_OPTION = "javasource"; //$NON-NLS-1$
+
+	private static final String JAVACOMPILER_OPTION = "javacompiler"; //$NON-NLS-1$
+
+	private static final String WRITETRACES_OPTION = "writetraces"; //$NON-NLS-1$
+
+	private static final String WRITESTORAGES_OPTION = "writestorages"; //$NON-NLS-1$
+
+	private static final String GENERATEINLINES_OPTION = "generateinlines"; //$NON-NLS-1$
+
+	private static final String GENERATEPURES_OPTION = 	"generatepures"; //$NON-NLS-1$
+
+	private static final String GENERATEEQUALITYTESTS_OPTION = "generateequalitytests"; //$NON-NLS-1$
+
+	private static final String GENERATETOSTRING_OPTION = "generatetostring"; //$NON-NLS-1$
+
+	private static final String GENERATECLONES_OPTION = "generateclones"; //$NON-NLS-1$
+
+	private static final String GENERATESERIALS_OPTION = "generateserials"; //$NON-NLS-1$
+
 	@Override
 	protected void configure() {
 		VariableDecls.extend(binder()).declareVar(FILE_ENCODING_NAME);
 		extend(binder()).addOption(OptionMetadata.builder(
 				ENCODING_OPTION,
 				MessageFormat.format(Messages.CompilerConfigModule_0, ENCODING_OPTION))
-				.configPath(FILE_ENCODING_NAME)
-				.valueOptional(Messages.CompilerConfigModule_1)
-				.defaultValue(Charset.defaultCharset().displayName())
-				.build());
+				.valueOptionalWithDefault(Messages.CompilerConfigModule_1, Charset.defaultCharset().displayName())
+				.build())
+			.mapConfigPath(ENCODING_OPTION, FILE_ENCODING_NAME);
 
 		VariableDecls.extend(binder()).declareVar(JAVA_VERSION_NAME);
 		extend(binder()).addOption(OptionMetadata.builder(
-				"javasource", //$NON-NLS-1$
+				JAVASOURCE_OPTION,
 				Messages.CompilerConfigModule_2)
-				.configPath(JAVA_VERSION_NAME)
-				.valueOptional(Messages.CompilerConfigModule_3)
-				.defaultValue(SARLVersion.MINIMAL_JDK_VERSION)
-				.build());
+				.valueOptionalWithDefault(Messages.CompilerConfigModule_3, SARLVersion.MINIMAL_JDK_VERSION)
+				.build())
+			.mapConfigPath(JAVASOURCE_OPTION, JAVA_VERSION_NAME);
 
 		VariableDecls.extend(binder()).declareVar(JAVA_COMPILER_NAME);
 		String jcompilerValues = null;
@@ -95,89 +113,80 @@ public class CompilerConfigModule extends AbstractModule {
 			}
 		}
 		extend(binder()).addOption(OptionMetadata.builder(
-				"javacompiler", //$NON-NLS-1$
+				JAVACOMPILER_OPTION,
 				MessageFormat.format(Messages.CompilerConfigModule_4, JavaCompiler.getDefault().toJsonString()))
-				.configPath(JAVA_COMPILER_NAME)
-				.valueOptional(jcompilerValues)
-				.defaultValue(JavaCompiler.getDefault().toJsonString())
-				.build());
+				.valueOptionalWithDefault(jcompilerValues, JavaCompiler.getDefault().toJsonString())
+				.build())
+			.mapConfigPath(JAVACOMPILER_OPTION, JAVA_COMPILER_NAME);
 
 		final String trueFalseValues = MessageFormat.format(Messages.CompilerConfigModule_5,
 				Boolean.TRUE.toString(), Boolean.FALSE.toString());
 		VariableDecls.extend(binder()).declareVar(OUTPUT_TRACES_NAME);
 		extend(binder()).addOption(OptionMetadata.builder(
-				"writetraces", //$NON-NLS-1$
+				WRITETRACES_OPTION,
 				MessageFormat.format(Messages.CompilerConfigModule_6, Boolean.TRUE))
-				.configPath(OUTPUT_TRACES_NAME)
-				.valueOptional(trueFalseValues)
-				.defaultValue(Boolean.TRUE.toString())
-				.build());
+				.valueOptionalWithDefault(trueFalseValues, Boolean.TRUE.toString())
+				.build())
+			.mapConfigPath(WRITETRACES_OPTION, OUTPUT_TRACES_NAME);
 
 		VariableDecls.extend(binder()).declareVar(OUTPUT_STORAGES_NAME);
 		extend(binder()).addOption(OptionMetadata.builder(
-				"writestorages", //$NON-NLS-1$
+				WRITESTORAGES_OPTION,
 				MessageFormat.format(Messages.CompilerConfigModule_7, Boolean.TRUE))
-				.configPath(OUTPUT_STORAGES_NAME)
-				.valueOptional(trueFalseValues)
-				.defaultValue(Boolean.TRUE.toString())
-				.build());
+				.valueOptionalWithDefault(trueFalseValues, Boolean.TRUE.toString())
+				.build())
+			.mapConfigPath(WRITESTORAGES_OPTION, OUTPUT_STORAGES_NAME);
 
 		VariableDecls.extend(binder()).declareVar(GENERATE_INLINES_NAME);
 		extend(binder()).addOption(OptionMetadata.builder(
-				"generateinlines", //$NON-NLS-1$
+				GENERATEINLINES_OPTION,
 				MessageFormat.format(Messages.CompilerConfigModule_8,
 						GeneratorConfig2.DEFAULT_GENERATE_INLINE_ANNOTATION))
-				.configPath(GENERATE_INLINES_NAME)
-				.valueOptional(trueFalseValues)
-				.defaultValue(Boolean.toString(GeneratorConfig2.DEFAULT_GENERATE_INLINE_ANNOTATION))
-				.build());
+				.valueOptionalWithDefault(trueFalseValues, Boolean.toString(GeneratorConfig2.DEFAULT_GENERATE_INLINE_ANNOTATION))
+				.build())
+			.mapConfigPath(GENERATEINLINES_OPTION, GENERATE_INLINES_NAME);
 
 		VariableDecls.extend(binder()).declareVar(COMPRESS_INLINE_EXPRESSIONS_NAME);
 
 		VariableDecls.extend(binder()).declareVar(GENERATE_PURES_NAME);
 		extend(binder()).addOption(OptionMetadata.builder(
-				"generatepures", //$NON-NLS-1$
+				GENERATEPURES_OPTION,
 				MessageFormat.format(Messages.CompilerConfigModule_9, GeneratorConfig2.DEFAULT_GENERATE_PURE_ANNOTATION))
-				.configPath(GENERATE_PURES_NAME)
-				.valueOptional(trueFalseValues)
-				.defaultValue(Boolean.toString(GeneratorConfig2.DEFAULT_GENERATE_PURE_ANNOTATION))
-				.build());
+				.valueOptionalWithDefault(trueFalseValues, Boolean.toString(GeneratorConfig2.DEFAULT_GENERATE_PURE_ANNOTATION))
+				.build())
+			.mapConfigPath(GENERATEPURES_OPTION, GENERATE_PURES_NAME);
 
 		VariableDecls.extend(binder()).declareVar(GENERATE_EQUALITY_TESTS_NAME);
 		extend(binder()).addOption(OptionMetadata.builder(
-				"generateequalitytests", //$NON-NLS-1$
+				GENERATEEQUALITYTESTS_OPTION,
 				MessageFormat.format(Messages.CompilerConfigModule_10, GeneratorConfig2.DEFAULT_GENERATE_EQUALITY_TEST_FUNCTIONS))
-				.configPath(GENERATE_EQUALITY_TESTS_NAME)
-				.valueOptional(trueFalseValues)
-				.defaultValue(Boolean.toString(GeneratorConfig2.DEFAULT_GENERATE_EQUALITY_TEST_FUNCTIONS))
-				.build());
+				.valueOptionalWithDefault(trueFalseValues, Boolean.toString(GeneratorConfig2.DEFAULT_GENERATE_EQUALITY_TEST_FUNCTIONS))
+				.build())
+			.mapConfigPath(GENERATEEQUALITYTESTS_OPTION, GENERATE_EQUALITY_TESTS_NAME);
 
 		VariableDecls.extend(binder()).declareVar(GENERATE_TOSTRING_NAME);
 		extend(binder()).addOption(OptionMetadata.builder(
-				"generatetostring", //$NON-NLS-1$
+				GENERATETOSTRING_OPTION,
 				MessageFormat.format(Messages.CompilerConfigModule_11, GeneratorConfig2.DEFAULT_GENERATE_TOSTRING_FUNCTION))
-				.configPath(GENERATE_TOSTRING_NAME)
-				.valueOptional(trueFalseValues)
-				.defaultValue(Boolean.toString(GeneratorConfig2.DEFAULT_GENERATE_TOSTRING_FUNCTION))
-				.build());
+				.valueOptionalWithDefault(trueFalseValues, Boolean.toString(GeneratorConfig2.DEFAULT_GENERATE_TOSTRING_FUNCTION))
+				.build())
+			.mapConfigPath(GENERATETOSTRING_OPTION, GENERATE_TOSTRING_NAME);
 
 		VariableDecls.extend(binder()).declareVar(GENERATE_CLONE_NAME);
 		extend(binder()).addOption(OptionMetadata.builder(
-				"generateclones", //$NON-NLS-1$
+				GENERATECLONES_OPTION,
 				MessageFormat.format(Messages.CompilerConfigModule_12, GeneratorConfig2.DEFAULT_GENERATE_CLONE_FUNCTION))
-				.configPath(GENERATE_CLONE_NAME)
-				.valueOptional(trueFalseValues)
-				.defaultValue(Boolean.toString(GeneratorConfig2.DEFAULT_GENERATE_CLONE_FUNCTION))
-				.build());
+				.valueOptionalWithDefault(trueFalseValues, Boolean.toString(GeneratorConfig2.DEFAULT_GENERATE_CLONE_FUNCTION))
+				.build())
+			.mapConfigPath(GENERATECLONES_OPTION, GENERATE_CLONE_NAME);
 
 		VariableDecls.extend(binder()).declareVar(GENERATE_SERIAL_IDS_NAME);
 		extend(binder()).addOption(OptionMetadata.builder(
-				"generateserials", //$NON-NLS-1$
+				GENERATESERIALS_OPTION,
 				MessageFormat.format(Messages.CompilerConfigModule_13, GeneratorConfig2.DEFAULT_GENERATE_SERIAL_NUMBER_FIELD))
-				.configPath(GENERATE_SERIAL_IDS_NAME)
-				.valueOptional(trueFalseValues)
-				.defaultValue(Boolean.toString(GeneratorConfig2.DEFAULT_GENERATE_SERIAL_NUMBER_FIELD))
-				.build());
+				.valueOptionalWithDefault(trueFalseValues, Boolean.toString(GeneratorConfig2.DEFAULT_GENERATE_SERIAL_NUMBER_FIELD))
+				.build())
+			.mapConfigPath(GENERATESERIALS_OPTION, GENERATE_SERIAL_IDS_NAME);
 	}
 
 	/** Provide a Java batch compiler based on the Bootique configuration.

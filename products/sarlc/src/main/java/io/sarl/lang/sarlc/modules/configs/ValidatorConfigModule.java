@@ -40,25 +40,31 @@ import org.arakhne.afc.bootique.variables.VariableDecls;
  */
 public class ValidatorConfigModule extends AbstractModule {
 
+	private static final String NOWARN_OPTION = "nowarn"; //$NON-NLS-1$
+
+	private static final String WALL_OPTION = "wall"; //$NON-NLS-1$
+
+	private static final String WERROR_OPTION = "werror"; //$NON-NLS-1$
+
 	@Override
 	protected void configure() {
 		VariableDecls.extend(binder()).declareVar(IGNORE_WARNINGS_NAME);
 		extend(binder()).addOption(OptionMetadata.builder(
-				"nowarn", Messages.ValidatorConfigModule_0) //$NON-NLS-1$
-				.configPath(IGNORE_WARNINGS_NAME)
-				.build());
+				NOWARN_OPTION, Messages.ValidatorConfigModule_0)
+				.build())
+			.mapConfigPath(NOWARN_OPTION, IGNORE_WARNINGS_NAME);
 
 		VariableDecls.extend(binder()).declareVar(ALL_WARNINGS_NAME);
 		extend(binder()).addOption(OptionMetadata.builder(
-				"wall", Messages.ValidatorConfigModule_2) //$NON-NLS-1$
-				.configPath(ALL_WARNINGS_NAME)
-				.build());
+				WALL_OPTION, Messages.ValidatorConfigModule_2)
+				.build())
+			.mapConfigPath(WALL_OPTION, ALL_WARNINGS_NAME);
 
 		VariableDecls.extend(binder()).declareVar(ALL_ERRORS_NAME);
 		extend(binder()).addOption(OptionMetadata.builder(
-				"werror", Messages.ValidatorConfigModule_1) //$NON-NLS-1$
-				.configPath(ALL_ERRORS_NAME)
-				.build());
+				WERROR_OPTION, Messages.ValidatorConfigModule_1)
+				.build())
+			.mapConfigPath(WERROR_OPTION, ALL_ERRORS_NAME);
 	}
 
 }
