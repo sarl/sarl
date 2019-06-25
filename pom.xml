@@ -80,10 +80,9 @@
 		<jre.environment>JavaSE-1.8</jre.environment>
 		<!-- Maven API version. This version should be supported by m2e. Search 
 			for maven-core on central. -->
-		<maven.api.version>3.6.0</maven.api.version>
-		<!-- Version of the Maven Java compiler.
-		     Version 3.7.0 depends on a library that is compiled with Java 9! -->
-		<mavencompiler.version>3.6.2</mavencompiler.version>
+		<maven.api.version>3.6.1</maven.api.version>
+		<!-- Version of the Maven Java compiler. -->
+		<mavencompiler.version>3.8.1</mavencompiler.version>
 		<!-- String to put after the copyright sign -->
 		<copyrighters>the original authors or authors</copyrighters>
 		<!-- URL of the Maven repositories of SARL (use in POM and documentation) -->
@@ -681,7 +680,7 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
 					<!-- Caution: version 3.1.2 causes problems with m2e into the SARL product -->
-					<version>3.1.1</version>
+					<version>3.1.2</version>
 				</plugin>
 
 
@@ -731,7 +730,7 @@
 					<groupId>org.codehaus.gmavenplus</groupId>
 					<artifactId>gmavenplus-plugin</artifactId>
 					<!-- version 1.6 does not work because a function is not found -->
-					<version>1.5</version>
+					<version>1.7.1</version>
 				</plugin>
 
 				<plugin>
