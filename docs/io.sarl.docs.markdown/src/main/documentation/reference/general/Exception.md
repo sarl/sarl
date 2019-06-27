@@ -58,7 +58,7 @@ non-final variables:
 
 		[:Success:]
 			package io.sarl.docs.reference.gsr
-				import java.io.IOException
+			import java.io.IOException
 			agent A {
 				[:On]
 					def readFromFile : String { } 
@@ -73,6 +73,46 @@ non-final variables:
 				[:Off]
 			}
 		[:End:]
+
+
+## The try-with-resources Statement
+
+The try-with-resources statement is a try statement that declares one or more resources. A resource
+is an object that must be closed after the program is finished with it. The try-with-resources
+statement ensures that each resource is closed at the end of the statement. Any object that
+implements `java.lang.AutoCloseable`, which includes all objects which implement `java.io.Closeable`,
+can be used as a resource.
+
+The following example reads the first line from a file. It uses an instance of [:bufferedreadertype:]
+to read data from the file. [:bufferedreadertype:] is a resource that must be closed after the
+program is finished with it:
+
+		[:Success:]
+			package io.sarl.docs.reference.gsr
+			import java.io.BufferedReader
+			import java.io.FileReader
+			class A {
+				[:On]
+				static def readFirstLineFromFile(path : String) : String {
+					[:trykw](try) (var br = new [:bufferedreadertype](BufferedReader)(new FileReader(path))) {
+        				return br.readLine
+					}
+				}
+				[:Off]
+			}
+		[:End:]
+
+
+
+In this example, the resource declared in the try-with-resources statement is a [:bufferedreadertype:].
+The declaration statement appears within parentheses immediately after the [:trykw:] keyword.
+The class [:bufferedreadertype:] implements the interface `java.lang.AutoCloseable`.
+Because the [:bufferedreadertype:] instance is declared in a try-with-resource statement, it will be
+closed regardless of whether the try statement completes normally or abruptly (as a result of the method
+`[:bufferedreadertype!].readLine` throwing an `IOException`).
+
+
+
 
 
 
