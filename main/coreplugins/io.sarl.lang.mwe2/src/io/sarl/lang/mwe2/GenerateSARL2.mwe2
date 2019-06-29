@@ -607,6 +607,22 @@ Workflow {
     				to = "io.sarl.lang.compiler.SarlPartialParserHelper"
     				functionName = "bindIPartialParserHelper"
    				}
+    			runtime = {
+    				bind = "org.eclipse.xtext.parser.antlr.ISyntaxErrorMessageProvider"
+    				to = "io.sarl.lang.validation.SARLSyntaxErrorMessageProvider"
+    				singleton = true
+    			}
+    			runtime = {
+    				bind = "org.eclipse.xtext.parser.antlr.SyntaxErrorMessageProvider"
+    				to = "io.sarl.lang.validation.SARLSyntaxErrorMessageProvider"
+    				singleton = true
+    			}
+    			runtime = {
+    				bind = "org.eclipse.xtext.xbase.validation.JvmTypeReferencesValidator"
+    				to = "io.sarl.lang.validation.SARLJvmTypeReferencesValidator"
+    				singleton = true
+    				eager = true
+    			}
 
     			ui = {
     				bind = "io.sarl.lang.extralanguage.IExtraLanguageContributions"
@@ -967,16 +983,6 @@ Workflow {
     			runtime = {
     				bind = "org.eclipse.xtend.core.macro.AbstractFileSystemSupport"
     				to = "org.eclipse.xtend.core.macro.JavaIOFileSystemSupport"
-    			}
-    			runtime = {
-    				bind = "org.eclipse.xtext.parser.antlr.ISyntaxErrorMessageProvider"
-    				to = "io.sarl.lang.validation.SARLSyntaxErrorMessageProvider"
-    				singleton = true
-    			}
-    			runtime = {
-    				bind = "org.eclipse.xtext.parser.antlr.SyntaxErrorMessageProvider"
-    				to = "io.sarl.lang.validation.SARLSyntaxErrorMessageProvider"
-    				singleton = true
     			}
 
     			ui = {

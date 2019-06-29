@@ -122,6 +122,8 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -204,7 +206,9 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReferenceFac
 import org.eclipse.xtext.xbase.typesystem.references.StandardTypeReferenceOwner;
 import org.eclipse.xtext.xbase.util.XbaseUsageCrossReferencer;
 import org.eclipse.xtext.xbase.validation.FeatureNameValidator;
+import org.eclipse.xtext.xbase.validation.ProxyAwareUIStrings;
 import org.eclipse.xtext.xbase.validation.UIStrings;
+import org.eclipse.xtext.xtype.XComputedTypeReference;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.annotation.EarlyExit;
@@ -432,6 +436,9 @@ public class SARLValidator extends AbstractSARLValidator {
 
 	@Inject
 	private ISarlEarlyExitComputer earlyExitComputer;
+
+	@Inject
+	private ProxyAwareUIStrings proxyAwareUIStrings;
 
 	// Update the annotation target information
 	{
@@ -3082,6 +3089,43 @@ public class SARLValidator extends AbstractSARLValidator {
 		if (!isIgnored(OBSOLETE_CAST) && toType.isAssignableFrom(fromType)) {
 			addIssue(MessageFormat.format(Messages.SARLValidator_96, fromType.getHumanReadableName(),
 					toType.getHumanReadableName()), concreteSyntax, OBSOLETE_CAST);
+		}
+	}
+
+	/** This function is overridden in order to add "isIgnore" invocation.
+	 * {@inheritDoc}
+	 */
+	@Override
+	@SuppressWarnings("checkstyle:nestedifdepth")
+	protected void validateInferredType(JvmTypeReference inferredType, XtendMember member, String messagePrefix, EAttribute location) {
+		if (inferredType != null) {
+			final TreeIterator<EObject> iterator = EcoreUtil2.eAll(inferredType);
+			while (iterator.hasNext()) {
+				final EObject next = iterator.next();
+				if (next instanceof JvmParameterizedTypeReference) {
+					final JvmParameterizedTypeReference candidate = (JvmParameterizedTypeReference) next;
+					final JvmType type = candidate.getType();
+					if (type instanceof JvmGenericType && !((JvmGenericType) type).getTypeParameters().isEmpty()) {
+						if (candidate.getArguments().isEmpty()) {
+							StringBuilder message = new StringBuilder(messagePrefix);
+							message = this.proxyAwareUIStrings.visit(inferredType, message);
+							if (message != null && !isIgnored(org.eclipse.xtext.xbase.validation.IssueCodes.RAW_TYPE)) {
+								StringBuilder msg2 = new StringBuilder();
+								msg2 = this.proxyAwareUIStrings.appendTypeSignature(type, msg2);
+								final String m = MessageFormat.format(Messages.SARLValidator_6,
+										message.toString(),
+										type.getSimpleName(),
+										msg2.toString());
+								warning(m.toString(), member, location, org.eclipse.xtext.xbase.validation.IssueCodes.RAW_TYPE);
+							}
+							return;
+						}
+					}
+				} else if (next instanceof XComputedTypeReference) {
+					validateInferredType(((XComputedTypeReference) next).getEquivalent(), member, messagePrefix, location);
+					iterator.prune();
+				}
+			}
 		}
 	}
 

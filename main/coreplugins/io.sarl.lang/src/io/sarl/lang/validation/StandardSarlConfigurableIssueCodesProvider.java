@@ -56,6 +56,9 @@ public class StandardSarlConfigurableIssueCodesProvider extends XtendConfigurabl
 		acceptor.accept(create(
 				org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISCOURAGED,
 				SeverityConverter.SEVERITY_WARNING));
+		acceptor.accept(create(
+				org.eclipse.xtext.xbase.validation.IssueCodes.RAW_TYPE,
+				SeverityConverter.SEVERITY_WARNING));
 
 		// Override the Xtend configuration
 		acceptor.accept(create(

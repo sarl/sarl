@@ -120,6 +120,7 @@ import io.sarl.lang.validation.DefaultFeatureCallValidator;
 import io.sarl.lang.validation.IFeatureCallValidator;
 import io.sarl.lang.validation.SARLEarlyExitValidator;
 import io.sarl.lang.validation.SARLFeatureNameValidator;
+import io.sarl.lang.validation.SARLJvmTypeReferencesValidator;
 import io.sarl.lang.validation.SARLSyntaxErrorMessageProvider;
 import io.sarl.lang.validation.SARLValidator;
 import io.sarl.lang.validation.StandardSarlConfigurableIssueCodesProvider;
@@ -248,6 +249,7 @@ import org.eclipse.xtext.xbase.util.XExpressionHelper;
 import org.eclipse.xtext.xbase.validation.EarlyExitValidator;
 import org.eclipse.xtext.xbase.validation.FeatureNameValidator;
 import org.eclipse.xtext.xbase.validation.ImplicitReturnFinder;
+import org.eclipse.xtext.xbase.validation.JvmTypeReferencesValidator;
 import org.eclipse.xtext.xbase.validation.ReadAndWriteTracking;
 
 /**
@@ -543,6 +545,12 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	@SingletonBinding
+	public Class<? extends ISyntaxErrorMessageProvider> bindISyntaxErrorMessageProvider() {
+		return SARLSyntaxErrorMessageProvider.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends IJvmModelInferrer> bindIJvmModelInferrer() {
 		return SARLJvmModelInferrer.class;
 	}
@@ -644,6 +652,12 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	@SingletonBinding(eager=true)
+	public Class<? extends JvmTypeReferencesValidator> bindJvmTypeReferencesValidator() {
+		return SARLJvmTypeReferencesValidator.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public void configureIGenerator2ExtraLanguageMainGenerator(Binder binder) {
 		binder.bind(IGenerator2.class).annotatedWith(Names.named(io.sarl.lang.extralanguage.compiler.ExtraLanguageGeneratorSupport.MAIN_GENERATOR_NAME)).to(SARLJvmGenerator.class);
 	}
@@ -656,6 +670,12 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
 	public Class<? extends ImplicitlyImportedFeatures> bindImplicitlyImportedFeatures() {
 		return SARLImplicitlyImportedFeatures.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	@SingletonBinding
+	public Class<? extends SyntaxErrorMessageProvider> bindSyntaxErrorMessageProvider() {
+		return SARLSyntaxErrorMessageProvider.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
@@ -744,12 +764,6 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
-	@SingletonBinding
-	public Class<? extends ISyntaxErrorMessageProvider> bindISyntaxErrorMessageProvider() {
-		return SARLSyntaxErrorMessageProvider.class;
-	}
-	
-	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
 	public Class<? extends IResourceValidator> bindIResourceValidator() {
 		return CachingResourceValidatorImpl.class;
 	}
@@ -834,12 +848,6 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
 	public Class<? extends TargetURICollector> bindTargetURICollector() {
 		return JvmModelTargetURICollector.class;
-	}
-	
-	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
-	@SingletonBinding
-	public Class<? extends SyntaxErrorMessageProvider> bindSyntaxErrorMessageProvider() {
-		return SARLSyntaxErrorMessageProvider.class;
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings required by extended Xtend API]
