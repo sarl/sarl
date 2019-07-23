@@ -60,31 +60,49 @@ import io.sarl.sarldoc.configs.Visibility;
  */
 public class SarldocConfigModule extends AbstractModule {
 
+	private static final String JAVADOC_OPTION = "javadoc";  //$NON-NLS-1$
+
+	private static final String DOCTITLE_OPTION = "doctitle";  //$NON-NLS-1$
+
+	private static final String TAGS_OPTION = "tags";  //$NON-NLS-1$
+
+	private static final String LOCALE_OPTION = "locale";  //$NON-NLS-1$
+
+	private static final String VERSIONTAG_OPTION = "versiontag";  //$NON-NLS-1$
+
+	private static final String AUTHORTAG_OPTION = "authortag";  //$NON-NLS-1$
+
+	private static final String DEPRECATEDTAG_OPTION = "deprecatedtag";  //$NON-NLS-1$
+
+	private static final String SINCETAG_OPTION = "sincetag";  //$NON-NLS-1$
+
+	private static final String VISIBILITY_OPTION = "visibility";  //$NON-NLS-1$
+
 	@Override
 	protected void configure() {
 		VariableDecls.extend(binder()).declareVar(JAVADOC_EXECUTABLE_NAME);
 		extend(binder()).addOption(OptionMetadata.builder(
-				"javadoc", //$NON-NLS-1$
+				JAVADOC_OPTION,
 				Messages.SarldocConfigModule_0)
-				.configPath(JAVADOC_EXECUTABLE_NAME)
 				.valueRequired(Messages.SarldocConfigModule_3)
-				.build());
+				.build())
+			.mapConfigPath(JAVADOC_OPTION, JAVADOC_EXECUTABLE_NAME);
 
 		VariableDecls.extend(binder()).declareVar(DOC_OUTPUT_DIRECTORY_NAME);
 		extend(binder()).addOption(OptionMetadata.builder(
 				Constants.DOCUMENTATION_OUTPUT_DIRECTORY_OPTION,
 				Messages.SarldocConfigModule_1)
-				.configPath(DOC_OUTPUT_DIRECTORY_NAME)
 				.valueRequired(Messages.SarldocConfigModule_4)
-				.build());
+				.build())
+			.mapConfigPath(Constants.DOCUMENTATION_OUTPUT_DIRECTORY_OPTION, DOC_OUTPUT_DIRECTORY_NAME);
 
 		VariableDecls.extend(binder()).declareVar(TITLE_NAME);
 		extend(binder()).addOption(OptionMetadata.builder(
-				"doctitle", //$NON-NLS-1$
+				DOCTITLE_OPTION,
 				Messages.SarldocConfigModule_2)
-				.configPath(TITLE_NAME)
 				.valueRequired(Messages.SarldocConfigModule_5)
-				.build());
+				.build())
+			.mapConfigPath(DOCTITLE_OPTION, TITLE_NAME);
 
 		final StringBuilder customTagHelp = new StringBuilder();
 		for (final Placement placement : Placement.values()) {
@@ -97,54 +115,50 @@ public class SarldocConfigModule extends AbstractModule {
 		}
 
 		extend(binder()).addOption(OptionMetadata.builder(
-				"tags", //$NON-NLS-1$
+				TAGS_OPTION,
 				MessageFormat.format(Messages.SarldocConfigModule_8,
 						customTagHelp.toString()))
-				.configPath(TAGS_NAME)
 				.valueRequired(Messages.SarldocConfigModule_9)
-				.build());
+				.build())
+			.mapConfigPath(TAGS_OPTION, TAGS_NAME);
 
 		extend(binder()).addOption(OptionMetadata.builder(
-				"locale", //$NON-NLS-1$
+				LOCALE_OPTION,
 				MessageFormat.format(Messages.SarldocConfigModule_10,
 						LOCALE_DEFAULT.toString()))
-				.configPath(LOCALE_NAME)
 				.valueRequired(Messages.SarldocConfigModule_11)
-				.build());
+				.build())
+			.mapConfigPath(LOCALE_OPTION, LOCALE_NAME);
 
 		final String truefalseString = Boolean.TRUE.toString() + "|" + Boolean.FALSE.toString(); //$NON-NLS-1$
 
 		extend(binder()).addOption(OptionMetadata.builder(
-				"versiontag", //$NON-NLS-1$
+				VERSIONTAG_OPTION,
 				MessageFormat.format(Messages.SarldocConfigModule_15, "@version", Boolean.TRUE)) //$NON-NLS-1$
-				.configPath(ENABLE_VERSION_TAG_NAME)
-				.valueOptional(truefalseString)
-				.defaultValue(Boolean.TRUE.toString())
-				.build());
+				.valueOptionalWithDefault(truefalseString, Boolean.TRUE.toString())
+				.build())
+			.mapConfigPath(VERSIONTAG_OPTION, ENABLE_VERSION_TAG_NAME);
 
 		extend(binder()).addOption(OptionMetadata.builder(
-				"authortag", //$NON-NLS-1$
+				AUTHORTAG_OPTION,
 				MessageFormat.format(Messages.SarldocConfigModule_15, "@author", Boolean.TRUE)) //$NON-NLS-1$
-				.configPath(ENABLE_AUTHOR_TAG_NAME)
-				.valueOptional(truefalseString)
-				.defaultValue(Boolean.TRUE.toString())
-				.build());
+				.valueOptionalWithDefault(truefalseString, Boolean.TRUE.toString())
+				.build())
+			.mapConfigPath(AUTHORTAG_OPTION, ENABLE_AUTHOR_TAG_NAME);
 
 		extend(binder()).addOption(OptionMetadata.builder(
-				"deprecatedtag", //$NON-NLS-1$
+				DEPRECATEDTAG_OPTION,
 				MessageFormat.format(Messages.SarldocConfigModule_15, "@deprecated", Boolean.TRUE)) //$NON-NLS-1$
-				.configPath(ENABLE_DEPRECATED_TAG_NAME)
-				.valueOptional(truefalseString)
-				.defaultValue(Boolean.TRUE.toString())
-				.build());
+				.valueOptionalWithDefault(truefalseString, Boolean.TRUE.toString())
+				.build())
+			.mapConfigPath(DEPRECATEDTAG_OPTION, ENABLE_DEPRECATED_TAG_NAME);
 
 		extend(binder()).addOption(OptionMetadata.builder(
-				"sincetag", //$NON-NLS-1$
+				SINCETAG_OPTION,
 				MessageFormat.format(Messages.SarldocConfigModule_15, "@since", Boolean.TRUE)) //$NON-NLS-1$
-				.configPath(ENABLE_SINCE_TAG_NAME)
-				.valueOptional(truefalseString)
-				.defaultValue(Boolean.TRUE.toString())
-				.build());
+				.valueOptionalWithDefault(truefalseString, Boolean.TRUE.toString())
+				.build())
+			.mapConfigPath(SINCETAG_OPTION, ENABLE_SINCE_TAG_NAME);
 
 		final StringBuilder visibilityDoc = new StringBuilder();
 		final StringBuilder visibilityValues = new StringBuilder();
@@ -159,13 +173,12 @@ public class SarldocConfigModule extends AbstractModule {
 			visibilityValues.append(visibility.toJsonString());
 		}
 		extend(binder()).addOption(OptionMetadata.builder(
-				"visibility", //$NON-NLS-1$
+				VISIBILITY_OPTION,
 				MessageFormat.format(Messages.SarldocConfigModule_17,
 						visibilityDoc.toString(), Visibility.getDefault().toJsonString()))
-				.configPath(VISIBILITY_NAME)
-				.valueOptional(visibilityValues.toString())
-				.defaultValue(Visibility.getDefault().toJsonString())
-				.build());
+				.valueOptionalWithDefault(visibilityValues.toString(), Visibility.getDefault().toJsonString())
+				.build())
+			.mapConfigPath(VISIBILITY_OPTION, VISIBILITY_NAME);
 	}
 
 	/** Replies the instance of the sarldoc configuration.
