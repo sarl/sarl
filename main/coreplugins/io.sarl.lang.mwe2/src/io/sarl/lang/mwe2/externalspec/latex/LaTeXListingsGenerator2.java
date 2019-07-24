@@ -58,19 +58,19 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 
 	/** Default definition for the basic style for floating algorithms (without colors).
 	 */
-	public static final String DEFAULT_FLOAT_BASIC_STYLE = "\\normalcolor\\smaller\\smaller"; //$NON-NLS-1$
+	public static final String DEFAULT_FLOAT_BASIC_STYLE = "\\smaller\\smaller"; //$NON-NLS-1$
 
 	/** Default definition for the basic style for floating algorithms (with colors).
 	 */
-	public static final String DEFAULT_COLORIZED_FLOAT_BASIC_STYLE = DEFAULT_FLOAT_BASIC_STYLE;
+	public static final String DEFAULT_COLORIZED_FLOAT_BASIC_STYLE = "\\normalcolor\\smaller\\smaller"; //$NON-NLS-1$
 
 	/** Default definition for the basic style for inline code (without color).
 	 */
-	public static final String DEFAULT_INLINE_BASIC_STYLE = "\\normalcolor"; //$NON-NLS-1$
+	public static final String DEFAULT_INLINE_BASIC_STYLE = "{}"; //$NON-NLS-1$
 
 	/** Default definition for the basic style for inline code (with colors).
 	 */
-	public static final String DEFAULT_COLORIZED_INLINE_BASIC_STYLE = DEFAULT_INLINE_BASIC_STYLE;
+	public static final String DEFAULT_COLORIZED_INLINE_BASIC_STYLE = "\\normalcolor"; //$NON-NLS-1$;
 
 	/** Default definition for the identifier style (without color).
 	 */
@@ -323,7 +323,7 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 
 		String floatBasicStyle = this.floatBasicStyle;
 		if (floatBasicStyle == null) {
-			floatBasicStyle = (getEnableColors()) ? DEFAULT_COLORIZED_FLOAT_BASIC_STYLE : DEFAULT_FLOAT_BASIC_STYLE;
+			floatBasicStyle = getEnableColors() ? DEFAULT_COLORIZED_FLOAT_BASIC_STYLE : DEFAULT_FLOAT_BASIC_STYLE;
 		}
 		floatBasicStyle = Strings.emptyIfNull(floatBasicStyle);
 		it.appendNl("   basicstyle={0}, % the size of the fonts that are used for the code", floatBasicStyle); //$NON-NLS-1$
@@ -341,28 +341,28 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 
 		String identifierStyle = this.identifierStyle;
 		if (identifierStyle == null) {
-			identifierStyle = (getEnableColors()) ? DEFAULT_COLORIZED_IDENTIFIER_STYLE : DEFAULT_IDENTIFIER_STYLE;
+			identifierStyle = getEnableColors() ? DEFAULT_COLORIZED_IDENTIFIER_STYLE : DEFAULT_IDENTIFIER_STYLE;
 		}
 		identifierStyle = Strings.emptyIfNull(identifierStyle);
 		it.appendNl("   identifierstyle={0},", identifierStyle); //$NON-NLS-1$
 
 		String commentStyle = this.commentStyle;
 		if (commentStyle == null) {
-			commentStyle = (getEnableColors()) ? DEFAULT_COLORIZED_COMMENT_STYLE : DEFAULT_COMMENT_STYLE;
+			commentStyle = getEnableColors() ? DEFAULT_COLORIZED_COMMENT_STYLE : DEFAULT_COMMENT_STYLE;
 		}
 		commentStyle = Strings.emptyIfNull(commentStyle);
 		it.appendNl("   commentstyle={0},", commentStyle); //$NON-NLS-1$
 
 		String stringStyle = this.stringStyle;
 		if (stringStyle == null) {
-			stringStyle = (getEnableColors()) ? DEFAULT_COLORIZED_STRING_STYLE : DEFAULT_STRING_STYLE;
+			stringStyle = getEnableColors() ? DEFAULT_COLORIZED_STRING_STYLE : DEFAULT_STRING_STYLE;
 		}
 		stringStyle = Strings.emptyIfNull(stringStyle);
 		it.appendNl("   stringstyle={0},", stringStyle); //$NON-NLS-1$
 
 		String keywordStyle = this.keywordStyle;
 		if (keywordStyle == null) {
-			keywordStyle = (getEnableColors()) ? DEFAULT_COLORIZED_KEYWORD_STYLE : DEFAULT_KEYWORD_STYLE;
+			keywordStyle = getEnableColors() ? DEFAULT_COLORIZED_KEYWORD_STYLE : DEFAULT_KEYWORD_STYLE;
 		}
 		keywordStyle = Strings.emptyIfNull(keywordStyle);
 		it.appendNl("   keywordstyle={0}, % keyword style", keywordStyle); //$NON-NLS-1$
@@ -387,12 +387,16 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 		it.appendNl("\\lstinputlisting; also try caption instead of title"); //$NON-NLS-1$
 		it.appendNl("   frameround=fttt, % If framed, use this rounded corner style"); //$NON-NLS-1$
 		it.appendNl("   xleftmargin=20pt,"); //$NON-NLS-1$
-		it.appendNl("   numberstyle=\\color{SARLlinenumber}\\tiny,"); //$NON-NLS-1$
+		it.append("   numberstyle="); //$NON-NLS-1$
+		if (getEnableColors()) {
+			it.append("\\color{SARLlinenumber}"); //$NON-NLS-1$
+		}
+		it.appendNl("\\tiny,"); //$NON-NLS-1$
 		it.appendNl("}"); //$NON-NLS-1$
 
 		String inlineBasicStyle = this.inlineBasicStyle;
 		if (inlineBasicStyle == null) {
-			inlineBasicStyle = (getEnableColors()) ? DEFAULT_COLORIZED_INLINE_BASIC_STYLE : DEFAULT_INLINE_BASIC_STYLE;
+			inlineBasicStyle = getEnableColors() ? DEFAULT_COLORIZED_INLINE_BASIC_STYLE : DEFAULT_INLINE_BASIC_STYLE;
 		}
 		inlineBasicStyle = Strings.emptyIfNull(inlineBasicStyle);
 		it.append("\\newcommand{\\code}[1]{"); //$NON-NLS-1$
@@ -427,12 +431,14 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 	 * @return {@code true} if options are generated.
 	 * @since 0.6
 	 */
-	@SuppressWarnings("static-method")
 	protected boolean generateOptions(IStyleAppendable it) {
-		it.appendNl("\\newif\\ifusesarlcolors\\usesarlcolorstrue"); //$NON-NLS-1$
-		it.appendNl("\\DeclareOption{sarlcolors}{\\global\\usesarlcolorstrue}"); //$NON-NLS-1$
-		it.appendNl("\\DeclareOption{nosarlcolors}{\\global\\usesarlcolorsfalse}"); //$NON-NLS-1$
-		return true;
+		if (getEnableColors()) {
+			it.appendNl("\\newif\\ifusesarlcolors\\usesarlcolorstrue"); //$NON-NLS-1$
+			it.appendNl("\\DeclareOption{sarlcolors}{\\global\\usesarlcolorstrue}"); //$NON-NLS-1$
+			it.appendNl("\\DeclareOption{nosarlcolors}{\\global\\usesarlcolorsfalse}"); //$NON-NLS-1$
+			return true;
+		}
+		return false;
 	}
 
 	/** Appendable for tex-based styles.

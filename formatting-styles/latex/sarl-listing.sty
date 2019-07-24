@@ -22,11 +22,7 @@
 % limitations under the License.
 %
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
-\ProvidesPackage{sarl-listing}[2019/06/29]
-\newif\ifusesarlcolors\usesarlcolorstrue
-\DeclareOption{sarlcolors}{\global\usesarlcolorstrue}
-\DeclareOption{nosarlcolors}{\global\usesarlcolorsfalse}
-\ProcessOptions*
+\ProvidesPackage{sarl-listing}[2019/07/24]
 \RequirePackage{algpseudocode}
 \RequirePackage{listings}
 \RequirePackage{xspace}
@@ -38,7 +34,7 @@
    morekeywords={abstract,agent,annotation,artifact,as,assert,assume,behavior,boolean,break,byte,capacity,case,catch,char,class,continue,def,default,dispatch,do,double,else,enum,event,extends,extension,false,final,finally,fires,float,for,if,implements,import,instanceof,int,interface,it,long,native,new,null,occurrence,on,override,package,private,protected,public,requires,return,short,skill,space,static,strictfp,super,switch,synchronized,this,throw,throws,transient,true,try,typeof,uses,val,var,void,volatile,while,with},
 }
 \lstset{%
-   basicstyle=\normalcolor\smaller\smaller, % the size of the fonts that are used for the code
+   basicstyle=\smaller\smaller, % the size of the fonts that are used for the code
    breakatwhitespace=false, % sets if automatic breaks should only happen at whitespace
    breaklines=true, % sets automatic line breaking
    captionpos=b, % sets the caption-position to bottom
@@ -63,9 +59,9 @@
    title=\lstname, % show the filename of files included with \lstinputlisting; also try caption instead of title
    frameround=fttt, % If framed, use this rounded corner style
    xleftmargin=20pt,
-   numberstyle=\color{SARLlinenumber}\tiny,
+   numberstyle=\tiny,
 }
-\newcommand{\code}[1]{\ifmmode\text{\lstinline[basicstyle=\normalcolor]{#1}}\else\lstinline[basicstyle=\normalcolor]{#1}\fi}
+\newcommand{\code}[1]{\ifmmode\text{\lstinline[basicstyle={}]{#1}}\else\lstinline[basicstyle={}]{#1}\fi}
 \newcommand{\sarl}{\mbox{SARL}\xspace}
 \newcommand{\sarlversion}{0.10}
 \endinput
