@@ -27,6 +27,8 @@ import org.eclipse.xtend.lib.annotations.AccessorsProcessor;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 
+import io.sarl.lang.annotations.SarlAccessorsProcessor;
+
 /** Processor for the {@code @Accessors} active annotations.
  *
  * <p>This processor ensures that the visibility of the generated functions is not higher
@@ -58,7 +60,10 @@ public class SarlProcessorInstanceForJvmTypeProvider extends ProcessorInstanceFo
 	 */
 	public static JvmType filterActiveProcessorType(JvmType type, CommonTypeComputationServices services) {
 		if (AccessorsProcessor.class.getName().equals(type.getQualifiedName())) {
-			return services.getTypeReferences().findDeclaredType(SarlAccessorsProcessor.class, type);
+			final JvmType filteredType = services.getTypeReferences().findDeclaredType(SarlAccessorsProcessor.class, type);
+			if (filteredType != null) {
+				return filteredType;
+			}
 		}
 		return type;
 	}

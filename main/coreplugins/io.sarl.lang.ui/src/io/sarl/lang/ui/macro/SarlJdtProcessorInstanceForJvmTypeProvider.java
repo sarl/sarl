@@ -46,7 +46,8 @@ public class SarlJdtProcessorInstanceForJvmTypeProvider extends JdtBasedProcesso
 
 	@Override
 	public Object getProcessorInstance(JvmType type) {
-		return super.getProcessorInstance(SarlProcessorInstanceForJvmTypeProvider.filterActiveProcessorType(type, this.services));
+		final JvmType filteredType = SarlProcessorInstanceForJvmTypeProvider.filterActiveProcessorType(type, this.services);
+		return super.getProcessorInstance(filteredType);
 	}
 
 }

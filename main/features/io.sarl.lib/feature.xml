@@ -224,10 +224,11 @@
    <requires>
       <import plugin="io.sarl.lang.core" version="0.10.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.util" version="0.10.0" match="greaterOrEqual"/>
-      <import plugin="javax.inject" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="io.sarl.core" version="0.10.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.osgi" version="3.14.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.xbase.lib" version="2.18.0" match="greaterOrEqual"/>
+      <import plugin="javax.inject" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="io.sarl.core" version="0.10.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtend.lib" version="2.18.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin

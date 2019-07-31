@@ -19,9 +19,10 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.macro;
+package io.sarl.lang.annotations;
 
-import com.google.inject.Singleton;
+import javax.inject.Singleton;
+
 import org.eclipse.xtend.lib.annotations.AccessorsProcessor;
 import org.eclipse.xtend.lib.macro.TransformationContext;
 import org.eclipse.xtend.lib.macro.declaration.MutableFieldDeclaration;
