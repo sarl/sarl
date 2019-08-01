@@ -21,7 +21,7 @@
 		        finalPerspective="io.sarl.eclipse.perspective.devel"
 		        preferredPerspectives="io.sarl.eclipse.perspective.devel,org.eclipse.jdt.ui.JavaPerspective,org.eclipse.jdt.ui.JavaBrowsingPerspective"
 		        project="true">
-				<description>%wizard.description.newSarlProject.short"</description>
+				<description>%wizard.description.newSarlProject.short</description>
 		  </wizard>
 		  <wizard 
 		        category="io.sarl.eclipse.category.wizards"
@@ -29,7 +29,7 @@
 		        icon="icons/sarl_new_file_16.png"
 		        id="io.sarl.eclipse.wizard.newSarlScript"
 		        name="%wizard.name.newSarlScript">
-				<description>%wizard.description.newSarlScript"</description>
+				<description>%wizard.description.newSarlScript</description>
 		  </wizard>
 		  <wizard
 		        category="io.sarl.eclipse.category.wizards"
@@ -40,7 +40,7 @@
 					<parameter name="javatype" value="true" />
 					<parameter name="guicekey" value="io.sarl.eclipse.wizards.elements.aop.newagent.NewSarlAgentWizard" />
 				</class>
-				<description>%wizard.description.newAgent"</description>
+				<description>%wizard.description.newAgent</description>
       	  </wizard>
 		  <wizard
 		        category="io.sarl.eclipse.category.wizards"
@@ -51,7 +51,7 @@
 					<parameter name="javatype" value="true" />
 					<parameter name="guicekey" value="io.sarl.eclipse.wizards.elements.aop.newbehavior.NewSarlBehaviorWizard" />
 				</class>
-				<description>%wizard.description.newBehavior"</description>
+				<description>%wizard.description.newBehavior</description>
       	  </wizard>
 		  <wizard
 		        category="io.sarl.eclipse.category.wizards"
@@ -62,7 +62,7 @@
 					<parameter name="javatype" value="true" />
 					<parameter name="guicekey" value="io.sarl.eclipse.wizards.elements.aop.newcapacity.NewSarlCapacityWizard" />
 				</class>
-				<description>%wizard.description.newCapacity"</description>
+				<description>%wizard.description.newCapacity</description>
       	  </wizard>
 		  <wizard
 		        category="io.sarl.eclipse.category.wizards"
@@ -73,7 +73,7 @@
 					<parameter name="javatype" value="true" />
 					<parameter name="guicekey" value="io.sarl.eclipse.wizards.elements.aop.newevent.NewSarlEventWizard" />
 				</class>
-				<description>%wizard.description.newEvent"</description>
+				<description>%wizard.description.newEvent</description>
       	  </wizard>
 		  <wizard
 		        category="io.sarl.eclipse.category.wizards"
@@ -84,7 +84,7 @@
 					<parameter name="javatype" value="true" />
 					<parameter name="guicekey" value="io.sarl.eclipse.wizards.elements.aop.newskill.NewSarlSkillWizard" />
 				</class>
-				<description>%wizard.description.newSkill"</description>
+				<description>%wizard.description.newSkill</description>
       	  </wizard>
 		  <wizard
 		        category="io.sarl.eclipse.category.wizards"
