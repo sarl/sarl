@@ -31,7 +31,7 @@ import io.sarl.lang.util.ClearableReference;
  * The built-in capacities are assumed to be provided by
  * the runtime platform.
  *
- * @author $Author: srodriguez$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -40,9 +40,9 @@ import io.sarl.lang.util.ClearableReference;
 @FunctionalInterface
 public interface DynamicSkillProvider {
 
-	/** Install the given skill into the given agent.
+	/** Install the built-in skill that corresponds to the given capacity into the given agent.
 	 *
-	 * <p>If the given type of skill depends on another builtin capacity, the corresponding skill is also installed.
+	 * <p>If the given type of capacity depends on another builtin capacity, the corresponding skill is also installed.
 	 *
 	 * @param agent the agent for which the built-in capacities must be retrieved.
 	 * @param capacity the type of the capacity to retrieve.

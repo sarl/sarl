@@ -51,7 +51,20 @@ public class UnimplementedCapacityException extends RuntimeException {
 	 * @param agent the agent accessing the capacity
 	 */
 	public UnimplementedCapacityException(Class<? extends Capacity> unimplementedCapacity, UUID agent) {
-		super(unimplementedCapacity.getName());
+		this(unimplementedCapacity, agent, null);
+	}
+
+	/**
+	 * Creates a new instance of the exception.
+	 *
+	 * @param unimplementedCapacity
+	 *            the capacitiy that the agent was trying to access.
+	 * @param agent the agent accessing the capacity
+	 * @param cause the cause of the error.
+	 * @since 16.0
+	 */
+	public UnimplementedCapacityException(Class<? extends Capacity> unimplementedCapacity, UUID agent, Throwable cause) {
+		super(unimplementedCapacity.getName(), cause);
 		this.unimplementedCapacity = unimplementedCapacity;
 		this.callingAgent = agent;
 	}

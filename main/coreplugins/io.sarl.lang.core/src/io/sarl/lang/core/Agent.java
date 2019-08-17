@@ -21,6 +21,7 @@
 
 package io.sarl.lang.core;
 
+import java.lang.reflect.Constructor;
 import java.security.InvalidParameterException;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -32,6 +33,7 @@ import javax.inject.Inject;
 
 import com.google.common.reflect.TypeToken;
 import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pair;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -39,6 +41,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.util.ClearableReference;
+import io.sarl.lang.util.OutParameter;
 
 
 /**
@@ -61,7 +64,7 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 
 	/** Skill repository.
 	 */
-	private final ConcurrentMap<Class<? extends Capacity>, ClearableReference<Skill>> skillRepository = new ConcurrentHashMap<>();
+	private ConcurrentMap<Class<? extends Capacity>, ClearableReference<Skill>> skillRepository = new ConcurrentHashMap<>();
 
 	private DynamicSkillProvider skillProvider;
 
@@ -179,9 +182,10 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	 * @param skill the skill to map.
 	 * @return the previous mapping, or {@code null}.
 	 * @see #$mapCapacityGetNew(Class, Skill)
+	 * @see #$mapCapacityGetOldAndNew(Class, Skill)
 	 */
 	ClearableReference<Skill> $mapCapacityGetOld(Class<? extends Capacity> capacity, Skill skill) {
-		return this.skillRepository.put(capacity, new ClearableReference<>(skill));
+		return $getSkillRepository().put(capacity, new ClearableReference<>(skill));
 	}
 
 	/** Create the mapping between the capacity and the skill.
@@ -192,11 +196,29 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	 * @param skill the skill to map.
 	 * @return the created reference, never {@code null}.
 	 * @see #$mapCapacityGetOld(Class, Skill)
+	 * @see #$mapCapacityGetOldAndNew(Class, Skill)
 	 */
 	ClearableReference<Skill> $mapCapacityGetNew(Class<? extends Capacity> capacity, Skill skill) {
 		final ClearableReference<Skill> newReference = new ClearableReference<>(skill);
-		this.skillRepository.put(capacity, newReference);
+		$getSkillRepository().put(capacity, newReference);
 		return newReference;
+	}
+
+	/** Create the mapping between the capacity and the skill.
+	 *
+	 * <p>This function is part of the private API of the library.
+	 *
+	 * @param capacity the capacity to map.
+	 * @param skill the skill to map.
+	 * @return the previous and new mappings, never {@code null}.
+	 * @since 16.0
+	 * @see #$mapCapacityGetOld(Class, Skill)
+	 * @see #$mapCapacityGetNew(Class, Skill)
+	 */
+	Pair<ClearableReference<Skill>, ClearableReference<Skill>> $mapCapacityGetOldAndNew(Class<? extends Capacity> capacity, Skill skill) {
+		final ClearableReference<Skill> newReference = new ClearableReference<>(skill);
+		final ClearableReference<Skill> oldReference = $getSkillRepository().put(capacity, newReference);
+		return Pair.of(oldReference, newReference);
 	}
 
 	/**
@@ -217,11 +239,32 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	@Override
 	@SafeVarargs
 	protected final <S extends Skill> S setSkill(S skill, Class<? extends Capacity>... capacities) {
+		$setSkill(skill, capacities);
+		return skill;
+	}
+
+	/** Add a skill to the agent.
+	 *
+	 * @param skill the new skill.
+	 * @param capacities the implemented capacities by the skill.
+	 * @return the reference to the skill.
+	 * @since 16.0
+	 */
+	@SafeVarargs
+	protected final ClearableReference<Skill> $setSkill(Skill skill, Class<? extends Capacity>... capacities) {
 		assert skill != null : "the skill parameter must not be null"; //$NON-NLS-1$
 		skill.setOwner(this);
+		final OutParameter<ClearableReference<Skill>> newRef = new OutParameter<>();
 		if (capacities == null || capacities.length == 0) {
 			runOnImplementedCapacities(skill, capacity -> {
-				final ClearableReference<Skill> oldS = $mapCapacityGetOld(capacity, skill);
+				final ClearableReference<Skill> oldS;
+				if (newRef.get() == null) {
+					final Pair<ClearableReference<Skill>, ClearableReference<Skill>> pair = $mapCapacityGetOldAndNew(capacity, skill);
+					newRef.set(pair.getValue());
+					oldS = pair.getKey();
+				} else {
+					oldS = $mapCapacityGetOld(capacity, skill);
+				}
 				skill.registerUse();
 				if (oldS != null) {
 					final Skill oldSkill = oldS.clear();
@@ -239,7 +282,14 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 							"the skill must implement the given capacity " //$NON-NLS-1$
 							+ capacity.getName());
 				}
-				final ClearableReference<Skill> oldS = $mapCapacityGetOld(capacity, skill);
+				final ClearableReference<Skill> oldS;
+				if (newRef.get() == null) {
+					final Pair<ClearableReference<Skill>, ClearableReference<Skill>> pair = $mapCapacityGetOldAndNew(capacity, skill);
+					newRef.set(pair.getValue());
+					oldS = pair.getKey();
+				} else {
+					oldS = $mapCapacityGetOld(capacity, skill);
+				}
 				skill.registerUse();
 				if (oldS != null) {
 					final Skill oldSkill = oldS.clear();
@@ -249,7 +299,7 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 				}
 			}
 		}
-		return skill;
+		return newRef.get();
 	}
 
 	private static void runOnImplementedCapacities(Skill skill, Procedure1<? super Class<? extends Capacity>> callback) {
@@ -270,7 +320,7 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	@Override
 	protected <S extends Capacity> S clearSkill(Class<S> capacity) {
 		assert capacity != null;
-		final ClearableReference<Skill> reference = this.skillRepository.remove(capacity);
+		final ClearableReference<Skill> reference = $getSkillRepository().remove(capacity);
 		if (reference != null) {
 			final Skill skill = reference.clear();
 			if (skill != null) {
@@ -307,13 +357,35 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	@Override
 	@Pure
 	protected ClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity) {
-		final ClearableReference<Skill> skill = this.skillRepository.get(capacity);
+		final ClearableReference<Skill> skill = $getSkillRepository().get(capacity);
 		if (skill == null) {
 			// Try to load dynamically the skill
-			if (this.skillProvider != null) {
-				final ClearableReference<Skill> reference = this.skillProvider.installSkill(this, capacity);
+			final DynamicSkillProvider dsp = this.skillProvider;
+			if (dsp != null) {
+				final ClearableReference<Skill> reference = dsp.installSkill(this, capacity);
 				if (reference != null) {
 					return reference;
+				}
+			}
+			// Use the default skill declaration if present.
+			final DefaultSkill annotation = capacity.getAnnotation(DefaultSkill.class);
+			if (annotation != null) {
+				try {
+					final Class<? extends Skill> type = annotation.value();
+					Constructor<? extends Skill> cons;
+					try {
+						cons = type.getConstructor(Agent.class);
+						cons.setAccessible(true);
+						final Skill skillInstance = cons.newInstance(this);
+						return $setSkill(skillInstance);
+					} catch (Throwable exception) {
+						cons = type.getConstructor();
+					}
+					cons.setAccessible(true);
+					final Skill skillInstance = cons.newInstance();
+					return $setSkill(skillInstance);
+				} catch (Throwable exception) {
+					throw new UnimplementedCapacityException(capacity, getID(), exception);
 				}
 			}
 			throw new UnimplementedCapacityException(capacity, getID());
@@ -325,12 +397,15 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	@Pure
 	protected boolean hasSkill(Class<? extends Capacity> capacity) {
 		assert capacity != null;
-		if (!this.skillRepository.containsKey(capacity)) {
+		if (!$getSkillRepository().containsKey(capacity)) {
 			if (this.skillProvider != null) {
 				final ClearableReference<Skill> reference = this.skillProvider.installSkill(this, capacity);
-				return reference != null;
+				if (reference != null) {
+					return true;
+				}
 			}
-			return false;
+			final DefaultSkill annotation = capacity.getAnnotation(DefaultSkill.class);
+			return annotation != null && annotation.value() != null;
 		}
 		return true;
 	}
