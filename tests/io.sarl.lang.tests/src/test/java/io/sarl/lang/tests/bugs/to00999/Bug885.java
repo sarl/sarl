@@ -3512,7 +3512,6 @@ public class Bug885 extends AbstractSarlTest {
 			"  protected void f(final Scope<Address> s) {",
 			"  }",
 			"  ",
-			"  @Pure",
 			"  protected void f2(final Scope<Address> s) {",
 			"    try {",
 			"      UUID _randomUUID = UUID.randomUUID();",

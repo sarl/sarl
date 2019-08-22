@@ -147,14 +147,21 @@ public class SARLOperationHelper implements IOperationHelper {
 	/** Replies if the given function is purable according to its modifiers and prototype.
 	 *
 	 * <p>Basically, an operation is purable if:<ul>
-	 * <li></li>
+	 * <li>not abstract,</li>
+	 * <li>not a dispatch function,</li>
+	 * <li>not native,</li>
+	 * <li>with a body,</li>
+	 * <li>not in a capacity definition.</li>
 	 * </ul>
+	 *
+	 * <p>This function is called usually before testing the pattern of the function's name.
 	 *
 	 * @param operation the operation to test.
 	 * @return {@code true} if the operation is not pure according to the prototype.
+	 * @since 0.10
 	 */
 	@SuppressWarnings("static-method")
-	protected boolean isUnpureOperationPrototype(XtendFunction operation) {
+	protected boolean isPureStateForbidden(XtendFunction operation) {
 		if (operation == null
 				|| operation.isAbstract() || operation.isDispatch() || operation.isNative()
 				|| operation.getExpression() == null) {
@@ -162,6 +169,17 @@ public class SARLOperationHelper implements IOperationHelper {
 		}
 		final XtendTypeDeclaration declaringType = operation.getDeclaringType();
 		return declaringType instanceof SarlCapacity;
+	}
+
+	/** Replies if it is impossible to determine the pure state of the given function .
+	 *
+	 * @param operation the operation to test.
+	 * @return {@code true} if the pure state of the operation cannot be determined.
+	 * @since 0.10
+	 */
+	@SuppressWarnings("static-method")
+	protected boolean isPureStateAmbiguous(XtendFunction operation) {
+		return false;
 	}
 
 	@Override
@@ -176,7 +194,7 @@ public class SARLOperationHelper implements IOperationHelper {
 	 * @return {@code true} if the operation could be marked as pure.
 	 */
 	boolean isPurableOperation(XtendFunction operation, ISideEffectContext context) {
-		if (isUnpureOperationPrototype(operation)) {
+		if (isPureStateForbidden(operation)) {
 			return false;
 		}
 		if (this.nameValidator.isNamePatternForNotPureOperation(operation)) {
@@ -185,6 +203,10 @@ public class SARLOperationHelper implements IOperationHelper {
 		if (this.nameValidator.isNamePatternForPureOperation(operation)) {
 			return true;
 		}
+		if (isPureStateAmbiguous(operation)) {
+			return false;
+		}
+		// Test the body
 		if (context == null) {
 			return !hasSideEffects(
 					getInferredPrototype(operation),
@@ -283,13 +305,16 @@ public class SARLOperationHelper implements IOperationHelper {
 	 */
 	protected boolean _hasSideEffects(XAbstractWhileExpression expression, ISideEffectContext context) {
 		context.open();
-		if (hasSideEffects(expression.getPredicate(), context)) {
-			return true;
+		try {
+			if (hasSideEffects(expression.getPredicate(), context)) {
+				return true;
+			}
+			if (hasSideEffects(expression.getBody(), context.branch())) {
+				return true;
+			}
+		} finally {
+			context.close();
 		}
-		if (hasSideEffects(expression.getBody(), context.branch())) {
-			return true;
-		}
-		context.close();
 		return false;
 	}
 
@@ -301,10 +326,13 @@ public class SARLOperationHelper implements IOperationHelper {
 	 */
 	protected Boolean _hasSideEffects(XForLoopExpression expression, ISideEffectContext context) {
 		context.open();
-		if (hasSideEffects(expression.getForExpression(), context)) {
-			return true;
+		try {
+			if (hasSideEffects(expression.getForExpression(), context)) {
+				return true;
+			}
+		} finally {
+			context.close();
 		}
-		context.close();
 		return hasSideEffects(expression.getEachExpression(), context.branch());
 	}
 
@@ -346,8 +374,9 @@ public class SARLOperationHelper implements IOperationHelper {
 	 * @param context the list of context expressions.
 	 * @return {@code true} if the expression has side effects.
 	 */
+	@SuppressWarnings("static-method")
 	protected Boolean _hasSideEffects(XThrowExpression expression, ISideEffectContext context) {
-		return hasSideEffects(expression.getExpression(), context);
+		return true;
 	}
 
 	/** Test if the given expression has side effects.
@@ -365,12 +394,15 @@ public class SARLOperationHelper implements IOperationHelper {
 		buffers.add(buffer);
 		for (final XCatchClause clause : expression.getCatchClauses()) {
 			context.open();
-			buffer = context.createVariableAssignmentBufferForBranch();
-			if (hasSideEffects(clause.getExpression(), context.branch(buffer))) {
-				return true;
+			try {
+				buffer = context.createVariableAssignmentBufferForBranch();
+				if (hasSideEffects(clause.getExpression(), context.branch(buffer))) {
+					return true;
+				}
+				buffers.add(buffer);
+			} finally {
+				context.close();
 			}
-			buffers.add(buffer);
-			context.close();
 		}
 		context.mergeBranchVariableAssignments(buffers);
 		if (hasSideEffects(expression.getFinallyExpression(), context)) {
@@ -401,23 +433,26 @@ public class SARLOperationHelper implements IOperationHelper {
 	 */
 	protected Boolean _hasSideEffects(XBasicForLoopExpression expression, ISideEffectContext context) {
 		context.open();
-		for (final XExpression ex : expression.getInitExpressions()) {
-			if (hasSideEffects(ex, context)) {
+		try {
+			for (final XExpression ex : expression.getInitExpressions()) {
+				if (hasSideEffects(ex, context)) {
+					return true;
+				}
+			}
+			if (hasSideEffects(expression.getEachExpression(), context)) {
 				return true;
 			}
-		}
-		if (hasSideEffects(expression.getEachExpression(), context)) {
-			return true;
-		}
-		for (final XExpression ex : expression.getUpdateExpressions()) {
-			if (hasSideEffects(ex, context.branch())) {
+			for (final XExpression ex : expression.getUpdateExpressions()) {
+				if (hasSideEffects(ex, context.branch())) {
+					return true;
+				}
+			}
+			if (hasSideEffects(expression.getExpression(), context.branch())) {
 				return true;
 			}
+		} finally {
+			context.close();
 		}
-		if (hasSideEffects(expression.getExpression(), context.branch())) {
-			return true;
-		}
-		context.close();
 		return false;
 	}
 
@@ -429,29 +464,35 @@ public class SARLOperationHelper implements IOperationHelper {
 	 */
 	protected Boolean _hasSideEffects(XSwitchExpression expression, ISideEffectContext context) {
 		context.open();
-		if (hasSideEffects(expression.getSwitch(), context)) {
-			return true;
-		}
-		final List<Map<String, List<XExpression>>> buffers = new ArrayList<>();
-		for (final XCasePart ex : expression.getCases()) {
-			context.open();
-			if (hasSideEffects(ex.getCase(), context)) {
+		try {
+			if (hasSideEffects(expression.getSwitch(), context)) {
 				return true;
 			}
+			final List<Map<String, List<XExpression>>> buffers = new ArrayList<>();
+			for (final XCasePart ex : expression.getCases()) {
+				context.open();
+				try {
+					if (hasSideEffects(ex.getCase(), context)) {
+						return true;
+					}
+					final Map<String, List<XExpression>> buffer = context.createVariableAssignmentBufferForBranch();
+					if (hasSideEffects(ex.getThen(), context.branch(buffer))) {
+						return true;
+					}
+					buffers.add(buffer);
+				} finally {
+					context.close();
+				}
+			}
 			final Map<String, List<XExpression>> buffer = context.createVariableAssignmentBufferForBranch();
-			if (hasSideEffects(ex.getThen(), context.branch(buffer))) {
+			if (hasSideEffects(expression.getDefault(), context.branch(buffer))) {
 				return true;
 			}
 			buffers.add(buffer);
+			context.mergeBranchVariableAssignments(buffers);
+		} finally {
 			context.close();
 		}
-		final Map<String, List<XExpression>> buffer = context.createVariableAssignmentBufferForBranch();
-		if (hasSideEffects(expression.getDefault(), context.branch(buffer))) {
-			return true;
-		}
-		buffers.add(buffer);
-		context.mergeBranchVariableAssignments(buffers);
-		context.close();
 		return false;
 	}
 
@@ -463,12 +504,15 @@ public class SARLOperationHelper implements IOperationHelper {
 	 */
 	protected Boolean _hasSideEffects(XCollectionLiteral expression, ISideEffectContext context) {
 		context.open();
-		for (final XExpression ex : expression.getElements()) {
-			if (hasSideEffects(ex, context)) {
-				return true;
+		try {
+			for (final XExpression ex : expression.getElements()) {
+				if (hasSideEffects(ex, context)) {
+					return true;
+				}
 			}
+		} finally {
+			context.close();
 		}
-		context.close();
 		return false;
 	}
 
@@ -589,12 +633,15 @@ public class SARLOperationHelper implements IOperationHelper {
 		final List<XExpression> exprs = expression.getExpressions();
 		if (exprs != null && !exprs.isEmpty()) {
 			context.open();
-			for (final XExpression ex : exprs) {
-				if (hasSideEffects(ex, context)) {
-					return true;
+			try {
+				for (final XExpression ex : exprs) {
+					if (hasSideEffects(ex, context)) {
+						return true;
+					}
 				}
+			} finally {
+				context.close();
 			}
-			context.close();
 		}
 		return false;
 	}
@@ -679,6 +726,11 @@ public class SARLOperationHelper implements IOperationHelper {
 				// to influence the pure state of the operation.
 				return false;
 			}
+			// Test if the receiver has side effects
+			if (hasSideEffects(expression.getActualReceiver(), context)) {
+				return true;
+			}
+			// Test the feature call itself
 			final ISideEffectContext ctx = new SideEffectContext(
 					Iterables.concat(context.getCalledOperations(),
 							Collections.singleton(getInferredPrototype(operation))));
