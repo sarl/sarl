@@ -443,7 +443,7 @@ final class Collections3 {
 	 * <p>It is imperative that the user manually synchronize on the returned
 	 * set when iterating over it:
 	 * <pre>
-	 * Set s = Collections.synchronizedSet(new HashSet());
+	 * Set s = Collections3.synchronizedSet(new HashSet());
 	 * ...
 	 * synchronized (s) {
 	 * Iterator i = s.iterator(); // Must be in the synchronized block
@@ -474,7 +474,7 @@ final class Collections3 {
 	 * <p>It is imperative that the user manually synchronize on the returned
 	 * collection when iterating over it:
 	 * <pre>
-	 * Collection c = Collections.synchronizedCollection(myCollection);
+	 * Collection c = Collections3.synchronizedCollection(myCollection);
 	 * ...
 	 * synchronized (c) {
 	 * Iterator i = c.iterator(); // Must be in the synchronized block
@@ -540,7 +540,7 @@ final class Collections3 {
 	 * <p>It is imperative that the user manually synchronize on the returned
 	 * set when iterating over it:
 	 * <pre>
-	 * Set s = Collections.synchronizedSet(new HashSet());
+	 * Set s = Collections3.synchronizedSet(new HashSet());
 	 * ...
 	 * synchronized (s) {
 	 * Iterator i = s.iterator(); // Must be in the synchronized block
@@ -570,7 +570,7 @@ final class Collections3 {
 	 * <p>It is imperative that the user manually synchronize on the returned
 	 * set when iterating over it:
 	 * <pre>
-	 * Set s = Collections.synchronizedSet(new HashSet());
+	 * Set s = Collections3.synchronizedSet(new HashSet());
 	 * ...
 	 * synchronized (s) {
 	 * Iterator i = s.iterator(); // Must be in the synchronized block
