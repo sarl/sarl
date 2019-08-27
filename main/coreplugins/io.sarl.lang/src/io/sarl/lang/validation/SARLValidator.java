@@ -179,6 +179,7 @@ import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XAbstractWhileExpression;
 import org.eclipse.xtext.xbase.XAssignment;
 import org.eclipse.xtext.xbase.XBasicForLoopExpression;
+import org.eclipse.xtext.xbase.XBinaryOperation;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
 import org.eclipse.xtext.xbase.XCastedExpression;
@@ -191,6 +192,7 @@ import org.eclipse.xtext.xbase.XMemberFeatureCall;
 import org.eclipse.xtext.xbase.XPostfixOperation;
 import org.eclipse.xtext.xbase.XSynchronizedExpression;
 import org.eclipse.xtext.xbase.XTypeLiteral;
+import org.eclipse.xtext.xbase.XUnaryOperation;
 import org.eclipse.xtext.xbase.XVariableDeclaration;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation;
@@ -2346,14 +2348,14 @@ public class SARLValidator extends AbstractSARLValidator {
 	}
 
 	@SuppressWarnings({"checkstyle:nestedifdepth", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
-	private void checkUnmodifiableFeatureAccess(boolean enableWarning, EObject readOnlyKeyword, String keywordName) {
+	private void checkUnmodifiableFeatureAccess(boolean enableWarning, EObject readOnlyExpression, String keywordName) {
 		final OutParameter<EObject> container = new OutParameter<>();
 		final OutParameter<EObject> directContainerChild = new OutParameter<>();
 
 		final OutParameter<Boolean> failure = new OutParameter<>(false);
-		final XMemberFeatureCall sequence = getRootOfMemberFeatureCallSequence(readOnlyKeyword, null, it -> {
+		final XMemberFeatureCall sequence = getRootOfMemberFeatureCallSequence(readOnlyExpression, null, it -> {
 			// Function call: if one of the functions called on the read-only keyword is not pure => WARNING
-			if (getExpressionHelper().hasSideEffects(it)) {
+			if (enableWarning && getExpressionHelper().hasSideEffects(it)) {
 				addIssue(MessageFormat.format(Messages.SARLValidator_11, keywordName),
 						it,
 						DISCOURAGED_OCCURRENCE_READONLY_USE);
@@ -2363,7 +2365,7 @@ public class SARLValidator extends AbstractSARLValidator {
 		if (failure.get().booleanValue()) {
 			return;
 		}
-		final EObject expression = sequence == null ? readOnlyKeyword : sequence;
+		final EObject expression = sequence == null ? readOnlyExpression : sequence;
 
 		if (Utils.getContainerOfType(expression, container, directContainerChild,
 				XAssignment.class, XVariableDeclaration.class)) {
@@ -2373,7 +2375,7 @@ public class SARLValidator extends AbstractSARLValidator {
 				final EObject leftMember = directContainerChild.get();
 				if (expression == leftMember && leftMember == assignment.getActualReceiver()) {
 					error(MessageFormat.format(Messages.SARLValidator_2, keywordName),
-							readOnlyKeyword,
+							readOnlyExpression,
 							null,
 							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 							INVALID_OCCURRENCE_READONLY_USE);
@@ -2400,12 +2402,17 @@ public class SARLValidator extends AbstractSARLValidator {
 
 		if (enableWarning) {
 			if (Utils.getContainerOfType(expression, container, directContainerChild,
-					XFeatureCall.class, XMemberFeatureCall.class, XConstructorCall.class,
-					XPostfixOperation.class)) {
+					XAbstractFeatureCall.class, XConstructorCall.class)) {
+				final EObject directExpressionContainer = container.get();
+				// Skip operators because they have no side effects
+				if (directExpressionContainer instanceof XBinaryOperation
+						|| directExpressionContainer instanceof XUnaryOperation) {
+					return;
+				}
 				// Side effect Operator: occurrence in one of the operands => WARNING
-				if (container.get() instanceof XPostfixOperation) {
+				if (directExpressionContainer instanceof XPostfixOperation) {
 					error(MessageFormat.format(Messages.SARLValidator_13, keywordName),
-							readOnlyKeyword,
+							readOnlyExpression,
 							null,
 							ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 							INVALID_OCCURRENCE_READONLY_USE);
@@ -2416,15 +2423,15 @@ public class SARLValidator extends AbstractSARLValidator {
 				final List<LightweightTypeReference> parameters;
 				final boolean hasSideEffects;
 				final boolean isVariadic;
-				if (container.get() instanceof XConstructorCall) {
-					final XConstructorCall cons = (XConstructorCall) container.get();
+				if (directExpressionContainer instanceof XConstructorCall) {
+					final XConstructorCall cons = (XConstructorCall) directExpressionContainer;
 					arguments = cons.getArguments();
 					final JvmConstructor constructor = cons.getConstructor();
 					parameters = getParamTypeReferences(constructor, false, true);
 					hasSideEffects = false;
 					isVariadic = constructor.isVarArgs();
 				} else {
-					final XAbstractFeatureCall call = (XAbstractFeatureCall) container.get();
+					final XAbstractFeatureCall call = (XAbstractFeatureCall) directExpressionContainer;
 					if (call.getFeature() instanceof JvmOperation) {
 						arguments = call.getActualArguments();
 						final JvmOperation operation = (JvmOperation) call.getFeature();
