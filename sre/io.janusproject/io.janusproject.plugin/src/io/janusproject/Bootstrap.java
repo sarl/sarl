@@ -62,6 +62,11 @@ public final class Bootstrap implements SREBootstrap {
 	}
 
 	@Override
+	public boolean isRunning() {
+		return this.kernel != null && this.kernel.isRunning();
+	}
+
+	@Override
 	public void shutdown(boolean blocking) throws InterruptedException {
 		final Kernel kern;
 		synchronized (this) {

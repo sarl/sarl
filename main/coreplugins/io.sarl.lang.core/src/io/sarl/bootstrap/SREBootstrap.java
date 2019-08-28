@@ -111,6 +111,17 @@ public interface SREBootstrap {
 		return true;
 	}
 
+	/** Replies if the kernel is running.
+	 *
+	 * @return {@code true} if the kernel is running. {@code false} is replied
+	 *     if the kernel was stopped.
+	 * @since 0.10
+	 */
+	@Pure
+	default boolean isRunning() {
+		return true;
+	}
+
 	/**
 	 * Set offline flag of the agent platform before it is launched.
 	 *

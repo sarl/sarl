@@ -229,6 +229,11 @@ public final class SRE {
 		}
 
 		@Override
+		public boolean isRunning() {
+			return false;
+		}
+
+		@Override
 		public void shutdown(boolean blocking) {
 			throw new UnsupportedOperationException();
 		}
