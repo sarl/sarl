@@ -55,7 +55,9 @@ import org.eclipse.xtext.ui.editor.outline.IOutlineNode;
 import org.eclipse.xtext.ui.editor.outline.impl.DocumentRootNode;
 import org.eclipse.xtext.ui.editor.outline.impl.EObjectNode;
 import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode;
+import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XFeatureCall;
+import org.eclipse.xtext.xbase.XListLiteral;
 import org.eclipse.xtext.xbase.annotations.ui.outline.XbaseWithAnnotationsOutlineTreeProvider;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
@@ -68,6 +70,7 @@ import io.sarl.lang.sarl.SarlConstructor;
 import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlRequiredCapacity;
 import io.sarl.lang.sarl.SarlScript;
+import io.sarl.lang.util.OutParameter;
 import io.sarl.lang.util.Utils;
 
 /**
@@ -177,6 +180,44 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 		}
 	}
 
+	private void extractGetterSetterFromAccessorsAnnotation(EObject value, OutParameter<Boolean> hasGetter,
+			OutParameter<Boolean> hasSetter) {
+		if (value instanceof XListLiteral) {
+			final XListLiteral list = (XListLiteral) value;
+			for (final XExpression literalExpression : list.getElements()) {
+				extractGetterSetterFromAccessorsAnnotation(literalExpression, hasGetter, hasSetter);
+			}
+		} else if (value instanceof XFeatureCall) {
+			final XFeatureCall call = (XFeatureCall) value;
+			final String id = call.getFeature().getSimpleName();
+			try {
+				final AccessorType acc = AccessorType.valueOf(id);
+				assert acc != null;
+				switch (acc) {
+				case PACKAGE_GETTER:
+				case PRIVATE_GETTER:
+				case PROTECTED_GETTER:
+				case PUBLIC_GETTER:
+					hasGetter.set(true);
+					break;
+				case PACKAGE_SETTER:
+				case PRIVATE_SETTER:
+				case PROTECTED_SETTER:
+				case PUBLIC_SETTER:
+					hasSetter.set(true);
+					break;
+				case NONE:
+					hasGetter.set(false);
+					hasSetter.set(false);
+					break;
+				default:
+				}
+			} catch (Throwable exception) {
+				// Ignore
+			}
+		}
+	}
+
 	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity", "checkstyle:nestedifdepth"})
 	private void createAutomaticAccessors(EStructuralFeatureNode elementNode, SarlField field) {
 		final JvmField jvmField = this.associations.getJvmField(field);
@@ -186,43 +227,15 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 				for (final JvmAnnotationValue value : annotation.getValues()) {
 					if (value instanceof JvmCustomAnnotationValue) {
 						final JvmCustomAnnotationValue annotationValue = (JvmCustomAnnotationValue) value;
-						boolean hasGetter = false;
-						boolean hasSetter = false;
+						final OutParameter<Boolean> hasGetter = new OutParameter<>(false);
+						final OutParameter<Boolean> hasSetter = new OutParameter<>(false);
 						for (final EObject rvalue : annotationValue.getValues()) {
-							if (rvalue instanceof XFeatureCall) {
-								final XFeatureCall call = (XFeatureCall) rvalue;
-								final String id = call.getFeature().getSimpleName();
-								try {
-									final AccessorType acc = AccessorType.valueOf(id);
-									assert acc != null;
-									switch (acc) {
-									case PACKAGE_GETTER:
-									case PRIVATE_GETTER:
-									case PROTECTED_GETTER:
-									case PUBLIC_GETTER:
-										hasGetter = true;
-										break;
-									case PACKAGE_SETTER:
-									case PRIVATE_SETTER:
-									case PROTECTED_SETTER:
-									case PUBLIC_SETTER:
-										hasSetter = true;
-										break;
-									case NONE:
-										hasGetter = false;
-										hasSetter = false;
-										break;
-									default:
-									}
-								} catch (Throwable exception) {
-									// Ignore
-								}
-							}
+							extractGetterSetterFromAccessorsAnnotation(rvalue, hasGetter, hasSetter);
 						}
-						if (hasGetter || hasSetter) {
+						if (hasGetter.get() || hasSetter.get()) {
 							final JvmDeclaredType container = jvmField.getDeclaringType();
 							final String basename = org.eclipse.xtext.util.Strings.toFirstUpper(field.getName());
-							if (hasGetter) {
+							if (hasGetter.get()) {
 								JvmOperation operation = findMethod(container, "get" + basename); //$NON-NLS-1$
 								if (operation == null) {
 									operation = findMethod(container, "is" + basename); //$NON-NLS-1$
@@ -234,7 +247,7 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 									createNode(elementNode, operation);
 								}
 							}
-							if (hasSetter) {
+							if (hasSetter.get()) {
 								final JvmOperation operation = findMethod(container, "set" + basename); //$NON-NLS-1$
 								if (operation != null) {
 									createNode(elementNode, operation);
