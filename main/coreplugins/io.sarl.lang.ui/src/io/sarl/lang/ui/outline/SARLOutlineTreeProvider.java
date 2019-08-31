@@ -180,13 +180,15 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 		}
 	}
 
-	private void extractGetterSetterFromAccessorsAnnotation(EObject value, OutParameter<Boolean> hasGetter,
+	private static boolean extractGetterSetterFromAccessorsAnnotation(EObject value, OutParameter<Boolean> hasGetter,
 			OutParameter<Boolean> hasSetter) {
 		if (value instanceof XListLiteral) {
 			final XListLiteral list = (XListLiteral) value;
+			boolean hasArg = false;
 			for (final XExpression literalExpression : list.getElements()) {
-				extractGetterSetterFromAccessorsAnnotation(literalExpression, hasGetter, hasSetter);
+				hasArg = extractGetterSetterFromAccessorsAnnotation(literalExpression, hasGetter, hasSetter) || hasArg;
 			}
+			return hasArg;
 		} else if (value instanceof XFeatureCall) {
 			final XFeatureCall call = (XFeatureCall) value;
 			final String id = call.getFeature().getSimpleName();
@@ -199,23 +201,24 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 				case PROTECTED_GETTER:
 				case PUBLIC_GETTER:
 					hasGetter.set(true);
-					break;
+					return true;
 				case PACKAGE_SETTER:
 				case PRIVATE_SETTER:
 				case PROTECTED_SETTER:
 				case PUBLIC_SETTER:
 					hasSetter.set(true);
-					break;
+					return true;
 				case NONE:
 					hasGetter.set(false);
 					hasSetter.set(false);
-					break;
+					return true;
 				default:
 				}
 			} catch (Throwable exception) {
 				// Ignore
 			}
 		}
+		return false;
 	}
 
 	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity", "checkstyle:nestedifdepth"})
@@ -223,36 +226,44 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 		final JvmField jvmField = this.associations.getJvmField(field);
 		if (jvmField != null) {
 			final JvmAnnotationReference annotation = this.annotationFinder.findAnnotation(jvmField, Accessors.class);
-			if (annotation != null && !annotation.getValues().isEmpty()) {
-				for (final JvmAnnotationValue value : annotation.getValues()) {
-					if (value instanceof JvmCustomAnnotationValue) {
-						final JvmCustomAnnotationValue annotationValue = (JvmCustomAnnotationValue) value;
-						final OutParameter<Boolean> hasGetter = new OutParameter<>(false);
-						final OutParameter<Boolean> hasSetter = new OutParameter<>(false);
-						for (final EObject rvalue : annotationValue.getValues()) {
-							extractGetterSetterFromAccessorsAnnotation(rvalue, hasGetter, hasSetter);
+			if (annotation != null) {
+				final OutParameter<Boolean> hasGetter = new OutParameter<>(false);
+				final OutParameter<Boolean> hasSetter = new OutParameter<>(false);
+				boolean explicitArgument = false;
+				if (!annotation.getValues().isEmpty()) {
+					for (final JvmAnnotationValue value : annotation.getValues()) {
+						if (value instanceof JvmCustomAnnotationValue) {
+							final JvmCustomAnnotationValue annotationValue = (JvmCustomAnnotationValue) value;
+							for (final EObject rvalue : annotationValue.getValues()) {
+								explicitArgument = extractGetterSetterFromAccessorsAnnotation(rvalue, hasGetter, hasSetter) || explicitArgument;
+							}
+							break;
 						}
-						if (hasGetter.get() || hasSetter.get()) {
-							final JvmDeclaredType container = jvmField.getDeclaringType();
-							final String basename = org.eclipse.xtext.util.Strings.toFirstUpper(field.getName());
-							if (hasGetter.get()) {
-								JvmOperation operation = findMethod(container, "get" + basename); //$NON-NLS-1$
-								if (operation == null) {
-									operation = findMethod(container, "is" + basename); //$NON-NLS-1$
-									if (operation == null) {
-										operation = findMethod(container, "has" + basename); //$NON-NLS-1$
-									}
-								}
-								if (operation != null) {
-									createNode(elementNode, operation);
-								}
+					}
+				}
+				if (!explicitArgument) {
+					hasGetter.set(true);
+					hasSetter.set(true);
+				}
+				if (hasGetter.get() || hasSetter.get()) {
+					final JvmDeclaredType container = jvmField.getDeclaringType();
+					final String basename = org.eclipse.xtext.util.Strings.toFirstUpper(field.getName());
+					if (hasGetter.get()) {
+						JvmOperation operation = findMethod(container, "get" + basename); //$NON-NLS-1$
+						if (operation == null) {
+							operation = findMethod(container, "is" + basename); //$NON-NLS-1$
+							if (operation == null) {
+								operation = findMethod(container, "has" + basename); //$NON-NLS-1$
 							}
-							if (hasSetter.get()) {
-								final JvmOperation operation = findMethod(container, "set" + basename); //$NON-NLS-1$
-								if (operation != null) {
-									createNode(elementNode, operation);
-								}
-							}
+						}
+						if (operation != null) {
+							createNode(elementNode, operation);
+						}
+					}
+					if (hasSetter.get()) {
+						final JvmOperation operation = findMethod(container, "set" + basename); //$NON-NLS-1$
+						if (operation != null) {
+							createNode(elementNode, operation);
 						}
 					}
 				}
