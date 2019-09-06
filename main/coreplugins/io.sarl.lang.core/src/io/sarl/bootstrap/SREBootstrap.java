@@ -291,4 +291,14 @@ public interface SREBootstrap {
 	 */
 	void shutdown(boolean blocking) throws InterruptedException;
 
+	/** Replies the service of the given type that is implemented into the SRE.
+	 *
+	 * @param <T> the type of the service.
+	 * @param serviceType the type of the service.
+	 * @return the service instance, or {@code null} if the SRE does not have any instance of service of the given type.
+	 * @since 0.10
+	 */
+	@Pure
+	<T> T getService(Class<T> serviceType);
+
 }

@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+import com.google.common.util.concurrent.Service;
+
 import io.janusproject.kernel.Kernel;
 
 import io.sarl.bootstrap.SREBootstrap;
@@ -178,6 +180,22 @@ public final class Bootstrap implements SREBootstrap {
 	@Override
 	public void setVerboseLevel(int level) {
 		Boot.setVerboseLevel(level);
+	}
+
+	/** {@inheritDoc}
+	 */
+	@Override
+	public <T> T getService(Class<T> serviceType) {
+		if (Service.class.isAssignableFrom(serviceType)) {
+			final Kernel kern;
+			synchronized (this) {
+				kern = this.kernel;
+			}
+			if (kern != null) {
+				return kern.getService(serviceType.asSubclass(Service.class));
+			}
+		}
+		return null;
 	}
 
 }

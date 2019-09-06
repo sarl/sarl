@@ -238,6 +238,11 @@ public final class SRE {
 			throw new UnsupportedOperationException();
 		}
 
+		@Override
+		public <T> T getService(Class<T> serviceType) {
+			return null;
+		}
+
 	}
 
 }

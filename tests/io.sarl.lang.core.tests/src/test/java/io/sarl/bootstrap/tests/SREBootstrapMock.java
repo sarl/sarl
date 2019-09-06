@@ -64,4 +64,9 @@ public class SREBootstrapMock implements SREBootstrap {
 		throw new IllegalStateException();
 	}
 
+	@Override
+	public <T> T getService(Class<T> serviceType) {
+		throw new IllegalStateException();
+	}
+
 }
