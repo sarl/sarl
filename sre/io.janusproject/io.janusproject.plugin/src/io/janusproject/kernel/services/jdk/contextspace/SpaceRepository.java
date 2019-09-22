@@ -22,6 +22,7 @@
 package io.janusproject.kernel.services.jdk.contextspace;
 
 import java.io.Serializable;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -35,7 +36,9 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.TreeMultimap;
+import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
+import com.google.inject.name.Names;
 
 import io.janusproject.services.contextspace.SpaceRepositoryListener;
 import io.janusproject.services.distributeddata.DMap;
@@ -49,6 +52,8 @@ import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.core.SpaceSpecification;
 import io.sarl.lang.util.SynchronizedCollection;
 import io.sarl.util.Collections3;
+import io.sarl.util.DefaultSpace;
+import io.sarl.util.OpenEventSpace;
 
 /**
  * A repository of spaces specific to a given context.
@@ -96,6 +101,11 @@ public class SpaceRepository {
 	 * Space object associated to a given id This is local non-distributed map.
 	 */
 	private final Multimap<Class<? extends SpaceSpecification<?>>, SpaceID> spacesBySpec;
+
+	/** Reference to the default space of the owning context.
+	 * @since 0.10
+	 */
+	private WeakReference<OpenEventSpace> defaultSpace;
 
 	/** Constructor.
 	 * @param distributedSpaceSetName the name used to identify distributed map over network
@@ -161,6 +171,8 @@ public class SpaceRepository {
 				removeLocalSpaceDefinition(spaceId, true);
 			}
 		}
+		// Remove the link to the default space of the ex-owning context
+		this.defaultSpace = null;
 	}
 
 	private <S extends Space> S createSpaceInstance(Class<? extends SpaceSpecification<S>> spec, SpaceID spaceID,
@@ -168,11 +180,22 @@ public class SpaceRepository {
 		final S space;
 		assert spaceID.getSpaceSpecification() == null
 				|| spaceID.getSpaceSpecification().equals(spec) : "The specification type is invalid"; //$NON-NLS-1$
+
+		final OpenEventSpace defaultSpace = this.defaultSpace == null ? null : this.defaultSpace.get();
+		final Injector defaultSpaceInjector;
+		if (defaultSpace == null) {
+			defaultSpaceInjector = this.injector;
+		} else {
+			final JustInTimeDefaultSpaceInjectionModule defaultSpaceInjectionModule = new JustInTimeDefaultSpaceInjectionModule(
+					defaultSpace);
+			defaultSpaceInjector = this.injector.createChildInjector(defaultSpaceInjectionModule);
+		}
+		final SpaceSpecification<S> spaceSpecificationInstance = defaultSpaceInjector.getInstance(spec);
 		// Split the call to create() to let the JVM to create the "empty" array for creation parameters.
 		if (creationParams != null && creationParams.length > 0) {
-			space = this.injector.getInstance(spec).create(spaceID, creationParams);
+			space = spaceSpecificationInstance.create(spaceID, creationParams);
 		} else {
-			space = this.injector.getInstance(spec).create(spaceID);
+			space = spaceSpecificationInstance.create(spaceID);
 		}
 		assert space != null;
 		final SpaceID id = space.getSpaceID();
@@ -437,6 +460,47 @@ public class SpaceRepository {
 		@Override
 		public void mapCleared(boolean localClearing) {
 			removeLocalSpaceDefinitions(false);
+		}
+
+	}
+
+	/** Set the reference to the default space for further space creations.
+	 *
+	 * @param defaultSpace the default space.
+	 * @since 0.10
+	 */
+	final void setDefaultSpace(OpenEventSpace defaultSpace) {
+		if (defaultSpace == null) {
+			this.defaultSpace = null;
+		} else {
+			this.defaultSpace = new WeakReference<>(defaultSpace);
+		}
+	}
+
+	/**
+	 * An injection module that is able to inject the default space instance into another space implementation.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.10
+	 */
+	private static class JustInTimeDefaultSpaceInjectionModule extends AbstractModule {
+
+		private static final String NAME = "defaultSpace"; //$NON-NLS-1$
+
+		private final OpenEventSpace defaultSpace;
+
+		JustInTimeDefaultSpaceInjectionModule(OpenEventSpace defaultSpace) {
+			assert defaultSpace != null;
+			this.defaultSpace = defaultSpace;
+		}
+
+		@Override
+		public void configure() {
+			bind(OpenEventSpace.class).annotatedWith(Names.named(NAME)).toInstance(this.defaultSpace);
+			bind(OpenEventSpace.class).annotatedWith(DefaultSpace.class).toInstance(this.defaultSpace);
 		}
 
 	}

@@ -107,6 +107,8 @@ public class Context implements AgentContext {
 			this.defaultSpace = (OpenEventSpace) this.spaceRepository
 					.getSpace(new SpaceID(this.id, this.defaultSpaceID, OpenEventSpaceSpecification.class));
 		}
+		// Notify the space repository that the default space is available.
+		this.spaceRepository.setDefaultSpace(this.defaultSpace);
 		return this.defaultSpace;
 	}
 
