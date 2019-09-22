@@ -89,7 +89,12 @@ public class LifecycleSkill extends BuiltinSkill implements Lifecycle {
 		return $castSkill(DefaultContextInteractions.class, this.skillDefaultContextInteraction);
 	}
 
+	/** {@inheritDoc}
+	 *
+	 * @deprecated since 0.10
+	 */
 	@Override
+	@Deprecated
 	public int getInstallationOrder() {
 		if (installationOrder < 0) {
 			installationOrder = installationOrder(this);

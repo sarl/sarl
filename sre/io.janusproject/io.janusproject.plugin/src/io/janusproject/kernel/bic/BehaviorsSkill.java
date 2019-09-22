@@ -105,7 +105,12 @@ public class BehaviorsSkill extends BuiltinSkill implements Behaviors {
 		return $castSkill(SchedulesSkill.class, this.skillBufferSchedules);
 	}
 
+	/** {@inheritDoc}
+	 *
+	 * @deprecated since 0.10
+	 */
 	@Override
+	@Deprecated
 	public int getInstallationOrder() {
 		if (installationOrder < 0) {
 			installationOrder = installationOrder(this);

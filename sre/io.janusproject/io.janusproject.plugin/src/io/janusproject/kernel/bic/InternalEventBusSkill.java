@@ -118,7 +118,12 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 		return $castSkill(Logging.class, this.skillBufferLogging);
 	}
 
+	/** {@inheritDoc}
+	 *
+	 * @deprecated since 0.10
+	 */
 	@Override
+	@Deprecated
 	public int getInstallationOrder() {
 		if (installationOrder < 0) {
 			installationOrder = installationOrder(this);

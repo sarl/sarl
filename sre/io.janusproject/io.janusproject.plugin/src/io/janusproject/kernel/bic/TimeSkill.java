@@ -46,7 +46,12 @@ public class TimeSkill extends BuiltinSkill implements Time {
 		super(agent);
 	}
 
+	/** {@inheritDoc}
+	 *
+	 * @deprecated since 0.10
+	 */
 	@Override
+	@Deprecated
 	public int getInstallationOrder() {
 		if (installationOrder < 0) {
 			installationOrder = installationOrder(this);

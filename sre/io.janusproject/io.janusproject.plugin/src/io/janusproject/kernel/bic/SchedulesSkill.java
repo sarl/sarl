@@ -122,7 +122,12 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 		return this.tasks;
 	}
 
+	/** {@inheritDoc}
+	 *
+	 * @deprecated since 0.10
+	 */
 	@Override
+	@Deprecated
 	public int getInstallationOrder() {
 		if (installationOrder < 0) {
 			installationOrder = installationOrder(this);

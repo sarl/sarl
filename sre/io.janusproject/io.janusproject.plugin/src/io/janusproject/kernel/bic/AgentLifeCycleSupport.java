@@ -211,7 +211,9 @@ class AgentLifeCycleSupport implements SpawnServiceListener {
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @deprecated since 0.10
 	 */
+	@Deprecated
 	private static class OrderComparator implements Comparator<BuiltinSkill> {
 
 		/** Constructor.
@@ -235,7 +237,9 @@ class AgentLifeCycleSupport implements SpawnServiceListener {
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @deprecated since 0.10
 	 */
+	@Deprecated
 	private static class ReverseOrderComparator implements Comparator<BuiltinSkill> {
 
 		/** Constructor.

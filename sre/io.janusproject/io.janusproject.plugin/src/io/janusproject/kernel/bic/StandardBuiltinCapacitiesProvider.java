@@ -43,6 +43,7 @@ import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.Capacity;
+import io.sarl.lang.core.DynamicSkillProvider;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.util.OpenEventSpaceSpecification;
@@ -55,7 +56,9 @@ import io.sarl.util.OpenEventSpaceSpecification;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated Replacement is {@link DynamicSkillProvider} since 0.6
  */
+@Deprecated
 public class StandardBuiltinCapacitiesProvider implements BuiltinCapacitiesProvider {
 
 	/** Order of installation of the BIC skills.

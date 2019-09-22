@@ -92,7 +92,12 @@ public class InnerContextSkill extends BuiltinSkill implements InnerContextAcces
 		return $castSkill(InternalEventBusCapacity.class, this.skillBufferInternalEventBusCapacity);
 	}
 
+	/** {@inheritDoc}
+	 *
+	 * @deprecated since 0.10
+	 */
 	@Override
+	@Deprecated
 	public int getInstallationOrder() {
 		if (installationOrder < 0) {
 			installationOrder = installationOrder(this);

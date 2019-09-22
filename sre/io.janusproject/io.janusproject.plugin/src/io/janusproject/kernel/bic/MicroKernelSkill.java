@@ -52,7 +52,12 @@ public class MicroKernelSkill extends BuiltinSkill implements MicroKernelCapacit
 		this.kernel = new WeakReference<>(kernel);
 	}
 
+	/** {@inheritDoc}
+	 *
+	 * @deprecated since 0.10
+	 */
 	@Override
+	@Deprecated
 	public int getInstallationOrder() {
 		if (installationOrder < 0) {
 			installationOrder = installationOrder(this);

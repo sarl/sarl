@@ -104,7 +104,12 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 		return $castSkill(Behaviors.class, this.skillBufferBehaviors);
 	}
 
+	/** {@inheritDoc}
+	 *
+	 * @deprecated since 0.10
+	 */
 	@Override
+	@Deprecated
 	public int getInstallationOrder() {
 		if (installationOrder < 0) {
 			installationOrder = installationOrder(this);

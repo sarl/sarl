@@ -39,6 +39,7 @@ import com.google.common.util.concurrent.Service;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
+import org.zeromq.SocketType;
 import org.zeromq.ZContext;
 import org.zeromq.ZMQ;
 import org.zeromq.ZMQ.Poller;
@@ -362,7 +363,7 @@ public class ZeroMQNetworkService extends AbstractNetworkingExecutionThreadServi
             Socket receptionSocket = this.receptionSocketsPerRemoteKernel.get(peerUri);
             if (receptionSocket == null) {
                 this.logger.getKernelLogger().fine(MessageFormat.format(Messages.ZeroMQNetworkService_2, peerUri, space));
-                receptionSocket = this.context.createSocket(ZMQ.SUB);
+                receptionSocket = this.context.createSocket(SocketType.PUB);
                 assert receptionSocket != null;
                 this.receptionSocketsPerRemoteKernel.put(peerUri, receptionSocket);
                 receptionSocket.connect(peerUri.toString());
@@ -469,7 +470,7 @@ public class ZeroMQNetworkService extends AbstractNetworkingExecutionThreadServi
         synchronized (this) {
             super.startUp();
             this.context = new ZContext();
-            this.sendingSocket = this.context.createSocket(ZMQ.PUB);
+            this.sendingSocket = this.context.createSocket(SocketType.PUB);
             final String strUri = this.uriCandidate.toString();
             if (this.uriCandidate.getPort() == -1) {
                 // Useful when the user do not manually specify a port
