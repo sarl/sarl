@@ -38,6 +38,7 @@ import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ResourceLocator;
 import org.eclipse.osgi.internal.debug.Debug;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
@@ -130,7 +131,7 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 	public ImageDescriptor getImageDescriptor(String imagePath) {
 		ImageDescriptor descriptor = getImageRegistry().getDescriptor(imagePath);
 		if (descriptor == null) {
-			descriptor = AbstractUIPlugin.imageDescriptorFromPlugin(SARLEclipsePlugin.PLUGIN_ID, imagePath);
+			descriptor = ResourceLocator.imageDescriptorFromBundle(SARLEclipsePlugin.PLUGIN_ID, imagePath).orElse(null);
 			if (descriptor != null) {
 				getImageRegistry().put(imagePath, descriptor);
 			}
