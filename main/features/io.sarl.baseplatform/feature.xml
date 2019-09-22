@@ -290,8 +290,8 @@
 
    <requires>
       <import plugin="org.eclipse.emf.common" version="2.16.0" match="compatible"/>
-      <import plugin="org.eclipse.emf.ecore" version="2.17.0" match="compatible"/>
-      <import plugin="org.eclipse.emf.edit" version="2.14.0" match="compatible"/>
+      <import plugin="org.eclipse.emf.ecore" version="2.19.0" match="compatible"/>
+      <import plugin="org.eclipse.emf.edit" version="2.15.0" match="compatible"/>
       <import plugin="org.eclipse.core.runtime" version="3.6.0" match="compatible"/>
       <import plugin="org.eclipse.core.resources" version="3.6.0" match="compatible"/>
       <import plugin="org.eclipse.ui.ide" version="3.6.0" match="compatible"/>
@@ -302,9 +302,11 @@
       <import plugin="org.eclipse.emf.ecore" version="2.18.0" match="compatible"/>
       <import plugin="org.eclipse.ui.views" version="3.5.0" match="compatible"/>
       <import plugin="org.eclipse.ui.workbench" version="3.6.0" match="compatible"/>
+      <import plugin="org.eclipse.emf.edit" version="2.14.0" match="compatible"/>
       <import plugin="org.eclipse.emf.common.ui" version="2.15.0" match="compatible"/>
+      <import plugin="org.antlr.runtime" version="3.2.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui" version="3.6.0" match="compatible"/>
-      <import plugin="org.eclipse.emf.mwe2.runtime" version="2.10.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.emf.mwe2.runtime" version="2.11.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.draw2d" version="3.7.0" match="compatible"/>
       <import plugin="org.eclipse.core.runtime" version="3.5.0" match="compatible"/>
       <import plugin="org.eclipse.ui.workbench" version="3.2.0" match="compatible"/>
@@ -375,7 +377,6 @@
       <import plugin="org.eclipse.equinox.p2.publisher.eclipse" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="com.google.inject" version="3.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.userstorage.ui" version="1.0.2" match="compatible"/>
-      <import plugin="org.antlr.runtime" version="3.2.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
@@ -589,6 +590,20 @@
 
    <plugin
          id="org.eclipse.equinox.concurrent"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="io.github.classgraph"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.google.guava.failureaccess"
          download-size="0"
          install-size="0"
          version="0.0.0"

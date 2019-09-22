@@ -3,25 +3,25 @@
 <target name="io.sarl.lang.targetplatform" sequenceNumber="130">
 	<locations>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-			<repository location="https://download.eclipse.org/releases/2019-06"/>
-			<unit id="epp.package.java" version="4.12.0.20190614-1200"/>
-			<unit id="org.eclipse.egit.feature.group" version="5.4.0.201906121030-r"/>
-			<unit id="org.eclipse.egit.mylyn.feature.group" version="5.4.0.201906121030-r"/>
-			<unit id="org.eclipse.epp.mpc.feature.group" version="1.7.7.v20190521-1752"/>
-			<unit id="org.eclipse.equinox.executable.feature.group" version="3.8.400.v20190515-0925"/>
-			<unit id="org.eclipse.jdt.feature.group" version="3.18.0.v20190605-1800"/>
-			<unit id="org.eclipse.jdt.source.feature.group" version="3.18.0.v20190605-1800"/>
-			<unit id="org.eclipse.m2e.feature.feature.group" version="1.12.0.20190529-1916"/>
-			<unit id="org.eclipse.m2e.logback.feature.feature.group" version="1.12.0.20190529-1916"/>
-			<unit id="org.eclipse.pde.source.feature.group" version="3.14.0.v20190605-1800"/>
-			<unit id="org.eclipse.platform.feature.group" version="4.12.0.v20190605-1801"/>
-			<unit id="org.eclipse.platform.ide" version="4.12.0.I20190605-1800"/>
+			<repository location="https://download.eclipse.org/releases/2019-09"/>
+			<unit id="epp.package.java" version="4.13.0.20190917-0000"/>
+			<unit id="org.eclipse.egit.feature.group" version="5.5.0.201909110433-r"/>
+			<unit id="org.eclipse.egit.mylyn.feature.group" version="5.5.0.201909110433-r"/>
+			<unit id="org.eclipse.epp.mpc.feature.group" version="1.8.0.v20190725-1807"/>
+			<unit id="org.eclipse.equinox.executable.feature.group" version="3.8.500.v20190907-0428"/>
+			<unit id="org.eclipse.jdt.feature.group" version="3.18.100.v20190916-1045"/>
+			<unit id="org.eclipse.jdt.source.feature.group" version="3.18.100.v20190916-1045"/>
+			<unit id="org.eclipse.m2e.feature.feature.group" version="1.13.0.20190716-1624"/>
+			<unit id="org.eclipse.m2e.logback.feature.feature.group" version="1.13.0.20190716-1624"/>
+			<unit id="org.eclipse.pde.source.feature.group" version="3.14.100.v20190916-1045"/>
+			<unit id="org.eclipse.platform.feature.group" version="4.13.0.v20190916-1323"/>
+			<unit id="org.eclipse.platform.ide" version="4.13.0.I20190916-1045"/>
 			<unit id="org.eclipse.wst.common_core.feature.feature.group" version="3.10.100.v201904082145"/>
 			<unit id="org.eclipse.wst.common_ui.feature.feature.group" version="3.11.0.v201905071717"/>
-			<unit id="org.eclipse.xsd.feature.group" version="2.17.0.v20190323-1100"/>
+			<unit id="org.eclipse.wst.xml_core.feature.feature.group" version="3.15.0.v201907091226"/>
+			<unit id="org.eclipse.xsd.feature.group" version="2.17.0.v20190625-1130"/>
+			<unit id="org.eclipse.xtext.sdk.feature.group" version="2.19.0.v20190902-1322"/>
 			<unit id="org.sonatype.m2e.mavenarchiver.feature.feature.group" version="0.17.4.201905300046"/>
-			<unit id="org.eclipse.xtext.sdk.feature.group" version="2.18.0.v20190528-0716"/>
-			<unit id="org.eclipse.wst.xml_core.feature.feature.group" version="3.13.0.v201903222120"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 			<unit id="net.bytebuddy.byte-buddy" version="1.9.3"/>
@@ -39,8 +39,8 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 			<unit id="aopalliance" version="1.0.0"/>
-			<unit id="com.google.guava" version="21.0.0"/>
-			<unit id="com.google.guava.testlib" version="21.0.0"/>
+			<unit id="com.google.guava" version="27.1.0.jre"/>
+			<unit id="com.google.guava.testlib" version="27.1.0.jre"/>
 			<unit id="com.google.gson" version="2.8.5"/>
 			<unit id="com.google.inject" version="4.1.0"/>
 			<unit id="com.google.inject.multibindings" version="4.1.0"/>

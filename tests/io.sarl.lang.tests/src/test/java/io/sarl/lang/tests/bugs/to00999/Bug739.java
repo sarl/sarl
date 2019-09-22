@@ -74,7 +74,7 @@ public class Bug739 extends AbstractSarlTest {
 			"	def asEventListener : EventListener {",
 			"      null",
 			"	}",
-			"	def registerBehavior(attitude : Behavior, filter : (Event)=>boolean = null) : Behavior {",
+			"	def registerBehavior(attitude : Behavior, filter : (Event)=>boolean = null, params : Object*) : Behavior {",
 			"		null",
 			"	}",
 			"	def unregisterBehavior(attitude : Behavior) : Behavior {",

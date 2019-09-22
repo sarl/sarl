@@ -33,10 +33,10 @@
 		<!-- The versions of the following Xtext libraries are available at: https://eclipse.org/Xtext/documentation/350_continuous_integration.html -->
 
 		<!-- Version of the Xtext API -->
-		<xtext.version>2.18.0</xtext.version>
-		<xtext.version.current>2.18.0</xtext.version.current>
-		<xtext.version.next>2.18.1</xtext.version.next>
-		<xtext.version.javadoc>2.18</xtext.version.javadoc>
+		<xtext.version>2.19.0</xtext.version>
+		<xtext.version.current>2.19.0</xtext.version.current>
+		<xtext.version.next>2.19.1</xtext.version.next>
+		<xtext.version.javadoc>2.19</xtext.version.javadoc>
 		<!-- Version of the MWE2 library (used for accessing the mwe2 P2 http://download.eclipse.org/modeling/emft/mwe/updates/releases/, 
 			see compositeContent.{xml,jar,xz,xml.xz} file) -->
 		<mwe2.version>2.11.0</mwe2.version>
@@ -44,15 +44,14 @@
 			see compositeContent.{xml,jar,xz,xml.xz} file) -->
 		<xpand.version>R201605260315</xpand.version>
 
-		<!-- Guice after 4.1.0 depends on Guava with too high version. Xbase requires 
-			up to 21.0. New guice requires 23.0. -->
+		<!-- Version of Guice (package: com.google.inject:guice). -->
 		<guice.version>4.1.0</guice.version>
 		<!-- Version of the OSGi module that provides the NLS (package: osgi) -->
 		<osgi.nls.version>3.10.0-v20140606-1445</osgi.nls.version>
 		<!-- Version of the Arakhne Foundation classes -->
 		<afc.version>16.0-SNAPSHOT</afc.version>
 		<!-- Version of the Guava API -->
-		<guava.version>21.0</guava.version>
+		<guava.version>27.1-jre</guava.version>
 		<!-- Version of the javax.inject module -->
 		<javaxinject.version>1</javaxinject.version>
 		<!-- Version of the Tycho module, (search for tycho-maven-plugin on Maven 
@@ -561,11 +560,6 @@
 				<groupId>com.google.code.findbugs</groupId>
 				<artifactId>jsr305</artifactId>
 				<version>3.0.2</version>
-			</dependency>
-			<dependency>
-				<groupId>com.google.errorprone</groupId>
-				<artifactId>error_prone_annotations</artifactId>
-				<version>2.3.3</version>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>

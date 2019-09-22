@@ -93,7 +93,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	private List<File> bufferedClasspath;
 
 	@Override
-	public void prepareExecution() throws MojoExecutionException {
+	protected void prepareExecution() throws MojoExecutionException {
 		if (this.injector == null) {
 			final Injector mainInjector = SARLStandaloneSetup.doSetup();
 			this.injector = mainInjector.createChildInjector(Arrays.asList(new MavenPrivateModule()));

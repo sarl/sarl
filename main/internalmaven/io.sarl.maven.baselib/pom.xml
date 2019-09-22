@@ -28,7 +28,7 @@
 			<artifactId>org.eclipse.xtend.core</artifactId>
 		</dependency>
 		<!-- Force the version of Guava because the Xbase is no more forcing a 
-			specific version (version range use) -->
+			specific version (version range use) and its transitive dependencies -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
@@ -43,17 +43,14 @@
 			<groupId>org.ow2.asm</groupId>
 			<artifactId>asm</artifactId>
 		</dependency>
-		<!-- Force the version of ASM -->
 		<dependency>
 			<groupId>org.ow2.asm</groupId>
 			<artifactId>asm-tree</artifactId>
 		</dependency>
-		<!-- Force the version of ASM -->
 		<dependency>
 			<groupId>org.ow2.asm</groupId>
 			<artifactId>asm-commons</artifactId>
 		</dependency>
-		<!-- Force the version of ASM -->
 		<dependency>
 			<groupId>org.ow2.asm</groupId>
 			<artifactId>asm-analysis</artifactId>

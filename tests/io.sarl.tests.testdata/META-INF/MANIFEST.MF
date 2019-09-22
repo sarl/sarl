@@ -8,6 +8,8 @@ Bundle-Name: %Bundle-Name
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: io.sarl.lang.core;bundle-version="0.10.0"
 Export-Package: foo,
+ foo.bug787,
+ foo.bug799,
  foo.ecore,
  foo.unpackedJAR,
  foo.unpackedSRE

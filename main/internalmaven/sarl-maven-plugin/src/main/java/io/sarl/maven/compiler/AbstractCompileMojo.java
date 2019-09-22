@@ -387,29 +387,30 @@ public abstract class AbstractCompileMojo extends AbstractSarlBatchCompilerMojo 
 
 		boolean hasError = false;
 
-		final Map<String, Artifact> artifacts = this.mavenHelper.getSession().getCurrentProject().getArtifactMap();
+		final Map<String, Artifact> projectDependencyTree = this.mavenHelper.getSession().getCurrentProject().getArtifactMap();
 		final String sdkArtifactKey = ArtifactUtils.versionlessKey(sarlSdkGroupId, sarlSdkArtifactId);
-		final Artifact sdkArtifact = artifacts.get(sdkArtifactKey);
+		final Artifact sdkArtifact = projectDependencyTree.get(sdkArtifactKey);
 		if (sdkArtifact != null) {
-			final Map<String, ArtifactVersion> versions = new TreeMap<>();
-			final Set<Artifact> dependencies = this.mavenHelper.resolveDependencies(sdkArtifactKey, false);
-			for (final Artifact dependency : dependencies) {
-				final ArtifactVersion dependencyVersion = new DefaultArtifactVersion(dependency.getVersion());
-				final String dependencyKey = ArtifactUtils.versionlessKey(dependency);
-				final ArtifactVersion currentVersion = versions.get(dependencyKey);
-				if (currentVersion == null || dependencyVersion.compareTo(currentVersion) > 0) {
-					versions.put(dependencyKey, dependencyVersion);
+			final Map<String, ArtifactVersion> pluginDependencyTree = new TreeMap<>();
+			final Set<Artifact> pluginScopeDependencies = this.mavenHelper.resolveDependencies(sdkArtifactKey, false);
+			for (final Artifact pluginScopeDependency : pluginScopeDependencies) {
+				final ArtifactVersion pluginScopeDependencyVersion = new DefaultArtifactVersion(pluginScopeDependency.getVersion());
+				final String pluginScopeDependencyKey = ArtifactUtils.versionlessKey(pluginScopeDependency);
+				final ArtifactVersion currentVersion = pluginDependencyTree.get(pluginScopeDependencyKey);
+				if (currentVersion == null || pluginScopeDependencyVersion.compareTo(currentVersion) > 0) {
+					pluginDependencyTree.put(pluginScopeDependencyKey, pluginScopeDependencyVersion);
 				}
 			}
 
-			for (final Entry<String, ArtifactVersion> entry : versions.entrySet()) {
-				final Artifact dependencyArtifact = artifacts.get(entry.getKey());
-				if (dependencyArtifact != null) {
-					final ArtifactVersion dependencyVersion = new DefaultArtifactVersion(dependencyArtifact.getVersion());
-					if (entry.getValue().compareTo(dependencyVersion) > 0) {
+			for (final Entry<String, Artifact> projectDependency : projectDependencyTree.entrySet()) {
+				final ArtifactVersion pluginDependencyArtifactVersion = pluginDependencyTree.get(projectDependency.getKey());
+				if (pluginDependencyArtifactVersion != null) {
+					final Artifact projectArtifact = projectDependency.getValue();
+					final ArtifactVersion projectDependencyVersion = new DefaultArtifactVersion(projectArtifact.getVersion());
+					if (Utils.compareMajorMinorVersions(pluginDependencyArtifactVersion, projectDependencyVersion) != 0) {
 						final String message = MessageFormat.format(Messages.CompileMojo_8,
-								dependencyArtifact.getGroupId(), dependencyArtifact.getArtifactId(),
-								dependencyArtifact.getVersion(), entry.getValue().toString());
+								projectArtifact.getGroupId(), projectArtifact.getArtifactId(),
+								pluginDependencyArtifactVersion.toString(), projectDependencyVersion.toString());
 						getLog().error(message);
 						hasError = true;
 					}

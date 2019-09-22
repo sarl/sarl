@@ -225,14 +225,14 @@
       <import plugin="io.sarl.lang" version="0.10.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.lang.ui" version="0.10.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.pythongenerator.generator" version="0.10.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.common.types" version="2.18.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.xbase" version="2.18.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext" version="2.18.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtend.core" version="2.18.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.runtime" version="3.15.300" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.resources" version="3.13.400" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.ui" version="2.18.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui" version="3.113.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.common.types" version="2.19.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.xbase" version="2.19.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext" version="2.19.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtend.core" version="2.19.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.runtime" version="3.16.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.resources" version="3.13.500" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.ui" version="2.19.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui" version="3.114.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
