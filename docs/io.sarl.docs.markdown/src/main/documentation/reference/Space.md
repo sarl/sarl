@@ -49,12 +49,12 @@ The most basic scope is represented by a collection of addresses.
 
 ## Types of Spaces
 
-SARL provides a collection of Java interfaces that are representing different types of spaces.
+SARL provides a collection of interfaces that are representing different types of spaces.
 
 
 ### Space
 
-SARL provides a Java interface that is representing all the spaces:
+SARL provides an interface that is representing all the spaces:
 
 		[:ShowType:]{io.sarl.lang.core.[:spacedef](Space)}
 		[:Fact:]{typeof(io.sarl.lang.core.Space).shouldHaveMethod("[:getspaceidfct](getSpaceID) : io.sarl.lang.core.SpaceID")}
@@ -101,7 +101,7 @@ The functions given by this type of space permits implementing a space with rest
 
 ##	Defining a Space
 
-The definition of a new space must be done with an object-oriented language's features statements.
+The definition of a new space must be done with object-oriented language's features.
 
 For defining a space, three steps must be followed:
 
@@ -109,31 +109,33 @@ For defining a space, three steps must be followed:
 * Implementation of the space on a specific runtime environment;
 * Definition of the space specification.
 
-In the rest of this section, we use the example of the definition of a physic space: a space in which objects are located. 
+In the rest of this section, we use the example of the definition of a physic space: a space in which objects have a 
+spatial position. 
 
 
-### Defining a Space
+### Defining the PhysicSpace
 
-The first step for the definition of a new type of space is the specification of the Java interface that is describing
+The first step for the definition of a new type of space is the specification of the interface that is describing
 the functions provided by the space.
 
-The new space type must extend one of the predefined types. In the following example, the new space is related to
-the physic environment in which the agents may evolve.
+The new space type must extend one of the predefined types, below [:spacetypename:]. In the following example, the new space
+is related to the physic environment in which the agents may evolve.
 
 		[:Success:]
 			import io.sarl.lang.core.Space
 			import java.util.UUID
 			import io.sarl.lang.core.EventListener
 			[:On]
-			interface PhysicSpace extends Space {
+			interface PhysicSpace extends [:spacetypename](Space) {
 				def moveObject(identifier : UUID, x : float, y : float, z : float)
 				def bindBody(^agent : EventListener)
 				def unbindBody(^agent : EventListener)
 			}
 		[:End:]
 
-This space permits to move an object (including the physical representation of the agent, its body).
-Additionally, the space gives to the agent the ability to be binded to its body, and to release the control of its body.
+This space permits to move an object, i.e. the physical representation of the agent 
+(named body). Additionally, the space gives to the agent the ability to be binded to its body, and
+to release the control of its body.
 The [:eventlistener:] type is the event listening mechanism associated to the agent. It may be obtained with
 the `Behaviors` built-in capacity (see the corresponding
 [built-in capacity reference](./bic/Behaviors.md) for details).
@@ -146,7 +148,7 @@ the `Behaviors` built-in capacity (see the corresponding
 The definition of the space implementation depends upon the runtime environment.
 
 <caution>This section of the space reference document may evolved in future releases of SARL. Please activate
-the "deprecated feature use" warning in your Java compilation configuration for ensuring
+the "deprecated feature use" warning in your compilation configuration for ensuring
 that you will be notified about any major changes on this part of the API.</caution>
 
 Below, the implementation extends one of the abstract classes provided by the [Janus Platform](http://www.janusproject.io).
@@ -209,7 +211,7 @@ As described in the previous section, the space implementation should route the 
 network.
 
 <caution>This section of the space reference document may evolved in future releases of SARL. Please activate the
-"deprecated feature use" warning in your Java compilation configuration for ensuring that you will be notified
+"deprecated feature use" warning in your compilation configuration for ensuring that you will be notified
 about any major changes on this part of the API.</caution>
 
 Below, the implementation extends one of the abstract classes provided by the [Janus Platform](http://www.janusproject.io).
@@ -333,6 +335,89 @@ The example above is the specification related to the first implementation of th
 
 The example above is the specification that permits to create a physic space with networking. It retrieves
 by injection the factory of distributed data structures provided by the Janus platform.
+
+
+### Access to the Default Space Instance within a space specification
+
+If the space instance needs to be linked to the default space of the context, it is 
+necessary to retrieve the instance of the default space within the space specification.
+Then, this specification is in charge of passing the default space instance to the 
+space instance.
+
+By contract, the default space instance could be []injected into the space specification 
+instance](https://en.wikipedia.org/wiki/Dependency_injection). The following constraints 
+apply:
+
+1. The injected feature is an object field of the space specification, or a formal parameter;
+2. The injected feature must be of type `OpenEventSpace`;
+3. The injected feature must be marked with one of the two following methods:
+   a. annotated with `[:namedannotation!]("defaultSpace")`, or
+   b. annotated with `@[:defaultspaceannotation!]`.
+
+The following example illustrates the first method of marking of an object field:
+
+        [:Success:]
+            import java.util.UUID
+            import io.sarl.lang.util.SynchronizedSet
+            import io.sarl.lang.core.SpaceID
+            import io.sarl.lang.core.SpaceSpecification
+            import io.sarl.lang.core.Space
+            import io.sarl.util.OpenEventSpace
+            import javax.inject.Inject
+            import com.google.inject.name.Named
+            interface MySpace extends Space {
+            }
+            class MySpaceImpl implements MySpace {
+                new (obj : OpenEventSpace) {}
+                def getID : SpaceID { null }
+                def getSpaceID : SpaceID { null }
+                def getParticipants : SynchronizedSet<UUID> { null }
+            }
+            [:On]
+            class MySpaceSpecification implements SpaceSpecification<MySpace> {
+
+                @Inject
+                [:namedannotation](@Named)("defaultSpace")
+                var defaultSpace : OpenEventSpace
+
+                def create(id : SpaceID, params : Object*) : MySpace {
+                    return new MySpaceImpl(this.defaultSpace)
+                }
+            }
+        [:End:]
+
+
+
+The following example illustrates the second method of marking of an object field:
+
+        [:Success:]
+            import java.util.UUID
+            import io.sarl.lang.util.SynchronizedSet
+            import io.sarl.lang.core.SpaceID
+            import io.sarl.lang.core.SpaceSpecification
+            import io.sarl.lang.core.Space
+            import io.sarl.util.OpenEventSpace
+            import javax.inject.Inject
+            interface MySpace extends Space {
+            }
+            class MySpaceImpl implements MySpace {
+                new (obj : OpenEventSpace) {}
+                def getID : SpaceID { null }
+                def getSpaceID : SpaceID { null }
+                def getParticipants : SynchronizedSet<UUID> { null }
+            }
+            [:On]
+            class MySpaceSpecification implements SpaceSpecification<MySpace> {
+
+                @Inject
+                @io.sarl.util.[:defaultspaceannotation](DefaultSpace)
+                var defaultSpace : OpenEventSpace
+
+                def create(id : SpaceID, params : Object*) : MySpace {
+                    return new MySpaceImpl(this.defaultSpace)
+                }
+            }
+        [:End:]
 
 
 
