@@ -23,6 +23,7 @@ package io.sarl.lang.core;
 
 import java.util.UUID;
 
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import io.sarl.lang.util.SynchronizedSet;
@@ -41,12 +42,15 @@ public interface Space {
     /**
      * Replies the Identification of this Interaction {@link Space}.
      *
-     * @deprecated replaced by {@link #getSpaceID()}, to increase readability in the SARL code
      * @return the space's id
+     * @deprecated replaced by {@link #getSpaceID()}, to increase readability in the SARL code
      */
     @Pure
     @Deprecated
-    SpaceID getID();
+    @Inline("getSpaceID()")
+    default SpaceID getID() {
+    	return getSpaceID();
+    }
 
     /**
      * Replies the Identification of this Interaction {@link Space}.

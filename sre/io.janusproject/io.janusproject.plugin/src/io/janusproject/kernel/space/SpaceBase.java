@@ -21,8 +21,6 @@
 
 package io.janusproject.kernel.space;
 
-import org.eclipse.xtext.xbase.lib.Inline;
-
 import io.janusproject.services.network.NetworkService.NetworkEventReceivingListener;
 
 import io.sarl.lang.core.Space;
@@ -47,17 +45,6 @@ public abstract class SpaceBase implements Space, NetworkEventReceivingListener 
 	 */
 	public SpaceBase(SpaceID id) {
 		this.id = id;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * @deprecated see {@link #getSpaceID()}.
-	 */
-	@Override
-	@Inline("getSpaceID()")
-	@Deprecated
-	public final SpaceID getID() {
-		return getSpaceID();
 	}
 
 	@Override
