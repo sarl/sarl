@@ -468,7 +468,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 				root = FileSystem.makeAbsolute(root, this.baseDirectory);
 			}
 			getLog().debug(MessageFormat.format(Messages.AbstractDocumentationMojo_4, root.getName()));
-			for (final File file : Files.fileTreeTraverser().breadthFirstTraversal(root)) {
+			for (final File file : Files.fileTraverser().breadthFirst(root)) {
 				if (file.exists() && file.isFile() && !file.isHidden() && file.canRead() && hasExtension(file)) {
 					files.put(file, root);
 				}
