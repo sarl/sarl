@@ -98,6 +98,14 @@ public class DefaultContextInteractionsTest extends AbstractSarlCoreTest<Capacit
 		assertMethod("receive", void.class, UUID.class, Event.class); //$NON-NLS-1$
 	}
 
+
+	/**
+	 */
+	@Test
+	public void willReceive() {
+		assertMethod("willReceive", void.class, UUID.class, Event.class); //$NON-NLS-1$
+	}
+
 	/**
 	 */
 	@Test

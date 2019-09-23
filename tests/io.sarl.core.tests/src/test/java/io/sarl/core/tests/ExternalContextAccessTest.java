@@ -27,6 +27,11 @@ import org.junit.Test;
 
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.Capacity;
+import io.sarl.lang.core.Event;
+import io.sarl.lang.core.EventSpace;
+import io.sarl.lang.core.Scope;
+import io.sarl.lang.core.Space;
+import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.util.SynchronizedIterable;
 
 /**
@@ -84,6 +89,41 @@ public class ExternalContextAccessTest extends AbstractSarlCoreTest<Capacity> {
 	@Test
 	public void leave() {
 		assertMethod("leave", boolean.class, UUID.class); //$NON-NLS-1$
+	}
+
+	/**
+	 */
+	@Test
+	public void emit_EventSpaceEventScope() {
+		assertMethod("emit", void.class, EventSpace.class, Event.class, Scope.class); //$NON-NLS-1$
+	}
+
+	/**
+	 */
+	@Test
+	public void emit_EventSpaceEvent() {
+		assertMethod("emit", void.class, EventSpace.class, Event.class); //$NON-NLS-1$
+	}
+
+	/**
+	 */
+	@Test
+	public void isInSpace_EventSpace() {
+		assertMethod("isInSpace", boolean.class, Event.class, Space.class); //$NON-NLS-1$
+	}
+
+	/**
+	 */
+	@Test
+	public void isInSpace_EventSpaceID() {
+		assertMethod("isInSpace", boolean.class, Event.class, SpaceID.class); //$NON-NLS-1$
+	}
+	  
+	/**
+	 */
+	@Test
+	public void isInSpace_EventUUID() {
+		assertMethod("isInSpace", boolean.class, Event.class, UUID.class); //$NON-NLS-1$
 	}
 
 }
