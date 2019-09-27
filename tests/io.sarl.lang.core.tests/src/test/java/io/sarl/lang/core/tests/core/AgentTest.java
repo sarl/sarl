@@ -20,12 +20,6 @@
  */
 package io.sarl.lang.core.tests.core;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.doReturn;
 
 import java.lang.reflect.InvocationTargetException;
@@ -41,7 +35,6 @@ import org.junit.Test;
 
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
-import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.DefaultSkill;
 import io.sarl.lang.core.Event;
@@ -483,7 +476,7 @@ public class AgentTest extends AbstractSarlTest {
 		 * @param parentID
 		 */
 		public AgentMock(UUID parentID) {
-			super(mock(BuiltinCapacitiesProvider.class), parentID, null);
+			super(parentID, null);
 		}
 
 		public <S extends Skill> S setSkill_Fake(S skill, Class<? extends Capacity>... capacity) {

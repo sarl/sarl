@@ -66,6 +66,7 @@ import io.sarl.lang.util.SynchronizedIterable;
 import io.sarl.tests.api.ManualMocking;
 import io.sarl.tests.api.Nullable;
 import io.sarl.util.Collections3;
+import io.sarl.util.NoReadWriteLock;
 import io.sarl.util.OpenEventSpace;
 
 /**
@@ -176,7 +177,7 @@ public class InnerContextSkillTest extends AbstractJanusTest {
 	@Test
 	public void hasMemberAgent_member() {
 		when(this.innerSpace.getParticipants())
-				.thenReturn(Collections3.synchronizedSet(new HashSet<>(Arrays.asList(this.agentId, UUID.randomUUID())), this));
+				.thenReturn(Collections3.synchronizedSet(new HashSet<>(Arrays.asList(this.agentId, UUID.randomUUID())), NoReadWriteLock.SINGLETON));
 		assertTrue(this.skill.hasMemberAgent());
 	}
 
@@ -188,7 +189,7 @@ public class InnerContextSkillTest extends AbstractJanusTest {
 	@Test
 	public void getMemberAgentCount_member() {
 		when(this.innerSpace.getParticipants())
-				.thenReturn(Collections3.synchronizedSet(new HashSet<>(Arrays.asList(this.agentId, UUID.randomUUID())), this));
+				.thenReturn(Collections3.synchronizedSet(new HashSet<>(Arrays.asList(this.agentId, UUID.randomUUID())), NoReadWriteLock.SINGLETON));
 		assertEquals(1, this.skill.getMemberAgentCount());
 	}
 
@@ -203,7 +204,7 @@ public class InnerContextSkillTest extends AbstractJanusTest {
 	public void getMemberAgents_member() {
 		UUID otherAgent = UUID.randomUUID();
 		when(this.innerSpace.getParticipants())
-				.thenReturn(Collections3.synchronizedSet(new HashSet<>(Arrays.asList(this.agentId, otherAgent)), this));
+				.thenReturn(Collections3.synchronizedSet(new HashSet<>(Arrays.asList(this.agentId, otherAgent)), NoReadWriteLock.SINGLETON));
 		SynchronizedIterable<UUID> set = this.skill.getMemberAgents();
 		assertNotNull(set);
 		final List<UUID> list = new ArrayList<>();

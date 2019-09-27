@@ -24,6 +24,11 @@ package io.janusproject.kernel.repository;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import io.janusproject.services.distributeddata.DistributedDataStructureService;
 
@@ -58,6 +63,8 @@ public final class UniqueAddressParticipantRepository<ADDRESST extends Serializa
 	 */
 	private final Map<UUID, ADDRESST> participants;
 
+	private final ReadWriteLock participantsLock = new ReentrantReadWriteLock();
+
 	private final String distributedParticipantMapName;
 
 	/**
@@ -74,8 +81,9 @@ public final class UniqueAddressParticipantRepository<ADDRESST extends Serializa
 	}
 
 	@Override
-	public Object mutex() {
-		return this.participants;
+	@Pure
+	public ReadWriteLock getLock() {
+		return this.participantsLock;
 	}
 
 	/**
@@ -85,9 +93,13 @@ public final class UniqueAddressParticipantRepository<ADDRESST extends Serializa
 	 * @return the address of the participant
 	 */
 	public ADDRESST registerParticipant(ADDRESST address, EventListener entity) {
-		synchronized (mutex()) {
+		final ReadWriteLock lock = getLock();
+		lock.writeLock().lock();
+		try {
 			addListener(address, entity);
 			this.participants.put(entity.getID(), address);
+		} finally {
+			lock.writeLock().unlock();
 		}
 		return address;
 	}
@@ -98,6 +110,7 @@ public final class UniqueAddressParticipantRepository<ADDRESST extends Serializa
 	 * @param entity participant to remove from this repository.
 	 * @return the address that was mapped to the given participant.
 	 */
+	@Inline("unregisterParticipant(($1).getID())")
 	public ADDRESST unregisterParticipant(EventListener entity) {
 		return unregisterParticipant(entity.getID());
 	}
@@ -109,10 +122,25 @@ public final class UniqueAddressParticipantRepository<ADDRESST extends Serializa
 	 * @return the address that was mapped to the given participant.
 	 */
 	public ADDRESST unregisterParticipant(UUID entityID) {
-		synchronized (mutex()) {
-			removeListener(this.participants.get(entityID));
-			return this.participants.remove(entityID);
+		ADDRESST adr = null;
+		final ReadWriteLock lock = getLock();
+		lock.readLock().lock();
+		try {
+			adr = this.participants.get(entityID);
+		} finally {
+			lock.readLock().unlock();
 		}
+		if (adr != null) {
+			// Caution: according to the lock's documentation, the writing lock cannot be obtained with reading lock handle
+			lock.writeLock().lock();
+			try {
+				removeListener(adr);
+				this.participants.remove(entityID);
+			} finally {
+				lock.writeLock().unlock();
+			}
+		}
+		return adr;
 	}
 
 	/**
@@ -121,6 +149,8 @@ public final class UniqueAddressParticipantRepository<ADDRESST extends Serializa
 	 * @param entity instance of a participant.
 	 * @return the address of the participant with the given id.
 	 */
+	@Pure
+	@Inline("getAddress(($1).getID())")
 	public ADDRESST getAddress(EventListener entity) {
 		return getAddress(entity.getID());
 	}
@@ -131,9 +161,14 @@ public final class UniqueAddressParticipantRepository<ADDRESST extends Serializa
 	 * @param id identifier of the participant to retreive.
 	 * @return the address of the participant with the given id.
 	 */
+	@Pure
 	public ADDRESST getAddress(UUID id) {
-		synchronized (mutex()) {
+		final ReadWriteLock lock = getLock();
+		lock.readLock().lock();
+		try {
 			return this.participants.get(id);
+		} finally {
+			lock.readLock().unlock();
 		}
 	}
 
@@ -142,10 +177,14 @@ public final class UniqueAddressParticipantRepository<ADDRESST extends Serializa
 	 *
 	 * @return all the addresses.
 	 */
+	@Pure
 	public SynchronizedCollection<ADDRESST> getParticipantAddresses() {
-		final Object mutex = mutex();
-		synchronized (mutex) {
-			return Collections3.synchronizedCollection(this.participants.values(), mutex);
+		final ReadWriteLock lock = getLock();
+		lock.readLock().lock();
+		try {
+			return Collections3.synchronizedCollection(this.participants.values(), lock);
+		} finally {
+			lock.readLock().unlock();
 		}
 	}
 
@@ -154,10 +193,14 @@ public final class UniqueAddressParticipantRepository<ADDRESST extends Serializa
 	 *
 	 * @return all the identifiers.
 	 */
+	@Pure
 	public SynchronizedSet<UUID> getParticipantIDs() {
-		final Object mutex = mutex();
-		synchronized (mutex) {
-			return Collections3.synchronizedSet(this.participants.keySet(), mutex);
+		final ReadWriteLock lock = getLock();
+		lock.readLock().lock();
+		try {
+			return Collections3.synchronizedSet(this.participants.keySet(), lock);
+		} finally {
+			lock.readLock().unlock();
 		}
 	}
 

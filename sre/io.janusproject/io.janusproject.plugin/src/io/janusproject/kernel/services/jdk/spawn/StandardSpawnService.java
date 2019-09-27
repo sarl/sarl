@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
@@ -89,8 +91,12 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 	// The use of two maps is decreasing the performances of the platform
 	private final Map<UUID, ListenerCollection<SpawnServiceListener>> agentLifecycleListeners = new TreeMap<>();
 
+	private final ReadWriteLock agentLifecycleListenersLock = new ReentrantReadWriteLock();
+
 	// The use of two maps is decreasing the performances of the platform
 	private final Map<UUID, Agent> agents = new TreeMap<>();
+
+	private final ReadWriteLock agentsLock = new ReentrantReadWriteLock();
 
 	private final Injector injector;
 
@@ -119,20 +125,20 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 		this.sarlSpecificationChecker = sarlSpecificationChecker;
 	}
 
-	/** Replies the mutex for synchronizing on agent repository.
+	/** Replies the lock for synchronizing on agent repository.
 	 *
-	 * @return the mutex.
+	 * @return the lock.
 	 */
-	protected final Object getAgentRepositoryMutex() {
-		return this.agents;
+	protected final ReadWriteLock getAgentRepositoryLock() {
+		return this.agentsLock;
 	}
 
-	/** Replies the mutex for synchronizing on agent-lifecycle listeners.
+	/** Replies the lock for synchronizing on agent-lifecycle listeners.
 	 *
-	 * @return the mutex.
+	 * @return the Lock.
 	 */
-	protected final Object getAgentLifecycleListenerMutex() {
-		return this.agentLifecycleListeners;
+	protected final ReadWriteLock getAgentLifecycleListenerLock() {
+		return this.agentLifecycleListenersLock;
 	}
 
 	@Override
@@ -177,8 +183,12 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 						}
 					});
 					// Add the agent in the system
-					synchronized (this.agents) {
+					final ReadWriteLock lock = getAgentRepositoryLock();
+					lock.writeLock().lock();
+					try {
 						this.agents.put(agent.getID(), agent);
+					} finally {
+						lock.writeLock().unlock();
 					}
 					synchronized (agents) {
 						agents.add(agent);
@@ -252,8 +262,12 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 		// io.janusproject.kernel.bic.StandardBuiltinCapacitiesProvider
 		// is invoked.
 		final ListenerCollection<SpawnServiceListener> list;
-		synchronized (this.agentLifecycleListeners) {
+		final ReadWriteLock lock = getAgentLifecycleListenerLock();
+		lock.readLock().lock();
+		try {
 			list = this.agentLifecycleListeners.get(agent.getID());
+		} finally {
+			lock.readLock().unlock();
 		}
 		if (list != null) {
 			final List<Agent> singleton = Collections.singletonList(agent);
@@ -268,26 +282,34 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 		final boolean error = !isRunning();
 
 		// We should check if it is possible to kill the agent BEFORE killing it.
-		final boolean foundAgent;
 		boolean isLast = false;
 		Agent killAgent = null;
 		final String warningMessage;
-		synchronized (getAgentRepositoryMutex()) {
-			final Agent agent = this.agents.get(agentID);
-			foundAgent = agent != null;
-			if (foundAgent) {
-				if (forceKilling || canKillAgent(agent)) {
+		final Agent agent;
+		final ReadWriteLock lock = getAgentRepositoryLock();
+		lock.readLock().lock();
+		try {
+			agent = this.agents.get(agentID);
+		} finally {
+			lock.readLock().unlock();
+		}
+		if (agent != null) {
+			if (forceKilling || canKillAgent(agent)) {
+				lock.writeLock().lock();
+				try {
 					this.agents.remove(agentID);
 					isLast = this.agents.isEmpty();
-					killAgent = agent;
-					warningMessage = null;
-				} else {
-					warningMessage = Messages.StandardSpawnService_7;
+				} finally {
+					lock.writeLock().unlock();
 				}
+				killAgent = agent;
+				warningMessage = null;
 			} else {
-				this.logger.getKernelLogger().finer(Messages.StandardSpawnService_8);
-				return false;
+				warningMessage = Messages.StandardSpawnService_7;
 			}
+		} else {
+			this.logger.getKernelLogger().finer(Messages.StandardSpawnService_8);
+			return false;
 		}
 
 		if (warningMessage == null) {
@@ -324,9 +346,12 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 
 	@Override
 	public SynchronizedSet<UUID> getAgents() {
-		final Object mutex = getAgentRepositoryMutex();
-		synchronized (mutex) {
-			return Collections3.synchronizedSet(this.agents.keySet(), mutex);
+		final ReadWriteLock lock = getAgentRepositoryLock();
+		lock.readLock().lock();
+		try {
+			return Collections3.synchronizedSet(this.agents.keySet(), lock);
+		} finally {
+			lock.readLock().unlock();
 		}
 	}
 
@@ -339,8 +364,12 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 	 */
 	Agent getAgent(UUID id) {
 		assert id != null;
-		synchronized (getAgentRepositoryMutex()) {
+		final ReadWriteLock lock = getAgentRepositoryLock();
+		lock.readLock().lock();
+		try {
 			return this.agents.get(id);
+		} finally {
+			lock.readLock().unlock();
 		}
 	}
 
@@ -374,13 +403,24 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 
 	@Override
 	public void addSpawnServiceListener(UUID id, SpawnServiceListener agentLifecycleListener) {
-		synchronized (getAgentLifecycleListenerMutex()) {
-			ListenerCollection<SpawnServiceListener> listeners = this.agentLifecycleListeners.get(id);
+		final ReadWriteLock lock = getAgentLifecycleListenerLock();
+		ListenerCollection<SpawnServiceListener> listeners;
+		lock.readLock().lock();
+		try {
+			listeners = this.agentLifecycleListeners.get(id);
+		} finally {
+			lock.readLock().unlock();
+		}
+		// Caution: according to the lock's documentation, the writing lock cannot be obtained with reading lock handle
+		lock.writeLock().lock();
+		try {
 			if (listeners == null) {
 				listeners = new ListenerCollection<>();
 				this.agentLifecycleListeners.put(id, listeners);
 			}
 			listeners.add(SpawnServiceListener.class, agentLifecycleListener);
+		} finally {
+			lock.writeLock().unlock();
 		}
 	}
 
@@ -391,14 +431,25 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 
 	@Override
 	public void removeSpawnServiceListener(UUID id, SpawnServiceListener agentLifecycleListener) {
-		synchronized (getAgentLifecycleListenerMutex()) {
-			final ListenerCollection<SpawnServiceListener> listeners = this.agentLifecycleListeners.get(id);
+		final ReadWriteLock lock = getAgentLifecycleListenerLock();
+		final ListenerCollection<SpawnServiceListener> listeners;
+		lock.readLock().lock();
+		try {
+			listeners = this.agentLifecycleListeners.get(id);
+		} finally {
+			lock.readLock().unlock();
+		}
+		// Caution: according to the lock's documentation, the writing lock cannot be obtained with reading lock handle
+		lock.writeLock().lock();
+		try {
 			if (listeners != null) {
 				listeners.remove(SpawnServiceListener.class, agentLifecycleListener);
 				if (listeners.isEmpty()) {
 					this.agentLifecycleListeners.remove(id);
 				}
 			}
+		} finally {
+			lock.writeLock().unlock();
 		}
 	}
 
@@ -421,11 +472,15 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 			if (ac != null) {
 				final SynchronizedSet<UUID> participants = ac.getDefaultSpace().getParticipants();
 				if (participants != null) {
-					synchronized (participants.mutex()) {
+					final ReadWriteLock plock = participants.getLock();
+					plock.readLock().lock();
+					try {
 						if (participants.size() > 1 || (participants.size() == 1
 								&& !participants.contains(agent.getID()))) {
 							return false;
 						}
+					} finally {
+						plock.readLock().unlock();
 					}
 				}
 			}
@@ -444,8 +499,12 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 	@SuppressWarnings({"checkstyle:npathcomplexity"})
 	protected void fireAgentDestroyed(Agent agent) {
 		final ListenerCollection<SpawnServiceListener> list;
-		synchronized (getAgentLifecycleListenerMutex()) {
+		final ReadWriteLock llock = getAgentLifecycleListenerLock();
+		llock.readLock().lock();
+		try {
 			list = this.agentLifecycleListeners.get(agent.getID());
+		} finally {
+			llock.readLock().unlock();
 		}
 		final SpawnServiceListener[] ilisteners;
 		if (list != null) {
@@ -458,12 +517,16 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 		final List<Pair<AgentContext, Address>> contextRegistrations = new ArrayList<>();
 		try {
 			final SynchronizedIterable<AgentContext> allContexts = BuiltinCapacityUtil.getContextsOf(agent);
-			synchronized (allContexts.mutex()) {
+			final ReadWriteLock clock = allContexts.getLock();
+			clock.readLock().lock();
+			try {
 				for (final AgentContext context : allContexts) {
 					final EventSpace defSpace = context.getDefaultSpace();
 					final Address address = defSpace.getAddress(agent.getID());
 					contextRegistrations.add(Pair.of(context, address));
 				}
+			} finally {
+				clock.readLock().unlock();
 			}
 		} catch (RuntimeException e) {
 			throw e;
@@ -512,8 +575,12 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 
 	@Override
 	protected void doStop() {
-		synchronized (getAgentLifecycleListenerMutex()) {
+		final ReadWriteLock lock = getAgentLifecycleListenerLock();
+		lock.writeLock().lock();
+		try {
 			this.agentLifecycleListeners.clear();
+		} finally {
+			lock.writeLock().unlock();
 		}
 		notifyStopped();
 	}
@@ -666,8 +733,11 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 
 		@Override
 		public Agent get() {
-			UUID agId = this.agentID;
-			this.agentID = null;
+			UUID agId;
+			synchronized (this) {
+				agId = this.agentID;
+				this.agentID = null;
+			}
 			if (agId == null) {
 				agId = UUID.randomUUID();
 			}

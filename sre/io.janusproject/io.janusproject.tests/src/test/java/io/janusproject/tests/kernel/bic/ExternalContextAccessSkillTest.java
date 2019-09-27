@@ -66,8 +66,11 @@ import io.sarl.lang.core.Skill.UninstallationStage;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.util.ClearableReference;
+import io.sarl.lang.util.SynchronizedCollection;
 import io.sarl.tests.api.ManualMocking;
 import io.sarl.tests.api.Nullable;
+import io.sarl.util.Collections3;
+import io.sarl.util.NoReadWriteLock;
 import io.sarl.util.OpenEventSpace;
 import io.sarl.util.Scopes;
 
@@ -81,10 +84,8 @@ import io.sarl.util.Scopes;
 @ManualMocking
 public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 
-	private static final Object MUTEX = new Object();
-
 	@Nullable
-	private List<AgentContext> contexts;
+	private SynchronizedCollection<AgentContext> contexts;
 
 	@Mock
 	private ContextSpaceService contextRepository;
@@ -117,7 +118,7 @@ public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 		this.busCapacity = mock(InternalEventBusCapacity.class);
 		when(this.busCapacity.asEventListener()).thenReturn(this.eventListener);
 
-		this.contexts = new ArrayList<>();
+		final List<AgentContext> contextsList = new ArrayList<>();
 		for (int i = 0; i < 10; ++i) {
 			UUID contextId = i == 0 ? parentId : UUID.randomUUID();
 			OpenEventSpace defaultSpace = mock(OpenEventSpace.class);
@@ -128,8 +129,9 @@ public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 			AgentContext c = mock(AgentContext.class);
 			when(c.getID()).thenReturn(contextId);
 			when(c.getDefaultSpace()).thenReturn(defaultSpace);
-			this.contexts.add(c);
+			contextsList.add(c);
 		}
+		this.contexts = Collections3.synchronizedCollection(contextsList, NoReadWriteLock.SINGLETON);
 		this.agent = new TestAgent(this);
 		this.agent = spy(this.agent);
 		when(this.agent.getParentID()).thenReturn(parentId);
@@ -138,7 +140,7 @@ public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 
 		MockitoAnnotations.initMocks(this);
 
-		when(this.contextRepository.mutex()).thenReturn(MUTEX);
+		when(this.contextRepository.getLock()).thenReturn(NoReadWriteLock.SINGLETON);
 		when(this.contextRepository.getContexts()).thenReturn(this.contexts);
 		when(this.contextRepository.getContexts(ArgumentMatchers.anyCollection())).then(new Answer<Collection>() {
 			@Override
@@ -150,7 +152,7 @@ public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 						l.add(ctx);
 					}
 				}
-				return l;
+				return Collections3.unmodifiableSynchronizedCollection(l, NoReadWriteLock.SINGLETON);
 			}
 		});
 		when(this.contextRepository.getContext(ArgumentMatchers.any(UUID.class))).then(new Answer<AgentContext>() {
@@ -169,7 +171,7 @@ public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 
 	@Test
 	public void getAllContexts() {
-		Collection<AgentContext> c = this.skill.getAllContexts();
+		SynchronizedCollection<AgentContext> c = this.skill.getAllContexts();
 		assertTrue(c.isEmpty());
 	}
 

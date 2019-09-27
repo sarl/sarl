@@ -21,6 +21,11 @@
 
 package io.sarl.lang.util;
 
+import java.util.concurrent.locks.ReadWriteLock;
+
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /** An itterable that is synchronized (thread-safe).
  *
  * <p>All the operations on the iterable are synchronized with an internal mutex,
@@ -29,12 +34,15 @@ package io.sarl.lang.util;
  * <p>The iterator replies by this set must be synchronized by hand by
  * the user of the iterator: <pre><code>
  * SynchronizedIterable&lt;Object&gt; c;
- * synchronized(c.mutex()) {
+ * c.getLock().readLock().lock();
+ * try {
  *   Iterator&lt;Object&gt; iterator = c.iterator();
  *   while (iterator.hasNext()) {
  *     Object element = iterator.next();
  *     // Do something with the element
  *   }
+ * } finally {
+ *   c.getLock().readLock().unlock();
  * }
  * </code></pre>
  *
@@ -50,8 +58,23 @@ public interface SynchronizedIterable<E> extends Iterable<E> {
 	/**
 	 * Replies the mutex that is used to synchronized the access to this set.
 	 *
-	 * @return the mutex.
+	 * @return the mutex, never {@code null}.
+	 * @deprecated since 0.10, see {@link #getLock()}.
 	 */
-	Object mutex();
+	@Deprecated
+	@Inline("getLock()")
+	@Pure
+	default Object mutex() {
+		return getLock();
+	}
+
+	/**
+	 * Replies the mutex that is used to synchronized the access to this set.
+	 *
+	 * @return the lock, never {@code null}.
+	 * @since 0.10
+	 */
+	@Pure
+	ReadWriteLock getLock();
 
 }

@@ -23,6 +23,8 @@ package io.janusproject.kernel.repository;
 
 import java.io.Serializable;
 import java.util.UUID;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import io.janusproject.services.distributeddata.DMultiMap;
 import io.janusproject.services.distributeddata.DistributedDataStructureService;
@@ -56,6 +58,8 @@ public final class MultipleAddressParticipantRepository<ADDRESST extends Seriali
 	 */
 	private final DMultiMap<UUID, ADDRESST> participants;
 
+	private final ReadWriteLock participantsLock = new ReentrantReadWriteLock();
+
 	private final String distributedParticipantMapName;
 
 	/**
@@ -72,8 +76,8 @@ public final class MultipleAddressParticipantRepository<ADDRESST extends Seriali
 	}
 
 	@Override
-	public Object mutex() {
-		return this.participants;
+	public ReadWriteLock getLock() {
+		return this.participantsLock;
 	}
 
 	/**
@@ -84,9 +88,13 @@ public final class MultipleAddressParticipantRepository<ADDRESST extends Seriali
 	 * @return a.
 	 */
 	public ADDRESST registerParticipant(ADDRESST address, EventListener entity) {
-		synchronized (mutex()) {
+		final ReadWriteLock lock = getLock();
+		lock.writeLock().lock();
+		try {
 			addListener(address, entity);
 			this.participants.put(entity.getID(), address);
+		} finally {
+			lock.writeLock().unlock();
 		}
 		return address;
 	}
@@ -99,9 +107,13 @@ public final class MultipleAddressParticipantRepository<ADDRESST extends Seriali
 	 * @return a.
 	 */
 	public ADDRESST unregisterParticipant(ADDRESST address, EventListener entity) {
-		synchronized (mutex()) {
+		final ReadWriteLock lock = getLock();
+		lock.writeLock().lock();
+		try {
 			removeListener(address);
 			this.participants.remove(entity.getID(), address);
+		} finally {
+			lock.writeLock().unlock();
 		}
 		return address;
 	}
@@ -113,9 +125,12 @@ public final class MultipleAddressParticipantRepository<ADDRESST extends Seriali
 	 * @return the collection of addresses. It may be <code>null</code> if the participant is unknown.
 	 */
 	public SynchronizedCollection<ADDRESST> getAddresses(UUID participant) {
-		final Object mutex = mutex();
-		synchronized (mutex) {
-			return Collections3.synchronizedCollection(this.participants.get(participant), mutex);
+		final ReadWriteLock lock = getLock();
+		lock.readLock().lock();
+		try {
+			return Collections3.synchronizedCollection(this.participants.get(participant), lock);
+		} finally {
+			lock.readLock().unlock();
 		}
 	}
 
@@ -125,9 +140,12 @@ public final class MultipleAddressParticipantRepository<ADDRESST extends Seriali
 	 * @return the collection of addresses.
 	 */
 	public SynchronizedCollection<ADDRESST> getParticipantAddresses() {
-		final Object mutex = mutex();
-		synchronized (mutex) {
-			return Collections3.synchronizedCollection(this.participants.values(), mutex);
+		final ReadWriteLock lock = getLock();
+		lock.readLock().lock();
+		try {
+			return Collections3.synchronizedCollection(this.participants.values(), lock);
+		} finally {
+			lock.readLock().unlock();
 		}
 	}
 
@@ -137,9 +155,12 @@ public final class MultipleAddressParticipantRepository<ADDRESST extends Seriali
 	 * @return the collection of identifiers.
 	 */
 	public SynchronizedSet<UUID> getParticipantIDs() {
-		final Object mutex = mutex();
-		synchronized (mutex) {
-			return Collections3.synchronizedSet(this.participants.keySet(), mutex);
+		final ReadWriteLock lock = getLock();
+		lock.readLock().lock();
+		try {
+			return Collections3.synchronizedSet(this.participants.keySet(), lock);
+		} finally {
+			lock.readLock().unlock();
 		}
 	}
 

@@ -26,6 +26,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.concurrent.locks.ReadWriteLock;
+
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import io.sarl.lang.core.EventListener;
 import io.sarl.lang.util.SynchronizedCollection;
@@ -47,13 +50,13 @@ public abstract class ParticipantRepository<ADDRESST extends Serializable> {
 	/**
 	 * Map linking the unique address of an entity in the related space to the entity itself. This is local non-distributed map.
 	 */
-	private final Map<ADDRESST, EventListener> listeners;
+	private final Map<ADDRESST, EventListener> participants;
 
 	/**
 	 * Construct a <code>ParticipantRepository</code>.
 	 */
 	protected ParticipantRepository() {
-		this.listeners = new TreeMap<>();
+		this.participants = new TreeMap<>();
 	}
 
 	/**
@@ -61,9 +64,14 @@ public abstract class ParticipantRepository<ADDRESST extends Serializable> {
 	 *
 	 * @return the number of listeners.
 	 */
+	@Pure
 	public int listenerCount() {
-		synchronized (mutex()) {
-			return this.listeners.size();
+		final ReadWriteLock lock = getLock();
+		lock.readLock().lock();
+		try {
+			return this.participants.size();
+		} finally {
+			lock.readLock().unlock();
 		}
 	}
 
@@ -73,8 +81,12 @@ public abstract class ParticipantRepository<ADDRESST extends Serializable> {
 	 * @return <code>true</code> if the repository is empty, <code>false</code> if there is a least one participant.
 	 */
 	protected boolean isListenerEmpty() {
-		synchronized (mutex()) {
-			return this.listeners.isEmpty();
+		final ReadWriteLock lock = getLock();
+		lock.readLock().lock();
+		try {
+			return this.participants.isEmpty();
+		} finally {
+			lock.readLock().unlock();
 		}
 	}
 
@@ -86,8 +98,12 @@ public abstract class ParticipantRepository<ADDRESST extends Serializable> {
 	 *         <code>null</code>.
 	 */
 	protected boolean containsAddress(ADDRESST key) {
-		synchronized (mutex()) {
-			return this.listeners.containsKey(key);
+		final ReadWriteLock lock = getLock();
+		lock.readLock().lock();
+		try {
+			return this.participants.containsKey(key);
+		} finally {
+			lock.readLock().unlock();
 		}
 	}
 
@@ -99,8 +115,12 @@ public abstract class ParticipantRepository<ADDRESST extends Serializable> {
 	 *         present or <code>null</code>.
 	 */
 	protected boolean containsListener(EventListener value) {
-		synchronized (mutex()) {
-			return this.listeners.containsValue(value);
+		final ReadWriteLock lock = getLock();
+		lock.readLock().lock();
+		try {
+			return this.participants.containsValue(value);
+		} finally {
+			lock.readLock().unlock();
 		}
 	}
 
@@ -111,8 +131,12 @@ public abstract class ParticipantRepository<ADDRESST extends Serializable> {
 	 * @return the participant with the given address, or <code>null</code> if there is no participant with the given address.
 	 */
 	protected EventListener getListener(ADDRESST key) {
-		synchronized (mutex()) {
-			return this.listeners.get(key);
+		final ReadWriteLock lock = getLock();
+		lock.readLock().lock();
+		try {
+			return this.participants.get(key);
+		} finally {
+			lock.readLock().unlock();
 		}
 	}
 
@@ -124,8 +148,12 @@ public abstract class ParticipantRepository<ADDRESST extends Serializable> {
 	 * @return the participant that was previously associated to the given address.
 	 */
 	protected EventListener addListener(ADDRESST key, EventListener value) {
-		synchronized (mutex()) {
-			return this.listeners.put(key, value);
+		final ReadWriteLock lock = getLock();
+		lock.writeLock().lock();
+		try {
+			return this.participants.put(key, value);
+		} finally {
+			lock.writeLock().unlock();
 		}
 	}
 
@@ -136,8 +164,12 @@ public abstract class ParticipantRepository<ADDRESST extends Serializable> {
 	 * @return the participant for which the address was removed, <code>null</code> if the given address was not found.
 	 */
 	protected EventListener removeListener(ADDRESST key) {
-		synchronized (mutex()) {
-			return this.listeners.remove(key);
+		final ReadWriteLock lock = getLock();
+		lock.writeLock().lock();
+		try {
+			return this.participants.remove(key);
+		} finally {
+			lock.writeLock().unlock();
 		}
 	}
 
@@ -145,8 +177,12 @@ public abstract class ParticipantRepository<ADDRESST extends Serializable> {
 	 * Remove all the participants in this repository.
 	 */
 	protected void clearListeners() {
-		synchronized (mutex()) {
-			this.listeners.clear();
+		final ReadWriteLock lock = getLock();
+		lock.writeLock().lock();
+		try {
+			this.participants.clear();
+		} finally {
+			lock.writeLock().unlock();
 		}
 	}
 
@@ -156,9 +192,12 @@ public abstract class ParticipantRepository<ADDRESST extends Serializable> {
 	 * @return the addresses in this repository.
 	 */
 	protected SynchronizedSet<ADDRESST> getAdresses() {
-		final Object mutex = mutex();
-		synchronized (mutex) {
-			return Collections3.synchronizedSet(this.listeners.keySet(), mutex);
+		final ReadWriteLock lock = getLock();
+		lock.readLock().lock();
+		try {
+			return Collections3.synchronizedSet(this.participants.keySet(), lock);
+		} finally {
+			lock.readLock().unlock();
 		}
 	}
 
@@ -168,9 +207,12 @@ public abstract class ParticipantRepository<ADDRESST extends Serializable> {
 	 * @return the participants.
 	 */
 	public SynchronizedCollection<EventListener> getListeners() {
-		final Object mutex = mutex();
-		synchronized (mutex) {
-			return Collections3.synchronizedCollection(this.listeners.values(), mutex);
+		final ReadWriteLock lock = getLock();
+		lock.readLock().lock();
+		try {
+			return Collections3.synchronizedCollection(this.participants.values(), lock);
+		} finally {
+			lock.readLock().unlock();
 		}
 	}
 
@@ -180,17 +222,21 @@ public abstract class ParticipantRepository<ADDRESST extends Serializable> {
 	 * @return the pairs of addresses and participants
 	 */
 	protected Set<Entry<ADDRESST, EventListener>> listenersEntrySet() {
-		final Object mutex = mutex();
-		synchronized (mutex) {
-			return Collections3.synchronizedSet(this.listeners.entrySet(), mutex);
+		final ReadWriteLock lock = getLock();
+		lock.readLock().lock();
+		try {
+			return Collections3.synchronizedSet(this.participants.entrySet(), lock);
+		} finally {
+			lock.readLock().unlock();
 		}
 	}
 
 	/**
-	 * Replies the mutex to synchronize on this repository.
+	 * Replies the lock to synchronize on this repository.
 	 *
-	 * @return the mutex.
+	 * @return the lock.
 	 */
-	public abstract Object mutex();
+	@Pure
+	public abstract ReadWriteLock getLock();
 
 }

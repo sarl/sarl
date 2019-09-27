@@ -76,6 +76,7 @@ import io.sarl.sarlspecification.SarlSpecificationChecker;
 import io.sarl.tests.api.ManualMocking;
 import io.sarl.tests.api.Nullable;
 import io.sarl.util.Collections3;
+import io.sarl.util.NoReadWriteLock;
 import io.sarl.util.OpenEventSpace;
 
 /**
@@ -183,7 +184,7 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 		ExternalContextSkillMock externalContextSkill = Mockito.mock(ExternalContextSkillMock.class);
 		bic.put(ExternalContextAccess.class, externalContextSkill);
 		Mockito.when(externalContextSkill.getAllContexts())
-				.thenReturn(Collections3.synchronizedCollection(Collections.singleton(this.agentContext), this));
+				.thenReturn(Collections3.synchronizedCollection(Collections.singleton(this.agentContext), NoReadWriteLock.SINGLETON));
 
 		Mockito.when(this.builtinCapacitiesProvider.getBuiltinCapacities(Mockito.any())).thenReturn(bic);
 
@@ -254,7 +255,7 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 	@Test
 	public void canKillAgent_oneagentinsideinnercontext() throws Exception {
 		Set<UUID> agIds = new HashSet<>();
-		Mockito.when(this.defaultSpace.getParticipants()).thenReturn(Collections3.synchronizedSet(agIds, agIds));
+		Mockito.when(this.defaultSpace.getParticipants()).thenReturn(Collections3.synchronizedSet(agIds, NoReadWriteLock.SINGLETON));
 		this.service.startAsync().awaitRunning();
 		List<UUID> agentIds = this.service.spawn(1, this.parentID, this.agentContext, this.agentId, Agent.class, "a", "b"); //$NON-NLS-1$//$NON-NLS-2$
 		agIds.add(agentIds.get(0));
@@ -268,9 +269,9 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 	@Test
 	public void canKillAgent_twoagentsinsideinnercontext() throws Exception {
 		Mockito.when(this.innerSpace.getParticipants())
-				.thenReturn(Collections3.synchronizedSet(new HashSet<>(Arrays.asList(this.agentId, UUID.randomUUID())), this));
+				.thenReturn(Collections3.synchronizedSet(new HashSet<>(Arrays.asList(this.agentId, UUID.randomUUID())), NoReadWriteLock.SINGLETON));
 		Set<UUID> agIds = new HashSet<>();
-		Mockito.when(this.defaultSpace.getParticipants()).thenReturn(Collections3.synchronizedSet(agIds, agIds));
+		Mockito.when(this.defaultSpace.getParticipants()).thenReturn(Collections3.synchronizedSet(agIds, NoReadWriteLock.SINGLETON));
 		this.service.startAsync().awaitRunning();
 		List<UUID> agentIds = this.service.spawn(1, this.parentID, this.agentContext, this.agentId, Agent.class, "a", "b"); //$NON-NLS-1$//$NON-NLS-2$
 		agIds.add(agentIds.get(0));

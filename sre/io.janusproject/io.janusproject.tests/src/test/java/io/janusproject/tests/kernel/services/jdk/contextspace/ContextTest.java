@@ -62,6 +62,7 @@ import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.util.SynchronizedCollection;
 import io.sarl.tests.api.Nullable;
 import io.sarl.util.Collections3;
+import io.sarl.util.NoReadWriteLock;
 import io.sarl.util.OpenEventSpace;
 import io.sarl.util.OpenEventSpaceSpecification;
 
@@ -166,7 +167,7 @@ public class ContextTest extends AbstractJanusTest {
 								c.add(space);
 							}
 						}
-						return Collections3.synchronizedCollection(c, c);
+						return Collections3.synchronizedCollection(c, NoReadWriteLock.SINGLETON);
 					}
 				});
 		when(this.spaceRepository.getSpace(ArgumentMatchers.any(SpaceID.class))).thenAnswer(new Answer<Space>() {
@@ -181,7 +182,7 @@ public class ContextTest extends AbstractJanusTest {
 			}
 		});
 		when(this.spaceRepository.getSpaces())
-				.thenReturn(Collections3.synchronizedCollection((Collection) this.spaces.values(), this.spaces));
+				.thenReturn(Collections3.synchronizedCollection((Collection) this.spaces.values(), NoReadWriteLock.SINGLETON));
 
 		Context.DefaultSpaceRepositoryFactory spaceRepoFactory = new TestFactory(this);
 		spaceRepoFactory = spy(spaceRepoFactory);

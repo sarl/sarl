@@ -299,16 +299,16 @@ identifier of the default space. In the other cases, the function replies nothin
 				var defaultSpace : Space
 			[:On]
 				def getSpaces : SynchronizedCollection<? extends Space> {
-					[:collection3](Collections3)::[:synccoll](synchronizedCollection)(Collections::singleton(this.defaultSpace), this)
+   					[:collection3](Collections3)::[:synccoll](synchronizedSingleton)(this.defaultSpace)
 				}
 
 				def getSpaces(spec : Class<? extends SpaceSpecification<S>>)
 						: SynchronizedCollection<S>
 						with S extends Space {
 					if (spec !== null && spec == typeof([:evtspacespec](EventSpaceSpecification))) {
-						return Collections3::synchronizedCollection(Collections::singleton(this.defaultSpace as S), this);
+						return Collections3::synchronizedSingleton(this.defaultSpace as S)
 					}
-					return Collections3::synchronizedCollection(Collections::emptyList, this)
+					return Collections3::emptySynchronizedSet
 				}
 
 				def [:getspacefct](getSpace)(spaceUUID : UUID) : S
@@ -321,6 +321,10 @@ identifier of the default space. In the other cases, the function replies nothin
 			[:Off]
 			}
 		[:End:]
+
+        
+The function call [:synccoll:] is provided by the SARL Development Kit in order to create synchronized collections.
+The argument of this function is the collection to synchronize.
 
 
 #### Definition of the creation functions for spaces
@@ -1689,6 +1693,8 @@ Two functions must be implemented for accessing to the internal list of the beha
 			import java.util.UUID
 			import java.util.List
 			import java.util.ArrayList
+            import java.util.concurrent.locks.ReadWriteLock
+            import java.util.concurrent.locks.ReentrantReadWriteLock
 			import io.sarl.lang.core.Behavior
 			import io.sarl.core.Behaviors
 			import io.sarl.util.Collections3
@@ -1701,13 +1707,56 @@ Two functions must be implemented for accessing to the internal list of the beha
 				}
 
 				def getRegisteredBehaviors : SynchronizedIterable<Behavior> {
-					[:synccolbuild](Collections3::unmodifiableSynchronizedIterable)(this.behaviors, this)
+                    this.lock.readLock.lock
+                    try {
+    					[:synccolbuild](Collections3::unmodifiableSynchronizedIterable)(this.behaviors, this.lock)
+                    } finally {
+                        this.lock.readLock.unlock
+                    }
 				}
+
+                val lock : ReadWriteLock = new [:reentrantlock](ReentrantReadWriteLock)
 				[:Off]
 			}
 		[:End:]
 		
 The function call [:synccolbuild:] is provided by the SARL Development Kit in order to create synchronized collections.
+The first argument of this function is the collection to synchronize.
+The second argument is the locking object that is supporting the synchronization of 
+the given collection.
+Usually, the locking object is an instance of [:reentrantlock:].
+The call to [:synccolbuild:] is enclosed by a typical code block that is enabling the 
+synchronization on the list of behaviors as reader of this list.
+
+If you don't want to apply a real synchronization on the replied collection, you could 
+replace the previous code by:
+
+        [:Success:]
+            package io.sarl.docs.tutorials.tinyMASSRE
+            import java.util.UUID
+            import java.util.List
+            import java.util.ArrayList
+            import java.util.concurrent.locks.ReadWriteLock
+            import java.util.concurrent.locks.ReentrantReadWriteLock
+            import io.sarl.lang.core.Behavior
+            import io.sarl.lang.util.SynchronizedIterable
+            import io.sarl.core.Behaviors
+            import io.sarl.util.Collections3
+            import io.sarl.util.NoReadWriteLock
+            abstract class BehaviorsSkill implements Behaviors {
+                var behaviors : List<Behavior>
+                [:On]
+                def getRegisteredBehaviors : SynchronizedIterable<Behavior> {
+                    Collections3::unmodifiableSynchronizedIterable(this.behaviors, [:nolock]{NoReadWriteLock::SINGLETON})
+                }
+                [:Off]
+            }
+        [:End:]
+
+
+In the previous code, [:nolock:] is a specific locking object that is doing exactly 
+nothing regarding the synchronization. In other words, this this locking object, the
+synchronization of the collection is disable. 
 
 
 #### Updating the tinyMAS agent life-cycle for (un)registering the behaviors

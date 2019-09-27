@@ -25,12 +25,13 @@ import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -91,10 +92,14 @@ public class SpaceRepository {
 	 */
 	private final DMap<SpaceID, Object[]> spaceIDs;
 
+	private final ReadWriteLock spaceIDsLock = new ReentrantReadWriteLock();
+
 	/**
 	 * Map linking a space id to its related Space object This is local non-distributed map.
 	 */
 	private final Map<SpaceID, Space> spaces;
+
+	private final ReadWriteLock spacesLock = new ReentrantReadWriteLock();
 
 	/**
 	 * Map linking a a class of Space specification to its related implementations' ids Use the map <code>spaces</code> to get the
@@ -137,39 +142,44 @@ public class SpaceRepository {
 		}
 	}
 
-	/** Replies the mutex to be synchronized on the internal space repository.
+	/** Replies the lock to be synchronized on the internal space repository.
 	 *
-	 * @return the mutex.
+	 * @return the lock.
 	 */
-	private Object getSpaceRepositoryMutex() {
-		return this.spaces;
+	protected ReadWriteLock getSpaceRepositoryLock() {
+		return this.spacesLock;
 	}
 
-	/** Replies the mutex to be synchronized on the internal space ID repository.
+	/** Replies the lock to be synchronized on the internal space ID repository.
 	 *
-	 * @return the mutex.
+	 * @return the lock.
 	 */
-	private Object getSpaceIDsMutex() {
-		return this.spaceIDs;
+	protected ReadWriteLock getSpaceIDsLock() {
+		return this.spaceIDsLock;
 	}
 
 	/**
 	 * Destroy this repository and releaqse all the resources.
 	 */
 	public void destroy() {
+		final List<SpaceID> ids;
 		// Unregister from Hazelcast layer.
-		synchronized (getSpaceIDsMutex()) {
+		final ReadWriteLock lock = getSpaceIDsLock();
+		lock.writeLock().lock();
+		try {
 			if (this.internalListener != null) {
 				this.spaceIDs.removeDMapListener(this.internalListener);
 			}
 			// Delete the spaces. If this function is called, it
 			// means that the spaces seems to have no more participant.
 			// The process cannot be done through hazelcast.
-			final List<SpaceID> ids = new ArrayList<>(this.spaceIDs.keySet());
+			ids = new ArrayList<>(this.spaceIDs.keySet());
 			this.spaceIDs.clear();
-			for (final SpaceID spaceId : ids) {
-				removeLocalSpaceDefinition(spaceId, true);
-			}
+		} finally {
+			lock.writeLock().unlock();
+		}
+		for (final SpaceID spaceId : ids) {
+			removeLocalSpaceDefinition(spaceId, true);
 		}
 		// Remove the link to the default space of the ex-owning context
 		this.defaultSpace = null;
@@ -215,8 +225,12 @@ public class SpaceRepository {
 					sharedParams = serializableParameters.toArray();
 				}
 			}
-			synchronized (getSpaceIDsMutex()) {
+			final ReadWriteLock lock = getSpaceIDsLock();
+			lock.writeLock().lock();
+			try {
 				this.spaceIDs.putIfAbsent(id, sharedParams);
+			} finally {
+				lock.writeLock().unlock();
 			}
 		}
 		fireSpaceAdded(space, isLocalCreation);
@@ -231,9 +245,21 @@ public class SpaceRepository {
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected void ensureLocalSpaceDefinition(SpaceID id, Object[] initializationParameters) {
-		synchronized (getSpaceRepositoryMutex()) {
-			if (!this.spaces.containsKey(id)) {
+		final boolean create;
+		final ReadWriteLock lock = getSpaceRepositoryLock();
+		lock.readLock().lock();
+		try {
+			create = !this.spaces.containsKey(id);
+		} finally {
+			lock.readLock().unlock();
+		}
+		if (create) {
+			// Caution: according to the lock's documentation, the writing lock cannot be obtained with reading lock handle
+			lock.writeLock().lock();
+			try {
 				createSpaceInstance((Class) id.getSpaceSpecification(), id, false, initializationParameters);
+			} finally {
+				lock.writeLock().unlock();
 			}
 		}
 	}
@@ -246,11 +272,15 @@ public class SpaceRepository {
 	 */
 	protected void removeLocalSpaceDefinition(SpaceID id, boolean isLocalDestruction) {
 		final Space space;
-		synchronized (getSpaceRepositoryMutex()) {
+		final ReadWriteLock lock = getSpaceRepositoryLock();
+		lock.writeLock().lock();
+		try {
 			space = this.spaces.remove(id);
 			if (space != null) {
 				this.spacesBySpec.remove(id.getSpaceSpecification(), id);
 			}
+		} finally {
+			lock.writeLock().unlock();
 		}
 		if (space != null) {
 			fireSpaceRemoved(space, isLocalDestruction);
@@ -264,9 +294,19 @@ public class SpaceRepository {
 	 */
 	protected void removeLocalSpaceDefinitions(boolean isLocalDestruction) {
 		List<Space> removedSpaces = null;
-		synchronized (getSpaceRepositoryMutex()) {
+		final ReadWriteLock lock = getSpaceRepositoryLock();
+		lock.readLock().lock();
+		try {
 			if (!this.spaces.isEmpty()) {
 				removedSpaces = new ArrayList<>(this.spaces.size());
+			}
+		} finally {
+			lock.readLock().unlock();
+		}
+		if (removedSpaces != null) {
+			// Caution: according to the lock's documentation, the writing lock cannot be obtained with reading lock handle
+			lock.writeLock().lock();
+			try {
 				final Iterator<Entry<SpaceID, Space>> iterator = this.spaces.entrySet().iterator();
 				Space space;
 				SpaceID id;
@@ -278,9 +318,9 @@ public class SpaceRepository {
 					this.spacesBySpec.remove(id.getSpaceSpecification(), id);
 					removedSpaces.add(space);
 				}
+			} finally {
+				lock.writeLock().unlock();
 			}
-		}
-		if (removedSpaces != null) {
 			for (final Space s : removedSpaces) {
 				fireSpaceRemoved(s, isLocalDestruction);
 			}
@@ -298,9 +338,21 @@ public class SpaceRepository {
 	 */
 	public <S extends io.sarl.lang.core.Space> S createSpace(SpaceID spaceID,
 			Class<? extends SpaceSpecification<S>> spec, Object... creationParams) {
-		synchronized (getSpaceRepositoryMutex()) {
-			if (!this.spaces.containsKey(spaceID)) {
+		final boolean create;
+		final ReadWriteLock lock = getSpaceRepositoryLock();
+		lock.readLock().lock();
+		try {
+			create = !this.spaces.containsKey(spaceID);
+		} finally {
+			lock.readLock().unlock();
+		}
+		if (create) {
+			// Caution: according to the lock's documentation, the writing lock cannot be obtained with reading lock handle
+			lock.writeLock().lock();
+			try {
 				return createSpaceInstance(spec, spaceID, true, creationParams);
+			} finally {
+				lock.writeLock().unlock();
 			}
 		}
 		return null;
@@ -318,17 +370,28 @@ public class SpaceRepository {
 	@SuppressWarnings("unchecked")
 	public <S extends io.sarl.lang.core.Space> S getOrCreateSpaceWithSpec(SpaceID spaceID,
 			Class<? extends SpaceSpecification<S>> spec, Object... creationParams) {
-		synchronized (getSpaceRepositoryMutex()) {
+		S firstSpace = null;
+		final ReadWriteLock lock = getSpaceRepositoryLock();
+		lock.readLock().lock();
+		try {
 			final Collection<SpaceID> ispaces = this.spacesBySpec.get(spec);
-			final S firstSpace;
-			if (ispaces == null || ispaces.isEmpty()) {
-				firstSpace = createSpaceInstance(spec, spaceID, true, creationParams);
-			} else {
+			if (ispaces != null && !ispaces.isEmpty()) {
 				firstSpace = (S) this.spaces.get(ispaces.iterator().next());
 			}
-			assert firstSpace != null;
-			return firstSpace;
+		} finally {
+			lock.readLock().unlock();
 		}
+		if (firstSpace == null) {
+			// Caution: according to the lock's documentation, the writing lock cannot be obtained with reading lock handle
+			lock.writeLock().lock();
+			try {
+				firstSpace = createSpaceInstance(spec, spaceID, true, creationParams);
+			} finally {
+				lock.writeLock().unlock();
+			}
+		}
+		assert firstSpace != null;
+		return firstSpace;
 	}
 
 	/**
@@ -343,14 +406,25 @@ public class SpaceRepository {
 	@SuppressWarnings("unchecked")
 	public <S extends io.sarl.lang.core.Space> S getOrCreateSpaceWithID(SpaceID spaceID,
 			Class<? extends SpaceSpecification<S>> spec, Object... creationParams) {
-		synchronized (getSpaceRepositoryMutex()) {
-			Space space = this.spaces.get(spaceID);
-			if (space == null) {
-				space = createSpaceInstance(spec, spaceID, true, creationParams);
-			}
-			assert space != null;
-			return (S) space;
+		final ReadWriteLock lock = getSpaceRepositoryLock();
+		Space space;
+		lock.readLock().lock();
+		try {
+			space = this.spaces.get(spaceID);
+		} finally {
+			lock.readLock().unlock();
 		}
+		if (space == null) {
+			// Caution: according to the lock's documentation, the writing lock cannot be obtained with reading lock handle
+			lock.writeLock().lock();
+			try {
+				space = createSpaceInstance(spec, spaceID, true, creationParams);
+			} finally {
+				lock.writeLock().unlock();
+			}
+		}
+		assert space != null;
+		return (S) space;
 	}
 
 	/**
@@ -359,9 +433,12 @@ public class SpaceRepository {
 	 * @return the collection of all spaces stored in this repository.
 	 */
 	public SynchronizedCollection<? extends Space> getSpaces() {
-		synchronized (getSpaceRepositoryMutex()) {
-			return Collections3.synchronizedCollection(Collections.unmodifiableCollection(this.spaces.values()),
-					getSpaceRepositoryMutex());
+		final ReadWriteLock lock = getSpaceRepositoryLock();
+		lock.readLock().lock();
+		try {
+			return Collections3.unmodifiableSynchronizedCollection(this.spaces.values(), lock);
+		} finally {
+			lock.readLock().unlock();
 		}
 	}
 
@@ -374,14 +451,18 @@ public class SpaceRepository {
 	 */
 	@SuppressWarnings("unchecked")
 	public <S extends Space> SynchronizedCollection<S> getSpaces(final Class<? extends SpaceSpecification<S>> spec) {
-		synchronized (getSpaceRepositoryMutex()) {
-			return Collections3
-					.synchronizedCollection((Collection<S>) Collections2.filter(this.spaces.values(), new Predicate<Space>() {
-						@Override
-						public boolean apply(Space input) {
-							return input.getSpaceID().getSpaceSpecification().equals(spec);
-						}
-					}), getSpaceRepositoryMutex());
+		final ReadWriteLock lock = getSpaceRepositoryLock();
+		lock.readLock().lock();
+		try {
+			final Collection<S> backed = (Collection<S>) Collections2.filter(this.spaces.values(), new Predicate<Space>() {
+				@Override
+				public boolean apply(Space input) {
+					return input.getSpaceID().getSpaceSpecification().equals(spec);
+				}
+			});
+			return Collections3.unmodifiableSynchronizedCollection(backed, lock);
+		} finally {
+			lock.readLock().unlock();
 		}
 	}
 
@@ -392,8 +473,12 @@ public class SpaceRepository {
 	 * @return the space instance of <code>null</code> if none.
 	 */
 	public Space getSpace(SpaceID spaceID) {
-		synchronized (getSpaceRepositoryMutex()) {
+		final ReadWriteLock lock = getSpaceRepositoryLock();
+		lock.readLock().lock();
+		try {
 			return this.spaces.get(spaceID);
+		} finally {
+			lock.readLock().unlock();
 		}
 	}
 

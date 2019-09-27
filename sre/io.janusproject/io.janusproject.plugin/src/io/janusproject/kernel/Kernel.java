@@ -28,6 +28,7 @@ import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.ReadWriteLock;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
@@ -133,8 +134,12 @@ public class Kernel {
 			if (service != null) {
 				final SynchronizedSet<UUID> agents = service.getAgents();
 				final List<UUID> agentIds;
-				synchronized (agents.mutex()) {
+				final ReadWriteLock lock = agents.getLock();
+				lock.readLock().lock();
+				try {
 					agentIds = new ArrayList<>(agents);
+				} finally {
+					lock.readLock().unlock();
 				}
 				boolean killed = false;
 				for (final UUID agentId : agentIds) {
@@ -169,8 +174,12 @@ public class Kernel {
 		final SpawnService service = getService(SpawnService.class);
 		if (service != null) {
 			final SynchronizedSet<UUID> agents = service.getAgents();
-			synchronized (agents.mutex()) {
+			final ReadWriteLock lock = agents.getLock();
+			lock.readLock().lock();
+			try {
 				return agents.size();
+			} finally {
+				lock.readLock().unlock();
 			}
 		}
 		return 0;

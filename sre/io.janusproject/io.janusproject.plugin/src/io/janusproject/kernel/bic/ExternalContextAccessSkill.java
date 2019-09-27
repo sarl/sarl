@@ -22,9 +22,9 @@
 package io.janusproject.kernel.bic;
 
 import java.text.MessageFormat;
-import java.util.Collections;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.locks.ReadWriteLock;
 
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
@@ -50,7 +50,6 @@ import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.util.ClearableReference;
 import io.sarl.lang.util.SynchronizedCollection;
-import io.sarl.util.Collections3;
 import io.sarl.util.OpenEventSpace;
 
 /**
@@ -142,9 +141,13 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 
 	@Override
 	public SynchronizedCollection<AgentContext> getAllContexts() {
-		return Collections3.synchronizedCollection(
-				Collections.unmodifiableCollection(this.contextRepository.getContexts(this.contexts)),
-				this.contextRepository.mutex());
+		final ReadWriteLock lock = this.contextRepository.getLock();
+		lock.readLock().lock();
+		try {
+			return this.contextRepository.getContexts(this.contexts);
+		} finally {
+			lock.readLock().unlock();
+		}
 	}
 
 	@Override

@@ -53,6 +53,7 @@ import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.tests.api.Nullable;
 import io.sarl.util.Collections3;
+import io.sarl.util.NoReadWriteLock;
 
 /**
  * @author $Author: sgalland$
@@ -237,7 +238,7 @@ public class KernelTest extends AbstractJanusTest {
 
 	@Test
 	public void getAgentCount_0() throws Exception {
-		when(this.spawnService.getAgents()).thenReturn(Collections3.synchronizedSet(Collections.emptySet(), this));
+		when(this.spawnService.getAgents()).thenReturn(Collections3.synchronizedSet(Collections.emptySet(), NoReadWriteLock.SINGLETON));
 		UUID aId = UUID.fromString(this.uuid.toString());
 		int nb = this.kernel.getAgentCount();
 		assertEquals(0, nb);
@@ -246,7 +247,7 @@ public class KernelTest extends AbstractJanusTest {
 	@Test
 	public void getAgentCount_1() throws Exception {
 		when(this.spawnService.getAgents()).thenReturn(Collections3.synchronizedSet(
-				Collections.singleton(UUID.randomUUID()), this));
+				Collections.singleton(UUID.randomUUID()), NoReadWriteLock.SINGLETON));
 		UUID aId = UUID.fromString(this.uuid.toString());
 		int nb = this.kernel.getAgentCount();
 		assertEquals(1, nb);
@@ -255,7 +256,7 @@ public class KernelTest extends AbstractJanusTest {
 	@Test
 	public void getAgentCount_2() throws Exception {
 		when(this.spawnService.getAgents()).thenReturn(Collections3.synchronizedSet(
-				Sets.newHashSet(UUID.randomUUID(), UUID.randomUUID()), this));
+				Sets.newHashSet(UUID.randomUUID(), UUID.randomUUID()), NoReadWriteLock.SINGLETON));
 		UUID aId = UUID.fromString(this.uuid.toString());
 		int nb = this.kernel.getAgentCount();
 		assertEquals(2, nb);
@@ -264,7 +265,7 @@ public class KernelTest extends AbstractJanusTest {
 	@Test
 	public void getAgentCount_3() throws Exception {
 		when(this.spawnService.getAgents()).thenReturn(Collections3.synchronizedSet(
-				Sets.newHashSet(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID()), this));
+				Sets.newHashSet(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID()), NoReadWriteLock.SINGLETON));
 		UUID aId = UUID.fromString(this.uuid.toString());
 		int nb = this.kernel.getAgentCount();
 		assertEquals(3, nb);

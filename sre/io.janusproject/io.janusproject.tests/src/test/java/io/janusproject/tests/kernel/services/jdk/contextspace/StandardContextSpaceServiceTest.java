@@ -35,6 +35,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.locks.ReadWriteLock;
 import java.util.logging.Logger;
 
 import com.google.inject.Injector;
@@ -201,10 +202,10 @@ public class StandardContextSpaceServiceTest extends AbstractDependentServiceTes
 	}
 
 	@Test
-	public void mutex() {
-		Object mutex = this.service.mutex();
-		assertNotNull(mutex);
-		assertSame(mutex, this.service.mutex());
+	public void getLock() {
+		ReadWriteLock lock = this.service.getLock();
+		assertNotNull(lock);
+		assertSame(lock, this.service.getLock());
 	}
 
 	@Test

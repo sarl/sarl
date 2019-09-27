@@ -27,6 +27,7 @@ import io.sarl.lang.core.SRESpecificDataContainer
 
 /**
  * Description of a task an agent has schedule to be performed at a later time.
+ * This class is not thread-safe.
  *
  * @author $Author: srodriguez$
  * @author $Author: sgalland$

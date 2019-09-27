@@ -364,7 +364,7 @@ public class BehaviorGuardEvaluatorRegistryTest {
 	public static class MyAgent extends Agent {
 
 		public MyAgent() {
-			super(null, UUID.randomUUID(), UUID.randomUUID());
+			super(UUID.randomUUID(), UUID.randomUUID());
 		}
 
 		@PerceptGuardEvaluator
@@ -392,7 +392,7 @@ public class BehaviorGuardEvaluatorRegistryTest {
 	public static class MyAgent2 extends Agent {
 
 		public MyAgent2() {
-			super(null, UUID.randomUUID(), UUID.randomUUID());
+			super(UUID.randomUUID(), UUID.randomUUID());
 		}
 
 		@PerceptGuardEvaluator

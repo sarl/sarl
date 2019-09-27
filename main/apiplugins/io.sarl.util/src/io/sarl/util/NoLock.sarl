@@ -18,34 +18,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.sarl.util
 
-package io.sarl.lang.util;
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.locks.Condition
+import java.util.concurrent.locks.Lock
 
-import java.util.Set;
-
-/** A set that is synchronized (thread-safe).
+/** Implementation of a lock that is not blocking the callers.
  *
- * <p>All the operations on the set are synchronized with an internal mutex,
- * except <code>iterator()</code>.
- *
- * <p>The iterator replies by this set must be synchronized by hand by
- * the user of the iterator: <pre><code>
- * SynchronizedSet&lt;Object&gt; c;
- * synchronized(c.mutex()) {
- *   Iterator&lt;Object&gt; iterator = c.iterator();
- *   while (iterator.hasNext()) {
- *     Object element = iterator.next();
- *     // Do something with the element
- *   }
- * }
- * </code></pre>
- *
- * @param <E> - type of the elements in the set.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.10
  */
-public interface SynchronizedSet<E> extends SynchronizedCollection<E>, Set<E> {
-	//
+final class NoLock implements Lock {
+
+	/** A lock that is not blocking the callers.
+	 */
+	public static val SINGLETON : Lock = new NoLock
+
+	override lock {
+	}
+
+	override lockInterruptibly throws InterruptedException {
+	}
+
+	override tryLock : boolean {
+		true
+	}
+
+	override tryLock(time : long, unit : TimeUnit) : boolean throws InterruptedException {
+		true
+	}
+
+	override unlock {
+	}
+
+	override newCondition : Condition {
+		throw new UnsupportedOperationException
+	}
+
 }

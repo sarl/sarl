@@ -132,13 +132,13 @@ public class Context implements AgentContext {
 	@Override
 	public <S extends Space> SynchronizedIterable<S> getSpaces(Class<? extends SpaceSpecification<S>> spec) {
 		final SynchronizedCollection<S> col = this.spaceRepository.getSpaces(spec);
-		return Collections3.unmodifiableSynchronizedIterable(col, col.mutex());
+		return Collections3.unmodifiableSynchronizedIterable(col, col.getLock());
 	}
 
 	@Override
 	public SynchronizedIterable<? extends io.sarl.lang.core.Space> getSpaces() {
 		final SynchronizedCollection<? extends io.sarl.lang.core.Space> col = this.spaceRepository.getSpaces();
-		return Collections3.unmodifiableSynchronizedIterable(col, col.mutex());
+		return Collections3.unmodifiableSynchronizedIterable(col, col.getLock());
 	}
 
 	@Override

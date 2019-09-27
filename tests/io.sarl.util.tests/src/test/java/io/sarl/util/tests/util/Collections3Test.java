@@ -37,6 +37,9 @@ import java.util.TreeSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.junit.After;
 import org.junit.Before;
@@ -73,7 +76,7 @@ public class Collections3Test {
 
 		public static class CollectionTest extends AbstractSarlTest {
 
-			private Object mutex;
+			private ReadWriteLock lock;
 
 			private List<String> original;
 
@@ -81,12 +84,12 @@ public class Collections3Test {
 
 			@Before
 			public void setUp() {
-				this.mutex = new Object();
+				this.lock = new ReentrantReadWriteLock();
 				this.original = new ArrayList<>();
 				for(int i=0; i<50; ++i) {
 					this.original.add("0x"+Double.toHexString(Math.random())); //$NON-NLS-1$
 				}
-				this.collection = Collections3.synchronizedCollection(this.original, this.mutex);
+				this.collection = Collections3.synchronizedCollection(this.original, this.lock);
 			}
 
 			@Test
@@ -189,8 +192,8 @@ public class Collections3Test {
 			}
 
 			@Test
-			public void mutex() {
-				assertSame(this.mutex, this.collection.mutex());
+			public void getLock() {
+				assertSame(this.lock, this.collection.getLock());
 			}
 
 		}
@@ -198,19 +201,19 @@ public class Collections3Test {
 		public static class SyncTest extends AbstractSarlTest {
 
 			private ExecutorService executors;
-			private Object mutex;
+			private ReadWriteLock lock;
 			private List<String> original;
 			private Collection<String> collection;
 
 			@Before
 			public void setUp() {
 				this.executors = Executors.newFixedThreadPool(5);
-				this.mutex = new Object();
+				this.lock = new ReentrantReadWriteLock();
 				this.original = new ArrayList<>();
 				for(int i=0; i<50; ++i) {
 					this.original.add("0x"+Double.toHexString(Math.random())); //$NON-NLS-1$
 				}
-				this.collection = Collections3.synchronizedCollection(this.original, this.mutex);
+				this.collection = Collections3.synchronizedCollection(this.original, this.lock);
 			}
 
 			@After
@@ -221,7 +224,8 @@ public class Collections3Test {
 
 			@Test
 			public void iteratorHasMutex() throws Exception {
-				synchronized(this.mutex) {
+				this.lock.writeLock().lock();
+				try {
 					this.executors.submit(new Runnable() {
 						@Override
 						public void run() {
@@ -237,6 +241,8 @@ public class Collections3Test {
 						assertSame(this.original.get(i), s);
 						++i;
 					}
+				} finally {
+					this.lock.writeLock().unlock();
 				}
 				this.executors.shutdown();
 				this.executors.awaitTermination(30, TimeUnit.SECONDS);
@@ -258,18 +264,18 @@ public class Collections3Test {
 
 		public static class CollectionTest extends AbstractSarlTest {
 
-			private Object mutex;
+			private ReadWriteLock lock;
 			private TreeSet<String> original;
 			private SynchronizedSet<String> collection;
 
 			@Before
 			public void setUp() {
-				this.mutex = new Object();
+				this.lock = new ReentrantReadWriteLock();
 				this.original = new TreeSet<>();
 				for(int i=0; i<50; ++i) {
 					this.original.add("0x"+Double.toHexString(Math.random())); //$NON-NLS-1$
 				}
-				this.collection = Collections3.synchronizedSet(this.original, this.mutex);
+				this.collection = Collections3.synchronizedSet(this.original, this.lock);
 			}
 
 			@Test
@@ -385,8 +391,8 @@ public class Collections3Test {
 			}
 
 			@Test
-			public void mutex() {
-				assertSame(this.mutex, this.collection.mutex());
+			public void getLock() {
+				assertSame(this.lock, this.collection.getLock());
 			}
 
 		}
@@ -402,19 +408,19 @@ public class Collections3Test {
 			}
 
 			private ExecutorService executors;
-			private Object mutex;
+			private ReadWriteLock lock;
 			private TreeSet<String> original;
 			private Set<String> collection;
 
 			@Before
 			public void setUp() {
 				this.executors = Executors.newFixedThreadPool(5);
-				this.mutex = new Object();
+				this.lock = new ReentrantReadWriteLock();
 				this.original = new TreeSet<>();
 				for(int i=0; i<50; ++i) {
 					this.original.add("0x"+Double.toHexString(Math.random())); //$NON-NLS-1$
 				}
-				this.collection = Collections3.synchronizedSet(this.original, this.mutex);
+				this.collection = Collections3.synchronizedSet(this.original, this.lock);
 			}
 
 			@After
@@ -425,7 +431,8 @@ public class Collections3Test {
 
 			@Test
 			public void iteratorHasMutex() throws Exception {
-				synchronized(this.mutex) {
+				this.lock.writeLock().lock();
+				try {
 					this.executors.submit(new Runnable() {
 						@Override
 						public void run() {
@@ -441,6 +448,8 @@ public class Collections3Test {
 						assertSame(get(this.original, i), s);
 						++i;
 					}
+				} finally {
+					this.lock.writeLock().unlock();
 				}
 				this.executors.shutdown();
 				this.executors.awaitTermination(30, TimeUnit.SECONDS);
@@ -448,7 +457,6 @@ public class Collections3Test {
 					assertTrue(this.collection.contains(Integer.toString(i)));
 				}
 			}
-
 		}
 
 	}

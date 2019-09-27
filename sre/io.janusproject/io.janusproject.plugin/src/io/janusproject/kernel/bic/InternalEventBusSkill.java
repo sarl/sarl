@@ -47,6 +47,7 @@ import io.sarl.core.Initialize;
 import io.sarl.core.Logging;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
+import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventListener;
 import io.sarl.lang.core.Skill;
@@ -169,8 +170,10 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 		if (stage == UninstallationStage.POST_DESTROY_EVENT) {
 			final Destroy event = new Destroy();
 			event.setSource(getInnerDefaultSpaceAddress());
+			final Agent owner = getOwner();
 			this.eventDispatcher.unregisterAll(subscriber -> {
-				if (subscriber != getOwner()) {
+				// Behaviors are already destroyed by AgentLifeCycleSupport#agentDestroy
+				if (subscriber != owner && !(subscriber instanceof Behavior)) {
 					this.eventDispatcher.immediateDispatchTo(subscriber, event);
 				}
 			});

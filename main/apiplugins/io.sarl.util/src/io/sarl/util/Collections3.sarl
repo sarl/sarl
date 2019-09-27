@@ -26,6 +26,9 @@ import io.sarl.lang.util.SynchronizedSet
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.io.Serializable
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.AbstractCollection
 import java.util.AbstractSet
 import java.util.ArrayList
@@ -33,6 +36,8 @@ import java.util.Collection
 import java.util.Collections
 import java.util.Iterator
 import java.util.Set
+import java.util.Spliterator
+import java.util.Spliterators
 
 /** Utilities on collections.
  *
@@ -62,13 +67,11 @@ final class Collections3 {
 	 */
 	private static class EmptySet extends AbstractSet<Object> implements SynchronizedSet<Object>, Serializable {
 
-		transient var mutex = new Object
-
 		package new {
 		}
 
-		override mutex : Object {
-			return this.mutex;
+		override getLock : ReadWriteLock {
+			return NoReadWriteLock::SINGLETON
 		}
 
 		override iterator : Iterator<Object> {
@@ -81,17 +84,12 @@ final class Collections3 {
 
 		@SuppressWarnings("unused_private_member")
 		private def writeObject(stream : ObjectOutputStream) {
-			synchronized (this.mutex) {
-				stream.defaultWriteObject
-			}
+			stream.defaultWriteObject
 		}
 
 		@SuppressWarnings("unused_private_member")
 		private def readObject(stream : ObjectInputStream) {
-			synchronized (this.mutex) {
-				stream.defaultReadObject
-				this.mutex = new Object
-			}
+			stream.defaultReadObject
 		}
 
 	}
@@ -112,55 +110,78 @@ final class Collections3 {
 
 		/** Object on which to synchronize.
 		 */
-		package transient var mutex : Object
+		package transient var lock : ReadWriteLock
 
-		new (collection : Collection<E>, mutex : Object) {
+		new (collection : Collection<E>, lock : ReadWriteLock) {
+			assert collection !== null
+			assert lock !== null
 			this.collection = collection
-			this.mutex = mutex
+			this.lock = lock
 		}
 
 		override equals(obj : Object) : boolean {
 			if (this === obj) {
 				return true
 			}
-			synchronized (this.mutex) {
+			this.lock.readLock.lock
+			try {
 				return this.collection == obj
+			} finally {
+				this.lock.readLock.unlock
 			}
 		}
 
 		override hashCode : int {
-			synchronized (this.mutex) {
-				this.collection.hashCode
+			this.lock.readLock.lock
+			try {
+				return this.collection.hashCode
+			} finally {
+				this.lock.readLock.unlock
 			}
 		}
 
 		override size : int {
-			synchronized (this.mutex) {
-				this.collection.size
+			this.lock.readLock.lock
+			try {
+				return this.collection.size
+			} finally {
+				this.lock.readLock.unlock
 			}
 		}
 
 		override isEmpty : boolean {
-			synchronized (this.mutex) {
-				this.collection.empty
+			this.lock.readLock.lock
+			try {
+				return this.collection.empty
+			} finally {
+				this.lock.readLock.unlock
 			}
 		}
 
 		override contains(object : Object) : boolean {
-			synchronized (this.mutex) {
-				this.collection.contains(object)
+			this.lock.readLock.lock
+			try {
+				return this.collection.contains(object)
+			} finally {
+				this.lock.readLock.unlock
 			}
 		}
 
 		override toArray : Object[] {
-			synchronized (this.mutex) {
-				this.collection.toArray
+			this.lock.readLock.lock
+			try {
+				return this.collection.toArray
+			} finally {
+				this.lock.readLock.unlock
 			}
 		}
 
 		override toArray(output : T[]) : T[] with T {
-			synchronized (this.mutex) {
-				this.collection.toArray(output)
+			this.lock.readLock.lock
+			try {
+				return this.collection.toArray(output)
+			} finally {
+				this.lock.readLock.unlock
 			}
 		}
 
@@ -170,70 +191,99 @@ final class Collections3 {
 		}
 
 		override add(element : E) : boolean {
-			synchronized (this.mutex) {
-				this.collection.add(element)
+			this.lock.writeLock.lock
+			try {
+				return this.collection.add(element)
+			} finally {
+				this.lock.writeLock.unlock
 			}
 		}
 
 		override remove(element : Object) : boolean {
-			synchronized (this.mutex) {
-				this.collection.remove(element)
+			this.lock.writeLock.lock
+			try {
+				return this.collection.remove(element)
+			} finally {
+				this.lock.writeLock.unlock
 			}
 		}
 
 		override containsAll(coll : Collection<?>) : boolean {
-			synchronized (this.mutex) {
-				this.collection.containsAll(coll)
+			this.lock.readLock.lock
+			try {
+				return this.collection.containsAll(coll)
+			} finally {
+				this.lock.readLock.unlock
 			}
 		}
 
 		override addAll(coll : Collection<? extends E>) : boolean {
-			synchronized (this.mutex) {
-				this.collection.addAll(coll)
+			this.lock.writeLock.lock
+			try {
+				return this.collection.addAll(coll)
+			} finally {
+				this.lock.writeLock.unlock
 			}
 		}
 
 		override removeAll(coll : Collection<?>) : boolean {
-			synchronized (this.mutex) {
-				this.collection.removeAll(coll)
+			this.lock.writeLock.lock
+			try {
+				return this.collection.removeAll(coll)
+			} finally {
+				this.lock.writeLock.unlock
 			}
 		}
 
 		override retainAll(coll : Collection<?>) : boolean {
-			synchronized (this.mutex) {
-				this.collection.retainAll(coll)
+			this.lock.writeLock.lock
+			try {
+				return this.collection.retainAll(coll)
+			} finally {
+				this.lock.writeLock.lock
 			}
 		}
 
 		override clear {
-			synchronized (this.mutex) {
+			this.lock.writeLock.lock
+			try {
 				this.collection.clear
+			} finally {
+				this.lock.writeLock.unlock
 			}
 		}
 
 		override toString : String {
-			synchronized (this.mutex) {
-				this.collection.toString
+			this.lock.readLock.lock
+			try {
+				return this.collection.toString
+			} finally {
+				this.lock.readLock.unlock
 			}
 		}
 
 		@SuppressWarnings("unused_private_member")
 		private def writeObject(stream : ObjectOutputStream) {
-			synchronized (this.mutex) {
+			this.lock.readLock.lock
+			try {
 				stream.defaultWriteObject
+			} finally {
+				this.lock.readLock.unlock
 			}
 		}
 
 		@SuppressWarnings("unused_private_member")
 		private def readObject(stream : ObjectInputStream) {
-			synchronized (this.mutex) {
+			this.lock.writeLock.lock
+			try {
 				stream.defaultReadObject
-				this.mutex = new Object
+			} finally {
+				this.lock.writeLock.unlock
 			}
 		}
 
-		override mutex : Object {
-			this.mutex
+		override getLock : ReadWriteLock {
+			this.lock
 		}
 
 	}
@@ -333,9 +383,13 @@ final class Collections3 {
 			throw new UnsupportedOperationException
 		}
 
-		override mutex : Object {
-			this.collection.mutex
+		override getLock : ReadWriteLock {
+			this.collection.lock
 		}
+
+		override spliterator : Spliterator<E> {
+        	Spliterators::spliterator(this, Spliterator::DISTINCT)
+	    }
 
 	}
 
@@ -350,8 +404,8 @@ final class Collections3 {
 	private static class UnmodifiableSynchronizedSetWrapper<E>
 			extends SynchronizedSetWrapper<E> {
 
-		package new (set : Set<E>, mutex : Object) {
-			super(set, mutex)
+		package new (set : Set<E>, lock : ReadWriteLock) {
+			super(set, lock)
 		}
 
 		override add(element : E) : boolean {
@@ -396,8 +450,8 @@ final class Collections3 {
 			extends SynchronizedCollectionWrapper<E>
 			implements SynchronizedSet<E> {
 
-		package new (set : Set<E>, mutex : Object) {
-			super(set, mutex)
+		package new (set : Set<E>, lock : ReadWriteLock) {
+			super(set, lock)
 		}
 
 	}
@@ -420,8 +474,8 @@ final class Collections3 {
 			this.singleton = singleton
 		}
 
-		override mutex : Object {
-			this
+		override getLock : ReadWriteLock {
+			return NoReadWriteLock::SINGLETON
 		}
 
 		override iterator : Iterator<T> {
@@ -443,12 +497,14 @@ final class Collections3 {
 	 * <p>It is imperative that the user manually synchronize on the returned
 	 * set when iterating over it:
 	 * <pre>
-	 * Set s = Collections3.synchronizedSet(new HashSet());
-	 * ...
-	 * synchronized (s) {
-	 * Iterator i = s.iterator(); // Must be in the synchronized block
-	 * while (i.hasNext())
-	 * foo(i.next());
+	 * SynchronizedSet s = Collections3.synchronizedSet(new HashSet(), new ReentrantReadWriteLock());
+	 * s.getLock().readLock().lock();
+	 * try {
+	 *   Iterator i = s.iterator(); // Must be in the synchronized block
+	 *   while (i.hasNext())
+	 *     foo(i.next());
+	 * } finally {
+	 *   s.getLock().readLock().unlock();
 	 * }
 	 * </pre>
 	 * Failure to follow this advice may result in non-deterministic behavior.
@@ -458,11 +514,11 @@ final class Collections3 {
 	 *
 	 * @param <T> - type of the set element.
 	 * @param  set the set to be "wrapped" in a synchronized set.
-	 * @param mutex is the mutex to use for synchronizing.
+	 * @param lock is the lock to use for synchronizing.
 	 * @return a synchronized view of the specified set.
 	 */
-	static def synchronizedSet(set : Set<T>, mutex : Object) : SynchronizedSet<T> with T {
-		new SynchronizedSetWrapper(set, mutex)
+	static def synchronizedSet(set : Set<T>, lock : ReadWriteLock) : SynchronizedSet<T> with T {
+		new SynchronizedSetWrapper(set, lock)
 	}
 
 	/**
@@ -474,12 +530,14 @@ final class Collections3 {
 	 * <p>It is imperative that the user manually synchronize on the returned
 	 * collection when iterating over it:
 	 * <pre>
-	 * Collection c = Collections3.synchronizedCollection(myCollection);
-	 * ...
-	 * synchronized (c) {
-	 * Iterator i = c.iterator(); // Must be in the synchronized block
-	 * while (i.hasNext())
-	 * foo(i.next());
+	 * SynchronizedCollection s = Collections3.synchronizedCollection(new ArrayList(), new ReentrantReadWriteLock());
+	 * s.getLock().readLock().lock();
+	 * try {
+	 *   Iterator i = s.iterator(); // Must be in the synchronized block
+	 *   while (i.hasNext())
+	 *     foo(i.next());
+	 * } finally {
+	 *   s.getLock().readLock().unlock();
 	 * }
 	 * </pre>
 	 * Failure to follow this advice may result in non-deterministic behavior.
@@ -495,11 +553,11 @@ final class Collections3 {
 	 *
 	 * @param <T> - type of the set elements.
 	 * @param  collection the collection to be "wrapped" in a synchronized collection.
-	 * @param mutex is the mutex to use for synchronizing.
+	 * @param lock is the lock to use for synchronizing.
 	 * @return a synchronized view of the specified collection.
 	 */
-	static def synchronizedCollection(collection : Collection<T>, mutex : Object) : SynchronizedCollection<T> with T {
-		new SynchronizedCollectionWrapper(collection, mutex)
+	static def synchronizedCollection(collection : Collection<T>, lock : ReadWriteLock) : SynchronizedCollection<T> with T {
+		new SynchronizedCollectionWrapper(collection, lock)
 	}
 
 	/** Replies an empty synchronized set.
@@ -523,6 +581,21 @@ final class Collections3 {
 
 	/** Replies an unmodifiable synchronized set.
 	 *
+	 * <p>It is imperative that the user manually synchronize on the returned
+	 * set when iterating over it:
+	 * <pre>
+	 * SynchronizedSet s = Collections3.unmodifiableSynchronizedSet(anySynchronizedSet);
+	 * s.getLock().readLock().lock();
+	 * try {
+	 *   Iterator i = s.iterator(); // Must be in the synchronized block
+	 *   while (i.hasNext())
+	 *     foo(i.next());
+	 * } finally {
+	 *   s.getLock().readLock().unlock();
+	 * }
+	 * </pre>
+	 * Failure to follow this advice may result in non-deterministic behavior.
+	 *
 	 * @param <T> - type of the elements in the set.
 	 * @param elements the set to transform as unmodifiable set.
 	 * @return an unmodifiable synchronized set.
@@ -540,12 +613,14 @@ final class Collections3 {
 	 * <p>It is imperative that the user manually synchronize on the returned
 	 * set when iterating over it:
 	 * <pre>
-	 * Set s = Collections3.synchronizedSet(new HashSet());
-	 * ...
-	 * synchronized (s) {
-	 * Iterator i = s.iterator(); // Must be in the synchronized block
-	 * while (i.hasNext())
-	 * foo(i.next());
+	 * SynchronizedSet s = Collections3.unmodifiableSynchronizedSet(new HashSet(), new ReentrantReadWriteLock());
+	 * s.getLock().readLock().lock();
+	 * try {
+	 *   Iterator i = s.iterator(); // Must be in the synchronized block
+	 *   while (i.hasNext())
+	 *     foo(i.next());
+	 * } finally {
+	 *   s.getLock().readLock().unlock();
 	 * }
 	 * </pre>
 	 * Failure to follow this advice may result in non-deterministic behavior.
@@ -555,12 +630,13 @@ final class Collections3 {
 	 *
 	 * @param <T> - type of the elements in the set.
 	 * @param elements the set to transform as unmodifiable set.
-	 * @param mutex is the mutex to use for synchronizing.
+	 * @param lock is the lock to use for synchronizing.
 	 * @return an unmodifiable synchronized set.
 	 */
-	static def unmodifiableSynchronizedSet(elements : Set<T>, mutex : Object) : SynchronizedSet<T> with T {
-		new UnmodifiableSynchronizedSetWrapper(elements, mutex)
+	static def unmodifiableSynchronizedSet(elements : Set<T>, lock : ReadWriteLock) : SynchronizedSet<T> with T {
+		new UnmodifiableSynchronizedSetWrapper(elements, lock)
 	}
+
 	/** 
 	 * Returns an immutable synchronized (thread-safe) iterable  backed by the specified
 	 * iterable.  In order to guarantee serial access, it is critical that
@@ -568,14 +644,16 @@ final class Collections3 {
 	 * through the returned set.
 	 * 
 	 * <p>It is imperative that the user manually synchronize on the returned
-	 * set when iterating over it:
+	 * iterable when iterating over it:
 	 * <pre>
-	 * Set s = Collections3.synchronizedSet(new HashSet());
-	 * ...
-	 * synchronized (s) {
-	 * Iterator i = s.iterator(); // Must be in the synchronized block
-	 * while (i.hasNext())
-	 * foo(i.next());
+	 * SynchronizedIterable s = Collections3.unmodifiableSynchronizedIterable(new ArrayList(), new ReentrantReadWriteLock());
+	 * s.getLock().readLock().lock();
+	 * try {
+	 *   Iterator i = s.iterator(); // Must be in the synchronized block
+	 *   while (i.hasNext())
+	 *     foo(i.next());
+	 * } finally {
+	 *   s.getLock().readLock().unlock();
 	 * }
 	 * </pre>
 	 * Failure to follow this advice may result in non-deterministic behavior.
@@ -585,11 +663,11 @@ final class Collections3 {
 	 * 
 	 * @param <T> - type of the elements in the iterable.
 	 * @param elements the set to transform as unmodifiable set.
-	 * @param mutex is the mutex to use for synchronizing.
+	 * @param lock is the lock to use for synchronizing.
 	 * @return an unmodifiable synchronized iterable.
 	 */
-	static def unmodifiableSynchronizedIterable(elements : Iterable<T>, mutex : Object) : SynchronizedIterable<T> with T {
-		new UnmodifiableSynchronizedIterableWrapper(elements, mutex)
+	static def unmodifiableSynchronizedIterable(elements : Iterable<T>, lock : ReadWriteLock) : SynchronizedIterable<T> with T {
+		new UnmodifiableSynchronizedIterableWrapper(elements, lock)
 	}
 
 	/** Unmodifiable synchronized iterable.
@@ -604,33 +682,43 @@ final class Collections3 {
 
 		val iterable : Iterable<E>
 
-		transient var mutex : Object
+		transient var lock : ReadWriteLock
 
-		package new (iterable : Iterable<E>, mutex : Object) {
+		package new (iterable : Iterable<E>, lock : ReadWriteLock) {
+			assert iterable !== null
+			assert lock !== null
 			this.iterable = iterable
-			this.mutex = mutex
+			this.lock = lock
 		}
 
 		override iterator : Iterator<E> {
 			new UnmodifiableIterator(this.iterable.iterator)
 		}
 
-		override mutex : Object {
-			return this.mutex
+		override getLock : ReadWriteLock {
+			if (this.lock === null) {
+				this.lock = new ReentrantReadWriteLock
+			}
+			return this.lock
 		}
 
 		@SuppressWarnings("unused_private_member")
 		private def writeObject(stream : ObjectOutputStream) {
-			synchronized (this.mutex) {
+			this.lock.readLock.lock
+			try {
 				stream.defaultWriteObject
+			} finally {
+				this.lock.readLock.unlock
 			}
 		}
 
 		@SuppressWarnings("unused_private_member")
 		private def readObject(stream : ObjectInputStream) {
-			synchronized (this.mutex) {
+			this.getLock.writeLock.lock
+			try {
 				stream.defaultReadObject
-				this.mutex = new Object
+			} finally {
+				this.lock.writeLock.unlock
 			}
 		}
 
@@ -697,6 +785,83 @@ final class Collections3 {
 			}
 		}
 
+	}
+
+	/** Implementation of a synchronized collection wrapper that disable modifications.
+	 *
+	 * @param <E> the type of the elements in the collection.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.10
+	 */
+	private static class UnmodifiableSynchronizedCollectionWrapper<E>
+			extends SynchronizedCollectionWrapper<E> {
+
+		package new (set : Collection<E>, lock : ReadWriteLock) {
+			super(set, lock)
+		}
+
+		override add(element : E) : boolean {
+			throw new UnsupportedOperationException
+		}
+
+		override remove(object : Object) : boolean {
+			throw new UnsupportedOperationException
+		}
+
+		override addAll(collection : Collection<? extends E>) : boolean {
+			throw new UnsupportedOperationException
+		}
+
+		override removeAll(collection : Collection<?>) : boolean {
+			throw new UnsupportedOperationException
+		}
+
+		override retainAll(collection : Collection<?>) : boolean {
+			throw new UnsupportedOperationException
+		}
+
+		override clear {
+			throw new UnsupportedOperationException
+		}
+
+		override iterator : Iterator<E> {
+			new UnmodifiableIterator(super.iterator)
+		}
+
+	}
+
+	/**
+	 * Returns an immutable synchronized (thread-safe) collection backed by the specified
+	 * collection.  In order to guarantee serial access, it is critical that
+	 * <strong>all</strong> access to the backing collection is accomplished
+	 * through the returned collection.
+	 *
+	 * <p>It is imperative that the user manually synchronize on the returned
+	 * collection when iterating over it:
+	 * <pre>
+	 * SynchronizedCollection s = Collections3.unmodifiableSynchronizedCollection(new ArrayList(), new ReentrantReadWriteLock());
+	 * s.getLock().readLock().lock();
+	 * try {
+	 *   Iterator i = s.iterator(); // Must be in the synchronized block
+	 *   while (i.hasNext())
+	 *     foo(i.next());
+	 * } finally {
+	 *   s.getLock().readLock().unlock();
+	 * }
+	 * </pre>
+	 * Failure to follow this advice may result in non-deterministic behavior.
+	 *
+	 * @param <T> - type of the elements in the set.
+	 * @param elements the set to transform as unmodifiable set.
+	 * @param lock is the lock to use for synchronizing.
+	 * @return an unmodifiable synchronized set.
+	 * @since 0.10
+	 */
+	static def unmodifiableSynchronizedCollection(elements : Collection<T>, lock : ReadWriteLock) : SynchronizedCollection<T> with T {
+		new UnmodifiableSynchronizedCollectionWrapper(elements, lock)
 	}
 
 }

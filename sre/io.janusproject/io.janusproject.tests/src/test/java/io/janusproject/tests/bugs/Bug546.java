@@ -20,8 +20,6 @@
 
 package io.janusproject.tests.bugs;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -33,6 +31,7 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -44,13 +43,11 @@ import io.janusproject.tests.testutils.AbstractJanusRunTest;
 import io.sarl.core.AgentKilled;
 import io.sarl.core.AgentTask;
 import io.sarl.core.DefaultContextInteractions;
-import io.sarl.core.Initialize;
 import io.sarl.core.Lifecycle;
 import io.sarl.core.Schedules;
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.annotation.SarlSpecification;
-import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.Event;
 import io.sarl.util.Scopes;
@@ -347,6 +344,7 @@ public class Bug546 {
 
 	}
 
+	@Ignore
 	public static class HugeEventSetTest extends AbstractJanusRunTest {
 
 		@Test

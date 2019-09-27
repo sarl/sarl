@@ -18,38 +18,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.sarl.util
 
-package io.sarl.lang.core;
+import java.util.concurrent.locks.Lock
+import java.util.concurrent.locks.ReadWriteLock
 
-
-/** Event describing an early exit from a block of code when it
- * is fired by a SARL action.
+/** Implementation of a read-write lock that is not blocking the callers.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated no replacement.
+ * @since 0.10
  */
-@Deprecated
-public abstract class EarlyExitEvent extends Event {
+final class NoReadWriteLock implements ReadWriteLock {
 
-	private static final long serialVersionUID = -5601857950368054559L;
-
-	/** Constructs an EarlyExitEvent without source.
-	 * The source must be set with {@link #setSource(Address)}
-	 * by the creator of the event, or by the emitting mechanism,
-	 * before sending the event on the event bus.
+	/** A lock that is not blocking the callers.
 	 */
-	public EarlyExitEvent() {
-		//
-	}
+	public static val SINGLETON : ReadWriteLock = new NoReadWriteLock
 
-	/** Constructs an EarlyExitEvent with a source.
-	 * @param source source of the event.
-	 */
-	public EarlyExitEvent(Address source) {
-		super(source);
-	}
+    override readLock : Lock {
+    	NoLock::SINGLETON
+    }
+
+	override writeLock : Lock {
+   		NoLock::SINGLETON
+   	}
 
 }
