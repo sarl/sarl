@@ -58,6 +58,7 @@ import org.junit.Assert;
 import org.junit.internal.builders.AllDefaultPossibilitiesBuilder;
 import org.junit.internal.builders.AnnotatedBuilder;
 import org.junit.internal.builders.JUnit4Builder;
+import org.junit.internal.builders.NullBuilder;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.junit.runner.Runner;
@@ -66,6 +67,7 @@ import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.Suite;
 import org.junit.runners.model.InitializationError;
+import org.junit.runners.model.RunnerBuilder;
 
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest.Validator;
@@ -177,7 +179,11 @@ public class MassiveCompilationSuite extends Suite {
 			}
 		}
 		//
-		final AllDefaultPossibilitiesBuilder builder = new AllDefaultPossibilitiesBuilder(false) {
+		final AllDefaultPossibilitiesBuilder builder = new AllDefaultPossibilitiesBuilder() {
+			@Override
+			protected RunnerBuilder suiteMethodBuilder() {
+		        return new NullBuilder();
+		    }
 			@Override
 			protected AnnotatedBuilder annotatedBuilder() {
 				// Avoid infinite loop by running the tests with the current suite.
