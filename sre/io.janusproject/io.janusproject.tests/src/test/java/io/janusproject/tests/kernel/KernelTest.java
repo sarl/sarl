@@ -25,7 +25,6 @@ import static org.mockito.Mockito.when;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -52,8 +51,8 @@ import io.janusproject.util.TwoStepConstruction;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.tests.api.Nullable;
-import io.sarl.util.Collections3;
-import io.sarl.util.NoReadWriteLock;
+import io.sarl.util.concurrent.Collections3;
+import io.sarl.util.concurrent.NoReadWriteLock;
 
 /**
  * @author $Author: sgalland$

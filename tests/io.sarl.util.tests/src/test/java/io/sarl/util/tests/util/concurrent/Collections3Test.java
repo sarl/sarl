@@ -18,7 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.util.tests.util;
+package io.sarl.util.tests.util.concurrent;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -51,7 +51,7 @@ import org.junit.runners.Suite.SuiteClasses;
 import io.sarl.lang.util.SynchronizedCollection;
 import io.sarl.lang.util.SynchronizedSet;
 import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.util.Collections3;
+import io.sarl.util.concurrent.Collections3;
 
 /**
  * @author $Author: sgalland$

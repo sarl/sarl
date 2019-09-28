@@ -43,7 +43,7 @@ import io.janusproject.kernel.services.jdk.executors.JdkUncaughtExceptionHandler
 import io.janusproject.services.executor.ExecutorService;
 
 /**
- * Configure the module for the {@code ExecutorService} based on the JDF.
+ * Configure the module for the {@code ExecutorService} based on the JDK.
  *
  * @author $Author: srodriguez$
  * @author $Author: sgalland$

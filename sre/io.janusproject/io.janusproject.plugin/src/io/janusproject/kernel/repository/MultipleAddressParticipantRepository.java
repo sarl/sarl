@@ -24,7 +24,6 @@ package io.janusproject.kernel.repository;
 import java.io.Serializable;
 import java.util.UUID;
 import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import io.janusproject.services.distributeddata.DMultiMap;
 import io.janusproject.services.distributeddata.DistributedDataStructureService;
@@ -32,7 +31,7 @@ import io.janusproject.services.distributeddata.DistributedDataStructureService;
 import io.sarl.lang.core.EventListener;
 import io.sarl.lang.util.SynchronizedCollection;
 import io.sarl.lang.util.SynchronizedSet;
-import io.sarl.util.Collections3;
+import io.sarl.util.concurrent.Collections3;
 
 /**
  * Repository that maps participants to multiple addresses.

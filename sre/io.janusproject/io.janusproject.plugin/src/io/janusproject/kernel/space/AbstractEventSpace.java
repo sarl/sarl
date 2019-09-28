@@ -40,8 +40,8 @@ import io.sarl.lang.core.Scope;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.util.SynchronizedCollection;
 import io.sarl.lang.util.SynchronizedSet;
-import io.sarl.util.Collections3;
 import io.sarl.util.Scopes;
+import io.sarl.util.concurrent.Collections3;
 
 /**
  * Abstract implementation of an event space.

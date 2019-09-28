@@ -19,10 +19,6 @@
  */
 package io.janusproject.tests.kernel.bic;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -65,9 +61,9 @@ import io.sarl.lang.util.ClearableReference;
 import io.sarl.lang.util.SynchronizedIterable;
 import io.sarl.tests.api.ManualMocking;
 import io.sarl.tests.api.Nullable;
-import io.sarl.util.Collections3;
-import io.sarl.util.NoReadWriteLock;
 import io.sarl.util.OpenEventSpace;
+import io.sarl.util.concurrent.Collections3;
+import io.sarl.util.concurrent.NoReadWriteLock;
 
 /**
  * @author $Author: sgalland$

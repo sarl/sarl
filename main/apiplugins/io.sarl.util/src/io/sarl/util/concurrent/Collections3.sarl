@@ -18,7 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.util
+package io.sarl.util.concurrent
 
 import io.sarl.lang.util.SynchronizedCollection
 import io.sarl.lang.util.SynchronizedIterable
@@ -46,9 +46,7 @@ import java.util.Spliterators
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated since 0.10, see {@link io.sarl.util.concurrent.Collections3}.
  */
-@Deprecated
 final class Collections3 {
 
 	/**

@@ -39,8 +39,8 @@ import io.sarl.lang.core.Scope;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.util.ClearableReference;
 import io.sarl.lang.util.SynchronizedIterable;
-import io.sarl.util.Collections3;
-import io.sarl.util.NoReadWriteLock;
+import io.sarl.util.concurrent.Collections3;
+import io.sarl.util.concurrent.NoReadWriteLock;
 
 /**
  * Janus implementation of SARL's {@link Behaviors} built-in capacity.

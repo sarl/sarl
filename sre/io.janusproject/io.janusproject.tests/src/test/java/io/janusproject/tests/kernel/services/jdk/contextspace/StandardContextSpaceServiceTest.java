@@ -74,6 +74,7 @@ import io.sarl.lang.core.SpaceID;
 import io.sarl.tests.api.Nullable;
 import io.sarl.util.OpenEventSpace;
 import io.sarl.util.OpenEventSpaceSpecification;
+import io.sarl.util.concurrent.NoReadWriteLock;
 
 /**
  * @author $Author: sgalland$

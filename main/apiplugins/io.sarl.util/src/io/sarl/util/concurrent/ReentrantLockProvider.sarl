@@ -18,13 +18,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.util
 
-import java.util.concurrent.TimeUnit
-import java.util.concurrent.locks.Condition
+package io.sarl.util.concurrent
+
 import java.util.concurrent.locks.Lock
+import java.util.concurrent.locks.ReentrantLock
 
-/** Implementation of a lock that is not blocking the callers.
+import com.google.inject.Provider
+
+/**
+ * Provider of standard locks.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -32,31 +35,10 @@ import java.util.concurrent.locks.Lock
  * @mavenartifactid $ArtifactId$
  * @since 0.10
  */
-final class NoLock implements Lock {
+class ReentrantLockProvider implements Provider<Lock> {
 
-	/** A lock that is not blocking the callers.
-	 */
-	public static val SINGLETON : Lock = new NoLock
-
-	override lock {
-	}
-
-	override lockInterruptibly throws InterruptedException {
-	}
-
-	override tryLock : boolean {
-		true
-	}
-
-	override tryLock(time : long, unit : TimeUnit) : boolean throws InterruptedException {
-		true
-	}
-
-	override unlock {
-	}
-
-	override newCondition : Condition {
-		throw new UnsupportedOperationException
+	override get : Lock {
+		new ReentrantLock
 	}
 
 }

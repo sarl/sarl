@@ -57,7 +57,7 @@ import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.util.SynchronizedCollection;
 import io.sarl.lang.util.SynchronizedSet;
-import io.sarl.util.Collections3;
+import io.sarl.util.concurrent.Collections3;
 
 /**
  * A repository of Agent's context and spaces that is based on the other Janus platform services.

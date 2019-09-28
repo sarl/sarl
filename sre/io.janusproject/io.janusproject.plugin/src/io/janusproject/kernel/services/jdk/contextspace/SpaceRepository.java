@@ -52,9 +52,9 @@ import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.core.SpaceSpecification;
 import io.sarl.lang.util.SynchronizedCollection;
-import io.sarl.util.Collections3;
 import io.sarl.util.DefaultSpace;
 import io.sarl.util.OpenEventSpace;
+import io.sarl.util.concurrent.Collections3;
 
 /**
  * A repository of spaces specific to a given context.

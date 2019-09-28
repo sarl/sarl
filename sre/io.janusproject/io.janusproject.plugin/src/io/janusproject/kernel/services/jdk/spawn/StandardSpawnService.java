@@ -68,7 +68,7 @@ import io.sarl.lang.core.Scope;
 import io.sarl.lang.util.SynchronizedIterable;
 import io.sarl.lang.util.SynchronizedSet;
 import io.sarl.sarlspecification.SarlSpecificationChecker;
-import io.sarl.util.Collections3;
+import io.sarl.util.concurrent.Collections3;
 
 /**
  * Implementation of a spawning service that is based on the other services of the Janus platform.

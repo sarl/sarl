@@ -294,7 +294,7 @@ identifier of the default space. In the other cases, the function replies nothin
 			import io.sarl.lang.core.SpaceSpecification
 			import io.sarl.lang.core.EventSpaceSpecification
 			import io.sarl.lang.util.SynchronizedCollection
-			import io.sarl.util.Collections3
+			import io.sarl.util.concurrent.Collections3
 			abstract class TMAgentContext implements AgentContext {
 				var defaultSpace : Space
 			[:On]
@@ -1697,7 +1697,7 @@ Two functions must be implemented for accessing to the internal list of the beha
             import java.util.concurrent.locks.ReentrantReadWriteLock
 			import io.sarl.lang.core.Behavior
 			import io.sarl.core.Behaviors
-			import io.sarl.util.Collections3
+			import io.sarl.util.concurrent.Collections3
 			import io.sarl.lang.util.SynchronizedIterable
 			abstract class BehaviorsSkill implements Behaviors {
 				var behaviors : List<Behavior>
@@ -1741,8 +1741,8 @@ replace the previous code by:
             import io.sarl.lang.core.Behavior
             import io.sarl.lang.util.SynchronizedIterable
             import io.sarl.core.Behaviors
-            import io.sarl.util.Collections3
-            import io.sarl.util.NoReadWriteLock
+            import io.sarl.util.concurrent.Collections3
+            import io.sarl.util.concurrent.NoReadWriteLock
             abstract class BehaviorsSkill implements Behaviors {
                 var behaviors : List<Behavior>
                 [:On]

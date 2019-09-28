@@ -41,9 +41,9 @@ import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.core.SpaceSpecification;
 import io.sarl.lang.util.SynchronizedCollection;
 import io.sarl.lang.util.SynchronizedIterable;
-import io.sarl.util.Collections3;
 import io.sarl.util.OpenEventSpace;
 import io.sarl.util.OpenEventSpaceSpecification;
+import io.sarl.util.concurrent.Collections3;
 
 /**
  * Implementation of an agent context in the Janus platform.

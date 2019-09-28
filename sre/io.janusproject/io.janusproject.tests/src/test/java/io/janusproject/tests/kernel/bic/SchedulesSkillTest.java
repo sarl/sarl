@@ -67,6 +67,7 @@ import io.sarl.lang.core.SREutils;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.Skill.UninstallationStage;
 import io.sarl.tests.api.Nullable;
+import io.sarl.util.concurrent.NoReadWriteLock;
 
 /**
  * @author $Author: sgalland$
@@ -154,6 +155,7 @@ public class SchedulesSkillTest {
 			this.reflect.set(this.skill, "executorService", this.executorService);
 			SREutils.createSkillMapping(this.agent, Time.class, this.timeSkill);
 			this.reflect.invoke(this.skill, "setOwner", this.agent);
+			this.reflect.set(this.skill, "tasksLock", NoReadWriteLock.SINGLETON);
 			Mockito.when(this.executorService.schedule(ArgumentMatchers.any(Runnable.class), ArgumentMatchers.any(long.class),
 					ArgumentMatchers.any(TimeUnit.class))).thenAnswer(new Answer<ScheduledFuture>() {
 						@Override

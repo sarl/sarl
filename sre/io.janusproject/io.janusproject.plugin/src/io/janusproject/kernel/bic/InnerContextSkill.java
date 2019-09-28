@@ -25,7 +25,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import com.google.inject.Inject;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -45,9 +44,9 @@ import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.util.ClearableReference;
 import io.sarl.lang.util.SynchronizedIterable;
 import io.sarl.lang.util.SynchronizedSet;
-import io.sarl.util.Collections3;
-import io.sarl.util.NoReadWriteLock;
 import io.sarl.util.OpenEventSpace;
+import io.sarl.util.concurrent.Collections3;
+import io.sarl.util.concurrent.NoReadWriteLock;
 
 /**
  * Janus implementation of SARL's {@link InnerContextSkill} built-in capacity.

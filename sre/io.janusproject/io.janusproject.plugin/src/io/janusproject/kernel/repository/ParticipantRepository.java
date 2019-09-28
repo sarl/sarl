@@ -33,7 +33,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import io.sarl.lang.core.EventListener;
 import io.sarl.lang.util.SynchronizedCollection;
 import io.sarl.lang.util.SynchronizedSet;
-import io.sarl.util.Collections3;
+import io.sarl.util.concurrent.Collections3;
 
 /**
  * An abstract repository providing the basic support of storage a collection a participant's address and its related listener.

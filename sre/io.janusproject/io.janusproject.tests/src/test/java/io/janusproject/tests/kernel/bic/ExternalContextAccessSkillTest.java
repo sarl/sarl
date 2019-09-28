@@ -19,22 +19,15 @@
  */
 package io.janusproject.tests.kernel.bic;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import io.janusproject.kernel.bic.ExternalContextAccessSkill;
-import io.janusproject.kernel.bic.InternalEventBusCapacity;
-import io.janusproject.services.contextspace.ContextSpaceService;
-import io.janusproject.tests.testutils.AbstractJanusTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -46,6 +39,11 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.internal.verification.Times;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+
+import io.janusproject.kernel.bic.ExternalContextAccessSkill;
+import io.janusproject.kernel.bic.InternalEventBusCapacity;
+import io.janusproject.services.contextspace.ContextSpaceService;
+import io.janusproject.tests.testutils.AbstractJanusTest;
 
 import io.sarl.core.Behaviors;
 import io.sarl.core.ContextJoined;
@@ -69,10 +67,10 @@ import io.sarl.lang.util.ClearableReference;
 import io.sarl.lang.util.SynchronizedCollection;
 import io.sarl.tests.api.ManualMocking;
 import io.sarl.tests.api.Nullable;
-import io.sarl.util.Collections3;
-import io.sarl.util.NoReadWriteLock;
 import io.sarl.util.OpenEventSpace;
 import io.sarl.util.Scopes;
+import io.sarl.util.concurrent.Collections3;
+import io.sarl.util.concurrent.NoReadWriteLock;
 
 /**
  * @author $Author: sgalland$
