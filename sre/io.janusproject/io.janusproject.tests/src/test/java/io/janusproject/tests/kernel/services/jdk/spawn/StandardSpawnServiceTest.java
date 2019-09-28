@@ -35,6 +35,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import com.google.inject.Provider;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -134,26 +135,33 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 	@Override
 	public StandardSpawnService newService() {
 		if (this.builtinCapacitiesProvider == null) {
-			this.builtinCapacitiesProvider = Mockito.mock(BuiltinCapacitiesProvider.class);
+			this.builtinCapacitiesProvider = mock(BuiltinCapacitiesProvider.class);
 		}
 		if (this.sarlSpecificationChecker == null) {
-			this.sarlSpecificationChecker = Mockito.mock(SarlSpecificationChecker.class);
-			Mockito.when(this.sarlSpecificationChecker.isValidSarlElement(ArgumentMatchers.any())).thenReturn(true);
+			this.sarlSpecificationChecker = mock(SarlSpecificationChecker.class);
+			when(this.sarlSpecificationChecker.isValidSarlElement(ArgumentMatchers.any())).thenReturn(true);
 		}
 		if (this.subInjector == null) {
-			this.subInjector = Mockito.mock(Injector.class);
-			Mockito.when(this.subInjector.getInstance(ArgumentMatchers.any(Class.class))).then((it) -> {
+			this.subInjector = mock(Injector.class);
+			when(this.subInjector.getInstance(ArgumentMatchers.any(Class.class))).then((it) -> {
 				if (Agent.class.equals(it.getArgument(0))) {
 					Agent agent = new Agent(this.builtinCapacitiesProvider, this.parentID,
 							this.agentId);
-					return Mockito.spy(agent);
+					return spy(agent);
 				}
 				return null;
 			});
 		}
 		if (this.injector == null) {
-			this.injector = Mockito.mock(Injector.class);
-			Mockito.when(this.injector.createChildInjector(ArgumentMatchers.any(Module.class))).thenReturn(this.subInjector);
+			this.injector = mock(Injector.class);
+			when(this.injector.getProvider(any(Class.class))).thenAnswer((it) -> {
+				Provider<?> provider = null;
+				if (ReadWriteLock.class.equals(it.getArgument(0))) {
+					provider = () -> NoReadWriteLock.SINGLETON;
+				}
+				return provider;
+			});
+			when(this.injector.createChildInjector(ArgumentMatchers.any(Module.class))).thenReturn(this.subInjector);
 		}
 		return new StandardSpawnService(this.injector, this.sarlSpecificationChecker);
 	}
@@ -162,27 +170,27 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 	public void setUp() throws Exception {
 		this.parentID = UUID.randomUUID();
 		this.agentId = UUID.randomUUID();
-		this.innerSpace = Mockito.mock(OpenEventSpace.class);
-		Mockito.when(this.innerSpace.getParticipants()).thenReturn(Collections3.synchronizedSingleton(this.agentId));
-		Mockito.when(this.innerContext.getDefaultSpace()).thenReturn(this.innerSpace);
-		Mockito.when(this.agentContext.getDefaultSpace()).thenReturn(this.defaultSpace);
-		Mockito.when(this.agentContext.getID()).thenReturn(this.parentID);
-		Mockito.when(this.defaultSpace.getAddress(ArgumentMatchers.any(UUID.class))).thenReturn(Mockito.mock(Address.class));
-		SpaceID spaceID = Mockito.mock(SpaceID.class);
-		Mockito.when(this.defaultSpace.getSpaceID()).thenReturn(spaceID);
+		this.innerSpace = mock(OpenEventSpace.class);
+		when(this.innerSpace.getParticipants()).thenReturn(Collections3.synchronizedSingleton(this.agentId));
+		when(this.innerContext.getDefaultSpace()).thenReturn(this.innerSpace);
+		when(this.agentContext.getDefaultSpace()).thenReturn(this.defaultSpace);
+		when(this.agentContext.getID()).thenReturn(this.parentID);
+		when(this.defaultSpace.getAddress(ArgumentMatchers.any(UUID.class))).thenReturn(mock(Address.class));
+		SpaceID spaceID = mock(SpaceID.class);
+		when(this.defaultSpace.getSpaceID()).thenReturn(spaceID);
 
 		Map<Class<? extends Capacity>, Skill> bic = new HashMap<>();
 
-		InnerContextSkillMock innerContextSkill = Mockito.mock(InnerContextSkillMock.class);
+		InnerContextSkillMock innerContextSkill = mock(InnerContextSkillMock.class);
 		bic.put(InnerContextAccess.class, innerContextSkill);
-		Mockito.when(innerContextSkill.getInnerContext()).thenReturn(this.innerContext);
+		when(innerContextSkill.getInnerContext()).thenReturn(this.innerContext);
 
-		ExternalContextSkillMock externalContextSkill = Mockito.mock(ExternalContextSkillMock.class);
+		ExternalContextSkillMock externalContextSkill = mock(ExternalContextSkillMock.class);
 		bic.put(ExternalContextAccess.class, externalContextSkill);
-		Mockito.when(externalContextSkill.getAllContexts())
+		when(externalContextSkill.getAllContexts())
 				.thenReturn(Collections3.synchronizedCollection(Collections.singleton(this.agentContext), NoReadWriteLock.SINGLETON));
 
-		Mockito.when(this.builtinCapacitiesProvider.getBuiltinCapacities(Mockito.any())).thenReturn(bic);
+		when(this.builtinCapacitiesProvider.getBuiltinCapacities(any())).thenReturn(bic);
 
 		this.service.addKernelAgentSpawnListener(this.kernelListener);
 		this.service.addSpawnServiceListener(this.serviceListener);
@@ -224,7 +232,7 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 		ArgumentCaptor<AgentContext> argument1 = ArgumentCaptor.forClass(AgentContext.class);
 		ArgumentCaptor<List<Agent>> argument2 = ArgumentCaptor.forClass(List.class);
 		ArgumentCaptor<Object[]> argument3 = ArgumentCaptor.forClass(Object[].class);
-		Mockito.verify(this.serviceListener, new Times(1)).agentSpawned(
+		verify(this.serviceListener, new Times(1)).agentSpawned(
 				argument0.capture(),
 				argument1.capture(), argument2.capture(),
 				argument3.capture());
@@ -240,7 +248,7 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 		ArgumentCaptor<UUID> argument4 = ArgumentCaptor.forClass(UUID.class);
 		ArgumentCaptor<Event> argument5 = ArgumentCaptor.forClass(Event.class);
 		ArgumentCaptor<Scope<Address>> argument6 = ArgumentCaptor.forClass(Scope.class);
-		Mockito.verify(this.defaultSpace, new Times(1)).emit(argument4.capture(), argument5.capture(), argument6.capture());
+		verify(this.defaultSpace, new Times(1)).emit(argument4.capture(), argument5.capture(), argument6.capture());
 		assertNull(argument4.getValue());
 		assertTrue(argument5.getValue() instanceof AgentSpawned);
 		assertContainsCollection(((AgentSpawned) argument5.getValue()).agentIdentifiers, agentIds);
@@ -251,7 +259,7 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 	@Test
 	public void canKillAgent_oneagentinsideinnercontext() throws Exception {
 		Set<UUID> agIds = new HashSet<>();
-		Mockito.when(this.defaultSpace.getParticipants()).thenReturn(Collections3.synchronizedSet(agIds, NoReadWriteLock.SINGLETON));
+		when(this.defaultSpace.getParticipants()).thenReturn(Collections3.synchronizedSet(agIds, NoReadWriteLock.SINGLETON));
 		this.service.startAsync().awaitRunning();
 		List<UUID> agentIds = this.service.spawn(1, this.parentID, this.agentContext, this.agentId, Agent.class, "a", "b"); //$NON-NLS-1$//$NON-NLS-2$
 		agIds.add(agentIds.get(0));
@@ -264,10 +272,10 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 	@AvoidServiceStartForTest
 	@Test
 	public void canKillAgent_twoagentsinsideinnercontext() throws Exception {
-		Mockito.when(this.innerSpace.getParticipants())
+		when(this.innerSpace.getParticipants())
 				.thenReturn(Collections3.synchronizedSet(new HashSet<>(Arrays.asList(this.agentId, UUID.randomUUID())), NoReadWriteLock.SINGLETON));
 		Set<UUID> agIds = new HashSet<>();
-		Mockito.when(this.defaultSpace.getParticipants()).thenReturn(Collections3.synchronizedSet(agIds, NoReadWriteLock.SINGLETON));
+		when(this.defaultSpace.getParticipants()).thenReturn(Collections3.synchronizedSet(agIds, NoReadWriteLock.SINGLETON));
 		this.service.startAsync().awaitRunning();
 		List<UUID> agentIds = this.service.spawn(1, this.parentID, this.agentContext, this.agentId, Agent.class, "a", "b"); //$NON-NLS-1$//$NON-NLS-2$
 		agIds.add(agentIds.get(0));
@@ -289,19 +297,19 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 		assertTrue(agents.isEmpty());
 		//
 		ArgumentCaptor<Agent> argument4 = ArgumentCaptor.forClass(Agent.class);
-		Mockito.verify(this.serviceListener, new Times(1)).agentDestroy(argument4.capture());
+		verify(this.serviceListener, new Times(1)).agentDestroy(argument4.capture());
 		assertSame(ag, argument4.getValue());
 		//
 		ArgumentCaptor<UUID> argument5 = ArgumentCaptor.forClass(UUID.class);
 		ArgumentCaptor<Event> argument6 = ArgumentCaptor.forClass(Event.class);
 		ArgumentCaptor<Scope<Address>> argument7 = ArgumentCaptor.forClass(Scope.class);
-		Mockito.verify(this.defaultSpace, new Times(2)).emit(argument5.capture(), argument6.capture(), argument7.capture());
+		verify(this.defaultSpace, new Times(2)).emit(argument5.capture(), argument6.capture(), argument7.capture());
 		assertNull(argument5.getValue());
 		assertTrue(argument6.getValue() instanceof AgentKilled);
 		assertEquals(agentIds.get(0), ((AgentKilled) argument6.getValue()).agentID);
 		assertNotNull(argument7.getValue());
 		//
-		Mockito.verify(this.kernelListener, new Times(1)).kernelAgentDestroy();
+		verify(this.kernelListener, new Times(1)).kernelAgentDestroy();
 	}
 
 	@AvoidServiceStartForTest
@@ -316,7 +324,7 @@ public class StandardSpawnServiceTest extends AbstractDependentServiceTest<Stand
 				fail("Expecting IllegalStateException"); //$NON-NLS-1$
 			}
 		}
-		Mockito.verify(this.kernelListener, new Times(1)).kernelAgentSpawn();
+		verify(this.kernelListener, new Times(1)).kernelAgentSpawn();
 	}
 
 	/**

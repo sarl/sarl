@@ -25,7 +25,6 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -36,6 +35,7 @@ import io.sarl.lang.core.EventListener;
 import io.sarl.lang.util.SynchronizedCollection;
 import io.sarl.lang.util.SynchronizedSet;
 import io.sarl.util.concurrent.Collections3;
+import io.sarl.util.concurrent.Locks;
 
 /**
  * A repository of participants specific to a given space.
@@ -63,7 +63,7 @@ public final class UniqueAddressParticipantRepository<ADDRESST extends Serializa
 	 */
 	private final Map<UUID, ADDRESST> participants;
 
-	private final ReadWriteLock participantsLock = new ReentrantReadWriteLock();
+	private final ReadWriteLock participantsLock;
 
 	private final String distributedParticipantMapName;
 
@@ -76,6 +76,7 @@ public final class UniqueAddressParticipantRepository<ADDRESST extends Serializa
 	public UniqueAddressParticipantRepository(String distributedParticipantMapName,
 			DistributedDataStructureService repositoryImplFactory) {
 		super();
+		this.participantsLock = Locks.getReadWriteLockProvider().get();
 		this.distributedParticipantMapName = distributedParticipantMapName;
 		this.participants = repositoryImplFactory.getMap(this.distributedParticipantMapName, null);
 	}

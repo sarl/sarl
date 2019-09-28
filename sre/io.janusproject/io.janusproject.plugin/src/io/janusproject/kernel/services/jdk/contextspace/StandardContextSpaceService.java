@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
 import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -108,7 +107,7 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	 */
 	private LogService logger;
 
-	private final ReadWriteLock lock = new ReentrantReadWriteLock();
+	private ReadWriteLock lock;
 
 	/**
 	 * Constructs <code>ContextRepository</code>.
@@ -121,6 +120,7 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	@Inject
 	public StandardContextSpaceService(@Named(JanusConfig.DEFAULT_CONTEXT_ID_NAME) UUID janusID,
 			DistributedDataStructureService dataStructureService, LogService logService, Injector injector) {
+		this.lock = injector.getProvider(ReadWriteLock.class).get();
 		this.logger = logService;
 		setContextFactory(new DefaultContextFactory());
 		setSpaceRepositoryFactory(new Context.DefaultSpaceRepositoryFactory(injector, dataStructureService, logService));

@@ -33,7 +33,6 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
 import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
@@ -91,12 +90,12 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 	// The use of two maps is decreasing the performances of the platform
 	private final Map<UUID, ListenerCollection<SpawnServiceListener>> agentLifecycleListeners = new TreeMap<>();
 
-	private final ReadWriteLock agentLifecycleListenersLock = new ReentrantReadWriteLock();
+	private ReadWriteLock agentLifecycleListenersLock;
 
 	// The use of two maps is decreasing the performances of the platform
 	private final Map<UUID, Agent> agents = new TreeMap<>();
 
-	private final ReadWriteLock agentsLock = new ReentrantReadWriteLock();
+	private ReadWriteLock agentsLock;
 
 	private final Injector injector;
 
@@ -122,6 +121,9 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 	@Inject
 	public StandardSpawnService(Injector injector, SarlSpecificationChecker sarlSpecificationChecker) {
 		this.injector = injector;
+		final Provider<ReadWriteLock> provider = this.injector.getProvider(ReadWriteLock.class);
+		this.agentLifecycleListenersLock = provider.get();
+		this.agentsLock = provider.get();
 		this.sarlSpecificationChecker = sarlSpecificationChecker;
 	}
 

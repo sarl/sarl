@@ -52,6 +52,8 @@ import io.janusproject.services.network.NetworkService;
 import io.janusproject.services.spawn.SpawnService;
 import io.janusproject.util.LoggerCreator;
 
+import io.sarl.util.concurrent.LockModule;
+
 /**
  * The Core Janus Module configures the minimum requirements for Janus to run properly. The network-based modules are skipped in
  * this StandardCoreModule. See {@link StandardJanusPlatformModule} for the configuration of the network-based modules
@@ -75,6 +77,7 @@ public class StandardCoreModule extends AbstractModule {
 		bind(ContextSpaceService.class).to(StandardContextSpaceService.class).in(Singleton.class);
 		bind(SpawnService.class).to(StandardSpawnService.class).in(Singleton.class);
 
+		install(new LockModule());
 		install(new JdkExecutorModule());
 
 		// Install the elements for the Janus kernel

@@ -39,6 +39,8 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.logging.Logger;
 
 import com.google.inject.Injector;
+import com.google.inject.Provider;
+
 import io.janusproject.kernel.services.jdk.contextspace.Context;
 import io.janusproject.kernel.services.jdk.contextspace.ContextFactory;
 import io.janusproject.kernel.services.jdk.contextspace.SpaceRepositoryFactory;
@@ -127,6 +129,13 @@ public class StandardContextSpaceServiceTest extends AbstractDependentServiceTes
 	public StandardContextSpaceService newService() {
 		this.dds = mock(DistributedDataStructureService.class);
 		this.injector = mock(Injector.class);
+		when(this.injector.getProvider(any(Class.class))).thenAnswer((it) -> {
+			Provider<?> provider = null;
+			if (ReadWriteLock.class.equals(it.getArgument(0))) {
+				provider = () -> NoReadWriteLock.SINGLETON;
+			}
+			return provider;
+		});
 		this.defaultSpace = mock(EventSpace.class);
 		this.context = mock(Context.class);
 		this.contextFactory = mock(ContextFactory.class);

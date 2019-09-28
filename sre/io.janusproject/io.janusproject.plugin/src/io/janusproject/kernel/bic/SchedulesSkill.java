@@ -35,7 +35,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
@@ -83,7 +82,8 @@ public class SchedulesSkill extends BuiltinSkill implements Schedules {
 
 	private final Map<String, TaskDescription> tasks = new TreeMap<>();
 
-	private final ReadWriteLock tasksLock = new ReentrantReadWriteLock();
+	@Inject
+	private ReadWriteLock tasksLock;
 
 	private ClearableReference<Skill> skillBufferLogging;
 

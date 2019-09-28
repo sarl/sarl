@@ -31,7 +31,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -39,6 +38,7 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.TreeMultimap;
 import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
+import com.google.inject.Provider;
 import com.google.inject.name.Names;
 
 import io.janusproject.services.contextspace.SpaceRepositoryListener;
@@ -92,14 +92,14 @@ public class SpaceRepository {
 	 */
 	private final DMap<SpaceID, Object[]> spaceIDs;
 
-	private final ReadWriteLock spaceIDsLock = new ReentrantReadWriteLock();
+	private final ReadWriteLock spaceIDsLock;
 
 	/**
 	 * Map linking a space id to its related Space object This is local non-distributed map.
 	 */
 	private final Map<SpaceID, Space> spaces;
 
-	private final ReadWriteLock spacesLock = new ReentrantReadWriteLock();
+	private final ReadWriteLock spacesLock;
 
 	/**
 	 * Map linking a a class of Space specification to its related implementations' ids Use the map <code>spaces</code> to get the
@@ -123,6 +123,9 @@ public class SpaceRepository {
 		this.distributedSpaceSetName = distributedSpaceSetName;
 		this.injector = injector;
 		this.externalListener = listener;
+		final Provider<ReadWriteLock> provider = this.injector.getProvider(ReadWriteLock.class);
+		this.spaceIDsLock = provider.get();
+		this.spacesLock = provider.get();
 		this.spaces = new TreeMap<>();
 		this.spacesBySpec = TreeMultimap.create(Comparators.CLASS_COMPARATOR, Comparators.OBJECT_COMPARATOR);
 		this.spaceIDs = distributedDataStructureService.getMap(this.distributedSpaceSetName, null);

@@ -46,6 +46,7 @@ import io.sarl.lang.util.SynchronizedIterable;
 import io.sarl.lang.util.SynchronizedSet;
 import io.sarl.util.OpenEventSpace;
 import io.sarl.util.concurrent.Collections3;
+import io.sarl.util.concurrent.Locks;
 import io.sarl.util.concurrent.NoReadWriteLock;
 
 /**
@@ -71,7 +72,7 @@ public class InnerContextSkill extends BuiltinSkill implements InnerContextAcces
 	 */
 	private AgentContext innerContext;
 
-	private final ReadWriteLock innerContextLock = new ReentrantReadWriteLock();
+	private final ReadWriteLock innerContextLock;
 
 	@Inject
 	private ContextSpaceService contextService;
@@ -82,6 +83,7 @@ public class InnerContextSkill extends BuiltinSkill implements InnerContextAcces
 	 */
 	InnerContextSkill(Agent agent, Address agentAddressInInnerDefaultSpace) {
 		super(agent);
+		this.innerContextLock = Locks.getReadWriteLockProvider().get();
 		this.agentAddressInInnerDefaultSpace = agentAddressInInnerDefaultSpace;
 	}
 

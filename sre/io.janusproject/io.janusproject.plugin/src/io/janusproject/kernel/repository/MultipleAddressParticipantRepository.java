@@ -32,6 +32,7 @@ import io.sarl.lang.core.EventListener;
 import io.sarl.lang.util.SynchronizedCollection;
 import io.sarl.lang.util.SynchronizedSet;
 import io.sarl.util.concurrent.Collections3;
+import io.sarl.util.concurrent.Locks;
 
 /**
  * Repository that maps participants to multiple addresses.
@@ -57,7 +58,7 @@ public final class MultipleAddressParticipantRepository<ADDRESST extends Seriali
 	 */
 	private final DMultiMap<UUID, ADDRESST> participants;
 
-	private final ReadWriteLock participantsLock = new ReentrantReadWriteLock();
+	private final ReadWriteLock participantsLock;
 
 	private final String distributedParticipantMapName;
 
@@ -70,6 +71,7 @@ public final class MultipleAddressParticipantRepository<ADDRESST extends Seriali
 	public MultipleAddressParticipantRepository(String distributedParticipantMapName,
 			DistributedDataStructureService repositoryImplFactory) {
 		super();
+		this.participantsLock = Locks.getReadWriteLockProvider().get();
 		this.distributedParticipantMapName = distributedParticipantMapName;
 		this.participants = repositoryImplFactory.getMultiMap(this.distributedParticipantMapName, null);
 	}
