@@ -225,6 +225,8 @@ Below, the implementation extends one of the abstract classes provided by the [J
 			import io.sarl.lang.core.EventListener
 			import io.janusproject.kernel.^space.AbstractEventSpace
 			import io.janusproject.services.distributeddata.DistributedDataStructureService
+            import com.google.inject.Provider
+            import java.util.concurrent.locks.ReadWriteLock
 			interface PhysicSpace extends Space {
 			}
 			class PhysicObject {
@@ -234,8 +236,9 @@ Below, the implementation extends one of the abstract classes provided by the [J
 			class NetworkPhysicSpaceImpl extends AbstractEventSpace implements PhysicSpace {
 				val entities : Map<UUID,PhysicObject>
 				
-				public new(id : SpaceID, factory : DistributedDataStructureService) {
-					super(id, factory)
+				public new(id : SpaceID, factory : DistributedDataStructureService,
+				        lockProvider : Provider<ReadWriteLock>) {
+					super(id, factory, lockProvider)
 					this.entities = factory.getMap(id.toString + "-physicObjects")
 				}
 				

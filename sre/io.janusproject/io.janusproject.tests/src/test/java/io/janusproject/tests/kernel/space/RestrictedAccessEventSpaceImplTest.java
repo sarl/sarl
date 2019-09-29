@@ -62,6 +62,7 @@ import io.sarl.tests.api.ManualMocking;
 import io.sarl.tests.api.Nullable;
 import io.sarl.util.OpenEventSpaceSpecification;
 import io.sarl.util.Scopes;
+import io.sarl.util.concurrent.NoReadWriteLock;
 
 /**
  * @author $Author: sgalland$
@@ -120,7 +121,8 @@ public class RestrictedAccessEventSpaceImplTest extends AbstractJanusTest {
 		Mockito.when(this.acl.checkPermission(Mockito.any(), Mockito.any())).thenReturn(true);
 		this.permission = Mockito.mock(Permission.class);
 
-		this.space = new RestrictedAccessEventSpaceImpl(this.spaceId, this.acl, this.permission, this.service);
+		this.space = new RestrictedAccessEventSpaceImpl(this.spaceId, this.acl, this.permission, this.service,
+				() -> NoReadWriteLock.SINGLETON);
 
 		this.listener = Mockito.mock(EventListener.class);
 		Mockito.when(this.listener.getID()).thenReturn(this.agentId);

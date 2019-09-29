@@ -21,6 +21,8 @@
 
 package io.janusproject.kernel.space;
 
+import java.util.concurrent.locks.ReadWriteLock;
+
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
@@ -45,7 +47,9 @@ public class OpenEventSpaceSpecificationImpl implements OpenEventSpaceSpecificat
 
 	@Override
 	public OpenEventSpace create(SpaceID id, Object... params) {
-		final EventSpaceImpl space = new EventSpaceImpl(id, this.injector.getInstance(DistributedDataStructureService.class));
+		final EventSpaceImpl space = new EventSpaceImpl(id,
+				this.injector.getInstance(DistributedDataStructureService.class),
+				this.injector.getProvider(ReadWriteLock.class));
 		this.injector.injectMembers(space);
 		return space;
 	}

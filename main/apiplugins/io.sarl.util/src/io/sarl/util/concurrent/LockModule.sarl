@@ -26,8 +26,6 @@ import java.util.concurrent.locks.ReadWriteLock
 
 import com.google.inject.AbstractModule
 
-import io.sarl.util.concurrent.Locks
-
 /**
  * Configure the module for the locks.
  *
@@ -45,9 +43,6 @@ class LockModule extends AbstractModule {
 
 		typeof(Lock).bind.toProvider(provider)
 		typeof(ReadWriteLock).bind.toProvider(rwProvider)
-
-		Locks::setLockProvider(provider)
-		Locks::setReadWriteLockProvider(rwProvider)
 	}
 
 }

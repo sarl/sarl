@@ -27,6 +27,7 @@ import java.util.UUID;
 import java.util.concurrent.locks.ReadWriteLock;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -46,7 +47,6 @@ import io.sarl.lang.util.SynchronizedIterable;
 import io.sarl.lang.util.SynchronizedSet;
 import io.sarl.util.OpenEventSpace;
 import io.sarl.util.concurrent.Collections3;
-import io.sarl.util.concurrent.Locks;
 import io.sarl.util.concurrent.NoReadWriteLock;
 
 /**
@@ -72,9 +72,8 @@ public class InnerContextSkill extends BuiltinSkill implements InnerContextAcces
 	 */
 	private AgentContext innerContext;
 
-	private final ReadWriteLock innerContextLock;
+	private ReadWriteLock innerContextLock;
 
-	@Inject
 	private ContextSpaceService contextService;
 
 	/** Constructor.
@@ -83,15 +82,32 @@ public class InnerContextSkill extends BuiltinSkill implements InnerContextAcces
 	 */
 	InnerContextSkill(Agent agent, Address agentAddressInInnerDefaultSpace) {
 		super(agent);
-		this.innerContextLock = Locks.getReadWriteLockProvider().get();
 		this.agentAddressInInnerDefaultSpace = agentAddressInInnerDefaultSpace;
+	}
+
+	/** Change the reference to the service that is managing the contexts and the spaces.
+	 *
+	 * @param contextService the service.
+	 */
+	@Inject
+	public final void setContextSpaceService(ContextSpaceService contextService) {
+		this.contextService = contextService;
+	}
+
+	/** Change the provider of the synchronization locks for the inner context.
+	 *
+	 * @param provider the provider of locks.
+	 */
+	@Inject
+	public final void setLockProvider(Provider<ReadWriteLock> provider) {
+		this.innerContextLock = provider.get();
 	}
 
 	/** Replies the synchronization lock for the inner context.
 	 *
 	 * @return the lock
 	 */
-	protected final ReadWriteLock getLock() {
+	public final ReadWriteLock getLock() {
 		return this.innerContextLock;
 	}
 

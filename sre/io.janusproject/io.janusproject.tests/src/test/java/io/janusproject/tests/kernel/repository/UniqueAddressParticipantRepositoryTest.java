@@ -38,6 +38,7 @@ import org.mockito.Mockito;
 
 import io.sarl.lang.core.EventListener;
 import io.sarl.tests.api.Nullable;
+import io.sarl.util.concurrent.NoReadWriteLock;
 
 /**
  * @author $Author: sgalland$
@@ -76,7 +77,8 @@ public class UniqueAddressParticipantRepositoryTest extends AbstractJanusTest {
 		DMap<Object, Object> mapMock = new DMapView<>(UUID.randomUUID().toString(), new HashMap<>());
 		Mockito.when(this.service.getMap(this.distributedName, null)).thenReturn(mapMock);
 		Mockito.when(this.service.getMap(this.distributedName)).thenReturn(mapMock);
-		this.repository = new UniqueAddressParticipantRepository<>(this.distributedName, this.service);
+		this.repository = new UniqueAddressParticipantRepository<>(this.distributedName, this.service,
+				() -> NoReadWriteLock.SINGLETON);
 		this.id1 = UUID.randomUUID();
 		this.id2 = UUID.randomUUID();
 		this.listener1 = Mockito.mock(EventListener.class);

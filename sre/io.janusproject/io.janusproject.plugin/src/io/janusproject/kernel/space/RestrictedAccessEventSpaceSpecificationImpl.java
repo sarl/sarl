@@ -23,6 +23,7 @@ package io.janusproject.kernel.space;
 
 import java.security.acl.Acl;
 import java.security.acl.Permission;
+import java.util.concurrent.locks.ReadWriteLock;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -66,7 +67,8 @@ public class RestrictedAccessEventSpaceSpecificationImpl implements RestrictedAc
 				permission = new RegistrationPermission();
 			}
 			final RestrictedAccessEventSpaceImpl space = new RestrictedAccessEventSpaceImpl(id, acl, permission,
-					this.injector.getInstance(DistributedDataStructureService.class));
+					this.injector.getInstance(DistributedDataStructureService.class),
+					this.injector.getProvider(ReadWriteLock.class));
 			this.injector.injectMembers(space);
 			return space;
 		}

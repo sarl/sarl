@@ -21,6 +21,10 @@
 
 package io.janusproject.kernel.space;
 
+import java.util.concurrent.locks.ReadWriteLock;
+
+import com.google.inject.Provider;
+
 import io.janusproject.services.distributeddata.DistributedDataStructureService;
 
 import io.sarl.lang.core.Address;
@@ -45,9 +49,10 @@ public class EventSpaceImpl extends AbstractEventSpace implements OpenEventSpace
 	 *
 	 * @param id identifier of the space.
 	 * @param factory factory that is used to create the internal data structure.
+	 * @param lockProvider a provider of synchronization locks.
 	 */
-	public EventSpaceImpl(SpaceID id, DistributedDataStructureService factory) {
-		super(id, factory);
+	public EventSpaceImpl(SpaceID id, DistributedDataStructureService factory, Provider<ReadWriteLock> lockProvider) {
+		super(id, factory, lockProvider);
 	}
 
 	@Override

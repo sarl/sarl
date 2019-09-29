@@ -40,6 +40,7 @@ import org.mockito.Mockito;
 
 import io.sarl.lang.core.EventListener;
 import io.sarl.tests.api.Nullable;
+import io.sarl.util.concurrent.NoReadWriteLock;
 
 /**
  * @author $Author: sgalland$
@@ -88,7 +89,8 @@ public class MultipleAddressParticipantRepositoryTest extends AbstractJanusTest 
 		Mockito.when(this.service.getMultiMap(this.distributedName, null)).thenReturn(mapMock);
 		Mockito.when(this.service.getMultiMap(this.distributedName)).thenReturn(mapMock);
 		//
-		this.repository = new MultipleAddressParticipantRepository<>(this.distributedName, this.service);
+		this.repository = new MultipleAddressParticipantRepository<>(this.distributedName, this.service,
+				() -> NoReadWriteLock.SINGLETON);
 		//
 		this.id1 = UUID.randomUUID();
 		this.id2 = UUID.randomUUID();

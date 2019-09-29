@@ -25,6 +25,8 @@ import java.io.Serializable;
 import java.util.UUID;
 import java.util.concurrent.locks.ReadWriteLock;
 
+import com.google.inject.Provider;
+
 import io.janusproject.services.distributeddata.DMultiMap;
 import io.janusproject.services.distributeddata.DistributedDataStructureService;
 
@@ -32,7 +34,6 @@ import io.sarl.lang.core.EventListener;
 import io.sarl.lang.util.SynchronizedCollection;
 import io.sarl.lang.util.SynchronizedSet;
 import io.sarl.util.concurrent.Collections3;
-import io.sarl.util.concurrent.Locks;
 
 /**
  * Repository that maps participants to multiple addresses.
@@ -67,11 +68,12 @@ public final class MultipleAddressParticipantRepository<ADDRESST extends Seriali
 	 *
 	 * @param distributedParticipantMapName name of the multimap over the network.
 	 * @param repositoryImplFactory factory that will be used to create the internal data structures.
+	 * @param lockProvider a provider of synchronization locks.
 	 */
 	public MultipleAddressParticipantRepository(String distributedParticipantMapName,
-			DistributedDataStructureService repositoryImplFactory) {
+			DistributedDataStructureService repositoryImplFactory, Provider<ReadWriteLock> lockProvider) {
 		super();
-		this.participantsLock = Locks.getReadWriteLockProvider().get();
+		this.participantsLock = lockProvider.get();
 		this.distributedParticipantMapName = distributedParticipantMapName;
 		this.participants = repositoryImplFactory.getMultiMap(this.distributedParticipantMapName, null);
 	}

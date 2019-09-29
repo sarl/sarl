@@ -118,6 +118,7 @@ public class InnerContextSkillTest extends AbstractJanusTest {
 		this.agent = spy(this.agent);
 		address = spy(address);
 		this.skill = this.reflect.newInstance(InnerContextSkill.class, this.agent, address);
+		this.skill.setLockProvider(() -> NoReadWriteLock.SINGLETON);
 		MockitoAnnotations.initMocks(this);
 		when(this.agent.getID()).thenReturn(this.agentId);
 		when(this.contextService.createContext(ArgumentMatchers.any(UUID.class), ArgumentMatchers.any(UUID.class))).thenReturn(this.innerContext);

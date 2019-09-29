@@ -19,30 +19,33 @@
  */
 package io.janusproject.tests.kernel.space;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
 import java.util.Comparator;
 import java.util.UUID;
+import java.util.concurrent.locks.ReadWriteLock;
 
 import com.google.inject.Injector;
+import com.google.inject.Provider;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
 import io.janusproject.kernel.space.EventSpaceSpecificationImpl;
 import io.janusproject.services.distributeddata.DMap;
 import io.janusproject.services.distributeddata.DistributedDataStructureService;
 import io.janusproject.tests.testutils.AbstractJanusTest;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.ArgumentMatchers;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 
 import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.EventSpaceSpecification;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.tests.api.ManualMocking;
 import io.sarl.tests.api.Nullable;
+import io.sarl.util.concurrent.NoReadWriteLock;
 
 /**
  * @author $Author: sgalland$
@@ -70,10 +73,17 @@ public class EventSpaceSpecificationImplTest extends AbstractJanusTest {
 	public void setUp() {
 		this.spaceId = new SpaceID(UUID.randomUUID(), UUID.randomUUID(), EventSpaceSpecification.class);
 		MockitoAnnotations.initMocks(this);
-		Mockito.when(this.injector.getInstance(ArgumentMatchers.any(Class.class))).thenReturn(this.structureFactory);
+		when(this.injector.getInstance(any(Class.class))).thenReturn(this.structureFactory);
+		when(this.injector.getProvider(any(Class.class))).thenAnswer((it) -> {
+			Provider<?> provider = null;
+			if (ReadWriteLock.class.equals(it.getArgument(0))) {
+				provider = () -> NoReadWriteLock.SINGLETON;
+			}
+			return provider;
+		});
 		DMap<Object, Object> mapMock = mock(DMap.class);
-		Mockito.when(this.structureFactory.getMap(ArgumentMatchers.anyString(), ArgumentMatchers.any(Comparator.class))).thenReturn(mapMock);
-		Mockito.when(this.structureFactory.getMap(ArgumentMatchers.anyString())).thenReturn(mapMock);
+		when(this.structureFactory.getMap(anyString(), any(Comparator.class))).thenReturn(mapMock);
+		when(this.structureFactory.getMap(anyString())).thenReturn(mapMock);
 	}
 
 	@Test

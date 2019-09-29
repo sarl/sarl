@@ -26,6 +26,7 @@ import java.util.UUID;
 import java.util.concurrent.locks.ReadWriteLock;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 import io.janusproject.kernel.repository.UniqueAddressParticipantRepository;
 import io.janusproject.services.distributeddata.DistributedDataStructureService;
@@ -83,11 +84,13 @@ public abstract class AbstractEventSpace extends SpaceBase {
 	 *
 	 * @param id identifier of the space.
 	 * @param factory factory that is used to create the internal data structure.
+	 * @param lockProvider a provider of synchronization locks.
 	 */
-	public AbstractEventSpace(SpaceID id, DistributedDataStructureService factory) {
+	public AbstractEventSpace(SpaceID id, DistributedDataStructureService factory,
+			Provider<ReadWriteLock> lockProvider) {
 		super(id);
 		this.participants = new UniqueAddressParticipantRepository<>(getSpaceID().getID().toString() + "-participants", //$NON-NLS-1$
-				factory);
+				factory, lockProvider);
 	}
 
 	/** Replies the internal datastructure that stores the participants to this space.

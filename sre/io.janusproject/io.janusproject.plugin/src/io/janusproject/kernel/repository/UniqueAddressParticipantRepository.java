@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.locks.ReadWriteLock;
 
+import com.google.inject.Provider;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -35,7 +36,6 @@ import io.sarl.lang.core.EventListener;
 import io.sarl.lang.util.SynchronizedCollection;
 import io.sarl.lang.util.SynchronizedSet;
 import io.sarl.util.concurrent.Collections3;
-import io.sarl.util.concurrent.Locks;
 
 /**
  * A repository of participants specific to a given space.
@@ -72,11 +72,13 @@ public final class UniqueAddressParticipantRepository<ADDRESST extends Serializa
 	 *
 	 * @param distributedParticipantMapName name of the multimap over the network.
 	 * @param repositoryImplFactory factory that will be used to create the internal data structures.
+	 * @param lockProvider a provider of synchronization locks.
 	 */
 	public UniqueAddressParticipantRepository(String distributedParticipantMapName,
-			DistributedDataStructureService repositoryImplFactory) {
+			DistributedDataStructureService repositoryImplFactory,
+			Provider<ReadWriteLock> lockProvider) {
 		super();
-		this.participantsLock = Locks.getReadWriteLockProvider().get();
+		this.participantsLock = lockProvider.get();
 		this.distributedParticipantMapName = distributedParticipantMapName;
 		this.participants = repositoryImplFactory.getMap(this.distributedParticipantMapName, null);
 	}

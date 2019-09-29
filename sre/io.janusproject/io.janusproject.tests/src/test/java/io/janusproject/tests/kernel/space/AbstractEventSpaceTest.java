@@ -60,6 +60,7 @@ import io.sarl.tests.api.ManualMocking;
 import io.sarl.tests.api.Nullable;
 import io.sarl.util.OpenEventSpaceSpecification;
 import io.sarl.util.Scopes;
+import io.sarl.util.concurrent.NoReadWriteLock;
 
 /**
  * @author $Author: sgalland$
@@ -108,7 +109,7 @@ public class AbstractEventSpaceTest extends AbstractJanusTest {
 
 		this.address = new Address(this.spaceId, this.agentId);
 
-		this.space = new AbstractEventSpace(this.spaceId, this.service) {
+		this.space = new AbstractEventSpace(this.spaceId, this.service, () -> NoReadWriteLock.SINGLETON) {
 			//
 		};
 
