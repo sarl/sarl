@@ -130,8 +130,30 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 	 * @param parentNode the parent node.
 	 * @param modelElement the feature container for which a node should be created.
 	 */
-	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	protected void _createNode(DocumentRootNode parentNode, XtendTypeDeclaration modelElement) {
+		createTypeDeclarationNode(parentNode, modelElement);
+	}
+
+	/** Create a node for the given feature container at the root level.
+	 *
+	 * @param parentNode the parent node.
+	 * @param modelElement the feature container for which a node should be created.
+	 */
+	protected void _createNode(EObjectNode parentNode, XtendTypeDeclaration modelElement) {
+		createTypeDeclarationNode(parentNode, modelElement);
+	}
+
+	/** Create a node for the given feature container at the root level.
+	 *
+	 * @param parentNode the parent node.
+	 * @param modelElement the feature container for which a node should be created.
+	 */
+	protected void _createNode(EStructuralFeatureNode parentNode, XtendTypeDeclaration modelElement) {
+		createTypeDeclarationNode(parentNode, modelElement);
+	}
+
+	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
+	private void createTypeDeclarationNode(IOutlineNode parentNode, XtendTypeDeclaration modelElement) {
 		//
 		// The text region is set to the model element, not to the model element's name as in the
 		// default implementation of createStructuralFeatureNode().
