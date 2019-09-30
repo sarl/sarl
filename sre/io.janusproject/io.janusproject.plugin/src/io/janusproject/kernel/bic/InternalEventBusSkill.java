@@ -361,7 +361,6 @@ public class InternalEventBusSkill extends BuiltinSkill implements InternalEvent
 
 		private final UUID aid;
 
-		@SuppressWarnings("synthetic-access")
 		AgentEventListener() {
 			this.aid = InternalEventBusSkill.this.getOwner().getID();
 		}
