@@ -125,7 +125,7 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 		}
 	}
 
-	/** Create a node for the given feature container.
+	/** Create a node for the given feature container at the root level.
 	 *
 	 * @param parentNode the parent node.
 	 * @param modelElement the feature container for which a node should be created.
@@ -283,6 +283,22 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 		return null;
 	}
 
+	private boolean hasInheritedConstructors(XtendTypeDeclaration modelElement) {
+		if (modelElement instanceof XtendClass) {
+			final JvmTypeReference extend = ((XtendClass) modelElement).getExtends();
+			if (extend != null) {
+				final LightweightTypeReference reference = Utils.toLightweightTypeReference(extend, this.services);
+				if (reference != null) {
+					final JvmType type = reference.getType();
+					if (type instanceof JvmDeclaredType) {
+						return ((JvmDeclaredType) type).getDeclaredConstructors().iterator().hasNext();
+					}
+				}
+			}
+		}
+		return false;
+	}
+
 	private void createInheritedConstructors(EStructuralFeatureNode elementNode, XtendClass modelElement) {
 		final JvmTypeReference extend = modelElement.getExtends();
 		if (extend != null) {
@@ -343,9 +359,8 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 	 * @param modelElement the model element.
 	 * @return <code>true</code> if it is a leaf, <code>false</code> otherwise.
 	 */
-	@SuppressWarnings("static-method")
 	protected boolean _isLeaf(XtendTypeDeclaration modelElement) {
-		return modelElement.getMembers().isEmpty();
+		return modelElement.getMembers().isEmpty() && !hasInheritedConstructors(modelElement);
 	}
 
 	/** Replies if the member element is a leaf in the outline.
