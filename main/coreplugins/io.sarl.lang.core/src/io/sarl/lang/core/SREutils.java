@@ -127,6 +127,19 @@ public final class SREutils {
 		return agent.$castSkill(type, reference);
 	}
 
+	/** Set the internal skill of an agent.
+	 *
+	 * @param agent the agent.
+	 * @param skill the skill instance to attach to the agent.
+	 * @param capacities the list of implemented capacities. This array cannot be {@code null}.
+	 * @return the reference to the skill.
+	 * @since 0.10
+	 */
+	public static ClearableReference<Skill> setInternalSkill(Agent agent, Skill skill, Class<? extends Capacity>[] capacities) {
+		assert capacities != null;
+		return agent.$setSkill(skill, capacities);
+	}
+
 	/** Replies the internal skill of an agent.
 	 *
 	 * @param <S> the type of the capacity.
