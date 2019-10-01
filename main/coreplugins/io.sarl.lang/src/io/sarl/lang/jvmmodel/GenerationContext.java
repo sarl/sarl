@@ -57,7 +57,7 @@ import io.sarl.lang.sarl.actionprototype.ActionPrototype;
  */
 abstract class GenerationContext {
 
-	private final JvmDeclaredType target;
+	private JvmDeclaredType target;
 
 	/** Compute serial number for serializable objects.
 	 */
@@ -111,7 +111,7 @@ abstract class GenerationContext {
 
 	/** The context object.
 	 */
-	private final EObject contextObject;
+	private EObject contextObject;
 
 	/** The provider of generation configuration.
 	 */
@@ -413,6 +413,25 @@ abstract class GenerationContext {
 	 */
 	public boolean isAtLeastJava8() {
 		return getGeneratorConfig().getJavaSourceVersion().isAtLeast(JavaVersion.JAVA8);
+	}
+
+
+	/** Release any allocated resource.
+	 */
+	public void release() {
+		this.target = null;
+		this.contextObject = null;
+		this.generatorConfig = null;
+		this.generatorConfig2 = null;
+		this.finalOperations.clear();
+		this.generatedCapacityUseFields.clear();
+		this.generatedConstructors.clear();
+		this.finalOperations.clear();
+		this.overridableOperations.clear();
+		this.operationsToImplement.clear();
+		this.preFinalization.clear();
+		this.postFinalization.clear();
+		this.guardEvaluators.clear();
 	}
 
 }
