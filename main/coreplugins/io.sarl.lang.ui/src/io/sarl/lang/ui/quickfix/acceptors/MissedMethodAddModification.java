@@ -183,6 +183,8 @@ public final class MissedMethodAddModification extends SARLSemanticModification 
 						declaringType,
 						operation.getSimpleName());
 				final InferredPrototype prototype = this.actionPrototypeProvider.createPrototypeFromJvmModel(
+						// TODO More general context?
+						this.actionPrototypeProvider.createContext(),
 						qualifiedActionName,
 						operation.isVarArgs(),
 						operation.getParameters());
