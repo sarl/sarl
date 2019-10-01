@@ -453,6 +453,8 @@ Workflow {
     			runtime = {
     				bind = "io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider"
     				to = "io.sarl.lang.sarl.actionprototype.DefaultActionPrototypeProvider"
+    				singleton = true
+    				eager = true
     			}
     			runtime = {
     				bind = "org.eclipse.xtext.validation.ConfigurableIssueCodesProvider"

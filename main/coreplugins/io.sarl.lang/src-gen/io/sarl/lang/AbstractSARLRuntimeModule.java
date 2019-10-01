@@ -540,6 +540,7 @@ public abstract class AbstractSARLRuntimeModule extends DefaultXbaseWithAnnotati
 	}
 	
 	// contributed by io.sarl.lang.mwe2.binding.InjectionFragment2 [Bindings provided by SARL API]
+	@SingletonBinding(eager=true)
 	public Class<? extends IActionPrototypeProvider> bindIActionPrototypeProvider() {
 		return DefaultActionPrototypeProvider.class;
 	}
