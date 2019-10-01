@@ -27,7 +27,10 @@ import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jdt.internal.ui.viewsupport.ColoringLabelProvider;
+import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.IStyledLabelProvider;
 import org.eclipse.jface.viewers.ILabelDecorator;
+import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.xtend.core.xtend.XtendClass;
 import org.eclipse.xtend.core.xtend.XtendMember;
@@ -456,6 +459,20 @@ public class SARLOutlineTreeProvider extends XbaseWithAnnotationsOutlineTreeProv
 	protected Image _image(XtendMember modelElement) {
 		final Image img = super._image(modelElement);
 		return this.diagnoticDecorator.decorateImage(img, modelElement);
+	}
+
+	/** Compute the text for the given JVM constructor, which is usually a inherited constructor.
+	 *
+	 * @param modelElement the model
+	 * @return the text.
+	 */
+	protected CharSequence _text(JvmConstructor modelElement) {
+		if (this.labelProvider instanceof IStyledLabelProvider) {
+			final StyledString str = ((IStyledLabelProvider) this.labelProvider).getStyledText(modelElement);
+			str.setStyle(0, str.length(), ColoringLabelProvider.INHERITED_STYLER);
+			return str;
+		}
+		return this.labelProvider.getText(modelElement);
 	}
 
 }
