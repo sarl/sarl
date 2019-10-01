@@ -522,7 +522,6 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			final Iterable<Class<? extends XtendMember>> supportedMemberTypes) {
 		assert type != null;
 		assert supportedMemberTypes != null;
-		this.sarlSignatureProvider.clear(type);
 		final GenerationContext context = new GenerationContext(sarlObject, type) {
 			@Override
 			public boolean isSupportedMember(XtendMember member) {
@@ -1466,6 +1465,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 		// Generate all the constructor signatures related to the constructor to create.
 		final InferredPrototype constructorSignatures = this.sarlSignatureProvider.createPrototypeFromSarlModel(
+				context.getActionPrototypeContext(this.sarlSignatureProvider),
 				actionKey,
 				Utils.isVarArg(source.getParameters()), source.getParameters());
 
@@ -1631,6 +1631,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 			// Compute the different action prototypes associated to the action to create.
 			final boolean isVarArgs = Utils.isVarArg(source.getParameters());
 			final InferredPrototype actionSignatures = this.sarlSignatureProvider.createPrototypeFromSarlModel(
+					context.getActionPrototypeContext(this.sarlSignatureProvider),
 					actionKey,
 					isVarArgs, source.getParameters());
 
@@ -2282,10 +2283,12 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 					// Retreive the inferred prototype (including the prototypes with optional arguments)
 					InferredPrototype redefinedPrototype = this.sarlSignatureProvider.getPrototypes(
+							context.getActionPrototypeContext(this.sarlSignatureProvider),
 							qualifiedActionName, parameterTypes);
 					if (redefinedPrototype == null) {
 						// The original operation was not parsed by the SARL compiler in the current run-time context.
 						redefinedPrototype = this.sarlSignatureProvider.createPrototypeFromJvmModel(
+								context.getActionPrototypeContext(this.sarlSignatureProvider),
 								qualifiedActionName, redefinedOperation.isVarArgs(),
 								redefinedOperation.getParameters());
 					}

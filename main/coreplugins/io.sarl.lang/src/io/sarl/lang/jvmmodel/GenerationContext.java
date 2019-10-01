@@ -47,6 +47,8 @@ import io.sarl.lang.compiler.IGeneratorConfigProvider2;
 import io.sarl.lang.sarl.SarlBehaviorUnit;
 import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
 import io.sarl.lang.sarl.actionprototype.ActionPrototype;
+import io.sarl.lang.sarl.actionprototype.IActionPrototypeContext;
+import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
 
 /** Describe generation context.
  *
@@ -134,6 +136,8 @@ abstract class GenerationContext {
 	/** Parent context.
 	 */
 	private GenerationContext parent;
+
+	private IActionPrototypeContext actionPrototypeContext;
 
 	/** Construct a information about the generation.
 	 *
@@ -415,10 +419,25 @@ abstract class GenerationContext {
 		return getGeneratorConfig().getJavaSourceVersion().isAtLeast(JavaVersion.JAVA8);
 	}
 
+	/** Get the context for the action prototype provider.
+	 *
+	 * @param provider the provider for creating the context if it was not created.
+	 * @return the context
+	 */
+	public IActionPrototypeContext getActionPrototypeContext(IActionPrototypeProvider provider) {
+		if (this.actionPrototypeContext == null) {
+			this.actionPrototypeContext = provider.createContext();
+		}
+		return this.actionPrototypeContext;
+	}
 
 	/** Release any allocated resource.
 	 */
 	public void release() {
+		if (this.actionPrototypeContext != null) {
+			this.actionPrototypeContext.release();
+			this.actionPrototypeContext = null;
+		}
 		this.target = null;
 		this.contextObject = null;
 		this.generatorConfig = null;

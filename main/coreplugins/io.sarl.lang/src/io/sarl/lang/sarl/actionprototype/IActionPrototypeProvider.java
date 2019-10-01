@@ -63,7 +63,7 @@ public interface IActionPrototypeProvider {
 
 	/** Build an identifier with the given parameters.
 	 *
-	 * @param isVarargs indicates if the signature has a variatic parameter.
+	 * @param isVarargs indicates if the signature has a variadic parameter.
 	 * @param parameters the list of the formal parameter to put in the signature key.
 	 * @return the list of the parameters' types.
 	 */
@@ -71,7 +71,7 @@ public interface IActionPrototypeProvider {
 
 	/** Build an identifier with the given parameters.
 	 *
-	 * @param isVarargs indicates if the signature has a variatic parameter.
+	 * @param isVarargs indicates if the signature has a variadic parameter.
 	 * @param parameters the list of the formal parameter to put in the signature key.
 	 * @return the list of the parameters' types.
 	 */
@@ -79,7 +79,7 @@ public interface IActionPrototypeProvider {
 
 	/** Build an identifier with the given parameters.
 	 *
-	 * @param isVarargs indicates if the signature has a variatic parameter.
+	 * @param isVarargs indicates if the signature has a variadic parameter.
 	 * @param provider the provider of the formal parameters.
 	 * @return the list of the parameters' types.
 	 */
@@ -102,55 +102,6 @@ public interface IActionPrototypeProvider {
 	 * @return the prototype.
 	 */
 	ActionPrototype createActionPrototype(String actionName, ActionParameterTypes parameters);
-
-	/** Reset all the prototypes associated to the given container.
-	 *
-	 * @param container the element for which the prototype store must be reset.
-	 */
-	void clear(JvmIdentifiableElement container);
-
-	/** Reset all the prototypes.
-	 */
-	void clear();
-
-	/** Build and replies the inferred action signature for the element with
-	 * the given ID. This function creates the different signatures according
-	 * to the definition, or not, of default values for the formal parameters.
-	 *
-	 * @param id identifier of the function.
-	 * @param isVarargs indicates if the signature has a variatic parameter.
-	 * @param parameters list of the formal parameters of the function.
-	 * @return the signature or <code>null</code> if none.
-	 */
-	InferredPrototype createPrototypeFromSarlModel(QualifiedActionName id, boolean isVarargs,
-			List<? extends XtendParameter> parameters);
-
-	/** Build and replies the inferred action signature for the element with
-	 * the given ID. This function creates the different signatures according
-	 * to the definition, or not, of default values for the formal parameters.
-	 *
-	 * @param id identifier of the function.
-	 * @param isVarargs indicates if the signature has a variatic parameter.
-	 * @param parameters list of the formal parameters of the function.
-	 * @return the signature or <code>null</code> if none.
-	 */
-	InferredPrototype createPrototypeFromJvmModel(QualifiedActionName id, boolean isVarargs, List<JvmFormalParameter> parameters);
-
-	/** Replies the inferred action signatures for the element with
-	 * the given ID.
-	 *
-	 * @param id the ID of the action.
-	 * @return the signature, never <code>null</code>.
-	 */
-	Iterable<InferredPrototype> getPrototypes(QualifiedActionName id);
-
-	/** Replies the inferred action signature for the given IDs.
-	 *
-	 * @param actionID the ID of the action.
-	 * @param signatureID ID of the signature.
-	 * @return the signature or <code>null</code> if none.
-	 */
-	InferredPrototype getPrototypes(QualifiedActionName actionID, ActionParameterTypes signatureID);
 
 	/** Replies the name of the field that should store the default value associated to the parameter with the given id.
 	 *
@@ -183,5 +134,158 @@ public interface IActionPrototypeProvider {
 	 * @return the default value, or <code>null</code> if none.
 	 */
 	String extractDefaultValueString(JvmFormalParameter parameter);
+
+	/** Reset all the prototypes associated to the given container.
+	 *
+	 * @param container the element for which the prototype store must be reset.
+	 * @deprecated since 0.10, see {@link #createContext()}
+	 */
+	@Deprecated
+	default void clear(JvmIdentifiableElement container) {
+		// Do nothing
+	}
+
+	/** Reset all the prototypes.
+	 *
+	 * @deprecated since 0.10, see {@link #createContext()}
+	 */
+	@Deprecated
+	default void clear() {
+		// Do nothing.
+	}
+
+	/** Replies the inferred action signatures for the element with
+	 * the given ID.
+	 *
+	 * @param context the context in which the prototype should be created.
+	 * @param id the ID of the action.
+	 * @return the signature, never <code>null</code>.
+	 * @since 0.10
+	 * @see #createContext()
+	 */
+	Iterable<InferredPrototype> getPrototypes(IActionPrototypeContext context, QualifiedActionName id);
+
+	/** Replies the inferred action signatures for the element with
+	 * the given ID.
+	 *
+	 * @param id the ID of the action.
+	 * @return the signature, never <code>null</code>.
+	 * @deprecated since 0.10, see {@link #getPrototypes(IActionPrototypeContext, QualifiedActionName)}
+	 */
+	@Deprecated
+	default Iterable<InferredPrototype> getPrototypes(QualifiedActionName id) {
+		final IActionPrototypeContext ctx = createContext();
+		try {
+			return getPrototypes(ctx, id);
+		} finally {
+			ctx.release();
+		}
+	}
+
+	/** Replies the inferred action signature for the given IDs.
+	 *
+	 * @param context the context in which the prototype should be created.
+	 * @param actionID the ID of the action.
+	 * @param signatureID ID of the signature.
+	 * @return the signature or <code>null</code> if none.
+	 * @since 0.10
+	 * @see #createContext()
+	 */
+	InferredPrototype getPrototypes(IActionPrototypeContext context, QualifiedActionName actionID, ActionParameterTypes signatureID);
+
+	/** Replies the inferred action signature for the given IDs.
+	 *
+	 * @param actionID the ID of the action.
+	 * @param signatureID ID of the signature.
+	 * @return the signature or <code>null</code> if none.
+	 * @deprecated since 0.10, see {@link #getPrototypes(IActionPrototypeContext, QualifiedActionName, ActionParameterTypes)}
+	 */
+	@Deprecated
+	default InferredPrototype getPrototypes(QualifiedActionName actionID, ActionParameterTypes signatureID) {
+		final IActionPrototypeContext ctx = createContext();
+		try {
+			return getPrototypes(ctx, actionID, signatureID);
+		} finally {
+			ctx.release();
+		}
+	}
+
+	/** Build and replies the inferred action signature for the element with
+	 * the given ID. This function creates the different signatures according
+	 * to the definition, or not, of default values for the formal parameters.
+	 *
+	 * @param context the context in which the prototype should be created.
+	 * @param id identifier of the function.
+	 * @param isVarargs indicates if the signature has a variadic parameter.
+	 * @param parameters list of the formal parameters of the function.
+	 * @return the signature or <code>null</code> if none.
+	 * @since 0.10
+	 * @see #createContext()
+	 */
+	InferredPrototype createPrototypeFromSarlModel(IActionPrototypeContext context, QualifiedActionName id, boolean isVarargs,
+			List<? extends XtendParameter> parameters);
+
+	/** Build and replies the inferred action signature for the element with
+	 * the given ID. This function creates the different signatures according
+	 * to the definition, or not, of default values for the formal parameters.
+	 *
+	 * @param id identifier of the function.
+	 * @param isVarargs indicates if the signature has a variadic parameter.
+	 * @param parameters list of the formal parameters of the function.
+	 * @return the signature or <code>null</code> if none.
+	 * @deprecated since 0.10, see {@link #createPrototypeFromSarlModel(IActionPrototypeContext, QualifiedActionName, boolean, List)}
+	 */
+	@Deprecated
+	default InferredPrototype createPrototypeFromSarlModel(QualifiedActionName id, boolean isVarargs,
+			List<? extends XtendParameter> parameters) {
+		final IActionPrototypeContext ctx = createContext();
+		try {
+			return createPrototypeFromSarlModel(ctx, id, isVarargs, parameters);
+		} finally {
+			ctx.release();
+		}
+	}
+
+	/** Build and replies the inferred action signature for the element with
+	 * the given ID. This function creates the different signatures according
+	 * to the definition, or not, of default values for the formal parameters.
+	 *
+	 * @param context the context in which the prototype should be created.
+	 * @param id identifier of the function.
+	 * @param isVarargs indicates if the signature has a variadic parameter.
+	 * @param parameters list of the formal parameters of the function.
+	 * @return the signature or <code>null</code> if none.
+	 * @since 0.10
+	 * @see #createContext()
+	 */
+	InferredPrototype createPrototypeFromJvmModel(IActionPrototypeContext context, QualifiedActionName id,
+			boolean isVarargs, List<JvmFormalParameter> parameters);
+
+	/** Build and replies the inferred action signature for the element with
+	 * the given ID. This function creates the different signatures according
+	 * to the definition, or not, of default values for the formal parameters.
+	 *
+	 * @param id identifier of the function.
+	 * @param isVarargs indicates if the signature has a variadic parameter.
+	 * @param parameters list of the formal parameters of the function.
+	 * @return the signature or <code>null</code> if none.
+	 * @deprecated since 0.10, see {@link #createPrototypeFromJvmModel(IActionPrototypeContext, QualifiedActionName, boolean, List)}
+	 */
+	@Deprecated
+	default InferredPrototype createPrototypeFromJvmModel(QualifiedActionName id, boolean isVarargs, List<JvmFormalParameter> parameters) {
+		final IActionPrototypeContext ctx = createContext();
+		try {
+			return createPrototypeFromJvmModel(ctx, id, isVarargs, parameters);
+		} finally {
+			ctx.release();
+		}
+	}
+
+	/** Create an empty context.
+	 *
+	 * @return the context.
+	 * @since 0.10
+	 */
+	IActionPrototypeContext createContext();
 
 }

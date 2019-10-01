@@ -20,12 +20,6 @@
  */
 package io.sarl.lang.tests.modules.actionprototype;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -68,11 +62,13 @@ import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
 import io.sarl.lang.sarl.actionprototype.ActionPrototype;
 import io.sarl.lang.sarl.actionprototype.DefaultActionPrototypeProvider;
 import io.sarl.lang.sarl.actionprototype.FormalParameterProvider;
+import io.sarl.lang.sarl.actionprototype.IActionPrototypeContext;
 import io.sarl.lang.sarl.actionprototype.InferredPrototype;
 import io.sarl.lang.sarl.actionprototype.InferredStandardParameter;
 import io.sarl.lang.sarl.actionprototype.InferredValuedParameter;
 import io.sarl.lang.sarl.actionprototype.QualifiedActionName;
 import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.Nullable;
 
 /**
  * @author $Author: sgalland$
@@ -85,7 +81,7 @@ import io.sarl.tests.api.AbstractSarlTest;
 	DefaultActionPrototypeProviderTest.NoDefaultValues.class,
 	DefaultActionPrototypeProviderTest.DefaultValues.class,
 })
-@SuppressWarnings("all")
+@SuppressWarnings({"javadoc", "nls", "incomplete-switch"})
 public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 
 	static int index;
@@ -218,7 +214,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			Object... expected) {
 		if (!matchPrototype(elements, expected)) {
 			fail("Expected elements: " + toString(expected)
-					+ "; but is: " + elements.toString());
+			+ "; but is: " + elements.toString());
 		}
 	}
 
@@ -233,15 +229,21 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 		@Inject
 		private DefaultActionPrototypeProvider provider;
 
+		@Nullable
+		private IActionPrototypeContext context;
+
+		@Nullable
 		private FormalParameterProvider parameterProvider;
 
+		@Nullable
 		private EList<SarlFormalParameter> sarlParameters;
 
+		@Nullable
 		private EList<JvmFormalParameter> jvmParameters;
 
 		@Before
 		public void setUp() throws Exception {
-			this.provider.clear();
+			this.context = this.provider.createContext();
 			this.parameterProvider = mock(FormalParameterProvider.class);
 			when(this.parameterProvider.getFormalParameterCount()).thenReturn(3);
 			when(this.parameterProvider.getFormalParameterName(ArgumentMatchers.anyInt())).thenAnswer(new Answer<String>() {
@@ -260,19 +262,19 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			});
 			when(this.parameterProvider.getFormalParameterType(ArgumentMatchers.anyInt(),
 					ArgumentMatchers.anyBoolean())).thenAnswer(new Answer<String>() {
-				@Override
-				public String answer(InvocationOnMock invocation) throws Throwable {
-					switch(((Integer) invocation.getArguments()[0]).intValue()) {
-					case 0:
-						return "java.lang.String";
-					case 1:
-						return "float";
-					case 2:
-						return "java.lang.Object[]";
-					}
-					return null;
-				}
-			});
+						@Override
+						public String answer(InvocationOnMock invocation) throws Throwable {
+							switch(((Integer) invocation.getArguments()[0]).intValue()) {
+							case 0:
+								return "java.lang.String";
+							case 1:
+								return "float";
+							case 2:
+								return "java.lang.Object[]";
+							}
+							return null;
+						}
+					});
 			//
 			SarlFormalParameter p;
 			this.sarlParameters = new BasicEList<>();
@@ -625,7 +627,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
 			EList<SarlFormalParameter> params = new BasicEList<>();
 			//
-			InferredPrototype prototype = this.provider.createPrototypeFromSarlModel(qn, false, params);
+			InferredPrototype prototype = this.provider.createPrototypeFromSarlModel(this.context, qn, false, params);
 			assertNotNull(prototype);
 			assertEquals("myfct", prototype.getActionName().getActionName());
 			assertSameFormalParameters(params, prototype.getFormalParameters());
@@ -641,7 +643,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
 			//
-			InferredPrototype prototype = this.provider.createPrototypeFromSarlModel(qn, false, this.sarlParameters);
+			InferredPrototype prototype = this.provider.createPrototypeFromSarlModel(this.context, qn, false, this.sarlParameters);
 			assertNotNull(prototype);
 			assertEquals("myfct", prototype.getActionName().getActionName());
 			assertSameFormalParameters(this.sarlParameters, prototype.getFormalParameters());
@@ -659,7 +661,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
 			//
-			InferredPrototype prototype = this.provider.createPrototypeFromSarlModel(qn, true, this.sarlParameters);
+			InferredPrototype prototype = this.provider.createPrototypeFromSarlModel(this.context, qn, true, this.sarlParameters);
 			assertNotNull(prototype);
 			assertEquals("myfct", prototype.getActionName().getActionName());
 			assertSameFormalParameters(this.sarlParameters, prototype.getFormalParameters());
@@ -676,7 +678,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
 			EList<JvmFormalParameter> params = new BasicEList<>();
 			//
-			InferredPrototype prototype = this.provider.createPrototypeFromJvmModel(qn, false, params);
+			InferredPrototype prototype = this.provider.createPrototypeFromJvmModel(this.context, qn, false, params);
 			assertNotNull(prototype);
 			assertEquals("myfct", prototype.getActionName().getActionName());
 			assertSameJvmFormalParameters(params, prototype.getFormalParameters());
@@ -692,7 +694,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
 			//
-			InferredPrototype prototype = this.provider.createPrototypeFromJvmModel(qn, false, this.jvmParameters);
+			InferredPrototype prototype = this.provider.createPrototypeFromJvmModel(this.context, qn, false, this.jvmParameters);
 			assertNotNull(prototype);
 			assertEquals("myfct", prototype.getActionName().getActionName());
 			assertSameJvmFormalParameters(this.jvmParameters, prototype.getFormalParameters());
@@ -710,7 +712,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
 			//
-			InferredPrototype prototype = this.provider.createPrototypeFromJvmModel(qn, true, this.jvmParameters);
+			InferredPrototype prototype = this.provider.createPrototypeFromJvmModel(this.context, qn, true, this.jvmParameters);
 			assertNotNull(prototype);
 			assertEquals("myfct", prototype.getActionName().getActionName());
 			assertSameJvmFormalParameters(this.jvmParameters, prototype.getFormalParameters());
@@ -726,7 +728,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
 			//
-			Iterable<InferredPrototype> iterable = this.provider.getPrototypes(qn);
+			Iterable<InferredPrototype> iterable = this.provider.getPrototypes(this.context, qn);
 			assertNotNull(iterable);
 			assertFalse(iterable.iterator().hasNext());
 		}
@@ -735,9 +737,9 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 		public void getPrototypesQualifiedActionName_createdPrototype_noVarArg() {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
-			InferredPrototype expected = this.provider.createPrototypeFromSarlModel(qn, false, this.sarlParameters);
+			InferredPrototype expected = this.provider.createPrototypeFromSarlModel(this.context, qn, false, this.sarlParameters);
 			//
-			Iterable<InferredPrototype> iterable = this.provider.getPrototypes(qn);
+			Iterable<InferredPrototype> iterable = this.provider.getPrototypes(this.context, qn);
 			assertNotNull(iterable);
 			Iterator<InferredPrototype> iterator = iterable.iterator();
 			assertTrue(iterator.hasNext());
@@ -750,9 +752,9 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 		public void getPrototypesQualifiedActionName_createdPrototype_varArg() {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
-			InferredPrototype expected = this.provider.createPrototypeFromSarlModel(qn, true, this.sarlParameters);
+			InferredPrototype expected = this.provider.createPrototypeFromSarlModel(this.context, qn, true, this.sarlParameters);
 			//
-			Iterable<InferredPrototype> iterable = this.provider.getPrototypes(qn);
+			Iterable<InferredPrototype> iterable = this.provider.getPrototypes(this.context, qn);
 			assertNotNull(iterable);
 			Iterator<InferredPrototype> iterator = iterable.iterator();
 			assertTrue(iterator.hasNext());
@@ -767,7 +769,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
 			ActionParameterTypes types = this.provider.createParameterTypesFromSarlModel(false, this.sarlParameters);
 			//
-			InferredPrototype prototype = this.provider.getPrototypes(qn, types);
+			InferredPrototype prototype = this.provider.getPrototypes(this.context, qn, types);
 			assertNull(prototype);
 		}
 
@@ -776,9 +778,9 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
 			ActionParameterTypes types = this.provider.createParameterTypesFromSarlModel(false, this.sarlParameters);
-			InferredPrototype expected = this.provider.createPrototypeFromSarlModel(qn, false, this.sarlParameters);
+			InferredPrototype expected = this.provider.createPrototypeFromSarlModel(this.context, qn, false, this.sarlParameters);
 			//
-			InferredPrototype prototype = this.provider.getPrototypes(qn, types);
+			InferredPrototype prototype = this.provider.getPrototypes(this.context, qn, types);
 			assertNotNull(prototype);
 			assertSame(expected, prototype);
 		}
@@ -788,9 +790,9 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
 			ActionParameterTypes types = this.provider.createParameterTypesFromSarlModel(true, this.sarlParameters);
-			InferredPrototype expected = this.provider.createPrototypeFromSarlModel(qn, true, this.sarlParameters);
+			InferredPrototype expected = this.provider.createPrototypeFromSarlModel(this.context, qn, true, this.sarlParameters);
 			//
-			InferredPrototype prototype = this.provider.getPrototypes(qn, types);
+			InferredPrototype prototype = this.provider.getPrototypes(this.context, qn, types);
 			assertNotNull(prototype);
 			assertSame(expected, prototype);
 		}
@@ -800,10 +802,11 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
 			ActionParameterTypes types = this.provider.createParameterTypesFromSarlModel(false, this.sarlParameters);
+			assertNotNull(types);
 			//
-			assertFalse(this.provider.getPrototypes(qn).iterator().hasNext());
-			this.provider.clear(container);
-			assertFalse(this.provider.getPrototypes(qn).iterator().hasNext());
+			assertFalse(this.provider.getPrototypes(this.context, qn).iterator().hasNext());
+			this.context.release();
+			assertFalse(this.provider.getPrototypes(this.context, qn).iterator().hasNext());
 		}
 
 		@Test
@@ -811,11 +814,13 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
 			ActionParameterTypes types = this.provider.createParameterTypesFromSarlModel(false, this.sarlParameters);
-			InferredPrototype prototype = this.provider.createPrototypeFromSarlModel(qn, false, this.sarlParameters);
+			assertNotNull(types);
+			InferredPrototype prototype = this.provider.createPrototypeFromSarlModel(this.context, qn, false, this.sarlParameters);
+			assertNotNull(prototype);
 			//
-			assertTrue(this.provider.getPrototypes(qn).iterator().hasNext());
-			this.provider.clear(container);
-			assertFalse(this.provider.getPrototypes(qn).iterator().hasNext());
+			assertTrue(this.provider.getPrototypes(this.context, qn).iterator().hasNext());
+			this.context.release();
+			assertFalse(this.provider.getPrototypes(this.context, qn).iterator().hasNext());
 		}
 
 		@Test
@@ -823,11 +828,13 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
 			ActionParameterTypes types = this.provider.createParameterTypesFromSarlModel(true, this.sarlParameters);
-			InferredPrototype prototype = this.provider.createPrototypeFromSarlModel(qn, true, this.sarlParameters);
+			assertNotNull(types);
+			InferredPrototype prototype = this.provider.createPrototypeFromSarlModel(this.context, qn, true, this.sarlParameters);
+			assertNotNull(prototype);
 			//
-			assertTrue(this.provider.getPrototypes(qn).iterator().hasNext());
-			this.provider.clear(container);
-			assertFalse(this.provider.getPrototypes(qn).iterator().hasNext());
+			assertTrue(this.provider.getPrototypes(this.context, qn).iterator().hasNext());
+			this.context.release();
+			assertFalse(this.provider.getPrototypes(this.context, qn).iterator().hasNext());
 		}
 
 	}
@@ -843,52 +850,58 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 		@Inject
 		private DefaultActionPrototypeProvider provider;
 
+		@Nullable
+		private IActionPrototypeContext context;
+
+		@Nullable
 		private FormalParameterProvider parameterProvider;
 
+		@Nullable
 		private EList<SarlFormalParameter> sarlParameters;
 
+		@Nullable
 		private EList<JvmFormalParameter> jvmParameters;
 
 		@Before
 		public void setUp() throws Exception {
-			this.provider.clear();
+			this.context = this.provider.createContext();
 			this.parameterProvider = mock(FormalParameterProvider.class);
 			when(this.parameterProvider.getFormalParameterCount()).thenReturn(4);
 			when(this.parameterProvider.getFormalParameterName(ArgumentMatchers.anyInt())).thenAnswer((invocation) -> {
-					switch(((Integer) invocation.getArguments()[0]).intValue()) {
-					case 0:
-						return "firstarg";
-					case 1:
-						return "secondarg";
-					case 2:
-						return "thirdarg";
-					case 3:
-						return "fourtharg";
-					}
-					return null;
-				});
+				switch(((Integer) invocation.getArguments()[0]).intValue()) {
+				case 0:
+					return "firstarg";
+				case 1:
+					return "secondarg";
+				case 2:
+					return "thirdarg";
+				case 3:
+					return "fourtharg";
+				}
+				return null;
+			});
 			when(this.parameterProvider.getFormalParameterType(ArgumentMatchers.anyInt(),
 					ArgumentMatchers.anyBoolean())).thenAnswer((invocation) -> {
-					switch(((Integer) invocation.getArguments()[0]).intValue()) {
-					case 0:
-						return "java.lang.String";
-					case 1:
-						return "int";
-					case 2:
-						return "float";
-					case 3:
-						return "java.lang.Object[]";
-					}
-					return null;
-				});
+						switch(((Integer) invocation.getArguments()[0]).intValue()) {
+						case 0:
+							return "java.lang.String";
+						case 1:
+							return "int";
+						case 2:
+							return "float";
+						case 3:
+							return "java.lang.Object[]";
+						}
+						return null;
+					});
 			when(this.parameterProvider.hasFormalParameterDefaultValue(ArgumentMatchers.anyInt())).thenAnswer((invocation) -> {
-					switch(((Integer) invocation.getArguments()[0]).intValue()) {
-					case 0:
-					case 2:
-						return Boolean.TRUE;
-					}
-					return Boolean.FALSE;
-				});
+				switch(((Integer) invocation.getArguments()[0]).intValue()) {
+				case 0:
+				case 2:
+					return Boolean.TRUE;
+				}
+				return Boolean.FALSE;
+			});
 			//
 			SarlFormalParameter p;
 			this.sarlParameters = new BasicEList<>();
@@ -1290,7 +1303,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
 			EList<SarlFormalParameter> params = new BasicEList<>();
 			//
-			InferredPrototype prototype = this.provider.createPrototypeFromSarlModel(qn, false, params);
+			InferredPrototype prototype = this.provider.createPrototypeFromSarlModel(this.context, qn, false, params);
 			assertNotNull(prototype);
 			assertEquals("myfct", prototype.getActionName().getActionName());
 			assertSameFormalParameters(params, prototype.getFormalParameters());
@@ -1306,7 +1319,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
 			//
-			InferredPrototype prototype = this.provider.createPrototypeFromSarlModel(qn, false, this.sarlParameters);
+			InferredPrototype prototype = this.provider.createPrototypeFromSarlModel(this.context, qn, false, this.sarlParameters);
 			assertNotNull(prototype);
 			assertEquals("myfct", prototype.getActionName().getActionName());
 			assertSameFormalParameters(this.sarlParameters, prototype.getFormalParameters());
@@ -1320,65 +1333,65 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 					"int,float,java.lang.Object",
 					"int,java.lang.Object");
 			assertPrototypes(prototype.getOriginalParameterTypes(),
-				InferredStandardParameter.class,
-				"java.lang.String",
-				"firstarg",
-				InferredStandardParameter.class,
-				"int",
-				"secondarg",
-				InferredStandardParameter.class,
-				"float",
-				"thirdarg",
-				InferredStandardParameter.class,
-				"java.lang.Object",
-				"fourtharg");
+					InferredStandardParameter.class,
+					"java.lang.String",
+					"firstarg",
+					InferredStandardParameter.class,
+					"int",
+					"secondarg",
+					InferredStandardParameter.class,
+					"float",
+					"thirdarg",
+					InferredStandardParameter.class,
+					"java.lang.Object",
+					"fourtharg");
 			assertPrototypes(prototype.getInferredParameterTypes(),
 					new Object[] {
-						InferredStandardParameter.class,
-						"java.lang.String",
-						"firstarg",
-						InferredStandardParameter.class,
-						"int",
-						"secondarg",
-						InferredValuedParameter.class,
-						"float",
-						"thirdarg",
-						"io.sarl.tests.Stub" + index + "#MYFCT_1",
-						InferredStandardParameter.class,
-						"java.lang.Object",
-						"fourtharg",
-					},
+							InferredStandardParameter.class,
+							"java.lang.String",
+							"firstarg",
+							InferredStandardParameter.class,
+							"int",
+							"secondarg",
+							InferredValuedParameter.class,
+							"float",
+							"thirdarg",
+							"io.sarl.tests.Stub" + index + "#MYFCT_1",
+							InferredStandardParameter.class,
+							"java.lang.Object",
+							"fourtharg",
+			},
 					new Object[] {
-						InferredValuedParameter.class,
-						"java.lang.String",
-						"firstarg",
-						"io.sarl.tests.Stub" + index + "#MYFCT_0",
-						InferredStandardParameter.class,
-						"int",
-						"secondarg",
-						InferredStandardParameter.class,
-						"float",
-						"thirdarg",
-						InferredStandardParameter.class,
-						"java.lang.Object",
-						"fourtharg",
-					},
+							InferredValuedParameter.class,
+							"java.lang.String",
+							"firstarg",
+							"io.sarl.tests.Stub" + index + "#MYFCT_0",
+							InferredStandardParameter.class,
+							"int",
+							"secondarg",
+							InferredStandardParameter.class,
+							"float",
+							"thirdarg",
+							InferredStandardParameter.class,
+							"java.lang.Object",
+							"fourtharg",
+			},
 					new Object[] {
-						InferredValuedParameter.class,
-						"java.lang.String",
-						"firstarg",
-						"io.sarl.tests.Stub" + index + "#MYFCT_0",
-						InferredStandardParameter.class,
-						"int",
-						"secondarg",
-						InferredValuedParameter.class,
-						"float",
-						"thirdarg",
-						"io.sarl.tests.Stub" + index + "#MYFCT_1",
-						InferredStandardParameter.class,
-						"java.lang.Object",
-						"fourtharg",
-					});
+							InferredValuedParameter.class,
+							"java.lang.String",
+							"firstarg",
+							"io.sarl.tests.Stub" + index + "#MYFCT_0",
+							InferredStandardParameter.class,
+							"int",
+							"secondarg",
+							InferredValuedParameter.class,
+							"float",
+							"thirdarg",
+							"io.sarl.tests.Stub" + index + "#MYFCT_1",
+							InferredStandardParameter.class,
+							"java.lang.Object",
+							"fourtharg",
+			});
 		}
 
 		@Test
@@ -1386,7 +1399,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
 			//
-			InferredPrototype prototype = this.provider.createPrototypeFromSarlModel(qn, true, this.sarlParameters);
+			InferredPrototype prototype = this.provider.createPrototypeFromSarlModel(this.context, qn, true, this.sarlParameters);
 			assertNotNull(prototype);
 			assertEquals("myfct", prototype.getActionName().getActionName());
 			assertSameFormalParameters(this.sarlParameters, prototype.getFormalParameters());
@@ -1412,51 +1425,51 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 					"fourtharg");
 			assertPrototypes(prototype.getInferredParameterTypes(),
 					new Object[] {
-						InferredStandardParameter.class,
-						"java.lang.String",
-						"firstarg",
-						InferredStandardParameter.class,
-						"int",
-						"secondarg",
-						InferredValuedParameter.class,
-						"float",
-						"thirdarg",
-						"io.sarl.tests.Stub" + index + "#MYFCT_1",
-						InferredStandardParameter.class,
-						"java.lang.Object[]",
-						"fourtharg",
-					},
+							InferredStandardParameter.class,
+							"java.lang.String",
+							"firstarg",
+							InferredStandardParameter.class,
+							"int",
+							"secondarg",
+							InferredValuedParameter.class,
+							"float",
+							"thirdarg",
+							"io.sarl.tests.Stub" + index + "#MYFCT_1",
+							InferredStandardParameter.class,
+							"java.lang.Object[]",
+							"fourtharg",
+			},
 					new Object[] {
-						InferredValuedParameter.class,
-						"java.lang.String",
-						"firstarg",
-						"io.sarl.tests.Stub" + index + "#MYFCT_0",
-						InferredStandardParameter.class,
-						"int",
-						"secondarg",
-						InferredStandardParameter.class,
-						"float",
-						"thirdarg",
-						InferredStandardParameter.class,
-						"java.lang.Object[]",
-						"fourtharg",
-					},
+							InferredValuedParameter.class,
+							"java.lang.String",
+							"firstarg",
+							"io.sarl.tests.Stub" + index + "#MYFCT_0",
+							InferredStandardParameter.class,
+							"int",
+							"secondarg",
+							InferredStandardParameter.class,
+							"float",
+							"thirdarg",
+							InferredStandardParameter.class,
+							"java.lang.Object[]",
+							"fourtharg",
+			},
 					new Object[] {
-						InferredValuedParameter.class,
-						"java.lang.String",
-						"firstarg",
-						"io.sarl.tests.Stub" + index + "#MYFCT_0",
-						InferredStandardParameter.class,
-						"int",
-						"secondarg",
-						InferredValuedParameter.class,
-						"float",
-						"thirdarg",
-						"io.sarl.tests.Stub" + index + "#MYFCT_1",
-						InferredStandardParameter.class,
-						"java.lang.Object[]",
-						"fourtharg",
-					});
+							InferredValuedParameter.class,
+							"java.lang.String",
+							"firstarg",
+							"io.sarl.tests.Stub" + index + "#MYFCT_0",
+							InferredStandardParameter.class,
+							"int",
+							"secondarg",
+							InferredValuedParameter.class,
+							"float",
+							"thirdarg",
+							"io.sarl.tests.Stub" + index + "#MYFCT_1",
+							InferredStandardParameter.class,
+							"java.lang.Object[]",
+							"fourtharg",
+			});
 		}
 
 		@Test
@@ -1465,7 +1478,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
 			EList<JvmFormalParameter> params = new BasicEList<>();
 			//
-			InferredPrototype prototype = this.provider.createPrototypeFromJvmModel(qn, false, params);
+			InferredPrototype prototype = this.provider.createPrototypeFromJvmModel(this.context, qn, false, params);
 			assertNotNull(prototype);
 			assertEquals("myfct", prototype.getActionName().getActionName());
 			assertSameJvmFormalParameters(params, prototype.getFormalParameters());
@@ -1481,7 +1494,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
 			//
-			InferredPrototype prototype = this.provider.createPrototypeFromJvmModel(qn, false, this.jvmParameters);
+			InferredPrototype prototype = this.provider.createPrototypeFromJvmModel(this.context, qn, false, this.jvmParameters);
 			assertNotNull(prototype);
 			assertEquals("myfct", prototype.getActionName().getActionName());
 			assertSameJvmFormalParameters(this.jvmParameters, prototype.getFormalParameters());
@@ -1509,51 +1522,51 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 					"fourtharg");
 			assertPrototypes(prototype.getInferredParameterTypes(),
 					new Object[] {
-						InferredStandardParameter.class,
-						"java.lang.String",
-						"firstarg",
-						InferredStandardParameter.class,
-						"int",
-						"secondarg",
-						InferredValuedParameter.class,
-						"float",
-						"thirdarg",
-						"io.sarl.tests.Stub" + index + "#MYFCT_1",
-						InferredStandardParameter.class,
-						"java.lang.Object[]",
-						"fourtharg",
-					},
+							InferredStandardParameter.class,
+							"java.lang.String",
+							"firstarg",
+							InferredStandardParameter.class,
+							"int",
+							"secondarg",
+							InferredValuedParameter.class,
+							"float",
+							"thirdarg",
+							"io.sarl.tests.Stub" + index + "#MYFCT_1",
+							InferredStandardParameter.class,
+							"java.lang.Object[]",
+							"fourtharg",
+			},
 					new Object[] {
-						InferredValuedParameter.class,
-						"java.lang.String",
-						"firstarg",
-						"io.sarl.tests.Stub" + index + "#MYFCT_0",
-						InferredStandardParameter.class,
-						"int",
-						"secondarg",
-						InferredStandardParameter.class,
-						"float",
-						"thirdarg",
-						InferredStandardParameter.class,
-						"java.lang.Object[]",
-						"fourtharg",
-					},
+							InferredValuedParameter.class,
+							"java.lang.String",
+							"firstarg",
+							"io.sarl.tests.Stub" + index + "#MYFCT_0",
+							InferredStandardParameter.class,
+							"int",
+							"secondarg",
+							InferredStandardParameter.class,
+							"float",
+							"thirdarg",
+							InferredStandardParameter.class,
+							"java.lang.Object[]",
+							"fourtharg",
+			},
 					new Object[] {
-						InferredValuedParameter.class,
-						"java.lang.String",
-						"firstarg",
-						"io.sarl.tests.Stub" + index + "#MYFCT_0",
-						InferredStandardParameter.class,
-						"int",
-						"secondarg",
-						InferredValuedParameter.class,
-						"float",
-						"thirdarg",
-						"io.sarl.tests.Stub" + index + "#MYFCT_1",
-						InferredStandardParameter.class,
-						"java.lang.Object[]",
-						"fourtharg",
-					});
+							InferredValuedParameter.class,
+							"java.lang.String",
+							"firstarg",
+							"io.sarl.tests.Stub" + index + "#MYFCT_0",
+							InferredStandardParameter.class,
+							"int",
+							"secondarg",
+							InferredValuedParameter.class,
+							"float",
+							"thirdarg",
+							"io.sarl.tests.Stub" + index + "#MYFCT_1",
+							InferredStandardParameter.class,
+							"java.lang.Object[]",
+							"fourtharg",
+			});
 		}
 
 		@Test
@@ -1561,7 +1574,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
 			//
-			InferredPrototype prototype = this.provider.createPrototypeFromJvmModel(qn, true, this.jvmParameters);
+			InferredPrototype prototype = this.provider.createPrototypeFromJvmModel(this.context, qn, true, this.jvmParameters);
 			assertNotNull(prototype);
 			assertEquals("myfct", prototype.getActionName().getActionName());
 			assertSameJvmFormalParameters(this.jvmParameters, prototype.getFormalParameters());
@@ -1589,51 +1602,51 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 					"fourtharg");
 			assertPrototypes(prototype.getInferredParameterTypes(),
 					new Object[] {
-						InferredStandardParameter.class,
-						"java.lang.String",
-						"firstarg",
-						InferredStandardParameter.class,
-						"int",
-						"secondarg",
-						InferredValuedParameter.class,
-						"float",
-						"thirdarg",
-						"io.sarl.tests.Stub" + index + "#MYFCT_1",
-						InferredStandardParameter.class,
-						"java.lang.Object[]",
-						"fourtharg",
-					},
+							InferredStandardParameter.class,
+							"java.lang.String",
+							"firstarg",
+							InferredStandardParameter.class,
+							"int",
+							"secondarg",
+							InferredValuedParameter.class,
+							"float",
+							"thirdarg",
+							"io.sarl.tests.Stub" + index + "#MYFCT_1",
+							InferredStandardParameter.class,
+							"java.lang.Object[]",
+							"fourtharg",
+			},
 					new Object[] {
-						InferredValuedParameter.class,
-						"java.lang.String",
-						"firstarg",
-						"io.sarl.tests.Stub" + index + "#MYFCT_0",
-						InferredStandardParameter.class,
-						"int",
-						"secondarg",
-						InferredStandardParameter.class,
-						"float",
-						"thirdarg",
-						InferredStandardParameter.class,
-						"java.lang.Object[]",
-						"fourtharg",
-					},
+							InferredValuedParameter.class,
+							"java.lang.String",
+							"firstarg",
+							"io.sarl.tests.Stub" + index + "#MYFCT_0",
+							InferredStandardParameter.class,
+							"int",
+							"secondarg",
+							InferredStandardParameter.class,
+							"float",
+							"thirdarg",
+							InferredStandardParameter.class,
+							"java.lang.Object[]",
+							"fourtharg",
+			},
 					new Object[] {
-						InferredValuedParameter.class,
-						"java.lang.String",
-						"firstarg",
-						"io.sarl.tests.Stub" + index + "#MYFCT_0",
-						InferredStandardParameter.class,
-						"int",
-						"secondarg",
-						InferredValuedParameter.class,
-						"float",
-						"thirdarg",
-						"io.sarl.tests.Stub" + index + "#MYFCT_1",
-						InferredStandardParameter.class,
-						"java.lang.Object[]",
-						"fourtharg",
-					});
+							InferredValuedParameter.class,
+							"java.lang.String",
+							"firstarg",
+							"io.sarl.tests.Stub" + index + "#MYFCT_0",
+							InferredStandardParameter.class,
+							"int",
+							"secondarg",
+							InferredValuedParameter.class,
+							"float",
+							"thirdarg",
+							"io.sarl.tests.Stub" + index + "#MYFCT_1",
+							InferredStandardParameter.class,
+							"java.lang.Object[]",
+							"fourtharg",
+			});
 		}
 
 		@Test
@@ -1641,7 +1654,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
 			//
-			Iterable<InferredPrototype> iterable = this.provider.getPrototypes(qn);
+			Iterable<InferredPrototype> iterable = this.provider.getPrototypes(this.context, qn);
 			assertNotNull(iterable);
 			assertFalse(iterable.iterator().hasNext());
 		}
@@ -1650,9 +1663,9 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 		public void getPrototypesQualifiedActionName_createdPrototype_noVarArg() {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
-			InferredPrototype expected = this.provider.createPrototypeFromSarlModel(qn, false, this.sarlParameters);
+			InferredPrototype expected = this.provider.createPrototypeFromSarlModel(this.context, qn, false, this.sarlParameters);
 			//
-			Iterable<InferredPrototype> iterable = this.provider.getPrototypes(qn);
+			Iterable<InferredPrototype> iterable = this.provider.getPrototypes(this.context, qn);
 			assertNotNull(iterable);
 			Iterator<InferredPrototype> iterator = iterable.iterator();
 			assertTrue(iterator.hasNext());
@@ -1665,9 +1678,9 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 		public void getPrototypesQualifiedActionName_createdPrototype_varArg() {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
-			InferredPrototype expected = this.provider.createPrototypeFromSarlModel(qn, true, this.sarlParameters);
+			InferredPrototype expected = this.provider.createPrototypeFromSarlModel(this.context, qn, true, this.sarlParameters);
 			//
-			Iterable<InferredPrototype> iterable = this.provider.getPrototypes(qn);
+			Iterable<InferredPrototype> iterable = this.provider.getPrototypes(this.context, qn);
 			assertNotNull(iterable);
 			Iterator<InferredPrototype> iterator = iterable.iterator();
 			assertTrue(iterator.hasNext());
@@ -1682,7 +1695,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
 			ActionParameterTypes types = this.provider.createParameterTypesFromSarlModel(false, this.sarlParameters);
 			//
-			InferredPrototype prototype = this.provider.getPrototypes(qn, types);
+			InferredPrototype prototype = this.provider.getPrototypes(this.context, qn, types);
 			assertNull(prototype);
 		}
 
@@ -1691,9 +1704,9 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
 			ActionParameterTypes types = this.provider.createParameterTypesFromSarlModel(false, this.sarlParameters);
-			InferredPrototype expected = this.provider.createPrototypeFromSarlModel(qn, false, this.sarlParameters);
+			InferredPrototype expected = this.provider.createPrototypeFromSarlModel(this.context, qn, false, this.sarlParameters);
 			//
-			InferredPrototype prototype = this.provider.getPrototypes(qn, types);
+			InferredPrototype prototype = this.provider.getPrototypes(this.context, qn, types);
 			assertNotNull(prototype);
 			assertSame(expected, prototype);
 		}
@@ -1703,9 +1716,9 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
 			ActionParameterTypes types = this.provider.createParameterTypesFromSarlModel(true, this.sarlParameters);
-			InferredPrototype expected = this.provider.createPrototypeFromSarlModel(qn, true, this.sarlParameters);
+			InferredPrototype expected = this.provider.createPrototypeFromSarlModel(this.context, qn, true, this.sarlParameters);
 			//
-			InferredPrototype prototype = this.provider.getPrototypes(qn, types);
+			InferredPrototype prototype = this.provider.getPrototypes(this.context, qn, types);
 			assertNotNull(prototype);
 			assertSame(expected, prototype);
 		}
@@ -1715,10 +1728,11 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
 			ActionParameterTypes types = this.provider.createParameterTypesFromSarlModel(false, this.sarlParameters);
+			assertNotNull(types);
 			//
-			assertFalse(this.provider.getPrototypes(qn).iterator().hasNext());
-			this.provider.clear(container);
-			assertFalse(this.provider.getPrototypes(qn).iterator().hasNext());
+			assertFalse(this.provider.getPrototypes(this.context, qn).iterator().hasNext());
+			this.context.release();
+			assertFalse(this.provider.getPrototypes(this.context, qn).iterator().hasNext());
 		}
 
 		@Test
@@ -1726,11 +1740,13 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
 			ActionParameterTypes types = this.provider.createParameterTypesFromSarlModel(false, this.sarlParameters);
-			InferredPrototype prototype = this.provider.createPrototypeFromSarlModel(qn, false, this.sarlParameters);
+			assertNotNull(types);
+			InferredPrototype prototype = this.provider.createPrototypeFromSarlModel(this.context, qn, false, this.sarlParameters);
+			assertNotNull(prototype);
 			//
-			assertTrue(this.provider.getPrototypes(qn).iterator().hasNext());
-			this.provider.clear(container);
-			assertFalse(this.provider.getPrototypes(qn).iterator().hasNext());
+			assertTrue(this.provider.getPrototypes(this.context, qn).iterator().hasNext());
+			this.context.release();
+			assertFalse(this.provider.getPrototypes(this.context, qn).iterator().hasNext());
 		}
 
 		@Test
@@ -1738,11 +1754,13 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			JvmIdentifiableElement container = createJvmIdentifiableElementStub();
 			QualifiedActionName qn = this.provider.createQualifiedActionName(container, "myfct");
 			ActionParameterTypes types = this.provider.createParameterTypesFromSarlModel(true, this.sarlParameters);
-			InferredPrototype prototype = this.provider.createPrototypeFromSarlModel(qn, true, this.sarlParameters);
+			assertNotNull(types);
+			InferredPrototype prototype = this.provider.createPrototypeFromSarlModel(this.context, qn, true, this.sarlParameters);
+			assertNotNull(prototype);
 			//
-			assertTrue(this.provider.getPrototypes(qn).iterator().hasNext());
-			this.provider.clear(container);
-			assertFalse(this.provider.getPrototypes(qn).iterator().hasNext());
+			assertTrue(this.provider.getPrototypes(this.context, qn).iterator().hasNext());
+			this.context.release();
+			assertFalse(this.provider.getPrototypes(this.context, qn).iterator().hasNext());
 		}
 
 	}

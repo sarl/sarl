@@ -39,6 +39,9 @@ import org.eclipse.xtext.util.CancelIndicator;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
+import io.sarl.lang.sarl.actionprototype.IActionPrototypeContext;
+import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
+
 /** The generator from SARL to the Python language.
  *
  * @author $Author: sgalland$
@@ -66,6 +69,8 @@ public class ExtraLanguageGeneratorContext implements IExtraLanguageGeneratorCon
 	private Map<String, Object> temporaryData;
 
 	private LightweightTypeReference expectedExpressionType;
+
+	private IActionPrototypeContext actionPrototypeContext;
 
 	/** Create the context for the given delegate.
 	 *
@@ -171,6 +176,7 @@ public class ExtraLanguageGeneratorContext implements IExtraLanguageGeneratorCon
 	@Override
 	public void clearData() {
 		this.temporaryData = null;
+		this.actionPrototypeContext = null;
 	}
 
 	@Override
@@ -262,6 +268,14 @@ public class ExtraLanguageGeneratorContext implements IExtraLanguageGeneratorCon
 			this.expectedExpressionType = expectedType;
 		}
 		return old;
+	}
+
+	@Override
+	public IActionPrototypeContext getActionPrototypeContext(IActionPrototypeProvider provider) {
+		if (this.actionPrototypeContext == null) {
+			this.actionPrototypeContext = provider.createContext();
+		}
+		return this.actionPrototypeContext;
 	}
 
 }

@@ -223,6 +223,8 @@ public class SARLOperationHelper implements IOperationHelper {
 		// Compute the different action prototypes associated to the action to create.
 		final boolean isVarArgs = Utils.isVarArg(operation.getParameters());
 		return this.actionPrototypes.createPrototypeFromSarlModel(
+				// TODO more general context?
+				this.actionPrototypes.createContext(),
 				actionKey, isVarArgs, operation.getParameters());
 	}
 
@@ -235,6 +237,8 @@ public class SARLOperationHelper implements IOperationHelper {
 				operation.getDeclaringType(), operation.getSimpleName());
 		// Compute the different action prototypes associated to the action to create.
 		return this.actionPrototypes.createPrototypeFromJvmModel(
+				// TODO more general context?
+				this.actionPrototypes.createContext(),
 				actionKey, operation.isVarArgs(), operation.getParameters());
 	}
 

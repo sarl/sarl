@@ -26,13 +26,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.TreeMap;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import com.google.common.base.Objects;
+import javax.inject.Inject;
+
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import org.eclipse.xtend.core.xtend.XtendParameter;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
@@ -56,13 +58,17 @@ import io.sarl.lang.util.Utils;
  * Provides additional function signatures according the semantic
  * associated to the parameter's default values.
  *
+ * <p>This implementation is thread-safe.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@Singleton
 public class DefaultActionPrototypeProvider implements IActionPrototypeProvider {
+
+	@Inject
+	private SARLAnnotationUtil annotationUtils;
 
 	@Inject
 	private TypeReferences references;
@@ -70,15 +76,8 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 	@Inject
 	private SARLGrammarKeywordAccess grammarAccess;
 
-	private final Map<String, Map<String, Map<ActionParameterTypes, InferredPrototype>>> prototypes = new TreeMap<>();
-
-	private final Map<String, Map<String, Integer>> defaultValueIDPrefixes = new TreeMap<>();
-
 	@Inject
 	private AnnotationLookup annotationFinder;
-
-	@Inject
-	private SARLAnnotationUtil annotationUtils;
 
 	/** Construct a provider of action prototypes.
 	 */
@@ -86,20 +85,80 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 		//
 	}
 
-	private static Pair<Map<ActionParameterTypes, List<InferredStandardParameter>>, Boolean> buildParameter(
+	@Override
+	public Iterable<InferredPrototype> getPrototypes(IActionPrototypeContext context, QualifiedActionName id) {
+		final Context ctx = (Context) context;
+		final InnerMap<String, InnerMap<ActionParameterTypes, InferredPrototype>> c;
+		ctx.getPrototypes().getLock().readLock().lock();
+		try {
+			c = ctx.getPrototypes().get(id.getContainerID());
+		} finally {
+			ctx.getPrototypes().getLock().readLock().unlock();
+		}
+		if (c != null) {
+			final InnerMap<ActionParameterTypes, InferredPrototype> list;
+			c.getLock().readLock().lock();
+			try {
+				list = c.get(id.getActionName());
+			} finally {
+				c.getLock().readLock().unlock();
+			}
+			if (list != null) {
+				list.getLock().readLock().lock();
+				try {
+					return Collections.unmodifiableCollection(list.values());
+				} finally {
+					list.getLock().readLock().unlock();
+				}
+			}
+		}
+		return Collections.emptyList();
+	}
+
+	@Override
+	public InferredPrototype getPrototypes(IActionPrototypeContext context, QualifiedActionName actionID, ActionParameterTypes signatureID) {
+		final Context ctx = (Context) context;
+		final InnerMap<String, InnerMap<ActionParameterTypes, InferredPrototype>> c;
+		ctx.getPrototypes().getLock().readLock().lock();
+		try {
+			c = ctx.getPrototypes().get(actionID.getContainerID());
+		} finally {
+			ctx.getPrototypes().getLock().readLock().unlock();
+		}
+		if (c != null) {
+			final InnerMap<ActionParameterTypes, InferredPrototype> list;
+			c.getLock().readLock().lock();
+			try {
+				list = c.get(actionID.getActionName());
+			} finally {
+				c.getLock().readLock().unlock();
+			}
+			if (list != null) {
+				list.getLock().readLock().lock();
+				try {
+					return list.get(signatureID);
+				} finally {
+					list.getLock().readLock().unlock();
+				}
+			}
+		}
+		return null;
+	}
+
+	private static Pair<InnerMap<ActionParameterTypes, List<InferredStandardParameter>>, Boolean> buildParameter(
 			int parameterIndex,
 			final int lastParameterIndex,
 			String argumentValue,
 			FormalParameterProvider params,
-			Map<ActionParameterTypes, List<InferredStandardParameter>> signatures,
+			InnerMap<ActionParameterTypes, List<InferredStandardParameter>> signatures,
 			ActionParameterTypes fillSignatureKeyOutputParameter) {
 		final boolean isOptional = params.hasFormalParameterDefaultValue(parameterIndex)
 				&& ((parameterIndex < lastParameterIndex)
-				|| (!fillSignatureKeyOutputParameter.isVarArg()));
+						|| (!fillSignatureKeyOutputParameter.isVarArg()));
 		final boolean isVarArg = parameterIndex >= lastParameterIndex && fillSignatureKeyOutputParameter.isVarArg();
 		final String name = params.getFormalParameterName(parameterIndex);
 		final JvmTypeReference type = params.getFormalParameterTypeReference(parameterIndex, isVarArg);
-		final Map<ActionParameterTypes, List<InferredStandardParameter>> tmpSignatures = new TreeMap<>();
+		final InnerMap<ActionParameterTypes, List<InferredStandardParameter>> tmpSignatures = new InnerMap<>();
 		if (type == null) {
 			return new Pair<>(tmpSignatures, isOptional);
 		}
@@ -148,21 +207,42 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 		return new Pair<>(tmpSignatures, isOptional);
 	}
 
-	private Map<ActionParameterTypes, List<InferredStandardParameter>> buildSignaturesForArgDefaultValues(
+	private InnerMap<ActionParameterTypes, List<InferredStandardParameter>> buildSignaturesForArgDefaultValues(
+			Context context,
 			JvmIdentifiableElement container, String actionId,
 			FormalParameterProvider params, ActionParameterTypes fillSignatureKeyOutputParameter) {
-		Map<ActionParameterTypes, List<InferredStandardParameter>> signatures = new TreeMap<>();
+		InnerMap<ActionParameterTypes, List<InferredStandardParameter>> signatures = new InnerMap<>();
 		fillSignatureKeyOutputParameter.clear();
 		if (params.getFormalParameterCount() > 0) {
 			final int lastParamIndex = params.getFormalParameterCount() - 1;
 
 			final String containerFullyQualifiedName = createQualifiedActionName(container, null).getContainerID();
-			Map<String, Integer> indexes = this.defaultValueIDPrefixes.get(containerFullyQualifiedName);
-			if (indexes == null) {
-				indexes = new TreeMap<>();
-				this.defaultValueIDPrefixes.put(containerFullyQualifiedName, indexes);
+			InnerMap<String, Integer> indexes;
+			context.getDefaultValueIDPrefixes().getLock().readLock().lock();
+			try {
+				indexes = context.getDefaultValueIDPrefixes().get(containerFullyQualifiedName);
+			} finally {
+				context.getDefaultValueIDPrefixes().getLock().readLock().unlock();
 			}
-			final Integer lastIndex = indexes.get(actionId);
+			if (indexes == null) {
+				context.getDefaultValueIDPrefixes().getLock().writeLock().lock();
+				try {
+					indexes = context.getDefaultValueIDPrefixes().get(containerFullyQualifiedName);
+					if (indexes == null) {
+						indexes = new InnerMap<>();
+						context.getDefaultValueIDPrefixes().put(containerFullyQualifiedName, indexes);
+					}
+				} finally {
+					context.getDefaultValueIDPrefixes().getLock().writeLock().unlock();
+				}
+			}
+			final Integer lastIndex;
+			indexes.getLock().readLock().lock();
+			try {
+				lastIndex = indexes.get(actionId);
+			} finally {
+				indexes.getLock().readLock().unlock();
+			}
 			int defaultValueIndex;
 			if (lastIndex == null) {
 				defaultValueIndex = 0;
@@ -174,7 +254,7 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 			final String prefix = container.getQualifiedName() + "#" //$NON-NLS-1$
 					+ actionId.toUpperCase() + "_"; //$NON-NLS-1$
 			for (int i = 0; i <= lastParamIndex; ++i) {
-				final Pair<Map<ActionParameterTypes, List<InferredStandardParameter>>, Boolean> pair = buildParameter(
+				final Pair<InnerMap<ActionParameterTypes, List<InferredStandardParameter>>, Boolean> pair = buildParameter(
 						i,
 						lastParamIndex,
 						prefix + defaultValueIndex,
@@ -188,7 +268,12 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 				}
 			}
 
-			indexes.put(actionId, defaultValueIndex);
+			indexes.getLock().writeLock().lock();
+			try {
+				indexes.put(actionId, defaultValueIndex);
+			} finally {
+				indexes.getLock().writeLock().unlock();
+			}
 
 			final List<InferredStandardParameter> parameters = signatures.get(fillSignatureKeyOutputParameter);
 			if (parameters != null) {
@@ -203,44 +288,22 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 		return signatures;
 	}
 
-	@Override
-	public Iterable<InferredPrototype> getPrototypes(QualifiedActionName id) {
-		final Map<String, Map<ActionParameterTypes, InferredPrototype>> c = this.prototypes.get(id.getContainerID());
-		if (c != null) {
-			final Map<ActionParameterTypes, InferredPrototype> list = c.get(id.getActionName());
-			if (list != null) {
-				return list.values();
-			}
-		}
-		return Collections.emptyList();
-	}
-
-	@Override
-	public InferredPrototype getPrototypes(QualifiedActionName actionID, ActionParameterTypes signatureID) {
-		final Map<String, Map<ActionParameterTypes, InferredPrototype>> c = this.prototypes.get(actionID.getContainerID());
-		if (c != null) {
-			final Map<ActionParameterTypes, InferredPrototype> list = c.get(actionID.getActionName());
-			if (list != null) {
-				return list.get(signatureID);
-			}
-		}
-		return null;
-	}
-
 	/** Build and replies the inferred action signature for the element with
 	 * the given ID. This function creates the different signatures according
 	 * to the definition, or not, of default values for the formal parameters.
 	 *
+	 * @param context the context in which the prototype should be created.
 	 * @param id identifier of the function.
-	 * @param isVarargs indicates if the signature has a variatic parameter.
+	 * @param isVarargs indicates if the signature has a variadic parameter.
 	 * @param parameters list of the formal parameters of the function.
 	 * @return the signature or <code>null</code> if none.
 	 */
-	protected InferredPrototype createPrototype(QualifiedActionName id,
+	protected InferredPrototype createPrototype(Context context, QualifiedActionName id,
 			boolean isVarargs, FormalParameterProvider parameters) {
 		assert parameters != null;
 		final ActionParameterTypes key = new ActionParameterTypes(isVarargs, parameters.getFormalParameterCount());
 		final Map<ActionParameterTypes, List<InferredStandardParameter>> ip = buildSignaturesForArgDefaultValues(
+				context,
 				id.getDeclaringType(),
 				key.toActionPrototype(id.getActionName()).toActionId(),
 				parameters, key);
@@ -252,49 +315,71 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 				op,
 				ip);
 		final String containerID = id.getContainerID();
-		Map<String, Map<ActionParameterTypes, InferredPrototype>> c = this.prototypes.get(containerID);
+		InnerMap<String, InnerMap<ActionParameterTypes, InferredPrototype>> c;
+		context.getPrototypes().getLock().readLock().lock();
+		try {
+			c = context.getPrototypes().get(containerID);
+		} finally {
+			context.getPrototypes().getLock().readLock().unlock();
+		}
 		if (c == null) {
-			c = new TreeMap<>();
-			this.prototypes.put(containerID, c);
+			context.getPrototypes().getLock().writeLock().lock();
+			try {
+				c = context.getPrototypes().get(containerID);
+				if (c == null) {
+					c = new InnerMap<>();
+					context.getPrototypes().put(containerID, c);
+				}
+			} finally {
+				context.getPrototypes().getLock().writeLock().unlock();
+			}
 		}
-		Map<ActionParameterTypes, InferredPrototype> list = c.get(id.getActionName());
+
+		InnerMap<ActionParameterTypes, InferredPrototype> list;
+		c.getLock().readLock().lock();
+		try {
+			list = c.get(id.getActionName());
+		} finally {
+			c.getLock().readLock().unlock();
+		}
 		if (list == null) {
-			list = new TreeMap<>();
-			c.put(id.getActionName(), list);
+			c.getLock().writeLock().lock();
+			try {
+				list = c.get(id.getActionName());
+				if (list == null) {
+					list = new InnerMap<>();
+					c.put(id.getActionName(), list);
+				}
+			} finally {
+				c.getLock().writeLock().unlock();
+			}
 		}
-		list.put(key, proto);
+		list.getLock().writeLock().lock();
+		try {
+			list.put(key, proto);
+		} finally {
+			list.getLock().writeLock().unlock();
+		}
 		return proto;
 	}
 
 	@Override
-	public final InferredPrototype createPrototypeFromSarlModel(QualifiedActionName id,
+	public final InferredPrototype createPrototypeFromSarlModel(IActionPrototypeContext context, QualifiedActionName id,
 			boolean isVarargs, List<? extends XtendParameter> parameters) {
-		return createPrototype(id, isVarargs,
+		return createPrototype((Context) context, id, isVarargs,
 				new SarlFormalParameterProvider(parameters, this.references));
 	}
 
 	@Override
-	public final InferredPrototype createPrototypeFromJvmModel(QualifiedActionName id,
+	public final InferredPrototype createPrototypeFromJvmModel(IActionPrototypeContext context, QualifiedActionName id,
 			boolean isVarargs, List<JvmFormalParameter> parameters) {
-		return createPrototype(id, isVarargs,
+		return createPrototype((Context) context, id, isVarargs,
 				new JvmFormalParameterProvider(parameters, this.annotationFinder, this));
 	}
 
 	@Override
-	public QualifiedActionName createQualifiedActionName(JvmIdentifiableElement container,
-			String functionName) {
-		return new QualifiedActionName(
-				container.eResource().getURI().toString(),
-				container,
-				functionName);
-	}
-
-	@Override
-	public QualifiedActionName createConstructorQualifiedName(JvmIdentifiableElement container) {
-		return new QualifiedActionName(
-				container.eResource().getURI().toString(),
-				container,
-				this.grammarAccess.getNewKeyword());
+	public IActionPrototypeContext createContext() {
+		return new Context();
 	}
 
 	@Override
@@ -322,20 +407,20 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 	}
 
 	@Override
-	public ActionParameterTypes createParameterTypesFromString(String parameters) {
-		return new ActionParameterTypes(parameters);
+	public QualifiedActionName createQualifiedActionName(JvmIdentifiableElement container,
+			String functionName) {
+		return new QualifiedActionName(
+				container.eResource().getURI().toString(),
+				container,
+				functionName);
 	}
 
 	@Override
-	public ActionParameterTypes createParameterTypesFromJvmModel(boolean isVarargs, List<JvmFormalParameter> parameters) {
-		final ActionParameterTypes sig = new ActionParameterTypes(isVarargs, parameters.size());
-		for (final JvmFormalParameter p : parameters) {
-			final JvmTypeReference paramType = p.getParameterType();
-			if (paramType != null) {
-				sig.add(paramType.getIdentifier());
-			}
-		}
-		return sig;
+	public QualifiedActionName createConstructorQualifiedName(JvmIdentifiableElement container) {
+		return new QualifiedActionName(
+				container.eResource().getURI().toString(),
+				container,
+				this.grammarAccess.getNewKeyword());
 	}
 
 	@Override
@@ -360,6 +445,23 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 	}
 
 	@Override
+	public ActionParameterTypes createParameterTypesFromString(String parameters) {
+		return new ActionParameterTypes(parameters);
+	}
+
+	@Override
+	public ActionParameterTypes createParameterTypesFromJvmModel(boolean isVarargs, List<JvmFormalParameter> parameters) {
+		final ActionParameterTypes sig = new ActionParameterTypes(isVarargs, parameters.size());
+		for (final JvmFormalParameter p : parameters) {
+			final JvmTypeReference paramType = p.getParameterType();
+			if (paramType != null) {
+				sig.add(paramType.getIdentifier());
+			}
+		}
+		return sig;
+	}
+
+	@Override
 	public ActionParameterTypes createParameterTypesForVoid() {
 		return new ActionParameterTypes(false, 0);
 	}
@@ -367,20 +469,6 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 	@Override
 	public ActionPrototype createActionPrototype(String actionName, ActionParameterTypes parameters) {
 		return new ActionPrototype(actionName, parameters, false);
-	}
-
-	@Override
-	public void clear(JvmIdentifiableElement container) {
-		final QualifiedActionName qn = createQualifiedActionName(container, null);
-		final String fqn = qn.getContainerID();
-		this.prototypes.remove(fqn);
-		this.defaultValueIDPrefixes.remove(fqn);
-	}
-
-	@Override
-	public void clear() {
-		this.prototypes.clear();
-		this.defaultValueIDPrefixes.clear();
 	}
 
 	@Override
@@ -407,7 +495,7 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 		final int index = id.indexOf('#');
 		if (index > 0) {
 			final String qn = id.substring(0, index);
-			if (!Objects.equal(qn, callerQualifiedName)) {
+			if (!Objects.equals(qn, callerQualifiedName)) {
 				b.append(qn);
 				b.append("."); //$NON-NLS-1$
 			}
@@ -441,7 +529,7 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 				}
 
 				final JvmField field = Iterables.find(target.getDeclaredFields(),
-						it -> Objects.equal(it.getSimpleName(), fieldName),
+						it -> Objects.equals(it.getSimpleName(), fieldName),
 						null);
 				if (field != null) {
 					final String value = this.annotationUtils.findStringValue(field, SarlSourceCode.class);
@@ -452,6 +540,85 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Context for a {@code DefaultActionPrototypeProvider}.
+	 *
+	 * @param <K> the type of the keys.
+	 * @param <V> the type of the values.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.10
+	 */
+	private static class InnerMap<K, V> extends TreeMap<K, V> {
+		// It is important to have a SortedMap as the super type in
+		// order to preserve the order of the prototypes into the
+		// map. This order is assumed to be present in all the unit tests.
+
+		private static final long serialVersionUID = -7858620757455956027L;
+
+		private final ReadWriteLock lock = new ReentrantReadWriteLock();
+
+		InnerMap() {
+			//
+		}
+
+		/** Replies the lock.
+		 *
+		 * @return never {@code null}.
+		 */
+		public ReadWriteLock getLock() {
+			return this.lock;
+		}
+
+	}
+
+	/**
+	 * Context for a {@code DefaultActionPrototypeProvider}.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.10
+	 */
+	private static class Context implements IActionPrototypeContext {
+
+		private final InnerMap<String, InnerMap<String, InnerMap<ActionParameterTypes, InferredPrototype>>> prototypes = new InnerMap<>();
+
+		private final InnerMap<String, InnerMap<String, Integer>> defaultValueIDPrefixes = new InnerMap<>();
+
+		Context() {
+			//
+		}
+
+		@Override
+		public void release() {
+			this.prototypes.getLock().writeLock().lock();
+			try {
+				this.prototypes.clear();
+			} finally {
+				this.prototypes.getLock().writeLock().unlock();
+			}
+			this.defaultValueIDPrefixes.getLock().writeLock().lock();
+			try {
+				this.defaultValueIDPrefixes.clear();
+			} finally {
+				this.defaultValueIDPrefixes.getLock().writeLock().unlock();
+			}
+		}
+
+		public InnerMap<String, InnerMap<String, Integer>> getDefaultValueIDPrefixes() {
+			return this.defaultValueIDPrefixes;
+		}
+
+		public InnerMap<String, InnerMap<String, InnerMap<ActionParameterTypes, InferredPrototype>>> getPrototypes() {
+			return this.prototypes;
+		}
+
 	}
 
 }
