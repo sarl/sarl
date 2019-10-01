@@ -23,7 +23,8 @@ Require-Bundle: io.sarl.lang.core;bundle-version="0.10.0",
  org.apache.commons.logging;bundle-version="1.2.0",
  org.objectweb.asm;bundle-version="7.1.0",
  aopalliance;bundle-version="1.0.0",
- org.eclipse.compare;bundle-version="3.7.700"
+ org.eclipse.compare;bundle-version="3.7.700",
+ com.google.guava.failureaccess;bundle-version="1.0.1"
 Export-Package: io.sarl.lang.mwe2,
  io.sarl.lang.mwe2.binding,
  io.sarl.lang.mwe2.bugfixes.unpublished,
