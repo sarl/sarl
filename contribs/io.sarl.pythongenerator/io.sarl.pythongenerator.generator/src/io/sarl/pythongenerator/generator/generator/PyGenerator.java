@@ -548,7 +548,9 @@ public class PyGenerator extends AbstractExtraLanguageGenerator {
 		final QualifiedActionName actionName = prototypeProvider.createQualifiedActionName(
 				(JvmIdentifiableElement) getJvmModelAssociations().getPrimaryJvmElement(executable.getDeclaringType()),
 				name);
-		final InferredPrototype inferredPrototype = getActionPrototypeProvider().createPrototypeFromSarlModel(actionName,
+		final InferredPrototype inferredPrototype = getActionPrototypeProvider().createPrototypeFromSarlModel(
+				context.getActionPrototypeContext(getActionPrototypeProvider()),
+				actionName,
 				Utils.isVarArg(executable.getParameters()), executable.getParameters());
 		for (final Entry<ActionParameterTypes, List<InferredStandardParameter>> types : inferredPrototype.getInferredParameterTypes().entrySet()) {
 			final List<InferredStandardParameter> argumentsToOriginal = types.getValue();
