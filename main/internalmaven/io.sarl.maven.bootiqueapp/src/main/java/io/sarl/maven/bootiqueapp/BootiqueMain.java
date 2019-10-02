@@ -21,19 +21,28 @@
 
 package io.sarl.maven.bootiqueapp;
 
+import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import com.google.common.base.Throwables;
+import com.google.common.base.Strings;
+import com.google.inject.CreationException;
 import com.google.inject.Injector;
 import com.google.inject.ProvisionException;
+import com.google.inject.spi.Message;
 import io.bootique.BQModuleProvider;
 import io.bootique.BQRuntime;
 import io.bootique.Bootique;
+import io.bootique.BootiqueException;
 import io.bootique.command.CommandOutcome;
 import io.bootique.help.HelpOption;
 import io.bootique.help.HelpOptions;
 import io.bootique.meta.application.ApplicationMetadata;
+import org.apache.log4j.Appender;
 import org.apache.log4j.Logger;
+import org.apache.log4j.PatternLayout;
+import org.arakhne.afc.bootique.log4j.configs.Log4jIntegrationConfig;
 
 import io.sarl.lang.SARLStandaloneSetup;
 
@@ -109,26 +118,64 @@ public class BootiqueMain {
 	 * @param args the command line arguments.
 	 * @return the exit code.
 	 */
+	@SuppressWarnings("unchecked")
 	public int runCommand(String... args) {
+		final Logger rootLogger = Logger.getRootLogger();
 		try {
+			// Configure the root logger with the default bootique configuration (because it is not yet available)
+			final Enumeration<? extends Appender> allAppenders = rootLogger.getAllAppenders();
+			while (allAppenders.hasMoreElements()) {
+				final Appender appender = allAppenders.nextElement();
+				appender.setLayout(new PatternLayout(Log4jIntegrationConfig.DEFAULT_LOG_FORMAT));
+			}
+			
 			if (isExperimental()) {
-				Logger.getRootLogger().warn(Messages.BootiqueMain_0);
+				rootLogger.warn(Messages.BootiqueMain_0);
 			}
 			final BQRuntime runtime = createRuntime(args);
+
+			// Reconfigure the logger because, now, the configuration is accessible
+			runtime.getInstance(Log4jIntegrationConfig.class).configureLogger(rootLogger);
+
 			final CommandOutcome outcome = runtime.run();
 			if (!outcome.isSuccess() && outcome.getException() != null) {
-				Logger.getRootLogger().error(outcome.getMessage(), outcome.getException());
+				rootLogger.error(outcome.getMessage(), outcome.getException());
 			}
 			return outcome.getExitCode();
+		} catch (BootiqueException exception) {
+			final CommandOutcome outcome = exception.getOutcome();
+			if (outcome != null) {
+				if (outcome.getException() != null) {
+					rootLogger.error(outcome.getMessage(), outcome.getException());
+				} else {
+					rootLogger.error(outcome.getMessage());
+				}
+				return outcome.getExitCode();
+			}
+			rootLogger.error(exception.getLocalizedMessage());
+			return ERROR_CODE;
 		} catch (ProvisionException exception) {
-			final Throwable ex = Throwables.getRootCause(exception);
-			if (ex != null) {
-				Logger.getRootLogger().error(ex.getLocalizedMessage());
-			} else {
-				Logger.getRootLogger().error(exception.getLocalizedMessage());
+			final Set<String> msgs = new HashSet<>();
+			for (final Message message : exception.getErrorMessages()) {
+				if (message != null) {
+					final String msg = message.getMessage();
+					if (!Strings.isNullOrEmpty(msg) && msgs.add(msg)) {
+						rootLogger.error(msg);
+					}
+				}
+			}
+		} catch (CreationException exception) {
+			final Set<String> msgs = new HashSet<>();
+			for (final Message message : exception.getErrorMessages()) {
+				if (message != null) {
+					final String msg = message.getMessage();
+					if (!Strings.isNullOrEmpty(msg) && msgs.add(msg)) {
+						rootLogger.error(msg);
+					}
+				}
 			}
 		} catch (Throwable exception) {
-			Logger.getRootLogger().error(exception.getLocalizedMessage());
+			rootLogger.error(exception.getLocalizedMessage(), exception);
 		}
 		return ERROR_CODE;
 	}
