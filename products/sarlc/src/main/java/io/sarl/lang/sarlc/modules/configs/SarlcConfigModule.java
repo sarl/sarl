@@ -27,7 +27,7 @@ import static io.sarl.lang.sarlc.configs.SarlcConfig.CLASSPATH_NAME;
 import static io.sarl.lang.sarlc.configs.SarlcConfig.CLASS_OUTPUT_PATH_NAME;
 import static io.sarl.lang.sarlc.configs.SarlcConfig.EXTRA_GENERATOR_NAME;
 import static io.sarl.lang.sarlc.configs.SarlcConfig.OUTPUT_PATH_NAME;
-import static io.sarl.lang.sarlc.configs.SarlcConfig.WORKING_PATH_NAME;
+import static io.sarl.lang.sarlc.configs.SarlcConfig.TEMP_DIRECTORY_NAME;
 
 import java.io.File;
 import java.text.MessageFormat;
@@ -62,7 +62,7 @@ public class SarlcConfigModule extends AbstractModule {
 
 	private static final String CLASSPATH_SHORT_OPTION = "cp"; //$NON-NLS-1$
 
-	private static final String WORKING_DIR_OPTION = "workingdir"; //$NON-NLS-1$
+	private static final String TEMP_DIR_OPTION = "tempdir"; //$NON-NLS-1$
 
 	private static final String BOOTCLASSPATH_OPTION = "bootclasspath"; //$NON-NLS-1$
 
@@ -90,12 +90,12 @@ public class SarlcConfigModule extends AbstractModule {
 				.build())
 			.mapConfigPath(Constants.JAVA_OUTPUT_DIRECTORY_OPTION, CLASS_OUTPUT_PATH_NAME);
 
-		VariableDecls.extend(binder()).declareVar(WORKING_PATH_NAME);
+		VariableDecls.extend(binder()).declareVar(TEMP_DIRECTORY_NAME);
 		extend(binder()).addOption(OptionMetadata.builder(
-				WORKING_DIR_OPTION, Messages.SarlcConfigModule_2)
+				TEMP_DIR_OPTION, Messages.SarlcConfigModule_2)
 				.valueRequired(Messages.SarlcConfigModule_1)
 				.build())
-			.mapConfigPath(WORKING_DIR_OPTION, WORKING_PATH_NAME);
+			.mapConfigPath(TEMP_DIR_OPTION, TEMP_DIRECTORY_NAME);
 
 		VariableDecls.extend(binder()).declareVar(CLASSPATH_NAME);
 		final String cpDescription = MessageFormat.format(Messages.SarlcConfigModule_3,

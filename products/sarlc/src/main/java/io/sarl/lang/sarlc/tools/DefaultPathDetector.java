@@ -22,6 +22,7 @@
 package io.sarl.lang.sarlc.tools;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -47,7 +48,7 @@ public class DefaultPathDetector implements PathDetector {
 
 	private File classOutputPath;
 
-	private File workingPath;
+	private File tempPath;
 
 	@Override
 	public void setSarlOutputPath(File path) {
@@ -60,8 +61,8 @@ public class DefaultPathDetector implements PathDetector {
 	}
 
 	@Override
-	public void setWorkingPath(File path) {
-		this.workingPath = path;
+	public void setTempDirectory(File path) {
+		this.tempPath = path;
 	}
 
 	@Override
@@ -75,28 +76,29 @@ public class DefaultPathDetector implements PathDetector {
 	}
 
 	@Override
-	public File getWorkingPath() {
-		return this.workingPath;
+	public File getTempDirectory() {
+		return this.tempPath;
 	}
 
 	@Override
-	public void resolve(List<String>  args) {
-		if (this.sarlOutputPath == null || this.workingPath == null || this.classOutputPath == null) {
+	@SuppressWarnings("checkstyle:npathcomplexity")
+	public void resolve(List<String>  args) throws IOException {
+		if (this.sarlOutputPath == null || this.tempPath == null || this.classOutputPath == null) {
 			final Iterable<File> cliFiles = Iterables.transform(
 					args,
 					it -> toFile(it));
 			File root = determineCommonRoot(Iterables.concat(
 					cliFiles,
 					Collections.singleton(this.sarlOutputPath),
-					Collections.singleton(this.workingPath),
+					Collections.singleton(this.tempPath),
 					Collections.singleton(this.classOutputPath)));
 			if (root != null) {
 				root = normalize(root);
 				if (this.sarlOutputPath == null) {
 					this.sarlOutputPath = toFile(root, SARLConfig.FOLDER_SOURCE_GENERATED);
 				}
-				if (this.workingPath == null) {
-					this.workingPath = toFile(root, SARLConfig.FOLDER_TMP);
+				if (this.tempPath == null) {
+					this.tempPath = toFile(root, SARLConfig.FOLDER_TMP);
 				}
 				if (this.classOutputPath == null) {
 					this.classOutputPath = toFile(root, SARLConfig.FOLDER_BIN);

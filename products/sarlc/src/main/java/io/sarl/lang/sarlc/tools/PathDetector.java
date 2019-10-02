@@ -22,6 +22,7 @@
 package io.sarl.lang.sarlc.tools;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import com.google.inject.ImplementedBy;
@@ -55,11 +56,11 @@ public interface PathDetector {
 	 */
 	void setClassOutputPath(File path);
 
-	/** Change the working path.
+	/** Change the path in which the SARL compiler will write temp files.
 	 *
 	 * @param path the path.
 	 */
-	void setWorkingPath(File path);
+	void setTempDirectory(File path);
 
 	/** Replies the SARL output path.
 	 *
@@ -73,16 +74,17 @@ public interface PathDetector {
 	 */
 	File getClassOutputPath();
 
-	/** Replies the working path.
+	/** Replies th path in which the SARL compiler will write temp files.
 	 *
 	 * @return the path.
 	 */
-	File getWorkingPath();
+	File getTempDirectory();
 
 	/** Resolve the paths.
 	 *
 	 * @param args the command line arguments to consider.
+	 * @throws IOException if one path cannot be canonized.
 	 */
-	void resolve(List<String> args);
+	void resolve(List<String> args) throws IOException;
 
 }

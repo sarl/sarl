@@ -46,6 +46,8 @@ import io.sarl.maven.bootiqueapp.utils.SystemPath;
 
 /**
  * Provider of the SARL SDK class path.
+ * The SARL libraries are supposed to be embedded into the sarlc archive file, into "embedded-sdk-libs" folder.
+ * The files into this folders are extracted into a temporary folder "sarlc-sdk-X.X".
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -156,6 +158,7 @@ public class SarlEmbededSdkClasspathProvider implements SARLClasspathProvider {
 			while (iterator.hasNext()) {
 				final URL url = iterator.next();
 				if (singleUrl != null) {
+					// If more then 2 jar files are on the classpath, then there is not a single archive.
 					return null;
 				}
 				final File jarFile = FileSystem.convertURLToFile(url);

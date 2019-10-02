@@ -53,9 +53,9 @@ public class SarlcConfig {
 	public static final String OUTPUT_PATH_NAME = PREFIX + ".outputPath"; //$NON-NLS-1$
 
 	/**
-	 * Name of the property that contains the working path.
+	 * Name of the property that contains the temp directory used by the SARL compiler.
 	 */
-	public static final String WORKING_PATH_NAME = PREFIX + ".workingPath"; //$NON-NLS-1$
+	public static final String TEMP_DIRECTORY_NAME = PREFIX + ".tempDirectory"; //$NON-NLS-1$
 
 	/**
 	 * Name of the property that contains the output path for the Java byte code.
@@ -92,7 +92,7 @@ public class SarlcConfig {
 
 	private File classOutputPath;
 
-	private File workingPath;
+	private File tempDirectory;
 
 	private CompilerConfig compilerConfig;
 
@@ -195,21 +195,21 @@ public class SarlcConfig {
 		this.outputPath = path;
 	}
 
-	/** Replies the working path.
+	/** Replies the path in which the SARL compiler will write temp files.
 	 *
 	 * @return the working path
 	 */
-	public File getWorkingPath() {
-		return this.workingPath;
+	public File getTempDirectory() {
+		return this.tempDirectory;
 	}
 
-	/** Change the working path.
+	/** Change the path in which the SARL compiler will write temp files.
 	 *
 	 * @param path the working path.
 	 */
 	@BQConfigProperty("Working/temporary path for the SARL compiler.")
-	public void setWorkingPath(File path) {
-		this.workingPath = path;
+	public void setTempDirectory(File path) {
+		this.tempDirectory = path;
 	}
 
 	/** Replies the compiler configuration.

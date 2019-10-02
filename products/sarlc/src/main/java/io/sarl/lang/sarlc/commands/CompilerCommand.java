@@ -21,6 +21,7 @@
 
 package io.sarl.lang.sarlc.commands;
 
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -95,14 +96,18 @@ public class CompilerCommand extends CommandWithMetadata {
 		final PathDetector paths = this.pathDetector.get();
 		paths.setSarlOutputPath(config.getOutputPath());
 		paths.setClassOutputPath(config.getClassOutputPath());
-		paths.setWorkingPath(config.getWorkingPath());
-		paths.resolve(cli.standaloneArguments());
+		paths.setTempDirectory(config.getTempDirectory());
+		try {
+			paths.resolve(cli.standaloneArguments());
+		} catch (IOException exception) {
+			return CommandOutcome.failed(BootiqueMain.ERROR_CODE, exception);
+		}
 
 		final SarlBatchCompiler comp = this.compiler.get();
 
 		comp.setOutputPath(paths.getSarlOutputPath());
 		comp.setClassOutputPath(paths.getClassOutputPath());
-		comp.setTempDirectory(paths.getWorkingPath());
+		comp.setTempDirectory(paths.getTempDirectory());
 
 		for (final String cliArg : cli.standaloneArguments()) {
 			comp.addSourcePath(cliArg);
