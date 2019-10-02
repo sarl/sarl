@@ -220,29 +220,55 @@ public class BootTest {
 		}
 
 		@Test
-		public void setConsoleLogger_default() {
-			assertSame(System.out, Boot.getConsoleLogger());
+		public void getStandardConsoleLogger_default() {
+			assertSame(System.out, Boot.getStandardConsoleLogger());
 		}
 
 		@Test
-		public void setConsoleLogger_null() {
-			Boot.setConsoleLogger(null);
-			assertSame(System.out, Boot.getConsoleLogger());
+		public void getErrorConsoleLogger_default() {
+			assertSame(System.err, Boot.getErrorConsoleLogger());
 		}
 
 		@Test
-		public void setConsoleLogger_notNull() {
+		public void setStandardConsoleLogger_null() {
+			Boot.setStandardConsoleLogger(null);
+			assertSame(System.out, Boot.getStandardConsoleLogger());
+		}
+
+		@Test
+		public void setErrorConsoleLogger_null() {
+			Boot.setErrorConsoleLogger(null);
+			assertSame(System.err, Boot.getErrorConsoleLogger());
+		}
+
+		@Test
+		public void setStandardConsoleLogger_notNull() {
 			PrintStream os = mock(PrintStream.class);
-			Boot.setConsoleLogger(os);
-			assertSame(os, Boot.getConsoleLogger());
+			Boot.setStandardConsoleLogger(os);
+			assertSame(os, Boot.getStandardConsoleLogger());
 		}
 
 		@Test
-		public void setConsoleLogger_notNull_null() {
+		public void setErrorConsoleLogger_notNull() {
 			PrintStream os = mock(PrintStream.class);
-			Boot.setConsoleLogger(os);
-			Boot.setConsoleLogger(null);
-			assertSame(System.out, Boot.getConsoleLogger());
+			Boot.setErrorConsoleLogger(os);
+			assertSame(os, Boot.getErrorConsoleLogger());
+		}
+
+		@Test
+		public void setStandardConsoleLogger_notNull_null() {
+			PrintStream os = mock(PrintStream.class);
+			Boot.setStandardConsoleLogger(os);
+			Boot.setStandardConsoleLogger(null);
+			assertSame(System.out, Boot.getStandardConsoleLogger());
+		}
+
+		@Test
+		public void setErrorConsoleLogger_notNull_null() {
+			PrintStream os = mock(PrintStream.class);
+			Boot.setErrorConsoleLogger(os);
+			Boot.setErrorConsoleLogger(null);
+			assertSame(System.err, Boot.getErrorConsoleLogger());
 		}
 
 	}
@@ -383,7 +409,8 @@ public class BootTest {
 
 		@Before
 		public void setUp() {
-			Boot.setConsoleLogger(this.logger);
+			Boot.setStandardConsoleLogger(this.logger);
+			Boot.setErrorConsoleLogger(this.logger);
 			Boot.setExiter(this.exiter);
 			Boot.setProperty("io.janusproject.tests.MY_PROPERTY_0", null);
 			Boot.setProperty("io.janusproject.tests.MY_PROPERTY_1", null);
@@ -392,7 +419,8 @@ public class BootTest {
 
 		@After
 		public void tearDown() {
-			Boot.setConsoleLogger(null);
+			Boot.setStandardConsoleLogger(null);
+			Boot.setErrorConsoleLogger(null);
 			Boot.setExiter(null);
 			Boot.setProperty("io.janusproject.tests.MY_PROPERTY_0", null);
 			Boot.setProperty("io.janusproject.tests.MY_PROPERTY_1", null);
@@ -413,7 +441,6 @@ public class BootTest {
 			assertNullProperty("io.janusproject.tests.MY_PROPERTY_2");
 			verify(this.logger, times(3)).write(ArgumentMatchers.any(byte[].class), ArgumentMatchers.anyInt(), ArgumentMatchers.anyInt());
 			verify(this.logger, times(3)).flush();
-			verify(this.logger, times(2)).close();
 			verifyNoMoreInteractions(this.logger);
 			verify(this.exiter, only()).exit();
 		}
@@ -660,7 +687,6 @@ public class BootTest {
 			assertNull(freeArgs);
 			verify(this.logger, times(1)).write(ArgumentMatchers.any(byte[].class), ArgumentMatchers.anyInt(), ArgumentMatchers.anyInt());
 			verify(this.logger, times(3)).flush();
-			verify(this.logger, times(1)).close();
 			verifyNoMoreInteractions(this.logger);
 			verify(this.exiter, only()).exit();
 		}
@@ -698,7 +724,6 @@ public class BootTest {
 			assertNullProperty(JanusConfig.VERBOSE_LEVEL_NAME);
 			assertNull(freeArgs);
 			verifyCli("arg1", "--cli", "--", "-x", "arg2", "-y");
-			verify(this.logger, times(1)).close();
 			verify(this.logger, times(1)).flush();
 			verifyNoMoreInteractions(this.logger);
 			verify(this.exiter, only()).exit();
@@ -1026,7 +1051,6 @@ public class BootTest {
 			assertEquals("Janus: " + JanusVersion.JANUS_RELEASE_VERSION + getLineSeparator() + "SARL specification: "
 					+ SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + getLineSeparator(), message);
 			verify(this.logger, times(1)).flush();
-			verify(this.logger, times(1)).close();
 			verifyNoMoreInteractions(this.logger);
 			verify(this.exiter, only()).exit();
 		}

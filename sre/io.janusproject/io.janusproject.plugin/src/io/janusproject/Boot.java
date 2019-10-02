@@ -53,6 +53,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.arakhne.afc.vmutil.URISchemeType;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import io.janusproject.kernel.Kernel;
 import io.janusproject.services.executor.EarlyExitException;
@@ -215,9 +216,13 @@ public final class Boot {
 
 	private static final int ERROR_EXIT_CODE = 255;
 
+	private static final int SUCCESS_EXIT_CODE = 0;
+
 	private static URLClassLoader dynamicClassLoader;
 
-	private static PrintStream consoleLogger;
+	private static PrintStream standardConsoleLogger;
+
+	private static PrintStream errorConsoleLogger;
 
 	private static Exiter applicationExiter;
 
@@ -472,9 +477,23 @@ public final class Boot {
 	 * Main function that is parsing the command line and launching the first agent.
 	 *
 	 * @param args command line arguments
+	 * @see #mainWithExitCode(String[])
 	 * @see #startJanus(Class, Object...)
 	 */
 	public static void main(String[] args) {
+		System.exit(mainWithExitCode(args));
+	}
+
+	/**
+	 * Main function that is parsing the command line and launching the first agent.
+	 *
+	 * @param args command line arguments
+	 * @return the exit code.
+	 * @since 0.10
+	 * @see #main(String[])
+	 * @see #startJanus(Class, Object...)
+	 */
+	public static int mainWithExitCode(String... args) {
 		try {
 			Object[] freeArgs = parseCommandLine(args);
 
@@ -487,7 +506,7 @@ public final class Boot {
 				showError(Messages.Boot_3, null);
 				// Event if showError never returns, add the return statement for
 				// avoiding compilation error.
-				return;
+				return ERROR_EXIT_CODE;
 			}
 
 			final String agentToLaunch = freeArgs[0].toString();
@@ -498,40 +517,71 @@ public final class Boot {
 			assert agent != null;
 
 			startJanus(agent, freeArgs);
+		} catch (ExitSignal exception) {
+			// Be silent
+			return exception.getReturnCode();
 		} catch (EarlyExitException exception) {
 			// Be silent
-			return;
 		} catch (Throwable e) {
 			showError(MessageFormat.format(Messages.Boot_4,
 					e.getLocalizedMessage()), e);
 			// Even if showError never returns, add the return statement for
 			// avoiding compilation error.
-			return;
+			return ERROR_EXIT_CODE;
 		}
+		return SUCCESS_EXIT_CODE;
 	}
 
 	/**
-	 * Replies the console stream for logging messages from the boot mechanism.
+	 * Replies the error console stream for logging messages from the boot mechanism.
 	 *
 	 * <p>The console stream is independent of the stream used by the {@link LoggingService logging service} of the platform. Indeed,
 	 * the console stream is used for displaying information, warnings and messages before the Janus platform is realy launched.
 	 *
 	 * @return the console logger.
+	 * @since 0.10
 	 */
-	public static PrintStream getConsoleLogger() {
-		return consoleLogger == null ? System.out : consoleLogger;
+	public static PrintStream getErrorConsoleLogger() {
+		return errorConsoleLogger == null ? System.err : errorConsoleLogger;
 	}
 
 	/**
-	 * Replies the console stream for logging messages from the boot mechanism.
+	 * Replies the standard console stream for logging messages from the boot mechanism.
+	 *
+	 * <p>The console stream is independent of the stream used by the {@link LoggingService logging service} of the platform. Indeed,
+	 * the console stream is used for displaying information, warnings and messages before the Janus platform is realy launched.
+	 *
+	 * @return the console logger.
+	 * @since 0.10
+	 */
+	public static PrintStream getStandardConsoleLogger() {
+		return standardConsoleLogger == null ? System.out : standardConsoleLogger;
+	}
+
+	/**
+	 * Change the error console stream for logging messages from the boot mechanism.
 	 *
 	 * <p>The console stream is independent of the stream used by the {@link LoggingService logging service} of the platform. Indeed,
 	 * the console stream is used for displaying information, warnings and messages before the Janus platform is realy launched.
 	 *
 	 * @param stream the stream to use for the console logging.
+	 * @since 0.10
 	 */
-	public static void setConsoleLogger(PrintStream stream) {
-		consoleLogger = stream;
+	public static void setErrorConsoleLogger(PrintStream stream) {
+		errorConsoleLogger = stream;
+	}
+
+	/**
+	 * Change the error console stream for logging messages from the boot mechanism.
+	 *
+	 * <p>The console stream is independent of the stream used by the {@link LoggingService logging service} of the platform. Indeed,
+	 * the console stream is used for displaying information, warnings and messages before the Janus platform is realy launched.
+	 *
+	 * @param stream the stream to use for the console logging.
+	 * @since 0.10
+	 */
+	public static void setStandardConsoleLogger(PrintStream stream) {
+		standardConsoleLogger = stream;
 	}
 
 	/**
@@ -625,17 +675,18 @@ public final class Boot {
 	 */
 	@SuppressWarnings("checkstyle:regexp")
 	public static void showError(String message, Throwable exception) {
-		try (PrintWriter logger = new PrintWriter(getConsoleLogger())) {
-			if (message != null && !message.isEmpty()) {
-				logger.println(message);
-			} else if (exception != null) {
-				exception.printStackTrace(logger);
-			}
-			logger.println();
-			logger.flush();
-			showHelp(logger, false);
-			showVersion(true);
+		PrintWriter logger = new PrintWriter(getErrorConsoleLogger());
+		if (message != null && !message.isEmpty()) {
+			logger.println(message);
+		} else if (exception != null) {
+			exception.printStackTrace(logger);
 		}
+		logger.println();
+		logger.flush();
+
+		logger = new PrintWriter(getStandardConsoleLogger());
+		showHelp(logger, false);
+		showVersion(logger, true);
 	}
 
 	/**
@@ -644,7 +695,7 @@ public final class Boot {
 	 * @param exit if {@code true}, this function never returns.
 	 */
 	public static void showHelp(boolean exit) {
-		showHelp(new PrintWriter(getConsoleLogger()), exit);
+		showHelp(new PrintWriter(getStandardConsoleLogger()), exit);
 	}
 
 	private static void showHelp(PrintWriter logger, boolean exit) {
@@ -675,12 +726,13 @@ public final class Boot {
 	/**
 	 * Show the default values of the system properties. This function never returns.
 	 */
-	@SuppressWarnings("checkstyle:regexp")
+	@SuppressWarnings({ "checkstyle:regexp", "resource" })
 	public static void showDefaults() {
 		final Properties defaultValues = new Properties();
 		JanusConfig.getDefaultValues(defaultValues);
 		NetworkConfig.getDefaultValues(defaultValues);
-		try (OutputStream os = getConsoleLogger()) {
+		try {
+			final OutputStream os = getStandardConsoleLogger();
 			defaultValues.storeToXML(os, null);
 			os.flush();
 		} catch (Throwable e) {
@@ -696,7 +748,7 @@ public final class Boot {
 	public static void showClasspath() {
 		final String cp = getCurrentClasspath();
 		if (!Strings.isNullOrEmpty(cp)) {
-			final PrintStream ps = getConsoleLogger();
+			final PrintStream ps = getStandardConsoleLogger();
 			for (final String entry : cp.split(Pattern.quote(File.pathSeparator))) {
 				ps.println(entry);
 			}
@@ -711,11 +763,13 @@ public final class Boot {
 	 * @param exit if {@code true}, this function never returns.
 	 */
 	public static void showVersion(boolean exit) {
-		try (PrintWriter logger = new PrintWriter(getConsoleLogger())) {
-			logger.println(MessageFormat.format(Messages.Boot_26, JanusVersion.JANUS_RELEASE_VERSION));
-			logger.println(MessageFormat.format(Messages.Boot_27, SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING));
-			logger.flush();
-		}
+		showVersion(new PrintWriter(getStandardConsoleLogger()), exit);
+	}
+
+	private static void showVersion(PrintWriter logger, boolean exit) {
+		logger.println(MessageFormat.format(Messages.Boot_26, JanusVersion.JANUS_RELEASE_VERSION));
+		logger.println(MessageFormat.format(Messages.Boot_27, SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING));
+		logger.flush();
 		if (exit) {
 			getExiter().exit();
 		}
@@ -726,9 +780,10 @@ public final class Boot {
 	 *
 	 * @param args the command line arguments.
 	 */
-	@SuppressWarnings("checkstyle:regexp")
+	@SuppressWarnings({ "checkstyle:regexp", "resource" })
 	public static void showCommandLineArguments(String[] args) {
-		try (PrintStream os = getConsoleLogger()) {
+		try {
+			final PrintStream os = getStandardConsoleLogger();
 			for (int i = 0; i < args.length; ++i) {
 				os.println(i + ": " //$NON-NLS-1$
 						+ args[i]);
@@ -745,7 +800,7 @@ public final class Boot {
 	 */
 	@SuppressWarnings("checkstyle:regexp")
 	public static void showJanusLogo() {
-		getConsoleLogger().println(Messages.Boot_21);
+		getStandardConsoleLogger().println(Messages.Boot_21);
 	}
 
 	/**
@@ -1071,7 +1126,9 @@ public final class Boot {
 	 * @return the tool for exiting the application.
 	 */
 	public static Exiter getExiter() {
-		return applicationExiter == null ? () -> System.exit(ERROR_EXIT_CODE) : applicationExiter;
+		return applicationExiter == null ? () -> {
+			throw new ExitSignal(ERROR_EXIT_CODE);
+		} : applicationExiter;
 	}
 
 	/**
@@ -1098,6 +1155,42 @@ public final class Boot {
 		 * Exit the application.
 		 */
 		void exit();
+
+	}
+
+	/** Signal for exiting.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.10
+	 */
+	private static final class ExitSignal extends RuntimeException {
+
+		private static final long serialVersionUID = -8424755495462938388L;
+
+		/** Application return code.
+		 */
+		private final int returnCode;
+
+		/**
+		 * Constructor.
+		 *
+		 * @param returnCode the application return code.
+		 */
+		ExitSignal(int returnCode) {
+			this.returnCode = returnCode;
+		}
+
+		/** Replies the application return code.
+		 *
+		 * @return the code.
+		 */
+		@Pure
+		public int getReturnCode() {
+			return this.returnCode;
+		}
 
 	}
 
