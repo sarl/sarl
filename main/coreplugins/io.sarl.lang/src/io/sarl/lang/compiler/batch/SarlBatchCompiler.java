@@ -88,7 +88,6 @@ import org.eclipse.xtext.resource.IResourceServiceProvider;
 import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.resource.persistence.StorageAwareResource;
 import org.eclipse.xtext.util.CancelIndicator;
-import org.eclipse.xtext.util.Files;
 import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.util.UriUtil;
@@ -109,6 +108,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.sarl.lang.SARLConfig;
+import io.sarl.lang.bugfixes.pending.bugxtext1251.BugXtext1251Files;
 import io.sarl.lang.compiler.GeneratorConfig2;
 import io.sarl.lang.compiler.GeneratorConfigProvider2;
 import io.sarl.lang.compiler.IGeneratorConfigProvider2;
@@ -137,13 +137,6 @@ public class SarlBatchCompiler {
 
 	private static final String INTERNAL_ERROR_CODE = SarlBatchCompiler.class.getName() + ".internal_error"; //$NON-NLS-1$
 
-	private static final FileFilter ACCEPT_ALL_FILTER = new FileFilter() {
-		@Override
-		public boolean accept(File pathname) {
-			return true;
-		}
-	};
-
 	private static final Predicate<IExtraLanguageContribution> DISABLER = it -> false;
 
 	private static Class<? extends IJavaBatchCompiler> defaultJavaBatchCompiler;
@@ -158,7 +151,7 @@ public class SarlBatchCompiler {
 
 	private File tempPath;
 
-	private boolean deleteTempPath = true;
+	private CleaningPolicy cleaningPolicy = CleaningPolicy.getDefault();
 
 	private List<File> bootClasspath;
 
@@ -815,21 +808,47 @@ public class SarlBatchCompiler {
 		return tmp;
 	}
 
+	/** Replies the cleaning policy that is applied by this batch compiler.
+	 *
+	 * @return the cleaning policy, never {@code null}.
+	 * @since 0.10
+	 */
+	@Pure
+	public CleaningPolicy getCleaningPolicy() {
+		return this.cleaningPolicy;
+	}
+
+	/** Change the cleaning policy that is applied by this batch compiler.
+	 *
+	 * @param policy the cleaning policy. If it is {@code null}, the
+	 *     {@link CleaningPolicy#getDefault() default policy} is used.
+	 * @since 0.10
+	 */
+	public void setCleaningPolicy(CleaningPolicy policy) {
+		this.cleaningPolicy = policy == null ? CleaningPolicy.getDefault() : policy;
+	}
+
 	/** Replies if the temp folder must be deleted at the end of the compilation.
 	 *
 	 * @return <code>true</code> if the temp folder is deleted.
+	 * @deprecated since 0.10, see {@link #getCleaningPolicy()}.
 	 */
 	@Pure
+	@Deprecated
+	@Inline(value = "getCleaningPolicy() != $1.NO_CLEANING", imported = {CleaningPolicy.class})
 	public boolean isDeleteTempDirectory() {
-		return this.deleteTempPath;
+		return getCleaningPolicy() != CleaningPolicy.NO_CLEANING;
 	}
 
 	/** Set if the temp folder must be deleted at the end of the compilation.
 	 *
 	 * @param delete <code>true</code> if the temp folder is deleted.
+	 * @deprecated since 0.10, see {@link #setCleaningPolicy(CleaningPolicy)}.
 	 */
+	@Deprecated
+	@Inline(value = "setCleaningPolicy(($1) ? $2.INTERNAL_CLEANING : $2.NO_CLEANING)", imported = {CleaningPolicy.class})
 	public void setDeleteTempDirectory(boolean delete) {
-		this.deleteTempPath = delete;
+		setCleaningPolicy(delete ? CleaningPolicy.INTERNAL_CLEANING : CleaningPolicy.NO_CLEANING);
 	}
 
 	/** Change the file encoding.
@@ -1351,19 +1370,39 @@ public class SarlBatchCompiler {
 			}
 			monitor.worked(16);
 		} finally {
-			monitor.subTask(Messages.SarlBatchCompiler_47);
-			destroyClassLoader(this.jvmTypesClassLoader);
-			destroyClassLoader(this.annotationProcessingClassLoader);
-			if (isDeleteTempDirectory()) {
-				monitor.subTask(Messages.SarlBatchCompiler_48);
-				for (final File file : this.tempFolders) {
-					cleanFolder(file, ACCEPT_ALL_FILTER, true, true);
-				}
-			}
-			unconfigureExtraLanguageGenerators();
+			finalizationStage(monitor);
 			monitor.done();
 		}
 		return true;
+	}
+
+	private void finalizationStage(IProgressMonitor monitor) {
+		monitor.subTask(Messages.SarlBatchCompiler_47);
+		destroyClassLoader(this.jvmTypesClassLoader);
+		destroyClassLoader(this.annotationProcessingClassLoader);
+		switch (getCleaningPolicy()) {
+		case FULL_CLEANING:
+			if (this.tempPath != null) {
+				cleanFolder(this.tempPath, null);
+			}
+			break;
+		case NO_CLEANING:
+			// Do nothing
+			break;
+		case INTERNAL_CLEANING:
+			monitor.subTask(Messages.SarlBatchCompiler_48);
+			for (final File file : this.tempFolders) {
+				cleanFolder(file, null);
+			}
+			break;
+		default:
+			// This case should never occur
+			throw new IllegalStateException();
+		}
+		this.tempPath = null;
+		this.tempFolders.clear();
+		//
+		unconfigureExtraLanguageGenerators();
 	}
 
 	/** Change the loggers that are internally used by Xtext.
@@ -1901,7 +1940,7 @@ public class SarlBatchCompiler {
 	 */
 	protected File createTempDir(String namePrefix) {
 		final File tempDir = new File(getTempDirectory(), namePrefix);
-		cleanFolder(tempDir, ACCEPT_ALL_FILTER, true, true);
+		cleanFolder(tempDir, null);
 		if (!tempDir.mkdirs()) {
 			throw new RuntimeException(MessageFormat.format(Messages.SarlBatchCompiler_8, tempDir.getAbsolutePath()));
 		}
@@ -1912,18 +1951,15 @@ public class SarlBatchCompiler {
 	/** Clean the folders.
 	 *
 	 * @param parentFolder the parent folder.
-	 * @param filter the file filter for the file to remove..
-	 * @param continueOnError indicates if the cleaning should continue on error.
-	 * @param deleteParentFolder indicates if the parent folder should be removed.
+	 * @param filter the file filter for the file to remove.
 	 * @return the success status.
 	 */
-	protected boolean cleanFolder(File parentFolder, FileFilter filter, boolean continueOnError,
-			boolean deleteParentFolder) {
+	protected boolean cleanFolder(File parentFolder, FileFilter filter) {
 		try {
 			if (getLogger().isDebugEnabled()) {
 				getLogger().debug(Messages.SarlBatchCompiler_9, parentFolder.toString());
 			}
-			return Files.cleanFolder(parentFolder, null, continueOnError, deleteParentFolder);
+			return BugXtext1251Files.cleanFolder(parentFolder, null, true, true);
 		} catch (FileNotFoundException e) {
 			return true;
 		}
