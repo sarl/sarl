@@ -29,6 +29,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.google.common.collect.Iterables;
+import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.xtext.util.Strings;
 
 import io.sarl.lang.SARLConfig;
@@ -107,13 +108,23 @@ public class DefaultPathDetector implements PathDetector {
 		}
 
 		if (this.sarlOutputPath == null) {
-			this.sarlOutputPath = toFile(cwd(), SARLConfig.FOLDER_SOURCE_GENERATED);
+			this.sarlOutputPath = toFile(cwd(), SARLConfig.FOLDER_SOURCE_GENERATED).getCanonicalFile();
 		}
-		if (this.workingPath == null) {
-			this.workingPath = toFile(cwd(), SARLConfig.FOLDER_TMP);
+		if (this.tempPath == null) {
+			this.tempPath = toFile(cwd(), SARLConfig.FOLDER_TMP).getCanonicalFile();
 		}
 		if (this.classOutputPath == null) {
-			this.classOutputPath = toFile(cwd(), SARLConfig.FOLDER_BIN);
+			this.classOutputPath = toFile(cwd(), SARLConfig.FOLDER_BIN).getCanonicalFile();
+		}
+
+		if (this.sarlOutputPath != null && !this.sarlOutputPath.isAbsolute()) {
+			this.sarlOutputPath = FileSystem.join(cwd(), this.sarlOutputPath).getCanonicalFile();
+		}
+		if (this.tempPath != null && !this.tempPath.isAbsolute()) {
+			this.tempPath = FileSystem.join(cwd(), this.tempPath).getCanonicalFile();
+		}
+		if (this.classOutputPath != null && !this.classOutputPath.isAbsolute()) {
+			this.classOutputPath = FileSystem.join(cwd(), this.classOutputPath).getCanonicalFile();
 		}
 	}
 
