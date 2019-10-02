@@ -25,9 +25,10 @@ import static io.bootique.BQCoreModule.extend;
 
 import java.text.MessageFormat;
 
+import javax.inject.Provider;
+import javax.inject.Singleton;
+
 import com.google.inject.AbstractModule;
-import com.google.inject.Provider;
-import com.google.inject.Singleton;
 import org.arakhne.afc.bootique.applicationdata2.annotations.DefaultApplicationName;
 import org.arakhne.afc.bootique.synopsishelp.annotations.ApplicationArgumentSynopsis;
 import org.arakhne.afc.bootique.synopsishelp.annotations.ApplicationDetailedDescription;

@@ -36,10 +36,11 @@ import static io.sarl.sarldoc.configs.SarldocConfig.VISIBILITY_NAME;
 
 import java.text.MessageFormat;
 
+import javax.inject.Singleton;
+
 import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 import com.google.inject.Provides;
-import com.google.inject.Singleton;
 import io.bootique.config.ConfigurationFactory;
 import io.bootique.meta.application.OptionMetadata;
 import org.arakhne.afc.bootique.variables.VariableDecls;

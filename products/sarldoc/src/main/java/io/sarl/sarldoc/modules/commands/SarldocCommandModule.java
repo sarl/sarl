@@ -23,10 +23,11 @@ package io.sarl.sarldoc.modules.commands;
 
 import static io.bootique.BQCoreModule.extend;
 
+import javax.inject.Provider;
+import javax.inject.Singleton;
+
 import com.google.inject.AbstractModule;
-import com.google.inject.Provider;
 import com.google.inject.Provides;
-import com.google.inject.Singleton;
 import io.bootique.command.CommandManager;
 import org.slf4j.Logger;
 

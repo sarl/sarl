@@ -38,9 +38,10 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.inject.Provider;
+
 import com.google.common.base.Strings;
 import com.google.common.collect.Multimap;
-import com.google.inject.Provider;
 import com.sun.tools.doclets.standard.Standard;
 import com.sun.tools.javadoc.Main;
 import io.bootique.cli.Cli;
@@ -437,8 +438,12 @@ public class SarldocCommand extends CommandWithMetadata {
 		final PathDetector paths = this.pathDetector.get();
 		paths.setSarlOutputPath(cconfig.getOutputPath());
 		paths.setClassOutputPath(cconfig.getClassOutputPath());
-		paths.setWorkingPath(cconfig.getWorkingPath());
-		paths.resolve(cli.standaloneArguments());
+		paths.setTempDirectory(cconfig.getTempDirectory());
+		try {
+			paths.resolve(cli.standaloneArguments());
+		} catch (IOException exception) {
+			return CommandOutcome.failed(BootiqueMain.ERROR_CODE, exception);
+		}
 
 		// Source folder
 		final SystemPath sourcePath = new SystemPath();
