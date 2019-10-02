@@ -31,9 +31,11 @@ import java.io.PrintStream;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.util.Iterator;
 
 import javax.annotation.Nullable;
 
+import org.arakhne.afc.vmutil.ClasspathUtil;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.arakhne.afc.vmutil.Resources;
 import org.junit.After;
@@ -44,6 +46,7 @@ import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarlc.Main;
 import io.sarl.lang.sarlc.configs.subconfigs.JavaCompiler;
+import io.sarl.maven.bootiqueapp.utils.SystemPath;
 
 /** Tests for {@code Main}.
  *
@@ -56,6 +59,8 @@ import io.sarl.lang.sarlc.configs.subconfigs.JavaCompiler;
 @SuppressWarnings("all")
 public class MainTest {
 
+	private static final boolean CAPTURE_OUTPUTS = true;
+	
 	@Nullable
 	private File rootFolder;
 
@@ -101,13 +106,15 @@ public class MainTest {
 	
 	@Before
 	public void setUp() {
-		this.originalStdout = System.out;
-		this.captureStdout = new ByteArrayOutputStream();
-		System.setOut(new PrintStream(this.captureStdout));
-		this.originalStderr = System.err;
-		this.captureStderr = new ByteArrayOutputStream();
-		System.setErr(new PrintStream(this.captureStderr));
 		this.rootFolder = null;
+		if (CAPTURE_OUTPUTS) {
+			this.originalStdout = System.out;
+			this.captureStdout = new ByteArrayOutputStream();
+			System.setOut(new PrintStream(this.captureStdout));
+			this.originalStderr = System.err;
+			this.captureStderr = new ByteArrayOutputStream();
+			System.setErr(new PrintStream(this.captureStderr));
+		}
 	}
 
 	@After
@@ -115,7 +122,9 @@ public class MainTest {
 		if (this.rootFolder != null) {
 			FileSystem.delete(this.rootFolder);
 		}
-		restoreOutputs();
+		if (CAPTURE_OUTPUTS) {
+			restoreOutputs();
+		}
 	}
 
 	private void prepareProject(String name) throws IOException {
@@ -126,7 +135,7 @@ public class MainTest {
 		this.genFolder.mkdirs();
 		this.binFolder = FileSystem.join(this.rootFolder, "target", "classes");
 		this.binFolder.mkdirs();
-		this.tempFolder = FileSystem.join(this.rootFolder, "target", "sarl-builds");
+		this.tempFolder = FileSystem.join(this.rootFolder, "target", "sarl-build");
 		this.tempFolder.mkdirs();
 
 		final URL resource = Resources.getResource(MainTest.class, "resources/" + name + ".sarl");
@@ -211,14 +220,25 @@ public class MainTest {
 	public void compileTest1() throws IOException {
 		prepareProject("test1");
 		
+		SystemPath classPath = new SystemPath();
+		Iterator<URL> iterator = ClasspathUtil.getClasspath();
+		while (iterator.hasNext()) {
+			final URL classPathElement = iterator.next();
+			final File localElement = FileSystem.convertURLToFile(classPathElement);
+			classPath.add(localElement);
+		}
+		
 		final int retcode = Main.run(
 				"--encoding", "UTF-8",
 				"--javasource", SARLVersion.MINIMAL_JDK_VERSION,
 				"--javacompiler", JavaCompiler.JAVAC.name(),
-				"--workingdir", this.tempFolder.getAbsolutePath(),
+				"--tempdir", this.tempFolder.getAbsolutePath(),
 				"--directory", this.genFolder.getAbsolutePath(),
 				"--outputdir", this.binFolder.getAbsolutePath(),
+				"--cp", classPath.toString(),
 				this.srcFolder.getAbsolutePath());
+		//this.originalStdout.print(new String(this.captureStdout.toByteArray()));
+		//this.originalStderr.print(new String(this.captureStderr.toByteArray()));
 		assertEquals(0, retcode);
 		
 		File javaFile = FileSystem.join(this.genFolder, "io", "sarl", "lang",
@@ -248,7 +268,6 @@ public class MainTest {
 
 	@Test
 	public void printConfigHelpOption() throws IOException {
-		//restoreOutputs();
 		final int retcode = Main.run("-H");
 		assertEquals(0, retcode);
 	}
