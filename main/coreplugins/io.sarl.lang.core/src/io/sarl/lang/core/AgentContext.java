@@ -73,7 +73,7 @@ public interface AgentContext {
 	/** Create an instance of space following the given specification.
 	 * This function always creates a new instance of space.
 	 * It means that is a space with the given identifier already
-	 * exists, this function does nothing and replies <code>null</code>.
+	 * exists, this function does nothing and replies {@code null}.
 	 * If you want to find an existing space prior to the creation of
 	 * a new one, you should use {@link #getOrCreateSpace(Class, UUID, Object...)}.
 	 *
@@ -81,7 +81,7 @@ public interface AgentContext {
 	 * @param spec specification of the space to create.
 	 * @param spaceUUID identifier of the new space.
 	 * @param creationParams parameters to pass to the space constructor.
-	 * @return the new space, or <code>null</code> if the space already exists.
+	 * @return the new space, or {@code null} if the space already exists.
 	 * @see #getOrCreateSpace(Class, UUID, Object...)
 	 * @see #getSpace(UUID)
 	 */
@@ -94,14 +94,20 @@ public interface AgentContext {
 	 * If none was found, this function creates a new space with the given space
 	 * identifier and creation parameters.
 	 *
-	 * <p><strong>Caution:</strong> The <code>spaceUUID</code> parameter is used only
+	 * <p><strong>Caution #1:</strong> This function ignores the default space when searching for
+	 * a space created with an {@code EventSpaceSpecification} or {@code OpenEventSpaceSpecification}.
+	 * Consequently, in the case of the {@code spec} argument is one of the previous types, and
+	 * there is no other space in the context that was created with this specification, then
+	 * the function creates a totally new space.
+	 *
+	 * <p><strong>Caution #2:</strong> The {@code spaceUUID} parameter is used only
 	 * if no existing space created with the given specification was found.
 	 *
 	 * @param <S> - type of the replied space.
 	 * @param spec specification of the space to retreive/create.
 	 * @param spaceUUID identifier used only when creating the space.
 	 * @param creationParams parameters to pass to the space constructor.
-	 * @return the space, never <code>null</code>.
+	 * @return the space, never {@code null} and never the default space.
 	 * @see #getOrCreateSpaceWithID(UUID, Class, Object...)
 	 * @see #createSpace(Class, UUID, Object...)
 	 * @see #getSpace(UUID)
@@ -119,14 +125,20 @@ public interface AgentContext {
 	 * If none was found, this function creates a new space with the given space
 	 * identifier and creation parameters.
 	 *
-	 * <p><strong>Caution:</strong> The <code>spaceUUID</code> parameter is used only
+	 * <p><strong>Caution:</strong> This function ignores the default space when searching for
+	 * a space created with an {@code EventSpaceSpecification} or {@code OpenEventSpaceSpecification}.
+	 * Consequently, in the case of the {@code spec} argument is one of the previous types, and
+	 * there is no other space in the context that was created with this specification, then
+	 * the function creates a totally new space.
+	 *
+	 * <p><strong>Caution:</strong> The {@code spaceUUID} parameter is used only
 	 * if no existing space created with the given specification was found.
 	 *
 	 * @param <S> - type of the replied space.
 	 * @param spec specification of the space to retreive/create.
 	 * @param spaceUUID identifier used only when creating the space.
 	 * @param creationParams parameters to pass to the space constructor.
-	 * @return the space, never <code>null</code>.
+	 * @return the space, never {@code null} and never the default space.
 	 * @see #getOrCreateSpaceWithID(UUID, Class, Object...)
 	 * @see #createSpace(Class, UUID, Object...)
 	 * @see #getSpace(UUID)
@@ -140,14 +152,18 @@ public interface AgentContext {
 	 * If none was found, this function creates a new space with the given
 	 * specification and creation parameters.
 	 *
-	 * <p><strong>Caution:</strong> The <code>spaceUUID</code> parameter is given to
+	 * <p><strong>Caution #1:</strong> The {@code spaceUUID} parameter is given to
 	 * the specification when creating the space.
+	 *
+	 * <p><strong>Caution #2:</strong> The {@code spaceUUID} parameter is equal to
+	 * the identifier of the default space in this context, then the default space
+	 * is returned by this function.
 	 *
 	 * @param <S> - type of the replied space.
 	 * @param spaceUUID identifier of the space.
 	 * @param spec specification of the space for creating the space.
 	 * @param creationParams parameters to pass to the space constructor.
-	 * @return the space, never <code>null</code>.
+	 * @return the space, never {@code null}.
 	 * @see #getOrCreateSpaceWithID(UUID, Class, Object...)
 	 * @see #createSpace(Class, UUID, Object...)
 	 * @see #getSpace(UUID)
@@ -165,14 +181,18 @@ public interface AgentContext {
 	 * If none was found, this function creates a new space with the given
 	 * specification and creation parameters.
 	 *
-	 * <p><strong>Caution:</strong> The <code>spaceUUID</code> parameter is given to
+	 * <p><strong>Caution #1:</strong> The {@code spaceUUID} parameter is given to
 	 * the specification when creating the space.
+	 *
+	 * <p><strong>Caution #2:</strong> The {@code spaceUUID} parameter is equal to
+	 * the identifier of the default space in this context, then the default space
+	 * is returned by this function.
 	 *
 	 * @param <S> - type of the replied space.
 	 * @param spaceUUID identifier of the space.
 	 * @param spec specification of the space for creating the space.
 	 * @param creationParams parameters to pass to the space constructor.
-	 * @return the space, never <code>null</code>.
+	 * @return the space, never {@code null}.
 	 * @see #getOrCreateSpaceWithID(UUID, Class, Object...)
 	 * @see #createSpace(Class, UUID, Object...)
 	 * @see #getSpace(UUID)
@@ -183,11 +203,11 @@ public interface AgentContext {
 
 	/** Retreive, but do not create, an instance of space following the given ID.
 	 * This function tries to find a space that fits the given specification.
-	 * If none was found, this function replies <code>null</code>.
+	 * If none was found, this function replies {@code null}.
 	 *
 	 * @param <S> - type of the replied space.
 	 * @param spaceUUID identifier of the space.
-	 * @return the space, or <code>null</code> if there is no space found.
+	 * @return the space, or {@code null} if there is no space found.
 	 * @see #createSpace(Class, UUID, Object...)
 	 * @see #getOrCreateSpace(Class, UUID, Object...)
 	 */
