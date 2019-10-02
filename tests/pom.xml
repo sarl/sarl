@@ -27,7 +27,7 @@
 		<module>sarl-maven-plugin.tests</module>
 		<module>io.sarl.maven.docs.generator.tests</module>
 
-		<!-- Included when Xtext 2.12 is available:
+		<!-- To be included after refactoring
 
 		<module>io.sarl.tests.api.ui</module>
 		<module>io.sarl.lang.ui.tests</module>
