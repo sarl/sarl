@@ -65,6 +65,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.impl.StaticLoggerBinder;
 
 import io.sarl.lang.SARLStandaloneSetup;
+import io.sarl.lang.compiler.batch.CleaningPolicy;
 import io.sarl.lang.compiler.batch.IJavaBatchCompiler;
 import io.sarl.lang.compiler.batch.OptimizationLevel;
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
@@ -246,7 +247,7 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 		compiler.setJavaSourceVersion(getSourceVersion());
 		compiler.setBasePath(baseDir);
 		compiler.setTempDirectory(getTempDirectory());
-		compiler.setDeleteTempDirectory(false);
+		compiler.setCleaningPolicy(CleaningPolicy.NO_CLEANING);
 		compiler.setClassPath(classPath);
 		final String bootClassPath = getBootClassPath();
 		compiler.setBootClassPath(bootClassPath);
