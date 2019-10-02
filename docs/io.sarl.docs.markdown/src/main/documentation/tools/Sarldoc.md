@@ -199,7 +199,7 @@ Tags have the following types:
 | Tag                  | Description                                        |
 | -------------------- | -------------------------------------------------- |
 | `@author text`       | Adds an author entry with the specified name text. |
-| `{@code text}        | Displays text in code font without interpreting the text as HTML markup or nested tags. |
+| `{@code text}`       | Displays text in code font without interpreting the text as HTML markup or nested tags. |
 | `@deprecated text`   | Adds a comment indicating that this API should no longer be used (even though it may continue to work). |
 | `{@docRoot}`         | Represents the relative path to the generated document's (destination) root directory from any generated page. |
 | `@exception class-name text` | See `@throws`. |
