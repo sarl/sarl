@@ -55,6 +55,7 @@ import org.slf4j.helpers.NOPLogger;
 
 import io.sarl.lang.SARLStandaloneSetup;
 import io.sarl.lang.SARLVersion;
+import io.sarl.lang.compiler.batch.CleaningPolicy;
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
 import io.sarl.tests.api.AbstractSarlTest;
 
@@ -238,7 +239,7 @@ public class ExamplesTest extends AbstractSarlTest {
 		compiler.setGenerateGeneratedAnnotation(false);
 		compiler.setGenerateInlineAnnotation(false);
 		compiler.setGenerateSyntheticSuppressWarnings(true);
-		compiler.setDeleteTempDirectory(false);
+		compiler.setCleaningPolicy(CleaningPolicy.NO_CLEANING);
 		compiler.setClassPath(getClasspath());
 		compiler.setJavaSourceVersion(SARLVersion.MINIMAL_JDK_VERSION);
 		compiler.setAllWarningSeverities(Severity.IGNORE);
