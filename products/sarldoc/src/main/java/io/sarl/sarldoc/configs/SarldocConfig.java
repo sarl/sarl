@@ -94,6 +94,19 @@ public class SarldocConfig {
 	public static final String DOC_OUTPUT_DIRECTORY_NAME = PREFIX + ".outputDirectory"; //$NON-NLS-1$
 
 	/**
+	 * File value of the property that contains the destination folder for the generated HTML documentation.
+	 */
+	public static final File DOC_OUTPUT_DIRECTORY_FILE = FileSystem.join(
+			new File("target"), //$NON-NLS-1$
+			"site", //$NON-NLS-1$
+			"apidocs"); //$NON-NLS-1$
+
+	/**
+	 * String value of the property that contains the destination folder for the generated HTML documentation.
+	 */
+	public static final String DOC_OUTPUT_DIRECTORY_VALUE = DOC_OUTPUT_DIRECTORY_FILE.getPath();
+
+	/**
 	 * Name of the property that contains options to javadoc.
 	 */
 	public static final String JAVADOC_OPTION_NAME = PREFIX + ".javadocOption"; //$NON-NLS-1$
@@ -460,7 +473,7 @@ public class SarldocConfig {
 	 */
 	public File getOutputDirectory() {
 		if (this.outputDirectory == null) {
-			this.outputDirectory = FileSystem.join(new File("target"), "site", "apidocs"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			this.outputDirectory = DOC_OUTPUT_DIRECTORY_FILE;
 		}
 		return this.outputDirectory;
 	}

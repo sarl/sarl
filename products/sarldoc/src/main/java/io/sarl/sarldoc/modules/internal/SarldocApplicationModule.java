@@ -80,7 +80,7 @@ public class SarldocApplicationModule extends AbstractModule {
 			final String sarlOutputDirectoryOption = "--" + io.sarl.lang.sarlc.Constants.SARL_OUTPUT_DIRECTORY_OPTION; //$NON-NLS-1$
 			final String javaOutputDirectory = SARLConfig.FOLDER_BIN;
 			final String javaOutputDirectoryOption = "--" + io.sarl.lang.sarlc.Constants.JAVA_OUTPUT_DIRECTORY_OPTION; //$NON-NLS-1$
-			final String docOutputDirectory = SARLConfig.FOLDER_BIN;
+			final String docOutputDirectory = SarldocConfig.DOC_OUTPUT_DIRECTORY_VALUE;
 			final String docOutputDirectoryOption = "--" + Constants.DOCUMENTATION_OUTPUT_DIRECTORY_OPTION; //$NON-NLS-1$
 			return MessageFormat.format(Messages.SarldocApplicationModule_2,
 					sarlOutputDirectory, sarlOutputDirectoryOption,
