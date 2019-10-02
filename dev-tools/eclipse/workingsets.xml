@@ -61,13 +61,9 @@
 <item elementID="=io.sarl.examples.tests" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/io.sarl.products.contribs" type="4"/>
 </workingSet>
-<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1480017551937_8" label="Product Engineering" name="Product Engineering">
-<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/io.sarl.sarldoc" type="4"/>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1480017551937_8" label="SARL Product" name="SARL Product">
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/io.sarl.lang.targetplatform" type="4"/>
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/io.sarl.lang.updatesite" type="4"/>
-<item elementID="=io.sarl.lang.sarlc" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/io.sarl.products" type="4"/>
-<item elementID="=io.sarl.sarlsh" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 </workingSet>
 <workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1480017558193_9" label="Documentation" name="Documentation">
 <item elementID="=io.sarl.docs.doclet" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
@@ -103,6 +99,7 @@
 <item elementID="=io.sarl.lang.mwe2/src" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=io.sarl.lang.sarlc/src\/main\/java" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=io.sarl.lang.sarlc/src\/main\/resources" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=io.sarl.lang.sarlc/src\/test\/resources" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=io.sarl.lang.tests/src\/main\/java" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=io.sarl.lang.ui/src" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=io.sarl.lang.ui/src-gen" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
@@ -123,8 +120,6 @@
 <item elementID="=io.sarl.util/src-gen" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=sarl-maven-plugin/src\/main\/java" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=sarl-maven-plugin/src\/main\/resources" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=io.sarl.sarlsh/src\/main\/java" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=io.sarl.sarlsh/src\/main\/resources" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 </workingSet>
 <workingSet editPageId="org.eclipse.jdt.internal.ui.DynamicSourcesWorkingSet" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1540978128500_13" label="Java Test Sources" name="Java Test Sources">
 <item elementID="=io.janusproject.tests/src\/test\/java" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
@@ -136,6 +131,7 @@
 <item elementID="=io.sarl.examples.tests/src\/test\/java" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=io.sarl.lang.core.tests/src\/test\/java" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=io.sarl.lang.core.tests/src\/test\/resources" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=io.sarl.lang.sarlc/src\/test\/java" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=io.sarl.lang.tests/src\/test\/java" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=io.sarl.maven.docs.generator.tests/src\/test\/resources" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=io.sarl.maven.docs.generator.tests/src\/test\/java" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
@@ -145,13 +141,17 @@
 <item elementID="=sarl-maven-plugin.tests/src\/test\/java" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=sarl-maven-plugin.tests/src\/test\/resources" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 </workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1569993860773_15" label="Other Products" name="Other Products">
+<item elementID="=io.sarl.lang.sarlc" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/io.sarl.products" type="4"/>
+</workingSet>
 <workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1480001462136_0" label="Window Working Set" name="Aggregate for window 1480001462135"/>
 <workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1480017876201_10" label="Multiple Working Sets" name="Aggregate:Contributions:Documentation:Features:Maven:Plugins:Product Engineering:SRE:Tests:">
 <workingSet IMemento.internal.id="Contributions"/>
 <workingSet IMemento.internal.id="Documentation"/>
 <workingSet IMemento.internal.id="Features"/>
 <workingSet IMemento.internal.id="Maven"/>
-<workingSet IMemento.internal.id="Product Engineering"/>
+<workingSet IMemento.internal.id="SARL Product"/>
 <workingSet IMemento.internal.id="SRE"/>
 <workingSet IMemento.internal.id="Tests"/>
 </workingSet>
