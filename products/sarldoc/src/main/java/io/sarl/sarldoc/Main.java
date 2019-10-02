@@ -44,11 +44,25 @@ public final class Main {
 
 	/** Main program of the API documentation generator.
 	 *
+	 * <p>This function never returns.
+	 *
 	 * @param args the command line arguments.
+	 * @see #run(String...)
 	 */
 	public static void main(String[] args) {
-		final int retCode = createMainObject().runCommand(args);
-		System.exit(retCode);
+		System.exit(run(args));
+	}
+
+	/** Main program of the API documentation generator.
+	 *
+	 * <p>This function returns.
+	 *
+	 * @param args the command line arguments.
+	 * @return the exit code.
+	 * @see #main(String[])
+	 */
+	public static int run(String... args) {
+		return createMainObject().runCommand(args);
 	}
 
 	/** Replies the default name of the program.
