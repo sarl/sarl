@@ -363,6 +363,9 @@ public class SpaceRepository {
 
 	/**
 	 * Retrieve the first space of the given specification, or create a space if none.
+	 * The default space is ignored by this function. Consequently, even if the
+	 * given specification is an {@code EventSpaceSpecification} or {@code OpenEventSpaceSpecification},
+	 * a totally new space will be created if none already exist, except the default space.
 	 *
 	 * @param <S> - the type of the space to reply.
 	 * @param spaceID ID of the space (used only when creating a space).
@@ -379,7 +382,24 @@ public class SpaceRepository {
 		try {
 			final Collection<SpaceID> ispaces = this.spacesBySpec.get(spec);
 			if (ispaces != null && !ispaces.isEmpty()) {
-				firstSpace = (S) this.spaces.get(ispaces.iterator().next());
+				final OpenEventSpace defaultSpace = this.defaultSpace == null ? null : this.defaultSpace.get();
+				if (defaultSpace == null) {
+					final Iterator<SpaceID> idIterator = ispaces.iterator();
+					while (firstSpace == null && idIterator.hasNext()) {
+						final SpaceID currentId = idIterator.next();
+						firstSpace = (S) this.spaces.get(currentId);
+					}
+				} else {
+					final SpaceID defaultSpaceId = defaultSpace.getSpaceID();
+					// Search for the first space that is not the default space.
+					final Iterator<SpaceID> idIterator = ispaces.iterator();
+					while (firstSpace == null && idIterator.hasNext()) {
+						final SpaceID currentId = idIterator.next();
+						if (!defaultSpaceId.equals(currentId)) {
+							firstSpace = (S) this.spaces.get(currentId);
+						}
+					}
+				}
 			}
 		} finally {
 			lock.readLock().unlock();
