@@ -1,0 +1,14 @@
+package io.sarl.lang.sarlc.tests.resources.test1
+
+import org.eclipse.xtend.lib.annotations.Accessors
+
+class Foo {
+
+	@Accessors
+	var fooField : int
+
+	new(value : int = 0) {
+		this.fooField = value
+	}
+
+}

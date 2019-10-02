@@ -31,6 +31,11 @@
 			<groupId>io.sarl.docs</groupId>
 			<artifactId>io.sarl.docs.doclet</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
