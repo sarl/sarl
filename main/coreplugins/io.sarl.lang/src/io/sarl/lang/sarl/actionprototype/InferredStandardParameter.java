@@ -21,6 +21,8 @@
 
 package io.sarl.lang.sarl.actionprototype;
 
+import java.lang.ref.WeakReference;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 
@@ -36,7 +38,7 @@ public class InferredStandardParameter {
 
 	/** Original parameter.
 	 */
-	protected final EObject source;
+	protected final WeakReference<EObject> source;
 
 	/** Name.
 	 */
@@ -60,7 +62,7 @@ public class InferredStandardParameter {
 	 * @param type the type of the formal parameter.
 	 */
 	public InferredStandardParameter(EObject source, String name, JvmTypeReference type) {
-		this.source = source;
+		this.source = new WeakReference<>(source);
 		this.name = name;
 		this.type = type;
 	}
@@ -70,7 +72,7 @@ public class InferredStandardParameter {
 	 * @return the source parameter.
 	 */
 	public EObject getParameter() {
-		return this.source;
+		return this.source.get();
 	}
 
 	/** Replies the name.
