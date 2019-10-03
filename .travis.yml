@@ -25,23 +25,13 @@ matrix:
   fast_finish: true
   include:
     - os: linux
-      jdk: oraclejdk8
-      addons:
-        apt:
-          packages:
-          - xvfb
-          - lib32z1
-          - lib32ncurses5
-          - genisoimage
+      jdk: openjdk8
       env:
-      - M2_HOME: "$HOME/.binaries/apache-maven-3.5.4"
+      - M2_HOME: "$HOME/.binaries/apache-maven-3.6.2"
       - PATH: "$M2_HOME/bin:$PATH"
-      - DISPLAY: ":99.0"
       before_install:
       - echo "MAVEN_OPTS=\"$MAVEN_OPTS\"" > $HOME/.mavenrc
-      - "sh -e ./build-tools/scripts/travis-download-maven.sh"
-      - "sh -e /etc/init.d/xvfb start"
-      - sleep 3 # give xvfb some time to start
+      - "sh -e ./build-tools/scripts/travis-download-maven.sh 3.6.2"
     - os: osx
       osx_image: xcode8.3 # see https://docs.travis-ci.com/user/osx-ci-environment/
       before_install:
