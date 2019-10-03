@@ -253,7 +253,7 @@ public class SarlBatchCompiler {
 	/** Constructor the batch compiler.
 	 */
 	public SarlBatchCompiler() {
-		this.logger = LoggerFactory.getLogger(getClass());
+		//
 	}
 
 	/** Change the Java compiler.
@@ -479,6 +479,9 @@ public class SarlBatchCompiler {
 	 * @return the logger.
 	 */
 	public Logger getLogger() {
+		if (this.logger == null) {
+			this.logger = LoggerFactory.getLogger(getClass());
+		}
 		return this.logger;
 	}
 
@@ -487,7 +490,7 @@ public class SarlBatchCompiler {
 	 * @param logger the logger.
 	 */
 	public void setLogger(Logger logger) {
-		this.logger = logger == null ? LoggerFactory.getLogger(getClass()) : logger;
+		this.logger = logger;
 	}
 
 	/** Set the provider of resource sets.

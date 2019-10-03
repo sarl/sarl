@@ -304,7 +304,6 @@
       <import plugin="org.eclipse.ui.workbench" version="3.6.0" match="compatible"/>
       <import plugin="org.eclipse.emf.edit" version="2.14.0" match="compatible"/>
       <import plugin="org.eclipse.emf.common.ui" version="2.15.0" match="compatible"/>
-      <import plugin="org.antlr.runtime" version="3.2.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui" version="3.6.0" match="compatible"/>
       <import plugin="org.eclipse.emf.mwe2.runtime" version="2.11.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.draw2d" version="3.7.0" match="compatible"/>
@@ -377,6 +376,7 @@
       <import plugin="org.eclipse.equinox.p2.publisher.eclipse" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="com.google.inject" version="3.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.userstorage.ui" version="1.0.2" match="compatible"/>
+      <import plugin="org.antlr.runtime" version="3.2.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
@@ -604,6 +604,13 @@
 
    <plugin
          id="com.google.guava.failureaccess"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="slf4j.api"
          download-size="0"
          install-size="0"
          version="0.0.0"
