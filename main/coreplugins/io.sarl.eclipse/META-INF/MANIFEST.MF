@@ -30,7 +30,7 @@ Require-Bundle: io.sarl.lang.ui;bundle-version="0.10.0";visibility:=reexport,
  org.eclipse.ui.intro;bundle-version="3.5.700",
  org.eclipse.ui.intro.quicklinks;bundle-version="1.0.300",
  org.eclipse.ui.intro.universal;bundle-version="3.3.600",
- org.arakhne.afc.core.vmutils;bundle-version="15.2.0",
+ org.arakhne.afc.core.vmutils;bundle-version="16.0.0",
  com.google.gson;bundle-version="2.8.5"
 Bundle-Activator: io.sarl.eclipse.SARLEclipsePlugin
 Export-Package: io.sarl.eclipse,

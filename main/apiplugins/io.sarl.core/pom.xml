@@ -15,7 +15,7 @@
 			<plugin>
 				<groupId>io.sarl.maven</groupId>
 				<artifactId>sarl-maven-plugin</artifactId>
-				<!-- Maven extension mechanism seems not working due to the tycho module type.
+				<!-- Maven extension mechanism seems not working because the plugin is defined in the same project.
 				     The different goals must be explicitly provided. -->
 				<executions>
 					<execution>
