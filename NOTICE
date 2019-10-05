@@ -1,4 +1,4 @@
-Copyright 2014-2018 the original authors or authors.
+Copyright 2014-2019 the original authors or authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -12,12 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
+The SARL project does not include third-party sofware.
+This library depends on libraries that are available on the Maven Central Server (see the Maven dependencies of this library for a complete list), or one public P2 reposotiries.
 
-This project uses:
-- Eclipse Xtext
-- Eclipse RCP
-- Hazelcast
-- ZeroMQ
-- Google Guava
-- Google Guice
-- Google Gson
+The SARL project is mostly based on Eclipse Xtext.
+
