@@ -1,19 +1,25 @@
-# MVC pattern
-
-This application follows a MVC (Model-View-Controller) pattern for the GUI communication.
-
-![MVC pattern applied on this project](MVC_en.png)
-
 # Sierpinski's fractals demo
 
 This demo is about Sierpinski's fractals. Those are 3 triangles inside a triangle.
+
+## Launching the demonstration
+
+* From SARL ID:
+  1. Create a launch configuration of type "SARL Application"
+  2. As the main class, select `io.sarl.demos.sierpinskiFractals.SierpinskiFractals`
+* From command-line interface:
+  1. Launch the application as a standard Java program.
+
+## Description of the software
+
+In the Sierpinski's fractals, there are 3 triangles inside a triangle.
 
 ![Agents organization in the fractal demo](Fractal_en.png)
 
 To create this demo, only one agent was required. The idea is to create a main agent and then create 3 other agents in the inner context of the main agent. Then the main agent becomes an event broadcaster and so on and so forth for each fractals newly created.
 
 
-```Scala
+```sarl
 agent Fractal {
 	...
 
@@ -47,3 +53,9 @@ agent Fractal {
 ```
 
 ![Application with the GUI](sierpinski_screenshot.png)
+
+## MVC pattern
+
+This application follows a MVC (Model-View-Controller) pattern for the GUI communication.
+
+![MVC pattern applied on this project](MVC_en.png)

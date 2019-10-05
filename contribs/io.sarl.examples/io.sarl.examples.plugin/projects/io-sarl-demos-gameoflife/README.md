@@ -3,6 +3,17 @@
 
 The goal of this demo is to bring out an implementation of the Game of Life using SARL agents.
 
+## Launching the demonstration
+
+* From SARL ID:
+  1. Create a launch configuration of type "SARL Agent"
+  2. As the agent type, select `io.sarl.demos.gameoflife.Boot`
+* From command-line interface:
+  1. Launch Janus SRE with `io.sarl.demos.gameoflife.Boot` as argument.
+
+
+## Description of the demonstration
+
 The Game of Life is a cellular automaton devised by the British mathematician John Horton Conway in 1970.
 The game is a zero-player game, meaning that its evolution is determined by its initial state, requiring
 no further input. A specific agent interacts with the Game of Life by creating an initial configuration
