@@ -26,10 +26,6 @@
 			<groupId>io.sarl</groupId>
 			<artifactId>io.sarl.util</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>io.sarl</groupId>
-			<artifactId>io.sarl.javafx</artifactId>
-		</dependency>
 	</dependencies>
 
 	<!-- ======================================= -->
