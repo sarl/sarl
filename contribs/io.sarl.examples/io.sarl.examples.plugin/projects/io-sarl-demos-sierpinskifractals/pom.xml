@@ -14,15 +14,8 @@
 	
 	<dependencies>
 		<dependency>
-			<groupId>javafx</groupId>
-			<artifactId>jfxrt</artifactId>
-			<version>${java.version}</version>
-			<scope>system</scope>
-			<systemPath>${java.home}/lib/ext/jfxrt.jar</systemPath>
-		</dependency>
-		<dependency>
 			<groupId>io.sarl.maven</groupId>
-			<artifactId>io.sarl.maven.sdk</artifactId>
+			<artifactId>io.sarl.javafx</artifactId>
 			<version>${sarl.version}</version>
 		</dependency>
 	</dependencies>
