@@ -26,6 +26,11 @@ matrix:
   fast_finish: true
   include:
     - os: linux
+      addons:
+        apt:
+          packages:
+          - openjfx
+          - genisoimage
       jdk: openjdk8
       env:
       - OPENJFX_LIB_PATH: "/usr/share/java/openjfx/jre/lib/ext/jfxrt.jar"
