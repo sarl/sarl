@@ -173,7 +173,7 @@ public class SarlcConfig {
 	 *
 	 * @param path the class output path.
 	 */
-	@BQConfigProperty("Byte code's output path for the SARL compiler.")
+	@BQConfigProperty("Output path for the Java compiler in which the byte-code is written.")
 	public void setClassOutputPath(File path) {
 		this.classOutputPath = path;
 	}
@@ -190,7 +190,7 @@ public class SarlcConfig {
 	 *
 	 * @param path the output path.
 	 */
-	@BQConfigProperty("Output path for the SARL compiler.")
+	@BQConfigProperty("Output path for the SARL compiler in which the Java code is written.")
 	public void setOutputPath(File path) {
 		this.outputPath = path;
 	}

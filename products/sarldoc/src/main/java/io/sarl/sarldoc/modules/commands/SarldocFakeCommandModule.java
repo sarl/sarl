@@ -28,18 +28,17 @@ import javax.inject.Singleton;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import io.bootique.command.CommandManager;
 import org.arakhne.afc.vmutil.DynamicURLClassLoader;
 import org.slf4j.Logger;
 
 import io.sarl.lang.sarlc.configs.SarlcConfig;
 import io.sarl.lang.sarlc.tools.PathDetector;
 import io.sarl.lang.sarlc.tools.SARLClasspathProvider;
-import io.sarl.sarldoc.commands.SarldocCommand;
+import io.sarl.sarldoc.commands.SarldocFakeCommand;
 import io.sarl.sarldoc.configs.SarldocConfig;
 import io.sarl.sarldoc.modules.internal.SarldocDynamicClassLoader;
 
-/** Module for the sarldoc command.
+/** Module for the sarldoc fake command.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$compiler
@@ -47,17 +46,16 @@ import io.sarl.sarldoc.modules.internal.SarldocDynamicClassLoader;
  * @mavenartifactid $ArtifactId$
  * @since 0.10
  */
-public class SarldocCommandModule extends AbstractModule {
+public class SarldocFakeCommandModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		extend(binder()).addCommand(SarldocCommand.class);
+		extend(binder()).addCommand(SarldocFakeCommand.class);
 	}
 
 	/** Provide the command for running sarldoc.
 	 *
 	 * @param sarldocClassLoader the class loader of sarldoc.
-	 * @param manager the provider of the manager of the commands.
 	 * @param dconfig the provider of sarldoc configuration.
 	 * @param cconfig the provider of sarlc configuration.
 	 * @param defaultBootClasspath the provider of the default boot class path.
@@ -68,12 +66,11 @@ public class SarldocCommandModule extends AbstractModule {
 	@SuppressWarnings("static-method")
 	@Provides
 	@Singleton
-	public SarldocCommand provideSarldocCommand(
-			@SarldocDynamicClassLoader DynamicURLClassLoader sarldocClassLoader,
-			Provider<CommandManager> manager, Provider<SarldocConfig> dconfig,
+	public SarldocFakeCommand provideSarldocCommand(
+			@SarldocDynamicClassLoader DynamicURLClassLoader sarldocClassLoader, Provider<SarldocConfig> dconfig,
 			Provider<SarlcConfig> cconfig, Provider<SARLClasspathProvider> defaultBootClasspath,
 			Provider<PathDetector> pathDetector, Provider<Logger> loggerProvider) {
-		return new SarldocCommand(sarldocClassLoader, manager, loggerProvider, dconfig, cconfig, defaultBootClasspath, pathDetector);
+		return new SarldocFakeCommand(sarldocClassLoader, loggerProvider, dconfig, cconfig, defaultBootClasspath, pathDetector);
 	}
 
 }

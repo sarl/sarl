@@ -22,6 +22,7 @@
 package io.sarl.sarldoc.tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;
@@ -262,6 +263,44 @@ public class MainTest {
 		File docFile = FileSystem.join(this.docFolder, "io", "sarl", "lang",
 				"sarlc", "tests", "resources", "test1", "Foo.html");
 		assertTrue("The documentation file " + docFile.getAbsolutePath() + " was not found", docFile.exists());
+	}
+
+	@Test
+	public void fakeTest1() throws IOException {
+		prepareProject("test1");
+		
+		SystemPath classPath = new SystemPath();
+		Iterator<URL> iterator = ClasspathUtil.getClasspath();
+		while (iterator.hasNext()) {
+			final URL classPathElement = iterator.next();
+			final File localElement = FileSystem.convertURLToFile(classPathElement);
+			classPath.add(localElement);
+		}
+		
+		final int retcode = Main.run(
+				"--fake",
+				"--encoding", "UTF-8",
+				"--javasource", SARLVersion.MINIMAL_JDK_VERSION,
+				"--javacompiler", JavaCompiler.JAVAC.name(),
+				"--tempdir", this.tempFolder.getAbsolutePath(),
+				"--directory", this.genFolder.getAbsolutePath(),
+				"--outputdir", this.binFolder.getAbsolutePath(),
+				"--docdirectory", this.docFolder.getAbsolutePath(),
+				"--cp", classPath.toString(),
+				this.srcFolder.getAbsolutePath());
+		assertEquals(0, retcode);
+
+		File javaFile = FileSystem.join(this.genFolder, "io", "sarl", "lang",
+				"sarlc", "tests", "resources", "test1", "Foo.java");
+		assertFalse("The Java file " + javaFile.getAbsolutePath() + " was found", javaFile.exists());
+
+		File classFile = FileSystem.join(this.binFolder, "io", "sarl", "lang",
+				"sarlc", "tests", "resources", "test1", "Foo.class");
+		assertFalse("The binary file " + classFile.getAbsolutePath() + " was found", classFile.exists());
+
+		File docFile = FileSystem.join(this.docFolder, "io", "sarl", "lang",
+				"sarlc", "tests", "resources", "test1", "Foo.html");
+		assertFalse("The documentation file " + docFile.getAbsolutePath() + " was found", docFile.exists());
 	}
 
 	@Test

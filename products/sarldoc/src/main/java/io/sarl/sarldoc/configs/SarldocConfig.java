@@ -22,14 +22,13 @@
 package io.sarl.sarldoc.configs;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.charset.Charset;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -38,13 +37,8 @@ import com.google.common.base.Strings;
 import io.bootique.annotation.BQConfig;
 import io.bootique.annotation.BQConfigProperty;
 import io.bootique.config.ConfigurationFactory;
-import org.apache.commons.lang3.SystemUtils;
-import org.arakhne.afc.vmutil.ClasspathUtil;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.arakhne.afc.vmutil.OperatingSystem;
-
-import io.sarl.docs.doclet.SarlDoclet;
-import io.sarl.maven.bootiqueapp.utils.SystemPath;
 
 /**
  * Configuration for the SARL API documentation generator.
@@ -79,11 +73,6 @@ public class SarldocConfig {
 	public static final String DOCLET_NAME = PREFIX + ".doclet"; //$NON-NLS-1$
 
 	/**
-	 * Default doclet.
-	 */
-	public static final String DOCLET_VALUE = SarlDoclet.class.getName();
-
-	/**
 	 * Name of the property that contains the class path for the doclet.
 	 */
 	public static final String DOCLET_PATH_NAME = PREFIX + ".docletPath"; //$NON-NLS-1$
@@ -91,7 +80,7 @@ public class SarldocConfig {
 	/**
 	 * Name of the property that contains the destination folder for the generated HTML documentation.
 	 */
-	public static final String DOC_OUTPUT_DIRECTORY_NAME = PREFIX + ".outputDirectory"; //$NON-NLS-1$
+	public static final String DOC_OUTPUT_DIRECTORY_NAME = PREFIX + ".documentationOutputDirectory"; //$NON-NLS-1$
 
 	/**
 	 * File value of the property that contains the destination folder for the generated HTML documentation.
@@ -172,6 +161,14 @@ public class SarldocConfig {
 
 	private static final String JAVADOC_BIN_UNIX = "javadoc"; //$NON-NLS-1$
 
+	private static final String NOTMAC_LIB_FOLDER = "lib"; //$NON-NLS-1$
+
+	private static final String MAC_LIB_FOLDER = "Classes"; //$NON-NLS-1$
+
+	private static final String NOTMAC_TOOLS_JAR = "tools.jar"; //$NON-NLS-1$
+
+	private static final String MAC_TOOLS_JAR = "Classes.jar"; //$NON-NLS-1$
+
 	private static final String JAVA_HOME_PROPERTY_NAME = "JAVA_HOME"; //$NON-NLS-1$
 
 	private static final String DEFAULT_NON_PROXY_HOSTS = "localhost|127.*.*.*|10.*.*.*"; //$NON-NLS-1$
@@ -179,6 +176,8 @@ public class SarldocConfig {
 	private static final char NO_PROXY_HOST_SEPARATOR = '|';
 
 	private static final String NO_PROXY_HOST_SEPARATOR_STRING = "|"; //$NON-NLS-1$
+
+	private static final String JAVA_HOME_KEY = "java.home"; //$NON-NLS-1$
 
 	private String javadocExecutable;
 
@@ -196,7 +195,7 @@ public class SarldocConfig {
 
 	private String locale;
 
-	private File outputDirectory;
+	private File documentationOutputDirectory;
 
 	private boolean enableVesionTag = true;
 
@@ -269,13 +268,21 @@ public class SarldocConfig {
 		// By default, System.getProperty( "java.home" ) = JRE_HOME and JRE_HOME
 		// should be in the JDK_HOME
 		// ----------------------------------------------------------------------
-		File javadocExe = FileSystem.join(SystemUtils.getJavaHome(), FileSystem.PARENT_DIRECTORY, BIN_FOLDER, javadocCommand);
+		File javadocExe = FileSystem.join(new File(System.getProperty(JAVA_HOME_KEY)), FileSystem.PARENT_DIRECTORY, BIN_FOLDER, javadocCommand);
 
 		// ----------------------------------------------------------------------
 		// Try to find javadocExe from JAVA_HOME environment variable
 		// ----------------------------------------------------------------------
 		if (!javadocExe.exists() || !javadocExe.isFile()) {
-			final String javaHome = SystemUtils.getEnvironmentVariable(JAVA_HOME_PROPERTY_NAME, null);
+			final String javaHome;
+	        try {
+	        	javaHome = System.getenv(JAVA_HOME_PROPERTY_NAME);
+	    		if (Strings.isNullOrEmpty(javaHome)) {
+					throw new RuntimeException(Messages.SarldocConfig_0);
+	    		}
+	        } catch (final SecurityException ex) {
+				throw new RuntimeException(Messages.SarldocConfig_0);
+	        }
 			if (Strings.isNullOrEmpty(javaHome)) {
 				throw new RuntimeException(Messages.SarldocConfig_0);
 			}
@@ -296,13 +303,75 @@ public class SarldocConfig {
 			if (!javadocExeCanon.exists() || !javadocExeCanon.isFile()) {
 				throw new RuntimeException(MessageFormat.format(Messages.SarldocConfig_2, javadocExe));
 			}
+			return javadocExe.getAbsolutePath();
 		} catch (IOException exception) {
 			throw new RuntimeException(exception);
 		}
+	}
+
+	/**
+	 * Get the path of the "tools.jar" file depending the user entry or try to find it depending the OS
+	 * or the <code>java.home</code> system property or the <code>JAVA_HOME</code> environment variable.
+	 *
+	 * @return the path of the "tools.jar" file, never {@code null}.
+	 * @throws FileNotFoundException if the "tools.jar" was not found.
+	 */
+	@SuppressWarnings("checkstyle:npathcomplexity")
+	public static File findToolsJar() throws FileNotFoundException {
+		final String libFolder;
+		final String toolsJar;
+		if (OperatingSystem.MACOSX.isCurrentOS()) {
+			libFolder = MAC_LIB_FOLDER;
+			toolsJar = MAC_TOOLS_JAR;
+		} else {
+			libFolder = NOTMAC_LIB_FOLDER;
+			toolsJar = NOTMAC_TOOLS_JAR;
+		}
+
+		// ----------------------------------------------------------------------
+		// Try to find javadocExe from System.getProperty( "java.home" )
+		// By default, System.getProperty( "java.home" ) = JRE_HOME and JRE_HOME
+		// should be in the JDK_HOME
+		// ----------------------------------------------------------------------
+		File file = FileSystem.join(new File(System.getProperty(JAVA_HOME_KEY)),
+				FileSystem.PARENT_DIRECTORY, libFolder, toolsJar);
+
+		// ----------------------------------------------------------------------
+		// Try to find javadocExe from JAVA_HOME environment variable
+		// ----------------------------------------------------------------------
+		if (!file.exists() || !file.isFile()) {
+			final String javaHome;
+	        try {
+	        	javaHome = System.getenv(JAVA_HOME_PROPERTY_NAME);
+	    		if (Strings.isNullOrEmpty(javaHome)) {
+					throw new FileNotFoundException(Messages.SarldocConfig_3);
+	    		}
+	        } catch (final SecurityException ex) {
+				throw new FileNotFoundException(Messages.SarldocConfig_3);
+	        }
+			if (Strings.isNullOrEmpty(javaHome)) {
+				throw new FileNotFoundException(Messages.SarldocConfig_3);
+			}
+			try {
+				final File javaHomeDirectory = FileSystem.convertStringToFile(javaHome).getCanonicalFile();
+				if (!javaHomeDirectory.exists() || javaHomeDirectory.isFile()) {
+					throw new FileNotFoundException(Messages.SarldocConfig_3);
+				}
+
+				file = FileSystem.join(javaHomeDirectory, libFolder, toolsJar);
+			} catch (IOException exception) {
+				throw new FileNotFoundException(Messages.SarldocConfig_3);
+			}
+		}
+
 		try {
-			return javadocExe.getCanonicalPath();
+			final File fileCanon = file.getCanonicalFile();
+			if (!fileCanon.exists() || !fileCanon.isFile()) {
+				throw new FileNotFoundException(Messages.SarldocConfig_3);
+			}
+			return fileCanon;
 		} catch (IOException exception) {
-			throw new RuntimeException(exception);
+			throw new FileNotFoundException(Messages.SarldocConfig_3);
 		}
 	}
 
@@ -422,12 +491,9 @@ public class SarldocConfig {
 
 	/** Replies the doclet.
 	 *
-	 * @return the classname of the doclet.
+	 * @return the classname of the doclet, or {@code null} if not specified.
 	 */
 	public String getDoclet() {
-		if (Strings.isNullOrEmpty(this.doclet)) {
-			this.doclet = DOCLET_VALUE;
-		}
 		return this.doclet;
 	}
 
@@ -445,16 +511,6 @@ public class SarldocConfig {
 	 * @return the class path for the doclet.
 	 */
 	public String getDocletPath() {
-		if (Strings.isNullOrEmpty(this.docletPath)) {
-			final SystemPath path = new SystemPath();
-			final Iterator<URL> iterator = ClasspathUtil.getClasspath();
-			while (iterator.hasNext()) {
-				final URL classpathEntry = iterator.next();
-				final File entry = FileSystem.convertURLToFile(classpathEntry);
-				path.add(entry);
-			}
-			this.docletPath = path.toString();
-		}
 		return this.docletPath;
 	}
 
@@ -471,11 +527,11 @@ public class SarldocConfig {
 	 *
 	 * @return the output directory
 	 */
-	public File getOutputDirectory() {
-		if (this.outputDirectory == null) {
-			this.outputDirectory = DOC_OUTPUT_DIRECTORY_FILE;
+	public File getDocumentationOutputDirectory() {
+		if (this.documentationOutputDirectory == null) {
+			this.documentationOutputDirectory = DOC_OUTPUT_DIRECTORY_FILE;
 		}
-		return this.outputDirectory;
+		return this.documentationOutputDirectory;
 	}
 
 	/** Change the output directory for the generated HTML documentation.
@@ -484,8 +540,8 @@ public class SarldocConfig {
 	 */
 	@BQConfigProperty("Specify the output folder into which the generated HTML documentation will be copied. "
 			+ "If it is not specified, the default sarldoc folder is used.")
-	public void setOutputDirectory(File outputDirectory) {
-		this.outputDirectory = outputDirectory;
+	public void setDocumentationOutputDirectory(File outputDirectory) {
+		this.documentationOutputDirectory = outputDirectory;
 	}
 
 	/** Replies if {@code @version} should be included into the documentation.

@@ -21,30 +21,24 @@
 
 package io.sarl.sarldoc.modules.internal;
 
-import org.eclipse.osgi.util.NLS;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-/** Messages for the SARL batch compiler.
+import com.google.inject.BindingAnnotation;
+
+/** Annotation for injecting the dynamic class loader of sarldoc.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @ExcludeFromApidoc
+ * @since 0.10
  */
-@SuppressWarnings("all")
-public class Messages extends NLS {
-	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
-	public static String SarldocDefaultCommandModuleProvider_0;
-	public static String SarldocApplicationModule_0;
-	public static String SarldocApplicationModule_1;
-	public static String SarldocApplicationModule_2;
-	public static String SarldocApplicationModuleProvider_0;
-	public static String SarldocDynamicClassLoaderModuleProvider_0;
-	static {
-		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
-	}
-
-	private Messages() {
-	}
+@Target({ ElementType.PARAMETER, ElementType.FIELD, ElementType.METHOD })
+@Retention(RetentionPolicy.RUNTIME)
+@BindingAnnotation
+public @interface SarldocDynamicClassLoader {
+	//
 }

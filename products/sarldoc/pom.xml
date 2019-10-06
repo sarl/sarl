@@ -16,16 +16,13 @@
 	<properties>
 		<cliToolName>sarldoc</cliToolName>
 		<cliToolMainClass>io.sarl.sarldoc.Main</cliToolMainClass>
+		<sarldocDefaultDoclet>io.sarl.docs.doclet.SarlDoclet</sarldocDefaultDoclet>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>io.sarl</groupId>
 			<artifactId>io.sarl.lang.sarlc</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>io.sarl.docs</groupId>
@@ -61,6 +58,10 @@
 								<replacement>
 									<token>@sarldoctoolname@</token>
 									<value>${cliToolName}</value>
+								</replacement>
+								<replacement>
+									<token>@sarldocdefaultdoclet@</token>
+									<value>${sarldocDefaultDoclet}</value>
 								</replacement>
 							</replacements>
 						</configuration>
@@ -117,7 +118,7 @@
 							<classPath>
 								<mainClass>${cliToolMainClass}</mainClass>
 								<addDependencies>false</addDependencies>
-								<postCp>%JAVA_HOME\lib\tools.jar</postCp>
+								<postCp>%JAVA_HOME\..\lib\tools.jar</postCp>
 							</classPath>
 							<jre>
 								<minVersion>${compiler.level}.0</minVersion>
@@ -192,7 +193,7 @@
 							<mainClass>${cliToolMainClass}</mainClass>
 							<iconFile>/icons/sarldoc.icns</iconFile>
 							<generateDiskImageFile>true</generateDiskImageFile>
-							<additionalClasspath>:$JAVA_HOME/Classes/classes.jar</additionalClasspath>
+							<additionalClasspath>:$JAVA_HOME/../Classes/classes.jar</additionalClasspath>
 						</configuration>
 					</execution>
 				</executions>

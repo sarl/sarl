@@ -31,6 +31,10 @@ package io.sarl.sarldoc;
  */
 public final class Constants {
 
+	/** Name of the default doclet class.
+	 */
+	public static final String DEFAULT_DOCLET = "@sarldocdefaultdoclet@"; //$NON-NLS-1$
+
 	/** Default name of the sarldoc program.
 	 */
 	public static final String PROGRAM_NAME = "@sarldoctoolname@"; //$NON-NLS-1$

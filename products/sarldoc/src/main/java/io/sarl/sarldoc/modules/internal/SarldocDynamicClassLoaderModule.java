@@ -21,30 +21,39 @@
 
 package io.sarl.sarldoc.modules.internal;
 
-import org.eclipse.osgi.util.NLS;
+import javax.inject.Singleton;
 
-/** Messages for the SARL batch compiler.
+import com.google.inject.AbstractModule;
+import com.google.inject.Injector;
+import com.google.inject.Provides;
+import org.arakhne.afc.vmutil.DynamicURLClassLoader;
+
+/** Module for injecting the dynamic class loader.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @ExcludeFromApidoc
+ * @since 0.10
  */
-@SuppressWarnings("all")
-public class Messages extends NLS {
-	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
-	public static String SarldocDefaultCommandModuleProvider_0;
-	public static String SarldocApplicationModule_0;
-	public static String SarldocApplicationModule_1;
-	public static String SarldocApplicationModule_2;
-	public static String SarldocApplicationModuleProvider_0;
-	public static String SarldocDynamicClassLoaderModuleProvider_0;
-	static {
-		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+public class SarldocDynamicClassLoaderModule extends AbstractModule {
+
+	@Override
+	protected void configure() {
+		//
 	}
 
-	private Messages() {
+	/** Create the dynamic class loader.
+	 *
+	 * @param injector the current injector.
+	 * @return the class loader;
+	 */
+	@SuppressWarnings("static-method")
+	@Provides
+	@Singleton
+	@SarldocDynamicClassLoader
+	public DynamicURLClassLoader providesDynamicURLClassLoader(Injector injector) {
+		return DynamicURLClassLoader.newInstance(injector.getClass().getClassLoader());
 	}
+
 }
