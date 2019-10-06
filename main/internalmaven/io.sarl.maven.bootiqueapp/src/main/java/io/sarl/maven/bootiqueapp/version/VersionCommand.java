@@ -63,7 +63,9 @@ public class VersionCommand extends CommandWithMetadata {
 		final StringBuilder text = new StringBuilder();
 		text.append(MessageFormat.format(Messages.VersionCommand_1,
 				SARLVersion.SARL_RELEASE_VERSION, SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING,
-				System.getProperty("java.version"))); //$NON-NLS-1$
+				System.getProperty("java.vm.name"), //$NON-NLS-1$
+				System.getProperty("java.version"), //$NON-NLS-1$
+				System.getProperty("java.home"))); //$NON-NLS-1$
 		this.bootLogger.stdout(text.toString());
 		return CommandOutcome.succeeded();
 	}
