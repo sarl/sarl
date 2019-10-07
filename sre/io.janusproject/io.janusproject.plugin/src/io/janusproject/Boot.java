@@ -481,7 +481,7 @@ public final class Boot {
 	 * @see #startJanus(Class, Object...)
 	 */
 	public static void main(String[] args) {
-		System.exit(mainWithExitCode(args));
+		mainWithExitCode(args);
 	}
 
 	/**
