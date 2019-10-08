@@ -245,6 +245,14 @@
 				<role>Maven Configuration</role>
 			</roles>
 		</contributor>
+		<contributor>
+			<name>Sebastian Sardina</name>
+			<email>sebastian.sardina@rmit.edu.au</email>
+			<url>https://github.com/ssardina</url>
+			<roles>
+				<role>Documentation Contributor</role>
+			</roles>
+		</contributor>
 	</contributors>
 
 	<!-- =================== -->
