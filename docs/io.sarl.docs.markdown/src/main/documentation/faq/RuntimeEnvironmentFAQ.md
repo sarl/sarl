@@ -37,7 +37,8 @@ Official website: [www.janusproject.io](http://www.janusproject.io)
 If you cannot find an answer to your question in the FAQ, nor the reference documents, nor
 the [existing SARL issues](https://github.com/sarl/sarl/issues),
 you may ask the SARL developers on 
-[the SARL forum](https://groups.google.com/forum/#!forum/sarl).
+[the SARL forum](https://groups.google.com/forum/#!forum/sarl), or 
+on the [instant messaging forum](https://gitter.im/sarl/Lobby).
 
 
 ### Where can I found information on the release planning of Janus?
