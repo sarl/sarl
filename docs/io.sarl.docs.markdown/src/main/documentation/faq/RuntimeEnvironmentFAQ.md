@@ -59,7 +59,8 @@ standard may be used to run Janus.
 
 ### What is the version of the Java virtual machine to install?
 
-Janus requires the JRE and the JDK [:compiler.level!] or higher to run and compile.
+Janus requires the JRE and the JDK [:compiler.level!] or higher to run and compile, 
+respectively.
 Note that if you plan to create Android applications, you may 
 configure your JDK to produce 1.6 class files from [:compiler.level!] Java code,
 depending of the current supported standard on Android platforms.
@@ -84,9 +85,6 @@ version of the SARL tools, which are embedded in Eclipse.
 For solving this problem, you must download the latest
 [Janus platform](http://www.janusproject.io), and install it in your Eclipse
 (Menu <code>Window&gt; Preferences&gt; SARL&gt; Installed SREs</code>).
-
-<caution>If the latest stable version of Janus is not working, you should
-download the latest development version.</caution>
 
 
 ### Error: "Incompatible SRE with SARL 1.1.1.1. Version must be lower than 0.0.0."
@@ -130,13 +128,14 @@ The Jar archiver uses the default file encoding of the operating system.
 On Linux and MacOS 10, it is almost UTF-8. On Windows, it is Latin1. And on MacOS (before 10),
 it is Mac-Roman.
 
-Unfortunately, the Janus Jar file is generated on a Linux operating system (UTF-8).
+The Janus Jar file is generated on a Linux operating system (UTF-8).
 When the Java virtual machine tries to uncompress and use the content of the Jar, it
-complains about an invalid charset format.
+may complain about an invalid charset format.
 
 For solving this issue, you could launch your Eclipse with the command line option
 `-Dfile.encoding=UTF-8`, which is forcing the Eclipse product to consider the
 file as encoded with the UTF-8 charset.
+Note that this option is defined into the Eclipse SARL product since version 0.4.
 
 
 ## Runtime Behavior of Janus
@@ -157,7 +156,7 @@ how the Java executor is running the handlers on the threads.
 
 ### How events are treated by the run-time environment?
 
-When the event `e` is received by an agent the following algorithm is applied:
+When the event `e` of type `E` is received by an agent the following algorithm is applied:
 ```
 if "on Initialize" is currently running then
    add e to a buffer of events.

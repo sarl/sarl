@@ -22,7 +22,7 @@ Syntactically and semantically SARL has its roots in the Java programming langua
 * [Powerful switch expressions](../reference/general/SwitchExpression.md) - type based switching with implicit casts
 * [No statements](../reference/GeneralSyntax.md#details-on-the-sarl-language-elements) - everything is an expression
 * Full support for Java generics - including all conformance and conversion rules
-* Translates to Java not bytecode - understand what is going on and use your code for platforms such as Android or GWT
+* Translates to Java not byte code - understand what is going on and use your code for platforms such as Android or GWT
 
 Unlike other JVM languages, SARL has zero interoperability issues with Java: everything you write interacts with Java exactly as expected. At the same time, SARL is much more concise, readable and expressive.
 
@@ -125,11 +125,11 @@ that fully supports the concepts of SARL.
 We can compare the SARL universe with the Java universe:
 
 
-|                          | SARL Universe       | Java Universe               |
-| ------------------------ | ------------------- | --------------------------- |
-| Language Specification   | SARL Specification  | Java Specification          |
-| Standard Development Kit | SARL SDK            | J(ava)DK                    |
-| Runtime environment      | Janus, TinyMAS...   | Hotspot, IcedTea, Dalvik... |
+|                          | SARL Universe                 | Java Universe                         |
+| ------------------------ | ----------------------------- | ------------------------------------- |
+| Language Specification   | SARL Specification            | Java Specification                    |
+| Standard Development Kit | SARL SDK                      | J(ava)DK                              |
+| Runtime environment      | SRE, e.g. Janus, TinyMAS...   | JVM, e.g. Hotspot, IcedTea, Dalvik... |
 
 
 ### Where can I find information on the release planning of SARL?
@@ -143,13 +143,17 @@ on Github.
 
 If your question is not addressed in the FAQ, the reference documents, or
 the [existing issues](https://github.com/sarl/sarl/issues), you
-may ask the SARL developers on 
-[the SARL forum](https://groups.google.com/forum/#!forum/sarl).
+may ask the SARL developers on the 
+[SARL forum](https://groups.google.com/forum/#!forum/sarl), or 
+on the [instant messaging forum](https://gitter.im/sarl/Lobby).
 
 
 ### Where can I find more information and projects related to SARL?
 
-A community driven list of useful SARL libraries, frameworks and software
+A list of successful projects are given on the [Community](http://sarl.io/community/index.html#sucessstories)
+page of the SARL web site.
+
+Additionally, a community driven list of useful SARL libraries, frameworks and software
 is maintained on [Github](https://github.com/sarl/awesome-sarl).
 This is not a catalog of all the libraries, just a starting point for your explorations.
 This list is used by the SARL team to update the official web site of SARL.
@@ -178,7 +182,7 @@ Most of the time the problem is due to an incompatibility between
 the configuration of your operating system or Java virtual machine,
 and the SARL Eclipse product.
 
-If a problem occured, find the ".log" file in which Eclipse is writting
+If a problem occurred, find the ".log" file in which Eclipse is writing
 the complete error trace. Usually, it is in your home directory or in
 the folder of the SARL Eclipse executable file.
 
