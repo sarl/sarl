@@ -113,7 +113,7 @@ public class JdkExecutorModule extends AbstractModule {
 						keepAliveDuration, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
 			} else {
 				// Use the default thread executor
-				executor = Executors.newCachedThreadPool();
+				executor = Executors.newFixedThreadPool(JanusConfig.MAX_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE);
 			}
 
 			if (this.rejectedExecutionHandler != null && executor instanceof ThreadPoolExecutor) {
