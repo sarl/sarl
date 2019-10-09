@@ -41,6 +41,18 @@
 	</extension>
 
 	<extension point="org.eclipse.ui.newWizards">
+		<category id="io.sarl.UIExamples"
+			name="%SARLUIExamplesCategory"
+			parentCategory="org.eclipse.ui.Examples" />
+	</extension>
+
+	<extension point="org.eclipse.ui.newWizards">
+		<category id="io.sarl.project.UIExamples"
+			name="%SARLUIExamplesProjectCategory"
+			parentCategory="io.sarl.eclipse.category.wizards" />
+	</extension>
+
+	<extension point="org.eclipse.ui.newWizards">
 		<category id="io.sarl.Tutorials"
 			name="%SARLTutorialsCategory"
 			parentCategory="org.eclipse.ui.Examples" />
@@ -451,6 +463,37 @@
 			<fileToOpen location="io-sarl-demos-gameoflife/src/main/sarl/io/sarl/demos/gameoflife/Boot.sarl"/>
 		</example>
 	</extension>
+	
+	<!-- ========= io-sarl-demos-boids-awt Example ========= -->
+	
+	<extension point="org.eclipse.ui.newWizards">
+	    <wizard id="io.sarl.demos.boids.awt"
+	        name="%io_sarl_demos_boids_awt_Name"
+	        class="io.sarl.examples.wizard.SarlExampleInstallerWizard"
+	        category="org.eclipse.ui.Examples/io.sarl.UIExamples"
+	        icon="/icons/io-sarl-demos-boids-awt.png"
+	        project="true">
+	        <description>%io_sarl_demos_boids_awt_Description</description>
+	    </wizard>
+	</extension>
+	
+	<extension point="org.eclipse.ui.newWizards">
+	    <wizard id="io.sarl.demos.boids.awt"
+	        name="%io_sarl_demos_boids_awt_Name"
+	        class="io.sarl.examples.wizard.SarlExampleInstallerWizard"
+	        category="io.sarl.eclipse.category.wizards/io.sarl.project.UIExamples"
+	        icon="/icons/io-sarl-demos-boids-awt.png"
+	        project="true">
+	        <description>%io_sarl_demos_boids_awt_Description</description>
+	    </wizard>
+	</extension>
+	
+	<extension point="org.eclipse.emf.common.ui.examples">
+	    <example wizardID="io.sarl.demos.boids.awt" pageImage="/icons/io-sarl-demos-boids-awt.png">
+	        <projectDescriptor name="io-sarl-demos-boids-awt" contentURI="contents/io-sarl-demos-boids-awt.zip" description="%io_sarl_demos_boids_awt_Description"/>
+	        <fileToOpen location="io-sarl-demos-boids-awt/src/main/sarl/io/sarl/demos/boids/BoidsSimulationLauncher.sarl"/>
+	    </example>
+	</extension>
 
 	<!-- ========= io-sarl-templates-javafx Template ========= -->
 	
@@ -545,6 +588,17 @@
 	         description="%io_sarl_demos_gameoflife_Description"
 	         label="%io_sarl_demos_gameoflife_Name"
 	         icon="/icons/io-sarl-demos-gameoflife.png">
+	      </command>
+	</extension>
+
+	<!-- adding a new quicklink for the Boids with AWT example -->
+	<extension
+	      point="org.eclipse.ui.intro.quicklinks">
+	      <command
+	           id="org.eclipse.ui.newWizard(newWizardId=io.sarl.demos.boids.awt)"
+	         description="%io_sarl_demos_boids_awt_Description"
+	         label="%io_sarl_demos_boids_awt_Name"
+	         icon="/icons/io-sarl-demos-boids-awt.png">
 	      </command>
 	</extension>
 

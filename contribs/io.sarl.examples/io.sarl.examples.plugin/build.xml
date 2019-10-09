@@ -26,6 +26,7 @@
 		<zip_example name="io-sarl-demos-fireworks" />
 		<zip_example name="io-sarl-demos-sierpinskifractals" />
 		<zip_example name="io-sarl-demos-gameoflife" />
+		<zip_example name="io-sarl-demos-boids-awt" />
 		<zip_example name="io-sarl-templates-javafx" />
 	</target>
 

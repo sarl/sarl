@@ -112,6 +112,18 @@
  			</link>
  		</group>
 
+		<html src="./ui_intro.html"/>
+
+		<group style-id="quick-links" id="quick-links">
+		    <link style-id="content-link" label="Reynolds' Boids with AWT interface"
+		        url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.demos.boids.awt%29"
+		        id="UIExemple-Boids-AWT-Sample">
+		        <text>
+		            An AWT application showing the simulation of Reynolds' Boids.
+		        </text>
+		    </link>
+		</group>
+
  		<html src="./tutorials_intro.html"/>
 
 		<group style-id="quick-links" id="quick-links">
