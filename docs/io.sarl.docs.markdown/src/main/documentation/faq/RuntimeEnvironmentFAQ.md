@@ -1,4 +1,4 @@
-# FAQ related to the Runtime Environment 
+    # FAQ related to the Runtime Environment 
 
 [:Outline:]
 
@@ -75,6 +75,37 @@ Three methods are available for launching one or more agents in the Janus platfo
 * [Inside the Eclipse IDE](../gettingstarted/RunSARLAgentEclipse.md).
 * [From a Java program](../gettingstarted/RunSARLAgentJava.md).
 
+
+### In the Eclipse SARL product, what is the difference between the launch configurations "SARL Agent" and "SARL Application"?
+
+There is two methods for starting an application that will run SARL agents:
+
+* start an agent that will create all the components of the application, or
+* start a standard Java application that will start the SRE later during its execution. 
+
+For the first case, the qualified name of the agent type to be launched must be provided.
+This case is supported by the *SARL Agent* launch configuration.
+
+For the second case, the `main()` function of the application should be launched in 
+order to start it. This case is supported by the *SARL Application* launch configuration.
+
+Both launch configurations adds the SARL Run-time Environment into the run-time classpath.
+The selected SRE depends on the configuration of your Eclipse SARL product.  
+
+
+### In the Eclipse SARL product, what is the difference between the launch configurations "Java Application" and "SARL Application"?
+
+Both "Java Application" and "SARL Application" are launch configurations for starting 
+a Java application, i.e. invoking the `main()` function for starting up.
+
+The difference between them is that the "SARL Application" launch configuration is 
+automatically adding in the application classpath the SARL Run-time Environment that
+is configured into your Eclipse SARL project.
+The "Java Application" does not.
+
+Consequently, if you need to run agents and if you start your application with a "Java 
+Application" launch configuration, you must add manually the SRE libraries in the classpath.
+ 
 
 ### Error: "The SRE is not standalone. It does not contain the Java dependencies."
 
