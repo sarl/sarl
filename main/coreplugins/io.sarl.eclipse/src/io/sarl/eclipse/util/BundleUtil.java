@@ -60,6 +60,7 @@ import org.osgi.framework.wiring.BundleWiring;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.util.Utilities.BundleURLMappings;
+import io.sarl.eclipse.util.classpath.JavaClasspathParser;
 import io.sarl.lang.SARLConfig;
 
 /** Utilities around bundles. It should be replaced

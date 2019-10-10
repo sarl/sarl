@@ -63,7 +63,6 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.ui.dialogs.StatusInfo;
 import org.eclipse.jdt.internal.ui.util.CoreUtility;
 import org.eclipse.jdt.internal.ui.util.ExceptionHandler;
-import org.eclipse.jdt.internal.ui.wizards.ClassPathDetector;
 import org.eclipse.jdt.internal.ui.wizards.NewWizardMessages;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jdt.ui.wizards.JavaCapabilityConfigurationPage;
@@ -75,6 +74,7 @@ import org.eclipse.ui.actions.WorkspaceModifyDelegatingOperation;
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.natures.SARLProjectConfigurator;
+import io.sarl.eclipse.util.classpath.SarlClassPathDetector;
 import io.sarl.lang.util.OutParameter;
 
 /**
@@ -318,8 +318,8 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 				outputLocation.set(this.firstPage.getOutputLocation());
 			}
 			// Override with the existing configuration
-			final ClassPathDetector detector = new ClassPathDetector(
-					this.currProject, subMonitor.newChild(1));
+			final SarlClassPathDetector detector = new SarlClassPathDetector(
+					this.currProject, this.firstPage, subMonitor.newChild(1));
 			entries = detector.getClasspath();
 			outLocation = detector.getOutputLocation();
 			if (entries.length == 0) {

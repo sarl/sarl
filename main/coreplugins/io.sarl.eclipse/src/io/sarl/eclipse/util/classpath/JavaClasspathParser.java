@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.eclipse.util;
+package io.sarl.eclipse.util.classpath;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -288,36 +288,6 @@ public final class JavaClasspathParser {
 
         return entries;
     }
-
-    // public IClasspathEntry decodeClasspathEntry(String projectName, IPath projectRootAbsoluteFullPath,String encodedEntry) {
-    //
-    // try {
-    // if (encodedEntry == null) return null;
-    // StringReader reader = new StringReader(encodedEntry);
-    // Element node;
-    //
-    // try {
-    // DocumentBuilder parser =
-    // DocumentBuilderFactory.newInstance().newDocumentBuilder();
-    // node = parser.parse(new InputSource(reader)).getDocumentElement();
-    // } catch (SAXException e) {
-    // return null;
-    // } catch (ParserConfigurationException e) {
-    // return null;
-    // } finally {
-    // reader.close();
-    // }
-    //
-    // if (!node.getNodeName().equalsIgnoreCase(ClasspathEntry.TAG_CLASSPATHENTRY)
-    // || node.getNodeType() != Node.ELEMENT_NODE) {
-    // return null;
-    // }
-    // return elementDecode(node, projectName,projectRootAbsoluteFullPath, null/*not interested in unknown elements*/);
-    // } catch (IOException e) {
-    // // bad format
-    // return null;
-    // }
-    // }
 
     /**
      * Decodes one XML element with the XML stream.

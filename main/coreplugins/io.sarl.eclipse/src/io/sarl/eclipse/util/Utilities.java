@@ -21,6 +21,8 @@
 
 package io.sarl.eclipse.util;
 
+import java.util.Iterator;
+
 import com.google.common.base.Strings;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IClasspathAttribute;
@@ -52,6 +54,23 @@ public final class Utilities {
 
 	private Utilities() {
 		//
+	}
+
+	/** Replies if the given path is nested in one of the given paths.
+	 *
+	 * @param path the path to search for.
+	 * @param rootPaths the root paths.
+	 * @return {@code true} if the {@code path} is nested into one of the {@code rootPaths}.
+	 * @since 0.10
+	 */
+	public static boolean isNested(IPath path, Iterator<IPath> rootPaths) {
+		while (rootPaths.hasNext()) {
+			final IPath other = rootPaths.next();
+			if (other.isPrefixOf(path)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/** Null-safe version parser.
