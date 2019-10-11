@@ -110,6 +110,7 @@ import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
 import io.sarl.eclipse.natures.SARLProjectConfigurator;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.SREConfigurationBlock;
+import io.sarl.eclipse.util.classpath.SarlDefaultClassPathProvider;
 import io.sarl.lang.SARLConfig;
 import io.sarl.lang.SARLVersion;
 
@@ -127,7 +128,7 @@ import io.sarl.lang.SARLVersion;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class MainProjectWizardPage extends WizardPage {
+public class MainProjectWizardPage extends WizardPage implements SarlDefaultClassPathProvider {
 
 	private static final IWorkingSet[] EMPTY_WORKING_SET_ARRAY = new IWorkingSet[0];
 
@@ -374,12 +375,7 @@ public class MainProjectWizardPage extends WizardPage {
 		return this.jreGroup.getSelectedCompilerCompliance();
 	}
 
-	/**
-	 * Returns the default class path entries to be added on new projects.
-	 * By default this is the JRE container as selected by the user.
-	 *
-	 * @param classpathEntries the collection in which the classpath entries will be added.
-	 */
+	@Override
 	public void putDefaultClasspathEntriesIn(Collection<IClasspathEntry> classpathEntries) {
 		final IPath newPath = this.jreGroup.getJREContainerPath();
 		if (newPath != null) {
