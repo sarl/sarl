@@ -603,13 +603,13 @@ public class SARLValidator extends AbstractSARLValidator {
 	public void checkClassPath(XtendFile sarlScript) {
 		final TypeReferences typeReferences = getServices().getTypeReferences();
 
-		if (!Utils.isCompatibleJREVersion()) {
+		if (!Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment()) {
 			error(
 					MessageFormat.format(
 							Messages.SARLValidator_3,
 							System.getProperty("java.specification.version"), //$NON-NLS-1$
-							SARLVersion.MINIMAL_JDK_VERSION,
-							SARLVersion.MAXIMAL_JDK_VERSION),
+							SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT,
+							SARLVersion.INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT),
 					sarlScript,
 					XtendPackage.Literals.XTEND_FILE__PACKAGE,
 					JDK_NOT_ON_CLASSPATH);
@@ -617,13 +617,13 @@ public class SARLValidator extends AbstractSARLValidator {
 			final GeneratorConfig generatorConfiguration = getGeneratorConfig(sarlScript);
 			final JavaVersion generatorVersion = generatorConfiguration.getJavaSourceVersion();
 			if (generatorVersion == null
-					|| !Utils.isCompatibleJREVersion(generatorVersion.getQualifier())) {
+					|| !Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath(generatorVersion.getQualifier())) {
 				error(
 						MessageFormat.format(
 								Messages.SARLValidator_4,
 								generatorVersion,
-								SARLVersion.MINIMAL_JDK_VERSION,
-								SARLVersion.MAXIMAL_JDK_VERSION),
+								SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH,
+								SARLVersion.INCOMPATIBLE_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH),
 						sarlScript,
 						XtendPackage.Literals.XTEND_FILE__PACKAGE,
 						JDK_NOT_ON_CLASSPATH);

@@ -293,7 +293,8 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 		// Get the template resource.
 		final URL templateUrl = getPomTemplateLocation();
 		if (templateUrl != null) {
-			final String compliance = Strings.isNullOrEmpty(compilerCompliance) ? SARLVersion.MINIMAL_JDK_VERSION : compilerCompliance;
+			final String compliance = Strings.isNullOrEmpty(compilerCompliance)
+					? SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH : compilerCompliance;
 			final String groupId = getDefaultMavenGroupId();
 			// Read the template and do string replacement.
 			final StringBuilder content = new StringBuilder();

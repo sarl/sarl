@@ -15,9 +15,9 @@ run a SARL program. The official standard SRE supported by the SARL developers i
 ### What is Janus?
 
 Janus is an open-source multi-agent platform fully implemented 
-in Java [:compiler.level!]. Janus enables developers to quickly create 
+in Java [:sarl-dsl.min.jdk.version!]. Janus enables developers to quickly create 
 web, enterprise and desktop agent-based applications.
-[:Fact:]("[:compiler.level!]".shouldBeAtLeastJava)
+[:Fact:]("[:sarl-dsl.min.jdk.version!]".shouldBeAtLeastJava)
 
 __Janus is an agent execution platform not an agent-oriented language.__
 
@@ -53,19 +53,20 @@ on Github.
 
 The [Janus runtime platform](http://www.janusproject.io)
 is a Java application. Every operating system which has 
-a Java Virtual Machine with at least with the [:compiler.level!]
+a Java Virtual Machin, especially the Java Development Kit (JDK),
+with at least with the [:sarl-run.min.jdk.version!]
 standard may be used to run Janus. 
-[:Fact:]("[:compiler.level!]".shouldBeAtLeastJava)
+[:Fact:]("[:sarl-run.min.jdk.version!]".shouldBeAtLeastJava)
 
 
 ### What is the version of the Java virtual machine to install?
 
-Janus requires the JRE and the JDK [:compiler.level!] or higher to run and compile, 
-respectively.
+Janus requires the JDK [:sarl-run.min.jdk.version!] or higher
+(and strictly lower than [:sarl-run.next.unsupported.jdk.version!]) to run and compile.
 Note that if you plan to create Android applications, you may 
-configure your JDK to produce 1.6 class files from [:compiler.level!] Java code,
+configure your JDK to produce 1.6 class files from [:sarl-run.min.jdk.version!] Java code,
 depending of the current supported standard on Android platforms.
-[:Fact:]("[:compiler.level!]".shouldBeAtLeastJava)
+[:Fact:]("[:sarl-run.min.jdk.version!]".shouldBeAtLeastJava)
 
 
 ### How to launch an agent in Janus?
@@ -91,7 +92,7 @@ For the second case, the `main()` function of the application should be launched
 order to start it. This case is supported by the *SARL Application* launch configuration.
 
 Both launch configurations adds the SARL Run-time Environment into the run-time classpath.
-The selected SRE depends on the configuration of your Eclipse SARL product.  
+The selected SRE depends on the configuration of your Eclipse SARL product.
 
 
 ### In the Eclipse SARL product, what is the difference between the launch configurations "Java Application" and "SARL Application"?

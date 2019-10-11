@@ -2772,15 +2772,15 @@ public class SarlDocumentationParser {
 
 		/** Default pattern.
 		 */
-		static final String DEFAULT_REFERENCE_PATTERN = "\\[:[a-zA-Z0-9\\._]+:\\]"; //$NON-NLS-1$
+		static final String DEFAULT_REFERENCE_PATTERN = "\\[:[a-zA-Z0-9\\._\\-@~]+:\\]"; //$NON-NLS-1$
 
 		/** Default pattern.
 		 */
-		static final String DEFAULT_RAW_REFERENCE_PATTERN = "\\[:[a-zA-Z0-9\\._]+\\!\\]"; //$NON-NLS-1$
+		static final String DEFAULT_RAW_REFERENCE_PATTERN = "\\[:[a-zA-Z0-9\\._\\-@~]+\\!\\]"; //$NON-NLS-1$
 
 		/** Default pattern.
 		 */
-		static final String DEFAULT_DEFINITION_PATTERN = "\\[:[a-zA-Z0-9\\._]+\\]"; //$NON-NLS-1$
+		static final String DEFAULT_DEFINITION_PATTERN = "\\[:[a-zA-Z0-9\\._\\-@~]+\\]"; //$NON-NLS-1$
 
 		/** Default pattern.
 		 */

@@ -6,7 +6,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<properties>
 		<sarl.version>%sarlreleaseversion%</sarl.version>
-        <compiler.level>%javaversion%</compiler.level>
+        <javac.level>%javaversion%</javac.level>
         <project.build.sourceEncoding>%fileencoding%</project.build.sourceEncoding>
 	</properties>
 	<build>
@@ -15,8 +15,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>%mavencompilerversion%</version>
 				<configuration>
-					<source>${compiler.level}</source>
-					<target>${compiler.level}</target>
+					<source>${javac.level}</source>
+					<target>${javac.level}</target>
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
@@ -26,8 +26,8 @@
 				<version>${sarl.version}</version>
 				<extensions>true</extensions>
 				<configuration>
-					<source>${compiler.level}</source>
-					<target>${compiler.level}</target>
+					<source>${javac.level}</source>
+					<target>${javac.level}</target>
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>

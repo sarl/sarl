@@ -32,26 +32,59 @@
 				<artifactId>replacer</artifactId>
 				<executions>
 					<execution>
-						<id>generate-javaversion-class</id>
-						<phase>generate-sources</phase>
+						<id>prepare-constants-class</id>
+						<phase>process-sources</phase>
 						<goals>
 							<goal>replace</goal>
 						</goals>
 						<configuration>
 							<encoding>${project.build.sourceEncoding}</encoding>
-							<basedir>${project.basedir}/src-templates</basedir>
-							<outputDir>../src</outputDir>
-							<includes>
-								<include>**/*.java</include>
-							</includes>
+							<file>${project.basedir}/src/io/janusproject/JanusVersion.java</file>
+							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
 							<replacements>
 								<replacement>
-									<token>@janusreleaseversion@</token>
-									<value>${janus.release_version}</value>
+									<token>(JANUS_RELEASE_VERSION *= *")([^"]+)(";)</token>
+									<value>$1${janus.release_version}$3</value>
 								</replacement>
 								<replacement>
-									<token>@janusisstableversion@</token>
-									<value>${sarl.is_stable_version}</value>
+									<token>(IS_STABLE *= *)([^;]+)(;)</token>
+									<value>$1${sarl.is_stable_version}$3</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+					<execution>
+						<id>prepare-eclipse-buildproperties</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<file>${project.basedir}/build.properties</file>
+							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
+							<replacements>
+								<replacement>
+									<token>^(jre\.compilation\.profile *= *)(.*)$</token>
+									<value>$1${sarl-dsl.min.jre.environment}</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+					<execution>
+						<id>prepare-eclipse-manifestmf</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<file>${project.basedir}/META-INF/MANIFEST.MF</file>
+							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
+							<replacements>
+								<replacement>
+									<token>^(Bundle-RequiredExecutionEnvironment: *)(.*)$</token>
+									<value>$1${user.min.jre.environment}</value>
 								</replacement>
 							</replacements>
 						</configuration>

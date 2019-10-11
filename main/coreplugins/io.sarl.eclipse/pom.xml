@@ -34,8 +34,83 @@
 						</goals>
 						<configuration>
 							<encoding>${project.build.sourceEncoding}</encoding>
-							<file>${project.basedir}/src-templates/about.mappings</file>
-							<outputFile>${project.basedir}/about.mappings</outputFile>
+							<file>${project.basedir}/about.mappings</file>
+							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
+							<replacements>
+								<replacement>
+									<token>^(0 *= *)(.*)$</token>
+									<value>$1${buildId}</value>
+								</replacement>
+								<replacement>
+									<token>^(1 *= *)(.*)$</token>
+									<value>$1${project.inceptionYear}-${year}</value>
+								</replacement>
+								<replacement>
+									<token>^(2 *= *)(.*)$</token>
+									<value>$1${copyrighters}</value>
+								</replacement>
+								<replacement>
+									<token>^(3 *= *)(.*)$</token>
+									<value>$1${sarlUrl}</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+					<execution>
+						<id>prepare-eclipse-buildproperties</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<file>${project.basedir}/build.properties</file>
+							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
+							<replacements>
+								<replacement>
+									<token>^(jre\.compilation\.profile *= *)(.*)$</token>
+									<value>$1${sarl-dsl.min.jre.environment}</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+					<execution>
+						<id>prepare-eclipse-manifestmf</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<file>${project.basedir}/META-INF/MANIFEST.MF</file>
+							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
+							<replacements>
+								<replacement>
+									<token>^(Bundle-RequiredExecutionEnvironment: *)(.*)$</token>
+									<value>$1${sarl-run.min.jre.environment}</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+					<execution>
+						<id>prepare-pom-template</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<file>${project.basedir}/src/io/sarl/eclipse/wizards/newproject/pom_template.xml</file>
+							<regexFlags>
+								<regexFlag>MULTILINE</regexFlag>
+								<regexFlag>DOTALL</regexFlag>
+							</regexFlags>
+							<replacements>
+								<replacement>
+									<token>^(.*&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;.*?&lt;version&gt;)(.*?)(&lt;/version&gt;.*)$</token>
+									<value>$1${mavencompiler.version}$3</value>
+								</replacement>
+							</replacements>
 						</configuration>
 					</execution>
 					<execution>
@@ -51,53 +126,43 @@
 							<includes>
 								<include>*.properties</include>
 							</includes>
-						</configuration>
-					</execution>
-					<execution>
-						<id>prepare-pom-template</id>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>replace</goal>
-						</goals>
-						<configuration>
-							<encoding>${project.build.sourceEncoding}</encoding>
-							<file>${project.basedir}/src-templates/pom_template.xml</file>
-							<outputFile>${project.basedir}/src/io/sarl/eclipse/wizards/newproject/pom_template.xml</outputFile>
+							<replacements>
+								<replacement>
+									<token>%website%</token>
+									<value>${sarlUrl}</value>
+								</replacement>
+								<replacement>
+									<token>%sarlBuildId%</token>
+									<value>${buildId}</value>
+								</replacement>
+								<replacement>
+									<token>%copyrightdate%</token>
+									<value>${project.inceptionYear}-${year}</value>
+								</replacement>
+								<replacement>
+									<token>%copyrighters%</token>
+									<value>${copyrighters}</value>
+								</replacement>
+								<replacement>
+									<token>%sarlreleaseversion%</token>
+									<value>${sarl.release_version}</value>
+								</replacement>
+								<replacement>
+									<token>%sarlspecificationreleasedate%</token>
+									<value>${sarl.specification.release_date}</value>
+								</replacement>
+								<replacement>
+									<token>%mavencompilerversion%</token>
+									<value>${mavencompiler.version}</value>
+								</replacement>
+								<replacement>
+									<token>%targetjreenvironment%</token>
+									<value>${sarl-run.min.jre.environment}</value>
+								</replacement>
+							</replacements>
 						</configuration>
 					</execution>
 				</executions>
-				<configuration>
-					<replacements>
-						<replacement>
-							<token>%website%</token>
-							<value>${sarlUrl}</value>
-						</replacement>
-						<replacement>
-							<token>%sarlBuildId%</token>
-							<value>${buildId}</value>
-						</replacement>
-						<replacement>
-							<token>%copyrightdate%</token>
-							<value>${project.inceptionYear}-${year}</value>
-						</replacement>
-						<replacement>
-							<token>%copyrighters%</token>
-							<value>${copyrighters}</value>
-						</replacement>
-						<replacement>
-							<token>%sarlreleaseversion%</token>
-							<value>${sarl.release_version}</value>
-						</replacement>
-						<replacement>
-							<token>%sarlspecificationreleasedate%</token>
-							<value>${sarl.specification.release_date}</value>
-						</replacement>
-						<replacement>
-							<token>%mavencompilerversion%</token>
-							<value>${mavencompiler.version}</value>
-						</replacement>
-					</replacements>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>

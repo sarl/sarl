@@ -10,7 +10,7 @@
 	<name>This is for Test ONLY</name>
 	
 	<properties>
-        <compiler.level>%javaversion%</compiler.level>
+        <javac.level>%javaversion%</javac.level>
         <project.build.sourceEncoding>%fileencoding%</project.build.sourceEncoding>
     </properties>
 
@@ -28,8 +28,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>%mavencompilerversion%</version>
 				<configuration>
-					<source>${compiler.level}</source>
-					<target>${compiler.level}</target>
+					<source>${javac.level}</source>
+					<target>${javac.level}</target>
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
@@ -39,8 +39,8 @@
 				<version>%sarlreleaseversion%</version>
 				<extensions>true</extensions>
 				<configuration>
-					<source>${compiler.level}</source>
-					<target>${compiler.level}</target>
+					<source>${javac.level}</source>
+					<target>${javac.level}</target>
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>

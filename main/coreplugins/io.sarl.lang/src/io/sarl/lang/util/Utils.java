@@ -1083,35 +1083,72 @@ public final class Utils {
 		return false;
 	}
 
-	/** Check if a version of the JRE is compatible with the SARL library.
+	/** Check if a version of the JDK is compatible with the SARL compilation environment.
+	 * In other words, check if the SARL compiler is able to be run without issue
+	 * with a JDK at the given version.
 	 *
 	 * @param version - the version to test.
-	 * @return {@code true} if this version is for a compatible JRE.
+	 * @return {@code true} if this version is for a compatible JDK.
 	 *     Otherwise {@code false}.
+	 * @since 0.10
+	 * @see SARLVersion#MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT
+	 * @see SARLVersion#INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT
 	 */
-	public static boolean isCompatibleJREVersion(String version) {
+	public static boolean isCompatibleJDKVersionWithSARLCompilationEnvironment(String version) {
 		if (version != null && !version.isEmpty()) {
 			final Version current = Version.parseVersion(version);
 			if (current != null) {
-				final Version minJdk = Version.parseVersion(SARLVersion.MINIMAL_JDK_VERSION);
+				final Version minJdk = Version.parseVersion(SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT);
 				assert minJdk != null;
 				if (current.compareTo(minJdk) >= 0) {
-					final Version maxJdk = Version.parseVersion(SARLVersion.MAXIMAL_JDK_VERSION);
+					final Version maxJdk = Version.parseVersion(SARLVersion.INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT);
 					assert maxJdk != null;
-					return current.compareTo(maxJdk) <= 0;
+					return current.compareTo(maxJdk) < 0;
 				}
 			}
 		}
 		return false;
 	}
 
-	/** Check if a version of the current JRE is compatible with the SARL library.
+	/** Check if a version of the JDK is compatible with the SARL compilation environment.
+	 * In other words, check if the SARL compiler is able to be run without issue
+	 * with the current JDK.
 	 *
-	 * @return {@code true} if this version is for a compatible JRE.
+	 * @return {@code true} if this version is for a compatible JDK.
 	 *     Otherwise {@code false}.
+	 * @since 0.10
+	 * @see SARLVersion#MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT
+	 * @see SARLVersion#INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT
 	 */
-	public static boolean isCompatibleJREVersion() {
-		return isCompatibleJREVersion(System.getProperty("java.specification.version")); //$NON-NLS-1$
+	public static boolean isCompatibleJDKVersionWithSARLCompilationEnvironment() {
+		return isCompatibleJDKVersionWithSARLCompilationEnvironment(System.getProperty("java.specification.version")); //$NON-NLS-1$
+	}
+
+	/** Check if a version of the JDK is compatible with the SARL libraries that is specified in the SARL project classpath.
+	 * In other words, check if the SARL libraries in compiled SARL project are
+	 * compatible with the JDK at the given version.
+	 *
+	 * @param version - the version to test.
+	 * @return {@code true} if this version is for a compatible JDK.
+	 *     Otherwise {@code false}.
+	 * @since 0.10
+	 * @see SARLVersion#MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH
+	 * @see SARLVersion#INCOMPATIBLE_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH
+	 */
+	public static boolean isCompatibleJDKVersionWhenInSARLProjectClasspath(String version) {
+		if (version != null && !version.isEmpty()) {
+			final Version current = Version.parseVersion(version);
+			if (current != null) {
+				final Version minJdk = Version.parseVersion(SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH);
+				assert minJdk != null;
+				if (current.compareTo(minJdk) >= 0) {
+					final Version maxJdk = Version.parseVersion(SARLVersion.INCOMPATIBLE_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH);
+					assert maxJdk != null;
+					return current.compareTo(maxJdk) < 0;
+				}
+			}
+		}
+		return false;
 	}
 
 	/** Check if a version of Xtext is compatible with the SARL library.

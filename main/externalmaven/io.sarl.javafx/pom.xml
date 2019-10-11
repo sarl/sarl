@@ -29,8 +29,8 @@
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>${compiler.level}</source>
-					<target>${compiler.level}</target>
+					<source>${sarl-dsl.min.jdk.version}</source>
+					<target>${sarl-dsl.min.jdk.version}</target>
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
@@ -64,8 +64,8 @@
 				</executions>
 				<configuration>
 					<tycho>true</tycho>
-					<source>${compiler.level}</source>
-					<target>${compiler.level}</target>
+					<source>${sarl-dsl.min.jdk.version}</source>
+					<target>${sarl-dsl.min.jdk.version}</target>
 					<encoding>${project.build.sourceEncoding}</encoding>
 					<input>src/main/sarl</input>
 					<output>src/main/generated-sources/sarl</output>

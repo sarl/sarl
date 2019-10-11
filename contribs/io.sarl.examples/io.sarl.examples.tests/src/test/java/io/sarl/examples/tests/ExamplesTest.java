@@ -241,7 +241,7 @@ public class ExamplesTest extends AbstractSarlTest {
 		compiler.setGenerateSyntheticSuppressWarnings(true);
 		compiler.setCleaningPolicy(CleaningPolicy.NO_CLEANING);
 		compiler.setClassPath(getClasspath());
-		compiler.setJavaSourceVersion(SARLVersion.MINIMAL_JDK_VERSION);
+		compiler.setJavaSourceVersion(SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT);
 		compiler.setAllWarningSeverities(Severity.IGNORE);
 		compiler.setWarningSeverity(IssueCodes.DEPRECATED_MEMBER_REFERENCE, Severity.ERROR);
 		compiler.setJavaCompilerVerbose(false);

@@ -54,7 +54,6 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.google.inject.MembersInjector;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.eclipse.emf.common.util.URI;
@@ -262,13 +261,13 @@ public abstract class AbstractSarlTest extends Assert {
 		protected void starting(Description description) {
 			// Check if the minimal version of Java is used for running the tests.
 			final JavaVersion cVersion = JavaVersion.fromQualifier(System.getProperty("java.specification.version"));
-			final JavaVersion mVersion = JavaVersion.fromQualifier(SARLVersion.MINIMAL_JDK_VERSION);
+			final JavaVersion mVersion = JavaVersion.fromQualifier(SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT);
 			if (!cVersion.isAtLeast(mVersion)) {
-				throw new Error("You must use JDK " + SARLVersion.MINIMAL_JDK_VERSION + " for running the tests.");
+				throw new Error("You must use JDK " + SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT + " or higher for running the tests.");
 			}
-			final JavaVersion xVersion = JavaVersion.fromQualifier(SARLVersion.MAXIMAL_JDK_VERSION);
-			if (!mVersion.isAtLeast(cVersion)) {
-				throw new Error("You must use JDK not higher that " + SARLVersion.MAXIMAL_JDK_VERSION + " for running the tests.");
+			final JavaVersion xVersion = JavaVersion.fromQualifier(SARLVersion.INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT);
+			if (cVersion.isAtLeast(xVersion)) {
+				throw new Error("You must use JDK strictly below " + SARLVersion.INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT + " for running the tests.");
 			}
 			//
 			final int mockFeaturing = getMockableFeatures();

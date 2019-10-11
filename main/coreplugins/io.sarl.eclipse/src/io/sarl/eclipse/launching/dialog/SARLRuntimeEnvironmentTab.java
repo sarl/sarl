@@ -256,13 +256,13 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 						Messages.RuntimeEnvironmentTab_3, install.getName()));
 				return false;
 			}
-			if (!Utils.isCompatibleJREVersion(version)) {
+			if (!Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath(version)) {
 				setErrorMessage(MessageFormat.format(
 						Messages.RuntimeEnvironmentTab_4,
 						install.getName(),
 						version,
-						SARLVersion.MINIMAL_JDK_VERSION,
-						SARLVersion.MAXIMAL_JDK_VERSION));
+						SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH,
+						SARLVersion.INCOMPATIBLE_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH));
 				return false;
 			}
 		}

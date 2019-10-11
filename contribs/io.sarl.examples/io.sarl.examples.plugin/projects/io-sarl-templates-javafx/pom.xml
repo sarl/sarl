@@ -8,7 +8,7 @@
 
 	<properties>
 		<sarl.version>@SARL_VERSION@</sarl.version>
-		<compiler.level>@JAVA_VERSION@</compiler.level>
+		<target.jdk.version>@JAVA_VERSION@</target.jdk.version>
 		<project.build.sourceEncoding>@FILE_ENCODING@</project.build.sourceEncoding>
 	</properties>
 	
@@ -27,8 +27,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>@MAVEN_COMPILER_VERSION@</version>
 				<configuration>
-					<source>${compiler.level}</source>
-					<target>${compiler.level}</target>
+					<source>${target.jdk.version}</source>
+					<target>${target.jdk.version}</target>
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
@@ -38,8 +38,8 @@
 				<version>${sarl.version}</version>
 				<extensions>true</extensions>
 				<configuration>
-					<source>${compiler.level}</source>
-					<target>${compiler.level}</target>
+					<source>${target.jdk.version}</source>
+					<target>${target.jdk.version}</target>
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>

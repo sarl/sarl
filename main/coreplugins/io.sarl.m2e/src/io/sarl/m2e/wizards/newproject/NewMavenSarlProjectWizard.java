@@ -63,7 +63,7 @@ public final class NewMavenSarlProjectWizard extends MavenProjectWizard {
 
 	private static final String SARL_VERSION_PROPERTY = "sarl.version"; //$NON-NLS-1$
 
-	private static final String COMPILER_LEVEL_PROPERTY = "compiler.level"; //$NON-NLS-1$
+	private static final String TARGET_JDK_VERSION_PROPERTY = "target.jdk.version"; //$NON-NLS-1$
 
 	private static final String ENCODING_PROPERTY = "project.build.sourceEncoding"; //$NON-NLS-1$
 
@@ -83,7 +83,7 @@ public final class NewMavenSarlProjectWizard extends MavenProjectWizard {
 
 	private static final String CONFIGURATION_KEY = "configuration"; //$NON-NLS-1$
 
-	private static final String CONFIGURATION_LEVEL_VALUE = "${compiler.level}"; //$NON-NLS-1$
+	private static final String CONFIGURATION_LEVEL_VALUE = "${target.jdk.version}"; //$NON-NLS-1$
 
 	private static final String CONFIGURATION_ENCODING_VALUE = "${project.build.sourceEncoding}"; //$NON-NLS-1$
 
@@ -98,7 +98,7 @@ public final class NewMavenSarlProjectWizard extends MavenProjectWizard {
 		final Model model = super.getModel();
 
 		model.addProperty(SARL_VERSION_PROPERTY, SARLVersion.SARL_RELEASE_VERSION_MAVEN);
-		model.addProperty(COMPILER_LEVEL_PROPERTY, SARLVersion.MINIMAL_JDK_VERSION);
+		model.addProperty(TARGET_JDK_VERSION_PROPERTY, SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH);
 		model.addProperty(ENCODING_PROPERTY, Charset.defaultCharset().displayName());
 
 		final Dependency dep = new Dependency();

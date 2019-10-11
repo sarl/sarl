@@ -5,6 +5,8 @@
 	<property name="pom_template_folder" location="target/example-pom-template" />
 	<property name="archive_folder" location="target/example-archives" />
 	<property name="target_folder" location="contents" />
+	<property name="relative_path_to_pom_template" value="io/sarl/eclipse/wizards/newproject/pom_template.xml" />
+	<property name="relative_path_to_source_folder_of_pom_template" value="../../../main/coreplugins/io.sarl.eclipse/src" />
 
 	<target name="zip_all_examples" depends="retrieve_pom_template">
 		<mkdir dir="${target_folder}" />
@@ -35,7 +37,7 @@
 		<attribute name="target" default="${target_folder}" />
 		<attribute name="source" default="${source_folder}" />
 		<attribute name="archive" default="${archive_folder}" />
-		<attribute name="pomtemplate" default="${pom_template_folder}/io/sarl/eclipse/wizards/newproject/pom_template.xml" />
+		<attribute name="pomtemplate" default="${pom_template_folder}/${relative_path_to_pom_template}" />
 		<attribute name="excludes" default="bin,bin/**,**/*._trace,.antlr-generator*.jar,component.def,${specific_pom_config}" />
 		<sequential>
 			<mkdir dir="@{archive}/@{name}" />
@@ -75,9 +77,9 @@
 
 	<target name="retrieve_pom_template">
 	        <mkdir dir="${pom_template_folder}" />
-			<copy file="../../../main/coreplugins/io.sarl.eclipse/src/io/sarl/eclipse/wizards/newproject/pom_template.xml"
-			      tofile="${pom_template_folder}/io/sarl/eclipse/wizards/newproject/pom_template.xml"
-			      overwrite="true" force="true" encoding="UTF-8" />
+		<copy file="${relative_path_to_source_folder_of_pom_template}/${relative_path_to_pom_template}"
+		      tofile="${pom_template_folder}/${relative_path_to_pom_template}"
+		      overwrite="true" force="true" encoding="UTF-8" />
 	</target>
 
 	<target name="generate_self">

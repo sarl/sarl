@@ -70,7 +70,7 @@
 					<replacements>
 						<replacement>
 							<token>%javaversion%</token>
-							<value>${compiler.level}</value>
+							<value>${sarl-dsl.min.jdk.version}</value>
 						</replacement>
 						<replacement>
 							<token>%fileencoding%</token>

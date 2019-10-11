@@ -24,6 +24,33 @@
 	<!-- ======================================= -->
 
 	<properties>
+		<!-- Java Configuration for compiling this project (useful for the SARL development team) -->
+		<sarl-dsl.min.jdk.version>1.8</sarl-dsl.min.jdk.version>
+		<sarl-dsl.min.jre.environment>JavaSE-${sarl-dsl.min.jdk.version}</sarl-dsl.min.jre.environment>
+		<sarl-dsl.max.jdk.version>1.8</sarl-dsl.max.jdk.version>
+		<sarl-dsl.next.unsupported.jdk.version>1.9</sarl-dsl.next.unsupported.jdk.version>
+
+		<!-- Java Configuration for running the SARL tools (IDE, sarlc, sarldoc...):
+		     ***********
+		     * CAUTION *
+		     ***********
+		     The versions below must include the versions for the properties "sarl-dsl.*"
+		-->
+		<sarl-run.min.jdk.version>1.8</sarl-run.min.jdk.version>
+		<sarl-run.min.jre.environment>JavaSE-${sarl-run.min.jdk.version}</sarl-run.min.jre.environment>
+		<sarl-run.max.jdk.version>1.8</sarl-run.max.jdk.version>
+		<sarl-run.next.unsupported.jdk.version>1.9</sarl-run.next.unsupported.jdk.version>
+
+		<!-- Java Configuration that should be used by the projects compiled with SARL IDE or sarlc:
+		     ***********
+		     * CAUTION *
+		     ***********
+		     The versions below must include the versions for the properties "sarl-run.*"
+		 -->
+		<user.min.jdk.version>1.8</user.min.jdk.version>
+		<user.min.jre.environment>JavaSE-${user.min.jdk.version}</user.min.jre.environment>
+		<user.max.jdk.version>1.8</user.max.jdk.version>
+		<user.next.unsupported.jdk.version>1.9</user.next.unsupported.jdk.version>
 
 		<!-- Version of the SARL API -->
 		<sarl.version>0.10.0-SNAPSHOT</sarl.version>
@@ -37,13 +64,13 @@
 		<xtext.version.current>2.19.0</xtext.version.current>
 		<xtext.version.next>2.19.1</xtext.version.next>
 		<xtext.version.javadoc>2.19</xtext.version.javadoc>
+
 		<!-- Version of the MWE2 library (used for accessing the mwe2 P2 http://download.eclipse.org/modeling/emft/mwe/updates/releases/, 
 			see compositeContent.{xml,jar,xz,xml.xz} file) -->
 		<mwe2.version>2.11.0</mwe2.version>
 		<!-- Version of the Xpand library (used for accessing the Xpand P2 http://download.eclipse.org/modeling/m2t/xpand/updates/releases/, 
 			see compositeContent.{xml,jar,xz,xml.xz} file) -->
 		<xpand.version>R201605260315</xpand.version>
-
 		<!-- Version of Guice (package: com.google.inject:guice). -->
 		<guice.version>4.1.0</guice.version>
 		<!-- Version of the OSGi module that provides the NLS (package: osgi) -->
@@ -72,11 +99,6 @@
 		<sarlUrl>http://www.sarl.io</sarlUrl>
 		<!-- Default encoding of the source files -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<!-- Java Configuration -->
-		<compiler.level>1.8</compiler.level>
-		<compiler.level.max>1.8</compiler.level.max>
-		<compiler.level.max.after>1.9</compiler.level.max.after>
-		<jre.environment>JavaSE-1.8</jre.environment>
 		<!-- Maven API version. This version should be supported by m2e. Search 
 			for maven-core on central. -->
 		<maven.api.version>3.6.1</maven.api.version>
@@ -665,10 +687,10 @@
 					<version>${mavencompiler.version}</version>
 					<configuration>
 						<compilerId>jdt</compilerId>
-						<source>${compiler.level}</source>
-						<target>${compiler.level}</target>
-						<testSource>${compiler.level}</testSource>
-						<testTarget>${compiler.level}</testTarget>
+						<source>${sarl-dsl.min.jdk.version}</source>
+						<target>${sarl-dsl.min.jdk.version}</target>
+						<testSource>${sarl-dsl.min.jdk.version}</testSource>
+						<testTarget>${sarl-dsl.min.jdk.version}</testTarget>
 						<encoding>${project.build.sourceEncoding}</encoding>
 						<showDeprecation>false</showDeprecation>
 						<showWarnings>false</showWarnings>
@@ -833,29 +855,6 @@
 							<version>8.18</version>
 						</dependency>
 					</dependencies>
-				</plugin>
-
-				<plugin>
-					<groupId>org.eclipse.xtend</groupId>
-					<artifactId>xtend-maven-plugin</artifactId>
-					<version>${xtext.version}</version>
-					<executions>
-						<execution>
-							<goals>
-								<goal>compile</goal>
-								<goal>xtend-install-debug-info</goal>
-								<goal>testCompile</goal>
-								<goal>xtend-test-install-debug-info</goal>
-							</goals>
-						</execution>
-					</executions>
-					<configuration>
-						<outputDirectory>xtend-gen</outputDirectory>
-						<source>${compiler.level}</source>
-						<target>${compiler.level}</target>
-						<encoding>${project.build.sourceEncoding}</encoding>
-						<xtendAsPrimaryDebugSource>true</xtendAsPrimaryDebugSource>
-					</configuration>
 				</plugin>
 
 				<plugin>
@@ -1149,6 +1148,27 @@
 				</dependencies>
 			</plugin>
 
+			<!-- Enforce that the JDK used for compiling this project is with an expected version -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>3.0.0-M2</version>
+				<executions>
+					<execution>
+						<id>enforce-jdk-versions</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireJavaVersion>
+									<version>${sarl-dsl.min.jdk.version}</version>
+								</requireJavaVersion>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 
 			<!-- Automatic creation of the Jar archive with the source code inside. -->
 			<plugin>

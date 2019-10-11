@@ -170,10 +170,10 @@ Virtual Machine with Eclipse may be used to run SARL.
 
 ### What version of the Java virtual machine is required?
 
-SARL requires the JRE and the JDK [:compiler.level!] or higher to compile and run.
+SARL requires the JDK [:sarl-run.min.jdk.version!] or higher to compile and run.
 Note that if you plan to create Android applications, you should
-configure your JDK to produce 1.6 class files from [:compiler.level!] Java code. 
-[:Fact:]("[:compiler.level!]".shouldBeAtLeastJava)
+configure your JDK to produce 1.6 class files from [:sarl-run.min.jdk.version!] Java code. 
+[:Fact:]("[:sarl-run.min.jdk.version!]".shouldBeAtLeastJava)
 
 
 ### Why does SARL display an error on startup?
@@ -203,15 +203,17 @@ If another error occurs, you should go on the SARL forum and report this problem
 ### Why does the SARL product launch but not contain any features related to SARL?
 
 This is due to a problem in your configuration. SARL tools need the Eclipse
-framework to be run with a Java Development Kit [:compiler.level!] or higher.
+framework to be run with a Java Development Kit [:sarl-run.min.jdk.version!] or higher.
 You are currently running the SARL product with a lower version of the JDK.
 
 You must run the SARL product with a valid version of the JDK.
 Two ways are available for solving this issue:
 
-1. install the JDK [:compiler.level!], and configuring your operating system to use it by default; or
-2. force the SARL product to use the JDK [:compiler.level!] by editing the `eclipse-sarl.ini` file. Add the following parameter on a new line: `-vm path`, where `path` is the path to the binary file `javaw[.exe]` or `java[.exe]` of the JDK [:compiler.level!].
-[:Fact:]("[:compiler.level!]".shouldBeAtLeastJava)
+1. install the JDK [:sarl-run.min.jdk.version!], and configuring your operating system to use it by default; or
+2. force the SARL product to use the JDK [:sarl-run.min.jdk.version!] by editing the `eclipse-sarl.ini` file
+into the folder of the SARL IDE. Add the following parameter on a new line: `-vm path`, where `path` is the
+path to the binary file `javaw[.exe]` or `java[.exe]` of at least the JDK [:sarl-run.min.jdk.version!].
+[:Fact:]("[:sarl-run.min.jdk.version!]".shouldBeAtLeastJava)
 
 
 ### Why does the content assistant not propose any suggestion on MacOS?

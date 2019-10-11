@@ -117,7 +117,7 @@ public class CompilerConfig {
 
 	private String fileEncoding;
 
-	private String javaVersion = SARLVersion.MINIMAL_JDK_VERSION;
+	private String javaVersion = SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH;
 
 	private JavaCompiler javaCompiler;
 
