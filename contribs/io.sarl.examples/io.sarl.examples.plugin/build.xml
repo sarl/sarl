@@ -14,7 +14,7 @@
 			<fileset dir="${target_folder}" includes="**/*" />
 		</delete>
 		<!--zip_example name="name-examples" excludes="**/*._trace,.antlr-generator*.jar"/>-->
-		<!-- run task "generate_self" to compose this list -->
+		<!-- run task "generate_self" to compose this list (only on linux) -->
 		<zip_example name="io-sarl-demos-basic-helloworld" />
 		<zip_example name="io-sarl-demos-basic-behaviors" />
 		<zip_example name="io-sarl-demos-basic-behaviorinheritance" />

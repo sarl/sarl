@@ -44,7 +44,7 @@ Add in the `plugin.xml` file:
 	<extension point="org.eclipse.emf.common.ui.examples">
 		<example wizardID="io.sarl.examples.myexample" pageImage="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif">
 			<projectDescriptor name="io-sarl-demos-myexample" contentURI="contents/io-sarl-demos-myexample.zip" description="%io_sarl_demos_myexample_Description"/>
-			<fileToOpen location="io-sarl-demos-myexample/path/to/the/file/to/open"/>
+			<fileToOpen location="path/to/the/file/to/open"/>
 		</example>
 	</extension>
 
