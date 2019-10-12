@@ -88,6 +88,8 @@
 		<zeromq.version>0.5.0</zeromq.version>
 		<!-- Version of the SWT library (search for  org.eclipse.platform:org.eclipse.swt.gtk.linux.x86_64) -->
 		<swt.version>3.111.0</swt.version>
+		<!-- Version of JavaFX (search for  org.openjfx:*) -->
+		<openjfx.version>12.0.2</openjfx.version>
 
 		<!-- Build ID Format (used in Eclipse about dialog) -->
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
