@@ -196,6 +196,41 @@ public class ExamplesTest extends AbstractSarlTest {
 		}
 	}
 
+	@Test
+	public void launchConfiguration() throws Exception {
+		assumeTrue(this.exampleZipFile != null);
+		final File projectRoot = createProject(); 
+		final List<File> installedFiles = unpackFiles(projectRoot);
+		final File launchConfiguration = new File(projectRoot, LAUNCH_PROPERTY_FILE);
+		assumeTrue(launchConfiguration.exists());
+
+		final File relativeLaunchConfiguration = FileSystem.makeRelative(launchConfiguration, projectRoot);
+		assertTrue(installedFiles.contains(relativeLaunchConfiguration));
+
+		final File folder;
+
+		if (isMavenProject()) {
+			// Maven compilation
+			compileMaven(projectRoot);
+			folder = FileSystem.join(projectRoot, "src", "main", "generated-sources", "sarl");
+		} else {
+			// Standard SARL compilation
+			compileFiles(projectRoot, installedFiles);
+			folder = getSourceGenPath(projectRoot);
+		}
+
+		final Document launch = readXmlContent(launchConfiguration);
+
+		readLaunchConfigurationFromXml(launch, (type, name, isAgent) -> {
+			final String filename = type.replaceAll("\\.", File.separator).concat(".java");
+			File file = FileSystem.convertStringToFile(filename);
+			file = FileSystem.join(folder, file);
+			assertTrue("The type specified into the launch configuration \""
+					+ name + "\" was not found into the compilation results: "
+					+ type,
+					file.exists());
+		});
+	}
 
 	@Test
 	public void fileToOpen() throws Exception {
