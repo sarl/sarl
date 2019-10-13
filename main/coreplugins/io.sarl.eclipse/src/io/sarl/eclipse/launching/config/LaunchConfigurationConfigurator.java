@@ -172,19 +172,23 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	}
 
 	@Override
-	public ILaunchConfiguration newAgentLaunchConfiguration(String projectName, String fullyQualifiedNameOfAgent)
-			throws CoreException {
+	public ILaunchConfiguration newAgentLaunchConfiguration(String projectName, String launchConfigurationName,
+			String fullyQualifiedNameOfAgent) throws CoreException {
+		final String name = Strings.isNullOrEmpty(launchConfigurationName)
+				? simpleName(fullyQualifiedNameOfAgent) : launchConfigurationName;
 		final ILaunchConfigurationWorkingCopy wc = initLaunchConfiguration(getAgentLaunchConfigurationType(), projectName,
-				simpleName(fullyQualifiedNameOfAgent), true);
+				name, true);
 		setAgent(wc, fullyQualifiedNameOfAgent);
 		return wc.doSave();
 	}
 
 	@Override
-	public ILaunchConfiguration newApplicationLaunchConfiguration(String projectName, String fullyQualifiedNameOfClass,
-			Class<? extends IRuntimeClasspathProvider> classPathProvider) throws CoreException {
+	public ILaunchConfiguration newApplicationLaunchConfiguration(String projectName, String launchConfigurationName,
+			String fullyQualifiedNameOfClass, Class<? extends IRuntimeClasspathProvider> classPathProvider) throws CoreException {
+		final String name = Strings.isNullOrEmpty(launchConfigurationName)
+				? simpleName(fullyQualifiedNameOfClass) : launchConfigurationName;
 		final ILaunchConfigurationWorkingCopy wc = initLaunchConfiguration(getApplicationLaunchConfigurationType(), projectName,
-				simpleName(fullyQualifiedNameOfClass), false);
+				name, false);
 		setMainJavaClass(wc, fullyQualifiedNameOfClass);
 		if (classPathProvider != null) {
 			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH_PROVIDER, classPathProvider.getName());

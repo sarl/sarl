@@ -27,6 +27,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jdt.launching.IRuntimeClasspathProvider;
+import org.eclipse.xtext.xbase.lib.Inline;
 
 import io.sarl.eclipse.runtime.ISREInstall;
 
@@ -66,8 +67,25 @@ public interface ILaunchConfigurationConfigurator {
 	 * @return the launch configuration.
 	 * @throws CoreException if something is going wrong.
 	 */
-	ILaunchConfiguration newAgentLaunchConfiguration(String projectName, String fullyQualifiedNameOfAgent)
-			throws CoreException;
+	@Inline("newAgentLaunchConfiguration($1, null, $2)")
+	default ILaunchConfiguration newAgentLaunchConfiguration(String projectName, String fullyQualifiedNameOfAgent)
+			throws CoreException {
+		return newAgentLaunchConfiguration(projectName, null, fullyQualifiedNameOfAgent);
+	}
+
+	/** Create a default launch configuration for SARL agents.
+	 *
+	 * <p>The launch configuration is attached to the given project.
+	 *
+	 * @param projectName the name of the project that contains the main class.
+	 * @param launchConfigurationName a proposal of name for the launch configuration.
+	 * @param fullyQualifiedNameOfAgent the fully qualified name of the agent to be launched.
+	 * @return the launch configuration.
+	 * @throws CoreException if something is going wrong.
+	 * @since 0.10
+	 */
+	ILaunchConfiguration newAgentLaunchConfiguration(String projectName, String launchConfigurationName,
+			String fullyQualifiedNameOfAgent) throws CoreException;
 
 	/** Create a default launch configuration for SARL agents.
 	 *
@@ -79,8 +97,26 @@ public interface ILaunchConfigurationConfigurator {
 	 * @return the launch configuration.
 	 * @throws CoreException if something is going wrong.
 	 */
-	ILaunchConfiguration newApplicationLaunchConfiguration(String projectName, String fullyQualifiedNameOfClass,
-			Class<? extends IRuntimeClasspathProvider> classPathProvider)
+	@Inline("newApplicationLaunchConfiguration($1, null, $2, $3)")
+	default ILaunchConfiguration newApplicationLaunchConfiguration(String projectName, String fullyQualifiedNameOfClass,
+			Class<? extends IRuntimeClasspathProvider> classPathProvider) throws CoreException {
+		return newApplicationLaunchConfiguration(projectName, null, fullyQualifiedNameOfClass, classPathProvider);
+	}
+
+	/** Create a default launch configuration for SARL agents.
+	 *
+	 * <p>The launch configuration is attached to the given project.
+	 *
+	 * @param projectName the name of the project that contains the main class.
+	 * @param launchConfigurationName a proposal of name for the launch configuration.
+	 * @param fullyQualifiedNameOfClass the fully qualified name of the class that contains the main function.
+	 * @param classPathProvider type of the class path provider to use for launching the application.
+	 * @return the launch configuration.
+	 * @throws CoreException if something is going wrong.
+	 * @since 0.10
+	 */
+	ILaunchConfiguration newApplicationLaunchConfiguration(String projectName, String launchConfigurationName,
+			String fullyQualifiedNameOfClass, Class<? extends IRuntimeClasspathProvider> classPathProvider)
 			throws CoreException;
 
 	/** Change the runtime configuration of the given launch configuration.
