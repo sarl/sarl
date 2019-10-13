@@ -22,7 +22,7 @@ Add in the `plugin.xml` file:
 	<extension point="org.eclipse.ui.newWizards">
 		<wizard id="io.sarl.examples.myexample"
 			name="%io_sarl_demos_myexample_Name"
-			class="io.sarl.examples.wizard.SarlExampleInstallerWizard"
+			class="io.sarl.examples.SARLExampleExecutableExtensionFactory:io.sarl.examples.wizard.SarlExampleInstallerWizard"
 			category="org.eclipse.ui.Examples/io.sarl.Examples"
 			icon="platform:/plugin/org.eclipse.xtend.examples/icons/genproject.gif"
 			project="true">

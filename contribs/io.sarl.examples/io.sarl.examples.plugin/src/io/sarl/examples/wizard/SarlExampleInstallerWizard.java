@@ -52,7 +52,7 @@ import io.sarl.m2e.wizards.importproject.MavenImportUtils;
 
 /** Wizard for importing SARL samples.
  *
- * <p>This wizard extends the EMF wizard with the initialization of the SARL nature on the project, 
+ * <p>This wizard extends the EMF wizard with the initialization of the SARL nature on the project,
  * the creation of launch configurations, and the closing of the welcome page of Eclipse.
  *
  * @author $Author: sgalland$
@@ -97,12 +97,21 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 	}
 
 	@Override
-	protected void installProject(ProjectDescriptor projectDescriptor, ImportOperation importOperation,
-			IProgressMonitor progressMonitor) throws Exception {
-		final SubMonitor mon = SubMonitor.convert(progressMonitor, 3);
+	protected void installProject(ProjectDescriptor projectDescriptor, IProgressMonitor progressMonitor)
+			throws Exception {
+		final SubMonitor mon = SubMonitor.convert(progressMonitor, 2);
+		super.installProject(projectDescriptor, mon.newChild(1));
+		postProjectInstallation(projectDescriptor, mon.newChild(1));
+	}
 
-		// Standard creation
-		super.installProject(projectDescriptor, importOperation, mon.newChild(1));
+	/** Post process the given project.
+	 *
+	 * @param projectDescriptor the descriptor of the project.
+	 * @param progressMonitor the progression monitor.
+	 * @throws Exception if the post process cannot be applied.
+	 */
+	protected void postProjectInstallation(ProjectDescriptor projectDescriptor, IProgressMonitor progressMonitor) throws Exception {
+		final SubMonitor mon = SubMonitor.convert(progressMonitor, 3);
 
 		// Force the natures of the project
 		final IProject project = projectDescriptor.getProject();
@@ -237,7 +246,7 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 
 
 	/** A file to be opened that is associated to a project.
-	 * 
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -265,6 +274,7 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 		 *
 		 * @return the file or {@code null} if the file cannot be found.
 		 */
+		@SuppressWarnings("checkstyle:nestedifdepth")
 		public IFile findProjectFile() {
 			if (this.projectFile == null) {
 				final IProject prj = this.project.get();
@@ -294,7 +304,7 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 			}
 			return this.projectFile;
 		}
-		
+
 		@Override
 		public IFile getWorkspaceFile() {
 			if (this.workspaceFile == null) {
