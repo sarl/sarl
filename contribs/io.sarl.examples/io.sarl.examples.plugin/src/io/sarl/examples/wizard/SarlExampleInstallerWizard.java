@@ -21,15 +21,22 @@
 
 package io.sarl.examples.wizard;
 
+import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.LAUNCH_PROPERTY_FILE;
+import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.readLaunchConfigurationFromXml;
+import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.readXmlContent;
+
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -44,9 +51,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.intro.IIntroManager;
 import org.eclipse.ui.intro.IIntroPart;
-import org.eclipse.ui.wizards.datatransfer.ImportOperation;
+import org.w3c.dom.Document;
 
+import io.sarl.eclipse.launching.config.ILaunchConfigurationConfigurator;
+import io.sarl.eclipse.launching.shortcuts.SarlStandardClasspathProvider;
 import io.sarl.eclipse.natures.SARLProjectConfigurator;
+import io.sarl.examples.SARLExamplePlugin;
 import io.sarl.lang.SARLConfig;
 import io.sarl.m2e.wizards.importproject.MavenImportUtils;
 
@@ -64,6 +74,11 @@ import io.sarl.m2e.wizards.importproject.MavenImportUtils;
 public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 
 	private ConfigurationPage configurationPage;
+
+	private List<ConfigurationToLaunch> configurationsToLaunch;
+
+	@Inject
+	private ILaunchConfigurationConfigurator launchConfigConfigurator;
 
 	@Override
 	public void addPages() {
@@ -152,7 +167,89 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 		// Fixing the names of the files to open because the project's names were not originally specified
 		fixFilesToOpen(project);
 
+		// Install the launch configuration(s)
+		if (this.configurationPage.isLaunchConfigurationInstallable()) {
+			try {
+				final List<ConfigurationToLaunch> configs = getConfigurationsToLaunch(project);
+				configs.forEach(it -> {
+					try {
+						if (it.isAgentLaunch()) {
+							createAgentLaunchConfiguration(project, it.getType(), it.getName());
+						} else {
+							createApplicationLaunchConfiguration(project, it.getType(), it.getName());
+						}
+					} catch (CoreException exception) {
+						SARLExamplePlugin.getDefault().openError(getShell(),
+								io.sarl.eclipse.util.Messages.AbstractSarlScriptInteractiveSelector_1,
+								exception.getStatus().getMessage(), exception);
+					}
+				});
+			} catch (CoreException exception) {
+				SARLExamplePlugin.getDefault().openError(getShell(),
+						io.sarl.eclipse.util.Messages.AbstractSarlScriptInteractiveSelector_1,
+						exception.getStatus().getMessage(), exception);
+			}
+		}
+
 		mon.done();
+	}
+
+	/** Replies the configurations to launch.
+	 * These configurations are inside an xml file with the name {@link #LAUNCH_PROPERTY_FILE}.
+	 *
+	 * @param project the project to analyze.
+	 * @return the configurations to launch.
+	 * @throws CoreException if the launch configuration cannot be read.
+	 * @since 0.10
+	 */
+	public List<ConfigurationToLaunch> getConfigurationsToLaunch(IProject project) throws CoreException {
+		if (this.configurationsToLaunch == null) {
+			this.configurationsToLaunch = new ArrayList<>();
+			final IPath rootLocation = project.getWorkspace().getRoot().getLocation();
+			final IPath configLocation = rootLocation.append(project.getName()).append(LAUNCH_PROPERTY_FILE);
+			final File jFile = configLocation.toFile();
+			if (jFile.canRead()) {
+				final Document document = readXmlContent(jFile);
+				if (document != null) {
+					readLaunchConfigurationFromXml(document, (type, name, isAgent) -> {
+						final ConfigurationToLaunch ctl = new ConfigurationToLaunch();
+						ctl.setType(type);
+						ctl.setName(name);
+						ctl.setAgentLaunch(isAgent);
+						this.configurationsToLaunch.add(ctl);
+					});
+				}
+			}
+		}
+		return this.configurationsToLaunch;
+	}
+
+	/** Create the application launch configuration.
+	 *
+	 * @param project the associated project.
+	 * @param mainClassfullyQualifedName the fully qualified name of the main class.
+	 * @param configurationName the proposed name for the launch configuration.
+	 * @throws CoreException if the launch configuration cannot be created.
+	 * @since 0.10
+	 */
+	protected void createApplicationLaunchConfiguration(IProject project, String mainClassfullyQualifedName,
+			String configurationName) throws CoreException {
+		this.launchConfigConfigurator.newApplicationLaunchConfiguration(project.getName(),
+				configurationName, mainClassfullyQualifedName, SarlStandardClasspathProvider.class);
+	}
+
+	/** Create the application launch configuration.
+	 *
+	 * @param project the associated project.
+	 * @param agentFullyQualifiedName the fully qualified name of the agent to launch.
+	 * @param configurationName the proposed name for the launch configuration.
+	 * @throws CoreException if the launch configuration cannot be created.
+	 * @since 0.10Agent
+	 */
+	protected void createAgentLaunchConfiguration(IProject project, String agentFullyQualifiedName,
+			String configurationName) throws CoreException {
+		this.launchConfigConfigurator.newAgentLaunchConfiguration(project.getName(),
+				configurationName, agentFullyQualifiedName);
 	}
 
 	@Override
@@ -196,6 +293,8 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 
 		private Button mavenProjectButton;
 
+		private Button installLaunchConfigButton;
+
 		/** Constructor.
 		 *
 		 * @param pageName the name of the page.
@@ -222,6 +321,9 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 			this.mavenProjectButton = SWTFactory.createCheckButton(composite,
 					Messages.SarlExampleInstallerWizard_2, null, DEFAULT_MAVEN_NATURE, 2);
 
+			this.installLaunchConfigButton = SWTFactory.createCheckButton(composite,
+					Messages.SarlExampleInstallerWizard_3, null, true, 2);
+
 			refresh();
 			setControl(composite);
 		}
@@ -241,6 +343,13 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 			return this.mavenProjectButton.getSelection();
 		}
 
+		/** Replies if the launch configurations could be installed if they are available.
+		 *
+		 * @return {@code true} for installing the launch configurations.
+		 */
+		public boolean isLaunchConfigurationInstallable() {
+			return this.installLaunchConfigButton.getSelection();
+		}
 
 	}
 
@@ -316,6 +425,80 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 				}
 			}
 			return this.workspaceFile;
+		}
+
+	}
+
+	/** Description of a launch configuration.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.10
+	 */
+	public static class ConfigurationToLaunch {
+
+		/** Name of the configuration.
+		 */
+		protected String name;
+
+		/** Type to launch.
+		 */
+		protected String type;
+
+		/** Indicates if the launch configuration is for an agent.
+		 */
+		protected boolean isAgentLaunch;
+
+		/** Replies the name of the configuration.
+		 *
+		 * @return the name.
+		 */
+		public String getName() {
+			return this.name;
+		}
+
+		/** Change the name of the configuration.
+		 *
+		 * @param name the name.
+		 */
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		/** Replies the type to launch.
+		 *
+		 * @return the type.
+		 */
+		public String getType() {
+			return this.type;
+		}
+
+		/** Change the type to launch.
+		 *
+		 * @param type the type.
+		 */
+		public void setType(String type) {
+			this.type = type;
+		}
+
+		/** Indicates if the launch configuration is for an agent.
+		 *
+		 * @return {@code true} if the configuration is for launching an agent;
+		 *     {@code false} if it is for launching an application.
+		 */
+		public boolean isAgentLaunch() {
+			return this.isAgentLaunch;
+		}
+
+		/** Change the flag that indicates if the launch configuration is for an agent.
+		 *
+		 * @param isAgent is {@code true} if the configuration is for launching an agent;
+		 *     {@code false} if it is for launching an application.
+		 */
+		public void setAgentLaunch(boolean isAgent) {
+			this.isAgentLaunch = isAgent;
 		}
 
 	}
