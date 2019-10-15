@@ -57,7 +57,7 @@ public abstract class AbstractCompileMojo extends AbstractSarlBatchCompilerMojo 
 
 	/** Version of the Java specification used for the source files.
 	 */
-	@Parameter(defaultValue = SARLVersion.MINIMAL_JDK_VERSION, required = false)
+	@Parameter(defaultValue = SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH, required = false)
 	private String source;
 
 	/** Encoding.

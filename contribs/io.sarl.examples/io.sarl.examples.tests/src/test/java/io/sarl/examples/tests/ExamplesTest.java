@@ -21,6 +21,13 @@
 
 package io.sarl.examples.tests;
 
+import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.LAUNCH_PROPERTY_FILE;
+import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.readLaunchConfigurationFromXml;
+import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.readXmlAttribute;
+import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.readXmlContent;
+import static org.junit.Assume.assumeNotNull;
+import static org.junit.Assume.assumeTrue;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -38,20 +45,23 @@ import java.util.TreeSet;
 import com.google.inject.Injector;
 import org.arakhne.afc.vmutil.ClasspathUtil;
 import org.arakhne.afc.vmutil.FileSystem;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.Pair;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 import org.junit.After;
-import org.junit.Assume;
 import org.junit.Before;
 import org.junit.ComparisonFailure;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 import org.slf4j.helpers.NOPLogger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import io.sarl.lang.SARLStandaloneSetup;
 import io.sarl.lang.SARLVersion;
@@ -164,18 +174,14 @@ public class ExamplesTest extends AbstractSarlTest {
 		return this.name;
 	}
 
-	// FIXME: Enable when the issue related to the Maven SARL compiler is fixed.
-	@Ignore
 	@Test
 	public void path() {
 		assertNotNull(this.exampleZipFile);
 	}
-
-	// FIXME: Enable when the issue related to the Maven SARL compiler is fixed.
-	@Ignore
+	
 	@Test
 	public void compilation() throws Exception {
-		Assume.assumeTrue(this.exampleZipFile != null);
+		assumeTrue(this.exampleZipFile != null);
 		final File projectRoot = createProject(); 
 		final List<File> installedFiles = unpackFiles(projectRoot);
 		assertFalse("No installed file in " + projectRoot, installedFiles.isEmpty());
@@ -188,6 +194,114 @@ public class ExamplesTest extends AbstractSarlTest {
 			List<String> issues = compileFiles(projectRoot, installedFiles);
 			assertNoIssue(issues);
 		}
+	}
+
+	@Test
+	public void launchConfiguration() throws Exception {
+		assumeTrue(this.exampleZipFile != null);
+		final File projectRoot = createProject(); 
+		final List<File> installedFiles = unpackFiles(projectRoot);
+		final File launchConfiguration = new File(projectRoot, LAUNCH_PROPERTY_FILE);
+		assumeTrue(launchConfiguration.exists());
+
+		final File relativeLaunchConfiguration = FileSystem.makeRelative(launchConfiguration, projectRoot);
+		assertTrue(installedFiles.contains(relativeLaunchConfiguration));
+
+		final File folder;
+
+		if (isMavenProject()) {
+			// Maven compilation
+			compileMaven(projectRoot);
+			folder = FileSystem.join(projectRoot, "src", "main", "generated-sources", "sarl");
+		} else {
+			// Standard SARL compilation
+			compileFiles(projectRoot, installedFiles);
+			folder = getSourceGenPath(projectRoot);
+		}
+
+		final Document launch = readXmlContent(launchConfiguration);
+
+		readLaunchConfigurationFromXml(launch, (type, name, isAgent) -> {
+			final String filename = type.replaceAll("\\.", File.separator).concat(".java");
+			File file = FileSystem.convertStringToFile(filename);
+			file = FileSystem.join(folder, file);
+			assertTrue("The type specified into the launch configuration \""
+					+ name + "\" was not found into the compilation results: "
+					+ type,
+					file.exists());
+		});
+	}
+
+	@Test
+	public void fileToOpen() throws Exception {
+		assumeTrue(this.exampleZipFile != null);
+		final File projectRoot = createProject(); 
+		final List<File> installedFiles = unpackFiles(projectRoot);
+		final File pluginFile = new File(DEFAULT_RELATIVE_PATH, "plugin.xml");
+		final Document document = readXmlContent(pluginFile);
+		Node node = readNode(document, "plugin");
+		node = readExtensionPoint(node);
+		assumeNotNull(node);
+		
+		String locationStr = readXmlAttribute(node, "location");
+		assertNotNull(locationStr);
+		IPath location = Path.fromPortableString(locationStr);
+	
+		// Format 1: <project-name>/<source-folder>/<qualified-filename>
+		IPath filePath = location.removeFirstSegments(1);
+		File file = FileSystem.join(projectRoot, filePath.toFile());
+		if (file == null || !file.exists()) {
+			// Format 2: <source-folder>/<qualified-filename>
+			file = FileSystem.join(projectRoot, location.toFile());
+			if (file == null || !file.exists()) {
+				// Format 3: <qualified-filename>
+				final File folder = getSourcePath(projectRoot);
+				file = FileSystem.join(folder, location.toFile());
+				assertTrue("The filename to be opened that is specified into the plugin.xml file for \""
+						+ this.exampleZipFile.getName() + "\" was not found into the zip file",
+						file != null && file.exists());
+			}
+		}
+	}
+
+	private static Node readNode(Node root, String name) {
+		NodeList nodes = root.getChildNodes();
+		final int len = nodes.getLength();
+		for (int i = 0; i < len; ++i) {
+			Node node = nodes.item(i);
+			if (node != null) {
+				if (name.equals(node.getNodeName())) {
+					return node;
+				}
+			}
+		}
+		return null;
+	}
+	
+	private Node readExtensionPoint(Node root) {
+		NodeList nodes = root.getChildNodes();
+		final int len = nodes.getLength();
+		for (int i = 0; i < len; ++i) {
+			Node node = nodes.item(i);
+			if (node != null) {
+				if ("extension".equals(node.getNodeName())
+					&& "org.eclipse.emf.common.ui.examples".equals(readXmlAttribute(node, "point"))) {
+					node = readNode(node, "example");
+					if (node != null) {
+						Node prjNode = readNode(node, "projectDescriptor");
+						if (prjNode != null) {
+							String field = readXmlAttribute(prjNode, "contentURI");
+							assertNotNull(field);
+							File zip = FileSystem.convertStringToFile(field);
+							if (this.exampleZipFile.getPath().endsWith(zip.getPath())) {
+								return readNode(node, "fileToOpen");
+							}
+						}
+					}
+				}
+			}
+		}
+		return null;
 	}
 
 	private boolean isMavenProject() {
@@ -205,12 +319,19 @@ public class ExamplesTest extends AbstractSarlTest {
 	}
 
 	private String compileMaven(File root) throws Exception {
+		File compiledFile = new File(root, ".sarltestscompiled.tmp");
+		if (compiledFile.exists()) {
+			return null;
+		}
+		compiledFile.createNewFile();
+		
 		final String[] command = new String[] {
 				"mvn", "-q", "clean", "package"
 		};
 		final Process p = Runtime.getRuntime().exec(command, null, root);
 		p.waitFor();
 		final StringBuilder output = new StringBuilder();
+		output.append("Exit code: ").append(p.exitValue()).append("\n");
 		final BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		String line = reader.readLine();
 		while (line != null) {
@@ -241,7 +362,7 @@ public class ExamplesTest extends AbstractSarlTest {
 		compiler.setGenerateSyntheticSuppressWarnings(true);
 		compiler.setCleaningPolicy(CleaningPolicy.NO_CLEANING);
 		compiler.setClassPath(getClasspath());
-		compiler.setJavaSourceVersion(SARLVersion.MINIMAL_JDK_VERSION);
+		compiler.setJavaSourceVersion(SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT);
 		compiler.setAllWarningSeverities(Severity.IGNORE);
 		compiler.setWarningSeverity(IssueCodes.DEPRECATED_MEMBER_REFERENCE, Severity.ERROR);
 		compiler.setJavaCompilerVerbose(false);

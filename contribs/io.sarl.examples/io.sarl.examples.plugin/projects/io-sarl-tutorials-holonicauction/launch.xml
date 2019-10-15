@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launchConfigurations>
+	<agent class="io.sarl.examples.holonicauction.Auctioneer" name="Holonic auction" />
+</launchConfigurations>

@@ -47,11 +47,46 @@
 			</plugins>
 		</pluginManagement>
 		<plugins>
-
 			<plugin>
 				<groupId>com.google.code.maven-replacer-plugin</groupId>
 				<artifactId>replacer</artifactId>
 				<executions>
+					<execution>
+						<id>prepare-eclipse-buildproperties</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<file>${project.basedir}/build.properties</file>
+							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
+							<replacements>
+								<replacement>
+									<token>^(jre\.compilation\.profile *= *)(.*)$</token>
+									<value>$1${sarl-dsl.min.jre.environment}</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+					<execution>
+						<id>prepare-eclipse-manifestmf</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<file>${project.basedir}/META-INF/MANIFEST.MF</file>
+							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
+							<replacements>
+								<replacement>
+									<token>^(Bundle-RequiredExecutionEnvironment: *)(.*)$</token>
+									<value>$1${sarl-run.min.jre.environment}</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
 					<execution>
 						<id>prepare-eclipse-aboutbox</id>
 						<phase>generate-sources</phase>
@@ -60,33 +95,25 @@
 						</goals>
 						<configuration>
 							<encoding>${project.build.sourceEncoding}</encoding>
-							<file>${project.basedir}/src-templates/about.mappings</file>
-							<outputFile>${project.basedir}/about.mappings</outputFile>
+							<file>${project.basedir}/about.mappings</file>
+							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
 							<replacements>
 								<replacement>
-									<token>%website%</token>
-									<value>${sarlUrl}</value>
+									<token>^(0 *= *)(.*)$</token>
+									<value>$1${buildId}</value>
 								</replacement>
 								<replacement>
-									<token>%sarlBuildId%</token>
-									<value>${buildId}</value>
+									<token>^(1 *= *)(.*)$</token>
+									<value>$1${project.inceptionYear}-${year}</value>
 								</replacement>
 								<replacement>
-									<token>%copyrightdate%</token>
-									<value>${project.inceptionYear}-${year}</value>
+									<token>^(2 *= *)(.*)$</token>
+									<value>$1${copyrighters}</value>
 								</replacement>
 								<replacement>
-									<token>%copyrighters%</token>
-									<value>${copyrighters}</value>
+									<token>^(3 *= *)(.*)$</token>
+									<value>$1${sarlUrl}</value>
 								</replacement>
-								<replacement>
-									<token>%sarlreleaseversion%</token>
-									<value>${sarl.release_version}</value>
-								</replacement>
-								<replacement>
-									<token>%sarlspecificationreleasedate%</token>
-									<value>${sarl.specification.release_date}</value>
-								</replacement>								
 							</replacements>
 						</configuration>
 					</execution>
@@ -98,40 +125,43 @@
 						</goals>
 						<configuration>
 							<encoding>${project.build.sourceEncoding}</encoding>
-							<file>${project.basedir}/src-templates/build.xml</file>
-							<outputFile>${project.basedir}/build.xml</outputFile>
+							<file>${project.basedir}/build.xml</file>
+							<regexFlags>
+								<regexFlag>MULTILINE</regexFlag>
+								<regexFlag>DOTALL</regexFlag>
+							</regexFlags>
 							<replacements>
 								<replacement>
-									<token>%sarlversion%</token>
-									<value>${sarl.version}</value>
+									<token>(token="PROJECT_VERSION" +value=")([^"]+)(")</token>
+									<value>$1${sarl.version}$3</value>
 								</replacement>
 								<replacement>
-									<token>%afcversion%</token>
-									<value>${afc.version}</value>
+									<token>(token="SARL_VERSION" +value=")([^"]+)(")</token>
+									<value>$1${sarl.version}$3</value>
 								</replacement>
 								<replacement>
-									<token>%encoding%</token>
-									<value>${project.build.sourceEncoding}</value>
+									<token>(token="AFC_VERSION" +value=")([^"]+)(")</token>
+									<value>$1${afc.version}$3</value>
 								</replacement>
 								<replacement>
-									<token>%compilerlevel%</token>
-									<value>${compiler.level}</value>
+									<token>(token="FILE_ENCODING" +value=")([^"]+)(")</token>
+									<value>$1${project.build.sourceEncoding}$3</value>
 								</replacement>
 								<replacement>
-									<token>%releaseyear%</token>
-									<value>${year}</value>
+									<token>(token="JAVA_VERSION" +value=")([^"]+)(")</token>
+									<value>$1${user.min.jdk.version}$3</value>
 								</replacement>
 								<replacement>
-									<token>%pomtemplaterelativepath%</token>
-									<value>io/sarl/eclipse/wizards/newproject/pom_template.xml</value>
+									<token>(token="RELEASE_YEAR" +value=")([^"]+)(")</token>
+									<value>$1${year}$3</value>
 								</replacement>
 								<replacement>
-									<token>%pomtemplatefile%</token>
-									<value>${path_to_pom_template_jar}</value>
+									<token>(token="MAVEN_COMPILER_VERSION" +value=")([^"]+)(")</token>
+									<value>$1${mavencompiler.version}$3</value>
 								</replacement>
 								<replacement>
-									<token>%mavencompilerversion%</token>
-									<value>${mavencompiler.version}</value>
+									<token>(name="relative_path_to_source_folder_of_pom_template" +value=")([^"]+)(")</token>
+									<value>$1${path_to_pom_template_jar}$3</value>
 								</replacement>
 							</replacements>
 						</configuration>
@@ -153,7 +183,7 @@
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
 					<execution>
-						<phase>generate-sources</phase>
+						<phase>generate-resources</phase>
 						<configuration>
 							<target>
 								<ant antfile="${project.basedir}/build.xml" target="zip_all_examples" />

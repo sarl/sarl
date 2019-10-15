@@ -38,18 +38,8 @@ public final class SARLVersion {
 	 *
 	 * <p>The version number is usually composed of two digits that
 	 * represent the version of the SARL specification and tools.
-	 *
-	 * @deprecated since 0.10, see #SPECIFICATION_RELEASE_VERSION_STRING
 	 */
-	@Deprecated
-	public static final float SPECIFICATION_RELEASE_VERSION = (float) (@sarlspecificationreleaseversion@);
-
-	/** Version number of the SARL specification.
-	 *
-	 * <p>The version number is usually composed of two digits that
-	 * represent the version of the SARL specification and tools.
-	 */
-	public static final String SPECIFICATION_RELEASE_VERSION_STRING = "@sarlspecificationreleaseversion@"; //$NON-NLS-1$
+	public static final String SPECIFICATION_RELEASE_VERSION_STRING = "0.10"; //$NON-NLS-1$
 
 	/** The version number of the current release of the SARL library.
 	 *
@@ -58,7 +48,7 @@ public final class SARLVersion {
 	 * @see #SARL_RELEASE_VERSION_OSGI
 	 * @see #SARL_RELEASE_VERSION_MAVEN
 	 */
-	public static final String SARL_RELEASE_VERSION = "@sarlreleaseversion@"; //$NON-NLS-1$
+	public static final String SARL_RELEASE_VERSION = "0.10.0"; //$NON-NLS-1$
 
 	/** The version number in OSGI format of the current release of the SARL library.
 	 *
@@ -67,7 +57,7 @@ public final class SARLVersion {
 	 * @see #SARL_RELEASE_VERSION
 	 * @see #SARL_RELEASE_VERSION_MAVEN
 	 */
-	public static final String SARL_RELEASE_VERSION_OSGI = "@sarlreleaseversion.osgi@"; //$NON-NLS-1$
+	public static final String SARL_RELEASE_VERSION_OSGI = "0.10.0.qualifier"; //$NON-NLS-1$
 
 	/** The version number in Maven format of the current release of the SARL library.
 	 *
@@ -76,34 +66,48 @@ public final class SARLVersion {
 	 * @see #SARL_RELEASE_VERSION
 	 * @see #SARL_RELEASE_VERSION_OSGI
 	 */
-	public static final String SARL_RELEASE_VERSION_MAVEN = "@sarlreleaseversion.maven@"; //$NON-NLS-1$
+	public static final String SARL_RELEASE_VERSION_MAVEN = "0.10.0-SNAPSHOT"; //$NON-NLS-1$
 
 	/** The status of the SARL specification.
 	 *
 	 * <p>Usually, this status is also displayed in the
 	 * <a href="http://www.sarl.io/docs/suite/io/sarl/docs/SARLDocumentationSuite.html">reference documentation of SARL</a>.
 	 */
-	public static final String RELEASE_STATUS = "@sarlspecificationreleasestatus@"; //$NON-NLS-1$
+	public static final String RELEASE_STATUS = "Draft Release"; //$NON-NLS-1$
 
-	/** Flag that indicates if the current SARL libbrary is a stable release.
+	/** Flag that indicates if the current SARL library is a stable release.
 	 *
 	 * <p>A stable release is collection of libraries that will be not more compiled and generated.
 	 */
-	public static final boolean IS_STABLE = @sarlisstableversion@;
-
-	/** The minimal JDK version to use SARL features.
-	 */
-	public static final String MINIMAL_JDK_VERSION = "@minimaljdkversion@"; //$NON-NLS-1$
-
-	/** The maximal JDK version to use SARL features.
-	 *
-	 * @since 0.10
-	 */
-	public static final String MAXIMAL_JDK_VERSION = "@maximaljdkversion@"; //$NON-NLS-1$
+	public static final boolean IS_STABLE = false;
 
 	/** The minimal Xtext version to use SARL features.
 	 */
-	public static final String MINIMAL_XTEXT_VERSION = "@minimalxtextversion@"; //$NON-NLS-1$
+	public static final String MINIMAL_XTEXT_VERSION = "2.19.0"; //$NON-NLS-1$
+
+	/** The minimal version of the JDK that must be used for running the SARL compilation tools (IDE, or sarlc).
+	 *
+	 * @since 0.10
+	 */
+	public static final String MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT = "1.8"; //$NON-NLS-1$
+
+	/** The first incompatible version of the JDK that must NOT be used for running the SARL compilation tools (IDE, or sarlc).
+	 *
+	 * @since 0.10
+	 */
+	public static final String INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT = "1.9"; //$NON-NLS-1$
+
+	/** The minimal version of the JDK that must be used on the classpath of SARL projects.
+	 *
+	 * @since 0.10
+	 */
+	public static final String MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH = "1.8"; //$NON-NLS-1$
+
+	/** The first incompatible version of the JDK that must NOT be used on the classpath of SARL projects.
+	 *
+	 * @since 0.10
+	 */
+	public static final String INCOMPATIBLE_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH = "1.9"; //$NON-NLS-1$
 
 	private SARLVersion() {
 		//

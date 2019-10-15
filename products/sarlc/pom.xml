@@ -45,22 +45,19 @@
 				<artifactId>replacer</artifactId>
 				<executions>
 					<execution>
-						<id>generate-sarlcconstants-class</id>
-						<phase>generate-sources</phase>
+						<id>prepare-constants-class</id>
+						<phase>process-sources</phase>
 						<goals>
 							<goal>replace</goal>
 						</goals>
 						<configuration>
 							<encoding>${project.build.sourceEncoding}</encoding>
-							<basedir>${project.basedir}/src-templates</basedir>
-							<outputDir>../src/main/java</outputDir>
-							<includes>
-								<include>**/*.java</include>
-							</includes>
+							<file>${project.basedir}/src/main/java/io/sarl/lang/sarlc/Constants.java</file>
+							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
 							<replacements>
 								<replacement>
-									<token>@sarlccompilername@</token>
-									<value>${cliCompilerName}</value>
+									<token>(PROGRAM_NAME *= *")([^"]+)(";)</token>
+									<value>$1${cliCompilerName}$3</value>
 								</replacement>
 							</replacements>
 						</configuration>
@@ -137,8 +134,7 @@
 								<addDependencies>false</addDependencies>
 							</classPath>
 							<jre>
-								<minVersion>${compiler.level}.0</minVersion>
-								<maxVersion>${compiler.level.max.after}.0</maxVersion>
+								<minVersion>${sarl-run.min.jdk.version}.0</minVersion>
 								<jdkPreference>jdkOnly</jdkPreference>
 								<runtimeBits>64/32</runtimeBits>
 							</jre>

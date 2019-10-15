@@ -855,8 +855,10 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 				@Override
 				public int compare(IVMInstall i0, IVMInstall i1) {
 					if (i1 instanceof IVMInstall2 && i0 instanceof IVMInstall2) {
-						final String cc0 = JavaModelUtil.getCompilerCompliance((IVMInstall2) i0, SARLVersion.MINIMAL_JDK_VERSION);
-						final String cc1 = JavaModelUtil.getCompilerCompliance((IVMInstall2) i1, SARLVersion.MINIMAL_JDK_VERSION);
+						final String cc0 = JavaModelUtil.getCompilerCompliance((IVMInstall2) i0,
+								SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH);
+						final String cc1 = JavaModelUtil.getCompilerCompliance((IVMInstall2) i1,
+								SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH);
 						final int result = cc1.compareTo(cc0);
 						if (result != 0) {
 							return result;
@@ -878,9 +880,9 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 				if (this.installedJVMs[i] instanceof IVMInstall2) {
 					this.jreCompliance[i] = JavaModelUtil.getCompilerCompliance(
 							(IVMInstall2) this.installedJVMs[i],
-							SARLVersion.MINIMAL_JDK_VERSION);
+							SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH);
 				} else {
-					this.jreCompliance[i] = SARLVersion.MINIMAL_JDK_VERSION;
+					this.jreCompliance[i] = SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH;
 				}
 			}
 			comboField.setItems(jreLabels);
@@ -965,9 +967,9 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 
 			final String defaultCC;
 			if (defaultVM instanceof IVMInstall2) {
-				defaultCC = JavaModelUtil.getCompilerCompliance((IVMInstall2) defaultVM, SARLVersion.MINIMAL_JDK_VERSION);
+				defaultCC = JavaModelUtil.getCompilerCompliance((IVMInstall2) defaultVM, SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH);
 			} else {
-				defaultCC = SARLVersion.MINIMAL_JDK_VERSION;
+				defaultCC = SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH;
 			}
 
 			for (int i = 0; i < environments.length; i++) {
@@ -977,7 +979,7 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 				}
 			}
 
-			return "JavaSE-1.6"; //$NON-NLS-1$
+			return SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH;
 		}
 
 		private String getDefaultJVMLabel() {
@@ -1269,9 +1271,10 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 			if (selectedJVM == null) {
 				selectedJVM = JavaRuntime.getDefaultVMInstall();
 			}
-			String jvmCompliance = SARLVersion.MINIMAL_JDK_VERSION;
+			String jvmCompliance = SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH;
 			if (selectedJVM instanceof IVMInstall2) {
-				jvmCompliance = JavaModelUtil.getCompilerCompliance((IVMInstall2) selectedJVM, SARLVersion.MINIMAL_JDK_VERSION);
+				jvmCompliance = JavaModelUtil.getCompilerCompliance((IVMInstall2) selectedJVM,
+						SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH);
 			}
 			if (!selectedCompliance.equals(jvmCompliance)
 					&& (JavaModelUtil.is50OrHigher(selectedCompliance)

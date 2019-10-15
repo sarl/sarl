@@ -19,33 +19,25 @@
  * limitations under the License.
  */
 
-package io.janusproject;
+package io.sarl.examples;
 
+import org.osgi.framework.Bundle;
 
-/**
- * Describes the version of the Janus platform.
+import io.sarl.eclipse.SARLEclipseExecutableExtensionFactory;
+
+/** Factory for injecting SARL instances.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 2.0.5.0
+ * @since 0.10
  */
-@SuppressWarnings("all")
-public final class JanusVersion {
+public class SARLExampleExecutableExtensionFactory extends SARLEclipseExecutableExtensionFactory {
 
-	/** The version number of the current release of the Janus platform.
-	 */
-	public static final String JANUS_RELEASE_VERSION = "@janusreleaseversion@"; //$NON-NLS-1$
-
-	/** Flag that indicates if the current Janus platform is a stable release.
-	 *
-	 * <p>A stable release is a platform that will be not more compiled and generated.
-	 */
-	public static final boolean IS_STABLE = @janusisstableversion@;
-
-	private JanusVersion() {
-		//
+	@Override
+	protected Bundle getBundle() {
+		return SARLExamplePlugin.getDefault().getBundle();
 	}
 
 }
