@@ -1,0 +1,146 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-@RELEASE_YEAR@ the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.demos.boids
+
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import io.sarl.core.Schedules
+import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ConcurrentSkipListSet
+import org.arakhne.afc.math.geometry.d2.d.Vector2d
+import org.eclipse.xtend.lib.annotations.Accessors
+
+/** 
+ * @author Nicolas Gaud
+ */
+agent Environment {
+
+	uses Logging, DefaultContextInteractions, Schedules
+
+	@Accessors
+	var width : int
+
+	@Accessors
+	var height : int
+
+	@Accessors
+	var boids : ConcurrentHashMap<UUID, PerceivedBoidBody>
+
+	// Set of boids ID who has sent their influence in the current time step
+	@Accessors
+	var influences : ConcurrentSkipListSet<UUID>
+
+	on Initialize {
+		// Environment init parameters : int ihauteur, int ilargeur
+		if (occurrence.parameters.size > 1) {
+			if (occurrence.parameters.get(0) instanceof Integer) {
+				height = occurrence.parameters.get(0) as Integer
+			}
+
+			if (occurrence.parameters.get(1) instanceof Integer) {
+				width = occurrence.parameters.get(1) as Integer
+			}
+			boids = null
+			influences = new ConcurrentSkipListSet
+
+		}
+	}
+
+	on Start {
+		this.boids = occurrence.perceivedAgentBody
+		new GuiRepaint(boids).emit
+		new Perception(boids).emit
+	}
+
+	on Action {
+		synchronized (boids) {
+			synchronized (influences) {
+				if (boids.containsKey(occurrence.source.UUID)) {
+					this.influences.add(occurrence.source.UUID)
+					applyForce(occurrence.influence, boids.get(occurrence.source.UUID))
+				}
+
+				if (this.influences.size == this.boids.size) {
+					// All boids have sent their influences
+					in(Settings::pause) [
+						new GuiRepaint(boids).emit [it.UUID == BoidsSimulation.id]
+						new Perception(boids).emit
+					]
+					this.influences.clear
+				}
+			}
+		}
+	}
+
+	def applyForce(force : Vector2d, b : PerceivedBoidBody) {
+		// on borne la force appliquee.
+		if (force.length > b.group.maxForce) {
+			force.length = b.group.maxForce
+		}
+
+		// contribution de la masse.
+		// force.fois( 1 / b.getGroupe().masse );
+		// mise a jour de l'acceleration et de la vitesse.
+		var acceleration = b.acceleration
+		acceleration.set(force)
+		var vitesse = b.vitesse
+		vitesse += acceleration
+
+		// on borne la vitesse.
+		if (vitesse.length > b.group.maxSpeed) {
+			vitesse.length = b.group.maxSpeed
+		}
+
+		// on met a jour la position
+		var position = b.position
+		position += vitesse
+
+		var bb = boids.get(b.owner)
+		bb.acceleration = acceleration
+		bb.vitesse = vitesse
+		bb.position = position
+
+		// on s'ajuste en fonction des dimension du Monde.
+		b.clampToWorld
+	}
+
+	def clampToWorld(b : PerceivedBoidBody) {
+		var posX = b.position.x
+		var posY = b.position.y
+		if (Settings::traverseWalls) {
+			if(posX > width) posX -= 2 * width
+			if(posX < ( -1 * width )) posX += 2 * width
+			if(posY > height) posY -= 2 * height
+			if(posY < ( -1 * height )) posY += 2 * height
+		} else {
+			if(posX > width) posX = width - 0.1
+			if(posX < ( -1 * width )) posX = -width + 0.1
+			if(posY > height) posY = height - 0.1
+			if(posY < ( -1 * height )) posY = -height + 0.1
+		}
+
+		boids.get(b.owner).position = new Vector2d(posX, posY)
+	}
+
+}

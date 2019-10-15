@@ -1,0 +1,106 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-@RELEASE_YEAR@ the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.demos.boids
+
+import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
+import org.eclipse.xtend.lib.annotations.Accessors
+import org.arakhne.afc.math.geometry.d2.d.Vector2d
+
+/**
+ * @author Nicolas Gaud
+ */
+event Action {
+	var influence : Vector2d
+}
+
+/** 
+ * @author Nicolas Gaud
+ */
+event Perception {
+	val perceivedAgentBody : ConcurrentHashMap<UUID, PerceivedBoidBody>
+	
+	new (bodies : ConcurrentHashMap<UUID, PerceivedBoidBody>) {
+		perceivedAgentBody = new ConcurrentHashMap<UUID, PerceivedBoidBody>(bodies);
+	}
+}
+
+/** 
+ * @author Nicolas Gaud
+ */
+event Start {
+	val perceivedAgentBody : ConcurrentHashMap<UUID, PerceivedBoidBody>
+
+	new (bodies : ConcurrentHashMap<UUID, PerceivedBoidBody>) {
+		perceivedAgentBody = new ConcurrentHashMap<UUID, PerceivedBoidBody>(bodies);
+	}
+	
+}
+
+/** 
+ * @author Nicolas Gaud
+ */
+event GuiRepaint {
+	val perceivedAgentBody : ConcurrentHashMap<UUID, PerceivedBoidBody>
+
+	new (bodies : ConcurrentHashMap<UUID, PerceivedBoidBody>) {
+		perceivedAgentBody = new ConcurrentHashMap<UUID, PerceivedBoidBody>(bodies);
+	}
+
+}
+
+/** 
+ * The representation of a boid in the environment.
+ *
+ * @author Nicolas Gaud 
+ */
+class PerceivedBoidBody {
+
+	// Position of the body
+	@Accessors
+	var position : Vector2d
+
+	// Address of the body's owner
+	@Accessors
+	var owner : UUID
+
+	// Agent's speed
+	@Accessors
+	var vitesse : Vector2d
+
+	// Acceleration
+	@Accessors
+	var acceleration : Vector2d
+
+	// Population of the agent
+	@Accessors
+	var group : Population
+
+	new (igroup : Population, iowner : UUID, iposition : Vector2d, ispeed : Vector2d) {
+		position = iposition
+		owner = iowner
+		vitesse = ispeed
+		acceleration = new Vector2d
+		group = igroup
+	}
+
+}
