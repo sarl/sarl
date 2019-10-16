@@ -37,9 +37,9 @@
 							<file>${project.basedir}/about.mappings</file>
 							<regexFlags><regexFlag>MULTILINE</regexFlag></regexFlags>
 							<replacements>
-								<replacement>
+								<replacement>dId
 									<token>^(0 *= *)(.*)$</token>
-									<value>$1${buildId}</value>
+									<value>$1${sarl.buildId}</value>
 								</replacement>
 								<replacement>
 									<token>^(1 *= *)(.*)$</token>
@@ -133,7 +133,7 @@
 								</replacement>
 								<replacement>
 									<token>%sarlBuildId%</token>
-									<value>${buildId}</value>
+									<value>${sarl.buildId}</value>
 								</replacement>
 								<replacement>
 									<token>%copyrightdate%</token>
