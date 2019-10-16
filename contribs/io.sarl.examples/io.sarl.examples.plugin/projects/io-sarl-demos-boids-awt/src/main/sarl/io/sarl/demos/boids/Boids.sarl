@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  * 
- * Copyright (C) 2014-@RELEASE_YEAR@ the original authors or authors.
+ * Copyright (C) 2014-2019 the original authors or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.sarl.demos.boids
 
 import io.sarl.core.DefaultContextInteractions
@@ -28,20 +27,19 @@ import io.sarl.core.Schedules
 import java.util.Collection
 import java.util.UUID
 import org.arakhne.afc.math.geometry.d2.d.Vector2d
+import io.sarl.core.Lifecycle
 
-/**
+/** 
+ * A boid agent evolving according C. Reynolds basic behavioral rules
  * @author Nicolas Gaud
  */
+@SuppressWarnings("potential_field_synchronization_problem")
 agent Boid {
 
-	uses Logging, DefaultContextInteractions, Schedules
+	uses Logging, DefaultContextInteractions, Schedules, Lifecycle
 
 	// ID of the environmental agent
 	var environment : UUID
-
-	var EnvtWidth : int
-
-	var EnvtHeight : int
 
 	var position : Vector2d
 
@@ -49,71 +47,69 @@ agent Boid {
 
 	var group : Population
 
-	val traverseWalls = Settings::traverseWalls
-
-	val distObstacles : double = Settings::obstacleDistance
-
-	val obstaclesForceFactor : double = Settings::obstaclesForceFactor
-
 	on Initialize {
-		// 6 Boids init parameters : UUID envt, int EnvtGrilleHauteur, int EnvtGrilleLargeur, Population p, Vector2d initialPosition, Vector2d initialVitesse, String boidName
-		if (occurrence.parameters.size > 6) {
+		// 5 Boids init parameters : UUID envt, Population p, Vector2d initialPosition, Vector2d initialVitesse, String boidName
+		if (occurrence.parameters.size > 4) {
 			if (occurrence.parameters.get(0) instanceof UUID) {
 				environment = occurrence.parameters.get(0) as UUID
 			}
 
-			if (occurrence.parameters.get(1) instanceof Integer) {
-				EnvtHeight = occurrence.parameters.get(1) as Integer
+			if (occurrence.parameters.get(1) instanceof Population) {
+				group = occurrence.parameters.get(1) as Population
 			}
 
-			if (occurrence.parameters.get(2) instanceof Integer) {
-				EnvtWidth = occurrence.parameters.get(2) as Integer
+			if (occurrence.parameters.get(2) instanceof Vector2d) {
+				position = occurrence.parameters.get(2) as Vector2d
 			}
-
-			if (occurrence.parameters.get(3) instanceof Population) {
-				group = occurrence.parameters.get(3) as Population
-			}
-
-			if (occurrence.parameters.get(4) instanceof Vector2d) {
-				position = occurrence.parameters.get(4) as Vector2d
-			}
-			if (occurrence.parameters.get(5) instanceof Vector2d) {
-				speed = occurrence.parameters.get(5) as Vector2d
+			if (occurrence.parameters.get(3) instanceof Vector2d) {
+				speed = occurrence.parameters.get(3) as Vector2d
 				speed.length = 0.25
 				speed += new Vector2d(0, 0.75)
 				speed.scale(group.maxSpeed)
 			}
-			if (occurrence.parameters.get(6) instanceof String) {
-				loggingName = occurrence.parameters.get(6) as String
+			if (occurrence.parameters.get(4) instanceof String) {
+				loggingName = occurrence.parameters.get(4) as String
 			}
 
 		}
-
-		"Boids activated".info
+		if (Settings::isLogActivated) {
+			"Boids activated".info
+		}
 	}
 
 	on Perception {
 		var boids = occurrence.perceivedAgentBody
 		var myBody = boids.get(ID)
 		if ((myBody !== null) && (myBody.owner == this.ID)) {
-			// Update les données internes de l'agent en fonction de l'environnement
+			// Update boids' speed and position according to the new environmental data
 			this.position = myBody.position
-			this.speed = myBody.vitesse		
+			this.speed = myBody.vitesse
 		}
 		in(Settings::pause) [
 			emit(new Action => [influence = think(boids.values)])[it.UUID == this.environment]
+
+			if (Settings::isLogActivated) {
+				info("Sending Influences.")
+			}
 		]
 	}
 
-	/************** Boid Methods ****************************
-	 */
+	on Die {
+		killMe
+	}
 
+	/************** Boids' behavioral Methods ****************************
+	 */
+	 
+	 /**
+	  * The core boids behavior : aggregating all forces into a influence 
+	  */
 	def think(perception : Collection<PerceivedBoidBody>) : Vector2d {
 		if (perception !== null) {
 			var force : Vector2d
 			var influence = new Vector2d
 
-			influence.set(0,0)
+			influence.set(0, 0)
 
 			if (group.separationOn) {
 				force = perception.separation
@@ -139,12 +135,6 @@ agent Boid {
 				influence += force
 			}
 
-			if (!traverseWalls) {
-				force = obstacles
-				force.scale(obstaclesForceFactor)
-				influence += force
-			}
-
 			if (influence.length > group.maxForce) {
 				influence.length = group.maxForce
 			}
@@ -155,11 +145,9 @@ agent Boid {
 		}
 	}
 
-	def isNear(otherBoid : PerceivedBoidBody, distance : double) : boolean {
-		var tmp = position - otherBoid.position
-		return tmp.length <= distance
-	}
-
+	/** 
+	 * Determine whether a body is visible or not according to the perception range
+	 */
 	def isVisible(otherBoid : PerceivedBoidBody, distance : double) : boolean {
 		var tmp = otherBoid.position - position
 
@@ -187,7 +175,7 @@ agent Boid {
 				var tmp = position - otherBoid.position
 				len = tmp.length
 				// force : 1/r
-				tmp.scale(1.0 / (len**2))
+				tmp.scale(1.0 / (len ** 2))
 				force += tmp
 			}
 		}
@@ -208,7 +196,7 @@ agent Boid {
 			}
 		}
 
-		// computation of the barycentre.
+		// computation of the barycenter.
 		if (nbTot > 0) {
 			force.scale(1.0 / nbTot)
 			force -= position
@@ -251,38 +239,12 @@ agent Boid {
 				isVisible(otherBoid, group.distRepulsion)) {
 				var tmp = position - otherBoid.position
 				len = tmp.length
-				tmp.scale(1 / (len**2))
+				tmp.scale(1 / (len ** 2))
 				force += tmp
 			}
 		}
 		return force
 	}
 
-	def obstacles : Vector2d {
-		var tmp = new Vector2d
-		var force = new Vector2d
-
-		if (((EnvtWidth - position.x) < distObstacles) && speed.x > 0) {
-			tmp.set(-speed.x / (EnvtWidth - position.x), 0);
-			force += tmp
-		}
-		if ((position.x < -EnvtWidth + distObstacles) && speed.x < 0) {
-			tmp.set(-speed.x / (EnvtWidth + position.x), 0);
-			force += tmp
-		}
-
-		if ((position.y > EnvtHeight - distObstacles) && speed.y > 0) {
-			tmp.set(0, -speed.y / (EnvtHeight - position.y));
-			force += tmp
-		}
-
-		if ((position.y < -EnvtHeight + distObstacles) && speed.y < 0) {
-			tmp.set(0, -speed.y / (EnvtHeight + position.y));
-			force += tmp
-		}
-
-		force.scale(group.mass)
-		return force
-	}
 
 }

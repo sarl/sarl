@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  * 
- * Copyright (C) 2014-@RELEASE_YEAR@ the original authors or authors.
+ * Copyright (C) 2014-2019 the original authors or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,18 +25,7 @@ import java.awt.Color
 
 /**
  * 
- * Cette simulation est inspiré d'une applet de simulation de boids réalisée dans le cadre de 
- * l'ouverture 12 Systèmes Multi-Agents de le 3ème année à l'ENST Bretagne et qui a été écrite par :
- * <ul>
- * <li> Gildas Cadin pour la partie comportement des Boids. 
- * <li> Lionel Deglise pour la partie interface. 
- * <li> Pierre Thebaud pour la partie évitement d'obstacle (gestion des murs).
- * </ul>
- * 
- * <p>
- * Elle a été modifié et adapté au principe OCMAS puis implementé sous MadKit
- * Cette classe est uniquement utilisé pour le lancement de la simulation.
- * Ainsi que la création et l'ajout des populations de boids
+ * The main class configuring the various boids populations and launching the simulation
  * 
  * @author Nicolas Gaud
  */
@@ -53,20 +42,18 @@ class BoidsSimulationLauncher {
 		var pGreen = new Population(Color::GREEN)
 		var pBlue = new Population(Color::BLUE)
 		
-		var popsize = 10
-		
 		//Initialization of the Red population
-		for (var i =0; i < popsize; i++) {
+		for (var i = 0; i < pRed.popSize; i++) {
 			simu.addBoid(pRed)
 		}
 
 		// Initialization of the Green population
-		for (var i = 0; i < popsize; i++) {
+		for (var i = 0; i < pGreen.popSize; i++) {
 			simu.addBoid(pGreen)
 		}
 
 		// Initialization of the Blue population
-		for (var i = 0; i < popsize; i++) {
+		for (var i = 0; i < pBlue.popSize; i++) {
 			simu.addBoid(pBlue);
 		}
 		

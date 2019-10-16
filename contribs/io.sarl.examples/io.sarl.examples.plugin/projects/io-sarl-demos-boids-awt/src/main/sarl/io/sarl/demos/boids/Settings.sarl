@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  * 
- * Copyright (C) 2014-@RELEASE_YEAR@ the original authors or authors.
+ * Copyright (C) 2014-2019 the original authors or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,37 +18,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.sarl.demos.boids
 
 /**
- * General configuration of the boids simulator.
+ * General configuration of the boids simulation.
  * 
  * @author Nicolas Gaud
  */
 interface Settings {
 
-	/**
-     * Traverse walls.
-     */
-	static val traverseWalls = true
-	
-	
-	/**
-     * Obstacle distance used by boids.
-     */
-	static val obstacleDistance = 20
-	
-	/**
-     * Adaptation factor for the obstacle forces used by boids.
-     */
-    static val obstaclesForceFactor = 80.0
     
+    /**
+     * Environmental grid default width
+     */
     public static val EnvtWidth = 800
+    
+    /**
+	 * Environmental grid default height
+     */
     public static val EnvtHeight = 600
     
+    /**
+     * Boolean specifying whether message logs are activated or not
+     */
     public static val isLogActivated = false
     
-    public static val pause = 10 
+    /**
+     * Specify a pause delay before each boids sends his influence to the environment, and respectively before the environment sends perceptions to boids
+     */
+    public static val pause = 0
 
 }

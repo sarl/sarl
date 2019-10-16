@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  * 
- * Copyright (C) 2014-@RELEASE_YEAR@ the original authors or authors.
+ * Copyright (C) 2014-2019 the original authors or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.sarl.demos.boids
 
 import java.util.UUID
@@ -27,6 +26,12 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.arakhne.afc.math.geometry.d2.d.Vector2d
 
 /**
+ * Event from the GUI to kill each agent to end the simulation before closing the main window
+ */
+event Die
+
+/**
+ * Event from a boid to the environment containing his corresponding influence for the current simulation step.
  * @author Nicolas Gaud
  */
 event Action {
@@ -34,6 +39,7 @@ event Action {
 }
 
 /** 
+ * Event from the environment to the boids with the global state of the environment, could be optimized to reduce it to the true local perception of each boids
  * @author Nicolas Gaud
  */
 event Perception {
@@ -45,6 +51,7 @@ event Perception {
 }
 
 /** 
+ * Event informing the environment from the real startup of the simulation with the corresponding boids inside
  * @author Nicolas Gaud
  */
 event Start {
@@ -57,6 +64,7 @@ event Start {
 }
 
 /** 
+ * Event specifying when the GUI must be refresh according to the new environmental state embodied by the specified map
  * @author Nicolas Gaud
  */
 event GuiRepaint {
@@ -69,7 +77,7 @@ event GuiRepaint {
 }
 
 /** 
- * The representation of a boid in the environment.
+ * The representation of a boid in the environment : his physical body
  *
  * @author Nicolas Gaud 
  */
