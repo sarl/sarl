@@ -1066,6 +1066,15 @@
 						    project.properties["mainbasedir"] = previousDirectory;
 						    log.info("set mainbasedir to: " + project.properties["mainbasedir"]);
 							//************************
+							// Bug in Jenkins/Hudson
+							// The buildId property is not correctly set since
+							// "maven.build.timestamp" is skipped by Jenkins/Hudson.
+							if (project.properties["buildId"] == "\${maven.build.timestamp}"
+								|| project.properties["buildId"] == "\$maven.build.timestamp") {
+								project.properties["buildId"] = (new java.text.SimpleDateFormat("yyyyMMddHHmmss")).format(now);
+								log.info("reset buildId to: " + project.properties["buildId"]);
+							}
+							//************************
 							// Compute version and snapshot tag
 							def snapshotTag = "-SNAPSHOT";
 							def version;
@@ -1082,13 +1091,16 @@
 								isSnapshot = true;
 								endOfVersion = snapshotTag;
 								p2UploadToDir = "/snapshots/"+version+"/R"+project.properties["buildId"]
+								project.properties["sarl.buildId"] = version + "-BETA"
 							} else {
 								version = projectVersion;
 								releaseStatus = "Stable Release";
 								isSnapshot = false;
 								endOfVersion = "";
 								p2UploadToDir = "/releases/"+version
+								project.properties["sarl.buildId"] = project.properties["buildId"]
 							}
+							log.info("set sarl.buildId to: " + project.properties["sarl.buildId"]);
 							versionFields = version.split("\\.");
 							//************************
 							// Set SARL properties
@@ -1118,15 +1130,6 @@
 							log.debug("set janus.release_version to: " + project.properties["janus.release_version"]);
 							log.debug("set janus.version2 to: " + project.properties["janus.version2"]);
 							//************************
-							// Bug in Jenkins/Hudson
-							// The buildId property is not correctly set since
-							// "maven.build.timestamp" is skipped by Jenkins/Hudson.
-							if (project.properties["buildId"] == "\${maven.build.timestamp}"
-								|| project.properties["buildId"] == "\$maven.build.timestamp") {
-								project.properties["buildId"] = (new java.text.SimpleDateFormat("yyyyMMddHHmmss")).format(now);
-								log.info("reset buildId to: " + project.properties["buildId"]);
-							}
-							//************************
 							// P2 properties
 							project.properties["p2UploadToDir"] = p2UploadToDir;
 							log.debug("set p2UploadToDir to: " + project.properties["p2UploadToDir"]);
@@ -1138,6 +1141,9 @@
 						    }
 						    project.properties["checkstyle.config_loc"] = "config_loc=" + config_loc.getAbsolutePath() + File.separator;
 						    log.debug("set checkstyle.config_loc to: " + project.properties["checkstyle.config_loc"]);
+							//************************
+							// Change the SARL Build ID
+							
 						]]></script>
 					</scripts>
 				</configuration>
