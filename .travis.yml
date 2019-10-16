@@ -15,11 +15,6 @@ env:
     - MAVEN_DEPLOYMENT_SETTING: "./build-tools/src/main/resources/maven/deploy-settings.xml"
     - MAVEN_DEPLOYMENT_OPTS: "\"-DskipTests -Dmaven.test.skip=true -Dcheckstyle.skip=true\""
     - HTTPS_KEYSTORE_FILE: "./build-tools/keyring/https.jks"
-    - secure: "e+S71qmexycXKKiRLzc/B12HO64XiGxB9nWW5vifuOI22qjsma6T2z4z+v5qWgSG0O5SEHjQCw+rXDjoqjD0hA8qHpiaFb5vuKS69ulBFfTM5QT4+5F3RX/xepYfrUZlAner7ES7UrYnwDOlASrARiy1HLmcWHcruLosWWgev9Y="
-    - secure: "grzZIv0E+OjSYyB81LH9j2KjH2SCspvsRY54KXD0dP7QmFb8pNbWClhV0TpGevaU4uocDn2ZhlXQdCEpzpesHo0LcPKz+b03xPg6ydbXvMuFXzJ4fFEUfi5iaRGuDDIFm/IPGEMRYyv62poUMFiKpwgECvFjE4ECG8NPegpZnz8="
-    - secure: "aIOrF7Oa3r2ZWuRC6YwSuw1UnDoBLz8uLjNmtq3ZIJzukI93NfjmnJcr+d278nvqOWm/eR+UPkE8fB8PgWamAoxYRK60bjP9ScvaudqR4cztwKMzHLetR1+h0yt3qRS3sl2ImdY2k0UkZDLe+sW7ColCnC1pKM4ty9mbs2tBbvk="
-    - secure: "SIQFWoeSvpHTtWi9x8SZ7J2qDU7OspParyQLAMuKsOK/SMeRbSEGoz1GMgoGMkTsrV64jbG82FTp+0h1ja4ImiaqNuJU7nnIya1CXQOQdtt2q0kcnVBUwhjNoASbxNdScFYrFRIv6205PlolehhpNl52YK5v1Lk0fdfxCaYaxsY="
-    - secure: "nxxWiaAefMEL0NIlJmm6z/R7lJu0MpV7UDrZ8JKlj1vrhw0xidWQwluCrnQS18kypw59gDvHSb/FqmSS4wz1ShVj6Zoptl3S7Y1DSkGPz1AndfDPyi2ned3VSW7aqT+LHdsVWn4YoGryjgEkCO8Lh4aTQlIFJIc1TFwo5L3b568="
 
 # Compilation matrix
 matrix:
@@ -50,9 +45,9 @@ script: "sh -e ./build-tools/scripts/travis-maven-compile.sh"
 
 #after_success: "mvn -B $MAVEN_TEST_OPTS test"
 
-deploy:
-  provider: script
-  script: "sh -e ./build-tools/scripts/travis-maven-deploy.sh"
+#deploy:
+#  provider: script
+#  script: "sh -e ./build-tools/scripts/travis-maven-deploy.sh"
 
 cache:
   directories:
