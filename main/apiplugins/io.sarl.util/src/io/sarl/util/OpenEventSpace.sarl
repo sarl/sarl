@@ -25,8 +25,6 @@ import io.sarl.lang.core.Address
 import io.sarl.lang.core.EventListener
 import io.sarl.lang.core.EventSpace
 
-
-
 /**
  * Event driven interaction space where agent are free register and unregister themselves.
  * Agents should only register once in this type of space.
@@ -47,8 +45,9 @@ interface OpenEventSpace extends EventSpace {
 	 *
 	 * @param entity the entity to register.
 	 * @return the entity's address in this space
+	 * @fires ParticipantJoined in its enclosing Context default space.
 	 */
-	def register(entity : EventListener) : Address
+	def register(entity : EventListener) : Address fires ParticipantJoined
 
 	/**
 	 * Unregisters the entity inside this space.
@@ -57,8 +56,9 @@ interface OpenEventSpace extends EventSpace {
 	 *
 	 * @param entity the entity to unregister.
 	 * @return the former entity's address
+	 * @fires ParticipantJoined in its enclosing Context default space.
 	 */
-	def unregister(entity : EventListener) : Address
+	def unregister(entity : EventListener) : Address fires ParticipantLeft
 
 }
 

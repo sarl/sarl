@@ -23,14 +23,19 @@ package io.janusproject.kernel.space;
 
 import java.util.concurrent.locks.ReadWriteLock;
 
+import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import io.janusproject.services.contextspace.ContextSpaceService;
 import io.janusproject.services.distributeddata.DistributedDataStructureService;
-
 import io.sarl.lang.core.Address;
+import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.EventListener;
+import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.util.OpenEventSpace;
+import io.sarl.util.ParticipantJoined;
+import io.sarl.util.ParticipantLeft;
 
 /**
  * Default implementation of an event space.
@@ -43,6 +48,9 @@ import io.sarl.util.OpenEventSpace;
  * @mavenartifactid $ArtifactId$
  */
 public class EventSpaceImpl extends AbstractEventSpace implements OpenEventSpace {
+
+	@Inject
+	private ContextSpaceService contextRepository;
 
 	/**
 	 * Constructs an event space.
@@ -57,12 +65,49 @@ public class EventSpaceImpl extends AbstractEventSpace implements OpenEventSpace
 
 	@Override
 	public Address register(EventListener entity) {
-		return getParticipantInternalDataStructure().registerParticipant(new Address(getSpaceID(), entity.getID()), entity);
+		final Address a = getParticipantInternalDataStructure().registerParticipant(new Address(getSpaceID(), entity.getID()), entity);
+		fireParticipantJoined(a);
+		return a;
 	}
 
 	@Override
 	public Address unregister(EventListener entity) {
-		return getParticipantInternalDataStructure().unregisterParticipant(entity);
+		final Address a = getParticipantInternalDataStructure().unregisterParticipant(entity);
+		fireParticipantLeft(a);
+		return a;
+	}
+
+	/**
+	 * Fires an {@link ParticipantJoined} event into the default space of the current Context to notify other context's members
+	 * that a new agent joined this space.
+	 * @param newAgentAddress - the address of the agent.
+	 */
+	protected final void fireParticipantJoined(Address newAgentAddress) {
+		final AgentContext enclosingContext = this.contextRepository.getContext(newAgentAddress.getSpaceID().getContextID());
+		final EventSpace defSpace = enclosingContext.getDefaultSpace();
+		defSpace.emit(
+				// No need to give an event source because the event's source is explicitly set below.
+				null,
+				new ParticipantJoined(defSpace.getAddress(newAgentAddress.getUUID()), newAgentAddress.getSpaceID(), newAgentAddress.getUUID()),
+									  it -> it.getUUID() != newAgentAddress.getUUID());
+	}
+
+	/**
+	 * Fires an {@link ParticipantLeft} event into the default space of the current Context to notify other context's members
+	 * that an agent left this space.
+	 * @param agentAddress - address of the agent leaving the space.
+	 */
+	protected final void fireParticipantLeft(Address agentAddress) {
+		final AgentContext enclosingContext = this.contextRepository.getContext(agentAddress.getSpaceID().getContextID());
+		final EventSpace defSpace = enclosingContext.getDefaultSpace();
+		//Since this agent may already have quit the default space at the moment this event is sent,
+		//it is mandatory to recreate an address to be sure the event has a source
+		defSpace.emit(
+				// No need to give an event source because the event's source is explicitly set below.
+				null,
+				new ParticipantLeft(new Address(defSpace.getSpaceID(), agentAddress.getUUID()),
+									agentAddress.getSpaceID(), agentAddress.getUUID()),
+									it -> it.getUUID() != agentAddress.getUUID());
 	}
 
 }
