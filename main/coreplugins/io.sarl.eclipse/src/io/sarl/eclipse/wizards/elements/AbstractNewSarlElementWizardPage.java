@@ -156,6 +156,18 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 */
 	protected static final String MEMBERLEFT_EVENT_NAME = "io.sarl.core.MemberLeft"; //$NON-NLS-1$
 
+	/** Name of the SARL SpaceCreated event.
+	 *
+	 * @since 0.10
+	 */
+	protected static final String SPACECREATED_EVENT_NAME = "io.sarl.core.SpaceCreated"; //$NON-NLS-1$
+
+	/** Name of the SARL SpaceDestroyed event.
+	 *
+	 * @since 0.10
+	 */
+	protected static final String SPACEDESTROYED_EVENT_NAME = "io.sarl.core.SpaceDestroyed"; //$NON-NLS-1$
+
 	/** Name of the SARL AgentSpawned event.
 	 */
 	protected static final String AGENTSPAWNED_EVENT_NAME = "io.sarl.core.AgentSpawned"; //$NON-NLS-1$
@@ -1278,6 +1290,24 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 			block = unit.getExpression();
 			block.setInnerDocumentation(MessageFormat.format(
 					Messages.AbstractNewSarlElementWizardPage_16,
+					elementTypeName));
+
+			unit = behaviorUnitAdder.apply(MEMBERLEFT_EVENT_NAME);
+			block = unit.getExpression();
+			block.setInnerDocumentation(MessageFormat.format(
+					Messages.AbstractNewSarlElementWizardPage_16,
+					elementTypeName));
+
+			unit = behaviorUnitAdder.apply(SPACECREATED_EVENT_NAME);
+			block = unit.getExpression();
+			block.setInnerDocumentation(MessageFormat.format(
+					Messages.AbstractNewSarlElementWizardPage_21,
+					elementTypeName));
+
+			unit = behaviorUnitAdder.apply(SPACEDESTROYED_EVENT_NAME);
+			block = unit.getExpression();
+			block.setInnerDocumentation(MessageFormat.format(
+					Messages.AbstractNewSarlElementWizardPage_22,
 					elementTypeName));
 
 			return true;
