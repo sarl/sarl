@@ -34,7 +34,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.annotation.Generated;
 import javax.inject.Singleton;
 
 import com.google.common.base.Strings;
@@ -71,6 +70,7 @@ import org.eclipse.xtext.xbase.XbaseFactory;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.lang.annotation.DefaultValue;
+import io.sarl.lang.annotation.Generated;
 import io.sarl.lang.annotation.SarlSourceCode;
 import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.codebuilder.builders.IBlockExpressionBuilder;

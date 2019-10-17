@@ -31,7 +31,6 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import javax.annotation.Generated;
 import javax.inject.Inject;
 
 import com.google.inject.Provider;
@@ -67,6 +66,7 @@ import org.eclipse.xtext.xbase.ui.contentassist.ReplacingAppendable;
 import org.eclipse.xtext.xbase.ui.document.DocumentSourceAppender.Factory.OptionalParameters;
 
 import io.sarl.lang.annotation.FiredEvent;
+import io.sarl.lang.annotation.Generated;
 import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.jvmmodel.SarlJvmModelAssociations;
 import io.sarl.lang.sarl.actionprototype.FormalParameterProvider;
