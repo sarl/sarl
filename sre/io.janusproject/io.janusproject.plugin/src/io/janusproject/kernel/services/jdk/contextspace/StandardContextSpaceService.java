@@ -228,23 +228,40 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	}
 
 	@Override
-	public synchronized AgentContext createContext(UUID contextID, UUID defaultSpaceUUID) {
+	public AgentContext createContext(UUID contextID, UUID defaultSpaceUUID) {
 		assert contextID != null : "The contextID cannot be null"; //$NON-NLS-1$
 		assert defaultSpaceUUID != null : "The defaultSpaceUUID cannot be null"; //$NON-NLS-1$
 		assert this.contexts != null : "Internal Error: the context container must not be null"; //$NON-NLS-1$
-		final AgentContext context = this.contexts.get(contextID);
+		AgentContext context;
+		final ReadWriteLock lock = getLock();
+		lock.readLock().lock();
+		try {
+			context = this.contexts.get(contextID);
+		} finally {
+			lock.readLock().unlock();
+		}
 		if (context == null) {
-			final Context ctx = this.contextFactory.newInstance(contextID, defaultSpaceUUID, this.spaceRepositoryFactory,
-					new SpaceEventProxy());
-			assert ctx != null : "The internal Context cannot be null"; //$NON-NLS-1$
-			assert this.contexts != null : "Internal Error: the context container must not be null"; //$NON-NLS-1$
-			this.contexts.put(contextID, ctx);
-			fireContextCreated(ctx);
-			final Space defaultSpace = ctx.postConstruction();
-			assert defaultSpace != null : "The default space in the context " //$NON-NLS-1$
-					+ contextID + " cannot be null"; //$NON-NLS-1$
-			this.defaultSpaces.putIfAbsent(ctx.getID(), defaultSpace.getSpaceID());
-			return ctx;
+			Context ctx = null;
+			lock.writeLock().lock();
+			try {
+				context = this.contexts.get(contextID);
+				if (context == null) {
+					ctx = this.contextFactory.newInstance(contextID, defaultSpaceUUID, this.spaceRepositoryFactory,
+							new SpaceEventProxy());
+					assert ctx != null : "The internal Context cannot be null"; //$NON-NLS-1$
+					this.contexts.put(contextID, ctx);
+					final Space defaultSpace = ctx.postConstruction();
+					assert defaultSpace != null : "The default space in the context " //$NON-NLS-1$
+							+ contextID + " cannot be null"; //$NON-NLS-1$
+					this.defaultSpaces.putIfAbsent(ctx.getID(), defaultSpace.getSpaceID());
+				}
+			} finally {
+				lock.writeLock().unlock();
+			}
+			if (ctx != null) {
+				fireContextCreated(ctx);
+				return ctx;
+			}
 		}
 		return context;
 	}
