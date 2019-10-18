@@ -130,7 +130,7 @@ public class PureOperationNameValidator implements IPureOperationNameValidator {
 	 * @return {@code true} if the operation has a side effects.
 	 */
 	protected boolean isNamePatternForPureOperation(String name) {
-		return name != null && this.purePattern.matcher(name).find();
+		return name != null && this.purePattern.matcher(name).matches();
 	}
 
 	@Override
@@ -149,7 +149,7 @@ public class PureOperationNameValidator implements IPureOperationNameValidator {
 	 * @return {@code true} if the operation has a side effects.
 	 */
 	protected boolean isNamePatternForNotPureOperation(String name) {
-		return name != null && this.notPurePattern.matcher(name).find();
+		return name != null && this.notPurePattern.matcher(name).matches();
 	}
 
 	@Override
