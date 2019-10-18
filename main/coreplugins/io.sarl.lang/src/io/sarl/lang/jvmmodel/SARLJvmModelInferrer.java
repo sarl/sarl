@@ -44,8 +44,6 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.annotation.Generated;
-
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
@@ -137,6 +135,7 @@ import io.sarl.lang.annotation.DefaultValueSource;
 import io.sarl.lang.annotation.DefaultValueUse;
 import io.sarl.lang.annotation.EarlyExit;
 import io.sarl.lang.annotation.FiredEvent;
+import io.sarl.lang.annotation.Generated;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.annotation.NoEqualityTestFunctionsGeneration;
 import io.sarl.lang.annotation.PerceptGuardEvaluator;
