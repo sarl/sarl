@@ -44,6 +44,12 @@ import io.sarl.util.Collections3
  *
  * <h4>For Agent Members</h4>
  * The member agents do not receive this event from the parent agent because they are not yet created when the agent is spawned.
+ *
+ * @author $Author: srodriguez$
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
  */
 final event Initialize {
 
@@ -109,6 +115,12 @@ final event Initialize {
  * <h4>For Agent Members</h4>
  * The member agents do not receive this event from the parent agent because the parent agent cannot be
  * destroyed if it has agent members.
+ *
+ * @author $Author: srodriguez$
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
  */
 @EarlyExit
 final event Destroy
@@ -119,6 +131,11 @@ final event Destroy
  * The spawned agent does not receive this event.
  * The source of the event is the spawning agent.
  * The context id can be retrieved via {@code ev.source.spaceID.contextID}.
+ *
+ * @author $Author: srodriguez$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
  */
 final event AgentSpawned {
 
@@ -188,6 +205,12 @@ final event AgentSpawned {
  * The killed agent does not receive this event.
  * The source of the event is the killed agent.
  * The context id can be retrieved via {@code ev.source.spaceID.contextID}.
+ *
+ * @author $Author: srodriguez$
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
  */
 final event AgentKilled {
 
@@ -220,6 +243,11 @@ final event AgentKilled {
  * The event is fired within the default space of the context in which the space was created.
  * The source of the event is the parent agent.
  * The context id can be retrieved via {@code ev.source.spaceID.contextID}.
+ *
+ * @author $Author: srodriguez$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
  */
 final event SpaceCreated {
 
@@ -243,6 +271,11 @@ final event SpaceCreated {
  * The event is fired within the default space of the context from  which the space was removed.
  * The context id can be retrieved via {@code ev.source.spaceID.contextID}.
  * The source of the event is the parent agent.
+ *
+ * @author $Author: srodriguez$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
  */
 final event SpaceDestroyed {
 
@@ -268,6 +301,11 @@ final event SpaceDestroyed {
  * The joining agent does not receive this event.
  * The source of the event is the parent agent.
  * The context id can be retrieved via {@code ev.source.spaceID.contextID}.
+ *
+ * @author $Author: srodriguez$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
  */
 final event MemberJoined {
 
@@ -307,6 +345,11 @@ final event MemberJoined {
  * The excluded agent does not receive this event.
  * The source of the event is the parent agent.
  * The context id can be retrieved via {@code ev.source.spaceID.contextID}.
+ *
+ * @author $Author: srodriguez$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
  */
 final event MemberExcluded {
 
@@ -345,6 +388,11 @@ final event MemberExcluded {
  * The left agent does not receive this event.
  * The source of the event is the parent agent.
  * The context id can be retrieved via {@code ev.source.spaceID.contextID}.
+ *
+ * @author $Author: srodriguez$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
  */
 final event MemberLeft {
 
@@ -373,6 +421,11 @@ final event MemberLeft {
 /** Notifies behaviors the agent has joined a new super-holon.
  * The event is fired within the internal bus of the agent that have joined a super-holon.
  * The source of the event is the agent itself.
+ *
+ * @author $Author: srodriguez$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
  */
 final event ContextJoined {
 
@@ -400,6 +453,11 @@ final event ContextJoined {
  * Notifies behaviors the agent has left a super-holon.
  * The event is fired within the internal bus of the agent that have left a super-holon.
  * The source of the event is the agent itself.
+ *
+ * @author $Author: srodriguez$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
  */
 final event ContextLeft {
 
@@ -417,3 +475,74 @@ final event ContextLeft {
 
 }
 
+/** Notifies other participants the member with agentID has effectively 
+ * integrated the space.
+ * The event is fired within the default space of the context in which the agent entered a new space.
+ * The joining agent does not receive this event.
+ * The source of the event is the entering agent.
+ *
+ * @author $Author: ngaud$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.10
+ */
+final event ParticipantJoined {
+
+	/** The identifier of the space in which the agent is entering.
+	 */
+	val spaceID : SpaceID
+
+	/** The identifier of the agent that has entered the space.
+	 */
+	val agentID : UUID
+
+	/** Construct the event.
+	 * 
+	 * @param source the address of the emitter.
+	 * @param spaceID the identifier of the space.
+	 * @param agentID the identifier of the agent.
+	 */
+	new (source : Address, spaceID : SpaceID, agentID : UUID) {
+		this.source = source
+		this.spaceID = spaceID
+		this.agentID = agentID
+	}
+
+}
+
+/** Notifies other participants the member with agentID has effectively 
+ * left the space.
+ * The event is fired within the default space of the context in which the agent left the space.
+ * The leaving agent does not receive this event.
+ * The source of the event is the leaving agent.
+ *
+ * @author $Author: ngaud$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.10
+ */
+final event ParticipantLeft {
+
+	/** The identifier of the space the agent just left.
+	 */
+	val spaceID : SpaceID
+
+	/** The identifier of the agent that has left the space.
+	 */
+	val agentID : UUID
+
+	/** Construct the event.
+	 * 
+	 * @param source the address of the emitter.
+	 * @param spaceID the identifier of the space.
+	 * @param agentID the identifier of the agent.
+	 */
+	new (source : Address, spaceID : SpaceID, agentID : UUID) {
+		this.source = source
+		this.spaceID = spaceID
+		this.agentID = agentID
+	}
+
+}

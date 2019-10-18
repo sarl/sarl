@@ -30,13 +30,13 @@ import io.janusproject.services.contextspace.ContextSpaceService;
 import io.janusproject.services.distributeddata.DistributedDataStructureService;
 
 import io.sarl.core.OpenEventSpace;
+import io.sarl.core.ParticipantJoined;
+import io.sarl.core.ParticipantLeft;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.EventListener;
 import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.SpaceID;
-import io.sarl.util.ParticipantJoined;
-import io.sarl.util.ParticipantLeft;
 
 /**
  * Default implementation of an event space.
@@ -92,8 +92,9 @@ public class EventSpaceImpl extends AbstractEventSpace implements OpenEventSpace
 		defSpace.emit(
 				// No need to give an event source because the event's source is explicitly set below.
 				null,
-				new ParticipantJoined(defSpace.getAddress(newAgentAddress.getUUID()), newAgentAddress.getSpaceID(), newAgentAddress.getUUID()),
-									  it -> it.getUUID() != newAgentAddress.getUUID());
+				new ParticipantJoined(new Address(defSpace.getSpaceID(), newAgentAddress.getUUID()),
+						newAgentAddress.getSpaceID(), newAgentAddress.getUUID()),
+						it -> it.getUUID() != newAgentAddress.getUUID());
 	}
 
 	/**
