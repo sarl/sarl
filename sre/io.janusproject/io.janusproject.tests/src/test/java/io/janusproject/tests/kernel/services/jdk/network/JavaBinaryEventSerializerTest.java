@@ -19,29 +19,27 @@
  */
 package io.janusproject.tests.kernel.services.jdk.network;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertNotNull;
-
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
+import org.arakhne.afc.vmutil.ClassLoaderFinder;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import io.janusproject.kernel.services.jdk.network.JavaBinaryEventSerializer;
 import io.janusproject.kernel.services.jdk.network.PlainTextEventEncrypter;
 import io.janusproject.services.network.EventDispatch;
 import io.janusproject.services.network.EventEnvelope;
 import io.janusproject.tests.testutils.AbstractJanusTest;
-import org.arakhne.afc.vmutil.ClassLoaderFinder;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
+import io.sarl.core.OpenEventSpaceSpecification;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Scope;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.tests.api.Nullable;
-import io.sarl.util.OpenEventSpaceSpecification;
 
 /**
  * @author $Author: sgalland$

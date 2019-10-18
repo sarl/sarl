@@ -39,6 +39,7 @@ import io.sarl.core.ContextLeft;
 import io.sarl.core.ExternalContextAccess;
 import io.sarl.core.MemberJoined;
 import io.sarl.core.MemberLeft;
+import io.sarl.core.OpenEventSpace;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
@@ -50,7 +51,6 @@ import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.util.ClearableReference;
 import io.sarl.lang.util.SynchronizedCollection;
-import io.sarl.util.OpenEventSpace;
 
 /**
  * Skill that permits to access to the context in which the agent is located.

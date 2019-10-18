@@ -48,12 +48,12 @@ import io.janusproject.services.distributeddata.DistributedDataStructureService;
 import io.janusproject.util.Comparators;
 import io.janusproject.util.TwoStepConstruction;
 
+import io.sarl.core.OpenEventSpace;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.core.SpaceSpecification;
 import io.sarl.lang.util.SynchronizedCollection;
 import io.sarl.util.DefaultSpace;
-import io.sarl.util.OpenEventSpace;
 import io.sarl.util.concurrent.Collections3;
 
 /**

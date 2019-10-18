@@ -30,7 +30,7 @@ import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
 import io.sarl.core.MemberLeft
-import io.sarl.util.OpenEventSpace
+import io.sarl.core.OpenEventSpace
 
 /** Specific behavior for an agent that supports killing from a JavaFX application.  
  *

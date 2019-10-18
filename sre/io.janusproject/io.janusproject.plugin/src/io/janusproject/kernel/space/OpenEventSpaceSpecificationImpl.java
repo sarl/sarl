@@ -29,9 +29,9 @@ import com.google.inject.Injector;
 import io.janusproject.services.contextspace.ContextSpaceService;
 import io.janusproject.services.distributeddata.DistributedDataStructureService;
 
+import io.sarl.core.OpenEventSpace;
+import io.sarl.core.OpenEventSpaceSpecification;
 import io.sarl.lang.core.SpaceID;
-import io.sarl.util.OpenEventSpace;
-import io.sarl.util.OpenEventSpaceSpecification;
 
 /**
  * Default implementation of the specification of an event space.

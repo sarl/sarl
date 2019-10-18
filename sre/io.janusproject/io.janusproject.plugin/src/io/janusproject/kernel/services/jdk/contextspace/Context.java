@@ -31,6 +31,8 @@ import io.janusproject.services.distributeddata.DistributedDataStructureService;
 import io.janusproject.services.logging.LogService;
 import io.janusproject.util.TwoStepConstruction;
 
+import io.sarl.core.OpenEventSpace;
+import io.sarl.core.OpenEventSpaceSpecification;
 import io.sarl.core.SpaceCreated;
 import io.sarl.core.SpaceDestroyed;
 import io.sarl.lang.core.Address;
@@ -41,8 +43,6 @@ import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.core.SpaceSpecification;
 import io.sarl.lang.util.SynchronizedCollection;
 import io.sarl.lang.util.SynchronizedIterable;
-import io.sarl.util.OpenEventSpace;
-import io.sarl.util.OpenEventSpaceSpecification;
 import io.sarl.util.concurrent.Collections3;
 
 /**

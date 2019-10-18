@@ -45,7 +45,7 @@ import io.sarl.lang.core.EventSpaceSpecification;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.tests.api.ManualMocking;
 import io.sarl.tests.api.Nullable;
-import io.sarl.util.OpenEventSpace;
+import io.sarl.core.OpenEventSpace;
 import io.sarl.util.concurrent.NoReadWriteLock;
 
 /**

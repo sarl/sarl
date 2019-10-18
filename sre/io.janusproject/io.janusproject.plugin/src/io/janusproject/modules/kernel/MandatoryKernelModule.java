@@ -45,12 +45,12 @@ import io.janusproject.services.IServiceManager;
 import io.janusproject.services.contextspace.ContextSpaceService;
 import io.janusproject.services.executor.ExecutorService;
 
+import io.sarl.core.OpenEventSpaceSpecification;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.BuiltinCapacitiesProvider;
 import io.sarl.lang.core.EventSpaceSpecification;
 import io.sarl.sarlspecification.SarlSpecificationChecker;
 import io.sarl.sarlspecification.StandardSarlSpecificationChecker;
-import io.sarl.util.OpenEventSpaceSpecification;
 import io.sarl.util.RestrictedAccessEventSpaceSpecification;
 
 /**

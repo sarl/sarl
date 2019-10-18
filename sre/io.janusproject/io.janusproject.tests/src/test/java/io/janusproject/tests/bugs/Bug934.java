@@ -20,37 +20,24 @@
  */
 package io.janusproject.tests.bugs;
 
-import static org.junit.Assert.*;
-
-import java.util.Collection;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 
-import org.junit.Rule;
 import org.junit.Test;
 
 import io.janusproject.tests.testutils.AbstractJanusRunTest;
 
-import io.sarl.core.AgentKilled;
-import io.sarl.core.AgentTask;
 import io.sarl.core.DefaultContextInteractions;
-import io.sarl.core.InnerContextAccess;
 import io.sarl.core.Lifecycle;
+import io.sarl.core.OpenEventSpace;
+import io.sarl.core.OpenEventSpaceSpecification;
 import io.sarl.core.Schedules;
 import io.sarl.lang.SARLVersion;
-import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.core.AgentContext;
-import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.Space;
-import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.sarl.SarlPackage;
-import io.sarl.tests.api.Repeat;
-import io.sarl.tests.api.RepeatRule;
-import io.sarl.util.OpenEventSpace;
-import io.sarl.util.OpenEventSpaceSpecification;
 
 /** Tests for issue #934: Agents communication enabled through space without being registered to it.
  *

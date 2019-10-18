@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.util
+package io.sarl.core
 
 import io.sarl.lang.core.SpaceSpecification
 
@@ -32,9 +32,7 @@ import io.sarl.lang.core.SpaceSpecification
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated
  */
-@Deprecated
 interface OpenEventSpaceSpecification extends SpaceSpecification<OpenEventSpace> {
 	//
 }

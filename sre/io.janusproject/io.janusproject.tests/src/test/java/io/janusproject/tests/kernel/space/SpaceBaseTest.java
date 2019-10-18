@@ -19,19 +19,18 @@
  */
 package io.janusproject.tests.kernel.space;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.UUID;
+
+import org.junit.Test;
 
 import io.janusproject.kernel.space.SpaceBase;
 import io.janusproject.tests.testutils.AbstractJanusTest;
-import org.junit.Test;
 
+import io.sarl.core.OpenEventSpaceSpecification;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Scope;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.util.SynchronizedSet;
-import io.sarl.util.OpenEventSpaceSpecification;
 
 /**
  * @author $Author: sgalland$

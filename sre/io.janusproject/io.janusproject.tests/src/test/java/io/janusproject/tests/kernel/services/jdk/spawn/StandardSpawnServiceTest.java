@@ -19,7 +19,9 @@
  */
 package io.janusproject.tests.kernel.services.jdk.spawn;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -41,7 +43,6 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.internal.verification.Times;
 
 import io.janusproject.kernel.services.jdk.spawn.StandardSpawnService;
@@ -58,6 +59,7 @@ import io.sarl.core.AgentKilled;
 import io.sarl.core.AgentSpawned;
 import io.sarl.core.ExternalContextAccess;
 import io.sarl.core.InnerContextAccess;
+import io.sarl.core.OpenEventSpace;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
@@ -72,7 +74,6 @@ import io.sarl.lang.util.SynchronizedSet;
 import io.sarl.sarlspecification.SarlSpecificationChecker;
 import io.sarl.tests.api.ManualMocking;
 import io.sarl.tests.api.Nullable;
-import io.sarl.util.OpenEventSpace;
 import io.sarl.util.concurrent.Collections3;
 import io.sarl.util.concurrent.NoReadWriteLock;
 

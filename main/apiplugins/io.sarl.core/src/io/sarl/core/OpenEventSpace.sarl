@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.util
+package io.sarl.core
 
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.EventListener
@@ -33,10 +33,8 @@ import io.sarl.lang.core.EventSpace
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated
  */
-@Deprecated
-interface OpenEventSpace extends EventSpace {
+interface OpenEventSpace extends io.sarl.util.OpenEventSpace {
 
 	/**
 	 * Registers the entity inside this space.
@@ -47,8 +45,9 @@ interface OpenEventSpace extends EventSpace {
 	 *
 	 * @param entity the entity to register.
 	 * @return the entity's address in this space
+	 * @fires ParticipantJoined in its enclosing Context default space.
 	 */
-	def register(entity : EventListener) : Address
+	def register(entity : EventListener) : Address fires ParticipantJoined
 
 	/**
 	 * Unregisters the entity inside this space.
@@ -57,8 +56,9 @@ interface OpenEventSpace extends EventSpace {
 	 *
 	 * @param entity the entity to unregister.
 	 * @return the former entity's address
+	 * @fires ParticipantJoined in its enclosing Context default space.
 	 */
-	def unregister(entity : EventListener) : Address
+	def unregister(entity : EventListener) : Address fires ParticipantLeft
 
 }
 

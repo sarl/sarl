@@ -25,10 +25,10 @@ import com.hazelcast.nio.serialization.StreamSerializer;
 import org.junit.Before;
 import org.junit.Test;
 
+import io.sarl.core.OpenEventSpaceSpecification;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.tests.api.Nullable;
-import io.sarl.util.OpenEventSpaceSpecification;
 
 /**
  * @author $Author: sgalland$

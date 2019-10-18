@@ -26,8 +26,8 @@ import io.sarl.core.AgentSpawned
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventListener
-import io.sarl.util.OpenEventSpace
-import io.sarl.util.OpenEventSpaceSpecification
+import io.sarl.core.OpenEventSpace
+import io.sarl.core.OpenEventSpaceSpecification
 import java.util.UUID
 import javafx.application.Platform
 import javafx.^event.ActionEvent

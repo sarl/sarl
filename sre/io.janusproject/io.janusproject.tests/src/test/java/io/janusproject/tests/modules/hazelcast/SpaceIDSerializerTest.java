@@ -22,15 +22,16 @@ package io.janusproject.tests.modules.hazelcast;
 import java.util.UUID;
 
 import com.hazelcast.nio.serialization.StreamSerializer;
-import io.janusproject.modules.hazelcast.SpaceIDSerializer;
 import org.arakhne.afc.vmutil.ClassLoaderFinder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import io.janusproject.modules.hazelcast.SpaceIDSerializer;
+
+import io.sarl.core.OpenEventSpaceSpecification;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.tests.api.Nullable;
-import io.sarl.util.OpenEventSpaceSpecification;
 
 /**
  * @author $Author: sgalland$

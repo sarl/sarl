@@ -19,22 +19,26 @@
  */
 package io.janusproject.tests.kernel.space;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentCaptor.forClass;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
 
-import static org.mockito.Mockito.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.MockitoAnnotations.*;
-import static org.mockito.ArgumentCaptor.*;
-
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Future;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import io.janusproject.kernel.services.jdk.distributeddata.DMapView;
 import io.janusproject.kernel.space.EventSpaceImpl;
@@ -44,14 +48,8 @@ import io.janusproject.services.distributeddata.DistributedDataStructureService;
 import io.janusproject.services.executor.ExecutorService;
 import io.janusproject.services.network.NetworkService;
 import io.janusproject.tests.testutils.AbstractJanusTest;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
+import io.sarl.core.OpenEventSpaceSpecification;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.Event;
@@ -61,7 +59,6 @@ import io.sarl.lang.core.Scope;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.tests.api.ManualMocking;
 import io.sarl.tests.api.Nullable;
-import io.sarl.util.OpenEventSpaceSpecification;
 import io.sarl.util.Scopes;
 import io.sarl.util.concurrent.NoReadWriteLock;
 

@@ -37,6 +37,7 @@ import io.sarl.core.ExternalContextAccess;
 import io.sarl.core.InnerContextAccess;
 import io.sarl.core.Lifecycle;
 import io.sarl.core.Logging;
+import io.sarl.core.OpenEventSpaceSpecification;
 import io.sarl.core.Schedules;
 import io.sarl.core.Time;
 import io.sarl.lang.core.Address;
@@ -46,7 +47,6 @@ import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.DynamicSkillProvider;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.SpaceID;
-import io.sarl.util.OpenEventSpaceSpecification;
 
 /**
  * Provider of the built-in capacities of the Janus platform.

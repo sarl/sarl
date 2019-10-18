@@ -20,41 +20,27 @@
 
 package io.janusproject.tests.bugs;
 
-import java.util.Collection;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.inject.Inject;
 
 import com.google.inject.name.Named;
 import org.junit.Test;
 
-import io.janusproject.kernel.services.jdk.contextspace.Context.DefaultSpaceRepositoryFactory;
 import io.janusproject.tests.testutils.AbstractJanusRunTest;
 
-import io.sarl.core.Behaviors;
 import io.sarl.core.DefaultContextInteractions;
-import io.sarl.core.Destroy;
-import io.sarl.core.Initialize;
-import io.sarl.core.InnerContextAccess;
-import io.sarl.core.Lifecycle;
-import io.sarl.core.Schedules;
+import io.sarl.core.OpenEventSpace;
 import io.sarl.lang.SARLVersion;
-import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.annotation.SarlSpecification;
-import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
-import io.sarl.lang.core.Behavior;
-import io.sarl.lang.core.BuiltinCapacitiesProvider;
-import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.core.SpaceSpecification;
 import io.sarl.lang.util.SynchronizedSet;
-import io.sarl.util.Collections3;
 import io.sarl.util.DefaultSpace;
-import io.sarl.util.OpenEventSpace;
+import io.sarl.util.concurrent.Collections3;
 
 /**
  * Unit test for the issue #66: Injection of the default space in a Space implementation.

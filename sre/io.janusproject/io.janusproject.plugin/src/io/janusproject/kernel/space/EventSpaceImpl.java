@@ -29,12 +29,12 @@ import com.google.inject.Provider;
 import io.janusproject.services.contextspace.ContextSpaceService;
 import io.janusproject.services.distributeddata.DistributedDataStructureService;
 
+import io.sarl.core.OpenEventSpace;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.EventListener;
 import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.SpaceID;
-import io.sarl.util.OpenEventSpace;
 import io.sarl.util.ParticipantJoined;
 import io.sarl.util.ParticipantLeft;
 

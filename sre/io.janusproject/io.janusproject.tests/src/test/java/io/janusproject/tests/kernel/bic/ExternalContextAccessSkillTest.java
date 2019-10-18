@@ -19,7 +19,8 @@
  */
 package io.janusproject.tests.kernel.bic;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -49,6 +50,7 @@ import io.sarl.core.ContextJoined;
 import io.sarl.core.ContextLeft;
 import io.sarl.core.MemberJoined;
 import io.sarl.core.MemberLeft;
+import io.sarl.core.OpenEventSpace;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
@@ -66,7 +68,6 @@ import io.sarl.lang.util.ClearableReference;
 import io.sarl.lang.util.SynchronizedCollection;
 import io.sarl.tests.api.ManualMocking;
 import io.sarl.tests.api.Nullable;
-import io.sarl.util.OpenEventSpace;
 import io.sarl.util.Scopes;
 import io.sarl.util.concurrent.Collections3;
 import io.sarl.util.concurrent.NoReadWriteLock;
