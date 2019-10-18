@@ -317,7 +317,7 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 		if (warningMessage == null) {
 			assert killAgent != null;
 
-			fireAgentDestroyed(killAgent);
+			fireAgentKilled(killAgent);
 
 			if (isLast) {
 				fireKernelAgentDestroy();
@@ -499,7 +499,7 @@ public class StandardSpawnService extends AbstractDependentService implements Sp
 	 *            - the destroyed agent.
 	 */
 	@SuppressWarnings({"checkstyle:npathcomplexity"})
-	protected void fireAgentDestroyed(Agent agent) {
+	protected void fireAgentKilled(Agent agent) {
 		final ListenerCollection<SpawnServiceListener> list;
 		final ReadWriteLock llock = getAgentLifecycleListenerLock();
 		llock.readLock().lock();
