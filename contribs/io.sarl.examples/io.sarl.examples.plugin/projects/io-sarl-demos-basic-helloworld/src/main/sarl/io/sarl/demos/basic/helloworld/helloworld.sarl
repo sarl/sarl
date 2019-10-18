@@ -44,6 +44,7 @@ agent HelloAgent {
 
 	/* Print "Hello World" when spawned and wait 2 seconds to kill itself */
 	on Initialize {
+		loggingName = "HelloAgent"
 		info("Hello World!")
 		in(2000) [killMe]
 	}
@@ -54,33 +55,4 @@ agent HelloAgent {
 		info("Goodbye World!")
 	}
 
-	/* Event trigger when an agent of the level joins a shared context, sent to agent of the same level*/
-	on ContextJoined {
-		info("ContextJoined, contextID:" + occurrence.holonContextID + " SpaceID: " + occurrence.defaultSpaceID)
-	}
-	
-	/* Event trigger when an agent of the level leaves a shared context, sent to agent of the same level */
-	on ContextLeft {
-		info("ContextLeft, contextID:" + occurrence.holonContextID)
-	}
-	
-	/* Event trigger when an agent joins one of our shared super-holons, sent to all members of the considered super-holon */
-	on MemberJoined {
-		info("MemberJoined, agentID:" + occurrence.agentID)
-	}
-	
-	/* Event trigger when an agent leaves one of our shared super-holons, sent to all members of the considered super-holon */
-	on MemberLeft {
-		info("MemberLeft, agentID:" + occurrence.agentID)
-	}
-
-	/* A new agent has been spawn in our context */
-	on AgentSpawned {
-		info("AgentSpawned, agentID:" + occurrence.agentIdentifiers + " AgentType: " + occurrence.agentType)
-	}
-	
-	/* An agent has been killed in our context */
-	on AgentKilled {
-		info("AgentKilled, agentID:" + occurrence.source.UUID)	
-	}
 }
