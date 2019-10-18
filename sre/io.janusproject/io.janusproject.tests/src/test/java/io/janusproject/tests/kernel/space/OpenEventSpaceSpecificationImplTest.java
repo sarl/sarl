@@ -36,6 +36,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import io.janusproject.kernel.space.OpenEventSpaceSpecificationImpl;
+import io.janusproject.services.contextspace.ContextSpaceService;
 import io.janusproject.services.distributeddata.DMap;
 import io.janusproject.services.distributeddata.DistributedDataStructureService;
 import io.janusproject.tests.testutils.AbstractJanusTest;
@@ -69,11 +70,22 @@ public class OpenEventSpaceSpecificationImplTest extends AbstractJanusTest {
 	@InjectMocks
 	private OpenEventSpaceSpecificationImpl specification;
 
+	@Mock
+	private ContextSpaceService contextSpaceService;
+	
 	@Before
 	public void setUp() {
 		this.spaceId = new SpaceID(UUID.randomUUID(), UUID.randomUUID(), EventSpaceSpecification.class);
 		MockitoAnnotations.initMocks(this);
-		when(this.injector.getInstance(any(Class.class))).thenReturn(this.structureFactory);
+		when(this.injector.getInstance(any(Class.class))).thenAnswer((it) -> {
+			Object obj = null;
+			if (DistributedDataStructureService.class.equals(it.getArgument(0))) {
+				obj = this.structureFactory;
+			} else if (ContextSpaceService.class.equals(it.getArgument(0))) {
+				obj = this.contextSpaceService;
+			}
+			return obj;
+		});
 		when(this.injector.getProvider(any(Class.class))).thenAnswer((it) -> {
 			Provider<?> provider = null;
 			if (ReadWriteLock.class.equals(it.getArgument(0))) {

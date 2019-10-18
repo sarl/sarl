@@ -19,7 +19,7 @@
  */
 package io.janusproject.tests.kernel.bic;
 
-import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -36,7 +36,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.internal.verification.Times;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
@@ -119,11 +118,13 @@ public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 		final List<AgentContext> contextsList = new ArrayList<>();
 		for (int i = 0; i < 10; ++i) {
 			UUID contextId = i == 0 ? parentId : UUID.randomUUID();
+			assert contextId != null;
 			OpenEventSpace defaultSpace = mock(OpenEventSpace.class);
 			if (i == 0) {
 				this.defaultSpace = defaultSpace;
 			}
-			when(defaultSpace.getSpaceID()).thenReturn(new SpaceID(contextId, UUID.randomUUID(), EventSpaceSpecification.class));
+			final SpaceID spaceId = new SpaceID(contextId, UUID.randomUUID(), EventSpaceSpecification.class);
+			when(defaultSpace.getSpaceID()).thenReturn(spaceId);
 			AgentContext c = mock(AgentContext.class);
 			when(c.getID()).thenReturn(contextId);
 			when(c.getDefaultSpace()).thenReturn(defaultSpace);
@@ -184,29 +185,36 @@ public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 	public void join() {
 		int nb = 0;
 		for (AgentContext c : this.contexts) {
-			this.skill.join(c.getID(), c.getDefaultSpace().getSpaceID().getID());
+			final SpaceID spaceId = c.getDefaultSpace().getSpaceID();
+			final UUID id = spaceId.getID();
+			this.skill.join(c.getID(), id);
 			//
 			AgentContext ctx = this.skill.getContext(c.getID());
 			assertSame(c, ctx);
 			//
+			verify(c.getDefaultSpace(), times(3)).getSpaceID();
 			ArgumentCaptor<UUID> argument1 = ArgumentCaptor.forClass(UUID.class);
 			ArgumentCaptor<Event> argument2 = ArgumentCaptor.forClass(Event.class);
-			verify(c.getDefaultSpace(), new Times(1)).emit(argument1.capture(), argument2.capture());
+			ArgumentCaptor<Scope<Address>> argument3 = ArgumentCaptor.forClass(Scope.class);
+			verify(c.getDefaultSpace(), times(1)).emit(argument1.capture(), argument2.capture(), argument3.capture());
 			assertNull(argument1.getValue());
 			Event evt = argument2.getValue();
 			assertNotNull(evt);
 			assertTrue(evt instanceof MemberJoined);
-			assertEquals(c.getID(), ((MemberJoined) evt).parentContextID);
+			assertEquals(this.skill.getOwner().getID(), ((MemberJoined) evt).getSource().getUUID());
 			assertEquals(this.agent.getID(), ((MemberJoined) evt).agentID);
+			assertNotNull(argument3.getValue());
 			//
-			ArgumentCaptor<Event> argument3 = ArgumentCaptor.forClass(Event.class);
+			ArgumentCaptor<Event> argument4 = ArgumentCaptor.forClass(Event.class);
+			ArgumentCaptor<Scope<Address>> argument5 = ArgumentCaptor.forClass(Scope.class);
 			++nb;
-			verify(this.behaviorCapacity, new Times(nb)).wake(argument3.capture());
-			evt = argument3.getValue();
+			verify(this.behaviorCapacity, times(nb)).wake(argument4.capture(), argument5.capture());
+			evt = argument4.getValue();
 			assertNotNull(evt);
 			assertTrue(evt instanceof ContextJoined);
 			assertEquals(c.getID(), ((ContextJoined) evt).holonContextID);
 			assertEquals(c.getDefaultSpace().getSpaceID().getID(), ((ContextJoined) evt).defaultSpaceID);
+			assertNotNull(argument5.getValue());
 		}
 		Collection<AgentContext> c = this.skill.getAllContexts();
 		assertEquals(this.contexts.size(), c.size());
@@ -236,22 +244,26 @@ public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 			//
 			ArgumentCaptor<UUID> argument1 = ArgumentCaptor.forClass(UUID.class);
 			ArgumentCaptor<Event> argument2 = ArgumentCaptor.forClass(Event.class);
+			ArgumentCaptor<Scope<Address>> argument3 = ArgumentCaptor.forClass(Scope.class);
 			// 2 times: 1 for MemberJoined, 1 for MemberLeft
-			verify(c.getDefaultSpace(), new Times(2)).emit(argument1.capture(), argument2.capture());
+			verify(c.getDefaultSpace(), times(2)).emit(argument1.capture(), argument2.capture(), argument3.capture());
 			assertNull(argument1.getValue());
 			Event evt = argument2.getValue();
 			assertNotNull(evt);
 			assertTrue(evt instanceof MemberLeft);
 			assertEquals(this.agent.getID(), ((MemberLeft) evt).agentID);
+			assertNotNull(argument3.getValue());
 			//
-			ArgumentCaptor<Event> argument3 = ArgumentCaptor.forClass(Event.class);
+			ArgumentCaptor<Event> argument4 = ArgumentCaptor.forClass(Event.class);
+			ArgumentCaptor<Scope<Address>> argument5 = ArgumentCaptor.forClass(Scope.class);
 			++nb;
 			// Nb times includes the joins and the leaves
-			verify(this.behaviorCapacity, new Times(nb)).wake(argument3.capture());
-			evt = argument3.getValue();
+			verify(this.behaviorCapacity, times(nb)).wake(argument4.capture(), argument5.capture());
+			evt = argument4.getValue();
 			assertNotNull(evt);
 			assertTrue(evt instanceof ContextLeft);
 			assertEquals(c.getID(), ((ContextLeft) evt).holonContextID);
+			assertNotNull(argument5.getValue());
 		}
 		assertTrue(remaining.isEmpty());
 	}
@@ -261,7 +273,7 @@ public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 		assertNull(this.defaultSpace.getAddress(this.agent.getID()));
 		this.reflect.invoke(this.skill, "install");
 		ArgumentCaptor<EventListener> argument = ArgumentCaptor.forClass(EventListener.class);
-		verify(this.defaultSpace, new Times(1)).register(argument.capture());
+		verify(this.defaultSpace, times(1)).register(argument.capture());
 		assertSame(this.eventListener, argument.getValue());
 	}
 
@@ -278,7 +290,7 @@ public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 		this.reflect.invoke(this.skill, "install");
 		this.reflect.invoke(this.skill, "uninstall", UninstallationStage.POST_DESTROY_EVENT);
 		ArgumentCaptor<EventListener> argument = ArgumentCaptor.forClass(EventListener.class);
-		verify(this.defaultSpace, new Times(1)).unregister(argument.capture());
+		verify(this.defaultSpace, times(1)).unregister(argument.capture());
 		assertSame(this.eventListener, argument.getValue());
 	}
 
@@ -441,7 +453,7 @@ public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 		ArgumentCaptor<UUID> argument1 = ArgumentCaptor.forClass(UUID.class);
 		ArgumentCaptor<Event> argument2 = ArgumentCaptor.forClass(Event.class);
 		ArgumentCaptor<Scope> argument3 = ArgumentCaptor.forClass(Scope.class);
-		verify(space, new Times(1)).emit(argument1.capture(), argument2.capture(), argument3.capture());
+		verify(space, times(1)).emit(argument1.capture(), argument2.capture(), argument3.capture());
 		assertEquals(this.agent.getID(), argument1.getValue());
 		assertSame(event, argument2.getValue());
 		assertSame(scope, argument3.getValue());
@@ -459,7 +471,7 @@ public class ExternalContextAccessSkillTest extends AbstractJanusTest {
 		ArgumentCaptor<UUID> argument1 = ArgumentCaptor.forClass(UUID.class);
 		ArgumentCaptor<Event> argument2 = ArgumentCaptor.forClass(Event.class);
 		ArgumentCaptor<Scope> argument3 = ArgumentCaptor.forClass(Scope.class);
-		verify(space, new Times(1)).emit(argument1.capture(), argument2.capture(), argument3.capture());
+		verify(space, times(1)).emit(argument1.capture(), argument2.capture(), argument3.capture());
 		assertEquals(this.agent.getID(), argument1.getValue());
 		assertSame(event, argument2.getValue());
 		assertNull(argument3.getValue());

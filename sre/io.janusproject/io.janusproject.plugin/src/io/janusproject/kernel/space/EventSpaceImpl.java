@@ -28,6 +28,7 @@ import com.google.inject.Provider;
 
 import io.janusproject.services.contextspace.ContextSpaceService;
 import io.janusproject.services.distributeddata.DistributedDataStructureService;
+
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.EventListener;
@@ -49,18 +50,21 @@ import io.sarl.util.ParticipantLeft;
  */
 public class EventSpaceImpl extends AbstractEventSpace implements OpenEventSpace {
 
-	@Inject
-	private ContextSpaceService contextRepository;
+	private final ContextSpaceService contextRepository;
 
 	/**
 	 * Constructs an event space.
 	 *
 	 * @param id identifier of the space.
 	 * @param factory factory that is used to create the internal data structure.
+	 * @param contextRepository service for accessing the repository of contexts.
 	 * @param lockProvider a provider of synchronization locks.
 	 */
-	public EventSpaceImpl(SpaceID id, DistributedDataStructureService factory, Provider<ReadWriteLock> lockProvider) {
+	@Inject
+	public EventSpaceImpl(SpaceID id, DistributedDataStructureService factory, ContextSpaceService contextRepository,
+			Provider<ReadWriteLock> lockProvider) {
 		super(id, factory, lockProvider);
+		this.contextRepository = contextRepository;
 	}
 
 	@Override

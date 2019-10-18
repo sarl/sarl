@@ -182,7 +182,10 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 		final AgentContext ac = this.contextRepository.getContext(futureContext);
 		assert ac != null : "Unknown Context"; //$NON-NLS-1$
 
-		if (!futureContextDefaultSpaceID.equals(ac.getDefaultSpace().getSpaceID().getID())) {
+		final EventSpace defaultSpace = ac.getDefaultSpace();
+		assert defaultSpace != null : "Unknown default space "; //$NON-NLS-1$
+
+		if (!futureContextDefaultSpaceID.equals(defaultSpace.getSpaceID().getID())) {
 			return false;
 		}
 
@@ -190,7 +193,7 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 		fireContextJoined(futureContext, futureContextDefaultSpaceID);
 		fireMemberJoined(ac);
 
-		((OpenEventSpace) ac.getDefaultSpace()).register(getInternalEventBusCapacitySkill().asEventListener());
+		((OpenEventSpace) defaultSpace).register(getInternalEventBusCapacitySkill().asEventListener());
 
 		return true;
 	}
@@ -206,7 +209,7 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 	 */
 	protected final void fireContextJoined(UUID futureContext, UUID futureContextDefaultSpaceID) {
 		getBehaviorsSkill().wake(new ContextJoined(futureContext, futureContextDefaultSpaceID),
-				it -> it.getUUID() != getOwner().getID());
+				it -> !it.getUUID().equals(getOwner().getID()));
 	}
 
 	/**
@@ -218,12 +221,13 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 	 */
 	protected final void fireMemberJoined(AgentContext newJoinedContext) {
 		final EventSpace defSpace = newJoinedContext.getDefaultSpace();
+		final UUID ownerId = getOwner().getID();
 		defSpace.emit(
 				// No need to give an event source because the event's source is explicitly set
 				// below.
-				null, new MemberJoined(new Address(defSpace.getSpaceID(), getOwner().getID()), newJoinedContext.getID(),
-						getOwner().getID(), getOwner().getClass().getName()),
-				it -> it.getUUID() != getOwner().getID());
+				null, new MemberJoined(new Address(defSpace.getSpaceID(), ownerId), newJoinedContext.getID(),
+						ownerId, getOwner().getClass().getName()),
+				it -> !it.getUUID().equals(ownerId));
 	}
 
 	@Override
