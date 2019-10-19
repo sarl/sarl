@@ -22,7 +22,7 @@ package io.sarl.demos.boids.gui
 
 import io.sarl.demos.boids.Die
 import io.sarl.demos.boids.PerceivedBoidBody
-import io.sarl.util.OpenEventSpace
+import io.sarl.core.OpenEventSpace
 import java.awt.Color
 import java.awt.Frame
 import java.awt.Graphics

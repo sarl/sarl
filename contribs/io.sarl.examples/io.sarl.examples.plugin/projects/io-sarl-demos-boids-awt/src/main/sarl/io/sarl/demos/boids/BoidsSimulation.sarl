@@ -26,7 +26,7 @@ import io.sarl.demos.boids.gui.EnvironmentGui
 import io.sarl.lang.core.AgentContext
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventListener
-import io.sarl.util.OpenEventSpace
+import io.sarl.core.OpenEventSpace
 import java.util.Map
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap

@@ -25,8 +25,8 @@ import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
 import io.sarl.core.Schedules
 import io.sarl.core.Behaviors
-import io.sarl.util.OpenEventSpace
-import io.sarl.util.OpenEventSpaceSpecification
+import io.sarl.core.OpenEventSpace
+import io.sarl.core.OpenEventSpaceSpecification
 import io.sarl.core.ExternalContextAccess
 import java.util.UUID
 import io.sarl.core.Logging
