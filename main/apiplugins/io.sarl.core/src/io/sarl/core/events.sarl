@@ -493,20 +493,14 @@ final event ParticipantJoined {
 	 */
 	val spaceID : SpaceID
 
-	/** The identifier of the agent that has entered the space.
-	 */
-	val agentID : UUID
-
 	/** Construct the event.
 	 * 
 	 * @param source the address of the emitter.
 	 * @param spaceID the identifier of the space.
-	 * @param agentID the identifier of the agent.
 	 */
-	new (source : Address, spaceID : SpaceID, agentID : UUID) {
+	new (source : Address, spaceID : SpaceID) {
 		this.source = source
 		this.spaceID = spaceID
-		this.agentID = agentID
 	}
 
 }
@@ -529,20 +523,14 @@ final event ParticipantLeft {
 	 */
 	val spaceID : SpaceID
 
-	/** The identifier of the agent that has left the space.
-	 */
-	val agentID : UUID
-
 	/** Construct the event.
 	 * 
 	 * @param source the address of the emitter.
 	 * @param spaceID the identifier of the space.
-	 * @param agentID the identifier of the agent.
 	 */
-	new (source : Address, spaceID : SpaceID, agentID : UUID) {
+	new (source : Address, spaceID : SpaceID) {
 		this.source = source
 		this.spaceID = spaceID
-		this.agentID = agentID
 	}
 
 }

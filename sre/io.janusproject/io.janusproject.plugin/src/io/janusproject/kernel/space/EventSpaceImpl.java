@@ -93,8 +93,8 @@ public class EventSpaceImpl extends AbstractEventSpace implements OpenEventSpace
 				// No need to give an event source because the event's source is explicitly set below.
 				null,
 				new ParticipantJoined(new Address(defSpace.getSpaceID(), newAgentAddress.getUUID()),
-						newAgentAddress.getSpaceID(), newAgentAddress.getUUID()),
-						it -> it.getUUID() != newAgentAddress.getUUID());
+						newAgentAddress.getSpaceID()),
+						it -> !it.getUUID().equals(newAgentAddress.getUUID()));
 	}
 
 	/**
@@ -111,8 +111,8 @@ public class EventSpaceImpl extends AbstractEventSpace implements OpenEventSpace
 				// No need to give an event source because the event's source is explicitly set below.
 				null,
 				new ParticipantLeft(new Address(defSpace.getSpaceID(), agentAddress.getUUID()),
-									agentAddress.getSpaceID(), agentAddress.getUUID()),
-									it -> it.getUUID() != agentAddress.getUUID());
+									agentAddress.getSpaceID()),
+									it -> !it.getUUID().equals(agentAddress.getUUID()));
 	}
 
 }
