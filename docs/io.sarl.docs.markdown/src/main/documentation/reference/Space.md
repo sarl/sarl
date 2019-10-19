@@ -83,11 +83,16 @@ The [:emitfct:] functions permits fire of an event in the space.
 
 Event spaces that are allowing the agents to be register and unregister are "open event spaces":
 
-		[:ShowType:](io.sarl.util.OpenEventSpace)
-		[:Fact:]{typeof(io.sarl.util.OpenEventSpace).shouldHaveMethod("[:registerfct](register)(io.sarl.lang.core.[:eventlistener](EventListener)) : io.sarl.lang.core.Address")}
-		[:Fact:]{typeof(io.sarl.util.OpenEventSpace).shouldHaveMethod("[:unregisterfct](unregister)(io.sarl.lang.core.EventListener) : io.sarl.lang.core.Address")}
+		[:ShowType:](io.sarl.core.OpenEventSpace)
+		[:Fact:]{typeof(io.sarl.core.OpenEventSpace).shouldHaveMethod("[:registerfct](register)(io.sarl.lang.core.[:eventlistener](EventListener)) : io.sarl.lang.core.Address")}
+		[:Fact:]{typeof(io.sarl.core.OpenEventSpace).shouldHaveMethod("[:unregisterfct](unregister)(io.sarl.lang.core.EventListener) : io.sarl.lang.core.Address")}
 
 The functions [:registerfct:] and [:unregisterfct:] permit an agent to be involved or not.
+The function [:registerfct:] fires the event `ParticipantJoined`.
+And, the function [:unregisterfct:] fires the event `ParticipantLeft`.
+
+[:Fact:]{typeof(io.sarl.core.ParticipantJoined)}
+[:Fact:]{typeof(io.sarl.core.ParticipantLeft)}
 
 
 ### Restricted Access Event Space
@@ -365,7 +370,7 @@ The following example illustrates the first method of marking of an object field
             import io.sarl.lang.core.SpaceID
             import io.sarl.lang.core.SpaceSpecification
             import io.sarl.lang.core.Space
-            import io.sarl.util.OpenEventSpace
+            import io.sarl.core.OpenEventSpace
             import javax.inject.Inject
             import com.google.inject.name.Named
             interface MySpace extends Space {
@@ -399,7 +404,7 @@ The following example illustrates the second method of marking of an object fiel
             import io.sarl.lang.core.SpaceID
             import io.sarl.lang.core.SpaceSpecification
             import io.sarl.lang.core.Space
-            import io.sarl.util.OpenEventSpace
+            import io.sarl.core.OpenEventSpace
             import javax.inject.Inject
             interface MySpace extends Space {
             }

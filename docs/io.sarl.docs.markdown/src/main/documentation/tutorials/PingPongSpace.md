@@ -109,7 +109,7 @@ After retrieving the instance of the space, it is mandatory to register the agen
 receiving the events. The spaces of type `OpenEventSpaceSpecification` provides
 the [:registerfct:] function. It takes the event listener of the agent (provided by
 the [:behaviorscap:] capacity).
-[:Fact:]{typeof(io.sarl.util.OpenEventSpaceSpecification)}
+[:Fact:]{typeof(io.sarl.core.OpenEventSpaceSpecification)}
 
 		[:Success:]
 			package io.sarl.docs.tutorials.pingpongspace
@@ -117,8 +117,8 @@ the [:behaviorscap:] capacity).
 			import io.sarl.core.Initialize
 			import io.sarl.core.Behaviors
 			import java.util.UUID
-			import io.sarl.util.OpenEventSpace
-			import io.sarl.util.OpenEventSpaceSpecification
+			import io.sarl.core.OpenEventSpace
+			import io.sarl.core.OpenEventSpaceSpecification
 			[:On]agent PongAgent {
 				
 				uses DefaultContextInteractions, [:behaviorscap](Behaviors)
@@ -148,8 +148,8 @@ receiving a [:pingevent:] event.
 			import io.sarl.core.DefaultContextInteractions
 			import io.sarl.core.Behaviors
 			import java.util.UUID
-			import io.sarl.util.OpenEventSpace
-			import io.sarl.util.OpenEventSpaceSpecification
+			import io.sarl.core.OpenEventSpace
+			import io.sarl.core.OpenEventSpaceSpecification
 			import io.sarl.core.Initialize
 			event Ping {
 				val index : int
@@ -208,8 +208,8 @@ stored in the received [:pingevent:] event.
 			import io.sarl.core.ExternalContextAccess
 			import io.sarl.core.Behaviors
 			import java.util.UUID
-			import io.sarl.util.OpenEventSpace
-			import io.sarl.util.OpenEventSpaceSpecification
+			import io.sarl.core.OpenEventSpace
+			import io.sarl.core.OpenEventSpaceSpecification
 			import io.sarl.core.Initialize
 			event Ping {
 				val index : int
@@ -267,8 +267,8 @@ It permits to restrict to the initial sender of the [:pingevent:] event: [:scopi
 			import io.sarl.core.ExternalContextAccess
 			import io.sarl.core.Behaviors
 			import java.util.UUID
-			import io.sarl.util.OpenEventSpace
-			import io.sarl.util.OpenEventSpaceSpecification
+			import io.sarl.core.OpenEventSpace
+			import io.sarl.core.OpenEventSpaceSpecification
 			import io.sarl.core.Initialize
 			event Ping {
 				val index : int
@@ -318,8 +318,8 @@ The initial definition of the ping agent is:
 			import io.sarl.core.Initialize
 			import io.sarl.core.Behaviors
 			import java.util.UUID
-			import io.sarl.util.OpenEventSpace
-			import io.sarl.util.OpenEventSpaceSpecification
+			import io.sarl.core.OpenEventSpace
+			import io.sarl.core.OpenEventSpaceSpecification
 			[:On]agent [:pingagent](PingAgent) {
 				
 				uses DefaultContextInteractions, Behaviors
@@ -346,8 +346,8 @@ defined in the agent.
 			import io.sarl.core.DefaultContextInteractions
 			import io.sarl.core.Behaviors
 			import java.util.UUID
-			import io.sarl.util.OpenEventSpace
-			import io.sarl.util.OpenEventSpaceSpecification
+			import io.sarl.core.OpenEventSpace
+			import io.sarl.core.OpenEventSpaceSpecification
 			import io.sarl.core.Initialize
 			event Pong {
 				val index : int
@@ -390,8 +390,8 @@ The receiving of the [:pingevent:] event is restricted to the sender of the
 			import io.sarl.core.ExternalContextAccess
 			import io.sarl.core.Behaviors
 			import java.util.UUID
-			import io.sarl.util.OpenEventSpace
-			import io.sarl.util.OpenEventSpaceSpecification
+			import io.sarl.core.OpenEventSpace
+			import io.sarl.core.OpenEventSpaceSpecification
 			import io.sarl.core.Initialize
 			event Ping {
 				val index : int
@@ -440,8 +440,8 @@ receiving the [:initevent:] event.
 			import io.sarl.core.ExternalContextAccess
 			import io.sarl.core.Behaviors
 			import java.util.UUID
-			import io.sarl.util.OpenEventSpace
-			import io.sarl.util.OpenEventSpaceSpecification
+			import io.sarl.core.OpenEventSpace
+			import io.sarl.core.OpenEventSpaceSpecification
 			import io.sarl.core.Initialize
 			event Ping {
 				val index : int
@@ -505,8 +505,8 @@ one agent belonging to the default space. If not, the agent is sending the initi
 			import io.sarl.core.ExternalContextAccess
 			import io.sarl.core.Behaviors
 			import java.util.UUID
-			import io.sarl.util.OpenEventSpace
-			import io.sarl.util.OpenEventSpaceSpecification
+			import io.sarl.core.OpenEventSpace
+			import io.sarl.core.OpenEventSpaceSpecification
 			import io.sarl.core.Initialize
 			import io.sarl.core.Schedules
 			event Ping {
