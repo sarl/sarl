@@ -234,10 +234,11 @@ public class UtilsTest extends AbstractSarlTest {
 		assertTrue(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("1.8"));
 		assertTrue(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("1.8.1"));
 		assertTrue(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("1.8.9"));
-		assertFalse(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("1.9"));
-		assertFalse(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("9"));
-		assertFalse(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("10"));
-		assertFalse(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("11"));
+		assertTrue(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("1.9"));
+		assertTrue(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("9"));
+		assertTrue(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("10"));
+		assertTrue(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("11"));
+		assertFalse(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("12"));
 	}
 
 	@Test
@@ -249,10 +250,11 @@ public class UtilsTest extends AbstractSarlTest {
 		assertTrue(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("1.8"));
 		assertTrue(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("1.8.1"));
 		assertTrue(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("1.8.9"));
-		assertFalse(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("1.9"));
-		assertFalse(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("9"));
-		assertFalse(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("10"));
-		assertFalse(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("11"));
+		assertTrue(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("1.9"));
+		assertTrue(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("9"));
+		assertTrue(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("10"));
+		assertTrue(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("11"));
+		assertFalse(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("12"));
 	}
 
 	@Test

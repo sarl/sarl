@@ -95,7 +95,7 @@ public final class SARLVersion {
 	 *
 	 * @since 0.10
 	 */
-	public static final String INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT = "1.9"; //$NON-NLS-1$
+	public static final String INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT = "12"; //$NON-NLS-1$
 
 	/** The minimal version of the JDK that must be used on the classpath of SARL projects.
 	 *
@@ -107,7 +107,7 @@ public final class SARLVersion {
 	 *
 	 * @since 0.10
 	 */
-	public static final String INCOMPATIBLE_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH = "1.9"; //$NON-NLS-1$
+	public static final String INCOMPATIBLE_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH = "12"; //$NON-NLS-1$
 
 	private SARLVersion() {
 		//

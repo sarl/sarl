@@ -38,8 +38,8 @@
 		-->
 		<sarl-run.min.jdk.version>1.8</sarl-run.min.jdk.version>
 		<sarl-run.min.jre.environment>JavaSE-${sarl-run.min.jdk.version}</sarl-run.min.jre.environment>
-		<sarl-run.max.jdk.version>1.8</sarl-run.max.jdk.version>
-		<sarl-run.next.unsupported.jdk.version>1.9</sarl-run.next.unsupported.jdk.version>
+		<sarl-run.max.jdk.version>11</sarl-run.max.jdk.version>
+		<sarl-run.next.unsupported.jdk.version>12</sarl-run.next.unsupported.jdk.version>
 
 		<!-- Java Configuration that should be used by the projects compiled with SARL IDE or sarlc:
 		     ***********
@@ -49,8 +49,8 @@
 		 -->
 		<user.min.jdk.version>1.8</user.min.jdk.version>
 		<user.min.jre.environment>JavaSE-${user.min.jdk.version}</user.min.jre.environment>
-		<user.max.jdk.version>1.8</user.max.jdk.version>
-		<user.next.unsupported.jdk.version>1.9</user.next.unsupported.jdk.version>
+		<user.max.jdk.version>11</user.max.jdk.version>
+		<user.next.unsupported.jdk.version>12</user.next.unsupported.jdk.version>
 
 		<!-- Version of the SARL API -->
 		<sarl.version>0.10.0-SNAPSHOT</sarl.version>

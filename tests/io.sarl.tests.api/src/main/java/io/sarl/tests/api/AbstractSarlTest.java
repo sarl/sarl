@@ -261,12 +261,16 @@ public abstract class AbstractSarlTest extends Assert {
 		protected void starting(Description description) {
 			// Check if the minimal version of Java is used for running the tests.
 			final JavaVersion cVersion = JavaVersion.fromQualifier(System.getProperty("java.specification.version"));
+			if (cVersion == null) {
+				throw new Error("You must use JDK " + SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT + " or higher for running the tests.");
+			}
 			final JavaVersion mVersion = JavaVersion.fromQualifier(SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT);
-			if (!cVersion.isAtLeast(mVersion)) {
+			if (mVersion == null || !cVersion.isAtLeast(mVersion)) {
 				throw new Error("You must use JDK " + SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT + " or higher for running the tests.");
 			}
 			final JavaVersion xVersion = JavaVersion.fromQualifier(SARLVersion.INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT);
-			if (cVersion.isAtLeast(xVersion)) {
+			// If null the max version that is specified into the SARL configuration is not yey supported by Xtext enumeration
+			if (xVersion != null && cVersion.isAtLeast(xVersion)) {
 				throw new Error("You must use JDK strictly below " + SARLVersion.INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT + " for running the tests.");
 			}
 			//

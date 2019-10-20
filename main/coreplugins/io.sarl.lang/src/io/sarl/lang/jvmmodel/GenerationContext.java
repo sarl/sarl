@@ -419,6 +419,15 @@ abstract class GenerationContext {
 		return getGeneratorConfig().getJavaSourceVersion().isAtLeast(JavaVersion.JAVA8);
 	}
 
+	/** Replies if the compiler is using Java11 or higher.
+	 *
+	 * @return <code>true</code> if the compiler uses Java8 or higher. Otherwise <code>false</code>.
+	 * @since 0.10
+	 */
+	public boolean isAtLeastJava11() {
+		return getGeneratorConfig().getJavaSourceVersion().isAtLeast(JavaVersion.JAVA11);
+	}
+
 	/** Get the context for the action prototype provider.
 	 *
 	 * @param provider the provider for creating the context if it was not created.

@@ -775,6 +775,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					final JvmType type = reference.getType();
 					if (type instanceof JvmGenericType) {
 						copyVisibleJvmConstructors(
+								context,
 								(JvmGenericType) type,
 								target, source, Sets.newTreeSet(),
 								JvmVisibility.PUBLIC);
@@ -3487,15 +3488,18 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 	/** Copy the JVM constructors from the source to the destination.
 	 *
+	 * @param context the current generation context.
 	 * @param source the source.
 	 * @param target the destination.
 	 * @param sarlSource the SARL source element. If {@code null}, the generated constructors will not be associated to the SARL element.
 	 * @param createdConstructors the set of constructors that are created before (input) or during (output) the invocation.
 	 * @param minimalVisibility the minimal visibility to apply to the created constructors.
-	 * @since 0.6
+	 * @since 0.10
 	 */
 	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
-	protected void copyVisibleJvmConstructors(JvmGenericType source, JvmGenericType target,
+	protected void copyVisibleJvmConstructors(
+			GenerationContext context,
+			JvmGenericType source, JvmGenericType target,
 			XtendTypeDeclaration sarlSource, Set<ActionParameterTypes> createdConstructors,
 			JvmVisibility minimalVisibility) {
 		final boolean samePackage = Objects.equal(source.getPackageName(), target.getPackageName());
@@ -3577,7 +3581,9 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				appendGeneratedAnnotation(newCons, getContext(target));
 
 				for (final JvmAnnotationReference annotationReference : constructor.getAnnotations()) {
-					if (this.annotationUtils.findAnnotation(newCons, annotationReference.getAnnotation().getQualifiedName()) == null) {
+					final JvmAnnotationType annotationType = annotationReference.getAnnotation();
+					if (isAccessibleTypeAccordingToJavaSpecifications(context, annotationType)
+							&& (this.annotationUtils.findAnnotation(newCons, annotationType.getQualifiedName()) == null)) {
 						final JvmAnnotationReference annotation = EcoreUtil.copy(annotationReference);
 						if (annotation != null) {
 							newCons.getAnnotations().add(annotation);
@@ -3588,6 +3594,26 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				this.associator.removeAllAssociation(newCons);
 			}
 		}
+	}
+
+	/** Replies if the given type is accessible according to the Java specifications.
+	 * Indeed, since Java11, several types, e.g. {@code HotSpotIntrinsicCandidate} annotation,
+	 * are inaccessible because they are in private modules.
+	 *
+	 * @param context the generation context.
+	 * @param type the type to test.
+	 * @return {@code true} if the type is accessible.
+	 */
+	@SuppressWarnings("static-method")
+	protected boolean isAccessibleTypeAccordingToJavaSpecifications(GenerationContext context, JvmDeclaredType type) {
+		if (context.isAtLeastJava11()) {
+			// TODO find and use an API-oriented way to have access to the module access definitions.
+			final String packageName = type.getPackageName();
+			if (!Strings.isNullOrEmpty(packageName)) {
+				return !packageName.contains(".internal"); //$NON-NLS-1$
+			}
+		}
+		return true;
 	}
 
 	/** Infer the function's return type.
