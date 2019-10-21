@@ -23,7 +23,6 @@ package io.sarl.core
 
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.EventListener
-import io.sarl.lang.core.EventSpace
 
 /**
  * Event driven interaction space where agent are free register and unregister themselves.

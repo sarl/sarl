@@ -21,7 +21,7 @@
 
 package io.sarl.core
 
-import io.sarl.lang.annotation.PrivateAPI
+import io.sarl.lang.^annotation.PrivateAPI
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.SRESpecificDataContainer
 
