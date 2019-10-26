@@ -39,7 +39,6 @@
 				<module>coreplugins</module>
 				<module>internalmaven</module>
 				<module>apiplugins</module>
-				<module>externalmaven</module>
 			</modules>
 		</profile>
 	</profiles>
