@@ -2,7 +2,7 @@
 <feature
       id="io.janusproject.feature"
       label="Janus SARL Runtime Environment"
-      version="0.10.0.qualifier"
+      version="0.10.0"
       plugin="io.janusproject.plugin">
 
    <description url="http://www.sarl.io/about/">

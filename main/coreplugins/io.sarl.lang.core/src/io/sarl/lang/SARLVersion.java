@@ -57,7 +57,7 @@ public final class SARLVersion {
 	 * @see #SARL_RELEASE_VERSION
 	 * @see #SARL_RELEASE_VERSION_MAVEN
 	 */
-	public static final String SARL_RELEASE_VERSION_OSGI = "0.10.0.qualifier"; //$NON-NLS-1$
+	public static final String SARL_RELEASE_VERSION_OSGI = "0.10.0"; //$NON-NLS-1$
 
 	/** The version number in Maven format of the current release of the SARL library.
 	 *
@@ -66,20 +66,20 @@ public final class SARLVersion {
 	 * @see #SARL_RELEASE_VERSION
 	 * @see #SARL_RELEASE_VERSION_OSGI
 	 */
-	public static final String SARL_RELEASE_VERSION_MAVEN = "0.10.0-SNAPSHOT"; //$NON-NLS-1$
+	public static final String SARL_RELEASE_VERSION_MAVEN = "0.10.0"; //$NON-NLS-1$
 
 	/** The status of the SARL specification.
 	 *
 	 * <p>Usually, this status is also displayed in the
 	 * <a href="http://www.sarl.io/docs/suite/io/sarl/docs/SARLDocumentationSuite.html">reference documentation of SARL</a>.
 	 */
-	public static final String RELEASE_STATUS = "Draft Release"; //$NON-NLS-1$
+	public static final String RELEASE_STATUS = "Stable Release"; //$NON-NLS-1$
 
 	/** Flag that indicates if the current SARL library is a stable release.
 	 *
 	 * <p>A stable release is collection of libraries that will be not more compiled and generated.
 	 */
-	public static final boolean IS_STABLE = false;
+	public static final boolean IS_STABLE = true;
 
 	/** The minimal Xtext version to use SARL features.
 	 */
