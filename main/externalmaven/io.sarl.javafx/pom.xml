@@ -214,7 +214,6 @@
 							<artifactId>tag-replacer</artifactId>
 							<configuration>
 								<sources>
-									<source>${project.basedir}/src/main/java</source>
 									<source>${project.basedir}/src/main/generated-sources/sarl</source>
 								</sources>
 							</configuration>
@@ -223,7 +222,7 @@
 							<groupId>org.apache.maven.plugins</groupId>
 							<artifactId>maven-javadoc-plugin</artifactId>
 							<configuration>
-								<sourcepath>${project.basedir}/src/main/generated-sources/java</sourcepath>
+								<sourcepath>${project.build.directory}/generated-sources/java</sourcepath>
 							</configuration>
 						</plugin>
 					</plugins>

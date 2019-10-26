@@ -52,8 +52,8 @@ toc::[]
 
 == 1. Requirements
 
-* Java Development Toolkit (JDK) 1.8.
-* You may encountering issues if your are using Java 9, 10, 11 or 12 with SARL.
+* Java Development Toolkit (JDK) between 1.8 and 11.
+* You may encountering issues if your are using Java 12 or higher with SARL.
 
 == 2. Using SARL
 
