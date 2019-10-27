@@ -21,7 +21,6 @@
 		<module>io.sarl.maven.sdk</module>
 		<module>io.sarl.maven.docs.generator</module>
 		<module>io.sarl.maven.docs.testing</module>
-		<module>io.sarl.maven.sre</module>
 		<module>io.sarl.javafx</module>
 	</modules>
 

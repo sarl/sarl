@@ -3219,59 +3219,6 @@ The following manifest context gives an example of the tinyMAS SRE declaration:
 		$
 
 
-### Maven Plugin for Updating the Manifest
-
-The SARL project provides a <a href="http://maven.apache.org">Maven</a> plugin that enables the
-SRE developer to update the manifest file automatically when the SRE project is built/compile (with Maven).
-
-The Maven plugin is:
-
-* GroupID: [:mavenplugingroup:]
-* ArtifactID: [:mavenpluginartifact:]
-
-The mojo action defined by the SRE Maven plugin is [:mavengoalupdatemanifest:]. This mojo action
-updates the existing manifest file with the SRE information.
-
-The following XML code gives an example of Maven configuration that enables to use the SRE Maven plugin.
-
-```xml
-<build>
-	<plugins>
-		<plugin>
-			<groupId>[:mavenplugingroup](io.sarl.maven)</groupId>
-			<artifactId>[:mavenpluginartifact](io.sarl.maven.sre)</artifactId>
-			<version>${sarl.version}</version>
-			<configuration>
-				<sreName>TinyMAS</sreName>
-				<commandLineOptions>
-					<hideInfo></hideInfo>
-					<hideLogo></hideLogo>
-					<showInfo></showInfo>
-					<showLogo></showLogo>
-					<defaultContextId></defaultContextId>
-					<randomContextId></randomContextId>
-					<bootAgentContextId></bootAgentContextId>
-					<offline></offline>
-					<embedded></embedded>
-					<noMoreOption></noMoreOption>
-					<standaloneSRE>true</standaloneSRE>
-				</commandLineOptions>
-				<mainClass>[:tinymasbootclass!]</mainClass>
-			</configuration>
-
-			<executions>
-				<execution>
-					<id>update-manifest-standard</id>
-					<goals>
-						<goal>[:mavengoalupdatemanifest](updatemanifest)</goal>
-					</goals>
-				</execution>
-			</executions>
-		</plugin>
- 	</plugins>
-</build>
-```
-
 ## Configuration of a SRE Bootstrap
 
 An SRE bootstrap is a service that is provided by a SRE (here TinyMAS) for launching agents.
@@ -3294,53 +3241,6 @@ This file contains a single line, which is the fully qualified name of the boots
 As soon the SRE library is included into the *run-time classpath*, the SRE utility class is able to find the
 bootstrap implementation class. This SRE utility class is the major front-end for launching the agents programmatically.
 
-
-### Configuration with Maven plugin
-
-The above [:mavenpluginartifact:] Maven plugin provides a tool for created the service definition.
-First, you have to define the [:mavenbootstrapprop:] property with the fully qualified name of the bootstrap implementation class.
-Second, you should run the [:mavengoaladdbootstrap:] goal.
-The resulting Mavne configuration becomes (after upadting the configuration above):
-
-```xml
-<build>
-	<plugins>
-		<plugin>
-			<groupId>[:mavenplugingroup!]</groupId>
-			<artifactId>[:mavenpluginartifact!]</artifactId>
-			<version>${sarl.version}</version>
-			<configuration>
-				<sreName>TinyMAS</sreName>
-				<commandLineOptions>
-					<hideInfo></hideInfo>
-					<hideLogo></hideLogo>
-					<showInfo></showInfo>
-					<showLogo></showLogo>
-					<defaultContextId></defaultContextId>
-					<randomContextId></randomContextId>
-					<bootAgentContextId></bootAgentContextId>
-					<offline></offline>
-					<embedded></embedded>
-					<noMoreOption></noMoreOption>
-					<standaloneSRE>true</standaloneSRE>
-				</commandLineOptions>
-				<mainClass>[:tinymasbootclass!]</mainClass>
-				<[:mavenbootstrapprop](bootstrap)>$org.arakhne.tinymas.sarl.Bootstrap</[:mavenbootstrapprop!]>
-			</configuration>
-
-			<executions>
-				<execution>
-					<id>update-manifest-standard</id>
-					<goals>
-						<goal>[:mavengoalupdatemanifest!]</goal>
-						<goal>[:mavengoaladdbootstrap](addbootstrap)</goal>
-					</goals>
-				</execution>
-			</executions>
-		</plugin>
- 	</plugins>
-</build>
-```
 
 
 

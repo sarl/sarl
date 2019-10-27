@@ -93,39 +93,6 @@
 			</plugin>
 
 			<plugin>
-				<groupId>io.sarl.maven</groupId>
-				<artifactId>io.sarl.maven.sre</artifactId>
-				<configuration>
-					<sreName>JANUS</sreName>
-					<standaloneSRE>false</standaloneSRE>
-					<commandLineOptions>
-						<hideInfo>--log=warning</hideInfo>
-						<hideLogo>--nologo</hideLogo>
-						<showInfo>--log=info</showInfo>
-						<showLogo></showLogo>
-						<defaultContextId>--worldid</defaultContextId>
-						<randomContextId>--randomid</randomContextId>
-						<bootAgentContextId>--bootid</bootAgentContextId>
-						<offline>--offline</offline>
-						<embedded>--embedded</embedded>
-						<noMoreOption>--</noMoreOption>
-					</commandLineOptions>
-					<mainClass>${cliRunnerMainClass}</mainClass>
-					<bootstrap>${bootstrap}</bootstrap>
-				</configuration>
-
-				<executions>
-					<execution>
-						<goals>
-							<goal>updatemanifest</goal>
-							<goal>addbootstrap</goal>
-						</goals>
-					</execution>
-				</executions>
-
-			</plugin>
-
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<configuration>
