@@ -35,8 +35,8 @@ import org.eclipse.jface.wizard.Wizard;
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.eclipse.runtime.ManifestBasedSREInstall;
 import io.sarl.eclipse.runtime.SREException;
-import io.sarl.eclipse.runtime.StandardSREInstall;
 
 /**
  * Wiazrd for SRE installation.
@@ -128,7 +128,7 @@ public abstract class SREInstallWizard extends Wizard {
 			}
 		}
 
-		if (sre == null || sre instanceof StandardSREInstall) {
+		if (sre == null || sre instanceof ManifestBasedSREInstall) {
 			final StandardSREPage standardVMPage = new StandardSREPage();
 			standardVMPage.setExistingNames(this.names);
 			return standardVMPage;

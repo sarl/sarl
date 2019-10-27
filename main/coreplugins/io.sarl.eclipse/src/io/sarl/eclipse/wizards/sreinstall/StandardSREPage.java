@@ -46,9 +46,9 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Text;
 
 import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.eclipse.runtime.ManifestBasedSREInstall;
 import io.sarl.eclipse.runtime.SARLRuntime;
 import io.sarl.eclipse.runtime.SREException;
-import io.sarl.eclipse.runtime.StandardSREInstall;
 import io.sarl.eclipse.util.Utilities;
 
 /**
@@ -69,9 +69,9 @@ public class StandardSREPage extends AbstractSREInstallPage {
 
 	private Text sreIdTextField;
 
-	private StandardSREInstall originalSRE;
+	private ManifestBasedSREInstall originalSRE;
 
-	private StandardSREInstall workingCopy;
+	private ManifestBasedSREInstall workingCopy;
 
 	/** Construct a configuration page for the SREs.
 	 */
@@ -200,11 +200,11 @@ public class StandardSREPage extends AbstractSREInstallPage {
 
 	@Override
 	public void initialize(ISREInstall sre) {
-		if (!(sre instanceof StandardSREInstall)) {
+		if (!(sre instanceof ManifestBasedSREInstall)) {
 			throw new SREException("Illegal SRE type: expecting StandardSREInstall."); //$NON-NLS-1$
 		}
 		setTitle(MessageFormat.format(Messages.StandardSREPage_7, sre.getName()));
-		this.originalSRE = (StandardSREInstall) sre;
+		this.originalSRE = (ManifestBasedSREInstall) sre;
 		createWorkingCopy();
 	}
 
@@ -217,7 +217,7 @@ public class StandardSREPage extends AbstractSREInstallPage {
 
 	@Override
 	public ISREInstall createSelection(String id) {
-		final StandardSREInstall sre = new StandardSREInstall(id);
+		final ManifestBasedSREInstall sre = new ManifestBasedSREInstall(id);
 		sre.revalidate();
 		initialize(sre);
 		return sre;

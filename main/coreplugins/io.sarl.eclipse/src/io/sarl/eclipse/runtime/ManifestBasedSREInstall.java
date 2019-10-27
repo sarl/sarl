@@ -61,7 +61,7 @@ import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.util.Utilities;
 
 /**
- * Standard SRE install.
+ * SRE install that is based on the information within the MANIFEST file.
  *
  * <p>The standard SRE install assumes:
  * <ul>
@@ -69,7 +69,7 @@ import io.sarl.eclipse.util.Utilities;
  * <li>The main class of the SRE is defined in the Manifest field <code>"Main-Class"</code>.</li>
  * <li>The Manifest contains a section named <code>"SARL-Runtime-Environment"</code>. This section contains the following entries:
  * <ul>
- * <li>The version number of the SARL sepcifications that are supported by the SRE is defined in the Manifest field <code>"SARL-Spec-Version"</code>.
+ * <li>The version number of the SARL specifications that are supported by the SRE is defined in the Manifest field <code>"SARL-Spec-Version"</code>.
  * </li>
  * <li>The name of the SRE may be given by the field <code>"Name"</code>.</li>
  * <li>The VM arguments of the SRE may be given by the field <code>"VM-Arguments"</code>.</li>
@@ -90,7 +90,7 @@ import io.sarl.eclipse.util.Utilities;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class StandardSREInstall extends AbstractSREInstall {
+public class ManifestBasedSREInstall extends AbstractSREInstall {
 
 	private IPath jarFile;
 
@@ -129,7 +129,7 @@ public class StandardSREInstall extends AbstractSREInstall {
 	 *
 	 * @param id the identifier of this SRE installation.
 	 */
-	public StandardSREInstall(String id) {
+	public ManifestBasedSREInstall(String id) {
 		super(id);
 	}
 
@@ -139,15 +139,15 @@ public class StandardSREInstall extends AbstractSREInstall {
 	}
 
 	@Override
-	public StandardSREInstall clone() {
-		final StandardSREInstall clone = (StandardSREInstall) super.clone();
+	public ManifestBasedSREInstall clone() {
+		final ManifestBasedSREInstall clone = (ManifestBasedSREInstall) super.clone();
 		clone.jarFile = this.jarFile == null ? null : Path.fromPortableString(clone.jarFile.toPortableString());
 		return clone;
 	}
 
 	@Override
-	public StandardSREInstall copy(String id) {
-		return (StandardSREInstall) super.copy(id);
+	public ManifestBasedSREInstall copy(String id) {
+		return (ManifestBasedSREInstall) super.copy(id);
 	}
 
 	/**
