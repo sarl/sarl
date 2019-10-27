@@ -33,10 +33,10 @@ import org.eclipse.m2e.core.project.IMavenProjectFacade;
 
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.runtime.ISREInstall;
+import io.sarl.eclipse.runtime.ManifestBasedSREInstall;
 import io.sarl.eclipse.runtime.ProjectSREProvider;
 import io.sarl.eclipse.runtime.ProjectSREProviderFactory;
 import io.sarl.eclipse.runtime.SARLRuntime;
-import io.sarl.eclipse.runtime.StandardSREInstall;
 import io.sarl.m2e.SARLMavenEclipsePlugin;
 
 /** Factory of project SRE provider for the Maven projects.
@@ -125,7 +125,7 @@ public class MavenProjectSREProviderFactory implements ProjectSREProviderFactory
 
 		@Override
 		public ISREInstall getProjectSREInstall() {
-			final StandardSREInstall tmpSre = new StandardSREInstall(this.id);
+			final ManifestBasedSREInstall tmpSre = new ManifestBasedSREInstall(this.id);
 			tmpSre.setJarFile(this.artifactFile);
 			return tmpSre;
 		}
