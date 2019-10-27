@@ -70,7 +70,7 @@ public class VimGenerator2 extends AbstractExternalHighlightingFragment2<IStyleA
 	 */
 	public static final String FTDETECT_FOLDER = "ftdetect"; //$NON-NLS-1$
 
-	private final Map<String, VimSyntaxGroup> hilights = new HashMap<>();
+	private final Map<String, VimSyntaxGroup> highlights = new HashMap<>();
 
 	@Override
 	protected IStyleAppendable newStyleAppendable() {
@@ -185,7 +185,7 @@ public class VimGenerator2 extends AbstractExternalHighlightingFragment2<IStyleA
 		appendCmd(it, "exec \"syn sync ccomment sarlComment minlines=\" . sarl_minlines"); //$NON-NLS-1$
 		it.newLine();
 		appendComment(it, "The default highlighting."); //$NON-NLS-1$
-		for (final Entry<String, VimSyntaxGroup> hilight : this.hilights.entrySet()) {
+		for (final Entry<String, VimSyntaxGroup> hilight : this.highlights.entrySet()) {
 			appendCmd(it, "SarlHiLink " + hilight.getKey() + " " + hilight.getValue().getVimConstant()); //$NON-NLS-1$//$NON-NLS-2$
 		}
 		clearHilights();
@@ -328,7 +328,7 @@ public class VimGenerator2 extends AbstractExternalHighlightingFragment2<IStyleA
 	/** Clear the hilight definitions.
 	 */
 	protected void clearHilights() {
-		this.hilights.clear();
+		this.highlights.clear();
 	}
 
 	/** Hilight the group with the given name as the given Vim syntax group.
@@ -337,7 +337,7 @@ public class VimGenerator2 extends AbstractExternalHighlightingFragment2<IStyleA
 	 * @param group the Vim syntax group.
 	 */
 	protected void hilight(String name, VimSyntaxGroup group) {
-		this.hilights.put(name, group);
+		this.highlights.put(name, group);
 	}
 
 	/** Append elements to the Vim top cluster.
@@ -561,11 +561,11 @@ public class VimGenerator2 extends AbstractExternalHighlightingFragment2<IStyleA
 		return concat(
 				"1. MANUAL INSTALLATION", //$NON-NLS-1$
 				"", //$NON-NLS-1$
-				"Fox Unix:", //$NON-NLS-1$
+				"For Unix:", //$NON-NLS-1$
 				"* Copy the content of the 'syntax' folder into $HOME/.vim/syntax", //$NON-NLS-1$
 				"* Copy the content of the 'ftdetect' folder into $HOME/.vim/ftdetect", //$NON-NLS-1$
 				"", //$NON-NLS-1$
-				"Fox Windows:", //$NON-NLS-1$
+				"For Windows:", //$NON-NLS-1$
 				"* Copy the content of the 'syntax' folder into C:\\Document and Settings\\User\\vimfiles\\syntax", //$NON-NLS-1$
 				"* Copy the content of the 'ftdetect' folder into C:\\Document and Settings\\User\\vimfiles\\ftdetect"); //$NON-NLS-1$
 	}
@@ -708,9 +708,9 @@ public class VimGenerator2 extends AbstractExternalHighlightingFragment2<IStyleA
 		/** To-Do.
 		 */
 		TODO("Todo"), //$NON-NLS-1$
-		/** Error.
+		/** Operator.
 		 */
-		ERROR("Error"); //$NON-NLS-1$
+		OPERATOR("Operator"); //$NON-NLS-1$
 
 		private final String vimConstant;
 

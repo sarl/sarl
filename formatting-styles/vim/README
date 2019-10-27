@@ -1,9 +1,9 @@
 1. MANUAL INSTALLATION
 
-Fox Unix:
+For Unix:
 * Copy the content of the 'syntax' folder into $HOME/.vim/syntax
 * Copy the content of the 'ftdetect' folder into $HOME/.vim/ftdetect
 
-Fox Windows:
+For Windows:
 * Copy the content of the 'syntax' folder into C:\Document and Settings\User\vimfiles\syntax
 * Copy the content of the 'ftdetect' folder into C:\Document and Settings\User\vimfiles\ftdetect
