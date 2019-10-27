@@ -177,9 +177,10 @@ Announce the new version of SARL on:
 
 * SARL's Google groups https://groups.google.com/forum/#!forum/sarl
 * SARL's Facebook page https://www.facebook.com/sarllanguage/
-* Research mailing lists
-* Google+
-* Linked-in
+* SARL Gitter https://gitter.im/sarl/Lobby
+* Linked-in https://www.linkedin.com/
+* CIAD laboratory Intranet 
+* Research mailing lists 
 
 == 4) PHASE 4: DEVELOPMENT VERSION
 
