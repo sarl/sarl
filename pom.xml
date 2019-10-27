@@ -6,7 +6,7 @@
 
 	<groupId>io.sarl</groupId>
 	<artifactId>io.sarl</artifactId>
-	<version>0.10.0-SNAPSHOT</version>
+	<version>0.11.0-SNAPSHOT</version>
 
 	<name>SARL Agent Oriented Programming Language</name>
 	<url>${sarlUrl}</url>
@@ -53,7 +53,7 @@
 		<user.next.unsupported.jdk.version>12</user.next.unsupported.jdk.version>
 
 		<!-- Version of the SARL API -->
-		<sarl.version>0.10.0-SNAPSHOT</sarl.version>
+		<sarl.version>0.11.0-SNAPSHOT</sarl.version>
 		<janus.version>2.${sarl.version}</janus.version>
 		<sarl.maven.compiler.version>${sarl.version}</sarl.maven.compiler.version>
 
@@ -1383,7 +1383,7 @@
 			</releases>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</repository>-->
-		<repository>
+		<!--<repository>
 			<id>org.arakhne-snapshot</id>
 			<snapshots>
 				<enabled>true</enabled>
@@ -1392,7 +1392,7 @@
 				<enabled>true</enabled>
 			</releases>
 			<url>http://download.tuxfamily.org/arakhne/maven</url>
-		</repository>
+		</repository>-->
 	</repositories>
 
 </project>

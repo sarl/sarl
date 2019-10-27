@@ -38,7 +38,9 @@ import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.junit.Test;
+import org.osgi.framework.Version;
 
+import io.sarl.lang.SARLVersion;
 import io.sarl.lang.annotation.DefaultValue;
 import io.sarl.lang.annotation.DefaultValueSource;
 import io.sarl.lang.annotation.DefaultValueUse;
@@ -154,9 +156,15 @@ public class UtilsTest extends AbstractSarlTest {
 		assertFalse(Utils.isCompatibleSARLLibraryVersion("0.7"));
 		assertFalse(Utils.isCompatibleSARLLibraryVersion("0.8"));
 		assertFalse(Utils.isCompatibleSARLLibraryVersion("0.9"));
-		assertTrue(Utils.isCompatibleSARLLibraryVersion("0.10"));
-		assertTrue(Utils.isCompatibleSARLLibraryVersion("0.10.1"));
-		assertFalse(Utils.isCompatibleSARLLibraryVersion("0.11"));
+		assertFalse(Utils.isCompatibleSARLLibraryVersion("0.10"));
+		assertFalse(Utils.isCompatibleSARLLibraryVersion("0.10.1"));
+
+		assertTrue(Utils.isCompatibleSARLLibraryVersion(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING));
+		assertTrue(Utils.isCompatibleSARLLibraryVersion(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + ".0"));
+		assertTrue(Utils.isCompatibleSARLLibraryVersion(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + ".1"));
+
+		Version nextVersion = Version.parseVersion(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING);
+		assertFalse(Utils.isCompatibleSARLLibraryVersion(nextVersion.getMajor() + "." + (nextVersion.getMinor() + 1)));
 	}
 
 	@Test
@@ -216,12 +224,22 @@ public class UtilsTest extends AbstractSarlTest {
 		assertFalse(Utils.isCompatibleSARLLibraryOnClasspath(references, context));
 
 		when(field.getConstantValueAsString()).thenReturn("0.10");
-		assertTrue(Utils.isCompatibleSARLLibraryOnClasspath(references, context));
+		assertFalse(Utils.isCompatibleSARLLibraryOnClasspath(references, context));
 
 		when(field.getConstantValueAsString()).thenReturn("0.10.1");
+		assertFalse(Utils.isCompatibleSARLLibraryOnClasspath(references, context));
+
+		when(field.getConstantValueAsString()).thenReturn(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING);
+		assertTrue(Utils.isCompatibleSARLLibraryOnClasspath(references, context));
+		
+		when(field.getConstantValueAsString()).thenReturn(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + ".0");
 		assertTrue(Utils.isCompatibleSARLLibraryOnClasspath(references, context));
 
-		when(field.getConstantValueAsString()).thenReturn("0.11");
+		when(field.getConstantValueAsString()).thenReturn(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + ".1");
+		assertTrue(Utils.isCompatibleSARLLibraryOnClasspath(references, context));
+
+		Version nextVersion = Version.parseVersion(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING);
+		when(field.getConstantValueAsString()).thenReturn(nextVersion.getMajor() + "." + (nextVersion.getMinor() + 1));
 		assertFalse(Utils.isCompatibleSARLLibraryOnClasspath(references, context));
 	}
 
