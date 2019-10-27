@@ -199,10 +199,10 @@
 			</dependencies>
 		</profile>
 		<profile>
-			<id>maven-release-of-javafx-plugin</id>
+			<id>maven-release-of-maven-javafx-plugin</id>
 			<activation>
 				<property>
-					<name>publicSarlApiModuleSet</name>
+					<name>performRelease</name>
 					<value>true</value>
 				</property>
 			</activation>
@@ -212,9 +212,23 @@
 						<plugin>
 							<groupId>org.arakhne.afc.maven</groupId>
 							<artifactId>tag-replacer</artifactId>
+							<executions>
+								<execution>
+									<id>update-sarl-source-tags</id>
+									<phase>process-classes</phase>
+									<goals>
+										<goal>generatereplacesrc</goal>
+									</goals>
+									<configuration>
+										<sources>
+											<source>${project.basedir}/src/main/generated-sources/sarl</source>
+										</sources>
+									</configuration>
+								</execution>
+							</executions>
 							<configuration>
 								<sources>
-									<source>${project.basedir}/src/main/generated-sources/sarl</source>
+									<source>${project.basedir}/src/main/java</source>
 								</sources>
 							</configuration>
 						</plugin>
