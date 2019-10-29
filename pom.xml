@@ -286,12 +286,12 @@
 	<distributionManagement>
 		<repository>
 			<id>io.sarl.maven.upload</id>
-			<url>${env.MAVENSARLIO_URL}</url>
+			<url>${MAVENSARLIO_URL}</url>
 			<name>SARL Maven Repository</name>
 		</repository>
 		<snapshotRepository>
 			<id>io.sarl.maven.upload</id>
-			<url>${env.MAVENSARLIO_URL}</url>
+			<url>${MAVENSARLIO_URL}</url>
 			<name>SARL Maven Repository</name>
 		</snapshotRepository>
 	</distributionManagement>
