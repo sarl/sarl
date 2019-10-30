@@ -45,11 +45,16 @@
 	</module>
 
 	<!-- Avoid tab characters in the code (Google). -->
-	<!-- <module name="FileTabCharacter"> <property name="eachLine" value="true"/> 
+	<!-- <module name="FileTabCharacter"> <property name="eachLine" value="true"/>
 		</module> -->
 
 	<!-- Activate the suppressions of the warnings with the holder for @SuppressWarnings -->
 	<module name="SuppressWarningsFilter" />
+
+	<!-- Ignore generated sources -->
+	<module name="SuppressionFilter">
+		<property name="file" value="${config_loc}/suppressions.xml" />
+	</module>
 
 	<module name="TreeWalker">
 
@@ -92,7 +97,7 @@
 
 		<!-- Specify the minimum number of lines for a method documentation. -->
 		<!-- Validate the throws. -->
-		<!-- Allow documentation of RuntimeException exceptions that are not declared 
+		<!-- Allow documentation of RuntimeException exceptions that are not declared
 			in throws. -->
 		<module name="JavadocMethod">
 			<property name="scope" value="package" />
@@ -129,14 +134,14 @@
 				value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF, METHOD_DEF, CTOR_DEF, VARIABLE_DEF" />
 		</module>
 
-		<!-- Check that any documentation with @ clause must have more than one 
+		<!-- Check that any documentation with @ clause must have more than one
 			line. -->
 		<module name="SingleLineJavadoc" />
 
 		<!-- Ensure comments are at the same level as the commented code. -->
 		<module name="CommentsIndentation" />
 
-		<!-- The only one comment that is allowed after source code is the NLS 
+		<!-- The only one comment that is allowed after source code is the NLS
 			comment. -->
 		<module name="TrailingComment">
 			<property name="legalComment"
@@ -296,7 +301,7 @@
 			<property name="max" value="100" />
 		</module>
 
-		<!-- Max number of statements in constructors, instance initializers, and 
+		<!-- Max number of statements in constructors, instance initializers, and
 			static initializers. -->
 		<module name="ExecutableStatementCount">
 			<property name="max" value="40" />
@@ -311,7 +316,7 @@
 		<!-- Check white spaces in generics declarations. -->
 		<module name="GenericWhitespace" />
 
-		<!-- No space between the name of the method/constructor and the parameter 
+		<!-- No space between the name of the method/constructor and the parameter
 			list. -->
 		<module name="MethodParamPad" />
 
@@ -321,14 +326,14 @@
 		<!-- No space after typical tokens (arrays, unary minus, etc.) -->
 		<module name="NoWhitespaceBefore" />
 
-		<!-- In multiline operations (e.g. string concatenation), the operators 
+		<!-- In multiline operations (e.g. string concatenation), the operators
 			are always at the begining of the lines. -->
 		<module name="OperatorWrap" />
 
 		<!-- No space after a left parenthesis and before a right parenthesis. -->
 		<module name="ParenPad" />
 
-		<!-- In type casts, no space after a left parenthesis and before a right 
+		<!-- In type casts, no space after a left parenthesis and before a right
 			parenthesis. -->
 		<module name="TypecastParenPad" />
 
@@ -358,7 +363,7 @@
 			<property name="option" value="nl" />
 		</module>
 
-		<!-- Comma separator must end the current line in the context of a line 
+		<!-- Comma separator must end the current line in the context of a line
 			wrapping. -->
 		<module name="SeparatorWrap">
 			<property name="tokens" value="COMMA" />
@@ -384,7 +389,7 @@
 		<!-- Nested blocks are avoided. -->
 		<module name="AvoidNestedBlocks" />
 
-		<!-- Empty blocks are not allowed, except for the catch statement in which 
+		<!-- Empty blocks are not allowed, except for the catch statement in which
 			a line comment must be written. -->
 		<module name="EmptyBlock">
 			<property name="option" value="text" />
@@ -396,11 +401,11 @@
 			<property name="exceptionVariableName" value="_" />
 		</module>
 
-		<!-- Check for the placement of the left curly braces at the ends of the 
+		<!-- Check for the placement of the left curly braces at the ends of the
 			lines. -->
 		<module name="LeftCurly" />
 
-		<!-- Check for the placement of the right curly braces on the same line 
+		<!-- Check for the placement of the right curly braces on the same line
 			as the following statement. -->
 		<module name="RightCurly" />
 
@@ -412,7 +417,7 @@
 		<!-- Class with only private constructors must be final. -->
 		<module name="FinalClass" />
 
-		<!-- An interface must contains at least one method. Interface with only 
+		<!-- An interface must contains at least one method. Interface with only
 			constants is forbidden. -->
 		<module name="InterfaceIsType" />
 
@@ -429,16 +434,16 @@
 		<!-- finalize() function is forbidden. -->
 		<module name="NoFinalizer" />
 
-		<!-- Members must be declared in the order: class variables (public, protected, 
-			package, private), instance variables (public, protected, package, private), 
+		<!-- Members must be declared in the order: class variables (public, protected,
+			package, private), instance variables (public, protected, package, private),
 			constructors, methods. -->
 		<module name="DeclarationOrder" />
 
-		<!-- If a function "equals(Something)" is defined, the function "equals(Object) 
+		<!-- If a function "equals(Something)" is defined, the function "equals(Object)
 			must be overriden. -->
 		<module name="CovariantEquals" />
 
-		<!-- If the equals() function is implemented; the hashCode() function must 
+		<!-- If the equals() function is implemented; the hashCode() function must
 			also be implemented. -->
 		<module name="EqualsHashCode" />
 
@@ -455,7 +460,7 @@
 
 		<!-- Requires "this". -->
 		<module name="RequireThis">
-			<property name="checkMethods" value="false" /> 
+			<property name="checkMethods" value="false" />
 		</module>
 
 		<!-- Check for unnecessary parentheses. -->
@@ -484,11 +489,11 @@
 		<!-- Avoid redundant initialization of the fields to their default values. -->
 		<module name="ExplicitInitialization" />
 
-		<!-- In the switch statements, the default clause must be after all the 
+		<!-- In the switch statements, the default clause must be after all the
 			other clauses. -->
 		<module name="DefaultComesLast" />
 
-		<!-- Avoid fall-through in switch statements, except if a comment with 
+		<!-- Avoid fall-through in switch statements, except if a comment with
 			"fall through" is specified. -->
 		<module name="FallThrough" />
 
@@ -501,7 +506,7 @@
 		<!-- Avoid empty statements (standalone ";"). -->
 		<module name="EmptyStatement" />
 
-		<!-- Avoid direct calls to the constructors when factory methods are preferred, 
+		<!-- Avoid direct calls to the constructors when factory methods are preferred,
 			e.g. Boolean. -->
 		<module name="IllegalInstantiation" />
 
@@ -528,14 +533,14 @@
 			<property name="allowNonPrintableEscapes" value="true" />
 		</module>
 
-		<!-- Avoid the use of specific types in parameter and method declarations 
+		<!-- Avoid the use of specific types in parameter and method declarations
 			(HashSet, etc.) -->
 		<module name="IllegalType">
 			<!-- <property name="ignoredMethodNames" value="getInstance"/> -->
 			<property name="tokens" value="PARAMETER_DEF,METHOD_DEF" />
 		</module>
 
-		<!-- Discourage the use of specific types in variable declarations (HashSet, 
+		<!-- Discourage the use of specific types in variable declarations (HashSet,
 			etc.) -->
 		<module name="IllegalType">
 			<property name="tokens" value="VARIABLE_DEF" />
@@ -642,7 +647,7 @@
 			<property name="max" value="40" />
 		</module>
 
-		<!-- Restrict the number of decision points in the code. Less decision 
+		<!-- Restrict the number of decision points in the code. Less decision
 			points means easier to test. -->
 		<module name="CyclomaticComplexity">
 			<property name="max" value="20" />
@@ -659,15 +664,15 @@
 		<!-- The functions must be grouped by their names. -->
 		<module name="OverloadMethodsDeclarationOrder" />
 
-		<!-- Avoid to declare variables too early in the code, before the first 
+		<!-- Avoid to declare variables too early in the code, before the first
 			use. -->
 		<module name="VariableDeclarationUsageDistance" />
 
-		<!-- Annotations must be after the documentation block and before the annotated 
+		<!-- Annotations must be after the documentation block and before the annotated
 			element. Each annotation is on a separate line. -->
 		<module name="AnnotationLocation" />
 
-		<!-- Enable to suppress checkstyle warnings via @SuppressWarnings annotation. 
+		<!-- Enable to suppress checkstyle warnings via @SuppressWarnings annotation.
 			Syntax is: @SuppressWarnings("checkstyle:<id>") -->
 		<module name="SuppressWarningsHolder" />
 

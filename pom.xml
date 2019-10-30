@@ -65,10 +65,10 @@
 		<xtext.version.next>2.19.1</xtext.version.next>
 		<xtext.version.javadoc>2.19</xtext.version.javadoc>
 
-		<!-- Version of the MWE2 library (used for accessing the mwe2 P2 http://download.eclipse.org/modeling/emft/mwe/updates/releases/, 
+		<!-- Version of the MWE2 library (used for accessing the mwe2 P2 http://download.eclipse.org/modeling/emft/mwe/updates/releases/,
 			see compositeContent.{xml,jar,xz,xml.xz} file) -->
 		<mwe2.version>2.11.0</mwe2.version>
-		<!-- Version of the Xpand library (used for accessing the Xpand P2 http://download.eclipse.org/modeling/m2t/xpand/updates/releases/, 
+		<!-- Version of the Xpand library (used for accessing the Xpand P2 http://download.eclipse.org/modeling/m2t/xpand/updates/releases/,
 			see compositeContent.{xml,jar,xz,xml.xz} file) -->
 		<xpand.version>R201605260315</xpand.version>
 		<!-- Version of Guice (package: com.google.inject:guice). -->
@@ -81,7 +81,7 @@
 		<guava.version>27.1-jre</guava.version>
 		<!-- Version of the javax.inject module -->
 		<javaxinject.version>1</javaxinject.version>
-		<!-- Version of the Tycho module, (search for tycho-maven-plugin on Maven 
+		<!-- Version of the Tycho module, (search for tycho-maven-plugin on Maven
 			central) -->
 		<tycho.version>1.4.0</tycho.version>
 		<!-- Version of the ZeroMQ library -->
@@ -94,14 +94,14 @@
 		<!-- Build ID Format (used in Eclipse about dialog) -->
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
 		<buildId>${maven.build.timestamp}</buildId>
-		<!-- Year of the release of SARL (used in Eclipse about, license management 
+		<!-- Year of the release of SARL (used in Eclipse about, license management
 			and documentation) -->
 		<year>2019</year>
 		<!-- URL of the SARL project (use in POM, Eclipse about and documentation) -->
 		<sarlUrl>http://www.sarl.io</sarlUrl>
 		<!-- Default encoding of the source files -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<!-- Maven API version. This version should be supported by m2e. Search 
+		<!-- Maven API version. This version should be supported by m2e. Search
 			for maven-core on central. -->
 		<maven.api.version>3.6.1</maven.api.version>
 		<!-- Version of the Maven Java compiler. -->
@@ -833,6 +833,7 @@
 					<configuration>
 						<!-- config is inside one of the dependencies -->
 						<configLocation>/checkstyle/sarl/checkstyle.xml</configLocation>
+						<suppressionsLocation>/checkstyle/sarl/suppressions.xml</suppressionsLocation>
 						<!-- force absolute path of the config file -->
 						<propertyExpansion>${checkstyle.config_loc}</propertyExpansion>
 						<consoleOutput>true</consoleOutput>
@@ -945,7 +946,7 @@
 					</configuration>
 				</plugin>
 
-				<!-- This plugin's configuration is used to store Eclipse m2e settings 
+				<!-- This plugin's configuration is used to store Eclipse m2e settings
 					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
@@ -1030,7 +1031,7 @@
 		</pluginManagement>
 
 		<plugins>
-			<!-- Compute additional version numbers for the SARL (specification, release, 
+			<!-- Compute additional version numbers for the SARL (specification, release,
 				buildId) -->
 			<plugin>
 				<groupId>org.codehaus.gmavenplus</groupId>
@@ -1142,7 +1143,7 @@
 						    log.debug("set checkstyle.config_loc to: " + project.properties["checkstyle.config_loc"]);
 							//************************
 							// Change the SARL Build ID
-							
+
 						]]></script>
 					</scripts>
 				</configuration>
