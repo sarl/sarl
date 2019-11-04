@@ -151,7 +151,8 @@ public final class JavaClasspathParser {
             Map<IPath, UnknownXmlElements> unknownElements)
             throws CoreException, IOException, ClasspathEntry.AssertionFailedException, URISyntaxException {
 
-        final URL rscFile = new URL(projectRootAbsoluteFullPath.toExternalForm().concat(JavaProject.CLASSPATH_FILENAME));
+        final URL rscFile = new URL(
+        		projectRootAbsoluteFullPath.toExternalForm().concat(JavaProject.CLASSPATH_FILENAME).replace(" ", "%20")); //$NON-NLS-1$ //$NON-NLS-2$
         byte[] bytes;
 
         // when a project is imported, we get a first delta for the addition of the .project, but the .classpath is not accessible
