@@ -397,7 +397,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 		final StringBuilder cp = new StringBuilder();
 		for (final File cpElement : getClassPath()) {
 			if (cp.length() > 0) {
-				cp.append(":"); //$NON-NLS-1$
+				cp.append(File.pathSeparator);
 			}
 			cp.append(cpElement.getAbsolutePath());
 		}
