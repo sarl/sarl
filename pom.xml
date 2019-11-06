@@ -194,6 +194,7 @@
 			</organization>
 			<organizationUrl>http://www.multiagent.fr</organizationUrl>
 			<roles>
+				<role>Architect</role>
 				<role>Developer</role>
 			</roles>
 		</developer>
