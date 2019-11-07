@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %Bundle-Name
+Bundle-SymbolicName: io.sarl.eclipse-slf4j;singleton:=true
+Automatic-Module-Name: io.sarl.eclipse-slf4j
+Bundle-Version: 0.11.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: %Bundle-Vendor
+Bundle-Activator: io.sarl.eclipse.slf4j.EclipseSLF4JLoggerPlugin
+Export-Package: io.sarl.eclipse.slf4j
+Require-Bundle: org.eclipse.core.runtime;bundle-version="3.16.0",
+ slf4j.api;bundle-version="2.0.0"
