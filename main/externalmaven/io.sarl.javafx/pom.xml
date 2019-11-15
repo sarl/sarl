@@ -13,7 +13,9 @@
 	<name>SDK JavaFX Library</name>
 
 	<properties>
-		<openjfx.fxml.linux.path>/usr/lib/jvm/java-8-oracle/jre/lib/ext/jfxrt.jar</openjfx.fxml.linux.path>
+		<openjfx.fxml.linux.path>${project.basedir}/../../../build-tools/libs/jfxrt.jar</openjfx.fxml.linux.path>
+		<openjfx.fxml.mac.path>${project.basedir}/../../../build-tools/libs/jfxrt.jar</openjfx.fxml.mac.path>
+		<openjfx.fxml.win.path>${project.basedir}/../../../build-tools/libs/jfxrt.jar</openjfx.fxml.win.path>
 	</properties>
 
 	<dependencies>
@@ -173,7 +175,7 @@
 					<artifactId>javafx-fxml</artifactId>
 					<version>${java.version}</version>
 					<scope>system</scope>
-					<systemPath>${java.home}/lib/ext/jfxrt.jar</systemPath>
+					<systemPath>${openjfx.fxml.mac.path}</systemPath>
 				</dependency>
 			</dependencies>
 		</profile>
@@ -194,7 +196,7 @@
 					<artifactId>javafx-fxml</artifactId>
 					<version>${java.version}</version>
 					<scope>system</scope>
-					<systemPath>${java.home}/lib/ext/jfxrt.jar</systemPath>
+					<systemPath>${openjfx.fxml.win.path}</systemPath>
 				</dependency>
 			</dependencies>
 		</profile>
