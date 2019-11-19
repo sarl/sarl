@@ -19,13 +19,15 @@
  * limitations under the License.
  */
 
-package io.sarl.javafx;
+package io.sarl.javafx
 
 import io.sarl.bootstrap.SRE
 import io.sarl.core.AgentSpawned
+import io.sarl.lang.core.Address
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventListener
+import io.sarl.lang.core.Scope
 import io.sarl.core.OpenEventSpace
 import io.sarl.core.OpenEventSpaceSpecification
 import java.util.UUID
@@ -52,10 +54,14 @@ abstract class FxViewerController implements EventListener {
 	 */
 	volatile var ^space : OpenEventSpace
 
+	/** Global event space.
+	 */
+	volatile var ^globalSpace : OpenEventSpace
+
 	/** Emit a kill signal when the application is exited.
 	 */
 	def safeExit : void {
-		emitToAgents(new AppExit)
+		emitToAgents(new AppExit, true)
 		this.UISpace = null
 	}
 
@@ -83,11 +89,14 @@ abstract class FxViewerController implements EventListener {
 	/** Emit an event to the agents.
 	 *
 	 * @param event the occurrence to send to agents.
+	 * @param globalSpace indicates if the global event space must be used in preference to the UI event space.
+	 * @param scope optional parameter that enables to scope the event receiving.
+	 * @since 0.11
 	 */
-	def emitToAgents(^event : Event) {
-		var s = ^space
+	def emitToAgents(^event : Event, globalSpace : boolean = false, scope : Scope<Address> = null) {
+		var s = if (globalSpace) this.globalSpace else this.^space 
 		if (s !== null) {
-			s.emit(ID, ^event)
+			s.emit(ID, ^event, scope)
 		}
 	}
 
@@ -104,9 +113,9 @@ abstract class FxViewerController implements EventListener {
 			throw new IllegalStateException(Messages::FxViewerController_0)
 		}
 		var context = bootstrap.startWithoutAgent
-		var rootSpace = context.defaultSpace as OpenEventSpace
+		this.globalSpace = context.defaultSpace as OpenEventSpace
 		this.UISpace = context.createSpace(typeof(OpenEventSpaceSpecification), ID)
-		new LaunchingCallback(ID, rootSpace, whenAgentLaunched)
+		new LaunchingCallback(ID, this.globalSpace, whenAgentLaunched)
 		return bootstrap.startAgent(agentType, this)
 	}
 
@@ -116,6 +125,14 @@ abstract class FxViewerController implements EventListener {
 	 */
 	@FXML
 	def exitApplication(^event : ActionEvent) {
+		exitApplication
+	}
+
+	/** Do a safe application exist.
+	 *
+	 * @since 0.11
+	 */
+	def exitApplication {
 		safeExit
 		Platform::exit
 	}
