@@ -21,14 +21,13 @@
 
 package io.sarl.eclipse.slf4j;
 
-import java.text.MessageFormat;
-
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.slf4j.Marker;
 import org.slf4j.event.Level;
 import org.slf4j.helpers.LegacyAbstractLogger;
+import org.slf4j.helpers.MessageFormatter;
 
 /** Apache logger that is wrapping an Eclipse logger.
  *
@@ -105,7 +104,7 @@ public class EclipseSlf4jLogger extends LegacyAbstractLogger {
 				break;
 			}
 			if (istatus != 0) {
-				final String expandedMessage = MessageFormat.format(msg, arguments);
+				final String expandedMessage = MessageFormatter.basicArrayFormat(msg, arguments);
 				if (throwable != null) {
 					status = new Status(istatus, EclipseSLF4JLoggerPlugin.PLUGIN_ID, expandedMessage, throwable);
 				} else {
