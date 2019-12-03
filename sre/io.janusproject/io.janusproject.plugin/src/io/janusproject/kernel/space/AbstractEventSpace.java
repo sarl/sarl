@@ -23,6 +23,7 @@ package io.janusproject.kernel.space;
 
 import java.text.MessageFormat;
 import java.util.UUID;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.locks.ReadWriteLock;
 
 import com.google.inject.Inject;
@@ -179,16 +180,18 @@ public abstract class AbstractEventSpace extends SpaceBase {
 		final UniqueAddressParticipantRepository<Address> particips = getParticipantInternalDataStructure();
 		final SynchronizedCollection<EventListener> listeners = particips.getListeners();
 		final ReadWriteLock lock = listeners.getLock();
+		LinkedBlockingQueue<EventListener> listenerLocalCopy = null;
 		lock.readLock().lock();
 		try {
-			for (final EventListener listener : listeners) {
-				final Address adr = getAddress(listener);
-				if (scope.matches(adr)) {
-					this.executorService.submit(new AsyncRunner(listener, event));
-				}
-			}
+			listenerLocalCopy = new LinkedBlockingQueue<>(listeners);
 		} finally {
 			lock.readLock().unlock();
+		}
+		for (final EventListener listener : listenerLocalCopy) {
+			final Address adr = getAddress(listener);
+			if (scope.matches(adr)) {
+				this.executorService.submit(new AsyncRunner(listener, event));
+			}
 		}
 	}
 
