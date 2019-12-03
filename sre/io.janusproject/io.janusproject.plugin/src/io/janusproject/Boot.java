@@ -678,7 +678,8 @@ public final class Boot {
 		PrintWriter logger = new PrintWriter(getErrorConsoleLogger());
 		if (message != null && !message.isEmpty()) {
 			logger.println(message);
-		} else if (exception != null) {
+		}
+		if (exception != null) {
 			exception.printStackTrace(logger);
 		}
 		logger.println();
