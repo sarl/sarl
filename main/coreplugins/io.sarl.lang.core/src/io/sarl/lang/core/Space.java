@@ -22,11 +22,10 @@
 package io.sarl.lang.core;
 
 import java.util.UUID;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
-
-import io.sarl.lang.util.SynchronizedSet;
 
 /**
  * Agents in SARL can interact only via Interaction Spaces. A space is the support of the event-driven interaction between agents respecting the rules
@@ -66,6 +65,6 @@ public interface Space {
      * @return participants IDs
      */
     @Pure
-    SynchronizedSet<UUID> getParticipants();
+    ConcurrentSkipListSet<UUID> getParticipants();
 
 }

@@ -25,9 +25,10 @@ import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.UUID;
-import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -50,16 +51,13 @@ import io.janusproject.services.logging.LogService;
 import io.janusproject.services.network.NetworkService;
 import io.janusproject.util.ListenerCollection;
 import io.janusproject.util.TwoStepConstruction;
-
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
-import io.sarl.lang.util.SynchronizedCollection;
-import io.sarl.lang.util.SynchronizedSet;
-import io.sarl.util.concurrent.Collections3;
 
 /**
- * A repository of Agent's context and spaces that is based on the other Janus platform services.
+ * A repository of Agent's context and spaces that is based on the other Janus
+ * platform services.
  *
  * @author $Author: ngaud$
  * @author $Author: srodriguez$
@@ -85,15 +83,16 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	private SpaceRepositoryFactory spaceRepositoryFactory;
 
 	/**
-	 * Map linking a context id to its associated default space id. This map must be distributed and synchronized all over the
-	 * network
+	 * Map linking a context id to its associated default space id. This map must be
+	 * distributed and synchronized all over the network
 	 */
 	private DMap<UUID, SpaceID> defaultSpaces;
 
 	/**
-	 * Map linking a context id to its related Context object This is local non-distributed map.
+	 * Map linking a context id to its related Context object This is local
+	 * non-distributed map.
 	 */
-	private Map<UUID, AgentContext> contexts = new TreeMap<>();
+	private ConcurrentSkipListMap<UUID, AgentContext> contexts = new ConcurrentSkipListMap<>();
 
 	/**
 	 * Internal listener on the space repository changes.
@@ -107,23 +106,22 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	 */
 	private LogService logger;
 
-	private ReadWriteLock lock;
-
 	/**
 	 * Constructs <code>ContextRepository</code>.
 	 *
-	 * @param janusID injected identifier.
-	 * @param dataStructureService service that permits to obtain distributed data structure.
-	 * @param logService service of logging.
-	 * @param injector the injector to use.
+	 * @param janusID              injected identifier.
+	 * @param dataStructureService service that permits to obtain distributed data
+	 *                             structure.
+	 * @param logService           service of logging.
+	 * @param injector             the injector to use.
 	 */
 	@Inject
 	public StandardContextSpaceService(@Named(JanusConfig.DEFAULT_CONTEXT_ID_NAME) UUID janusID,
 			DistributedDataStructureService dataStructureService, LogService logService, Injector injector) {
-		this.lock = injector.getProvider(ReadWriteLock.class).get();
 		this.logger = logService;
 		setContextFactory(new DefaultContextFactory());
-		setSpaceRepositoryFactory(new Context.DefaultSpaceRepositoryFactory(injector, dataStructureService, logService));
+		setSpaceRepositoryFactory(
+				new Context.DefaultSpaceRepositoryFactory(injector, dataStructureService, logService));
 		this.defaultSpaces = dataStructureService.getMap(janusID.toString(), null);
 	}
 
@@ -178,11 +176,6 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 		}
 	}
 
-	@Override
-	public final ReadWriteLock getLock() {
-		return this.lock;
-	}
-
 	/**
 	 * Change the Janus context of the kernel.
 	 *
@@ -196,35 +189,18 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 
 	@Override
 	public boolean isEmptyContextRepository() {
-		final ReadWriteLock lock = getLock();
-		lock.readLock().lock();
-		try {
-			return this.contexts.isEmpty();
-		} finally {
-			lock.readLock().unlock();
-		}
+		return this.contexts.isEmpty();
 	}
 
 	@Override
 	public int getNumberOfContexts() {
-		final ReadWriteLock lock = getLock();
-		lock.readLock().lock();
-		try {
-			return this.contexts.size();
-		} finally {
-			lock.readLock().unlock();
-		}
+		return this.contexts.size();
+
 	}
 
 	@Override
 	public boolean containsContext(UUID contextID) {
-		final ReadWriteLock lock = getLock();
-		lock.readLock().lock();
-		try {
-			return this.contexts.containsKey(contextID);
-		} finally {
-			lock.readLock().unlock();
-		}
+		return this.contexts.containsKey(contextID);
 	}
 
 	@Override
@@ -232,31 +208,20 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 		assert contextID != null : "The contextID cannot be null"; //$NON-NLS-1$
 		assert defaultSpaceUUID != null : "The defaultSpaceUUID cannot be null"; //$NON-NLS-1$
 		assert this.contexts != null : "Internal Error: the context container must not be null"; //$NON-NLS-1$
-		AgentContext context;
-		final ReadWriteLock lock = getLock();
-		lock.readLock().lock();
-		try {
-			context = this.contexts.get(contextID);
-		} finally {
-			lock.readLock().unlock();
-		}
+		AgentContext context = this.contexts.get(contextID);
+
 		if (context == null) {
 			Context ctx = null;
-			lock.writeLock().lock();
-			try {
-				context = this.contexts.get(contextID);
-				if (context == null) {
-					ctx = this.contextFactory.newInstance(contextID, defaultSpaceUUID, this.spaceRepositoryFactory,
-							new SpaceEventProxy());
-					assert ctx != null : "The internal Context cannot be null"; //$NON-NLS-1$
-					this.contexts.put(contextID, ctx);
-					final Space defaultSpace = ctx.postConstruction();
-					assert defaultSpace != null : "The default space in the context " //$NON-NLS-1$
-							+ contextID + " cannot be null"; //$NON-NLS-1$
-					this.defaultSpaces.putIfAbsent(ctx.getID(), defaultSpace.getSpaceID());
-				}
-			} finally {
-				lock.writeLock().unlock();
+			context = this.contexts.get(contextID);
+			if (context == null) {
+				ctx = this.contextFactory.newInstance(contextID, defaultSpaceUUID, this.spaceRepositoryFactory,
+						new SpaceEventProxy());
+				assert ctx != null : "The internal Context cannot be null"; //$NON-NLS-1$
+				this.contexts.put(contextID, ctx);
+				final Space defaultSpace = ctx.postConstruction();
+				assert defaultSpace != null : "The default space in the context " //$NON-NLS-1$
+						+ contextID + " cannot be null"; //$NON-NLS-1$
+				this.defaultSpaces.putIfAbsent(ctx.getID(), defaultSpace.getSpaceID());
 			}
 			if (ctx != null) {
 				fireContextCreated(ctx);
@@ -274,71 +239,44 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	@Override
 	public void removeContext(UUID contextID) {
 		AgentContext context = null;
-		final ReadWriteLock lock = getLock();
-		lock.writeLock().lock();
-		try {
-			this.defaultSpaces.remove(contextID);
-			context = this.contexts.remove(contextID);
-			if (context != null) {
-				assert context instanceof Context;
-				((Context) context).destroy();
-			}
-		} finally {
-			lock.writeLock().unlock();
+
+		this.defaultSpaces.remove(contextID);
+		context = this.contexts.remove(contextID);
+		if (context != null) {
+			assert context instanceof Context;
+			((Context) context).destroy();
 		}
+
 		if (context != null) {
 			fireContextDestroyed(context);
 		}
 	}
 
 	@Override
-	public SynchronizedCollection<AgentContext> getContexts() {
-		final ReadWriteLock lock = getLock();
-		lock.readLock().lock();
-		try {
-			return Collections3.unmodifiableSynchronizedCollection(this.contexts.values(), lock);
-		} finally {
-			lock.readLock().unlock();
-		}
+	public ConcurrentLinkedDeque<AgentContext> getContexts() {
+		return new ConcurrentLinkedDeque<>(this.contexts.values());
 	}
 
 	@Override
-	public SynchronizedCollection<AgentContext> getContexts(final Collection<UUID> contextIDs) {
-		final ReadWriteLock lock = getLock();
-		lock.readLock().lock();
-		try {
-			final Collection<AgentContext> backedCollection = Collections2.filter(this.contexts.values(), new Predicate<AgentContext>() {
-				@Override
-				public boolean apply(AgentContext input) {
-					return contextIDs.contains(input.getID());
-				}
-			});
-			return Collections3.unmodifiableSynchronizedCollection(backedCollection, lock);
-		} finally {
-			lock.readLock().unlock();
-		}
+	public ConcurrentLinkedDeque<AgentContext> getContexts(final Collection<UUID> contextIDs) {
+		final ConcurrentLinkedDeque<AgentContext> backedCollection = new ConcurrentLinkedDeque<>(
+				Collections2.filter(this.contexts.values(), new Predicate<AgentContext>() {
+					@Override
+					public boolean apply(AgentContext input) {
+						return contextIDs.contains(input.getID());
+					}
+				}));
+		return backedCollection;
 	}
 
 	@Override
-	public SynchronizedSet<UUID> getContextIDs() {
-		final ReadWriteLock lock = getLock();
-		lock.readLock().lock();
-		try {
-			return Collections3.unmodifiableSynchronizedSet(this.contexts.keySet(), lock);
-		} finally {
-			lock.readLock().unlock();
-		}
+	public ConcurrentSkipListSet<UUID> getContextIDs() {
+		return new ConcurrentSkipListSet<>(this.contexts.keySet());
 	}
 
 	@Override
 	public AgentContext getContext(UUID contextID) {
-		final ReadWriteLock lock = getLock();
-		lock.readLock().lock();
-		try {
-			return this.contexts.get(contextID);
-		} finally {
-			lock.readLock().unlock();
-		}
+		return this.contexts.get(contextID);
 	}
 
 	@Override
@@ -363,7 +301,8 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	 */
 	protected void fireContextCreated(AgentContext context) {
 		final ContextRepositoryListener[] ilisteners = this.listeners.getListeners(ContextRepositoryListener.class);
-		this.logger.getKernelLogger().info(MessageFormat.format(Messages.StandardContextSpaceService_0, context.getID()));
+		this.logger.getKernelLogger()
+				.info(MessageFormat.format(Messages.StandardContextSpaceService_0, context.getID()));
 		for (final ContextRepositoryListener listener : ilisteners) {
 			listener.contextCreated(context);
 		}
@@ -376,7 +315,8 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	 */
 	protected void fireContextDestroyed(AgentContext context) {
 		final ContextRepositoryListener[] ilisteners = this.listeners.getListeners(ContextRepositoryListener.class);
-		this.logger.getKernelLogger().info(MessageFormat.format(Messages.StandardContextSpaceService_1, context.getID()));
+		this.logger.getKernelLogger()
+				.info(MessageFormat.format(Messages.StandardContextSpaceService_1, context.getID()));
 		for (final ContextRepositoryListener listener : ilisteners) {
 			listener.contextDestroyed(context);
 		}
@@ -395,8 +335,9 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	/**
 	 * Notifies the listeners on the space creation.
 	 *
-	 * @param space reference to the created space.
-	 * @param isLocalCreation indicates if the space was initially created on the current kernel.
+	 * @param space           reference to the created space.
+	 * @param isLocalCreation indicates if the space was initially created on the
+	 *                        current kernel.
 	 */
 	protected void fireSpaceCreated(Space space, boolean isLocalCreation) {
 		for (final SpaceRepositoryListener listener : this.listeners.getListeners(SpaceRepositoryListener.class)) {
@@ -407,8 +348,9 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	/**
 	 * Notifies the listeners on the space destruction.
 	 *
-	 * @param space reference to the destroyed space.
-	 * @param isLocalDestruction indicates if the space was destroyed in the current kernel.
+	 * @param space              reference to the destroyed space.
+	 * @param isLocalDestruction indicates if the space was destroyed in the current
+	 *                           kernel.
 	 */
 	protected void fireSpaceDestroyed(Space space, boolean isLocalDestruction) {
 		for (final SpaceRepositoryListener listener : this.listeners.getListeners(SpaceRepositoryListener.class)) {
@@ -432,13 +374,7 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 	 */
 	protected void removeDefaultSpaceDefinition(SpaceID spaceID) {
 		AgentContext context = null;
-		final ReadWriteLock lock = getLock();
-		lock.writeLock().lock();
-		try {
-			context = this.contexts.remove(spaceID.getContextID());
-		} finally {
-			lock.writeLock().unlock();
-		}
+		context = this.contexts.remove(spaceID.getContextID());
 		if (context != null) {
 			fireContextDestroyed(context);
 		}
@@ -446,37 +382,28 @@ public class StandardContextSpaceService extends AbstractDependentService implem
 
 	@Override
 	protected void doStart() {
-		final ReadWriteLock lock = getLock();
-		lock.writeLock().lock();
-		try {
-			for (final SpaceID space : this.defaultSpaces.values()) {
-				ensureDefaultSpaceDefinition(space);
-			}
-			this.dmapListener = new ContextDMapListener();
-			this.defaultSpaces.addDMapListener(this.dmapListener);
-		} finally {
-			lock.writeLock().unlock();
+		for (final SpaceID space : this.defaultSpaces.values()) {
+			ensureDefaultSpaceDefinition(space);
 		}
+		this.dmapListener = new ContextDMapListener();
+		this.defaultSpaces.addDMapListener(this.dmapListener);
+
 		notifyStarted();
 	}
 
 	@Override
 	protected void doStop() {
 		final Map<UUID, AgentContext> old;
-		final ReadWriteLock lock = getLock();
-		lock.writeLock().lock();
-		try {
-			if (this.dmapListener != null) {
-				this.defaultSpaces.removeDMapListener(this.dmapListener);
-			}
-			// Unconnect the default space collection from remote clusters
-			// Not needed becasue the Kernel will be stopped: this.defaultSpaces.destroy();
-			// Delete the contexts from this repository
-			old = this.contexts;
-			this.contexts = new TreeMap<>();
-		} finally {
-			lock.writeLock().unlock();
+
+		if (this.dmapListener != null) {
+			this.defaultSpaces.removeDMapListener(this.dmapListener);
 		}
+		// Unconnect the default space collection from remote clusters
+		// Not needed becasue the Kernel will be stopped: this.defaultSpaces.destroy();
+		// Delete the contexts from this repository
+		old = this.contexts;
+		this.contexts = new ConcurrentSkipListMap<>();
+
 		for (final AgentContext context : old.values()) {
 			((Context) context).destroy();
 			fireContextDestroyed(context);

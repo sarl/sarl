@@ -27,10 +27,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
-import java.util.TreeMap;
-import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -38,7 +37,6 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.TreeMultimap;
 import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
-import com.google.inject.Provider;
 import com.google.inject.name.Names;
 
 import io.janusproject.services.contextspace.SpaceRepositoryListener;
@@ -47,14 +45,11 @@ import io.janusproject.services.distributeddata.DMapListener;
 import io.janusproject.services.distributeddata.DistributedDataStructureService;
 import io.janusproject.util.Comparators;
 import io.janusproject.util.TwoStepConstruction;
-
 import io.sarl.core.OpenEventSpace;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.core.SpaceSpecification;
-import io.sarl.lang.util.SynchronizedCollection;
 import io.sarl.util.DefaultSpace;
-import io.sarl.util.concurrent.Collections3;
 
 /**
  * A repository of spaces specific to a given context.
@@ -82,57 +77,61 @@ public class SpaceRepository {
 	private SpaceDMapListener internalListener;
 
 	/**
-	 * Listener on the events in this repository (basically somewhere in the Context).
+	 * Listener on the events in this repository (basically somewhere in the
+	 * Context).
 	 */
 	private final SpaceRepositoryListener externalListener;
 
 	/**
-	 * The set of the id of all spaces stored in this repository This set must be distributed and synchronized all over the
-	 * network.
+	 * The set of the id of all spaces stored in this repository This set must be
+	 * distributed and synchronized all over the network.
 	 */
 	private final DMap<SpaceID, Object[]> spaceIDs;
 
-	private final ReadWriteLock spaceIDsLock;
-
 	/**
-	 * Map linking a space id to its related Space object This is local non-distributed map.
+	 * Map linking a space id to its related Space object This is local
+	 * non-distributed map.
 	 */
-	private final Map<SpaceID, Space> spaces;
-
-	private final ReadWriteLock spacesLock;
+	private final ConcurrentSkipListMap<SpaceID, Space> spaces;
 
 	/**
-	 * Map linking a a class of Space specification to its related implementations' ids Use the map <code>spaces</code> to get the
-	 * Space object associated to a given id This is local non-distributed map.
+	 * Map linking a a class of Space specification to its related implementations'
+	 * ids Use the map <code>spaces</code> to get the Space object associated to a
+	 * given id This is local non-distributed map.
 	 */
 	private final Multimap<Class<? extends SpaceSpecification<?>>, SpaceID> spacesBySpec;
 
-	/** Reference to the default space of the owning context.
+	/**
+	 * Reference to the default space of the owning context.
+	 *
 	 * @since 0.10
 	 */
 	private WeakReference<OpenEventSpace> defaultSpace;
 
-	/** Constructor.
-	 * @param distributedSpaceSetName the name used to identify distributed map over network
+	/**
+	 * Constructor.
+	 *
+	 * @param distributedSpaceSetName         the name used to identify distributed
+	 *                                        map over network
 	 * @param distributedDataStructureService distributed data structure service.
-	 * @param injector injector to used for creating new spaces.
-	 * @param listener listener on the events in the space repository.
+	 * @param injector                        injector to used for creating new
+	 *                                        spaces.
+	 * @param listener                        listener on the events in the space
+	 *                                        repository.
 	 */
 	SpaceRepository(String distributedSpaceSetName, DistributedDataStructureService distributedDataStructureService,
 			Injector injector, SpaceRepositoryListener listener) {
 		this.distributedSpaceSetName = distributedSpaceSetName;
 		this.injector = injector;
 		this.externalListener = listener;
-		final Provider<ReadWriteLock> provider = this.injector.getProvider(ReadWriteLock.class);
-		this.spaceIDsLock = provider.get();
-		this.spacesLock = provider.get();
-		this.spaces = new TreeMap<>();
+		this.spaces = new ConcurrentSkipListMap<>();
 		this.spacesBySpec = TreeMultimap.create(Comparators.CLASS_COMPARATOR, Comparators.OBJECT_COMPARATOR);
 		this.spaceIDs = distributedDataStructureService.getMap(this.distributedSpaceSetName, null);
 	}
 
 	/**
-	 * Finalize the initialization: ensure that the events are fired outside the scope of the SpaceRepository constructor.
+	 * Finalize the initialization: ensure that the events are fired outside the
+	 * scope of the SpaceRepository constructor.
 	 */
 	void postConstruction() {
 		if (this.spaceIDs != null) {
@@ -145,42 +144,22 @@ public class SpaceRepository {
 		}
 	}
 
-	/** Replies the lock to be synchronized on the internal space repository.
-	 *
-	 * @return the lock.
-	 */
-	protected ReadWriteLock getSpaceRepositoryLock() {
-		return this.spacesLock;
-	}
-
-	/** Replies the lock to be synchronized on the internal space ID repository.
-	 *
-	 * @return the lock.
-	 */
-	protected ReadWriteLock getSpaceIDsLock() {
-		return this.spaceIDsLock;
-	}
-
 	/**
 	 * Destroy this repository and releaqse all the resources.
 	 */
 	public void destroy() {
 		final List<SpaceID> ids;
 		// Unregister from Hazelcast layer.
-		final ReadWriteLock lock = getSpaceIDsLock();
-		lock.writeLock().lock();
-		try {
-			if (this.internalListener != null) {
-				this.spaceIDs.removeDMapListener(this.internalListener);
-			}
-			// Delete the spaces. If this function is called, it
-			// means that the spaces seems to have no more participant.
-			// The process cannot be done through hazelcast.
-			ids = new ArrayList<>(this.spaceIDs.keySet());
-			this.spaceIDs.clear();
-		} finally {
-			lock.writeLock().unlock();
+
+		if (this.internalListener != null) {
+			this.spaceIDs.removeDMapListener(this.internalListener);
 		}
+		// Delete the spaces. If this function is called, it
+		// means that the spaces seems to have no more participant.
+		// The process cannot be done through hazelcast.
+		ids = new ArrayList<>(this.spaceIDs.keySet());
+		this.spaceIDs.clear();
+
 		for (final SpaceID spaceId : ids) {
 			removeLocalSpaceDefinition(spaceId, true);
 		}
@@ -204,7 +183,8 @@ public class SpaceRepository {
 			defaultSpaceInjector = this.injector.createChildInjector(defaultSpaceInjectionModule);
 		}
 		final SpaceSpecification<S> spaceSpecificationInstance = defaultSpaceInjector.getInstance(spec);
-		// Split the call to create() to let the JVM to create the "empty" array for creation parameters.
+		// Split the call to create() to let the JVM to create the "empty" array for
+		// creation parameters.
 		if (creationParams != null && creationParams.length > 0) {
 			space = spaceSpecificationInstance.create(spaceID, creationParams);
 		} else {
@@ -228,13 +208,9 @@ public class SpaceRepository {
 					sharedParams = serializableParameters.toArray();
 				}
 			}
-			final ReadWriteLock lock = getSpaceIDsLock();
-			lock.writeLock().lock();
-			try {
-				this.spaceIDs.putIfAbsent(id, sharedParams);
-			} finally {
-				lock.writeLock().unlock();
-			}
+
+			this.spaceIDs.putIfAbsent(id, sharedParams);
+
 		}
 		fireSpaceAdded(space, isLocalCreation);
 		return space;
@@ -243,48 +219,35 @@ public class SpaceRepository {
 	/**
 	 * Add the existing, but not yet known, spaces into this repository.
 	 *
-	 * @param id identifier of the space
+	 * @param id                       identifier of the space
 	 * @param initializationParameters parameters for initialization.
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected void ensureLocalSpaceDefinition(SpaceID id, Object[] initializationParameters) {
 		final boolean create;
-		final ReadWriteLock lock = getSpaceRepositoryLock();
-		lock.readLock().lock();
-		try {
-			create = !this.spaces.containsKey(id);
-		} finally {
-			lock.readLock().unlock();
-		}
+
+		create = !this.spaces.containsKey(id);
+
 		if (create) {
-			// Caution: according to the lock's documentation, the writing lock cannot be obtained with reading lock handle
-			lock.writeLock().lock();
-			try {
-				createSpaceInstance((Class) id.getSpaceSpecification(), id, false, initializationParameters);
-			} finally {
-				lock.writeLock().unlock();
-			}
+			createSpaceInstance((Class) id.getSpaceSpecification(), id, false, initializationParameters);
 		}
 	}
 
 	/**
 	 * Remove a remote space.
 	 *
-	 * @param id identifier of the space
-	 * @param isLocalDestruction indicates if the destruction is initiated by the local kernel.
+	 * @param id                 identifier of the space
+	 * @param isLocalDestruction indicates if the destruction is initiated by the
+	 *                           local kernel.
 	 */
 	protected void removeLocalSpaceDefinition(SpaceID id, boolean isLocalDestruction) {
 		final Space space;
-		final ReadWriteLock lock = getSpaceRepositoryLock();
-		lock.writeLock().lock();
-		try {
-			space = this.spaces.remove(id);
-			if (space != null) {
-				this.spacesBySpec.remove(id.getSpaceSpecification(), id);
-			}
-		} finally {
-			lock.writeLock().unlock();
+
+		space = this.spaces.remove(id);
+		if (space != null) {
+			this.spacesBySpec.remove(id.getSpaceSpecification(), id);
 		}
+
 		if (space != null) {
 			fireSpaceRemoved(space, isLocalDestruction);
 		}
@@ -293,37 +256,30 @@ public class SpaceRepository {
 	/**
 	 * Remove all the remote spaces.
 	 *
-	 * @param isLocalDestruction indicates if the destruction is initiated by the local kernel.
+	 * @param isLocalDestruction indicates if the destruction is initiated by the
+	 *                           local kernel.
 	 */
 	protected void removeLocalSpaceDefinitions(boolean isLocalDestruction) {
 		List<Space> removedSpaces = null;
-		final ReadWriteLock lock = getSpaceRepositoryLock();
-		lock.readLock().lock();
-		try {
-			if (!this.spaces.isEmpty()) {
-				removedSpaces = new ArrayList<>(this.spaces.size());
-			}
-		} finally {
-			lock.readLock().unlock();
+
+		if (!this.spaces.isEmpty()) {
+			removedSpaces = new ArrayList<>(this.spaces.size());
 		}
+
 		if (removedSpaces != null) {
-			// Caution: according to the lock's documentation, the writing lock cannot be obtained with reading lock handle
-			lock.writeLock().lock();
-			try {
-				final Iterator<Entry<SpaceID, Space>> iterator = this.spaces.entrySet().iterator();
-				Space space;
-				SpaceID id;
-				while (iterator.hasNext()) {
-					final Entry<SpaceID, Space> entry = iterator.next();
-					id = entry.getKey();
-					space = entry.getValue();
-					iterator.remove();
-					this.spacesBySpec.remove(id.getSpaceSpecification(), id);
-					removedSpaces.add(space);
-				}
-			} finally {
-				lock.writeLock().unlock();
+
+			final Iterator<Entry<SpaceID, Space>> iterator = this.spaces.entrySet().iterator();
+			Space space;
+			SpaceID id;
+			while (iterator.hasNext()) {
+				final Entry<SpaceID, Space> entry = iterator.next();
+				id = entry.getKey();
+				space = entry.getValue();
+				iterator.remove();
+				this.spacesBySpec.remove(id.getSpaceSpecification(), id);
+				removedSpaces.add(space);
 			}
+
 			for (final Space s : removedSpaces) {
 				fireSpaceRemoved(s, isLocalDestruction);
 			}
@@ -333,43 +289,34 @@ public class SpaceRepository {
 	/**
 	 * Create a space.
 	 *
-	 * @param <S> - the type of the space to reply.
-	 * @param spaceID ID of the space.
-	 * @param spec specification of the space.
+	 * @param <S>            - the type of the space to reply.
+	 * @param spaceID        ID of the space.
+	 * @param spec           specification of the space.
 	 * @param creationParams creation parameters.
 	 * @return the new space, or <code>null</code> if the space already exists.
 	 */
 	public <S extends io.sarl.lang.core.Space> S createSpace(SpaceID spaceID,
 			Class<? extends SpaceSpecification<S>> spec, Object... creationParams) {
 		final boolean create;
-		final ReadWriteLock lock = getSpaceRepositoryLock();
-		lock.readLock().lock();
-		try {
-			create = !this.spaces.containsKey(spaceID);
-		} finally {
-			lock.readLock().unlock();
-		}
+
+		create = !this.spaces.containsKey(spaceID);
+
 		if (create) {
-			// Caution: according to the lock's documentation, the writing lock cannot be obtained with reading lock handle
-			lock.writeLock().lock();
-			try {
-				return createSpaceInstance(spec, spaceID, true, creationParams);
-			} finally {
-				lock.writeLock().unlock();
-			}
+			return createSpaceInstance(spec, spaceID, true, creationParams);
 		}
 		return null;
 	}
 
 	/**
-	 * Retrieve the first space of the given specification, or create a space if none.
-	 * The default space is ignored by this function. Consequently, even if the
-	 * given specification is an {@code EventSpaceSpecification} or {@code OpenEventSpaceSpecification},
-	 * a totally new space will be created if none already exist, except the default space.
+	 * Retrieve the first space of the given specification, or create a space if
+	 * none. The default space is ignored by this function. Consequently, even if
+	 * the given specification is an {@code EventSpaceSpecification} or
+	 * {@code OpenEventSpaceSpecification}, a totally new space will be created if
+	 * none already exist, except the default space.
 	 *
-	 * @param <S> - the type of the space to reply.
-	 * @param spaceID ID of the space (used only when creating a space).
-	 * @param spec specification of the space.
+	 * @param <S>            - the type of the space to reply.
+	 * @param spaceID        ID of the space (used only when creating a space).
+	 * @param spec           specification of the space.
 	 * @param creationParams creation parameters (used only when creating a space).
 	 * @return the new space.
 	 */
@@ -377,41 +324,31 @@ public class SpaceRepository {
 	public <S extends io.sarl.lang.core.Space> S getOrCreateSpaceWithSpec(SpaceID spaceID,
 			Class<? extends SpaceSpecification<S>> spec, Object... creationParams) {
 		S firstSpace = null;
-		final ReadWriteLock lock = getSpaceRepositoryLock();
-		lock.readLock().lock();
-		try {
-			final Collection<SpaceID> ispaces = this.spacesBySpec.get(spec);
-			if (ispaces != null && !ispaces.isEmpty()) {
-				final OpenEventSpace defaultSpace = this.defaultSpace == null ? null : this.defaultSpace.get();
-				if (defaultSpace == null) {
-					final Iterator<SpaceID> idIterator = ispaces.iterator();
-					while (firstSpace == null && idIterator.hasNext()) {
-						final SpaceID currentId = idIterator.next();
+
+		final Collection<SpaceID> ispaces = this.spacesBySpec.get(spec);
+		if (ispaces != null && !ispaces.isEmpty()) {
+			final OpenEventSpace defaultSpace = this.defaultSpace == null ? null : this.defaultSpace.get();
+			if (defaultSpace == null) {
+				final Iterator<SpaceID> idIterator = ispaces.iterator();
+				while (firstSpace == null && idIterator.hasNext()) {
+					final SpaceID currentId = idIterator.next();
+					firstSpace = (S) this.spaces.get(currentId);
+				}
+			} else {
+				final SpaceID defaultSpaceId = defaultSpace.getSpaceID();
+				// Search for the first space that is not the default space.
+				final Iterator<SpaceID> idIterator = ispaces.iterator();
+				while (firstSpace == null && idIterator.hasNext()) {
+					final SpaceID currentId = idIterator.next();
+					if (!defaultSpaceId.equals(currentId)) {
 						firstSpace = (S) this.spaces.get(currentId);
-					}
-				} else {
-					final SpaceID defaultSpaceId = defaultSpace.getSpaceID();
-					// Search for the first space that is not the default space.
-					final Iterator<SpaceID> idIterator = ispaces.iterator();
-					while (firstSpace == null && idIterator.hasNext()) {
-						final SpaceID currentId = idIterator.next();
-						if (!defaultSpaceId.equals(currentId)) {
-							firstSpace = (S) this.spaces.get(currentId);
-						}
 					}
 				}
 			}
-		} finally {
-			lock.readLock().unlock();
 		}
+
 		if (firstSpace == null) {
-			// Caution: according to the lock's documentation, the writing lock cannot be obtained with reading lock handle
-			lock.writeLock().lock();
-			try {
-				firstSpace = createSpaceInstance(spec, spaceID, true, creationParams);
-			} finally {
-				lock.writeLock().unlock();
-			}
+			firstSpace = createSpaceInstance(spec, spaceID, true, creationParams);
 		}
 		assert firstSpace != null;
 		return firstSpace;
@@ -420,31 +357,21 @@ public class SpaceRepository {
 	/**
 	 * Retrieve the first space of the given identifier, or create a space if none.
 	 *
-	 * @param <S> - the type of the space to reply.
-	 * @param spaceID ID of the space.
-	 * @param spec specification of the space.
+	 * @param <S>            - the type of the space to reply.
+	 * @param spaceID        ID of the space.
+	 * @param spec           specification of the space.
 	 * @param creationParams creation parameters (used only when creating a space).
 	 * @return the new space.
 	 */
 	@SuppressWarnings("unchecked")
 	public <S extends io.sarl.lang.core.Space> S getOrCreateSpaceWithID(SpaceID spaceID,
 			Class<? extends SpaceSpecification<S>> spec, Object... creationParams) {
-		final ReadWriteLock lock = getSpaceRepositoryLock();
+
 		Space space;
-		lock.readLock().lock();
-		try {
-			space = this.spaces.get(spaceID);
-		} finally {
-			lock.readLock().unlock();
-		}
+		space = this.spaces.get(spaceID);
+
 		if (space == null) {
-			// Caution: according to the lock's documentation, the writing lock cannot be obtained with reading lock handle
-			lock.writeLock().lock();
-			try {
-				space = createSpaceInstance(spec, spaceID, true, creationParams);
-			} finally {
-				lock.writeLock().unlock();
-			}
+			space = createSpaceInstance(spec, spaceID, true, creationParams);
 		}
 		assert space != null;
 		return (S) space;
@@ -455,38 +382,29 @@ public class SpaceRepository {
 	 *
 	 * @return the collection of all spaces stored in this repository.
 	 */
-	public SynchronizedCollection<? extends Space> getSpaces() {
-		final ReadWriteLock lock = getSpaceRepositoryLock();
-		lock.readLock().lock();
-		try {
-			return Collections3.unmodifiableSynchronizedCollection(this.spaces.values(), lock);
-		} finally {
-			lock.readLock().unlock();
-		}
+	public ConcurrentLinkedDeque<? extends Space> getSpaces() {
+		return new ConcurrentLinkedDeque<>(this.spaces.values());
 	}
 
 	/**
-	 * Returns the collection of all spaces with the specified {@link SpaceSpecification} stored in this repository.
+	 * Returns the collection of all spaces with the specified
+	 * {@link SpaceSpecification} stored in this repository.
 	 *
-	 * @param <S> - type of the spaces to reply.
+	 * @param <S>  - type of the spaces to reply.
 	 * @param spec the specification used to filter the set of stored spaces.
-	 * @return the collection of all spaces with the specified {@link SpaceSpecification} stored in this repository
+	 * @return the collection of all spaces with the specified
+	 *         {@link SpaceSpecification} stored in this repository
 	 */
 	@SuppressWarnings("unchecked")
-	public <S extends Space> SynchronizedCollection<S> getSpaces(final Class<? extends SpaceSpecification<S>> spec) {
-		final ReadWriteLock lock = getSpaceRepositoryLock();
-		lock.readLock().lock();
-		try {
-			final Collection<S> backed = (Collection<S>) Collections2.filter(this.spaces.values(), new Predicate<Space>() {
-				@Override
-				public boolean apply(Space input) {
-					return input.getSpaceID().getSpaceSpecification().equals(spec);
-				}
-			});
-			return Collections3.unmodifiableSynchronizedCollection(backed, lock);
-		} finally {
-			lock.readLock().unlock();
-		}
+	public <S extends Space> ConcurrentLinkedDeque<S> getSpaces(final Class<? extends SpaceSpecification<S>> spec) {
+		final ConcurrentLinkedDeque<S> backed = new ConcurrentLinkedDeque<>(
+				(ConcurrentLinkedDeque<S>) Collections2.filter(this.spaces.values(), new Predicate<Space>() {
+					@Override
+					public boolean apply(Space input) {
+						return input.getSpaceID().getSpaceSpecification().equals(spec);
+					}
+				}));
+		return backed;
 	}
 
 	/**
@@ -496,20 +414,15 @@ public class SpaceRepository {
 	 * @return the space instance of <code>null</code> if none.
 	 */
 	public Space getSpace(SpaceID spaceID) {
-		final ReadWriteLock lock = getSpaceRepositoryLock();
-		lock.readLock().lock();
-		try {
-			return this.spaces.get(spaceID);
-		} finally {
-			lock.readLock().unlock();
-		}
+		return this.spaces.get(spaceID);
 	}
 
 	/**
 	 * Notifies the listeners on the space creation.
 	 *
-	 * @param space the created space.
-	 * @param isLocalCreation indicates if the creation of the space was initiated on the current kernel.
+	 * @param space           the created space.
+	 * @param isLocalCreation indicates if the creation of the space was initiated
+	 *                        on the current kernel.
 	 */
 	protected void fireSpaceAdded(Space space, boolean isLocalCreation) {
 		if (this.externalListener != null) {
@@ -520,8 +433,9 @@ public class SpaceRepository {
 	/**
 	 * Notifies the listeners on the space destruction.
 	 *
-	 * @param space the removed space.
-	 * @param isLocalDestruction indicates if the destruction of the space was initiated on the current kernel.
+	 * @param space              the removed space.
+	 * @param isLocalDestruction indicates if the destruction of the space was
+	 *                           initiated on the current kernel.
 	 */
 	protected void fireSpaceRemoved(Space space, boolean isLocalDestruction) {
 		if (this.externalListener != null) {
@@ -572,7 +486,8 @@ public class SpaceRepository {
 
 	}
 
-	/** Set the reference to the default space for further space creations.
+	/**
+	 * Set the reference to the default space for further space creations.
 	 *
 	 * @param defaultSpace the default space.
 	 * @since 0.10
@@ -586,7 +501,8 @@ public class SpaceRepository {
 	}
 
 	/**
-	 * An injection module that is able to inject the default space instance into another space implementation.
+	 * An injection module that is able to inject the default space instance into
+	 * another space implementation.
 	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$

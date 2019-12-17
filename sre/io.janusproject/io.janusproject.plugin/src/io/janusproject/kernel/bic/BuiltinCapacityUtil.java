@@ -21,12 +21,13 @@
 
 package io.janusproject.kernel.bic;
 
+import java.util.concurrent.ConcurrentLinkedDeque;
+
 import io.sarl.core.ExternalContextAccess;
 import io.sarl.core.InnerContextAccess;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.SREutils;
-import io.sarl.lang.util.SynchronizedIterable;
 
 /**
  * Utilities that are dedicated to the built-in capacities.
@@ -49,7 +50,7 @@ public final class BuiltinCapacityUtil {
 	 * @return the contexts of the agents.
 	 * @throws Exception - when it is not possible to retrieve the contexts.
 	 */
-	public static SynchronizedIterable<AgentContext> getContextsOf(Agent agent) throws Exception {
+	public static ConcurrentLinkedDeque<AgentContext> getContextsOf(Agent agent) throws Exception {
 		final ExternalContextAccess skill = SREutils.getInternalSkill(agent, ExternalContextAccess.class);
 		assert skill != null;
 		return skill.getAllContexts();

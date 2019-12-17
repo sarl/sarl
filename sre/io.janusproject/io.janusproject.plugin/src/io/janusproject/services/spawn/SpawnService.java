@@ -23,12 +23,12 @@ package io.janusproject.services.spawn;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 import io.janusproject.services.DependentService;
 
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
-import io.sarl.lang.util.SynchronizedSet;
 
 /**
  * This service provides the tools to manage the life-cycle of the agents.
@@ -127,6 +127,6 @@ public interface SpawnService extends DependentService {
 	 * @return the registered agents.
 	 * @since 0.10
 	 */
-	SynchronizedSet<UUID> getAgents();
+	ConcurrentSkipListSet<UUID> getAgents();
 
 }

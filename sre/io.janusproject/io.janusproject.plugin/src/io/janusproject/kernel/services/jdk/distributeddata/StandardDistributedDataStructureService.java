@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.Lists;
@@ -70,7 +71,7 @@ public class StandardDistributedDataStructureService extends AbstractDependentSe
 
 	@Override
 	public <K, V> DMap<K, V> getMap(String name) {
-		return new DMapView<>(name, Maps.<K, V>newHashMap());
+		return new DMapView<>(name, new ConcurrentSkipListMap<K, V>());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -78,7 +79,7 @@ public class StandardDistributedDataStructureService extends AbstractDependentSe
 	public <K, V> DMap<K, V> getMap(String name, Comparator<? super K> comparator) {
 		final Map<K, V> map;
 		if (comparator == null) {
-			map = (Map<K, V>) Maps.newTreeMap();
+			map = (Map<K, V>) new ConcurrentSkipListMap<K, V>();
 		} else {
 			map = Maps.newTreeMap(comparator);
 		}
@@ -106,7 +107,7 @@ public class StandardDistributedDataStructureService extends AbstractDependentSe
 	}
 
 	/**
-	 * Suplier of list for Hazelcast.
+	 * Supplier of list for Hazelcast.
 	 *
 	 * @param <K> type of the list elements.
 	 * @author $Author: sgalland$

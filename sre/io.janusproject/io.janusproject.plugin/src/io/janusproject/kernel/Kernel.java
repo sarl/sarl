@@ -22,13 +22,12 @@
 package io.janusproject.kernel;
 
 import java.lang.Thread.UncaughtExceptionHandler;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.ReadWriteLock;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
@@ -47,18 +46,16 @@ import io.janusproject.services.logging.LogService;
 import io.janusproject.services.spawn.KernelAgentSpawnListener;
 import io.janusproject.services.spawn.SpawnService;
 import io.janusproject.util.TwoStepConstruction;
-
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
-import io.sarl.lang.util.SynchronizedSet;
 
 /**
  * This class represents the Kernel of the Janus platform.
  *
  * <p><strong>The Kernel is a singleton.</strong>
  *
- * <p>The Kernel is assimilated to an agent that is omniscient and distributed other the network. It is containing all the other
- * agents.
+ * <p>The Kernel is assimilated to an agent that is omniscient and distributed
+ * other the network. It is containing all the other agents.
  *
  * <p>To create a Kernel, you should use the function {@link #create(Module...)}.
  *
@@ -86,9 +83,10 @@ public class Kernel {
 	/**
 	 * Constructs a Janus kernel.
 	 *
-	 * @param serviceManager is the instance of the service manager that must be used by the kernel.
-	 * @param spawnService is the instance of the spawn service.
-	 * @param loggingService is the instance of the logging service.
+	 * @param serviceManager   is the instance of the service manager that must be
+	 *                         used by the kernel.
+	 * @param spawnService     is the instance of the spawn service.
+	 * @param loggingService   is the instance of the logging service.
 	 * @param exceptionHandler is the handler of the uncaught exceptions.
 	 */
 	@Inject
@@ -132,15 +130,7 @@ public class Kernel {
 		return () -> {
 			final SpawnService service = getService(SpawnService.class);
 			if (service != null) {
-				final SynchronizedSet<UUID> agents = service.getAgents();
-				final List<UUID> agentIds;
-				final ReadWriteLock lock = agents.getLock();
-				lock.readLock().lock();
-				try {
-					agentIds = new ArrayList<>(agents);
-				} finally {
-					lock.readLock().unlock();
-				}
+				final ConcurrentSkipListSet<UUID> agentIds = service.getAgents();
 				boolean killed = false;
 				for (final UUID agentId : agentIds) {
 					if (service.killAgent(agentId, true)) {
@@ -157,15 +147,16 @@ public class Kernel {
 	/**
 	 * Replies if the kernel is running or not.
 	 *
-	 * @return <code>true</code> if the kernel is running; <code>false</code> otherwise.
+	 * @return <code>true</code> if the kernel is running; <code>false</code>
+	 *         otherwise.
 	 */
 	public boolean isRunning() {
 		return this.isRunning.get();
 	}
 
 	/**
-	 * Replies the number of agents that are registered on this kernel.
-	 * This function does not consider the agents that are on remote kernels.
+	 * Replies the number of agents that are registered on this kernel. This
+	 * function does not consider the agents that are on remote kernels.
 	 *
 	 * @return the number of agents on this local kernel.
 	 * @since 0.10
@@ -173,23 +164,19 @@ public class Kernel {
 	public int getAgentCount() {
 		final SpawnService service = getService(SpawnService.class);
 		if (service != null) {
-			final SynchronizedSet<UUID> agents = service.getAgents();
-			final ReadWriteLock lock = agents.getLock();
-			lock.readLock().lock();
-			try {
-				return agents.size();
-			} finally {
-				lock.readLock().unlock();
-			}
+			final ConcurrentSkipListSet<UUID> agents = service.getAgents();
+			return agents.size();
 		}
 		return 0;
 	}
 
 	/**
-	 * Spawn an agent of the given type, and pass the parameters to its initialization function.
+	 * Spawn an agent of the given type, and pass the parameters to its
+	 * initialization function.
 	 *
-	 * @param agent the type of the agent to spawn.
-	 * @param params the list of the parameters to pass to the agent initialization function.
+	 * @param agent  the type of the agent to spawn.
+	 * @param params the list of the parameters to pass to the agent initialization
+	 *               function.
 	 * @return the identifier of the agent, never <code>null</code>.
 	 */
 	public UUID spawn(Class<? extends Agent> agent, Object... params) {
@@ -201,11 +188,13 @@ public class Kernel {
 	}
 
 	/**
-	 * Spawn agents of the given type, and pass the parameters to its initialization function.
+	 * Spawn agents of the given type, and pass the parameters to its initialization
+	 * function.
 	 *
 	 * @param nbAgents the number of agents to spawn.
-	 * @param agent the type of the agents to spawn.
-	 * @param params the list of the parameters to pass to the agent initialization function.
+	 * @param agent    the type of the agents to spawn.
+	 * @param params   the list of the parameters to pass to the agent
+	 *                 initialization function.
 	 * @return the identifiers of the agents, never <code>null</code>.
 	 */
 	public List<UUID> spawn(int nbAgents, Class<? extends Agent> agent, Object... params) {
@@ -213,11 +202,14 @@ public class Kernel {
 	}
 
 	/**
-	 * Spawn an agent of the given type, and pass the parameters to its initialization function.
+	 * Spawn an agent of the given type, and pass the parameters to its
+	 * initialization function.
 	 *
-	 * @param agentID the identifier of the agent to spawn. If <code>null</code> the identifier is randomly selected.
-	 * @param agent the type of the agent to spawn.
-	 * @param params the list of the parameters to pass to the agent initialization function.
+	 * @param agentID the identifier of the agent to spawn. If <code>null</code> the
+	 *                identifier is randomly selected.
+	 * @param agent   the type of the agent to spawn.
+	 * @param params  the list of the parameters to pass to the agent initialization
+	 *                function.
 	 * @return the identifier of the agent, never <code>null</code>.
 	 */
 	public UUID spawn(UUID agentID, Class<? extends Agent> agent, Object... params) {
@@ -231,7 +223,7 @@ public class Kernel {
 	/**
 	 * Replies a kernel service that is alive.
 	 *
-	 * @param <S> - type of the type to reply.
+	 * @param <S>  - type of the type to reply.
 	 * @param type type of the type to reply.
 	 * @return the service, or <code>null</code>.
 	 */
@@ -327,8 +319,8 @@ public class Kernel {
 		}
 
 		/**
-		 * Start the thread.
-		 * The thread invokes the {@link #run()} function asynchronously.
+		 * Start the thread. The thread invokes the {@link #run()} function
+		 * asynchronously.
 		 *
 		 * @return the thread.
 		 */

@@ -21,14 +21,11 @@
 
 package io.janusproject.kernel.space;
 
-import java.util.concurrent.locks.ReadWriteLock;
-
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
 import io.janusproject.services.contextspace.ContextSpaceService;
 import io.janusproject.services.distributeddata.DistributedDataStructureService;
-
 import io.sarl.core.OpenEventSpace;
 import io.sarl.core.OpenEventSpaceSpecification;
 import io.sarl.lang.core.SpaceID;
@@ -50,8 +47,7 @@ public class OpenEventSpaceSpecificationImpl implements OpenEventSpaceSpecificat
 	public OpenEventSpace create(SpaceID id, Object... params) {
 		final EventSpaceImpl space = new EventSpaceImpl(id,
 				this.injector.getInstance(DistributedDataStructureService.class),
-				this.injector.getInstance(ContextSpaceService.class),
-				this.injector.getProvider(ReadWriteLock.class));
+				this.injector.getInstance(ContextSpaceService.class));
 		this.injector.injectMembers(space);
 		return space;
 	}

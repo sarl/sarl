@@ -23,27 +23,21 @@ package io.janusproject.kernel.space;
 
 import java.text.MessageFormat;
 import java.util.UUID;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 import io.janusproject.kernel.repository.UniqueAddressParticipantRepository;
 import io.janusproject.services.distributeddata.DistributedDataStructureService;
 import io.janusproject.services.executor.ExecutorService;
 import io.janusproject.services.logging.LogService;
 import io.janusproject.services.network.NetworkService;
-
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventListener;
 import io.sarl.lang.core.Scope;
 import io.sarl.lang.core.SpaceID;
-import io.sarl.lang.util.SynchronizedCollection;
-import io.sarl.lang.util.SynchronizedSet;
 import io.sarl.util.Scopes;
-import io.sarl.util.concurrent.Collections3;
 
 /**
  * Abstract implementation of an event space.
@@ -78,27 +72,28 @@ public abstract class AbstractEventSpace extends SpaceBase {
 	/**
 	 * List of participants in this space.
 	 */
-	private final UniqueAddressParticipantRepository<Address> participants;
+	private final UniqueAddressParticipantRepository participants;
 
 	/**
 	 * Constructs an event space.
 	 *
-	 * @param id identifier of the space.
-	 * @param factory factory that is used to create the internal data structure.
-	 * @param lockProvider a provider of synchronization locks.
+	 * @param id           identifier of the space.
+	 * @param factory      factory that is used to create the internal data
+	 *                     structure.
 	 */
-	public AbstractEventSpace(SpaceID id, DistributedDataStructureService factory,
-			Provider<ReadWriteLock> lockProvider) {
+	public AbstractEventSpace(SpaceID id, DistributedDataStructureService factory) {
 		super(id);
-		this.participants = new UniqueAddressParticipantRepository<>(getSpaceID().getID().toString() + "-participants", //$NON-NLS-1$
-				factory, lockProvider);
+		this.participants = new UniqueAddressParticipantRepository(getSpaceID().getID().toString() + "-participants", //$NON-NLS-1$
+				factory);
 	}
 
-	/** Replies the internal datastructure that stores the participants to this space.
+	/**
+	 * Replies the internal datastructure that stores the participants to this
+	 * space.
 	 *
 	 * @return the internal data structure.
 	 */
-	protected UniqueAddressParticipantRepository<Address> getParticipantInternalDataStructure() {
+	protected UniqueAddressParticipantRepository getParticipantInternalDataStructure() {
 		return this.participants;
 	}
 
@@ -125,11 +120,13 @@ public abstract class AbstractEventSpace extends SpaceBase {
 	/**
 	 * Emit the given event in the given scope.
 	 *
-	 * <p>This function emits on the internal event bus of the agent (call to {@link #doEmit(Event, Scope)}), and on the network.
+	 * <p>This function emits on the internal event bus of the agent (call to
+	 * {@link #doEmit(Event, Scope)}), and on the network.
 	 *
 	 * @param eventSource the source of the event.
-	 * @param event the event to emit.
-	 * @param scope description of the scope of the event, i.e. the receivers of the event.
+	 * @param event       the event to emit.
+	 * @param scope       description of the scope of the event, i.e. the receivers
+	 *                    of the event.
 	 * @since 2.0.6.0
 	 */
 	public final void emit(UUID eventSource, Event event, Scope<Address> scope) {
@@ -141,7 +138,8 @@ public abstract class AbstractEventSpace extends SpaceBase {
 			try {
 				this.network.publish(scopeInstance, event);
 			} catch (Throwable e) {
-				this.logger.getKernelLogger().severe(MessageFormat.format(Messages.AbstractEventSpace_2, event, scope, e));
+				this.logger.getKernelLogger()
+						.severe(MessageFormat.format(Messages.AbstractEventSpace_2, event, scope, e));
 			}
 			doEmit(event, scopeInstance);
 		} catch (Throwable e) {
@@ -150,10 +148,11 @@ public abstract class AbstractEventSpace extends SpaceBase {
 
 	}
 
-	/** Ensure that the given event has a source.
+	/**
+	 * Ensure that the given event has a source.
 	 *
 	 * @param eventSource the source of the event.
-	 * @param event the event to emit.
+	 * @param event       the event to emit.
 	 * @since 2.0.6.0
 	 */
 	protected void ensureEventSource(UUID eventSource, Event event) {
@@ -169,25 +168,18 @@ public abstract class AbstractEventSpace extends SpaceBase {
 	/**
 	 * Do the emission of the event.
 	 *
-	 * <p>This function emits the event <strong>only on the internal event bus</strong> of the agents.
+	 * <p>This function emits the event <strong>only on the internal event bus</strong>
+	 * of the agents.
 	 *
 	 * @param event the event to emit.
-	 * @param scope description of the scope of the event, i.e. the receivers of the event.
+	 * @param scope description of the scope of the event, i.e. the receivers of the
+	 *              event.
 	 */
 	protected void doEmit(Event event, Scope<? super Address> scope) {
 		assert scope != null;
 		assert event != null;
-		final UniqueAddressParticipantRepository<Address> particips = getParticipantInternalDataStructure();
-		final SynchronizedCollection<EventListener> listeners = particips.getListeners();
-		final ReadWriteLock lock = listeners.getLock();
-		LinkedBlockingQueue<EventListener> listenerLocalCopy = null;
-		lock.readLock().lock();
-		try {
-			listenerLocalCopy = new LinkedBlockingQueue<>(listeners);
-		} finally {
-			lock.readLock().unlock();
-		}
-		for (final EventListener listener : listenerLocalCopy) {
+		final UniqueAddressParticipantRepository particips = getParticipantInternalDataStructure();
+		for (final EventListener listener : particips.getListeners()) {
 			final Address adr = getAddress(listener);
 			if (scope.matches(adr)) {
 				this.executorService.submit(new AsyncRunner(listener, event));
@@ -196,8 +188,8 @@ public abstract class AbstractEventSpace extends SpaceBase {
 	}
 
 	@Override
-	public SynchronizedSet<UUID> getParticipants() {
-		return Collections3.unmodifiableSynchronizedSet(getParticipantInternalDataStructure().getParticipantIDs());
+	public ConcurrentSkipListSet<UUID> getParticipants() {
+		return getParticipantInternalDataStructure().getParticipantIDs();
 	}
 
 	@Override
@@ -231,6 +223,7 @@ public abstract class AbstractEventSpace extends SpaceBase {
 
 		/**
 		 * Construct.
+		 *
 		 * @param agent the agent listener.
 		 * @param event the event.
 		 */

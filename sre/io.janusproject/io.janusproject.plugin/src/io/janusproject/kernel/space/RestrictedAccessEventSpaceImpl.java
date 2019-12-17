@@ -24,12 +24,8 @@ package io.janusproject.kernel.space;
 import java.security.Principal;
 import java.security.acl.Acl;
 import java.security.acl.Permission;
-import java.util.concurrent.locks.ReadWriteLock;
-
-import com.google.inject.Provider;
 
 import io.janusproject.services.distributeddata.DistributedDataStructureService;
-
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.EventListener;
 import io.sarl.lang.core.SpaceID;
@@ -58,11 +54,10 @@ public class RestrictedAccessEventSpaceImpl extends AbstractEventSpace implement
 	 * @param acl Access Control List
 	 * @param accessPermission permission that corresponds to the registration in the space.
 	 * @param factory factory that is used to create the internal data structure.
-	 * @param lockProvider a provider of synchronization locks.
 	 */
 	public RestrictedAccessEventSpaceImpl(SpaceID id, Acl acl, Permission accessPermission,
-			DistributedDataStructureService factory, Provider<ReadWriteLock> lockProvider) {
-		super(id, factory, lockProvider);
+			DistributedDataStructureService factory) {
+		super(id, factory);
 		assert acl != null;
 		assert accessPermission != null;
 		this.acl = acl;

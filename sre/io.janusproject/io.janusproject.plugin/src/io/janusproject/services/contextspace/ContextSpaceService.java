@@ -23,13 +23,11 @@ package io.janusproject.services.contextspace;
 
 import java.util.Collection;
 import java.util.UUID;
-import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 import io.janusproject.services.DependentService;
-
 import io.sarl.lang.core.AgentContext;
-import io.sarl.lang.util.SynchronizedCollection;
-import io.sarl.lang.util.SynchronizedSet;
 
 /**
  * This service enables to store the contexts and to manage the spaces in the janus platform.
@@ -41,13 +39,6 @@ import io.sarl.lang.util.SynchronizedSet;
  * @mavenartifactid $ArtifactId$
  */
 public interface ContextSpaceService extends DependentService {
-
-	/**
-	 * Replies the lock that is used to synchronized the access to the service.
-	 *
-	 * @return the lock.
-	 */
-	ReadWriteLock getLock();
 
 	/**
 	 * Does this repository contain some context.
@@ -99,7 +90,7 @@ public interface ContextSpaceService extends DependentService {
 	 *
 	 * @return the collection of all agent's contexts stored in this repository
 	 */
-	SynchronizedCollection<AgentContext> getContexts();
+	ConcurrentLinkedDeque<AgentContext> getContexts();
 
 	/**
 	 * Returns the collection of {@link AgentContext} with the given IDs.
@@ -109,7 +100,7 @@ public interface ContextSpaceService extends DependentService {
 	 * @param contextIDs the identifiers of the contexts to retreive.
 	 * @return the collection of {@link AgentContext} with the given IDs
 	 */
-	SynchronizedCollection<AgentContext> getContexts(Collection<UUID> contextIDs);
+	ConcurrentLinkedDeque<AgentContext> getContexts(Collection<UUID> contextIDs);
 
 	/**
 	 * Returns the set of all agent context IDs stored in this repository.
@@ -118,7 +109,7 @@ public interface ContextSpaceService extends DependentService {
 	 *
 	 * @return the set of all agent context IDs stored in this repository
 	 */
-	SynchronizedSet<UUID> getContextIDs();
+	ConcurrentSkipListSet<UUID> getContextIDs();
 
 	/**
 	 * Returns the {@link AgentContext} with the given ID.

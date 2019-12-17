@@ -21,49 +21,44 @@
 
 package io.janusproject.kernel.repository;
 
-import java.io.Serializable;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.ConcurrentSkipListSet;
 
-import com.google.inject.Provider;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import io.janusproject.services.distributeddata.DistributedDataStructureService;
-
+import io.sarl.lang.core.Address;
 import io.sarl.lang.core.EventListener;
-import io.sarl.lang.util.SynchronizedCollection;
-import io.sarl.lang.util.SynchronizedSet;
-import io.sarl.util.concurrent.Collections3;
 
 /**
  * A repository of participants specific to a given space.
  *
- * <p>This repository links the id of an entity to its various addresses in the related space.
+ * <p>This repository links the id of an entity to its various addresses in the
+ * related space.
  *
- * <p>The repository must be distributed and synchronized all over the network by using data-structures that are provided by an
- * injected {@link DistributedDataStructureService}.
+ * <p>The repository must be distributed and synchronized all over the network by
+ * using data-structures that are provided by an injected
+ * {@link DistributedDataStructureService}.
  *
  * <p>This class is thread-safe.
  *
- * @param <ADDRESST> - the generic type representing the address of a participant in the related space. This type must remains
- *        small, less than M in memory and must be {@link java.io.Serializable}.
  * @author $Author: ngaud$
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public final class UniqueAddressParticipantRepository<ADDRESST extends Serializable> extends ParticipantRepository<ADDRESST> {
+public final class UniqueAddressParticipantRepository extends ParticipantRepository {
 
 	/**
-	 * Map linking the id of an entity to its unique address in the related space. This map must be distributed and synchronized
-	 * all over the network
+	 * TODO Look for definitely removing this map and use a single collection and
+	 * thus remove all synchronized in this class Map linking the id of an entity to
+	 * its unique address in the related space. This map must be distributed and
+	 * synchronized all over the network
 	 */
-	private final Map<UUID, ADDRESST> participants;
-
-	private final ReadWriteLock participantsLock;
+	private final Map<UUID, Address> participants;
 
 	private final String distributedParticipantMapName;
 
@@ -71,38 +66,27 @@ public final class UniqueAddressParticipantRepository<ADDRESST extends Serializa
 	 * Constructs a <code>UniqueAddressParticipantRepository</code>.
 	 *
 	 * @param distributedParticipantMapName name of the multimap over the network.
-	 * @param repositoryImplFactory factory that will be used to create the internal data structures.
-	 * @param lockProvider a provider of synchronization locks.
+	 * @param repositoryImplFactory         factory that will be used to create the
+	 *                                      internal data structures.
 	 */
 	public UniqueAddressParticipantRepository(String distributedParticipantMapName,
-			DistributedDataStructureService repositoryImplFactory,
-			Provider<ReadWriteLock> lockProvider) {
+			DistributedDataStructureService repositoryImplFactory) {
 		super();
-		this.participantsLock = lockProvider.get();
 		this.distributedParticipantMapName = distributedParticipantMapName;
 		this.participants = repositoryImplFactory.getMap(this.distributedParticipantMapName, null);
 	}
 
-	@Override
-	@Pure
-	public ReadWriteLock getLock() {
-		return this.participantsLock;
-	}
-
 	/**
 	 * Registers a new participant in this repository.
+	 *
 	 * @param address the address of the participant
-	 * @param entity the entity associated to the specified address
+	 * @param entity  the entity associated to the specified address
 	 * @return the address of the participant
 	 */
-	public ADDRESST registerParticipant(ADDRESST address, EventListener entity) {
-		final ReadWriteLock lock = getLock();
-		lock.writeLock().lock();
-		try {
+	public Address registerParticipant(Address address, EventListener entity) {
+		synchronized (this) {
 			addListener(address, entity);
 			this.participants.put(entity.getID(), address);
-		} finally {
-			lock.writeLock().unlock();
 		}
 		return address;
 	}
@@ -114,7 +98,7 @@ public final class UniqueAddressParticipantRepository<ADDRESST extends Serializa
 	 * @return the address that was mapped to the given participant.
 	 */
 	@Inline("unregisterParticipant(($1).getID())")
-	public ADDRESST unregisterParticipant(EventListener entity) {
+	public Address unregisterParticipant(EventListener entity) {
 		return unregisterParticipant(entity.getID());
 	}
 
@@ -124,26 +108,13 @@ public final class UniqueAddressParticipantRepository<ADDRESST extends Serializa
 	 * @param entityID identifier of the participant to remove from this repository.
 	 * @return the address that was mapped to the given participant.
 	 */
-	public ADDRESST unregisterParticipant(UUID entityID) {
-		ADDRESST adr = null;
-		final ReadWriteLock lock = getLock();
-		lock.readLock().lock();
-		try {
-			adr = this.participants.get(entityID);
-		} finally {
-			lock.readLock().unlock();
+	public Address unregisterParticipant(UUID entityID) {
+		synchronized (this) {
+			final Address adr = this.participants.get(entityID);
+			removeListener(adr);
+			this.participants.remove(entityID);
+			return adr;
 		}
-		if (adr != null) {
-			// Caution: according to the lock's documentation, the writing lock cannot be obtained with reading lock handle
-			lock.writeLock().lock();
-			try {
-				removeListener(adr);
-				this.participants.remove(entityID);
-			} finally {
-				lock.writeLock().unlock();
-			}
-		}
-		return adr;
 	}
 
 	/**
@@ -154,7 +125,7 @@ public final class UniqueAddressParticipantRepository<ADDRESST extends Serializa
 	 */
 	@Pure
 	@Inline("getAddress(($1).getID())")
-	public ADDRESST getAddress(EventListener entity) {
+	public Address getAddress(EventListener entity) {
 		return getAddress(entity.getID());
 	}
 
@@ -165,31 +136,20 @@ public final class UniqueAddressParticipantRepository<ADDRESST extends Serializa
 	 * @return the address of the participant with the given id.
 	 */
 	@Pure
-	public ADDRESST getAddress(UUID id) {
-		final ReadWriteLock lock = getLock();
-		lock.readLock().lock();
-		try {
-			return this.participants.get(id);
-		} finally {
-			lock.readLock().unlock();
-		}
+	public Address getAddress(UUID id) {
+		return this.participants.get(id);
 	}
 
 	/**
-	 * Replies all the addresses of the participants that ar einside this repository.
+	 * Replies all the addresses of the participants that ar einside this
+	 * repository.
 	 *
 	 * @return all the addresses.
 	 */
-	@Pure
-	public SynchronizedCollection<ADDRESST> getParticipantAddresses() {
-		final ReadWriteLock lock = getLock();
-		lock.readLock().lock();
-		try {
-			return Collections3.synchronizedCollection(this.participants.values(), lock);
-		} finally {
-			lock.readLock().unlock();
-		}
-	}
+	/*@Pure
+	public Collection<Address> getParticipantAddresses() {
+			return this.participants.values()
+	}*/
 
 	/**
 	 * Replies the identifiers of all the participants in this repository.
@@ -197,14 +157,8 @@ public final class UniqueAddressParticipantRepository<ADDRESST extends Serializa
 	 * @return all the identifiers.
 	 */
 	@Pure
-	public SynchronizedSet<UUID> getParticipantIDs() {
-		final ReadWriteLock lock = getLock();
-		lock.readLock().lock();
-		try {
-			return Collections3.synchronizedSet(this.participants.keySet(), lock);
-		} finally {
-			lock.readLock().unlock();
-		}
+	public ConcurrentSkipListSet<UUID> getParticipantIDs() {
+		return new ConcurrentSkipListSet<>(this.participants.keySet());
 	}
 
 }

@@ -24,15 +24,15 @@ package io.janusproject.kernel.bic;
 import java.text.MessageFormat;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
+
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 import io.janusproject.services.contextspace.ContextSpaceService;
-
 import io.sarl.core.Behaviors;
 import io.sarl.core.ContextJoined;
 import io.sarl.core.ContextLeft;
@@ -50,7 +50,6 @@ import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.util.ClearableReference;
-import io.sarl.lang.util.SynchronizedCollection;
 
 /**
  * Skill that permits to access to the context in which the agent is located.
@@ -146,14 +145,8 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 	}
 
 	@Override
-	public SynchronizedCollection<AgentContext> getAllContexts() {
-		final ReadWriteLock lock = this.contextRepository.getLock();
-		lock.readLock().lock();
-		try {
-			return this.contextRepository.getContexts(this.contexts);
-		} finally {
-			lock.readLock().unlock();
-		}
+	public ConcurrentLinkedDeque<AgentContext> getAllContexts() {
+		return this.contextRepository.getContexts(this.contexts);
 	}
 
 	@Override
@@ -225,8 +218,8 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 		defSpace.emit(
 				// No need to give an event source because the event's source is explicitly set
 				// below.
-				null, new MemberJoined(new Address(defSpace.getSpaceID(), ownerId), newJoinedContext.getID(),
-						ownerId, getOwner().getClass().getName()),
+				null, new MemberJoined(new Address(defSpace.getSpaceID(), ownerId), newJoinedContext.getID(), ownerId,
+						getOwner().getClass().getName()),
 				it -> !it.getUUID().equals(ownerId));
 	}
 
@@ -256,8 +249,7 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 	 * @param contextID the ID of context that will be left
 	 */
 	protected final void fireContextLeft(UUID contextID) {
-		getBehaviorsSkill().wake(new ContextLeft(contextID),
-								it -> it.getUUID() != getOwner().getID());
+		getBehaviorsSkill().wake(new ContextLeft(contextID), it -> it.getUUID() != getOwner().getID());
 	}
 
 	/**
@@ -273,8 +265,8 @@ public class ExternalContextAccessSkill extends BuiltinSkill implements External
 				// No need to give an event source because the event's source is explicitly set
 				// below.
 				null, new MemberLeft(new Address(defSpace.getSpaceID(), getOwner().getID()), getOwner().getID(),
-									getOwner().getClass().getName()),
-									it -> it.getUUID() != getOwner().getID());
+						getOwner().getClass().getName()),
+				it -> it.getUUID() != getOwner().getID());
 	}
 
 	@Override

@@ -21,8 +21,7 @@
 
 package io.janusproject.kernel.bic;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 
@@ -38,9 +37,6 @@ import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.Scope;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.util.ClearableReference;
-import io.sarl.lang.util.SynchronizedIterable;
-import io.sarl.util.concurrent.Collections3;
-import io.sarl.util.concurrent.NoReadWriteLock;
 
 /**
  * Janus implementation of SARL's {@link Behaviors} built-in capacity.
@@ -125,10 +121,10 @@ public class BehaviorsSkill extends BuiltinSkill implements Behaviors {
 	}
 
 	@Override
-	public SynchronizedIterable<Behavior> getRegisteredBehaviors() {
-		final Collection<Behavior> behaviors = new ArrayList<>();
+	public ConcurrentLinkedDeque<Behavior> getRegisteredBehaviors() {
+		final ConcurrentLinkedDeque<Behavior> behaviors = new ConcurrentLinkedDeque<>();
 		getSkill(InternalEventBusCapacity.class).getRegisteredEventListeners(Behavior.class, behaviors);
-		return Collections3.unmodifiableSynchronizedIterable(behaviors, NoReadWriteLock.SINGLETON);
+		return behaviors;
 	}
 
 	@Override

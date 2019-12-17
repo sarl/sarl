@@ -23,6 +23,7 @@ package io.janusproject.kernel.services.jdk.contextspace;
 
 import java.text.MessageFormat;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 import com.google.inject.Injector;
 
@@ -30,7 +31,6 @@ import io.janusproject.services.contextspace.SpaceRepositoryListener;
 import io.janusproject.services.distributeddata.DistributedDataStructureService;
 import io.janusproject.services.logging.LogService;
 import io.janusproject.util.TwoStepConstruction;
-
 import io.sarl.core.OpenEventSpace;
 import io.sarl.core.OpenEventSpaceSpecification;
 import io.sarl.core.SpaceCreated;
@@ -41,9 +41,6 @@ import io.sarl.lang.core.EventSpace;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.core.SpaceSpecification;
-import io.sarl.lang.util.SynchronizedCollection;
-import io.sarl.lang.util.SynchronizedIterable;
-import io.sarl.util.concurrent.Collections3;
 
 /**
  * Implementation of an agent context in the Janus platform.
@@ -73,13 +70,15 @@ public class Context implements AgentContext {
 	 *
 	 * <p>CAUTION: Do not miss to call {@link #postConstruction()}.
 	 *
-	 * @param id identifier of the context.
-	 * @param defaultSpaceID identifier of the default space in the context.
-	 * @param factory factory to use for creating the space repository.
-	 * @param startUpListener repository listener which is added just after the creation of the repository, but before the
-	 *        creation of the default space.
+	 * @param id              identifier of the context.
+	 * @param defaultSpaceID  identifier of the default space in the context.
+	 * @param factory         factory to use for creating the space repository.
+	 * @param startUpListener repository listener which is added just after the
+	 *                        creation of the repository, but before the creation of
+	 *                        the default space.
 	 */
-	public Context(UUID id, UUID defaultSpaceID, SpaceRepositoryFactory factory, SpaceRepositoryListener startUpListener) {
+	public Context(UUID id, UUID defaultSpaceID, SpaceRepositoryFactory factory,
+			SpaceRepositoryListener startUpListener) {
 		assert factory != null;
 		this.id = id;
 		this.defaultSpaceID = defaultSpaceID;
@@ -103,7 +102,8 @@ public class Context implements AgentContext {
 		if (this.defaultSpace == null) {
 			// The default space could have been created before thanks to Hazelcast,
 			// thus createSpace returns null because the space already exist,
-			// in this case we return the already existing default space stored in the SpaceRepository
+			// in this case we return the already existing default space stored in the
+			// SpaceRepository
 			this.defaultSpace = (OpenEventSpace) this.spaceRepository
 					.getSpace(new SpaceID(this.id, this.defaultSpaceID, OpenEventSpaceSpecification.class));
 		}
@@ -130,27 +130,26 @@ public class Context implements AgentContext {
 	}
 
 	@Override
-	public <S extends Space> SynchronizedIterable<S> getSpaces(Class<? extends SpaceSpecification<S>> spec) {
-		final SynchronizedCollection<S> col = this.spaceRepository.getSpaces(spec);
-		return Collections3.unmodifiableSynchronizedIterable(col, col.getLock());
+	public <S extends Space> ConcurrentLinkedDeque<S> getSpaces(Class<? extends SpaceSpecification<S>> spec) {
+		return this.spaceRepository.getSpaces(spec);
 	}
 
 	@Override
-	public SynchronizedIterable<? extends io.sarl.lang.core.Space> getSpaces() {
-		final SynchronizedCollection<? extends io.sarl.lang.core.Space> col = this.spaceRepository.getSpaces();
-		return Collections3.unmodifiableSynchronizedIterable(col, col.getLock());
+	public ConcurrentLinkedDeque<? extends io.sarl.lang.core.Space> getSpaces() {
+		return this.spaceRepository.getSpaces();
 	}
 
 	@Override
-	public <S extends io.sarl.lang.core.Space> S createSpace(Class<? extends SpaceSpecification<S>> spec, UUID spaceUUID,
-			Object... creationParams) {
+	public <S extends io.sarl.lang.core.Space> S createSpace(Class<? extends SpaceSpecification<S>> spec,
+			UUID spaceUUID, Object... creationParams) {
 		return this.spaceRepository.createSpace(new SpaceID(this.id, spaceUUID, spec), spec, creationParams);
 	}
 
 	@Override
 	public <S extends Space> S getOrCreateSpaceWithSpec(Class<? extends SpaceSpecification<S>> spec, UUID spaceUUID,
 			Object... creationParams) {
-		return this.spaceRepository.getOrCreateSpaceWithSpec(new SpaceID(this.id, spaceUUID, spec), spec, creationParams);
+		return this.spaceRepository.getOrCreateSpaceWithSpec(new SpaceID(this.id, spaceUUID, spec), spec,
+				creationParams);
 	}
 
 	@Override
@@ -162,7 +161,8 @@ public class Context implements AgentContext {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <S extends io.sarl.lang.core.Space> S getSpace(UUID spaceUUID) {
-		// Type safety: assume that any ClassCastException will be thrown in the caller context.
+		// Type safety: assume that any ClassCastException will be thrown in the caller
+		// context.
 		return (S) this.spaceRepository.getSpace(
 				// The space specification parameter
 				// could be null because it will
@@ -186,10 +186,13 @@ public class Context implements AgentContext {
 
 		private final LogService logger;
 
-		/** Constructor.
+		/**
+		 * Constructor.
+		 *
 		 * @param context the context that is owner this space listener.
-		 * @param logger the logging service to use.
-		 * @param relay the space repository listener to register at initialization time.
+		 * @param logger  the logging service to use.
+		 * @param relay   the space repository listener to register at initialization
+		 *                time.
 		 */
 		SpaceListener(Context context, LogService logger, SpaceRepositoryListener relay) {
 			assert context != null;
@@ -212,8 +215,8 @@ public class Context implements AgentContext {
 				if (defSpace != null) {
 					defSpace.emit(
 							// No need to give an event source because it is explicitly set below.
-							null,
-							new SpaceCreated(new Address(defSpace.getSpaceID(), this.context.getID()), space.getSpaceID()));
+							null, new SpaceCreated(new Address(defSpace.getSpaceID(), this.context.getID()),
+									space.getSpaceID()));
 				}
 			}
 		}
@@ -228,8 +231,8 @@ public class Context implements AgentContext {
 				if (defSpace != null) {
 					defSpace.emit(
 							// No need to give an event source because it is explicitly set below.
-							null,
-							new SpaceDestroyed(new Address(defSpace.getSpaceID(), this.context.getID()), space.getSpaceID()));
+							null, new SpaceDestroyed(new Address(defSpace.getSpaceID(), this.context.getID()),
+									space.getSpaceID()));
 				}
 			}
 			// Notify the relays (other services)
@@ -254,13 +257,16 @@ public class Context implements AgentContext {
 
 		private final LogService logger;
 
-		/** Constructor.
-		 * @param injector instance of the injector to be used.
-		 * @param distributedDataStructure service that permits to obtain distributed data structure.
-		 * @param logger logging service.
+		/**
+		 * Constructor.
+		 *
+		 * @param injector                 instance of the injector to be used.
+		 * @param distributedDataStructure service that permits to obtain distributed
+		 *                                 data structure.
+		 * @param logger                   logging service.
 		 */
-		public DefaultSpaceRepositoryFactory(Injector injector, DistributedDataStructureService distributedDataStructure,
-				LogService logger) {
+		public DefaultSpaceRepositoryFactory(Injector injector,
+				DistributedDataStructureService distributedDataStructure, LogService logger) {
 			this.dataStructureService = distributedDataStructure;
 			this.injector = injector;
 			this.logger = logger;
@@ -269,8 +275,10 @@ public class Context implements AgentContext {
 		/**
 		 * {@inheritDoc}
 		 *
-		 * <p>In opposite to {@link #newInstanceWithPrivateSpaceListener(Context, String, SpaceRepositoryListener)}, this function
-		 * wraps the listener into a private space listener proxy before giving this wrapper to the space repository.
+		 * <p>In opposite to
+		 * {@link #newInstanceWithPrivateSpaceListener(Context, String, SpaceRepositoryListener)},
+		 * this function wraps the listener into a private space listener proxy before
+		 * giving this wrapper to the space repository.
 		 */
 		@Override
 		public final SpaceRepository newInstance(Context context, String distributedSpaceSetName,
@@ -282,12 +290,17 @@ public class Context implements AgentContext {
 		/**
 		 * Create an instance of the space repository.
 		 *
-		 * <p>In opposite to {@link #newInstance(Context, String, SpaceRepositoryListener)}, this function gives the listener to the
-		 * space repository, without wrapping it into the private space listener proxy.
+		 * <p>In opposite to
+		 * {@link #newInstance(Context, String, SpaceRepositoryListener)}, this function
+		 * gives the listener to the space repository, without wrapping it into the
+		 * private space listener proxy.
 		 *
-		 * @param context the context in which the space repository must be created.
-		 * @param distributedSpaceSetName name of the distribued data structure used by the space repository.
-		 * @param listener the listener on the space repository events to be register at initialization stage.
+		 * @param context                 the context in which the space repository must
+		 *                                be created.
+		 * @param distributedSpaceSetName name of the distribued data structure used by
+		 *                                the space repository.
+		 * @param listener                the listener on the space repository events to
+		 *                                be register at initialization stage.
 		 * @return the space repository
 		 */
 		protected SpaceRepository newInstanceWithPrivateSpaceListener(Context context, String distributedSpaceSetName,

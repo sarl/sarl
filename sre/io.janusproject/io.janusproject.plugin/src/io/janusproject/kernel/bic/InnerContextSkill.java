@@ -21,18 +21,16 @@
 
 package io.janusproject.kernel.bic;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 import com.google.inject.Inject;
-import com.google.inject.Provider;
+
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 import io.janusproject.services.contextspace.ContextSpaceService;
-
 import io.sarl.core.InnerContextAccess;
 import io.sarl.core.OpenEventSpace;
 import io.sarl.lang.core.Address;
@@ -44,10 +42,6 @@ import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.util.ClearableReference;
-import io.sarl.lang.util.SynchronizedIterable;
-import io.sarl.lang.util.SynchronizedSet;
-import io.sarl.util.concurrent.Collections3;
-import io.sarl.util.concurrent.NoReadWriteLock;
 
 /**
  * Janus implementation of SARL's {@link InnerContextSkill} built-in capacity.
@@ -72,20 +66,23 @@ public class InnerContextSkill extends BuiltinSkill implements InnerContextAcces
 	 */
 	private AgentContext innerContext;
 
-	private ReadWriteLock innerContextLock;
-
 	private ContextSpaceService contextService;
 
-	/** Constructor.
-	 * @param agent owner of this skill.
-	 * @param agentAddressInInnerDefaultSpace address of the owner of this skill in its default space.
+	/**
+	 * Constructor.
+	 *
+	 * @param agent                           owner of this skill.
+	 * @param agentAddressInInnerDefaultSpace address of the owner of this skill in
+	 *                                        its default space.
 	 */
 	InnerContextSkill(Agent agent, Address agentAddressInInnerDefaultSpace) {
 		super(agent);
 		this.agentAddressInInnerDefaultSpace = agentAddressInInnerDefaultSpace;
 	}
 
-	/** Change the reference to the service that is managing the contexts and the spaces.
+	/**
+	 * Change the reference to the service that is managing the contexts and the
+	 * spaces.
 	 *
 	 * @param contextService the service.
 	 */
@@ -94,35 +91,21 @@ public class InnerContextSkill extends BuiltinSkill implements InnerContextAcces
 		this.contextService = contextService;
 	}
 
-	/** Change the provider of the synchronization locks for the inner context.
-	 *
-	 * @param provider the provider of locks.
-	 */
-	@Inject
-	public final void setLockProvider(Provider<ReadWriteLock> provider) {
-		this.innerContextLock = provider.get();
-	}
-
-	/** Replies the synchronization lock for the inner context.
-	 *
-	 * @return the lock
-	 */
-	public final ReadWriteLock getLock() {
-		return this.innerContextLock;
-	}
-
-	/** Replies the InternalEventBusCapacity skill as fast as possible.
+	/**
+	 * Replies the InternalEventBusCapacity skill as fast as possible.
 	 *
 	 * @return the skill
 	 */
 	protected final InternalEventBusCapacity getInternalEventBusCapacitySkill() {
-		if (this.skillBufferInternalEventBusCapacity == null || this.skillBufferInternalEventBusCapacity.get() == null) {
+		if (this.skillBufferInternalEventBusCapacity == null
+				|| this.skillBufferInternalEventBusCapacity.get() == null) {
 			this.skillBufferInternalEventBusCapacity = $getSkill(InternalEventBusCapacity.class);
 		}
 		return $castSkill(InternalEventBusCapacity.class, this.skillBufferInternalEventBusCapacity);
 	}
 
-	/** {@inheritDoc}
+	/**
+	 * {@inheritDoc}
 	 *
 	 * @deprecated since 0.10
 	 */
@@ -136,28 +119,27 @@ public class InnerContextSkill extends BuiltinSkill implements InnerContextAcces
 	}
 
 	/**
-	 * Replies if the inner context was instanciated. To create the inner context, call {@link #getInnerContext()}
+	 * Replies if the inner context was instanciated. To create the inner context,
+	 * call {@link #getInnerContext()}
 	 *
-	 * @return <code>true</code> if an instance of inner context exists, otherwise <code>false</code>.
+	 * @return <code>true</code> if an instance of inner context exists, otherwise
+	 *         <code>false</code>.
 	 */
 	public boolean hasInnerContext() {
 		return getInnerContextWithoutAutomaticCreation() != null;
 	}
 
 	/**
-	 * Force to reset the inner context. This function does not update the context repository.
+	 * Force to reset the inner context. This function does not update the context
+	 * repository.
 	 *
-	 * <p>Do not call this function, exception if you are sure that the setting of the inner context to <code>null</code> only does
-	 * not introduce problems.
+	 * <p>Do not call this function, exception if you are sure that the setting of the
+	 * inner context to <code>null</code> only does not introduce problems.
 	 */
 	void resetInnerContext() {
-		final ReadWriteLock lock = getLock();
-		lock.writeLock().lock();
-		try {
-			this.innerContext = null;
-		} finally {
-			lock.writeLock().unlock();
-		}
+		// synchronized (this.innerContext) {
+		this.innerContext = null;
+		// }
 	}
 
 	@Override
@@ -171,14 +153,10 @@ public class InnerContextSkill extends BuiltinSkill implements InnerContextAcces
 	protected void uninstall(UninstallationStage stage) {
 		if (stage == UninstallationStage.POST_DESTROY_EVENT) {
 			final AgentContext context;
-			final ReadWriteLock lock = getLock();
-			lock.writeLock().lock();
-			try {
-				context = this.innerContext;
-				this.innerContext = null;
-			} finally {
-				lock.writeLock().unlock();
-			}
+			// synchronized (this.innerContext) {
+			context = this.innerContext;
+			this.innerContext = null;
+			// }
 			if (context != null) {
 				// Unregister the agent from the default space
 				final EventListener listener = getInternalEventBusCapacitySkill().asEventListener();
@@ -189,9 +167,10 @@ public class InnerContextSkill extends BuiltinSkill implements InnerContextAcces
 		}
 	}
 
-	/** Replies the inner context, but do not create one if it was not created
-	 * before calling this function. If you would like to automatically
-	 * create the inner context, please call {@link #getInnerContext()}.
+	/**
+	 * Replies the inner context, but do not create one if it was not created before
+	 * calling this function. If you would like to automatically create the inner
+	 * context, please call {@link #getInnerContext()}.
 	 *
 	 * <p>This function is thread-safe.
 	 *
@@ -200,41 +179,29 @@ public class InnerContextSkill extends BuiltinSkill implements InnerContextAcces
 	 * @see #getInnerContext()
 	 */
 	protected final AgentContext getInnerContextWithoutAutomaticCreation() {
-		final ReadWriteLock lock = getLock();
-		lock.readLock().lock();
-		try {
-			return this.innerContext;
-		} finally {
-			lock.readLock().unlock();
-		}
+		// synchronized (this.innerContext) {
+		return this.innerContext;
+		// }
 	}
 
 	@Override
 	public AgentContext getInnerContext() {
 		AgentContext ictx;
-		final ReadWriteLock lock = getLock();
-		lock.readLock().lock();
-		try {
-			ictx = this.innerContext;
-		} finally {
-			lock.readLock().unlock();
-		}
+		// synchronized (this.innerContext) {
+		ictx = this.innerContext;
+		// }
 		if (ictx == null) {
-			// Caution: according to the lock's documentation, the writing lock cannot be obtained with reading lock handle
-			lock.writeLock().lock();
-			try {
-				// Create the inner context.
-				this.innerContext = this.contextService.createContext(
-						this.agentAddressInInnerDefaultSpace.getSpaceID().getContextID(),
-						this.agentAddressInInnerDefaultSpace.getSpaceID().getID());
-				ictx = this.innerContext;
-				// Register the agent in the default space
-				final EventListener listener = getInternalEventBusCapacitySkill().asEventListener();
-				final OpenEventSpace defSpace = (OpenEventSpace) ictx.getDefaultSpace();
-				defSpace.register(listener);
-			} finally {
-				lock.writeLock().unlock();
-			}
+			// synchronized (this.innerContext) {
+			// Create the inner context.
+			this.innerContext = this.contextService.createContext(
+					this.agentAddressInInnerDefaultSpace.getSpaceID().getContextID(),
+					this.agentAddressInInnerDefaultSpace.getSpaceID().getID());
+			ictx = this.innerContext;
+			// Register the agent in the default space
+			final EventListener listener = getInternalEventBusCapacitySkill().asEventListener();
+			final OpenEventSpace defSpace = (OpenEventSpace) ictx.getDefaultSpace();
+			defSpace.register(listener);
+			// }
 		}
 		return ictx;
 	}
@@ -243,15 +210,10 @@ public class InnerContextSkill extends BuiltinSkill implements InnerContextAcces
 	public boolean hasMemberAgent() {
 		final AgentContext ictx = getInnerContextWithoutAutomaticCreation();
 		if (ictx != null) {
-			final SynchronizedSet<UUID> participants = ictx.getDefaultSpace().getParticipants();
+			final Set<UUID> participants = ictx.getDefaultSpace().getParticipants();
 			assert participants != null;
-			final ReadWriteLock lock = participants.getLock();
-			lock.readLock().lock();
-			try {
-				return (participants.size() > 1) || ((participants.size() == 1) && (!participants.contains(getOwner().getID())));
-			} finally {
-				lock.readLock().unlock();
-			}
+			return (participants.size() > 1)
+					|| ((participants.size() == 1) && (!participants.contains(getOwner().getID())));
 		}
 		return false;
 	}
@@ -260,51 +222,41 @@ public class InnerContextSkill extends BuiltinSkill implements InnerContextAcces
 	public int getMemberAgentCount() {
 		final AgentContext ictx = getInnerContextWithoutAutomaticCreation();
 		if (ictx != null) {
-			final SynchronizedSet<UUID> participants = ictx.getDefaultSpace().getParticipants();
+			final Set<UUID> participants = ictx.getDefaultSpace().getParticipants();
 			assert participants != null;
-			final ReadWriteLock lock = participants.getLock();
-			lock.readLock().lock();
-			try {
-				int count = participants.size();
-				if (participants.contains(getOwner().getID())) {
-					--count;
-				}
-				return count;
-			} finally {
-				lock.readLock().unlock();
+
+			int count = participants.size();
+			if (participants.contains(getOwner().getID())) {
+				--count;
 			}
+			return count;
 		}
 		return 0;
 	}
 
 	@Override
-	public SynchronizedIterable<UUID> getMemberAgents() {
-		SynchronizedSet<UUID> participants = null;
+	public ConcurrentSkipListSet<UUID> getMemberAgents() {
+		ConcurrentSkipListSet<UUID> participants = null;
 		final AgentContext ictx = getInnerContextWithoutAutomaticCreation();
 		if (ictx != null) {
 			participants = ictx.getDefaultSpace().getParticipants();
 			assert participants != null;
 		}
-		Set<UUID> members = null;
+		ConcurrentSkipListSet<UUID> members = null;
 		if (participants != null) {
-			members = new HashSet<>();
+			members = new ConcurrentSkipListSet<>();
 			final UUID myId = getOwner().getID();
-			final ReadWriteLock plock = participants.getLock();
-			plock.readLock().lock();
-			try {
-				for (final UUID id : participants) {
-					if (!id.equals(myId)) {
-						members.add(id);
-					}
+
+			for (final UUID id : participants) {
+				if (!id.equals(myId)) {
+					members.add(id);
 				}
-			} finally {
-				plock.readLock().unlock();
 			}
 		}
 		if (members != null) {
-			return Collections3.unmodifiableSynchronizedSet(members, NoReadWriteLock.SINGLETON);
+			return members;
 		}
-		return Collections3.emptySynchronizedSet();
+		return new ConcurrentSkipListSet<UUID>();
 	}
 
 	@Override
