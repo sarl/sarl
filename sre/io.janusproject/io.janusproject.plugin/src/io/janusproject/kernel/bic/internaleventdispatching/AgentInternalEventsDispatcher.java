@@ -23,12 +23,13 @@ package io.janusproject.kernel.bic.internaleventdispatching;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
-import java.util.stream.StreamSupport;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
+
 import org.arakhne.afc.util.MultiCollection;
 import org.arakhne.afc.util.OutputParameter;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
@@ -37,7 +38,6 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import io.janusproject.services.executor.EarlyExitException;
 import io.janusproject.services.executor.ExecutorService;
 import io.janusproject.services.executor.JanusRunnable;
-
 import io.sarl.eventdispatching.BehaviorGuardEvaluator;
 import io.sarl.eventdispatching.BehaviorGuardEvaluatorRegistry;
 import io.sarl.lang.core.Event;
@@ -156,7 +156,7 @@ public class AgentInternalEventsDispatcher {
 	 */
 	public void immediateDispatch(Event event) {
 		assert event != null;
-		Iterable<BehaviorGuardEvaluator> behaviorGuardEvaluators = null;
+		ConcurrentLinkedDeque<BehaviorGuardEvaluator> behaviorGuardEvaluators = null;
 		synchronized (this.behaviorGuardEvaluatorRegistry) {
 			behaviorGuardEvaluators = AgentInternalEventsDispatcher.this.behaviorGuardEvaluatorRegistry
 					.getBehaviorGuardEvaluators(event);
@@ -168,7 +168,7 @@ public class AgentInternalEventsDispatcher {
 				executeBehaviorMethodsInParalellWithSynchroAtTheEnd(behaviorsMethodsToExecute);
 			} catch (RuntimeException exception) {
 				throw exception;
-			} catch (InterruptedException | ExecutionException | InvocationTargetException e) {
+			} catch (InterruptedException | ExecutionException e) {
 				throw new RuntimeException(e);
 			}
 
@@ -186,7 +186,7 @@ public class AgentInternalEventsDispatcher {
 	 */
 	public void immediateDispatchTo(Object listener, Event event) {
 		assert event != null;
-		Iterable<BehaviorGuardEvaluator> behaviorGuardEvaluators = null;
+		ConcurrentLinkedDeque<BehaviorGuardEvaluator> behaviorGuardEvaluators = null;
 		synchronized (this.behaviorGuardEvaluatorRegistry) {
 			behaviorGuardEvaluators = AgentInternalEventsDispatcher.this.behaviorGuardEvaluatorRegistry
 					.getBehaviorGuardEvaluatorsFor(event, listener);
@@ -198,10 +198,9 @@ public class AgentInternalEventsDispatcher {
 				executeBehaviorMethodsInParalellWithSynchroAtTheEnd(behaviorsMethodsToExecute);
 			} catch (RuntimeException exception) {
 				throw exception;
-			} catch (InterruptedException | ExecutionException | InvocationTargetException e) {
+			} catch (InterruptedException | ExecutionException e) {
 				throw new RuntimeException(e);
 			}
-
 		}
 	}
 
@@ -216,7 +215,7 @@ public class AgentInternalEventsDispatcher {
 	public void asyncDispatch(Event event) {
 		assert event != null;
 		this.executor.execute(() -> {
-			Iterable<BehaviorGuardEvaluator> behaviorGuardEvaluators = null;
+			ConcurrentLinkedDeque<BehaviorGuardEvaluator> behaviorGuardEvaluators = null;
 			synchronized (AgentInternalEventsDispatcher.this.behaviorGuardEvaluatorRegistry) {
 				behaviorGuardEvaluators = AgentInternalEventsDispatcher.this.behaviorGuardEvaluatorRegistry
 						.getBehaviorGuardEvaluators(event);
@@ -225,7 +224,7 @@ public class AgentInternalEventsDispatcher {
 				final Collection<Runnable> behaviorsMethodsToExecute;
 				try {
 					behaviorsMethodsToExecute = evaluateGuards(event, behaviorGuardEvaluators);
-				} catch (InvocationTargetException e) {
+				} catch (ExecutionException e) {
 					throw new RuntimeException(e);
 				}
 				executeAsynchronouslyBehaviorMethods(behaviorsMethodsToExecute);
@@ -242,12 +241,12 @@ public class AgentInternalEventsDispatcher {
 	 * @return the collection of couple associating a object and its collection of behavior methods that must be executed
 	 * @throws InvocationTargetException - exception when you try to execute a method by reflection and this method doesn't exist.
 	 */
-	private static Collection<Runnable> evaluateGuards(final Event event,
-			final Iterable<BehaviorGuardEvaluator> behaviorGuardEvaluators) throws InvocationTargetException {
+	private Collection<Runnable> evaluateGuards(final Event event,
+			final ConcurrentLinkedDeque<BehaviorGuardEvaluator> behaviorGuardEvaluators) throws ExecutionException {
 
 		final MultiCollection<Runnable> behaviorsMethodsToExecute = new MultiCollection<>();
 
-		try {
+		/*try {
 			StreamSupport.stream(behaviorGuardEvaluators.spliterator(), true).forEach(evaluator -> {
 				final Collection<Runnable> behaviorsMethodsToExecutePerTarget = Lists.newLinkedList();
 				evaluator.evaluateGuard(event, behaviorsMethodsToExecutePerTarget);
@@ -264,7 +263,67 @@ public class AgentInternalEventsDispatcher {
 				throw (InvocationTargetException) t;
 			}
 			throw exception;
+		}*/
+
+		final CountDownLatch doneSignal = new CountDownLatch(behaviorGuardEvaluators.size());
+
+		final OutputParameter<Throwable> runException = new OutputParameter<>();
+
+		for (final BehaviorGuardEvaluator evaluator : behaviorGuardEvaluators) {
+			this.executor.execute(new JanusRunnable() {
+				@Override
+				public void run() {
+					try {
+						final Collection<Runnable> behaviorsMethodsToExecutePerTarget = Lists.newLinkedList();
+						evaluator.evaluateGuard(event, behaviorsMethodsToExecutePerTarget);
+						synchronized (behaviorsMethodsToExecute) {
+							behaviorsMethodsToExecute.addCollection(behaviorsMethodsToExecutePerTarget);
+						}
+					} catch (EarlyExitException e) {
+						// Ignore this exception
+					} catch (RuntimeException e) {
+						// Catch exception for notifying the caller
+						runException.set(e);
+						// Do the standard behavior too -> logging
+						throw e;
+					} catch (Exception e) {
+						// Catch exception for notifying the caller
+						runException.set(e);
+						// Do the standard behavior too -> logging
+						throw new RuntimeException(e);
+					} finally {
+						doneSignal.countDown();
+					}
+				}
+			});
 		}
+
+		// Wait for all Behaviors runnable to complete before continuing
+		try {
+			doneSignal.await();
+		} catch (InterruptedException ex) {
+			// This exception occurs when one of the launched task kills the agent before all the
+			// submitted tasks are finished. Keep in mind that killing an agent should kill the
+			// launched tasks.
+			// Example of code that is generating this issue:
+			//
+			// on Initialize {
+			//   in (100) [
+			//     killMe
+			//   ]
+			// }
+			//
+			// In this example, the killMe is launched before the Initialize code is finished;
+			// and because the Initialize event is fired through the current function, it
+			// causes the InterruptedException.
+		}
+
+		// Re-throw the run-time exception
+		if (runException.get() != null) {
+			throw new ExecutionException(runException.get());
+		}
+
+
 
 		return behaviorsMethodsToExecute;
 	}

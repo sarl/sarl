@@ -21,19 +21,6 @@
 
 package io.sarl.eventdispatching
 
-import java.lang.reflect.Method
-import java.text.MessageFormat
-import java.util.Arrays
-import java.util.Collection
-import java.util.Iterator
-import java.util.List
-import java.util.Map
-import java.util.Map.Entry
-import java.util.Set
-import java.util.TreeSet
-import java.util.TreeMap
-import java.util.concurrent.CopyOnWriteArraySet
-
 import com.google.common.base.Objects
 import com.google.common.base.Throwables
 import com.google.common.cache.CacheBuilder
@@ -43,10 +30,21 @@ import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Maps
 import com.google.common.reflect.TypeToken
-import org.eclipse.xtext.xbase.lib.Pair
-
-import io.sarl.lang.^annotation.PerceptGuardEvaluator
+import io.sarl.lang.annotation.PerceptGuardEvaluator
 import io.sarl.lang.core.Event
+import java.lang.reflect.Method
+import java.text.MessageFormat
+import java.util.Arrays
+import java.util.Collection
+import java.util.Iterator
+import java.util.List
+import java.util.Map
+import java.util.Map.Entry
+import java.util.Set
+import java.util.TreeMap
+import java.util.TreeSet
+import java.util.concurrent.ConcurrentLinkedDeque
+import java.util.concurrent.CopyOnWriteArraySet
 
 /**
  * Registry of all {@code BehaviorGuardEvaluator} classes containing a method to evaluate the guard of a given behavior (on clause in SARL behavior).
@@ -557,8 +555,9 @@ class BehaviorGuardEvaluatorRegistry {
 	 *            -the event to process
 	 * @return the set of guard evaluators associated to the specified event
 	 */
-	def getBehaviorGuardEvaluators(^event : Event) : Iterable<BehaviorGuardEvaluator> {
-		//		final ImmutableSet<Class<?>> eventTypes = flattenHierarchy(event.getClass());
+	def getBehaviorGuardEvaluators(^event : Event) : ConcurrentLinkedDeque<BehaviorGuardEvaluator> {
+		//		Original java code from Nico
+		// 		final ImmutableSet<Class<?>> eventTypes = flattenHierarchy(event.getClass());
 		//
 		//		final List<BehaviorGuardEvaluator> iBehaviorGuardEvaluators = Lists.newArrayListWithCapacity(eventTypes.size());
 		//
@@ -572,9 +571,25 @@ class BehaviorGuardEvaluatorRegistry {
 		//		}
 		//
 		//		return iBehaviorGuardEvaluators;
-		val eventTypes = flattenHierarchy(^event.class)
-		return [ new EvaluatorCollectionIterator(this.behaviorGuardEvaluators, ^event,
-					eventTypes.iterator, false) ]
+		
+				var eventTypes : ImmutableSet<Class<?>>  = flattenHierarchy(^event.getClass());
+		
+				var iBehaviorGuardEvaluators : ConcurrentLinkedDeque<BehaviorGuardEvaluator>  = new ConcurrentLinkedDeque();
+		
+				for (eventType : eventTypes) {
+					
+					var eventSubscribers : Pair<(Event) => Boolean, Set<BehaviorGuardEvaluator>> = this.behaviorGuardEvaluators.get(eventType);
+					if (eventSubscribers != null && eventSubscribers.getValue() != null
+							&& (eventSubscribers.getKey() == null || eventSubscribers.getKey().apply(^event))) {
+						iBehaviorGuardEvaluators.addAll(eventSubscribers.getValue());
+					}
+				}
+		
+				return iBehaviorGuardEvaluators;
+		
+		//val eventTypes = flattenHierarchy(^event.class)
+		//return [ new EvaluatorCollectionIterator(this.behaviorGuardEvaluators, ^event,
+		//			eventTypes.iterator, false) ]
 	}
 
 	/**
@@ -589,12 +604,33 @@ class BehaviorGuardEvaluatorRegistry {
 	 * @return the set of guard evaluators associated to the specified event
 	 * @since 0.5
 	 */
-	def getBehaviorGuardEvaluatorsFor(^event : Event, listener : Object) : Iterable<BehaviorGuardEvaluator> {
-		val eventTypes = flattenHierarchy(^event.class)
+	def getBehaviorGuardEvaluatorsFor(^event : Event, listener : Object) : ConcurrentLinkedDeque<BehaviorGuardEvaluator> {
+		/*val eventTypes = flattenHierarchy(^event.class)
 		return [
 			val base = new EvaluatorCollectionIterator(this.behaviorGuardEvaluators, ^event, eventTypes.iterator, true)
 			new EvaluatorCollectionFilteringIterator(base, listener)
-		]
+		]*/
+		val eventTypes = flattenHierarchy(^event.class)
+		var iBehaviorGuardEvaluators : ConcurrentLinkedDeque<BehaviorGuardEvaluator>  = new ConcurrentLinkedDeque();
+		
+		if(listener != null) {
+			for (eventType : eventTypes) {					
+				var eventSubscribers : Pair<(Event) => Boolean, Set<BehaviorGuardEvaluator>> = this.behaviorGuardEvaluators.get(eventType);
+				if (eventSubscribers != null && eventSubscribers.getValue() != null
+						&& eventSubscribers === listener && (eventSubscribers.getKey() == null || eventSubscribers.getKey().apply(^event))) {
+					iBehaviorGuardEvaluators.addAll(eventSubscribers.getValue());
+				}
+			}
+		} else {
+			for (eventType : eventTypes) {					
+				var eventSubscribers : Pair<(Event) => Boolean, Set<BehaviorGuardEvaluator>> = this.behaviorGuardEvaluators.get(eventType);
+				if (eventSubscribers != null && eventSubscribers.getValue() != null
+						&& (eventSubscribers.getKey() == null || eventSubscribers.getKey().apply(^event))) {
+					iBehaviorGuardEvaluators.addAll(eventSubscribers.getValue());
+				}
+			}
+		}
+		return iBehaviorGuardEvaluators;
 	}
 
 	/** Replies if a listener with the given type is registered.
