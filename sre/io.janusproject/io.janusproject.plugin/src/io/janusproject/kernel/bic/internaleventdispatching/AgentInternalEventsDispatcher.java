@@ -244,6 +244,7 @@ public class AgentInternalEventsDispatcher {
 	private Collection<Runnable> evaluateGuards(final Event event,
 			final ConcurrentLinkedDeque<BehaviorGuardEvaluator> behaviorGuardEvaluators) throws ExecutionException {
 
+		//TODO remove this multicollection to avoid the next synchronized
 		final MultiCollection<Runnable> behaviorsMethodsToExecute = new MultiCollection<>();
 
 		/*try {
@@ -264,66 +265,78 @@ public class AgentInternalEventsDispatcher {
 			}
 			throw exception;
 		}*/
+		int eval = behaviorGuardEvaluators.size();
+		if (eval > 1 ) {
+			final CountDownLatch doneSignal = new CountDownLatch(eval);
+	
+			final OutputParameter<Throwable> runException = new OutputParameter<>();
+	
+			for (final BehaviorGuardEvaluator evaluator : behaviorGuardEvaluators) {
+				this.executor.execute(new JanusRunnable() {
+					@Override
+					public void run() {
+						try {
+							final Collection<Runnable> behaviorsMethodsToExecutePerTarget = Lists.newLinkedList();
+							evaluator.evaluateGuard(event, behaviorsMethodsToExecutePerTarget);
+							synchronized (behaviorsMethodsToExecute) {
+								behaviorsMethodsToExecute.addCollection(behaviorsMethodsToExecutePerTarget);
+							}
+						} catch (EarlyExitException e) {
+							// Ignore this exception
+						} catch (RuntimeException e) {
+							// Catch exception for notifying the caller
+							runException.set(e);
+							// Do the standard behavior too -> logging
+							throw e;
+						} catch (Exception e) {
+							// Catch exception for notifying the caller
+							runException.set(e);
+							// Do the standard behavior too -> logging
+							throw new RuntimeException(e);
+						} finally {
+							doneSignal.countDown();
+						}
+					}
+				});
+			}
+	
+			// Wait for all Behaviors runnable to complete before continuing
+			try {
+				doneSignal.await();
+			} catch (InterruptedException ex) {
+				// This exception occurs when one of the launched task kills the agent before all the
+				// submitted tasks are finished. Keep in mind that killing an agent should kill the
+				// launched tasks.
+				// Example of code that is generating this issue:
+				//
+				// on Initialize {
+				//   in (100) [
+				//     killMe
+				//   ]
+				// }
+				//
+				// In this example, the killMe is launched before the Initialize code is finished;
+				// and because the Initialize event is fired through the current function, it
+				// causes the InterruptedException.
+			}
+	
+			// Re-throw the run-time exception
+			if (runException.get() != null) {
+				throw new ExecutionException(runException.get());
+			}
 
-		final CountDownLatch doneSignal = new CountDownLatch(behaviorGuardEvaluators.size());
-
-		final OutputParameter<Throwable> runException = new OutputParameter<>();
-
-		for (final BehaviorGuardEvaluator evaluator : behaviorGuardEvaluators) {
+		} else {
 			this.executor.execute(new JanusRunnable() {
 				@Override
 				public void run() {
-					try {
 						final Collection<Runnable> behaviorsMethodsToExecutePerTarget = Lists.newLinkedList();
-						evaluator.evaluateGuard(event, behaviorsMethodsToExecutePerTarget);
+						behaviorGuardEvaluators.getFirst().evaluateGuard(event, behaviorsMethodsToExecutePerTarget);
 						synchronized (behaviorsMethodsToExecute) {
 							behaviorsMethodsToExecute.addCollection(behaviorsMethodsToExecutePerTarget);
 						}
-					} catch (EarlyExitException e) {
-						// Ignore this exception
-					} catch (RuntimeException e) {
-						// Catch exception for notifying the caller
-						runException.set(e);
-						// Do the standard behavior too -> logging
-						throw e;
-					} catch (Exception e) {
-						// Catch exception for notifying the caller
-						runException.set(e);
-						// Do the standard behavior too -> logging
-						throw new RuntimeException(e);
-					} finally {
-						doneSignal.countDown();
-					}
 				}
 			});
 		}
-
-		// Wait for all Behaviors runnable to complete before continuing
-		try {
-			doneSignal.await();
-		} catch (InterruptedException ex) {
-			// This exception occurs when one of the launched task kills the agent before all the
-			// submitted tasks are finished. Keep in mind that killing an agent should kill the
-			// launched tasks.
-			// Example of code that is generating this issue:
-			//
-			// on Initialize {
-			//   in (100) [
-			//     killMe
-			//   ]
-			// }
-			//
-			// In this example, the killMe is launched before the Initialize code is finished;
-			// and because the Initialize event is fired through the current function, it
-			// causes the InterruptedException.
-		}
-
-		// Re-throw the run-time exception
-		if (runException.get() != null) {
-			throw new ExecutionException(runException.get());
-		}
-
-
 
 		return behaviorsMethodsToExecute;
 	}
