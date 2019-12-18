@@ -617,8 +617,14 @@ class BehaviorGuardEvaluatorRegistry {
 			for (eventType : eventTypes) {					
 				var eventSubscribers : Pair<(Event) => Boolean, Set<BehaviorGuardEvaluator>> = this.behaviorGuardEvaluators.get(eventType);
 				if (eventSubscribers != null && eventSubscribers.getValue() != null
-						&& eventSubscribers === listener && (eventSubscribers.getKey() == null || eventSubscribers.getKey().apply(^event))) {
-					iBehaviorGuardEvaluators.addAll(eventSubscribers.getValue());
+						&& (eventSubscribers.getKey() == null || eventSubscribers.getKey().apply(^event))) {
+					//iBehaviorGuardEvaluators.addAll(eventSubscribers.getValue());
+					for (evaluator : eventSubscribers.getValue()) {
+						if(evaluator.target === listener) {
+							iBehaviorGuardEvaluators.add(evaluator)
+						}
+					}
+					
 				}
 			}
 		} else {
