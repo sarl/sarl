@@ -283,8 +283,14 @@ public class UtilsTest extends AbstractSarlTest {
 		assertFalse(Utils.isCompatibleXtextVersion("2.17"));
 		assertFalse(Utils.isCompatibleXtextVersion("2.17.1"));
 		assertFalse(Utils.isCompatibleXtextVersion("2.18"));
-		assertTrue(Utils.isCompatibleXtextVersion("2.19"));
+		assertFalse(Utils.isCompatibleXtextVersion("2.19"));
 		assertTrue(Utils.isCompatibleXtextVersion("2.20"));
+		assertTrue(Utils.isCompatibleXtextVersion("2.21"));
+		assertTrue(Utils.isCompatibleXtextVersion("2.22"));
+		assertTrue(Utils.isCompatibleXtextVersion("2.23"));
+		assertTrue(Utils.isCompatibleXtextVersion("2.24"));
+		assertTrue(Utils.isCompatibleXtextVersion("2.25"));
+		assertTrue(Utils.isCompatibleXtextVersion("2.26"));
 	}
 
 	@Test

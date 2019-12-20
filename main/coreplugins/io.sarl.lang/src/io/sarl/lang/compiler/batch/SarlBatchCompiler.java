@@ -88,6 +88,7 @@ import org.eclipse.xtext.resource.IResourceServiceProvider;
 import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.resource.persistence.StorageAwareResource;
 import org.eclipse.xtext.util.CancelIndicator;
+import org.eclipse.xtext.util.Files;
 import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.util.UriUtil;
@@ -108,7 +109,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.sarl.lang.SARLConfig;
-import io.sarl.lang.bugfixes.pending.bugxtext1251.BugXtext1251Files;
 import io.sarl.lang.compiler.GeneratorConfig2;
 import io.sarl.lang.compiler.GeneratorConfigProvider2;
 import io.sarl.lang.compiler.IGeneratorConfigProvider2;
@@ -1962,7 +1962,7 @@ public class SarlBatchCompiler {
 			if (getLogger().isDebugEnabled()) {
 				getLogger().debug(Messages.SarlBatchCompiler_9, parentFolder.toString());
 			}
-			return BugXtext1251Files.cleanFolder(parentFolder, null, true, true);
+			return Files.cleanFolder(parentFolder, null, true, true);
 		} catch (FileNotFoundException e) {
 			return true;
 		}

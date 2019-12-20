@@ -60,10 +60,10 @@
 		<!-- The versions of the following Xtext libraries are available at: https://eclipse.org/Xtext/documentation/350_continuous_integration.html -->
 
 		<!-- Version of the Xtext API -->
-		<xtext.version>2.19.0</xtext.version>
-		<xtext.version.current>2.19.0</xtext.version.current>
-		<xtext.version.next>2.19.1</xtext.version.next>
-		<xtext.version.javadoc>2.19</xtext.version.javadoc>
+		<xtext.version>2.20.0</xtext.version>
+		<xtext.version.current>2.20.0</xtext.version.current>
+		<xtext.version.next>2.20.1</xtext.version.next>
+		<xtext.version.javadoc>2.20</xtext.version.javadoc>
 
 		<!-- Version of the MWE2 library (used for accessing the mwe2 P2 http://download.eclipse.org/modeling/emft/mwe/updates/releases/,
 			see compositeContent.{xml,jar,xz,xml.xz} file) -->
