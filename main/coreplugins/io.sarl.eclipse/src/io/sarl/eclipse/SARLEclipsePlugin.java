@@ -45,7 +45,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.service.prefs.BackingStoreException;
 
-
 /**
  * Utility functions for the plugin.
  *

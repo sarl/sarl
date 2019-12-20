@@ -38,7 +38,6 @@ import org.osgi.framework.Version;
 
 import io.sarl.lang.SARLConfig;
 
-
 /** Utilities.
  *
  * @author $Author: sgalland$

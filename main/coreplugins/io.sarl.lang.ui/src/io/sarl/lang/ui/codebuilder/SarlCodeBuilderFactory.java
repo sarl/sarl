@@ -23,7 +23,6 @@ package io.sarl.lang.ui.codebuilder;
 
 import org.eclipse.xtend.ide.codebuilder.CodeBuilderFactory;
 
-
 /** Factory for the ICodeBuilder builders.
  *
  * <p>This implementation generates the code according to the SARL syntax (not the Xtend syntax).

@@ -40,12 +40,10 @@ public interface DistributedDataStructureService extends DependentService {
 	/**
 	 * Replies the {@link DMap} with the given name.
 	 *
-	 * <p>
-	 * This function permits to create a map for keys without a natural order, and without a specific comparator. An object has a
+	 * <p>This function permits to create a map for keys without a natural order, and without a specific comparator. An object has a
 	 * natural order if it implements {@link Comparable}.
 	 *
-	 * <p>
-	 * This function is equivalent to create a <code>HashMap</code> in the standard Java API. If the keys have a natural order,
+	 * <p>This function is equivalent to create a <code>HashMap</code> in the standard Java API. If the keys have a natural order,
 	 * i.e. they implement the {@link Comparable} interface, or if you are able to provide a {@link Comparator}, then it is
 	 * recommended to use {@link #getMap(String, Comparator)} in place of the function {@link #getMap(String)}.
 	 *
@@ -60,13 +58,11 @@ public interface DistributedDataStructureService extends DependentService {
 	/**
 	 * Replies the {@link DMap} with the given name.
 	 *
-	 * <p>
-	 * This function permits to create a map for keys with a natural order, OR with a specific comparator. An object has a natural
+	 * <p>This function permits to create a map for keys with a natural order, OR with a specific comparator. An object has a natural
 	 * order if it implements {@link Comparable}. If the comparator is <code>null</code>, then the natural order of the keys is
 	 * used.
 	 *
-	 * <p>
-	 * This function is equivalent to create a <code>TreeMap</code> in the standard Java API. If the keys have not a natural
+	 * <p>This function is equivalent to create a <code>TreeMap</code> in the standard Java API. If the keys have not a natural
 	 * order, i.e. they not implement the {@link Comparable} interface, or if you are not able to provide a {@link Comparator},
 	 * then it is recommended to use {@link #getMap(String)} in place of the function {@link #getMap(String, Comparator)}.
 	 *
@@ -82,12 +78,10 @@ public interface DistributedDataStructureService extends DependentService {
 	/**
 	 * Replies the {@link DMultiMap} with the given name.
 	 *
-	 * <p>
-	 * This function permits to create a map for keys without a natural order, and without a specific comparator. An object has a
+	 * <p>This function permits to create a map for keys without a natural order, and without a specific comparator. An object has a
 	 * natural order if it implements {@link Comparable}.
 	 *
-	 * <p>
-	 * This function is equivalent to create a <code>HashMap</code> in the standard Java API. If the keys have a natural order,
+	 * <p>This function is equivalent to create a <code>HashMap</code> in the standard Java API. If the keys have a natural order,
 	 * i.e. they implement the {@link Comparable} interface, or if you are able to provide a {@link Comparator}, then it is
 	 * recommended to use {@link #getMultiMap(String, Comparator)} in place of the function {@link #getMultiMap(String)}.
 	 *
@@ -102,13 +96,11 @@ public interface DistributedDataStructureService extends DependentService {
 	/**
 	 * Replies the {@link DMultiMap} with the given name.
 	 *
-	 * <p>
-	 * This function permits to create a map for keys with a natural order, OR with a specific comparator. An object has a natural
+	 * <p>This function permits to create a map for keys with a natural order, OR with a specific comparator. An object has a natural
 	 * order if it implements {@link Comparable}. If the comparator is <code>null</code>, then the natural order of the keys is
 	 * used.
 	 *
-	 * <p>
-	 * This function is equivalent to create a <code>TreeMap</code> in the standard Java API. If the keys have not a natural
+	 * <p>This function is equivalent to create a <code>TreeMap</code> in the standard Java API. If the keys have not a natural
 	 * order, i.e. they not implement the {@link Comparable} interface, or if you are not able to provide a {@link Comparator},
 	 * then it is recommended to use {@link #getMultiMap(String)} in place of the function
 	 * {@link #getMultiMap(String, Comparator)}.

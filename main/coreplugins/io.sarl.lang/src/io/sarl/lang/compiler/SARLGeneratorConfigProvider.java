@@ -31,7 +31,6 @@ import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.xbase.compiler.GeneratorConfig;
 import org.eclipse.xtext.xbase.compiler.GeneratorConfigProvider;
 
-
 /** SARL-specific provider of a generator configuration.
  *
  * @author $Author: sgalland$

@@ -21,7 +21,6 @@
 
 package io.sarl.eclipse;
 
-
 /**
  * Provides the constants for the SARL projects.
  *

@@ -89,7 +89,7 @@
 		<!-- Version of the SWT library (search for  org.eclipse.platform:org.eclipse.swt.gtk.linux.x86_64) -->
 		<swt.version>3.111.0</swt.version>
 		<!-- Version of JavaFX (search for  org.openjfx:*) -->
-		<openjfx.version>12.0.2</openjfx.version>
+		<openjfx.version>11.0.2</openjfx.version>
 
 		<!-- Build ID Format (used in Eclipse about dialog) -->
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
@@ -577,7 +577,7 @@
 			<dependency>
 				<groupId>org.mockito</groupId>
 				<artifactId>mockito-core</artifactId>
-				<version>2.28.2</version>
+				<version>3.2.0</version>
 			</dependency>
 			<dependency>
 				<groupId>com.vladsch.flexmark</groupId>
@@ -855,7 +855,7 @@
 							<groupId>com.puppycrawl.tools</groupId>
 							<artifactId>checkstyle</artifactId>
 							<!-- Same version as inside Eclipse IDE -->
-							<version>8.18</version>
+							<version>8.27</version>
 						</dependency>
 					</dependencies>
 				</plugin>

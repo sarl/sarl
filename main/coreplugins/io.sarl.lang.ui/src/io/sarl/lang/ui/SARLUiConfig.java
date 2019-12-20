@@ -21,7 +21,6 @@
 
 package io.sarl.lang.ui;
 
-
 /**
  * Provides the constants for the SARL projects.
  *

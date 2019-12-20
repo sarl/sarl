@@ -349,7 +349,9 @@ public abstract class AbstractCompileMojo extends AbstractSarlBatchCompilerMojo 
 			if (classpath.length() > 0) {
 				classpath.append(":"); //$NON-NLS-1$
 			}
+			classpath.append("{"); //$NON-NLS-1$
 			classpath.append(ArtifactUtils.versionlessKey(dep));
+			classpath.append("}"); //$NON-NLS-1$
 			String gid = null;
 			String aid = null;
 			if (sarlLibGroupId.equals(dep.getGroupId())

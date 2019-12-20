@@ -41,7 +41,6 @@ import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
 import io.sarl.lang.typesystem.IOperationHelper;
 import io.sarl.lang.util.Utils;
 
-
 /** SARL-specific generator.
  *
  * <p>This generator:<ul>

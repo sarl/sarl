@@ -3,32 +3,11 @@
 <target name="io.sarl.lang.targetplatform" sequenceNumber="130">
 	<locations>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-			<repository location="https://download.eclipse.org/releases/2019-09"/>
-			<unit id="epp.package.java" version="4.13.0.20190917-0000"/>
-			<unit id="org.eclipse.egit.feature.group" version="5.5.0.201909110433-r"/>
-			<unit id="org.eclipse.egit.mylyn.feature.group" version="5.5.0.201909110433-r"/>
-			<unit id="org.eclipse.epp.mpc.feature.group" version="1.8.0.v20190725-1807"/>
-			<unit id="org.eclipse.equinox.executable.feature.group" version="3.8.500.v20190907-0428"/>
-			<unit id="org.eclipse.jdt.feature.group" version="3.18.100.v20190916-1045"/>
-			<unit id="org.eclipse.jdt.source.feature.group" version="3.18.100.v20190916-1045"/>
-			<unit id="org.eclipse.m2e.feature.feature.group" version="1.13.0.20190716-1624"/>
-			<unit id="org.eclipse.m2e.logback.feature.feature.group" version="1.13.0.20190716-1624"/>
-			<unit id="org.eclipse.pde.source.feature.group" version="3.14.100.v20190916-1045"/>
-			<unit id="org.eclipse.platform.feature.group" version="4.13.0.v20190916-1323"/>
-			<unit id="org.eclipse.platform.ide" version="4.13.0.I20190916-1045"/>
-			<unit id="org.eclipse.wst.common_core.feature.feature.group" version="3.10.100.v201904082145"/>
-			<unit id="org.eclipse.wst.common_ui.feature.feature.group" version="3.11.0.v201905071717"/>
-			<unit id="org.eclipse.wst.xml_core.feature.feature.group" version="3.15.0.v201907091226"/>
-			<unit id="org.eclipse.xsd.feature.group" version="2.17.0.v20190625-1130"/>
-			<unit id="org.eclipse.xtext.sdk.feature.group" version="2.19.0.v20190902-1322"/>
-			<unit id="org.sonatype.m2e.mavenarchiver.feature.feature.group" version="0.17.4.201905300046"/>
-		</location>
-		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 			<unit id="org.arakhne.afc.core.references" version="16.0.0"/>
 			<unit id="org.arakhne.afc.core.text" version="16.0.0"/>
 			<unit id="org.arakhne.afc.core.util" version="16.0.0"/>
 			<unit id="org.arakhne.afc.core.vmutils" version="16.0.0"/>
-			<unit id="org.mockito.mockito-core" version="2.28.2"/>
+			<unit id="org.mockito.mockito-core" version="3.2.0"/>
 			<unit id="org.objenesis" version="2.6.0"/>
 			<unit id="slf4j.api" version="2.0.0.alpha1"/>
 			<repository location="http://download.tuxfamily.org/arakhne/p2/"/>
@@ -48,6 +27,27 @@
 			<unit id="org.zeromq.jeromq" version="0.5.0"/>
 			<unit id="javax.inject" version="1.0.0"/>
 			<repository location="http://dependencies.sarl.io"/>
+		</location>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+			<repository location="https://download.eclipse.org/releases/2019-12"/>
+			<unit id="epp.package.java" version="4.14.0.20191212-1200"/>
+			<unit id="org.eclipse.egit.feature.group" version="5.6.0.201912101111-r"/>
+			<unit id="org.eclipse.egit.mylyn.feature.group" version="5.6.0.201912101111-r"/>
+			<unit id="org.eclipse.epp.mpc.feature.group" version="1.8.1.v20191106-1317"/>
+			<unit id="org.eclipse.equinox.executable.feature.group" version="3.8.600.v20191014-2025"/>
+			<unit id="org.eclipse.jdt.feature.group" version="3.18.200.v20191210-0610"/>
+			<unit id="org.eclipse.jdt.source.feature.group" version="3.18.200.v20191210-0610"/>
+			<unit id="org.eclipse.m2e.feature.feature.group" version="1.14.0.20191209-1925"/>
+			<unit id="org.eclipse.m2e.logback.feature.feature.group" version="1.14.0.20191209-1925"/>
+			<unit id="org.eclipse.pde.source.feature.group" version="3.14.200.v20191210-0610"/>
+			<unit id="org.eclipse.platform.feature.group" version="4.14.0.v20191210-0610"/>
+			<unit id="org.eclipse.platform.ide" version="4.14.0.I20191210-0610"/>
+			<unit id="org.eclipse.wst.common_core.feature.feature.group" version="3.10.100.v201904082145"/>
+			<unit id="org.eclipse.wst.common_ui.feature.feature.group" version="3.11.0.v201905071717"/>
+			<unit id="org.eclipse.wst.xml_core.feature.feature.group" version="3.16.0.v201911262147"/>
+			<unit id="org.eclipse.xsd.feature.group" version="2.18.0.v20191117-1035"/>
+			<unit id="org.eclipse.xtext.sdk.feature.group" version="2.20.0.v20191202-1256"/>
+			<unit id="org.sonatype.m2e.mavenarchiver.feature.feature.group" version="0.17.4.201905300046"/>
 		</location>
 	</locations>
 	<targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>

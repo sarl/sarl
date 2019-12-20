@@ -86,7 +86,7 @@ agent FactorialQueryAgent {
 	on Initialize {
 		loggingName = "QueryAgent"
 		if (occurrence.parameters.length > 0) {
-			factValue = new Long(occurrence.parameters.get(0) as Long)
+			factValue = (occurrence.parameters.get(0) as String) as long
 
 			info("Auto-detecting Factorial")
 			task("discovery-task").every(1000) [
@@ -143,7 +143,7 @@ agent FactorialAgent {
 	}
 
 	on Calculate {
-		this.upto = new Long(occurrence.number);
+		this.upto = occurrence.number as long
 		info("Query for " + this.upto + "!")
 		wake(new Factorial => [number = 0l; value = 1l])
 	}

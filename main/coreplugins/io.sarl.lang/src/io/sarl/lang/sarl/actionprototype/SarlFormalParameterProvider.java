@@ -31,7 +31,6 @@ import org.eclipse.xtext.xbase.XExpression;
 
 import io.sarl.lang.sarl.SarlFormalParameter;
 
-
 /** An object able to provide the name and the type of a formal parameter.
 *
 * @author $Author: sgalland$

@@ -28,7 +28,6 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
 
-
 /** A source appender that is mapping the Java function types (Function0...) to the equivalent SARL notation.
  *
  * @author $Author: sgalland$

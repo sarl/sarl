@@ -289,7 +289,7 @@
          version="0.0.0"/>
 
    <requires>
-      <import plugin="org.eclipse.emf.common" version="2.16.0" match="compatible"/>
+      <import plugin="org.eclipse.emf.common" version="2.17.0" match="compatible"/>
       <import plugin="org.eclipse.emf.ecore" version="2.19.0" match="compatible"/>
       <import plugin="org.eclipse.emf.edit" version="2.15.0" match="compatible"/>
       <import plugin="org.eclipse.core.runtime" version="3.6.0" match="compatible"/>
@@ -300,12 +300,14 @@
       <import plugin="org.eclipse.emf.edit.ui" version="2.16.0" match="compatible"/>
       <import plugin="org.eclipse.jface.text" version="3.6.0" match="compatible"/>
       <import plugin="org.eclipse.emf.ecore" version="2.18.0" match="compatible"/>
+      <import plugin="org.eclipse.emf.ecore" version="2.20.0" match="compatible"/>
       <import plugin="org.eclipse.ui.views" version="3.5.0" match="compatible"/>
       <import plugin="org.eclipse.ui.workbench" version="3.6.0" match="compatible"/>
-      <import plugin="org.eclipse.emf.edit" version="2.14.0" match="compatible"/>
-      <import plugin="org.eclipse.emf.common.ui" version="2.15.0" match="compatible"/>
+      <import plugin="org.eclipse.emf.edit" version="2.16.0" match="compatible"/>
+      <import plugin="org.eclipse.emf.common.ui" version="2.18.0" match="compatible"/>
       <import plugin="org.eclipse.ui" version="3.6.0" match="compatible"/>
-      <import plugin="org.eclipse.emf.mwe2.runtime" version="2.11.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.emf.common" version="2.16.0" match="compatible"/>
+      <import plugin="org.eclipse.emf.mwe2.runtime" version="2.11.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.draw2d" version="3.7.0" match="compatible"/>
       <import plugin="org.eclipse.core.runtime" version="3.5.0" match="compatible"/>
       <import plugin="org.eclipse.ui.workbench" version="3.2.0" match="compatible"/>
@@ -319,6 +321,7 @@
       <import plugin="org.eclipse.search" version="3.11.0" match="compatible"/>
       <import plugin="org.eclipse.ui" version="3.109.0" match="compatible"/>
       <import plugin="org.eclipse.ui.workbench.texteditor" version="3.10.0" match="compatible"/>
+      <import plugin="org.eclipse.ui.workbench" version="3.117.0" match="compatible"/>
       <import plugin="org.eclipse.ui.forms" version="3.7.0" match="compatible"/>
       <import plugin="org.eclipse.ui.views" version="3.9.0" match="compatible"/>
       <import plugin="org.eclipse.wst.sse.core" version="1.2.0" match="equivalent"/>

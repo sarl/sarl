@@ -27,7 +27,6 @@ import java.util.Objects;
 
 import org.eclipse.emf.common.util.URI;
 
-
 /** Detect the type of a folder.
  *
  * <p>A resource may be inside a standard source folder or a folder that is dedicated

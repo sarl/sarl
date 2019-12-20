@@ -187,7 +187,8 @@ public class SubmitEclipseLogWizard extends Wizard {
 	 * @throws Exception when error.
 	 */
 	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:npathcomplexity", "static-method"})
-	protected IStatus submit(Charset charset, String title, String body, String login, String password, IProgressMonitor progress) throws Exception {
+	protected IStatus submit(Charset charset, String title, String body, String login, String password,
+			IProgressMonitor progress) throws Exception {
 		final SubMonitor subMonitor = SubMonitor.convert(progress, 10);
 
 		subMonitor.setTaskName(Messages.SubmitEclipseLogWizard_15);
@@ -306,7 +307,6 @@ public class SubmitEclipseLogWizard extends Wizard {
 	 * @return the content.
 	 * @throws IOException if the content cannot be built.
 	 */
-	@SuppressWarnings("static-method")
 	protected String buildContent(String description, Charset charset) throws IOException {
 		final StringBuilder fullContent = new StringBuilder();
 

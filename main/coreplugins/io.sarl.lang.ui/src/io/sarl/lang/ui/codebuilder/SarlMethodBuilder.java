@@ -42,7 +42,6 @@ import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import io.sarl.lang.jvmmodel.IDefaultVisibilityProvider;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
 
-
 /** Code builder for methods.
  *
  * <p>This implementation generates the code according to the SARL syntax (not the Xtend syntax).

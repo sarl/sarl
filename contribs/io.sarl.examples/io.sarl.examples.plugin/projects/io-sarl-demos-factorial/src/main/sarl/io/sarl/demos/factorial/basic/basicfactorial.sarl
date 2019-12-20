@@ -44,8 +44,8 @@ agent FactorialAgent {
 
 	  
 	on Initialize {
-		if (occurrence.parameters.length > 0) { /* check the number of parameter specified in the laucnh configuration */
-			this.upto  = new Long(occurrence.parameters.get(0) as String) 
+		if (occurrence.parameters.length > 0) { /* check the number of parameter specified in the launch configuration */
+			this.upto  = (occurrence.parameters.get(0) as String) as long 
 			info("Received Calculate for " + this.upto)   
 			wake(new Factorial => [ number = 0l ; value = 1l ])
 		} else {

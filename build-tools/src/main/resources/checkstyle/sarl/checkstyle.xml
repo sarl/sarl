@@ -56,6 +56,13 @@
 		<property name="file" value="${config_loc}/suppressions.xml" />
 	</module>
 
+	<!-- Line length is 150 (100 in Google standards). -->
+	<module name="LineLength">
+		<property name="max" value="200" />
+		<property name="ignorePattern"
+			value="^package.*|^import.*|a href|href|http://|https://|ftp://" />
+	</module>
+
 	<module name="TreeWalker">
 
 		<!-- Size of the tab characters. -->
@@ -101,7 +108,6 @@
 			in throws. -->
 		<module name="JavadocMethod">
 			<property name="scope" value="package" />
-			<property name="minLineCount" value="1" />
 			<property name="validateThrows" value="true" />
 			<property name="allowUndeclaredRTE" value="true" />
 		</module>
@@ -257,13 +263,6 @@
 		</module>
 
 		<!-- ************* *** SIZES *** ************* -->
-
-		<!-- Line length is 150 (100 in Google standards). -->
-		<module name="LineLength">
-			<property name="max" value="150" />
-			<property name="ignorePattern"
-				value="^package.*|^import.*|a href|href|http://|https://|ftp://" />
-		</module>
 
 		<!-- Maximum number of methods per type. -->
 		<module name="MethodCount">

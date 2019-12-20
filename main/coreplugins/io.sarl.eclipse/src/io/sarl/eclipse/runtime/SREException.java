@@ -21,7 +21,6 @@
 
 package io.sarl.eclipse.runtime;
 
-
 /**
  * Exception in a SRE operation.
  *

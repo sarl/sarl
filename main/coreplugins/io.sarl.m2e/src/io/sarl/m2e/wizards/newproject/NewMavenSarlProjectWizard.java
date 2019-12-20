@@ -49,7 +49,6 @@ import org.eclipse.m2e.core.ui.internal.wizards.MavenProjectWizard;
 
 import io.sarl.lang.SARLVersion;
 
-
 /**
  * Wizard for creating a maven-based SARL project.
  *

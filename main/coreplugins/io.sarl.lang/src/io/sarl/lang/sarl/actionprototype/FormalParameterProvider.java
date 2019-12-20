@@ -25,8 +25,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.xbase.XExpression;
 
-
-
 /** An object able to provide the name and the type of a formal parameter.
 *
 * @author $Author: sgalland$

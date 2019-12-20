@@ -38,7 +38,6 @@ import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.util.internal.EmfAdaptable;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-
 /** Provider of a generator configuration v2.
  *
  * @author $Author: sgalland$

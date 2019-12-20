@@ -49,7 +49,6 @@ public class SARLCodeminingPreferenceAccess extends AbstractPreferenceAccess {
 	 */
 	public static final boolean CODEMINING_DEFAULT_VALUE = true;
 
-
 	/** Replies if the codemining feature is enable into the SARL editor.
 	 *
 	 * @return {@code true} if it is enabled.

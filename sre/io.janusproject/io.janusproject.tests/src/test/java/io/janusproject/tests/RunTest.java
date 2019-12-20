@@ -47,7 +47,7 @@ import io.janusproject.Boot;
 @SuppressWarnings("all")
 public class RunTest {
 
-	private static final boolean CAPTURE_OUTPUTS = true;
+	private static final boolean CAPTURE_OUTPUTS = false;
 	
 	@Nullable
 	private PrintStream originalStdout;

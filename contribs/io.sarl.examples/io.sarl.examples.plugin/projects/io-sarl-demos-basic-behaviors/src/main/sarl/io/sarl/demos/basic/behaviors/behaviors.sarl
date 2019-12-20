@@ -58,7 +58,7 @@ behavior FactorialBehavior {
 	var upto : Long = 5l /* A behavior attribute */
 	
 	on BehaviorInitialize {
-		this.upto  = new Long(16) 
+		this.upto  = 16l 
 		info("Received Calculate for " + this.upto)   
 		wake(new Factorial => [ number = 0l ; value = 1l ]) /* Wake function send a new factorial event within the internal context of an agent (could be listen by the agent itself, its collections of behaviors and its sub-members) */		
 	}

@@ -30,7 +30,6 @@ import org.eclipse.xtext.xbase.typesystem.references.ArrayTypeReference;
 
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
 
-
 /** Code builder for formal parameters.
  *
  * <p>This implementation generates the code according to the SARL syntax (not the Xtend syntax).

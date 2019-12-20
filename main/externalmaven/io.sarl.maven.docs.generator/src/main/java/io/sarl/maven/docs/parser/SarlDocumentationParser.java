@@ -814,7 +814,6 @@ public class SarlDocumentationParser {
 		observer.apply(components);
 	}
 
-
 	/** Initialize the given context.
 	 *
 	 * @param context the context.

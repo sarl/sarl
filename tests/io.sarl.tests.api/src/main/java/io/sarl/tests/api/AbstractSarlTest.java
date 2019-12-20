@@ -2092,17 +2092,18 @@ public abstract class AbstractSarlTest extends Assert {
 		}
 
 		protected Field getDeclaredField(Class<?> clazz, String name) throws NoSuchFieldException {
+			Class<?> type = clazz;
 			NoSuchFieldException initialException = null;
 			do {
 				try {
-					Field f = clazz.getDeclaredField(name);
+					Field f = type.getDeclaredField(name);
 					return f;
 				} catch(NoSuchFieldException noSuchField) {
 					if (initialException == null) {
 						initialException = noSuchField;
 					}
 				}
-			} while((clazz = clazz.getSuperclass()) != null);
+			} while((type = type.getSuperclass()) != null);
 			throw initialException;
 		}
 
@@ -2201,8 +2202,11 @@ public abstract class AbstractSarlTest extends Assert {
 			assert receiver != null;
 			assert methodName != null;
 
+			final Object[] arguments;
 			if (args == null) {
-				args = new Object[] {null};
+				arguments = new Object[] {null};
+			} else {
+				arguments = args;
 			}
 
 			Class<? extends Object> clazz = receiver.getClass();
@@ -2210,7 +2214,7 @@ public abstract class AbstractSarlTest extends Assert {
 			do {
 				for (Method candidate : clazz.getDeclaredMethods()) {
 					if (candidate != null && !candidate.isBridge() && Objects.equal(methodName, candidate.getName())
-							&& isValidArgs(candidate.isVarArgs(), args, candidate.getParameterTypes())) {
+							&& isValidArgs(candidate.isVarArgs(), arguments, candidate.getParameterTypes())) {
 						if (compatible != null) 
 							throw new IllegalStateException("Ambiguous methods to invoke. Both "+compatible+" and  "+candidate+" would be compatible choices.");
 						compatible = candidate;
@@ -2223,18 +2227,18 @@ public abstract class AbstractSarlTest extends Assert {
 				if (compatible.isVarArgs()) {
 					Object[] newArgs = new Object[compatible.getParameterCount()];
 					for (int i = 0; i < compatible.getParameterCount() - 1; ++i) {
-						newArgs[i] = args[i];
+						newArgs[i] = arguments[i];
 					}
 					Class<?> componentType = compatible.getParameterTypes()[compatible.getParameterCount() - 1].getComponentType();
-					int varArgsLength = args.length - compatible.getParameterCount() + 1;
+					int varArgsLength = arguments.length - compatible.getParameterCount() + 1;
 					Object varArgs = Array.newInstance(componentType, varArgsLength);
 					for (int i = 0; i < varArgsLength; ++i) {
-						Array.set(varArgs, i, args[i + compatible.getParameterCount() - 1]);
+						Array.set(varArgs, i, arguments[i + compatible.getParameterCount() - 1]);
 					}
 					newArgs[compatible.getParameterCount() - 1] = varArgs;
 					return compatible.invoke(compatible.getDeclaringClass().cast(receiver), (Object[]) newArgs);
 				}
-				return compatible.invoke(compatible.getDeclaringClass().cast(receiver), (Object[]) args);
+				return compatible.invoke(compatible.getDeclaringClass().cast(receiver), (Object[]) arguments);
 			}
 			// not found provoke method not found exception
 			Method method = receiver.getClass().getMethod(methodName);

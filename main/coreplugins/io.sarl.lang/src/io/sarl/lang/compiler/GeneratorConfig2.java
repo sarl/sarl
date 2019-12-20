@@ -25,7 +25,6 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import io.sarl.lang.SARLConfig;
 
-
 /** Configuration for the SARL generator.
  *
  * @author $Author: sgalland$

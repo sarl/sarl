@@ -103,7 +103,6 @@ public final class SREutils {
 	 * @param agent the agent.
 	 * @param type the type of the capacity.
 	 * @return the skill reference
-	 * @throws UnimplementedCapacityException if the agent has not a skill for the given capacity.
 	 * @since 0.6
 	 */
 	@Pure
@@ -118,7 +117,6 @@ public final class SREutils {
 	 * @param reference the reference to cast.
 	 * @param type the type of the capacity.
 	 * @return the skill reference
-	 * @throws UnimplementedCapacityException if the agent has not a skill for the given capacity.
 	 * @since 0.6
 	 */
 	@Pure
@@ -146,7 +144,6 @@ public final class SREutils {
 	 * @param agent the agent.
 	 * @param type the type of the capacity.
 	 * @return the skill.
-	 * @throws UnimplementedCapacityException if the agent has not a skill for the given capacity.
 	 * @since 0.6
 	 */
 	@Pure

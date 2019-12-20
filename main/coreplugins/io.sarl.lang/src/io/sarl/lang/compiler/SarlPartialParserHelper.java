@@ -23,7 +23,6 @@ package io.sarl.lang.compiler;
 
 import org.eclipse.xtend.core.parser.XtendPartialParsingHelper;
 
-
 /** A customized partial parsing helper that falls eagerly back to a full parse
  * as soon as the new token sequence would be different from the old one.
  * This approach allows to benefit from partial parsing whenever a token content

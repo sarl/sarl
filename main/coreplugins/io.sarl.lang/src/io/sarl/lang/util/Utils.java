@@ -643,7 +643,6 @@ public final class Utils {
 		return toLightweightTypeReference(type, services, false);
 	}
 
-
 	/** Convert a type to a lightweight type reference.
 	 *
 	 * @param type - type to convert.
@@ -1736,7 +1735,6 @@ public final class Utils {
 			}
 		}
 	}
-
 
 	/** Set the given structure feature with the given value.
 	 *

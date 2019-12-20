@@ -44,7 +44,6 @@ import io.sarl.lang.codebuilder.builders.ISarlSkillBuilder;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Skill;
 
-
 /**
  * Wizard page for creating a new SARL skill.
  *

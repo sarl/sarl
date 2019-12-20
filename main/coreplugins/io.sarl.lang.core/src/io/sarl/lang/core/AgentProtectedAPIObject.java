@@ -63,7 +63,6 @@ public abstract class AgentProtectedAPIObject extends SRESpecificDataContainer {
 	 * @param <S> - type of the capacity.
 	 * @param capacity the capacity to search for the implementation.
 	 * @return the skill, never <code>null</code>
-	 * @throws UnimplementedCapacityException - if no skill is owned by the agent for the given capacity.
 	 */
 	@Pure
 	protected abstract <S extends Capacity> S getSkill(Class<S> capacity);
@@ -76,7 +75,6 @@ public abstract class AgentProtectedAPIObject extends SRESpecificDataContainer {
 	 *
 	 * @param capacity the capacity to search for the implementation.
 	 * @return the reference to the skill, never <code>null</code>
-	 * @throws UnimplementedCapacityException - if no skill is owned by the agent for the given capacity.
 	 */
 	@Pure
 	protected abstract ClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity);

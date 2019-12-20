@@ -342,7 +342,7 @@ abstract class GenerationContext {
 	 *
 	 * <p>The differed generation element are the element's components that could be
 	 * generated after the complete JVM type is generated. They are extended the
-	 * JVM type definition with additionnal elements (annotations...)
+	 * JVM type definition with additional elements (annotations...)
 	 *
 	 * @return the original collection of elements.
 	 * @since 0.5
@@ -402,7 +402,6 @@ abstract class GenerationContext {
 	public void setLocalTypeIndex(int index) {
 		this.localTypeIndex = index;
 	}
-
 
 	/** Replies if the given member is supported in the current context.
 	 *

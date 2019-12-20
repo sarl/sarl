@@ -28,7 +28,6 @@ import com.google.common.base.Strings;
 import org.apache.maven.artifact.Artifact;
 import org.osgi.framework.Version;
 
-
 /**
  * M2E utilities.
  *

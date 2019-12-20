@@ -23,7 +23,6 @@ package io.sarl.eclipse.runtime;
 
 import org.eclipse.core.resources.IProject;
 
-
 /** The objects that are implementing this interface are able to
  * create instances of {@link ProjectSREProvider}.
  *

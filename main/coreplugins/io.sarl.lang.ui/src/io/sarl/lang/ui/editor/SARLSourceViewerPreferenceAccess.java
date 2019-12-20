@@ -58,7 +58,6 @@ public class SARLSourceViewerPreferenceAccess extends AbstractPreferenceAccess {
 		return store.getBoolean(AUTOFORMATTING_PROPERTY);
 	}
 
-
 	/** Enable or disable the auto-formatting feature into the SARL editor.
 	 *
 	 * @param enable is {@code true} if it is enabled; {@code false} if it is disable; {@code null}

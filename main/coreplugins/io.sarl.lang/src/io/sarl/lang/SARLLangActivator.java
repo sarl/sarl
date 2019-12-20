@@ -24,8 +24,6 @@ package io.sarl.lang;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-
-
 /**
  * Bundle activator for the SARL language module.
  *

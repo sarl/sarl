@@ -456,7 +456,8 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	@Override
 	public String getAgentLaunchingArguments(ILaunchConfiguration configuration) {
 		try {
-			return Strings.nullToEmpty(configuration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, (String) null));
+			return Strings.nullToEmpty(configuration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS,
+					(String) null));
 		} catch (CoreException e) {
 			return null;
 		}

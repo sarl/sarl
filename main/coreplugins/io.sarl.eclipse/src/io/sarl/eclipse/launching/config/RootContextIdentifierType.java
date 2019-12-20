@@ -21,7 +21,6 @@
 
 package io.sarl.eclipse.launching.config;
 
-
 /**
  * Type of the root context identifier in the multiagent system.
  *

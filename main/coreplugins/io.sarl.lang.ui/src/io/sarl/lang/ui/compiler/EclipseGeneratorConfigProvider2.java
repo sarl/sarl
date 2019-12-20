@@ -33,7 +33,6 @@ import io.sarl.lang.compiler.GeneratorConfig2;
 import io.sarl.lang.compiler.IGeneratorConfigProvider2;
 import io.sarl.lang.ui.preferences.SARLBuilderPreferenceAccess;
 
-
 /** Provider of a generator configuration v2.
  *
  * @author $Author: sgalland$

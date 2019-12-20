@@ -353,7 +353,6 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 
 	}
 
-
 	/** A file to be opened that is associated to a project.
 	 *
 	 * @author $Author: sgalland$

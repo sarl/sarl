@@ -21,7 +21,6 @@
 
 package io.sarl.eclipse.runtime;
 
-
 /** The objects that are implementing this interface are able to
  * provide a project-level SRE to the {@link ProjectSREProvider}.
  *

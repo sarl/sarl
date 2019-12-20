@@ -769,7 +769,6 @@ public class PyExpressionGenerator extends AbstractExpressionGenerator {
 		return ifStatement;
 	}
 
-
 	/** Generate the given object.
 	 *
 	 * @param operator the instance-of operator.

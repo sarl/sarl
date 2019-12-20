@@ -21,7 +21,6 @@
 
 package io.sarl.lang.ide;
 
-
 /**
  * Use this class to register ide components.
  *
