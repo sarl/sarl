@@ -28,7 +28,7 @@ Require-Bundle: io.sarl.lang.ui;bundle-version="0.11.0";visibility:=reexport,
  org.eclipse.ui.console;bundle-version="3.9.0",
  org.eclipse.ui;bundle-version="3.115.0",
  org.eclipse.ui.intro;bundle-version="3.5.800",
- org.eclipse.ui.intro.quicklinks;bundle-version="1.0.300",
+ org.eclipse.ui.intro.quicklinks;bundle-version="1.0.400",
  org.eclipse.ui.intro.universal;bundle-version="3.3.700",
  org.arakhne.afc.core.vmutils;bundle-version="16.0.0",
  com.google.gson;bundle-version="2.8.5"
