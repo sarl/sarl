@@ -580,7 +580,7 @@ class BehaviorGuardEvaluatorRegistry {
 					
 					var eventSubscribers : Pair<(Event) => Boolean, Set<BehaviorGuardEvaluator>> = this.behaviorGuardEvaluators.get(eventType);
 					if (eventSubscribers != null && eventSubscribers.getValue() != null
-							&& (eventSubscribers.getKey() == null || eventSubscribers.getKey().apply(^event))) {
+							&& (eventSubscribers.getKey() === null || eventSubscribers.getKey().apply(^event))) {
 						iBehaviorGuardEvaluators.addAll(eventSubscribers.getValue());
 					}
 				}
@@ -613,11 +613,11 @@ class BehaviorGuardEvaluatorRegistry {
 		val eventTypes = flattenHierarchy(^event.class)
 		var iBehaviorGuardEvaluators : ConcurrentLinkedDeque<BehaviorGuardEvaluator>  = new ConcurrentLinkedDeque();
 		
-		if(listener != null) {
+		//if(listener != null) {
 			for (eventType : eventTypes) {					
 				var eventSubscribers : Pair<(Event) => Boolean, Set<BehaviorGuardEvaluator>> = this.behaviorGuardEvaluators.get(eventType);
 				if (eventSubscribers != null && eventSubscribers.getValue() != null
-						&& (eventSubscribers.getKey() == null || eventSubscribers.getKey().apply(^event))) {
+						&& (eventSubscribers.getKey() === null || eventSubscribers.getKey().apply(^event))) {
 					//iBehaviorGuardEvaluators.addAll(eventSubscribers.getValue());
 					for (evaluator : eventSubscribers.getValue()) {
 						if(evaluator.target === listener) {
@@ -627,15 +627,15 @@ class BehaviorGuardEvaluatorRegistry {
 					
 				}
 			}
-		} else {
+		/*} else {
 			for (eventType : eventTypes) {					
 				var eventSubscribers : Pair<(Event) => Boolean, Set<BehaviorGuardEvaluator>> = this.behaviorGuardEvaluators.get(eventType);
 				if (eventSubscribers != null && eventSubscribers.getValue() != null
-						&& (eventSubscribers.getKey() == null || eventSubscribers.getKey().apply(^event))) {
+						&& (eventSubscribers.getKey() === null || eventSubscribers.getKey().apply(^event))) {
 					iBehaviorGuardEvaluators.addAll(eventSubscribers.getValue());
 				}
 			}
-		}
+		}*/
 		return iBehaviorGuardEvaluators;
 	}
 
