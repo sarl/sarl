@@ -7,7 +7,12 @@
 			<unit id="org.arakhne.afc.core.text" version="16.0.0"/>
 			<unit id="org.arakhne.afc.core.util" version="16.0.0"/>
 			<unit id="org.arakhne.afc.core.vmutils" version="16.0.0"/>
-			<unit id="org.mockito.mockito-core" version="3.2.0"/>
+			<unit id="org.arakhne.afc.core.inputoutput" version="16.0.0"/>
+			<unit id="org.mockito.mockito-core" version="3.2.4"/>
+			<unit id="com.fasterxml.jackson.core.jackson-annotations" version="2.9.8"/>
+			<unit id="io.bootique" version="1.0.0"/>
+			<unit id="org.arakhne.afc.bootique.log4j" version="16.0.0"/>
+			<unit id="org.arakhne.afc.bootique.variables" version="16.0.0"/>
 			<unit id="org.objenesis" version="2.6.0"/>
 			<unit id="slf4j.api" version="2.0.0.alpha1"/>
 			<repository location="http://download.tuxfamily.org/arakhne/p2/"/>
