@@ -27,19 +27,19 @@ import java.util.Map;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
+
 import org.eclipse.core.runtime.IPath;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import io.janusproject.Boot;
-import io.janusproject.Bootstrap;
-import io.janusproject.JanusConfig;
 import io.janusproject.eclipse.buildpath.JanusClasspathContainer;
 import io.janusproject.eclipse.buildpath.JanusClasspathContainerInitializer;
-
+import io.sarl.bootstrap.SREBootstrap;
 import io.sarl.eclipse.runtime.AbstractSREInstall;
 import io.sarl.eclipse.runtime.SREConstants;
 import io.sarl.eclipse.util.BundleUtil.IBundleDependencies;
+import io.sarl.sre.boot.Boot;
+import io.sarl.sre.boot.configs.SreConfig;
 
 /**
  * Provide Janus as a SRE install.
@@ -77,9 +77,10 @@ public class JanusSREInstall extends AbstractSREInstall {
 		this.janusSREInstallPath = dependencies.getBundleBinaryPath();
 		assert this.janusSREInstallPath != null;
 		this.location = this.janusSREInstallPath.toPortableString();
-		setName(JanusConfig.JANUS_DEFAULT_PLATFORM_NAME);
+		//TODO Verify that PREFIX is the correct replacement of the previous config that was .JANUS_DEFAULT_PLATFORM_NAME
+		setName(SreConfig.PREFIX);
 		setMainClass(Boot.class.getName());
-		setBootstrap(Bootstrap.class.getName());
+		setBootstrap(SREBootstrap.class.getName());
 		//
 		setClassPathEntries(dependencies.getTransitiveRuntimeClasspathEntries(true));
 	}
@@ -106,7 +107,8 @@ public class JanusSREInstall extends AbstractSREInstall {
 	@Override
 	public Map<String, String> getAvailableCommandLineOptions() {
 		final Map<String, String> options = Maps.newHashMap();
-		options.put(SREConstants.MANIFEST_CLI_SHOW_LOGO, ""); //$NON-NLS-1$
+		//TODO Terminer le mapping avec les bonnes options de la nouvelle version de Janus, decommenter ci-dessus pour mettre les bonnes options de lignes de commandes
+		/*options.put(SREConstants.MANIFEST_CLI_SHOW_LOGO, ""); //$NON-NLS-1$
 		options.put(SREConstants.MANIFEST_CLI_HIDE_LOGO, formatCommandLineOption(Boot.CLI_OPTION_NOLOGO_LONG, null));
 		options.put(SREConstants.MANIFEST_CLI_SHOW_INFO, formatCommandLineOption(Boot.CLI_OPTION_LOG_LONG, "info")); //$NON-NLS-1$
 		options.put(SREConstants.MANIFEST_CLI_HIDE_INFO, formatCommandLineOption(Boot.CLI_OPTION_LOG_LONG, "warning")); //$NON-NLS-1$
@@ -114,7 +116,7 @@ public class JanusSREInstall extends AbstractSREInstall {
 		options.put(SREConstants.MANIFEST_CLI_RANDOM_CONTEXT_ID, formatCommandLineOption(Boot.CLI_OPTION_RANDOMID_LONG, null));
 		options.put(SREConstants.MANIFEST_CLI_BOOT_AGENT_CONTEXT_ID, formatCommandLineOption(Boot.CLI_OPTION_BOOTID_LONG, null));
 		options.put(SREConstants.MANIFEST_CLI_SRE_OFFLINE, formatCommandLineOption(Boot.CLI_OPTION_OFFLINE_LONG, null));
-		options.put(SREConstants.MANIFEST_CLI_EMBEDDED, formatCommandLineOption(Boot.CLI_OPTION_EMBEDDED_LONG, null));
+		options.put(SREConstants.MANIFEST_CLI_EMBEDDED, formatCommandLineOption(Boot.CLI_OPTION_EMBEDDED_LONG, null));*/
 		options.put(SREConstants.MANIFEST_CLI_NO_MORE_OPTION, formatCommandLineOption(null, null));
 		return Collections.unmodifiableMap(options);
 	}
