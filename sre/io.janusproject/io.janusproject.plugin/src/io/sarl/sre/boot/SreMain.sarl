@@ -1,0 +1,373 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2019 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.boot
+
+import com.google.common.base.Throwables
+import com.google.common.util.concurrent.Service
+import com.google.inject.Injector
+import com.google.inject.Module
+import com.google.inject.ProvisionException
+import io.bootique.BQRuntime
+import io.bootique.Bootique
+import io.bootique.help.HelpOption
+import io.bootique.help.HelpOptions
+import io.bootique.meta.application.ApplicationMetadata
+import io.sarl.bootstrap.SRE
+import io.sarl.bootstrap.SREBootstrap
+import io.sarl.lang.core.Agent
+import io.sarl.lang.core.AgentContext
+import io.sarl.sre.Kernel
+import io.sarl.sre.boot.configs.SreConfig
+import io.sarl.sre.boot.configs.subconfigs.BootConfig
+import io.sarl.sre.boot.configs.subconfigs.RootContextType
+import io.sarl.sre.services.lifecycle.KernelAgentLifecycleListener
+import io.sarl.sre.services.lifecycle.LifecycleService
+import io.sarl.sre.services.logging.LoggingService
+import java.util.List
+import java.util.UUID
+import org.apache.log4j.Logger
+import org.arakhne.afc.bootique.log4j.configs.Level
+import org.arakhne.afc.bootique.log4j.configs.Log4jIntegrationConfig
+import org.arakhne.afc.bootique.variables.VariableNames
+import org.arakhne.afc.util.OutputParameter
+import org.eclipse.xtend.lib.annotations.Accessors
+
+import static io.sarl.bootstrap.SRE.*
+
+/** Class that implements the standard main function for running a SARL run-time environment
+ * with bootique modules.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.9
+ */
+class SreMain implements SREBootstrap {
+
+	@Accessors(PUBLIC_GETTER)
+	var kernel : Kernel
+
+	@Accessors(PUBLIC_GETTER)
+	var runtime : BQRuntime
+
+	var isResetableBootAgent = true
+
+	var lastBootAgent : UUID
+
+	var bootType : RootContextType
+
+	var userDefinedContextId : UUID
+
+	var userDefinedSpaceId : UUID
+	
+	/** Set the Bootique runtime instance.
+	 *
+	 * @param runtime the new Bootique runtime.
+	 * @return {@code true} if the runtime has been changed.
+	 */
+	def setRuntime(runtime : BQRuntime) : boolean {
+		if (this.runtime !== runtime) {
+			this.runtime = runtime
+			return true
+		}
+		return false
+	}
+
+	override isRunning : boolean {
+		return this.kernel !== null && this.kernel.isRunning
+	}
+
+	override setRandomContextUUID {
+		this.bootType = RootContextType::RANDOM
+		this.userDefinedContextId = null
+	}
+
+	override setBootAgentTypeContextUUID {
+		this.bootType = RootContextType::BOOT_AGENT_NAME
+		this.userDefinedContextId = null
+	}
+
+	override setSpecificContextUUID {
+		this.bootType = RootContextType::DEFAULT
+		this.userDefinedContextId = null
+	}
+
+	override setUniverseContextUUID(id : UUID) {
+		this.userDefinedContextId = id
+	}
+
+	override getUniverseContextUUID : UUID {
+		this.userDefinedContextId
+	}
+
+	override setUniverseSpaceUUID(id : UUID) {
+		this.userDefinedSpaceId = id
+	}
+
+	override getUniverseSpaceUUID : UUID {
+		this.userDefinedSpaceId
+	}
+
+	override setVerboseLevel(level : int) {
+		var config = ensureBootiqueRuntimeInstance(null, null).getInstance(typeof(Log4jIntegrationConfig))
+		var levels = Level::values
+		var lvl = if (level < 0) 0 else (if (level >= levels.length) levels.length - 1 else level)
+		var levelObject = levels.get(lvl)
+		config.level = levelObject
+		var logger = getKernelLogger
+		if (logger !== null) {
+			logger.level = levelObject.toJul
+		}
+	}
+
+	override getKernelLogger : java.util.logging.Logger {
+		if (isActive) {
+			var service = this.runtime.getInstance(typeof(LoggingService))
+			return service.platformLogger
+		}
+		return null
+	}
+
+	/** Create the SRE runtime.
+	 * 
+	 * @param bootique the instance of the bootique accessor, or {@code null} if none is provided.
+	 * @param module specify the type of the injection module to be used by the bootique accessor.
+	 * @param args the command line arguments to put into the bootique accessor. This argument is used only if {@code bootique}
+	 *      is evaluated to {@code null}.
+	 * @return the runtime.
+	 */
+	protected def createRuntime(bootique : Bootique, module : Class<? extends Module>, args : String*) : BQRuntime {
+		var bt = bootique ?: Bootique::app(args)
+		if (module !== null) {
+			bt = bt.module(module)
+		}
+		return bt.autoLoadModules.createRuntime
+	}
+
+	private def ensureBootiqueRuntimeInstance(bootique : Bootique, module : Class<? extends Module>, args : String*) : BQRuntime {
+		var r = this.runtime
+		if (r === null) {
+			this.runtime = createRuntime(bootique, module, args)
+			r = this.runtime
+		}
+		return this.runtime
+	}
+
+	/** Run the SRE.
+	 *
+	 * <p>This function runs the SRE and exits with the return code.
+	 *
+	 * @param args the command line arguments.
+	 * @return the exit code.
+	 */
+	def runSRE(args : String*) : int {
+		var runtime = ensureBootiqueRuntimeInstance(null, null, args)
+		try {
+			// Force the bootstrap to be this object
+			SRE::bootstrap = this
+			val outcome = runtime.run
+			if (outcome !== null) {
+				if (!outcome.success && outcome.exception !== null) {
+					Logger::rootLogger.error(outcome.message, outcome.exception)
+				}
+				return outcome.exitCode
+			}
+		} catch (exception : ProvisionException) {
+			val ex = Throwables::getRootCause(exception)
+			if (ex !== null) {
+				Logger::rootLogger.error(ex.localizedMessage)
+			} else {
+				Logger.rootLogger.error(exception.localizedMessage)
+			}
+		} catch (exception : Throwable) {
+			Logger::rootLogger.error(exception.localizedMessage)
+		}
+		return 255
+	}
+
+	/** Replies the options of the program.
+	 *
+	 * @return the options of the program.
+	 */
+	def getOptions : List<HelpOption> {
+		val runtime = ensureBootiqueRuntimeInstance(null, null)
+		val application = runtime.getInstance(typeof(ApplicationMetadata))
+		val helpOptions = new HelpOptions
+
+		application.commands.forEach [ c |
+			helpOptions.add(c.asOption)
+			c.options.forEach [o | helpOptions.add(o)]
+		]
+
+		application.options.forEach [o | helpOptions.add(o)]
+
+		return helpOptions.options
+	}
+	
+	override getBootAgentIdentifier : UUID {
+		this.lastBootAgent
+	}
+
+	private def ensureKernelInstance(bootique : Bootique, module : Class<? extends Module>, args : String*) : Kernel {
+		var k = this.kernel
+		if (k === null) {
+			var runtime = ensureBootiqueRuntimeInstance(bootique, module, args)
+			val injector = runtime.getInstance(typeof(Injector))
+			// Update the method for selecting the root context identifier
+			if (this.bootType !== null
+					|| this.userDefinedContextId !== null
+					|| this.userDefinedSpaceId !== null) {
+				val sreConfig = injector.getInstance(typeof(SreConfig))
+				if (this.bootType !== null) {
+					sreConfig.boot.rootContextBootType = this.bootType
+				}
+				if (this.userDefinedContextId !== null) {
+					sreConfig.boot.rootContextID = this.userDefinedContextId
+				}
+				if (this.userDefinedSpaceId !== null) {
+					sreConfig.boot.rootSpaceID = this.userDefinedSpaceId
+				}
+			}
+			k = injector.getInstance(typeof(Kernel))
+			val listener : KernelAgentLifecycleListener = [
+				this.kernel = null
+				this.runtime = null
+				this.isResetableBootAgent = true
+			]
+			k.getService(typeof(LifecycleService)).addKernelAgentLifecycleListener(listener)
+			this.kernel = k
+		}
+		// Force the bootstrap to be this object
+		SRE::bootstrap = this
+		return this.kernel
+	}
+
+	/** Start the agent framework without agent.
+	 * 
+	 * @param bootique the Bootique instance to set up the framework. If it is {@code null},
+	 * the default Bootique instance is created.
+	 * @param module the injection module to use. If it is {@code null}, the default module is used.
+	 */
+	def startWithoutAgent(bootique : Bootique = null, module : Class<? extends Module> = null) : AgentContext {
+		ensureKernelInstance(bootique, module).rootContext
+	}
+	
+	def startAgent(nbAgents : int, agentCls : Class<? extends Agent>,
+		params : Object*) : Iterable<UUID> throws Exception {
+		val propName = VariableNames::toPropertyName(BootConfig::BOOT_AGENT_NAME)
+		val old = System::setProperty(propName, agentCls.name)
+		var kernel : Kernel
+		try {
+			kernel = ensureKernelInstance(null, null)
+		} finally {
+			if (old === null) {
+				System::clearProperty(propName)
+			} else {
+				System::setProperty(propName, old)
+			}
+		}
+		var ids = new OutputParameter<List<UUID>>(emptyList)
+		kernel.spawn(nbAgents, agentCls, [
+			ids.set(it)
+			if (this.isResetableBootAgent) {
+				this.lastBootAgent = it.head
+				
+			}
+		], params)
+		
+		return ids.get		
+	}
+
+	/** Start the boot agent if it is specified in the boot configuration.
+	 */
+	def startBootAgent : UUID {
+		var config = this.runtime.getInstance(typeof(SreConfig)).boot
+		var bootAgent = config.getBootAgent(this.class.classLoader)
+		assert bootAgent !== null
+		var args = config.agentStartArgs
+		startAgent(bootAgent, args)
+	}
+
+	def startAgent(agentCls : Class<? extends Agent>, params : Object*) : UUID throws Exception {
+		val propName = VariableNames::toPropertyName(BootConfig::BOOT_AGENT_NAME)
+		assert propName !== null
+		var alreadyLaunched = System::getProperty(propName)
+		if (alreadyLaunched.nullOrEmpty) {
+			// Force the property that indicates the booted agent
+			System::setProperty(propName, agentCls.name)
+		}
+		val kernel = ensureKernelInstance(null, null)
+		val id = new OutputParameter<UUID>
+		kernel.spawn(agentCls, [
+			id.set(it)
+			if (this.isResetableBootAgent) {
+				this.lastBootAgent = it
+			}
+		], params)
+		return id.get
+	}
+	
+	def startAgentWithID(agentCls : Class<? extends Agent>, agentID : UUID, params : Object*) throws Exception {
+		val propName = VariableNames::toPropertyName(BootConfig::BOOT_AGENT_NAME)
+		assert propName !== null
+		var alreadyLaunched = System::getProperty(propName)
+		if (alreadyLaunched.nullOrEmpty) {
+			// Force the property that indicates the booted agent
+			System::setProperty(propName, agentCls.name)
+		}
+		val kernel = ensureKernelInstance(null, null)
+		kernel.spawn(agentID, agentCls, [
+			if (this.isResetableBootAgent) {
+				this.lastBootAgent = it
+			}
+		], params)
+	}
+
+	@SuppressWarnings("discouraged_reference")
+	def shutdown(blocking : boolean) throws InterruptedException {
+		var kern = this.kernel
+		this.kernel = null
+		if (kern !== null) {
+			var stopBehavior = kern.shutdownTrigger
+			stopBehavior.run
+			if (blocking) {
+				while (kern.running) {
+					Thread::yield
+				}
+			}
+		}
+	}
+
+	override getService(serviceType : Class<T>) : T with T {
+		if (typeof(Service).isAssignableFrom(serviceType)) {
+			var kern = this.kernel
+			if (kern !== null) {
+				var castedServiceType = serviceType.asSubclass(typeof(Service))
+				var serv = kern.getService(castedServiceType)
+				return serviceType.cast(serv)
+			}
+		}
+		return null
+	}
+
+}

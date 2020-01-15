@@ -1,0 +1,82 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2019 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.boot.internal.spaces
+
+import com.google.inject.AbstractModule
+import com.google.inject.Injector
+import com.google.inject.Module
+import com.google.inject.Provides
+import io.bootique.BQModule
+import io.bootique.BQModuleProvider
+import io.sarl.core.OpenEventSpaceSpecification
+import io.sarl.sre.KernelScope
+import io.sarl.sre.services.logging.LoggingService
+import io.sarl.sre.spaces.SpaceParticipantListenerFactory
+import io.sarl.sre.spaces.SreOpenEventSpaceSpecification
+import java.util.concurrent.locks.ReadWriteLock
+import javax.inject.Provider
+
+/** 
+ * Module for configuring the SARL spaces.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+class SpacesModule extends AbstractModule {
+
+	protected override configure {
+		//
+	}
+
+	/** This injection definition is for the default spaces. */
+	@Provides
+	@KernelScope
+	def provideDefaultSpaceSpecification(injector : Injector, lockProvider : Provider<ReadWriteLock>,
+		@KernelScope spaceParticipantListenerFactory : Provider<SpaceParticipantListenerFactory>,
+		logger : LoggingService) : OpenEventSpaceSpecification {
+		new SreOpenEventSpaceSpecification(injector, lockProvider, null, spaceParticipantListenerFactory.get,
+			logger)
+	}
+
+}
+
+/** Provider of the module for configuring the SARL spaces.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.9
+ */
+class SpacesModuleProvider implements BQModuleProvider {
+
+	override module : Module {
+		return new SpacesModule
+	}
+
+	override moduleBuilder : BQModule.Builder {
+		return BQModule::builder(module).overrides(overrides).providerName(name).configs(configs).description(
+			Messages::SpacesModuleProvider_0);
+	}
+
+}

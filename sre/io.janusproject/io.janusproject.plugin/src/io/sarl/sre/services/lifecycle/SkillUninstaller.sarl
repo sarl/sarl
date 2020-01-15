@@ -1,0 +1,126 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2019 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.services.lifecycle
+
+import com.google.common.collect.Collections2
+import com.google.inject.ImplementedBy
+import io.sarl.core.Destroy
+import io.sarl.lang.annotation.PrivateAPI
+import io.sarl.lang.core.Agent
+import io.sarl.lang.core.SREutils
+import io.sarl.lang.core.Skill
+import io.sarl.lang.core.Skill.UninstallationStage
+import java.util.ArrayList
+
+/** 
+ * Install and uninstall the skills. 
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.6.0
+ */
+@ImplementedBy(typeof(BasicSkillUninstaller))
+interface SkillUninstaller {
+
+	/** Uninstall the skills before the destroying event handler of the agent is invoked.
+	 *
+	 * @param agent the agent for which the skills should be uninstalled.
+	 * @return the skills to pass to {@link #uninstallSkillsAfterDestroy(io.sarl.lang.core.Agent, java.util.Iterable)}.
+	 */
+	def uninstallSkillsBeforeDestroy(^agent : Agent) : Iterable<? extends Skill>
+
+	/** Uninstall the skills after the destroying event handler of the agent is invoked.
+	 * 
+	 * @param agent the agent for which the skills should be uninstalled.
+	 * @param skills the skills given by {@link #uninstallSkillsBeforeDestroy(io.sarl.lang.core.Agent)}.
+	 */
+	def uninstallSkillsAfterDestroy(^agent : Agent, skills : Iterable<? extends Skill>)
+
+}
+
+/** 
+ * Install and uninstall the skills. 
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.6.0
+ */
+@SuppressWarnings("use_reserved_sarl_annotation")
+@PrivateAPI(isCallerOnly = true)
+class BasicSkillUninstaller implements SkillUninstaller {
+
+	/** Retrieve the skills that are installed into the given agent.
+	 *
+	 * <p>This function ensures that a skill is not added two times into the replied skills.
+	 * This case may appends when a skill implements multiple capacities.
+	 * 
+	 * @return the skills.
+	 */
+	private static def getAllSkills(^agent : Agent) : Iterable<? extends Skill>  {
+		// Get the registered skills
+		val skills = SREutils.getSkillRepository(^agent)
+		if (skills !== null) {
+			return new ArrayList(Collections2.transform(skills.values) [it.get])
+		}
+		return emptyList
+	}
+
+	def uninstallSkillsBeforeDestroy(^agent : Agent) : Iterable<? extends Skill> {
+		val skills = ^agent.getAllSkills
+		skills.uninstallSkillsPreStage
+		return skills
+	}
+
+	def uninstallSkillsAfterDestroy(^agent : Agent, skills : Iterable<? extends Skill>) {
+		skills.uninstallSkillsFinalStage
+	}
+
+	/** Run the uninstallation functions of the skills for the pre stage of the uninstallation process.
+	 * 
+	 * <p>This function is run before the handlers for {@link Destroy} are invoked.
+	 * 
+	 * @param skills the skills to uninstall.
+	 * @see #uninstallSkillsFinalStage(Agent)
+	 */
+	private static def uninstallSkillsPreStage(skills : Iterable<? extends Skill>) {
+		for (^skill : skills) {
+			SREutils::doSkillUninstallation(^skill, UninstallationStage::PRE_DESTROY_EVENT)
+		}
+	}
+
+	/** Run the uninstallation functions of the skills for the final stage of the uninstallation process.
+	 * 
+	 * <p>This function is run after the handlers for {@link Destroy} are invoked.
+	 * 
+	 * @param skills the skills to uninstall.
+	 * @see #uninstallSkillsPreStage(Agent)
+	 */
+	private static def uninstallSkillsFinalStage(skills : Iterable<? extends Skill>) {
+		for (^skill : skills) {
+			SREutils::doSkillUninstallation(^skill, UninstallationStage::POST_DESTROY_EVENT)
+		}
+	}
+
+}

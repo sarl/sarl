@@ -1,0 +1,191 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2019 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.skills.bic
+
+import io.sarl.core.InnerContextAccess
+import io.sarl.lang.core.AgentContext
+import io.sarl.lang.core.Event
+import io.sarl.lang.core.Space
+import io.sarl.lang.core.SpaceID
+import io.sarl.lang.util.SynchronizedIterable
+import io.sarl.sre.capacities.InternalEventBusCapacity
+import io.sarl.sre.services.context.ContextService
+import io.sarl.sre.services.lifecycle.AgentLife
+import io.sarl.sre.skills.BuiltinSkill
+import io.sarl.util.concurrent.Collections3
+import java.util.UUID
+import java.util.concurrent.locks.ReadWriteLock
+import javax.inject.Inject
+import javax.inject.Provider
+
+import static io.sarl.sre.services.lifecycle.AgentLife.*
+
+/** 
+ * SRE implementation of SARL's {@link InnerContextAccess} built-in capacity.
+ *
+ * <p>The inner context instance is stored into the {@link AgentLife}.
+ * 
+ * @author $Author: srodriguez$
+ * @author $Author: ngaud$
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+@SuppressWarnings("potential_field_synchronization_problem")
+skill InnerContextAccessSkill extends BuiltinSkill implements InnerContextAccess {
+
+	uses InternalEventBusCapacity
+
+	val contextService : ContextService
+
+	/** Constructor. */
+	@Inject	
+	new (service : ContextService, lockProvider : Provider<ReadWriteLock>) {
+		super(lockProvider)
+		this.contextService = service
+	}
+
+	/** Destroy the inner context instance.
+	 *
+	 * <p>This function is thread-safe.
+	 */
+	private def detroyInnerContext {
+		var context = getLife(owner, this.lockProvider).setInnerContext(null)
+		if (context !== null) {
+			var ^space = context.defaultSpace
+			// Unregister the agent from the default space
+			val listener = associatedEventBusListener
+			^space.unregister(listener)
+			// Destroy the context
+			this.contextService.removeContext(context.ID)
+		}
+	}
+
+	protected override uninstall(stage : UninstallationStage) {
+		if (stage === UninstallationStage.POST_DESTROY_EVENT) {
+			detroyInnerContext
+		}
+	}
+
+	def getInnerContext : AgentContext {
+		val myself = owner
+		var newContext = false
+		var life = getLife(myself, this.lockProvider)
+		var context = life.innerContext
+		if (context === null) {
+			var lck = life.getLock
+			lck.writeLock.lock
+			try {
+				context = life.innerContext
+				if (context === null) {
+					var spaceId = life.addressInInnerDefaultSpace.spaceID
+					context = this.contextService.createContext(spaceId.contextID, spaceId.ID, myself)
+					life.innerContext = context
+					newContext = true
+				}
+			} finally {
+				lck.writeLock.unlock
+			}
+		}
+		if (newContext) {
+			// Register the agent in the default space
+			var ^space = context.defaultSpace
+			// Unregister the agent from the default space
+			val listener = associatedEventBusListener
+			^space.register(listener)
+		}
+		return context
+	}
+
+	def isInInnerDefaultSpace(^event : Event) : boolean {
+		if (^event !== null) {
+			val adr = ^event.source
+			if (adr !== null) {
+				return adr.spaceID.isInnerDefaultSpace
+			}
+		}
+		return false
+	}
+
+	def isInnerDefaultSpace(^space : Space) : boolean {
+		isInnerDefaultSpace(^space.spaceID)
+	}
+
+	def isInnerDefaultSpace(spaceID : SpaceID) : boolean {
+		val context = getLife(owner, this.lockProvider).innerContext
+		context !== null && spaceID == context.defaultSpace.spaceID
+	}
+
+	def isInnerDefaultSpace(spaceID : UUID) : boolean {
+		val context = getLife(owner, this.lockProvider).innerContext
+		context !== null && spaceID == context.defaultSpace.spaceID.ID
+	}
+	
+	def getMemberAgentCount : int {
+		val context = getLife(owner, this.lockProvider).innerContext
+		if (context !== null) {
+			val participants = context.defaultSpace.participants
+			assert participants !== null
+			var count : int 
+			val lck = participants.lock
+			lck.readLock.lock
+			try {
+				assert !context.rootContext, "An inner context cannot be a root context"
+				assert participants.contains(owner.ID), "The agent must be a participant of its inner conntext's default space"
+				count = participants.size - 1
+			} finally {
+				lck.readLock.unlock
+			}
+			return count
+		}
+		return 0
+	}
+	
+	def getMemberAgents : SynchronizedIterable<UUID> {
+		val context = getLife(owner, this.lockProvider).innerContext
+		if (context !== null) {
+			val participants = context.defaultSpace.participants
+			assert participants !== null
+			var filtered = participants.filter [it != this.owner.ID]
+			return Collections3::unmodifiableSynchronizedIterable(filtered, participants.lock)
+		}
+		return Collections3::emptySynchronizedSet
+	}
+	
+	def hasMemberAgent : boolean {
+		val context = getLife(owner, this.lockProvider).innerContext
+		if (context !== null) {
+			val participants = context.defaultSpace.participants
+			assert participants !== null
+			val lck = participants.lock
+			lck.readLock.lock
+			try {
+				return (participants.size > 1) ||
+					((participants.size == 1) && (!participants.contains(this.owner.ID)))
+			} finally {
+				lck.readLock.unlock
+			}
+		}
+		return false;
+	}
+		
+}

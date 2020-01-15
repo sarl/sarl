@@ -1,0 +1,275 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2019 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.services.lifecycle
+
+import com.google.common.util.concurrent.Service
+import io.sarl.lang.core.Agent
+import io.sarl.lang.core.DynamicSkillProvider
+import io.sarl.sre.services.context.Context
+import java.util.EventListener
+import java.util.List
+import java.util.UUID
+import org.eclipse.xtend.lib.annotations.Accessors
+import org.eclipse.xtext.xbase.lib.util.ToStringBuilder
+
+/** 
+ * This service provides the tools to manage the life-cycle of the agents.
+ * 
+ * @author $Author: srodriguez$
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+interface LifecycleService extends Service {
+
+	/** 
+	 * Spawn agents of the given type, and pass the parameters to its initialization function.
+	 *
+	 * <p>This function is blocking until all the agents are spawned.
+	 * 
+	 * @param nbAgents the number of agents to spawn.
+	 * @param spawningAgent the agent which is spawning.
+	 * @param parent the parent entity that is creating the agents.
+	 * @param agentClazz the type of the agents to spawn.
+	 * @param agentId the identifier of the agent to spawn. If <code>null</code> the identifier is randomly selected.
+	 * If {@code nbAgents} is greater than 1, the agent identifier must be {@code null}.
+	 * @param params the list of the parameters to pass to the agent initialization function.
+	 * @return the result of the spawning action, including the identifiers of the agents, and the failure causes.
+	 */
+	def spawnAgent(nbAgents : int, spawningAgent : UUID, parent : Context, agentId : UUID,
+		agentClazz : Class<? extends Agent>, params : Object*) : SpawnResult
+
+	/**
+	 * Kill the given agent.
+	 * 
+	 * <p>An agent could be killed only if it does not contain sub-agents.
+	 * 
+	 * <p>Because the agent reference is passed to this function, only the objects which have this reference
+	 * could kill the agent.
+	 *
+	 * @param agent the agent to kill.
+	 * @return {@code true} if the agent was killed by this call; {@code false} if the agent
+	 *     is unknown or already killed.
+	 */
+	def killAgent(^agent : Agent) : boolean
+
+	/** 
+	 * Replies if the given agent could be killed
+	 * 
+	 * <p>An agent could be killed only if it does not contain sub-agents.
+	 * 
+	 * <p>Because the agent reference is passed to this function, only the objects which have this reference
+	 * could kill the agent.
+	 * 
+	 * @param agent the agent to kill.
+	 * @return {@code true} if the agent could be killed.
+	 */
+	def isKillableAgent(^agent : Agent) : boolean
+
+	/** 
+	 * Add a listener on the changes in the current state of an agent.
+	 *
+	 * @param agentLifecycleListener the listener on the any change in the life-cycle of the agent.
+	 */
+	def addLifecycleServiceListener(agentLifecycleListener : LifecycleServiceListener)
+
+	/**
+	 * Remove a listener on the changes in the current state of an agent.
+	 *
+	 * @param agentLifecycleListener the listener on the any change in the life-cycle of the agent.
+	 */
+	def removeLifecycleServiceListener(agentLifecycleListener : LifecycleServiceListener)
+
+	/**
+	 * Add a listener on the changes related to the kernel agent.
+	 *
+	 * @param listener listener on the spawning events in the local kernel.
+	 */
+	def addKernelAgentLifecycleListener(listener : KernelAgentLifecycleListener)
+
+	/**
+	 * Remove a listener on the changes related to the kernel agent.
+	 *
+	 * @param listener listener on the spawning events in the local kernel.
+	 */
+	def removeKernelAgentLifecycleListener(listener : KernelAgentLifecycleListener)
+
+	/** Add a dynamic skill provider that must be used for the agents that are spawned
+	 * after the call to this function.
+	 *
+	 * @param provider is the provider of skills for newly created agents.
+	 */
+	def addDynamicSkillProvider(provider : DynamicSkillProvider)
+
+	/** Remove a dynamic skill provider that must be not be used any more for the agents that are spawned.
+	 * 
+	 * @param provider is the provider of skills to be removed.
+	 */
+	def removeDynamicSkillProvider(provider : DynamicSkillProvider)
+
+}
+
+/** 
+ * Description of a spawning action's result.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.7.0
+ */
+final class SpawnResult {
+	
+	@Accessors(PUBLIC_GETTER)
+	val spawnedAgents : List<UUID>
+
+	val errors : List<Throwable>
+
+	var cause : Throwable
+	
+	new (spawnedAgents : List<UUID>, errors : List<Throwable>) {
+		assert spawnedAgents !== null
+		assert errors !== null
+		this.spawnedAgents = spawnedAgents
+		this.errors = errors
+	}
+
+	final override toString : String {
+		val builder = new ToStringBuilder(this)
+		toString(builder)
+		return builder.toString
+	}
+
+	/** Build the string representation of this result.
+	 *
+	 * @param buffer the buffer to fill out.
+	 */
+	def toString(buffer : ToStringBuilder) {
+		buffer.addDeclaredFields
+	}
+
+	/** Replies if the spawning action has encountered a failure.
+	 *
+	 * @return {@code true} if an error was encountered.
+	 */
+	def isFailing : boolean {
+		!this.errors.empty
+	}
+
+	/** Replies if the spawning action has generated at least one agent.
+	 * 
+	 * @return {@code true} if no error was encountered.
+	 */
+	def isAgentSpawned : boolean {
+		!this.spawnedAgents.empty
+	}
+
+	/** Replies the failing cause.
+	 *
+	 * @return the failing cause.
+	 * @see #throwAnyError()
+	 */
+	def getError : Throwable {
+		if (this.cause === null) {
+			switch (this.errors.size) {
+			case 0:
+				this.cause = null
+			case 1:
+				this.cause = this.errors.get(0)
+			default: {
+					this.cause = new CannotSpawnException
+					for (exception : this.errors) {
+						this.cause.addSuppressed(exception)
+					}
+				}
+			}
+		}
+		return this.cause
+	}
+
+	/** Throw the exception if the result has an error.
+	 *
+	 * <p>This function does not return when the result contains an error.
+	 *
+	 * @return the failing cause.
+	 * @see #getError()
+	 * @throws Exception the error into the result.
+	 */
+	def throwAnyError : void throws Exception {
+		val cause = getError
+		if (cause !== null) {
+			throw cause
+		}
+	}
+
+}
+
+/** 
+ * Listener on events related to the life-cycle of an agent.
+ * 
+ * @author $Author: srodriguez$
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+interface LifecycleServiceListener extends EventListener {
+
+	/** 
+	 * Invoked when the agent is spawned.
+	 * 
+	 * @param spawningAgent the identifier of the agent which spawns the given agent.
+	 * @param parent the context in which the agent was created.
+	 * @param agentType the type of the spawned agents.
+	 * @param spawnedAgents the spawned agents.
+	 * @param initializationParameters list of parameters that were passed to the agent.
+	 */
+	def agentSpawned(spawningAgent : UUID, parent : Context,
+		agentType : Class<? extends Agent>,
+		spawnedAgents : List<Agent>,
+		initializationParameters : Object[])
+
+	/**
+	 * Invoked when the agent is destroyed.
+	 * @param agent the destroyed agent.
+	 * @param outerContexts the contexts from which the given agent were removed after its destruction.
+	 */
+	def agentDestroyed(^agent : Agent, outerContexts : Iterable<ContextReference>)
+
+}
+
+/** 
+ * Listener on events related to the kernel agent.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+interface KernelAgentLifecycleListener extends EventListener {
+
+	/**
+	 * Invoked when the kernel agent is destroyed.
+	 */
+	def kernelAgentDestroyed
+
+}

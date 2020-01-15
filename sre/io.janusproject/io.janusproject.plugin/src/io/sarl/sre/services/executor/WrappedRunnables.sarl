@@ -1,0 +1,440 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2019 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.services.executor
+
+import java.util.concurrent.Callable
+import java.util.function.Consumer
+import java.util.logging.Level
+import java.util.logging.Logger
+import org.eclipse.xtend.lib.annotations.Accessors
+
+/** 
+ * Abstract implementation of a task that could be run on the JRE executor service.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.6
+ * @see Runnables
+ */
+abstract class SreExecutable {
+
+	val logger : Logger
+
+	/** 
+	 * @param logger the logger to use.
+	 */
+	protected new (logger : Logger) {
+		this.logger = logger
+	}
+
+	/** Replies the logger.
+	 * 
+	 * @return the logger, or {@code null} if the platform logger should be used.
+	 */
+	def getLogger : Logger {
+		this.logger
+	}
+
+	/** Replies a not-empty message for the given exception.
+	 *
+	 * @param ex the exception.
+	 * @return the error message.
+	 */
+	protected static def exceptionMessage(ex : Throwable) {
+		if (ex !== null) {
+			val msg = ex.localizedMessage
+			if (!msg.nullOrEmpty) {
+				return msg
+			}
+		}
+		var msg = ex.class.simpleName
+		return msg
+	}
+
+	/** Replies the root cause of the given exception.
+	 *
+	 * @param ex the exception for which the root cause msut be determined.
+	 * @return the root cause, never null.
+	 */
+	protected static def getRootCause(ex : Throwable) : Throwable {
+		assert ex !== null
+		var root = ex
+		while (root.cause !== null && root.cause !== root && root.cause !== ex) {
+			root = root.cause
+		}
+		return root
+	}
+
+}
+
+/** 
+ * A specific SRE runnable that is catching the {@link EarlyExitException}.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.6
+ * @see Runnables
+ */
+class SreRunnable extends SreExecutable implements Runnable {
+
+	val runnable : Runnable
+	var success = false
+
+	/** 
+	 * @param runnable the wrapped task.
+	 * @param logger the logger to use.
+	 */
+	protected new (runnable : Runnable, logger : Logger) {
+		super(logger)
+		assert runnable !== null
+		this.runnable = runnable
+	}
+
+	/** 
+	 * @param logger the logger to use.
+	 */
+	protected new (logger : Logger) {
+		super(logger)
+		this.runnable = null
+	}
+
+	/** Replies the wrapped task.
+	 * 
+	 * @return the runnable.
+	 */
+	def getWrappedRunnable : Runnable {
+		this.runnable
+	}
+
+	def run {
+		runWithEarlyExitSupport
+	}
+
+	private def protectRun(runnable : Runnable) {
+		try {
+			runnable?.run
+		} catch (ex : EarlyExitException) {
+			ex.runPostTreatment(this.logger)
+		} catch (ex : InterruptedException) {
+			// Ignore this exception
+		}
+	}
+
+	/** Run the wrapped task with the early exist support.
+	 * The {@link EarlyExitException} is silently catch.
+	 */
+	protected final def runWithEarlyExitSupport {
+		if (this.logger !== null) {
+			try {
+				this.success = false
+				this.runnable.protectRun
+				this.success = true
+			} catch (ex : Throwable) {
+				val cause = ex.rootCause
+				this.logger.log(Level::SEVERE, cause.exceptionMessage, cause)
+			}
+		} else {
+			this.runnable.protectRun
+			this.success = true
+		}
+	}
+
+	/** Replies if the task was finished on a success.
+	 *
+	 * @return {@code true} if the tas if finished and successful. {@code false}
+	 *     if the task is not not finished or successful.
+	 */
+	def isSuccess : boolean {
+		this.success
+	}
+
+	def toString : String {
+		this.runnable?.toString
+	}
+
+	def equals(obj : Object) : boolean {
+		this.runnable == obj
+	}
+
+	def hashCode : int {
+		if (this.runnable !== null) this.runnable.hashCode else 0
+	}
+
+}
+
+/** 
+ * A specific SRE callable that is catching the {@link EarlyExitException}.
+ * 
+ * @param <T> the type of the result.
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.6
+ * @see Runnables
+ */
+class SreCallable<T> extends SreExecutable implements Callable<T> {
+
+	val callable : Callable<T>
+
+	var success = false
+
+	/**
+	 * @param callable the wrapped task.
+	 * @param logger the logger to use.
+	 */
+	protected new (callable : Callable<T>, logger : Logger) {
+		super(logger)
+		assert callable !== null
+		this.callable = callable
+	}
+
+	/** 
+	 * @param logger the logger to use.
+	 */
+	protected new (logger : Logger) {
+		super(logger)
+		this.callable = null
+	}
+
+	/** Replies the wrapped task.
+	 * 
+	 * @return the callable.
+	 */
+	def getWrappedCallable : Callable<T> {
+		this.callable
+	}
+
+	def call : T {
+		callWithEarlyExitSupport
+	}
+
+	private def protectCall(callable : Callable<T>) : T with T {
+		try {
+			return callable?.call
+		} catch (ex : EarlyExitException) {
+			ex.runPostTreatment(this.logger)
+			return null
+		} catch (ex : InterruptedException) {
+			// Ignore this exception
+			return null
+		}
+	}
+
+	/** Run the wrapped task with the early exist support.
+	 * The {@link EarlyExitException} is silently catched.
+	 * 
+	 * @return the computed value.
+	 * @throws Exception the error in the wrapped task, exit {@link EarlyExitException}
+	 */
+	protected final def callWithEarlyExitSupport : T {
+		if (this.logger !== null) {
+			try {
+				this.success = false
+				var value = this.callable.protectCall
+				this.success = true
+				return value
+			} catch (ex : Throwable) {
+				val cause = ex.rootCause
+				this.logger.log(Level::SEVERE, cause.exceptionMessage, cause)
+				return null
+			}
+		} else {
+			var value = this.callable.protectCall
+			this.success = true
+			return value
+		}
+	}
+
+	/** Replies if the task was finished on a success.
+	 * 
+	 * @return {@code true} if the tas if finished and successful. {@code false}
+	 * if the task is not not finished or successful.
+	 */
+	def isSuccess : boolean {
+		this.success
+	}
+
+	def toString : String {
+		this.callable?.toString
+	}
+
+	def equals(obj : Object) : boolean {
+		this.callable == obj
+	}
+
+	def hashCode : int {
+		if (this.callable !== null) this.callable.hashCode else 0
+	}
+
+}
+
+/** 
+ * A specific SRE consumer that is catching the {@link EarlyExitException}.
+ * 
+ * @param <T> the type of the result.
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.7
+ * @see Runnables
+ */
+class SreConsumer<T> extends SreExecutable implements Consumer<T> {
+
+	val consumer : Consumer<T>
+
+	var success = false
+
+	/** 
+	 * @param consumer the wrapped task.
+	 * @param logger the logger to use.
+	 */
+	protected new (consumer : Consumer<T>, logger : Logger) {
+		super(logger)
+		assert consumer !== null
+		this.consumer = consumer
+	}
+
+	/** 
+	 * @param logger the logger to use.
+	 */
+	protected new (logger : Logger) {
+		super(logger)
+		this.consumer = null
+	}
+
+	/** Replies the wrapped task.
+	 * 
+	 * @return the consumer.
+	 */
+	def getWrappedConsumer : Consumer<T> {
+		this.consumer
+	}
+
+	def accept(t : T) {
+		t.consumeWithEarlyExitSupport
+	}
+
+	private def protectAccept(consumer : Consumer<T>, element : T) : void with T {
+		try {
+			consumer?.accept(element)
+		} catch (ex : Throwable) {
+			val cause = ex.rootCause
+			if (cause instanceof EarlyExitException) {
+				cause.runPostTreatment(this.logger)
+			}
+			else if (cause instanceof InterruptedException) {
+				// Ignore this exception
+			} else {
+				throw cause
+			}
+		}
+	}
+	/** Run the wrapped task with the early exist support.
+	 * The {@link EarlyExitException} is silently catch.
+	 * 
+	 * @param element the consumed element.
+	 * @throws Exception the error in the wrapped task, exit {@link EarlyExitException}
+	 */
+	protected final def consumeWithEarlyExitSupport(element : T) : void {
+		if (this.logger !== null) {
+			try {
+				this.success = false
+				protectAccept(this.consumer, element)
+				this.success = true
+			} catch (ex : Throwable) {
+				val cause = ex.rootCause
+				this.logger.log(Level::SEVERE, cause.exceptionMessage, cause)
+				throw cause
+			}
+		} else {
+			protectAccept(this.consumer, element)
+			this.success = true
+		}
+	}
+
+	/** Replies if the task was finished on a success.
+	 * 
+	 * @return {@code true} if the task if finished and successful. {@code false}
+	 * if the task is not not finished or successful.
+	 */
+	def isSuccess : boolean {
+		this.success
+	}
+
+	def toString : String {
+		this.consumer?.toString
+	}
+
+	def equals(obj : Object) : boolean {
+		this.consumer == obj
+	}
+
+	def hashCode : int {
+		if (this.consumer !== null) this.consumer.hashCode else 0
+	}
+	
+}
+
+/** 
+ * A specific SRE runnable for kernel tasks.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.10
+ * @see Runnables
+ */
+class SreKernelRunnable implements Runnable {
+
+	@Accessors(PUBLIC_GETTER)
+	val source : Runnable
+
+	@Accessors(PUBLIC_GETTER)
+	val name : String
+
+	protected new (source : Runnable, name : String) {
+		assert source !== null
+		this.source = source
+		this.name = name
+	}
+
+	@SuppressWarnings("discouraged_reference")
+	override run {
+		val th = Thread::currentThread
+		val oldName = th.name
+		try {
+			if (this.name !== null) {
+				th.name = this.name
+			}
+			this.source.run
+		} finally {
+			th.name = oldName
+		}
+	}
+
+}

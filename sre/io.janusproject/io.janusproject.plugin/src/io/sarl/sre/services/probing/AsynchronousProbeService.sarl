@@ -1,0 +1,121 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2019 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.services.probing
+
+import io.sarl.sre.internal.SmartListenerCollection
+import io.sarl.sre.naming.NameParser
+import io.sarl.sre.services.executor.ExecutorService
+import io.sarl.sre.services.executor.Runnables
+import io.sarl.sre.services.namespace.NamespaceService
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.locks.ReadWriteLock
+import javax.inject.Inject
+import javax.inject.Provider
+import org.eclipse.xtend.lib.annotations.Accessors
+
+/** 
+ * This class is the implementation of a probe service that is updating the values asynchronously.
+ * Asynchronous updates means that the {@link #sync()} function is invoking by a specific thread.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.10
+ * @see SynchronousProbeService
+ */
+class AsynchronousProbeService extends AbstractProbeService {
+
+	val executor : ExecutorService
+
+	val synchronizationStarted = new AtomicBoolean(false)
+
+	val enableSynchronization = new AtomicBoolean(true)
+
+	@Accessors
+	volatile var sleepingDurationBetweenSyncs : long = 500l
+
+	/** Constructor.
+	 *
+	 * @param service the executor service.
+	 * @param namespaceService the service that is giving access to the namespaces.
+	 * @param nameParser the object that is able to parse resource names.
+	 * @param listenerCollectionProvider the provider of listener collections. 
+	 * @param lockProvider the provider of synchronization locks.
+	 */
+	@Inject
+	new (service : ExecutorService, namespaceService : NamespaceService, nameParser : NameParser,
+		listenerCollectionProvider : Provider<SmartListenerCollection<?>>,
+		lockProvider : Provider<ReadWriteLock>) {
+		super(namespaceService, nameParser, listenerCollectionProvider, lockProvider)
+		this.executor = service
+	}
+
+	protected override onFirstProbe {
+		startSyncThread
+	}
+
+	protected override onLastProbe {
+		stopSyncThread
+	}
+
+	/** Start the thread that dynamically update the probes */
+	def startSyncThread {
+		if (!this.synchronizationStarted.getAndSet(true)) {
+			var task = Runnables::named(createRunnableUpdater, "Probe Updater")
+			this.executor.executeAsap(task)
+		}
+	}
+
+	/** Invoked to create a {@code Runnable} that may be used for updated the probes
+	 *
+	 * @return the {@code Runnable} insstance, never {@code null}.
+	 */
+	@SuppressWarnings("discouraged_reference")
+	protected def createRunnableUpdater : Runnable {
+		[
+			this.enableSynchronization.set(true)
+			while (this.enableSynchronization.get) {
+				sync
+				val duration = getSleepingDurationBetweenSyncs
+				if (duration <= 0l) {
+					Thread::yield
+				} else {
+					Thread::sleep(duration)
+				}
+			}
+		]
+	}
+
+	/** Stop the thread that dynamically update the probes
+	 */
+	@SuppressWarnings("discouraged_reference")
+	def stopSyncThread {
+		this.enableSynchronization.set(false)
+		this.synchronizationStarted.set(false)
+	}
+
+	protected override onStop {
+		stopSyncThread
+		super.onStop
+	}
+
+}

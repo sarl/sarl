@@ -1,0 +1,94 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2019 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.services.namespace
+
+import io.sarl.sre.naming.SarlName
+import io.sarl.sre.services.AbstractSreService
+
+/** 
+ * Abstract implementation of a service that manages name spaces into the SRE.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.10
+ */
+abstract class AbstractNamespaceService extends AbstractSreService implements NamespaceService {
+
+	final override findObject(name : SarlName, type : Class<T>) : T with T {
+		assert type !== null
+		var obj = findObject(name)
+		if (obj !== null && type.isInstance(obj)) {
+			return type.cast(obj)
+		}
+		return null
+	}
+
+	final override findObject(name : SarlName) : Object {
+		if (name === null) {
+			return null
+		}
+		var associatedObject = name.associatedObject
+		if (associatedObject === null) {
+			var obj = findObjectWithoutFragment(name)
+			if (name.hasFragment) {
+				// Treat the fragment
+				var field = obj.getDeclaredField(name)
+				if (field !== null) {
+					associatedObject = field
+				}
+				return field				
+			} else {
+				try {
+					associatedObject = obj
+				} catch (ex : ClassCastException) {
+					//
+				}
+			}
+		}
+		return associatedObject
+	}
+
+	private static def getDeclaredField(obj : Object, name : SarlName) : FieldAccess {
+		var type = obj.class
+		while (type !== null && typeof(Object) != type) {
+			try {
+				var field = type.getDeclaredField(name.fragment)
+				if (field !== null) {
+					return new FieldAccess(name, field, obj)
+				} 
+			} catch (ex : Throwable) {
+				//
+			}
+			type = type.superclass
+		}
+		return null
+	}
+
+	/** Find an object with the given name, but ignoring the fragment.
+	 *
+	 * @param name the name of the object, never {@code null}.
+	 * @return the object, or {@code null} if the object was not found.
+	 */
+	protected abstract def findObjectWithoutFragment(name : SarlName) : Object
+
+}

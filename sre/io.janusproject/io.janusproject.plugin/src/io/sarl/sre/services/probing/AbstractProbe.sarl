@@ -1,0 +1,261 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2019 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.services.probing
+
+import io.sarl.sre.internal.SmartListenerCollection
+import java.lang.ref.WeakReference
+import java.net.URI
+import java.util.concurrent.locks.ReadWriteLock
+import javax.inject.Provider
+import org.eclipse.xtend.lib.annotations.Accessors
+
+/** 
+ * Abstract probe implementation. A probe is thread-safe.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.10
+ */
+abstract class AbstractProbe<T> implements Probe<T> {
+
+	var manager : WeakReference<IProbeReleaseListener>
+
+	var listeners : SmartListenerCollection<?>
+
+	@Accessors
+	val name : String
+
+	@Accessors
+	val uri : URI
+
+	@Accessors
+	val type : Class<T>
+
+	protected var active : boolean = true
+	
+	val lock : ReadWriteLock
+
+	val listenerLock : ReadWriteLock
+
+	val listenerCollectionProvider : Provider<SmartListenerCollection<?>>
+
+	
+	/** Constructor.
+	 * 
+	 * @param manager the creator of this probe, and its manager.
+	 * @param name the name of the probe
+	 * @param uri the UI of the field.
+	 * @param type the expected type of the probed value.
+	 * @param listenerCollectionProvider the provider of listener collections. 
+	 * @param lockProvider the provider of synchronization locks.
+	 */
+	protected new (
+		manager : IProbeReleaseListener,
+		name : String,
+		uri : URI,
+		type : Class<T>,
+		listenerCollectionProvider : Provider<SmartListenerCollection<?>>,
+		lockProvider : Provider<ReadWriteLock>) {
+		assert manager !== null
+		assert type !== null
+		assert listenerCollectionProvider !== null
+		assert lockProvider !== null
+		this.manager = new WeakReference(manager)
+		this.name = name
+		this.uri = uri
+		this.type = type
+		this.listenerCollectionProvider = listenerCollectionProvider
+		this.lock = lockProvider.get
+		this.listenerLock = lockProvider.get
+	}
+
+	override getLock : ReadWriteLock {
+		this.lock
+	}
+
+	/** Replies the lock object for listener list. */
+	protected def getListenerLock : ReadWriteLock {
+		this.listenerLock
+	}
+
+	@Pure
+	override isActive : boolean {
+		val lck = getLock
+		lck.readLock.lock
+		try {
+			return this.active
+		} finally {
+			lck.readLock.unlock
+		}
+	}
+
+	override release {
+		var act : boolean
+		val lck = getLock
+		lck.readLock.lock
+		try {
+			act = this.active
+		} finally {
+			lck.readLock.unlock
+		}
+		if (act) {
+			var m : IProbeReleaseListener = null
+			try {
+				lck.writeLock.lock
+				try {
+					act = this.active
+					if (act) {
+						this.active = false
+						m = this.manager?.get
+						this.manager.clear
+						this.manager = null
+					}
+				} finally {
+					lck.writeLock.unlock
+				}
+			} finally {
+				fireRelease
+				var llck = getListenerLock
+				llck.writeLock.lock
+				try {
+					this.listeners = null
+				} finally {
+					llck.writeLock.unlock
+				}
+			}
+			if (m !== null) {
+				m.onProbeReleasedProbe(this)
+			}
+		}
+	}
+
+	/** Notify the listener that the probe's value has changed. */
+	protected def fireValueChanged {
+		var list : SmartListenerCollection<?>
+		var lck = getListenerLock
+		lck.readLock.lock
+		try {
+			list = this.listeners
+		} finally {
+			lck.readLock.unlock
+		}
+		if (list !== null) {
+			list.notifyListeners(typeof(IProbeListener)) [
+				probeValueChanged(this)
+			]
+		}
+	}
+	
+	override addProbeListener(listener : IProbeListener) {
+		assert listener !== null
+		val lck = getListenerLock
+		lck.writeLock.lock
+		try {
+			if (this.listeners === null) {
+				this.listeners = this.listenerCollectionProvider.get
+			}
+			this.listeners.add(typeof(IProbeListener), listener)
+		} finally {
+			lck.writeLock.unlock
+		}
+	}
+	
+	override removeProbeListener(listener : IProbeListener) {
+		assert listener !== null
+		var list : SmartListenerCollection<?>
+		val lck = getListenerLock
+		lck.readLock.lock
+		try {
+			list = this.listeners
+		} finally {
+			lck.readLock.unlock
+		}
+		if (list !== null) {
+			list.remove(typeof(IProbeListener), listener)
+			lck.writeLock.lock
+			try {
+				if (this.listeners !== null && this.listeners.isEmpty) {
+					this.listeners = null
+				}
+			} finally {
+				lck.writeLock.unlock
+			}
+		}
+	}
+
+	/** Notify the listener that the probe has been released.
+	 */
+	protected def fireRelease {
+		var list : SmartListenerCollection<?>
+		var lck = getListenerLock
+		lck.readLock.lock
+		try {
+			list = this.listeners
+		} finally {
+			lck.readLock.unlock
+		}
+		if (list !== null) {
+			list.notifyListeners(typeof(IProbeReleaseListener)) [
+				onProbeReleasedProbe(this)
+			]
+		}
+	}
+
+	override addProbeReleaseListener(listener : IProbeReleaseListener) {
+		assert listener !== null
+		val lck = getListenerLock
+		lck.writeLock.lock
+		try {
+			if (this.listeners === null) {
+				this.listeners = this.listenerCollectionProvider.get
+			}
+			this.listeners.add(typeof(IProbeReleaseListener), listener)
+		} finally {
+			lck.writeLock.unlock
+		}
+	}
+
+	override removeProbeReleaseListener(listener : IProbeReleaseListener) {
+		assert listener !== null
+		var list : SmartListenerCollection<?>
+		val lck = getListenerLock
+			lck.readLock.lock
+		try {
+			list = this.listeners
+		} finally {
+			lck.readLock.unlock
+		}
+		if (list !== null) {
+			list.remove(typeof(IProbeReleaseListener), listener)
+			lck.writeLock.lock
+			try {
+				if (this.listeners !== null && this.listeners.isEmpty) {
+					this.listeners = null
+				}
+			} finally {
+				lck.writeLock.unlock
+			}
+		}
+	}
+
+}

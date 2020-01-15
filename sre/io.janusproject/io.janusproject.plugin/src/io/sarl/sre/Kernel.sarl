@@ -1,0 +1,404 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2019 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre
+
+import com.google.common.util.concurrent.Service
+import com.google.inject.BindingAnnotation
+import io.sarl.lang.annotation.PrivateAPI
+import io.sarl.lang.core.Agent
+import io.sarl.lang.core.AgentContext
+import io.sarl.sre.capacities.InformedEventListener
+import io.sarl.sre.services.IServiceManager
+import io.sarl.sre.services.context.ContextService
+import io.sarl.sre.services.lifecycle.KernelAgentLifecycleListener
+import io.sarl.sre.services.lifecycle.LifecycleService
+import io.sarl.sre.services.logging.LoggingService
+import io.sarl.sre.spaces.AbstractEventSpace
+import java.lang.Thread.UncaughtExceptionHandler
+import java.lang.annotation.Retention
+import java.lang.annotation.Target
+import java.lang.ref.WeakReference
+import java.util.List
+import java.util.UUID
+import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.logging.Level
+import java.util.logging.LogRecord
+import java.util.logging.Logger
+import javax.inject.Inject
+import javax.inject.Singleton
+
+/** 
+ * This class represents the Kernel of the SRE platform.
+ * 
+ * <p><strong>The Kernel is a singleton.</strong>
+ * 
+ * <p>The Kernel is assimilated to an agent that is omniscient and distributed other the network. It is containing all the other
+ * agents.
+ * 
+ * <p>To create a Kernel, you should use the function {@link #create(Module...)}.
+ * 
+ * @author $Author: srodriguez$
+ * @author $Author: ngaud$
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+@Singleton
+class Kernel {
+
+	// value is true because the SRE kernel is running as soon as it is created. 
+	val isRunning = new AtomicBoolean(true)
+
+	val stopListener : AsynchronousKernelStoppingListener
+
+	val serviceManager : IServiceManager
+
+	val loggingService : LoggingService
+
+	val spawnService : LifecycleService
+
+	val contextService : ContextService
+
+	/** 
+	 * Constructs a SRE kernel.
+	 * 
+	 * @param serviceManager is the instance of the service manager that must be used by the kernel.
+	 *     The service manager must already have registered services inside itself.
+	 * @param exceptionHandler is the handler of the uncaught exceptions.
+	 */
+	@SuppressWarnings("discouraged_reference")
+	@Inject
+	new (serviceManager : IServiceManager, exceptionHandler : UncaughtExceptionHandler) {
+		// Initialize the fields
+		this.stopListener = createKernelListener
+		this.serviceManager = serviceManager
+		this.loggingService = this.serviceManager.getService(typeof(LoggingService))
+		this.spawnService = this.serviceManager.getService(typeof(LifecycleService))
+		this.contextService = this.serviceManager.getService(typeof(ContextService))
+
+		// Ensure that all the threads has a default hander.
+		if (exceptionHandler !== null) {
+			Thread::setDefaultUncaughtExceptionHandler(exceptionHandler)
+		}
+
+		// Listen on the kernel's events
+		this.spawnService.addKernelAgentLifecycleListener(this.stopListener)
+
+		// Start the services NOW to ensure that the default context and space
+		// of the SRE agent are catched by the modules;
+		this.serviceManager.startServices(getLogger)
+
+		// TODO Remove the following line when the framework is ready for the release
+		this.logger.warning(Messages::Kernel_3)
+	}
+
+	/** Create an instance of the kernel event listener.
+	 *
+	 * @return the listener instance.
+	 * @since 0.8.0
+	 */
+	protected def createKernelListener : AsynchronousKernelStoppingListener {
+		new AsynchronousKernelStoppingListener(this)
+	}
+
+	/** 
+	 * Replies if the kernel is running or not.
+	 *
+	 * <p>The kernel is running if at least one agent is alive.
+	 * 
+	 * @return <code>true</code> if the kernel is running; <code>false</code> otherwise.
+	 */
+	def isRunning : boolean {
+		this.isRunning.get
+	}
+
+	/** 
+	 * Replies the logger used by the kernel.
+	 *
+	 * <p>This function replies the logger of the logging service. If this service is down,
+	 * {@code null} is replied.
+	 *
+	 * @return the logger of the kernel.
+	 * @see #getShutdownSafeLogger()
+	 */
+	def getLogger : Logger {
+		this.loggingService.kernelLogger
+	}
+
+	/** 
+	 * Spawn an agent of the given type, and pass the parameters to its initialization function.
+	 * 
+	 * @param agent the type of the agent to spawn.
+	 * @param callback the function invoked each time an agent is spawned.
+	 * @param params the list of the parameters to pass to the agent initialization function.
+	 * @return the identifier of the agent, never <code>null</code>.
+	 */
+	def spawn(^agent : Class<? extends Agent>, callback : (UUID) => void, arguments : Object*) {
+		val result = this.spawnService.spawnAgent(1, null, this.contextService.rootContext, null, ^agent, arguments)
+		if (result.failing) {
+			throw result.error
+		}
+		if (callback !== null && result.agentSpawned) {
+			var ags = result.spawnedAgents
+			if (!ags.empty) {
+				callback.apply(ags.head)
+			}
+		}
+	}
+
+	/** 
+	 * Spawn agents of the given type, and pass the parameters to its initialization function.
+	 * 
+	 * @param nbAgents the number of agents to spawn.
+	 * @param agent the type of the agents to spawn.
+	 * @param callback the function invoked each time an agent is spawned.
+	 * @param params the list of the parameters to pass to the agent initialization function.
+	 */
+	def spawn(nbAgents : int, ^agent : Class<? extends Agent>, callback : (List<UUID>)=>void, params : Object*) {
+		var result = this.spawnService.spawnAgent(nbAgents, null, this.contextService.rootContext, null, ^agent, params)
+		if (result.failing) {
+			var exception = result.error
+			this.loggingService.kernelLogger.log(Level::SEVERE, exception.localizedMessage, exception)
+		}
+		if (callback !== null) {
+			var ags = result.spawnedAgents
+			if (!ags.empty)	{
+				callback.apply(ags)
+			}
+		}
+	}
+
+	/** 
+	 * Spawn an agent of the given type, and pass the parameters to its initialization function.
+	 * 
+	 * @param agentID the identifier of the agent to spawn. If <code>null</code> the identifier is randomly selected.
+	 * @param agent the type of the agent to spawn.
+	 * @param callback the function invoked each time an agent is spawned.
+	 * @param params the list of the parameters to pass to the agent initialization function.
+	 */
+	def spawn(agentID : UUID, ^agent : Class<? extends Agent>, callback : (UUID)=>void, params : Object*) {
+		val result = this.spawnService.spawnAgent(1, null, this.contextService.rootContext, agentID, ^agent, params)
+		if (result.failing) {
+			throw result.error
+		}
+		if (callback !== null && result.agentSpawned) {
+			var ags = result.spawnedAgents
+			if (!ags.empty) {
+				callback.apply(ags.head)
+			}
+		}
+	}
+
+	/** 
+	 * Replies a kernel service that is alive.
+	 * 
+	 * @param <S> - type of the type to reply.
+	 * @param type type of the type to reply.
+	 * @return the service, or <code>null</code>.
+	 */
+	def getService(type : Class<S>) : S with S extends Service {
+		this.serviceManager.getService(type)
+	}
+
+	/** 
+	 * Replies the SRE context of the kernel.
+	 * 
+	 * @return the context for the kernel.
+	 */
+	def getRootContext : AgentContext {
+		this.contextService.rootContext
+	}
+
+	/** Run the standard algorithm for stopping properly the kernel when no
+	 * agent is alive.
+	 *
+	 * @param kern the kernel to stop.
+	 */
+	@SuppressWarnings("use_reserved_sarl_annotation")
+	@PrivateAPI
+	static def executeKernelStopWhenNoAgentAlive(kern : Kernel) {
+		val logger = kern.logger
+		logger.info(Messages.Kernel_0)
+		if (kern.stopListener !== null) {
+			kern.spawnService.removeKernelAgentLifecycleListener(kern.stopListener)
+		}
+		kern.serviceManager.stopServices(logger)
+		logger.info(Messages.Kernel_1)
+		kern.isRunning.set(false)
+	}
+
+	/** Run the standard algorithm for stopping the agents on the kernel..
+	 * 
+	 * @param kern the kernel to stop the agent inside.
+	 * @return the number of killed agents.
+	 * @since 0.10
+	 */
+	@SuppressWarnings("use_reserved_sarl_annotation")
+	@PrivateAPI
+	static def executeForcedAgentStop(kern : Kernel) : int {
+		val contextService = kern.getService(typeof(ContextService))
+		val lifeCycleService = kern.getService(typeof(LifecycleService))
+		assert contextService !== null && lifeCycleService !== null
+		val contexts = contextService.allContexts
+		val encounteredAgents = <UUID>newTreeSet(null)
+		val agents = newArrayList
+		val clock = contexts.lock
+		clock.readLock.lock
+		try {
+			val iter = contexts.iterator
+			while (iter.hasNext) {
+				val context = iter.next
+				val ^space = context.defaultSpace as AbstractEventSpace
+				val slock = ^space.lock
+				slock.readLock.lock
+				try {
+					for (participant : ^space.internalParticipantStructure.values) {
+						val listener = participant.participant
+						if (listener instanceof InformedEventListener) {
+							val ag = listener.ownerInstance
+							assert ag !== null
+							if (encounteredAgents += ag.ID) {
+								agents += ag
+							}
+						}
+					}
+				} finally {
+					slock.readLock.unlock
+				}
+			}
+		} finally {
+			clock.readLock.unlock
+		}
+		var nb = 0
+		for (ag : agents) {
+			if (lifeCycleService.killAgent(ag)) {
+				nb++
+			}
+		}
+		return nb
+	}
+
+	/** 
+	 * Replies a behavior that shutdowns the kernel.
+	 *
+	 * <p>The returned trigger invokes the functions {@link #executeForcedAgentStop(Kernel)}
+	 * and {@link #executeKernelStopWhenNoAgentAlive(Kernel)} depending on the size of the
+	 * agents' collection.
+	 *
+	 * <p>The provided trigger does not run the stopping behavior into a separate thread.
+	 * 
+	 * @return the logger of the kernel.
+	 * @since 0.10
+	 */
+	@SuppressWarnings("use_reserved_sarl_annotation")
+	@PrivateAPI(isCallerOnly = true)
+	def getShutdownTrigger : Runnable {
+		[
+			var nbKilled = executeForcedAgentStop
+			if (nbKilled == 0) {
+				executeKernelStopWhenNoAgentAlive
+			}
+		]
+	}
+
+	/** 
+	 * Asynchronous listener on platform events.
+	 * 
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	protected static class AsynchronousKernelStoppingListener
+			implements KernelAgentLifecycleListener, Runnable, UncaughtExceptionHandler {
+
+		val kernel : WeakReference<Kernel>
+
+		val stopProcessRunning = new AtomicBoolean(false)
+
+		new (kernel : Kernel) {
+			this.kernel = new WeakReference(kernel)
+		}
+
+		override kernelAgentDestroyed {
+			if (!this.stopProcessRunning.getAndSet(true)) {
+				// CAUTION: EXECUTE THE STOP FUNCTION IN A THREAD THAT
+				// IS INDEPENDENT TO THE ONES FROM THE EXECUTORS
+				// CREATED BY THE EXECUTORSERVICE.
+				// THIS AVOID THE STOP FUNCTION TO BE INTERRUPTED
+				// BECAUSE THE EXECUTORSERVICE WAS SHUTTED DOWN.
+				startAsync
+			}
+		}
+	
+		/** Start the stopper asynchronously.
+		 * @since 0.10
+		 */
+		@SuppressWarnings("discouraged_reference")
+		def startAsync {
+			val thread = Executors::defaultThreadFactory().newThread(this)
+			thread => [
+				name = "SRE kernel shutdown" // $NON-NLS-1$
+				daemon = false
+				uncaughtExceptionHandler = this
+				start
+			]
+		}
+
+		@SuppressWarnings("use_reserved_sarl_annotation")
+		@PrivateAPI(isCallerOnly = true)
+		override run {
+			this.kernel.get.executeKernelStopWhenNoAgentAlive
+		}
+		
+		override uncaughtException(thread : Thread, exception : Throwable) {
+			assert thread !== null;
+			assert exception !== null;
+			val record = new LogRecord(Level::SEVERE, exception.localizedMessage)
+			record.thrown = exception
+			val elt = exception.stackTrace.get(0)
+			assert elt !== null
+			record.sourceClassName = elt.className
+			record.sourceMethodName = elt.methodName
+			val logger = this.kernel.get.logger
+			logger.log(record)
+		}
+		
+	}
+
+}
+
+/** 
+ * Annotation for injection of the kernel.
+ * 
+ * @author $Author: srodriguez$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+@BindingAnnotation
+@Target(#[ FIELD, PARAMETER, METHOD ])
+@Retention(RUNTIME)
+annotation KernelScope {
+	//
+}

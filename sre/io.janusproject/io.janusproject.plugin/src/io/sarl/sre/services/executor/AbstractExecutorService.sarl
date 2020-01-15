@@ -1,0 +1,239 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2019 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.services.executor
+
+import io.sarl.sre.services.AbstractSreService
+import java.util.Collection
+import java.util.LinkedList
+import java.util.List
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.atomic.AtomicInteger
+import java.util.function.Consumer
+import java.util.logging.Logger
+import java.util.stream.StreamSupport
+
+import static extension io.sarl.sre.services.executor.Runnables.*
+
+/** 
+ * Abstract implementation for the services that executes the tasks.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.6.0
+ */
+abstract class AbstractExecutorService extends AbstractSreService implements ExecutorService {
+
+	val jreExecutor : java.util.concurrent.ExecutorService
+
+	/** 
+	 * Constructor.
+	 * 
+	 * @param service the JRE service.
+	 */
+	new (service : java.util.concurrent.ExecutorService) {
+		this.jreExecutor = service
+	}
+
+	/** 
+	 * Replies the JRE service for scheduled tasks.
+	 * 
+	 * @return the JRE service.
+	 */
+	def getExecutorService : java.util.concurrent.ExecutorService {
+		this.jreExecutor
+	}
+
+	/** Execute the given tasks in parallel and wait for the termination.
+	 * 
+	 * @param tasks the tasks to run.
+	 * @param thrownExceptions indicates if the exceptions in the tasks are thrown into a combined exception.
+	 * @param a callback for wrapping the tasks.
+	 */
+	protected def executeInThreadsAndWait(tasks : Collection<Runnable>, thrownExceptions : boolean,
+		wrapper : (boolean,Runnable)=>Runnable) {
+		var runExceptions : List<Throwable> = null
+
+		if (tasks.size == 1) {
+			val runnable = tasks.head
+			assert runnable !== null
+			if (thrownExceptions) {
+				val finalRunExceptions = new LinkedList<Throwable>
+				runExceptions = finalRunExceptions
+				try {
+					// Catch the early-exit exception
+					wrapper.apply(false, runnable).run
+				} catch (e : Throwable) {
+					finalRunExceptions += e
+				}
+			} else {
+				wrapper.apply(true, runnable).run
+			}
+		} else {
+			val doneSignal = new CountDownLatch(tasks.size)
+			if (thrownExceptions) {
+				val finalRunExceptions = new LinkedList<Throwable>
+				runExceptions = finalRunExceptions
+				for (runnable : tasks) {
+					var wrunnable : Runnable = [
+						try {
+							// Catch the early-exit exception
+							wrapper.apply(false, runnable).run
+						} catch (e : Throwable) {
+							synchronized (finalRunExceptions) {
+								finalRunExceptions += e
+							}
+						} finally {
+							doneSignal.countDown
+						}
+					]
+					this.executorService.execute(wrunnable) 
+				}
+			} else {
+				for (runnable : tasks) {
+					this.executorService.execute [
+						try {
+							// Catch the early-exit exception
+							wrapper.apply(true, runnable).run
+						} finally {
+							doneSignal.countDown
+						}
+					]
+				}
+			}
+
+			// Wait
+			try {
+				doneSignal.await
+			} catch (ex : InterruptedException) {
+				// XXX: Improve because:
+				// This exception occurs when one of the launched task kills the agent before all the
+				// submitted tasks are finished. Keep in mind that killing an agent should kill the
+				// launched tasks.
+				// Example of code that is generating this issue:
+				//
+				// on Initialize {
+				// in (100) [
+				// killMe
+				// ]
+				// }
+				//
+				// In this example, the killMe is launched before the Initialize code is finished;
+				// and because the Initialize event is fired through the current function, it
+				// causes the InterruptedException.
+			}
+		}
+
+		// Re-throw the run-time exception
+		if (runExceptions !== null && !runExceptions.empty) {
+			var iterator = runExceptions.iterator
+			val firstException = iterator.next
+			while (iterator.hasNext) {
+				firstException.addSuppressed(iterator.next)
+			}
+			throw firstException
+		}
+	}
+
+	/** Execute the given task in parallel and wait for the termination.
+	 * 
+	 * @param task the task to run.
+	 * @param nbExecutions number of runs
+	 * @param runGroupSize the size of a parallel group
+	 */
+	protected final def executeInThreadsAndWait(task : SreRunnable, nbExecutions : int,
+		runGroupSize : int) : int {
+		assert runGroupSize >= 1
+		val es = executorService
+		if (nbExecutions > 1) {
+			val errors = new AtomicInteger
+			var doneSignal : CountDownLatch
+			if (runGroupSize > 1) {
+				val numberOfGroups = nbExecutions / runGroupSize
+				val rest = nbExecutions - numberOfGroups * runGroupSize
+				if (rest > 0) {
+					doneSignal = new CountDownLatch(numberOfGroups + 1)
+				} else {
+					doneSignal = new CountDownLatch(numberOfGroups)
+				}
+				val finalSignal = doneSignal
+				for (var i = 0; i < numberOfGroups; i++) {
+					es.execute [
+						try {
+							for (var j = 0; j < runGroupSize; j++) {
+								task.run
+								if (!task.success) {
+									errors.incrementAndGet
+								}
+							}
+						} finally {
+							finalSignal.countDown
+						}
+					]
+				}
+				if (rest > 0) {
+					es.execute [
+						try {
+							for (var j = 0; j < rest; j++) {
+								task.run
+								if (!task.success) {
+									errors.incrementAndGet
+								}
+							}
+						} finally {
+							finalSignal.countDown
+						}
+					]
+				}
+			} else {
+				doneSignal = new CountDownLatch(nbExecutions)
+				val finalSignal = doneSignal
+				for (var i = 0; i < nbExecutions; i++) {
+					es.execute [
+						try {
+							task.run
+							if (!task.success) {
+								errors.incrementAndGet
+							}
+						} finally {
+							finalSignal.countDown
+						}
+					]
+				}
+			}
+			// Wait for all creators to complete before continuing
+			doneSignal.await
+			return nbExecutions - errors.get
+		}
+		if (nbExecutions == 1) {
+			task.run
+			return if (task.success) 1 else 0
+		}
+		return 0
+	}
+
+	override applyBlockingConsumer(logger : Logger, collection : Iterable<T>, task : Consumer<? super T>) with T {
+		// Assuming that the task is properly synchronized on the collection.
+		StreamSupport::stream(collection.spliterator, true).forEach(task.protectConsumer(logger))
+	}
+
+}

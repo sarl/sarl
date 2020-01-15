@@ -1,0 +1,157 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2019 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.services.logging
+
+import java.io.PrintStream
+import java.util.logging.Formatter
+import java.util.logging.Level
+import java.util.logging.Logger
+import java.util.logging.SimpleFormatter
+import javax.inject.Provider
+
+/** 
+ * Helper for creating a JUL logger.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+class JulLoggerCreator {
+
+	val defaultLevel : Level
+
+	val defaultProgramName : String
+
+	val loggerProvider : Provider<Logger>
+
+	var formatter : Formatter
+
+	/** Build a logger creator.
+	 *
+	 * @param defaultLevel the logging level for new loggers.
+	 * @param defaultProgramName the default name of the program.
+	 * @param loggerProvider the provider of loggers.
+	 * @param formatter the log message formatter to be used.
+	 */
+	new (defaultLevel : Level, defaultProgramName : String,
+			loggerProvider : Provider<Logger>, formatter : Formatter = null) {
+		this.defaultLevel = defaultLevel
+		this.defaultProgramName = defaultProgramName
+		this.loggerProvider = loggerProvider
+		setFormatter(formatter)
+	}
+
+	/** Replies the log formatter.
+	 *
+	 * @return the log formatter, never {@code null}.
+	 */
+	synchronized def getFormatter : Formatter {
+		if (this.formatter === null) {
+			this.formatter = createFormatter
+		}
+		return this.formatter
+	}
+
+	/** Change the log formatter.
+	 * 
+	 * @param formatter the log formatter, or {@code null} to use the default.
+	 */
+	synchronized def setFormatter(formatter : Formatter) {
+		this.formatter = formatter
+	}
+
+	/** Create a formatter.
+	 *
+	 * @return the newly created instance of formatter.
+	 */
+	protected def createFormatter : Formatter {
+		new SimpleFormatter
+	}
+
+	/** 
+	 * Create a logger with the given output for the console.
+	 * 
+	 * @param name the name of the new logger.
+	 * @param output the output.
+	 * @return the logger.
+	 * @since 0.7.0
+	 */
+	def createConsoleLogger(name : String, output : PrintStream) : Logger {
+		val logger = this.loggerProvider.get
+		val nhandler = new JulOutputStreamConsoleHandler(output, getFormatter)
+		var allHandlers = logger.handlers
+		if (allHandlers !== null) {
+			for (handler : allHandlers) {
+				logger.removeHandler(handler)
+			}
+		}
+		logger.addHandler(nhandler)
+		logger.useParentHandlers = false
+		logger.level = this.defaultLevel
+		return logger
+	}
+
+	/** 
+	 * Create a logger for the platform.
+	 * 
+	 * @return the logger.
+	 * @since 0.7.0
+	 */
+	def createPlatformLogger() : Logger {
+		val logger = this.loggerProvider.get
+		val stderr = new JulStandardErrorOutputConsoleHandler(getFormatter)
+		stderr.level = Level::ALL
+		val stdout = new JulStandardOutputConsoleHandler(getFormatter)
+		stdout.level = Level::ALL
+		var allHandlers = logger.handlers
+		if (allHandlers !== null) {
+			for (handler : allHandlers) {
+				logger.removeHandler(handler)
+			}
+		}
+		logger.addHandler(stderr)
+		logger.addHandler(stdout)
+		logger.useParentHandlers = false
+		logger.level = Level::ALL
+		return logger
+	}
+
+	/** 
+	 * Create a logger with the given name for a platform module (kernel or agent).
+	 * 
+	 * @param name the name of the new logger. If {@code null}, the default program name is used.
+	 * @param parent the parent logger.
+	 * @return the logger.
+	 * @since 0.7.0
+	 */
+	def createModuleLogger(name : String = null, parent : Logger) : Logger {
+		val thename = if (name.isNullOrEmpty) this.defaultProgramName else name
+		val logger = Logger::getLogger(thename)
+		if (parent !== null) {
+			logger.parent = parent
+		}
+		logger.useParentHandlers = true
+		logger.level = this.defaultLevel
+		return logger
+	}
+
+}

@@ -1,0 +1,203 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2019 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.boot.internal.services
+
+import com.google.common.util.concurrent.Service
+import com.google.inject.AbstractModule
+import com.google.inject.Injector
+import com.google.inject.Module
+import com.google.inject.Provides
+import io.bootique.BQModule
+import io.bootique.BQModuleProvider
+import io.sarl.sre.boot.configs.subconfigs.ExecutorsConfig
+import io.sarl.sre.services.executor.JreExecutorService
+import io.sarl.sre.services.executor.QuietThreadExecutorPolicy
+import io.sarl.sre.services.executor.VerboseThreadExecutorPolicy
+import io.sarl.sre.services.logging.LoggingService
+import java.lang.Thread.UncaughtExceptionHandler
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import java.util.concurrent.RejectedExecutionHandler
+import java.util.concurrent.ScheduledExecutorService
+import java.util.concurrent.SynchronousQueue
+import java.util.concurrent.ThreadPoolExecutor
+import java.util.concurrent.TimeUnit
+import javax.inject.Provider
+import javax.inject.Singleton
+import org.arakhne.afc.bootique.log4j.configs.Log4jIntegrationConfig
+
+import static extension com.google.inject.multibindings.Multibinder.*
+
+/** 
+ * Module for the execution services.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+class ExecutorServiceModule extends AbstractModule {
+
+	protected override configure {
+		typeof(io.sarl.sre.services.executor.ExecutorService).bind.to(typeof(JreExecutorService)).in(typeof(Singleton))
+
+		binder.newSetBinder(typeof(Service), typeof(SreServices)).addBinding.to(
+			typeof(io.sarl.sre.services.executor.ExecutorService))
+	}
+
+	/**
+	 * Construct a {@code VerboseThreadExecutorPolicy}.
+	 * 
+	 * @param logService the service for logging.
+	 * @return the policy.
+	 */
+	@Provides
+	@Singleton
+	def providesVerboseThreadExecutorPolicy(logService : LoggingService) : VerboseThreadExecutorPolicy {
+		new VerboseThreadExecutorPolicy(logService)
+	}
+
+	/** 
+	 * Construct a {@code QuietThreadExecutorPolicy}.
+	 * 
+	 * @return the policy.
+	 */
+	@Provides
+	@Singleton
+	def provideQuietThreadExecutorPolicy : QuietThreadExecutorPolicy {
+		new QuietThreadExecutorPolicy
+	}
+
+	/**
+	 * Construct a handler for tasks that cannot be executed by a ThreadPoolExecutor.
+	 * 
+	 * @param loggingConfig accessor to the logging bootique factory.
+	 * @param executorsConfig accessor to the execution bootique factory.
+	 * @param injector the current injector
+	 * @return the handler.
+	 */
+	@Provides
+	@Singleton
+	def provideRejectedExecutionHandler(loggingConfig : Log4jIntegrationConfig, executorsConfig : ExecutorsConfig,
+		injector : Injector) : RejectedExecutionHandler {
+		var level = loggingConfig.level
+		var ielevel = executorsConfig.internalErrorVerboseLevel
+		var provider : Provider<? extends RejectedExecutionHandler>
+		if (level.compareTo(ielevel) <= 0) {
+			provider = injector.getProvider(typeof(VerboseThreadExecutorPolicy))
+		} else {
+			provider = injector.getProvider(typeof(QuietThreadExecutorPolicy))
+		}
+		return provider.get
+	}
+
+	/**
+	 * Construct a handler for exceptions that are not catched.
+	 * 
+	 * @param loggingConfig accessor to the logging bootique factory.
+	 * @param executorsConfig accessor to the execution bootique factory.
+	 * @param injector the current injector
+	 * @return the handler.
+	 */
+	@Provides
+	@Singleton
+	def providetUncaughtExceptionHandler(loggingConfig : Log4jIntegrationConfig, executorsConfig : ExecutorsConfig,
+		injector : Injector) : UncaughtExceptionHandler {
+		var level = loggingConfig.level
+		var ielevel = executorsConfig.internalErrorVerboseLevel
+		if (level.compareTo(ielevel) <= 0) {
+			injector.getProvider(typeof(VerboseThreadExecutorPolicy)).get
+		} else {
+			injector.getProvider(typeof(QuietThreadExecutorPolicy)).get
+		}
+	}
+
+	/**
+	 * Construct a JVM executor service.
+	 * 
+	 * @param executorsConfig accessor to the execution bootique factory.
+	 * @param rejectedExecutionHandler the handler for rejected executions.
+	 * @return the service.
+	 */
+	@Provides
+	@Singleton
+	def provideExecutorService(executorsConfig : ExecutorsConfig,
+		rejectedExecutionHandler : RejectedExecutionHandler) : ExecutorService {
+		var executor : ExecutorService = null
+		if (executorsConfig.hasMaxThreadsSpecified) {
+			val minPoolSize = executorsConfig.minThreads
+			val maxPoolSize = executorsConfig.maxThreads
+			val keepAliveDuration = executorsConfig.keepAliveDuration
+			var min = Math::max(0, Math::min(minPoolSize, maxPoolSize))
+			var max = Math::max(1, Math::max(minPoolSize, maxPoolSize))
+			executor = new ThreadPoolExecutor(min, max, keepAliveDuration, TimeUnit::SECONDS, new SynchronousQueue)
+		} else {
+			executor = Executors::newFixedThreadPool(ExecutorsConfig::MAX_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE)
+		}
+		if (rejectedExecutionHandler !== null && executor instanceof ThreadPoolExecutor) {
+			(executor as ThreadPoolExecutor).rejectedExecutionHandler = rejectedExecutionHandler
+		}
+		return executor
+	}
+
+	/** 
+	 * Construct a JVM scheduled executor service.
+	 * 
+	 * @param executorsConfig accessor to the execution bootique factory.
+	 * @param rejectedExecutionHandler the handler for rejected executions.
+	 * @return the service.
+	 */
+	@Provides
+	@Singleton
+	def provideJvmScheduledExecutorService(executorsConfig : ExecutorsConfig,
+		rejectedExecutionHandler : RejectedExecutionHandler) : ScheduledExecutorService {
+		val minPoolSize = executorsConfig.minThreads
+		val maxPoolSize = executorsConfig.maxThreads
+		var max = Math::max(1, Math::min(minPoolSize, maxPoolSize))
+		var executor = Executors.newScheduledThreadPool(max)
+		if (rejectedExecutionHandler !== null && executor instanceof ThreadPoolExecutor) {
+			(executor as ThreadPoolExecutor).rejectedExecutionHandler = rejectedExecutionHandler
+		}
+		return executor
+	}
+
+}
+
+/** Provider of the module for the execution services.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.9
+ */
+class ExecutorServiceModuleProvider implements BQModuleProvider {
+
+	override module : Module {
+		return new ExecutorServiceModule
+	}
+
+	override moduleBuilder : BQModule.Builder {
+		return BQModule::builder(module).overrides(overrides).providerName(name).configs(configs).description(
+			Messages::ExecutorServiceModuleProvider_0);
+	}
+
+}

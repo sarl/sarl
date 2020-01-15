@@ -1,0 +1,267 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2019 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.spaces
+
+import io.sarl.lang.annotation.PrivateAPI
+import io.sarl.lang.core.Address
+import io.sarl.lang.core.Event
+import io.sarl.lang.core.EventListener
+import io.sarl.lang.core.EventSpace
+import io.sarl.lang.core.SREutils
+import io.sarl.lang.core.Scope
+import io.sarl.lang.core.SpaceID
+import io.sarl.lang.util.SynchronizedSet
+import io.sarl.sre.services.logging.LoggingService
+import io.sarl.util.AddressScope
+import io.sarl.util.Scopes
+import io.sarl.util.concurrent.Collections3
+import java.text.MessageFormat
+import java.util.UUID
+import java.util.concurrent.locks.ReadWriteLock
+import java.util.logging.Level
+import java.util.stream.Stream
+import javax.inject.Inject
+import javax.inject.Provider
+import org.eclipse.xtend.lib.annotations.Accessors
+
+/** 
+ * Abstract implementation of an event space.
+ * 
+ * @author $Author: srodriguez$
+ * @author $Author: ngaud$
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+@SuppressWarnings("use_reserved_sarl_annotation")
+@PrivateAPI(isCallerOnly = true)
+abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, SpaceWithParticipants {
+
+	@Accessors(PUBLIC_GETTER)
+	val lock : ReadWriteLock
+
+	/** 
+	 * Logging service.
+	 */
+	@Accessors(PUBLIC_GETTER)
+	val logger : LoggingService
+
+	/** Router of the events.
+	 * @since 0.8
+	 */
+	@Accessors(PUBLIC_GETTER)
+	var eventTransportService : EventTransportService
+
+	/** Listener on platform events related to space participants.
+	 * @since 0.10
+	 */
+	@Accessors(PUBLIC_GETTER)
+	var spaceParticipantListener : SpaceParticipantListener
+
+	/** Constructor.
+	 * 
+	 * @param id identifier of the space.
+	 * @param lockProvider the provider of synchronization locks.
+	 * @param participantListener the platform listener on participant events.
+	 * @param logger the logger service.
+	 */
+	new (spaceId : SpaceID, lockProvider : Provider<ReadWriteLock>,
+		participantListener : SpaceParticipantListener, logger : LoggingService) {
+		super(spaceId)
+		this.lock = lockProvider.get
+		this.spaceParticipantListener = participantListener
+		this.logger = logger
+	}
+
+	/** Set the event router.
+	 * 
+	 * @param router the router.
+	 * @since 0.8
+	 */
+	@Inject
+	def setEventTransportService(router : EventTransportService) {
+		this.eventTransportService = router
+	}
+	
+	protected final def registerToSpace(entity : EventListener) : Address {
+		assert entity !== null
+		var id = entity.ID
+		var address = new Address(this.spaceID, id)
+		var participant = Participant::createAndInit(address, entity)
+		val lck = getLock
+		lck.writeLock.lock
+		try {
+			this.internalParticipantStructure.put(id, participant)
+		} finally {
+			lck.writeLock.unlock
+		}
+		getSpaceParticipantListener?.participantJoined(participant)
+		return address
+	}
+
+	protected final def unregisterFromSpace(entity : EventListener) : Address {
+		assert entity !== null
+		var participant : Participant = null
+		var becomesEmpty : boolean
+		val lck = getLock
+		lck.writeLock.lock
+		try {
+			var structure = this.internalParticipantStructure
+			participant = structure.remove(entity.ID)
+			becomesEmpty = structure.empty
+		} finally {
+			lck.writeLock.unlock
+		}
+		if (participant !== null) {
+			if (becomesEmpty) {
+				fireDestroyableSpace
+			}
+			getSpaceParticipantListener?.participantLeft(participant)
+			return participant.address
+		}
+		return null
+	}
+
+	def getAddress(id : UUID) : Address {
+		assert id !== null
+		var participant : Participant = null
+		val lck = getLock
+		lck.writeLock.lock
+		try {
+			participant = this.internalParticipantStructure.remove(id)
+		} finally {
+			lck.writeLock.unlock
+		}
+		if (participant !== null) {
+			return participant.address
+		}
+		return null
+	}
+
+	@Deprecated
+	final def getParticipants : SynchronizedSet<UUID> {
+		val lck = getLock
+		lck.readLock.lock
+		try {
+			Collections3.unmodifiableSynchronizedSet(this.internalParticipantStructure.keySet, lck)
+		} finally {
+			lck.readLock.unlock
+		}
+	}
+
+	@Deprecated
+	final def emit(^event : Event, scope : Scope<Address>) {
+		emit(null, ^event, scope)
+	}
+
+	final def emit(eventSource : UUID, ^event : Event, scope : Scope<Address>) {
+		assert ^event !== null
+		ensureEventSource(eventSource, ^event)
+		assert this.spaceID == ^event.source.spaceID, "The source address must belong to this space"
+		try {
+			var mts = getEventTransportService
+			if (mts === null || mts.routeEvent(^event, this, scope)) {
+				^event.emitLocally(scope)
+			}
+		} catch (e : Throwable) {
+			this.logger.kernelLogger.log(Level::SEVERE, MessageFormat::format(Messages::AbstractEventSpace_0, ^event, scope, e), e)
+		}
+	}
+
+	/** Ensure that the given event has a source.
+	 * 
+	 * @param eventSource the source of the event.
+	 * @param event the event to emit.
+	 * @since 0.6.0
+	 */
+	protected def ensureEventSource(eventSource : UUID, ^event : Event) {
+		if (^event.source === null) {
+			if (eventSource !== null) {
+				^event.source = new Address(spaceID, eventSource)
+			} else {
+				throw new AssertionError("Every event must have a source")
+			}
+		}
+	}
+
+	private def lazyParticipant(address : Address) : Participant {
+		var links = SREutils::getSreSpecificData(address, typeof(AddressLazyLinks))
+		if (links === null) {
+			links = new AddressLazyLinks
+			SREutils::setSreSpecificData(address, links)
+		}
+		var participant = links.participant
+		if (participant !== null) {
+			return participant
+		}
+		participant = this.internalParticipantStructure.get(address.UUID)
+		links.participant = participant
+		return participant
+	}
+
+	/** Replies the participants that matches the given scope.
+	 *
+	 * @param scope the scope.
+	 * @return the matching participants.
+	 */
+	protected def getScopedParticipants(scope : Scope<? super Address>) : Stream<Participant> {
+		if (scope === null || scope === Scopes::allParticipants) {
+			return this.internalParticipantStructure.values.stream
+		}
+		if (scope instanceof AddressScope) {
+			return Stream.of(scope.addresses).map([it.lazyParticipant]).filter([it !== null])
+		}
+		return this.internalParticipantStructure.values.stream.filter [
+			scope.matches(it.address)
+		]
+	}
+	
+	/** 
+	 * Do the emission of the event.
+	 * 
+	 * <p>This function emits the event <strong>only on the internal event bus</strong> of the listeners.
+	 * 
+	 * <p>This function launch a task for each matching listener.
+	 * 
+	 * @param event the event to emit.
+	 * @param scope description of the scope of the event, i.e. the receivers of the event.
+	 */
+	protected def emitLocally(^event : Event, scope : Scope<? super Address>) {
+		assert ^event !== null
+		// Distinguish the emit and reception processes into two different tasks.
+		// The emit process is run in the current thread.
+		// The reception process should be treated into a separate thread in order
+		// to never block the sender process.
+		val lck = getLock
+		lck.readLock.lock
+		try {
+			val participants = getScopedParticipants(scope)
+			participants.forEach [
+					it.getParticipant.receiveEvent(^event)
+			]
+		} finally {
+			lck.readLock.unlock
+		}
+	}
+
+}

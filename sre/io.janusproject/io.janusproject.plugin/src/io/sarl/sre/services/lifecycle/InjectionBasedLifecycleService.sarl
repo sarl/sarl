@@ -1,0 +1,247 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2019 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.services.lifecycle
+
+import com.google.inject.AbstractModule
+import com.google.inject.Injector
+import io.sarl.lang.annotation.PrivateAPI
+import io.sarl.lang.core.Agent
+import io.sarl.lang.core.DynamicSkillProvider
+import io.sarl.lang.core.SREutils
+import java.lang.reflect.Constructor
+import java.util.UUID
+import javax.inject.Provider
+import io.sarl.sarlspecification.SarlSpecificationChecker
+import io.sarl.sre.internal.SmartListenerCollection
+import java.util.concurrent.locks.ReadWriteLock
+import io.sarl.sre.services.executor.ExecutorService
+import io.sarl.sre.services.context.ExternalContextMemberListener
+import io.sarl.sre.services.logging.LoggingService
+import javax.inject.Inject
+import io.sarl.sre.KernelScope
+
+/** 
+ * Implementation of a spawning service that is based on the other services of the SRE platform.
+ * 
+ * @author $Author: srodriguez$
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+class InjectionBasedLifecycleService extends AbstractLifecycleService {
+
+	/**
+	 * Constructs the service with the given (injected) injector.
+	 * 
+	 * @param injector
+	 * the injector that should be used by this service for creating the agents.
+	 * @param sarlSpecificationChecker the tool for checking the validity of the SARL specification supported by
+	 * the agents to launch.
+	 * @param skillProvider the provider of skills that should be used to init the agents.
+	 * @param globalListeners is the collection of global listeners to use.
+	 * @param lockProvider the provider of locks.
+	 * @param lifecycleListener the listener at the platform scale on life cycle events.
+	 * @param externalContextListener the listener at the platform scale on context membership events.
+	 * @param skillUninstaller the object this is able to uninstall the skills.
+	 * @param executor the executor service.
+	 * @param logger the logging service.
+	 */
+	@Inject
+	new (injector : Injector, sarlSpecificationChecker : SarlSpecificationChecker,
+		skillProvider : DynamicSkillProvider,
+		globalListeners : SmartListenerCollection<?>,
+		lockProvider : Provider<ReadWriteLock>,
+		@KernelScope lifecycleListener : Provider<LifecycleServiceListener>,
+		@KernelScope externalContextListener : Provider<ExternalContextMemberListener>,
+		skillUninstaller : SkillUninstaller,
+		executor : ExecutorService,
+		logger : LoggingService) {
+		this(sarlSpecificationChecker, new CreatorFactory(injector, skillProvider),
+			globalListeners, lockProvider, lifecycleListener, externalContextListener,
+			skillUninstaller, executor, logger)
+	}
+
+	/** 
+	 * Constructs the service.
+	 * 
+	 * @param sarlSpecificationChecker the tool for checking the validity of the SARL specification supported by
+	 * the agents to launch.
+	 * @param creator the provider of agent creators that is used when spawning agents.
+	 * @param globalListeners is the collection of global listeners to use.
+	 * @param lockProvider the provider of locks.
+	 * @param lifecycleListener the listener at the platform scale on life cycle events.
+	 * @param externalContextListener the listener at the platform scale on context membership events.
+	 * @param skillUninstaller the object this is able to uninstall the skills.
+	 * @param executor the executor service.
+	 * @param logger the logging service.
+	 */
+	new (sarlSpecificationChecker : SarlSpecificationChecker, creator : AgentCreatorProvider,
+		globalListeners : SmartListenerCollection<?>, lockProvider : Provider<ReadWriteLock>,
+		lifecycleListener : Provider<LifecycleServiceListener>,
+		externalContextListener : Provider<ExternalContextMemberListener>,
+		skillUninstaller : SkillUninstaller, executor : ExecutorService, logger : LoggingService) {
+		super(sarlSpecificationChecker, creator, globalListeners, lockProvider, lifecycleListener,
+			externalContextListener, skillUninstaller, executor, logger)
+	}
+
+	/** 
+	 * An injection module that is able to inject the parent ID and agent ID when creating an agent.
+	 * 
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static class CreatorFactory implements AgentCreatorProvider {
+
+		val injector : Injector
+
+		val skillProvider : DynamicSkillProvider 
+
+		new (injector : Injector, skillProvider : DynamicSkillProvider) {
+			this.injector = injector
+			this.skillProvider = skillProvider
+		}
+	
+		def getAgentCreator(
+			agentClazz : Class<T>,
+			parent : UUID,
+			nbAgents : int,
+			skillProviders : Iterable<DynamicSkillProvider>,
+			agentId : (int) => UUID) : Provider<T> with T extends Agent {
+			var sproviders = skillProviders.createSkillProvider
+			val agentInjectionModule = new JustInTimeAgentInjectionModule<T>(agentClazz, parent, agentId, sproviders)
+			val agentInjector = this.injector.createChildInjector(agentInjectionModule)
+			return [
+				agentInjector.getInstance(agentClazz)
+			]
+		}
+
+		private def createSkillProvider(providers : Iterable<DynamicSkillProvider>) : DynamicSkillProvider {
+			if (providers !== null) {
+				var iterator = providers.iterator
+				if (iterator.hasNext) {
+					return [^agent, ^capacity |
+						var r = this.skillProvider.installSkill(^agent, ^capacity)
+						if (r !== null) {
+							return r
+						}
+						for (provider : providers) {
+							r = provider.installSkill(^agent, ^capacity)
+							if (r !== null) {
+								return r
+							}
+						}
+						return null
+					]
+				}
+			}
+			return this.skillProvider
+		}
+	
+	}
+	
+	/** 
+	 * An injection module that is able to inject the parent ID and agent ID when creating an agent.
+	 * 
+	 * @param <T> the type of the generated agent.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	@SuppressWarnings("use_reserved_sarl_annotation")
+	@PrivateAPI(isCallerOnly = true)
+	private static class JustInTimeAgentInjectionModule<T extends Agent> extends AbstractModule implements Provider<T> {
+
+		val agentType : Class<T>
+
+		val constructor1 : Constructor<T>
+
+		val constructor2 : Constructor<T> 
+
+		val parentID : UUID
+
+		val skillProvider : DynamicSkillProvider
+
+		var identifierComputer : (int) => UUID
+
+		var creationIndex = 0
+
+		package new (agentType : Class<T>, parentID : UUID, agentID : (int) => UUID, skillProvider : DynamicSkillProvider) {
+			assert agentType !== null
+			assert parentID !== null
+			this.agentType = agentType
+			this.parentID = parentID
+			this.identifierComputer = agentID
+			this.skillProvider = skillProvider
+			var cons : Constructor<T> = null
+			var e1 : Exception = null
+			try {
+				cons = this.agentType.getConstructor(typeof(UUID), typeof(UUID))
+			} catch (exception : Exception) {
+				cons = null
+				e1 = exception
+			}
+			this.constructor1 = cons
+			var e2 : Exception = null
+			try {
+				cons = this.agentType.getConstructor(typeof(UUID), typeof(UUID), typeof(DynamicSkillProvider))
+			} catch (exception : Exception) {
+				cons = null
+				e2 = exception
+}
+			this.constructor2 = cons
+			if (this.constructor1 === null && this.constructor2 === null) {
+				throw new CannotSpawnException(this.agentType, e1 ?: e2)
+			}
+		}
+
+		def configure {
+			bind(this.agentType).toProvider(this)
+		}
+
+		def get : T {
+			var idx : int
+			synchronized (this) {
+				idx = this.creationIndex
+				this.creationIndex ++
+			}
+			var aid = this.identifierComputer.apply(idx)
+			assert this.constructor1 !== null || this.constructor2 !== null
+			try {
+				if (this.constructor2 !== null) {
+					this.constructor2.accessible = true
+					return this.constructor2.newInstance(this.parentID, aid, this.skillProvider)
+				}
+				this.constructor1.accessible = true
+				var ^agent = this.constructor1.newInstance(this.parentID, aid)
+				SREutils::setDynamicSkillProvider(^agent, this.skillProvider)
+				return ^agent
+			} catch (exception : Exception) {
+				throw new CannotSpawnException(this.agentType, exception)
+			}
+		}
+
+	}
+
+}

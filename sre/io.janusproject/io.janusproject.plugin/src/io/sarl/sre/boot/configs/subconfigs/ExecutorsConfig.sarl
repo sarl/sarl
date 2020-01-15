@@ -1,0 +1,327 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2019 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.boot.configs.subconfigs
+
+import com.google.inject.AbstractModule
+import com.google.inject.Module
+import io.bootique.BQModule
+import io.bootique.BQModuleProvider
+import io.bootique.annotation.BQConfig
+import io.bootique.annotation.BQConfigProperty
+import io.bootique.meta.application.OptionMetadata
+import java.lang.reflect.Type
+import java.text.MessageFormat
+import java.util.Collections
+import java.util.Map
+import org.arakhne.afc.bootique.log4j.configs.Level
+import org.arakhne.afc.bootique.variables.VariableDecls
+import org.eclipse.xtend.lib.annotations.Accessors
+
+import static io.sarl.sre.boot.configs.subconfigs.ExecutorsConfig.*
+
+import static extension io.bootique.BQCoreModule.extend
+
+/** 
+ * Configuration for the parallel executors.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.8
+ */
+@BQConfig("Configuration of the executor service")
+class ExecutorsConfig {
+
+	/** 
+	 * Prefix for the configuration entries of the parallel execution configuration.
+	 */
+	public static val PREFIX : String = ServicesConfig::PREFIX + ".executors"
+
+	/** 
+	 * Name of property for the maximal number of threads to keep in the pool.
+	 * 
+	 * @see #MAX_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE
+	 */
+	public static val MAX_NUMBER_OF_THREADS_IN_EXECUTOR_NAME = PREFIX + ".mxThreads"
+	
+	/** 
+	 * Indicates the maximal number of threads to keep in the pool.
+	 * 
+	 * @see #MAX_NUMBER_OF_THREADS_IN_EXECUTOR_NAME
+	 */
+	public static val MAX_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE = 32
+
+	/** 
+	 * Name of the property for the minimal number of threads to keep in the pool, even if they are idle.
+	 * 
+	 * @see #MIN_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE
+	 */
+	public static val MIN_NUMBER_OF_THREADS_IN_EXECUTOR_NAME = PREFIX + ".mnThreads"
+
+	/** 
+	 * Indicates the minimal number of threads to keep in the pool, even if they are idle.
+	 * 
+	 * @see #MIN_NUMBER_OF_THREADS_IN_EXECUTOR_NAME
+	 */
+	public static val MIN_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE = 0
+
+	/** 
+	 * Name of the property for the duration for keeping the iddle threads alive (in seconds).
+	 * 
+	 * @since 0.5.0
+	 * @see #THREAD_KEEP_ALIVE_DURATION_VALUE
+	 */
+	public static val THREAD_KEEP_ALIVE_DURATION_NAME = PREFIX + ".keepAlive"
+
+	/** 
+	 * Indicates the duration for keeping the iddle threads alive (in seconds).
+	 * 
+	 * @since 0.5.0
+	 * @see #THREAD_KEEP_ALIVE_DURATION_NAME
+	 */
+	public static val THREAD_KEEP_ALIVE_DURATION_VALUE = 60
+
+	/** 
+	 * Name of the property for the numbers of seconds that the kernel is waiting for thread terminations before timeout.
+	 * 
+	 * @see #KERNEL_THREAD_TIMEOUT_VALUE
+	 */
+	public static val THREAD_TIMEOUT_NAME = PREFIX + ".threadTimeout"
+
+	/** 
+	 * Indicates the numbers of seconds that the kernel is waiting for thread terminations before timeout.
+	 * 
+	 * @see #KERNEL_THREAD_TIMEOUT_NAME
+	 */
+	public static val THREAD_TIMEOUT_VALUE = 30
+
+	/** 
+	 * Name of the property for the default verbosity level of the executor's internal errors.
+	 * 
+	 * @see #INTERNAL_ERROR_VERBOSE_LEVEL_VALUE
+	 */
+	public static val INTERNAL_ERROR_VERBOSE_LEVEL_NAME = PREFIX + ".internalErrorLogLevel"
+
+	
+	/** 
+	 * The default verbosity level of the executor's internal errors.
+	 * 
+	 * @see #INTERNAL_ERROR_VERBOSE_LEVEL_NAME
+	 */
+	public static val INTERNAL_ERROR_VERBOSE_LEVEL_VALUE = Level::DEBUG
+
+
+
+
+	var internalErrorVerboseLevel : Level
+
+	var maxThreads : Integer
+
+	@Accessors(PUBLIC_GETTER)
+	var minThreads : int = MIN_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE
+
+	@Accessors(PUBLIC_GETTER)
+	var keepAliveDuration : int = THREAD_KEEP_ALIVE_DURATION_VALUE
+
+	@Accessors(PUBLIC_GETTER)
+	var timeout : int = THREAD_TIMEOUT_VALUE
+
+	/** Change the maximum number of threads that could be used by the executor service.
+	 *
+	 * @param maxThreads the max number.
+	 */
+	@BQConfigProperty("Maximum number of threads that could be used by the executor service")
+	def setMaxThreads(maxThreads : int) : void {
+		if (maxThreads > 0) {
+			this.maxThreads = maxThreads;
+		} else {
+			this.maxThreads = 1
+		}
+	}
+
+	/** Replies the maximum number of threads that could be used by the executor service.
+	 * 
+	 * @param the max number.
+	 */
+	def getMaxThreads : int {
+		if (this.maxThreads !== null) {
+			return this.maxThreads.intValue
+		}
+		return Integer::MAX_VALUE
+	}
+
+	/** Replies if the maximum number of threads is specified.
+	 * 
+	 * @return {@code true} if the maximum number of threads is specified. Otherwise {@code false}.
+	 */
+	def hasMaxThreadsSpecified : boolean {
+		this.maxThreads !== null
+	}
+
+	/** Change the minimum number of threads that could be used by the executor service.
+	 * 
+	 * @param minThreads the min number.
+	 */
+	@BQConfigProperty("Minimum number of threads that could be used by the executor service")
+	def setMinThreads(minThreads : int) {
+		if (minThreads > 0) {
+			this.minThreads = minThreads;
+		} else {
+			this.minThreads = 1
+		}
+	}
+
+	/** Change the duration during which a thread is still in memory without being used for another task.
+	 * 
+	 * @param duration the duration of an iddle thread.
+	 */
+	@BQConfigProperty("Duration during which a thread is iddle before being destroyed")
+	def setKeepAliveDuration(duration : int) {
+		if (duration >= 0) {
+			this.keepAliveDuration = duration;
+		} else {
+			this.keepAliveDuration = 0
+		}
+	}
+
+	/** Change the timeout duration for waiting the termination of the threads.
+	 * 
+	 * @param duration the timeout duration.
+	 */
+	@BQConfigProperty("Duration before assuming a timeout for the threads' termination")
+	def setTimeout(duration : int) {
+		if (duration >= 0) {
+			this.timeout = duration;
+		} else {
+			this.timeout = 0
+		}
+	}
+
+	/** 
+	 * Change the verbosity level of the internal errors.
+	 * 
+	 * @return the verbose level.
+	 */
+	@BQConfigProperty("Verbosity level for the internal errors within the executor service.")
+	def setInternalErrorVerboseLevel(level : Level) {
+		this.internalErrorVerboseLevel = level
+	}
+	
+	/** 
+	 * Replies the verbosity level of the internal errors.
+	 * 
+	 * @return the verbose level
+	 */
+	def getInternalErrorVerboseLevel : Level {
+		if (this.internalErrorVerboseLevel === null) {
+			this.internalErrorVerboseLevel = INTERNAL_ERROR_VERBOSE_LEVEL_VALUE
+		}
+		return this.internalErrorVerboseLevel
+	}
+
+}
+
+/** 
+ * Module for the parallel executors' configuration.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.9
+ */
+class ExecutorsConfigModule extends AbstractModule {
+
+	static val XMXTHREADS_OPTION = "Xmxthreads"
+
+	static val XMNTHREADS_OPTION = "Xmnthreads"
+
+	static val XKEEPALIVE_OPTION = "XkeepAlive"
+
+	static val XTHREADTIMEOUT_OPTION = "XthreadTimeout"
+
+	static val XINTERNALERRORLOGLEVEL_OPTION = "XinternalErrorLogLevel"
+
+	override configure : void {
+		VariableDecls::extend(binder).declareVar(MAX_NUMBER_OF_THREADS_IN_EXECUTOR_NAME)
+		binder.extend.addOption(
+			OptionMetadata::builder(XMXTHREADS_OPTION, Messages::ExecutorsConfigModule_0)
+			.valueRequired(Messages::ExecutorsConfigModule_5)
+			.build)
+			.mapConfigPath(XMXTHREADS_OPTION, MAX_NUMBER_OF_THREADS_IN_EXECUTOR_NAME)
+
+		VariableDecls::extend(binder).declareVar(MIN_NUMBER_OF_THREADS_IN_EXECUTOR_NAME)
+		binder.extend.addOption(OptionMetadata::builder(XMNTHREADS_OPTION, Messages::ExecutorsConfigModule_1)
+			.valueRequired(Messages::ExecutorsConfigModule_5)
+			.build)
+			.mapConfigPath(XMNTHREADS_OPTION, MIN_NUMBER_OF_THREADS_IN_EXECUTOR_NAME)
+
+		VariableDecls::extend(binder).declareVar(THREAD_KEEP_ALIVE_DURATION_NAME)
+		binder.extend.addOption(OptionMetadata::builder(XKEEPALIVE_OPTION,
+			MessageFormat::format(Messages::ExecutorsConfigModule_2, THREAD_KEEP_ALIVE_DURATION_VALUE))
+			.valueRequired(Messages::ExecutorsConfigModule_6)
+			.build)
+			.mapConfigPath(XKEEPALIVE_OPTION, THREAD_KEEP_ALIVE_DURATION_NAME)
+
+		VariableDecls::extend(binder).declareVar(THREAD_TIMEOUT_NAME)
+		binder.extend.addOption(OptionMetadata::builder(
+			XTHREADTIMEOUT_OPTION,
+				MessageFormat::format(Messages::ExecutorsConfigModule_3, THREAD_TIMEOUT_VALUE))
+				.valueRequired(Messages::ExecutorsConfigModule_7)
+				.build)
+				.mapConfigPath(XTHREADTIMEOUT_OPTION, THREAD_TIMEOUT_NAME)
+
+		VariableDecls::extend(binder).declareVar(INTERNAL_ERROR_VERBOSE_LEVEL_NAME)
+		binder.extend.addOption(OptionMetadata::builder(
+				XINTERNALERRORLOGLEVEL_OPTION,
+				MessageFormat::format(Messages::ExecutorsConfigModule_4, INTERNAL_ERROR_VERBOSE_LEVEL_VALUE.toString))
+				.valueRequired(Messages::ExecutorsConfigModule_8)
+				.build)
+				.mapConfigPath(XINTERNALERRORLOGLEVEL_OPTION, INTERNAL_ERROR_VERBOSE_LEVEL_NAME)
+	}
+
+}
+
+/** Provider of the module for the parallel executors' configuration.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.9
+ */
+class ExecutorsConfigModuleProvider implements BQModuleProvider {
+
+	override module : Module {
+		return new ExecutorsConfigModule
+	}
+
+	override configs : Map<String, Type> {
+		return Collections::singletonMap(PREFIX, typeof(ExecutorsConfig))
+	}
+	
+	override moduleBuilder : BQModule.Builder {
+		return BQModule::builder(module).overrides(overrides).providerName(name).configs(configs).description(
+			Messages::ExecutorsConfigModuleProvider_0);
+	}
+
+}

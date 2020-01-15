@@ -1,0 +1,165 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2019 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.services.context
+
+import io.sarl.sre.services.AbstractSreService
+import java.util.Map
+import java.util.UUID
+import java.util.concurrent.locks.ReadWriteLock
+import javax.inject.Singleton
+import org.eclipse.xtend.lib.annotations.Accessors
+import io.sarl.lang.core.Agent
+
+/** 
+ * A service managing the root context and enabling the creation of contexts.
+ *
+ * <p>This service is thread-safe.
+ *  
+ * @author $Author: ngaud$
+ * @author $Author: srodriguez$
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+@Singleton
+abstract class AbstractContextService extends AbstractSreService implements ContextService {
+
+	val lock : ReadWriteLock
+
+	@Accessors(PUBLIC_GETTER)
+	val rootContext : Context
+
+	/** Constructor.
+	 * 
+	 * @param rootContext the root context.
+	 * @param lock is the lock that must be used by this service.
+	 */
+	protected new (rootContext : Context, lock : ReadWriteLock) {
+		this.rootContext = rootContext
+		this.lock = lock
+	}
+
+	def onStart {
+		this.rootContext.initialize
+	}
+
+	def onStop {
+		this.rootContext.destroy
+	}
+
+	/** Replies the lock for synchronizing this service
+	 */
+	def getLock : ReadWriteLock {
+		this.lock
+	}
+
+	/** Replies the internal data structure for storing the contexts.
+	 *
+	 * <p>This function is not thread-safe.
+	 */
+	protected abstract def getContextInternalStructure : Map<UUID, Context>
+
+	final def createContextWithoutRegistration(contextID : UUID, defaultSpaceID : UUID, owner : Agent) : Context {
+		assert contextID !== null, "The contextID cannot be null"
+		assert defaultSpaceID !== null, "The defaultSpaceUUID cannot be null"
+		return contextID.newContextInstance(defaultSpaceID, owner)
+	}
+	
+	final def createContext(contextID : UUID, defaultSpaceID : UUID, owner : Agent) : Context {
+		assert contextID !== null, "The contextID cannot be null"
+		assert this.rootContext !== null, "No root context yet"
+		if (contextID == this.rootContext.ID) {
+			return this.rootContext
+		}
+		val repository = getContextInternalStructure
+		var existingContext : Context
+		var lck = getLock
+		lck.readLock.lock
+		try {
+			existingContext = repository.get(contextID)
+		} finally {
+			lck.readLock.unlock
+		}
+		if (existingContext === null) {
+			assert defaultSpaceID !== null, "The defaultSpaceUUID cannot be null"
+			lck.writeLock.lock
+			try {
+				existingContext = repository.get(contextID)
+				if (existingContext === null) {
+					existingContext = contextID.newContextInstance(defaultSpaceID, owner)
+					repository.putIfAbsent(contextID, existingContext)
+				}
+			} finally {
+				lck.writeLock.unlock
+			}
+		}
+		return existingContext
+	}
+
+	def getContext(contextID : UUID) : Context {
+		assert contextID !== null, "The contextID cannot be null"
+		assert rootContext !== null, "The root context cannot be null"
+		if (contextID == this.rootContext.ID) {
+			return this.rootContext
+		}
+		val repository = contextInternalStructure
+		var existingContext : Context
+		var lck = getLock
+		lck.readLock.lock
+		try {
+			existingContext = repository.get(contextID)
+		} finally {
+			lck.readLock.unlock
+		}
+		return existingContext
+	}
+
+	def removeContext(contextID : UUID) : Context {
+		assert contextID !== null, "The contextID cannot be null"
+		if (contextID == this.rootContext.ID) {
+			return null
+		}
+		val repository = contextInternalStructure
+		var existingContext : Context
+		var lck = getLock
+		lck.writeLock.lock
+		try {
+			existingContext = repository.remove(contextID)
+		} finally {
+			lck.writeLock.unlock
+		}
+		if (existingContext !== null) {
+			existingContext.destroy
+		}
+		return existingContext
+	}
+
+	/** Create a context instance.
+	 * 
+	 * @param contextID the identifier of the context.
+	 * @param defaultSpaceId the identifier of the default space in the context.
+	 * @param owner is the owner of the context. If {@code null}, the context is the root context
+	 */
+	protected abstract def newContextInstance(contextID : UUID, defaultSpaceID : UUID,
+		owner : Agent) : Context
+
+}

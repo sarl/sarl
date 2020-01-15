@@ -1,0 +1,821 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2019 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.skills.bic
+
+import io.sarl.core.AgentTask
+import io.sarl.core.Logging
+import io.sarl.core.Time
+import io.sarl.lang.annotation.PrivateAPI
+import io.sarl.lang.core.Agent
+import io.sarl.lang.core.Behavior
+import io.sarl.lang.core.Capacities
+import io.sarl.lang.core.SREutils
+import io.sarl.lang.util.SynchronizedSet
+import io.sarl.sre.capacities.InternalSchedules
+import io.sarl.sre.services.executor.EarlyExitException
+import io.sarl.sre.services.executor.ExecutorService
+import io.sarl.sre.services.executor.SreRunnable
+import io.sarl.sre.skills.BuiltinSkill
+import io.sarl.util.concurrent.Collections3
+import java.lang.ref.WeakReference
+import java.text.MessageFormat
+import java.util.Map
+import java.util.UUID
+import java.util.concurrent.ExecutionException
+import java.util.concurrent.Future
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.TimeoutException
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.locks.ReadWriteLock
+import java.util.logging.Logger
+import javax.inject.Inject
+import javax.inject.Provider
+
+import static io.sarl.sre.services.lifecycle.AgentLife.*
+import static io.sarl.sre.services.lifecycle.BehaviorLife.*
+
+/** 
+ * Skill that permits to execute tasks with an executor service.
+ * 
+ * @author $Author: srodriguez$
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+@SuppressWarnings("use_reserved_sarl_annotation", "potential_field_synchronization_problem")
+@PrivateAPI(isCallerOnly = true)
+skill SchedulesSkill extends BuiltinSkill implements InternalSchedules {
+
+	uses Logging, Time
+
+	val executorService : ExecutorService
+
+	var activeTaskRepository : Map<String, TaskDescription> = null
+
+	val lock : ReadWriteLock
+
+	/** Constructor. */
+	@Inject
+	new (service : ExecutorService, lockProvider : Provider<ReadWriteLock>) {
+		super(lockProvider)
+		this.executorService = service
+		this.lock = lockProvider.get
+	}
+
+	/** Replies the synchronization lock object.
+	 */
+	protected def getLock : ReadWriteLock {
+		this.lock
+	}
+
+	protected override uninstall(stage : UninstallationStage) {
+		var lck = getLock
+		lck.writeLock.lock
+		try {
+			if (stage == UninstallationStage.PRE_DESTROY_EVENT) {
+				// Cancel the tasks as soon as possible in the uninstallation process
+				cancelAllRunningTasks
+			} else {
+				// Cancel the tasks that were creating during the destruction stage (in the Destroy event handler)
+				cancelAllRunningTasks
+			}
+		} finally {
+			lck.writeLock.unlock
+		}
+	}
+
+	/** Replies the map that store the active tasks.
+	 * If the map is not created before, this function creates it.
+	 * 
+	 * <p>This function is not thread-safe.
+	 */
+	private def getRepository : Map<String, TaskDescription> {
+		if (this.activeTaskRepository === null) {
+			this.activeTaskRepository = newTreeMap(null)
+		}
+		this.activeTaskRepository
+	}
+	
+	/** Cancel all the running tasks.
+	 *
+	 * <p>This function is not thread-safe.
+	 */
+	private def cancelAllRunningTasks {
+		var activeTasks = this.activeTaskRepository
+		this.activeTaskRepository = null
+		if (activeTasks !== null) {
+			for (taskDescription : activeTasks.entrySet) {
+				var description = taskDescription.value
+				if (description !== null) {
+					var task = description.task
+					if (task !== null) {
+						finishTask(task, true, false, false)
+					}
+				}
+			}
+		}
+	}
+
+	/** Create a task.
+	 * If the task was already launched, this function replies the active task.
+	 *
+	 * <p>If {@code updateBehaviorReference} evaluates to {@code true} and the caller
+	 * of the function's skill is a {@code Behavior}, then this latest behavior
+	 * is associated to the task.
+	 * 
+	 * <p>This function is thread-safe.
+	 *
+	 * @param name the name of the task to be created.
+	 * @param updateTaskList is {@code true} for adding the created task into the list of active tasks.
+	 * @param updateBehaviorReference indicates if the behavior reference to the task must be updated by removing the reference.
+	 */
+	private def createTaskIfNecessary(name : String = null, updateTaskList : boolean,
+		updateBehaviorReference : boolean) : TaskDescription {
+		var lck = getLock
+		var description : TaskDescription = null
+		var realName : String
+		if (name.isNullOrEmpty) {
+			realName = "task-" + UUID::randomUUID.toString
+		} else {
+			realName = name
+			lck.readLock.lock
+			try {
+				description = this.activeTaskRepository?.get(realName)
+			} finally {
+				lck.readLock.unlock
+			}
+		}
+		
+		if (description === null) {
+			val caller = Capacities::getCaller ?: this.owner
+			val task = new AgentTask(caller)
+			task.taskName = realName
+			task.guard = AgentTask::TRUE_GUARD
+			description = new TaskDescription(task)
+			SREutils.setSreSpecificData(task, description)
+			if (updateTaskList || updateBehaviorReference) {
+				lck.writeLock.lock
+				try {
+					if (updateBehaviorReference) {
+						getRepository.put(realName, description)
+					}
+					if (updateBehaviorReference && caller instanceof Behavior) {
+						// Register the task to the behavior in order to cancel the task when the behavior is unregistered.
+						task.bindToBehavior(caller)
+					}
+				} finally {
+					lck.writeLock.unlock
+				}
+			}
+		}
+
+		return description
+	}
+
+	private def unbindToBehavior(task : AgentTask) {
+		var caller = task.initiator
+		if (caller instanceof Behavior) {
+			getLife(caller, this.lockProvider).removeTaskReference(task)
+		}
+	}
+
+	private def bindToBehavior(task : AgentTask, caller : Object = null) {
+		var initiator = caller ?: (task.initiator ?: (Capacities::getCaller ?: this.owner))
+		if (initiator instanceof Behavior) {
+			getLife(initiator, this.lockProvider).addTaskReference(task)
+		}
+	}
+
+	private def resetTask(newTask : AgentTask, description : TaskDescription) {
+		assert newTask !== null
+		assert description !== null
+		
+		var oldTask = description.task
+		if (oldTask !== null) {
+			assert oldTask.name == newTask.name
+			SREutils::setSreSpecificData(oldTask, null, typeof(TaskDescription))
+			oldTask.unbindToBehavior
+		}
+
+		SREutils::setSreSpecificData(newTask, description, typeof(TaskDescription))
+		val name = newTask.name
+		if (name.isNullOrEmpty) {
+			newTask.taskName = "task-" + UUID::randomUUID.toString
+		}
+		description.task = newTask
+		description.future = null
+		newTask.bindToBehavior
+	}
+
+	/** 
+	 * Remove any reference to the given task.
+	 * The repository of active tasks is updated.
+	 * 
+	 * <p>This function is not thread-safe.
+	 * 
+	 * @param name the task.
+	 * @param cancelTask indicates if the task should be canceled by this function.
+	 * @param updateTaskList indicates if the task list must be updated by removing the task.
+	 * @param updateBehaviorReference indicates if the behavior reference to the task must be updated by removing the reference.
+	 * @return {@code true} if the task was successfully finished.
+	 */
+	private def finishTask(task : AgentTask, cancelTask : boolean, updateTaskList : boolean, updateBehaviorReference : boolean) : boolean {
+		assert task !== null
+		// Remove the reference of the behavior to the task.
+		if (updateBehaviorReference) {
+			task.unbindToBehavior
+		}
+		// Remove the task from the global list.
+		var description : TaskDescription = null
+		if (updateTaskList && !task.name.nullOrEmpty) {
+			description = this.activeTaskRepository?.remove(task.name)
+		}
+		if (cancelTask) {
+			// Force the stop of the task.
+			var description2 = SREutils::setSreSpecificData(task, null, typeof(TaskDescription))
+			if (description === null) {
+				description = description2
+			}
+			if (description !== null) {
+				var future = description.future
+				description.future = null
+				if (future !== null && !future.done && !future.cancelled) {
+					// Task is running. Force its stop.
+					return future.cancel(true)
+				}
+			}
+		}
+		return true;
+	}
+
+	/** Replies the  task description of the given task.
+	 *
+	 * @param task the task reference.
+	 * @return the task description, or {@code null} if the task is unknown.
+	 */
+	protected def getTaskDescription(task : AgentTask) : TaskDescription {
+		if (task === null) {
+			return null;
+		}
+		var description = SREutils::getSreSpecificData(task, typeof(TaskDescription))
+		if (description === null && !task.name.nullOrEmpty) {
+			description = this.activeTaskRepository?.get(task.name)
+		}
+		return description
+	}
+
+	/** Prepare a task for submission.
+	 * 
+	 * <p>This function creates the AgentTask and the task description if they are not created yet.
+	 * This function put the task into the list of active tasks.
+	 * 
+	 * <p>This function is thread-safe.
+	 */
+	private def preRunTask(task : AgentTask, procedure : (Agent)=>void) : TaskDescription {
+		var description : TaskDescription
+		var taskInstance : AgentTask
+		if (task === null) {
+			description = createTaskIfNecessary(true, true)
+			taskInstance = description.task
+		} else {
+			if (task.name.nullOrEmpty) {
+				description = null
+			} else {
+				var lck = getLock
+				lck.readLock.lock
+				try {
+					description = this.activeTaskRepository?.get(task.name)
+				} finally {
+					lck.readLock.unlock
+				}
+			}
+			var registered = description !== null
+			if (description === null) {
+				description = SREutils::getSreSpecificData(task, typeof(TaskDescription))
+			}
+			if (description !== null) {
+				var future = description.future
+				if (future !== null && !future.done && !future.cancelled) {
+					throw new IllegalStateException(Messages::SchedulesSkill_2)
+				}
+			} else {
+				description = new TaskDescription()
+			}
+			task.resetTask(description)
+			if (!registered) {
+				var lck = getLock
+				lck.writeLock.lock
+				try {
+					getRepository.put(task.name, description)
+				} finally {
+					lck.writeLock.unlock
+				}
+			}
+			taskInstance = task
+		}
+		taskInstance.procedure = procedure
+		return description
+	}
+
+	/** Finalize the task initialization.
+	 * 
+	 * <p>This function is thread-safe.
+	 */
+	private def postRunTask(description : TaskDescription, task : AgentTask, future : Future<?>) : TaskDescription {
+		assert description !== null
+		description.future = future
+		return description
+	}
+
+	/** Called by a behavior when it is destroyed. */
+	def unregisterTasksForBehavior(^behavior : Behavior) {
+		var tasksToCancel = getLife(^behavior, this.lockProvider).removeAllTaskReferences
+		if (tasksToCancel !== null) {
+			for (taskToCancel : tasksToCancel.map[it.get]) {
+				if (taskToCancel !== null) {
+					taskToCancel.finishTask(true, true, false)
+				}
+			}
+		}
+	}
+
+	/** Called by a behavior when it is destroyed.
+	 */
+	def releaseInternalResources(^behavior : Behavior) {
+		SREutils::setSreSpecificData(^behavior, null)
+	}
+
+	def task(name : String) : AgentTask {
+		if (getLife(owner, this.lockProvider).state.alive) {
+			return createTaskIfNecessary(name, false, false).task
+		}
+		return null
+	}
+
+	def setName(task : AgentTask, name : String) {
+		if (getLife(owner, this.lockProvider).state.alive) {
+			val realName = if (name.isNullOrEmpty) "task-" + UUID::randomUUID.toString else name 
+			val prefix = realName + "-"
+			var i = 0
+			var nm = realName
+			var atr : Map<String, TaskDescription>
+			var lck = getLock
+			lck.readLock.lock
+			try {
+				atr = this.activeTaskRepository
+			} finally {
+				lck.readLock.unlock
+			}
+			if (atr !== null) {
+				lck.writeLock.lock
+				try {
+					atr = this.activeTaskRepository
+					if (atr !== null) {
+						var desc = atr.remove(task.name)
+						if (desc !== null) {
+							while (atr.containsKey(nm)) {
+								i++
+								nm = prefix + i
+							}
+							task.taskName = nm
+							atr.put(nm, desc)
+						}
+					} else {
+						task.taskName = nm
+					}
+				} finally {
+					lck.writeLock.unlock
+				}
+			} else {
+				task.taskName = nm
+			}
+		}		
+	}
+
+	def execute(task : AgentTask = null, procedure : (Agent)=>void) : AgentTask {
+		var description = preRunTask(task, procedure)
+		var logger = getLogger
+		val future = this.executorService.executeAsap(logger, new SingleRunner(this, this.owner, description, logger))
+		description = postRunTask(description, task, future)
+		return description.task
+	}
+
+	def in(task : AgentTask = null, delay : long, procedure : (Agent)=>void) : AgentTask {
+		if (getLife(owner, this.lockProvider).state.alive) {
+			var description = preRunTask(task, procedure)
+			val logger = getLogger
+			val sf = this.executorService.schedule(logger, delay, TimeUnit::MILLISECONDS,
+				new SingleRunner(this, this.owner, description, logger))
+			description = postRunTask(description, task, sf)
+			return description.task
+		}
+		return task
+	}
+
+	def every(task : AgentTask = null, period : long, procedure : (Agent)=>void) : AgentTask {
+		if (getLife(owner, this.lockProvider).state.alive) {
+			var description = preRunTask(task, procedure)
+			val logger = getLogger
+			val sf = this.executorService.scheduleAtFixedRate(logger, 0, period, TimeUnit::MILLISECONDS,
+					new PeriodicRunner(this, this.owner, description, logger))
+			description = postRunTask(description, task, sf)
+			return description.task
+		}
+		return task
+	}
+
+	def atFixedDelay(task : AgentTask = null, delay : long, procedure : (Agent)=>void) : AgentTask {
+		if (getLife(owner, this.lockProvider).state.alive) {
+			var description = preRunTask(task, procedure)
+			var future : Future<?>
+			if (delay <= 0) {
+				future = this.executorService.executeAsap(new InfiniteRunner(this, this.owner, description, getLogger))
+			} else {
+				var logger = getLogger
+				future = this.executorService.scheduleWithFixedDelay(logger, 0, delay, TimeUnit::MILLISECONDS,
+						new PeriodicRunner(this, this.owner, description, logger))
+			}
+			description = postRunTask(description, task, future)
+			return description.task
+		}
+		return task
+	}
+
+	def at(task : AgentTask = null, time : long, procedure : (Agent)=>void) : AgentTask {
+		val delay = Math::round(time - getTime)
+		if (delay > 0.0) {
+			return in(task, delay, procedure)
+		}
+		return task
+	}
+
+	def isCanceled(task : AgentTask) : boolean {
+		if (task !== null) {
+			var description = task.taskDescription
+			if (description !== null) {
+				var future = description.future
+				if (future !== null) {
+					return future.cancelled
+				}
+			}
+		}
+		return false
+	}
+
+	def cancel(task : AgentTask, mayInterruptIfRunning : boolean = true) : boolean {
+		if(task !== null) {
+			var description = task.taskDescription
+			if (description !== null) {
+				var future = description.future
+				if (future !== null && !future.done && !future.cancelled
+					&& future.cancel(mayInterruptIfRunning)) {
+					return finishTask(task, true, true, true)
+				}
+			}
+		}
+		return false
+	}
+
+	def getActiveTasks : SynchronizedSet<String> {
+		var lck = getLock
+		lck.readLock.lock
+		try {
+			if (this.activeTaskRepository !== null) {
+				return Collections3::unmodifiableSynchronizedSet(this.activeTaskRepository.keySet, lck)
+			}
+			return Collections3::emptySynchronizedSet
+		} finally {
+			lck.readLock.unlock
+		}
+	}
+	
+	/** 
+	 * Description of a task.
+	 * 
+	 * @author $Author: sgalland$
+	 * @version $Name$ $Revision$ $Date$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.5.0
+	 */
+	private static final class TaskDescription {
+
+		var taskReference : AgentTask
+
+		/** The scheduled future associated to the task.
+		 */
+		var futureResult : Future<?>
+
+		new (task : AgentTask = null, future : Future<?> = null) {
+			this.taskReference = task
+			if (future === null) {
+				this.futureResult = new FutureReceiver
+			} else {
+				this.futureResult = future
+			}
+		}
+
+		def toString : String {
+			this.taskReference?.toString
+		}
+
+		def getTask : AgentTask {
+			this.taskReference
+		}
+
+		package def setTask(task : AgentTask) {
+			this.taskReference = task
+		}
+
+		def getFuture : Future<?> {
+			this.futureResult
+		}
+
+		package def setFuture(future : Future<?>) {
+			var receiver : FutureReceiver
+			if (this.futureResult instanceof FutureReceiver) {
+				receiver = this.futureResult
+			} else {
+				receiver = null
+			}
+			this.futureResult = future
+			if (receiver !== null && this.futureResult !== null) {
+				receiver.apply(this.futureResult)
+			}
+		}
+
+	}
+
+	/** 
+	 * A future definition that enables to interact with the future
+	 * object's even if it is not already provided by the thread manager.
+	 * This receiver will be replaced by the real future object as soon
+	 * as it is provided by the thread manager. Then, any interaction with
+	 * the receiver will be propagated to the real future.
+	 * 
+	 * @author $Author: sgalland$
+	 * @version $Name$ $Revision$ $Date$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.9
+	 */
+	private static class FutureReceiver implements Future<Object> {
+
+		val cancelFlag = new AtomicBoolean
+
+		val mayInterruptIfRunningFlag = new AtomicBoolean
+
+		package new {
+			//
+		}
+
+		def apply(future : Future<?>) {
+			if (future !== null && !future.isCancelled && !future.isDone && this.cancelFlag.get) {
+				future.cancel(this.mayInterruptIfRunningFlag.get)
+			}
+		}
+
+		override cancel(mayInterruptIfRunning : boolean) : boolean {
+			this.mayInterruptIfRunningFlag.set(mayInterruptIfRunning)
+			this.cancelFlag.set(true)
+			return true
+		}
+
+		override isCancelled : boolean {
+			this.cancelFlag.get
+		}
+
+		override isDone : boolean {
+			false
+		}
+
+		override get : Object throws InterruptedException, ExecutionException {
+			throw new ExecutionException(new UnsupportedOperationException)
+		}
+
+		override get(timeout : long, unit : TimeUnit) : Object
+					throws InterruptedException, ExecutionException, TimeoutException {
+			throw new ExecutionException(new UnsupportedOperationException)
+		}
+
+	}
+
+	/** 
+	 * Type of task termination.
+	 * 
+	 * @author $Author: sgalland$
+	 * @version $Name$ $Revision$ $Date$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.6.0
+	 */
+	private enum TaskTermination {
+		PROCEDURE_RUN, NO_PROCEDURE_RUN, ERROR_IN_PROCEDURE
+	}
+
+	/** 
+	 * Implementation of an agent task that is run once time.
+	 * 
+	 * @author $Author: sgalland$
+	 * @version $Name$ $Revision$ $Date$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static abstract class TaskRunner extends SreRunnable {
+
+		protected val ^skill : WeakReference<SchedulesSkill>
+
+		protected val ^agent : WeakReference<Agent>
+
+		protected val agentTaskRef : WeakReference<TaskDescription>
+
+		new (^skill : SchedulesSkill, ^agent : Agent, task : TaskDescription, logger : Logger) {
+			super(logger)
+			assert ^skill !== null
+			assert ^agent !== null
+			assert task !== null
+			this.^skill = new WeakReference(^skill)
+			this.^agent = new WeakReference(^agent)
+			this.agentTaskRef = new WeakReference(task)
+		}
+
+		protected def coreRun(task : AgentTask) : TaskTermination {
+			val owner = ^agent?.get
+			assert owner !== null
+			val guard = task.guard
+			if (guard === null || guard.apply(owner).booleanValue) {
+				val procedure = task.procedure
+				if (procedure !== null) {
+					procedure.apply(owner)
+					return TaskTermination::PROCEDURE_RUN
+				}
+			}
+			return TaskTermination::NO_PROCEDURE_RUN
+		}
+
+		final override run {
+			val taskDescription = this.agentTaskRef.get
+			if (taskDescription === null) {
+				throw new RuntimeException(Messages.SchedulesSkill_0)
+			}
+			val task = taskDescription.task
+			if (task === null) {
+				throw new RuntimeException(Messages.SchedulesSkill_0)
+			}
+			val future = taskDescription.future
+			if (future !== null && (future.done || future.cancelled)) {
+				return
+			}
+			if (!preRun) {
+				return
+			}
+			val ^skill = this.^skill?.get
+			assert ^skill !== null
+			var mustBeFinished = TaskTermination::PROCEDURE_RUN
+			try {
+				try {
+					mustBeFinished = task.coreRun
+				} catch (ex : EarlyExitException) {
+					throw ex
+				} catch (ex : InterruptedException) {
+					throw ex
+				} catch (ex : Throwable) {
+					mustBeFinished = TaskTermination::ERROR_IN_PROCEDURE
+					this.logger.severe(
+						MessageFormat::format(Messages.SchedulesSkill_1, ex, toString, ex.getLocalizedMessage))
+				} finally {
+					val finishTask = postRun(mustBeFinished)
+					if (finishTask) {
+						var lck = ^skill.getLock
+						lck.writeLock.lock
+						try {
+							^skill.finishTask(task, false, true, true);
+						} finally {
+							lck.writeLock.unlock
+						}
+					}
+				}
+			} catch (ex : EarlyExitException) {
+				ex.runPostTreatment(this.logger)
+			} catch (ex : InterruptedException) {
+				// Ignore this exception
+			}
+		}
+
+		protected def preRun : boolean {
+			true
+		}
+
+		protected abstract def postRun(termination : TaskTermination) : boolean
+
+	}
+
+	/** 
+	 * Implementation of an agent task that is run once time.
+	 * 
+	 * @author $Author: sgalland$
+	 * @version $Name$ $Revision$ $Date$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static class SingleRunner extends TaskRunner {
+
+		new (^skill : SchedulesSkill, ^agent : Agent, task : TaskDescription, logger : Logger) {
+			super(^skill, ^agent, task, logger)
+		}
+
+		protected def postRun(termination : TaskTermination) : boolean {
+			true
+		}
+
+	}
+
+	/** 
+	 * Implementation of a periodic agent task.
+	 * 
+	 * @author $Author: sgalland$
+	 * @version $Name$ $Revision$ $Date$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static class PeriodicRunner extends TaskRunner {
+
+		new (^skill : SchedulesSkill, ^agent : Agent, task : TaskDescription, logger : Logger) {
+			super(^skill, ^agent, task, logger)
+		}
+
+		protected def postRun(termination : TaskTermination) : boolean {
+			termination !== TaskTermination::PROCEDURE_RUN
+		}
+
+	}
+
+	/** 
+	 * Implementation of an agent infinite loop task.
+	 * 
+	 * @author $Author: sgalland$
+	 * @version $Name$ $Revision$ $Date$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static class InfiniteRunner extends TaskRunner {
+		
+		new (^skill : SchedulesSkill, ^agent : Agent, task : TaskDescription, logger : Logger) {
+			super(^skill, ^agent, task, logger)
+		}
+
+		private def canRun : boolean {
+			var taskDescription = this.agentTaskRef.get
+			if (taskDescription !== null) {
+				var future = taskDescription.future
+				return future !== null && !future.done && !future.cancelled
+			}
+			return false
+		}
+
+		protected def postRun(termination : TaskTermination) : boolean {
+			true
+		}
+
+		@SuppressWarnings("discouraged_reference")
+		protected override coreRun(task : AgentTask) : TaskTermination {
+			var owner = ^agent.get
+			assert owner !== null
+			while (canRun) {
+				val guard = task.guard
+				if (guard === null || guard.apply(owner).booleanValue) {
+					val procedure = task.procedure
+					if (procedure !== null) {
+						procedure.apply(owner)
+					}
+				} else {
+					// Break the loop without introducing a local boolean variable
+					break
+				}
+				Thread::yield
+			}
+			return TaskTermination::NO_PROCEDURE_RUN
+		}
+
+	}
+
+}

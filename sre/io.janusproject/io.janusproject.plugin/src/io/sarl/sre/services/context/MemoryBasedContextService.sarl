@@ -1,0 +1,99 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2019 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.sarl.sre.services.context
+
+import com.google.common.collect.Iterables
+import com.google.inject.Injector
+import io.sarl.lang.util.SynchronizedIterable
+import io.sarl.sre.KernelScope
+import io.sarl.util.concurrent.Collections3
+import java.util.Collections
+import java.util.Map
+import java.util.UUID
+import java.util.concurrent.locks.ReadWriteLock
+import javax.inject.Inject
+
+/** 
+ * A service managing the root context and enabling the creation of contexts by injection into the
+ * local memory.
+ * The context repository is not shared among different instances of the SRE kernel.
+ *
+ * <p>This service is thread-safe.
+ *  
+ * @author $Author: ngaud$
+ * @author $Author: srodriguez$
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+class MemoryBasedContextService extends AbstractInjectionBasedContextService {
+
+	var contextRepository : Map<UUID, Context>
+
+	/** Constructor.
+	 * 
+	 * @param rootContext the root context.
+	 * @param injector is the injector.
+	 * @param factory is the factory of contexts.
+	 * @param lock is the lock that must be used by this service.
+	 */
+	@Inject
+	new(@KernelScope rootContext : Context, injector : Injector, factory : ContextFactory, lock : ReadWriteLock) {
+		super(rootContext, injector, factory, lock)
+	}
+
+	protected def getContextInternalStructure : Map<UUID, Context> {
+		var repository : Map<UUID, Context>
+		var lck = getLock
+		lck.readLock.lock
+		try {
+			repository = this.contextRepository
+		} finally {
+			lck.readLock.unlock
+		}
+		if (repository === null) {
+			lck.writeLock.lock
+			try {
+				repository = this.contextRepository
+				if (repository === null) {
+					repository = newTreeMap(null)
+					this.contextRepository = repository
+				}
+			} finally {
+				lck.writeLock.unlock
+			}
+		}
+		return repository
+	}
+	
+	def getAllContexts : SynchronizedIterable<Context> {
+		var lck = getLock
+		lck.writeLock.lock
+		try {
+			var all = Iterables::concat(Collections::singletonList(rootContext), this.contextInternalStructure.values)
+			return Collections3::unmodifiableSynchronizedIterable(all, lck)
+		} finally {
+			lck.writeLock.unlock
+		}
+	}
+	
+}
