@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.eventdispatching
+package io.sarl.revision
 
 import com.google.common.base.Objects
 import com.google.common.base.Throwables

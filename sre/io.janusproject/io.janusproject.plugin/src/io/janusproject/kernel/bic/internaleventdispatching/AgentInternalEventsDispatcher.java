@@ -36,8 +36,8 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import io.janusproject.services.executor.EarlyExitException;
 import io.janusproject.services.executor.ExecutorService;
 import io.janusproject.services.executor.JanusRunnable;
-import io.sarl.eventdispatching.BehaviorGuardEvaluator;
-import io.sarl.eventdispatching.BehaviorGuardEvaluatorRegistry;
+import io.sarl.revision.BehaviorGuardEvaluator;
+import io.sarl.revision.BehaviorGuardEvaluatorRegistry;
 import io.sarl.lang.core.Event;
 
 /**
