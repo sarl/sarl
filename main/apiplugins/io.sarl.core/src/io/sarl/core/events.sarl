@@ -27,7 +27,7 @@ import java.util.UUID
 import io.sarl.lang.^annotation.EarlyExit
 import io.sarl.lang.core.SpaceID
 import io.sarl.lang.core.Address
-import io.sarl.util.concurrent.Collections3
+import io.sarl.util.Collections3;
 
 /**
  * Initialization event.

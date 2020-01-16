@@ -21,10 +21,12 @@
 
 package io.sarl.revision
 
-import com.google.common.base.Strings
+import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
 import java.text.MessageFormat
 import java.util.Collection
+
+import com.google.common.base.Strings
 
 /**
  * Describes each class having one of its methods annotated with {@code PerceptGuardEvaluator} annotation corresponding to the
@@ -50,6 +52,7 @@ class BehaviorGuardEvaluator {
 	 * @param method the method to call to evaluate a guard
 	 */
     new (target : Object, method : Method) {
+    	assert target !== null
         this.target = target
         this.method = method
     }
@@ -61,7 +64,6 @@ class BehaviorGuardEvaluator {
 	 * @param behaviorsMethodsToExecute the list of behavior methods that will be completed according to the result of the guard
 	 *        evaluation, BE CARFEUL: we suppose that these behavior methods are parts of the SAME object where the
 	 *        {@code PerceptGuardEvaluator} method is declared
-	 * @throws InvocationTargetException - exception during evaluation, can find the method to invoke
 	 */
 	def evaluateGuard(^event : Object, behaviorsMethodsToExecute : Collection<Runnable>) : void {
 		try {
@@ -71,6 +73,11 @@ class BehaviorGuardEvaluator {
 			throw new Error(MessageFormat::format(Messages::BehaviorGuardEvaluator_0, ^event), e)
 		} catch (e : IllegalAccessException) {
 			throw new Error(MessageFormat::format(Messages::BehaviorGuardEvaluator_1, ^event), e)
+		} catch (e : InvocationTargetException) {
+			if (e.cause instanceof Error) {
+				throw e.cause as Error
+			}
+			throw e
 		}
 	}
 

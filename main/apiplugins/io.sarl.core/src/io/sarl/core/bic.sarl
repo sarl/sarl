@@ -25,6 +25,8 @@ import java.util.UUID
 import java.util.concurrent.TimeUnit
 import java.util.logging.Logger
 import java.util.function.Supplier
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 import io.sarl.core.AgentTask
 import io.sarl.lang.core.Address
@@ -37,8 +39,6 @@ import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.Scope
 import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
-import io.sarl.lang.util.SynchronizedSet
-import io.sarl.lang.util.SynchronizedIterable
 
 /**
  * Provides functions for accessing and managing the external contexts of an agent.
@@ -51,7 +51,7 @@ capacity ExternalContextAccess {
 	 * @return the list of the agent contexts.
 	 */	 
 	@Pure
-	def getAllContexts : SynchronizedIterable<AgentContext>
+	def getAllContexts : ConcurrentLinkedDeque<AgentContext>
 
 	/**
 	 * Replies the AgentContext for the given ID.
@@ -226,7 +226,7 @@ capacity InnerContextAccess {
 	 * @return the identifiers of the members of the internal context of the current agent.
 	 */	 
 	@Pure
-	def getMemberAgents : SynchronizedIterable<UUID>
+	def getMemberAgents : ConcurrentSkipListSet<UUID>
 
 	/** Replies if the given space is the default space of the inner context.
 	 *
@@ -294,7 +294,7 @@ capacity Behaviors {
 	 * @return the unmodifiable collection of the registered behavior.
 	 * @since 0.5
 	 */
-	def getRegisteredBehaviors : SynchronizedIterable<Behavior>
+	def getRegisteredBehaviors : ConcurrentLinkedDeque<Behavior>
 
 	/**
 	 * Register a Behavior for the owner agent.
@@ -502,7 +502,7 @@ capacity Schedules {
 	 * @return the names of the active tasks.
 	 * @since 0.5
 	 */
-	def getActiveTasks : SynchronizedSet<String>
+	def getActiveTasks : ConcurrentSkipListSet<String>
 	
 	/**
 	 * Schedule a given task to be executed after the specified delay.

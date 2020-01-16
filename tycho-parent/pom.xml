@@ -88,6 +88,35 @@
 								<version>${zeromq.version}</version>
 							</restrictTo>
 						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.arakhne.afc.core.vmutils</id>
+							<restrictTo>
+								<version>${afc.version}</version>
+							</restrictTo>
+						</filter>						
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.arakhne.afc.core.text</id>
+							<restrictTo>
+								<version>${afc.version}</version>
+							</restrictTo>
+						</filter>
+						
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.arakhne.afc.core.util</id>
+							<restrictTo>
+								<version>${afc.version}</version>
+							</restrictTo>
+						</filter>						
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.arakhne.afc.core.references</id>
+							<restrictTo>
+								<version>${afc.version}</version>
+							</restrictTo>
+						</filter>
 					</filters>
 					<!-- The following dependency-resolution is added for obtaining a runnable
 					     product on MacOS  -->
