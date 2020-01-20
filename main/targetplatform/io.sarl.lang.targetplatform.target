@@ -7,12 +7,7 @@
 			<unit id="org.arakhne.afc.core.text" version="16.0.0"/>
 			<unit id="org.arakhne.afc.core.util" version="16.0.0"/>
 			<unit id="org.arakhne.afc.core.vmutils" version="16.0.0"/>
-			<unit id="slf4j.api" version="2.0.0.alpha1"/>
 			<repository location="http://download.tuxfamily.org/arakhne/p2/"/>
-			<unit id="jul.to.slf4j" version="2.0.0.alpha1"/>
-			<unit id="org.arakhne.afc.slf4j.backwardcompat" version="18.0.0.20200104172624"/>
-			<unit id="org.arakhne.afc.slf4j.log4j" version="18.0.0.20200104172624"/>
-			<unit id="slf4j.log4j12" version="2.0.0.alpha1"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 			<unit id="org.jboss.tools.m2e.jdt.feature.feature.group" version="1.0.1.201209200903"/>
