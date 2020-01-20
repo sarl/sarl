@@ -19,10 +19,17 @@ Require-Bundle: io.sarl.core;bundle-version="0.11.0",
  aopalliance;bundle-version="1.0.0",
  com.google.inject;bundle-version="4.1.0",
  com.fasterxml.jackson.core.jackson-annotations;bundle-version="2.9.8",
+ com.fasterxml.jackson.core.jackson-core;bundle-version="2.10.0.pr1",
+ com.fasterxml.jackson.core.jackson-databind;bundle-version="2.10.0.pr1",
+ com.fasterxml.jackson.dataformat.jackson-dataformat-xml;bundle-version="2.10.1",
+ com.fasterxml.jackson.dataformat.jackson-dataformat-yaml;bundle-version="2.10.0.pr1",
  io.bootique;bundle-version="1.0.0",
  org.arakhne.afc.bootique.log4j;bundle-version="16.0.0",
  org.arakhne.afc.bootique.variables;bundle-version="16.0.0",
- org.apache.log4j;bundle-version="1.2.15"
+ net.sf.jopt-simple.jopt-simple;bundle-version="5.0.3",
+ jul.to.slf4j;bundle-version="2.0.0.alpha1",
+ org.apache.log4j;bundle-version="1.2.15",
+ org.eclipse.xtend.lib;bundle-version="2.20.0"
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %Bundle-Vendor
 Export-Package: io.sarl.revision,

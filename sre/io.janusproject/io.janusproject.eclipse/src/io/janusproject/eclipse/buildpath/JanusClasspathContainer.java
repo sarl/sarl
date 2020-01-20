@@ -62,8 +62,14 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 			"org.apache.commons.cli", //$NON-NLS-1$
 			"org.arakhne.afc.core.vmutils", //$NON-NLS-1$
 			"org.arakhne.afc.core.util", //$NON-NLS-1$
+			"org.arakhne.afc.core.inputoutput", //$NON-NLS-1$
 			"org.eclipse.osgi", //$NON-NLS-1$
 			"org.zeromq.jeromq", //$NON-NLS-1$
+			"com.fasterxml.jackson.core.jackson-annotations", //$NON-NLS-1$
+			"io.bootique", //$NON-NLS-1$
+			"org.arakhne.afc.bootique.log4j", //$NON-NLS-1$
+			"org.arakhne.afc.bootique.variables", //$NON-NLS-1$
+			"org.apache.log4j", //$NON-NLS-1$
 		};
 		final String[] array = new String[SARLClasspathContainer.SARL_ROOT_BUNDLE_NAMES.length + array1.length];
 		System.arraycopy(SARLClasspathContainer.SARL_ROOT_BUNDLE_NAMES, 0, array, 0, SARLClasspathContainer.SARL_ROOT_BUNDLE_NAMES.length);
