@@ -36,7 +36,6 @@ import io.janusproject.eclipse.buildpath.JanusClasspathContainer;
 import io.janusproject.eclipse.buildpath.JanusClasspathContainerInitializer;
 import io.sarl.bootstrap.SREBootstrap;
 import io.sarl.eclipse.runtime.AbstractSREInstall;
-import io.sarl.eclipse.runtime.SREConstants;
 import io.sarl.eclipse.util.BundleUtil.IBundleDependencies;
 import io.sarl.sre.boot.Boot;
 import io.sarl.sre.boot.configs.SreConfig;
@@ -116,8 +115,8 @@ public class JanusSREInstall extends AbstractSREInstall {
 		options.put(SREConstants.MANIFEST_CLI_RANDOM_CONTEXT_ID, formatCommandLineOption(Boot.CLI_OPTION_RANDOMID_LONG, null));
 		options.put(SREConstants.MANIFEST_CLI_BOOT_AGENT_CONTEXT_ID, formatCommandLineOption(Boot.CLI_OPTION_BOOTID_LONG, null));
 		options.put(SREConstants.MANIFEST_CLI_SRE_OFFLINE, formatCommandLineOption(Boot.CLI_OPTION_OFFLINE_LONG, null));
-		options.put(SREConstants.MANIFEST_CLI_EMBEDDED, formatCommandLineOption(Boot.CLI_OPTION_EMBEDDED_LONG, null));*/
-		options.put(SREConstants.MANIFEST_CLI_NO_MORE_OPTION, formatCommandLineOption(null, null));
+		options.put(SREConstants.MANIFEST_CLI_EMBEDDED, formatCommandLineOption(Boot.CLI_OPTION_EMBEDDED_LONG, null));
+		options.put(SREConstants.MANIFEST_CLI_NO_MORE_OPTION, formatCommandLineOption(null, null));*/
 		return Collections.unmodifiableMap(options);
 	}
 
