@@ -17,8 +17,8 @@
 
 	<properties>
 		<jkernel.version>2.${project.version}</jkernel.version>
-		<cliRunnerMainClass>io.janusproject.Boot</cliRunnerMainClass>
-		<bootstrap>io.janusproject.Bootstrap</bootstrap>
+		<cliRunnerMainClass>io.sarl.sre.boot.Boot</cliRunnerMainClass>
+		<bootstrap>io.sarl.sre.boot.SreMain</bootstrap>
 	</properties>
 
 	<build>
