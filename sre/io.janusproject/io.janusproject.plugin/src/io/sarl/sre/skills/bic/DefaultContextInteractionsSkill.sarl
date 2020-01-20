@@ -27,13 +27,10 @@ import io.sarl.lang.core.AgentContext
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.Scope
+import io.sarl.lang.core.Skill
 import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
-import io.sarl.sre.skills.BuiltinSkill
 import java.util.UUID
-import java.util.concurrent.locks.ReadWriteLock
-import javax.inject.Inject
-import javax.inject.Provider
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
 
@@ -46,24 +43,19 @@ import static io.sarl.sre.services.lifecycle.AgentLife.*
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-skill DefaultContextInteractionsSkill extends BuiltinSkill implements DefaultContextInteractions {
+skill DefaultContextInteractionsSkill extends Skill implements DefaultContextInteractions {
 
-	/** Constructor. */
-	@Inject
-	new (lockProvider : Provider<ReadWriteLock>) {
-		super(lockProvider)
-	}
 
 	def getDefaultContext : AgentContext {
-		getLife(owner, this.lockProvider).defaultContext.context
+		getLife(owner).defaultContext.context
 	}
 
 	def getDefaultSpace : EventSpace {
-		getLife(owner, this.lockProvider).defaultContext.defaultSpace
+		getLife(owner).defaultContext.defaultSpace
 	}
 
 	def getDefaultAddress : Address {
-		getLife(owner, this.lockProvider).defaultContext.addressInDefaultSpace
+		getLife(owner).defaultContext.addressInDefaultSpace
 	}
 
 	def isDefaultContext(context : AgentContext) : boolean {

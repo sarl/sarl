@@ -1,17 +1,17 @@
-/*
+/* 
  * $Id$
- *
+ * 
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
- *
+ * 
  * Copyright (C) 2014-2019 the original authors or authors.
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,7 +24,7 @@ import io.sarl.core.AgentTask
 import java.lang.ref.WeakReference
 import java.util.Comparator
 import java.util.Set
-import java.util.concurrent.locks.ReadWriteLock
+import java.util.concurrent.ConcurrentSkipListSet
 
 /** 
  * Describes any information that is required by SRE for supporting the agent trait's life. 
@@ -46,35 +46,17 @@ abstract class AgentTraitLife {
 		System::identityHashCode(t1) <=> System.identityHashCode(t2)
 	]
 
-	/** Only one lock for the entire instance in order to minimum memory foot print.
-	 * It may be more efficient at run-time to create more locks, but with bigger memort foot print.
-	 */
-	val lock : ReadWriteLock
-
-	var tasks : Set<WeakReference<AgentTask>>
-
-	/** Constructor.
-	 *
-	 * @param lock the synchronization lock to used for this life description.
-	 */
-	protected new(lock : ReadWriteLock) {
-		this.lock = lock
-	}
+	var tasks : ConcurrentSkipListSet<WeakReference<AgentTask>>
 
 	/** Add a reference to a task that is assumed to be cancelled if the behavior becomes unregistered.
-	 *
+	 * 
 	 * @param task the task to save.
 	 */
 	def addTaskReference(task : AgentTask) {
-		this.lock.writeLock.lock
-		try {
-			if (this.tasks === null) {
-				this.tasks = newTreeSet(COMPARATOR)
-			}
-			this.tasks += new WeakReference(task)
-		} finally {
-			this.lock.writeLock.unlock
+		if (this.tasks === null) {
+			this.tasks = new ConcurrentSkipListSet<WeakReference<AgentTask>>(COMPARATOR)
 		}
+		this.tasks += new WeakReference(task)
 	}
 
 	/** Remove the reference to a task that is assumed to be cancelled if the behavior becomes unregistered.
@@ -82,24 +64,10 @@ abstract class AgentTraitLife {
 	 * @param task the task to remove.
 	 */
 	def removeTaskReference(task : AgentTask) {
-		var tsk : Set<WeakReference<AgentTask>>
-		this.lock.readLock.lock
-		try {
-			tsk = this.tasks
-		} finally {
-			this.lock.readLock.unlock
-		}
+		var tsk : ConcurrentSkipListSet<WeakReference<AgentTask>> = this.tasks
 		if (tsk !== null) {
-			this.lock.writeLock.lock
-			try {
-				tsk = this.tasks
-				if (tsk !== null) {
-					val ref = new WeakReference(task)
-					tsk -= ref
-				}
-			} finally {
-				this.lock.writeLock.unlock
-			}
+			val ref = new WeakReference(task)
+			tsk -= ref
 		}
 	}
 
@@ -108,23 +76,9 @@ abstract class AgentTraitLife {
 	 * @return the removed tasks.
 	 */
 	def removeAllTaskReferences : Set<WeakReference<AgentTask>> {
-		var tsk : Set<WeakReference<AgentTask>> = null
-		this.lock.readLock.lock
-		try {
-			tsk = this.tasks
-		} finally {
-			this.lock.readLock.unlock
-		}
+		var tsk : ConcurrentSkipListSet<WeakReference<AgentTask>> = this.tasks
 		if (tsk !== null) {
-			this.lock.writeLock.lock
-			try {
-				tsk = this.tasks
-				if (tsk !== null) {
-					this.tasks = null
-				}
-			} finally {
-				this.lock.writeLock.unlock
-			}
+			this.tasks = null
 		}
 		return tsk
 	}

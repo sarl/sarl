@@ -28,7 +28,6 @@ import com.google.common.cache.LoadingCache
 import com.google.common.collect.Collections2
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSet
-import com.google.common.collect.Maps
 import com.google.common.reflect.TypeToken
 import io.sarl.lang.annotation.PerceptGuardEvaluator
 import io.sarl.lang.core.Event
@@ -43,7 +42,9 @@ import java.util.Map.Entry
 import java.util.Set
 import java.util.TreeMap
 import java.util.TreeSet
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedDeque
+import java.util.concurrent.ConcurrentSkipListSet
 import java.util.concurrent.CopyOnWriteArraySet
 
 /**
@@ -397,7 +398,7 @@ class BehaviorGuardEvaluatorRegistry {
 	 * <p>The {@link CopyOnWriteArraySet} values make it easy and relatively lightweight to get an immutable snapshot of all current
 	 * {@code BehaviorGuardEvaluator}s to an event without any locking.
 	 */
-	val behaviorGuardEvaluators : Map<Class<? extends Event>, Pair<(Event) => Boolean, Set<BehaviorGuardEvaluator>>>
+	val behaviorGuardEvaluators : ConcurrentHashMap<Class<? extends Event>, Pair<(Event) => Boolean, ConcurrentSkipListSet<BehaviorGuardEvaluator>>>
 
 	var active = true
 
@@ -406,27 +407,8 @@ class BehaviorGuardEvaluatorRegistry {
 	 *
 	 * <p>The registry will use concurrent data structures.
 	 */
-	new {
-		this(true)
-	}
-
-	/**
-	 * Instanciates a new registry linked with the {@link PerceptGuardEvaluator} annotation.
-	 *
-	 * @param concurrent indicates if the internal data structures must support thread concurrency, or not.
-	 */
-	new (concurrent : boolean) {
-		this(if (concurrent) Maps::newConcurrentMap else Maps::newHashMap)
-	}
-
-	/**
-	 * Instanciates a new registry linked with the {@link PerceptGuardEvaluator} annotation.
-	 *
-	 * @param buffer the buffer to be used for storing the behavior guard evaluators.
-	 */
-	new (buffer : Map<Class<? extends Event>, Pair<(Event) => Boolean, Set<BehaviorGuardEvaluator>>>) {
-		assert buffer !== null
-		this.behaviorGuardEvaluators = buffer
+	new {	
+		this.behaviorGuardEvaluators = new ConcurrentHashMap<Class<? extends Event>, Pair<(Event)=>Boolean, ConcurrentSkipListSet<BehaviorGuardEvaluator>>>()
 	}
 
 	/**
@@ -607,8 +589,8 @@ class BehaviorGuardEvaluatorRegistry {
 		
 				for (eventType : eventTypes) {
 					
-					var eventSubscribers : Pair<(Event) => Boolean, Set<BehaviorGuardEvaluator>> = this.behaviorGuardEvaluators.get(eventType);
-					if (eventSubscribers != null && eventSubscribers.getValue() != null
+					var eventSubscribers : Pair<(Event) => Boolean, ConcurrentSkipListSet<BehaviorGuardEvaluator>> = this.behaviorGuardEvaluators.get(eventType);
+					if (eventSubscribers !== null && eventSubscribers.getValue() !== null
 							&& (eventSubscribers.getKey() === null || eventSubscribers.getKey().apply(^event))) {
 						iBehaviorGuardEvaluators.addAll(eventSubscribers.getValue());
 					}
@@ -644,8 +626,8 @@ class BehaviorGuardEvaluatorRegistry {
 		
 		//if(listener != null) {
 			for (eventType : eventTypes) {					
-				var eventSubscribers : Pair<(Event) => Boolean, Set<BehaviorGuardEvaluator>> = this.behaviorGuardEvaluators.get(eventType);
-				if (eventSubscribers != null && eventSubscribers.getValue() != null
+				var eventSubscribers : Pair<(Event) => Boolean, ConcurrentSkipListSet<BehaviorGuardEvaluator>> = this.behaviorGuardEvaluators.get(eventType);
+				if (eventSubscribers !== null && eventSubscribers.getValue() !== null
 						&& (eventSubscribers.getKey() === null || eventSubscribers.getKey().apply(^event))) {
 					//iBehaviorGuardEvaluators.addAll(eventSubscribers.getValue());
 					for (evaluator : eventSubscribers.getValue()) {
@@ -729,16 +711,27 @@ class BehaviorGuardEvaluatorRegistry {
 	 * @return the listeners.
 	 * @since 0.6
 	 */
-	def getRegisteredEventListeners(type : Class<T>) : Iterable<T> with T {
+	def getRegisteredEventListeners(type : Class<T>) : ConcurrentLinkedDeque<T> with T {
 		val addedObjects = new TreeSet [ elt1, elt2 |
 			if (elt1 === elt2) {
 				return 0
 			}
 			System::identityHashCode(elt1) <=> System::identityHashCode(elt2)
 		]
-		return this.behaviorGuardEvaluators.values.map[it.value].flatten.map[it.target].filter [
+		//TODO optimize this loop introduce to remove the iterable in coments below 
+		/*return this.behaviorGuardEvaluators.values.map[it.value].flatten.map[it.target].filter [
 			type.isInstance(it) && addedObjects.add(it)
-		].map[type.cast(it)]
+		].map[type.cast(it)]*/
+		var result : ConcurrentLinkedDeque<T> = new ConcurrentLinkedDeque<T>();
+		
+		for (t : this.behaviorGuardEvaluators.values.map[it.value].flatten.map[it.target].filter [
+			type.isInstance(it) && addedObjects.add(it)
+		].map[type.cast(it)]) {
+			result.add(t)
+		}
+		
+		return result
+		
 	}
 
 	/**

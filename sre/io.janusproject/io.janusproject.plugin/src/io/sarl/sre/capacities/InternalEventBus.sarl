@@ -21,9 +21,9 @@
 package io.sarl.sre.capacities
 
 import io.sarl.lang.core.Event
-import io.sarl.lang.util.SynchronizedIterable
 import io.sarl.sre.services.lifecycle.AgentState
 import io.sarl.sre.skills.internal.EventBus
+import java.util.concurrent.ConcurrentLinkedDeque
 
 /** 
  * Capacity that provides an event bus to notify the different components of an agent.
@@ -137,7 +137,7 @@ capacity InternalEventBusCapacity {
 	 * @param type the type of the listeners.
 	 * @return the registered listeners.
 	 */
-	def getRegisteredEventBusListeners(type : Class<T>) : SynchronizedIterable<T> with T
+	def getRegisteredEventBusListeners(type : Class<T>) : ConcurrentLinkedDeque<T> with T
 
 	/** Replies the backend event bus.
 	 * 

@@ -1,17 +1,17 @@
-/*
+/* 
  * $Id$
- *
+ * 
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
- *
+ * 
  * Copyright (C) 2014-2019 the original authors or authors.
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,13 +28,10 @@ import io.sarl.lang.core.Behavior
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventListener
 import io.sarl.lang.core.Scope
-import io.sarl.lang.util.SynchronizedIterable
+import io.sarl.lang.core.Skill
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.capacities.InternalSchedules
-import io.sarl.sre.skills.BuiltinSkill
-import java.util.concurrent.locks.ReadWriteLock
-import javax.inject.Inject
-import javax.inject.Provider
+import java.util.concurrent.ConcurrentLinkedDeque
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
 
@@ -48,19 +45,13 @@ import static io.sarl.sre.services.lifecycle.AgentLife.*
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-skill BehaviorsSkill extends BuiltinSkill implements Behaviors {
+skill BehaviorsSkill extends Skill implements Behaviors {
 
 	uses InternalEventBusCapacity, InternalSchedules
 
-	/** Constructor. */
-	@Inject
-	new (lockProvider : Provider<ReadWriteLock>) {
-		super(lockProvider)
-	}
-
 	protected override uninstall(stage : UninstallationStage) {
 		if (stage === UninstallationStage::PRE_DESTROY_EVENT) {
-			val adr = getLife(owner, this.lockProvider).addressInInnerDefaultSpace
+			val adr = getLife(owner).addressInInnerDefaultSpace
 			unregisterEventBusListener(typeof(Behavior)) [
 				// Destroy the behavior
 				val ^event = new Destroy
@@ -75,9 +66,10 @@ skill BehaviorsSkill extends BuiltinSkill implements Behaviors {
 		associatedEventBusListener
 	}
 
-	def registerBehavior(attitude : Behavior, filter : (Event)=>boolean, initializationParameters : Object*) : Behavior {
+	def registerBehavior(attitude : Behavior, filter : (Event)=>boolean,
+		initializationParameters : Object*) : Behavior {
 		assert attitude !== null
-		val life = getLife(owner, this.lockProvider)
+		val life = getLife(owner)
 		if (life.state.alive) {
 			val adr = life.addressInInnerDefaultSpace
 			attitude.registerEventBusListener(filter) [
@@ -92,7 +84,7 @@ skill BehaviorsSkill extends BuiltinSkill implements Behaviors {
 
 	def unregisterBehavior(attitude : Behavior) : Behavior {
 		assert attitude !== null
-		var adr = getLife(owner, this.lockProvider).addressInInnerDefaultSpace
+		var adr = getLife(owner).addressInInnerDefaultSpace
 		attitude.unregisterTasksForBehavior
 		attitude.unregisterEventBusListener [
 			// Destroy the behavior
@@ -109,7 +101,7 @@ skill BehaviorsSkill extends BuiltinSkill implements Behaviors {
 		// running in distant kernels) are notified. The event will return into
 		// the agent via the inner default space add call internalReceiveEvent
 		// for real posting
-		val life = getLife(owner, this.lockProvider)
+		val life = getLife(owner)
 		if (life.state.alive) {
 			var context = life.innerContext
 			if (context !== null) {
@@ -130,18 +122,13 @@ skill BehaviorsSkill extends BuiltinSkill implements Behaviors {
 		}
 	}
 
-	def getRegisteredBehaviors : SynchronizedIterable<Behavior> {
+	def getRegisteredBehaviors : ConcurrentLinkedDeque<Behavior> {
 		getRegisteredEventBusListeners(typeof(Behavior))
 	}
-	
+
 	def hasRegisteredBehavior : boolean {
 		val iterable = getRegisteredEventBusListeners(typeof(Behavior))
-		iterable.lock.readLock.lock
-		try {
-			return iterable.iterator.hasNext
-		} finally {
-			iterable.lock.readLock.unlock
-		}
+		return iterable.iterator.hasNext
 	}
-	
+
 }

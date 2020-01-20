@@ -22,9 +22,6 @@ package io.sarl.sre.services.lifecycle
 
 import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Behavior
-import java.util.concurrent.locks.ReadWriteLock
-import javax.inject.Provider
-
 import static extension io.sarl.lang.core.SREutils.*
 
 /** 
@@ -44,13 +41,12 @@ final class BehaviorLife extends AgentTraitLife {
 	 * If this data structure does not exists, it is automatically created.
 	 * 
 	 * @param behavior the instance of the behavior for which the life description should be retrieved
-	 * @param lockProvider the provider of locks that should be used if the life description must be created.
 	 * @see #getLifeNoCreation
 	 */
-	static def getLife(^behavior : Behavior, lockProvider : Provider<ReadWriteLock>) : BehaviorLife {
+	static def getLife(^behavior : Behavior) : BehaviorLife {
 		var life = ^behavior.getSreSpecificData(typeof(BehaviorLife))
 		if (life === null) {
-			life = new BehaviorLife(lockProvider.get)
+			life = new BehaviorLife()
 			^behavior.sreSpecificData = life
 		}
 		return life
@@ -68,12 +64,5 @@ final class BehaviorLife extends AgentTraitLife {
 		return ^behavior.getSreSpecificData(typeof(BehaviorLife))
 	}
 
-	/** Constructor.
-	 * 
-	 * @param lock the synchronization lock to used for this life description.
-	 */
-	private new(lock : ReadWriteLock) {
-		super(lock)
-	}
 
 }

@@ -1,17 +1,17 @@
-/*
+/* 
  * $Id$
- *
+ * 
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
- *
+ * 
  * Copyright (C) 2014-2019 the original authors or authors.
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,17 +29,13 @@ import io.sarl.sre.services.context.Context
 import io.sarl.sre.services.context.ExternalContextMemberListener
 import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.logging.LoggingService
-import io.sarl.util.concurrent.Collections3
 import java.text.MessageFormat
-import java.util.ArrayList
-import java.util.List
 import java.util.UUID
-import java.util.concurrent.locks.ReadWriteLock
 import javax.inject.Provider
 import javax.inject.Singleton
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
-import org.eclipse.xtend.lib.annotations.Accessors
+import java.util.concurrent.ConcurrentLinkedDeque
 
 /** 
  * Implementation of a spawning service that is based on the other services of the SRE platform.
@@ -52,8 +48,8 @@ import org.eclipse.xtend.lib.annotations.Accessors
 @Singleton
 abstract class AbstractLifecycleService extends AbstractSreService implements LifecycleService {
 
-	/** Maximum number of agents to be launch by a single thread.
-	 */
+		/** Maximum number of agents to be launch by a single thread.
+		 */
 	static val CREATION_POOL_SIZE = 128
 
 	val globalListeners : SmartListenerCollection<?>
@@ -72,18 +68,13 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 
 	val executor : ExecutorService
 
-	var userDynamicSkillProviders : List<DynamicSkillProvider>
-
-	@Accessors(PROTECTED_GETTER)
-	val lockProvider : Provider<ReadWriteLock>
-
-	val userDynamicSkillProvidersLock : ReadWriteLock
+	var userDynamicSkillProviders : ConcurrentLinkedDeque<DynamicSkillProvider>
 
 	/** 
 	 * Constructs the service.
 	 * 
 	 * @param sarlSpecificationChecker the tool for checking the validity of the SARL specification supported by
-	 *     the agents to launch.
+	 * the agents to launch.
 	 * @param creator the provider of agent creators that is used when spawning agents.
 	 * @param globalListeners is the collection of global listeners to use.
 	 * @param lockProvider the provider of locks.
@@ -93,27 +84,22 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	 * @param executor the executor service.
 	 * @param logger the logging service.
 	 */
-	new (
-		sarlSpecificationChecker : SarlSpecificationChecker,
-		creator : AgentCreatorProvider,
-		globalListeners : SmartListenerCollection<?>, lockProvider : Provider<ReadWriteLock>,
-		lifecycleListener : Provider<LifecycleServiceListener>,
-		externalContextListener : Provider<ExternalContextMemberListener>,
-		skillUninstaller : SkillUninstaller, executor : ExecutorService, logger : LoggingService) {
+	new (sarlSpecificationChecker : SarlSpecificationChecker, creator : AgentCreatorProvider,
+		globalListeners : SmartListenerCollection<?>, lifecycleListener : Provider<LifecycleServiceListener>,
+		externalContextListener : Provider<ExternalContextMemberListener>, skillUninstaller : SkillUninstaller,
+		executor : ExecutorService, logger : LoggingService) {
 		this.sarlSpecificationChecker = sarlSpecificationChecker
 		this.agentCreatorProvider = creator
 		this.globalListeners = globalListeners
-		this.lockProvider = lockProvider
-		this.userDynamicSkillProvidersLock = lockProvider.get
 		this.skillUninstaller = skillUninstaller
 		this.executor = executor
 		this.logger = logger
 		this.platformLifecycleEventEmitter = lifecycleListener.get
 		this.platformContextEventEmitter = externalContextListener.get
 	}
-	
+
 	/** Replies the backend logging service.
-	 *
+	 * 
 	 * @return the logging service.
 	 */
 	protected def getLoggingService : LoggingService {
@@ -127,7 +113,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	protected def onStop {
 		this.platformLifecycleEventEmitter.removeLifecycleServiceListener
 	}
-	
+
 	def addLifecycleServiceListener(agentLifecycleListener : LifecycleServiceListener) {
 		this.globalListeners.add(typeof(LifecycleServiceListener), agentLifecycleListener)
 	}
@@ -155,23 +141,23 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 			agentDestroyed(^agent, outerContexts)
 		]
 	}
-	
+
 	/** Notify the listeners outside the parent context.
-	 *
+	 * 
 	 * @param spawningAgent the spawning agent.
 	 * @param context the context in which the agents were spawned.
 	 * @param agentClazz the type of the spawned agents.
 	 * @param agents the spawned agents.
 	 * @param initializationParameters the initialization parameters.
 	 */
-	protected def fireAgentSpawned(spawningAgent : UUID, context : Context,
-			agentClazz : Class<? extends Agent>, agents : List<Agent>, initializationParameters : Object*) {
+	protected def fireAgentSpawned(spawningAgent : UUID, context : Context, agentClazz : Class<? extends Agent>,
+		agents : ConcurrentLinkedDeque<Agent>, initializationParameters : Object*) {
 		this.globalListeners.notifyListeners(typeof(LifecycleServiceListener)) [
 			agentSpawned(spawningAgent, context, agentClazz, agents, initializationParameters)
 		]
 	}
 
-	/**
+	/** 
 	 * Notifies the listeners about the kernel agent destruction.
 	 */
 	protected def fireKernelAgentDestroy {
@@ -182,19 +168,15 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 
 	def isKillableAgent(^agent : Agent) : boolean {
 		try {
-			var innerContext = getLife(^agent, this.lockProvider).innerContext
+			var innerContext = getLife(^agent).innerContext
 			if (innerContext !== null) {
-				var participants = innerContext.defaultSpace.getParticipants
+				var participants = innerContext.defaultSpace.participants
 				if (participants !== null) {
-					var lck = participants.lock
-					lck.readLock.lock
-					try {
-						if (participants.size > 1 || (participants.size == 1 && !participants.contains(^agent.ID))) {
-							return false
-						} 
-					} finally {
-						lck.readLock.unlock
+
+					if (participants.size > 1 || (participants.size == 1 && !participants.contains(^agent.ID))) {
+						return false
 					}
+
 				}
 			}
 			return true
@@ -212,26 +194,26 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 			return UUID::randomUUID
 		]
 	}
-	
+
 	/** Replies if the service can spawn.
-	 *
+	 * 
 	 * @return {@code true} if the service can spawn an agent.
 	 */
 	def canSpawnAgent : boolean {
 		isRunning
 	}
-	
-	protected def spawnAgent(nbAgents : int, spawningAgent : UUID, parent : Context, agentClazz : Class<? extends Agent>, params : Object[],
-		agentIds : (int) => UUID) : SpawnResult {
 
-		val agents = new ArrayList<Agent>(nbAgents)
-		val agentsLock = this.lockProvider.get
-		val errors = new ArrayList<Throwable>()
+	protected def spawnAgent(nbAgents : int, spawningAgent : UUID, parent : Context,
+		agentClazz : Class<? extends Agent>, params : Object[], agentIds : (int)=>UUID) : SpawnResult {
+
+		val agents : ConcurrentLinkedDeque<Agent> = new ConcurrentLinkedDeque<Agent>()
+		val errors : ConcurrentLinkedDeque<Throwable> = new ConcurrentLinkedDeque<Throwable>()
 		if (canSpawnAgent && nbAgents > 0) {
 			// Create the list of the spawned agents during this function execution
 			try {
 				// Check if the version of the SARL agent class is compatible.
-				if (this.sarlSpecificationChecker === null || !this.sarlSpecificationChecker.isValidSarlElement(agentClazz)) {
+				if (this.sarlSpecificationChecker === null ||
+					!this.sarlSpecificationChecker.isValidSarlElement(agentClazz)) {
 					errors += new InvalidSarlSpecificationException(agentClazz)
 				} else {
 					// Create the shared injector that is also able to create the agent instance.
@@ -244,7 +226,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 							throw new CannotSpawnException(agentClazz)
 						}
 						// Start the agent's life
-						var life = getLife(^agent, this.lockProvider)
+						var life = getLife(^agent)
 						try {
 							var started = false
 							try {
@@ -255,12 +237,8 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 							}
 							if (started) {
 								// Add the agent in the system. It is synchronized because additions may occur in parallel
-								agentsLock.writeLock.lock
-								try {
-									agents += ^agent
-								} finally {
-									agentsLock.writeLock.unlock
-								}
+								agents += ^agent
+
 								^agent.onAgentCreated
 							} else if (parent.emptyRootContext) {
 								// The agent seems to be the boot agent, and it has failed to be launched.
@@ -291,9 +269,14 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 		} else {
 			errors += new SpawnDisabledException(parent.ID, agentClazz)
 		}
-		return new SpawnResult(
-			(agents.map[it.ID]).unmodifiableView,
-			errors)
+
+		//Returning just the UUID not the whole agent
+		val agentUUIDs : ConcurrentLinkedDeque<UUID> = new ConcurrentLinkedDeque<UUID>()
+		for(a : agents) {
+			agentUUIDs.add(a.ID)
+		}
+		
+		return new SpawnResult(agentUUIDs, errors)
 	}
 
 	/** This function is called each time the agent framework should be stopped.
@@ -312,9 +295,9 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	/** This function is called each time an agent was created.
 	 * This function is provided for being overridden by the sub-classes of
 	 * the current class.
-	 *
+	 * 
 	 * <p>Within the {@code AbstractLifecycleService}, this function does nothing.
-	 *
+	 * 
 	 * @param agent the spawned agent.
 	 * @since 0.8.0
 	 */
@@ -323,28 +306,26 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	}
 
 	/** Fire the events related to the agent spawn.
-	 *
+	 * 
 	 * @param spawningAgent the creator.
 	 * @param parent the context in which the agents are created.
 	 * @param agentClazz the type of the spawned agents.
 	 * @param spawnedAgents the spawnedAgents.
 	 */
-	protected def fireAgentSpawningEvents(spawningAgent : UUID, parent : Context,
-		agentClazz : Class<? extends Agent>, params : Object[], spawnedAgents : List<Agent>) {
+	protected def fireAgentSpawningEvents(spawningAgent : UUID, parent : Context, agentClazz : Class<? extends Agent>,
+		params : Object[], spawnedAgents : ConcurrentLinkedDeque<Agent>) {
 		spawningAgent.fireAgentSpawned(parent, agentClazz, spawnedAgents, params)
 		val spaceID = parent.defaultSpace.spaceID
 		for (^agent : spawnedAgents) {
-			this.platformContextEventEmitter.memberJoined(
-				parent, spaceID,
-				^agent.ID, agentClazz.name)
+			this.platformContextEventEmitter.memberJoined(parent, spaceID, ^agent.ID, agentClazz.name)
 		}
 	}
 
 	/** Replies if the given context is the root context and is empty.
-	 *
+	 * 
 	 * @param context the agent context to test.
 	 * @return {@code true} if the given context is the root context, and it is empty.
-	 *     @Otherwise {@code false}.
+	 * @Otherwise {@code false}.
 	 */
 	protected def isEmptyRootContext(context : ContextReference) {
 		context.context.isEmptyRootContext
@@ -360,11 +341,10 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 		context !== null && context.rootContext && context.defaultSpace.participants.empty
 	}
 
-	
 	def killAgent(^agent : Agent) : boolean {
 		// We should check if it is possible to kill the agent BEFORE killing it.
 		if (this.running && ^agent.isKillableAgent()) {
-			var life = getLife(^agent, this.lockProvider)
+			var life = getLife(^agent)
 			var defaultContext = life.defaultContext
 			var contexts = life.stop(this.skillUninstaller, getLoggingService)
 			^agent.onAgentKilled
@@ -392,10 +372,8 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 		leavedContexts : Iterable<ContextReference>) {
 		// Leave the default context because the ExternalContextAccessSkill does not fire events related
 		// to the default space.
-		this.platformContextEventEmitter.memberLeft(
-			defaultContextBeforeKilled.context,
-			defaultContextBeforeKilled.addressInDefaultSpace.spaceID,
-			^agent.ID, ^agent.class.name)
+		this.platformContextEventEmitter.memberLeft(defaultContextBeforeKilled.context,
+			defaultContextBeforeKilled.addressInDefaultSpace.spaceID, ^agent.ID, ^agent.class.name)
 		// Fire the agent destroy event
 		^agent.fireAgentDestroy(leavedContexts)
 		// Test if the agent is the latest on this kernel.
@@ -404,17 +382,13 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 		}
 	}
 
-	/** Replies the dynamic skill providers that are defined by the user of the service. */
-	protected def getDynamicSkillProviders : Iterable<DynamicSkillProvider> {
-		this.userDynamicSkillProvidersLock.readLock.lock
-		try {
-			if (this.userDynamicSkillProviders === null) {
-				return emptyList
-			}
-			return Collections3::unmodifiableSynchronizedIterable(this.userDynamicSkillProviders, this.userDynamicSkillProvidersLock)
-		} finally {
-			this.userDynamicSkillProvidersLock.readLock.unlock
+	/** Replies the dynamic skill providers that are defined by the user of the service.
+	 */
+	protected def getDynamicSkillProviders : ConcurrentLinkedDeque<DynamicSkillProvider> {
+		if (this.userDynamicSkillProviders === null) {
+			return new ConcurrentLinkedDeque<DynamicSkillProvider>()
 		}
+		return new ConcurrentLinkedDeque<DynamicSkillProvider>(this.userDynamicSkillProviders)
 	}
 
 	/** Add a dynamic skill provider that must be used for the agents that are spawned
@@ -424,15 +398,12 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	 */
 	def addDynamicSkillProvider(provider : DynamicSkillProvider) {
 		assert provider !== null
-		this.userDynamicSkillProvidersLock.writeLock.lock
-		try {
-			if (this.userDynamicSkillProviders === null) {
-				this.userDynamicSkillProviders = newArrayList
-			}
-			this.userDynamicSkillProviders += provider
-		} finally {
-			this.userDynamicSkillProvidersLock.writeLock.unlock
+
+		if (this.userDynamicSkillProviders === null) {
+			this.userDynamicSkillProviders = new ConcurrentLinkedDeque<DynamicSkillProvider>
 		}
+		this.userDynamicSkillProviders += provider
+
 	}
 
 	/** Remove a dynamic skill provider that must be not be used any more for the agents that are spawned.
@@ -441,34 +412,20 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	 */
 	def removeDynamicSkillProvider(provider : DynamicSkillProvider) {
 		assert provider !== null
-		var list : List<DynamicSkillProvider>
-		this.userDynamicSkillProvidersLock.readLock.lock
-		try {
-			list = this.userDynamicSkillProviders
-		} finally {
-			this.userDynamicSkillProvidersLock.readLock.unlock
-		}
+		var list : ConcurrentLinkedDeque<DynamicSkillProvider> = this.userDynamicSkillProviders
 		if (list !== null) {
-			this.userDynamicSkillProvidersLock.writeLock.lock
-			try {
-				list = this.userDynamicSkillProviders
-				if (list !== null) {
-					this.userDynamicSkillProviders.remove(provider)
-					if (this.userDynamicSkillProviders.empty) {
-						this.userDynamicSkillProviders = null
-					}
-				}
-			} finally {
-				this.userDynamicSkillProvidersLock.writeLock.unlock
+			this.userDynamicSkillProviders.remove(provider)
+			if (this.userDynamicSkillProviders.empty) {
+				this.userDynamicSkillProviders = null
 			}
 		}
 	}
 
 }
 
-/**
+/** 
  * This exception is thrown when the agent to spawn is not generated according to a valid SARL specification version.
- *
+ * 
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -476,7 +433,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
  */
 class InvalidSarlSpecificationException extends RuntimeException {
 
-	new (agentType : Class<? extends Agent> ) {
+	new (agentType : Class<? extends Agent>) {
 		super(MessageFormat::format(Messages::InvalidSarlSpecificationException_0, agentType.name))
 	}
 
@@ -492,12 +449,12 @@ class InvalidSarlSpecificationException extends RuntimeException {
  */
 class SpawnDisabledException extends RuntimeException {
 
-	/**
-	 * @param parentID
-	 *            - the identifier of the parent entity that is creating the agent.
-	 * @param agentClazz
-	 *            - the type of the agent to spawn.
-	 */
+		/** 
+		 * @param parentID
+		 * - the identifier of the parent entity that is creating the agent.
+		 * @param agentClazz
+		 * - the type of the agent to spawn.
+		 */
 	new (parentID : UUID, agentClazz : Class<? extends Agent>) {
 		super(MessageFormat.format(Messages.SpawnDisabledException_0, parentID, agentClazz));
 	}

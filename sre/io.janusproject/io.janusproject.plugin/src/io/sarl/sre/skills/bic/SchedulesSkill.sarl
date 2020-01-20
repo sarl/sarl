@@ -1,17 +1,17 @@
-/*
+/* 
  * $Id$
- *
+ * 
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
- *
+ * 
  * Copyright (C) 2014-2019 the original authors or authors.
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,29 +28,27 @@ import io.sarl.lang.core.Agent
 import io.sarl.lang.core.Behavior
 import io.sarl.lang.core.Capacities
 import io.sarl.lang.core.SREutils
-import io.sarl.lang.util.SynchronizedSet
+import io.sarl.lang.core.Skill
 import io.sarl.sre.capacities.InternalSchedules
 import io.sarl.sre.services.executor.EarlyExitException
 import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.executor.SreRunnable
-import io.sarl.sre.skills.BuiltinSkill
-import io.sarl.util.concurrent.Collections3
 import java.lang.ref.WeakReference
 import java.text.MessageFormat
 import java.util.Map
 import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.Future
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 import java.util.concurrent.atomic.AtomicBoolean
-import java.util.concurrent.locks.ReadWriteLock
 import java.util.logging.Logger
 import javax.inject.Inject
-import javax.inject.Provider
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
 import static io.sarl.sre.services.lifecycle.BehaviorLife.*
+import java.util.concurrent.ConcurrentSkipListSet
 
 /** 
  * Skill that permits to execute tasks with an executor service.
@@ -63,44 +61,32 @@ import static io.sarl.sre.services.lifecycle.BehaviorLife.*
  */
 @SuppressWarnings("use_reserved_sarl_annotation", "potential_field_synchronization_problem")
 @PrivateAPI(isCallerOnly = true)
-skill SchedulesSkill extends BuiltinSkill implements InternalSchedules {
+skill SchedulesSkill extends Skill implements InternalSchedules {
 
 	uses Logging, Time
 
 	val executorService : ExecutorService
 
-	var activeTaskRepository : Map<String, TaskDescription> = null
+	var activeTaskRepository : ConcurrentHashMap<String, TaskDescription> = null
 
-	val lock : ReadWriteLock
-
-	/** Constructor. */
-	@Inject
-	new (service : ExecutorService, lockProvider : Provider<ReadWriteLock>) {
-		super(lockProvider)
-		this.executorService = service
-		this.lock = lockProvider.get
-	}
-
-	/** Replies the synchronization lock object.
+	/** Constructor.
 	 */
-	protected def getLock : ReadWriteLock {
-		this.lock
+	@Inject
+	new (service : ExecutorService) {
+		super()
+		this.executorService = service
 	}
 
 	protected override uninstall(stage : UninstallationStage) {
-		var lck = getLock
-		lck.writeLock.lock
-		try {
-			if (stage == UninstallationStage.PRE_DESTROY_EVENT) {
-				// Cancel the tasks as soon as possible in the uninstallation process
-				cancelAllRunningTasks
-			} else {
-				// Cancel the tasks that were creating during the destruction stage (in the Destroy event handler)
-				cancelAllRunningTasks
-			}
-		} finally {
-			lck.writeLock.unlock
+
+		if (stage == UninstallationStage.PRE_DESTROY_EVENT) {
+			// Cancel the tasks as soon as possible in the uninstallation process
+			cancelAllRunningTasks
+		} else {
+			// Cancel the tasks that were creating during the destruction stage (in the Destroy event handler)
+			cancelAllRunningTasks
 		}
+
 	}
 
 	/** Replies the map that store the active tasks.
@@ -110,13 +96,13 @@ skill SchedulesSkill extends BuiltinSkill implements InternalSchedules {
 	 */
 	private def getRepository : Map<String, TaskDescription> {
 		if (this.activeTaskRepository === null) {
-			this.activeTaskRepository = newTreeMap(null)
+			this.activeTaskRepository = new ConcurrentHashMap<String,TaskDescription> 
 		}
 		this.activeTaskRepository
 	}
-	
+
 	/** Cancel all the running tasks.
-	 *
+	 * 
 	 * <p>This function is not thread-safe.
 	 */
 	private def cancelAllRunningTasks {
@@ -137,34 +123,31 @@ skill SchedulesSkill extends BuiltinSkill implements InternalSchedules {
 
 	/** Create a task.
 	 * If the task was already launched, this function replies the active task.
-	 *
+	 * 
 	 * <p>If {@code updateBehaviorReference} evaluates to {@code true} and the caller
 	 * of the function's skill is a {@code Behavior}, then this latest behavior
 	 * is associated to the task.
 	 * 
 	 * <p>This function is thread-safe.
-	 *
+	 * 
 	 * @param name the name of the task to be created.
 	 * @param updateTaskList is {@code true} for adding the created task into the list of active tasks.
 	 * @param updateBehaviorReference indicates if the behavior reference to the task must be updated by removing the reference.
 	 */
 	private def createTaskIfNecessary(name : String = null, updateTaskList : boolean,
 		updateBehaviorReference : boolean) : TaskDescription {
-		var lck = getLock
+
 		var description : TaskDescription = null
 		var realName : String
 		if (name.isNullOrEmpty) {
 			realName = "task-" + UUID::randomUUID.toString
 		} else {
 			realName = name
-			lck.readLock.lock
-			try {
-				description = this.activeTaskRepository?.get(realName)
-			} finally {
-				lck.readLock.unlock
-			}
+
+			description = this.activeTaskRepository?.get(realName)
+
 		}
-		
+
 		if (description === null) {
 			val caller = Capacities::getCaller ?: this.owner
 			val task = new AgentTask(caller)
@@ -173,18 +156,15 @@ skill SchedulesSkill extends BuiltinSkill implements InternalSchedules {
 			description = new TaskDescription(task)
 			SREutils.setSreSpecificData(task, description)
 			if (updateTaskList || updateBehaviorReference) {
-				lck.writeLock.lock
-				try {
-					if (updateBehaviorReference) {
-						getRepository.put(realName, description)
-					}
-					if (updateBehaviorReference && caller instanceof Behavior) {
-						// Register the task to the behavior in order to cancel the task when the behavior is unregistered.
-						task.bindToBehavior(caller)
-					}
-				} finally {
-					lck.writeLock.unlock
+
+				if (updateBehaviorReference) {
+					getRepository.put(realName, description)
 				}
+				if (updateBehaviorReference && caller instanceof Behavior) {
+					// Register the task to the behavior in order to cancel the task when the behavior is unregistered.
+					task.bindToBehavior(caller)
+				}
+
 			}
 		}
 
@@ -194,21 +174,21 @@ skill SchedulesSkill extends BuiltinSkill implements InternalSchedules {
 	private def unbindToBehavior(task : AgentTask) {
 		var caller = task.initiator
 		if (caller instanceof Behavior) {
-			getLife(caller, this.lockProvider).removeTaskReference(task)
+			getLife(caller).removeTaskReference(task)
 		}
 	}
 
 	private def bindToBehavior(task : AgentTask, caller : Object = null) {
 		var initiator = caller ?: (task.initiator ?: (Capacities::getCaller ?: this.owner))
 		if (initiator instanceof Behavior) {
-			getLife(initiator, this.lockProvider).addTaskReference(task)
+			getLife(initiator).addTaskReference(task)
 		}
 	}
 
 	private def resetTask(newTask : AgentTask, description : TaskDescription) {
 		assert newTask !== null
 		assert description !== null
-		
+
 		var oldTask = description.task
 		if (oldTask !== null) {
 			assert oldTask.name == newTask.name
@@ -238,7 +218,8 @@ skill SchedulesSkill extends BuiltinSkill implements InternalSchedules {
 	 * @param updateBehaviorReference indicates if the behavior reference to the task must be updated by removing the reference.
 	 * @return {@code true} if the task was successfully finished.
 	 */
-	private def finishTask(task : AgentTask, cancelTask : boolean, updateTaskList : boolean, updateBehaviorReference : boolean) : boolean {
+	private def finishTask(task : AgentTask, cancelTask : boolean, updateTaskList : boolean,
+		updateBehaviorReference : boolean) : boolean {
 		assert task !== null
 		// Remove the reference of the behavior to the task.
 		if (updateBehaviorReference) {
@@ -268,7 +249,7 @@ skill SchedulesSkill extends BuiltinSkill implements InternalSchedules {
 	}
 
 	/** Replies the  task description of the given task.
-	 *
+	 * 
 	 * @param task the task reference.
 	 * @return the task description, or {@code null} if the task is unknown.
 	 */
@@ -300,13 +281,9 @@ skill SchedulesSkill extends BuiltinSkill implements InternalSchedules {
 			if (task.name.nullOrEmpty) {
 				description = null
 			} else {
-				var lck = getLock
-				lck.readLock.lock
-				try {
-					description = this.activeTaskRepository?.get(task.name)
-				} finally {
-					lck.readLock.unlock
-				}
+
+				description = this.activeTaskRepository?.get(task.name)
+
 			}
 			var registered = description !== null
 			if (description === null) {
@@ -322,13 +299,9 @@ skill SchedulesSkill extends BuiltinSkill implements InternalSchedules {
 			}
 			task.resetTask(description)
 			if (!registered) {
-				var lck = getLock
-				lck.writeLock.lock
-				try {
-					getRepository.put(task.name, description)
-				} finally {
-					lck.writeLock.unlock
-				}
+
+				getRepository.put(task.name, description)
+
 			}
 			taskInstance = task
 		}
@@ -346,9 +319,10 @@ skill SchedulesSkill extends BuiltinSkill implements InternalSchedules {
 		return description
 	}
 
-	/** Called by a behavior when it is destroyed. */
+	/** Called by a behavior when it is destroyed.
+	 */
 	def unregisterTasksForBehavior(^behavior : Behavior) {
-		var tasksToCancel = getLife(^behavior, this.lockProvider).removeAllTaskReferences
+		var tasksToCancel = getLife(^behavior).removeAllTaskReferences
 		if (tasksToCancel !== null) {
 			for (taskToCancel : tasksToCancel.map[it.get]) {
 				if (taskToCancel !== null) {
@@ -365,50 +339,43 @@ skill SchedulesSkill extends BuiltinSkill implements InternalSchedules {
 	}
 
 	def task(name : String) : AgentTask {
-		if (getLife(owner, this.lockProvider).state.alive) {
+		if (getLife(owner).state.alive) {
 			return createTaskIfNecessary(name, false, false).task
 		}
 		return null
 	}
 
 	def setName(task : AgentTask, name : String) {
-		if (getLife(owner, this.lockProvider).state.alive) {
-			val realName = if (name.isNullOrEmpty) "task-" + UUID::randomUUID.toString else name 
+		if (getLife(owner).state.alive) {
+			val realName = if(name.isNullOrEmpty) "task-" + UUID::randomUUID.toString else name
 			val prefix = realName + "-"
 			var i = 0
 			var nm = realName
-			var atr : Map<String, TaskDescription>
-			var lck = getLock
-			lck.readLock.lock
-			try {
-				atr = this.activeTaskRepository
-			} finally {
-				lck.readLock.unlock
-			}
+			var atr : ConcurrentHashMap<String, TaskDescription>
+
+			atr = this.activeTaskRepository
+
 			if (atr !== null) {
-				lck.writeLock.lock
-				try {
-					atr = this.activeTaskRepository
-					if (atr !== null) {
-						var desc = atr.remove(task.name)
-						if (desc !== null) {
-							while (atr.containsKey(nm)) {
-								i++
-								nm = prefix + i
-							}
-							task.taskName = nm
-							atr.put(nm, desc)
+
+				atr = this.activeTaskRepository
+				if (atr !== null) {
+					var desc = atr.remove(task.name)
+					if (desc !== null) {
+						while (atr.containsKey(nm)) {
+							i++
+							nm = prefix + i
 						}
-					} else {
 						task.taskName = nm
+						atr.put(nm, desc)
 					}
-				} finally {
-					lck.writeLock.unlock
+				} else {
+					task.taskName = nm
 				}
+
 			} else {
 				task.taskName = nm
 			}
-		}		
+		}
 	}
 
 	def execute(task : AgentTask = null, procedure : (Agent)=>void) : AgentTask {
@@ -420,7 +387,7 @@ skill SchedulesSkill extends BuiltinSkill implements InternalSchedules {
 	}
 
 	def in(task : AgentTask = null, delay : long, procedure : (Agent)=>void) : AgentTask {
-		if (getLife(owner, this.lockProvider).state.alive) {
+		if (getLife(owner).state.alive) {
 			var description = preRunTask(task, procedure)
 			val logger = getLogger
 			val sf = this.executorService.schedule(logger, delay, TimeUnit::MILLISECONDS,
@@ -432,11 +399,11 @@ skill SchedulesSkill extends BuiltinSkill implements InternalSchedules {
 	}
 
 	def every(task : AgentTask = null, period : long, procedure : (Agent)=>void) : AgentTask {
-		if (getLife(owner, this.lockProvider).state.alive) {
+		if (getLife(owner).state.alive) {
 			var description = preRunTask(task, procedure)
 			val logger = getLogger
 			val sf = this.executorService.scheduleAtFixedRate(logger, 0, period, TimeUnit::MILLISECONDS,
-					new PeriodicRunner(this, this.owner, description, logger))
+				new PeriodicRunner(this, this.owner, description, logger))
 			description = postRunTask(description, task, sf)
 			return description.task
 		}
@@ -444,7 +411,7 @@ skill SchedulesSkill extends BuiltinSkill implements InternalSchedules {
 	}
 
 	def atFixedDelay(task : AgentTask = null, delay : long, procedure : (Agent)=>void) : AgentTask {
-		if (getLife(owner, this.lockProvider).state.alive) {
+		if (getLife(owner).state.alive) {
 			var description = preRunTask(task, procedure)
 			var future : Future<?>
 			if (delay <= 0) {
@@ -452,7 +419,7 @@ skill SchedulesSkill extends BuiltinSkill implements InternalSchedules {
 			} else {
 				var logger = getLogger
 				future = this.executorService.scheduleWithFixedDelay(logger, 0, delay, TimeUnit::MILLISECONDS,
-						new PeriodicRunner(this, this.owner, description, logger))
+					new PeriodicRunner(this, this.owner, description, logger))
 			}
 			description = postRunTask(description, task, future)
 			return description.task
@@ -482,12 +449,11 @@ skill SchedulesSkill extends BuiltinSkill implements InternalSchedules {
 	}
 
 	def cancel(task : AgentTask, mayInterruptIfRunning : boolean = true) : boolean {
-		if(task !== null) {
+		if (task !== null) {
 			var description = task.taskDescription
 			if (description !== null) {
 				var future = description.future
-				if (future !== null && !future.done && !future.cancelled
-					&& future.cancel(mayInterruptIfRunning)) {
+				if (future !== null && !future.done && !future.cancelled && future.cancel(mayInterruptIfRunning)) {
 					return finishTask(task, true, true, true)
 				}
 			}
@@ -495,19 +461,13 @@ skill SchedulesSkill extends BuiltinSkill implements InternalSchedules {
 		return false
 	}
 
-	def getActiveTasks : SynchronizedSet<String> {
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			if (this.activeTaskRepository !== null) {
-				return Collections3::unmodifiableSynchronizedSet(this.activeTaskRepository.keySet, lck)
-			}
-			return Collections3::emptySynchronizedSet
-		} finally {
-			lck.readLock.unlock
+	def getActiveTasks : ConcurrentSkipListSet<String> {
+		if (this.activeTaskRepository !== null) {
+			return new ConcurrentSkipListSet<String>(this.activeTaskRepository.keySet)
 		}
+		return new ConcurrentSkipListSet<String>();
 	}
-	
+
 	/** 
 	 * Description of a task.
 	 * 
@@ -612,8 +572,8 @@ skill SchedulesSkill extends BuiltinSkill implements InternalSchedules {
 			throw new ExecutionException(new UnsupportedOperationException)
 		}
 
-		override get(timeout : long, unit : TimeUnit) : Object
-					throws InterruptedException, ExecutionException, TimeoutException {
+		override get(timeout : long,
+			unit : TimeUnit) : Object throws InterruptedException, ExecutionException, TimeoutException {
 			throw new ExecutionException(new UnsupportedOperationException)
 		}
 
@@ -629,7 +589,9 @@ skill SchedulesSkill extends BuiltinSkill implements InternalSchedules {
 	 * @since 0.6.0
 	 */
 	private enum TaskTermination {
-		PROCEDURE_RUN, NO_PROCEDURE_RUN, ERROR_IN_PROCEDURE
+		PROCEDURE_RUN,
+		NO_PROCEDURE_RUN,
+		ERROR_IN_PROCEDURE
 	}
 
 	/** 
@@ -705,13 +667,7 @@ skill SchedulesSkill extends BuiltinSkill implements InternalSchedules {
 				} finally {
 					val finishTask = postRun(mustBeFinished)
 					if (finishTask) {
-						var lck = ^skill.getLock
-						lck.writeLock.lock
-						try {
-							^skill.finishTask(task, false, true, true);
-						} finally {
-							lck.writeLock.unlock
-						}
+						^skill.finishTask(task, false, true, true);
 					}
 				}
 			} catch (ex : EarlyExitException) {
@@ -778,7 +734,7 @@ skill SchedulesSkill extends BuiltinSkill implements InternalSchedules {
 	 * @mavenartifactid $ArtifactId$
 	 */
 	private static class InfiniteRunner extends TaskRunner {
-		
+
 		new (^skill : SchedulesSkill, ^agent : Agent, task : TaskDescription, logger : Logger) {
 			super(^skill, ^agent, task, logger)
 		}

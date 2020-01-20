@@ -22,16 +22,14 @@ package io.sarl.sre.skills.bic
 
 import com.google.common.base.Throwables
 import io.sarl.core.Logging
+import io.sarl.lang.core.Skill
 import io.sarl.sre.services.logging.LoggingService
-import io.sarl.sre.skills.BuiltinSkill
 import java.text.MessageFormat
-import java.util.concurrent.locks.ReadWriteLock
 import java.util.function.Supplier
 import java.util.logging.Level
 import java.util.logging.LogRecord
 import java.util.logging.Logger
 import javax.inject.Inject
-import javax.inject.Provider
 
 /** 
  * SRE implementation of SARL's {@link Logging} built-in capacity.
@@ -44,7 +42,7 @@ import javax.inject.Provider
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("potential_field_synchronization_problem")
-skill LoggingSkill extends BuiltinSkill implements Logging {
+skill LoggingSkill extends Skill implements Logging {
 
 	val logService : LoggingService
 
@@ -53,8 +51,7 @@ skill LoggingSkill extends BuiltinSkill implements Logging {
 	/** Constructor.
 	 */
 	@Inject
-	new (service : LoggingService, lockProvider : Provider<ReadWriteLock>) {
-		super(lockProvider)
+	new (service : LoggingService) {
 		this.logService = service
 	}
 

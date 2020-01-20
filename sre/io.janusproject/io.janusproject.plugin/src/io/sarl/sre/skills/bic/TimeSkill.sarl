@@ -21,12 +21,10 @@
 package io.sarl.sre.skills.bic
 
 import io.sarl.core.Time
+import io.sarl.lang.core.Skill
 import io.sarl.sre.services.time.TimeService
-import io.sarl.sre.skills.BuiltinSkill
 import java.util.concurrent.TimeUnit
-import java.util.concurrent.locks.ReadWriteLock
 import javax.inject.Inject
-import javax.inject.Provider
 
 /** 
  * SRE implementation of SARL's {@link Time} built-in capacity.
@@ -37,14 +35,14 @@ import javax.inject.Provider
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("potential_field_synchronization_problem")
-skill TimeSkill extends BuiltinSkill implements Time {
+skill TimeSkill extends Skill implements Time {
 
 	val timeService : TimeService
 
 	/** Constructor. */
 	@Inject
-	new (service : TimeService, provider : Provider<ReadWriteLock>) {
-		super(provider)
+	new (service : TimeService) {
+		super()
 		this.timeService = service
 	}
 

@@ -51,11 +51,8 @@ import io.sarl.sre.services.lifecycle.ContextReference
 import io.sarl.sre.services.lifecycle.LifecycleServiceListener
 import java.lang.ref.WeakReference
 import java.text.MessageFormat
-import java.util.List
 import java.util.UUID
-import java.util.concurrent.locks.ReadWriteLock
 import java.util.logging.Logger
-import javax.inject.Provider
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
 import io.sarl.sre.spaces.SpaceParticipantListener
@@ -63,6 +60,7 @@ import io.sarl.sre.spaces.Participant
 import io.sarl.core.ParticipantJoined
 import io.sarl.core.ParticipantLeft
 import io.sarl.sre.spaces.SpaceParticipantListenerFactory
+import java.util.concurrent.ConcurrentLinkedDeque
 
 /** Emit the space platform events.
  *
@@ -198,7 +196,7 @@ class AgentEventEmitter implements LifecycleServiceListener {
 	}
 
 	override agentSpawned(spawningAgent : UUID, parent : Context, agentType : Class<? extends Agent>,
-		spawnedAgents : List<Agent>, initializationParameters : Object[]) {
+		spawnedAgents : ConcurrentLinkedDeque<Agent>, initializationParameters : Object[]) {
 		val identifiers = spawnedAgents.map[it.ID]
 		this.logger.config [MessageFormat::format(Messages::AgentEventEmitter_0, identifiers)]
 		 // Send the event in the default space.
@@ -298,8 +296,6 @@ class SubHolonContextEventEmitter implements InternalContextMembershipListener {
 
 	val owner : WeakReference<Agent>
 
-	val lockProvider : Provider<ReadWriteLock>
-
 	var behaviorSkill : ClearableReference<Skill>
 
 	var loggingSkill : ClearableReference<Skill>
@@ -309,9 +305,8 @@ class SubHolonContextEventEmitter implements InternalContextMembershipListener {
 	 * @param owner the owner of this emitter.
 	 * @param lockProvider the provider of synchronization locks.
 	 */
-	new (owner : Agent, lockProvider : Provider<ReadWriteLock>) {
-		this.owner = new WeakReference(owner)
-		this.lockProvider = lockProvider
+	new (owner : Agent) {
+		this.owner = new WeakReference(owner)		
 	}
 
 	private def getBehaviors : Behaviors {
@@ -341,7 +336,7 @@ class SubHolonContextEventEmitter implements InternalContextMembershipListener {
 		if (o !== null) {
 			this.logging.debug[MessageFormat::format(Messages::ContextMemberEventEmitter_0, o.ID, futureContext)]
 			var evt = new ContextJoined(futureContext, futureContextDefaultSpaceID)
-			evt.source = getLife(o, this.lockProvider).addressInInnerDefaultSpace
+			evt.source = getLife(o).addressInInnerDefaultSpace
 			this.behaviors?.wake(evt)
 		}
 	}
@@ -351,7 +346,7 @@ class SubHolonContextEventEmitter implements InternalContextMembershipListener {
 		if (o !== null) {
 			this.logging.debug[MessageFormat::format(Messages::ContextMemberEventEmitter_1, o.ID, contextID)]
 			var evt = new ContextLeft(contextID)
-			evt.source = getLife(o, this.lockProvider).addressInInnerDefaultSpace
+			evt.source = getLife(o).addressInInnerDefaultSpace
 			this.behaviors?.wake(evt)
 		}
 	}
@@ -369,8 +364,8 @@ class SubHolonContextEventEmitter implements InternalContextMembershipListener {
  */
 class SubHolonContextEventEmitterFactory implements InternalContextMembershipListenerFactory {
 
-	def create(owner : Agent, lockProvider : Provider<ReadWriteLock>) : InternalContextMembershipListener {
-		new SubHolonContextEventEmitter(owner, lockProvider)
+	def create(owner : Agent) : InternalContextMembershipListener {
+		new SubHolonContextEventEmitter(owner)
 	}
 
 }

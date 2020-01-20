@@ -25,10 +25,10 @@ import io.sarl.lang.core.Agent
 import io.sarl.lang.core.DynamicSkillProvider
 import io.sarl.sre.services.context.Context
 import java.util.EventListener
-import java.util.List
 import java.util.UUID
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder
+import java.util.concurrent.ConcurrentLinkedDeque
 
 /** 
  * This service provides the tools to manage the life-cycle of the agents.
@@ -140,13 +140,13 @@ interface LifecycleService extends Service {
 final class SpawnResult {
 	
 	@Accessors(PUBLIC_GETTER)
-	val spawnedAgents : List<UUID>
+	val spawnedAgents : ConcurrentLinkedDeque<UUID>
 
-	val errors : List<Throwable>
+	val errors : ConcurrentLinkedDeque<Throwable>
 
 	var cause : Throwable
 	
-	new (spawnedAgents : List<UUID>, errors : List<Throwable>) {
+	new (spawnedAgents : ConcurrentLinkedDeque<UUID>, errors : ConcurrentLinkedDeque<Throwable>) {
 		assert spawnedAgents !== null
 		assert errors !== null
 		this.spawnedAgents = spawnedAgents
@@ -245,7 +245,7 @@ interface LifecycleServiceListener extends EventListener {
 	 */
 	def agentSpawned(spawningAgent : UUID, parent : Context,
 		agentType : Class<? extends Agent>,
-		spawnedAgents : List<Agent>,
+		spawnedAgents : ConcurrentLinkedDeque<Agent>,
 		initializationParameters : Object[])
 
 	/**

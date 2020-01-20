@@ -1,17 +1,17 @@
-/*
+/* 
  * $Id$
- *
+ * 
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
- *
+ * 
  * Copyright (C) 2014-2019 the original authors or authors.
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,20 +20,17 @@
  */
 package io.sarl.sre.services.probing
 
-import io.sarl.lang.util.SynchronizedIterable
 import io.sarl.sre.internal.SmartListenerCollection
 import io.sarl.sre.naming.NameParser
 import io.sarl.sre.naming.SarlName
 import io.sarl.sre.services.AbstractSreService
 import io.sarl.sre.services.namespace.FieldAccess
 import io.sarl.sre.services.namespace.NamespaceService
-import io.sarl.util.concurrent.Collections3
 import java.net.URI
-import java.util.ArrayList
-import java.util.Collection
 import java.util.UUID
-import java.util.concurrent.locks.ReadWriteLock
 import javax.inject.Provider
+import java.util.concurrent.ConcurrentLinkedDeque
+import java.util.concurrent.ConcurrentHashMap
 
 /** 
  * This class is the standard implementation of a probe service.
@@ -50,36 +47,24 @@ abstract class AbstractProbeService extends AbstractSreService implements ProbeS
 
 	val nameParser : NameParser
 
-	val probes = <URI, Probe<?>>newTreeMap(null)
-	
+	val probes = new ConcurrentHashMap<URI, Probe<?>>
+
 	val listenerCollectionProvider : Provider<SmartListenerCollection<?>>
-	
-	val lockProvider : Provider<ReadWriteLock>
-	
-	val lock : ReadWriteLock
-	
+
 	/** Constructor.
-	 *
+	 * 
 	 * @param namespaceService the service that is giving access to the namespaces.
 	 * @param nameParser the object that is able to parse resource names.
 	 * @param listenerCollectionProvider the provider of listener collections. 
 	 * @param lockProvider the provider of synchronization locks.
 	 */
-	protected new (namespaceService : NamespaceService, nameParser : NameParser, listenerCollectionProvider : Provider<SmartListenerCollection<?>>,
-		lockProvider : Provider<ReadWriteLock>) {
+	protected new (namespaceService : NamespaceService, nameParser : NameParser,
+		listenerCollectionProvider : Provider<SmartListenerCollection<?>>) {
 		this.namespace = namespaceService
 		this.nameParser = nameParser
 		this.listenerCollectionProvider = listenerCollectionProvider
-		this.lockProvider = lockProvider
-		this.lock = lockProvider.get
 	}
 
-	/** Replies the synchronization lock. */
-	@Pure
-	def getLock : ReadWriteLock {
-		this.lock
-	}
-	
 	protected override onStop {
 		releaseAllProbes
 	}
@@ -96,38 +81,28 @@ abstract class AbstractProbeService extends AbstractSreService implements ProbeS
 		return null
 	}
 
-	override probe(valueName : SarlName, valueType : Class<T>,
-		probeName : String = null) : Probe<T> with T {
+	override probe(valueName : SarlName, valueType : Class<T>, probeName : String = null) : Probe<T> with T {
 		assert valueType !== null
 		val uri = valueName.toURI
 		if (valueName === null) {
 			return null
 		}
-		var probe : Probe<T>
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			probe = this.probes.get(uri) as Probe<T>
-		} finally {
-			lck.readLock.unlock
-		}
+		var probe : Probe<T> = this.probes.get(uri) as Probe<T>
+
 		if (probe === null) {
 			var isFirst = false
-			lck.writeLock.lock
-			try {
-				probe = this.probes.get(uri) as Probe<T>
-				if (probe === null) {
-					val probedValue = this.namespace.findObject(valueName)
-					val name = if(probeName.isNullOrEmpty) UUID::randomUUID.toString else probeName
-					probe = probedValue.newProbe(valueType, uri, name)
-					if (probe !== null) {
-						isFirst = this.probes.empty
-						this.probes.put(uri, probe)
-					}
+
+			probe = this.probes.get(uri) as Probe<T>
+			if (probe === null) {
+				val probedValue = this.namespace.findObject(valueName)
+				val name = if(probeName.isNullOrEmpty) UUID::randomUUID.toString else probeName
+				probe = probedValue.newProbe(valueType, uri, name)
+				if (probe !== null) {
+					isFirst = this.probes.empty
+					this.probes.put(uri, probe)
 				}
-			} finally {
-				lck.writeLock.unlock
 			}
+
 			if (isFirst) {
 				onFirstProbe
 			}
@@ -146,7 +121,7 @@ abstract class AbstractProbeService extends AbstractSreService implements ProbeS
 	protected def onLastProbe {
 		//
 	}
-	
+
 	/** Create an instance of the probe.
 	 * 
 	 * @param <T> the expected type of the probed values.
@@ -155,65 +130,43 @@ abstract class AbstractProbeService extends AbstractSreService implements ProbeS
 	 * @param probeUri the URI of the probe, never {@code null}.
 	 * @param probeName the name of the probe, never {@code null}.
 	 */
-	protected def newProbe(probedElement : Object, valueType : Class<T>, probeUri : URI, probeName : String) : Probe<T> with T {
+	protected def newProbe(probedElement : Object, valueType : Class<T>, probeUri : URI,
+		probeName : String) : Probe<T> with T {
 		if (probedElement instanceof FieldAccess) {
-			return new FieldProbe(this, probeName, probeUri, valueType, probedElement, this.listenerCollectionProvider,
-				this.lockProvider)
+			return new FieldProbe(this, probeName, probeUri, valueType, probedElement, this.listenerCollectionProvider)
 		}
 		return null
 	}
 
-	override getProbes : SynchronizedIterable<Probe<?>> {
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			return Collections3::unmodifiableSynchronizedIterable(this.probes.values, lck)			
-		} finally {
-			lck.readLock.unlock
-		}
+	override getProbes : ConcurrentLinkedDeque<Probe<?>> {
+
+		return new ConcurrentLinkedDeque<Probe<?>>(this.probes.values)
+
 	}
 
 	override releaseAllProbes {
-		var removable : Collection<Probe<?>>
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			// Copy of the probes into a separate array is mandatory
-			// for avoiding ConcurrentModificationException
-			removable = new ArrayList(this.probes.values)
-		} finally {
-			lck.readLock.unlock
-		}
+		var removable = new ConcurrentLinkedDeque<Probe<?>>(this.probes.values)
+
 		removable.forEach [
 			it.release
 		]
 	}
 
 	override sync {
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			this.probes.values.parallelStream.forEach [
-				it.sync
-			]
-		} finally {
-			lck.readLock.unlock
-		}
+		this.probes.values.parallelStream.forEach [
+			it.sync
+		]
 	}
-	
+
 	override onProbeReleasedProbe(probe : Probe<?>) {
 		var isLast = false
-		var lck = getLock
-		lck.writeLock.lock
-		try {
-			this.probes.remove(probe.uri)
-			isLast = this.probes.empty
-		} finally {
-			lck.writeLock.unlock
-		}
+
+		this.probes.remove(probe.uri)
+		isLast = this.probes.empty
+
 		if (isLast) {
 			onLastProbe
 		}
 	}
-	
+
 }

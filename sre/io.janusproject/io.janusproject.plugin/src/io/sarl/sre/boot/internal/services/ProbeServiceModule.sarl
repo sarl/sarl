@@ -35,7 +35,6 @@ import io.sarl.sre.services.namespace.NamespaceService
 import io.sarl.sre.services.probing.AsynchronousProbeService
 import io.sarl.sre.services.probing.ProbeService
 import io.sarl.sre.services.probing.SynchronousProbeService
-import java.util.concurrent.locks.ReadWriteLock
 import javax.inject.Provider
 import javax.inject.Singleton
 
@@ -67,15 +66,12 @@ class ProbeServiceModule extends AbstractModule {
 	@Provides
 	def providesProbeService(sreConfig : SreConfig, injector : Injector, service : ExecutorService,
 		namespaceService : NamespaceService, nameParser : NameParser,
-		listenerCollectionProvider : Provider<SmartListenerCollection<?>>,
-		lockProvider : Provider<ReadWriteLock>) : ProbeService {
+		listenerCollectionProvider : Provider<SmartListenerCollection<?>>) : ProbeService {
 		var ps : ProbeService
 		if (sreConfig.services.asynchronousProbeUpdate) {
-			ps = new AsynchronousProbeService(service, namespaceService, nameParser, listenerCollectionProvider, lockProvider)
-			
-			
+			ps = new AsynchronousProbeService(service, namespaceService, nameParser, listenerCollectionProvider)
 		} else {
-			ps = new SynchronousProbeService(namespaceService, nameParser, listenerCollectionProvider, lockProvider)
+			ps = new SynchronousProbeService(namespaceService, nameParser, listenerCollectionProvider)
 		}
 		injector.injectMembers(ps)
 		return ps

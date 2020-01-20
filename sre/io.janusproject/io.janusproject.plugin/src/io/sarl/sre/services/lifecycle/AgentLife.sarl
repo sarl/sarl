@@ -1,17 +1,17 @@
-/*
+/* 
  * $Id$
- *
+ * 
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
- *
+ * 
  * Copyright (C) 2014-2019 the original authors or authors.
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,26 +33,24 @@ import io.sarl.lang.core.SREutils
 import io.sarl.lang.core.Skill
 import io.sarl.lang.core.SpaceID
 import io.sarl.lang.util.ClearableReference
-import io.sarl.lang.util.SynchronizedIterable
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.services.context.Context
 import io.sarl.sre.services.logging.LoggingService
-import io.sarl.util.concurrent.Collections3
 import java.lang.ref.WeakReference
 import java.util.Collections
 import java.util.Map
 import java.util.UUID
-import java.util.concurrent.locks.ReadWriteLock
 import java.util.logging.Level
-import javax.inject.Provider
-import org.arakhne.afc.util.MultiCollection
 
 import static extension io.sarl.lang.core.SREutils.*
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ConcurrentLinkedDeque
 
-/**
+/** 
  * Describes any information that is required by the SRE for supporting the agent's life. 
  * 
  * @author $Author: sgalland$
+ * @author $Author: ngaud$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -62,20 +60,15 @@ import static extension io.sarl.lang.core.SREutils.*
 @PrivateAPI(isCallerOnly = true)
 final class AgentLife {
 
-	/** Only one lock for the entire instance in order to minimum memory foot print.
-	 * It may be more efficient at run-time to create more locks, but with bigger memort foot print.
-	 */
-	val lock : ReadWriteLock
-
 	var state = AgentState::UNSTARTED
 
 	var agentInstance : Agent
 
-	var innerContextInstance : Context
-	
+	volatile var innerContextInstance : Context
+
 	var innerSpaceAddress : Address
 
-	var externalContextInstances : Map<UUID, ContextReference>
+	var externalContextInstances : ConcurrentHashMap<UUID, ContextReference>
 
 	var defaultContextInstance : ContextReference
 
@@ -85,17 +78,16 @@ final class AgentLife {
 
 	/** Replies the data structure that is storing the living data of the agent for the SRE.
 	 * If this data structure does not exists, it is automatically created.
-	 *
+	 * 
 	 * @param agent the instance of the agent for which the life description should be retrieved
-	 * @param lockProvider the provider of locks that should be used if the life description must be created.
 	 * @see #getLifeNotCreation
 	 */
-	static def getLife(^agent : Agent, lockProvider : Provider<ReadWriteLock>) : AgentLife {
+	static def getLife(^agent : Agent) : AgentLife {
 		// Do not need to synchronize this code because the creation of the agent life
 		// object is done when spawning the agent, that is synchronously executed.
 		var life = ^agent.getSreSpecificData(typeof(AgentLife))
 		if (life === null) {
-			life = new AgentLife(lockProvider.get)
+			life = new AgentLife()
 			life.^agent = ^agent
 			^agent.sreSpecificData = life
 		}
@@ -115,16 +107,6 @@ final class AgentLife {
 		// object is done when spawning the agent, that is synchronously executed.
 		return ^agent.getSreSpecificData(typeof(AgentLife))
 	}
-	
-	private new(lock : ReadWriteLock) {
-		this.lock = lock
-	}
-
-	/** Replies the lock used by this object. */
-	@Pure
-	def getLock : ReadWriteLock {
-		this.lock
-	}
 
 	def toString : String {
 		this.^agent?.ID + "[" + this.state.name + "]"
@@ -135,24 +117,13 @@ final class AgentLife {
 	 * @return the logger.
 	 */
 	protected final def getAgentLogger : Logging {
-		var cap : ClearableReference<Skill>
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			cap = this.loggingCapacity
-		} finally {
-			lck.readLock.unlock
-		}
+		var cap : ClearableReference<Skill> = this.loggingCapacity
+
 		if (cap === null) {
-			lck.writeLock.lock
-			try {
-				cap = this.loggingCapacity
-				if (cap === null) {
-					cap = SREutils::getInternalSkillReference(this.^agent, typeof(Logging))
-					this.loggingCapacity = cap
-				}
-			} finally {
-				lck.writeLock.unlock
+			cap = this.loggingCapacity
+			if (cap === null) {
+				cap = SREutils::getInternalSkillReference(this.^agent, typeof(Logging))
+				this.loggingCapacity = cap
 			}
 		}
 		SREutils::castInternalSkillReference(this.^agent, cap, typeof(Logging))
@@ -163,35 +134,24 @@ final class AgentLife {
 	 * @return the event bus.
 	 */
 	final def getEventBus : InternalEventBusCapacity {
-		var cap : ClearableReference<Skill>
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			cap = this.eventBusCapacity
-		} finally {
-			lck.readLock.unlock
-		}
+		var cap : ClearableReference<Skill> = this.eventBusCapacity
+
 		if (cap === null) {
-			lck.writeLock.lock
-			try {
-				cap = this.eventBusCapacity
-				if (cap === null) {
-					cap = SREutils::getInternalSkillReference(this.^agent, typeof(InternalEventBusCapacity))
-					this.eventBusCapacity = cap
-				}
-			} finally {
-				lck.writeLock.unlock
+			cap = this.eventBusCapacity
+			if (cap === null) {
+				cap = SREutils::getInternalSkillReference(this.^agent, typeof(InternalEventBusCapacity))
+				this.eventBusCapacity = cap
 			}
 		}
 		SREutils::castInternalSkillReference(this.^agent, cap, typeof(InternalEventBusCapacity))
 	}
 
 	/** Start the agent's life.
-	 *
+	 * 
 	 * <p>This function is invoked for executing the born stage of the agent.
-	 *
+	 * 
 	 * <p>If an exception is thrown into the initialization code of the agent, the exception is forwarded.
-	 *
+	 * 
 	 * @param skillUninstaller the skill uninstaller.
 	 * @param logger the logger to use for reporting initialization errors when the agent's logger is unavailable
 	 * @param startError the exception that avoid to start the agent.
@@ -200,30 +160,21 @@ final class AgentLife {
 	 * @param initializationParameters the parameters to give to the agent for its start-up.
 	 * @return {@code true} is successful, i.e. the {@code AgentSpawned} could be fired.
 	 */
-	def start(skillUninstaller : SkillUninstaller, logger : LoggingService,
-		spawningAgent : UUID, spawningContext : Context, initializationParameters : Object*) : boolean {
-		var st : AgentState
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			st = this.state
-		} finally {
-			lck.readLock.unlock
-		}
+	def start(skillUninstaller : SkillUninstaller, logger : LoggingService, spawningAgent : UUID,
+		spawningContext : Context, initializationParameters : Object*) : boolean {
+		var st : AgentState = this.state
+
 		if (st === AgentState::UNSTARTED) {
 			try {
 				var continueStart = false
-				lck.writeLock.lock
-				try {
-					st = this.state
-					if (st === AgentState::UNSTARTED) {
-						st = AgentState::INITIALIZING
-						this.state = st
-						continueStart = true
-					}
-				} finally {
-					lck.writeLock.unlock
+
+				st = this.state
+				if (st === AgentState::UNSTARTED) {
+					st = AgentState::INITIALIZING
+					this.state = st
+					continueStart = true
 				}
+
 				if (continueStart) {
 					var eb = spawningContext.attachAgentToPlatform
 
@@ -234,25 +185,18 @@ final class AgentLife {
 					// Any exception into the inits are thrown outside the call below.
 					var delayedEvents = eb.fireEventAndWait(initEvent, true, true)
 
-					lck.readLock.lock
-					try {
-						st = this.state
-					} finally {
-						lck.readLock.unlock
-					}
+					st = this.state
+
 					continueStart = false
 					if (st === AgentState::INITIALIZING) {
-						lck.writeLock.lock
-						try {
-							st = this.state
-							if (st === AgentState::INITIALIZING) {
-								st = AgentState::ALIVE
-								this.state = st
-								continueStart = true
-							}
-						} finally {
-							lck.writeLock.unlock
+
+						st = this.state
+						if (st === AgentState::INITIALIZING) {
+							st = AgentState::ALIVE
+							this.state = st
+							continueStart = true
 						}
+
 					}
 					if (continueStart) {
 						if (delayedEvents !== null) {
@@ -310,14 +254,8 @@ final class AgentLife {
 	 * @param listener the listener on space events that must be unregistered.
 	 */
 	protected def detachAgentFromPlatform(listener : EventListener) : void {
-		var contextReference : ContextReference
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			contextReference = this.defaultContextInstance
-		} finally {
-			lck.readLock.unlock
-		}
+		var contextReference : ContextReference = this.defaultContextInstance
+
 		// Unregister the agent on its parent default space.
 		if (contextReference !== null) {
 			var ds = contextReference.defaultSpace
@@ -330,7 +268,7 @@ final class AgentLife {
 	/** Stop the agent's life.
 	 * 
 	 * <p>This function is invoked for executing the killing stage of the agent.
-	 *
+	 * 
 	 * @param skillUninstaller the skill uninstaller.
 	 * @param logger the logger to use for reporting initialization errors when the agent's logger is unavailable
 	 * @param fireDestroy indicates if the {@code Destroy} event should be fired.
@@ -338,13 +276,9 @@ final class AgentLife {
 	 */
 	def stop(skillUninstaller : SkillUninstaller, logger : LoggingService,
 		fireDestroy : boolean = true) : Iterable<ContextReference> {
-		var lck = getLock
-		lck.writeLock.lock
-		try {
-			this.state = AgentState::DYING
-		} finally {
-			lck.writeLock.unlock
-		}
+
+		this.state = AgentState::DYING
+
 		try {
 			// Pre-stage for uninstalling the skills (BIC and user defined)
 			var skills : Iterable<? extends Skill>
@@ -358,7 +292,7 @@ final class AgentLife {
 			if (fireDestroy) {
 				try {
 					// Notify the agent about its destruction.
-					var ^event  = new Destroy
+					var ^event = new Destroy
 					^event.source = addressInInnerDefaultSpace
 					this.eventBus.fireEventAndWait(^event, false, false)
 				} catch (e : Throwable) {
@@ -369,20 +303,17 @@ final class AgentLife {
 					}
 				}
 			}
-	
+
 			// Copy the contexts in which the agents is registered in order to reply them.
 			var enclosingContextsCopy = <ContextReference>newArrayList
 			var contexts = getEnclosingContexts
-			contexts.lock.readLock.lock
-			try {
-				enclosingContextsCopy += contexts
-			} finally {
-				contexts.lock.readLock.unlock
-			}
+
+			enclosingContextsCopy += contexts
+
 
 			// Copy the external event listener in order to unregistered it later.
 			var listener = this.eventBus.associatedEventBusListener
-			
+
 			// Final stage for uninstalling the skills (BIC and user defined)
 			try {
 				skillUninstaller.uninstallSkillsAfterDestroy(^agent, skills)
@@ -392,7 +323,7 @@ final class AgentLife {
 
 			// Detach the agent form the platform
 			listener.detachAgentFromPlatform
-			
+
 			// Force unregistration to the enclosing spaces
 			return enclosingContextsCopy
 		} catch (e : Throwable) {
@@ -400,83 +331,49 @@ final class AgentLife {
 			return Collections::emptyList
 		} finally {
 			// Clear the references
-			lck.writeLock.lock
-			try {
-				^agent.setSreSpecificData(null)
-				this.defaultContextInstance = null
-				this.externalContextInstances = null
-				this.agentInstance = null
-				this.state = AgentState::DEAD
-			} finally {
-				lck.writeLock.unlock
-			}
+			^agent.setSreSpecificData(null)
+			this.defaultContextInstance = null
+			this.externalContextInstances = null
+			this.agentInstance = null
+			this.state = AgentState::DEAD
+
 		}
 	}
 
 	/** Replies the agent associated to this life.
 	 */
 	def getAgent : Agent {
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			return this.agentInstance
-		} finally {
-			lck.readLock.unlock
-		}
+		return this.agentInstance
 	}
 
 	/** Change the agent associated to this life.
 	 */
 	def setAgent(^agent : Agent) {
-		var lck = getLock
-		lck.writeLock.lock
-		try {
-			this.agentInstance = ^agent
-		} finally {
-			lck.writeLock.unlock
-		}
+		this.agentInstance = ^agent
 	}
 
 	/** Replies the agent state.
 	 */
 	def getState : AgentState {
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			return this.state
-		} finally {
-			lck.readLock.unlock
-		}
+		return this.state
 	}
 
 	/** Change the agent state.
 	 */
 	def setState(state : AgentState) {
-		var lck = getLock
 		assert state !== null
-		lck.writeLock.lock
-		try {
-			this.state = state
-		} finally {
-			lck.writeLock.unlock
-		}
+		this.state = state
 	}
 
 	/** Set the inner context reference.
-	 *
+	 * 
 	 * @param innerContext the instance of inner context, or {@code null}
 	 * @return the previous context, or {@code null}.
 	 */
 	def setInnerContext(innerContext : Context) : Context {
-		var old : Context
-		var lck = getLock
-		lck.writeLock.lock
-		try {
-			old = this.innerContextInstance
-			this.innerContextInstance = innerContext
-		} finally {
-			lck.writeLock.unlock
-		}
+		var old : Context = this.innerContextInstance
+		this.innerContextInstance = innerContext
+
 		return old
 	}
 
@@ -485,13 +382,7 @@ final class AgentLife {
 	 * @return the instance of inner context, or {@code null}
 	 */
 	def getInnerContext : Context {
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			return this.innerContextInstance
-		} finally {
-			lck.readLock.unlock
-		}
+		return this.innerContextInstance
 	}
 
 	/** Replies the address of the agent into the default space of its inner context.
@@ -499,33 +390,24 @@ final class AgentLife {
 	 * @return the address, never {@code null}.
 	 */
 	def getAddressInInnerDefaultSpace : Address {
-		var adr : Address
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			adr = this.innerSpaceAddress
-		} finally {
-			lck.readLock.unlock
-		}
+		var adr : Address = this.innerSpaceAddress
+
 		if (adr === null) {
-			lck.writeLock.lock
-			try {
-				adr = this.innerSpaceAddress
-				if (adr === null) {
-					var aid = this.^agent.ID
-					var spaceid = new SpaceID(aid, UUID::randomUUID, typeof(OpenEventSpaceSpecification))
-					adr = new Address(spaceid, aid);
-					this.innerSpaceAddress = adr
-				}
-			} finally {
-				lck.writeLock.unlock
+
+			adr = this.innerSpaceAddress
+			if (adr === null) {
+				var aid = this.^agent.ID
+				var spaceid = new SpaceID(aid, UUID::randomUUID, typeof(OpenEventSpaceSpecification))
+				adr = new Address(spaceid, aid);
+				this.innerSpaceAddress = adr
 			}
+
 		}
 		return adr
 	}
 
 	/** Add a context in which the agent is located.
-	 *
+	 * 
 	 * @param context the context in which the agent is now located.
 	 * @param address the address of the agent in the default space of the given context.
 	 * @return the created reference, or {@code null} if the reference cannot be added (because the given context is already the default context).
@@ -534,21 +416,14 @@ final class AgentLife {
 		assert context !== null
 		assert address !== null
 		var continueAddition = false
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			continueAddition = this.defaultContextInstance === null || context.ID != this.defaultContextInstance.context.ID
-		} finally {
-			lck.readLock.unlock
-		}
+
+		continueAddition = this.defaultContextInstance === null || context.ID != this.defaultContextInstance.context.ID
+
 		if (continueAddition) {
 			var ref = new ContextReference(this, context, address)
-			lck.writeLock.lock
-			try {
-				ensureExternalContextInstances.put(context.ID, ref)
-			} finally {
-				lck.writeLock.unlock
-			}
+
+			ensureExternalContextInstances.put(context.ID, ref)
+
 			return ref
 		}
 		return null
@@ -558,28 +433,19 @@ final class AgentLife {
 	 */
 	def removeExternalContext(context : Context) : ContextReference {
 		assert context !== null
-		var ctxs : Map<UUID, ContextReference>
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			ctxs = this.externalContextInstances
-		} finally {
-			lck.readLock.unlock
-		}
+		var ctxs : ConcurrentHashMap<UUID, ContextReference> = this.externalContextInstances
+
 		if (ctxs !== null) {
-			lck.writeLock.lock
-			try {
-				ctxs = this.externalContextInstances
-				if (ctxs !== null) {
-					var ctx = ctxs.remove(context.ID)
-					if (ctxs.empty) {
-						this.externalContextInstances = null
-					}
-					return ctx
+
+			ctxs = this.externalContextInstances
+			if (ctxs !== null) {
+				var ctx = ctxs.remove(context.ID)
+				if (ctxs.empty) {
+					this.externalContextInstances = null
 				}
-			} finally {
-				lck.writeLock.unlock
+				return ctx
 			}
+
 		}
 		return null
 	}
@@ -588,49 +454,34 @@ final class AgentLife {
 	 */
 	def removeExternalContext(context : ContextReference) : ContextReference {
 		assert context !== null
-		var ctxs : Map<UUID, ContextReference>
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			ctxs = this.externalContextInstances
-		} finally {
-			lck.readLock.unlock
-		}
+		var ctxs : Map<UUID, ContextReference> = this.externalContextInstances
+
 		if (ctxs !== null) {
-			lck.writeLock.lock
-			try {
-				ctxs = this.externalContextInstances
-				if (ctxs !== null) {
-					var ctx = ctxs.remove(context.context.ID)
-					if (ctxs.empty) {
-						this.externalContextInstances = null
-					}
-					return ctx
+
+			ctxs = this.externalContextInstances
+			if (ctxs !== null) {
+				var ctx = ctxs.remove(context.context.ID)
+				if (ctxs.empty) {
+					this.externalContextInstances = null
 				}
-			} finally {
-				lck.writeLock.unlock
+				return ctx
 			}
+
 		}
 		return null
 	}
 
 	/** Replies the external contexts in which the agent is located.
 	 * The default context is not part of the replied collection.
-	 *
+	 * 
 	 * @see {@link #getEnclosingContexts()}
 	 */
-	def getExternalContexts : SynchronizedIterable<ContextReference> {
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			if (this.externalContextInstances === null) {
-				Collections3::emptySynchronizedSet
-			} else {
-				Collections3::unmodifiableSynchronizedIterable(this.externalContextInstances.values, lck)
-			}
-		} finally {
-			lck.readLock.unlock
-		}		
+	def getExternalContexts : ConcurrentLinkedDeque<ContextReference> {
+		return if (this.externalContextInstances === null) {
+			new ConcurrentLinkedDeque<ContextReference>()
+		} else {
+			new ConcurrentLinkedDeque<ContextReference>(this.externalContextInstances.values)
+		}
 	}
 
 	/** Replies the number of external contexts in which the agent is located.
@@ -639,68 +490,56 @@ final class AgentLife {
 	 * @return the number of external contexts.
 	 */
 	def getExternalContextCount : int {
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			if (this.externalContextInstances === null) {
-				return 0
-			}
-			return this.externalContextInstances.size
-		} finally {
-			lck.readLock.unlock
+
+		if (this.externalContextInstances === null) {
+			return 0
 		}
+		return this.externalContextInstances.size
+
 	}
 
 	/** Replies all the contexts in which the agent is located, including the default context and
 	 * the external contexts.
-	 *
+	 * 
 	 * @see {@link #getExternalContexts()}
 	 */
-	def getEnclosingContexts : SynchronizedIterable<ContextReference> {
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			if (this.defaultContextInstance !== null) {
-				var dcs = Collections::singleton(this.defaultContextInstance)
-				if (this.externalContextInstances === null) {
-					return Collections3::unmodifiableSynchronizedIterable(dcs, lck)
-				} else {
-					var multi = new MultiCollection<ContextReference>
-					multi.addCollection(dcs)
-					multi.addCollection(this.externalContextInstances.values)
-					return Collections3::unmodifiableSynchronizedIterable(multi, lck)
-				}
-			} else if (this.externalContextInstances === null) {
-				return Collections3::emptySynchronizedSet
+	def getEnclosingContexts : ConcurrentLinkedDeque<ContextReference> {
+
+		if (this.defaultContextInstance !== null) {
+			var result = new ConcurrentLinkedDeque<ContextReference>
+			result.add(this.defaultContextInstance)
+			if (this.externalContextInstances === null) {
+
+				return result
 			} else {
-				return Collections3::unmodifiableSynchronizedIterable(this.externalContextInstances.values, lck)
+				result.add(this.defaultContextInstance)
+				result.addAll(this.externalContextInstances.values)
+				return result
 			}
-		} finally {
-			lck.readLock.unlock
+		} else if (this.externalContextInstances === null) {
+			return new ConcurrentLinkedDeque<ContextReference>
+		} else {
+			return new ConcurrentLinkedDeque<ContextReference>(this.externalContextInstances.values)
 		}
+
 	}
 
-
 	/** Replies the external context with the given identifier.
-	 *
+	 * 
 	 * @param identifer the identifier of the context.
 	 * @return the context, or {@code null} 
 	 */
 	def getExternalContext(identifier : UUID) : ContextReference {
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			if (this.externalContextInstances !== null) {
-				return this.externalContextInstances.get(identifier)
-			}
-		} finally {
-			lck.readLock.unlock
+
+		if (this.externalContextInstances !== null) {
+			return this.externalContextInstances.get(identifier)
 		}
+
 		return null
 	}
 
 	/** Change the default context of the agent.
-	 *
+	 * 
 	 * @param context the next context, never {@code null}.
 	 * @param address the address of the agent into the default space of the given context.
 	 * @return the reference to the previous default context.
@@ -708,39 +547,24 @@ final class AgentLife {
 	def setDefaultContext(context : Context, address : Address) : ContextReference {
 		assert context !== null
 		assert address !== null
-		var oldDefaultSpace : ContextReference
-		var lck = getLock
-		lck.writeLock.lock
-		try {
-			oldDefaultSpace = this.defaultContextInstance
-			this.defaultContextInstance = new ContextReference(this, context, address)
-		} finally {
-			lck.writeLock.unlock
-		}
+		var oldDefaultSpace : ContextReference = this.defaultContextInstance
+		this.defaultContextInstance = new ContextReference(this, context, address)
+
 		removeExternalContext(context)
 		return oldDefaultSpace
 	}
 
 	private def ensureExternalContextInstances : Map<UUID, ContextReference> {
-		var map : Map<UUID, ContextReference>
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			map = this.externalContextInstances
-		} finally {
-			lck.readLock.unlock
-		}
+		var map : ConcurrentHashMap<UUID, ContextReference> = this.externalContextInstances
+
 		if (map === null) {
-			lck.writeLock.lock
-			try {
-				map = this.externalContextInstances
-				if (map === null) {
-					map = newTreeMap(null)
-					this.externalContextInstances = map
-				}
-			} finally {
-				lck.writeLock.unlock
+
+			map = this.externalContextInstances
+			if (map === null) {
+				map = new ConcurrentHashMap<UUID, ContextReference>
+				this.externalContextInstances = map
 			}
+
 		}
 		return map
 	}
@@ -750,13 +574,7 @@ final class AgentLife {
 	 * @return the default context, never {@code null}.
 	 */
 	def getDefaultContext : ContextReference {
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			return this.defaultContextInstance
-		} finally {
-			lck.readLock.unlock
-		}
+		return this.defaultContextInstance
 	}
 
 }
@@ -779,7 +597,7 @@ final class ContextReference implements Comparable<ContextReference> {
 	var defaultAddress : Address
 
 	/** Constructor.
-	 *
+	 * 
 	 * @param context the content to reference.
 	 * @param address the address of the agent in the default space of the given context.
 	 */
@@ -795,9 +613,9 @@ final class ContextReference implements Comparable<ContextReference> {
 	override toString : String {
 		var context = this.contextInstance?.get
 		if(context === null) "[?]" else context.toString
-		}
-	
-		override compareTo(o : ContextReference) : int {
+	}
+
+	override compareTo(o : ContextReference) : int {
 		if(o === null) return Integer::MAX_VALUE
 		return this.contextInstance.get.ID <=> o.contextInstance.get.ID
 	}
@@ -805,7 +623,7 @@ final class ContextReference implements Comparable<ContextReference> {
 	/** Replies the context.
 	 */
 	def getContext : Context {
-			this.contextInstance.get
+		this.contextInstance.get
 	}
 
 	/** Replies the default space.
@@ -817,7 +635,7 @@ final class ContextReference implements Comparable<ContextReference> {
 	/** Replies the address of the agent into the default space.
 	 */
 	def getAddressInDefaultSpace : Address {
-			if (this.defaultAddress === null) {
+		if (this.defaultAddress === null) {
 			this.defaultAddress = this.contextInstance.get.defaultSpace.getAddress(this.life.get.^agent.ID)
 		}
 		this.defaultAddress

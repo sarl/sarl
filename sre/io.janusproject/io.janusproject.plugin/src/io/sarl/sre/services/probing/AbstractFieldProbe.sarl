@@ -30,7 +30,6 @@ import io.sarl.sre.services.lifecycle.AgentLife
 import io.sarl.sre.services.lifecycle.BehaviorLife
 import io.sarl.sre.services.namespace.FieldAccess
 import java.net.URI
-import java.util.concurrent.locks.ReadWriteLock
 import javax.inject.Provider
 import org.eclipse.xtend.lib.annotations.Accessors
 
@@ -66,9 +65,8 @@ abstract class AbstractFieldProbe<T> extends AbstractProbe<T> {
 		uri : URI,
 		type : Class<T>,
 		field : FieldAccess,
-		listenerCollectionProvider : Provider<SmartListenerCollection<?>>,
-		lockProvider : Provider<ReadWriteLock>) {
-		super(manager, name, uri, type, listenerCollectionProvider, lockProvider)
+		listenerCollectionProvider : Provider<SmartListenerCollection<?>>) {
+		super(manager, name, uri, type, listenerCollectionProvider)
 		assert field !== null
 		this.field = field
 	}

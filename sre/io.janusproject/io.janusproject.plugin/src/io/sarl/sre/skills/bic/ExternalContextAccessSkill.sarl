@@ -1,17 +1,17 @@
-/*
+/* 
  * $Id$
- *
+ * 
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
- *
+ * 
  * Copyright (C) 2014-2019 the original authors or authors.
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,9 +26,9 @@ import io.sarl.lang.core.AgentContext
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.Scope
+import io.sarl.lang.core.Skill
 import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
-import io.sarl.lang.util.SynchronizedIterable
 import io.sarl.sre.KernelScope
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.services.context.ContextService
@@ -36,10 +36,8 @@ import io.sarl.sre.services.context.ExternalContextMemberListener
 import io.sarl.sre.services.context.InternalContextMembershipListener
 import io.sarl.sre.services.context.InternalContextMembershipListenerFactory
 import io.sarl.sre.services.lifecycle.ContextReference
-import io.sarl.sre.skills.BuiltinSkill
-import io.sarl.util.concurrent.Collections3
 import java.util.UUID
-import java.util.concurrent.locks.ReadWriteLock
+import java.util.concurrent.ConcurrentLinkedDeque
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -56,7 +54,7 @@ import static io.sarl.sre.services.lifecycle.AgentLife.*
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("potential_field_synchronization_problem")
-skill ExternalContextAccessSkill extends BuiltinSkill implements ExternalContextAccess {
+skill ExternalContextAccessSkill extends Skill implements ExternalContextAccess {
 
 	uses InternalEventBusCapacity
 
@@ -68,36 +66,32 @@ skill ExternalContextAccessSkill extends BuiltinSkill implements ExternalContext
 
 	var internalEventEmitter : InternalContextMembershipListener
 
-	/** Constructor. */
+	/** Constructor.
+	 */
 	@Inject
-	new (service : ContextService, @KernelScope outerContextProvider  : Provider<ExternalContextMemberListener>,
-		@KernelScope innerContextProvider : InternalContextMembershipListenerFactory,
-		lockProvider : Provider<ReadWriteLock>) {
-		super(lockProvider)
+	new (service : ContextService, @KernelScope outerContextProvider : Provider<ExternalContextMemberListener>,
+		@KernelScope innerContextProvider : InternalContextMembershipListenerFactory) {
+		super()
 		this.contextService = service
 		this.externalEventEmitter = outerContextProvider.get
 		this.innerContextProvider = innerContextProvider
 	}
 
 	protected override install {
-		this.internalEventEmitter = this.innerContextProvider.create(owner, this.lockProvider)
+		this.internalEventEmitter = this.innerContextProvider.create(owner)
 	}
 
 	protected override uninstall(stage : UninstallationStage) {
 		if (stage == UninstallationStage::POST_DESTROY_EVENT) {
 
-			var life = getLife(owner, this.lockProvider)
+			var life = getLife(owner)
 			// Unregister from the external context.
 			// The unregistration to the default context is be done into the AgentLife class.
 			var contexts = life.externalContexts
-			var identifiers = <UUID> newArrayList
-			val lck = contexts.lock
-			lck.readLock.lock
-			try {
-				identifiers += contexts.map[it.context.ID]
-			} finally {
-				lck.readLock.unlock
-			}
+			var identifiers = <UUID>newArrayList
+
+			identifiers += contexts.map[it.context.ID]
+
 			for (id : identifiers) {
 				id.leave
 			}
@@ -110,7 +104,7 @@ skill ExternalContextAccessSkill extends BuiltinSkill implements ExternalContext
 
 	def getContext(contextID : UUID) : AgentContext {
 		assert contextID !== null
-		var life = getLife(owner, this.lockProvider)
+		var life = getLife(owner)
 		var defaultContext = life.defaultContext
 		if (defaultContext !== null) {
 			var theDefaultContext = defaultContext.context
@@ -125,29 +119,34 @@ skill ExternalContextAccessSkill extends BuiltinSkill implements ExternalContext
 		return context.context
 	}
 
-	def getAllContexts : SynchronizedIterable<AgentContext> {
-		var collection = getLife(owner, this.lockProvider).enclosingContexts
-		var col2 = collection.map[var local : AgentContext = it.context; local]
-		Collections3::unmodifiableSynchronizedIterable(col2, collection.lock)
+	def getAllContexts : ConcurrentLinkedDeque<AgentContext> {
+		var collection = getLife(owner).enclosingContexts
+		// TODO opitze the following loop
+		// var col2 = collection.map[var local : AgentContext = it.context; local]
+		var result : ConcurrentLinkedDeque<AgentContext> = new ConcurrentLinkedDeque<AgentContext>();
+		for (t : collection.map[var local : AgentContext = it.context; local]) {
+			result.add(t)
+		}
+		return result;
 	}
-	
+
 	def isInSpace(^event : Event, ^space : Space) : boolean {
 		^event.isInSpace(^space.spaceID)
 	}
-	
+
 	def isInSpace(^event : Event, spaceID : SpaceID) : boolean {
 		spaceID == ^event.source.spaceID
 	}
-	
+
 	def isInSpace(^event : Event, spaceID : UUID) : boolean {
 		spaceID == ^event.source.spaceID.ID
 	}
-	
+
 	def join(contextID : UUID, expectedDefaultSpaceID : UUID) : boolean {
 		assert contextID !== null
 		assert expectedDefaultSpaceID !== null
 
-		var life = getLife(owner, this.lockProvider)
+		var life = getLife(owner)
 		if (life.state.alive) {
 			if (life.defaultContext.context.ID == contextID) {
 				return false
@@ -156,39 +155,37 @@ skill ExternalContextAccessSkill extends BuiltinSkill implements ExternalContext
 			if (existingContext !== null) {
 				return false
 			}
-	
+
 			var context = this.contextService.getContext(contextID)
 			if (context === null) {
 				return false
 			}
-	
+
 			val defaultSpace = context.defaultSpace
 			val defaultSpaceID = defaultSpace.spaceID
-	
+
 			if (expectedDefaultSpaceID != defaultSpaceID.ID) {
 				return false
 			}
-	
+
 			val agentID = ID
 			val adr = new Address(defaultSpaceID, agentID)
 			life.addExternalContext(context, adr)
-	
+
 			defaultSpace.register(associatedEventBusListener)
-	
-			this.externalEventEmitter.memberJoined(
-				context, defaultSpaceID,
-				agentID, this.owner.class.name)
+
+			this.externalEventEmitter.memberJoined(context, defaultSpaceID, agentID, this.owner.class.name)
 			this.internalEventEmitter.contextJoined(contextID, expectedDefaultSpaceID)
-	
+
 			return true
 		}
 		return false
 	}
-	
+
 	def leave(contextID : UUID) : boolean {
 		assert contextID !== null
 
-		var life = getLife(owner, this.lockProvider)
+		var life = getLife(owner)
 		var exitDefaultSpace = false
 		var context : ContextReference
 		var candidate : ContextReference
@@ -198,17 +195,13 @@ skill ExternalContextAccessSkill extends BuiltinSkill implements ExternalContext
 				return false
 			}
 			var ctxs = life.externalContexts
-			val lck = ctxs.lock
-			lck.readLock.lock
-			try {
-				var iterator = ctxs.iterator
-				if (!iterator.hasNext) {
-					return false
-				}
-				candidate = iterator.next
-			} finally {
-				lck.readLock.lock
+			// TODO verify we have nopt a bug in the following iterator
+			var iterator = ctxs.iterator
+			if (!iterator.hasNext) {
+				return false
 			}
+			candidate = iterator.next
+
 			context = life.defaultContext
 			exitDefaultSpace = true
 		} else {
@@ -232,15 +225,14 @@ skill ExternalContextAccessSkill extends BuiltinSkill implements ExternalContext
 		}
 		// To send this event the agent must still be inside the context and its default space
 		this.internalEventEmitter.contextLeft(contextID)
-		this.externalEventEmitter.memberLeft(
-			context.context, context.addressInDefaultSpace.spaceID,
-			this.owner.ID, this.owner.class.name)
+		this.externalEventEmitter.memberLeft(context.context, context.addressInDefaultSpace.spaceID, this.owner.ID,
+			this.owner.class.name)
 
 		return true
 	}
-	
+
 	def emit(^space : EventSpace, ^event : Event, scope : Scope<Address>) {
 		^space.emit(ID, ^event, scope)
 	}
-	
+
 }

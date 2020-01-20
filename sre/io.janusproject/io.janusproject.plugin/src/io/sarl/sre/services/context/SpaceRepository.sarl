@@ -1,17 +1,17 @@
-/*
+/* 
  * $Id$
- *
+ * 
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
- *
+ * 
  * Copyright (C) 2014-2019 the original authors or authors.
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,7 +34,6 @@ import io.sarl.lang.core.SREutils
 import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
 import io.sarl.lang.core.SpaceSpecification
-import io.sarl.lang.util.SynchronizedIterable
 import io.sarl.sre.KernelScope
 import io.sarl.sre.boot.configs.SreConfig
 import io.sarl.sre.internal.SmartListenerCollection
@@ -46,18 +45,16 @@ import io.sarl.sre.spaces.SpaceParticipantListenerFactory
 import io.sarl.sre.spaces.SreEventSpaceSpecification
 import io.sarl.sre.spaces.SreOpenEventSpaceSpecification
 import io.sarl.sre.spaces.SreRestrictedAccessEventSpaceSpecification
-import io.sarl.util.Comparators
 import io.sarl.util.DefaultSpace
 import io.sarl.util.RestrictedAccessEventSpaceSpecification
-import io.sarl.util.concurrent.Collections3
 import java.io.Serializable
 import java.lang.ref.WeakReference
 import java.util.EventListener
-import java.util.Map
-import java.util.Set
 import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ConcurrentLinkedDeque
+import java.util.concurrent.ConcurrentSkipListSet
 import java.util.concurrent.TimeUnit
-import java.util.concurrent.locks.ReadWriteLock
 import java.util.logging.Logger
 import javax.inject.Inject
 import javax.inject.Provider
@@ -83,14 +80,9 @@ abstract class SpaceRepository implements SpaceListener {
 
 	val destroyDelay : int
 
-	val lockProvider : Provider<ReadWriteLock>
-
-	val lock : ReadWriteLock
-
 	val listeners : SmartListenerCollection<?>
 
-	val spacesBySpec = <Class<? extends SpaceSpecification<?>>, Set<SpaceDescription>>newTreeMap(
-		Comparators::classComparator)
+	val spacesBySpec = new ConcurrentHashMap<Class<? extends SpaceSpecification<?>>, ConcurrentSkipListSet<SpaceDescription>>
 
 	/** Reference to the default space of the owning context.
 	 * @since 0.10
@@ -98,7 +90,7 @@ abstract class SpaceRepository implements SpaceListener {
 	var defaultSpace : WeakReference<OpenEventSpace>
 
 	/** Constructor.
-	 *
+	 * 
 	 * @param injector the injector.
 	 * @param executor the asynchronous execution service.
 	 * @param config the configuration.
@@ -107,39 +99,33 @@ abstract class SpaceRepository implements SpaceListener {
 	 */
 	@Inject
 	new (injector : Injector, executor : ExecutorService, config : SreConfig,
-		listenerCollection : SmartListenerCollection<?>, lockProvider : Provider<ReadWriteLock>) {
+		listenerCollection : SmartListenerCollection<?>) {
 		this.injector = injector
 		this.executor = executor
 		this.destroyDelay = config.services.executors.keepAliveDuration
 		this.listeners = listenerCollection
-		this.lockProvider = lockProvider
-		this.lock = lockProvider.get
 	}
 
-	/** Replies the internal map that contains the spaces */
-	protected abstract def getSharedStructure : Map<UUID, SpaceDescription>
+	/** Replies the internal map that contains the spaces
+	 */
+	protected abstract def getSharedStructure : ConcurrentHashMap<UUID, SpaceDescription>
 
 	/** Create a space description.
-	 *
+	 * 
 	 * <p>This function should be overridden by the sub-types.
-	 *
+	 * 
 	 * @param id the space identifier.
 	 * @param space the space instance.
 	 * @return the description.
 	 */
 	protected def createSpaceDescription(id : SpaceID, ^space : Space) : SpaceDescription {
-		new SpaceDescription(id, ^space, this.lockProvider.get)
-	}
-
-	/** Replies the lock for changing the internal data structures, except for the destroyable spaces. */
-	def getLock : ReadWriteLock {
-		this.lock
+		new SpaceDescription(id, ^space)
 	}
 
 	/** Replies the space information associated to the space if already associated.
-	 *
+	 * 
 	 * <p>This function is not thread-safe.
-	 *
+	 * 
 	 * @param newDescription the description to associated to the space.
 	 * @return the space description, or {@code null}
 	 */
@@ -153,7 +139,7 @@ abstract class SpaceRepository implements SpaceListener {
 		}
 		return null
 	}
-	
+
 	/** Replies the space information associated to the space identifier if already associated.
 	 * 
 	 * <p>This function is not thread-safe.
@@ -177,33 +163,23 @@ abstract class SpaceRepository implements SpaceListener {
 	 */
 	package final def createDefaultSpace(spaceID : SpaceID) : OpenEventSpace {
 		var defaultSpace = getOrCreateSpaceWithID(spaceID, typeof(OpenEventSpaceSpecification))
-		var lck = getLock
-		lck.writeLock.lock
-		try {
-			if (defaultSpace === null) {
-				this.defaultSpace = null
-			} else {
-				this.defaultSpace = new WeakReference(defaultSpace)
-			}
-		} finally {
-			lck.writeLock.unlock
+
+		if (defaultSpace === null) {
+			this.defaultSpace = null
+		} else {
+			this.defaultSpace = new WeakReference(defaultSpace)
 		}
+
 		return defaultSpace
 	}
 
 	private def createSpaceFirstInstance(spec : Class<? extends SpaceSpecification<S>>, spaceID : SpaceID,
-			creationParams : Object[]) : S with S extends Space {
+		creationParams : Object[]) : S with S extends Space {
 		assert spaceID.spaceSpecification === null ||
-				spaceID.spaceSpecification == spec, "The specification type is invalid"
+			spaceID.spaceSpecification == spec, "The specification type is invalid"
 
-		var defaultSpace : OpenEventSpace
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			defaultSpace = this.defaultSpace?.get
-		} finally {
-			lck.readLock.unlock
-		}
+		var defaultSpace : OpenEventSpace = this.defaultSpace?.get
+
 		var spaceSpecificationInstance : SpaceSpecification<S>
 		if (defaultSpace === null) {
 			// Usually, this case cover the creation of the default space within a context
@@ -214,7 +190,7 @@ abstract class SpaceRepository implements SpaceListener {
 			val defaultSpaceInjector = this.injector.createChildInjector(defaultSpaceInjectionModule)
 			spaceSpecificationInstance = defaultSpaceInjector.getInstance(spec)
 		}
-		
+
 		// Split the call to create() to let the JVM to create the "empty" array for creation parameters.
 		var ^space : S
 		if (creationParams !== null && creationParams.length > 0) {
@@ -230,17 +206,14 @@ abstract class SpaceRepository implements SpaceListener {
 		^space.life(description)
 		id.life(description)
 		val spaces = sharedStructure
-		lck.writeLock.lock
-		try {
-			var list = this.spacesBySpec.get(id.spaceSpecification)
-			if (list === null) {
-				list = newTreeSet(null)
-				this.spacesBySpec.put(id.spaceSpecification, list)
-			}
-			list += description
-		} finally {
-			lck.writeLock.unlock
+
+		var list = this.spacesBySpec.get(id.spaceSpecification)
+		if (list === null) {
+			list = new ConcurrentSkipListSet<SpaceDescription>
+			this.spacesBySpec.put(id.spaceSpecification, list)
 		}
+		list += description
+
 		spaces.put(id.ID, description)
 		if (^space instanceof AbstractSpace) {
 			^space.spaceListenerIfNone = this
@@ -248,36 +221,30 @@ abstract class SpaceRepository implements SpaceListener {
 		^space.fireSpaceAdded(true)
 		return ^space
 	}
-	
+
 	/** Synchronize the internal structures of SpaceRepository with the content of
 	 * {@link #getSharedStructure()}.
-	 *
+	 * 
 	 * <p>This function is thread-safe.
 	 * 
 	 * <p>Caution: Do not call this function if you are not certain it does the expected things.
 	 */
 	def refreshInternalStructures : void {
-		var lck = getLock
-		lck.writeLock.lock
-		try {
-			this.spacesBySpec.clear
-			for (description : this.sharedStructure.values) {
-				var ^space = description.^space
-				var spaceId = ^space.spaceID
-				^space.life(description)
-				spaceId.life(description)
-				var list = this.spacesBySpec.get(spaceId.spaceSpecification)
-				if (list === null) {
-					list = newTreeSet(null)
-					this.spacesBySpec.put(spaceId.spaceSpecification, list)
-				}
-				list += description
-				if (^space instanceof AbstractSpace) {
-					^space.spaceListenerIfNone = this
-				}
+		this.spacesBySpec.clear
+		for (description : this.sharedStructure.values) {
+			var ^space = description.^space
+			var spaceId = ^space.spaceID
+			^space.life(description)
+			spaceId.life(description)
+			var list = this.spacesBySpec.get(spaceId.spaceSpecification)
+			if (list === null) {
+				list = new ConcurrentSkipListSet<SpaceDescription>
+				this.spacesBySpec.put(spaceId.spaceSpecification, list)
 			}
-		} finally {
-			lck.writeLock.unlock
+			list += description
+			if (^space instanceof AbstractSpace) {
+				^space.spaceListenerIfNone = this
+			}
 		}
 	}
 
@@ -300,13 +267,7 @@ abstract class SpaceRepository implements SpaceListener {
 	 * Destroy this repository and release all the resources.
 	 */
 	final def destroy {
-		var lck = getLock
-		lck.writeLock.lock
-		try {
-			safeDestroy
-		} finally {
-			lck.writeLock.unlock
-		}
+		safeDestroy
 		this.listeners.clear
 	}
 
@@ -315,7 +276,7 @@ abstract class SpaceRepository implements SpaceListener {
 	 */
 	protected def safeDestroy {
 		val spaces = sharedStructure
-		var iterator  = spaces.values.iterator
+		var iterator = spaces.values.iterator
 		while (iterator.hasNext) {
 			var description = iterator.next
 			var ^space = description.^space
@@ -338,7 +299,8 @@ abstract class SpaceRepository implements SpaceListener {
 	 */
 	def createSpace(spaceID : SpaceID, spec : Class<? extends SpaceSpecification<S>>,
 		creationParams : Object*) : S with S extends Space {
-		assert spaceID.spaceSpecification == spec, "The space identifier does not contains the same specification as the one given to the creation function"
+		assert spaceID.spaceSpecification ==
+			spec, "The space identifier does not contains the same specification as the one given to the creation function"
 		spec.createSpaceFirstInstance(spaceID, creationParams)
 	}
 
@@ -352,20 +314,14 @@ abstract class SpaceRepository implements SpaceListener {
 			var spaceID = ^space.spaceID
 			var spaces = sharedStructure
 			assert spaces !== null
-			var description : SpaceDescription
-			var lck = getLock
-			lck.writeLock.lock
-			try {
-				description = spaces.remove(spaceID.ID)
-				if (description !== null) {
-					var cousins = this.spacesBySpec.get(spaceID.spaceSpecification)
-					if (cousins !== null) {
-						cousins.remove(description)
-					}
+			var description : SpaceDescription = spaces.remove(spaceID.ID)
+			if (description !== null) {
+				var cousins = this.spacesBySpec.get(spaceID.spaceSpecification)
+				if (cousins !== null) {
+					cousins.remove(description)
 				}
-			} finally {
-				lck.writeLock.unlock
 			}
+
 			^space.life(null)
 			spaceID.life(null)
 			if (description !== null) {
@@ -387,30 +343,26 @@ abstract class SpaceRepository implements SpaceListener {
 	def getOrCreateSpaceWithSpec(spaceID : SpaceID, spec : Class<? extends SpaceSpecification<S>>,
 		creationParams : Object*) : S with S extends Space {
 		var description : SpaceDescription = null
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			var spaces = spacesBySpec.get(spec)
-			if (spaces !== null && !spaces.empty) {
-				var defaultSpace = this.defaultSpace?.get
-				var iter = spaces.iterator
-				if (defaultSpace === null) {
-					if (iter.hasNext) {
-						description = iter.next
-					}
-				} else {
-					val dfid = defaultSpace.spaceID
-					while (description === null && iter.hasNext) {
-						var desc = iter.next
-						if (dfid != desc.spaceID) {
-							description = desc
-						}
+
+		var spaces = spacesBySpec.get(spec)
+		if (spaces !== null && !spaces.empty) {
+			var defaultSpace = this.defaultSpace?.get
+			var iter = spaces.iterator
+			if (defaultSpace === null) {
+				if (iter.hasNext) {
+					description = iter.next
+				}
+			} else {
+				val dfid = defaultSpace.spaceID
+				while (description === null && iter.hasNext) {
+					var desc = iter.next
+					if (dfid != desc.spaceID) {
+						description = desc
 					}
 				}
 			}
-		} finally {
-			lck.readLock.unlock
 		}
+
 		if (description === null) {
 			return spec.createSpaceFirstInstance(spaceID, creationParams)
 		}
@@ -429,14 +381,8 @@ abstract class SpaceRepository implements SpaceListener {
 	def getOrCreateSpaceWithID(spaceID : SpaceID, spec : Class<? extends SpaceSpecification<S>>,
 		creationParams : Object*) : S with S extends Space {
 		val spaces = sharedStructure
-		var description : SpaceDescription
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			description = spaces.get(spaceID.ID)
-		} finally {
-			lck.readLock.unlock
-		}
+		var description : SpaceDescription = spaces.get(spaceID.ID)
+
 		if (description === null) {
 			return spec.createSpaceFirstInstance(spaceID, creationParams)
 		}
@@ -448,16 +394,14 @@ abstract class SpaceRepository implements SpaceListener {
 	 * 
 	 * @return the collection of all spaces stored in this repository.
 	 */
-	def getSpaces : SynchronizedIterable<? extends Space> {
+	def getSpaces : ConcurrentLinkedDeque<? extends Space> {
 		val spaces = sharedStructure
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			var translated = spaces.values.map[it.ensureSpaceInstance]
-			return Collections3::unmodifiableSynchronizedIterable(translated, lck)
-		} finally {
-			lck.readLock.unlock
+		// TODO optimize this code below to avoid this filter loop
+		var translated = new ConcurrentLinkedDeque
+		for (t : spaces.values.map[it.ensureSpaceInstance]) {
+			translated.add(t)
 		}
+		return translated
 	}
 
 	/** 
@@ -467,19 +411,19 @@ abstract class SpaceRepository implements SpaceListener {
 	 * @param spec the specification used to filter the set of stored spaces.
 	 * @return the collection of all spaces with the specified {@link SpaceSpecification} stored in this repository
 	 */
-	def getSpaces(spec : Class<? extends SpaceSpecification<S>>) : SynchronizedIterable<S> with S extends Space {
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			var spaces = this.spacesBySpec.get(spec)
-			if (spaces !== null) {
-				var mapped = spaces.map [it.ensureSpaceInstance as S]
-				return Collections3::unmodifiableSynchronizedIterable(mapped, lock)
+	def getSpaces(spec : Class<? extends SpaceSpecification<S>>) : ConcurrentLinkedDeque<S> with S extends Space {
+
+		var spaces = this.spacesBySpec.get(spec)
+		if (spaces !== null) {
+			// TODO optimize this code below to avoid this filter loop
+			var mapped = new ConcurrentLinkedDeque<S>
+			for (m : spaces.map[it.ensureSpaceInstance as S]) {
+				mapped.add(m)
 			}
-		} finally {
-			lck.readLock.unlock
+			return mapped
 		}
-		return Collections3::emptySynchronizedSet
+
+		return new ConcurrentLinkedDeque<S>
 	}
 
 	/** 
@@ -490,21 +434,15 @@ abstract class SpaceRepository implements SpaceListener {
 	 */
 	def getSpace(spaceID : SpaceID) : Space {
 		val spaces = sharedStructure
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			var description = spaces.get(spaceID.ID)
-			if (description !== null) {
-				return description.ensureSpaceInstance
-			}
-		} finally {
-			lck.readLock.unlock
+		var description = spaces.get(spaceID.ID)
+		if (description !== null) {
+			return description.ensureSpaceInstance
 		}
 		return null
 	}
 
 	/** Add listener on the space repository changes.
-	 *
+	 * 
 	 * @param listener
 	 */
 	def addSpaceRepositoryListener(listener : SpaceRepositoryListener) {
@@ -546,19 +484,13 @@ abstract class SpaceRepository implements SpaceListener {
 	override destroyableSpace(^space : Space) {
 		var run : Runnable = [
 			var participants = ^space.participants
-			var couldBeDestroyed : boolean
-			var lck = participants.lock
-			lck.readLock.lock
-			try {
-				couldBeDestroyed = participants.empty
-			} finally {
-				lck.readLock.unlock
-			}
+			var couldBeDestroyed : boolean = participants.empty
+
 			if (couldBeDestroyed) {
 				removeSpace(^space)
 			}
 		]
-		this.executor.schedule(this.destroyDelay, TimeUnit::SECONDS, run) 
+		this.executor.schedule(this.destroyDelay, TimeUnit::SECONDS, run)
 	}
 
 	/** 
@@ -575,34 +507,21 @@ abstract class SpaceRepository implements SpaceListener {
 
 		transient var ^space : Space
 
-		val lock : ReadWriteLock
-
-		new (id : SpaceID, ^space : Space, lock : ReadWriteLock) {
+		new (id : SpaceID, ^space : Space) {
 			this.id = id
 			this.^space = ^space
-			this.lock = lock
 		}
 
 		def getSpaceID : SpaceID {
 			this.id
 		}
-		
+
 		def getSpace : Space {
-			this.lock.readLock.lock
-			try {
-				return this.^space
-			} finally {
-				this.lock.readLock.unlock
-			}
+			return this.^space
 		}
 
 		def setSpace(^space : Space) {
-			this.lock.writeLock.lock
-			try {
-				this.^space = ^space
-			} finally {
-				this.lock.writeLock.unlock
-			}
+			this.^space = ^space
 		}
 
 		def equals(obj : Object) : boolean {
@@ -651,16 +570,15 @@ abstract class SpaceRepository implements SpaceListener {
 		}
 
 		/** This injection definition is for the spaces that are not a default space.
-		 *
+		 * 
 		 * <p>Note: This provider must be defined into this "temp" module because it depends on the
 		 * definition of the default space injection.
 		 */
 		@Provides
-		def provideEventSpaceSpecification(injector : Injector, lockProvider : Provider<ReadWriteLock>,
-			@DefaultSpace defaultSpace : OpenEventSpace,
+		def provideEventSpaceSpecification(injector : Injector, @DefaultSpace defaultSpace : OpenEventSpace,
 			@KernelScope spaceParticipantListenerFactory : Provider<SpaceParticipantListenerFactory>,
 			logger : LoggingService) : EventSpaceSpecification {
-			new SreEventSpaceSpecification(injector, lockProvider, defaultSpace, spaceParticipantListenerFactory.get,
+			new SreEventSpaceSpecification(injector, defaultSpace, spaceParticipantListenerFactory.get,
 				logger)
 		}
 
@@ -670,11 +588,10 @@ abstract class SpaceRepository implements SpaceListener {
 		 * definition of the default space injection.
 		 */
 		@Provides
-		def provideOpenEventSpaceSpecification(injector : Injector, lockProvider : Provider<ReadWriteLock>,
-			@DefaultSpace defaultSpace : OpenEventSpace,
+		def provideOpenEventSpaceSpecification(injector : Injector, @DefaultSpace defaultSpace : OpenEventSpace,
 			@KernelScope spaceParticipantListenerFactory : Provider<SpaceParticipantListenerFactory>,
 			logger : LoggingService) : OpenEventSpaceSpecification {
-			new SreOpenEventSpaceSpecification(injector, lockProvider, defaultSpace,
+			new SreOpenEventSpaceSpecification(injector, defaultSpace,
 				spaceParticipantListenerFactory.get, logger)
 		}
 
@@ -684,16 +601,16 @@ abstract class SpaceRepository implements SpaceListener {
 		 * definition of the default space injection.
 		 */
 		@Provides
-		def provideRestrictedAccessEventSpaceSpecification(injector : Injector, lockProvider : Provider<ReadWriteLock>,
+		def provideRestrictedAccessEventSpaceSpecification(injector : Injector,
 			@DefaultSpace defaultSpace : OpenEventSpace,
 			@KernelScope spaceParticipantListenerFactory : Provider<SpaceParticipantListenerFactory>,
 			logger : LoggingService) : RestrictedAccessEventSpaceSpecification {
-			new SreRestrictedAccessEventSpaceSpecification(injector, lockProvider, defaultSpace,
+			new SreRestrictedAccessEventSpaceSpecification(injector, defaultSpace,
 				spaceParticipantListenerFactory.get, logger)
 		}
 
 	}
-	
+
 }
 
 /** 
@@ -706,17 +623,17 @@ abstract class SpaceRepository implements SpaceListener {
  */
 interface SpaceRepositoryListener extends EventListener {
 
-	/** 
-	 * Invoked when the space is added.
-	 * 
-	 * @param space reference to the created space.
-	 * @param isLocalCreation indicates if the creation of the space was initiated on the current kernel.
-	 */
+		/** 
+		 * Invoked when the space is added.
+		 * 
+		 * @param space reference to the created space.
+		 * @param isLocalCreation indicates if the creation of the space was initiated on the current kernel.
+		 */
 	def spaceCreated(^space : Space, isLocalCreation : boolean)
 
-	/**
+	/** 
 	 * Invoked when the space is destroyed.
-	 *
+	 * 
 	 * @param space reference to the destroyed space.
 	 * @param isLocalDestruction indicates if the destruction of the space was initiated on the current kernel.
 	 */

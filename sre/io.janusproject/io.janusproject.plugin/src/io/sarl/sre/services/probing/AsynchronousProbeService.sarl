@@ -26,7 +26,6 @@ import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.executor.Runnables
 import io.sarl.sre.services.namespace.NamespaceService
 import java.util.concurrent.atomic.AtomicBoolean
-import java.util.concurrent.locks.ReadWriteLock
 import javax.inject.Inject
 import javax.inject.Provider
 import org.eclipse.xtend.lib.annotations.Accessors
@@ -63,9 +62,8 @@ class AsynchronousProbeService extends AbstractProbeService {
 	 */
 	@Inject
 	new (service : ExecutorService, namespaceService : NamespaceService, nameParser : NameParser,
-		listenerCollectionProvider : Provider<SmartListenerCollection<?>>,
-		lockProvider : Provider<ReadWriteLock>) {
-		super(namespaceService, nameParser, listenerCollectionProvider, lockProvider)
+		listenerCollectionProvider : Provider<SmartListenerCollection<?>>) {
+		super(namespaceService, nameParser, listenerCollectionProvider)
 		this.executor = service
 	}
 

@@ -32,8 +32,6 @@ import io.sarl.util.RestrictedAccessEventSpace
 import io.sarl.util.RestrictedAccessEventSpaceSpecification
 import java.security.acl.Acl
 import java.security.acl.Permission
-import java.util.concurrent.locks.ReadWriteLock
-import javax.inject.Provider
 
 /** 
  * Abstract specification for standard event spaces into the SRE. 
@@ -47,8 +45,6 @@ import javax.inject.Provider
 abstract class AbstractSreEventSpaceSpecification {
 
 	val injector : Injector
-
-	val lockProvider : Provider<ReadWriteLock>
 
 	val logger : LoggingService
 
@@ -64,12 +60,11 @@ abstract class AbstractSreEventSpaceSpecification {
 	 * @param spaceParticipantListenerFactory the factory of listeners on space participant events.
 	 * @param logger the logging service. 
 	 */
-	new (injector : Injector, lockProvider : Provider<ReadWriteLock>,
+	new (injector : Injector,
 		defaultSpace : OpenEventSpace,
 		spaceParticipantListenerFactory : SpaceParticipantListenerFactory,
 		logger : LoggingService) {
 		this.injector = injector;
-		this.lockProvider = lockProvider
 		this.defaultSpace = defaultSpace
 		this.spaceParticipantListenerFactory = spaceParticipantListenerFactory
 		this.logger = logger
@@ -77,7 +72,7 @@ abstract class AbstractSreEventSpaceSpecification {
 
 	protected def createSpaceInstance(id : SpaceID, params : Object*) : OpenLocalEventSpace {
 		val listener = this.spaceParticipantListenerFactory.create(this.defaultSpace, this.logger.kernelLogger)
-		val ^space = new OpenLocalEventSpace(id, this.lockProvider, listener, this.logger)
+		val ^space = new OpenLocalEventSpace(id, listener, this.logger)
 		this.injector.injectMembers(^space)
 		return ^space
 	}
@@ -132,8 +127,6 @@ class SreRestrictedAccessEventSpaceSpecification implements RestrictedAccessEven
 
 	var injector : Injector
 
-	val lockProvider : Provider<ReadWriteLock>
-
 	val logger : LoggingService
 
 	val spaceParticipantListenerFactory : SpaceParticipantListenerFactory
@@ -148,10 +141,9 @@ class SreRestrictedAccessEventSpaceSpecification implements RestrictedAccessEven
 	 * @param spaceParticipantListenerFactory the factory of listeners on space participant events.
 	 * @param logger the logging service. 
 	 */
-	new (injector : Injector, lockProvider : Provider<ReadWriteLock>, defaultSpace : OpenEventSpace,
+	new (injector : Injector, defaultSpace : OpenEventSpace,
 		spaceParticipantListenerFactory : SpaceParticipantListenerFactory, logger : LoggingService) {
-		this.injector = injector;
-		this.lockProvider = lockProvider
+		this.injector = injector;		
 		this.defaultSpace = defaultSpace
 		this.spaceParticipantListenerFactory = spaceParticipantListenerFactory
 		this.logger = logger
@@ -172,7 +164,7 @@ class SreRestrictedAccessEventSpaceSpecification implements RestrictedAccessEven
 				permission = new RegistrationPermission
 			}
 			val listener = this.spaceParticipantListenerFactory.create(this.defaultSpace, this.logger.kernelLogger)
-			val ^space = new RestrictedAccessLocalEventSpace(id, acl, permission, this.lockProvider, listener, this.logger)
+			val ^space = new RestrictedAccessLocalEventSpace(id, acl, permission, listener, this.logger)
 			this.injector.injectMembers(^space)
 			return ^space
 		}

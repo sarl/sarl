@@ -22,7 +22,6 @@ package io.sarl.sre.services.context
 
 import com.google.inject.Injector
 import java.util.UUID
-import java.util.concurrent.locks.ReadWriteLock
 import io.sarl.lang.core.Agent
 
 /** 
@@ -50,8 +49,8 @@ abstract class AbstractInjectionBasedContextService extends AbstractContextServi
 	 * @param factory is the factory of contexts.
 	 * @param lock is the lock that must be used by this service.
 	 */
-	protected new(rootContext : Context, injector : Injector, factory : ContextFactory, lock : ReadWriteLock) {
-		super(rootContext, lock)
+	protected new(rootContext : Context, injector : Injector, factory : ContextFactory) {
+		super(rootContext)
 		this.injector = injector
 		this.contextFactory = factory
 	}

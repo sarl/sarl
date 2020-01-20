@@ -23,7 +23,6 @@ package io.sarl.sre.services.probing
 import io.sarl.sre.internal.SmartListenerCollection
 import io.sarl.sre.naming.NameParser
 import io.sarl.sre.services.namespace.NamespaceService
-import java.util.concurrent.locks.ReadWriteLock
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -49,9 +48,8 @@ class SynchronousProbeService extends AbstractProbeService {
 	 */
 	@Inject
 	new (namespaceService : NamespaceService, nameParser : NameParser,
-		listenerCollectionProvider : Provider<SmartListenerCollection<?>>,
-		lockProvider : Provider<ReadWriteLock>) {
-		super(namespaceService, nameParser, listenerCollectionProvider, lockProvider)
+		listenerCollectionProvider : Provider<SmartListenerCollection<?>>) {
+		super(namespaceService, nameParser, listenerCollectionProvider)
 	}
 
 }

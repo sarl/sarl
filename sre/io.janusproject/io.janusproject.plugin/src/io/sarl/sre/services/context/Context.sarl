@@ -1,17 +1,17 @@
-/*
+/* 
  * $Id$
- *
+ * 
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
- *
+ * 
  * Copyright (C) 2014-2019 the original authors or authors.
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,11 +29,10 @@ import io.sarl.lang.core.AgentTrait
 import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
 import io.sarl.lang.core.SpaceSpecification
-import io.sarl.lang.util.SynchronizedIterable
 import io.sarl.sre.KernelScope
 import io.sarl.sre.services.logging.LoggingService
 import java.util.UUID
-import java.util.concurrent.locks.ReadWriteLock
+import java.util.concurrent.ConcurrentLinkedDeque
 import javax.inject.Inject
 import javax.inject.Provider
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder
@@ -64,16 +63,15 @@ class Context extends AgentTrait implements AgentContext {
 
 	val logger : LoggingService
 
-	/** Emitter of the platform events: SpaceCreated, SpaceDestroy */
+	/** Emitter of the platform events: SpaceCreated, SpaceDestroy
+	 */
 	var platformEventEmitter : SpaceRepositoryListener
 
 	val spaceEventEmitterFactory : SpaceRepositoryListenerFactory
 
-	val lock : ReadWriteLock
-
 	/** 
 	 * Constructs a {@code Context}.
-	 *
+	 * 
 	 * @param id identifier of the context.
 	 * @param defaultSpaceID identifier of the default space in the context.
 	 * @param owner is the owner of the context. If {@code null}, it is the root context.
@@ -82,23 +80,21 @@ class Context extends AgentTrait implements AgentContext {
 	 * @param logger the logging service.
 	 * @param listenerFactory the factory of space listeners.
 	 */
-	new (id : UUID, defaultSpaceID : UUID, owner : Agent, lock : ReadWriteLock,
-		spaceRepositoryProvider : Provider<SpaceRepository>, logger : LoggingService,
-		listenerFactory : SpaceRepositoryListenerFactory) {
+	new (id : UUID, defaultSpaceID : UUID, owner : Agent, spaceRepositoryProvider : Provider<SpaceRepository>,
+		logger : LoggingService, listenerFactory : SpaceRepositoryListenerFactory) {
 		super(owner)
 		this.id = id
 		this.defaultSpaceID = defaultSpaceID
-		this.lock = lock
 		this.repositoryProvider = spaceRepositoryProvider
 		this.logger = logger
 		this.spaceEventEmitterFactory = listenerFactory
 	}
 
 	/** Replies if the context is a root context.
-	 *
+	 * 
 	 * <p>A root context is associated to the platform kernel agent, which is not created into memory.
 	 * For example, it means that there is no parent registered into the default space.
-	 *
+	 * 
 	 * @return {@code true} if the context is a root context.
 	 */
 	def isRootContext : boolean {
@@ -107,11 +103,6 @@ class Context extends AgentTrait implements AgentContext {
 
 	def getID : UUID {
 		this.id
-	}
-
-	/** Replies the lock used for synchronizing this context. */
-	def getLock : ReadWriteLock {
-		this.lock
 	}
 
 	@Pure
@@ -130,149 +121,93 @@ class Context extends AgentTrait implements AgentContext {
 	}
 
 	private def ensureRepository : SpaceRepository {
-		var instance : SpaceRepository
 		var addListener = false
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			instance = this.repositoryInstance
-		} finally {
-			lck.readLock.unlock
-		}
+		var instance : SpaceRepository = this.repositoryInstance
+
 		if (instance === null) {
-			lck.writeLock.lock
-			try {
-				instance = this.repositoryInstance
-				if (instance === null) {
-					instance = this.repositoryProvider.get
-					this.repositoryInstance = instance
-					addListener = true
-				}
-			} finally {
-				lck.writeLock.unlock
-			}
+			instance = this.repositoryProvider.get
+			this.repositoryInstance = instance
+			addListener = true
 		}
 
-		var ds : OpenEventSpace
-		lck.readLock.lock
-		try {
-			ds = this.defaultSpaceInstance
-		} finally {
-			lck.readLock.unlock
-		}
+		var ds : OpenEventSpace = this.defaultSpaceInstance
 		if (ds === null) {
-			lck.writeLock.lock
-			try {
-				ds = this.defaultSpaceInstance
-				if (ds === null) {
-					var spaceID = new SpaceID(ID, this.defaultSpaceID, typeof(OpenEventSpaceSpecification))
-					ds = instance.createDefaultSpace(spaceID)
-					this.defaultSpaceInstance = ds
-				}				
-			} finally {
-				lck.writeLock.unlock
-			}
+			var spaceID = new SpaceID(ID, this.defaultSpaceID, typeof(OpenEventSpaceSpecification))
+			ds = instance.createDefaultSpace(spaceID)
+			this.defaultSpaceInstance = ds
 		}
 		if (addListener) {
 			instance.addSpaceRepositoryListener(getPlatformEventEmitter)
 		}
 		return instance
 	}
+
 	/** 
 	 * Initialize the context when it is published to the agents.
 	 */
 	def initialize {
 	}
-	
+
 	/** 
 	 * Destroy any associated resources.
 	 */
 	def destroy {
 		this.platformEventEmitter = null
-		var lck = getLock
-		lck.writeLock.lock
-		try {
-			this.defaultSpaceInstance = null
-			var instance = this.repositoryInstance
-			if (instance !== null) {
-				instance.destroy
-				instance.removeSpaceRepositoryListener(getPlatformEventEmitter)
-			}
-			this.repositoryInstance = null
-		} finally {
-			lck.writeLock.unlock
+
+		this.defaultSpaceInstance = null
+		var instance = this.repositoryInstance
+		if (instance !== null) {
+			instance.destroy
+			instance.removeSpaceRepositoryListener(getPlatformEventEmitter)
 		}
+		this.repositoryInstance = null
 	}
 
 	def getDefaultSpace : OpenEventSpace {
 		ensureRepository
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			return this.defaultSpaceInstance
-		} finally {
-			lck.readLock.unlock
-		}
+		return this.defaultSpaceInstance
 	}
 
 	def getSpace(spaceUUID : UUID) : S with S extends Space {
 		var repo = ensureRepository
 		if (this.defaultSpaceID == spaceUUID) {
-			var lck = getLock
-			lck.readLock.lock
-			try {
-				return this.defaultSpaceInstance as S
-			} finally {
-				lck.readLock.unlock
-			}
+			return this.defaultSpaceInstance as S
 		}
 		var spaceID = new SpaceID(ID, spaceUUID, null)
 		return repo.getSpace(spaceID) as S
 	}
-	
-	def getSpaces(spec : Class<? extends SpaceSpecification<S>>) : SynchronizedIterable<S> with S extends Space {
+
+	def getSpaces(spec : Class<? extends SpaceSpecification<S>>) : ConcurrentLinkedDeque<S> with S extends Space {
 		ensureRepository.getSpaces(spec)
 	}
 
-	def getSpaces : SynchronizedIterable<? extends Space> {
+	def getSpaces : ConcurrentLinkedDeque<? extends Space> {
 		ensureRepository.getSpaces
 	}
 
 	def createSpace(spec : Class<? extends SpaceSpecification<S>>, spaceUUID : UUID,
-			creationParams : Object*) : S with S extends Space {
+		creationParams : Object*) : S with S extends Space {
 		// If the space identifier corresponds to the default space, get the default space (by accessing the cache attribute)
 		var instance = ensureRepository
 		if (spaceUUID == this.defaultSpaceID) {
-			var lck = getLock
-			lck.readLock.lock
-			try {
-				return this.defaultSpaceInstance as S
-			} finally {
-				lck.readLock.unlock
-			}
+			return this.defaultSpaceInstance as S
 		}
 		var spaceID = new SpaceID(ID, spaceUUID, spec)
 		return instance.createSpace(spaceID, spec, creationParams)
 	}
 
 	def getOrCreateSpaceWithSpec(spec : Class<? extends SpaceSpecification<S>>, spaceUUID : UUID,
-			creationParams : Object*) : S with S extends Space {
+		creationParams : Object*) : S with S extends Space {
 		var instance = ensureRepository
 		var spaceID = new SpaceID(ID, spaceUUID, spec)
 		return instance.getOrCreateSpaceWithSpec(spaceID, spec, creationParams)
 	}
 
 	def getOrCreateSpaceWithID(spec : Class<? extends SpaceSpecification<S>>, spaceUUID : UUID,
-			creationParams : Object*) : S with S extends Space {
+		creationParams : Object*) : S with S extends Space {
 		var instance = ensureRepository
 		if (this.defaultSpaceID == spaceUUID) {
-			var lck = getLock
-			lck.readLock.lock
-			try {
-				return this.defaultSpaceInstance as S
-			} finally {
-				lck.readLock.unlock
-			}
+			return this.defaultSpaceInstance as S
 		}
 		var spaceID = new SpaceID(ID, spaceUUID, spec)
 		return instance.getOrCreateSpaceWithID(spaceID, spec, creationParams)
@@ -285,19 +220,13 @@ class Context extends AgentTrait implements AgentContext {
 	def addSpaceRepositoryListener(listener : SpaceRepositoryListener) {
 		ensureRepository.addSpaceRepositoryListener(listener)
 	}
+
 	/** Remove listener on the space repository changes.
 	 * 
 	 * @param listener
 	 */
 	def removeSpaceRepositoryListener(listener : SpaceRepositoryListener) {
-		var instance : SpaceRepository
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			instance = this.repositoryInstance
-		} finally {
-			lck.readLock.unlock
-		}
+		var instance : SpaceRepository = this.repositoryInstance
 		if (instance !== null) {
 			instance.removeSpaceRepositoryListener(listener)
 		}
@@ -317,14 +246,14 @@ class Context extends AgentTrait implements AgentContext {
 @ImplementedBy(typeof(DefaultContextFactory))
 interface ContextFactory {
 
-	/** Create an instance of SRE context.
-	 *
-	 * @param contextID the identifier of the context.
-	 * @param defaultSpaceID the identifier of the defualt space into the context.
-	 * @param owner is the owner of the context. If {@code null}, the context is the root context.
-	 */
+		/** Create an instance of SRE context.
+		 * 
+		 * @param contextID the identifier of the context.
+		 * @param defaultSpaceID the identifier of the defualt space into the context.
+		 * @param owner is the owner of the context. If {@code null}, the context is the root context.
+		 */
 	def newInstance(contextID : UUID, defaultSpaceID : UUID, owner : Agent) : Context
-	
+
 }
 
 /** 
@@ -338,13 +267,12 @@ interface ContextFactory {
  */
 class DefaultContextFactory implements ContextFactory {
 
-	val lock : Provider<ReadWriteLock>
 	val spaceRepositoryProvider : Provider<SpaceRepository>
 	val logger : LoggingService
 	val listenerFactory : Provider<SpaceRepositoryListenerFactory>
 
 	/** Constructor with injected parameters.
-	 *
+	 * 
 	 * @param id identifier of the context.
 	 * @param defaultSpaceID identifier of the default space in the context.
 	 * @param lock the synchronization lock to use.
@@ -353,18 +281,16 @@ class DefaultContextFactory implements ContextFactory {
 	 * @param listenerFactory the factory of space listeners.
 	 */
 	@Inject
-	new (lock : Provider<ReadWriteLock>,
-		spaceRepositoryProvider : Provider<SpaceRepository>, logger : LoggingService,
+	new (spaceRepositoryProvider : Provider<SpaceRepository>, logger : LoggingService,
 		@KernelScope listenerFactory : Provider<SpaceRepositoryListenerFactory>) {
-		this.lock = lock
 		this.spaceRepositoryProvider = spaceRepositoryProvider
 		this.logger = logger
 		this.listenerFactory = listenerFactory
 	}
 
 	override newInstance(contextID : UUID, defaultSpaceID : UUID, owner : Agent) : Context {
-		new Context(contextID, defaultSpaceID, owner,
-			this.lock.get, this.spaceRepositoryProvider, this.logger, this.listenerFactory.get)
+		new Context(contextID, defaultSpaceID, owner, this.spaceRepositoryProvider, this.logger,
+			this.listenerFactory.get)
 	}
-	
+
 }

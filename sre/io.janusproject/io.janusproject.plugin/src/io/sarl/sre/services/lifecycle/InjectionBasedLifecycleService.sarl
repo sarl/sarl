@@ -31,7 +31,6 @@ import java.util.UUID
 import javax.inject.Provider
 import io.sarl.sarlspecification.SarlSpecificationChecker
 import io.sarl.sre.internal.SmartListenerCollection
-import java.util.concurrent.locks.ReadWriteLock
 import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.context.ExternalContextMemberListener
 import io.sarl.sre.services.logging.LoggingService
@@ -69,14 +68,13 @@ class InjectionBasedLifecycleService extends AbstractLifecycleService {
 	new (injector : Injector, sarlSpecificationChecker : SarlSpecificationChecker,
 		skillProvider : DynamicSkillProvider,
 		globalListeners : SmartListenerCollection<?>,
-		lockProvider : Provider<ReadWriteLock>,
 		@KernelScope lifecycleListener : Provider<LifecycleServiceListener>,
 		@KernelScope externalContextListener : Provider<ExternalContextMemberListener>,
 		skillUninstaller : SkillUninstaller,
 		executor : ExecutorService,
 		logger : LoggingService) {
 		this(sarlSpecificationChecker, new CreatorFactory(injector, skillProvider),
-			globalListeners, lockProvider, lifecycleListener, externalContextListener,
+			globalListeners, lifecycleListener, externalContextListener,
 			skillUninstaller, executor, logger)
 	}
 
@@ -95,11 +93,10 @@ class InjectionBasedLifecycleService extends AbstractLifecycleService {
 	 * @param logger the logging service.
 	 */
 	new (sarlSpecificationChecker : SarlSpecificationChecker, creator : AgentCreatorProvider,
-		globalListeners : SmartListenerCollection<?>, lockProvider : Provider<ReadWriteLock>,
-		lifecycleListener : Provider<LifecycleServiceListener>,
+		globalListeners : SmartListenerCollection<?>, lifecycleListener : Provider<LifecycleServiceListener>,
 		externalContextListener : Provider<ExternalContextMemberListener>,
 		skillUninstaller : SkillUninstaller, executor : ExecutorService, logger : LoggingService) {
-		super(sarlSpecificationChecker, creator, globalListeners, lockProvider, lifecycleListener,
+		super(sarlSpecificationChecker, creator, globalListeners, lifecycleListener,
 			externalContextListener, skillUninstaller, executor, logger)
 	}
 

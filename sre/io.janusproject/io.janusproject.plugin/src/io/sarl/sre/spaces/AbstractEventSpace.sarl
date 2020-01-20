@@ -1,24 +1,23 @@
-/*
+/* 
  * $Id$
- *
+ * 
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
- *
+ * 
  * Copyright (C) 2014-2019 the original authors or authors.
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.sarl.sre.spaces
 
 import io.sarl.lang.annotation.PrivateAPI
@@ -29,18 +28,15 @@ import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.SREutils
 import io.sarl.lang.core.Scope
 import io.sarl.lang.core.SpaceID
-import io.sarl.lang.util.SynchronizedSet
 import io.sarl.sre.services.logging.LoggingService
 import io.sarl.util.AddressScope
 import io.sarl.util.Scopes
-import io.sarl.util.concurrent.Collections3
 import java.text.MessageFormat
 import java.util.UUID
-import java.util.concurrent.locks.ReadWriteLock
+import java.util.concurrent.ConcurrentSkipListSet
 import java.util.logging.Level
 import java.util.stream.Stream
 import javax.inject.Inject
-import javax.inject.Provider
 import org.eclipse.xtend.lib.annotations.Accessors
 
 /** 
@@ -57,12 +53,9 @@ import org.eclipse.xtend.lib.annotations.Accessors
 @PrivateAPI(isCallerOnly = true)
 abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, SpaceWithParticipants {
 
-	@Accessors(PUBLIC_GETTER)
-	val lock : ReadWriteLock
-
-	/** 
-	 * Logging service.
-	 */
+		/** 
+		 * Logging service.
+		 */
 	@Accessors(PUBLIC_GETTER)
 	val logger : LoggingService
 
@@ -85,10 +78,8 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 	 * @param participantListener the platform listener on participant events.
 	 * @param logger the logger service.
 	 */
-	new (spaceId : SpaceID, lockProvider : Provider<ReadWriteLock>,
-		participantListener : SpaceParticipantListener, logger : LoggingService) {
+	new (spaceId : SpaceID, participantListener : SpaceParticipantListener, logger : LoggingService) {
 		super(spaceId)
-		this.lock = lockProvider.get
 		this.spaceParticipantListener = participantListener
 		this.logger = logger
 	}
@@ -102,19 +93,15 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 	def setEventTransportService(router : EventTransportService) {
 		this.eventTransportService = router
 	}
-	
+
 	protected final def registerToSpace(entity : EventListener) : Address {
 		assert entity !== null
 		var id = entity.ID
 		var address = new Address(this.spaceID, id)
 		var participant = Participant::createAndInit(address, entity)
-		val lck = getLock
-		lck.writeLock.lock
-		try {
-			this.internalParticipantStructure.put(id, participant)
-		} finally {
-			lck.writeLock.unlock
-		}
+
+		this.internalParticipantStructure.put(id, participant)
+
 		getSpaceParticipantListener?.participantJoined(participant)
 		return address
 	}
@@ -123,15 +110,11 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 		assert entity !== null
 		var participant : Participant = null
 		var becomesEmpty : boolean
-		val lck = getLock
-		lck.writeLock.lock
-		try {
-			var structure = this.internalParticipantStructure
-			participant = structure.remove(entity.ID)
-			becomesEmpty = structure.empty
-		} finally {
-			lck.writeLock.unlock
-		}
+
+		var structure = this.internalParticipantStructure
+		participant = structure.remove(entity.ID)
+		becomesEmpty = structure.empty
+
 		if (participant !== null) {
 			if (becomesEmpty) {
 				fireDestroyableSpace
@@ -145,13 +128,8 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 	def getAddress(id : UUID) : Address {
 		assert id !== null
 		var participant : Participant = null
-		val lck = getLock
-		lck.writeLock.lock
-		try {
-			participant = this.internalParticipantStructure.remove(id)
-		} finally {
-			lck.writeLock.unlock
-		}
+
+		participant = this.internalParticipantStructure.remove(id)
 		if (participant !== null) {
 			return participant.address
 		}
@@ -159,14 +137,8 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 	}
 
 	@Deprecated
-	final def getParticipants : SynchronizedSet<UUID> {
-		val lck = getLock
-		lck.readLock.lock
-		try {
-			Collections3.unmodifiableSynchronizedSet(this.internalParticipantStructure.keySet, lck)
-		} finally {
-			lck.readLock.unlock
-		}
+	final def getParticipants : ConcurrentSkipListSet<UUID> {
+		new ConcurrentSkipListSet<UUID>(this.internalParticipantStructure.keySet)
 	}
 
 	@Deprecated
@@ -184,7 +156,8 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 				^event.emitLocally(scope)
 			}
 		} catch (e : Throwable) {
-			this.logger.kernelLogger.log(Level::SEVERE, MessageFormat::format(Messages::AbstractEventSpace_0, ^event, scope, e), e)
+			this.logger.kernelLogger.log(Level::SEVERE,
+				MessageFormat::format(Messages::AbstractEventSpace_0, ^event, scope, e), e)
 		}
 	}
 
@@ -220,11 +193,12 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 	}
 
 	/** Replies the participants that matches the given scope.
-	 *
+	 * 
 	 * @param scope the scope.
 	 * @return the matching participants.
 	 */
 	protected def getScopedParticipants(scope : Scope<? super Address>) : Stream<Participant> {
+		//TODO change the prototype of this function to replace stream by a concurrent collection
 		if (scope === null || scope === Scopes::allParticipants) {
 			return this.internalParticipantStructure.values.stream
 		}
@@ -235,7 +209,7 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 			scope.matches(it.address)
 		]
 	}
-	
+
 	/** 
 	 * Do the emission of the event.
 	 * 
@@ -252,16 +226,11 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 		// The emit process is run in the current thread.
 		// The reception process should be treated into a separate thread in order
 		// to never block the sender process.
-		val lck = getLock
-		lck.readLock.lock
-		try {
-			val participants = getScopedParticipants(scope)
-			participants.forEach [
-					it.getParticipant.receiveEvent(^event)
-			]
-		} finally {
-			lck.readLock.unlock
-		}
+		val participants = getScopedParticipants(scope)
+		participants.forEach [
+			it.getParticipant.receiveEvent(^event)
+		]
+
 	}
 
 }

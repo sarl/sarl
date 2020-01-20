@@ -22,13 +22,11 @@ package io.sarl.sre.services.context
 
 import com.google.inject.Injector
 import io.sarl.sre.boot.configs.SreConfig
-import io.sarl.sre.services.executor.ExecutorService
-import java.util.Map
-import java.util.UUID
-import javax.inject.Inject
-import java.util.concurrent.locks.ReadWriteLock
 import io.sarl.sre.internal.SmartListenerCollection
-import javax.inject.Provider
+import io.sarl.sre.services.executor.ExecutorService
+import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
+import javax.inject.Inject
 
 /** 
  * A repository of spaces specific to a given context.
@@ -43,7 +41,7 @@ import javax.inject.Provider
  */
 class LocalSpaceRepository extends SpaceRepository {
  
-	val spaces : Map<UUID, SpaceDescription>
+	val spaces : ConcurrentHashMap<UUID, SpaceDescription>
 
 	/** Constructor.
 	 * 
@@ -58,9 +56,8 @@ class LocalSpaceRepository extends SpaceRepository {
 		injector : Injector,
 		executor : ExecutorService,
 		config : SreConfig,
-		listenerCollection : SmartListenerCollection<?>,
-		lockProvider : Provider<ReadWriteLock>) {
-		this(injector, executor, config, null, listenerCollection, lockProvider)
+		listenerCollection : SmartListenerCollection<?>) {
+		this(injector, executor, config, null, listenerCollection)
 	}
 
 	/** Constructor.
@@ -72,18 +69,18 @@ class LocalSpaceRepository extends SpaceRepository {
 	 * @param lockProvider the provider of the locking objects that must be used to synchronize this repository.
 	 */
 	new (injector : Injector, executor : ExecutorService, config : SreConfig,
-		internalStructure : Map<UUID, SpaceDescription>, listenerCollection : SmartListenerCollection<?>,
-		lockProvider : Provider<ReadWriteLock>) {
-		super(injector, executor, config, listenerCollection, lockProvider)
+		internalStructure : ConcurrentHashMap<UUID, SpaceDescription>,
+		listenerCollection : SmartListenerCollection<?>) {
+		super(injector, executor, config, listenerCollection)
 		if (internalStructure !== null) {
 			this.spaces = internalStructure
 		} else {
-			this.spaces = newTreeMap(null)
+			this.spaces = new ConcurrentHashMap<UUID, SpaceDescription>
 		}
 	}
 
 	
-	protected override getSharedStructure : Map<UUID, SpaceDescription> {
+	protected override getSharedStructure : ConcurrentHashMap<UUID, SpaceDescription> {
 		this.spaces
 	}
 

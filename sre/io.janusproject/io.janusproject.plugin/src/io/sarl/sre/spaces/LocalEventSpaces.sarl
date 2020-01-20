@@ -32,10 +32,8 @@ import java.security.AccessControlException
 import java.security.Principal
 import java.security.acl.Acl
 import java.security.acl.Permission
-import java.util.Map
 import java.util.UUID
-import java.util.concurrent.locks.ReadWriteLock
-import javax.inject.Provider
+import java.util.concurrent.ConcurrentHashMap
 
 /** 
  * Default implementation of an event space which has a local repository.
@@ -49,9 +47,9 @@ import javax.inject.Provider
  */
 class OpenLocalEventSpace extends AbstractEventSpace implements OpenEventSpace {
 
-	val repository = <UUID, Participant>newTreeMap(null)
+	val repository = new ConcurrentHashMap<UUID, Participant>
 
-	override getInternalParticipantStructure : Map<UUID, Participant> {
+	override getInternalParticipantStructure : ConcurrentHashMap<UUID, Participant> {
 		this.repository 
 	}
 
@@ -77,7 +75,7 @@ class OpenLocalEventSpace extends AbstractEventSpace implements OpenEventSpace {
  */
 class RestrictedAccessLocalEventSpace extends AbstractEventSpace implements RestrictedAccessEventSpace {
 
-	val repository = <UUID, Participant>newTreeMap(null)
+	val repository = new ConcurrentHashMap<UUID, Participant>
 
 	val acl : Acl
 
@@ -93,16 +91,16 @@ class RestrictedAccessLocalEventSpace extends AbstractEventSpace implements Rest
 	 * @param participantListener the platform listener on participant events.
 	 * @param logger the logger service.
 	 */
-	new (id : SpaceID, acl : Acl, accessPermission : Permission, lockProvider : Provider<ReadWriteLock>,
+	new (id : SpaceID, acl : Acl, accessPermission : Permission,
 		participantListener : SpaceParticipantListener, logger : LoggingService) {
-		super(id, lockProvider, participantListener, logger)
+		super(id, participantListener, logger)
 		assert acl !== null
 		assert accessPermission !== null
 		this.acl = acl
 		this.accessPermission = accessPermission
 	}
 
-	override getInternalParticipantStructure : Map<UUID, Participant> {
+	override getInternalParticipantStructure : ConcurrentHashMap<UUID, Participant> {
 		this.repository
 	}
 

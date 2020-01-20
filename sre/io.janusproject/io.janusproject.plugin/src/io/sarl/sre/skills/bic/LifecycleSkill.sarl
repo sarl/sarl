@@ -1,17 +1,17 @@
-/*
+/* 
  * $Id$
- *
+ * 
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
- *
+ * 
  * Copyright (C) 2014-2019 the original authors or authors.
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,15 +24,13 @@ import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AgentContext
+import io.sarl.lang.core.Skill
 import io.sarl.sre.services.context.Context
 import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.lifecycle.AgentState
 import io.sarl.sre.services.lifecycle.LifecycleService
-import io.sarl.sre.skills.BuiltinSkill
 import java.util.UUID
-import java.util.concurrent.locks.ReadWriteLock
 import javax.inject.Inject
-import javax.inject.Provider
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
 
@@ -47,7 +45,7 @@ import static io.sarl.sre.services.lifecycle.AgentLife.*
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("potential_field_synchronization_problem")
-	skill LifecycleSkill extends BuiltinSkill implements Lifecycle {
+skill LifecycleSkill extends Skill implements Lifecycle {
 
 	uses Logging
 
@@ -56,20 +54,20 @@ import static io.sarl.sre.services.lifecycle.AgentLife.*
 	/** Constructor.
 	 */
 	@Inject
-	new (service : LifecycleService, provider : Provider<ReadWriteLock>) {
-		super(provider)
+	new (service : LifecycleService) {
+		super()
 		this.lifecycle = service
 	}
 
 	@SuppressWarnings("discouraged_reference")
 	def killMe {
 		var postTreatment : Runnable = null
-		var state = getLife(owner, this.lockProvider).state
+		var state = getLife(owner).state
 		// The agent should be killed by a specific asynchronous event.
 		// This event is supported by the internal event bus implementation.
 		if (state == AgentState::INITIALIZING) {
 			// Indicate to the starting function into AgentLife that the initialization has failed.
-			postTreatment = [getLife(owner, this.lockProvider).state = AgentState::DYING]
+			postTreatment = [getLife(owner).state = AgentState::DYING]
 		} else if (state == AgentState::ALIVE) {
 			// Synchronous killing
 			postTreatment = [this.lifecycle.killAgent(this.owner)]
@@ -78,9 +76,9 @@ import static io.sarl.sre.services.lifecycle.AgentLife.*
 		Thread::yield
 		ExecutorService::neverReturn(postTreatment)
 	}
-	
+
 	def spawn(agentType : Class<? extends Agent>, params : Object*) : UUID {
-		val life = getLife(owner, this.lockProvider)
+		val life = getLife(owner)
 		if (life.state.alive) {
 			var o = this.owner
 			val result = this.lifecycle.spawnAgent(1, o.ID, life.defaultContext.context, null, agentType, params)
@@ -98,9 +96,9 @@ import static io.sarl.sre.services.lifecycle.AgentLife.*
 		}
 		return null
 	}
-	
+
 	def spawn(nbAgents : int, agentType : Class<? extends Agent>, params : Object*) : Iterable<UUID> {
-		val life = getLife(owner, this.lockProvider)
+		val life = getLife(owner)
 		if (life.state.alive) {
 			var o = this.owner
 			var result = this.lifecycle.spawnAgent(nbAgents, o.ID, life.defaultContext.context, null, agentType, params)
@@ -114,9 +112,9 @@ import static io.sarl.sre.services.lifecycle.AgentLife.*
 		}
 		return emptyList
 	}
-	
+
 	def spawnInContext(agentClass : Class<? extends Agent>, context : AgentContext, params : Object*) : UUID {
-		if (getLife(owner, this.lockProvider).state.alive) {
+		if (getLife(owner).state.alive) {
 			var o = this.owner
 			val result = this.lifecycle.spawnAgent(1, o.ID, context as Context, null, agentClass, params)
 			if (result.agentSpawned) {
@@ -133,10 +131,10 @@ import static io.sarl.sre.services.lifecycle.AgentLife.*
 		}
 		return null
 	}
-	
+
 	def spawnInContext(nbAgents : int, agentClass : Class<? extends Agent>, context : AgentContext,
 		params : Object*) : Iterable<UUID> {
-		if (getLife(owner, this.lockProvider).state.alive) {
+		if (getLife(owner).state.alive) {
 			var o = this.owner
 			var result = this.lifecycle.spawnAgent(nbAgents, o.ID, context as Context, null, agentClass, params)
 			if (result.failing) {
@@ -149,10 +147,10 @@ import static io.sarl.sre.services.lifecycle.AgentLife.*
 		}
 		return emptyList
 	}
-	
+
 	def spawnInContextWithID(agentClass : Class<? extends Agent>, agentID : UUID, context : AgentContext,
 		params : Object*) : UUID {
-		if (getLife(owner, this.lockProvider).state.alive) {
+		if (getLife(owner).state.alive) {
 			var o = this.owner
 			val result = this.lifecycle.spawnAgent(1, o.ID, context as Context, agentID, agentClass, params)
 			if (result.agentSpawned) {
@@ -169,5 +167,5 @@ import static io.sarl.sre.services.lifecycle.AgentLife.*
 		}
 		return null
 	}
-	
+
 }

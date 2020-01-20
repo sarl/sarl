@@ -1,17 +1,17 @@
-/*
+/* 
  * $Id$
- *
+ * 
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
- *
+ * 
  * Copyright (C) 2014-2019 the original authors or authors.
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,7 +23,6 @@ package io.sarl.sre.services.probing
 import io.sarl.sre.internal.SmartListenerCollection
 import io.sarl.sre.services.namespace.FieldAccess
 import java.net.URI
-import java.util.concurrent.locks.ReadWriteLock
 import javax.inject.Provider
 
 /** 
@@ -61,34 +60,24 @@ class FieldProbe<T> extends AbstractFieldProbe<T> {
 	 * @param lockProvider the provider of synchronization locks.
 	 */
 	protected new (manager : IProbeReleaseListener, name : String, uri : URI, type : Class<T>, field : FieldAccess,
-		listenerCollectionProvider : Provider<SmartListenerCollection<?>>, lockProvider : Provider<ReadWriteLock>) {
-		super(manager, name, uri, type, field, listenerCollectionProvider, lockProvider)
+		listenerCollectionProvider : Provider<SmartListenerCollection<?>>) {
+		super(manager, name, uri, type, field, listenerCollectionProvider)
 	}
 
 	@Pure
 	override isInvalid : boolean {
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			if (active) {
-				return this.in || this.out
-			}
-		} finally {
-			lck.readLock.unlock
+
+		if (active) {
+			return this.in || this.out
 		}
+
 		return false
 	}
 
 	override setValue(value : T) {
 		if (isActive) {
-			var lck = getLock
-			lck.writeLock.lock
-			try {
-				this.out = true
-				this.outbuffer = value
-			} finally {
-				lck.writeLock.unlock
-			}
+			this.out = true
+			this.outbuffer = value
 		}
 	}
 
@@ -101,31 +90,20 @@ class FieldProbe<T> extends AbstractFieldProbe<T> {
 	}
 
 	/** Do input synchronization.
-	 *
+	 * 
 	 * <p>This function is thread-safe.
 	 */
 	private def syncIn : boolean {
-		var continueSync : boolean
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			continueSync = this.in || this.init
-		} finally {
-			lck.readLock.unlock
-		}
+		var continueSync : boolean = this.in || this.init
+
 		if (continueSync) {
-			lck.writeLock.lock
-			try {
-				val enableChange = !this.init
-				this.in = false
-				this.init = false
-				var oldValue = this.inbuffer
-				var newValue = readField
-				this.inbuffer = newValue
-				return enableChange && newValue != oldValue
-			} finally {
-				lck.writeLock.unlock
-			}
+			val enableChange = !this.init
+			this.in = false
+			this.init = false
+			var oldValue = this.inbuffer
+			var newValue = readField
+			this.inbuffer = newValue
+			return enableChange && newValue != oldValue
 		}
 		return false
 	}
@@ -135,25 +113,14 @@ class FieldProbe<T> extends AbstractFieldProbe<T> {
 	 * <p>This function is thread-safe.
 	 */
 	private def syncOut : boolean {
-		var continueSync : boolean
-		var lck = getLock
-		lck.readLock.lock
-		try {
-			continueSync = this.out
-		} finally {
-			lck.readLock.unlock
-		}
+		var continueSync : boolean = this.out
+
 		if (continueSync) {
-			lck.writeLock.lock
-			try {
-				this.out = false
-				var newValue = this.outbuffer
-				this.outbuffer = null
-				var oldValue = writeField(newValue)
-				return newValue != oldValue
-			} finally {
-				lck.writeLock.unlock
-			}
+			this.out = false
+			var newValue = this.outbuffer
+			this.outbuffer = null
+			var oldValue = writeField(newValue)
+			return newValue != oldValue
 		}
 		return false
 	}
@@ -164,13 +131,7 @@ class FieldProbe<T> extends AbstractFieldProbe<T> {
 		if (isActive) {
 			if (isActiveObject) {
 				val changed0 = syncOut
-				var lck = getLock
-				lck.writeLock.lock
-				try {
-					this.in = forcedReading || this.in
-				} finally {
-					lck.writeLock.unlock
-				}
+				this.in = forcedReading || this.in
 				val changed1 = syncIn
 				if (changed0 || changed1) {
 					fireValueChanged
@@ -183,18 +144,12 @@ class FieldProbe<T> extends AbstractFieldProbe<T> {
 
 	override release {
 		if (isActive) {
-			var lck = getLock
-			lck.writeLock.lock
-			try {
-				// Caution: Do not reset the inbuffer field in order to enable access to the value even if the probe is inactive
-				this.in = false
-				this.out = false
-				this.outbuffer = null
-				super.release
-			} finally {
-				lck.writeLock.unlock
-			}
+			// Caution: Do not reset the inbuffer field in order to enable access to the value even if the probe is inactive
+			this.in = false
+			this.out = false
+			this.outbuffer = null
+			super.release
 		}
 	}
-	
+
 }

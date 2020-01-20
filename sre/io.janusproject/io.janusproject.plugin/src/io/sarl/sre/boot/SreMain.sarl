@@ -52,6 +52,7 @@ import org.arakhne.afc.util.OutputParameter
 import org.eclipse.xtend.lib.annotations.Accessors
 
 import static io.sarl.bootstrap.SRE.*
+import java.util.concurrent.ConcurrentLinkedDeque
 
 /** Class that implements the standard main function for running a SARL run-time environment
  * with bootique modules.
@@ -286,7 +287,7 @@ class SreMain implements SREBootstrap {
 				System::setProperty(propName, old)
 			}
 		}
-		var ids = new OutputParameter<List<UUID>>(emptyList)
+		var ids = new OutputParameter<ConcurrentLinkedDeque<UUID>>(new ConcurrentLinkedDeque<UUID>)
 		kernel.spawn(nbAgents, agentCls, [
 			ids.set(it)
 			if (this.isResetableBootAgent) {

@@ -31,7 +31,6 @@ import io.sarl.sre.KernelScope
 import io.sarl.sre.services.logging.LoggingService
 import io.sarl.sre.spaces.SpaceParticipantListenerFactory
 import io.sarl.sre.spaces.SreOpenEventSpaceSpecification
-import java.util.concurrent.locks.ReadWriteLock
 import javax.inject.Provider
 
 /** 
@@ -51,10 +50,10 @@ class SpacesModule extends AbstractModule {
 	/** This injection definition is for the default spaces. */
 	@Provides
 	@KernelScope
-	def provideDefaultSpaceSpecification(injector : Injector, lockProvider : Provider<ReadWriteLock>,
+	def provideDefaultSpaceSpecification(injector : Injector,
 		@KernelScope spaceParticipantListenerFactory : Provider<SpaceParticipantListenerFactory>,
 		logger : LoggingService) : OpenEventSpaceSpecification {
-		new SreOpenEventSpaceSpecification(injector, lockProvider, null, spaceParticipantListenerFactory.get,
+		new SreOpenEventSpaceSpecification(injector, null, spaceParticipantListenerFactory.get,
 			logger)
 	}
 

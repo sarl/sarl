@@ -23,8 +23,8 @@ package io.sarl.sre.spaces
 
 import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Space
-import java.util.Map
 import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
 
 /** 
  * Space with participants.
@@ -43,7 +43,7 @@ interface SpaceWithParticipants extends Space {
 	 * 
 	 * @return the entire participant structure.
 	 */
-	def getInternalParticipantStructure : Map<UUID, Participant>
+	def getInternalParticipantStructure : ConcurrentHashMap<UUID, Participant>
 
 }
 

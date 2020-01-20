@@ -1,24 +1,23 @@
-/*
+/* 
  * $Id$
- *
+ * 
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
- *
+ * 
  * Copyright (C) 2014-2019 the original authors or authors.
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.sarl.sre.boot.commands
 
 import io.bootique.cli.Cli
@@ -30,14 +29,13 @@ import io.sarl.lang.core.Agent
 import io.sarl.sre.boot.configs.SreConfig
 import io.sarl.sre.boot.configs.subconfigs.BootConfig
 import java.util.List
-import java.util.concurrent.locks.ReadWriteLock
 
 import static java.lang.Thread.*
 import javax.inject.Provider
 
-/**
+/** 
  * Abstract command for running the SRE without agent at boot time.
- *
+ * 
  * <p>This abstract command provides helping tools for implementing a launching command.
  * 
  * @author $Author: sgalland$
@@ -48,29 +46,26 @@ import javax.inject.Provider
  */
 abstract class AbstractRunCommand extends CommandWithMetadata {
 
-	/** Launching configuration.
-	 */
+		/** Launching configuration.
+		 */
 	protected val configuration : Provider<SreConfig>
 
 	var sre : SREBootstrap
 
-	val lock : ReadWriteLock
-	
 	/** Constructor.
-	 *
+	 * 
 	 * @param configuration the configuration of the tool.
 	 * @param commandBuilder the builder of the command.
 	 * @param lock the lock to use for synchronizing.
 	 */
-	new (configuration : Provider<SreConfig>, commandBuilder : CommandMetadata.Builder, lock : ReadWriteLock) {
+	new (configuration : Provider<SreConfig>, commandBuilder : CommandMetadata.Builder) {
 		super(commandBuilder)
 		this.configuration = configuration
-		this.lock = lock
 	}
 
 	/** Replies if the given value is the fully qualified name of an agent's type.
 	 * An agent's type is a {@code Class} that extends the {@code Agent} type. 
-	 *
+	 * 
 	 * @param value the value to test.
 	 * @return {@code true} if the given value is the fully qualified name of an agent's type.
 	 */
@@ -89,7 +84,7 @@ abstract class AbstractRunCommand extends CommandWithMetadata {
 	/** Synchronizes the command-line arguments and the SRE configuration.
 	 * This function gets the arguments from the given {@code Cli} and
 	 * updates the {@code SreConfig}.
-	 *
+	 * 
 	 * @param args the definition of the command line arguments
 	 * @param maxNbAgents is the maximum number of agents to be launched. 
 	 * @return the boot configuration.
@@ -131,40 +126,31 @@ abstract class AbstractRunCommand extends CommandWithMetadata {
 	 * @return the SRE bootstrap. 
 	 */
 	protected def getSREBootstrap : SREBootstrap {
-		var s : SREBootstrap
-		this.lock.readLock.lock
-		try {
-			s = this.sre
-		} finally {
-			this.lock.readLock.unlock
-		}
+		var s : SREBootstrap = this.sre
+
 		if (s === null) {
-			this.lock.writeLock.lock
-			try {
+
+			s = this.sre
+			if (s === null) {
+				this.sre = SRE::bootstrap
 				s = this.sre
-				if (s === null) {
-					this.sre = SRE::bootstrap
-					s = this.sre
-					val config = this.configuration.get
-					switch (config.boot.rootContextBootType) {
-						case BOOT_AGENT_NAME: {
-							this.sre.setBootAgentTypeContextUUID
-						}
-						case RANDOM: {
-							this.sre.setRandomContextUUID
-						}
-						case DEFAULT: {
-							this.sre.setSpecificContextUUID
-						}
-						default: {
-							this.sre.setSpecificContextUUID
-						}
+				val config = this.configuration.get
+				switch (config.boot.rootContextBootType) {
+					case BOOT_AGENT_NAME: {
+						this.sre.setBootAgentTypeContextUUID
 					}
-					this.sre.universeContextUUID = config.boot.rootContextID
-					this.sre.universeSpaceUUID = config.boot.rootSpaceID
+					case RANDOM: {
+						this.sre.setRandomContextUUID
+					}
+					case DEFAULT: {
+						this.sre.setSpecificContextUUID
+					}
+					default: {
+						this.sre.setSpecificContextUUID
+					}
 				}
-			} finally {
-				this.lock.writeLock.unlock
+				this.sre.universeContextUUID = config.boot.rootContextID
+				this.sre.universeSpaceUUID = config.boot.rootSpaceID
 			}
 		}
 		return s
@@ -182,7 +168,7 @@ abstract class AbstractRunCommand extends CommandWithMetadata {
 
 	/** Wait for the termination of the SRE execution.
 	 * This function returns when the SRE is stopped.
-	 *
+	 * 
 	 * @param bootstrap the SRE bootstrap.
 	 */
 	@SuppressWarnings("discouraged_reference")

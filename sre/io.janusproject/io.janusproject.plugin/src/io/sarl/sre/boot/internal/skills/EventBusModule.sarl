@@ -29,7 +29,6 @@ import javax.inject.Provider
 import io.bootique.BQModuleProvider
 import com.google.inject.Module
 import io.bootique.BQModule
-import java.util.concurrent.locks.ReadWriteLock
 
 /** 
  * Module for configuring the agents' event buses.
@@ -46,9 +45,9 @@ class EventBusModule extends AbstractModule {
 	}
 
 	@Provides
-	def provideEventBus(executorService : Provider<ExecutorService>, lockProvider : Provider<ReadWriteLock>, injector : Injector) : EventBus {
+	def provideEventBus(executorService : Provider<ExecutorService>, injector : Injector) : EventBus {
 		// Ensure a new instance is created at each injection.
-		val aeb = new EventBus(executorService.get, lockProvider)
+		val aeb = new EventBus(executorService.get)
 		// to be able to inject the ExecutorService and SubscriberFindingStrategy
 		injector.injectMembers(aeb)
 		return aeb
