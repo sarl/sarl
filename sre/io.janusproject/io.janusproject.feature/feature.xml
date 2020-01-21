@@ -224,6 +224,7 @@
    <requires>
       <import plugin="io.sarl.core" version="0.11.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.util" version="0.11.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.osgi" version="3.15.100" match="greaterOrEqual"/>
       <import plugin="com.hazelcast" version="3.11.2" match="greaterOrEqual"/>
       <import plugin="org.zeromq.jeromq" version="0.5.0" match="greaterOrEqual"/>
       <import plugin="org.apache.commons.cli" version="1.4.0" match="greaterOrEqual"/>
@@ -235,7 +236,6 @@
       <import plugin="com.google.inject" version="4.1.0" match="greaterOrEqual"/>
       <import plugin="io.janusproject.plugin" version="0.11.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.eclipse" version="0.11.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.osgi" version="3.15.100" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jdt.core" version="3.20.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.runtime" version="3.17.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.workbench" version="3.117.0" match="greaterOrEqual"/>
@@ -243,6 +243,21 @@
       <import plugin="org.eclipse.jface" version="3.18.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.swt" version="3.113.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jdt.launching" version="3.16.0" match="greaterOrEqual"/>
+      <import plugin="org.arakhne.afc.core.inputoutput" version="16.0.0" match="greaterOrEqual"/>
+      <import plugin="com.fasterxml.jackson.core.jackson-annotations" version="2.9.8" match="greaterOrEqual"/>
+      <import plugin="com.fasterxml.jackson.core.jackson-core" version="2.10.0.pr1" match="greaterOrEqual"/>
+      <import plugin="com.fasterxml.jackson.core.jackson-databind" version="2.10.0.pr1" match="greaterOrEqual"/>
+      <import plugin="com.fasterxml.jackson.dataformat.jackson-dataformat-xml" version="2.10.1" match="greaterOrEqual"/>
+      <import plugin="com.fasterxml.jackson.dataformat.jackson-dataformat-yaml" version="2.10.0.pr1" match="greaterOrEqual"/>
+      <import plugin="io.bootique" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.arakhne.afc.bootique.log4j" version="16.0.0" match="greaterOrEqual"/>
+      <import plugin="org.arakhne.afc.bootique.variables" version="16.0.0" match="greaterOrEqual"/>
+      <import plugin="net.sf.jopt-simple.jopt-simple" version="5.0.3" match="greaterOrEqual"/>
+      <import plugin="jul.to.slf4j" version="2.0.0.alpha1" match="greaterOrEqual"/>
+      <import plugin="org.apache.log4j" version="1.2.15" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtend.lib" version="2.20.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.xbase.lib" version="2.20.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtend.lib.macro"/>
    </requires>
 
    <plugin

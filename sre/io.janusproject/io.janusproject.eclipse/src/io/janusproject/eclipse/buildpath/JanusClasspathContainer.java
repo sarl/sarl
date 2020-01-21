@@ -55,21 +55,33 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 	static {
 		final String[] array1 = new String[] {
 			JanusEclipsePlugin.JANUS_KERNEL_PLUGIN_ID,
-			"com.google.code.gson", //$NON-NLS-1$
-			"com.google.code.gson", //$NON-NLS-1$
 			"com.google.inject", //$NON-NLS-1$
 			"com.hazelcast", //$NON-NLS-1$
+			"org.zeromq.jeromq", //$NON-NLS-1$
 			"org.apache.commons.cli", //$NON-NLS-1$
 			"org.arakhne.afc.core.vmutils", //$NON-NLS-1$
 			"org.arakhne.afc.core.util", //$NON-NLS-1$
 			"org.arakhne.afc.core.inputoutput", //$NON-NLS-1$
-			"org.eclipse.osgi", //$NON-NLS-1$
-			"org.zeromq.jeromq", //$NON-NLS-1$
+			"com.google.gson", //$NON-NLS-1$
+			"javax.inject", //$NON-NLS-1$
+			"aopalliance", //$NON-NLS-1$
+			"com.google.inject", //$NON-NLS-1$
 			"com.fasterxml.jackson.core.jackson-annotations", //$NON-NLS-1$
+			"com.fasterxml.jackson.core.jackson-core", //$NON-NLS-1$
+			"com.fasterxml.jackson.core.jackson-databind", //$NON-NLS-1$
+			"com.fasterxml.jackson.dataformat.jackson-dataformat-xml", //$NON-NLS-1$
+			"com.fasterxml.jackson.dataformat.jackson-dataformat-yaml", //$NON-NLS-1$
+			"com.fasterxml.jackson.module.jackson-module-jaxb-annotations", //$NON-NLS-1$
+			"org.yaml.snakeyaml", //$NON-NLS-1$
+			"jakarta.xml.bind-api", //$NON-NLS-1$
 			"io.bootique", //$NON-NLS-1$
 			"org.arakhne.afc.bootique.log4j", //$NON-NLS-1$
 			"org.arakhne.afc.bootique.variables", //$NON-NLS-1$
+			"net.sf.jopt-simple.jopt-simple", //$NON-NLS-1$
+			"jul.to.slf4j", //$NON-NLS-1$
 			"org.apache.log4j", //$NON-NLS-1$
+			"org.eclipse.xtend.lib", //$NON-NLS-1$
+			"stax2-api", //$NON-NLS-1$
 		};
 		final String[] array = new String[SARLClasspathContainer.SARL_ROOT_BUNDLE_NAMES.length + array1.length];
 		System.arraycopy(SARLClasspathContainer.SARL_ROOT_BUNDLE_NAMES, 0, array, 0, SARLClasspathContainer.SARL_ROOT_BUNDLE_NAMES.length);
