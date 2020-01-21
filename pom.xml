@@ -77,6 +77,7 @@
 		<osgi.nls.version>3.10.0-v20140606-1445</osgi.nls.version>
 		<!-- Version of the Arakhne Foundation classes -->
 		<afc.version>16.0</afc.version>
+		<afc.osgi.version>16.0.0</afc.osgi.version>
 		<!-- Version of the Guava API -->
 		<guava.version>27.1-jre</guava.version>
 		<!-- Version of the javax.inject module -->
@@ -87,7 +88,7 @@
 		<!-- Version of the ZeroMQ library -->
 		<zeromq.version>0.5.0</zeromq.version>
 		<!-- Version of the SWT library (search for  org.eclipse.platform:org.eclipse.swt.gtk.linux.x86_64) -->
-		<swt.version>3.111.0</swt.version>
+		<swt.version>3.113.0</swt.version>
 		<!-- Version of JavaFX (search for  org.openjfx:*) -->
 		<openjfx.version>11.0.2</openjfx.version>
 
