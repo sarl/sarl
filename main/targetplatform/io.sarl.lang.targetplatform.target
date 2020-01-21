@@ -16,10 +16,14 @@
 			<unit id="org.objenesis" version="2.6.0"/>						
 			<unit id="com.fasterxml.jackson.core.jackson-core" version="2.10.0.pr1"/>
 			<unit id="com.fasterxml.jackson.core.jackson-databind" version="2.10.0.pr1"/>
+			<unit id="com.fasterxml.jackson.module.jackson-module-jaxb-annotations" version="2.10.1"/>
 			<unit id="com.fasterxml.jackson.dataformat.jackson-dataformat-xml" version="2.10.1"/>
 			<unit id="com.fasterxml.jackson.dataformat.jackson-dataformat-yaml" version="2.10.0.pr1"/>
+			<unit id="org.yaml.snakeyaml" version="1.24.0"/>
+			<unit id="jakarta.xml.bind-api" version="2.3.2"/>
 			<unit id="net.sf.jopt-simple.jopt-simple" version="5.0.3"/>
 			<unit id="slf4j.api" version="2.0.0.alpha1"/>
+			<unit id="stax2.api" version="4.2.0"/>
 			<unit id="jul.to.slf4j" version="2.0.0.alpha1"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">

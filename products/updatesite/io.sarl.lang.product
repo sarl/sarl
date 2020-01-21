@@ -313,36 +313,6 @@
    <repositories>
       <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
       <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
-      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
-      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
-      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
-      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
-      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
-      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
-      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
-      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
-      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
-      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
-      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
-      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
-      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
-      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
-      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
-      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
-      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
-      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
-      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
-      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
-      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
-      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
-      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
-      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
-      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
-      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
-      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
-      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
-      <repository location="http://updates.sarl.io/composite/snapshots/" enabled="false" />
-      <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
    </repositories>
 
    <preferencesInfo>
