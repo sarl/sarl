@@ -9,7 +9,7 @@ sudo: required
 env:
   global:
     - MAVEN_VERSION: "3.6.2"
-    - MAVEN_OPTS: "-XX:+CMSClassUnloadingEnabled -Xmx3g" #-Dorg.slf4j.simpleLogger.defaultLogLevel=warn 
+    - MAVEN_OPTS: "-XX:+CMSClassUnloadingEnabled -Xmx3g" 
     - MAVEN_COMPILATION_OPTS: "\"-e -P!generateproduct -Dmaven.test.skip=true -Dio.sarl.docs.tests.skip=true\""
     - MAVEN_TEST_OPTS: "\"-e -P!generateproduct\""
     - MAVEN_DEPLOYMENT_SETTING: "./build-tools/src/main/resources/maven/deploy-settings.xml"
