@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
@@ -88,20 +89,49 @@
 								<version>${zeromq.version}</version>
 							</restrictTo>
 						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.arakhne.afc.core.vmutils</id>
+							<restrictTo>
+								<version>${afc.osgi.version}</version>
+							</restrictTo>
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.arakhne.afc.core.text</id>
+							<restrictTo>
+								<version>${afc.osgi.version}</version>
+							</restrictTo>
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.arakhne.afc.core.util</id>
+							<restrictTo>
+								<version>${afc.osgi.version}</version>
+							</restrictTo>
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.arakhne.afc.core.references</id>
+							<restrictTo>
+								<version>${afc.osgi.version}</version>
+							</restrictTo>
+						</filter>
 					</filters>
-					<!-- The following dependency-resolution is added for obtaining a runnable
-					     product on MacOS  -->
+					<!-- The following dependency-resolution is added for obtaining a runnable 
+						product on MacOS -->
 					<dependency-resolution>
 						<extraRequirements>
-							<!-- to ensure that the generated product is not using the bad Xtext version. -->
+							<!-- to ensure that the generated product is not using the bad Xtext 
+								version. -->
 							<requirement>
 								<type>eclipse-feature</type>
 								<id>org.eclipse.xtext.xbase.lib</id>
 								<versionRange>[${xtext.version.current},${xtext.version.next})</versionRange>
 							</requirement>
-							<!-- to get the org.eclipse.osgi.compatibility.state plugin iff 
-							the targeted Eclipse version (e.g., Luna) has it
-							(backwards compatible with kepler and previous versions) -->
+							<!-- to get the org.eclipse.osgi.compatibility.state plugin iff the 
+								targeted Eclipse version (e.g., Luna) has it (backwards compatible with kepler 
+								and previous versions) -->
 							<requirement>
 								<type>eclipse-feature</type>
 								<id>org.eclipse.rcp</id>
@@ -229,22 +259,18 @@
 				</property>
 			</activation>
 		</profile>
-  	</profiles>
+	</profiles>
 
 	<!-- ===================== -->
 	<!-- ==== Repositories === -->
 	<!-- ===================== -->
 
 	<repositories>
-		<!-- Use the different P2 repositories in place of the P2 composite repository.
-		     The list of the available P2 repositories is available at:
-		     https://eclipse.org/Xtext/documentation/350_continuous_integration.html
-		     -->
-		<!--<repository>
-			<id>org.eclipse.modeling.tmf.xtext.updates</id>
-			<layout>p2</layout>
-			<url>http://download.eclipse.org/modeling/tmf/xtext/updates/releases/${xtext.version.current}/</url>
-		</repository>-->
+		<!-- Use the different P2 repositories in place of the P2 composite repository. 
+			The list of the available P2 repositories is available at: https://eclipse.org/Xtext/documentation/350_continuous_integration.html -->
+		<!--<repository> <id>org.eclipse.modeling.tmf.xtext.updates</id> <layout>p2</layout> 
+			<url>http://download.eclipse.org/modeling/tmf/xtext/updates/releases/${xtext.version.current}/</url> 
+			</repository> -->
 		<!-- Eclipse and related libraries -->
 		<repository>
 			<id>org.eclipse.ide.lastest</id>
