@@ -92,29 +92,49 @@
 							<type>eclipse-plugin</type>
 							<id>org.arakhne.afc.core.vmutils</id>
 							<restrictTo>
-								<version>${afc.version}</version>
+								<version>${afc.osgi.version}</version>
 							</restrictTo>
 						</filter>						
 						<filter>
 							<type>eclipse-plugin</type>
 							<id>org.arakhne.afc.core.text</id>
 							<restrictTo>
-								<version>${afc.version}</version>
+								<version>${afc.osgi.version}</version>
 							</restrictTo>
 						</filter>
-						
 						<filter>
 							<type>eclipse-plugin</type>
 							<id>org.arakhne.afc.core.util</id>
 							<restrictTo>
-								<version>${afc.version}</version>
+								<version>${afc.osgi.version}</version>
 							</restrictTo>
-						</filter>						
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.arakhne.afc.core.inputoutput</id>
+							<restrictTo>
+								<version>${afc.osgi.version}</version>
+							</restrictTo>
+						</filter>
 						<filter>
 							<type>eclipse-plugin</type>
 							<id>org.arakhne.afc.core.references</id>
 							<restrictTo>
-								<version>${afc.version}</version>
+								<version>${afc.osgi.version}</version>
+							</restrictTo>
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.arakhne.afc.bootique.log4j</id>
+							<restrictTo>
+								<version>${afc.osgi.version}</version>
+							</restrictTo>
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.arakhne.afc.bootique.variables</id>
+							<restrictTo>
+								<version>${afc.osgi.version}</version>
 							</restrictTo>
 						</filter>
 					</filters>

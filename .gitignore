@@ -27,6 +27,7 @@
 **/io.sarl.experienceindex.plugin/xtend-gen/
 **/io.sarl.experienceindex.plugin/src-gen/
 **/io.sarl.experienceindex.plugin/src/main/generated-sources/
+**/io.janusproject.plugin/src-gen/
 
 # Xtext templates
 **/*.xml_gen
