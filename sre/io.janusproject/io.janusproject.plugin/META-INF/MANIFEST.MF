@@ -36,8 +36,7 @@ Require-Bundle: io.sarl.core;bundle-version="0.11.0",
  stax2-api;bundle-version="4.2.0"
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %Bundle-Vendor
-Export-Package: io.sarl.revision;uses:="io.sarl.lang.core,org.eclipse.osgi.util,org.eclipse.xtext.xbase.lib",
- io.sarl.sre;
+Export-Package: io.sarl.sre;
   uses:="io.sarl.lang.core,
    org.eclipse.osgi.util,
    io.sarl.sre.services,

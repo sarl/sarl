@@ -52,6 +52,9 @@ final class Messages extends NLS {
 	public static var ContextMemberEventEmitter_2 : String
 	public static var ContextMemberEventEmitter_3 : String
 
+	public static var BehaviorGuardEvaluator_0 : String
+	public static var BehaviorGuardEvaluator_1 : String
+	public static var BehaviorGuardEvaluatorRegistry_0 : String
 	
 	private new {
 	}

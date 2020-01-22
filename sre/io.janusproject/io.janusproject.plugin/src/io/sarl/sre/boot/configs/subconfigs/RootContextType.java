@@ -97,7 +97,7 @@ public enum RootContextType {
 			if (first) {
 				first = false;
 			} else {
-				buffer.append(", ");
+				buffer.append(", "); //$NON-NLS-1$
 			}
 			buffer.append(type.toJsonString());
 		}

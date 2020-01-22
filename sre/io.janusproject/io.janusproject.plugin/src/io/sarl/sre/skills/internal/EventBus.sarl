@@ -21,8 +21,8 @@
 package io.sarl.sre.skills.internal
 
 import io.sarl.lang.core.Event
-import io.sarl.revision.BehaviorGuardEvaluator
-import io.sarl.revision.BehaviorGuardEvaluatorRegistry
+import io.sarl.sre.internal.BehaviorGuardEvaluator
+import io.sarl.sre.internal.BehaviorGuardEvaluatorRegistry
 import io.sarl.sre.services.executor.EarlyExitException
 import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.executor.SreRunnable

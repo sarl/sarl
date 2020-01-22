@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.revision
+package io.sarl.sre.internal
 
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method

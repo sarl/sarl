@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.revision
+package io.sarl.sre.internal
 
 import com.google.common.base.Objects
 import com.google.common.base.Throwables
