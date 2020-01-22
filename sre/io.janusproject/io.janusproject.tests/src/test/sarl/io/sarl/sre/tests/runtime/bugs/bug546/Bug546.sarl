@@ -1,0 +1,73 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2019 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.tests.runtime.bugs.bug546
+
+import io.sarl.sre.tests.runtime.bugs.bug546.mocks.InitAndWaitAgent0
+import io.sarl.sre.tests.runtime.bugs.bug546.mocks.InitAndWaitAgent1
+import io.sarl.sre.tests.testutils.AbstractSreRunTest
+import org.junit.Ignore
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Suite
+import org.junit.runners.Suite.SuiteClasses
+
+/**
+ * Unit test for the issue #546: Not enough AgentKilled occurrences after killMe() calls.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @see https://github.com/sarl/sarl/issues/546
+ */
+@RunWith(typeof(Suite))
+@SuiteClasses(#[
+	typeof(Bug546.AgentKillTest),
+	typeof(Bug546.LargeEventSetTest)
+])
+class Bug546 {
+
+	public static val NB_AGENTS = 300
+
+	public static val NB_EVENTS = 15000
+
+	static class AgentKillTest extends AbstractSreRunTest {
+		
+		@Test
+		@Ignore
+		def launchTest() : void {
+			typeof(InitAndWaitAgent0).runSre(false, true, EXTRA_TIMEOUT)
+		}
+
+	}
+
+	static class LargeEventSetTest extends AbstractSreRunTest {
+
+		@Test
+		@Ignore
+		def sendHugeNumberEvents : void {
+			typeof(InitAndWaitAgent1).runSre(false, true, EXTRA_TIMEOUT)
+		}
+	
+	}
+
+}

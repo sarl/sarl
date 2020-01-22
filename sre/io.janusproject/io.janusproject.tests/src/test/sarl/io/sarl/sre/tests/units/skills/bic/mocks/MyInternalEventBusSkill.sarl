@@ -1,0 +1,96 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2019 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.tests.units.skills.bic.mocks
+
+import io.sarl.lang.core.Behavior
+import io.sarl.lang.core.Event
+import io.sarl.lang.util.SynchronizedIterable
+import io.sarl.lang.util.SynchronizedSet
+import io.sarl.sre.capacities.InformedEventListener
+import io.sarl.sre.capacities.InternalEventBusCapacity
+import io.sarl.sre.skills.internal.EventBus
+
+import static extension org.mockito.Mockito.mock
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+@SuppressWarnings("potential_field_synchronization_problem")
+skill MyInternalEventBusSkill implements InternalEventBusCapacity {
+
+	var listeners : SynchronizedSet<Behavior> = null
+		
+	var listener : InformedEventListener
+
+	new (listener : InformedEventListener) {
+		this.listener = if (listener === null) typeof(InformedEventListener).mock else listener
+	}
+		
+	override registerEventBusListener(listener : Object, filter : (Event)=>boolean, callback : (Object)=>void) {
+	}
+
+	def setRegisteredEventBusListeners(listeners : SynchronizedSet<Behavior>) {
+		this.listeners = listeners
+	}
+
+	override unregisterEventBusListener(listener : Object, callback : (Object)=>void) {
+	}
+
+	override unregisterEventBusListener(type : Class<?>, callback : (Object)=>void) {
+	}
+
+	override fireEventAndWait(^event : Event, gatherEvents : boolean, thrownExceptions : boolean) : Iterable<Event> {
+		null
+	}
+
+	override fireEventAndWait(^event : Event, gatherEvents : boolean, thrownExceptions : boolean,
+	listener : Object) : Iterable<Event> {
+		null
+	}
+
+	override fireEvent(^event : Event) {
+	}
+
+	override getAssociatedEventBusListener : InformedEventListener {
+		this.listener
+	}
+
+	override getRegisteredEventBusListeners(type : Class<T>) : SynchronizedIterable<T> with T {
+		if (type == typeof(Behavior)) {
+			return this.listeners as SynchronizedIterable<T>
+		}
+		return null
+	}
+
+	override getEventBus : EventBus {
+		throw new UnsupportedOperationException
+	}
+
+	override getEventBus(type : Class<T>) : T with T extends EventBus {
+		throw new UnsupportedOperationException
+	}
+
+}
+	

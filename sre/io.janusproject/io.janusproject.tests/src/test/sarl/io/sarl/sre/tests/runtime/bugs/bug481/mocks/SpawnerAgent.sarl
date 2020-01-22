@@ -1,0 +1,65 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2019 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.tests.runtime.bugs.bug481.mocks
+
+import io.sarl.core.Lifecycle
+import io.sarl.sre.tests.runtime.bugs.bug481.Bug481
+import io.sarl.sre.tests.testutils.TestingAgent
+import java.util.UUID
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @see https://github.com/sarl/sarl/issues/481
+ */
+agent SpawnerAgent extends TestingAgent {
+
+	uses Lifecycle
+
+	val agents = <UUID>newHashSet
+	
+	override runAgentTest : RunPolicy {
+		spawn(Bug481::NB_AGENTS, typeof(ChildAgent), rawResultMap)
+		return null
+	}
+
+	on ReadyEvent {
+		synchronized (this) {
+			var size : int
+			synchronized (this) {
+				this.agents += occurrence.source.UUID
+				size = this.agents.size
+			}
+			if (size >= Bug481::NB_AGENTS) {
+				synchronized (this) {
+					for (ag : this.agents) {
+						addResult(ag)
+					}
+				}
+				killMe
+			}
+		}
+	}
+
+}

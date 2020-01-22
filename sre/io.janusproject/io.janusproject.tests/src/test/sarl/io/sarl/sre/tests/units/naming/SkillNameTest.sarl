@@ -1,0 +1,106 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2019 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.tests.units.naming
+
+import io.sarl.lang.core.Capacity
+import io.sarl.sre.naming.SkillName
+import io.sarl.sre.tests.units.naming.mocks.CapacityMock
+import io.sarl.sre.tests.units.naming.mocks.SkillMock
+import io.sarl.tests.api.AbstractSarlTest
+import java.net.URI
+import java.util.UUID
+import javax.annotation.Nullable
+import org.junit.Before
+import org.junit.Test
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+class SkillNameTest extends AbstractSarlTest {
+
+	@Nullable
+	var uri : URI
+
+	@Nullable
+	var contextId : UUID
+
+	@Nullable
+	var spaceId : UUID
+
+	@Nullable
+	var agentId : UUID
+
+	@Nullable
+	var ^capacity : Class<? extends Capacity>
+
+	@Nullable
+	var name : SkillName
+
+	@Before
+	def setUp : void {
+		this.uri = URI::create("http://www.sarl.io/001#fragment")
+		this.contextId = UUID::randomUUID
+		this.spaceId = UUID::randomUUID
+		this.agentId = UUID::randomUUID
+		this.^capacity = typeof(CapacityMock)
+		this.name = (new SkillName(this.uri, this.contextId, this.spaceId, this.agentId, this.^capacity) {
+		}).spy
+	}
+
+	@Test
+	def getContextId {
+		this.contextId.assertSame(this.name.contextId)
+	}
+
+	@Test
+	def getSpaceId {
+		this.spaceId.assertSame(this.name.spaceId)
+	}
+
+	@Test
+	def getAgentId {
+		this.agentId.assertSame(this.name.agentId)
+	}
+
+	@Test
+	def getCapacity {
+		this.^capacity.assertSame(this.name.^capacity)
+	}
+
+	@Test
+	def getAssociatedObject {
+		var ref = this.name.associatedObject
+		ref.assertNull
+	}
+
+	@Test
+	def setAssociatedObject {
+		var sk = typeof(SkillMock).mock
+		this.name.associatedObject = sk
+		var ref = this.name.associatedObject
+		sk.assertSame(ref)
+	}
+
+}

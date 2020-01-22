@@ -21,6 +21,7 @@
 package io.sarl.core.tests;
 
 import java.util.UUID;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,7 +31,6 @@ import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Space;
 import io.sarl.lang.core.SpaceID;
-import io.sarl.lang.util.SynchronizedIterable;
 
 /**
  * @author $Author: sgalland$
@@ -79,7 +79,7 @@ public class InnerContextAccessTest extends AbstractSarlCoreTest<Capacity> {
 	 */
 	@Test
 	public void getMemberAgents() {
-		assertMethod("getMemberAgents", SynchronizedIterable.class); //$NON-NLS-1$
+		assertMethod("getMemberAgents", ConcurrentSkipListSet.class); //$NON-NLS-1$
 	}
 
 	/**

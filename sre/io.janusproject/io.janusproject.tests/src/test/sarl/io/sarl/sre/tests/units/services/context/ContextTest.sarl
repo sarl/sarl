@@ -1,0 +1,210 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2019 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.tests.units.services.context
+
+import io.sarl.core.OpenEventSpace
+import io.sarl.core.OpenEventSpaceSpecification
+import io.sarl.lang.core.Agent
+import io.sarl.lang.core.EventSpace
+import io.sarl.lang.core.Space
+import io.sarl.lang.core.SpaceID
+import io.sarl.sre.services.context.Context
+import io.sarl.sre.services.context.SpaceRepository
+import io.sarl.sre.services.context.SpaceRepositoryListener
+import io.sarl.sre.services.context.SpaceRepositoryListenerFactory
+import io.sarl.sre.services.logging.LoggingService
+import io.sarl.sre.tests.testutils.AbstractSreTest
+import io.sarl.tests.api.Nullable
+import io.sarl.util.concurrent.NoReadWriteLock
+import java.util.UUID
+import java.util.logging.Logger
+import javax.inject.Provider
+import org.junit.Before
+import org.junit.Test
+
+import static org.mockito.ArgumentMatchers.*
+import static org.mockito.Mockito.*
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+class ContextTest extends AbstractSreTest {
+
+	var root : Agent
+
+	@Nullable
+	var contextId : UUID
+
+	@Nullable
+	var spaceId : UUID
+
+	@Nullable
+	var context : Context
+
+	@Nullable
+	var repository : SpaceRepository
+	
+	@Nullable
+	var logging : LoggingService
+
+	@Before
+	def setUp : void {
+		this.logging = typeof(LoggingService).mock
+		this.contextId = UUID::randomUUID
+		this.spaceId = UUID::randomUUID
+		this.root = if (Math::random <= 0.5) typeof(Agent).mock else null
+
+		this.repository = typeof(SpaceRepository).mock
+		when(this.repository.getLock).thenReturn(NoReadWriteLock.SINGLETON)
+		var provider : Provider<SpaceRepository> = [this.repository]
+
+		var factory = new SpaceRepositoryListenerFactory {
+			def create(contextID : UUID, defaultSpace : EventSpace, logger : Logger) : SpaceRepositoryListener {
+				typeof(SpaceRepositoryListener).mock
+			}
+		}
+
+		this.context = new Context(this.contextId, this.spaceId, this.root,
+			NoReadWriteLock::SINGLETON, provider, this.logging, factory)
+	}
+
+	@Test
+	def getID {
+		assertSame(this.contextId, this.context.ID)
+	}
+
+	@Test
+	def isRootContext {
+		assertEquals(this.root === null, this.context.isRootContext)
+	}
+
+	@Test
+	def getOwner {
+		assertSame(this.root, this.context.getOwner)
+	}
+	
+	@Test
+	def getDefaultSpace {
+		var ospace = typeof(OpenEventSpace).mock
+		when(this.repository.getOrCreateSpaceWithID(any, any, any)).thenAnswer [
+			if ((it.getArgument(0) as SpaceID).ID == this.spaceId) {
+				return ospace 
+			}
+			return null
+		]
+		//
+		var ^space = this.context.defaultSpace
+		assertNotNull(^space)
+		assertSame(ospace, ^space)
+	}
+
+	@Test
+	def getSpace_0 {
+		var ospace = typeof(OpenEventSpace).mock
+		when(this.repository.getOrCreateSpaceWithID(any, any, any)).thenAnswer [
+			if ((it.getArgument(0) as SpaceID).ID == this.spaceId) {
+				return ospace 
+			}
+			return null
+		]
+		//
+		var ^space = this.context.getSpace(this.spaceId)
+		assertNotNull(^space)
+		assertSame(ospace, ^space)
+	}
+
+	@Test
+	def getSpace_1 {
+		var ospace = typeof(OpenEventSpace).mock
+		var xspace = typeof(Space).mock
+		when(this.repository.getOrCreateSpaceWithID(any, any, any)).thenAnswer [
+			if ((it.getArgument(0) as SpaceID).ID == this.spaceId) {
+				return ospace 
+			}
+			return null
+		]
+		when(this.repository.getSpace(any)).thenAnswer [
+			if ((it.getArgument(0) as SpaceID).ID == this.spaceId) {
+				return ospace 
+			}
+			return xspace
+		]
+		//
+		var ^space = this.context.getSpace(UUID::randomUUID)
+		assertNotNull(^space)
+		assertSame(xspace, ^space)
+	}
+
+	@Test
+	def createSpace_createDefaultSpace {
+		var ospace = typeof(OpenEventSpace).mock
+		when(this.repository.getOrCreateSpaceWithID(any, any, any)).thenAnswer [
+			if ((it.getArgument(0) as SpaceID).ID == this.spaceId) {
+				return ospace 
+			}
+			return null
+		]
+		//
+		var ^space = this.context.createSpace(typeof(OpenEventSpaceSpecification), this.spaceId)
+		assertNotNull(^space)
+		assertSame(ospace, ^space)
+	}
+
+	@Test
+	def getOrCreateSpaceWithSpec_createDefaultSpace {
+		var ospace = typeof(OpenEventSpace).mock
+		when(this.repository.getOrCreateSpaceWithSpec(any, any, any)).thenAnswer [
+			return typeof(OpenEventSpace).mock
+		]
+		//
+		var space1 = this.context.getOrCreateSpaceWithSpec(typeof(OpenEventSpaceSpecification), this.spaceId)
+		assertNotNull(space1)
+		assertNotSame(ospace, space1)
+		//
+		var space2 = this.context.getOrCreateSpaceWithSpec(typeof(OpenEventSpaceSpecification), this.spaceId)
+		assertNotNull(^space2)
+		assertNotSame(space1, space2)
+	}
+
+	@Test
+	def getOrCreateSpaceWithID_createDefaultSpace {
+		var ospace = typeof(OpenEventSpace).mock
+		when(this.repository.getOrCreateSpaceWithID(any, any, any)).thenAnswer [
+			if ((it.getArgument(0) as SpaceID).ID == this.spaceId) {
+				return ospace 
+			}
+			return typeof(OpenEventSpace).mock
+		]
+		//
+		var space1 = this.context.getOrCreateSpaceWithID(typeof(OpenEventSpaceSpecification), this.spaceId)
+		assertNotNull(space1)
+		assertSame(ospace, space1)
+		//
+		var space2 = this.context.getOrCreateSpaceWithID(typeof(OpenEventSpaceSpecification), this.spaceId)
+		assertNotNull(space2)
+		assertSame(space1, space2)
+	}
+
+}

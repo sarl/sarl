@@ -1,0 +1,85 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2019 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.tests.runtime.boot.bootstrap
+
+import io.sarl.sre.boot.configs.subconfigs.BootConfig
+import io.sarl.sre.boot.configs.subconfigs.RootContextType
+import io.sarl.sre.tests.runtime.boot.bootstrap.mocks.BootAgent1
+import io.sarl.sre.tests.testutils.AbstractSreRunTest
+import io.sarl.tests.api.Nullable
+import java.util.UUID
+import org.arakhne.afc.bootique.variables.VariableNames
+import org.junit.Before
+import org.junit.Test
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+class BootstrapTest extends AbstractSreRunTest {
+
+	@Nullable
+	var defaultID : UUID
+
+	@Nullable
+	var bootID : UUID
+
+	@Before
+	def setUp : void {
+		this.defaultID = UUID::fromString(BootConfig::ROOT_CONTEXT_ID_VALUE)
+		this.bootID = UUID::nameUUIDFromBytes(typeof(BootAgent1).name.bytes)
+	}
+
+	@Test
+	def defaultContextUUID {
+		System::setProperty(VariableNames::toPropertyName(BootConfig::ROOT_CONTEXT_BOOT_TYPE_NAME),
+				RootContextType::^default.name)
+		typeof(BootAgent1).runSre(false, true, STANDARD_TIMEOUT)
+		var id = getResult(typeof(UUID), 0)
+		assertNotNull(id)
+		assertEquals(defaultID, id)
+	}
+
+	@Test
+	def bootContextUUID {
+		System::setProperty(VariableNames::toPropertyName(BootConfig::ROOT_CONTEXT_BOOT_TYPE_NAME),
+				RootContextType::BOOT_AGENT_NAME.name)
+		typeof(BootAgent1).runSre(false, true, STANDARD_TIMEOUT)
+		var id = getResult(typeof(UUID), 0)
+		assertNotNull(id)
+		assertEquals(bootID, id)
+	}
+
+	@Test
+	def randomContextUUID {
+		System::setProperty(VariableNames::toPropertyName(BootConfig::ROOT_CONTEXT_BOOT_TYPE_NAME),
+				RootContextType::RANDOM.name)
+		typeof(BootAgent1).runSre(false, true, STANDARD_TIMEOUT)
+		var id = getResult(typeof(UUID), 0)
+		assertNotNull(id)
+		assertNotEquals(defaultID, id)
+		assertNotEquals(bootID, id)
+	}
+
+}

@@ -1,0 +1,638 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2019 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.tests.units.skills.internal
+
+import io.sarl.lang.core.Agent
+import io.sarl.lang.core.Event
+import io.sarl.lang.core.EventListener
+import io.sarl.lang.util.SynchronizedIterable
+import io.sarl.sre.services.lifecycle.AgentLife
+import io.sarl.sre.services.lifecycle.AgentState
+import io.sarl.sre.skills.internal.EventBus
+import io.sarl.sre.skills.internal.InternalEventBusSkill
+import io.sarl.sre.tests.testutils.AbstractSreTest
+import io.sarl.sre.tests.units.skills.internal.mocks.MyAgent
+import io.sarl.sre.tests.units.skills.internal.mocks.MyLoggingSkill
+import io.sarl.tests.api.Nullable
+import io.sarl.util.concurrent.NoReadWriteLock
+import java.util.UUID
+import java.util.logging.Logger
+import org.eclipse.xtext.xbase.lib.Functions.Function1
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
+import org.junit.Before
+import org.junit.Test
+import org.mockito.ArgumentCaptor
+
+import static org.mockito.ArgumentMatchers.any
+import static org.mockito.Mockito.verifyZeroInteractions
+import static org.mockito.Mockito.when
+
+import static extension org.mockito.Mockito.verify
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+class InternalEventBusSkillTest extends AbstractSreTest {
+
+	@Nullable
+	var contextId : UUID
+
+	@Nullable
+	var agentId : UUID
+
+	@Nullable
+	var ^agent : Agent
+
+	@Nullable
+	var ^skill : InternalEventBusSkill
+
+	@Nullable
+	var eventBus : EventBus
+
+	@Nullable
+	var logger : MyLoggingSkill
+
+	@Before
+	def setUp : void {
+		this.contextId = UUID::randomUUID
+		this.^agentId = UUID::randomUUID
+		this.eventBus = typeof(EventBus).mock
+		this.logger = new MyLoggingSkill().spy
+		this.^agent = new MyAgent(contextId, this.^agentId, this.logger).spy
+		this.^skill = new InternalEventBusSkill(this.eventBus, [NoReadWriteLock::SINGLETON])
+		this.reflect.invoke(this.^skill, "setOwner", this.^agent)
+	}
+
+	@Test
+	def getAssociatedEventBusListener {
+		var listener1 = this.^skill.associatedEventBusListener
+		var listener2 = this.^skill.associatedEventBusListener
+		assertNotNull(listener1)
+		assertNotNull(listener2)
+		assertSame(listener1, listener2)
+	}
+
+	@Test
+	def getRegisteredEventBusListeners {
+		var iterable = typeof(SynchronizedIterable).mock
+		when(this.eventBus.getRegisteredEventListeners(any)).thenReturn(iterable)
+		var list = this.^skill.getRegisteredEventBusListeners(null)
+		assertSame(iterable, list)
+	}
+
+	@Test
+	def registerEventBusListener_notFilter_noCallback {
+		var listener1 = typeof(EventListener).mock
+		this.^skill.registerEventBusListener(listener1)
+		
+		var capturedListener = ArgumentCaptor::forClass(typeof(Object))
+		var capturedFilter = ArgumentCaptor::forClass(typeof(Function1))
+		var capturedCallback = ArgumentCaptor::forClass(typeof(Procedure1))
+		this.eventBus.verify.register(capturedListener.capture, capturedFilter.capture, capturedCallback.capture)
+		assertSame(listener1, capturedListener.value)
+		assertNull(capturedFilter.value)
+		assertNull(capturedCallback.value)
+	}
+
+	@Test
+	def registerEventBusListener_filter_noCallback {
+		var listener1 = typeof(EventListener).mock
+		var filter = typeof(Function1).mock
+		this.^skill.registerEventBusListener(listener1, filter)
+		
+		var capturedListener = ArgumentCaptor::forClass(typeof(Object))
+		var capturedFilter = ArgumentCaptor::forClass(typeof(Function1))
+		var capturedCallback = ArgumentCaptor::forClass(typeof(Procedure1))
+		this.eventBus.verify.register(capturedListener.capture, capturedFilter.capture, capturedCallback.capture)
+		assertSame(listener1, capturedListener.value)
+		assertSame(filter, capturedFilter.value)
+		assertNull(capturedCallback.value)
+	}
+
+	@Test
+	def registerEventBusListener_notFilter_callback {
+		var callback = typeof(Procedure1).mock
+		var listener1 = typeof(EventListener).mock
+		this.^skill.registerEventBusListener(listener1, null, callback)
+		
+		var capturedListener = ArgumentCaptor::forClass(typeof(Object))
+		var capturedFilter = ArgumentCaptor::forClass(typeof(Function1))
+		var capturedCallback = ArgumentCaptor::forClass(typeof(Procedure1))
+		this.eventBus.verify.register(capturedListener.capture, capturedFilter.capture, capturedCallback.capture)
+		assertSame(listener1, capturedListener.value)
+		assertNull(capturedFilter.value)
+		assertSame(callback, capturedCallback.value)
+	}
+
+	@Test
+	def registerEventBusListener_filter_callback {
+		var callback = typeof(Procedure1).mock
+		var listener1 = typeof(EventListener).mock
+		var filter = typeof(Function1).mock
+		this.^skill.registerEventBusListener(listener1, filter, callback)
+		
+		var capturedListener = ArgumentCaptor::forClass(typeof(Object))
+		var capturedFilter = ArgumentCaptor::forClass(typeof(Function1))
+		var capturedCallback = ArgumentCaptor::forClass(typeof(Procedure1))
+		this.eventBus.verify.register(capturedListener.capture, capturedFilter.capture, capturedCallback.capture)
+		assertSame(listener1, capturedListener.value)
+		assertSame(filter, capturedFilter.value)
+		assertSame(callback, capturedCallback.value)
+	}
+
+	@Test
+	def unregisterEventBusListener {
+		var listener1 = typeof(EventListener).mock
+		this.^skill.unregisterEventBusListener(listener1)
+		
+		var capturedListener = ArgumentCaptor::forClass(typeof(Object))
+		var capturedCallback = ArgumentCaptor::forClass(typeof(Procedure1))
+		this.eventBus.verify.unregister(capturedListener.capture, capturedCallback.capture)
+		assertSame(listener1, capturedListener.value)
+		assertNull(capturedCallback.value)
+	}
+
+	@Test
+	def fireEvent_agentNotStarted_notEventCaching {
+		AgentLife::getLife(this.^agent, [NoReadWriteLock::SINGLETON]).state = AgentState::UNSTARTED
+		
+		this.^skill.eventBuffering = false
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEvent(^event)
+		
+		verifyZeroInteractions(this.eventBus)
+		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
+	}
+
+	@Test
+	def fireEvent_agentInitialization_notEventCaching {
+		AgentLife::getLife(this.^agent, [NoReadWriteLock::SINGLETON]).state = AgentState::INITIALIZING
+		
+		this.^skill.eventBuffering = false
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEvent(^event)
+		
+		var capturedEvent = ArgumentCaptor::forClass(typeof(Event))
+		var capturedLogger = ArgumentCaptor::forClass(typeof(Logger))
+		this.eventBus.verify.asyncDispatch(capturedEvent.capture, capturedLogger.capture)
+		assertSame(^event, capturedEvent.value)
+		assertSame(this.logger.logger, capturedLogger.value)
+		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
+	}
+
+	@Test
+	def fireEvent_agentAlive_notEventCaching {
+		AgentLife::getLife(this.^agent, [NoReadWriteLock::SINGLETON]).state = AgentState::ALIVE
+		
+		this.^skill.eventBuffering = false
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEvent(^event)
+		
+		var capturedEvent = ArgumentCaptor::forClass(typeof(Event))
+		var capturedLogger = ArgumentCaptor::forClass(typeof(Logger))
+		this.eventBus.verify.asyncDispatch(capturedEvent.capture, capturedLogger.capture)
+		assertSame(^event, capturedEvent.value)
+		assertSame(this.logger.logger, capturedLogger.value)
+		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
+	}
+
+	@Test
+	def fireEvent_agentDying_notEventCaching {
+		AgentLife::getLife(this.^agent, [NoReadWriteLock::SINGLETON]).state = AgentState::DYING
+		
+		this.^skill.eventBuffering = false
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEvent(^event)
+		
+		verifyZeroInteractions(this.eventBus)
+		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
+	}
+
+	@Test
+	def fireEvent_agentDead_notEventCaching {
+		AgentLife::getLife(this.^agent, [NoReadWriteLock::SINGLETON]).state = AgentState::DEAD
+		
+		this.^skill.eventBuffering = false
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEvent(^event)
+		
+		verifyZeroInteractions(this.eventBus)
+		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
+	}
+
+	@Test
+	def fireEvent_agentNotStarted_eventCaching {
+		AgentLife::getLife(this.^agent, [NoReadWriteLock::SINGLETON]).state = AgentState::UNSTARTED
+		
+		this.^skill.eventBuffering = true
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEvent(^event)
+		
+		verifyZeroInteractions(this.eventBus)
+		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
+	}
+
+	@Test
+	def fireEvent_agentInitialization_eventCaching {
+		AgentLife::getLife(this.^agent, [NoReadWriteLock::SINGLETON]).state = AgentState::INITIALIZING
+		
+		this.^skill.eventBuffering = true
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEvent(^event)
+		
+		verifyZeroInteractions(this.eventBus)
+		assertContains(this.^skill.bufferedEvents, ^event)
+	}
+
+	@Test
+	def fireEvent_agentAlive_eventCaching {
+		AgentLife::getLife(this.^agent, [NoReadWriteLock::SINGLETON]).state = AgentState::ALIVE
+		
+		this.^skill.eventBuffering = true
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEvent(^event)
+		
+		verifyZeroInteractions(this.eventBus)
+		assertContains(this.^skill.bufferedEvents, ^event)
+	}
+
+	@Test
+	def fireEvent_agentDying_eventCaching {
+		AgentLife::getLife(this.^agent, [NoReadWriteLock::SINGLETON]).state = AgentState::DYING
+		
+		this.^skill.eventBuffering = true
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEvent(^event)
+		
+		verifyZeroInteractions(this.eventBus)
+		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
+	}
+
+	@Test
+	def fireEvent_agentDead_eventCaching {
+		AgentLife::getLife(this.^agent, [NoReadWriteLock::SINGLETON]).state = AgentState::DEAD
+		
+		this.^skill.eventBuffering = true
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEvent(^event)
+		
+		verifyZeroInteractions(this.eventBus)
+		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
+	}
+
+	@Test
+	def fireEventAndWait_notEventGathering_notExceptionThrowing_agentNotStarted {
+		AgentLife::getLife(this.^agent, [NoReadWriteLock::SINGLETON]).state = AgentState::UNSTARTED
+		
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEventAndWait(^event, false, false)
+		
+		verifyZeroInteractions(this.eventBus)
+		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
+	}
+
+	@Test
+	def fireEventAndWait_notEventGathering_notExceptionThrowing_agentInitializing {
+		AgentLife::getLife(this.^agent, [NoReadWriteLock::SINGLETON]).state = AgentState::INITIALIZING
+		
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEventAndWait(^event, false, false)
+		
+		var capturedEvent = ArgumentCaptor::forClass(typeof(Event))
+		var capturedExceptions = ArgumentCaptor::forClass(typeof(boolean))
+		var capturedLogger = ArgumentCaptor::forClass(typeof(Logger))
+		this.eventBus.verify.immediateDispatch(capturedEvent.capture, capturedExceptions.capture.booleanValue,
+			capturedLogger.capture)
+		assertSame(^event, capturedEvent.value)
+		assertFalse(capturedExceptions.value)
+		assertSame(this.logger.logger, capturedLogger.value)
+		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
+	}
+
+	@Test
+	def fireEventAndWait_notEventGathering_notExceptionThrowing_agentAlive {
+		AgentLife::getLife(this.^agent, [NoReadWriteLock::SINGLETON]).state = AgentState::ALIVE
+		
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEventAndWait(^event, false, false)
+		
+		var capturedEvent = ArgumentCaptor::forClass(typeof(Event))
+		var capturedExceptions = ArgumentCaptor::forClass(typeof(boolean))
+		var capturedLogger = ArgumentCaptor::forClass(typeof(Logger))
+		this.eventBus.verify.immediateDispatch(capturedEvent.capture, capturedExceptions.capture.booleanValue,
+			capturedLogger.capture)
+		assertSame(^event, capturedEvent.value)
+		assertFalse(capturedExceptions.value)
+		assertSame(this.logger.logger, capturedLogger.value)
+		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
+	}
+
+	@Test
+	def fireEventAndWait_notEventGathering_notExceptionThrowing_agentDying {
+		AgentLife::getLife(this.^agent, [NoReadWriteLock::SINGLETON]).state = AgentState::DYING
+		
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEventAndWait(^event, false, false)
+		
+		var capturedEvent = ArgumentCaptor::forClass(typeof(Event))
+		var capturedExceptions = ArgumentCaptor::forClass(typeof(boolean))
+		var capturedLogger = ArgumentCaptor::forClass(typeof(Logger))
+		this.eventBus.verify.immediateDispatch(capturedEvent.capture, capturedExceptions.capture.booleanValue,
+			capturedLogger.capture)
+		assertSame(^event, capturedEvent.value)
+		assertFalse(capturedExceptions.value)
+		assertSame(this.logger.logger, capturedLogger.value)
+		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
+	}
+
+	@Test
+	def fireEventAndWait_notEventGathering_notExceptionThrowing_agentDead {
+		AgentLife::getLife(this.^agent, [NoReadWriteLock::SINGLETON]).state = AgentState::DEAD
+		
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEventAndWait(^event, false, false)
+		
+		verifyZeroInteractions(this.eventBus)
+		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
+	}
+
+	@Test
+	def fireEventAndWait_notEventGathering_exceptionThrowing_agentNotStarted {
+		AgentLife::getLife(this.^agent, [NoReadWriteLock::SINGLETON]).state = AgentState::UNSTARTED
+		
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEventAndWait(^event, false, true)
+		
+		verifyZeroInteractions(this.eventBus)
+		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
+	}
+
+	@Test
+	def fireEventAndWait_notEventGathering_exceptionThrowing_agentInitializing {
+		AgentLife::getLife(this.^agent, [NoReadWriteLock::SINGLETON]).state = AgentState::INITIALIZING
+		
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEventAndWait(^event, false, true)
+		
+		var capturedEvent = ArgumentCaptor::forClass(typeof(Event))
+		var capturedExceptions = ArgumentCaptor::forClass(typeof(boolean))
+		var capturedLogger = ArgumentCaptor::forClass(typeof(Logger))
+		this.eventBus.verify.immediateDispatch(capturedEvent.capture, capturedExceptions.capture.booleanValue,
+			capturedLogger.capture)
+		assertSame(^event, capturedEvent.value)
+		assertTrue(capturedExceptions.value)
+		assertSame(this.logger.logger, capturedLogger.value)
+		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
+	}
+
+	@Test
+	def fireEventAndWait_notEventGathering_exceptionThrowing_agentAlive {
+		AgentLife::getLife(this.^agent, [NoReadWriteLock::SINGLETON]).state = AgentState::ALIVE
+		
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEventAndWait(^event, false, true)
+		
+		var capturedEvent = ArgumentCaptor::forClass(typeof(Event))
+		var capturedExceptions = ArgumentCaptor::forClass(typeof(boolean))
+		var capturedLogger = ArgumentCaptor::forClass(typeof(Logger))
+		this.eventBus.verify.immediateDispatch(capturedEvent.capture, capturedExceptions.capture.booleanValue,
+			capturedLogger.capture)
+		assertSame(^event, capturedEvent.value)
+		assertTrue(capturedExceptions.value)
+		assertSame(this.logger.logger, capturedLogger.value)
+		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
+	}
+
+	@Test
+	def fireEventAndWait_notEventGathering_exceptionThrowing_agentDying {
+		AgentLife::getLife(this.^agent, [NoReadWriteLock::SINGLETON]).state = AgentState::DYING
+		
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEventAndWait(^event, false, true)
+		
+		var capturedEvent = ArgumentCaptor::forClass(typeof(Event))
+		var capturedExceptions = ArgumentCaptor::forClass(typeof(boolean))
+		var capturedLogger = ArgumentCaptor::forClass(typeof(Logger))
+		this.eventBus.verify.immediateDispatch(capturedEvent.capture, capturedExceptions.capture.booleanValue,
+			capturedLogger.capture)
+		assertSame(^event, capturedEvent.value)
+		assertTrue(capturedExceptions.value)
+		assertSame(this.logger.logger, capturedLogger.value)
+		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
+	}
+
+	@Test
+	def fireEventAndWait_notEventGathering_exceptionThrowing_agentDead {
+		AgentLife::getLife(this.^agent, [NoReadWriteLock::SINGLETON]).state = AgentState::DEAD
+		
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEventAndWait(^event, false, true)
+		
+		verifyZeroInteractions(this.eventBus)
+		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
+	}
+
+	@Test
+	def fireEventAndWait_eventGathering_notExceptionThrowing_agentNotStarted {
+		AgentLife::getLife(this.^agent, [NoReadWriteLock::SINGLETON]).state = AgentState::UNSTARTED
+		
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEventAndWait(^event, true, false)
+		
+		verifyZeroInteractions(this.eventBus)
+		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
+	}
+
+	@Test
+	def fireEventAndWait_eventGathering_notExceptionThrowing_agentInitializing {
+		AgentLife::getLife(this.^agent, [NoReadWriteLock::SINGLETON]).state = AgentState::INITIALIZING
+		
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEventAndWait(^event, true, false)
+		
+		var capturedEvent = ArgumentCaptor::forClass(typeof(Event))
+		var capturedExceptions = ArgumentCaptor::forClass(typeof(boolean))
+		var capturedLogger = ArgumentCaptor::forClass(typeof(Logger))
+		this.eventBus.verify.immediateDispatch(capturedEvent.capture, capturedExceptions.capture.booleanValue,
+			capturedLogger.capture)
+		assertSame(^event, capturedEvent.value)
+		assertFalse(capturedExceptions.value)
+		assertSame(this.logger.logger, capturedLogger.value)
+		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
+	}
+
+	@Test
+	def fireEventAndWait_eventGathering_notExceptionThrowing_agentAlive {
+		AgentLife::getLife(this.^agent, [NoReadWriteLock::SINGLETON]).state = AgentState::ALIVE
+		
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEventAndWait(^event, true, false)
+		
+		var capturedEvent = ArgumentCaptor::forClass(typeof(Event))
+		var capturedExceptions = ArgumentCaptor::forClass(typeof(boolean))
+		var capturedLogger = ArgumentCaptor::forClass(typeof(Logger))
+		this.eventBus.verify.immediateDispatch(capturedEvent.capture, capturedExceptions.capture.booleanValue,
+			capturedLogger.capture)
+		assertSame(^event, capturedEvent.value)
+		assertFalse(capturedExceptions.value)
+		assertSame(this.logger.logger, capturedLogger.value)
+		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
+	}
+
+	@Test
+	def fireEventAndWait_eventGathering_notExceptionThrowing_agentDying {
+		AgentLife::getLife(this.^agent, [NoReadWriteLock::SINGLETON]).state = AgentState::DYING
+		
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEventAndWait(^event, true, false)
+		
+		var capturedEvent = ArgumentCaptor::forClass(typeof(Event))
+		var capturedExceptions = ArgumentCaptor::forClass(typeof(boolean))
+		var capturedLogger = ArgumentCaptor::forClass(typeof(Logger))
+		this.eventBus.verify.immediateDispatch(capturedEvent.capture, capturedExceptions.capture.booleanValue,
+			capturedLogger.capture)
+		assertSame(^event, capturedEvent.value)
+		assertFalse(capturedExceptions.value)
+		assertSame(this.logger.logger, capturedLogger.value)
+		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
+	}
+
+	@Test
+	def fireEventAndWait_eventGathering_notExceptionThrowing_agentDead {
+		AgentLife::getLife(this.^agent, [NoReadWriteLock::SINGLETON]).state = AgentState::DEAD
+		
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEventAndWait(^event, true, false)
+		
+		verifyZeroInteractions(this.eventBus)
+		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
+	}
+
+	@Test
+	def fireEventAndWait_eventGathering_exceptionThrowing_agentNotStarted {
+		AgentLife::getLife(this.^agent, [NoReadWriteLock::SINGLETON]).state = AgentState::UNSTARTED
+		
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEventAndWait(^event, true, true)
+		
+		verifyZeroInteractions(this.eventBus)
+		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
+	}
+
+	@Test
+	def fireEventAndWait_eventGathering_exceptionThrowing_agentInitializing {
+		AgentLife::getLife(this.^agent, [NoReadWriteLock::SINGLETON]).state = AgentState::INITIALIZING
+		
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEventAndWait(^event, true, true)
+		
+		var capturedEvent = ArgumentCaptor::forClass(typeof(Event))
+		var capturedExceptions = ArgumentCaptor::forClass(typeof(boolean))
+		var capturedLogger = ArgumentCaptor::forClass(typeof(Logger))
+		this.eventBus.verify.immediateDispatch(capturedEvent.capture, capturedExceptions.capture.booleanValue,
+			capturedLogger.capture)
+		assertSame(^event, capturedEvent.value)
+		assertTrue(capturedExceptions.value)
+		assertSame(this.logger.logger, capturedLogger.value)
+		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
+	}
+
+	@Test
+	def fireEventAndWait_eventGathering_exceptionThrowing_agentAlive {
+		AgentLife::getLife(this.^agent, [NoReadWriteLock::SINGLETON]).state = AgentState::ALIVE
+		
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEventAndWait(^event, true, true)
+		
+		var capturedEvent = ArgumentCaptor::forClass(typeof(Event))
+		var capturedExceptions = ArgumentCaptor::forClass(typeof(boolean))
+		var capturedLogger = ArgumentCaptor::forClass(typeof(Logger))
+		this.eventBus.verify.immediateDispatch(capturedEvent.capture, capturedExceptions.capture.booleanValue, capturedLogger.capture)
+		assertSame(^event, capturedEvent.value)
+		assertTrue(capturedExceptions.value)
+		assertSame(this.logger.logger, capturedLogger.value)
+		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
+	}
+
+	@Test
+	def fireEventAndWait_eventGathering_exceptionThrowing_agentDying {
+		AgentLife::getLife(this.^agent, [NoReadWriteLock::SINGLETON]).state = AgentState::DYING
+		
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEventAndWait(^event, true, true)
+		
+		var capturedEvent = ArgumentCaptor::forClass(typeof(Event))
+		var capturedExceptions = ArgumentCaptor::forClass(typeof(boolean))
+		var capturedLogger = ArgumentCaptor::forClass(typeof(Logger))
+		this.eventBus.verify.immediateDispatch(capturedEvent.capture, capturedExceptions.capture.booleanValue,
+			capturedLogger.capture)
+		assertSame(^event, capturedEvent.value)
+		assertTrue(capturedExceptions.value)
+		assertSame(this.logger.logger, capturedLogger.value)
+		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
+	}
+
+	@Test
+	def fireEventAndWait_eventGathering_exceptionThrowing_agentDead {
+		AgentLife::getLife(this.^agent, [NoReadWriteLock::SINGLETON]).state = AgentState::DEAD
+		
+		var ^event = typeof(Event).mock
+		
+		this.^skill.fireEventAndWait(^event, true, true)
+		
+		verifyZeroInteractions(this.eventBus)
+		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
+	}
+
+}

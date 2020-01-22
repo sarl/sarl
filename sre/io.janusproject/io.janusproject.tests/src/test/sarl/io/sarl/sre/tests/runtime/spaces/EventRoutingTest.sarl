@@ -1,0 +1,79 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2019 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.tests.runtime.spaces
+
+import io.sarl.sre.tests.runtime.spaces.mocks.TargetAgent
+import io.sarl.sre.tests.testutils.AbstractSreRunTest
+import org.junit.Test
+import io.sarl.sre.tests.runtime.spaces.mocks.SourceAgent
+import java.util.UUID
+import io.sarl.lang.core.Address
+import io.sarl.lang.util.OutParameter
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+class EventRoutingTest extends AbstractSreRunTest {
+
+	@Test
+	def unchangedEventSource {
+		val kern = setupTheSreKernel(typeof(TargetAgent), false, true)
+		kern.spawn(typeof(SourceAgent), null, agentInitializationParameters)
+		waitForTheKernel(STANDARD_TIMEOUT)
+		
+		var adr = getResult(typeof(Address), 0)
+		var id = getResult(typeof(UUID), 1)
+		adr.assertNotNull
+		id.assertNotNull
+		id.assertEquals(adr.UUID)
+	}
+
+	@Test
+	def unchangedEventSources {
+		val kern = setupTheSreKernel(false, true)
+		val ag1 = new OutParameter<UUID>
+		kern.spawn(typeof(TargetAgent), [ag1.set(it)], agentInitializationParameters)
+		val ag2 = new OutParameter<UUID>
+		kern.spawn(typeof(TargetAgent), [ag2.set(it)], agentInitializationParameters)
+		kern.spawn(typeof(SourceAgent), null, agentInitializationParameters)
+		waitForTheKernel(STANDARD_TIMEOUT)
+
+		var adr1 = getResult(ag1.get, typeof(Address), 0)
+		var id1 = getResult(ag1.get, typeof(UUID), 1)
+		adr1.assertNotNull
+		id1.assertNotNull
+		id1.assertEquals(adr1.UUID)
+
+		var adr2 = getResult(ag2.get, typeof(Address), 0)
+		var id2 = getResult(ag2.get, typeof(UUID), 1)
+		adr2.assertNotNull
+		id2.assertNotNull
+		id2.assertEquals(adr2.UUID)
+
+		adr1.UUID.assertEquals(adr2.UUID)
+		id1.assertEquals(id1)
+	}
+
+}

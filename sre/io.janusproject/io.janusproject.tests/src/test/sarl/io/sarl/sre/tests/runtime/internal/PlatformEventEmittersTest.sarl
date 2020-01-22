@@ -1,0 +1,348 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2019 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.tests.runtime.internal
+
+import io.sarl.core.AgentKilled
+import io.sarl.core.AgentSpawned
+import io.sarl.core.MemberJoined
+import io.sarl.core.MemberLeft
+import io.sarl.core.ParticipantJoined
+import io.sarl.core.ParticipantLeft
+import io.sarl.lang.core.SpaceID
+import io.sarl.sre.tests.runtime.internal.mocks.Data
+import io.sarl.sre.tests.runtime.internal.mocks.JoinerAgent0
+import io.sarl.sre.tests.runtime.internal.mocks.JoinerAgent1
+import io.sarl.sre.tests.runtime.internal.mocks.MyAgent0
+import io.sarl.sre.tests.runtime.internal.mocks.MyAgent1
+import io.sarl.sre.tests.runtime.internal.mocks.MySpawnedAgent0
+import io.sarl.sre.tests.runtime.internal.mocks.MySpawnedAgent1
+import io.sarl.sre.tests.runtime.internal.mocks.MySpawnedAgent2
+import io.sarl.sre.tests.runtime.internal.mocks.MySpawnedAgent3
+import io.sarl.sre.tests.runtime.internal.mocks.MyWaiterAgent0
+import io.sarl.sre.tests.runtime.internal.mocks.MyWaiterAgent1
+import io.sarl.sre.tests.runtime.internal.mocks.MyWaiterAgent2
+import io.sarl.sre.tests.runtime.internal.mocks.MyWaiterAgent3
+import io.sarl.sre.tests.runtime.internal.mocks.MyWaiterAgent4
+import io.sarl.sre.tests.runtime.internal.mocks.RootAgent0
+import io.sarl.sre.tests.runtime.internal.mocks.RootAgent1
+import io.sarl.sre.tests.runtime.internal.mocks.RootAgent2
+import io.sarl.sre.tests.runtime.internal.mocks.RootAgent3
+import io.sarl.sre.tests.runtime.internal.mocks.SpyAgent0
+import io.sarl.sre.tests.runtime.internal.mocks.SpyAgent1
+import io.sarl.sre.tests.testutils.AbstractSreRunTest
+import java.util.UUID
+import org.arakhne.afc.util.OutputParameter
+import org.junit.Ignore
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Suite
+import org.junit.runners.Suite.SuiteClasses
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+@RunWith(typeof(Suite))
+@SuiteClasses(#[
+	typeof(PlatformEventEmittersTest.InitializeTest),
+	typeof(PlatformEventEmittersTest.DestroyTest),
+	typeof(PlatformEventEmittersTest.AgentSpawnedTest),
+	typeof(PlatformEventEmittersTest.AgentKilledTest),
+	typeof(PlatformEventEmittersTest.SpaceCreatedTest),
+	typeof(PlatformEventEmittersTest.SpaceDestroyedTest),
+	typeof(PlatformEventEmittersTest.MemberLeftTest),
+	typeof(PlatformEventEmittersTest.MemberLeftAtTheSameTimeAsAgentKilledTest),
+	typeof(PlatformEventEmittersTest.MemberJoinedTest),
+	typeof(PlatformEventEmittersTest.MemberJoinedAtTheSameTimeAsAgentSpawnedTest),
+	typeof(PlatformEventEmittersTest.ContextLeftTest),
+	typeof(PlatformEventEmittersTest.ContextJoinedTest)
+])
+class PlatformEventEmittersTest {
+
+	static class InitializeTest extends AbstractSreRunTest {
+
+		@Test
+		def withinAgentAndBehavior {
+			typeof(MyAgent0).runSre(false, true, STANDARD_TIMEOUT)
+			assertContains(allResults, "AGENT", "BEHAVIOR")
+		}
+
+	}
+
+	static class DestroyTest extends AbstractSreRunTest {
+
+		@Test
+		def withinAgentAndBehavior {
+			typeof(MyAgent1).runSre(false, true, STANDARD_TIMEOUT)
+			assertContains(allResults, "AGENT", "BEHAVIOR")
+		}
+
+	}
+
+	static class AgentSpawnedTest extends AbstractSreRunTest {
+
+		@Test
+		def run {
+			typeof(MyWaiterAgent0).runSre(false, true, STANDARD_TIMEOUT)
+			
+			var all = allResults
+			assertEquals(5, all.size)
+			assertEquals("SPAWNER", all.get(typeof(String), 0))
+			var ^event = all.get(typeof(AgentSpawned), 1)
+			var spawner = all.get(typeof(UUID), 2)
+			var ^space = all.get(typeof(SpaceID), 3)
+			var spawnId = all.get(typeof(UUID), 4)
+
+			assertNotNull(^event)
+			assertEquals(typeof(MySpawnedAgent0).name, ^event.agentType)
+			assertEquals(spawner, ^event.source.UUID)
+			assertEquals(^space, ^event.source.spaceID)
+			assertContains(^event.agentIdentifiers, spawnId)
+		}
+		
+	}
+
+	static class AgentKilledTest extends AbstractSreRunTest {
+		
+		@Test
+		def run {
+			typeof(MyWaiterAgent1).runSre(false, true, STANDARD_TIMEOUT)
+			
+			var all = allResults
+			assertEquals(4, all.size)
+			assertEquals("SPAWNER", all.get(typeof(String), 0))
+			var ^event = all.get(typeof(AgentKilled), 1)
+			var ^space = all.get(typeof(SpaceID), 2)
+			var spawnId = all.get(typeof(UUID), 3)
+
+			assertNotNull(^event)
+			assertEquals(typeof(MySpawnedAgent1).name, ^event.agentType)
+			assertEquals(spawnId, ^event.source.UUID)
+			assertEquals(^space, ^event.source.spaceID)
+			assertEquals(spawnId, ^event.source.UUID)
+		}
+
+	}
+
+	static class MemberJoinedAtTheSameTimeAsAgentSpawnedTest extends AbstractSreRunTest {
+
+		@Test
+		def run {
+			typeof(MyWaiterAgent2).runSre(false, true, STANDARD_TIMEOUT)
+			
+			var all = allResults
+			assertEquals(5, all.size)
+			assertEquals("SPAWNER", all.get(typeof(String), 0))
+			var ^event = all.get(typeof(MemberJoined), 1)
+			var parent = all.get(typeof(UUID), 2)
+			var ^space = all.get(typeof(SpaceID), 3)
+			var spawnId = all.get(typeof(UUID), 4)
+
+			assertNotNull(^event)
+			assertEquals(parent, ^event.source.UUID)
+			assertEquals(^space, ^event.source.spaceID)
+			assertEquals(spawnId, ^event.agentID)
+			assertEquals(typeof(MySpawnedAgent2).name, ^event.agentType)
+		}
+
+	}
+
+	static class MemberLeftAtTheSameTimeAsAgentKilledTest extends AbstractSreRunTest {
+
+		@Test
+		def run {
+			typeof(MyWaiterAgent3).runSre(false, true, STANDARD_TIMEOUT)
+			
+			var all = allResults
+			assertEquals(4, all.size)
+			assertEquals("SPAWNER", all.get(typeof(String), 0))
+			var ^event = all.get(typeof(MemberLeft), 1)
+			var ^space = all.get(typeof(SpaceID), 2)
+			var parent = all.get(typeof(UUID), 3)
+
+			assertNotNull(^event)
+			assertEquals(typeof(MySpawnedAgent3).name, ^event.agentType)
+			assertEquals(parent, ^event.source.UUID)
+			assertEquals(^space, ^event.source.spaceID)
+		}
+
+	}
+
+	static class MemberJoinedTest extends AbstractSreRunTest {
+
+		@Test
+		def run {
+			typeof(RootAgent0).runSre(false, true, STANDARD_TIMEOUT)
+			assertContains(allResults,
+					"ROOT:ChildAgent0", // Spawning
+					"ROOT:Child2Agent0", // Arrival of Child2 within the Inner context of Root.
+					"CHILD1:Child2Agent0") // Arrival of Child2 within the Inner context of Root.
+		}
+
+	}
+
+	static class MemberLeftTest extends AbstractSreRunTest {
+
+		@Test
+		def run {
+			typeof(RootAgent1).runSre(false, true, STANDARD_TIMEOUT)
+			assertContains(allResults, "ROOT:ChildAgent1", "ROOT:Child2Agent1", "CHILD1:Child2Agent1")
+		}
+
+	}
+
+	static class ContextJoinedTest extends AbstractSreRunTest {
+		
+		@Test
+		def run {
+			typeof(RootAgent2).runSre(false, true, STANDARD_TIMEOUT)
+			assertContains(allResults, "CHILD2")
+		}
+
+	}
+
+	static class ContextLeftTest extends AbstractSreRunTest {
+
+		@Test
+		def run {
+			typeof(RootAgent3).runSre(false, true, STANDARD_TIMEOUT)
+			assertContains(allResults, "CHILD2") // Child2 left the inner context of ROOT
+		}
+
+	}
+
+	static class SpaceCreatedTest extends AbstractSreRunTest {
+		
+		@Test
+		def run {
+			typeof(MyWaiterAgent4).runSre(false, true, STANDARD_TIMEOUT)
+			
+			var all = allResults
+			assertEquals(2, all.size)
+			var data1 = all.get(typeof(Data), 0)
+			var data2 = all.get(typeof(Data), 1)
+
+			var rest = validateSpawner(data1, data2)
+			rest.validateSpawned
+		}
+
+		private def validateSpawner(d1 : Data, d2 : Data) : Data {
+			var sdata : Data 
+			var rdata : Data
+			if (d1.label == "SPAWNER") {
+				sdata = d1
+				rdata = d2
+			} else {
+				sdata = d2
+				rdata = d1 
+			}
+			assertNotNull(rdata.createdSpace)
+			assertEquals("SPAWNER", sdata.label)
+			assertEquals(rdata.createdSpace.spaceID, sdata.spaceID)
+			assertEquals(rdata.defaultSpaceID, sdata.source.spaceID)
+			assertEquals(rdata.defaultSpaceID.contextID, sdata.source.UUID)
+			return rdata
+		}
+
+		private def validateSpawned(d : Data) {
+			assertNotNull(d.createdSpace)
+			assertEquals("SPAWNED", d.label)
+			assertEquals(d.createdSpace.spaceID, d.spaceID)
+			assertEquals(d.defaultSpaceID, d.source.spaceID)
+			assertEquals(d.defaultSpaceID.contextID, d.source.UUID)
+		}
+
+	}
+
+	static class SpaceDestroyedTest extends AbstractSreRunTest {
+
+		@Test
+		@Ignore("Destruction of spaces is not yet implemented")
+		def run {
+			//
+		}
+
+	}
+
+	static class ParticipantJoinedTest extends AbstractSreRunTest {
+
+		@Test
+		@SuppressWarnings("discouraged_reference")
+		def run {
+			var kern = typeof(SpyAgent0).setupTheSreKernel(false, true)
+
+			Thread::sleep(1000)
+
+			val id : OutputParameter<UUID> = new OutputParameter
+
+			kern.spawn(typeof(JoinerAgent0)) [
+				id.set(it)
+			]
+
+			waitForTheKernel(STANDARD_TIMEOUT)
+			
+			var evt = getResult(bootAgent, typeof(ParticipantJoined), 0)
+			evt.assertNotNull
+			
+			var spaceId = getResult(id.get, typeof(UUID), 0)
+			spaceId.assertNotNull
+			
+			bootAgent.assertEquals(evt.source.UUID)
+			spaceId.assertNotEquals(evt.source.spaceID.ID)
+			spaceId.assertEquals(evt.spaceID.ID)
+		}
+
+	}
+
+	static class ParticipantLeftTest extends AbstractSreRunTest {
+
+		@Test
+		@SuppressWarnings("discouraged_reference")
+		def run {
+			var kern = typeof(SpyAgent1).setupTheSreKernel(false, true)
+
+			Thread::sleep(1000)
+
+			val id : OutputParameter<UUID> = new OutputParameter
+
+			kern.spawn(typeof(JoinerAgent1)) [
+				id.set(it)
+			]
+
+			waitForTheKernel(STANDARD_TIMEOUT)
+
+			var evt = getResult(bootAgent, typeof(ParticipantLeft), 0)
+			evt.assertNotNull
+
+			var spaceId = getResult(id.get, typeof(UUID), 0)
+			spaceId.assertNotNull
+
+			bootAgent.assertEquals(evt.source.UUID)
+			spaceId.assertNotEquals(evt.source.spaceID.ID)
+			spaceId.assertEquals(evt.spaceID.ID)
+		}
+
+	}
+
+}
