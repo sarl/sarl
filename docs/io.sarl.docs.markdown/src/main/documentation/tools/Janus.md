@@ -31,14 +31,17 @@ For obtaining a list of the options, type:
 
 ## Command-Line Options
 
-The complete list of the options is:
+The Janus framework provides options on the command-line.
+The list of the options is displayed below. This list includes
+all the standard modules of Janus. If you add an extra module into
+the classpath of your application, more options may become available.
 
 
 
 | Option | Description |
 | ------ | ----------- |
 [:Dynamic:]{
-	io.janusproject.Boot::getOptions.renderToMarkdown
+	io.sarl.sre.boot.Boot::getOptions.renderToMarkdown
 }
 
 
