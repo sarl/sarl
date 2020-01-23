@@ -173,7 +173,7 @@ abstract class AbstractRunCommand extends CommandWithMetadata {
 	 */
 	@SuppressWarnings("discouraged_reference")
 	protected def waitForTermination(bootstrap : SREBootstrap) : void {
-		while (bootstrap.active) {
+		while (bootstrap.running) {
 			sleep(100)
 		}
 	}
