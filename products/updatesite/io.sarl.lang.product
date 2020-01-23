@@ -317,8 +317,7 @@
       <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
    </repositories>
 
-   <preferencesInfo>
-      <sourcefile path="/home/sgalland/sarl.epf"/>
+   <preferencesInfo>     
       <targetfile overwrite="false" path="/io.sarl.eclipse/plugin_customization.ini"/>
    </preferencesInfo>
 
