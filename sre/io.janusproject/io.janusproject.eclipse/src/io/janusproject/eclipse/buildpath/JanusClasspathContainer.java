@@ -56,8 +56,6 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 		final String[] array1 = new String[] {
 			JanusEclipsePlugin.JANUS_KERNEL_PLUGIN_ID,
 			"com.google.inject", //$NON-NLS-1$
-			"com.hazelcast", //$NON-NLS-1$
-			"org.zeromq.jeromq", //$NON-NLS-1$
 			"org.apache.commons.cli", //$NON-NLS-1$
 			"org.arakhne.afc.core.vmutils", //$NON-NLS-1$
 			"org.arakhne.afc.core.util", //$NON-NLS-1$

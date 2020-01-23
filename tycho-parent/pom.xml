@@ -83,13 +83,6 @@
 						</filter>
 						<filter>
 							<type>eclipse-plugin</type>
-							<id>org.zeromq.jeromq</id>
-							<restrictTo>
-								<version>${zeromq.version}</version>
-							</restrictTo>
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
 							<id>org.arakhne.afc.core.vmutils</id>
 							<restrictTo>
 								<version>${afc.osgi.version}</version>

@@ -85,8 +85,6 @@
 		<!-- Version of the Tycho module, (search for tycho-maven-plugin on Maven
 			central) -->
 		<tycho.version>1.4.0</tycho.version>
-		<!-- Version of the ZeroMQ library -->
-		<zeromq.version>0.5.0</zeromq.version>
 		<!-- Version of the SWT library (search for  org.eclipse.platform:org.eclipse.swt.gtk.linux.x86_64) -->
 		<swt.version>3.111.0</swt.version>
 		<!-- Version of JavaFX (search for  org.openjfx:*) -->
@@ -497,16 +495,6 @@
 				<groupId>commons-io</groupId>
 				<artifactId>commons-io</artifactId>
 				<version>2.6</version>
-			</dependency>
-			<dependency>
-				<groupId>com.hazelcast</groupId>
-				<artifactId>hazelcast</artifactId>
-				<version>3.12.1</version>
-			</dependency>
-			<dependency>
-				<groupId>org.zeromq</groupId>
-				<artifactId>jeromq</artifactId>
-				<version>${zeromq.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.code.gson</groupId>
