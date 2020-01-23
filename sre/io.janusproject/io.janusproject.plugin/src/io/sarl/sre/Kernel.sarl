@@ -107,9 +107,6 @@ class Kernel {
 		// Start the services NOW to ensure that the default context and space
 		// of the SRE agent are catched by the modules;
 		this.serviceManager.startServices(getLogger)
-
-		// TODO Remove the following line when the framework is ready for the release
-		this.logger.warning(Messages::Kernel_3)
 	}
 
 	/** Create an instance of the kernel event listener.
