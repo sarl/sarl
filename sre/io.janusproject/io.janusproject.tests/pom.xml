@@ -12,15 +12,50 @@
 	<name>Janus SRE Tests</name>
 
 	<dependencies>
+		<dependency>
+			<groupId>io.janusproject</groupId>
+			<artifactId>io.janusproject.kernel</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.sarl</groupId>
+			<artifactId>io.sarl.tests.api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.javassist</groupId>
+			<artifactId>javassist</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava-testlib</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>add-test-source-folders</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>add-test-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/test/sarl</source>
+								<source>src/test/generated-sources/sarl</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>io.sarl.maven</groupId>
 				<artifactId>sarl-maven-plugin</artifactId>
-				<!-- Maven extension mechanism seems not working because the plugin is defined in the same project.
-				     The different goals must be explicitly provided. -->
+				<!-- Maven extension mechanism seems not working because the plugin is 
+					defined in the same project. The different goals must be explicitly provided. -->
 				<executions>
 					<execution>
 						<id>sarl-compiler-init</id>
@@ -34,6 +69,13 @@
 						<phase>compile</phase>
 						<goals>
 							<goal>compile</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>sarl-compiler-testCompile</id>
+						<phase>test-compile</phase>
+						<goals>
+							<goal>testCompile</goal>
 						</goals>
 					</execution>
 					<execution>
@@ -51,9 +93,34 @@
 					<encoding>${project.build.sourceEncoding}</encoding>
 					<runJavaCompiler>true</runJavaCompiler>
 					<generateInlines>true</generateInlines>
-					<generateStorageFiles>true</generateStorageFiles>
-					<generateTraceFiles>true</generateTraceFiles>
+					<generateStorageFiles>false</generateStorageFiles>
+					<generateTraceFiles>false</generateTraceFiles>
 				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>default-compile</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+						<configuration>
+							<skip>true</skip>
+						</configuration>
+					</execution>
+					<execution>
+						<id>default-testCompile</id>
+						<phase>test-compile</phase>
+						<goals>
+							<goal>testCompile</goal>
+						</goals>
+						<configuration>
+							<skip>true</skip>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
