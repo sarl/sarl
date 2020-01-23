@@ -73,8 +73,7 @@ class RunWithoutAgentCommand extends AbstractRunCommand {
 			val universeContext = sre.startWithoutAgent
 			if (universeContext === null) {
 				return CommandOutcome::failed(255, Messages::RunWithoutAgentCommand_3)
-			}
-			sre.waitForTermination			
+			}	
 		} catch (exception : Throwable) {
 			return CommandOutcome::failed(255, MessageFormat::format(Messages::RunWithoutAgentCommand_2, exception.localizedMessage), exception)
 		}

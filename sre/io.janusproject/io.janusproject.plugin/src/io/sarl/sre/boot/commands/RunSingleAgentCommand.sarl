@@ -74,7 +74,6 @@ class RunSingleAgentCommand extends AbstractRunCommand {
 			}
 			var config = cli.synchronizeCliWithBootConfig(1)
 			bootstrap.startAgentsFromConfig(config)
-			bootstrap.waitForTermination
 		} catch (exception : Throwable) {
 			return CommandOutcome.failed(255,
 				MessageFormat::format(Messages::RunSingleAgentCommand_2, exception.localizedMessage), exception)
