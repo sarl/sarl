@@ -218,6 +218,14 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	 */
 	protected abstract boolean isTestContext();
 
+	@Override
+	protected boolean isSkipped() {
+		if (isTestContext() && this.mavenTestSkip) {
+			return true;
+		}
+		return super.isSkipped();
+	}
+
 	/** Run compilation.
 	 *
 	 * @param classPath the classpath

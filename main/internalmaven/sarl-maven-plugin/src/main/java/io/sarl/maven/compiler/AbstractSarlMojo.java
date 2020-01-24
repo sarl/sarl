@@ -64,6 +64,12 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 */
 	protected MavenHelper mavenHelper;
 
+	/** General Maven flag for skipping tests.
+	 * @since 0.11
+	 */
+	@Parameter(defaultValue = "${maven.test.skip}", required = true, readonly = true)
+	protected boolean mavenTestSkip;
+
 	/**
 	 * The current Maven session.
 	 */
@@ -102,8 +108,28 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	@Parameter(defaultValue = SARLConfig.FOLDER_TEST_SOURCE_SARL)
 	private File testInput;
 
+	/** Skip the execution of the mojo.
+	 * @since 0.11
+	 */
+	@Parameter(defaultValue = "false")
+	private boolean skip;
+
+	/** Replies if the execution of the mojo should be skipped or not.
+	 * This function checks the configuration tag "skip".
+	 *
+	 * @return {@code true} if the mojo should be skipped.
+	 * @since 0.11
+	 */
+	protected boolean isSkipped() {
+		return this.skip;
+	}
+
 	@Override
 	public final void execute() throws MojoExecutionException, MojoFailureException {
+		if (isSkipped()) {
+			getLog().info(Messages.AbstractSarlMojo_5);
+			return;
+		}
 		try {
 			this.mavenHelper = new MavenHelper(this.session, this.buildPluginManager, this.repositorySystem,
 					this.resolutionErrorHandler, getLog());
