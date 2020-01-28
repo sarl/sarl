@@ -18,6 +18,7 @@
 		<module>io.sarl.lib</module>
 		<module>io.sarl.compiler</module>
 		<module>io.sarl.ide</module>
+		<module>io.sarl.baseplatform.dsl</module>
 	</modules>
 
 	<!-- ======================================= -->

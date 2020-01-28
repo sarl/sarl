@@ -71,5 +71,6 @@ workspace/
 #Others
 **/.DS_Store
 sarlide.sh
+sarldslide.sh
 dbg.log
 

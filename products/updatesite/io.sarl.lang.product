@@ -316,7 +316,7 @@
    </repositories>
 
    <preferencesInfo>
-      <sourcefile path="/home/sgalland/sarl.epf"/>
+      <sourcefile path="sarl.epf"/>
       <targetfile overwrite="false" path="/io.sarl.eclipse/plugin_customization.ini"/>
    </preferencesInfo>
 

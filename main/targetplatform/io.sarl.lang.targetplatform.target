@@ -44,18 +44,26 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 			<repository location="https://download.eclipse.org/releases/2019-12"/>
+			<unit id="epp.package.dsl" version="4.14.0.20191212-1200"/>
 			<unit id="epp.package.java" version="4.14.0.20191212-1200"/>
 			<unit id="org.eclipse.egit.feature.group" version="5.6.0.201912101111-r"/>
 			<unit id="org.eclipse.egit.mylyn.feature.group" version="5.6.0.201912101111-r"/>
+			<unit id="org.eclipse.emf.ecore.xcore.sdk.feature.group" version="1.12.0.v20190924-0817"/>
+			<unit id="org.eclipse.emf.mwe2.language.sdk.feature.group" version="2.11.1.v20191121-1148"/>
+			<unit id="org.eclipse.emf.sdk.feature.group" version="2.20.0.v20191028-0905"/>
 			<unit id="org.eclipse.epp.mpc.feature.group" version="1.8.1.v20191106-1317"/>
 			<unit id="org.eclipse.equinox.executable.feature.group" version="3.8.600.v20191014-2025"/>
 			<unit id="org.eclipse.jdt.feature.group" version="3.18.200.v20191210-0610"/>
 			<unit id="org.eclipse.jdt.source.feature.group" version="3.18.200.v20191210-0610"/>
+			<unit id="org.eclipse.lsp4j.sdk.feature.group" version="0.8.1.v20190925-0747"/>
 			<unit id="org.eclipse.m2e.feature.feature.group" version="1.14.0.20191209-1925"/>
 			<unit id="org.eclipse.m2e.logback.feature.feature.group" version="1.14.0.20191209-1925"/>
+			<unit id="org.eclipse.oomph.setup.feature.group" version="1.15.0.v20191209-1132"/>
+			<unit id="org.eclipse.pde.feature.group" version="3.14.200.v20191210-0610"/>
 			<unit id="org.eclipse.pde.source.feature.group" version="3.14.200.v20191210-0610"/>
 			<unit id="org.eclipse.platform.feature.group" version="4.14.0.v20191210-0610"/>
 			<unit id="org.eclipse.platform.ide" version="4.14.0.I20191210-0610"/>
+			<unit id="org.eclipse.rcp.feature.group" version="4.14.0.v20191210-0610"/>
 			<unit id="org.eclipse.wst.common_core.feature.feature.group" version="3.10.100.v201904082145"/>
 			<unit id="org.eclipse.wst.common_ui.feature.feature.group" version="3.11.0.v201905071717"/>
 			<unit id="org.eclipse.wst.xml_core.feature.feature.group" version="3.16.0.v201911262147"/>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.5"?>
+
+<product name="DSL Editor with SARL" uid="io.sarl.lang.sarl-dsl.product" id="org.eclipse.platform.ide" application="org.eclipse.ui.ide.workbench" version="0.11.0.qualifier" useFeatures="true" includeLaunchers="true">
+
+   <configIni use="default">
+   </configIni>
+
+   <launcherArgs>
+      <vmArgs>-Xms256m
+-Xmx1g
+      </vmArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
+      </vmArgsMac>
+      <vmArgsWin>-Dfile.encoding=UTF-8
+      </vmArgsWin>
+   </launcherArgs>
+
+   <windowImages/>
+
+   <splash
+      startupProgressRect="5,280,442,15"
+      startupMessageRect="7,252,330,20"
+      startupForegroundColor="F3F3F3" />
+   <launcher name="eclipse-sarl-dsl">
+      <win useIco="true">
+         <bmp/>
+      </win>
+   </launcher>
+
+   <vm>
+      <linux include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</linux>
+      <macos include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</macos>
+      <solaris include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</solaris>
+      <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</windows>
+   </vm>
+
+   <plugins>
+   </plugins>
+
+   <features>
+      <feature id="io.sarl.lib" installMode="root"/>
+      <feature id="io.sarl.compiler" installMode="root"/>
+      <feature id="io.sarl.ide" installMode="root"/>
+      <feature id="io.sarl.baseplatform.dsl" installMode="root"/>
+      <feature id="org.eclipse.help" installMode="root"/>
+      <feature id="org.eclipse.emf.ecore.xcore.ui.source" installMode="root"/>
+      <feature id="org.eclipse.help.source" installMode="root"/>
+      <feature id="org.eclipse.emf.databinding.source" installMode="root"/>
+      <feature id="org.eclipse.sdk" installMode="root"/>
+      <feature id="org.eclipse.xtext.xbase.lib" installMode="root"/>
+      <feature id="org.eclipse.wst.xml_core.feature" installMode="root"/>
+      <feature id="org.eclipse.buildship" installMode="root"/>
+      <feature id="org.eclipse.egit" installMode="root"/>
+      <feature id="org.eclipse.wst.common_core.feature" installMode="root"/>
+      <feature id="org.eclipse.ecf.core.ssl.feature" installMode="root"/>
+      <feature id="org.eclipse.emf.mapping.ecore.editor.source" installMode="root"/>
+      <feature id="org.eclipse.emf.ecore.xcore.ui" installMode="root"/>
+      <feature id="org.eclipse.emf.ecore.xcore.source" installMode="root"/>
+      <feature id="org.eclipse.equinox.p2.user.ui.source" installMode="root"/>
+      <feature id="org.eclipse.oomph.p2" installMode="root"/>
+      <feature id="org.eclipse.xtext.xbase" installMode="root"/>
+      <feature id="org.eclipse.emf.codegen.ui" installMode="root"/>
+      <feature id="org.eclipse.jgit.http.apache" installMode="root"/>
+      <feature id="org.eclipse.emf.common.source" installMode="root"/>
+      <feature id="org.eclipse.emf.converter" installMode="root"/>
+      <feature id="org.eclipse.emf.edit.ui" installMode="root"/>
+      <feature id="org.eclipse.rcp" installMode="root"/>
+      <feature id="org.eclipse.ecf.filetransfer.feature" installMode="root"/>
+      <feature id="org.eclipse.emf.mapping.source" installMode="root"/>
+      <feature id="org.eclipse.wst.xml_userdoc.feature" installMode="root"/>
+      <feature id="org.eclipse.emf.codegen.ecore.ui.source" installMode="root"/>
+      <feature id="org.eclipse.emf.ecore.xcore.lib" installMode="root"/>
+      <feature id="org.eclipse.emf.ecore.source" installMode="root"/>
+      <feature id="org.eclipse.emf.ecore.xcore.sdk" installMode="root"/>
+      <feature id="org.eclipse.equinox.p2.core.feature.source" installMode="root"/>
+      <feature id="org.eclipse.jdt" installMode="root"/>
+      <feature id="org.eclipse.emf.common" installMode="root"/>
+      <feature id="org.eclipse.emf.codegen.ecore.source" installMode="root"/>
+      <feature id="org.eclipse.platform.source" installMode="root"/>
+      <feature id="org.eclipse.xtend.sdk" installMode="root"/>
+      <feature id="org.eclipse.ecf.core.ssl.feature.source" installMode="root"/>
+      <feature id="org.eclipse.pde.source" installMode="root"/>
+      <feature id="org.eclipse.emf.mapping" installMode="root"/>
+      <feature id="org.eclipse.oomph.setup" installMode="root"/>
+      <feature id="org.eclipse.emf.ecore" installMode="root"/>
+      <feature id="org.eclipse.equinox.p2.user.ui" installMode="root"/>
+      <feature id="org.eclipse.xtext.examples" installMode="root"/>
+      <feature id="org.eclipse.ecf.filetransfer.feature.source" installMode="root"/>
+      <feature id="org.eclipse.jgit" installMode="root"/>
+      <feature id="org.eclipse.emf.mapping.ecore.editor" installMode="root"/>
+      <feature id="org.eclipse.platform" installMode="root"/>
+      <feature id="org.eclipse.emf.ecore.edit" installMode="root"/>
+      <feature id="org.eclipse.e4.rcp.source" installMode="root"/>
+      <feature id="org.eclipse.e4.rcp" installMode="root"/>
+      <feature id="org.eclipse.ecf.filetransfer.httpclient45.feature.source" installMode="root"/>
+      <feature id="org.eclipse.emf.common.ui.source" installMode="root"/>
+      <feature id="org.eclipse.emf.mapping.ecore" installMode="root"/>
+      <feature id="org.eclipse.emf.databinding.edit.source" installMode="root"/>
+      <feature id="org.eclipse.emf.codegen.ui.source" installMode="root"/>
+      <feature id="org.eclipse.emf.mwe2.language.sdk" installMode="root"/>
+      <feature id="org.eclipse.lsp4j.sdk" installMode="root"/>
+      <feature id="org.eclipse.m2e.logback.feature" installMode="root"/>
+      <feature id="org.eclipse.emf.codegen" installMode="root"/>
+      <feature id="org.eclipse.xtext.xtext.ui.graph" installMode="root"/>
+      <feature id="org.eclipse.equinox.p2.core.feature" installMode="root"/>
+      <feature id="org.eclipse.wst.xml_ui.feature" installMode="root"/>
+      <feature id="org.eclipse.emf.mwe2.runtime.sdk" installMode="root"/>
+      <feature id="org.eclipse.emf" installMode="root"/>
+      <feature id="org.eclipse.rcp.source" installMode="root"/>
+      <feature id="org.eclipse.ecf.filetransfer.ssl.feature" installMode="root"/>
+      <feature id="org.eclipse.userstorage" installMode="root"/>
+      <feature id="org.eclipse.emf.edit" installMode="root"/>
+      <feature id="org.eclipse.xtext.runtime" installMode="root"/>
+      <feature id="org.eclipse.emf.ecore.editor.source" installMode="root"/>
+      <feature id="org.eclipse.ecf.filetransfer.ssl.feature.source" installMode="root"/>
+      <feature id="org.eclipse.emf.databinding.edit" installMode="root"/>
+      <feature id="org.eclipse.emf.edit.source" installMode="root"/>
+      <feature id="org.eclipse.emf.ecore.xcore.lib.source" installMode="root"/>
+      <feature id="org.eclipse.jdt.source" installMode="root"/>
+      <feature id="org.eclipse.emf.codegen.ecore" installMode="root"/>
+      <feature id="org.eclipse.emf.mapping.ecore.source" installMode="root"/>
+      <feature id="org.eclipse.m2e.feature" installMode="root"/>
+      <feature id="org.eclipse.equinox.p2.rcp.feature" installMode="root"/>
+      <feature id="org.eclipse.equinox.p2.discovery.feature" installMode="root"/>
+      <feature id="org.eclipse.emf.codegen.source" installMode="root"/>
+      <feature id="org.eclipse.xtext.ui" installMode="root"/>
+      <feature id="org.eclipse.emf.sdk" installMode="root"/>
+      <feature id="org.eclipse.epp.mpc" installMode="root"/>
+      <feature id="org.eclipse.emf.ecore.xcore" installMode="root"/>
+      <feature id="org.eclipse.xtext.docs" installMode="root"/>
+      <feature id="org.eclipse.equinox.p2.rcp.feature.source" installMode="root"/>
+      <feature id="org.eclipse.emf.doc" installMode="root"/>
+      <feature id="org.eclipse.wst.common_ui.feature" installMode="root"/>
+      <feature id="org.eclipse.pde" installMode="root"/>
+      <feature id="org.eclipse.xtext.redist" installMode="root"/>
+      <feature id="org.eclipse.xtext.xtext.ui" installMode="root"/>
+      <feature id="org.eclipse.emf.edit.ui.source" installMode="root"/>
+      <feature id="org.eclipse.emf.common.ui" installMode="root"/>
+      <feature id="org.eclipse.jgit.ssh.apache" installMode="root"/>
+      <feature id="org.eclipse.emf.converter.source" installMode="root"/>
+      <feature id="org.eclipse.epp.package.dsl.feature" installMode="root"/>
+      <feature id="org.eclipse.emf.mapping.ui" installMode="root"/>
+      <feature id="org.eclipse.emf.mwe2.launcher" installMode="root"/>
+      <feature id="org.eclipse.emf.mwe2.launcher.source" installMode="root"/>
+      <feature id="org.eclipse.xtext.sdk" installMode="root"/>
+      <feature id="org.eclipse.ecf.core.feature.source" installMode="root"/>
+      <feature id="org.eclipse.emf.mapping.ui.source" installMode="root"/>
+      <feature id="org.eclipse.emf.ecore.edit.source" installMode="root"/>
+      <feature id="org.eclipse.equinox.p2.extras.feature" installMode="root"/>
+      <feature id="org.eclipse.equinox.p2.extras.feature.source" installMode="root"/>
+      <feature id="org.eclipse.ecf.core.feature" installMode="root"/>
+      <feature id="org.eclipse.ecf.filetransfer.httpclient45.feature" installMode="root"/>
+      <feature id="org.eclipse.emf.codegen.ecore.ui" installMode="root"/>
+      <feature id="org.eclipse.emf.ecore.editor" installMode="root"/>
+      <feature id="org.eclipse.emf.source" installMode="root"/>
+      <feature id="org.eclipse.emf.databinding" installMode="root"/>
+      <feature id="org.eclipse.oomph.setup.core" installMode="root"/>
+   </features>
+
+   <configurations>
+      <plugin id="org.apache.felix.scr" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
+      <property name="org.eclipse.update.reconcile" value="false" />
+   </configurations>
+
+   <preferencesInfo>
+      <sourcefile path="sarl.epf"/>
+      <targetfile overwrite="false" path="/io.sarl.eclipse/plugin_customization.ini"/>
+   </preferencesInfo>
+
+   <cssInfo>
+   </cssInfo>
+
+</product>
