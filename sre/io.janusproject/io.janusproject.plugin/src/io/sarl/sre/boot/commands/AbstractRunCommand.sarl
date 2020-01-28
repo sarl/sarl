@@ -166,16 +166,4 @@ abstract class AbstractRunCommand extends CommandWithMetadata {
 		bootstrap.startAgent(bootAgent, config.agentStartArgs)
 	}
 
-	/** Wait for the termination of the SRE execution.
-	 * This function returns when the SRE is stopped.
-	 * 
-	 * @param bootstrap the SRE bootstrap.
-	 */
-	@SuppressWarnings("discouraged_reference")
-	protected def waitForTermination(bootstrap : SREBootstrap) : void {
-		while (bootstrap.running) {
-			sleep(100)
-		}
-	}
-
 }

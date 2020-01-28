@@ -180,7 +180,8 @@ class EventBus {
 			var behaviorsMethodsToExecute : Collection<Runnable>;
 			try {
 				behaviorsMethodsToExecute = evaluateGuards(^event, behaviorGuardEvaluators, logger);
-				executeBehaviorMethodsInParalellWithSynchroAtTheEnd(behaviorsMethodsToExecute, thrownExceptions,logger);
+				executeBehaviorMethodsInParalellWithSynchroAtTheEnd(behaviorsMethodsToExecute, thrownExceptions,
+					logger);
 			} catch (exception : RuntimeException) {
 				throw exception;
 			} catch (e : InterruptedException) {
@@ -218,7 +219,7 @@ class EventBus {
 				behaviorsMethodsToExecute = evaluateGuards(^event, behaviorGuardEvaluators, logger);
 				if (behaviorsMethodsToExecute !== null && behaviorsMethodsToExecute.size() > 0) {
 					executeBehaviorMethodsInParalellWithSynchroAtTheEnd(behaviorsMethodsToExecute,
-						thrownExceptions,logger);
+						thrownExceptions, logger);
 				}
 			} catch (exception : RuntimeException) {
 				throw exception;
@@ -247,10 +248,11 @@ class EventBus {
 
 			if (behaviorGuardEvaluators !== null && behaviorGuardEvaluators.size() > 0) {
 				// Could be null when the corresponding events is not listen by an agent, i.e. system event like ParticpantJoined
-				var behaviorsMethodsToExecute : Collection<Runnable> = evaluateGuards(^event, behaviorGuardEvaluators, logger)
+				var behaviorsMethodsToExecute : Collection<Runnable> = evaluateGuards(^event, behaviorGuardEvaluators,
+					logger)
 
 				if (behaviorsMethodsToExecute !== null && behaviorsMethodsToExecute.size() > 0) {
-					executeAsynchronouslyBehaviorMethods(behaviorsMethodsToExecute,logger)
+					executeAsynchronouslyBehaviorMethods(behaviorsMethodsToExecute, logger)
 				}
 			}
 		] as Runnable);
@@ -312,7 +314,7 @@ class EventBus {
 			// Wait for all Behaviors runnable to complete before continuing
 			try {
 				doneSignal.await();
-			} catch (ex:InterruptedException) {
+			} catch (ex : InterruptedException) {
 				// This exception occurs when one of the launched task kills the agent before
 				// all the
 				// submitted tasks are finished. Keep in mind that killing an agent should kill
@@ -375,8 +377,7 @@ class EventBus {
 	 */
 	protected def executeBehaviorMethodsInParalellWithSynchroAtTheEnd(behaviorsMethodsToExecute : Collection<Runnable>,
 		thrownExceptions : boolean, logger : Logger) {
-		//code from steph this.executor.executeBlockingTasks(logger, thrownExceptions, behaviorsMethodsToExecute)
-		
+		// code from steph this.executor.executeBlockingTasks(logger, thrownExceptions, behaviorsMethodsToExecute)
 		assert behaviorsMethodsToExecute !== null;
 		assert behaviorsMethodsToExecute.size() > 0;
 
@@ -390,14 +391,14 @@ class EventBus {
 					def run() {
 						try {
 							runnable.run();
-						} catch (e: EarlyExitException) {
+						} catch (e : EarlyExitException) {
 							// Ignore this exception
-						} catch (e: RuntimeException) {
+						} catch (e : RuntimeException) {
 							// Catch exception for notifying the caller
 							runException.set(e);
 							// Do the standard behavior too -> logging
 							throw e;
-						} catch (e: Exception) {
+						} catch (e : Exception) {
 							// Catch exception for notifying the caller
 							runException.set(e);
 							// Do the standard behavior too -> logging
@@ -407,7 +408,7 @@ class EventBus {
 						}
 					}
 				});
-}
+			}
 
 			// Wait for all Behaviors runnable to complete before continuing
 			try {
@@ -437,12 +438,20 @@ class EventBus {
 				throw new ExecutionException(runException.get());
 			}
 		} else {
-			var r : Runnable = behaviorsMethodsToExecute.iterator().next();
+			var r : Runnable = new SreRunnable(logger) {
+				def run() {
+					try {
+						behaviorsMethodsToExecute.iterator().next().run;
+					} catch (e : EarlyExitException) {
+						// Ignore this exception
+					}
+				}
+			};
+
 			assert r !== null;
 			r.run();
 		}
-		
-		
+
 	}
 
 	/** 
@@ -454,10 +463,11 @@ class EventBus {
 	 * @param logger the logger to use for notifying the errors.
 	 * @param behaviorsMethodsToExecute the collection of Behaviors runnable that must be executed.
 	 */
-	protected def executeAsynchronouslyBehaviorMethods(behaviorsMethodsToExecute : Collection<Runnable>, logger : Logger) {
+	protected def executeAsynchronouslyBehaviorMethods(behaviorsMethodsToExecute : Collection<Runnable>,
+		logger : Logger) {
 		assert behaviorsMethodsToExecute !== null;
-		assert behaviorsMethodsToExecute.size() > 0;	
-			
+		assert behaviorsMethodsToExecute.size() > 0;
+
 		for (runnable : behaviorsMethodsToExecute) {
 			this.executor.executeAsap(logger, runnable)
 		}

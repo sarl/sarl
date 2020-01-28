@@ -263,8 +263,10 @@
       <feature id="io.sarl.experienceindex.feature" installMode="root"/>
       <feature id="io.sarl.ide" installMode="root"/>
       <feature id="io.sarl.lib" installMode="root"/>
+      <feature id="io.sarl.lib.source" installMode="root"/>
       <feature id="io.sarl.pythongenerator.feature" installMode="root"/>
       <feature id="io.janusproject.feature" installMode="root"/>
+      <feature id="io.janusproject.feature.source" installMode="root"/>
       <feature id="org.eclipse.help" installMode="root"/>
       <feature id="org.jboss.tools.m2e.jdt.feature" installMode="root"/>
       <feature id="org.eclipse.xtext.redist" installMode="root"/>
@@ -315,8 +317,7 @@
       <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
    </repositories>
 
-   <preferencesInfo>
-      <sourcefile path="sarl.epf"/>
+   <preferencesInfo>     
       <targetfile overwrite="false" path="/io.sarl.eclipse/plugin_customization.ini"/>
    </preferencesInfo>
 
