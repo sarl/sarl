@@ -1,0 +1,619 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2019 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.tests.units.services.lifecycle
+
+import io.sarl.core.Destroy
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import io.sarl.core.OpenEventSpace
+import io.sarl.core.OpenEventSpaceSpecification
+import io.sarl.lang.core.Address
+import io.sarl.lang.core.Agent
+import io.sarl.lang.core.Event
+import io.sarl.lang.core.SpaceID
+import io.sarl.sre.capacities.InformedEventListener
+import io.sarl.sre.services.context.Context
+import io.sarl.sre.services.lifecycle.AgentLife
+import io.sarl.sre.services.lifecycle.AgentState
+import io.sarl.sre.services.lifecycle.SkillUninstaller
+import io.sarl.sre.services.logging.LoggingService
+import io.sarl.sre.tests.testutils.AbstractSreTest
+import io.sarl.sre.tests.units.services.lifecycle.mocks.MyAgent1
+import io.sarl.sre.tests.units.services.lifecycle.mocks.MyLogging
+import io.sarl.sre.tests.units.services.lifecycle.mocks.MySkill
+import io.sarl.tests.api.Nullable
+import java.util.Collections
+import java.util.UUID
+import java.util.logging.Level
+import java.util.logging.Logger
+import org.junit.Before
+import org.junit.Test
+import org.mockito.ArgumentCaptor
+
+import static org.mockito.ArgumentMatchers.anyString
+import static org.mockito.Mockito.doAnswer
+import static org.mockito.Mockito.reset
+import static org.mockito.Mockito.verifyNoMoreInteractions
+import static org.mockito.Mockito.when
+
+import static extension org.mockito.ArgumentMatchers.any
+import static extension org.mockito.Mockito.times
+import static extension org.mockito.Mockito.verify
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+class AgentLifeTest extends AbstractSreTest {
+
+	@Nullable
+	var eventBus : MySkill
+
+	@Nullable
+	var ^agent : Agent
+
+	@Nullable
+	var life : AgentLife
+
+	@Nullable
+	var logging : Logging
+
+	@Before
+	def setUp : void {
+		this.eventBus = new MySkill().spy
+		this.logging = new MyLogging().spy
+		this.^agent = new MyAgent1(this.eventBus, this.logging).spy
+		this.life = AgentLife::getLife(^agent)
+		// Remove the interaction
+		reset(this.eventBus)
+	}
+
+	@Test
+	def getAgent {
+		assertSame(this.^agent, this.life.^agent)
+	}
+
+	@Test
+	def setAgent {
+		var ag = typeof(Agent).mock
+		this.life.^agent = ag
+		assertSame(ag, this.life.^agent)
+	}
+
+	@Test
+	def getState {
+		assertSame(AgentState::UNSTARTED, this.life.state)
+	}
+
+	@Test
+	def setState {
+		this.life.state = AgentState::DEAD
+		assertSame(AgentState::DEAD, this.life.state)
+	}
+
+	@Test
+	def setInnerContext {
+		var ctx2 = typeof(Context).mock
+		var ctx1 = this.life.setInnerContext(ctx2)
+		assertNull(ctx1)
+		assertSame(ctx2, this.life.innerContext)
+
+		var ctx3 = typeof(Context).mock
+		ctx1 = this.life.setInnerContext(ctx3)
+		assertSame(ctx2, ctx1)
+		assertSame(ctx3, this.life.innerContext)
+	}
+
+	@Test
+	def getInnerContext {
+		assertNull(this.life.innerContext)
+	}
+
+	@Test
+	def getAddressInInnerDefaultSpace {
+		var adr = this.life.addressInInnerDefaultSpace
+		assertNotNull(adr)
+		assertEquals(this.^agent.ID, adr.UUID)
+		assertEquals(this.^agent.ID, adr.spaceID.contextID)
+		assertNotEquals(this.^agent.ID, adr.spaceID.ID)
+	}
+
+	@Test
+	def getExternalContexts {
+		var context = this.life.externalContexts
+		assertFalse(context.iterator.hasNext)
+	}
+
+	@Test
+	def getEnclosingContexts_0 {
+		var context = this.life.enclosingContexts
+		assertFalse(context.iterator.hasNext)
+	}
+
+	@Test
+	def getEnclosingContexts_1 {
+		var ctx = typeof(Context).mock
+		var adr = typeof(Address).mock
+		this.life.setDefaultContext(ctx, adr)
+		var context = this.life.enclosingContexts
+		var iterator = context.iterator
+		
+		assertTrue(iterator.hasNext)
+		var ref = iterator.next
+		assertSame(ctx, ref.context)
+		assertSame(adr, ref.addressInDefaultSpace)
+
+		assertFalse(iterator.hasNext)
+	}
+
+	@Test
+	def getEnclosingContexts_2 {
+		var minmax = #[UUID::randomUUID, UUID::randomUUID].sort
+		var ctx1 = typeof(Context).mock
+		when(ctx1.ID).thenReturn(minmax.get(0))
+		var adr1 = typeof(Address).mock
+		var ctx2 = typeof(Context).mock
+		when(ctx2.ID).thenReturn(minmax.get(1))
+		var adr2 = typeof(Address).mock
+		this.life.addExternalContext(ctx1, adr1)
+		this.life.addExternalContext(ctx2, adr2)
+		var context = this.life.enclosingContexts
+		var iterator = context.iterator
+		
+		assertTrue(iterator.hasNext)
+		var ref = iterator.next
+		assertSame(ctx1, ref.context)
+		assertSame(adr1, ref.addressInDefaultSpace)
+
+		assertTrue(iterator.hasNext)
+		ref = iterator.next
+		assertSame(ctx2, ref.context)
+		assertSame(adr2, ref.addressInDefaultSpace)
+
+		assertFalse(iterator.hasNext)
+	}
+
+	@Test
+	def getEnclosingContexts_3 {
+		var minmax = #[UUID::randomUUID, UUID::randomUUID, UUID::randomUUID].sort
+		var ctx0 = typeof(Context).mock
+		when(ctx0.ID).thenReturn(minmax.get(0))
+		var adr0 = typeof(Address).mock
+		var ctx1 = typeof(Context).mock
+		when(ctx1.ID).thenReturn(minmax.get(1))
+		var adr1 = typeof(Address).mock
+		var ctx2 = typeof(Context).mock
+		when(ctx2.ID).thenReturn(minmax.get(2))
+		var adr2 = typeof(Address).mock
+		this.life.setDefaultContext(ctx0, adr0)
+		this.life.addExternalContext(ctx1, adr1)
+		this.life.addExternalContext(ctx2, adr2)
+		var context = this.life.enclosingContexts
+		var iterator = context.iterator
+		
+		assertTrue(iterator.hasNext)
+		var ref = iterator.next
+		assertSame(ctx0, ref.context)
+		assertSame(adr0, ref.addressInDefaultSpace)
+
+		assertTrue(iterator.hasNext)
+		ref = iterator.next
+		assertSame(ctx1, ref.context)
+		assertSame(adr1, ref.addressInDefaultSpace)
+
+		assertTrue(iterator.hasNext)
+		ref = iterator.next
+		assertSame(ctx2, ref.context)
+		assertSame(adr2, ref.addressInDefaultSpace)
+
+		assertFalse(iterator.hasNext)
+	}
+
+	@Test
+	def getEnclosingContexts_4 {
+		var minmax = #[UUID::randomUUID, UUID::randomUUID, UUID::randomUUID].sort
+		var ctx0 = typeof(Context).mock
+		when(ctx0.ID).thenReturn(minmax.get(2))
+		var adr0 = typeof(Address).mock
+		var ctx1 = typeof(Context).mock
+		when(ctx1.ID).thenReturn(minmax.get(0))
+		var adr1 = typeof(Address).mock
+		var ctx2 = typeof(Context).mock
+		when(ctx2.ID).thenReturn(minmax.get(1))
+		var adr2 = typeof(Address).mock
+		this.life.setDefaultContext(ctx0, adr0)
+		this.life.addExternalContext(ctx1, adr1)
+		this.life.addExternalContext(ctx2, adr2)
+		var context = this.life.enclosingContexts
+		var iterator = context.iterator
+		
+		assertTrue(iterator.hasNext)
+		var ref = iterator.next
+		assertSame(ctx0, ref.context)
+		assertSame(adr0, ref.addressInDefaultSpace)
+
+		assertTrue(iterator.hasNext)
+		ref = iterator.next
+		assertSame(ctx1, ref.context)
+		assertSame(adr1, ref.addressInDefaultSpace)
+
+		assertTrue(iterator.hasNext)
+		ref = iterator.next
+		assertSame(ctx2, ref.context)
+		assertSame(adr2, ref.addressInDefaultSpace)
+
+		assertFalse(iterator.hasNext)
+	}
+
+	@Test
+	def getExternalContexts_0 {
+		var context = this.life.externalContexts
+		assertFalse(context.iterator.hasNext)
+	}
+
+	@Test
+	def getExternalContexts_1 {
+		var ctx = typeof(Context).mock
+		var adr = typeof(Address).mock
+		this.life.setDefaultContext(ctx, adr)
+		var context = this.life.externalContexts
+		var iterator = context.iterator
+		
+		assertFalse(iterator.hasNext)
+	}
+	
+	@Test
+	def getExternalContexts_2 {
+		var minmax = #[UUID::randomUUID, UUID::randomUUID].sort
+		var ctx1 = typeof(Context).mock
+		when(ctx1.ID).thenReturn(minmax.get(0))
+		var adr1 = typeof(Address).mock
+		var ctx2 = typeof(Context).mock
+		when(ctx2.ID).thenReturn(minmax.get(1))
+		var adr2 = typeof(Address).mock
+		this.life.addExternalContext(ctx1, adr1)
+		this.life.addExternalContext(ctx2, adr2)
+		var context = this.life.externalContexts
+		var iterator = context.iterator
+		
+		assertTrue(iterator.hasNext)
+		var ref = iterator.next
+		assertSame(ctx1, ref.context)
+		assertSame(adr1, ref.addressInDefaultSpace)
+
+		assertTrue(iterator.hasNext)
+		ref = iterator.next
+		assertSame(ctx2, ref.context)
+		assertSame(adr2, ref.addressInDefaultSpace)
+
+		assertFalse(iterator.hasNext)
+	}
+
+	@Test
+	def getExternalContexts_3 {
+		var minmax = #[UUID::randomUUID, UUID::randomUUID, UUID::randomUUID].sort
+		var ctx0 = typeof(Context).mock
+		when(ctx0.ID).thenReturn(minmax.get(0))
+		var adr0 = typeof(Address).mock
+		var ctx1 = typeof(Context).mock
+		when(ctx1.ID).thenReturn(minmax.get(1))
+		var adr1 = typeof(Address).mock
+		var ctx2 = typeof(Context).mock
+		when(ctx2.ID).thenReturn(minmax.get(2))
+		var adr2 = typeof(Address).mock
+		this.life.setDefaultContext(ctx0, adr0)
+		this.life.addExternalContext(ctx1, adr1)
+		this.life.addExternalContext(ctx2, adr2)
+		var context = this.life.externalContexts
+		var iterator = context.iterator
+		
+		assertTrue(iterator.hasNext)
+		var ref = iterator.next
+		assertSame(ctx1, ref.context)
+		assertSame(adr1, ref.addressInDefaultSpace)
+
+		assertTrue(iterator.hasNext)
+		ref = iterator.next
+		assertSame(ctx2, ref.context)
+		assertSame(adr2, ref.addressInDefaultSpace)
+
+		assertFalse(iterator.hasNext)
+	}
+
+	@Test
+	def getExternalContextCount_0 {
+		assertEquals(0, this.life.externalContextCount)
+	}
+
+	@Test
+	def getExternalContextCount_1 {
+		var ctx = typeof(Context).mock
+		var adr = typeof(Address).mock
+		this.life.setDefaultContext(ctx, adr)
+		assertEquals(0, this.life.externalContextCount)
+	}
+	
+	@Test
+	def getExternalContextCount_2 {
+		var minmax = #[UUID::randomUUID, UUID::randomUUID].sort
+		var ctx1 = typeof(Context).mock
+		when(ctx1.ID).thenReturn(minmax.get(0))
+		var adr1 = typeof(Address).mock
+		var ctx2 = typeof(Context).mock
+		when(ctx2.ID).thenReturn(minmax.get(1))
+		var adr2 = typeof(Address).mock
+		this.life.addExternalContext(ctx1, adr1)
+		this.life.addExternalContext(ctx2, adr2)
+		assertEquals(2, this.life.externalContextCount)
+	}
+
+	@Test
+	def getExternalContextCount_3 {
+		var minmax = #[UUID::randomUUID, UUID::randomUUID, UUID::randomUUID].sort
+		var ctx0 = typeof(Context).mock
+		when(ctx0.ID).thenReturn(minmax.get(0))
+		var adr0 = typeof(Address).mock
+		var ctx1 = typeof(Context).mock
+		when(ctx1.ID).thenReturn(minmax.get(1))
+		var adr1 = typeof(Address).mock
+		var ctx2 = typeof(Context).mock
+		when(ctx2.ID).thenReturn(minmax.get(2))
+		var adr2 = typeof(Address).mock
+		this.life.setDefaultContext(ctx0, adr0)
+		this.life.addExternalContext(ctx1, adr1)
+		this.life.addExternalContext(ctx2, adr2)
+		
+		assertEquals(2, this.life.externalContextCount)
+	}
+
+	@Test
+	def setDefaultContext {
+		var ctx = typeof(Context).mock
+		this.life.setDefaultContext(ctx, typeof(Address).mock)
+		assertSame(ctx, this.life.defaultContext.context)
+		ctx = typeof(Context).mock
+		var ref = this.life.setDefaultContext(ctx, typeof(Address).mock)
+		assertSame(ctx, this.life.defaultContext.context)
+		assertNotNull(ref)
+		assertNotEquals(ref.context, ctx)
+	}
+
+	@Test
+	def defaultContext {
+		assertNull(this.life.defaultContext)
+		var ctx = typeof(Context).mock
+		this.life.setDefaultContext(ctx, typeof(Address).mock)
+		assertSame(ctx, this.life.defaultContext.context)
+		ctx = typeof(Context).mock
+		this.life.setDefaultContext(ctx, typeof(Address).mock)
+		assertSame(ctx, this.life.defaultContext.context)
+	}
+
+	@Test
+	def addExternalContext {
+		var minmax = #[UUID::randomUUID, UUID::randomUUID].sort
+		var ctx1 = typeof(Context).mock
+		when(ctx1.ID).thenReturn(minmax.get(0))
+		var adr1 = typeof(Address).mock
+		var ctx2 = typeof(Context).mock
+		when(ctx2.ID).thenReturn(minmax.get(1))
+		var adr2 = typeof(Address).mock
+		var ref1 = this.life.addExternalContext(ctx1, adr1)
+		var ref2 = this.life.addExternalContext(ctx2, adr2)
+		
+		assertNotNull(ref1)
+		assertSame(ctx1, ref1.context)
+		assertSame(adr1, ref1.addressInDefaultSpace)
+		assertNotNull(ref2)
+		assertSame(ctx2, ref2.context)
+		assertSame(adr2, ref2.addressInDefaultSpace)
+		
+		var context = this.life.externalContexts
+		var iterator = context.iterator
+
+		assertTrue(iterator.hasNext)
+		var ref = iterator.next
+		assertSame(ctx1, ref.context)
+		assertSame(adr1, ref.addressInDefaultSpace)
+
+		assertTrue(iterator.hasNext)
+		ref = iterator.next
+		assertSame(ctx2, ref.context)
+		assertSame(adr2, ref.addressInDefaultSpace)
+
+		assertFalse(iterator.hasNext)
+	}
+
+	@Test
+	def removeExternalContextContext {
+		var ctx1 = typeof(Context).mock
+		when(ctx1.ID).thenReturn(UUID::randomUUID)
+		var adr1 = typeof(Address).mock
+		var ctx2 = typeof(Context).mock
+		when(ctx2.ID).thenReturn(UUID::randomUUID)
+		var adr2 = typeof(Address).mock
+		this.life.addExternalContext(ctx1, adr1)
+		this.life.addExternalContext(ctx2, adr2)
+		
+		this.life.removeExternalContext(ctx1)
+		
+		var context = this.life.externalContexts
+		var iterator = context.iterator
+
+		assertTrue(iterator.hasNext)
+		var ref = iterator.next
+		assertSame(ctx2, ref.context)
+		assertSame(adr2, ref.addressInDefaultSpace)
+
+		assertFalse(iterator.hasNext)
+	}
+
+	@Test
+	def removeExternalContextContextReference {
+		var ctx1 = typeof(Context).mock
+		when(ctx1.ID).thenReturn(UUID::randomUUID)
+		var adr1 = typeof(Address).mock
+		var ctx2 = typeof(Context).mock
+		when(ctx2.ID).thenReturn(UUID::randomUUID)
+		var adr2 = typeof(Address).mock
+		var ref1 = this.life.addExternalContext(ctx1, adr1)
+		this.life.addExternalContext(ctx2, adr2)
+		
+		this.life.removeExternalContext(ref1)
+		
+		var context = this.life.externalContexts
+		var iterator = context.iterator
+		
+		assertTrue(iterator.hasNext)
+		var ref = iterator.next
+		assertSame(ctx2, ref.context)
+		assertSame(adr2, ref.addressInDefaultSpace)
+
+		assertFalse(iterator.hasNext)
+	}
+
+	@Test
+	def start_failingInOnInitialize : void {
+		var installer = typeof(SkillUninstaller).mock
+		var logger = typeof(LoggingService).mock
+		var loglog = typeof(Logger).mock
+		when(logger.kernelLogger).thenReturn(loglog)
+		var parent = UUID::randomUUID
+		var spawner = UUID::randomUUID
+		var spawningContext = typeof(Context).mock
+		when(spawningContext.ID).thenReturn(parent)
+		var spawningSpace = typeof(OpenEventSpace).mock
+		when(spawningSpace.spaceID).thenReturn(new SpaceID(parent, UUID::randomUUID, typeof(OpenEventSpaceSpecification)))
+		when(spawningContext.defaultSpace).thenReturn(spawningSpace)
+		var params = #[UUID::randomUUID, UUID::randomUUID.toString]
+		
+		this.eventBus.failure = true
+		
+		try {
+			this.life.start(installer, logger, spawner, spawningContext, params)
+		} catch (ex : RuntimeException) {
+			//
+		}
+		
+		assertSame(AgentState.DEAD, this.life.getState())
+		
+		var ^event = ArgumentCaptor::forClass(typeof(Event))
+		var gath = ArgumentCaptor::forClass(typeof(boolean))
+		var thro = ArgumentCaptor::forClass(typeof(boolean))
+		this.eventBus.verify(2.times).fireEventAndWait(^event.capture, gath.capture.booleanValue,
+			thro.capture.booleanValue)
+		var e0 = ^event.allValues.get(0)
+		assertInstanceOf(typeof(Initialize), e0)
+		var e1 = ^event.allValues.get(1)
+		assertInstanceOf(typeof(Destroy), e1)
+	}
+
+	@Test
+	def start_success : void {
+		var eventListener = typeof(InformedEventListener).mock
+		when(this.eventBus.associatedEventBusListener).thenReturn(eventListener)
+		var installer = typeof(SkillUninstaller).mock
+		var logger = typeof(LoggingService).mock
+		var loglog = typeof(Logger).mock
+		when(logger.kernelLogger).thenReturn(loglog)
+		// Force the logger to forward the exception
+		doAnswer([
+			Exceptions::sneakyThrow(it.getArgument(0) as Throwable)
+			return null
+		]).when(loglog).log(typeof(Level).any, anyString, typeof(Throwable).any)
+		var parent = UUID::randomUUID
+		var spawner = UUID::randomUUID
+		var spawningContext = typeof(Context).mock
+		when(spawningContext.ID).thenReturn(parent)
+		var params : Object[] = #[UUID::randomUUID, UUID::randomUUID.toString]
+		var defaultSpace = typeof(OpenEventSpace).mock
+		when(spawningContext.defaultSpace).thenReturn(defaultSpace)
+		var defaultSpaceID = new SpaceID(parent, UUID::randomUUID, typeof(OpenEventSpaceSpecification))
+		when(defaultSpace.spaceID).thenReturn(defaultSpaceID)
+		
+		assertTrue(this.life.start(installer, logger, spawner, spawningContext, params))
+		
+		assertSame(AgentState::ALIVE, this.life.state)
+		
+		var x = this.eventBus.verify(1.times).associatedEventBusListener
+		assertNull(x)
+
+		var ^event = ArgumentCaptor::forClass(typeof(Event))
+		var gath = ArgumentCaptor::forClass(typeof(boolean))
+		var thro = ArgumentCaptor::forClass(typeof(boolean))
+		this.eventBus.verify(1.times).fireEventAndWait(^event.capture, gath.capture.booleanValue,
+			thro.capture.booleanValue)
+		assertInstanceOf(typeof(Initialize), ^event.value)
+		var init = ^event.value as Initialize
+		assertNotNull(init.source)
+		assertSame(params, init.parameters)
+		assertEquals(spawner, init.spawner)
+		
+		assertTrue(gath.value)
+		assertTrue(thro.value)
+		
+		verifyNoMoreInteractions(installer)
+		verifyNoMoreInteractions(this.eventBus)
+	}
+
+	@Test
+	def stop {
+		var installer = typeof(SkillUninstaller).mock
+		var it = Collections.singletonList(this.eventBus)
+		when(installer.uninstallSkillsBeforeDestroy(any)).thenReturn(it)
+		var logger = typeof(LoggingService).mock
+		
+		this.life.stop(installer, logger, true)
+		
+		assertSame(AgentState::DEAD, this.life.state)
+		
+		var ^agent = ArgumentCaptor::forClass(typeof(Agent))
+		installer.verify.uninstallSkillsBeforeDestroy(^agent.capture)
+		assertSame(this.^agent, ^agent.value)
+		var skills = ArgumentCaptor::forClass(typeof(Iterable))
+		installer.verify.uninstallSkillsAfterDestroy(^agent.capture, skills.capture)
+		assertSame(this.^agent, ^agent.value)
+		var iterator = skills.value.iterator
+		assertTrue(iterator.hasNext)
+		assertSame(this.eventBus, iterator.next)
+		assertFalse(iterator.hasNext)
+		
+		var ^event = ArgumentCaptor::forClass(typeof(Event))
+		var gath = ArgumentCaptor::forClass(typeof(boolean))
+		var thro = ArgumentCaptor::forClass(typeof(boolean))
+		this.eventBus.verify.fireEventAndWait(^event.capture, gath.capture.booleanValue, thro.capture.booleanValue)
+		assertInstanceOf(typeof(Destroy), ^event.value)
+		var destroy = ^event.value as Destroy
+		assertNotNull(destroy.source)
+		
+		assertFalse(gath.value)
+		assertFalse(thro.value)
+		
+		var x = this.eventBus.verify(1.times).associatedEventBusListener
+		assertNull(x)
+
+		verifyNoMoreInteractions(installer, this.eventBus)
+	}
+
+}

@@ -19,13 +19,11 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.tests.runtime.services.context.mocks
+package io.sarl.sre.tests.units.skills.bic.mocks
 
-import io.sarl.lang.core.Space
-import io.sarl.lang.core.SpaceID
-import io.sarl.lang.util.SynchronizedSet
-import java.util.UUID
-import java.util.concurrent.ConcurrentSkipListSet
+import io.sarl.core.Time
+import io.sarl.sre.skills.BuiltinSkill
+import java.util.concurrent.TimeUnit
 
 /**
  * @author $Author: sgalland$
@@ -33,20 +31,42 @@ import java.util.concurrent.ConcurrentSkipListSet
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class MySpace implements Space {
-
-	val id : SpaceID
-
-	new (id : SpaceID) {
-		this.id = id
+skill MyTimeSkill extends BuiltinSkill implements Time {
+	
+	val time : double
+	
+	new (t : double = 0.0) {
+		super()
+		this.time = t
 	}
 	
-	override getSpaceID : SpaceID {
-		this.id
+	def getInstallationOrder : int {
+		throw new UnsupportedOperationException
 	}
-
-	override getParticipants : ConcurrentSkipListSet<UUID> {
-		new ConcurrentSkipListSet
+	
+	def fromOSDuration(timeDuration : double) : double {
+		timeDuration
+	}
+	
+	def fromOSTime(timeValue : double) : double {
+		timeValue
+	}
+	
+	def getOSTimeFactor : double {
+		1
+	}
+	
+	def getTime(timeUnit : TimeUnit = null) : double {
+		this.time
+	}
+	
+	def toOSDuration(timeDuration : double) : double {
+		timeDuration
+	}
+	
+	def toOSTime(timeValue : double) : double {
+		timeValue
 	}
 	
 }
+	

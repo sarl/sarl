@@ -87,7 +87,6 @@
 					</execution>
 				</executions>
 				<configuration>
-					<tycho>true</tycho>
 					<source>${sarl-dsl.min.jdk.version}</source>
 					<target>${sarl-dsl.min.jdk.version}</target>
 					<encoding>${project.build.sourceEncoding}</encoding>

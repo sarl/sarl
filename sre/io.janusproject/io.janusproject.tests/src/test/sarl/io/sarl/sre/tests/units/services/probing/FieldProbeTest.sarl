@@ -1,0 +1,187 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2019 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.tests.units.services.probing
+
+import io.sarl.sre.internal.SequenceListenerNotifier
+import io.sarl.sre.internal.SmartListenerCollection
+import io.sarl.sre.services.namespace.FieldAccess
+import io.sarl.sre.services.probing.FieldProbe
+import io.sarl.sre.services.probing.IProbeListener
+import io.sarl.sre.services.probing.IProbeReleaseListener
+import io.sarl.sre.services.probing.Probe
+import io.sarl.tests.api.AbstractSarlTest
+import java.net.URI
+import java.util.UUID
+import javax.annotation.Nullable
+import javax.inject.Provider
+import org.junit.Before
+import org.junit.Test
+import org.mockito.ArgumentCaptor
+
+import static org.mockito.ArgumentMatchers.*
+
+import static extension org.mockito.Mockito.*
+import io.sarl.sre.naming.SarlName
+import io.sarl.sre.naming.NameScheme
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+class FieldProbeTest extends AbstractSarlTest {
+
+	@Nullable
+	var field : FieldAccess
+
+	@Nullable
+	var uri : URI
+
+	@Nullable
+	var name : String
+
+	@Nullable
+	var releaseListener : IProbeReleaseListener
+
+	@Nullable
+	var probeListener : IProbeListener
+
+	@Nullable
+	var probe : FieldProbe<Integer>
+
+	@Nullable
+	var nameObject : SarlName
+	
+	@Before
+	def setUp : void {
+		this.nameObject = typeof(SarlName).mock
+		when(this.nameObject.scheme).thenReturn(NameScheme::SPACE)
+		this.field = typeof(FieldAccess).mock
+		when(this.field.name).thenReturn(this.nameObject)
+		when(this.field.get).thenReturn(34)
+		this.releaseListener = typeof(IProbeReleaseListener).mock
+		this.probeListener = typeof(IProbeListener).mock
+		this.uri = URI::create("context://mycontext#myfield")
+		this.name = UUID::randomUUID.toString
+		val coll = new SmartListenerCollection(new SequenceListenerNotifier)
+		this.probe = new TestedFieldProbe(this.releaseListener, this.name, this.uri, typeof(Integer), this.field,
+			[coll]) 
+		this.probe.addProbeListener(this.probeListener)
+	}
+
+	@SuppressWarnings("unused_local_variable")
+	@Test
+	def getValue : void {
+		this.probe.invalid.assertFalse
+		
+		34.assertEquals(this.probe.value)
+
+		this.probe.invalid.assertFalse
+
+		this.releaseListener.verify(never).onProbeReleasedProbe(any)
+
+		var x = this.field.verify(only).get
+
+		this.probeListener.verify(never).probeValueChanged(any)
+	}
+
+	@Test
+	def setValue_nosync : void {
+		this.probe.value = 56
+
+		this.releaseListener.verify(never).onProbeReleasedProbe(any)
+
+		this.field.verify(never).set(any)
+
+		this.probeListener.verify(never).probeValueChanged(any)
+	}
+
+	@Test
+	def setValue_sync : void {
+		this.probe.value = 56
+
+		this.probe.sync
+
+		this.releaseListener.verify(never).onProbeReleasedProbe(any)
+
+		var capture0 = ArgumentCaptor::forClass(typeof(Object))
+		this.field.verify(1.times).set(capture0.capture)
+
+		var capture = ArgumentCaptor::forClass(typeof(Probe))
+		this.probeListener.verify(1.times).probeValueChanged(capture.capture)
+		this.probe.assertSame(capture.value)
+	}
+	
+	@Test
+	def sync : void {
+		this.probe.value = 56
+
+		this.probe.sync
+
+		this.releaseListener.verify(never).onProbeReleasedProbe(any)
+
+		var capture0 = ArgumentCaptor::forClass(typeof(Object))
+		this.field.verify(1.times).set(capture0.capture)
+
+		var capture = ArgumentCaptor::forClass(typeof(Probe))
+		this.probeListener.verify(1.times).probeValueChanged(capture.capture)
+		this.probe.assertSame(capture.value)
+	}
+
+	@Test
+	def release : void {
+		this.probe.release
+
+		var capture0 = ArgumentCaptor::forClass(typeof(Probe))
+		this.releaseListener.verify(1.times).onProbeReleasedProbe(capture0.capture)
+		this.probe.assertSame(capture0.value)
+
+		this.field.verify(never).set(any)
+
+		this.probeListener.verify(never).probeValueChanged(any)
+	}
+
+	@Test
+	def isActive : void {
+		this.probe.isActive.assertTrue
+	}
+
+	@Test
+	def isInvalid : void {
+		this.probe.isInvalid.assertFalse
+		this.probe.sync
+		this.probe.isInvalid.assertFalse
+		this.probe.value = 67
+		this.probe.isInvalid.assertTrue
+		this.probe.sync
+		this.probe.isInvalid.assertFalse
+	}
+
+	private static class TestedFieldProbe extends FieldProbe<Integer> {
+		new (manager : IProbeReleaseListener, name : String, uri : URI, type : Class<Integer>, field : FieldAccess,
+			listenerCollectionProvider : Provider<SmartListenerCollection<?>>) {
+			super(manager, name, uri, type, field, listenerCollectionProvider)
+		}
+	}
+
+}

@@ -19,13 +19,14 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.tests.runtime.services.context.mocks
+package io.sarl.sre.tests.units.spaces
 
-import io.sarl.lang.core.Space
+import io.sarl.core.OpenEventSpaceSpecification
 import io.sarl.lang.core.SpaceID
-import io.sarl.lang.util.SynchronizedSet
+import io.sarl.sre.spaces.AbstractSpace
+import io.sarl.sre.tests.testutils.AbstractSreTest
 import java.util.UUID
-import java.util.concurrent.ConcurrentSkipListSet
+import org.junit.Test
 
 /**
  * @author $Author: sgalland$
@@ -33,20 +34,29 @@ import java.util.concurrent.ConcurrentSkipListSet
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class MySpace implements Space {
+abstract class AbstractSpaceTest extends AbstractSreTest {
 
-	val id : SpaceID
+	@Test
+	def getSpaceID {
+		var spaceId = new SpaceID(UUID::randomUUID, UUID::randomUUID, typeof(OpenEventSpaceSpecification))
+		var base = new AbstractSpace(spaceId) {
+			def getParticipants : ConcurrentSkipListSet<UUID> {
+				throw new UnsupportedOperationException
+			}
+		}
+		assertEquals(spaceId, base.spaceID)
+	}
 
-	new (id : SpaceID) {
-		this.id = id
-	}
-	
-	override getSpaceID : SpaceID {
-		this.id
+	@Test
+	@Deprecated
+	def getID {
+		var spaceId = new SpaceID(UUID::randomUUID, UUID::randomUUID, typeof(OpenEventSpaceSpecification))
+		var base = new AbstractSpace(spaceId) {
+			def getParticipants : ConcurrentSkipListSet<UUID> {
+				throw new UnsupportedOperationException
+			}
+		}
+		assertEquals(spaceId, base.ID)
 	}
 
-	override getParticipants : ConcurrentSkipListSet<UUID> {
-		new ConcurrentSkipListSet
-	}
-	
 }
