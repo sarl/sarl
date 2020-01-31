@@ -64,17 +64,11 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 */
 	protected MavenHelper mavenHelper;
 
-	/** General Maven flag for skipping tests.
-	 * @since 0.11
-	 */
-	@Parameter(defaultValue = "${maven.test.skip}", required = true, readonly = true)
-	protected boolean mavenTestSkip;
-
 	/**
 	 * The current Maven session.
 	 */
 	@Parameter(defaultValue = "${session}", required = true, readonly = true)
-	private MavenSession session;
+	protected MavenSession session;
 
 	/**
 	 * The Build PluginManager component.

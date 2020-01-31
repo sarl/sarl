@@ -220,8 +220,17 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 
 	@Override
 	protected boolean isSkipped() {
-		if (isTestContext() && this.mavenTestSkip) {
-			return true;
+		if (isTestContext()) {
+			// Check the general Maven test skipping flag
+			boolean mavenTestSkip = false;
+			try {
+				mavenTestSkip = Boolean.parseBoolean(this.session.getUserProperties().getProperty("maven.test.skip", "false")); //$NON-NLS-1$ //$NON-NLS-2$
+			} catch (Throwable exception) {
+				mavenTestSkip = false;
+			}
+			if (mavenTestSkip) {
+				return true;
+			}
 		}
 		return super.isSkipped();
 	}
