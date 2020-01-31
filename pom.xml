@@ -86,7 +86,7 @@
 			central) -->
 		<tycho.version>1.4.0</tycho.version>
 		<!-- Version of the SWT library (search for  org.eclipse.platform:org.eclipse.swt.gtk.linux.x86_64) -->
-		<swt.version>3.111.0</swt.version>
+		<swt.version>3.113.0</swt.version>
 		<!-- Version of JavaFX (search for  org.openjfx:*) -->
 		<openjfx.version>11.0.2</openjfx.version>
 
