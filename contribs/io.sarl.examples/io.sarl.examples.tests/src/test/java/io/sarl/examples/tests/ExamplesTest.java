@@ -90,6 +90,8 @@ public class ExamplesTest extends AbstractSarlTest {
 
 	private static final String PROJECTS_FOLDER_NAME = "projects"; //$NON-NLS-1$
 
+	private static final String MAVEN_COMMAND = "mvn"; //$NON-NLS-1$
+
 	/** Replies the archives for the examples.
 	 *
 	 * @return the archive locations.
@@ -326,9 +328,9 @@ public class ExamplesTest extends AbstractSarlTest {
 		compiledFile.createNewFile();
 		
 		final String[] command = new String[] {
-				"mvn", "-q", "clean", "package"
+				MAVEN_COMMAND, "-q", "clean", "package"
 		};
-		final Process p = Runtime.getRuntime().exec(command, null, root);
+		final Process p = Runtime.getRuntime().exec(command, environmentVariables, root);
 		p.waitFor();
 		final StringBuilder output = new StringBuilder();
 		output.append("Exit code: ").append(p.exitValue()).append("\n");
