@@ -307,6 +307,7 @@ public class SubmitEclipseLogWizard extends Wizard {
 	 * @return the content.
 	 * @throws IOException if the content cannot be built.
 	 */
+	@SuppressWarnings("static-method")
 	protected String buildContent(String description, Charset charset) throws IOException {
 		final StringBuilder fullContent = new StringBuilder();
 

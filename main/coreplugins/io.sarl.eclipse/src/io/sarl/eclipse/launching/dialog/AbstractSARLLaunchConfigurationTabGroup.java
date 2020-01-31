@@ -57,7 +57,7 @@ public abstract class AbstractSARLLaunchConfigurationTabGroup extends AbstractLa
 	}
 
 	@Override
-	protected void setTabs(ILaunchConfigurationTab[] tabs) {
+	protected void setTabs(ILaunchConfigurationTab... tabs) {
 		//Override the function for automatic injection within the tabs.
 		if (this.injector != null) {
 			for (final ILaunchConfigurationTab tab : tabs) {
