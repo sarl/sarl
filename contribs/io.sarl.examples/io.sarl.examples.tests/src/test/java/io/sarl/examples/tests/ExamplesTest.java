@@ -92,6 +92,9 @@ public class ExamplesTest extends AbstractSarlTest {
 
 	private static final String MAVEN_COMMAND = "mvn"; //$NON-NLS-1$
 
+	// TODO Remove this definition when moving to Java 9 or higher (because JavaFX is mavenized)
+	private static final String DEFAULT_JAVAFX_PATH = "/home/sgalland/git/sarl/contribs/io.sarl.examples/io.sarl.examples.tests/../../../build-tools/libs/jfxrt.jar"; //$NON-NLS-1$
+
 	/** Replies the archives for the examples.
 	 *
 	 * @return the archive locations.
@@ -329,6 +332,10 @@ public class ExamplesTest extends AbstractSarlTest {
 		
 		final String[] command = new String[] {
 				MAVEN_COMMAND, "-q", "clean", "package"
+		};
+		// TODO Remove this definition when moving to JAva 9 or higher (because JavaFX is mavenized)
+		final String[] environmentVariables = new String[] {
+				"OPENJFX_LIB_PATH=" + DEFAULT_JAVAFX_PATH,
 		};
 		final Process p = Runtime.getRuntime().exec(command, environmentVariables, root);
 		p.waitFor();
