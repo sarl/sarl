@@ -44,7 +44,6 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.jdt.core.Flags;
 import org.eclipse.xtend.core.jvmmodel.XtendJvmModelInferrer;
 import org.eclipse.xtend.core.xtend.XtendFunction;
 import org.eclipse.xtend.core.xtend.XtendMember;
@@ -1457,7 +1456,7 @@ public final class Utils {
 			boolean firstRound = true;
 
 			for (final Field field : fields) {
-				if (!includeStaticField && Flags.isStatic(field.getModifiers())) {
+				if (!includeStaticField && Modifier.isStatic(field.getModifiers())) {
 					continue;
 				}
 				if (!firstRound) {
