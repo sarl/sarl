@@ -57,7 +57,7 @@ import io.sarl.lang.compiler.batch.OptimizationLevel;
  */
 final class MavenBatchCompiler implements IJavaBatchCompiler {
 
-	private static final String DEFAULT_COMPILER_VERSION = "3.6.2"; //$NON-NLS-1$
+	private static final String DEFAULT_COMPILER_VERSION = "3.8.1"; //$NON-NLS-1$
 
 	private static final String MAVEN_COMPILER_PLUGIN_GROUPID = "org.apache.maven.plugins"; //$NON-NLS-1$
 
