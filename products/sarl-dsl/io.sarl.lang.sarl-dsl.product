@@ -55,6 +55,7 @@
       <feature id="org.eclipse.wst.common_core.feature" installMode="root"/>
       <feature id="org.eclipse.ecf.core.ssl.feature" installMode="root"/>
       <feature id="org.eclipse.emf.mapping.ecore.editor.source" installMode="root"/>
+      <feature id="org.sonatype.tycho.m2e.feature" installMode="root"/>
       <feature id="org.eclipse.emf.ecore.xcore.ui" installMode="root"/>
       <feature id="org.eclipse.emf.ecore.xcore.source" installMode="root"/>
       <feature id="org.eclipse.equinox.p2.user.ui.source" installMode="root"/>
@@ -154,6 +155,8 @@
       <feature id="org.eclipse.emf.codegen.ecore.ui" installMode="root"/>
       <feature id="org.eclipse.emf.ecore.editor" installMode="root"/>
       <feature id="org.eclipse.emf.source" installMode="root"/>
+      <feature id="org.sonatype.m2e.mavenarchiver.feature" installMode="root"/>
+      <feature id="org.jboss.tools.maven.apt.feature" installMode="root"/>
       <feature id="org.eclipse.emf.databinding" installMode="root"/>
       <feature id="org.eclipse.oomph.setup.core" installMode="root"/>
    </features>

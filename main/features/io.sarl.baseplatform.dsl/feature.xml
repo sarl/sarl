@@ -269,6 +269,26 @@ for the SARL DSL Environment
          id="org.eclipse.xtend.sdk"
          version="0.0.0"/>
 
+   <includes
+         id="org.eclipse.m2e.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.m2e.logback.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.sonatype.m2e.mavenarchiver.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.sonatype.tycho.m2e.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.jboss.tools.maven.apt.feature"
+         version="0.0.0"/>
+
    <requires>
       <import plugin="org.eclipse.swt" version="3.4.0" match="compatible"/>
       <import plugin="org.eclipse.emf.ecore.xmi"/>

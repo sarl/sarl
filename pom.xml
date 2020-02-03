@@ -84,7 +84,7 @@
 		<javaxinject.version>1</javaxinject.version>
 		<!-- Version of the Tycho module, (search for tycho-maven-plugin on Maven
 			central) -->
-		<tycho.version>1.4.0</tycho.version>
+		<tycho.version>1.6.0</tycho.version>
 		<!-- Version of the SWT library (search for  org.eclipse.platform:org.eclipse.swt.gtk.linux.x86_64) -->
 		<swt.version>3.113.0</swt.version>
 		<!-- Version of JavaFX (search for  org.openjfx:*) -->
@@ -690,7 +690,7 @@
 						<dependency>
 							<groupId>org.eclipse.tycho</groupId>
 							<artifactId>tycho-compiler-jdt</artifactId>
-							<version>1.4.0</version>
+							<version>${tycho.version}</version>
 						</dependency>
 					</dependencies>
 				</plugin>
