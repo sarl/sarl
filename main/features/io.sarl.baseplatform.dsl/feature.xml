@@ -289,6 +289,10 @@ for the SARL DSL Environment
          id="org.jboss.tools.maven.apt.feature"
          version="0.0.0"/>
 
+   <includes
+         id="net.sf.eclipsecs"
+         version="0.0.0"/>
+
    <requires>
       <import plugin="org.eclipse.swt" version="3.4.0" match="compatible"/>
       <import plugin="org.eclipse.emf.ecore.xmi"/>
