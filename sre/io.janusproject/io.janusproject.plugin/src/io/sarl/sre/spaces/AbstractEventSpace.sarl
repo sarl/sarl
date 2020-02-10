@@ -38,6 +38,7 @@ import java.util.logging.Level
 import java.util.stream.Stream
 import javax.inject.Inject
 import org.eclipse.xtend.lib.annotations.Accessors
+import java.util.concurrent.ConcurrentLinkedDeque
 
 /** 
  * Abstract implementation of an event space.
@@ -129,7 +130,7 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 		assert id !== null
 		var participant : Participant = null
 
-		participant = this.internalParticipantStructure.remove(id)
+		participant = this.internalParticipantStructure.get(id)
 		if (participant !== null) {
 			return participant.address
 		}
@@ -197,17 +198,31 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 	 * @param scope the scope.
 	 * @return the matching participants.
 	 */
-	protected def getScopedParticipants(scope : Scope<? super Address>) : Stream<Participant> {
+	protected def getScopedParticipants(scope : Scope<? super Address>) : ConcurrentLinkedDeque<Participant> {
 		//TODO change the prototype of this function to replace stream by a concurrent collection
 		if (scope === null || scope === Scopes::allParticipants) {
-			return this.internalParticipantStructure.values.stream
+			
+			return new ConcurrentLinkedDeque(this.internalParticipantStructure.values);
 		}
 		if (scope instanceof AddressScope) {
-			return Stream.of(scope.addresses).map([it.lazyParticipant]).filter([it !== null])
+			//return Stream.of(scope.addresses).map([it.lazyParticipant]).filter([it !== null])
+			val scopedParticpants = new ConcurrentLinkedDeque();
+			for(t:scope.addresses) {
+				var p = t.lazyParticipant
+				if (p !== null) {
+					scopedParticpants.add(p)
+				}
+			}
+			return scopedParticpants
 		}
-		return this.internalParticipantStructure.values.stream.filter [
-			scope.matches(it.address)
-		]
+		// return this.internalParticipantStructure.values.stream.filter [scope.matches(it.address)]
+		val scopedParticpants = new ConcurrentLinkedDeque();
+		for(p : this.internalParticipantStructure.values) {
+			if (scope.matches(p.address)) {
+				scopedParticpants.add(p)
+			}
+		}
+		return scopedParticpants
 	}
 
 	/** 
