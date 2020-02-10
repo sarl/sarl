@@ -998,21 +998,6 @@
 										<ignore></ignore>
 									</action>
 								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>io.sarl.maven</groupId>
-										<artifactId>sarl-maven-plugin</artifactId>
-										<versionRange>[0.5.0,)</versionRange>
-										<goals>
-											<goal>initialize</goal>
-											<goal>compile</goal>
-											<goal>clean</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
 					</configuration>

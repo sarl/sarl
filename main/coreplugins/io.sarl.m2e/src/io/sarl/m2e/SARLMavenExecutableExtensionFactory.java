@@ -21,9 +21,8 @@
 
 package io.sarl.m2e;
 
-import org.osgi.framework.Bundle;
-
 import com.google.inject.Injector;
+import org.osgi.framework.Bundle;
 
 import io.sarl.eclipse.SARLEclipseExecutableExtensionFactory;
 import io.sarl.lang.ui.internal.LangActivator;
@@ -41,7 +40,7 @@ public class SARLMavenExecutableExtensionFactory extends SARLEclipseExecutableEx
 	protected Bundle getBundle() {
 		return SARLMavenEclipsePlugin.getDefault().getBundle();
 	}
-	
+
 	/** Replies the SARL injector.
 	 *
 	 * @return the injector.
