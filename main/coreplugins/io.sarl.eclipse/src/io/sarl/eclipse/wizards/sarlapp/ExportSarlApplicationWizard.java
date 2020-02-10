@@ -55,6 +55,7 @@ public class ExportSarlApplicationWizard extends FixedFatJarExportWizard {
 	/** Replies the data that describe the package.
 	 *
 	 * @return the package data.
+	 * @throws RuntimeException a runtime exception
 	 */
 	protected JarPackageData getJarPackageData() {
 		try {
@@ -67,6 +68,7 @@ public class ExportSarlApplicationWizard extends FixedFatJarExportWizard {
 	/** Replies the structured selection.
 	 *
 	 * @return the selection.
+	 * @throws RuntimeException a runtime exception
 	 */
 	protected IStructuredSelection getStructuredSelection() {
 		try {

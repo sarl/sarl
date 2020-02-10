@@ -22,7 +22,6 @@
 package io.sarl.lang.bugfixes.unpublished;
 
 import java.util.List;
-
 import javax.inject.Singleton;
 
 import org.eclipse.emf.ecore.EObject;

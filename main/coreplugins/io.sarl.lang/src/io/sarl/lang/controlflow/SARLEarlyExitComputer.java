@@ -24,7 +24,6 @@ package io.sarl.lang.controlflow;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-
 import javax.inject.Inject;
 
 import com.google.inject.Singleton;

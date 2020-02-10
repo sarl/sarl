@@ -22,7 +22,6 @@
 package io.sarl.lang.scoping;
 
 import java.util.List;
-
 import javax.inject.Inject;
 
 import com.google.inject.Singleton;

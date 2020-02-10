@@ -24,7 +24,6 @@ package io.sarl.lang.ui.extralanguage.preferences;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import javax.inject.Inject;
 
 import org.eclipse.core.resources.IProject;

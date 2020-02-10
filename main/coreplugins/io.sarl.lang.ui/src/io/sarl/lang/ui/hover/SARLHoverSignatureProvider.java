@@ -22,7 +22,6 @@
 package io.sarl.lang.ui.hover;
 
 import java.text.MessageFormat;
-
 import javax.inject.Inject;
 
 import org.eclipse.emf.ecore.EObject;

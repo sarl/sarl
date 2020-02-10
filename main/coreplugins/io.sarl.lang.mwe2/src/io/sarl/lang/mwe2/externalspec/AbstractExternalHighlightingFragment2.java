@@ -37,7 +37,6 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
-
 import javax.inject.Named;
 
 import com.google.inject.Inject;
@@ -639,6 +638,7 @@ public abstract class AbstractExternalHighlightingFragment2<T extends IStyleAppe
 	 * @param basename the basename of the file.
 	 * @param content the content of the style file.
 	 * @param outputDirectoryFilter the output directory.
+	 * @throws RuntimeException a runtime exception
 	 * @since 0.6
 	 */
 	protected void writeFile(String basename, byte[] content,

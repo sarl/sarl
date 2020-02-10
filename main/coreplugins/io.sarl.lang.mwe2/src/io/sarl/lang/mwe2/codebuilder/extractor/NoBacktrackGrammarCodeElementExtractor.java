@@ -24,7 +24,6 @@ package io.sarl.lang.mwe2.codebuilder.extractor;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.inject.Singleton;
 
 import com.google.common.collect.Iterables;

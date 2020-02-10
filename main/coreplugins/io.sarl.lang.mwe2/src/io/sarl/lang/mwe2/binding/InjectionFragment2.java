@@ -23,7 +23,6 @@ package io.sarl.lang.mwe2.binding;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Inject;
 
 import com.google.inject.Injector;

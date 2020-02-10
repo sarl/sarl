@@ -41,7 +41,6 @@ import java.util.Properties;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javax.inject.Named;
 
 import com.google.common.base.Strings;
@@ -864,6 +863,7 @@ public class SarlDocumentationParser {
 	 *
 	 * @param context the parsing context.
 	 * @return {@code true} if a special tag was found.
+	 * @throws ParsingException a runtime exception
 	 */
 	protected boolean parse(ParsingContext context) {
 		try {

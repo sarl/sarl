@@ -22,7 +22,6 @@
 package io.sarl.eclipse.launching.dialog;
 
 import java.lang.ref.SoftReference;
-
 import javax.inject.Inject;
 
 import org.eclipse.debug.core.ILaunchConfiguration;

@@ -22,7 +22,6 @@
 package io.sarl.pythongenerator.generator.validator;
 
 import java.text.MessageFormat;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

@@ -24,7 +24,6 @@ package io.sarl.eclipse.launching.config;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import javax.inject.Singleton;
 
 import com.google.common.base.Strings;

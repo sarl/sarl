@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
-
 import javax.inject.Inject;
 
 import org.eclipse.xtend.core.xtend.AnonymousClass;

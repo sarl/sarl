@@ -24,7 +24,6 @@ import java.io.ByteArrayOutputStream;
 import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
-
 import javax.inject.Inject;
 
 import org.eclipse.core.resources.IFile;

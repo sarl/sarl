@@ -217,6 +217,7 @@ public class SarlClassPathDetector implements IResourceProxyVisitor {
 	 * Detect the classpath components.
 	 *
 	 * @throws CoreException in case of any failure.
+	 * @throws OperationCanceledException a runtime exception
 	 */
 	@SuppressWarnings("checkstyle:magicnumber")
 	protected void detectClasspath() throws CoreException {

@@ -22,7 +22,6 @@
 package io.sarl.lang.ui.labeling;
 
 import java.text.MessageFormat;
-
 import javax.inject.Inject;
 
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;

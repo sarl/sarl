@@ -23,7 +23,6 @@ package io.sarl.lang.tests.modules.formatting2;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Collections;
-
 import javax.inject.Inject;
 
 import org.eclipse.emf.common.util.URI;

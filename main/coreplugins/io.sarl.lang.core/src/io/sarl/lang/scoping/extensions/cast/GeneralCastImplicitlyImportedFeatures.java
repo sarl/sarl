@@ -22,7 +22,6 @@
 package io.sarl.lang.scoping.extensions.cast;
 
 import java.util.List;
-
 import javax.inject.Singleton;
 
 /** Provide static functions related to the casting for primitive types that are not numbers.

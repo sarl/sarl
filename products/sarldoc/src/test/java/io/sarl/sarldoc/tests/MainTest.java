@@ -33,7 +33,6 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.Iterator;
-
 import javax.annotation.Nullable;
 
 import org.arakhne.afc.vmutil.ClasspathUtil;

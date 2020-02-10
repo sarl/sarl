@@ -24,7 +24,6 @@ package io.sarl.lang.ui.codebuilder;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-
 import javax.inject.Inject;
 
 import com.google.common.collect.Iterables;

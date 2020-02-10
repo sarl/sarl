@@ -431,6 +431,7 @@ public abstract class AbstractMarkerLanguageParser {
 		 *
 		 * @param anchor the anchor to validate.
 		 * @return the validated anchor text.
+		 * @throws InvalidAnchorLabelException a runtime exception
 		 */
 		public String validateAnchor(String anchor) {
 			if (!this.anchorToTitle.containsKey(anchor)) {

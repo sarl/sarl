@@ -24,7 +24,6 @@ package io.sarl.sarldoc.modules.internal;
 import static io.bootique.BQCoreModule.extend;
 
 import java.text.MessageFormat;
-
 import javax.inject.Provider;
 import javax.inject.Singleton;
 

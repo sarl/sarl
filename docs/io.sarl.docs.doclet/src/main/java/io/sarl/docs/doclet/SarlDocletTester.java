@@ -42,6 +42,7 @@ public final class SarlDocletTester {
 	/** Run the Javadoc generator.
 	 *
 	 * @param args arguments.
+	 * @throws RuntimeException a runtime exception.
 	 */
 	@SuppressWarnings("checkstyle:all")
 	public static void main(String[] args) {

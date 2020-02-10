@@ -55,6 +55,7 @@ public final class Reflect {
 	 * @param type the type in which the field is declared.
 	 * @param fieldName the name of the field.
 	 * @param fieldValue the value of the field.
+	 * @throws Error a runtime exception.
 	 */
 	public static void setField(Object instance, Class<?> type, String fieldName, Object fieldValue) {
 		try {
@@ -73,6 +74,7 @@ public final class Reflect {
 	 * @param methodName the name of the method.
 	 * @param types the types of the parameters.
 	 * @param args the values of the arguments.
+	 * @throws Error a runtime exception.
 	 */
 	public static void callProc(Object instance, Class<?> type, String methodName, Class<?>[] types, Object... args) {
 		try {
@@ -94,6 +96,7 @@ public final class Reflect {
 	 * @param types the types of the parameters.
 	 * @param args the values of the arguments.
 	 * @return the value.
+	 * @throws Error a runtime exception.
 	 */
 	public static <R> R callFunc(Object instance, Class<?> type, Class<R> returnType,
 			String methodName, Class<?>[] types, Object... args) {
@@ -114,6 +117,7 @@ public final class Reflect {
 	 * @param clazz the container type.
 	 * @param fieldType the field type.
 	 * @return the value.
+	 * @throws Error a runtime exception.
 	 */
 	public static <T> T getField(Object obj, String string, Class<?> clazz, Class<T> fieldType) {
 		try {
@@ -132,6 +136,7 @@ public final class Reflect {
 	 * @param type the type of the objects.
 	 * @param dest the destination.
 	 * @param source the source.
+	 * @throws Error a runtime exception.
 	 */
 	public static <T> void copyFields(Class<T> type, T dest, T source) {
 		Class<?> clazz = type;

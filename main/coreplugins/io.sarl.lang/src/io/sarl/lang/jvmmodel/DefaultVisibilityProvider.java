@@ -23,7 +23,6 @@ package io.sarl.lang.jvmmodel;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
 import javax.inject.Inject;
 
 import org.eclipse.emf.ecore.EClass;
@@ -48,6 +47,7 @@ public class DefaultVisibilityProvider implements IDefaultVisibilityProvider {
 	private SarlJvmModelAssociations associations;
 
 	/** Constructor.
+	 * @throws RuntimeException a runtime exception
 	 */
 	public DefaultVisibilityProvider() {
 		try {

@@ -24,7 +24,6 @@ package io.sarl.lang.ui.extralanguage.validation;
 import java.lang.ref.SoftReference;
 import java.util.Collections;
 import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

@@ -22,7 +22,6 @@
 package io.sarl.lang.ui.labeling;
 
 import java.lang.reflect.Method;
-
 import javax.inject.Singleton;
 
 import com.google.inject.Inject;

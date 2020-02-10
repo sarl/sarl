@@ -117,6 +117,7 @@ public class Tag {
 	 *
 	 * @param text the string to parse.
 	 * @return the tag.
+	 * @throws NullPointerException when the specified text is null
 	 */
 	@JsonCreator
 	public static Tag valueOf(String text) {

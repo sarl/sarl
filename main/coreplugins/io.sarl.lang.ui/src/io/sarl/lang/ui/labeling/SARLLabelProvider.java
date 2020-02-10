@@ -23,7 +23,6 @@ package io.sarl.lang.ui.labeling;
 
 import java.util.Collections;
 import java.util.concurrent.locks.ReentrantLock;
-
 import javax.inject.Singleton;
 
 import com.google.common.base.Strings;

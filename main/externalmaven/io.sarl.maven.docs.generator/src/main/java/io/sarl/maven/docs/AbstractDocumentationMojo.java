@@ -250,6 +250,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	 *
 	 * @param files the map from source file to the source folder.
 	 * @return the error message
+	 * @throws UnsupportedOperationException a runtime exception.
 	 */
 	@SuppressWarnings("static-method")
 	protected String internalExecute(Map<File, File> files) {
@@ -292,6 +293,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	 * @param outputFolder the output folder.
 	 * @param parser the parser to be used for reading the input file.
 	 * @throws IOException if there is some issue with IO.
+	 * @throws UnsupportedOperationException a runtime exception.
 	 */
 	@SuppressWarnings("static-method")
 	protected void internalExecute(File sourceFolder, File inputFile, File relativeInputFile, File outputFolder,

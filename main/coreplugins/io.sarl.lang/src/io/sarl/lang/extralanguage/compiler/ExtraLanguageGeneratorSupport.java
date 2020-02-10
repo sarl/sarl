@@ -23,7 +23,6 @@ package io.sarl.lang.extralanguage.compiler;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.inject.Named;
 
 import com.google.inject.Inject;

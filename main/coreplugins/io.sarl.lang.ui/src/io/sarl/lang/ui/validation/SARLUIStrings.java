@@ -22,7 +22,6 @@
 package io.sarl.lang.ui.validation;
 
 import java.util.Iterator;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

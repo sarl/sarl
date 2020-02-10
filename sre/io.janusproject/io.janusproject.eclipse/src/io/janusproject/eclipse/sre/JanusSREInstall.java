@@ -27,7 +27,6 @@ import java.util.Map;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
-
 import org.eclipse.core.runtime.IPath;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

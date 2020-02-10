@@ -26,7 +26,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-
 import javax.inject.Inject;
 
 import org.eclipse.core.resources.IProject;
@@ -75,6 +74,7 @@ public class SARLEditorErrorTickUpdater extends XtendEditorErrorTickUpdater {
 	 * Replies the editor that is linked to this updater.
 	 *
 	 * @return the linked editor, or {@code null} if no editor was linked.
+	 * @throws RuntimeException a runtime exception
 	 */
 	protected XtextEditor getEditor() {
 		// FIXME: Remove when Xbase is fixed.

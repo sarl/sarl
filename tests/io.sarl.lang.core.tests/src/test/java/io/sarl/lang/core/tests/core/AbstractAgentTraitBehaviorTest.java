@@ -25,7 +25,6 @@ import static org.junit.Assert.assertSame;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
-
 import javax.inject.Inject;
 
 import com.google.common.base.Throwables;

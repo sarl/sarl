@@ -49,7 +49,6 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
-
 import javax.inject.Provider;
 
 import com.google.common.base.CharMatcher;

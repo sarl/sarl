@@ -24,7 +24,6 @@ package io.sarl.sarldoc.commands;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import javax.inject.Provider;
 
 import io.bootique.cli.Cli;

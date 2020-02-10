@@ -24,7 +24,6 @@
 package io.sarl.lang.scoping.extensions.numbers.arithmetic;
 
 import java.util.List;
-
 import javax.inject.Singleton;
 
 /** Provide static functions related to the arithmetic of numbers.

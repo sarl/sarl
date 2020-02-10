@@ -23,7 +23,6 @@ package io.sarl.lang.formatting2;
 
 import java.util.Collections;
 import java.util.List;
-
 import javax.inject.Named;
 
 import com.google.inject.Inject;

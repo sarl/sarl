@@ -318,6 +318,7 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 	 * Sets the name of the new project.
 	 *
 	 * @param name the new name
+	 * @throws IllegalArgumentException a runtime exception
 	 */
 	public void setProjectName(String name) {
 		if (name == null) {
@@ -421,6 +422,7 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 	 * Sets the working sets to which the new project should be added.
 	 *
 	 * @param workingSets the initial selected working sets
+	 * @throws IllegalArgumentException a runtime exception
 	 */
 	public void setWorkingSets(IWorkingSet[] workingSets) {
 		if (workingSets == null) {

@@ -30,7 +30,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
-
 import javax.inject.Inject;
 
 import com.google.common.collect.Lists;

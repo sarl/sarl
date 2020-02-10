@@ -23,7 +23,6 @@ package io.sarl.lang.extralanguage.validator;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Inject;
 
 import org.eclipse.emf.ecore.EObject;

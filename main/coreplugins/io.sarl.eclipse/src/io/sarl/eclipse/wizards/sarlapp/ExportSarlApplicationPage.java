@@ -24,7 +24,6 @@ package io.sarl.eclipse.wizards.sarlapp;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Inject;
 
 import org.eclipse.core.resources.IProject;

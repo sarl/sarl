@@ -29,7 +29,6 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
-
 import javax.inject.Inject;
 
 import org.eclipse.emf.common.notify.impl.AdapterImpl;

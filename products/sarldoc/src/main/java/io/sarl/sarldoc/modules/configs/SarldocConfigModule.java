@@ -35,7 +35,6 @@ import static io.sarl.sarldoc.configs.SarldocConfig.TITLE_NAME;
 import static io.sarl.sarldoc.configs.SarldocConfig.VISIBILITY_NAME;
 
 import java.text.MessageFormat;
-
 import javax.inject.Singleton;
 
 import com.google.inject.AbstractModule;

@@ -43,7 +43,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
-
 import javax.inject.Provider;
 
 import com.google.common.base.Joiner;

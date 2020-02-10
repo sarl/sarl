@@ -22,7 +22,6 @@
 package io.sarl.lang.ui.extralanguage.preferences;
 
 import java.util.Map;
-
 import javax.inject.Inject;
 
 import org.eclipse.core.resources.IProject;

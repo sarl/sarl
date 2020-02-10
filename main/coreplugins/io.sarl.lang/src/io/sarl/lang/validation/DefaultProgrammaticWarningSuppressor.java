@@ -24,7 +24,6 @@ package io.sarl.lang.validation;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
 import javax.inject.Singleton;
 
 import org.eclipse.emf.ecore.EObject;

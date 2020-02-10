@@ -78,6 +78,7 @@ public enum ProgressBarStyle {
 	 *
 	 * @param name the string to parse.
 	 * @return the progress bar style.
+	 * @throws NullPointerException when the specified name is null
 	 */
 	@JsonCreator
 	public static ProgressBarStyle valueOfCaseInsensitive(String name) {

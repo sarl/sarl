@@ -23,7 +23,6 @@ package io.sarl.lang.ui.extralanguage.compiler;
 
 import java.lang.ref.SoftReference;
 import java.util.Collections;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

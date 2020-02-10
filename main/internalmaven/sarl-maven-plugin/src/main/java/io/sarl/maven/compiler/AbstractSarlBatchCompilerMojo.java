@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
-
 import javax.inject.Provider;
 
 import com.google.common.collect.Iterables;

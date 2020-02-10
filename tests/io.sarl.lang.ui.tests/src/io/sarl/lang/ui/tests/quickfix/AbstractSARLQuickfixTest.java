@@ -33,7 +33,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
-
 import javax.inject.Inject;
 
 import org.arakhne.afc.text.TextUtil;

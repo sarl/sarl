@@ -23,7 +23,6 @@ package io.sarl.lang.mwe2.codebuilder.fragments;
 
 import java.util.Iterator;
 import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Provider;
 

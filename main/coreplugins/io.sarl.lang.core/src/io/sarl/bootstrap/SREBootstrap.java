@@ -128,6 +128,7 @@ public interface SREBootstrap {
 	 * <p>This function has no effect if the agent framework is already launched.
 	 *
 	 * @param isOffline the offline flag.
+	 * @throws UnsupportedOperationException a runtime exception
 	 * @since 0.7
 	 */
 	default void setOffline(boolean isOffline) {
@@ -139,6 +140,7 @@ public interface SREBootstrap {
 	 *
 	 * <p>This function has no effect if the agent framework is already launched.
 	 *
+	 * @throws UnsupportedOperationException a runtime exception
 	 * @since 0.7
 	 */
 	default void setRandomContextUUID() {
@@ -151,6 +153,7 @@ public interface SREBootstrap {
 	 *
 	 * <p>This function has no effect if the agent framework is already launched.
 	 *
+	 * @throws UnsupportedOperationException a runtime exception
 	 * @since 0.7
 	 */
 	default void setBootAgentTypeContextUUID() {
@@ -179,6 +182,7 @@ public interface SREBootstrap {
 	 *
 	 * <p>This function has no effect if the agent framework is already launched.
 	 *
+	 * @throws UnsupportedOperationException a runtime exception
 	 * @since 0.9
 	 * @see #setUniverseContextUUID(UUID)
 	 * @see #getUniverseContextUUID()
@@ -196,6 +200,7 @@ public interface SREBootstrap {
 	 * <p>This function has no effect if the agent framework is already launched.
 	 *
 	 * @param id the identifier, or {@code null} if the default identifier should be used.
+	 * @throws UnsupportedOperationException a runtime exception
 	 * @since 0.9
 	 */
 	default void setUniverseContextUUID(UUID id) {
@@ -208,6 +213,7 @@ public interface SREBootstrap {
 	 * <p>This function has no effect if the agent framework is already launched.
 	 *
 	 * @return the identifier, or {@code null} if no identifier is provided by the user and the default identifier should be used.
+	 * @throws UnsupportedOperationException a runtime exception
 	 * @since 0.9
 	 */
 	@Pure
@@ -222,6 +228,7 @@ public interface SREBootstrap {
 	 * <p>This function has no effect if the agent framework is already launched.
 	 *
 	 * @param id the identifier, or {@code null} if the default identifier should be used.
+	 * @throws UnsupportedOperationException a runtime exception
 	 * @since 0.9
 	 */
 	default void setUniverseSpaceUUID(UUID id) {
@@ -234,6 +241,7 @@ public interface SREBootstrap {
 	 * <p>This function has no effect if the agent framework is already launched.
 	 *
 	 * @return the identifier, or {@code null} if no identifier is provided by the user and the default identifier should be used.
+	 * @throws UnsupportedOperationException a runtime exception
 	 * @since 0.9
 	 */
 	@Pure
@@ -247,6 +255,7 @@ public interface SREBootstrap {
 	 * <p>This function has no effect if the agent framework is already launched.
 	 *
 	 * @param level the verbosity level.
+	 * @throws UnsupportedOperationException a runtime exception
 	 * @since 0.7
 	 */
 	default void setVerboseLevel(int level) {

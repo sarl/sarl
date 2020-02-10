@@ -109,7 +109,6 @@
 		<module name="JavadocMethod">
 			<property name="scope" value="package" />
 			<property name="validateThrows" value="true" />
-			<property name="allowUndeclaredRTE" value="true" />
 		</module>
 
 		<!-- Every public/protected/package fields must have a documentation. -->

@@ -24,7 +24,6 @@ package io.sarl.lang.extralanguage.compiler;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
-
 import javax.inject.Inject;
 
 import io.sarl.lang.core.Agent;

@@ -96,6 +96,7 @@ public class SARLPackageExplorerPart extends PackageExplorerPart {
 	 *
 	 * @param reflect the reflection utilities.
 	 * @param builder the builder.
+	 * @throws Error a runtime exception.
 	 */
 	@Inject
 	public SARLPackageExplorerPart(ReflectExtensions reflect, IPackageExplorerLabelProviderBuilder builder) {
@@ -124,6 +125,7 @@ public class SARLPackageExplorerPart extends PackageExplorerPart {
 	/** Replies the dialog settings for this view.
 	 *
 	 * @return the settings.
+	 * @throws Error a runtime exception.
 	 */
 	protected IDialogSettings getDialogSettings() {
 		try {
@@ -193,6 +195,7 @@ public class SARLPackageExplorerPart extends PackageExplorerPart {
 	}
 
 	/** Reset the label provider for using the SARL one.
+	 * @throws Error a runtime exception.
 	 */
 	protected void internalResetLabelProvider() {
 		try {
@@ -212,6 +215,7 @@ public class SARLPackageExplorerPart extends PackageExplorerPart {
 	/** Replies the label provider.
 	 *
 	 * @return the label provider.
+	 * @throws Error a runtime exception.
 	 */
 	protected PackageExplorerLabelProvider getLabelProvider() {
 		try {
@@ -224,6 +228,7 @@ public class SARLPackageExplorerPart extends PackageExplorerPart {
 	/** Replies the viewer.
 	 *
 	 * @return the viewer.
+	 * @throws Error a runtime exception.
 	 */
 	protected ProblemTreeViewer getViewer() {
 		try {
@@ -236,6 +241,7 @@ public class SARLPackageExplorerPart extends PackageExplorerPart {
 	/** Replies the label provider.
 	 *
 	 * @return the label provider.
+	 * @throws Error a runtime exception.
 	 */
 	protected PackageExplorerContentProvider getContentProvider() {
 		try {

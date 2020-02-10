@@ -29,7 +29,6 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.osgi.framework.Bundle;
 
 import io.janusproject.eclipse.JanusEclipsePlugin;
-
 import io.sarl.eclipse.buildpath.AbstractSARLBasedClasspathContainer;
 import io.sarl.eclipse.buildpath.SARLClasspathContainer;
 import io.sarl.eclipse.util.BundleUtil;

@@ -22,7 +22,6 @@
 package io.sarl.lang.mwe2.codebuilder.fragments;
 
 import java.util.Collections;
-
 import javax.inject.Inject;
 
 import org.eclipse.emf.ecore.EClassifier;

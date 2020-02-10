@@ -22,7 +22,6 @@
 package io.sarl.eclipse.wizards.newfile;
 
 import java.io.InputStream;
-
 import javax.inject.Inject;
 
 import org.eclipse.core.resources.IProject;

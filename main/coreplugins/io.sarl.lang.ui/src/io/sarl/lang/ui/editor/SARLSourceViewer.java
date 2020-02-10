@@ -22,7 +22,6 @@
 package io.sarl.lang.ui.editor;
 
 import java.lang.reflect.Field;
-
 import javax.inject.Inject;
 
 import com.google.inject.MembersInjector;

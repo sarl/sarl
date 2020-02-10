@@ -24,7 +24,6 @@ package io.sarl.lang.mwe2.binding;
 import java.lang.reflect.Method;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
 import javax.inject.Inject;
 
 import com.google.common.annotations.Beta;

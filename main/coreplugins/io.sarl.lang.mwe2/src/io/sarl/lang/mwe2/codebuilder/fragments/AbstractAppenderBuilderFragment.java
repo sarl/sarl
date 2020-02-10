@@ -24,7 +24,6 @@ package io.sarl.lang.mwe2.codebuilder.fragments;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Map;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

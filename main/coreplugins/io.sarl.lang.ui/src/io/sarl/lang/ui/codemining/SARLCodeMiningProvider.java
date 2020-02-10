@@ -24,7 +24,6 @@ package io.sarl.lang.ui.codemining;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-
 import javax.inject.Inject;
 
 import org.eclipse.core.runtime.IProgressMonitor;

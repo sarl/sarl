@@ -52,6 +52,7 @@ public enum RootContextType {
 	 *
 	 * @param name the string to parse.
 	 * @return the type.
+	 * @throws NullPointerException when the specified name is null
 	 */
 	@JsonCreator
 	public static RootContextType valueOfCaseInsensitive(String name) {

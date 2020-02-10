@@ -22,7 +22,6 @@
 package io.sarl.lang.scoping.extensions.numbers.comparison;
 
 import java.util.List;
-
 import javax.inject.Singleton;
 
 /** Provide static functions related to the comparison of numbers.

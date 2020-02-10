@@ -71,6 +71,7 @@ public enum JavaCompiler {
 	 *
 	 * @param name the string to parse.
 	 * @return the java compiler.
+	 * @throws NullPointerException when the specified name is null
 	 */
 	@JsonCreator
 	public static JavaCompiler valueOfCaseInsensitive(String name) {

@@ -23,7 +23,6 @@ package io.sarl.lang.mwe2.codebuilder.fragments;
 
 import java.lang.reflect.Type;
 import java.util.Map;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Provider;

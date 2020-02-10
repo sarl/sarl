@@ -63,6 +63,7 @@ public enum Visibility {
 	 *
 	 * @param name the string to parse.
 	 * @return the visibility.
+	 * @throws NullPointerException when the specified name is null
 	 */
 	@JsonCreator
 	public static Visibility valueOfCaseInsensitive(String name) {

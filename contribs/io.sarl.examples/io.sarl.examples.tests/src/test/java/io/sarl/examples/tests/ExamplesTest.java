@@ -93,7 +93,7 @@ public class ExamplesTest extends AbstractSarlTest {
 	private static final String MAVEN_COMMAND = "mvn"; //$NON-NLS-1$
 
 	// TODO Remove this definition when moving to Java 9 or higher (because JavaFX is mavenized)
-	private static final String DEFAULT_JAVAFX_PATH = "/home/sgalland/git/sarl/contribs/io.sarl.examples/io.sarl.examples.tests/../../../build-tools/libs/jfxrt.jar"; //$NON-NLS-1$
+	private static final String DEFAULT_JAVAFX_PATH = "/mnt/data/workspaces/workspace-janus-merge/sarl/contribs/io.sarl.examples/io.sarl.examples.tests/../../../build-tools/libs/jfxrt.jar"; //$NON-NLS-1$
 
 	/** Replies the archives for the examples.
 	 *

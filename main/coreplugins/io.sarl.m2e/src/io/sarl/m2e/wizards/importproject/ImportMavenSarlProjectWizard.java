@@ -61,6 +61,7 @@ public class ImportMavenSarlProjectWizard extends MavenImportWizard {
 	/** Replies the main configuration page.
 	 *
 	 * @return the main configuration page.
+	 * @throws RuntimeException a runtime exception.
 	 */
 	protected MavenImportWizardPage getMavenImportWizardPage() {
 		if (this.mainPageBuffer == null) {

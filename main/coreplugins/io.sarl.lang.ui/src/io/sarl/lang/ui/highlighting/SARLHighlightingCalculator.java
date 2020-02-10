@@ -22,7 +22,6 @@
 package io.sarl.lang.ui.highlighting;
 
 import java.util.Map;
-
 import javax.inject.Inject;
 
 import org.eclipse.xtend.ide.common.highlighting.XtendHighlightingCalculator;

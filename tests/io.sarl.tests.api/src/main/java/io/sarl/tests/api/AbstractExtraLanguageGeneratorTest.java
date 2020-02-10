@@ -22,7 +22,6 @@ package io.sarl.tests.api;
 
 import java.io.IOException;
 import java.util.Map;
-
 import javax.inject.Inject;
 
 import org.eclipse.xtext.generator.IFileSystemAccess;

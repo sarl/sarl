@@ -22,7 +22,6 @@
 package io.sarl.lang.typesystem;
 
 import java.util.regex.Pattern;
-
 import javax.inject.Singleton;
 
 import org.eclipse.xtend.core.xtend.XtendFunction;

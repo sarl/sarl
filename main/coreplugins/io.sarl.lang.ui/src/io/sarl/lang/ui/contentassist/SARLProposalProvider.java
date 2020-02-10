@@ -22,7 +22,6 @@
 package io.sarl.lang.ui.contentassist;
 
 import java.util.Objects;
-
 import javax.inject.Inject;
 
 import com.google.common.base.Strings;

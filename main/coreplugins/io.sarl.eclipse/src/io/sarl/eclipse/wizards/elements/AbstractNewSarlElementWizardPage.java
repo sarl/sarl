@@ -34,7 +34,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -428,6 +427,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * </ul>
 	 *
 	 * @return the error message.
+	 * @throws UnsupportedOperationException a runtime exception
 	 */
 	@SuppressWarnings("static-method")
 	protected String getInvalidSubtypeErrorMessage() {
@@ -442,6 +442,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * </ul>
 	 *
 	 * @return the error message.
+	 * @throws UnsupportedOperationException a runtime exception
 	 */
 	@SuppressWarnings("static-method")
 	protected String getInvalidInterfaceTypeErrorMessage() {
@@ -456,6 +457,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * </ul>
 	 *
 	 * @return the error message.
+	 * @throws UnsupportedOperationException a runtime exception
 	 */
 	@SuppressWarnings("static-method")
 	protected String getMissedSuperInterfaceErrorMessage() {
@@ -670,7 +672,8 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	/** Replies the allowed root super type for the created type.
 	 *
 	 * @return the allowed root super type.
-	 * @throws JavaModelException - when the Java model cannot enable to retreive the root type.
+	 * @throws JavaModelException - when the Java model cannot enable to retrieve the root type.
+	 * @throws UnsupportedOperationException a runtime exception
 	 */
 	@SuppressWarnings("static-method")
 	protected IType getRootSuperType() throws JavaModelException {
@@ -680,7 +683,8 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	/** Replies the allowed root super interface for the created type.
 	 *
 	 * @return the allowed root super interface.
-	 * @throws JavaModelException - when the Java model cannot enable to retreive the root type.
+	 * @throws JavaModelException - when the Java model cannot enable to retrieve the root type.
+	 * @throws UnsupportedOperationException a runtime exception
 	 */
 	@SuppressWarnings("static-method")
 	protected IType getRootSuperInterface() throws JavaModelException {

@@ -31,7 +31,6 @@ import java.util.Objects;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javax.inject.Inject;
 
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;

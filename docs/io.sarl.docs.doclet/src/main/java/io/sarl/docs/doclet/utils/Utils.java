@@ -399,6 +399,7 @@ public final class Utils {
 	 *
 	 * @param filename the file to copy.
 	 * @param configuration the configuration.
+	 * @throws DocletAbortException a runtime exception.
 	 */
 	public static void performCopy(String filename, SarlConfiguration configuration) {
 		if (filename.isEmpty()) {

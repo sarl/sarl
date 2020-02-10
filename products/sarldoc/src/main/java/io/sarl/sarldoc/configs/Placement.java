@@ -116,6 +116,7 @@ public enum Placement {
 	 *
 	 * @param name the string to parse.
 	 * @return the placement.
+	 * @throws NullPointerException when the specified name is null
 	 */
 	@JsonCreator
 	public static Placement valueOfCaseInsensitive(String name) {

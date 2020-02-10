@@ -22,7 +22,6 @@
 package io.sarl.lang.scoping.extensions.numbers.cast;
 
 import java.util.List;
-
 import javax.inject.Singleton;
 
 /** Provide static functions related to the casting of numbers.
