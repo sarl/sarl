@@ -102,10 +102,12 @@ public final class SARLPreferences {
 	 *
 	 * @param project the project.
 	 * @param outputPath the path where SARL compiler is generating the Java code.
+	 * @param testOutputPath the path where SARL compiler is generating the Java code for testing.
+	 * @since 0.11
 	 */
 	public static void setSpecificSARLConfigurationFor(
 			IProject project,
-			IPath outputPath) {
+			IPath outputPath, IPath testOutputPath) {
 		final IPreferenceStore preferenceStore = getSARLPreferencesFor(project);
 		// Force to use a specific configuration for the SARL
 		preferenceStore.setValue(IS_PROJECT_SPECIFIC, true);
@@ -113,12 +115,22 @@ public final class SARLPreferences {
 		// Loop on the Xtext configurations embedded in the SARL compiler.
 		String key;
 		for (final OutputConfiguration projectConfiguration : getXtextConfigurationsFor(project)) {
+			final String name = projectConfiguration.getName();
+
 			//
 			// OUTPUT PATH
 			key = BuilderPreferenceAccess.getKey(
 					projectConfiguration,
 					EclipseOutputConfigurationProvider.OUTPUT_DIRECTORY);
-			preferenceStore.setValue(key, outputPath.toOSString());
+			if (Objects.equals(name, SARLConfig.TEST_OUTPUT_CONFIGURATION)) {
+				if (testOutputPath != null) {
+					preferenceStore.setValue(key, testOutputPath.toOSString());
+				}
+			} else if (Objects.equals(name, IFileSystemAccess.DEFAULT_OUTPUT)) {
+				if (outputPath != null) {
+					preferenceStore.setValue(key, outputPath.toOSString());
+				}
+			}
 
 			//
 			// CREATE THE OUTPUT DIRECTORY

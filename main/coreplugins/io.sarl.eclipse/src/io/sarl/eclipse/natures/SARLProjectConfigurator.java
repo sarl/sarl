@@ -269,16 +269,19 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 			final OutParameter<IFolder[]> generationFolders = new OutParameter<>();
 			final OutParameter<IFolder[]> testGenerationFolders = new OutParameter<>();
 			final OutParameter<IFolder> generationFolder = new OutParameter<>();
+			final OutParameter<IFolder> testGenerationFolder = new OutParameter<>();
 			final OutParameter<IFolder> outputFolder = new OutParameter<>();
 			final OutParameter<IFolder> testOutputFolder = new OutParameter<>();
 			ensureSourceFolders(project, createFolders, subMonitor,
 					sourceFolders, testSourceFolders,
 					generationFolders, testGenerationFolders,
-					generationFolder,
+					generationFolder, testGenerationFolder,
 					outputFolder, testOutputFolder);
 
 			// SARL specific configuration
-			SARLPreferences.setSpecificSARLConfigurationFor(project, generationFolder.get().getProjectRelativePath());
+			SARLPreferences.setSpecificSARLConfigurationFor(project,
+					generationFolder.get().getProjectRelativePath(),
+					testGenerationFolder.get().getProjectRelativePath());
 			subMonitor.worked(1);
 
 			// Create the Java project
@@ -308,13 +311,14 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 		}
 	}
 
-	@SuppressWarnings("checkstyle:parameternumber")
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity"})
 	private static void ensureSourceFolders(IProject project, boolean createFolders, SubMonitor monitor,
 			OutParameter<IFolder[]> sourcePaths,
 			OutParameter<IFolder[]> testSourcePaths,
 			OutParameter<IFolder[]> generationPaths,
 			OutParameter<IFolder[]> testGenerationPaths,
 			OutParameter<IFolder> standardGenerationFolder,
+			OutParameter<IFolder> testingGenerationFolder,
 			OutParameter<IFolder> classOutput,
 			OutParameter<IFolder> testClassOutput) throws CoreException {
 		final IFolder sourceSarlFolder = ensureSourceFolder(project,
@@ -348,6 +352,9 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 		if (standardGenerationFolder != null) {
 			standardGenerationFolder.set(generationFolder);
 		}
+		if (testingGenerationFolder != null) {
+			testingGenerationFolder.set(testGenerationFolder);
+		}
 		if (classOutput != null) {
 			classOutput.set(outputFolder);
 		}
@@ -378,6 +385,7 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 			ensureSourceFolders(project, createFolders, subMonitor,
 					sourceFolders, testSourceFolders,
 					generationFolders, testGenerationFolders,
+					null,
 					null,
 					null,
 					testOutputFolder);
