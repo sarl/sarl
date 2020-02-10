@@ -57,6 +57,7 @@ import io.sarl.sre.tests.units.internal.mocks.MyAgent0
 import io.sarl.tests.api.AbstractSarlTest
 import io.sarl.tests.api.Nullable
 import java.util.UUID
+import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.logging.Logger
 import org.junit.Before
 import org.junit.Test
@@ -321,8 +322,11 @@ class PlatformEventEmittersTest {
 		
 		@Test
 		def agentSpawned {
+			var agentList = new ConcurrentLinkedDeque
+			agentList += agent1
+			agentList += agent2
 			this.emitter.agentSpawned(this.contextID, this.parent, typeof(IddleTestingAgent),
-					#[agent1, agent2], params);
+					agentList, params);
 			
 			var ^event = ArgumentCaptor::forClass(typeof(Event))
 			var scope = ArgumentCaptor::forClass(typeof(Scope))

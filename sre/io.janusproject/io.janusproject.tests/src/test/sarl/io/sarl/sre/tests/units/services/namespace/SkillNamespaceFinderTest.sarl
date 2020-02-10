@@ -42,6 +42,7 @@ import org.junit.Test
 
 import static org.mockito.ArgumentMatchers.*
 import static org.mockito.Mockito.*
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * @author $Author: sgalland$
@@ -96,7 +97,7 @@ class SkillNamespaceFinderTest extends AbstractSarlTest {
 		when(listener0.ownerInstance).thenReturn(this.ag0)
 		var participant0 = typeof(Participant).mock
 		when(participant0.participant).thenReturn(listener0)
-		var map0 = newHashMap
+		var map0 = new ConcurrentHashMap
 		map0.put(this.aid0, participant0)
 		var spc0 = typeof(MySpace).mock
 		when(spc0.internalParticipantStructure).thenReturn(map0)
@@ -111,7 +112,7 @@ class SkillNamespaceFinderTest extends AbstractSarlTest {
 		when(listener1.ownerInstance).thenReturn(this.ag1)
 		var participant1 = typeof(Participant).mock
 		when(participant1.participant).thenReturn(listener1)
-		var map1 = newHashMap
+		var map1 = new ConcurrentHashMap
 		map1.put(this.aid1, participant1)
 		this.sid1 = UUID::randomUUID
 		var spc1 = typeof(MySpace).mock

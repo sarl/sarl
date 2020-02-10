@@ -49,8 +49,9 @@ import io.sarl.sre.tests.units.services.lifecycle.mocks.InvalidMyAgent2
 import io.sarl.sre.tests.units.services.lifecycle.mocks.MyAgent0
 import io.sarl.sre.tests.units.services.lifecycle.mocks.MyEventBus
 import io.sarl.tests.api.Nullable
-import java.util.List
 import java.util.UUID
+import java.util.concurrent.ConcurrentLinkedDeque
+import java.util.concurrent.ConcurrentSkipListSet
 import javax.inject.Provider
 import org.junit.Before
 import org.junit.Test
@@ -58,7 +59,6 @@ import org.mockito.ArgumentCaptor
 
 import static org.mockito.ArgumentMatchers.any
 import static org.mockito.Mockito.verifyNoMoreInteractions
-import static org.mockito.Mockito.verifyZeroInteractions
 import static org.mockito.Mockito.when
 
 import static extension org.mockito.Mockito.verify
@@ -146,10 +146,10 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 		AgentLife::getLife(this.^agent).innerContext = innerContext
 		var ^space = typeof(OpenEventSpace).mock
 		when(innerContext.defaultSpace).thenReturn(^space)
-		var set = <UUID>newHashSet
+		var set = new ConcurrentSkipListSet<UUID>
 		set += this.agentId
 		set += ids
-		when(^space.participants).thenReturn(Collections3.unmodifiableSynchronizedSet(set))
+		when(^space.participants).thenReturn(set)
 	}
 
 	private def createOuterContext(^agent : Agent) : Context {
@@ -159,10 +159,10 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 		var ^space = typeof(OpenEventSpace).mock
 		when(context.defaultSpace).thenReturn(^space)
 		when(^space.spaceID).thenReturn(new SpaceID(contextId, UUID::randomUUID, typeof(OpenEventSpaceSpecification)))
-		var set = <UUID>newHashSet
+		var set = new ConcurrentSkipListSet<UUID>
 		set += this.agentId
 		set += #[^agent.ID]
-		when(^space.participants).thenReturn(Collections3.unmodifiableSynchronizedSet(set))
+		when(^space.participants).thenReturn(set)
 		return context
 	}
 
@@ -248,7 +248,7 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 		var capSpawningAgent = ArgumentCaptor::forClass(typeof(UUID))
 		var capParentContext = ArgumentCaptor::forClass(typeof(Context))
 		var capAgentType = ArgumentCaptor::forClass(typeof(Class))
-		var capAgents = ArgumentCaptor::forClass(typeof(List))
+		var capAgents = ArgumentCaptor::forClass(typeof(ConcurrentLinkedDeque))
 		var capParams = ArgumentCaptor::forClass(typeof(Object[]))
 		listener1.verify.agentSpawned(
 				capSpawningAgent.capture,
@@ -265,7 +265,7 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 		assertSame(this.agent2, agents.get(0))
 
 		// Kernel event.
-		verifyZeroInteractions(listener2)
+		verifyNoMoreInteractions(listener2)
 	}
 
 	@Test(expected = typeof(InvalidSarlSpecificationException))

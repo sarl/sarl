@@ -24,8 +24,8 @@ package io.sarl.sre.tests.units.skills.bic.mocks
 import io.sarl.core.AgentTask
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.Behavior
-import io.sarl.lang.util.SynchronizedSet
 import io.sarl.sre.capacities.InternalSchedules
+import java.util.concurrent.ConcurrentSkipListSet
 
 /**
  * @author $Author: sgalland$
@@ -35,7 +35,7 @@ import io.sarl.sre.capacities.InternalSchedules
  */
 skill MyInternalSchedulesSkill implements InternalSchedules {
 
-	override getActiveTasks : SynchronizedSet<String> {
+	override getActiveTasks : ConcurrentSkipListSet<String> {
 		null
 	}
 

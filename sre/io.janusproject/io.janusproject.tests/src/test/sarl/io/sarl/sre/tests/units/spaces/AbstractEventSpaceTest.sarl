@@ -37,7 +37,6 @@ import io.sarl.tests.api.ManualMocking
 import io.sarl.tests.api.Nullable
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentSkipListSet
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentCaptor
@@ -46,7 +45,7 @@ import org.mockito.Mock
 
 import static org.mockito.Mockito.doAnswer
 import static org.mockito.Mockito.verify
-import static org.mockito.Mockito.verifyZeroInteractions
+import static org.mockito.Mockito.verifyNoMoreInteractions
 import static org.mockito.Mockito.when
 
 import static extension org.mockito.ArgumentMatchers.any
@@ -82,7 +81,7 @@ abstract class AbstractEventSpaceTest extends AbstractSreTest {
 	@Mock
 	var executor : ExecutorService 
 
-	@Mock
+	@Nullable
 	var participants : ConcurrentHashMap<UUID, Participant> 
 
 	@InjectMocks
@@ -90,6 +89,8 @@ abstract class AbstractEventSpaceTest extends AbstractSreTest {
 
 	@Before
 	def setUp : void {
+		this.participants = new ConcurrentHashMap
+
 		this.agentId = UUID::randomUUID
 
 		this.agentId2 = UUID::randomUUID
@@ -127,12 +128,9 @@ abstract class AbstractEventSpaceTest extends AbstractSreTest {
 		var participant2 = typeof(Participant).mock
 		when(participant2.address).thenReturn(new Address(this.spaceId, this.agentId2))
 		when(participant2.participant).thenReturn(this.listener2)
-		var map0 = new ConcurrentHashMap
-		map0.put(this.agentId, participant1)
-		map0.put(this.agentId2, participant2)
-		when(this.participants.keySet).thenReturn(map0.keys)
-		when(this.participants.values).thenReturn(map0.values)
-		when(this.participants.size).thenReturn(2)
+		this.participants = this.participants.spy
+		this.participants.put(this.agentId, participant1)
+		this.participants.put(this.agentId2, participant2)
 		when(this.participants.remove(any)).thenReturn(participant1)
 		when(this.participants.get(any)).thenAnswer [
 			if (this.agentId == it.getArgument(0)) {
@@ -161,8 +159,8 @@ abstract class AbstractEventSpaceTest extends AbstractSreTest {
 		var ^event = typeof(Event).mock
 		when(^event.source).thenReturn(this.address)
 		emitLocally(^event, null)
-		verifyZeroInteractions(this.listener1)
-		verifyZeroInteractions(this.listener2)
+		verifyNoMoreInteractions(this.listener1)
+		verifyNoMoreInteractions(this.listener2)
 
 		register
 
@@ -184,8 +182,8 @@ abstract class AbstractEventSpaceTest extends AbstractSreTest {
 		var ^event = typeof(Event).mock
 		when(^event.source).thenReturn(this.address)
 		emitLocally(^event) [true]
-		verifyZeroInteractions(this.listener1)
-		verifyZeroInteractions(this.listener2)
+		verifyNoMoreInteractions(this.listener1)
+		verifyNoMoreInteractions(this.listener2)
 
 		register
 
@@ -207,8 +205,8 @@ abstract class AbstractEventSpaceTest extends AbstractSreTest {
 		var ^event = typeof(Event).mock
 		when(^event.source).thenReturn(this.address)
 		emitLocally(^event) [this.address == it]
-		verifyZeroInteractions(this.listener1)
-		verifyZeroInteractions(this.listener2)
+		verifyNoMoreInteractions(this.listener1)
+		verifyNoMoreInteractions(this.listener2)
 
 		register
 
@@ -220,7 +218,7 @@ abstract class AbstractEventSpaceTest extends AbstractSreTest {
 
 		verify(this.listener1).receiveEvent(argument.capture)
 		assertSame(^event, argument.value)
-		verifyZeroInteractions(this.listener2)
+		verifyNoMoreInteractions(this.listener2)
 	}
 
 	@Test
@@ -228,8 +226,8 @@ abstract class AbstractEventSpaceTest extends AbstractSreTest {
 		var ^event = typeof(Event).mock
 		when(^event.source).thenReturn(this.address)
 		this.^space.emit(null, ^event, null)
-		verifyZeroInteractions(this.listener1)
-		verifyZeroInteractions(this.listener2)
+		verifyNoMoreInteractions(this.listener1)
+		verifyNoMoreInteractions(this.listener2)
 
 		register
 
@@ -251,8 +249,8 @@ abstract class AbstractEventSpaceTest extends AbstractSreTest {
 		var ^event = mock(typeof(Event))
 		when(^event.source).thenReturn(this.address)
 		this.^space.emit(null, ^event) [true]
-		verifyZeroInteractions(this.listener1)
-		verifyZeroInteractions(this.listener2)
+		verifyNoMoreInteractions(this.listener1)
+		verifyNoMoreInteractions(this.listener2)
 
 		register
 
@@ -274,8 +272,8 @@ abstract class AbstractEventSpaceTest extends AbstractSreTest {
 		var ^event = typeof(Event).mock
 		when(^event.source).thenReturn(this.address)
 		this.^space.emit(null, ^event) [this.address == it]
-		verifyZeroInteractions(this.listener1)
-		verifyZeroInteractions(this.listener2)
+		verifyNoMoreInteractions(this.listener1)
+		verifyNoMoreInteractions(this.listener2)
 
 		register
 
@@ -287,7 +285,7 @@ abstract class AbstractEventSpaceTest extends AbstractSreTest {
 
 		verify(this.listener1).receiveEvent(argument.capture)
 		assertSame(^event, argument.value)
-		verifyZeroInteractions(this.listener2)
+		verifyNoMoreInteractions(this.listener2)
 	}
 
 }

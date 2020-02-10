@@ -22,10 +22,10 @@
 package io.sarl.sre.tests.units.services.lifecycle.mocks
 
 import io.sarl.lang.core.Event
-import io.sarl.lang.util.SynchronizedIterable
 import io.sarl.sre.capacities.InformedEventListener
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.skills.internal.EventBus
+import java.util.concurrent.ConcurrentLinkedDeque
 
 /**
  * @author $Author: sgalland$
@@ -59,7 +59,7 @@ skill MyEventBus implements InternalEventBusCapacity {
 		null
 	}
 
-	override getRegisteredEventBusListeners(type : Class<T>) : SynchronizedIterable<T> with T {
+	override getRegisteredEventBusListeners(type : Class<T>) : ConcurrentLinkedDeque<T> with T {
 		null
 	}
 

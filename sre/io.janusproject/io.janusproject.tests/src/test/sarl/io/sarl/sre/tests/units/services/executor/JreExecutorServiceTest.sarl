@@ -38,13 +38,9 @@ import org.junit.Test
 import org.mockito.ArgumentCaptor
 
 import static org.mockito.ArgumentMatchers.anyLong
-import static org.mockito.Mockito.doAnswer
-import static org.mockito.Mockito.verifyZeroInteractions
-import static org.mockito.Mockito.when
 
 import static extension org.mockito.ArgumentMatchers.any
-import static extension org.mockito.Mockito.times
-import static extension org.mockito.Mockito.verify
+import static extension org.mockito.Mockito.*
 
 /**
  * @author $Author: sgalland$
@@ -80,7 +76,7 @@ class JreExecutorServiceTest extends AbstractExecutorServiceTest<JreExecutorServ
 		assertSame(logger, jr.logger)
 		assertSame(run, jr.wrappedRunnable)
 
-		verifyZeroInteractions(this.logger)
+		verifyNoMoreInteractions(this.logger)
 	}
 	
 	def execute_exception {
@@ -124,7 +120,7 @@ class JreExecutorServiceTest extends AbstractExecutorServiceTest<JreExecutorServ
 		assertSame(logger, jr.logger)
 		assertSame(run, jr.wrappedRunnable)
 
-		verifyZeroInteractions(this.logger)
+		verifyNoMoreInteractions(this.logger)
 	}
 	
 	@Test
@@ -174,7 +170,7 @@ class JreExecutorServiceTest extends AbstractExecutorServiceTest<JreExecutorServ
 		assertSame(run, jr.wrappedRunnable)
 		assertSame(future, capturedFuture.value)
 
-		verifyZeroInteractions(this.logger)
+		verifyNoMoreInteractions(this.logger)
 	}
 
 	@Test
@@ -224,7 +220,7 @@ class JreExecutorServiceTest extends AbstractExecutorServiceTest<JreExecutorServ
 		assertSame(logger, jc.logger)
 		assertSame(run, jc.getWrappedCallable())
 
-		verifyZeroInteractions(this.logger)
+		verifyNoMoreInteractions(this.logger)
 	}
 
 	@Test
@@ -277,7 +273,7 @@ class JreExecutorServiceTest extends AbstractExecutorServiceTest<JreExecutorServ
 		Assert.assertEquals(34, capturedDelay.value.longValue)
 		assertEquals(TimeUnit::DAYS, capturedUnit.value)
 
-		verifyZeroInteractions(this.logger)
+		verifyNoMoreInteractions(this.logger)
 	}
 
 	@Test
@@ -334,7 +330,7 @@ class JreExecutorServiceTest extends AbstractExecutorServiceTest<JreExecutorServ
 		Assert.assertEquals(34, capturedDelay.value.longValue)
 		assertEquals(TimeUnit::DAYS, capturedUnit.value)
 
-		verifyZeroInteractions(this.logger)
+		verifyNoMoreInteractions(this.logger)
 	}
 
 	@Test
@@ -393,7 +389,7 @@ class JreExecutorServiceTest extends AbstractExecutorServiceTest<JreExecutorServ
 		Assert.assertEquals(34, capturedPeriod.value.longValue)
 		assertEquals(TimeUnit::DAYS, capturedUnit.value)
 
-		verifyZeroInteractions(this.logger)
+		verifyNoMoreInteractions(this.logger)
 	}
 
 	@Test
@@ -455,7 +451,7 @@ class JreExecutorServiceTest extends AbstractExecutorServiceTest<JreExecutorServ
 		Assert.assertEquals(34, capturedPeriod.value.longValue)
 		assertEquals(TimeUnit::DAYS, capturedUnit.value)
 
-		verifyZeroInteractions(this.logger)
+		verifyNoMoreInteractions(this.logger)
 	}
 
 	@Test

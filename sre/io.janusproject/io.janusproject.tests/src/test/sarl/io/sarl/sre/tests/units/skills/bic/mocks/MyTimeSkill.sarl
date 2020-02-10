@@ -22,7 +22,6 @@
 package io.sarl.sre.tests.units.skills.bic.mocks
 
 import io.sarl.core.Time
-import io.sarl.sre.skills.BuiltinSkill
 import java.util.concurrent.TimeUnit
 
 /**
@@ -31,7 +30,7 @@ import java.util.concurrent.TimeUnit
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-skill MyTimeSkill extends BuiltinSkill implements Time {
+skill MyTimeSkill implements Time {
 	
 	val time : double
 	

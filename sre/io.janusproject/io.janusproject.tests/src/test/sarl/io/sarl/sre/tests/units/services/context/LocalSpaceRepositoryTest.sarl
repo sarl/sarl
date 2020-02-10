@@ -25,9 +25,8 @@ import io.sarl.sre.internal.SequenceListenerNotifier
 import io.sarl.sre.internal.SmartListenerCollection
 import io.sarl.sre.services.context.LocalSpaceRepository
 import io.sarl.sre.services.context.SpaceRepository.SpaceDescription
-import java.util.Map
-import java.util.TreeMap
 import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * @author $Author: sgalland$
@@ -35,7 +34,7 @@ import java.util.UUID
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class LocalSpaceRepositoryTest extends AbstractSpaceRepositoryTest<LocalSpaceRepository> {
+class LocalSpaceRepositoryTest extends AbstractSpaceRepositoryTest<LocalSpaceRepository, ConcurrentHashMap<UUID, SpaceDescription>> {
 
 	protected def newSpaceRepository : LocalSpaceRepository {
 		var coll = new SmartListenerCollection(new SequenceListenerNotifier)
@@ -43,8 +42,8 @@ class LocalSpaceRepositoryTest extends AbstractSpaceRepositoryTest<LocalSpaceRep
 			coll)
 	}
 
-	protected override newInternalStructure : Map<UUID, SpaceDescription> {
-		new TreeMap
+	protected override newInternalStructure : ConcurrentHashMap<UUID, SpaceDescription> {
+		new ConcurrentHashMap
 	}
 	
 }

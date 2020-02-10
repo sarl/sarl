@@ -38,13 +38,8 @@ import org.junit.runners.Suite
 import org.junit.runners.Suite.SuiteClasses
 import org.mockito.ArgumentCaptor
 
-import static org.mockito.Mockito.never
-import static org.mockito.Mockito.only
-import static org.mockito.Mockito.verifyZeroInteractions
-import static org.mockito.Mockito.when
-
 import static extension org.mockito.ArgumentMatchers.any
-import static extension org.mockito.Mockito.verify
+import static extension org.mockito.Mockito.*
 
 /**
  * @author $Author: sgalland$
@@ -122,7 +117,7 @@ class VerboseThreadExecutorPolicyTest {
 				fail("Early exit exception is expected")
 			} catch (e : Exception) {
 				this.handler.uncaughtException(Thread.currentThread, e)
-				verifyZeroInteractions(this.logService)
+				verifyNoMoreInteractions(this.logService)
 			}
 		}
 
@@ -219,7 +214,7 @@ class VerboseThreadExecutorPolicyTest {
 				fail("Early exit exception is expected")
 			} catch (e : Exception) {
 				this.handler.uncaughtException(Thread.currentThread, e)
-				verifyZeroInteractions(this.logService)
+				verifyNoMoreInteractions(this.logService)
 			}
 		}
 

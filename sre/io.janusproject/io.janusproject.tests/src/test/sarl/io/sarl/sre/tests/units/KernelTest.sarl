@@ -32,10 +32,10 @@ import io.sarl.sre.tests.testutils.AbstractSreTest
 import io.sarl.sre.tests.testutils.IddleTestingAgent
 import io.sarl.tests.api.Nullable
 import java.lang.Thread.UncaughtExceptionHandler
-import java.util.Collections
-import java.util.List
 import java.util.UUID
+import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.logging.Logger
+import org.arakhne.afc.util.OutputParameter
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -46,7 +46,6 @@ import static org.mockito.ArgumentMatchers.anyInt
 import static org.mockito.Mockito.when
 
 import static extension org.mockito.Mockito.verify
-import org.arakhne.afc.util.OutputParameter
 
 /**
  * @author $Author: sgalland$
@@ -122,9 +121,15 @@ class KernelTest extends AbstractSreTest {
 	def spawnClassObjectArray {
 		when(this.lifecycle.spawnAgent(anyInt, any, any, any, any, any)).then [
 			if (getArgument(3) !== null) {
-				return new SpawnResult(Collections::singletonList(getArgument(3)), emptyList)
+				var col0 = new ConcurrentLinkedDeque
+				col0 += getArgument(3)
+				var col1 = new ConcurrentLinkedDeque
+				return new SpawnResult(col0, col1)
 			}
-			return new SpawnResult(Collections::singletonList(UUID.randomUUID), emptyList)
+			var col0 = new ConcurrentLinkedDeque
+			col0 += UUID::randomUUID
+			var col1 = new ConcurrentLinkedDeque
+			return new SpawnResult(col0, col1)
 		]
 
 		this.kernel.spawn(typeof(IddleTestingAgent), [], 1, "a")
@@ -151,9 +156,15 @@ class KernelTest extends AbstractSreTest {
 	def spawnUUIDClassObjectArray : void {
 		when(this.lifecycle.spawnAgent(anyInt(), any(), any(), any(), any(), any())).then [
 			if (getArgument(3) !== null) {
-				return new SpawnResult(Collections::singletonList(getArgument(3)), emptyList)
+				var col0 = new ConcurrentLinkedDeque
+				col0 += getArgument(3)
+				var col1 = new ConcurrentLinkedDeque
+				return new SpawnResult(col0, col1)
 			}
-			return new SpawnResult(Collections::singletonList(UUID::randomUUID), emptyList)
+			var col0 = new ConcurrentLinkedDeque
+			col0 += UUID::randomUUID
+			var col1 = new ConcurrentLinkedDeque
+			return new SpawnResult(col0, col1)
 		]
 		var expectedId = UUID::randomUUID
 
@@ -182,14 +193,15 @@ class KernelTest extends AbstractSreTest {
 
 	@Test
 	def spawnIntClassObjectArray {
-		var ids = typeof(List).mock
-		var result = new SpawnResult(ids, emptyList)
+		var col0 = new ConcurrentLinkedDeque().spy
+		var col1 = new ConcurrentLinkedDeque
+		var result = new SpawnResult(col0, col1)
 		when(this.lifecycle.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
 
-		var ids2 = new OutputParameter<List<UUID>>
+		var ids2 = new OutputParameter<ConcurrentLinkedDeque<UUID>>
 		this.kernel.spawn(34, typeof(IddleTestingAgent), [ids2.set(it)], 1, "a")
 		
-		assertSame(ids, ids2.get)
+		assertSame(col0, ids2.get)
 		
 		var capturedNb = ArgumentCaptor::forClass(typeof(int))
 		var capturedSpawner = ArgumentCaptor::forClass(typeof(UUID))

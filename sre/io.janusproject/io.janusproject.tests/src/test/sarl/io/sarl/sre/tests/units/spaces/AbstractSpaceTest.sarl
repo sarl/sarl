@@ -27,6 +27,7 @@ import io.sarl.sre.spaces.AbstractSpace
 import io.sarl.sre.tests.testutils.AbstractSreTest
 import java.util.UUID
 import org.junit.Test
+import java.util.concurrent.ConcurrentSkipListSet
 
 /**
  * @author $Author: sgalland$

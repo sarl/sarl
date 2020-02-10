@@ -23,13 +23,12 @@ package io.sarl.sre.tests.units.skills.bic.mocks
 
 import io.sarl.lang.core.Behavior
 import io.sarl.lang.core.Event
-import io.sarl.lang.util.SynchronizedIterable
-import io.sarl.lang.util.SynchronizedSet
 import io.sarl.sre.capacities.InformedEventListener
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.skills.internal.EventBus
 
 import static extension org.mockito.Mockito.mock
+import java.util.concurrent.ConcurrentLinkedDeque
 
 /**
  * @author $Author: sgalland$
@@ -40,7 +39,7 @@ import static extension org.mockito.Mockito.mock
 @SuppressWarnings("potential_field_synchronization_problem")
 skill MyInternalEventBusSkill implements InternalEventBusCapacity {
 
-	var listeners : SynchronizedSet<Behavior> = null
+	var listeners : ConcurrentLinkedDeque<Behavior> = null
 		
 	var listener : InformedEventListener
 
@@ -51,7 +50,7 @@ skill MyInternalEventBusSkill implements InternalEventBusCapacity {
 	override registerEventBusListener(listener : Object, filter : (Event)=>boolean, callback : (Object)=>void) {
 	}
 
-	def setRegisteredEventBusListeners(listeners : SynchronizedSet<Behavior>) {
+	def setRegisteredEventBusListeners(listeners : ConcurrentLinkedDeque<Behavior>) {
 		this.listeners = listeners
 	}
 
@@ -77,9 +76,10 @@ skill MyInternalEventBusSkill implements InternalEventBusCapacity {
 		this.listener
 	}
 
-	override getRegisteredEventBusListeners(type : Class<T>) : SynchronizedIterable<T> with T {
+	override getRegisteredEventBusListeners(type : Class<T>) : ConcurrentLinkedDeque<T> with T {
 		if (type == typeof(Behavior)) {
-			return this.listeners as SynchronizedIterable<T>
+			var obj : Object = this.listeners
+			return obj as ConcurrentLinkedDeque<T>
 		}
 		return null
 	}

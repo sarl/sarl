@@ -35,7 +35,7 @@ import io.sarl.sre.spaces.SpaceWithParticipants
 import io.sarl.tests.api.AbstractSarlTest
 import io.sarl.tests.api.Nullable
 import java.util.UUID
-import java.util.concurrent.ConcurrentSkipListSet
+import java.util.concurrent.ConcurrentHashMap
 import org.junit.Before
 import org.junit.Test
 
@@ -102,7 +102,7 @@ class AgentNamespaceServiceTest extends AbstractSarlTest {
 		when(listener1.ownerInstance).thenReturn(this.ag1)
 		var participant1 = typeof(Participant).mock
 		when(participant1.participant).thenReturn(listener1)
-		var map1 = new ConcurrentSkipListSet
+		var map1 = new ConcurrentHashMap
 		map1.put(this.aid1, participant1)
 		this.sid1 = UUID::randomUUID
 		var spc1 = typeof(MySpace).mock

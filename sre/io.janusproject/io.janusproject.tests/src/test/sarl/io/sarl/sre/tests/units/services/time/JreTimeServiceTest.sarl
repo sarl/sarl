@@ -33,7 +33,7 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentCaptor
 
-import static org.mockito.Mockito.verifyZeroInteractions
+import static org.mockito.Mockito.verifyNoMoreInteractions
 
 import static extension org.mockito.Mockito.verify
 
@@ -64,13 +64,13 @@ class JreTimeServiceTest extends AbstractSreTest {
 		assertEpsilonEquals(0.025, this.service.getTime(TimeUnit::MINUTES))
 		assertEpsilonEquals(1.5, this.service.getTime(TimeUnit::SECONDS))
 		assertEpsilonEquals(1500.0, this.service.getTime(TimeUnit::MILLISECONDS))
-		verifyZeroInteractions(this.listener)
+		verifyNoMoreInteractions(this.listener)
 	}
 
 	@Test
 	def getOSTimeFactor {
 		assertEpsilonEquals(1.0, this.service.OSTimeFactor)
-		verifyZeroInteractions(this.listener)
+		verifyNoMoreInteractions(this.listener)
 	}
 
 	@Test

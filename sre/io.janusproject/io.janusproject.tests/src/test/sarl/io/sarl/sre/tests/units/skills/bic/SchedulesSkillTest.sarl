@@ -50,7 +50,6 @@ import static org.mockito.Mockito.atLeastOnce
 import static org.mockito.Mockito.only
 import static org.mockito.Mockito.reset
 import static org.mockito.Mockito.verifyNoMoreInteractions
-import static org.mockito.Mockito.verifyZeroInteractions
 import static org.mockito.Mockito.when
 
 import static extension org.mockito.ArgumentMatchers.any
@@ -305,7 +304,7 @@ class SchedulesSkillTest extends AbstractSreTest {
 			verify(task).setProcedure(capturedProcedure.capture)
 			assertSame(procedure, capturedProcedure.value)
 		} else {
-			verifyZeroInteractions(task)
+			verifyNoMoreInteractions(task)
 		}
 		
 		assertEquals(1, this.^skill.activeTasks.size)
@@ -348,7 +347,7 @@ class SchedulesSkillTest extends AbstractSreTest {
 			verify(task).setProcedure(capturedProcedure.capture)
 			assertSame(procedure, capturedProcedure.value)
 		} else {
-			verifyZeroInteractions(task)
+			verifyNoMoreInteractions(task)
 		}
 		
 		assertEquals(1, this.^skill.activeTasks.size)
@@ -492,7 +491,7 @@ class SchedulesSkillTest extends AbstractSreTest {
 				assertEquals(TimeUnit::MILLISECONDS, capturedUnit.value)
 				assertNotNull(capturedProcedure.value)
 			} else {
-				verifyZeroInteractions(this.executor)
+				verifyNoMoreInteractions(this.executor)
 			}
 		]
 	}
@@ -628,7 +627,7 @@ class SchedulesSkillTest extends AbstractSreTest {
 				assertEquals(TimeUnit::MILLISECONDS, capturedUnit.value)
 				assertNotNull(capturedProcedure.value)
 			} else {
-				verifyZeroInteractions(this.executor)
+				verifyNoMoreInteractions(this.executor)
 			}
 		]
 	}
@@ -766,7 +765,7 @@ class SchedulesSkillTest extends AbstractSreTest {
 				assertEquals(TimeUnit::MILLISECONDS, capturedUnit.value)
 				assertNotNull(capturedProcedure.value)
 			} else {
-				verifyZeroInteractions(this.executor)
+				verifyNoMoreInteractions(this.executor)
 			}
 		]
 	}
@@ -928,7 +927,7 @@ class SchedulesSkillTest extends AbstractSreTest {
 		var task = this.^skill.in(10000) []
 		assertFalse(this.^skill.cancel(task))
 		assertTrue(this.^skill.activeTasks.isEmpty)
-		verifyZeroInteractions(future)
+		verifyNoMoreInteractions(future)
 	}
 
 	@Test
@@ -959,7 +958,7 @@ class SchedulesSkillTest extends AbstractSreTest {
 		assertFalse(this.^skill.cancel(task))
 		assertContains(this.^skill.activeTasks)
 		
-		verifyZeroInteractions(future)
+		verifyNoMoreInteractions(future)
 	}
 
 	@Test
@@ -990,7 +989,7 @@ class SchedulesSkillTest extends AbstractSreTest {
 		var task = this.^skill.in(10000) []
 		assertFalse(this.^skill.cancel(task))
 		assertContains(this.^skill.activeTasks)
-		verifyZeroInteractions(future)
+		verifyNoMoreInteractions(future)
 	}
 
 	@Test
@@ -1141,7 +1140,7 @@ class SchedulesSkillTest extends AbstractSreTest {
 				assertEquals(TimeUnit::MILLISECONDS, capturedUnit.value)
 				assertNotNull(capturedProcedure.value)
 			} else {
-				verifyZeroInteractions(this.executor)
+				verifyNoMoreInteractions(this.executor)
 			}
 		]
 	}

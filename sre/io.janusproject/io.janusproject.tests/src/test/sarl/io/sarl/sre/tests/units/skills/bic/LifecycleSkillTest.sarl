@@ -33,16 +33,15 @@ import io.sarl.sre.tests.testutils.AbstractSreTest
 import io.sarl.sre.tests.units.skills.bic.mocks.MyAgent2
 import io.sarl.sre.tests.units.skills.bic.mocks.MyAgent3
 import io.sarl.tests.api.Nullable
-import java.util.Arrays
-import java.util.Collections
 import java.util.UUID
+import java.util.concurrent.ConcurrentLinkedDeque
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentCaptor
 
 import static org.mockito.ArgumentMatchers.any
 import static org.mockito.ArgumentMatchers.anyInt
-import static org.mockito.Mockito.verifyZeroInteractions
+import static org.mockito.Mockito.verifyNoMoreInteractions
 import static org.mockito.Mockito.when
 
 import static extension org.mockito.Mockito.times
@@ -91,20 +90,26 @@ class LifecycleSkillTest extends AbstractSreTest {
 	@Test
 	def spawn_notAlive {
 		var agentID = UUID::randomUUID
-		var result = new SpawnResult(Collections::singletonList(agentID), emptyList)
+		val col0 = new ConcurrentLinkedDeque
+		col0 += agentID
+		val col1 = new ConcurrentLinkedDeque
+		var result = new SpawnResult(col0, col1)
 		when(this.service.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
 		
 		var id = this.^skill.spawn(typeof(MyAgent2), 1, "value")
 		
 		assertNull(id)
 		
-		verifyZeroInteractions(this.service)
+		verifyNoMoreInteractions(this.service)
 	}
 
 	@Test
 	def spawn_alive {
 		var agentID = UUID::randomUUID
-		var result = new SpawnResult(Collections.singletonList(agentID), emptyList)
+		val col0 = new ConcurrentLinkedDeque
+		col0 += agentID
+		val col1 = new ConcurrentLinkedDeque
+		var result = new SpawnResult(col0, col1)
 		when(this.service.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
 
 		forceAlive
@@ -135,14 +140,19 @@ class LifecycleSkillTest extends AbstractSreTest {
 		var agentID1 = UUID::randomUUID
 		var agentID2 = UUID::randomUUID
 		var agentID3 = UUID::randomUUID
-		var result = new SpawnResult(Arrays.asList(agentID1, agentID2, agentID3), emptyList)
+		val col0 = new ConcurrentLinkedDeque
+		col0 += agentID1
+		col0 += agentID2
+		col0 += agentID3
+		val col1 = new ConcurrentLinkedDeque
+		var result = new SpawnResult(col0, col1)
 		when(this.service.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
 		
 		var id = this.^skill.spawn(3, typeof(MyAgent2), 1, "value")
 		
 		assertNotNull(id)
 		assertContains(id)
-		verifyZeroInteractions(this.service)
+		verifyNoMoreInteractions(this.service)
 	}
 
 	@Test
@@ -150,7 +160,12 @@ class LifecycleSkillTest extends AbstractSreTest {
 		var agentID1 = UUID::randomUUID
 		var agentID2 = UUID::randomUUID
 		var agentID3 = UUID::randomUUID
-		var result = new SpawnResult(Arrays.asList(agentID1, agentID2, agentID3), emptyList)
+		val col0 = new ConcurrentLinkedDeque
+		col0 += agentID1
+		col0 += agentID2
+		col0 += agentID3
+		val col1 = new ConcurrentLinkedDeque
+		var result = new SpawnResult(col0, col1)
 		when(this.service.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
 
 		forceAlive
@@ -183,7 +198,10 @@ class LifecycleSkillTest extends AbstractSreTest {
 	@Test
 	def spawnInContext_notAlive {
 		var agentID = UUID::randomUUID
-		var result = new SpawnResult(Collections.singletonList(agentID), emptyList)
+		val col0 = new ConcurrentLinkedDeque
+		col0 += agentID
+		val col1 = new ConcurrentLinkedDeque
+		var result = new SpawnResult(col0, col1)
 		when(this.service.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
 		var otherContext = typeof(Context).mock
 		
@@ -191,13 +209,16 @@ class LifecycleSkillTest extends AbstractSreTest {
 		
 		assertNull(id)
 
-		verifyZeroInteractions(this.service)
+		verifyNoMoreInteractions(this.service)
 	}
 
 	@Test
 	def spawnInContext_alive {
 		var agentID = UUID::randomUUID
-		var result = new SpawnResult(Collections.singletonList(agentID), emptyList)
+		val col0 = new ConcurrentLinkedDeque
+		col0 += agentID
+		val col1 = new ConcurrentLinkedDeque
+		var result = new SpawnResult(col0, col1)
 		when(this.service.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
 		var otherContext = typeof(Context).mock
 
@@ -228,7 +249,12 @@ class LifecycleSkillTest extends AbstractSreTest {
 		var agentID1 = UUID::randomUUID
 		var agentID2 = UUID::randomUUID
 		var agentID3 = UUID::randomUUID
-		var result = new SpawnResult(Arrays.asList(agentID1, agentID2, agentID3), emptyList)
+		val col0 = new ConcurrentLinkedDeque
+		col0 += agentID1
+		col0 += agentID2
+		col0 += agentID3
+		val col1 = new ConcurrentLinkedDeque
+		var result = new SpawnResult(col0, col1)
 		when(this.service.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
 		var otherContext = typeof(Context).mock
 
@@ -236,7 +262,7 @@ class LifecycleSkillTest extends AbstractSreTest {
 		
 		assertNotNull(id)
 		assertContains(id)
-		verifyZeroInteractions(this.service)
+		verifyNoMoreInteractions(this.service)
 	}
 
 	@Test
@@ -244,7 +270,12 @@ class LifecycleSkillTest extends AbstractSreTest {
 		var agentID1 = UUID::randomUUID
 		var agentID2 = UUID::randomUUID
 		var agentID3 = UUID::randomUUID
-		var result = new SpawnResult(Arrays.asList(agentID1, agentID2, agentID3), emptyList)
+		val col0 = new ConcurrentLinkedDeque
+		col0 += agentID1
+		col0 += agentID2
+		col0 += agentID3
+		val col1 = new ConcurrentLinkedDeque
+		var result = new SpawnResult(col0, col1)
 		when(this.service.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
 		var otherContext = typeof(Context).mock
 
@@ -278,7 +309,10 @@ class LifecycleSkillTest extends AbstractSreTest {
 	@Test
 	def spawnInContextWithID_notAlive {
 		var agentID = UUID::randomUUID
-		var result = new SpawnResult(Collections.singletonList(agentID), emptyList)
+		val col0 = new ConcurrentLinkedDeque
+		col0 += agentID
+		val col1 = new ConcurrentLinkedDeque
+		var result = new SpawnResult(col0, col1)
 		when(this.service.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
 		var otherContext = typeof(Context).mock
 		
@@ -286,13 +320,16 @@ class LifecycleSkillTest extends AbstractSreTest {
 		
 		assertNull(id)
 		
-		verifyZeroInteractions(this.service)
+		verifyNoMoreInteractions(this.service)
 	}
 
 	@Test
 	def spawnInContextWithID_alive {
 		var agentID = UUID::randomUUID
-		var result = new SpawnResult(Collections.singletonList(agentID), emptyList)
+		val col0 = new ConcurrentLinkedDeque
+		col0 += agentID
+		val col1 = new ConcurrentLinkedDeque
+		var result = new SpawnResult(col0, col1)
 		when(this.service.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
 		var otherContext = typeof(Context).mock
 

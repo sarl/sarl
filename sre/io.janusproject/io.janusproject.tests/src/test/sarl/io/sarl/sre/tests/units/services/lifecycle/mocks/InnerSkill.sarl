@@ -22,14 +22,13 @@ package io.sarl.sre.tests.units.services.lifecycle.mocks
 
 import io.sarl.core.InnerContextAccess
 import io.sarl.lang.core.AgentContext
+import io.sarl.lang.core.Capacity
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
-import io.sarl.lang.util.SynchronizedIterable
-import io.sarl.sre.skills.BuiltinSkill
 import java.util.UUID
+import java.util.concurrent.ConcurrentSkipListSet
 import java.util.concurrent.atomic.AtomicInteger
-import io.sarl.lang.core.Capacity
 
 /** 
  * @author $Author: sgalland$
@@ -38,7 +37,7 @@ import io.sarl.lang.core.Capacity
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("potential_field_synchronization_problem")
-skill InnerSkill extends BuiltinSkill implements InnerContextAccess {
+skill InnerSkill implements InnerContextAccess {
 
 	val orderSource : AtomicInteger
 	public var installOrder : Integer
@@ -76,7 +75,7 @@ skill InnerSkill extends BuiltinSkill implements InnerContextAccess {
 		0
 	}
 	
-	def getMemberAgents : SynchronizedIterable<UUID> {
+	def getMemberAgents : ConcurrentSkipListSet<UUID> {
 		null
 	}
 	

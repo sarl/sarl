@@ -24,7 +24,6 @@ package io.sarl.sre.tests.units.skills.internal
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventListener
-import io.sarl.lang.util.SynchronizedIterable
 import io.sarl.sre.services.lifecycle.AgentLife
 import io.sarl.sre.services.lifecycle.AgentState
 import io.sarl.sre.skills.internal.EventBus
@@ -34,6 +33,7 @@ import io.sarl.sre.tests.units.skills.internal.mocks.MyAgent
 import io.sarl.sre.tests.units.skills.internal.mocks.MyLoggingSkill
 import io.sarl.tests.api.Nullable
 import java.util.UUID
+import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.logging.Logger
 import org.eclipse.xtext.xbase.lib.Functions.Function1
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
@@ -42,7 +42,7 @@ import org.junit.Test
 import org.mockito.ArgumentCaptor
 
 import static org.mockito.ArgumentMatchers.any
-import static org.mockito.Mockito.verifyZeroInteractions
+import static org.mockito.Mockito.verifyNoMoreInteractions
 import static org.mockito.Mockito.when
 
 import static extension org.mockito.Mockito.verify
@@ -95,7 +95,7 @@ class InternalEventBusSkillTest extends AbstractSreTest {
 
 	@Test
 	def getRegisteredEventBusListeners {
-		var iterable = typeof(SynchronizedIterable).mock
+		var iterable = new ConcurrentLinkedDeque().spy
 		when(this.eventBus.getRegisteredEventListeners(any)).thenReturn(iterable)
 		var list = this.^skill.getRegisteredEventBusListeners(null)
 		assertSame(iterable, list)
@@ -182,7 +182,7 @@ class InternalEventBusSkillTest extends AbstractSreTest {
 		
 		this.^skill.fireEvent(^event)
 		
-		verifyZeroInteractions(this.eventBus)
+		verifyNoMoreInteractions(this.eventBus)
 		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
 	}
 
@@ -229,7 +229,7 @@ class InternalEventBusSkillTest extends AbstractSreTest {
 		
 		this.^skill.fireEvent(^event)
 		
-		verifyZeroInteractions(this.eventBus)
+		verifyNoMoreInteractions(this.eventBus)
 		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
 	}
 
@@ -242,7 +242,7 @@ class InternalEventBusSkillTest extends AbstractSreTest {
 		
 		this.^skill.fireEvent(^event)
 		
-		verifyZeroInteractions(this.eventBus)
+		verifyNoMoreInteractions(this.eventBus)
 		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
 	}
 
@@ -255,7 +255,7 @@ class InternalEventBusSkillTest extends AbstractSreTest {
 		
 		this.^skill.fireEvent(^event)
 		
-		verifyZeroInteractions(this.eventBus)
+		verifyNoMoreInteractions(this.eventBus)
 		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
 	}
 
@@ -268,7 +268,7 @@ class InternalEventBusSkillTest extends AbstractSreTest {
 		
 		this.^skill.fireEvent(^event)
 		
-		verifyZeroInteractions(this.eventBus)
+		verifyNoMoreInteractions(this.eventBus)
 		assertContains(this.^skill.bufferedEvents, ^event)
 	}
 
@@ -281,7 +281,7 @@ class InternalEventBusSkillTest extends AbstractSreTest {
 		
 		this.^skill.fireEvent(^event)
 		
-		verifyZeroInteractions(this.eventBus)
+		verifyNoMoreInteractions(this.eventBus)
 		assertContains(this.^skill.bufferedEvents, ^event)
 	}
 
@@ -294,7 +294,7 @@ class InternalEventBusSkillTest extends AbstractSreTest {
 		
 		this.^skill.fireEvent(^event)
 		
-		verifyZeroInteractions(this.eventBus)
+		verifyNoMoreInteractions(this.eventBus)
 		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
 	}
 
@@ -307,7 +307,7 @@ class InternalEventBusSkillTest extends AbstractSreTest {
 		
 		this.^skill.fireEvent(^event)
 		
-		verifyZeroInteractions(this.eventBus)
+		verifyNoMoreInteractions(this.eventBus)
 		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
 	}
 
@@ -319,7 +319,7 @@ class InternalEventBusSkillTest extends AbstractSreTest {
 		
 		this.^skill.fireEventAndWait(^event, false, false)
 		
-		verifyZeroInteractions(this.eventBus)
+		verifyNoMoreInteractions(this.eventBus)
 		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
 	}
 
@@ -388,7 +388,7 @@ class InternalEventBusSkillTest extends AbstractSreTest {
 		
 		this.^skill.fireEventAndWait(^event, false, false)
 		
-		verifyZeroInteractions(this.eventBus)
+		verifyNoMoreInteractions(this.eventBus)
 		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
 	}
 
@@ -400,7 +400,7 @@ class InternalEventBusSkillTest extends AbstractSreTest {
 		
 		this.^skill.fireEventAndWait(^event, false, true)
 		
-		verifyZeroInteractions(this.eventBus)
+		verifyNoMoreInteractions(this.eventBus)
 		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
 	}
 
@@ -469,7 +469,7 @@ class InternalEventBusSkillTest extends AbstractSreTest {
 		
 		this.^skill.fireEventAndWait(^event, false, true)
 		
-		verifyZeroInteractions(this.eventBus)
+		verifyNoMoreInteractions(this.eventBus)
 		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
 	}
 
@@ -481,7 +481,7 @@ class InternalEventBusSkillTest extends AbstractSreTest {
 		
 		this.^skill.fireEventAndWait(^event, true, false)
 		
-		verifyZeroInteractions(this.eventBus)
+		verifyNoMoreInteractions(this.eventBus)
 		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
 	}
 
@@ -550,7 +550,7 @@ class InternalEventBusSkillTest extends AbstractSreTest {
 		
 		this.^skill.fireEventAndWait(^event, true, false)
 		
-		verifyZeroInteractions(this.eventBus)
+		verifyNoMoreInteractions(this.eventBus)
 		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
 	}
 
@@ -562,7 +562,7 @@ class InternalEventBusSkillTest extends AbstractSreTest {
 		
 		this.^skill.fireEventAndWait(^event, true, true)
 		
-		verifyZeroInteractions(this.eventBus)
+		verifyNoMoreInteractions(this.eventBus)
 		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
 	}
 
@@ -630,7 +630,7 @@ class InternalEventBusSkillTest extends AbstractSreTest {
 		
 		this.^skill.fireEventAndWait(^event, true, true)
 		
-		verifyZeroInteractions(this.eventBus)
+		verifyNoMoreInteractions(this.eventBus)
 		assertFalse(this.^skill.bufferedEvents.iterator.hasNext)
 	}
 

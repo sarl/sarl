@@ -37,8 +37,8 @@ import io.sarl.sre.tests.testutils.AbstractSreTest
 import io.sarl.sre.tests.units.skills.bic.mocks.MyAgent0
 import io.sarl.tests.api.ManualMocking
 import io.sarl.tests.api.Nullable
-import java.util.Collections
 import java.util.UUID
+import java.util.concurrent.ConcurrentSkipListSet
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentCaptor
@@ -222,8 +222,9 @@ class InnerContextSkillTest extends AbstractSreTest {
 	@Test
 	def getMemberAgentCount_withInnerContextInstance_noAgent {
 		var innerContext = forceInnerContextCreation
-		when(innerContext.defaultSpace.participants).thenReturn(
-				Collections3.synchronizedSet(#{this.parentID})
+		var col0 = new ConcurrentSkipListSet
+		col0 += this.parentID
+		when(innerContext.defaultSpace.participants).thenReturn(col0)
 		assertEquals(0, this.^skill.memberAgentCount)
 	}
 
@@ -232,9 +233,11 @@ class InnerContextSkillTest extends AbstractSreTest {
 		var innerContext = forceInnerContextCreation
 		var id1 = UUID::randomUUID
 		var id2 = UUID::randomUUID
-		var ids = newHashSet(#[this.parentID, id1, id2])
-		when(innerContext.defaultSpace.participants).thenReturn(
-				Collections3.unmodifiableSynchronizedSet(ids))
+		var ids = new ConcurrentSkipListSet
+		ids += this.parentID
+		ids += id1
+		ids += id2
+		when(innerContext.defaultSpace.participants).thenReturn(ids)
 		assertEquals(2, this.^skill.memberAgentCount)
 	}
 
@@ -246,8 +249,9 @@ class InnerContextSkillTest extends AbstractSreTest {
 	@Test
 	def getMemberAgents_withInnerContextInstance_noAgent {
 		var innerContext = forceInnerContextCreation
-		when(innerContext.defaultSpace.participants).thenReturn(
-				Collections3.synchronizedSet(Collections.singleton(this.parentID)))
+		var ids = new ConcurrentSkipListSet
+		ids += this.parentID
+		when(innerContext.defaultSpace.participants).thenReturn(ids)
 		assertFalse(this.^skill.memberAgents.iterator.hasNext)
 	}
 
@@ -256,9 +260,11 @@ class InnerContextSkillTest extends AbstractSreTest {
 		var innerContext = forceInnerContextCreation
 		var id1 = UUID::randomUUID
 		var id2 = UUID::randomUUID
-		var ids = newHashSet(#[this.parentID, id1, id2])
-		when(innerContext.defaultSpace.participants).thenReturn(
-				Collections3.unmodifiableSynchronizedSet(ids))
+		var ids = new ConcurrentSkipListSet
+		ids += this.parentID
+		ids += id1
+		ids += id2
+		when(innerContext.defaultSpace.participants).thenReturn(ids)
 		var actual = this.^skill.memberAgents
 		assertContains(actual, id1, id2)
 	}
@@ -271,8 +277,9 @@ class InnerContextSkillTest extends AbstractSreTest {
 	@Test
 	def hasMemberAgent_withInnerContextInstance_noAgent {
 		var innerContext = forceInnerContextCreation
-		when(innerContext.defaultSpace.participants).thenReturn(
-				Collections3.synchronizedSet(Collections.singleton(this.parentID)))
+		var ids = new ConcurrentSkipListSet
+		ids += this.parentID
+		when(innerContext.defaultSpace.participants).thenReturn(ids)
 		assertFalse(this.^skill.hasMemberAgent)
 	}
 
@@ -281,9 +288,11 @@ class InnerContextSkillTest extends AbstractSreTest {
 		var innerContext = forceInnerContextCreation
 		var id1 = UUID::randomUUID
 		var id2 = UUID::randomUUID
-		var ids = newHashSet(#[this.parentID, id1, id2])
-		when(innerContext.defaultSpace.participants).thenReturn(
-				Collections3.unmodifiableSynchronizedSet(ids))
+		var ids = new ConcurrentSkipListSet
+		ids += this.parentID
+		ids += id1
+		ids += id2
+		when(innerContext.defaultSpace.participants).thenReturn(ids)
 		assertTrue(this.^skill.hasMemberAgent)
 	}
 

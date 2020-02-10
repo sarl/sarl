@@ -22,14 +22,14 @@
 package io.sarl.sre.tests.units.skills.internal
 
 import io.sarl.lang.core.Event
-import io.sarl.revision.BehaviorGuardEvaluator
-import io.sarl.revision.BehaviorGuardEvaluatorRegistry
+import io.sarl.sre.internal.BehaviorGuardEvaluator
+import io.sarl.sre.internal.BehaviorGuardEvaluatorRegistry
 import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.skills.internal.EventBus
 import io.sarl.sre.tests.testutils.AbstractSreTest
 import io.sarl.tests.api.Nullable
 import java.util.Collection
-import java.util.Collections
+import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.function.Consumer
 import java.util.logging.Logger
 import org.eclipse.xtext.xbase.lib.Functions.Function1
@@ -127,7 +127,9 @@ class EventBusTest extends AbstractSreTest {
 			(it.getArgument(1) as Collection<Runnable>) += runnable
 			return null
 		].when(evaluator).evaluateGuard(any, any)
-		when(this.registry.getBehaviorGuardEvaluators(any)).thenReturn(Collections.singleton(evaluator))
+		val col0 = new ConcurrentLinkedDeque
+		col0 += evaluator
+		when(this.registry.getBehaviorGuardEvaluators(any)).thenReturn(col0)
 		doAnswer [
 			(it.getArgument(2) as Consumer).accept(evaluator)
 			return null
@@ -163,7 +165,9 @@ class EventBusTest extends AbstractSreTest {
 			(it.getArgument(1) as Collection<Runnable>) += runnable
 			return null
 		].when(evaluator).evaluateGuard(any, any)
-		when(this.registry.getBehaviorGuardEvaluators(any)).thenReturn(Collections.singleton(evaluator))
+		var col0 = new ConcurrentLinkedDeque
+		col0 += evaluator 
+		when(this.registry.getBehaviorGuardEvaluators(any)).thenReturn(col0)
 		doAnswer [
 			(it.getArgument(2) as Consumer).accept(evaluator)
 			return null
@@ -203,7 +207,9 @@ class EventBusTest extends AbstractSreTest {
 			(it.getArgument(1) as Collection<Runnable>) += runnable
 			return null
 		].when(evaluator).evaluateGuard(any, any)
-		when(this.registry.getBehaviorGuardEvaluatorsFor(any, any)).thenReturn(Collections.singleton(evaluator))
+		var col0 = new ConcurrentLinkedDeque
+		col0 += evaluator
+		when(this.registry.getBehaviorGuardEvaluatorsFor(any, any)).thenReturn(col0)
 		doAnswer [
 			(it.getArgument(2) as Consumer).accept(evaluator)
 			return null

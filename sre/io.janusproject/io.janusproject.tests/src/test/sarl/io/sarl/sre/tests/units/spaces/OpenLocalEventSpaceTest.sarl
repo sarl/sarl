@@ -44,7 +44,7 @@ import org.mockito.Mock
 
 import static org.mockito.Mockito.doAnswer
 import static org.mockito.Mockito.never
-import static org.mockito.Mockito.verifyZeroInteractions
+import static org.mockito.Mockito.verifyNoMoreInteractions
 import static org.mockito.Mockito.when
 
 import static extension org.mockito.ArgumentMatchers.any
@@ -123,7 +123,7 @@ class OpenLocalEventSpaceTest extends AbstractSreTest {
 		var ^event = typeof(Event).mock
 		when(^event.source).thenReturn(this.address)
 		this.^space.emit(null, ^event, null)
-		verifyZeroInteractions(this.listener)
+		verifyNoMoreInteractions(this.listener)
 
 		doRegister
 
@@ -142,7 +142,7 @@ class OpenLocalEventSpaceTest extends AbstractSreTest {
 		var ^event = typeof(Event).mock
 		when(^event.source).thenReturn(this.address)
 		this.^space.emit(null, ^event, null)
-		verifyZeroInteractions(this.listener)
+		verifyNoMoreInteractions(this.listener)
 
 		doRegister
 		doUnregister

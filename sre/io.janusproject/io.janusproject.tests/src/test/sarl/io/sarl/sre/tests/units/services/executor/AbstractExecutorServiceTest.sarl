@@ -98,7 +98,7 @@ abstract class AbstractExecutorServiceTest<T extends AbstractExecutorService> ex
 		for (var i = 0; i < 1000; i += 10) {
 			assertTrue(set.contains(i))
 		}
-		verifyZeroInteractions(this.logger)
+		verifyNoMoreInteractions(this.logger)
 	}
 
 	@Test
@@ -170,8 +170,8 @@ abstract class AbstractExecutorServiceTest<T extends AbstractExecutorService> ex
 		
 		run1.verify(only).run
 		run2.verify(only).run
-		
-		verifyZeroInteractions(this.logger)
+
+		verifyNoMoreInteractions(this.logger)
 	}
 
 	@Test
@@ -195,7 +195,7 @@ abstract class AbstractExecutorServiceTest<T extends AbstractExecutorService> ex
 		
 		run2.verify(only).run
 
-		verifyZeroInteractions(this.logger)
+		verifyNoMoreInteractions(this.logger)
 	}
 
 	@Test
@@ -213,8 +213,8 @@ abstract class AbstractExecutorServiceTest<T extends AbstractExecutorService> ex
 		
 		run1.verify(only).run
 		run2.verify(only).run
-		
-		verifyZeroInteractions(this.logger)
+
+		verifyNoMoreInteractions(this.logger)
 	}
 
 	@Test
@@ -254,8 +254,8 @@ abstract class AbstractExecutorServiceTest<T extends AbstractExecutorService> ex
 		this.executor.verify(never).execute(any)
 		
 		run.verify(1.times).run
-		
-		verifyZeroInteractions(this.logger)
+
+		verifyNoMoreInteractions(this.logger)
 	}
 
 	@Test
@@ -271,8 +271,8 @@ abstract class AbstractExecutorServiceTest<T extends AbstractExecutorService> ex
 		this.executor.verify(4.times).execute(any)
 		
 		run.verify(4.times).run
-		
-		verifyZeroInteractions(this.logger)
+
+		verifyNoMoreInteractions(this.logger)
 	}
 
 	@Test
@@ -288,8 +288,8 @@ abstract class AbstractExecutorServiceTest<T extends AbstractExecutorService> ex
 		this.executor.verify(2.times).execute(any)
 		
 		run.verify(4.times).run
-		
-		verifyZeroInteractions(this.logger)
+
+		verifyNoMoreInteractions(this.logger)
 	}
 
 	@Test
@@ -305,8 +305,8 @@ abstract class AbstractExecutorServiceTest<T extends AbstractExecutorService> ex
 		this.executor.verify(2.times).execute(any)
 		
 		run.verify(4.times).run
-		
-		verifyZeroInteractions(this.logger)
+
+		verifyNoMoreInteractions(this.logger)
 	}
 
 	@Test
@@ -322,8 +322,8 @@ abstract class AbstractExecutorServiceTest<T extends AbstractExecutorService> ex
 		this.executor.verify(1.times).execute(any)
 		
 		run.verify(4.times).run
-		
-		verifyZeroInteractions(this.logger)
+
+		verifyNoMoreInteractions(this.logger)
 	}
 
 	@Test
@@ -339,8 +339,8 @@ abstract class AbstractExecutorServiceTest<T extends AbstractExecutorService> ex
 		this.executor.verify(1.times).execute(any)
 		
 		run.verify(4.times).run
-		
-		verifyZeroInteractions(this.logger)
+
+		verifyNoMoreInteractions(this.logger)
 	}
 
 	@Test

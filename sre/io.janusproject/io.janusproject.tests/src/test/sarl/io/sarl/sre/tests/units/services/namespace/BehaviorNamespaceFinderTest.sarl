@@ -29,7 +29,6 @@ import io.sarl.lang.core.Behavior
 import io.sarl.lang.core.SREutils
 import io.sarl.lang.core.Skill
 import io.sarl.lang.util.ClearableReference
-import io.sarl.lang.util.SynchronizedIterable
 import io.sarl.sre.capacities.InformedEventListener
 import io.sarl.sre.naming.BehaviorName
 import io.sarl.sre.naming.NameScheme
@@ -41,6 +40,8 @@ import io.sarl.sre.spaces.SpaceWithParticipants
 import io.sarl.tests.api.AbstractSarlTest
 import io.sarl.tests.api.Nullable
 import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ConcurrentLinkedDeque
 import org.junit.Before
 import org.junit.Test
 
@@ -109,7 +110,7 @@ class BehaviorNamespaceFinderTest extends AbstractSarlTest {
 		when(listener0.ownerInstance).thenReturn(this.ag0)
 		var participant0 = typeof(Participant).mock
 		when(participant0.participant).thenReturn(listener0)
-		var map0 = newHashMap
+		var map0 = new ConcurrentHashMap
 		map0.put(this.aid0, participant0)
 		var spc0 = typeof(MySpace).mock
 		when(spc0.internalParticipantStructure).thenReturn(map0)
@@ -127,7 +128,7 @@ class BehaviorNamespaceFinderTest extends AbstractSarlTest {
 		when(listener1.ownerInstance).thenReturn(this.ag1)
 		var participant1 = typeof(Participant).mock
 		when(participant1.participant).thenReturn(listener1)
-		var map1 = newHashMap
+		var map1 = new ConcurrentHashMap
 		map1.put(this.aid1, participant1)
 		this.sid1 = UUID::randomUUID
 		var spc1 = typeof(MySpace).mock
@@ -327,7 +328,9 @@ class BehaviorNamespaceFinderTest extends AbstractSarlTest {
 		@SuppressWarnings("use_reserved_sarl_annotation")
 		@PrivateAPI(isCallerOnly = true)
 		def initBeh(beh0 : Behavior, beh1 : Behavior) {
-			var set : SynchronizedIterable<Behavior> = Collections3::unmodifiableSynchronizedIterable(#[beh0, beh1])
+			var set = new ConcurrentLinkedDeque
+			set += beh0
+			set += beh1
 			var behs = typeof(MyBehaviors).mock
 			when(behs.registeredBehaviors).thenReturn(set)
 			SREutils::getSkillRepository(this).put(typeof(Behaviors), new ClearableReference(behs))
