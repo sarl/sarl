@@ -148,6 +148,7 @@
       <feature id="org.eclipse.ecf.core.feature.source" installMode="root"/>
       <feature id="org.eclipse.emf.mapping.ui.source" installMode="root"/>
       <feature id="org.eclipse.emf.ecore.edit.source" installMode="root"/>
+      <feature id="net.sf.eclipsecs" installMode="root"/>
       <feature id="org.eclipse.equinox.p2.extras.feature" installMode="root"/>
       <feature id="org.eclipse.equinox.p2.extras.feature.source" installMode="root"/>
       <feature id="org.eclipse.ecf.core.feature" installMode="root"/>

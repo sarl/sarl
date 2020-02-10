@@ -98,6 +98,8 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 
 	private static final String SARL_PLUGIN_ARTIFACT_ID = "sarl-maven-plugin"; //$NON-NLS-1$
 
+	private static final String ECLIPSE_PLUGIN_PACKAGING = "eclipse-plugin"; //$NON-NLS-1$
+
 	/** Invoked to add the preferences dedicated to SARL, JRE, etc.
 	 *
 	 * @param facade the Maven face.
@@ -151,14 +153,16 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	 * @param facade the facade of the Maven project.
 	 * @param config the configuration.
 	 * @param classpath the project classpath.
+	 * @param addTestFolders indicate if the test folders must be added into the classpath.
 	 * @param monitor the monitor.
 	 * @throws CoreException if cannot add the source folders.
 	 */
 	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:npathcomplexity"})
 	protected void addSourceFolders(
 			IMavenProjectFacade facade, SARLConfiguration config,
-			IClasspathDescriptor classpath, IProgressMonitor monitor)
-					throws CoreException {
+			IClasspathDescriptor classpath,
+			boolean addTestFolders,
+			IProgressMonitor monitor) throws CoreException {
 
 		assertHasNature(facade.getProject(), SARLEclipseConfig.NATURE_ID);
 		assertHasNature(facade.getProject(), SARLEclipseConfig.XTEXT_NATURE_ID);
@@ -198,33 +202,37 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		descriptor.setClasspathAttribute(IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS, Boolean.TRUE.toString());
 		subMonitor.worked(1);
 
-		// Test input folder, e.g. "src/test/sarl"
-		final IPath testInputPath = makeFullPath(facade, config.getTestInput());
-		final IFolder testInputFolder = ensureFolderExists(facade, testInputPath, false, subMonitor);
-		if (encoding != null && testInputFolder != null && testInputFolder.exists()) {
-			testInputFolder.setDefaultCharset(encoding, monitor);
+		if (addTestFolders) {
+			// Test input folder, e.g. "src/test/sarl"
+			final IPath testInputPath = makeFullPath(facade, config.getTestInput());
+			final IFolder testInputFolder = ensureFolderExists(facade, testInputPath, false, subMonitor);
+			if (encoding != null && testInputFolder != null && testInputFolder.exists()) {
+				testInputFolder.setDefaultCharset(encoding, monitor);
+			}
+			descriptor = classpath.addSourceEntry(
+					testInputPath,
+					facade.getTestOutputLocation(),
+					true);
+			descriptor.setPomDerived(true);
+			descriptor.setClasspathAttribute(IClasspathAttribute.TEST, Boolean.TRUE.toString());
 		}
-		descriptor = classpath.addSourceEntry(
-				testInputPath,
-				facade.getTestOutputLocation(),
-				true);
-		descriptor.setPomDerived(true);
-		descriptor.setClasspathAttribute(IClasspathAttribute.TEST, Boolean.TRUE.toString());
 		subMonitor.worked(1);
 
-		// Test input folder, e.g. "src/test/generated-sources/sarl"
-		final IPath testOutputPath = makeFullPath(facade, config.getTestOutput());
-		final IFolder testOutputFolder = ensureFolderExists(facade, testOutputPath, true, subMonitor);
-		if (encoding != null && testOutputFolder != null && testOutputFolder.exists()) {
-			testOutputFolder.setDefaultCharset(encoding, monitor);
+		if (addTestFolders) {
+			// Test input folder, e.g. "src/test/generated-sources/sarl"
+			final IPath testOutputPath = makeFullPath(facade, config.getTestOutput());
+			final IFolder testOutputFolder = ensureFolderExists(facade, testOutputPath, true, subMonitor);
+			if (encoding != null && testOutputFolder != null && testOutputFolder.exists()) {
+				testOutputFolder.setDefaultCharset(encoding, monitor);
+			}
+			descriptor = classpath.addSourceEntry(
+					testOutputPath,
+					facade.getTestOutputLocation(),
+					true);
+			descriptor.setPomDerived(true);
+			descriptor.setClasspathAttribute(IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS, Boolean.TRUE.toString());
+			descriptor.setClasspathAttribute(IClasspathAttribute.TEST, Boolean.TRUE.toString());
 		}
-		descriptor = classpath.addSourceEntry(
-				testOutputPath,
-				facade.getTestOutputLocation(),
-				true);
-		descriptor.setPomDerived(true);
-		descriptor.setClasspathAttribute(IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS, Boolean.TRUE.toString());
-		descriptor.setClasspathAttribute(IClasspathAttribute.TEST, Boolean.TRUE.toString());
 		subMonitor.done();
 	}
 
@@ -414,15 +422,47 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	}
 
 	@Override
+	@SuppressWarnings("checkstyle:magicnumber")
 	public void configure(ProjectConfigurationRequest request,
 			IProgressMonitor monitor) throws CoreException {
-		final SubMonitor subMonitor = SubMonitor.convert(monitor, 3);
+		final IMavenProjectFacade facade = request.getMavenProjectFacade();
+
+		// Special case of tycho plugins, for which the {@link #configureRawClasspath}
+		// and {@link #configureClasspath} were not invoked.
+		final boolean isEclipseBundle = ECLIPSE_PLUGIN_PACKAGING.equalsIgnoreCase(facade.getPackaging());
+
+		final SubMonitor subMonitor;
+		if (isEclipseBundle) {
+			subMonitor = SubMonitor.convert(monitor, 4);
+		} else {
+			subMonitor = SubMonitor.convert(monitor, 3);
+		}
+
+		final IProject project = request.getProject();
+
 		final SARLConfiguration config = readConfiguration(request, subMonitor.newChild(1));
-		forceMavenCompilerConfiguration(request.getMavenProjectFacade(), config);
+		forceMavenCompilerConfiguration(facade, config);
 		subMonitor.worked(1);
 		io.sarl.eclipse.natures.SARLProjectConfigurator.addSarlNatures(
-				request.getProject(),
+				project,
 				subMonitor.newChild(1));
+
+		if (isEclipseBundle) {
+			// In the case of Eclipse bundle, the face to the Java project must be created by hand.
+			final IJavaProject javaProject = JavaCore.create(project);
+			final IClasspathDescriptor classpath = new ClasspathDescriptor(javaProject);
+			configureSarlProject(facade, config, classpath, false, subMonitor.newChild(1));
+			subMonitor.worked(1);
+		}
+	}
+
+	private void configureSarlProject(IMavenProjectFacade facade, SARLConfiguration config,
+			IClasspathDescriptor classpath, boolean addTestFolders, IProgressMonitor monitor) throws CoreException {
+		final SubMonitor subm = SubMonitor.convert(monitor, 2);
+		addSourceFolders(facade, config, classpath, addTestFolders, subm.newChild(1));
+		subm.worked(1);
+		addPreferences(facade, config, subm.newChild(1));
+		subm.worked(1);
 	}
 
 	@Override
@@ -450,17 +490,14 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		subm.worked(1);
 		removeSarlLibraries(classpath);
 		subm.worked(2);
-		addSourceFolders(facade, config, classpath, subm.newChild(1));
-		subm.worked(1);
-		addPreferences(facade, config, subm.newChild(1));
-		subm.worked(1);
+		configureSarlProject(facade, config, classpath, true, subm);
 	}
 
 	@Override
 	public AbstractBuildParticipant getBuildParticipant(
 			IMavenProjectFacade projectFacade, MojoExecution execution,
 			IPluginExecutionMetadata executionMetadata) {
-		return new BuildParticipant();
+		return new BuildParticipant(ECLIPSE_PLUGIN_PACKAGING.equalsIgnoreCase(projectFacade.getPackaging()));
 	}
 
 	/** Build participant for detecting invalid versions of SARL components.
@@ -474,10 +511,14 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 
 		private static final int NSTEPS = 4;
 
+		private final boolean isEclipseBundleProject;
+
 		/** Construct a build participant.
+		 *
+		 * @param isEclipseBundleProject indicates if the build participant is created for a Eclipse Bundle project.
 		 */
-		public BuildParticipant() {
-			//
+		public BuildParticipant(boolean isEclipseBundleProject) {
+			this.isEclipseBundleProject = isEclipseBundleProject;
 		}
 
 		@Override
@@ -547,20 +588,24 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 
 		/** Validate the version of the SARL library in the dependencies.
 		 *
+		 * <p>The test works for standard Java or Maven projects, but not for Eclipse bundles.
+		 *
 		 * @throws CoreException if internal error occurs.
 		 */
 		protected void validateSARLLibraryVersion() throws CoreException {
-			final Map<String, Artifact> artifacts = getMavenProjectFacade().getMavenProject().getArtifactMap();
-			final Artifact artifact = artifacts.get(ArtifactUtils.versionlessKey(SARL_GROUP_ID, SARL_ARTIFACT_ID));
-			if (artifact != null) {
-				validateSARLVersion(SARL_GROUP_ID, SARL_ARTIFACT_ID, artifact.getVersion());
-			} else {
-				getBuildContext().addMessage(
-						getMavenProjectFacade().getPomFile(),
-						-1, -1,
-						Messages.SARLProjectConfigurator_6,
-						BuildContext.SEVERITY_ERROR,
-						null);
+			if (!this.isEclipseBundleProject) {
+				final Map<String, Artifact> artifacts = getMavenProjectFacade().getMavenProject().getArtifactMap();
+				final Artifact artifact = artifacts.get(ArtifactUtils.versionlessKey(SARL_GROUP_ID, SARL_ARTIFACT_ID));
+				if (artifact != null) {
+					validateSARLVersion(SARL_GROUP_ID, SARL_ARTIFACT_ID, artifact.getVersion());
+				} else {
+					getBuildContext().addMessage(
+							getMavenProjectFacade().getPomFile(),
+							-1, -1,
+							Messages.SARLProjectConfigurator_6,
+							BuildContext.SEVERITY_ERROR,
+							null);
+				}
 			}
 		}
 
@@ -621,9 +666,9 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 				@Override
 				public boolean visitLeave(DependencyNode node) {
 					if (sarlNode[0] == null
-						&& node.getDependency() != null
-						&& Objects.equals(node.getDependency().getArtifact().getGroupId(), SARL_MAVENLIB_GROUP_ID)
-						&& Objects.equals(node.getDependency().getArtifact().getArtifactId(), SARL_MAVENLIB_ARTIFACT_ID)) {
+							&& node.getDependency() != null
+							&& Objects.equals(node.getDependency().getArtifact().getGroupId(), SARL_MAVENLIB_GROUP_ID)
+							&& Objects.equals(node.getDependency().getArtifact().getArtifactId(), SARL_MAVENLIB_ARTIFACT_ID)) {
 						sarlNode[0] = node;
 						return false;
 					}
@@ -648,7 +693,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 							final String key = ArtifactUtils.versionlessKey(grId, arId);
 							final String vers = neededArtifactVersions.get(key);
 							if (vers == null
-								|| M2EUtilities.compareMavenVersions(vers, node.getVersion().toString()) < 0) {
+									|| M2EUtilities.compareMavenVersions(vers, node.getVersion().toString()) < 0) {
 								neededArtifactVersions.put(key, node.getVersion().toString());
 							}
 						}
