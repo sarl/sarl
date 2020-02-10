@@ -104,17 +104,21 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	 *
 	 * @param facade the Maven face.
 	 * @param config the configuration.
+	 * @param addTestFolders indicates if the test folders should be considered.
 	 * @param monitor the monitor.
 	 * @throws CoreException if cannot add the source folders.
 	 */
 	@SuppressWarnings("static-method")
 	protected void addPreferences(
 			IMavenProjectFacade facade, SARLConfiguration config,
-			IProgressMonitor monitor) throws CoreException {
+			boolean addTestFolders, IProgressMonitor monitor) throws CoreException {
 		final IPath outputPath = makeProjectRelativePath(facade, config.getOutput());
+		final IPath testOutputPath = addTestFolders ? makeProjectRelativePath(facade, config.getTestOutput()) : null;
 		// Set the SARL preferences
 		SARLPreferences.setSpecificSARLConfigurationFor(
-				facade.getProject(), outputPath);
+				facade.getProject(),
+				outputPath,
+				testOutputPath);
 	}
 
 	private static IPath makeFullPath(IMavenProjectFacade facade, File file) {
@@ -461,7 +465,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		final SubMonitor subm = SubMonitor.convert(monitor, 2);
 		addSourceFolders(facade, config, classpath, addTestFolders, subm.newChild(1));
 		subm.worked(1);
-		addPreferences(facade, config, subm.newChild(1));
+		addPreferences(facade, config, addTestFolders, subm.newChild(1));
 		subm.worked(1);
 	}
 
