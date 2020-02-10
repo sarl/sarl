@@ -291,7 +291,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 			}
 			if (description !== null) {
 				var future = description.future
-				if (future !== null && !future.done && !future.cancelled) {
+				if (future !== null && registered && !future.done && !future.cancelled) {//TODO could have a problem here
 					throw new IllegalStateException(Messages::SchedulesSkill_2)
 				}
 			} else {
