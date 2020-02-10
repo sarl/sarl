@@ -29,8 +29,6 @@
 						<plugin id="com.google.guava"/>
 						<plugin id="com.google.inject"/>
 						<plugin id="com.google.inject.multibindings"/>
-						<plugin id="com.hazelcast"/>
-						<plugin id="org.zeromq.jeromq"/>
 						<plugin id="com.fasterxml.jackson.core.jackson-annotations"/>
 						<plugin id="com.fasterxml.jackson.core.jackson-core"/>
 						<plugin id="com.fasterxml.jackson.core.jackson-databind"/>

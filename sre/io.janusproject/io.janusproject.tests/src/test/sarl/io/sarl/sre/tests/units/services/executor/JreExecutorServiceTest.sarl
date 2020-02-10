@@ -1,0 +1,496 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2020 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.tests.units.services.executor
+
+import io.sarl.sre.services.executor.JreExecutorService
+import io.sarl.sre.services.executor.SreCallable
+import io.sarl.sre.services.executor.SreRunnable
+import io.sarl.tests.api.Nullable
+import java.lang.Thread.UncaughtExceptionHandler
+import java.util.concurrent.Callable
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Future
+import java.util.concurrent.ScheduledExecutorService
+import java.util.concurrent.ScheduledFuture
+import java.util.concurrent.TimeUnit
+import java.util.logging.Level
+import org.junit.Assert
+import org.junit.Test
+import org.mockito.ArgumentCaptor
+
+import static org.mockito.ArgumentMatchers.anyLong
+import static org.mockito.Mockito.doAnswer
+import static org.mockito.Mockito.verifyZeroInteractions
+import static org.mockito.Mockito.when
+
+import static extension org.mockito.ArgumentMatchers.any
+import static extension org.mockito.Mockito.times
+import static extension org.mockito.Mockito.verify
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+class JreExecutorServiceTest extends AbstractExecutorServiceTest<JreExecutorService> {
+
+	@Nullable
+	var handler : UncaughtExceptionHandler
+
+	@Nullable
+	var scheduledExecutor : ScheduledExecutorService
+
+	override newService(executor : ExecutorService) : JreExecutorService {
+		this.scheduledExecutor = typeof(ScheduledExecutorService).mock
+		var serv = new JreExecutorService(executor, this.scheduledExecutor)
+		this.handler = typeof(UncaughtExceptionHandler).mock
+		serv.uncaughtExceptionHandler = this.handler
+		return serv
+	}
+
+	@Test
+	def execute {
+		var run = typeof(Runnable).mock
+		this.service.executeAsap(this.logger, run)
+
+		var capturedRunnable = ArgumentCaptor::forClass(typeof(Runnable))
+		this.executor.verify.submit(capturedRunnable.capture)
+		assertInstanceOf(typeof(SreRunnable), capturedRunnable.value)
+		var jr = capturedRunnable.value as SreRunnable
+		assertSame(logger, jr.logger)
+		assertSame(run, jr.wrappedRunnable)
+
+		verifyZeroInteractions(this.logger)
+	}
+	
+	def execute_exception {
+		var exception = typeof(RuntimeException).mock
+		var run : Runnable= [throw exception]
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return null
+		]).when(this.executor).submit(typeof(Runnable).any)
+		
+		this.service.executeAsap(this.logger, run)
+
+		var capturedRunnable = ArgumentCaptor::forClass(typeof(Runnable))
+		this.executor.verify.submit(capturedRunnable.capture)
+		assertInstanceOf(typeof(SreRunnable), capturedRunnable.value)
+		var jr = capturedRunnable.value as SreRunnable
+		assertSame(logger, jr.logger)
+		assertSame(run, jr.wrappedRunnable)
+		
+		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
+		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
+		this.logger.verify(1.times).log(capturedLevel.capture, any, capturedException.capture)
+		assertSame(Level::SEVERE, capturedLevel.value)
+		assertSame(exception, capturedException.value)
+	}
+
+	@Test
+	def submitRunnable {
+		var future = typeof(Future).mock
+		var run = typeof(Runnable).mock
+		when(this.executor.submit(any(typeof(Runnable)))).thenReturn(future)
+		
+		var rfuture = this.service.executeAsap(this.logger, run)
+		
+		assertSame(future, rfuture)
+
+		var capturedRunnable = ArgumentCaptor::forClass(typeof(Runnable))
+		this.executor.verify.submit(capturedRunnable.capture)
+		assertInstanceOf(typeof(SreRunnable), capturedRunnable.value)
+		var jr = capturedRunnable.value as SreRunnable
+		assertSame(logger, jr.logger)
+		assertSame(run, jr.wrappedRunnable)
+
+		verifyZeroInteractions(this.logger)
+	}
+	
+	@Test
+	def submitRunnable_exception {
+		var future = typeof(Future).mock
+		var exception = typeof(RuntimeException).mock
+		var run : Runnable= [throw exception]
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return future
+		]).when(this.executor).submit(any(typeof(Runnable)))
+		
+		var rfuture = this.service.executeAsap(this.logger, run)
+		
+		assertSame(future, rfuture)
+
+		var capturedRunnable = ArgumentCaptor::forClass(typeof(Runnable))
+		this.executor.verify.submit(capturedRunnable.capture)
+		assertInstanceOf(typeof(SreRunnable), capturedRunnable.value)
+		var jr = capturedRunnable.value as SreRunnable
+		assertSame(logger, jr.logger)
+		assertSame(run, jr.wrappedRunnable)
+		
+		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
+		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
+		this.logger.verify(1.times).log(capturedLevel.capture, any, capturedException.capture)
+		assertSame(Level::SEVERE, capturedLevel.value)
+		assertSame(exception, capturedException.value)
+	}
+
+	@Test
+	def submitRunnableFuture {
+		var future = typeof(Future).mock
+		var run = typeof(Runnable).mock
+		when(this.executor.submit(any(typeof(Runnable)), any)).thenReturn(future)
+		
+		var rfuture = this.service.executeAsap(this.logger, future, run)
+		
+		assertSame(future, rfuture)
+
+		var capturedRunnable = ArgumentCaptor::forClass(typeof(Runnable))
+		var capturedFuture = ArgumentCaptor::forClass(typeof(Future))
+		this.executor.verify.submit(capturedRunnable.capture, capturedFuture.capture)
+		assertInstanceOf(typeof(SreRunnable), capturedRunnable.value)
+		var jr = capturedRunnable.value as SreRunnable
+		assertSame(logger, jr.logger)
+		assertSame(run, jr.wrappedRunnable)
+		assertSame(future, capturedFuture.value)
+
+		verifyZeroInteractions(this.logger)
+	}
+
+	@Test
+	def submitRunnableFuture_exception {
+		var future = typeof(Future).mock
+		var exception = typeof(RuntimeException).mock
+		var run : Runnable= [throw exception]
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return future
+		]).when(this.executor).submit(any(typeof(Runnable)), any(typeof(Future)))
+		
+		var rfuture = this.service.executeAsap(this.logger, future, run)
+		
+		assertSame(future, rfuture)
+
+		var capturedRunnable = ArgumentCaptor::forClass(typeof(Runnable))
+		var capturedFuture = ArgumentCaptor::forClass(typeof(Future))
+		this.executor.verify.submit(capturedRunnable.capture, capturedFuture.capture)
+		assertInstanceOf(typeof(SreRunnable), capturedRunnable.value)
+		var jr = capturedRunnable.value as SreRunnable
+		assertSame(logger, jr.logger)
+		assertSame(run, jr.wrappedRunnable)
+		assertSame(future, capturedFuture.value)
+		
+		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
+		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
+		this.logger.verify(1.times).log(capturedLevel.capture, any, capturedException.capture)
+		assertSame(Level::SEVERE, capturedLevel.value)
+		assertSame(exception, capturedException.value)
+	}
+
+	@Test
+	def submitCallable {
+		var future = typeof(Future).mock
+		var run = typeof(Callable).mock
+		when(this.executor.submit(any(typeof(Callable)))).thenReturn(future)
+		
+		var rfuture = this.service.executeAsap(this.logger, run)
+		
+		assertSame(future, rfuture)
+
+		var capturedCallable = ArgumentCaptor::forClass(typeof(Callable))
+		this.executor.verify.submit(capturedCallable.capture)
+		assertInstanceOf(typeof(SreCallable), capturedCallable.value)
+		var jc = capturedCallable.value as SreCallable<?>
+		assertSame(logger, jc.logger)
+		assertSame(run, jc.getWrappedCallable())
+
+		verifyZeroInteractions(this.logger)
+	}
+
+	@Test
+	def submitCallable_exception : void {
+		var future = typeof(Future).mock
+		var exception = typeof(RuntimeException).mock
+		var run : Callable<?> = [throw exception]
+		doAnswer([
+			(it.getArgument(0) as Callable<?>).call
+			return future
+		]).when(this.executor).submit(any(typeof(Callable)))
+		
+		var rfuture = this.service.executeAsap(this.logger, run)
+		
+		assertSame(future, rfuture)
+
+		var capturedCallable = ArgumentCaptor::forClass(typeof(Callable))
+		this.executor.verify.submit(capturedCallable.capture)
+		assertInstanceOf(typeof(SreCallable), capturedCallable.value)
+		var jc = capturedCallable.value as SreCallable<?>
+		assertSame(logger, jc.logger)
+		assertSame(run, jc.getWrappedCallable())
+		
+		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
+		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
+		this.logger.verify(1.times).log(capturedLevel.capture, any, capturedException.capture)
+		assertSame(Level::SEVERE, capturedLevel.value)
+		assertSame(exception, capturedException.value)
+	}
+
+	@Test
+	def scheduleRunnable {
+		var future = typeof(ScheduledFuture).mock
+		var run = typeof(Runnable).mock
+		when(this.scheduledExecutor.schedule(any(typeof(Runnable)), anyLong(), any)).thenReturn(future)
+		
+		var rfuture = this.service.schedule(this.logger, 34, TimeUnit::DAYS, run)
+		
+		assertSame(future, rfuture)
+
+		var capturedRunnable = ArgumentCaptor::forClass(typeof(Runnable))
+		var capturedDelay = ArgumentCaptor::forClass(typeof(long))
+		var capturedUnit = ArgumentCaptor::forClass(typeof(TimeUnit))
+		this.scheduledExecutor.verify.schedule(capturedRunnable.capture, capturedDelay.capture.longValue,
+			capturedUnit.capture)
+		assertInstanceOf(typeof(SreRunnable), capturedRunnable.value)
+		var jr = capturedRunnable.value as SreRunnable
+		assertSame(logger, jr.logger)
+		assertSame(run, jr.wrappedRunnable)
+		Assert.assertEquals(34, capturedDelay.value.longValue)
+		assertEquals(TimeUnit::DAYS, capturedUnit.value)
+
+		verifyZeroInteractions(this.logger)
+	}
+
+	@Test
+	def scheduleRunnable_exception {
+		var future = typeof(ScheduledFuture).mock
+		var exception = typeof(RuntimeException).mock
+		var run : Runnable= [throw exception]
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return future
+		]).when(this.scheduledExecutor).schedule(any(typeof(Runnable)), anyLong(), any)
+		
+		var rfuture = this.service.schedule(this.logger, 34, TimeUnit::DAYS, run)
+		
+		assertSame(future, rfuture)
+
+		var capturedRunnable = ArgumentCaptor::forClass(typeof(Runnable))
+		var capturedDelay = ArgumentCaptor::forClass(typeof(long))
+		var capturedUnit = ArgumentCaptor::forClass(typeof(TimeUnit))
+		this.scheduledExecutor.verify.schedule(capturedRunnable.capture, capturedDelay.capture.longValue,
+			capturedUnit.capture)
+		assertInstanceOf(typeof(SreRunnable), capturedRunnable.value)
+		var jr = capturedRunnable.value as SreRunnable
+		assertSame(logger, jr.logger)
+		assertSame(run, jr.wrappedRunnable)
+		Assert.assertEquals(34, capturedDelay.value.longValue)
+		assertEquals(TimeUnit::DAYS, capturedUnit.value)
+		
+		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
+		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
+		this.logger.verify(1.times).log(capturedLevel.capture, any, capturedException.capture)
+		assertSame(Level::SEVERE, capturedLevel.value)
+		assertSame(exception, capturedException.value)
+	}
+
+	@Test
+	def scheduleCallable {
+		var future = typeof(ScheduledFuture).mock
+		var run = typeof(Callable).mock
+		when(this.scheduledExecutor.schedule(any(typeof(Callable)), anyLong(), any)).thenReturn(future)
+		
+		var rfuture = this.service.schedule(this.logger, 34, TimeUnit::DAYS, run)
+		
+		assertSame(future, rfuture)
+
+		var capturedCallable = ArgumentCaptor::forClass(typeof(Callable))
+		var capturedDelay = ArgumentCaptor::forClass(typeof(long))
+		var capturedUnit = ArgumentCaptor::forClass(typeof(TimeUnit))
+		this.scheduledExecutor.verify.schedule(capturedCallable.capture, capturedDelay.capture.longValue, capturedUnit.capture)
+		assertInstanceOf(typeof(SreCallable), capturedCallable.value)
+		var jc = capturedCallable.value as SreCallable<?>
+		assertSame(logger, jc.logger)
+		assertSame(run, jc.getWrappedCallable())
+		Assert.assertEquals(34, capturedDelay.value.longValue)
+		assertEquals(TimeUnit::DAYS, capturedUnit.value)
+
+		verifyZeroInteractions(this.logger)
+	}
+
+	@Test
+	def scheduleCallable_exception {
+		var future = typeof(ScheduledFuture).mock
+		var exception = typeof(RuntimeException).mock
+		var run : Callable<?> = [throw exception]
+		doAnswer([
+			(it.getArgument(0) as Callable<?>).call
+			return future
+		]).when(this.scheduledExecutor).schedule(any(typeof(Callable)), anyLong(), any)
+		
+		var rfuture = this.service.schedule(this.logger, 34, TimeUnit::DAYS, run)
+		
+		assertSame(future, rfuture)
+
+		var capturedCallable = ArgumentCaptor::forClass(typeof(Callable))
+		var capturedDelay = ArgumentCaptor::forClass(typeof(long))
+		var capturedUnit = ArgumentCaptor::forClass(typeof(TimeUnit))
+		this.scheduledExecutor.verify.schedule(capturedCallable.capture, capturedDelay.capture.longValue, capturedUnit.capture)
+		assertInstanceOf(typeof(SreCallable), capturedCallable.value)
+		var jc = capturedCallable.value as SreCallable<?>
+		assertSame(logger, jc.logger)
+		assertSame(run, jc.getWrappedCallable())
+		Assert.assertEquals(34, capturedDelay.value.longValue)
+		assertEquals(TimeUnit::DAYS, capturedUnit.value)
+		
+		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
+		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
+		this.logger.verify(1.times).log(capturedLevel.capture, any, capturedException.capture)
+		assertSame(Level::SEVERE, capturedLevel.value)
+		assertSame(exception, capturedException.value)
+	}
+
+	@Test
+	def scheduleAtFixedRate {
+		var future = typeof(ScheduledFuture).mock
+		var run = typeof(Runnable).mock
+		when(this.scheduledExecutor.scheduleAtFixedRate(any(typeof(Runnable)), anyLong(), anyLong(), any)).thenReturn(future)
+		
+		var rfuture = this.service.scheduleAtFixedRate(this.logger, 12, 34, TimeUnit::DAYS, run)
+		
+		assertSame(future, rfuture)
+
+		var capturedRunnable = ArgumentCaptor::forClass(typeof(Runnable))
+		var capturedDelay = ArgumentCaptor::forClass(typeof(long))
+		var capturedPeriod = ArgumentCaptor::forClass(typeof(long))
+		var capturedUnit = ArgumentCaptor::forClass(typeof(TimeUnit))
+		this.scheduledExecutor.verify.scheduleAtFixedRate(capturedRunnable.capture, capturedDelay.capture.longValue, 
+				capturedPeriod.capture.longValue, capturedUnit.capture)
+		assertInstanceOf(typeof(SreRunnable), capturedRunnable.value)
+		var jr = capturedRunnable.value as SreRunnable
+		assertSame(logger, jr.logger)
+		assertSame(run, jr.wrappedRunnable)
+		Assert.assertEquals(12, capturedDelay.value.longValue)
+		Assert.assertEquals(34, capturedPeriod.value.longValue)
+		assertEquals(TimeUnit::DAYS, capturedUnit.value)
+
+		verifyZeroInteractions(this.logger)
+	}
+
+	@Test
+	def scheduleAtFixedRate_exception {
+		var future = typeof(ScheduledFuture).mock
+		var exception = typeof(RuntimeException).mock
+		var run : Runnable= [throw exception]
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return future
+		]).when(this.scheduledExecutor).scheduleAtFixedRate(any(typeof(Runnable)), anyLong(), anyLong(), any)
+		
+		var rfuture = this.service.scheduleAtFixedRate(this.logger, 12, 34, TimeUnit::DAYS, run)
+		
+		assertSame(future, rfuture)
+
+		var capturedRunnable = ArgumentCaptor::forClass(typeof(Runnable))
+		var capturedDelay = ArgumentCaptor::forClass(typeof(long))
+		var capturedPeriod = ArgumentCaptor::forClass(typeof(long))
+		var capturedUnit = ArgumentCaptor::forClass(typeof(TimeUnit))
+		this.scheduledExecutor.verify.scheduleAtFixedRate(capturedRunnable.capture, capturedDelay.capture.longValue, 
+				capturedPeriod.capture.longValue, capturedUnit.capture)
+		assertInstanceOf(typeof(SreRunnable), capturedRunnable.value)
+		var jr = capturedRunnable.value as SreRunnable
+		assertSame(logger, jr.logger)
+		assertSame(run, jr.wrappedRunnable)
+		Assert.assertEquals(12, capturedDelay.value.longValue)
+		Assert.assertEquals(34, capturedPeriod.value.longValue)
+		assertEquals(TimeUnit::DAYS, capturedUnit.value)
+		
+		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
+		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
+		this.logger.verify(1.times).log(capturedLevel.capture, any, capturedException.capture)
+		assertSame(Level::SEVERE, capturedLevel.value)
+		assertSame(exception, capturedException.value)
+	}
+
+	@Test
+	def scheduleWithFixedDelay {
+		var future = typeof(ScheduledFuture).mock
+		var run = typeof(Runnable).mock
+		when(this.scheduledExecutor.scheduleWithFixedDelay(any(typeof(Runnable)), anyLong(), anyLong(), any)).thenReturn(future)
+		
+		var rfuture = this.service.scheduleWithFixedDelay(this.logger, 12, 34, TimeUnit::DAYS, run)
+		
+		assertSame(future, rfuture)
+
+		var capturedRunnable = ArgumentCaptor::forClass(typeof(Runnable))
+		var capturedDelay = ArgumentCaptor::forClass(typeof(long))
+		var capturedPeriod = ArgumentCaptor::forClass(typeof(long))
+		var capturedUnit = ArgumentCaptor::forClass(typeof(TimeUnit))
+		this.scheduledExecutor.verify.scheduleWithFixedDelay(capturedRunnable.capture, capturedDelay.capture.longValue, 
+				capturedPeriod.capture.longValue, capturedUnit.capture)
+		assertInstanceOf(typeof(SreRunnable), capturedRunnable.value)
+		var jr = capturedRunnable.value as SreRunnable
+		assertSame(logger, jr.logger)
+		assertSame(run, jr.wrappedRunnable)
+		Assert.assertEquals(12, capturedDelay.value.longValue)
+		Assert.assertEquals(34, capturedPeriod.value.longValue)
+		assertEquals(TimeUnit::DAYS, capturedUnit.value)
+
+		verifyZeroInteractions(this.logger)
+	}
+
+	@Test
+	def scheduleWithFixedDelay_exception {
+		var future = typeof(ScheduledFuture).mock
+		var exception = typeof(RuntimeException).mock
+		var run : Runnable= [throw exception]
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return future
+		]).when(this.scheduledExecutor).scheduleWithFixedDelay(any(typeof(Runnable)), anyLong(), anyLong(), any)
+		
+		var rfuture = this.service.scheduleWithFixedDelay(this.logger, 12, 34, TimeUnit::DAYS, run)
+		
+		assertSame(future, rfuture)
+
+		var capturedRunnable = ArgumentCaptor::forClass(typeof(Runnable))
+		var capturedDelay = ArgumentCaptor::forClass(typeof(long))
+		var capturedPeriod = ArgumentCaptor::forClass(typeof(long))
+		var capturedUnit = ArgumentCaptor::forClass(typeof(TimeUnit))
+		this.scheduledExecutor.verify.scheduleWithFixedDelay(capturedRunnable.capture, capturedDelay.capture.longValue, 
+				capturedPeriod.capture.longValue, capturedUnit.capture)
+		assertInstanceOf(typeof(SreRunnable), capturedRunnable.value)
+		var jr = capturedRunnable.value as SreRunnable
+		assertSame(logger, jr.logger)
+		assertSame(run, jr.wrappedRunnable)
+		Assert.assertEquals(12, capturedDelay.value.longValue)
+		Assert.assertEquals(34, capturedPeriod.value.longValue)
+		assertEquals(TimeUnit::DAYS, capturedUnit.value)
+		
+		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
+		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
+		this.logger.verify(1.times).log(capturedLevel.capture, any, capturedException.capture)
+		assertSame(Level::SEVERE, capturedLevel.value)
+		assertSame(exception, capturedException.value)
+	}
+
+}

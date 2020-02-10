@@ -1,0 +1,511 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2020 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.tests.units.boot
+
+import com.google.inject.Injector
+import io.bootique.BQRuntime
+import io.bootique.Bootique
+import io.bootique.command.CommandOutcome
+import io.bootique.config.ConfigurationFactory
+import io.sarl.lang.core.AgentContext
+import io.sarl.sre.Kernel
+import io.sarl.sre.boot.SreMain
+import io.sarl.sre.boot.configs.SreConfig
+import io.sarl.sre.boot.configs.subconfigs.BootConfig
+import io.sarl.sre.boot.configs.subconfigs.InvalidAgentNameException
+import io.sarl.sre.boot.configs.subconfigs.NoBootAgentNameException
+import io.sarl.sre.services.lifecycle.LifecycleService
+import io.sarl.sre.tests.testutils.AbstractSreTest
+import io.sarl.sre.tests.testutils.IddleTestingAgent
+import io.sarl.sre.tests.testutils.ModuleMock
+import io.sarl.tests.api.Nullable
+import java.util.List
+import java.util.UUID
+import org.arakhne.afc.bootique.log4j.configs.Level
+import org.arakhne.afc.bootique.log4j.configs.Log4jIntegrationConfig
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
+import org.junit.Before
+import org.junit.Test
+import org.mockito.ArgumentCaptor
+
+import static extension org.mockito.ArgumentMatchers.*
+import static extension org.mockito.Mockito.*
+import io.sarl.sre.services.logging.LoggingService
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+class SreMainTest extends AbstractSreTest {
+
+	val DEFAULT_OPTIONS = #{
+		"bootType",
+		"classpath",
+		"config",
+		"cp",
+		"defaultSpaceId",
+		"help",
+		"help-config",
+		"json",
+		"log",
+		"name",
+		"noagent",
+		"printconfig",
+		"rootContextId",
+		"version",
+		"XasyncProbeUpdate",
+		"XinternalErrorLogLevel",
+		"XkeepAlive",
+		"xml",
+		"Xmnthreads",
+		"Xmxthreads",
+		"XserviceStartTimeout",
+		"XserviceStopTimeout",
+		"XthreadTimeout"
+	}
+
+	@Nullable
+	var bootstrap : SreMain
+	
+	@Nullable
+	var kernel : Kernel
+	
+	@Nullable
+	var bootique : Bootique
+
+	@Nullable
+	var runtime : BQRuntime
+
+	@Nullable
+	var rootContext : AgentContext
+
+	@Nullable
+	var id0 : UUID
+
+	@Nullable
+	var configurationFactory : ConfigurationFactory
+
+	@Nullable
+	var bootConfig : BootConfig
+
+	@Nullable
+	var injector : Injector
+
+	@Nullable
+	var loggingService : LoggingService
+
+	private def createConfiguration(bootAgent : Class<?>, sreConfig : SreConfig = null) {
+		this.bootConfig = new BootConfig
+		this.bootConfig.bootAgent = bootAgent.name
+		this.bootConfig.agentStartArgs = #["a"]
+		this.bootConfig.commandLineArgs = #[typeof(IddleTestingAgent).name, "a"]
+		this.bootConfig = this.bootConfig.spy
+		when(this.configurationFactory.config(typeof(Class).any, typeof(String).any)).thenReturn(this.bootConfig)
+		if (sreConfig !== null) {
+			when(sreConfig.getBoot).thenReturn(this.bootConfig)
+		}
+	}
+	
+	private def createBootiqueMock(instances : (Class<?>) => Object = null) {
+		this.loggingService = typeof(LoggingService).mock
+		this.id0 = UUID::randomUUID
+		this.configurationFactory = typeof(ConfigurationFactory).mock
+		this.rootContext = typeof(AgentContext).mock
+		this.kernel = typeof(Kernel).mock
+		when(this.kernel.rootContext).thenReturn(this.rootContext)
+		when(this.kernel.getService(typeof(Class).any)).thenReturn(typeof(LifecycleService).mock)
+
+		doAnswer [
+			var callback = it.arguments.get(1) as (UUID) => void
+			callback?.apply(this.id0)
+			return null
+		].when(this.kernel).spawn(typeof(Class).any, typeof(Procedure1).any, typeof(Object).any);
+
+		doAnswer [
+			var callback = it.arguments.get(2) as (List<UUID>)=>void
+			callback?.apply(#[this.id0])
+			return null
+		].when(this.kernel).spawn(anyInt, typeof(Class).any, typeof(Procedure1).any, typeof(Object).any)
+
+		this.injector = typeof(Injector).mock
+		when(this.injector.getInstance(typeof(Class).any)).thenAnswer [
+			val type : Class<?> = it.getArgument(0)
+			if (instances !== null) {
+				var obj = instances.apply(type)
+				if (obj !== null) {
+					return obj
+				}
+			}
+			if (typeof(Kernel) == type) {
+				return this.kernel
+			}
+			if (typeof(ConfigurationFactory) == type) {
+				return this.configurationFactory
+			}
+			throw new IllegalStateException(type.name)
+		]
+		this.runtime = typeof(BQRuntime).mock
+		when(this.runtime.getInstance(typeof(Class).any)).thenAnswer [
+			val type : Class<?> = it.getArgument(0)
+			if (instances !== null) {
+				var obj = instances.apply(type)
+				if (obj !== null) {
+					return obj
+				}
+			}
+			if (typeof(Kernel) == type) {
+				return this.kernel
+			}
+			if (typeof(ConfigurationFactory) == type) {
+				return this.configurationFactory
+			}
+			if (typeof(BootConfig) == type) {
+				return this.bootConfig
+			}
+			if (typeof(Injector) == type) {
+				return this.injector
+			}
+			if (typeof(LoggingService) == type) {
+				return this.loggingService
+			}
+			throw new IllegalStateException(type.name)
+		]
+		this.bootique = typeof(Bootique).mock
+		when(this.bootique.module(typeof(Class).any)).thenReturn(this.bootique)
+		when(this.bootique.autoLoadModules).thenReturn(this.bootique)
+		when(this.bootique.createRuntime).thenReturn(this.runtime)
+		
+		this.bootstrap.runtime = this.runtime
+	}
+
+	@Before
+	def setUp {
+		this.bootstrap = new SreMain
+	}
+
+	@Test
+	def getKernel_start0 {
+		assertNull(this.bootstrap.kernel)
+	}
+
+	@Test
+	def getKernel_start1 {
+		createBootiqueMock
+		this.bootstrap.startWithoutAgent(this.bootique)
+		assertSame(this.kernel, this.bootstrap.kernel)
+	}
+
+	@Test
+	def getRuntime_start0 {
+		assertNull(this.bootstrap.runtime)
+	}
+
+	@Test
+	def getRuntime_start1 {
+		createBootiqueMock
+		this.bootstrap.startWithoutAgent(this.bootique)
+		assertSame(this.runtime, this.bootstrap.runtime)
+	}
+
+	@Test
+	def getService_start0 {
+		assertNull(this.bootstrap.getService(typeof(LoggingService)))
+	}
+
+	@Test
+	def getService_start1 {
+		createBootiqueMock
+		this.bootstrap.startWithoutAgent(this.bootique)
+		var serv = this.bootstrap.getService(typeof(LifecycleService))
+		serv.assertNotNull
+		assertInstanceOf(typeof(LifecycleService), serv)
+	}
+
+	@Test
+	def getOptions {
+		var opts = this.bootstrap.options
+		assertNotNull(opts)
+		var names = opts.map[it.option.name]
+		assertContainsCollection(names, DEFAULT_OPTIONS)
+	}
+
+	@Test
+	def isActive_start0 {
+		assertTrue(this.bootstrap.active)
+	}
+
+	@Test
+	def isActive_start1 {
+		createBootiqueMock
+		this.bootstrap.startWithoutAgent(this.bootique)
+		assertTrue(this.bootstrap.active)
+	}
+
+	@Test
+	def setVerboseLevel {
+		var configInstance = new Log4jIntegrationConfig
+		createBootiqueMock [
+			if (it == typeof(Log4jIntegrationConfig)) {
+				return configInstance
+			}
+		]
+		var config = this.runtime.getInstance(typeof(Log4jIntegrationConfig))
+		
+		assertEquals(Level::INFO, config.level)
+
+		this.bootstrap.verboseLevel = -1
+		assertEquals(Level::OFF, config.level)
+
+		this.bootstrap.verboseLevel = 0
+		assertEquals(Level::OFF, config.level)
+
+		this.bootstrap.verboseLevel = 1
+		assertEquals(Level::ERROR, config.level)
+
+		this.bootstrap.verboseLevel = 2
+		assertEquals(Level::WARNING, config.level)
+
+		this.bootstrap.verboseLevel = 3
+		assertEquals(Level::INFO, config.level)
+
+		this.bootstrap.verboseLevel = 4
+		assertEquals(Level::DEBUG, config.level)
+
+		this.bootstrap.verboseLevel = 5
+		assertEquals(Level::TRACE, config.level)
+
+		this.bootstrap.verboseLevel = 6
+		assertEquals(Level::ALL, config.level)
+
+		this.bootstrap.verboseLevel = 7
+		assertEquals(Level::ALL, config.level)
+	}
+
+	@Test
+	def getBootAgentIdentifier_start0 {
+		assertNull(this.bootstrap.bootAgentIdentifier)
+	}
+
+	@Test
+	def getBootAgentIdentifier_start1 {
+		createBootiqueMock
+		this.bootstrap.startWithoutAgent(this.bootique)
+		assertNull(this.bootstrap.bootAgentIdentifier)
+	}
+
+	@Test
+	def startAgentClassObjectArray {
+		createBootiqueMock
+		createConfiguration(typeof(IddleTestingAgent))
+		this.bootstrap.startWithoutAgent(this.bootique)
+		var id = this.bootstrap.startAgent(typeof(IddleTestingAgent), "a")
+		assertEquals(this.id0, id)
+		var arg0 = ArgumentCaptor::forClass(typeof(Class))
+		var arg1 = ArgumentCaptor::forClass(typeof(Procedure1))
+		var arg2 = ArgumentCaptor::forClass(typeof(Object[]))
+		this.kernel.verify.spawn(arg0.capture, arg1.capture, arg2.capture)
+		assertEquals(typeof(IddleTestingAgent), arg0.value)
+		assertNotNull(arg1.value)
+		assertEquals("a", arg2.allValues.get(0))
+		assertEquals(this.id0, this.bootstrap.bootAgentIdentifier)
+	}
+
+	@Test
+	def startAgentIntClassObjectArray {
+		createBootiqueMock
+		createConfiguration(typeof(IddleTestingAgent))
+		this.bootstrap.startWithoutAgent(this.bootique)
+		var id = this.bootstrap.startAgent(1, typeof(IddleTestingAgent), "a")
+		var iterator = id.iterator
+		assertEquals(this.id0, iterator.next)
+		assertFalse(iterator.hasNext)
+		var arg0 = ArgumentCaptor::forClass(typeof(int))
+		var arg1 = ArgumentCaptor::forClass(typeof(Class))
+		var arg2 = ArgumentCaptor::forClass(typeof(Procedure1))
+		var arg3 = ArgumentCaptor::forClass(typeof(Object[]))
+		this.kernel.verify.spawn(arg0.capture.intValue, arg1.capture, arg2.capture, arg3.capture)
+		assertEquals(1, arg0.value)
+		assertEquals(typeof(IddleTestingAgent), arg1.value)
+		assertNotNull(arg2.value)
+		assertEquals("a", arg3.allValues.get(0))
+		assertEquals(this.id0, this.bootstrap.bootAgentIdentifier)
+	}
+
+	@Test(expected = typeof(NoBootAgentNameException))
+	def startBootAgent_start0 : void {
+		var configInstance = new SreConfig().spy
+		createBootiqueMock [
+			if (it == typeof(SreConfig)) {
+				return configInstance
+			}
+		]
+		this.bootstrap.startWithoutAgent(this.bootique)
+		this.bootstrap.startBootAgent
+	}
+
+	@Test(expected = typeof(InvalidAgentNameException))
+	def startBootAgent_start1 : void {
+		var configInstance = new SreConfig().spy
+		createBootiqueMock [
+			if (it == typeof(SreConfig)) {
+				return configInstance
+			}
+		]
+		createConfiguration(typeof(String), configInstance)
+		this.bootstrap.startWithoutAgent(this.bootique)
+		this.bootstrap.startBootAgent
+	}
+
+	
+	@Test
+	def startBootAgent_start2 {
+		var configInstance = new SreConfig().spy
+		createBootiqueMock [
+			if (it == typeof(SreConfig)) {
+				return configInstance
+			}
+		]
+		createConfiguration(typeof(IddleTestingAgent), configInstance)
+		this.bootstrap.startWithoutAgent(this.bootique)
+		var id = this.bootstrap.startBootAgent
+		assertEquals(this.id0, id)
+		var arg0 = ArgumentCaptor::forClass(typeof(Class))
+		var arg1 = ArgumentCaptor::forClass(typeof(Procedure1))
+		var arg2 = ArgumentCaptor::forClass(typeof(Object[]))
+		this.kernel.verify.spawn(arg0.capture, arg1.capture, arg2.capture)
+		assertEquals(typeof(IddleTestingAgent), arg0.value)
+		assertNotNull(arg1.value)
+		assertEquals("a", arg2.allValues.get(0))
+		assertEquals(this.id0, this.bootstrap.bootAgentIdentifier)
+	}
+
+	@Test
+	def startWithoutAgentBootique_start0 {
+		createBootiqueMock
+		var ctx = this.bootstrap.startWithoutAgent(this.bootique)
+		assertSame(this.rootContext, ctx)
+		assertSame(this.kernel, this.bootstrap.kernel)
+		assertSame(this.runtime, this.bootstrap.runtime)
+	}
+
+	@Test
+	def startWithoutAgentBootique_start1 {
+		createBootiqueMock
+		var ctx0 = this.bootstrap.startWithoutAgent(this.bootique)
+		assertSame(this.rootContext, ctx0)
+		assertSame(this.kernel, this.bootstrap.kernel)
+		assertSame(this.runtime, this.bootstrap.runtime)
+		var ctx1 = this.bootstrap.startWithoutAgent(this.bootique)
+		assertSame(this.rootContext, ctx1)
+		assertSame(ctx0, ctx1)
+		assertSame(this.kernel, this.bootstrap.kernel)
+		assertSame(this.runtime, this.bootstrap.runtime)
+	}
+
+	@Test
+	def startWithoutAgentBootiqueClass_start0 {
+		createBootiqueMock
+		var ctx = this.bootstrap.startWithoutAgent(this.bootique, typeof(ModuleMock))
+		assertSame(this.rootContext, ctx);
+		assertSame(this.kernel, this.bootstrap.getKernel());
+		assertSame(this.runtime, this.bootstrap.getRuntime());
+	}
+
+	@Test
+	def startWithoutAgentBootiqueClass_start1 {
+		createBootiqueMock
+		var ctx0 = this.bootstrap.startWithoutAgent(this.bootique, typeof(ModuleMock))
+		assertSame(this.rootContext, ctx0)
+		assertSame(this.kernel, this.bootstrap.kernel)
+		assertSame(this.runtime, this.bootstrap.runtime)
+		var ctx1 = this.bootstrap.startWithoutAgent(this.bootique, typeof(ModuleMock))
+		assertSame(this.rootContext, ctx1)
+		assertSame(ctx0, ctx1)
+		assertSame(this.kernel, this.bootstrap.kernel)
+		assertSame(this.runtime, this.bootstrap.runtime)
+	}
+
+	@Test
+	def runSREObjectArray_start0 : void {
+		var configInstance = new SreConfig().spy
+		createBootiqueMock [
+			if (it == typeof(SreConfig)) {
+				return configInstance
+			}
+		]
+		createConfiguration(typeof(IddleTestingAgent), configInstance)
+
+		var retcode = this.bootstrap.runSRE("--version")
+
+		// Because run() function is not binded to the real code.
+		assertEquals(255, retcode)
+
+		verify(this.runtime, only).run
+	}
+
+	@Test
+	def runSREObjectArray_start1 : void {
+		var configInstance = new SreConfig().spy
+		createBootiqueMock [
+			if (it == typeof(SreConfig)) {
+				return configInstance
+			}
+		]
+		createConfiguration(typeof(IddleTestingAgent), configInstance)
+		
+		var outcome = typeof(CommandOutcome).mock
+		when(outcome.exitCode).thenReturn(1234)
+		when(outcome.isSuccess).thenReturn(false)
+		when(this.runtime.run).thenReturn(outcome)
+
+		var retcode = this.bootstrap.runSRE("--version")
+
+		assertEquals(1234, retcode)
+
+		verify(this.runtime, only).run
+	}
+
+	@Test
+	def runSREObjectArray_start2 : void {
+		var configInstance = new SreConfig().spy
+		createBootiqueMock [
+			if (it == typeof(SreConfig)) {
+				return configInstance
+			}
+		]
+		createConfiguration(typeof(IddleTestingAgent), configInstance)
+
+		var outcome = typeof(CommandOutcome).mock
+		when(outcome.exitCode).thenReturn(0)
+		when(outcome.isSuccess).thenReturn(true)
+		when(this.runtime.run).thenReturn(outcome)
+
+		var retcode = this.bootstrap.runSRE("--version")
+
+		assertEquals(0, retcode)
+
+		verify(this.runtime, only).run
+	}
+
+}

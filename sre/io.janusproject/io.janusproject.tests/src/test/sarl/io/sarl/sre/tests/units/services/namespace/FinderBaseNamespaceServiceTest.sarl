@@ -1,0 +1,342 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2020 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.tests.units.services.namespace
+
+import io.sarl.lang.annotation.PrivateAPI
+import io.sarl.sre.naming.ContextName
+import io.sarl.sre.naming.NameScheme
+import io.sarl.sre.naming.SpaceName
+import io.sarl.sre.services.context.Context
+import io.sarl.sre.services.context.ContextService
+import io.sarl.sre.services.context.SpaceRepository
+import io.sarl.sre.services.context.SpaceRepositoryListenerFactory
+import io.sarl.sre.services.logging.LoggingService
+import io.sarl.sre.services.namespace.ContextNamespaceFinder
+import io.sarl.sre.services.namespace.FieldAccess
+import io.sarl.sre.services.namespace.FinderBasedNamespaceService
+import io.sarl.tests.api.AbstractSarlTest
+import io.sarl.tests.api.Nullable
+import java.util.Collections
+import java.util.UUID
+import javax.inject.Provider
+import org.junit.Before
+import org.junit.Test
+
+import static org.mockito.ArgumentMatchers.*
+import static org.mockito.Mockito.*
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+class FinderBasedNamespaceServiceTest extends AbstractSarlTest {
+
+	@Nullable
+	var service : FinderBasedNamespaceService
+
+	@Nullable
+	var contextService : ContextService
+
+	@Nullable
+	var finder : ContextNamespaceFinder
+
+	@Nullable
+	var cid0 : UUID
+
+	@Nullable
+	var ctx0 : Context
+
+	@Nullable
+	var cid1 : UUID
+
+	@Nullable
+	var ctx1 : Context
+
+	@SuppressWarnings("use_reserved_sarl_annotation")
+	@Before
+	@PrivateAPI(isCallerOnly = true)
+	def setUp : void {
+		this.contextService = typeof(ContextService).mock
+		this.finder = new ContextNamespaceFinder(this.contextService)
+		this.service = new FinderBasedNamespaceService
+		this.service.namespaceFinders = Collections::singleton(this.finder)
+
+		var spaceRepository  = typeof(SpaceRepository).mock
+		
+		var logger = typeof(LoggingService).mock 
+		
+		var listenerFactory = typeof(SpaceRepositoryListenerFactory).mock
+			
+
+		// Default space creation
+		this.cid0 = UUID::randomUUID
+		this.ctx0 = new MyContext([spaceRepository], logger, listenerFactory).spy
+
+		// Other space creation
+		this.cid1 = UUID::randomUUID
+		this.ctx1 = new MyContext([spaceRepository], logger, listenerFactory).spy
+
+		when(this.contextService.rootContext).thenReturn(this.ctx0)
+		when(this.contextService.getContext(any(typeof(UUID)))).thenAnswer [
+			if (it.getArgument(0) == this.cid0) {
+				return this.ctx0
+			} else if (it.getArgument(0) == this.cid1) {
+				return this.ctx1
+			} else {
+				return null
+			}
+		]
+	}
+
+	@Test
+	def findObjectWithoutFragment_00 : void {
+		var name = typeof(ContextName).mock
+		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.contextId).thenReturn(this.cid0)
+		this.ctx0.assertSame(this.service.findObjectWithoutFragment(name))
+	}
+
+	@Test
+	def findObjectWithoutFragment_01 : void {
+		var name = typeof(ContextName).mock
+		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.contextId).thenReturn(this.cid0)
+		when(name.fragment).thenReturn("myfield")
+		when(name.hasFragment).thenReturn(true)
+		this.ctx0.assertSame(this.service.findObjectWithoutFragment(name))
+	}
+
+	@Test
+	def findObjectWithoutFragment_02 : void {
+		var name = typeof(ContextName).mock
+		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.contextId).thenReturn(this.cid0)
+		when(name.fragment).thenReturn("xyz")
+		when(name.hasFragment).thenReturn(true)
+		this.ctx0.assertSame(this.service.findObjectWithoutFragment(name))
+	}
+
+	@Test
+	def findObjectWithoutFragment_03 : void {
+		var name = typeof(SpaceName).mock
+		when(name.scheme).thenReturn(NameScheme::SPACE)
+		this.service.findObjectWithoutFragment(name).assertNull
+	}
+
+	@Test
+	def findObject_SarlName_00 : void {
+		var name = typeof(ContextName).mock
+		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.contextId).thenReturn(this.cid0)
+		this.ctx0.assertSame(this.service.findObject(name))
+	}
+
+	@Test
+	def findObject_SarlName_01 : void {
+		var name = typeof(ContextName).mock
+		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.contextId).thenReturn(this.cid0)
+		when(name.fragment).thenReturn("myfield")
+		when(name.hasFragment).thenReturn(true)
+		var fld = this.service.findObject(name)
+		assertInstanceOf(typeof(FieldAccess), fld)
+		var fa = fld as FieldAccess
+		this.ctx0.assertSame(fa.instance)
+		fa.field.assertNotNull
+		"myfield".assertEquals(fa.field.name)
+		34.assertEquals(fa.get)
+	}
+
+	@Test
+	def findObject_SarlName_02 : void {
+		var name = typeof(ContextName).mock
+		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.contextId).thenReturn(this.cid0)
+		when(name.fragment).thenReturn("xyz")
+		when(name.hasFragment).thenReturn(true)
+		this.service.findObject(name).assertNull
+	}
+
+	@Test
+	def findObject_SarlName_03 : void {
+		var name = typeof(SpaceName).mock
+		when(name.scheme).thenReturn(NameScheme::SPACE)
+		this.service.findObject(name).assertNull
+	}
+
+	@Test
+	def findObject_SarlName_Class_00_Context : void {
+		var name = typeof(ContextName).mock
+		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.contextId).thenReturn(this.cid0)
+		this.ctx0.assertSame(this.service.findObject(name, typeof(Context)))
+	}
+
+	@Test
+	def findObject_SarlName_Class_00_Object : void {
+		var name = typeof(ContextName).mock
+		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.contextId).thenReturn(this.cid0)
+		this.ctx0.assertSame(this.service.findObject(name, typeof(Object)))
+	}
+
+	@Test
+	def findObject_SarlName_Class_00_Integer : void {
+		var name = typeof(ContextName).mock
+		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.contextId).thenReturn(this.cid0)
+		this.service.findObject(name, typeof(Integer)).assertNull
+	}
+
+	@Test
+	def findObject_SarlName_Class_01_Context : void {
+		var name = typeof(ContextName).mock
+		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.contextId).thenReturn(this.cid0)
+		when(name.fragment).thenReturn("myfield")
+		when(name.hasFragment).thenReturn(true)
+		this.service.findObject(name, typeof(Context)).assertNull
+	}
+
+	@Test
+	def findObject_SarlName_Class_01_Object : void {
+		var name = typeof(ContextName).mock
+		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.contextId).thenReturn(this.cid0)
+		when(name.fragment).thenReturn("myfield")
+		when(name.hasFragment).thenReturn(true)
+		var fld = this.service.findObject(name, typeof(Object))
+		assertInstanceOf(typeof(FieldAccess), fld)
+		var fa = fld as FieldAccess
+		this.ctx0.assertSame(fa.instance)
+		fa.field.assertNotNull
+		"myfield".assertEquals(fa.field.name)
+		34.assertEquals(fa.get)
+	}
+
+	@Test
+	def findObject_SarlName_Class_01_FieldAccess : void {
+		var name = typeof(ContextName).mock
+		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.contextId).thenReturn(this.cid0)
+		when(name.fragment).thenReturn("myfield")
+		when(name.hasFragment).thenReturn(true)
+		var fld = this.service.findObject(name, typeof(FieldAccess))
+		this.ctx0.assertSame(fld.instance)
+		fld.field.assertNotNull
+		"myfield".assertEquals(fld.field.name)
+		34.assertEquals(fld.get)
+	}
+
+	@Test
+	def findObject_SarlName_Class_01_Integer : void {
+		var name = typeof(ContextName).mock
+		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.contextId).thenReturn(this.cid0)
+		when(name.fragment).thenReturn("myfield")
+		when(name.hasFragment).thenReturn(true)
+		this.service.findObject(name, typeof(Integer)).assertNull
+	}
+
+	@Test
+	def findObject_SarlName_Class_02_Context : void {
+		var name = typeof(ContextName).mock
+		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.contextId).thenReturn(this.cid0)
+		when(name.fragment).thenReturn("xyz")
+		when(name.hasFragment).thenReturn(true)
+		this.service.findObject(name, typeof(Context)).assertNull
+	}
+
+	@Test
+	def findObject_SarlName_Class_02_Object : void {
+		var name = typeof(ContextName).mock
+		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.contextId).thenReturn(this.cid0)
+		when(name.fragment).thenReturn("xyz")
+		when(name.hasFragment).thenReturn(true)
+		this.service.findObject(name, typeof(Object)).assertNull
+	}
+
+	@Test
+	def findObject_SarlName_Class_02_FieldAccess : void {
+		var name = typeof(ContextName).mock
+		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.contextId).thenReturn(this.cid0)
+		when(name.fragment).thenReturn("xyz")
+		when(name.hasFragment).thenReturn(true)
+		this.service.findObject(name, typeof(FieldAccess)).assertNull
+	}
+
+	@Test
+	def findObject_SarlName_Class_02_Integer : void {
+		var name = typeof(ContextName).mock
+		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.contextId).thenReturn(this.cid0)
+		when(name.fragment).thenReturn("xyz")
+		when(name.hasFragment).thenReturn(true)
+		this.service.findObject(name, typeof(Integer)).assertNull
+	}
+
+	@Test
+	def findObject_SarlName_Class_03_Context : void {
+		var name = typeof(SpaceName).mock
+		when(name.scheme).thenReturn(NameScheme::SPACE)
+		this.service.findObject(name, typeof(Context)).assertNull
+	}
+
+	@Test
+	def findObject_SarlName_Class_03_Object : void {
+		var name = typeof(SpaceName).mock
+		when(name.scheme).thenReturn(NameScheme::SPACE)
+		this.service.findObject(name, typeof(Object)).assertNull
+	}
+
+	@Test
+	def findObject_SarlName_Class_03_FieldAccess : void {
+		var name = typeof(SpaceName).mock
+		when(name.scheme).thenReturn(NameScheme::SPACE)
+		this.service.findObject(name, typeof(FieldAccess)).assertNull
+	}
+
+	@Test
+	def findObject_SarlName_Class_03_Integer : void {
+		var name = typeof(SpaceName).mock
+		when(name.scheme).thenReturn(NameScheme::SPACE)
+		this.service.findObject(name, typeof(Integer)).assertNull
+	}
+	
+	private static class MyContext extends Context {
+		
+		@SuppressWarnings("unused_private_member")
+		var myfield : int = 34
+		
+		new(spaceRepositoryProvider : Provider<SpaceRepository>, logger : LoggingService,
+			listenerFactory : SpaceRepositoryListenerFactory) {
+			super(null, null, null, spaceRepositoryProvider, logger, listenerFactory)
+		}
+		
+	}
+
+}

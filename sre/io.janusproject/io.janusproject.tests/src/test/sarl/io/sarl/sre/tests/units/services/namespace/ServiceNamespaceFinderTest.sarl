@@ -1,0 +1,98 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2020 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.tests.units.services.namespace
+
+import com.google.inject.Injector
+import io.sarl.lang.annotation.PrivateAPI
+import io.sarl.sre.naming.NameScheme
+import io.sarl.sre.naming.ServiceName
+import io.sarl.sre.services.lifecycle.LifecycleService
+import io.sarl.sre.services.logging.LoggingService
+import io.sarl.sre.services.namespace.ServiceNamespaceFinder
+import io.sarl.tests.api.AbstractSarlTest
+import io.sarl.tests.api.Nullable
+import org.junit.Before
+import org.junit.Test
+
+import static org.mockito.ArgumentMatchers.*
+import static org.mockito.Mockito.*
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+class ServiceNamespaceFinderTest extends AbstractSarlTest {
+
+	@Nullable
+	var injector : Injector
+
+	@Nullable
+	var loggingService : LoggingService
+
+	@Nullable
+	var finder : ServiceNamespaceFinder
+
+	@SuppressWarnings("use_reserved_sarl_annotation")
+	@Before
+	@PrivateAPI(isCallerOnly = true)
+	def setUp : void {
+		this.loggingService = typeof(LoggingService).mock
+		this.injector = typeof(Injector).mock
+		when(this.injector.getInstance(any(typeof(Class)))).thenAnswer [
+			if (it.getArgument(0) == typeof(LoggingService)) {
+				return this.loggingService
+			}
+			return null
+		]
+
+		this.finder = new ServiceNamespaceFinder(this.injector)
+	}
+
+	@Test
+	def getScheme : void {
+		NameScheme::SERVICE.assertEquals(this.finder.scheme)
+	}
+
+	@Test
+	def find_ServiceName_null : void {
+		var name = typeof(ServiceName).mock
+		when(name.serviceType).thenReturn(typeof(LoggingService))
+		this.finder.find(null).assertNull
+	}
+
+	@Test
+	def find_ServiceName_valid : void {
+		var name = typeof(ServiceName).mock
+		when(name.serviceType).thenReturn(typeof(LoggingService))
+		this.loggingService.assertSame(this.finder.find(name))
+	}
+
+	@Test
+	def find_ServiceName_invalid : void {
+		var name = typeof(ServiceName).mock
+		when(name.serviceType).thenReturn(typeof(LifecycleService))
+		this.finder.find(name).assertNull
+	}
+
+}

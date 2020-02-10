@@ -9,7 +9,7 @@
    </description>
 
    <copyright url="http://www.sarl.io/about/">
-      Copyright 2014-2018 the original authors and authors.
+      Copyright 2014-2020 the original authors and authors.
    </copyright>
 
    <license url="http://www.apache.org/licenses/LICENSE-2.0">
@@ -253,10 +253,6 @@
          version="0.0.0"/>
 
    <includes
-         id="org.jboss.tools.m2e.jdt.feature"
-         version="0.0.0"/>
-
-   <includes
          id="org.eclipse.wst.common_ui.feature"
          version="0.0.0"/>
 
@@ -286,6 +282,18 @@
 
    <includes
          id="org.eclipse.wst.xml_core.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.jboss.tools.maven.apt.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.m2e.logback.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.sonatype.m2e.mavenarchiver.feature"
          version="0.0.0"/>
 
    <requires>
@@ -614,6 +622,13 @@
 
    <plugin
          id="slf4j.api"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="aopalliance"
          download-size="0"
          install-size="0"
          version="0.0.0"

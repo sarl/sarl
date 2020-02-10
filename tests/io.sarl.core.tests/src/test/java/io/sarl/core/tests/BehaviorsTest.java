@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2019 the original authors or authors.
+ * Copyright (C) 2014-2020 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,8 @@
  */
 package io.sarl.core.tests;
 
+import java.util.concurrent.ConcurrentLinkedDeque;
+
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +31,6 @@ import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.EventListener;
 import io.sarl.lang.core.Scope;
-import io.sarl.lang.util.SynchronizedIterable;
 
 /**
  * @author $Author: sgalland$
@@ -57,7 +58,7 @@ public class BehaviorsTest extends AbstractSarlCoreTest<Capacity> {
 
 	@Test
 	public void getRegisteredBehaviors() {
-		assertMethod("getRegisteredBehaviors", SynchronizedIterable.class); //$NON-NLS-1$
+		assertMethod("getRegisteredBehaviors", ConcurrentLinkedDeque.class); //$NON-NLS-1$
 	}
 
 	@Test

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2019 the original authors or authors.
+ * Copyright (C) 2014-2020 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,7 +68,7 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 * The current Maven session.
 	 */
 	@Parameter(defaultValue = "${session}", required = true, readonly = true)
-	private MavenSession session;
+	protected MavenSession session;
 
 	/**
 	 * The Build PluginManager component.
@@ -102,8 +102,28 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	@Parameter(defaultValue = SARLConfig.FOLDER_TEST_SOURCE_SARL)
 	private File testInput;
 
+	/** Skip the execution of the mojo.
+	 * @since 0.11
+	 */
+	@Parameter(defaultValue = "false")
+	private boolean skip;
+
+	/** Replies if the execution of the mojo should be skipped or not.
+	 * This function checks the configuration tag "skip".
+	 *
+	 * @return {@code true} if the mojo should be skipped.
+	 * @since 0.11
+	 */
+	protected boolean isSkipped() {
+		return this.skip;
+	}
+
 	@Override
 	public final void execute() throws MojoExecutionException, MojoFailureException {
+		if (isSkipped()) {
+			getLog().info(Messages.AbstractSarlMojo_5);
+			return;
+		}
 		try {
 			this.mavenHelper = new MavenHelper(this.session, this.buildPluginManager, this.repositorySystem,
 					this.resolutionErrorHandler, getLog());

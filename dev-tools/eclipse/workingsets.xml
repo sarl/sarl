@@ -7,7 +7,6 @@
 <item elementID="=io.sarl.m2e" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=io.sarl.lang.mwe2" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=io.sarl.eclipse" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=io.sarl.eclipse-slf4j" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 </workingSet>
 <workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1480017504015_3" label="Features" name="Features">
 <item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/io.sarl.compiler" type="4"/>

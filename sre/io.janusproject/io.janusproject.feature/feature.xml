@@ -10,7 +10,7 @@
    </description>
 
    <copyright url="http://www.sarl.io/about/">
-      Copyright (c) 2014-2018 the original authors and authors.
+      Copyright (c) 2014-2020 the original authors and authors.
    </copyright>
 
    <license url="http://www.apache.org/licenses/LICENSE-2.0">
@@ -225,8 +225,6 @@
       <import plugin="io.sarl.core" version="0.11.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.util" version="0.11.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.osgi" version="3.15.100" match="greaterOrEqual"/>
-      <import plugin="com.hazelcast" version="3.11.2" match="greaterOrEqual"/>
-      <import plugin="org.zeromq.jeromq" version="0.5.0" match="greaterOrEqual"/>
       <import plugin="org.apache.commons.cli" version="1.4.0" match="greaterOrEqual"/>
       <import plugin="org.arakhne.afc.core.vmutils" version="16.0.0" match="greaterOrEqual"/>
       <import plugin="org.arakhne.afc.core.util" version="16.0.0" match="greaterOrEqual"/>
@@ -240,6 +238,9 @@
       <import plugin="com.fasterxml.jackson.core.jackson-databind" version="2.10.0.pr1" match="greaterOrEqual"/>
       <import plugin="com.fasterxml.jackson.dataformat.jackson-dataformat-xml" version="2.10.1" match="greaterOrEqual"/>
       <import plugin="com.fasterxml.jackson.dataformat.jackson-dataformat-yaml" version="2.10.0.pr1" match="greaterOrEqual"/>
+      <import plugin="com.fasterxml.jackson.module.jackson-module-jaxb-annotations" version="2.10.1" match="greaterOrEqual"/>
+      <import plugin="org.yaml.snakeyaml" version="1.24.0" match="greaterOrEqual"/>
+      <import plugin="jakarta.xml.bind-api" version="2.3.2" match="greaterOrEqual"/>
       <import plugin="io.bootique" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.arakhne.afc.bootique.log4j" version="16.0.0" match="greaterOrEqual"/>
       <import plugin="org.arakhne.afc.bootique.variables" version="16.0.0" match="greaterOrEqual"/>
@@ -247,6 +248,7 @@
       <import plugin="jul.to.slf4j" version="2.0.0.alpha1" match="greaterOrEqual"/>
       <import plugin="org.apache.log4j" version="1.2.15" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtend.lib" version="2.20.0" match="greaterOrEqual"/>
+      <import plugin="stax2-api" version="4.2.0" match="greaterOrEqual"/>
       <import plugin="io.janusproject.plugin" version="0.11.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.eclipse" version="0.11.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jdt.core" version="3.20.0" match="greaterOrEqual"/>
@@ -258,10 +260,6 @@
       <import plugin="org.eclipse.jdt.launching" version="3.16.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.xbase.lib" version="2.20.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtend.lib.macro"/>
-      <import plugin="com.fasterxml.jackson.module.jackson-module-jaxb-annotations" version="2.10.1" match="greaterOrEqual"/>
-      <import plugin="org.yaml.snakeyaml" version="1.24.0" match="greaterOrEqual"/>
-      <import plugin="jakarta.xml.bind-api" version="2.3.2" match="greaterOrEqual"/>
-      <import plugin="stax2-api" version="4.2.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
@@ -280,20 +278,6 @@
 
    <plugin
          id="com.google.gson"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.hazelcast"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.zeromq.jeromq"
          download-size="0"
          install-size="0"
          version="0.0.0"

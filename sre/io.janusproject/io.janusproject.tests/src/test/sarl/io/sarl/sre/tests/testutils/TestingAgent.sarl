@@ -1,0 +1,266 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2020 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.tests.testutils
+
+import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
+import io.sarl.sre.services.executor.EarlyExitException
+import java.util.Collection
+import java.util.List
+import java.util.Map
+import java.util.UUID
+import io.sarl.core.Schedules
+
+/**
+ * Abstract implementation of an agent that is used for testing SRE.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+@SuppressWarnings("potential_field_synchronization_problem")
+abstract agent TestingAgent {
+
+	uses Lifecycle, Schedules
+
+	var results : Map<UUID, List<Object>>
+
+	var initializationParameters : Object[]
+
+	/** Replies the simple name of the given type name
+	 *
+	 * @param typeName the fully qualifed name of a type.
+	 */
+	static def simpleName(typeName : String) : String {
+		var index1 = typeName.lastIndexOf("$")
+		var index2 = typeName.lastIndexOf(".")
+		var index = Math::max(index1, index2)
+		if (index >= 0) {
+			return typeName.substring(index + 1)
+		}
+		return typeName
+	}
+
+	/** 
+	 * Add a result associated to the current agent.
+	 * 
+	 * @param result - the result.
+	 */
+	def addResult(result : Object) {
+		if (this.results !== null) {
+			var list : List<Object>
+			synchronized (this.results) {
+				val aid = this.ID
+				list = this.results.get(aid)
+				if (list === null) {
+					list = newArrayList
+					this.results.put(aid, list)
+				}
+			}
+			if (list !== null) {
+				synchronized (list) {
+					list += result
+				}
+			}
+		}
+	}
+
+	
+	/**
+	 * Replies the number of results provided by the ran platform.
+	 *
+	 * @return the number of results.
+	 */
+	@Pure
+	def getNumberOfResults : int {
+		if (this.results !== null) {
+			var list : List<Object>
+			synchronized (this.results) {
+				list = this.results.get(this.ID)
+			}
+			if (list !== null) {
+				synchronized (list) {
+					return list.size
+				}
+			}
+		}
+		return 0
+	}
+
+	/**
+	 * Add a result.
+	 * 
+	 * @param result - the result.
+	 */
+	def addResults(results : Collection<?>) {
+		if (this.results !== null) {
+			var list : List<Object>
+			synchronized (this.results) {
+				list = this.results.get(this.ID)
+				if (list !== null) {
+					list = newArrayList
+					this.results.put(this.ID, list)
+				}
+			}
+			if (list !== null) {
+				synchronized (list) {
+					list += results
+				}
+			}
+		}
+	}
+
+	/**
+	 * Replies a unmodifiable view on the results for the current agent.
+	 * @return the results.
+	 */
+	@Pure
+	def getUnmodifiableResults : List<Object> {
+		if (this.results !== null) {
+			var list : List<Object>
+			synchronized (this.results) {
+				list = this.results.get(this.ID)
+			}
+			if (list !== null) {
+				synchronized (list) {
+					return list.unmodifiableView
+				}
+			}
+		}
+		return emptyList
+	}
+
+	/** 
+	 * Replies a modifiable view on the results for the current agent.
+	 * @return the results.
+	 */
+	@Pure
+	def getModifiableResults : List<Object> {
+		if (this.results !== null) {
+			var list : List<Object>
+			synchronized (this.results) {
+				list = this.results.get(this.ID)
+				if (list === null) {
+					list = newArrayList
+					this.results.put(this.ID, list)
+				}
+			}
+			return list
+		}
+		return emptyList
+	}
+
+	/**
+	 * Replies the map of the results for all the agents.
+	 * @return the results.
+	 */
+	@Pure
+	def getRawResultMap : Map<UUID, List<Object>> {
+		this.results
+	}
+
+	/** Replies the initialization parameters of the agents.
+	 *
+	 * @return the initialization parameters.
+	 */
+	@Pure
+	def getAgentInitializationParameters : Object[] {
+		this.initializationParameters
+	}
+
+	/** Wait until the condition is true or time out; and run the code.
+	 *
+	 * @param condition the condition to validate.
+	 * @param timeout the time out duration.
+	 * @param code the code to execute after waiting for evaluating the condition to true. 
+	 */
+	@SuppressWarnings("discouraged_reference")
+	def waitAndDo(condition : () => boolean, timeout : int = AbstractSreRunTest::STANDARD_TIMEOUT,
+		code : ()=>void) {
+		assert condition !== null
+		assert code !== null
+		var endTime : long
+		if (timeout >= 0) {
+			endTime = System::currentTimeMillis() + timeout * 1000
+		} else {
+			endTime = -1
+		}
+		while (!condition.apply && (endTime == -1 || System.currentTimeMillis() <= endTime)) {
+			Thread.sleep(100)
+		}
+		if (endTime == -1 || System.currentTimeMillis() <= endTime) {
+			code.apply
+		}
+	}
+
+	on Initialize {
+		this.initializationParameters = occurrence.parameters
+		this.results = occurrence.parameters.get(0) as Map<UUID, List<Object>>
+		try {
+			var policy = runAgentTest
+			if (policy !== null) {
+				switch (policy) {
+					case IMMEDIATE_KILLING: {
+						killMe
+					}
+					case DIFFERED_KILLING: {
+						in(1000) [killMe] 
+					}
+					case STANDARD: {
+						//
+					}
+				}
+			}
+		} catch (exception : Throwable) {
+			if (!(exception instanceof EarlyExitException)) {
+				addResult(exception)
+			}
+			throw exception
+		}
+	}
+
+	/**
+	 * Invoked to run the unit test. This function is invoked at agent initialization
+	 *
+	 * @return <code>true</code> for killing the agent during its initialization.
+	 */
+	abstract def runAgentTest : RunPolicy
+
+	/** 
+	 * Type of action to apply after the testing function.
+	 * 
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	enum RunPolicy {
+		/** Run the agent in its normal way. */
+		STANDARD,
+		/** Kill the agent at the return of the test function. */
+		IMMEDIATE_KILLING,
+		/** Kill the agent after a small amount of time. */
+		DIFFERED_KILLING
+	}
+
+}

@@ -57,16 +57,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.hazelcast</groupId>
-			<artifactId>hazelcast</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.zeromq</groupId>
-			<artifactId>jeromq</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 		</dependency>
@@ -85,6 +75,43 @@
 		<dependency>
 			<groupId>org.arakhne.afc.core</groupId>
 			<artifactId>util</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.arakhne.afc.core</groupId>
+			<artifactId>inputoutput</artifactId>
+			<version>${afc.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.openjfx-jre8</groupId>
+					<artifactId>javafx-graphics</artifactId>
+		        </exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.arakhne.afc.bootique</groupId>
+			<artifactId>bootique-log4j</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.arakhne.afc.bootique</groupId>
+			<artifactId>bootique-variables</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.arakhne.afc.bootique</groupId>
+			<artifactId>bootique-synopsishelp</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.arakhne.afc.bootique</groupId>
+			<artifactId>bootique-printconfig</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.arakhne.afc.bootique</groupId>
+			<artifactId>bootique-applicationdata2</artifactId>
 		</dependency>
 	</dependencies>
 

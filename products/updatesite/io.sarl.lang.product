@@ -268,10 +268,10 @@
       <feature id="io.janusproject.feature" installMode="root"/>
       <feature id="io.janusproject.feature.source" installMode="root"/>
       <feature id="org.eclipse.help" installMode="root"/>
-      <feature id="org.jboss.tools.m2e.jdt.feature" installMode="root"/>
       <feature id="org.eclipse.xtext.redist" installMode="root"/>
       <feature id="org.eclipse.jdt" installMode="root"/>
       <feature id="org.eclipse.xtext.xbase.lib" installMode="root"/>
+      <feature id="org.eclipse.m2e.logback.feature" installMode="root"/>
       <feature id="org.eclipse.emf.common" installMode="root"/>
       <feature id="org.eclipse.equinox.p2.core.feature" installMode="root"/>
       <feature id="org.eclipse.wst.xml_core.feature" installMode="root"/>
@@ -292,8 +292,10 @@
       <feature id="org.eclipse.ecf.core.feature" installMode="root"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient45.feature" installMode="root"/>
       <feature id="org.eclipse.jgit" installMode="root"/>
+      <feature id="org.sonatype.m2e.mavenarchiver.feature" installMode="root"/>
       <feature id="org.eclipse.equinox.p2.discovery.feature" installMode="root"/>
       <feature id="org.eclipse.equinox.p2.rcp.feature" installMode="root"/>
+      <feature id="org.jboss.tools.maven.apt.feature" installMode="root"/>
       <feature id="org.eclipse.ecf.filetransfer.feature" installMode="root"/>
       <feature id="org.eclipse.xtext.ui" installMode="root"/>
       <feature id="org.eclipse.epp.mpc" installMode="root"/>
@@ -303,7 +305,6 @@
    </features>
 
    <configurations>
-      <plugin id="io.sarl.eclipse-slf4j" autoStart="true" startLevel="3" />
       <plugin id="org.apache.felix.scr" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
@@ -317,7 +318,7 @@
       <repository location="http://updates.sarl.io/composite/releases/" enabled="true" />
    </repositories>
 
-   <preferencesInfo>     
+   <preferencesInfo>
       <targetfile overwrite="false" path="/io.sarl.eclipse/plugin_customization.ini"/>
    </preferencesInfo>
 

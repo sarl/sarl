@@ -1,0 +1,71 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2020 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.tests.units.services.logging
+
+import io.sarl.sre.services.logging.JulLoggerCreator
+import io.sarl.sre.tests.testutils.AbstractSreTest
+import java.util.UUID
+import java.util.logging.Level
+import java.util.logging.Logger
+import javax.inject.Provider
+import org.junit.Test
+import org.mockito.ArgumentCaptor
+
+import static extension org.mockito.Mockito.*
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+class LoggerCreatorTest extends AbstractSreTest {
+
+	@Test
+	def createPlatformLogger {
+		var config = typeof(Provider).mock
+		var log = typeof(Logger).mock
+		when(config.get).thenReturn(log)
+		var expectedLevel = Level::ALL
+		var creator = new JulLoggerCreator(Level::CONFIG, "name", config)
+		var logger = creator.createPlatformLogger
+		assertSame(log, logger)
+		var argument0 = ArgumentCaptor::forClass(typeof(Level))
+		verify(logger, 1.times).level = argument0.capture
+		assertEquals(expectedLevel, argument0.value)
+	}
+
+	@Test
+	def createAgentLogger {
+		var config = typeof(Provider).mock
+		var log = typeof(Logger).mock
+		when(config.get).thenReturn(log)
+		var expectedLevel = Level::CONFIG
+		var creator = new JulLoggerCreator(Level::CONFIG, "name", config)
+		var parent = creator.createPlatformLogger
+		var name = UUID::randomUUID.toString
+		var logger = creator.createModuleLogger(name, parent)
+		assertNotSame(log, logger)
+		assertEquals(expectedLevel, logger.level)
+	}
+
+}

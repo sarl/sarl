@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2019 the original authors or authors.
+ * Copyright (C) 2014-2020 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@
 package io.sarl.eclipse.perspectives;
 
 import org.eclipse.debug.ui.IDebugUIConstants;
-import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.search.ui.NewSearchUI;
 import org.eclipse.ui.IFolderLayout;
@@ -60,7 +59,6 @@ public class SARLPerspectiveFactory implements IPerspectiveFactory {
 		//folder.addView(JavaUI.ID_PACKAGES);
 		folder.addView(SARLPackageExplorerPart.ID_PACKAGES);
 		folder.addPlaceholder(JavaUI.ID_TYPE_HIERARCHY);
-		folder.addPlaceholder(JavaPlugin.ID_RES_NAV);
 		folder.addPlaceholder(IPageLayout.ID_PROJECT_EXPLORER);
 
 		final IFolderLayout outputfolder = layout.createFolder("bottom", IPageLayout.BOTTOM, //$NON-NLS-1$
@@ -98,7 +96,6 @@ public class SARLPerspectiveFactory implements IPerspectiveFactory {
 		// views - standard workbench
 		layout.addShowViewShortcut(IPageLayout.ID_OUTLINE);
 		layout.addShowViewShortcut(IPageLayout.ID_PROBLEM_VIEW);
-		layout.addShowViewShortcut(JavaPlugin.ID_RES_NAV);
 		layout.addShowViewShortcut(IPageLayout.ID_TASK_LIST);
 		layout.addShowViewShortcut(IProgressConstants.PROGRESS_VIEW_ID);
 		layout.addShowViewShortcut(IPageLayout.ID_PROJECT_EXPLORER);

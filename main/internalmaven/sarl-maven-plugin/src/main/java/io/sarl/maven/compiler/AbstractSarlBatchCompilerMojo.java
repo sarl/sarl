@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2019 the original authors or authors.
+ * Copyright (C) 2014-2020 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -217,6 +217,23 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	 * @since 0.8
 	 */
 	protected abstract boolean isTestContext();
+
+	@Override
+	protected boolean isSkipped() {
+		if (isTestContext()) {
+			// Check the general Maven test skipping flag
+			boolean mavenTestSkip = false;
+			try {
+				mavenTestSkip = Boolean.parseBoolean(this.session.getUserProperties().getProperty("maven.test.skip", "false")); //$NON-NLS-1$ //$NON-NLS-2$
+			} catch (Throwable exception) {
+				mavenTestSkip = false;
+			}
+			if (mavenTestSkip) {
+				return true;
+			}
+		}
+		return super.isSkipped();
+	}
 
 	/** Run compilation.
 	 *

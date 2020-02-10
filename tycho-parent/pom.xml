@@ -83,13 +83,6 @@
 						</filter>
 						<filter>
 							<type>eclipse-plugin</type>
-							<id>org.zeromq.jeromq</id>
-							<restrictTo>
-								<version>${zeromq.version}</version>
-							</restrictTo>
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
 							<id>org.arakhne.afc.core.vmutils</id>
 							<restrictTo>
 								<version>${afc.osgi.version}</version>
@@ -133,6 +126,34 @@
 						<filter>
 							<type>eclipse-plugin</type>
 							<id>org.arakhne.afc.bootique.variables</id>
+							<restrictTo>
+								<version>${afc.osgi.version}</version>
+							</restrictTo>
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.arakhne.afc.core.vmutils</id>
+							<restrictTo>
+								<version>${afc.osgi.version}</version>
+							</restrictTo>
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.arakhne.afc.core.text</id>
+							<restrictTo>
+								<version>${afc.osgi.version}</version>
+							</restrictTo>
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.arakhne.afc.core.util</id>
+							<restrictTo>
+								<version>${afc.osgi.version}</version>
+							</restrictTo>
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.arakhne.afc.core.references</id>
 							<restrictTo>
 								<version>${afc.osgi.version}</version>
 							</restrictTo>
@@ -300,11 +321,6 @@
 			<layout>p2</layout>
 			<url>http://download.eclipse.org/releases/2019-12/</url>
 		</repository>
-		<repository>
-			<id>org.jboss.m2e-jdt-compiler.update.lastest</id>
-			<layout>p2</layout>
-			<url>http://download.jboss.org/jbosstools/updates/m2e-extensions/m2e-jdt-compiler/</url>
-		</repository>
 		<!-- Arakhne libraries -->
 		<repository>
 			<id>org.arakhne.p2</id>
@@ -316,6 +332,22 @@
 			<id>io.sarl.dependencies</id>
 			<layout>p2</layout>
 			<url>http://dependencies.sarl.io</url>
+		</repository>
+		<!-- For pre-installing the m2e connectors -->
+		<repository>
+			<id>org.jboss.m2e-jdt-compiler.update.lastest</id>
+			<layout>p2</layout>
+			<url>http://download.jboss.org/jbosstools/updates/m2e-extensions/m2e-jdt-compiler/</url>
+		</repository>
+		<repository>
+			<id>org.jboss.m2e-extensions.m2e-apt</id>
+			<layout>p2</layout>
+			<url>https://download.jboss.org/jbosstools/photon/snapshots/builds/m2e-apt/latest/all/repo/</url>
+		</repository>
+		<repository>
+			<id>org.maven.m2e.connectors.tycho.update.lastest</id>
+			<layout>p2</layout>
+			<url>https://repo1.maven.org/maven2/.m2e/connectors/m2eclipse-tycho/0.8.1/N/LATEST/</url>
 		</repository>
 	</repositories>
 

@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2019 the original authors or authors.
+ * Copyright (C) 2014-2020 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -270,6 +270,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 				initConfig = readInitializeConfiguration(request, mojo, monitor);
 				break;
 			case "compile": //$NON-NLS-1$
+			case "testCompile": //$NON-NLS-1$
 				compileConfig = readCompileConfiguration(request, mojo, monitor);
 				break;
 			default:

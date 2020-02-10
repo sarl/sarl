@@ -9,6 +9,7 @@
 					<goal>clean</goal>
 					<goal>initialize</goal>
 					<goal>compile</goal>
+					<goal>testCompile</goal>
 				</goals>
 			</pluginExecutionFilter>
 			<action>

@@ -1,0 +1,321 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2020 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.tests.units.skills.bic
+
+import io.sarl.lang.core.Address
+import io.sarl.lang.core.Agent
+import io.sarl.sre.services.context.Context
+import io.sarl.sre.services.lifecycle.AgentLife
+import io.sarl.sre.services.lifecycle.AgentState
+import io.sarl.sre.services.lifecycle.LifecycleService
+import io.sarl.sre.services.lifecycle.SpawnResult
+import io.sarl.sre.skills.bic.LifecycleSkill
+import io.sarl.sre.tests.testutils.AbstractSreTest
+import io.sarl.sre.tests.units.skills.bic.mocks.MyAgent2
+import io.sarl.sre.tests.units.skills.bic.mocks.MyAgent3
+import io.sarl.tests.api.Nullable
+import java.util.Arrays
+import java.util.Collections
+import java.util.UUID
+import org.junit.Before
+import org.junit.Test
+import org.mockito.ArgumentCaptor
+
+import static org.mockito.ArgumentMatchers.any
+import static org.mockito.ArgumentMatchers.anyInt
+import static org.mockito.Mockito.verifyZeroInteractions
+import static org.mockito.Mockito.when
+
+import static extension org.mockito.Mockito.times
+import static extension org.mockito.Mockito.verify
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+class LifecycleSkillTest extends AbstractSreTest {
+
+	@Nullable
+	var service : LifecycleService
+	
+	@Nullable
+	var spawnerID : UUID
+
+	@Nullable
+	var context : Context
+
+	@Nullable
+	var ^agent : Agent
+
+	@Nullable
+	var ^skill : LifecycleSkill
+
+	@Before
+	def setUp : void {
+		this.spawnerID = UUID::randomUUID
+		this.service = typeof(LifecycleService).mock
+		this.context = typeof(Context).mock
+		when(this.context.ID).thenReturn(UUID::randomUUID)
+		this.^agent = new MyAgent3(this.context.ID, this.spawnerID).spy
+		AgentLife::getLife(^agent).setDefaultContext(this.context, typeof(Address).mock)
+		this.^skill = new LifecycleSkill(this.service)
+		this.reflect.invoke(this.^skill, "setOwner", this.^agent)
+	}
+
+	private def forceAlive {
+		// Force being alive
+		AgentLife.getLife(this.^agent).state = AgentState::ALIVE
+	}
+
+	@Test
+	def spawn_notAlive {
+		var agentID = UUID::randomUUID
+		var result = new SpawnResult(Collections::singletonList(agentID), emptyList)
+		when(this.service.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
+		
+		var id = this.^skill.spawn(typeof(MyAgent2), 1, "value")
+		
+		assertNull(id)
+		
+		verifyZeroInteractions(this.service)
+	}
+
+	@Test
+	def spawn_alive {
+		var agentID = UUID::randomUUID
+		var result = new SpawnResult(Collections.singletonList(agentID), emptyList)
+		when(this.service.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
+
+		forceAlive
+		
+		var id = this.^skill.spawn(typeof(MyAgent2), 1, "value")
+		
+		assertSame(agentID, id)
+		
+		var argument0 = ArgumentCaptor::forClass(typeof(int))
+		var argument1 = ArgumentCaptor::forClass(typeof(UUID))
+		var argument2 = ArgumentCaptor::forClass(typeof(Context))
+		var argument3 = ArgumentCaptor::forClass(typeof(UUID))
+		var argument4 = ArgumentCaptor::forClass(typeof(Class))
+		var argument5 = ArgumentCaptor::forClass(typeof(Object))
+		this.service.verify(1.times).spawnAgent(
+			argument0.capture.intValue, argument1.capture, argument2.capture,
+				argument3.capture, argument4.capture, argument5.capture)
+		assertEquals(1, argument0.value)
+		assertSame(this.spawnerID, argument1.value)
+		assertSame(this.context, argument2.value)
+		assertNull(argument3.value)
+		assertEquals(typeof(MyAgent2), argument4.value)
+		assertArrayEquals(#[1, "value"], argument5.allValues.toArray)
+	}
+
+	@Test
+	def spawnInteger_notAlive {
+		var agentID1 = UUID::randomUUID
+		var agentID2 = UUID::randomUUID
+		var agentID3 = UUID::randomUUID
+		var result = new SpawnResult(Arrays.asList(agentID1, agentID2, agentID3), emptyList)
+		when(this.service.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
+		
+		var id = this.^skill.spawn(3, typeof(MyAgent2), 1, "value")
+		
+		assertNotNull(id)
+		assertContains(id)
+		verifyZeroInteractions(this.service)
+	}
+
+	@Test
+	def spawnInteger_alive {
+		var agentID1 = UUID::randomUUID
+		var agentID2 = UUID::randomUUID
+		var agentID3 = UUID::randomUUID
+		var result = new SpawnResult(Arrays.asList(agentID1, agentID2, agentID3), emptyList)
+		when(this.service.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
+
+		forceAlive
+		
+		var id = this.^skill.spawn(3, typeof(MyAgent2), 1, "value")
+		
+		assertNotNull(id)
+		var iterator = id.iterator
+		assertSame(agentID1, iterator.next)
+		assertSame(agentID2, iterator.next)
+		assertSame(agentID3, iterator.next)
+		assertFalse(iterator.hasNext)
+		
+		var argument0 = ArgumentCaptor::forClass(typeof(int))
+		var argument1 = ArgumentCaptor::forClass(typeof(UUID))
+		var argument2 = ArgumentCaptor::forClass(typeof(Context))
+		var argument3 = ArgumentCaptor::forClass(typeof(UUID))
+		var argument4 = ArgumentCaptor::forClass(typeof(Class))
+		var argument5 = ArgumentCaptor::forClass(typeof(Object))
+		this.service.verify(1.times).spawnAgent(argument0.capture.intValue, argument1.capture, argument2.capture,
+				argument3.capture, argument4.capture, argument5.capture)
+		assertEquals(3, argument0.value)
+		assertSame(this.spawnerID, argument1.value)
+		assertSame(this.context, argument2.value)
+		assertNull(argument3.value)
+		assertEquals(typeof(MyAgent2), argument4.value)
+		assertArrayEquals(#[1, "value"], argument5.allValues.toArray)
+	}
+
+	@Test
+	def spawnInContext_notAlive {
+		var agentID = UUID::randomUUID
+		var result = new SpawnResult(Collections.singletonList(agentID), emptyList)
+		when(this.service.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
+		var otherContext = typeof(Context).mock
+		
+		var id = this.^skill.spawnInContext(typeof(MyAgent2), otherContext, 1, "value")
+		
+		assertNull(id)
+
+		verifyZeroInteractions(this.service)
+	}
+
+	@Test
+	def spawnInContext_alive {
+		var agentID = UUID::randomUUID
+		var result = new SpawnResult(Collections.singletonList(agentID), emptyList)
+		when(this.service.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
+		var otherContext = typeof(Context).mock
+
+		forceAlive
+		
+		var id = this.^skill.spawnInContext(typeof(MyAgent2), otherContext, 1, "value")
+		
+		assertSame(agentID, id)
+		
+		var argument0 = ArgumentCaptor::forClass(typeof(int))
+		var argument1 = ArgumentCaptor::forClass(typeof(UUID))
+		var argument2 = ArgumentCaptor::forClass(typeof(Context))
+		var argument3 = ArgumentCaptor::forClass(typeof(UUID))
+		var argument4 = ArgumentCaptor::forClass(typeof(Class))
+		var argument5 = ArgumentCaptor::forClass(typeof(Object))
+		this.service.verify(1.times).spawnAgent(argument0.capture.intValue, argument1.capture, argument2.capture,
+				argument3.capture, argument4.capture, argument5.capture)
+		assertEquals(1, argument0.value)
+		assertSame(this.spawnerID, argument1.value)
+		assertSame(otherContext, argument2.value)
+		assertNull(argument3.value)
+		assertEquals(typeof(MyAgent2), argument4.value)
+		assertArrayEquals(#[1, "value"], argument5.allValues.toArray)
+	}
+
+	@Test
+	def spawnInContextInteger_notAlive {
+		var agentID1 = UUID::randomUUID
+		var agentID2 = UUID::randomUUID
+		var agentID3 = UUID::randomUUID
+		var result = new SpawnResult(Arrays.asList(agentID1, agentID2, agentID3), emptyList)
+		when(this.service.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
+		var otherContext = typeof(Context).mock
+
+		var id = this.^skill.spawnInContext(3, typeof(MyAgent2), otherContext, 1, "value")
+		
+		assertNotNull(id)
+		assertContains(id)
+		verifyZeroInteractions(this.service)
+	}
+
+	@Test
+	def spawnInContextInteger_alive {
+		var agentID1 = UUID::randomUUID
+		var agentID2 = UUID::randomUUID
+		var agentID3 = UUID::randomUUID
+		var result = new SpawnResult(Arrays.asList(agentID1, agentID2, agentID3), emptyList)
+		when(this.service.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
+		var otherContext = typeof(Context).mock
+
+		forceAlive
+
+		var id = this.^skill.spawnInContext(3, typeof(MyAgent2), otherContext, 1, "value")
+		
+		assertNotNull(id)
+		var iterator = id.iterator
+		assertSame(agentID1, iterator.next)
+		assertSame(agentID2, iterator.next)
+		assertSame(agentID3, iterator.next)
+		assertFalse(iterator.hasNext)
+		
+		var argument0 = ArgumentCaptor::forClass(typeof(int))
+		var argument1 = ArgumentCaptor::forClass(typeof(UUID))
+		var argument2 = ArgumentCaptor::forClass(typeof(Context))
+		var argument3 = ArgumentCaptor::forClass(typeof(UUID))
+		var argument4 = ArgumentCaptor::forClass(typeof(Class))
+		var argument5 = ArgumentCaptor::forClass(typeof(Object))
+		this.service.verify(1.times).spawnAgent(argument0.capture.intValue, argument1.capture, argument2.capture,
+				argument3.capture, argument4.capture, argument5.capture)
+		assertEquals(3, argument0.value)
+		assertSame(this.spawnerID, argument1.value)
+		assertSame(otherContext, argument2.value)
+		assertNull(argument3.value)
+		assertEquals(typeof(MyAgent2), argument4.value)
+		assertArrayEquals(#[1, "value"], argument5.allValues.toArray)
+	}
+
+	@Test
+	def spawnInContextWithID_notAlive {
+		var agentID = UUID::randomUUID
+		var result = new SpawnResult(Collections.singletonList(agentID), emptyList)
+		when(this.service.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
+		var otherContext = typeof(Context).mock
+		
+		var id = this.^skill.spawnInContextWithID(typeof(MyAgent2), agentID, otherContext, 1, "value")
+		
+		assertNull(id)
+		
+		verifyZeroInteractions(this.service)
+	}
+
+	@Test
+	def spawnInContextWithID_alive {
+		var agentID = UUID::randomUUID
+		var result = new SpawnResult(Collections.singletonList(agentID), emptyList)
+		when(this.service.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
+		var otherContext = typeof(Context).mock
+
+		forceAlive
+
+		var id = this.^skill.spawnInContextWithID(typeof(MyAgent2), agentID, otherContext, 1, "value")
+		
+		assertSame(agentID, id)
+		
+		var argument0 = ArgumentCaptor::forClass(typeof(int))
+		var argument1 = ArgumentCaptor::forClass(typeof(UUID))
+		var argument2 = ArgumentCaptor::forClass(typeof(Context))
+		var argument3 = ArgumentCaptor::forClass(typeof(UUID))
+		var argument4 = ArgumentCaptor::forClass(typeof(Class))
+		var argument5 = ArgumentCaptor::forClass(typeof(Object))
+		verify(this.service, times(1)).spawnAgent(argument0.capture.intValue, argument1.capture, argument2.capture,
+				argument3.capture, argument4.capture, argument5.capture)
+		assertEquals(1, argument0.value)
+		assertSame(this.spawnerID, argument1.value)
+		assertSame(otherContext, argument2.value)
+		assertSame(agentID, argument3.value)
+		assertEquals(typeof(MyAgent2), argument4.value)
+		assertArrayEquals(#[1, "value"], argument5.allValues.toArray)
+	}
+
+}

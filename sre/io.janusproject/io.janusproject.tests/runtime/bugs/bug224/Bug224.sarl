@@ -1,0 +1,99 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2020 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.tests.runtime.bugs.bug224
+
+import io.sarl.sre.tests.runtime.bugs.bug224.mocks.MyBehavior
+import io.sarl.sre.tests.runtime.bugs.bug224.mocks.RegisteredInDestroyAgent
+import io.sarl.sre.tests.runtime.bugs.bug224.mocks.RegisteredInHandlerAgent
+import io.sarl.sre.tests.runtime.bugs.bug224.mocks.RegisteredInInitializeAgent
+import io.sarl.sre.tests.runtime.bugs.bug224.mocks.UnregisteredInDestroyAgent
+import io.sarl.sre.tests.runtime.bugs.bug224.mocks.UnregisteredInHandlerAgent
+import io.sarl.sre.tests.runtime.bugs.bug224.mocks.UnregisteredInInitializeAgent
+import io.sarl.sre.tests.testutils.AbstractSreRunTest
+import org.junit.Test
+
+/**
+ * Unit test for the issue #224: Equivalent of Skill.install for the Behavior class.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @see https://github.com/sarl/sarl/issues/224
+ */
+class Bug224 extends AbstractSreRunTest {
+
+	@Test
+	def registerInInitialize {
+		typeof(RegisteredInInitializeAgent).runSre(false)
+		assertEquals(1, getNumberOfResults)
+		var beh = getResult(typeof(MyBehavior), 0)
+		assertEquals(1, beh.initializeEvaluations.intValue)
+		assertEquals(1, beh.destroyEvaluations.intValue)
+	}
+
+	@Test
+	def registerInHandler {
+		typeof(RegisteredInHandlerAgent).runSre(false)
+		assertEquals(1, getNumberOfResults)
+		var beh = getResult(typeof(MyBehavior), 0)
+		assertEquals(1, beh.initializeEvaluations.intValue)
+		assertEquals(1, beh.destroyEvaluations.intValue)
+	}
+
+	@Test
+	def registerInDestroy {
+		typeof(RegisteredInDestroyAgent).runSre(false)
+		assertEquals(1, getNumberOfResults)
+		var beh = getResult(typeof(MyBehavior), 0)
+		assertEquals(0, beh.initializeEvaluations.intValue)
+		assertEquals(0, beh.destroyEvaluations.intValue)
+	}
+
+	@Test
+	def unregisterInInitialize {
+		typeof(UnregisteredInInitializeAgent).runSre(false)
+		assertEquals(1, getNumberOfResults)
+		var beh = getResult(typeof(MyBehavior), 0)
+		assertEquals(1, beh.initializeEvaluations.intValue)
+		assertEquals(1, beh.destroyEvaluations.intValue)
+	}
+
+	@Test
+	def unregisterInHandler {
+		typeof(UnregisteredInHandlerAgent).runSre(false)
+		assertEquals(1, getNumberOfResults)
+		var beh = getResult(typeof(MyBehavior), 0)
+		assertEquals(1, beh.initializeEvaluations.intValue)
+		assertEquals(1, beh.destroyEvaluations.intValue)
+	}
+
+	@Test
+	def unregisterInDestroy {
+		typeof(UnregisteredInDestroyAgent).runSre(false, true, NO_TIMEOUT)
+		assertEquals(1, getNumberOfResults)
+		var beh = getResult(typeof(MyBehavior), 0)
+		assertEquals(1, beh.initializeEvaluations.intValue)
+		assertEquals(1, beh.destroyEvaluations.intValue)
+	}
+
+}

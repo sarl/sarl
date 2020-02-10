@@ -1,0 +1,232 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2020 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.tests.testutils
+
+import com.google.common.util.concurrent.Service
+import com.google.common.util.concurrent.Service.Listener
+import com.google.common.util.concurrent.Service.State
+import io.sarl.tests.api.ManualMocking
+import java.util.List
+import java.util.concurrent.Executor
+import java.util.concurrent.TimeUnit
+import org.junit.Rule
+import org.junit.Test
+import org.junit.internal.runners.statements.RunBefores
+import org.junit.rules.TestWatcher
+import org.junit.runner.Description
+import org.junit.runners.model.FrameworkMethod
+import org.junit.runners.model.Statement
+import org.mockito.ArgumentCaptor
+import org.mockito.InjectMocks
+import org.mockito.MockitoAnnotations
+
+import static extension org.mockito.Mockito.times
+import static extension org.mockito.Mockito.verify
+
+/**
+ * Abstract class that permits to test the implementation of a service.
+ *
+ * @param <S> - the type of the service.
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+@ManualMocking
+abstract class AbstractServiceTest<S extends Service> extends AbstractSreTest {
+
+	@InjectMocks
+	protected var service : S
+
+	/**
+	 * This rule permits to start the service according to the annotation {@link StartServiceForTest}.
+	 */
+	@Rule
+	public val serviceWatcher = new TestWatcher {
+
+		private def nextStatement(n : Statement) : Statement {
+			try {
+				val f = n.class.getDeclaredField("next")
+				val isAcc = f.accessible
+				try {
+					f.accessible = true
+					if (typeof(Statement).isAssignableFrom(f.type)) {
+						return typeof(Statement).cast(f.get(n))
+					}
+				} finally {
+					f.accessible = isAcc
+				}
+			} catch (exception : Throwable) {
+				//
+			}
+			return null;
+		}
+
+		override apply(base : Statement, description : Description) : Statement {
+			// Search for the statement "RunBefores" that describes the
+			// @Before calls.
+			var n = base
+			while (n !== null && !(n instanceof RunBefores)) {
+				n = nextStatement(n)
+			}
+			if (n instanceof RunBefores) {
+				// Insert a new Statement for creating/launching the service.
+				// The insertion point is just before the @Before statement
+				// since the statements are run from the end to the start
+				// of the linked list.
+				val f = n.class.getDeclaredField("befores")
+				val isAcc = f.accessible
+				try {
+					f.accessible = true
+					if (typeof(List).isAssignableFrom(f.type)) {
+						val befores = f.get(n) as List<FrameworkMethod>
+						var foundStart = false
+						var foundInit = false
+						var iterator = befores.iterator
+						while (!foundStart && !foundInit && iterator.hasNext) {
+							val fm = iterator.next
+							if ("startService" == fm.method.name) {
+								foundStart = true
+							}
+							if ("createAndInitService" == fm.method.name) {
+								foundStart = true
+							}
+						}
+						val startAnnot = description.testClass.getAnnotation(typeof(StartServiceForTest))
+						val avoidAnnot = description.getAnnotation(typeof(AvoidServiceStartForTest))
+						var tmp : List<FrameworkMethod> = null
+						if (!foundInit && startAnnot !== null && startAnnot.createAfterSetUp()) {
+							val createServiceMethod = typeof(AbstractServiceTest).getMethod("createAndInitService")
+							val fm = new FrameworkMethod(createServiceMethod)
+							tmp = newArrayList(befores)
+							tmp += fm
+						}
+						if (!foundStart && avoidAnnot === null && startAnnot !== null
+								&& (tmp !== null || startAnnot.startAfterSetUp)) {
+							val startServiceMethod = typeof(AbstractServiceTest).getMethod("startService")
+							val fm = new FrameworkMethod(startServiceMethod)
+							if (tmp === null) {
+								tmp = newArrayList(befores)
+							}
+							tmp += fm
+						}
+						if (tmp !== null) {
+							f.set(n, tmp.unmodifiableView)
+						}
+					}
+				} finally {
+					f.accessible = isAcc
+				}
+			}
+			return super.apply(base, description)
+		}
+
+		@Override
+		protected def starting(description : Description) {
+			// Create the instance of the service
+			val startAnnot = description.testClass.getAnnotation(typeof(StartServiceForTest))
+			if (startAnnot === null || !startAnnot.createAfterSetUp) {
+				createAndInitService
+				// Start the service according to the @StartServiceForTest annotation
+				val avoidAnnot = description.getAnnotation(typeof(AvoidServiceStartForTest))
+				if (avoidAnnot === null && startAnnot !== null && !startAnnot.startAfterSetUp) {
+					startService
+				}
+			}
+		}
+
+		@Override
+		protected def finished(description : Description) {
+			// Stop the service
+			if (AbstractServiceTest.this.service !== null) {
+				AbstractServiceTest.this.service.stopAsync
+				AbstractServiceTest.this.service = null
+			}
+		}
+	}
+
+	/**
+	 * Start the tested service.
+	 * 
+	 * This function should not be called directly. It is invoked by the watcher implemented in the {@link AbstractServiceTest}.
+	 */
+	def startService {
+		this.service.startAsync
+		this.service.awaitRunning(2, TimeUnit::SECONDS)
+	}
+
+	/**
+	 * Create and initialize the service
+	 * 
+	 * This function should not be called directly. It is invoked by the watcher implemented in the {@link AbstractServiceTest}.
+	 *
+	 * @throws Exception if the service cannot be created.
+	 */
+	def createAndInitService {
+		this.service = newService
+		MockitoAnnotations::initMocks(this)
+	}
+
+	/**
+	 * Replies the instance of the service under test.
+	 *
+	 * @return the tested service.
+	 * @throws Exception if the service cannot be created.
+	 */
+	abstract def newService : S
+
+	@Test
+	@AvoidServiceStartForTest
+	def notificationOnStart {
+		val listener = typeof(Listener).mock
+		this.service.addListener(listener, new SyncExecutor)
+		this.service.startAsync
+		this.service.awaitRunning(10, TimeUnit::SECONDS)
+		listener.verify(1.times).starting
+	}
+
+	@Test
+	def notificationOnStop {
+		val listener = typeof(Listener).mock
+		this.service.addListener(listener, new SyncExecutor)
+		this.service.stopAsync
+		this.service.awaitTerminated(10, TimeUnit::SECONDS)
+		val arg = ArgumentCaptor::forClass(typeof(State))
+		listener.verify(1.times).stopping(arg.capture)
+		assertEquals(State::RUNNING, arg.value)
+	}
+
+	/**
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	protected static class SyncExecutor implements Executor {
+
+		override execute(command : Runnable) {
+			command.run
+		}
+
+	}
+
+}

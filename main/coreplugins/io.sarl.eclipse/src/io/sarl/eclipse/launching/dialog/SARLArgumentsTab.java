@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2019 the original authors or authors.
+ * Copyright (C) 2014-2020 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -148,6 +148,7 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 		this.sreArgumentsText.setLayoutData(gd);
 		this.sreArgumentsText.setFont(font);
 		this.sreArgumentsText.addModifyListener(new ModifyListener() {
+			@SuppressWarnings("synthetic-access")
 			@Override
 			public void modifyText(ModifyEvent evt) {
 				scheduleUpdateJob();
@@ -160,6 +161,7 @@ public class SARLArgumentsTab extends JavaArgumentsTab {
 		final Button sreArgVariableButton = createPushButton(group, "", null); //$NON-NLS-1$
 		sreArgVariableButton.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
 		sreArgVariableButton.addSelectionListener(new SelectionAdapter() {
+			@SuppressWarnings("synthetic-access")
 			@Override
 			public void widgetSelected(SelectionEvent event) {
 				final StringVariableSelectionDialog dialog = new StringVariableSelectionDialog(getShell());

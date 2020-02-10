@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2019 the original authors or authors.
+ * Copyright (C) 2014-2020 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,7 +57,7 @@ import io.sarl.lang.compiler.batch.OptimizationLevel;
  */
 final class MavenBatchCompiler implements IJavaBatchCompiler {
 
-	private static final String DEFAULT_COMPILER_VERSION = "3.6.2"; //$NON-NLS-1$
+	private static final String DEFAULT_COMPILER_VERSION = "3.8.1"; //$NON-NLS-1$
 
 	private static final String MAVEN_COMPILER_PLUGIN_GROUPID = "org.apache.maven.plugins"; //$NON-NLS-1$
 

@@ -1,0 +1,145 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2020 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.tests.units.services.executor
+
+import io.sarl.sre.services.executor.ExecutorService
+import io.sarl.sre.services.executor.Runnables
+import io.sarl.sre.tests.testutils.AbstractSreTest
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.logging.Level
+import java.util.logging.Logger
+import org.junit.Test
+import org.mockito.ArgumentCaptor
+import org.mockito.Mock
+
+import static org.mockito.Mockito.verifyNoMoreInteractions
+
+import static extension org.mockito.Mockito.verify
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+class SreCallableTest extends AbstractSreTest {
+
+	@Mock
+	var logger : Logger
+	
+	@Test
+	def call_logger_successTask {
+		var run = new AtomicBoolean
+		var callable = Runnables::protectCallable([run.set(true) return "a"], this.logger)
+		var value = callable.call
+		assertTrue(callable.isSuccess)
+		assertEquals("a", value)
+		assertTrue(run.get)
+		verifyNoMoreInteractions(this.logger)
+	}
+
+	@Test
+	def call_logger_earlyExit1 {
+		var run = new AtomicBoolean
+		var callable = Runnables::protectCallable([run.set(true); ExecutorService.neverReturn; return "b"], this.logger)
+		var value = callable.call
+		assertTrue(callable.isSuccess)
+		assertNull(value)
+		assertTrue(run.get)
+		verifyNoMoreInteractions(this.logger)
+	}
+
+	@Test
+	def call_logger_earlyExit2 {
+		var run = new AtomicBoolean
+		var callable = Runnables::protectCallable([ExecutorService.neverReturn; run.set(true); return "c"], this.logger)
+		var value = callable.call
+		assertTrue(callable.isSuccess)
+		assertNull(value)
+		assertFalse(run.get)
+		verifyNoMoreInteractions(this.logger)
+	}
+
+	@Test
+	def call_logger_exception {
+		var run = new AtomicBoolean
+		var callable = Runnables::protectCallable([run.set(true); throw new IllegalStateException()], this.logger)
+		var value = callable.call
+		assertFalse(callable.isSuccess)
+		assertNull(value)
+		assertTrue(run.get)
+		
+		var level = ArgumentCaptor::forClass(typeof(Level))
+		var msg = ArgumentCaptor::forClass(typeof(String))
+		var ex = ArgumentCaptor::forClass(typeof(Throwable))
+		this.logger.verify.log(level.capture, msg.capture, ex.capture)
+		assertSame(Level::SEVERE, level.value)
+		assertEquals(typeof(IllegalStateException).simpleName, msg.value)
+		assertInstanceOf(typeof(IllegalStateException), ex.value)
+	}
+
+	@Test
+	def call_noLogger_successTask {
+		var run = new AtomicBoolean
+		var callable = Runnables::protectCallable([run.set(true); return "d"], null)
+		var value = callable.call
+		assertTrue(callable.isSuccess)
+		assertEquals("d", value)
+		assertTrue(run.get)
+		verifyNoMoreInteractions(this.logger)
+	}
+
+	@Test
+	def call_noLogger_earlyExit1 {
+		var run = new AtomicBoolean
+		var callable = Runnables::protectCallable([run.set(true); ExecutorService.neverReturn; return "e"], null)
+		var value = callable.call
+		assertTrue(callable.isSuccess)
+		assertNull(value)
+		assertTrue(run.get)
+		verifyNoMoreInteractions(this.logger)
+	}
+
+	@Test
+	def call_noLogger_earlyExit2 {
+		var run = new AtomicBoolean
+		var callable = Runnables::protectCallable([ExecutorService.neverReturn; run.set(true); return "f"], null)
+		var value = callable.call
+		assertTrue(callable.isSuccess)
+		assertNull(value)
+		assertFalse(run.get)
+		verifyNoMoreInteractions(this.logger)
+	}
+
+	@Test
+	def call_noLogger_exception {
+		var run = new AtomicBoolean
+		var callable = Runnables::protectCallable([run.set(true); throw new IllegalStateException], null)
+		try {
+			callable.call
+			fail("Expected exception " + typeof(IllegalStateException).name)
+		} catch (ex : IllegalStateException) {
+		}
+		assertFalse(callable.isSuccess)
+	}
+
+}

@@ -1,0 +1,103 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2020 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.tests.units.services.namespace
+
+import io.sarl.sre.services.namespace.FieldAccess
+import io.sarl.tests.api.AbstractSarlTest
+import java.lang.reflect.Field
+import javax.annotation.Nullable
+import org.junit.Before
+import org.junit.Test
+import io.sarl.sre.naming.SarlName
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+class FieldAccessTest extends AbstractSarlTest {
+
+	private static class ObjectMock {
+		public var fld : int = 34
+	}
+
+	@Nullable
+	var field : Field
+
+	@Nullable
+	var objectMock : ObjectMock
+
+	@Nullable
+	var accessor : FieldAccess
+
+	@Nullable
+	var nameMock : SarlName
+
+	
+	@Before
+	def setUp : void {
+		this.nameMock = typeof(SarlName).mock
+		this.field = typeof(ObjectMock).getDeclaredField("fld")
+		this.objectMock = new ObjectMock
+		this.accessor = new FieldAccess(this.nameMock, this.field, this.objectMock)
+	}
+
+	@Test
+	def getName {
+		this.nameMock.assertSame(this.accessor.name)
+	}
+
+	@Test
+	def getField {
+		this.field.assertSame(this.accessor.field)
+	}
+
+	@Test
+	def getInstance {
+		this.objectMock.assertSame(this.accessor.instance)
+	}
+
+	@Test
+	def get {
+		34.assertEquals(this.accessor.get)
+	}
+
+	@Test
+	def set_success {
+		var old = this.accessor.set(128)
+		34.assertEquals(old)
+		128.assertEquals(this.accessor.get)
+		128.assertEquals(this.objectMock.fld)
+	}
+
+	@Test(expected = IllegalArgumentException)
+	def set_invalidType : void {
+		this.accessor.set("abc")
+	}
+
+	@Test
+	def toStringTest {
+		"fld".assertEquals(this.accessor.toString)
+	}
+
+}

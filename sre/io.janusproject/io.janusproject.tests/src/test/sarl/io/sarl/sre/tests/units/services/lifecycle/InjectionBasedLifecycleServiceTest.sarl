@@ -1,0 +1,81 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2020 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.tests.units.services.lifecycle
+
+import com.google.inject.Injector
+import com.google.inject.Module
+import io.sarl.lang.core.DynamicSkillProvider
+import io.sarl.sre.internal.SequenceListenerNotifier
+import io.sarl.sre.internal.SmartListenerCollection
+import io.sarl.sre.services.context.ExternalContextMemberListener
+import io.sarl.sre.services.executor.ExecutorService
+import io.sarl.sre.services.lifecycle.InjectionBasedLifecycleService
+import io.sarl.sre.services.lifecycle.LifecycleServiceListener
+import io.sarl.sre.services.lifecycle.SkillUninstaller
+import io.sarl.sre.services.logging.LoggingService
+import io.sarl.tests.api.Nullable
+import javax.inject.Provider
+
+import static org.mockito.Mockito.when
+
+import static extension org.mockito.ArgumentMatchers.any
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+class InjectionBasedLifecycleServiceTest extends AbstractLifecycleServiceTest<InjectionBasedLifecycleService> {
+
+	@Nullable
+	var injector : Injector
+	
+	@Nullable
+	var childInjector : Injector
+
+	@Nullable
+	var skillProvider : DynamicSkillProvider
+
+	override setUp {
+		this.injector = typeof(Injector).mock
+		this.childInjector = typeof(Injector).mock
+		this.skillProvider = typeof(DynamicSkillProvider).mock
+		super.setUp
+		when(this.injector.createChildInjector(typeof(Module).any)).thenReturn(this.childInjector)
+		when(this.childInjector.getInstance(typeof(Class).any)).thenReturn(this.agent2)
+	}
+	
+	override newService(executor : ExecutorService, logger : LoggingService, skillUninstaller : SkillUninstaller,
+		contextListenerProvider : Provider<ExternalContextMemberListener>,
+		lifecycleListenerProvider : Provider<LifecycleServiceListener>) : InjectionBasedLifecycleService {
+		var coll = new SmartListenerCollection(new SequenceListenerNotifier)
+		return new InjectionBasedLifecycleService(this.injector, this.checker, this.skillProvider,
+			coll,
+			lifecycleListenerProvider,
+			contextListenerProvider,
+			skillUninstaller,
+			executor,
+			logger)
+	}
+
+}

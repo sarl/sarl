@@ -1,0 +1,466 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2020 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.tests.units.services.executor
+
+import io.sarl.sre.services.executor.AbstractExecutorService
+import io.sarl.sre.services.executor.EarlyExitException
+import io.sarl.sre.services.executor.ExecutorService
+import io.sarl.sre.tests.testutils.AbstractSreTest
+import io.sarl.tests.api.Nullable
+import java.util.logging.Level
+import java.util.logging.Logger
+import org.junit.Before
+import org.junit.Test
+import org.mockito.ArgumentCaptor
+
+import static org.mockito.ArgumentMatchers.any
+import static org.mockito.Mockito.*
+import static org.mockito.Mockito.atLeastOnce
+import static org.mockito.Mockito.doAnswer
+import static org.mockito.Mockito.never
+import static org.mockito.Mockito.only
+
+import static extension org.mockito.Mockito.times
+import static extension org.mockito.Mockito.verify
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+abstract class AbstractExecutorServiceTest<T extends AbstractExecutorService> extends AbstractSreTest {
+
+	@Nullable
+	protected var executor : java.util.concurrent.ExecutorService
+
+	@Nullable
+	protected var logger : Logger
+
+	@Nullable
+	protected var service : T
+	
+	@Before
+	def setUp : void {
+		this.logger = typeof(Logger).mock
+		this.executor = typeof(java.util.concurrent.ExecutorService).mock
+		this.service = newService(this.executor)
+	}
+
+	protected abstract def newService(executor : java.util.concurrent.ExecutorService) : T
+
+	protected def startService {
+		startServiceManually(this.service)
+	}
+	
+	@Test(expected = typeof(EarlyExitException))
+	def neverReturn_noPostCommand {
+		ExecutorService.neverReturn
+	}
+
+	@Test(expected = typeof(EarlyExitException))
+	def neverReturn_postCommand {
+		ExecutorService.neverReturn []
+	}
+
+	@Test
+	def applyBlockingConsumer {
+		var list = <Integer>newArrayList
+		for (i : 0..<100) {
+			list.add(i)
+		}
+		var set = <Integer>newTreeSet(null)
+		this.service.applyBlockingConsumer(this.logger, list) [
+			synchronized (set) {
+				set.add(it * 10)
+			}
+		]
+		assertEquals(100, set.size)
+		for (var i = 0; i < 1000; i += 10) {
+			assertTrue(set.contains(i))
+		}
+		verifyZeroInteractions(this.logger)
+	}
+
+	@Test
+	def applyBlockingConsumer_exception_01 {
+		var list = <Integer>newArrayList
+		for (i : 0..<100) {
+			list.add(i)
+		}
+
+		try {
+			this.service.applyBlockingConsumer(this.logger, list) [ throw new RuntimeException ]
+			fail("Expecting exception " + typeof(RuntimeException).name)
+		} catch (ex : RuntimeException) {
+		}
+
+		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
+		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
+		this.logger.verify(atLeastOnce).log(capturedLevel.capture, any, capturedException.capture)
+		assertSame(Level.SEVERE, capturedLevel.value)
+		assertInstanceOf(typeof(RuntimeException), capturedException.value)
+	}
+
+	@Test
+	def applyBlockingConsumer_exception_02 {
+		var list = <Integer>newArrayList
+		for (i : 0..<100) {
+			list.add(i)
+		}
+
+		this.service.applyBlockingConsumer(this.logger, list) [
+			ExecutorService.neverReturn
+		]
+	}
+
+	@Test
+	def applyBlockingConsumer_exception_03 {
+		var list = <Integer>newArrayList
+		for (i : 0..<100) {
+			list.add(i)
+		}
+
+		try {
+			this.service.applyBlockingConsumer(this.logger, list) [
+				throw new RuntimeException(new IllegalStateException)
+			]
+			fail("Expecting exception " + typeof(IllegalStateException).name)
+		} catch (ex : IllegalStateException) {
+		}
+
+		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
+		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
+		this.logger.verify(atLeastOnce).log(capturedLevel.capture, any, capturedException.capture)
+		assertSame(Level::SEVERE, capturedLevel.value)
+		assertInstanceOf(typeof(IllegalStateException), capturedException.value)
+	}
+
+	@Test
+	def executeBlockingTasks_throws_noException {
+		var run1 = typeof(Runnable).mock
+		var run2 = typeof(Runnable).mock
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return null
+		]).when(this.executor).execute(any)
+		
+		this.service.executeBlockingTasks(this.logger, true, #[run1, run2])
+
+		this.executor.verify(2.times).execute(any)
+		
+		run1.verify(only).run
+		run2.verify(only).run
+		
+		verifyZeroInteractions(this.logger)
+	}
+
+	@Test
+	def executeBlockingTasks_throws_exception {
+		var exception = new RuntimeException
+		var run1 :Runnable = [throw exception]
+		var run2 = typeof(Runnable).mock
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return null
+		]).when(this.executor).execute(any)
+
+		try {
+			this.service.executeBlockingTasks(this.logger, true, #[run1, run2])
+			fail("Expecting exception: " + exception)
+		} catch (ex : Throwable) {
+			assertSame(exception, ex)
+		}
+
+		this.executor.verify(2.times).execute(any)
+		
+		run2.verify(only).run
+
+		verifyZeroInteractions(this.logger)
+	}
+
+	@Test
+	def executeBlockingTasks_notThrows_noException {
+		var run1 = typeof(Runnable).mock
+		var run2 = typeof(Runnable).mock
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return null
+		]).when(this.executor).execute(any)
+		
+		this.service.executeBlockingTasks(this.logger, false, #[run1, run2])
+
+		this.executor.verify(2.times).execute(any)
+		
+		run1.verify(only).run
+		run2.verify(only).run
+		
+		verifyZeroInteractions(this.logger)
+	}
+
+	@Test
+	def executeBlockingTasks_notThrows_exception {
+		var exception = new RuntimeException
+		var run1 : Runnable = [throw exception]
+		var run2 = typeof(Runnable).mock
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return null
+		]).when(this.executor).execute(any)
+
+		this.service.executeBlockingTasks(this.logger, false, #[run1, run2])
+
+		this.executor.verify(2.times).execute(any)
+		
+		run2.verify(only).run
+
+		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
+		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
+		this.logger.verify.log(capturedLevel.capture, any, capturedException.capture)
+		assertSame(Level::SEVERE, capturedLevel.value)
+		assertSame(exception, capturedException.value)
+	}
+
+
+	@Test
+	def executeBlockingTask_noException_1task {
+		var run = typeof(Runnable).mock
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return null
+		]).when(this.executor).execute(any)
+		
+		assertEquals(1, this.service.executeBlockingTask(this.logger, 1, 100, run))
+
+		this.executor.verify(never).execute(any)
+		
+		run.verify(1.times).run
+		
+		verifyZeroInteractions(this.logger)
+	}
+
+	@Test
+	def executeBlockingTask_noException_4tasks_1member {
+		var run = typeof(Runnable).mock
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return null
+		]).when(this.executor).execute(any)
+		
+		assertEquals(4, this.service.executeBlockingTask(this.logger, 4, 1, run))
+
+		this.executor.verify(4.times).execute(any)
+		
+		run.verify(4.times).run
+		
+		verifyZeroInteractions(this.logger)
+	}
+
+	@Test
+	def executeBlockingTask_noException_4tasks_2members {
+		var run = typeof(Runnable).mock
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return null
+		]).when(this.executor).execute(any)
+		
+		assertEquals(4, this.service.executeBlockingTask(this.logger, 4, 2, run))
+
+		this.executor.verify(2.times).execute(any)
+		
+		run.verify(4.times).run
+		
+		verifyZeroInteractions(this.logger)
+	}
+
+	@Test
+	def executeBlockingTask_noException_4tasks_3members {
+		var run = typeof(Runnable).mock
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return null
+		]).when(this.executor).execute(any)
+		
+		assertEquals(4, this.service.executeBlockingTask(this.logger, 4, 3, run))
+
+		this.executor.verify(2.times).execute(any)
+		
+		run.verify(4.times).run
+		
+		verifyZeroInteractions(this.logger)
+	}
+
+	@Test
+	def executeBlockingTask_noException_4tasks_4members {
+		var run = typeof(Runnable).mock
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return null
+		]).when(this.executor).execute(any)
+		
+		assertEquals(4, this.service.executeBlockingTask(this.logger, 4, 4, run))
+
+		this.executor.verify(1.times).execute(any)
+		
+		run.verify(4.times).run
+		
+		verifyZeroInteractions(this.logger)
+	}
+
+	@Test
+	def executeBlockingTask_noException_4tasks_5members {
+		var run = typeof(Runnable).mock
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return null
+		]).when(this.executor).execute(any)
+		
+		assertEquals(4, this.service.executeBlockingTask(this.logger, 4, 5, run))
+
+		this.executor.verify(1.times).execute(any)
+		
+		run.verify(4.times).run
+		
+		verifyZeroInteractions(this.logger)
+	}
+
+	@Test
+	def executeBlockingTask_exception_1task {
+		var exception = typeof(RuntimeException).mock
+		var run : Runnable = [throw exception]
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return null
+		]).when(this.executor).execute(any)
+		
+		assertEquals(0, this.service.executeBlockingTask(this.logger, 1, 100, run))
+
+		this.executor.verify(never).execute(any)
+		
+		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
+		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
+		this.logger.verify(1.times).log(capturedLevel.capture, any, capturedException.capture)
+		assertSame(Level::SEVERE, capturedLevel.value)
+		assertSame(exception, capturedException.value)
+	}
+
+	@Test
+	def executeBlockingTask_exception_4tasks_1member {
+		var exception = typeof(RuntimeException).mock
+		var run : Runnable = [throw exception]
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return null
+		]).when(this.executor).execute(any)
+		
+		assertEquals(0, this.service.executeBlockingTask(this.logger, 4, 1, run))
+
+		this.executor.verify(4.times).execute(any)
+	
+		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
+		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
+		this.logger.verify(4.times).log(capturedLevel.capture, any, capturedException.capture)
+		assertSame(Level::SEVERE, capturedLevel.value)
+		assertSame(exception, capturedException.value)
+	}
+
+	@Test
+	def executeBlockingTask_exception_4tasks_2members {
+		var exception = typeof(RuntimeException).mock
+		var run : Runnable = [throw exception]
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return null
+		]).when(this.executor).execute(any)
+		
+		assertEquals(0, this.service.executeBlockingTask(this.logger, 4, 2, run))
+
+		this.executor.verify(2.times).execute(any)
+		
+		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
+		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
+		this.logger.verify(4.times).log(capturedLevel.capture, any, capturedException.capture)
+		assertSame(Level::SEVERE, capturedLevel.value)
+		assertSame(exception, capturedException.value)
+	}
+
+	@Test
+	def executeBlockingTask_exception_4tasks_3members {
+		var exception = typeof(RuntimeException).mock
+		var run : Runnable = [throw exception]
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return null
+		]).when(this.executor).execute(any)
+		
+		assertEquals(0, this.service.executeBlockingTask(this.logger, 4, 3, run))
+
+		this.executor.verify(2.times).execute(any)
+		
+		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
+		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
+		this.logger.verify(4.times).log(capturedLevel.capture, any, capturedException.capture)
+		assertSame(Level::SEVERE, capturedLevel.value)
+		assertSame(exception, capturedException.value)
+	}
+
+	@Test
+	def executeBlockingTask_exception_4tasks_4members {
+		var exception = typeof(RuntimeException).mock
+		var run : Runnable = [throw exception]
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return null
+		]).when(this.executor).execute(any)
+		
+		assertEquals(0, this.service.executeBlockingTask(this.logger, 4, 4, run))
+
+		this.executor.verify(1.times).execute(any)
+		
+		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
+		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
+		this.logger.verify(4.times).log(capturedLevel.capture, any, capturedException.capture)
+		assertSame(Level::SEVERE, capturedLevel.value)
+		assertSame(exception, capturedException.value)
+	}
+
+	@Test
+	def executeBlockingTask_exception_4tasks_5members {
+		var exception = typeof(RuntimeException).mock
+		var run : Runnable = [throw exception]
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return null
+		]).when(this.executor).execute(any)
+		
+		assertEquals(0, this.service.executeBlockingTask(this.logger, 4, 5, run))
+
+		verify(this.executor, times(1)).execute(any)
+		
+		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
+		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
+		this.logger.verify(4.times).log(capturedLevel.capture, any, capturedException.capture)
+		assertSame(Level.SEVERE, capturedLevel.value)
+		assertSame(exception, capturedException.value)
+	}
+
+}

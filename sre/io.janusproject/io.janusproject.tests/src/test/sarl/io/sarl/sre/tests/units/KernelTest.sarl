@@ -1,0 +1,217 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2020 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.tests.units;
+
+import io.sarl.sre.Kernel
+import io.sarl.sre.services.IServiceManager
+import io.sarl.sre.services.context.Context
+import io.sarl.sre.services.context.ContextService
+import io.sarl.sre.services.lifecycle.LifecycleService
+import io.sarl.sre.services.lifecycle.SpawnResult
+import io.sarl.sre.services.logging.LoggingService
+import io.sarl.sre.tests.testutils.AbstractSreTest
+import io.sarl.sre.tests.testutils.IddleTestingAgent
+import io.sarl.tests.api.Nullable
+import java.lang.Thread.UncaughtExceptionHandler
+import java.util.Collections
+import java.util.List
+import java.util.UUID
+import java.util.logging.Logger
+import org.junit.Assert
+import org.junit.Before
+import org.junit.Test
+import org.mockito.ArgumentCaptor
+
+import static org.mockito.ArgumentMatchers.any
+import static org.mockito.ArgumentMatchers.anyInt
+import static org.mockito.Mockito.when
+
+import static extension org.mockito.Mockito.verify
+import org.arakhne.afc.util.OutputParameter
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+class KernelTest extends AbstractSreTest {
+
+	@Nullable
+	var handler : UncaughtExceptionHandler
+
+	@Nullable
+	var serviceManager : IServiceManager
+
+	@Nullable
+	var logger : LoggingService
+
+	@Nullable
+	var lifecycle : LifecycleService
+
+	@Nullable
+	var context : ContextService
+
+	@Nullable
+	var rootContext : Context
+
+	@Nullable
+	var kernel : Kernel 
+
+	@Before
+	def setUp {
+		this.rootContext = typeof(Context).mock
+		this.handler = typeof(UncaughtExceptionHandler).mock
+		this.logger = typeof(LoggingService).mock
+		when(this.logger.kernelLogger).thenReturn(typeof(Logger).mock)
+		this.lifecycle = typeof(LifecycleService).mock
+		this.context = typeof(ContextService).mock
+		when(this.context.rootContext).thenReturn(this.rootContext)
+		this.serviceManager = typeof(IServiceManager).mock
+		when(this.serviceManager.getService(any)).thenAnswer [
+			if (typeof(LoggingService) == it.getArgument(0)) {
+				return this.logger
+			}
+			if (typeof(LifecycleService) == it.getArgument(0)) {
+				return this.lifecycle
+			}
+			if (typeof(ContextService) == it.getArgument(0)) {
+				return this.context
+			}
+			return null
+		]
+		this.kernel = new Kernel(this.serviceManager, this.handler)
+		this.lifecycle.verify.addKernelAgentLifecycleListener(any)
+		this.serviceManager.verify.startServices(any)
+	}
+
+	@Test
+	def isRunning {
+		// As soon the kernel is created, it is running.
+		assertTrue(this.kernel.running)
+	}
+
+	@Test
+	def getLogger {
+		var log = typeof(Logger).mock
+		when(this.logger.kernelLogger).thenReturn(log)
+		var l = this.kernel.logger
+		assertSame(log, l)
+	}
+
+	@Test
+	def spawnClassObjectArray {
+		when(this.lifecycle.spawnAgent(anyInt, any, any, any, any, any)).then [
+			if (getArgument(3) !== null) {
+				return new SpawnResult(Collections::singletonList(getArgument(3)), emptyList)
+			}
+			return new SpawnResult(Collections::singletonList(UUID.randomUUID), emptyList)
+		]
+
+		this.kernel.spawn(typeof(IddleTestingAgent), [], 1, "a")
+		
+		var capturedNb = ArgumentCaptor::forClass(typeof(int))
+		var capturedSpawner = ArgumentCaptor::forClass(typeof(UUID))
+		var capturedContext = ArgumentCaptor::forClass(typeof(Context))
+		var capturedAgentId = ArgumentCaptor::forClass(typeof(UUID))
+		var capturedAgentType = ArgumentCaptor::forClass(typeof(Class))
+		var capturedParams = ArgumentCaptor.forClass(typeof(Object))
+		this.lifecycle.verify.spawnAgent(capturedNb.capture.intValue, capturedSpawner.capture,
+				capturedContext.capture, capturedAgentId.capture, capturedAgentType.capture,
+				capturedParams.capture)
+		assertEquals(1, capturedNb.value)
+		assertNull(capturedSpawner.value)
+		assertSame(this.rootContext, capturedContext.value)
+		assertNull(capturedAgentId.value)
+		assertEquals(typeof(IddleTestingAgent), capturedAgentType.value)
+		Assert.assertEquals(1, capturedParams.allValues.get(0))
+		assertEquals("a", capturedParams.allValues.get(1))
+	}
+
+	@Test
+	def spawnUUIDClassObjectArray : void {
+		when(this.lifecycle.spawnAgent(anyInt(), any(), any(), any(), any(), any())).then [
+			if (getArgument(3) !== null) {
+				return new SpawnResult(Collections::singletonList(getArgument(3)), emptyList)
+			}
+			return new SpawnResult(Collections::singletonList(UUID::randomUUID), emptyList)
+		]
+		var expectedId = UUID::randomUUID
+
+		val id = new OutputParameter<UUID>
+		this.kernel.spawn(expectedId, typeof(IddleTestingAgent), [id.set(it)], 1, "a");
+		
+		assertSame(expectedId, id.get);
+		
+		var capturedNb = ArgumentCaptor::forClass(typeof(int))
+		var capturedSpawner = ArgumentCaptor::forClass(typeof(UUID))
+		var capturedContext = ArgumentCaptor::forClass(typeof(Context))
+		var capturedAgentId = ArgumentCaptor::forClass(typeof(UUID))
+		var capturedAgentType = ArgumentCaptor::forClass(typeof(Class))
+		var capturedParams = ArgumentCaptor::forClass(typeof(Object))
+		this.lifecycle.verify.spawnAgent(capturedNb.capture.intValue, capturedSpawner.capture,
+				capturedContext.capture, capturedAgentId.capture, capturedAgentType.capture,
+				capturedParams.capture)
+		assertEquals(1, capturedNb.value)
+		assertNull(capturedSpawner.value)
+		assertSame(this.rootContext, capturedContext.value)
+		assertSame(expectedId, capturedAgentId.value)
+		assertEquals(typeof(IddleTestingAgent), capturedAgentType.value)
+		Assert.assertEquals(1, capturedParams.allValues.get(0))
+		assertEquals("a", capturedParams.allValues.get(1))
+	}
+
+	@Test
+	def spawnIntClassObjectArray {
+		var ids = typeof(List).mock
+		var result = new SpawnResult(ids, emptyList)
+		when(this.lifecycle.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
+
+		var ids2 = new OutputParameter<List<UUID>>
+		this.kernel.spawn(34, typeof(IddleTestingAgent), [ids2.set(it)], 1, "a")
+		
+		assertSame(ids, ids2.get)
+		
+		var capturedNb = ArgumentCaptor::forClass(typeof(int))
+		var capturedSpawner = ArgumentCaptor::forClass(typeof(UUID))
+		var capturedContext = ArgumentCaptor::forClass(typeof(Context))
+		var capturedAgentId = ArgumentCaptor::forClass(typeof(UUID))
+		var capturedAgentType = ArgumentCaptor::forClass(typeof(Class))
+		var capturedParams = ArgumentCaptor::forClass(typeof(Object))
+		this.lifecycle.verify.spawnAgent(capturedNb.capture.intValue, capturedSpawner.capture,
+				capturedContext.capture, capturedAgentId.capture, capturedAgentType.capture,
+				capturedParams.capture)
+		assertEquals(34, capturedNb.value)
+		assertNull(capturedSpawner.value)
+		assertSame(this.rootContext, capturedContext.value)
+		assertNull(capturedAgentId.value)
+		assertEquals(typeof(IddleTestingAgent), capturedAgentType.value)
+		Assert.assertEquals(1, capturedParams.allValues.get(0))
+		assertEquals("a", capturedParams.allValues.get(1))
+	}
+
+	@Test
+	def getService {
+		assertSame(this.logger, this.kernel.getService(typeof(LoggingService)))
+	}
+
+}
