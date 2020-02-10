@@ -31,7 +31,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.google.common.base.Strings;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.ArtifactUtils;
 import org.apache.maven.plugin.MojoExecution;
@@ -66,6 +65,8 @@ import org.eclipse.m2e.jdt.internal.ClasspathDescriptor;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 import org.sonatype.plexus.build.incremental.BuildContext;
+
+import com.google.common.base.Strings;
 
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.buildpath.SARLClasspathContainerInitializer;
@@ -270,6 +271,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 				initConfig = readInitializeConfiguration(request, mojo, monitor);
 				break;
 			case "compile": //$NON-NLS-1$
+			case "testCompile": //$NON-NLS-1$
 				compileConfig = readCompileConfiguration(request, mojo, monitor);
 				break;
 			default:

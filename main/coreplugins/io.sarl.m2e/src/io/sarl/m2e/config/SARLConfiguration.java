@@ -30,7 +30,7 @@ import java.io.File;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class SARLConfiguration {
+public class SARLConfiguration {
 
 	private File input;
 
