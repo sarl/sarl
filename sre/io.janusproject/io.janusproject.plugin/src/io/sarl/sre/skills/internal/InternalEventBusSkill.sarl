@@ -26,7 +26,6 @@ import io.sarl.lang.core.Event
 import io.sarl.lang.core.Skill
 import io.sarl.sre.capacities.InformedEventListener
 import io.sarl.sre.capacities.InternalEventBusCapacity
-import java.lang.ref.WeakReference
 import java.util.UUID
 import java.util.concurrent.ConcurrentLinkedDeque
 import javax.inject.Inject
@@ -77,27 +76,29 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 		if (bus !== null) {
 			bus.register(this.owner, null, null)
 		}
+		//Must be here because the owner is set during the skill installation
+		this.eventListener = new ExternalEventBusAccessor(owner.ID, this)
 	}
 
-	protected override uninstall(stage : UninstallationStage) {
+	protected override uninstall(stage : UninstallationStage) {		
 		if (stage == UninstallationStage::POST_DESTROY_EVENT) {
 			var bus = this.eventBus
 			if (bus !== null) {
 				bus.unregisterAll(null)
 			}
-			this.eventListener = null
 			this.eventBuffer = null;
+
+			// Must be done to enable the memory free of these mutual references between InternalBusSkill and ExternalEventBusAccessor
+			(this.eventListener as ExternalEventBusAccessor).nullifyOwner
+			this.eventListener = null			
 		}
 	}
 
+	/** 
+	 * Must be synchronized multiple thread may call it at the same time and we must ensure that only one instance of ExternalEventBusAccessor is effectively created
+	 */
 	final def getAssociatedEventBusListener : InformedEventListener {
-		var lst : InformedEventListener = this.eventListener
-
-		if (lst === null) {
-			lst = new ExternalEventBusAccessor(owner.ID, this)
-			this.eventListener = lst
-		}
-		return lst
+		return this.eventListener
 	}
 
 	def registerEventBusListener(listener : Object, filter : (Event)=>boolean, callback : (Object)=>void) {
@@ -220,17 +221,17 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 	 */
 	private static class ExternalEventBusAccessor implements InformedEventListener {
 
-		val owner : WeakReference<InternalEventBusSkill>
+		var owner : InternalEventBusSkill
 
 		val id : UUID
 
 		new (id : UUID, owner : InternalEventBusSkill) {
 			this.id = id
-			this.owner = new WeakReference(owner)
+			this.owner = owner;
 		}
 
 		private def getOwnerSkill : InternalEventBusSkill {
-			this.owner?.get
+			this.owner		
 		}
 
 		override receiveEvent(^event : Event) {
@@ -239,6 +240,10 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 
 		override getID : UUID {
 			this.id
+		}
+		
+		def nullifyOwner() {
+			this.owner = null;
 		}
 
 		override getOwnerInstance : Agent {
