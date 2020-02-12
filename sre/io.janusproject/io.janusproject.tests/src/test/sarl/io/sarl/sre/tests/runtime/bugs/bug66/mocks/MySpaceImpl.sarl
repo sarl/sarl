@@ -1,16 +1,15 @@
 /*
  * $Id$
  *
- * SARL is an general-purpose agent programming language.
- * More details on http://www.sarl.io
+ * Janus platform is an open-source multiagent platform.
+ * More details on http://www.janusproject.io
  *
- * Copyright (C) 2014-2020 the original authors or authors.
+ * Copyright (C) 2014-2020 the original authors.
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,28 +18,28 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.tests.runtime.services.context.mocks
+package io.sarl.sre.tests.runtime.bugs.bug66.mocks
 
-import io.sarl.lang.core.Space
+import io.sarl.core.OpenEventSpace
 import io.sarl.lang.core.SpaceID
-import io.sarl.lang.util.SynchronizedSet
 import java.util.UUID
 import java.util.concurrent.ConcurrentSkipListSet
 
-/**
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- */
-class MySpace implements Space {
+class MySpaceImpl implements MySpace {
 
 	val id : SpaceID
 
-	new (id : SpaceID) {
+	val otherSpace : OpenEventSpace
+	
+	new (id : SpaceID, otherSpace : OpenEventSpace) {
 		this.id = id
+		this.otherSpace = otherSpace
 	}
 	
+	override getTheOtherSpace : OpenEventSpace {
+		this.otherSpace
+	}
+
 	override getSpaceID : SpaceID {
 		this.id
 	}
@@ -48,5 +47,5 @@ class MySpace implements Space {
 	override getParticipants : ConcurrentSkipListSet<UUID> {
 		new ConcurrentSkipListSet
 	}
-	
+
 }
