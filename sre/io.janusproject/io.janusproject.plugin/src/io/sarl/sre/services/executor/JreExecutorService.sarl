@@ -217,6 +217,17 @@ class JreExecutorService extends AbstractExecutorService implements PreReleasabl
 		scheduledExecutorService.scheduleWithFixedDelay(command.protectRunnable(logger), initialDelay, delay, unit)
 	}
 
+	def remove(task : Runnable) : Boolean {
+		var es = executorService
+		if (es instanceof ThreadPoolExecutor) {
+			es.remove(task)
+		}
+		var ses = scheduledExecutorService
+		if (ses instanceof ThreadPoolExecutor) {
+			ses.remove(task)
+		}
+	}
+
 	def purge {
 		var es = executorService
 		if (es instanceof ThreadPoolExecutor) {
@@ -285,5 +296,5 @@ class JreExecutorService extends AbstractExecutorService implements PreReleasabl
 		}
 
 	}
-
+	
 }

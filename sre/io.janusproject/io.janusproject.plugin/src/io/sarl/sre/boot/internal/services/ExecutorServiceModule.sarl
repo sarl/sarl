@@ -37,6 +37,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.RejectedExecutionHandler
 import java.util.concurrent.ScheduledExecutorService
+import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.SynchronousQueue
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
@@ -172,9 +173,10 @@ class ExecutorServiceModule extends AbstractModule {
 		val minPoolSize = executorsConfig.minThreads
 		val maxPoolSize = executorsConfig.maxThreads
 		var max = Math::max(1, Math::min(minPoolSize, maxPoolSize))
-		var executor = Executors.newScheduledThreadPool(max)
+		var executor = Executors.newScheduledThreadPool(max)		
 		if (rejectedExecutionHandler !== null && executor instanceof ThreadPoolExecutor) {
-			(executor as ThreadPoolExecutor).rejectedExecutionHandler = rejectedExecutionHandler
+			(executor as ThreadPoolExecutor).rejectedExecutionHandler = rejectedExecutionHandler;
+			(executor as ScheduledThreadPoolExecutor).removeOnCancelPolicy = true
 		}
 		return executor
 	}
