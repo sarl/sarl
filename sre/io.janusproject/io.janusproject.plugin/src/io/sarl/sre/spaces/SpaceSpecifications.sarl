@@ -73,6 +73,9 @@ abstract class AbstractSreEventSpaceSpecification {
 	protected def createSpaceInstance(id : SpaceID, params : Object*) : OpenLocalEventSpace {
 		val listener = this.spaceParticipantListenerFactory.create(this.defaultSpace, this.logger.kernelLogger)
 		val ^space = new OpenLocalEventSpace(id, listener, this.logger)
+		if (this.defaultSpace === null) {//Only useful for the default space of the default context
+			listener.defaultSpace = ^space;
+		}
 		this.injector.injectMembers(^space)
 		return ^space
 	}

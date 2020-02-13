@@ -1,17 +1,17 @@
-/*
+/* 
  * $Id$
- *
+ * 
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
- *
+ * 
  * Copyright (C) 2014-2020 the original authors or authors.
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,6 +20,7 @@
  */
 package io.sarl.sre.spaces
 
+import io.sarl.lang.core.EventSpace
 import java.util.EventListener
 
 /** 
@@ -46,5 +47,12 @@ interface SpaceParticipantListener extends EventListener {
 	 * @param participant the participant.
 	 */
 	def participantLeft(participant : Participant)
+
+	/** 
+	 * Set the default only useful for the first space to be created
+	 * 
+	 * @param space - the default space of the default context
+	 */
+	def setDefaultSpace(^space : EventSpace)
 
 }

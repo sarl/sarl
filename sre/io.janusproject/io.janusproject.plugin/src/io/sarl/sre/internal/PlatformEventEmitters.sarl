@@ -132,7 +132,7 @@ class SpaceParticipantEventEmitter implements SpaceParticipantListener {
 
 	val logger : Logger
 
-	val defaultSpace : EventSpace
+	var defaultSpace : EventSpace
 
 	new (defaultSpace : EventSpace, logger : Logger) {
 		this.defaultSpace = defaultSpace
@@ -160,7 +160,11 @@ class SpaceParticipantEventEmitter implements SpaceParticipantListener {
 			this.defaultSpace.emit(null, new ParticipantLeft(addr, participantAddr.spaceID))
 		}
 	}
-
+	
+	def setDefaultSpace(^space : EventSpace) {
+		this.defaultSpace = ^space
+	}
+	
 }
 
 /** Factory for a space participant event emitter.
