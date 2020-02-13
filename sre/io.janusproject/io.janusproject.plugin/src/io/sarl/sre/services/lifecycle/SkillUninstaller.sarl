@@ -29,6 +29,7 @@ import io.sarl.lang.core.SREutils
 import io.sarl.lang.core.Skill
 import io.sarl.lang.core.Skill.UninstallationStage
 import java.util.ArrayList
+import io.sarl.sre.skills.internal.InternalEventBusSkill
 
 /** 
  * Install and uninstall the skills. 
@@ -105,9 +106,16 @@ class BasicSkillUninstaller implements SkillUninstaller {
 	 * @see #uninstallSkillsFinalStage(Agent)
 	 */
 	private static def uninstallSkillsPreStage(skills : Iterable<? extends Skill>) {
+		//The InternalEventBusSkill must the last skill to be uninstalled
 		for (^skill : skills) {
-			SREutils::doSkillUninstallation(^skill, UninstallationStage::PRE_DESTROY_EVENT)
+			if (!(^skill instanceof InternalEventBusSkill)) {
+				SREutils::doSkillUninstallation(^skill, UninstallationStage::PRE_DESTROY_EVENT)			
+			}
 		}
+		for (^skill : skills) {
+			SREutils::doSkillUninstallation(^skill, UninstallationStage::PRE_DESTROY_EVENT)		
+		}
+		
 	}
 
 	/** Run the uninstallation functions of the skills for the final stage of the uninstallation process.
@@ -118,6 +126,12 @@ class BasicSkillUninstaller implements SkillUninstaller {
 	 * @see #uninstallSkillsPreStage(Agent)
 	 */
 	private static def uninstallSkillsFinalStage(skills : Iterable<? extends Skill>) {
+		// The InternalEventBusSkill must the last skill to be uninstalled
+		for (^skill : skills) {
+			if (!(^skill instanceof InternalEventBusSkill)) {
+				SREutils::doSkillUninstallation(^skill, UninstallationStage::POST_DESTROY_EVENT)			
+			}
+		}
 		for (^skill : skills) {
 			SREutils::doSkillUninstallation(^skill, UninstallationStage::POST_DESTROY_EVENT)
 		}
