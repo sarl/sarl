@@ -31,6 +31,7 @@ import java.util.UUID
 import javax.inject.Provider
 import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.ConcurrentHashMap
+import java.util.Collection
 
 /** 
  * This class is the standard implementation of a probe service.
@@ -138,18 +139,15 @@ abstract class AbstractProbeService extends AbstractSreService implements ProbeS
 		return null
 	}
 
-	override getProbes : ConcurrentLinkedDeque<Probe<?>> {
-
-		return new ConcurrentLinkedDeque<Probe<?>>(this.probes.values)
-
+	override getProbes : Collection<Probe<?>> {
+		return new ConcurrentLinkedDeque(this.probes.values)
 	}
 
 	override releaseAllProbes {
-		var removable = new ConcurrentLinkedDeque<Probe<?>>(this.probes.values)
-
-		removable.forEach [
+		var removable = new ConcurrentLinkedDeque(this.probes.values)
+		for (it : removable) {
 			it.release
-		]
+		}
 	}
 
 	override sync {

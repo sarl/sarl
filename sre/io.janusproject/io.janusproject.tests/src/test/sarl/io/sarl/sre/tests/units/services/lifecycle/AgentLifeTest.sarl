@@ -34,6 +34,7 @@ import io.sarl.sre.capacities.InformedEventListener
 import io.sarl.sre.services.context.Context
 import io.sarl.sre.services.lifecycle.AgentLife
 import io.sarl.sre.services.lifecycle.AgentState
+import io.sarl.sre.services.lifecycle.ContextReference
 import io.sarl.sre.services.lifecycle.SkillUninstaller
 import io.sarl.sre.services.logging.LoggingService
 import io.sarl.sre.tests.testutils.AbstractSreTest
@@ -41,7 +42,10 @@ import io.sarl.sre.tests.units.services.lifecycle.mocks.MyAgent1
 import io.sarl.sre.tests.units.services.lifecycle.mocks.MyLogging
 import io.sarl.sre.tests.units.services.lifecycle.mocks.MySkill
 import io.sarl.tests.api.Nullable
+import java.util.Collection
 import java.util.Collections
+import java.util.Iterator
+import java.util.List
 import java.util.UUID
 import java.util.logging.Level
 import java.util.logging.Logger
@@ -58,11 +62,9 @@ import static org.mockito.Mockito.when
 import static extension org.mockito.ArgumentMatchers.any
 import static extension org.mockito.Mockito.times
 import static extension org.mockito.Mockito.verify
-import java.util.List
-import java.util.Iterator
-import io.sarl.sre.services.lifecycle.ContextReference
-import java.util.Collection
 import java.util.ArrayList
+import com.google.common.collect.Iterables
+import java.util.TreeSet
 
 /**
  * @author $Author: sgalland$
@@ -184,22 +186,12 @@ class AgentLifeTest extends AbstractSreTest {
 		var ctx2 = typeof(Context).mock
 		when(ctx2.ID).thenReturn(minmax.get(1))
 		var adr2 = typeof(Address).mock
-		this.life.addExternalContext(ctx1, adr1)
-		this.life.addExternalContext(ctx2, adr2)
+		var ref1 = this.life.addExternalContext(ctx1, adr1)
+		var ref2 = this.life.addExternalContext(ctx2, adr2)
 		var context = this.life.enclosingContexts
 		var iterator = context.iterator
-		
-		assertTrue(iterator.hasNext)
-		var ref = iterator.next
-		assertSame(ctx1, ref.context)
-		assertSame(adr1, ref.addressInDefaultSpace)
 
-		assertTrue(iterator.hasNext)
-		ref = iterator.next
-		assertSame(ctx2, ref.context)
-		assertSame(adr2, ref.addressInDefaultSpace)
-
-		assertFalse(iterator.hasNext)
+		#[ref1.clone, ref2.clone].assertUnorderedContexts(iterator)
 	}
 
 	@Test
@@ -214,28 +206,14 @@ class AgentLifeTest extends AbstractSreTest {
 		var ctx2 = typeof(Context).mock
 		when(ctx2.ID).thenReturn(minmax.get(2))
 		var adr2 = typeof(Address).mock
-		var ref0 = this.life.setDefaultContext(ctx0, adr0)
+		this.life.setDefaultContext(ctx0, adr0)
+		var ref0 = new ContextReference(this.life, ctx0, adr0)
 		var ref1 = this.life.addExternalContext(ctx1, adr1)
 		var ref2 = this.life.addExternalContext(ctx2, adr2)
 		var context = this.life.enclosingContexts
 		var iterator = context.iterator
 
-		assertTrue(iterator.hasNext)
-		var ref = iterator.next
-		assertSame(ctx0, ref.context)
-		assertSame(adr0, ref.addressInDefaultSpace)
-
-		assertTrue(iterator.hasNext)
-		ref = iterator.next
-		assertSame(ctx1, ref.context)
-		assertSame(adr1, ref.addressInDefaultSpace)
-
-		assertTrue(iterator.hasNext)
-		ref = iterator.next
-		assertSame(ctx2, ref.context)
-		assertSame(adr2, ref.addressInDefaultSpace)
-
-		assertFalse(iterator.hasNext)
+		#[ref0, ref1.clone, ref2.clone].assertUnorderedContexts(iterator)
 	}
 
 	@Test
@@ -250,14 +228,15 @@ class AgentLifeTest extends AbstractSreTest {
 		var ctx2 = typeof(Context).mock
 		when(ctx2.ID).thenReturn(minmax.get(1))
 		var adr2 = typeof(Address).mock
-		var ref0 = this.life.setDefaultContext(ctx0, adr0)
+		this.life.setDefaultContext(ctx0, adr0)
+		var ref0 = new ContextReference(this.life, ctx0, adr0)
 		var ref1 =this.life.addExternalContext(ctx1, adr1)
 		var ref2 = this.life.addExternalContext(ctx2, adr2)
 
 		var context = this.life.enclosingContexts
 		var iterator = context.iterator
 
-		#[ref0, ref1, ref2].assertUnorderedContexts(iterator)
+		#[ref0, ref1.clone, ref2.clone].assertUnorderedContexts(iterator)
 	}
 
 	@Test
@@ -291,7 +270,7 @@ class AgentLifeTest extends AbstractSreTest {
 		var context = this.life.externalContexts
 		var iterator = context.iterator
 		
-		#[ref1, ref2].assertUnorderedContexts(iterator)
+		#[ref1.clone, ref2.clone].assertUnorderedContexts(iterator)
 	}
 
 	@Test
@@ -307,22 +286,12 @@ class AgentLifeTest extends AbstractSreTest {
 		when(ctx2.ID).thenReturn(minmax.get(2))
 		var adr2 = typeof(Address).mock
 		this.life.setDefaultContext(ctx0, adr0)
-		this.life.addExternalContext(ctx1, adr1)
-		this.life.addExternalContext(ctx2, adr2)
+		var ref1 = this.life.addExternalContext(ctx1, adr1)
+		var ref2 = this.life.addExternalContext(ctx2, adr2)
 		var context = this.life.externalContexts
 		var iterator = context.iterator
-		
-		assertTrue(iterator.hasNext)
-		var ref = iterator.next
-		assertSame(ctx1, ref.context)
-		assertSame(adr1, ref.addressInDefaultSpace)
 
-		assertTrue(iterator.hasNext)
-		ref = iterator.next
-		assertSame(ctx2, ref.context)
-		assertSame(adr2, ref.addressInDefaultSpace)
-
-		assertFalse(iterator.hasNext)
+		#[ref1.clone, ref2.clone].assertUnorderedContexts(iterator)
 	}
 
 	@Test
@@ -425,7 +394,40 @@ class AgentLifeTest extends AbstractSreTest {
 			var ref = iterator.next
 			actual += ref	
 		}
-		assertContainsCollection(actual, expected)
+		val le = new ArrayList
+		Iterables::addAll(le, expected)
+		val unexpectedElements = new TreeSet
+		val it1 = actual.iterator
+		while (it1.hasNext) {
+			val ac = it1.next
+			it1.remove
+			if (ac !== null) {
+				var found = false
+				var it2 = le.iterator
+				while (it2.hasNext) {
+					val ec = it2.next
+					if (ec !== null) {
+						if (ec.context.ID === ac.context.ID) {
+							it2.remove
+							assertSame(ec.addressInDefaultSpace, ac.addressInDefaultSpace)
+							found = true
+							break
+						}
+					}
+				}
+				if (!found) {
+					unexpectedElements.add(ac.toString)
+				}
+			}
+		}
+
+		if (!unexpectedElements.empty) {
+			fail("Unexpected elements:\n" + unexpectedElements.toString + "\nActual elements are:\n" +
+					Iterables::toString(actual) + "\nExpected elements are:\n" + Iterables::toString(expected))
+		} else if (!le.empty) {
+			fail("Expecting the following elements:\n" + le.toString + "\nActual elements are:\n" +
+					Iterables::toString(actual) + "\nExpected elements are:\n" + Iterables::toString(expected))
+		}
 	}
 
 	@Test
@@ -436,15 +438,19 @@ class AgentLifeTest extends AbstractSreTest {
 		var ctx2 = typeof(Context).mock
 		when(ctx2.ID).thenReturn(UUID::randomUUID)
 		var adr2 = typeof(Address).mock
-		var ref1 = this.life.addExternalContext(ctx1, adr1)
+		this.life.addExternalContext(ctx1, adr1)
 		var ref2 = this.life.addExternalContext(ctx2, adr2)
 		
-		this.life.removeExternalContext(ctx1)
-		
+		var rref = this.life.removeExternalContext(ctx1)
+
+		assertNotNull(rref)
+		assertSame(ctx1, rref.context)
+		assertSame(adr1, rref.addressInDefaultSpace)
+
 		var context = this.life.externalContexts
 		var iterator = context.iterator
 
-		#[ref1, ref2].assertUnorderedContexts(iterator)
+		#[ref2.clone].assertUnorderedContexts(iterator)
 	}
 
 	@Test

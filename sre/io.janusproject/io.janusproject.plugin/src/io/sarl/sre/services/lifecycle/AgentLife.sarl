@@ -433,18 +433,12 @@ final class AgentLife {
 	def removeExternalContext(context : Context) : ContextReference {
 		assert context !== null
 		var ctxs : ConcurrentHashMap<UUID, ContextReference> = this.externalContextInstances
-
 		if (ctxs !== null) {
-
-			ctxs = this.externalContextInstances
-			if (ctxs !== null) {
-				var ctx = ctxs.remove(context.ID)
-				if (ctxs.empty) {
-					this.externalContextInstances = null
-				}
-				return ctx
+			var ctx = ctxs.remove(context.ID)
+			if (this.externalContextInstances !== null && this.externalContextInstances.empty) {
+				this.externalContextInstances = null
 			}
-
+			return ctx
 		}
 		return null
 	}
@@ -476,11 +470,21 @@ final class AgentLife {
 	 * @see {@link #getEnclosingContexts()}
 	 */
 	def getExternalContexts : ConcurrentLinkedDeque<ContextReference> {
-		return if (this.externalContextInstances === null) {
-			new ConcurrentLinkedDeque
-		} else {
-			new ConcurrentLinkedDeque(this.externalContextInstances.values)
+		var result = new ConcurrentLinkedDeque
+		val instances = this.externalContextInstances
+		val dc = this.defaultContextInstance
+		if (instances !== null) {
+			val dcId = dc?.context?.ID
+			var foundDefaultContext = false
+			for (entry : instances.entrySet) {
+				if (!foundDefaultContext && dcId == entry.key) {
+					foundDefaultContext = true
+				} else {
+					result += entry.value
+				}
+			}
 		}
+		return result
 	}
 
 	/** Replies the number of external contexts in which the agent is located.
@@ -590,7 +594,7 @@ final class AgentLife {
  * @mavenartifactid $ArtifactId$
  * @since 0.6.0
  */
-final class ContextReference implements Comparable<ContextReference> {
+final class ContextReference implements Comparable<ContextReference>, Cloneable {
 
 	val life : WeakReference<AgentLife>
 
@@ -610,6 +614,10 @@ final class ContextReference implements Comparable<ContextReference> {
 		this.life = new WeakReference(life)
 		this.contextInstance = new WeakReference(context)
 		this.defaultAddress = address
+	}
+
+	override clone : ContextReference {
+		new ContextReference(this.life.get, this.contextInstance.get, this.defaultAddress)
 	}
 
 	override toString : String {

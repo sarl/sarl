@@ -63,7 +63,7 @@ abstract class AgentTraitLife {
 	 * 
 	 * @param task the task to remove.
 	 */
-	def removeTaskReference(task : AgentTask) {
+	def removeTaskReference(task : AgentTask) : void {
 		var tsk : ConcurrentSkipListSet<WeakReference<AgentTask>> = this.tasks
 		if (tsk !== null) {
 			val ref = new WeakReference(task)

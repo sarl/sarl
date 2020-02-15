@@ -167,12 +167,8 @@ class SynchronousProbeServiceTest extends AbstractSarlTest {
 		var name1 = typeof(ContextName).mock
 		when(name1.toURI).thenReturn(URI::create("context:fc1f2dbb-e9aa-4cfd-87cd-b4eda14c1599"))
 		var probe1 = this.service.probe(name1, typeof(Integer), UUID::randomUUID.toString)
-		var iterator = this.service.probes.iterator
-		iterator.hasNext.assertTrue
-		probe0.assertSame(iterator.next)
-		iterator.hasNext.assertTrue
-		probe1.assertSame(iterator.next)
-		iterator.hasNext.assertFalse
+		var collection = this.service.probes
+		assertContainsCollection(collection, #[probe0, probe1])
 	}
 
 	@Test
@@ -184,14 +180,8 @@ class SynchronousProbeServiceTest extends AbstractSarlTest {
 		var name2 = typeof(ContextName).mock
 		when(name2.toURI).thenReturn(URI::create("context:fc1f2dbb-e9aa-4cfd-87cd-b4eda14c1598"))
 		var probe2 = this.service.probe(name2, typeof(String), UUID::randomUUID.toString)
-		var iterator = this.service.probes.iterator
-		iterator.hasNext.assertTrue
-		probe0.assertSame(iterator.next)
-		iterator.hasNext.assertTrue
-		probe2.assertSame(iterator.next)
-		iterator.hasNext.assertTrue
-		probe1.assertSame(iterator.next)
-		iterator.hasNext.assertFalse
+		var collection = this.service.probes
+		assertContainsCollection(collection, #[probe0, probe1, probe2])
 	}
 
 	@Test
@@ -230,12 +220,8 @@ class SynchronousProbeServiceTest extends AbstractSarlTest {
 
 		this.service.sync
 
-		var iterator = this.service.probes.iterator
-		iterator.hasNext.assertTrue
-		probe0.assertSame(iterator.next)
-		iterator.hasNext.assertTrue
-		probe1.assertSame(iterator.next)
-		iterator.hasNext.assertFalse
+		var collection = this.service.probes
+		assertContainsCollection(collection, #[probe0, probe1])
 
 		probe0.active.assertTrue
 		probe1.active.assertTrue

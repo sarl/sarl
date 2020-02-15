@@ -39,14 +39,14 @@ class Boot {
 	 * @return the default name of the program.
 	 */
 	static def getDefaultSreProgramName : String {
-		return "sarl"
+		return "janus"
 	}
 
 	/** Create the instance of the bootique main launcher.
 	 * 
 	 * @return the main launcher.
 	 */
-	protected static def createMainObject : SreMain {
+	static def createMainObject : SreMain {
 		new SreMain
 	}
 

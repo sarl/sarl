@@ -21,10 +21,9 @@
 package io.sarl.sre.services.probing
 
 import com.google.common.util.concurrent.Service
-
 import io.sarl.sre.naming.SarlName
 import java.net.URI
-import java.util.concurrent.ConcurrentLinkedDeque
+import java.util.Collection
 
 /** 
  * This service provides probing mechanisms.
@@ -76,7 +75,7 @@ interface ProbeService extends Service {
 	 *  @return the iterable on probes
 	 */
 	@Pure
-	def getProbes : ConcurrentLinkedDeque<Probe<?>>
+	def getProbes : Collection<Probe<?>>
 	
 	/** Release all the probes.
 	 */

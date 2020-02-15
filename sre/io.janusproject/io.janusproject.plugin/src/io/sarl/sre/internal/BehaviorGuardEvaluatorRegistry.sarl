@@ -22,7 +22,6 @@
 package io.sarl.sre.internal
 
 import com.google.common.base.Objects
-import com.google.common.base.Throwables
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.LoadingCache
 import com.google.common.collect.Collections2
@@ -148,12 +147,7 @@ class BehaviorGuardEvaluatorRegistry {
 	}
 
 	private static def getAnnotatedMethodsPerEvent(listenerType : Class<?>) : Map<Class<? extends Event>, Collection<Method>> {
-		try {
-			PERCEPT_GUARD_EVALUATOR_METHOD_CACHE.getUnchecked(listenerType)
-		} catch (ex : Exception) {
-			Throwables::throwIfUnchecked(ex)
-			throw new RuntimeException(ex)
-		}
+		PERCEPT_GUARD_EVALUATOR_METHOD_CACHE.getUnchecked(listenerType)
 	}
 
 	/**
@@ -529,35 +523,6 @@ class BehaviorGuardEvaluatorRegistry {
 			}
 		}
 	}
-	
-	/*def unregister(listener : Object, callback : (Object) => void = null) {
-		if (this.active) {
-			// TODO EvaluatorIterator is not efficient
-			val listenerMethods = new EvaluatorIterator(listener)
-			var listenerCallback = new OutParameter(callback)
-			while (listenerMethods.hasNext) {
-				val entry = listenerMethods.next
-				val eventType = entry.key
-
-				val pair = this.behaviorGuardEvaluators.get(eventType)
-
-				if (pair !== null && pair.value !== null) {
-					var candidates = pair.value
-					candidates.removeIf [
-						if (it.target === listener) {
-							var cb = listenerCallback.get
-							if (cb !== null) {
-								cb.apply(listener)
-								listenerCallback.set(null)
-							}
-							return true
-						}
-						return false
-					]
-				}
-			}
-		}
-	}*/
 
 	/**
 	 * Gets an iterator representing an immutable snapshot of all BehaviorGuardEvaluators to the given event at the time this method is called.
@@ -567,40 +532,16 @@ class BehaviorGuardEvaluatorRegistry {
 	 * @return the set of guard evaluators associated to the specified event
 	 */
 	def getBehaviorGuardEvaluators(^event : Event) : ConcurrentLinkedDeque<BehaviorGuardEvaluator> {
-		//		Original java code from Nico
-		// 		final ImmutableSet<Class<?>> eventTypes = flattenHierarchy(event.getClass());
-		//
-		//		final List<BehaviorGuardEvaluator> iBehaviorGuardEvaluators = Lists.newArrayListWithCapacity(eventTypes.size());
-		//
-		//		for (final Class<?> eventType : eventTypes) {
-		//			final Pair<Function1<? super Event, ? extends Boolean>, Set<BehaviorGuardEvaluator>> eventSubscribers =
-		//					this.behaviorGuardEvaluators.get(eventType);
-		//			if (eventSubscribers != null && eventSubscribers.getValue() != null
-		//					&& (eventSubscribers.getKey() == null || eventSubscribers.getKey().apply(event))) {
-		//				iBehaviorGuardEvaluators.addAll(eventSubscribers.getValue());
-		//			}
-		//		}
-		//
-		//		return iBehaviorGuardEvaluators;
-		
-				var eventTypes : ImmutableSet<Class<?>>  = flattenHierarchy(^event.getClass());
-		
-				var iBehaviorGuardEvaluators : ConcurrentLinkedDeque<BehaviorGuardEvaluator>  = new ConcurrentLinkedDeque();
-		
-				for (eventType : eventTypes) {
-					
-					var eventSubscribers : Pair<(Event) => Boolean, ConcurrentSkipListSet<BehaviorGuardEvaluator>> = this.behaviorGuardEvaluators.get(eventType);
-					if (eventSubscribers !== null && eventSubscribers.getValue() !== null
-							&& (eventSubscribers.getKey() === null || eventSubscribers.getKey().apply(^event))) {
-						iBehaviorGuardEvaluators.addAll(eventSubscribers.getValue());
-					}
-				}
-		
-				return iBehaviorGuardEvaluators;
-		
-		//val eventTypes = flattenHierarchy(^event.class)
-		//return [ new EvaluatorCollectionIterator(this.behaviorGuardEvaluators, ^event,
-		//			eventTypes.iterator, false) ]
+		val eventTypes = ^event.class.flattenHierarchy
+		val iBehaviorGuardEvaluators = new ConcurrentLinkedDeque
+		for (eventType : eventTypes) {
+			val eventSubscribers = this.behaviorGuardEvaluators.get(eventType)
+			if (eventSubscribers !== null && eventSubscribers.value !== null
+					&& (eventSubscribers.key === null || eventSubscribers.key.apply(^event))) {
+				iBehaviorGuardEvaluators.addAll(eventSubscribers.value)
+			}
+		}
+		return iBehaviorGuardEvaluators
 	}
 
 	/**
@@ -616,38 +557,22 @@ class BehaviorGuardEvaluatorRegistry {
 	 * @since 0.5
 	 */
 	def getBehaviorGuardEvaluatorsFor(^event : Event, listener : Object) : ConcurrentLinkedDeque<BehaviorGuardEvaluator> {
-		/*val eventTypes = flattenHierarchy(^event.class)
-		return [
-			val base = new EvaluatorCollectionIterator(this.behaviorGuardEvaluators, ^event, eventTypes.iterator, true)
-			new EvaluatorCollectionFilteringIterator(base, listener)
-		]*/
 		val eventTypes = flattenHierarchy(^event.class)
-		var iBehaviorGuardEvaluators : ConcurrentLinkedDeque<BehaviorGuardEvaluator>  = new ConcurrentLinkedDeque();
+		var iBehaviorGuardEvaluators = new ConcurrentLinkedDeque
 		
-		//if(listener != null) {
-			for (eventType : eventTypes) {					
-				var eventSubscribers : Pair<(Event) => Boolean, ConcurrentSkipListSet<BehaviorGuardEvaluator>> = this.behaviorGuardEvaluators.get(eventType);
-				if (eventSubscribers !== null && eventSubscribers.getValue() !== null
-						&& (eventSubscribers.getKey() === null || eventSubscribers.getKey().apply(^event))) {
-					//iBehaviorGuardEvaluators.addAll(eventSubscribers.getValue());
-					for (evaluator : eventSubscribers.getValue()) {
-						if(evaluator.target === listener) {
-							iBehaviorGuardEvaluators.add(evaluator)
-						}
+		for (eventType : eventTypes) {					
+			var eventSubscribers = this.behaviorGuardEvaluators.get(eventType)
+			if (eventSubscribers !== null && eventSubscribers.getValue() !== null
+					&& (eventSubscribers.getKey() === null || eventSubscribers.getKey().apply(^event))) {
+				for (evaluator : eventSubscribers.getValue()) {
+					if(evaluator.target === listener) {
+						iBehaviorGuardEvaluators.add(evaluator)
 					}
-					
 				}
+				
 			}
-		/*} else {
-			for (eventType : eventTypes) {					
-				var eventSubscribers : Pair<(Event) => Boolean, Set<BehaviorGuardEvaluator>> = this.behaviorGuardEvaluators.get(eventType);
-				if (eventSubscribers != null && eventSubscribers.getValue() != null
-						&& (eventSubscribers.getKey() === null || eventSubscribers.getKey().apply(^event))) {
-					iBehaviorGuardEvaluators.addAll(eventSubscribers.getValue());
-				}
-			}
-		}*/
-		return iBehaviorGuardEvaluators;
+		}
+		return iBehaviorGuardEvaluators
 	}
 
 	/** Replies if a listener with the given type is registered.
@@ -743,12 +668,7 @@ class BehaviorGuardEvaluatorRegistry {
 	 * @return the set of class in the hierarchy of the specififed class
 	 */
 	private static def flattenHierarchy(concreteClass : Class<?>) : ImmutableSet<Class<?>> {
-		try {
-			FLATTEN_HIERARCHY_CACHE.getUnchecked(concreteClass)
-		} catch (e : Exception) {
-			Throwables::throwIfUnchecked(e.cause)
-			throw new RuntimeException(e.cause)
-		}
+		FLATTEN_HIERARCHY_CACHE.getUnchecked(concreteClass)
 	}
 
 }

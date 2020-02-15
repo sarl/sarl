@@ -88,7 +88,6 @@ public class Bug816 extends AbstractSarlTest {
 			"public class X {",
 			"  private String bounds;",
 			"  ",
-			"  @Pure",
 			"  public void fct(final boolean condition1, final boolean condition2) {",
 			"    if (condition1) {",
 			"      String bounds = this.bounds;",

@@ -34,12 +34,13 @@ import io.sarl.sre.boot.configs.subconfigs.BootConfig
 import io.sarl.sre.boot.configs.subconfigs.InvalidAgentNameException
 import io.sarl.sre.boot.configs.subconfigs.NoBootAgentNameException
 import io.sarl.sre.services.lifecycle.LifecycleService
+import io.sarl.sre.services.logging.LoggingService
 import io.sarl.sre.tests.testutils.AbstractSreTest
 import io.sarl.sre.tests.testutils.IddleTestingAgent
 import io.sarl.sre.tests.testutils.ModuleMock
 import io.sarl.tests.api.Nullable
-import java.util.List
 import java.util.UUID
+import java.util.concurrent.ConcurrentLinkedDeque
 import org.arakhne.afc.bootique.log4j.configs.Level
 import org.arakhne.afc.bootique.log4j.configs.Log4jIntegrationConfig
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
@@ -49,7 +50,6 @@ import org.mockito.ArgumentCaptor
 
 import static extension org.mockito.ArgumentMatchers.*
 import static extension org.mockito.Mockito.*
-import io.sarl.sre.services.logging.LoggingService
 
 /**
  * @author $Author: sgalland$
@@ -143,8 +143,10 @@ class SreMainTest extends AbstractSreTest {
 		].when(this.kernel).spawn(typeof(Class).any, typeof(Procedure1).any, typeof(Object).any);
 
 		doAnswer [
-			var callback = it.arguments.get(2) as (List<UUID>)=>void
-			callback?.apply(#[this.id0])
+			var callback = it.arguments.get(2) as (ConcurrentLinkedDeque<UUID>)=>void
+			var deque = new ConcurrentLinkedDeque
+			deque += this.id0
+			callback?.apply(deque)
 			return null
 		].when(this.kernel).spawn(anyInt, typeof(Class).any, typeof(Procedure1).any, typeof(Object).any)
 

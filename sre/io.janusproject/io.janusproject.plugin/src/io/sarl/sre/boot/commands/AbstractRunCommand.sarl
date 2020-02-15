@@ -29,8 +29,6 @@ import io.sarl.lang.core.Agent
 import io.sarl.sre.boot.configs.SreConfig
 import io.sarl.sre.boot.configs.subconfigs.BootConfig
 import java.util.List
-
-import static java.lang.Thread.*
 import javax.inject.Provider
 
 /** 

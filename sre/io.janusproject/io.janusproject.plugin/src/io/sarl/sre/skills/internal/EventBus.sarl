@@ -32,8 +32,7 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.ExecutionException
 import java.util.logging.Logger
 import javax.inject.Inject
-
-import org.arakhne.afc.util.OutputParameter;
+import org.arakhne.afc.util.OutputParameter
 
 /** 
  * The class in charge of dispatching every single events coming from the outside of this agent (i.e. from a space) or from an
@@ -44,15 +43,14 @@ import org.arakhne.afc.util.OutputParameter;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * 
  */
 class EventBus {
 
-		/** 
-		 * The registry of all {@code BehaviorGuardEvaluator} classes containing a method to evaluate the guard of a given behavior
-		 * ("on" clause in SARL behavior). This class has been inspired by the com.google.common.eventbus.SuscriberRegistry class of
-		 * Google Guava library.
-		 */
+	/** 
+	 * The registry of all {@code BehaviorGuardEvaluator} classes containing a method to evaluate the guard of a given behavior
+	 * ("on" clause in SARL behavior). This class has been inspired by the com.google.common.eventbus.SuscriberRegistry class of
+	 * Google Guava library.
+	 */
 	val behaviorGuardEvaluatorRegistry : BehaviorGuardEvaluatorRegistry
 
 	/** 
@@ -170,24 +168,15 @@ class EventBus {
 	 * @param logger the logger to use for notifying the errors.
 	 */
 	def immediateDispatch(^event : Event, thrownExceptions : boolean, logger : Logger = null) {
-		assert ^event !== null;
+		assert ^event !== null
 
-		var behaviorGuardEvaluators : ConcurrentLinkedDeque<BehaviorGuardEvaluator> = null;
-
-		behaviorGuardEvaluators = EventBus.this.behaviorGuardEvaluatorRegistry.getBehaviorGuardEvaluators(^event);
+		val behaviorGuardEvaluators = this.behaviorGuardEvaluatorRegistry.getBehaviorGuardEvaluators(^event)
 
 		if (behaviorGuardEvaluators !== null) {
-			var behaviorsMethodsToExecute : Collection<Runnable>;
-			try {
-				behaviorsMethodsToExecute = evaluateGuards(^event, behaviorGuardEvaluators, logger);
-				executeBehaviorMethodsInParalellWithSynchroAtTheEnd(behaviorsMethodsToExecute, thrownExceptions,
-					logger);
-			} catch (exception : RuntimeException) {
-				throw exception;
-			} catch (e : InterruptedException) {
-				throw new RuntimeException(e);
+			val behaviorsMethodsToExecute = ^event.evaluateGuards(behaviorGuardEvaluators, logger)
+			if (behaviorsMethodsToExecute !== null && !behaviorsMethodsToExecute.empty) {
+				behaviorsMethodsToExecute.executeBehaviorMethodsInParalellWithSynchroAtTheEnd(thrownExceptions, logger)
 			}
-
 		}
 	}
 
@@ -204,27 +193,16 @@ class EventBus {
 	 * @param logger the logger to use for notifying the errors.
 	 */
 	def immediateDispatchTo(listener : Object, ^event : Event, thrownExceptions : boolean, logger : Logger = null) {
-		assert ^event !== null;
-		assert listener !== null;
+		assert ^event !== null
+		assert listener !== null
 
-		var behaviorGuardEvaluators : ConcurrentLinkedDeque<BehaviorGuardEvaluator> = null;
-
-		behaviorGuardEvaluators = EventBus.this.behaviorGuardEvaluatorRegistry.
-			getBehaviorGuardEvaluatorsFor(^event, listener);
+		val behaviorGuardEvaluators = 
+			this.behaviorGuardEvaluatorRegistry.getBehaviorGuardEvaluatorsFor(^event, listener)
 
 		if (behaviorGuardEvaluators !== null && behaviorGuardEvaluators.size() > 0) {
-
-			var behaviorsMethodsToExecute : Collection<Runnable>;
-			try {
-				behaviorsMethodsToExecute = evaluateGuards(^event, behaviorGuardEvaluators, logger);
-				if (behaviorsMethodsToExecute !== null && behaviorsMethodsToExecute.size() > 0) {
-					executeBehaviorMethodsInParalellWithSynchroAtTheEnd(behaviorsMethodsToExecute,
-						thrownExceptions, logger);
-				}
-			} catch (exception : RuntimeException) {
-				throw exception;
-			} catch (e : InterruptedException) {
-				throw new RuntimeException(e);
+			val behaviorsMethodsToExecute = ^event.evaluateGuards(behaviorGuardEvaluators, logger)
+			if (behaviorsMethodsToExecute !== null && !behaviorsMethodsToExecute.empty) {
+				behaviorsMethodsToExecute.executeBehaviorMethodsInParalellWithSynchroAtTheEnd(thrownExceptions, logger)
 			}
 		}
 	}
@@ -239,23 +217,18 @@ class EventBus {
 	 * @param logger the logger to use for notifying the errors.
 	 */
 	def asyncDispatch(^event : Event, logger : Logger = null) {
-		assert ^event !== null;
-
-		this.executor.executeAsap([
-			var behaviorGuardEvaluators : ConcurrentLinkedDeque<BehaviorGuardEvaluator> = null;
-
-			behaviorGuardEvaluators = EventBus.this.behaviorGuardEvaluatorRegistry.getBehaviorGuardEvaluators(^event)
-
-			if (behaviorGuardEvaluators !== null && behaviorGuardEvaluators.size() > 0) {
+		assert ^event !== null
+		var asyncTask : Runnable = [
+			val behaviorGuardEvaluators = this.behaviorGuardEvaluatorRegistry.getBehaviorGuardEvaluators(^event)
+			if (behaviorGuardEvaluators !== null && !behaviorGuardEvaluators.empty) {
 				// Could be null when the corresponding events is not listen by an agent, i.e. system event like ParticpantJoined
-				var behaviorsMethodsToExecute : Collection<Runnable> = evaluateGuards(^event, behaviorGuardEvaluators,
-					logger)
-
-				if (behaviorsMethodsToExecute !== null && behaviorsMethodsToExecute.size() > 0) {
-					executeAsynchronouslyBehaviorMethods(behaviorsMethodsToExecute, logger)
+				var behaviorsMethodsToExecute = ^event.evaluateGuards(behaviorGuardEvaluators, logger)
+				if (behaviorsMethodsToExecute !== null && !behaviorsMethodsToExecute.empty) {
+					behaviorsMethodsToExecute.executeAsynchronouslyBehaviorMethods(logger)
 				}
 			}
-		] as Runnable);
+		]
+		this.executor.executeAsap(asyncTask)
 	}
 
 	/** 
@@ -278,42 +251,41 @@ class EventBus {
 		assert behaviorGuardEvaluators !== null
 		assert behaviorGuardEvaluators.size() > 0
 
-		val behaviorsMethodsToExecute : ConcurrentMultiList<Runnable> = new ConcurrentMultiList<Runnable>();
-		var eval : int = behaviorGuardEvaluators.size();
+		val behaviorsMethodsToExecute = new ConcurrentMultiList
+		val eval = behaviorGuardEvaluators.size
 		if (eval > 1) {
-			val doneSignal : CountDownLatch = new CountDownLatch(eval);
-
-			val runException : OutputParameter<Throwable> = new OutputParameter<Throwable>();
+			val doneSignal = new CountDownLatch(eval)
+			val runException = new OutputParameter
 
 			for (evaluator : behaviorGuardEvaluators) {
 				this.executor.executeAsap(new SreRunnable(logger) {
-					def run() {
+					def run {
 						try {
-							var behaviorsMethodsToExecutePerTarget : ConcurrentLinkedDeque<Runnable> = new ConcurrentLinkedDeque<Runnable>();
-							evaluator.evaluateGuard(^event, behaviorsMethodsToExecutePerTarget);
-							behaviorsMethodsToExecute.addCollection(behaviorsMethodsToExecutePerTarget);
+							val behaviorsMethodsToExecutePerTarget = new ConcurrentLinkedDeque
+							evaluator.evaluateGuard(^event, behaviorsMethodsToExecutePerTarget)
+							behaviorsMethodsToExecute.addCollection(behaviorsMethodsToExecutePerTarget)
 						} catch (e : EarlyExitException) {
 							// Ignore this exception
 						} catch (e : RuntimeException) {
 							// Catch exception for notifying the caller
-							runException.set(e);
+							runException.set(e)
 							// Do the standard behavior too -> logging
-							throw e;
+							throw e
 						} catch (e : Exception) {
 							// Catch exception for notifying the caller
-							runException.set(e);
+							runException.set(e)
 							// Do the standard behavior too -> logging
-							throw new RuntimeException(e);
+							throw new RuntimeException(e)
 						} finally {
-							doneSignal.countDown();
+							doneSignal.countDown
 						}
 					}
-				});
+				})
 			}
 
 			// Wait for all Behaviors runnable to complete before continuing
 			try {
-				doneSignal.await();
+				doneSignal.await
 			} catch (ex : InterruptedException) {
 				// This exception occurs when one of the launched task kills the agent before
 				// all the
@@ -336,29 +308,18 @@ class EventBus {
 
 			// Re-throw the run-time exception
 			if (runException.get() !== null) {
-				throw new ExecutionException(runException.get());
+				throw new ExecutionException(runException.get)
 			}
 
 		} else {
 			// When you have a single guard to evaluate we cannot create a thread because we must be sure the guard evaluation
 			// is finished before executing the corresponding behaviors
-			var behaviorsMethodsToExecutePerTarget : ConcurrentLinkedDeque<Runnable> = new ConcurrentLinkedDeque<Runnable>();
-			behaviorGuardEvaluators.getFirst().evaluateGuard(^event, behaviorsMethodsToExecutePerTarget);
-			behaviorsMethodsToExecute.addCollection(behaviorsMethodsToExecutePerTarget);
+			var behaviorsMethodsToExecutePerTarget = new ConcurrentLinkedDeque
+			behaviorGuardEvaluators.first.evaluateGuard(^event, behaviorsMethodsToExecutePerTarget)
+			behaviorsMethodsToExecute.addCollection(behaviorsMethodsToExecutePerTarget)
 		}
 
-		return behaviorsMethodsToExecute;
-
-	/* val behaviorsMethodsToExecute = new ConcurrentMultiList<Runnable>
-	 * this.executor.applyBlockingConsumer(logger, behaviorGuardEvaluators) [evaluator |
-	 * val behaviorsMethodsToExecutePerTarget = <Runnable>newLinkedList
-	 * evaluator.evaluateGuard(^event, behaviorsMethodsToExecutePerTarget)
-	 * synchronized (behaviorsMethodsToExecute) {
-	 * behaviorsMethodsToExecute.addCollection(behaviorsMethodsToExecutePerTarget)
-	 * }
-	 * ]
-	 * return behaviorsMethodsToExecute
-	 */
+		return behaviorsMethodsToExecute
 	}
 
 	/** 
@@ -378,33 +339,33 @@ class EventBus {
 	protected def executeBehaviorMethodsInParalellWithSynchroAtTheEnd(behaviorsMethodsToExecute : Collection<Runnable>,
 		thrownExceptions : boolean, logger : Logger) {
 		// code from steph this.executor.executeBlockingTasks(logger, thrownExceptions, behaviorsMethodsToExecute)
-		assert behaviorsMethodsToExecute !== null;
-		assert behaviorsMethodsToExecute.size() > 0;
+		assert behaviorsMethodsToExecute !== null
+		assert behaviorsMethodsToExecute.size() > 0
 
 		if (behaviorsMethodsToExecute.size() > 1) {
-			val doneSignal : CountDownLatch = new CountDownLatch(behaviorsMethodsToExecute.size());
+			val doneSignal = new CountDownLatch(behaviorsMethodsToExecute.size)
 
-			val runException : OutputParameter<Throwable> = new OutputParameter<Throwable>();
+			val runException = new OutputParameter
 
 			for (runnable : behaviorsMethodsToExecute) {
 				this.executor.executeAsap(new SreRunnable(logger) {
-					def run() {
+					def run {
 						try {
-							runnable.run();
+							runnable.run
 						} catch (e : EarlyExitException) {
 							// Ignore this exception
 						} catch (e : RuntimeException) {
 							// Catch exception for notifying the caller
-							runException.set(e);
+							runException.set(e)
 							// Do the standard behavior too -> logging
 							throw e;
 						} catch (e : Exception) {
 							// Catch exception for notifying the caller
-							runException.set(e);
+							runException.set(e)
 							// Do the standard behavior too -> logging
-							throw new RuntimeException(e);
+							throw new RuntimeException(e)
 						} finally {
-							doneSignal.countDown();
+							doneSignal.countDown
 						}
 					}
 				});
@@ -412,7 +373,7 @@ class EventBus {
 
 			// Wait for all Behaviors runnable to complete before continuing
 			try {
-				doneSignal.await();
+				doneSignal.await
 			} catch (ex : InterruptedException) {
 				// This exception occurs when one of the launched task kills the agent before
 				// all the
@@ -435,21 +396,13 @@ class EventBus {
 
 			// Re-throw the run-time exception
 			if (runException.get() !== null) {
-				throw new ExecutionException(runException.get());
+				throw new ExecutionException(runException.get)
 			}
 		} else {
-			var r : Runnable = new SreRunnable(logger) {
-				def run() {
-					try {
-						behaviorsMethodsToExecute.iterator().next().run;
-					} catch (e : EarlyExitException) {
-						// Ignore this exception
-					}
-				}
-			};
-
-			assert r !== null;
-			r.run();
+			val r0 = behaviorsMethodsToExecute.iterator.next
+			assert r0 !== null
+			var r1 : Runnable = new SreRunnable(r0, logger)
+			r1.run
 		}
 
 	}
@@ -465,8 +418,8 @@ class EventBus {
 	 */
 	protected def executeAsynchronouslyBehaviorMethods(behaviorsMethodsToExecute : Collection<Runnable>,
 		logger : Logger) {
-		assert behaviorsMethodsToExecute !== null;
-		assert behaviorsMethodsToExecute.size() > 0;
+		assert behaviorsMethodsToExecute !== null
+		assert behaviorsMethodsToExecute.size() > 0
 
 		for (runnable : behaviorsMethodsToExecute) {
 			this.executor.executeAsap(logger, runnable)

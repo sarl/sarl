@@ -107,13 +107,16 @@ class BasicSkillUninstaller implements SkillUninstaller {
 	 */
 	private static def uninstallSkillsPreStage(skills : Iterable<? extends Skill>) {
 		//The InternalEventBusSkill must the last skill to be uninstalled
+		var busSkill : InternalEventBusSkill
 		for (^skill : skills) {
-			if (!(^skill instanceof InternalEventBusSkill)) {
+			if (^skill instanceof InternalEventBusSkill) {
+				busSkill = ^skill
+			} else {
 				SREutils::doSkillUninstallation(^skill, UninstallationStage::PRE_DESTROY_EVENT)			
 			}
 		}
-		for (^skill : skills) {
-			SREutils::doSkillUninstallation(^skill, UninstallationStage::PRE_DESTROY_EVENT)		
+		if (busSkill !== null) {
+			SREutils::doSkillUninstallation(busSkill, UninstallationStage::PRE_DESTROY_EVENT)		
 		}
 		
 	}
@@ -127,13 +130,16 @@ class BasicSkillUninstaller implements SkillUninstaller {
 	 */
 	private static def uninstallSkillsFinalStage(skills : Iterable<? extends Skill>) {
 		// The InternalEventBusSkill must the last skill to be uninstalled
+		var busSkill : InternalEventBusSkill
 		for (^skill : skills) {
-			if (!(^skill instanceof InternalEventBusSkill)) {
+			if (^skill instanceof InternalEventBusSkill) {
+				busSkill = ^skill
+			} else {
 				SREutils::doSkillUninstallation(^skill, UninstallationStage::POST_DESTROY_EVENT)			
 			}
 		}
-		for (^skill : skills) {
-			SREutils::doSkillUninstallation(^skill, UninstallationStage::POST_DESTROY_EVENT)
+		if (busSkill !== null) {
+			SREutils::doSkillUninstallation(busSkill, UninstallationStage::POST_DESTROY_EVENT)
 		}
 	}
 

@@ -167,7 +167,25 @@ public class SARLOperationHelper implements IOperationHelper {
 			return true;
 		}
 		final XtendTypeDeclaration declaringType = operation.getDeclaringType();
-		return declaringType instanceof SarlCapacity;
+		if (declaringType instanceof SarlCapacity) {
+			return true;
+		}
+		//  Return type with void means that the function has a side effect
+		JvmTypeReference returnType = operation.getReturnType();
+		if (returnType != null) {
+			// The type is specified in SARL
+			return Void.TYPE.getName().equals(returnType.getIdentifier());
+		}
+		final JvmOperation jvmOperation = this.associations.getDirectlyInferredOperation(operation);
+		if (jvmOperation != null) {
+			returnType = jvmOperation.getReturnType();
+			if (returnType != null) {
+				// The type is specified in SARL
+				return Void.TYPE.getName().equals(returnType.getIdentifier());
+			}
+			return false;
+		}
+		return true;
 	}
 
 	/** Replies if it is impossible to determine the pure state of the given function .

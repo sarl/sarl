@@ -45,7 +45,7 @@ import static org.mockito.ArgumentMatchers.any
 import static org.mockito.ArgumentMatchers.anyInt
 import static org.mockito.Mockito.when
 
-import static extension org.mockito.Mockito.verify
+import static extension org.mockito.Mockito.*
 
 /**
  * @author $Author: sgalland$
@@ -193,13 +193,23 @@ class KernelTest extends AbstractSreTest {
 
 	@Test
 	def spawnIntClassObjectArray {
-		var col0 = new ConcurrentLinkedDeque().spy
+		var col0 = new ConcurrentLinkedDeque
+		for (var i = 0; i <34; i++) {
+			col0 += UUID::randomUUID
+		}
+		col0 = col0.spy
 		var col1 = new ConcurrentLinkedDeque
 		var result = new SpawnResult(col0, col1)
-		when(this.lifecycle.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
+		when(this.lifecycle.spawnAgent(anyInt, typeof(UUID).anyInstanceOrNull,
+			typeof(Context).any, typeof(UUID).anyInstanceOrNull,
+			typeof(Class).any, typeof(Object).any, typeof(Object).any)).thenReturn(result)
 
 		var ids2 = new OutputParameter<ConcurrentLinkedDeque<UUID>>
-		this.kernel.spawn(34, typeof(IddleTestingAgent), [ids2.set(it)], 1, "a")
+		this.kernel.spawn(34, typeof(IddleTestingAgent),
+			[
+				ids2.set(it)
+			],
+			1, "a")
 		
 		assertSame(col0, ids2.get)
 		

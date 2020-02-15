@@ -30,7 +30,6 @@ import io.sarl.sre.tests.testutils.AbstractSreTest
 import io.sarl.tests.api.Nullable
 import java.util.Collection
 import java.util.concurrent.ConcurrentLinkedDeque
-import java.util.function.Consumer
 import java.util.logging.Logger
 import org.eclipse.xtext.xbase.lib.Functions.Function1
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
@@ -38,11 +37,8 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentCaptor
 
-import static org.mockito.Mockito.doAnswer
-import static org.mockito.Mockito.when
-
 import static extension org.mockito.ArgumentMatchers.any
-import static extension org.mockito.Mockito.verify
+import static extension org.mockito.Mockito.*
 
 /**
  * @author $Author: sgalland$
@@ -118,126 +114,173 @@ class EventBusTest extends AbstractSreTest {
 
 	@SuppressWarnings("raw_type")
 	@Test
-	def asyncDispatch {
-		var ^event = typeof(Event).mock
+	def asyncDispatch_singleHandler {
+		// Prepare mocks
+		when(this.executor.executeAsap(typeof(Runnable).any)).thenAnswer [
+			(it.getArgument(0) as Runnable).run
+			return null
+		]
+		//
 		var logger = typeof(Logger).mock
-		var runnable = typeof(Runnable).mock
+		//
 		var evaluator = typeof(BehaviorGuardEvaluator).mock
+		when(this.registry.getBehaviorGuardEvaluators(typeof(Event).any)).thenAnswer [
+			var evaluators = new ConcurrentLinkedDeque
+			evaluators += evaluator
+			return evaluators
+		]
+		//
+		var eventHandler = typeof(Runnable).mock
 		doAnswer [
-			(it.getArgument(1) as Collection<Runnable>) += runnable
+			(it.getArgument(1) as Collection) += eventHandler
 			return null
-		].when(evaluator).evaluateGuard(any, any)
-		val col0 = new ConcurrentLinkedDeque
-		col0 += evaluator
-		when(this.registry.getBehaviorGuardEvaluators(any)).thenReturn(col0)
-		doAnswer [
-			(it.getArgument(2) as Consumer).accept(evaluator)
-			return null
-		].when(this.executor).applyBlockingConsumer(any, any, any)
+		].when(evaluator).evaluateGuard(typeof(Object).any, typeof(Collection).any)
+
+		// Prepare event
+		var ^event = typeof(Event).mock
 	
+		// Dispatch
 		this.eventBus.asyncDispatch(^event, logger)
 		
-		var capturedEvent = ArgumentCaptor::forClass(typeof(Event))
-		this.registry.verify.getBehaviorGuardEvaluators(capturedEvent.capture)
-		assertSame(^event, capturedEvent.value)
+		// Verify
+		this.registry.verify(1.times).getBehaviorGuardEvaluators(typeof(Event).any)
 
 		var capturedLogger = ArgumentCaptor::forClass(typeof(Logger))
-		var capturedIterable = ArgumentCaptor::forClass(typeof(Iterable))
-		this.executor.verify.applyBlockingConsumer(capturedLogger.capture, capturedIterable.capture, typeof(Consumer).any)
-		assertSame(logger, capturedLogger.value)
-		assertContains(capturedIterable.value, evaluator)
-
-		capturedLogger = ArgumentCaptor::forClass(typeof(Logger))
 		var capturedRunnable = ArgumentCaptor::forClass(typeof(Runnable))
 		this.executor.verify.executeAsap(capturedLogger.capture, capturedRunnable.capture)
 		assertSame(logger, capturedLogger.value)
-		assertSame(runnable, capturedRunnable.value)
+		assertSame(eventHandler, capturedRunnable.value)
 	}
 
 	@SuppressWarnings("raw_type")
 	@Test
-	def immediateDispatch {
-		var ^event = typeof(Event).mock
+	def asyncDispatch_twoHandlers {
+		// Prepare mocks
+		when(this.executor.executeAsap(typeof(Runnable).any)).thenAnswer [
+			(it.getArgument(0) as Runnable).run
+			return null
+		]
+		//
 		var logger = typeof(Logger).mock
-		var runnable = typeof(Runnable).mock
+		//
 		var evaluator = typeof(BehaviorGuardEvaluator).mock
+		when(this.registry.getBehaviorGuardEvaluators(typeof(Event).any)).thenAnswer [
+			var evaluators = new ConcurrentLinkedDeque
+			evaluators += evaluator
+			return evaluators
+		]
+		//
+		var eventHandler1 = typeof(Runnable).mock
+		var eventHandler2 = typeof(Runnable).mock
 		doAnswer [
-			(it.getArgument(1) as Collection<Runnable>) += runnable
+			var col = it.getArgument(1) as Collection
+			col += eventHandler1
+			col += eventHandler2
 			return null
-		].when(evaluator).evaluateGuard(any, any)
-		var col0 = new ConcurrentLinkedDeque
-		col0 += evaluator 
-		when(this.registry.getBehaviorGuardEvaluators(any)).thenReturn(col0)
+		].when(evaluator).evaluateGuard(typeof(Object).any, typeof(Collection).any)
+
+		// Prepare event
+		var ^event = typeof(Event).mock
+
+		// Dispatch
+		this.eventBus.asyncDispatch(^event, logger)
+
+		// Verify
+		this.registry.verify(1.times).getBehaviorGuardEvaluators(typeof(Event).any)
+
+		var capturedLogger = ArgumentCaptor::forClass(typeof(Logger))
+		var capturedRunnable = ArgumentCaptor::forClass(typeof(Runnable))
+		this.executor.verify(2.times).executeAsap(capturedLogger.capture, capturedRunnable.capture)
+		assertSame(logger, capturedLogger.value)
+		assertContains(capturedRunnable.allValues, eventHandler1, eventHandler2)
+	}
+
+	@SuppressWarnings("raw_type")
+	@Test
+	def immediateDispatch : void {
+		// Prepare mocks
+		when(this.executor.executeAsap(typeof(Runnable).any)).thenAnswer [
+			(it.getArgument(0) as Runnable).run
+			return null
+		]
+		//
+		var logger = typeof(Logger).mock
+		//
+		var evaluator = typeof(BehaviorGuardEvaluator).mock
+		when(this.registry.getBehaviorGuardEvaluators(typeof(Event).any)).thenAnswer [
+			var evaluators = new ConcurrentLinkedDeque
+			evaluators += evaluator
+			return evaluators
+		]
+		//
+		var eventHandler1 = typeof(Runnable).mock
+		var eventHandler2 = typeof(Runnable).mock
 		doAnswer [
-			(it.getArgument(2) as Consumer).accept(evaluator)
+			var col = it.getArgument(1) as Collection
+			col += eventHandler1
+			col += eventHandler2
 			return null
-		].when(this.executor).applyBlockingConsumer(any, any, any)
-	
+		].when(evaluator).evaluateGuard(typeof(Object).any, typeof(Collection).any)
+
+		// Prepare event
+		var ^event = typeof(Event).mock
+
+		// Dispatch
 		this.eventBus.immediateDispatch(^event, true, logger)
-		
-		var capturedEvent = ArgumentCaptor::forClass(typeof(Event))
-		this.registry.verify.getBehaviorGuardEvaluators(capturedEvent.capture)
-		assertSame(^event, capturedEvent.value)
+
+		// Verify
+		this.registry.verify(1.times).getBehaviorGuardEvaluators(typeof(Event).any)
+
+		this.executor.verify(never).executeAsap(typeof(Logger).any, typeof(Runnable).any)
 
 		var capturedLogger = ArgumentCaptor::forClass(typeof(Logger))
-		var capturedIterable = ArgumentCaptor::forClass(typeof(Iterable))
-		this.executor.verify.applyBlockingConsumer(capturedLogger.capture, capturedIterable.capture, typeof(Consumer).any)
-		assertSame(logger, capturedLogger.value)
-		assertContains(capturedIterable.value, evaluator)
-
-		capturedLogger = ArgumentCaptor::forClass(typeof(Logger))
-		var capturedThrow = ArgumentCaptor::forClass(typeof(boolean))
-		var capturedCollection = ArgumentCaptor::forClass(typeof(Collection))
-		this.executor.verify.executeBlockingTasks(capturedLogger.capture, capturedThrow.capture.booleanValue, capturedCollection.capture)
-		assertSame(logger, capturedLogger.value)
-		assertTrue(capturedThrow.value)
-		var col = capturedCollection.value
-		assertEquals(1, col.size)
-		assertSame(runnable, col.iterator.next)
+		var capturedRunnable = ArgumentCaptor::forClass(typeof(Runnable))
+		this.executor.verify(never).executeAsap(capturedLogger.capture, capturedRunnable.capture)
 	}
 
 	@SuppressWarnings("raw_type")
 	@Test
-	def immediateDispatchTo {
-		var ^event = typeof(Event).mock
-		var logger = typeof(Logger).mock
-		var runnable = typeof(Runnable).mock
-		var evaluator = typeof(BehaviorGuardEvaluator).mock
-		doAnswer [
-			(it.getArgument(1) as Collection<Runnable>) += runnable
-			return null
-		].when(evaluator).evaluateGuard(any, any)
-		var col0 = new ConcurrentLinkedDeque
-		col0 += evaluator
-		when(this.registry.getBehaviorGuardEvaluatorsFor(any, any)).thenReturn(col0)
-		doAnswer [
-			(it.getArgument(2) as Consumer).accept(evaluator)
-			return null
-		].when(this.executor).applyBlockingConsumer(any, any, any)
+	def immediateDispatchTo : void {
+		// Prepare mocks
 		var listener = typeof(Object).mock
+		//
+		when(this.executor.executeAsap(typeof(Runnable).any)).thenAnswer [
+			(it.getArgument(0) as Runnable).run
+			return null
+		]
+		//
+		var logger = typeof(Logger).mock
+		//
+		var evaluator = typeof(BehaviorGuardEvaluator).mock
+		when(this.registry.getBehaviorGuardEvaluatorsFor(typeof(Event).any, typeof(Object).any)).thenAnswer [
+			var evaluators = new ConcurrentLinkedDeque
+			evaluators += evaluator
+			return evaluators
+		]
+		//
+		var eventHandler1 = typeof(Runnable).mock
+		var eventHandler2 = typeof(Runnable).mock
+		doAnswer [
+			var col = it.getArgument(1) as Collection
+			col += eventHandler1
+			col += eventHandler2
+			return null
+		].when(evaluator).evaluateGuard(typeof(Object).any, typeof(Collection).any)
 
+		// Prepare event
+		var ^event = typeof(Event).mock
+
+		// Dispatch
 		this.eventBus.immediateDispatchTo(listener, ^event, true, logger)
-		
-		var capturedEvent = ArgumentCaptor::forClass(typeof(Event))
-		var capturedListener = ArgumentCaptor::forClass(typeof(Object))
-		this.registry.verify.getBehaviorGuardEvaluatorsFor(capturedEvent.capture, capturedListener.capture)
-		assertSame(^event, capturedEvent.value)
+
+		// Verify
+		this.registry.verify(1.times).getBehaviorGuardEvaluatorsFor(typeof(Event).any, typeof(Object).any)
+
+		this.executor.verify(never).executeAsap(typeof(Logger).any, typeof(Runnable).any)
 
 		var capturedLogger = ArgumentCaptor::forClass(typeof(Logger))
-		var capturedIterable = ArgumentCaptor::forClass(typeof(Iterable))
-		this.executor.verify.applyBlockingConsumer(capturedLogger.capture, capturedIterable.capture, typeof(Consumer).any)
-		assertSame(logger, capturedLogger.value)
-		assertContains(capturedIterable.value, evaluator)
-
-		capturedLogger = ArgumentCaptor::forClass(typeof(Logger))
-		var capturedThrow = ArgumentCaptor::forClass(typeof(boolean))
-		var capturedCollection = ArgumentCaptor::forClass(typeof(Collection))
-		this.executor.verify.executeBlockingTasks(capturedLogger.capture, capturedThrow.capture.booleanValue, capturedCollection.capture)
-		assertSame(logger, capturedLogger.value)
-		assertTrue(capturedThrow.value)
-		var col = capturedCollection.value
-		assertEquals(1, col.size)
-		assertSame(runnable, col.iterator.next)
+		var capturedRunnable = ArgumentCaptor::forClass(typeof(Runnable))
+		this.executor.verify(never).executeAsap(capturedLogger.capture, capturedRunnable.capture)
 	}
 
 }

@@ -219,13 +219,16 @@ class JreExecutorService extends AbstractExecutorService implements PreReleasabl
 
 	def remove(task : Runnable) : Boolean {
 		var es = executorService
+		var cancel1 = false
 		if (es instanceof ThreadPoolExecutor) {
-			es.remove(task)
+			cancel1 = es.remove(task)
 		}
 		var ses = scheduledExecutorService
+		var cancel2 = false
 		if (ses instanceof ThreadPoolExecutor) {
-			ses.remove(task)
+			cancel2 = ses.remove(task)
 		}
+		return cancel1 || cancel2
 	}
 
 	def purge {
