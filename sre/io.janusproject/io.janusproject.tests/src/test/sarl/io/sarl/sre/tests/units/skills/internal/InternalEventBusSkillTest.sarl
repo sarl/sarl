@@ -85,7 +85,15 @@ class InternalEventBusSkillTest extends AbstractSreTest {
 	}
 
 	@Test
-	def getAssociatedEventBusListener {
+	def getAssociatedEventBusListener_notInstalled {
+		var listener = this.^skill.associatedEventBusListener
+		assertNull(listener)
+	}
+
+	@Test
+	def getAssociatedEventBusListener_installed {
+		this.reflect.invoke(this.^skill, "install")
+
 		var listener1 = this.^skill.associatedEventBusListener
 		var listener2 = this.^skill.associatedEventBusListener
 		assertNotNull(listener1)

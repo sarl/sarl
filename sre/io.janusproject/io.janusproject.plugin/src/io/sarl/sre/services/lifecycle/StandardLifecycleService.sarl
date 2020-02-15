@@ -20,40 +20,37 @@
  */
 package io.sarl.sre.services.lifecycle
 
-import com.google.inject.AbstractModule
-import com.google.inject.Injector
 import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.DynamicSkillProvider
 import io.sarl.lang.core.SREutils
+import io.sarl.sarlspecification.SarlSpecificationChecker
+import io.sarl.sre.KernelScope
+import io.sarl.sre.internal.SmartListenerCollection
+import io.sarl.sre.services.context.ExternalContextMemberListener
+import io.sarl.sre.services.executor.ExecutorService
+import io.sarl.sre.services.logging.LoggingService
 import java.lang.reflect.Constructor
 import java.util.UUID
-import javax.inject.Provider
-import io.sarl.sarlspecification.SarlSpecificationChecker
-import io.sarl.sre.internal.SmartListenerCollection
-import io.sarl.sre.services.executor.ExecutorService
-import io.sarl.sre.services.context.ExternalContextMemberListener
-import io.sarl.sre.services.logging.LoggingService
 import javax.inject.Inject
-import io.sarl.sre.KernelScope
+import javax.inject.Provider
 
 /** 
- * Implementation of a spawning service that is using injection mechanism
- * for creatin the agent.
+ * Implementation of a spawning service that is using standard object creation
+ * for creating the agents.
+ * No injection mechanism is used.
  * 
- * @author $Author: srodriguez$
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.11
  */
-class InjectionBasedLifecycleService extends AbstractLifecycleService {
+class StandardLifecycleService extends AbstractLifecycleService {
 
 	/**
-	 * Constructs the service with the given (injected) injector.
+	 * Constructs the service.
 	 * 
-	 * @param injector
-	 * the injector that should be used by this service for creating the agents.
 	 * @param sarlSpecificationChecker the tool for checking the validity of the SARL specification supported by
 	 * the agents to launch.
 	 * @param skillProvider the provider of skills that should be used to init the agents.
@@ -66,7 +63,7 @@ class InjectionBasedLifecycleService extends AbstractLifecycleService {
 	 * @param logger the logging service.
 	 */
 	@Inject
-	new (injector : Injector, sarlSpecificationChecker : SarlSpecificationChecker,
+	new (sarlSpecificationChecker : SarlSpecificationChecker,
 		skillProvider : DynamicSkillProvider,
 		globalListeners : SmartListenerCollection<?>,
 		@KernelScope lifecycleListener : Provider<LifecycleServiceListener>,
@@ -74,12 +71,12 @@ class InjectionBasedLifecycleService extends AbstractLifecycleService {
 		skillUninstaller : SkillUninstaller,
 		executor : ExecutorService,
 		logger : LoggingService) {
-		this(sarlSpecificationChecker, new CreatorFactory(injector, skillProvider),
+		this(sarlSpecificationChecker, new CreatorFactory(skillProvider),
 			globalListeners, lifecycleListener, externalContextListener,
 			skillUninstaller, executor, logger)
 	}
 
-	/** 
+	/**
 	 * Constructs the service.
 	 * 
 	 * @param sarlSpecificationChecker the tool for checking the validity of the SARL specification supported by
@@ -102,120 +99,75 @@ class InjectionBasedLifecycleService extends AbstractLifecycleService {
 	}
 
 	/** 
-	 * An injection module that is able to inject the parent ID and agent ID when creating an agent.
+	 * A factory of agent creator that provides the parent ID and agent ID to the created agent.
 	 * 
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 0.11
 	 */
-	private static class CreatorFactory extends AbstractCreatorFactory  {
+	private static class CreatorFactory extends AbstractCreatorFactory {
 
-		val injector : Injector
+		var creationIndex = 0
 
-		new (injector : Injector, skillProvider : DynamicSkillProvider) {
-			super(skillProvider)
-			this.injector = injector
-		}
-	
 		def getAgentCreator(
 			agentClazz : Class<T>,
 			parent : UUID,
 			nbAgents : int,
 			skillProviders : Iterable<DynamicSkillProvider>,
-			agentId : (int) => UUID) : Provider<T> with T extends Agent {
-			var sproviders = skillProviders.mergeSkillProviders
-			val agentInjectionModule = new JustInTimeAgentInjectionModule<T>(agentClazz, parent, agentId, sproviders)
-			val agentInjector = this.injector.createChildInjector(agentInjectionModule)
+			agentId : (int)=>UUID) : Provider<T> with T extends Agent {
+			val cons = agentClazz.agentConstructor
+			val sproviders = skillProviders.mergeSkillProviders
 			return [
-				agentInjector.getInstance(agentClazz)
+				cons.createAgent(agentClazz, parent, agentId, sproviders)
 			]
 		}
-	
-	}
-	
-	/** 
-	 * An injection module that is able to inject the parent ID and agent ID when creating an agent.
-	 * 
-	 * @param <T> the type of the generated agent.
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	@SuppressWarnings("use_reserved_sarl_annotation")
-	@PrivateAPI(isCallerOnly = true)
-	private static class JustInTimeAgentInjectionModule<T extends Agent> extends AbstractModule implements Provider<T> {
 
-		val agentType : Class<T>
+		@SuppressWarnings("use_reserved_sarl_annotation")
+		@PrivateAPI(isCallerOnly = true)
+		private def createAgent(constructor : Constructor<T>, agentClazz : Class<T>,
+				parentId : UUID, agentId : (int)=>UUID, skillProvider : DynamicSkillProvider) : T with T extends Agent {
+			var idx : int
+			synchronized (this) {
+				idx = this.creationIndex
+				this.creationIndex++
+			}
+			var aid = agentId.apply(idx)
+			try {
+				var ^agent = constructor.newInstance(parentId, aid)
+				SREutils::setDynamicSkillProvider(^agent, skillProvider)
+				return ^agent
+			} catch (exception : Exception) {
+				throw new CannotSpawnException(agentClazz, exception)
+			}
+		}
 
-		val constructor1 : Constructor<T>
-
-		val constructor2 : Constructor<T> 
-
-		val parentID : UUID
-
-		val skillProvider : DynamicSkillProvider
-
-		var identifierComputer : (int) => UUID
-
-		var creationIndex = 0
-
-		package new (agentType : Class<T>, parentID : UUID, agentID : (int) => UUID, skillProvider : DynamicSkillProvider) {
-			assert agentType !== null
-			assert parentID !== null
-			this.agentType = agentType
-			this.parentID = parentID
-			this.identifierComputer = agentID
-			this.skillProvider = skillProvider
+		private def getAgentConstructor(agentClazz : Class<T>) : Constructor<T> with T extends Agent {
 			var cons : Constructor<T> = null
 			var e1 : Exception = null
 			try {
-				cons = this.agentType.getConstructor(typeof(UUID), typeof(UUID))
+				cons = agentClazz.getConstructor(typeof(UUID), typeof(UUID))
 			} catch (exception : Exception) {
 				cons = null
 				e1 = exception
 			}
-			this.constructor1 = cons
 			var e2 : Exception = null
-			try {
-				cons = this.agentType.getConstructor(typeof(UUID), typeof(UUID), typeof(DynamicSkillProvider))
-			} catch (exception : Exception) {
-				cons = null
-				e2 = exception
-}
-			this.constructor2 = cons
-			if (this.constructor1 === null && this.constructor2 === null) {
-				throw new CannotSpawnException(this.agentType, e1 ?: e2)
-			}
-		}
-
-		def configure {
-			bind(this.agentType).toProvider(this)
-		}
-
-		def get : T {
-			var idx : int
-			synchronized (this) {
-				idx = this.creationIndex
-				this.creationIndex ++
-			}
-			var aid = this.identifierComputer.apply(idx)
-			assert this.constructor1 !== null || this.constructor2 !== null
-			try {
-				if (this.constructor2 !== null) {
-					this.constructor2.accessible = true
-					return this.constructor2.newInstance(this.parentID, aid, this.skillProvider)
+			if (cons === null) {
+				try {
+					cons = agentClazz.getConstructor(typeof(UUID), typeof(UUID), typeof(DynamicSkillProvider))
+				} catch (exception : Exception) {
+					cons = null
+					e2 = exception
 				}
-				this.constructor1.accessible = true
-				var ^agent = this.constructor1.newInstance(this.parentID, aid)
-				SREutils::setDynamicSkillProvider(^agent, this.skillProvider)
-				return ^agent
-			} catch (exception : Exception) {
-				throw new CannotSpawnException(this.agentType, exception)
 			}
+			if (cons === null) {
+				throw new CannotSpawnException(agentClazz, e1 ?: e2)
+			}
+			cons.accessible = true
+			return cons
 		}
-
+	
 	}
 
 }

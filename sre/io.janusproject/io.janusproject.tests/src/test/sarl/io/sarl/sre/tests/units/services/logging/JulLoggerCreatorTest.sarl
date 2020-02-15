@@ -31,6 +31,11 @@ import org.junit.Test
 import org.mockito.ArgumentCaptor
 
 import static extension org.mockito.Mockito.*
+import io.sarl.sre.boot.configs.SreConfig
+import io.sarl.tests.api.Nullable
+import org.junit.Before
+import io.sarl.sre.boot.configs.subconfigs.ServicesConfig
+import io.sarl.sre.boot.configs.subconfigs.LoggingConfig
 
 /**
  * @author $Author: sgalland$
@@ -40,15 +45,42 @@ import static extension org.mockito.Mockito.*
  */
 class LoggerCreatorTest extends AbstractSreTest {
 
+	@Nullable
+	var loggerProvider : Provider<Logger>
+
+	@Nullable
+	var logger : Logger
+
+	@Nullable
+	var configProvider : Provider<SreConfig>
+
+	@Nullable
+	var config : SreConfig
+	
+	@Before
+	def setUp : void {
+		this.loggerProvider = typeof(Provider).mock
+		this.logger = typeof(Logger).mock
+		when(this.loggerProvider.get).thenReturn(this.logger)
+
+		this.configProvider = typeof(Provider).mock
+		this.config = typeof(SreConfig).mock
+		when(this.configProvider.get).thenReturn(this.config)
+
+		var servicesConfig = typeof(ServicesConfig).mock
+		when(this.config.services).thenReturn(servicesConfig)
+
+		var loggingConfig = typeof(LoggingConfig).mock
+		when(loggingConfig.platformMessageFormat).thenReturn("X")
+		when(servicesConfig.logging).thenReturn(loggingConfig)
+	}
+
 	@Test
 	def createPlatformLogger {
-		var config = typeof(Provider).mock
-		var log = typeof(Logger).mock
-		when(config.get).thenReturn(log)
 		var expectedLevel = Level::ALL
-		var creator = new JulLoggerCreator(Level::CONFIG, "name", config)
+		var creator = new JulLoggerCreator(Level::CONFIG, this.loggerProvider, this.configProvider)
 		var logger = creator.createPlatformLogger
-		assertSame(log, logger)
+		assertSame(this.logger, logger)
 		var argument0 = ArgumentCaptor::forClass(typeof(Level))
 		verify(logger, 1.times).level = argument0.capture
 		assertEquals(expectedLevel, argument0.value)
@@ -56,15 +88,12 @@ class LoggerCreatorTest extends AbstractSreTest {
 
 	@Test
 	def createAgentLogger {
-		var config = typeof(Provider).mock
-		var log = typeof(Logger).mock
-		when(config.get).thenReturn(log)
 		var expectedLevel = Level::CONFIG
-		var creator = new JulLoggerCreator(Level::CONFIG, "name", config)
+		var creator = new JulLoggerCreator(Level::CONFIG, this.loggerProvider, this.configProvider)
 		var parent = creator.createPlatformLogger
 		var name = UUID::randomUUID.toString
 		var logger = creator.createModuleLogger(name, parent)
-		assertNotSame(log, logger)
+		assertNotSame(this.logger, logger)
 		assertEquals(expectedLevel, logger.level)
 	}
 

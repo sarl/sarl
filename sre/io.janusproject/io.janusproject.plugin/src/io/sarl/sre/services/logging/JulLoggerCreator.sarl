@@ -20,11 +20,12 @@
  */
 package io.sarl.sre.services.logging
 
+import io.sarl.sre.boot.configs.SreConfig
+import io.sarl.sre.boot.configs.subconfigs.LoggingConfig
 import java.io.PrintStream
 import java.util.logging.Formatter
 import java.util.logging.Level
 import java.util.logging.Logger
-import java.util.logging.SimpleFormatter
 import javax.inject.Provider
 
 /** 
@@ -39,52 +40,55 @@ class JulLoggerCreator {
 
 	val defaultLevel : Level
 
-	val defaultProgramName : String
-
 	val loggerProvider : Provider<Logger>
 
-	var formatter : Formatter
+	val configProvider : Provider<SreConfig>
+
+	var config : LoggingConfig
+
+	var defaultProgramName : String
+
+	var consoleFormatter : Formatter
+
+	var platformFormatter : Formatter
 
 	/** Build a logger creator.
 	 *
 	 * @param defaultLevel the logging level for new loggers.
-	 * @param defaultProgramName the default name of the program.
 	 * @param loggerProvider the provider of loggers.
-	 * @param formatter the log message formatter to be used.
+	 * @param configProvider the provider of SRE configuration.
 	 */
-	new (defaultLevel : Level, defaultProgramName : String,
-			loggerProvider : Provider<Logger>, formatter : Formatter = null) {
+	new (defaultLevel : Level, loggerProvider : Provider<Logger>, configProvider : Provider<SreConfig>) {
 		this.defaultLevel = defaultLevel
-		this.defaultProgramName = defaultProgramName
 		this.loggerProvider = loggerProvider
-		setFormatter(formatter)
+		this.configProvider = configProvider
 	}
 
-	/** Replies the log formatter.
+	/** Replies the log formatter for the console messages.
 	 *
 	 * @return the log formatter, never {@code null}.
 	 */
-	synchronized def getFormatter : Formatter {
-		if (this.formatter === null) {
-			this.formatter = createFormatter
+	synchronized def getConsoleFormatter : Formatter {
+		if (this.consoleFormatter === null) {
+			this.consoleFormatter = createConsoleFormatter
 		}
-		return this.formatter
+		return this.consoleFormatter
 	}
 
-	/** Change the log formatter.
+	/** Change the log formatter for the console messages.
 	 * 
 	 * @param formatter the log formatter, or {@code null} to use the default.
 	 */
-	synchronized def setFormatter(formatter : Formatter) {
-		this.formatter = formatter
+	synchronized def setConsoleFormatter(formatter : Formatter) {
+		this.consoleFormatter = formatter
 	}
 
-	/** Create a formatter.
+	/** Create a formatter for the console messages.
 	 *
 	 * @return the newly created instance of formatter.
 	 */
-	protected def createFormatter : Formatter {
-		new SimpleFormatter
+	protected def createConsoleFormatter : Formatter {
+		new JulPatternFormatter(this.loggingConfig.platformMessageFormat)
 	}
 
 	/** 
@@ -97,7 +101,7 @@ class JulLoggerCreator {
 	 */
 	def createConsoleLogger(name : String, output : PrintStream) : Logger {
 		val logger = this.loggerProvider.get
-		val nhandler = new JulOutputStreamConsoleHandler(output, getFormatter)
+		val nhandler = new JulOutputStreamConsoleHandler(output, getConsoleFormatter)
 		var allHandlers = logger.handlers
 		if (allHandlers !== null) {
 			for (handler : allHandlers) {
@@ -110,6 +114,47 @@ class JulLoggerCreator {
 		return logger
 	}
 
+	/** Replies the log formatter for the SRE kernel.
+	 * 
+	 * @return the log formatter, never {@code null}.
+	 */
+	synchronized def getPlatformFormatter : Formatter {
+		if (this.platformFormatter === null) {
+			this.platformFormatter = createPlatformFormatter
+		}
+		return this.consoleFormatter
+	}
+
+	/** Change the log formatter for the SRE kernel.
+	 * 
+	 * @param formatter the log formatter, or {@code null} to use the default.
+	 */
+	synchronized def setPlatformFormatter(formatter : Formatter) {
+		this.consoleFormatter = formatter
+	}
+
+	/** Create a formatter for the SRE kernel.
+	 * 
+	 * @return the newly created instance of formatter.
+	 */
+	protected def createPlatformFormatter : Formatter {
+		new JulPatternFormatter(this.loggingConfig.platformMessageFormat)
+	}
+
+	protected def getLoggingConfig : LoggingConfig {
+		if (this.config === null) {
+			this.config = this.configProvider.get.services.logging
+		}
+		return this.config
+	}
+
+	protected def getProgramName : String {
+		if (this.defaultProgramName.isNullOrEmpty) {
+			this.defaultProgramName = this.configProvider.get.boot.programName
+		}
+		return this.defaultProgramName
+	}
+	
 	/** 
 	 * Create a logger for the platform.
 	 * 
@@ -118,9 +163,9 @@ class JulLoggerCreator {
 	 */
 	def createPlatformLogger() : Logger {
 		val logger = this.loggerProvider.get
-		val stderr = new JulStandardErrorOutputConsoleHandler(getFormatter)
+		val stderr = new JulStandardErrorOutputConsoleHandler(getPlatformFormatter)
 		stderr.level = Level::ALL
-		val stdout = new JulStandardOutputConsoleHandler(getFormatter)
+		val stdout = new JulStandardOutputConsoleHandler(getPlatformFormatter)
 		stdout.level = Level::ALL
 		var allHandlers = logger.handlers
 		if (allHandlers !== null) {
@@ -144,7 +189,11 @@ class JulLoggerCreator {
 	 * @since 0.7.0
 	 */
 	def createModuleLogger(name : String = null, parent : Logger) : Logger {
-		val thename = if (name.isNullOrEmpty) this.defaultProgramName else name
+		val thename = if (name.isNullOrEmpty) {
+			this.programName
+		} else {
+			name
+		}
 		val logger = Logger::getLogger(thename)
 		if (parent !== null) {
 			logger.parent = parent

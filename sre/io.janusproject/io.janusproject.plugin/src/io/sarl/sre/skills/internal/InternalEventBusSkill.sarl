@@ -58,7 +58,6 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 
 	@Inject
 	new (bus : EventBus) {
-		super()
 		this.eventBus = bus
 	}
 

@@ -111,6 +111,10 @@ class ServicesConfig {
 
 	var executorsConfig : ExecutorsConfig
 
+	var lifecycleConfig : LifecycleConfig
+
+	var loggingConfig : LoggingConfig
+	
 	/** Change the flag that enables to select the type of probe manager
 	 * 
 	 * @param doAsync is {@code true} if the asynchronous update is prefered.
@@ -164,9 +168,53 @@ class ServicesConfig {
 	 * 
 	 * @param config the parallel execution configuration.
 	 */
-	@BQConfigProperty("Configuration for the SRE services.")
+	@BQConfigProperty("Configuration for the thread execution service.")
 	def setExecutors(config : ExecutorsConfig) {
 		this.executorsConfig = config
+	}
+
+	/** Replies the agent lifecycle configuration.
+	 * 
+	 * @return the agent lifecycle configuration.
+	 * @since 0.11
+	 */
+	def getLifecycle : LifecycleConfig {
+		if (this.lifecycleConfig === null) {
+			this.lifecycleConfig = new LifecycleConfig
+		}
+		return this.lifecycleConfig
+	}
+
+	/** Change the agent lifecycle configuration.
+	 * 
+	 * @param config the agent lifecycle configuration.
+	 * @since 0.11
+	 */
+	@BQConfigProperty("Configuration for the agent lifecycle management.")
+	def setLifecycle(config : LifecycleConfig) {
+		this.lifecycleConfig = config
+	}
+
+	/** Replies the SRE logging configuration.
+	 * 
+	 * @return the SRE logging configuration.
+	 * @since 0.11
+	 */
+	def getLogging : LoggingConfig {
+		if (this.loggingConfig === null) {
+			this.loggingConfig = new LoggingConfig
+		}
+		return this.loggingConfig
+	}
+
+	/** Change the SRE logging configuration.
+	 * 
+	 * @param config the SRE logging configuration.
+	 * @since 0.11
+	 */
+	@BQConfigProperty("Configuration for the SRE logging service.")
+	def setLogging(config : LoggingConfig) {
+		this.loggingConfig = config
 	}
 
 }

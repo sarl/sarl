@@ -22,11 +22,16 @@ package io.sarl.sre.boot.internal.services
 
 import com.google.common.util.concurrent.Service
 import com.google.inject.AbstractModule
+import com.google.inject.Injector
 import com.google.inject.Module
+import com.google.inject.Provides
 import io.bootique.BQModule
 import io.bootique.BQModuleProvider
+import io.sarl.sre.boot.configs.SreConfig
 import io.sarl.sre.services.lifecycle.InjectionBasedLifecycleService
 import io.sarl.sre.services.lifecycle.LifecycleService
+import io.sarl.sre.services.lifecycle.StandardLifecycleService
+import javax.inject.Provider
 import javax.inject.Singleton
 
 import static extension com.google.inject.multibindings.Multibinder.*
@@ -42,9 +47,27 @@ import static extension com.google.inject.multibindings.Multibinder.*
 class LifecycleServiceModule extends AbstractModule {
 
 	protected override configure {
-		typeof(LifecycleService).bind.to(typeof(InjectionBasedLifecycleService)).in(typeof(Singleton))
-
 		binder.newSetBinder(typeof(Service), typeof(SreServices)).addBinding.to(typeof(LifecycleService))
+	}
+
+	/** 
+	 * Construct the lifecycle service.
+	 * 
+	 * @param lifecycleConfig accessor to the lifecycle bootique configuration.
+	 * @param injector the current injector
+	 * @return the handler.
+	 * @since 0.11
+	 */
+	@Provides
+	@Singleton
+	def providetLifecycleService(config : Provider<SreConfig>, injector : Injector) : LifecycleService {
+		val cfg = config.get.services.lifecycle
+		if (cfg.isCreateAgentsWithInjector) {
+			// Creation of agents with injection
+			return injector.getInstance(InjectionBasedLifecycleService)
+		}
+		// Creation of agents without injection
+		return injector.getInstance(StandardLifecycleService)
 	}
 
 }

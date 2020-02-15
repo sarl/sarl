@@ -310,7 +310,6 @@ final class AgentLife {
 
 			enclosingContextsCopy += contexts
 
-
 			// Copy the external event listener in order to unregistered it later.
 			var listener = this.eventBus.associatedEventBusListener
 
@@ -478,9 +477,9 @@ final class AgentLife {
 	 */
 	def getExternalContexts : ConcurrentLinkedDeque<ContextReference> {
 		return if (this.externalContextInstances === null) {
-			new ConcurrentLinkedDeque<ContextReference>()
+			new ConcurrentLinkedDeque
 		} else {
-			new ConcurrentLinkedDeque<ContextReference>(this.externalContextInstances.values)
+			new ConcurrentLinkedDeque(this.externalContextInstances.values)
 		}
 	}
 
@@ -490,12 +489,10 @@ final class AgentLife {
 	 * @return the number of external contexts.
 	 */
 	def getExternalContextCount : int {
-
 		if (this.externalContextInstances === null) {
 			return 0
 		}
 		return this.externalContextInstances.size
-
 	}
 
 	/** Replies all the contexts in which the agent is located, including the default context and
@@ -504,24 +501,29 @@ final class AgentLife {
 	 * @see {@link #getExternalContexts()}
 	 */
 	def getEnclosingContexts : ConcurrentLinkedDeque<ContextReference> {
-
 		if (this.defaultContextInstance !== null) {
-			var result = new ConcurrentLinkedDeque<ContextReference>
-			result.add(this.defaultContextInstance)
+			var result = new ConcurrentLinkedDeque
 			if (this.externalContextInstances === null) {
-
-				return result
-			} else {
 				result.add(this.defaultContextInstance)
-				result.addAll(this.externalContextInstances.values)
 				return result
 			}
+			var foundDefaultContext = false
+			val dcId = this.defaultContextInstance.context.ID
+			for (entry : this.externalContextInstances.entrySet) {
+				result += entry.value
+				if (!foundDefaultContext && dcId == entry.key) {
+					foundDefaultContext = true
+				}				
+			}
+			if (!foundDefaultContext) {
+				result += this.defaultContextInstance
+			}
+			return result
 		} else if (this.externalContextInstances === null) {
-			return new ConcurrentLinkedDeque<ContextReference>
+			return new ConcurrentLinkedDeque
 		} else {
-			return new ConcurrentLinkedDeque<ContextReference>(this.externalContextInstances.values)
+			return new ConcurrentLinkedDeque(this.externalContextInstances.values)
 		}
-
 	}
 
 	/** Replies the external context with the given identifier.

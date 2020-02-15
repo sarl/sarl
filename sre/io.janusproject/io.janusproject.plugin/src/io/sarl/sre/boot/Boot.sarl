@@ -64,7 +64,7 @@ class Boot {
 	 */
 	@SuppressWarnings("discouraged_reference")
 	static def main(args : String*) : void {
-		val retCode = createMainObject.runSRE(args)		
+		createMainObject.runSRE(args)		
 	}
 
 }

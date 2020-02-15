@@ -58,6 +58,11 @@ import static org.mockito.Mockito.when
 import static extension org.mockito.ArgumentMatchers.any
 import static extension org.mockito.Mockito.times
 import static extension org.mockito.Mockito.verify
+import java.util.List
+import java.util.Iterator
+import io.sarl.sre.services.lifecycle.ContextReference
+import java.util.Collection
+import java.util.ArrayList
 
 /**
  * @author $Author: sgalland$
@@ -147,12 +152,14 @@ class AgentLifeTest extends AbstractSreTest {
 
 	@Test
 	def getEnclosingContexts_0 {
+		// No enclosing context
 		var context = this.life.enclosingContexts
 		assertFalse(context.iterator.hasNext)
 	}
 
 	@Test
 	def getEnclosingContexts_1 {
+		// One enclosing context: the default context
 		var ctx = typeof(Context).mock
 		var adr = typeof(Address).mock
 		this.life.setDefaultContext(ctx, adr)
@@ -169,6 +176,7 @@ class AgentLifeTest extends AbstractSreTest {
 
 	@Test
 	def getEnclosingContexts_2 {
+		// Two external contexts: ctx1 and ctx2
 		var minmax = #[UUID::randomUUID, UUID::randomUUID].sort
 		var ctx1 = typeof(Context).mock
 		when(ctx1.ID).thenReturn(minmax.get(0))
@@ -206,12 +214,12 @@ class AgentLifeTest extends AbstractSreTest {
 		var ctx2 = typeof(Context).mock
 		when(ctx2.ID).thenReturn(minmax.get(2))
 		var adr2 = typeof(Address).mock
-		this.life.setDefaultContext(ctx0, adr0)
-		this.life.addExternalContext(ctx1, adr1)
-		this.life.addExternalContext(ctx2, adr2)
+		var ref0 = this.life.setDefaultContext(ctx0, adr0)
+		var ref1 = this.life.addExternalContext(ctx1, adr1)
+		var ref2 = this.life.addExternalContext(ctx2, adr2)
 		var context = this.life.enclosingContexts
 		var iterator = context.iterator
-		
+
 		assertTrue(iterator.hasNext)
 		var ref = iterator.next
 		assertSame(ctx0, ref.context)
@@ -242,28 +250,14 @@ class AgentLifeTest extends AbstractSreTest {
 		var ctx2 = typeof(Context).mock
 		when(ctx2.ID).thenReturn(minmax.get(1))
 		var adr2 = typeof(Address).mock
-		this.life.setDefaultContext(ctx0, adr0)
-		this.life.addExternalContext(ctx1, adr1)
-		this.life.addExternalContext(ctx2, adr2)
+		var ref0 = this.life.setDefaultContext(ctx0, adr0)
+		var ref1 =this.life.addExternalContext(ctx1, adr1)
+		var ref2 = this.life.addExternalContext(ctx2, adr2)
+
 		var context = this.life.enclosingContexts
 		var iterator = context.iterator
-		
-		assertTrue(iterator.hasNext)
-		var ref = iterator.next
-		assertSame(ctx0, ref.context)
-		assertSame(adr0, ref.addressInDefaultSpace)
 
-		assertTrue(iterator.hasNext)
-		ref = iterator.next
-		assertSame(ctx1, ref.context)
-		assertSame(adr1, ref.addressInDefaultSpace)
-
-		assertTrue(iterator.hasNext)
-		ref = iterator.next
-		assertSame(ctx2, ref.context)
-		assertSame(adr2, ref.addressInDefaultSpace)
-
-		assertFalse(iterator.hasNext)
+		#[ref0, ref1, ref2].assertUnorderedContexts(iterator)
 	}
 
 	@Test
@@ -292,22 +286,12 @@ class AgentLifeTest extends AbstractSreTest {
 		var ctx2 = typeof(Context).mock
 		when(ctx2.ID).thenReturn(minmax.get(1))
 		var adr2 = typeof(Address).mock
-		this.life.addExternalContext(ctx1, adr1)
-		this.life.addExternalContext(ctx2, adr2)
+		var ref1 = this.life.addExternalContext(ctx1, adr1)
+		var ref2 = this.life.addExternalContext(ctx2, adr2)
 		var context = this.life.externalContexts
 		var iterator = context.iterator
 		
-		assertTrue(iterator.hasNext)
-		var ref = iterator.next
-		assertSame(ctx1, ref.context)
-		assertSame(adr1, ref.addressInDefaultSpace)
-
-		assertTrue(iterator.hasNext)
-		ref = iterator.next
-		assertSame(ctx2, ref.context)
-		assertSame(adr2, ref.addressInDefaultSpace)
-
-		assertFalse(iterator.hasNext)
+		#[ref1, ref2].assertUnorderedContexts(iterator)
 	}
 
 	@Test
@@ -412,7 +396,7 @@ class AgentLifeTest extends AbstractSreTest {
 
 	@Test
 	def addExternalContext {
-		var minmax = #[UUID::randomUUID, UUID::randomUUID].sort
+		var minmax : List<UUID> = #[UUID::randomUUID, UUID::randomUUID]
 		var ctx1 = typeof(Context).mock
 		when(ctx1.ID).thenReturn(minmax.get(0))
 		var adr1 = typeof(Address).mock
@@ -432,17 +416,16 @@ class AgentLifeTest extends AbstractSreTest {
 		var context = this.life.externalContexts
 		var iterator = context.iterator
 
-		assertTrue(iterator.hasNext)
-		var ref = iterator.next
-		assertSame(ctx1, ref.context)
-		assertSame(adr1, ref.addressInDefaultSpace)
+		#[ref1, ref2].assertUnorderedContexts(iterator)
+	}
 
-		assertTrue(iterator.hasNext)
-		ref = iterator.next
-		assertSame(ctx2, ref.context)
-		assertSame(adr2, ref.addressInDefaultSpace)
-
-		assertFalse(iterator.hasNext)
+	private static def assertUnorderedContexts(expected : Collection<ContextReference>, iterator : Iterator<ContextReference>) : void {
+		val actual = newArrayList
+		while (iterator.hasNext) {
+			var ref = iterator.next
+			actual += ref	
+		}
+		assertContainsCollection(actual, expected)
 	}
 
 	@Test
@@ -453,20 +436,15 @@ class AgentLifeTest extends AbstractSreTest {
 		var ctx2 = typeof(Context).mock
 		when(ctx2.ID).thenReturn(UUID::randomUUID)
 		var adr2 = typeof(Address).mock
-		this.life.addExternalContext(ctx1, adr1)
-		this.life.addExternalContext(ctx2, adr2)
+		var ref1 = this.life.addExternalContext(ctx1, adr1)
+		var ref2 = this.life.addExternalContext(ctx2, adr2)
 		
 		this.life.removeExternalContext(ctx1)
 		
 		var context = this.life.externalContexts
 		var iterator = context.iterator
 
-		assertTrue(iterator.hasNext)
-		var ref = iterator.next
-		assertSame(ctx2, ref.context)
-		assertSame(adr2, ref.addressInDefaultSpace)
-
-		assertFalse(iterator.hasNext)
+		#[ref1, ref2].assertUnorderedContexts(iterator)
 	}
 
 	@Test

@@ -26,12 +26,12 @@ import com.google.inject.Module
 import com.google.inject.Provides
 import io.bootique.BQModule
 import io.bootique.BQModuleProvider
-import io.sarl.sre.boot.configs.subconfigs.BootConfig
+import io.sarl.sre.boot.configs.SreConfig
 import io.sarl.sre.services.logging.JulLoggerCreator
 import java.util.logging.Logger
 import javax.inject.Provider
-import org.arakhne.afc.bootique.log4j.configs.Log4jIntegrationConfig
 import javax.inject.Singleton
+import org.arakhne.afc.bootique.log4j.configs.Log4jIntegrationConfig
 
 /** 
  * Module for the creator of loggers.
@@ -50,18 +50,18 @@ class LoggerCreatorModule extends AbstractModule {
 	 * Replies the creator of loggers.
 	 * 
 	 * @param loggingFactory accessor to the logging bootique factory.
-	 * @param bootFactory accessor to the boot bootique factory.
+	 * @param sreConfig the provider of configuration..
 	 * @param injector the injector of the members.
 	 * @return the logger creator.
 	 */
 	@Provides
 	@Singleton
-	def provideLoggerCreator(loggingConfig : Log4jIntegrationConfig, bootFactory : BootConfig,
+	def provideLoggerCreator(loggingConfig : Log4jIntegrationConfig, sreConfig : Provider<SreConfig>,
 		injector : Injector, loggerProvider : Provider<Logger>) : JulLoggerCreator {
 		var creator = new JulLoggerCreator(
 			loggingConfig.level.toJul,
-			bootFactory.programName,
-			loggerProvider)
+			loggerProvider,
+			sreConfig)
 		injector.injectMembers(creator)
 		return creator
 	}

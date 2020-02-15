@@ -45,6 +45,7 @@ import javax.inject.Singleton
 import org.arakhne.afc.bootique.log4j.configs.Log4jIntegrationConfig
 
 import static extension com.google.inject.multibindings.Multibinder.*
+import io.sarl.sre.boot.configs.SreConfig
 
 /** 
  * Module for the execution services.
@@ -139,13 +140,14 @@ class ExecutorServiceModule extends AbstractModule {
 	 */
 	@Provides
 	@Singleton
-	def provideExecutorService(executorsConfig : ExecutorsConfig,
+	def provideExecutorService(config : Provider<SreConfig>,
 		rejectedExecutionHandler : RejectedExecutionHandler) : ExecutorService {
 		var executor : ExecutorService = null
-		if (executorsConfig.hasMaxThreadsSpecified) {
-			val minPoolSize = executorsConfig.minThreads
-			val maxPoolSize = executorsConfig.maxThreads
-			val keepAliveDuration = executorsConfig.keepAliveDuration
+		var cfg = config.get.services.executors
+		if (cfg.hasMaxThreadsSpecified) {
+			val minPoolSize = cfg.minThreads
+			val maxPoolSize = cfg.maxThreads
+			val keepAliveDuration = cfg.keepAliveDuration
 			var min = Math::max(0, Math::min(minPoolSize, maxPoolSize))
 			var max = Math::max(1, Math::max(minPoolSize, maxPoolSize))
 			executor = new ThreadPoolExecutor(min, max, keepAliveDuration, TimeUnit::SECONDS, new SynchronousQueue)
