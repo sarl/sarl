@@ -240,8 +240,10 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 				var future = description.future
 				description.future = null
 				if (future !== null && !future.done && !future.cancelled) {
-					// Task is running. Force its stop.
-					return future.cancel(true)
+					// Task is running. Force its stop. Canceling the not running tasks and removing the running ones
+					var b1 = future.cancel(true);
+					var b2 = this.executorService.remove(future as Runnable)
+					return b1 && b2
 				}
 			}
 		}

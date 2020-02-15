@@ -184,6 +184,14 @@ interface ExecutorService extends Service {
 	 * Remove any canceled/terminated tasks from the lists of tasks.
 	 */
 	def purge
+
+
+	/**
+	 * Removes this task from the executor's internal queue if it is present, thus causing it not to be run if it has not already started.
+	 * @param task - the task to remove
+	 * @return rue if the task was removed 
+	 */
+	def remove(task: Runnable) : Boolean   
 	
 	/** 
 	 * Submit tasks to the executor service and wait for the termination of all the tasks.
