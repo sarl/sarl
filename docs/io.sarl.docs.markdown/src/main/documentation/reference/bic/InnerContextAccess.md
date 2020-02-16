@@ -13,7 +13,7 @@ bottom context in the figure above.
 			"[:getinnercontext](getInnerContext) : io.sarl.lang.core.AgentContext",
 			"[:hasmemberagent](hasMemberAgent) : boolean",
 			"[:getmemberagentcount](getMemberAgentCount) : int",
-			"[:getmemberagents](getMemberAgents) : io.sarl.lang.util.SynchronizedIterable",
+			"[:getmemberagents](getMemberAgents) : java.util.concurrent.ConcurrentSkipListSet",
 			"[:isinnerdefaultspace](isInnerDefaultSpace)(io.sarl.lang.core.Space) : boolean",
 			"[:isinnerdefaultspace](isInnerDefaultSpace)(io.sarl.lang.core.SpaceID) : boolean",
 			"[:isinnerdefaultspace](isInnerDefaultSpace)(java.util.UUID) : boolean",
@@ -87,11 +87,11 @@ The third function replies all the member agents in the inner context:
 
 		[:Success:]
 			package io.sarl.docs.reference.bic
-			import io.sarl.lang.util.SynchronizedIterable
+			import java.util.concurrent.ConcurrentSkipListSet
 			import java.util.UUID
 			interface Tmp {
 			[:On]
-				def [:getmemberagents!] : SynchronizedIterable<UUID>
+				def [:getmemberagents!] : ConcurrentSkipListSet<UUID>
 			[:Off]
 			}
 		[:End:]
@@ -102,14 +102,14 @@ Examples:
 		[:Success:]
 			package io.sarl.docs.reference.bic
 			import io.sarl.core.InnerContextAccess
-			import io.sarl.lang.util.SynchronizedIterable
+			import java.util.concurrent.ConcurrentSkipListSet
 			import java.util.UUID
 			[:On]
 			agent A {
 				uses InnerContextAccess
 				var b : boolean
 				var n : int
-				var m : SynchronizedIterable<UUID>
+				var m : ConcurrentSkipListSet<UUID>
 				def myaction {
 					b = hasMemberAgent
 					n = getMemberAgentCount

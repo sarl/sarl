@@ -2,7 +2,7 @@
 
 [:Outline:]
 
-[:Fact:]{(io.janusproject.Boot)::getProgramName == '[:name](janus)'}
+[:Fact:]{(io.sarl.sre.boot.Boot)::getDefaultSreProgramName == '[:name](janus)'}
 
 [Janus](http://www.janusproject.io) is the default SARL Run-time Environment (SRE).
 Its role is to provide all the libraries and plugins that are needed for running SARL agents.

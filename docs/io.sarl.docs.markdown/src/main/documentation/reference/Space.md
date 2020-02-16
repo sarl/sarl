@@ -58,7 +58,7 @@ SARL provides an interface that is representing all the spaces:
 
 		[:ShowType:]{io.sarl.lang.core.[:spacedef](Space)}
 		[:Fact:]{typeof(io.sarl.lang.core.Space).shouldHaveMethod("[:getspaceidfct](getSpaceID) : io.sarl.lang.core.SpaceID")}
-		[:Fact:]{typeof(io.sarl.lang.core.Space).shouldHaveMethod("[:getparticipantsfct](getParticipants) : io.sarl.lang.util.SynchronizedSet")}
+		[:Fact:]{typeof(io.sarl.lang.core.Space).shouldHaveMethod("[:getparticipantsfct](getParticipants) : java.util.concurrent.ConcurrentSkipListSet")}
 
 The [:getspaceidfct:] function replies the identifier of the space.
 The [:getparticipantsfct:] function replies the identifiers
@@ -161,9 +161,11 @@ Below, the implementation extends one of the abstract classes provided by the [J
 		[:Success:]
 			import io.sarl.lang.core.Space
 			import io.sarl.lang.core.SpaceID
-			import java.util.UUID
 			import io.sarl.lang.core.EventListener
-			import io.janusproject.kernel.^space.AbstractEventSpace
+			import io.sarl.sre.spaces.AbstractEventSpace
+			import io.sarl.sre.spaces.Participant
+			import java.util.concurrent.ConcurrentHashMap
+			import java.util.UUID
 			interface PhysicSpace extends Space {
 			}
 			class PhysicObject {
@@ -172,6 +174,12 @@ Below, the implementation extends one of the abstract classes provided by the [J
 			[:On]
 			class PhysicSpaceImpl extends AbstractEventSpace implements PhysicSpace {
 				val [:entityfield](entities) = <[:uuid](UUID), PhysicObject>newHashMap
+				
+				val participantMap = new ConcurrentHashMap<UUID, Participant>
+
+				def getInternalParticipantStructure : ConcurrentHashMap<UUID, Participant> {
+					return this.participantMap
+				}
 
 				def [:moveobjectfct](moveObject)(identifier : UUID, x : float, y : float, z : float) {
 					synchronized (this.entities) {
@@ -210,72 +218,6 @@ the support of the interaction. Consequently, it should provide the mechanisms f
 routing the events to all the agents other the computer network.</important>
 
 
-### Basic Network Support
-
-As described in the previous section, the space implementation should route the information among the agents over a computer
-network.
-
-<caution>This section of the space reference document may evolved in future releases of SARL. Please activate the
-"deprecated feature use" warning in your compilation configuration for ensuring that you will be notified
-about any major changes on this part of the API.</caution>
-
-Below, the implementation extends one of the abstract classes provided by the [Janus Platform](http://www.janusproject.io).
-
-		[:Success:]
-			import io.sarl.lang.core.Space
-			import io.sarl.lang.core.SpaceID
-			import io.sarl.lang.core.Address
-			import java.util.UUID
-			import java.util.Map
-			import io.sarl.lang.core.EventListener
-			import io.janusproject.kernel.^space.AbstractEventSpace
-			import io.janusproject.services.distributeddata.DistributedDataStructureService
-            import com.google.inject.Provider
-            import java.util.concurrent.locks.ReadWriteLock
-			interface PhysicSpace extends Space {
-			}
-			class PhysicObject {
-				def move(x : float, y : float, z : float) { }
-			}
-			[:On]
-			class NetworkPhysicSpaceImpl extends AbstractEventSpace implements PhysicSpace {
-				val entities : Map<UUID,PhysicObject>
-				
-				public new(id : SpaceID, factory : DistributedDataStructureService,
-				        lockProvider : Provider<ReadWriteLock>) {
-					super(id, factory, lockProvider)
-					this.entities = factory.getMap(id.toString + "-physicObjects")
-				}
-				
-				def bindBody(entity : EventListener) {
-					this.entities.put(entity.ID, new PhysicObject)
-					var a = new Address(spaceID, entity.ID)
-					synchronized (this.participantInternalDataStructure) {
-						return this.participantInternalDataStructure.registerParticipant(a, entity)
-					}
-				}
-				
-				def unbindBody(entity : EventListener) {
-					this.entities.remove(entity.ID)
-					synchronized (this.participantInternalDataStructure) {
-						return this.participantInternalDataStructure.unregisterParticipant(entity)
-					}
-				}
-				
-				def moveObject(identifier : UUID, x : float, y : float, z : float) {
-					var o = this.entities.remove(identifier)
-					if (o !== null) {
-						o.move(x, y, z)
-						this.entities.put(identifier, o)
-					}
-				}
-			}
-		[:End:]
-
-<important>The collection of the physic objects is a distributed map over the computer network. It means that each node
-of the platform has a direct access to the objects' instances. If whose to say that is implementation may face some problems,
-such as the serialization of the physic objects, and the scalability of the distributed map.</important>
-
 
 ### Defining a SpaceSpecification
 
@@ -286,9 +228,9 @@ This specification may create the space instance according to rules, or provide 
 			import io.sarl.lang.core.Space
 			import io.sarl.lang.core.SpaceSpecification
 			import io.sarl.lang.core.SpaceID
-			import io.sarl.lang.util.SynchronizedSet
-			import java.util.UUID
 			import io.sarl.lang.core.EventListener
+			import java.util.concurrent.ConcurrentSkipListSet
+			import java.util.UUID
 			interface PhysicSpace extends Space {
 			}
 			class PhysicSpaceImpl implements PhysicSpace {
@@ -298,7 +240,7 @@ This specification may create the space instance according to rules, or provide 
 				def unbindBody(listener : EventListener) { }
 				def getID : SpaceID { null }
 				def getSpaceID : SpaceID { null }
-				def getParticipants : SynchronizedSet<UUID> { null }
+				def getParticipants : ConcurrentSkipListSet<UUID> { null }
 			}
 			[:On]
 			class PhysicSpaceSpecification implements [:spacespecdef](SpaceSpecification)<PhysicSpace> {
@@ -309,40 +251,6 @@ This specification may create the space instance according to rules, or provide 
 		[:End:]
 
 The example above is the specification related to the first implementation of the [:physicspacedef:].
-
-		[:Success:]
-			import io.sarl.lang.core.Space
-			import io.sarl.lang.core.SpaceSpecification
-			import io.sarl.lang.core.SpaceID
-			import java.util.UUID
-			import io.sarl.lang.util.SynchronizedSet
-			import io.sarl.lang.core.EventListener
-			import javax.inject.Inject
-			import io.janusproject.services.distributeddata.DistributedDataStructureService
-			interface PhysicSpace extends Space {
-			}
-			class NetworkPhysicSpaceImpl implements PhysicSpace {
-				new (id : SpaceID, serv : DistributedDataStructureService) { }
-				def moveObject(identifier : UUID, x : float, y : float, z : float) { }
-				def bindBody(listener : EventListener) { }
-				def unbindBody(listener : EventListener) { }
-				def getID : SpaceID { null }
-				def getSpaceID : SpaceID { null }
-				def getParticipants : SynchronizedSet<UUID> { null }
-			}
-			[:On]
-			class NetworkPhysicSpaceSpecification implements SpaceSpecification<PhysicSpace> {
-				@Inject
-				var factory : DistributedDataStructureService
-
-				def create(id : SpaceID, params : Object*) : PhysicSpace {
-					return new NetworkPhysicSpaceImpl(id, factory)
-				}
-			}
-		[:End:]
-
-The example above is the specification that permits to create a physic space with networking. It retrieves
-by injection the factory of distributed data structures provided by the Janus platform.
 
 
 ### Access to the Default Space Instance within a space specification
@@ -366,11 +274,11 @@ The following example illustrates the first method of marking of an object field
 
         [:Success:]
             import java.util.UUID
-            import io.sarl.lang.util.SynchronizedSet
             import io.sarl.lang.core.SpaceID
             import io.sarl.lang.core.SpaceSpecification
             import io.sarl.lang.core.Space
             import io.sarl.core.OpenEventSpace
+            import java.util.concurrent.ConcurrentSkipListSet
             import javax.inject.Inject
             import com.google.inject.name.Named
             interface MySpace extends Space {
@@ -379,7 +287,7 @@ The following example illustrates the first method of marking of an object field
                 new (obj : OpenEventSpace) {}
                 def getID : SpaceID { null }
                 def getSpaceID : SpaceID { null }
-                def getParticipants : SynchronizedSet<UUID> { null }
+                def getParticipants : ConcurrentSkipListSet<UUID> { null }
             }
             [:On]
             class MySpaceSpecification implements SpaceSpecification<MySpace> {
@@ -400,11 +308,11 @@ The following example illustrates the second method of marking of an object fiel
 
         [:Success:]
             import java.util.UUID
-            import io.sarl.lang.util.SynchronizedSet
             import io.sarl.lang.core.SpaceID
             import io.sarl.lang.core.SpaceSpecification
             import io.sarl.lang.core.Space
             import io.sarl.core.OpenEventSpace
+            import java.util.concurrent.ConcurrentSkipListSet
             import javax.inject.Inject
             interface MySpace extends Space {
             }
@@ -412,7 +320,7 @@ The following example illustrates the second method of marking of an object fiel
                 new (obj : OpenEventSpace) {}
                 def getID : SpaceID { null }
                 def getSpaceID : SpaceID { null }
-                def getParticipants : SynchronizedSet<UUID> { null }
+                def getParticipants : ConcurrentSkipListSet<UUID> { null }
             }
             [:On]
             class MySpaceSpecification implements SpaceSpecification<MySpace> {

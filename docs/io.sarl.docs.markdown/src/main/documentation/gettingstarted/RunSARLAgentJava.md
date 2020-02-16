@@ -108,66 +108,40 @@ pass with the [:initevent:] event to the launched agent.
 If you want to launch more agents, please read the next section.</importantnote>
 
 		[:Success:]
-			import io.janusproject.Boot
+			import io.sarl.sre.boot.Boot
 			import myprogram.MyAgent
 			class MyProgram {
 			 	static def main(args : String*) {
-					[:boot](Boot)::[:startjanus](startJanus)(
+					[:boot](Boot)::createMainObject.[:startjanus](startAgent)(
 						typeof([:agenttype]{MyAgent}),
 						args)
 				}
 			}
 		[:End:]
-		import io.janusproject.Boot;
+		import io.sarl.sre.boot.Boot;
 		import myprogram.MyAgent;
 		public class MyProgram {
 		 	public static void main(String[] args) {
-				[:boot!].[:startjanus!]([:agenttype!].class, args);
+				[:boot!].createMainObject.[:startjanus!]([:agenttype!].class, args);
 			}
 		}
 
 
 In  the case you want to launch more than one agent programmatically,
 you could use the [:kernel:] instance provided by Janus.
-[:Fact:]{io.janusproject.kernel.[:kernel](Kernel)}
-This instance is replied by the [:startjanus:] function of the [:boot:] class.
-
-The [:kernel:] type provides the [:spawn:] functions, which permit launching
-an agent programmatically.
-
-The previous example could be updated for launching two agents of the same type.
-The resulting code is shown below.
-
-The first parameter of the [:spawn:] function is the Java type of the agent to launch.
-
-The second parameter of the [:spawn:] function is the list of parameters to
-pass with the [:initevent] event to the launched agent.
-
-<important>that the first agent is launched by the [:startjanus:] function, and the 
-second agent is launched by the [:spawn:] function.</important>
-
+This instance is replied by the [:getkernel:] function of the [:boot:] class.
 
 		[:Success:]
-			import io.janusproject.Boot
+			[:Off]
+			import io.sarl.sre.boot.Boot
+			import io.sarl.sre.boot.[:kernel](SreMain)
 			class MyProgram {
-				static def main(args : String*) {
-					var janusKernel = Boot::startJanus(
-						typeof(MyAgent),
-						args)
-					janusKernel.[:spawn]{spawn}(typeof(MyAgent), args)
+			 	def fct : void {
+					var sremain = Boot.createMainObject
+					var kernel = sremain.[:getkernel](getKernel)
 				}
 			}
-			[:Off]
-			agent MyAgent {}
 		[:End:]
-		import io.janusproject.Boot;
-		import myprogram.MyAgent;
-		public class MyProgram {
-		 	public static void main(String[] args) {
-				[:boot!].[:startjanus!]([:agenttype!].class, args);
-				janusKernel.[:spawn!](MyAgent.class, args);
-			}
-		}
 
 
 ## What's next?

@@ -272,10 +272,8 @@ context.
 
 Consequently, the function `[:getspacefct!]()` replies the collection of all the context as
 an singleton collection instance that is containing the default space.
-This function must reply a auto-synchronized collection. We use the [:collection3:] utility
+This function must reply a auto-synchronized collection. We use the [:concurrentdeque:]
 class, provided in the SARL API, for creating the synchronized collection.
-The first parameter of the [:synccoll:] function is the collection to synchronized,
-the second parameter is the object on from which the synchronization token will be obtained.
 
 The `[:getspacefct!](Class)` function is supposed to reply the existing spaces that were created
 by using the given type of space specification.
@@ -293,22 +291,24 @@ identifier of the default space. In the other cases, the function replies nothin
 			import io.sarl.lang.core.Space
 			import io.sarl.lang.core.SpaceSpecification
 			import io.sarl.lang.core.EventSpaceSpecification
-			import io.sarl.lang.util.SynchronizedCollection
-			import io.sarl.util.concurrent.Collections3
+			import java.util.concurrent.ConcurrentLinkedDeque
 			abstract class TMAgentContext implements AgentContext {
 				var defaultSpace : Space
 			[:On]
-				def getSpaces : SynchronizedCollection<? extends Space> {
-   					[:collection3](Collections3)::[:synccoll](synchronizedSingleton)(this.defaultSpace)
+				def getSpaces : ConcurrentLinkedDeque<? extends Space> {
+					var list = new [:concurrentdeque](ConcurrentLinkedDeque)
+					list += this.defaultSpace
+					return list
 				}
 
 				def getSpaces(spec : Class<? extends SpaceSpecification<S>>)
-						: SynchronizedCollection<S>
+						: ConcurrentLinkedDeque<S>
 						with S extends Space {
+					var list = new ConcurrentLinkedDeque
 					if (spec !== null && spec == typeof([:evtspacespec](EventSpaceSpecification))) {
-						return Collections3::synchronizedSingleton(this.defaultSpace as S)
+						list += this.defaultSpace as S
 					}
-					return Collections3::emptySynchronizedSet
+					return list
 				}
 
 				def [:getspacefct](getSpace)(spaceUUID : UUID) : S
@@ -322,9 +322,6 @@ identifier of the default space. In the other cases, the function replies nothin
 			}
 		[:End:]
 
-        
-The function call [:synccoll:] is provided by the SARL Development Kit in order to create synchronized collections.
-The argument of this function is the collection to synchronize.
 
 
 #### Definition of the creation functions for spaces
@@ -1693,12 +1690,9 @@ Two functions must be implemented for accessing to the internal list of the beha
 			import java.util.UUID
 			import java.util.List
 			import java.util.ArrayList
-            import java.util.concurrent.locks.ReadWriteLock
-            import java.util.concurrent.locks.ReentrantReadWriteLock
 			import io.sarl.lang.core.Behavior
 			import io.sarl.core.Behaviors
-			import io.sarl.util.concurrent.Collections3
-			import io.sarl.lang.util.SynchronizedIterable
+			import java.util.concurrent.ConcurrentLinkedDeque
 			abstract class BehaviorsSkill implements Behaviors {
 				var behaviors : List<Behavior>
 				[:On]
@@ -1706,27 +1700,12 @@ Two functions must be implemented for accessing to the internal list of the beha
 					!this.behaviors.isEmpty
 				}
 
-				def getRegisteredBehaviors : SynchronizedIterable<Behavior> {
-                    this.lock.readLock.lock
-                    try {
-    					[:synccolbuild](Collections3::unmodifiableSynchronizedIterable)(this.behaviors, this.lock)
-                    } finally {
-                        this.lock.readLock.unlock
-                    }
+				def getRegisteredBehaviors : ConcurrentLinkedDeque<Behavior> {
+					return new ConcurrentLinkedDeque(this.behaviors)
 				}
-
-                val lock : ReadWriteLock = new [:reentrantlock](ReentrantReadWriteLock)
 				[:Off]
 			}
 		[:End:]
-		
-The function call [:synccolbuild:] is provided by the SARL Development Kit in order to create synchronized collections.
-The first argument of this function is the collection to synchronize.
-The second argument is the locking object that is supporting the synchronization of 
-the given collection.
-Usually, the locking object is an instance of [:reentrantlock:].
-The call to [:synccolbuild:] is enclosed by a typical code block that is enabling the 
-synchronization on the list of behaviors as reader of this list.
 
 If you don't want to apply a real synchronization on the replied collection, you could 
 replace the previous code by:
@@ -1736,27 +1715,19 @@ replace the previous code by:
             import java.util.UUID
             import java.util.List
             import java.util.ArrayList
-            import java.util.concurrent.locks.ReadWriteLock
-            import java.util.concurrent.locks.ReentrantReadWriteLock
             import io.sarl.lang.core.Behavior
-            import io.sarl.lang.util.SynchronizedIterable
             import io.sarl.core.Behaviors
-            import io.sarl.util.concurrent.Collections3
-            import io.sarl.util.concurrent.NoReadWriteLock
+            import java.util.concurrent.ConcurrentLinkedDeque
             abstract class BehaviorsSkill implements Behaviors {
                 var behaviors : List<Behavior>
                 [:On]
-                def getRegisteredBehaviors : SynchronizedIterable<Behavior> {
-                    Collections3::unmodifiableSynchronizedIterable(this.behaviors, [:nolock]{NoReadWriteLock::SINGLETON})
+                def getRegisteredBehaviors : ConcurrentLinkedDeque<Behavior> {
+                    return new ConcurrentLinkedDeque(this.behaviors)
                 }
                 [:Off]
             }
         [:End:]
 
-
-In the previous code, [:nolock:] is a specific locking object that is doing exactly 
-nothing regarding the synchronization. In other words, this this locking object, the
-synchronization of the collection is disable. 
 
 
 #### Updating the tinyMAS agent life-cycle for (un)registering the behaviors

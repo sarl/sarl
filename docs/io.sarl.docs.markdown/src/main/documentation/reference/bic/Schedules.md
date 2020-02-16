@@ -22,7 +22,7 @@ The built-in capacity `[:schedules](Schedules)` enables the agent to schedule ta
 			"[:cancel](cancel)(io.sarl.core.AgentTask, boolean) : boolean",
 			"cancel(io.sarl.core.AgentTask) : boolean",
 			"[:iscanceled](isCanceled)(io.sarl.core.AgentTask) : boolean",
-			"[:getactivetasks](getActiveTasks) : io.sarl.lang.util.SynchronizedSet")
+			"[:getactivetasks](getActiveTasks) : java.util.concurrent.ConcurrentSkipListSet")
 		}
 
 ## Creating Named Tasks

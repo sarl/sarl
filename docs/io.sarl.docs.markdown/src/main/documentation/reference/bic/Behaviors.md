@@ -23,7 +23,7 @@ Please read the [Behavior Reference](../Behavior.md) for details.
 			"wake(io.sarl.lang.core.Event)",
 			"[:aseventlistener](asEventListener) : io.sarl.lang.core.EventListener",
 			"[:hasregisteredbehavior](hasRegisteredBehavior) : boolean",
-			"[:getregisteredbehaviors](getRegisteredBehaviors) : io.sarl.lang.util.SynchronizedIterable")
+			"[:getregisteredbehaviors](getRegisteredBehaviors) : java.util.concurrent.ConcurrentLinkedDeque")
 		}
 
 
@@ -303,12 +303,12 @@ Two functions are provided for accessing to the collection of the registered beh
 
 		[:Success:]
 			package io.sarl.docs.reference.bic
-			import io.sarl.lang.util.SynchronizedIterable
 			import io.sarl.lang.core.Behavior
+			import java.util.concurrent.ConcurrentLinkedDeque
 			interface Tmp {
 			[:On]
 				def [:hasregisteredbehavior!] : boolean
-				def [:getregisteredbehaviors!] : SynchronizedIterable<Behavior>
+				def [:getregisteredbehaviors!] : ConcurrentLinkedDeque<Behavior>
 			[:Off]
 			}
 		[:End:]
@@ -320,16 +320,16 @@ The [:getregisteredbehaviors!] replies an unmodifiable collection of the registe
 
 		[:Success:]
 			package io.sarl.docs.reference.bic
-			import io.sarl.lang.util.SynchronizedIterable
 			import io.sarl.core.Behaviors
 			import io.sarl.lang.core.Behavior
 			import io.sarl.lang.core.EventListener
+			import java.util.concurrent.ConcurrentLinkedDeque
 			agent A {
 				uses Behaviors
 				def myaction {
 					[:On]
 					var b : boolean = hasRegisteredBehavior
-					var c : SynchronizedIterable<Behavior> = getRegisteredBehaviors
+					var c : ConcurrentLinkedDeque<Behavior> = getRegisteredBehaviors
 					[:Off]
 				}
 			}

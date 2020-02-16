@@ -44,7 +44,7 @@ In the following example, the [:myspacename:] space is declared:
 		[:Success:]
 			import io.sarl.lang.core.Space
 			import io.sarl.lang.core.SpaceID
-			import io.sarl.lang.util.SynchronizedSet
+			import java.util.concurrent.ConcurrentSkipListSet
 			import java.util.UUID
 			abstract [:On]
 			class [:myspacename](MySpace) implements [:spacetype](Space) {
@@ -59,7 +59,7 @@ In the following example, the [:myspacename:] space is declared:
 			    	this.id
 			    }
 
-			    def getParticipants : SynchronizedSet<UUID> {
+			    def getParticipants : ConcurrentSkipListSet<UUID> {
 			    	null
 			    }
 
@@ -75,7 +75,7 @@ Back to the example, the code becomes:
 		[:Success:]
 			import io.sarl.lang.core.Space
 			import io.sarl.lang.core.SpaceID
-			import io.sarl.lang.util.SynchronizedSet
+			import java.util.concurrent.ConcurrentSkipListSet
 			import java.util.UUID
 			abstract [:On]
 			class [:myspacename](MySpace) implements [:spacetype](Space) {
@@ -94,7 +94,7 @@ Back to the example, the code becomes:
 			    	this.id
 			    }
 
-			    def getParticipants : SynchronizedSet<UUID> {
+			    def getParticipants : ConcurrentSkipListSet<UUID> {
 			    	null
 			    }
 
@@ -108,7 +108,7 @@ In order to enable the creation of an instance of [:myspacename!], a space speci
 			import io.sarl.lang.core.Space
 			import io.sarl.lang.core.SpaceID
 			import io.sarl.lang.core.SpaceSpecification
-			import io.sarl.lang.util.SynchronizedSet
+			import java.util.concurrent.ConcurrentSkipListSet
 			import java.util.UUID
 			class [:myspacename!] implements [:spacetype!] {
 				def [:fctname!](callerIdentity : UUID, parameter : Object) {
@@ -119,7 +119,7 @@ In order to enable the creation of an instance of [:myspacename!], a space speci
 			    }
 			    def getID : SpaceID {
 			    }
-			    def getParticipants : SynchronizedSet<UUID> {
+			    def getParticipants : ConcurrentSkipListSet<UUID> {
 			    }
 			}
 			[:On]
@@ -144,7 +144,7 @@ Back to the example, the code for the skill is:
 			import io.sarl.lang.core.Space
 			import io.sarl.lang.core.SpaceID
 			import io.sarl.lang.core.SpaceSpecification
-			import io.sarl.lang.util.SynchronizedSet
+			import java.util.concurrent.ConcurrentSkipListSet
 			import java.util.UUID
 			capacity [:mycapacityname!] {
 				def [:fctname!](parameter : Object)
@@ -158,7 +158,7 @@ Back to the example, the code for the skill is:
 			    }
 			    def getID : SpaceID {
 			    }
-			    def getParticipants : SynchronizedSet<UUID> {
+			    def getParticipants : ConcurrentSkipListSet<UUID> {
 			    }
 			}
 			class [:myspacespecname]([:myspacename!]Specification) implements SpaceSpecification<[:myspacename!]> {
@@ -207,7 +207,7 @@ to give the instance of the caller to the space. The code of the skill becomes:
 			import io.sarl.lang.core.Space
 			import io.sarl.lang.core.SpaceID
 			import io.sarl.lang.core.SpaceSpecification
-			import io.sarl.lang.util.SynchronizedSet
+			import java.util.concurrent.ConcurrentSkipListSet
 			import java.util.UUID
 			capacity [:mycapacityname!] {
 				def [:fctname!](parameter : Object)
@@ -221,7 +221,7 @@ to give the instance of the caller to the space. The code of the skill becomes:
 			    }
 			    def getID : SpaceID {
 			    }
-			    def getParticipants : SynchronizedSet<UUID> {
+			    def getParticipants : ConcurrentSkipListSet<UUID> {
 			    }
 			}
 			[:On]
