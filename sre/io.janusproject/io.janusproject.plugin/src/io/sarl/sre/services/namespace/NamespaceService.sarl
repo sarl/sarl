@@ -22,6 +22,7 @@ package io.sarl.sre.services.namespace
 
 import com.google.common.util.concurrent.Service
 import io.sarl.sre.naming.SarlName
+import io.sarl.sre.naming.INameParser
 
 /** 
  * This service enables to manage the name spaces into the SRE.
@@ -35,6 +36,15 @@ import io.sarl.sre.naming.SarlName
  * @since 0.10
  */
 interface NamespaceService extends Service {
+
+	/** 
+	 * Replies the name parser that is used by this service.
+	 * 
+	 * @return The name parser
+	 * @since 0.11
+	 */
+	@Pure
+	def getNameParser : INameParser
 
 	/**
 	 * Finds and replies the object with the given name and of the given type.
@@ -55,5 +65,49 @@ interface NamespaceService extends Service {
 	 */
 	@Pure
 	def findObject(name : SarlName) : Object
+
+	/** 
+	 * Finds and replies the object with the given name and of the given type.
+	 * 
+	 * @param name the name of the object. See the documentation of {@link NamespaceService}
+	 * for details.
+	 * @return the root context.  A {@code null} value is replied if the object is not found.
+	 * @since 0.11
+	 */
+	@Pure
+	def findObject(name : String, type : Class<T>) : T with T {
+		var parser = this.nameParser
+		var nameURI = parser.decode(name)
+		if (nameURI === null) {
+			return null
+		}
+		var sarlName = parser.decode(nameURI)
+		if (sarlName === null) {
+			return null
+		}
+		return findObject(sarlName, type)
+	}
+
+	/** 
+	 * Finds and replies the object with the given name and of the given type.
+	 * 
+	 * @param name the name of the object. See the documentation of {@link NamespaceService}
+	 * for details.
+	 * @return the object with the given name. A {@code null} value is replied if the object is not found.
+	 * @since 0.11
+	 */
+	@Pure
+	def findObject(name : String) : Object {
+		var parser = this.nameParser
+		var nameURI = parser.decode(name)
+		if (nameURI === null) {
+			return null
+		}
+		var sarlName = parser.decode(nameURI)
+		if (sarlName === null) {
+			return null
+		}
+		return findObject(sarlName)
+	}
 
 }

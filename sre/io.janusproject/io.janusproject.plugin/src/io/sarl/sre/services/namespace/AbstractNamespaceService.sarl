@@ -22,6 +22,8 @@ package io.sarl.sre.services.namespace
 
 import io.sarl.sre.naming.SarlName
 import io.sarl.sre.services.AbstractSreService
+import io.sarl.sre.naming.INameParser
+import javax.inject.Inject
 
 /** 
  * Abstract implementation of a service that manages name spaces into the SRE.
@@ -33,6 +35,23 @@ import io.sarl.sre.services.AbstractSreService
  * @since 0.10
  */
 abstract class AbstractNamespaceService extends AbstractSreService implements NamespaceService {
+
+	var nameParser : INameParser
+	
+	@Pure
+	override getNameParser : INameParser {
+		this.nameParser
+	}
+
+	/** Change the name parser used by this service.
+	 *
+	 * @param parser the name parser, never {@code null}
+	 * @since 0.11
+	 */
+	@Inject
+	def setNameParser(parser : INameParser) {
+		this.nameParser = parser
+	}
 
 	final override findObject(name : SarlName, type : Class<T>) : T with T {
 		assert type !== null
@@ -50,7 +69,7 @@ abstract class AbstractNamespaceService extends AbstractSreService implements Na
 		var associatedObject = name.associatedObject
 		if (associatedObject === null) {
 			var obj = findObjectWithoutFragment(name)
-			if (name.hasFragment) {
+			if (obj !== null && name.hasFragment) {
 				// Treat the fragment
 				var field = obj.getDeclaredField(name)
 				if (field !== null) {
