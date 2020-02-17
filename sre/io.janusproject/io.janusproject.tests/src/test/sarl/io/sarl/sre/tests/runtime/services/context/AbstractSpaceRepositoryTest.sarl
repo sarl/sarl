@@ -40,38 +40,38 @@ abstract class AbstractSpaceRepositoryTest extends AbstractSreRunTest {
 
 	@Test
 	def createSpace {
-	typeof(CreateSpaceTestAgent).runSre(false, true, STANDARD_TIMEOUT)
+	typeof(CreateSpaceTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		allResults.assertContains("FOUND")
 	}
 
 	@Test
 	def getOrCreateSpaceWithID {
-		typeof(GetOrCreateSpaceWithIDTestAgent).runSre(false, true, STANDARD_TIMEOUT)
+		typeof(GetOrCreateSpaceWithIDTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		allResults.assertContains("FOUND1", "FOUND2")
 	}
 
 	@Test
 	def getOrCreateSpaceWithSpec {
-		typeof(GetOrCreateSpaceWithSpecTestAgent).runSre(false, true, STANDARD_TIMEOUT)
+		typeof(GetOrCreateSpaceWithSpecTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		allResults.assertContains("FOUND1", "FOUND2")
 	}
 
 	@Test
 	def getSpace {
-		typeof(GetSpaceTestAgent).runSre(false, true, STANDARD_TIMEOUT)
+		typeof(GetSpaceTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		allResults.assertContains("FOUND", "IS_DEFAULT_SPACE")
 	}
 
 	@Test
 	def getSpaces {
-		typeof(GetSpacesTestAgent).runSre(false, true, STANDARD_TIMEOUT)
+		typeof(GetSpacesTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		allResults.assertContains("1/OpenEventSpaceSpecification", "2/OpenEventSpaceSpecification",
 			"2/MySpaceSpec")
 	}
 
 	@Test
 	def getSpacesClass {
-		typeof(GetSpacesClassTestAgent).runSre(false, true, STANDARD_TIMEOUT)
+		typeof(GetSpacesClassTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		allResults.assertContains("1/OpenEventSpaceSpecification", "2/OpenEventSpaceSpecification",
 				"3/MySpaceSpec", "3/MySpaceSpec")
 	}

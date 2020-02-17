@@ -41,7 +41,7 @@ class JanusBug91 extends AbstractSreRunTest {
 	@Test
 	def ExceptionInInit : void {
 		try {
-			typeof(ExceptionInInitAgent).runSre(false, true, STANDARD_TIMEOUT);
+			typeof(ExceptionInInitAgent).runSre(null, true, STANDARD_TIMEOUT);
 		} catch (e : CannotSpawnException) {
 			var ex = e.cause
 			assertNotNull(ex)

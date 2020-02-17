@@ -38,7 +38,7 @@ class Bug613 extends AbstractSreRunTest {
 
 	@Test
 	def killMeInInit {
-		typeof(TAgent1).runSre(false)
+		typeof(TAgent1).runSre(null)
 		assertEquals(0, getResults.size)
 	}
 

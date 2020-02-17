@@ -51,7 +51,7 @@ abstract class AbstractLifecycleServiceTest extends AbstractSreRunTest {
 
 	@Test
 	def spawnAgent_1 {
-		typeof(OneAgentSpawnTestAgent).runSre(false, true, STANDARD_TIMEOUT)
+		typeof(OneAgentSpawnTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		var results = allResults
 		assertNotNull(results)
 		assertEquals(1, results.size)
@@ -60,7 +60,7 @@ abstract class AbstractLifecycleServiceTest extends AbstractSreRunTest {
 
 	@Test
 	def spawnAgent_3 {
-		typeof(ThreeAgentsSpawnTestAgent).runSre(false, true, STANDARD_TIMEOUT)
+		typeof(ThreeAgentsSpawnTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		var results = allResults
 		assertNotNull(results)
 		assertEquals(3, results.size)
@@ -69,7 +69,7 @@ abstract class AbstractLifecycleServiceTest extends AbstractSreRunTest {
 
 	@Test
 	def killAgent_duringInitialize {
-		typeof(InitializeKillTestAgent).runSre(false, true, STANDARD_TIMEOUT)
+		typeof(InitializeKillTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		var results = allResults
 		assertNotNull(results)
 		assertEquals(1, results.size)
@@ -78,7 +78,7 @@ abstract class AbstractLifecycleServiceTest extends AbstractSreRunTest {
 
 	@Test
 	def killAgent_duringInitializeAfterSpawn {
-		typeof(InitializeSpawnKillTestAgent).runSre(false, true, STANDARD_TIMEOUT)
+		typeof(InitializeSpawnKillTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		var results = allResults
 		assertNotNull(results)
 		assertEquals(3, results.size)
@@ -87,7 +87,7 @@ abstract class AbstractLifecycleServiceTest extends AbstractSreRunTest {
 
 	@Test
 	def killAgent_duringEventHandling {
-		typeof(EventHanlderKillTestAgent).runSre(false, true, STANDARD_TIMEOUT)
+		typeof(EventHanlderKillTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		var results = allResults
 		assertNotNull(results)
 		assertEquals(2, results.size)
@@ -96,7 +96,7 @@ abstract class AbstractLifecycleServiceTest extends AbstractSreRunTest {
 
 	@Test
 	def killAgent_duringTask {
-		typeof(TaskKillTestAgent).runSre(false, true, STANDARD_TIMEOUT)
+		typeof(TaskKillTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		var results = allResults
 		assertNotNull(results)
 		assertEquals(2, results.size)
@@ -105,7 +105,7 @@ abstract class AbstractLifecycleServiceTest extends AbstractSreRunTest {
 
 	@Test
 	def killAgent_duringDestroy {
-		typeof(DestroyKillTestAgent).runSre(false, true, STANDARD_TIMEOUT)
+		typeof(DestroyKillTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		var results = allResults
 		assertNotNull(results)
 		assertEquals(2, results.size)
@@ -114,7 +114,7 @@ abstract class AbstractLifecycleServiceTest extends AbstractSreRunTest {
 
 	@Test
 	def isKillableAgent_noChild_noInnerContext {
-		typeof(NoChildNoInnerContextIsKillableTestAgent).runSre(false, true, STANDARD_TIMEOUT)
+		typeof(NoChildNoInnerContextIsKillableTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		var results = allResults
 		assertNotNull(results)
 		assertEquals(2, results.size)
@@ -123,7 +123,7 @@ abstract class AbstractLifecycleServiceTest extends AbstractSreRunTest {
 
 	@Test
 	def isKillableAgent_noChild_innerContext {
-		typeof(NoChildInnerContextIsKillableTestAgent).runSre(false, true, STANDARD_TIMEOUT)
+		typeof(NoChildInnerContextIsKillableTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		var results = allResults
 		assertNotNull(results)
 		assertEquals(2, results.size)

@@ -42,7 +42,7 @@ class Bug942 extends AbstractSreRunTest {
 	@SuppressWarnings("discouraged_reference")
 	@Test
 	def doTest : void {
-		var kern = typeof(AgentBug942).setupTheSreKernel(false, true)
+		var kern = typeof(AgentBug942).setupTheSreKernel(null, true, false)
 
 		Thread::sleep(1000)
 

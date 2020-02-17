@@ -28,6 +28,7 @@ import io.sarl.sre.tests.runtime.spaces.mocks.SourceAgent
 import java.util.UUID
 import io.sarl.lang.core.Address
 import io.sarl.lang.util.OutParameter
+import java.util.logging.Level
 
 /**
  * @author $Author: sgalland$
@@ -39,7 +40,7 @@ class EventRoutingTest extends AbstractSreRunTest {
 
 	@Test
 	def unchangedEventSource {
-		val kern = setupTheSreKernel(typeof(TargetAgent), false, true)
+		val kern = setupTheSreKernel(typeof(TargetAgent), null, true, false)
 		kern.spawn(typeof(SourceAgent), null, agentInitializationParameters)
 		waitForTheKernel(STANDARD_TIMEOUT)
 		
@@ -52,7 +53,7 @@ class EventRoutingTest extends AbstractSreRunTest {
 
 	@Test
 	def unchangedEventSources {
-		val kern = setupTheSreKernel(false, true)
+		val kern = setupTheSreKernel(Level::OFF, true, false)
 		val ag1 = new OutParameter<UUID>
 		kern.spawn(typeof(TargetAgent), [ag1.set(it)], agentInitializationParameters)
 		val ag2 = new OutParameter<UUID>

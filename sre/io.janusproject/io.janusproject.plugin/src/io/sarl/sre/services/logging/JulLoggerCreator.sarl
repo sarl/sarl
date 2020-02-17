@@ -122,7 +122,7 @@ class JulLoggerCreator {
 		if (this.platformFormatter === null) {
 			this.platformFormatter = createPlatformFormatter
 		}
-		return this.consoleFormatter
+		return this.platformFormatter
 	}
 
 	/** Change the log formatter for the SRE kernel.
@@ -130,7 +130,7 @@ class JulLoggerCreator {
 	 * @param formatter the log formatter, or {@code null} to use the default.
 	 */
 	synchronized def setPlatformFormatter(formatter : Formatter) {
-		this.consoleFormatter = formatter
+		this.platformFormatter = formatter
 	}
 
 	/** Create a formatter for the SRE kernel.

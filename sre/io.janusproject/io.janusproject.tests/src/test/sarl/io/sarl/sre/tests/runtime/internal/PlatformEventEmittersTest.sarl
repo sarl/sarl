@@ -80,7 +80,7 @@ class PlatformEventEmittersTest {
 
 		@Test
 		def run {
-			typeof(MyWaiterAgent0).runSre(false, true, STANDARD_TIMEOUT)
+			typeof(MyWaiterAgent0).runSre(null, true, STANDARD_TIMEOUT)
 			
 			var all = allResults
 			assertEquals(5, all.size)
@@ -103,7 +103,7 @@ class PlatformEventEmittersTest {
 		
 		@Test
 		def run {
-			typeof(MyWaiterAgent1).runSre(false, true, STANDARD_TIMEOUT)
+			typeof(MyWaiterAgent1).runSre(null, true, STANDARD_TIMEOUT)
 			
 			var all = allResults
 			assertEquals(4, all.size)
@@ -125,7 +125,7 @@ class PlatformEventEmittersTest {
 
 		@Test
 		def run {
-			typeof(MyWaiterAgent2).runSre(false, true, STANDARD_TIMEOUT)
+			typeof(MyWaiterAgent2).runSre(null, true, STANDARD_TIMEOUT)
 			
 			var all = allResults
 			assertEquals(5, all.size)
@@ -148,7 +148,7 @@ class PlatformEventEmittersTest {
 
 		@Test
 		def run {
-			typeof(MyWaiterAgent3).runSre(false, true, STANDARD_TIMEOUT)
+			typeof(MyWaiterAgent3).runSre(null, true, STANDARD_TIMEOUT)
 			
 			var all = allResults
 			assertEquals(4, all.size)
@@ -169,7 +169,7 @@ class PlatformEventEmittersTest {
 
 		@Test
 		def run {
-			typeof(RootAgent0).runSre(false, true, STANDARD_TIMEOUT)
+			typeof(RootAgent0).runSre(null, true, STANDARD_TIMEOUT)
 			assertContains(allResults,
 					"ROOT:ChildAgent0", // Spawning
 					"ROOT:Child2Agent0", // Arrival of Child2 within the Inner context of Root.
@@ -182,7 +182,7 @@ class PlatformEventEmittersTest {
 
 		@Test
 		def run {
-			typeof(RootAgent1).runSre(false, true, STANDARD_TIMEOUT)
+			typeof(RootAgent1).runSre(null, true, STANDARD_TIMEOUT)
 			assertContains(allResults, "ROOT:ChildAgent1", "ROOT:Child2Agent1", "CHILD1:Child2Agent1")
 		}
 
@@ -192,7 +192,7 @@ class PlatformEventEmittersTest {
 		
 		@Test
 		def run {
-			typeof(RootAgent2).runSre(false, true, STANDARD_TIMEOUT)
+			typeof(RootAgent2).runSre(null, true, STANDARD_TIMEOUT)
 			assertContains(allResults, "CHILD2")
 		}
 
@@ -202,7 +202,7 @@ class PlatformEventEmittersTest {
 
 		@Test
 		def run {
-			typeof(RootAgent3).runSre(false, true, STANDARD_TIMEOUT)
+			typeof(RootAgent3).runSre(null, true, STANDARD_TIMEOUT)
 			assertContains(allResults, "CHILD2") // Child2 left the inner context of ROOT
 		}
 
@@ -212,7 +212,7 @@ class PlatformEventEmittersTest {
 		
 		@Test
 		def run {
-			typeof(MyWaiterAgent4).runSre(false, true, STANDARD_TIMEOUT)
+			typeof(MyWaiterAgent4).runSre(null, true, STANDARD_TIMEOUT)
 			
 			var all = allResults
 			assertEquals(2, all.size)
@@ -266,7 +266,7 @@ class PlatformEventEmittersTest {
 		@Test
 		@SuppressWarnings("discouraged_reference")
 		def run {
-			var kern = typeof(SpyAgent0).setupTheSreKernel(false, true)
+			var kern = typeof(SpyAgent0).setupTheSreKernel(null, true, false)
 
 			Thread::sleep(1000)
 
@@ -296,7 +296,7 @@ class PlatformEventEmittersTest {
 		@Test
 		@SuppressWarnings("discouraged_reference")
 		def run {
-			var kern = typeof(SpyAgent1).setupTheSreKernel(false, true)
+			var kern = typeof(SpyAgent1).setupTheSreKernel(null, true, false)
 
 			Thread::sleep(1000)
 

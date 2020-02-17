@@ -146,7 +146,7 @@ import org.junit.Test
 
 	@Test
 	def run_01 : void {
-		typeof(BootAgent).runSre(false, true, STANDARD_TIMEOUT)
+		typeof(BootAgent).runSre(null, true, STANDARD_TIMEOUT)
 		// Should stop
 	}
 

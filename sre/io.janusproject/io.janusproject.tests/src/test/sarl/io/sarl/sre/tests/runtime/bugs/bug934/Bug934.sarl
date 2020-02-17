@@ -44,7 +44,7 @@ class Bug934 extends AbstractSreRunTest {
 
 	@Test
 	def withSpec {
-		typeof(WithSpecAgent).runSre(false, true, SHORT_TIMEOUT)
+		typeof(WithSpecAgent).runSre(null, true, SHORT_TIMEOUT)
 
 		var id = getBootAgent
 		5.assertEquals(id.numberOfResults)
@@ -79,7 +79,7 @@ class Bug934 extends AbstractSreRunTest {
 
 	@Test
 	def withId {
-		typeof(WithIdAgent).runSre(false, true, SHORT_TIMEOUT)
+		typeof(WithIdAgent).runSre(null, true, SHORT_TIMEOUT)
 
 		var id = getBootAgent
 		5.assertEquals(id.numberOfResults)

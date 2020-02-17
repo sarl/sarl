@@ -39,7 +39,7 @@ abstract class AbstractContextServiceTest extends AbstractSreRunTest {
 
 	@Test
 	def getRootContext : void {
-		typeof(GetRootContextTestAgent).runSre(false, true, STANDARD_TIMEOUT)
+		typeof(GetRootContextTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		var results = getResults
 		assertEquals(1, results.size)
 		var res = results.get(0)
@@ -52,7 +52,7 @@ abstract class AbstractContextServiceTest extends AbstractSreRunTest {
 
 	@Test
 	def getContext : void {
-		typeof(GetContextTestAgent).runSre(false, true, STANDARD_TIMEOUT)
+		typeof(GetContextTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		var results = getResults
 		assertEquals(2, results.size)
 		assertInstanceOf(typeof(UUID), results.get(0))

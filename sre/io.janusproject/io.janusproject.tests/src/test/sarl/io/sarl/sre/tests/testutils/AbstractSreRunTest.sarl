@@ -39,7 +39,6 @@ import java.util.logging.LogRecord
 import org.arakhne.afc.bootique.log4j.configs.Log4jIntegrationConfig
 import org.arakhne.afc.bootique.variables.VariableNames
 import org.junit.ComparisonFailure
-import org.junit.Rule
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 
@@ -82,7 +81,6 @@ abstract class AbstractSreRunTest extends AbstractSreTest {
 	@Nullable
 	var results : Map<UUID, List<Object>>
 
-	@Rule
 	public var sreRunWatcher = new TestWatcher {
 		protected override starting(description : Description) {
 			SRE::resetServiceLoader
@@ -120,7 +118,6 @@ abstract class AbstractSreRunTest extends AbstractSreTest {
 	 * @param index - the index of the result.
 	 * @return the value; or <code>null</code> if no result.
 	 */
-	@Pure
 	protected static def get(source : List<?>, type : Class<T>, index : int) : T with T {
 		var element = source.get(index);
 		if (element === null || type.isInstance(element)) {
@@ -137,7 +134,6 @@ abstract class AbstractSreRunTest extends AbstractSreTest {
 	 * @param index - the index of the result.
 	 * @return the value; or <code>null</code> if no result.
 	 */
-	@Pure
 	protected def getResult(agentId : UUID = null, type : Class<T>, index : int) : T with T {
 		if (this.results !== null) {
 			try {
@@ -193,7 +189,6 @@ abstract class AbstractSreRunTest extends AbstractSreTest {
 	 *     replied.
 	 * @return the results.
 	 */
-	@Pure
 	protected def getResults(agentId : UUID = null) : List<Object> {
 		if (this.results !== null) {
 			var res : List<Object> 
@@ -210,10 +205,33 @@ abstract class AbstractSreRunTest extends AbstractSreTest {
 	}
 
 	/** 
+	 * Add a value to the list of results.
+	 * 
+	 * @param agentId the identifier of the agent for which the results must be retrieved.
+	 * If {@code null} or not provided, the results associated to the boot agent are
+	 * replied.
+	 * @param value the new value.
+	 * @since 0.11
+	 */
+	protected def addResult(agentId : UUID = null, value : Object) : void {
+		if (this.results !== null) {
+			var res : List<Object>
+			synchronized (this.results) {
+				val id = agentId ?: bootAgent
+				res = this.results.get(id)
+				if (res === null) {
+					res = newArrayList
+					this.results.put(id, res)
+				}
+			}
+			res += value
+		}
+	}
+
+	/** 
 	 * Replies all the results for all the agents.
 	 * @return the results.
 	 */
-	@Pure
 	protected def getAllResultsPerAgent() : Map<UUID, List<Object>> {
 		if (this.results !== null) {
 			return results
@@ -225,7 +243,6 @@ abstract class AbstractSreRunTest extends AbstractSreTest {
 	 * Replies all the results for all the agents.
 	 * @return the results.
 	 */
-	@Pure
 	protected def getAllResults() : List<Object> {
 		if (this.results !== null) {
 			var all = newArrayList
@@ -244,7 +261,6 @@ abstract class AbstractSreRunTest extends AbstractSreTest {
 	 * Replies the initialization parameters for the agents.
 	 * @return the parameters.
 	 */
-	@Pure
 	protected def getAgentInitializationParameters : Object[] {
 		#[ this.results ]
 	}
@@ -257,7 +273,6 @@ abstract class AbstractSreRunTest extends AbstractSreTest {
 	 * @param fromIndex - the start index.
 	 * @return the index; or <code>-1</code> if not found.
 	 */
-	@Pure
 	protected def indexOfResult(agentId : UUID = null, type : Class<?>, fromIndex : int = 0) : int {
 		if (this.results !== null) {
 			try {
@@ -286,8 +301,9 @@ abstract class AbstractSreRunTest extends AbstractSreTest {
 	 * Start the SRE platform.
 	 * 
 	 * @param type - the type of the agent to launch at start-up.
-	 * @param enableLogging - indicates if the logging is enable or not.
+	 * @param loggingLevel indicates the level of logging.
 	 * @param trackLogErrors indicates if the logged errors should be tracked.
+	 * @param deleteLogHandlers indicates if the loggers' handler should be removed.
 	 * @param timeout - the maximum waiting time in seconds, or <code>-1</code> to ignore the timeout.
 	 *     See {@link #STANDARD_TIMEOUT}, {@link #EXTRA_TIMEOUT} or {@link #NO_TIMEOUT}.
 	 * @return the kernel.
@@ -296,10 +312,10 @@ abstract class AbstractSreRunTest extends AbstractSreTest {
 	@SuppressWarnings("use_reserved_sarl_annotation")
 	@PrivateAPI(isCallerOnly = true)
 	protected def runSre(type : Class<? extends TestingAgent>,
-			enableLogging : boolean = true,
-			trackLogErrors : boolean = true,
+			loggingLevel : Level = TEST_LOGGING_LEVEL,
+			trackLogErrors : boolean = true, deleteLogHandlers : boolean = false,
 			timeout : int = STANDARD_TIMEOUT) : Kernel {
-		val kern = setupTheSreKernel(type, enableLogging, trackLogErrors)
+		val kern = setupTheSreKernel(type, loggingLevel, trackLogErrors, deleteLogHandlers)
 		try {
 			waitForTheKernel(timeout)
 		} catch (exception : SreTimeoutException | TimeoutException) {
@@ -313,7 +329,6 @@ abstract class AbstractSreRunTest extends AbstractSreTest {
 	 *
 	 * @return the module, never {@code null}.
 	 */
-	@Pure
 	protected def getTestingModule : Class<? extends Module> {
 		null
 	}
@@ -349,15 +364,16 @@ abstract class AbstractSreRunTest extends AbstractSreTest {
 	 * Set-up the SRE platform.
 	 * 
 	 * @param type - the type of the agent to launch at start-up.
-	 * @param enableLogging - indicates if the logging is enable or not, i.e. messages are output.
+	 * @param loggingLevel - indicates the level of logging.
 	 * @param trackLogErrors indicates if the logged errors should be tracked.
+	 * @param deleteLogHandlers indicates if the loggers' handler should be removed.
 	 * @return the kernel.
 	 * @throws Exception - if the kernel cannot be launched.
 	 */
-	protected def setupTheSreKernel(type : Class<? extends TestingAgent>, enableLogging : boolean,
-		trackLogErrors : boolean) : Kernel {
+	protected def setupTheSreKernel(type : Class<? extends TestingAgent>, loggingLevel : Level = TEST_LOGGING_LEVEL,
+		trackLogErrors : boolean, deleteLogHandlers : boolean) : Kernel {
 		System::setProperty(VariableNames::toPropertyName(BootConfig::BOOT_AGENT_NAME), type.name)
-		var k = setupTheSreKernel(enableLogging, trackLogErrors)
+		var k = setupTheSreKernel(loggingLevel, trackLogErrors, deleteLogHandlers)
 		this.bootstrap.startAgent(type, getAgentInitializationParameters)
 		return k
 	}
@@ -365,32 +381,46 @@ abstract class AbstractSreRunTest extends AbstractSreTest {
 	/** 
 	 * Set-up the SRE platform.
 	 * 
-	 * @param enableLogging - indicates if the logging is enable or not, i.e. messages are output.
+	 * @param loggingLevel indicates the level of logging.
 	 * @param trackLogErrors indicates if the logged errors should be tracked.
+	 * @param deleteLogHandlers indicates if the loggers' handler should be removed.
 	 * @return the kernel.
 	 * @throws Exception - if the kernel cannot be launched.
 	 */
-	protected def setupTheSreKernel(enableLogging : boolean,
-		trackLogErrors : boolean) : Kernel {
+	protected def setupTheSreKernel(loggingLevel : Level = TEST_LOGGING_LEVEL,
+			trackLogErrors : boolean, deleteLogHandlers : boolean) : Kernel {
 		assertNull("SRE already launched.", this.sreKernel)
-		val logLevel = if(enableLogging) TEST_LOGGING_LEVEL else Level::OFF
-		System::setProperty(VariableNames::toPropertyName(Log4jIntegrationConfig::LEVEL), logLevel.name)
+		val lvl = loggingLevel ?: Level::OFF
+		val glvl = org.arakhne.afc.bootique.log4j.configs.Level::valueOf(lvl)
+		System::setProperty(VariableNames::toPropertyName(Log4jIntegrationConfig::LEVEL), glvl.name)
 		val module = getTestingModule
 		this.results = newHashMap
 		this.bootstrap = new SreMain
 		this.bootstrap.startWithoutAgent(module)
 		this.sreKernel = this.bootstrap.kernel
+		val logger = this.sreKernel.getService(typeof(LoggingService)).platformLogger
+		if (deleteLogHandlers) {
+			for (handler : logger.handlers) {
+				logger.removeHandler(handler)
+			}
+		}
 		if (trackLogErrors) {
-			this.sreKernel.getService(typeof(LoggingService)).platformLogger.addHandler(new Handler {
+			logger.addHandler(new Handler {
 				override publish(record : LogRecord) {
 					if (record.level === Level.SEVERE) {
-						val res = getAgentInitializationParameters().get(0) as List<Object>
-						if (res !== null) {
-							synchronized (res) {
-								res += record
-							}
-						}
+						addResult(record)
 					}
+				}
+
+				override flush {
+				}
+
+				override close {
+				}
+			})
+		} else if (deleteLogHandlers) {
+			logger.addHandler(new Handler {
+				override publish(record : LogRecord) {
 				}
 
 				override flush {

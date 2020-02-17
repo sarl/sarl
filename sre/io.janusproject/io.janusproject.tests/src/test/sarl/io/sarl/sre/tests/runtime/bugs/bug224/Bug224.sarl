@@ -89,7 +89,7 @@ class Bug224 extends AbstractSreRunTest {
 
 	@Test
 	def unregisterInDestroy {
-		typeof(UnregisteredInDestroyAgent).runSre(false, true, NO_TIMEOUT)
+		typeof(UnregisteredInDestroyAgent).runSre(null, true, NO_TIMEOUT)
 		assertEquals(1, getNumberOfResults)
 		var beh = getResult(typeof(MyBehavior), 0)
 		assertEquals(1, beh.initializeEvaluations.intValue)

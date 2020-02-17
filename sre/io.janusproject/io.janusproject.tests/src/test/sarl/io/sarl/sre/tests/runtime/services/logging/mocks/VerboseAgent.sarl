@@ -18,29 +18,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.sre.tests.runtime.bugs.bug872
 
-import io.sarl.sre.tests.runtime.bugs.bug872.mocks.TopAgent
-import io.sarl.sre.tests.testutils.AbstractSreRunTest
-import org.junit.Test
+package io.sarl.sre.tests.runtime.services.logging.mocks
 
-/** Tests for issue #872: Invalid synchronization of the member agent collection.
- *
- * <p>See: https://github.com/sarl/sarl/issues/872
- *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- * @see "https://github.com/sarl/sarl/issues/872"
- */
-@SuppressWarnings("all")
-class Bug872 extends AbstractSreRunTest {
+import io.sarl.sre.tests.testutils.TestingAgent
+import io.sarl.sre.tests.testutils.TestingAgent.RunPolicy
+import io.sarl.core.Logging
+import io.sarl.core.Schedules
+import io.sarl.core.Lifecycle
 
-	@Test
-	def run_01 {
-		typeof(TopAgent).runSre(null, true, SHORT_TIMEOUT)
-		assertFalse(bootAgent.getResult(typeof(Boolean), 0))
+agent VerboseAgent extends TestingAgent {
+	
+	uses Logging, Schedules, Lifecycle
+	
+	def runAgentTest : RunPolicy {
+		in(1000) [
+			error("This is a welcome message")
+			killMe
+		]
+		return null
 	}
-
+	
 }

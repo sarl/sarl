@@ -48,77 +48,77 @@ class Bug794 extends AbstractSreRunTest {
 
 	@Test
 	def spawn1 {
-		typeof(SpawnerAgent1).runSre(false)
+		typeof(SpawnerAgent1).runSre(null)
 		assertEquals(1, getResults.size)
 		assertAllDifferents(getResults)
 	}
 
 	@Test
 	def spawn2 {
-		typeof(SpawnerAgent2).runSre(false)
+		typeof(SpawnerAgent2).runSre(null)
 		assertEquals(2, getResults.size)
 		assertAllDifferents(getResults)
 	}
 
 	@Test
 	def spawn3 {
-		typeof(SpawnerAgent3).runSre(false)
+		typeof(SpawnerAgent3).runSre(null)
 		assertEquals(3, getResults.size)
 		assertAllDifferents(getResults)
 	}
 
 	@Test
 	def spawn4 {
-		typeof(SpawnerAgent4).runSre(false)
+		typeof(SpawnerAgent4).runSre(null)
 		assertEquals(4, getResults.size)
 		assertAllDifferents(getResults)
 	}
 
 	@Test
 	def spawn5 {
-		typeof(SpawnerAgent5).runSre(false)
+		typeof(SpawnerAgent5).runSre(null)
 		assertEquals(5, getResults.size)
 		assertAllDifferents(getResults)
 	}
 
 	@Test
 	def spawn6 {
-		typeof(SpawnerAgent6).runSre(false)
+		typeof(SpawnerAgent6).runSre(null)
 		assertEquals(6, getResults.size)
 		assertAllDifferents(getResults)
 	}
 
 	@Test
 	def spawn7 {
-		typeof(SpawnerAgent7).runSre(false)
+		typeof(SpawnerAgent7).runSre(null)
 		assertEquals(7, getResults.size)
 		assertAllDifferents(getResults)
 	}
 
 	@Test
 	def spawn8 {
-		typeof(SpawnerAgent8).runSre(false)
+		typeof(SpawnerAgent8).runSre(null)
 		assertEquals(8, getResults.size)
 		assertAllDifferents(getResults)
 	}
 
 	@Test
 	def spawn9 {
-		typeof(SpawnerAgent9).runSre(false)
+		typeof(SpawnerAgent9).runSre(null)
 		assertEquals(9, getResults.size)
 		assertAllDifferents(getResults)
 	}
 
 	@Test
 	def spawn10 {
-		typeof(SpawnerAgent10).runSre(false)
+		typeof(SpawnerAgent10).runSre(null)
 		assertEquals(10, getResults.size)
 		assertAllDifferents(getResults)
 	}
 
 	@Test
 	def spawn200 {
-		typeof(SpawnerAgent200).runSre(false)
+		typeof(SpawnerAgent200).runSre(null)
 		assertEquals(200, getResults.size)
 		assertAllDifferents(getResults)
 	}

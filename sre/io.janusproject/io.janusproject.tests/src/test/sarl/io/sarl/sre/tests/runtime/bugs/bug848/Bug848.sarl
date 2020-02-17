@@ -41,7 +41,7 @@ class Bug848 extends AbstractSreRunTest {
 
 	@Test
 	def agentSpawnedReceiving_01 {
-		typeof(TAgent1a).runSre(false)
+		typeof(TAgent1a).runSre(null)
 
 		var bootAgent = getBootAgent
 		assertEquals(2, getNumberOfResults(bootAgent))

@@ -24,6 +24,7 @@ package io.sarl.sre.tests.runtime.boot.shutdown
 import io.sarl.sre.tests.runtime.boot.shutdown.mocks.ShutdownAgent1Mock
 import io.sarl.sre.tests.runtime.boot.shutdown.mocks.ShutdownAgent2Mock
 import io.sarl.sre.tests.testutils.AbstractSreRunTest
+import java.util.logging.Level
 import org.junit.Test
 
 /**
@@ -36,7 +37,7 @@ class ShutdownTest extends AbstractSreRunTest {
 
 	@Test
 	def shutdownWithoutAgent {
-		setupTheSreKernel(false, true)
+		setupTheSreKernel(Level::OFF, true, false)
 		val handler = startTimeOut(false)
 		try {
 			this.bootstrap.shutdown(true)
@@ -48,7 +49,7 @@ class ShutdownTest extends AbstractSreRunTest {
 
 	@Test
 	def shutdownWithAgent1 {
-		setupTheSreKernel(typeof(ShutdownAgent1Mock), false, true)
+		setupTheSreKernel(typeof(ShutdownAgent1Mock), null, true, false)
 		val handler = startTimeOut
 		try {
 			bootstrap.shutdown(true)
@@ -60,7 +61,7 @@ class ShutdownTest extends AbstractSreRunTest {
 
 	@Test
 	def shutdownWithAgent2 {
-		setupTheSreKernel(typeof(ShutdownAgent2Mock), false, true)
+		setupTheSreKernel(typeof(ShutdownAgent2Mock), null, true, false)
 		val handler = startTimeOut
 		try {
 			bootstrap.shutdown(true)

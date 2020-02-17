@@ -55,7 +55,7 @@ class Bug546 {
 		@Test
 		@Ignore
 		def launchTest() : void {
-			typeof(InitAndWaitAgent0).runSre(false, true, EXTRA_TIMEOUT)
+			typeof(InitAndWaitAgent0).runSre(null, true, EXTRA_TIMEOUT)
 		}
 
 	}
@@ -65,7 +65,7 @@ class Bug546 {
 		@Test
 		@Ignore
 		def sendHugeNumberEvents : void {
-			typeof(InitAndWaitAgent1).runSre(false, true, EXTRA_TIMEOUT)
+			typeof(InitAndWaitAgent1).runSre(null, true, EXTRA_TIMEOUT)
 		}
 	
 	}

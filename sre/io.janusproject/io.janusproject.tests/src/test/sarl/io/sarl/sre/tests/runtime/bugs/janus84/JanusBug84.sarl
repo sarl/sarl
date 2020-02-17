@@ -38,7 +38,7 @@ class JanusBug84 extends AbstractSreRunTest {
 
 	@Test
 	def killMeInInit {
-		var kern = typeof(KilledInInitAgent).runSre(false, true, STANDARD_TIMEOUT)
+		var kern = typeof(KilledInInitAgent).runSre(null, true, STANDARD_TIMEOUT)
 		assertNoErrorLog(kern)
 		assertContains(getResults)
 	}

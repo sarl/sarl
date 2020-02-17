@@ -46,7 +46,7 @@ class InitDestroyTest {
 
 		@Test
 		def withinAgentAndBehavior {
-			typeof(MyAgent0).runSre(false, true, SHORT_TIMEOUT)
+			typeof(MyAgent0).runSre(null, true, SHORT_TIMEOUT)
 			assertNoExceptionInResults
 			assertContains(allResults, "AGENT", "BEHAVIOR")
 		}
@@ -57,7 +57,7 @@ class InitDestroyTest {
 
 		@Test
 		def withinAgentAndBehavior {
-			typeof(MyAgent1).runSre(false, true, SHORT_TIMEOUT)
+			typeof(MyAgent1).runSre(null, true, SHORT_TIMEOUT)
 			assertNoExceptionInResults
 			assertContains(allResults, "AGENT", "BEHAVIOR")
 		}

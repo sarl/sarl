@@ -30,6 +30,7 @@ import io.sarl.sre.tests.testutils.AbstractSreRunTest
 import java.util.UUID
 import org.junit.Before
 import org.junit.Test
+import java.util.logging.Level
 
 /**
  * @author $Author: sgalland$
@@ -46,7 +47,7 @@ abstract class AbstractNamespaceServiceTest extends AbstractSreRunTest {
 
 	protected def startTestingFramework : NamespaceService {
 		runTestCase_prepare
-		var kern = setupTheSreKernel(false, false)
+		var kern = setupTheSreKernel(Level::OFF, false, false)
 		var service = kern.getService(typeof(NamespaceService))
 		service.assertNotNull
 		return service
@@ -56,7 +57,7 @@ abstract class AbstractNamespaceServiceTest extends AbstractSreRunTest {
 	protected def runTestCase(type : Class<T>) : T with T {
 		runTestCase_prepare
 
-		var kern = setupTheSreKernel(false, false)
+		var kern = setupTheSreKernel(Level::OFF, false, false)
 		var service = kern.getService(typeof(NamespaceService))
 		service.assertNotNull
 

@@ -40,7 +40,7 @@ class Bug481 extends AbstractSreRunTest {
 
 	@Test
 	def spawnSubAgents {
-		typeof(SpawnerAgent).runSre(false, true, STANDARD_TIMEOUT)
+		typeof(SpawnerAgent).runSre(null, true, STANDARD_TIMEOUT)
 		assertEquals(NB_AGENTS, getNumberOfResults())
 	}
 

@@ -18,29 +18,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.sre.tests.runtime.bugs.bug872
 
-import io.sarl.sre.tests.runtime.bugs.bug872.mocks.TopAgent
-import io.sarl.sre.tests.testutils.AbstractSreRunTest
+package io.sarl.sre.tests.runtime.services.logging
+
 import org.junit.Test
+import io.sarl.sre.tests.runtime.services.logging.mocks.VerboseAgent
+import io.sarl.sre.tests.testutils.AbstractSreRunTest
+import java.util.logging.Level
+import java.util.logging.LogRecord
 
-/** Tests for issue #872: Invalid synchronization of the member agent collection.
- *
- * <p>See: https://github.com/sarl/sarl/issues/872
- *
+/**
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @see "https://github.com/sarl/sarl/issues/872"
  */
-@SuppressWarnings("all")
-class Bug872 extends AbstractSreRunTest {
+class LoggingServiceTest extends AbstractSreRunTest {
 
 	@Test
-	def run_01 {
-		typeof(TopAgent).runSre(null, true, SHORT_TIMEOUT)
-		assertFalse(bootAgent.getResult(typeof(Boolean), 0))
+	def agentLoggingMessageFormat : void {
+		typeof(VerboseAgent).runSre(Level::SEVERE, true, true)
+		var record = typeof(LogRecord).getResult(0)
+		record.assertNotNull;
+		("AGENT-" + bootAgent.toString).assertEquals(record.loggerName)
+		"This is a welcome message".assertEquals(record.message)
 	}
 
 }

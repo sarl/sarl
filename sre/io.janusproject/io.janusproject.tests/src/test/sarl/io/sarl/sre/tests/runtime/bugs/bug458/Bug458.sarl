@@ -38,7 +38,7 @@ class Bug458 extends AbstractSreRunTest {
 
 	@Test
 	def exceptionInInit : void {
-		typeof(KillMeInBehaviorAgent).runSre(false, true, STANDARD_TIMEOUT)
+		typeof(KillMeInBehaviorAgent).runSre(null, true, STANDARD_TIMEOUT)
 	}
 
 }

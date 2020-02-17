@@ -401,7 +401,7 @@ class Bug861 {
 
 		@Test
 		def run_01 : void {
-			typeof(BootAgent).runSre(false, STANDARD_TIMEOUT)
+			typeof(BootAgent).runSre(null, STANDARD_TIMEOUT)
 
 		/* UUID bootAgent = getBootAgent()
 		 * assertEquals(2, getNumberOfResults(bootAgent))
