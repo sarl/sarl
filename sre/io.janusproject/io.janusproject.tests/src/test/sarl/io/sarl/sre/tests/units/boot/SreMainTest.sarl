@@ -59,7 +59,17 @@ import static extension org.mockito.Mockito.*
  */
 class SreMainTest extends AbstractSreTest {
 
-	val DEFAULT_OPTIONS = #{
+	val DEFAULT_OPTIONS = #[
+		"XasyncProbeUpdate",
+		"Xinjectagents",
+		"XinternalErrorLogLevel",
+		"XkeepAlive",
+		"Xmnthreads",
+		"Xmxthreads",
+		"XserviceStartTimeout",
+		"XserviceStopTimeout",
+		"XthreadPurge",
+		"XthreadTimeout",
 		"bootType",
 		"classpath",
 		"config",
@@ -74,16 +84,8 @@ class SreMainTest extends AbstractSreTest {
 		"printconfig",
 		"rootContextId",
 		"version",
-		"XasyncProbeUpdate",
-		"XinternalErrorLogLevel",
-		"XkeepAlive",
-		"xml",
-		"Xmnthreads",
-		"Xmxthreads",
-		"XserviceStartTimeout",
-		"XserviceStopTimeout",
-		"XthreadTimeout"
-	}
+		"xml"
+	]
 
 	@Nullable
 	var bootstrap : SreMain

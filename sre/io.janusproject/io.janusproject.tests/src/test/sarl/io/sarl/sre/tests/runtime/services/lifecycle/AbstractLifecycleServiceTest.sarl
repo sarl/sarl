@@ -32,6 +32,7 @@ import io.sarl.sre.tests.runtime.services.lifecycle.mocks.TaskKillTestAgent
 import io.sarl.sre.tests.runtime.services.lifecycle.mocks.ThreeAgentsSpawnTestAgent
 import io.sarl.sre.tests.testutils.AbstractSreRunTest
 import org.junit.Test
+import org.junit.Before
 
 /**
  * @author $Author: sgalland$
@@ -40,6 +41,13 @@ import org.junit.Test
  * @mavenartifactid $ArtifactId$
  */
 abstract class AbstractLifecycleServiceTest extends AbstractSreRunTest {
+
+	protected abstract def runTestCase_prepare
+	
+	@Before
+	def setUp : void {
+		runTestCase_prepare
+	}
 
 	@Test
 	def spawnAgent_1 {

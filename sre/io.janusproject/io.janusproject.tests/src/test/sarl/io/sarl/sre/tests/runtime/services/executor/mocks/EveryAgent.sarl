@@ -25,6 +25,7 @@ import io.sarl.core.Destroy
 import io.sarl.core.Lifecycle
 import io.sarl.core.Schedules
 import io.sarl.sre.tests.testutils.TestingAgent
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * @author $Author: sgalland$
@@ -36,12 +37,12 @@ agent EveryAgent extends TestingAgent {
 
 	uses Schedules, Lifecycle
 
-	var nb = 0
+	var nb = new AtomicInteger(0)
 	
 	override runAgentTest : RunPolicy {
 		every(1000) [
-			nb++
-			if (nb == 2) {
+			var n = nb.incrementAndGet
+			if (n == 2) {
 				killMe
 			}
 		]
@@ -49,7 +50,7 @@ agent EveryAgent extends TestingAgent {
 	}
 
 	on Destroy {
-		addResult(this.nb)
+		addResult(this.nb.get)
 	}
 
 }

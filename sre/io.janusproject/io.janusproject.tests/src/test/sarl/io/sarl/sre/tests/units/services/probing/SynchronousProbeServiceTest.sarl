@@ -79,7 +79,7 @@ class SynchronousProbeServiceTest extends AbstractSarlTest {
 		this.fieldAccess = typeof(FieldAccess).mock
 		when(this.fieldAccess.name).thenReturn(this.nameObject)
 		this.namespaceService = typeof(NamespaceService).mock
-		when(this.namespaceService.findObject(any)).thenReturn(this.fieldAccess)
+		when(this.namespaceService.findObject(typeof(SarlName).any)).thenReturn(this.fieldAccess)
 		this.nameParser = typeof(NameParser).mock
 		when(this.nameParser.normalize(any(typeof(URI)))).thenAnswer[it.getArgument(0) as URI]
 		when(this.nameParser.decode(any(typeof(URI)))).thenAnswer[

@@ -19,10 +19,9 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.tests.runtime.services.probing
+package io.sarl.sre.tests.runtime.services.namespace
 
-import io.sarl.sre.services.probing.Probe
-import io.sarl.sre.services.probing.ProbeService
+import io.sarl.sre.services.namespace.NamespaceService
 
 /**
  * @author $Author: sgalland$
@@ -30,18 +29,18 @@ import io.sarl.sre.services.probing.ProbeService
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class AsynchronousProbeServiceTest extends AbstractProbeServiceTest {
+class FinderBasedNamespaceServiceTest extends AbstractNamespaceServiceTest {
 
-	protected def runTestCase_prepare {
+	protected override runTestCase_prepare {
 	}
 
-	protected def runTestCase_beforeChangeField(service : ProbeService, probe : Probe<Integer>) {
+	protected override runTestCase_beforeChangeField(service : NamespaceService, namedObject : Object) {
 	}
-	
-	protected def runTestCase_beforeStopTest(service : ProbeService, probe : Probe<Integer>) {
+
+	protected override runTestCase_beforeStopTest(service : NamespaceService, namedObject : Object) {
 	}
-	
-	protected def runTestCase_afterStopTest(service : ProbeService, probe : Probe<Integer>) {
+
+	protected override runTestCase_afterStopTest(service : NamespaceService, namedObject : Object) {
 	}
-	
+
 }

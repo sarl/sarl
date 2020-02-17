@@ -21,12 +21,15 @@
 
 package io.sarl.sre.tests.runtime.services.executor
 
+import io.sarl.lang.annotation.PrivateAPI
+import io.sarl.sre.Kernel
 import io.sarl.sre.tests.runtime.services.executor.mocks.AtFixedDelayAgent
 import io.sarl.sre.tests.runtime.services.executor.mocks.CancelTaskAgent
 import io.sarl.sre.tests.runtime.services.executor.mocks.EveryAgent
 import io.sarl.sre.tests.runtime.services.executor.mocks.ExecuteAgent
 import io.sarl.sre.tests.runtime.services.executor.mocks.GetActiveTasksAgent
 import io.sarl.sre.tests.runtime.services.executor.mocks.InAgent
+import io.sarl.sre.tests.runtime.services.executor.mocks.WaiterAgent
 import io.sarl.sre.tests.testutils.AbstractSreRunTest
 import java.util.List
 import java.util.UUID
@@ -56,14 +59,36 @@ abstract class AbstractExecutorServiceRunTest extends AbstractSreRunTest {
 		assertInstanceOf(typeof(UUID), all.get(0))
 	}
 
+	/** Every task should be stopped when kill me is invoked
+	 */
 	@Test
-	def every {
+	def every_00 {
 		typeof(EveryAgent).runSre(false, true, STANDARD_TIMEOUT)
+		// Wait two more seconds in order to give a chance to the every task to be run even if the agent is died
+		Thread::sleep(2000)
 		var all = allResults
 		assertEquals(1, all.size)
 		assertEquals(2, all.get(0))
 	}
 
+	/** Every task should be stopped when kill me is invoked
+	 */
+	@Test
+	@SuppressWarnings("use_reserved_sarl_annotation")
+	@PrivateAPI(isCallerOnly = true)
+	def every_01 {
+		val kern = typeof(WaiterAgent).setupTheSreKernel(false, true)
+		kern.spawn(typeof(EveryAgent), [], getAgentInitializationParameters)
+		try {
+			waitForTheKernel(STANDARD_TIMEOUT)
+		} finally {
+			Kernel::executeForcedAgentStop(kern)
+		}
+		var all = allResults
+		assertEquals(1, all.size)
+		assertEquals(2, all.get(0))
+	}
+	
 	@Test
 	def atFixedDelay {
 		typeof(AtFixedDelayAgent).runSre(false, true, STANDARD_TIMEOUT)
@@ -86,16 +111,20 @@ abstract class AbstractExecutorServiceRunTest extends AbstractSreRunTest {
 	}
 
 	@Test
-	def cancel {
+	def cancel_00 {
 		typeof(CancelTaskAgent).runSre(false, true, STANDARD_TIMEOUT)
 		var all = allResults
 		assertEquals(4, all.size)
+		// After creating T1
 		var actives1 = all.get(typeof(List), 0)
 		assertContains(actives1, "T1")
+		// After creating T1 and T2
 		var actives2 = all.get(typeof(List), 1)
 		assertContains(actives2, "T1", "T2")
+		// After cancel T1. T2 is still active
 		var actives3 = all.get(typeof(List), 2)
 		assertContains(actives3, "T2")
+		// Inside on destroy
 		var actives4 = all.get(typeof(List), 3)
 		assertContains(actives4)
 	}

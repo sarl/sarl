@@ -21,11 +21,20 @@
 
 package io.sarl.sre.tests.runtime.services.lifecycle
 
+import io.sarl.sre.boot.configs.subconfigs.LifecycleConfig
+import org.arakhne.afc.bootique.variables.VariableNames
+
 /**
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class InjectionBasedLifecycleServiceTest extends AbstractLifecycleServiceTest {
+class StandardLifecycleServiceTest extends AbstractLifecycleServiceTest {
+
+	protected def runTestCase_prepare {
+		var prop = VariableNames::toPropertyName(LifecycleConfig::CREATE_AGENT_WITH_INJECTOR_NAME)
+		System::setProperty(prop, Boolean::FALSE.toString)
+	}
+
 }

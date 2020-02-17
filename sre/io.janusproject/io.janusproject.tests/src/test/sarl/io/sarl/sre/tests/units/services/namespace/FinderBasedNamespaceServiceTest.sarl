@@ -23,6 +23,10 @@ package io.sarl.sre.tests.units.services.namespace
 
 import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.sre.naming.ContextName
+import io.sarl.sre.naming.ContextSchemeNameParser
+import io.sarl.sre.naming.INameParser
+import io.sarl.sre.naming.ISchemeNameParser
+import io.sarl.sre.naming.NameParser
 import io.sarl.sre.naming.NameScheme
 import io.sarl.sre.naming.SpaceName
 import io.sarl.sre.services.context.Context
@@ -62,6 +66,13 @@ class FinderBasedNamespaceServiceTest extends AbstractSarlTest {
 	var finder : ContextNamespaceFinder
 
 	@Nullable
+	var nameParser : NameParser
+
+	@SuppressWarnings("raw_type")
+	@Nullable
+	var schemeParser : ISchemeNameParser
+
+	@Nullable
 	var cid0 : UUID
 
 	@Nullable
@@ -73,13 +84,17 @@ class FinderBasedNamespaceServiceTest extends AbstractSarlTest {
 	@Nullable
 	var ctx1 : Context
 
-	@SuppressWarnings("use_reserved_sarl_annotation")
+	@SuppressWarnings("raw_type", "use_reserved_sarl_annotation")
 	@Before
 	@PrivateAPI(isCallerOnly = true)
 	def setUp : void {
 		this.contextService = typeof(ContextService).mock
+		this.schemeParser = new ContextSchemeNameParser
 		this.finder = new ContextNamespaceFinder(this.contextService)
 		this.service = new FinderBasedNamespaceService
+		this.nameParser = new NameParser
+		this.nameParser.schemeNameParsers = Collections::singleton(this.schemeParser)
+		this.service.nameParser = this.nameParser
 		this.service.namespaceFinders = Collections::singleton(this.finder)
 
 		var spaceRepository  = typeof(SpaceRepository).mock
@@ -107,6 +122,14 @@ class FinderBasedNamespaceServiceTest extends AbstractSarlTest {
 				return null
 			}
 		]
+	}
+
+	@Test
+	def getParserName : void {
+		this.nameParser.assertSame(this.service.nameParser)
+		var parser = typeof(INameParser).mock
+		this.service.nameParser = parser
+		parser.assertSame(this.service.nameParser)
 	}
 
 	@Test
@@ -183,6 +206,47 @@ class FinderBasedNamespaceServiceTest extends AbstractSarlTest {
 		var name = typeof(SpaceName).mock
 		when(name.scheme).thenReturn(NameScheme::SPACE)
 		this.service.findObject(name).assertNull
+	}
+
+	@Test
+	def findObject_String_00 : void {
+		this.ctx0.assertSame(this.service.findObject("context:" + this.cid0.toString))
+	}
+
+	@Test
+	def findObject_String_01 : void {
+		var fld = this.service.findObject("context:" + this.cid0.toString + "#myfield")
+		assertInstanceOf(typeof(FieldAccess), fld)
+		var fa = fld as FieldAccess
+		this.ctx0.assertSame(fa.instance)
+		fa.field.assertNotNull
+		"myfield".assertEquals(fa.field.name)
+		34.assertEquals(fa.get)
+	}
+
+	@Test
+	def findObject_String_02 : void {
+		this.service.findObject("context:" + this.cid0.toString + "#xyz").assertNull
+	}
+
+	@Test
+	def findObject_String_03 : void {
+		this.service.findObject("context:").assertNull
+	}
+
+	@Test
+	def findObject_String_Class_00_Context : void {
+		this.ctx0.assertSame(this.service.findObject("context:" + this.cid0.toString, typeof(Context)))
+	}
+
+	@Test
+	def findObject_String_Class_00_Object : void {
+		this.ctx0.assertSame(this.service.findObject("context:" + this.cid0.toString, typeof(Object)))
+	}
+
+	@Test
+	def findObject_String_Class_00_FieldAccess : void {
+		this.service.findObject("context:" + this.cid0.toString, typeof(FieldAccess)).assertNull
 	}
 
 	@Test
