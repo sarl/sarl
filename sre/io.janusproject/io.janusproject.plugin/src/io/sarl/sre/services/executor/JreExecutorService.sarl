@@ -139,13 +139,15 @@ class JreExecutorService extends AbstractExecutorService implements PreReleasabl
 			Thread::setDefaultUncaughtExceptionHandler(uncaughtHandler)
 		}
 		// Launch a periodic task that is purging the executor pools.
-		var es = executorService
-		var ses = scheduledExecutorService
-		if (es instanceof ThreadPoolExecutor || ses instanceof ThreadPoolExecutor) {
-			var cfg = getConfiguration
-			val delay = if (cfg !== null) cfg.timeout * 2 else DEFAULT_DELAY
-			this.purgeTask = scheduledExecutorService.scheduleWithFixedDelay(new Purger(this),
-				delay, delay, TimeUnit::SECONDS)
+		var cfg = getConfiguration
+		if (cfg.isPeriodicThreadPoolPurge) {
+			var es = executorService
+			var ses = scheduledExecutorService
+			if (es instanceof ThreadPoolExecutor || ses instanceof ThreadPoolExecutor) {
+				val delay = if(cfg !== null) cfg.timeout * 2 else DEFAULT_DELAY
+				this.purgeTask = scheduledExecutorService.scheduleWithFixedDelay(new Purger(this), delay, delay,
+					TimeUnit::SECONDS)
+			}
 		}
 	}
 
@@ -217,7 +219,7 @@ class JreExecutorService extends AbstractExecutorService implements PreReleasabl
 		scheduledExecutorService.scheduleWithFixedDelay(command.protectRunnable(logger), initialDelay, delay, unit)
 	}
 
-	def remove(task : Runnable) : Boolean {
+	def remove(task : Runnable) : boolean {
 		var es = executorService
 		var cancel1 = false
 		if (es instanceof ThreadPoolExecutor) {

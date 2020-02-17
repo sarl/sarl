@@ -33,7 +33,7 @@ import java.net.URI
  */
 interface INameParser {
 
-	/** Parse the scheme.
+	/** Parse the scheme for a named object.
 	 */
 	@Pure
 	static def getSchemeObject(scheme : String) : NameScheme {
