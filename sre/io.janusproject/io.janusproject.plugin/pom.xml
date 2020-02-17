@@ -23,6 +23,35 @@
 
 	<build>
 		<plugins>
+			<!-- CAUTION:
+					The following plugin is copying the service definitions from META-INF/services
+					into the target/classes/META-INF/services because the "eclipse-plugin"
+					reactor does not copy these files in this particular location.
+					But, it is mandatory in order to enable debugging into the Eclipse DSL tool.
+			-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-bootique-module-providers</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.outputDirectory}/META-INF/services</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.basedir}/META-INF/services</directory>
+									<filtering>false</filtering>
+								</resource>
+							</resources>
+							<overwrite>true</overwrite>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>com.google.code.maven-replacer-plugin</groupId>
 				<artifactId>replacer</artifactId>
