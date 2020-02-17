@@ -57,6 +57,8 @@ final class Messages extends NLS {
 	public static var ExecutorsConfigModule_9 : String
 	public static var ExecutorsConfigModule_10 : String
 	public static var ExecutorsConfigModuleProvider_0 : String
+	public static var LifecycleConfigModule_0 : String
+	public static var LifecycleConfigModule_1 : String
 	public static var LifecycleConfigModuleProvider_0 : String
 	public static var LoggingConfigModuleProvider_0 : String
 	public static var ServicesConfigModule_0 : String

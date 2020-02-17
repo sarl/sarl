@@ -26,12 +26,16 @@ import io.bootique.BQModule
 import io.bootique.BQModuleProvider
 import io.bootique.annotation.BQConfig
 import io.bootique.annotation.BQConfigProperty
+import io.bootique.meta.application.OptionMetadata
 import java.lang.reflect.Type
 import java.util.Collections
 import java.util.Map
+import org.arakhne.afc.bootique.variables.VariableDecls
 import org.eclipse.xtend.lib.annotations.Accessors
 
 import static io.sarl.sre.boot.configs.subconfigs.LifecycleConfig.*
+
+import static extension io.bootique.BQCoreModule.extend
 
 /** 
  * Configuration for the agent lifecycle management.
@@ -91,7 +95,13 @@ class LifecycleConfig {
  */
 class LifecycleConfigModule extends AbstractModule {
 
+	static val XINJECTAGENT_OPTION = "Xinjectagents"
+
 	override configure : void {
+		VariableDecls::extend(binder).declareVar(CREATE_AGENT_WITH_INJECTOR_NAME)
+		binder.extend.addOption(
+			OptionMetadata::builder(XINJECTAGENT_OPTION, Messages::LifecycleConfigModule_0).valueRequired(
+				Messages::LifecycleConfigModule_1).build).mapConfigPath(XINJECTAGENT_OPTION, CREATE_AGENT_WITH_INJECTOR_NAME)
 	}
 
 }
