@@ -44,7 +44,6 @@ import java.util.TreeSet
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.ConcurrentSkipListSet
-import java.util.concurrent.CopyOnWriteArraySet
 
 /**
  * Registry of all {@code BehaviorGuardEvaluator} classes containing a method to evaluate the guard of a given behavior (on clause in SARL behavior).
@@ -427,12 +426,12 @@ class BehaviorGuardEvaluatorRegistry {
 				val eventMethodsInListener = entry.value
 
 				val pair = this.behaviorGuardEvaluators.get(eventType)
-				var eventSubscribers : Set<BehaviorGuardEvaluator>
+				var eventSubscribers : ConcurrentSkipListSet<BehaviorGuardEvaluator>
 
 				if (pair === null) {
-					//TODO Array-based implementation may be not efficient
-					eventSubscribers = new CopyOnWriteArraySet
-					this.behaviorGuardEvaluators.put(eventType, new Pair(filter, eventSubscribers))
+					eventSubscribers = new ConcurrentSkipListSet
+					var p = new Pair(filter, eventSubscribers)
+					this.behaviorGuardEvaluators.put(eventType, p)
 					firstInit = true
 				} else {
 					eventSubscribers = pair.value

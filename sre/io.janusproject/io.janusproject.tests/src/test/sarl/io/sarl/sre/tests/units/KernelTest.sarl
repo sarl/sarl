@@ -98,7 +98,7 @@ class KernelTest extends AbstractSreTest {
 			}
 			return null
 		]
-		this.kernel = new Kernel(this.serviceManager, this.handler)
+		this.kernel = new Kernel([this.serviceManager], [this.handler])
 		this.lifecycle.verify.addKernelAgentLifecycleListener(any)
 		this.serviceManager.verify.startServices(any)
 	}

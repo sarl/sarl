@@ -302,7 +302,7 @@ abstract class AbstractSreRunTest extends AbstractSreTest {
 		val kern = setupTheSreKernel(type, enableLogging, trackLogErrors)
 		try {
 			waitForTheKernel(timeout)
-		} catch (exception : TimeoutException) {
+		} catch (exception : SreTimeoutException | TimeoutException) {
 			Kernel::executeKernelStopWhenNoAgentAlive(kern)
 			throw exception
 		}
@@ -318,7 +318,7 @@ abstract class AbstractSreRunTest extends AbstractSreTest {
 		null
 	}
 
-	/** Assert the the given kernel has no error on its logs.
+	/** Assert that the given kernel has no error on its logs.
 	 *
 	 * @param kern the kernel.
 	 */
@@ -329,8 +329,23 @@ abstract class AbstractSreRunTest extends AbstractSreTest {
 			}
 		}
 	}
-	
-	/**
+
+	/** Assert that not exception is inside the results of the test run.
+	 */
+	protected def assertNoExceptionInResults {
+		var list = newArrayList
+		for (obj : allResults) {
+			if (obj instanceof Throwable) {
+				list += obj
+			}
+		}
+		if (!list.empty) {
+			// Only the first is logged
+			throw list.get(0)
+		}
+	}
+
+	/** 
 	 * Set-up the SRE platform.
 	 * 
 	 * @param type - the type of the agent to launch at start-up.
@@ -421,7 +436,17 @@ abstract class AbstractSreRunTest extends AbstractSreTest {
 			Thread.sleep(100)
 		}
 		if (isSreRunning) {
-			throw new TimeoutException
+			var cause : Throwable = null
+			for (result : allResults) {
+				if (result instanceof Throwable) {
+					cause = result
+					break
+				}
+			}
+			if (cause !== null) {
+				throw new SreTimeoutException(cause)
+			}
+			throw new SreTimeoutException
 		}
 	}
 

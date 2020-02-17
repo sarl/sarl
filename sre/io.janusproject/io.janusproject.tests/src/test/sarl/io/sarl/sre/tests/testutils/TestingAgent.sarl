@@ -255,11 +255,11 @@ abstract agent TestingAgent {
 	 * @mavenartifactid $ArtifactId$
 	 */
 	enum RunPolicy {
-		/** Run the agent in its normal way. */
+		/** Run the agent in its normal way, i.e. no killing. */
 		STANDARD,
-		/** Kill the agent at the return of the test function. */
+		/** Kill the agent at the return of the test function, i.e. during the initialization stage. */
 		IMMEDIATE_KILLING,
-		/** Kill the agent after a small amount of time. */
+		/** Kill the agent after a small amount of time, i.e. outside the initialization stage. */
 		DIFFERED_KILLING
 	}
 
