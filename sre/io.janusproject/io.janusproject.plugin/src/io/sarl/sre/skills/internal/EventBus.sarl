@@ -172,7 +172,7 @@ class EventBus {
 
 		val behaviorGuardEvaluators = this.behaviorGuardEvaluatorRegistry.getBehaviorGuardEvaluators(^event)
 
-		if (behaviorGuardEvaluators !== null) {
+		if (behaviorGuardEvaluators !== null && !behaviorGuardEvaluators.empty) {
 			val behaviorsMethodsToExecute = ^event.evaluateGuards(behaviorGuardEvaluators, logger)
 			if (behaviorsMethodsToExecute !== null && !behaviorsMethodsToExecute.empty) {
 				behaviorsMethodsToExecute.executeBehaviorMethodsInParalellWithSynchroAtTheEnd(thrownExceptions, logger)
