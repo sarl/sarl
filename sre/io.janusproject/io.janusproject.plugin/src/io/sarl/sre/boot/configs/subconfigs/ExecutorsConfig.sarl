@@ -129,6 +129,21 @@ class ExecutorsConfig {
 	 */
 	public static val INTERNAL_ERROR_VERBOSE_LEVEL_VALUE = Level::DEBUG
 
+	/** 
+	 * Name of the property that indicates if the executor service is purging the thread queues periodically.
+	 * 
+	 * @see #PERIODIC_THREAD_POOL_PURGE_VALUE
+	 * @since 0.11
+	 */
+	public static val PERIODIC_THREAD_POOL_PURGE_NAME = PREFIX + ".periodicThreadPoolPurge"
+
+	/** 
+	 * The default flag that indicates if the executor service is purging the thread queues periodically.
+	 * 
+	 * @see #PERIODIC_THREAD_POOL_PURGE_NAME
+	 * @since 0.11
+	 */
+	public static val PERIODIC_THREAD_POOL_PURGE_VALUE = true
 
 
 
@@ -145,6 +160,9 @@ class ExecutorsConfig {
 	@Accessors(PUBLIC_GETTER)
 	var timeout : int = THREAD_TIMEOUT_VALUE
 
+	@Accessors(PUBLIC_GETTER)
+	var periodicThreadPoolPurge : boolean = PERIODIC_THREAD_POOL_PURGE_VALUE
+	
 	/** Change the maximum number of threads that could be used by the executor service.
 	 *
 	 * @param maxThreads the max number.
@@ -238,6 +256,17 @@ class ExecutorsConfig {
 		return this.internalErrorVerboseLevel
 	}
 
+	/** 
+	 * Change the verbosity level of the internal errors.
+	 * 
+	 * @return the verbose level.
+	 * @since 0.11
+	 */
+	@BQConfigProperty("Indicates if the executor service is purging the thread pools periodically.")
+	def setPeriodicThreadPoolPurge(purge : boolean) {
+		this.periodicThreadPoolPurge = purge
+	}
+
 }
 
 /** 
@@ -261,6 +290,8 @@ class ExecutorsConfigModule extends AbstractModule {
 
 	static val XINTERNALERRORLOGLEVEL_OPTION = "XinternalErrorLogLevel"
 
+	static val XTHREADPURGE_OPTION = "XthreadPurge"
+	
 	override configure : void {
 		VariableDecls::extend(binder).declareVar(MAX_NUMBER_OF_THREADS_IN_EXECUTOR_NAME)
 		binder.extend.addOption(
@@ -297,6 +328,13 @@ class ExecutorsConfigModule extends AbstractModule {
 				.valueRequired(Messages::ExecutorsConfigModule_8)
 				.build)
 				.mapConfigPath(XINTERNALERRORLOGLEVEL_OPTION, INTERNAL_ERROR_VERBOSE_LEVEL_NAME)
+
+		VariableDecls::extend(binder).declareVar(PERIODIC_THREAD_POOL_PURGE_NAME)
+		binder.extend.addOption(
+			OptionMetadata::builder(XTHREADPURGE_OPTION,
+				MessageFormat::format(Messages::ExecutorsConfigModule_9, PERIODIC_THREAD_POOL_PURGE_VALUE.toString)).
+				valueRequired(Messages::ExecutorsConfigModule_10).build).mapConfigPath(XTHREADPURGE_OPTION,
+					PERIODIC_THREAD_POOL_PURGE_NAME)
 	}
 
 }
