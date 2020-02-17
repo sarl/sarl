@@ -45,6 +45,7 @@ import java.util.logging.LogRecord
 import java.util.logging.Logger
 import javax.inject.Inject
 import javax.inject.Singleton
+import javax.inject.Provider
 
 /** 
  * This class represents the Kernel of the SRE platform.
@@ -88,17 +89,17 @@ class Kernel {
 	 */
 	@SuppressWarnings("discouraged_reference")
 	@Inject
-	new (serviceManager : IServiceManager, exceptionHandler : UncaughtExceptionHandler) {
+	new (serviceManager : Provider<IServiceManager>, exceptionHandler : Provider<UncaughtExceptionHandler>) {
 		// Initialize the fields
 		this.stopListener = createKernelListener
-		this.serviceManager = serviceManager
+		this.serviceManager = serviceManager.get
 		this.loggingService = this.serviceManager.getService(typeof(LoggingService))
 		this.spawnService = this.serviceManager.getService(typeof(LifecycleService))
 		this.contextService = this.serviceManager.getService(typeof(ContextService))
 
 		// Ensure that all the threads has a default hander.
 		if (exceptionHandler !== null) {
-			Thread::setDefaultUncaughtExceptionHandler(exceptionHandler)
+			Thread::setDefaultUncaughtExceptionHandler(exceptionHandler.get)
 		}
 
 		// Listen on the kernel's events

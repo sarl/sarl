@@ -38,6 +38,7 @@ import com.google.inject.Module
 import io.bootique.BQModule
 import io.sarl.sre.spaces.SpaceParticipantListenerFactory
 import io.sarl.sre.internal.SpaceParticipantEventEmitterFactory
+import javax.inject.Provider
 
 /** 
  * Module for configuring the methods for firing the specific events that are defined into the SARL API.
@@ -55,8 +56,8 @@ class PlatformEventEmitterModule extends AbstractModule {
 	@Provides
 	@KernelScope
 	@Singleton
-	static def provideExternalContextMemberListener(logging : LoggingService) : ExternalContextMemberListener {
-		new ContextMemberEventEmitter(logging.kernelLogger)
+	static def provideExternalContextMemberListener(logging : Provider<LoggingService>) : ExternalContextMemberListener {
+		new ContextMemberEventEmitter(logging.get.kernelLogger)
 	}
 
 	@Provides
@@ -83,8 +84,8 @@ class PlatformEventEmitterModule extends AbstractModule {
 	@Provides
 	@KernelScope
 	@Singleton
-	static def provideLifecycleServiceListener(logging : LoggingService) : LifecycleServiceListener {
-		new AgentEventEmitter(logging.kernelLogger)
+	static def provideLifecycleServiceListener(logging : Provider<LoggingService>) : LifecycleServiceListener {
+		new AgentEventEmitter(logging.get.kernelLogger)
 	}
 
 }

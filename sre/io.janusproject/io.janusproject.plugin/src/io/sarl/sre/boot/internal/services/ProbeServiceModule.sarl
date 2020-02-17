@@ -64,15 +64,16 @@ class ProbeServiceModule extends AbstractModule {
 	 */
 	@Singleton
 	@Provides
-	def providesProbeService(sreConfig : Provider<SreConfig>, injector : Injector, service : ExecutorService,
-		namespaceService : NamespaceService, nameParser : NameParser,
+	def providesProbeService(sreConfig : Provider<SreConfig>, injector : Injector,
+		service : Provider<ExecutorService>, namespaceService : Provider<NamespaceService>,
+		nameParser : Provider<NameParser>,
 		listenerCollectionProvider : Provider<SmartListenerCollection<?>>) : ProbeService {
 		var ps : ProbeService
 		var cfgInstance = sreConfig.get
 		if (cfgInstance.services.asynchronousProbeUpdate) {
-			ps = new AsynchronousProbeService(service, namespaceService, nameParser, listenerCollectionProvider)
+			ps = new AsynchronousProbeService(service.get, namespaceService.get, nameParser.get, listenerCollectionProvider)
 		} else {
-			ps = new SynchronousProbeService(namespaceService, nameParser, listenerCollectionProvider)
+			ps = new SynchronousProbeService(namespaceService.get, nameParser.get, listenerCollectionProvider)
 		}
 		injector.injectMembers(ps)
 		return ps

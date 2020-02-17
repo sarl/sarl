@@ -60,7 +60,7 @@ class LifecycleServiceModule extends AbstractModule {
 	 */
 	@Provides
 	@Singleton
-	def providetLifecycleService(config : Provider<SreConfig>, injector : Injector) : LifecycleService {
+	def provideLifecycleService(config : Provider<SreConfig>, injector : Injector) : LifecycleService {
 		val cfg = config.get.services.lifecycle
 		if (cfg.isCreateAgentsWithInjector) {
 			// Creation of agents with injection

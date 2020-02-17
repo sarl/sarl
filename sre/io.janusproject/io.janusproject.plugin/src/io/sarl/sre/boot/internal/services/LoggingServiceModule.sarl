@@ -36,6 +36,7 @@ import org.arakhne.afc.bootique.log4j.configs.Log4jIntegrationConfig
 import static extension com.google.inject.multibindings.Multibinder.*
 import javax.inject.Singleton
 import io.sarl.sre.services.logging.JulLoggerCreator
+import javax.inject.Provider
 
 /** 
  * Module for the logging services.
@@ -54,14 +55,14 @@ class LoggingServiceModule extends AbstractModule {
 	/** 
 	 * Replies the verbose level.
 	 * 
-	 * @param configFactory accessor to the bootique factory.
+	 * @param configFactory the bootique configuration for log4j.
 	 * @param injector the injector of the members.
 	 * @return the verbose level.
 	 */
 	@Provides
 	@Singleton
-	def provideLoggingService(loggingConfig : Log4jIntegrationConfig, injector : Injector) : LoggingService {
-		var level = loggingConfig.level
+	def provideLoggingService(loggingConfig : Provider<Log4jIntegrationConfig>, injector : Injector) : LoggingService {
+		var level = loggingConfig.get.level
 		var srv : LoggingService
 		if (level != Level::OFF) {
 			srv = new JulLoggingService(injector.getInstance(typeof(JulLoggerCreator)))

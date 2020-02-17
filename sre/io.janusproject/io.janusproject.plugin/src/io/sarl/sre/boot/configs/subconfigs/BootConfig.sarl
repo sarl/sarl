@@ -45,6 +45,7 @@ import org.arakhne.afc.bootique.variables.VariableDecls
 import static io.sarl.sre.boot.configs.subconfigs.BootConfig.*
 
 import static extension io.bootique.BQCoreModule.extend
+import javax.inject.Provider
 
 /** 
  * Configuration for specifying the SRE booting parameters.
@@ -457,8 +458,8 @@ class BootConfigModule extends AbstractModule {
 	 */
 	@Provides
 	@Named(BOOT_AGENT_NAME)
-	def getBootAgentType(config : SreConfig) : Class<? extends Agent> {
-		config.boot.getBootAgent(getClass.getClassLoader)
+	def getBootAgentType(config : Provider<SreConfig>) : Class<? extends Agent> {
+		config.get.boot.getBootAgent(getClass.getClassLoader)
 	}
 
 	/** Replies the programmatic bootstrap for the SRE.
@@ -480,8 +481,8 @@ class BootConfigModule extends AbstractModule {
 	@Provides
 	@Named(ROOT_CONTEXT_ID_NAME)
 	@Singleton
-	def getRootContextID(config : SreConfig) : UUID {
-		config.boot.rootContextID
+	def getRootContextID(config : Provider<SreConfig>) : UUID {
+		config.get.boot.rootContextID
 	}
 
 	/** 
@@ -493,8 +494,8 @@ class BootConfigModule extends AbstractModule {
 	@Provides
 	@Named(ROOT_DEFAULT_SPACE_ID_NAME)
 	@Singleton
-	def getRootSpaceID(config : SreConfig) : UUID {
-		config.boot.rootSpaceID
+	def getRootSpaceID(config : Provider<SreConfig>) : UUID {
+		config.get.boot.rootSpaceID
 	}
 
 }

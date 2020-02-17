@@ -73,8 +73,8 @@ class ExecutorServiceModule extends AbstractModule {
 	 */
 	@Provides
 	@Singleton
-	def providesVerboseThreadExecutorPolicy(logService : LoggingService) : VerboseThreadExecutorPolicy {
-		new VerboseThreadExecutorPolicy(logService)
+	def providesVerboseThreadExecutorPolicy(logService : Provider<LoggingService>) : VerboseThreadExecutorPolicy {
+		new VerboseThreadExecutorPolicy(logService.get)
 	}
 
 	/** 
@@ -91,17 +91,18 @@ class ExecutorServiceModule extends AbstractModule {
 	/**
 	 * Construct a handler for tasks that cannot be executed by a ThreadPoolExecutor.
 	 * 
-	 * @param loggingConfig accessor to the logging bootique factory.
-	 * @param executorsConfig accessor to the execution bootique factory.
+	 * @param loggingConfig the bootique configuration for log4j.
+	 * @param configuration the general configuration.
 	 * @param injector the current injector
 	 * @return the handler.
 	 */
 	@Provides
 	@Singleton
-	def provideRejectedExecutionHandler(loggingConfig : Log4jIntegrationConfig, executorsConfig : ExecutorsConfig,
+	def provideRejectedExecutionHandler(loggingConfig : Provider<Log4jIntegrationConfig>,
+		configuration : Provider<SreConfig>,
 		injector : Injector) : RejectedExecutionHandler {
-		var level = loggingConfig.level
-		var ielevel = executorsConfig.internalErrorVerboseLevel
+		var level = loggingConfig.get.level
+		var ielevel = configuration.get.services.executors.internalErrorVerboseLevel
 		var provider : Provider<? extends RejectedExecutionHandler>
 		if (level.compareTo(ielevel) <= 0) {
 			provider = injector.getProvider(typeof(VerboseThreadExecutorPolicy))
@@ -114,17 +115,18 @@ class ExecutorServiceModule extends AbstractModule {
 	/**
 	 * Construct a handler for exceptions that are not catched.
 	 * 
-	 * @param loggingConfig accessor to the logging bootique factory.
-	 * @param executorsConfig accessor to the execution bootique factory.
-	 * @param injector the current injector
+	 * @param loggingConfig the bootique configuration for log4j.
+	 * @param configuration the general configuration.
+	 * @param injector the current injector.
 	 * @return the handler.
 	 */
 	@Provides
 	@Singleton
-	def providetUncaughtExceptionHandler(loggingConfig : Log4jIntegrationConfig, executorsConfig : ExecutorsConfig,
+	def providetUncaughtExceptionHandler(loggingConfig : Provider<Log4jIntegrationConfig>,
+		configuration : Provider<SreConfig>,
 		injector : Injector) : UncaughtExceptionHandler {
-		var level = loggingConfig.level
-		var ielevel = executorsConfig.internalErrorVerboseLevel
+		var level = loggingConfig.get.level
+		var ielevel = configuration.get.services.executors.internalErrorVerboseLevel
 		if (level.compareTo(ielevel) <= 0) {
 			injector.getProvider(typeof(VerboseThreadExecutorPolicy)).get
 		} else {
@@ -135,16 +137,16 @@ class ExecutorServiceModule extends AbstractModule {
 	/**
 	 * Construct a JVM executor service.
 	 * 
-	 * @param executorsConfig accessor to the execution bootique factory.
+	 * @param configuration the general configuration.
 	 * @param rejectedExecutionHandler the handler for rejected executions.
 	 * @return the service.
 	 */
 	@Provides
 	@Singleton
-	def provideExecutorService(config : Provider<SreConfig>,
-		rejectedExecutionHandler : RejectedExecutionHandler) : ExecutorService {
+	def provideExecutorService(configuration : Provider<SreConfig>,
+		rejectedExecutionHandler : Provider<RejectedExecutionHandler>) : ExecutorService {
 		var executor : ExecutorService = null
-		var cfg = config.get.services.executors
+		var cfg = configuration.get.services.executors
 		if (cfg.hasMaxThreadsSpecified) {
 			val minPoolSize = cfg.minThreads
 			val maxPoolSize = cfg.maxThreads
@@ -156,7 +158,7 @@ class ExecutorServiceModule extends AbstractModule {
 			executor = Executors::newFixedThreadPool(ExecutorsConfig::MAX_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE)
 		}
 		if (rejectedExecutionHandler !== null && executor instanceof ThreadPoolExecutor) {
-			(executor as ThreadPoolExecutor).rejectedExecutionHandler = rejectedExecutionHandler
+			(executor as ThreadPoolExecutor).rejectedExecutionHandler = rejectedExecutionHandler.get
 		}
 		return executor
 	}
@@ -164,20 +166,21 @@ class ExecutorServiceModule extends AbstractModule {
 	/** 
 	 * Construct a JVM scheduled executor service.
 	 * 
-	 * @param executorsConfig accessor to the execution bootique factory.
+	 * @param configuration the general configuration.
 	 * @param rejectedExecutionHandler the handler for rejected executions.
 	 * @return the service.
 	 */
 	@Provides
 	@Singleton
-	def provideJvmScheduledExecutorService(executorsConfig : ExecutorsConfig,
-		rejectedExecutionHandler : RejectedExecutionHandler) : ScheduledExecutorService {
+	def provideJvmScheduledExecutorService(configuration : Provider<SreConfig>,
+		rejectedExecutionHandler : Provider<RejectedExecutionHandler>) : ScheduledExecutorService {
+		val executorsConfig = configuration.get.services.executors
 		val minPoolSize = executorsConfig.minThreads
 		val maxPoolSize = executorsConfig.maxThreads
 		var max = Math::max(1, Math::min(minPoolSize, maxPoolSize))
 		var executor = Executors.newScheduledThreadPool(max)		
 		if (rejectedExecutionHandler !== null && executor instanceof ThreadPoolExecutor) {
-			(executor as ThreadPoolExecutor).rejectedExecutionHandler = rejectedExecutionHandler;
+			(executor as ThreadPoolExecutor).rejectedExecutionHandler = rejectedExecutionHandler.get;
 			(executor as ScheduledThreadPoolExecutor).removeOnCancelPolicy = true
 		}
 		return executor

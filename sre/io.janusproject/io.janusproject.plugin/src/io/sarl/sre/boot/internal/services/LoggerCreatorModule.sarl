@@ -49,17 +49,17 @@ class LoggerCreatorModule extends AbstractModule {
 	/** 
 	 * Replies the creator of loggers.
 	 * 
-	 * @param loggingFactory accessor to the logging bootique factory.
-	 * @param sreConfig the provider of configuration..
+	 * @param loggingFactory the bootique configuration for log4j.
+	 * @param sreConfig the provider of configuration.
 	 * @param injector the injector of the members.
 	 * @return the logger creator.
 	 */
 	@Provides
 	@Singleton
-	def provideLoggerCreator(loggingConfig : Log4jIntegrationConfig, sreConfig : Provider<SreConfig>,
+	def provideLoggerCreator(loggingConfig : Provider<Log4jIntegrationConfig>, sreConfig : Provider<SreConfig>,
 		injector : Injector, loggerProvider : Provider<Logger>) : JulLoggerCreator {
 		var creator = new JulLoggerCreator(
-			loggingConfig.level.toJul,
+			loggingConfig.get.level.toJul,
 			loggerProvider,
 			sreConfig)
 		injector.injectMembers(creator)

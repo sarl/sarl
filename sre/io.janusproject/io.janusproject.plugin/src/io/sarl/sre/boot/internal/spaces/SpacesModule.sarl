@@ -52,9 +52,9 @@ class SpacesModule extends AbstractModule {
 	@KernelScope
 	def provideDefaultSpaceSpecification(injector : Injector,
 		@KernelScope spaceParticipantListenerFactory : Provider<SpaceParticipantListenerFactory>,
-		logger : LoggingService) : OpenEventSpaceSpecification {
+		logger : Provider<LoggingService>) : OpenEventSpaceSpecification {
 		new SreOpenEventSpaceSpecification(injector, null, spaceParticipantListenerFactory.get,
-			logger)
+			logger.get)
 	}
 
 }

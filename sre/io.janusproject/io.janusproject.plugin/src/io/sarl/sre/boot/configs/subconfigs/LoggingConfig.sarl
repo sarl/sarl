@@ -31,7 +31,7 @@ import java.util.Collections
 import java.util.Map
 import org.eclipse.xtend.lib.annotations.Accessors
 
-import static io.sarl.sre.boot.configs.subconfigs.ExecutorsConfig.*
+import static io.sarl.sre.boot.configs.subconfigs.LoggingConfig.*
 
 /** 
  * Configuration for the agent logging service.
@@ -99,7 +99,9 @@ class LoggingConfig {
 	 * 
 	 * @param pattern the new pattern, or {@code null} to use the default pattern.
 	 */
-	@BQConfigProperty("Pattern of the logging messages for the platform")
+	@BQConfigProperty("Pattern of the logging messages for the platform. The format string may contains one of the following elements: "
+		+ "%1 the date, %2 the name of the calling function, %3 : the name of the logger, "
+		+ "%4 : the logging level, %5 : the message, and %6 the throwable object.")
 	def setPlatformMessageFormat(pattern : String) : void {
 		if (pattern.isNullOrEmpty) {
 			this.platformMessageFormat = PLATFORM_MESSAGE_FORMAT_VALUE
