@@ -54,7 +54,6 @@ abstract class AbstractServiceManager implements IServiceManager {
 		setLogger(logger)
 		internalStartAllServices
 		// Await for stop
-		logger.fine(Messages::AbstractServiceManager_1)
 		awaitHealthy
 	}
 
@@ -63,7 +62,6 @@ abstract class AbstractServiceManager implements IServiceManager {
 		logger.fine(Messages::AbstractServiceManager_3)
 		internalStopAllServices
 		// Await for stop
-		logger.fine(Messages::AbstractServiceManager_0)
 		awaitStopped
 	}
 
