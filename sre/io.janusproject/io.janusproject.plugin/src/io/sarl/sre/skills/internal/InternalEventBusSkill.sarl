@@ -21,11 +21,15 @@
 package io.sarl.sre.skills.internal
 
 import io.sarl.core.Logging
+import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.Event
+import io.sarl.lang.core.SREutils
 import io.sarl.lang.core.Skill
+import io.sarl.lang.util.ClearableReference
 import io.sarl.sre.capacities.InformedEventListener
 import io.sarl.sre.capacities.InternalEventBusCapacity
+import io.sarl.sre.capacities.InternalSchedules
 import java.util.UUID
 import java.util.concurrent.ConcurrentLinkedDeque
 import javax.inject.Inject
@@ -56,8 +60,26 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 
 	var eventBuffer : ConcurrentLinkedDeque<Event> = null
 
+	var scheduleSkillReference : ClearableReference<InternalSchedules>
+
+	@SuppressWarnings("raw_type")
 	@Inject
+	@PrivateAPI(isCallerOnly = true)
+	new (busFactory : EventBusFactory) {
+		this.eventBus = busFactory.createEventBus [
+			var sk = this.scheduleSkillReference?.get
+			if (sk === null) {
+				var ref : ClearableReference = SREutils::getInternalSkillReference(getOwner, typeof(InternalSchedules))
+				assert ref !== null
+				this.scheduleSkillReference = ref as ClearableReference<InternalSchedules>
+				sk = this.scheduleSkillReference.get
+			}
+			return sk
+		]
+	}
+
 	new (bus : EventBus) {
+		assert bus !== null
 		this.eventBus = bus
 	}
 

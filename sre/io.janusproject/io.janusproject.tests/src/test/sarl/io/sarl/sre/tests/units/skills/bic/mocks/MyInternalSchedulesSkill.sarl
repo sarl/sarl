@@ -74,6 +74,10 @@ skill MyInternalSchedulesSkill implements InternalSchedules {
 		null
 	}
 
+	override executeAsap(task : Runnable) : AgentTask {
+		null
+	}
+	
 	override unregisterTasksForBehavior(^behavior : Behavior) {
 	}
 

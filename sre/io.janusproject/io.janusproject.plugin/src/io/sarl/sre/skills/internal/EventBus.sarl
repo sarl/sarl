@@ -21,17 +21,17 @@
 package io.sarl.sre.skills.internal
 
 import io.sarl.lang.core.Event
+import io.sarl.sre.capacities.InternalSchedules
 import io.sarl.sre.internal.BehaviorGuardEvaluator
 import io.sarl.sre.internal.BehaviorGuardEvaluatorRegistry
 import io.sarl.sre.services.executor.EarlyExitException
-import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.executor.SreRunnable
 import java.util.Collection
 import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.ExecutionException
+import java.util.function.Supplier
 import java.util.logging.Logger
-import javax.inject.Inject
 import org.arakhne.afc.util.OutputParameter
 
 /** 
@@ -54,33 +54,30 @@ class EventBus {
 	val behaviorGuardEvaluatorRegistry : BehaviorGuardEvaluatorRegistry
 
 	/** 
-	 * The executor used to execute behavior methods in dedicated thread.
+	 * The skill that gives access to the scheduling capacity of the agent
 	 */
-	val executor : ExecutorService
+	val taskSchedulerSupplier : Supplier<InternalSchedules>
 
 	/** 
 	 * Instantiates a dispatcher.
 	 * 
-	 * @param executor the executor service.
-	 * @param provider of synchronization locks.
-	 */
-	@Inject
-	new (executor : ExecutorService) {
-		this(executor, new BehaviorGuardEvaluatorRegistry)
-	}
-
-	/** 
-	 * Instantiates a dispatcher.
-	 * 
-	 * @param executor the executor service.
-	 * @param provider of synchronization locks.
+	 * @param taskScheduler the scheduler of agent tasks.
 	 * @param dispatcher the event dispatcher.
 	 */
-	new (executor : ExecutorService, dispatcher : BehaviorGuardEvaluatorRegistry) {
-		assert executor !== null
+	new (taskScheduler : Supplier<InternalSchedules>, dispatcher : BehaviorGuardEvaluatorRegistry) {
+		assert taskScheduler !== null
 		assert dispatcher !== null
-		this.executor = executor
+		this.taskSchedulerSupplier = taskScheduler
 		this.behaviorGuardEvaluatorRegistry = dispatcher
+	}
+
+	/** Replies the agent's task scheduler that must be used by the event bus.
+	 *
+	 * @return the executor.
+	 * @since 0.11
+	 */
+	def getExecutor : InternalSchedules {
+		this.taskSchedulerSupplier.get
 	}
 
 	/** Replies if a listener with the given type is registered.
@@ -117,9 +114,7 @@ class EventBus {
 	 * @param callback function which is invoked just after the first registration of the object. It could be {@code null}.
 	 */
 	def register(object : Object, filter : (Event)=>boolean, callback : (Object)=>void) {
-
 		this.behaviorGuardEvaluatorRegistry.register(object, filter, callback)
-
 	}
 
 	/** 
@@ -224,7 +219,7 @@ class EventBus {
 				// Could be null when the corresponding events is not listen by an agent, i.e. system event like ParticpantJoined
 				var behaviorsMethodsToExecute = ^event.evaluateGuards(behaviorGuardEvaluators, logger)
 				if (behaviorsMethodsToExecute !== null && !behaviorsMethodsToExecute.empty) {
-					behaviorsMethodsToExecute.executeAsynchronouslyBehaviorMethods(logger)
+					behaviorsMethodsToExecute.executeAsynchronouslyBehaviorMethods
 				}
 			}
 		]
@@ -413,16 +408,15 @@ class EventBus {
 	 * 
 	 * <p>Errors are logged by the executor service. They are not thrown by this function.
 	 * 
-	 * @param logger the logger to use for notifying the errors.
 	 * @param behaviorsMethodsToExecute the collection of Behaviors runnable that must be executed.
 	 */
-	protected def executeAsynchronouslyBehaviorMethods(behaviorsMethodsToExecute : Collection<Runnable>,
-		logger : Logger) {
+	protected def executeAsynchronouslyBehaviorMethods(behaviorsMethodsToExecute : Collection<Runnable>) {
 		assert behaviorsMethodsToExecute !== null
 		assert behaviorsMethodsToExecute.size() > 0
 
+		val exec = this.executor
 		for (runnable : behaviorsMethodsToExecute) {
-			this.executor.executeAsap(logger, runnable)
+			exec.executeAsap(runnable)
 		}
 	}
 

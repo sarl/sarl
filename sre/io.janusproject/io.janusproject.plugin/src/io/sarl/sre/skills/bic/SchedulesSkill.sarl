@@ -384,6 +384,17 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 		}
 	}
 
+	def executeAsap(task : Runnable) : AgentTask {
+		if (task !== null) {
+			var description = preRunTask(null) [task.run]
+			var logger = getLogger
+			val future = this.executorService.executeAsap(logger,
+				new SingleRunner(this, this.owner, description, logger))
+			description = postRunTask(description, null, future)
+			return description.task
+		}
+	}
+
 	def execute(task : AgentTask = null, procedure : (Agent)=>void) : AgentTask {
 		var description = preRunTask(task, procedure)
 		var logger = getLogger

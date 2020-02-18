@@ -22,9 +22,9 @@
 package io.sarl.sre.tests.units.skills.internal
 
 import io.sarl.lang.core.Event
+import io.sarl.sre.capacities.InternalSchedules
 import io.sarl.sre.internal.BehaviorGuardEvaluator
 import io.sarl.sre.internal.BehaviorGuardEvaluatorRegistry
-import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.skills.internal.EventBus
 import io.sarl.sre.tests.testutils.AbstractSreTest
 import io.sarl.tests.api.Nullable
@@ -55,13 +55,13 @@ class EventBusTest extends AbstractSreTest {
 	var eventBus : EventBus
 
 	@Nullable
-	var executor : ExecutorService
+	var executor : InternalSchedules
 
 	@Before
 	def setUp : void {
 		this.registry = typeof(BehaviorGuardEvaluatorRegistry).mock
-		this.executor = typeof(ExecutorService).mock
-		this.eventBus = new EventBus(this.executor, this.registry)
+		this.executor = typeof(InternalSchedules).mock
+		this.eventBus = new EventBus([this.executor], this.registry)
 	}
 
 	@Test
@@ -145,11 +145,9 @@ class EventBusTest extends AbstractSreTest {
 		// Verify
 		this.registry.verify(1.times).getBehaviorGuardEvaluators(typeof(Event).any)
 
-		var capturedLogger = ArgumentCaptor::forClass(typeof(Logger))
 		var capturedRunnable = ArgumentCaptor::forClass(typeof(Runnable))
-		this.executor.verify.executeAsap(capturedLogger.capture, capturedRunnable.capture)
-		assertSame(logger, capturedLogger.value)
-		assertSame(eventHandler, capturedRunnable.value)
+		this.executor.verify(2.times).executeAsap(capturedRunnable.capture)
+		capturedRunnable.value.assertNotNull
 	}
 
 	@SuppressWarnings("raw_type")
@@ -188,11 +186,9 @@ class EventBusTest extends AbstractSreTest {
 		// Verify
 		this.registry.verify(1.times).getBehaviorGuardEvaluators(typeof(Event).any)
 
-		var capturedLogger = ArgumentCaptor::forClass(typeof(Logger))
 		var capturedRunnable = ArgumentCaptor::forClass(typeof(Runnable))
-		this.executor.verify(2.times).executeAsap(capturedLogger.capture, capturedRunnable.capture)
-		assertSame(logger, capturedLogger.value)
-		assertContains(capturedRunnable.allValues, eventHandler1, eventHandler2)
+		this.executor.verify(3.times).executeAsap(capturedRunnable.capture)
+		capturedRunnable.value.assertNotNull
 	}
 
 	@SuppressWarnings("raw_type")
@@ -231,11 +227,9 @@ class EventBusTest extends AbstractSreTest {
 		// Verify
 		this.registry.verify(1.times).getBehaviorGuardEvaluators(typeof(Event).any)
 
-		this.executor.verify(never).executeAsap(typeof(Logger).any, typeof(Runnable).any)
-
-		var capturedLogger = ArgumentCaptor::forClass(typeof(Logger))
 		var capturedRunnable = ArgumentCaptor::forClass(typeof(Runnable))
-		this.executor.verify(never).executeAsap(capturedLogger.capture, capturedRunnable.capture)
+		this.executor.verify(2.times).executeAsap(capturedRunnable.capture)
+		capturedRunnable.value.assertNotNull
 	}
 
 	@SuppressWarnings("raw_type")
@@ -276,11 +270,9 @@ class EventBusTest extends AbstractSreTest {
 		// Verify
 		this.registry.verify(1.times).getBehaviorGuardEvaluatorsFor(typeof(Event).any, typeof(Object).any)
 
-		this.executor.verify(never).executeAsap(typeof(Logger).any, typeof(Runnable).any)
-
-		var capturedLogger = ArgumentCaptor::forClass(typeof(Logger))
 		var capturedRunnable = ArgumentCaptor::forClass(typeof(Runnable))
-		this.executor.verify(never).executeAsap(capturedLogger.capture, capturedRunnable.capture)
+		this.executor.verify(2.times).executeAsap(capturedRunnable.capture)
+		capturedRunnable.value.assertNotNull
 	}
 
 }

@@ -22,6 +22,7 @@ package io.sarl.sre.capacities
 
 import io.sarl.core.Schedules
 import io.sarl.lang.core.Behavior
+import io.sarl.core.AgentTask
 
 /** 
  * Capacity for executing tasks with specific functions for the SRE platform.
@@ -30,7 +31,7 @@ import io.sarl.lang.core.Behavior
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.6.0
+ * @since 0.6
  */
 capacity InternalSchedules extends Schedules {
 
@@ -45,5 +46,13 @@ capacity InternalSchedules extends Schedules {
 	 * @param behavior the behavior.
 	 */
 	def releaseInternalResources(^behavior : Behavior)
+
+	/** Submit the given task for being run as soon as possible.
+	 *
+	 * @param task the task to run.
+	 * @return the definition of the task reference.
+	 * @since 0.11
+	 */
+	def executeAsap(task : Runnable) : AgentTask
 
 }

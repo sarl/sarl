@@ -21,14 +21,12 @@
 package io.sarl.sre.boot.internal.skills
 
 import com.google.inject.AbstractModule
-import com.google.inject.Injector
-import com.google.inject.Provides
-import io.sarl.sre.services.executor.ExecutorService
-import io.sarl.sre.skills.internal.EventBus
-import javax.inject.Provider
-import io.bootique.BQModuleProvider
 import com.google.inject.Module
 import io.bootique.BQModule
+import io.bootique.BQModuleProvider
+import io.sarl.sre.skills.internal.DefaultEventBusFactory
+import io.sarl.sre.skills.internal.EventBusFactory
+import javax.inject.Singleton
 
 /** 
  * Module for configuring the agents' event buses.
@@ -41,16 +39,7 @@ import io.bootique.BQModule
 class EventBusModule extends AbstractModule {
 
 	protected override configure {
-		//
-	}
-
-	@Provides
-	def provideEventBus(executorService : Provider<ExecutorService>, injector : Injector) : EventBus {
-		// Ensure a new instance is created at each injection.
-		val aeb = new EventBus(executorService.get)
-		// to be able to inject the ExecutorService and SubscriberFindingStrategy
-		injector.injectMembers(aeb)
-		return aeb
+		typeof(EventBusFactory).bind.to(typeof(DefaultEventBusFactory)).in(typeof(Singleton))
 	}
 
 }
