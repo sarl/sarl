@@ -29,6 +29,7 @@ import java.util.UUID
 import io.sarl.lang.core.Address
 import io.sarl.lang.util.OutParameter
 import java.util.logging.Level
+import io.sarl.sre.tests.runtime.spaces.mocks.SourceAgent2
 
 /**
  * @author $Author: sgalland$
@@ -52,7 +53,7 @@ class EventRoutingTest extends AbstractSreRunTest {
 	}
 
 	@Test
-	def unchangedEventSources {
+	def unchangedEventSources_inspace {
 		val kern = setupTheSreKernel(Level::OFF, true, false)
 		val ag1 = new OutParameter<UUID>
 		kern.spawn(typeof(TargetAgent), [ag1.set(it)], agentInitializationParameters)
@@ -75,6 +76,23 @@ class EventRoutingTest extends AbstractSreRunTest {
 
 		adr1.UUID.assertEquals(adr2.UUID)
 		id1.assertEquals(id1)
+	}
+
+	@Test
+	def unchangedEventSource_innercontext {
+		typeof(SourceAgent2).runSre
+		
+		var innerAgent = typeof(UUID).getResult(0)
+		innerAgent.assertNotNull
+		
+		var adr = innerAgent.getResult(typeof(Address), 0)
+		var id = innerAgent.getResult(typeof(UUID), 1)
+		adr.assertNotNull
+		id.assertNotNull
+		id.assertEquals(adr.UUID)
+		innerAgent.assertNotEquals(id)
+		
+		bootAgent.assertEquals(id)
 	}
 
 }
