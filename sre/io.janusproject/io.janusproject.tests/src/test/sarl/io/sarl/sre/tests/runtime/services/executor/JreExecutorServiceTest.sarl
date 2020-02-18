@@ -55,7 +55,7 @@ class JreExecutorServiceTest extends AbstractExecutorServiceRunTest {
 	def cancel_00b : void {
 		val nb0 = new AtomicLong(0l)
 		val nb1 = new AtomicLong(0l)
-		val kern = typeof(CancelTaskAgent2).setupTheSreKernel(null, true, false)
+		val kern = typeof(CancelTaskAgent2).setupTheSreKernel(null, true, true)
 		val service = kern.getService(JreExecutorService)
 		kern.getService(typeof(LifecycleService)).addKernelAgentLifecycleListener [
 			var exec = service.executorService as ThreadPoolExecutor

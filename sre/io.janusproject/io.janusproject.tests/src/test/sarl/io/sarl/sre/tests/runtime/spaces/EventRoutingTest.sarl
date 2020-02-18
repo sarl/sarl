@@ -39,8 +39,8 @@ import java.util.logging.Level
 class EventRoutingTest extends AbstractSreRunTest {
 
 	@Test
-	def unchangedEventSource {
-		val kern = setupTheSreKernel(typeof(TargetAgent), null, true, false)
+	def unchangedEventSource_inspace {
+		val kern = setupTheSreKernel(typeof(TargetAgent), null, true, true)
 		kern.spawn(typeof(SourceAgent), null, agentInitializationParameters)
 		waitForTheKernel(STANDARD_TIMEOUT)
 		

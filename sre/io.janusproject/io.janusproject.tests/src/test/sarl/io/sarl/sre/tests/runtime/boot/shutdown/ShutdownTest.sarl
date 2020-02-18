@@ -49,7 +49,7 @@ class ShutdownTest extends AbstractSreRunTest {
 
 	@Test
 	def shutdownWithAgent1 {
-		setupTheSreKernel(typeof(ShutdownAgent1Mock), null, true, false)
+		setupTheSreKernel(typeof(ShutdownAgent1Mock), null, true, true)
 		val handler = startTimeOut
 		try {
 			bootstrap.shutdown(true)
@@ -61,7 +61,7 @@ class ShutdownTest extends AbstractSreRunTest {
 
 	@Test
 	def shutdownWithAgent2 {
-		setupTheSreKernel(typeof(ShutdownAgent2Mock), null, true, false)
+		setupTheSreKernel(typeof(ShutdownAgent2Mock), null, true, true)
 		val handler = startTimeOut
 		try {
 			bootstrap.shutdown(true)

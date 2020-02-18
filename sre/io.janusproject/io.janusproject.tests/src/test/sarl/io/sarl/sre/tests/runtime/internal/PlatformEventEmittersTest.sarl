@@ -266,7 +266,7 @@ class PlatformEventEmittersTest {
 		@Test
 		@SuppressWarnings("discouraged_reference")
 		def run {
-			var kern = typeof(SpyAgent0).setupTheSreKernel(null, true, false)
+			var kern = typeof(SpyAgent0).setupTheSreKernel(null, true, true)
 
 			Thread::sleep(1000)
 
@@ -296,7 +296,7 @@ class PlatformEventEmittersTest {
 		@Test
 		@SuppressWarnings("discouraged_reference")
 		def run {
-			var kern = typeof(SpyAgent1).setupTheSreKernel(null, true, false)
+			var kern = typeof(SpyAgent1).setupTheSreKernel(null, true, true)
 
 			Thread::sleep(1000)
 

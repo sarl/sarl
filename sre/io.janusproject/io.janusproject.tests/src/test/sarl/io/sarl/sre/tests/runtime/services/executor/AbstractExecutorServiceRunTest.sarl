@@ -77,7 +77,7 @@ abstract class AbstractExecutorServiceRunTest extends AbstractSreRunTest {
 	@SuppressWarnings("use_reserved_sarl_annotation")
 	@PrivateAPI(isCallerOnly = true)
 	def every_01 {
-		val kern = typeof(WaiterAgent).setupTheSreKernel(null, true, false)
+		val kern = typeof(WaiterAgent).setupTheSreKernel(null, true, true)
 		kern.spawn(typeof(EveryAgent), [], getAgentInitializationParameters)
 		try {
 			waitForTheKernel(STANDARD_TIMEOUT)

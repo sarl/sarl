@@ -313,7 +313,7 @@ abstract class AbstractSreRunTest extends AbstractSreTest {
 	@PrivateAPI(isCallerOnly = true)
 	protected def runSre(type : Class<? extends TestingAgent>,
 			loggingLevel : Level = TEST_LOGGING_LEVEL,
-			trackLogErrors : boolean = true, deleteLogHandlers : boolean = false,
+			trackLogErrors : boolean = true, deleteLogHandlers : boolean = true,
 			timeout : int = STANDARD_TIMEOUT) : Kernel {
 		val kern = setupTheSreKernel(type, loggingLevel, trackLogErrors, deleteLogHandlers)
 		try {
