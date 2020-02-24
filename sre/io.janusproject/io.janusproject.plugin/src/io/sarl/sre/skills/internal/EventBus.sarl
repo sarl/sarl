@@ -46,11 +46,11 @@ import org.arakhne.afc.util.OutputParameter
  */
 class EventBus {
 
-	/** 
-	 * The registry of all {@code BehaviorGuardEvaluator} classes containing a method to evaluate the guard of a given behavior
-	 * ("on" clause in SARL behavior). This class has been inspired by the com.google.common.eventbus.SuscriberRegistry class of
-	 * Google Guava library.
-	 */
+		/** 
+		 * The registry of all {@code BehaviorGuardEvaluator} classes containing a method to evaluate the guard of a given behavior
+		 * ("on" clause in SARL behavior). This class has been inspired by the com.google.common.eventbus.SuscriberRegistry class of
+		 * Google Guava library.
+		 */
 	val behaviorGuardEvaluatorRegistry : BehaviorGuardEvaluatorRegistry
 
 	/** 
@@ -72,11 +72,12 @@ class EventBus {
 	}
 
 	/** Replies the agent's task scheduler that must be used by the event bus.
-	 *
+	 * 
 	 * @return the executor.
 	 * @since 0.11
 	 */
 	def getExecutor : InternalSchedules {
+		assert(this.taskSchedulerSupplier.get !== null)
 		this.taskSchedulerSupplier.get
 	}
 
@@ -191,8 +192,8 @@ class EventBus {
 		assert ^event !== null
 		assert listener !== null
 
-		val behaviorGuardEvaluators = 
-			this.behaviorGuardEvaluatorRegistry.getBehaviorGuardEvaluatorsFor(^event, listener)
+		val behaviorGuardEvaluators = this.behaviorGuardEvaluatorRegistry.
+			getBehaviorGuardEvaluatorsFor(^event, listener)
 
 		if (behaviorGuardEvaluators !== null && behaviorGuardEvaluators.size() > 0) {
 			val behaviorsMethodsToExecute = ^event.evaluateGuards(behaviorGuardEvaluators, logger)
@@ -213,17 +214,32 @@ class EventBus {
 	 */
 	def asyncDispatch(^event : Event, logger : Logger = null) {
 		assert ^event !== null
-		var asyncTask : Runnable = [
-			val behaviorGuardEvaluators = this.behaviorGuardEvaluatorRegistry.getBehaviorGuardEvaluators(^event)
-			if (behaviorGuardEvaluators !== null && !behaviorGuardEvaluators.empty) {
-				// Could be null when the corresponding events is not listen by an agent, i.e. system event like ParticpantJoined
-				var behaviorsMethodsToExecute = ^event.evaluateGuards(behaviorGuardEvaluators, logger)
-				if (behaviorsMethodsToExecute !== null && !behaviorsMethodsToExecute.empty) {
-					behaviorsMethodsToExecute.executeAsynchronouslyBehaviorMethods
+		val runException = new OutputParameter
+		var asyncTask = new SreRunnable(logger) {
+			def run {
+				try {
+					val behaviorGuardEvaluators = EventBus.this.behaviorGuardEvaluatorRegistry.getBehaviorGuardEvaluators(^event)
+					if (behaviorGuardEvaluators !== null && !behaviorGuardEvaluators.empty) {
+						// Could be null when the corresponding events is not listen by an agent, i.e. system event like ParticpantJoined
+						var behaviorsMethodsToExecute = ^event.evaluateGuards(behaviorGuardEvaluators, logger)
+						if (behaviorsMethodsToExecute !== null && !behaviorsMethodsToExecute.empty) {
+							behaviorsMethodsToExecute.executeAsynchronouslyBehaviorMethods
+						}
+					}
+				} catch (e : Exception) {
+					// Catch exception for notifying the caller
+							runException.set(e)
+					// Do the standard behavior too -> logging
+							throw new RuntimeException(e)
 				}
 			}
-		]
+		}
+		
 		this.executor.executeAsap(asyncTask)
+		// Re-throw the run-time exception
+		if (runException.get() !== null) {
+			throw new ExecutionException(runException.get)
+		}
 	}
 
 	/** 
