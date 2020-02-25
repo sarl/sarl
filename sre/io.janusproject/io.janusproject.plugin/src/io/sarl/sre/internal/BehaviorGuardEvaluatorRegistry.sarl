@@ -34,6 +34,7 @@ import java.lang.reflect.Method
 import java.text.MessageFormat
 import java.util.Arrays
 import java.util.Collection
+import java.util.Comparator
 import java.util.Iterator
 import java.util.List
 import java.util.Map
@@ -44,10 +45,11 @@ import java.util.TreeSet
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.ConcurrentSkipListSet
+import java.util.concurrent.CopyOnWriteArraySet
 
 /**
  * Registry of all {@code BehaviorGuardEvaluator} classes containing a method to evaluate the guard of a given behavior (on clause in SARL behavior).
- * This class has been inspired by the {@code com.google.common.eventbus.SuscriberRegistry} class of Google Guava library.
+ * This class has been inspired by the {@code com.google.common.eventbus.SubscriberRegistry} class of Google Guava library.
  *
  * <p>This class is not thread-safe.
  *
@@ -391,7 +393,8 @@ class BehaviorGuardEvaluatorRegistry {
 	 * <p>The {@link CopyOnWriteArraySet} values make it easy and relatively lightweight to get an immutable snapshot of all current
 	 * {@code BehaviorGuardEvaluator}s to an event without any locking.
 	 */
-	val behaviorGuardEvaluators : ConcurrentHashMap<Class<? extends Event>, Pair<(Event) => Boolean, ConcurrentSkipListSet<BehaviorGuardEvaluator>>>
+	 // FIXME replace the CopyOnWriteArraySet by an adapted concurrent implementations of set but not ConcurrentSkipList that also implement list and thus use the compareTo that is not working well on BehaviorGuardEvaluator
+	val behaviorGuardEvaluators : ConcurrentHashMap<Class<? extends Event>, Pair<(Event)=>Boolean, CopyOnWriteArraySet<BehaviorGuardEvaluator>>>
 
 	var active = true
 
@@ -401,7 +404,7 @@ class BehaviorGuardEvaluatorRegistry {
 	 * <p>The registry will use concurrent data structures.
 	 */
 	new {	
-		this.behaviorGuardEvaluators = new ConcurrentHashMap<Class<? extends Event>, Pair<(Event)=>Boolean, ConcurrentSkipListSet<BehaviorGuardEvaluator>>>()
+		this.behaviorGuardEvaluators = new ConcurrentHashMap<Class<? extends Event>, Pair<(Event)=>Boolean, CopyOnWriteArraySet<BehaviorGuardEvaluator>>>()
 	}
 
 	/**
@@ -426,10 +429,10 @@ class BehaviorGuardEvaluatorRegistry {
 				val eventMethodsInListener = entry.value
 
 				val pair = this.behaviorGuardEvaluators.get(eventType)
-				var eventSubscribers : ConcurrentSkipListSet<BehaviorGuardEvaluator>
+				var eventSubscribers : CopyOnWriteArraySet<BehaviorGuardEvaluator>
 
 				if (pair === null) {
-					eventSubscribers = new ConcurrentSkipListSet
+					eventSubscribers = new CopyOnWriteArraySet()
 					var p = new Pair(filter, eventSubscribers)
 					this.behaviorGuardEvaluators.put(eventType, p)
 					firstInit = true
