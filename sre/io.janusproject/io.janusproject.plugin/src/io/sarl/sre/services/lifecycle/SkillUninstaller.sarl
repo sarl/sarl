@@ -30,7 +30,8 @@ import io.sarl.lang.core.Skill
 import io.sarl.lang.core.Skill.UninstallationStage
 import io.sarl.sre.skills.bic.SchedulesSkill
 import io.sarl.sre.skills.internal.InternalEventBusSkill
-import java.util.ArrayList
+import java.util.HashSet
+import java.util.Set
 
 /** 
  * Install and uninstall the skills. 
@@ -80,13 +81,13 @@ class BasicSkillUninstaller implements SkillUninstaller {
 	 * 
 	 * @return the skills.
 	 */
-	private static def getAllSkills(^agent : Agent) : Iterable<? extends Skill>  {
+	private static def getAllSkills(^agent : Agent) : Set<? extends Skill>  {
 		// Get the registered skills
 		val skills = SREutils.getSkillRepository(^agent)
 		if (skills !== null) {
-			return new ArrayList(Collections2.transform(skills.values) [it.get])
+			return new HashSet(Collections2.transform(skills.values) [it.get])
 		}
-		return emptyList
+		return emptySet
 	}
 
 	def uninstallSkillsBeforeDestroy(^agent : Agent) : Iterable<? extends Skill> {
