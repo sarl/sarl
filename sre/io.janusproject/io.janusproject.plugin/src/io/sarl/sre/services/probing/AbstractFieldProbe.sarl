@@ -113,7 +113,7 @@ abstract class AbstractFieldProbe<T> extends AbstractProbe<T> {
 		switch (scheme) {
 			case AGENT: {
 				return [
-					var life = AgentLife::getLifeNoCreation(it as Agent)
+					var life = AgentLife::getLifeOrNull(it as Agent)
 					if (life !== null) {
 						return life.state.alive
 					}
@@ -122,7 +122,7 @@ abstract class AbstractFieldProbe<T> extends AbstractProbe<T> {
 			}
 			case BEHAVIOR: {
 				return [
-					return BehaviorLife::getLifeNoCreation(it as Behavior) !== null
+					return BehaviorLife::getLifeOrNull(it as Behavior) !== null
 				]
 			}
 			case SKILL,
@@ -130,7 +130,7 @@ abstract class AbstractFieldProbe<T> extends AbstractProbe<T> {
 				return [
 					var ag = (it as AgentTrait).owner
 					if (ag !== null) {
-						var life = AgentLife::getLifeNoCreation(ag)
+						var life = AgentLife::getLifeOrNull(ag)
 						if (life !== null) {
 							return life.state.alive
 						}

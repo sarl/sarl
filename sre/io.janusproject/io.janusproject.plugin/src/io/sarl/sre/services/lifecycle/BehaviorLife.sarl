@@ -60,7 +60,7 @@ final class BehaviorLife extends AgentTraitLife {
 	 * @see #getLife
 	 */
 	@Pure
-	static def getLifeNoCreation(^behavior : Behavior) : BehaviorLife {
+	static def getLifeOrNull(^behavior : Behavior) : BehaviorLife {
 		return ^behavior.getSreSpecificData(typeof(BehaviorLife))
 	}
 

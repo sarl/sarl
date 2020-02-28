@@ -173,7 +173,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	private def unbindToBehavior(task : AgentTask) {
 		var caller = task.initiator
 		if (caller instanceof Behavior) {
-			getLife(caller).removeTaskReference(task)
+			getLifeOrNull(caller)?.removeTaskReference(task)
 		}
 	}
 
@@ -328,7 +328,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	/** Called by a behavior when it is destroyed.
 	 */
 	def unregisterTasksForBehavior(^behavior : Behavior) {
-		var tasksToCancel = getLife(^behavior).removeAllTaskReferences
+		var tasksToCancel = getLifeOrNull(^behavior)?.removeAllTaskReferences
 		if (tasksToCancel !== null) {
 			for (taskToCancel : tasksToCancel.map[it.get]) {
 				if (taskToCancel !== null) {

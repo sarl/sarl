@@ -168,7 +168,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 
 	def isKillableAgent(^agent : Agent) : boolean {
 		try {
-			var innerContext = getLife(^agent).innerContext
+			var innerContext = getLifeOrNull(^agent)?.innerContext
 			if (innerContext !== null) {
 				var participants = innerContext.defaultSpace.participants
 				if (participants !== null) {

@@ -60,7 +60,7 @@ import java.util.concurrent.ConcurrentLinkedDeque
 @PrivateAPI(isCallerOnly = true)
 final class AgentLife {
 
-	var state = AgentState::UNSTARTED
+	volatile var state = AgentState::UNSTARTED
 
 	var agentInstance : Agent
 
@@ -80,7 +80,7 @@ final class AgentLife {
 	 * If this data structure does not exists, it is automatically created.
 	 * 
 	 * @param agent the instance of the agent for which the life description should be retrieved
-	 * @see #getLifeNotCreation
+	 * @see #getLifeOrNull
 	 */
 	static def getLife(^agent : Agent) : AgentLife {
 		// Do not need to synchronize this code because the creation of the agent life
@@ -102,7 +102,7 @@ final class AgentLife {
 	 * @see #getLife
 	 */
 	@Pure
-	static def getLifeNoCreation(^agent : Agent) : AgentLife {
+	static def getLifeOrNull(^agent : Agent) : AgentLife {
 		// Do not need to synchronize this code because the creation of the agent life
 		// object is done when spawning the agent, that is synchronously executed.
 		return ^agent.getSreSpecificData(typeof(AgentLife))
@@ -276,6 +276,10 @@ final class AgentLife {
 	 */
 	def stop(skillUninstaller : SkillUninstaller, logger : LoggingService,
 		fireDestroy : boolean = true) : Iterable<ContextReference> {
+
+		if (this.state.postAlive) {
+			return #[]
+		}
 
 		this.state = AgentState::DYING
 
