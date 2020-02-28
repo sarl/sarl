@@ -28,6 +28,7 @@ import io.sarl.sre.tests.testutils.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
@@ -47,6 +48,7 @@ import static io.sarl.tests.api.tools.TestAssertions.*
 	typeof(SreRunExtension)
 ])
 @DisplayName("run: on MemberLeft test")
+@Tag("run")
 class OnMemberLeftTest {
 
 	@Test

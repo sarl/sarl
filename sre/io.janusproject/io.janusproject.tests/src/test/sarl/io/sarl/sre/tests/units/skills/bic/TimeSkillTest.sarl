@@ -31,6 +31,7 @@ import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.concurrent.TimeUnit
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
@@ -52,6 +53,7 @@ import static extension io.sarl.tests.api.tools.TestMockito.mock
 	typeof(PropertyRestoreExtension)
 ])
 @DisplayName("unit: TimeSkill test")
+@Tag("unit")
 class TimeSkillTest {
 
 	@Nullable

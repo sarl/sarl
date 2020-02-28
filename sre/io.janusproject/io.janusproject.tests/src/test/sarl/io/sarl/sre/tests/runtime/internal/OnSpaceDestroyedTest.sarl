@@ -28,6 +28,7 @@ import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
@@ -44,6 +45,7 @@ import org.junit.jupiter.api.^extension.ExtendWith
 	typeof(SreRunExtension)
 ])
 @DisplayName("run: on SpaceDestroyed test")
+@Tag("run")
 class SpaceDestroyedTest {
 
 	@Test

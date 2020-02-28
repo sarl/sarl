@@ -46,6 +46,7 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedDeque
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
@@ -70,6 +71,7 @@ import static extension org.mockito.Mockito.spy
 	typeof(PropertyRestoreExtension)
 ])
 @DisplayName("unit: BehaviorNamespaceFinder test")
+@Tag("unit")
 class BehaviorNamespaceFinderTest {
 
 	@Nullable

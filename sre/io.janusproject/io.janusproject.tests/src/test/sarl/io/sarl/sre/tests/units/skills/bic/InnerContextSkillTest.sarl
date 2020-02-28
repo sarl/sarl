@@ -42,6 +42,7 @@ import java.util.UUID
 import java.util.concurrent.ConcurrentSkipListSet
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 import org.mockito.ArgumentCaptor
@@ -68,6 +69,7 @@ import static extension org.mockito.Mockito.verify
 	typeof(PropertyRestoreExtension)
 ])
 @DisplayName("unit: InnerContextSkill test")
+@Tag("unit")
 class InnerContextSkillTest {
 
 	@Nullable

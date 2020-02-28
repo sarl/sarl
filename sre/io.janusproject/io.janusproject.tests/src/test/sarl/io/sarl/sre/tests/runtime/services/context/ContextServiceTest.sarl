@@ -22,6 +22,7 @@
 package io.sarl.sre.tests.runtime.services.context;
 
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
 
 /**
  * @author $Author: sgalland$
@@ -30,5 +31,6 @@ import org.junit.jupiter.api.DisplayName
  * @mavenartifactid $ArtifactId$
  */
 @DisplayName("run: Context service test")
+@Tag("run")
 class ContextServiceTest extends AbstractContextServiceTest {
 }

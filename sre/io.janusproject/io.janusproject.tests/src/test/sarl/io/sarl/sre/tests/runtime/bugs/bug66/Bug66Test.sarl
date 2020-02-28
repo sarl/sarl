@@ -30,6 +30,7 @@ import io.sarl.sre.tests.testutils.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
@@ -53,6 +54,7 @@ import static extension org.junit.jupiter.api.Assertions.assertSame
 	typeof(SreRunExtension)
 ])
 @DisplayName("run: Bug #66")
+@Tag("run")
 class Bug66Test {
 
 	@Test

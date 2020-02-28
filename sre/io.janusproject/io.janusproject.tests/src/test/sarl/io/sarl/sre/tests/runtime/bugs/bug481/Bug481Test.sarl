@@ -28,11 +28,12 @@ import io.sarl.sre.tests.testutils.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static org.junit.jupiter.api.Assertions.*
 import static io.sarl.sre.tests.testutils.Constants.*
+import static org.junit.jupiter.api.Assertions.*
 
 /**
  * Unit test for the issue #481: Spawn more than one agent at the same time.
@@ -50,6 +51,7 @@ import static io.sarl.sre.tests.testutils.Constants.*
 	typeof(SreRunExtension)
 ])
 @DisplayName("run: Bug #481")
+@Tag("run")
 class Bug481Test {
 
 	public static val NB_AGENTS = 50

@@ -44,6 +44,7 @@ import java.util.logging.Logger
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 import org.mockito.ArgumentCaptor
@@ -71,6 +72,7 @@ import static extension org.mockito.Mockito.times
 	typeof(PropertyRestoreExtension)
 ])
 @DisplayName("unit: SchedulesSkill test")
+@Tag("unit")
 @SuppressWarnings("use_reserved_sarl_annotation")
 class SchedulesSkillTest {
 

@@ -23,6 +23,7 @@ package io.sarl.sre.tests.runtime.services.namespace
 
 import io.sarl.sre.services.namespace.NamespaceService
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
 
 /**
  * @author $Author: sgalland$
@@ -31,6 +32,7 @@ import org.junit.jupiter.api.DisplayName
  * @mavenartifactid $ArtifactId$
  */
 @DisplayName("run: FinderBasedNamespace service test")
+@Tag("run")
 class FinderBasedNamespaceServiceTest extends AbstractNamespaceServiceTest {
 
 	protected override runTestCase_prepare {

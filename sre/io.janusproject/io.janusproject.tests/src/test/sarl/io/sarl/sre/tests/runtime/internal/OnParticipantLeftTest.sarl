@@ -32,6 +32,7 @@ import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
 import org.arakhne.afc.util.OutputParameter
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
@@ -54,6 +55,7 @@ import static extension org.junit.jupiter.api.Assertions.assertNotNull
 	typeof(SreRunExtension)
 ])
 @DisplayName("run: on ParticipantLeft test")
+@Tag("run")
 class OnParticipantLeftTest {
 
 	@Test

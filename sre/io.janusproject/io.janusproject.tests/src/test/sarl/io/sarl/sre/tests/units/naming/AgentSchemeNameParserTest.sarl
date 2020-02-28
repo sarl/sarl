@@ -33,6 +33,7 @@ import java.net.URI
 import java.util.UUID
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
@@ -53,6 +54,7 @@ import static extension org.junit.jupiter.api.Assertions.assertNull
 	typeof(PropertyRestoreExtension)
 ])
 @DisplayName("unit: agent NameParser test")
+@Tag("unit")
 class AgentSchemeNameParserTest {
 
 	protected static val CONTEXT_ID = "2a2c6de4-8327-431b-a916-97a05caafe14"

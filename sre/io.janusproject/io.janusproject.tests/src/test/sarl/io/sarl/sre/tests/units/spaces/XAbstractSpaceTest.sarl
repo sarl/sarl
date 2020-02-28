@@ -30,6 +30,7 @@ import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
 import java.util.concurrent.ConcurrentSkipListSet
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
@@ -47,6 +48,7 @@ import static org.junit.jupiter.api.Assertions.*
 	typeof(PropertyRestoreExtension)
 ])
 @DisplayName("unit: AbstractSpace test")
+@Tag("unit")
 class XAbstractSpaceTest {
 
 	@Test

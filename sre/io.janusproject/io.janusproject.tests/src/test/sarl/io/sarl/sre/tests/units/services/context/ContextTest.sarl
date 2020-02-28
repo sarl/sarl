@@ -41,6 +41,7 @@ import java.util.logging.Logger
 import javax.inject.Provider
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
@@ -62,6 +63,7 @@ import static extension io.sarl.tests.api.tools.TestMockito.mock
 	typeof(PropertyRestoreExtension)
 ])
 @DisplayName("unit: Context test")
+@Tag("unit")
 class ContextTest {
 
 	var root : Agent

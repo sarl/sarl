@@ -34,6 +34,7 @@ import java.util.concurrent.atomic.AtomicLong
 import org.arakhne.afc.bootique.variables.VariableNames
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 
 import static io.sarl.sre.tests.testutils.Constants.*
@@ -49,6 +50,7 @@ import static extension org.junit.jupiter.api.Assertions.assertFalse
  * @mavenartifactid $ArtifactId$
  */
 @DisplayName("run: JreExecutor service test")
+@Tag("run")
 class JreExecutorServiceTest extends AbstractExecutorServiceRunTest {
 
 	@BeforeEach

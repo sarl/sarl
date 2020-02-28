@@ -24,6 +24,7 @@ package io.sarl.sre.tests.runtime.services.lifecycle
 import io.sarl.sre.boot.configs.subconfigs.LifecycleConfig
 import org.arakhne.afc.bootique.variables.VariableNames
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
 
 /**
  * @author $Author: sgalland$
@@ -32,6 +33,7 @@ import org.junit.jupiter.api.DisplayName
  * @mavenartifactid $ArtifactId$
  */
 @DisplayName("run: StandardLifecycle service test")
+@Tag("run")
 class StandardLifecycleServiceTest extends AbstractLifecycleServiceTest {
 
 	protected def runTestCase_prepare {
