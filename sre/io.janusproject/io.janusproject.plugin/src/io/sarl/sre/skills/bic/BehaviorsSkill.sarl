@@ -52,12 +52,14 @@ skill BehaviorsSkill extends Skill implements Behaviors {
 	protected override uninstall(stage : UninstallationStage) {
 		if (stage === UninstallationStage::PRE_DESTROY_EVENT) {
 			val adr = getLife(owner).addressInInnerDefaultSpace
-			unregisterEventBusListener(typeof(Behavior)) [
+			typeof(Behavior).unregisterEventBusListener [
 				// Destroy the behavior
 				val ^event = new Destroy
 				^event.source = adr
 				fireEventAndWait(^event, false, true, it)
 				(it as Behavior).releaseInternalResources
+				// Run this lambda on all the behaviors:
+				return true
 			]
 		}
 	}
@@ -92,6 +94,8 @@ skill BehaviorsSkill extends Skill implements Behaviors {
 			^event.source = adr
 			fireEventAndWait(^event, false, true, attitude)
 			attitude.releaseInternalResources
+			// Do not call this lambda when it is the same behavior
+			return false
 		]
 		return attitude
 	}

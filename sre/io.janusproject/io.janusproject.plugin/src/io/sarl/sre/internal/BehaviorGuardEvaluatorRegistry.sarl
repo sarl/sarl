@@ -1,17 +1,17 @@
-/*
+/* 
  * $Id$
- *
+ * 
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
- *
+ * 
  * Copyright (C) 2014-2020 the original authors or authors.
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -44,11 +44,14 @@ import java.util.TreeSet
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.ConcurrentSkipListSet
+import java.util.concurrent.CopyOnWriteArraySet
 
-/**
- * Registry of all {@code BehaviorGuardEvaluator} classes containing a method to evaluate the guard of a given behavior (on clause in SARL behavior).
- * This class has been inspired by the {@code com.google.common.eventbus.SuscriberRegistry} class of Google Guava library.
- *
+/** 
+ * Registry of all {@code BehaviorGuardEvaluator} classes containing a method to evaluate the guard of a
+ * given behavior (on clause in SARL behavior).
+ * This class has been inspired by the {@code com.google.common.eventbus.SuscriberRegistry} class of
+ * Google Guava library.
+ * 
  * <p>This class is not thread-safe.
  *
  * @author $Author: ngaud$
@@ -56,7 +59,7 @@ import java.util.concurrent.ConcurrentSkipListSet
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- *
+ * 
  */
 class BehaviorGuardEvaluatorRegistry {
 
@@ -94,7 +97,8 @@ class BehaviorGuardEvaluatorRegistry {
 		ImmutableSet::copyOf(typeHierarchy)
 	}
 
-	private static def getAnnotatedMethodMapOnDemand(concreteClass : Class<?>) : Map<Class<? extends Event>, Collection<Method>> {
+	private static def getAnnotatedMethodMapOnDemand(
+		concreteClass : Class<?>) : Map<Class<? extends Event>, Collection<Method>> {
 		assert concreteClass !== null
 		// TODO verify if it effectively explores the whole type hierarchy
 		val typeHierarchy = concreteClass.exploreTypeHierarchy
@@ -145,7 +149,8 @@ class BehaviorGuardEvaluatorRegistry {
 		return false
 	}
 
-	private static def getAnnotatedMethodsPerEvent(listenerType : Class<?>) : Map<Class<? extends Event>, Collection<Method>> {
+	private static def getAnnotatedMethodsPerEvent(
+		listenerType : Class<?>) : Map<Class<? extends Event>, Collection<Method>> {
 		PERCEPT_GUARD_EVALUATOR_METHOD_CACHE.getUnchecked(listenerType)
 	}
 
@@ -173,7 +178,6 @@ class BehaviorGuardEvaluatorRegistry {
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
-	 *
 	 */
 	private static final class MethodIdentifier implements Comparable<MethodIdentifier> {
 
@@ -185,7 +189,7 @@ class BehaviorGuardEvaluatorRegistry {
 		/**
 		 * The list of the type of the various parameters of the considered method.
 		 */
-		val parameterTypes : List<Class<?>> 
+		val parameterTypes : List<Class<?>>
 
 		/**
 		 * Creates a new method identifier according to the name and the list of parameter types of the considered method.
@@ -310,7 +314,7 @@ class BehaviorGuardEvaluatorRegistry {
 			while ((this.evaluators === null || !this.evaluators.hasNext) && this.eventTypeIterator.hasNext) {
 				val eventType = this.eventTypeIterator.next
 				val eventSubscribers = this.behaviorGuardEvaluators.get(eventType)
-				if (isValidSubscriber(eventSubscribers)) {
+				if (eventSubscribers.isValidSubscriber) {
 					this.evaluators = eventSubscribers.value.iterator
 				}
 			}
@@ -332,6 +336,7 @@ class BehaviorGuardEvaluatorRegistry {
 				searchNext
 			}
 			val next = this.evaluators.next
+			assert next !== null
 			searchNext
 			return next
 		}
@@ -395,13 +400,15 @@ class BehaviorGuardEvaluatorRegistry {
 
 	var active = true
 
-	/**
+	/** 
 	 * Instanciates a new registry linked with the {@link PerceptGuardEvaluator} annotation.
-	 *
+	 * 
 	 * <p>The registry will use concurrent data structures.
+	 * 
+	 * @param internalMap the internal map.
 	 */
-	new {	
-		this.behaviorGuardEvaluators = new ConcurrentHashMap<Class<? extends Event>, Pair<(Event)=>Boolean, ConcurrentSkipListSet<BehaviorGuardEvaluator>>>()
+	new {
+		this.behaviorGuardEvaluators = new ConcurrentHashMap
 	}
 
 	/**
@@ -451,10 +458,13 @@ class BehaviorGuardEvaluatorRegistry {
 	 * Unregisters all BehaviorGuardEvaluators on all the listener objects.
 	 *
 	 * @param callback function which is invoked just before the object is unregistered. It could be {@code null}.
+	 *     The callback functions replies {@code true} if it should be called on the next removed object.
+	 *     If it replies {@code false}, it will be not called anymore.
 	 * @since 0.5
 	 */
-	def unregisterAll(callback : (Object) => void = null) : void {
+	def unregisterAll(callback : (Object) => boolean) : void {
 		if (this.active) {
+			var listenerCallback = callback
 			this.active = false
 			try {
 				if (callback !== null) {
@@ -469,7 +479,12 @@ class BehaviorGuardEvaluatorRegistry {
 						val pair = iterator.next
 						for (evaluator : pair.value) {
 							if (subscribers += evaluator.target) {
-								callback.apply(evaluator.target)
+								if (listenerCallback !== null) {
+									val continueCalls = listenerCallback.apply(evaluator.target)
+									if (!continueCalls) {
+										listenerCallback = null
+									}
+								}
 							}
 						}
 						iterator.remove
@@ -488,9 +503,11 @@ class BehaviorGuardEvaluatorRegistry {
 	 *
 	 * @param listener the new {@code BehaviorGuardEvaluator} to remove
 	 * @param callback function which is invoked just before the object is unregistered. It could be {@code null}.
+	 *     The callback functions replies {@code true} if it should be called on the next removed object.
+	 *     If it replies {@code false}, it will be not called anymore.
 	 * @since 0.5
 	 */
-	def unregister(listener : Object, callback : (Object) => void = null) {
+	def unregister(listener : Object, callback : (Object)=>boolean) : void {
 		if (this.active) {
 			val listenerMethods = new EvaluatorIterator(listener)
 			var listenerCallback = callback
@@ -501,24 +518,68 @@ class BehaviorGuardEvaluatorRegistry {
 
 				val pair = this.behaviorGuardEvaluators.get(eventType)
 
-				if (listenerCallback !== null && pair !== null && pair.value !== null && !pair.value.empty) {
-					listenerCallback.apply(listener)
-					listenerCallback = null
-				}
+				val listenerList = if(pair !== null && pair.value !== null) pair.value else null
 
-				if (pair === null || pair.value === null || !pair.value.removeAll(listenerMethodsForType)) {
-					if (pair !== null && pair.value !== null) {
-						pair.value.removeAll(listenerMethodsForType)
+				if (listenerList !== null) {
+					if (!listenerList.empty) {
+						if (listenerCallback !== null) {
+							val continueCalls = listenerCallback.apply(listener)
+							if (!continueCalls) {
+								listenerCallback = null
+							}
+						}
+
+						if (!listenerList.removeAll(listenerMethodsForType)) {
+							throw new IllegalArgumentException(
+								MessageFormat::format(Messages::BehaviorGuardEvaluatorRegistry_0, listener))
+						}
+
+						// TODO: Is the following behavior efficient?
+						// don't try to remove the set if it's empty; that can't be done safely without a lock
+						// anyway, if the set is empty it'll just be wrapping an array of length 0
 					}
-					// if removeAll returns true, all we really know is that at least one subscriber was
-					// removed... however, barring something very strange we can assume that if at least one
-					// subscriber was removed, all subscribers on listener for that event type were... after
-					// all, the definition of subscribers on a particular class is totally static
-					throw new IllegalArgumentException(MessageFormat::format(Messages::BehaviorGuardEvaluatorRegistry_0, listener))
 				}
+			}
+		}
+	}
 
-				// don't try to remove the set if it's empty; that can't be done safely without a lock
-				// anyway, if the set is empty it'll just be wrapping an array of length 0
+	/** 
+	 * Unregisters all BehaviorGuardEvaluators on the listener objects of the given type.
+	 * 
+	 * @param listenerType the type of the {@code BehaviorGuardEvaluator} to remove
+	 * @param callback function which is invoked just before the object is unregistered. It could be {@code null}.
+	 *     The callback functions replies {@code true} if it should be called on the next removed object.
+	 *     If it replies {@code false}, it will be not called anymore.
+	 * @since 0.7
+	 */
+	def unregister(listenerType : Class<?>, callback : (Object) => boolean) {
+		if (this.active) {
+			var listenerCallback = callback
+			val listeners = new TreeSet[a, b|Integer::compare(System::identityHashCode(a), System::identityHashCode(b))]
+			for (handler : this.behaviorGuardEvaluators.entrySet) {
+				var pair = handler.value
+				if (pair !== null) {
+					var candidates = pair.value
+					if (candidates !== null) {
+						val iterator = candidates.iterator
+						while (iterator.hasNext) {
+							val evaluator = iterator.next
+							if (evaluator !== null && listenerType.isInstance(evaluator)) {
+								if (listenerCallback !== null && listeners.add(evaluator)) {
+									val continueCalls = listenerCallback.apply(evaluator)
+									if (!continueCalls) {
+										listenerCallback = null
+									}
+								}
+								iterator.remove
+							}
+						}
+						
+						// TODO: Is the following behavior efficient?
+						// don't try to remove the set if it's empty; that can't be done safely without a lock
+						// anyway, if the set is empty it'll just be wrapping an array of length 0
+					}
+				}
 			}
 		}
 	}

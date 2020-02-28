@@ -242,7 +242,7 @@ class BehaviorsSkillTest {
 
 		assertSame(beh1, b)
 		var capturedListener = ArgumentCaptor::forClass(typeof(Object))
-		var capturedCallback = ArgumentCaptor::forClass(typeof(Procedure1))
+		var capturedCallback = ArgumentCaptor::forClass(typeof(Function1))
 		this.eventBus.verify.unregisterEventBusListener(capturedListener.capture, capturedCallback.capture)
 		assertSame(beh1, capturedListener.value)
 		assertNotNull(capturedCallback.value)

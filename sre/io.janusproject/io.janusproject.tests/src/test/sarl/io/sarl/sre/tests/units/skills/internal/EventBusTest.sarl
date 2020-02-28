@@ -110,10 +110,10 @@ class EventBusTest {
 	@Test
 	def unregister {
 		var listener = typeof(Object).mock
-		var callback = typeof(Procedure1).mock
+		var callback = typeof(Function1).mock
 		this.eventBus.unregister(listener, callback)
 		var capturedListener = ArgumentCaptor::forClass(typeof(Object))
-		var capturedCallback = ArgumentCaptor::forClass(typeof(Procedure1))
+		var capturedCallback = ArgumentCaptor::forClass(typeof(Function1))
 		this.registry.verify.unregister(capturedListener.capture, capturedCallback.capture)
 		assertSame(listener, capturedListener.value)
 		assertSame(callback, capturedCallback.value)
@@ -121,9 +121,9 @@ class EventBusTest {
 
 	@Test
 	def unregisterAll {
-		var callback = typeof(Procedure1).mock
+		var callback = typeof(Function1).mock
 		this.eventBus.unregisterAll(callback)
-		var capturedCallback = ArgumentCaptor::forClass(typeof(Procedure1))
+		var capturedCallback = ArgumentCaptor::forClass(typeof(Function1))
 		this.registry.verify.unregisterAll(capturedCallback.capture)
 		assertSame(callback, capturedCallback.value)
 	}

@@ -122,9 +122,11 @@ class EventBus {
 	 * 
 	 * @param object object whose {@code PerceptGuardEvaluator} methods should be unregistered.
 	 * @param callback function which is invoked just before the object is unregistered.
+	 *     The callback functions replies {@code true} if it should be called on the next removed object.
+	 *     If it replies {@code false}, it will be not called anymore.
 	 * @throws IllegalArgumentException if the object was not previously registered.
 	 */
-	def unregister(object : Object, callback : (Object)=>void) {
+	def unregister(object : Object, callback : (Object)=>boolean) {
 		this.behaviorGuardEvaluatorRegistry.unregister(object, callback)
 	}
 
@@ -133,10 +135,12 @@ class EventBus {
 	 * 
 	 * @param type type of the objects whose {@code PerceptGuardEvaluator} methods should be unregistered.
 	 * @param callback function which is invoked just before the object is unregistered.
+	 *     The callback functions replies {@code true} if it should be called on the next removed object.
+	 *     If it replies {@code false}, it will be not called anymore.
 	 * @throws IllegalArgumentException if the object was not previously registered.
-	 * @since 0.7.0
+	 * @since 0.7
 	 */
-	def unregister(type : Class<?>, callback : (Object)=>void) {
+	def unregister(type : Class<?>, callback : (Object)=>boolean) {
 		this.behaviorGuardEvaluatorRegistry.unregister(type, callback)
 	}
 
@@ -144,9 +148,11 @@ class EventBus {
 	 * Unregisters all {@code PerceptGuardEvaluator} methods on all registered objects.
 	 * 
 	 * @param callback function which is invoked just before the object is unregistered.
+	 *     The callback functions replies {@code true} if it should be called on the next removed object.
+	 *     If it replies {@code false}, it will be not called anymore.
 	 * @throws IllegalArgumentException if the object was not previously registered.
 	 */
-	def unregisterAll(callback : (Object)=>void) {
+	def unregisterAll(callback : (Object)=>boolean) {
 		this.behaviorGuardEvaluatorRegistry.unregisterAll(callback)
 	}
 

@@ -38,10 +38,10 @@ skill MyEventBus implements InternalEventBusCapacity {
 	override registerEventBusListener(listener : Object, filter : (Event)=>boolean, callback : (Object)=>void) {
 	}
 
-	override unregisterEventBusListener(listener : Object, callback : (Object)=>void) {
+	override unregisterEventBusListener(listener : Object, callback : (Object)=>boolean) {
 	}
 
-	override unregisterEventBusListener(type : Class<?>, callback : (Object)=>void) {
+	override unregisterEventBusListener(type : Class<?>, callback : (Object)=>boolean) {
 	}
 
 	override fireEventAndWait(^event : Event, gatherEvents : boolean, thrownExceptions : boolean) : Iterable<Event> {
