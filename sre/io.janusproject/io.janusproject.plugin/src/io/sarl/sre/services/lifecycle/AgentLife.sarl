@@ -277,10 +277,6 @@ final class AgentLife {
 	def stop(skillUninstaller : SkillUninstaller, logger : LoggingService,
 		fireDestroy : boolean = true) : Iterable<ContextReference> {
 
-		if (this.state.postAlive) {
-			return #[]
-		}
-
 		this.state = AgentState::DYING
 
 		try {
