@@ -538,8 +538,8 @@ public final class TimeExtensions {
 	 * double floating-point values.
 	 *
 	 * @param time the amount of time.
-	 * @param source the source unit. Never <code>null</code>.
-	 * @param target the target unit. Never <code>null</code>.
+	 * @param source the source unit. Never {@code null}.
+	 * @param target the target unit. Never {@code null}.
 	 * @return the amount of time in the target unit.
 	 */
 	@Pure

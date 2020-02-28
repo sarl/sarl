@@ -1016,7 +1016,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 				if (forInterface) {
 					it.append("\t/** Replies the context for type resolution."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @return the context or <code>null</code> if the Ecore object is the context."); //$NON-NLS-1$
+					it.append("\t * @return the context or {@code null} if the Ecore object is the context."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
@@ -1298,7 +1298,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 						it.newLine();
 						it.append("\t * @param superType the qualified name of the super type,"); //$NON-NLS-1$
 						it.newLine();
-						it.append("\t *     or <code>null</code> if the default type."); //$NON-NLS-1$
+						it.append("\t *     or {@code null} if the default type."); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t */"); //$NON-NLS-1$
 						it.newLine();
@@ -1445,7 +1445,7 @@ public class TopElementBuilderFragment extends AbstractSubCodeBuilderFragment {
 						it.newLine();
 						it.append("\t * @param type the qualified name of the implemented type,"); //$NON-NLS-1$
 						it.newLine();
-						it.append("\t *     or <code>null</code> for nothing."); //$NON-NLS-1$
+						it.append("\t *     or {@code null} for nothing."); //$NON-NLS-1$
 						it.newLine();
 						it.append("\t */"); //$NON-NLS-1$
 						it.newLine();

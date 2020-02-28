@@ -86,7 +86,7 @@ public class SARLDiagnosticLabelDecorator extends BaseLabelProvider implements I
 	 *
 	 * @param imageDescription
 	 *            a {@link String}, an {@link ImageDescriptor} or an {@link Image}
-	 * @return the {@link Image} associated with the description or <code>null</code>
+	 * @return the {@link Image} associated with the description or {@code null}
 	 */
 	protected Image convertToImage(Object imageDescription) {
 		if (imageDescription instanceof Image) {

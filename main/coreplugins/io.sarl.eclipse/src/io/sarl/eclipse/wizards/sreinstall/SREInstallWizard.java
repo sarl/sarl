@@ -55,7 +55,7 @@ public abstract class SREInstallWizard extends Wizard {
 	/**
 	 * Constructs a new wizard to add/edit a SRE.
 	 *
-	 * @param editSRE the SRE being edited, or <code>null</code> if none.
+	 * @param editSRE the SRE being edited, or {@code null} if none.
 	 * @param currentInstalls current SRE installs used to validate name changes.
 	 */
 	public SREInstallWizard(ISREInstall editSRE, ISREInstall[] currentInstalls) {
@@ -74,9 +74,9 @@ public abstract class SREInstallWizard extends Wizard {
 	}
 
 	/**
-	 * Returns the original SRE to edit, or <code>null</code> if creating a SRE.
+	 * Returns the original SRE to edit, or {@code null} if creating a SRE.
 	 *
-	 * @return SRE to edit or <code>null</code>
+	 * @return SRE to edit or {@code null}
 	 */
 	protected ISREInstall getOriginalSRE() {
 		return this.sre;

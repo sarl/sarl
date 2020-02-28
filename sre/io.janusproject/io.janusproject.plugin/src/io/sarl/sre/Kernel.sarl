@@ -149,7 +149,7 @@ class Kernel {
 	 * @param agent the type of the agent to spawn.
 	 * @param callback the function invoked each time an agent is spawned.
 	 * @param params the list of the parameters to pass to the agent initialization function.
-	 * @return the identifier of the agent, never <code>null</code>.
+	 * @return the identifier of the agent, never {@code null}.
 	 */
 	def spawn(^agent : Class<? extends Agent>, callback : (UUID)=>void, arguments : Object*) {
 		val result = this.spawnService.spawnAgent(1, null, this.contextService.rootContext, null, ^agent, arguments)
@@ -190,7 +190,7 @@ class Kernel {
 	/** 
 	 * Spawn an agent of the given type, and pass the parameters to its initialization function.
 	 * 
-	 * @param agentID the identifier of the agent to spawn. If <code>null</code> the identifier is randomly selected.
+	 * @param agentID the identifier of the agent to spawn. If {@code null} the identifier is randomly selected.
 	 * @param agent the type of the agent to spawn.
 	 * @param callback the function invoked each time an agent is spawned.
 	 * @param params the list of the parameters to pass to the agent initialization function.
@@ -213,7 +213,7 @@ class Kernel {
 	 * 
 	 * @param <S> - type of the type to reply.
 	 * @param type type of the type to reply.
-	 * @return the service, or <code>null</code>.
+	 * @return the service, or {@code null}.
 	 */
 	def getService(type : Class<S>) : S with S extends Service {
 		this.serviceManager.getService(type)

@@ -54,7 +54,7 @@ public interface ISarlEnumLiteralBuilder {
 	void dispose();
 
 	/** Replies the context for type resolution.
-	 * @return the context or <code>null</code> if the Ecore object is the context.
+	 * @return the context or {@code null} if the Ecore object is the context.
 	 */
 	IJvmTypeProvider getTypeResolutionContext();
 

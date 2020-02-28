@@ -56,25 +56,25 @@ public abstract class AgentProtectedAPIObject extends SRESpecificDataContainer {
 
 	/** Replies the skill corresponding to the given capacity.
 	 *
-	 * <p>The return may never be <code>null</code>. If not capacity
+	 * <p>The return may never be {@code null}. If not capacity
 	 * was set, the exception {@link UnimplementedCapacityException}
 	 * is thrown.
 	 *
 	 * @param <S> - type of the capacity.
 	 * @param capacity the capacity to search for the implementation.
-	 * @return the skill, never <code>null</code>
+	 * @return the skill, never {@code null}
 	 */
 	@Pure
 	protected abstract <S extends Capacity> S getSkill(Class<S> capacity);
 
 	/** Replies the skill corresponding to the given capacity.
 	 *
-	 * <p>The return may never be <code>null</code>. If not capacity
+	 * <p>The return may never be {@code null}. If not capacity
 	 * was set, the exception {@link UnimplementedCapacityException}
 	 * is thrown.
 	 *
 	 * @param capacity the capacity to search for the implementation.
-	 * @return the reference to the skill, never <code>null</code>
+	 * @return the reference to the skill, never {@code null}
 	 */
 	@Pure
 	protected abstract ClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity);

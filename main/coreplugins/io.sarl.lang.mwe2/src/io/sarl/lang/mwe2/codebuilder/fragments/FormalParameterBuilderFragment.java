@@ -312,7 +312,7 @@ public class FormalParameterBuilderFragment extends AbstractSubCodeBuilderFragme
 				if (forInterface) {
 					it.append("\t/** Replies the context for type resolution."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @return the context or <code>null</code> if the Ecore object is the context."); //$NON-NLS-1$
+					it.append("\t * @return the context or {@code null} if the Ecore object is the context."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();

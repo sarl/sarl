@@ -49,7 +49,7 @@ public final class FileSystemAddons {
 	 *
 	 * @param file is the filename to translate.
 	 * @param allowRelativePath indicate if a relative path is allowed in the returned URL.
-	 * @return the URL which is corresponding to file, or <code>null</code> if
+	 * @return the URL which is corresponding to file, or {@code null} if
 	 *     the url cannot be computed.
 	 * @see "https://github.com/gallandarakhneorg/afc/issues/173"
 	 */

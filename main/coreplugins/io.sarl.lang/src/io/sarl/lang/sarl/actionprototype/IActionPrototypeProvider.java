@@ -131,7 +131,7 @@ public interface IActionPrototypeProvider {
 	 * <p>This function replies the string representation of the default value.
 	 *
 	 * @param parameter the parameter for which the default value should be extracted.
-	 * @return the default value, or <code>null</code> if none.
+	 * @return the default value, or {@code null} if none.
 	 */
 	String extractDefaultValueString(JvmFormalParameter parameter);
 
@@ -159,7 +159,7 @@ public interface IActionPrototypeProvider {
 	 *
 	 * @param context the context in which the prototype should be created.
 	 * @param id the ID of the action.
-	 * @return the signature, never <code>null</code>.
+	 * @return the signature, never {@code null}.
 	 * @since 0.10
 	 * @see #createContext()
 	 */
@@ -169,7 +169,7 @@ public interface IActionPrototypeProvider {
 	 * the given ID.
 	 *
 	 * @param id the ID of the action.
-	 * @return the signature, never <code>null</code>.
+	 * @return the signature, never {@code null}.
 	 * @deprecated since 0.10, see {@link #getPrototypes(IActionPrototypeContext, QualifiedActionName)}
 	 */
 	@Deprecated
@@ -187,7 +187,7 @@ public interface IActionPrototypeProvider {
 	 * @param context the context in which the prototype should be created.
 	 * @param actionID the ID of the action.
 	 * @param signatureID ID of the signature.
-	 * @return the signature or <code>null</code> if none.
+	 * @return the signature or {@code null} if none.
 	 * @since 0.10
 	 * @see #createContext()
 	 */
@@ -197,7 +197,7 @@ public interface IActionPrototypeProvider {
 	 *
 	 * @param actionID the ID of the action.
 	 * @param signatureID ID of the signature.
-	 * @return the signature or <code>null</code> if none.
+	 * @return the signature or {@code null} if none.
 	 * @deprecated since 0.10, see {@link #getPrototypes(IActionPrototypeContext, QualifiedActionName, ActionParameterTypes)}
 	 */
 	@Deprecated
@@ -218,7 +218,7 @@ public interface IActionPrototypeProvider {
 	 * @param id identifier of the function.
 	 * @param isVarargs indicates if the signature has a variadic parameter.
 	 * @param parameters list of the formal parameters of the function.
-	 * @return the signature or <code>null</code> if none.
+	 * @return the signature or {@code null} if none.
 	 * @since 0.10
 	 * @see #createContext()
 	 */
@@ -232,7 +232,7 @@ public interface IActionPrototypeProvider {
 	 * @param id identifier of the function.
 	 * @param isVarargs indicates if the signature has a variadic parameter.
 	 * @param parameters list of the formal parameters of the function.
-	 * @return the signature or <code>null</code> if none.
+	 * @return the signature or {@code null} if none.
 	 * @deprecated since 0.10, see {@link #createPrototypeFromSarlModel(IActionPrototypeContext, QualifiedActionName, boolean, List)}
 	 */
 	@Deprecated
@@ -254,7 +254,7 @@ public interface IActionPrototypeProvider {
 	 * @param id identifier of the function.
 	 * @param isVarargs indicates if the signature has a variadic parameter.
 	 * @param parameters list of the formal parameters of the function.
-	 * @return the signature or <code>null</code> if none.
+	 * @return the signature or {@code null} if none.
 	 * @since 0.10
 	 * @see #createContext()
 	 */
@@ -268,7 +268,7 @@ public interface IActionPrototypeProvider {
 	 * @param id identifier of the function.
 	 * @param isVarargs indicates if the signature has a variadic parameter.
 	 * @param parameters list of the formal parameters of the function.
-	 * @return the signature or <code>null</code> if none.
+	 * @return the signature or {@code null} if none.
 	 * @deprecated since 0.10, see {@link #createPrototypeFromJvmModel(IActionPrototypeContext, QualifiedActionName, boolean, List)}
 	 */
 	@Deprecated

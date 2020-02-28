@@ -93,9 +93,9 @@ public final class Utilities {
 	 * <p>The minVersion must be strictly lower to the maxVersion. Otherwise
 	 * the behavior is not predictible.
 	 *
-	 * @param version the version to compare to the range; must not be <code>null</code>.
-	 * @param minVersion the minimal version in the range (inclusive); could be <code>null</code>.
-	 * @param maxVersion the maximal version in the range (exclusive); could be <code>null</code>.
+	 * @param version the version to compare to the range; must not be {@code null}.
+	 * @param minVersion the minimal version in the range (inclusive); could be {@code null}.
+	 * @param maxVersion the maximal version in the range (exclusive); could be {@code null}.
 	 * @return a negative number if the version in lower than the minVersion.
 	 *     A positive number if the version is greater than or equal to the maxVersion.
 	 *     <code>0</code> if the version is between minVersion and maxVersion.
@@ -157,7 +157,7 @@ public final class Utilities {
 
 	/** Replies the fully qualified name with generic parameters.
 	 *
-	 * @param type the type. Never <code>null</code>.
+	 * @param type the type. Never {@code null}.
 	 * @return the qualified name.
 	 */
 	public static String getNameWithTypeParameters(IType type) {
@@ -189,11 +189,11 @@ public final class Utilities {
 
 	/** Create the classpath library linked to the bundle with the given name.
 	 *
-	 * @param bundle the bundle to point to. Never <code>null</code>.
-	 * @param precomputedBundlePath the path to the bundle that is already available. If <code>null</code>,
+	 * @param bundle the bundle to point to. Never {@code null}.
+	 * @param precomputedBundlePath the path to the bundle that is already available. If {@code null},
 	 *      the path is computed from the bundle with {@link BundleUtil}.
 	 * @param javadocURLs the mappings from the bundle to the javadoc URL. It is used for linking the javadoc to the bundle if
-	 *      the bundle platform does not know the Javadoc file. If <code>null</code>, no mapping is defined.
+	 *      the bundle platform does not know the Javadoc file. If {@code null}, no mapping is defined.
 	 * @return the classpath entry.
 	 */
 	public static IClasspathEntry newLibraryEntry(Bundle bundle, IPath precomputedBundlePath, BundleURLMappings javadocURLs) {
@@ -240,11 +240,11 @@ public final class Utilities {
 
 	/** Create the classpath output location.
 	 *
-	 * @param bundle the bundle to point to. Never <code>null</code>.
-	 * @param precomputedBundlePath the path to the bundle that is already available. If <code>null</code>,
+	 * @param bundle the bundle to point to. Never {@code null}.
+	 * @param precomputedBundlePath the path to the bundle that is already available. If {@code null},
 	 *      the path is computed from the bundle with {@link BundleUtil}.
 	 * @param javadocURLs the mappings from the bundle to the javadoc URL. It is used for linking the javadoc to the bundle if
-	 *      the bundle platform does not know the Javadoc file. If <code>null</code>, no mapping is defined.
+	 *      the bundle platform does not know the Javadoc file. If {@code null}, no mapping is defined.
 	 * @return the classpath entry.
 	 */
 	public static IClasspathEntry newOutputClasspathEntry(Bundle bundle, IPath precomputedBundlePath, BundleURLMappings javadocURLs) {
@@ -302,8 +302,8 @@ public final class Utilities {
 
 		/** Replies the URL for the given bundle.
 		 *
-		 * @param bundle the bundle, never <code>null</code>.
-		 * @return the URL, or <code>null</code> if no URL is defined.
+		 * @param bundle the bundle, never {@code null}.
+		 * @return the URL, or {@code null} if no URL is defined.
 		 */
 		String getURLForBundle(Bundle bundle);
 

@@ -122,7 +122,7 @@ public class SarlBehaviorSourceAppender extends AbstractSourceAppender implement
 
 	/** Change the super type.
 	 * @param superType the qualified name of the super type,
-	 *     or <code>null</code> if the default type.
+	 *     or {@code null} if the default type.
 	 */
 	public void setExtends(String superType) {
 		this.builder.setExtends(superType);	}

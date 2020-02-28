@@ -371,7 +371,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @param target the receiver of the annotation.
 	 * @param annotationType the type of the annotation.
 	 * @param values the annotations values.
-	 * @return the annotation reference or <code>null</code> if the annotation cannot be added.
+	 * @return the annotation reference or {@code null} if the annotation cannot be added.
 	 */
 	private JvmAnnotationReference addAnnotationSafe(JvmAnnotationTarget target, Class<?> annotationType, String... values) {
 		assert target != null;
@@ -397,7 +397,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @param target the receiver of the annotation.
 	 * @param annotationType the type of the annotation.
 	 * @param value the annotations value.
-	 * @return the annotation reference or <code>null</code> if the annotation cannot be added.
+	 * @return the annotation reference or {@code null} if the annotation cannot be added.
 	 */
 	private JvmAnnotationReference addAnnotationSafe(JvmAnnotationTarget target, Class<?> annotationType, int value) {
 		assert target != null;

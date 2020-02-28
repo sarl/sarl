@@ -58,7 +58,7 @@ public interface ITypeParameterBuilder {
 	void eInit(EObject context, String name, IJvmTypeProvider typeContext);
 
 	/** Replies the context for type resolution.
-	 * @return the context or <code>null</code> if the Ecore object is the context.
+	 * @return the context or {@code null} if the Ecore object is the context.
 	 */
 	IJvmTypeProvider getTypeResolutionContext();
 

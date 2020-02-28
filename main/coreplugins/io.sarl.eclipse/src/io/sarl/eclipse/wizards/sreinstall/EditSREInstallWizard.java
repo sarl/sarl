@@ -40,7 +40,7 @@ public class EditSREInstallWizard extends SREInstallWizard {
 	/**
 	 * Constructs a new wizard to edit a SRE.
 	 *
-	 * @param editSRE the SRE being edited, or <code>null</code> if none.
+	 * @param editSRE the SRE being edited, or {@code null} if none.
 	 * @param currentInstalls current SRE installs used to validate name changes.
 	 */
 	public EditSREInstallWizard(ISREInstall editSRE, ISREInstall[] currentInstalls) {

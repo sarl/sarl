@@ -96,6 +96,8 @@
 					<generateTraceFiles>false</generateTraceFiles>
 				</configuration>
 			</plugin>
+			<!-- The following plugin is needed to avoid the standard Java compilation before
+			     the SARL compiler has generated the Java code. -->
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<executions>

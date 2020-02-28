@@ -125,11 +125,11 @@ public class SARLAgentLaunchConfigurationDelegate extends AbstractSARLLaunchConf
 
 	/**
 	 * Returns the main type name specified by the given launch configuration,
-	 * or <code>null</code> if none.
+	 * or {@code null} if none.
 	 *
 	 * @param configuration launch configuration
 	 * @return the main type name specified by the given launch configuration,
-	 *         or <code>null</code> if none
+	 *         or {@code null} if none
 	 * @throws CoreException if unable to retrieve the attribute
 	 */
 	protected String getAgentName(ILaunchConfiguration configuration) throws CoreException {

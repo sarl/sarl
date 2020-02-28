@@ -50,7 +50,7 @@ public interface ISarlAgentBuilder {
 	JvmParameterizedTypeReference newTypeRef(Notifier context, String typeName);
 
 	/** Replies the context for type resolution.
-	 * @return the context or <code>null</code> if the Ecore object is the context.
+	 * @return the context or {@code null} if the Ecore object is the context.
 	 */
 	IJvmTypeProvider getTypeResolutionContext();
 
@@ -82,7 +82,7 @@ public interface ISarlAgentBuilder {
 
 	/** Change the super type.
 	 * @param superType the qualified name of the super type,
-	 *     or <code>null</code> if the default type.
+	 *     or {@code null} if the default type.
 	 */
 	void setExtends(String superType);
 

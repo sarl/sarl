@@ -47,7 +47,7 @@ public class ClearableReference<T> {
 	/** Returns this reference object's referent.
 	 *
 	 * @return the object to which this reference refers, or
-	 *           <code>null</code> if this reference object has been cleared.
+	 *           {@code null} if this reference object has been cleared.
 	 */
 	public T get() {
 		return this.reference;

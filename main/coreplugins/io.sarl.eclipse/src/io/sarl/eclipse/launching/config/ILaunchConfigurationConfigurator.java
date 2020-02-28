@@ -126,7 +126,7 @@ public interface ILaunchConfigurationConfigurator {
 	 * <code>false</code>.
 	 *
 	 * @param configuration the configuration to change.
-	 * @param sre the SRE to use; or <code>null</code> for removing the SRE configuration entries.
+	 * @param sre the SRE to use; or {@code null} for removing the SRE configuration entries.
 	 * @param useSystemSre indicates if the system-wide SRE must be used. If null, the default is used.
 	 * @param useProjectSre indicates if the SRE in the project's classpath must be used. If null, the default is used.
 	 * @param resetJavaMainClass indicates if the Java main class must be reset or not within the configuration.

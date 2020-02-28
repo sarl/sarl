@@ -137,7 +137,7 @@ public class SARLPackageExplorerPart extends PackageExplorerPart {
 
 	/**
 	 * Returns the package explorer part of the active perspective. If
-	 * there isn't any package explorer part <code>null</code> is returned.
+	 * there isn't any package explorer part {@code null} is returned.
 	 *
 	 * @return the package explorer from the active perspective
 	 */
@@ -155,7 +155,7 @@ public class SARLPackageExplorerPart extends PackageExplorerPart {
 
 	/**
 	 * Makes the package explorer part visible in the active perspective. If there
-	 * isn't a package explorer part registered <code>null</code> is returned.
+	 * isn't a package explorer part registered {@code null} is returned.
 	 * Otherwise the opened view part is returned.
 	 *
 	 * @return the opened package explorer

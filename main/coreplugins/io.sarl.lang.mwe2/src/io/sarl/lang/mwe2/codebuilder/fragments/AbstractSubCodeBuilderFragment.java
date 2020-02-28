@@ -678,7 +678,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 *
 	 * @param rule the rule.
 	 * @param name the name.
-	 * @return the assignment or <code>null</code>.
+	 * @return the assignment or {@code null}.
 	 */
 	protected static Assignment findAssignmentFromFeatureName(EObject rule, String name) {
 		return IterableExtensions.findFirst(GrammarUtil.containedAssignments(rule),
@@ -689,7 +689,7 @@ public abstract class AbstractSubCodeBuilderFragment extends AbstractStubGenerat
 	 *
 	 * @param rule the rule.
 	 * @param pattern pattern for the name of the terminal.
-	 * @return the assignment or <code>null</code>.
+	 * @return the assignment or {@code null}.
 	 */
 	protected static Assignment findAssignmentFromTerminalPattern(EObject rule, String pattern) {
 		return IterableExtensions.findFirst(GrammarUtil.containedAssignments(rule),

@@ -191,7 +191,7 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 	 * The wizard owning this page can call this method to initialize the fields from the current selection and active part.
 	 *
 	 * @param selection used to initialize the fields
-	 * @param activePart the (typically active) part to initialize the fields or <code>null</code>
+	 * @param activePart the (typically active) part to initialize the fields or {@code null}
 	 */
 	public void init(IStructuredSelection selection, IWorkbenchPart activePart) {
 		setWorkingSets(getSelectedWorkingSet(selection, activePart));
@@ -345,7 +345,7 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 	}
 
 	/**
-	 * Returns the current project location path as entered by the user, or <code>null</code> if
+	 * Returns the current project location path as entered by the user, or {@code null} if
 	 * the project should be created in the workspace.
 	 *
 	 * @return the project location path or its anticipated initial value.
@@ -358,7 +358,7 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 	}
 
 	/**
-	 * Sets the project location of the new project or <code>null</code> if the project should be created in the workspace.
+	 * Sets the project location of the new project or {@code null} if the project should be created in the workspace.
 	 *
 	 * @param uri the new project location.
 	 */
@@ -368,9 +368,9 @@ public class MainProjectWizardPage extends WizardPage implements SarlDefaultClas
 	}
 
 	/**
-	 * Returns the compiler compliance to be used for the project, or <code>null</code> to use the workspace compiler compliance.
+	 * Returns the compiler compliance to be used for the project, or {@code null} to use the workspace compiler compliance.
 	 *
-	 * @return compiler compliance to be used for the project or <code>null</code>
+	 * @return compiler compliance to be used for the project or {@code null}
 	 */
 	public String getCompilerCompliance() {
 		return this.jreGroup.getSelectedCompilerCompliance();

@@ -57,7 +57,7 @@ skill MicroKernelSkill extends Skill implements MicroKernelCapacity {
 	/**
 	 * Replies the kernel.
 	 *
-	 * @return the kernel, or <code>null</code>.
+	 * @return the kernel, or {@code null}.
 	 */
 	protected def getKernel : Kernel {
 		this.kernel?.get

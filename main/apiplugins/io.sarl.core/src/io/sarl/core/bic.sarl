@@ -174,7 +174,7 @@ capacity ExternalContextAccess {
 	 *
 	 * @param space the space in which the event should be fired.
 	 * @param event the event to emit.
-	 * @param scope the definition of the scope that will be used for selected the receivers of the events. If <code>null</code>, all the agents in the space will receive the event.
+	 * @param scope the definition of the scope that will be used for selected the receivers of the events. If {@code null}, all the agents in the space will receive the event.
 	 * @since 0.6
 	 */
 	def emit(^space : EventSpace, ^event : Event, scope : Scope<Address> = null)
@@ -522,7 +522,7 @@ capacity Schedules {
 	 * <li>the agent is not alive.</li>
 	 * </ul>
 	 *
-	 * @param task the task that will run the given closure. If <code>null</code>, a new task is created.
+	 * @param task the task that will run the given closure. If {@code null}, a new task is created.
 	 * @param delay time in milliseconds to delay the procedure execution.
 	 * @param procedure the closure to execute.
 	 * @return the generated task.
@@ -629,7 +629,7 @@ capacity Schedules {
 	 * <li>the agent is not alive.</li>
 	 * </ul>
 	 *
-	 * @param task the task to associate to the procedure. If <code>null</code> a new task is created.
+	 * @param task the task to associate to the procedure. If {@code null} a new task is created.
 	 * @param period the number of milliseconds between two launches of the given procedure.
 	 * @param procedure the procedure to launch. The parameter of the procedure is the agent.
 	 * @return the given task.
@@ -674,7 +674,7 @@ capacity Schedules {
 	 * <li>the agent is not alive.</li>
 	 * </ul>
 	 *
-	 * @param task the task to associate to the procedure. If <code>null</code> a new task is created.
+	 * @param task the task to associate to the procedure. If {@code null} a new task is created.
 	 * @param delay the delay in milliseconds.
 	 * @param procedure the procedure to launch. The parameter of the procedure is the agent.
 	 * @return the given task.
@@ -692,7 +692,7 @@ capacity Schedules {
 	 *
 	 * <p>This function is supposed to execute the given procedure, even if the agent is not alive.
 	 *
-	 * @param task the task to associate to the procedure. If <code>null</code> a new task is created.
+	 * @param task the task to associate to the procedure. If {@code null} a new task is created.
 	 * @param procedure the procedure to launch. The parameter of the procedure is the agent.
 	 * @return the given task.
 	 * @since 0.5
@@ -719,7 +719,7 @@ capacity Schedules {
 	 * <li>the agent is not alive.</li>
 	 * </ul>
 	 *
-	 * @param task the task that will run the given closure. If <code>null</code>, a new task is created.
+	 * @param task the task that will run the given closure. If {@code null}, a new task is created.
 	 * @param time the time in milliseconds at which to start the procedure execution.
 	 * @param procedure the closure to execute.
 	 * @return the task is given, or a new task if the procedure is schedule, or
@@ -769,7 +769,7 @@ capacity DefaultContextInteractions {
 	 * Equivalent to <code>defaultContext.defaultSpace.emit(e,scope)</code>
 	 *
 	 * @param event the event to emit.
-	 * @param scope the definition of the scope that will be used for selected the receivers of the events. If <code>null</code>, all the agents in the space will receive the event.
+	 * @param scope the definition of the scope that will be used for selected the receivers of the events. If {@code null}, all the agents in the space will receive the event.
 	 */
 	def emit(^event : Event, scope : Scope<Address> = null)
 

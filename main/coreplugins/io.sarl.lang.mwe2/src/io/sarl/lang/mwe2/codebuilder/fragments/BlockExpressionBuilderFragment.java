@@ -312,7 +312,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 				if (forInterface) {
 					it.append("\t/** Replies the context for type resolution."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @return the context or <code>null</code> if the Ecore object is the context."); //$NON-NLS-1$
+					it.append("\t * @return the context or {@code null} if the Ecore object is the context."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
@@ -569,7 +569,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 				it.newLine();
 				it.append("\t * @param type the expected type of the block (the last instruction), or"); //$NON-NLS-1$
 				it.newLine();
-				it.append("\t    <code>null</code> for no type."); //$NON-NLS-1$
+				it.append("\t    {@code null} for no type."); //$NON-NLS-1$
 				it.newLine();
 				it.append("\t */"); //$NON-NLS-1$
 				it.newLine();
@@ -831,7 +831,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 	/** Replies a keyword for declaring a container.
 	 *
 	 * @param grammarContainer the container description.
-	 * @return the keyword, never <code>null</code> nor an empty string.
+	 * @return the keyword, never {@code null} nor an empty string.
 	 */
 	protected String ensureContainerKeyword(EObject grammarContainer) {
 		final Iterator<Keyword> iterator = Iterators.filter(grammarContainer.eContents().iterator(), Keyword.class);
@@ -844,7 +844,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 	/** Replies a keyword for declaring a member.
 	 *
 	 * @param memberDescription the member description.
-	 * @return the keyword, never <code>null</code> nor an empty string.
+	 * @return the keyword, never {@code null} nor an empty string.
 	 */
 	protected String ensureMemberDeclarationKeyword(CodeElementExtractor.ElementDescription memberDescription) {
 		final List<String> modifiers = getCodeBuilderConfig().getModifiers().get(memberDescription.getName());

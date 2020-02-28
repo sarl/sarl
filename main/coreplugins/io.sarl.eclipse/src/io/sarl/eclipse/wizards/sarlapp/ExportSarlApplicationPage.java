@@ -141,12 +141,12 @@ public class ExportSarlApplicationPage extends FixedFatJarExportPage  {
 
 	/**
 	 * Returns the Java project name specified by the given launch
-	 * configuration, or <code>null</code> if none.
+	 * configuration, or {@code null} if none.
 	 *
 	 * @param configuration
 	 *            launch configuration
 	 * @return the Java project name specified by the given launch
-	 *         configuration, or <code>null</code> if none
+	 *         configuration, or {@code null} if none
 	 * @exception CoreException
 	 *                if unable to retrieve the attribute
 	 */
@@ -159,12 +159,12 @@ public class ExportSarlApplicationPage extends FixedFatJarExportPage  {
 
 	/**
 	 * Returns the Java project specified by the given launch configuration, or
-	 * <code>null</code> if none.
+	 * {@code null} if none.
 	 *
 	 * @param configuration
 	 *            launch configuration
 	 * @return the Java project specified by the given launch configuration, or
-	 *         <code>null</code> if none
+	 *         {@code null} if none
 	 * @exception CoreException
 	 *                if unable to retrieve the attribute
 	 */

@@ -101,7 +101,7 @@ public class BuildSettingWizardPage extends JavaCapabilityConfigurationPage {
 	private final MainProjectWizardPage firstPage;
 
 	/** Location of the current project.
-	 * It is <code>null</code> if the location is a platform location.
+	 * It is {@code null} if the location is a platform location.
 	 */
 	private URI currProjectLocation;
 

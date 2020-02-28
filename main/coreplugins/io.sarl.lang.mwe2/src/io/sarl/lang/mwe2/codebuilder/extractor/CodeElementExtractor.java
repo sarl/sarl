@@ -64,7 +64,7 @@ public interface CodeElementExtractor {
 	/** Replies the first classifier that is defined in the given grammar element.
 	 *
 	 * @param grammarElement the grammar element.
-	 * @return the classifier or <code>null</code> if none.
+	 * @return the classifier or {@code null} if none.
 	 */
 	EClassifier getGeneratedTypeFor(EObject grammarElement);
 
@@ -222,7 +222,7 @@ public interface CodeElementExtractor {
 	 *     types, for example a kind of "import".
 	 *     The parameters of the callback function are: the grammar container given to the visiting function;
 	 *     the grammar container of the member, and the name of the member.
-	 * @return the first value replied by the callback, or <code>null</code>.
+	 * @return the first value replied by the callback, or {@code null}.
 	 */
 	<T> T visitMemberElements(
 			ElementDescription element,

@@ -295,7 +295,7 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 	 * @param id identifier of the function.
 	 * @param isVarargs indicates if the signature has a variadic parameter.
 	 * @param parameters list of the formal parameters of the function.
-	 * @return the signature or <code>null</code> if none.
+	 * @return the signature or {@code null} if none.
 	 */
 	protected InferredPrototype createPrototype(Context context, QualifiedActionName id,
 			boolean isVarargs, FormalParameterProvider parameters) {

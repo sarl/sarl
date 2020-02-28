@@ -321,7 +321,7 @@ public abstract class AbstractSarlScriptInteractiveSelector<ET extends EObject, 
 	 * Prompts the user to select an element from the given element types.
 	 *
 	 * @param elements the element types to choose from.
-	 * @return the selected element or <code>null</code> if none.
+	 * @return the selected element or {@code null} if none.
 	 */
 	private ElementDescription chooseElement(List<ElementDescription> elements) {
 		final ElementListSelectionDialog dialog = new ElementListSelectionDialog(getShell(),

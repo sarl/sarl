@@ -65,10 +65,10 @@
 		<xtext.version.next>2.20.1</xtext.version.next>
 		<xtext.version.javadoc>2.20</xtext.version.javadoc>
 
-		<!-- Version of the MWE2 library (used for accessing the mwe2 P2 http://download.eclipse.org/modeling/emft/mwe/updates/releases/,
+		<!-- Version of the MWE2 library (used for accessing the mwe2 P2 http://download.eclipse.org/modeling/emft/mwe/updates/releases/, 
 			see compositeContent.{xml,jar,xz,xml.xz} file) -->
 		<mwe2.version>2.11.0</mwe2.version>
-		<!-- Version of the Xpand library (used for accessing the Xpand P2 http://download.eclipse.org/modeling/m2t/xpand/updates/releases/,
+		<!-- Version of the Xpand library (used for accessing the Xpand P2 http://download.eclipse.org/modeling/m2t/xpand/updates/releases/, 
 			see compositeContent.{xml,jar,xz,xml.xz} file) -->
 		<xpand.version>R201605260315</xpand.version>
 		<!-- Version of Guice (package: com.google.inject:guice). -->
@@ -82,25 +82,25 @@
 		<guava.version>27.1-jre</guava.version>
 		<!-- Version of the javax.inject module -->
 		<javaxinject.version>1</javaxinject.version>
-		<!-- Version of the Tycho module, (search for tycho-maven-plugin on Maven
+		<!-- Version of the Tycho module, (search for tycho-maven-plugin on Maven 
 			central) -->
 		<tycho.version>1.6.0</tycho.version>
-		<!-- Version of the SWT library (search for  org.eclipse.platform:org.eclipse.swt.gtk.linux.x86_64) -->
+		<!-- Version of the SWT library (search for org.eclipse.platform:org.eclipse.swt.gtk.linux.x86_64) -->
 		<swt.version>3.113.0</swt.version>
-		<!-- Version of JavaFX (search for  org.openjfx:*) -->
+		<!-- Version of JavaFX (search for org.openjfx:*) -->
 		<openjfx.version>11.0.2</openjfx.version>
 
 		<!-- Build ID Format (used in Eclipse about dialog) -->
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
 		<buildId>${maven.build.timestamp}</buildId>
-		<!-- Year of the release of SARL (used in Eclipse about, license management
+		<!-- Year of the release of SARL (used in Eclipse about, license management 
 			and documentation) -->
 		<year>2020</year>
 		<!-- URL of the SARL project (use in POM, Eclipse about and documentation) -->
 		<sarlUrl>http://www.sarl.io</sarlUrl>
 		<!-- Default encoding of the source files -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<!-- Maven API version. This version should be supported by m2e. Search
+		<!-- Maven API version. This version should be supported by m2e. Search 
 			for maven-core on central. -->
 		<maven.api.version>3.6.1</maven.api.version>
 		<!-- Version of the Maven Java compiler. -->
@@ -109,7 +109,7 @@
 		<copyrighters>the original authors or authors</copyrighters>
 		<!-- URL of the Maven repositories of SARL (use in POM and documentation) -->
 		<sarl.maven.repository.url>http://maven.sarl.io</sarl.maven.repository.url>
-		<!--  Version of the SLF4J Logging API -->
+		<!-- Version of the SLF4J Logging API -->
 		<slf4j.version>2.0.0-alpha1</slf4j.version>
 	</properties>
 
@@ -936,7 +936,7 @@
 					</configuration>
 				</plugin>
 
-				<!-- This plugin's configuration is used to store Eclipse m2e settings
+				<!-- This plugin's configuration is used to store Eclipse m2e settings 
 					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
@@ -1006,7 +1006,7 @@
 		</pluginManagement>
 
 		<plugins>
-			<!-- Compute additional version numbers for the SARL (specification, release,
+			<!-- Compute additional version numbers for the SARL (specification, release, 
 				buildId) -->
 			<plugin>
 				<groupId>org.codehaus.gmavenplus</groupId>
@@ -1131,7 +1131,8 @@
 				</dependencies>
 			</plugin>
 
-			<!-- Enforce that the JDK used for compiling this project is with an expected version -->
+			<!-- Enforce that the JDK used for compiling this project is with an expected 
+				version -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>

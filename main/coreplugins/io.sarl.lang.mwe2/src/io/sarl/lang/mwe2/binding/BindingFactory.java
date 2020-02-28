@@ -221,7 +221,7 @@ public class BindingFactory {
 	/** Bind a type to an instance expression.
 	 *
 	 * @param bind the type to bind.
-	 * @param functionName the name of the binding function. It may be <code>null</code> for the default name.
+	 * @param functionName the name of the binding function. It may be {@code null} for the default name.
 	 * @param instanceExpression the expression that represents the instance.
 	 * @param isSingleton indicates if the instance is a singleton.
 	 * @param isEager indicates if the instance is an eager singleton.
@@ -265,7 +265,7 @@ public class BindingFactory {
 	/** Bind a type to concrete type.
 	 *
 	 * @param bind the type to bind.
-	 * @param functionName the name of the binding function. It may be <code>null</code> for the default name.
+	 * @param functionName the name of the binding function. It may be {@code null} for the default name.
 	 * @param to the concrete type.
 	 * @param isSingleton indicates if the instance is a singleton.
 	 * @param isEager indicates if the instance is an eager singleton.

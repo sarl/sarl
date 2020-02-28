@@ -78,7 +78,7 @@ public interface FormalParameterProvider {
 	 * default value may be still available. See {@link #getFormalParameterDefaultValueString(int)}.
 	 *
 	 * @param position the position of the formal parameter.
-	 * @return the default value, or <code>null</code> if none.
+	 * @return the default value, or {@code null} if none.
 	 * @see #getFormalParameterDefaultValueString(int)
 	 */
 	XExpression getFormalParameterDefaultValue(int position);
@@ -91,7 +91,7 @@ public interface FormalParameterProvider {
 	 * default value may be still available. See {@link #getFormalParameterDefaultValue(int)}.
 	 *
 	 * @param position the position of the formal parameter.
-	 * @return the default value, or <code>null</code> if none.
+	 * @return the default value, or {@code null} if none.
 	 * @see #getFormalParameterDefaultValue(int)
 	 */
 	String getFormalParameterDefaultValueString(int position);

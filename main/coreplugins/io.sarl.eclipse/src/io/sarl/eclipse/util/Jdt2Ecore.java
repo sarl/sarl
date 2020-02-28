@@ -329,7 +329,7 @@ public class Jdt2Ecore {
 	 *
 	 * @param element the annoted element.
 	 * @param qualifiedName the qualified name of the element.
-	 * @return the annotation, or <code>null</code> if the element is not annoted.
+	 * @return the annotation, or {@code null} if the element is not annoted.
 	 */
 	public IAnnotation getAnnotation(IAnnotatable element, String qualifiedName) {
 		if (element != null) {
@@ -529,7 +529,7 @@ public class Jdt2Ecore {
 	 *
 	 * @param codeBuilder the builder of the script.
 	 * @param methods the operations to create.
-	 * @param context the context of the actions. If <code>null</code>, the block of the actions are not generated.
+	 * @param context the context of the actions. If {@code null}, the block of the actions are not generated.
 	 * @throws JavaModelException if the Java model is invalid.
 	 * @throws IllegalArgumentException if the signature is not syntactically correct.
 	 */
@@ -825,7 +825,7 @@ public class Jdt2Ecore {
 		/** Find the definition of a type.
 		 *
 		 * @param typeName the name of the type to search for.
-		 * @return the type, or <code>null</code> if the type was not found.
+		 * @return the type, or {@code null} if the type was not found.
 		 * @throws JavaModelException if this project does not exist or if an
 		 *     exception occurs while accessing its corresponding resource.
 		 */

@@ -63,7 +63,7 @@ public class SARLImages extends XtendImages {
 
 	/** Replies the image descriptor for the given element.
 	 *
-	 * @param type the type of the SARL element, or <code>null</code> if unknown.
+	 * @param type the type of the SARL element, or {@code null} if unknown.
 	 * @param isInner indicates if the element is inner.
 	 * @param isInInterfaceOrAnnotation indicates if the element is defined inside an interface or an annotation.
 	 * @param flags the adornments.
@@ -93,7 +93,7 @@ public class SARLImages extends XtendImages {
 
 	/** Replies the image descriptor for the given element.
 	 *
-	 * @param type the type of the SARL element, or <code>null</code> if unknown.
+	 * @param type the type of the SARL element, or {@code null} if unknown.
 	 * @param isInner indicates if the element is inner.
 	 * @return the image descriptor.
 	 */
@@ -105,7 +105,7 @@ public class SARLImages extends XtendImages {
 
 	/** Replies the image descriptor for the given element.
 	 *
-	 * @param type the type of the SARL element, or <code>null</code> if unknown.
+	 * @param type the type of the SARL element, or {@code null} if unknown.
 	 * @param isInner indicates if the element is inner.
 	 * @param flags the adornments.
 	 * @return the image descriptor.

@@ -104,10 +104,10 @@ public class SREConfigurationBlock {
 
 	/** Constructor.
 	 * @param enableSystemWideSelector indicates if the system-wide configuration selector must be enabled.
-	 * @param project the provider of the project that may be associated to the block. If <code>null</code> the components
+	 * @param project the provider of the project that may be associated to the block. If {@code null} the components
 	 *     related to the project are hidden.
 	 * @param projectProviderFactories the factories of  the provider of a project that may give SRE configuration.
-	 *     If <code>null</code> the components related to the project are hidden.
+	 *     If {@code null} the components related to the project are hidden.
 	 */
 	public SREConfigurationBlock(boolean enableSystemWideSelector,
 			ProjectProvider project,
@@ -118,10 +118,10 @@ public class SREConfigurationBlock {
 	/** Constructor.
 	 * @param title the title of the group.
 	 * @param enableSystemWideSelector indicates if the system-wide configuration selector must be enabled.
-	 * @param project the provider of the project that may be associated to the block. If <code>null</code> the components
+	 * @param project the provider of the project that may be associated to the block. If {@code null} the components
 	 *     related to the project are hidden.
 	 * @param projectProviderFactories the factories of  the provider of a project that may give SRE configuration.
-	 *     If <code>null</code> the components related to the project are hidden.
+	 *     If {@code null} the components related to the project are hidden.
 	 */
 	public SREConfigurationBlock(String title, boolean enableSystemWideSelector,
 			ProjectProvider project,
@@ -381,13 +381,13 @@ public class SREConfigurationBlock {
 		return this.control;
 	}
 
-	/** Change the selected SRE. If <code>null</code> is given as parameter,
+	/** Change the selected SRE. If {@code null} is given as parameter,
 	 * and this block enables to select the system-wide SRE, then
 	 * the system-wide SRE is selected. If the block is not enabling the
 	 * system-wide SRE, the specific SRE is reset to the system-wide
 	 * SRE.
 	 *
-	 * @param sre the sre, if <code>null</code> reset to default.
+	 * @param sre the sre, if {@code null} reset to default.
 	 * @return <code>true</code> if the selection changed.
 	 * @see #selectSpecificSRE(ISREInstall)
 	 */
@@ -441,7 +441,7 @@ public class SREConfigurationBlock {
 
 	/** Select a specific SRE.
 	 *
-	 * @param sre the sre, if <code>null</code> reset to default.
+	 * @param sre the sre, if {@code null} reset to default.
 	 * @return <code>true</code> if the selection changed.
 	 */
 	@SuppressWarnings("checkstyle:npathcomplexity")
@@ -529,7 +529,7 @@ public class SREConfigurationBlock {
 
 	/** Replies the selected SARL runtime environment.
 	 *
-	 * @return the SARL runtime environment or <code>null</code> if
+	 * @return the SARL runtime environment or {@code null} if
 	 *     there is no selected SRE.
 	 * @see #isSystemWideDefaultSRE()
 	 */
@@ -545,7 +545,7 @@ public class SREConfigurationBlock {
 
 	/** Replies the specific SARL runtime environment.
 	 *
-	 * @return the SARL runtime environment or <code>null</code> if
+	 * @return the SARL runtime environment or {@code null} if
 	 *     there is no selected SRE.
 	 * @see #isSystemWideDefaultSRE()
 	 */
@@ -661,7 +661,7 @@ public class SREConfigurationBlock {
 	/** Validate that the given SRE is valid in the context of the SRE configuration.
 	 *
 	 * @param sre the SRE.
-	 * @return the state of the validation, never <code>null</code>.
+	 * @return the state of the validation, never {@code null}.
 	 */
 	public IStatus validate(ISREInstall sre) {
 		final IStatus status;

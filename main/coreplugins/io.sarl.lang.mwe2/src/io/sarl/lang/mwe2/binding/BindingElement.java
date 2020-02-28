@@ -150,7 +150,7 @@ public class BindingElement {
 
 	/** Replies the function name.
 	 *
-	 * @return the name of the binding function, or <code>null</code>.
+	 * @return the name of the binding function, or {@code null}.
 	 */
 	@Pure
 	public String getFunctionName() {

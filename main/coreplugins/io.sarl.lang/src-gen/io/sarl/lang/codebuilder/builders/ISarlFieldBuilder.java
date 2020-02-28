@@ -54,7 +54,7 @@ public interface ISarlFieldBuilder {
 	void dispose();
 
 	/** Replies the context for type resolution.
-	 * @return the context or <code>null</code> if the Ecore object is the context.
+	 * @return the context or {@code null} if the Ecore object is the context.
 	 */
 	IJvmTypeProvider getTypeResolutionContext();
 
@@ -88,7 +88,7 @@ public interface ISarlFieldBuilder {
 	void setType(String type);
 
 	/** Change the initialValue.
-	 * @param value the value of the initialValue. It may be <code>null</code>.
+	 * @param value the value of the initialValue. It may be {@code null}.
 	 */
 	@Pure
 	IExpressionBuilder getInitialValue();

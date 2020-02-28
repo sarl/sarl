@@ -116,7 +116,7 @@ public class PyGeneratorConfigurationProvider implements IPyGeneratorConfigurati
 		/** Find the adapter in the EMF object.
 		 *
 		 * @param emfObject the EMF object.
-		 * @return the adapter or <code>null</code> if no object is available.
+		 * @return the adapter or {@code null} if no object is available.
 		 */
 		public static PyGeneratorConfigAdapter findInEmfObject(final Notifier emfObject) {
 			if (emfObject != null) {

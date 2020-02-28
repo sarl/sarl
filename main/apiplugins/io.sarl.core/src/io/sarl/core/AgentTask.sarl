@@ -110,6 +110,7 @@ class AgentTask extends SRESpecificDataContainer {
 	 * @since 0.7, it is part of the private API.
 	 * @privateapi
 	 */
+	@SuppressWarnings("use_reserved_sarl_annotation")
 	@PrivateAPI
 	def setTaskName(name : String) : void {
 		this.name = name

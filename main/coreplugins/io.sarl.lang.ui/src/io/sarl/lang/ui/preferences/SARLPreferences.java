@@ -64,7 +64,7 @@ public final class SARLPreferences {
 	/** Replies the preference store for the given project.
 	 *
 	 * @param project the project.
-	 * @return the preference store or <code>null</code>.
+	 * @return the preference store or {@code null}.
 	 */
 	public static IPreferenceStore getSARLPreferencesFor(IProject project) {
 		if (project != null) {
@@ -170,11 +170,11 @@ public final class SARLPreferences {
 	}
 
 	/** Replies the output path for the generated sources that is registered inside the project's preferences.
-	 * If the project has no specific configuration, replies <code>null</code>.
+	 * If the project has no specific configuration, replies {@code null}.
 	 *
 	 * @param project the project.
 	 * @return the output path for SARL compiler if the project has a specific configuration,
-	 *     otherwise <code>null</code>.
+	 *     otherwise {@code null}.
 	 */
 	public static IPath getSARLOutputPathFor(
 			IProject project) {

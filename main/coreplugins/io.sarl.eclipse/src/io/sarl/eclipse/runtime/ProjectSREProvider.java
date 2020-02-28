@@ -51,7 +51,7 @@ public interface ProjectSREProvider {
 	 * configuration.
 	 *
 	 * @return the identifier of the SRE used by the project when it has a specific
-	 *     configuration AND not using the system SRE; otherwise <code>null</code>.
+	 *     configuration AND not using the system SRE; otherwise {@code null}.
 	 */
 	String getSREInstallIdentifier();
 

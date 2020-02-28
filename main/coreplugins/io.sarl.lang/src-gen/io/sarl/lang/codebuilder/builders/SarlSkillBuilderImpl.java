@@ -112,7 +112,7 @@ public class SarlSkillBuilderImpl extends AbstractBuilder implements ISarlSkillB
 
 	/** Change the super type.
 	 * @param superType the qualified name of the super type,
-	 *     or <code>null</code> if the default type.
+	 *     or {@code null} if the default type.
 	 */
 	public void setExtends(String superType) {
 		if (!Strings.isEmpty(superType)

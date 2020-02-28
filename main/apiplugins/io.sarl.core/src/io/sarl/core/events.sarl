@@ -60,7 +60,7 @@ final event Initialize {
 
 	/** Identifier of the agent, which has spawned the under-initialization agent.
 	 * If the under-initialization agent was spawned by the SARL run-time environment
-	 * (and not by another agent), the identifier is <code>null</code>.
+	 * (and not by another agent), the identifier is {@code null}.
 	 *
 	 * @since 0.5
 	 */

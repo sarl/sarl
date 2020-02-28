@@ -365,7 +365,7 @@ public class SarlBatchCompiler {
 
 	/** Set the comparator of issues that is used for sorting the issues before they are logged.
 	 *
-	 * @param comparator the comparator; never <code>null</code>.
+	 * @param comparator the comparator; never {@code null}.
 	 */
 	public void setIssueComparator(Comparator<Issue> comparator) {
 		if (comparator != null) {
@@ -375,7 +375,7 @@ public class SarlBatchCompiler {
 
 	/** Replies the comparator of issues that is used for sorting the issues before they are logged.
 	 *
-	 * @return the comparator; never <code>null</code>.
+	 * @return the comparator; never {@code null}.
 	 */
 	public Comparator<Issue> getIssueComparator() {
 		return this.issueComparator;
@@ -508,7 +508,7 @@ public class SarlBatchCompiler {
 	/** Replies if the trace files must be generated.
 	 *
 	 * <p>A trace file contains the links between the class, java and SARL files.
-	 * They are mandatory for retreiving and displaying the SARL source code from
+	 * They are mandatory for retrieving and displaying the SARL source code from
 	 * a JVM element.
 	 *
 	 * <p>The usual filename for the trace files follows the pattern
@@ -636,7 +636,7 @@ public class SarlBatchCompiler {
 
 	/** Change the path where the Java files are generated.
 	 *
-	 * @param path the path, or <code>null</code> for using the default path in {@link SARLConfig#FOLDER_SOURCE_GENERATED}..
+	 * @param path the path, or {@code null} for using the default path in {@link SARLConfig#FOLDER_SOURCE_GENERATED}..
 	 */
 	public void setOutputPath(File path) {
 		this.outputPath = path;
@@ -652,7 +652,7 @@ public class SarlBatchCompiler {
 
 	/** Replies the path where the Java files are generated.
 	 *
-	 * @return the path; or <code>null</code> for using the default path in {@link SARLConfig#FOLDER_SOURCE_GENERATED}.
+	 * @return the path; or {@code null} for using the default path in {@link SARLConfig#FOLDER_SOURCE_GENERATED}.
 	 */
 	@Pure
 	public File getOutputPath() {
@@ -661,7 +661,7 @@ public class SarlBatchCompiler {
 
 	/** Replies the path where the class files are generated.
 	 *
-	 * @return the path; or <code>null</code> for ignoring the class generation.
+	 * @return the path; or {@code null} for ignoring the class generation.
 	 */
 	@Pure
 	public File getClassOutputPath() {
@@ -670,7 +670,7 @@ public class SarlBatchCompiler {
 
 	/** Set the path where the class files are generated.
 	 *
-	 * @param path the path; or <code>null</code> for ignoring the class generation.
+	 * @param path the path; or {@code null} for ignoring the class generation.
 	 */
 	@Pure
 	public void setClassOutputPath(File path) {
@@ -784,7 +784,7 @@ public class SarlBatchCompiler {
 
 	/** Replies the path where the Xtext stubs are generated.
 	 *
-	 * @return the path; or <code>null</code> for using the default path.
+	 * @return the path; or {@code null} for using the default path.
 	 */
 	@Pure
 	public File getTempDirectory() {
@@ -863,7 +863,7 @@ public class SarlBatchCompiler {
 
 	/** Change the file encoding.
 	 *
-	 * @return the file encoding, or <code>null</code> if the default encoding must be used.
+	 * @return the file encoding, or {@code null} if the default encoding must be used.
 	 */
 	@Pure
 	public String getFileEncoding() {
@@ -1869,7 +1869,7 @@ public class SarlBatchCompiler {
 	 *
 	 * @param resourceSet the input resource set.
 	 * @param progress monitor of the progress of the compilation.
-	 * @return the folder in which the stubs are located. Replies <code>null</code> if the activity is canceled.
+	 * @return the folder in which the stubs are located. Replies {@code null} if the activity is canceled.
 	 */
 	protected File createStubs(ResourceSet resourceSet, IProgressMonitor progress) {
 		assert progress != null;

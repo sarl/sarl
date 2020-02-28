@@ -50,7 +50,7 @@ interface LifecycleService extends Service {
 	 * @param spawningAgent the agent which is spawning.
 	 * @param parent the parent entity that is creating the agents.
 	 * @param agentClazz the type of the agents to spawn.
-	 * @param agentId the identifier of the agent to spawn. If <code>null</code> the identifier is randomly selected.
+	 * @param agentId the identifier of the agent to spawn. If {@code null} the identifier is randomly selected.
 	 * If {@code nbAgents} is greater than 1, the agent identifier must be {@code null}.
 	 * @param params the list of the parameters to pass to the agent initialization function.
 	 * @return the result of the spawning action, including the identifiers of the agents, and the failure causes.

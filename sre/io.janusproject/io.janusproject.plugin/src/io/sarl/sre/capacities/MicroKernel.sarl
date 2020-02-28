@@ -37,7 +37,7 @@ capacity MicroKernelCapacity {
 	 * 
 	 * @param <S> - type of the service to reply.
 	 * @param type type of the service to reply.
-	 * @return the service, or <code>null</code>.
+	 * @return the service, or {@code null}.
 	 */
 	def getService(type : Class<S>) : S with S extends Service
 

@@ -299,7 +299,7 @@ public abstract class AbstractSarlLaunchShortcut<ET extends EObject, JT>
 	 *
 	 * @param projectName the name of the project.
 	 * @param fullyQualifiedName the element.
-	 * @return the list of {@link ILaunchConfiguration}s or an empty list, never <code>null</code>
+	 * @return the list of {@link ILaunchConfiguration}s or an empty list, never {@code null}
 	 * @throws CoreException if something is going wrong.
 	 */
 	protected List<ILaunchConfiguration> getCandidates(String projectName,
@@ -324,12 +324,12 @@ public abstract class AbstractSarlLaunchShortcut<ET extends EObject, JT>
 
 	/**
 	 * Returns a configuration from the given collection of configurations that should be launched,
-	 * or <code>null</code> to cancel. Default implementation opens a selection dialog that allows
+	 * or {@code null} to cancel. Default implementation opens a selection dialog that allows
 	 * the user to choose one of the specified launch configurations.  Returns the chosen configuration,
-	 * or <code>null</code> if the user cancels.
+	 * or {@code null} if the user cancels.
 	 *
 	 * @param configList list of configurations to choose from.
-	 * @return configuration to launch or <code>null</code> to cancel.
+	 * @return configuration to launch or {@code null} to cancel.
 	 */
 	@SuppressWarnings("static-method")
 	protected ILaunchConfiguration chooseConfiguration(List<ILaunchConfiguration> configList) {

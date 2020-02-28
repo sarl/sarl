@@ -94,7 +94,7 @@ public interface SREBootstrap {
 	 * Replies the identifier of the boot agent from the system's properties. The boot agent is launched with
 	 * {@link #startAgent(int, Class, Object...)}.
 	 *
-	 * @return the identifier of the boot agent, or <code>null</code> if it is unknown.
+	 * @return the identifier of the boot agent, or {@code null} if it is unknown.
 	 * @see #startAgent(int, Class, Object...)
 	 */
 	@Pure

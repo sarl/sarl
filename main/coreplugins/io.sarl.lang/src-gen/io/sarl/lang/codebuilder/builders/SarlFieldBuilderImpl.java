@@ -124,7 +124,7 @@ public class SarlFieldBuilderImpl extends AbstractBuilder implements ISarlFieldB
 	}
 
 	/** Change the initialValue.
-	 * @param value the value of the initialValue. It may be <code>null</code>.
+	 * @param value the value of the initialValue. It may be {@code null}.
 	 */
 	@Pure
 	public IExpressionBuilder getInitialValue() {

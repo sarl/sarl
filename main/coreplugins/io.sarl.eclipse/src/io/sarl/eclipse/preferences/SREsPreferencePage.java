@@ -755,9 +755,9 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	}
 
 	/**
-	 * Sets the default SRE, possible <code>null</code>.
+	 * Sets the default SRE, possible {@code null}.
 	 *
-	 * @param sre the SRE or <code>null</code>
+	 * @param sre the SRE or {@code null}
 	 */
 	public void setDefaultSRE(ISREInstall sre) {
 		if (sre == null) {
@@ -819,9 +819,9 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 	}
 
 	/**
-	 * Returns the default SRE or <code>null</code> if none.
+	 * Returns the default SRE or {@code null} if none.
 	 *
-	 * @return the default SRE or <code>null</code> if none
+	 * @return the default SRE or {@code null} if none
 	 */
 	public ISREInstall getDefaultSRE() {
 		final Object[] objects = this.sresList.getCheckedElements();

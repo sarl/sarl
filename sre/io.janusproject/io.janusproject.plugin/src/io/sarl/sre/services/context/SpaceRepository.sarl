@@ -295,7 +295,7 @@ abstract class SpaceRepository implements SpaceListener {
 	 * @param spaceID ID of the space.
 	 * @param spec specification of the space.
 	 * @param creationParams creation parameters.
-	 * @return the new space, or <code>null</code> if the space already exists.
+	 * @return the new space, or {@code null} if the space already exists.
 	 */
 	def createSpace(spaceID : SpaceID, spec : Class<? extends SpaceSpecification<S>>,
 		creationParams : Object*) : S with S extends Space {
@@ -430,7 +430,7 @@ abstract class SpaceRepository implements SpaceListener {
 	 * Returns the first instance of a space with the specified SpaceID.
 	 * 
 	 * @param spaceID the identifier to retrieve.
-	 * @return the space instance of <code>null</code> if none.
+	 * @return the space instance of {@code null} if none.
 	 */
 	def getSpace(spaceID : SpaceID) : Space {
 		val spaces = sharedStructure

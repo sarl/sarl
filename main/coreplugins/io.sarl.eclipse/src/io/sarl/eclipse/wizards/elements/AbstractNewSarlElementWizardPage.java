@@ -1158,7 +1158,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @param project the Java project.
 	 * @param extension the extension to give to the dialog box.
 	 * @param multi indicates if the selection could be done on multiple elements.
-	 * @return the dialog, or <code>null</code> for using the default dialog box.
+	 * @return the dialog, or {@code null} for using the default dialog box.
 	 */
 	@SuppressWarnings("static-method")
 	protected AbstractSuperTypeSelectionDialog<?> createSuperClassSelectionDialog(
@@ -1201,7 +1201,7 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 * @param project the Java project.
 	 * @param extension the extension to give to the dialog box.
 	 * @param multi indicates if the selection could be done on multiple elements.
-	 * @return the dialog, or <code>null</code> for using the default dialog box.
+	 * @return the dialog, or {@code null} for using the default dialog box.
 	 */
 	@SuppressWarnings("static-method")
 	protected AbstractSuperTypeSelectionDialog<?> createSuperInterfaceSelectionDialog(

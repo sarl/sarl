@@ -41,7 +41,7 @@ final class BehaviorLife extends AgentTraitLife {
 	 * If this data structure does not exists, it is automatically created.
 	 * 
 	 * @param behavior the instance of the behavior for which the life description should be retrieved
-	 * @see #getLifeNoCreation
+	 * @see #getLifeOrNull
 	 */
 	static def getLife(^behavior : Behavior) : BehaviorLife {
 		var life = ^behavior.getSreSpecificData(typeof(BehaviorLife))

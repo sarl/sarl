@@ -351,7 +351,7 @@ public abstract class AbstractSREInstall implements ISREInstall {
 	 * Change the library locations of this ISREInstall.
 	 *
 	 * @param libraries The library locations of this ISREInstall.
-	 *     Must not be <code>null</code>.
+	 *     Must not be {@code null}.
 	 */
 	@Override
 	public void setClassPathEntries(List<IRuntimeClasspathEntry> libraries) {

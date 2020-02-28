@@ -557,7 +557,7 @@ public final class Utils {
 	 * @param fromType - source type
 	 * @param toType - target type
 	 * @param enablePrimitiveWidening - indicates if the widening of the primitive types is allowed.
-	 * @param enableVoidMatchingNull - indicates if the <code>null</code> is matching <code>void</code>.
+	 * @param enableVoidMatchingNull - indicates if the {@code null} is matching <code>void</code>.
 	 * @param allowSynonyms - indicates if the synonyms are allowed.
 	 * @return the state of the cast.
 	 */
@@ -740,7 +740,7 @@ public final class Utils {
 	 * @param serializer - the Xtext serializer
 	 * @param grammarAccess - the accessor to the SARL grammar.
 	 * @param importManager - used to collect the types to import.
-	 *     If <code>null</code>, the qualified names of the types with be put in the signature.
+	 *     If {@code null}, the qualified names of the types with be put in the signature.
 	 * @return the string representation of the signature.
 	 */
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
@@ -1009,7 +1009,7 @@ public final class Utils {
 	}
 
 	/** Replies a singleton list with the given element, or the empty list if
-	 * the element is <code>null</code>.
+	 * the element is {@code null}.
 	 *
 	 * @param <T> the type of the element in the list.
 	 * @param element the element.
@@ -1177,7 +1177,7 @@ public final class Utils {
 	 *
 	 * @param typeReferences - the accessor to the types.
 	 * @param context - the context that is providing the access to the classpath.
-	 * @return the version, or <code>null</code> if the SARL library cannot be found or
+	 * @return the version, or {@code null} if the SARL library cannot be found or
 	 *     is too old.
 	 * @deprecated see {@link #getSARLLibraryVersionOnClasspath(TypeReferences, Notifier, OutParameter)}
 	 */
@@ -1196,7 +1196,7 @@ public final class Utils {
 	 * @param typeReferences - the accessor to the types.
 	 * @param context the context that is providing the access to the classpath.
 	 * @param version the version of the SARL library that was found, according to the returned error code.
-	 * @return the version, or <code>null</code> if the SARL library cannot be found or
+	 * @return the version, or {@code null} if the SARL library cannot be found or
 	 *     is too old.
 	 */
 	@SuppressWarnings("checkstyle:npathcomplexity")

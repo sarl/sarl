@@ -90,7 +90,7 @@ public final class FactExtensions {
 	 *
 	 * @param bundleName the name of the bundle, i.e. the name of the jar file.
 	 * @param filename the name of the file.
-	 * @return the URL, or <code>null</code>.
+	 * @return the URL, or {@code null}.
 	 */
 	public static URL getBundlePropertyURL(String bundleName, String filename) {
 		try {

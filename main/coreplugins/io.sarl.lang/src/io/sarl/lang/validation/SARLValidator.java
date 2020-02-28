@@ -518,7 +518,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	/** Replies the canonical name of the given object.
 	 *
 	 * @param object the object.
-	 * @return the canonical name or <code>null</code> if it cannot be computed.
+	 * @return the canonical name or {@code null} if it cannot be computed.
 	 */
 	protected String canonicalName(EObject object) {
 		if (object instanceof JvmIdentifiableElement) {

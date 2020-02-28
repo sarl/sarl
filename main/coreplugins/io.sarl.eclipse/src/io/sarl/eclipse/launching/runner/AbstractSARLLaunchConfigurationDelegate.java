@@ -184,7 +184,7 @@ public abstract class AbstractSARLLaunchConfigurationDelegate extends AbstractJa
 	 * @param configuration the configuration to read.
 	 * @param verify  if true verify the SRE validity, do nothing otherwise
 	 * @param projectAccessor the accessor to the Java project.
-	 * @return the project SRE or <code>null</code>.
+	 * @return the project SRE or {@code null}.
 	 * @throws CoreException Some error occurs when accessing to the ecore elements.
 	 */
 	private static ISREInstall getProjectSpecificSRE(ILaunchConfiguration configuration, boolean verify,

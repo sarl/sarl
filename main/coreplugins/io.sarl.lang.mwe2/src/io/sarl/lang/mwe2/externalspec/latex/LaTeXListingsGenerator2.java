@@ -154,7 +154,7 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 
 	/** Set the TeX style of the standard code in floats.
 	 *
-	 * @param style the TeX code that describes the style. If <code>null</code>
+	 * @param style the TeX code that describes the style. If {@code null}
 	 *     or empty, the default style is applied.
 	 */
 	public void setFloatBasicStyle(String style) {
@@ -163,7 +163,7 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 
 	/** Set the TeX style of the inline standard code.
 	 *
-	 * @param style the TeX code that describes the style. If <code>null</code>
+	 * @param style the TeX code that describes the style. If {@code null}
 	 *     or empty, the default style is applied.
 	 */
 	public void setInlineBasicStyle(String style) {
@@ -172,7 +172,7 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 
 	/** Set the TeX style of the identifiers.
 	 *
-	 * @param style the TeX code that describes the style. If <code>null</code>
+	 * @param style the TeX code that describes the style. If {@code null}
 	 *     or empty, the default style is applied.
 	 */
 	public void setIdentifierStyle(String style) {
@@ -181,7 +181,7 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 
 	/** Set the TeX style of the comments.
 	 *
-	 * @param style the TeX code that describes the style. If <code>null</code>
+	 * @param style the TeX code that describes the style. If {@code null}
 	 *     or empty, the default style is applied.
 	 */
 	public void setCommentStyle(String style) {
@@ -190,7 +190,7 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 
 	/** Set the TeX style of the strings of characters.
 	 *
-	 * @param style the TeX code that describes the style. If <code>null</code>
+	 * @param style the TeX code that describes the style. If {@code null}
 	 *     or empty, the default style is applied.
 	 */
 	public void setStringStyle(String style) {
@@ -199,7 +199,7 @@ public class LaTeXListingsGenerator2 extends AbstractExternalHighlightingFragmen
 
 	/** Set the TeX style of the strings of keywords.
 	 *
-	 * @param style the TeX code that describes the style. If <code>null</code>
+	 * @param style the TeX code that describes the style. If {@code null}
 	 *     or empty, the default style is applied.
 	 */
 	public void setKeywordStyle(String style) {

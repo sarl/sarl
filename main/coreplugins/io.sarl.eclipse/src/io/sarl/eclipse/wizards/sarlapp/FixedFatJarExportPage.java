@@ -965,7 +965,7 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 	 * then a dialog will ask the user again.
 	 *
 	 * @param	parent	the parent for the dialog,
-	 * 			or <code>null</code> if no dialog should be presented
+	 * 			or {@code null} if no dialog should be presented
 	 * @return	<code>true</code> if it is OK to create the JAR
 	 */
 	private boolean canCreateAntScript(Shell parent) {

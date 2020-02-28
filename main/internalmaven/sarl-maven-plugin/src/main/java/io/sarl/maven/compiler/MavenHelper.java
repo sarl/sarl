@@ -343,7 +343,7 @@ public class MavenHelper {
 	 *
 	 * @param groupId the identifier of the group.
 	 * @param artifactId thidentifier of the artifact.
-	 * @return the version, never <code>null</code>
+	 * @return the version, never {@code null}
 	 * @throws MojoExecutionException if the plugin was not found.
 	 */
 	public String getPluginDependencyVersion(String groupId, String artifactId) throws MojoExecutionException {

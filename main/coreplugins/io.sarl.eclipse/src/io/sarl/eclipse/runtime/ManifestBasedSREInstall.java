@@ -153,7 +153,7 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 	/**
 	 * Replies the path to the JAR file that is supporting this SRE installation.
 	 *
-	 * @return the path to the JAR file. Must not be <code>null</code>.
+	 * @return the path to the JAR file. Must not be {@code null}.
 	 */
 	public IPath getJarFile() {
 		return this.jarFile;
@@ -162,7 +162,7 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 	/**
 	 * Change the path to the JAR file that is supporting this SRE installation.
 	 *
-	 * @param jarFile the path to the JAR file. Must not be <code>null</code>.
+	 * @param jarFile the path to the JAR file. Must not be {@code null}.
 	 */
 	public void setJarFile(IPath jarFile) {
 		if (!Objects.equal(jarFile, this.jarFile)) {

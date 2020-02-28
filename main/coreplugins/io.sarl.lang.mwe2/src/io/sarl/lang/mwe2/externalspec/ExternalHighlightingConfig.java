@@ -254,7 +254,7 @@ public class ExternalHighlightingConfig implements IGuiceAwareGeneratorComponent
 
 	/** Replies the color configuration.
 	 *
-	 * @return the color configuration, or <code>null</code>
+	 * @return the color configuration, or {@code null}
 	 */
 	@Pure
 	public ColorConfig getColors() {

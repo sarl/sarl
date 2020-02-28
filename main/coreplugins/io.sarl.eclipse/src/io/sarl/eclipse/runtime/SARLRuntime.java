@@ -145,10 +145,10 @@ public final class SARLRuntime {
 	/** Change the key used for storing the SARL runtime configuration
 	 * into the preferences.
 	 *
-	 * <p>If the given key is <code>null</code> or empty, the preference key
+	 * <p>If the given key is {@code null} or empty, the preference key
 	 * is reset to the {@link #DEFAULT_PREFERENCE_KEY}.
 	 *
-	 * @param key the new key or <code>null</code>.
+	 * @param key the new key or {@code null}.
 	 */
 	public static void setCurrentPreferenceKey(String key) {
 		LOCK.lock();
@@ -216,7 +216,7 @@ public final class SARLRuntime {
 	 * Return the SRE corresponding to the specified Id.
 	 *
 	 * @param id the id that specifies an instance of ISREInstall
-	 * @return the SRE corresponding to the specified Id, or <code>null</code>.
+	 * @return the SRE corresponding to the specified Id, or {@code null}.
 	 */
 	public static ISREInstall getSREFromId(String id) {
 		if (Strings.isNullOrEmpty(id)) {
@@ -234,7 +234,7 @@ public final class SARLRuntime {
 	/**
 	 * Returns the default SRE id determined during the initialization of the SRE types.
 	 *
-	 * @return the id of the default SRE, or <code>null</code> if none.
+	 * @return the id of the default SRE, or {@code null} if none.
 	 */
 	private static String getDefaultSREId() {
 		LOCK.lock();
@@ -249,7 +249,7 @@ public final class SARLRuntime {
 	/**
 	 * Return the default SRE set with <code>setDefaultSRE()</code>.
 	 *
-	 * @return	Returns the default SRE. May return <code>null</code> when no default
+	 * @return	Returns the default SRE. May return {@code null} when no default
 	 *     SRE was set or when the default SRE has been disposed.
 	 */
 	public static ISREInstall getDefaultSREInstall() {
@@ -273,7 +273,7 @@ public final class SARLRuntime {
 	 *
 	 * @param sres The installed SREs.
 	 * @param monitor the progress monitor to use for reporting progress to the user. It is the caller's responsibility
-	 *        to call done() on the given monitor. Accepts <code>null</code>, indicating that no progress should be
+	 *        to call done() on the given monitor. Accepts {@code null}, indicating that no progress should be
 	 *        reported and that the operation cannot be canceled.
 	 * @throws CoreException if trying to set the default SRE install encounters problems
 	 */
@@ -336,9 +336,9 @@ public final class SARLRuntime {
 	 * Sets a SRE as the system-wide default SRE, and notifies registered SRE install
 	 * change listeners of the change.
 	 *
-	 * @param sre The SRE to make the default. May be <code>null</code> to clear
+	 * @param sre The SRE to make the default. May be {@code null} to clear
 	 * 				the default.
-	 * @param monitor progress monitor or <code>null</code>
+	 * @param monitor progress monitor or {@code null}
 	 * @throws CoreException if trying to set the default SRE install encounters problems
 	 */
 	public static void setDefaultSREInstall(ISREInstall sre, IProgressMonitor monitor) throws CoreException {
@@ -349,9 +349,9 @@ public final class SARLRuntime {
 	 * Sets a SRE as the system-wide default SRE, and notifies registered SRE install
 	 * change listeners of the change.
 	 *
-	 * @param sre The SRE to make the default. May be <code>null</code> to clear
+	 * @param sre The SRE to make the default. May be {@code null} to clear
 	 * 				the default.
-	 * @param monitor progress monitor or <code>null</code>
+	 * @param monitor progress monitor or {@code null}
 	 * @param savePreference If <code>true</code>, update workbench preferences to reflect
 	 * 		   				  the new default SRE.
 	 * @throws CoreException if trying to set the default SRE install encounters problems
@@ -439,7 +439,7 @@ public final class SARLRuntime {
 	 * This state will be read again upon first access to SRE
 	 * configuration information.
 	 *
-	 * @param monitor the progression monitor, or <code>null</code>.
+	 * @param monitor the progression monitor, or {@code null}.
 	 * @throws CoreException if trying to save the current state of SREs encounters a problem
 	 */
 	public static void saveSREConfiguration(IProgressMonitor monitor) throws CoreException {

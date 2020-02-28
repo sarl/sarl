@@ -63,9 +63,9 @@ public abstract class AbstractSREInstallPage extends WizardPage {
 	 *
 	 * @param pageName the name of the page
 	 * @param title the title for this wizard page,
-	 *     or <code>null</code> if none.
+	 *     or {@code null} if none.
 	 * @param titleImage the image descriptor for the title of this wizard page,
-	 *     or <code>null</code> if none.
+	 *     or {@code null} if none.
 	 */
 	protected AbstractSREInstallPage(String pageName, String title, ImageDescriptor titleImage) {
 		super(pageName, title, titleImage);

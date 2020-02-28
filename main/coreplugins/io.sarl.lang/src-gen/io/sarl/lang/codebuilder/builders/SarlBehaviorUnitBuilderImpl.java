@@ -112,7 +112,7 @@ public class SarlBehaviorUnitBuilderImpl extends AbstractBuilder implements ISar
 	}
 
 	/** Change the guard.
-	 * @param value the value of the guard. It may be <code>null</code>.
+	 * @param value the value of the guard. It may be {@code null}.
 	 */
 	@Pure
 	public IExpressionBuilder getGuard() {

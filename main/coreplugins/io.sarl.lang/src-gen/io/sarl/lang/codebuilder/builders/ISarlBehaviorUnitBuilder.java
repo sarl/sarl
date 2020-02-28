@@ -54,7 +54,7 @@ public interface ISarlBehaviorUnitBuilder {
 	void dispose();
 
 	/** Replies the context for type resolution.
-	 * @return the context or <code>null</code> if the Ecore object is the context.
+	 * @return the context or {@code null} if the Ecore object is the context.
 	 */
 	IJvmTypeProvider getTypeResolutionContext();
 
@@ -83,7 +83,7 @@ public interface ISarlBehaviorUnitBuilder {
 	void setDocumentation(String doc);
 
 	/** Change the guard.
-	 * @param value the value of the guard. It may be <code>null</code>.
+	 * @param value the value of the guard. It may be {@code null}.
 	 */
 	@Pure
 	IExpressionBuilder getGuard();

@@ -343,7 +343,7 @@ public class SARLEclipsePlugin extends AbstractUIPlugin {
 
 	/** Replies the Eclipse preferences for this plugin.
 	 *
-	 * @return the Eclipse preferences, never <code>null</code>.
+	 * @return the Eclipse preferences, never {@code null}.
 	 */
 	@SuppressWarnings("static-method")
 	public IEclipsePreferences getPreferences() {

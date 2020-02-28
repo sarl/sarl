@@ -86,7 +86,7 @@ public final class ShouldExtensions {
 	 *
 	 * @param actual the string to parse.
 	 * @param dateFormat the expected format of the date, as
-	 *     described in {@link SimpleDateFormat}. If <code>null</code>, the
+	 *     described in {@link SimpleDateFormat}. If {@code null}, the
 	 *     default date format is considered.
 	 * @return the validation status
 	 */
@@ -121,7 +121,7 @@ public final class ShouldExtensions {
 	 *
 	 * @param actual the string to parse.
 	 * @param numberFormat the expected format of the number, as
-	 *     described in {@link DecimalFormat}. If <code>null</code>, the
+	 *     described in {@link DecimalFormat}. If {@code null}, the
 	 *     default date format is considered.
 	 * @return the validation status
 	 */

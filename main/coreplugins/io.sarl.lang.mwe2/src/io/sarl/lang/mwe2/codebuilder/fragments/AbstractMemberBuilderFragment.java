@@ -405,7 +405,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 				if (forInterface) {
 					it.append("\t/** Replies the context for type resolution."); //$NON-NLS-1$
 					it.newLine();
-					it.append("\t * @return the context or <code>null</code> if the Ecore object is the context."); //$NON-NLS-1$
+					it.append("\t * @return the context or {@code null} if the Ecore object is the context."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
@@ -833,7 +833,7 @@ public abstract class AbstractMemberBuilderFragment extends AbstractSubCodeBuild
 					it.newLine();
 					it.append("\t * @param value the value of the "); //$NON-NLS-1$
 					it.append(expressionName);
-					it.append(". It may be <code>null</code>."); //$NON-NLS-1$
+					it.append(". It may be {@code null}."); //$NON-NLS-1$
 					it.newLine();
 					it.append("\t */"); //$NON-NLS-1$
 					it.newLine();
