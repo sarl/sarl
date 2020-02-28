@@ -22,7 +22,7 @@
 package io.sarl.sre.tests.runtime.bugs.janus84.mocks
 
 import io.sarl.core.Lifecycle
-import io.sarl.sre.tests.testutils.TestingAgent
+import io.sarl.sre.tests.testutils.agents.TestingAgent
 
 /**
  * @author $Author: sgalland$

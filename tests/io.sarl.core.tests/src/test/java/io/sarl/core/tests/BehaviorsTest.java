@@ -20,11 +20,13 @@
  */
 package io.sarl.core.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.Capacity;
@@ -41,7 +43,7 @@ import io.sarl.lang.core.Scope;
 @SuppressWarnings("all")
 public class BehaviorsTest extends AbstractSarlCoreTest<Capacity> {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		loadSARL("io.sarl.core.Behaviors", Capacity.class); //$NON-NLS-1$
 	}

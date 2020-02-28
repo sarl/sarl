@@ -20,10 +20,12 @@
  */
 package io.sarl.core.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.UUID;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.AgentContext;
@@ -44,7 +46,7 @@ public class DefaultContextInteractionsTest extends AbstractSarlCoreTest<Capacit
 
 	/**
 	 */
-	@Before
+	@BeforeEach
 	public void setUp() {
 		loadSARL("io.sarl.core.DefaultContextInteractions", Capacity.class); //$NON-NLS-1$
 	}

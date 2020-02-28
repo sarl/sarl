@@ -22,6 +22,7 @@
 package io.sarl.sre.tests.runtime.services.probing.mocks
 
 import io.sarl.core.Lifecycle
+import io.sarl.sre.tests.testutils.agents.TestingAgent
 
 /**
  * @author $Author: sgalland$
@@ -30,7 +31,7 @@ import io.sarl.core.Lifecycle
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-agent ProbedAgent {
+agent ProbedAgent extends TestingAgent {
 
 	uses Lifecycle
 
@@ -45,7 +46,11 @@ agent ProbedAgent {
 	on StopTest {
 		killMe
 	}
-
+	
+	def runAgentTest : RunPolicy {
+		RunPolicy::STANDARD
+	}
+	
 }
 
 event ChangeField

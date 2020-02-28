@@ -20,18 +20,20 @@
  */
 package io.sarl.bootstrap.tests;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static io.sarl.tests.api.tools.TestAssertions.assertContains;
+import static io.sarl.tests.api.tools.TestAssertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Iterator;
 import java.util.ServiceLoader;
 import java.util.UUID;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.bootstrap.SRE;
 import io.sarl.bootstrap.SREBootstrap;
@@ -47,13 +49,13 @@ import io.sarl.tests.api.AbstractSarlTest;
 @SuppressWarnings("all")
 public class SRETest extends AbstractSarlTest {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		SRE.resetServiceLoader();
 		SRE.setBootstrap(null);
 	}
 	
-	@After
+	@AfterEach
 	public void tearDown() {
 		SRE.resetServiceLoader();
 		SRE.setBootstrap(null);

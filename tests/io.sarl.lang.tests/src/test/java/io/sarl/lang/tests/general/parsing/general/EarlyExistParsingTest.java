@@ -20,21 +20,27 @@
  */
 package io.sarl.lang.tests.general.parsing.general;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static io.sarl.tests.api.tools.TestAssertions.assertParameterNames;
+import static io.sarl.tests.api.tools.TestAssertions.assertTypeReferenceIdentifier;
+import static io.sarl.tests.api.tools.TestAssertions.assertTypeReferenceIdentifiers;
+import static io.sarl.tests.api.tools.TestEObjects.file;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static io.sarl.tests.api.tools.TestValidator.validate;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import com.google.common.base.Strings;
+import com.google.inject.Inject;
+import org.eclipse.xtext.serializer.ISerializer;
+import org.eclipse.xtext.xbase.XbasePackage;
+import org.eclipse.xtext.xbase.validation.IssueCodes;
+import org.junit.jupiter.api.Test;
+
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
-
-import org.eclipse.xtext.serializer.ISerializer;
-import org.eclipse.xtext.xbase.XbasePackage;
-import org.eclipse.xtext.xbase.validation.IssueCodes;
-import org.junit.Test;
-
-import com.google.common.base.Strings;
-import com.google.inject.Inject;
 
 /**
  * @author $Author: sgalland$
@@ -50,7 +56,7 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 	
 	@Test
 	public void earlyExistFunction_inAction_lastExpression_0() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 				"import io.sarl.lang.annotation.EarlyExit",
 				"class EarlyExitFunctionDefinitions {",
 				"	@EarlyExit",
@@ -62,7 +68,7 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 				"		EarlyExitFunctionDefinitions::killFunction2",
 				"	}",
 				"}"
-				), true);
+				));
 		assertEquals(2, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -81,7 +87,7 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void earlyExistFunction_inAction_lastExpression_1() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 				"import io.sarl.lang.annotation.EarlyExit",
 				"class EarlyExitFunctionDefinitions {",
 				"	@EarlyExit",
@@ -94,7 +100,7 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 				"		inst.killFunction1",
 				"	}",
 				"}"
-				), true);
+				));
 		assertEquals(2, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -113,7 +119,7 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void earlyExistFunction_inAction_penultimateExpression_0() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.EarlyExit",
 				"class EarlyExitFunctionDefinitions {",
 				"	@EarlyExit",
@@ -128,7 +134,7 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 				"}"
 				));
 		
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
 				IssueCodes.UNREACHABLE_CODE,
 				"Unreachable expression");
@@ -136,7 +142,7 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void earlyExistFunction_inAction_penultimateExpression_1() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.EarlyExit",
 				"class EarlyExitFunctionDefinitions {",
 				"	@EarlyExit",
@@ -151,7 +157,7 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 				"	}",
 				"}"
 				));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
 				IssueCodes.UNREACHABLE_CODE,
 				"Unreachable expression");
@@ -159,7 +165,7 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void earlyExistFunction_inIf_0() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.EarlyExit",
 				"class EarlyExitFunctionDefinitions {",
 				"	@EarlyExit",
@@ -177,7 +183,7 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 				"	}",
 				"}"
 				));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
 				IssueCodes.UNREACHABLE_CODE,
 				"Unreachable expression");
@@ -185,7 +191,7 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void earlyExistFunction_inIf_1() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 				"import io.sarl.lang.annotation.EarlyExit",
 				"class EarlyExitFunctionDefinitions {",
 				"	@EarlyExit",
@@ -202,7 +208,7 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 				"		println(\"Bye bye\")",
 				"	}",
 				"}"
-				), true);
+				));
 		assertEquals(2, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -221,7 +227,7 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void earlyExistFunction_inIf_2() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 				"import io.sarl.lang.annotation.EarlyExit",
 				"class EarlyExitFunctionDefinitions {",
 				"	@EarlyExit",
@@ -238,7 +244,7 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 				"		println(\"Bye bye\")",
 				"	}",
 				"}"
-				), true);
+				));
 		assertEquals(2, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -257,7 +263,7 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void earlyExistFunction_inWhile_0() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.EarlyExit",
 				"class EarlyExitFunctionDefinitions {",
 				"	@EarlyExit",
@@ -273,7 +279,7 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 				"	}",
 				"}"
 				));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
 				IssueCodes.UNREACHABLE_CODE,
 				"Unreachable expression");

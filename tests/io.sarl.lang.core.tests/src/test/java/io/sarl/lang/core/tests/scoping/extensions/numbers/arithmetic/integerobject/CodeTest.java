@@ -27,11 +27,14 @@ import static io.sarl.lang.scoping.extensions.numbers.arithmetic.IntegerArithmet
 import static io.sarl.lang.scoping.extensions.numbers.arithmetic.IntegerArithmeticExtensions.operator_multiply;
 import static io.sarl.lang.scoping.extensions.numbers.arithmetic.IntegerArithmeticExtensions.operator_plus;
 import static io.sarl.lang.scoping.extensions.numbers.arithmetic.IntegerArithmeticExtensions.operator_power;
+import static io.sarl.tests.api.tools.TestAssertions.assertEpsilonEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.tests.api.AbstractSarlTest;
 
@@ -43,6 +46,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @see "https://github.com/eclipse/xtext-extras/issues/186"
  */
 @SuppressWarnings("all")
+@DisplayName("Calling Integer arithmetic operators")
 public class CodeTest extends AbstractSarlTest {
 
 	private static Integer left = 4;

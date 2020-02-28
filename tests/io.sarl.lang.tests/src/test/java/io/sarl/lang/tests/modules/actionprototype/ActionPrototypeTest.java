@@ -20,15 +20,15 @@
  */
 package io.sarl.lang.tests.modules.actionprototype;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
 import io.sarl.lang.sarl.actionprototype.ActionPrototype;
@@ -46,7 +46,7 @@ public class ActionPrototypeTest {
 
 	private ActionPrototype prototype;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.parameters = new ActionParameterTypes("int,float,java.lang.String*");
 		this.prototype = new ActionPrototype("myfct", this.parameters, false);

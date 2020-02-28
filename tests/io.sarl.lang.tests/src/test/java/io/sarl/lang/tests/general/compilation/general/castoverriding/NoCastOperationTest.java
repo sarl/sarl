@@ -20,17 +20,21 @@
  */
 package io.sarl.lang.tests.general.compilation.general.castoverriding;
 
+import static io.sarl.tests.api.tools.TestEObjects.file;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static io.sarl.tests.api.tools.TestValidator.validate;
+
 import org.eclipse.xtext.common.types.TypesPackage;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.MassiveCompilationSuite;
-import io.sarl.tests.api.MassiveCompilationSuite.CompilationTest;
-import io.sarl.tests.api.MassiveCompilationSuite.Context;
+import io.sarl.tests.api.globalcompilation.GlobalCompilationSuite;
+import io.sarl.tests.api.globalcompilation.GlobalCompilationTestContribution;
+import io.sarl.tests.api.globalcompilation.ResourceSetGlobalCompilationContext;
+import io.sarl.tests.api.tools.TestValidator.Validator;
 
 
 /**
@@ -40,7 +44,7 @@ import io.sarl.tests.api.MassiveCompilationSuite.Context;
  * @mavenartifactid $ArtifactId$
  * @since 0.9
  */
-@RunWith(MassiveCompilationSuite.class)
+@GlobalCompilationSuite
 @SuppressWarnings("all")
 public class NoCastOperationTest extends AbstractSarlTest {
 
@@ -75,13 +79,13 @@ public class NoCastOperationTest extends AbstractSarlTest {
 
 	@Test
 	public void parsePrimitivePrimitive00() throws Exception {
-		SarlScript mas = file(PRIMITIVE_PRIMITIVE_SARL_00);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), PRIMITIVE_PRIMITIVE_SARL_00);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val.assertNoIssues();
 	}
 
-	@CompilationTest
-	public static void compilePrimitivePrimitive00(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void compilePrimitivePrimitive00(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(PRIMITIVE_PRIMITIVE_SARL_00, PRIMITIVE_PRIMITIVE_JAVA_00);
 	}
 
@@ -117,8 +121,8 @@ public class NoCastOperationTest extends AbstractSarlTest {
 
 	@Test
 	public void parsePrimitivePrimitive01() throws Exception {
-		SarlScript mas = file(PRIMITIVE_PRIMITIVE_SARL_01);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), PRIMITIVE_PRIMITIVE_SARL_01);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val.assertNoErrors();
 		val.assertWarning(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
@@ -126,8 +130,8 @@ public class NoCastOperationTest extends AbstractSarlTest {
 				"Unnecessary cast from long to double");
 	}
 
-	@CompilationTest
-	public static void compilePrimitivePrimitive01(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void compilePrimitivePrimitive01(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(PRIMITIVE_PRIMITIVE_SARL_01, PRIMITIVE_PRIMITIVE_JAVA_01);
 	}
 
@@ -167,8 +171,8 @@ public class NoCastOperationTest extends AbstractSarlTest {
 
 	@Test
 	public void parseSubtypeType00() throws Exception {
-		SarlScript mas = file(SUBTYPE_TYPE_SARL_00);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), SUBTYPE_TYPE_SARL_00);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val.assertNoErrors();
 		val.assertWarning(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
@@ -176,8 +180,8 @@ public class NoCastOperationTest extends AbstractSarlTest {
 				"Unnecessary cast from A1 to A0");
 	}
 
-	@CompilationTest
-	public static void compileSubtypeType00(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void compileSubtypeType00(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(SUBTYPE_TYPE_SARL_00, SUBTYPE_TYPE_JAVA_00);
 	}
 
@@ -213,8 +217,8 @@ public class NoCastOperationTest extends AbstractSarlTest {
 
 	@Test
 	public void parsePrimitiveWrapper00() throws Exception {
-		SarlScript mas = file(PRIMITIVE_WRAPPER_SARL_00);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), PRIMITIVE_WRAPPER_SARL_00);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val.assertNoErrors();
 		val.assertWarning(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
@@ -222,8 +226,8 @@ public class NoCastOperationTest extends AbstractSarlTest {
 				"Unnecessary cast from double to Double");
 	}
 
-	@CompilationTest
-	public static void compilePrimitiveWrapper00(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void compilePrimitiveWrapper00(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(PRIMITIVE_WRAPPER_SARL_00, PRIMITIVE_WRAPPER_JAVA_00);
 	}
 
@@ -259,8 +263,8 @@ public class NoCastOperationTest extends AbstractSarlTest {
 
 	@Test
 	public void parseWrapperPrimitive00() throws Exception {
-		SarlScript mas = file(WRAPPER_PRIMITIVE_SARL_00);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), WRAPPER_PRIMITIVE_SARL_00);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val.assertNoErrors();
 		val.assertWarning(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
@@ -268,8 +272,8 @@ public class NoCastOperationTest extends AbstractSarlTest {
 				"Unnecessary cast from Double to double");
 	}
 
-	@CompilationTest
-	public static void compileWrapperPrimitive00(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void compileWrapperPrimitive00(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(WRAPPER_PRIMITIVE_SARL_00, WRAPPER_PRIMITIVE_JAVA_00);
 	}
 

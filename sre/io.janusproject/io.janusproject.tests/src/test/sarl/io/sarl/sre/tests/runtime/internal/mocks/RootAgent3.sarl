@@ -28,8 +28,8 @@ import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
-import io.sarl.sre.tests.testutils.TestingAgent
 import io.sarl.core.Schedules
+import io.sarl.sre.tests.testutils.agents.TestingAgent
 
 /**
  * @author $Author: sgalland$

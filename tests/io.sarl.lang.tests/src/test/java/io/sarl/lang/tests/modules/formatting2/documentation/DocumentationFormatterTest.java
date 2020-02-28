@@ -20,13 +20,13 @@
  */
 package io.sarl.lang.tests.modules.formatting2.documentation;
 
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+
 import com.google.inject.Inject;
 import org.eclipse.xtext.util.Strings;
-import org.junit.ComparisonFailure;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.opentest4j.AssertionFailedError;
 
 import io.sarl.lang.documentation.IDocumentationFormatter;
 import io.sarl.tests.api.AbstractSarlTest;
@@ -38,15 +38,11 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(Suite.class)
-@SuiteClasses({
-	DocumentationFormatterTest.WithoutIndentation.class,
-	DocumentationFormatterTest.WithIndentation.class,
-})
 @SuppressWarnings("all")
 public class DocumentationFormatterTest {
 
-	public static class WithIndentation extends AbstractSarlTest {
+	@Nested
+	public class WithIndentation extends AbstractSarlTest {
 
 		@Inject
 		private IDocumentationFormatter formatter;
@@ -59,7 +55,7 @@ public class DocumentationFormatterTest {
 		protected void assertMLFormatted(String input, final String expected) {
 			String actual = this.formatter.formatMultilineComment(input, "\t");
 			if (!Strings.equal(expected, actual)) {
-				throw new ComparisonFailure("not same formatting", expected, actual);
+				throw new AssertionFailedError("not same formatting", expected, actual);
 			}
 		}
 
@@ -71,7 +67,7 @@ public class DocumentationFormatterTest {
 		protected void assertSLFormatted(String input, final String expected) {
 			String actual = this.formatter.formatSinglelineComment(input, "\t");
 			if (!Strings.equal(expected, actual)) {
-				throw new ComparisonFailure("not same formatting", expected, actual);
+				throw new AssertionFailedError("not same formatting", expected, actual);
 			}
 		}
 
@@ -190,7 +186,8 @@ public class DocumentationFormatterTest {
 
 	}
 
-	public static class WithoutIndentation extends AbstractSarlTest {
+	@Nested
+	public class WithoutIndentation extends AbstractSarlTest {
 
 		@Inject
 		private IDocumentationFormatter formatter;
@@ -203,7 +200,7 @@ public class DocumentationFormatterTest {
 		protected void assertMLFormatted(String input, final String expected) {
 			String actual = this.formatter.formatMultilineComment(input);
 			if (!Strings.equal(expected, actual)) {
-				throw new ComparisonFailure("not same formatting", expected, actual);
+				throw new AssertionFailedError("not same formatting", expected, actual);
 			}
 		}
 
@@ -215,7 +212,7 @@ public class DocumentationFormatterTest {
 		protected void assertSLFormatted(String input, final String expected) {
 			String actual = this.formatter.formatSinglelineComment(input);
 			if (!Strings.equal(expected, actual)) {
-				throw new ComparisonFailure("not same formatting", expected, actual);
+				throw new AssertionFailedError("not same formatting", expected, actual);
 			}
 		}
 

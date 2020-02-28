@@ -21,16 +21,25 @@
 
 package io.sarl.sre.tests.units.naming
 
-import io.sarl.sre.naming.NameParser
 import io.sarl.sre.naming.ContextName
 import io.sarl.sre.naming.ContextSchemeNameParser
+import io.sarl.sre.naming.NameParser
 import io.sarl.sre.naming.SarlName
-import io.sarl.tests.api.AbstractSarlTest
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.net.URI
 import java.util.UUID
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static extension io.sarl.tests.api.tools.TestAssertions.assertNullOrEmpty
+import static extension org.junit.jupiter.api.Assertions.assertEquals
+import static extension org.junit.jupiter.api.Assertions.assertNotNull
+import static extension org.junit.jupiter.api.Assertions.assertNull
 
 /**
  * @author $Author: sgalland$
@@ -38,14 +47,20 @@ import org.junit.Test
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class ContextSchemeNameParserTest extends AbstractSarlTest {
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@DisplayName("unit: context NameParser test")
+class ContextSchemeNameParserTest {
 
 	protected static val CONTEXT_ID = "2a2c6de4-8327-431b-a916-97a05caafe14"
 
 	@Nullable
 	var parser : NameParser
 
-	@Before
+	@BeforeEach
 	def setUp : void {
 		this.parser = new NameParser
 		this.parser.addSchemeNameParser(new ContextSchemeNameParser)

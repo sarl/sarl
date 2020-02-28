@@ -35,21 +35,34 @@ import io.sarl.sre.boot.configs.subconfigs.InvalidAgentNameException
 import io.sarl.sre.boot.configs.subconfigs.NoBootAgentNameException
 import io.sarl.sre.services.lifecycle.LifecycleService
 import io.sarl.sre.services.logging.LoggingService
-import io.sarl.sre.tests.testutils.AbstractSreTest
-import io.sarl.sre.tests.testutils.IddleTestingAgent
-import io.sarl.sre.tests.testutils.ModuleMock
+import io.sarl.sre.tests.testutils.agents.IddleTestingAgent
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.sre.tests.testutils.mockito.ModuleMock
 import io.sarl.tests.api.Nullable
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
 import java.util.concurrent.ConcurrentLinkedDeque
 import org.arakhne.afc.bootique.log4j.configs.Level
 import org.arakhne.afc.bootique.log4j.configs.Log4jIntegrationConfig
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
 import org.mockito.ArgumentCaptor
 
-import static extension org.mockito.ArgumentMatchers.*
-import static extension org.mockito.Mockito.*
+import static io.sarl.tests.api.tools.TestAssertions.*
+import static org.junit.jupiter.api.Assertions.*
+import static org.mockito.ArgumentMatchers.*
+import static org.mockito.Mockito.*
+
+import static extension io.sarl.tests.api.tools.TestAssertions.assertException
+import static extension io.sarl.tests.api.tools.TestMockito.mock
+import static extension org.junit.jupiter.api.Assertions.assertNotNull
+import static extension org.mockito.ArgumentMatchers.any
+import static extension org.mockito.Mockito.spy
+import static extension org.mockito.Mockito.verify
 
 /**
  * @author $Author: sgalland$
@@ -57,7 +70,13 @@ import static extension org.mockito.Mockito.*
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class SreMainTest extends AbstractSreTest {
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@DisplayName("unit: SreMain test")
+class SreMainTest {
 
 	val DEFAULT_OPTIONS = #[
 		"XasyncProbeUpdate",
@@ -203,7 +222,7 @@ class SreMainTest extends AbstractSreTest {
 		this.bootstrap.runtime = this.runtime
 	}
 
-	@Before
+	@BeforeEach
 	def setUp {
 		this.bootstrap = new SreMain
 	}
@@ -356,29 +375,33 @@ class SreMainTest extends AbstractSreTest {
 		assertEquals(this.id0, this.bootstrap.bootAgentIdentifier)
 	}
 
-	@Test(expected = typeof(NoBootAgentNameException))
+	@Test
 	def startBootAgent_start0 : void {
-		var configInstance = new SreConfig().spy
-		createBootiqueMock [
-			if (it == typeof(SreConfig)) {
-				return configInstance
-			}
+		typeof(NoBootAgentNameException).assertException [
+			var configInstance = new SreConfig().spy
+			createBootiqueMock [
+				if (it == typeof(SreConfig)) {
+					return configInstance
+				}
+			]
+			this.bootstrap.startWithoutAgent(this.bootique)
+			this.bootstrap.startBootAgent
 		]
-		this.bootstrap.startWithoutAgent(this.bootique)
-		this.bootstrap.startBootAgent
 	}
 
-	@Test(expected = typeof(InvalidAgentNameException))
+	@Test
 	def startBootAgent_start1 : void {
-		var configInstance = new SreConfig().spy
-		createBootiqueMock [
-			if (it == typeof(SreConfig)) {
-				return configInstance
-			}
+		typeof(InvalidAgentNameException).assertException [
+			var configInstance = new SreConfig().spy
+			createBootiqueMock [
+				if (it == typeof(SreConfig)) {
+					return configInstance
+				}
+			]
+			createConfiguration(typeof(String), configInstance)
+			this.bootstrap.startWithoutAgent(this.bootique)
+			this.bootstrap.startBootAgent
 		]
-		createConfiguration(typeof(String), configInstance)
-		this.bootstrap.startWithoutAgent(this.bootique)
-		this.bootstrap.startBootAgent
 	}
 
 	

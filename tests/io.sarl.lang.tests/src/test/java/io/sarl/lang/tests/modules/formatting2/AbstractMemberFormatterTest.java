@@ -20,10 +20,11 @@
  */
 package io.sarl.lang.tests.modules.formatting2;
 
+import static io.sarl.tests.api.tools.TestUtils.getLineSeparator;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+
 import com.google.inject.Inject;
 import org.eclipse.xtext.testing.formatter.FormatterTestHelper;
-import org.eclipse.xtext.testing.formatter.FormatterTestRequest;
-import org.eclipse.xtext.xbase.lib.Procedures;
 
 import io.sarl.tests.api.AbstractSarlTest;
 

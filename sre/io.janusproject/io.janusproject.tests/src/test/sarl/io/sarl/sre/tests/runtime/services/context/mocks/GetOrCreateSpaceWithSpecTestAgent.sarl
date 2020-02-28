@@ -23,10 +23,10 @@ package io.sarl.sre.tests.runtime.services.context.mocks
 
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.OpenEventSpaceSpecification
-import io.sarl.sre.tests.testutils.TestingAgent
+import io.sarl.sre.tests.testutils.agents.TestingAgent
 import java.util.UUID
 
-import static org.junit.Assert.*
+import static org.junit.jupiter.api.Assertions.*
 
 /**
  * @author $Author: sgalland$

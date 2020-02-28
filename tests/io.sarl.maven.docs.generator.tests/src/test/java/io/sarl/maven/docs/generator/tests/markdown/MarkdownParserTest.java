@@ -21,8 +21,8 @@
 
 package io.sarl.maven.docs.generator.tests.markdown;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assume.assumeNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.io.File;
 import java.net.URL;
@@ -31,15 +31,12 @@ import com.google.common.io.Resources;
 import com.google.inject.Injector;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.xtext.xbase.lib.IntegerRange;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLStandaloneSetup;
 import io.sarl.maven.docs.markdown.MarkdownParser;
-import io.sarl.maven.docs.parser.SarlDocumentationParser.ParsingException;
 
 /**
  * @author $Author: sgalland$
@@ -48,26 +45,23 @@ import io.sarl.maven.docs.parser.SarlDocumentationParser.ParsingException;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
-@RunWith(Suite.class)
-@SuiteClasses({
-	MarkdownParserTest.TransformTest.class,
-})
 @SuppressWarnings("all")
 public class MarkdownParserTest {
 
 	private static File file(String basename) {
 		URL url = Resources.getResource(MarkdownParserTest.class, basename);
-		assumeNotNull(url);
+		assumeTrue(url != null);
 		File file = FileSystem.convertURLToFile(url);
-		assumeNotNull(file);
+		assumeTrue(file != null);
 		return file;
 	}
 
-	public static class TransformTest {
+	@Nested
+	public class TransformTest {
 
 		private MarkdownParser parser;
 
-		@Before
+		@BeforeEach
 		public void setUp() {
 			Injector injector = SARLStandaloneSetup.doSetup();
 			this.parser = injector.getInstance(MarkdownParser.class);

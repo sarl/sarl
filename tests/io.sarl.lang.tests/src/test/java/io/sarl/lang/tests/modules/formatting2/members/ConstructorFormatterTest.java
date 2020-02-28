@@ -20,10 +20,10 @@
  */
 package io.sarl.lang.tests.modules.formatting2.members;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.tests.modules.formatting2.AbstractMemberFormatterTest;
 
@@ -34,10 +34,6 @@ import io.sarl.lang.tests.modules.formatting2.AbstractMemberFormatterTest;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(Suite.class)
-@SuiteClasses({
-	ConstructorFormatterTest.FormatterAPITest.class,
-})
 @SuppressWarnings("all")
 public class ConstructorFormatterTest {
 
@@ -47,7 +43,8 @@ public class ConstructorFormatterTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class FormatterAPITest extends AbstractMemberFormatterTest {
+	@Nested
+	public class FormatterAPITest extends AbstractMemberFormatterTest {
 
 		@Test
 		public void noParam() throws Exception {

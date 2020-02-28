@@ -20,11 +20,11 @@
  */
 package io.sarl.lang.tests.modules.sarl.impl;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.google.inject.Inject;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.impl.SarlAgentImplCustom;
 import io.sarl.tests.api.AbstractSarlTest;

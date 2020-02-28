@@ -34,7 +34,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.inject.Inject;
-import org.apache.commons.lang3.tuple.MutableTriple;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.IntegerRange;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
@@ -267,7 +266,8 @@ public abstract class AbstractMarkerLanguageParser {
 	 */
 	public Iterable<ValidationComponent> getStandardValidationComponents(File inputFile) {
 		final ValidationHandler handler = new ValidationHandler();
-		getDocumentParser().extractValidationComponents(inputFile, handler);
+		final SarlDocumentationParser parser = getDocumentParser();
+		parser.extractValidationComponents(inputFile, handler);
 		return handler.getComponents();
 	}
 
@@ -337,7 +337,7 @@ public abstract class AbstractMarkerLanguageParser {
 	 * @mavenartifactid $ArtifactId$
 	 * @since 0.6
 	 */
-	private static class ValidationHandler implements Procedure1<Map<Tag, List<MutableTriple<File, Integer, String>>>> {
+	private static class ValidationHandler implements Procedure1<Map<Tag, List<ValidationComponentData>>> {
 
 		private final List<ValidationComponent> components = new ArrayList<>();
 
@@ -354,8 +354,8 @@ public abstract class AbstractMarkerLanguageParser {
 		}
 
 		@Override
-		public void apply(Map<Tag, List<MutableTriple<File, Integer, String>>> it) {
-			for (final Entry<Tag, List<MutableTriple<File, Integer, String>>> entry : it.entrySet()) {
+		public void apply(Map<Tag, List<ValidationComponentData>> it) {
+			for (final Entry<Tag, List<ValidationComponentData>> entry : it.entrySet()) {
 				final boolean isCompilable;
 				final boolean isExecutable;
 				switch (entry.getKey()) {
@@ -375,13 +375,16 @@ public abstract class AbstractMarkerLanguageParser {
 				default:
 					continue;
 				}
-				for (final MutableTriple<File, Integer, String> code : entry.getValue()) {
+				for (final ValidationComponentData code : entry.getValue()) {
 					final ValidationComponent component = new ValidationComponent();
 					component.setCompilable(isCompilable);
 					component.setExecutable(isExecutable);
-					component.setFile(code.getLeft());
-					component.setLineno(code.getMiddle());
-					component.setCode(code.getRight());
+					component.setSourceFile(code.file);
+					component.setOffsetInSourceFile(code.offset);
+					component.setLengthInSourceFile(code.length);
+					component.setLinenoInSourceFile(code.lineno);
+					component.setEndLinenoInSourceFile(code.endLineno);
+					component.setCode(code.code);
 					this.components.add(component);
 				}
 			}

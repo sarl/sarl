@@ -21,21 +21,29 @@
 
 package io.sarl.sre.tests.units.services.logging
 
+import io.sarl.sre.boot.configs.SreConfig
+import io.sarl.sre.boot.configs.subconfigs.LoggingConfig
+import io.sarl.sre.boot.configs.subconfigs.ServicesConfig
 import io.sarl.sre.services.logging.JulLoggerCreator
-import io.sarl.sre.tests.testutils.AbstractSreTest
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.Nullable
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
 import java.util.logging.Level
 import java.util.logging.Logger
 import javax.inject.Provider
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
 import org.mockito.ArgumentCaptor
 
-import static extension org.mockito.Mockito.*
-import io.sarl.sre.boot.configs.SreConfig
-import io.sarl.tests.api.Nullable
-import org.junit.Before
-import io.sarl.sre.boot.configs.subconfigs.ServicesConfig
-import io.sarl.sre.boot.configs.subconfigs.LoggingConfig
+import static org.junit.jupiter.api.Assertions.*
+import static org.mockito.Mockito.*
+
+import static extension io.sarl.tests.api.tools.TestMockito.mock
+import static extension org.mockito.Mockito.times
 
 /**
  * @author $Author: sgalland$
@@ -43,7 +51,13 @@ import io.sarl.sre.boot.configs.subconfigs.LoggingConfig
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class LoggerCreatorTest extends AbstractSreTest {
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@DisplayName("unit: JulLoggerCreator test")
+class JulLoggerCreatorTest {
 
 	@Nullable
 	var loggerProvider : Provider<Logger>
@@ -57,7 +71,7 @@ class LoggerCreatorTest extends AbstractSreTest {
 	@Nullable
 	var config : SreConfig
 	
-	@Before
+	@BeforeEach
 	def setUp : void {
 		this.loggerProvider = typeof(Provider).mock
 		this.logger = typeof(Logger).mock

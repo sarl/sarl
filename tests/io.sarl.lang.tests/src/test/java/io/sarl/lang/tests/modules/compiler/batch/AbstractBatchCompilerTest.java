@@ -20,13 +20,17 @@
  */
 package io.sarl.lang.tests.modules.compiler.batch;
 
+import static io.sarl.tests.api.tools.TestUtils.getLineSeparator;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.File;
 import java.nio.charset.Charset;
 
 import com.google.common.io.Files;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.xtext.util.Strings;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;

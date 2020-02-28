@@ -1,0 +1,472 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2020 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.tests.testutils.^extension
+
+import com.google.inject.Module
+import io.sarl.lang.annotation.PrivateAPI
+import io.sarl.sre.Kernel
+import io.sarl.sre.boot.SreMain
+import io.sarl.sre.boot.configs.subconfigs.BootConfig
+import io.sarl.sre.services.logging.LoggingService
+import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.sre.tests.testutils.exception.SreTimeoutException
+import java.util.HashMap
+import java.util.List
+import java.util.Map
+import java.util.UUID
+import java.util.concurrent.TimeoutException
+import java.util.logging.Handler
+import java.util.logging.Level
+import java.util.logging.LogRecord
+import org.arakhne.afc.bootique.log4j.configs.Log4jIntegrationConfig
+import org.arakhne.afc.bootique.variables.VariableNames
+import org.eclipse.xtend.lib.annotations.Accessors
+import org.opentest4j.AssertionFailedError
+
+import static io.sarl.sre.tests.testutils.Constants.STANDARD_TIMEOUT
+import static org.junit.jupiter.api.Assertions.*
+
+import static extension org.junit.jupiter.api.Assertions.assertEquals
+
+/**
+ * Context for running the SRE.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.11
+ */
+class SreRunContext {
+
+	/** The logging level when logging is enable during tests.
+	 */
+	public static val TEST_LOGGING_LEVEL = Level::ALL
+
+	/** 
+	 * Reference to the instance of the SRE kernel.
+	 */
+	@Accessors(PUBLIC_GETTER)
+	var sreKernel : Kernel
+
+	/** 
+	 * Reference to the instance of the SRE bootstrap.
+	 */
+	@Accessors(PUBLIC_GETTER)
+	var bootstrap : SreMain
+
+	var results = new HashMap<UUID, List<Object>>
+
+	var module : Class<? extends Module>
+
+	/** Replies the identifier of the lastly booted agent.
+	 * 
+	 * @return the identifier of the agent, or {@code null} if no agent was booted.
+	 */
+	def getBootAgent : UUID {
+		this.bootstrap.bootAgentIdentifier
+	}
+
+	/** 
+	 * Replies result at the given index of the run of the agent.
+	 * 
+	 * @param source - the source of the data.
+	 * @param type - the type of the result.
+	 * @param index - the index of the result.
+	 * @return the value; or {@code null} if no result.
+	 */
+	def get(source : List<?>, type : Class<T>, index : int) : T with T {
+		var element = source.get(index);
+		if (element === null || type.isInstance(element)) {
+			return type.cast(element);
+		}
+		return null
+	}
+
+	/** 
+	 * Replies result at the given index of the run of the agent.
+	 * 
+	 * @param agentId the identifier of the agent.
+	 * @param type - the type of the result.
+	 * @param index - the index of the result.
+	 * @return the value; or {@code null} if no result.
+	 */
+	def getResult(agentId : UUID = null, type : Class<T>, index : int) : T with T {
+		if (this.results !== null) {
+			try {
+				var res : List<Object>
+				synchronized (this.results) {
+					res = this.results.get(agentId ?: bootAgent)
+				}
+				if (res !== null) {
+					synchronized (res) {
+						return type.cast(res.get(index))
+					}
+				}
+			} catch (exception : Throwable) {
+				//
+			}
+		}
+		return null
+	}
+
+	/** Replies the number of results that are provided by the agent.
+	 * 
+	 * @return the number of results.
+	 */
+	def getNumberOfResults(agentId : UUID = null) : int {
+		if (this.results !== null) {
+			var list : List<Object>
+			synchronized (this.results) {
+				list = this.results.get(agentId ?: bootAgent)
+			}
+			if (list !== null) {
+				synchronized (list) {
+					return list.size
+				}
+			}
+		}
+		return 0
+	}
+
+	/** 
+	 * Test if the number of results provided by the SRE platform is equal to the given number.
+	 * 
+	 * @param expected - the expected number of results.
+	 */
+	def assertNumberOfResults(expected : int) {
+		expected.assertEquals(getNumberOfResults)["Invalid number of results provided by the platform."]
+	}
+
+	/** 
+	 * Replies result for the boot agent or the agent with the given identifier.
+	 * 
+	 * @param agentId the identifier of the agent for which the results must be retrieved.
+	 * If {@code null} or not provided, the results associated to the boot agent are
+	 * replied.
+	 * @return the results.
+	 */
+	def getResults(agentId : UUID = null) : List<Object> {
+		if (this.results !== null) {
+			var res : List<Object>
+			synchronized (this.results) {
+				res = this.results.get(agentId ?: bootAgent)
+			}
+			if (res !== null) {
+				synchronized (res) {
+					return res.unmodifiableView
+				}
+			}
+		}
+		return emptyList
+	}
+
+	/** 
+	 * Add a value to the list of results.
+	 * 
+	 * @param agentId the identifier of the agent for which the results must be retrieved.
+	 * If {@code null} or not provided, the results associated to the boot agent are
+	 * replied.
+	 * @param value the new value.
+	 */
+	def addResult(agentId : UUID = null, value : Object) : void {
+		if (this.results !== null) {
+			var res : List<Object>
+			synchronized (this.results) {
+				val id = agentId ?: bootAgent
+				res = this.results.get(id)
+				if (res === null) {
+					res = newArrayList
+					this.results.put(id, res)
+				}
+			}
+			res += value
+		}
+	}
+
+	/** 
+	 * Replies all the results for all the agents.
+	 * @return the results.
+	 */
+	def getAllResultsPerAgent() : Map<UUID, List<Object>> {
+		if (this.results !== null) {
+			return results
+		}
+		return emptyMap
+	}
+
+	/** 
+	 * Replies all the results for all the agents.
+	 * @return the results.
+	 */
+	def getAllResults() : List<Object> {
+		if (this.results !== null) {
+			var all = newArrayList
+			synchronized (this.results) {
+				for (values : this.results.values) {
+					all += values
+				}
+			}
+			return all
+		}
+		return emptyList
+	}
+	
+	/** 
+	 * Replies the initialization parameters for the agents.
+	 * @return the parameters.
+	 */
+	def getAgentInitializationParameters : Object[] {
+		#[this.results]
+	}
+
+	/** 
+	 * Replies the index of the first result of the given type starting at the given index.
+	 * 
+	 * @param agentId the identifier of the agent.
+	 * @param type - the type of the result.
+	 * @param fromIndex - the start index.
+	 * @return the index; or <code>-1</code> if not found.
+	 */
+	def indexOfResult(agentId : UUID = null, type : Class<?>, fromIndex : int = 0) : int {
+		if (this.results !== null) {
+			try {
+				var res : List<Object>
+				synchronized (this.results) {
+					res = this.results.get(agentId ?: bootAgent)
+				}
+				if (res !== null) {
+					synchronized (res) {
+						for (var i = fromIndex; i < res.size; i++) {
+							var r = res.get(i)
+							if (type.isInstance(r)) {
+								return i
+							}
+						}
+					}
+				}
+			} catch (exception : Throwable) {
+			//
+			}
+		}
+		return -1
+	}
+
+	/** 
+	 * Start the SRE platform.
+	 * 
+	 * @param type - the type of the agent to launch at start-up.
+	 * @param loggingLevel indicates the level of logging.
+	 * @param trackLogErrors indicates if the logged errors should be tracked.
+	 * @param deleteLogHandlers indicates if the loggers' handler should be removed.
+	 * @param timeout - the maximum waiting time in seconds, or <code>-1</code> to ignore the timeout.
+	 * See {@link #STANDARD_TIMEOUT}, {@link #EXTRA_TIMEOUT} or {@link #NO_TIMEOUT}.
+	 * @return the kernel.
+	 * @throws Exception - if the kernel cannot be launched.
+	 */
+	@SuppressWarnings("use_reserved_sarl_annotation")
+	@PrivateAPI(isCallerOnly = true)
+	def runSre(type : Class<? extends TestingAgent>, loggingLevel : Level = TEST_LOGGING_LEVEL,
+		trackLogErrors : boolean = true, deleteLogHandlers : boolean = true,
+		timeout : int = STANDARD_TIMEOUT) : Kernel {
+		val kern = setupTheSreKernel(type, loggingLevel, trackLogErrors, deleteLogHandlers)
+		try {
+			waitForTheKernel(timeout)
+		} catch (exception : SreTimeoutException | TimeoutException) {
+			Kernel::executeKernelStopWhenNoAgentAlive(kern)
+			throw exception
+		}
+		return kern
+	}
+
+	/** Replies the module that should be injected in order to proceed tests.
+	 * 
+	 * @return the module, never {@code null}.
+	 */
+	def getTestingModule : Class<? extends Module> {
+		this.module
+	}
+
+	/** Replies the module that should be injected in order to proceed tests.
+	 * 
+	 * @param module the module, never {@code null}.
+	 */
+	def setTestingModule(module : Class<? extends Module>) {
+		assert module !== null
+		this.module = module
+	}
+	
+	/** Assert that the given kernel has no error on its logs.
+	 * 
+	 * @param kern the kernel.
+	 */
+	def assertNoErrorLog(kern : Kernel) {
+		for (obj : getResults(null)) {
+			if (obj instanceof LogRecord) {
+				throw new AssertionFailedError("Unexpected error log", "", obj.toString)
+			}
+		}
+	}
+
+	/** Assert that not exception is inside the results of the test run.
+	 */
+	def assertNoExceptionInResults {
+		var list = newArrayList
+		for (obj : allResults) {
+			if (obj instanceof Throwable) {
+				list += obj
+			}
+		}
+		if (!list.empty) {
+			// Only the first is logged
+			throw list.get(0)
+		}
+	}
+
+	/** 
+	 * Set-up the SRE platform.
+	 * 
+	 * @param type - the type of the agent to launch at start-up.
+	 * @param loggingLevel - indicates the level of logging.
+	 * @param trackLogErrors indicates if the logged errors should be tracked.
+	 * @param deleteLogHandlers indicates if the loggers' handler should be removed.
+	 * @return the kernel.
+	 * @throws Exception - if the kernel cannot be launched.
+	 */
+	def setupTheSreKernel(type : Class<? extends TestingAgent>, loggingLevel : Level = TEST_LOGGING_LEVEL,
+		trackLogErrors : boolean, deleteLogHandlers : boolean) : Kernel {
+		System::setProperty(VariableNames::toPropertyName(BootConfig::BOOT_AGENT_NAME), type.name)
+		var k = setupTheSreKernel(loggingLevel, trackLogErrors, deleteLogHandlers)
+		this.bootstrap.startAgent(type, getAgentInitializationParameters)
+		return k
+	}
+
+	/** 
+	 * Set-up the SRE platform.
+	 * 
+	 * @param loggingLevel indicates the level of logging.
+	 * @param trackLogErrors indicates if the logged errors should be tracked.
+	 * @param deleteLogHandlers indicates if the loggers' handler should be removed.
+	 * @return the kernel.
+	 * @throws Exception - if the kernel cannot be launched.
+	 */
+	def setupTheSreKernel(loggingLevel : Level = TEST_LOGGING_LEVEL, trackLogErrors : boolean,
+		deleteLogHandlers : boolean) : Kernel {
+		assertNull(this.sreKernel, "SRE already launched.")
+		val lvl = loggingLevel ?: Level::OFF
+		val glvl = org.arakhne.afc.bootique.log4j.configs.Level::valueOf(lvl)
+		System::setProperty(VariableNames::toPropertyName(Log4jIntegrationConfig::LEVEL), glvl.name)
+		val module = getTestingModule
+		this.results = newHashMap
+		this.bootstrap = new SreMain
+		this.bootstrap.startWithoutAgent(module)
+		this.sreKernel = this.bootstrap.kernel
+		val logger = this.sreKernel.getService(typeof(LoggingService)).platformLogger
+		if (deleteLogHandlers) {
+			for (handler : logger.handlers) {
+				logger.removeHandler(handler)
+			}
+		}
+		if (trackLogErrors) {
+			logger.addHandler(new Handler {
+				override publish(record : LogRecord) {
+					if (record.level === Level.SEVERE) {
+						addResult(record)
+					}
+				}
+
+				override flush {
+				}
+
+				override close {
+				}
+			})
+		} else if (deleteLogHandlers) {
+			logger.addHandler(new Handler {
+				override publish(record : LogRecord) {
+				}
+
+				override flush {
+				}
+
+				override close {
+				}
+			})
+		}
+		return this.sreKernel
+	}
+
+	/** 
+	 * Wait for the end of the SRE platform.
+	 * 
+	 * @param timeout - the maximum waiting time in seconds, or <code>-1</code> to ignore the timeout.
+	 * See {@link #STANDARD_TIMEOUT}, {@link #EXTRA_TIMEOUT} or {@link #NO_TIMEOUT}.
+	 * @throws Exception - if the kernel cannot be launched.
+	 */
+	def waitForTheKernel(timeout : int) {
+		waitForTheKernel(timeout, null)
+	}
+
+	/** 
+	 * Wait for the end of the SRE platform.
+	 * 
+	 * @param timeout - the maximum waiting time in seconds, or <code>-1</code> to ignore the timeout.
+	 * See {@link #STANDARD_TIMEOUT}, {@link #EXTRA_TIMEOUT} or {@link #NO_TIMEOUT}.
+	 * @param predicate the predicate to use as stop condition.
+	 * @throws Exception - if the kernel cannot be launched.
+	 */
+	@SuppressWarnings("discouraged_reference")
+	def waitForTheKernel(timeout : int, predicate : (Map<UUID, List<Object>>)=>boolean) {
+		var endTime : long
+		if (timeout >= 0) {
+			endTime = System::currentTimeMillis() + timeout.seconds
+		} else {
+			endTime = -1
+		}
+		var isSreRunning = this.sreKernel.running
+		while (isSreRunning && (endTime == -1 || System.currentTimeMillis() <= endTime)) {
+			isSreRunning = this.sreKernel.isRunning() || (predicate !== null && (!(predicate.apply(this.results))))
+			Thread.sleep(100)
+		}
+		if (isSreRunning) {
+			var cause : Throwable = null
+			for (result : allResults) {
+				if (result instanceof Throwable) {
+					cause = result
+					break
+				}
+			}
+			if (cause !== null) {
+				throw new SreTimeoutException(cause)
+			}
+			throw new SreTimeoutException
+		}
+	}
+
+	/** 
+	 * Forget any reference to a Janus kernel.
+	 */
+	def forgetTheKernel : void {
+		this.sreKernel = null;
+	}
+
+}

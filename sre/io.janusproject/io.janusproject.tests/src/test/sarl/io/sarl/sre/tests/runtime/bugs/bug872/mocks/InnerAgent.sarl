@@ -22,7 +22,7 @@ package io.sarl.sre.tests.runtime.bugs.bug872.mocks
 
 import io.sarl.core.Lifecycle
 import io.sarl.core.Schedules
-import io.sarl.sre.tests.testutils.TestingAgent
+import io.sarl.sre.tests.testutils.agents.TestingAgent
 
 agent InnerAgent extends TestingAgent {
 

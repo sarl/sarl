@@ -27,7 +27,7 @@ import io.sarl.core.OpenEventSpace
 import io.sarl.core.OpenEventSpaceSpecification
 import io.sarl.core.Schedules
 import io.sarl.core.SpaceCreated
-import io.sarl.sre.tests.testutils.TestingAgent
+import io.sarl.sre.tests.testutils.agents.TestingAgent
 import java.util.UUID
 
 /**

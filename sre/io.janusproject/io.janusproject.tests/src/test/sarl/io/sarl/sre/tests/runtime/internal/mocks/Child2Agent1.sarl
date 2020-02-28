@@ -26,7 +26,7 @@ import io.sarl.core.Lifecycle
 import io.sarl.core.MemberLeft
 import io.sarl.core.Schedules
 import io.sarl.lang.core.AgentContext
-import io.sarl.sre.tests.testutils.TestingAgent
+import io.sarl.sre.tests.testutils.agents.TestingAgent
 
 /**
  * @author $Author: sgalland$

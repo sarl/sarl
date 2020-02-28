@@ -22,8 +22,8 @@
 package io.sarl.sre.tests.runtime.services.lifecycle.mocks
 
 import io.sarl.core.Behaviors
-import io.sarl.sre.tests.testutils.TestingAgent
 import io.sarl.core.Lifecycle
+import io.sarl.sre.tests.testutils.agents.TestingAgent
 
 /**
  * @author $Author: sgalland$

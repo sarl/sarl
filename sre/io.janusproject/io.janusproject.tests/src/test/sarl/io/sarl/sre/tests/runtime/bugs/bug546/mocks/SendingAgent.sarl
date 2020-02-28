@@ -24,9 +24,10 @@ package io.sarl.sre.tests.runtime.bugs.bug546.mocks
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Lifecycle
 import io.sarl.core.Schedules
-import io.sarl.sre.tests.runtime.bugs.bug546.Bug546
-import io.sarl.sre.tests.testutils.TestingAgent
+import io.sarl.sre.tests.testutils.agents.TestingAgent
 import java.util.UUID
+
+import static io.sarl.sre.tests.runtime.bugs.bug546.Constants.*
 
 /**
  * @author $Author: sgalland$
@@ -42,7 +43,7 @@ agent SendingAgent extends TestingAgent {
 	override runAgentTest : RunPolicy {
 		val parentID = this.agentInitializationParameters.get(1) as UUID
 		in(500) [
-			for (i : 0..<Bug546::NB_EVENTS) {
+			for (i : 0..<NB_EVENTS) {
 				emit(new MyEvent) [it.UUID == parentID]
 			}
 			killMe

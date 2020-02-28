@@ -20,9 +20,11 @@
  */
 package io.sarl.core.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.core.AgentTask;
 import io.sarl.lang.core.Capacity;
@@ -36,7 +38,7 @@ import io.sarl.lang.core.Capacity;
 @SuppressWarnings("all")
 public class SchedulesTest extends AbstractSarlCoreTest<Capacity> {
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		loadSARL("io.sarl.core.Schedules", Capacity.class); //$NON-NLS-1$
 	}

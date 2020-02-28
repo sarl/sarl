@@ -38,7 +38,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 /** Context for building a dynamic validation component.
  *
@@ -160,8 +160,8 @@ public class DynamicValidationContext {
 			receiver.append(File.class).append(" file = new ").append(File.class); //$NON-NLS-1$
 			receiver.append("(\"").append(Strings.convertToJavaString(relativeFile.toString())).append("\");"); //$NON-NLS-1$ //$NON-NLS-2$
 			receiver.newLine();
-			receiver.append(Assert.class).append(".assertTrue(\"" + Strings.convertToJavaString(errorLabel) //$NON-NLS-1$
-					+ ": \" + file, file.exists());"); //$NON-NLS-1$
+			receiver.append(Assertions.class).append(".assertTrue(file.exists(), () -> \"" + Strings.convertToJavaString(errorLabel) //$NON-NLS-1$
+					+ ": \" + file);"); //$NON-NLS-1$
 			receiver.decreaseIndentation().newLine();
 			receiver.append("}"); //$NON-NLS-1$
 		}
@@ -174,7 +174,7 @@ public class DynamicValidationContext {
 			appendSafeFileExistenceTest(receiver, fileInResource);
 		}
 		receiver.newLine();
-		receiver.append(Assert.class).append(".fail(\"" + Strings.convertToJavaString(errorLabel) //$NON-NLS-1$
+		receiver.append(Assertions.class).append(".fail(\"" + Strings.convertToJavaString(errorLabel) //$NON-NLS-1$
 			+ ": " + Strings.convertToJavaString(relativeFile.toString()) + "\");"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
@@ -209,7 +209,7 @@ public class DynamicValidationContext {
 			}
 		}
 		receiver.newLine();
-		receiver.append(Assert.class).append(".fail(\""); //$NON-NLS-1$
+		receiver.append(Assertions.class).append(".fail(\""); //$NON-NLS-1$
 		receiver.append(Strings.convertToJavaString(errorLabel));
 		receiver.append(": ").append(Strings.convertToJavaString(fileWithoutExtension.toString())); //$NON-NLS-1$
 		receiver.append("["); //$NON-NLS-1$
@@ -337,7 +337,7 @@ public class DynamicValidationContext {
 		receiver.append(Strings.convertToJavaString(anchor)).append("\".equals(key2)) {"); //$NON-NLS-1$
 		receiver.increaseIndentation().newLine().append("return;").decreaseIndentation().newLine(); //$NON-NLS-1$
 		receiver.append("}").decreaseIndentation().newLine(); //$NON-NLS-1$
-		receiver.append("}").newLine().append(Assert.class).append(".fail(\""); //$NON-NLS-1$ //$NON-NLS-2$
+		receiver.append("}").newLine().append(Assertions.class).append(".fail(\""); //$NON-NLS-1$ //$NON-NLS-2$
 		receiver.append(Strings.convertToJavaString(MessageFormat.format(Messages.DynamicValidationContext_0,
 				anchor, fileInResource.getName())));
 		receiver.append("\");").newLine(); //$NON-NLS-1$

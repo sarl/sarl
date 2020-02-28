@@ -20,13 +20,27 @@
  */
 package io.sarl.lang.tests.general.parsing.aop;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static io.sarl.tests.api.tools.TestAssertions.assertParameterDefaultValues;
+import static io.sarl.tests.api.tools.TestAssertions.assertParameterNames;
+import static io.sarl.tests.api.tools.TestAssertions.assertParameterTypes;
+import static io.sarl.tests.api.tools.TestAssertions.assertTypeReferenceIdentifier;
+import static io.sarl.tests.api.tools.TestAssertions.assertXExpression;
+import static io.sarl.tests.api.tools.TestEObjects.file;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static io.sarl.tests.api.tools.TestValidator.validate;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import io.sarl.lang.sarl.SarlAgent;
-import io.sarl.lang.sarl.SarlBehavior;
+import com.google.common.base.Strings;
+import org.eclipse.xtext.common.types.JvmVisibility;
+import org.eclipse.xtext.xbase.XNumberLiteral;
+import org.eclipse.xtext.xbase.XStringLiteral;
+import org.eclipse.xtext.xbase.XbasePackage;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+
 import io.sarl.lang.sarl.SarlConstructor;
 import io.sarl.lang.sarl.SarlEvent;
 import io.sarl.lang.sarl.SarlField;
@@ -35,42 +49,27 @@ import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.validation.IssueCodes;
 import io.sarl.tests.api.AbstractSarlTest;
 
-import org.eclipse.xtext.common.types.JvmVisibility;
-import org.eclipse.xtext.xbase.XNumberLiteral;
-import org.eclipse.xtext.xbase.XStringLiteral;
-import org.eclipse.xtext.xbase.XbasePackage;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
-import com.google.common.base.Strings;
-
 /**
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(Suite.class)
-@SuiteClasses({
-	EventParsingTest.TopElementTest.class,
-	EventParsingTest.FieldTest.class,
-	EventParsingTest.ConstructorTest.class,
-})
 @SuppressWarnings("all")
 public class EventParsingTest extends AbstractSarlTest {
 
-	public static class TopElementTest extends AbstractSarlTest {
+	@Nested
+	public class TopElementTest extends AbstractSarlTest {
 
 		@Test
 		public void invalidExtend_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"}",
 					"event E1 extends C1 {",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEvent(),
 					org.eclipse.xtend.core.validation.IssueCodes.CLASS_EXPECTED,
 					"Invalid supertype. Expecting a class.");
@@ -78,13 +77,13 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void invalidExtend_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"}",
 					"event E1 extends A1 {",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEvent(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
 					"Supertype must be of type 'io.sarl.lang.core.Event'.");
@@ -92,13 +91,13 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void invalidExtend_2() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 {",
 					"}",
 					"agent A1 extends E1 {",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
 					"Supertype must be of type 'io.sarl.lang.core.Agent'.");
@@ -106,13 +105,13 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void invalidExtend_3() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 {",
 					"}",
 					"behavior B1 extends E1 {",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
 					"Supertype must be of type 'io.sarl.lang.core.Behavior'.");
@@ -120,13 +119,13 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void invalidExtend_4() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 {",
 					"}",
 					"skill S1 extends E1 {",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
 					"Supertype must be of type 'io.sarl.lang.core.Skill'.");
@@ -134,10 +133,10 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void eventmodifier_public() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public event E1"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -154,10 +153,10 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void eventmodifier_none() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"event E1"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -174,32 +173,32 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void eventmodifier_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"private event E1"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEvent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void eventmodifier_protected() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"protected event E1"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEvent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void eventmodifier_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"package event E1"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -216,43 +215,43 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void eventmodifier_abstract() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"abstract event E1"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEvent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void eventmodifier_static() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"static event E1"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEvent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void eventmodifier_dispatch() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"dispatch event E1"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEvent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void eventmodifier_final() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"final event E1"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -269,66 +268,66 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void eventmodifier_strictfp() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"strictfp event E1"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEvent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void eventmodifier_native() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"native event E1"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEvent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void eventmodifier_volatile() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"volatile event E1"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEvent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void eventmodifier_synchronized() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"synchronized event E1"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEvent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void eventmodifier_transient() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"transient event E1"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEvent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void eventmodifier_public_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public package event E1"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlEvent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"public / package / protected / private");
@@ -336,15 +335,16 @@ public class EventParsingTest extends AbstractSarlTest {
 
 	}
 
-	public static class FieldTest extends AbstractSarlTest {
+	@Nested
+	public class FieldTest extends AbstractSarlTest {
 
 		@Test
 		public void modifier_public() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"event E1 {",
 					"	public var field : int",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -367,47 +367,47 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void modifier_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"event E1 {",
 					"	private var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_protected() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"event E1 {",
 					"	protected var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"event E1 {",
 					"	package var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_none() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"event E1 {",
 					"	var field : int",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -430,48 +430,48 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void modifier_abstract() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"event E1 {",
 					"	abstract var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_static() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"event E1 {",
 					"	static var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_dispatch() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"event E1 {",
 					"	dispatch var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_final_var() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"event E1 {",
 					"	final var field : int = 5",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"var or val / final, not both");
@@ -479,72 +479,72 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void modifier_strictfp() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"event E1 {",
 					"	strictfp var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_native() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"event E1 {",
 					"	native var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_volatile() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"event E1 {",
 					"	volatile var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_synchronized() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"event E1 {",
 					"	synchronized var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_transient() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"event E1 {",
 					"	transient var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_protected_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"event E1 {",
 					"	protected private var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"public / package / protected / private");
@@ -552,13 +552,13 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void missedFinalFieldInitialization() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 {",
 					"val field1 : int = 5",
 					"val field2 : String",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.FIELD_NOT_INITIALIZED,
 					"The blank final field field2 may not have been initialized");
@@ -566,12 +566,12 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void completeFinalFieldInitialization() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"event E1 {",
 					"val field1 : int = 5",
 					"val field2 : String = \"\"",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -594,14 +594,14 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void invalidSarlFieldName_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 {",
 					"var myfield1 = 4.5",
 					"var $FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = \"String\"",
 					"var myfield2 = true",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
 					"Invalid attribute name '$FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'");
@@ -609,14 +609,14 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void invalidSarlFieldName_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 {",
 					"val myfield1 = 4.5",
 					"val $FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = \"String\"",
 					"val myfield2 = true",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
 					"Invalid attribute name '$FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'");
@@ -624,14 +624,14 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void invalidSarlFieldName_2() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 {",
 					"var myfield1 = 4.5",
 					"var const = \"String\"",
 					"var myfield2 = true",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_IDENTIFIER,
 					"'const' is not a valid identifier.");
@@ -639,14 +639,14 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void invalidSarlFieldName_3() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 {",
 					"var myfield1 = 4.5",
 					"var this = \"String\"",
 					"var myfield2 = true",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_IDENTIFIER,
 					"'this' is not a valid identifier");
@@ -654,14 +654,14 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void discouragedSarlFieldName_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 {",
 					"val myfield1 = 4.5",
 					"val self = \"String\"",
 					"val myfield2 = true",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISCOURAGED,
 					"'self' is a discouraged name");
@@ -669,14 +669,14 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void multipleVariableDefinition() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 {",
 					"var myfield : int",
 					"var myfield1 : String",
 					"var myfield : double",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_FIELD,
 					"Duplicate field myfield");
@@ -684,14 +684,14 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void multipleValueDefinition() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 {",
 					"val myfield : int = 4",
 					"val myfield1 : String = \"\"",
 					"val myfield : double = 5",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_FIELD,
 					"Duplicate field myfield");
@@ -699,7 +699,7 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void fieldNameShadowing() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E0 {",
 					"val field1 : int = 5",
 					"val field2 : int = 6",
@@ -708,7 +708,7 @@ public class EventParsingTest extends AbstractSarlTest {
 					"val field1 : int = 5",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING,
 					"The field 'field1' in 'E1' is hidding the inherited field 'E0.field1'.");
@@ -716,15 +716,16 @@ public class EventParsingTest extends AbstractSarlTest {
 
 	}
 
-	public static class ConstructorTest extends AbstractSarlTest {
+	@Nested
+	public class ConstructorTest extends AbstractSarlTest {
 
 		@Test
 		public void modifier_public() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"event E1 {",
 					"	public new { super(null) }",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -742,11 +743,11 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void modifier_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"event E1 {",
 					"	private new { super(null) }",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -764,11 +765,11 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void modifier_protected() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"event E1 {",
 					"	protected new { super(null) }",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -786,11 +787,11 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void modifier_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"event E1 {",
 					"	package new { super(null) }",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -808,11 +809,11 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void modifier_none() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"event E1 {",
 					"	new { super(null) }",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -830,120 +831,120 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void modifier_abstract() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"event E1 {",
 					"	abstract new { super(null) }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_static() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"event E1 {",
 					"	static new { super(null) }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_dispatch() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"event E1 {",
 					"	dispatch new { super(null) }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_final() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"event E1 {",
 					"	final new { super(null) }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_strictfp() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"event E1 {",
 					"	strictfp new { super(null) }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_native() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"event E1 {",
 					"	native new { super(null) }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_volatile() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"event E1 {",
 					"	volatile new { super(null) }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_synchronized() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"event E1 {",
 					"	synchronized new { super(null) }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_transient() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"event E1 {",
 					"	transient new { super(null) }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_protected_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"event E1 {",
 					"	protected private new { super(null) }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"public / package / protected / private");
@@ -951,7 +952,7 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void validImplicitSuperConstructor() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.test",
 					"event E1 {",
 					"}",
@@ -959,7 +960,7 @@ public class EventParsingTest extends AbstractSarlTest {
 					"new (a : int) {",
 					"}",
 					"}"
-					), true);
+					));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.test", mas.getPackage());
@@ -982,7 +983,7 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void missedImplicitSuperConstructor_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.test",
 					"event E1 {",
 					"new (a : char) {",
@@ -993,7 +994,7 @@ public class EventParsingTest extends AbstractSarlTest {
 					"}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR,
 					"Undefined default constructor in the super-type");
@@ -1001,7 +1002,7 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void missedImplicitSuperConstructor_2() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.test",
 					"event E1 {",
 					"new (a : int) {",
@@ -1012,7 +1013,7 @@ public class EventParsingTest extends AbstractSarlTest {
 					"}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR,
 					"Undefined default constructor in the super-type");
@@ -1020,7 +1021,7 @@ public class EventParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void notMissedImplicitSuperConstructor() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.test",
 					"event E1 {",
 					"new (a : int) {",
@@ -1029,12 +1030,12 @@ public class EventParsingTest extends AbstractSarlTest {
 					"event E2 extends E1 {",
 					"}"
 					));
-			validate(mas).assertNoErrors();
+			validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 		}
 
 		@Test
 		public void invalidArgumentTypeToSuperConstructor() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.test",
 					"event E1 {",
 					"new (a : int) {",
@@ -1046,7 +1047,7 @@ public class EventParsingTest extends AbstractSarlTest {
 					"}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					XbasePackage.eINSTANCE.getXStringLiteral(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES,
 					"Type mismatch: cannot convert from String to int");

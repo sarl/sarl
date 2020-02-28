@@ -20,11 +20,11 @@
  */
 package io.sarl.lang.tests.modules.sarl.impl;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.google.inject.Inject;
 import org.eclipse.xtext.common.types.JvmVisibility;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlFactory;
 import io.sarl.lang.sarl.impl.SarlActionImplCustom;

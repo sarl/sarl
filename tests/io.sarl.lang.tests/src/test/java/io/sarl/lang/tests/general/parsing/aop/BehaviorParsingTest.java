@@ -20,10 +20,20 @@
  */
 package io.sarl.lang.tests.general.parsing.aop;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static io.sarl.tests.api.tools.TestAssertions.assertNullOrEmpty;
+import static io.sarl.tests.api.tools.TestAssertions.assertParameterDefaultValues;
+import static io.sarl.tests.api.tools.TestAssertions.assertParameterNames;
+import static io.sarl.tests.api.tools.TestAssertions.assertParameterTypes;
+import static io.sarl.tests.api.tools.TestAssertions.assertTypeReferenceIdentifier;
+import static io.sarl.tests.api.tools.TestAssertions.assertXExpression;
+import static io.sarl.tests.api.tools.TestEObjects.file;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static io.sarl.tests.api.tools.TestValidator.validate;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.google.common.base.Strings;
 import org.eclipse.xtext.common.types.JvmTypeConstraint;
@@ -32,10 +42,8 @@ import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.XbasePackage;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlBehavior;
@@ -52,29 +60,21 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(Suite.class)
-@SuiteClasses({
-	BehaviorParsingTest.TopElementTest.class,
-	BehaviorParsingTest.ActionTest.class,
-	BehaviorParsingTest.FieldTest.class,
-	BehaviorParsingTest.ConstructorTest.class,
-	BehaviorParsingTest.CapacityUsesTest.class,
-	BehaviorParsingTest.GenericTest.class,
-})
 @SuppressWarnings("all")
 public class BehaviorParsingTest {
 
-	public static class TopElementTest extends AbstractSarlTest {
+	@Nested
+	public class TopElementTest extends AbstractSarlTest {
 
 		@Test
 		public void invalidExtend_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 				"capacity C1 {",
 				"}",
 				"behavior B1 extends C1 {",
 				"}"
 			));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlBehavior(),
 				org.eclipse.xtend.core.validation.IssueCodes.CLASS_EXPECTED,
 				"Invalid supertype. Expecting a class");
@@ -82,13 +82,13 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void invalidExtend_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
 				"}",
 				"behavior B3 extends A1 {",
 				"}"
 			));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlBehavior(),
 				IssueCodes.INVALID_EXTENDED_TYPE,
 				"Supertype must be of type 'io.sarl.lang.core.Behavior'");
@@ -96,11 +96,11 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void invalidExtend_2() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 extends B1 {",
 				"}"
 			));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlBehavior(),
 				org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
 				"The inheritance hierarchy of 'B1' is inconsistent");
@@ -108,13 +108,13 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void invalidExtend_3() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 extends B2 {",
 				"}",
 				"behavior B2 extends B1 {",
 				"}"
 			));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlBehavior(),
 				IssueCodes.INVALID_EXTENDED_TYPE,
 				"Supertype must be of type 'io.sarl.lang.core.Behavior'");
@@ -122,7 +122,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void invalidExtend_4() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 extends B2 {",
 				"}",
 				"behavior B2 extends B1 {",
@@ -130,7 +130,7 @@ public class BehaviorParsingTest {
 				"behavior B3 extends B2 {",
 				"}"
 			));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlBehavior(),
 				IssueCodes.INVALID_EXTENDED_TYPE,
 				"Supertype must be of type 'io.sarl.lang.core.Behavior'");
@@ -138,7 +138,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void invalidExtend_5() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B3 extends B2 {",
 				"}",
 				"behavior B2 extends B1 {",
@@ -146,7 +146,7 @@ public class BehaviorParsingTest {
 				"behavior B1 extends B2 {",
 				"}"
 			));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlBehavior(),
 				IssueCodes.INVALID_EXTENDED_TYPE,
 				"Supertype must be of type 'io.sarl.lang.core.Behavior'");
@@ -154,7 +154,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void duplicateTypeNames() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.test",
 				"behavior B1 {",
 				"}",
@@ -163,7 +163,7 @@ public class BehaviorParsingTest {
 				"behavior B1 {",
 				"}"
 			));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlBehavior(),
 				org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_TYPE_NAME,
 				"Duplicate type B1");
@@ -171,10 +171,10 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void behaviormodifier_public() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public behavior B1 {}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -191,10 +191,10 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void behaviormodifier_none() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -211,32 +211,32 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void behaviormodifier_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"private behavior B1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void behaviormodifier_protected() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"protected behavior B1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void behaviormodifier_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"package behavior B1 {}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -253,10 +253,10 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void behaviormodifier_abstract() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"abstract behavior B1 {}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -273,32 +273,32 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void behaviormodifier_static() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"static behavior B1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void behaviormodifier_dispatch() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"dispatch behavior B1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void behaviormodifier_final() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"final behavior B1 {}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -315,66 +315,66 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void behaviormodifier_strictfp() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"strictfp behavior B1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void behaviormodifier_native() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"native behavior B1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void behaviormodifier_volatile() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"volatile behavior B1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void behaviormodifier_synchronized() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"synchronized behavior B1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void behaviormodifier_transient() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"transient behavior B1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void behaviormodifier_abstract_final() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"abstract final behavior B1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"The definition of B1 can either be abstract or final, not both");
@@ -382,39 +382,39 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void modifier_abstract_action_error_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	def name",
 					"}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT);
 		}
 
 		@Test
 		public void modifier_abstract_action_error_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	abstract def name",
 					"}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT);
 		}
 		
 		@Test
 		public void modifier_abstract_action_warning() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"abstract behavior B1 {",
 					"	def name",
 					"}"
-					), true);
-			validate(mas).assertWarning(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT);
 			//
@@ -434,13 +434,13 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void modifier_abstract_action() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"abstract behavior B1 {",
 					"	abstract def name",
 					"}"
-					), true);
-			validate(mas).assertNoIssues();
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertNoIssues();
 			//
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -458,11 +458,11 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void behaviormodifier_public_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public package behavior B1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlBehavior(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"The definition of B1 can only set one of public / package / protected / private");
@@ -470,33 +470,34 @@ public class BehaviorParsingTest {
 
 	}
 
-	public static class ActionTest extends AbstractSarlTest {
+	@Nested
+	public class ActionTest extends AbstractSarlTest {
 
 		@Test
 		public void modifier_override_notRecommended() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"abstract behavior B1 {",
 					"	abstract def name",
 					"}",
 					"behavior B2 extends B1 {",
 					"	def name { }",
-					"}"), false);
-			validate(mas).assertNoWarnings(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertNoWarnings(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE);
 		}
 
 		@Test
 		public void modifier_override_invalid() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"}",
 					"behavior B2 extends B1 {",
 					"	override name { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.OBSOLETE_OVERRIDE,
 					"The method name() of type B2 must override a superclass method");
@@ -504,27 +505,27 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void modifier_override_valid() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"abstract behavior B1 {",
 					"	abstract def name",
 					"}",
 					"behavior B2 extends B1 {",
 					"	override name { }",
-					"}"), false);
-			validate(mas).assertNoIssues();
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertNoIssues();
 		}
 
 		@Test
 		public void multipleActionDefinition() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
 				"	def myaction(a : int, b : int) { }",
 				"	def myaction(a : int) { }",
 				"	def myaction(a : int) { }",
 				"}"
 			));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlAction(),
 				org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_METHOD,
 				"Duplicate method myaction(int) in type B1");
@@ -532,7 +533,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void invalidActionName() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
 				"	def myaction {",
 				"		System.out.println(\"ok\")",
@@ -545,7 +546,7 @@ public class BehaviorParsingTest {
 				"	}",
 				"}"
 			));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlAction(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MEMBER_NAME,
 				"Invalid action name '$handle_myaction'.");
@@ -553,7 +554,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void incompatibleReturnType_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
 				"	def myaction(a : int) : int {",
 				"		return 0",
@@ -565,14 +566,14 @@ public class BehaviorParsingTest {
 				"	}",
 				"}"
 			));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlAction(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE);
 		}
 
 		@Test
 		public void incompatibleReturnType_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
 				"	def myaction(a : int) {",
 				"		// void",
@@ -584,14 +585,14 @@ public class BehaviorParsingTest {
 				"	}",
 				"}"
 			));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlAction(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE);
 		}
 
 		@Test
 		public void incompatibleReturnType_2() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
 				"	def myaction(a : int) : int {",
 				"		return 0",
@@ -603,14 +604,14 @@ public class BehaviorParsingTest {
 				"	}",
 				"}"
 			));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlAction(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE);
 		}
 
 		@Test
 		public void incompatibleReturnType_3() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
 				"	def myaction(a : int) : int {",
 				"		return 0",
@@ -622,7 +623,7 @@ public class BehaviorParsingTest {
 				"	}",
 				"}"
 			));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				XbasePackage.eINSTANCE.getXBlockExpression(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES,
 				"Type mismatch: cannot convert from null to int");
@@ -630,7 +631,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void compatibleReturnType_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 				"behavior B1 {",
 				"	def myaction(a : int) : Number {",
 				"		return 0.0",
@@ -641,7 +642,7 @@ public class BehaviorParsingTest {
 				"		return 0.0",
 				"	}",
 				"}"
-			), true);
+			));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -675,7 +676,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void compatibleReturnType_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 				"behavior B1 {",
 				"	def myaction(a : int) : float {",
 				"		return 0f",
@@ -686,7 +687,7 @@ public class BehaviorParsingTest {
 				"		return 0f",
 				"	}",
 				"}"
-			), true);
+			));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -720,13 +721,13 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void multipleParameterNames() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
 				"	def myaction(a : int, b : int, c : int, b : int) {",
 				"	}",
 				"}"
 			));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlFormalParameter(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING,
 				"Duplicate local variable b");
@@ -734,11 +735,11 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void modifier_public() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	public def name { }",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -761,11 +762,11 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void modifier_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	private def name { }",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -788,11 +789,11 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void modifier_protected() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	protected def name { }",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -815,11 +816,11 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void modifier_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	package def name { }",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -842,11 +843,11 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void modifier_none() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	def name { }",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -869,11 +870,11 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void modifier_abstract() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"abstract behavior B1 {",
 					"	abstract def name",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -896,11 +897,11 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void modifier_no_abstract() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"abstract behavior B1 {",
 					"	def name",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -923,23 +924,23 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void modifier_static() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	static def name { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_dispatch() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	dispatch def name { }",
-					"}"), false);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -962,11 +963,11 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void modifier_final_var() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	final def name { }",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -989,47 +990,47 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void modifier_strictfp() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	strictfp def name { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_native() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	native def name { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_volatile() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	volatile def name { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_synchronized() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	synchronized def name { }",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1052,24 +1053,24 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void modifier_transient() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	transient def name { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_protected_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	protected private def name { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"public / package / protected / private");
@@ -1077,11 +1078,11 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void modifier_dispatch_final() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	dispatch final def name(a : Integer) { }",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1104,18 +1105,19 @@ public class BehaviorParsingTest {
 
 	}
 
-	public static class FieldTest extends AbstractSarlTest {
+	@Nested
+	public class FieldTest extends AbstractSarlTest {
 
 		@Test
 		public void multipleVariableDefinition() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
 				"	var myfield : int",
 				"	var myfield1 : String",
 				"	var myfield : double",
 				"}"
 			));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlField(),
 				org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_FIELD,
 				"Duplicate field myfield");
@@ -1123,14 +1125,14 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void multipleValueDefinition() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
 				"	val myfield : int = 4",
 				"	val myfield1 : String = \"\"",
 				"	val myfield : double = 5",
 				"}"
 			));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlField(),
 				org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_FIELD,
 				"Duplicate field myfield");
@@ -1138,14 +1140,14 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void invalidAttributeName_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
 				"	var myfield1 = 4.5",
 				"	var $FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = \"String\"",
 				"	var myfield2 = true",
 				"}"
 			));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlField(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
 				"Invalid attribute name '$FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'");
@@ -1153,14 +1155,14 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void invalidAttributeName_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
 				"	val myfield1 = 4.5",
 				"	val $FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = \"String\"",
 				"	val myfield2 = true",
 				"}"
 			));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlField(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
 				"Invalid attribute name '$FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'");
@@ -1168,14 +1170,14 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void invalidAttributeName_2() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
 				"	val myfield1 = 4.5",
 				"	val this = \"String\"",
 				"	val myfield2 = true",
 				"}"
 			));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlField(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_IDENTIFIER,
 				"'this' is not a valid identifier");
@@ -1183,14 +1185,14 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void invalidAttributeName_3() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
 				"	val myfield1 = 4.5",
 				"	val const = \"String\"",
 				"	val myfield2 = true",
 				"}"
 			));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlField(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_IDENTIFIER,
 				"'const' is not a valid identifier.");
@@ -1198,14 +1200,14 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void invalidAttributeName_4() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
 				"	val myfield1 = 4.5",
 				"	val self = \"String\"",
 				"	val myfield2 = true",
 				"}"
 			));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 				SarlPackage.eINSTANCE.getSarlField(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISCOURAGED,
 				"'self' is a discouraged name");
@@ -1213,13 +1215,13 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void missedFinalFieldInitialization() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
 				"	val field1 : int = 5",
 				"	val field2 : String",
 				"}"
 			));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlField(),
 				org.eclipse.xtend.core.validation.IssueCodes.FIELD_NOT_INITIALIZED,
 				"The blank final field field2 may not have been initialized");
@@ -1227,12 +1229,12 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void completeFinalFieldInitialization() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 				"behavior B1 {",
 				"	val field1 : int = 5",
 				"	val field2 : String = \"\"",
 				"}"
-			), true);
+			));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -1255,7 +1257,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void fieldNameShadowing() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
 				"	protected val field1 : int = 5",
 				"	def myaction(a : int) { }",
@@ -1265,7 +1267,7 @@ public class BehaviorParsingTest {
 				"	def myaction(a : int) { }",
 				"}"
 			));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 				SarlPackage.eINSTANCE.getSarlField(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING,
 				"The field 'field1' in 'B2' is hidding the inherited field 'B1.field1'.");
@@ -1273,11 +1275,11 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void modifier_public() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	public var field : int",
-					"}"), false);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1301,11 +1303,11 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void modifier_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	private var field : int",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1329,11 +1331,11 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void modifier_protected() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	protected var field : int",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1357,11 +1359,11 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void modifier_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	package var field : int",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1385,11 +1387,11 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void modifier_none() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	var field : int",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1413,48 +1415,48 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void modifier_abstract() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	abstract var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_static() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	static var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_dispatch() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	dispatch var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_final_var() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	final var field : int = 5",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"var or val / final, not both");
@@ -1462,72 +1464,72 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void modifier_strictfp() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	strictfp var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_native() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	native var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_volatile() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	volatile var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_synchronized() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	synchronized var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_transient() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	transient var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_protected_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	protected private var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"public / package / protected / private");
@@ -1535,11 +1537,12 @@ public class BehaviorParsingTest {
 
 	}
 
-	public static class ConstructorTest extends AbstractSarlTest {
+	@Nested
+	public class ConstructorTest extends AbstractSarlTest {
 
 		@Test
 		public void validImplicitSuperConstructor() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 				"package io.sarl.test",
 				"behavior B1 {",
 				"}",
@@ -1548,7 +1551,7 @@ public class BehaviorParsingTest {
 				"		super(null)",
 				"	}",
 				"}"
-			), true);
+			));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.test", mas.getPackage());
@@ -1571,7 +1574,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void missedImplicitSuperConstructor_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.test",
 				"behavior B1 {",
 				"}",
@@ -1580,7 +1583,7 @@ public class BehaviorParsingTest {
 				"	}",
 				"}"
 			));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlConstructor(),
 				org.eclipse.xtend.core.validation.IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR,
 				"Undefined default constructor in the super-type");
@@ -1588,7 +1591,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void missedImplicitSuperConstructor_2() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.test",
 				"behavior B1 {",
 				"	new (a : int) {",
@@ -1600,7 +1603,7 @@ public class BehaviorParsingTest {
 				"	}",
 				"}"
 			));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlConstructor(),
 				org.eclipse.xtend.core.validation.IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR,
 				"Undefined default constructor in the super-type");
@@ -1608,7 +1611,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void notMissedImplicitSuperConstructor() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.test",
 				"behavior B1 {",
 				"	new (a : int) {",
@@ -1618,13 +1621,13 @@ public class BehaviorParsingTest {
 				"behavior B2 extends B1 {",
 				"}"
 			));
-			validate(mas).assertNoErrors();
+			validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 		}
 
 
 		@Test
 		public void invalidArgumentTypeToSuperConstructor() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.test",
 				"behavior B1 {",
 				"	new (a : int) {",
@@ -1637,7 +1640,7 @@ public class BehaviorParsingTest {
 				"	}",
 				"}"
 			));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				XbasePackage.eINSTANCE.getXStringLiteral(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES,
 				"Type mismatch: cannot convert from String to int");
@@ -1645,11 +1648,11 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void modifier_public() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	public new { super(null) }",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1667,11 +1670,11 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void modifier_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	private new { super(null) }",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1690,11 +1693,11 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void modifier_protected() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	protected new { super(null) }",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1713,11 +1716,11 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void modifier_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	package new { super(null) }",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1736,11 +1739,11 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void modifier_none() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	new { super(null) }",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1759,120 +1762,120 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void modifier_abstract() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	abstract new { super(null) }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_static() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	static new { super(null) }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_dispatch() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	dispatch new { super(null) }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_final() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	final new { super(null) }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_strictfp() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	strictfp new { super(null) }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_native() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	native new { super(null) }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_volatile() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	volatile new { super(null) }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_synchronized() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	synchronized new { super(null) }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_transient() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	transient new { super(null) }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_protected_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	protected private new { super(null) }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"public / package / protected / private");
@@ -1880,11 +1883,12 @@ public class BehaviorParsingTest {
 
 	}
 
-	public static class CapacityUsesTest extends AbstractSarlTest {
+	@Nested
+	public class CapacityUsesTest extends AbstractSarlTest {
 
 		@Test
 		public void multipleCapacityUses_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 				"capacity C1 {}",
 				"capacity C2 {}",
 				"behavior B1 {",
@@ -1893,7 +1897,7 @@ public class BehaviorParsingTest {
 				"}"
 			));
 
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 				SarlPackage.eINSTANCE.getSarlCapacityUses(),
 				IssueCodes.REDUNDANT_CAPACITY_USE,
 				"Redundant use of the capacity 'C1'");
@@ -1901,7 +1905,7 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void multipleCapacityUses_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 				"capacity C1 {}",
 				"capacity C2 {}",
 				"behavior B1 {",
@@ -1911,7 +1915,7 @@ public class BehaviorParsingTest {
 				"}"
 			));
 
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 				SarlPackage.eINSTANCE.getSarlCapacityUses(),
 				IssueCodes.REDUNDANT_CAPACITY_USE,
 				"Redundant use of the capacity 'C2'");
@@ -1919,15 +1923,16 @@ public class BehaviorParsingTest {
 
 	}
 
-	public static class GenericTest extends AbstractSarlTest {
+	@Nested
+	public class GenericTest extends AbstractSarlTest {
 
 		@Test
 		public void functionGeneric_X_sarlNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	def setX(param : X) : void with X { var xxx : X }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertNotNull(beh);
@@ -1946,11 +1951,11 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void functionGeneric_X_javaNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	def <X> setX(param : X) : void { var xxx : X }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertNotNull(beh);
@@ -1969,11 +1974,11 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void functionGeneric_XextendsNumber_sarlNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	def setX(param : X) : void with X extends Number { var xxx : X }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertNotNull(beh);
@@ -1996,11 +2001,11 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void functionGeneric_XextendsNumber_javaNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	def <X extends Number> setX(param : X) : void { var xxx : X }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertNotNull(beh);
@@ -2023,11 +2028,11 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void functionGeneric_XY_sarlNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	def setX(param : X) : void with X, Y { var xxx : X; var yyy : Y }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertNotNull(beh);
@@ -2050,11 +2055,11 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void functionGeneric_XY_javaNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	def <X, Y> setX(param : X) : void { var xxx : X; var yyy : Y }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertNotNull(beh);
@@ -2077,11 +2082,11 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void functionGeneric_XYextendsX_sarlNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	def setX(param : X) : void with X, Y extends X { var xxx : X; var yyy : Y }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertNotNull(beh);
@@ -2108,11 +2113,11 @@ public class BehaviorParsingTest {
 
 		@Test
 		public void functionGeneric_XYextendsX_javaNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"behavior B1 {",
 					"	def <X, Y extends X> setX(param : X) : void { var xxx : X; var yyy : Y }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlBehavior beh = (SarlBehavior) mas.getXtendTypes().get(0);
 			assertNotNull(beh);

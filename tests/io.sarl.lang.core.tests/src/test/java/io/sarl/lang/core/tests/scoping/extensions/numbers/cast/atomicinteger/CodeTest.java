@@ -31,12 +31,16 @@ import static io.sarl.lang.scoping.extensions.numbers.cast.AtomicIntegerCastExte
 import static io.sarl.lang.scoping.extensions.numbers.cast.AtomicIntegerCastExtensions.toInteger;
 import static io.sarl.lang.scoping.extensions.numbers.cast.AtomicIntegerCastExtensions.toLong;
 import static io.sarl.lang.scoping.extensions.numbers.cast.AtomicIntegerCastExtensions.toShort;
+import static io.sarl.tests.api.tools.TestAssertions.assertEpsilonEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.tests.api.AbstractSarlTest;
 
@@ -48,6 +52,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @see "https://github.com/eclipse/xtext-extras/issues/186"
  */
 @SuppressWarnings("all")
+@DisplayName("Calling atomic integer cast operator")
 public class CodeTest extends AbstractSarlTest {
 
 	private static AtomicInteger left = new AtomicInteger(4);

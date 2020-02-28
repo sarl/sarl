@@ -21,14 +21,16 @@
 
 package io.sarl.lang.core.tests.scoping.extensions.numbers.comparison.number;
 
-import org.junit.runner.RunWith;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+
+import org.junit.jupiter.api.DisplayName;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.MassiveCompilationSuite;
-import io.sarl.tests.api.MassiveCompilationSuite.CompilationTest;
-import io.sarl.tests.api.MassiveCompilationSuite.Context;
+import io.sarl.tests.api.globalcompilation.GlobalCompilationSuite;
+import io.sarl.tests.api.globalcompilation.GlobalCompilationTestContribution;
+import io.sarl.tests.api.globalcompilation.ResourceSetGlobalCompilationContext;
 
 /**
  * @author $Author: sgalland$
@@ -37,12 +39,13 @@ import io.sarl.tests.api.MassiveCompilationSuite.Context;
  * @mavenartifactid $ArtifactId$
  * @see "https://github.com/eclipse/xtext-extras/issues/186"
  */
-@RunWith(MassiveCompilationSuite.class)
+@GlobalCompilationSuite
 @SuppressWarnings("all")
+@DisplayName("Compiling Number comparison operators")
 public class CompilerTest extends AbstractSarlTest {
 
-	@CompilationTest
-	public static void operator_greaterThan_Byte_byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_greaterThan_Byte_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : byte) : boolean {",
@@ -72,8 +75,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_greaterThan_Byte_short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_greaterThan_Byte_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : short) : boolean {",
@@ -103,8 +106,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_greaterThan_Byte_int(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_greaterThan_Byte_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : int) : boolean {",
@@ -134,8 +137,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_greaterThan_Byte_long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_greaterThan_Byte_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : long) : boolean {",
@@ -165,8 +168,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_greaterThan_Byte_float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_greaterThan_Byte_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : float) : boolean {",
@@ -196,8 +199,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_greaterThan_Byte_double(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_greaterThan_Byte_double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : double) : boolean {",
@@ -227,8 +230,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_greaterThan_Byte_Byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_greaterThan_Byte_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Byte) : boolean {",
@@ -258,8 +261,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_greaterThan_Byte_Short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_greaterThan_Byte_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Short) : boolean {",
@@ -289,8 +292,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_greaterThan_Byte_Integer(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_greaterThan_Byte_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Integer) : boolean {",
@@ -320,8 +323,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_greaterThan_Byte_Long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_greaterThan_Byte_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Long) : boolean {",
@@ -351,8 +354,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_greaterThan_Byte_Float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_greaterThan_Byte_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Float) : boolean {",
@@ -382,8 +385,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_greaterThan_Byte_Double(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_greaterThan_Byte_Double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Double) : boolean {",
@@ -414,8 +417,8 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 
-	@CompilationTest
-	public static void operator_greaterThan_Byte_AtomicInteger(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_greaterThan_Byte_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicInteger",
 				"class A {",
@@ -447,8 +450,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_greaterThan_Byte_AtomicLong(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_greaterThan_Byte_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicLong",
 				"class A {",
@@ -480,8 +483,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_greaterThan_Byte_Number(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_greaterThan_Byte_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import com.google.common.util.concurrent.AtomicDouble",
 				"class A {",
@@ -513,8 +516,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_greaterEqualsThan_Byte_byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_greaterEqualsThan_Byte_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : byte) : boolean {",
@@ -544,8 +547,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_greaterEqualsThan_Byte_short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_greaterEqualsThan_Byte_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : short) : boolean {",
@@ -575,8 +578,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_greaterEqualsThan_Byte_int(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_greaterEqualsThan_Byte_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : int) : boolean {",
@@ -606,8 +609,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_greaterEqualsThan_Byte_long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_greaterEqualsThan_Byte_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : long) : boolean {",
@@ -637,8 +640,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_greaterEqualsThan_Byte_float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_greaterEqualsThan_Byte_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : float) : boolean {",
@@ -668,8 +671,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_greaterEqualsThan_Byte_double(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_greaterEqualsThan_Byte_double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : double) : boolean {",
@@ -699,8 +702,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_greaterEqualsThan_Byte_Byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_greaterEqualsThan_Byte_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Byte) : boolean {",
@@ -730,8 +733,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_greaterEqualsThan_Byte_Short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_greaterEqualsThan_Byte_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Short) : boolean {",
@@ -761,8 +764,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_greaterEqualsThan_Byte_Integer(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_greaterEqualsThan_Byte_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Integer) : boolean {",
@@ -792,8 +795,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_greaterEqualsThan_Byte_Long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_greaterEqualsThan_Byte_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Long) : boolean {",
@@ -823,8 +826,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_greaterEqualsThan_Byte_Float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_greaterEqualsThan_Byte_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Float) : boolean {",
@@ -854,8 +857,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_greaterEqualsThan_Byte_Double(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_greaterEqualsThan_Byte_Double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Double) : boolean {",
@@ -885,8 +888,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_greaterEqualsThan_Byte_AtomicInteger(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_greaterEqualsThan_Byte_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicInteger",
 				"class A {",
@@ -918,8 +921,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_greaterEqualsThan_Byte_AtomicLong(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_greaterEqualsThan_Byte_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicLong",
 				"class A {",
@@ -951,8 +954,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_greaterEqualsThan_Byte_Number(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_greaterEqualsThan_Byte_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import com.google.common.util.concurrent.AtomicDouble",
 				"class A {",
@@ -984,8 +987,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_lowerThan_Byte_byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_lowerThan_Byte_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : byte) : boolean {",
@@ -1015,8 +1018,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_lowerThan_Byte_short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_lowerThan_Byte_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : short) : boolean {",
@@ -1046,8 +1049,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_lowerThan_Byte_int(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_lowerThan_Byte_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : int) : boolean {",
@@ -1077,8 +1080,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_lowerThan_Byte_long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_lowerThan_Byte_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : long) : boolean {",
@@ -1108,8 +1111,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_lowerThan_Byte_float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_lowerThan_Byte_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : float) : boolean {",
@@ -1139,8 +1142,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_lowerThan_Byte_double(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_lowerThan_Byte_double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : double) : boolean {",
@@ -1170,8 +1173,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_lowerThan_Byte_Byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_lowerThan_Byte_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Byte) : boolean {",
@@ -1201,8 +1204,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_lowerThan_Byte_Short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_lowerThan_Byte_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Short) : boolean {",
@@ -1232,8 +1235,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_lowerThan_Byte_Integer(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_lowerThan_Byte_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Integer) : boolean {",
@@ -1263,8 +1266,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_lowerThan_Byte_Long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_lowerThan_Byte_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Long) : boolean {",
@@ -1294,8 +1297,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_lowerThan_Byte_Float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_lowerThan_Byte_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Float) : boolean {",
@@ -1325,8 +1328,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_lowerThan_Byte_Double(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_lowerThan_Byte_Double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Double) : boolean {",
@@ -1356,8 +1359,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_lowerThan_Byte_AtomicInteger(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_lowerThan_Byte_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicInteger",
 				"class A {",
@@ -1389,8 +1392,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_lowerThan_Byte_AtomicLong(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_lowerThan_Byte_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicLong",
 				"class A {",
@@ -1422,8 +1425,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_lowerThan_Byte_Number(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_lowerThan_Byte_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import com.google.common.util.concurrent.AtomicDouble",
 				"class A {",
@@ -1455,8 +1458,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_lowerEqualsThan_Byte_byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_lowerEqualsThan_Byte_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : byte) : boolean {",
@@ -1486,8 +1489,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_lowerEqualsThan_Byte_short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_lowerEqualsThan_Byte_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : short) : boolean {",
@@ -1517,8 +1520,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_lowerEqualsThan_Byte_int(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_lowerEqualsThan_Byte_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : int) : boolean {",
@@ -1548,8 +1551,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_lowerEqualsThan_Byte_long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_lowerEqualsThan_Byte_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : long) : boolean {",
@@ -1579,8 +1582,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_lowerEqualsThan_Byte_float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_lowerEqualsThan_Byte_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : float) : boolean {",
@@ -1610,8 +1613,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_lowerEqualsThan_Byte_double(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_lowerEqualsThan_Byte_double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : double) : boolean {",
@@ -1641,8 +1644,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_lowerEqualsThan_Byte_Byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_lowerEqualsThan_Byte_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Byte) : boolean {",
@@ -1672,8 +1675,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_lowerEqualsThan_Byte_Short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_lowerEqualsThan_Byte_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Short) : boolean {",
@@ -1703,8 +1706,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_lowerEqualsThan_Byte_Integer(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_lowerEqualsThan_Byte_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Integer) : boolean {",
@@ -1734,8 +1737,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_lowerEqualsThan_Byte_Long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_lowerEqualsThan_Byte_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Long) : boolean {",
@@ -1765,8 +1768,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_lowerEqualsThan_Byte_Float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_lowerEqualsThan_Byte_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Float) : boolean {",
@@ -1796,8 +1799,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_lowerEqualsThan_Byte_Double(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_lowerEqualsThan_Byte_Double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Double) : boolean {",
@@ -1827,8 +1830,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_lowerEqualsThan_Byte_AtomicInteger(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_lowerEqualsThan_Byte_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicInteger",
 				"class A {",
@@ -1860,8 +1863,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_lowerEqualsThan_Byte_AtomicLong(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_lowerEqualsThan_Byte_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicLong",
 				"class A {",
@@ -1893,8 +1896,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_lowerEqualsThan_Byte_Number(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_lowerEqualsThan_Byte_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import com.google.common.util.concurrent.AtomicDouble",
 				"class A {",
@@ -1926,8 +1929,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_equals_Byte_byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_equals_Byte_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : byte) : boolean {",
@@ -1957,8 +1960,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_equals_Byte_short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_equals_Byte_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : short) : boolean {",
@@ -1988,8 +1991,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_equals_Byte_int(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_equals_Byte_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : int) : boolean {",
@@ -2019,8 +2022,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_equals_Byte_long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_equals_Byte_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : long) : boolean {",
@@ -2050,8 +2053,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_equals_Byte_float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_equals_Byte_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : float) : boolean {",
@@ -2081,8 +2084,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_equals_Byte_double(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_equals_Byte_double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : double) : boolean {",
@@ -2112,8 +2115,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_equals_Byte_Byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_equals_Byte_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Byte) : boolean {",
@@ -2143,8 +2146,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_equals_Byte_Short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_equals_Byte_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Short) : boolean {",
@@ -2174,8 +2177,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_equals_Byte_Integer(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_equals_Byte_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Integer) : boolean {",
@@ -2205,8 +2208,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_equals_Byte_Long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_equals_Byte_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Long) : boolean {",
@@ -2236,8 +2239,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_equals_Byte_Float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_equals_Byte_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Float) : boolean {",
@@ -2267,8 +2270,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_equals_Byte_Double(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_equals_Byte_Double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Double) : boolean {",
@@ -2298,8 +2301,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_equals_Byte_AtomicInteger(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_equals_Byte_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicInteger",
 				"class A {",
@@ -2331,8 +2334,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_equals_Byte_AtomicLong(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_equals_Byte_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicLong",
 				"class A {",
@@ -2364,8 +2367,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_equals_Byte_Number(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_equals_Byte_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import com.google.common.util.concurrent.AtomicDouble",
 				"class A {",
@@ -2398,8 +2401,8 @@ public class CompilerTest extends AbstractSarlTest {
 	}
 
 
-	@CompilationTest
-	public static void operator_notEquals_Byte_byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_notEquals_Byte_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : byte) : boolean {",
@@ -2429,8 +2432,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_notEquals_Byte_short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_notEquals_Byte_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : short) : boolean {",
@@ -2460,8 +2463,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_notEquals_Byte_int(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_notEquals_Byte_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : int) : boolean {",
@@ -2491,8 +2494,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_notEquals_Byte_long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_notEquals_Byte_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : long) : boolean {",
@@ -2522,8 +2525,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_notEquals_Byte_float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_notEquals_Byte_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : float) : boolean {",
@@ -2553,8 +2556,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_notEquals_Byte_double(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_notEquals_Byte_double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : double) : boolean {",
@@ -2584,8 +2587,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_notEquals_Byte_Byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_notEquals_Byte_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Byte) : boolean {",
@@ -2615,8 +2618,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_notEquals_Byte_Short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_notEquals_Byte_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Short) : boolean {",
@@ -2646,8 +2649,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_notEquals_Byte_Integer(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_notEquals_Byte_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Integer) : boolean {",
@@ -2677,8 +2680,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_notEquals_Byte_Long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_notEquals_Byte_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Long) : boolean {",
@@ -2708,8 +2711,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_notEquals_Byte_Float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_notEquals_Byte_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Float) : boolean {",
@@ -2739,8 +2742,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_notEquals_Byte_Double(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_notEquals_Byte_Double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Double) : boolean {",
@@ -2770,8 +2773,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_notEquals_Byte_AtomicInteger(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_notEquals_Byte_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicInteger",
 				"class A {",
@@ -2803,8 +2806,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_notEquals_Byte_AtomicLong(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_notEquals_Byte_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicLong",
 				"class A {",
@@ -2836,8 +2839,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_notEquals_Byte_Number(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_notEquals_Byte_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import com.google.common.util.concurrent.AtomicDouble",
 				"class A {",
@@ -2869,8 +2872,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_spaceship_Byte_byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_spaceship_Byte_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : byte) : int {",
@@ -2900,8 +2903,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_spaceship_Byte_short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_spaceship_Byte_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : short) : int {",
@@ -2931,8 +2934,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_spaceship_Byte_int(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_spaceship_Byte_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : int) : int {",
@@ -2962,8 +2965,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_spaceship_Byte_long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_spaceship_Byte_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : long) : int {",
@@ -2993,8 +2996,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_spaceship_Byte_float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_spaceship_Byte_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : float) : int {",
@@ -3024,8 +3027,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_spaceship_Byte_double(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_spaceship_Byte_double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : double) : int {",
@@ -3055,8 +3058,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_spaceship_Byte_Byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_spaceship_Byte_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Byte) : int {",
@@ -3086,8 +3089,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_spaceship_Byte_Short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_spaceship_Byte_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Short) : int {",
@@ -3117,8 +3120,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_spaceship_Byte_Integer(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_spaceship_Byte_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Integer) : int {",
@@ -3148,8 +3151,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_spaceship_Byte_Long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_spaceship_Byte_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Long) : int {",
@@ -3179,8 +3182,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_spaceship_Byte_Float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_spaceship_Byte_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Float) : int {",
@@ -3210,8 +3213,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_spaceship_Byte_Double(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_spaceship_Byte_Double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Number, right : Double) : int {",
@@ -3241,8 +3244,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_spaceship_Byte_AtomicInteger(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_spaceship_Byte_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicInteger",
 				"class A {",
@@ -3274,8 +3277,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_spaceship_Byte_AtomicLong(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_spaceship_Byte_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicLong",
 				"class A {",
@@ -3307,8 +3310,8 @@ public class CompilerTest extends AbstractSarlTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_spaceship_Byte_Number(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void operator_spaceship_Byte_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import com.google.common.util.concurrent.AtomicDouble",
 				"class A {",

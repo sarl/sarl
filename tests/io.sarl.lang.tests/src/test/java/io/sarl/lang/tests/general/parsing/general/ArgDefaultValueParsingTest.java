@@ -20,9 +20,19 @@
  */
 package io.sarl.lang.tests.general.parsing.general;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static io.sarl.tests.api.tools.TestAssertions.assertNoParameterVarArg;
+import static io.sarl.tests.api.tools.TestAssertions.assertParameterDefaultValues;
+import static io.sarl.tests.api.tools.TestAssertions.assertParameterNames;
+import static io.sarl.tests.api.tools.TestAssertions.assertParameterTypes;
+import static io.sarl.tests.api.tools.TestAssertions.assertParameterVarArg;
+import static io.sarl.tests.api.tools.TestAssertions.assertTypeReferenceIdentifier;
+import static io.sarl.tests.api.tools.TestAssertions.assertTypeReferenceIdentifiers;
+import static io.sarl.tests.api.tools.TestEObjects.file;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static io.sarl.tests.api.tools.TestValidator.validate;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.google.common.base.Strings;
 import org.eclipse.xtext.diagnostics.Diagnostic;
@@ -30,10 +40,8 @@ import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
@@ -51,28 +59,21 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(Suite.class)
-@SuiteClasses({
-	ArgDefaultValueParsingTest.AgentAction.class,
-	ArgDefaultValueParsingTest.BehaviorConstructor.class,
-	ArgDefaultValueParsingTest.CapacityAction.class,
-	ArgDefaultValueParsingTest.SkillAction.class,
-	ArgDefaultValueParsingTest.BehaviorAction.class,
-})
 @SuppressWarnings("all")
 public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
-	public static class AgentAction extends AbstractSarlTest {
+	@Nested
+	public class AgentAction extends AbstractSarlTest {
 
 		@Test
 		public void action_1p() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(arg : int=4) {",
 					"System.out.println(arg)",
 					"}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -93,14 +94,14 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_1p_invalid1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(arg : int=4*) {",
 					"System.out.println(arg)",
 					"}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"no viable alternative at input");
@@ -108,14 +109,14 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_1p_invalid2() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(arg : int*=4) {",
 					"System.out.println(arg)",
 					"}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input '*=' expecting ')'");
@@ -123,14 +124,14 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_1p_returnValue() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(arg : int=4) : boolean {",
 					"System.out.println(arg)",
 					"return true",
 					"}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -151,13 +152,13 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int, arg4 : String) {",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -178,13 +179,13 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int, arg1 : String=\"abc\", arg2 : int, arg3 : int, arg4 : String) {",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -205,13 +206,13 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_2() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"	def myaction(arg0 : int, arg1 : String, arg2 : int=18, arg3 : int, arg4 : String) {",
 					"		System.out.println(arg0)",
 					"	}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -232,13 +233,13 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_3() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int, arg1 : String, arg2 : int, arg3 : int = 34, arg4 : String) {",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -259,13 +260,13 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_4() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int, arg1 : String, arg2 : int, arg3 : int, arg4 : String=\"xyz\") {",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -286,13 +287,13 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0_3() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int=56, arg4 : String) {",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -313,13 +314,13 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0_3_4() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int=56, arg4 : String=\"def\") {",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -340,13 +341,13 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0_2_4() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int=4, arg1 : String, arg2 : int=18, arg3 : int, arg4 : String=\"def\") {",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -367,13 +368,13 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0_1_2_3() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int=4, arg1 : String=\"ghj\", arg2 : int=18, arg3 : int=98, arg4 : String) {",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -394,13 +395,13 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0_1_2_3_4() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int=4, arg1 : String=\"ghj\", arg2 : int=18, arg3 : int=98, arg4 : String=\"klm\") {",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -421,14 +422,14 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_3p_vararg_2() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int, arg1 : int, arg2 : int=45*) {",
 					"System.out.println(arg0)",
 					"}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"no viable alternative at input");
@@ -436,13 +437,13 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_3p_vararg_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"	def myaction(arg0 : int, arg1 : int=45, arg2 : int*) {",
 					"		System.out.println(arg0)",
 					"	}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -467,13 +468,13 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_3p_vararg_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"	def myaction(arg0 : int=45, arg1 : int, arg2 : int*) {",
 					"		System.out.println(arg0)",
 					"	}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -498,13 +499,13 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_3p_vararg_0_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*) {",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -529,7 +530,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void multipleActionDefinitionsInAgent() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"	def myaction(arg0 : int, arg1 : int=42, arg2 : int*) {",
 					"		System.out.println(\"valid\")",
@@ -538,7 +539,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"		System.out.println(\"invalid\")",
 					"	}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -574,18 +575,19 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 	}
 
-	public static class BehaviorConstructor extends AbstractSarlTest {
+	@Nested
+	public class BehaviorConstructor extends AbstractSarlTest {
 
 		@Test
 		public void constructor_1p() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
 					"new(arg : int=4) {",
 					"super(null) // must be never null during runtime",
 					"System.out.println(arg)",
 					"}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -603,14 +605,14 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructor_1p_invalid1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
 					"new(arg : int=4*) {",
 					"System.out.println(arg)",
 					"}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"no viable alternative at input");
@@ -618,14 +620,14 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructor_1p_invalid2() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
 					"new(arg : int*=4) {",
 					"System.out.println(arg)",
 					"}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input '*=' expecting ')'");
@@ -633,14 +635,14 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructor_5p_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
 					"new(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int, arg4 : String) {",
 					"super(null) // must be never null during runtime",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -658,14 +660,14 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructor_5p_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
 					"new(arg0 : int, arg1 : String=\"abc\", arg2 : int, arg3 : int, arg4 : String) {",
 					"super(null) // must be never null during runtime",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -683,14 +685,14 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructor_5p_2() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
 					"new(arg0 : int, arg1 : String, arg2 : int=18, arg3 : int, arg4 : String) {",
 					"super(null) // must be never null during runtime",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -708,14 +710,14 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructor_5p_3() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
 					"new(arg0 : int, arg1 : String, arg2 : int, arg3 : int = 34, arg4 : String) {",
 					"super(null) // must be never null during runtime",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -733,14 +735,14 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructor_5p_4() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
 					"new(arg0 : int, arg1 : String, arg2 : int, arg3 : int, arg4 : String=\"xyz\") {",
 					"super(null) // must be never null during runtime",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -758,14 +760,14 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructor_5p_0_3() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
 					"new(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int=56, arg4 : String) {",
 					"super(null) // must be never null during runtime",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -783,14 +785,14 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructor_5p_0_3_4() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
 					"	new(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int=56, arg4 : String=\"def\") {",
 					"		super(null) // must be never null during runtime",
 					"		System.out.println(arg0)",
 					"	}",
 					"}"
-					), true);
+					));
 
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -814,14 +816,14 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructor_5p_0_2_4() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
 					"	new(arg0 : int=4, arg1 : String, arg2 : int=18, arg3 : int, arg4 : String=\"def\") {",
 					"		super(null) // must be never null during runtime",
 					"		System.out.println(arg0)",
 					"	}",
 					"}"
-					), true);
+					));
 
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -845,14 +847,14 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructor_5p_0_1_2_3() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
 					"new(arg0 : int=4, arg1 : String=\"ghj\", arg2 : int=18, arg3 : int=98, arg4 : String) {",
 					"super(null) // must be never null during runtime",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					), true);
+					));
 
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -871,14 +873,14 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructor_5p_0_1_2_3_4() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
 					"new(arg0 : int=4, arg1 : String=\"ghj\", arg2 : int=18, arg3 : int=98, arg4 : String=\"klm\") {",
 					"super(null) // must be never null during runtime",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					), true);
+					));
 
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -897,7 +899,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructor_3p_vararg_2() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
 					"new(arg0 : int, arg1 : int, arg2 : int=45*) {",
 					"super(null) // must be never null during runtime",
@@ -905,7 +907,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"no viable alternative at input");
@@ -913,14 +915,14 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructor_3p_vararg_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
 					"new(arg0 : int, arg1 : int=45, arg2 : int*) {",
 					"super(null) // must be never null during runtime",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					), true);
+					));
 
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -943,14 +945,14 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructor_3p_vararg_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
 					"new(arg0 : int=45, arg1 : int, arg2 : int*) {",
 					"super(null) // must be never null during runtime",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					), true);
+					));
 
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -973,14 +975,14 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructor_3p_vararg_0_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
 					"	new(arg0 : int=45, arg1 : int=56, arg2 : int*) {",
 					"		super(null) // must be never null during runtime",
 					"		System.out.println(arg0)",
 					"	}",
 					"}"
-					), true);
+					));
 
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -1003,7 +1005,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructorCast_String2int() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.test",
 					"behavior B1 {",
 					"new(arg0 : int=45, arg1 : int=\"S\", arg2 : int) {",
@@ -1011,7 +1013,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					XbasePackage.eINSTANCE.getXStringLiteral(),
 					IssueCodes.INCOMPATIBLE_TYPES,
 					"Type mismatch: cannot convert from String to int");
@@ -1019,14 +1021,14 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructorCast_int2double() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
 					"new(arg0 : int=45, arg1 : double=18, arg2 : int) {",
 					"super(null) // must be never null during runtime",
 					"System.out.println(arg0)",
 					"}",
 					"}"
-					), true);
+					));
 
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -1045,14 +1047,14 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void constructorCast_double2int() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
 					"new(arg0 : int=45, arg1 : int=18.0, arg2 : int) {",
 					"System.out.println(arg0)",
 					"}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					XbasePackage.eINSTANCE.getXNumberLiteral(),
 					IssueCodes.INCOMPATIBLE_TYPES,
 					"Type mismatch: cannot convert from double to int");
@@ -1060,15 +1062,16 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 	}
 
-	public static class CapacityAction extends AbstractSarlTest {
+	@Nested
+	public class CapacityAction extends AbstractSarlTest {
 
 		@Test
 		public void action_1p() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"def myaction(arg : int=4)",
 					"}"
-					), true);
+					));
 
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -1087,12 +1090,12 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_1p_invalid1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"def myaction(arg : int=4*)",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"no viable alternative at input");
@@ -1100,12 +1103,12 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_1p_invalid2() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"def myaction(arg : int*=4)",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input '*=' expecting ')'");
@@ -1113,11 +1116,11 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"def myaction(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int, arg4 : String)",
 					"}"
-					), true);
+					));
 
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -1136,11 +1139,11 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"def myaction(arg0 : int, arg1 : String=\"abc\", arg2 : int, arg3 : int, arg4 : String)",
 					"}"
-					), true);
+					));
 
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -1159,11 +1162,11 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_2() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"def myaction(arg0 : int, arg1 : String, arg2 : int=18, arg3 : int, arg4 : String)",
 					"}"
-					), true);
+					));
 
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -1182,11 +1185,11 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_3() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"def myaction(arg0 : int, arg1 : String, arg2 : int, arg3 : int = 34, arg4 : String)",
 					"}"
-					), true);
+					));
 
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -1205,11 +1208,11 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_4() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"def myaction(arg0 : int, arg1 : String, arg2 : int, arg3 : int, arg4 : String=\"xyz\")",
 					"}"
-					), true);
+					));
 
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -1228,11 +1231,11 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0_3() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"def myaction(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int=56, arg4 : String)",
 					"}"
-					), true);
+					));
 
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -1251,11 +1254,11 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0_3_4() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"def myaction(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int=56, arg4 : String=\"def\")",
 					"}"
-					), true);
+					));
 
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -1274,11 +1277,11 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0_2_4() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"def myaction(arg0 : int=4, arg1 : String, arg2 : int=18, arg3 : int, arg4 : String=\"def\")",
 					"}"
-					), true);
+					));
 
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -1297,11 +1300,11 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0_1_2_3() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"def myaction(arg0 : int=4, arg1 : String=\"ghj\", arg2 : int=18, arg3 : int=98, arg4 : String)",
 					"}"
-					), true);
+					));
 
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -1325,11 +1328,11 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0_1_2_3_4() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"def myaction(arg0 : int=4, arg1 : String=\"ghj\", arg2 : int=18, arg3 : int=98, arg4 : String=\"klm\")",
 					"}"
-					), true);
+					));
 
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -1348,12 +1351,12 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_3p_vararg_2() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"def myaction(arg0 : int, arg1 : int, arg2 : int=45*)",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"no viable alternative at input");
@@ -1361,11 +1364,11 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_3p_vararg_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"def myaction(arg0 : int, arg1 : int=45, arg2 : int*)",
 					"}"
-					), true);
+					));
 
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -1385,11 +1388,11 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_3p_vararg_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"def myaction(arg0 : int=45, arg1 : int, arg2 : int*)",
 					"}"
-					), true);
+					));
 
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -1409,11 +1412,11 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_3p_vararg_0_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*)",
 					"}"
-					), true);
+					));
 
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -1436,11 +1439,12 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 	}
 
-	public static class SkillAction extends AbstractSarlTest {
+	@Nested
+	public class SkillAction extends AbstractSarlTest {
 
 		@Test
 		public void action_1p() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -1448,7 +1452,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def capAction {}",
 					"	def myaction(arg : int=4) {}",
 					"}"
-					), true);
+					));
 
 			assertEquals(2, mas.getXtendTypes().size());
 			//
@@ -1485,7 +1489,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_1p_invalid1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -1494,7 +1498,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def myaction(arg : int=4*) {}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"no viable alternative at input");
@@ -1502,7 +1506,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_1p_invalid2() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -1511,7 +1515,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def myaction(arg : int*=4) {}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"mismatched input '*=' expecting ')'");
@@ -1519,7 +1523,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -1527,7 +1531,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def capAction {}",
 					"	def myaction(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int, arg4 : String) {}",
 					"}"
-					), true);
+					));
 
 			assertEquals(2, mas.getXtendTypes().size());
 			//
@@ -1568,7 +1572,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -1576,7 +1580,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def capAction {}",
 					"	def myaction(arg0 : int, arg1 : String=\"abc\", arg2 : int, arg3 : int, arg4 : String) {}",
 					"}"
-					), true);
+					));
 
 			assertEquals(2, mas.getXtendTypes().size());
 			//
@@ -1617,7 +1621,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_2() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -1625,7 +1629,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def capAction {}",
 					"	def myaction(arg0 : int, arg1 : String, arg2 : int=18, arg3 : int, arg4 : String) {}",
 					"}"
-					), true);
+					));
 
 			assertEquals(2, mas.getXtendTypes().size());
 			//
@@ -1666,7 +1670,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_3() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -1674,7 +1678,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def capAction {}",
 					"	def myaction(arg0 : int, arg1 : String, arg2 : int, arg3 : int = 34, arg4 : String) {}",
 					"}"
-					), true);
+					));
 
 			assertEquals(2, mas.getXtendTypes().size());
 			//
@@ -1715,7 +1719,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_4() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -1723,7 +1727,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def capAction {}",
 					"	def myaction(arg0 : int, arg1 : String, arg2 : int, arg3 : int, arg4 : String=\"xyz\") {}",
 					"}"
-					), true);
+					));
 
 			assertEquals(2, mas.getXtendTypes().size());
 			//
@@ -1764,7 +1768,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0_3() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -1772,7 +1776,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def capAction {}",
 					"	def myaction(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int=56, arg4 : String) {}",
 					"}"
-					), true);
+					));
 
 			assertEquals(2, mas.getXtendTypes().size());
 			//
@@ -1813,7 +1817,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0_3_4() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -1821,7 +1825,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def capAction {}",
 					"	def myaction(arg0 : int=4, arg1 : String, arg2 : int, arg3 : int=56, arg4 : String=\"def\") {}",
 					"}"
-					), true);
+					));
 
 			assertEquals(2, mas.getXtendTypes().size());
 			//
@@ -1862,7 +1866,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0_2_4() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -1870,7 +1874,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def capAction {}",
 					"	def myaction(arg0 : int=4, arg1 : String, arg2 : int=18, arg3 : int, arg4 : String=\"def\") {}",
 					"}"
-					), true);
+					));
 
 			assertEquals(2, mas.getXtendTypes().size());
 			//
@@ -1911,7 +1915,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0_1_2_3() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -1919,7 +1923,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def capAction {}",
 					"	def myaction(arg0 : int=4, arg1 : String=\"ghj\", arg2 : int=18, arg3 : int=98, arg4 : String) {}",
 					"}"
-					), true);
+					));
 
 			assertEquals(2, mas.getXtendTypes().size());
 			//
@@ -1960,7 +1964,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_5p_0_1_2_3_4() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -1968,7 +1972,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def capAction {}",
 					"	def myaction(arg0 : int=4, arg1 : String=\"ghj\", arg2 : int=18, arg3 : int=98, arg4 : String=\"klm\") {}",
 					"}"
-					), true);
+					));
 
 			assertEquals(2, mas.getXtendTypes().size());
 			//
@@ -2009,7 +2013,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_3p_vararg_2() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -2018,7 +2022,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def myaction(arg0 : int, arg1 : int, arg2 : int=45*) {}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					Diagnostic.SYNTAX_DIAGNOSTIC,
 					"no viable alternative at input");
@@ -2026,7 +2030,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_3p_vararg_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -2034,7 +2038,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def capAction {}",
 					"	def myaction(arg0 : int, arg1 : int=45, arg2 : int*) {}",
 					"}"
-					), true);
+					));
 
 			assertEquals(2, mas.getXtendTypes().size());
 			//
@@ -2074,7 +2078,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_3p_vararg_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -2082,7 +2086,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def capAction {}",
 					"	def myaction(arg0 : int=45, arg1 : int, arg2 : int*) {}",
 					"}"
-					), true);
+					));
 
 			assertEquals(2, mas.getXtendTypes().size());
 			//
@@ -2122,7 +2126,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void action_3p_vararg_0_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"	def capAction",
 					"}",
@@ -2130,7 +2134,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def capAction {}",
 					"	def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*) {}",
 					"}"
-					), true);
+					));
 
 			assertEquals(2, mas.getXtendTypes().size());
 			//
@@ -2170,7 +2174,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void overridingCapacitySkill() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"	def myaction(arg0 : int=45, arg1 : int=56, arg2 : int*)",
 					"}",
@@ -2182,7 +2186,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"		System.out.println(\"ok\");",
 					"	}",
 					"}"
-					), true);
+					));
 
 			assertEquals(2, mas.getXtendTypes().size());
 			//
@@ -2225,7 +2229,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void multipleActionDefinitionsInSkill() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {}",
 					"skill S1 implements C1 {",
 					"	def myaction(arg0 : int, arg1 : int=42, arg2 : int*) {",
@@ -2235,7 +2239,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"		System.out.println(\"invalid\")",
 					"	}",
 					"}"
-					), true);
+					));
 
 			assertEquals(2, mas.getXtendTypes().size());
 			//
@@ -2274,7 +2278,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void missedActionImplementation_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"	def myaction1(a : int=4)",
 					"}",
@@ -2285,7 +2289,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def myaction1(x : int) { }",
 					"	def myaction2(y : float, z : boolean) { }",
 					"}"
-					), true);
+					));
 
 			assertEquals(3, mas.getXtendTypes().size());
 			//
@@ -2338,7 +2342,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void missedActionImplementation_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"	def myaction1(a : int=4)",
 					"}",
@@ -2349,7 +2353,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def myaction2(b : float, c : boolean) { }",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
 					"The class S1 must be defined abstract because it does not implement myaction1(int)");
@@ -2357,7 +2361,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void missedActionImplementation_2() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"	def myaction1(a : int=4)",
 					"}",
@@ -2369,7 +2373,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"	def myaction2(y : float, z : boolean) { }",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
 					"The class S1 must be defined abstract because it does not implement myaction1(int)");
@@ -2377,18 +2381,19 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 	}
 
-	public static class BehaviorAction extends AbstractSarlTest {
+	@Nested
+	public class BehaviorAction extends AbstractSarlTest {
 
 		@Test
 		public void actionCast_String2int() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
 					"	def myaction(arg0 : int=45, arg1 : int=\"S\", arg2 : int) {",
 					"		System.out.println(arg0)",
 					"	}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					XbasePackage.eINSTANCE.getXStringLiteral(),
 					IssueCodes.INCOMPATIBLE_TYPES,
 					"Type mismatch: cannot convert from String to int");
@@ -2396,13 +2401,13 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void actionCast_int2double() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
 					"	def myaction(arg0 : int=45, arg1 : double=18, arg2 : int) {",
 					"		System.out.println(arg0)",
 					"	}",
 					"}"
-					), true);
+					));
 
 			assertEquals(1, mas.getXtendTypes().size());
 			//
@@ -2427,14 +2432,14 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void actionCast_double2int() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
 					"	def myaction(arg0 : int=45, arg1 : int=18.0, arg2 : int) {",
 					"		System.out.println(arg0)",
 					"	}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					XbasePackage.eINSTANCE.getXNumberLiteral(),
 					IssueCodes.INCOMPATIBLE_TYPES,
 					"Type mismatch: cannot convert from double to int");
@@ -2442,7 +2447,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 		@Test
 		public void multipleActionDefinitionsInBehavior() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
 					"	def myaction(arg0 : int, arg1 : int=42, arg2 : int*) {",
 					"		System.out.println(\"valid\")",
@@ -2451,7 +2456,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 					"		System.out.println(\"invalid\")",
 					"	}",
 					"}"
-					), true);
+					));
 
 			assertEquals(1, mas.getXtendTypes().size());
 			//

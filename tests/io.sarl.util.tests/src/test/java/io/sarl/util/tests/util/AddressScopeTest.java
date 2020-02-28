@@ -21,11 +21,11 @@
 
 package io.sarl.util.tests.util;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 import io.sarl.lang.core.Address;
@@ -37,8 +37,10 @@ import io.sarl.util.AddressScope;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated since 0.7
  */
 @SuppressWarnings("all")
+@Deprecated
 public class AddressScopeTest extends AbstractSarlTest {
 
 	@Mock
@@ -52,7 +54,7 @@ public class AddressScopeTest extends AbstractSarlTest {
 
 	private AddressScope scope;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.scope = new AddressScope(this.base1, this.base2);
 	}

@@ -20,14 +20,14 @@
  */
 package io.sarl.lang.tests.general.compilation.aop;
 
-import com.google.inject.Inject;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.eclipse.xtext.util.IAcceptor;
 import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.eclipse.xtext.xbase.testing.CompilationTestHelper.Result;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
@@ -40,17 +40,11 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(Suite.class)
-@SuiteClasses({
-	SkillCompilerTest.FieldTest.class,
-	SkillCompilerTest.ActionTest.class,
-	SkillCompilerTest.ReturnTypeTest.class,
-	SkillCompilerTest.TopElementTest.class,
-})
 @SuppressWarnings("all")
 public class SkillCompilerTest {
 
-	public static class FieldTest extends AbstractSarlTest {
+	@Nested
+	public class FieldTest extends AbstractSarlTest {
 
 		@Test
 		public void fieldmodifier_none() throws Exception {
@@ -724,7 +718,8 @@ public class SkillCompilerTest {
 
 	}
 
-	public static class ActionTest extends AbstractSarlTest {
+	@Nested
+	public class ActionTest extends AbstractSarlTest {
 
 		@Test
 		public void actionmodifier_override() throws Exception {
@@ -1418,7 +1413,8 @@ public class SkillCompilerTest {
 
 	}
 
-	public static class ReturnTypeTest extends AbstractSarlTest {
+	@Nested
+	public class ReturnTypeTest extends AbstractSarlTest {
 
 		@Test
 		public void compatibleReturnType_0() throws Exception {
@@ -1824,7 +1820,8 @@ public class SkillCompilerTest {
 
 	}
 
-	public static class TopElementTest extends AbstractSarlTest {
+	@Nested
+	public class TopElementTest extends AbstractSarlTest {
 
 		@Test
 		public void skillmodifier_none() throws Exception {

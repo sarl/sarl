@@ -26,13 +26,21 @@ import io.sarl.sre.boot.configs.subconfigs.ExecutorsConfig
 import io.sarl.sre.services.executor.JreExecutorService
 import io.sarl.sre.services.lifecycle.LifecycleService
 import io.sarl.sre.tests.runtime.services.executor.mocks.CancelTaskAgent2
+import io.sarl.sre.tests.testutils.^extension.SreRunContext
+import java.util.List
 import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.atomic.AtomicLong
 import org.arakhne.afc.bootique.variables.VariableNames
-import org.junit.Before
-import org.junit.Test
-import java.util.List
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+
+import static io.sarl.sre.tests.testutils.Constants.*
+import static io.sarl.tests.api.tools.TestAssertions.*
+
+import static extension org.junit.jupiter.api.Assertions.assertEquals
+import static extension org.junit.jupiter.api.Assertions.assertFalse
 
 /**
  * @author $Author: sgalland$
@@ -40,9 +48,10 @@ import java.util.List
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@DisplayName("run: JreExecutor service test")
 class JreExecutorServiceTest extends AbstractExecutorServiceRunTest {
 
-	@Before
+	@BeforeEach
 	def setUp : void {
 		// Disable the background tasks of the kernel
 		var prop = VariableNames::toPropertyName(ExecutorsConfig::PERIODIC_THREAD_POOL_PURGE_NAME)
@@ -52,7 +61,7 @@ class JreExecutorServiceTest extends AbstractExecutorServiceRunTest {
 	@Test
 	@SuppressWarnings("use_reserved_sarl_annotation")
 	@PrivateAPI(isCallerOnly = true)
-	def cancel_00b : void {
+	def cancel_00b(extension rc : SreRunContext) : void {
 		val nb0 = new AtomicLong(0l)
 		val nb1 = new AtomicLong(0l)
 		val kern = typeof(CancelTaskAgent2).setupTheSreKernel(null, true, true)

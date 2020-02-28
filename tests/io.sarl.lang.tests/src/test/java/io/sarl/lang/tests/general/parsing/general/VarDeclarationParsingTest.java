@@ -20,8 +20,17 @@
  */
 package io.sarl.lang.tests.general.parsing.general;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static io.sarl.tests.api.tools.TestAssertions.assertParameterDefaultValues;
+import static io.sarl.tests.api.tools.TestAssertions.assertParameterNames;
+import static io.sarl.tests.api.tools.TestAssertions.assertParameterTypes;
+import static io.sarl.tests.api.tools.TestAssertions.assertTypeReferenceIdentifier;
+import static io.sarl.tests.api.tools.TestAssertions.assertXExpression;
+import static io.sarl.tests.api.tools.TestEObjects.file;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static io.sarl.tests.api.tools.TestValidator.validate;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.google.common.base.Strings;
 import org.eclipse.xtext.common.types.TypesPackage;
@@ -29,7 +38,7 @@ import org.eclipse.xtext.diagnostics.Diagnostic;
 import org.eclipse.xtext.xbase.XNullLiteral;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XbasePackage;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
@@ -37,6 +46,7 @@ import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.tools.TestValidator.Validator;
 
 /**
  * @author $Author: sgalland$
@@ -49,7 +59,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void variableDeclaration_SarlFieldScope_xtend() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"var List<Integer> list",
@@ -57,7 +67,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 				"var double j = 45",
 			"}"
 		));
-		validate(mas)
+		validate(getValidationHelper(), getInjector(), mas)
 			.assertError(
 				SarlPackage.eINSTANCE.getSarlAgent(),
 				Diagnostic.SYNTAX_DIAGNOSTIC,
@@ -66,7 +76,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void variableDeclaration_localScope_xtend() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 			"agent A1 {",
 				"def myaction {",
 					"var int i",
@@ -78,7 +88,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		Validator validator = validate(mas);
+		Validator validator = validate(getValidationHelper(), getInjector(), mas);
 		validator.assertError(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
 				Diagnostic.LINKING_DIAGNOSTIC,
@@ -91,14 +101,14 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void variableDeclaration_SarlFieldScope() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"var list : List<Integer>",
 				"var i = 45",
 				"var j : double = 45",
 			"}"
-		), true);
+		));
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -126,7 +136,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void variableDeclaration_localScope() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"def myaction {",
@@ -138,7 +148,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 					"System.out.println(k)",
 				"}",
 			"}"
-		), true);
+		));
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -156,7 +166,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void valueDeclaration_SarlFieldScope_xtend() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"val List<Integer> list",
@@ -164,7 +174,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 				"val double j = 45",
 			"}"
 		));
-		validate(mas)
+		validate(getValidationHelper(), getInjector(), mas)
 			.assertError(
 				SarlPackage.eINSTANCE.getSarlAgent(),
 				Diagnostic.SYNTAX_DIAGNOSTIC,
@@ -173,7 +183,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void valueDeclaration_localScope_xtend() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 			"agent A1 {",
 				"def myaction {",
 					"val int i",
@@ -185,7 +195,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		Validator validator = validate(mas);
+		Validator validator = validate(getValidationHelper(), getInjector(), mas);
 		validator.assertError(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
 				Diagnostic.LINKING_DIAGNOSTIC,
@@ -198,14 +208,14 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void valueDeclaration_SarlFieldScope() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"val list : List<Integer> = null",
 				"val i = 45",
 				"val j : double = 45",
 			"}"
-		), true);
+		));
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -233,7 +243,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void valueDeclaration_localScope() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 			"agent A1 {",
 				"def myaction {",
 					"val j = 45",
@@ -242,7 +252,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 					"System.out.println(k)",
 				"}",
 			"}"
-		), true);
+		));
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -260,7 +270,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void forLoop_xtend() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"var list : List<Integer>",
@@ -271,7 +281,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 			XbasePackage.eINSTANCE.getXFeatureCall(),
 			Diagnostic.SYNTAX_DIAGNOSTIC,
 			"missing ';' at 'i'");
@@ -279,7 +289,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void forLoop_inferredType() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"var list : List<Integer>",
@@ -289,7 +299,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 					"}",
 				"}",
 			"}"
-		), true);
+		));
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -312,7 +322,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void forLoop_explicitType() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 			"import java.util.List",
 			"agent A1 {",
 				"var list : List<Integer>",
@@ -322,7 +332,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 					"}",
 				"}",
 			"}"
-		), true);
+		));
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -345,7 +355,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void catch_xtend() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 			"agent A1 {",
 				"def myaction {",
 					"try {",
@@ -357,7 +367,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 			TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 			Diagnostic.SYNTAX_DIAGNOSTIC,
 			"missing ':' at 'e'");
@@ -365,7 +375,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void catch_oneType() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 			"agent A1 {",
 				"def myaction {",
 					"try {",
@@ -376,7 +386,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 					"}",
 				"}",
 			"}"
-		), true);
+		));
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -394,7 +404,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void multicatch_xtend() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 			"agent A1 {",
 				"def myaction {",
 					"try {",
@@ -409,7 +419,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 			TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 			Diagnostic.SYNTAX_DIAGNOSTIC,
 			"missing ':' at 'e'");
@@ -417,7 +427,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void multicatch_oneType() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 			"agent A1 {",
 				"def myaction {",
 					"try {",
@@ -431,7 +441,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 					"}",
 				"}",
 			"}"
-		), true);
+		));
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -449,7 +459,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void closure_xtend() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 			"agent A1 {",
 				"def mycall(a : int, f : (Number,Number) => int) {",
 					"return a + f.apply",
@@ -461,7 +471,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 			XbasePackage.eINSTANCE.getXClosure(),
 			Diagnostic.SYNTAX_DIAGNOSTIC,
 			"mismatched input ',' expecting ']'");
@@ -469,7 +479,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void closure_twoParams() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 			"agent A1 {",
 				"def mycall(a : int, f : (Float,Integer) => float) : float {",
 					"return a + f.apply(5.45f, 6)",
@@ -480,7 +490,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 					"]",
 				"}",
 			"}"
-		), true);
+		));
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));

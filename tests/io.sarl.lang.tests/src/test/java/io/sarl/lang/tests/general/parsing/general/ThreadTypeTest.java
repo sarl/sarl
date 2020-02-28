@@ -20,12 +20,14 @@
  */
 package io.sarl.lang.tests.general.parsing.general;
 
+import static io.sarl.tests.api.tools.TestEObjects.file;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static io.sarl.tests.api.tools.TestValidator.validate;
+
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
@@ -37,18 +39,14 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-@RunWith(Suite.class)
-@SuiteClasses({
-	ThreadTypeTest.SleepFunction.class,
-	ThreadTypeTest.YieldFunction.class,
-})
 public class ThreadTypeTest {
 
-	public static class SleepFunction extends AbstractSarlTest {
+	@Nested
+	public class SleepFunction extends AbstractSarlTest {
 
 		@Test
 		public void inAgent_inFunction_01() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"  def fct(x : int) : int {",
 					"    Thread::sleep(5)",
@@ -56,7 +54,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -64,7 +62,7 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inAgent_inEventHandler_01() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event Evt",
 					"agent A1 {",
 					"  on Evt {",
@@ -72,7 +70,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -80,7 +78,7 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inAgent_inConstructor_01() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"  new (parent : UUID, me : UUID) {",
 					"    super(parent, me)",
@@ -88,7 +86,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -96,7 +94,7 @@ public class ThreadTypeTest {
 
 		@Test
 		public void inAgent_inFunction_02() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
 					"agent A1 {",
 					"  def fct(x : int) : int {",
@@ -105,7 +103,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -113,7 +111,7 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inAgent_inEventHandler_02() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
 					"event Evt",
 					"agent A1 {",
@@ -122,7 +120,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -130,7 +128,7 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inAgent_inConstructor_02() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
 					"agent A1 {",
 					"  new (parent : UUID, me : UUID) {",
@@ -139,7 +137,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -147,7 +145,7 @@ public class ThreadTypeTest {
 
 		@Test
 		public void inAgent_inFunction_03() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static extension java.lang.Thread.*",
 					"agent A1 {",
 					"  def fct(x : int) : int {",
@@ -156,7 +154,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -164,7 +162,7 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inAgent_inEventHandler_03() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static extension java.lang.Thread.*",
 					"event Evt",
 					"agent A1 {",
@@ -173,7 +171,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -181,7 +179,7 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inAgent_inConstructor_03() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static extension java.lang.Thread.*",
 					"agent A1 {",
 					"  new (parent : UUID, me : UUID) {",
@@ -190,7 +188,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -198,7 +196,7 @@ public class ThreadTypeTest {
 
 		@Test
 		public void inBehavior_inFunction_01() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
 					"  def fct(x : int) : int {",
 					"    Thread::sleep(5)",
@@ -206,7 +204,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -214,7 +212,7 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inBehavior_inEventHandler_01() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event Evt",
 					"behavior B1 {",
 					"  on Evt {",
@@ -222,7 +220,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -230,7 +228,7 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inBehavior_inConstructor_01() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
 					"  new (parent : Agent) {",
@@ -239,7 +237,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -247,7 +245,7 @@ public class ThreadTypeTest {
 
 		@Test
 		public void inBehavior_inFunction_02() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
 					"behavior B1 {",
 					"  def fct(x : int) : int {",
@@ -256,7 +254,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -264,7 +262,7 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inBehavior_inEventHandler_02() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
 					"event Evt",
 					"behavior B1 {",
@@ -273,7 +271,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -281,7 +279,7 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inBehavior_inConstructor_02() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
 					"import static java.lang.Thread.*",
 					"behavior B1 {",
@@ -291,7 +289,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -299,7 +297,7 @@ public class ThreadTypeTest {
 
 		@Test
 		public void inBehavior_inFunction_03() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static extension java.lang.Thread.*",
 					"behavior B1 {",
 					"  def fct(x : int) : int {",
@@ -308,7 +306,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -316,7 +314,7 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inBehavior_inEventHandler_03() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static extension java.lang.Thread.*",
 					"event Evt",
 					"behavior B1 {",
@@ -325,7 +323,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -333,7 +331,7 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inBehavior_inConstructor_03() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
 					"import static extension java.lang.Thread.*",
 					"behavior B1 {",
@@ -343,7 +341,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -351,7 +349,7 @@ public class ThreadTypeTest {
 
 		@Test
 		public void inSkill_inFunction_01() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"skill S1 {",
 					"  def fct(x : int) : int {",
 					"    Thread::sleep(5)",
@@ -359,7 +357,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -367,7 +365,7 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inSkill_inEventHandler_01() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event Evt",
 					"skill S1 {",
 					"  on Evt {",
@@ -375,7 +373,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -383,14 +381,14 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inSkill_inConstructor_01() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"skill S1 {",
 					"  new {",
 					"    Thread::sleep(5)",
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -398,7 +396,7 @@ public class ThreadTypeTest {
 
 		@Test
 		public void inSkill_inFunction_02() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
 					"skill S1 {",
 					"  def fct(x : int) : int {",
@@ -407,7 +405,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -415,7 +413,7 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inSkill_inEventHandler_02() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
 					"event Evt",
 					"skill S1 {",
@@ -424,7 +422,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -432,7 +430,7 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inSkill_inConstructor_02() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
 					"skill S1 {",
 					"  new {",
@@ -440,7 +438,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -448,7 +446,7 @@ public class ThreadTypeTest {
 
 		@Test
 		public void inSkill_inFunction_03() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static extension java.lang.Thread.*",
 					"skill S1 {",
 					"  def fct(x : int) : int {",
@@ -457,7 +455,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -465,7 +463,7 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inSkill_inEventHandler_03() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static extension java.lang.Thread.*",
 					"event Evt",
 					"skill S1 {",
@@ -474,7 +472,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -482,7 +480,7 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inSkill_inConstructor_03() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static extension java.lang.Thread.*",
 					"skill S1 {",
 					"  new {",
@@ -490,7 +488,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -498,7 +496,7 @@ public class ThreadTypeTest {
 
 		@Test
 		public void inClass_inFunction_01() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"class C1 {",
 					"  def fct(x : int) : int {",
 					"    Thread::sleep(5)",
@@ -506,7 +504,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -514,14 +512,14 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inClass_inConstructor_01() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"class C1 {",
 					"  new {",
 					"    Thread::sleep(5)",
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -529,7 +527,7 @@ public class ThreadTypeTest {
 
 		@Test
 		public void inClass_inFunction_02() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
 					"class C1 {",
 					"  def fct(x : int) : int {",
@@ -538,7 +536,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -546,7 +544,7 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inClass_inConstructor_02() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
 					"class C1 {",
 					"  new {",
@@ -554,7 +552,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -562,7 +560,7 @@ public class ThreadTypeTest {
 
 		@Test
 		public void inClass_inFunction_03() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static extension java.lang.Thread.*",
 					"class C1 {",
 					"  def fct(x : int) : int {",
@@ -571,7 +569,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
@@ -579,7 +577,7 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inClass_inConstructor_03() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static extension java.lang.Thread.*",
 					"class C1 {",
 					"  new {",
@@ -587,19 +585,20 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"sleep");
 		}
 
 	}
-	
-	public static class YieldFunction extends AbstractSarlTest {
+
+	@Nested
+	public class YieldFunction extends AbstractSarlTest {
 
 		@Test
 		public void inAgent_inFunction_01() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"  def fct(x : int) : int {",
 					"    Thread::yield",
@@ -607,7 +606,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"yield");
@@ -615,7 +614,7 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inAgent_inEventHandler_01() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event Evt",
 					"agent A1 {",
 					"  on Evt {",
@@ -623,7 +622,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"yield");
@@ -631,7 +630,7 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inAgent_inConstructor_01() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"  new (parent : UUID, me : UUID) {",
 					"    super(parent, me)",
@@ -639,7 +638,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"yield");
@@ -647,7 +646,7 @@ public class ThreadTypeTest {
 
 		@Test
 		public void inAgent_inFunction_02() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
 					"agent A1 {",
 					"  def fct(x : int) : int {",
@@ -656,7 +655,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"yield");
@@ -664,7 +663,7 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inAgent_inEventHandler_02() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
 					"event Evt",
 					"agent A1 {",
@@ -673,7 +672,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"yield");
@@ -681,7 +680,7 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inAgent_inConstructor_02() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
 					"agent A1 {",
 					"  new (parent : UUID, me : UUID) {",
@@ -690,7 +689,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"yield");
@@ -698,7 +697,7 @@ public class ThreadTypeTest {
 
 		@Test
 		public void inBehavior_inFunction_01() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
 					"  def fct(x : int) : int {",
 					"    Thread::yield",
@@ -706,7 +705,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"yield");
@@ -714,7 +713,7 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inBehavior_inEventHandler_01() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event Evt",
 					"behavior B1 {",
 					"  on Evt {",
@@ -722,7 +721,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"yield");
@@ -730,7 +729,7 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inBehavior_inConstructor_01() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
 					"  new (parent : Agent) {",
@@ -739,7 +738,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"yield");
@@ -747,7 +746,7 @@ public class ThreadTypeTest {
 
 		@Test
 		public void inBehavior_inFunction_02() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
 					"behavior B1 {",
 					"  def fct(x : int) : int {",
@@ -756,7 +755,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"yield");
@@ -764,7 +763,7 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inBehavior_inEventHandler_02() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
 					"event Evt",
 					"behavior B1 {",
@@ -773,7 +772,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"yield");
@@ -781,7 +780,7 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inBehavior_inConstructor_02() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
 					"import static java.lang.Thread.*",
 					"behavior B1 {",
@@ -791,7 +790,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"yield");
@@ -799,7 +798,7 @@ public class ThreadTypeTest {
 
 		@Test
 		public void inSkill_inFunction_01() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"skill S1 {",
 					"  def fct(x : int) : int {",
 					"    Thread::yield",
@@ -807,7 +806,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"yield");
@@ -815,7 +814,7 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inSkill_inEventHandler_01() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event Evt",
 					"skill S1 {",
 					"  on Evt {",
@@ -823,7 +822,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"yield");
@@ -831,14 +830,14 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inSkill_inConstructor_01() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"skill S1 {",
 					"  new {",
 					"    Thread::yield",
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"yield");
@@ -846,7 +845,7 @@ public class ThreadTypeTest {
 
 		@Test
 		public void inSkill_inFunction_02() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
 					"skill S1 {",
 					"  def fct(x : int) : int {",
@@ -855,7 +854,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"yield");
@@ -863,7 +862,7 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inSkill_inEventHandler_02() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
 					"event Evt",
 					"skill S1 {",
@@ -872,7 +871,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"yield");
@@ -880,7 +879,7 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inSkill_inConstructor_02() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
 					"skill S1 {",
 					"  new {",
@@ -888,7 +887,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"yield");
@@ -896,7 +895,7 @@ public class ThreadTypeTest {
 
 		@Test
 		public void inClass_inFunction_01() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"class C1 {",
 					"  def fct(x : int) : int {",
 					"    Thread::yield",
@@ -904,7 +903,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"yield");
@@ -912,14 +911,14 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inClass_inConstructor_01() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"class C1 {",
 					"  new {",
 					"    Thread::yield",
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"yield");
@@ -927,7 +926,7 @@ public class ThreadTypeTest {
 
 		@Test
 		public void inClass_inFunction_02() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
 					"class C1 {",
 					"  def fct(x : int) : int {",
@@ -936,7 +935,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"yield");
@@ -944,7 +943,7 @@ public class ThreadTypeTest {
 	
 		@Test
 		public void inClass_inConstructor_02() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
 					"class C1 {",
 					"  new {",
@@ -952,7 +951,7 @@ public class ThreadTypeTest {
 					"  }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"yield");

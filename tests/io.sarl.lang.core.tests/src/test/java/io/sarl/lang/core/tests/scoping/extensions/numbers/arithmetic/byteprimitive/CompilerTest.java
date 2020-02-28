@@ -21,13 +21,17 @@
 
 package io.sarl.lang.core.tests.scoping.extensions.numbers.arithmetic.byteprimitive;
 
-import org.junit.Ignore;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
-import io.sarl.tests.api.AbstractMassiveCompilationTest;
-import io.sarl.tests.api.MassiveCompilationSuite.CompilationTest;
-import io.sarl.tests.api.MassiveCompilationSuite.Context;
+import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.globalcompilation.GlobalCompilationSuite;
+import io.sarl.tests.api.globalcompilation.GlobalCompilationTestContribution;
+import io.sarl.tests.api.globalcompilation.ResourceSetGlobalCompilationContext;
 
 /**
  * <p>FIXME: Enable when the speed issue of implicitly imported functions is solved.
@@ -39,11 +43,13 @@ import io.sarl.tests.api.MassiveCompilationSuite.Context;
  * @see "https://github.com/eclipse/xtext-extras/issues/186"
  */
 @SuppressWarnings("all")
-@Ignore
-public class CompilerTest extends AbstractMassiveCompilationTest {
+@DisplayName("Compiling byte operators")
+@GlobalCompilationSuite
+@Disabled("not yet added to the compiler")
+public class CompilerTest extends AbstractSarlTest {
 
-	@CompilationTest
-	public static void operator_minus_byte_Number(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_minus_byte_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import com.google.common.util.concurrent.AtomicDouble",
 				"class A {",
@@ -75,8 +81,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_minus_byte_Long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_minus_byte_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : byte, right : Long) : long {",
@@ -106,8 +112,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_minus_byte_Byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_minus_byte_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : byte, right : Byte) : int {",
@@ -137,8 +143,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_minus_byte_Float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_minus_byte_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : byte, right : Float) : float {",
@@ -168,8 +174,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_minus_byte_Integer(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_minus_byte_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : byte, right : Integer) : int {",
@@ -199,8 +205,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_minus_byte_Short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_minus_byte_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : byte, right : Short) : int {",
@@ -230,8 +236,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_minus_byte_AtomicInteger(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_minus_byte_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicInteger",
 				"class A {",
@@ -263,8 +269,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_minus_byte_AtomicLong(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_minus_byte_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicLong",
 				"class A {",
@@ -296,8 +302,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_plus_byte_Long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_plus_byte_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : byte, right : Long) : long {",
@@ -327,8 +333,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_plus_byte_Byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_plus_byte_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : byte, right : Byte) : int {",
@@ -358,8 +364,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_plus_byte_Float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_plus_byte_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : byte, right : Float) : float {",
@@ -389,8 +395,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_plus_byte_Integer(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_plus_byte_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : byte, right : Integer) : int {",
@@ -420,8 +426,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_plus_byte_Short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_plus_byte_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : byte, right : Short) : int {",
@@ -451,8 +457,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_plus_byte_AtomicInteger(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_plus_byte_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicInteger",
 				"class A {",
@@ -484,8 +490,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_plus_byte_AtomicLong(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_plus_byte_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : byte, right : Long) : long {",
@@ -515,8 +521,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_plus_byte_Number(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_plus_byte_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import com.google.common.util.concurrent.AtomicDouble",
 				"class A {",
@@ -548,8 +554,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_power_byte_Number(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_power_byte_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import com.google.common.util.concurrent.AtomicDouble",
 				"class A {",
@@ -581,8 +587,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_divide_byte_Long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_divide_byte_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : byte, right : Long) : long {",
@@ -612,8 +618,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_divide_byte_Byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_divide_byte_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : byte, right : Byte) : int {",
@@ -643,8 +649,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_divide_byte_Float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_divide_byte_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : byte, right : Float) : float {",
@@ -674,8 +680,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_divide_byte_Integer(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_divide_byte_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : byte, right : Integer) : int {",
@@ -705,8 +711,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_divide_byte_Number(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_divide_byte_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import com.google.common.util.concurrent.AtomicDouble",
 				"class A {",
@@ -738,8 +744,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_divide_byte_Short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_divide_byte_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : byte, right : Short) : int {",
@@ -769,8 +775,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_divide_byte_AtomicInteger(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_divide_byte_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicInteger",
 				"class A {",
@@ -802,8 +808,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_divide_byte_AtomicLong(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_divide_byte_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicLong",
 				"class A {",
@@ -835,8 +841,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_multiply_byte_Long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_multiply_byte_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : byte, right : Long) : long {",
@@ -866,8 +872,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_multiply_byte_Byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_multiply_byte_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : byte, right : Byte) : int {",
@@ -897,8 +903,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_multiply_byte_Float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_multiply_byte_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : byte, right : Float) : float {",
@@ -928,8 +934,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_multiply_byte_Integer(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_multiply_byte_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : byte, right : Integer) : int {",
@@ -959,8 +965,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_multiply_byte_Number(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_multiply_byte_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import com.google.common.util.concurrent.AtomicDouble",
 				"class A {",
@@ -992,8 +998,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_multiply_byte_Short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_multiply_byte_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : byte, right : Short) : int {",
@@ -1023,8 +1029,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_multiply_byte_AtomicInteger(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_multiply_byte_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicInteger",
 				"class A {",
@@ -1056,8 +1062,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_multiply_byte_AtomicLong(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_multiply_byte_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicLong",
 				"class A {",
@@ -1089,8 +1095,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_modulo_byte_Long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_modulo_byte_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : byte, right : Long) : long {",
@@ -1120,8 +1126,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_modulo_byte_Byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_modulo_byte_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : byte, right : Byte) : int {",
@@ -1151,8 +1157,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_modulo_byte_Float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_modulo_byte_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : byte, right : Float) : float {",
@@ -1182,8 +1188,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_modulo_byte_Integer(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_modulo_byte_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : byte, right : Integer) : int {",
@@ -1213,8 +1219,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_modulo_byte_Number(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_modulo_byte_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import com.google.common.util.concurrent.AtomicDouble",
 				"class A {",
@@ -1246,8 +1252,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_modulo_byte_Short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_modulo_byte_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : byte, right : Short) : int {",
@@ -1277,8 +1283,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_modulo_byte_AtomicInteger(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_modulo_byte_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicInteger",
 				"class A {",
@@ -1310,8 +1316,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_modulo_byte_AtomicLong(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void operator_modulo_byte_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicLong",
 				"class A {",

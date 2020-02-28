@@ -23,10 +23,13 @@ package io.sarl.lang.core.tests.scoping.extensions.numbers.cast.bigdecimal;
 
 import static io.sarl.lang.scoping.extensions.numbers.cast.BigDecimalCastExtensions.toAtomicDouble;
 import static io.sarl.lang.scoping.extensions.numbers.cast.BigDecimalCastExtensions.toAtomicInteger;
+import static io.sarl.tests.api.tools.TestAssertions.assertEpsilonEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.math.BigDecimal;
 
-import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.tests.api.AbstractSarlTest;
 
@@ -37,6 +40,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("Calling big decimal cast operator")
 public class CodeTest extends AbstractSarlTest {
 
 	private static BigDecimal left = BigDecimal.valueOf(4);

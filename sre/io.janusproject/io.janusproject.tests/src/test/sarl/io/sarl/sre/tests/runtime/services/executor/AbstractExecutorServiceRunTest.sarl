@@ -30,10 +30,19 @@ import io.sarl.sre.tests.runtime.services.executor.mocks.ExecuteAgent
 import io.sarl.sre.tests.runtime.services.executor.mocks.GetActiveTasksAgent
 import io.sarl.sre.tests.runtime.services.executor.mocks.InAgent
 import io.sarl.sre.tests.runtime.services.executor.mocks.WaiterAgent
-import io.sarl.sre.tests.testutils.AbstractSreRunTest
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.sre.tests.testutils.^extension.SreRunContext
+import io.sarl.sre.tests.testutils.^extension.SreRunExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.List
 import java.util.UUID
-import org.junit.Test
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static io.sarl.sre.tests.testutils.Constants.*
+import static io.sarl.tests.api.tools.TestAssertions.*
+import static org.junit.jupiter.api.Assertions.*
 
 /**
  * @author $Author: sgalland$
@@ -41,10 +50,16 @@ import org.junit.Test
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-abstract class AbstractExecutorServiceRunTest extends AbstractSreRunTest {
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension),
+	typeof(SreRunExtension)
+])
+abstract class AbstractExecutorServiceRunTest {
 
 	@Test
-	def execute {
+	def execute(extension rc : SreRunContext) {
 		typeof(ExecuteAgent).runSre(null, true, STANDARD_TIMEOUT)
 		var all = allResults
 		assertEquals(1, all.size)
@@ -52,7 +67,7 @@ abstract class AbstractExecutorServiceRunTest extends AbstractSreRunTest {
 	}
 
 	@Test
-	def in {
+	def in(extension rc : SreRunContext) {
 		typeof(InAgent).runSre(null, true, STANDARD_TIMEOUT)
 		var all = allResults
 		assertEquals(1, all.size)
@@ -62,7 +77,7 @@ abstract class AbstractExecutorServiceRunTest extends AbstractSreRunTest {
 	/** Every task should be stopped when kill me is invoked
 	 */
 	@Test
-	def every_00 {
+	def every_00(extension rc : SreRunContext) {
 		typeof(EveryAgent).runSre(null, true, STANDARD_TIMEOUT)
 		// Wait two more seconds in order to give a chance to the every task to be run even if the agent is died
 		Thread::sleep(2000)
@@ -76,7 +91,7 @@ abstract class AbstractExecutorServiceRunTest extends AbstractSreRunTest {
 	@Test
 	@SuppressWarnings("use_reserved_sarl_annotation")
 	@PrivateAPI(isCallerOnly = true)
-	def every_01 {
+	def every_01(extension rc : SreRunContext) {
 		val kern = typeof(WaiterAgent).setupTheSreKernel(null, true, true)
 		kern.spawn(typeof(EveryAgent), [], getAgentInitializationParameters)
 		try {
@@ -90,7 +105,7 @@ abstract class AbstractExecutorServiceRunTest extends AbstractSreRunTest {
 	}
 	
 	@Test
-	def atFixedDelay {
+	def atFixedDelay(extension rc : SreRunContext) {
 		typeof(AtFixedDelayAgent).runSre(null, true, STANDARD_TIMEOUT)
 		var all = allResults
 		assertEquals(1, all.size)
@@ -98,7 +113,7 @@ abstract class AbstractExecutorServiceRunTest extends AbstractSreRunTest {
 	}
 
 	@Test
-	def getActiveTasks {
+	def getActiveTasks(extension rc : SreRunContext) {
 		typeof(GetActiveTasksAgent).runSre(null, true, STANDARD_TIMEOUT)
 		var all = allResults
 		assertEquals(3, all.size)
@@ -111,7 +126,7 @@ abstract class AbstractExecutorServiceRunTest extends AbstractSreRunTest {
 	}
 
 	@Test
-	def cancel_00 {
+	def cancel_00(extension rc : SreRunContext) {
 		typeof(CancelTaskAgent).runSre(null, true, STANDARD_TIMEOUT)
 		var all = allResults
 		assertEquals(4, all.size)

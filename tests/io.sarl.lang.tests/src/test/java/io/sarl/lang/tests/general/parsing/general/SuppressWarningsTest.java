@@ -20,8 +20,12 @@
  */
 package io.sarl.lang.tests.general.parsing.general;
 
+import static io.sarl.tests.api.tools.TestEObjects.file;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static io.sarl.tests.api.tools.TestValidator.validate;
+
 import org.eclipse.xtext.xbase.XbasePackage;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
@@ -39,83 +43,83 @@ public class SuppressWarningsTest extends AbstractSarlTest {
 
 	@Test
 	public void noAnnotation() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.lang.tests.test",
 				"capacity C1 {",
-				"}"), false);
-		validate(mas).assertWarning(
+				"}"));
+		validate(getValidationHelper(), getInjector(), mas).assertWarning(
 				SarlPackage.eINSTANCE.getSarlCapacity(),
 				IssueCodes.DISCOURAGED_CAPACITY_DEFINITION);
 	}
 
 	@Test
 	public void annotation_all() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.lang.tests.test",
 				"@SuppressWarnings(\"all\")",
 				"capacity C1 {",
-				"}"), false);
-		validate(mas).assertNoWarnings(
+				"}"));
+		validate(getValidationHelper(), getInjector(), mas).assertNoWarnings(
 				SarlPackage.eINSTANCE.getSarlCapacity(),
 				IssueCodes.DISCOURAGED_CAPACITY_DEFINITION);
 	}
 
 	@Test
 	public void annotation_correctId() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.lang.tests.test",
 				"@SuppressWarnings(\"" + IssueCodes.DISCOURAGED_CAPACITY_DEFINITION + "\")",
 				"capacity C1 {",
-				"}"), false);
-		validate(mas).assertNoWarnings(
+				"}"));
+		validate(getValidationHelper(), getInjector(), mas).assertNoWarnings(
 				SarlPackage.eINSTANCE.getSarlCapacity(),
 				IssueCodes.DISCOURAGED_CAPACITY_DEFINITION);
 	}
 
 	@Test
 	public void annotation_invalidId() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.lang.tests.test",
 				"@SuppressWarnings(\"x.y.z\")",
 				"capacity C1 {",
-				"}"), false);
-		validate(mas).assertWarning(
+				"}"));
+		validate(getValidationHelper(), getInjector(), mas).assertWarning(
 				SarlPackage.eINSTANCE.getSarlCapacity(),
 				IssueCodes.DISCOURAGED_CAPACITY_DEFINITION);
 	}
 
 	@Test
 	public void annotation_all_inlist() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.lang.tests.test",
 				"@SuppressWarnings(\"a\", \"b\", \"c\", \"all\")",
 				"capacity C1 {",
-				"}"), false);
-		validate(mas).assertNoWarnings(
+				"}"));
+		validate(getValidationHelper(), getInjector(), mas).assertNoWarnings(
 				SarlPackage.eINSTANCE.getSarlCapacity(),
 				IssueCodes.DISCOURAGED_CAPACITY_DEFINITION);
 	}
 
 	@Test
 	public void annotation_correctId_inlist() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.lang.tests.test",
 				"@SuppressWarnings(\"a\", \"b\", \"c\", \"" + IssueCodes.DISCOURAGED_CAPACITY_DEFINITION + "\")",
 				"capacity C1 {",
-				"}"), false);
-		validate(mas).assertNoWarnings(
+				"}"));
+		validate(getValidationHelper(), getInjector(), mas).assertNoWarnings(
 				SarlPackage.eINSTANCE.getSarlCapacity(),
 				IssueCodes.DISCOURAGED_CAPACITY_DEFINITION);
 	}
 
 	@Test
 	public void annotation_invalidId_inlist() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.lang.tests.test",
 				"@SuppressWarnings(\"a\", \"b\", \"c\", \"x.y.z\")",
 				"capacity C1 {",
-				"}"), false);
-		validate(mas).assertWarning(
+				"}"));
+		validate(getValidationHelper(), getInjector(), mas).assertWarning(
 				SarlPackage.eINSTANCE.getSarlCapacity(),
 				IssueCodes.DISCOURAGED_CAPACITY_DEFINITION);
 	}
@@ -123,22 +127,22 @@ public class SuppressWarningsTest extends AbstractSarlTest {
 
 	@Test
 	public void expression_noSuppression() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.lang.tests.test",
 				"agent A1 {",
 				"	def mytst : void {",
 				"     if (1==1) {",
 				"     }",
 				"   }",
-				"}"), false);
-		validate(mas).assertWarning(
+				"}"));
+		validate(getValidationHelper(), getInjector(), mas).assertWarning(
 				XbasePackage.eINSTANCE.getXBinaryOperation(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.CONSTANT_BOOLEAN_CONDITION);
 	}
 
 	@Test
 	public void expression_suppression_01() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.lang.tests.test",
 				"agent A1 {",
 				"   @SuppressWarnings(\"constant_condition\")",
@@ -146,15 +150,15 @@ public class SuppressWarningsTest extends AbstractSarlTest {
 				"     if (1==1) {",
 				"     }",
 				"   }",
-				"}"), false);
-		validate(mas).assertNoWarnings(
+				"}"));
+		validate(getValidationHelper(), getInjector(), mas).assertNoWarnings(
 				XbasePackage.eINSTANCE.getXBinaryOperation(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.CONSTANT_BOOLEAN_CONDITION);
 	}
 
 	@Test
 	public void expression_suppression_02() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.lang.tests.test",
 				"@SuppressWarnings(\"constant_condition\")",
 				"agent A1 {",
@@ -162,8 +166,8 @@ public class SuppressWarningsTest extends AbstractSarlTest {
 				"     if (1==1) {",
 				"     }",
 				"   }",
-				"}"), false);
-		validate(mas).assertNoWarnings(
+				"}"));
+		validate(getValidationHelper(), getInjector(), mas).assertNoWarnings(
 				XbasePackage.eINSTANCE.getXBinaryOperation(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.CONSTANT_BOOLEAN_CONDITION);
 	}

@@ -28,12 +28,18 @@ import static io.sarl.lang.scoping.extensions.numbers.comparison.PrimitiveIntCom
 import static io.sarl.lang.scoping.extensions.numbers.comparison.PrimitiveIntComparisonExtensions.operator_lessThan;
 import static io.sarl.lang.scoping.extensions.numbers.comparison.PrimitiveIntComparisonExtensions.operator_notEquals;
 import static io.sarl.lang.scoping.extensions.numbers.comparison.PrimitiveIntComparisonExtensions.operator_spaceship;
+import static io.sarl.tests.api.tools.TestAssertions.assertStrictlyNegative;
+import static io.sarl.tests.api.tools.TestAssertions.assertStrictlyPositive;
+import static io.sarl.tests.api.tools.TestAssertions.assertZero;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.tests.api.AbstractSarlTest;
 
@@ -45,6 +51,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @see "https://github.com/eclipse/xtext-extras/issues/186"
  */
 @SuppressWarnings("all")
+@DisplayName("Calling int comparison operators")
 public class CodeTest extends AbstractSarlTest {
 
 	private static int left = 4;

@@ -22,7 +22,7 @@
 package io.sarl.sre.tests.runtime.boot.boot.mocks
 
 import io.sarl.core.DefaultContextInteractions
-import io.sarl.sre.tests.testutils.TestingAgent
+import io.sarl.sre.tests.testutils.agents.TestingAgent
 
 /**
  * @author $Author: sgalland$

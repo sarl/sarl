@@ -22,8 +22,9 @@
 package io.sarl.sre.tests.runtime.bugs.bug546.mocks
 
 import io.sarl.core.Lifecycle
-import io.sarl.sre.tests.runtime.bugs.bug546.Bug546
-import io.sarl.sre.tests.testutils.TestingAgent
+import io.sarl.sre.tests.testutils.agents.TestingAgent
+
+import static io.sarl.sre.tests.runtime.bugs.bug546.Constants.*
 
 /**
  * @author $Author: sgalland$
@@ -46,7 +47,7 @@ agent InitAndWaitAgent1 extends TestingAgent {
 	on MyEvent {
 		synchronized (this) {
 				nbEvents++
-				if (nbEvents === Bug546::NB_EVENTS) {
+				if (nbEvents === NB_EVENTS) {
 					killMe
 				}
 		}

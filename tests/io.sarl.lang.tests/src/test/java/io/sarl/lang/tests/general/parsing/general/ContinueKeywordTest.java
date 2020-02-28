@@ -20,24 +20,17 @@
  */
 package io.sarl.lang.tests.general.parsing.general;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import io.sarl.lang.sarl.SarlAction;
-import io.sarl.lang.sarl.SarlAgent;
+import static io.sarl.tests.api.tools.TestEObjects.file;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static io.sarl.tests.api.tools.TestValidator.validate;
+
+import org.eclipse.xtext.xbase.XbasePackage;
+import org.junit.jupiter.api.Test;
+
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.validation.IssueCodes;
 import io.sarl.tests.api.AbstractSarlTest;
-
-import org.eclipse.xtext.serializer.ISerializer;
-import org.eclipse.xtext.xbase.XbasePackage;
-import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationsPackage;
-import org.eclipse.xtext.xtype.XtypePackage;
-import org.junit.Test;
-
-import com.google.common.base.Strings;
-import com.google.inject.Inject;
 
 /**
  * @author $Author: sgalland$
@@ -50,14 +43,14 @@ public class ContinueKeywordTest extends AbstractSarlTest {
 
 	@Test
 	public void insideFunction() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
 				"  def fct {",
 				"    continue",
 				"  }",
 				"}"
 				));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlContinueExpression(),
 				IssueCodes.INVALID_USE_OF_LOOP_BREAKING_KEYWORD,
 				"Invalid use of the continue keyword");
@@ -65,7 +58,7 @@ public class ContinueKeywordTest extends AbstractSarlTest {
 
 	@Test
 	public void insideIfThen() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
 				"  def fct(a : int) {",
 				"    if (a == 1) {",
@@ -74,7 +67,7 @@ public class ContinueKeywordTest extends AbstractSarlTest {
 				"  }",
 				"}"
 				));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlContinueExpression(),
 				IssueCodes.INVALID_USE_OF_LOOP_BREAKING_KEYWORD,
 				"Invalid use of the continue keyword");
@@ -82,14 +75,14 @@ public class ContinueKeywordTest extends AbstractSarlTest {
 
 	@Test
 	public void insideField() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
 				"  var field = [",
 				"    continue",
 				"  ]",
 				"}"
 				));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlContinueExpression(),
 				IssueCodes.INVALID_USE_OF_LOOP_BREAKING_KEYWORD,
 				"Invalid use of the continue keyword");
@@ -97,7 +90,7 @@ public class ContinueKeywordTest extends AbstractSarlTest {
 
 	@Test
 	public void insideWhileWithoutBranch() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
 				"  def fct(a : int) {",
 				"    var b = a",
@@ -108,7 +101,7 @@ public class ContinueKeywordTest extends AbstractSarlTest {
 				"  }",
 				"}"
 				));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 				XbasePackage.eINSTANCE.getXPostfixOperation(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.UNREACHABLE_CODE,
 				"Unreachable expression");
@@ -116,7 +109,7 @@ public class ContinueKeywordTest extends AbstractSarlTest {
 
 	@Test
 	public void insideWhileWithBranch() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
 				"  def fct(a : int) {",
 				"    var b = a",
@@ -127,12 +120,12 @@ public class ContinueKeywordTest extends AbstractSarlTest {
 				"  }",
 				"}"
 				));
-		validate(mas).assertNoIssues();
+		validate(getValidationHelper(), getInjector(), mas).assertNoIssues();
 	}
 
 	@Test
 	public void insideDoWhileWithoutBranch() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
 				"  def fct(a : int) {",
 				"    var b = a",
@@ -143,7 +136,7 @@ public class ContinueKeywordTest extends AbstractSarlTest {
 				"  }",
 				"}"
 				));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 				XbasePackage.eINSTANCE.getXPostfixOperation(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.UNREACHABLE_CODE,
 				"Unreachable expression");
@@ -151,7 +144,7 @@ public class ContinueKeywordTest extends AbstractSarlTest {
 
 	@Test
 	public void insideDoWhileWithBranch() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
 				"  def fct(a : int) {",
 				"    var b = a",
@@ -162,12 +155,12 @@ public class ContinueKeywordTest extends AbstractSarlTest {
 				"  }",
 				"}"
 				));
-		validate(mas).assertNoIssues();
+		validate(getValidationHelper(), getInjector(), mas).assertNoIssues();
 	}
 
 	@Test
 	public void insideForWithoutBranch() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
 				"  def fct(a : int) {",
 				"    for(b : 0..a) {",
@@ -176,12 +169,12 @@ public class ContinueKeywordTest extends AbstractSarlTest {
 				"  }",
 				"}"
 				));
-		validate(mas).assertNoIssues();
+		validate(getValidationHelper(), getInjector(), mas).assertNoIssues();
 	}
 
 	@Test
 	public void insideForWithBranch() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
 				"  def fct(a : int) {",
 				"    for(b : 0..a) {",
@@ -190,12 +183,12 @@ public class ContinueKeywordTest extends AbstractSarlTest {
 				"  }",
 				"}"
 				));
-		validate(mas).assertNoIssues();
+		validate(getValidationHelper(), getInjector(), mas).assertNoIssues();
 	}
 
 	@Test
 	public void insideBasicForWithoutBranch() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
 				"  def fct(a : int) {",
 				"    for(var b = 0; b < a; b++) {",
@@ -204,7 +197,7 @@ public class ContinueKeywordTest extends AbstractSarlTest {
 				"  }",
 				"}"
 				));
-		validate(mas).assertWarning(
+		validate(getValidationHelper(), getInjector(), mas).assertWarning(
 				SarlPackage.eINSTANCE.getSarlContinueExpression(),
 				IssueCodes.DISCOURAGED_LOOP_BREAKING_KEYWORD_USE,
 				"Discouraged use of the continue keyword inside a basic loop");
@@ -212,7 +205,7 @@ public class ContinueKeywordTest extends AbstractSarlTest {
 
 	@Test
 	public void insideBasicForWithBranch() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
 				"  def fct(a : int) {",
 				"    for(var b = 0; b < a; b++) {",
@@ -221,7 +214,7 @@ public class ContinueKeywordTest extends AbstractSarlTest {
 				"  }",
 				"}"
 				));
-		validate(mas).assertWarning(
+		validate(getValidationHelper(), getInjector(), mas).assertWarning(
 				SarlPackage.eINSTANCE.getSarlContinueExpression(),
 				IssueCodes.DISCOURAGED_LOOP_BREAKING_KEYWORD_USE,
 				"Discouraged use of the continue keyword inside a basic loop");
@@ -229,7 +222,7 @@ public class ContinueKeywordTest extends AbstractSarlTest {
 
 	@Test
 	public void unreachableCode() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
 				"  def fct(a : int) {",
 				"    for(b : 0..a) {",
@@ -241,7 +234,7 @@ public class ContinueKeywordTest extends AbstractSarlTest {
 				"  }",
 				"}"
 				));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 				XbasePackage.eINSTANCE.getXFeatureCall(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.UNREACHABLE_CODE,
 				"Unreachable expression");

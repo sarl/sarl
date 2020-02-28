@@ -7,9 +7,13 @@
  *******************************************************************************/
 package io.sarl.lang.tests.xtext;
 
+import static io.sarl.tests.api.tools.TestEObjects.file;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static io.sarl.tests.api.tools.TestValidator.validate;
+
 import org.eclipse.xtend.core.validation.IssueCodes;
 import org.eclipse.xtext.xbase.XbasePackage;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
@@ -37,14 +41,14 @@ public class Java8ValidationTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void testInheritedDefaultMethod() throws Exception {
-		SarlScript file = file(multilineString(
+		SarlScript file = file(getParseHelper(), multilineString(
 				"interface A {",
 				"	def foo { }",
 				"}",
 				"class C implements A {",
 				"	def bar { foo }",
 				"}"));
-		validate(file).assertNoErrors();
+		validate(this.getValidationHelper(), getInjector(), file).assertNoErrors();
 	}
 
 	/**
@@ -58,12 +62,12 @@ public class Java8ValidationTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void testRedeclaredMethodFromObject() throws Exception {
-		SarlScript file = file(multilineString(
+		SarlScript file = file(getParseHelper(), multilineString(
 				"interface A {",
 				"	override toString : String",
 				"}",
 				"class C implements A {}"));
-		validate(file).assertNoErrors();
+		validate(getValidationHelper(), getInjector(), file).assertNoErrors();
 	}
 
 	/**
@@ -80,7 +84,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void testRedeclaredMethodFromCustomClass() throws Exception {
-		SarlScript file = file(multilineString(
+		SarlScript file = file(getParseHelper(), multilineString(
 				"interface A {",
 				"	def m",
 				"}",
@@ -89,7 +93,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"}",
 				"class C extends B {}",
 				"class D extends C implements A {}"));
-		validate(file).assertNoErrors();
+		validate(getValidationHelper(), getInjector(), file).assertNoErrors();
 	}
 
 	/**
@@ -106,7 +110,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 
 	@Test
 	public void testConflictingDefaultMethods01() throws Exception {
-		SarlScript file = file(multilineString(
+		SarlScript file = file(getParseHelper(), multilineString(
 				"interface A {",
 				"	def foo { }",
 				"}",
@@ -114,7 +118,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"	def foo { }",
 				"}",
 				"class C implements A, B { }"));
-		validate(file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
 				"The type C inherits multiple implementations of the method foo() from A and B.");
 	}
 
@@ -131,7 +135,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void testConflictingDefaultMethods02() throws Exception {
-		SarlScript file = file(multilineString(
+		SarlScript file = file(getParseHelper(), multilineString(
 				"interface A {",
 				"	def foo { }",
 				"}",
@@ -139,7 +143,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"	def foo { }",
 				"}",
 				"interface C extends A, B { }"));
-		validate(file).assertError(SarlPackage.eINSTANCE.getSarlInterface(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlInterface(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
 				"The type C inherits multiple implementations of the method foo() from A and B.");
 	}
 
@@ -156,7 +160,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void testConflictingDefaultMethods03() throws Exception {
-		SarlScript file = file(multilineString(
+		SarlScript file = file(getParseHelper(), multilineString(
 				"interface A {",
 				"	def foo { }",
 				"}",
@@ -164,7 +168,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"	def foo",
 				"}",
 				"class C implements A, B { }"));
-		validate(file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
 				"The non-abstract method foo() inherited from A conflicts with the method foo() inherited from B.");
 	}
 
@@ -181,7 +185,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void testConflictingDefaultMethods04() throws Exception {
-		SarlScript file = file(multilineString(
+		SarlScript file = file(getParseHelper(), multilineString(
 				"interface A {",
 				"	def foo { }",
 				"}",
@@ -189,7 +193,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"	def foo",
 				"}",
 				"interface C extends A, B { }"));
-		validate(file).assertError(SarlPackage.eINSTANCE.getSarlInterface(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlInterface(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
 				"The non-abstract method foo() inherited from A conflicts with the method foo() inherited from B.");
 	}
 
@@ -212,7 +216,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void testConflictingDefaultMethods05() throws Exception {
-		SarlScript file = file(multilineString(
+		SarlScript file = file(getParseHelper(), multilineString(
 				"interface A {",
 				"	def foo(list : java.util.List<String>) : int { 0 }",
 				"}",
@@ -220,7 +224,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"	def foo(list : java.util.List<Class<?>>) : double { 0 }",
 				"}",
 				"class C implements A, B { }"));
-		validate(file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
 				"The type C inherits multiple implementations of the method foo(List<String>) from A and B.");
 	}
 	
@@ -243,7 +247,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void testConflictingDefaultMethods06() throws Exception {
-		SarlScript file = file(multilineString(
+		SarlScript file = file(getParseHelper(), multilineString(
 				"interface A {",
 				"	def foo(list : java.util.List<String>) : int { 0 }",
 				"}",
@@ -251,7 +255,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"	def foo(list : java.util.List<Class<?>>) : double { 0 }",
 				"}",
 				"interface C extends A, B { }"));
-		validate(file).assertError(SarlPackage.eINSTANCE.getSarlInterface(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlInterface(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
 				"The type C inherits multiple implementations of the method foo(List<String>) from A and B.");
 	}
 
@@ -274,7 +278,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void testConflictingDefaultMethods07() throws Exception {
-		SarlScript file = file(multilineString(
+		SarlScript file = file(getParseHelper(), multilineString(
 				"interface A {",
 				"	def foo { }",
 				"}",
@@ -288,7 +292,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"	override foo { }",
 				"}",
 				"class E implements A, B, C, D { }"));
-		validate(file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
 				"The type E inherits multiple implementations of the method foo() from C and D.");
 	}
 
@@ -311,7 +315,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void testConflictingDefaultMethods08() throws Exception {
-		SarlScript file = file(multilineString(
+		SarlScript file = file(getParseHelper(), multilineString(
 				"interface A {",
 				"	def foo { }",
 				"}",
@@ -325,7 +329,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"	override foo { }",
 				"}",
 				"class E implements A, B, D, C { }"));
-		validate(file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
 				"The type E inherits multiple implementations of the method foo() from D and C.");
 	}
 
@@ -348,7 +352,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void testConflictingDefaultMethods09() throws Exception {
-		SarlScript file = file(multilineString(
+		SarlScript file = file(getParseHelper(), multilineString(
 				"interface A {",
 				"	def foo { }",
 				"}",
@@ -362,7 +366,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"	override foo { }",
 				"}",
 				"class E implements A, B, D, C { }"));
-		validate(file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
 				"The non-abstract method foo() inherited from D conflicts with the method foo() inherited from C.");
 	}
 
@@ -385,7 +389,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void testConflictingDefaultMethods10() throws Exception {
-		SarlScript file = file(multilineString(
+		SarlScript file = file(getParseHelper(), multilineString(
 				"interface A {",
 				"	def foo { }",
 				"}",
@@ -399,7 +403,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"	override foo { }",
 				"}",
 				"class E implements B, C, A, D { }"));
-		validate(file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
 				"The non-abstract method foo() inherited from D conflicts with the method foo() inherited from C.");
 	}
 
@@ -418,7 +422,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void testConflictingDefaultMethods11() throws Exception {
-		SarlScript file = file(multilineString(
+		SarlScript file = file(getParseHelper(), multilineString(
 				"interface I {",
 				"	def m {}",
 				"}",
@@ -427,7 +431,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"}",
 				"interface J1 extends J {}",
 				"class E implements I, J1 {}"));
-		validate(file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
 				"The non-abstract method m() inherited from I conflicts with the method m() inherited from J.");
 	}
 
@@ -446,7 +450,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void testMissingImplementation_01() throws Exception {
-		SarlScript file = file(multilineString(
+		SarlScript file = file(getParseHelper(), multilineString(
 				"abstract class A {",
 				"	def m",
 				"}",
@@ -455,7 +459,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"	def m {}",
 				"}",
 				"class C extends B implements I {}"));
-		validate(file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CLASS_MUST_BE_ABSTRACT,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CLASS_MUST_BE_ABSTRACT,
 				"The class C must be defined abstract because it does not implement m()");
 	}
 
@@ -472,7 +476,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void testMissingImplementation_02() throws Exception {
-		SarlScript file = file(multilineString(
+		SarlScript file = file(getParseHelper(), multilineString(
 				"interface I {",
 				"	def m {}",
 				"}",
@@ -480,7 +484,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"	override m",
 				"}",
 				"class C implements J {}"));
-		validate(file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CLASS_MUST_BE_ABSTRACT,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CLASS_MUST_BE_ABSTRACT,
 				"The class C must be defined abstract because it does not implement m()");
 	}
 
@@ -500,7 +504,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void testMissingImplementation_03() throws Exception {
-		SarlScript file = file(multilineString(
+		SarlScript file = file(getParseHelper(), multilineString(
 				"interface I {",
 				"	def m {}",
 				"}",
@@ -511,7 +515,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"}",
 				"interface L extends J {}",
 				"class C implements I, K, L {}"));
-		validate(file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CLASS_MUST_BE_ABSTRACT,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CLASS_MUST_BE_ABSTRACT,
 				"The class C must be defined abstract because it does not implement m()");
 	}
 
@@ -530,7 +534,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void testResolvedConflict01() throws Exception {
-		SarlScript file = file(multilineString(
+		SarlScript file = file(getParseHelper(), multilineString(
 				"interface A {",
 				"	def foo { }",
 				"}",
@@ -540,7 +544,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"class C implements A, B {",
 				"	override foo { }",
 				"}"));
-		validate(file).assertNoErrors();
+		validate(getValidationHelper(), getInjector(), file).assertNoErrors();
 	}
 
 	/**
@@ -559,7 +563,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void testResolvedConflict02() throws Exception {
-		SarlScript file = file(multilineString(
+		SarlScript file = file(getParseHelper(), multilineString(
 				"interface A {",
 				"	def foo { }",
 				"}",
@@ -570,7 +574,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"	override foo { }",
 				"}",
 				"class D implements /*A, B,*/ C { }"));
-		validate(file).assertNoErrors();
+		validate(getValidationHelper(), getInjector(), file).assertNoErrors();
 	}
 
 	/**
@@ -589,7 +593,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void testResolvedConflict03() throws Exception {
-		SarlScript file = file(multilineString(
+		SarlScript file = file(getParseHelper(), multilineString(
 				"interface A {",
 				"	def foo { }",
 				"}",
@@ -600,7 +604,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"	override foo { }",
 				"}",
 				"class D implements /*A,*/ C/*, B*/ { }"));
-		validate(file).assertNoErrors();
+		validate(getValidationHelper(), getInjector(), file).assertNoErrors();
 	}
 
 	/**
@@ -619,7 +623,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void testResolvedConflict04() throws Exception {
-		SarlScript file = file(multilineString(
+		SarlScript file = file(getParseHelper(), multilineString(
 				"interface A {",
 				"	def foo { }",
 				"}",
@@ -630,7 +634,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"	override foo { }",
 				"}",
 				"class D implements C/*, A, B*/ { }"));
-		validate(file).assertNoErrors();
+		validate(getValidationHelper(), getInjector(), file).assertNoErrors();
 	}
 
 	/**
@@ -650,7 +654,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void testResolvedConflict05() throws Exception {
-		SarlScript file = file(multilineString(
+		SarlScript file = file(getParseHelper(), multilineString(
 				"interface I {",
 				"	def m {}",
 				"}",
@@ -661,7 +665,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"}",
 				"interface L extends J {}",
 				"class C implements /*I, J,*/ L {}"));
-		validate(file).assertNoErrors();
+		validate(getValidationHelper(), getInjector(), file).assertNoErrors();
 	}
 
 	/**
@@ -679,7 +683,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void testInheritedConflict01() throws Exception {
-		SarlScript file = file(multilineString(
+		SarlScript file = file(getParseHelper(), multilineString(
 				"interface A {",
 				"	def foo { }",
 				"}",
@@ -688,7 +692,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"}",
 				"class C implements A, B { }",
 				"class D extends C { }"));
-		validate(file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlClass(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
 				"");
 	}
 
@@ -707,7 +711,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void testInheritedConflict02() throws Exception {
-		SarlScript file = file(multilineString(
+		SarlScript file = file(getParseHelper(), multilineString(
 				"interface A {",
 				"	def foo { }",
 				"}",
@@ -716,7 +720,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"}",
 				"interface C extends A, B { }",
 				"interface D extends C { }"));
-		validate(file).assertError(SarlPackage.eINSTANCE.getSarlInterface(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
+		validate(getValidationHelper(), getInjector(), file).assertError(SarlPackage.eINSTANCE.getSarlInterface(), IssueCodes.CONFLICTING_DEFAULT_METHODS,
 				"");
 	}
 
@@ -734,7 +738,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void testAbstractMethodCall() throws Exception {
-		SarlScript file = file(multilineString(
+		SarlScript file = file(getParseHelper(), multilineString(
 				"interface A {",
 				"	def foo",
 				"}",
@@ -743,7 +747,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"		A.super.foo",
 				"	}",
 				"}"));
-		validate(file).assertError(XbasePackage.eINSTANCE.getXMemberFeatureCall(),
+		validate(getValidationHelper(), getInjector(), file).assertError(XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.ABSTRACT_METHOD_INVOCATION,
 				"Cannot directly invoke the abstract method foo() of the type A");
 	}
@@ -759,13 +763,13 @@ public class Java8ValidationTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void testInterfaceSuperCall() throws Exception {
-		SarlScript file = file(multilineString(
+		SarlScript file = file(getParseHelper(), multilineString(
 				"class Foo {",
 				"	def foo {",
 				"		java.util.List.super.clear",
 				"	}",
 				"}"));
-		validate(file).assertError(XbasePackage.eINSTANCE.getXMemberFeatureCall(),
+		validate(getValidationHelper(), getInjector(), file).assertError(XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.NO_ENCLOSING_INSTANCE_AVAILABLE,
 				"The enclosing type does not extend or implement the interface List");
 	}
@@ -792,7 +796,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 	*/
 	@Test
 	public void testResolvedByAbstractType01() throws Exception {
-		SarlScript file = file(multilineString(
+		SarlScript file = file(getParseHelper(), multilineString(
 				"import java.util.Iterator",
 				"import java.util.Set",
 				"import java.util.AbstractCollection",
@@ -804,7 +808,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"    0",
 				"  }",
 				"}"));
-		validate(file).assertNoErrors();
+		validate(getValidationHelper(), getInjector(), file).assertNoErrors();
 	}
 
 	/**
@@ -834,7 +838,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 	*/
 	@Test
 	public void testResolvedByAbstractType02() throws Exception {
-		SarlScript file = file(multilineString(
+		SarlScript file = file(getParseHelper(), multilineString(
 				"import java.util.Iterator",
 				"import java.util.Set",
 				"import java.util.AbstractCollection",
@@ -851,7 +855,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"    0",
 				"  }",
 				"}"));
-		validate(file).assertNoErrors();
+		validate(getValidationHelper(), getInjector(), file).assertNoErrors();
 	}
 
 	/**
@@ -879,7 +883,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 	*/
 	@Test
 	public void testResolvedByAbstractType03() throws Exception {
-		SarlScript file = file(multilineString(
+		SarlScript file = file(getParseHelper(), multilineString(
 				"import java.util.Iterator",
 				"import java.util.Set",
 				"import java.util.AbstractCollection",
@@ -893,7 +897,7 @@ public class Java8ValidationTest extends AbstractSarlTest {
 				"    0",
 				"  }",
 				"}"));
-		validate(file).assertNoErrors();
+		validate(getValidationHelper(), getInjector(), file).assertNoErrors();
 	}
 
 

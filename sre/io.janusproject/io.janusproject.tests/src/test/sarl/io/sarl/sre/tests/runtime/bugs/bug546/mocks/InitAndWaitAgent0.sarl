@@ -24,11 +24,11 @@ package io.sarl.sre.tests.runtime.bugs.bug546.mocks
 import io.sarl.core.AgentKilled
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Lifecycle
-import io.sarl.sre.tests.testutils.TestingAgent
-
-import static io.sarl.sre.tests.runtime.bugs.bug546.mocks.InitAndWaitAgent0.State.*
-import static io.sarl.sre.tests.runtime.bugs.bug546.Bug546.*
+import io.sarl.sre.tests.testutils.agents.TestingAgent
 import java.util.concurrent.atomic.AtomicInteger
+
+import static io.sarl.sre.tests.runtime.bugs.bug546.Constants.*
+import static io.sarl.sre.tests.runtime.bugs.bug546.mocks.InitAndWaitAgent0.State.*
 
 /**
  * @author $Author: sgalland$

@@ -25,9 +25,18 @@ import io.sarl.lang.core.AgentContext
 import io.sarl.sre.boot.configs.subconfigs.BootConfig
 import io.sarl.sre.tests.runtime.services.context.mocks.GetContextTestAgent
 import io.sarl.sre.tests.runtime.services.context.mocks.GetRootContextTestAgent
-import io.sarl.sre.tests.testutils.AbstractSreRunTest
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.sre.tests.testutils.^extension.SreRunContext
+import io.sarl.sre.tests.testutils.^extension.SreRunExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
-import org.junit.Test
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static io.sarl.sre.tests.testutils.Constants.*
+import static io.sarl.tests.api.tools.TestAssertions.*
+import static org.junit.jupiter.api.Assertions.*
 
 /**
  * @author $Author: sgalland$
@@ -35,10 +44,16 @@ import org.junit.Test
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-abstract class AbstractContextServiceTest extends AbstractSreRunTest {
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension),
+	typeof(SreRunExtension)
+])
+abstract class AbstractContextServiceTest {
 
 	@Test
-	def getRootContext : void {
+	def getRootContext(extension rc : SreRunContext) : void {
 		typeof(GetRootContextTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		var results = getResults
 		assertEquals(1, results.size)
@@ -51,7 +66,7 @@ abstract class AbstractContextServiceTest extends AbstractSreRunTest {
 	}
 
 	@Test
-	def getContext : void {
+	def getContext(extension rc : SreRunContext) : void {
 		typeof(GetContextTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		var results = getResults
 		assertEquals(2, results.size)

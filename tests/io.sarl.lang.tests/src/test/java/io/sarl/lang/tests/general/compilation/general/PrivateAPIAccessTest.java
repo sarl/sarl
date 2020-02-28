@@ -20,18 +20,14 @@
  */
 package io.sarl.lang.tests.general.compilation.general;
 
-import com.google.inject.Inject;
-import org.eclipse.xtext.xbase.XbasePackage;
-import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
-import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
-
-import org.eclipse.xtext.xbase.validation.IssueCodes;
-import org.eclipse.xtext.xtype.XtypePackage;
-import org.junit.Test;
 
 
 /**

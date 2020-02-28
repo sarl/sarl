@@ -20,16 +20,23 @@
  */
 package io.sarl.lang.tests.general.parsing.general;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static io.sarl.tests.api.tools.TestAssertions.assertParameterDefaultValues;
+import static io.sarl.tests.api.tools.TestAssertions.assertParameterNames;
+import static io.sarl.tests.api.tools.TestAssertions.assertParameterTypes;
+import static io.sarl.tests.api.tools.TestAssertions.assertParameterVarArg;
+import static io.sarl.tests.api.tools.TestAssertions.assertTypeReferenceIdentifier;
+import static io.sarl.tests.api.tools.TestAssertions.assertTypeReferenceIdentifiers;
+import static io.sarl.tests.api.tools.TestEObjects.file;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static io.sarl.tests.api.tools.TestValidator.validate;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.google.common.base.Strings;
 import org.eclipse.xtend.core.validation.IssueCodes;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
@@ -48,28 +55,21 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(Suite.class)
-@SuiteClasses({
-	VarArgsParsingTest.AgentTest.class,
-	VarArgsParsingTest.BehaviorTest.class,
-	VarArgsParsingTest.SkillTest.class,
-	VarArgsParsingTest.CapacityTest.class,
-	VarArgsParsingTest.EventTest.class,
-})
 @SuppressWarnings("all")
 public class VarArgsParsingTest {
 
-	public static class AgentTest extends AbstractSarlTest {
+	@Nested
+	public class AgentTest extends AbstractSarlTest {
 
 		@Test
 		public void action_singleParam() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"	def myaction(arg : int*) {",
 					"		System.out.println(arg)",
 					"	}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -90,13 +90,13 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void inAgentAction() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"	def myaction(arg1 : char, arg2 : boolean, arg3 : int*) {",
 					"		System.out.println(arg3)",
 					"	}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -118,14 +118,14 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void action_invalid() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"	def myaction(arg1 : char, arg2 : boolean*, arg3 : int) {",
 					"		System.out.println(arg3)",
 					"	}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlFormalParameter(),
 					IssueCodes.INVALID_USE_OF_VAR_ARG,
 					"A vararg must be the last parameter");
@@ -133,17 +133,18 @@ public class VarArgsParsingTest {
 
 	}
 
-	public static class BehaviorTest extends AbstractSarlTest {
+	@Nested
+	public class BehaviorTest extends AbstractSarlTest {
 
 		@Test
 		public void action_singleParam() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
 					"	def myaction(arg : int*) {",
 					"		System.out.println(arg)",
 					"	}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -165,13 +166,13 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void action() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
 					"	def myaction(arg1 : char, arg2 : boolean, arg3 : int*) {",
 					"		System.out.println(arg3)",
 					"	}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -193,14 +194,14 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void action_invalid() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
 					"	def myaction(arg1 : char, arg2 : boolean*, arg3 : int) {",
 					"		System.out.println(arg3)",
 					"	}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlFormalParameter(),
 					IssueCodes.INVALID_USE_OF_VAR_ARG,
 					"A vararg must be the last parameter");
@@ -208,14 +209,14 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void constructor_singleParam() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
 					"	new(arg : int*) {",
 					"		super(null) // must be never null during runtime",
 					"		System.out.println(arg)",
 					"	}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -234,14 +235,14 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void constructor() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
 					"	new (arg1 : char, arg2 : boolean, arg3 : int*) {",
 					"		super(null) // must be never null during runtime",
 					"		System.out.println(arg3)",
 					"	}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -260,7 +261,7 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void constructor_invalid() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
 					"	new (arg1 : char, arg2 : boolean*, arg3 : int) {",
 					"		super(null) // must be never null during runtime",
@@ -268,7 +269,7 @@ public class VarArgsParsingTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlFormalParameter(),
 					IssueCodes.INVALID_USE_OF_VAR_ARG,
 					"A vararg must be the last parameter");
@@ -276,7 +277,7 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void multipleActionDefinitionsInBehavior_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
 					"	def myaction(arg0 : int, arg1 : int*) {",
 					"		System.out.println(\"invalid\")",
@@ -285,7 +286,7 @@ public class VarArgsParsingTest {
 					"		System.out.println(\"invalid\")",
 					"	}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -313,7 +314,7 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void multipleActionDefinitionsInBehavior_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
 					"	def myaction(arg0 : int, arg1 : int*) {",
 					"		System.out.println(\"invalid\")",
@@ -322,7 +323,7 @@ public class VarArgsParsingTest {
 					"		System.out.println(\"invalid\")",
 					"	}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -352,7 +353,7 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void multipleActionDefinitionsInBehavior_2() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
 					"	def myaction(arg0 : int, arg1 : int*) {",
 					"		System.out.println(\"invalid\")",
@@ -362,7 +363,7 @@ public class VarArgsParsingTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					IssueCodes.DUPLICATE_METHOD,
 					"Duplicate method myaction(int, int[]) in type B1");
@@ -370,18 +371,19 @@ public class VarArgsParsingTest {
 
 	}
 
-	public static class SkillTest extends AbstractSarlTest {
+	@Nested
+	public class SkillTest extends AbstractSarlTest {
 
 		@Test
 		public void action_singleParam() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {}",
 					"skill S1 implements C1 {",
 					"	def myaction(arg : int*) {",
 					"		System.out.println(arg)",
 					"	}",
 					"}"
-					), true);
+					));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -409,14 +411,14 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void action() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {}",
 					"skill S1 implements C1 {",
 					"	def myaction(arg1 : char, arg2 : boolean, arg3 : int*) {",
 					"		System.out.println(arg3)",
 					"	}",
 					"}"
-					), true);
+					));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -444,7 +446,7 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void action_invalid() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {}",
 					"skill S1 implements C1 {",
 					"	def myaction(arg1 : char, arg2 : boolean*, arg3 : int) {",
@@ -452,7 +454,7 @@ public class VarArgsParsingTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlFormalParameter(),
 					IssueCodes.INVALID_USE_OF_VAR_ARG,
 					"A vararg must be the last parameter");
@@ -460,14 +462,14 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void constructor_singleParam() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {}",
 					"skill S1 implements C1 {",
 					"	new(arg : int*) {",
 					"		System.out.println(arg)",
 					"	}",
 					"}"
-					), true);
+					));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -492,14 +494,14 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void constructor() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {}",
 					"skill S1 implements C1 {",
 					"	new (arg1 : char, arg2 : boolean, arg3 : int*) {",
 					"		System.out.println(arg3)",
 					"	}",
 					"}"
-					), true);
+					));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -524,7 +526,7 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void constructor_invalid() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {}",
 					"skill S1 implements C1 {",
 					"	new (arg1 : char, arg2 : boolean*, arg3 : int) {",
@@ -532,7 +534,7 @@ public class VarArgsParsingTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlFormalParameter(),
 					IssueCodes.INVALID_USE_OF_VAR_ARG,
 					"A vararg must be the last parameter");
@@ -540,15 +542,16 @@ public class VarArgsParsingTest {
 
 	}
 
-	public static class CapacityTest extends AbstractSarlTest {
+	@Nested
+	public class CapacityTest extends AbstractSarlTest {
 
 		@Test
 		public void action_singleParam() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"	def myaction(arg : int*)",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -570,11 +573,11 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void action() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"	def myaction(arg1 : char, arg2 : boolean, arg3 : int*)",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -596,12 +599,12 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void action_invalid() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"	def myaction(arg1 : char, arg2 : boolean*, arg3 : int)",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlFormalParameter(),
 					IssueCodes.INVALID_USE_OF_VAR_ARG,
 					"A vararg must be the last parameter");
@@ -609,17 +612,18 @@ public class VarArgsParsingTest {
 
 	}
 
-	public static class EventTest extends AbstractSarlTest {
+	@Nested
+	public class EventTest extends AbstractSarlTest {
 
 		@Test
 		public void constructor_singleParam() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"event E1 {",
 					"	new(arg : int*) {",
 					"		System.out.println(arg)",
 					"	}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -638,13 +642,13 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void constructor() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"event E1 {",
 					"	new (arg1 : char, arg2 : boolean, arg3 : int*) {",
 					"		System.out.println(arg3)",
 					"	}",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -663,14 +667,14 @@ public class VarArgsParsingTest {
 
 		@Test
 		public void constructor_invalid() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 {",
 					"	new (arg1 : char, arg2 : boolean*, arg3 : int) {",
 					"		System.out.println(arg3)",
 					"	}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlFormalParameter(),
 					IssueCodes.INVALID_USE_OF_VAR_ARG,
 					"A vararg must be the last parameter");

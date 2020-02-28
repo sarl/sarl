@@ -20,19 +20,23 @@
  */
 package io.sarl.lang.tests.general.compilation.general.castoverriding;
 
+import static io.sarl.tests.api.tools.TestEObjects.file;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static io.sarl.tests.api.tools.TestValidator.validate;
+
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.common.types.TypesPackage;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.validation.IssueCodes;
 import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.MassiveCompilationSuite;
-import io.sarl.tests.api.MassiveCompilationSuite.CompilationTest;
-import io.sarl.tests.api.MassiveCompilationSuite.Context;
+import io.sarl.tests.api.globalcompilation.GlobalCompilationSuite;
+import io.sarl.tests.api.globalcompilation.GlobalCompilationTestContribution;
+import io.sarl.tests.api.globalcompilation.ResourceSetGlobalCompilationContext;
+import io.sarl.tests.api.tools.TestValidator.Validator;
 
 
 /**
@@ -42,7 +46,7 @@ import io.sarl.tests.api.MassiveCompilationSuite.Context;
  * @mavenartifactid $ArtifactId$
  * @since 0.9
  */
-@RunWith(MassiveCompilationSuite.class)
+@GlobalCompilationSuite
 @SuppressWarnings("all")
 public class A0NoIngerithanceTest extends AbstractSarlTest {
 
@@ -61,8 +65,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 
 	@Test
 	public void parseNoFunction() throws Exception {
-		SarlScript mas = file(NO_FUNCTION_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), NO_FUNCTION_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertError(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
@@ -91,8 +95,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 
 	@Test
 	public void parseInteger() throws Exception {
-		SarlScript mas = file(INTEGER_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), INTEGER_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertError(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
@@ -121,8 +125,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 
 	@Test
 	public void parseBoolean() throws Exception {
-		SarlScript mas = file(BOOLEAN_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), BOOLEAN_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertError(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
@@ -151,8 +155,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 
 	@Test
 	public void parseString() throws Exception {
-		SarlScript mas = file(STRING_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), STRING_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertError(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
@@ -184,7 +188,7 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.core.tests.compileLocalInteger.A0;",
+			"import io.sarl.lang.tests.general.compilation.general.castoverriding.tests.test8.compileLocalInteger.A0;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -211,8 +215,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 
 	@Test
 	public void parseLocalInteger() throws Exception {
-		SarlScript mas = file(LOCAL_INTEGER_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), LOCAL_INTEGER_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
@@ -226,8 +230,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 				"toA0");
 	}
 
-	@CompilationTest
-	public static void compileLocalInteger(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void compileLocalInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(LOCAL_INTEGER_SARL, LOCAL_INTEGER_JAVA);
 	}
 
@@ -251,8 +255,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.core.tests.compileLocalBoolean.A0;",
-			"import io.sarl.lang.core.tests.compileLocalBoolean.A1;",
+			"import io.sarl.lang.tests.general.compilation.general.castoverriding.tests.test4.compileLocalBoolean.A0;",
+			"import io.sarl.lang.tests.general.compilation.general.castoverriding.tests.test4.compileLocalBoolean.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -279,8 +283,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 
 	@Test
 	public void parseLocalBoolean() throws Exception {
-		SarlScript mas = file(LOCAL_BOOLEAN_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), LOCAL_BOOLEAN_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
@@ -294,8 +298,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 				"toA0");
 	}
 
-	@CompilationTest
-	public static void compileLocalBoolean(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void compileLocalBoolean(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(LOCAL_BOOLEAN_SARL, LOCAL_BOOLEAN_JAVA);
 	}
 
@@ -319,8 +323,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.core.tests.compileLocalString01.A0;",
-			"import io.sarl.lang.core.tests.compileLocalString01.A1;",
+			"import io.sarl.lang.tests.general.compilation.general.castoverriding.tests.test0.compileLocalString01.A0;",
+			"import io.sarl.lang.tests.general.compilation.general.castoverriding.tests.test0.compileLocalString01.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -347,8 +351,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 
 	@Test
 	public void parseLocalString01() throws Exception {
-		SarlScript mas = file(LOCAL_STRING_SARL_01);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), LOCAL_STRING_SARL_01);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
@@ -362,8 +366,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 				"toA0");
 	}
 
-	@CompilationTest
-	public static void compileLocalString01(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void compileLocalString01(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(LOCAL_STRING_SARL_01, LOCAL_STRING_JAVA_01);
 	}
 
@@ -385,7 +389,7 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.core.tests.compileLocalString02.A0;",
+			"import io.sarl.lang.tests.general.compilation.general.castoverriding.tests.test1.compileLocalString02.A0;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -412,8 +416,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 
 	@Test
 	public void parseLocalString02() throws Exception {
-		SarlScript mas = file(LOCAL_STRING_SARL_02);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), LOCAL_STRING_SARL_02);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
@@ -427,8 +431,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 				"toA0");
 	}
 
-	@CompilationTest
-	public static void compileLocalString02(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void compileLocalString02(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(LOCAL_STRING_SARL_02, LOCAL_STRING_JAVA_02);
 	}
 
@@ -452,8 +456,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.core.tests.compileLocalIfThen.A0;",
-			"import io.sarl.lang.core.tests.compileLocalIfThen.A1;",
+			"import io.sarl.lang.tests.general.compilation.general.castoverriding.tests.test10.compileLocalIfThen.A0;",
+			"import io.sarl.lang.tests.general.compilation.general.castoverriding.tests.test10.compileLocalIfThen.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -486,8 +490,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 
 	@Test
 	public void parseLocalIfThen() throws Exception {
-		SarlScript mas = file(LOCAL_IFTHEN_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), LOCAL_IFTHEN_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
@@ -501,8 +505,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 				"toA0");
 	}
 
-	@CompilationTest
-	public static void compileLocalIfThen(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void compileLocalIfThen(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(LOCAL_IFTHEN_SARL, LOCAL_IFTHEN_JAVA);
 	}
 
@@ -524,7 +528,7 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.core.tests.compileLocalArith.A0;",
+			"import io.sarl.lang.tests.general.compilation.general.castoverriding.tests.test3.compileLocalArith.A0;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -551,8 +555,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 
 	@Test
 	public void parseLocalArith() throws Exception {
-		SarlScript mas = file(LOCAL_ARITH_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), LOCAL_ARITH_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
@@ -566,8 +570,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 				"toA0");
 	}
 
-	@CompilationTest
-	public static void compileLocalArith(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void compileLocalArith(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(LOCAL_ARITH_SARL, LOCAL_ARITH_JAVA);
 	}
 
@@ -589,7 +593,7 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.core.tests.compileLocalCast.A0;",
+			"import io.sarl.lang.tests.general.compilation.general.castoverriding.tests.test9.compileLocalCast.A0;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -616,8 +620,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 
 	@Test
 	public void parseLocalCast() throws Exception {
-		SarlScript mas = file(LOCAL_CAST_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), LOCAL_CAST_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
@@ -631,8 +635,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 				"toA0");
 	}
 
-	@CompilationTest
-	public static void compileLocalCast(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void compileLocalCast(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(LOCAL_CAST_SARL, LOCAL_CAST_JAVA);
 	}
 
@@ -652,8 +656,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 
 	@Test
 	public void parseLocalFunctionCall00() throws Exception {
-		SarlScript mas = file(LOCAL_FUNCTION_CALL_SARL_00);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), LOCAL_FUNCTION_CALL_SARL_00);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertError(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
@@ -686,8 +690,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.core.tests.compileLocalFunctionCall01.A0;",
-			"import io.sarl.lang.core.tests.compileLocalFunctionCall01.A1;",
+			"import io.sarl.lang.tests.general.compilation.general.castoverriding.tests.test6.compileLocalFunctionCall01.A0;", 
+			"import io.sarl.lang.tests.general.compilation.general.castoverriding.tests.test6.compileLocalFunctionCall01.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -715,8 +719,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 
 	@Test
 	public void parseLocalFunctionCall01() throws Exception {
-		SarlScript mas = file(LOCAL_FUNCTION_CALL_SARL_01);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), LOCAL_FUNCTION_CALL_SARL_01);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
@@ -730,8 +734,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 				"toA0");
 	}
 
-	@CompilationTest
-	public static void compileLocalFunctionCall01(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void compileLocalFunctionCall01(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(LOCAL_FUNCTION_CALL_SARL_01, LOCAL_FUNCTION_CALL_JAVA_01);
 	}
 
@@ -753,8 +757,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.core.tests.compileObject.A0;",
-			"import io.sarl.lang.core.tests.compileObject.A1;",
+			"import io.sarl.lang.tests.general.compilation.general.castoverriding.tests.test5.compileObject.A0;",
+			"import io.sarl.lang.tests.general.compilation.general.castoverriding.tests.test5.compileObject.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -776,8 +780,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 
 	@Test
 	public void parseObject() throws Exception {
-		SarlScript mas = file(OBJECT_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), OBJECT_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
@@ -791,8 +795,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 				"toA0");
 	}
 
-	@CompilationTest
-	public static void compileObject(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void compileObject(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(OBJECT_SARL, OBJECT_JAVA);
 	}
 
@@ -822,8 +826,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.core.tests.compileLocalStatic.A0;",
-			"import io.sarl.lang.core.tests.compileLocalStatic.A1;",
+			"import io.sarl.lang.tests.general.compilation.general.castoverriding.tests.test12.compileLocalStatic.A0;", 
+			"import io.sarl.lang.tests.general.compilation.general.castoverriding.tests.test12.compileLocalStatic.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -860,8 +864,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 
 	@Test
 	public void parseLocalStatic() throws Exception {
-		SarlScript mas = file(LOCAL_STATIC_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), LOCAL_STATIC_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
@@ -875,8 +879,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 				"toA0");
 	}
 
-	@CompilationTest
-	public static void compileLocalStatic(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void compileLocalStatic(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(LOCAL_STATIC_SARL, LOCAL_STATIC_JAVA);
 	}
 
@@ -905,9 +909,9 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.core.tests.compileSuperStatic.A0;",
-			"import io.sarl.lang.core.tests.compileSuperStatic.A1;",
-			"import io.sarl.lang.core.tests.compileSuperStatic.A2;",
+			"import io.sarl.lang.tests.general.compilation.general.castoverriding.tests.test2.compileSuperStatic.A0;",
+			"import io.sarl.lang.tests.general.compilation.general.castoverriding.tests.test2.compileSuperStatic.A1;",
+			"import io.sarl.lang.tests.general.compilation.general.castoverriding.tests.test2.compileSuperStatic.A2;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -929,8 +933,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 
 	@Test
 	public void parseSuperStatic() throws Exception {
-		SarlScript mas = file(SUPER_STATIC_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), SUPER_STATIC_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
@@ -944,8 +948,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 				"toA0");
 	}
 
-	@CompilationTest
-	public static void compileSuperStatic(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void compileSuperStatic(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(SUPER_STATIC_SARL, SUPER_STATIC_JAVA);
 	}
 
@@ -974,9 +978,9 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.core.tests.compileSuper.A0;",
-			"import io.sarl.lang.core.tests.compileSuper.A1;",
-			"import io.sarl.lang.core.tests.compileSuper.A2;",
+			"import io.sarl.lang.tests.general.compilation.general.castoverriding.tests.test7.compileSuper.A0;",
+			"import io.sarl.lang.tests.general.compilation.general.castoverriding.tests.test7.compileSuper.A1;",
+			"import io.sarl.lang.tests.general.compilation.general.castoverriding.tests.test7.compileSuper.A2;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -998,8 +1002,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 
 	@Test
 	public void parseSuper() throws Exception {
-		SarlScript mas = file(SUPER_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), SUPER_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
@@ -1013,8 +1017,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 				"toA0");
 	}
 
-	@CompilationTest
-	public static void compileSuper(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void compileSuper(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(SUPER_SARL, SUPER_JAVA);
 	}
 
@@ -1034,7 +1038,7 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.core.tests.compileStaticImport.A1;",
+			"import io.sarl.lang.tests.general.compilation.general.castoverriding.tests.test11.compileStaticImport.A1;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
@@ -1056,8 +1060,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 
 	@Test
 	public void parseStaticImport() throws Exception {
-		SarlScript mas = file(STATIC_IMPORT_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), STATIC_IMPORT_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
@@ -1071,8 +1075,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 				"toString");
 	}
 
-	@CompilationTest
-	public static void compileStaticImport(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void compileStaticImport(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(STATIC_IMPORT_SARL, STATIC_IMPORT_JAVA);
 	}
 
@@ -1104,8 +1108,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 			"import io.sarl.lang.annotation.SarlElementType;",
 			"import io.sarl.lang.annotation.SarlSpecification;",
 			"import io.sarl.lang.annotation.SyntheticMember;",
-			"import io.sarl.lang.core.tests.compileExtensionImport.A0;",
-			"import io.sarl.lang.core.tests.compileExtensionImport.A1;",
+			"import io.sarl.lang.core.tests.compileExtensionImport.A0;", 
+			"import io.sarl.lang.core.tests.compileExtensionImport.A1;", 
 			"import io.sarl.lang.core.tests.compileExtensionImport.FooUtils;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
@@ -1128,10 +1132,10 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 
 	@Test
 	public void parseExtensionImport() throws Exception {
-		SarlScript mas0 = file(EXTENSION_IMPORT_A_SARL);
-		validate(mas0).assertNoErrors();
-		SarlScript mas1 = file(EXTENSION_IMPORT_B_SARL, mas0.eResource().getResourceSet(), false);
-		Validator val = validate(mas1);
+		SarlScript mas0 = file(getParseHelper(), EXTENSION_IMPORT_A_SARL);
+		validate(getValidationHelper(), getInjector(), mas0).assertNoErrors();
+		SarlScript mas1 = file(getParseHelper(), null, EXTENSION_IMPORT_B_SARL, mas0.eResource().getResourceSet());
+		Validator val = validate(getValidationHelper(), getInjector(), mas1);
 		val
 			.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
@@ -1145,8 +1149,8 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 				"toA0");
 	}
 
-	@CompilationTest
-	public static void compileExtensionImport(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void compileExtensionImport(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(
 				new String[] { EXTENSION_IMPORT_A_SARL, EXTENSION_IMPORT_B_SARL },
 				"io.sarl.lang.core.tests.compileExtensionImport.A2",
@@ -1225,11 +1229,11 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 
 	@Test
 	public void parseExtension() throws Exception {
-		SarlScript mas0 = file(EXTENSION_A_SARL);
-		validate(mas0).assertNoErrors();
+		SarlScript mas0 = file(getParseHelper(), EXTENSION_A_SARL);
+		validate(getValidationHelper(), getInjector(), mas0).assertNoErrors();
 		ResourceSet rs = mas0.eResource().getResourceSet();
-		SarlScript mas1 = file(EXTENSION_B_SARL, rs, false);
-		Validator val = validate(mas1);
+		SarlScript mas1 = file(getParseHelper(), null, EXTENSION_B_SARL, rs);
+		Validator val = validate(getValidationHelper(), getInjector(), mas1);
 		val
 			.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
@@ -1243,12 +1247,31 @@ public class A0NoIngerithanceTest extends AbstractSarlTest {
 				"toA0");
 	}
 
-	@CompilationTest
-	public static void compileExtension(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void compileExtension(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(
 				new String[] { EXTENSION_A_SARL, EXTENSION_B_SARL },
 				"io.sarl.lang.core.tests.compileExtension.A2",
 				EXTENSION_JAVA);
+	}
+
+	private static final String EXTENSION_A_SARL_F = multilineString(
+			"package io.sarl.lang.core.tests.compileExtension",
+			"class A0 {",
+			"}",
+			"class A1 {",
+			"}",
+			"class FooUtils {",
+			"  def toA0(x : A1) : { null }",
+			"}"
+			);
+
+	@GlobalCompilationTestContribution
+	public void compileExtensionFailed(ResourceSetGlobalCompilationContext ctx) throws Exception {
+		ctx.compileTo(
+				new String[] { EXTENSION_A_SARL_F },
+				"io.sarl.lang.core.tests.compileExtension.A2",
+				"");
 	}
 
 }

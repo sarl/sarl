@@ -26,12 +26,23 @@ import io.sarl.sre.services.probing.ProbeService
 import io.sarl.sre.tests.runtime.services.probing.mocks.ChangeField
 import io.sarl.sre.tests.runtime.services.probing.mocks.ProbedAgent
 import io.sarl.sre.tests.runtime.services.probing.mocks.StopTest
-import io.sarl.sre.tests.testutils.AbstractSreRunTest
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.sre.tests.testutils.^extension.SreRunContext
+import io.sarl.sre.tests.testutils.^extension.SreRunExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.List
 import java.util.UUID
-import org.junit.Before
-import org.junit.Test
 import java.util.logging.Level
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static io.sarl.sre.tests.testutils.Constants.*
+
+import static extension org.junit.jupiter.api.Assertions.assertEquals
+import static extension org.junit.jupiter.api.Assertions.assertNotNull
+import static extension org.junit.jupiter.api.Assertions.assertSame
 
 /**
  * @author $Author: sgalland$
@@ -39,17 +50,23 @@ import java.util.logging.Level
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-abstract class AbstractProbeServiceTest extends AbstractSreRunTest {
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension),
+	typeof(SreRunExtension)
+])
+abstract class AbstractProbeServiceTest {
 
 	var changedProbes : List<Pair<Probe<?>, Object>>
 	var releasedProbes : List<Probe<?>>
 
-	@Before
+	@BeforeEach
 	def setUp : void {
 	}
 
 	@SuppressWarnings("discouraged_reference")
-	protected def runTestCase : Probe<Integer> {
+	protected def runTestCase(extension rc : SreRunContext) : Probe<Integer> {
 		runTestCase_prepare
 
 		var kern = setupTheSreKernel(Level::OFF, false, false)
@@ -59,7 +76,7 @@ abstract class AbstractProbeServiceTest extends AbstractSreRunTest {
 		this.changedProbes = newArrayList
 		this.releasedProbes = newArrayList
 
-		val id = this.bootstrap.startAgent(typeof(ProbedAgent), getAgentInitializationParameters)
+		val id = bootstrap.startAgent(typeof(ProbedAgent), getAgentInitializationParameters)
 
 		var probe = service.probe("agent:" + id + "#myfield", typeof(Integer))
 		probe.assertNotNull
@@ -89,8 +106,8 @@ abstract class AbstractProbeServiceTest extends AbstractSreRunTest {
 	}
 
 	@Test
-	def probeAgentField {
-		var probe = runTestCase
+	def probeAgentField(extension rc : SreRunContext) {
+		var probe = rc.runTestCase
 		
 		1.assertEquals(changedProbes.size)
 

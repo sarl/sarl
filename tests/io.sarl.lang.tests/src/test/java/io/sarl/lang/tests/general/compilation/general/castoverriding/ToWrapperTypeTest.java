@@ -20,18 +20,22 @@
  */
 package io.sarl.lang.tests.general.compilation.general.castoverriding;
 
+import static io.sarl.tests.api.tools.TestEObjects.file;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static io.sarl.tests.api.tools.TestValidator.validate;
+
 import org.eclipse.xtext.common.types.TypesPackage;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.validation.IssueCodes;
 import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.MassiveCompilationSuite;
-import io.sarl.tests.api.MassiveCompilationSuite.CompilationTest;
-import io.sarl.tests.api.MassiveCompilationSuite.Context;
+import io.sarl.tests.api.globalcompilation.GlobalCompilationSuite;
+import io.sarl.tests.api.globalcompilation.GlobalCompilationTestContribution;
+import io.sarl.tests.api.globalcompilation.ResourceSetGlobalCompilationContext;
+import io.sarl.tests.api.tools.TestValidator.Validator;
 
 
 /**
@@ -41,7 +45,7 @@ import io.sarl.tests.api.MassiveCompilationSuite.Context;
  * @mavenartifactid $ArtifactId$
  * @since 0.9
  */
-@RunWith(MassiveCompilationSuite.class)
+@GlobalCompilationSuite
 @SuppressWarnings("all")
 public class ToWrapperTypeTest extends AbstractSarlTest {
 
@@ -58,8 +62,8 @@ public class ToWrapperTypeTest extends AbstractSarlTest {
 
 	@Test
 	public void parseNoOperator() throws Exception {
-		SarlScript mas = file(NO_OPERATOR_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), NO_OPERATOR_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertError(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
@@ -111,8 +115,8 @@ public class ToWrapperTypeTest extends AbstractSarlTest {
 
 	@Test
 	public void parseLocal00() throws Exception {
-		SarlScript mas = file(TYPE_SARL_00);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), TYPE_SARL_00);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors()
 			.assertNoWarnings(
@@ -124,8 +128,8 @@ public class ToWrapperTypeTest extends AbstractSarlTest {
 				"'doubleValue'");
 	}
 
-	@CompilationTest
-	public static void compileLocal00(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void compileLocal00(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(TYPE_SARL_00, TYPE_JAVA_00);
 	}
 
@@ -143,8 +147,8 @@ public class ToWrapperTypeTest extends AbstractSarlTest {
 
 	@Test
 	public void parseLocal01() throws Exception {
-		SarlScript mas = file(TYPE_SARL_01);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), TYPE_SARL_01);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertError(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
@@ -196,8 +200,8 @@ public class ToWrapperTypeTest extends AbstractSarlTest {
 
 	@Test
 	public void parseLocal02() throws Exception {
-		SarlScript mas = file(TYPE_SARL_02);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), TYPE_SARL_02);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
@@ -211,8 +215,8 @@ public class ToWrapperTypeTest extends AbstractSarlTest {
 				"'toDouble'");
 	}
 
-	@CompilationTest
-	public static void compileLocal02(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void compileLocal02(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(TYPE_SARL_02, TYPE_JAVA_02);
 	}
 
@@ -230,8 +234,8 @@ public class ToWrapperTypeTest extends AbstractSarlTest {
 
 	@Test
 	public void parseLocal03() throws Exception {
-		SarlScript mas = file(TYPE_SARL_03);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), TYPE_SARL_03);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertError(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),

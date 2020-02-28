@@ -21,13 +21,16 @@
 
 package io.sarl.lang.core.tests.scoping.extensions.numbers.cast.longobject;
 
-import org.eclipse.xtext.common.types.TypesPackage;
-import org.eclipse.xtext.xbase.validation.IssueCodes;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+
+import org.junit.jupiter.api.DisplayName;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
-import io.sarl.tests.api.AbstractMassiveCompilationTest;
-import io.sarl.tests.api.AbstractMassiveCompilationTest.DifferedTest;
+import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.globalcompilation.GlobalCompilationSuite;
+import io.sarl.tests.api.globalcompilation.GlobalCompilationTestContribution;
+import io.sarl.tests.api.globalcompilation.ResourceSetGlobalCompilationContext;
 
 /**
  * @author $Author: sgalland$
@@ -37,11 +40,13 @@ import io.sarl.tests.api.AbstractMassiveCompilationTest.DifferedTest;
  * @see "https://github.com/eclipse/xtext-extras/issues/186"
  */
 @SuppressWarnings("all")
-public class CompilerTest extends AbstractMassiveCompilationTest {
+@DisplayName("Compiling Long cast operator")
+@GlobalCompilationSuite
+public class CompilerTest extends AbstractSarlTest {
 
-	@DifferedTest
-	public void as_byte() throws Exception {
-		diffSingleTypeCompileTo(multilineString(
+	@GlobalCompilationTestContribution
+	public void as_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
+		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long) : byte {",
 				"    left as byte",
@@ -70,9 +75,9 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@DifferedTest
-	public void as_short() throws Exception {
-		diffSingleTypeCompileTo(multilineString(
+	@GlobalCompilationTestContribution
+	public void as_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
+		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long) : short {",
 				"    left as short",
@@ -101,9 +106,9 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@DifferedTest
-	public void as_int() throws Exception {
-		diffSingleTypeCompileTo(multilineString(
+	@GlobalCompilationTestContribution
+	public void as_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
+		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long) : int {",
 				"    left as int",
@@ -132,9 +137,9 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@DifferedTest
-	public void as_long() throws Exception {
-		diffSingleTypeCompileTo(multilineString(
+	@GlobalCompilationTestContribution
+	public void as_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
+		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long) : long {",
 				"    left as long",
@@ -163,9 +168,9 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@DifferedTest
-	public void as_float() throws Exception {
-		diffSingleTypeCompileTo(multilineString(
+	@GlobalCompilationTestContribution
+	public void as_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
+		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long) : float {",
 				"    left as float",
@@ -194,9 +199,9 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@DifferedTest
-	public void as_double() throws Exception {
-		diffSingleTypeCompileTo(multilineString(
+	@GlobalCompilationTestContribution
+	public void as_double(ResourceSetGlobalCompilationContext ctx) throws Exception {
+		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long) : double {",
 				"    left as double",
@@ -225,9 +230,9 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@DifferedTest
-	public void as_Byte() throws Exception {
-		diffSingleTypeCompileTo(multilineString(
+	@GlobalCompilationTestContribution
+	public void as_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
+		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long) : Byte {",
 				"    left as Byte",
@@ -256,9 +261,9 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@DifferedTest
-	public void as_Short() throws Exception {
-		diffSingleTypeCompileTo(multilineString(
+	@GlobalCompilationTestContribution
+	public void as_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
+		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long) : Short {",
 				"    left as Short",
@@ -287,9 +292,9 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@DifferedTest
-	public void as_Integer() throws Exception {
-		diffSingleTypeCompileTo(multilineString(
+	@GlobalCompilationTestContribution
+	public void as_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
+		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long) : Integer {",
 				"    left as Integer",
@@ -318,9 +323,9 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@DifferedTest
-	public void as_Long() throws Exception {
-		diffSingleTypeCompileTo(multilineString(
+	@GlobalCompilationTestContribution
+	public void as_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
+		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long) : Long {",
 				"    left as Long",
@@ -349,9 +354,9 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@DifferedTest
-	public void as_Float() throws Exception {
-		diffSingleTypeCompileTo(multilineString(
+	@GlobalCompilationTestContribution
+	public void as_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
+		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long) : Float {",
 				"    left as Float",
@@ -380,9 +385,9 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@DifferedTest
-	public void as_Double() throws Exception {
-		diffSingleTypeCompileTo(multilineString(
+	@GlobalCompilationTestContribution
+	public void as_Double(ResourceSetGlobalCompilationContext ctx) throws Exception {
+		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long) : Double {",
 				"    left as Double",
@@ -411,9 +416,9 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@DifferedTest
-	public void as_AtomicInteger() throws Exception {
-		diffSingleTypeCompileTo(multilineString(
+	@GlobalCompilationTestContribution
+	public void as_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
+		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicInteger",
 				"class A {",
 				"  def fct(left : Long) : AtomicInteger {",
@@ -444,9 +449,9 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@DifferedTest
-	public void as_AtomicLong() throws Exception {
-		diffSingleTypeCompileTo(multilineString(
+	@GlobalCompilationTestContribution
+	public void as_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
+		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicLong",
 				"class A {",
 				"  def fct(left : Long) : AtomicLong {",
@@ -477,9 +482,9 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@DifferedTest
-	public void as_AtomicDouble() throws Exception {
-		diffSingleTypeCompileTo(multilineString(
+	@GlobalCompilationTestContribution
+	public void as_AtomicDouble(ResourceSetGlobalCompilationContext ctx) throws Exception {
+		ctx.compileTo(multilineString(
 				"import com.google.common.util.concurrent.AtomicDouble",
 				"class A {",
 				"  def fct(left : Long) : AtomicDouble {",
@@ -510,9 +515,9 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@DifferedTest
-	public void as_BigInteger() throws Exception {
-		diffSingleTypeCompileTo(multilineString(
+	@GlobalCompilationTestContribution
+	public void as_BigInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
+		ctx.compileTo(multilineString(
 				"import java.math.BigInteger",
 				"class A {",
 				"  def fct(left : Long) : BigInteger {",
@@ -543,9 +548,9 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@DifferedTest
-	public void as_BigDecimal() throws Exception {
-		diffSingleTypeCompileTo(multilineString(
+	@GlobalCompilationTestContribution
+	public void as_BigDecimal(ResourceSetGlobalCompilationContext ctx) throws Exception {
+		ctx.compileTo(multilineString(
 				"import java.math.BigDecimal",
 				"class A {",
 				"  def fct(left : Long) : BigDecimal {",
@@ -576,9 +581,9 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@DifferedTest
-	public void as_Number() throws Exception {
-		diffSingleTypeCompileTo(multilineString(
+	@GlobalCompilationTestContribution
+	public void as_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
+		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Long) : Number {",
 				"    left as Number",

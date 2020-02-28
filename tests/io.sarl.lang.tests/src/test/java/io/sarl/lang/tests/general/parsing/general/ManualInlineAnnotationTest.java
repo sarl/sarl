@@ -20,24 +20,17 @@
  */
 package io.sarl.lang.tests.general.parsing.general;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import io.sarl.lang.sarl.SarlAction;
-import io.sarl.lang.sarl.SarlAgent;
-import io.sarl.lang.sarl.SarlPackage;
+import static io.sarl.tests.api.tools.TestEObjects.file;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static io.sarl.tests.api.tools.TestValidator.validate;
+
+import com.google.common.base.Throwables;
+import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationsPackage;
+import org.junit.jupiter.api.Test;
+
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.validation.IssueCodes;
 import io.sarl.tests.api.AbstractSarlTest;
-
-import org.eclipse.xtext.serializer.ISerializer;
-import org.eclipse.xtext.xbase.XbasePackage;
-import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationsPackage;
-import org.eclipse.xtext.xtype.XtypePackage;
-import org.junit.Test;
-
-import com.google.common.base.Strings;
-import com.google.inject.Inject;
 
 /**
  * @author $Author: sgalland$
@@ -49,19 +42,24 @@ import com.google.inject.Inject;
 public class ManualInlineAnnotationTest extends AbstractSarlTest {
 
 	@Test
-	public void defaultValue() throws Exception {
-		SarlScript mas = file(multilineString(
-				"import org.eclipse.xtext.xbase.lib.Inline",
-				"agent A1 {",
-				"   @Inline(\"\")",
-				"	def fct() {",
-				"	}",
-				"}"
-				));
-		validate(mas).assertWarning(
-				XAnnotationsPackage.eINSTANCE.getXAnnotation(),
-				IssueCodes.MANUAL_INLINE_DEFINITION,
-				"Discouraged manual definition of an inline expression");
+	public void testDefaultValue() throws Exception {
+		try {
+			SarlScript mas = file(getParseHelper(), multilineString(
+					"import org.eclipse.xtext.xbase.lib.Inline",
+					"agent A1 {",
+					"   @Inline(\"\")",
+					"	def fct() {",
+					"	}",
+					"}"
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
+					XAnnotationsPackage.eINSTANCE.getXAnnotation(),
+					IssueCodes.MANUAL_INLINE_DEFINITION,
+					"Discouraged manual definition of an inline expression");
+		} catch (Throwable e) {
+			e.printStackTrace();
+			Throwables.propagate(e);
+		}
 	}
 
 }

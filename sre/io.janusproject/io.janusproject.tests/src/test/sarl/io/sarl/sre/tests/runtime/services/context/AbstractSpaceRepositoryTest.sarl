@@ -27,8 +27,17 @@ import io.sarl.sre.tests.runtime.services.context.mocks.GetOrCreateSpaceWithSpec
 import io.sarl.sre.tests.runtime.services.context.mocks.GetSpaceTestAgent
 import io.sarl.sre.tests.runtime.services.context.mocks.GetSpacesClassTestAgent
 import io.sarl.sre.tests.runtime.services.context.mocks.GetSpacesTestAgent
-import io.sarl.sre.tests.testutils.AbstractSreRunTest
-import org.junit.Test
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.sre.tests.testutils.^extension.SreRunContext
+import io.sarl.sre.tests.testutils.^extension.SreRunExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static io.sarl.sre.tests.testutils.Constants.*
+
+import static extension io.sarl.tests.api.tools.TestAssertions.assertContains
 
 /**
  * @author $Author: sgalland$
@@ -36,41 +45,47 @@ import org.junit.Test
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-abstract class AbstractSpaceRepositoryTest extends AbstractSreRunTest {
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension),
+	typeof(SreRunExtension)
+])
+abstract class AbstractSpaceRepositoryTest {
 
 	@Test
-	def createSpace {
-	typeof(CreateSpaceTestAgent).runSre(null, true, STANDARD_TIMEOUT)
+	def createSpace(extension rc : SreRunContext) {
+		typeof(CreateSpaceTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		allResults.assertContains("FOUND")
 	}
 
 	@Test
-	def getOrCreateSpaceWithID {
+	def getOrCreateSpaceWithID(extension rc : SreRunContext) {
 		typeof(GetOrCreateSpaceWithIDTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		allResults.assertContains("FOUND1", "FOUND2")
 	}
 
 	@Test
-	def getOrCreateSpaceWithSpec {
+	def getOrCreateSpaceWithSpec(extension rc : SreRunContext) {
 		typeof(GetOrCreateSpaceWithSpecTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		allResults.assertContains("FOUND1", "FOUND2")
 	}
 
 	@Test
-	def getSpace {
+	def getSpace(extension rc : SreRunContext) {
 		typeof(GetSpaceTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		allResults.assertContains("FOUND", "IS_DEFAULT_SPACE")
 	}
 
 	@Test
-	def getSpaces {
+	def getSpaces(extension rc : SreRunContext) {
 		typeof(GetSpacesTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		allResults.assertContains("1/OpenEventSpaceSpecification", "2/OpenEventSpaceSpecification",
 			"2/MySpaceSpec")
 	}
 
 	@Test
-	def getSpacesClass {
+	def getSpacesClass(extension rc : SreRunContext) {
 		typeof(GetSpacesClassTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		allResults.assertContains("1/OpenEventSpaceSpecification", "2/OpenEventSpaceSpecification",
 				"3/MySpaceSpec", "3/MySpaceSpec")

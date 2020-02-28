@@ -20,16 +20,14 @@
  */
 package io.sarl.lang.tests.general.compilation.general;
 
-import com.google.inject.Inject;
-import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
-import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /**
@@ -38,17 +36,11 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(Suite.class)
-@SuiteClasses({
-	ActiveAnnotationTest.AccessorsTest.class,
-	ActiveAnnotationTest.DataTest.class,
-	ActiveAnnotationTest.DelegateTest.class,
-	ActiveAnnotationTest.ToStringTest.class,
-})
 @SuppressWarnings("all")
 public class ActiveAnnotationTest {
 	
-	public static class AccessorsTest extends AbstractSarlTest {
+	@Nested
+	public class AccessorsTest extends AbstractSarlTest {
 
 		@Test
 		public void inClassField_01() throws Exception {
@@ -314,7 +306,8 @@ public class ActiveAnnotationTest {
 
 	}
 
-	public static class DataTest extends AbstractSarlTest {
+	@Nested
+	public class DataTest extends AbstractSarlTest {
 
 		@Test
 		public void inClass_01() throws Exception {
@@ -390,7 +383,8 @@ public class ActiveAnnotationTest {
 
 	}
 
-	public static class DelegateTest extends AbstractSarlTest {
+	@Nested
+	public class DelegateTest extends AbstractSarlTest {
 
 		@Test
 		public void inClass_01() throws Exception {
@@ -500,7 +494,8 @@ public class ActiveAnnotationTest {
 
 	}
 
-	public static class ToStringTest extends AbstractSarlTest {
+	@Nested
+	public class ToStringTest extends AbstractSarlTest {
 
 		@Test
 		public void inClass_01() throws Exception {

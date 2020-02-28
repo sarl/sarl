@@ -20,18 +20,22 @@
  */
 package io.sarl.lang.tests.general.compilation.general.castoverriding;
 
+import static io.sarl.tests.api.tools.TestEObjects.file;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static io.sarl.tests.api.tools.TestValidator.validate;
+
 import org.eclipse.xtext.common.types.TypesPackage;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.validation.IssueCodes;
 import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.MassiveCompilationSuite;
-import io.sarl.tests.api.MassiveCompilationSuite.CompilationTest;
-import io.sarl.tests.api.MassiveCompilationSuite.Context;
+import io.sarl.tests.api.globalcompilation.GlobalCompilationSuite;
+import io.sarl.tests.api.globalcompilation.GlobalCompilationTestContribution;
+import io.sarl.tests.api.globalcompilation.ResourceSetGlobalCompilationContext;
+import io.sarl.tests.api.tools.TestValidator.Validator;
 
 
 /**
@@ -41,7 +45,7 @@ import io.sarl.tests.api.MassiveCompilationSuite.Context;
  * @mavenartifactid $ArtifactId$
  * @since 0.9
  */
-@RunWith(MassiveCompilationSuite.class)
+@GlobalCompilationSuite
 @SuppressWarnings("all")
 public class AsStringTest extends AbstractSarlTest {
 
@@ -80,8 +84,8 @@ public class AsStringTest extends AbstractSarlTest {
 
 	@Test
 	public void parseObjectToString() throws Exception {
-		SarlScript mas = file(OBJECT_TOSTRING_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), OBJECT_TOSTRING_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors()
 			.assertNoWarnings(
@@ -93,8 +97,8 @@ public class AsStringTest extends AbstractSarlTest {
 				"toString");
 	}
 
-	@CompilationTest
-	public static void compileObjectToString(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void compileObjectToString(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(OBJECT_TOSTRING_SARL, OBJECT_TOSTRING_JAVA);
 	}
 
@@ -133,8 +137,8 @@ public class AsStringTest extends AbstractSarlTest {
 
 	@Test
 	public void parseString() throws Exception {
-		SarlScript mas = file(STRING_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), STRING_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors()
 			.assertWarning(
@@ -146,8 +150,8 @@ public class AsStringTest extends AbstractSarlTest {
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION);
 	}
 
-	@CompilationTest
-	public static void compileString(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void compileString(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(STRING_SARL, STRING_JAVA);
 	}
 
@@ -192,8 +196,8 @@ public class AsStringTest extends AbstractSarlTest {
 
 	@Test
 	public void parseIfThen() throws Exception {
-		SarlScript mas = file(IFTHEN_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), IFTHEN_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors()
 			.assertNoWarnings(
@@ -205,8 +209,8 @@ public class AsStringTest extends AbstractSarlTest {
 				"toString");
 	}
 
-	@CompilationTest
-	public static void compileIfThen(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void compileIfThen(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(IFTHEN_SARL, IFTHEN_JAVA);
 	}
 
@@ -242,8 +246,8 @@ public class AsStringTest extends AbstractSarlTest {
 
 	@Test
 	public void parseCast() throws Exception {
-		SarlScript mas = file(CAST_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), CAST_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors()
 			.assertWarning(
@@ -256,8 +260,8 @@ public class AsStringTest extends AbstractSarlTest {
 				"toString");
 	}
 
-	@CompilationTest
-	public static void compileCast(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void compileCast(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(CAST_SARL, CAST_JAVA);
 	}
 
@@ -302,8 +306,8 @@ public class AsStringTest extends AbstractSarlTest {
 
 	@Test
 	public void parseFunctionCall() throws Exception {
-		SarlScript mas = file(FUNCTION_CALL_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), FUNCTION_CALL_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors()
 			.assertNoWarnings(
@@ -315,8 +319,8 @@ public class AsStringTest extends AbstractSarlTest {
 				"toString");
 	}
 
-	@CompilationTest
-	public static void compileFunctionCall(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void compileFunctionCall(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		//XXX: ctx.compileTo(FUNCTION_CALL_SARL, FUNCTION_CALL_JAVA);
 	}
 
@@ -387,8 +391,8 @@ public class AsStringTest extends AbstractSarlTest {
 
 	@Test
 	public void parseLocalToString() throws Exception {
-		SarlScript mas = file(LOCAL_TOSTRING_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), LOCAL_TOSTRING_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors()
 			.assertNoWarnings(
@@ -400,8 +404,8 @@ public class AsStringTest extends AbstractSarlTest {
 				"toString");
 	}
 
-	@CompilationTest
-	public static void compileLocalToString(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void compileLocalToString(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(LOCAL_TOSTRING_SARL, LOCAL_TOSTRING_JAVA);
 	}
 
@@ -448,8 +452,8 @@ public class AsStringTest extends AbstractSarlTest {
 
 	@Test
 	public void parseA1ToString() throws Exception {
-		SarlScript mas = file(A1_TOSTRING_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), A1_TOSTRING_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors()
 			.assertNoWarnings(
@@ -461,8 +465,8 @@ public class AsStringTest extends AbstractSarlTest {
 				"toString");
 	}
 
-	@CompilationTest
-	public static void compileA1ToString(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void compileA1ToString(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(A1_TOSTRING_SARL, A1_TOSTRING_JAVA);
 	}
 
@@ -522,8 +526,8 @@ public class AsStringTest extends AbstractSarlTest {
 
 	@Test
 	public void parseLocalStaticToString() throws Exception {
-		SarlScript mas = file(LOCAL_STATIC_TOSTRING_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), LOCAL_STATIC_TOSTRING_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors()
 			.assertNoWarnings(
@@ -535,8 +539,8 @@ public class AsStringTest extends AbstractSarlTest {
 				"toString");
 	}
 
-	@CompilationTest
-	public static void compileLocalStaticToString(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void compileLocalStaticToString(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(LOCAL_STATIC_TOSTRING_SARL, LOCAL_STATIC_TOSTRING_JAVA);
 	}
 
@@ -584,8 +588,8 @@ public class AsStringTest extends AbstractSarlTest {
 
 	@Test
 	public void parseSuperStaticToString() throws Exception {
-		SarlScript mas = file(SUPER_STATIC_TOSTRING_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), SUPER_STATIC_TOSTRING_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors()
 			.assertNoWarnings(
@@ -597,8 +601,8 @@ public class AsStringTest extends AbstractSarlTest {
 				"toString");
 	}
 
-	@CompilationTest
-	public static void compileSuperStaticToString(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void compileSuperStaticToString(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(SUPER_STATIC_TOSTRING_SARL, SUPER_STATIC_TOSTRING_JAVA);
 	}
 
@@ -646,8 +650,8 @@ public class AsStringTest extends AbstractSarlTest {
 
 	@Test
 	public void parseSuperToString() throws Exception {
-		SarlScript mas = file(SUPER_TOSTRING_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), SUPER_TOSTRING_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors()
 			.assertNoWarnings(
@@ -659,8 +663,8 @@ public class AsStringTest extends AbstractSarlTest {
 				"toString");
 	}
 
-	@CompilationTest
-	public static void compileSuperToString(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void compileSuperToString(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(SUPER_TOSTRING_SARL, SUPER_TOSTRING_JAVA);
 	}
 
@@ -700,8 +704,8 @@ public class AsStringTest extends AbstractSarlTest {
 
 	@Test
 	public void parseStaticImportToString() throws Exception {
-		SarlScript mas = file(STATIC_IMPORT_TOSTRING_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), STATIC_IMPORT_TOSTRING_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors()
 			.assertNoWarnings(
@@ -713,8 +717,8 @@ public class AsStringTest extends AbstractSarlTest {
 				"toString");
 	}
 
-	@CompilationTest
-	public static void compileStaticImportToString(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void compileStaticImportToString(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(STATIC_IMPORT_TOSTRING_SARL, STATIC_IMPORT_TOSTRING_JAVA);
 	}
 
@@ -755,8 +759,8 @@ public class AsStringTest extends AbstractSarlTest {
 
 	@Test
 	public void parseExtensionImportToString() throws Exception {
-		SarlScript mas = file(EXTENSION_IMPORT_TOSTRING_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), EXTENSION_IMPORT_TOSTRING_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors()
 			.assertNoWarnings(
@@ -768,8 +772,8 @@ public class AsStringTest extends AbstractSarlTest {
 				"toString");
 	}
 
-	@CompilationTest
-	public static void compileExtensionImportToString(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void compileExtensionImportToString(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(EXTENSION_IMPORT_TOSTRING_SARL, EXTENSION_IMPORT_TOSTRING_JAVA);
 	}
 
@@ -830,8 +834,8 @@ public class AsStringTest extends AbstractSarlTest {
 
 	@Test
 	public void parseExtensionToString() throws Exception {
-		SarlScript mas = file(EXTENSION_TOSTRING_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), EXTENSION_TOSTRING_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors()
 			.assertNoWarnings(
@@ -843,8 +847,8 @@ public class AsStringTest extends AbstractSarlTest {
 				"toString");
 	}
 
-	@CompilationTest
-	public static void compileExtensionToString(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void compileExtensionToString(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(EXTENSION_TOSTRING_SARL, EXTENSION_TOSTRING_JAVA);
 	}
 
@@ -883,8 +887,8 @@ public class AsStringTest extends AbstractSarlTest {
 
 	@Test
 	public void parseBoolean() throws Exception {
-		SarlScript mas = file(BOOLEAN_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), BOOLEAN_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors()
 			.assertNoWarnings(
@@ -896,8 +900,8 @@ public class AsStringTest extends AbstractSarlTest {
 				"toString");
 	}
 
-	@CompilationTest
-	public static void compileBoolean(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void compileBoolean(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(BOOLEAN_SARL, BOOLEAN_JAVA);
 	}
 
@@ -936,8 +940,8 @@ public class AsStringTest extends AbstractSarlTest {
 
 	@Test
 	public void parseIntegerToString() throws Exception {
-		SarlScript mas = file(INTEGER_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), INTEGER_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors()
 			.assertNoWarnings(
@@ -949,8 +953,8 @@ public class AsStringTest extends AbstractSarlTest {
 				"toString");
 	}
 
-	@CompilationTest
-	public static void compileIntegerToString(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void compileIntegerToString(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(INTEGER_SARL, INTEGER_JAVA);
 	}
 
@@ -986,8 +990,8 @@ public class AsStringTest extends AbstractSarlTest {
 
 	@Test
 	public void parseArith() throws Exception {
-		SarlScript mas = file(ARITH_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), ARITH_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors()
 			.assertNoWarnings(
@@ -999,8 +1003,8 @@ public class AsStringTest extends AbstractSarlTest {
 				"toString");
 	}
 
-	@CompilationTest
-	public static void compileArith(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void compileArith(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(ARITH_SARL, ARITH_JAVA);
 	}
 

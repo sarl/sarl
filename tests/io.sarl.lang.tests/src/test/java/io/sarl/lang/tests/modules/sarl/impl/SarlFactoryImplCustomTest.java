@@ -20,10 +20,14 @@
  */
 package io.sarl.lang.tests.modules.sarl.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static io.sarl.tests.api.tools.TestAssertions.assertInstanceOf;
+import static io.sarl.tests.api.tools.TestEObjects.file;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static io.sarl.tests.api.tools.TestValidator.validate;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlScript;
@@ -57,8 +61,8 @@ public class SarlFactoryImplCustomTest extends AbstractSarlTest {
 
 	@Test
 	public void agent() throws Exception {
-		SarlScript mas = file("agent A1 { }");
-		validate(mas).assertNoErrors();
+		SarlScript mas = file(getParseHelper(), "agent A1 { }");
+		validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 		Object element = mas.getXtendTypes().get(0);
 		assertInstanceOf(SarlAgentImpl.class, element);
 		assertEquals(SarlAgentImplCustom.class, element.getClass());
@@ -66,8 +70,8 @@ public class SarlFactoryImplCustomTest extends AbstractSarlTest {
 
 	@Test
 	public void behavior() throws Exception {
-		SarlScript mas = file("behavior B1 { }");
-		validate(mas).assertNoErrors();
+		SarlScript mas = file(getParseHelper(), "behavior B1 { }");
+		validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 		Object element = mas.getXtendTypes().get(0);
 		assertInstanceOf(SarlBehaviorImpl.class, element);
 		assertEquals(SarlBehaviorImplCustom.class, element.getClass());
@@ -75,8 +79,8 @@ public class SarlFactoryImplCustomTest extends AbstractSarlTest {
 
 	@Test
 	public void capacity() throws Exception {
-		SarlScript mas = file("capacity C1 { }");
-		validate(mas).assertNoErrors();
+		SarlScript mas = file(getParseHelper(), "capacity C1 { }");
+		validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 		Object element = mas.getXtendTypes().get(0);
 		assertInstanceOf(SarlCapacityImpl.class, element);
 		assertEquals(SarlCapacityImpl.class, element.getClass());
@@ -84,10 +88,10 @@ public class SarlFactoryImplCustomTest extends AbstractSarlTest {
 
 	@Test
 	public void skill() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"capacity C1 { }",
 				"skill S1 implements C1 { }"));
-		validate(mas).assertNoErrors();
+		validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 		Object element = mas.getXtendTypes().get(1);
 		assertInstanceOf(SarlSkillImpl.class, element);
 		assertEquals(SarlSkillImplCustom.class, element.getClass());
@@ -95,48 +99,48 @@ public class SarlFactoryImplCustomTest extends AbstractSarlTest {
 
 	@Test
 	public void clazz() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"class C1 { }"));
-		validate(mas).assertNoErrors();
+		validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 		Object element = mas.getXtendTypes().get(0);
 		assertInstanceOf(SarlClassImplCustom.class, element);
 	}
 
 	@Test
 	public void interfaze() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"interface C1 { }"));
-		validate(mas).assertNoErrors();
+		validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 		Object element = mas.getXtendTypes().get(0);
 		assertInstanceOf(SarlInterfaceImplCustom.class, element);
 	}
 
 	@Test
 	public void enumeration() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"enum E1 { CONST1, CONST2 }"));
-		validate(mas).assertNoErrors();
+		validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 		Object element = mas.getXtendTypes().get(0);
 		assertInstanceOf(SarlEnumerationImplCustom.class, element);
 	}
 
 	@Test
 	public void annotationType() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"annotation A1 { }"));
-		validate(mas).assertNoErrors();
+		validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 		Object element = mas.getXtendTypes().get(0);
 		assertInstanceOf(SarlAnnotationTypeImplCustom.class, element);
 	}
 
 	@Test
 	public void constructor() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
 				"	new { super(null, null) }",
 				"}"
 				));
-		validate(mas).assertNoErrors();
+		validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertNotNull(agent);
 		Object element = agent.getMembers().get(0);
@@ -145,12 +149,12 @@ public class SarlFactoryImplCustomTest extends AbstractSarlTest {
 
 	@Test
 	public void action() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
 				"	def myfct { }",
 				"}"
 				));
-		validate(mas).assertNoErrors();
+		validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertNotNull(agent);
 		Object element = agent.getMembers().get(0);
@@ -159,13 +163,13 @@ public class SarlFactoryImplCustomTest extends AbstractSarlTest {
 
 	@Test
 	public void behaviorUnit() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"event E1",
 				"agent A1 {",
 				"	on E1 { }",
 				"}"
 				));
-		validate(mas).assertNoErrors();
+		validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(1);
 		assertNotNull(agent);
 		Object element = agent.getMembers().get(0);
@@ -174,13 +178,13 @@ public class SarlFactoryImplCustomTest extends AbstractSarlTest {
 
 	@Test
 	public void capacityUses() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"capacity C1 { }",
 				"agent A1 {",
 				"	uses C1",
 				"}"
 				));
-		validate(mas).assertNoErrors();
+		validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(1);
 		assertNotNull(agent);
 		Object element = agent.getMembers().get(0);
@@ -189,13 +193,13 @@ public class SarlFactoryImplCustomTest extends AbstractSarlTest {
 
 	@Test
 	public void requireCapacity() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"capacity C1 { }",
 				"agent A1 {",
 				"	requires C1",
 				"}"
 				));
-		validate(mas).assertNoErrors();
+		validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(1);
 		assertNotNull(agent);
 		Object element = agent.getMembers().get(0);
@@ -204,12 +208,12 @@ public class SarlFactoryImplCustomTest extends AbstractSarlTest {
 
 	@Test
 	public void value() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
 				"	val field = 1",
 				"}"
 				));
-		validate(mas).assertNoErrors();
+		validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertNotNull(agent);
 		Object element = agent.getMembers().get(0);
@@ -218,12 +222,12 @@ public class SarlFactoryImplCustomTest extends AbstractSarlTest {
 
 	@Test
 	public void variable() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
 				"	var field = 1",
 				"}"
 				));
-		validate(mas).assertNoErrors();
+		validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 		SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 		assertNotNull(agent);
 		Object element = agent.getMembers().get(0);

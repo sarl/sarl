@@ -21,11 +21,10 @@
 
 package io.sarl.sre.tests.runtime.services.logging.mocks
 
-import io.sarl.sre.tests.testutils.TestingAgent
-import io.sarl.sre.tests.testutils.TestingAgent.RunPolicy
+import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.core.Schedules
-import io.sarl.core.Lifecycle
+import io.sarl.sre.tests.testutils.agents.TestingAgent
 
 agent VerboseAgent extends TestingAgent {
 	

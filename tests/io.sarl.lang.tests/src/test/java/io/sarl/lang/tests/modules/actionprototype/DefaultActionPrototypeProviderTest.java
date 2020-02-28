@@ -20,6 +20,17 @@
  */
 package io.sarl.lang.tests.modules.actionprototype;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertContainsStrings;
+import static io.sarl.tests.api.tools.TestEObjects.file;
+import static io.sarl.tests.api.tools.TestEObjects.getType;
+import static io.sarl.tests.api.tools.TestMockito.mock;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -43,15 +54,13 @@ import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.xbase.XExpression;
-import org.junit.Before;
-import org.junit.ComparisonFailure;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.opentest4j.AssertionFailedError;
 
 import io.sarl.lang.annotation.DefaultValue;
 import io.sarl.lang.sarl.SarlAction;
@@ -76,11 +85,6 @@ import io.sarl.tests.api.Nullable;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(Suite.class)
-@SuiteClasses({
-	DefaultActionPrototypeProviderTest.NoDefaultValues.class,
-	DefaultActionPrototypeProviderTest.DefaultValues.class,
-})
 @SuppressWarnings({"javadoc", "nls", "incomplete-switch"})
 public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 
@@ -157,7 +161,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 				return;
 			}
 		}
-		throw new ComparisonFailure("Not same parameter prototype.",
+		throw new AssertionFailedError("Not same parameter prototype.",
 				parameters.toString(), toString(originalExpected));
 	}
 
@@ -204,7 +208,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			assertPrototypes(parameters, expectedElements, expected);
 		}
 		if (!expectedElements.isEmpty()) {
-			throw new ComparisonFailure(
+			throw new AssertionFailedError(
 					"Not same prototypes", expectedElements.toString(), elements.toString());
 		}
 	}
@@ -224,7 +228,8 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class NoDefaultValues extends AbstractSarlTest {
+	@Nested
+	public class NoDefaultValues extends AbstractSarlTest {
 
 		@Inject
 		private DefaultActionPrototypeProvider provider;
@@ -241,7 +246,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 		@Nullable
 		private EList<JvmFormalParameter> jvmParameters;
 
-		@Before
+		@BeforeEach
 		public void setUp() throws Exception {
 			this.context = this.provider.createContext();
 			this.parameterProvider = mock(FormalParameterProvider.class);
@@ -280,17 +285,17 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			this.sarlParameters = new BasicEList<>();
 			p = mock(SarlFormalParameter.class);
 			when(p.getName()).thenReturn("firstarg");
-			JvmTypeReference ref = getType("java.lang.String");
+			JvmTypeReference ref = getType(getParseHelper(), "java.lang.String");
 			when(p.getParameterType()).thenReturn(ref);
 			this.sarlParameters.add(p);
 			p = mock(SarlFormalParameter.class);
 			when(p.getName()).thenReturn("secondarg");
-			ref = getType("float");
+			ref = getType(getParseHelper(), "float");
 			when(p.getParameterType()).thenReturn(ref);
 			this.sarlParameters.add(p);
 			p = mock(SarlFormalParameter.class);
 			when(p.getName()).thenReturn("thirdarg");
-			ref = getType("java.lang.Object");
+			ref = getType(getParseHelper(), "java.lang.Object");
 			when(p.getParameterType()).thenReturn(ref);
 			this.sarlParameters.add(p);
 			//
@@ -298,19 +303,19 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 			this.jvmParameters = new BasicEList<>();
 			jp = mock(JvmFormalParameter.class);
 			when(jp.getName()).thenReturn("firstarg");
-			ref = getType("java.lang.String");
+			ref = getType(getParseHelper(), "java.lang.String");
 			when(jp.getParameterType()).thenReturn(ref);
 			when(jp.getAnnotations()).thenReturn(new BasicEList<JvmAnnotationReference>());
 			this.jvmParameters.add(jp);
 			jp = mock(JvmFormalParameter.class);
 			when(jp.getName()).thenReturn("secondarg");
-			ref = getType("float");
+			ref = getType(getParseHelper(), "float");
 			when(jp.getParameterType()).thenReturn(ref);
 			when(jp.getAnnotations()).thenReturn(new BasicEList<JvmAnnotationReference>());
 			this.jvmParameters.add(jp);
 			jp = mock(JvmFormalParameter.class);
 			when(jp.getName()).thenReturn("thirdarg");
-			ref = getType("java.lang.Object[]");
+			ref = getType(getParseHelper(), "java.lang.Object[]");
 			when(jp.getParameterType()).thenReturn(ref);
 			when(jp.getAnnotations()).thenReturn(new BasicEList<JvmAnnotationReference>());
 			this.jvmParameters.add(jp);
@@ -318,7 +323,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 
 		@Test
 		public void validateTypeOfVarArgInSarl() throws Exception {
-			SarlScript s = file("agent Foo { def fooFct(a : float, b : Object*) {} }");
+			SarlScript s = file(getParseHelper(), "agent Foo { def fooFct(a : float, b : Object*) {} }");
 			SarlFormalParameter param = (SarlFormalParameter) ((SarlAction) ((SarlAgent) s.getXtendTypes().get(0))
 					.getMembers().get(0)).getParameters().get(1);
 			assertNotNull(param);
@@ -845,7 +850,8 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class DefaultValues extends AbstractSarlTest {
+	@Nested
+	public class DefaultValues extends AbstractSarlTest {
 
 		@Inject
 		private DefaultActionPrototypeProvider provider;
@@ -862,7 +868,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 		@Nullable
 		private EList<JvmFormalParameter> jvmParameters;
 
-		@Before
+		@BeforeEach
 		public void setUp() throws Exception {
 			this.context = this.provider.createContext();
 			this.parameterProvider = mock(FormalParameterProvider.class);
@@ -908,27 +914,27 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 
 			p = mock(SarlFormalParameter.class);
 			when(p.getName()).thenReturn("firstarg");
-			JvmTypeReference ref = getType("java.lang.String");
+			JvmTypeReference ref = getType(getParseHelper(), "java.lang.String");
 			when(p.getParameterType()).thenReturn(ref);
 			when(p.getDefaultValue()).thenReturn(mock(XExpression.class));
 			this.sarlParameters.add(p);
 
 			p = mock(SarlFormalParameter.class);
 			when(p.getName()).thenReturn("secondarg");
-			ref = getType("int");
+			ref = getType(getParseHelper(), "int");
 			when(p.getParameterType()).thenReturn(ref);
 			this.sarlParameters.add(p);
 
 			p = mock(SarlFormalParameter.class);
 			when(p.getName()).thenReturn("thirdarg");
-			ref = getType("float");
+			ref = getType(getParseHelper(), "float");
 			when(p.getParameterType()).thenReturn(ref);
 			when(p.getDefaultValue()).thenReturn(mock(XExpression.class));
 			this.sarlParameters.add(p);
 
 			p = mock(SarlFormalParameter.class);
 			when(p.getName()).thenReturn("fourtharg");
-			ref = getType("java.lang.Object");
+			ref = getType(getParseHelper(), "java.lang.Object");
 			when(p.getParameterType()).thenReturn(ref);
 			this.sarlParameters.add(p);
 			//
@@ -937,7 +943,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 
 			jp = mock(JvmFormalParameter.class);
 			when(jp.getName()).thenReturn("firstarg");
-			ref = getType("java.lang.String");
+			ref = getType(getParseHelper(), "java.lang.String");
 			when(jp.getParameterType()).thenReturn(ref);
 			JvmAnnotationType annotationType = mock(JvmAnnotationType.class);
 			when(annotationType.getQualifiedName()).thenReturn(DefaultValue.class.getName());
@@ -955,14 +961,14 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 
 			jp = mock(JvmFormalParameter.class);
 			when(jp.getName()).thenReturn("secondarg");
-			ref = getType("int");
+			ref = getType(getParseHelper(), "int");
 			when(jp.getParameterType()).thenReturn(ref);
 			when(jp.getAnnotations()).thenReturn(ECollections.<JvmAnnotationReference>emptyEList());
 			this.jvmParameters.add(jp);
 
 			jp = mock(JvmFormalParameter.class);
 			when(jp.getName()).thenReturn("thirdarg");
-			ref = getType("float");
+			ref = getType(getParseHelper(), "float");
 			when(jp.getParameterType()).thenReturn(ref);
 			annotationType = mock(JvmAnnotationType.class);
 			when(annotationType.getQualifiedName()).thenReturn(DefaultValue.class.getName());
@@ -980,7 +986,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 
 			jp = mock(JvmFormalParameter.class);
 			when(jp.getName()).thenReturn("fourtharg");
-			ref = getType("java.lang.Object[]");
+			ref = getType(getParseHelper(), "java.lang.Object[]");
 			when(jp.getParameterType()).thenReturn(ref);
 			when(jp.getAnnotations()).thenReturn(ECollections.<JvmAnnotationReference>emptyEList());
 			this.jvmParameters.add(jp);
@@ -988,7 +994,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 
 		@Test
 		public void validateTypeOfVarArgInSarl() throws Exception {
-			SarlScript s = file("agent Foo { def fooFct(a : float, b : Object*) {} }");
+			SarlScript s = file(getParseHelper(), "agent Foo { def fooFct(a : float, b : Object*) {} }");
 			SarlFormalParameter param = (SarlFormalParameter) ((SarlAction) ((SarlAgent) s.getXtendTypes().get(0))
 					.getMembers().get(0)).getParameters().get(1);
 			assertNotNull(param);

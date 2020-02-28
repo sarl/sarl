@@ -31,16 +31,24 @@ import io.sarl.lang.core.SpaceID
 import io.sarl.sre.services.context.Context
 import io.sarl.sre.services.lifecycle.AgentLife
 import io.sarl.sre.skills.bic.DefaultContextInteractionsSkill
-import io.sarl.sre.tests.testutils.AbstractSreTest
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
 import io.sarl.sre.tests.units.skills.bic.mocks.MyAgent3
 import io.sarl.tests.api.Nullable
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
 import org.mockito.ArgumentCaptor
 
-import static org.mockito.Mockito.when
+import static io.sarl.tests.api.tools.TestReflections.*
+import static org.junit.jupiter.api.Assertions.*
+import static org.mockito.Mockito.*
 
+import static extension io.sarl.tests.api.tools.TestMockito.mock
+import static extension org.mockito.Mockito.spy
 import static extension org.mockito.Mockito.verify
 
 /**
@@ -49,7 +57,13 @@ import static extension org.mockito.Mockito.verify
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class DefaultContextInteractionsSkillTest extends AbstractSreTest {
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@DisplayName("unit: DefaultContextInteractionsSkill test")
+class DefaultContextInteractionsSkillTest {
 
 	@Nullable
 	var contextId : UUID
@@ -63,13 +77,13 @@ class DefaultContextInteractionsSkillTest extends AbstractSreTest {
 	@Nullable
 	var ^skill : DefaultContextInteractionsSkill
 
-	@Before
+	@BeforeEach
 	def setUp : void {
 		this.contextId = UUID::randomUUID
 		this.^agentId = UUID::randomUUID
 		this.^agent = new MyAgent3(contextId, this.^agentId).spy
 		this.^skill = new DefaultContextInteractionsSkill
-		this.reflect.invoke(this.^skill, "setOwner", this.^agent)
+		invokeProc(this.^skill.class, this.^skill, "setOwner", #[typeof(Agent)], this.^agent)
 	}
 
 	@Test

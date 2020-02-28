@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.tests.units;
+package io.sarl.sre.tests.units
 
 import io.sarl.sre.Kernel
 import io.sarl.sre.services.IServiceManager
@@ -28,32 +28,45 @@ import io.sarl.sre.services.context.ContextService
 import io.sarl.sre.services.lifecycle.LifecycleService
 import io.sarl.sre.services.lifecycle.SpawnResult
 import io.sarl.sre.services.logging.LoggingService
-import io.sarl.sre.tests.testutils.AbstractSreTest
-import io.sarl.sre.tests.testutils.IddleTestingAgent
+import io.sarl.sre.tests.testutils.agents.IddleTestingAgent
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.lang.Thread.UncaughtExceptionHandler
 import java.util.UUID
 import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.logging.Logger
 import org.arakhne.afc.util.OutputParameter
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
 import org.mockito.ArgumentCaptor
 
-import static org.mockito.ArgumentMatchers.any
-import static org.mockito.ArgumentMatchers.anyInt
-import static org.mockito.Mockito.when
+import static org.junit.jupiter.api.Assertions.*
+import static org.mockito.ArgumentMatchers.*
+import static org.mockito.Mockito.*
 
-import static extension org.mockito.Mockito.*
+import static extension io.sarl.tests.api.tools.TestMockito.anyInstanceOrNull
+import static extension io.sarl.tests.api.tools.TestMockito.mock
+import static extension org.mockito.ArgumentMatchers.any
+import static extension org.mockito.Mockito.spy
+import static extension org.mockito.Mockito.verify
+import org.junit.jupiter.api.DisplayName
 
-/**
+/** 
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class KernelTest extends AbstractSreTest {
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@DisplayName("unit: Kernel test")
+class KernelTest {
 
 	@Nullable
 	var handler : UncaughtExceptionHandler
@@ -76,7 +89,7 @@ class KernelTest extends AbstractSreTest {
 	@Nullable
 	var kernel : Kernel 
 
-	@Before
+	@BeforeEach
 	def setUp {
 		this.rootContext = typeof(Context).mock
 		this.handler = typeof(UncaughtExceptionHandler).mock
@@ -148,7 +161,7 @@ class KernelTest extends AbstractSreTest {
 		assertSame(this.rootContext, capturedContext.value)
 		assertNull(capturedAgentId.value)
 		assertEquals(typeof(IddleTestingAgent), capturedAgentType.value)
-		Assert.assertEquals(1, capturedParams.allValues.get(0))
+		assertEquals(1, capturedParams.allValues.get(0))
 		assertEquals("a", capturedParams.allValues.get(1))
 	}
 
@@ -187,7 +200,7 @@ class KernelTest extends AbstractSreTest {
 		assertSame(this.rootContext, capturedContext.value)
 		assertSame(expectedId, capturedAgentId.value)
 		assertEquals(typeof(IddleTestingAgent), capturedAgentType.value)
-		Assert.assertEquals(1, capturedParams.allValues.get(0))
+		assertEquals(1, capturedParams.allValues.get(0))
 		assertEquals("a", capturedParams.allValues.get(1))
 	}
 
@@ -227,7 +240,7 @@ class KernelTest extends AbstractSreTest {
 		assertSame(this.rootContext, capturedContext.value)
 		assertNull(capturedAgentId.value)
 		assertEquals(typeof(IddleTestingAgent), capturedAgentType.value)
-		Assert.assertEquals(1, capturedParams.allValues.get(0))
+		assertEquals(1, capturedParams.allValues.get(0))
 		assertEquals("a", capturedParams.allValues.get(1))
 	}
 

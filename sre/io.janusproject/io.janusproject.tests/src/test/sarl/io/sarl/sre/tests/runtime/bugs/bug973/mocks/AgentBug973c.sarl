@@ -20,12 +20,13 @@
  */
 package io.sarl.sre.tests.runtime.bugs.bug973.mocks
 
-import io.sarl.sre.tests.testutils.TestingAgent
+import io.sarl.sre.tests.testutils.agents.TestingAgent
 
 agent AgentBug973c extends TestingAgent {
 
 	var theSkill : SkillBug973
 
+	@SuppressWarnings("potential_field_synchronization_problem")
 	override runAgentTest : RunPolicy {
 		// Add a fake skill in order to have at least 2 registered skills
 		new FakeSkillBug973().setSkill

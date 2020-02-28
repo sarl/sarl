@@ -21,14 +21,14 @@
 
 package io.sarl.docs.doclet.tests;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.google.inject.Injector;
 import org.eclipse.xtext.xbase.lib.Functions;
 import org.eclipse.xtext.xbase.lib.Procedures;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.docs.doclet.utils.SARLFeatureAccess;
 import io.sarl.lang.SARLStandaloneSetup;
@@ -49,6 +49,17 @@ import io.sarl.lang.services.SARLGrammarKeywordAccess;
  */
 @SuppressWarnings("all")
 public final class SARLFeatureAccessTest {
+
+	private io.sarl.lang.services.SARLGrammarKeywordAccess original;
+
+	private SARLFeatureAccess access;
+	
+	@BeforeEach
+	public void setUp() {
+		Injector injector = SARLStandaloneSetup.doSetup();
+		this.original = injector.getInstance(SARLGrammarKeywordAccess.class);
+		this.access = new SARLFeatureAccess();
+	}
 
 	@Test
 	public void testSARL_AGENT() {
@@ -85,16 +96,6 @@ public final class SARLFeatureAccessTest {
 		assertEquals(SarlPackage.SARL_ARTIFACT, SARLFeatureAccess.SARL_ARTIFACT);
 	}
 	
-	private io.sarl.lang.services.SARLGrammarKeywordAccess original;
-	private SARLFeatureAccess access;
-	
-	@Before
-	public void setUp() {
-		Injector injector = SARLStandaloneSetup.doSetup();
-		this.original = injector.getInstance(SARLGrammarKeywordAccess.class);
-		this.access = new SARLFeatureAccess();
-	}
-
 	@Test
 	public void testDef() {
 		assertEquals(original.getDefKeyword(), access.getDefKeyword());

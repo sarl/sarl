@@ -23,8 +23,15 @@ package io.sarl.sre.tests.units.naming
 
 import io.sarl.sre.naming.INameParser
 import io.sarl.sre.naming.NameScheme
-import io.sarl.tests.api.AbstractSarlTest
-import org.junit.Test
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static extension org.junit.jupiter.api.Assertions.assertNull
+import static extension org.junit.jupiter.api.Assertions.assertSame
 
 /**
  * @author $Author: sgalland$
@@ -32,7 +39,13 @@ import org.junit.Test
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class INameParserTest extends AbstractSarlTest {
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@DisplayName("unit: INameParser test")
+class INameParserTest {
 
 	@Test
 	def getSchemeObject_String_null {

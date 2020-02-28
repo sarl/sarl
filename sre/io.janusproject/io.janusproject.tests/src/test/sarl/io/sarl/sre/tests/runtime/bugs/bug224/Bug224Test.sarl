@@ -1,0 +1,115 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2020 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.tests.runtime.bugs.bug224
+
+import io.sarl.sre.tests.runtime.bugs.bug224.mocks.MyBehavior
+import io.sarl.sre.tests.runtime.bugs.bug224.mocks.RegisteredInDestroyAgent
+import io.sarl.sre.tests.runtime.bugs.bug224.mocks.RegisteredInHandlerAgent
+import io.sarl.sre.tests.runtime.bugs.bug224.mocks.RegisteredInInitializeAgent
+import io.sarl.sre.tests.runtime.bugs.bug224.mocks.UnregisteredInDestroyAgent
+import io.sarl.sre.tests.runtime.bugs.bug224.mocks.UnregisteredInHandlerAgent
+import io.sarl.sre.tests.runtime.bugs.bug224.mocks.UnregisteredInInitializeAgent
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.sre.tests.testutils.^extension.SreRunContext
+import io.sarl.sre.tests.testutils.^extension.SreRunExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static org.junit.jupiter.api.Assertions.*
+import static io.sarl.sre.tests.testutils.Constants.*
+
+/** 
+ * Unit test for the issue #224: Equivalent of Skill.install for the Behavior class.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @see https://github.com/sarl/sarl/issues/224
+ */
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension),
+	typeof(SreRunExtension)
+])
+@DisplayName("run: Bug #224")
+class Bug224Test {
+
+	@Test
+	def registerInInitialize(extension rc : SreRunContext) {
+		typeof(RegisteredInInitializeAgent).runSre(false)
+		assertEquals(1, getNumberOfResults)
+		var beh = getResult(typeof(MyBehavior), 0)
+		assertEquals(1, beh.initializeEvaluations.intValue)
+		assertEquals(1, beh.destroyEvaluations.intValue)
+	}
+
+	@Test
+	def registerInHandler(extension rc : SreRunContext) {
+		typeof(RegisteredInHandlerAgent).runSre(false)
+		assertEquals(1, getNumberOfResults)
+		var beh = getResult(typeof(MyBehavior), 0)
+		assertEquals(1, beh.initializeEvaluations.intValue)
+		assertEquals(1, beh.destroyEvaluations.intValue)
+	}
+
+	@Test
+	def registerInDestroy(extension rc : SreRunContext) {
+		typeof(RegisteredInDestroyAgent).runSre(false)
+		assertEquals(1, getNumberOfResults)
+		var beh = getResult(typeof(MyBehavior), 0)
+		assertEquals(0, beh.initializeEvaluations.intValue)
+		assertEquals(0, beh.destroyEvaluations.intValue)
+	}
+
+	@Test
+	def unregisterInInitialize(extension rc : SreRunContext) {
+		typeof(UnregisteredInInitializeAgent).runSre(false)
+		assertEquals(1, getNumberOfResults)
+		var beh = getResult(typeof(MyBehavior), 0)
+		assertEquals(1, beh.initializeEvaluations.intValue)
+		assertEquals(1, beh.destroyEvaluations.intValue)
+	}
+
+	@Test
+	def unregisterInHandler(extension rc : SreRunContext) {
+		typeof(UnregisteredInHandlerAgent).runSre(false)
+		assertEquals(1, getNumberOfResults)
+		var beh = getResult(typeof(MyBehavior), 0)
+		assertEquals(1, beh.initializeEvaluations.intValue)
+		assertEquals(1, beh.destroyEvaluations.intValue)
+	}
+
+	@Test
+	def unregisterInDestroy(extension rc : SreRunContext) {
+		typeof(UnregisteredInDestroyAgent).runSre(null, true, NO_TIMEOUT)
+		assertEquals(1, getNumberOfResults)
+		var beh = getResult(typeof(MyBehavior), 0)
+		assertEquals(1, beh.initializeEvaluations.intValue)
+		assertEquals(1, beh.destroyEvaluations.intValue)
+	}
+
+}

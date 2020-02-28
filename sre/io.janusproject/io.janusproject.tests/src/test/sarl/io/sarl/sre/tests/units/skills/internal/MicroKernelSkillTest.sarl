@@ -24,14 +24,20 @@ package io.sarl.sre.tests.units.skills.internal
 import com.google.common.util.concurrent.Service
 import io.sarl.sre.Kernel
 import io.sarl.sre.skills.internal.MicroKernelSkill
-import io.sarl.sre.tests.testutils.AbstractSreTest
-import io.sarl.tests.api.ManualMocking
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
-import org.junit.Before
-import org.junit.Test
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
 
-import static org.mockito.ArgumentMatchers.any
-import static org.mockito.Mockito.when
+import static org.junit.jupiter.api.Assertions.*
+import static org.mockito.ArgumentMatchers.*
+import static org.mockito.Mockito.*
+
+import static extension io.sarl.tests.api.tools.TestMockito.mock
 
 /**
  * @author $Author: sgalland$
@@ -39,8 +45,13 @@ import static org.mockito.Mockito.when
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@ManualMocking
-class MicroKernelSkillTest extends AbstractSreTest {
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@DisplayName("unit: MicroKernelSkill test")
+class MicroKernelSkillTest {
 
 	@Nullable
 	var kernel : Kernel
@@ -51,7 +62,7 @@ class MicroKernelSkillTest extends AbstractSreTest {
 	@Nullable
 	var ^skill : MicroKernelSkill
 
-	@Before
+	@BeforeEach
 	def setUp : void {
 		this.service = typeof(Service).mock
 		this.kernel = typeof(Kernel).mock

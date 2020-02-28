@@ -20,10 +20,15 @@
  */
 package io.sarl.lang.core.tests.scoping.extensions.time;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static io.sarl.tests.api.tools.TestAssertions.assertParameterNames;
+import static io.sarl.tests.api.tools.TestAssertions.assertTypeReferenceIdentifier;
+import static io.sarl.tests.api.tools.TestAssertions.assertTypeReferenceIdentifiers;
+import static io.sarl.tests.api.tools.TestEObjects.file;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
@@ -42,14 +47,14 @@ public class TimeExtensionsParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void testMilliseconds() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 				"package io.sarl.lang.tests.ste",
 				"agent A1 {",
 					"def myaction0 : Object {",
 					"	1234.milliseconds",
 					"}",
 				"}"
-			), true);
+			));
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertEquals("io.sarl.lang.tests.ste", mas.getPackage());
@@ -68,14 +73,14 @@ public class TimeExtensionsParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void testSeconds() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 				"package io.sarl.lang.tests.ste",
 				"agent A1 {",
 					"def myaction0 : Object {",
 					"	1234.seconds",
 					"}",
 				"}"
-			), true);
+			));
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertEquals("io.sarl.lang.tests.ste", mas.getPackage());
@@ -94,14 +99,14 @@ public class TimeExtensionsParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void testMinutes() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 				"package io.sarl.lang.tests.ste",
 				"agent A1 {",
 					"def myaction0 : Object {",
 					"	1234.minutes",
 					"}",
 				"}"
-			), true);
+			));
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertEquals("io.sarl.lang.tests.ste", mas.getPackage());
@@ -120,14 +125,14 @@ public class TimeExtensionsParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void testHours() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 				"package io.sarl.lang.tests.ste",
 				"agent A1 {",
 					"def myaction0 : Object {",
 					"	1234.hours",
 					"}",
 				"}"
-			), true);
+			));
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertEquals("io.sarl.lang.tests.ste", mas.getPackage());
@@ -146,14 +151,14 @@ public class TimeExtensionsParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void testDays() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 				"package io.sarl.lang.tests.ste",
 				"agent A1 {",
 					"def myaction0 : Object {",
 					"	1234.days",
 					"}",
 				"}"
-			), true);
+			));
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertEquals("io.sarl.lang.tests.ste", mas.getPackage());
@@ -172,14 +177,14 @@ public class TimeExtensionsParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void testWeeks() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 				"package io.sarl.lang.tests.ste",
 				"agent A1 {",
 					"def myaction0 : Object {",
 					"	1234.weeks",
 					"}",
 				"}"
-			), true);
+			));
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertEquals("io.sarl.lang.tests.ste", mas.getPackage());

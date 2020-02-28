@@ -28,15 +28,22 @@ import io.sarl.lang.core.SpaceID
 import io.sarl.sre.services.logging.LoggingService
 import io.sarl.sre.spaces.SpaceParticipantListenerFactory
 import io.sarl.sre.spaces.SreOpenEventSpaceSpecification
-import io.sarl.sre.tests.testutils.AbstractSreTest
-import io.sarl.tests.api.ManualMocking
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
 
+import static io.sarl.tests.api.tools.TestAssertions.*
+import static org.junit.jupiter.api.Assertions.*
+
+import static extension io.sarl.tests.api.tools.TestMockito.mock
 import static extension org.mockito.MockitoAnnotations.initMocks
 
 /**
@@ -45,8 +52,13 @@ import static extension org.mockito.MockitoAnnotations.initMocks
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@ManualMocking
-class SreOpenEventSpaceSpecificationTest extends AbstractSreTest {
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@DisplayName("unit: SreOpenEventSpaceSpecification test")
+class SreOpenEventSpaceSpecificationTest {
 
 	@Nullable
 	var spaceId : SpaceID
@@ -57,7 +69,7 @@ class SreOpenEventSpaceSpecificationTest extends AbstractSreTest {
 	@InjectMocks
 	var specification : SreOpenEventSpaceSpecification
 
-	@Before
+	@BeforeEach
 	def setUp : void {
 		this.spaceId = new SpaceID(UUID::randomUUID, UUID::randomUUID, typeof(EventSpaceSpecification))
 		this.initMocks

@@ -20,10 +20,10 @@
  */
 package io.sarl.lang.tests.modules.formatting2.types;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.tests.modules.formatting2.AbstractFormatterTest;
 
@@ -34,10 +34,6 @@ import io.sarl.lang.tests.modules.formatting2.AbstractFormatterTest;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(Suite.class)
-@SuiteClasses({
-	AnnotationTypeFormatterTest.FormatterAPITest.class,
-})
 @SuppressWarnings("all")
 public class AnnotationTypeFormatterTest {
 
@@ -47,7 +43,8 @@ public class AnnotationTypeFormatterTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class FormatterAPITest extends AbstractFormatterTest {
+	@Nested
+	public class FormatterAPITest extends AbstractFormatterTest {
 
 		@Test
 		public void empty() throws Exception {

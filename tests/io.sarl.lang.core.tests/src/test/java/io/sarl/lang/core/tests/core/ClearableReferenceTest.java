@@ -20,11 +20,12 @@
  */
 package io.sarl.lang.core.tests.core;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.mockito.Mockito.spy;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 import io.sarl.lang.util.ClearableReference;
@@ -44,7 +45,7 @@ public class ClearableReferenceTest extends AbstractSarlTest {
 
 	private ClearableReference<Object> reference;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.reference = mockReference(this.referencedObject);
 	}

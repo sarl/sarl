@@ -4,7 +4,25 @@
 			<pluginExecutionFilter>
 				<goals>
 					<goal>initialize</goal>
+				</goals>
+			</pluginExecutionFilter>
+			<action>
+				<execute />
+			</action>
+		</pluginExecution>
+		<pluginExecution>
+			<pluginExecutionFilter>
+				<goals>
 					<goal>generate</goal>
+				</goals>
+			</pluginExecutionFilter>
+			<action>
+				<execute />
+			</action>
+		</pluginExecution>
+		<pluginExecution>
+			<pluginExecutionFilter>
+				<goals>
 					<goal>generatetests</goal>
 				</goals>
 			</pluginExecutionFilter>

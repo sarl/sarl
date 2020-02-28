@@ -20,6 +20,14 @@
  */
 package io.sarl.lang.tests.modules.util;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertStrictlyNegative;
+import static io.sarl.tests.api.tools.TestAssertions.assertStrictlyPositive;
+import static io.sarl.tests.api.tools.TestAssertions.assertZero;
+import static io.sarl.tests.api.tools.TestMockito.mock;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyChar;
 import static org.mockito.Mockito.when;
@@ -37,7 +45,7 @@ import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.osgi.framework.Version;
 
 import io.sarl.lang.SARLVersion;

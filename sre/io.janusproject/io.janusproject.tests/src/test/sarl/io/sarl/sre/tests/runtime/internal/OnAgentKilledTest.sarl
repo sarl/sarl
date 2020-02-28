@@ -1,0 +1,74 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2020 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.tests.runtime.internal
+
+import io.sarl.core.AgentKilled
+import io.sarl.lang.core.SpaceID
+import io.sarl.sre.tests.runtime.internal.mocks.MySpawnedAgent1
+import io.sarl.sre.tests.runtime.internal.mocks.MyWaiterAgent1
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.sre.tests.testutils.^extension.SreRunContext
+import io.sarl.sre.tests.testutils.^extension.SreRunExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.util.UUID
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static io.sarl.sre.tests.testutils.Constants.*
+import static org.junit.jupiter.api.Assertions.*
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension),
+	typeof(SreRunExtension)
+])
+@DisplayName("run: on AgentKilled test")
+class OnAgentKilledTest {
+		
+	@Test
+	def run(extension rc : SreRunContext) {
+		typeof(MyWaiterAgent1).runSre(null, true, STANDARD_TIMEOUT)
+		
+		var all = allResults
+		assertEquals(4, all.size)
+		assertEquals("SPAWNER", all.get(typeof(String), 0))
+		var ^event = all.get(typeof(AgentKilled), 1)
+		var ^space = all.get(typeof(SpaceID), 2)
+		var spawnId = all.get(typeof(UUID), 3)
+
+		assertNotNull(^event)
+		assertEquals(typeof(MySpawnedAgent1).name, ^event.agentType)
+		assertEquals(spawnId, ^event.source.UUID)
+		assertEquals(^space, ^event.source.spaceID)
+		assertEquals(spawnId, ^event.source.UUID)
+	}
+
+}

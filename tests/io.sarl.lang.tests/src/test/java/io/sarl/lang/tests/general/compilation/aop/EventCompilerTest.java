@@ -21,9 +21,10 @@
 
 package io.sarl.lang.tests.general.compilation.aop;
 
-import com.google.inject.Inject;
-import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
-import org.junit.Test;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;

@@ -20,9 +20,9 @@
  */
 package io.sarl.lang.tests.general.compilation.general;
 
-import com.google.inject.Inject;
-import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
-import org.junit.Test;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;

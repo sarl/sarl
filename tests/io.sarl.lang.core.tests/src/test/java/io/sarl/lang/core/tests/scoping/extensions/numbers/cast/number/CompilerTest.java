@@ -21,18 +21,22 @@
 
 package io.sarl.lang.core.tests.scoping.extensions.numbers.cast.number;
 
+import static io.sarl.tests.api.tools.TestEObjects.file;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static io.sarl.tests.api.tools.TestValidator.validate;
+
 import org.eclipse.xtext.common.types.TypesPackage;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.validation.IssueCodes;
 import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.MassiveCompilationSuite;
-import io.sarl.tests.api.MassiveCompilationSuite.CompilationTest;
-import io.sarl.tests.api.MassiveCompilationSuite.Context;
+import io.sarl.tests.api.globalcompilation.GlobalCompilationSuite;
+import io.sarl.tests.api.globalcompilation.GlobalCompilationTestContribution;
+import io.sarl.tests.api.globalcompilation.ResourceSetGlobalCompilationContext;
 
 /**
  * @author $Author: sgalland$
@@ -41,8 +45,9 @@ import io.sarl.tests.api.MassiveCompilationSuite.Context;
  * @mavenartifactid $ArtifactId$
  * @see "https://github.com/eclipse/xtext-extras/issues/186"
  */
-@RunWith(MassiveCompilationSuite.class)
+@GlobalCompilationSuite
 @SuppressWarnings("all")
+@DisplayName("Compiling Number cast operator")
 public class CompilerTest extends AbstractSarlTest {
 
 	private static final String AS_BYTE_SARL = multilineString(
@@ -76,7 +81,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	public void as_byte_issues() throws Exception {
-		validate(file(AS_BYTE_SARL))
+		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_BYTE_SARL))
 		.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
@@ -89,8 +94,8 @@ public class CompilerTest extends AbstractSarlTest {
 				"'byteValue'");
 	}
 
-	@CompilationTest
-	public static void as_byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void as_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_BYTE_SARL, AS_BYTE_JAVA);
 	}
 
@@ -125,7 +130,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	public void as_short_issues() throws Exception {
-		validate(file(AS_SHORT_SARL))
+		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_SHORT_SARL))
 		.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
@@ -138,8 +143,8 @@ public class CompilerTest extends AbstractSarlTest {
 				"'shortValue'");
 	}
 
-	@CompilationTest
-	public static void as_short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void as_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_SHORT_SARL, AS_SHORT_JAVA);
 	}
 
@@ -174,7 +179,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	public void as_int_issues() throws Exception {
-		validate(file(AS_INT_SARL))
+		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_INT_SARL))
 		.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
@@ -187,8 +192,8 @@ public class CompilerTest extends AbstractSarlTest {
 				"'intValue'");
 	}
 
-	@CompilationTest
-	public static void as_int(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void as_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_INT_SARL, AS_INT_JAVA);
 	}
 
@@ -223,7 +228,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	public void as_long_issues() throws Exception {
-		validate(file(AS_LONG_SARL))
+		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_LONG_SARL))
 		.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
@@ -236,8 +241,8 @@ public class CompilerTest extends AbstractSarlTest {
 				"'longValue'");
 	}
 
-	@CompilationTest
-	public static void as_long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void as_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_LONG_SARL, AS_LONG_JAVA);
 	}
 
@@ -272,7 +277,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	public void as_float_issues() throws Exception {
-		validate(file(AS_FLOAT_SARL))
+		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_FLOAT_SARL))
 		.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
@@ -285,8 +290,8 @@ public class CompilerTest extends AbstractSarlTest {
 				"'floatValue'");
 	}
 
-	@CompilationTest
-	public static void as_float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void as_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_FLOAT_SARL, AS_FLOAT_JAVA);
 	}
 
@@ -321,7 +326,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	public void as_double_issues() throws Exception {
-		validate(file(AS_DOUBLE_SARL))
+		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_DOUBLE_SARL))
 		.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
@@ -334,8 +339,8 @@ public class CompilerTest extends AbstractSarlTest {
 				"'doubleValue'");
 	}
 
-	@CompilationTest
-	public static void as_double(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void as_double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_DOUBLE_SARL, AS_DOUBLE_JAVA);
 	}
 
@@ -370,7 +375,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	public void as_Byte_issues() throws Exception {
-		validate(file(AS_BYTE_OBJECT_SARL))
+		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_BYTE_OBJECT_SARL))
 		.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
@@ -383,8 +388,8 @@ public class CompilerTest extends AbstractSarlTest {
 				"'toByte'");
 	}
 
-	@CompilationTest
-	public static void as_Byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void as_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_BYTE_OBJECT_SARL, AS_BYTE_OBJECT_JAVA);
 	}
 
@@ -419,7 +424,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	public void as_Short_issues() throws Exception {
-		validate(file(AS_SHORT_OBJECT_SARL))
+		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_SHORT_OBJECT_SARL))
 		.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
@@ -432,8 +437,8 @@ public class CompilerTest extends AbstractSarlTest {
 				"'toShort'");
 	}
 
-	@CompilationTest
-	public static void as_Short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void as_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_SHORT_OBJECT_SARL, AS_SHORT_OBJECT_JAVA);
 	}
 
@@ -468,7 +473,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	public void as_Integer_issues() throws Exception {
-		validate(file(AS_INTEGER_OBJECT_SARL))
+		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_INTEGER_OBJECT_SARL))
 		.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
@@ -481,8 +486,8 @@ public class CompilerTest extends AbstractSarlTest {
 				"'toInteger'");
 	}
 
-	@CompilationTest
-	public static void as_Integer(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void as_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_INTEGER_OBJECT_SARL, AS_INTEGER_OBJECT_JAVA);
 	}
 
@@ -517,8 +522,8 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	public void as_Long_issues() throws Exception {
-		SarlScript script = file(AS_LONG_OBJECT_SARL);
-		validate(script)
+		SarlScript script = file(getParseHelper(), AS_LONG_OBJECT_SARL);
+		validate(getValidationHelper(), getInjector(), script)
 		.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
@@ -530,8 +535,8 @@ public class CompilerTest extends AbstractSarlTest {
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION);
 	}
 
-	@CompilationTest
-	public static void as_Long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void as_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_LONG_OBJECT_SARL, AS_LONG_OBJECT_JAVA);
 	}
 
@@ -566,7 +571,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	public void as_Float_issues() throws Exception {
-		validate(file(AS_FLOAT_OBJECT_SARL))
+		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_FLOAT_OBJECT_SARL))
 		.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
@@ -579,8 +584,8 @@ public class CompilerTest extends AbstractSarlTest {
 				"'toFloat'");
 	}
 
-	@CompilationTest
-	public static void as_Float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void as_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_FLOAT_OBJECT_SARL, AS_FLOAT_OBJECT_JAVA);
 	}
 
@@ -615,7 +620,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	public void as_Double_issues() throws Exception {
-		validate(file(AS_DOUBLE_OBJECT_SARL))
+		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_DOUBLE_OBJECT_SARL))
 		.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
@@ -628,8 +633,8 @@ public class CompilerTest extends AbstractSarlTest {
 				"'toDouble'");
 	}
 
-	@CompilationTest
-	public static void as_Double(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void as_Double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_DOUBLE_OBJECT_SARL, AS_DOUBLE_OBJECT_JAVA);
 	}
 
@@ -666,7 +671,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	public void as_AtomicInteger_issues() throws Exception {
-		validate(file(AS_ATOMICINTEGER_OBJECT_SARL))
+		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_ATOMICINTEGER_OBJECT_SARL))
 		.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
@@ -678,8 +683,8 @@ public class CompilerTest extends AbstractSarlTest {
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION);
 	}
 
-	@CompilationTest
-	public static void as_AtomicInteger(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void as_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_ATOMICINTEGER_OBJECT_SARL, AS_ATOMICINTEGER_OBJECT_JAVA);
 	}
 
@@ -716,7 +721,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	public void as_AtomicLong_issues() throws Exception {
-		validate(file(AS_ATOMICLONG_OBJECT_SARL))
+		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_ATOMICLONG_OBJECT_SARL))
 		.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
@@ -729,8 +734,8 @@ public class CompilerTest extends AbstractSarlTest {
 				"'toAtomicLong'");
 	}
 
-	@CompilationTest
-	public static void as_AtomicLong(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void as_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_ATOMICLONG_OBJECT_SARL, AS_ATOMICLONG_OBJECT_JAVA);
 	}
 
@@ -767,7 +772,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	public void as_AtomicDouble_issues() throws Exception {
-		validate(file(AS_ATOMICDOUBLE_OBJECT_SARL))
+		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_ATOMICDOUBLE_OBJECT_SARL))
 		.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
@@ -779,8 +784,8 @@ public class CompilerTest extends AbstractSarlTest {
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION);
 	}
 
-	@CompilationTest
-	public static void as_AtomicDouble(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void as_AtomicDouble(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_ATOMICDOUBLE_OBJECT_SARL, AS_ATOMICDOUBLE_OBJECT_JAVA);
 	}
 
@@ -817,7 +822,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	public void as_BigInteger_issues() throws Exception {
-		validate(file(AS_BIGINTEGER_OBJECT_SARL))
+		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_BIGINTEGER_OBJECT_SARL))
 		.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
@@ -829,8 +834,8 @@ public class CompilerTest extends AbstractSarlTest {
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION);
 	}
 
-	@CompilationTest
-	public static void as_BigInteger(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void as_BigInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_BIGINTEGER_OBJECT_SARL, AS_BIGINTEGER_OBJECT_JAVA);
 	}
 
@@ -867,7 +872,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	public void as_BigDecimal_issues() throws Exception {
-		validate(file(AS_BIGDECIMAL_OBJECT_SARL))
+		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_BIGDECIMAL_OBJECT_SARL))
 		.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
@@ -879,8 +884,8 @@ public class CompilerTest extends AbstractSarlTest {
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION);
 	}
 
-	@CompilationTest
-	public static void as_BigDecimal(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void as_BigDecimal(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_BIGDECIMAL_OBJECT_SARL, AS_BIGDECIMAL_OBJECT_JAVA);
 	}
 
@@ -915,7 +920,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	public void as_Number_issues() throws Exception {
-		validate(file(AS_NUMBER_OBJECT_SARL))
+		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_NUMBER_OBJECT_SARL))
 		.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
@@ -928,8 +933,8 @@ public class CompilerTest extends AbstractSarlTest {
 				IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION);
 	}
 
-	@CompilationTest
-	public static void as_Number(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void as_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_NUMBER_OBJECT_SARL, AS_NUMBER_OBJECT_JAVA);
 	}
 
@@ -964,7 +969,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	public void as_String_issues() throws Exception {
-		validate(file(AS_STRING_OBJECT_SARL))
+		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_STRING_OBJECT_SARL))
 		.assertNoErrors(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST)
@@ -977,8 +982,8 @@ public class CompilerTest extends AbstractSarlTest {
 				"'toString'");
 	}
 
-	@CompilationTest
-	public static void as_String(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void as_String(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(AS_STRING_OBJECT_SARL, AS_STRING_OBJECT_JAVA);
 	}
 
@@ -992,7 +997,7 @@ public class CompilerTest extends AbstractSarlTest {
 
 	@Test
 	public void as_UUID_issues() throws Exception {
-		validate(file(AS_UUID_OBJECT_SARL))
+		validate(getValidationHelper(), getInjector(), file(getParseHelper(), AS_UUID_OBJECT_SARL))
 		.assertError(
 				TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_CAST,

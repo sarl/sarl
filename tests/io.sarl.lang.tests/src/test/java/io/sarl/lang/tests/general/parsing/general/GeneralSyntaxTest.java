@@ -20,14 +20,18 @@
  */
 package io.sarl.lang.tests.general.parsing.general;
 
+import static io.sarl.tests.api.tools.TestEObjects.file;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static io.sarl.tests.api.tools.TestValidator.validate;
+
+import org.eclipse.xtext.xbase.validation.IssueCodes;
+import org.eclipse.xtext.xtype.XtypePackage;
+import org.junit.jupiter.api.Test;
+
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.validation.SyntaxIssueCodes;
 import io.sarl.tests.api.AbstractSarlTest;
-
-import org.eclipse.xtext.xbase.validation.IssueCodes;
-import org.eclipse.xtext.xtype.XtypePackage;
-import org.junit.Test;
 
 
 /**
@@ -41,13 +45,13 @@ public class GeneralSyntaxTest extends AbstractSarlTest {
 
 	@Test
 	public void wildCardImports() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.docs.reference.gsr",
 				"import org.eclipse.xtext.xbase.lib.Procedures.*",
 				"agent A {",
 				"}",
 				""));
-		validate(mas).assertWarning(
+		validate(getValidationHelper(), getInjector(), mas).assertWarning(
 				XtypePackage.eINSTANCE.getXImportDeclaration(),
 				IssueCodes.IMPORT_WILDCARD_DEPRECATED,
 				"The use of wildcard imports is deprecated");
@@ -55,32 +59,32 @@ public class GeneralSyntaxTest extends AbstractSarlTest {
 
 	@Test
 	public void noParamNoReturnActionInClass() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"abstract class Light {",
 				"	abstract def turnOn",
 				"	abstract def turnOff",
 				"}",
 				""));
-		validate(mas).assertNoIssues();
+		validate(getValidationHelper(), getInjector(), mas).assertNoIssues();
 	}
 
 	@Test
 	public void noParamNoReturnActionInInterface() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"interface Light {",
 				"	abstract def turnOn",
 				"	abstract def turnOff",
 				"}",
 				""));
-		validate(mas).assertNoIssues();
+		validate(getValidationHelper(), getInjector(), mas).assertNoIssues();
 	}
 	
 	@Test
 	public void sarlKeywordAsIdentifier() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.lang.tests.behavior.mypackage",
 				""));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlScript(),
 				SyntaxIssueCodes.USED_RESERVED_KEYWORD,
 				"'behavior' is a reserved keyword which is not allowed as identifier.");
@@ -88,10 +92,10 @@ public class GeneralSyntaxTest extends AbstractSarlTest {
 
 	@Test
 	public void javaKeywordAsIdentifier() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.lang.tests.null.mypackage",
 				""));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlScript(),
 				SyntaxIssueCodes.USED_RESERVED_KEYWORD,
 				"'null' is a reserved keyword which is not allowed as identifier.");

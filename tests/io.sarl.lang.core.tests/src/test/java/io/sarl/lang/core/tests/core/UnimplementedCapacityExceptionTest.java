@@ -20,10 +20,12 @@
  */
 package io.sarl.lang.core.tests.core;
 
+import static org.junit.jupiter.api.Assertions.assertSame;
+
 import java.util.UUID;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.UnimplementedCapacityException;
@@ -45,7 +47,7 @@ public class UnimplementedCapacityExceptionTest extends AbstractSarlTest {
 
 	/**
 	 */
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.agentID = UUID.randomUUID();
 		this.capacity = Capacity.class;

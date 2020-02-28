@@ -20,7 +20,7 @@
  */
 package io.sarl.lang.tests.modules.formatting2.documentation;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.tests.modules.formatting2.AbstractMemberFormatterTest;
 

@@ -1,0 +1,126 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2020 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.tests.testutils.^extension
+
+import com.google.common.util.concurrent.Service
+import com.google.common.util.concurrent.Service.State
+import io.sarl.sre.tests.testutils.AbstractSreServiceTest
+import io.sarl.sre.tests.testutils.annotation.AvoidServiceAutostartForTest
+import java.lang.reflect.Method
+import java.util.concurrent.TimeUnit
+import org.junit.jupiter.api.^extension.ExtensionContext
+import org.junit.jupiter.api.^extension.InvocationInterceptor
+import org.junit.jupiter.api.^extension.ParameterContext
+import org.junit.jupiter.api.^extension.ParameterResolver
+import org.junit.jupiter.api.^extension.ReflectiveInvocationContext
+
+/**
+ * JUnit 5 extension that is saving and restoring system properties.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.11
+ */
+class ServiceManagementExtension implements ParameterResolver, InvocationInterceptor {
+
+	override supportsParameter(parameterContext : ParameterContext, extensionContext : ExtensionContext) : boolean {
+		if (parameterContext.index === 0) {
+			var instance = extensionContext.requiredTestInstance
+			if (instance instanceof AbstractSreServiceTest) {
+				val type : Class<? extends Service> = instance.serviceType
+				if (type !== null) {
+					return type.isAssignableFrom(parameterContext.parameter.type)
+				}
+			}
+		}
+		return false
+	}
+
+	override resolveParameter(parameterContext : ParameterContext, extensionContext : ExtensionContext) : Object {
+		var instance = extensionContext.requiredTestInstance
+		if (instance instanceof AbstractSreServiceTest) {
+			var service = instance.newService
+			service.startService(extensionContext)
+			return service
+		}
+		throw new IllegalStateException("cannot create the service")
+	}
+
+	override interceptTestMethod(invocation : Invocation<Void>,
+		invocationContext : ReflectiveInvocationContext<Method>,
+		extensionContext : ExtensionContext) {
+		try {
+			invocation.proceed
+		} finally {
+			if (invocationContext.arguments.size === 1) {
+				var arg = invocationContext.arguments.get(0)
+				if (arg instanceof Service) {
+					arg.stopAsync
+				}
+			}
+		}
+	}
+
+	protected static def startService(service : Service, context : ExtensionContext) {
+		val avoidAnnot = context.requiredTestMethod.getAnnotation(typeof(AvoidServiceAutostartForTest))
+		if (avoidAnnot === null) {
+			service.startService
+		}
+	}
+
+	/** 
+	 * Start the tested service.
+	 * 
+	 * <p>This function should not be called directly. It is invoked by the extension implemented
+	 * in the {@link AbstractSreServiceTest}.
+	 *
+	 * @param service the service to start.
+	 */
+	static def startService(service : Service) {
+		service.startAsync
+		service.awaitRunning(2, TimeUnit::SECONDS)
+	}
+
+	/** Start the given service manually.
+	 * 
+	 * @param service the service to start.
+	 */
+	@SuppressWarnings("discouraged_reference")
+	static def startServiceManually(service : Service) {
+		service.startAsync
+		var state = service.state
+		while (state !== null && state !== State::STOPPING && state !== State::FAILED && state !== State::RUNNING) {
+			try {
+				Thread::sleep(1)
+			} catch (e : Throwable) {
+				// Ignore any exception
+			}
+			state = service.state
+		}
+		if (state === State::FAILED) {
+			throw new RuntimeException(service.failureCause)
+		}
+	}
+
+}

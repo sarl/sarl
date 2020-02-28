@@ -21,13 +21,22 @@
 
 package io.sarl.sre.tests.units.services.namespace
 
+import io.sarl.sre.naming.SarlName
 import io.sarl.sre.services.namespace.FieldAccess
-import io.sarl.tests.api.AbstractSarlTest
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.lang.reflect.Field
 import javax.annotation.Nullable
-import org.junit.Before
-import org.junit.Test
-import io.sarl.sre.naming.SarlName
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static extension io.sarl.tests.api.tools.TestAssertions.assertException
+import static extension io.sarl.tests.api.tools.TestMockito.mock
+import static extension org.junit.jupiter.api.Assertions.assertEquals
+import static extension org.junit.jupiter.api.Assertions.assertSame
 
 /**
  * @author $Author: sgalland$
@@ -35,7 +44,13 @@ import io.sarl.sre.naming.SarlName
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class FieldAccessTest extends AbstractSarlTest {
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@DisplayName("unit: FieldAccess test")
+class FieldAccessTest {
 
 	private static class ObjectMock {
 		public var fld : int = 34
@@ -54,7 +69,7 @@ class FieldAccessTest extends AbstractSarlTest {
 	var nameMock : SarlName
 
 	
-	@Before
+	@BeforeEach
 	def setUp : void {
 		this.nameMock = typeof(SarlName).mock
 		this.field = typeof(ObjectMock).getDeclaredField("fld")
@@ -90,9 +105,11 @@ class FieldAccessTest extends AbstractSarlTest {
 		128.assertEquals(this.objectMock.fld)
 	}
 
-	@Test(expected = IllegalArgumentException)
+	@Test
 	def set_invalidType : void {
-		this.accessor.set("abc")
+		typeof(IllegalArgumentException).assertException [
+			this.accessor.set("abc")
+		]
 	}
 
 	@Test

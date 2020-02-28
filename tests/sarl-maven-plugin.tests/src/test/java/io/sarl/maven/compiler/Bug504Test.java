@@ -20,7 +20,8 @@
  */
 package io.sarl.maven.compiler;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 import java.nio.file.FileSystems;
@@ -28,10 +29,7 @@ import java.nio.file.Path;
 
 import org.apache.maven.it.Verifier;
 import org.apache.maven.shared.utils.io.FileUtils;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;

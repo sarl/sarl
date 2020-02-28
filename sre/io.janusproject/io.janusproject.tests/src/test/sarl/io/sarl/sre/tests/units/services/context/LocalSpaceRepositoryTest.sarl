@@ -27,6 +27,7 @@ import io.sarl.sre.services.context.LocalSpaceRepository
 import io.sarl.sre.services.context.SpaceRepository.SpaceDescription
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
+import org.junit.jupiter.api.DisplayName
 
 /**
  * @author $Author: sgalland$
@@ -34,6 +35,7 @@ import java.util.concurrent.ConcurrentHashMap
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@DisplayName("unit: LocalSpaceRepository test")
 class LocalSpaceRepositoryTest extends AbstractSpaceRepositoryTest<LocalSpaceRepository, ConcurrentHashMap<UUID, SpaceDescription>> {
 
 	protected def newSpaceRepository : LocalSpaceRepository {

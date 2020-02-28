@@ -20,9 +20,13 @@
  */
 package io.sarl.lang.tests.general.parsing.general;
 
+import static io.sarl.tests.api.tools.TestEObjects.file;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static io.sarl.tests.api.tools.TestValidator.validate;
+
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
@@ -38,14 +42,14 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_agent_action() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 			"agent A1 {",
 				"def test {",
 					"System.exit(0)",
 				"}",
 			"}"
 		));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden feature call: java.lang.System.exit(int)");
@@ -53,7 +57,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_agent_behaviorUnit() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 			"event E1 { }",
 			"agent A1 {",
 				"on E1 {",
@@ -61,7 +65,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden feature call: java.lang.System.exit(int)");
@@ -69,14 +73,14 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_behavior_action() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 			"behavior B1 {",
 				"def test {",
 					"System.exit(0)",
 				"}",
 			"}"
 		));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden feature call: java.lang.System.exit(int)");
@@ -84,7 +88,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_behavior_behaviorUnit() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 			"event E1 { }",
 			"behavior B1 {",
 				"on E1 {",
@@ -92,7 +96,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden feature call: java.lang.System.exit(int)");
@@ -100,7 +104,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_behavior_constructor() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 			"event E1 { }",
 			"behavior B1 {",
 				"new (a : Agent) {",
@@ -109,7 +113,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden feature call: java.lang.System.exit(int)");
@@ -117,7 +121,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_skill_action() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 			"capacity C1 { }",
 			"skill S1 implements C1 {",
 				"def test {",
@@ -125,7 +129,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden feature call: java.lang.System.exit(int)");
@@ -133,7 +137,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_skill_constructor() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 			"capacity C1 { }",
 			"event E1 { }",
 			"skill S1 implements C1 {",
@@ -143,7 +147,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden feature call: java.lang.System.exit(int)");
@@ -151,7 +155,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_agent_action_staticImport() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 			"import static java.lang.System.*",
 			"agent A1 {",
 				"def test {",
@@ -159,7 +163,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 			XbasePackage.eINSTANCE.getXFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden feature call: java.lang.System.exit(int)");
@@ -167,7 +171,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_agent_behaviorUnit_staticImport() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 			"import static java.lang.System.*",
 			"event E1 { }",
 			"agent A1 {",
@@ -176,7 +180,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 			XbasePackage.eINSTANCE.getXFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden feature call: java.lang.System.exit(int)");
@@ -184,7 +188,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_behavior_action_staticImport() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 			"import static java.lang.System.*",
 			"behavior B1 {",
 				"def test {",
@@ -192,7 +196,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 			XbasePackage.eINSTANCE.getXFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden feature call: java.lang.System.exit(int)");
@@ -200,7 +204,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_behavior_behaviorUnit_staticImport() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 			"import static java.lang.System.*",
 			"event E1 { }",
 			"behavior B1 {",
@@ -209,7 +213,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 			XbasePackage.eINSTANCE.getXFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden feature call: java.lang.System.exit(int)");
@@ -217,7 +221,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_behavior_constructor_staticImport() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 			"import io.sarl.lang.core.Agent",
 			"import static java.lang.System.*",
 			"event E1 { }",
@@ -228,7 +232,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 			XbasePackage.eINSTANCE.getXFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden feature call: java.lang.System.exit(int)");
@@ -236,7 +240,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_skill_action_staticImport() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 			"import static java.lang.System.*",
 			"capacity C1 { }",
 			"skill S1 implements C1 {",
@@ -245,7 +249,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 			XbasePackage.eINSTANCE.getXFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden feature call: java.lang.System.exit(int)");
@@ -253,7 +257,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_skill_constructor_staticImport() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 			"import io.sarl.lang.core.Agent",
 			"import static java.lang.System.*",
 			"capacity C1 { }",
@@ -265,7 +269,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 			XbasePackage.eINSTANCE.getXFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden feature call: java.lang.System.exit(int)");
@@ -273,7 +277,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_agent_action_extension() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 			"import static extension java.lang.System.*",
 			"agent A1 {",
 				"def test {",
@@ -281,7 +285,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden feature call: java.lang.System.exit(int)");
@@ -289,7 +293,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_agent_behaviorUnit_extension() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 			"import static extension java.lang.System.*",
 			"event E1 { }",
 			"agent A1 {",
@@ -298,7 +302,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden feature call: java.lang.System.exit(int)");
@@ -306,7 +310,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_behavior_action_extension() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 			"import static extension java.lang.System.*",
 			"behavior B1 {",
 				"def test {",
@@ -314,7 +318,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden feature call: java.lang.System.exit(int)");
@@ -322,7 +326,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_behavior_behaviorUnit_extension() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 			"import static extension java.lang.System.*",
 			"event E1 { }",
 			"behavior B1 {",
@@ -331,7 +335,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden feature call: java.lang.System.exit(int)");
@@ -339,7 +343,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_behavior_constructor_extension() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 			"import io.sarl.lang.core.Agent",
 			"import static extension java.lang.System.*",
 			"event E1 { }",
@@ -350,7 +354,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden feature call: java.lang.System.exit(int)");
@@ -358,7 +362,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_skill_action_extension() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 			"import static extension java.lang.System.*",
 			"capacity C1 { }",
 			"skill S1 implements C1 {",
@@ -367,7 +371,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden feature call: java.lang.System.exit(int)");
@@ -375,7 +379,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
 	public void systemExit_skill_constructor_extension() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 			"import io.sarl.lang.core.Agent",
 			"import static extension java.lang.System.*",
 			"capacity C1 { }",
@@ -387,7 +391,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 				"}",
 			"}"
 		));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 			XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 			IssueCodes.FORBIDDEN_REFERENCE,
 			"Forbidden feature call: java.lang.System.exit(int)");

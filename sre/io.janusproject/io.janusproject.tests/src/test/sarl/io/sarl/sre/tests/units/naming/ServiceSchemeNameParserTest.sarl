@@ -26,27 +26,41 @@ import io.sarl.sre.naming.SarlName
 import io.sarl.sre.naming.ServiceName
 import io.sarl.sre.naming.ServiceSchemeNameParser
 import io.sarl.sre.services.logging.LoggingService
-import io.sarl.tests.api.AbstractSarlTest
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.net.URI
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
 
-/**
+import static extension io.sarl.tests.api.tools.TestAssertions.assertNullOrEmpty
+import static extension org.junit.jupiter.api.Assertions.assertEquals
+import static extension org.junit.jupiter.api.Assertions.assertNotNull
+import static extension org.junit.jupiter.api.Assertions.assertNull
+
+/** 
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-
-class ServiceSchemeNameParserTest extends AbstractSarlTest {
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@DisplayName("unit: service NameParser test")
+class ServiceSchemeNameParserTest {
 
 	val SERVICE_ID = typeof(LoggingService).name
 
 	@Nullable
 	var parser : NameParser
 
-	@Before
+	@BeforeEach
 	def setUp : void {
 		this.parser = new NameParser
 		this.parser.addSchemeNameParser(new ServiceSchemeNameParser)

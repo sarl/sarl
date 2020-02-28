@@ -20,9 +20,13 @@
  */
 package io.sarl.lang.tests.general.parsing.general;
 
+import static io.sarl.tests.api.tools.TestEObjects.file;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static io.sarl.tests.api.tools.TestValidator.validate;
+
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
@@ -39,7 +43,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 
 	@Test
 	public void privateFunctionPublicCaller_01() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"import foo.PrivateAPIObject",
 				"",
 				"class Accessor {",
@@ -48,7 +52,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 				"	}",
 				"}",
 				""));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 				XbasePackage.Literals.XMEMBER_FEATURE_CALL,
 				IssueCodes.FORBIDDEN_REFERENCE,
 				"Forbidden feature call");
@@ -56,7 +60,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 
 	@Test
 	public void privateFunctionPrivateCaller_01() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.PrivateAPI",
 				"import foo.PrivateAPIObject",
 				"",
@@ -67,12 +71,12 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				""));
-		validate(mas).assertNoErrors();
+		validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 	}
 
 	@Test
 	public void privateFunctionPrivateCaller_02() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.PrivateAPI",
 				"import foo.PrivateAPIObject",
 				"",
@@ -83,12 +87,12 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				""));
-		validate(mas).assertNoErrors();
+		validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 	}
 
 	@Test
 	public void privateFunctionPublicCaller_02() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"import foo.PrivateAPIObject2",
 				"",
 				"class Accessor {",
@@ -97,7 +101,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 				"	}",
 				"}",
 				""));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 				XbasePackage.Literals.XMEMBER_FEATURE_CALL,
 				IssueCodes.FORBIDDEN_REFERENCE,
 				"Forbidden feature call");
@@ -105,7 +109,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 
 	@Test
 	public void privateFunctionPrivateCaller_03() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.PrivateAPI",
 				"import foo.PrivateAPIObject2",
 				"",
@@ -116,12 +120,12 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				""));
-		validate(mas).assertNoErrors();
+		validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 	}
 
 	@Test
 	public void privateFunctionPrivateCaller_04() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.PrivateAPI",
 				"import foo.PrivateAPIObject2",
 				"",
@@ -132,12 +136,12 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				""));
-		validate(mas).assertNoErrors();
+		validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 	}
 
 	@Test
 	public void ambigousPrivateAPI_01() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.PrivateAPI",
 				"import foo.PrivateAPIObject2",
 				"import static extension foo.PrivateAPIObject3.*",
@@ -148,7 +152,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				""));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 				XbasePackage.Literals.XMEMBER_FEATURE_CALL,
 				IssueCodes.FORBIDDEN_REFERENCE,
 				"Forbidden feature call");
@@ -156,7 +160,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 
 	@Test
 	public void ambigousPrivateAPI_02() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.PrivateAPI",
 				"import foo.PrivateAPIObject2",
 				"import static extension foo.PrivateAPIObject3.*",
@@ -168,12 +172,12 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				""));
-		validate(mas).assertNoErrors();
+		validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 	}
 
 	@Test
 	public void ambigousPrivateAPI_03() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.PrivateAPI",
 				"import foo.PrivateAPIObject2",
 				"import static extension foo.PrivateAPIObject3.*",
@@ -185,12 +189,12 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				""));
-		validate(mas).assertNoErrors();
+		validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 	}
 
 	@Test
 	public void ambigousPrivateAPI_04() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.PrivateAPI",
 				"import io.sarl.core.AgentTask",
 				"import io.sarl.core.Schedules",
@@ -203,7 +207,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 				"  }",
 				"}",
 				""));
-		validate(mas).assertNoErrors();
+		validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 	}
 
 }

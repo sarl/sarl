@@ -21,13 +21,17 @@
 
 package io.sarl.lang.core.tests.scoping.extensions.numbers.arithmetic.doubleobject;
 
-import org.junit.Ignore;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
-import io.sarl.tests.api.AbstractMassiveCompilationTest;
-import io.sarl.tests.api.MassiveCompilationSuite.CompilationTest;
-import io.sarl.tests.api.MassiveCompilationSuite.Context;
+import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.globalcompilation.GlobalCompilationSuite;
+import io.sarl.tests.api.globalcompilation.GlobalCompilationTestContribution;
+import io.sarl.tests.api.globalcompilation.ResourceSetGlobalCompilationContext;
 
 /**
  * <p>FIXME: Enable when the speed issue of implicitly imported functions is solved.
@@ -39,11 +43,13 @@ import io.sarl.tests.api.MassiveCompilationSuite.Context;
  * @see "https://github.com/eclipse/xtext-extras/issues/186"
  */
 @SuppressWarnings("all")
-@Ignore
-public class CompilerTest extends AbstractMassiveCompilationTest {
+@DisplayName("Compiling Double operators")
+@GlobalCompilationSuite
+@Disabled("not yet added to the compiler")
+public class CompilerTest extends AbstractSarlTest {
 	
-	@CompilationTest
-	public static void operator_minus_Double(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_minus_Double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import com.google.common.util.concurrent.AtomicDouble",
 				"class A {",
@@ -75,8 +81,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_minus_Double_Number(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_minus_Double_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import com.google.common.util.concurrent.AtomicDouble",
 				"class A {",
@@ -109,8 +115,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_minus_Double_long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_minus_Double_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : long) : double {",
@@ -140,8 +146,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_minus_Double_Long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_minus_Double_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : Long) : double {",
@@ -172,8 +178,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_minus_Double_byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_minus_Double_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : byte) : double {",
@@ -203,8 +209,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_minus_Double_Byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_minus_Double_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : Byte) : double {",
@@ -235,8 +241,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_minus_Double_float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_minus_Double_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : float) : double {",
@@ -266,8 +272,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_minus_Double_Float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_minus_Double_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : Float) : double {",
@@ -298,8 +304,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_minus_Double_int(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_minus_Double_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : int) : double {",
@@ -329,8 +335,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_minus_Double_Integer(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_minus_Double_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : Integer) : double {",
@@ -361,8 +367,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_minus_Double_short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_minus_Double_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : short) : double {",
@@ -392,8 +398,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_minus_Double_Short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_minus_Double_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : Short) : double {",
@@ -424,8 +430,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_minus_Double_AtomicInteger(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_minus_Double_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicInteger",
 				"class A {",
@@ -458,8 +464,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_minus_Double_AtomicLong(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_minus_Double_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicLong",
 				"class A {",
@@ -492,8 +498,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_plus_Double_Long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_plus_Double_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : Long) : double {",
@@ -524,8 +530,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_plus_Double_long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_plus_Double_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : long) : double {",
@@ -555,8 +561,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_plus_Double_byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_plus_Double_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : byte) : double {",
@@ -586,8 +592,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_plus_Double_Byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_plus_Double_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : Byte) : double {",
@@ -618,8 +624,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_plus_Double_Float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_plus_Double_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : Float) : double {",
@@ -650,8 +656,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_plus_Double_float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_plus_Double_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : float) : double {",
@@ -681,8 +687,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_plus_Double_Integer(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_plus_Double_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : Integer) : double {",
@@ -713,8 +719,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_plus_Double_int(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_plus_Double_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : int) : double {",
@@ -744,8 +750,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_plus_Double_short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_plus_Double_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : short) : double {",
@@ -775,8 +781,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_plus_Double_Short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_plus_Double_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : Short) : double {",
@@ -807,8 +813,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_plus_Double_AtomicInteger(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_plus_Double_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicInteger",
 				"class A {",
@@ -841,8 +847,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_plus_Double_AtomicLong(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_plus_Double_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : Long) : double {",
@@ -873,8 +879,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_plus_Double_Number(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_plus_Double_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import com.google.common.util.concurrent.AtomicDouble",
 				"class A {",
@@ -907,8 +913,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_power_Double_Number(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_power_Double_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import com.google.common.util.concurrent.AtomicDouble",
 				"class A {",
@@ -941,8 +947,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_power_Double_byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_power_Double_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : byte) : double {",
@@ -972,8 +978,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_power_Double_short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_power_Double_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : short) : double {",
@@ -1003,8 +1009,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_power_Double_int(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_power_Double_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : int) : double {",
@@ -1034,8 +1040,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_power_Double_long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_power_Double_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : long) : double {",
@@ -1065,8 +1071,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_power_Double_float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_power_Double_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : float) : double {",
@@ -1096,8 +1102,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_power_Double_double(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_power_Double_double(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : double) : double {",
@@ -1127,8 +1133,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_divide_Double_long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_divide_Double_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : long) : double {",
@@ -1158,8 +1164,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_divide_Double_Long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_divide_Double_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : Long) : double {",
@@ -1190,8 +1196,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_divide_Double_byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_divide_Double_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : byte) : double {",
@@ -1221,8 +1227,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_divide_Double_Byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_divide_Double_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : Byte) : double {",
@@ -1253,8 +1259,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_divide_Double_float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_divide_Double_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : float) : double {",
@@ -1284,8 +1290,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_divide_Double_Float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_divide_Double_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : Float) : double {",
@@ -1316,8 +1322,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_divide_Double_int(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_divide_Double_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : int) : double {",
@@ -1347,8 +1353,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_divide_Double_Integer(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_divide_Double_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : Integer) : double {",
@@ -1379,8 +1385,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_divide_Double_Number(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_divide_Double_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import com.google.common.util.concurrent.AtomicDouble",
 				"class A {",
@@ -1413,8 +1419,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_divide_Double_short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_divide_Double_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : short) : double {",
@@ -1444,8 +1450,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_divide_Double_Short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_divide_Double_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : Short) : double {",
@@ -1476,8 +1482,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_divide_Double_AtomicInteger(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_divide_Double_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicInteger",
 				"class A {",
@@ -1510,8 +1516,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_divide_Double_AtomicLong(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_divide_Double_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicLong",
 				"class A {",
@@ -1544,8 +1550,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_multiply_Double_long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_multiply_Double_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : long) : double {",
@@ -1575,8 +1581,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_multiply_Double_Long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_multiply_Double_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : Long) : double {",
@@ -1607,8 +1613,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_multiply_Double_byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_multiply_Double_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : byte) : double {",
@@ -1638,8 +1644,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_multiply_Double_Byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_multiply_Double_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : Byte) : double {",
@@ -1670,8 +1676,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_multiply_Double_float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_multiply_Double_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : float) : double {",
@@ -1701,8 +1707,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_multiply_Double_Float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_multiply_Double_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : Float) : double {",
@@ -1733,8 +1739,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_multiply_Double_int(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_multiply_Double_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : int) : double {",
@@ -1764,8 +1770,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_multiply_Double_Integer(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_multiply_Double_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : Integer) : double {",
@@ -1796,8 +1802,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_multiply_Double_Number(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_multiply_Double_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import com.google.common.util.concurrent.AtomicDouble",
 				"class A {",
@@ -1830,8 +1836,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_multiply_Double_short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_multiply_Double_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : short) : double {",
@@ -1861,8 +1867,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_multiply_Double_Short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_multiply_Double_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : Short) : double {",
@@ -1893,8 +1899,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_multiply_Double_AtomicInteger(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_multiply_Double_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicInteger",
 				"class A {",
@@ -1927,8 +1933,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_multiply_Double_AtomicLong(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_multiply_Double_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicLong",
 				"class A {",
@@ -1961,8 +1967,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_modulo_Double_long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_modulo_Double_long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : long) : double {",
@@ -1992,8 +1998,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_modulo_Double_Long(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_modulo_Double_Long(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : Long) : double {",
@@ -2023,8 +2029,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_modulo_Double_Byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_modulo_Double_Byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : Byte) : double {",
@@ -2054,8 +2060,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_modulo_Double_byte(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_modulo_Double_byte(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : byte) : double {",
@@ -2085,8 +2091,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_modulo_Double_float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_modulo_Double_float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : float) : double {",
@@ -2116,8 +2122,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_modulo_Double_Float(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_modulo_Double_Float(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : Float) : double {",
@@ -2147,8 +2153,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_modulo_Double_int(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_modulo_Double_int(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : int) : double {",
@@ -2178,8 +2184,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_modulo_Double_Integer(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_modulo_Double_Integer(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : Integer) : double {",
@@ -2209,8 +2215,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_modulo_Double_Number(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_modulo_Double_Number(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import com.google.common.util.concurrent.AtomicDouble",
 				"class A {",
@@ -2242,8 +2248,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_modulo_Double_short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_modulo_Double_short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : short) : double {",
@@ -2273,8 +2279,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_modulo_Double_Short(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_modulo_Double_Short(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"class A {",
 				"  def fct(left : Double, right : Short) : double {",
@@ -2304,8 +2310,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_modulo_Double_AtomicInteger(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_modulo_Double_AtomicInteger(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicInteger",
 				"class A {",
@@ -2337,8 +2343,8 @@ public class CompilerTest extends AbstractMassiveCompilationTest {
 						""));
 	}
 
-	@CompilationTest
-	public static void operator_modulo_Double_AtomicLong(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public void  operator_modulo_Double_AtomicLong(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(multilineString(
 				"import java.util.concurrent.atomic.AtomicLong",
 				"class A {",

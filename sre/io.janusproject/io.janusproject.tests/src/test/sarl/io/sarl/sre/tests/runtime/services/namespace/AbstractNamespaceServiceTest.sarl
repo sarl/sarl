@@ -26,11 +26,22 @@ import io.sarl.sre.services.namespace.NamespaceService
 import io.sarl.sre.tests.runtime.services.namespace.mocks.ChangeField
 import io.sarl.sre.tests.runtime.services.namespace.mocks.NamespaceTestAgent
 import io.sarl.sre.tests.runtime.services.namespace.mocks.StopTest
-import io.sarl.sre.tests.testutils.AbstractSreRunTest
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.sre.tests.testutils.^extension.SreRunContext
+import io.sarl.sre.tests.testutils.^extension.SreRunExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
-import org.junit.Before
-import org.junit.Test
 import java.util.logging.Level
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static io.sarl.sre.tests.testutils.Constants.*
+
+import static extension org.junit.jupiter.api.Assertions.assertEquals
+import static extension org.junit.jupiter.api.Assertions.assertNotNull
+import static extension org.junit.jupiter.api.Assertions.assertNull
 
 /**
  * @author $Author: sgalland$
@@ -38,14 +49,20 @@ import java.util.logging.Level
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-abstract class AbstractNamespaceServiceTest extends AbstractSreRunTest {
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension),
+	typeof(SreRunExtension)
+])
+abstract class AbstractNamespaceServiceTest {
 
-	@Before
+	@BeforeEach
 	def setUp : void {
 		//
 	}
 
-	protected def startTestingFramework : NamespaceService {
+	protected def startTestingFramework(extension rc : SreRunContext) : NamespaceService {
 		runTestCase_prepare
 		var kern = setupTheSreKernel(Level::OFF, false, false)
 		var service = kern.getService(typeof(NamespaceService))
@@ -54,14 +71,14 @@ abstract class AbstractNamespaceServiceTest extends AbstractSreRunTest {
 	}
 
 	@SuppressWarnings("discouraged_reference")
-	protected def runTestCase(type : Class<T>) : T with T {
+	protected def runTestCase(extension rc : SreRunContext, type : Class<T>) : T with T {
 		runTestCase_prepare
 
 		var kern = setupTheSreKernel(Level::OFF, false, false)
 		var service = kern.getService(typeof(NamespaceService))
 		service.assertNotNull
 
-		val id = this.bootstrap.startAgent(typeof(NamespaceTestAgent), getAgentInitializationParameters)
+		val id = bootstrap.startAgent(typeof(NamespaceTestAgent), getAgentInitializationParameters)
 
 		var namedObject = service.findObject("agent:" + id + "#myfield")
 		namedObject.assertNotNull
@@ -79,8 +96,8 @@ abstract class AbstractNamespaceServiceTest extends AbstractSreRunTest {
 	}
 
 	@Test
-	def accessAgentField : void {
-		var field = runTestCase(typeof(FieldAccess))
+	def accessAgentField(extension rc : SreRunContext) : void {
+		var field = rc.runTestCase(typeof(FieldAccess))
 		
 		"myfield".assertEquals(field.field.name)
 
@@ -90,8 +107,8 @@ abstract class AbstractNamespaceServiceTest extends AbstractSreRunTest {
 	}
 
 	@Test
-	def accessUnknownAgent : void {
-		var service = startTestingFramework
+	def accessUnknownAgent(extension rc : SreRunContext) : void {
+		var service = rc.startTestingFramework
 
 		val id = UUID::randomUUID
 

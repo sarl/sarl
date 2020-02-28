@@ -20,9 +20,13 @@
  */
 package io.sarl.lang.tests.modules.formatting2;
 
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Collections;
+
 import javax.inject.Inject;
 
 import org.eclipse.emf.common.util.URI;
@@ -31,7 +35,7 @@ import org.eclipse.xtext.resource.IResourceFactory;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.util.StringInputStream;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.formatting2.FormatterFacade;
 import io.sarl.tests.api.AbstractSarlTest;

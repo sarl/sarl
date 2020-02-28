@@ -24,14 +24,21 @@ package io.sarl.sre.tests.units.skills.bic
 import io.sarl.lang.scoping.extensions.time.TimeExtensions
 import io.sarl.sre.services.time.TimeService
 import io.sarl.sre.skills.bic.TimeSkill
-import io.sarl.sre.tests.testutils.AbstractSreTest
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.concurrent.TimeUnit
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
 
+import static io.sarl.tests.api.tools.TestAssertions.*
 import static org.mockito.ArgumentMatchers.*
-import static org.mockito.Mockito.when
+import static org.mockito.Mockito.*
+
+import static extension io.sarl.tests.api.tools.TestMockito.mock
 
 /**
  * @author $Author: sgalland$
@@ -39,7 +46,13 @@ import static org.mockito.Mockito.when
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class TimeSkillTest extends AbstractSreTest {
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@DisplayName("unit: TimeSkill test")
+class TimeSkillTest {
 
 	@Nullable
 	var service : TimeService
@@ -47,7 +60,7 @@ class TimeSkillTest extends AbstractSreTest {
 	@Nullable
 	var ^skill : TimeSkill
 
-	@Before
+	@BeforeEach
 	def setUp : void {
 		this.service = typeof(TimeService).mock
 		when(this.service.getTime(any)).thenAnswer [

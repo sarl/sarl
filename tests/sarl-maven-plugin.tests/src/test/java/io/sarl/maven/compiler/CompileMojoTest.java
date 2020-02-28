@@ -20,23 +20,8 @@
  */
 package io.sarl.maven.compiler;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
-import java.io.InputStream;
-import java.net.URL;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-
 import org.apache.maven.it.VerificationException;
-
-import org.apache.maven.it.Verifier;
-import org.apache.maven.plugin.MojoFailureException;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author $Author: sgalland$
@@ -52,9 +37,11 @@ public class CompileMojoTest extends AbstractMojoTest {
 		executeMojo("prj1", "compile");
 	}
 
-	@Test(expected = VerificationException.class)
+	@Test
 	public void invalidSdk() throws Exception {
-		executeMojo("prj2", "compile");
+		assertException(VerificationException.class, () -> {
+			executeMojo("prj2", "compile");
+		});
 	}
 
 }

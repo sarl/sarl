@@ -20,12 +20,10 @@
  */
 package io.sarl.lang.tests.general.compilation.oop;
 
-import com.google.inject.Inject;
-import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
@@ -37,16 +35,11 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(Suite.class)
-@SuiteClasses({
-	AnnotationTypeCompilerTest.TopLevelTest.class,
-	AnnotationTypeCompilerTest.InClassTest.class,
-	AnnotationTypeCompilerTest.InAgentTest.class,
-})
 @SuppressWarnings("all")
 public class AnnotationTypeCompilerTest {
 
-	public static class TopLevelTest extends AbstractSarlTest {
+	@Nested
+	public class TopLevelTest extends AbstractSarlTest {
 
 		@Test
 		public void basic() throws Exception {
@@ -134,7 +127,8 @@ public class AnnotationTypeCompilerTest {
 
 	}
 
-	public static class InClassTest extends AbstractSarlTest {
+	@Nested
+	public class InClassTest extends AbstractSarlTest {
 
 		@Test
 		public void basic() throws Exception {
@@ -221,7 +215,8 @@ public class AnnotationTypeCompilerTest {
 
 	}
 
-	public static class InAgentTest extends AbstractSarlTest {
+	@Nested
+	public class InAgentTest extends AbstractSarlTest {
 
 		@Test
 		public void basic() throws Exception {

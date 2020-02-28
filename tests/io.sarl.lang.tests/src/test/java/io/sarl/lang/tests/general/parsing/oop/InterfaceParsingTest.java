@@ -20,20 +20,22 @@
  */
 package io.sarl.lang.tests.general.parsing.oop;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static io.sarl.tests.api.tools.TestAssertions.assertNullOrEmpty;
+import static io.sarl.tests.api.tools.TestEObjects.file;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static io.sarl.tests.api.tools.TestValidator.validate;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.eclipse.xtext.common.types.JvmTypeConstraint;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.common.types.TypesPackage;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
-import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlBehavior;
@@ -50,19 +52,11 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(Suite.class)
-@SuiteClasses({
-	InterfaceParsingTest.TopInterfaceTest.class,
-	InterfaceParsingTest.InsideClassTest.class,
-	InterfaceParsingTest.InsideAgentTest.class,
-	InterfaceParsingTest.InsideBehaviorTest.class,
-	InterfaceParsingTest.InsideSkillTest.class,
-	InterfaceParsingTest.GenericTest.class,
-})
 @SuppressWarnings("all")
 public class InterfaceParsingTest {
 
-	public static class TopInterfaceTest extends AbstractSarlTest {
+	@Nested
+	public class TopInterfaceTest extends AbstractSarlTest {
 
 		protected SarlInterface getInterface(SarlScript script) {
 			return (SarlInterface) script.getXtendTypes().get(0);
@@ -70,9 +64,9 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_public() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
-					"public interface I1 { }"), true);
+					"public interface I1 { }"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -90,9 +84,9 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_none() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
-					"interface I1 { }"), true);
+					"interface I1 { }"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -110,10 +104,10 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
-					"private interface I1 { }"), false);
-			validate(mas).assertError(
+					"private interface I1 { }"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlInterface(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"Illegal modifier for the interface I1; only public, package, abstract & strictfp are permitted");
@@ -121,10 +115,10 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_protected() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
-					"protected interface I1 { }"), false);
-			validate(mas).assertError(
+					"protected interface I1 { }"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlInterface(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"Illegal modifier for the interface I1; only public, package, abstract & strictfp are permitted");
@@ -132,9 +126,9 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
-					"package interface I1 { }"), true);
+					"package interface I1 { }"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -152,9 +146,9 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_abstract() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
-					"abstract interface I1 { }"), true);
+					"abstract interface I1 { }"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -172,10 +166,10 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_static() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
-					"static interface I1 { }"), false);
-			validate(mas).assertError(
+					"static interface I1 { }"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlInterface(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"Illegal modifier for the interface I1; only public, package, abstract & strictfp are permitted");
@@ -183,10 +177,10 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_dispatch() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
-					"dispatch interface I1 { }"), false);
-			validate(mas).assertError(
+					"dispatch interface I1 { }"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				"Illegal modifier for the interface I1; only public, package, abstract & strictfp are permitted");
@@ -194,10 +188,10 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_final() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
-					"final interface I1 { }"), false);
-			validate(mas).assertError(
+					"final interface I1 { }"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlInterface(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"Illegal modifier for the interface I1; only public, package, abstract & strictfp are permitted");
@@ -205,9 +199,9 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_strictfp() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
-					"strictfp interface I1 { }"), true);
+					"strictfp interface I1 { }"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -225,10 +219,10 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_native() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
-					"native interface I1 { }"), false);
-			validate(mas).assertError(
+					"native interface I1 { }"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				"Illegal modifier for the interface I1; only public, package, abstract & strictfp are permitted");
@@ -236,10 +230,10 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_volatile() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
-					"volatile interface I1 { }"), false);
-			validate(mas).assertError(
+					"volatile interface I1 { }"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				"Illegal modifier for the interface I1; only public, package, abstract & strictfp are permitted");
@@ -247,10 +241,10 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_synchronized() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
-					"synchronized interface I1 { }"), false);
-			validate(mas).assertError(
+					"synchronized interface I1 { }"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				"Illegal modifier for the interface I1; only public, package, abstract & strictfp are permitted");
@@ -258,10 +252,10 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_transient() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
-					"transient interface I1 { }"), false);
-			validate(mas).assertError(
+					"transient interface I1 { }"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				"Illegal modifier for the interface I1; only public, package, abstract & strictfp are permitted");
@@ -269,10 +263,10 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_abstract_final() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
-					"abstract final interface I1 { }"), false);
-			validate(mas).assertError(
+					"abstract final interface I1 { }"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				"The interface I1 can either be abstract or final, not both");
@@ -280,10 +274,10 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_public_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
-					"public private interface I1 { }"), false);
-			validate(mas).assertError(
+					"public private interface I1 { }"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				"The interface I1 can only set one of public / package / protected / private");
@@ -291,19 +285,20 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void method_0() throws Exception {
-			SarlScript mas = file("interface I1 { def fct(a : int) : float { a + 1f } }");
-			validate(mas).assertNoErrors();
+			SarlScript mas = file(getParseHelper(), "interface I1 { def fct(a : int) : float { a + 1f } }");
+			validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 		}
 
 		@Test
 		public void method_5() throws Exception {
-			SarlScript mas = file("interface I1 { def fct(a : int = 6) : float { a + 1f } }");
-			validate(mas).assertNoErrors();
+			SarlScript mas = file(getParseHelper(), "interface I1 { def fct(a : int = 6) : float { a + 1f } }");
+			validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 		}
 
 	}
 
-	public static class InsideClassTest extends AbstractSarlTest {
+	@Nested
+	public class InsideClassTest extends AbstractSarlTest {
 
 		protected SarlInterface getInterface(SarlScript script) {
 			SarlClass enclosing = (SarlClass) script.getXtendTypes().get(0);
@@ -312,11 +307,11 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_public() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public class EnclosingClass {",
 					"  public interface I1 { }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -334,11 +329,11 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_none() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public class EnclosingClass {",
 					"  interface I1 { }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -356,11 +351,11 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public class EnclosingClass {",
 					"  private interface I1 { }",
-					"}"), false);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -378,11 +373,11 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_protected() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public class EnclosingClass {",
 					"  protected interface I1 { }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -400,11 +395,11 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public class EnclosingClass {",
 					"  package interface I1 { }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -422,11 +417,11 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_abstract() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public class EnclosingClass {",
 					"  abstract interface I1 { }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -444,11 +439,11 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_static() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public class EnclosingClass {",
 					"  static interface I1 { }",
-					"}"), false);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -466,12 +461,12 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_dispatch() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public class EnclosingClass {",
 					"  dispatch interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
@@ -479,12 +474,12 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_final() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public class EnclosingClass {",
 					"  final interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlInterface(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
@@ -492,11 +487,11 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_strictfp() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public class EnclosingClass {",
 					"  strictfp interface I1 { }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -514,12 +509,12 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_native() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public class EnclosingClass {",
 					"  native interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
@@ -527,12 +522,12 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_volatile() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public class EnclosingClass {",
 					"  volatile interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
@@ -540,12 +535,12 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_synchronized() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public class EnclosingClass {",
 					"  synchronized interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
@@ -553,12 +548,12 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_transient() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public class EnclosingClass {",
 					"  transient interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
@@ -566,12 +561,12 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_abstract_final() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public class EnclosingClass {",
 					"  abstract final interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				"The interface I1 can either be abstract or final, not both");
@@ -579,12 +574,12 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_public_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public class EnclosingClass {",
 					"  public private interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				"The interface I1 can only set one of public / package / protected / private");
@@ -592,7 +587,8 @@ public class InterfaceParsingTest {
 
 	}
 
-	public static class InsideAgentTest extends AbstractSarlTest {
+	@Nested
+	public class InsideAgentTest extends AbstractSarlTest {
 
 		protected SarlInterface getInterface(SarlScript script) {
 			SarlAgent enclosing = (SarlAgent) script.getXtendTypes().get(0);
@@ -601,23 +597,23 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_public() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public agent EnclosingAgent {",
 					"  public interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlInterface(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void classmodifier_none() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public agent EnclosingAgent {",
 					"  interface I1 { }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -635,11 +631,11 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public agent EnclosingAgent {",
 					"  private interface I1 { }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -657,11 +653,11 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_protected() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public agent EnclosingAgent {",
 					"  protected interface I1 { }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -679,11 +675,11 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public agent EnclosingAgent {",
 					"  package interface I1 { }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -701,11 +697,11 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_abstract() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public agent EnclosingAgent {",
 					"  abstract interface I1 { }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -723,11 +719,11 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_static() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public agent EnclosingAgent {",
 					"  static interface I1 { }",
-					"}"), false);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -745,96 +741,96 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_dispatch() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public agent EnclosingAgent {",
 					"  dispatch interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void classmodifier_final() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public agent EnclosingAgent {",
 					"  final interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlInterface(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void classmodifier_strictfp() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public agent EnclosingAgent {",
 					"  strictfp interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlInterface(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void classmodifier_native() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public agent EnclosingAgent {",
 					"  native interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void classmodifier_volatile() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public agent EnclosingAgent {",
 					"  volatile interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void classmodifier_synchronized() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public agent EnclosingAgent {",
 					"  synchronized interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void classmodifier_transient() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public agent EnclosingAgent {",
 					"  transient interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void classmodifier_abstract_final() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public agent EnclosingAgent {",
 					"  abstract final interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				"abstract or final, not both");
@@ -842,12 +838,12 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_public_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public agent EnclosingAgent {",
 					"  public private interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				"public / package / protected / private");
@@ -855,7 +851,8 @@ public class InterfaceParsingTest {
 
 	}
 
-	public static class InsideBehaviorTest extends AbstractSarlTest {
+	@Nested
+	public class InsideBehaviorTest extends AbstractSarlTest {
 
 		protected SarlInterface getInterface(SarlScript script) {
 			SarlBehavior enclosing = (SarlBehavior) script.getXtendTypes().get(0);
@@ -864,11 +861,11 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_public() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public behavior EnclosingBehavior {",
 					"  public interface I1 { }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -886,11 +883,11 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_none() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public behavior EnclosingBehavior {",
 					"  interface I1 { }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -908,11 +905,11 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public behavior EnclosingBehavior {",
 					"  private interface I1 { }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -930,11 +927,11 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_protected() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public behavior EnclosingBehavior {",
 					"  protected interface I1 { }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -952,11 +949,11 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public behavior EnclosingBehavior {",
 					"  package interface I1 { }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -974,11 +971,11 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_abstract() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public behavior EnclosingBehavior {",
 					"  abstract interface I1 { }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -996,11 +993,11 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_static() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public behavior EnclosingBehavior {",
 					"  static interface I1 { }",
-					"}"), false);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -1018,12 +1015,12 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_dispatch() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public behavior EnclosingBehavior {",
 					"  dispatch interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
@@ -1031,12 +1028,12 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_final() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public behavior EnclosingBehavior {",
 					"  final interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlInterface(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
@@ -1044,11 +1041,11 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_strictfp() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public behavior EnclosingBehavior {",
 					"  strictfp interface I1 { }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -1066,12 +1063,12 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_native() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public behavior EnclosingBehavior {",
 					"  native interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
@@ -1079,12 +1076,12 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_volatile() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public behavior EnclosingBehavior {",
 					"  volatile interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
@@ -1092,12 +1089,12 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_synchronized() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public behavior EnclosingBehavior {",
 					"  synchronized interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
@@ -1105,12 +1102,12 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_transient() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public behavior EnclosingBehavior {",
 					"  transient interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
@@ -1118,12 +1115,12 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_abstract_final() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public behavior EnclosingBehavior {",
 					"  abstract final interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				"The interface I1 can either be abstract or final, not both");
@@ -1131,12 +1128,12 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_public_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public behavior EnclosingBehavior {",
 					"  public private interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				"The interface I1 can only set one of public / package / protected / private");
@@ -1144,7 +1141,8 @@ public class InterfaceParsingTest {
 
 	}
 
-	public static class InsideSkillTest extends AbstractSarlTest {
+	@Nested
+	public class InsideSkillTest extends AbstractSarlTest {
 
 		protected SarlInterface getInterface(SarlScript script) {
 			SarlSkill enclosing = (SarlSkill) script.getXtendTypes().get(1);
@@ -1153,12 +1151,12 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_public() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public capacity C1 { }",
 					"public skill EnclosingSkill implements C1 {",
 					"  public interface I1 { }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -1176,12 +1174,12 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_none() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public capacity C1 { }",
 					"public skill EnclosingSkill implements C1 {",
 					"  interface I1 { }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -1199,12 +1197,12 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public capacity C1 { }",
 					"public skill EnclosingSkill implements C1 {",
 					"  private interface I1 { }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -1222,12 +1220,12 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_protected() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public capacity C1 { }",
 					"public skill EnclosingSkill implements C1 {",
 					"  protected interface I1 { }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -1245,12 +1243,12 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public capacity C1 { }",
 					"public skill EnclosingSkill implements C1 {",
 					"  package interface I1 { }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -1268,12 +1266,12 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_abstract() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public capacity C1 { }",
 					"public skill EnclosingSkill implements C1 {",
 					"  abstract interface I1 { }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -1291,12 +1289,12 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_static() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public capacity C1 { }",
 					"public skill EnclosingSkill implements C1 {",
 					"  static interface I1 { }",
-					"}"), false);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -1314,13 +1312,13 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_dispatch() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public capacity C1 { }",
 					"public skill EnclosingSkill implements C1 {",
 					"  dispatch interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
@@ -1328,13 +1326,13 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_final() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public capacity C1 { }",
 					"public skill EnclosingSkill implements C1 {",
 					"  final interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlInterface(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
@@ -1342,12 +1340,12 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_strictfp() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public capacity C1 { }",
 					"public skill EnclosingSkill implements C1 {",
 					"  strictfp interface I1 { }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = getInterface(mas);
 			assertNotNull(interf);
@@ -1365,13 +1363,13 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_native() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public capacity C1 { }",
 					"public skill EnclosingSkill implements C1 {",
 					"  native interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
@@ -1379,13 +1377,13 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_volatile() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public capacity C1 { }",
 					"public skill EnclosingSkill implements C1 {",
 					"  volatile interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
@@ -1393,13 +1391,13 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_synchronized() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public capacity C1 { }",
 					"public skill EnclosingSkill implements C1 {",
 					"  synchronized interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
@@ -1407,13 +1405,13 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_transient() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public capacity C1 { }",
 					"public skill EnclosingSkill implements C1 {",
 					"  transient interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				"Illegal modifier for the interface I1; only public, package, protected, private, static, abstract & strictfp are permitted");
@@ -1421,13 +1419,13 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_abstract_final() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public capacity C1 { }",
 					"public skill EnclosingSkill implements C1 {",
 					"  abstract final interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				"The interface I1 can either be abstract or final, not both");
@@ -1435,13 +1433,13 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void classmodifier_public_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public capacity C1 { }",
 					"public skill EnclosingSkill implements C1 {",
 					"  public private interface I1 { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlInterface(),
 				org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 				"The interface I1 can only set one of public / package / protected / private");
@@ -1449,16 +1447,17 @@ public class InterfaceParsingTest {
 
 	}
 
-	public static class GenericTest extends AbstractSarlTest {
+	@Nested
+	public class GenericTest extends AbstractSarlTest {
 
 		@Test
 		public void interfaceGeneric_X() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"interface I1<X> {",
 					"	def setX(param : X)",
 					"	def getX : X",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = (SarlInterface) mas.getXtendTypes().get(0);
 			assertNotNull(interf);
@@ -1474,12 +1473,12 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void interfaceGeneric_XextendsNumber() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"interface I1<X extends Number> {",
 					"	def setX(param : X)",
 					"	def getX : X",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = (SarlInterface) mas.getXtendTypes().get(0);
 			assertNotNull(interf);
@@ -1499,13 +1498,13 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void interfaceGeneric_XY() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"interface I1<X,Y> {",
 					"	def getY : Y",
 					"	def setX(param : X)",
 					"	def getX : X",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = (SarlInterface) mas.getXtendTypes().get(0);
 			assertNotNull(interf);
@@ -1525,13 +1524,13 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void interfaceGeneric_XYextendsX() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"interface I1<X,Y extends X> {",
 					"	def getY : Y",
 					"	def setX(param : X)",
 					"	def getX : X",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = (SarlInterface) mas.getXtendTypes().get(0);
 			assertNotNull(interf);
@@ -1555,14 +1554,14 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void interfaceGeneric_XextendsYY() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"interface I1<X extends Y,Y> {",
 					"	def getY : Y",
 					"	def setX(param : X)",
 					"	def getX : X",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.TYPE_PARAMETER_FORWARD_REFERENCE,
 					"Illegal forward reference to type parameter Y");
@@ -1570,11 +1569,11 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void functionGeneric_X_sarlNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"interface I1 {",
 					"	def setX(param : X) : void with X",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = (SarlInterface) mas.getXtendTypes().get(0);
 			assertNotNull(interf);
@@ -1593,11 +1592,11 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void functionGeneric_X_javaNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"interface I1 {",
 					"	def <X> setX(param : X) : void",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = (SarlInterface) mas.getXtendTypes().get(0);
 			assertNotNull(interf);
@@ -1616,11 +1615,11 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void functionGeneric_XextendsNumber_sarlNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"interface I1 {",
 					"	def setX(param : X) : void with X extends Number",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = (SarlInterface) mas.getXtendTypes().get(0);
 			assertNotNull(interf);
@@ -1643,11 +1642,11 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void functionGeneric_XextendsNumber_javaNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"interface I1 {",
 					"	def <X extends Number> setX(param : X) : void",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = (SarlInterface) mas.getXtendTypes().get(0);
 			assertNotNull(interf);
@@ -1670,11 +1669,11 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void functionGeneric_XY_sarlNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"interface I1 {",
 					"	def setX(param : X) : void with X, Y",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = (SarlInterface) mas.getXtendTypes().get(0);
 			assertNotNull(interf);
@@ -1697,11 +1696,11 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void functionGeneric_XY_javaNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"interface I1 {",
 					"	def <X, Y> setX(param : X) : void",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = (SarlInterface) mas.getXtendTypes().get(0);
 			assertNotNull(interf);
@@ -1724,11 +1723,11 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void functionGeneric_XYextendsX_sarlNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"interface I1 {",
 					"	def setX(param : X) : void with X, Y extends X",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = (SarlInterface) mas.getXtendTypes().get(0);
 			assertNotNull(interf);
@@ -1755,11 +1754,11 @@ public class InterfaceParsingTest {
 
 		@Test
 		public void functionGeneric_XYextendsX_javaNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"interface I1 {",
 					"	def <X, Y extends X> setX(param : X) : void",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlInterface interf = (SarlInterface) mas.getXtendTypes().get(0);
 			assertNotNull(interf);

@@ -21,10 +21,11 @@
 
 package io.sarl.sre.tests.runtime.services.probing
 
-import io.sarl.sre.services.probing.Probe
-import org.arakhne.afc.bootique.variables.VariableNames
 import io.sarl.sre.boot.configs.subconfigs.ServicesConfig
+import io.sarl.sre.services.probing.Probe
 import io.sarl.sre.services.probing.ProbeService
+import org.arakhne.afc.bootique.variables.VariableNames
+import org.junit.jupiter.api.DisplayName
 
 /**
  * @author $Author: sgalland$
@@ -32,6 +33,7 @@ import io.sarl.sre.services.probing.ProbeService
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@DisplayName("run: SynchronousProbe service test")
 class SynchronousProbeServiceTest extends AbstractProbeServiceTest {
 
 	protected def runTestCase_prepare {

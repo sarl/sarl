@@ -24,10 +24,18 @@ package io.sarl.sre.tests.units.services.lifecycle
 import io.sarl.core.AgentTask
 import io.sarl.lang.core.Behavior
 import io.sarl.sre.services.lifecycle.BehaviorLife
-import io.sarl.sre.tests.testutils.AbstractSreTest
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
-import org.junit.Before
-import org.junit.Test
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static org.junit.jupiter.api.Assertions.*
+
+import static extension io.sarl.tests.api.tools.TestMockito.mock
 
 /**
  * @author $Author: sgalland$
@@ -35,7 +43,13 @@ import org.junit.Test
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class BehaviorTest extends AbstractSreTest {
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@DisplayName("unit: Behavior test")
+class BehaviorTest {
 
 	@Nullable
 	var ^behavior : Behavior
@@ -43,7 +57,7 @@ class BehaviorTest extends AbstractSreTest {
 	@Nullable
 	var life : BehaviorLife
 
-	@Before
+	@BeforeEach
 	def setUp : void {
 		this.^behavior = typeof(Behavior).mock
 		this.life = BehaviorLife::getLife(this.^behavior)

@@ -34,6 +34,7 @@ import io.sarl.sre.services.context.Context
 import io.sarl.sre.services.context.ExternalContextMemberListener
 import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.lifecycle.AbstractLifecycleService
+import io.sarl.sre.services.lifecycle.AgentCreatorProvider
 import io.sarl.sre.services.lifecycle.AgentLife
 import io.sarl.sre.services.lifecycle.AgentState
 import io.sarl.sre.services.lifecycle.ContextReference
@@ -43,28 +44,36 @@ import io.sarl.sre.services.lifecycle.LifecycleServiceListener
 import io.sarl.sre.services.lifecycle.SkillUninstaller
 import io.sarl.sre.services.lifecycle.SpawnDisabledException
 import io.sarl.sre.services.logging.LoggingService
-import io.sarl.sre.tests.testutils.AbstractSreTest
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
 import io.sarl.sre.tests.units.services.lifecycle.mocks.InvalidMyAgent1
 import io.sarl.sre.tests.units.services.lifecycle.mocks.InvalidMyAgent2
 import io.sarl.sre.tests.units.services.lifecycle.mocks.MyAgent0
 import io.sarl.sre.tests.units.services.lifecycle.mocks.MyEventBus
 import io.sarl.tests.api.Nullable
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
 import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.ConcurrentSkipListSet
+import java.util.logging.Logger
 import javax.inject.Provider
-import org.junit.Before
-import org.junit.Test
+import org.eclipse.xtext.xbase.lib.Functions.Function1
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
 import org.mockito.ArgumentCaptor
 
-import static extension org.mockito.ArgumentMatchers.*
-import static org.mockito.Mockito.verifyNoMoreInteractions
-import static org.mockito.Mockito.when
+import static io.sarl.sre.tests.testutils.^extension.ServiceManagementExtension.*
+import static io.sarl.tests.api.tools.TestAssertions.*
+import static org.junit.jupiter.api.Assertions.*
+import static org.mockito.ArgumentMatchers.*
+import static org.mockito.Mockito.*
 
+import static extension io.sarl.tests.api.tools.TestAssertions.assertException
+import static extension io.sarl.tests.api.tools.TestMockito.mock
+import static extension org.mockito.ArgumentMatchers.any
+import static extension org.mockito.Mockito.spy
 import static extension org.mockito.Mockito.verify
-import java.util.logging.Logger
-import io.sarl.sre.services.lifecycle.AgentCreatorProvider
-import org.eclipse.xtext.xbase.lib.Functions.Function1
 
 /**
  * @author $Author: sgalland$
@@ -72,7 +81,12 @@ import org.eclipse.xtext.xbase.lib.Functions.Function1
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> extends AbstractSreTest {
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> {
 
 	@Nullable
 	protected var contextId : UUID
@@ -110,7 +124,7 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 	@Nullable
 	var agentCreatorProvider : AgentCreatorProvider
 	
-	@Before
+	@BeforeEach
 	def setUp : void {
 		this.contextId = UUID::randomUUID
 		this.outContext = typeof(Context).mock
@@ -204,23 +218,29 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 		assertFalse(this.service.isKillableAgent(this.^agent))
 	}
 
-	@Test(expected = typeof(SpawnDisabledException))
+	@Test
 	def spawnAgent_0_serviceNotStarted {
-		var result = this.service.spawnAgent(0, null, this.outContext, null, null, null)
-		result.throwAnyError
+		typeof(SpawnDisabledException).assertException [
+			var result = this.service.spawnAgent(0, null, this.outContext, null, null, null)
+			result.throwAnyError
+		]
 	}
 	
-	@Test(expected = typeof(SpawnDisabledException))
+	@Test
 	def spawnAgent_0 {
 		startService
-		var result = this.service.spawnAgent(0, null, this.outContext, null, null, null)
-		result.throwAnyError
+		typeof(SpawnDisabledException).assertException [
+			var result = this.service.spawnAgent(0, null, this.outContext, null, null, null)
+			result.throwAnyError
+		]
 	}
 
-	@Test(expected = typeof(SpawnDisabledException))
+	@Test
 	def spawnAgent_1_serviceNotStarted {
-		var result = this.service.spawnAgent(1, null, this.outContext, null, null, null)
-		result.throwAnyError
+		typeof(SpawnDisabledException).assertException [
+			var result = this.service.spawnAgent(1, null, this.outContext, null, null, null)
+			result.throwAnyError
+		]
 	}
 
 	def assertNoException(ex : Throwable) : void {
@@ -290,20 +310,26 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 		verifyNoMoreInteractions(listener2)
 	}
 
-	@Test(expected = typeof(InvalidSarlSpecificationException))
+	@Test
 	def spawnAgent_1_noSpec {
 		startService
 		var newAgentId = UUID::randomUUID
-		var result = this.service.spawnAgent(1, this.agentId, this.outContext, newAgentId, typeof(InvalidMyAgent1), 1, "a")
-		result.throwAnyError
+		typeof(InvalidSarlSpecificationException).assertException [
+			var result = this.service.spawnAgent(1, this.agentId, this.outContext, newAgentId, typeof(InvalidMyAgent1),
+				1, "a")
+			result.throwAnyError
+		]
 	}
 
-	@Test(expected = typeof(InvalidSarlSpecificationException))
+	@Test
 	def spawnAgent_1_invalidSpec {
 		startService
 		var newAgentId = UUID::randomUUID
-		var result = this.service.spawnAgent(1, this.agentId, this.outContext, newAgentId, typeof(InvalidMyAgent2), 1, "a")
-		result.throwAnyError
+		typeof(InvalidSarlSpecificationException).assertException [
+			var result = this.service.spawnAgent(1, this.agentId, this.outContext, newAgentId, typeof(InvalidMyAgent2),
+				1, "a")
+			result.throwAnyError
+		]
 	}
 
 	@Test

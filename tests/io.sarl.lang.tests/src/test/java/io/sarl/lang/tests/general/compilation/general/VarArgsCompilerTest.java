@@ -20,14 +20,14 @@
  */
 package io.sarl.lang.tests.general.compilation.general;
 
-import com.google.inject.Inject;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.eclipse.xtext.util.IAcceptor;
 import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.eclipse.xtext.xbase.testing.CompilationTestHelper.Result;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
@@ -39,18 +39,11 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(Suite.class)
-@SuiteClasses({
-	VarArgsCompilerTest.ActionTest.class,
-	VarArgsCompilerTest.BehaviorTest.class,
-	VarArgsCompilerTest.CapacityTest.class,
-	VarArgsCompilerTest.EventTest.class,
-	VarArgsCompilerTest.SkillTest.class,
-})
 @SuppressWarnings("all")
 public class VarArgsCompilerTest {
 
-	public static class ActionTest extends AbstractSarlTest {
+	@Nested
+	public class ActionTest extends AbstractSarlTest {
 
 		@Test
 		public void action_singleParam() throws Exception {
@@ -154,7 +147,8 @@ public class VarArgsCompilerTest {
 
 	}
 
-	public static class BehaviorTest extends AbstractSarlTest {
+	@Nested
+	public class BehaviorTest extends AbstractSarlTest {
 
 		@Test
 		public void action_singleParam() throws Exception {
@@ -284,7 +278,8 @@ public class VarArgsCompilerTest {
 
 	}
 
-	public static class CapacityTest extends AbstractSarlTest {
+	@Nested
+	public class CapacityTest extends AbstractSarlTest {
 
 		@Test
 		public void action_singleParam() throws Exception {
@@ -374,7 +369,8 @@ public class VarArgsCompilerTest {
 
 	}
 
-	public static class EventTest extends AbstractSarlTest {
+	@Nested
+	public class EventTest extends AbstractSarlTest {
 
 		@Test
 		public void action_singleParam() throws Exception {
@@ -440,7 +436,8 @@ public class VarArgsCompilerTest {
 
 	}
 
-	public static class SkillTest extends AbstractSarlTest {
+	@Nested
+	public class SkillTest extends AbstractSarlTest {
 
 		@Test
 		public void action_singleParam() throws Exception {

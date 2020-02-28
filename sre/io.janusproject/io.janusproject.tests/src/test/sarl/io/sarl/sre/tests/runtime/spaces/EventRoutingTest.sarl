@@ -21,15 +21,27 @@
 
 package io.sarl.sre.tests.runtime.spaces
 
-import io.sarl.sre.tests.runtime.spaces.mocks.TargetAgent
-import io.sarl.sre.tests.testutils.AbstractSreRunTest
-import org.junit.Test
-import io.sarl.sre.tests.runtime.spaces.mocks.SourceAgent
-import java.util.UUID
 import io.sarl.lang.core.Address
 import io.sarl.lang.util.OutParameter
-import java.util.logging.Level
+import io.sarl.sre.tests.runtime.spaces.mocks.SourceAgent
 import io.sarl.sre.tests.runtime.spaces.mocks.SourceAgent2
+import io.sarl.sre.tests.runtime.spaces.mocks.TargetAgent
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.sre.tests.testutils.^extension.SreRunContext
+import io.sarl.sre.tests.testutils.^extension.SreRunExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.util.UUID
+import java.util.logging.Level
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static io.sarl.sre.tests.testutils.Constants.*
+
+import static extension org.junit.jupiter.api.Assertions.assertEquals
+import static extension org.junit.jupiter.api.Assertions.assertNotEquals
+import static extension org.junit.jupiter.api.Assertions.assertNotNull
 
 /**
  * @author $Author: sgalland$
@@ -37,10 +49,17 @@ import io.sarl.sre.tests.runtime.spaces.mocks.SourceAgent2
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class EventRoutingTest extends AbstractSreRunTest {
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension),
+	typeof(SreRunExtension)
+])
+@DisplayName("run: event routing test")
+class EventRoutingTest {
 
 	@Test
-	def unchangedEventSource_inspace {
+	def unchangedEventSource_inspace(extension rc : SreRunContext) {
 		val kern = setupTheSreKernel(typeof(TargetAgent), null, true, true)
 		kern.spawn(typeof(SourceAgent), null, agentInitializationParameters)
 		waitForTheKernel(STANDARD_TIMEOUT)
@@ -53,7 +72,7 @@ class EventRoutingTest extends AbstractSreRunTest {
 	}
 
 	@Test
-	def unchangedEventSources_inspace {
+	def unchangedEventSources_inspace(extension rc : SreRunContext) {
 		val kern = setupTheSreKernel(Level::OFF, true, false)
 		val ag1 = new OutParameter<UUID>
 		kern.spawn(typeof(TargetAgent), [ag1.set(it)], agentInitializationParameters)
@@ -79,7 +98,7 @@ class EventRoutingTest extends AbstractSreRunTest {
 	}
 
 	@Test
-	def unchangedEventSource_innercontext {
+	def unchangedEventSource_innercontext(extension rc : SreRunContext) {
 		typeof(SourceAgent2).runSre
 		
 		var innerAgent = typeof(UUID).getResult(0)

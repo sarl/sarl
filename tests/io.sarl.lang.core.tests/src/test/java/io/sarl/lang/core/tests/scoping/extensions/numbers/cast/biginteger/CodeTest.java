@@ -24,11 +24,15 @@ package io.sarl.lang.core.tests.scoping.extensions.numbers.cast.biginteger;
 import static io.sarl.lang.scoping.extensions.numbers.cast.BigIntegerCastExtensions.toAtomicDouble;
 import static io.sarl.lang.scoping.extensions.numbers.cast.BigIntegerCastExtensions.toAtomicInteger;
 import static io.sarl.lang.scoping.extensions.numbers.cast.BigIntegerCastExtensions.toBigDecimal;
+import static io.sarl.tests.api.tools.TestAssertions.assertEpsilonEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.tests.api.AbstractSarlTest;
 
@@ -39,6 +43,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("Calling big integer cast operator")
 public class CodeTest extends AbstractSarlTest {
 
 	private static BigInteger left = BigInteger.valueOf(4);

@@ -210,7 +210,7 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 			if (jFile.canRead()) {
 				final Document document = readXmlContent(jFile);
 				if (document != null) {
-					readLaunchConfigurationFromXml(document, (type, name, isAgent) -> {
+					readLaunchConfigurationFromXml(document, null, (type, name, isAgent, rootFolder) -> {
 						final ConfigurationToLaunch ctl = new ConfigurationToLaunch();
 						ctl.setType(type);
 						ctl.setName(name);

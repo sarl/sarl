@@ -20,12 +20,17 @@
  */
 package io.sarl.lang.core.tests.core;
 
+import static io.sarl.tests.api.tools.TestMockito.mock;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.util.UUID;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.SpaceID;
@@ -58,7 +63,7 @@ public class AddressTest extends AbstractSarlTest {
 
 	/**
 	 */
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.agentID = UUID.fromString("d9162392-dedf-43a6-be1a-b9fed6d5253c"); //$NON-NLS-1$
 		this.spaceID = mockSpaceID(this.agentID);

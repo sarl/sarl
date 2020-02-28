@@ -20,10 +20,12 @@
  */
 package io.sarl.core.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.UUID;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.core.Event;
 
@@ -37,7 +39,7 @@ public class ContextJoinedTest extends AbstractSarlCoreTest<Event> {
 
 	/**
 	 */
-	@Before
+	@BeforeEach
 	public void setUp() {
 		loadSARL("io.sarl.core.ContextJoined", Event.class); //$NON-NLS-1$
 	}

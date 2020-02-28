@@ -32,16 +32,23 @@ import io.sarl.sre.services.context.SpaceRepository
 import io.sarl.sre.services.context.SpaceRepositoryListener
 import io.sarl.sre.services.context.SpaceRepositoryListenerFactory
 import io.sarl.sre.services.logging.LoggingService
-import io.sarl.sre.tests.testutils.AbstractSreTest
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
 import java.util.logging.Logger
 import javax.inject.Provider
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
 
+import static org.junit.jupiter.api.Assertions.*
 import static org.mockito.ArgumentMatchers.*
 import static org.mockito.Mockito.*
+
+import static extension io.sarl.tests.api.tools.TestMockito.mock
 
 /**
  * @author $Author: sgalland$
@@ -49,7 +56,13 @@ import static org.mockito.Mockito.*
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class ContextTest extends AbstractSreTest {
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@DisplayName("unit: Context test")
+class ContextTest {
 
 	var root : Agent
 
@@ -68,7 +81,7 @@ class ContextTest extends AbstractSreTest {
 	@Nullable
 	var logging : LoggingService
 
-	@Before
+	@BeforeEach
 	def setUp : void {
 		this.logging = typeof(LoggingService).mock
 		this.contextId = UUID::randomUUID

@@ -23,6 +23,9 @@ package io.sarl.maven.docs.parser;
 
 import java.io.File;
 
+import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.arakhne.afc.vmutil.json.JsonableObject;
+
 /** A component description for validation.
  *
  * @author $Author: sgalland$
@@ -31,7 +34,7 @@ import java.io.File;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
-public class ValidationComponent {
+public class ValidationComponent implements JsonableObject {
 
 	private boolean isCompilable;
 
@@ -40,6 +43,12 @@ public class ValidationComponent {
 	private File file;
 
 	private int lineno;
+
+	private int endLineno;
+
+	private int offset;
+
+	private int length;
 
 	private String code;
 
@@ -79,7 +88,7 @@ public class ValidationComponent {
 	 *
 	 * @param lineno the line number.
 	 */
-	public void setLineno(int lineno) {
+	public void setLinenoInSourceFile(int lineno) {
 		this.lineno = lineno;
 	}
 
@@ -87,15 +96,69 @@ public class ValidationComponent {
 	 *
 	 * @return the line number.
 	 */
-	public int getLineno() {
+	public int getLinenoInSourceFile() {
 		return this.lineno;
+	}
+
+	/** Change the end line number.
+	 *
+	 * @param lineno the end line number.
+	 */
+	public void setEndLinenoInSourceFile(int lineno) {
+		this.endLineno = lineno;
+		if (this.endLineno < 0 || this.endLineno < this.lineno) {
+			this.endLineno = this.lineno;
+		}
+	}
+
+	/** Replies the end line number.
+	 *
+	 * @return the end line number.
+	 */
+	public int getEndLinenoInSourceFile() {
+		return this.endLineno;
+	}
+
+	/** Change the offset.
+	 *
+	 * @param offset the offset of the component within its file.
+	 * @since 0.11
+	 */
+	public void setOffsetInSourceFile(int offset) {
+		this.offset = offset;
+	}
+
+	/** Replies the offset.
+	 *
+	 * @return the offset of the component within its file.
+	 */
+	public int getOffsetInSourceFile() {
+		return this.offset;
+	}
+
+	/** Change the length.
+	 *
+	 * @param length the length of the component within its file.
+	 * @since 0.11
+	 */
+	public void setLengthInSourceFile(int length) {
+		this.length = length;
+	}
+
+	/** Replies the length.
+	 *
+	 * @return the length of the component within its file.
+	 * @since 0.11
+	 */
+	public int getLengthInSourceFile() {
+		return this.length;
 	}
 
 	/** Change the file.
 	 *
 	 * @param file the file.
 	 */
-	public void setFile(File file) {
+	public void setSourceFile(File file) {
 		this.file = file;
 	}
 
@@ -103,7 +166,7 @@ public class ValidationComponent {
 	 *
 	 * @return the file.
 	 */
-	public File getFile() {
+	public File getSourceFile() {
 		return this.file;
 	}
 
@@ -124,8 +187,20 @@ public class ValidationComponent {
 	}
 
 	@Override
+	public void toJson(JsonBuffer buffer) {
+		buffer.add("sourceFile", getSourceFile());
+		buffer.add("linenoInSourceFile", getLinenoInSourceFile());
+		buffer.add("endLinenoInSourceFile", getEndLinenoInSourceFile());
+		buffer.add("offsetInSourceFile", getOffsetInSourceFile());
+		buffer.add("lengthInSourceFile", getLengthInSourceFile());
+		buffer.add("compilable", isCompilable());
+		buffer.add("executable", isExecutable());
+		buffer.add("code", getCode());
+	}
+
+	@Override
 	public String toString() {
-		return getCode();
+		return JsonBuffer.toString(this);
 	}
 
 }

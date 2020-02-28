@@ -20,11 +20,20 @@
  */
 package io.sarl.lang.tests.general.parsing.aop;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static io.sarl.tests.api.tools.TestAssertions.assertNullOrEmpty;
+import static io.sarl.tests.api.tools.TestAssertions.assertParameterNames;
+import static io.sarl.tests.api.tools.TestAssertions.assertParameterTypes;
+import static io.sarl.tests.api.tools.TestAssertions.assertTypeReferenceIdentifier;
+import static io.sarl.tests.api.tools.TestAssertions.assertTypeReferenceIdentifiers;
+import static io.sarl.tests.api.tools.TestAssertions.assertXExpression;
+import static io.sarl.tests.api.tools.TestEObjects.file;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static io.sarl.tests.api.tools.TestValidator.validate;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.google.common.base.Strings;
 import org.eclipse.xtext.common.types.JvmTypeConstraint;
@@ -35,11 +44,8 @@ import org.eclipse.xtext.diagnostics.Diagnostic;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.XbasePackage;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
@@ -60,27 +66,19 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(Suite.class)
-@SuiteClasses({
-	AgentParsingTest.TopElementTest.class,
-	AgentParsingTest.BehaviorUnitTest.class,
-	AgentParsingTest.FieldTest.class,
-	AgentParsingTest.CapacityUseTest.class,
-	AgentParsingTest.ActionTest.class,
-	AgentParsingTest.GenericTest.class,
-})
 @SuppressWarnings("all")
 public class AgentParsingTest {
 
-	public static class TopElementTest extends AbstractSarlTest {
+	@Nested
+	public class TopElementTest extends AbstractSarlTest {
 
 		@Test
 		public void declaration() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {}",
 					"agent A2 {}"
-					), true);
+					));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -98,13 +96,13 @@ public class AgentParsingTest {
 
 		@Test
 		public void invalidExtend() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"}",
 					"agent A1 extends C1 {",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.CLASS_EXPECTED,
 					"Invalid supertype. Expecting a class.");
@@ -112,12 +110,12 @@ public class AgentParsingTest {
 
 		@Test
 		public void recursiveAgentExtension_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 extends A1 {",
 					"}"
 					));
 
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
 					"The inheritance hierarchy of 'A1' is inconsistent");
@@ -125,14 +123,14 @@ public class AgentParsingTest {
 
 		@Test
 		public void recursiveAgentExtension_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 extends A2 {",
 					"}",
 					"agent A2 extends A1 {",
 					"}"
 					));
 
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
 					"Supertype must be of type 'io.sarl.lang.core.Agent'");
@@ -140,7 +138,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void recursiveAgentExtension_2() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 extends A3 {",
 					"}",
 					"agent A2 extends A1 {",
@@ -149,7 +147,7 @@ public class AgentParsingTest {
 					"}"
 					));
 
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
 					"Supertype must be of type 'io.sarl.lang.core.Agent'");
@@ -157,7 +155,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void sequenceAgentDefinition_valid00() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 extends A2 {",
 					"}",
 					"agent A2 extends A3 {",
@@ -187,14 +185,14 @@ public class AgentParsingTest {
 
 		@Test
 		public void sequenceAgentDefinition_valid01() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A3 {",
 					"}",
 					"agent A2 extends A3 {",
 					"}",
 					"agent A1 extends A2 {",
 					"}"
-					), true);
+					));
 			assertEquals(3, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -217,10 +215,10 @@ public class AgentParsingTest {
 
 		@Test
 		public void agentmodifier_public() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public agent A1 {}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -240,10 +238,10 @@ public class AgentParsingTest {
 
 		@Test
 		public void agentmodifier_none() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -263,11 +261,11 @@ public class AgentParsingTest {
 
 		@Test
 		public void agentmodifier_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"private agent A1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"Illegal modifier for the definition of A1; only public, package, abstract & final are permitted");
@@ -275,11 +273,11 @@ public class AgentParsingTest {
 
 		@Test
 		public void agentmodifier_protected() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"protected agent A1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"Illegal modifier for the definition of A1; only public, package, abstract & final are permitted");
@@ -287,10 +285,10 @@ public class AgentParsingTest {
 
 		@Test
 		public void agentmodifier_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"package agent A1 {}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -310,10 +308,10 @@ public class AgentParsingTest {
 
 		@Test
 		public void agentmodifier_abstract() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"abstract agent A1 {}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -333,11 +331,11 @@ public class AgentParsingTest {
 
 		@Test
 		public void agentmodifier_static() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"static agent A1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"Illegal modifier for the definition of A1; only public, package, abstract & final are permitted");
@@ -345,21 +343,21 @@ public class AgentParsingTest {
 
 		@Test
 		public void agentmodifier_dispatch() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"dispatch agent A1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void agentmodifier_final() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"final agent A1 {}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -379,22 +377,22 @@ public class AgentParsingTest {
 
 		@Test
 		public void agentmodifier_strictfp() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"strictfp agent A1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void agentmodifier_native() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"native agent A1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"Illegal modifier for the definition of A1; only public, package, abstract & final are permitted");
@@ -402,11 +400,11 @@ public class AgentParsingTest {
 
 		@Test
 		public void agentmodifier_volatile() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"volatile agent A1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"Illegal modifier for the definition of A1; only public, package, abstract & final are permitted");
@@ -414,33 +412,33 @@ public class AgentParsingTest {
 
 		@Test
 		public void agentmodifier_synchronized() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"synchronized agent A1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void agentmodifier_transient() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"transient agent A1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void agentmodifier_abstract_final() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"abstract final agent A1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"The definition of A1 can either be abstract or final, not both");
@@ -448,35 +446,35 @@ public class AgentParsingTest {
 
 		@Test
 		public void modifier_abstract_action_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	def name",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT);
 		}
 
 		@Test
 		public void modifier_abstract_action_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	abstract def name",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT);
 		}
 
 		@Test
 		public void modifier_abstract_action_2() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"abstract agent A1 {",
 					"	abstract def name",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -494,12 +492,12 @@ public class AgentParsingTest {
 
 		@Test
 		public void modifier_abstract_action_3() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"abstract agent A1 {",
 					"	def name",
-					"}"), true);
-			validate(mas).assertWarning(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT);
 			//
@@ -520,11 +518,11 @@ public class AgentParsingTest {
 
 		@Test
 		public void agentmodifier_public_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public package agent A1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"The definition of A1 can only set one of public / package / protected / private");
@@ -532,11 +530,12 @@ public class AgentParsingTest {
 
 	}
 
-	public static class BehaviorUnitTest extends AbstractSarlTest {
+	@Nested
+	public class BehaviorUnitTest extends AbstractSarlTest {
 
 		@Test
 		public void itInsideEventHandlerGuards_explicitIt() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"event E {",
 					"  var field : int",
 					"}",
@@ -544,12 +543,12 @@ public class AgentParsingTest {
 					"  on E [ it.field == 4 ] {",
 					"  }",
 					"}"
-					), true);
+					));
 		}
 
 		@Test
 		public void itInsideEventHandlerGuards_implicitIt() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"event E {",
 					"  var field : int",
 					"}",
@@ -557,30 +556,30 @@ public class AgentParsingTest {
 					"  on E [ field == 4 ] {",
 					"  }",
 					"}"
-					), true);
+					));
 		}
 
 		@Test
 		public void synchronizedGuard() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E {}",
 					"agent A1 {",
 					"  var myfield = new Object",
 					"  on E [ synchronized(this.myfield) { this.myfield.hashCode != 0 } ] {",
 					"  }",
 					"}"
-					), false);
-			validate(mas).assertNoErrors();
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 		}
 
 		@Test
 		public void declarationWithoutGuard() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"event E {}",
 					"agent A1 {",
 					"on E {}",
 					"}"
-					), true);
+					));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -602,12 +601,12 @@ public class AgentParsingTest {
 
 		@Test
 		public void declarationWithGuard() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"event E {}",
 					"agent A1 {",
 					"on E [ occurrence.source != null] {}",
 					"}"
-					), true);
+					));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -629,12 +628,12 @@ public class AgentParsingTest {
 
 		@Test
 		public void missedEventDeclaration() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"on E  {}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 					Diagnostic.LINKING_DIAGNOSTIC,
 					"E cannot be resolved to a type");
@@ -642,13 +641,13 @@ public class AgentParsingTest {
 
 		@Test
 		public void invalidBehaviorUnit_EventType() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"on String {}",
 					"}"
 					));
 
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.TYPE_BOUNDS_MISMATCH,
 					"Invalid type: 'java.lang.String'. Only events can be used after the keyword 'on'");
@@ -656,14 +655,14 @@ public class AgentParsingTest {
 
 		@Test
 		public void invalidBehaviorUnit_GuardType() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1",
 					"agent A1 {",
 					"on E1 [ \"hello\" ] {}",
 					"}"
 					));
 
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					XbasePackage.eINSTANCE.getXExpression(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES,
 					"Type mismatch: cannot convert from String to boolean");
@@ -671,14 +670,14 @@ public class AgentParsingTest {
 
 		@Test
 		public void trueGuardBehaviorUnit() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1",
 					"agent A1 {",
 					"on E1 [ true ] {}",
 					"}"
 					));
 
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXBooleanLiteral(),
 					IssueCodes.DISCOURAGED_BOOLEAN_EXPRESSION,
 					"Discouraged boolean value. The guard is always true.");
@@ -686,14 +685,14 @@ public class AgentParsingTest {
 
 		@Test
 		public void falseGuardBehaviorUnit() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1",
 					"agent A1 {",
 					"on E1 [ false ] {}",
 					"}"
 					));
 
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlBehaviorUnit(),
 					IssueCodes.UNREACHABLE_BEHAVIOR_UNIT,
 					"Dead code. The guard is always false.");
@@ -701,7 +700,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void invalidBehaviorUnit_SideEffect0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1",
 					"agent A1 {",
 					"var t = 5",
@@ -709,7 +708,7 @@ public class AgentParsingTest {
 					"}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					XbasePackage.eINSTANCE.getXBinaryOperation(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES,
 					"cannot convert from int to boolean");
@@ -717,7 +716,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void invalidBehaviorUnit_SideEffect1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1",
 					"agent A1 {",
 					"var t = 5",
@@ -725,7 +724,7 @@ public class AgentParsingTest {
 					"}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					XbasePackage.eINSTANCE.getXBinaryOperation(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_INNER_EXPRESSION,
 					"Expression with side effect is not allowed in guards");
@@ -733,7 +732,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void castGuard_invalid() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import java.util.List",
 					"event E1 { var parameters : List<Object> }",
 					"agent A1 {",
@@ -741,7 +740,7 @@ public class AgentParsingTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					XbasePackage.eINSTANCE.getXCastedExpression(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INVALID_INNER_EXPRESSION,
 					"Expression with side effect is not allowed in guards");
@@ -749,7 +748,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void validBehaviorUnit_noSideEffect() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import java.util.List",
 					"event E1 { var parameters : List<Object> }",
 					"agent A1 {",
@@ -758,21 +757,22 @@ public class AgentParsingTest {
 					"}"
 					));
 
-			validate(mas).assertNoIssues();
+			validate(getValidationHelper(), getInjector(), mas).assertNoIssues();
 		}
 
 	}
 
-	public static class FieldTest extends AbstractSarlTest {
+	@Nested
+	public class FieldTest extends AbstractSarlTest {
 
 		@Test
 		public void variableDefinition() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"var name : String = \"Hello\"",
 					"var number : Integer",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -798,12 +798,12 @@ public class AgentParsingTest {
 
 		@Test
 		public void valueDefinition() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"val name : String = \"Hello\"",
 					"var number : Integer",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -828,14 +828,14 @@ public class AgentParsingTest {
 
 		@Test
 		public void multipleVariableDefinition() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"var myfield : int",
 					"var myfield1 : String",
 					"var myfield : double",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_FIELD,
 					"Duplicate field myfield");
@@ -843,14 +843,14 @@ public class AgentParsingTest {
 
 		@Test
 		public void multipleValueDefinition() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"val myfield : int = 4",
 					"val myfield1 : String = \"\"",
 					"val myfield : double = 5",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_FIELD,
 					"Duplicate field myfield");
@@ -858,14 +858,14 @@ public class AgentParsingTest {
 
 		@Test
 		public void invalidAttributeName_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"var myfield1 = 4.5",
 					"var $FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = \"String\"",
 					"var myfield2 = true",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
 					"Invalid attribute name '$FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'");
@@ -873,14 +873,14 @@ public class AgentParsingTest {
 
 		@Test
 		public void invalidAttributeName_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"val myfield1 = 4.5",
 					"val $FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD = \"String\"",
 					"val myfield2 = true",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
 					"Invalid attribute name '$FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'");
@@ -888,12 +888,12 @@ public class AgentParsingTest {
 
 		@Test
 		public void variableUse() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"var name : String = \"Hello\"",
 					"def myfct() { println(name) }",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -916,12 +916,12 @@ public class AgentParsingTest {
 
 		@Test
 		public void valueUse() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"val name : String = \"Hello\"",
 					"def myfct() { println(name) }",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -943,13 +943,13 @@ public class AgentParsingTest {
 
 		@Test
 		public void missedFinalFieldInitialization() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"val field1 : int = 5",
 					"val field2 : String",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.FIELD_NOT_INITIALIZED,
 					"The blank final field field2 may not have been initialized");
@@ -957,12 +957,12 @@ public class AgentParsingTest {
 
 		@Test
 		public void completeFinalFieldInitialization() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"val field1 : int = 5",
 					"val field2 : String = \"\"",
 					"}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -987,7 +987,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void fieldNameShadowing() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"	protected val field1 : int = 5",
 					"	def myaction(a : int) { }",
@@ -997,7 +997,7 @@ public class AgentParsingTest {
 					"	def myaction(a : int) { }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING,
 					"The field 'field1' in 'A2' is hidding the inherited field 'A1.field1'.");
@@ -1005,23 +1005,23 @@ public class AgentParsingTest {
 
 		@Test
 		public void modifier_public() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	public var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	private var field : int",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1045,11 +1045,11 @@ public class AgentParsingTest {
 
 		@Test
 		public void modifier_protected() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	protected var field : int",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1073,11 +1073,11 @@ public class AgentParsingTest {
 
 		@Test
 		public void modifier_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	package var field : int",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1101,11 +1101,11 @@ public class AgentParsingTest {
 
 		@Test
 		public void modifier_none() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	var field : int",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1129,48 +1129,48 @@ public class AgentParsingTest {
 
 		@Test
 		public void modifier_abstract() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	abstract var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_static() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	static var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_dispatch() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	dispatch var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_final_var() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	final var field : int = 5",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"var or val / final, not both");
@@ -1178,72 +1178,72 @@ public class AgentParsingTest {
 
 		@Test
 		public void modifier_strictfp() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	strictfp var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_native() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	native var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_volatile() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	volatile var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_synchronized() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	synchronized var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_transient() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	transient var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_protected_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	protected private var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"public / package / protected / private");
@@ -1251,18 +1251,19 @@ public class AgentParsingTest {
 
 	}
 
-	public static class CapacityUseTest extends AbstractSarlTest {
+	@Nested
+	public class CapacityUseTest extends AbstractSarlTest {
 
 		@Test
 		public void declarationInAgent() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity MyCap {",
 					"def my_operation",
 					"}",
 					"agent A1 {",
 					"uses MyCap",
 					"}"
-					), true);
+					));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -1289,12 +1290,12 @@ public class AgentParsingTest {
 
 		@Test
 		public void missedCapacityDeclaration() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"uses MyCap",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 					Diagnostic.LINKING_DIAGNOSTIC,
 					"MyCap cannot be resolved to a type");
@@ -1302,7 +1303,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void multipleCapacityUses_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {}",
 					"capacity C2 {}",
 					"agent A1 {",
@@ -1311,7 +1312,7 @@ public class AgentParsingTest {
 					"}"
 					));
 
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlCapacityUses(),
 					IssueCodes.REDUNDANT_CAPACITY_USE,
 					"Redundant use of the capacity 'C1'");
@@ -1319,7 +1320,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void multipleCapacityUses_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {}",
 					"capacity C2 {}",
 					"agent A1 {",
@@ -1329,7 +1330,7 @@ public class AgentParsingTest {
 					"}"
 					));
 
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlCapacityUses(),
 					IssueCodes.REDUNDANT_CAPACITY_USE,
 					"Redundant use of the capacity 'C2'");
@@ -1337,18 +1338,19 @@ public class AgentParsingTest {
 
 	}
 
-	public static class ActionTest extends AbstractSarlTest {
+	@Nested
+	public class ActionTest extends AbstractSarlTest {
 
 		@Test
 		public void multipleActionDefinitionInAgent() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(a : int, b : int) { }",
 					"def myaction(a : int) { }",
 					"def myaction(a : int) { }",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_METHOD,
 					"Duplicate method myaction(int) in type A1");
@@ -1356,7 +1358,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void invalidActionName() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"def myaction {",
 					"System.out.println(\"ok\")",
@@ -1369,7 +1371,7 @@ public class AgentParsingTest {
 					"}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MEMBER_NAME,
 					"Invalid action name '$handle_myaction'.");
@@ -1377,7 +1379,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void incompatibleReturnType_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(a : int) : int {",
 					"return 0",
@@ -1389,14 +1391,14 @@ public class AgentParsingTest {
 					"}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE);
 		}
 
 		@Test
 		public void incompatibleReturnType_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(a : int) {",
 					"// void",
@@ -1408,14 +1410,14 @@ public class AgentParsingTest {
 					"}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE);
 		}
 
 		@Test
 		public void incompatibleReturnType_2() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(a : int) : int {",
 					"return 0",
@@ -1427,14 +1429,14 @@ public class AgentParsingTest {
 					"}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE);
 		}
 
 		@Test
 		public void incompatibleReturnType_3() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(a : int) : int {",
 					"return 0",
@@ -1446,7 +1448,7 @@ public class AgentParsingTest {
 					"}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					XbasePackage.eINSTANCE.getXBlockExpression(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES,
 					"Type mismatch: cannot convert from null to int");
@@ -1454,7 +1456,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void compatibleReturnType_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(a : int) : Number {",
 					"return 0.0",
@@ -1465,7 +1467,7 @@ public class AgentParsingTest {
 					"return 0.0",
 					"}",
 					"}"
-					), true);
+					));
 
 			assertEquals(2, mas.getXtendTypes().size());
 			//
@@ -1498,7 +1500,7 @@ public class AgentParsingTest {
 
 		@Test
 		public void compatibleReturnType_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
 					"def myaction(a : int) : float {",
 					"return 0f",
@@ -1509,7 +1511,7 @@ public class AgentParsingTest {
 					"return 0f",
 					"}",
 					"}"
-					), true);
+					));
 
 			assertEquals(2, mas.getXtendTypes().size());
 			//
@@ -1542,14 +1544,14 @@ public class AgentParsingTest {
 
 		@Test
 		public void invalidFires() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1",
 					"behavior B1 { }",
 					"agent A1 {",
 					"def myaction1 fires E1, B1 { }",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 					IssueCodes.INVALID_FIRING_EVENT_TYPE,
 					"Invalid type: 'B1'. Only events can be used after the keyword 'fires'");
@@ -1557,23 +1559,23 @@ public class AgentParsingTest {
 
 		@Test
 		public void modifier_public() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	public def name { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	private def name { }",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1596,11 +1598,11 @@ public class AgentParsingTest {
 
 		@Test
 		public void modifier_protected() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	protected def name { }",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1623,11 +1625,11 @@ public class AgentParsingTest {
 
 		@Test
 		public void modifier_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	package def name { }",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1650,29 +1652,29 @@ public class AgentParsingTest {
 
 		@Test
 		public void modifier_override_notRecommended() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"abstract agent A1 {",
 					"	abstract def name",
 					"}",
 					"agent A2 extends A1 {",
 					"	def name { }",
-					"}"), false);
-			validate(mas).assertNoWarnings(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertNoWarnings(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE);
 		}
 
 		@Test
 		public void modifier_override_invalid() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"}",
 					"agent A2 extends A1 {",
 					"	override name { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.OBSOLETE_OVERRIDE,
 					"The method name() of type A2 must override a superclass method");
@@ -1680,24 +1682,24 @@ public class AgentParsingTest {
 
 		@Test
 		public void modifier_override_valid() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"abstract agent A1 {",
 					"	abstract def name",
 					"}",
 					"agent A2 extends A1 {",
 					"	override name { }",
-					"}"), false);
-			validate(mas).assertNoIssues();
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertNoIssues();
 		}
 
 		@Test
 		public void modifier_none() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	def name { }",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1720,11 +1722,11 @@ public class AgentParsingTest {
 
 		@Test
 		public void modifier_abstract() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"abstract agent A1 {",
 					"	abstract def name",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1747,12 +1749,12 @@ public class AgentParsingTest {
 
 		@Test
 		public void modifier_no_abstract() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"abstract agent A1 {",
 					"	def name",
-					"}"), true);
-			validate(mas).assertWarning(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT);
 			//
@@ -1778,11 +1780,11 @@ public class AgentParsingTest {
 
 		@Test
 		public void modifier_static() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	static def name { }",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1805,11 +1807,11 @@ public class AgentParsingTest {
 
 		@Test
 		public void modifier_dispatch() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	dispatch def name(i : Integer) { }",
-					"}"), false);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1832,11 +1834,11 @@ public class AgentParsingTest {
 
 		@Test
 		public void modifier_final_var() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	final def name { }",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1859,47 +1861,47 @@ public class AgentParsingTest {
 
 		@Test
 		public void modifier_strictfp() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	strictfp def name { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_native() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	native def name { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_volatile() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	volatile def name { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_synchronized() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	synchronized def name { }",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1922,24 +1924,24 @@ public class AgentParsingTest {
 
 		@Test
 		public void modifier_transient() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	transient def name { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_protected_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	protected private def name { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"public / package / protected / private");
@@ -1947,11 +1949,11 @@ public class AgentParsingTest {
 
 		@Test
 		public void modifier_dispatch_final() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	dispatch final def name(a : Integer) { }",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1974,15 +1976,16 @@ public class AgentParsingTest {
 
 	}
 
-	public static class GenericTest extends AbstractSarlTest {
+	@Nested
+	public class GenericTest extends AbstractSarlTest {
 
 		@Test
 		public void functionGeneric_X_sarlNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	def setX(param : X) : void with X { var xxx : X }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 			assertNotNull(agent);
@@ -2001,11 +2004,11 @@ public class AgentParsingTest {
 
 		@Test
 		public void functionGeneric_X_javaNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	def <X> setX(param : X) : void { var xxx : X }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 			assertNotNull(agent);
@@ -2024,11 +2027,11 @@ public class AgentParsingTest {
 
 		@Test
 		public void functionGeneric_XextendsNumber_sarlNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	def setX(param : X) : void with X extends Number { var xxx : X }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 			assertNotNull(agent);
@@ -2051,11 +2054,11 @@ public class AgentParsingTest {
 
 		@Test
 		public void functionGeneric_XextendsNumber_javaNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	def <X extends Number> setX(param : X) : void { var xxx : X }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 			assertNotNull(agent);
@@ -2078,11 +2081,11 @@ public class AgentParsingTest {
 
 		@Test
 		public void functionGeneric_XY_sarlNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	def setX(param : X) : void with X, Y { var xxx : X; var yyy : Y }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 			assertNotNull(agent);
@@ -2105,11 +2108,11 @@ public class AgentParsingTest {
 
 		@Test
 		public void functionGeneric_XY_javaNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	def <X, Y> setX(param : X) : void { var xxx : X; var yyy : Y }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 			assertNotNull(agent);
@@ -2132,11 +2135,11 @@ public class AgentParsingTest {
 
 		@Test
 		public void functionGeneric_XYextendsX_sarlNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	def setX(param : X) : void with X, Y extends X { var xxx : X; var yyy : Y }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 			assertNotNull(agent);
@@ -2163,11 +2166,11 @@ public class AgentParsingTest {
 
 		@Test
 		public void functionGeneric_XYextendsX_javaNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"agent A1 {",
 					"	def <X, Y extends X> setX(param : X) : void { var xxx : X; var yyy : Y }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlAgent agent = (SarlAgent) mas.getXtendTypes().get(0);
 			assertNotNull(agent);

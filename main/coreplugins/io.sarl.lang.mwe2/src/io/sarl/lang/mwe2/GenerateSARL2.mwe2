@@ -367,6 +367,8 @@ Workflow {
     		// Testing infrastructure
 			junitSupport = auto-inject {
 				generateStub = false
+				generateXtendStub = false
+				junitVersion = "5"
 			}
 			
 			// Content assist - Bug fixed for avoiding compilation error due to an

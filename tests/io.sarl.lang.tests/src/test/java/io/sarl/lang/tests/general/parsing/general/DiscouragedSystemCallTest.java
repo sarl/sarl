@@ -20,12 +20,14 @@
  */
 package io.sarl.lang.tests.general.parsing.general;
 
+import static io.sarl.tests.api.tools.TestEObjects.file;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static io.sarl.tests.api.tools.TestValidator.validate;
+
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
@@ -37,31 +39,22 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(Suite.class)
-@SuiteClasses({
-	DiscouragedSystemCallTest.ConsoleTest.class,
-	DiscouragedSystemCallTest.ErrCallTest.class,
-	DiscouragedSystemCallTest.OutCallTest.class,
-	DiscouragedSystemCallTest.SetErrCallTest.class,
-	DiscouragedSystemCallTest.SetOutCallTest.class,
-	DiscouragedSystemCallTest.OutputImplicitCallTest.class,
-	DiscouragedSystemCallTest.InheritedChannelCallTest.class,
-})
 @SuppressWarnings("all")
 public class DiscouragedSystemCallTest {
 
-	public static class ConsoleTest extends AbstractSarlTest {
+	@Nested
+	public class ConsoleTest extends AbstractSarlTest {
 
 		@Test
 		public void systemConsole_agent_action() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"	def test {",
 					"		System.console().readLine();",
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -69,7 +62,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemConsole_agent_behaviorUnit() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
 					"agent A1 {",
 					"	on E1 {",
@@ -77,7 +70,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -85,14 +78,14 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemConsole_behavior_action() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
 					"	def test {",
 					"		System.console().readLine();",
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -100,7 +93,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemConsole_behavior_behaviorUnit() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
 					"behavior B1 {",
 					"	on E1 {",
@@ -108,7 +101,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -116,7 +109,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemConsole_behavior_constructor() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.SARLInjectorProvider;",
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
@@ -126,7 +119,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -134,7 +127,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemConsole_skill_action() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def test {",
@@ -142,7 +135,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -150,7 +143,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemConsole_skill_constructor() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -160,7 +153,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -168,7 +161,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemConsole_agent_action_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"import static java.lang.System.*",
 					"import static java.lang.System.*",
@@ -182,7 +175,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -190,7 +183,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemConsole_skill_action_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"import io.sarl.lang.core.Agent",
 					"import io.sarl.tests.api.AbstractSarlTest",
@@ -203,7 +196,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -211,18 +204,19 @@ public class DiscouragedSystemCallTest {
 
 	}
 
-	public static class ErrCallTest extends AbstractSarlTest {
+	@Nested
+	public class ErrCallTest extends AbstractSarlTest {
 
 		@Test
 		public void systemErr_agent_action() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"	def test {",
 					"		System.err.println(\"\")",
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -230,7 +224,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemErr_agent_behaviorUnit() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
 					"agent A1 {",
 					"	on E1 {",
@@ -238,7 +232,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -246,14 +240,14 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemErr_behavior_action() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
 					"	def test {",
 					"		System.err.println(\"\")",
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -261,7 +255,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemErr_behavior_behaviorUnit() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
 					"behavior B1 {",
 					"	on E1 {",
@@ -269,7 +263,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -277,7 +271,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemErr_behavior_constructor() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
 					"	new (a : Agent) {",
@@ -286,7 +280,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -294,7 +288,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemErr_skill_action() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def test {",
@@ -302,7 +296,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -310,7 +304,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemErr_skill_constructor() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -320,7 +314,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -328,7 +322,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemErr_agent_action_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"agent A1 {",
 					"	def test {",
@@ -336,7 +330,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -344,7 +338,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemErr_agent_behaviorUnit_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"event E1 { }",
 					"agent A1 {",
@@ -353,7 +347,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -361,7 +355,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemErr_behavior_action_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"behavior B1 {",
 					"	def test {",
@@ -369,7 +363,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -377,7 +371,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemErr_behavior_behaviorUnit_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"event E1 { }",
 					"behavior B1 {",
@@ -386,7 +380,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -394,7 +388,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemErr_behavior_constructor_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
@@ -404,7 +398,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -412,7 +406,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemErr_skill_action_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -421,7 +415,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -429,7 +423,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemErr_skill_constructor_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
 					"import static java.lang.System.*",
 					"capacity C1 { }",
@@ -440,7 +434,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -448,18 +442,19 @@ public class DiscouragedSystemCallTest {
 
 	}
 
-	public static class OutCallTest extends AbstractSarlTest {
+	@Nested
+	public class OutCallTest extends AbstractSarlTest {
 
 		@Test
 		public void systemOut_agent_action() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"	def test {",
 					"		System.out.println(\"\")",
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -467,7 +462,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemOut_agent_behaviorUnit() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
 					"agent A1 {",
 					"	on E1 {",
@@ -475,7 +470,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -483,14 +478,14 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemOut_behavior_action() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
 					"	def test {",
 					"		System.out.println(\"\")",
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -498,7 +493,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemOut_behavior_behaviorUnit() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
 					"behavior B1 {",
 					"	on E1 {",
@@ -506,7 +501,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -514,7 +509,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemOut_behavior_constructor() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
 					"	new (a : Agent) {",
@@ -523,7 +518,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -531,7 +526,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemOut_skill_action() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def test {",
@@ -539,7 +534,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -547,7 +542,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemOut_skill_constructor() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -557,7 +552,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -565,7 +560,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemOut_agent_action_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"agent A1 {",
 					"	def test {",
@@ -573,7 +568,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -581,7 +576,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemOut_agent_behaviorUnit_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"event E1 { }",
 					"agent A1 {",
@@ -590,7 +585,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -598,7 +593,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemOut_behavior_action_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"behavior B1 {",
 					"	def test {",
@@ -606,7 +601,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -614,7 +609,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemOut_behavior_behaviorUnit_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"event E1 { }",
 					"behavior B1 {",
@@ -623,7 +618,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -631,7 +626,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemOut_behavior_constructor_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
@@ -641,7 +636,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -649,7 +644,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemOut_skill_action_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -658,7 +653,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -666,7 +661,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemOut_skill_constructor_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
 					"import static java.lang.System.*",
 					"capacity C1 { }",
@@ -677,7 +672,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -685,18 +680,19 @@ public class DiscouragedSystemCallTest {
 
 	}
 
-	public static class SetErrCallTest extends AbstractSarlTest {
+	@Nested
+	public class SetErrCallTest extends AbstractSarlTest {
 
 		@Test
 		public void systemSetErr_agent_action() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"	def test {",
 					"		System.setErr(null)",
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -704,7 +700,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetErr_agent_behaviorUnit() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
 					"agent A1 {",
 					"	on E1 {",
@@ -712,7 +708,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -720,14 +716,14 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetErr_behavior_action() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
 					"	def test {",
 					"		System.setErr(null)",
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -735,7 +731,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetErr_behavior_behaviorUnit() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
 					"behavior B1 {",
 					"	on E1 {",
@@ -743,7 +739,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -751,7 +747,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetErr_behavior_constructor() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
 					"	new (a : Agent) {",
@@ -760,7 +756,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -768,7 +764,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetErr_skill_action() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def test {",
@@ -776,7 +772,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -784,7 +780,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetErr_skill_constructor() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -794,7 +790,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -802,7 +798,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetErr_agent_action_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"agent A1 {",
 					"	def test {",
@@ -810,7 +806,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -818,7 +814,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetErr_agent_behaviorUnit_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"event E1 { }",
 					"agent A1 {",
@@ -827,7 +823,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -835,7 +831,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetErr_behavior_action_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"behavior B1 {",
 					"	def test {",
@@ -843,7 +839,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -851,7 +847,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetErr_behavior_behaviorUnit_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"event E1 { }",
 					"behavior B1 {",
@@ -860,7 +856,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -868,7 +864,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetErr_behavior_constructor_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
@@ -878,7 +874,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -886,7 +882,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetErr_skill_action_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -895,7 +891,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -903,7 +899,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetErr_skill_constructor_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
 					"import static java.lang.System.*",
 					"capacity C1 { }",
@@ -914,7 +910,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -922,18 +918,19 @@ public class DiscouragedSystemCallTest {
 
 	}
 
-	public static class SetOutCallTest extends AbstractSarlTest {
+	@Nested
+	public class SetOutCallTest extends AbstractSarlTest {
 
 		@Test
 		public void systemSetOut_agent_action() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"	def test {",
 					"		System.setOut(null)",
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -941,7 +938,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetOut_agent_behaviorUnit() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
 					"agent A1 {",
 					"	on E1 {",
@@ -949,7 +946,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -957,14 +954,14 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetOut_behavior_action() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
 					"	def test {",
 					"		System.setOut(null)",
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -972,7 +969,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetOut_behavior_behaviorUnit() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
 					"behavior B1 {",
 					"	on E1 {",
@@ -980,7 +977,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -988,7 +985,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetOut_behavior_constructor() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
 					"	new (a : Agent) {",
@@ -997,7 +994,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -1005,7 +1002,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetOut_skill_action() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def test {",
@@ -1013,7 +1010,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -1021,7 +1018,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetOut_skill_constructor() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -1031,7 +1028,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -1039,7 +1036,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetOut_agent_action_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"agent A1 {",
 					"	def test {",
@@ -1047,7 +1044,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -1055,7 +1052,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetOut_agent_behaviorUnit_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"event E1 { }",
 					"agent A1 {",
@@ -1064,7 +1061,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -1072,7 +1069,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetOut_behavior_action_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"behavior B1 {",
 					"	def test {",
@@ -1080,7 +1077,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -1088,7 +1085,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetOut_behavior_behaviorUnit_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"event E1 { }",
 					"behavior B1 {",
@@ -1097,7 +1094,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -1105,7 +1102,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetOut_behavior_constructor_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
@@ -1115,7 +1112,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -1123,7 +1120,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetOut_skill_action_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -1132,7 +1129,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -1140,7 +1137,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemSetOut_skill_constructor_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
 					"import static java.lang.System.*",
 					"capacity C1 { }",
@@ -1151,7 +1148,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -1159,18 +1156,19 @@ public class DiscouragedSystemCallTest {
 
 	}
 
-	public static class OutputImplicitCallTest extends AbstractSarlTest {
+	@Nested
+	public class OutputImplicitCallTest extends AbstractSarlTest {
 
 		@Test
 		public void println_agent_action() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"	def test {",
 					"		println(\"\")",
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -1178,7 +1176,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void println_agent_behaviorUnit() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
 					"agent A1 {",
 					"	on E1 {",
@@ -1186,7 +1184,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -1194,14 +1192,14 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void println_behavior_action() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
 					"	def test {",
 					"		println(\"\")",
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -1209,7 +1207,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void println_behavior_behaviorUnit() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
 					"behavior B1 {",
 					"	on E1 {",
@@ -1217,7 +1215,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -1225,7 +1223,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void println_behavior_constructor() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
 					"	new (a : Agent) {",
@@ -1234,7 +1232,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -1242,7 +1240,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void println_skill_action() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def test {",
@@ -1250,7 +1248,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -1258,7 +1256,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void println_skill_constructor() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -1268,7 +1266,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -1276,18 +1274,19 @@ public class DiscouragedSystemCallTest {
 
 	}
 
-	public static class InheritedChannelCallTest extends AbstractSarlTest {
+	@Nested
+	public class InheritedChannelCallTest extends AbstractSarlTest {
 
 		@Test
 		public void systemInheritedChannel_agent_action() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"	def test {",
 					"		System.inheritedChannel().isOpen();",
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -1295,7 +1294,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemInheritedChannel_agent_behaviorUnit() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
 					"agent A1 {",
 					"	on E1 {",
@@ -1303,7 +1302,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -1311,14 +1310,14 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemInheritedChannel_behavior_action() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
 					"	def test {",
 					"		System.inheritedChannel().isOpen();",
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -1326,7 +1325,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemInheritedChannel_behavior_behaviorUnit() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
 					"behavior B1 {",
 					"	on E1 {",
@@ -1334,7 +1333,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -1342,7 +1341,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemInheritedChannel_behavior_constructor() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
 					"	new (a : Agent) {",
@@ -1351,7 +1350,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -1359,7 +1358,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemInheritedChannel_skill_action() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def test {",
@@ -1367,7 +1366,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -1375,7 +1374,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemInheritedChannel_skill_constructor() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -1385,7 +1384,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -1393,7 +1392,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemInheritedChannel_agent_action_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"agent A1 {",
 					"	def test {",
@@ -1401,7 +1400,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -1409,7 +1408,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemInheritedChannel_agent_behaviorUnit_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"event E1 { }",
 					"agent A1 {",
@@ -1418,7 +1417,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -1426,7 +1425,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemInheritedChannel_behavior_action_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"behavior B1 {",
 					"	def test {",
@@ -1434,7 +1433,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -1442,7 +1441,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemInheritedChannel_behavior_behaviorUnit_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"event E1 { }",
 					"behavior B1 {",
@@ -1451,7 +1450,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -1459,7 +1458,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemInheritedChannel_behavior_constructor_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"import io.sarl.lang.core.Agent",
 					"behavior B1 {",
@@ -1469,7 +1468,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -1477,7 +1476,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemInheritedChannel_skill_action_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
@@ -1486,7 +1485,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");
@@ -1494,7 +1493,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		public void systemInheritedChannel_skill_constructor_staticImport() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
 					"import static java.lang.System.*",
 					"capacity C1 { }",
@@ -1505,7 +1504,7 @@ public class DiscouragedSystemCallTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					XbasePackage.eINSTANCE.getXFeatureCall(),
 					IssueCodes.DISCOURAGED_REFERENCE,
 					"Discouraged feature call");

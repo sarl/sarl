@@ -31,7 +31,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import com.google.common.base.Strings;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.xtext.xbase.lib.Procedures.Procedure3;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure4;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -97,13 +97,16 @@ public final class SarlExampleLaunchConfiguration {
 	/** Parse the XML content for extracted information on launch configurations.
 	 *
 	 * @param document the document to parse.
+	 * @param rootFolder the root folder to pass to the callback.
 	 * @param callback the lambda that is called for each discovered launch configuration.
 	 *     The first argument is the type to be launch. The second argument is the
-	 *     name of the launch configuration. And, the third argument indicates
+	 *     name of the launch configuration. The third argument indicates
 	 *     if it is a configuration for launching an agent ({@code true}) or an
-	 *     application ({@code false}).
+	 *     application ({@code false}). And, the fourth argument is {@code rootFolder}.
 	 */
-	public static void readLaunchConfigurationFromXml(Document document, Procedure3<String, String, Boolean> callback) {
+	public static void readLaunchConfigurationFromXml(Document document,
+			File rootFolder,
+			Procedure4<String, String, Boolean, File> callback) {
 		NodeList nodes = document.getChildNodes();
 		final int len = nodes.getLength();
 		for (int i = 0; i < len; ++i) {
@@ -125,7 +128,7 @@ public final class SarlExampleLaunchConfiguration {
 						}
 						final String type = readXmlAttribute(node, LAUNCH_PROPERTY_TYPE_FIELD);
 						if (!Strings.isNullOrEmpty(type)) {
-							callback.apply(type, readXmlAttribute(node, LAUNCH_PROPERTY_NAME_FIELD), isAgent);
+							callback.apply(type, readXmlAttribute(node, LAUNCH_PROPERTY_NAME_FIELD), isAgent, rootFolder);
 						}
 					}
 					// Break the loop

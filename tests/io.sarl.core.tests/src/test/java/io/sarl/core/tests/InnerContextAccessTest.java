@@ -20,11 +20,13 @@
  */
 package io.sarl.core.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.UUID;
 import java.util.concurrent.ConcurrentSkipListSet;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.Capacity;
@@ -42,7 +44,7 @@ public class InnerContextAccessTest extends AbstractSarlCoreTest<Capacity> {
 
 	/**
 	 */
-	@Before
+	@BeforeEach
 	public void setUp() {
 		loadSARL("io.sarl.core.InnerContextAccess", Capacity.class); //$NON-NLS-1$
 	}

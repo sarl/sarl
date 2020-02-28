@@ -20,33 +20,38 @@
  */
 package io.sarl.lang.tests.general.parsing.aop;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static io.sarl.tests.api.tools.TestAssertions.assertNoMoreIssues;
+import static io.sarl.tests.api.tools.TestAssertions.assertNullOrEmpty;
+import static io.sarl.tests.api.tools.TestAssertions.assertParameterDefaultValues;
+import static io.sarl.tests.api.tools.TestAssertions.assertParameterNames;
+import static io.sarl.tests.api.tools.TestAssertions.assertParameterTypes;
+import static io.sarl.tests.api.tools.TestAssertions.assertTypeReferenceIdentifier;
+import static io.sarl.tests.api.tools.TestAssertions.assertTypeReferenceIdentifiers;
+import static io.sarl.tests.api.tools.TestAssertions.assertWarning;
+import static io.sarl.tests.api.tools.TestAssertions.assertXExpression;
+import static io.sarl.tests.api.tools.TestEObjects.file;
+import static io.sarl.tests.api.tools.TestEObjects.issues;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static io.sarl.tests.api.tools.TestValidator.validate;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.Iterator;
 import java.util.List;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Strings;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.common.types.JvmTypeConstraint;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.common.types.TypesPackage;
-import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.validation.Issue;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.XbasePackage;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
@@ -66,27 +71,20 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(Suite.class)
-@SuiteClasses({
-	SkillParsingTest.TopElementTest.class,
-	SkillParsingTest.ActionTest.class,
-	SkillParsingTest.FieldTest.class,
-	SkillParsingTest.CapacityUsesTest.class,
-	SkillParsingTest.GenericTest.class,
-})
 @SuppressWarnings("all")
 public class SkillParsingTest {
 
-	public static class TopElementTest extends AbstractSarlTest {
+	@Nested
+	public class TopElementTest extends AbstractSarlTest {
 
 		@Test
 		public void capacityDirectImplementation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Capacity",
 					"skill S1 implements Capacity {",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					IssueCodes.INVALID_IMPLEMENTED_TYPE,
 					"Invalid implemented type: 'io.sarl.lang.core.Capacity'. Only subtypes of 'io.sarl.lang.core.Capacity' are allowed for 'S1'");
@@ -94,13 +92,13 @@ public class SkillParsingTest {
 
 		@Test
 		public void redundantCapacity_fromSuperType() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {}",
 					"capacity C2 {}",
 					"skill S1 implements C1 { }",
 					"skill S2 extends S1 implements C2, C1 { }"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION,
 					"The feature 'C1' is already implemented by the super-type 'S1'.");
@@ -108,14 +106,14 @@ public class SkillParsingTest {
 
 		@Test
 		public void redundantCapacity_duplicate() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {}",
 					"capacity C2 {}",
 					"capacity C3 {}",
 					"skill S1 implements C1 { }",
 					"skill S2 extends S1 implements C2, C3, C2 { }"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION,
 					"Duplicate implemented feature 'C2'");
@@ -123,14 +121,14 @@ public class SkillParsingTest {
 
 		@Test
 		public void redundantCapacity_fromPreviousCapacity() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {}",
 					"capacity C2 {}",
 					"capacity C3 extends C2 {}",
 					"skill S1 implements C1 { }",
 					"skill S2 extends S1 implements C3, C2 { }"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION,
 					"The feature 'C2' is already implemented by the super-type 'C3'.");
@@ -138,7 +136,7 @@ public class SkillParsingTest {
 
 		@Test
 		public void invalidSkillExtend_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"}",
 					"agent A1 {",
@@ -146,7 +144,7 @@ public class SkillParsingTest {
 					"skill S1 extends A1 implements C1 {",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
 					"Supertype must be of type 'io.sarl.lang.core.Skill'");
@@ -154,7 +152,7 @@ public class SkillParsingTest {
 
 		@Test
 		public void invalidSkillExtend_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"}",
 					"capacity C2 {",
@@ -162,7 +160,7 @@ public class SkillParsingTest {
 					"skill S1 extends C1 implements C2 {",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.CLASS_EXPECTED,
 					"Invalid supertype. Expecting a class");
@@ -170,13 +168,13 @@ public class SkillParsingTest {
 
 		@Test
 		public void invalidSkillImplement_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
 					"}",
 					"skill S1 implements B1 {",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					IssueCodes.INVALID_IMPLEMENTED_TYPE,
 					"Invalid implemented type: 'B1'. Only subtypes of 'io.sarl.lang.core.Capacity' are allowed for 'S1'");
@@ -184,7 +182,7 @@ public class SkillParsingTest {
 
 		@Test
 		public void invalidSkillImplement_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
 					"}",
 					"capacity C1 {",
@@ -194,7 +192,7 @@ public class SkillParsingTest {
 					"skill S1 implements B1, C1, C2 {",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					IssueCodes.INVALID_IMPLEMENTED_TYPE,
 					"Invalid implemented type: 'B1'. Only subtypes of 'io.sarl.lang.core.Capacity' are allowed for 'S1'");
@@ -202,7 +200,7 @@ public class SkillParsingTest {
 
 		@Test
 		public void invalidSkillImplement_2() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
 					"}",
 					"capacity C1 {",
@@ -212,7 +210,7 @@ public class SkillParsingTest {
 					"skill S1 implements C1, B1, C2 {",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					IssueCodes.INVALID_IMPLEMENTED_TYPE,
 					"Invalid implemented type: 'B1'. Only subtypes of 'io.sarl.lang.core.Capacity' are allowed for 'S1'");
@@ -220,7 +218,7 @@ public class SkillParsingTest {
 
 		@Test
 		public void invalidSkillImplement_3() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
 					"}",
 					"capacity C1 {",
@@ -230,7 +228,7 @@ public class SkillParsingTest {
 					"skill S1 implements C1, C2, B1 {",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					IssueCodes.INVALID_IMPLEMENTED_TYPE,
 					"Invalid implemented type: 'B1'. Only subtypes of 'io.sarl.lang.core.Capacity' are allowed for 'S1'");
@@ -238,14 +236,14 @@ public class SkillParsingTest {
 
 		@Test
 		public void skillImplementCapacity() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"	def myaction",
 					"}",
 					"skill S1 implements C1 {",
 					"	def myaction { }",
 					"}"
-					), true);
+					));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -276,7 +274,7 @@ public class SkillParsingTest {
 
 		@Test
 		public void skillExtendSkill() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"	def myaction",
 					"}",
@@ -286,7 +284,7 @@ public class SkillParsingTest {
 					"skill S2 extends S1 {",
 					"	def myaction { }",
 					"}"
-					), true);
+					));
 			assertEquals(3, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -329,7 +327,7 @@ public class SkillParsingTest {
 
 		@Test
 		public void skillExtendSkillImplementCapacity() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"	def myaction",
 					"}",
@@ -343,7 +341,7 @@ public class SkillParsingTest {
 					"	def myaction { }",
 					"	def myaction2 { }",
 					"}"
-					), true);
+					));
 			assertEquals(4, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -403,12 +401,12 @@ public class SkillParsingTest {
 
 		@Test
 		public void skillNoExtendSkillNoImplementCapacity() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"skill S1 {",
 					"	def myaction { }",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.MISSING_TYPE,
 					"Missing implemented type 'io.sarl.lang.core.Capacity' for 'S1'");
@@ -416,11 +414,11 @@ public class SkillParsingTest {
 
 		@Test
 		public void skillmodifier_public() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {}",
 					"public skill S1 implements C1 {}"
-					), true);
+					));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -438,11 +436,11 @@ public class SkillParsingTest {
 
 		@Test
 		public void skillmodifier_none() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {}",
 					"skill S1 implements C1 {}"
-					), true);
+					));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -460,35 +458,35 @@ public class SkillParsingTest {
 
 		@Test
 		public void skillmodifier_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {}",
 					"private skill S1 implements C1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void skillmodifier_protected() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {}",
 					"protected skill S1 implements C1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void skillmodifier_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {}",
 					"package skill S1 implements C1 {}"
-					), true);
+					));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -506,11 +504,11 @@ public class SkillParsingTest {
 
 		@Test
 		public void skillmodifier_abstract() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {}",
 					"abstract skill S1 implements C1 { }"
-					), true);
+					));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -528,35 +526,35 @@ public class SkillParsingTest {
 
 		@Test
 		public void skillmodifier_static() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {}",
 					"static skill S1 implements C1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void skillmodifier_dispatch() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {}",
 					"dispatch skill S1 implements C1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void skillmodifier_final() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {}",
 					"final skill S1 implements C1 {}"
-					), true);
+					));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -574,72 +572,72 @@ public class SkillParsingTest {
 
 		@Test
 		public void skillmodifier_strictfp() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {}",
 					"strictfp skill S1 implements C1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void skillmodifier_native() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {}",
 					"native skill S1 implements C1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void skillmodifier_volatile() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {}",
 					"volatile skill S1 implements C1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void skillmodifier_synchronized() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {}",
 					"synchronized skill S1 implements C1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void skillmodifier_transient() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {}",
 					"transient skill S1 implements C1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void skillmodifier_public_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {}",
 					"public package skill S1 implements C1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"public / package / protected / private");
@@ -647,12 +645,12 @@ public class SkillParsingTest {
 
 		@Test
 		public void abstractSkill() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"	def fct(a : int = 4)",
 					"}",
 					"skill S1 implements C1 { }"));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
 					"class S1 must be defined abstract");
@@ -660,11 +658,12 @@ public class SkillParsingTest {
 
 	}
 
-	public static class ActionTest extends AbstractSarlTest {
+	@Nested
+	public class ActionTest extends AbstractSarlTest {
 
 		@Test
 		public void modifier_override_possible_but_no_warning() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { def fakefct() }",
 					"abstract skill S1 implements C1 {",
@@ -673,15 +672,15 @@ public class SkillParsingTest {
 					"}",
 					"skill S2 extends S1 {",
 					"	def name { }",
-					"}"), false);
-			validate(mas).assertNoWarnings(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertNoWarnings(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE);
 		}
 
 		@Test
 		public void modifier_override_invalid() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { def fakefct() }",
 					"skill S1 implements C1 {",
@@ -689,8 +688,8 @@ public class SkillParsingTest {
 					"}",
 					"skill S2 extends S1 {",
 					"	override name { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.OBSOLETE_OVERRIDE,
 					"The method name() of type S2 must override a superclass method");
@@ -698,7 +697,7 @@ public class SkillParsingTest {
 
 		@Test
 		public void modifier_override_valid() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { def fakefct() }",
 					"abstract skill S1 implements C1 {",
@@ -708,18 +707,18 @@ public class SkillParsingTest {
 					"skill S2 extends S1 {",
 					"   override fakefct() { }",
 					"	override name() { }",
-					"}"), false);
-			validate(mas).assertNoIssues();
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertNoIssues();
 		}
 
 		@Test
 		public void modifier_public() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	public def name { }",
-					"}"), true);
+					"}"));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -742,12 +741,12 @@ public class SkillParsingTest {
 
 		@Test
 		public void modifier_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	private def name { }",
-					"}"), true);
+					"}"));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -770,12 +769,12 @@ public class SkillParsingTest {
 
 		@Test
 		public void modifier_protected() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	protected def name { }",
-					"}"), true);
+					"}"));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -798,12 +797,12 @@ public class SkillParsingTest {
 
 		@Test
 		public void modifier_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	package def name { }",
-					"}"), true);
+					"}"));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -826,12 +825,12 @@ public class SkillParsingTest {
 
 		@Test
 		public void modifier_none() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def name { }",
-					"}"), true);
+					"}"));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -854,12 +853,12 @@ public class SkillParsingTest {
 
 		@Test
 		public void modifier_abstract() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"abstract skill S1 implements C1 {",
 					"	abstract def name",
-					"}"), true);
+					"}"));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -882,13 +881,13 @@ public class SkillParsingTest {
 
 		@Test
 		public void modifier_no_abstract() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"abstract skill S1 implements C1 {",
 					"	def name",
-					"}"), true);
-			validate(mas).assertWarning(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_ABSTRACT);
 			//
@@ -914,25 +913,25 @@ public class SkillParsingTest {
 
 		@Test
 		public void modifier_static() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	static def name { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_dispatch() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	dispatch def name { }",
-					"}"), false);
+					"}"));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -955,12 +954,12 @@ public class SkillParsingTest {
 
 		@Test
 		public void modifier_final_var() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	final def name { }",
-					"}"), true);
+					"}"));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -983,51 +982,51 @@ public class SkillParsingTest {
 
 		@Test
 		public void modifier_strictfp() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	strictfp def name { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_native() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	native def name { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_volatile() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	volatile def name { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_synchronized() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	synchronized def name { }",
-					"}"), true);
+					"}"));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1050,38 +1049,38 @@ public class SkillParsingTest {
 
 		@Test
 		public void modifier_transient() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	transient def name { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_protected_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	protected private def name { }",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_dispatch_final() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	dispatch final def name(a : Integer) { }",
-					"}"), true);
+					"}"));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1104,14 +1103,14 @@ public class SkillParsingTest {
 
 		@Test
 		public void multipleActionDefinitionInCapacity() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"	def myaction(a : int, b : int)",
 					"	def myaction(a : int)",
 					"	def myaction(a : int)",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_METHOD,
 					"Duplicate method myaction(int) in type C1");
@@ -1119,7 +1118,7 @@ public class SkillParsingTest {
 
 		@Test
 		public void multipleActionDefinitionInSkill() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def myaction(a : int, b : int) { }",
@@ -1127,7 +1126,7 @@ public class SkillParsingTest {
 					"	def myaction(a : int) { }",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_METHOD,
 					"Duplicate method myaction(int) in type S1");
@@ -1135,14 +1134,14 @@ public class SkillParsingTest {
 
 		@Test
 		public void invalidActionNameInCapacity() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"	def myaction",
 					"	def $handle_myaction",
 					"	def myaction2",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MEMBER_NAME,
 					"Invalid action name '$handle_myaction'.");
@@ -1150,7 +1149,7 @@ public class SkillParsingTest {
 
 		@Test
 		public void invalidActionNameInSkill() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def myaction {",
@@ -1164,7 +1163,7 @@ public class SkillParsingTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MEMBER_NAME,
 					"Invalid action name '$handle_myaction'.");
@@ -1172,7 +1171,7 @@ public class SkillParsingTest {
 
 		@Test
 		public void missedActionImplementation_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"	def myaction1(a : int)",
 					"}",
@@ -1183,7 +1182,7 @@ public class SkillParsingTest {
 					"	def myaction1(x : int) { }",
 					"	def myaction2(y : float, z : boolean) { }",
 					"}"
-					), true);
+					));
 			assertEquals(3, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -1239,7 +1238,7 @@ public class SkillParsingTest {
 
 		@Test
 		public void missedActionImplementation_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"	def myaction1(a : int)",
 					"}",
@@ -1250,7 +1249,7 @@ public class SkillParsingTest {
 					"	def myaction2(b : float, c : boolean) { }",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
 					"The class S1 must be defined abstract because it does not implement myaction1(int)");
@@ -1258,7 +1257,7 @@ public class SkillParsingTest {
 
 		@Test
 		public void missedActionImplementation_2() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"	def myaction1(a : int)",
 					"}",
@@ -1270,7 +1269,7 @@ public class SkillParsingTest {
 					"	def myaction2(y : float, z : boolean) { }",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlSkill(),
 					org.eclipse.xtend.core.validation.IssueCodes.CLASS_MUST_BE_ABSTRACT,
 					"The class S1 must be defined abstract because it does not implement myaction1(int)");
@@ -1278,7 +1277,7 @@ public class SkillParsingTest {
 
 		@Test
 		public void incompatibleReturnType_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"skill S1 implements C1 {",
@@ -1292,14 +1291,14 @@ public class SkillParsingTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE);
 		}
 
 		@Test
 		public void incompatibleReturnType_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"skill S1 implements C1 {",
@@ -1313,14 +1312,14 @@ public class SkillParsingTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE);
 		}
 
 		@Test
 		public void incompatibleReturnType_2() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"skill S1 implements C1 {",
@@ -1334,14 +1333,14 @@ public class SkillParsingTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE);
 		}
 
 		@Test
 		public void incompatibleReturnType_3() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"skill S1 implements C1 {",
@@ -1355,7 +1354,7 @@ public class SkillParsingTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					XbasePackage.eINSTANCE.getXBlockExpression(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES,
 					"Type mismatch: cannot convert from null to int");
@@ -1363,7 +1362,7 @@ public class SkillParsingTest {
 
 		@Test
 		public void incompatibleReturnType_4() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"	def myaction(a : int) : int",
 					"}",
@@ -1373,14 +1372,14 @@ public class SkillParsingTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE);
 		}
 
 		@Test
 		public void incompatibleReturnType_5() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"	def myaction(a : int) // void",
 					"}",
@@ -1390,14 +1389,14 @@ public class SkillParsingTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE);
 		}
 
 		@Test
 		public void incompatibleReturnType_6() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"	def myaction(a : int) : int",
 					"}",
@@ -1407,14 +1406,14 @@ public class SkillParsingTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_RETURN_TYPE);
 		}
 
 		@Test
 		public void incompatibleReturnType_7() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"	def myaction(a : int) : int",
 					"}",
@@ -1424,7 +1423,7 @@ public class SkillParsingTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					XbasePackage.eINSTANCE.getXBlockExpression(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.INCOMPATIBLE_TYPES,
 					"Type mismatch: cannot convert from null to int");
@@ -1432,7 +1431,7 @@ public class SkillParsingTest {
 
 		@Test
 		public void expectingReturnType_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"skill S1 implements C1 {",
@@ -1446,7 +1445,7 @@ public class SkillParsingTest {
 					"	}",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					IssueCodes.RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED,
 					"int");
@@ -1454,7 +1453,7 @@ public class SkillParsingTest {
 
 		@Test
 		public void compatibleReturnType_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"skill S1 implements C1 {",
@@ -1467,7 +1466,7 @@ public class SkillParsingTest {
 					"		return 0.0",
 					"	}",
 					"}"
-					), true);
+					));
 			assertEquals(4, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -1513,7 +1512,7 @@ public class SkillParsingTest {
 
 		@Test
 		public void compatibleReturnType_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"skill S1 implements C1 {",
@@ -1526,7 +1525,7 @@ public class SkillParsingTest {
 					"		return 0f",
 					"	}",
 					"}"
-					), true);
+					));
 			assertEquals(4, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -1572,7 +1571,7 @@ public class SkillParsingTest {
 
 		@Test
 		public void compatibleReturnType_2() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"	def myaction(a : int) : Number",
 					"}",
@@ -1581,7 +1580,7 @@ public class SkillParsingTest {
 					"		return 0.0",
 					"	}",
 					"}"
-					), true);
+					));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -1616,7 +1615,7 @@ public class SkillParsingTest {
 
 		@Test
 		public void compatibleReturnType_3() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"	def myaction(a : int) : float",
 					"}",
@@ -1625,7 +1624,7 @@ public class SkillParsingTest {
 					"		return 0f",
 					"	}",
 					"}"
-					), true);
+					));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -1660,16 +1659,17 @@ public class SkillParsingTest {
 
 	}
 
-	public static class FieldTest extends AbstractSarlTest {
+	@Nested
+	public class FieldTest extends AbstractSarlTest {
 
 		@Test
 		public void modifier_public() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	public var field : int",
-					"}"), false);
+					"}"));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1693,12 +1693,12 @@ public class SkillParsingTest {
 
 		@Test
 		public void modifier_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	private var field : int",
-					"}"), true);
+					"}"));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1722,12 +1722,12 @@ public class SkillParsingTest {
 
 		@Test
 		public void modifier_protected() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	protected var field : int",
-					"}"), true);
+					"}"));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1751,12 +1751,12 @@ public class SkillParsingTest {
 
 		@Test
 		public void modifier_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	package var field : int",
-					"}"), true);
+					"}"));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1780,12 +1780,12 @@ public class SkillParsingTest {
 
 		@Test
 		public void modifier_none() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	var field : int",
-					"}"), true);
+					"}"));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -1809,130 +1809,130 @@ public class SkillParsingTest {
 
 		@Test
 		public void modifier_abstract() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	abstract var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_static() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	static var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_dispatch() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	dispatch var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_final_var() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	final var field : int = 5",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_strictfp() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	strictfp var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_native() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	native var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_volatile() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	volatile var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_synchronized() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	synchronized var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_transient() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	transient var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_protected_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	protected private var field : int",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"public / package / protected / private");
@@ -1940,7 +1940,7 @@ public class SkillParsingTest {
 
 		@Test
 		public void multipleVariableDefinitionInSkill() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	var myfield : int",
@@ -1948,7 +1948,7 @@ public class SkillParsingTest {
 					"	var myfield : double",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_FIELD,
 					"Duplicate field myfield");
@@ -1956,7 +1956,7 @@ public class SkillParsingTest {
 
 		@Test
 		public void multipleValueDefinitionInSkill() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	val myfield : int = 4",
@@ -1964,7 +1964,7 @@ public class SkillParsingTest {
 					"	val myfield : double = 5",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_FIELD,
 					"Duplicate field myfield");
@@ -1972,14 +1972,14 @@ public class SkillParsingTest {
 
 		@Test
 		public void missedFinalFieldInitialization() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	val field1 : int = 5",
 					"	val field2 : String",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtend.core.validation.IssueCodes.FIELD_NOT_INITIALIZED,
 					"The blank final field field2 may not have been initialized");
@@ -1987,13 +1987,13 @@ public class SkillParsingTest {
 
 		@Test
 		public void completeFinalFieldInitialization() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	val field1 : int = 5",
 					"	val field2 : String = \"\"",
 					"}"
-					), true);
+					));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -2022,7 +2022,7 @@ public class SkillParsingTest {
 
 		@Test
 		public void fieldNameShadowingInSkill() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"skill S1 implements C1 {",
@@ -2034,7 +2034,7 @@ public class SkillParsingTest {
 					"	def myaction(a : int) { }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_SHADOWING,
 					"The field 'field1' in 'S2' is hidding the inherited field 'S1.field1'.");
@@ -2042,24 +2042,24 @@ public class SkillParsingTest {
 
 		@Test
 		public void variableModifier_public() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"public var name : String = \"Hello\"",
 					"}"
-					), false);
+					));
 			//
-			validate(mas).assertNoErrors();
+			validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 		}
 
 		@Test
 		public void variableModifier_protected() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"protected var name : String = \"Hello\"",
 					"}"
-					), true);
+					));
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			SarlField attr1 = (SarlField) skill.getMembers().get(0);
@@ -2068,24 +2068,24 @@ public class SkillParsingTest {
 
 		@Test
 		public void variableModifier_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"package var name : String = \"Hello\"",
 					"}"
-					), false);
+					));
 			//
-			validate(mas).assertNoErrors();
+			validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 		}
 
 		@Test
 		public void variableModifier_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"private var name : String = \"Hello\"",
 					"}"
-					), true);
+					));
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			SarlField attr1 = (SarlField) skill.getMembers().get(0);
@@ -2094,12 +2094,12 @@ public class SkillParsingTest {
 
 		@Test
 		public void variableModifier_default() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"var name : String = \"Hello\"",
 					"}"
-					), true);
+					));
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			SarlField attr1 = (SarlField) skill.getMembers().get(0);
@@ -2108,24 +2108,24 @@ public class SkillParsingTest {
 
 		@Test
 		public void valueModifier_public() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"public val name : String = \"Hello\"",
 					"}"
-					), false);
+					));
 			//
-			validate(mas).assertNoErrors();
+			validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 		}
 
 		@Test
 		public void valueModifier_protected() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"protected val name : String = \"Hello\"",
 					"}"
-					), true);
+					));
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			SarlField attr1 = (SarlField) skill.getMembers().get(0);
@@ -2134,24 +2134,24 @@ public class SkillParsingTest {
 
 		@Test
 		public void valueModifier_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"package val name : String = \"Hello\"",
 					"}"
-					), false);
+					));
 			//
-			validate(mas).assertNoErrors();
+			validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 		}
 
 		@Test
 		public void valueModifier_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"private val name : String = \"Hello\"",
 					"}"
-					), true);
+					));
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			SarlField attr1 = (SarlField) skill.getMembers().get(0);
@@ -2160,12 +2160,12 @@ public class SkillParsingTest {
 
 		@Test
 		public void valueModifier_default() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"val name : String = \"Hello\"",
 					"}"
-					), true);
+					));
 			//
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			SarlField attr1 = (SarlField) skill.getMembers().get(0);
@@ -2174,11 +2174,12 @@ public class SkillParsingTest {
 
 	}
 
-	public static class CapacityUsesTest extends AbstractSarlTest {
+	@Nested
+	public class CapacityUsesTest extends AbstractSarlTest {
 
 		@Test
 		public void invalidCapacityTypeForUses() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"	def myaction(a : int) : float",
 					"}",
@@ -2189,7 +2190,7 @@ public class SkillParsingTest {
 					"	uses C1, E1",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 					IssueCodes.INVALID_CAPACITY_TYPE,
 					"Invalid type: 'E1'. Only capacities can be used after the keyword 'uses'");
@@ -2197,7 +2198,7 @@ public class SkillParsingTest {
 
 		@Test
 		public void agentUnsuedCapacity_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"	def myfct",
 					"}",
@@ -2211,7 +2212,7 @@ public class SkillParsingTest {
 					"	}",
 					"}"
 					));
-			List<Issue> issues = issues(mas);
+			List<Issue> issues = issues(getValidationHelper(), mas);
 			assertWarning(
 					issues,
 					mas,
@@ -2223,7 +2224,7 @@ public class SkillParsingTest {
 
 		@Test
 		public void agentUnsuedCapacity_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"	def myfct",
 					"}",
@@ -2236,7 +2237,7 @@ public class SkillParsingTest {
 					"	}",
 					"}"
 					));
-			List<Issue> issues = issues(mas);
+			List<Issue> issues = issues(getValidationHelper(), mas);
 			assertWarning(
 					issues,
 					mas,
@@ -2254,7 +2255,7 @@ public class SkillParsingTest {
 
 		@Test
 		public void agentUnsuedCapacity_2() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"	def myfct",
 					"}",
@@ -2268,7 +2269,7 @@ public class SkillParsingTest {
 					"		myfct2",
 					"	}",
 					"}"
-					), true);
+					));
 			assertEquals(3, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -2312,7 +2313,7 @@ public class SkillParsingTest {
 
 		@Test
 		public void agentUnsuedCapacity_3() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"	def myfct",
 					"}",
@@ -2328,7 +2329,7 @@ public class SkillParsingTest {
 					"   }",
 					"}"
 					));
-			List<Issue> issues = issues(mas);
+			List<Issue> issues = issues(getValidationHelper(), mas);
 			assertWarning(
 					issues,
 					mas,
@@ -2340,7 +2341,7 @@ public class SkillParsingTest {
 
 		@Test
 		public void agentUnsuedCapacity_4() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"	def myfct",
 					"}",
@@ -2356,7 +2357,7 @@ public class SkillParsingTest {
 					"   }",
 					"}"
 					));
-			List<Issue> issues = issues(mas);
+			List<Issue> issues = issues(getValidationHelper(), mas);
 			assertWarning(
 					issues,
 					mas,
@@ -2368,7 +2369,7 @@ public class SkillParsingTest {
 
 		@Test
 		public void multipleCapacityUses_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {}",
 					"capacity C2 {}",
 					"capacity C3 { def testFct }",
@@ -2377,7 +2378,7 @@ public class SkillParsingTest {
 					"	def testFct { }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlCapacityUses(),
 					IssueCodes.REDUNDANT_CAPACITY_USE,
 					"Redundant use of the capacity 'C1'");
@@ -2385,7 +2386,7 @@ public class SkillParsingTest {
 
 		@Test
 		public void multipleCapacityUses_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {}",
 					"capacity C2 {}",
 					"capacity C3 { def testFct }",
@@ -2395,7 +2396,7 @@ public class SkillParsingTest {
 					"	uses C2, C1",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlCapacityUses(),
 					IssueCodes.REDUNDANT_CAPACITY_USE,
 					"Redundant use of the capacity 'C2'");
@@ -2403,16 +2404,17 @@ public class SkillParsingTest {
 
 	}
 
-	public static class GenericTest extends AbstractSarlTest {
+	@Nested
+	public class GenericTest extends AbstractSarlTest {
 
 		@Test
 		public void functionGeneric_X_sarlNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def setX(param : X) : void with X { var xxx : X }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertNotNull(skill);
@@ -2431,12 +2433,12 @@ public class SkillParsingTest {
 
 		@Test
 		public void functionGeneric_X_javaNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def <X> setX(param : X) : void { var xxx : X }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertNotNull(skill);
@@ -2455,12 +2457,12 @@ public class SkillParsingTest {
 
 		@Test
 		public void functionGeneric_XextendsNumber_sarlNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def setX(param : X) : void with X extends Number { var xxx : X }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertNotNull(skill);
@@ -2483,12 +2485,12 @@ public class SkillParsingTest {
 
 		@Test
 		public void functionGeneric_XextendsNumber_javaNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def <X extends Number> setX(param : X) : void { var xxx : X }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertNotNull(skill);
@@ -2511,12 +2513,12 @@ public class SkillParsingTest {
 
 		@Test
 		public void functionGeneric_XY_sarlNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def setX(param : X) : void with X, Y { var xxx : X; var yyy : Y }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertNotNull(skill);
@@ -2539,12 +2541,12 @@ public class SkillParsingTest {
 
 		@Test
 		public void functionGeneric_XY_javaNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def <X, Y> setX(param : X) : void { var xxx : X; var yyy : Y }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertNotNull(skill);
@@ -2567,12 +2569,12 @@ public class SkillParsingTest {
 
 		@Test
 		public void functionGeneric_XYextendsX_sarlNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def setX(param : X) : void with X, Y extends X { var xxx : X; var yyy : Y }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertNotNull(skill);
@@ -2599,12 +2601,12 @@ public class SkillParsingTest {
 
 		@Test
 		public void functionGeneric_XYextendsX_javaNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def <X, Y extends X> setX(param : X) : void { var xxx : X; var yyy : Y }",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlSkill skill = (SarlSkill) mas.getXtendTypes().get(1);
 			assertNotNull(skill);

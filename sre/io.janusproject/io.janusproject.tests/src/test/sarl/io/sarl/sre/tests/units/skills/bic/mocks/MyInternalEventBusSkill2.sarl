@@ -25,9 +25,9 @@ import io.sarl.lang.core.Event
 import io.sarl.sre.capacities.InformedEventListener
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.skills.internal.EventBus
+import java.util.concurrent.ConcurrentLinkedDeque
 
 import static extension org.mockito.Mockito.mock
-import java.util.concurrent.ConcurrentLinkedDeque
 
 /**
  * @author $Author: sgalland$

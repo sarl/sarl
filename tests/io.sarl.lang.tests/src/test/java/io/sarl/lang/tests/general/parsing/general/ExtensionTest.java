@@ -20,15 +20,15 @@
  */
 package io.sarl.lang.tests.general.parsing.general;
 
-import org.eclipse.xtext.xbase.XbasePackage;
+import static io.sarl.tests.api.tools.TestEObjects.file;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static io.sarl.tests.api.tools.TestValidator.validate;
+
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
-
-import org.eclipse.xtext.xbase.validation.IssueCodes;
-import org.eclipse.xtext.xtype.XtypePackage;
-import org.junit.Test;
 
 
 /**
@@ -42,7 +42,7 @@ public class ExtensionTest extends AbstractSarlTest {
 
 	@Test
 	public void localExtension() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"class LocalExtensionTest {",
 				"	def doSomething(obj : Object) { }",
 				"	def extensionCall(obj : Object) {",
@@ -50,12 +50,12 @@ public class ExtensionTest extends AbstractSarlTest {
 				"	}",
 				"}",
 				""));
-		validate(mas).assertNoIssues();
+		validate(getValidationHelper(), getInjector(), mas).assertNoIssues();
 	}
 
 	@Test
 	public void extensionImports() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"import java.util.List",
 				"import static extension java.util.Collections.singletonList",
 				"class ExtensionImportsTest {",
@@ -65,12 +65,12 @@ public class ExtensionTest extends AbstractSarlTest {
 				"	}",
 				"}",
 				""));
-		validate(mas).assertNoIssues();
+		validate(getValidationHelper(), getInjector(), mas).assertNoIssues();
 	}
 
 	@Test
 	public void extensionProviderOnFieldVariable_valid() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"import java.util.ArrayList",
 				"class ExtensionProviderTest {",
 				"	extension var f : ArrayList<String> = newArrayList",
@@ -79,7 +79,7 @@ public class ExtensionTest extends AbstractSarlTest {
 				"	}",
 				"}",
 				""));
-		validate(mas).assertNoIssues();
+		validate(getValidationHelper(), getInjector(), mas).assertNoIssues();
 	}
 
 	/** The type of the field must be given, otherwise there is a problem with
@@ -89,7 +89,7 @@ public class ExtensionTest extends AbstractSarlTest {
 	 */
 	@Test
 	public void extensionProviderOnFieldVariable_missedType() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"import java.util.ArrayList",
 				"class ExtensionProviderTest {",
 				"	extension var f = newArrayList",
@@ -98,7 +98,7 @@ public class ExtensionTest extends AbstractSarlTest {
 				"	}",
 				"}",
 				""));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlField(),
 				org.eclipse.xtext.diagnostics.Diagnostic.SYNTAX_DIAGNOSTIC,
 				"mismatched input '=' expecting ':'");
@@ -106,7 +106,7 @@ public class ExtensionTest extends AbstractSarlTest {
 
 	@Test
 	public void extensionProviderOnFieldValue() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"import java.util.ArrayList",
 				"class ExtensionProviderTest {",
 				"	extension val f : ArrayList<String> = newArrayList",
@@ -115,12 +115,12 @@ public class ExtensionTest extends AbstractSarlTest {
 				"	}",
 				"}",
 				""));
-		validate(mas).assertNoIssues();
+		validate(getValidationHelper(), getInjector(), mas).assertNoIssues();
 	}
 
 	@Test
 	public void extensionProviderOnParameter() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"class ExtensionProvider {",
 				"	def doSomething(e : Object) : int { 0 }",
 				"}",
@@ -130,12 +130,12 @@ public class ExtensionTest extends AbstractSarlTest {
 				"	}",
 				"}",
 				""));
-		validate(mas).assertNoIssues();
+		validate(getValidationHelper(), getInjector(), mas).assertNoIssues();
 	}
 
 	@Test
 	public void extensionProviderOnLocalVariable() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"class ExtensionProvider {",
 				"	def doSomething(e : Object) : int { 0 }",
 				"}",
@@ -146,12 +146,12 @@ public class ExtensionTest extends AbstractSarlTest {
 				"	}",
 				"}",
 				""));
-		validate(mas).assertNoIssues();
+		validate(getValidationHelper(), getInjector(), mas).assertNoIssues();
 	}
 
 	@Test
 	public void extensionProviderOnLocalValue() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"class ExtensionProvider {",
 				"	def doSomething(e : Object) : int { 0 }",
 				"}",
@@ -162,7 +162,7 @@ public class ExtensionTest extends AbstractSarlTest {
 				"	}",
 				"}",
 				""));
-		validate(mas).assertNoIssues();
+		validate(getValidationHelper(), getInjector(), mas).assertNoIssues();
 	}
 
 }

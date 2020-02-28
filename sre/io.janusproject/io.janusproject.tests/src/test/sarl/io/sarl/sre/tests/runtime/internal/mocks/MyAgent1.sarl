@@ -23,7 +23,7 @@ package io.sarl.sre.tests.runtime.internal.mocks
 
 import io.sarl.core.Behaviors
 import io.sarl.core.Destroy
-import io.sarl.sre.tests.testutils.TestingAgent
+import io.sarl.sre.tests.testutils.agents.TestingAgent
 
 /**
  * @author $Author: sgalland$

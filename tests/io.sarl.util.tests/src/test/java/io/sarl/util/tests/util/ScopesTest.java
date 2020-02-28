@@ -21,15 +21,14 @@
 
 package io.sarl.util.tests.util;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
 
 import java.util.UUID;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -45,9 +44,11 @@ import io.sarl.util.Scopes;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated since 0.7
  */
 @SuppressWarnings("all")
 @ManualMocking
+@Deprecated
 public final class ScopesTest extends AbstractSarlTest {
 
 	@Nullable
@@ -68,7 +69,7 @@ public final class ScopesTest extends AbstractSarlTest {
 	@Mock
 	private Address base4;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.id1 = UUID.randomUUID();
 		this.id2 = UUID.randomUUID();

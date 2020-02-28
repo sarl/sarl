@@ -39,6 +39,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.TreeMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Named;
@@ -47,7 +48,6 @@ import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import org.apache.commons.lang3.tuple.MutableTriple;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.arakhne.afc.vmutil.ReflectionUtil;
 import org.eclipse.xtext.Constants;
@@ -648,7 +648,7 @@ public class SarlDocumentationParser {
 	public String transform(File inputFile) {
 		final String content;
 		try (FileReader reader = new FileReader(inputFile)) {
-			content = read(reader);
+			content = read(reader, null);
 		} catch (IOException exception) {
 			reportError(Messages.SarlDocumentationParser_0, exception);
 			return null;
@@ -665,7 +665,7 @@ public class SarlDocumentationParser {
 	public String transform(Reader reader, File inputFile) {
 		final String content;
 		try {
-			content = read(reader);
+			content = read(reader, null);
 		} catch (IOException exception) {
 			reportError(Messages.SarlDocumentationParser_0, exception);
 			return null;
@@ -686,8 +686,9 @@ public class SarlDocumentationParser {
 		Stage stage = Stage.first();
 		do {
 			final ContentParserInterceptor interceptor = new ContentParserInterceptor();
-			// Reset the lineno because it is not reset between the different stages.
+			// Reset the lineno and offset because they are not reset between the different stages.
 			rootContextForReplacements.setLineNo(1);
+			rootContextForReplacements.setOffset(0);
 			final boolean hasChanged = parse(rawContent, inputFile, 0, stage, rootContextForReplacements, interceptor);
 			if (hasChanged) {
 				rawContent = interceptor.getResult();
@@ -731,10 +732,11 @@ public class SarlDocumentationParser {
 	 *     the tags to the associated list of the extraction information.
 	 */
 	public void extractValidationComponents(File inputFile,
-			Procedure1<Map<Tag, List<MutableTriple<File, Integer, String>>>> observer) {
+			Procedure1<Map<Tag, List<ValidationComponentData>>> observer) {
 		final String content;
+		final AtomicInteger nblines = new AtomicInteger();
 		try (FileReader reader = new FileReader(inputFile)) {
-			content = read(reader);
+			content = read(reader, nblines);
 		} catch (IOException exception) {
 			reportError(Messages.SarlDocumentationParser_0, exception);
 			return;
@@ -750,10 +752,11 @@ public class SarlDocumentationParser {
 	 *     the tags to the associated list of the extraction information.
 	 */
 	public void extractValidationComponents(Reader reader, File inputFile,
-			Procedure1<Map<Tag, List<MutableTriple<File, Integer, String>>>> observer) {
+			Procedure1<Map<Tag, List<ValidationComponentData>>> observer) {
 		final String content;
+		final AtomicInteger nblines = new AtomicInteger();
 		try {
-			content = read(reader);
+			content = read(reader, nblines);
 		} catch (IOException exception) {
 			reportError(Messages.SarlDocumentationParser_0, exception);
 			return;
@@ -769,28 +772,33 @@ public class SarlDocumentationParser {
 	 *     the tags to the associated list of the extraction information.
 	 */
 	public void extractValidationComponents(CharSequence content, File inputFile,
-			Procedure1<Map<Tag, List<MutableTriple<File, Integer, String>>>> observer) {
+			Procedure1<Map<Tag, List<ValidationComponentData>>> observer) {
 		//
 		// STEP 1: Extract the raw text
 		//
-		final Map<Tag, List<MutableTriple<File, Integer, String>>> components = new TreeMap<>();
+		final Map<Tag, List<ValidationComponentData>> components = new TreeMap<>();
 		final ContentParserInterceptor interceptor = new ContentParserInterceptor(new ParserInterceptor() {
 			@Override
 			public void tag(ParsingContext context, Tag tag, String dynamicName, String parameter,
 					String blockValue) {
 				if (tag.isOpeningTag() || tag.hasParameter()) {
-					List<MutableTriple<File, Integer, String>> values = components.get(tag);
+					List<ValidationComponentData> values = components.get(tag);
 					if (values == null) {
 						values = new ArrayList<>();
 						components.put(tag, values);
 					}
+					final ValidationComponentData data = new ValidationComponentData();
+					data.file = context.getCurrentFile();
+					data.lineno = context.getLineNo();
+					data.endLineno = context.getEndLineNo();
+					data.offset = context.getOffset();
+					data.length = context.getLength();
 					if (tag.isOpeningTag()) {
-						values.add(new MutableTriple<>(context.getCurrentFile(),
-								context.getLineNo(), Strings.nullToEmpty(blockValue).trim()));
+						data.code = Strings.nullToEmpty(blockValue).trim();
 					} else {
-						values.add(new MutableTriple<>(context.getCurrentFile(),
-								context.getLineNo(), Strings.nullToEmpty(parameter).trim()));
+						data.code = Strings.nullToEmpty(parameter).trim();
 					}
+					values.add(data);
 				}
 			}
 		});
@@ -800,13 +808,13 @@ public class SarlDocumentationParser {
 		//
 		// STEP 2: Do macro replacement in the captured elements.
 		//
-		final Collection<List<MutableTriple<File, Integer, String>>> allTexts = new ArrayList<>(components.values());
-		for (final List<MutableTriple<File, Integer, String>> values : allTexts) {
-			for (final MutableTriple<File, Integer, String> pair : values) {
+		final Collection<List<ValidationComponentData>> allTexts = new ArrayList<>(components.values());
+		for (final List<ValidationComponentData> values : allTexts) {
+			for (final ValidationComponentData data : values) {
 				final ContentParserInterceptor localInterceptor = new ContentParserInterceptor(interceptor);
-				parse(pair.getRight(), inputFile, 0, Stage.SECOND, rootContextForReplacements, localInterceptor);
+				parse(data.code, inputFile, 0, Stage.SECOND, rootContextForReplacements, localInterceptor);
 				final String newCapturedText = localInterceptor.getResult();
-				pair.setRight(newCapturedText);
+				data.code = newCapturedText;
 			}
 		}
 
@@ -819,6 +827,7 @@ public class SarlDocumentationParser {
 	 */
 	protected void initializeContext(ParsingContext context) {
 		context.setLineNo(1);
+		context.setOffset(0);
 		context.setScriptExecutor(getScriptExecutor());
 	}
 
@@ -875,8 +884,19 @@ public class SarlDocumentationParser {
 				final String tagName = context.getMatcher().group(groupIndex);
 				if (lineSeparator.equals(tagName)) {
 					context.incrementLineNo();
+					context.incrementOffset(lineSeparator.length());
 					continue;
 				}
+
+				final int regionOffset = context.getMatcher().start();
+				final int regionLength = context.getMatcher().end() - regionOffset;
+				context.setOffset(regionOffset);
+				context.setLength(regionLength);
+				final int startLine = context.getLineNo();
+				final int nbLines = countLines(context.getMatcher().group());
+				final int endLine = startLine + nbLines - 1;
+				context.setEndLineNo(endLine);
+
 				final Tag tag = getTagForPattern(tagName);
 				if (tag != null) {
 					if (tag.isActive(context)) {
@@ -939,6 +959,9 @@ public class SarlDocumentationParser {
 					reportError(context, Messages.SarlDocumentationParser_1, tagName);
 					return false;
 				}
+
+				context.setLineNo(endLine);
+				context.setEndLineNo(endLine);
 			}
 			context.getParserInterceptor().closeContext(context);
 			return specialTagFound;
@@ -952,6 +975,11 @@ public class SarlDocumentationParser {
 					context.getLineNo(),
 					rootException);
 		}
+	}
+
+	private int countLines(String text) {
+		final String[] lines = text.split(Pattern.quote(getLineSeparator()));
+		return lines.length;
 	}
 
 	/** Report an error.
@@ -1016,22 +1044,29 @@ public class SarlDocumentationParser {
 			filename = FileSystem.makeAbsolute(filename, context.getCurrentDirectory());
 		}
 		try (FileReader reader = new FileReader(filename)) {
-			return read(reader);
+			return read(reader, null);
 		}
 	}
 
 	/** Read the content of a file.
 	 *
 	 * @param file the file to read.
+	 * @param nblines the number of lines that is read.
 	 * @return the content.
 	 * @throws IOException if the content cannot be read.
 	 */
-	protected static String read(Reader file) throws IOException {
+	protected static String read(Reader file, AtomicInteger nblines) throws IOException {
+		if (nblines != null) {
+			nblines.set(0);
+		}
 		final StringBuilder content = new StringBuilder();
 		try (BufferedReader reader = new BufferedReader(file)) {
 			String line = reader.readLine();
 			boolean first = true;
 			while (line != null) {
+				if (nblines != null) {
+					nblines.incrementAndGet();
+				}
 				if (first) {
 					first = false;
 				} else {
@@ -1190,6 +1225,12 @@ public class SarlDocumentationParser {
 
 		private int[] lineno = new int[] {1};
 
+		private int endLineno = 1;
+
+		private int[] offset = new int[] {0};
+
+		private int length;
+
 		private String lineSeparator;
 
 		private String outputLanguage;
@@ -1276,6 +1317,9 @@ public class SarlDocumentationParser {
 		 */
 		public void incrementLineNo() {
 			++(this.lineno[0]);
+			if (this.lineno[0] > this.endLineno) {
+				this.endLineno = this.lineno[0];
+			}
 		}
 
 		/** Increment the line number.
@@ -1285,6 +1329,9 @@ public class SarlDocumentationParser {
 		public void incrementLineNo(int amount) {
 			if (amount > 0) {
 				(this.lineno[0]) += amount;
+				if (this.lineno[0] > this.endLineno) {
+					this.endLineno = this.lineno[0];
+				}
 			}
 		}
 
@@ -1294,6 +1341,74 @@ public class SarlDocumentationParser {
 		 */
 		public void setLineNo(int lineno) {
 			this.lineno[0] = lineno;
+			if (this.lineno[0] > this.endLineno) {
+				this.endLineno = this.lineno[0];
+			}
+		}
+
+		/** Change the end line number.
+		 *
+		 * @param lineno the end line number.
+		 * @since 0.11
+		 */
+		public void setEndLineNo(int lineno) {
+			this.endLineno = lineno;
+		}
+
+		/** Replies the end line number.
+		 *
+		 * @return the end line number.
+		 * @since 0.11
+		 */
+		public int getEndLineNo() {
+			return this.endLineno;
+		}
+
+		/** Replies the offset.
+		 *
+		 * @return the offset.
+		 * @since 0.11
+		 */
+		public int getOffset() {
+			return this.offset[0];
+		}
+
+		/** Increment the offset.
+		 *
+		 * @param amount the amount for increasing the offset.
+		 * @since 0.11
+		 */
+		public void incrementOffset(int amount) {
+			if (amount > 0) {
+				(this.offset[0]) += amount;
+			}
+		}
+
+		/** Change the offset.
+		 *
+		 * @param offset the offset.
+		 * @since 0.11
+		 */
+		public void setOffset(int offset) {
+			this.offset[0] = offset;
+		}
+
+		/** Replies the length.
+		 *
+		 * @return the length.
+		 * @since 0.11
+		 */
+		public int getLength() {
+			return this.length;
+		}
+
+		/** Change the length.
+		 *
+		 * @param length the length.
+		 * @since 0.11
+		 */
+		public void setLength(int length) {
+			this.length = length;
 		}
 
 		@Override
@@ -1393,6 +1508,7 @@ public class SarlDocumentationParser {
 			this.forceVisibility = parentContext.forceVisibility;
 			this.isTestingPhase = parentContext.isTestingPhase;
 			this.lineno = parentContext.lineno;
+			this.offset = parentContext.offset;
 			this.scriptExecutor = parentContext.scriptExecutor;
 		}
 
@@ -1405,7 +1521,7 @@ public class SarlDocumentationParser {
 			this.replacements.put(id, to);
 		}
 
-		/** Get the replacement for the givene id.
+		/** Get the replacement for the given id.
 		 *
 		 * @param id the identifier of the replacement.
 		 * @return the replacement value, or {@code null} if none.
@@ -2005,10 +2121,16 @@ public class SarlDocumentationParser {
 				}
 				final File filename = FileSystem.convertStringToFile(parameter);
 				try {
-					final String fileContent = read(context, filename);
 					final int oldLine = context.getLineNo();
+					final int oldEndLine = context.getEndLineNo();
+					final int oldOffset = context.getOffset();
+					final int oldLength = context.getLength();
 					final File oldFile = context.getCurrentFile();
+					final String fileContent = read(context, filename);
 					context.setLineNo(1);
+					context.setEndLineNo(1);
+					context.setOffset(0);
+					context.setLength(0);
 					context.setCurrentFile(filename);
 					final ContentParserInterceptor subInterceptor = new ContentParserInterceptor(context.getParserInterceptor());
 					context.getParser().parse(
@@ -2019,6 +2141,9 @@ public class SarlDocumentationParser {
 							context,
 							subInterceptor);
 					context.setLineNo(oldLine);
+					context.setEndLineNo(oldEndLine);
+					context.setOffset(oldOffset);
+					context.setLength(oldLength);
 					context.setCurrentFile(oldFile);
 					return subInterceptor.getResult();
 				} catch (IOException exception) {
@@ -2448,9 +2573,9 @@ public class SarlDocumentationParser {
 
 			@Override
 			public String passThrough(ParsingContext context, String dynamicTag, String parameter, String blockValue) {
-				final String text = Strings.nullToEmpty(blockValue);
+				/*final String text = Strings.nullToEmpty(blockValue);
 				final String[] lines = text.split(Pattern.quote(context.getLineSeparator()));
-				context.incrementLineNo(lines.length);
+				context.incrementLineNo_(lines.length);*/
 				return new String();
 			}
 

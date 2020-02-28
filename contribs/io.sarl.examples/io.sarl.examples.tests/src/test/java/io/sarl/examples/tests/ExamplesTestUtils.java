@@ -1,0 +1,474 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2020 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.examples.tests;
+
+import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.readXmlAttribute;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.stream.Stream;
+
+import com.google.inject.Injector;
+import org.arakhne.afc.vmutil.ClasspathUtil;
+import org.arakhne.afc.vmutil.FileSystem;
+import org.eclipse.xtext.diagnostics.Severity;
+import org.eclipse.xtext.util.Strings;
+import org.eclipse.xtext.xbase.lib.Pair;
+import org.eclipse.xtext.xbase.validation.IssueCodes;
+import org.junit.jupiter.api.DynamicTest;
+import org.opentest4j.AssertionFailedError;
+import org.slf4j.helpers.NOPLogger;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import io.sarl.lang.SARLStandaloneSetup;
+import io.sarl.lang.SARLVersion;
+import io.sarl.lang.compiler.batch.CleaningPolicy;
+import io.sarl.lang.compiler.batch.SarlBatchCompiler;
+
+/** Utilities for the example's tests.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.11
+ */
+public final class ExamplesTestUtils {
+
+	private ExamplesTestUtils() {
+		//
+	}
+
+	/** Name of the property that contains the root path for the project to test.
+	 */
+	public static final String ROOT_TEST_FOLDER_PROPERTY = "io.sarl.examples.test.rootDir"; //$NON-NLS-1$
+
+	/** Relative path to the examples.
+	 */
+	public static final File DEFAULT_RELATIVE_PATH = FileSystem.convertStringToFile("file:../io.sarl.examples.plugin"); //$NON-NLS-1$
+
+	/** Name of the folder that contains the examples.
+	 */
+	public static final String CONTENTS_FOLDER_NAME = "contents"; //$NON-NLS-1$
+
+	/** Name of the folder that contains the examples' projects.
+	 */
+	public static final String PROJECTS_FOLDER_NAME = "projects"; //$NON-NLS-1$
+
+	/** Name of maven command.
+	 */
+	public static final String MAVEN_COMMAND = "mvn"; //$NON-NLS-1$
+
+	// TODO Remove this definition when moving to Java 9 or higher (because JavaFX is mavenized)
+	public static final String DEFAULT_JAVAFX_PATH = "/home/sgalland/git/sarl.dsl/contribs/io.sarl.examples/io.sarl.examples.tests/../../../build-tools/libs/jfxrt.jar"; //$NON-NLS-1$
+
+	private volatile static List<ExampleDescription> ARCHIVE_BUFFER = null;
+
+	/** Create the dynamic tests with the given function.
+	 *
+	 * @param testFunction the test code.
+	 * @return the dynamic tests.
+	 * @throws Exception if the example descriptions cannot be read.
+	 */
+	public static Stream<DynamicTest> dynamicTests(TestExecutable testFunction) throws Exception {
+		return dynamicTests(true, testFunction);
+	}
+	
+	/** Create the dynamic tests with the given function.
+	 *
+	 * @param testIfArchive indicates if the example archive should be test for creating the dynamic test.
+	 * @param testFunction the test code.
+	 * @return the dynamic tests.
+	 * @throws Exception if the example descriptions cannot be read.
+	 */
+	public static Stream<DynamicTest> dynamicTests(boolean testIfArchive, TestExecutable testFunction) throws Exception {
+		return getExampleDescriptions().stream()
+				.filter(it -> !testIfArchive || it.archive != null)
+				.map((example) -> DynamicTest.dynamicTest(example.name, () -> testFunction.execute(example)));
+	}
+
+	/** Replies the descriptions for the examples.
+	 *
+	 * @return the descriptions.
+	 * @throws Exception in case of error.
+	 */
+	private static List<ExampleDescription> getExampleDescriptions() throws Exception {
+		if (ARCHIVE_BUFFER == null) {
+			final Set<String> names = new TreeSet<>();
+			final Map<String, Pair<File, File>> rawSources = new TreeMap<>();
+	
+			File rootPath = null;
+			final String projectdir = System.getProperty(ROOT_TEST_FOLDER_PROPERTY);
+			if (!Strings.isEmpty(projectdir)) {
+				rootPath = FileSystem.convertStringToFile(projectdir);
+			}
+			if (rootPath == null) {
+				rootPath = DEFAULT_RELATIVE_PATH;
+			}
+	
+			final File sourceFolder = new File(rootPath, PROJECTS_FOLDER_NAME);
+			final File projectFolder = new File(rootPath, CONTENTS_FOLDER_NAME);
+			if (projectFolder.isDirectory()) {
+				for (File child : projectFolder.listFiles()) {
+					if (child.isFile()) {
+						final String basename = child.getName();
+						final String sbasename = FileSystem.shortBasename(child);
+						rawSources.putIfAbsent(basename, Pair.of(child,
+								new File(sourceFolder, sbasename)));
+						names.add(basename);
+					}
+				}
+			}
+	
+			if (names.isEmpty()) {
+				throw new Exception("no test found"); //$NON-NLS-1$
+			}
+	
+			final List<ExampleDescription> list = new ArrayList<>();
+	
+			for (final String name : names) {
+				final Pair<File, File> pair = rawSources.get(name);
+				final File zipFile = pair.getKey();
+				final File projectSourceFolder = pair.getValue();
+				final ExampleDescription description = new ExampleDescription();
+				description.name = FileSystem.shortBasename(name);
+				description.archive = zipFile;
+				description.sourceFolder = projectSourceFolder;
+				list.add(description);
+			}
+	
+			ARCHIVE_BUFFER = list;
+		}
+		return Collections.unmodifiableList(ARCHIVE_BUFFER);
+	}
+
+	/** Replies the SARL batch compiler.
+	 *
+	 * @return the SARL batch compiler.
+	 */
+	public static SarlBatchCompiler getSarlBatchCompiler() {
+		Injector injector = SARLStandaloneSetup.doSetup();
+		return injector.getInstance(SarlBatchCompiler.class);
+	}
+
+	/** Read the XML node.
+	 *
+	 * @param root the root.
+	 * @param name the name of the node to read.
+	 * @return the node with the given name.
+	 */
+	public static Node readXmlNode(Node root, String name) {
+		NodeList nodes = root.getChildNodes();
+		final int len = nodes.getLength();
+		for (int i = 0; i < len; ++i) {
+			Node node = nodes.item(i);
+			if (node != null) {
+				if (name.equals(node.getNodeName())) {
+					return node;
+				}
+			}
+		}
+		return null;
+	}
+	
+	/** Read the XML node that describes an extension point..
+	 *
+	 * @param root the root.
+	 * @param exampleZipFile the filename of the example's archive.
+	 * @return the extension point node.
+	 */
+	public static Node readExtensionPointFromXml(Node root, File exampleZipFile) {
+		NodeList nodes = root.getChildNodes();
+		final int len = nodes.getLength();
+		for (int i = 0; i < len; ++i) {
+			Node node = nodes.item(i);
+			if (node != null) {
+				if ("extension".equals(node.getNodeName())
+					&& "org.eclipse.emf.common.ui.examples".equals(readXmlAttribute(node, "point"))) {
+					node = readXmlNode(node, "example");
+					if (node != null) {
+						Node prjNode = readXmlNode(node, "projectDescriptor");
+						if (prjNode != null) {
+							String field = readXmlAttribute(prjNode, "contentURI");
+							assertNotNull(field);
+							File zip = FileSystem.convertStringToFile(field);
+							if (exampleZipFile.getPath().endsWith(zip.getPath())) {
+								return readXmlNode(node, "fileToOpen");
+							}
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	/** Replies if the give source file is the folder of a maven project.
+	 *
+	 * @param exampleSourceFile the name of a folder to test.
+	 * @return {@code true} if the folder contains a maven project.
+	 */
+	public static boolean isMavenProject(File exampleSourceFile) {
+		if (exampleSourceFile != null) {
+			final File pomFile = new File(exampleSourceFile, "pom.xml");
+			return pomFile.exists();
+		}
+		return false;
+	}
+
+	/** Assert that the given list contains no issue.
+	 *
+	 * @param issues the list to test.
+	 */
+	public static void assertNoIssue(List<String> issues) {
+		if (!issues.isEmpty()) {
+			throw new AssertionFailedError("Errors in the example code", "", Strings.concat("\n", issues));
+		}
+	}
+
+	/** Assert file exists.
+	 *
+	 * @param file the file to test.
+	 */
+	public static void assertFile(File file) {
+		assertNotNull(file, "The filename cannot be null");
+		if (!file.exists()) {
+			File parent = file.getParentFile();
+			final Deque<File> parents = new LinkedList<>();
+			while (parent != null) {
+				parents.addFirst(parent);
+				parent = parent.getParentFile();
+			}
+			for (final File lparent : parents) {
+				if (!lparent.exists()) {
+					fail("Parent folder not found: " + lparent.getAbsolutePath() + "\nFor file: " + file.getAbsolutePath());
+					return;
+				}
+			}
+			fail("File not found: " + file.getAbsolutePath()
+					+ "\nSibling files are: "
+					+ Strings.concat("\n", Arrays.asList(file.getParentFile().list())));
+		}
+	}
+
+	/** Compile the given project with the standard maven tool.
+	 *
+	 * @param compiler the SARL compiler to use.
+	 * @param root the root folder of the project.
+	 * @param installedFiles the installed files.
+	 * @return the list of issues.
+	 * @throws Exception if compilation cannot be proceeded.
+	 * @see #MAVEN_COMMAND
+	 */
+	public static String compileMaven(File root) throws Exception {
+		File compiledFile = new File(root, ".sarltestscompiled.tmp");
+		if (compiledFile.exists()) {
+			return null;
+		}
+		compiledFile.createNewFile();
+		
+		final String[] command = new String[] {
+				MAVEN_COMMAND, "-q", "clean", "package"
+		};
+		// TODO Remove this definition when moving to JAva 9 or higher (because JavaFX is mavenized)
+		final String[] environmentVariables = new String[] {
+				"OPENJFX_LIB_PATH=" + DEFAULT_JAVAFX_PATH,
+		};
+		final Process p = Runtime.getRuntime().exec(command, environmentVariables, root);
+		p.waitFor();
+		final StringBuilder output = new StringBuilder();
+		output.append("Exit code: ").append(p.exitValue()).append("\n");
+		final BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+		String line = reader.readLine();
+		while (line != null) {
+			output.append(line + "\n");
+			line = reader.readLine();
+		}
+		final BufferedReader readerErr = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+		line = readerErr.readLine();
+		while (line != null) {
+			output.append(line + "\n");
+			line = readerErr.readLine();
+		}
+		if (p.exitValue() != 0) {
+			return output.toString();
+		}
+		return null;
+	}
+
+	/** Compile the given files with the given batch compiler.
+	 *
+	 * @param root the root folder of the project.
+	 * @param installedFiles the installed files.
+	 * @return the list of issues.
+	 * @throws Exception if compilation cannot be proceeded.
+	 */
+	public static List<String> compileFiles(File root, List<File> installedFiles) throws Exception {
+		final SarlBatchCompiler compiler = getSarlBatchCompiler();
+		final List<String> issues = new ArrayList<>();
+		compiler.setBasePath(root.getAbsolutePath());
+		compiler.setTempDirectory(getTempPath(root));
+		compiler.addSourcePath(getSourcePath(root));
+		compiler.setClassOutputPath(getBinPath(root));
+		compiler.setOutputPath(getSourceGenPath(root));
+		compiler.setGenerateGeneratedAnnotation(false);
+		compiler.setGenerateInlineAnnotation(false);
+		compiler.setGenerateSyntheticSuppressWarnings(true);
+		compiler.setCleaningPolicy(CleaningPolicy.NO_CLEANING);
+		compiler.setClassPath(getClasspath());
+		compiler.setJavaSourceVersion(SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT);
+		compiler.setAllWarningSeverities(Severity.IGNORE);
+		compiler.setWarningSeverity(IssueCodes.DEPRECATED_MEMBER_REFERENCE, Severity.ERROR);
+		compiler.setJavaCompilerVerbose(false);
+		compiler.setLogger(NOPLogger.NOP_LOGGER);
+		compiler.addIssueMessageListener((issue, uri, message) -> {
+			if (issue.isSyntaxError() || issue.getSeverity().compareTo(Severity.ERROR) >= 0) {
+				final Integer line = issue.getLineNumber();
+				final int issueLine = (line == null ? 0 : line.intValue());
+				issues.add(message + " (line " + issueLine + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+		});
+		if (compiler.compile()) {
+			return Collections.emptyList();
+		}
+		return issues;
+	}
+
+	private static List<File> getClasspath() throws Exception {
+		final List<File> classpath = new ArrayList<>();
+		final Iterator<URL> iterator = ClasspathUtil.getClasspath();
+		while (iterator.hasNext()) {
+			final URL url = iterator.next();
+			try {
+				final File file = FileSystem.convertURLToFile(url);
+				classpath.add(file);
+			} catch (IllegalArgumentException exception) {
+				//
+			}
+		}
+		return classpath;
+	}
+
+	/** Unpack the given zip file into the root folder.
+	 *
+	 * @param root the root folder.
+	 * @param exampleZipFile the zip file to unpack.
+	 * @return the list of extracted files.
+	 * @throws Exception if cannot unpack.
+	 */
+	public static List<File> unpackFiles(File root, File exampleZipFile) throws Exception {
+		FileSystem.unzipFile(exampleZipFile, root);
+
+		final List<File> installedFiles = new ArrayList<>();
+		final List<File> folders = new ArrayList<>();
+		folders.add(root);
+		while (!folders.isEmpty()) {
+			final File folder = folders.remove(0);
+			for (final File file : folder.listFiles()) {
+				if (file.isDirectory()) {
+					folders.add(file);
+				} else if (file.isFile()) {
+					if (!isIgnorableFile(file)) {
+						final File relPathFile = FileSystem.makeRelative(file, root);
+						installedFiles.add(relPathFile);
+					} else {
+						file.delete();
+					}
+				}
+			}
+		}
+		return installedFiles;
+	}
+
+	private static boolean isIgnorableFile(File file) {
+		final String name = file.getName();
+		return ".classpath".equals(name) || ".project".equals(name);
+	}
+
+	/** Replies the path of the SARL source files in the example project.
+	 *
+	 * @param rootPath the root path.
+	 * @return the source path.
+	 */
+	public static File getSourcePath(File rootPath) {
+		return FileSystem.join(rootPath, "src", "main", "sarl");
+	}
+
+	/** Replies the path in which the Java code is generated from the SARL code.
+	 *
+	 * @param rootPath the root path.
+	 * @return the generation path.
+	 */
+	public static File getSourceGenPath(File rootPath) {
+		return new File(rootPath, "src-gen");
+	}
+
+	/** Replies the path in which the byte code files is generated from the Java code.
+	 *
+	 * @param rootPath the root path.
+	 * @return the byte code path.
+	 */
+	public static File getBinPath(File rootPath) {
+		return new File(rootPath, "bin");
+	}
+
+	/** Replies the path of a temporary folder that is used for building the example's project.
+	 *
+	 * @param rootPath the root path.
+	 * @return the temp path.
+	 */
+	public static File getTempPath(File rootPath) {
+		return new File(rootPath, "build");
+	}
+
+	/** Create a compilable project.
+	 *
+	 * @return the folder that could contains the example's project.
+	 * @throws Exception if the project's folder cannot be created.
+	 */
+	public static File createProject() throws Exception {
+		final File rootPath = FileSystem.createTempDirectory("exampletests", ".tmp").getAbsoluteFile();
+		getSourcePath(rootPath).mkdirs();
+		getSourceGenPath(rootPath).mkdirs();
+		getBinPath(rootPath).mkdirs();
+		getTempPath(rootPath).mkdirs();
+		FileSystem.deleteOnExit(rootPath);
+		return rootPath;
+	}
+
+}

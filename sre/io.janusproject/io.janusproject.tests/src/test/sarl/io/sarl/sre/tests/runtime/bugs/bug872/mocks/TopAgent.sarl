@@ -23,7 +23,7 @@ package io.sarl.sre.tests.runtime.bugs.bug872.mocks
 import io.sarl.core.AgentKilled
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
-import io.sarl.sre.tests.testutils.TestingAgent
+import io.sarl.sre.tests.testutils.agents.TestingAgent
 
 agent TopAgent extends TestingAgent {
 

@@ -27,14 +27,23 @@ import io.sarl.sre.naming.NameScheme
 import io.sarl.sre.services.context.Context
 import io.sarl.sre.services.context.ContextService
 import io.sarl.sre.services.namespace.ContextNamespaceFinder
-import io.sarl.tests.api.AbstractSarlTest
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
 
 import static org.mockito.ArgumentMatchers.*
 import static org.mockito.Mockito.*
+
+import static extension io.sarl.tests.api.tools.TestMockito.mock
+import static extension org.junit.jupiter.api.Assertions.assertEquals
+import static extension org.junit.jupiter.api.Assertions.assertNull
+import static extension org.junit.jupiter.api.Assertions.assertSame
 
 /**
  * @author $Author: sgalland$
@@ -42,7 +51,13 @@ import static org.mockito.Mockito.*
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class ContextNamespaceFinderTest extends AbstractSarlTest {
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@DisplayName("unit: ContextNamespaceFinder test")
+class ContextNamespaceFinderTest {
 
 	@Nullable
 	var contextService : ContextService
@@ -63,7 +78,7 @@ class ContextNamespaceFinderTest extends AbstractSarlTest {
 	var ctx1 : Context
 
 	@SuppressWarnings("use_reserved_sarl_annotation")
-	@Before
+	@BeforeEach
 	@PrivateAPI(isCallerOnly = true)
 	def setUp : void {
 		this.contextService = typeof(ContextService).mock

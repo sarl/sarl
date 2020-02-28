@@ -21,7 +21,7 @@
 
 package io.sarl.sre.tests.runtime.bugs.janus91.mocks
 
-import io.sarl.sre.tests.testutils.TestingAgent
+import io.sarl.sre.tests.testutils.agents.TestingAgent
 
 /**
  * @author $Author: sgalland$

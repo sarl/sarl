@@ -20,9 +20,6 @@
  */
 package io.sarl.lang.core.tests.core;
 
-import org.junit.Test;
-import org.mockito.Mockito;
-
 import io.sarl.lang.core.Skill;
 
 /**

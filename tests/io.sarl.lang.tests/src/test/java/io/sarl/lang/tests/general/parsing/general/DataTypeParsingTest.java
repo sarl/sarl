@@ -20,15 +20,21 @@
  */
 package io.sarl.lang.tests.general.parsing.general;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static io.sarl.tests.api.tools.TestAssertions.assertTypeReferenceIdentifier;
+import static io.sarl.tests.api.tools.TestAssertions.assertXExpression;
+import static io.sarl.tests.api.tools.TestEObjects.file;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static io.sarl.tests.api.tools.TestValidator.validate;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.google.common.base.Strings;
 import org.eclipse.xtext.diagnostics.Diagnostic;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlAgent;
 import io.sarl.lang.sarl.SarlField;
@@ -47,12 +53,12 @@ public class DataTypeParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void intToDouble() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
 				"	var internalTime : Double = 0",
 				"}"
 				));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 				XbasePackage.eINSTANCE.getXNumberLiteral(),
 				IssueCodes.INCOMPATIBLE_TYPES,
 				"cannot convert from int to Double");
@@ -60,11 +66,11 @@ public class DataTypeParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void doubleToDouble_1() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 				"agent A1 {",
 				"	var internalTime : Double = 0.0",
 				"}"
-				), true);
+				));
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -82,12 +88,12 @@ public class DataTypeParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void doubleToDouble_2() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
 				"	var internalTime : Double = 0.",
 				"}"
 				));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlAgent(),
 				Diagnostic.SYNTAX_DIAGNOSTIC,
 				"no viable alternative at input '}'");
@@ -95,12 +101,12 @@ public class DataTypeParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void doubleToDouble_3() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
 				"	var internalTime : Double = .0",
 				"}"
 				));
-		validate(mas).assertError(
+		validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlField(),
 				Diagnostic.SYNTAX_DIAGNOSTIC,
 				"no viable alternative at input '.'");
@@ -108,11 +114,11 @@ public class DataTypeParsingTest extends AbstractSarlTest {
 
 	@Test
 	public void doubleToDouble_4() throws Exception {
-		SarlScript mas = file(multilineString(
+		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 				"agent A1 {",
 				"	var internalTime : Double = 0d",
 				"}"
-				), true);
+				));
 		assertEquals(1, mas.getXtendTypes().size());
 		//
 		assertTrue(Strings.isNullOrEmpty(mas.getPackage()));

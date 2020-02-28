@@ -20,17 +20,20 @@
  */
 package io.sarl.lang.core.tests.core;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static io.sarl.tests.api.tools.TestMockito.mock;
+import static io.sarl.tests.api.tools.TestMockito.spy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doReturn;
 
 import java.util.UUID;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 
 import io.sarl.lang.core.Address;
@@ -56,7 +59,7 @@ public class EventTest extends AbstractSarlTest {
 		};
 	}
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.event = mockEvent();
 	}

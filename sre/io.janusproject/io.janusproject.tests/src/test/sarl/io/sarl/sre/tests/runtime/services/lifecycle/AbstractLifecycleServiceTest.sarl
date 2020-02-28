@@ -30,9 +30,18 @@ import io.sarl.sre.tests.runtime.services.lifecycle.mocks.NoChildNoInnerContextI
 import io.sarl.sre.tests.runtime.services.lifecycle.mocks.OneAgentSpawnTestAgent
 import io.sarl.sre.tests.runtime.services.lifecycle.mocks.TaskKillTestAgent
 import io.sarl.sre.tests.runtime.services.lifecycle.mocks.ThreeAgentsSpawnTestAgent
-import io.sarl.sre.tests.testutils.AbstractSreRunTest
-import org.junit.Test
-import org.junit.Before
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.sre.tests.testutils.^extension.SreRunContext
+import io.sarl.sre.tests.testutils.^extension.SreRunExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static io.sarl.sre.tests.testutils.Constants.*
+import static io.sarl.tests.api.tools.TestAssertions.*
+import static org.junit.jupiter.api.Assertions.*
 
 /**
  * @author $Author: sgalland$
@@ -40,17 +49,23 @@ import org.junit.Before
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-abstract class AbstractLifecycleServiceTest extends AbstractSreRunTest {
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension),
+	typeof(SreRunExtension)
+])
+abstract class AbstractLifecycleServiceTest {
 
 	protected abstract def runTestCase_prepare
 	
-	@Before
+	@BeforeEach
 	def setUp : void {
 		runTestCase_prepare
 	}
 
 	@Test
-	def spawnAgent_1 {
+	def spawnAgent_1(extension rc : SreRunContext) {
 		typeof(OneAgentSpawnTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		var results = allResults
 		assertNotNull(results)
@@ -59,7 +74,7 @@ abstract class AbstractLifecycleServiceTest extends AbstractSreRunTest {
 	}
 
 	@Test
-	def spawnAgent_3 {
+	def spawnAgent_3(extension rc : SreRunContext) {
 		typeof(ThreeAgentsSpawnTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		var results = allResults
 		assertNotNull(results)
@@ -68,7 +83,7 @@ abstract class AbstractLifecycleServiceTest extends AbstractSreRunTest {
 	}
 
 	@Test
-	def killAgent_duringInitialize {
+	def killAgent_duringInitialize(extension rc : SreRunContext) {
 		typeof(InitializeKillTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		var results = allResults
 		assertNotNull(results)
@@ -77,7 +92,7 @@ abstract class AbstractLifecycleServiceTest extends AbstractSreRunTest {
 	}
 
 	@Test
-	def killAgent_duringInitializeAfterSpawn {
+	def killAgent_duringInitializeAfterSpawn(extension rc : SreRunContext) {
 		typeof(InitializeSpawnKillTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		var results = allResults
 		assertNotNull(results)
@@ -86,7 +101,7 @@ abstract class AbstractLifecycleServiceTest extends AbstractSreRunTest {
 	}
 
 	@Test
-	def killAgent_duringEventHandling {
+	def killAgent_duringEventHandling(extension rc : SreRunContext) {
 		typeof(EventHanlderKillTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		var results = allResults
 		assertNotNull(results)
@@ -95,7 +110,7 @@ abstract class AbstractLifecycleServiceTest extends AbstractSreRunTest {
 	}
 
 	@Test
-	def killAgent_duringTask {
+	def killAgent_duringTask(extension rc : SreRunContext) {
 		typeof(TaskKillTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		var results = allResults
 		assertNotNull(results)
@@ -104,7 +119,7 @@ abstract class AbstractLifecycleServiceTest extends AbstractSreRunTest {
 	}
 
 	@Test
-	def killAgent_duringDestroy {
+	def killAgent_duringDestroy(extension rc : SreRunContext) {
 		typeof(DestroyKillTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		var results = allResults
 		assertNotNull(results)
@@ -113,7 +128,7 @@ abstract class AbstractLifecycleServiceTest extends AbstractSreRunTest {
 	}
 
 	@Test
-	def isKillableAgent_noChild_noInnerContext {
+	def isKillableAgent_noChild_noInnerContext(extension rc : SreRunContext) {
 		typeof(NoChildNoInnerContextIsKillableTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		var results = allResults
 		assertNotNull(results)
@@ -122,7 +137,7 @@ abstract class AbstractLifecycleServiceTest extends AbstractSreRunTest {
 	}
 
 	@Test
-	def isKillableAgent_noChild_innerContext {
+	def isKillableAgent_noChild_innerContext(extension rc : SreRunContext) {
 		typeof(NoChildInnerContextIsKillableTestAgent).runSre(null, true, STANDARD_TIMEOUT)
 		var results = allResults
 		assertNotNull(results)

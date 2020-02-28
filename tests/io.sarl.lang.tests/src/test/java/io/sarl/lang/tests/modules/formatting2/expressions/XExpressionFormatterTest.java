@@ -20,10 +20,8 @@
  */
 package io.sarl.lang.tests.modules.formatting2.expressions;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.tests.modules.formatting2.AbstractMemberFormatterTest;
 
@@ -34,10 +32,6 @@ import io.sarl.lang.tests.modules.formatting2.AbstractMemberFormatterTest;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(Suite.class)
-@SuiteClasses({
-	XExpressionFormatterTest.FormatterAPITest.class,
-})
 @SuppressWarnings("all")
 public class XExpressionFormatterTest {
 
@@ -47,7 +41,8 @@ public class XExpressionFormatterTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class FormatterAPITest extends AbstractMemberFormatterTest {
+	@Nested
+	public class FormatterAPITest extends AbstractMemberFormatterTest {
 
 		@Test
 		public void localVariableType() throws Exception {

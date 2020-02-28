@@ -20,8 +20,10 @@
  */
 package io.sarl.maven.compiler;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,8 +39,7 @@ import org.apache.maven.it.VerificationException;
 import org.apache.maven.it.Verifier;
 import org.apache.maven.shared.utils.cli.CommandLineUtils;
 import org.apache.maven.shared.utils.io.FileUtils;
-import org.junit.Assume;
-import org.junit.internal.Throwables;
+import org.opentest4j.TestAbortedException;
 
 /** Abstract test of Maven Mojo.
  * 
@@ -63,7 +64,7 @@ public abstract class AbstractMojoTest {
 	public static void touchSarlWebSites() throws Exception {
 		Boolean bool = IS_SARL_WEBSITE_AVAILABLE;
 		if (bool != null) {
-			Assume.assumeTrue("SARL webiste are not available on Internet", bool.booleanValue()); //$NON-NLS-1$
+			assumeTrue(bool.booleanValue(), () -> "SARL webiste are not available on Internet"); //$NON-NLS-1$
 			return;
 		}
 		bool = Boolean.FALSE;
@@ -111,9 +112,9 @@ public abstract class AbstractMojoTest {
 			}
 		} catch (Exception e) {
 			if (failureIfNotAccessible) {
-				Throwables.rethrowAsException(e);
+				throw e;
 			} else {
-				Assume.assumeNoException(e);
+				throw new TestAbortedException(e.getLocalizedMessage(), e);
 			}
 		}
 	}
@@ -132,6 +133,22 @@ public abstract class AbstractMojoTest {
 			b.append("\n"); //$NON-NLS-1$
 		}
 		return b.toString();
+	}
+
+	/** Assert that the given code generates an exception of the given type.
+	 *
+	 * @param expected the type of the expected exception.
+	 * @param code the code to run.
+	 */
+	public static void assertException(Class<? extends Throwable> expected, Code code) throws Exception {
+		try {
+			code.run();
+			fail("Expecting exception of type " + expected.getName());
+		} catch (Throwable ex) {
+			if (!expected.isAssignableFrom(ex.getClass())) {
+				fail("Expecting exception of type " + expected.getName());
+			}
+		}
 	}
 
 	/** Recursive deletion of a folder when the VM is exiting.
@@ -227,6 +244,25 @@ public abstract class AbstractMojoTest {
 			buffer.append(line).append("\n"); //$NON-NLS-1$
 		}
 		return buffer.toString();
+	}
+
+	/** Code to be run.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.11
+	 */
+	@FunctionalInterface
+	public interface Code {
+
+		/** Code.
+		 *
+		 * @throws Exception any exception
+		 */
+		void run() throws Exception;
+
 	}
 
 }

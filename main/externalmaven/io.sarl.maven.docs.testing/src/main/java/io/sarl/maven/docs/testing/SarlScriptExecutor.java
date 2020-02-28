@@ -22,11 +22,14 @@
 
 package io.sarl.maven.docs.testing;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import javax.inject.Inject;
 
 import com.google.common.io.Files;
@@ -40,7 +43,6 @@ import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.interpreter.IEvaluationResult;
 import org.eclipse.xtext.xbase.interpreter.IExpressionInterpreter;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
-import org.junit.ComparisonFailure;
 import org.slf4j.helpers.NOPLogger;
 
 import io.sarl.lang.compiler.batch.CleaningPolicy;
@@ -207,7 +209,7 @@ public class SarlScriptExecutor implements ScriptExecutor {
 			for (String message : issues) {
 				msg.append(message).append("\n"); //$NON-NLS-1$
 			}
-			throw new ComparisonFailure("Expecting no issue but find one [line:" + lineno + "]", "", msg.toString()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			fail("Expecting no issue but find one [line:" + lineno + "]" + msg.toString()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 	}
 

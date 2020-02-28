@@ -21,22 +21,38 @@
 
 package io.sarl.sre.tests.runtime.services.logging
 
-import org.junit.Test
 import io.sarl.sre.tests.runtime.services.logging.mocks.VerboseAgent
-import io.sarl.sre.tests.testutils.AbstractSreRunTest
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.sre.tests.testutils.^extension.SreRunContext
+import io.sarl.sre.tests.testutils.^extension.SreRunExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.logging.Level
 import java.util.logging.LogRecord
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
 
-/**
+import static extension org.junit.jupiter.api.Assertions.assertEquals
+import static extension org.junit.jupiter.api.Assertions.assertNotNull
+
+/** 
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class LoggingServiceTest extends AbstractSreRunTest {
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension),
+	typeof(SreRunExtension)
+])
+@DisplayName("run: Logging service test")
+class LoggingServiceTest {
 
 	@Test
-	def agentLoggingMessageFormat : void {
+	def agentLoggingMessageFormat(extension rc : SreRunContext) : void {
 		typeof(VerboseAgent).runSre(Level::SEVERE, true, true)
 		var record = typeof(LogRecord).getResult(0)
 		record.assertNotNull;

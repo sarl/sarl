@@ -20,14 +20,14 @@
  */
 package io.sarl.lang.tests.general.compilation.general;
 
-import com.google.inject.Inject;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.eclipse.xtext.util.IAcceptor;
 import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.eclipse.xtext.xbase.testing.CompilationTestHelper.Result;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
@@ -40,14 +40,11 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(Suite.class)
-@SuiteClasses({
-	PureFunctionTest.DefinitionTests.class,
-})
 @SuppressWarnings("all")
 public class PureFunctionTest {
 
-	public static class DefinitionTests extends AbstractSarlTest {
+	@Nested
+	public class DefinitionTests extends AbstractSarlTest {
 
 		@Test
 		public void noPureParent_noPureLocal() throws Exception {

@@ -21,8 +21,8 @@
 
 package io.sarl.sre.tests.units.services.lifecycle.mocks
 
-import java.util.concurrent.atomic.AtomicInteger
 import io.sarl.lang.core.Capacity
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * @author $Author: sgalland$

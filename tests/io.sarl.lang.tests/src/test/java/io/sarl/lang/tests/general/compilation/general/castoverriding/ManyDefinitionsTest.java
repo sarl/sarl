@@ -20,24 +20,14 @@
  */
 package io.sarl.lang.tests.general.compilation.general.castoverriding;
 
-import java.util.AbstractSet;
-
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.xtext.common.types.TypesPackage;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
-import io.sarl.lang.sarl.SarlScript;
-import io.sarl.lang.validation.IssueCodes;
 import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.MassiveCompilationSuite;
-import io.sarl.tests.api.AbstractSarlTest.Validator;
-import io.sarl.tests.api.MassiveCompilationSuite.CompilationTest;
-import io.sarl.tests.api.MassiveCompilationSuite.Context;
+import io.sarl.tests.api.globalcompilation.GlobalCompilationSuite;
+import io.sarl.tests.api.globalcompilation.GlobalCompilationTestContribution;
+import io.sarl.tests.api.globalcompilation.ResourceSetGlobalCompilationContext;
 
 
 /**
@@ -47,11 +37,6 @@ import io.sarl.tests.api.MassiveCompilationSuite.Context;
  * @mavenartifactid $ArtifactId$
  * @since 0.9
  */
-@RunWith(Suite.class)
-@SuiteClasses({
-	ManyDefinitionsTest.StandardFunctionCalls.class,
-	ManyDefinitionsTest.CastFunctionCalls.class,
-})
 @SuppressWarnings("all")
 public class ManyDefinitionsTest {
 
@@ -63,10 +48,10 @@ public class ManyDefinitionsTest {
 	 * @mavenartifactid $ArtifactId$
 	 * @since 0.9
 	 */
-	@RunWith(MassiveCompilationSuite.class)
+	@GlobalCompilationSuite
 	public static class StandardFunctionCalls extends AbstractSarlTest {
 
-		private static final String STATIC_EXTFIELD_EXTPARAM_INSTANCE_LOCALFUNCTION_A_SARL = multilineString(
+		private final String STATIC_EXTFIELD_EXTPARAM_INSTANCE_LOCALFUNCTION_A_SARL = multilineString(
 				"package io.sarl.lang.core.tests.compile00",
 				"import java.util.UUID",
 				"class A0 {",
@@ -80,7 +65,7 @@ public class ManyDefinitionsTest {
 				"}"
 				);
 
-		private static final String STATIC_EXTFIELD_EXTPARAM_INSTANCE_LOCALFUNCTION_B_SARL = multilineString(
+		private final String STATIC_EXTFIELD_EXTPARAM_INSTANCE_LOCALFUNCTION_B_SARL = multilineString(
 				"package io.sarl.lang.core.tests.compile00",
 				"import static extension o.sarl.lang.core.tests.compile00.StaticA1.*",
 				"import java.util.UUID",
@@ -93,7 +78,7 @@ public class ManyDefinitionsTest {
 				"}"
 				);
 
-		private static final String STATIC_EXTFIELD_EXTPARAM_INSTANCE_LOCALFUNCTION_JAVA = multilineString(
+		private final String STATIC_EXTFIELD_EXTPARAM_INSTANCE_LOCALFUNCTION_JAVA = multilineString(
 				"package io.sarl.lang.core.tests.compile00;",
 				"",
 				"import io.sarl.lang.annotation.SarlElementType;",
@@ -144,15 +129,15 @@ public class ManyDefinitionsTest {
 				"}",
 				"");
 
-		@CompilationTest
-		public static void compile00(Context ctx) throws Exception {
+		@GlobalCompilationTestContribution
+		public void compile00(ResourceSetGlobalCompilationContext ctx) throws Exception {
 			ctx.compileTo(
 					new String[] { STATIC_EXTFIELD_EXTPARAM_INSTANCE_LOCALFUNCTION_A_SARL, STATIC_EXTFIELD_EXTPARAM_INSTANCE_LOCALFUNCTION_B_SARL },
 					"io.sarl.lang.core.tests.compile00.A2",
 					STATIC_EXTFIELD_EXTPARAM_INSTANCE_LOCALFUNCTION_JAVA);
 		}
 
-		private static final String STATIC_EXTFIELD_EXTPARAM_LOCALFUNCTION_A_SARL = multilineString(
+		private final String STATIC_EXTFIELD_EXTPARAM_LOCALFUNCTION_A_SARL = multilineString(
 				"package io.sarl.lang.core.tests.compile01",
 				"import java.util.UUID",
 				"class A0 {",
@@ -165,7 +150,7 @@ public class ManyDefinitionsTest {
 				"}"
 				);
 
-		private static final String STATIC_EXTFIELD_EXTPARAM_LOCALFUNCTION_B_SARL = multilineString(
+		private final String STATIC_EXTFIELD_EXTPARAM_LOCALFUNCTION_B_SARL = multilineString(
 				"package io.sarl.lang.core.tests.compile01",
 				"import static extension o.sarl.lang.core.tests.compile01.StaticA1.*",
 				"import java.util.UUID",
@@ -178,7 +163,7 @@ public class ManyDefinitionsTest {
 				"}"
 				);
 
-		private static final String STATIC_EXTFIELD_EXTPARAM_LOCALFUNCTION_JAVA = multilineString(
+		private final String STATIC_EXTFIELD_EXTPARAM_LOCALFUNCTION_JAVA = multilineString(
 				"package io.sarl.lang.core.tests.compile01;",
 				"",
 				"import io.sarl.lang.annotation.SarlElementType;",
@@ -229,15 +214,15 @@ public class ManyDefinitionsTest {
 				"}",
 				"");
 
-		@CompilationTest
-		public static void compile01(Context ctx) throws Exception {
+		@GlobalCompilationTestContribution
+		public void compile01(ResourceSetGlobalCompilationContext ctx) throws Exception {
 			ctx.compileTo(
 					new String[] { STATIC_EXTFIELD_EXTPARAM_LOCALFUNCTION_A_SARL, STATIC_EXTFIELD_EXTPARAM_LOCALFUNCTION_B_SARL },
 					"io.sarl.lang.core.tests.compile01.A2",
 					STATIC_EXTFIELD_EXTPARAM_LOCALFUNCTION_JAVA);
 		}
 
-		private static final String STATIC_EXTFIELD_LOCALFUNCTION_A_SARL = multilineString(
+		private final String STATIC_EXTFIELD_LOCALFUNCTION_A_SARL = multilineString(
 				"package io.sarl.lang.core.tests.compile02",
 				"import java.util.UUID",
 				"class A0 {",
@@ -250,7 +235,7 @@ public class ManyDefinitionsTest {
 				"}"
 				);
 
-		private static final String STATIC_EXTFIELD_LOCALFUNCTION_B_SARL = multilineString(
+		private final String STATIC_EXTFIELD_LOCALFUNCTION_B_SARL = multilineString(
 				"package io.sarl.lang.core.tests.compile02",
 				"import static extension o.sarl.lang.core.tests.compile02.StaticA1.*",
 				"import java.util.UUID",
@@ -263,7 +248,7 @@ public class ManyDefinitionsTest {
 				"}"
 				);
 
-		private static final String STATIC_EXTFIELD_LOCALFUNCTION_JAVA = multilineString(
+		private final String STATIC_EXTFIELD_LOCALFUNCTION_JAVA = multilineString(
 				"package io.sarl.lang.core.tests.compile02;",
 				"",
 				"import io.sarl.lang.annotation.SarlElementType;",
@@ -314,15 +299,15 @@ public class ManyDefinitionsTest {
 				"}",
 				"");
 
-		@CompilationTest
-		public static void compile02(Context ctx) throws Exception {
+		@GlobalCompilationTestContribution
+		public void compile02(ResourceSetGlobalCompilationContext ctx) throws Exception {
 			ctx.compileTo(
 					new String[] { STATIC_EXTFIELD_LOCALFUNCTION_A_SARL, STATIC_EXTFIELD_LOCALFUNCTION_B_SARL },
 					"io.sarl.lang.core.tests.compile02.A2",
 					STATIC_EXTFIELD_LOCALFUNCTION_JAVA);
 		}
 
-		private static final String STATIC_EXTFIELD_A_SARL = multilineString(
+		private final String STATIC_EXTFIELD_A_SARL = multilineString(
 				"package io.sarl.lang.core.tests.compile03",
 				"import java.util.UUID",
 				"class A0 {",
@@ -335,7 +320,7 @@ public class ManyDefinitionsTest {
 				"}"
 				);
 
-		private static final String STATIC_EXTFIELD_B_SARL = multilineString(
+		private final String STATIC_EXTFIELD_B_SARL = multilineString(
 				"package io.sarl.lang.core.tests.compile03",
 				"import static extension o.sarl.lang.core.tests.compile03.StaticA1.*",
 				"import java.util.UUID",
@@ -347,7 +332,7 @@ public class ManyDefinitionsTest {
 				"}"
 				);
 
-		private static final String STATIC_EXTFIELD_JAVA = multilineString(
+		private final String STATIC_EXTFIELD_JAVA = multilineString(
 				"package io.sarl.lang.core.tests.compile03;",
 				"",
 				"import io.sarl.lang.annotation.SarlElementType;",
@@ -393,8 +378,8 @@ public class ManyDefinitionsTest {
 				"}",
 				"");
 
-		@CompilationTest
-		public static void compile03(Context ctx) throws Exception {
+		@GlobalCompilationTestContribution
+		public void compile03(ResourceSetGlobalCompilationContext ctx) throws Exception {
 			ctx.compileTo(
 					new String[] { STATIC_EXTFIELD_A_SARL, STATIC_EXTFIELD_B_SARL },
 					"io.sarl.lang.core.tests.compile03.A2",
@@ -413,10 +398,10 @@ public class ManyDefinitionsTest {
 	 * @mavenartifactid $ArtifactId$
 	 * @since 0.9
 	 */
-	@RunWith(MassiveCompilationSuite.class)
+	@GlobalCompilationSuite
 	public static class CastFunctionCalls extends AbstractSarlTest {
 
-		private static final String STATIC_EXTFIELD_EXTPARAM_INSTANCE_LOCALFUNCTION_A_SARL = multilineString(
+		private final String STATIC_EXTFIELD_EXTPARAM_INSTANCE_LOCALFUNCTION_A_SARL = multilineString(
 				"package io.sarl.lang.core.tests.compile00",
 				"import java.util.UUID",
 				"class A0 {",
@@ -430,7 +415,7 @@ public class ManyDefinitionsTest {
 				"}"
 				);
 
-		private static final String STATIC_EXTFIELD_EXTPARAM_INSTANCE_LOCALFUNCTION_B_SARL = multilineString(
+		private final String STATIC_EXTFIELD_EXTPARAM_INSTANCE_LOCALFUNCTION_B_SARL = multilineString(
 				"package io.sarl.lang.core.tests.compile00",
 				"import static extension o.sarl.lang.core.tests.compile00.StaticA1.*",
 				"import java.util.UUID",
@@ -443,7 +428,7 @@ public class ManyDefinitionsTest {
 				"}"
 				);
 
-		private static final String STATIC_EXTFIELD_EXTPARAM_INSTANCE_LOCALFUNCTION_JAVA = multilineString(
+		private final String STATIC_EXTFIELD_EXTPARAM_INSTANCE_LOCALFUNCTION_JAVA = multilineString(
 				"package io.sarl.lang.core.tests.compile00;",
 				"",
 				"import io.sarl.lang.annotation.SarlElementType;",
@@ -494,15 +479,15 @@ public class ManyDefinitionsTest {
 				"}",
 				"");
 
-		@CompilationTest
-		public static void compile00(Context ctx) throws Exception {
+		@GlobalCompilationTestContribution
+		public void compile00(ResourceSetGlobalCompilationContext ctx) throws Exception {
 			ctx.compileTo(
 					new String[] { STATIC_EXTFIELD_EXTPARAM_INSTANCE_LOCALFUNCTION_A_SARL, STATIC_EXTFIELD_EXTPARAM_INSTANCE_LOCALFUNCTION_B_SARL },
 					"io.sarl.lang.core.tests.compile00.A2",
 					STATIC_EXTFIELD_EXTPARAM_INSTANCE_LOCALFUNCTION_JAVA);
 		}
 
-		private static final String STATIC_EXTFIELD_EXTPARAM_LOCALFUNCTION_A_SARL = multilineString(
+		private final String STATIC_EXTFIELD_EXTPARAM_LOCALFUNCTION_A_SARL = multilineString(
 				"package io.sarl.lang.core.tests.compile01",
 				"import java.util.UUID",
 				"class A0 {",
@@ -515,7 +500,7 @@ public class ManyDefinitionsTest {
 				"}"
 				);
 
-		private static final String STATIC_EXTFIELD_EXTPARAM_LOCALFUNCTION_B_SARL = multilineString(
+		private final String STATIC_EXTFIELD_EXTPARAM_LOCALFUNCTION_B_SARL = multilineString(
 				"package io.sarl.lang.core.tests.compile01",
 				"import static extension o.sarl.lang.core.tests.compile01.StaticA1.*",
 				"import java.util.UUID",
@@ -528,7 +513,7 @@ public class ManyDefinitionsTest {
 				"}"
 				);
 
-		private static final String STATIC_EXTFIELD_EXTPARAM_LOCALFUNCTION_JAVA = multilineString(
+		private final String STATIC_EXTFIELD_EXTPARAM_LOCALFUNCTION_JAVA = multilineString(
 				"package io.sarl.lang.core.tests.compile01;",
 				"",
 				"import io.sarl.lang.annotation.SarlElementType;",
@@ -579,15 +564,15 @@ public class ManyDefinitionsTest {
 				"}",
 				"");
 
-		@CompilationTest
-		public static void compile01(Context ctx) throws Exception {
+		@GlobalCompilationTestContribution
+		public void compile01(ResourceSetGlobalCompilationContext ctx) throws Exception {
 			ctx.compileTo(
 					new String[] { STATIC_EXTFIELD_EXTPARAM_LOCALFUNCTION_A_SARL, STATIC_EXTFIELD_EXTPARAM_LOCALFUNCTION_B_SARL },
 					"io.sarl.lang.core.tests.compile01.A2",
 					STATIC_EXTFIELD_EXTPARAM_LOCALFUNCTION_JAVA);
 		}
 
-		private static final String STATIC_EXTFIELD_LOCALFUNCTION_A_SARL = multilineString(
+		private final String STATIC_EXTFIELD_LOCALFUNCTION_A_SARL = multilineString(
 				"package io.sarl.lang.core.tests.compile02",
 				"import java.util.UUID",
 				"class A0 {",
@@ -600,7 +585,7 @@ public class ManyDefinitionsTest {
 				"}"
 				);
 
-		private static final String STATIC_EXTFIELD_LOCALFUNCTION_B_SARL = multilineString(
+		private final String STATIC_EXTFIELD_LOCALFUNCTION_B_SARL = multilineString(
 				"package io.sarl.lang.core.tests.compile02",
 				"import static extension o.sarl.lang.core.tests.compile02.StaticA1.*",
 				"import java.util.UUID",
@@ -613,7 +598,7 @@ public class ManyDefinitionsTest {
 				"}"
 				);
 
-		private static final String STATIC_EXTFIELD_LOCALFUNCTION_JAVA = multilineString(
+		private final String STATIC_EXTFIELD_LOCALFUNCTION_JAVA = multilineString(
 				"package io.sarl.lang.core.tests.compile02;",
 				"",
 				"import io.sarl.lang.annotation.SarlElementType;",
@@ -664,15 +649,15 @@ public class ManyDefinitionsTest {
 				"}",
 				"");
 
-		@CompilationTest
-		public static void compile02(Context ctx) throws Exception {
+		@GlobalCompilationTestContribution
+		public void compile02(ResourceSetGlobalCompilationContext ctx) throws Exception {
 			ctx.compileTo(
 					new String[] { STATIC_EXTFIELD_LOCALFUNCTION_A_SARL, STATIC_EXTFIELD_LOCALFUNCTION_B_SARL },
 					"io.sarl.lang.core.tests.compile02.A2",
 					STATIC_EXTFIELD_LOCALFUNCTION_JAVA);
 		}
 
-		private static final String STATIC_EXTFIELD_A_SARL = multilineString(
+		private final String STATIC_EXTFIELD_A_SARL = multilineString(
 				"package io.sarl.lang.core.tests.compile03",
 				"import java.util.UUID",
 				"class A0 {",
@@ -685,7 +670,7 @@ public class ManyDefinitionsTest {
 				"}"
 				);
 
-		private static final String STATIC_EXTFIELD_B_SARL = multilineString(
+		private final String STATIC_EXTFIELD_B_SARL = multilineString(
 				"package io.sarl.lang.core.tests.compile03",
 				"import static extension o.sarl.lang.core.tests.compile03.StaticA1.*",
 				"import java.util.UUID",
@@ -697,7 +682,7 @@ public class ManyDefinitionsTest {
 				"}"
 				);
 
-		private static final String STATIC_EXTFIELD_JAVA = multilineString(
+		private final String STATIC_EXTFIELD_JAVA = multilineString(
 				"package io.sarl.lang.core.tests.compile03;",
 				"",
 				"import io.sarl.lang.annotation.SarlElementType;",
@@ -743,8 +728,8 @@ public class ManyDefinitionsTest {
 				"}",
 				"");
 
-		@CompilationTest
-		public static void compile03(Context ctx) throws Exception {
+		@GlobalCompilationTestContribution
+		public void compile03(ResourceSetGlobalCompilationContext ctx) throws Exception {
 			ctx.compileTo(
 					new String[] { STATIC_EXTFIELD_A_SARL, STATIC_EXTFIELD_B_SARL },
 					"io.sarl.lang.core.tests.compile03.A2",

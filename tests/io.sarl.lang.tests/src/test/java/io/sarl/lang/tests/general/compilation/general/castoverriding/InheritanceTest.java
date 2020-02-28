@@ -20,18 +20,22 @@
  */
 package io.sarl.lang.tests.general.compilation.general.castoverriding;
 
+import static io.sarl.tests.api.tools.TestEObjects.file;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static io.sarl.tests.api.tools.TestValidator.validate;
+
 import org.eclipse.xtext.common.types.TypesPackage;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.validation.IssueCodes;
 import io.sarl.tests.api.AbstractSarlTest;
-import io.sarl.tests.api.MassiveCompilationSuite;
-import io.sarl.tests.api.MassiveCompilationSuite.CompilationTest;
-import io.sarl.tests.api.MassiveCompilationSuite.Context;
+import io.sarl.tests.api.globalcompilation.GlobalCompilationSuite;
+import io.sarl.tests.api.globalcompilation.GlobalCompilationTestContribution;
+import io.sarl.tests.api.globalcompilation.ResourceSetGlobalCompilationContext;
+import io.sarl.tests.api.tools.TestValidator.Validator;
 
 
 /**
@@ -41,7 +45,7 @@ import io.sarl.tests.api.MassiveCompilationSuite.Context;
  * @mavenartifactid $ArtifactId$
  * @since 0.9
  */
-@RunWith(MassiveCompilationSuite.class)
+@GlobalCompilationSuite
 @SuppressWarnings("all")
 public class InheritanceTest extends AbstractSarlTest {
 
@@ -88,8 +92,8 @@ public class InheritanceTest extends AbstractSarlTest {
 
 	@Test
 	public void parseToA3FromA1() throws Exception {
-		SarlScript mas = file(TO_A3_FROM_A1_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), TO_A3_FROM_A1_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors()
 			.assertNoWarnings(
@@ -101,8 +105,8 @@ public class InheritanceTest extends AbstractSarlTest {
 				"'toA3'", "'A0'");
 	}
 
-	@CompilationTest
-	public static void compileToA3FromA1(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void compileToA3FromA1(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(TO_A3_FROM_A1_SARL, TO_A3_FROM_A1_JAVA);
 	}
 
@@ -152,8 +156,8 @@ public class InheritanceTest extends AbstractSarlTest {
 
 	@Test
 	public void parseToA3FromA4() throws Exception {
-		SarlScript mas = file(TO_A3_FROM_A4_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), TO_A3_FROM_A4_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors()
 			.assertNoWarnings(
@@ -165,8 +169,8 @@ public class InheritanceTest extends AbstractSarlTest {
 				"'toA3'", "'A0'");
 	}
 
-	@CompilationTest
-	public static void compileToA3FromA4(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void compileToA3FromA4(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(TO_A3_FROM_A4_SARL, TO_A3_FROM_A4_JAVA);
 	}
 
@@ -220,8 +224,8 @@ public class InheritanceTest extends AbstractSarlTest {
 
 	@Test
 	public void parseStaticToA3FromA1() throws Exception {
-		SarlScript mas = file(STATIC_TO_A3_FROM_A1_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), STATIC_TO_A3_FROM_A1_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors()
 			.assertNoWarnings(
@@ -233,8 +237,8 @@ public class InheritanceTest extends AbstractSarlTest {
 				"'toA3'", "'A0'");
 	}
 
-	@CompilationTest
-	public static void compileStaticToA3FromA1(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void compileStaticToA3FromA1(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(STATIC_TO_A3_FROM_A1_SARL, STATIC_TO_A3_FROM_A1_JAVA);
 	}
 
@@ -291,8 +295,8 @@ public class InheritanceTest extends AbstractSarlTest {
 
 	@Test
 	public void parseStaticToA3FromA4() throws Exception {
-		SarlScript mas = file(STATIC_TO_A3_FROM_A4_SARL);
-		Validator val = validate(mas);
+		SarlScript mas = file(getParseHelper(), STATIC_TO_A3_FROM_A4_SARL);
+		Validator val = validate(getValidationHelper(), getInjector(), mas);
 		val
 			.assertNoErrors()
 			.assertNoWarnings(
@@ -304,8 +308,8 @@ public class InheritanceTest extends AbstractSarlTest {
 				"'toA3'", "'A0'");
 	}
 
-	@CompilationTest
-	public static void compileStaticToA3FromA4(Context ctx) throws Exception {
+	@GlobalCompilationTestContribution
+	public static void compileStaticToA3FromA4(ResourceSetGlobalCompilationContext ctx) throws Exception {
 		ctx.compileTo(STATIC_TO_A3_FROM_A4_SARL, STATIC_TO_A3_FROM_A4_JAVA);
 	}
 

@@ -20,10 +20,12 @@
  */
 package io.sarl.core.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.UUID;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.core.AgentContext;
 import io.sarl.lang.core.Capacity;
@@ -38,7 +40,7 @@ public class LifecycleTest extends AbstractSarlCoreTest<Capacity> {
 
 	/**
 	 */
-	@Before
+	@BeforeEach
 	public void setUp() {
 		loadSARL("io.sarl.core.Lifecycle", Capacity.class); //$NON-NLS-1$
 	}

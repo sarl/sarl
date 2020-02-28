@@ -30,25 +30,28 @@ import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.logging.LoggingService
 import io.sarl.sre.spaces.RestrictedAccessLocalEventSpace
 import io.sarl.sre.spaces.SpaceParticipantListener
-import io.sarl.sre.tests.testutils.AbstractSreTest
-import io.sarl.tests.api.ManualMocking
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.security.AccessControlException
 import java.security.Principal
 import java.security.acl.Acl
 import java.security.acl.Permission
 import java.util.UUID
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
 import org.mockito.ArgumentCaptor
 import org.mockito.InjectMocks
 import org.mockito.Mock
 
-import static org.mockito.Mockito.doAnswer
-import static org.mockito.Mockito.never
-import static org.mockito.Mockito.verifyNoMoreInteractions
-import static org.mockito.Mockito.when
+import static org.junit.jupiter.api.Assertions.*
+import static org.mockito.Mockito.*
 
+import static extension io.sarl.tests.api.tools.TestAssertions.assertException
+import static extension io.sarl.tests.api.tools.TestMockito.mock
 import static extension org.mockito.ArgumentMatchers.any
 import static extension org.mockito.Mockito.verify
 import static extension org.mockito.MockitoAnnotations.initMocks
@@ -59,8 +62,13 @@ import static extension org.mockito.MockitoAnnotations.initMocks
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@ManualMocking
-class RestrictedAccessLocalEventSpaceTest extends AbstractSreTest {
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@DisplayName("unit: RestrictedAccessLocalEventSpace test")
+class RestrictedAccessLocalEventSpaceTest {
 
 	@Nullable
 	var agentId : UUID
@@ -86,7 +94,7 @@ class RestrictedAccessLocalEventSpaceTest extends AbstractSreTest {
 	@InjectMocks
 	var ^space : RestrictedAccessLocalEventSpace
 
-	@Before
+	@BeforeEach
 	def setUp : void {
 		this.agentId = UUID::randomUUID
 
@@ -103,7 +111,7 @@ class RestrictedAccessLocalEventSpaceTest extends AbstractSreTest {
 		this.listener = typeof(InformedEventListener).mock
 		when(this.listener.ID).thenReturn(this.agentId)
 
-		this.initMocks
+		initMocks
 
 		doAnswer [
 				var r = it.getArguments().get(0) as Runnable
@@ -154,14 +162,16 @@ class RestrictedAccessLocalEventSpaceTest extends AbstractSreTest {
 		assertSame(^event, argument.getValue())
 	}
 
-	@Test(expected = typeof(AccessControlException))
+	@Test
 	def register_noAccess {
-		var ^event = typeof(Event).mock
-		when(^event.source).thenReturn(this.address)
-		this.^space.emit(null, ^event, null)
-		verifyNoMoreInteractions(this.listener)
+		typeof(AccessControlException).assertException [
+			var ^event = typeof(Event).mock
+			when(^event.source).thenReturn(this.address)
+			this.^space.emit(null, ^event, null)
+			verifyNoMoreInteractions(this.listener)
 
-		doRegisterWithoutAccess
+			doRegisterWithoutAccess
+		]
 	}
 
 	@Test

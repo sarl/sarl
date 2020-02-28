@@ -28,13 +28,18 @@ import io.sarl.sre.naming.NameParser
 import io.sarl.sre.naming.ServiceSchemeNameParser
 import io.sarl.sre.naming.SkillSchemeNameParser
 import io.sarl.sre.naming.SpaceSchemeNameParser
-import io.sarl.tests.api.AbstractSarlTest
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.net.URI
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
 
-import static extension java.net.URI.*
+import static extension java.net.URI.create
+import static extension org.junit.jupiter.api.Assertions.assertNull
 
 /**
  * @author $Author: sgalland$
@@ -42,12 +47,18 @@ import static extension java.net.URI.*
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class NameParserTest extends AbstractSarlTest {
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@DisplayName("unit: base NameParser test")
+class NameParserTest {
 
 	@Nullable
 	var parser : NameParser
 
-	@Before
+	@BeforeEach
 	def setUp : void {
 		this.parser = new NameParser
 		this.parser.addSchemeNameParser(new ServiceSchemeNameParser)

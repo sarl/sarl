@@ -20,31 +20,34 @@
  */
 package io.sarl.lang.tests.general.parsing.aop;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static io.sarl.tests.api.tools.TestAssertions.assertNoMoreIssues;
+import static io.sarl.tests.api.tools.TestAssertions.assertNullOrEmpty;
+import static io.sarl.tests.api.tools.TestAssertions.assertParameterDefaultValues;
+import static io.sarl.tests.api.tools.TestAssertions.assertParameterNames;
+import static io.sarl.tests.api.tools.TestAssertions.assertParameterTypes;
+import static io.sarl.tests.api.tools.TestAssertions.assertTypeReferenceIdentifier;
+import static io.sarl.tests.api.tools.TestAssertions.assertTypeReferenceIdentifiers;
+import static io.sarl.tests.api.tools.TestAssertions.assertWarning;
+import static io.sarl.tests.api.tools.TestEObjects.file;
+import static io.sarl.tests.api.tools.TestEObjects.issues;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static io.sarl.tests.api.tools.TestValidator.validate;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.Iterator;
 import java.util.List;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Strings;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.common.types.JvmTypeConstraint;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.common.types.TypesPackage;
-import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.validation.Issue;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlAction;
 import io.sarl.lang.sarl.SarlAgent;
@@ -62,27 +65,21 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@RunWith(Suite.class)
-@SuiteClasses({
-	CapacityParsingTest.TopElementTest.class,
-	CapacityParsingTest.ActionTest.class,
-	CapacityParsingTest.CapacityUsesTest.class,
-	CapacityParsingTest.GenericTest.class,
-})
 @SuppressWarnings("all")
 public class CapacityParsingTest {
 	
-	public static class TopElementTest extends AbstractSarlTest {
+	@Nested
+	public class TopElementTest extends AbstractSarlTest {
 
 		@Test
 		public void invalidCapacityExtend_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"}",
 					"capacity C1 extends A1 {",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INTERFACE_EXPECTED,
 					"Invalid supertype. Expecting an interface");
@@ -90,7 +87,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"}",
 					"capacity C1 {",
@@ -98,7 +95,7 @@ public class CapacityParsingTest {
 					"capacity C2 extends A1, C1 {",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INTERFACE_EXPECTED,
 					"Invalid supertype. Expecting an interface");
@@ -106,7 +103,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_2() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"}",
 					"capacity C1 {",
@@ -114,7 +111,7 @@ public class CapacityParsingTest {
 					"capacity C2 extends C1, A1 {",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INTERFACE_EXPECTED,
 					"Invalid supertype. Expecting an interface");
@@ -122,7 +119,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_3() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"}",
 					"capacity C1 {",
@@ -132,7 +129,7 @@ public class CapacityParsingTest {
 					"capacity C3 extends A1, C1, C2 {",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INTERFACE_EXPECTED,
 					"Invalid supertype. Expecting an interface");
@@ -140,7 +137,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_4() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"}",
 					"capacity C1 {",
@@ -150,7 +147,7 @@ public class CapacityParsingTest {
 					"capacity C3 extends C1, A1, C2 {",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INTERFACE_EXPECTED,
 					"Invalid supertype. Expecting an interface");
@@ -158,7 +155,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_5() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
 					"}",
 					"capacity C1 {",
@@ -168,7 +165,7 @@ public class CapacityParsingTest {
 					"capacity C3 extends C1, C2, A1 {",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INTERFACE_EXPECTED,
 					"Invalid supertype. Expecting an interface");
@@ -176,11 +173,11 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_6() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 extends java.lang.Cloneable {",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
 					"Supertype must be of type 'io.sarl.lang.core.Capacity'");
@@ -188,13 +185,13 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_7() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"}",
 					"capacity C2 extends java.lang.Cloneable, C1 {",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
 					"Supertype must be of type 'io.sarl.lang.core.Capacity'");
@@ -202,13 +199,13 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_8() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"}",
 					"capacity C2 extends C1, java.lang.Cloneable {",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
 					"Supertype must be of type 'io.sarl.lang.core.Capacity'");
@@ -216,7 +213,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_9() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"}",
 					"capacity C2 {",
@@ -224,7 +221,7 @@ public class CapacityParsingTest {
 					"capacity C3 extends java.lang.Cloneable, C1, C2 {",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
 					"Supertype must be of type 'io.sarl.lang.core.Capacity'");
@@ -232,7 +229,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_10() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"}",
 					"capacity C2 {",
@@ -240,7 +237,7 @@ public class CapacityParsingTest {
 					"capacity C3 extends C1, java.lang.Cloneable, C2 {",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
 					"Supertype must be of type 'io.sarl.lang.core.Capacity'");
@@ -248,7 +245,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_11() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"}",
 					"capacity C2 {",
@@ -256,7 +253,7 @@ public class CapacityParsingTest {
 					"capacity C3 extends C1, C2, java.lang.Cloneable {",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
 					"Supertype must be of type 'io.sarl.lang.core.Capacity'");
@@ -264,11 +261,11 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_12() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 extends C1 {",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
 					"The inheritance hierarchy of 'C1' is inconsistent");
@@ -276,13 +273,13 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_13() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 extends C2 {",
 					"}",
 					"capacity C2 extends C1 {",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
 					"Supertype must be of type 'io.sarl.lang.core.Capacity'");
@@ -290,7 +287,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_14() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 extends C3 {",
 					"}",
 					"capacity C2 extends C1 {",
@@ -298,7 +295,7 @@ public class CapacityParsingTest {
 					"capacity C3 extends C2 {",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					IssueCodes.INVALID_EXTENDED_TYPE,
 					"Supertype must be of type 'io.sarl.lang.core.Capacity'");
@@ -306,12 +303,12 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_15() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"capacity C3 extends C1, C2, C3 { }"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
 					"The inheritance hierarchy of 'C3' is inconsistent");
@@ -319,12 +316,12 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_16() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"capacity C3 extends C1, C3, C2 { }"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
 					"The inheritance hierarchy of 'C3' is inconsistent");
@@ -332,12 +329,12 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidCapacityExtend_17() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
 					"capacity C2 { }",
 					"capacity C3 extends C3, C1, C3 { }"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
 					"The inheritance hierarchy of 'C3' is inconsistent");
@@ -345,14 +342,14 @@ public class CapacityParsingTest {
 
 		@Test
 		public void inheritance() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity CapTest1 {",
 					"	def func1 : int",
 					"}",
 					"capacity CapTest2 extends CapTest1 {",
 					"	def func2(a : int)",
 					"}"
-					), true);
+					));
 			assertEquals(2, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -384,8 +381,8 @@ public class CapacityParsingTest {
 
 		@Test
 		public void emptyCapacity() throws Exception {
-			SarlScript mas = file("capacity C1 { }");
-			validate(mas).assertWarning(
+			SarlScript mas = file(getParseHelper(), "capacity C1 { }");
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					IssueCodes.DISCOURAGED_CAPACITY_DEFINITION,
 					"Discouraged capacity definition. A capacity without actions defined inside is not useful since it cannot be called by an agent or a behavior.");
@@ -393,10 +390,10 @@ public class CapacityParsingTest {
 
 		@Test
 		public void capacitymodifier_public() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public capacity C1 {}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -411,10 +408,10 @@ public class CapacityParsingTest {
 
 		@Test
 		public void capacitymodifier_none() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -429,11 +426,11 @@ public class CapacityParsingTest {
 
 		@Test
 		public void capacitymodifier_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"private capacity C1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"Illegal modifier for the definition of C1; only public & package are permitted");
@@ -441,11 +438,11 @@ public class CapacityParsingTest {
 
 		@Test
 		public void capacitymodifier_protected() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"protected capacity C1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"Illegal modifier for the definition of C1; only public & package are permitted");
@@ -453,10 +450,10 @@ public class CapacityParsingTest {
 
 		@Test
 		public void capacitymodifier_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"package capacity C1 {}"
-					), true);
+					));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -471,11 +468,11 @@ public class CapacityParsingTest {
 
 		@Test
 		public void capacitymodifier_abstract() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"abstract capacity C1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"Illegal modifier for the definition of C1; only public & package are permitted");
@@ -483,11 +480,11 @@ public class CapacityParsingTest {
 
 		@Test
 		public void capacitymodifier_static() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"static capacity C1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"Illegal modifier for the definition of C1; only public & package are permitted");
@@ -495,11 +492,11 @@ public class CapacityParsingTest {
 
 		@Test
 		public void capacitymodifier_dispatch() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"dispatch capacity C1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"Illegal modifier for the definition of C1; only public & package are permitted");
@@ -507,11 +504,11 @@ public class CapacityParsingTest {
 
 		@Test
 		public void capacitymodifier_final() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"final capacity C1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"Illegal modifier for the definition of C1; only public & package are permitted");
@@ -519,11 +516,11 @@ public class CapacityParsingTest {
 
 		@Test
 		public void capacitymodifier_strictfp() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"strictfp capacity C1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"Illegal modifier for the definition of C1; only public & package are permitted");
@@ -531,11 +528,11 @@ public class CapacityParsingTest {
 
 		@Test
 		public void capacitymodifier_native() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"native capacity C1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"Illegal modifier for the definition of C1; only public & package are permitted");
@@ -543,11 +540,11 @@ public class CapacityParsingTest {
 
 		@Test
 		public void capacitymodifier_volatile() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"volatile capacity C1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"Illegal modifier for the definition of C1; only public & package are permitted");
@@ -555,11 +552,11 @@ public class CapacityParsingTest {
 
 		@Test
 		public void capacitymodifier_synchronized() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"synchronized capacity C1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"Illegal modifier for the definition of C1; only public & package are permitted");
@@ -567,11 +564,11 @@ public class CapacityParsingTest {
 
 		@Test
 		public void capacitymodifier_transient() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"transient capacity C1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"Illegal modifier for the definition of C1; only public & package are permitted");
@@ -579,11 +576,11 @@ public class CapacityParsingTest {
 
 		@Test
 		public void capacitymodifier_public_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"public package capacity C1 {}"
-					), false);
-			validate(mas).assertError(
+					));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"The definition of C1 can only set one of public / package / protected / private");
@@ -591,33 +588,34 @@ public class CapacityParsingTest {
 
 	}
 
-	public static class ActionTest extends AbstractSarlTest {
+	@Nested
+	public class ActionTest extends AbstractSarlTest {
 
 		@Test
 		public void modifier_override_notRecommended() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {",
 					"	def name",
 					"}",
 					"capacity C2 extends C1 {",
 					"	def name { }",
-					"}"), false);
-			validate(mas).assertNoWarnings(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertNoWarnings(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.MISSING_OVERRIDE);
 		}
 
 		@Test
 		public void modifier_override_invalid() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {",
 					"}",
 					"capacity C2 extends C1 {",
 					"	override name",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.OBSOLETE_OVERRIDE,
 					"The method name() of type C2 must override a superclass method");
@@ -625,27 +623,27 @@ public class CapacityParsingTest {
 
 		@Test
 		public void modifier_override_valid() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {",
 					"	def name",
 					"}",
 					"capacity C2 extends C1 {",
 					"	override name",
-					"}"), false);
-			validate(mas).assertNoIssues();
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertNoIssues();
 		}
 
 		@Test
 		public void multipleActionDefinitionInCapacity() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"	def myaction(a : int, b : int)",
 					"	def myaction(a : int)",
 					"	def myaction(a : int)",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_METHOD,
 					"Duplicate method myaction(int) in type C1");
@@ -653,7 +651,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void multipleActionDefinitionInSkill() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
 					"skill S1 implements C1 {",
 					"	def myaction(a : int, b : int) { }",
@@ -661,7 +659,7 @@ public class CapacityParsingTest {
 					"	def myaction(a : int) { }",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.DUPLICATE_METHOD,
 					"Duplicate method myaction(int) in type S1");
@@ -669,14 +667,14 @@ public class CapacityParsingTest {
 
 		@Test
 		public void invalidActionNameInCapacity() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"	def myaction",
 					"	def $handle_myaction",
 					"	def myaction2",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MEMBER_NAME,
 					"Invalid action name '$handle_myaction'.");
@@ -684,11 +682,11 @@ public class CapacityParsingTest {
 
 		@Test
 		public void modifier_public() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {",
 					"	public def name",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -710,47 +708,47 @@ public class CapacityParsingTest {
 
 		@Test
 		public void modifier_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {",
 					"	private def name",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_protected() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {",
 					"	protected def name",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_package() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {",
 					"	package def name",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_none() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {",
 					"	def name",
-					"}"), true);
+					"}"));
 			assertEquals(1, mas.getXtendTypes().size());
 			//
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
@@ -772,120 +770,120 @@ public class CapacityParsingTest {
 
 		@Test
 		public void modifier_abstract() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {",
 					"	abstract def name",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_static() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {",
 					"	static def name",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_dispatch() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {",
 					"	dispatch def name(a : Integer)",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_final() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {",
 					"	final def name",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_strictfp() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {",
 					"	strictfp def name",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_native() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {",
 					"	native def name",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_volatile() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {",
 					"	volatile def name",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_synchronized() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {",
 					"	synchronized def name",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_transient() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {",
 					"	transient def name",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER);
 		}
 
 		@Test
 		public void modifier_protected_private() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {",
 					"	protected private def name",
-					"}"), false);
-			validate(mas).assertError(
+					"}"));
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAction(),
 					org.eclipse.xtend.core.validation.IssueCodes.INVALID_MODIFIER,
 					"public / package / protected / private");
@@ -893,11 +891,12 @@ public class CapacityParsingTest {
 
 	}
 
-	public static class CapacityUsesTest extends AbstractSarlTest {
+	@Nested
+	public class CapacityUsesTest extends AbstractSarlTest {
 
 		@Test
 		public void invalidCapacityTypeForUses() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"	def myaction(a : int) : float",
 					"}",
@@ -908,7 +907,7 @@ public class CapacityParsingTest {
 					"	uses C1, E1",
 					"}"
 					));
-			validate(mas).assertError(
+			validate(getValidationHelper(), getInjector(), mas).assertError(
 					TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),
 					IssueCodes.INVALID_CAPACITY_TYPE,
 					"Invalid type: 'E1'. Only capacities can be used after the keyword 'uses'");
@@ -916,7 +915,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void agentUnsuedCapacity_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"	def myfct",
 					"}",
@@ -930,7 +929,7 @@ public class CapacityParsingTest {
 					"	}",
 					"}"
 					));
-			List<Issue> issues = issues(mas);
+			List<Issue> issues = issues(getValidationHelper(), mas);
 			assertWarning(
 					issues,
 					mas,
@@ -942,7 +941,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void agentUnsuedCapacity_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
 					"	def myfct",
 					"}",
@@ -955,7 +954,7 @@ public class CapacityParsingTest {
 					"	}",
 					"}"
 					));
-			List<Issue> issues = issues(mas);
+			List<Issue> issues = issues(getValidationHelper(), mas);
 			assertWarning(
 					issues,
 					mas,
@@ -973,7 +972,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void agentUnsuedCapacity_2() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
 					"	def myfct",
 					"}",
@@ -987,7 +986,7 @@ public class CapacityParsingTest {
 					"		myfct2",
 					"	}",
 					"}"
-					), true);
+					));
 			assertEquals(3, mas.getXtendTypes().size());
 			//
 			assertTrue(Strings.isNullOrEmpty(mas.getPackage()));
@@ -1031,7 +1030,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void multipleCapacityUses_0() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {}",
 					"capacity C2 {}",
 					"capacity C3 { def testFct }",
@@ -1040,7 +1039,7 @@ public class CapacityParsingTest {
 					"	def testFct { }",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlCapacityUses(),
 					IssueCodes.REDUNDANT_CAPACITY_USE,
 					"Redundant use of the capacity 'C1'");
@@ -1048,7 +1047,7 @@ public class CapacityParsingTest {
 
 		@Test
 		public void multipleCapacityUses_1() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {}",
 					"capacity C2 {}",
 					"capacity C3 { def testFct }",
@@ -1058,7 +1057,7 @@ public class CapacityParsingTest {
 					"	uses C2, C1",
 					"}"
 					));
-			validate(mas).assertWarning(
+			validate(getValidationHelper(), getInjector(), mas).assertWarning(
 					SarlPackage.eINSTANCE.getSarlCapacityUses(),
 					IssueCodes.REDUNDANT_CAPACITY_USE,
 					"Redundant use of the capacity 'C2'");
@@ -1066,15 +1065,16 @@ public class CapacityParsingTest {
 
 	}
 
-	public static class GenericTest extends AbstractSarlTest {
+	@Nested
+	public class GenericTest extends AbstractSarlTest {
 
 		@Test
 		public void functionGeneric_X_sarlNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {",
 					"	def setX(param : X) : void with X",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlCapacity cap = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertNotNull(cap);
@@ -1093,11 +1093,11 @@ public class CapacityParsingTest {
 
 		@Test
 		public void functionGeneric_X_javaNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {",
 					"	def <X> setX(param : X) : void",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlCapacity cap = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertNotNull(cap);
@@ -1116,11 +1116,11 @@ public class CapacityParsingTest {
 
 		@Test
 		public void functionGeneric_XextendsNumber_sarlNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {",
 					"	def setX(param : X) : void with X extends Number",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlCapacity cap = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertNotNull(cap);
@@ -1143,11 +1143,11 @@ public class CapacityParsingTest {
 
 		@Test
 		public void functionGeneric_XextendsNumber_javaNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {",
 					"	def <X extends Number> setX(param : X) : void",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlCapacity cap = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertNotNull(cap);
@@ -1170,11 +1170,11 @@ public class CapacityParsingTest {
 
 		@Test
 		public void functionGeneric_XY_sarlNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {",
 					"	def setX(param : X) : void with X, Y",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlCapacity cap = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertNotNull(cap);
@@ -1197,11 +1197,11 @@ public class CapacityParsingTest {
 
 		@Test
 		public void functionGeneric_XY_javaNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {",
 					"	def <X, Y> setX(param : X) : void",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlCapacity cap = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertNotNull(cap);
@@ -1224,11 +1224,11 @@ public class CapacityParsingTest {
 
 		@Test
 		public void functionGeneric_XYextendsX_sarlNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {",
 					"	def setX(param : X) : void with X, Y extends X",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlCapacity cap = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertNotNull(cap);
@@ -1255,11 +1255,11 @@ public class CapacityParsingTest {
 
 		@Test
 		public void functionGeneric_XYextendsX_javaNotation() throws Exception {
-			SarlScript mas = file(multilineString(
+			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
 					"capacity C1 {",
 					"	def <X, Y extends X> setX(param : X) : void",
-					"}"), true);
+					"}"));
 			assertEquals("io.sarl.lang.tests.test", mas.getPackage());
 			SarlCapacity cap = (SarlCapacity) mas.getXtendTypes().get(0);
 			assertNotNull(cap);

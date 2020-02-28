@@ -28,13 +28,22 @@ import io.sarl.sre.naming.ServiceName
 import io.sarl.sre.services.lifecycle.LifecycleService
 import io.sarl.sre.services.logging.LoggingService
 import io.sarl.sre.services.namespace.ServiceNamespaceFinder
-import io.sarl.tests.api.AbstractSarlTest
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
-import org.junit.Before
-import org.junit.Test
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
 
 import static org.mockito.ArgumentMatchers.*
 import static org.mockito.Mockito.*
+
+import static extension io.sarl.tests.api.tools.TestMockito.mock
+import static extension org.junit.jupiter.api.Assertions.assertEquals
+import static extension org.junit.jupiter.api.Assertions.assertNull
+import static extension org.junit.jupiter.api.Assertions.assertSame
 
 /**
  * @author $Author: sgalland$
@@ -42,7 +51,13 @@ import static org.mockito.Mockito.*
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class ServiceNamespaceFinderTest extends AbstractSarlTest {
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@DisplayName("unit: ServiceNamespaceFinder test")
+class ServiceNamespaceFinderTest {
 
 	@Nullable
 	var injector : Injector
@@ -54,7 +69,7 @@ class ServiceNamespaceFinderTest extends AbstractSarlTest {
 	var finder : ServiceNamespaceFinder
 
 	@SuppressWarnings("use_reserved_sarl_annotation")
-	@Before
+	@BeforeEach
 	@PrivateAPI(isCallerOnly = true)
 	def setUp : void {
 		this.loggingService = typeof(LoggingService).mock

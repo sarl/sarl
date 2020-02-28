@@ -16,10 +16,6 @@
 			<groupId>io.sarl.maven</groupId>
 			<artifactId>io.sarl.maven.docs.generator</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-		</dependency>
 	</dependencies>
 
 	<build>

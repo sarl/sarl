@@ -21,9 +21,9 @@
 
 package io.sarl.sarldoc.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -33,14 +33,15 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.Iterator;
+
 import javax.annotation.Nullable;
 
 import org.arakhne.afc.vmutil.ClasspathUtil;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.arakhne.afc.vmutil.Resources;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
@@ -109,7 +110,7 @@ public class MainTest {
 		}
 	}
 	
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.rootFolder = null;
 		if (CAPTURE_OUTPUTS) {
@@ -122,7 +123,7 @@ public class MainTest {
 		}
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws IOException {
 		if (this.rootFolder != null && DELETE_GENERATED_FOLDER) {
 			FileSystem.delete(this.rootFolder);
@@ -251,17 +252,17 @@ public class MainTest {
 		
 		File javaFile = FileSystem.join(this.genFolder, "io", "sarl", "lang",
 				"sarlc", "tests", "resources", "test1", "Foo.java");
-		assertTrue("The Java file " + javaFile.getAbsolutePath() + " was not found", javaFile.exists());
+		assertTrue(javaFile.exists(), "The Java file " + javaFile.getAbsolutePath() + " was not found");
 		String content = new String(Files.readAllBytes(javaFile.toPath()), Charset.defaultCharset());
 		assertEquals(EXPECTED_TEST1, content);
 
 		File classFile = FileSystem.join(this.binFolder, "io", "sarl", "lang",
 				"sarlc", "tests", "resources", "test1", "Foo.class");
-		assertTrue("The binary file " + classFile.getAbsolutePath() + " was not found", classFile.exists());
+		assertTrue(classFile.exists(), () -> "The binary file " + classFile.getAbsolutePath() + " was not found");
 
 		File docFile = FileSystem.join(this.docFolder, "io", "sarl", "lang",
 				"sarlc", "tests", "resources", "test1", "Foo.html");
-		assertTrue("The documentation file " + docFile.getAbsolutePath() + " was not found", docFile.exists());
+		assertTrue(docFile.exists(), () -> "The documentation file " + docFile.getAbsolutePath() + " was not found");
 	}
 
 	@Test
@@ -291,15 +292,15 @@ public class MainTest {
 
 		File javaFile = FileSystem.join(this.genFolder, "io", "sarl", "lang",
 				"sarlc", "tests", "resources", "test1", "Foo.java");
-		assertFalse("The Java file " + javaFile.getAbsolutePath() + " was found", javaFile.exists());
+		assertFalse(javaFile.exists(), () -> "The Java file " + javaFile.getAbsolutePath() + " was found");
 
 		File classFile = FileSystem.join(this.binFolder, "io", "sarl", "lang",
 				"sarlc", "tests", "resources", "test1", "Foo.class");
-		assertFalse("The binary file " + classFile.getAbsolutePath() + " was found", classFile.exists());
+		assertFalse(classFile.exists(), () -> "The binary file " + classFile.getAbsolutePath() + " was found");
 
 		File docFile = FileSystem.join(this.docFolder, "io", "sarl", "lang",
 				"sarlc", "tests", "resources", "test1", "Foo.html");
-		assertFalse("The documentation file " + docFile.getAbsolutePath() + " was found", docFile.exists());
+		assertFalse(docFile.exists(), () -> "The documentation file " + docFile.getAbsolutePath() + " was found");
 	}
 
 	@Test

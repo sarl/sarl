@@ -20,14 +20,16 @@
  */
 package io.sarl.lang.tests.modules.validation;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
+import static io.sarl.tests.api.tools.TestEObjects.file;
+import static io.sarl.tests.api.tools.TestUtils.multilineString;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import com.google.inject.Inject;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.validation.IssueSeverities;
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
@@ -56,14 +58,14 @@ public class IConfigurableIssueSeveritiesProviderTest extends AbstractSarlTest {
 	@Inject
 	private IConfigurableIssueSeveritiesProvider provider;
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		this.provider.setAllSeverities(null);
 	}
 
 	@Test
 	public void getIssueSeverities() throws Exception {
-		SarlScript script = file(SNIPSET, true);
+		SarlScript script = file(getParseHelper(), getValidationHelper(), SNIPSET);
 		//
 		IssueSeverities severities = this.provider.getIssueSeverities(script.eResource());
 		//
@@ -77,7 +79,7 @@ public class IConfigurableIssueSeveritiesProviderTest extends AbstractSarlTest {
 	public void setSeverity() throws Exception {
 		this.provider.setSeverity(IssueCodes.UNREACHABLE_BEHAVIOR_UNIT, Severity.INFO);
 		//
-		SarlScript script = file(SNIPSET, true);
+		SarlScript script = file(getParseHelper(), getValidationHelper(), SNIPSET);
 		//
 		IssueSeverities severities = this.provider.getIssueSeverities(script.eResource());
 		assertNotNull(severities);
@@ -90,7 +92,7 @@ public class IConfigurableIssueSeveritiesProviderTest extends AbstractSarlTest {
 	public void setAllSeverities() throws Exception {
 		this.provider.setAllSeverities(Severity.INFO);
 		//
-		SarlScript script = file(SNIPSET, true);
+		SarlScript script = file(getParseHelper(), getValidationHelper(), SNIPSET);
 		//
 		IssueSeverities severities = this.provider.getIssueSeverities(script.eResource());
 		assertNotNull(severities);

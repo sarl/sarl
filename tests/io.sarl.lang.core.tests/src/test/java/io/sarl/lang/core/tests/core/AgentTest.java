@@ -20,17 +20,27 @@
  */
 package io.sarl.lang.core.tests.core;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertException;
+import static io.sarl.tests.api.tools.TestAssertions.assertInstanceOf;
+import static io.sarl.tests.api.tools.TestMockito.mock;
+import static io.sarl.tests.api.tools.TestMockito.spy;
+import static io.sarl.tests.api.tools.TestReflections.invokeFunc;
+import static io.sarl.tests.api.tools.TestReflections.invokeProc;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.doReturn;
 
-import java.lang.reflect.InvocationTargetException;
 import java.security.InvalidParameterException;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
-import javax.inject.Inject;
 
-import com.google.common.base.Throwables;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
@@ -55,9 +65,6 @@ public class AgentTest extends AbstractSarlTest {
 
 	private AgentMock agent;
 	
-	@Inject
-	private ReflectExtensions reflect;
-
 	private static Address mockAddress(UUID agentID) {
 		Address adr = mock(Address.class);
 		doReturn(agentID).when(adr).getUUID();
@@ -71,46 +78,26 @@ public class AgentTest extends AbstractSarlTest {
 		return evt;
 	}
 
-	private void assertNoSkill(Class<? extends Capacity> c) {
-		try {
-			try {
-				this.reflect.invoke(this.agent, "getSkill", c);
-			} catch (InvocationTargetException e) {
-				throw Throwables.propagate(e.getTargetException());
-			} catch (Exception e) {
-				throw Throwables.propagate(e);
-			}
-			fail("Expecting the exception UnimplementedCapacityException, but got no exception."); //$NON-NLS-1$
-		} catch (UnimplementedCapacityException exception) {
-			//
-		}
+	private void assertNoSkill(Class<? extends Capacity> c) throws Exception {
+		assertException(UnimplementedCapacityException.class, () -> {
+			invokeProc(this.agent.getClass(), this.agent, "getSkill", new Class[] {Class.class}, c);
+			invokeProc(this.agent.getClass(), this.agent, "getSkill", new Class[] {Class.class}, c);
+		});
 	}
 
-	private void assertSkill(Class<? extends Capacity> c, Skill expected) {
-		Object r;
-		try {
-			r = this.reflect.invoke(this.agent, "getSkill", c);
-		} catch (InvocationTargetException e) {
-			throw Throwables.propagate(e.getTargetException());
-		} catch (Exception e) {
-			throw Throwables.propagate(e);
-		}
+	private void assertSkill(Class<? extends Capacity> c, Skill expected) throws Exception {
+		Object r = invokeFunc(this.agent.getClass(), this.agent, Skill.class,
+				"getSkill", new Class[] {Class.class}, c);
 		assertSame(expected, r);
 	}
 
-	private void assertSkill(Class<? extends Capacity> c) {
-		Object r;
-		try {
-			r = this.reflect.invoke(this.agent, "getSkill", c);
-		} catch (InvocationTargetException e) {
-			throw Throwables.propagate(e.getTargetException());
-		} catch (Exception e) {
-			throw Throwables.propagate(e);
-		}
+	private void assertSkill(Class<? extends Capacity> c) throws Exception {
+		Object r = invokeFunc(this.agent.getClass(), this.agent, Skill.class,
+				"getSkill", new Class[] {Class.class}, c);
 		assertNotNull(r);
 	}
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.id = UUID.randomUUID();
 		this.agent = spy(new AgentMock(this.id));
@@ -129,7 +116,7 @@ public class AgentTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void setSkill() {
+	public void setSkill() throws Exception {
 		Skill s1, s2, r;
 
 		assertNoSkill(Capacity1.class);
@@ -187,7 +174,7 @@ public class AgentTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void setSkill_withoutCapacity() {
+	public void setSkill_withoutCapacity() throws Exception {
 		Skill s4, r;
 
 		assertNoSkill(Capacity1.class);
@@ -207,7 +194,7 @@ public class AgentTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void clearSkill_multipleCapacityImplementation() {
+	public void clearSkill_multipleCapacityImplementation() throws Exception {
 		assertNoSkill(Capacity1.class);
 		assertNoSkill(Capacity2.class);
 		assertNoSkill(Skill1.class);
@@ -244,7 +231,7 @@ public class AgentTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void clearSkill() {
+	public void clearSkill() throws Exception {
 		this.agent.setSkill_Fake(new Skill1(), Capacity1.class);
 		this.agent.setSkill_Fake(new Skill2(), Capacity2.class);
 		assertSkill(Capacity1.class);
@@ -276,7 +263,7 @@ public class AgentTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void hasSkill() {
+	public void hasSkill() throws Exception {
 		this.agent.setSkill_Fake(new Skill1(), Capacity1.class);
 		this.agent.setSkill_Fake(new Skill2(), Capacity2.class);
 		assertTrue(this.agent.hasSkill(Capacity1.class));
@@ -306,7 +293,7 @@ public class AgentTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void operator_mappedTo() {
+	public void operator_mappedTo() throws Exception {
 		Skill s1, s2;
 
 		assertNoSkill(Capacity1.class);
@@ -362,7 +349,7 @@ public class AgentTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void isMeAddress() {
+	public void isMeAddress() throws Exception {
 		Address adr;
 
 		adr = mockAddress(this.agent.getID());
@@ -376,14 +363,14 @@ public class AgentTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void isMeUUID() {
+	public void isMeUUID() throws Exception {
 		assertTrue(this.agent.isMe(this.agent.getID()));
 		assertTrue(this.agent.isMe(UUID.fromString(this.agent.getID().toString())));
 		assertFalse(this.agent.isMe(UUID.randomUUID()));
 	}
 
 	@Test
-	public void isFromMeEvent() {
+	public void isFromMeEvent() throws Exception {
 		Event evt;
 
 		evt = mockEvent(this.agent.getID());
@@ -397,7 +384,7 @@ public class AgentTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void skillInstallation_withMultipleSetSkill() {
+	public void skillInstallation_withMultipleSetSkill() throws Exception {
 		Skill4 s4 = new Skill4();
 		this.agent.setSkill_Fake(s4, Capacity1.class);
 		
@@ -409,14 +396,14 @@ public class AgentTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void skillInstallation_withSingleSetSkill() {
+	public void skillInstallation_withSingleSetSkill() throws Exception {
 		Skill4 s4 = new Skill4();
 		this.agent.setSkill_Fake(s4);
 		assertEquals(1, s4.installCalls());
 	}
 
 	@Test
-	public void skillUninstallation_withClearSkill() {
+	public void skillUninstallation_withClearSkill() throws Exception {
 		Skill4 s4 = new Skill4();
 		this.agent.setSkill_Fake(s4);
 
@@ -429,13 +416,15 @@ public class AgentTest extends AbstractSarlTest {
 		assertEquals(1, s4.uninstallPostCalls());
 	}
 
-	@Test(expected = UnimplementedCapacityException.class)
-	public void getSkill_noSetSkill() {
-		this.agent.$getSkill(Capacity1.class);
+	@Test
+	public void getSkill_noSetSkill() throws Exception {
+		assertException(UnimplementedCapacityException.class, () -> {
+			this.agent.$getSkill(Capacity1.class);
+		});
 	}
 
 	@Test
-	public void getSkill_setSkill() {
+	public void getSkill_setSkill() throws Exception {
 		Skill1 so = new Skill1();
 		this.agent.setSkill_Fake(so);
 		//
@@ -450,7 +439,7 @@ public class AgentTest extends AbstractSarlTest {
 	}
 
 	@Test
-	public void getSkill_defaultskill() {
+	public void getSkill_defaultskill() throws Exception {
 		ClearableReference<Skill> ref0 = this.agent.$getSkill(Capacity3.class);
 		assertNotNull(ref0);
 		Skill s0 = ref0.get();

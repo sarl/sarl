@@ -20,8 +20,10 @@
  */
 package io.sarl.core.tests;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Event;
@@ -36,7 +38,7 @@ public class DestroyTest extends AbstractSarlCoreTest<Event> {
 
 	/**
 	 */
-	@Before
+	@BeforeEach
 	public void setUp() {
 		loadSARL("io.sarl.core.Destroy", Event.class); //$NON-NLS-1$
 	}

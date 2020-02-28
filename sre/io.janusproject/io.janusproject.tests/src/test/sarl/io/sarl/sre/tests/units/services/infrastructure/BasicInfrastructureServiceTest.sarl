@@ -22,10 +22,16 @@
 package io.sarl.sre.tests.units.services.infrastructure
 
 import io.sarl.sre.services.infrastructure.BasicInfrastructureService
-import io.sarl.sre.tests.testutils.AbstractSreTest
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
-import org.junit.Before
-import org.junit.Test
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static org.junit.jupiter.api.Assertions.*
 
 /**
  * @author $Author: sgalland$
@@ -33,12 +39,18 @@ import org.junit.Test
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class BasicInfrastructureServiceTest extends AbstractSreTest {
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension)
+])
+@DisplayName("unit: BasicInfrastructureService test")
+class BasicInfrastructureServiceTest {
 
 	@Nullable
 	var service : BasicInfrastructureService
 	
-	@Before
+	@BeforeEach
 	def setUp : void {
 		this.service = new BasicInfrastructureService
 	}

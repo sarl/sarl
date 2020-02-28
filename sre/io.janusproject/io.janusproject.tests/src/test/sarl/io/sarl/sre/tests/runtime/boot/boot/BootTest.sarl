@@ -25,12 +25,21 @@ import io.sarl.sre.boot.configs.subconfigs.BootConfig
 import io.sarl.sre.boot.configs.subconfigs.RootContextType
 import io.sarl.sre.tests.runtime.boot.boot.mocks.BootAgent0
 import io.sarl.sre.tests.runtime.boot.boot.mocks.BootAgent1
-import io.sarl.sre.tests.testutils.AbstractSreRunTest
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.sre.tests.testutils.^extension.SreRunContext
+import io.sarl.sre.tests.testutils.^extension.SreRunExtension
 import io.sarl.tests.api.Nullable
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
 import org.arakhne.afc.bootique.variables.VariableNames
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static org.junit.jupiter.api.Assertions.*
+import static io.sarl.sre.tests.testutils.Constants.*
 
 /**
  * @author $Author: sgalland$
@@ -38,7 +47,14 @@ import org.junit.Test
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class BootTest extends AbstractSreRunTest {
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension),
+	typeof(SreRunExtension)
+])
+@DisplayName("run: Boot test")
+class BootTest {
 
 	@Nullable
 	var defaultID : UUID
@@ -49,7 +65,7 @@ class BootTest extends AbstractSreRunTest {
 	@Nullable
 	var bootID1 : UUID
 	
-	@Before
+	@BeforeEach
 	def setUp : void {
 		this.defaultID = UUID::fromString(BootConfig::ROOT_CONTEXT_ID_VALUE)
 		this.bootID0 = UUID::nameUUIDFromBytes(typeof(BootAgent0).name.bytes)
@@ -57,7 +73,7 @@ class BootTest extends AbstractSreRunTest {
 	}
 
 	@Test
-	def bootAgentId_killInOnInitialize {
+	def bootAgentId_killInOnInitialize(extension rc : SreRunContext) {
 		System::setProperty(VariableNames::toPropertyName(BootConfig::ROOT_CONTEXT_BOOT_TYPE_NAME),
 			RootContextType::DEFAULT.name)
 		typeof(BootAgent0).runSre(null, true, STANDARD_TIMEOUT)
@@ -65,7 +81,7 @@ class BootTest extends AbstractSreRunTest {
 	}
 
 	@Test
-	def bootAgentId_killAfterOnInitialize {
+	def bootAgentId_killAfterOnInitialize(extension rc : SreRunContext) {
 		System::setProperty(VariableNames::toPropertyName(BootConfig::ROOT_CONTEXT_BOOT_TYPE_NAME),
 			RootContextType::DEFAULT.name)
 		typeof(BootAgent1).runSre(null, true, STANDARD_TIMEOUT)
@@ -73,7 +89,7 @@ class BootTest extends AbstractSreRunTest {
 	}
 	
 	@Test
-	def defaultContextUUID_killInOnInitalize {
+	def defaultContextUUID_killInOnInitalize(extension rc : SreRunContext) {
 		System::setProperty(VariableNames::toPropertyName(BootConfig::ROOT_CONTEXT_BOOT_TYPE_NAME),
 				RootContextType::DEFAULT.name)
 		typeof(BootAgent0).runSre(null, true, STANDARD_TIMEOUT)
@@ -82,7 +98,7 @@ class BootTest extends AbstractSreRunTest {
 	}
 
 	@Test
-	def defaultContextUUID_killAfterOnInitalize {
+	def defaultContextUUID_killAfterOnInitalize(extension rc : SreRunContext) {
 		System::setProperty(VariableNames::toPropertyName(BootConfig::ROOT_CONTEXT_BOOT_TYPE_NAME),
 			RootContextType::DEFAULT.name)
 		typeof(BootAgent1).runSre(null, true, STANDARD_TIMEOUT)
@@ -93,7 +109,7 @@ class BootTest extends AbstractSreRunTest {
 	}
 
 	@Test
-	def bootContextUUID_killInOnInitialize {
+	def bootContextUUID_killInOnInitialize(extension rc : SreRunContext) {
 		System::setProperty(VariableNames::toPropertyName(BootConfig::ROOT_CONTEXT_BOOT_TYPE_NAME),
 				RootContextType::BOOT_AGENT_NAME.name)
 		typeof(BootAgent0).runSre(null, true, STANDARD_TIMEOUT)
@@ -102,7 +118,7 @@ class BootTest extends AbstractSreRunTest {
 	}
 
 	@Test
-	def bootContextUUID_killAfterOnInitialize {
+	def bootContextUUID_killAfterOnInitialize(extension rc : SreRunContext) {
 		System::setProperty(VariableNames::toPropertyName(BootConfig::ROOT_CONTEXT_BOOT_TYPE_NAME),
 			RootContextType::BOOT_AGENT_NAME.name)
 		typeof(BootAgent1).runSre(null, true, STANDARD_TIMEOUT)
@@ -114,7 +130,7 @@ class BootTest extends AbstractSreRunTest {
 
 	
 	@Test
-	def randomContextUUID_killInOnInitialize {
+	def randomContextUUID_killInOnInitialize(extension rc : SreRunContext) {
 		System::setProperty(VariableNames::toPropertyName(BootConfig::ROOT_CONTEXT_BOOT_TYPE_NAME),
 				RootContextType::RANDOM.name)
 		typeof(BootAgent0).runSre(null, true, STANDARD_TIMEOUT)
@@ -123,7 +139,7 @@ class BootTest extends AbstractSreRunTest {
 	}
 
 	@Test
-	def randomContextUUID_killAfterOnInitialize {
+	def randomContextUUID_killAfterOnInitialize(extension rc : SreRunContext) {
 		System::setProperty(VariableNames::toPropertyName(BootConfig::ROOT_CONTEXT_BOOT_TYPE_NAME),
 			RootContextType::RANDOM.name)
 		typeof(BootAgent1).runSre(null, true, STANDARD_TIMEOUT)

@@ -1,0 +1,85 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2020 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.tests.runtime.internal
+
+import io.sarl.core.ParticipantJoined
+import io.sarl.sre.tests.runtime.internal.mocks.JoinerAgent0
+import io.sarl.sre.tests.runtime.internal.mocks.SpyAgent0
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.sre.tests.testutils.^extension.SreRunContext
+import io.sarl.sre.tests.testutils.^extension.SreRunExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.util.UUID
+import org.arakhne.afc.util.OutputParameter
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static io.sarl.sre.tests.testutils.Constants.*
+
+import static extension org.junit.jupiter.api.Assertions.assertEquals
+import static extension org.junit.jupiter.api.Assertions.assertNotEquals
+import static extension org.junit.jupiter.api.Assertions.assertNotNull
+
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension),
+	typeof(SreRunExtension)
+])
+@DisplayName("run: on ParticipantJoined test")
+class OnParticipantJoinedTest {
+
+	@Test
+	@SuppressWarnings("discouraged_reference")
+	def run(extension rc : SreRunContext) {
+		var kern = typeof(SpyAgent0).setupTheSreKernel(null, true, true)
+
+		Thread::sleep(1000)
+
+		val id : OutputParameter<UUID> = new OutputParameter
+
+		kern.spawn(typeof(JoinerAgent0)) [
+			id.set(it)
+		]
+
+		waitForTheKernel(STANDARD_TIMEOUT)
+		
+		var evt = getResult(bootAgent, typeof(ParticipantJoined), 0)
+		evt.assertNotNull
+		
+		var spaceId = getResult(id.get, typeof(UUID), 0)
+		spaceId.assertNotNull
+		
+		bootAgent.assertEquals(evt.source.UUID)
+		spaceId.assertNotEquals(evt.source.spaceID.ID)
+		spaceId.assertEquals(evt.spaceID.ID)
+	}
+
+}

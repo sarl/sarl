@@ -20,17 +20,20 @@
  */
 package io.sarl.lang.core.tests.core;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
+import static io.sarl.tests.api.tools.TestAssertions.assertException;
+import static io.sarl.tests.api.tools.TestAssertions.assertInstanceOf;
+import static io.sarl.tests.api.tools.TestReflections.invokeFunc;
+import static io.sarl.tests.api.tools.TestReflections.invokeProc;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
-import javax.inject.Inject;
 
-import com.google.common.base.Throwables;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
@@ -52,9 +55,6 @@ import io.sarl.tests.api.Nullable;
 @SuppressWarnings("all")
 public abstract class AbstractAgentTraitBehaviorTest extends AbstractSarlTest {
 
-	@Inject
-	private ReflectExtensions reflect;
-	
 	@Nullable
 	private AgentMock agent;
 	
@@ -70,18 +70,10 @@ public abstract class AbstractAgentTraitBehaviorTest extends AbstractSarlTest {
 	protected AgentMock getAgent() {
 		return this.agent;
 	}
-	
-	protected Object invoke(Object instance, String functionName, Object... parameters) throws Exception {
-		try {
-			return this.reflect.invoke(instance, functionName, parameters);
-		} catch (InvocationTargetException e) {
-			throw Throwables.propagate(e.getTargetException());
-		}
-	}
 
-	@Before
+	@BeforeEach
 	public void setUp() {
-		this.agent = Mockito.spy(new AgentMock());
+		this.agent = spy(new AgentMock());
 		this.instance = createInstance();
 	}
 	
@@ -89,19 +81,23 @@ public abstract class AbstractAgentTraitBehaviorTest extends AbstractSarlTest {
 	public void setOwner() throws Exception {
 		Agent newAgent = mock(Agent.class);
 		Object instance = getInstance();
-		assertSame(getAgent(), invoke(instance, "getOwner"));
-		this.reflect.invoke(getInstance(), "setOwner", newAgent);
-		assertSame(newAgent, invoke(instance, "getOwner"));
+		assertSame(getAgent(), invokeFunc(instance.getClass(), instance, Agent.class, "getOwner"));
+		invokeProc(instance.getClass(), instance, "setOwner", new Class[] {Agent.class}, newAgent);
+		assertSame(newAgent, invokeFunc(instance.getClass(), instance, Agent.class, "getOwner"));
 	}
 
 	@Test
 	public void getOwner() throws Exception {
-		assertSame(getAgent(), invoke(getInstance(), "getOwner"));
+		Object instance = getInstance();
+		assertSame(getAgent(), invokeFunc(instance.getClass(), instance, Agent.class, "getOwner"));
 	}
 
-	@Test(expected = UnimplementedCapacityException.class)
+	@Test
 	public void getSkill_unset() throws Exception {
-		Object result = invoke(getInstance(), "getSkill", Capacity1.class);
+		assertException(UnimplementedCapacityException.class,() -> {
+			Object instance = getInstance();
+			invokeProc(instance.getClass(), instance, "getSkill", new Class[] {Class.class}, Capacity1.class);
+		});
 	}
 
 	@Test
@@ -109,14 +105,18 @@ public abstract class AbstractAgentTraitBehaviorTest extends AbstractSarlTest {
 		Skill1 skill = new Skill1();
 		getAgent().setSkill_Fake(skill, Capacity1.class);
 		//
-		Object result = invoke(getInstance(), "getSkill", Capacity1.class);
+		Object instance = getInstance();
+		Capacity result = invokeFunc(instance.getClass(), instance, Capacity.class,
+				"getSkill", new Class[] {Class.class}, Capacity1.class);
 		//
 		assertInstanceOf(Capacity1.class, result);
 	}
 
 	@Test
 	public void hasSkill_unset() throws Exception {
-		Object result = invoke(getInstance(), "hasSkill", Capacity1.class);
+		Object instance = getInstance();
+		Object result = invokeFunc(instance.getClass(), instance, Boolean.class,
+				"hasSkill", new Class[] {Class.class}, Capacity1.class);
 		assertEquals(Boolean.FALSE, result);
 	}
 
@@ -125,7 +125,9 @@ public abstract class AbstractAgentTraitBehaviorTest extends AbstractSarlTest {
 		Skill1 skill = new Skill1();
 		getAgent().setSkill_Fake(skill, Capacity1.class);
 		//
-		Object result = invoke(getInstance(), "hasSkill", Capacity1.class);
+		Object instance = getInstance();
+		Object result = invokeFunc(instance.getClass(), instance, Boolean.class,
+				"hasSkill", new Class[] {Class.class}, Capacity1.class);
 		//
 		assertEquals(Boolean.TRUE, result);
 	}
@@ -134,11 +136,14 @@ public abstract class AbstractAgentTraitBehaviorTest extends AbstractSarlTest {
 	public void setSkill() throws Exception {
 		Skill1 skill = new Skill1();
 		//
-		Object result = invoke(getInstance(), "setSkill", skill, Capacity1.class);
+		Object instance = getInstance();
+		Object result = invokeFunc(instance.getClass(), instance, Skill.class,
+				"setSkill", new Class[] {Skill.class, Class[].class}, skill, new Class[] {Capacity1.class});
 		//
 		assertSame(skill, result);
 		//
-		result = invoke(getInstance(), "getSkill", Capacity1.class);
+		result = invokeFunc(instance.getClass(), instance, Capacity.class, 
+				"getSkill", new Class[] {Class.class}, Capacity1.class);
 		assertInstanceOf(Capacity1.class, result);
 	}
 
@@ -146,66 +151,84 @@ public abstract class AbstractAgentTraitBehaviorTest extends AbstractSarlTest {
 	public void operator_mappedTo() throws Exception {
 		Skill1 skill = new Skill1();
 		//
-		invoke(getInstance(), "operator_mappedTo", Capacity1.class, skill);
+		Object instance = getInstance();
+		invokeProc(instance.getClass(), instance, "operator_mappedTo",
+				new Class[] {Class.class, Skill.class}, Capacity1.class, skill);
 		//
-		Object result = invoke(getInstance(), "getSkill", Capacity1.class);
+		Object result = invokeFunc(instance.getClass(), instance, Capacity.class,
+				"getSkill", new Class[] {Class.class}, Capacity1.class);
 		assertInstanceOf(Capacity1.class, result);
 	}
 
-	@Test(expected = UnimplementedCapacityException.class)
+	@Test
 	public void clearSkill_set() throws Exception {
-		Skill1 skill = new Skill1();
-		getAgent().setSkill_Fake(skill, Capacity1.class);
-		//
-		Object result = invoke(getInstance(), "clearSkill", Capacity1.class);
-		//
-		assertSame(skill, result);
-		//
-		invoke(getInstance(), "getSkill", Capacity1.class);
+		assertException(UnimplementedCapacityException.class, () -> {
+			Skill1 skill = new Skill1();
+			getAgent().setSkill_Fake(skill, Capacity1.class);
+			//
+			Object instance = getInstance();
+			Object result = invokeFunc(instance.getClass(), instance, Skill.class,
+					"clearSkill", new Class[] {Class.class}, Capacity1.class);
+			//
+			assertSame(skill, result);
+			//
+			invokeProc(instance.getClass(), instance, "getSkill", new Class[] {Class.class}, Capacity1.class);
+		});
 	}
 
 	@Test
 	public void clearSkill_unset() throws Exception {
-		Object result = invoke(getInstance(), "clearSkill", Capacity1.class);
+		Object instance = getInstance();
+		Object result = invokeFunc(instance.getClass(), instance, Skill.class,
+				"clearSkill", new Class[] {Class.class}, Capacity1.class);
 		//
 		assertNull(result);
 	}
 
 	@Test
 	public void isMeAddress() throws Exception {
-		SpaceID spaceID = Mockito.mock(SpaceID.class);
+		SpaceID spaceID = mock(SpaceID.class);
 		//
+		Object instance = getInstance();
 		UUID randomID = UUID.randomUUID();
 		Address adr1 = new Address(spaceID, randomID);
-		Object result = invoke(getInstance(), "isMe", adr1);
+		Object result = invokeFunc(instance.getClass(), instance, Boolean.class,
+				"isMe", new Class[] {Address.class}, adr1);
 		assertEquals(Boolean.FALSE, result);
 		//
 		Address adr2 = new Address(spaceID, getAgent().getID());
-		result = invoke(getInstance(), "isMe", adr2);
+		result = invokeFunc(instance.getClass(), instance, Boolean.class,
+				"isMe", new Class[] {Address.class}, adr2);
 		assertEquals(Boolean.TRUE, result);
 	}
 
 	@Test
 	public void isMeUUID() throws Exception {
+		Object instance = getInstance();
 		UUID randomID = UUID.randomUUID();
-		Object result = invoke(getInstance(), "isMe", randomID);
+		Object result = invokeFunc(instance.getClass(), instance, Boolean.class,
+				"isMe", new Class[] {UUID.class}, randomID);
 		assertEquals(Boolean.FALSE, result);
 		//
-		result = invoke(getInstance(), "isMe", getAgent().getID());
+		result = invokeFunc(instance.getClass(), instance, Boolean.class,
+				"isMe", new Class[] {UUID.class}, getAgent().getID());
 		assertEquals(Boolean.TRUE, result);
 	}
 
 	@Test
 	public void isFromMeEvent() throws Exception {
-		SpaceID spaceID = Mockito.mock(SpaceID.class);
+		SpaceID spaceID = mock(SpaceID.class);
 		//
+		Object instance = getInstance();
 		UUID randomID = UUID.randomUUID();
 		Address adr1 = new Address(spaceID, randomID);
-		Object result = invoke(getInstance(), "isFromMe", new Event(adr1) {});
+		Object result = invokeFunc(instance.getClass(), instance, Boolean.class,
+				"isFromMe", new Class[] {Event.class}, new Event(adr1) {});
 		assertEquals(Boolean.FALSE, result);
 		//
 		Address adr2 = new Address(spaceID, getAgent().getID());
-		result = invoke(getInstance(), "isFromMe", new Event(adr2) {});
+		result = invokeFunc(instance.getClass(), instance, Boolean.class,
+				"isFromMe", new Class[] {Event.class}, new Event(adr2) {});
 		assertEquals(Boolean.TRUE, result);
 	}
 
@@ -234,7 +257,7 @@ public abstract class AbstractAgentTraitBehaviorTest extends AbstractSarlTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	protected static interface Capacity1 extends Capacity {
+	public static interface Capacity1 extends Capacity {
 		public static class ContextAwareCapacityWrapper<C extends Capacity1> extends Capacity.ContextAwareCapacityWrapper<C> implements Capacity1 {
 			public ContextAwareCapacityWrapper(C capacity, AgentTrait caller) {
 				super(capacity, caller);
@@ -248,7 +271,7 @@ public abstract class AbstractAgentTraitBehaviorTest extends AbstractSarlTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	protected static class Skill1 extends Skill implements Capacity1 {
+	public static class Skill1 extends Skill implements Capacity1 {
 		public Skill1() {
 			//
 		}

@@ -281,7 +281,7 @@ public abstract class AbstractSARLQuickfixTest extends AbstractSarlUiTest {
 		 * @param failIfNotFound fails if no resolution found.
 		 * @param removeWhenFound indicates if the resolution must be removed for the list of the resolutions
 		 * when it was found.
-		 * @return the resolution or <code>null</code>.
+		 * @return the resolution or {@code null}.
 		 */
 		public IssueResolution findResolution(String label, boolean failIfNotFound, boolean removeWhenFound) {
 			Iterator<IssueResolution> iterator = this.resolutions.iterator();

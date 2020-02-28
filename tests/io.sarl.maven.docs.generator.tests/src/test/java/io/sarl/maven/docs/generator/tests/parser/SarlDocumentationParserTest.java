@@ -21,9 +21,10 @@
 
 package io.sarl.maven.docs.generator.tests.parser;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assume.assumeNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.io.File;
 import java.net.URL;
@@ -31,20 +32,17 @@ import java.util.List;
 
 import com.google.common.io.Resources;
 import com.google.inject.Injector;
-import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.MutableTriple;
 import org.arakhne.afc.vmutil.FileSystem;
-import org.eclipse.xtext.util.Strings;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLStandaloneSetup;
 import io.sarl.maven.docs.parser.SarlDocumentationParser;
 import io.sarl.maven.docs.parser.SarlDocumentationParser.ParsingException;
 import io.sarl.maven.docs.parser.SarlDocumentationParser.Tag;
+import io.sarl.maven.docs.parser.ValidationComponentData;
 
 /**
  * @author $Author: sgalland$
@@ -53,37 +51,38 @@ import io.sarl.maven.docs.parser.SarlDocumentationParser.Tag;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
-@RunWith(Suite.class)
-@SuiteClasses({
-	SarlDocumentationParserTest.TransformTest.class,
-	SarlDocumentationParserTest.ValidationTest.class,
-})
 @SuppressWarnings("all")
 public class SarlDocumentationParserTest {
 
 	private static File file(String basename) {
 		URL url = Resources.getResource(SarlDocumentationParserTest.class, basename);
-		assumeNotNull(url);
+		assumeTrue(url != null);
 		File file = FileSystem.convertURLToFile(url);
-		assumeNotNull(file);
+		assumeTrue(file != null);
 		return file;
 	}
 
-	public static class TransformTest {
+	@Nested
+	public class TransformTest {
 
 		private SarlDocumentationParser parser;
 
-		@Before
+		@BeforeEach
 		public void setUp() {
 			Injector injector = SARLStandaloneSetup.doSetup();
 			this.parser = injector.getInstance(SarlDocumentationParser.class);
 			this.parser.setBlockCodeTemplate(SarlDocumentationParser.getBasicCodeBlockFormatter());
 		}
 
-		@Test(expected = ParsingException.class)
+		@Test
 		public void noFile() throws Exception {
-			File file = new File("nofile.txt");
-			this.parser.transform(file);
+			try {
+				File file = new File("nofile.txt");
+				this.parser.transform(file);
+				fail("expecting exception " + ParsingException.class);
+			} catch (ParsingException ex) {
+				//
+			}
 		}
 	
 		@Test
@@ -130,10 +129,15 @@ public class SarlDocumentationParserTest {
 					value);
 		}
 	
-		@Test(expected = ParsingException.class)
+		@Test
 		public void saver03() throws Exception {
-			File file = file("savernodefinition.txt");
-			this.parser.transform(file);
+			try {
+				File file = file("savernodefinition.txt");
+				this.parser.transform(file);
+				fail("expecting exception " + ParsingException.class);
+			} catch (ParsingException ex) {
+				//
+			}
 		}
 	
 		@Test
@@ -260,11 +264,12 @@ public class SarlDocumentationParserTest {
 
 	}
 
-	public static class ValidationTest {
+	@Nested
+	public class ValidationTest {
 
 		private SarlDocumentationParser parser;
 
-		@Before
+		@BeforeEach
 		public void setUp() {
 			Injector injector = SARLStandaloneSetup.doSetup();
 			this.parser = injector.getInstance(SarlDocumentationParser.class);
@@ -278,7 +283,7 @@ public class SarlDocumentationParserTest {
 				assertEquals(1, components.size());
 				Tag key = components.keySet().iterator().next();
 				assertEquals(Tag.SUCCESS, key);
-				List<MutableTriple<File, Integer, String>> values = components.get(key);
+				List<ValidationComponentData> values = components.get(key);
 				assertNotNull(values);
 				assertEquals(1, values.size());
 				assertEquals("package io.sarl.docs.tests\n"
@@ -290,7 +295,7 @@ public class SarlDocumentationParserTest {
 						+ "				info(\"Hello\")\n"
 						+ "			}\n"
 						+ "		}",
-						values.get(0).getRight());
+						values.get(0).code);
 			});
 		}
 
@@ -301,7 +306,7 @@ public class SarlDocumentationParserTest {
 				assertEquals(1, components.size());
 				Tag key = components.keySet().iterator().next();
 				assertEquals(Tag.FAILURE, key);
-				List<MutableTriple<File, Integer, String>> values = components.get(key);
+				List<ValidationComponentData> values = components.get(key);
 				assertNotNull(values);
 				assertEquals(1, values.size());
 				assertEquals("package io.sarl.docs.tests\n"
@@ -311,7 +316,7 @@ public class SarlDocumentationParserTest {
 						+ "				info(\"Hello\")\n"
 						+ "			}\n"
 						+ "		}",
-						values.get(0).getRight());
+						values.get(0).code);
 			});
 		}
 
@@ -322,11 +327,11 @@ public class SarlDocumentationParserTest {
 				assertEquals(1, components.size());
 				Tag key = components.keySet().iterator().next();
 				assertEquals(Tag.FACT, key);
-				List<MutableTriple<File, Integer, String>> values = components.get(key);
+				List<ValidationComponentData> values = components.get(key);
 				assertNotNull(values);
 				assertEquals(1, values.size());
 				assertEquals("typeof(Integer)",
-						values.get(0).getRight());
+						values.get(0).code);
 			});
 		}
 
@@ -335,10 +340,10 @@ public class SarlDocumentationParserTest {
 			File file = file("multipleblocks.txt");
 			this.parser.extractValidationComponents(file, (components) -> {
 				assertEquals(3, components.size());
-				List<MutableTriple<File, Integer, String>> values = components.get(Tag.FACT);
+				List<ValidationComponentData> values = components.get(Tag.FACT);
 				assertNotNull(values);
 				assertEquals(1, values.size());
-				assertEquals("true",values.get(0).getRight());
+				assertEquals("true",values.get(0).code);
 
 				values = components.get(Tag.FAILURE);
 				assertNotNull(values);
@@ -350,7 +355,7 @@ public class SarlDocumentationParserTest {
 						+ "				info(\"Hello\")\n"
 						+ "			}\n"
 						+ "		}",
-						values.get(0).getRight());
+						values.get(0).code);
 
 
 				values = components.get(Tag.SUCCESS);
@@ -365,9 +370,9 @@ public class SarlDocumentationParserTest {
 						+ "				info(\"Hello\")\n"
 						+ "			}\n"
 						+ "		}",
-						values.get(0).getRight());
+						values.get(0).code);
 				assertEquals("agent MyAgent {}",
-						values.get(1).getRight());
+						values.get(1).code);
 			});
 		}
 

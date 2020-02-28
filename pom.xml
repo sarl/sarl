@@ -111,6 +111,8 @@
 		<sarl.maven.repository.url>http://maven.sarl.io</sarl.maven.repository.url>
 		<!-- Version of the SLF4J Logging API -->
 		<slf4j.version>2.0.0-alpha1</slf4j.version>
+		<!-- Version of Junit 5 library -->
+		<junit5.version>5.6.0</junit5.version>
 	</properties>
 
 	<!-- ======================================= -->
@@ -427,6 +429,11 @@
 				<version>${xtext.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.eclipse.xtext</groupId>
+				<artifactId>org.eclipse.xtext.xbase.testing</artifactId>
+				<version>${xtext.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>javax.inject</groupId>
 				<artifactId>javax.inject</artifactId>
 				<version>${javaxinject.version}</version>
@@ -543,10 +550,14 @@
 				<version>3.1.1</version>
 			</dependency>
 			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>4.13-beta-3</version>
-				<scope>test</scope>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter-engine</artifactId>
+				<version>${junit5.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter-params</artifactId>
+				<version>${junit5.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse</groupId>
@@ -779,7 +790,14 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>3.0.0-M3</version>
+					<version>3.0.0-M4</version>
+					<dependencies>
+						<dependency>
+							<groupId>org.junit.jupiter</groupId>
+							<artifactId>junit-jupiter-engine</artifactId>
+							<version>${junit5.version}</version>
+						</dependency>
+					</dependencies>
 				</plugin>
 
 				<plugin>

@@ -33,13 +33,14 @@ import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.xbase.testing.OnTheFlyJavaCompiler2;
 
 import io.sarl.lang.SARLStandaloneSetup;
+import io.sarl.lang.SARLVersion;
 import io.sarl.lang.tests.SARLInjectorProvider;
 
 /** Override the module definition for tests only.
  *
- * <p>This class is implemented for overriding the default Javba version of the on-the-fly Java compiler
+ * <p>This class is implemented for overriding the default Java version of the on-the-fly Java compiler
  * that is used by the testing framework. Indeed, the default Java version for this compiler is Java 6. But,
- * we are expecting at least Java 8 in tests.
+ * we are expecting another version, as described in {@link SARLVersion}.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -77,6 +78,10 @@ public class ExtendedSARLInjectorProvider extends SARLInjectorProvider {
 
 	/** Provider of the on-the-fly Java compiler.
 	 *
+	 * <p>This class is implemented for overriding the default Java version of the on-the-fly Java compiler
+	 * that is used by the testing framework. Indeed, the default Java version for this compiler is Java 6. But,
+	 * we are expecting another version, as described in {@link SARLVersion}.
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -86,14 +91,18 @@ public class ExtendedSARLInjectorProvider extends SARLInjectorProvider {
 
 		@Override
 		public OnTheFlyJavaCompiler2 get() {
+			final String minJava = SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT;
+			final JavaVersion jversion = JavaVersion.fromQualifier(minJava);
 			return new OnTheFlyJavaCompiler2(
 					SARLInjectorProvider.class.getClassLoader(),
-					JavaVersion.JAVA8);
+					jversion);
 		}
 
 	}
 
 	/** Provider of the loggers.
+	 *
+	 * <p>The logger is configured to be not verbose.
 	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$

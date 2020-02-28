@@ -21,10 +21,10 @@
 
 package io.sarl.sre.tests.units.services.lifecycle.mocks
 
+import io.sarl.core.Logging
 import io.sarl.lang.core.Skill
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import java.util.UUID
-import io.sarl.core.Logging
 
 /**
  * @author $Author: sgalland$

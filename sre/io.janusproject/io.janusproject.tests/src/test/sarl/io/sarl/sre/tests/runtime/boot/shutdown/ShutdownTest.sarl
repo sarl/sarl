@@ -23,9 +23,18 @@ package io.sarl.sre.tests.runtime.boot.shutdown
 
 import io.sarl.sre.tests.runtime.boot.shutdown.mocks.ShutdownAgent1Mock
 import io.sarl.sre.tests.runtime.boot.shutdown.mocks.ShutdownAgent2Mock
-import io.sarl.sre.tests.testutils.AbstractSreRunTest
+import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.sre.tests.testutils.^extension.SreRunContext
+import io.sarl.sre.tests.testutils.^extension.SreRunExtension
+import io.sarl.tests.api.extensions.ContextInitExtension
+import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.logging.Level
-import org.junit.Test
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static io.sarl.tests.api.tools.TestTimeout.*
+import static org.junit.jupiter.api.Assertions.*
 
 /**
  * @author $Author: sgalland$
@@ -33,22 +42,29 @@ import org.junit.Test
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class ShutdownTest extends AbstractSreRunTest {
+@ExtendWith(#[
+	typeof(ContextInitExtension),
+	typeof(JavaVersionCheckExtension),
+	typeof(PropertyRestoreExtension),
+	typeof(SreRunExtension)
+])
+@DisplayName("run: Kernel shutdown test")
+class ShutdownTest {
 
 	@Test
-	def shutdownWithoutAgent {
+	def shutdownWithoutAgent(extension rc : SreRunContext) {
 		setupTheSreKernel(Level::OFF, true, false)
 		val handler = startTimeOut(false)
 		try {
-			this.bootstrap.shutdown(true)
+			bootstrap.shutdown(true)
 		} finally {
 			handler.stop
 		}
-		assertFalse(this.sreKernel.isRunning)
+		assertFalse(sreKernel.isRunning)
 	}
 
 	@Test
-	def shutdownWithAgent1 {
+	def shutdownWithAgent1(extension rc : SreRunContext) {
 		setupTheSreKernel(typeof(ShutdownAgent1Mock), null, true, true)
 		val handler = startTimeOut
 		try {
@@ -56,11 +72,11 @@ class ShutdownTest extends AbstractSreRunTest {
 		} finally {
 			handler.stop
 		}
-		assertFalse(this.sreKernel.isRunning)
+		assertFalse(sreKernel.isRunning)
 	}
 
 	@Test
-	def shutdownWithAgent2 {
+	def shutdownWithAgent2(extension rc : SreRunContext) {
 		setupTheSreKernel(typeof(ShutdownAgent2Mock), null, true, true)
 		val handler = startTimeOut
 		try {
@@ -68,7 +84,7 @@ class ShutdownTest extends AbstractSreRunTest {
 		} finally {
 			handler.stop
 		}
-		assertFalse(this.sreKernel.isRunning)
+		assertFalse(sreKernel.isRunning)
 	}
 
 }

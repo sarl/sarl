@@ -20,11 +20,14 @@
  */
 package io.sarl.lang.core.tests.core;
 
-import static org.junit.Assert.assertTrue;
+import static io.sarl.tests.api.tools.TestAssertions.assertInstanceOf;
+import static io.sarl.tests.api.tools.TestReflections.invokeFunc;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.core.Behavior;
+import io.sarl.lang.core.Capacity;
+import io.sarl.lang.core.Skill;
 
 /**
  * @author $Author: sgalland$
@@ -47,7 +50,9 @@ public class BehaviorTest extends AbstractAgentTraitBehaviorTest {
 		Skill1 skill = new Skill1();
 		getAgent().setSkill_Fake(skill, Capacity1.class);
 		//
-		Object result = invoke(getInstance(), "getSkill", Capacity1.class);
+		Object instance = getInstance();
+		Object result = invokeFunc(instance.getClass(), instance, Capacity.class,
+				"getSkill", new Class[] {Class.class}, Capacity1.class);
 		//
 		assertInstanceOf(Capacity1.class, result);
 		assertInstanceOf(Capacity1.ContextAwareCapacityWrapper.class, result);
