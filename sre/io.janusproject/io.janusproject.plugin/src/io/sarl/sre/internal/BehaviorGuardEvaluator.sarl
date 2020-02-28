@@ -125,11 +125,14 @@ class BehaviorGuardEvaluator implements Comparable<BehaviorGuardEvaluator> {
 		if (other.method === null) {
 			return 1
 		}
+		
 		var cmpName = this.method.name <=> other.method.name
 		if (cmpName !== 0) {
 			return cmpName
 		}
-		if (this.target === other.target) {
+		
+		//Warning the targets could be equals but method declaring classes could be different, especially in the case of inherited methods		
+		if ((this.method.declaringClass === other.method.declaringClass) && (this.target === other.target)) {
 			return 0
 		}
 		val id0 = System::identityHashCode(this.target)
