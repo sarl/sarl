@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.internal
+package io.sarl.sre.internal.eventguard
 
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
@@ -87,13 +87,23 @@ class BehaviorGuardEvaluator implements Comparable<BehaviorGuardEvaluator> {
 	}
 
 	/**
-	 * Returns he object instance containing the {@code PerceptGuardEvaluator}.
+	 * Returns the object instance containing the {@code PerceptGuardEvaluator}.
 	 * @return the object instance containing the {@code PerceptGuardEvaluator}
 	 */
 	def getTarget : Object {
 		this.target
 	}
 
+	/** 
+	 * Returns the method that is invoked to evaluate the guard.
+	 * @return the guard evaluation method.
+	 * @since 0.11
+	 */
+	def getMethod : Method {
+		this.method
+	}
+
+	
 	override hashCode : int {
 		val a = if (this.method === null) 0 else this.method.hashCode
 		return (31 + a) * 31 + System::identityHashCode(this.target)

@@ -23,8 +23,6 @@ package io.sarl.sre.tests.units.skills.internal
 
 import io.sarl.lang.core.Event
 import io.sarl.sre.capacities.InternalSchedules
-import io.sarl.sre.internal.BehaviorGuardEvaluator
-import io.sarl.sre.internal.BehaviorGuardEvaluatorRegistry
 import io.sarl.sre.skills.internal.EventBus
 import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
@@ -50,6 +48,8 @@ import static extension org.junit.jupiter.api.Assertions.assertNotNull
 import static extension org.mockito.ArgumentMatchers.any
 import static extension org.mockito.Mockito.times
 import static extension org.mockito.Mockito.verify
+import io.sarl.sre.internal.eventguard.BehaviorGuardEvaluatorRegistry
+import io.sarl.sre.internal.eventguard.BehaviorGuardEvaluator
 
 /**
  * @author $Author: sgalland$
@@ -112,10 +112,10 @@ class EventBusTest {
 	@Test
 	def unregister {
 		var listener = typeof(Object).mock
-		var callback = typeof(Function1).mock
+		var callback = typeof(Procedure1).mock
 		this.eventBus.unregister(listener, callback)
 		var capturedListener = ArgumentCaptor::forClass(typeof(Object))
-		var capturedCallback = ArgumentCaptor::forClass(typeof(Function1))
+		var capturedCallback = ArgumentCaptor::forClass(typeof(Procedure1))
 		this.registry.verify.unregister(capturedListener.capture, capturedCallback.capture)
 		assertSame(listener, capturedListener.value)
 		assertSame(callback, capturedCallback.value)

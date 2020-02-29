@@ -54,7 +54,7 @@ skill MyInternalEventBusSkill implements InternalEventBusCapacity {
 		this.listeners = listeners
 	}
 
-	override unregisterEventBusListener(listener : Object, callback : (Object)=>boolean) {
+	override unregisterEventBusListener(listener : Object, callback : (Object)=>void) {
 	}
 
 	override unregisterEventBusListener(type : Class<?>, callback : (Object)=>boolean) {

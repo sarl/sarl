@@ -22,8 +22,6 @@ package io.sarl.sre.skills.internal
 
 import io.sarl.lang.core.Event
 import io.sarl.sre.capacities.InternalSchedules
-import io.sarl.sre.internal.BehaviorGuardEvaluator
-import io.sarl.sre.internal.BehaviorGuardEvaluatorRegistry
 import io.sarl.sre.services.executor.EarlyExitException
 import io.sarl.sre.services.executor.SreRunnable
 import java.util.Collection
@@ -33,6 +31,8 @@ import java.util.concurrent.ExecutionException
 import java.util.function.Supplier
 import java.util.logging.Logger
 import org.arakhne.afc.util.OutputParameter
+import io.sarl.sre.internal.eventguard.BehaviorGuardEvaluatorRegistry
+import io.sarl.sre.internal.eventguard.BehaviorGuardEvaluator
 
 /** 
  * The class in charge of dispatching every single events coming from the outside of this agent (i.e. from a space) or from an
@@ -123,11 +123,9 @@ class EventBus {
 	 * 
 	 * @param object object whose {@code PerceptGuardEvaluator} methods should be unregistered.
 	 * @param callback function which is invoked just before the object is unregistered.
-	 *     The callback functions replies {@code true} if it should be called on the next removed object.
-	 *     If it replies {@code false}, it will be not called anymore.
 	 * @throws IllegalArgumentException if the object was not previously registered.
 	 */
-	def unregister(object : Object, callback : (Object)=>boolean) {
+	def unregister(object : Object, callback : (Object)=>void) {
 		this.behaviorGuardEvaluatorRegistry.unregister(object, callback)
 	}
 

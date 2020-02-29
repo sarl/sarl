@@ -18,25 +18,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.sre.skills.internal
 
-import io.sarl.sre.capacities.InternalSchedules
-import io.sarl.sre.internal.eventguard.BehaviorGuardEvaluatorRegistry
-import java.util.function.Supplier
+package io.sarl.sre.tests.units.internal.eventguard.mocks
 
 /** 
- * Factory of event bus.
- * 
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 0.11
  */
-class DefaultEventBusFactory implements EventBusFactory {
-
-	override createEventBus(provider : Supplier<InternalSchedules>) : EventBus {
-		new EventBus(provider, new BehaviorGuardEvaluatorRegistry)
-	}
-
+agent TestAgent0 {
 }

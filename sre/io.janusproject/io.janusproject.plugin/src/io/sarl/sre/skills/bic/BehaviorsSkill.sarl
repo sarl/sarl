@@ -94,8 +94,6 @@ skill BehaviorsSkill extends Skill implements Behaviors {
 			^event.source = adr
 			fireEventAndWait(^event, false, true, attitude)
 			attitude.releaseInternalResources
-			// Do not call this lambda when it is the same behavior
-			return false
 		]
 		return attitude
 	}

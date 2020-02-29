@@ -45,7 +45,7 @@ skill MySkill implements InternalEventBusCapacity {
 	override registerEventBusListener(listener : Object, filter : (Event)=>boolean, callback : (Object)=>void) {
 	}
 
-	override unregisterEventBusListener(listener : Object, callback : (Object)=>boolean) {
+	override unregisterEventBusListener(listener : Object, callback : (Object)=>void) {
 	}
 
 	override unregisterEventBusListener(type : Class<?>, callback : (Object)=>boolean) {

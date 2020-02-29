@@ -130,10 +130,8 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 	 *
 	 * @param listener the listener to unregister.
 	 * @param callback function which is invoked just before the object is unregistered.
-	 *     The callback functions replies {@code true} if it should be called on the next removed object.
-	 *     If it replies {@code false}, it will be not called anymore.
 	 */
-	def unregisterEventBusListener(listener : Object, callback : (Object)=>boolean) {
+	def unregisterEventBusListener(listener : Object, callback : (Object)=>void) {
 		this.eventBus.unregister(listener, callback)
 	}
 

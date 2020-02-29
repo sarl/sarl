@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.internal
+package io.sarl.sre.internal.eventguard
 
 import org.eclipse.osgi.util.NLS
 
@@ -38,19 +38,8 @@ final class Messages extends NLS {
 		NLS.initializeMessages(BUNDLE_NAME, typeof(Messages))
 	}
 	
-	public static var SpaceEventEmitter_0 : String
-	public static var SpaceEventEmitter_1 : String
-
-	public static var SpaceParticipantEventEmitter_0 : String
-	public static var SpaceParticipantEventEmitter_1 : String
-
-	public static var AgentEventEmitter_0 : String
-	public static var AgentEventEmitter_1 : String
-
-	public static var ContextMemberEventEmitter_0 : String
-	public static var ContextMemberEventEmitter_1 : String
-	public static var ContextMemberEventEmitter_2 : String
-	public static var ContextMemberEventEmitter_3 : String
+	public static var BehaviorGuardEvaluator_0 : String
+	public static var BehaviorGuardEvaluator_1 : String
 	
 	private new {
 	}

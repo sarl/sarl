@@ -191,7 +191,7 @@ class InternalEventBusSkillTest {
 		this.^skill.unregisterEventBusListener(listener1)
 		
 		var capturedListener = ArgumentCaptor::forClass(typeof(Object))
-		var capturedCallback = ArgumentCaptor::forClass(typeof(Function1))
+		var capturedCallback = ArgumentCaptor::forClass(typeof(Procedure1))
 		this.eventBus.verify.unregister(capturedListener.capture, capturedCallback.capture)
 		assertSame(listener1, capturedListener.value)
 		assertNull(capturedCallback.value)

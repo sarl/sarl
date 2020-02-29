@@ -18,25 +18,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.sre.skills.internal
 
-import io.sarl.sre.capacities.InternalSchedules
-import io.sarl.sre.internal.eventguard.BehaviorGuardEvaluatorRegistry
-import java.util.function.Supplier
+package io.sarl.sre.internal
 
-/** 
- * Factory of event bus.
- * 
+import java.util.Comparator
+
+/**
+ * Comparator of objects.
+ *
+ *  @param <T> is the type of the compared objects.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 0.11
  */
-class DefaultEventBusFactory implements EventBusFactory {
+class ObjectComparator<T> implements Comparator<T> {
 
-	override createEventBus(provider : Supplier<InternalSchedules>) : EventBus {
-		new EventBus(provider, new BehaviorGuardEvaluatorRegistry)
+	public static val SINGLETON = new ObjectComparator
+
+	def compare(o1 : T, o2 : T) : int {
+		if (o1 === o2) {
+			return 0
+		}
+		if (o1 === null) {
+			return -1
+		}
+		if (o2 === null) {
+			return 1
+		}
+		return System::identityHashCode(o1) <=> System::identityHashCode(o2)
 	}
-
+	
 }
