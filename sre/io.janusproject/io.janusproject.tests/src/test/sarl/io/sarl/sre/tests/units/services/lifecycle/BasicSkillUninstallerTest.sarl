@@ -24,6 +24,7 @@ package io.sarl.sre.tests.units.services.lifecycle
 import com.google.common.collect.Collections2
 import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.SREutils
+import io.sarl.lang.core.Skill
 import io.sarl.sre.services.lifecycle.BasicSkillUninstaller
 import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
 import io.sarl.sre.tests.units.services.lifecycle.mocks.InnerSkill
@@ -33,7 +34,8 @@ import io.sarl.sre.tests.units.services.lifecycle.mocks.MySkill0
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
-import java.util.ArrayList
+import java.util.HashSet
+import java.util.Set
 import java.util.concurrent.atomic.AtomicInteger
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -44,7 +46,7 @@ import org.junit.jupiter.api.^extension.ExtendWith
 import static org.junit.jupiter.api.Assertions.*
 
 import static extension org.mockito.Mockito.spy
-import org.junit.jupiter.api.Disabled
+import io.sarl.lang.core.Agent
 
 /**
  * @author $Author: sgalland$
@@ -79,9 +81,12 @@ class BasicSkillUninstallerTest {
 		return -1
 	}
 
-	@Test
-	@Disabled("tmp")
 	@PrivateAPI(isCallerOnly = true)
+	private static def getStoredSkills(^agent : Agent) : Set<Skill> {
+		new HashSet(Collections2.transform(SREutils::getSkillRepository(^agent).values, [it.get]))
+	}
+
+	@Test
 	def uninstallSkillsBeforeDestroy {
 		var order = new AtomicInteger
 		var s1 = new LifeSkill(order)
@@ -91,9 +96,9 @@ class BasicSkillUninstallerTest {
 		assertEquals(0, s1.installOrder)
 		assertEquals(2, s2.installOrder)
 		assertEquals(1, s3.installOrder)
-		var od = new ArrayList(Collections2.transform(SREutils::getSkillRepository(^agent).values, [it.get]))
 		order.set(0)
 		var skills = this.installer.uninstallSkillsBeforeDestroy(^agent)
+		var od = ^agent.getStoredSkills
 		assertEquals(s1.getOrder(od), s1.uninstallOrderPre)
 		assertEquals(s2.getOrder(od), s2.uninstallOrderPre)
 		assertEquals(s3.getOrder(od), s3.uninstallOrderPre)
@@ -118,8 +123,8 @@ class BasicSkillUninstallerTest {
 		assertEquals(0, s1.installOrder)
 		assertEquals(2, s2.installOrder)
 		assertEquals(1, s3.installOrder)
-		var od = new ArrayList(Collections2.transform(SREutils::getSkillRepository(^agent).values, [it.get]))
 		order.set(0)
+		var od = ^agent.getStoredSkills
 		this.installer.uninstallSkillsAfterDestroy(^agent, od)
 		assertNull(s1.uninstallOrderPre)
 		assertNull(s2.uninstallOrderPre)
