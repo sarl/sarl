@@ -425,18 +425,30 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		}
 	}
 
+	/** Replies if the given project facade is pointing an Eclipe plugin.
+	 *
+	 * @param facade the maven project facade.
+	 * @return {@code true} if the facade is for an Eclipse plugin.
+	 * @since 0.11
+	 */
+	public boolean isEclipsePluginPackaging(IMavenProjectFacade facade) {
+		return ECLIPSE_PLUGIN_PACKAGING.equalsIgnoreCase(facade.getPackaging());
+	}
+
 	@Override
 	@SuppressWarnings("checkstyle:magicnumber")
 	public void configure(ProjectConfigurationRequest request,
 			IProgressMonitor monitor) throws CoreException {
 		final IMavenProjectFacade facade = request.getMavenProjectFacade();
 
+		// --- ECLIPSE PLUGIN ---------------------------------------------------------------
 		// Special case of tycho plugins, for which the {@link #configureRawClasspath}
 		// and {@link #configureClasspath} were not invoked.
-		final boolean isEclipseBundle = ECLIPSE_PLUGIN_PACKAGING.equalsIgnoreCase(facade.getPackaging());
+		// ----------------------------------------------------------------------------------
+		final boolean isEclipsePlugin = isEclipsePluginPackaging(facade);
 
 		final SubMonitor subMonitor;
-		if (isEclipseBundle) {
+		if (isEclipsePlugin) {
 			subMonitor = SubMonitor.convert(monitor, 4);
 		} else {
 			subMonitor = SubMonitor.convert(monitor, 3);
@@ -445,19 +457,24 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		final IProject project = request.getProject();
 
 		final SARLConfiguration config = readConfiguration(request, subMonitor.newChild(1));
+		subMonitor.worked(1);
 		forceMavenCompilerConfiguration(facade, config);
 		subMonitor.worked(1);
-		io.sarl.eclipse.natures.SARLProjectConfigurator.addSarlNatures(
-				project,
-				subMonitor.newChild(1));
 
-		if (isEclipseBundle) {
+		// --- ECLIPSE PLUGIN ---------------------------------------------------------------
+		if (isEclipsePlugin) {
 			// In the case of Eclipse bundle, the face to the Java project must be created by hand.
 			final IJavaProject javaProject = JavaCore.create(project);
 			final IClasspathDescriptor classpath = new ClasspathDescriptor(javaProject);
 			configureSarlProject(facade, config, classpath, false, subMonitor.newChild(1));
 			subMonitor.worked(1);
 		}
+		// ----------------------------------------------------------------------------------
+
+		io.sarl.eclipse.natures.SARLProjectConfigurator.addSarlNatures(
+				project,
+				subMonitor.newChild(1));
+		subMonitor.worked(1);
 	}
 
 	private void configureSarlProject(IMavenProjectFacade facade, SARLConfiguration config,
@@ -501,7 +518,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 	public AbstractBuildParticipant getBuildParticipant(
 			IMavenProjectFacade projectFacade, MojoExecution execution,
 			IPluginExecutionMetadata executionMetadata) {
-		return new BuildParticipant(ECLIPSE_PLUGIN_PACKAGING.equalsIgnoreCase(projectFacade.getPackaging()));
+		return new BuildParticipant(isEclipsePluginPackaging(projectFacade));
 	}
 
 	/** Build participant for detecting invalid versions of SARL components.
@@ -515,14 +532,14 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 
 		private static final int NSTEPS = 4;
 
-		private final boolean isEclipseBundleProject;
+		private final boolean isEclipsePlugin;
 
 		/** Construct a build participant.
 		 *
-		 * @param isEclipseBundleProject indicates if the build participant is created for a Eclipse Bundle project.
+		 * @param isEclipsePlugin indicates if the build participant is created for an Eclipse plugin project.
 		 */
-		public BuildParticipant(boolean isEclipseBundleProject) {
-			this.isEclipseBundleProject = isEclipseBundleProject;
+		public BuildParticipant(boolean isEclipsePlugin) {
+			this.isEclipsePlugin = isEclipsePlugin;
 		}
 
 		@Override
@@ -533,7 +550,9 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 				subm.worked(1);
 				validateSARLCompilerPlugin();
 				subm.worked(2);
-				validateSARLLibraryVersion();
+				if (!this.isEclipsePlugin) {
+					validateSARLLibraryVersion();
+				}
 				subm.worked(3);
 				validateSARLDependenciesVersions(subm.newChild(1));
 				subm.worked(NSTEPS);
@@ -592,24 +611,24 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 
 		/** Validate the version of the SARL library in the dependencies.
 		 *
-		 * <p>The test works for standard Java or Maven projects, but not for Eclipse bundles.
+		 * <p>The test works for standard Java or Maven projects.
+		 *
+		 * <p>Caution: This function should not be called for Eclipse plugins.
 		 *
 		 * @throws CoreException if internal error occurs.
 		 */
 		protected void validateSARLLibraryVersion() throws CoreException {
-			if (!this.isEclipseBundleProject) {
-				final Map<String, Artifact> artifacts = getMavenProjectFacade().getMavenProject().getArtifactMap();
-				final Artifact artifact = artifacts.get(ArtifactUtils.versionlessKey(SARL_GROUP_ID, SARL_ARTIFACT_ID));
-				if (artifact != null) {
-					validateSARLVersion(SARL_GROUP_ID, SARL_ARTIFACT_ID, artifact.getVersion());
-				} else {
-					getBuildContext().addMessage(
-							getMavenProjectFacade().getPomFile(),
-							-1, -1,
-							Messages.SARLProjectConfigurator_6,
-							BuildContext.SEVERITY_ERROR,
-							null);
-				}
+			final Map<String, Artifact> artifacts = getMavenProjectFacade().getMavenProject().getArtifactMap();
+			final Artifact artifact = artifacts.get(ArtifactUtils.versionlessKey(SARL_GROUP_ID, SARL_ARTIFACT_ID));
+			if (artifact != null) {
+				validateSARLVersion(SARL_GROUP_ID, SARL_ARTIFACT_ID, artifact.getVersion());
+			} else {
+				getBuildContext().addMessage(
+						getMavenProjectFacade().getPomFile(),
+						-1, -1,
+						Messages.SARLProjectConfigurator_6,
+						BuildContext.SEVERITY_ERROR,
+						null);
 			}
 		}
 
