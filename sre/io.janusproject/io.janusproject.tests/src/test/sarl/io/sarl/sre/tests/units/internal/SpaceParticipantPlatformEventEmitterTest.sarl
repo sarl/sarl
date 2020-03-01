@@ -111,7 +111,7 @@ class SpaceParticipantEventEmitterTest {
 		var ^event = ArgumentCaptor::forClass(typeof(Event))
 		var scope = ArgumentCaptor::forClass(typeof(Scope))
 		this.defaultSpace.verify.emit(any, ^event.capture, scope.capture)
-		scope.value.assertNull
+		scope.value.assertNotNull
 		var evt = ^event.value
 		evt.assertNotNull
 		typeof(ParticipantJoined).assertInstanceOf(evt)

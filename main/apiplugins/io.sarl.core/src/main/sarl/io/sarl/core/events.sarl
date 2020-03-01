@@ -475,7 +475,7 @@ final event ContextLeft {
 
 }
 
-/** Notifies other participants the member with agentID has effectively 
+/** Notifies other participants that a member has effectively 
  * integrated the space.
  * The event is fired within the default space of the context in which the agent entered a new space.
  * The joining agent does not receive this event.

@@ -46,6 +46,7 @@ import static io.sarl.sre.tests.testutils.Constants.STANDARD_TIMEOUT
 import static org.junit.jupiter.api.Assertions.*
 
 import static extension org.junit.jupiter.api.Assertions.assertEquals
+import io.sarl.lang.core.Agent
 
 /**
  * Context for running the SRE.
@@ -467,6 +468,30 @@ class SreRunContext {
 	 */
 	def forgetTheKernel : void {
 		this.sreKernel = null;
+	}
+
+	/** 
+	 * Spawn an agent of the given type, and pass the parameters replied by
+	 * {@link #getAgentInitializationParameters()} and the given parameters to its initialization function.
+	 * 
+	 * @param kernel the kernel.
+	 * @param agent the type of the agent to spawn.
+	 * @param callback the function invoked each time an agent is spawned.
+	 * @param params the list of the parameters to pass to the agent initialization function.
+	 * @return the identifier of the agent, never {@code null}.
+	 */
+	def spawnInTest(kernel : Kernel, ^agent : Class<? extends Agent>, callback : (UUID)=>void, arguments : Object*) {
+		var allParameters : Object[]
+		if (arguments === null || arguments.length === 0) {
+			allParameters = agentInitializationParameters
+		} else {
+			var ags = agentInitializationParameters
+			var tab = newArrayOfSize(ags.length + arguments.length)
+			System::arraycopy(ags, 0, tab, 0, ags.length)
+			System::arraycopy(arguments, 0, tab, ags.length, arguments.length)
+			allParameters = tab
+		}
+		kernel.spawn(^agent, callback, allParameters)
 	}
 
 }

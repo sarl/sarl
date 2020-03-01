@@ -22,8 +22,11 @@
 package io.sarl.sre.tests.runtime.internal
 
 import io.sarl.core.ParticipantJoined
+import io.sarl.lang.core.SpaceID
 import io.sarl.sre.tests.runtime.internal.mocks.JoinerAgent0
+import io.sarl.sre.tests.runtime.internal.mocks.JoinerAgent2
 import io.sarl.sre.tests.runtime.internal.mocks.SpyAgent0
+import io.sarl.sre.tests.runtime.internal.mocks.SpyAgent2
 import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
 import io.sarl.sre.tests.testutils.^extension.SreRunContext
 import io.sarl.sre.tests.testutils.^extension.SreRunExtension
@@ -41,7 +44,6 @@ import static io.sarl.sre.tests.testutils.Constants.*
 import static extension org.junit.jupiter.api.Assertions.assertEquals
 import static extension org.junit.jupiter.api.Assertions.assertNotEquals
 import static extension org.junit.jupiter.api.Assertions.assertNotNull
-import org.junit.jupiter.api.Disabled
 
 /**
  * @author $Author: sgalland$
@@ -60,30 +62,60 @@ import org.junit.jupiter.api.Disabled
 class OnParticipantJoinedTest {
 
 	@Test
-	@Disabled("tmp")
+	@DisplayName("ParticipantJoined in default space")
 	@SuppressWarnings("discouraged_reference")
-	def run(extension rc : SreRunContext) {
-		var kern = typeof(SpyAgent0).setupTheSreKernel(null, true, true)
+	def runParticipantJoinedInDefaultSpace(extension rc : SreRunContext) {
+		var kern = typeof(SpyAgent0).setupTheSreKernel(true, true)
 
 		Thread::sleep(1000)
 
 		val id : OutputParameter<UUID> = new OutputParameter
 
-		kern.spawn(typeof(JoinerAgent0)) [
+		kern.spawnInTest(typeof(JoinerAgent0), [
 			id.set(it)
-		]
+		])
 
 		waitForTheKernel(STANDARD_TIMEOUT)
 		
 		var evt = getResult(bootAgent, typeof(ParticipantJoined), 0)
 		evt.assertNotNull
-		
-		var spaceId = getResult(id.get, typeof(UUID), 0)
-		spaceId.assertNotNull
-		
-		bootAgent.assertEquals(evt.source.UUID)
-		spaceId.assertNotEquals(evt.source.spaceID.ID)
-		spaceId.assertEquals(evt.spaceID.ID)
+
+		var spcid = getResult(bootAgent, typeof(SpaceID), 1)
+		spcid.assertNotNull
+
+		id.get.assertEquals(evt.source.UUID)
+		spcid.assertEquals(evt.spaceID)
+	}
+
+	@Test
+	@DisplayName("ParticipantJoined in other space")
+	@SuppressWarnings("discouraged_reference")
+	def runParticipantJoinedInOtherSpace(extension rc : SreRunContext) {
+		var kern = typeof(SpyAgent2).setupTheSreKernel(true, true)
+
+		Thread::sleep(1000)
+
+		val id : OutputParameter<UUID> = new OutputParameter
+
+		kern.spawnInTest(typeof(JoinerAgent2), [
+			id.set(it)
+		])
+
+		waitForTheKernel(STANDARD_TIMEOUT)
+
+		var evt = getResult(bootAgent, typeof(ParticipantJoined), 0)
+		evt.assertNotNull
+
+		var spcid0 = getResult(bootAgent, typeof(SpaceID), 1)
+		spcid0.assertNotNull
+
+		var spcid1 = getResult(id.get, typeof(SpaceID), 0)
+		spcid1.assertNotNull
+
+		spcid0.assertNotEquals(spcid1)
+
+		id.get.assertEquals(evt.source.UUID)
+		spcid1.assertEquals(evt.spaceID)
 	}
 
 }

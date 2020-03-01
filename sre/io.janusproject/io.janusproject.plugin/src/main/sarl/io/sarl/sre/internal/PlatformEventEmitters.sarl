@@ -144,9 +144,13 @@ class SpaceParticipantEventEmitter implements SpaceParticipantListener {
 		// Send the event in the default space of the context.
 		if (this.defaultSpace !== null) {
 			var participantAddr = participant.address
-			var addr = new Address(this.defaultSpace.spaceID, participantAddr.UUID)
-			// The first parameter is null because the event has an address.
-			this.defaultSpace.emit(null, new ParticipantJoined(addr, participantAddr.spaceID))
+			val participantId = participantAddr.UUID
+			var addr = new Address(this.defaultSpace.spaceID, participantId)
+			// a) The first parameter is null because the event has an address.
+			// b) The scope is defined for avoiding the participant to receive the event.
+			this.defaultSpace.emit(null,
+				new ParticipantJoined(addr, participantAddr.spaceID)
+			) [participantId != it.UUID]
 		}
 	}
 
