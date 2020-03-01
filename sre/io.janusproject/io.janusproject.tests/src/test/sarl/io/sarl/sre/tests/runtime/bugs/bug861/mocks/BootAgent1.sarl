@@ -20,29 +20,21 @@
  */
 package io.sarl.sre.tests.runtime.bugs.bug861.mocks
 
-import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Lifecycle
-import io.sarl.core.Logging
 import io.sarl.sre.tests.testutils.agents.TestingAgent
 
-agent BootAgent extends TestingAgent {
+agent BootAgent1 extends TestingAgent {
 
-	uses Logging, Lifecycle, DefaultContextInteractions
+	uses Lifecycle
 
 	override runAgentTest : RunPolicy {
-		info("Boot-Init")
-		typeof(EmptyAgent).spawn
-		return null
+		var id = typeof(EmptyAgent1).spawn(agentInitializationParameters)
+		addResult(id)
+		return RunPolicy::STANDARD
 	}
 
 	on Initialized {
-		info("Boot-Reception")
-		new CommitSuicide().emit
-	}
-
-	on CommitSuicide {
-		info("Boot-Suicide")
-		killMe
+		addResult(occurrence)
 	}
 
 }

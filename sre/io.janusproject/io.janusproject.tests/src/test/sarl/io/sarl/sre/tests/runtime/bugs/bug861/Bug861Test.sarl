@@ -20,25 +20,25 @@
  */
 package io.sarl.sre.tests.runtime.bugs.bug861
 
-import io.sarl.sre.tests.runtime.bugs.bug861.mocks.BootAgent
+import io.sarl.sre.tests.runtime.bugs.bug861.mocks.BootAgent0
+import io.sarl.sre.tests.runtime.bugs.bug861.mocks.Initialized
 import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
 import io.sarl.sre.tests.testutils.^extension.SreRunContext
 import io.sarl.sre.tests.testutils.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
-import java.util.Collection
 import java.util.UUID
-import org.arakhne.afc.util.Triplet
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
 import static io.sarl.sre.tests.testutils.Constants.*
-import static org.junit.jupiter.api.Assertions.*
-
+import static extension io.sarl.tests.api.tools.TestAssertions.*
+import static extension org.junit.jupiter.api.Assertions.assertEquals
 import static extension org.junit.jupiter.api.Assertions.assertNotNull
-import org.junit.jupiter.api.Disabled
+import io.sarl.sre.tests.testutils.exception.SreTimeoutException
+import io.sarl.sre.tests.runtime.bugs.bug861.mocks.BootAgent1
 
 /** Tests for issue #861: Cannot use emit function in the Initialize handler.
  *
@@ -61,22 +61,43 @@ import org.junit.jupiter.api.Disabled
 class Bug861Test {
 
 	@Test
-	@Disabled("tmp")
-	def run_01(extension rc : SreRunContext) : void {
-		typeof(BootAgent).runSre(null, STANDARD_TIMEOUT)
+	@DisplayName("Emit without scope")
+	def runWithoutScope(extension rc : SreRunContext) : void {
+		typeof(BootAgent0).runSre(null)
 
-		var bootAgent = getBootAgent
 	 	assertEquals(2, getNumberOfResults(bootAgent))
+
 		val childAgent = getResult(bootAgent, typeof(UUID), 0)
 		childAgent.assertNotNull
-		val spawnEvents1 : Triplet<Boolean, UUID, Collection<UUID>> = getResult(bootAgent, typeof(Triplet), 1)
-		assertNotNull(spawnEvents1)
-		assertTrue(spawnEvents1.getA().booleanValue())
-		assertEquals(bootAgent, spawnEvents1.getB())
-		assertEquals(1, spawnEvents1.getC().size())
-		assertEquals(childAgent, spawnEvents1.getC().iterator().next())
+
+		val initEvent0 = getResult(bootAgent, typeof(Initialized), 1)
+		initEvent0.assertNotNull
+		childAgent.assertEquals(initEvent0.source.UUID)
 		
-		assertEquals(0, getNumberOfResults(childAgent))
+		assertEquals(1, getNumberOfResults(childAgent))
+
+		val initEvent1 = getResult(childAgent, typeof(Initialized), 0)
+		initEvent1.assertNotNull
+		childAgent.assertEquals(initEvent1.source.UUID)
+	}
+
+	@Test
+	@DisplayName("Emit with scope")
+	def runWithScope(extension rc : SreRunContext) : void {
+		typeof(SreTimeoutException).whenException [
+			typeof(BootAgent1).runSre(null, VERY_SHORT_TIMEOUT)
+		].verify [
+			assertEquals(2, getNumberOfResults(bootAgent))
+
+			val childAgent = getResult(bootAgent, typeof(UUID), 0)
+			childAgent.assertNotNull
+
+			val initEvent0 = getResult(bootAgent, typeof(Initialized), 1)
+			initEvent0.assertNotNull
+			childAgent.assertEquals(initEvent0.source.UUID)
+
+			assertEquals(0, getNumberOfResults(childAgent))
+		]
 	}
 
 }

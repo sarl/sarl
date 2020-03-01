@@ -21,23 +21,32 @@
 package io.sarl.sre.tests.runtime.bugs.bug861.mocks
 
 import io.sarl.core.DefaultContextInteractions
-import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
-import io.sarl.core.Logging
+import io.sarl.sre.tests.testutils.agents.TestingAgent
+import java.util.concurrent.atomic.AtomicBoolean
 
-agent EmptyAgent {
+agent EmptyAgent0 extends TestingAgent {
 	
-	uses Logging, DefaultContextInteractions, Lifecycle
+	uses DefaultContextInteractions, Lifecycle
 	
-	@SuppressWarnings("discouraged_occurrence_readonly_use")
-	on Initialize {
-		info("Empty-Init")
-		new Initialized().emit [it.UUID == occurrence.spawner]
+	val done = new AtomicBoolean
+
+	def runAgentTest : RunPolicy {
+		new Initialized().emit
+		return RunPolicy::STANDARD
+	}
+
+	on Initialized {
+		addResult(occurrence)
+		if (this.done.getAndSet(true)) {
+			killMe
+		}
 	}
 
 	on CommitSuicide {
-		info("Empty-Suicide")
-		killMe
+		if (this.done.getAndSet(true)) {
+			killMe
+		}
 	}
-
+	
 }

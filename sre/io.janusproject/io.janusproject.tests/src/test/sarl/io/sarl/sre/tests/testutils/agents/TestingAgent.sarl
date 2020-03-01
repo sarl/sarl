@@ -30,6 +30,7 @@ import java.util.Collection
 import java.util.List
 import java.util.Map
 import java.util.UUID
+import org.eclipse.xtend.lib.annotations.Accessors
 
 /**
  * Abstract implementation of an agent that is used for testing a SRE.
@@ -47,6 +48,9 @@ abstract agent TestingAgent {
 	var results : Map<UUID, List<Object>>
 
 	var initializationParameters : Object[]
+
+	@Accessors(PROTECTED_GETTER)
+	var spawner : UUID
 
 	/** Replies the simple name of the given type name
 	 *
@@ -217,6 +221,7 @@ abstract agent TestingAgent {
 	on Initialize {
 		this.initializationParameters = occurrence.parameters
 		this.results = occurrence.parameters.get(0) as Map<UUID, List<Object>>
+		this.spawner = occurrence.spawner
 		try {
 			var policy = runAgentTest
 			if (policy !== null) {

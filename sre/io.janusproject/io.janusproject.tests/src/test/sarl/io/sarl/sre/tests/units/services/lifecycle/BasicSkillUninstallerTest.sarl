@@ -97,8 +97,8 @@ class BasicSkillUninstallerTest {
 		assertEquals(2, s2.installOrder)
 		assertEquals(1, s3.installOrder)
 		order.set(0)
+		var od = ^agent.getStoredSkills.clone
 		var skills = this.installer.uninstallSkillsBeforeDestroy(^agent)
-		var od = ^agent.getStoredSkills
 		assertEquals(s1.getOrder(od), s1.uninstallOrderPre)
 		assertEquals(s2.getOrder(od), s2.uninstallOrderPre)
 		assertEquals(s3.getOrder(od), s3.uninstallOrderPre)
@@ -124,7 +124,7 @@ class BasicSkillUninstallerTest {
 		assertEquals(2, s2.installOrder)
 		assertEquals(1, s3.installOrder)
 		order.set(0)
-		var od = ^agent.getStoredSkills
+		var od = ^agent.getStoredSkills.clone
 		this.installer.uninstallSkillsAfterDestroy(^agent, od)
 		assertNull(s1.uninstallOrderPre)
 		assertNull(s2.uninstallOrderPre)
