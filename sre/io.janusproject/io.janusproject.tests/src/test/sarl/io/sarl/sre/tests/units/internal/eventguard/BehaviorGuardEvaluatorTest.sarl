@@ -124,7 +124,16 @@ class BehaviorGuardEvaluatorTest {
 		val target2 = typeof(TestAgent1).mock
 		val evaluator2 = new BehaviorGuardEvaluator(target2, method2)
 
-		evaluator1a.compareTo(evaluator2).assertStrictlyNegative
+		evaluator1a.compareTo(evaluator2).assertNotZero
+
+		val id1 = System::identityHashCode(target1)
+		val id2 = System::identityHashCode(target2)
+
+		if (id1 <= id2) {
+			evaluator1a.compareTo(evaluator2).assertStrictlyNegative
+		} else {
+			evaluator1a.compareTo(evaluator2).assertStrictlyPositive
+		}
 	}
 
 }

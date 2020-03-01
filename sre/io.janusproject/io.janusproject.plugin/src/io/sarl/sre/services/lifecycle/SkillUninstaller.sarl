@@ -20,7 +20,6 @@
  */
 package io.sarl.sre.services.lifecycle
 
-import com.google.common.collect.Collections2
 import com.google.inject.ImplementedBy
 import io.sarl.core.Destroy
 import io.sarl.lang.annotation.PrivateAPI
@@ -30,7 +29,6 @@ import io.sarl.lang.core.Skill
 import io.sarl.lang.core.Skill.UninstallationStage
 import io.sarl.sre.skills.bic.SchedulesSkill
 import io.sarl.sre.skills.internal.InternalEventBusSkill
-import java.util.HashSet
 import java.util.Set
 
 /** 
@@ -85,7 +83,11 @@ class BasicSkillUninstaller implements SkillUninstaller {
 		// Get the registered skills
 		val skills = SREutils.getSkillRepository(^agent)
 		if (skills !== null) {
-			return new HashSet(Collections2.transform(skills.values) [it.get])
+			var set : Set<Skill> = newHashSet
+			for (instance : skills.values) {
+				set += instance.get
+			}
+			return set
 		}
 		return emptySet
 	}

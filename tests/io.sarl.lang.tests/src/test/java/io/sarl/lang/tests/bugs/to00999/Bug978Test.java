@@ -35,70 +35,53 @@ import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.tools.TestValidator.Validator;
 
-/** Testing class for issue: Illegal assert statement generation.
+/** Testing class for issue: Invalid generation of the hashCode function with Integer fields.
  *
- * <p>https://github.com/sarl/sarl/issues/816
+ * <p>https://github.com/sarl/sarl/issues/978
  *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @see "https://github.com/sarl/sarl/issues/816"
+ * @see "https://github.com/sarl/sarl/issues/978"
  */
-@DisplayName("Bug #816")
+@DisplayName("Bug #978")
 @SuppressWarnings("all")
-public class Bug816Test extends AbstractSarlTest {
+public class Bug978Test extends AbstractSarlTest {
 
-	private static final String SNIPSET01 = multilineString(
-			"class X {",
-			"  var bounds : String",
-			"  def fct(condition1 : boolean, condition2 : boolean) : void {",
-			"    if (condition1) {",
-			"      var bounds = this.bounds",
-			"      assert bounds !== null",
-			"    }",
-			"    if (condition2) {",
-			"      var bounds = this.bounds",
-			"      assert bounds !== null",
-			"    }",
-			"  }",
+	/** Expression elements are inside the same resource as the expression.
+	 */
+	private static final String SARL_CODE_01 = multilineString(
+			"package io.sarl.lang.tests.bug978",
+			"capacity MyCapacity {",
+			"}",
+			"skill MySkill implements MyCapacity {",
+			"  var field0 : Integer",
+			"  var field1 : int",
+			"  var field2 : Object",
 			"}");
 
-	private static final String EXPECTED01 = multilineString(
-			"import io.sarl.lang.annotation.SarlElementType;",
-			"import io.sarl.lang.annotation.SarlSpecification;",
-			"import io.sarl.lang.annotation.SyntheticMember;",
+	private static final String JAVA_CODE_01 = multilineString(
+			"package io.sarl.lang.tests.bug978;",
+			"",
+			"import io.sarl.lang.annotation.SarlElementType;", 
+			"import io.sarl.lang.annotation.SarlSpecification;", 
+			"import io.sarl.lang.annotation.SyntheticMember;", 
+			"import io.sarl.lang.core.Agent;",
+			"import io.sarl.lang.core.Skill;",
+			"import io.sarl.lang.tests.bug978.MyCapacity;",
 			"import java.util.Objects;",
 			"import org.eclipse.xtext.xbase.lib.Pure;",
 			"",
 			"@SarlSpecification(\"" + SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING + "\")",
-			"@SarlElementType(" + SarlPackage.SARL_CLASS + ")",
+			"@SarlElementType(" + SarlPackage.SARL_SKILL + ")",
 			"@SuppressWarnings(\"all\")",
-			"public class X {",
-			"  private String bounds;",
+			"public class MySkill extends Skill implements MyCapacity {",
+			"  private Integer field0;",
 			"  ",
-			"  public void fct(final boolean condition1, final boolean condition2) {",
-			"    if (condition1) {",
-			"      String bounds = this.bounds;",
-			"      class $AssertEvaluator$ {",
-			"        final boolean $$result;",
-			"        $AssertEvaluator$(final String bounds) {",
-			"          this.$$result = (bounds != null);",
-			"        }",
-			"      }",
-			"      assert new $AssertEvaluator$(bounds).$$result;",
-			"    }",
-			"    if (condition2) {",
-			"      String bounds_1 = this.bounds;",
-			"      class $AssertEvaluator$_1 {",
-			"        final boolean $$result;",
-			"        $AssertEvaluator$_1(final String bounds_1) {",
-			"          this.$$result = (bounds_1 != null);",
-			"        }",
-			"      }",
-			"      assert new $AssertEvaluator$_1(bounds_1).$$result;",
-			"    }",
-			"  }",
+			"  private int field1;", 
+			"  ",
+			"  private Object field2;",
 			"  ",
 			"  @Override",
 			"  @Pure",
@@ -110,8 +93,15 @@ public class Bug816Test extends AbstractSarlTest {
 			"      return false;",
 			"    if (getClass() != obj.getClass())",
 			"      return false;",
-			"    X other = (X) obj;",
-			"    if (!Objects.equals(this.bounds, other.bounds))",
+			"    MySkill other = (MySkill) obj;",
+			"    if (other.field0 == null) {",
+			"      if (this.field0 != null)",
+			"        return false;",
+			"    } else if (this.field0 == null)",
+			"      return false;",
+			"    if (other.field0 != null && other.field0.intValue() != this.field0.intValue())",
+			"      return false;",
+			"    if (other.field1 != this.field1)",
 			"      return false;",
 			"    return super.equals(obj);",
 			"  }",
@@ -122,31 +112,37 @@ public class Bug816Test extends AbstractSarlTest {
 			"  public int hashCode() {",
 			"    int result = super.hashCode();",
 			"    final int prime = 31;",
-			"    result = prime * result + Objects.hashCode(this.bounds);",
+			"    result = prime * result + Objects.hashCode(this.field0);",
+			"    result = prime * result + Integer.hashCode(this.field1);",
 			"    return result;",
 			"  }",
 			"  ",
 			"  @SyntheticMember",
-			"  public X() {",
+			"  public MySkill() {",
 			"    super();",
+			"  }",
+			"  ",
+			"  @SyntheticMember",
+			"  public MySkill(final Agent arg0) {",
+			"    super(arg0);",
 			"  }",
 			"}",
 			"");
 
 	@Test
-	public void parsing_01() throws Exception {
-		SarlScript mas = file(getParseHelper(), SNIPSET01);
+	public void parsing01() throws Exception {
+		SarlScript mas = file(getParseHelper(), SARL_CODE_01);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
 		validator.assertNoErrors();
 	}
 
 	@Test
-	public void compiling_01() throws Exception {
-		getCompileHelper().compile(SNIPSET01, (it) -> {
-			String actual = it.getGeneratedCode("X");
-			assertEquals(EXPECTED01, actual);
+	public void compiling01() throws Exception {
+		getCompileHelper().compile(SARL_CODE_01, (it) -> {
+			String actual;
+			actual = it.getGeneratedCode("io.sarl.lang.tests.bug978.MySkill");
+			assertEquals(JAVA_CODE_01, actual);
 		});
 	}
 
 }
-

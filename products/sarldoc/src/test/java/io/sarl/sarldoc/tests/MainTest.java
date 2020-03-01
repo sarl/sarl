@@ -210,7 +210,7 @@ public class MainTest {
 			"  public int hashCode() {\n" +
 			"    int result = super.hashCode();\n" +
 			"    final int prime = 31;\n" +
-			"    result = prime * result + this.fooField;\n" +
+			"    result = prime * result + Integer.hashCode(this.fooField);\n" +
 			"    return result;\n" +
 			"  }\n" +
 			"  \n" +

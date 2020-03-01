@@ -41,6 +41,8 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -3098,6 +3100,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 	 * @param generatePureAnnotation indicates if the <code>@Pure</code> annotation should be generated.
 	 * @return the "equals" function.
 	 */
+	@SuppressWarnings("checkstyle:anoninnerlength")
 	private JvmOperation toEqualsMethod(
 			XtendTypeDeclaration sarlElement,
 			final JvmDeclaredType declaredType,
@@ -3163,36 +3166,99 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				it.append("(obj);"); //$NON-NLS-1$
 			}
 
+			private void generateToEqualForObjectNullity(ITreeAppendable it, JvmField field) {
+				it.append("if (other.").append(field.getSimpleName()); //$NON-NLS-1$
+				it.append(" == null) {").increaseIndentation(); //$NON-NLS-1$
+				it.newLine().append("if (this.").append(field.getSimpleName()).append(" != null)").increaseIndentation(); //$NON-NLS-1$
+				it.newLine().append("return false;").decreaseIndentation().decreaseIndentation(); //$NON-NLS-1$
+				it.newLine().append("} else if (this."); //$NON-NLS-1$
+				it.append(field.getSimpleName()).append(" == null)").increaseIndentation(); //$NON-NLS-1$
+				it.newLine().append("return false;").decreaseIndentation(); //$NON-NLS-1$
+			}
+
+			private void generateToEqualForObjectTest(ITreeAppendable it, JvmField field, String convertName) {
+				if (convertName != null) {
+					it.newLine().append("if (other.").append(field.getSimpleName()); //$NON-NLS-1$
+					it.append(" != null && other.").append(field.getSimpleName()); //$NON-NLS-1$
+					it.append(".").append(convertName).append("Value() != this.").append(field.getSimpleName()); //$NON-NLS-1$ //$NON-NLS-2$
+					it.append(".").append(convertName).append("Value())").increaseIndentation(); //$NON-NLS-1$
+					it.newLine().append("return false;").decreaseIndentation(); //$NON-NLS-1$
+				} else {
+					it.newLine().append("if (!").append(java.util.Objects.class); //$NON-NLS-1$
+					it.append(".equals(this.").append(field.getSimpleName()); //$NON-NLS-1$
+					it.append(", other.").append(field.getSimpleName()); //$NON-NLS-1$
+					it.append("))").increaseIndentation(); //$NON-NLS-1$
+					it.newLine().append("return false;").decreaseIndentation(); //$NON-NLS-1$
+				}
+			}
+
 			@SuppressWarnings({"checkstyle:booleanexpressioncomplexity", "checkstyle:cyclomaticcomplexity", "synthetic-access"})
 			private void generateToEqualForField(ITreeAppendable it, JvmField field) {
 				final TypeReferences refs = SARLJvmModelInferrer.this.typeReferences;
 				final JvmTypeReference type = field.getType();
-				if (refs.is(type, Boolean.TYPE) || refs.is(type, Boolean.class)
-					|| refs.is(type, Integer.TYPE) || refs.is(type, Integer.class)
-					|| refs.is(type, Long.TYPE) || refs.is(type, Long.class)
-					|| refs.is(type, Character.TYPE) || refs.is(type, Character.class)
-					|| refs.is(type, Byte.TYPE) || refs.is(type, Byte.class)
-					|| refs.is(type, Short.TYPE) || refs.is(type, Short.class)) {
+				if (refs.is(type, Boolean.TYPE)
+					|| refs.is(type, Integer.TYPE)
+					|| refs.is(type, Long.TYPE)
+					|| refs.is(type, Character.TYPE)
+					|| refs.is(type, Byte.TYPE)
+					|| refs.is(type, Short.TYPE)) {
 					it.append("if (other.").append(field.getSimpleName()); //$NON-NLS-1$
 					it.append(" != this.").append(field.getSimpleName()).append(")").increaseIndentation(); //$NON-NLS-1$ //$NON-NLS-2$
 					it.newLine().append("return false;").decreaseIndentation(); //$NON-NLS-1$
-				} else if (refs.is(type, Double.TYPE) || refs.is(type, Double.class)) {
+				} else if (refs.is(type, Double.TYPE)) {
 					it.append("if (Double.doubleToLongBits(other.").append(field.getSimpleName()); //$NON-NLS-1$
 					it.append(") != Double.doubleToLongBits(this.").append(field.getSimpleName()); //$NON-NLS-1$
 					it.append("))").increaseIndentation(); //$NON-NLS-1$
 					it.newLine().append("return false;").decreaseIndentation(); //$NON-NLS-1$
-				} else if (refs.is(type, Float.TYPE) || refs.is(type, Float.class)) {
+				} else if (refs.is(type, Double.class)) {
+					generateToEqualForObjectNullity(it, field);
+					it.newLine().append("if (other.").append(field.getSimpleName()); //$NON-NLS-1$
+					it.append(" != null && Double.doubleToLongBits(other.").append(field.getSimpleName()); //$NON-NLS-1$
+					it.append(".doubleValue()) != Double.doubleToLongBits(this.").append(field.getSimpleName()); //$NON-NLS-1$
+					it.append(".doubleValue()))").increaseIndentation(); //$NON-NLS-1$
+					it.newLine().append("return false;").decreaseIndentation(); //$NON-NLS-1$
+				} else if (refs.is(type, Float.TYPE)) {
 					it.append("if (Float.floatToIntBits(other.").append(field.getSimpleName()); //$NON-NLS-1$
 					it.append(") != Float.floatToIntBits(this.").append(field.getSimpleName()); //$NON-NLS-1$
 					it.append("))").increaseIndentation(); //$NON-NLS-1$
 					it.newLine().append("return false;").decreaseIndentation(); //$NON-NLS-1$
+				} else if (refs.is(type, Float.class)) {
+					generateToEqualForObjectNullity(it, field);
+					it.append("if (other.").append(field.getSimpleName()); //$NON-NLS-1$
+					it.append(" != null && Float.floatToIntBits(other.").append(field.getSimpleName()); //$NON-NLS-1$
+					it.append(".floatValue()) != Float.floatToIntBits(this.").append(field.getSimpleName()); //$NON-NLS-1$
+					it.append(".floatValue()))").increaseIndentation(); //$NON-NLS-1$
+					it.newLine().append("return false;").decreaseIndentation(); //$NON-NLS-1$
+				} else if (refs.is(type, Byte.class)
+						|| refs.is(type, Short.class)
+						|| refs.is(type, Integer.class) || refs.is(type, AtomicInteger.class)
+						|| refs.is(type, Long.class) || refs.is(type, AtomicLong.class)
+						|| refs.is(type, Boolean.class)
+						|| refs.is(type, Character.class)) {
+					generateToEqualForObjectNullity(it, field);
+					final String conv;
+					if (refs.is(type, Byte.class)) {
+						conv = "byte";
+					} else if (refs.is(type, Short.class)) {
+						conv = "short";
+					} else if (refs.is(type, Integer.class)) {
+						conv = "int";
+					} else if (refs.is(type, Long.class)) {
+						conv = "long";
+					} else if (refs.is(type, Character.class)) {
+						conv = "char";
+					} else if (refs.is(type, Boolean.class)) {
+						conv = "boolean";
+					} else {
+						conv = null;
+					}
+					generateToEqualForObjectTest(it, field, conv);
 				} else {
 					it.append("if (!").append(java.util.Objects.class); //$NON-NLS-1$
 					it.append(".equals(this.").append(field.getSimpleName()); //$NON-NLS-1$
 					it.append(", other.").append(field.getSimpleName()); //$NON-NLS-1$
-					it.append(")) {").increaseIndentation(); //$NON-NLS-1$
+					it.append("))").increaseIndentation(); //$NON-NLS-1$
 					it.newLine().append("return false;").decreaseIndentation(); //$NON-NLS-1$
-					it.newLine().append("}"); //$NON-NLS-1$
 				}
 				it.newLine();
 			}
@@ -3239,26 +3305,30 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						it.newLine().append("final int prime = 31;"); //$NON-NLS-1$
 					}
 					final JvmTypeReference type = field.getType();
-					if (refs.is(type, Boolean.TYPE) || refs.is(type, Boolean.class)) {
-						it.newLine().append("result = prime * result + (this."); //$NON-NLS-1$
-						it.append(field.getSimpleName()).append(" ? 1231 : 1237);"); //$NON-NLS-1$
-					} else if (refs.is(type, Integer.TYPE) || refs.is(type, Integer.class)
-							|| refs.is(type, Character.TYPE) || refs.is(type, Character.class)
-							|| refs.is(type, Byte.TYPE) || refs.is(type, Byte.class)
-							|| refs.is(type, Short.TYPE) || refs.is(type, Short.class)) {
-						it.newLine().append("result = prime * result + this."); //$NON-NLS-1$
-						it.append(field.getSimpleName()).append(";"); //$NON-NLS-1$
-					} else if (refs.is(type, Long.TYPE) || refs.is(type, Long.class)) {
-						it.newLine().append("result = prime * result + (int) (this."); //$NON-NLS-1$
-						it.append(field.getSimpleName()).append(" ^ (this.").append(field.getSimpleName()); //$NON-NLS-1$
-						it.append(" >>> 32));"); //$NON-NLS-1$
-					} else if (refs.is(type, Float.TYPE) || refs.is(type, Float.class)) {
-						it.newLine().append("result = prime * result + Float.floatToIntBits(this."); //$NON-NLS-1$
+					if (refs.is(type, Boolean.TYPE)) {
+						it.newLine().append("result = prime * result + Boolean.hashCode(this."); //$NON-NLS-1$
 						it.append(field.getSimpleName()).append(");"); //$NON-NLS-1$
-					} else if (refs.is(type, Double.TYPE) || refs.is(type, Double.class)) {
-						it.newLine().append("result = prime * result + (int) (Double.doubleToLongBits(this."); //$NON-NLS-1$
-						it.append(field.getSimpleName()).append(") ^ (Double.doubleToLongBits(this."); //$NON-NLS-1$
-						it.append(field.getSimpleName()).append(") >>> 32));"); //$NON-NLS-1$
+					} else if (refs.is(type, Character.TYPE)) {
+						it.newLine().append("result = prime * result + Character.hashCode(this."); //$NON-NLS-1$
+						it.append(field.getSimpleName()).append(");"); //$NON-NLS-1$
+					} else if (refs.is(type, Byte.TYPE)) {
+						it.newLine().append("result = prime * result + Byte.hashCode(this."); //$NON-NLS-1$
+						it.append(field.getSimpleName()).append(");"); //$NON-NLS-1$
+					} else if (refs.is(type, Short.TYPE)) {
+						it.newLine().append("result = prime * result + Short.hashCode(this."); //$NON-NLS-1$
+						it.append(field.getSimpleName()).append(");"); //$NON-NLS-1$
+					} else if (refs.is(type, Integer.TYPE)) {
+						it.newLine().append("result = prime * result + Integer.hashCode(this."); //$NON-NLS-1$
+						it.append(field.getSimpleName()).append(");"); //$NON-NLS-1$
+					} else if (refs.is(type, Long.TYPE)) {
+						it.newLine().append("result = prime * result + Long.hashCode(this."); //$NON-NLS-1$
+						it.append(field.getSimpleName()).append(");"); //$NON-NLS-1$
+					} else if (refs.is(type, Float.TYPE)) {
+						it.newLine().append("result = prime * result + Float.hashCode(this."); //$NON-NLS-1$
+						it.append(field.getSimpleName()).append(");"); //$NON-NLS-1$
+					} else if (refs.is(type, Double.TYPE)) {
+						it.newLine().append("result = prime * result + Double.hashCode(this."); //$NON-NLS-1$
+						it.append(field.getSimpleName()).append(");"); //$NON-NLS-1$
 					} else {
 						it.newLine().append("result = prime * result + "); //$NON-NLS-1$
 						it.append(java.util.Objects.class).append(".hashCode(this."); //$NON-NLS-1$

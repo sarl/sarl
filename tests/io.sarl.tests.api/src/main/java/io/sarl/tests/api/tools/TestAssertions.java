@@ -491,6 +491,33 @@ public final class TestAssertions {
 		}
 	}
 
+	/** Assert that the given value is not equal to zero.
+	 *
+	 * @param actual the value to test.
+	 * @since 0.11
+	 */
+	public static void assertNotZero(int actual) {
+		assertNotZero(null, actual);
+	}
+
+	/** Assert that the given value is not equal to zero.
+	 *
+	 * @param message the error message.
+	 * @param actual the value to test.
+	 * @since 0.11
+	 */
+	public static void assertNotZero(String message, int actual) {
+		if (actual == 0) {
+			String msg;
+			if (!Strings.isNullOrEmpty(message)) {
+				msg = message + ". "; //$NON-NLS-1$
+			} else {
+				msg = ""; //$NON-NLS-1$
+			}
+			fail(msg + "Expecting a number different than zero"); //$NON-NLS-1$
+		}
+	}
+
 	/** Assert that the given value is NaN.
 	 *
 	 * @param actual the value to test.

@@ -97,7 +97,7 @@ public class Bug696Test extends AbstractSarlTest {
 			"  public int hashCode() {",
 			"    int result = super.hashCode();",
 			"    final int prime = 31;",
-			"    result = prime * result + this.f;",
+			"    result = prime * result + Integer.hashCode(this.f);",
 			"    return result;",
 			"  }",
 			"  ",
