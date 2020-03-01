@@ -22,11 +22,11 @@
 package io.sarl.sre.tests.runtime.bugs.bug543
 
 import io.sarl.lang.core.UnimplementedCapacityException
-import io.sarl.sre.services.lifecycle.CannotSpawnException
 import io.sarl.sre.tests.runtime.bugs.bug543.mocks.C1
 import io.sarl.sre.tests.runtime.bugs.bug543.mocks.TAgent1
 import io.sarl.sre.tests.runtime.bugs.bug543.mocks.TAgent2
 import io.sarl.sre.tests.runtime.bugs.bug543.mocks.TAgent3
+import io.sarl.sre.tests.testutils.exception.SreTimeoutException
 import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
 import io.sarl.sre.tests.testutils.^extension.SreRunContext
 import io.sarl.sre.tests.testutils.^extension.SreRunExtension
@@ -37,9 +37,10 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static io.sarl.tests.api.tools.TestAssertions.*
+import static io.sarl.sre.tests.testutils.Constants.*
 import static org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.Disabled
+
+import static extension io.sarl.tests.api.tools.TestAssertions.*
 
 /**
  * Unit test for the issue #543: Incomplete reset of the hidden buffers to skills.
@@ -61,6 +62,7 @@ import org.junit.jupiter.api.Disabled
 class Bug543Test {
 
 	@Test
+	@DisplayName("Multiple setSkill")
 	def setSkill(extension rc : SreRunContext) {
 		typeof(TAgent1).runSre(false)
 		assertEquals(2, getNumberOfResults())
@@ -69,19 +71,18 @@ class Bug543Test {
 	}
 
 	@Test
-	@Disabled("tmp")
+	@DisplayName("clearSkill after setSkill")
 	def clearSkill(extension rc : SreRunContext) : void {
-		try {
-			typeof(TAgent2).runSre(false)
-			fail("Expecting exception: CannotSpawnException")
-		} catch (ex : CannotSpawnException) {
-			var cause = ex.cause
-			assertInstanceOf(typeof(UnimplementedCapacityException), cause)
-			assertEquals(typeof(C1), (cause as UnimplementedCapacityException).unimplementedCapacity)
-		}
+		typeof(SreTimeoutException).whenException [
+			typeof(TAgent2).runSre(null, true, VERY_SHORT_TIMEOUT);
+		].verify [
+			var c = assertCause(typeof(UnimplementedCapacityException), it)
+			assertEquals(typeof(C1), c.unimplementedCapacity)
+		]
 	}
 
 	@Test
+	@DisplayName("two consecutive getSkill")
 	def doubleHiddenGetters(extension rc : SreRunContext) {
 		typeof(TAgent3).runSre(false)
 		assertEquals(1, getNumberOfResults)
