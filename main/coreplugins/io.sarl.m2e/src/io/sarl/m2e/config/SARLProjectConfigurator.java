@@ -445,14 +445,10 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		// Special case of tycho plugins, for which the {@link #configureRawClasspath}
 		// and {@link #configureClasspath} were not invoked.
 		// ----------------------------------------------------------------------------------
-		final boolean isEclipsePlugin = isEclipsePluginPackaging(facade);
+		//final boolean isEclipsePlugin = isEclipsePluginPackaging(facade);
 
 		final SubMonitor subMonitor;
-		if (isEclipsePlugin) {
-			subMonitor = SubMonitor.convert(monitor, 4);
-		} else {
-			subMonitor = SubMonitor.convert(monitor, 3);
-		}
+		subMonitor = SubMonitor.convert(monitor, 3);
 
 		final IProject project = request.getProject();
 
@@ -462,13 +458,13 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		subMonitor.worked(1);
 
 		// --- ECLIPSE PLUGIN ---------------------------------------------------------------
-		if (isEclipsePlugin) {
+		/*if (isEclipsePlugin) {
 			// In the case of Eclipse bundle, the face to the Java project must be created by hand.
 			final IJavaProject javaProject = JavaCore.create(project);
 			final IClasspathDescriptor classpath = new ClasspathDescriptor(javaProject);
 			configureSarlProject(facade, config, classpath, false, subMonitor.newChild(1));
 			subMonitor.worked(1);
-		}
+		}*/
 		// ----------------------------------------------------------------------------------
 
 		io.sarl.eclipse.natures.SARLProjectConfigurator.addSarlNatures(
@@ -539,7 +535,8 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		 * @param isEclipsePlugin indicates if the build participant is created for an Eclipse plugin project.
 		 */
 		public BuildParticipant(boolean isEclipsePlugin) {
-			this.isEclipsePlugin = isEclipsePlugin;
+			//this.isEclipsePlugin = isEclipsePlugin;
+			this.isEclipsePlugin = false;
 		}
 
 		@Override
