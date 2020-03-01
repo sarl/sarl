@@ -22,8 +22,6 @@
 package io.sarl.sre.tests.runtime.bugs.bug224.mocks
 
 import io.sarl.core.Behaviors
-import io.sarl.core.Lifecycle
-import io.sarl.core.Schedules
 import io.sarl.sre.tests.testutils.agents.TestingAgent
 
 /**
@@ -36,7 +34,7 @@ import io.sarl.sre.tests.testutils.agents.TestingAgent
 @SuppressWarnings("potential_field_synchronization_problem")
 agent UnregisteredInInitializeAgent extends TestingAgent {
 
-	uses Behaviors, Schedules, Lifecycle
+	uses Behaviors
 
 	var ^behavior : MyBehavior
 
@@ -45,8 +43,7 @@ agent UnregisteredInInitializeAgent extends TestingAgent {
 		addResult(this.^behavior)
 		registerBehavior(this.^behavior)
 		unregisterBehavior(this.^behavior)
-		in(1000) [killMe]
-		return null
+		return RunPolicy::DIFFERED_KILLING
 	}
 
 }

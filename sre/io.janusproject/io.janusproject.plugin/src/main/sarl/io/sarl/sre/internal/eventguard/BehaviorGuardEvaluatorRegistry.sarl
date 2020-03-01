@@ -100,7 +100,7 @@ class BehaviorGuardEvaluatorRegistry {
 	 *
 	 * @param listener the new {@code BehaviorGuardEvaluator} to add
 	 * @param filter the filter function.
-	 * @param callback function which is invoked just after the first registration of the object. It could be {@code null}.
+	 * @param callback function which is invoked just after the registration of the object. It could be {@code null}.
 	 * @since 0.5
 	 */
 	def register(listener : Object, filter : (Event) => boolean, callback : (Object) => void = null) {
@@ -115,12 +115,14 @@ class BehaviorGuardEvaluatorRegistry {
 			]
 
 			for (meth : method.methods) {
-				evaluators += new GuardedEvaluator(filter, new BehaviorGuardEvaluator(listener, meth))
-				if (hasCallback.get) {
+				var success = evaluators += new GuardedEvaluator(filter, new BehaviorGuardEvaluator(listener, meth))
+				if (!success) {
 					hasCallback.set(false)
-					callback.apply(listener)
 				}
 			}
+		}
+		if (hasCallback.get) {
+			callback.apply(listener)
 		}
 	}
 

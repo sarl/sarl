@@ -40,7 +40,6 @@ import org.junit.jupiter.api.^extension.ExtendWith
 
 import static io.sarl.sre.tests.testutils.Constants.*
 import static org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.Disabled
 
 /** 
  * Unit test for the issue #224: Equivalent of Skill.install for the Behavior class.
@@ -62,7 +61,7 @@ import org.junit.jupiter.api.Disabled
 class Bug224Test {
 
 	@Test
-	@Disabled("tmp")
+	@DisplayName("Register behavior in on Initialize")
 	def registerInInitialize(extension rc : SreRunContext) {
 		typeof(RegisteredInInitializeAgent).runSre(false)
 		assertEquals(1, getNumberOfResults)
@@ -72,7 +71,7 @@ class Bug224Test {
 	}
 
 	@Test
-	@Disabled("tmp")
+	@DisplayName("Register behavior in on Event")
 	def registerInHandler(extension rc : SreRunContext) {
 		typeof(RegisteredInHandlerAgent).runSre(false)
 		assertEquals(1, getNumberOfResults)
@@ -82,6 +81,7 @@ class Bug224Test {
 	}
 
 	@Test
+	@DisplayName("Register behavior in on Destroy")
 	def registerInDestroy(extension rc : SreRunContext) {
 		typeof(RegisteredInDestroyAgent).runSre(false)
 		assertEquals(1, getNumberOfResults)
@@ -91,7 +91,7 @@ class Bug224Test {
 	}
 
 	@Test
-	@Disabled("tmp")
+	@DisplayName("Unregister behavior in on Initialize")
 	def unregisterInInitialize(extension rc : SreRunContext) {
 		typeof(UnregisteredInInitializeAgent).runSre(false)
 		assertEquals(1, getNumberOfResults)
@@ -101,7 +101,7 @@ class Bug224Test {
 	}
 
 	@Test
-	@Disabled("tmp")
+	@DisplayName("Unregister behavior in on Event")
 	def unregisterInHandler(extension rc : SreRunContext) {
 		typeof(UnregisteredInHandlerAgent).runSre(false)
 		assertEquals(1, getNumberOfResults)
@@ -111,7 +111,7 @@ class Bug224Test {
 	}
 
 	@Test
-	@Disabled("tmp")
+	@DisplayName("Unregister behavior in on Destroy")
 	def unregisterInDestroy(extension rc : SreRunContext) {
 		typeof(UnregisteredInDestroyAgent).runSre(null, true, NO_TIMEOUT)
 		assertEquals(1, getNumberOfResults)

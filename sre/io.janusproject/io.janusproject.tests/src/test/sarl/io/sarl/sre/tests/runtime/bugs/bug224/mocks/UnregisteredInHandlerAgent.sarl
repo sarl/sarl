@@ -23,9 +23,8 @@ package io.sarl.sre.tests.runtime.bugs.bug224.mocks
 
 import io.sarl.core.Behaviors
 import io.sarl.core.DefaultContextInteractions
-import io.sarl.core.Lifecycle
-import io.sarl.core.Schedules
 import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.core.Lifecycle
 
 /**
  * @author $Author: sgalland$
@@ -37,7 +36,7 @@ import io.sarl.sre.tests.testutils.agents.TestingAgent
 @SuppressWarnings("potential_field_synchronization_problem")
 agent UnregisteredInHandlerAgent extends TestingAgent {
 
-	uses Behaviors, Lifecycle, DefaultContextInteractions, Schedules
+	uses Behaviors, DefaultContextInteractions, Lifecycle
 
 	var ^behavior : MyBehavior
 
@@ -46,12 +45,12 @@ agent UnregisteredInHandlerAgent extends TestingAgent {
 		addResult(this.^behavior)
 		registerBehavior(this.^behavior)
 		emit(new MyEvent)
-		in(1000) [killMe]
-		return null
+		return RunPolicy::STANDARD
 	}
 
 	on MyEvent {
 		unregisterBehavior(this.^behavior)
+		killMe
 	}
 
 }
