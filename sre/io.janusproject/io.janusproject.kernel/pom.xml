@@ -10,7 +10,7 @@
 	<groupId>io.janusproject</groupId>
 	<artifactId>io.janusproject.kernel</artifactId>
 	<name>Janus Platform for Maven</name>
-	<version>2.0.11.0-SNAPSHOT</version>
+	<version>3.0.11.0-SNAPSHOT</version>
 
 	<properties>
 		<cliRunnerName>janus</cliRunnerName>

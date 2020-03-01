@@ -54,7 +54,7 @@
 
 		<!-- Version of the SARL API -->
 		<sarl.version>0.11.0-SNAPSHOT</sarl.version>
-		<janus.version>2.${sarl.version}</janus.version>
+		<janus.version>3.${sarl.version}</janus.version>
 		<sarl.maven.compiler.version>${sarl.version}</sarl.maven.compiler.version>
 
 		<!-- The versions of the following Xtext libraries are available at: https://eclipse.org/Xtext/documentation/350_continuous_integration.html -->
@@ -1109,8 +1109,8 @@
 							project.properties["sarl.specification.release_status"] = releaseStatus;
 							project.properties["sarl.is_stable_version"] = Boolean.toString(!isSnapshot);
 							project.properties["janus.version"] = versionFields[0]+"."+versionFields[1]+"."+versionFields[2]+endOfVersion;
-							project.properties["janus.release_version"] = "2."+versionFields[0]+"."+versionFields[1]+"."+versionFields[2];
-							project.properties["janus.version2"] = "2."+project.properties["janus.version"];
+							project.properties["janus.release_version"] = "3."+versionFields[0]+"."+versionFields[1]+"."+versionFields[2];
+							project.properties["janus.version2"] = "3."+project.properties["janus.version"];
 
 							log.debug("set sarl.specification.release_version to: " + project.properties["sarl.specification.release_version"]);
 							log.debug("set sarl.release_version to: " + project.properties["sarl.release_version"]);
