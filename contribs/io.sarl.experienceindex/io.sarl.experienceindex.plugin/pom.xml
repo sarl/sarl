@@ -88,8 +88,6 @@
 					<source>${sarl-dsl.min.jdk.version}</source>
 					<target>${sarl-dsl.min.jdk.version}</target>
 					<encoding>${project.build.sourceEncoding}</encoding>
-					<input>src/</input>
-					<output>src-gen/</output>
 					<runJavaCompiler>true</runJavaCompiler>
 					<generateInlines>true</generateInlines>
 					<generateStorageFiles>true</generateStorageFiles>
@@ -101,7 +99,7 @@
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<configuration>
 					<sourceDirectories>
-						<sourceDirectory>src</sourceDirectory>
+						<sourceDirectory>src/main/sarl</sourceDirectory>
 					</sourceDirectories>
 				</configuration>
 			</plugin>
