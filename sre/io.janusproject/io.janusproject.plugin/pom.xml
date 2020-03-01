@@ -64,7 +64,7 @@
 						</goals>
 						<configuration>
 							<encoding>${project.build.sourceEncoding}</encoding>
-							<file>${project.basedir}/src/io/sarl/sre/SreVersion.sarl</file>
+							<file>${project.basedir}/src/main/sarl/io/sarl/sre/SreVersion.sarl</file>
 							<regexFlags>
 								<regexFlag>MULTILINE</regexFlag>
 							</regexFlags>
@@ -155,8 +155,6 @@
 					<source>${sarl-dsl.min.jdk.version}</source>
 					<target>${sarl-dsl.min.jdk.version}</target>
 					<encoding>${project.build.sourceEncoding}</encoding>
-					<input>src/</input>
-					<output>src-gen/</output>
 					<runJavaCompiler>true</runJavaCompiler>
 					<generateInlines>true</generateInlines>
 					<generateStorageFiles>true</generateStorageFiles>
@@ -168,7 +166,7 @@
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<configuration>
 					<sourceDirectories>
-						<sourceDirectory>src</sourceDirectory>
+						<sourceDirectory>src/main/sarl</sourceDirectory>
 					</sourceDirectories>
 				</configuration>
 			</plugin>
@@ -199,8 +197,8 @@
 							<artifactId>tag-replacer</artifactId>
 							<configuration>
 								<sources>
-									<source>${project.basedir}/src</source>
-									<source>${project.basedir}/src-gen</source>
+									<source>${project.basedir}/src/main/sarl</source>
+									<source>${project.basedir}/src/main/generated-sources/sarl</source>
 								</sources>
 							</configuration>
 						</plugin>

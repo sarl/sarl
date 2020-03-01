@@ -38,6 +38,7 @@ import static io.sarl.sre.tests.testutils.Constants.*
 import static org.junit.jupiter.api.Assertions.*
 
 import static extension org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Disabled
 
 /** Tests for issue #861: Cannot use emit function in the Initialize handler.
  *
@@ -60,6 +61,7 @@ import static extension org.junit.jupiter.api.Assertions.assertNotNull
 class Bug861Test {
 
 	@Test
+	@Disabled("tmp")
 	def run_01(extension rc : SreRunContext) : void {
 		typeof(BootAgent).runSre(null, STANDARD_TIMEOUT)
 

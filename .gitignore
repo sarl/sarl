@@ -15,6 +15,7 @@
 **/io.sarl.experienceindex.plugin/src-gen/
 **/io.sarl.experienceindex.plugin/src/main/generated-sources/
 **/io.janusproject.plugin/src-gen/
+**/io.janusproject.plugin/src/main/generated-sources
 **/io.janusproject.tests/src/main/generated-sources
 **/io.janusproject.tests/src/test/generated-sources
 
