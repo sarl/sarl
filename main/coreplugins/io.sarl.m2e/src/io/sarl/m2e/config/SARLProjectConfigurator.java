@@ -23,6 +23,7 @@ package io.sarl.m2e.config;
 
 import java.io.File;
 import java.text.MessageFormat;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -152,6 +153,42 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		return folder;
 	}
 
+	/** Invoked to remove all the source folders.
+	 *
+	 * @param classpath the project classpath.
+	 * @param monitor the monitor.
+	 * @throws CoreException if cannot add the source folders.
+	 */
+	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:npathcomplexity"})
+	protected void removeAllSourceFolders(
+			IClasspathDescriptor classpath,
+			IProgressMonitor monitor) throws CoreException {
+		final SubMonitor subMonitor = SubMonitor.convert(monitor, 3);
+
+		final IClasspathEntry[] entries = classpath.getEntries();
+		subMonitor.worked(1);
+
+		final SubMonitor subMonitor0 = SubMonitor.convert(subMonitor, entries.length);
+		final Set<IPath> removableEntries = new HashSet<>();
+
+		for (final IClasspathEntry entry : entries) {
+			final int type = entry.getEntryKind();
+			if (type == IClasspathEntry.CPE_SOURCE) {
+				removableEntries.add(entry.getPath());
+			}
+			subMonitor0.worked(1);
+		}
+		subMonitor0.done();
+
+		final SubMonitor subMonitor1 = SubMonitor.convert(subMonitor, removableEntries.size());
+
+		for (final IPath path : removableEntries) {
+			classpath.removeEntry(path);
+			subMonitor1.worked(1);
+		}
+		subMonitor.done();
+	}
+
 	/** Invoked to add the source folders.
 	 *
 	 * @param facade the facade of the Maven project.
@@ -167,14 +204,12 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 			IClasspathDescriptor classpath,
 			boolean addTestFolders,
 			IProgressMonitor monitor) throws CoreException {
-
 		assertHasNature(facade.getProject(), SARLEclipseConfig.NATURE_ID);
 		assertHasNature(facade.getProject(), SARLEclipseConfig.XTEXT_NATURE_ID);
 		assertHasNature(facade.getProject(), JavaCore.NATURE_ID);
 
-		final String encoding = config.getEncoding();
-
 		final SubMonitor subMonitor = SubMonitor.convert(monitor, 4);
+		final String encoding = config.getEncoding();
 
 		//
 		// Add the source folders
@@ -445,7 +480,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		// Special case of tycho plugins, for which the {@link #configureRawClasspath}
 		// and {@link #configureClasspath} were not invoked.
 		// ----------------------------------------------------------------------------------
-		//final boolean isEclipsePlugin = isEclipsePluginPackaging(facade);
+		final boolean isEclipsePlugin = isEclipsePluginPackaging(facade);
 
 		final SubMonitor subMonitor;
 		subMonitor = SubMonitor.convert(monitor, 3);
@@ -458,13 +493,13 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		subMonitor.worked(1);
 
 		// --- ECLIPSE PLUGIN ---------------------------------------------------------------
-		/*if (isEclipsePlugin) {
+		if (isEclipsePlugin) {
 			// In the case of Eclipse bundle, the face to the Java project must be created by hand.
 			final IJavaProject javaProject = JavaCore.create(project);
 			final IClasspathDescriptor classpath = new ClasspathDescriptor(javaProject);
 			configureSarlProject(facade, config, classpath, false, subMonitor.newChild(1));
 			subMonitor.worked(1);
-		}*/
+		}
 		// ----------------------------------------------------------------------------------
 
 		io.sarl.eclipse.natures.SARLProjectConfigurator.addSarlNatures(
@@ -475,7 +510,9 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 
 	private void configureSarlProject(IMavenProjectFacade facade, SARLConfiguration config,
 			IClasspathDescriptor classpath, boolean addTestFolders, IProgressMonitor monitor) throws CoreException {
-		final SubMonitor subm = SubMonitor.convert(monitor, 2);
+		final SubMonitor subm = SubMonitor.convert(monitor, 3);
+		removeAllSourceFolders(classpath, subm.newChild(1));
+		subm.worked(1);
 		addSourceFolders(facade, config, classpath, addTestFolders, subm.newChild(1));
 		subm.worked(1);
 		addPreferences(facade, config, addTestFolders, subm.newChild(1));
@@ -535,8 +572,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		 * @param isEclipsePlugin indicates if the build participant is created for an Eclipse plugin project.
 		 */
 		public BuildParticipant(boolean isEclipsePlugin) {
-			//this.isEclipsePlugin = isEclipsePlugin;
-			this.isEclipsePlugin = false;
+			this.isEclipsePlugin = isEclipsePlugin;
 		}
 
 		@Override
