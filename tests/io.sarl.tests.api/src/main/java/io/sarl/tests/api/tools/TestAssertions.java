@@ -973,6 +973,27 @@ public final class TestAssertions {
 		}
 	}
 
+	/** Assert that the given code generates an exception of the given type, and replies the checker if
+	 * the exception occured.
+	 *
+	 * @param expected the type of the expected exception.
+	 * @param code the code to run.
+	 * @return the exception checker.
+	 */
+	public static ExceptionChecker whenException(Class<? extends Throwable> expected, Code code) throws Exception {
+		try {
+			code.run();
+			fail("Expecting exception of type " + expected.getName());
+		} catch (Throwable ex) {
+			if (!expected.isAssignableFrom(ex.getClass())) {
+				fail("Expecting exception of type " + expected.getName());
+			} else {
+				return new ExceptionChecker(ex);
+			}
+		}
+		return null;
+	}
+
 	/** Code to be run.
 	 *
 	 * @author $Author: sgalland$
@@ -989,6 +1010,57 @@ public final class TestAssertions {
 		 * @throws Exception any exception
 		 */
 		void run() throws Exception;
+
+	}
+
+	/** Verification code for exception.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.11
+	 */
+	@FunctionalInterface
+	public interface ExceptionCode {
+
+		/** Code.
+		 *
+		 * @param it the exception to verify.
+		 * @throws Exception any exception
+		 */
+		void run(Throwable it) throws Exception;
+
+	}
+
+	/** Exception checker.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.11
+	 */
+	public static class ExceptionChecker {
+
+		private final Throwable exception;
+
+		/** Constructor.
+		 *
+		 * @param exception the exception to check.
+		 */
+		ExceptionChecker(Throwable exception) {
+			this.exception = exception;
+		}
+		
+		/** Run the given check code.
+		 *
+		 * @throws Exception any exception
+		 */
+		public void verify(ExceptionCode code) throws Exception {
+			assertNotNull(code);
+			code.run(exception);
+		}
 
 	}
 

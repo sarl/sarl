@@ -35,8 +35,19 @@ final class Constants {
 	private new {
 	}
 
+	/** Veru short timeout in seconds.
+	 * 
+	 * @see #SHORT_TIMEOUT
+	 * @see #EXTRA_TIMEOUT
+	 * @see #NO_TIMEOUT
+	 * @see #STANDARD_TIMEOUT
+	 * @since 0.11
+	 */
+	public static val VERY_SHORT_TIMEOUT = 1
+
 	/** Short timeout in seconds.
 	 * 
+	 * @see #VERY_SHORT_TIMEOUT
 	 * @see #EXTRA_TIMEOUT
 	 * @see #NO_TIMEOUT
 	 * @see #STANDARD_TIMEOUT
@@ -45,6 +56,7 @@ final class Constants {
 
 	/** Standard timeout in seconds.
 	 * 
+	 * @see #VERY_SHORT_TIMEOUT
 	 * @see #EXTRA_TIMEOUT
 	 * @see #NO_TIMEOUT
 	 * @see #SHORT_TIMEOUT
@@ -53,6 +65,7 @@ final class Constants {
 
 	/** Extra timeout in seconds.
 	 * 
+	 * @see #VERY_SHORT_TIMEOUT
 	 * @see #STANDARD_TIMEOUT
 	 * @see #NO_TIMEOUT
 	 * @see #SHORT_TIMEOUT
@@ -61,6 +74,7 @@ final class Constants {
 
 	/** No timeout.
 	 * 
+	 * @see #VERY_SHORT_TIMEOUT
 	 * @see #STANDARD_TIMEOUT
 	 * @see #EXTRA_TIMEOUT
 	 * @see #SHORT_TIMEOUT

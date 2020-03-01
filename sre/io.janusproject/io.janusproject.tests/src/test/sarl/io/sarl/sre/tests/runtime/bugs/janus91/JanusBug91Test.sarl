@@ -21,9 +21,9 @@
 
 package io.sarl.sre.tests.runtime.bugs.janus91;
 
-import io.sarl.sre.services.lifecycle.CannotSpawnException
 import io.sarl.sre.tests.runtime.bugs.janus91.mocks.ExceptionInInitAgent
 import io.sarl.sre.tests.runtime.bugs.janus91.mocks.TestException
+import io.sarl.sre.tests.testutils.exception.SreTimeoutException
 import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
 import io.sarl.sre.tests.testutils.^extension.SreRunContext
 import io.sarl.sre.tests.testutils.^extension.SreRunExtension
@@ -35,9 +35,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
 import static io.sarl.sre.tests.testutils.Constants.*
-import static io.sarl.tests.api.tools.TestAssertions.*
-import static org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.Disabled
+
+import static extension io.sarl.tests.api.tools.TestAssertions.*
 
 /**
  * Unit test for the issue #91: Stop agent on initialization failure?
@@ -59,15 +58,13 @@ import org.junit.jupiter.api.Disabled
 class JanusBug91Test {
 
 	@Test
-	@Disabled("tmp")
+	@DisplayName("Exception in on Initialize")
 	def ExceptionInInit(extension rc : SreRunContext) : void {
-		try {
-			typeof(ExceptionInInitAgent).runSre(null, true, STANDARD_TIMEOUT);
-		} catch (e : CannotSpawnException) {
-			var ex = e.cause
-			assertNotNull(ex)
-			assertCause(typeof(TestException), ex)
-		}
+		typeof(SreTimeoutException).whenException [
+			typeof(ExceptionInInitAgent).runSre(null, true, VERY_SHORT_TIMEOUT);
+		].verify [
+			assertCause(typeof(TestException), it)
+		]
 	}
 
 }
