@@ -21,8 +21,14 @@
 
 package io.sarl.sre.tests.runtime.internal.mocks
 
-import io.sarl.core.ParticipantLeft
+import io.sarl.core.Behaviors
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Lifecycle
+import io.sarl.core.OpenEventSpaceSpecification
+import io.sarl.core.Schedules
 import io.sarl.sre.tests.testutils.agents.TestingAgent
+import java.util.UUID
+import io.sarl.core.ParticipantLeft
 
 /**
  * @author $Author: sgalland$
@@ -30,14 +36,24 @@ import io.sarl.sre.tests.testutils.agents.TestingAgent
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent JoinerAgent1 extends TestingAgent {
+agent JoinerAgent3 extends TestingAgent {
+
+	uses DefaultContextInteractions, Schedules, Behaviors, Lifecycle
 
 	override runAgentTest : RunPolicy {
-		return RunPolicy::DIFFERED_KILLING
+		var id = UUID::randomUUID
+		val spc = defaultContext.getOrCreateSpaceWithSpec(typeof(OpenEventSpaceSpecification), id)
+		spc.register(asEventListener)
+		addResult(spc.spaceID)
+		in(500) [
+			spc.unregister(asEventListener)
+		]
+		return RunPolicy::STANDARD
 	}
 
-	on ParticipantLeft {
+	on ParticipantLeft [it.source.UUID != ID] {
 		addResult(occurrence)
+		killMe
 	}
 
 }

@@ -41,7 +41,11 @@ import static io.sarl.sre.tests.testutils.Constants.*
 import static extension org.junit.jupiter.api.Assertions.assertEquals
 import static extension org.junit.jupiter.api.Assertions.assertNotEquals
 import static extension org.junit.jupiter.api.Assertions.assertNotNull
-import org.junit.jupiter.api.Disabled
+import static extension org.junit.jupiter.api.Assertions.assertNull
+import static extension org.junit.jupiter.api.Assertions.assertNotSame
+import io.sarl.lang.core.SpaceID
+import io.sarl.sre.tests.runtime.internal.mocks.SpyAgent3
+import io.sarl.sre.tests.runtime.internal.mocks.JoinerAgent3
 
 /**
  * @author $Author: sgalland$
@@ -60,30 +64,72 @@ import org.junit.jupiter.api.Disabled
 class OnParticipantLeftTest {
 
 	@Test
-	@Disabled("tmp")
+	@DisplayName("ParticipantLeft in default space")
 	@SuppressWarnings("discouraged_reference")
-	def run(extension rc : SreRunContext) {
-		var kern = typeof(SpyAgent1).setupTheSreKernel(null, true, true)
+	def runParticipantLeftInDefaultSpace(extension rc : SreRunContext) {
+		var kern = typeof(SpyAgent1).setupTheSreKernel(true, true)
 
 		Thread::sleep(1000)
 
 		val id : OutputParameter<UUID> = new OutputParameter
 
-		kern.spawn(typeof(JoinerAgent1)) [
+		kern.spawnInTest(typeof(JoinerAgent1)) [
 			id.set(it)
 		]
 
 		waitForTheKernel(STANDARD_TIMEOUT)
 
-		var evt = getResult(bootAgent, typeof(ParticipantLeft), 0)
-		evt.assertNotNull
+		var evt0 = getResult(bootAgent, typeof(ParticipantLeft), 0)
+		evt0.assertNotNull
 
-		var spaceId = getResult(id.get, typeof(UUID), 0)
-		spaceId.assertNotNull
+		var spcid0 = getResult(bootAgent, typeof(SpaceID), 1)
+		spcid0.assertNotNull
 
-		bootAgent.assertEquals(evt.source.UUID)
-		spaceId.assertNotEquals(evt.source.spaceID.ID)
-		spaceId.assertEquals(evt.spaceID.ID)
+		var evt1 = getResult(id.get, typeof(ParticipantLeft), 0)
+		evt1.assertNull
+
+		id.get.assertEquals(evt0.source.UUID)
+		spcid0.assertEquals(evt0.spaceID)
+	}
+
+	@Test
+	@DisplayName("ParticipantLeft in other space")
+	@SuppressWarnings("discouraged_reference")
+	def runParticipantLeftInOtherSpace(extension rc : SreRunContext) {
+		var kern = typeof(SpyAgent3).setupTheSreKernel(true, true)
+
+		Thread::sleep(1000)
+
+		val id : OutputParameter<UUID> = new OutputParameter
+
+		kern.spawnInTest(typeof(JoinerAgent3)) [
+			id.set(it)
+		]
+
+		waitForTheKernel(NO_TIMEOUT)
+
+		var evt0 = getResult(bootAgent, typeof(ParticipantLeft), 0)
+		evt0.assertNotNull
+
+		var spcid0 = getResult(bootAgent, typeof(SpaceID), 1)
+		spcid0.assertNotNull
+
+		var spcid1 = getResult(id.get, typeof(SpaceID), 0)
+		spcid1.assertNotNull
+
+		var evt1 = getResult(id.get, typeof(ParticipantLeft), 1)
+		evt1.assertNotNull
+		
+		spcid0.assertNotEquals(spcid1)
+		evt0.assertNotSame(evt1)
+
+		spcid0.assertEquals(evt0.source.spaceID)
+		id.get.assertEquals(evt0.source.UUID)
+		spcid1.assertEquals(evt0.spaceID)
+
+		spcid0.assertEquals(evt1.source.spaceID)
+		bootAgent.assertEquals(evt1.source.UUID)
+		spcid0.assertEquals(evt1.spaceID)
 	}
 
 }

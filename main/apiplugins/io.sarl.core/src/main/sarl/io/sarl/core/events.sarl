@@ -505,7 +505,7 @@ final event ParticipantJoined {
 
 }
 
-/** Notifies other participants the member with agentID has effectively 
+/** Notifies other participants that the member has effectively 
  * left the space.
  * The event is fired within the default space of the context in which the agent left the space.
  * The leaving agent does not receive this event.

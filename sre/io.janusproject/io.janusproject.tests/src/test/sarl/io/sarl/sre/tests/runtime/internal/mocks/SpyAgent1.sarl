@@ -24,6 +24,7 @@ package io.sarl.sre.tests.runtime.internal.mocks
 import io.sarl.core.Lifecycle
 import io.sarl.core.ParticipantLeft
 import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.core.DefaultContextInteractions
 
 /**
  * @author $Author: sgalland$
@@ -33,7 +34,7 @@ import io.sarl.sre.tests.testutils.agents.TestingAgent
  */
 agent SpyAgent1 extends TestingAgent {
 
-	uses Lifecycle
+	uses Lifecycle, DefaultContextInteractions
 
 	override runAgentTest : RunPolicy {
 		return null
@@ -41,6 +42,7 @@ agent SpyAgent1 extends TestingAgent {
 
 	on ParticipantLeft {
 		addResult(occurrence)
+		addResult(defaultSpace.spaceID)
 		killMe
 	}
 

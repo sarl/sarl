@@ -21,8 +21,10 @@
 
 package io.sarl.sre.tests.runtime.internal.mocks
 
+import io.sarl.core.Lifecycle
 import io.sarl.core.ParticipantLeft
 import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.core.DefaultContextInteractions
 
 /**
  * @author $Author: sgalland$
@@ -30,14 +32,21 @@ import io.sarl.sre.tests.testutils.agents.TestingAgent
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent JoinerAgent1 extends TestingAgent {
+agent SpyAgent3 extends TestingAgent {
+
+	uses Lifecycle, DefaultContextInteractions
 
 	override runAgentTest : RunPolicy {
-		return RunPolicy::DIFFERED_KILLING
+		return null
 	}
 
 	on ParticipantLeft {
-		addResult(occurrence)
+		val spcid = defaultSpace.spaceID
+		if (occurrence.spaceID != spcid) {
+			addResult(occurrence)
+			addResult(spcid)
+			killMe
+		}
 	}
 
 }
