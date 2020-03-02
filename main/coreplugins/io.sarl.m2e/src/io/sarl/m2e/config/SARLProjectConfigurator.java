@@ -236,7 +236,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		descriptor = classpath.addSourceEntry(
 				outputPath,
 				facade.getOutputLocation(),
-				false);
+				true);
 		descriptor.setPomDerived(true);
 		descriptor.setClasspathAttribute(IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS, Boolean.TRUE.toString());
 		subMonitor.worked(1);
@@ -251,7 +251,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 			descriptor = classpath.addSourceEntry(
 					testInputPath,
 					facade.getTestOutputLocation(),
-					true);
+					false);
 			descriptor.setPomDerived(true);
 			descriptor.setClasspathAttribute(IClasspathAttribute.TEST, Boolean.TRUE.toString());
 		}
