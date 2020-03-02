@@ -40,7 +40,7 @@ agent SpawnerAgent extends TestingAgent {
 	val agents = <UUID>newHashSet
 	
 	override runAgentTest : RunPolicy {
-		spawn(Bug481Test::NB_AGENTS, typeof(ChildAgent), rawResultMap)
+		spawn(Bug481Test::NB_AGENTS, typeof(ChildAgent), buildAgentInitializationParameters)
 		return null
 	}
 

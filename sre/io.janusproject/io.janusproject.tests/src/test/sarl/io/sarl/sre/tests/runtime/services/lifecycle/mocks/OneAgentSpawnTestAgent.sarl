@@ -36,7 +36,7 @@ agent OneAgentSpawnTestAgent extends TestingAgent {
 
 	@Override
 	override runAgentTest : RunPolicy {
-		spawn(typeof(FakeAgent3), rawResultMap)
+		spawn(typeof(FakeAgent3), buildAgentInitializationParameters)
 		return RunPolicy::IMMEDIATE_KILLING
 	}
 

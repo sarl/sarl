@@ -44,13 +44,13 @@ agent RootAgent3 extends TestingAgent {
 	override runAgentTest : RunPolicy {
 		loggingName = "ROOT"
 		in(500) [
-			typeof(ChildAgent3).spawnInContext(innerContext, rawResultMap)
+			typeof(ChildAgent3).spawnInContext(innerContext, buildAgentInitializationParameters)
 		]
 		return null
 	}
 
 	on AgentSpawned [typeof(ChildAgent3).name == occurrence.agentType] {
-		typeof(Child2Agent3).spawn(rawResultMap, innerContext)
+		typeof(Child2Agent3).spawn(buildAgentInitializationParameters(innerContext))
 	}
 	
 	on ContextLeft [!occurrence.isInDefaultSpace] {

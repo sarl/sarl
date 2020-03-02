@@ -40,7 +40,7 @@ agent MyWaiterAgent3 extends TestingAgent {
 
 	override runAgentTest : RunPolicy {
 		in(500) [
-			typeof(MySpawnedAgent3).spawn(rawResultMap)
+			typeof(MySpawnedAgent3).spawn(buildAgentInitializationParameters)
 		]
 		return null
 	}

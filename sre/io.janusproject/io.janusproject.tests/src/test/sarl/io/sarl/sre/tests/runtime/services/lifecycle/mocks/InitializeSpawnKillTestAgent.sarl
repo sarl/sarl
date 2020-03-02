@@ -37,7 +37,7 @@ agent InitializeSpawnKillTestAgent extends TestingAgent {
 	@Override
 	override runAgentTest : RunPolicy {
 		addResult("1")
-		typeof(FakeAgent1).spawn(rawResultMap)
+		typeof(FakeAgent1).spawn(buildAgentInitializationParameters)
 		addResult("2")
 		hiddenKillMe
 		addResult("3")

@@ -40,7 +40,7 @@ agent InitAndWaitAgent1 extends TestingAgent {
 	var nbEvents = 0
 
 	override runAgentTest : RunPolicy {
-		typeof(SendingAgent).spawn(rawResultMap, ID)
+		typeof(SendingAgent).spawn(buildAgentInitializationParameters(ID))
 		return null
 	}
 

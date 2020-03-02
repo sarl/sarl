@@ -43,7 +43,7 @@ agent MyWaiterAgent0 extends TestingAgent {
 	
 	override runAgentTest : RunPolicy {
 		in(500) [
-			var id = typeof(MySpawnedAgent0).spawn(rawResultMap)
+			var id = typeof(MySpawnedAgent0).spawn(buildAgentInitializationParameters)
 			synchronized (this) {
 				this.spawnId = id
 			}
