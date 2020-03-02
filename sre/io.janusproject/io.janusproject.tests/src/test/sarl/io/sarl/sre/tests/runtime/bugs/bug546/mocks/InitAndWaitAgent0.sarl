@@ -28,7 +28,6 @@ import io.sarl.sre.tests.testutils.agents.TestingAgent
 import java.util.concurrent.atomic.AtomicInteger
 
 import static io.sarl.sre.tests.runtime.bugs.bug546.Constants.*
-import static io.sarl.sre.tests.runtime.bugs.bug546.mocks.InitAndWaitAgent0.State.*
 
 /**
  * @author $Author: sgalland$
@@ -42,34 +41,30 @@ agent InitAndWaitAgent0 extends TestingAgent {
 
 	uses Lifecycle, DefaultContextInteractions
 
-	enum State { WAIT_ALL, WAIT_KILLS }
-	
-	var state = WAIT_ALL
-
-	val nbHellos = new AtomicInteger
+	val nbHello = new AtomicInteger
 
 	var nbKilled = new AtomicInteger
 
 	override runAgentTest : RunPolicy {
 		for (i : 0 ..< NB_AGENTS) {
-			typeof(ChildAgent).spawn(rawResultMap, ID)
+			typeof(ChildAgent).spawn(buildAgentInitializationParameters(ID))
 		}
 		return null
 	}
 
-	on Hello [this.state === WAIT_ALL] {
-		var n = this.nbHellos.incrementAndGet
+	on Hello {
+		var n = this.nbHello.incrementAndGet
+		System::out.println("Hello #" + n)
 		if (n >= NB_AGENTS) {
-			synchronized (this) {
-				this.state = WAIT_KILLS
-			}
+			System::out.println("Emit destroy order")
 			emit(new KillYou)
 		}
 	}
 
 	on AgentKilled {
 		var n = this.nbKilled.incrementAndGet
-		if (n === NB_AGENTS) {
+		System::out.println("Bye #" + n)
+		if (n >= NB_AGENTS) {
 			killMe
 		}
 	}

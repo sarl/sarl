@@ -193,6 +193,25 @@ abstract agent TestingAgent {
 		this.initializationParameters
 	}
 
+	/** Replies the initialization parameters of the agents extended with the given values.
+	 * 
+	 * @param values the additional parameters
+	 * @return the initialization parameters.
+	 * @since 0.11
+	 */
+	@Pure
+	def buildAgentInitializationParameters(values : Object*) : Object[] {
+		if (values === null || values.length == 0) {
+			return #[rawResultMap]
+		}
+		var l = newArrayList()
+		var ll : List<Object> = values
+		l.add(rawResultMap)
+		l.addAll(ll)
+		var t : Object[] = l
+		return t
+	}
+
 	/** Wait until the condition is true or time out; and run the code.
 	 *
 	 * @param condition the condition to validate.

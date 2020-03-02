@@ -41,12 +41,13 @@ agent ChildAgent extends TestingAgent {
 	var waiterId : UUID
 	
 	override runAgentTest : RunPolicy {
-		this.waiterId = getAgentInitializationParameters.get(1) as UUID
+		this.waiterId = agentInitializationParameters.get(1) as UUID
 		emit(new Hello) [it.UUID == this.waiterId]
-		return null
+		return RunPolicy::STANDARD
 	}
 	
 	on KillYou {
+		System::out.println("Bye")
 		killMe
 	}
 
