@@ -23,7 +23,6 @@ package io.sarl.m2e.config;
 
 import java.io.File;
 import java.text.MessageFormat;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -153,39 +152,38 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		return folder;
 	}
 
-	/** Invoked to remove all the source folders.
+	/** Invoked to remove the source folder from the classpath.
 	 *
+	 * @param path the path to remove.
 	 * @param classpath the project classpath.
 	 * @param monitor the monitor.
 	 * @throws CoreException if cannot add the source folders.
 	 */
 	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:npathcomplexity"})
-	protected void removeAllSourceFolders(
-			IClasspathDescriptor classpath,
-			IProgressMonitor monitor) throws CoreException {
+	protected void removeSourceFolder(IPath path, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
 		final SubMonitor subMonitor = SubMonitor.convert(monitor, 3);
+
+		if (path == null) {
+			subMonitor.done();
+			return;
+		}
 
 		final IClasspathEntry[] entries = classpath.getEntries();
 		subMonitor.worked(1);
 
 		final SubMonitor subMonitor0 = SubMonitor.convert(subMonitor, entries.length);
-		final Set<IPath> removableEntries = new HashSet<>();
 
 		for (final IClasspathEntry entry : entries) {
 			final int type = entry.getEntryKind();
-			if (type == IClasspathEntry.CPE_SOURCE) {
-				removableEntries.add(entry.getPath());
+			if (type == IClasspathEntry.CPE_SOURCE && path.equals(entry.getPath())) {
+				classpath.removeEntry(entry.getPath());
+				subMonitor0.done();
+				subMonitor.done();
+				return;
 			}
 			subMonitor0.worked(1);
 		}
 		subMonitor0.done();
-
-		final SubMonitor subMonitor1 = SubMonitor.convert(subMonitor, removableEntries.size());
-
-		for (final IPath path : removableEntries) {
-			classpath.removeEntry(path);
-			subMonitor1.worked(1);
-		}
 		subMonitor.done();
 	}
 
@@ -208,7 +206,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		assertHasNature(facade.getProject(), SARLEclipseConfig.XTEXT_NATURE_ID);
 		assertHasNature(facade.getProject(), JavaCore.NATURE_ID);
 
-		final SubMonitor subMonitor = SubMonitor.convert(monitor, 4);
+		final SubMonitor subMonitor = SubMonitor.convert(monitor, 6);
 		final String encoding = config.getEncoding();
 
 		//
@@ -216,10 +214,14 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		//
 		// Input folder, e.g. "src/main/sarl"
 		final IPath inputPath = makeFullPath(facade, config.getInput());
+		removeSourceFolder(inputPath, classpath, subMonitor.newChild(1));
 		final IFolder inputFolder = ensureFolderExists(facade, inputPath, false, subMonitor);
 		if (encoding != null && inputFolder != null && inputFolder.exists()) {
 			inputFolder.setDefaultCharset(encoding, monitor);
 		}
+		// Remove any previous definition of the source entry
+		classpath.touchEntry(inputPath);
+		// Add the source entry
 		IClasspathEntryDescriptor descriptor = classpath.addSourceEntry(
 				inputPath,
 				facade.getOutputLocation(),
@@ -229,10 +231,14 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 
 		// Input folder, e.g. "src/main/generated-sources/sarl"
 		final IPath outputPath = makeFullPath(facade, config.getOutput());
+		removeSourceFolder(outputPath, classpath, subMonitor.newChild(1));
 		final IFolder outputFolder = ensureFolderExists(facade, outputPath, true, subMonitor);
 		if (encoding != null && outputFolder != null && outputFolder.exists()) {
 			outputFolder.setDefaultCharset(encoding, monitor);
 		}
+		// Remove any previous definition of the source entry
+		classpath.touchEntry(outputPath);
+		// Add the source entry
 		descriptor = classpath.addSourceEntry(
 				outputPath,
 				facade.getOutputLocation(),
@@ -244,26 +250,36 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 		if (addTestFolders) {
 			// Test input folder, e.g. "src/test/sarl"
 			final IPath testInputPath = makeFullPath(facade, config.getTestInput());
+			removeSourceFolder(testInputPath, classpath, subMonitor.newChild(1));
 			final IFolder testInputFolder = ensureFolderExists(facade, testInputPath, false, subMonitor);
 			if (encoding != null && testInputFolder != null && testInputFolder.exists()) {
 				testInputFolder.setDefaultCharset(encoding, monitor);
 			}
+			// Remove any previous definition of the source entry
+			classpath.touchEntry(testInputPath);
+			// Add the source entry
 			descriptor = classpath.addSourceEntry(
 					testInputPath,
 					facade.getTestOutputLocation(),
 					false);
 			descriptor.setPomDerived(true);
 			descriptor.setClasspathAttribute(IClasspathAttribute.TEST, Boolean.TRUE.toString());
+			subMonitor.worked(1);
+		} else {
+			subMonitor.worked(2);
 		}
-		subMonitor.worked(1);
 
 		if (addTestFolders) {
 			// Test input folder, e.g. "src/test/generated-sources/sarl"
 			final IPath testOutputPath = makeFullPath(facade, config.getTestOutput());
+			removeSourceFolder(testOutputPath, classpath, subMonitor.newChild(1));
 			final IFolder testOutputFolder = ensureFolderExists(facade, testOutputPath, true, subMonitor);
 			if (encoding != null && testOutputFolder != null && testOutputFolder.exists()) {
 				testOutputFolder.setDefaultCharset(encoding, monitor);
 			}
+			// Remove any previous definition of the source entry
+			classpath.touchEntry(testOutputPath);
+			// Add the source entry
 			descriptor = classpath.addSourceEntry(
 					testOutputPath,
 					facade.getTestOutputLocation(),
@@ -510,9 +526,7 @@ public class SARLProjectConfigurator extends AbstractProjectConfigurator impleme
 
 	private void configureSarlProject(IMavenProjectFacade facade, SARLConfiguration config,
 			IClasspathDescriptor classpath, boolean addTestFolders, IProgressMonitor monitor) throws CoreException {
-		final SubMonitor subm = SubMonitor.convert(monitor, 3);
-		removeAllSourceFolders(classpath, subm.newChild(1));
-		subm.worked(1);
+		final SubMonitor subm = SubMonitor.convert(monitor, 2);
 		addSourceFolders(facade, config, classpath, addTestFolders, subm.newChild(1));
 		subm.worked(1);
 		addPreferences(facade, config, addTestFolders, subm.newChild(1));
