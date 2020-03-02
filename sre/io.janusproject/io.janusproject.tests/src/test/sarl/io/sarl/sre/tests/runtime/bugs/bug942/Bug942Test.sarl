@@ -92,9 +92,6 @@ class Bug942Test {
 
 		^space.spaceID.assertEquals(d1.address.spaceID)
 		^space.spaceID.assertEquals(d2.address.spaceID)
-
-		forgetTheKernel()
-
 	}
 
 }

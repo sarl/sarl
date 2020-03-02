@@ -21,8 +21,6 @@
 
 package io.sarl.sre.tests.runtime.internal.eventguard.mocks
 
-import io.sarl.sre.tests.testutils.agents.TestingAgent.RunPolicy
-
 agent Agent1 extends Agent0 {
 
 	override myfunction : void {

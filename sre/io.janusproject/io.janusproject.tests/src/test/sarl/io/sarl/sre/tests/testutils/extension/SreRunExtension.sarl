@@ -45,7 +45,7 @@ class SreRunExtension implements ParameterResolver, InvocationInterceptor {
 
 	override supportsParameter(parameterContext : ParameterContext, extensionContext : ExtensionContext) : boolean {
 		if (parameterContext.index === 0) {
-			return typeof(SreRunContext).isAssignableFrom(parameterContext.parameter.type)
+			return parameterContext.parameter.type === typeof(SreRunContext)
 		}
 		return false
 	}
@@ -72,7 +72,7 @@ class SreRunExtension implements ParameterResolver, InvocationInterceptor {
 			if (invocationContext.arguments.size === 1) {
 				var arg = invocationContext.arguments.get(0)
 				if (arg instanceof SreRunContext) {
-					arg.forgetTheKernel
+					arg.shutdown
 				}
 			}
 		}

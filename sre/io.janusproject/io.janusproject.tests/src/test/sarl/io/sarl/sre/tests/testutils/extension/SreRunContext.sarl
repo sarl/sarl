@@ -23,16 +23,18 @@ package io.sarl.sre.tests.testutils.^extension
 
 import com.google.inject.Module
 import io.sarl.lang.annotation.PrivateAPI
+import io.sarl.lang.core.Agent
 import io.sarl.sre.Kernel
 import io.sarl.sre.boot.SreMain
 import io.sarl.sre.boot.configs.subconfigs.BootConfig
 import io.sarl.sre.services.logging.LoggingService
 import io.sarl.sre.tests.testutils.agents.TestingAgent
 import io.sarl.sre.tests.testutils.exception.SreTimeoutException
-import java.util.HashMap
 import java.util.List
 import java.util.Map
 import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.TimeoutException
 import java.util.logging.Handler
 import java.util.logging.Level
@@ -46,7 +48,6 @@ import static io.sarl.sre.tests.testutils.Constants.STANDARD_TIMEOUT
 import static org.junit.jupiter.api.Assertions.*
 
 import static extension org.junit.jupiter.api.Assertions.assertEquals
-import io.sarl.lang.core.Agent
 
 /**
  * Context for running the SRE.
@@ -75,7 +76,7 @@ class SreRunContext {
 	@Accessors(PUBLIC_GETTER)
 	var bootstrap : SreMain
 
-	var results = new HashMap<UUID, List<Object>>
+	val globalResults = new ConcurrentHashMap<UUID, List<Object>>
 
 	var module : Class<? extends Module>
 
@@ -103,6 +104,17 @@ class SreRunContext {
 		return null
 	}
 
+	private def key(agentId : UUID) : UUID {
+		var id = agentId
+		if (id === null) {
+			id = bootAgent
+		}
+		if (id === null) {
+			return UUID::randomUUID
+		}
+		return id
+	}
+
 	/** 
 	 * Replies result at the given index of the run of the agent.
 	 * 
@@ -112,20 +124,13 @@ class SreRunContext {
 	 * @return the value; or {@code null} if no result.
 	 */
 	def getResult(agentId : UUID = null, type : Class<T>, index : int) : T with T {
-		if (this.results !== null) {
-			try {
-				var res : List<Object>
-				synchronized (this.results) {
-					res = this.results.get(agentId ?: bootAgent)
-				}
-				if (res !== null) {
-					synchronized (res) {
-						return type.cast(res.get(index))
-					}
-				}
-			} catch (exception : Throwable) {
-				//
+		try {
+			val res = this.globalResults.get(agentId.key)
+			if (res !== null) {
+				return type.cast(res.get(index))
 			}
+		} catch (exception : Throwable) {
+			//
 		}
 		return null
 	}
@@ -135,16 +140,9 @@ class SreRunContext {
 	 * @return the number of results.
 	 */
 	def getNumberOfResults(agentId : UUID = null) : int {
-		if (this.results !== null) {
-			var list : List<Object>
-			synchronized (this.results) {
-				list = this.results.get(agentId ?: bootAgent)
-			}
-			if (list !== null) {
-				synchronized (list) {
-					return list.size
-				}
-			}
+		val list = this.globalResults.get(agentId.key)
+		if (list !== null) {
+			return list.size
 		}
 		return 0
 	}
@@ -167,16 +165,9 @@ class SreRunContext {
 	 * @return the results.
 	 */
 	def getResults(agentId : UUID = null) : List<Object> {
-		if (this.results !== null) {
-			var res : List<Object>
-			synchronized (this.results) {
-				res = this.results.get(agentId ?: bootAgent)
-			}
-			if (res !== null) {
-				synchronized (res) {
-					return res.unmodifiableView
-				}
-			}
+		val res = this.globalResults.get(agentId.key)
+		if (res !== null) {
+			return res.unmodifiableView
 		}
 		return emptyList
 	}
@@ -190,18 +181,13 @@ class SreRunContext {
 	 * @param value the new value.
 	 */
 	def addResult(agentId : UUID = null, value : Object) : void {
-		if (this.results !== null) {
-			var res : List<Object>
-			synchronized (this.results) {
-				val id = agentId ?: bootAgent
-				res = this.results.get(id)
-				if (res === null) {
-					res = newArrayList
-					this.results.put(id, res)
-				}
-			}
-			res += value
+		val id = agentId.key
+		var res = this.globalResults.get(id)
+		if (res === null) {
+			res = new CopyOnWriteArrayList
+			this.globalResults.put(id, res)
 		}
+		res += value
 	}
 
 	/** 
@@ -209,10 +195,7 @@ class SreRunContext {
 	 * @return the results.
 	 */
 	def getAllResultsPerAgent() : Map<UUID, List<Object>> {
-		if (this.results !== null) {
-			return results
-		}
-		return emptyMap
+		return globalResults
 	}
 
 	/** 
@@ -220,16 +203,11 @@ class SreRunContext {
 	 * @return the results.
 	 */
 	def getAllResults() : List<Object> {
-		if (this.results !== null) {
-			var all = newArrayList
-			synchronized (this.results) {
-				for (values : this.results.values) {
-					all += values
-				}
-			}
-			return all
+		var all = newArrayList
+		for (values : this.globalResults.values) {
+			all.addAll(values)
 		}
-		return emptyList
+		return all
 	}
 	
 	/** 
@@ -237,7 +215,7 @@ class SreRunContext {
 	 * @return the parameters.
 	 */
 	def getAgentInitializationParameters : Object[] {
-		#[this.results]
+		#[allResultsPerAgent]
 	}
 
 	/** 
@@ -249,25 +227,18 @@ class SreRunContext {
 	 * @return the index; or <code>-1</code> if not found.
 	 */
 	def indexOfResult(agentId : UUID = null, type : Class<?>, fromIndex : int = 0) : int {
-		if (this.results !== null) {
-			try {
-				var res : List<Object>
-				synchronized (this.results) {
-					res = this.results.get(agentId ?: bootAgent)
-				}
-				if (res !== null) {
-					synchronized (res) {
-						for (var i = fromIndex; i < res.size; i++) {
-							var r = res.get(i)
-							if (type.isInstance(r)) {
-								return i
-							}
-						}
+		try {
+			val res = this.globalResults.get(agentId.key)
+			if (res !== null) {
+				for (var i = fromIndex; i < res.size; i++) {
+					var r = res.get(i)
+					if (type.isInstance(r)) {
+						return i
 					}
 				}
-			} catch (exception : Throwable) {
-			//
 			}
+		} catch (exception : Throwable) {
+			//
 		}
 		return -1
 	}
@@ -377,7 +348,7 @@ class SreRunContext {
 		val glvl = org.arakhne.afc.bootique.log4j.configs.Level::valueOf(lvl)
 		System::setProperty(VariableNames::toPropertyName(Log4jIntegrationConfig::LEVEL), glvl.name)
 		val module = getTestingModule
-		this.results = newHashMap
+		this.globalResults.clear
 		this.bootstrap = new SreMain
 		this.bootstrap.startWithoutAgent(module)
 		this.sreKernel = this.bootstrap.kernel
@@ -445,7 +416,7 @@ class SreRunContext {
 		}
 		var isSreRunning = this.sreKernel.running
 		while (isSreRunning && (endTime == -1 || System.currentTimeMillis() <= endTime)) {
-			isSreRunning = this.sreKernel.isRunning() || (predicate !== null && (!(predicate.apply(this.results))))
+			isSreRunning = this.sreKernel.isRunning() || (predicate !== null && (!(predicate.apply(this.globalResults))))
 			Thread.sleep(100)
 		}
 		if (isSreRunning) {
@@ -466,8 +437,15 @@ class SreRunContext {
 	/** 
 	 * Forget any reference to a Janus kernel.
 	 */
-	def forgetTheKernel : void {
-		this.sreKernel = null;
+	package def shutdown : void {
+		var m = this.bootstrap
+		this.bootstrap = null
+		if (m !== null) {
+			m.shutdown(false)
+		}
+		this.sreKernel = null
+		this.module = null
+		this.globalResults.clear
 	}
 
 	/** 

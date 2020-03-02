@@ -30,6 +30,7 @@ import java.util.Collection
 import java.util.List
 import java.util.Map
 import java.util.UUID
+import java.util.concurrent.CopyOnWriteArrayList
 import org.eclipse.xtend.lib.annotations.Accessors
 
 /**
@@ -45,7 +46,9 @@ abstract agent TestingAgent {
 
 	uses Lifecycle, Schedules
 
-	var results : Map<UUID, List<Object>>
+	var results : List<Object>
+
+	var globalResults : Map<UUID, List<Object>>
 
 	var initializationParameters : Object[]
 
@@ -54,7 +57,7 @@ abstract agent TestingAgent {
 
 	/** Replies the simple name of the given type name
 	 *
-	 * @param typeName the fully qualifed name of a type.
+	 * @param typeName the fully qualified name of a type.
 	 */
 	static def simpleName(typeName : String) : String {
 		var index1 = typeName.lastIndexOf("$")
@@ -72,22 +75,8 @@ abstract agent TestingAgent {
 	 * @param result - the result.
 	 */
 	def addResult(result : Object) {
-		if (this.results !== null) {
-			var list : List<Object>
-			synchronized (this.results) {
-				val aid = this.ID
-				list = this.results.get(aid)
-				if (list === null) {
-					list = newArrayList
-					this.results.put(aid, list)
-				}
-			}
-			if (list !== null) {
-				synchronized (list) {
-					list += result
-				}
-			}
-		}
+		var r = getModifiableResults
+		r += result
 	}
 
 	
@@ -98,18 +87,8 @@ abstract agent TestingAgent {
 	 */
 	@Pure
 	def getNumberOfResults : int {
-		if (this.results !== null) {
-			var list : List<Object>
-			synchronized (this.results) {
-				list = this.results.get(this.ID)
-			}
-			if (list !== null) {
-				synchronized (list) {
-					return list.size
-				}
-			}
-		}
-		return 0
+		var r = getModifiableResults
+		return r.size
 	}
 
 	/**
@@ -118,21 +97,8 @@ abstract agent TestingAgent {
 	 * @param result - the result.
 	 */
 	def addResults(results : Collection<?>) {
-		if (this.results !== null) {
-			var list : List<Object>
-			synchronized (this.results) {
-				list = this.results.get(this.ID)
-				if (list !== null) {
-					list = newArrayList
-					this.results.put(this.ID, list)
-				}
-			}
-			if (list !== null) {
-				synchronized (list) {
-					list += results
-				}
-			}
-		}
+		var r = getModifiableResults
+		r.addAll(results)
 	}
 
 	/**
@@ -141,18 +107,8 @@ abstract agent TestingAgent {
 	 */
 	@Pure
 	def getUnmodifiableResults : List<Object> {
-		if (this.results !== null) {
-			var list : List<Object>
-			synchronized (this.results) {
-				list = this.results.get(this.ID)
-			}
-			if (list !== null) {
-				synchronized (list) {
-					return list.unmodifiableView
-				}
-			}
-		}
-		return emptyList
+		var r = getModifiableResults
+		return r.unmodifiableView
 	}
 
 	/** 
@@ -161,27 +117,33 @@ abstract agent TestingAgent {
 	 */
 	@Pure
 	def getModifiableResults : List<Object> {
-		if (this.results !== null) {
-			var list : List<Object>
-			synchronized (this.results) {
-				list = this.results.get(this.ID)
-				if (list === null) {
-					list = newArrayList
-					this.results.put(this.ID, list)
-				}
-			}
-			return list
-		}
-		return emptyList
+		return synchronizeResults
 	}
 
-	/**
-	 * Replies the map of the results for all the agents.
+	/** 
+	 * Replies a modifiable view on the results for the current agent.
 	 * @return the results.
 	 */
-	@Pure
-	def getRawResultMap : Map<UUID, List<Object>> {
-		this.results
+	private def synchronizeResults : List<Object> {
+		synchronized (this) {
+			if (this.globalResults !== null) {
+				var list = this.globalResults.get(ID)
+				if (list === null) {
+					list = new CopyOnWriteArrayList
+					this.globalResults.put(ID, list)
+				}
+				if (this.results !== null) {
+					list.addAll(this.results)
+					this.results = null
+				}
+				return list
+			} else {
+				if (this.results === null) {
+					this.results = new CopyOnWriteArrayList
+				}
+				return this.results
+			}
+		}
 	}
 
 	/** Replies the initialization parameters of the agents.
@@ -201,15 +163,17 @@ abstract agent TestingAgent {
 	 */
 	@Pure
 	def buildAgentInitializationParameters(values : Object*) : Object[] {
-		if (values === null || values.length == 0) {
-			return #[rawResultMap]
+		synchronized (this) {
+			if (values === null || values.length == 0) {
+				return #[this.globalResults]
+			}
+			var l = newArrayList()
+			var ll : List<Object> = values
+			l.add(this.globalResults)
+			l.addAll(ll)
+			var t : Object[] = l
+			return t
 		}
-		var l = newArrayList()
-		var ll : List<Object> = values
-		l.add(rawResultMap)
-		l.addAll(ll)
-		var t : Object[] = l
-		return t
 	}
 
 	/** Wait until the condition is true or time out; and run the code.
@@ -238,9 +202,13 @@ abstract agent TestingAgent {
 	}
 
 	on Initialize {
-		this.initializationParameters = occurrence.parameters
-		this.results = occurrence.parameters.get(0) as Map<UUID, List<Object>>
-		this.spawner = occurrence.spawner
+		synchronized (this) {
+			this.initializationParameters = occurrence.parameters
+			this.globalResults = occurrence.parameters.get(0) as Map<UUID, List<Object>>
+			// Fill up the buffered results
+			synchronizeResults
+			this.spawner = occurrence.spawner
+		}
 		try {
 			var policy = runAgentTest
 			if (policy !== null) {
@@ -264,9 +232,9 @@ abstract agent TestingAgent {
 		}
 	}
 
-	/**
-	 * Invoked to run the unit test. This function is invoked at agent initialization
-	 *
+	/** 
+	 * Invoked to run the unit test. This function is invoked at agent initialization.
+	 * 
 	 * @return <code>true</code> for killing the agent during its initialization.
 	 */
 	abstract def runAgentTest : RunPolicy

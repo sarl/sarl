@@ -95,8 +95,6 @@ class Bug934Test {
 		defaultSpace.spaceID.assertNotEquals(otherSpace2.spaceID)
 		defaultSpace.spaceID.ID.assertNotEquals(otherSpace2.spaceID.ID)
 		otherSpace1.assertSame(otherSpace2)
-
-		forgetTheKernel
 	}
 
 	@Test
@@ -132,8 +130,6 @@ class Bug934Test {
 		otherSpace1.assertNotSame(otherSpace2)
 		otherSpace1.spaceID.assertNotEquals(otherSpace2.spaceID)
 		otherSpace1.spaceID.ID.assertNotEquals(otherSpace2.spaceID.ID)
-		
-		forgetTheKernel
 	}
 
 }
