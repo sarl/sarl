@@ -171,12 +171,36 @@ public final class TestAssertions {
 		}
 
 		if (!unexpectedElements.isEmpty()) {
-			fail("Unexpected elements:\n" + unexpectedElements.toString() + "\nActual elements are:\n" +
-					Iterables.toString(actual) + "\nExpected elements are:\n" + Iterables.toString(expected));
+			throw new AssertionFailedError(
+					"Unexpected elements:\n" + unexpectedElements.toString(),
+					toString(expected),
+					toString(actual));
 		} else if (!le.isEmpty()) {
-			fail("Expecting the following elements:\n" + le.toString() + "\nActual elements are:\n" +
-					Iterables.toString(actual) + "\nExpected elements are:\n" + Iterables.toString(expected));
+			throw new AssertionFailedError("Expecting the following elements:\n" + le.toString(),
+					toString(expected),
+					toString(actual));
 		}
+	}
+
+	private static String toString(Iterable<?> iterable) {
+		final StringBuilder buf = new StringBuilder();
+		if (iterable != null) {
+			final List<String> elements = new ArrayList<>();
+			for (final Object obj : iterable) {
+				if (obj == null) {
+					elements.add("null");
+				} else {
+					elements.add("<" + obj.toString() + ">");
+				}
+			}
+			final String[] tab = new String[elements.size()];
+			elements.toArray(tab);
+			Arrays.sort(tab);
+			for (final String obj : tab) {
+				buf.append(obj).append("\n");
+			}
+		}
+		return buf.toString();
 	}
 
 	/** Test if the actual collection/iterable contains at least all the expected objects.
