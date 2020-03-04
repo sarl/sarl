@@ -34,7 +34,10 @@ import java.util.function.Supplier
  */
 interface EventBusFactory {
 
-	/** Create the event bus. */
-	def createEventBus(provider : Supplier<InternalSchedules>) : EventBus
+	/** Create the event bus.
+	 * 
+	 * @param taskSchedulerProvider a provider of scheduler for the agent tasks that may be invoked on demand.
+	 */
+	def createEventBus(taskSchedulerProvider : Supplier<InternalSchedules>) : EventBus
 
 }

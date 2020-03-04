@@ -35,8 +35,8 @@ import java.util.function.Supplier
  */
 class DefaultEventBusFactory implements EventBusFactory {
 
-	override createEventBus(provider : Supplier<InternalSchedules>) : EventBus {
-		new EventBus(provider, new BehaviorGuardEvaluatorRegistry)
+	override createEventBus(taskSchedulerProvider : Supplier<InternalSchedules>) : EventBus {
+		new EventBus(taskSchedulerProvider, new BehaviorGuardEvaluatorRegistry)
 	}
 
 }
