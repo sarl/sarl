@@ -24,9 +24,7 @@ import io.sarl.core.Logging
 import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.Event
-import io.sarl.lang.core.SREutils
 import io.sarl.lang.core.Skill
-import io.sarl.lang.util.ClearableReference
 import io.sarl.sre.capacities.InformedEventListener
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.capacities.InternalSchedules
@@ -60,21 +58,14 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 
 	var eventBuffer : ConcurrentLinkedDeque<Event> = null
 
-	var scheduleSkillReference : ClearableReference<InternalSchedules>
-
 	@SuppressWarnings("raw_type")
 	@Inject
 	@PrivateAPI(isCallerOnly = true)
 	new (busFactory : EventBusFactory) {
 		this.eventBus = busFactory.createEventBus [
-			var sk = this.scheduleSkillReference?.get
-			if (sk === null) {
-				var ref : ClearableReference = SREutils::getInternalSkillReference(getOwner, typeof(InternalSchedules))
-				assert ref !== null
-				this.scheduleSkillReference = ref as ClearableReference<InternalSchedules>
-				sk = this.scheduleSkillReference.get
-			}
-			return sk
+			var instance = typeof(InternalSchedules).getSkill
+			assert instance !== null, "the owner of the InternalEventBusSkill must also have an InternalSchedules skill"
+			return instance
 		]
 	}
 
@@ -179,12 +170,13 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 	def fireEventAndWait(^event : Event, gatherEvents : boolean, thrownExceptions : boolean,
 		listener : Object) : ConcurrentLinkedDeque<Event> {
 		if (getLife(owner).state.blockingEventHandling) {
+			val logger = getLogger
 			if (gatherEvents) {
 				var wasEnabled : boolean = this.isEventBufferEnabled
 				this.isEventBufferEnabled = true
 
 				try {
-					this.eventBus.immediateDispatchTo(listener, ^event, thrownExceptions, getLogger)
+					this.eventBus.immediateDispatchTo(listener, ^event, thrownExceptions, logger)
 				} finally {
 					this.isEventBufferEnabled = wasEnabled
 				}
@@ -194,19 +186,20 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 				return cache
 
 			}
-			this.eventBus.immediateDispatchTo(listener, ^event, thrownExceptions, getLogger)
+			this.eventBus.immediateDispatchTo(listener, ^event, thrownExceptions, logger)
 		}
 		return new ConcurrentLinkedDeque<Event>
 	}
 
 	def fireEventAndWait(^event : Event, gatherEvents : boolean, thrownExceptions : boolean) : Iterable<Event> {
 		if (getLife(owner).state.blockingEventHandling) {
+			val logger = getLogger
 			if (gatherEvents) {
 				var wasEnabled : boolean = this.isEventBufferEnabled
 				this.isEventBufferEnabled = true
 
 				try {
-					this.eventBus.immediateDispatch(^event, thrownExceptions, getLogger)
+					this.eventBus.immediateDispatch(^event, thrownExceptions, logger)
 				} finally {
 					this.isEventBufferEnabled = wasEnabled
 				}
@@ -216,7 +209,7 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 				return cache
 
 			}
-			this.eventBus.immediateDispatch(^event, thrownExceptions, getLogger)
+			this.eventBus.immediateDispatch(^event, thrownExceptions, logger)
 		}
 		return emptyList
 	}
