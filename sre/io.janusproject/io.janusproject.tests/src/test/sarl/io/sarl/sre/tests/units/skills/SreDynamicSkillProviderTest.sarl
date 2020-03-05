@@ -33,7 +33,7 @@ import io.sarl.core.Time
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.Capacity
 import io.sarl.lang.core.Skill
-import io.sarl.lang.util.ClearableReference
+import io.sarl.lang.util.AtomicClearableReference
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.capacities.InternalSchedules
 import io.sarl.sre.capacities.MicroKernelCapacity
@@ -48,14 +48,14 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
-import org.mockito.ArgumentCaptor
 
-import static io.sarl.tests.api.tools.TestAssertions.*
-import static org.junit.jupiter.api.Assertions.*
 import static org.mockito.ArgumentMatchers.*
 import static org.mockito.Mockito.*
 
+import static extension io.sarl.tests.api.tools.TestAssertions.*
 import static extension io.sarl.tests.api.tools.TestMockito.mock
+import static extension org.junit.jupiter.api.Assertions.*
+import static extension org.mockito.ArgumentCaptor.*
 import static extension org.mockito.Mockito.spy
 import static extension org.mockito.Mockito.times
 import static extension org.mockito.Mockito.verify
@@ -96,23 +96,21 @@ class SreDynamicSkillProviderTest {
 
 	private def doInstallSkillTest(capType : Class<? extends Capacity>, adds : Class<? extends Capacity>*) {
 		var reference = this.provider.installSkill(^agent, capType)
-		assertNotNull(reference)
+		reference.assertNotNull
 		var ^skill = reference.get
-		assertNotNull(^skill)
-		assertInstanceOf(capType, ^skill)
+		^skill.assertNotNull
+		capType.assertInstanceOf(^skill)
 		
-		var capturedAgent = ArgumentCaptor::forClass(typeof(Agent))
-		var capturedCapacity = ArgumentCaptor::forClass(typeof(Class[]))
-		var capturedSkill = ArgumentCaptor::forClass(typeof(Skill))
+		var capturedAgent = typeof(Agent).forClass
+		var capturedCapacity = typeof(Class[]).forClass
+		var capturedSkill = typeof(Skill).forClass
 		this.provider.verify(1.times).registerSkill(capturedAgent.capture, capturedCapacity.capture, capturedSkill.capture)
-		assertEquals(this.^agent, capturedAgent.value)
+		this.^agent.assertEquals(capturedAgent.value)
 		var caps = <Class<? extends Capacity>>newArrayList
 		caps += capType
 		caps.addAll(Arrays::asList(adds))
-		assertContainsCollection(
-				caps,
-				Arrays::asList(capturedCapacity.value))
-		assertEquals(^skill, capturedSkill.value)
+		caps.assertContainsCollection(Arrays::asList(capturedCapacity.value))
+		^skill.assertEquals(capturedSkill.value)
 	}
 
 	@Test
@@ -156,6 +154,21 @@ class SreDynamicSkillProviderTest {
 	}
 
 	@Test
+	def installSkill_Schedules_InternalSchedules {
+		var reference0 = this.provider.installSkill(^agent, typeof(Schedules))
+		reference0.assertNotNull
+		var skill0 = reference0.get
+		skill0.assertNotNull
+		//
+		var reference1 = this.provider.installSkill(^agent, typeof(InternalSchedules))
+		reference1.assertNotNull
+		var skill1 = reference1.get
+		skill1.assertNotNull
+		//
+		skill0.assertNotSame(skill1)
+	}
+	
+	@Test
 	def installSkill_Behaviors {
 		doInstallSkillTest(typeof(Behaviors))
 	}
@@ -171,8 +184,8 @@ class SreDynamicSkillProviderTest {
 	}
 
 	private static class MockedDynamicSkillProvider extends SreDynamicSkillProvider {
-		override registerSkill(^agent : Agent, ^capacity : Class<? extends Capacity>[], ^skill : Skill) : ClearableReference<Skill> {
-			return new ClearableReference(^skill)
+		override registerSkill(^agent : Agent, ^capacity : Class<? extends Capacity>[], ^skill : Skill) : AtomicClearableReference<Skill> {
+			return new AtomicClearableReference(^skill)
 		}
 	}
 }
