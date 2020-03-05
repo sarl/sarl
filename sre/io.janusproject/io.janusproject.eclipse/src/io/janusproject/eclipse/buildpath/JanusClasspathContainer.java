@@ -69,6 +69,7 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 			"com.fasterxml.jackson.dataformat.jackson-dataformat-xml", //$NON-NLS-1$
 			"com.fasterxml.jackson.dataformat.jackson-dataformat-yaml", //$NON-NLS-1$
 			"com.fasterxml.jackson.module.jackson-module-jaxb-annotations", //$NON-NLS-1$
+			"java-uuid-generator", //$NON-NLS-1$
 			"org.yaml.snakeyaml", //$NON-NLS-1$
 			"jakarta.xml.bind-api", //$NON-NLS-1$
 			"io.bootique", //$NON-NLS-1$
