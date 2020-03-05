@@ -47,6 +47,7 @@ import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.DefaultSkill;
 import io.sarl.lang.core.Event;
+import io.sarl.lang.core.SREutils;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.UnimplementedCapacityException;
 import io.sarl.lang.util.AtomicClearableReference;
@@ -451,6 +452,94 @@ public class AgentTest extends AbstractSarlTest {
 		assertSame(ref0, ref1);
 	}
 
+	@Test
+	public void getSkill_noRegistration() throws Exception {
+		assertException(UnimplementedCapacityException.class, () -> {
+			this.agent.$getSkill(Capacity4.class);
+		});
+		//
+		assertException(UnimplementedCapacityException.class, () -> {
+			this.agent.$getSkill(Capacity5.class);
+		});
+	}
+
+	@Test
+	public void getSkill_registrationSkill6() throws Exception {
+		Skill expected = new Skill6();
+		SREutils.setInternalSkill(this.agent, expected, new Class[0]);
+		//
+		AtomicClearableReference<Skill> actual = this.agent.$getSkill(Capacity4.class);
+		assertNotNull(actual);
+		assertSame(expected, actual.get());
+		//
+		assertException(UnimplementedCapacityException.class, () -> {
+			this.agent.$getSkill(Capacity5.class);
+		});
+	}
+
+	@Test
+	public void getSkill_registrationSkill7() throws Exception {
+		Skill expected = new Skill7();
+		SREutils.setInternalSkill(this.agent, expected, new Class[0]);
+		//
+		AtomicClearableReference<Skill> actual0 = this.agent.$getSkill(Capacity4.class);
+		assertNotNull(actual0);
+		assertSame(expected, actual0.get());
+		//
+		AtomicClearableReference<Skill> actual1 = this.agent.$getSkill(Capacity5.class);
+		assertNotNull(actual1);
+		assertSame(expected, actual1.get());
+	}
+
+	@Test
+	public void getSkill_registrationSkill6_clearReference() throws Exception {
+		Skill expected = new Skill6();
+		SREutils.setInternalSkill(this.agent, expected, new Class[0]).clear();
+		//
+		assertException(UnimplementedCapacityException.class, () -> {
+			this.agent.$getSkill(Capacity4.class);
+		});
+		//
+		assertException(UnimplementedCapacityException.class, () -> {
+			this.agent.$getSkill(Capacity5.class);
+		});
+	}
+
+	@Test
+	public void getSkill_registrationSkill7_clearReference0() throws Exception {
+		Skill expected = new Skill7();
+		// The following line clear the Capacity5 reference only.
+		SREutils.setInternalSkill(this.agent, expected, new Class[0]).clear();
+		//
+		AtomicClearableReference<Skill> actual = this.agent.$getSkill(Capacity4.class);
+		assertNotNull(actual);
+		assertSame(expected, actual.get());
+		assertException(UnimplementedCapacityException.class, () -> {
+			this.agent.$getSkill(Capacity5.class);
+		});
+		//
+		assertException(UnimplementedCapacityException.class, () -> {
+			this.agent.$getSkill(Capacity5.class);
+		});
+	}
+
+	@Test
+	public void getSkill_registrationSkill7_clearReference1() throws Exception {
+		Skill expected = new Skill7();
+		// The following line clear the Capacity5 reference only.
+		SREutils.setInternalSkill(this.agent, expected, new Class[0]).clear();
+		// The following line clear the Capacity4 reference only.
+		SREutils.getInternalSkillReference(this.agent, Capacity4.class).clear();
+		//
+		assertException(UnimplementedCapacityException.class, () -> {
+			this.agent.$getSkill(Capacity4.class);
+		});
+		//
+		assertException(UnimplementedCapacityException.class, () -> {
+			this.agent.$getSkill(Capacity5.class);
+		});
+	}
+
 	/** Only for making public several protected methods.
 	 *
 	 * @author $Author: sgalland$
@@ -470,7 +559,6 @@ public class AgentTest extends AbstractSarlTest {
 		public <S extends Skill> S setSkill_Fake(S skill, Class<? extends Capacity>... capacity) {
 			return setSkill(skill, capacity);
 		}
-
 		
 		@Override
 		public AtomicClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity) {
@@ -573,6 +661,50 @@ public class AgentTest extends AbstractSarlTest {
 	 */
 	private static class Skill3 extends Skill {
 		public Skill3() {
+			//
+		}
+	}
+
+	/**
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static interface Capacity4 extends Capacity {
+		//
+	}
+
+	/**
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static interface Capacity5 extends Capacity4 {
+		//
+	}
+
+	/**
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static class Skill6 extends Skill implements Capacity4 {
+		public Skill6() {
+			//
+		}
+	}
+
+	/**
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static class Skill7 extends Skill implements Capacity5 {
+		public Skill7() {
 			//
 		}
 	}

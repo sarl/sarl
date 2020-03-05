@@ -57,6 +57,8 @@ import io.sarl.lang.util.OutParameter;
 @SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
 public class Agent extends AgentProtectedAPIObject implements Identifiable {
 
+	private static final DynamicSkillProvider SINGLETON = (it0, it1) -> null;
+
 	private final UUID id;
 
 	private final UUID parentID;
@@ -125,7 +127,11 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 			DynamicSkillProvider skillProvider) {
 		this.parentID = parentID;
 		this.id = (agentID == null) ? UUID.randomUUID() : agentID;
-		this.skillProvider = skillProvider;
+		if (skillProvider == null) {
+			this.skillProvider = SINGLETON;
+		} else {
+			this.skillProvider = skillProvider;
+		}
 	}
 
 	@Override
@@ -160,7 +166,11 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	 * @since 0.6
 	 */
 	void $setDynamicSkillProvider(DynamicSkillProvider provider) {
-		this.skillProvider = provider;
+		if (provider == null) {
+			this.skillProvider = SINGLETON;
+		} else {
+			this.skillProvider = provider;
+		}
 	}
 
 	/** Replies the skill repository.
@@ -359,39 +369,67 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	@Pure
 	protected AtomicClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity) {
 		AtomicClearableReference<Skill> skill = $getSkillRepository().get(capacity);
+		// Check if the stored skill is still not empty
+		if (skill != null) {
+			final Skill s = skill.get();
+			if (s == null) {
+				skill = null;
+			}
+		}
 		if (skill == null) {
 			// Try to load dynamically the skill
-			final DynamicSkillProvider dsp = this.skillProvider;
-			if (dsp != null) {
-				final ClearableReference<Skill> reference = dsp.installSkill(this, capacity);
-				if (reference != null) {
-					return reference;
-				}
+			skill = createSkillFromProvider(capacity);
+			if (skill == null) {
+				// Use the default skill declaration if present.
+				skill = createDefaultSkill(capacity);
 			}
-			// Use the default skill declaration if present.
-			final DefaultSkill annotation = capacity.getAnnotation(DefaultSkill.class);
-			if (annotation != null) {
-				try {
-					final Class<? extends Skill> type = annotation.value();
-					Constructor<? extends Skill> cons;
-					try {
-						cons = type.getConstructor(Agent.class);
-						cons.setAccessible(true);
-						final Skill skillInstance = cons.newInstance(this);
-						return $setSkill(skillInstance);
-					} catch (Throwable exception) {
-						cons = type.getConstructor();
-					}
-					cons.setAccessible(true);
-					final Skill skillInstance = cons.newInstance();
-					return $setSkill(skillInstance);
-				} catch (Throwable exception) {
-					throw new UnimplementedCapacityException(capacity, getID(), exception);
-				}
+			if (skill == null) {
+				throw new UnimplementedCapacityException(capacity, getID());
 			}
-			throw new UnimplementedCapacityException(capacity, getID());
 		}
 		return skill;
+	}
+
+	private AtomicClearableReference<Skill> createSkillFromProvider(Class<? extends Capacity> capacity) {
+		assert this.skillProvider != null;
+		final AtomicClearableReference<Skill> reference = this.skillProvider.installSkill(this, capacity);
+		if (reference != null) {
+			final Skill s = reference.get();
+			if (s != null) {
+				return reference;
+			}
+		}
+		return null;
+	}
+
+	private AtomicClearableReference<Skill> createDefaultSkill(Class<? extends Capacity> capacity) {
+		final DefaultSkill annotation = capacity.getAnnotation(DefaultSkill.class);
+		if (annotation != null) {
+			try {
+				final Class<? extends Skill> type = annotation.value();
+				Constructor<? extends Skill> cons;
+				try {
+					cons = type.getConstructor(Agent.class);
+					cons.setAccessible(true);
+					final Skill skillInstance = cons.newInstance(this);
+					return $setSkill(skillInstance);
+				} catch (Throwable exception) {
+					cons = type.getConstructor();
+				}
+				cons.setAccessible(true);
+				final Skill skillInstance = cons.newInstance();
+				final AtomicClearableReference<Skill> ref = $setSkill(skillInstance);
+				if (ref != null) {
+					final Skill s = ref.get();
+					if (s != null) {
+						return ref;
+					}
+				}
+			} catch (Throwable exception) {
+				throw new UnimplementedCapacityException(capacity, getID(), exception);
+			}
+		}
+		return null;
 	}
 
 	@Override
