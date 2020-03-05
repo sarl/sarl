@@ -21,6 +21,10 @@
 package io.sarl.sre.services.lifecycle
 
 import io.sarl.lang.core.DynamicSkillProvider
+import io.sarl.lang.core.Agent
+import io.sarl.lang.core.Capacity
+import io.sarl.lang.util.AtomicClearableReference
+import io.sarl.lang.core.Skill
 
 /** 
  * Abstract implementation of a factory of agent creator that provides the parent ID and agent ID to the created agent.
@@ -44,27 +48,44 @@ abstract class AbstractCreatorFactory implements AgentCreatorProvider {
 		this.skillProvider = skillProvider
 	}
 
+	@Pure
+	private static def extract(providers : Iterable<DynamicSkillProvider>, ^agent : Agent,
+		^capacity : Class<? extends Capacity>) : AtomicClearableReference<Skill> {
+		for (provider : providers) {
+			var r = provider.installSkill(^agent, ^capacity)
+			if (r !== null) {
+				var s = r.get
+				if (s !== null) {
+					return r
+				}
+			}
+		}
+		return null
+	}
+
 	/** Create a skill provider that is delegating the creation to a set of providers.
 	 *
 	 * @param providers is the list of skill providers to be integrated into the skill provider.
 	 * @return the skill provider to give to the agents.
 	 */
-	protected def mergeSkillProviders(providers : Iterable<DynamicSkillProvider>) : DynamicSkillProvider {
+	def mergeSkillProviders(providers : Iterable<DynamicSkillProvider>) : DynamicSkillProvider {
 		if (providers !== null) {
 			var iterator = providers.iterator
 			if (iterator.hasNext) {
+				if (this.skillProvider === null) {
+					return [ ^agent, ^capacity |
+						return providers.extract(^agent, ^capacity)
+					]
+				}
 				return [ ^agent, ^capacity |
 					var r = this.skillProvider.installSkill(^agent, ^capacity)
 					if (r !== null) {
-						return r
-					}
-					for (provider : providers) {
-						r = provider.installSkill(^agent, ^capacity)
-						if (r !== null) {
+						var s = r.get
+						if (s !== null) {
 							return r
 						}
 					}
-					return null
+					return providers.extract(^agent, ^capacity)
 				]
 			}
 		}
