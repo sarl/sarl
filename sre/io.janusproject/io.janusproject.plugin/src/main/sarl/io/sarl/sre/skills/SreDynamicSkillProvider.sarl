@@ -35,7 +35,6 @@ import io.sarl.lang.core.Capacity
 import io.sarl.lang.core.DynamicSkillProvider
 import io.sarl.lang.core.SREutils
 import io.sarl.lang.core.Skill
-import io.sarl.lang.util.ClearableReference
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.capacities.InternalSchedules
 import io.sarl.sre.capacities.MicroKernelCapacity
@@ -51,6 +50,7 @@ import io.sarl.sre.skills.internal.InternalEventBusSkill
 import io.sarl.sre.skills.internal.MicroKernelSkill
 import javax.inject.Inject
 import javax.inject.Singleton
+import io.sarl.lang.util.AtomicClearableReference
 
 /** 
  * Provider of the built-in capacities of the SRE platform.
@@ -128,7 +128,7 @@ class SreDynamicSkillProvider implements DynamicSkillProvider {
 		return null
 	}
 
-	def installSkill(^agent : Agent, ^capacity : Class<? extends Capacity>) : ClearableReference<Skill> {
+	def installSkill(^agent : Agent, ^capacity : Class<? extends Capacity>) : AtomicClearableReference<Skill> {
 		var pair = ^capacity.newSkillInstance
 		var ^skill : Skill = pair?.key
 		if (^skill !== null) {
@@ -143,8 +143,7 @@ class SreDynamicSkillProvider implements DynamicSkillProvider {
 
 	/** Register the given skill.
 	 */
-	protected def registerSkill(^agent : Agent, capacities : Class<? extends Capacity>[],
-		^skill : Skill) : ClearableReference<Skill> {
+	protected def registerSkill(^agent : Agent, capacities : Class<? extends Capacity>[], ^skill : Skill) : AtomicClearableReference<Skill> {
 		SREutils::setInternalSkill(^agent, ^skill, capacities)
 	}
 

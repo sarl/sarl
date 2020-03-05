@@ -28,7 +28,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import io.sarl.lang.util.ClearableReference;
+import io.sarl.lang.util.AtomicClearableReference;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /**
@@ -38,20 +38,20 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-public class ClearableReferenceTest extends AbstractSarlTest {
+public class AtomicClearableReferenceTest extends AbstractSarlTest {
 
 	@Mock
 	private Object referencedObject;
 
-	private ClearableReference<Object> reference;
+	private AtomicClearableReference<Object> reference;
 
 	@BeforeEach
 	public void setUp() {
 		this.reference = mockReference(this.referencedObject);
 	}
 
-	private static ClearableReference<Object> mockReference(Object object) {
-		ClearableReference<Object> reference = new ClearableReference<>(object);
+	private static AtomicClearableReference<Object> mockReference(Object object) {
+		AtomicClearableReference<Object> reference = new AtomicClearableReference<>(object);
 		return spy(reference);
 	}
 

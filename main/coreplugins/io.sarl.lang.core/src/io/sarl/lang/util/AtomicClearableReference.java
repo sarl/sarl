@@ -21,10 +21,17 @@
 
 package io.sarl.lang.util;
 
+import java.io.Serializable;
+
 /** A reference to an object that could be clear dynamically.
  *
- * <p>This type does not extends the {@code java.lang.reflect.Reference} because of
+ * <p>This class is thread-safe.
+ *
+ * <p>This type does not extend the {@code java.lang.reflect.Reference} because of
  * the private constructor of this later.
+ *
+ * <p>This type does not extend the {@code java.util.concurrent.atomic.AtomicReference} because
+ * we don't want to exhibit several of its public functions.
  *
  * @param <T> the type of the referenced object.
  * @author $Author: sgalland$
@@ -32,16 +39,28 @@ package io.sarl.lang.util;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class ClearableReference<T> {
+public class AtomicClearableReference<T> implements Serializable, Cloneable {
 
-	private T reference;
+	private static final long serialVersionUID = -2985132547428365532L;
+
+	private volatile T reference;
 
 	/** Constructor.
 	 *
 	 * @param object the object to reference to.
 	 */
-	public ClearableReference(T object) {
+	public AtomicClearableReference(T object) {
 		this.reference = object;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public AtomicClearableReference<T> clone() {
+		try {
+			return (AtomicClearableReference<T>) super.clone();
+		} catch (CloneNotSupportedException exception) {
+			throw new Error(exception);
+		}
 	}
 
 	/** Returns this reference object's referent.
@@ -56,7 +75,7 @@ public class ClearableReference<T> {
 	/**
 	 * Clears this reference object.
 	 *
-	 * @return the cleared reference.
+	 * @return the old reference.
 	 */
 	public T clear() {
 		final T ref = this.reference;

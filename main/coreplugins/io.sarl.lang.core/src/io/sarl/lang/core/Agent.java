@@ -39,7 +39,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.annotation.SarlSpecification;
-import io.sarl.lang.util.ClearableReference;
+import io.sarl.lang.util.AtomicClearableReference;
 import io.sarl.lang.util.OutParameter;
 
 
@@ -63,7 +63,7 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 
 	/** Skill repository.
 	 */
-	private ConcurrentMap<Class<? extends Capacity>, ClearableReference<Skill>> skillRepository = new ConcurrentHashMap<>();
+	private ConcurrentMap<Class<? extends Capacity>, AtomicClearableReference<Skill>> skillRepository = new ConcurrentHashMap<>();
 
 	private DynamicSkillProvider skillProvider;
 
@@ -169,7 +169,7 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	 *
 	 * @return the skill repository.
 	 */
-	ConcurrentMap<Class<? extends Capacity>, ClearableReference<Skill>> $getSkillRepository() {
+	ConcurrentMap<Class<? extends Capacity>, AtomicClearableReference<Skill>> $getSkillRepository() {
 		return this.skillRepository;
 	}
 
@@ -183,8 +183,8 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	 * @see #$mapCapacityGetNew(Class, Skill)
 	 * @see #$mapCapacityGetOldAndNew(Class, Skill)
 	 */
-	ClearableReference<Skill> $mapCapacityGetOld(Class<? extends Capacity> capacity, Skill skill) {
-		return $getSkillRepository().put(capacity, new ClearableReference<>(skill));
+	AtomicClearableReference<Skill> $mapCapacityGetOld(Class<? extends Capacity> capacity, Skill skill) {
+		return $getSkillRepository().put(capacity, new AtomicClearableReference<>(skill));
 	}
 
 	/** Create the mapping between the capacity and the skill.
@@ -197,8 +197,8 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	 * @see #$mapCapacityGetOld(Class, Skill)
 	 * @see #$mapCapacityGetOldAndNew(Class, Skill)
 	 */
-	ClearableReference<Skill> $mapCapacityGetNew(Class<? extends Capacity> capacity, Skill skill) {
-		final ClearableReference<Skill> newReference = new ClearableReference<>(skill);
+	AtomicClearableReference<Skill> $mapCapacityGetNew(Class<? extends Capacity> capacity, Skill skill) {
+		final AtomicClearableReference<Skill> newReference = new AtomicClearableReference<>(skill);
 		$getSkillRepository().put(capacity, newReference);
 		return newReference;
 	}
@@ -214,9 +214,9 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	 * @see #$mapCapacityGetOld(Class, Skill)
 	 * @see #$mapCapacityGetNew(Class, Skill)
 	 */
-	Pair<ClearableReference<Skill>, ClearableReference<Skill>> $mapCapacityGetOldAndNew(Class<? extends Capacity> capacity, Skill skill) {
-		final ClearableReference<Skill> newReference = new ClearableReference<>(skill);
-		final ClearableReference<Skill> oldReference = $getSkillRepository().put(capacity, newReference);
+	Pair<AtomicClearableReference<Skill>, AtomicClearableReference<Skill>> $mapCapacityGetOldAndNew(Class<? extends Capacity> capacity, Skill skill) {
+		final AtomicClearableReference<Skill> newReference = new AtomicClearableReference<>(skill);
+		final AtomicClearableReference<Skill> oldReference = $getSkillRepository().put(capacity, newReference);
 		return Pair.of(oldReference, newReference);
 	}
 
@@ -250,15 +250,15 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	 * @since 16.0
 	 */
 	@SafeVarargs
-	protected final ClearableReference<Skill> $setSkill(Skill skill, Class<? extends Capacity>... capacities) {
+	protected final AtomicClearableReference<Skill> $setSkill(Skill skill, Class<? extends Capacity>... capacities) {
 		assert skill != null : "the skill parameter must not be null"; //$NON-NLS-1$
 		skill.setOwner(this);
-		final OutParameter<ClearableReference<Skill>> newRef = new OutParameter<>();
+		final OutParameter<AtomicClearableReference<Skill>> newRef = new OutParameter<>();
 		if (capacities == null || capacities.length == 0) {
 			runOnImplementedCapacities(skill, capacity -> {
-				final ClearableReference<Skill> oldS;
+				final AtomicClearableReference<Skill> oldS;
 				if (newRef.get() == null) {
-					final Pair<ClearableReference<Skill>, ClearableReference<Skill>> pair = $mapCapacityGetOldAndNew(capacity, skill);
+					final Pair<AtomicClearableReference<Skill>, AtomicClearableReference<Skill>> pair = $mapCapacityGetOldAndNew(capacity, skill);
 					newRef.set(pair.getValue());
 					oldS = pair.getKey();
 				} else {
@@ -281,9 +281,9 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 							"the skill must implement the given capacity " //$NON-NLS-1$
 							+ capacity.getName());
 				}
-				final ClearableReference<Skill> oldS;
+				final AtomicClearableReference<Skill> oldS;
 				if (newRef.get() == null) {
-					final Pair<ClearableReference<Skill>, ClearableReference<Skill>> pair = $mapCapacityGetOldAndNew(capacity, skill);
+					final Pair<AtomicClearableReference<Skill>, AtomicClearableReference<Skill>> pair = $mapCapacityGetOldAndNew(capacity, skill);
 					newRef.set(pair.getValue());
 					oldS = pair.getKey();
 				} else {
@@ -319,7 +319,7 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	@Override
 	protected <S extends Capacity> S clearSkill(Class<S> capacity) {
 		assert capacity != null;
-		final ClearableReference<Skill> reference = $getSkillRepository().remove(capacity);
+		final AtomicClearableReference<Skill> reference = $getSkillRepository().remove(capacity);
 		if (reference != null) {
 			final Skill skill = reference.clear();
 			if (skill != null) {
@@ -334,7 +334,9 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	@Pure
 	protected final <S extends Capacity> S getSkill(Class<S> capacity) {
 		assert capacity != null;
-		return $castSkill(capacity, $getSkill(capacity));
+		final AtomicClearableReference<Skill> skill = $getSkill(capacity);
+		assert skill != null;
+		return $castSkill(capacity, skill);
 	}
 
 	/** Cast the skill reference to the given capacity type.
@@ -345,7 +347,7 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 	 * @return the skill casted to the given capacity.
 	 */
 	@Pure
-	protected <S extends Capacity> S $castSkill(Class<S> capacity, ClearableReference<Skill> skillReference) {
+	protected <S extends Capacity> S $castSkill(Class<S> capacity, AtomicClearableReference<Skill> skillReference) {
 		final S skill = capacity.cast(skillReference.get());
 		if (skill == null) {
 			throw new UnimplementedCapacityException(capacity, getID());
@@ -355,8 +357,8 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 
 	@Override
 	@Pure
-	protected ClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity) {
-		final ClearableReference<Skill> skill = $getSkillRepository().get(capacity);
+	protected AtomicClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity) {
+		AtomicClearableReference<Skill> skill = $getSkillRepository().get(capacity);
 		if (skill == null) {
 			// Try to load dynamically the skill
 			final DynamicSkillProvider dsp = this.skillProvider;
@@ -398,7 +400,7 @@ public class Agent extends AgentProtectedAPIObject implements Identifiable {
 		assert capacity != null;
 		if (!$getSkillRepository().containsKey(capacity)) {
 			if (this.skillProvider != null) {
-				final ClearableReference<Skill> reference = this.skillProvider.installSkill(this, capacity);
+				final AtomicClearableReference<Skill> reference = this.skillProvider.installSkill(this, capacity);
 				if (reference != null) {
 					return true;
 				}

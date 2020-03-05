@@ -23,7 +23,7 @@ package io.sarl.lang.core;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import io.sarl.lang.util.ClearableReference;
+import io.sarl.lang.util.AtomicClearableReference;
 
 
 
@@ -49,6 +49,6 @@ public interface DynamicSkillProvider {
 	 * @return the skill that is installed into the agent.
 	 */
 	@Pure
-	ClearableReference<Skill> installSkill(Agent agent, Class<? extends Capacity> capacity);
+	AtomicClearableReference<Skill> installSkill(Agent agent, Class<? extends Capacity> capacity);
 
 }

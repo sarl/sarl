@@ -27,7 +27,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import io.sarl.lang.annotation.PrivateAPI;
 import io.sarl.lang.core.Skill.UninstallationStage;
-import io.sarl.lang.util.ClearableReference;
+import io.sarl.lang.util.AtomicClearableReference;
 
 /** Utilities for accessing to the part of the SARL API that is dedicated to the
  * SARL run-time environments (SRE).
@@ -106,7 +106,7 @@ public final class SREutils {
 	 * @since 0.6
 	 */
 	@Pure
-	public static ClearableReference<Skill> getInternalSkillReference(Agent agent, Class<? extends Capacity> type) {
+	public static AtomicClearableReference<Skill> getInternalSkillReference(Agent agent, Class<? extends Capacity> type) {
 		return agent.$getSkill(type);
 	}
 
@@ -121,7 +121,7 @@ public final class SREutils {
 	 */
 	@Pure
 	public static <S extends Capacity> S castInternalSkillReference(Agent agent,
-			ClearableReference<Skill> reference, Class<S> type) {
+			AtomicClearableReference<Skill> reference, Class<S> type) {
 		return agent.$castSkill(type, reference);
 	}
 
@@ -133,7 +133,7 @@ public final class SREutils {
 	 * @return the reference to the skill.
 	 * @since 0.10
 	 */
-	public static ClearableReference<Skill> setInternalSkill(Agent agent, Skill skill, Class<? extends Capacity>[] capacities) {
+	public static AtomicClearableReference<Skill> setInternalSkill(Agent agent, Skill skill, Class<? extends Capacity>[] capacities) {
 		assert capacities != null;
 		return agent.$setSkill(skill, capacities);
 	}
@@ -164,7 +164,7 @@ public final class SREutils {
 	 * @deprecated since 0.10, no replacement
 	 */
 	@Deprecated
-	public static ClearableReference<Skill> createSkillMapping(Agent agent, Class<? extends Capacity> capacity, Skill skill) {
+	public static AtomicClearableReference<Skill> createSkillMapping(Agent agent, Class<? extends Capacity> capacity, Skill skill) {
 		return agent.$mapCapacityGetNew(capacity, skill);
 	}
 
@@ -182,7 +182,7 @@ public final class SREutils {
 	 * @deprecated since 0.10, no replacement
 	 */
 	@Deprecated
-	public static ClearableReference<Skill> createSkillMappingGetOld(Agent agent, Class<? extends Capacity> capacity, Skill skill) {
+	public static AtomicClearableReference<Skill> createSkillMappingGetOld(Agent agent, Class<? extends Capacity> capacity, Skill skill) {
 		return agent.$mapCapacityGetOld(capacity, skill);
 	}
 
@@ -194,7 +194,7 @@ public final class SREutils {
 	 * @return the repository.
 	 * @since 0.6
 	 */
-	public static ConcurrentMap<Class<? extends Capacity>, ClearableReference<Skill>> getSkillRepository(Agent agent) {
+	public static ConcurrentMap<Class<? extends Capacity>, AtomicClearableReference<Skill>> getSkillRepository(Agent agent) {
 		return agent.$getSkillRepository();
 	}
 

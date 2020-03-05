@@ -40,7 +40,6 @@ import io.sarl.lang.core.SREutils
 import io.sarl.lang.core.Skill
 import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
-import io.sarl.lang.util.ClearableReference
 import io.sarl.sre.services.context.Context
 import io.sarl.sre.services.context.ExternalContextMemberListener
 import io.sarl.sre.services.context.InternalContextMembershipListener
@@ -61,6 +60,7 @@ import io.sarl.core.ParticipantJoined
 import io.sarl.core.ParticipantLeft
 import io.sarl.sre.spaces.SpaceParticipantListenerFactory
 import java.util.concurrent.ConcurrentLinkedDeque
+import io.sarl.lang.util.AtomicClearableReference
 
 /** Emit the space platform events.
  *
@@ -308,9 +308,9 @@ class SubHolonContextEventEmitter implements InternalContextMembershipListener {
 
 	val owner : WeakReference<Agent>
 
-	var behaviorSkill : ClearableReference<Skill>
+	var behaviorSkill : AtomicClearableReference<Skill>
 
-	var loggingSkill : ClearableReference<Skill>
+	var loggingSkill : AtomicClearableReference<Skill>
 
 	/** Constructors.
 	 * 

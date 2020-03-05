@@ -185,7 +185,7 @@ import io.sarl.lang.typesystem.IOperationHelper;
 import io.sarl.lang.typesystem.InheritanceHelper;
 import io.sarl.lang.typesystem.SARLAnnotationUtil;
 import io.sarl.lang.typesystem.SARLReentrantTypeResolver;
-import io.sarl.lang.util.ClearableReference;
+import io.sarl.lang.util.AtomicClearableReference;
 import io.sarl.lang.util.JvmVisibilityComparator;
 import io.sarl.lang.util.Utils;
 
@@ -2088,7 +2088,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				field.setVisibility(JvmVisibility.PRIVATE);
 				field.setSimpleName(fieldName);
 				field.setTransient(true);
-				final JvmType clearableReferenceType = this.typeReferences.findDeclaredType(ClearableReference.class, container);
+				final JvmType clearableReferenceType = this.typeReferences.findDeclaredType(AtomicClearableReference.class, container);
 				final JvmTypeReference skillClearableReference = this.typeReferences.createTypeRef(
 						clearableReferenceType,
 						this.typeReferences.createTypeRef(this.typeReferences.findDeclaredType(Skill.class, container)));
@@ -2131,7 +2131,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 				// Add the annotation dedicated to this particular method
 				if (context.isAtLeastJava8()) {
-					context.getPostFinalizationElements().add(() -> {
+					/*context.getPostFinalizationElements().add(() -> {
 						final String inlineExpression = Utils.HIDDEN_MEMBER_CHARACTER
 								+ "castSkill(" + capacityType.getSimpleName() //$NON-NLS-1$
 								+ ".class, ($0" + fieldName //$NON-NLS-1$
@@ -2142,7 +2142,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 								+ ".class)) : $0" + fieldName + ")"; //$NON-NLS-1$ //$NON-NLS-2$;
 						this.inlineExpressionCompiler.appendInlineAnnotation(
 								operation, source.eResource().getResourceSet(), inlineExpression, capacityType);
-					});
+					});*/
 				}
 				appendGeneratedAnnotation(operation, context);
 				if (context.getGeneratorConfig2().isGeneratePureAnnotation()) {

@@ -32,7 +32,6 @@ import io.sarl.lang.core.EventListener
 import io.sarl.lang.core.SREutils
 import io.sarl.lang.core.Skill
 import io.sarl.lang.core.SpaceID
-import io.sarl.lang.util.ClearableReference
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.services.context.Context
 import io.sarl.sre.services.logging.LoggingService
@@ -45,6 +44,7 @@ import java.util.logging.Level
 import static extension io.sarl.lang.core.SREutils.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedDeque
+import io.sarl.lang.util.AtomicClearableReference
 
 /** 
  * Describes any information that is required by the SRE for supporting the agent's life. 
@@ -72,9 +72,9 @@ final class AgentLife {
 
 	var defaultContextInstance : ContextReference
 
-	var loggingCapacity : ClearableReference<Skill>
+	var loggingCapacity : AtomicClearableReference<Skill>
 
-	var eventBusCapacity : ClearableReference<Skill>
+	var eventBusCapacity : AtomicClearableReference<Skill>
 
 	/** Replies the data structure that is storing the living data of the agent for the SRE.
 	 * If this data structure does not exists, it is automatically created.
@@ -117,7 +117,7 @@ final class AgentLife {
 	 * @return the logger.
 	 */
 	protected final def getAgentLogger : Logging {
-		var cap : ClearableReference<Skill> = this.loggingCapacity
+		var cap : AtomicClearableReference<Skill> = this.loggingCapacity
 
 		if (cap === null) {
 			cap = this.loggingCapacity
@@ -134,7 +134,7 @@ final class AgentLife {
 	 * @return the event bus.
 	 */
 	final def getEventBus : InternalEventBusCapacity {
-		var cap : ClearableReference<Skill> = this.eventBusCapacity
+		var cap : AtomicClearableReference<Skill> = this.eventBusCapacity
 
 		if (cap === null) {
 			cap = this.eventBusCapacity

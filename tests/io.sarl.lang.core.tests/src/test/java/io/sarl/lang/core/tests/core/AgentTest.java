@@ -49,7 +49,7 @@ import io.sarl.lang.core.DefaultSkill;
 import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.UnimplementedCapacityException;
-import io.sarl.lang.util.ClearableReference;
+import io.sarl.lang.util.AtomicClearableReference;
 import io.sarl.tests.api.AbstractSarlTest;
 
 /**
@@ -428,25 +428,25 @@ public class AgentTest extends AbstractSarlTest {
 		Skill1 so = new Skill1();
 		this.agent.setSkill_Fake(so);
 		//
-		ClearableReference<Skill> ref0 = this.agent.$getSkill(Capacity1.class);
+		AtomicClearableReference<Skill> ref0 = this.agent.$getSkill(Capacity1.class);
 		assertNotNull(ref0);
 		Skill s0 = ref0.get();
 		assertSame(so, s0);
 		//
-		ClearableReference<Skill> ref1 = this.agent.$getSkill(Capacity1.class);
+		AtomicClearableReference<Skill> ref1 = this.agent.$getSkill(Capacity1.class);
 		assertNotNull(ref1);
 		assertSame(ref0, ref1);
 	}
 
 	@Test
 	public void getSkill_defaultskill() throws Exception {
-		ClearableReference<Skill> ref0 = this.agent.$getSkill(Capacity3.class);
+		AtomicClearableReference<Skill> ref0 = this.agent.$getSkill(Capacity3.class);
 		assertNotNull(ref0);
 		Skill s0 = ref0.get();
 		assertNotNull(s0);
 		assertInstanceOf(Skill5.class, s0);
 		//
-		ClearableReference<Skill> ref1 = this.agent.$getSkill(Capacity3.class);
+		AtomicClearableReference<Skill> ref1 = this.agent.$getSkill(Capacity3.class);
 		assertNotNull(ref1);
 		assertSame(ref0, ref1);
 	}
@@ -471,8 +471,9 @@ public class AgentTest extends AbstractSarlTest {
 			return setSkill(skill, capacity);
 		}
 
+		
 		@Override
-		public ClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity) {
+		public AtomicClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity) {
 			return super.$getSkill(capacity);
 		}
 

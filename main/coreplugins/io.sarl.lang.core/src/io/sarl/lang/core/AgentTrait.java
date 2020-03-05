@@ -28,7 +28,7 @@ import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
-import io.sarl.lang.util.ClearableReference;
+import io.sarl.lang.util.AtomicClearableReference;
 
 /** This class represents a part of trait of an agent.
  *
@@ -95,7 +95,9 @@ public abstract class AgentTrait extends AgentProtectedAPIObject {
 	@Pure
 	protected final <S extends Capacity> S getSkill(Class<S> capacity) {
 		assert capacity != null;
-		return $castSkill(capacity, $getSkill(capacity));
+		final AtomicClearableReference<Skill> skill = $getSkill(capacity);
+		assert skill != null;
+		return $castSkill(capacity, skill);
 	}
 
 	/** Cast the skill reference to the given capacity type.
@@ -106,7 +108,7 @@ public abstract class AgentTrait extends AgentProtectedAPIObject {
 	 * @return the skill casted to the given capacity.
 	 */
 	@Pure
-	protected <S extends Capacity> S $castSkill(Class<S> capacity, ClearableReference<Skill> skillReference) {
+	protected <S extends Capacity> S $castSkill(Class<S> capacity, AtomicClearableReference<Skill> skillReference) {
 		if (skillReference != null) {
 			final S skill = capacity.cast(skillReference.get());
 			if (skill != null) {
@@ -117,7 +119,7 @@ public abstract class AgentTrait extends AgentProtectedAPIObject {
 	}
 
 	@Override
-	protected ClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity) {
+	protected AtomicClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity) {
 		final Agent owner = getOwner();
 		if (owner == null) {
 			throw new UnimplementedCapacityException(capacity, null);

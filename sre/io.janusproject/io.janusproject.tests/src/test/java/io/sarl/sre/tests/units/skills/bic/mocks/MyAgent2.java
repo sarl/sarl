@@ -24,7 +24,7 @@ package io.sarl.sre.tests.units.skills.bic.mocks;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Skill;
-import io.sarl.lang.util.ClearableReference;
+import io.sarl.lang.util.AtomicClearableReference;
 import io.sarl.sre.tests.units.skills.bic.LoggingSkillTest;
 
 import java.util.UUID;
@@ -45,8 +45,8 @@ public class MyAgent2 extends Agent {
 	}
 
 	@Override
-	protected ClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity) {
-		return new ClearableReference<>(this.test.skill);
+	protected AtomicClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity) {
+		return new AtomicClearableReference<>(this.test.skill);
 	}
 
 }
