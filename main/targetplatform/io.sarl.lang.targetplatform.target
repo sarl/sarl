@@ -35,6 +35,7 @@
 			<unit id="org.jboss.tools.m2e.jdt.feature.feature.group" version="1.0.1.201209200903"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+			<repository location="http://dependencies.sarl.io"/>
 			<unit id="aopalliance" version="1.0.0"/>
 			<unit id="com.google.guava" version="27.1.0.jre"/>
 			<unit id="com.google.guava.testlib" version="27.1.0.jre"/>
@@ -44,7 +45,7 @@
 			<unit id="com.hazelcast" version="3.11.2"/>
 			<unit id="org.zeromq.jeromq" version="0.5.0"/>
 			<unit id="javax.inject" version="1.0.0"/>
-			<repository location="http://dependencies.sarl.io"/>
+			<unit id="java-uuid-generator" version="4.0.1"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 			<repository location="https://download.eclipse.org/releases/2019-12"/>

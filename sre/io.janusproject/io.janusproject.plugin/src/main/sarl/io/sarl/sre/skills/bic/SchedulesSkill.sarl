@@ -20,6 +20,9 @@
  */
 package io.sarl.sre.skills.bic
 
+import com.fasterxml.uuid.EthernetAddress
+import com.fasterxml.uuid.Generators
+import com.fasterxml.uuid.impl.TimeBasedGenerator
 import io.sarl.core.AgentTask
 import io.sarl.core.Logging
 import io.sarl.core.Time
@@ -38,6 +41,7 @@ import java.text.MessageFormat
 import java.util.Map
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ConcurrentSkipListSet
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.Future
 import java.util.concurrent.TimeUnit
@@ -48,7 +52,6 @@ import javax.inject.Inject
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
 import static io.sarl.sre.services.lifecycle.BehaviorLife.*
-import java.util.concurrent.ConcurrentSkipListSet
 
 /** 
  * Skill that permits to execute tasks with an executor service.
@@ -69,7 +72,15 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 
 	var activeTaskRepository : ConcurrentHashMap<String, TaskDescription> = null
 
-	/** Constructor.
+	/**
+	 * JUG Time based generator used for naming tasks, enough for this kind of missions not for a string unique UUID
+	 * Goal: replace UUID.randomUUID that is way too slow in multithread context
+	 */
+	var uuidTimeBasedGenerator : TimeBasedGenerator = Generators.timeBasedGenerator(EthernetAddress.fromInterface());
+
+
+	/** 
+	 * Constructor.
 	 */
 	@Inject
 	new (service : ExecutorService) {
@@ -139,7 +150,9 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 		var description : TaskDescription = null
 		var realName : String
 		if (name.isNullOrEmpty) {
-			realName = "task-" + UUID::randomUUID.toString
+			// see http://www.cowtowncoder.com/blog/archives/2010/10/entry_429.html
+			//Don't use UUID::randomUUID way too slow
+			realName = "task-" + uuidTimeBasedGenerator.generate().toString
 		} else {
 			realName = name
 

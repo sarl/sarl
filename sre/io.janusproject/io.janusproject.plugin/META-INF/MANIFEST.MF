@@ -32,7 +32,8 @@ Require-Bundle: io.sarl.core;bundle-version="0.11.0",
  org.apache.log4j;bundle-version="1.2.15",
  org.eclipse.xtend.lib;bundle-version="2.20.0",
  stax2-api;bundle-version="4.2.0",
- com.google.guava.failureaccess;bundle-version="1.0.1"
+ com.google.guava.failureaccess;bundle-version="1.0.1",
+ java-uuid-generator;bundle-version="4.0.1"
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %Bundle-Vendor
 Export-Package: io.sarl.sre;
