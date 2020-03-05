@@ -32,6 +32,7 @@ import io.sarl.lang.core.EventListener
 import io.sarl.lang.core.SREutils
 import io.sarl.lang.core.Skill
 import io.sarl.lang.core.SpaceID
+import io.sarl.lang.util.AtomicClearableReference
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.services.context.Context
 import io.sarl.sre.services.logging.LoggingService
@@ -39,12 +40,13 @@ import java.lang.ref.WeakReference
 import java.util.Collections
 import java.util.Map
 import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ConcurrentLinkedDeque
+import java.util.concurrent.ConcurrentLinkedQueue
+import java.util.concurrent.CopyOnWriteArraySet
 import java.util.logging.Level
 
 import static extension io.sarl.lang.core.SREutils.*
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentLinkedDeque
-import io.sarl.lang.util.AtomicClearableReference
 
 /** 
  * Describes any information that is required by the SRE for supporting the agent's life. 
@@ -275,18 +277,18 @@ final class AgentLife {
 	 * @return the contexts from which the agent was removed.
 	 */
 	def stop(skillUninstaller : SkillUninstaller, logger : LoggingService,
-		fireDestroy : boolean = true) : Iterable<ContextReference> {
+		fireDestroy : boolean = true) : ConcurrentLinkedDeque<ContextReference> {
 
 		this.state = AgentState::DYING
 
 		try {
 			// Pre-stage for uninstalling the skills (BIC and user defined)
-			var skills : Iterable<? extends Skill>
+			var skills : CopyOnWriteArraySet<? extends Skill>
 			try {
 				skills = skillUninstaller.uninstallSkillsBeforeDestroy(^agent)
 			} catch (e : Throwable) {
 				logger.kernelLogger.log(Level::SEVERE, e.localizedMessage, e)
-				skills = emptyList
+				skills = new CopyOnWriteArraySet
 			}
 
 			if (fireDestroy) {
@@ -305,7 +307,7 @@ final class AgentLife {
 			}
 
 			// Copy the contexts in which the agents is registered in order to reply them.
-			var enclosingContextsCopy = <ContextReference>newArrayList
+			var enclosingContextsCopy = new ConcurrentLinkedDeque<ContextReference>
 			var contexts = getEnclosingContexts
 
 			enclosingContextsCopy += contexts
@@ -327,7 +329,7 @@ final class AgentLife {
 			return enclosingContextsCopy
 		} catch (e : Throwable) {
 			logger.kernelLogger.log(Level::SEVERE, e.localizedMessage, e)
-			return Collections::emptyList
+			return new ConcurrentLinkedDeque
 		} finally {
 			// Clear the references
 			^agent.setSreSpecificData(null)
