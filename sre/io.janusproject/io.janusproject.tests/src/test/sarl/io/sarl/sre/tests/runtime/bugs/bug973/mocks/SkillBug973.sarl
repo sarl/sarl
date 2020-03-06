@@ -37,16 +37,12 @@ skill SkillBug973 implements CapacityBug973 {
 	def doSomething {
 	}
 
-	protected override uninstall(stage : UninstallationStage) {
-		assert stage !== null
-		switch (stage) {
-			case PRE_DESTROY_EVENT: {
-				this.countBefore.incrementAndGet
-			}
-			case POST_DESTROY_EVENT: {
-				this.countAfter.incrementAndGet
-			}
-		}
+	protected override prepareUninstallation {
+		this.countBefore.incrementAndGet
+	}
+
+	protected override uninstall {
+		this.countAfter.incrementAndGet
 	}
 
 }

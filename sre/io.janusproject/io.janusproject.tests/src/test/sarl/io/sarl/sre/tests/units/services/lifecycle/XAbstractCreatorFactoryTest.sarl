@@ -85,7 +85,7 @@ class XAbstractCreatorFactoryTest {
 	def mergeSkillProviders_0_oneIterable_clearReference : void {
 		var factory = new XAbstractCreatorFactoryMock
 		//
-		var subprovider0 : DynamicSkillProvider = [^agent, ^capacity|new AtomicSkillReference(null)]
+		var subprovider0 : DynamicSkillProvider = [^agent, ^capacity|null as AtomicSkillReference]
 		var provider = factory.mergeSkillProviders(#[subprovider0])
 		//
 		provider.assertNotNull
@@ -136,7 +136,7 @@ class XAbstractCreatorFactoryTest {
 	def mergeSkillProviders_0_twoIterables_secondActive : void {
 		var factory = new XAbstractCreatorFactoryMock
 		//
-		var subprovider0 : DynamicSkillProvider = [^agent, ^capacity|new AtomicSkillReference(null)]
+		var subprovider0 : DynamicSkillProvider = [^agent, ^capacity|null as AtomicSkillReference]
 		val expected1 = typeof(Skill).mock
 		var subprovider1 : DynamicSkillProvider = [^agent, ^capacity|new AtomicSkillReference(expected1)]
 		var provider = factory.mergeSkillProviders(#[subprovider0, subprovider1])
@@ -154,8 +154,8 @@ class XAbstractCreatorFactoryTest {
 	def mergeSkillProviders_0_twoIterables_noneActive : void {
 		var factory = new XAbstractCreatorFactoryMock
 		//
-		var subprovider0 : DynamicSkillProvider = [^agent, ^capacity|new AtomicSkillReference(null)]
-		var subprovider1 : DynamicSkillProvider = [^agent, ^capacity|new AtomicSkillReference(null)]
+		var subprovider0 : DynamicSkillProvider = [^agent, ^capacity|null as AtomicSkillReference]
+		var subprovider1 : DynamicSkillProvider = [^agent, ^capacity|null as AtomicSkillReference]
 		var provider = factory.mergeSkillProviders(#[subprovider0, subprovider1])
 		//
 		provider.assertNotNull
@@ -168,7 +168,7 @@ class XAbstractCreatorFactoryTest {
 	@Test
 	@DisplayName("mergeSkillProviders with empty DynamicSkillProvider, null parameter")
 	def mergeSkillProviders_1_nullIterable : void {
-		var orig : DynamicSkillProvider = [^agent, ^capacity | new AtomicSkillReference(null)]
+		var orig : DynamicSkillProvider = [^agent, ^capacity | null as AtomicSkillReference]
 		var factory = new XAbstractCreatorFactoryMock(orig)
 		//
 		var provider = factory.mergeSkillProviders(null)
@@ -177,31 +177,29 @@ class XAbstractCreatorFactoryTest {
 		//
 		var s = provider.installSkill(this.^agent, typeof(MyCap))
 		//
-		s.assertNotNull
-		s.get.assertNull
+		s.assertNull
 	}
 
 	@Test
 	@DisplayName("mergeSkillProviders with empty DynamicSkillProvider, empty iterable")
 	def mergeSkillProviders_1_emptyIterable : void {
-		var orig : DynamicSkillProvider = [^agent, ^capacity|new AtomicSkillReference(null)]
+		var orig : DynamicSkillProvider = [^agent, ^capacity|null as AtomicSkillReference]
 		var factory = new XAbstractCreatorFactoryMock(orig)
 		//
 		var provider = factory.mergeSkillProviders(emptyList)
 		//
 		var s = provider.installSkill(this.^agent, typeof(MyCap))
 		//
-		s.assertNotNull
-		s.get.assertNull
+		s.assertNull
 	}
 
 	@Test
 	@DisplayName("mergeSkillProviders with empty DynamicSkillProvider, one iterable with cleared reference")
 	def mergeSkillProviders_1_oneIterable_clearReference : void {
-		var orig : DynamicSkillProvider = [^agent, ^capacity|new AtomicSkillReference(null)]
+		var orig : DynamicSkillProvider = [^agent, ^capacity|null as AtomicSkillReference]
 		var factory = new XAbstractCreatorFactoryMock(orig)
 		//
-		var subprovider0 : DynamicSkillProvider = [^agent, ^capacity|new AtomicSkillReference(null)]
+		var subprovider0 : DynamicSkillProvider = [^agent, ^capacity|null as AtomicSkillReference]
 		var provider = factory.mergeSkillProviders(#[subprovider0])
 		//
 		provider.assertNotNull
@@ -214,7 +212,7 @@ class XAbstractCreatorFactoryTest {
 	@Test
 	@DisplayName("mergeSkillProviders with empty DynamicSkillProvider, one iterable")
 	def mergeSkillProviders_1_oneIterable : void {
-		var orig : DynamicSkillProvider = [^agent, ^capacity|new AtomicSkillReference(null)]
+		var orig : DynamicSkillProvider = [^agent, ^capacity|null as AtomicSkillReference]
 		var factory = new XAbstractCreatorFactoryMock(orig)
 		//
 		val expected0 = typeof(Skill).mock
@@ -232,7 +230,7 @@ class XAbstractCreatorFactoryTest {
 	@Test
 	@DisplayName("mergeSkillProviders with empty DynamicSkillProvider, two iterables, first active")
 	def mergeSkillProviders_1_twoIterables_firstActive : void {
-		var orig : DynamicSkillProvider = [^agent, ^capacity|new AtomicSkillReference(null)]
+		var orig : DynamicSkillProvider = [^agent, ^capacity|null as AtomicSkillReference]
 		var factory = new XAbstractCreatorFactoryMock(orig)
 		//
 		val expected0 = typeof(Skill).mock
@@ -252,10 +250,10 @@ class XAbstractCreatorFactoryTest {
 	@Test
 	@DisplayName("mergeSkillProviders with empty DynamicSkillProvider, two iterables, second active")
 	def mergeSkillProviders_1_twoIterables_secondActive : void {
-		var orig : DynamicSkillProvider = [^agent, ^capacity|new AtomicSkillReference(null)]
+		var orig : DynamicSkillProvider = [^agent, ^capacity|null as AtomicSkillReference]
 		var factory = new XAbstractCreatorFactoryMock(orig)
 		//
-		var subprovider0 : DynamicSkillProvider = [^agent, ^capacity|new AtomicSkillReference(null)]
+		var subprovider0 : DynamicSkillProvider = [^agent, ^capacity|null as AtomicSkillReference]
 		val expected1 = typeof(Skill).mock
 		var subprovider1 : DynamicSkillProvider = [^agent, ^capacity|new AtomicSkillReference(expected1)]
 		var provider = factory.mergeSkillProviders(#[subprovider0, subprovider1])
@@ -271,11 +269,11 @@ class XAbstractCreatorFactoryTest {
 	@Test
 	@DisplayName("mergeSkillProviders with empty DynamicSkillProvider, two iterables, none active")
 	def mergeSkillProviders_1_twoIterables_noneActive : void {
-		var orig : DynamicSkillProvider = [^agent, ^capacity|new AtomicSkillReference(null)]
+		var orig : DynamicSkillProvider = [^agent, ^capacity|null as AtomicSkillReference]
 		var factory = new XAbstractCreatorFactoryMock(orig)
 		//
-		var subprovider0 : DynamicSkillProvider = [^agent, ^capacity|new AtomicSkillReference(null)]
-		var subprovider1 : DynamicSkillProvider = [^agent, ^capacity|new AtomicSkillReference(null)]
+		var subprovider0 : DynamicSkillProvider = [^agent, ^capacity|null as AtomicSkillReference]
+		var subprovider1 : DynamicSkillProvider = [^agent, ^capacity|null as AtomicSkillReference]
 		var provider = factory.mergeSkillProviders(#[subprovider0, subprovider1])
 		//
 		provider.assertNotNull
@@ -326,7 +324,7 @@ class XAbstractCreatorFactoryTest {
 		var orig : DynamicSkillProvider = [^agent, ^capacity|new AtomicSkillReference(expected)]
 		var factory = new XAbstractCreatorFactoryMock(orig)
 		//
-		var subprovider0 : DynamicSkillProvider = [^agent, ^capacity|new AtomicSkillReference(null)]
+		var subprovider0 : DynamicSkillProvider = [^agent, ^capacity|null as AtomicSkillReference]
 		var provider = factory.mergeSkillProviders(#[subprovider0])
 		//
 		provider.assertNotNull
@@ -384,7 +382,7 @@ class XAbstractCreatorFactoryTest {
 		var orig : DynamicSkillProvider = [^agent, ^capacity|new AtomicSkillReference(expected)]
 		var factory = new XAbstractCreatorFactoryMock(orig)
 		//
-		var subprovider0 : DynamicSkillProvider = [^agent, ^capacity|new AtomicSkillReference(null)]
+		var subprovider0 : DynamicSkillProvider = [^agent, ^capacity|null as AtomicSkillReference]
 		val expected1 = typeof(Skill).mock
 		var subprovider1 : DynamicSkillProvider = [^agent, ^capacity|new AtomicSkillReference(expected1)]
 		var provider = factory.mergeSkillProviders(#[subprovider0, subprovider1])
@@ -404,8 +402,8 @@ class XAbstractCreatorFactoryTest {
 		var orig : DynamicSkillProvider = [^agent, ^capacity|new AtomicSkillReference(expected)]
 		var factory = new XAbstractCreatorFactoryMock(orig)
 		//
-		var subprovider0 : DynamicSkillProvider = [^agent, ^capacity|new AtomicSkillReference(null)]
-		var subprovider1 : DynamicSkillProvider = [^agent, ^capacity|new AtomicSkillReference(null)]
+		var subprovider0 : DynamicSkillProvider = [^agent, ^capacity|null as AtomicSkillReference]
+		var subprovider1 : DynamicSkillProvider = [^agent, ^capacity|null as AtomicSkillReference]
 		var provider = factory.mergeSkillProviders(#[subprovider0, subprovider1])
 		//
 		provider.assertNotNull

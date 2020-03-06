@@ -20,12 +20,10 @@
  */
 package io.sarl.sre.services.lifecycle
 
-import io.sarl.lang.core.DynamicSkillProvider
-import io.sarl.lang.core.Agent
-import io.sarl.lang.core.Capacity
-import io.sarl.lang.core.Skill
-import io.sarl.lang.core.AtomicSkillReference
 import io.sarl.lang.core.AbstractSkillContainer
+import io.sarl.lang.core.AtomicSkillReference
+import io.sarl.lang.core.Capacity
+import io.sarl.lang.core.DynamicSkillProvider
 
 /** 
  * Abstract implementation of a factory of agent creator that provides the parent ID and agent ID to the created agent.

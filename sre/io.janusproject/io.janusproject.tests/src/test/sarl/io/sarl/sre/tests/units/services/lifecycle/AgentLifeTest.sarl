@@ -497,6 +497,7 @@ class AgentLifeTest {
 	@Test
 	def start_failingInOnInitialize : void {
 		var installer = typeof(SkillUninstaller).mock
+		when(installer.uninstallSkillsBeforeDestroy(any)).thenReturn(new CopyOnWriteArraySet)
 		var logger = typeof(LoggingService).mock
 		var loglog = typeof(Logger).mock
 		when(logger.kernelLogger).thenReturn(loglog)
@@ -535,6 +536,7 @@ class AgentLifeTest {
 		var eventListener = typeof(InformedEventListener).mock
 		when(this.eventBus.associatedEventBusListener).thenReturn(eventListener)
 		var installer = typeof(SkillUninstaller).mock
+		when(installer.uninstallSkillsBeforeDestroy(any)).thenReturn(new CopyOnWriteArraySet)
 		var logger = typeof(LoggingService).mock
 		var loglog = typeof(Logger).mock
 		when(logger.kernelLogger).thenReturn(loglog)

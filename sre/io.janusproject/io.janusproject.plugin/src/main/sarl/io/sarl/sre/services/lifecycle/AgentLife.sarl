@@ -288,6 +288,8 @@ final class AgentLife {
 				logger.kernelLogger.log(Level::SEVERE, e.localizedMessage, e)
 				skills = new CopyOnWriteArraySet
 			}
+			
+			assert skills !== null
 
 			if (fireDestroy) {
 				try {

@@ -151,6 +151,7 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 		this.logger = typeof(LoggingService).mock
 		when(this.logger.kernelLogger).thenReturn(typeof(Logger).mock)
 		this.skillUninstaller = typeof(SkillUninstaller).mock
+		when(this.skillUninstaller.uninstallSkillsBeforeDestroy(any)).thenReturn(new CopyOnWriteArraySet)
 
 		this.service = newService(
 			this.executor,

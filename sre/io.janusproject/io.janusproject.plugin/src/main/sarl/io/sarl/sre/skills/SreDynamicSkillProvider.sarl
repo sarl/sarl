@@ -38,7 +38,6 @@ import io.sarl.lang.core.SREutils
 import io.sarl.lang.core.Skill
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.capacities.InternalSchedules
-import io.sarl.sre.capacities.MicroKernelCapacity
 import io.sarl.sre.skills.bic.BehaviorsSkill
 import io.sarl.sre.skills.bic.DefaultContextInteractionsSkill
 import io.sarl.sre.skills.bic.ExternalContextAccessSkill
@@ -48,7 +47,6 @@ import io.sarl.sre.skills.bic.LoggingSkill
 import io.sarl.sre.skills.bic.SchedulesSkill
 import io.sarl.sre.skills.bic.TimeSkill
 import io.sarl.sre.skills.internal.InternalEventBusSkill
-import io.sarl.sre.skills.internal.MicroKernelSkill
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -85,7 +83,7 @@ class SreDynamicSkillProvider implements DynamicSkillProvider {
 				return Pair::of(^skill, null)
 			}
 			case typeof(DefaultContextInteractions): {
-				var ^skill = this.injector.getInstance(typeof(DefaultContextInteractionsSkill))
+				var ^skill = new DefaultContextInteractionsSkill
 				return Pair::of(^skill, null)
 			}
 			case typeof(Lifecycle): {
@@ -101,7 +99,7 @@ class SreDynamicSkillProvider implements DynamicSkillProvider {
 				return Pair::of(^skill, typeof(Schedules))
 			}
 			case typeof(Behaviors): {
-				var ^skill = this.injector.getInstance(typeof(BehaviorsSkill))
+				var ^skill = new BehaviorsSkill()
 				return Pair::of(^skill, null)
 			}
 			case typeof(Logging): {
@@ -118,10 +116,6 @@ class SreDynamicSkillProvider implements DynamicSkillProvider {
 			}
 			case typeof(ExternalContextAccess): {
 				var ^skill = this.injector.getInstance(typeof(ExternalContextAccessSkill))
-				return Pair::of(^skill, null)
-			}
-			case typeof(MicroKernelCapacity): {
-				var ^skill = this.injector.getInstance(typeof(MicroKernelSkill))
 				return Pair::of(^skill, null)
 			}
 		}

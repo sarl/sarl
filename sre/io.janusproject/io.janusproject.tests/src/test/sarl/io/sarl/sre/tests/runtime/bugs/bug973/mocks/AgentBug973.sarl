@@ -39,7 +39,9 @@ agent AgentBug973 extends TestingAgent {
 		addResult(this.theSkill)
 		this.theSkill.setSkill
 
-		in(1000) [ killMe ]
+		in(1000) [
+			killMe
+		]
 		return RunPolicy::STANDARD
 	}
 

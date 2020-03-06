@@ -58,6 +58,8 @@ import static extension org.junit.jupiter.api.Assertions.assertEquals
 import static extension org.junit.jupiter.api.Assertions.assertNull
 import static extension org.junit.jupiter.api.Assertions.assertSame
 import static extension org.mockito.Mockito.spy
+import io.sarl.tests.api.tools.TestReflections
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * @author $Author: sgalland$
@@ -350,6 +352,7 @@ class BehaviorNamespaceFinderTest {
 			set += beh0
 			set += beh1
 			var behs = typeof(MyBehaviors).mock
+			TestReflections::set(behs, "referencesFromCapacityMap", new AtomicInteger)
 			when(behs.registeredBehaviors).thenReturn(set)
 			SREutils::getSkillRepository(this).put(typeof(Behaviors), new AtomicSkillReference(behs))
 		}
