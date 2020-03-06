@@ -25,6 +25,7 @@ import io.sarl.core.Behaviors
 import io.sarl.core.OpenEventSpace
 import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Agent
+import io.sarl.lang.core.AtomicSkillReference
 import io.sarl.lang.core.Behavior
 import io.sarl.lang.core.SREutils
 import io.sarl.lang.core.Skill
@@ -57,7 +58,6 @@ import static extension org.junit.jupiter.api.Assertions.assertEquals
 import static extension org.junit.jupiter.api.Assertions.assertNull
 import static extension org.junit.jupiter.api.Assertions.assertSame
 import static extension org.mockito.Mockito.spy
-import io.sarl.lang.util.AtomicClearableReference
 
 /**
  * @author $Author: sgalland$
@@ -351,7 +351,7 @@ class BehaviorNamespaceFinderTest {
 			set += beh1
 			var behs = typeof(MyBehaviors).mock
 			when(behs.registeredBehaviors).thenReturn(set)
-			SREutils::getSkillRepository(this).put(typeof(Behaviors), new AtomicClearableReference(behs))
+			SREutils::getSkillRepository(this).put(typeof(Behaviors), new AtomicSkillReference(behs))
 		}
 		
 	}

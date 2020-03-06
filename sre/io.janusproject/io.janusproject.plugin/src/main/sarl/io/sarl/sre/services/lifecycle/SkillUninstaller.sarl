@@ -21,12 +21,10 @@
 package io.sarl.sre.services.lifecycle
 
 import com.google.inject.ImplementedBy
-import io.sarl.core.Destroy
 import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.SREutils
 import io.sarl.lang.core.Skill
-import io.sarl.lang.core.Skill.UninstallationStage
 import io.sarl.sre.skills.bic.SchedulesSkill
 import io.sarl.sre.skills.internal.InternalEventBusSkill
 import java.util.concurrent.CopyOnWriteArraySet
@@ -94,45 +92,6 @@ class BasicSkillUninstaller implements SkillUninstaller {
 
 	def uninstallSkillsBeforeDestroy(^agent : Agent) : CopyOnWriteArraySet<? extends Skill> {
 		val skills = ^agent.getAllSkills
-		skills.uninstallSkillsPreStage
-		return skills
-	}
-
-	def uninstallSkillsAfterDestroy(^agent : Agent, skills : CopyOnWriteArraySet<? extends Skill>) {
-		skills.uninstallSkillsFinalStage
-	}
-
-	/** Run the uninstallation functions of the skills for the pre stage of the uninstallation process.
-	 * 
-	 * <p>This function is run before the handlers for {@link Destroy} are invoked.
-	 * 
-	 * @param skills the skills to uninstall.
-	 * @see #uninstallSkillsFinalStage(Agent)
-	 */
-	private static def uninstallSkillsPreStage(skills : CopyOnWriteArraySet<? extends Skill>) {
-		skills.uninstallSkills(UninstallationStage::PRE_DESTROY_EVENT)
-	}
-
-	/** Run the uninstallation functions of the skills for the final stage of the uninstallation process.
-	 * 
-	 * <p>This function is run after the handlers for {@link Destroy} are invoked.
-	 * 
-	 * @param skills the skills to uninstall.
-	 * @see #uninstallSkillsPreStage(Agent)
-	 */
-	private static def uninstallSkillsFinalStage(skills : CopyOnWriteArraySet<? extends Skill>) {
-		skills.uninstallSkills(UninstallationStage::POST_DESTROY_EVENT)
-	}
-
-	/** Run the uninstallation functions of the skills for the pre stage of the uninstallation process.
-	 * 
-	 * <p>This function is run before the handlers for {@link Destroy} are invoked.
-	 * 
-	 * @param skills the skills to uninstall.
-	 * @param stage is the uninstallation stage.
-	 * @see #uninstallSkillsFinalStage(Agent)
-	 */
-	private static def uninstallSkills(skills : CopyOnWriteArraySet<? extends Skill>, stage : UninstallationStage) {
 		// The InternalEventBus and Schedules skills must released after all
 		// the other skills
 		var busSkill : InternalEventBusSkill = null
@@ -143,14 +102,37 @@ class BasicSkillUninstaller implements SkillUninstaller {
 			} else if (^skill instanceof SchedulesSkill) {
 				schedulesSkill = ^skill
 			} else {
-				SREutils::doSkillUninstallation(^skill, stage)
+				SREutils::doSkillUninstallationPreparation(^skill)
 			}
 		}
 		if (busSkill !== null) {
-			SREutils::doSkillUninstallation(busSkill, stage)
+			SREutils::doSkillUninstallationPreparation(busSkill)
 		}
 		if (schedulesSkill !== null) {
-			SREutils::doSkillUninstallation(schedulesSkill, stage)
+			SREutils::doSkillUninstallationPreparation(schedulesSkill)
+		}
+		return skills
+	}
+
+	def uninstallSkillsAfterDestroy(^agent : Agent, skills : CopyOnWriteArraySet<? extends Skill>) {
+		// The InternalEventBus and Schedules skills must released after all
+		// the other skills
+		var busSkill : InternalEventBusSkill = null
+		var schedulesSkill : SchedulesSkill = null
+		for (^skill : skills) {
+			if (^skill instanceof InternalEventBusSkill) {
+				busSkill = ^skill
+			} else if (^skill instanceof SchedulesSkill) {
+				schedulesSkill = ^skill
+			} else {
+				SREutils::doSkillUninstallation(^skill)
+			}
+		}
+		if (busSkill !== null) {
+			SREutils::doSkillUninstallation(busSkill)
+		}
+		if (schedulesSkill !== null) {
+			SREutils::doSkillUninstallation(schedulesSkill)
 		}
 	}
 

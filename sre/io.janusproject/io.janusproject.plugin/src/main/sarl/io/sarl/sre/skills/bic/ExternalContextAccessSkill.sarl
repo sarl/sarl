@@ -81,12 +81,11 @@ skill ExternalContextAccessSkill extends Skill implements ExternalContextAccess 
 		this.internalEventEmitter = this.innerContextProvider.create(owner)
 	}
 
-	protected override uninstall(stage : UninstallationStage) {
-		if (stage == UninstallationStage::POST_DESTROY_EVENT) {
-
-			var life = getLife(owner)
+	protected override uninstall {
+		var life = getLifeOrNull(owner)
+		if (life !== null) {
 			// Unregister from the external context.
-			// The unregistration to the default context is be done into the AgentLife class.
+		// The unregistration to the default context is be done into the AgentLife class.
 			var contexts = life.externalContexts
 			var identifiers = <UUID>newArrayList
 
@@ -121,7 +120,7 @@ skill ExternalContextAccessSkill extends Skill implements ExternalContextAccess 
 
 	def getAllContexts : ConcurrentLinkedDeque<AgentContext> {
 		var collection = getLife(owner).enclosingContexts
-		// TODO opitze the following loop
+		// TODO optimize the following loop
 		// var col2 = collection.map[var local : AgentContext = it.context; local]
 		var result : ConcurrentLinkedDeque<AgentContext> = new ConcurrentLinkedDeque<AgentContext>();
 		for (t : collection.map[var local : AgentContext = it.context; local]) {

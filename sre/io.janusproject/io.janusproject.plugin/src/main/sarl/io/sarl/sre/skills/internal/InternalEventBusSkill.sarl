@@ -92,18 +92,16 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 		this.eventListener = new ExternalEventBusAccessor(owner.ID, this)
 	}
 
-	protected override uninstall(stage : UninstallationStage) {		
-		if (stage == UninstallationStage::POST_DESTROY_EVENT) {
-			var bus = this.eventBus
-			if (bus !== null) {
-				bus.unregisterAll(null)
-			}
-			this.eventBuffer = null;
-
-			// Must be done to enable the memory free of these mutual references between InternalBusSkill and ExternalEventBusAccessor
-			(this.eventListener as ExternalEventBusAccessor).nullifyOwner
-			this.eventListener = null			
+	protected override uninstall {		
+		var bus = this.eventBus
+		if (bus !== null) {
+			bus.unregisterAll(null)
 		}
+		this.eventBuffer = null;
+
+		// Must be done to enable the memory free of these mutual references between InternalBusSkill and ExternalEventBusAccessor
+		(this.eventListener as ExternalEventBusAccessor).nullifyOwner
+		this.eventListener = null			
 	}
 
 	/** 

@@ -151,6 +151,7 @@ import io.sarl.lang.compiler.SarlCompiler;
 import io.sarl.lang.controlflow.ISarlEarlyExitComputer;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentTrait;
+import io.sarl.lang.core.AtomicSkillReference;
 import io.sarl.lang.core.Behavior;
 import io.sarl.lang.core.Capacity;
 import io.sarl.lang.core.Event;
@@ -185,7 +186,6 @@ import io.sarl.lang.typesystem.IOperationHelper;
 import io.sarl.lang.typesystem.InheritanceHelper;
 import io.sarl.lang.typesystem.SARLAnnotationUtil;
 import io.sarl.lang.typesystem.SARLReentrantTypeResolver;
-import io.sarl.lang.util.AtomicClearableReference;
 import io.sarl.lang.util.JvmVisibilityComparator;
 import io.sarl.lang.util.Utils;
 
@@ -2088,10 +2088,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				field.setVisibility(JvmVisibility.PRIVATE);
 				field.setSimpleName(fieldName);
 				field.setTransient(true);
-				final JvmType clearableReferenceType = this.typeReferences.findDeclaredType(AtomicClearableReference.class, container);
-				final JvmTypeReference skillClearableReference = this.typeReferences.createTypeRef(
-						clearableReferenceType,
-						this.typeReferences.createTypeRef(this.typeReferences.findDeclaredType(Skill.class, container)));
+				final JvmTypeReference skillClearableReference = this.typeReferences.getTypeForName(AtomicSkillReference.class, container);
 				field.setType(skillClearableReference);
 
 				this.associator.associatePrimary(source, field);

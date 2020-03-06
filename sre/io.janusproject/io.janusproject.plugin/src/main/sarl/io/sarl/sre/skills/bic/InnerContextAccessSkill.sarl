@@ -78,10 +78,8 @@ skill InnerContextAccessSkill extends Skill implements InnerContextAccess {
 		}
 	}
 
-	protected override uninstall(stage : UninstallationStage) {
-		if (stage === UninstallationStage.POST_DESTROY_EVENT) {
-			detroyInnerContext
-		}
+	protected override uninstall {
+		detroyInnerContext
 	}
 
 	def getInnerContext : AgentContext {

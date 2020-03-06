@@ -26,8 +26,6 @@ import java.util.concurrent.ConcurrentMap;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import io.sarl.lang.annotation.PrivateAPI;
-import io.sarl.lang.core.Skill.UninstallationStage;
-import io.sarl.lang.util.AtomicClearableReference;
 
 /** Utilities for accessing to the part of the SARL API that is dedicated to the
  * SARL run-time environments (SRE).
@@ -98,114 +96,79 @@ public final class SREutils {
 		return oldData;
 	}
 
-	/** Replies the internal skill reference of an agent.
+	/** Replies the internal skill reference of a skill container.
 	 *
-	 * @param agent the agent.
+	 * @param container the container.
 	 * @param type the type of the capacity.
 	 * @return the skill reference
 	 * @since 0.6
 	 */
 	@Pure
-	public static AtomicClearableReference<Skill> getInternalSkillReference(Agent agent, Class<? extends Capacity> type) {
-		return agent.$getSkill(type);
+	public static AtomicSkillReference getInternalSkillReference(AbstractSkillContainer container, Class<? extends Capacity> type) {
+		return container.$getSkill(type);
 	}
 
-	/** Casts the internal skill reference of an agent.
+	/** Casts the internal skill reference of a skill container.
 	 *
 	 * @param <S> the type of the capacity.
-	 * @param agent the agent.
+	 * @param container the container.
 	 * @param reference the reference to cast.
 	 * @param type the type of the capacity.
 	 * @return the skill reference
 	 * @since 0.6
 	 */
 	@Pure
-	public static <S extends Capacity> S castInternalSkillReference(Agent agent,
-			AtomicClearableReference<Skill> reference, Class<S> type) {
-		return agent.$castSkill(type, reference);
+	public static <S extends Capacity> S castInternalSkillReference(AbstractSkillContainer container,
+			AtomicSkillReference reference, Class<S> type) {
+		return container.$castSkill(type, reference);
 	}
 
-	/** Set the internal skill of an agent.
+	/** Set the internal skill of a skill container.
 	 *
-	 * @param agent the agent.
-	 * @param skill the skill instance to attach to the agent.
+	 * @param container the container.
+	 * @param skill the skill instance to attach to the container.
 	 * @param capacities the list of implemented capacities. This array cannot be {@code null}.
 	 * @return the reference to the skill.
 	 * @since 0.10
 	 */
-	public static AtomicClearableReference<Skill> setInternalSkill(Agent agent, Skill skill, Class<? extends Capacity>[] capacities) {
+	public static AtomicSkillReference setInternalSkill(AbstractSkillContainer container, Skill skill, Class<? extends Capacity>[] capacities) {
 		assert capacities != null;
-		return agent.$setSkill(skill, capacities);
+		return container.$setSkill(skill, capacities);
 	}
 
-	/** Replies the internal skill of an agent.
+	/** Replies the internal skill of a skill container.
 	 *
 	 * @param <S> the type of the capacity.
-	 * @param agent the agent.
+	 * @param container the container.
 	 * @param type the type of the capacity.
 	 * @return the skill.
 	 * @since 0.6
 	 */
 	@Pure
-	public static <S extends Capacity> S getInternalSkill(Agent agent, Class<S> type) {
-		return agent.getSkill(type);
+	public static <S extends Capacity> S getInternalSkill(AbstractSkillContainer container, Class<S> type) {
+		return container.getSkill(type);
 	}
 
-	/** Create the mapping between the capacity and the skill.
-	 *
-	 * <p>This function does not call neither {@link Skill#install()} nor {@link AgentTrait#setOwner(Agent)}.
-	 *
-	 * @param agent the agent.
-	 * @param capacity the capacity to map.
-	 * @param skill the skill to map.
-	 * @return the created mapping, never {@code null}.
-	 * @since 0.6
-	 * @see #createSkillMappingGetOld(Agent, Class, Skill)
-	 * @deprecated since 0.10, no replacement
-	 */
-	@Deprecated
-	public static AtomicClearableReference<Skill> createSkillMapping(Agent agent, Class<? extends Capacity> capacity, Skill skill) {
-		return agent.$mapCapacityGetNew(capacity, skill);
-	}
-
-	/** Create the mapping between the capacity and the skill.
-	 *
-	 * <p>This function does not call neither {@link Skill#install()} nor {@link AgentTrait#setOwner(Agent)}.
-	 *
-	 * @param agent the agent.
-	 * @param capacity the capacity to map.
-	 * @param skill the skill to map.
-	 * @return the mapping that is defined before the one created by the call to this function, or {@code null} if
-	 *     there is no previous mapping.
-	 * @since 0.6
-	 * @see #createSkillMapping(Agent, Class, Skill)
-	 * @deprecated since 0.10, no replacement
-	 */
-	@Deprecated
-	public static AtomicClearableReference<Skill> createSkillMappingGetOld(Agent agent, Class<? extends Capacity> capacity, Skill skill) {
-		return agent.$mapCapacityGetOld(capacity, skill);
-	}
-
-	/** Replies the skill repository of the given agent.
+	/** Replies the skill repository of the given container.
 	 *
 	 * <p>The replied repository is not protected against asynchronous accesses.
 	 *
-	 * @param agent the agent.
+	 * @param container the container.
 	 * @return the repository.
 	 * @since 0.6
 	 */
-	public static ConcurrentMap<Class<? extends Capacity>, AtomicClearableReference<Skill>> getSkillRepository(Agent agent) {
-		return agent.$getSkillRepository();
+	public static ConcurrentMap<Class<? extends Capacity>, AtomicSkillReference> getSkillRepository(AbstractSkillContainer container) {
+		return container.$getSkillRepository();
 	}
 
-	/** Change the dynamic skill provider of an agent.
+	/** Change the dynamic skill provider of a skill container.
 	 *
-	 * @param agent the agent.
+	 * @param container the container.
 	 * @param provider the provider.
 	 * @since 0.6
 	 */
-	public static void setDynamicSkillProvider(Agent agent, DynamicSkillProvider provider) {
-		agent.$setDynamicSkillProvider(provider);
+	public static void setDynamicSkillProvider(AbstractSkillContainer container, DynamicSkillProvider provider) {
+		container.$setDynamicSkillProvider(provider);
 	}
 
 	/** Do the installation of the given skill.
@@ -214,21 +177,37 @@ public final class SREutils {
 	 *
 	 * @param skill the skill to be installed.
 	 * @since 0.6
+	 * @see #doSkillUninstallationPreparation(Skill)
+	 * @see #doSkillUninstallation(Skill)
 	 */
 	public static void doSkillInstallation(Skill skill) {
 		skill.install();
 	}
 
-	/** Do the uninstallation of the given skill.
+	/** Do the uninstallation preparation of the given skill.
 	 *
-	 * <p>This function invokes {@link Skill#uninstall(UninstallationStage)} and nothing more.
+	 * <p>This function invokes {@link Skill#prepareUninstallation()} and nothing more.
 	 *
 	 * @param skill the skill to be uninstalled.
-	 * @param stage the uninstallation stage, never {@code null}.
-	 * @since 0.6
+	 * @since 0.11
+	 * @see #doSkillInstallation(Skill)
+	 * @see #doSkillUninstallation(Skill)
 	 */
-	public static void doSkillUninstallation(Skill skill, UninstallationStage stage) {
-		skill.uninstall(stage);
+	public static void doSkillUninstallationPreparation(Skill skill) {
+		skill.prepareUninstallation();
+	}
+
+	/** Do the uninstallation of the given skill.
+	 *
+	 * <p>This function invokes {@link Skill#uninstall()} and nothing more.
+	 *
+	 * @param skill the skill to be uninstalled.
+	 * @since 0.11
+	 * @see #doSkillInstallation(Skill)
+	 * @see #doSkillUninstallationPreparation(Skill)
+	 */
+	public static void doSkillUninstallation(Skill skill) {
+		skill.uninstall();
 	}
 
 }

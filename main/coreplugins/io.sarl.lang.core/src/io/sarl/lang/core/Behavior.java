@@ -21,8 +21,6 @@
 
 package io.sarl.lang.core;
 
-import io.sarl.lang.util.AtomicClearableReference;
-
 /**
  * A behavior maps a collection of perceptions represented by events to a collection of a task.
  *
@@ -43,7 +41,7 @@ public abstract class Behavior extends AgentTrait {
 	}
 
 	@Override
-	protected <S extends Capacity> S $castSkill(Class<S> capacity, AtomicClearableReference<Skill> skillReference) {
+	protected <S extends Capacity> S $castSkill(Class<S> capacity, AtomicSkillReference skillReference) {
 		final Skill original = skillReference.get();
 		if (original == null) {
 			throw new UnimplementedCapacityException(capacity, getOwner().getID());

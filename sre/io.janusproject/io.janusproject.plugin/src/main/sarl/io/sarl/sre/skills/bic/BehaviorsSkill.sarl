@@ -49,19 +49,17 @@ skill BehaviorsSkill extends Skill implements Behaviors {
 
 	uses InternalEventBusCapacity, InternalSchedules
 
-	protected override uninstall(stage : UninstallationStage) {
-		if (stage === UninstallationStage::PRE_DESTROY_EVENT) {
-			val adr = getLife(owner).addressInInnerDefaultSpace
-			typeof(Behavior).unregisterEventBusListener [
-				// Destroy the behavior
-				val ^event = new Destroy
-				^event.source = adr
-				fireEventAndWait(^event, false, true, it)
-				(it as Behavior).releaseInternalResources
-				// Run this lambda on all the behaviors:
-				return true
-			]
-		}
+	protected override prepareUninstallation {
+		val adr = getLife(owner).addressInInnerDefaultSpace
+		typeof(Behavior).unregisterEventBusListener [
+			// Destroy the behavior
+			val ^event = new Destroy
+			^event.source = adr
+			fireEventAndWait(^event, false, true, it)
+			(it as Behavior).releaseInternalResources
+			// Run this lambda on all the behaviors:
+			return true
+		]
 	}
 
 	def asEventListener : EventListener {

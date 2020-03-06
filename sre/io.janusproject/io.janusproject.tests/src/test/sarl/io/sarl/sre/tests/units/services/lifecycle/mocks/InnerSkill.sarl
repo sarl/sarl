@@ -55,14 +55,14 @@ skill InnerSkill implements InnerContextAccess {
 		this.installOrder = this.orderSource.getAndIncrement()
 	}
 
-	protected def uninstall(stage : UninstallationStage) {
-		if (stage == UninstallationStage::PRE_DESTROY_EVENT) {
-			this.uninstallOrderPre = this.orderSource.getAndIncrement
-		} else {
-			this.uninstallOrderPost = this.orderSource.getAndIncrement
-		}
+	protected def prepareUninstallation {
+		this.uninstallOrderPre = this.orderSource.getAndIncrement
 	}
-	
+
+	protected def uninstall {
+		this.uninstallOrderPost = this.orderSource.getAndIncrement
+	}
+
 	def getInstallationOrder : int {
 		this.installOrder
 	}

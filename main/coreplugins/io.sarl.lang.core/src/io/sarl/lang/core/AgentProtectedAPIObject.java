@@ -26,8 +26,6 @@ import java.util.UUID;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
-import io.sarl.lang.util.AtomicClearableReference;
-
 /** This class defines the protected API that is provided to the agents and the agent traits.
  *
  * @author $Author: sgalland$
@@ -77,7 +75,7 @@ public abstract class AgentProtectedAPIObject extends SRESpecificDataContainer {
 	 * @return the reference to the skill, never {@code null}
 	 */
 	@Pure
-	protected abstract AtomicClearableReference<Skill> $getSkill(Class<? extends Capacity> capacity);
+	protected abstract AtomicSkillReference $getSkill(Class<? extends Capacity> capacity);
 
 	/** Defines the implementation of the "capacity maps-to skill" operator.
 	 *

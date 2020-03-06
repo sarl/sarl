@@ -21,15 +21,19 @@
 package io.sarl.lang.core.tests.core;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.spy;
+import static io.sarl.tests.api.tools.TestMockito.mock;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import io.sarl.lang.util.AtomicClearableReference;
+import io.sarl.lang.core.AtomicSkillReference;
+import io.sarl.lang.core.Skill;
 import io.sarl.tests.api.AbstractSarlTest;
+import io.sarl.tests.api.Nullable;
 
 /**
  * @author $Author: sgalland$
@@ -38,34 +42,36 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-public class AtomicClearableReferenceTest extends AbstractSarlTest {
+public class AtomicSkillReferenceTest extends AbstractSarlTest {
 
-	@Mock
-	private Object referencedObject;
+	@Nullable
+	private Skill referencedObject;
 
-	private AtomicClearableReference<Object> reference;
+	@Nullable
+	private AtomicSkillReference reference;
 
 	@BeforeEach
 	public void setUp() {
-		this.reference = mockReference(this.referencedObject);
-	}
-
-	private static AtomicClearableReference<Object> mockReference(Object object) {
-		AtomicClearableReference<Object> reference = new AtomicClearableReference<>(object);
-		return spy(reference);
+		this.referencedObject = new Skill() {};
+		this.reference = new AtomicSkillReference(this.referencedObject);
 	}
 
 	@Test
 	public void get() {
+		assertEquals(1, this.referencedObject.getReferenceCount());
 		assertSame(this.referencedObject, this.reference.get());
+		assertEquals(1, this.referencedObject.getReferenceCount());
 	}
 
 	@Test
 	public void clear() {
+		assertEquals(1, this.referencedObject.getReferenceCount());
 		assertSame(this.referencedObject, this.reference.get());
 		Object r = this.reference.clear();
+		assertEquals(0, this.referencedObject.getReferenceCount());
 		assertNull(this.reference.get());
 		assertSame(this.referencedObject, r);
+		assertEquals(0, this.referencedObject.getReferenceCount());
 	}
 
 }

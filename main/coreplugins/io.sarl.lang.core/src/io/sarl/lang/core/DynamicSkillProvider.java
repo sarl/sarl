@@ -23,8 +23,6 @@ package io.sarl.lang.core;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import io.sarl.lang.util.AtomicClearableReference;
-
 
 
 /** This interface represents a provider of built-in capacities.
@@ -40,15 +38,15 @@ import io.sarl.lang.util.AtomicClearableReference;
 @FunctionalInterface
 public interface DynamicSkillProvider {
 
-	/** Install the built-in skill that corresponds to the given capacity into the given agent.
+	/** Install the built-in skill that corresponds to the given capacity into the given container.
 	 *
 	 * <p>If the given type of capacity depends on another builtin capacity, the corresponding skill is also installed.
 	 *
-	 * @param agent the agent for which the built-in capacities must be retrieved.
+	 * @param container the container for which the built-in capacities must be retrieved.
 	 * @param capacity the type of the capacity to retrieve.
 	 * @return the skill that is installed into the agent.
 	 */
 	@Pure
-	AtomicClearableReference<Skill> installSkill(Agent agent, Class<? extends Capacity> capacity);
+	AtomicSkillReference installSkill(AbstractSkillContainer container, Class<? extends Capacity> capacity);
 
 }

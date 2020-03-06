@@ -23,8 +23,9 @@ package io.sarl.sre.services.lifecycle
 import io.sarl.lang.core.DynamicSkillProvider
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.Capacity
-import io.sarl.lang.util.AtomicClearableReference
 import io.sarl.lang.core.Skill
+import io.sarl.lang.core.AtomicSkillReference
+import io.sarl.lang.core.AbstractSkillContainer
 
 /** 
  * Abstract implementation of a factory of agent creator that provides the parent ID and agent ID to the created agent.
@@ -49,10 +50,10 @@ abstract class AbstractCreatorFactory implements AgentCreatorProvider {
 	}
 
 	@Pure
-	private static def extract(providers : Iterable<DynamicSkillProvider>, ^agent : Agent,
-		^capacity : Class<? extends Capacity>) : AtomicClearableReference<Skill> {
+	private static def extract(providers : Iterable<DynamicSkillProvider>, container : AbstractSkillContainer,
+		^capacity : Class<? extends Capacity>) : AtomicSkillReference {
 		for (provider : providers) {
-			var r = provider.installSkill(^agent, ^capacity)
+			var r = provider.installSkill(container, ^capacity)
 			if (r !== null) {
 				var s = r.get
 				if (s !== null) {
