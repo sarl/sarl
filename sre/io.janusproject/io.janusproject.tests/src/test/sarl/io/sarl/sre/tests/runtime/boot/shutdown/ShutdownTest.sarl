@@ -28,7 +28,6 @@ import io.sarl.sre.tests.testutils.^extension.SreRunContext
 import io.sarl.sre.tests.testutils.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
-import java.util.logging.Level
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
@@ -55,7 +54,7 @@ class ShutdownTest {
 
 	@Test
 	def shutdownWithoutAgent(extension rc : SreRunContext) {
-		setupTheSreKernel(Level::OFF, true, false)
+		setupTheSreKernel(null, null)
 		val handler = startTimeOut(false)
 		try {
 			bootstrap.shutdown(true)
@@ -67,7 +66,7 @@ class ShutdownTest {
 
 	@Test
 	def shutdownWithAgent1(extension rc : SreRunContext) {
-		setupTheSreKernel(typeof(ShutdownAgent1Mock), null, true, true)
+		typeof(ShutdownAgent1Mock).setupTheSreKernel(null, null)
 		val handler = startTimeOut
 		try {
 			bootstrap.shutdown(true)
@@ -79,7 +78,7 @@ class ShutdownTest {
 
 	@Test
 	def shutdownWithAgent2(extension rc : SreRunContext) {
-		setupTheSreKernel(typeof(ShutdownAgent2Mock), null, true, true)
+		typeof(ShutdownAgent2Mock).setupTheSreKernel(null, null)
 		val handler = startTimeOut
 		try {
 			bootstrap.shutdown(true)

@@ -29,6 +29,7 @@ import io.sarl.sre.boot.SreMain
 import io.sarl.sre.boot.configs.subconfigs.BootConfig
 import io.sarl.sre.services.logging.LoggingService
 import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.sre.tests.testutils.exception.SreLogException
 import io.sarl.sre.tests.testutils.exception.SreTimeoutException
 import java.util.List
 import java.util.Map
@@ -36,6 +37,7 @@ import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.TimeoutException
+import java.util.concurrent.atomic.AtomicReference
 import java.util.logging.Handler
 import java.util.logging.Level
 import java.util.logging.LogRecord
@@ -79,6 +81,8 @@ class SreRunContext {
 	val globalResults = new ConcurrentHashMap<UUID, List<Object>>
 
 	var module : Class<? extends Module>
+
+	val directFailureCause = new AtomicReference<Throwable>
 
 	/** Replies the identifier of the lastly booted agent.
 	 * 
@@ -257,10 +261,10 @@ class SreRunContext {
 	 */
 	@SuppressWarnings("use_reserved_sarl_annotation")
 	@PrivateAPI(isCallerOnly = true)
-	def runSre(type : Class<? extends TestingAgent>, loggingLevel : Level = TEST_LOGGING_LEVEL,
-		trackLogErrors : boolean = true, deleteLogHandlers : boolean = true,
+	def runSre(type : Class<? extends TestingAgent>, loggingLevel : Level = null,
+		trackMode : LogTrackingMode = null,
 		timeout : int = STANDARD_TIMEOUT) : Kernel {
-		val kern = setupTheSreKernel(type, loggingLevel, trackLogErrors, deleteLogHandlers)
+		val kern = setupTheSreKernel(type, loggingLevel, trackMode)
 		try {
 			waitForTheKernel(timeout)
 		} catch (exception : SreTimeoutException | TimeoutException) {
@@ -319,15 +323,13 @@ class SreRunContext {
 	 * 
 	 * @param type - the type of the agent to launch at start-up.
 	 * @param loggingLevel - indicates the level of logging.
-	 * @param trackLogErrors indicates if the logged errors should be tracked.
-	 * @param deleteLogHandlers indicates if the loggers' handler should be removed.
+	 * @param trackMode is the mode of log tracking to be used.
 	 * @return the kernel.
 	 * @throws Exception - if the kernel cannot be launched.
 	 */
-	def setupTheSreKernel(type : Class<? extends TestingAgent>, loggingLevel : Level = TEST_LOGGING_LEVEL,
-		trackLogErrors : boolean, deleteLogHandlers : boolean) : Kernel {
+	def setupTheSreKernel(type : Class<? extends TestingAgent>, loggingLevel : Level, trackMode : LogTrackingMode) : Kernel {
 		System::setProperty(VariableNames::toPropertyName(BootConfig::BOOT_AGENT_NAME), type.name)
-		var k = setupTheSreKernel(loggingLevel, trackLogErrors, deleteLogHandlers)
+		var k = setupTheSreKernel(loggingLevel, trackMode)
 		this.bootstrap.startAgent(type, getAgentInitializationParameters)
 		return k
 	}
@@ -336,15 +338,14 @@ class SreRunContext {
 	 * Set-up the SRE platform.
 	 * 
 	 * @param loggingLevel indicates the level of logging.
-	 * @param trackLogErrors indicates if the logged errors should be tracked.
-	 * @param deleteLogHandlers indicates if the loggers' handler should be removed.
+	 * @param trackMode is the mode of log tracking to be used.
 	 * @return the kernel.
 	 * @throws Exception - if the kernel cannot be launched.
 	 */
-	def setupTheSreKernel(loggingLevel : Level = TEST_LOGGING_LEVEL, trackLogErrors : boolean,
-		deleteLogHandlers : boolean) : Kernel {
+	def setupTheSreKernel(loggingLevel : Level, trackMode : LogTrackingMode) : Kernel {
 		assertNull(this.sreKernel, "SRE already launched.")
-		val lvl = loggingLevel ?: Level::OFF
+		val tm = trackMode ?: LogTrackingMode::FAIL_ON_ERROR
+		val lvl = loggingLevel ?: TEST_LOGGING_LEVEL
 		val glvl = org.arakhne.afc.bootique.log4j.configs.Level::valueOf(lvl)
 		System::setProperty(VariableNames::toPropertyName(Log4jIntegrationConfig::LEVEL), glvl.name)
 		val module = getTestingModule
@@ -353,38 +354,76 @@ class SreRunContext {
 		this.bootstrap.startWithoutAgent(module)
 		this.sreKernel = this.bootstrap.kernel
 		val logger = this.sreKernel.getService(typeof(LoggingService)).platformLogger
-		if (deleteLogHandlers) {
-			for (handler : logger.handlers) {
-				logger.removeHandler(handler)
+		switch (tm) {
+			case SILENT: {
+				for (handler : logger.handlers) {
+					logger.removeHandler(handler)
+				}
+				logger.addHandler(IDDLE_LOG_HANDLER)
+			}
+			case STANDARD_LOGGER_BEHAVIOR: {
+				// Do nothing special with the logger
+			}
+			case ADD_TO_AGENT_RESULTS: {
+				for (handler : logger.handlers) {
+					logger.removeHandler(handler)
+				}
+				logger.addHandler(RESULT_FILLER_LOG_HANDLER)
+			}
+			case FAIL_ON_ERROR: {
+				for (handler : logger.handlers) {
+					logger.removeHandler(handler)
+				}
+				logger.addHandler(FAILURE_LOG_HANDLER)
+			}
+			case STANDARD_LOGGER_BEHAVIOR_AND_FAIL_ON_ERROR: {
+				logger.addHandler(FAILURE_LOG_HANDLER)
 			}
 		}
-		if (trackLogErrors) {
-			logger.addHandler(new Handler {
-				override publish(record : LogRecord) {
-					if (record.level === Level.SEVERE) {
-						addResult(record)
-					}
-				}
-
-				override flush {
-				}
-
-				override close {
-				}
-			})
-		} else if (deleteLogHandlers) {
-			logger.addHandler(new Handler {
-				override publish(record : LogRecord) {
-				}
-
-				override flush {
-				}
-
-				override close {
-				}
-			})
-		}
 		return this.sreKernel
+	}
+
+	static val IDDLE_LOG_HANDLER = new Handler {
+		override publish(record : LogRecord) {
+		}
+
+		override flush {
+		}
+
+		override close {
+		}
+	}
+
+	val RESULT_FILLER_LOG_HANDLER = new Handler {
+		override publish(record : LogRecord) {
+			if (record.level === Level.SEVERE) {
+				addResult(record)
+			}
+		}
+
+		override flush {
+		}
+
+		override close {
+		}
+	}
+
+	val FAILURE_LOG_HANDLER = new Handler {
+		override publish(record : LogRecord) {
+			if (record.level === Level.SEVERE) {
+				var exception = record.thrown
+				if (exception === null) {
+					exception = new SreLogException(record)
+				}
+				directFailureCause.set(exception)
+			}
+		}
+
+		override flush {
+		}
+
+		override close {
+		}
 	}
 
 	/** 
@@ -415,11 +454,14 @@ class SreRunContext {
 			endTime = -1
 		}
 		var isSreRunning = this.sreKernel.running
-		while (isSreRunning && (endTime == -1 || System.currentTimeMillis() <= endTime)) {
+		while (this.directFailureCause.get === null && isSreRunning && (endTime == -1 || System.currentTimeMillis() <= endTime)) {
 			isSreRunning = this.sreKernel.isRunning() || (predicate !== null && (!(predicate.apply(this.globalResults))))
 			Thread.sleep(100)
 		}
-		if (isSreRunning) {
+		val directException = this.directFailureCause.get
+		if (directException !== null) {
+			throw directException
+		} else if (isSreRunning) {
 			var cause : Throwable = null
 			for (result : allResults) {
 				if (result instanceof Throwable) {
@@ -471,5 +513,4 @@ class SreRunContext {
 		}
 		kernel.spawn(^agent, callback, allParameters)
 	}
-
 }

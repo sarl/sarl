@@ -31,8 +31,6 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static io.sarl.sre.tests.testutils.Constants.*
-
 /** Tests for issue #864: Not suicide commit in "on Initialize" when the agent is the boot agent.
  *
  * <p>See: https://github.com/sarl/sarl/issues/864
@@ -55,7 +53,7 @@ class Bug864Test {
 
 	@Test
 	def run_01(extension rc : SreRunContext) : void {
-		typeof(BootAgent).runSre(null, true, STANDARD_TIMEOUT)
+		typeof(BootAgent).runSre
 		// Should stop
 	}
 

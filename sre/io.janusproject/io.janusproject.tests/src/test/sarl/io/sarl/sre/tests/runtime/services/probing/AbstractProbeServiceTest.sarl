@@ -33,7 +33,6 @@ import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.List
 import java.util.UUID
-import java.util.logging.Level
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
@@ -69,7 +68,7 @@ abstract class AbstractProbeServiceTest {
 	protected def runTestCase(extension rc : SreRunContext) : Probe<Integer> {
 		runTestCase_prepare
 
-		var kern = setupTheSreKernel(Level::OFF, false, false)
+		var kern = setupTheSreKernel(null, null)
 		var service = kern.getService(typeof(ProbeService))
 		service.assertNotNull
 

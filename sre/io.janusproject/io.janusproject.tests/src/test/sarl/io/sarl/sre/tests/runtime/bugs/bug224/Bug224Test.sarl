@@ -38,7 +38,6 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static io.sarl.sre.tests.testutils.Constants.*
 import static org.junit.jupiter.api.Assertions.*
 
 /** 
@@ -63,7 +62,7 @@ class Bug224Test {
 	@Test
 	@DisplayName("Register behavior in on Initialize")
 	def registerInInitialize(extension rc : SreRunContext) {
-		typeof(RegisteredInInitializeAgent).runSre(false)
+		typeof(RegisteredInInitializeAgent).runSre
 		assertEquals(1, getNumberOfResults)
 		var beh = getResult(typeof(MyBehavior), 0)
 		assertEquals(1, beh.initializeEvaluations.intValue)
@@ -73,7 +72,7 @@ class Bug224Test {
 	@Test
 	@DisplayName("Register behavior in on Event")
 	def registerInHandler(extension rc : SreRunContext) {
-		typeof(RegisteredInHandlerAgent).runSre(false)
+		typeof(RegisteredInHandlerAgent).runSre
 		assertEquals(1, getNumberOfResults)
 		var beh = getResult(typeof(MyBehavior), 0)
 		assertEquals(1, beh.initializeEvaluations.intValue)
@@ -83,7 +82,7 @@ class Bug224Test {
 	@Test
 	@DisplayName("Register behavior in on Destroy")
 	def registerInDestroy(extension rc : SreRunContext) {
-		typeof(RegisteredInDestroyAgent).runSre(false)
+		typeof(RegisteredInDestroyAgent).runSre
 		assertEquals(1, getNumberOfResults)
 		var beh = getResult(typeof(MyBehavior), 0)
 		assertEquals(0, beh.initializeEvaluations.intValue)
@@ -93,7 +92,7 @@ class Bug224Test {
 	@Test
 	@DisplayName("Unregister behavior in on Initialize")
 	def unregisterInInitialize(extension rc : SreRunContext) {
-		typeof(UnregisteredInInitializeAgent).runSre(false)
+		typeof(UnregisteredInInitializeAgent).runSre
 		assertEquals(1, getNumberOfResults)
 		var beh = getResult(typeof(MyBehavior), 0)
 		assertEquals(1, beh.initializeEvaluations.intValue)
@@ -103,7 +102,7 @@ class Bug224Test {
 	@Test
 	@DisplayName("Unregister behavior in on Event")
 	def unregisterInHandler(extension rc : SreRunContext) {
-		typeof(UnregisteredInHandlerAgent).runSre(false)
+		typeof(UnregisteredInHandlerAgent).runSre
 		assertEquals(1, getNumberOfResults)
 		var beh = getResult(typeof(MyBehavior), 0)
 		assertEquals(1, beh.initializeEvaluations.intValue)
@@ -113,7 +112,7 @@ class Bug224Test {
 	@Test
 	@DisplayName("Unregister behavior in on Destroy")
 	def unregisterInDestroy(extension rc : SreRunContext) {
-		typeof(UnregisteredInDestroyAgent).runSre(null, true, NO_TIMEOUT)
+		typeof(UnregisteredInDestroyAgent).runSre
 		assertEquals(1, getNumberOfResults)
 		var beh = getResult(typeof(MyBehavior), 0)
 		assertEquals(1, beh.initializeEvaluations.intValue)

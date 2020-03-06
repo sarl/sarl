@@ -22,7 +22,6 @@
 package io.sarl.sre.tests.testutils.^extension
 
 import io.sarl.bootstrap.SRE
-import io.sarl.sre.tests.testutils.annotation.SreRun
 import java.lang.reflect.Method
 import org.junit.jupiter.api.^extension.ExtensionContext
 import org.junit.jupiter.api.^extension.InvocationInterceptor
@@ -54,10 +53,6 @@ class SreRunExtension implements ParameterResolver, InvocationInterceptor {
 		SRE::resetServiceLoader
 		SRE::bootstrap = null
 		var context = new SreRunContext
-		var run = extensionContext.requiredTestMethod.getAnnotation(typeof(SreRun))
-		if (run !== null) {
-			context.runSre(run.type, run.enableLogging)
-		}
 		return context
 	}
 

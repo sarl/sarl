@@ -19,40 +19,38 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.tests.testutils.annotation
+package io.sarl.sre.tests.testutils.exception
 
-import io.sarl.sre.tests.testutils.agents.TestingAgent
-import java.lang.annotation.Documented
-import java.lang.annotation.ElementType
-import java.lang.annotation.Retention
-import java.lang.annotation.RetentionPolicy
-import java.lang.annotation.Target
+import java.util.logging.LogRecord
 
 /**
- * Annotation that permits to mark a method that is manually launching the SRE.
+ * Error is detected in the logged messages.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.11
  */
-@Documented
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-annotation SreRun {
+class SreLogException extends Exception {
 
-	/**
-	 * The type of the agent to launch.
-	 *
-	 * @return the type of the agent to launch.
-	 */
-	val type : Class<? extends TestingAgent> 
+	val record : LogRecord
 
-	/**
-	 * Indicates if the logging is enabled.
+	/** Constructor.
 	 *
-	 * @return {@code true} if the logging is enabled; {@code false} otherwise.
+	 * @param cause the cause of the error.
 	 */
-	val enableLogging : boolean = false
+	new (cause : LogRecord) {
+		super(cause.message)
+		this.record = cause
+	}
+
+	/** Replies the log record that is the cause of this exception.
+	 *
+	 * @return the log record.
+	 */
+	def getLogRecord : LogRecord {
+		this.record
+	}
 
 }

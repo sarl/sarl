@@ -65,7 +65,7 @@ class OnParticipantJoinedTest {
 	@DisplayName("ParticipantJoined in default space")
 	@SuppressWarnings("discouraged_reference")
 	def runParticipantJoinedInDefaultSpace(extension rc : SreRunContext) {
-		var kern = typeof(SpyAgent0).setupTheSreKernel(true, true)
+		var kern = typeof(SpyAgent0).setupTheSreKernel(null, null)
 
 		Thread::sleep(1000)
 
@@ -91,7 +91,7 @@ class OnParticipantJoinedTest {
 	@DisplayName("ParticipantJoined in other space")
 	@SuppressWarnings("discouraged_reference")
 	def runParticipantJoinedInOtherSpace(extension rc : SreRunContext) {
-		var kern = typeof(SpyAgent2).setupTheSreKernel(true, true)
+		var kern = typeof(SpyAgent2).setupTheSreKernel(null, null)
 
 		Thread::sleep(1000)
 

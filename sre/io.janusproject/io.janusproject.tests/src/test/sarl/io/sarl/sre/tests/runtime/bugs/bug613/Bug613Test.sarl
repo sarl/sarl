@@ -55,7 +55,7 @@ class Bug613Test {
 
 	@Test
 	def killMeInInit(extension rc : SreRunContext) {
-		typeof(TAgent1).runSre(null)
+		typeof(TAgent1).runSre
 		assertEquals(0, getResults.size)
 	}
 

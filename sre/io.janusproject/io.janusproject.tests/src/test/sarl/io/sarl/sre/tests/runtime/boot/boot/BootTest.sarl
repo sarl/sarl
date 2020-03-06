@@ -39,7 +39,6 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static io.sarl.sre.tests.testutils.Constants.*
 import static org.junit.jupiter.api.Assertions.*
 
 /**
@@ -78,7 +77,7 @@ class BootTest {
 	def bootAgentId_killInOnInitialize(extension rc : SreRunContext) {
 		System::setProperty(VariableNames::toPropertyName(BootConfig::ROOT_CONTEXT_BOOT_TYPE_NAME),
 			RootContextType::DEFAULT.name)
-		typeof(BootAgent0).runSre(null, true, STANDARD_TIMEOUT)
+		typeof(BootAgent0).runSre
 		assertNull(bootAgent)
 	}
 
@@ -86,7 +85,7 @@ class BootTest {
 	def bootAgentId_killAfterOnInitialize(extension rc : SreRunContext) {
 		System::setProperty(VariableNames::toPropertyName(BootConfig::ROOT_CONTEXT_BOOT_TYPE_NAME),
 			RootContextType::DEFAULT.name)
-		typeof(BootAgent1).runSre(null, true, STANDARD_TIMEOUT)
+		typeof(BootAgent1).runSre
 		assertNotNull(bootAgent)
 	}
 	
@@ -94,7 +93,7 @@ class BootTest {
 	def defaultContextUUID_killInOnInitalize(extension rc : SreRunContext) {
 		System::setProperty(VariableNames::toPropertyName(BootConfig::ROOT_CONTEXT_BOOT_TYPE_NAME),
 				RootContextType::DEFAULT.name)
-		typeof(BootAgent0).runSre(null, true, STANDARD_TIMEOUT)
+		typeof(BootAgent0).runSre
 		var id = getResult(typeof(UUID), 0)
 		assertNull(id)
 	}
@@ -103,7 +102,7 @@ class BootTest {
 	def defaultContextUUID_killAfterOnInitalize(extension rc : SreRunContext) {
 		System::setProperty(VariableNames::toPropertyName(BootConfig::ROOT_CONTEXT_BOOT_TYPE_NAME),
 			RootContextType::DEFAULT.name)
-		typeof(BootAgent1).runSre(null, true, STANDARD_TIMEOUT)
+		typeof(BootAgent1).runSre
 		var id = getResult(typeof(UUID), 0)
 		assertEquals(defaultID, id)
 		assertNotEquals(bootID0, id)
@@ -114,7 +113,7 @@ class BootTest {
 	def bootContextUUID_killInOnInitialize(extension rc : SreRunContext) {
 		System::setProperty(VariableNames::toPropertyName(BootConfig::ROOT_CONTEXT_BOOT_TYPE_NAME),
 				RootContextType::BOOT_AGENT_NAME.name)
-		typeof(BootAgent0).runSre(null, true, STANDARD_TIMEOUT)
+		typeof(BootAgent0).runSre
 		var id = getResult(typeof(UUID), 0)
 		assertNull(id)
 	}
@@ -123,7 +122,7 @@ class BootTest {
 	def bootContextUUID_killAfterOnInitialize(extension rc : SreRunContext) {
 		System::setProperty(VariableNames::toPropertyName(BootConfig::ROOT_CONTEXT_BOOT_TYPE_NAME),
 			RootContextType::BOOT_AGENT_NAME.name)
-		typeof(BootAgent1).runSre(null, true, STANDARD_TIMEOUT)
+		typeof(BootAgent1).runSre
 		var id = getResult(typeof(UUID), 0)
 		assertNotEquals(defaultID, id)
 		assertNotEquals(bootID0, id)
@@ -135,7 +134,7 @@ class BootTest {
 	def randomContextUUID_killInOnInitialize(extension rc : SreRunContext) {
 		System::setProperty(VariableNames::toPropertyName(BootConfig::ROOT_CONTEXT_BOOT_TYPE_NAME),
 				RootContextType::RANDOM.name)
-		typeof(BootAgent0).runSre(null, true, STANDARD_TIMEOUT)
+		typeof(BootAgent0).runSre
 		var id = getResult(typeof(UUID), 0)
 		assertNull(id)
 	}
@@ -144,7 +143,7 @@ class BootTest {
 	def randomContextUUID_killAfterOnInitialize(extension rc : SreRunContext) {
 		System::setProperty(VariableNames::toPropertyName(BootConfig::ROOT_CONTEXT_BOOT_TYPE_NAME),
 			RootContextType::RANDOM.name)
-		typeof(BootAgent1).runSre(null, true, STANDARD_TIMEOUT)
+		typeof(BootAgent1).runSre
 		var id = getResult(typeof(UUID), 0)
 		assertNotEquals(defaultID, id)
 		assertNotEquals(bootID0, id)

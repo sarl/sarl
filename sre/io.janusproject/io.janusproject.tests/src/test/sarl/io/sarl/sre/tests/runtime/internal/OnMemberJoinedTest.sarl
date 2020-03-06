@@ -32,7 +32,6 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static io.sarl.sre.tests.testutils.Constants.*
 import static io.sarl.tests.api.tools.TestAssertions.*
 
 /**
@@ -53,7 +52,7 @@ class OnMemberJoinedTest {
 
 	@Test
 	def run(extension rc : SreRunContext) {
-		typeof(RootAgent0).runSre(null, true, STANDARD_TIMEOUT)
+		typeof(RootAgent0).runSre
 		assertContains(allResults,
 				"ROOT:ChildAgent0", // Spawning
 				"ROOT:Child2Agent0", // Arrival of Child2 within the Inner context of Root.

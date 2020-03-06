@@ -23,7 +23,6 @@ package io.sarl.sre.tests.runtime.bugs.janus91;
 
 import io.sarl.sre.tests.runtime.bugs.janus91.mocks.ExceptionInInitAgent
 import io.sarl.sre.tests.runtime.bugs.janus91.mocks.TestException
-import io.sarl.sre.tests.testutils.exception.SreTimeoutException
 import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
 import io.sarl.sre.tests.testutils.^extension.SreRunContext
 import io.sarl.sre.tests.testutils.^extension.SreRunExtension
@@ -60,10 +59,8 @@ class JanusBug91Test {
 	@Test
 	@DisplayName("Exception in on Initialize")
 	def ExceptionInInit(extension rc : SreRunContext) : void {
-		typeof(SreTimeoutException).whenException [
-			typeof(ExceptionInInitAgent).runSre(null, true, VERY_SHORT_TIMEOUT);
-		].verify [
-			assertCause(typeof(TestException), it)
+		typeof(TestException).whenException [
+			typeof(ExceptionInInitAgent).runSre(VERY_SHORT_TIMEOUT);
 		]
 	}
 

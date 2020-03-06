@@ -32,7 +32,6 @@ import io.sarl.sre.tests.testutils.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
-import java.util.logging.Level
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
@@ -64,7 +63,7 @@ abstract class AbstractNamespaceServiceTest {
 
 	protected def startTestingFramework(extension rc : SreRunContext) : NamespaceService {
 		runTestCase_prepare
-		var kern = setupTheSreKernel(Level::OFF, false, false)
+		var kern = setupTheSreKernel(null, null)
 		var service = kern.getService(typeof(NamespaceService))
 		service.assertNotNull
 		return service
@@ -74,7 +73,7 @@ abstract class AbstractNamespaceServiceTest {
 	protected def runTestCase(extension rc : SreRunContext, type : Class<T>) : T with T {
 		runTestCase_prepare
 
-		var kern = setupTheSreKernel(Level::OFF, false, false)
+		var kern = setupTheSreKernel(null, null)
 		var service = kern.getService(typeof(NamespaceService))
 		service.assertNotNull
 

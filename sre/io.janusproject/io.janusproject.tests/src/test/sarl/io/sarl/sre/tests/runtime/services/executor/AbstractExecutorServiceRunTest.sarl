@@ -60,7 +60,7 @@ abstract class AbstractExecutorServiceRunTest {
 
 	@Test
 	def execute(extension rc : SreRunContext) {
-		typeof(ExecuteAgent).runSre(null, true, STANDARD_TIMEOUT)
+		typeof(ExecuteAgent).runSre
 		var all = allResults
 		assertEquals(1, all.size)
 		assertInstanceOf(typeof(UUID), all.get(0))
@@ -68,7 +68,7 @@ abstract class AbstractExecutorServiceRunTest {
 
 	@Test
 	def in(extension rc : SreRunContext) {
-		typeof(InAgent).runSre(null, true, STANDARD_TIMEOUT)
+		typeof(InAgent).runSre
 		var all = allResults
 		assertEquals(1, all.size)
 		assertInstanceOf(typeof(UUID), all.get(0))
@@ -78,7 +78,7 @@ abstract class AbstractExecutorServiceRunTest {
 	 */
 	@Test
 	def every_00(extension rc : SreRunContext) {
-		typeof(EveryAgent).runSre(null, true, STANDARD_TIMEOUT)
+		typeof(EveryAgent).runSre
 		// Wait two more seconds in order to give a chance to the every task to be run even if the agent is died
 		Thread::sleep(2000)
 		var all = allResults
@@ -92,7 +92,7 @@ abstract class AbstractExecutorServiceRunTest {
 	@SuppressWarnings("use_reserved_sarl_annotation")
 	@PrivateAPI(isCallerOnly = true)
 	def every_01(extension rc : SreRunContext) {
-		val kern = typeof(WaiterAgent).setupTheSreKernel(null, true, true)
+		val kern = typeof(WaiterAgent).setupTheSreKernel(null, null)
 		kern.spawn(typeof(EveryAgent), [], getAgentInitializationParameters)
 		try {
 			waitForTheKernel(STANDARD_TIMEOUT)
@@ -106,7 +106,7 @@ abstract class AbstractExecutorServiceRunTest {
 	
 	@Test
 	def atFixedDelay(extension rc : SreRunContext) {
-		typeof(AtFixedDelayAgent).runSre(null, true, STANDARD_TIMEOUT)
+		typeof(AtFixedDelayAgent).runSre
 		var all = allResults
 		assertEquals(1, all.size)
 		assertEquals(2, all.get(0))
@@ -114,7 +114,7 @@ abstract class AbstractExecutorServiceRunTest {
 
 	@Test
 	def getActiveTasks(extension rc : SreRunContext) {
-		typeof(GetActiveTasksAgent).runSre(null, true, STANDARD_TIMEOUT)
+		typeof(GetActiveTasksAgent).runSre
 		var all = allResults
 		assertEquals(3, all.size)
 		var actives1 = all.get(typeof(List), 0)
@@ -127,7 +127,7 @@ abstract class AbstractExecutorServiceRunTest {
 
 	@Test
 	def cancel_00(extension rc : SreRunContext) {
-		typeof(CancelTaskAgent).runSre(null, true, STANDARD_TIMEOUT)
+		typeof(CancelTaskAgent).runSre
 		var all = allResults
 		assertEquals(4, all.size)
 		// After creating T1

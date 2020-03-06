@@ -1000,19 +1000,21 @@ public final class TestAssertions {
 	/** Assert that the given code generates an exception of the given type, and replies the checker if
 	 * the exception occured.
 	 *
+	 * @param <T> the type of the exception.
 	 * @param expected the type of the expected exception.
 	 * @param code the code to run.
 	 * @return the exception checker.
 	 */
-	public static ExceptionChecker whenException(Class<? extends Throwable> expected, Code code) throws Exception {
+	@SuppressWarnings("unchecked")
+	public static <T extends Throwable> ExceptionChecker<T> whenException(Class<T> expected, Code code) throws Exception {
 		try {
 			code.run();
-			fail("Expecting exception of type " + expected.getName());
+			fail("Expecting exception of type " + expected.getName() + ", but not exception is known");
 		} catch (Throwable ex) {
 			if (!expected.isAssignableFrom(ex.getClass())) {
-				fail("Expecting exception of type " + expected.getName());
+				fail("Expecting exception of type " + expected.getName() + ", but get " + ex.getClass().getName(), ex);
 			} else {
-				return new ExceptionChecker(ex);
+				return new ExceptionChecker<>((T) ex);
 			}
 		}
 		return null;
@@ -1039,6 +1041,7 @@ public final class TestAssertions {
 
 	/** Verification code for exception.
 	 *
+	 * @param <T> the type of the exception.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -1046,34 +1049,35 @@ public final class TestAssertions {
 	 * @since 0.11
 	 */
 	@FunctionalInterface
-	public interface ExceptionCode {
+	public interface ExceptionCode<T extends Throwable> {
 
 		/** Code.
 		 *
 		 * @param it the exception to verify.
 		 * @throws Exception any exception
 		 */
-		void run(Throwable it) throws Exception;
+		void run(T it) throws Exception;
 
 	}
 
 	/** Exception checker.
 	 *
+	 * @param <T> the type of the exception.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 * @since 0.11
 	 */
-	public static class ExceptionChecker {
+	public static class ExceptionChecker<T extends Throwable> {
 
-		private final Throwable exception;
+		private final T exception;
 
 		/** Constructor.
 		 *
 		 * @param exception the exception to check.
 		 */
-		ExceptionChecker(Throwable exception) {
+		ExceptionChecker(T exception) {
 			this.exception = exception;
 		}
 		
@@ -1081,7 +1085,7 @@ public final class TestAssertions {
 		 *
 		 * @throws Exception any exception
 		 */
-		public void verify(ExceptionCode code) throws Exception {
+		public void verify(ExceptionCode<T> code) throws Exception {
 			assertNotNull(code);
 			code.run(exception);
 		}

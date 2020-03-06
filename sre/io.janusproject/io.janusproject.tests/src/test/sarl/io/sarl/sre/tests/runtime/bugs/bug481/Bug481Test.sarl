@@ -32,7 +32,6 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static io.sarl.sre.tests.testutils.Constants.*
 import static org.junit.jupiter.api.Assertions.*
 
 /**
@@ -58,7 +57,7 @@ class Bug481Test {
 
 	@Test
 	def spawnSubAgents(extension rc : SreRunContext) {
-		typeof(SpawnerAgent).runSre(null, true, STANDARD_TIMEOUT)
+		typeof(SpawnerAgent).runSre
 		assertEquals(NB_AGENTS, getNumberOfResults())
 	}
 

@@ -58,7 +58,7 @@ class AgentKillTest {
 	@DisplayName("Wait for AgentKilled events")
 	@Disabled("tmp")
 	def launchTest(extension rc : SreRunContext) : void {
-		typeof(InitAndWaitAgent0).runSre(null, true, EXTRA_TIMEOUT)
+		typeof(InitAndWaitAgent0).runSre(EXTRA_TIMEOUT)
 	}
 
 }

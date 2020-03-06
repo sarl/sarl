@@ -22,8 +22,11 @@
 package io.sarl.sre.tests.runtime.internal
 
 import io.sarl.core.ParticipantLeft
+import io.sarl.lang.core.SpaceID
 import io.sarl.sre.tests.runtime.internal.mocks.JoinerAgent1
+import io.sarl.sre.tests.runtime.internal.mocks.JoinerAgent3
 import io.sarl.sre.tests.runtime.internal.mocks.SpyAgent1
+import io.sarl.sre.tests.runtime.internal.mocks.SpyAgent3
 import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
 import io.sarl.sre.tests.testutils.^extension.SreRunContext
 import io.sarl.sre.tests.testutils.^extension.SreRunExtension
@@ -41,11 +44,8 @@ import static io.sarl.sre.tests.testutils.Constants.*
 import static extension org.junit.jupiter.api.Assertions.assertEquals
 import static extension org.junit.jupiter.api.Assertions.assertNotEquals
 import static extension org.junit.jupiter.api.Assertions.assertNotNull
-import static extension org.junit.jupiter.api.Assertions.assertNull
 import static extension org.junit.jupiter.api.Assertions.assertNotSame
-import io.sarl.lang.core.SpaceID
-import io.sarl.sre.tests.runtime.internal.mocks.SpyAgent3
-import io.sarl.sre.tests.runtime.internal.mocks.JoinerAgent3
+import static extension org.junit.jupiter.api.Assertions.assertNull
 
 /**
  * @author $Author: sgalland$
@@ -67,7 +67,7 @@ class OnParticipantLeftTest {
 	@DisplayName("ParticipantLeft in default space")
 	@SuppressWarnings("discouraged_reference")
 	def runParticipantLeftInDefaultSpace(extension rc : SreRunContext) {
-		var kern = typeof(SpyAgent1).setupTheSreKernel(true, true)
+		var kern = typeof(SpyAgent1).setupTheSreKernel(null, null)
 
 		Thread::sleep(1000)
 
@@ -96,7 +96,7 @@ class OnParticipantLeftTest {
 	@DisplayName("ParticipantLeft in other space")
 	@SuppressWarnings("discouraged_reference")
 	def runParticipantLeftInOtherSpace(extension rc : SreRunContext) {
-		var kern = typeof(SpyAgent3).setupTheSreKernel(true, true)
+		var kern = typeof(SpyAgent3).setupTheSreKernel(null, null)
 
 		Thread::sleep(1000)
 

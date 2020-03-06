@@ -80,17 +80,8 @@ import static extension org.mockito.Mockito.verify
 @Tag("unit")
 class SreMainTest {
 
-	val DEFAULT_OPTIONS = #[
-		"XasyncProbeUpdate",
-		"Xinjectagents",
-		"XinternalErrorLogLevel",
-		"XkeepAlive",
-		"Xmnthreads",
-		"Xmxthreads",
-		"XserviceStartTimeout",
-		"XserviceStopTimeout",
-		"XthreadPurge",
-		"XthreadTimeout",
+	public val DEFAULT_OPTIONS = #[
+		"asyncProbeUpdate",
 		"bootType",
 		"classpath",
 		"config",
@@ -98,12 +89,21 @@ class SreMainTest {
 		"defaultSpaceId",
 		"help",
 		"help-config",
+		"injectagents",
+		"internalErrorLogLevel",
 		"json",
+		"keepAlive",
 		"log",
+		"mnthreads",
+		"mxthreads",
 		"name",
 		"noagent",
 		"printconfig",
 		"rootContextId",
+		"serviceStartTimeout",
+		"serviceStopTimeout",
+		"threadPurge",
+		"threadTimeout",
 		"version",
 		"xml"
 	]

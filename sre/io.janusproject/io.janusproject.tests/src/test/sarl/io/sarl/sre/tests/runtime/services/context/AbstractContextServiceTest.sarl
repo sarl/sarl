@@ -34,7 +34,6 @@ import java.util.UUID
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static io.sarl.sre.tests.testutils.Constants.*
 import static io.sarl.tests.api.tools.TestAssertions.*
 import static org.junit.jupiter.api.Assertions.*
 
@@ -54,7 +53,7 @@ abstract class AbstractContextServiceTest {
 
 	@Test
 	def getRootContext(extension rc : SreRunContext) : void {
-		typeof(GetRootContextTestAgent).runSre(null, true, STANDARD_TIMEOUT)
+		typeof(GetRootContextTestAgent).runSre
 		var results = getResults
 		assertEquals(1, results.size)
 		var res = results.get(0)
@@ -67,7 +66,7 @@ abstract class AbstractContextServiceTest {
 
 	@Test
 	def getContext(extension rc : SreRunContext) : void {
-		typeof(GetContextTestAgent).runSre(null, true, STANDARD_TIMEOUT)
+		typeof(GetContextTestAgent).runSre
 		var results = getResults
 		assertEquals(2, results.size)
 		assertInstanceOf(typeof(UUID), results.get(0))

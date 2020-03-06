@@ -53,7 +53,7 @@ class OnInitializeTest {
 
 	@Test
 	def withinAgentAndBehavior(extension rc : SreRunContext) {
-		typeof(MyAgent0).runSre(null, true, SHORT_TIMEOUT)
+		typeof(MyAgent0).runSre(SHORT_TIMEOUT)
 		assertNoExceptionInResults
 		assertContains(allResults, "AGENT", "BEHAVIOR")
 	}

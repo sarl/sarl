@@ -58,7 +58,7 @@ class Bug848Test {
 
 	@Test
 	def agentSpawnedReceiving_01(extension rc : SreRunContext) {
-		typeof(TAgent1a).runSre(null)
+		typeof(TAgent1a).runSre
 
 		var bootAgent = getBootAgent
 		assertEquals(2, getNumberOfResults(bootAgent))

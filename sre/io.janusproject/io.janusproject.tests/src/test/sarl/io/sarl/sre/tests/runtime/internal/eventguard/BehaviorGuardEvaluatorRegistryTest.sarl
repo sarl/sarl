@@ -32,8 +32,6 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static io.sarl.sre.tests.testutils.Constants.*
-
 import static extension io.sarl.tests.api.tools.TestAssertions.*
 import static extension org.junit.jupiter.api.Assertions.*
 
@@ -56,7 +54,7 @@ class BehaviorGuardEvaluatorRegistryTest {
 	@Test
 	@DisplayName("Override of event handler and action")
 	def overrideOfEventHanderAndMethod(extension rc : SreRunContext) {
-		typeof(Agent1).runSre(null, true, STANDARD_TIMEOUT)
+		typeof(Agent1).runSre
 		
 		var all = allResults
 		2.assertEquals(all.size)

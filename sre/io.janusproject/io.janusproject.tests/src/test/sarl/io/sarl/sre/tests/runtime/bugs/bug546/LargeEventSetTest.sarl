@@ -57,7 +57,7 @@ class LargeEventSetTest {
 
 	@Test
 	def sendHugeNumberEvents(extension rc : SreRunContext) : void {
-		typeof(InitAndWaitAgent1).runSre(null, true, EXTRA_TIMEOUT)
+		typeof(InitAndWaitAgent1).runSre(EXTRA_TIMEOUT)
 	}
 
 }

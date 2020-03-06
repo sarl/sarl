@@ -32,7 +32,6 @@ import io.sarl.sre.tests.testutils.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
-import java.util.logging.Level
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
@@ -62,7 +61,7 @@ class EventRoutingTest {
 
 	@Test
 	def unchangedEventSource_inspace(extension rc : SreRunContext) {
-		val kern = setupTheSreKernel(typeof(TargetAgent), null, true, true)
+		val kern = typeof(TargetAgent).setupTheSreKernel(null, null)
 		kern.spawn(typeof(SourceAgent), null, agentInitializationParameters)
 		waitForTheKernel(STANDARD_TIMEOUT)
 		
@@ -75,7 +74,7 @@ class EventRoutingTest {
 
 	@Test
 	def unchangedEventSources_inspace(extension rc : SreRunContext) {
-		val kern = setupTheSreKernel(Level::OFF, true, false)
+		val kern = setupTheSreKernel(null, null)
 		val ag1 = new OutParameter<UUID>
 		kern.spawn(typeof(TargetAgent), [ag1.set(it)], agentInitializationParameters)
 		val ag2 = new OutParameter<UUID>

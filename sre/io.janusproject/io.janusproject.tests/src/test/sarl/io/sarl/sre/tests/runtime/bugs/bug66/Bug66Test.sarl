@@ -59,7 +59,7 @@ class Bug66Test {
 
 	@Test
 	def injectionWithNamedAnnotation(extension rc : SreRunContext) : void {
-		typeof(SpaceCreatorWithNamedAnnotationAgent).runSre(null)
+		typeof(SpaceCreatorWithNamedAnnotationAgent).runSre
 		2.assertEquals(getNumberOfResults)
 		val dftSpc = typeof(EventSpace).getResult(0)
 		dftSpc.assertNotNull
@@ -69,7 +69,7 @@ class Bug66Test {
 
 	@Test
 	def injectionWithDefaultSpaceAnnotation(extension rc : SreRunContext) : void {
-		typeof(SpaceCreatorWithDefaultSpaceAnnotationAgent).runSre(null)
+		typeof(SpaceCreatorWithDefaultSpaceAnnotationAgent).runSre
 		2.assertEquals(getNumberOfResults)
 		val dftSpc = typeof(EventSpace).getResult(0)
 		dftSpc.assertNotNull

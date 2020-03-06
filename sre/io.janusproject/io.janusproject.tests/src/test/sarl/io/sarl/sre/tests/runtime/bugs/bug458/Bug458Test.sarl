@@ -32,8 +32,6 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static io.sarl.sre.tests.testutils.Constants.*
-
 /**
  * Unit test for the issue #458: Thread deadlock problem in agent's destroy function
  * 
@@ -55,7 +53,7 @@ class Bug458Test {
 
 	@Test
 	def exceptionInInit(extension rc : SreRunContext) : void {
-		typeof(KillMeInBehaviorAgent).runSre(null, true, STANDARD_TIMEOUT)
+		typeof(KillMeInBehaviorAgent).runSre
 	}
 
 }

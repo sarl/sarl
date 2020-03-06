@@ -21,7 +21,9 @@
 package io.sarl.sre.tests.runtime.bugs.bug861
 
 import io.sarl.sre.tests.runtime.bugs.bug861.mocks.BootAgent0
+import io.sarl.sre.tests.runtime.bugs.bug861.mocks.BootAgent1
 import io.sarl.sre.tests.runtime.bugs.bug861.mocks.Initialized
+import io.sarl.sre.tests.testutils.exception.SreTimeoutException
 import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
 import io.sarl.sre.tests.testutils.^extension.SreRunContext
 import io.sarl.sre.tests.testutils.^extension.SreRunExtension
@@ -34,11 +36,10 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
 import static io.sarl.sre.tests.testutils.Constants.*
+
 import static extension io.sarl.tests.api.tools.TestAssertions.*
 import static extension org.junit.jupiter.api.Assertions.assertEquals
 import static extension org.junit.jupiter.api.Assertions.assertNotNull
-import io.sarl.sre.tests.testutils.exception.SreTimeoutException
-import io.sarl.sre.tests.runtime.bugs.bug861.mocks.BootAgent1
 
 /** Tests for issue #861: Cannot use emit function in the Initialize handler.
  *
@@ -63,7 +64,7 @@ class Bug861Test {
 	@Test
 	@DisplayName("Emit without scope")
 	def runWithoutScope(extension rc : SreRunContext) : void {
-		typeof(BootAgent0).runSre(null)
+		typeof(BootAgent0).runSre
 
 	 	assertEquals(2, getNumberOfResults(bootAgent))
 
@@ -85,7 +86,7 @@ class Bug861Test {
 	@DisplayName("Emit with scope")
 	def runWithScope(extension rc : SreRunContext) : void {
 		typeof(SreTimeoutException).whenException [
-			typeof(BootAgent1).runSre(null, VERY_SHORT_TIMEOUT)
+			typeof(BootAgent1).runSre(VERY_SHORT_TIMEOUT)
 		].verify [
 			assertEquals(2, getNumberOfResults(bootAgent))
 

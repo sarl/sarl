@@ -62,7 +62,7 @@ class Bug942Test {
 	@SuppressWarnings("discouraged_reference")
 	@Test
 	def doTest(extension rc : SreRunContext) : void {
-		var kern = typeof(AgentBug942).setupTheSreKernel(null, true, true)
+		var kern = typeof(AgentBug942).setupTheSreKernel(null, null)
 
 		Thread::sleep(1000)
 

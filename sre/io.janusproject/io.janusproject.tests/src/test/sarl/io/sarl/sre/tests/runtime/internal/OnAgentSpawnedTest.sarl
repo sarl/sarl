@@ -36,7 +36,6 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static io.sarl.sre.tests.testutils.Constants.*
 import static io.sarl.tests.api.tools.TestAssertions.*
 import static org.junit.jupiter.api.Assertions.*
 
@@ -58,7 +57,7 @@ class OnAgentSpawnedTest {
 
 	@Test
 	def run(extension rc : SreRunContext) {
-		typeof(MyWaiterAgent0).runSre(null, true, STANDARD_TIMEOUT)
+		typeof(MyWaiterAgent0).runSre
 		
 		var all = allResults
 		assertEquals(5, all.size)

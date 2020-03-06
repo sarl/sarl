@@ -22,12 +22,12 @@
 package io.sarl.sre.tests.runtime.services.logging
 
 import io.sarl.sre.tests.runtime.services.logging.mocks.VerboseAgent
+import io.sarl.sre.tests.testutils.^extension.LogTrackingMode
 import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
 import io.sarl.sre.tests.testutils.^extension.SreRunContext
 import io.sarl.sre.tests.testutils.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
-import java.util.logging.Level
 import java.util.logging.LogRecord
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
@@ -55,7 +55,7 @@ class LoggingServiceTest {
 
 	@Test
 	def agentLoggingMessageFormat(extension rc : SreRunContext) : void {
-		typeof(VerboseAgent).runSre(Level::SEVERE, true, true)
+		typeof(VerboseAgent).runSre(null, LogTrackingMode::ADD_TO_AGENT_RESULTS)
 		var record = typeof(LogRecord).getResult(0)
 		record.assertNotNull;
 		("AGENT-" + bootAgent.toString).assertEquals(record.loggerName)

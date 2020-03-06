@@ -32,7 +32,6 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static io.sarl.sre.tests.testutils.Constants.*
 import static io.sarl.tests.api.tools.TestAssertions.*
 
 /**
@@ -53,7 +52,7 @@ class OnContextJoinedTest {
 		
 	@Test
 	def run(extension rc : SreRunContext) {
-		typeof(RootAgent2).runSre(null, true, STANDARD_TIMEOUT)
+		typeof(RootAgent2).runSre
 		assertContains(allResults, "CHILD2")
 	}
 

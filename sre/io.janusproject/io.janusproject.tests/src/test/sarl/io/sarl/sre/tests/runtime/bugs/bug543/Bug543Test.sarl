@@ -26,7 +26,6 @@ import io.sarl.sre.tests.runtime.bugs.bug543.mocks.C1
 import io.sarl.sre.tests.runtime.bugs.bug543.mocks.TAgent1
 import io.sarl.sre.tests.runtime.bugs.bug543.mocks.TAgent2
 import io.sarl.sre.tests.runtime.bugs.bug543.mocks.TAgent3
-import io.sarl.sre.tests.testutils.exception.SreTimeoutException
 import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
 import io.sarl.sre.tests.testutils.^extension.SreRunContext
 import io.sarl.sre.tests.testutils.^extension.SreRunExtension
@@ -64,7 +63,7 @@ class Bug543Test {
 	@Test
 	@DisplayName("Multiple setSkill")
 	def setSkill(extension rc : SreRunContext) {
-		typeof(TAgent1).runSre(false)
+		typeof(TAgent1).runSre
 		assertEquals(2, getNumberOfResults())
 		assertEquals("1", getResult(typeof(String), 0))
 		assertEquals("2", getResult(typeof(String), 1))
@@ -73,18 +72,17 @@ class Bug543Test {
 	@Test
 	@DisplayName("clearSkill after setSkill")
 	def clearSkill(extension rc : SreRunContext) : void {
-		typeof(SreTimeoutException).whenException [
-			typeof(TAgent2).runSre(null, true, VERY_SHORT_TIMEOUT);
+		typeof(UnimplementedCapacityException).whenException [
+			typeof(TAgent2).runSre(VERY_SHORT_TIMEOUT);
 		].verify [
-			var c = assertCause(typeof(UnimplementedCapacityException), it)
-			assertEquals(typeof(C1), c.unimplementedCapacity)
+			assertEquals(typeof(C1), it.unimplementedCapacity)
 		]
 	}
 
 	@Test
 	@DisplayName("two consecutive getSkill")
 	def doubleHiddenGetters(extension rc : SreRunContext) {
-		typeof(TAgent3).runSre(false)
+		typeof(TAgent3).runSre
 		assertEquals(1, getNumberOfResults)
 		assertEquals(Boolean.TRUE, getResult(typeof(Boolean), 0))
 	}

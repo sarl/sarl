@@ -66,77 +66,77 @@ class Bug794Test {
 
 	@Test
 	def spawn1(extension rc : SreRunContext) {
-		typeof(SpawnerAgent1).runSre(null)
+		typeof(SpawnerAgent1).runSre
 		assertEquals(1, getResults.size)
 		assertAllDifferents(getResults)
 	}
 
 	@Test
 	def spawn2(extension rc : SreRunContext) {
-		typeof(SpawnerAgent2).runSre(null)
+		typeof(SpawnerAgent2).runSre
 		assertEquals(2, getResults.size)
 		assertAllDifferents(getResults)
 	}
 
 	@Test
 	def spawn3(extension rc : SreRunContext) {
-		typeof(SpawnerAgent3).runSre(null)
+		typeof(SpawnerAgent3).runSre
 		assertEquals(3, getResults.size)
 		assertAllDifferents(getResults)
 	}
 
 	@Test
 	def spawn4(extension rc : SreRunContext) {
-		typeof(SpawnerAgent4).runSre(null)
+		typeof(SpawnerAgent4).runSre
 		assertEquals(4, getResults.size)
 		assertAllDifferents(getResults)
 	}
 
 	@Test
 	def spawn5(extension rc : SreRunContext) {
-		typeof(SpawnerAgent5).runSre(null)
+		typeof(SpawnerAgent5).runSre
 		assertEquals(5, getResults.size)
 		assertAllDifferents(getResults)
 	}
 
 	@Test
 	def spawn6(extension rc : SreRunContext) {
-		typeof(SpawnerAgent6).runSre(null)
+		typeof(SpawnerAgent6).runSre
 		assertEquals(6, getResults.size)
 		assertAllDifferents(getResults)
 	}
 
 	@Test
 	def spawn7(extension rc : SreRunContext) {
-		typeof(SpawnerAgent7).runSre(null)
+		typeof(SpawnerAgent7).runSre
 		assertEquals(7, getResults.size)
 		assertAllDifferents(getResults)
 	}
 
 	@Test
 	def spawn8(extension rc : SreRunContext) {
-		typeof(SpawnerAgent8).runSre(null)
+		typeof(SpawnerAgent8).runSre
 		assertEquals(8, getResults.size)
 		assertAllDifferents(getResults)
 	}
 
 	@Test
 	def spawn9(extension rc : SreRunContext) {
-		typeof(SpawnerAgent9).runSre(null)
+		typeof(SpawnerAgent9).runSre
 		assertEquals(9, getResults.size)
 		assertAllDifferents(getResults)
 	}
 
 	@Test
 	def spawn10(extension rc : SreRunContext) {
-		typeof(SpawnerAgent10).runSre(null)
+		typeof(SpawnerAgent10).runSre
 		assertEquals(10, getResults.size)
 		assertAllDifferents(getResults)
 	}
 
 	@Test
 	def spawn200(extension rc : SreRunContext) {
-		typeof(SpawnerAgent200).runSre(null)
+		typeof(SpawnerAgent200).runSre
 		assertEquals(200, getResults.size)
 		assertAllDifferents(getResults)
 	}

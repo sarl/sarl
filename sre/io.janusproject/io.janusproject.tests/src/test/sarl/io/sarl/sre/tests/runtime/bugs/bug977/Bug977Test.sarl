@@ -34,8 +34,6 @@ import org.junit.jupiter.api.RepetitionInfo
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static io.sarl.sre.tests.testutils.Constants.*
-
 import static extension io.sarl.tests.api.tools.TestAssertions.*
 
 /** Tests for issue #977: Problem with multiple initialize event in Behavior inheritance demos.
@@ -61,7 +59,7 @@ class Bug977Test {
 	@RepeatedTest(10)
 	@DisplayName("Inheritance of event handlers and functions")
 	def runInheritanceBehaviorExampleCode(extension rc : SreRunContext) : void {
-		typeof(HelloChildAgent).runSre(null, true, STANDARD_TIMEOUT)
+		typeof(HelloChildAgent).runSre
 
 		val all = getResults(bootAgent)
 
@@ -76,7 +74,7 @@ class Bug977Test {
 	@RepeatedTest(10)
 	@DisplayName("Shared guard evaluation without value change")
 	def runSharedGuardEvaluationWithoutValueChange(extension rc : SreRunContext, info : RepetitionInfo) : void {
-		typeof(SharedGuardEvaluationAgent0).runSre(null, true, STANDARD_TIMEOUT)
+		typeof(SharedGuardEvaluationAgent0).runSre
 
 		val all = getResults(bootAgent)
 
@@ -86,7 +84,7 @@ class Bug977Test {
 	@RepeatedTest(10)
 	@DisplayName("Shared guard evaluation with value change")
 	def runSharedGuardEvaluationWithValueChange(extension rc : SreRunContext) : void {
-		typeof(SharedGuardEvaluationAgent1).runSre(null, true, STANDARD_TIMEOUT)
+		typeof(SharedGuardEvaluationAgent1).runSre
 
 		val all = getResults(bootAgent)
 
