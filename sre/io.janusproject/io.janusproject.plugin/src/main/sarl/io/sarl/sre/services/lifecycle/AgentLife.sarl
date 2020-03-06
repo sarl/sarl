@@ -279,11 +279,14 @@ final class AgentLife {
 
 		this.state = AgentState::DYING
 
+		val dyingAgent = ^agent
+		assert dyingAgent !== null
+
 		try {
 			// Pre-stage for uninstalling the skills (BIC and user defined)
 			var skills : CopyOnWriteArraySet<? extends Skill>
 			try {
-				skills = skillUninstaller.uninstallSkillsBeforeDestroy(^agent)
+				skills = skillUninstaller.uninstallSkillsBeforeDestroy(dyingAgent)
 			} catch (e : Throwable) {
 				logger.kernelLogger.log(Level::SEVERE, e.localizedMessage, e)
 				skills = new CopyOnWriteArraySet
@@ -317,7 +320,7 @@ final class AgentLife {
 
 			// Final stage for uninstalling the skills (BIC and user defined)
 			try {
-				skillUninstaller.uninstallSkillsAfterDestroy(^agent, skills)
+				skillUninstaller.uninstallSkillsAfterDestroy(dyingAgent, skills)
 			} catch (e : Throwable) {
 				logger.kernelLogger.log(Level::SEVERE, e.localizedMessage, e)
 			}
@@ -332,7 +335,7 @@ final class AgentLife {
 			return new ConcurrentLinkedDeque
 		} finally {
 			// Clear the references
-			^agent.setSreSpecificData(null)
+			dyingAgent.setSreSpecificData(null)
 			this.defaultContextInstance = null
 			this.externalContextInstances = null
 			this.agentInstance = null
