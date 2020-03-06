@@ -8,7 +8,7 @@
 	</parent>
 
 	<artifactId>sarl-maven-plugin.tests</artifactId>
-	<name>Tests for the SARL Compiler Plugin</name>
+	<name>Tests for the SARL Compiler Maven Plugin</name>
 
 	<dependencies>
 		<dependency>
