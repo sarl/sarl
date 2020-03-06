@@ -230,11 +230,11 @@ class ServicesConfig {
  */
 class ServicesConfigModule extends AbstractModule {
 
-	static val XSERVICESTARTTIMEOUT_OPTION = "XserviceStartTimeout"
+	static val XSERVICESTARTTIMEOUT_OPTION = "serviceStartTimeout"
 
-	static val XSERVICESTOPTIMEOUT_OPTION = "XserviceStopTimeout"
+	static val XSERVICESTOPTIMEOUT_OPTION = "serviceStopTimeout"
 
-	static val XASYNCPROBEUPDATE_OPTION = "XasyncProbeUpdate"
+	static val XASYNCPROBEUPDATE_OPTION = "asyncProbeUpdate"
 
 	override configure : void {
 		VariableDecls::extend(binder).declareVar(START_TIMEOUT_NAME)

@@ -20,9 +20,6 @@
  */
 package io.sarl.sre.skills.bic
 
-import com.fasterxml.uuid.EthernetAddress
-import com.fasterxml.uuid.Generators
-import com.fasterxml.uuid.impl.TimeBasedGenerator
 import io.sarl.core.AgentTask
 import io.sarl.core.Logging
 import io.sarl.core.Time
@@ -47,6 +44,7 @@ import java.util.concurrent.Future
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicLong
 import java.util.logging.Logger
 import javax.inject.Inject
 
@@ -76,8 +74,8 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	 * JUG Time based generator used for naming tasks, enough for this kind of missions not for a string unique UUID
 	 * Goal: replace UUID.randomUUID that is way too slow in multithread context
 	 */
-	var uuidTimeBasedGenerator : TimeBasedGenerator = Generators.timeBasedGenerator(EthernetAddress.fromInterface());
-
+	//val uuidTimeBasedGenerator : TimeBasedGenerator = Generators.timeBasedGenerator(EthernetAddress.fromInterface());
+	var taskCountID : AtomicLong = new AtomicLong(Long.MAX_VALUE)
 
 	/** 
 	 * Constructor.
@@ -150,8 +148,9 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 		var realName : String
 		if (name.isNullOrEmpty) {
 			// see http://www.cowtowncoder.com/blog/archives/2010/10/entry_429.html
-			//Don't use UUID::randomUUID way too slow
-			realName = "task-" + uuidTimeBasedGenerator.generate().toString
+			// Don't use UUID::randomUUID way too slow
+			taskCountID.incrementAndGet
+			realName = "task-" + taskCountID 	//+ uuidTimeBasedGenerator.generate().toString
 		} else {
 			realName = name
 
@@ -257,7 +256,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 						if (future instanceof Runnable) {
 							this.executorService.remove(future)
 						}
-						this.executorService.purge
+						//DO NOT CALL IT here this.executorService.purge it is way too costly
 					}
 					return b1
 				}
