@@ -95,7 +95,7 @@ class LifecycleConfig {
  */
 class LifecycleConfigModule extends AbstractModule {
 
-	static val XINJECTAGENT_OPTION = "Xinjectagents"
+	static val XINJECTAGENT_OPTION = "injectagents"
 
 	override configure : void {
 		VariableDecls::extend(binder).declareVar(CREATE_AGENT_WITH_INJECTOR_NAME)

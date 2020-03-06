@@ -61,7 +61,7 @@ class ExecutorsConfig {
 	 * 
 	 * @see #MAX_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE
 	 */
-	public static val MAX_NUMBER_OF_THREADS_IN_EXECUTOR_NAME = PREFIX + ".mxThreads"
+	public static val MAX_NUMBER_OF_THREADS_IN_EXECUTOR_NAME = PREFIX + ".maxThreads"
 	
 	/** 
 	 * Indicates the maximal number of threads to keep in the pool.
@@ -75,7 +75,7 @@ class ExecutorsConfig {
 	 * 
 	 * @see #MIN_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE
 	 */
-	public static val MIN_NUMBER_OF_THREADS_IN_EXECUTOR_NAME = PREFIX + ".mnThreads"
+	public static val MIN_NUMBER_OF_THREADS_IN_EXECUTOR_NAME = PREFIX + ".minThreads"
 
 	/** 
 	 * Indicates the minimal number of threads to keep in the pool, even if they are idle.
@@ -90,7 +90,7 @@ class ExecutorsConfig {
 	 * @since 0.5.0
 	 * @see #THREAD_KEEP_ALIVE_DURATION_VALUE
 	 */
-	public static val THREAD_KEEP_ALIVE_DURATION_NAME = PREFIX + ".keepAlive"
+	public static val THREAD_KEEP_ALIVE_DURATION_NAME = PREFIX + ".keepAliveDuration"
 
 	/** 
 	 * Indicates the duration for keeping the iddle threads alive (in seconds).
@@ -119,9 +119,8 @@ class ExecutorsConfig {
 	 * 
 	 * @see #INTERNAL_ERROR_VERBOSE_LEVEL_VALUE
 	 */
-	public static val INTERNAL_ERROR_VERBOSE_LEVEL_NAME = PREFIX + ".internalErrorLogLevel"
+	public static val INTERNAL_ERROR_VERBOSE_LEVEL_NAME = PREFIX + ".internalErrorVerboseLevel"
 
-	
 	/** 
 	 * The default verbosity level of the executor's internal errors.
 	 * 
@@ -145,11 +144,9 @@ class ExecutorsConfig {
 	 */
 	public static val PERIODIC_THREAD_POOL_PURGE_VALUE = true
 
-
-
 	var internalErrorVerboseLevel : Level
 
-	var maxThreads : Integer
+	var maxThreads : int = MAX_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE
 
 	@Accessors(PUBLIC_GETTER)
 	var minThreads : int = MIN_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE
@@ -168,9 +165,9 @@ class ExecutorsConfig {
 	 * @param maxThreads the max number.
 	 */
 	@BQConfigProperty("Maximum number of threads that could be used by the executor service")
-	def setMaxThreads(maxThreads : int) : void {
+	def setMaxThreads(iMaxThreads : int) : void {
 		if (maxThreads > 0) {
-			this.maxThreads = maxThreads;
+			this.maxThreads = iMaxThreads;
 		} else {
 			this.maxThreads = 1
 		}
@@ -181,7 +178,7 @@ class ExecutorsConfig {
 	 * @param the max number.
 	 */
 	def getMaxThreads : int {
-		if (this.maxThreads !== null) {
+		if (this.maxThreads >0) {
 			return this.maxThreads.intValue
 		}
 		return Integer::MAX_VALUE
@@ -192,7 +189,7 @@ class ExecutorsConfig {
 	 * @return {@code true} if the maximum number of threads is specified. Otherwise {@code false}.
 	 */
 	def hasMaxThreadsSpecified : boolean {
-		this.maxThreads !== null
+		this.maxThreads !== 0
 	}
 
 	/** Change the minimum number of threads that could be used by the executor service.
@@ -200,9 +197,9 @@ class ExecutorsConfig {
 	 * @param minThreads the min number.
 	 */
 	@BQConfigProperty("Minimum number of threads that could be used by the executor service")
-	def setMinThreads(minThreads : int) {
+	def setMinThreads(iMinThreads : int) {
 		if (minThreads > 0) {
-			this.minThreads = minThreads;
+			this.minThreads = iMinThreads;
 		} else {
 			this.minThreads = 1
 		}
@@ -280,17 +277,17 @@ class ExecutorsConfig {
  */
 class ExecutorsConfigModule extends AbstractModule {
 
-	static val XMXTHREADS_OPTION = "Xmxthreads"
+	static val XMXTHREADS_OPTION = "mxthreads"
 
-	static val XMNTHREADS_OPTION = "Xmnthreads"
+	static val XMNTHREADS_OPTION = "mnthreads"
 
-	static val XKEEPALIVE_OPTION = "XkeepAlive"
+	static val XKEEPALIVE_OPTION = "keepAlive"
 
-	static val XTHREADTIMEOUT_OPTION = "XthreadTimeout"
+	static val XTHREADTIMEOUT_OPTION = "threadTimeout"
 
-	static val XINTERNALERRORLOGLEVEL_OPTION = "XinternalErrorLogLevel"
+	static val XINTERNALERRORLOGLEVEL_OPTION = "internalErrorLogLevel"
 
-	static val XTHREADPURGE_OPTION = "XthreadPurge"
+	static val XTHREADPURGE_OPTION = "threadPurge"
 	
 	override configure : void {
 		VariableDecls::extend(binder).declareVar(MAX_NUMBER_OF_THREADS_IN_EXECUTOR_NAME)
