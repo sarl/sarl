@@ -258,7 +258,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 						if (future instanceof Runnable) {
 							this.executorService.remove(future)
 						}
-						this.executorService.purge
+						//DO NOT CALL IT here this.executorService.purge it is way too costly
 					}
 					return b1
 				}
