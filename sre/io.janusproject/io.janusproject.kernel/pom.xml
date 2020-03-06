@@ -14,7 +14,7 @@
 
 	<properties>
 		<cliRunnerName>janus</cliRunnerName>
-		<cliRunnerMainClass>io.janusproject.Boot</cliRunnerMainClass>
+		<cliRunnerMainClass>io.sarl.sre.boot.Boot</cliRunnerMainClass>
 	</properties>
 
 	<dependencies>

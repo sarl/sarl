@@ -125,10 +125,10 @@ Then, you are able to select the library for the Janus runtime environment.
 ![Add Janus Library](./EclipseRunConfiguration_1_2.png)
 
 
-### Specify the Janus Boot agent
+### Specify the SRE Boot agent
 
 You can go back to the *Main* tab, and enter the *Main class*.
-The main class **must always be** `io.janusproject.Boot`.
+The main class **must always be** `io.sarl.sre.boot.Boot`.
 
 
 ![Janus Boot Class](./EclipseRunConfiguration_1_3.png)
