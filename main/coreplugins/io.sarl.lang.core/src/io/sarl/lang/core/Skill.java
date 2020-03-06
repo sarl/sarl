@@ -26,6 +26,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import io.sarl.lang.annotation.PrivateAPI;
+
 /**
  * A possible implementation of a capacity fulfilling all the constraints of
  * this specification. Require Capacities should be accessed via the
@@ -39,7 +41,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  */
 public abstract class Skill extends AgentTrait {
 
-	private final AtomicInteger uses = new AtomicInteger();
+	private final AtomicInteger referencesFromCapacityMap = new AtomicInteger();
 
 	/**
 	 * Creates a new Skill.
@@ -64,6 +66,15 @@ public abstract class Skill extends AgentTrait {
 		super();
 	}
 
+	/** Set the agent that has this trait.
+	 *
+	 * @param agent the owner of this trait.
+	 */
+	void setOwner(Agent agent) {
+		super.setOwner(agent);
+		this.referencesFromCapacityMap.set(0);
+	}
+
 	/** Replies the caller of the capacity functions.
 	 *
 	 * <p>The replied value has a meaning inside the skills' functions that
@@ -79,25 +90,6 @@ public abstract class Skill extends AgentTrait {
 		return Capacities.getCaller();
 	}
 
-	/** Mark this skill as used by one user.
-	 */
-	void registerUse() {
-		final int value = this.uses.getAndIncrement();
-		if (value == 0) {
-			install();
-		}
-	}
-
-	/** Mark this skill as release by one user.
-	 */
-	void unregisterUse() {
-		final int value = this.uses.decrementAndGet();
-		if (value == 0) {
-			uninstall(UninstallationStage.PRE_DESTROY_EVENT);
-			uninstall(UninstallationStage.POST_DESTROY_EVENT);
-		}
-	}
-
 	/**
 	 * This method is called just after the installation of this skill into its
 	 * owner agent. In this method you should get all information that depends
@@ -107,51 +99,57 @@ public abstract class Skill extends AgentTrait {
 		//
 	}
 
-	/** This method is called just before uninstalling the skill from its owner agent.
-	 * The Skill should release all resources here.
-	 *
-	 * @deprecated see {@link #uninstall(UninstallationStage)} with {@link UninstallationStage#POST_DESTROY_EVENT} argument.
+	/**
+	 * This method is called just before the "on Destroy" is fired.
+	 * @since 0.11
 	 */
-	@Deprecated
-	protected void uninstall() {
+	protected void prepareUninstallation() {
 		//
 	}
 
 	/**
-	 * This method is called just before uninstalling the skill from its owner agent.
-	 *
-	 * @param stage indicates the stage in the uninstallation process.
-	 * @since 0.5
+	 * This method is called just after the uninstallation of this skill into its
+	 * owner agent.
+	 * @since 0.11
 	 */
-	protected void uninstall(UninstallationStage stage) {
-		// This following code should be removed when uninstalled() is removed.
-		if (stage == UninstallationStage.POST_DESTROY_EVENT) {
+	protected void uninstall() {
+		//
+	}
+
+	/** Increment the reference to the skill from the capacity map.
+	 *
+	 * <p>This function should invokes the {@link #install()} function if it is the
+	 * first call on the skill.
+	 */
+	void increaseReference() {
+		final int oldValue = this.referencesFromCapacityMap.getAndIncrement();
+		if (oldValue <= 0) {
+			install();
+		}
+	}
+
+	/** Decrement the reference to the skill from the capacity map.
+	 *
+	 * <p>This function should invokes the {@link #prepareUninstallation()} and
+	 * {@link #uninstall()} functions if it is the
+	 * last call on the skill.
+	 */
+	void decreaseReference() {
+		final int newValue = this.referencesFromCapacityMap.decrementAndGet();
+		if (newValue <= 0) {
+			prepareUninstallation();
 			uninstall();
 		}
 	}
 
-	/** Sage in the skill uninstallation process.
+	/** Replies the number of registered references to this skill into its container.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 0.5
+	 * @return the number of references to this skill.
+	 * @since 0.11
 	 */
-	public enum UninstallationStage {
-
-		/** The stage is before the event handlers for {@code Destroy} are invoked.
-		 *
-		 * <p>During this stage, the skill could release resources before the destruction functions of its agent are invoked.
-		 */
-		PRE_DESTROY_EVENT,
-
-		/** The stage is after the event handlers for {@code Destroy} are invoked.
-		 *
-		 * <p>During this stage, the skill should release all the resources that are still used by the skill.
-		 */
-		POST_DESTROY_EVENT,
-
+	@PrivateAPI
+	public int getReferenceCount() {
+		return this.referencesFromCapacityMap.get();
 	}
 
 }

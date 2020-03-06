@@ -19,11 +19,15 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.util;
+package io.sarl.lang.core;
 
 import java.io.Serializable;
 
-/** A reference to an object that could be clear dynamically.
+import io.sarl.lang.annotation.PrivateAPI;
+
+/** A reference to a skill that could be clear dynamically and that is managing the calls to the
+ * {@link AtomicSkillReference#install()}, {@link AtomicSkillReference#prepareUninstallation()} and {@link AtomicSkillReference#uninstall()}
+ * automatically.
  *
  * <p>This class is thread-safe.
  *
@@ -33,31 +37,33 @@ import java.io.Serializable;
  * <p>This type does not extend the {@code java.util.concurrent.atomic.AtomicReference} because
  * we don't want to exhibit several of its public functions.
  *
- * @param <T> the type of the referenced object.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.11
  */
-public class AtomicClearableReference<T> implements Serializable, Cloneable {
+public class AtomicSkillReference implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = -2985132547428365532L;
 
-	private volatile T reference;
+	private volatile Skill reference;
 
 	/** Constructor.
 	 *
 	 * @param object the object to reference to.
 	 */
-	public AtomicClearableReference(T object) {
+	@PrivateAPI
+	public AtomicSkillReference(Skill object) {
+		assert object != null;
 		this.reference = object;
+		object.increaseReference();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public AtomicClearableReference<T> clone() {
+	public AtomicSkillReference clone() {
 		try {
-			return (AtomicClearableReference<T>) super.clone();
+			return (AtomicSkillReference) super.clone();
 		} catch (CloneNotSupportedException exception) {
 			throw new Error(exception);
 		}
@@ -68,7 +74,7 @@ public class AtomicClearableReference<T> implements Serializable, Cloneable {
 	 * @return the object to which this reference refers, or
 	 *           {@code null} if this reference object has been cleared.
 	 */
-	public T get() {
+	public Skill get() {
 		return this.reference;
 	}
 
@@ -77,19 +83,54 @@ public class AtomicClearableReference<T> implements Serializable, Cloneable {
 	 *
 	 * @return the old reference.
 	 */
-	public T clear() {
-		final T ref = this.reference;
+	public Skill clear() {
+		final Skill ref = this.reference;
 		this.reference = null;
+		if (ref != null) {
+			ref.decreaseReference();
+		}
 		return ref;
 	}
 
 	@Override
 	public String toString() {
-		final T ref = this.reference;
+		final Skill ref = this.reference;
 		if (ref != null) {
 			return ref.toString();
 		}
 		return "null"; //$NON-NLS-1$
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!obj.getClass().equals(AtomicSkillReference.class)) {
+			return false;
+		}
+		final Skill ref = this.reference;
+		final AtomicSkillReference aref = (AtomicSkillReference) obj;
+		final Skill oref = aref.reference;
+		if (ref == null) {
+			return oref == null;
+		}
+		if (oref == null) {
+			return ref == null;
+		}
+		return ref.equals(oref);
+	}
+
+	@Override
+	public int hashCode() {
+		final Skill ref = this.reference;
+		if (ref == null) {
+			return 0;
+		}
+		return ref.hashCode();
 	}
 
 }

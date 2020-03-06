@@ -283,9 +283,15 @@ public abstract class AbstractAgentTraitBehaviorTest extends AbstractSarlTest {
 		}
 
 		@Override
-		public void uninstall(UninstallationStage stage) {
+		public void prepareUninstallation() {
 			// Make the function with a public access
-			super.uninstall(stage);
+			super.prepareUninstallation();
+		}
+
+		@Override
+		public void uninstall() {
+			// Make the function with a public access
+			super.uninstall();
 		}
 
 	}

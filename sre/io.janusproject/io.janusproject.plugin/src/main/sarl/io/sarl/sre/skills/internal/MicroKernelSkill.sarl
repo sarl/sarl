@@ -44,13 +44,11 @@ skill MicroKernelSkill extends Skill implements MicroKernelCapacity {
 		this.kernel = new WeakReference(kernel)
 	}
 
-	protected override uninstall(stage : UninstallationStage) {
-		if (stage == UninstallationStage.POST_DESTROY_EVENT) {
-			val kernelReference = this.kernel
-			this.kernel = null
-			if (kernelReference !== null) {
-				kernelReference.clear
-			}
+	protected override uninstall {
+		val kernelReference = this.kernel
+		this.kernel = null
+		if (kernelReference !== null) {
+			kernelReference.clear
 		}
 	}
 

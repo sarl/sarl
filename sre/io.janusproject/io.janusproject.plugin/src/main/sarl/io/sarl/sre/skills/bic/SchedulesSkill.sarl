@@ -86,15 +86,14 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 		this.executorService = service
 	}
 
-	protected override uninstall(stage : UninstallationStage) {
-		if (stage == UninstallationStage.PRE_DESTROY_EVENT) {
-			// Cancel the tasks as soon as possible in the uninstallation process
-			cancelAllRunningTasks
-		} else {
-			// Cancel the tasks that were creating during the destruction stage (in the Destroy event handler)
-			cancelAllRunningTasks
-		}
+	protected override prepareUninstallation {
+		// Cancel the tasks as soon as possible in the uninstallation process
+		cancelAllRunningTasks
+	}
 
+	protected override uninstall {
+		// Cancel the tasks that were creating during the destruction stage (in the Destroy event handler)
+		cancelAllRunningTasks
 	}
 
 	/** Replies the map that store the active tasks.

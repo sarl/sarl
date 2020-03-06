@@ -30,10 +30,11 @@ import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.core.Schedules
 import io.sarl.core.Time
+import io.sarl.lang.core.AbstractSkillContainer
 import io.sarl.lang.core.Agent
+import io.sarl.lang.core.AtomicSkillReference
 import io.sarl.lang.core.Capacity
 import io.sarl.lang.core.Skill
-import io.sarl.lang.util.AtomicClearableReference
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.capacities.InternalSchedules
 import io.sarl.sre.capacities.MicroKernelCapacity
@@ -184,8 +185,8 @@ class SreDynamicSkillProviderTest {
 	}
 
 	private static class MockedDynamicSkillProvider extends SreDynamicSkillProvider {
-		override registerSkill(^agent : Agent, ^capacity : Class<? extends Capacity>[], ^skill : Skill) : AtomicClearableReference<Skill> {
-			return new AtomicClearableReference(^skill)
+		override registerSkill(container : AbstractSkillContainer, ^capacity : Class<? extends Capacity>[], ^skill : Skill) : AtomicSkillReference {
+			return new AtomicSkillReference(^skill)
 		}
 	}
 }
