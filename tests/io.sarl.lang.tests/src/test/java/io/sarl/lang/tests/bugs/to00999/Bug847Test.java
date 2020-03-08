@@ -57,7 +57,7 @@ public class Bug847Test extends AbstractSarlTest {
 			"   uses Logging",
 			"   on AgentSpawned {",
 			"       info(\"Agent {0} of type {1} has been created successfully and is now alive!\",",
-			"            occurrence.agentIdentifiers, occurrence.agentType)",
+			"            occurrence.agentID, occurrence.agentType)",
 			"   }",
 			"}");
 
@@ -88,7 +88,7 @@ public class Bug847Test extends AbstractSarlTest {
 			"  private void $behaviorUnit$AgentSpawned$0(final AgentSpawned occurrence) {",
 			"    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();",
 			"    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(\"Agent {0} of type {1} has been created successfully and is now alive!\", ",
-			"      occurrence.agentIdentifiers, occurrence.agentType);",
+			"      occurrence.agentID, occurrence.agentType);",
 			"  }",
 			"  ",
 			"  @Extension",
@@ -155,10 +155,10 @@ public class Bug847Test extends AbstractSarlTest {
 			"agent SomeAgent{",
 			"   uses Logging",
 			"   on AgentSpawned {",
-			"       val agent_ids = occurrence.agentIdentifiers",
+			"       val agent_id = occurrence.agentID",
 			"       val agent_type = occurrence.agentType",
 			"       info(\"Agent {0} of type {1} has been created successfully and is now alive!\",",
-			"            agent_ids, agent_type)",
+			"            agent_id, agent_type)",
 			"   }",
 			"}");
 
@@ -187,10 +187,10 @@ public class Bug847Test extends AbstractSarlTest {
 			"@SuppressWarnings(\"all\")",
 			"public class SomeAgent extends Agent {",
 			"  private void $behaviorUnit$AgentSpawned$0(final AgentSpawned occurrence) {",
-			"    final Collection<UUID> agent_ids = occurrence.agentIdentifiers;",
+			"    final UUID agent_id = occurrence.agentID;",
 			"    final String agent_type = occurrence.agentType;",
 			"    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();",
-			"    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(\"Agent {0} of type {1} has been created successfully and is now alive!\", agent_ids, agent_type);",
+			"    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(\"Agent {0} of type {1} has been created successfully and is now alive!\", agent_id, agent_type);",
 			"  }",
 			"  ",
 			"  @Extension",
