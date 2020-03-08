@@ -39,6 +39,7 @@ import java.util.function.Supplier;
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
+import com.google.common.base.Throwables;
 import com.google.common.collect.Iterables;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -991,8 +992,9 @@ public final class TestAssertions {
 			code.run();
 			fail("Expecting exception of type " + expected.getName());
 		} catch (Throwable ex) {
-			if (!expected.isAssignableFrom(ex.getClass())) {
-				fail("Expecting exception of type " + expected.getName() + ", but got " + ex.getClass().getName(), ex);
+			final Throwable cause = Throwables.getRootCause(ex);
+			if (!expected.isAssignableFrom(cause.getClass())) {
+				fail("Expecting exception of type " + expected.getName() + ", but got " + cause.getClass().getName(), cause);
 			}
 		}
 	}
@@ -1009,12 +1011,13 @@ public final class TestAssertions {
 	public static <T extends Throwable> ExceptionChecker<T> whenException(Class<T> expected, Code code) throws Exception {
 		try {
 			code.run();
-			fail("Expecting exception of type " + expected.getName() + ", but not exception is known");
+			fail("Expecting exception of type " + expected.getName() + ", but no exception is known");
 		} catch (Throwable ex) {
-			if (!expected.isAssignableFrom(ex.getClass())) {
-				fail("Expecting exception of type " + expected.getName() + ", but get " + ex.getClass().getName(), ex);
+			final Throwable cause = Throwables.getRootCause(ex);
+			if (!expected.isAssignableFrom(cause.getClass())) {
+				fail("Expecting exception of type " + expected.getName() + ", but get " + cause.getClass().getName(), cause);
 			} else {
-				return new ExceptionChecker<>((T) ex);
+				return new ExceptionChecker<>((T) cause);
 			}
 		}
 		return null;
