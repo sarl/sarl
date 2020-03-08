@@ -25,12 +25,9 @@ import io.sarl.lang.core.Address
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventListener
 import io.sarl.lang.core.EventSpace
-import io.sarl.lang.core.SREutils
 import io.sarl.lang.core.Scope
 import io.sarl.lang.core.SpaceID
 import io.sarl.sre.services.logging.LoggingService
-import io.sarl.util.AddressScope
-import io.sarl.util.Scopes
 import java.text.MessageFormat
 import java.util.UUID
 import java.util.concurrent.ConcurrentLinkedDeque
@@ -177,21 +174,6 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 		}
 	}
 
-	private def lazyParticipant(address : Address) : Participant {
-		var links = SREutils::getSreSpecificData(address, typeof(AddressLazyLinks))
-		if (links === null) {
-			links = new AddressLazyLinks
-			SREutils::setSreSpecificData(address, links)
-		}
-		var participant = links.participant
-		if (participant !== null) {
-			return participant
-		}
-		participant = this.internalParticipantStructure.get(address.UUID)
-		links.participant = participant
-		return participant
-	}
-
 	/** Replies the participants that matches the given scope.
 	 * 
 	 * @param scope the scope.
@@ -199,20 +181,9 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 	 */
 	protected def getScopedParticipants(scope : Scope<? super Address>) : ConcurrentLinkedDeque<Participant> {
 		//TODO change the prototype of this function to replace stream by a concurrent collection
-		if (scope === null || scope === Scopes::allParticipants) {
+		if (scope === null) {
 			
 			return new ConcurrentLinkedDeque(this.internalParticipantStructure.values);
-		}
-		if (scope instanceof AddressScope) {
-			//return Stream.of(scope.addresses).map([it.lazyParticipant]).filter([it !== null])
-			val scopedParticpants = new ConcurrentLinkedDeque();
-			for(t:scope.addresses) {
-				var p = t.lazyParticipant
-				if (p !== null) {
-					scopedParticpants.add(p)
-				}
-			}
-			return scopedParticpants
 		}
 		// return this.internalParticipantStructure.values.stream.filter [scope.matches(it.address)]
 		val scopedParticpants = new ConcurrentLinkedDeque();

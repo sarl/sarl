@@ -23,6 +23,7 @@ package io.sarl.core
 
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.EventListener
+import io.sarl.lang.core.EventSpace
 
 /**
  * Event driven interaction space where agent are free register and unregister themselves.
@@ -33,7 +34,7 @@ import io.sarl.lang.core.EventListener
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-interface OpenEventSpace extends io.sarl.util.OpenEventSpace {
+interface OpenEventSpace extends EventSpace {
 
 	/**
 	 * Registers the entity inside this space.
