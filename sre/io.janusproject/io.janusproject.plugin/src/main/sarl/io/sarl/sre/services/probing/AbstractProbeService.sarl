@@ -84,6 +84,9 @@ abstract class AbstractProbeService extends AbstractSreService implements ProbeS
 
 	override probe(valueName : SarlName, valueType : Class<T>, probeName : String = null) : Probe<T> with T {
 		assert valueType !== null
+		if (valueName === null) {
+			return null
+		}
 		val uri = valueName.toURI
 		if (valueName === null) {
 			return null
