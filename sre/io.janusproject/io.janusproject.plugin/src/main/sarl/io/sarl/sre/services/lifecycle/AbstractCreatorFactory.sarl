@@ -20,12 +20,11 @@
  */
 package io.sarl.sre.services.lifecycle
 
-import io.sarl.lang.core.AbstractSkillContainer
-import io.sarl.lang.core.AtomicSkillReference
 import io.sarl.lang.core.Capacity
 import io.sarl.lang.core.DynamicSkillProvider
+import io.sarl.lang.core.Skill
 
-/** 
+/**
  * Abstract implementation of a factory of agent creator that provides the parent ID and agent ID to the created agent.
  * 
  * @author $Author: sgalland$
@@ -47,21 +46,6 @@ abstract class AbstractCreatorFactory implements AgentCreatorProvider {
 		this.skillProvider = skillProvider
 	}
 
-	@Pure
-	private static def extract(providers : Iterable<DynamicSkillProvider>, container : AbstractSkillContainer,
-		^capacity : Class<? extends Capacity>) : AtomicSkillReference {
-		for (provider : providers) {
-			var r = provider.installSkill(container, ^capacity)
-			if (r !== null) {
-				var s = r.get
-				if (s !== null) {
-					return r
-				}
-			}
-		}
-		return null
-	}
-
 	/** Create a skill provider that is delegating the creation to a set of providers.
 	 *
 	 * @param providers is the list of skill providers to be integrated into the skill provider.
@@ -72,23 +56,81 @@ abstract class AbstractCreatorFactory implements AgentCreatorProvider {
 			var iterator = providers.iterator
 			if (iterator.hasNext) {
 				if (this.skillProvider === null) {
-					return [ ^agent, ^capacity |
-						return providers.extract(^agent, ^capacity)
-					]
+					return new CreatorFactory0(providers)
 				}
-				return [ ^agent, ^capacity |
-					var r = this.skillProvider.installSkill(^agent, ^capacity)
-					if (r !== null) {
-						var s = r.get
-						if (s !== null) {
-							return r
-						}
-					}
-					return providers.extract(^agent, ^capacity)
-				]
+				return new CreatorFactory1(this.skillProvider, providers)
 			}
 		}
 		return this.skillProvider
+	}
+
+	/** 
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.11
+	 */
+	private static class CreatorFactory0 implements DynamicSkillProvider {
+
+		val providers : Iterable<DynamicSkillProvider>
+
+		new (providers : Iterable<DynamicSkillProvider>) {
+			this.providers = providers
+		}
+
+		def createSkill(^capacity : Class<? extends Capacity>) : Skill {
+			for (provider : this.providers) {
+				var r = provider.createSkill(^capacity)
+				if (r !== null) {
+					return r
+				}
+			}
+			return null
+		}
+		
+		def isSkillProviding(^capacity : Class<? extends Capacity>) : boolean {
+			for (provider : this.providers) {
+				if (provider.isSkillProviding(^capacity)) {
+					return true
+				}
+			}
+			return false
+		}
+	
+	}
+
+	/** 
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.11
+	 */
+	private static class CreatorFactory1 extends CreatorFactory0 {
+
+		val skillProvider : DynamicSkillProvider
+
+		new (skillProvider : DynamicSkillProvider, providers : Iterable<DynamicSkillProvider>) {
+			super(providers)
+			this.skillProvider = skillProvider
+		}
+
+		def createSkill(^capacity : Class<? extends Capacity>) : Skill {
+			var r = this.skillProvider.createSkill(^capacity)
+			if (r !== null) {
+				return r
+			}
+			return super.createSkill(^capacity)
+		}
+
+		def isSkillProviding(^capacity : Class<? extends Capacity>) : boolean {
+			if (this.skillProvider.isSkillProviding(^capacity)) {
+				return true
+			}
+			return super.isSkillProviding(^capacity)
+		}
+
 	}
 
 }

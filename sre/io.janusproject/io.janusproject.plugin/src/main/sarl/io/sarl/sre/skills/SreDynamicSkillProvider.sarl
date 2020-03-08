@@ -30,11 +30,8 @@ import io.sarl.core.Logging
 import io.sarl.core.Schedules
 import io.sarl.core.Time
 import io.sarl.lang.annotation.PrivateAPI
-import io.sarl.lang.core.AbstractSkillContainer
-import io.sarl.lang.core.AtomicSkillReference
 import io.sarl.lang.core.Capacity
 import io.sarl.lang.core.DynamicSkillProvider
-import io.sarl.lang.core.SREutils
 import io.sarl.lang.core.Skill
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.capacities.InternalSchedules
@@ -75,70 +72,63 @@ class SreDynamicSkillProvider implements DynamicSkillProvider {
 		this.injector = injector
 	}
 
-	/** Create the skill instance as fast as possible. */
-	protected def newSkillInstance(^capacity : Class<? extends Capacity>) : Pair<Skill, Class<? extends Capacity>> {
+	def createSkill(^capacity : Class<? extends Capacity>) : Skill {
 		switch (^capacity) {
 			case typeof(InternalEventBusCapacity): {
 				var ^skill = this.injector.getInstance(typeof(InternalEventBusSkill))
-				return Pair::of(^skill, null)
+				return ^skill
 			}
 			case typeof(DefaultContextInteractions): {
 				var ^skill = new DefaultContextInteractionsSkill
-				return Pair::of(^skill, null)
+				return ^skill
 			}
 			case typeof(Lifecycle): {
 				var ^skill = this.injector.getInstance(typeof(LifecycleSkill))
-				return Pair::of(^skill, null)
+				return ^skill
 			}
 			case typeof(Schedules): {
 				var ^skill = this.injector.getInstance(typeof(SchedulesSkill))
-				return Pair::of(^skill, typeof(InternalSchedules))
+				return ^skill
 			}
 			case typeof(InternalSchedules): {
 				var ^skill = this.injector.getInstance(typeof(SchedulesSkill))
-				return Pair::of(^skill, typeof(Schedules))
+				return ^skill
 			}
 			case typeof(Behaviors): {
 				var ^skill = new BehaviorsSkill()
-				return Pair::of(^skill, null)
+				return ^skill
 			}
 			case typeof(Logging): {
 				var ^skill = this.injector.getInstance(typeof(LoggingSkill))
-				return Pair::of(^skill, null)
+				return ^skill
 			}
 			case typeof(Time): {
 				var ^skill = this.injector.getInstance(typeof(TimeSkill))
-				return Pair::of(^skill, null)
+				return ^skill
 			}
 			case typeof(InnerContextAccess): {
 				var ^skill = this.injector.getInstance(typeof(InnerContextAccessSkill))
-				return Pair::of(^skill, null)
+				return ^skill
 			}
 			case typeof(ExternalContextAccess): {
 				var ^skill = this.injector.getInstance(typeof(ExternalContextAccessSkill))
-				return Pair::of(^skill, null)
+				return ^skill
 			}
 		}
 		return null
 	}
-
-	def installSkill(container : AbstractSkillContainer, ^capacity : Class<? extends Capacity>) : AtomicSkillReference {
-		var pair = ^capacity.newSkillInstance
-		var ^skill : Skill = pair?.key
-		if (^skill !== null) {
-			var additionalCapacity = pair.value
-			if (additionalCapacity !== null) {
-				return container.registerSkill(#[^capacity, additionalCapacity], ^skill)
-			}
-			return container.registerSkill(#[^capacity], ^skill)
-		}
-		return null
+	
+	def isSkillProviding(^capacity : Class<? extends Capacity>) : boolean {
+		return typeof(InternalEventBusCapacity) == ^capacity
+			|| typeof(DefaultContextInteractions) == ^capacity
+			|| typeof(Lifecycle) == ^capacity
+			|| typeof(Schedules) == ^capacity
+			|| typeof(InternalSchedules) == ^capacity
+			|| typeof(Behaviors) == ^capacity
+			|| typeof(Logging) == ^capacity
+			|| typeof(Time) == ^capacity
+			|| typeof(InnerContextAccess) == ^capacity
+			|| typeof(ExternalContextAccess) == ^capacity
 	}
-
-	/** Register the given skill.
-	 */
-	protected def registerSkill(container : AbstractSkillContainer, capacities : Class<? extends Capacity>[], ^skill : Skill) : AtomicSkillReference {
-		SREutils::setInternalSkill(container, ^skill, capacities)
-	}
-
+	
 }
