@@ -29,6 +29,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 import javax.inject.Provider
 import org.eclipse.xtend.lib.annotations.Accessors
+import java.util.concurrent.ConcurrentHashMap
 
 /** 
  * This class is the implementation of a probe service that is updating the values asynchronously.
@@ -63,7 +64,7 @@ class AsynchronousProbeService extends AbstractProbeService {
 	@Inject
 	new (service : ExecutorService, namespaceService : NamespaceService, nameParser : NameParser,
 		listenerCollectionProvider : Provider<SmartListenerCollection<?>>) {
-		super(namespaceService, nameParser, listenerCollectionProvider)
+		super(new ConcurrentHashMap, namespaceService, nameParser, listenerCollectionProvider)
 		this.executor = service
 	}
 

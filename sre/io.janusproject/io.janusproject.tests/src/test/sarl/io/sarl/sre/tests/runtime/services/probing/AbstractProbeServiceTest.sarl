@@ -77,14 +77,15 @@ abstract class AbstractProbeServiceTest {
 
 		bootstrap.startAgent(typeof(ProbedAgent), getAgentInitializationParameters)
 
-		var bid = bootstrap.bootAgentIdentifier
+		val bid = bootstrap.bootAgentIdentifier
 		bid.assertNotNull
+		val url : String = "agent:" + bid + "#myfield"
 
 		// Wait for the starting of the agent. The agent is accessible when it is started, and
 		// member of a default space.
 		val probeParam = new OutParameter
 		val to = newTimeOut [
-			val obj = service.probe("agent:" + bid + "#myfield", typeof(Integer))
+			val obj = service.probe(url, typeof(Integer))
 			probeParam.set(obj)
 			return obj !== null
 		]

@@ -27,11 +27,11 @@ import io.sarl.sre.services.AbstractSreService
 import io.sarl.sre.services.namespace.FieldAccess
 import io.sarl.sre.services.namespace.NamespaceService
 import java.net.URI
-import java.util.UUID
-import javax.inject.Provider
-import java.util.concurrent.ConcurrentLinkedDeque
-import java.util.concurrent.ConcurrentHashMap
 import java.util.Collection
+import java.util.Map
+import java.util.UUID
+import java.util.concurrent.ConcurrentLinkedDeque
+import javax.inject.Provider
 
 /** 
  * This class is the standard implementation of a probe service.
@@ -48,19 +48,21 @@ abstract class AbstractProbeService extends AbstractSreService implements ProbeS
 
 	val nameParser : NameParser
 
-	val probes = new ConcurrentHashMap<URI, Probe<?>>
+	val probes : Map<URI, Probe<?>>
 
 	val listenerCollectionProvider : Provider<SmartListenerCollection<?>>
 
 	/** Constructor.
 	 * 
+	 * @param internalStructure is the internal structure for storing the probes.
 	 * @param namespaceService the service that is giving access to the namespaces.
 	 * @param nameParser the object that is able to parse resource names.
 	 * @param listenerCollectionProvider the provider of listener collections. 
 	 * @param lockProvider the provider of synchronization locks.
 	 */
-	protected new (namespaceService : NamespaceService, nameParser : NameParser,
+	protected new (internalStructure : Map<URI, Probe<?>>, namespaceService : NamespaceService, nameParser : NameParser,
 		listenerCollectionProvider : Provider<SmartListenerCollection<?>>) {
+		this.probes = internalStructure
 		this.namespace = namespaceService
 		this.nameParser = nameParser
 		this.listenerCollectionProvider = listenerCollectionProvider
@@ -95,16 +97,12 @@ abstract class AbstractProbeService extends AbstractSreService implements ProbeS
 
 		if (probe === null) {
 			var isFirst = false
-
-			probe = this.probes.get(uri) as Probe<T>
-			if (probe === null) {
-				val probedValue = this.namespace.findObject(valueName)
-				val name = if(probeName.isNullOrEmpty) UUID::randomUUID.toString else probeName
-				probe = probedValue.newProbe(valueType, uri, name)
-				if (probe !== null) {
-					isFirst = this.probes.empty
-					this.probes.put(uri, probe)
-				}
+			val probedValue = this.namespace.findObject(valueName)
+			val name = if(probeName.isNullOrEmpty) UUID::randomUUID.toString else probeName
+			probe = probedValue.newProbe(valueType, uri, name)
+			if (probe !== null) {
+				isFirst = this.probes.empty
+				this.probes.put(uri, probe)
 			}
 
 			if (isFirst) {
