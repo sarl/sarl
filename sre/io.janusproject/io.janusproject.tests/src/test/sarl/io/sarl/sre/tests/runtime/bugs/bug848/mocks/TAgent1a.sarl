@@ -22,8 +22,10 @@ package io.sarl.sre.tests.runtime.bugs.bug848.mocks
 
 import io.sarl.core.AgentSpawned
 import io.sarl.core.Lifecycle
+import io.sarl.core.Schedules
 import io.sarl.sre.tests.testutils.agents.TestingAgent
 import java.util.UUID
+import java.util.concurrent.atomic.AtomicBoolean
 import org.arakhne.afc.util.Triplet
 
 /**
@@ -34,22 +36,30 @@ import org.arakhne.afc.util.Triplet
  */
 agent TAgent1a extends TestingAgent {
 
-	uses Lifecycle
+	uses Lifecycle, Schedules
+
+	val done = new AtomicBoolean
 
 	override runAgentTest : RunPolicy {
-		typeof(TAgent1b).spawn(getAgentInitializationParameters)
-		return null
+		in(1.seconds) [
+			typeof(TAgent1b).spawn(buildAgentInitializationParameters)
+		]
+		return RunPolicy::STANDARD
 	}
 
 	on AgentSpawned {
-		var pair = new Triplet<Boolean, UUID, UUID>(occurrence.isFromMe, occurrence.source.UUID,
-				occurrence.agentID)
+		var pair = new Triplet<Boolean, UUID, UUID>(
+			occurrence.isFromMe, occurrence.source.UUID, occurrence.agentID)
 		addResult(pair)
-		killMe
+		if (this.done.getAndSet(true)) {
+			killMe
+		}
 	}
 
 	on TEvent {
-		killMe
+		if (this.done.getAndSet(true)) {
+			killMe
+		}
 	}
 
 }

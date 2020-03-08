@@ -195,7 +195,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 				!this.sarlSpecificationChecker.isValidSarlElement(agentClazz)) {
 				throw new InvalidSarlSpecificationException(agentClazz)
 			}
-			
+
 			// The following variable enables to get the identifier of the first spawned agent.
 			var firstAgentIdentifier = new AtomicReference<UUID>
 			

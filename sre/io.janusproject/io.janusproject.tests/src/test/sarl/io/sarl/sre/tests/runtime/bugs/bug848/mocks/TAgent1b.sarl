@@ -27,6 +27,7 @@ import io.sarl.core.Schedules
 import io.sarl.sre.tests.testutils.agents.TestingAgent
 import java.util.UUID
 import org.arakhne.afc.util.Triplet
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * @author $Author: sgalland$
@@ -38,25 +39,25 @@ agent TAgent1b extends TestingAgent {
 
 	uses Lifecycle, Schedules, DefaultContextInteractions
 
+	val done = new AtomicBoolean
+
 	override runAgentTest : RunPolicy {
-	}
-
-	on AgentSpawned [occurrence.agentType != typeof(TAgent1a).name] {
-		var pair = new Triplet<Boolean, UUID, UUID>(occurrence.isFromMe, occurrence.source.UUID,
-				occurrence.agentID)
-		addResult(pair)
-		stop
-	}
-
-	on AgentSpawned [occurrence.agentType == typeof(TAgent1a).name] {
-		stop
-	}
-	
-	def stop {
 		in(1000) [
 			new TEvent().emit
-			killMe
+			if (this.done.getAndSet(true)) {
+				killMe
+			}
 		]
+		return RunPolicy::STANDARD
+	}
+
+	on AgentSpawned {
+		var pair = new Triplet<Boolean, UUID, UUID>(
+			occurrence.isFromMe, occurrence.source.UUID, occurrence.agentID)
+		addResult(pair)
+		if (this.done.getAndSet(true)) {
+			killMe
+		}
 	}
 
 }

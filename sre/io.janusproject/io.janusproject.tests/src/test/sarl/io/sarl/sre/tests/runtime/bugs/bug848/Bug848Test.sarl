@@ -18,6 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.sarl.sre.tests.runtime.bugs.bug848
 
 import io.sarl.sre.tests.runtime.bugs.bug848.mocks.TAgent1a
@@ -26,7 +27,6 @@ import io.sarl.sre.tests.testutils.^extension.SreRunContext
 import io.sarl.sre.tests.testutils.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
-import java.util.Collection
 import java.util.UUID
 import org.arakhne.afc.util.Triplet
 import org.junit.jupiter.api.DisplayName
@@ -35,6 +35,9 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
 import static org.junit.jupiter.api.Assertions.*
+import static io.sarl.sre.tests.testutils.Constants.*
+import static extension io.sarl.tests.api.tools.TestAssertions.*
+import io.sarl.sre.tests.testutils.exception.SreTimeoutException
 
 /** Tests for issue #848: Event AgentSpawned being received by spawned agent.
  *
@@ -58,17 +61,20 @@ class Bug848Test {
 
 	@Test
 	def agentSpawnedReceiving_01(extension rc : SreRunContext) {
-		typeof(TAgent1a).runSre
+		// The MAS may never stops because TAgent1b calls "killMe" if it receives "AgentSpawned". But it should never occur.
+		typeof(SreTimeoutException).whenException [
+			typeof(TAgent1a).runSre(SHORT_TIMEOUT)
+		].verify [
+			var bootAgent = getBootAgent
+			assertEquals(1, getNumberOfResults(bootAgent))
+			var spawnEvents1 : Triplet<Boolean, UUID, UUID> = getResult(bootAgent, typeof(Triplet), 0)
+			assertNotNull(spawnEvents1)
+			assertTrue(spawnEvents1.a.booleanValue)
+			assertEquals(bootAgent, spawnEvents1.b)
 
-		var bootAgent = getBootAgent
-		assertEquals(1, getNumberOfResults(bootAgent))
-		var spawnEvents1 : Triplet<Boolean, UUID, UUID> = getResult(bootAgent, typeof(Triplet), 0)
-		assertNotNull(spawnEvents1)
-		assertTrue(spawnEvents1.a.booleanValue)
-		assertEquals(bootAgent, spawnEvents1.b)
-		
-		var childAgent = spawnEvents1.c
-		assertEquals(0, getNumberOfResults(childAgent))
+			var childAgent = spawnEvents1.c
+			assertEquals(0, getNumberOfResults(childAgent))
+		]
 	}
 
 }
