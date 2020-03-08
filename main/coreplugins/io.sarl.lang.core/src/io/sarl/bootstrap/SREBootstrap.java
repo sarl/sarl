@@ -55,29 +55,27 @@ public interface SREBootstrap {
 	/**
 	 * Launch the SRE and the first agent in the kernel.
 	 *
-	 * <p>The function {@link #getBootAgentIdentifier()} permits to retrieve the identifier of the launched agent.
+	 * <p>The function {@link #getBootAgentIdentifier()} permits to retrieve the identifier of the first launched agent.
 	 *
 	 * @param agentCls type of the first agent to launch.
 	 * @param params parameters to pass to the agent as its initialization parameters.
-	 * @return the identifier of the created agent.
 	 * @throws Exception - if it is impossible to start the platform.
 	 * @see #getBootAgentIdentifier()
 	 */
-	UUID startAgent(Class<? extends Agent> agentCls, Object... params) throws Exception;
+	void startAgent(Class<? extends Agent> agentCls, Object... params) throws Exception;
 
 	/**
 	 * Launch the SRE and the first agent in the kernel.
 	 *
-	 * <p>The function {@link #getBootAgentIdentifier()} permits to retrieve the identifier of the launched agent.
+	 * <p>The function {@link #getBootAgentIdentifier()} permits to retrieve the identifier of the first launched agent.
 	 *
 	 * @param nbAgents the number of agents to be launched.
 	 * @param agentCls type of the first agent to launch.
 	 * @param params parameters to pass to the agent as its initialization parameters.
-	 * @return the identifiers of the created agents.
 	 * @throws Exception - if it is impossible to start the platform.
 	 * @see #getBootAgentIdentifier()
 	 */
-	Iterable<UUID> startAgent(int nbAgents, Class<? extends Agent> agentCls, Object... params) throws Exception;
+	void startAgent(int nbAgents, Class<? extends Agent> agentCls, Object... params) throws Exception;
 
 	/**
 	 * Launch the SRE and the first agent in the kernel and assigning a specific UUID.

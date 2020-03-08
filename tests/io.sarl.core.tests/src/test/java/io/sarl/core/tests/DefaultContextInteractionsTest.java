@@ -55,7 +55,7 @@ public class DefaultContextInteractionsTest extends AbstractSarlCoreTest<Capacit
 	 */
 	@Test
 	public void memberCount() {
-		assertEquals(14, this.type.getDeclaredMethods().length);
+		assertEquals(13, this.type.getDeclaredMethods().length);
 	}
 
 	/**
@@ -91,21 +91,6 @@ public class DefaultContextInteractionsTest extends AbstractSarlCoreTest<Capacit
 	@Test
 	public void emitEvent() {
 		assertMethod("emit", void.class, Event.class); //$NON-NLS-1$
-	}
-
-	/**
-	 */
-	@Test
-	public void receive() {
-		assertMethod("receive", void.class, UUID.class, Event.class); //$NON-NLS-1$
-	}
-
-
-	/**
-	 */
-	@Test
-	public void willReceive() {
-		assertMethod("willReceive", void.class, UUID.class, Event.class); //$NON-NLS-1$
 	}
 
 	/**

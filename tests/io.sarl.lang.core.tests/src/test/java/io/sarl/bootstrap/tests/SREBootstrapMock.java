@@ -35,12 +35,12 @@ import io.sarl.lang.core.AgentContext;
 public class SREBootstrapMock implements SREBootstrap {
 
 	@Override
-	public UUID startAgent(Class<? extends Agent> agentCls, Object... params) throws Exception {
+	public void startAgent(Class<? extends Agent> agentCls, Object... params) throws Exception {
 		throw new IllegalStateException();
 	}
 
 	@Override
-	public Iterable<UUID> startAgent(int nbAgents, Class<? extends Agent> agentCls, Object... params) throws Exception {
+	public void startAgent(int nbAgents, Class<? extends Agent> agentCls, Object... params) throws Exception {
 		throw new IllegalStateException();
 	}
 

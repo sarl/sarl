@@ -56,14 +56,14 @@ public class LifecycleTest extends AbstractSarlCoreTest<Capacity> {
 	 */
 	@Test
 	public void spawnInContext() {
-		assertMethod("spawnInContext", UUID.class, Class.class, AgentContext.class, Object[].class); //$NON-NLS-1$
+		assertMethod("spawnInContext", void.class, Class.class, AgentContext.class, Object[].class); //$NON-NLS-1$
 	}
 
 	/**
 	 */
 	@Test
 	public void spawnInContextWithID() {
-		assertMethod("spawnInContextWithID", UUID.class, Class.class, UUID.class, AgentContext.class, Object[].class); //$NON-NLS-1$
+		assertMethod("spawnInContextWithID", void.class, Class.class, UUID.class, AgentContext.class, Object[].class); //$NON-NLS-1$
 	}
 
 	/**

@@ -20,14 +20,10 @@
  */
 package io.sarl.core
 
-import java.util.Arrays
-import java.util.Collection
-import java.util.Collections
-import java.util.UUID
-import io.sarl.lang.^annotation.EarlyExit
-import io.sarl.lang.core.SpaceID
+import io.sarl.lang.annotation.EarlyExit
 import io.sarl.lang.core.Address
-import io.sarl.util.Collections3;
+import io.sarl.lang.core.SpaceID
+import java.util.UUID
 
 /**
  * Initialization event.
@@ -141,16 +137,8 @@ final event AgentSpawned {
 
 	/** Identifier of the spawned agent.
 	 * It is the first identifier in {@link #agentIdentifiers}.
-	 *
-	 * @deprecated since 0.5, See {@link #agentIdentifiers}.
 	 */
-	@Deprecated
 	val agentID : UUID
-
-	/** Identifiers of the spawned agents.
-	 * @since 0.5
-	 */
-	val agentIdentifiers : Collection<UUID>
 
 	/** Fully qualifiedname of the type of the agent.
 	 */
@@ -161,39 +149,10 @@ final event AgentSpawned {
 	 * @param source the address of the emitter.
 	 * @param agentID : the identifier of the spawned agent.
 	 * @param agentType fully qualified name of the type of the agent.
-	 * @deprecated
 	 */
-	@Deprecated
 	new (source : Address, agentID : UUID, agentType : String) {
 		setSource(source)
-		this.agentIdentifiers = Collections::singleton(agentID)
 		this.agentID = agentID
-		this.agentType = agentType
-	}
-
-	/** Constuct the event.
-	 *
-	 * @param source the address of the emitter.
-	 * @param agentType fully qualified name of the type of the agent.
-	 * @param agentID : the identifiers of the spawned agents.
-	 */
-	new (source : Address, agentType : String,  agentID : UUID*) {
-		setSource(source)
-		this.agentIdentifiers = Collections::unmodifiableCollection(Arrays::asList(agentID))
-		this.agentID = agentID.get(0)
-		this.agentType = agentType
-	}
-
-	/** Constuct the event.
-	 *
-	 * @param source the address of the emitter.
-	 * @param agentType fully qualified name of the type of the agent.
-	 * @param agentID : the identifiers of the spawned agents.
-	 */
-	new (source : Address, agentType : String,  agentID : Collection<UUID>) {
-		setSource(source)
-		this.agentIdentifiers = Collections::unmodifiableCollection(Collections3::serializableCollection(agentID))
-		this.agentID = agentID.iterator.next
 		this.agentType = agentType
 	}
 

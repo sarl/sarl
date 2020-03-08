@@ -204,12 +204,12 @@ public final class SRE {
 		}
 
 		@Override
-		public UUID startAgent(Class<? extends Agent> agentCls, Object... params) {
+		public void startAgent(Class<? extends Agent> agentCls, Object... params) {
 			throw new UnsupportedOperationException();
 		}
 
 		@Override
-		public Iterable<UUID> startAgent(int nbAgents, Class<? extends Agent> agentCls, Object... params) {
+		public void startAgent(int nbAgents, Class<? extends Agent> agentCls, Object... params) {
 			throw new UnsupportedOperationException();
 		}
 
