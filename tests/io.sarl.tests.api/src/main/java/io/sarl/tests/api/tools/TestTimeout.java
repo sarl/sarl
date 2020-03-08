@@ -45,11 +45,7 @@ public class TestTimeout {
 	 * @since 0.10
 	 */
 	public static TimeOutHandler startTimeOut(boolean enable) {
-		final TimeOutHandler handler = new TimeOutHandler();
-		if (enable) {
-			handler.start();
-		}
-		return handler;
+		return startTimeOut(enable, null);
 	}
 
 	/** Start a time out on the operation.
@@ -58,7 +54,60 @@ public class TestTimeout {
 	 * @since 0.9
 	 */
 	public static TimeOutHandler startTimeOut() {
-		return startTimeOut(true);
+		return startTimeOut(true, null);
+	}
+
+	/** Start a time out on the operation.
+	 *
+	 * @param enable programmatic flag for enabling the time out.
+	 * @param predicate the condition for stopping the timeout loop.
+	 * @return the time out manager.
+	 * @since 0.11
+	 */
+	public static TimeOutHandler startTimeOut(boolean enable, Predicate predicate) {
+		final TimeOutHandler handler = newTimeOut(predicate);
+		if (enable) {
+			handler.startAsync();
+		}
+		return handler;
+	}
+
+	/** Start a time out on the operation.
+	 *
+	 * @return the time out manager.
+	 * @param predicate the condition for stopping the timeout loop.
+	 * @since 0.11
+	 */
+	public static TimeOutHandler startTimeOut(Predicate predicate) {
+		return startTimeOut(true, predicate);
+	}
+
+	/** Create a timeout object.
+	 *
+	 * @param predicate the condition for stopping the timeout loop.
+	 * @return the time out object.
+	 * @since 0.11
+	 */
+	public static TimeOutHandler newTimeOut(Predicate predicate) {
+		return new TimeOutHandler(predicate);
+	}
+
+	/** An object for managing the time out of operations.
+	 * 
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.11
+	 */
+	@FunctionalInterface
+	public interface Predicate {
+		
+		/** Test something in order to stop the timeout loop.
+		 *
+		 * @return {@code true} to stop the timeout loop.
+		 */
+		boolean test();
 	}
 
 	/** An object for managing the time out of operations.
@@ -69,7 +118,7 @@ public class TestTimeout {
 	 * @mavenartifactid $ArtifactId$
 	 * @since 0.9
 	 */
-	public static class TimeOutHandler {
+	public static class TimeOutHandler implements Runnable {
 
 		private static final int TIME_OUT = 10000;
 		
@@ -81,33 +130,55 @@ public class TestTimeout {
 		
 		private final AtomicBoolean timeout = new AtomicBoolean();
 
+		private final Predicate predicate;
+		
 		/** Constructor.
+		 *
+		 * @param predicate the condition for stopping the timeout loop.
+		 * @since 0.11
 		 */
-		TimeOutHandler() {
-			//
+		TimeOutHandler(Predicate predicate) {
+			this.predicate = predicate;
 		}
 
 		/** Start the time out process.
 		 */
-		void start() {
+		public void startAsync() {
 			this.threadToBreak = Thread.currentThread();
 			this.thread = new Thread() {
 				@Override
 				public void run() {
-					final long endTime = System.currentTimeMillis() + TIME_OUT;
-					while (TimeOutHandler.this.continueLoop.get()
-							&& System.currentTimeMillis() <= endTime) {
-						Thread.yield();
-					}
-					if (TimeOutHandler.this.continueLoop.get()) {
-						TimeOutHandler.this.timeout.set(true);
-						TimeOutHandler.this.stop();
-					}
+					TimeOutHandler.this.run();
 				}
 			};
 			this.thread.setDaemon(true);
 			this.thread.setName("Test TimeOut Manager");
 			this.thread.start();
+		}
+
+		@Override
+		public void run() {
+			final long endTime = System.currentTimeMillis() + TIME_OUT;
+			while (TimeOutHandler.this.continueLoop.get()
+					&& System.currentTimeMillis() <= endTime) {
+				Thread.yield();
+				if (TimeOutHandler.this.predicate != null) {
+					TimeOutHandler.this.continueLoop.set(!TimeOutHandler.this.predicate.test());
+				}
+			}
+			if (TimeOutHandler.this.continueLoop.get()) {
+				TimeOutHandler.this.timeout.set(true);
+				TimeOutHandler.this.stop();
+			}
+		}
+
+		/** Replies if the process has stopped on a time out.
+		 *
+		 * @return {@code true} if time out.
+		 * @since 0.11
+		 */
+		public boolean isTimeout() {
+			return this.timeout.get();
 		}
 
 		/** Stop the time out process.

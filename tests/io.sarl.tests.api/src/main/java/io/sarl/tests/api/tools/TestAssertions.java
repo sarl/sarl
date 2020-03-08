@@ -992,7 +992,7 @@ public final class TestAssertions {
 			fail("Expecting exception of type " + expected.getName());
 		} catch (Throwable ex) {
 			if (!expected.isAssignableFrom(ex.getClass())) {
-				fail("Expecting exception of type " + expected.getName());
+				fail("Expecting exception of type " + expected.getName() + ", but got " + ex.getClass().getName(), ex);
 			}
 		}
 	}
