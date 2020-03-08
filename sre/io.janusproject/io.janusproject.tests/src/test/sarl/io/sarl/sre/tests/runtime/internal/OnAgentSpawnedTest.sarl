@@ -36,7 +36,6 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static io.sarl.tests.api.tools.TestAssertions.*
 import static org.junit.jupiter.api.Assertions.*
 
 /**
@@ -71,7 +70,7 @@ class OnAgentSpawnedTest {
 		assertEquals(typeof(MySpawnedAgent0).name, ^event.agentType)
 		assertEquals(spawner, ^event.source.UUID)
 		assertEquals(^space, ^event.source.spaceID)
-		assertContains(^event.agentIdentifiers, spawnId)
+		assertEquals(^event.agentID, spawnId)
 	}
 	
 }

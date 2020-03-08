@@ -53,8 +53,8 @@ import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
-import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.ConcurrentSkipListSet
+import java.util.concurrent.CopyOnWriteArraySet
 import java.util.logging.Logger
 import javax.inject.Provider
 import org.eclipse.xtext.xbase.lib.Functions.Function1
@@ -74,7 +74,8 @@ import static extension io.sarl.tests.api.tools.TestMockito.mock
 import static extension org.mockito.ArgumentMatchers.any
 import static extension org.mockito.Mockito.spy
 import static extension org.mockito.Mockito.verify
-import java.util.concurrent.CopyOnWriteArraySet
+import java.util.concurrent.Future
+import static extension io.sarl.sre.services.lifecycle.AgentLife.*
 
 /**
  * @author $Author: sgalland$
@@ -148,6 +149,13 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 			typeof(UUID).any, anyInt, typeof(Iterable).any, typeof(Function1).any)).thenReturn(agentProvider)
 
 		this.executor = typeof(ExecutorService).mock
+		// Execute the code synchronously only for testing purpose
+		doAnswer([
+			val r = it.getArgument(1) as Runnable
+			r.run
+			return typeof(Future).mock
+		]).when(this.executor).executeAsap(typeof(Logger).any, typeof(Runnable).any)
+		
 		this.logger = typeof(LoggingService).mock
 		when(this.logger.kernelLogger).thenReturn(typeof(Logger).mock)
 		this.skillUninstaller = typeof(SkillUninstaller).mock
@@ -199,32 +207,31 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 
 	@Test
 	def isKillableAgent_noInnerContext {
-		assertTrue(this.service.isKillableAgent(this.^agent))
+		assertTrue(this.service.isKillableAgent(this.^agent.getLife, this.^agent.ID))
 	}
 
 	@Test
 	def isKillableAgent_emptyInnerContext {
 		createInnerContext
-		assertTrue(this.service.isKillableAgent(this.^agent))
+		assertTrue(this.service.isKillableAgent(this.^agent.getLife, this.^agent.ID))
 	}
 
 	@Test
 	def isKillableAgent_oneChild {
 		createInnerContext(UUID::randomUUID)
-		assertFalse(this.service.isKillableAgent(this.^agent))
+		assertFalse(this.service.isKillableAgent(this.^agent.getLife, this.^agent.ID))
 	}
 
 	@Test
 	def isKillableAgent_twoChild {
 		createInnerContext(UUID::randomUUID, UUID::randomUUID)
-		assertFalse(this.service.isKillableAgent(this.^agent))
+		assertFalse(this.service.isKillableAgent(this.^agent.getLife, this.^agent.ID))
 	}
 
 	@Test
 	def spawnAgent_0_serviceNotStarted {
 		typeof(SpawnDisabledException).assertException [
-			var result = this.service.spawnAgent(0, null, this.outContext, null, null, null)
-			result.throwAnyError
+			this.service.spawnAgent(0, null, this.outContext, null, null, null)
 		]
 	}
 	
@@ -232,16 +239,14 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 	def spawnAgent_0 {
 		startService
 		typeof(SpawnDisabledException).assertException [
-			var result = this.service.spawnAgent(0, null, this.outContext, null, null, null)
-			result.throwAnyError
+			this.service.spawnAgent(0, null, this.outContext, null, null, null)
 		]
 	}
 
 	@Test
 	def spawnAgent_1_serviceNotStarted {
 		typeof(SpawnDisabledException).assertException [
-			var result = this.service.spawnAgent(1, null, this.outContext, null, null, null)
-			result.throwAnyError
+			this.service.spawnAgent(1, null, this.outContext, null, null, null)
 		]
 	}
 
@@ -263,14 +268,8 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 		
 		when(this.checker.isValidSarlElement(any)).thenReturn(true)
 		
-		var result = this.service.spawnAgent(1, this.agentId, this.outContext, newAgentId, typeof(MyAgent0), 1, "a")
-		var ids = result.spawnedAgents
+		this.service.spawnAgent(1, this.agentId, this.outContext, newAgentId, typeof(MyAgent0), null, 1, "a")
 
-		// Created agent identifiers
-		assertNotNull(ids)
-		assertNoException(result.error)
-		assertContains(ids, newAgentId)
-	
 		// Agent State
 		assertSame(AgentState.ALIVE, AgentLife::getLife(this.agent2).state)
 		
@@ -292,7 +291,7 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 		var capSpawningAgent = ArgumentCaptor::forClass(typeof(UUID))
 		var capParentContext = ArgumentCaptor::forClass(typeof(Context))
 		var capAgentType = ArgumentCaptor::forClass(typeof(Class))
-		var capAgents = ArgumentCaptor::forClass(typeof(ConcurrentLinkedDeque))
+		var capAgents = ArgumentCaptor::forClass(typeof(Agent))
 		var capParams = ArgumentCaptor::forClass(typeof(Object[]))
 		listener1.verify.agentSpawned(
 				capSpawningAgent.capture,
@@ -304,9 +303,7 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 		assertSame(this.outContext, capParentContext.value)
 		assertSame(typeof(MyAgent0), capAgentType.value)
 		assertContains(#[capParams.value], 1, "a")
-		var agents = capAgents.value
-		assertEquals(1, agents.size)
-		assertSame(this.agent2, agents.get(0))
+		assertSame(this.agent2, capAgents.value)
 
 		// Kernel event.
 		verifyNoMoreInteractions(listener2)
@@ -317,9 +314,8 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 		startService
 		var newAgentId = UUID::randomUUID
 		typeof(InvalidSarlSpecificationException).assertException [
-			var result = this.service.spawnAgent(1, this.agentId, this.outContext, newAgentId, typeof(InvalidMyAgent1),
-				1, "a")
-			result.throwAnyError
+			this.service.spawnAgent(1, this.agentId, this.outContext, newAgentId, typeof(InvalidMyAgent1),
+				null, 1, "a")
 		]
 	}
 
@@ -328,9 +324,8 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 		startService
 		var newAgentId = UUID::randomUUID
 		typeof(InvalidSarlSpecificationException).assertException [
-			var result = this.service.spawnAgent(1, this.agentId, this.outContext, newAgentId, typeof(InvalidMyAgent2),
-				1, "a")
-			result.throwAnyError
+			this.service.spawnAgent(1, this.agentId, this.outContext, newAgentId, typeof(InvalidMyAgent2),
+				null, 1, "a")
 		]
 	}
 
@@ -353,6 +348,7 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 		var outerContext = createOuterContext(this.agent2)
 		AgentLife::getLife(this.agent2).addExternalContext(outerContext,
 				new Address(outerContext.defaultSpace.spaceID, this.^agent.ID))
+		AgentLife::getLife(this.agent2).state = AgentState::ALIVE
 
 		assertTrue(this.service.killAgent(this.agent2))
 		
@@ -395,26 +391,26 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 	@Test
 	def killAgent_emptyInnerContext_serviceNotStarted {
 		createInnerContext
-		assertTrue(this.service.isKillableAgent(this.^agent))
+		assertTrue(this.service.isKillableAgent(this.^agent.getLife, this.^agent.ID))
 	}
 
 	@Test
 	def killAgent_emptyInnerContext_serviceStarted {
 		startService
 		createInnerContext
-		assertTrue(this.service.isKillableAgent(this.^agent))
+		assertTrue(this.service.isKillableAgent(this.^agent.getLife, this.^agent.ID))
 	}
 
 	@Test
 	def killAgent_oneChild {
 		createInnerContext(UUID::randomUUID)
-		assertFalse(this.service.isKillableAgent(this.^agent))
+		assertFalse(this.service.isKillableAgent(this.^agent.getLife, this.^agent.ID))
 	}
 
 	@Test
 	def killAgent_twoChild {
 		createInnerContext(UUID::randomUUID, UUID::randomUUID)
-		assertFalse(this.service.isKillableAgent(this.^agent))
+		assertFalse(this.service.isKillableAgent(this.^agent.getLife, this.^agent.ID))
 	}
 
 }

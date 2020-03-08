@@ -27,6 +27,7 @@ import io.sarl.lang.core.Agent
 import io.sarl.sre.Kernel
 import io.sarl.sre.boot.SreMain
 import io.sarl.sre.boot.configs.subconfigs.BootConfig
+import io.sarl.sre.services.lifecycle.LifecycleSpawnCallback
 import io.sarl.sre.services.logging.LoggingService
 import io.sarl.sre.tests.testutils.agents.TestingAgent
 import io.sarl.sre.tests.testutils.exception.SreLogException
@@ -132,6 +133,30 @@ class SreRunContext {
 			val res = this.globalResults.get(agentId.key)
 			if (res !== null) {
 				return type.cast(res.get(index))
+			}
+		} catch (exception : Throwable) {
+			//
+		}
+		return null
+	}
+
+	/** 
+	 * Replies first result of the given type of the run of the agent.
+	 * 
+	 * @param agentId the identifier of the agent.
+	 * @param type - the type of the result.
+	 * @return the value; or {@code null} if no result.
+	 * @since 0.11
+	 */
+	def getFirstResultOfType(agentId : UUID = null, type : Class<T>) : T with T {
+		try {
+			val res = this.globalResults.get(agentId.key)
+			if (res !== null) {
+				for (value : res) {
+					if (type.isInstance(value)) {
+						return type.cast(value)
+					}
+				}
 			}
 		} catch (exception : Throwable) {
 			//
@@ -500,7 +525,7 @@ class SreRunContext {
 	 * @param params the list of the parameters to pass to the agent initialization function.
 	 * @return the identifier of the agent, never {@code null}.
 	 */
-	def spawnInTest(kernel : Kernel, ^agent : Class<? extends Agent>, callback : (UUID)=>void, arguments : Object*) {
+	def spawnInTest(kernel : Kernel, ^agent : Class<? extends Agent>, callback : LifecycleSpawnCallback, arguments : Object*) {
 		var allParameters : Object[]
 		if (arguments === null || arguments.length === 0) {
 			allParameters = agentInitializationParameters

@@ -21,7 +21,6 @@
 package io.sarl.sre.skills.bic
 
 import io.sarl.core.Lifecycle
-import io.sarl.core.Logging
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AgentContext
 import io.sarl.sre.services.context.Context
@@ -36,17 +35,15 @@ import static io.sarl.sre.services.lifecycle.AgentLife.*
 /** 
  * Skill that permits to manage the life cycle of the agents.
  * 
+ * @author $Author: sgalland$
  * @author $Author: srodriguez$
  * @author $Author: ngaud$
- * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("potential_field_synchronization_problem")
 skill LifecycleSkill implements Lifecycle {
-
-	uses Logging
 
 	val lifecycle : LifecycleService
 
@@ -76,95 +73,41 @@ skill LifecycleSkill implements Lifecycle {
 		ExecutorService::neverReturn(postTreatment)
 	}
 
-	def spawn(agentType : Class<? extends Agent>, params : Object*) : UUID {
+	def spawn(agentType : Class<? extends Agent>, params : Object*) {
 		val life = getLife(owner)
 		if (life.state.alive) {
 			var o = this.owner
-			val result = this.lifecycle.spawnAgent(1, o.ID, life.defaultContext.context, null, agentType, params)
-			if (result.agentSpawned) {
-				var iterator = result.spawnedAgents.iterator
-				if (iterator.hasNext) {
-					return iterator.next
-				}
-			} else {
-				val err = result.error
-				if (err !== null) {
-					error(err.localizedMessage, err)
-				}
-			}
+			this.lifecycle.spawnAgent(1, o.ID, life.defaultContext.context, null, agentType, null, params)
 		}
-		return null
 	}
 
-	def spawn(nbAgents : int, agentType : Class<? extends Agent>, params : Object*) : Iterable<UUID> {
+	def spawn(nbAgents : int, agentType : Class<? extends Agent>, params : Object*) {
 		val life = getLife(owner)
 		if (life.state.alive) {
 			var o = this.owner
-			var result = this.lifecycle.spawnAgent(nbAgents, o.ID, life.defaultContext.context, null, agentType, params)
-			if (result.failing) {
-				val err = result.error
-				if (err !== null) {
-					error(err.localizedMessage, err)
-				}
-			}
-			return result.spawnedAgents
+			this.lifecycle.spawnAgent(nbAgents, o.ID, life.defaultContext.context, null, agentType, null, params)
 		}
-		return emptyList
 	}
 
-	def spawnInContext(agentClass : Class<? extends Agent>, context : AgentContext, params : Object*) : UUID {
+	def spawnInContext(agentClass : Class<? extends Agent>, context : AgentContext, params : Object*) {
 		if (getLife(owner).state.alive) {
 			var o = this.owner
-			val result = this.lifecycle.spawnAgent(1, o.ID, context as Context, null, agentClass, params)
-			if (result.agentSpawned) {
-				var iterator = result.spawnedAgents.iterator
-				if (iterator.hasNext) {
-					return iterator.next
-				}
-			} else {
-				val err = result.error
-				if (err !== null) {
-					error(err.localizedMessage, err)
-				}
-			}
+			this.lifecycle.spawnAgent(1, o.ID, context as Context, null, agentClass, null, params)
 		}
-		return null
 	}
 
-	def spawnInContext(nbAgents : int, agentClass : Class<? extends Agent>, context : AgentContext,
-		params : Object*) : Iterable<UUID> {
+	def spawnInContext(nbAgents : int, agentClass : Class<? extends Agent>, context : AgentContext, params : Object*) {
 		if (getLife(owner).state.alive) {
 			var o = this.owner
-			var result = this.lifecycle.spawnAgent(nbAgents, o.ID, context as Context, null, agentClass, params)
-			if (result.failing) {
-				val err = result.error
-				if (err !== null) {
-					error(err.localizedMessage, err)
-				}
-			}
-			return result.spawnedAgents
+			this.lifecycle.spawnAgent(nbAgents, o.ID, context as Context, null, agentClass, null, params)
 		}
-		return emptyList
 	}
 
-	def spawnInContextWithID(agentClass : Class<? extends Agent>, agentID : UUID, context : AgentContext,
-		params : Object*) : UUID {
+	def spawnInContextWithID(agentClass : Class<? extends Agent>, agentID : UUID, context : AgentContext, params : Object*) {
 		if (getLife(owner).state.alive) {
 			var o = this.owner
-			val result = this.lifecycle.spawnAgent(1, o.ID, context as Context, agentID, agentClass, params)
-			if (result.agentSpawned) {
-				var iterator = result.spawnedAgents.iterator
-				if (iterator.hasNext) {
-					return iterator.next
-				}
-			} else {
-				val err = result.error
-				if (err !== null) {
-					error(err.localizedMessage, err)
-				}
-			}
+			this.lifecycle.spawnAgent(1, o.ID, context as Context, agentID, agentClass, null, params)
 		}
-		return null
 	}
 
 }

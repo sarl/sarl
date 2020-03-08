@@ -26,9 +26,6 @@ import io.sarl.lang.core.DynamicSkillProvider
 import io.sarl.sre.services.context.Context
 import java.util.EventListener
 import java.util.UUID
-import org.eclipse.xtend.lib.annotations.Accessors
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder
-import java.util.concurrent.ConcurrentLinkedDeque
 
 /** 
  * This service provides the tools to manage the life-cycle of the agents.
@@ -49,14 +46,16 @@ interface LifecycleService extends Service {
 	 * @param nbAgents the number of agents to spawn.
 	 * @param spawningAgent the agent which is spawning.
 	 * @param parent the parent entity that is creating the agents.
-	 * @param agentClazz the type of the agents to spawn.
 	 * @param agentId the identifier of the agent to spawn. If {@code null} the identifier is randomly selected.
 	 * If {@code nbAgents} is greater than 1, the agent identifier must be {@code null}.
+	 * @param agentClazz the type of the agents to spawn.
+	 * @param callback function that is invoked when an identifier of spawned agent is known. The number of times this callback
+	 * is invoked depends on the service's implementation. But, the contract is that is must be called at least one time when
+	 * one or more agent is spawned.
 	 * @param params the list of the parameters to pass to the agent initialization function.
-	 * @return the result of the spawning action, including the identifiers of the agents, and the failure causes.
 	 */
 	def spawnAgent(nbAgents : int, spawningAgent : UUID, parent : Context, agentId : UUID,
-		agentClazz : Class<? extends Agent>, params : Object*) : SpawnResult
+		agentClazz : Class<? extends Agent>, callback : LifecycleSpawnCallback, params : Object*)
 
 	/**
 	 * Kill the given agent.
@@ -129,101 +128,6 @@ interface LifecycleService extends Service {
 }
 
 /** 
- * Description of a spawning action's result.
- * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- * @since 0.7.0
- */
-final class SpawnResult {
-	
-	@Accessors(PUBLIC_GETTER)
-	val spawnedAgents : ConcurrentLinkedDeque<UUID>
-
-	val errors : ConcurrentLinkedDeque<Throwable>
-
-	var cause : Throwable
-	
-	new (spawnedAgents : ConcurrentLinkedDeque<UUID>, errors : ConcurrentLinkedDeque<Throwable>) {
-		assert spawnedAgents !== null
-		assert errors !== null
-		this.spawnedAgents = spawnedAgents
-		this.errors = errors
-	}
-
-	final override toString : String {
-		val builder = new ToStringBuilder(this)
-		toString(builder)
-		return builder.toString
-	}
-
-	/** Build the string representation of this result.
-	 *
-	 * @param buffer the buffer to fill out.
-	 */
-	def toString(buffer : ToStringBuilder) {
-		buffer.addDeclaredFields
-	}
-
-	/** Replies if the spawning action has encountered a failure.
-	 *
-	 * @return {@code true} if an error was encountered.
-	 */
-	def isFailing : boolean {
-		!this.errors.empty
-	}
-
-	/** Replies if the spawning action has generated at least one agent.
-	 * 
-	 * @return {@code true} if no error was encountered.
-	 */
-	def isAgentSpawned : boolean {
-		!this.spawnedAgents.empty
-	}
-
-	/** Replies the failing cause.
-	 *
-	 * @return the failing cause.
-	 * @see #throwAnyError()
-	 */
-	def getError : Throwable {
-		if (this.cause === null) {
-			switch (this.errors.size) {
-			case 0:
-				this.cause = null
-			case 1:
-				this.cause = this.errors.get(0)
-			default: {
-					this.cause = new CannotSpawnException
-					for (exception : this.errors) {
-						this.cause.addSuppressed(exception)
-					}
-				}
-			}
-		}
-		return this.cause
-	}
-
-	/** Throw the exception if the result has an error.
-	 *
-	 * <p>This function does not return when the result contains an error.
-	 *
-	 * @return the failing cause.
-	 * @see #getError()
-	 * @throws Exception the error into the result.
-	 */
-	def throwAnyError : void throws Exception {
-		val cause = getError
-		if (cause !== null) {
-			throw cause
-		}
-	}
-
-}
-
-/** 
  * Listener on events related to the life-cycle of an agent.
  * 
  * @author $Author: srodriguez$
@@ -240,12 +144,12 @@ interface LifecycleServiceListener extends EventListener {
 	 * @param spawningAgent the identifier of the agent which spawns the given agent.
 	 * @param parent the context in which the agent was created.
 	 * @param agentType the type of the spawned agents.
-	 * @param spawnedAgents the spawned agents.
+	 * @param spawnedAgent the spawned agent.
 	 * @param initializationParameters list of parameters that were passed to the agent.
 	 */
 	def agentSpawned(spawningAgent : UUID, parent : Context,
 		agentType : Class<? extends Agent>,
-		spawnedAgents : ConcurrentLinkedDeque<Agent>,
+		spawnedAgent : Agent,
 		initializationParameters : Object[])
 
 	/**
@@ -271,5 +175,28 @@ interface KernelAgentLifecycleListener extends EventListener {
 	 * Invoked when the kernel agent is destroyed.
 	 */
 	def kernelAgentDestroyed
+
+}
+
+/** 
+ * Callback object for the spawn of agents.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.11
+ */
+@FunctionalInterface
+interface LifecycleSpawnCallback {
+
+	/**
+	 * Invoked when the service has spawned the first agent with the given identifier.
+	 * Usually, this callback function in invoked between the agent instance creation and the
+	 * rest of the spawning process.
+	 *
+	 * @param id the identifier of the agent.
+	 */
+	def firstAgentSpawned(id : UUID)
 
 }

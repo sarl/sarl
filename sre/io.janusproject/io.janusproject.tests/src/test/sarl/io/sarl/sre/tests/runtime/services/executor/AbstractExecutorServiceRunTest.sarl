@@ -93,7 +93,7 @@ abstract class AbstractExecutorServiceRunTest {
 	@PrivateAPI(isCallerOnly = true)
 	def every_01(extension rc : SreRunContext) {
 		val kern = typeof(WaiterAgent).setupTheSreKernel(null, null)
-		kern.spawn(typeof(EveryAgent), [], getAgentInitializationParameters)
+		kern.spawn(typeof(EveryAgent), null, getAgentInitializationParameters)
 		try {
 			waitForTheKernel(STANDARD_TIMEOUT)
 		} finally {

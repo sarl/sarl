@@ -67,24 +67,19 @@ skill LifeSkill implements Lifecycle {
 	def killMe {
 	}
 	
-	def spawn(agentType : Class<? extends Agent>, params : Object*) : UUID {
-		null
+	def spawn(agentType : Class<? extends Agent>, params : Object*) {
 	}
 	
-	def spawn(nbAgents : int, agentType : Class<? extends Agent>, params : Object*) : Iterable<UUID> {
-		null
+	def spawn(nbAgents : int, agentType : Class<? extends Agent>, params : Object*) {
 	}
 	
-	def spawnInContext(agentClass : Class<? extends Agent>, context : AgentContext, params : Object*) : UUID {
-		null
+	def spawnInContext(agentClass : Class<? extends Agent>, context : AgentContext, params : Object*) {
 	}
 	
-	def spawnInContext(nbAgents : int, agentClass : Class<? extends Agent>, context : AgentContext, params : Object*) : Iterable<UUID> {
-		null
+	def spawnInContext(nbAgents : int, agentClass : Class<? extends Agent>, context : AgentContext, params : Object*) {
 	}
 	
-	def spawnInContextWithID(agentClass : Class<? extends Agent>, agentID : UUID, context : AgentContext, params : Object*) : UUID {
-		null
+	def spawnInContextWithID(agentClass : Class<? extends Agent>, agentID : UUID, context : AgentContext, params : Object*) {
 	}
 	
 }

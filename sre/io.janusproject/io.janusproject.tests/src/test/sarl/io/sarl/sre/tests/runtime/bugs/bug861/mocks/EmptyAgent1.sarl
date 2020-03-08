@@ -22,10 +22,11 @@ package io.sarl.sre.tests.runtime.bugs.bug861.mocks
 
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.core.Lifecycle
 
 agent EmptyAgent1 extends TestingAgent {
 	
-	uses DefaultContextInteractions
+	uses DefaultContextInteractions, Lifecycle
 
 	def runAgentTest : RunPolicy {
 		new Initialized().emit [getSpawner == it.UUID]
@@ -34,6 +35,7 @@ agent EmptyAgent1 extends TestingAgent {
 
 	on Initialized {
 		addResult(occurrence)
+		killMe
 	}
 	
 }

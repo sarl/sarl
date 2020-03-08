@@ -21,6 +21,7 @@
 
 package io.sarl.sre.tests.runtime.services.namespace
 
+import io.sarl.lang.util.OutParameter
 import io.sarl.sre.services.namespace.FieldAccess
 import io.sarl.sre.services.namespace.NamespaceService
 import io.sarl.sre.tests.runtime.services.namespace.mocks.ChangeField
@@ -37,10 +38,9 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
 import static io.sarl.sre.tests.testutils.Constants.*
+import static io.sarl.tests.api.tools.TestTimeout.*
 
-import static extension org.junit.jupiter.api.Assertions.assertEquals
-import static extension org.junit.jupiter.api.Assertions.assertNotNull
-import static extension org.junit.jupiter.api.Assertions.assertNull
+import static extension org.junit.jupiter.api.Assertions.*
 
 /**
  * @author $Author: sgalland$
@@ -77,9 +77,22 @@ abstract class AbstractNamespaceServiceTest {
 		var service = kern.getService(typeof(NamespaceService))
 		service.assertNotNull
 
-		val id = bootstrap.startAgent(typeof(NamespaceTestAgent), getAgentInitializationParameters)
+		bootstrap.startAgent(typeof(NamespaceTestAgent), getAgentInitializationParameters)
 
-		var namedObject = service.findObject("agent:" + id + "#myfield")
+		var bid = bootstrap.bootAgentIdentifier
+		bid.assertNotNull
+
+		// Wait for the starting of the agent. The agent is accessible when it is started, and
+		// member of a default space.
+		val namedObjectParam = new OutParameter
+		val to = newTimeOut [
+			val obj = service.findObject("agent:" + bid + "#myfield")
+			namedObjectParam.set(obj)
+			return obj !== null
+		]
+		to.run
+		to.isTimeout.assertFalse
+		val namedObject = namedObjectParam.get
 		namedObject.assertNotNull
 
 		service.runTestCase_beforeChangeField(namedObject)

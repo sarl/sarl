@@ -27,7 +27,6 @@ import io.sarl.sre.services.context.Context
 import io.sarl.sre.services.lifecycle.AgentLife
 import io.sarl.sre.services.lifecycle.AgentState
 import io.sarl.sre.services.lifecycle.LifecycleService
-import io.sarl.sre.services.lifecycle.SpawnResult
 import io.sarl.sre.skills.bic.LifecycleSkill
 import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
 import io.sarl.sre.tests.units.skills.bic.mocks.MyAgent2
@@ -36,7 +35,6 @@ import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
-import java.util.concurrent.ConcurrentLinkedDeque
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
@@ -44,7 +42,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 import org.mockito.ArgumentCaptor
 
-import static io.sarl.tests.api.tools.TestAssertions.*
 import static io.sarl.tests.api.tools.TestReflections.*
 import static org.junit.jupiter.api.Assertions.*
 import static org.mockito.ArgumentMatchers.*
@@ -103,271 +100,155 @@ class LifecycleSkillTest {
 	}
 
 	@Test
-	def spawn_notAlive {
-		var agentID = UUID::randomUUID
-		val col0 = new ConcurrentLinkedDeque
-		col0 += agentID
-		val col1 = new ConcurrentLinkedDeque
-		var result = new SpawnResult(col0, col1)
-		when(this.service.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
-		
-		var id = this.^skill.spawn(typeof(MyAgent2), 1, "value")
-		
-		assertNull(id)
-		
+	def spawn_notAlive : void{
+		this.^skill.spawn(typeof(MyAgent2), 1, "value")
 		verifyNoMoreInteractions(this.service)
 	}
 
 	@Test
 	def spawn_alive {
-		var agentID = UUID::randomUUID
-		val col0 = new ConcurrentLinkedDeque
-		col0 += agentID
-		val col1 = new ConcurrentLinkedDeque
-		var result = new SpawnResult(col0, col1)
-		when(this.service.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
-
 		forceAlive
 		
-		var id = this.^skill.spawn(typeof(MyAgent2), 1, "value")
-		
-		assertSame(agentID, id)
+		this.^skill.spawn(typeof(MyAgent2), 1, "value")
 		
 		var argument0 = ArgumentCaptor::forClass(typeof(int))
 		var argument1 = ArgumentCaptor::forClass(typeof(UUID))
 		var argument2 = ArgumentCaptor::forClass(typeof(Context))
 		var argument3 = ArgumentCaptor::forClass(typeof(UUID))
 		var argument4 = ArgumentCaptor::forClass(typeof(Class))
-		var argument5 = ArgumentCaptor::forClass(typeof(Object))
+		var argument6 = ArgumentCaptor::forClass(typeof(Object))
 		this.service.verify(1.times).spawnAgent(
 			argument0.capture.intValue, argument1.capture, argument2.capture,
-				argument3.capture, argument4.capture, argument5.capture)
+				argument3.capture, argument4.capture, any, argument6.capture)
 		assertEquals(1, argument0.value)
 		assertSame(this.spawnerID, argument1.value)
 		assertSame(this.context, argument2.value)
 		assertNull(argument3.value)
 		assertEquals(typeof(MyAgent2), argument4.value)
-		assertArrayEquals(#[1, "value"], argument5.allValues.toArray)
+		assertArrayEquals(#[1, "value"], argument6.allValues.toArray)
 	}
 
 	@Test
 	def spawnInteger_notAlive {
-		var agentID1 = UUID::randomUUID
-		var agentID2 = UUID::randomUUID
-		var agentID3 = UUID::randomUUID
-		val col0 = new ConcurrentLinkedDeque
-		col0 += agentID1
-		col0 += agentID2
-		col0 += agentID3
-		val col1 = new ConcurrentLinkedDeque
-		var result = new SpawnResult(col0, col1)
-		when(this.service.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
-		
-		var id = this.^skill.spawn(3, typeof(MyAgent2), 1, "value")
-		
-		assertNotNull(id)
-		assertContains(id)
+		this.^skill.spawn(3, typeof(MyAgent2), 1, "value")
 		verifyNoMoreInteractions(this.service)
 	}
 
 	@Test
 	def spawnInteger_alive {
-		var agentID1 = UUID::randomUUID
-		var agentID2 = UUID::randomUUID
-		var agentID3 = UUID::randomUUID
-		val col0 = new ConcurrentLinkedDeque
-		col0 += agentID1
-		col0 += agentID2
-		col0 += agentID3
-		val col1 = new ConcurrentLinkedDeque
-		var result = new SpawnResult(col0, col1)
-		when(this.service.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
-
 		forceAlive
 		
-		var id = this.^skill.spawn(3, typeof(MyAgent2), 1, "value")
-		
-		assertNotNull(id)
-		var iterator = id.iterator
-		assertSame(agentID1, iterator.next)
-		assertSame(agentID2, iterator.next)
-		assertSame(agentID3, iterator.next)
-		assertFalse(iterator.hasNext)
+		this.^skill.spawn(3, typeof(MyAgent2), 1, "value")
 		
 		var argument0 = ArgumentCaptor::forClass(typeof(int))
 		var argument1 = ArgumentCaptor::forClass(typeof(UUID))
 		var argument2 = ArgumentCaptor::forClass(typeof(Context))
 		var argument3 = ArgumentCaptor::forClass(typeof(UUID))
 		var argument4 = ArgumentCaptor::forClass(typeof(Class))
-		var argument5 = ArgumentCaptor::forClass(typeof(Object))
+		var argument6 = ArgumentCaptor::forClass(typeof(Object))
 		this.service.verify(1.times).spawnAgent(argument0.capture.intValue, argument1.capture, argument2.capture,
-				argument3.capture, argument4.capture, argument5.capture)
+				argument3.capture, argument4.capture, any, argument6.capture)
 		assertEquals(3, argument0.value)
 		assertSame(this.spawnerID, argument1.value)
 		assertSame(this.context, argument2.value)
 		assertNull(argument3.value)
 		assertEquals(typeof(MyAgent2), argument4.value)
-		assertArrayEquals(#[1, "value"], argument5.allValues.toArray)
+		assertArrayEquals(#[1, "value"], argument6.allValues.toArray)
 	}
 
 	@Test
-	def spawnInContext_notAlive {
-		var agentID = UUID::randomUUID
-		val col0 = new ConcurrentLinkedDeque
-		col0 += agentID
-		val col1 = new ConcurrentLinkedDeque
-		var result = new SpawnResult(col0, col1)
-		when(this.service.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
+	def spawnInContext_notAlive : void {
 		var otherContext = typeof(Context).mock
-		
-		var id = this.^skill.spawnInContext(typeof(MyAgent2), otherContext, 1, "value")
-		
-		assertNull(id)
-
+		this.^skill.spawnInContext(typeof(MyAgent2), otherContext, 1, "value")
 		verifyNoMoreInteractions(this.service)
 	}
 
 	@Test
 	def spawnInContext_alive {
-		var agentID = UUID::randomUUID
-		val col0 = new ConcurrentLinkedDeque
-		col0 += agentID
-		val col1 = new ConcurrentLinkedDeque
-		var result = new SpawnResult(col0, col1)
-		when(this.service.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
 		var otherContext = typeof(Context).mock
 
 		forceAlive
 		
-		var id = this.^skill.spawnInContext(typeof(MyAgent2), otherContext, 1, "value")
-		
-		assertSame(agentID, id)
+		this.^skill.spawnInContext(typeof(MyAgent2), otherContext, 1, "value")
 		
 		var argument0 = ArgumentCaptor::forClass(typeof(int))
 		var argument1 = ArgumentCaptor::forClass(typeof(UUID))
 		var argument2 = ArgumentCaptor::forClass(typeof(Context))
 		var argument3 = ArgumentCaptor::forClass(typeof(UUID))
 		var argument4 = ArgumentCaptor::forClass(typeof(Class))
-		var argument5 = ArgumentCaptor::forClass(typeof(Object))
+		var argument6 = ArgumentCaptor::forClass(typeof(Object))
 		this.service.verify(1.times).spawnAgent(argument0.capture.intValue, argument1.capture, argument2.capture,
-				argument3.capture, argument4.capture, argument5.capture)
+				argument3.capture, argument4.capture, any, argument6.capture)
 		assertEquals(1, argument0.value)
 		assertSame(this.spawnerID, argument1.value)
 		assertSame(otherContext, argument2.value)
 		assertNull(argument3.value)
 		assertEquals(typeof(MyAgent2), argument4.value)
-		assertArrayEquals(#[1, "value"], argument5.allValues.toArray)
+		assertArrayEquals(#[1, "value"], argument6.allValues.toArray)
 	}
 
 	@Test
-	def spawnInContextInteger_notAlive {
-		var agentID1 = UUID::randomUUID
-		var agentID2 = UUID::randomUUID
-		var agentID3 = UUID::randomUUID
-		val col0 = new ConcurrentLinkedDeque
-		col0 += agentID1
-		col0 += agentID2
-		col0 += agentID3
-		val col1 = new ConcurrentLinkedDeque
-		var result = new SpawnResult(col0, col1)
-		when(this.service.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
+	def spawnInContextInteger_notAlive : void {
 		var otherContext = typeof(Context).mock
-
-		var id = this.^skill.spawnInContext(3, typeof(MyAgent2), otherContext, 1, "value")
-		
-		assertNotNull(id)
-		assertContains(id)
+		this.^skill.spawnInContext(3, typeof(MyAgent2), otherContext, 1, "value")
 		verifyNoMoreInteractions(this.service)
 	}
 
 	@Test
 	def spawnInContextInteger_alive {
-		var agentID1 = UUID::randomUUID
-		var agentID2 = UUID::randomUUID
-		var agentID3 = UUID::randomUUID
-		val col0 = new ConcurrentLinkedDeque
-		col0 += agentID1
-		col0 += agentID2
-		col0 += agentID3
-		val col1 = new ConcurrentLinkedDeque
-		var result = new SpawnResult(col0, col1)
-		when(this.service.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
 		var otherContext = typeof(Context).mock
 
 		forceAlive
 
-		var id = this.^skill.spawnInContext(3, typeof(MyAgent2), otherContext, 1, "value")
-		
-		assertNotNull(id)
-		var iterator = id.iterator
-		assertSame(agentID1, iterator.next)
-		assertSame(agentID2, iterator.next)
-		assertSame(agentID3, iterator.next)
-		assertFalse(iterator.hasNext)
+		this.^skill.spawnInContext(3, typeof(MyAgent2), otherContext, 1, "value")
 		
 		var argument0 = ArgumentCaptor::forClass(typeof(int))
 		var argument1 = ArgumentCaptor::forClass(typeof(UUID))
 		var argument2 = ArgumentCaptor::forClass(typeof(Context))
 		var argument3 = ArgumentCaptor::forClass(typeof(UUID))
 		var argument4 = ArgumentCaptor::forClass(typeof(Class))
-		var argument5 = ArgumentCaptor::forClass(typeof(Object))
+		var argument6 = ArgumentCaptor::forClass(typeof(Object))
 		this.service.verify(1.times).spawnAgent(argument0.capture.intValue, argument1.capture, argument2.capture,
-				argument3.capture, argument4.capture, argument5.capture)
+				argument3.capture, argument4.capture, any, argument6.capture)
 		assertEquals(3, argument0.value)
 		assertSame(this.spawnerID, argument1.value)
 		assertSame(otherContext, argument2.value)
 		assertNull(argument3.value)
 		assertEquals(typeof(MyAgent2), argument4.value)
-		assertArrayEquals(#[1, "value"], argument5.allValues.toArray)
+		assertArrayEquals(#[1, "value"], argument6.allValues.toArray)
 	}
 
 	@Test
-	def spawnInContextWithID_notAlive {
+	def spawnInContextWithID_notAlive : void {
 		var agentID = UUID::randomUUID
-		val col0 = new ConcurrentLinkedDeque
-		col0 += agentID
-		val col1 = new ConcurrentLinkedDeque
-		var result = new SpawnResult(col0, col1)
-		when(this.service.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
 		var otherContext = typeof(Context).mock
-		
-		var id = this.^skill.spawnInContextWithID(typeof(MyAgent2), agentID, otherContext, 1, "value")
-		
-		assertNull(id)
-		
+		this.^skill.spawnInContextWithID(typeof(MyAgent2), agentID, otherContext, 1, "value")
 		verifyNoMoreInteractions(this.service)
 	}
 
 	@Test
 	def spawnInContextWithID_alive {
 		var agentID = UUID::randomUUID
-		val col0 = new ConcurrentLinkedDeque
-		col0 += agentID
-		val col1 = new ConcurrentLinkedDeque
-		var result = new SpawnResult(col0, col1)
-		when(this.service.spawnAgent(anyInt, any, any, any, any, any)).thenReturn(result)
 		var otherContext = typeof(Context).mock
 
 		forceAlive
 
-		var id = this.^skill.spawnInContextWithID(typeof(MyAgent2), agentID, otherContext, 1, "value")
-		
-		assertSame(agentID, id)
+		this.^skill.spawnInContextWithID(typeof(MyAgent2), agentID, otherContext, 1, "value")
 		
 		var argument0 = ArgumentCaptor::forClass(typeof(int))
 		var argument1 = ArgumentCaptor::forClass(typeof(UUID))
 		var argument2 = ArgumentCaptor::forClass(typeof(Context))
 		var argument3 = ArgumentCaptor::forClass(typeof(UUID))
 		var argument4 = ArgumentCaptor::forClass(typeof(Class))
-		var argument5 = ArgumentCaptor::forClass(typeof(Object))
+		var argument6 = ArgumentCaptor::forClass(typeof(Object))
 		verify(this.service, times(1)).spawnAgent(argument0.capture.intValue, argument1.capture, argument2.capture,
-				argument3.capture, argument4.capture, argument5.capture)
+				argument3.capture, argument4.capture, any, argument6.capture)
 		assertEquals(1, argument0.value)
 		assertSame(this.spawnerID, argument1.value)
 		assertSame(otherContext, argument2.value)
 		assertSame(agentID, argument3.value)
 		assertEquals(typeof(MyAgent2), argument4.value)
-		assertArrayEquals(#[1, "value"], argument5.allValues.toArray)
+		assertArrayEquals(#[1, "value"], argument6.allValues.toArray)
 	}
 
 }

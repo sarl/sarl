@@ -30,6 +30,7 @@ import io.sarl.sre.services.IServiceManager
 import io.sarl.sre.services.context.ContextService
 import io.sarl.sre.services.lifecycle.KernelAgentLifecycleListener
 import io.sarl.sre.services.lifecycle.LifecycleService
+import io.sarl.sre.services.lifecycle.LifecycleSpawnCallback
 import io.sarl.sre.services.logging.LoggingService
 import io.sarl.sre.spaces.AbstractEventSpace
 import java.lang.Thread.UncaughtExceptionHandler
@@ -37,15 +38,14 @@ import java.lang.annotation.Retention
 import java.lang.annotation.Target
 import java.lang.ref.WeakReference
 import java.util.UUID
-import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.logging.Level
 import java.util.logging.LogRecord
 import java.util.logging.Logger
 import javax.inject.Inject
-import javax.inject.Singleton
 import javax.inject.Provider
+import javax.inject.Singleton
 
 /** 
  * This class represents the Kernel of the SRE platform.
@@ -147,21 +147,12 @@ class Kernel {
 	 * Spawn an agent of the given type, and pass the parameters to its initialization function.
 	 * 
 	 * @param agent the type of the agent to spawn.
-	 * @param callback the function invoked each time an agent is spawned.
-	 * @param params the list of the parameters to pass to the agent initialization function.
+	 * @param callback function that is invoked when an identifier of spawned agent is known.
+	 * @param arguments the list of the parameters to pass to the agent initialization function.
 	 * @return the identifier of the agent, never {@code null}.
 	 */
-	def spawn(^agent : Class<? extends Agent>, callback : (UUID)=>void, arguments : Object*) {
-		val result = this.spawnService.spawnAgent(1, null, this.contextService.rootContext, null, ^agent, arguments)
-		if (result.failing) {
-			throw result.error
-		}
-		if (callback !== null && result.agentSpawned) {
-			var ags = result.spawnedAgents
-			if (!ags.empty) {
-				callback.apply(ags.head)
-			}
-		}
+	def spawn(^agent : Class<? extends Agent>, callback : LifecycleSpawnCallback, arguments : Object*) {
+		this.spawnService.spawnAgent(1, null, this.contextService.rootContext, null, ^agent, callback, arguments)
 	}
 
 	/** 
@@ -169,22 +160,11 @@ class Kernel {
 	 * 
 	 * @param nbAgents the number of agents to spawn.
 	 * @param agent the type of the agents to spawn.
-	 * @param callback the function invoked each time an agent is spawned.
+	 * @param callback function that is invoked when an identifier of spawned agent is known.
 	 * @param params the list of the parameters to pass to the agent initialization function.
 	 */
-	def spawn(nbAgents : int, ^agent : Class<? extends Agent>, callback : (ConcurrentLinkedDeque<UUID>)=>void,
-		params : Object*) {
-		var result = this.spawnService.spawnAgent(nbAgents, null, this.contextService.rootContext, null, ^agent, params)
-		if (result.failing) {
-			var exception = result.error
-			this.loggingService.kernelLogger.log(Level::SEVERE, exception.localizedMessage, exception)
-		}
-		if (callback !== null) {
-			var ags = result.spawnedAgents
-			if (!ags.empty) {
-				callback.apply(ags)
-			}
-		}
+	def spawn(nbAgents : int, ^agent : Class<? extends Agent>, callback : LifecycleSpawnCallback, params : Object*) {
+		this.spawnService.spawnAgent(nbAgents, null, this.contextService.rootContext, null, ^agent, callback, params)
 	}
 
 	/** 
@@ -192,20 +172,11 @@ class Kernel {
 	 * 
 	 * @param agentID the identifier of the agent to spawn. If {@code null} the identifier is randomly selected.
 	 * @param agent the type of the agent to spawn.
-	 * @param callback the function invoked each time an agent is spawned.
+	 * @param callback function that is invoked when an identifier of spawned agent is known.
 	 * @param params the list of the parameters to pass to the agent initialization function.
 	 */
-	def spawn(agentID : UUID, ^agent : Class<? extends Agent>, callback : (UUID)=>void, params : Object*) {
-		val result = this.spawnService.spawnAgent(1, null, this.contextService.rootContext, agentID, ^agent, params)
-		if (result.failing) {
-			throw result.error
-		}
-		if (callback !== null && result.agentSpawned) {
-			var ags = result.spawnedAgents
-			if (!ags.empty) {
-				callback.apply(ags.head)
-			}
-		}
+	def spawn(agentID : UUID, ^agent : Class<? extends Agent>, callback : LifecycleSpawnCallback, params : Object*) {
+		this.spawnService.spawnAgent(1, null, this.contextService.rootContext, agentID, ^agent, callback, params)
 	}
 
 	/** 

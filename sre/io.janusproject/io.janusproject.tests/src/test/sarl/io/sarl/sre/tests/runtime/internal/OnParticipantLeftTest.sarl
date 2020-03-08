@@ -73,9 +73,7 @@ class OnParticipantLeftTest {
 
 		val id : OutputParameter<UUID> = new OutputParameter
 
-		kern.spawnInTest(typeof(JoinerAgent1)) [
-			id.set(it)
-		]
+		kern.spawnInTest(typeof(JoinerAgent1), [id.set(it)])
 
 		waitForTheKernel(STANDARD_TIMEOUT)
 
@@ -102,9 +100,7 @@ class OnParticipantLeftTest {
 
 		val id : OutputParameter<UUID> = new OutputParameter
 
-		kern.spawnInTest(typeof(JoinerAgent3)) [
-			id.set(it)
-		]
+		kern.spawnInTest(typeof(JoinerAgent3), [id.set(it)])
 
 		waitForTheKernel(NO_TIMEOUT)
 

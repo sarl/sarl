@@ -68,10 +68,10 @@ class Bug861Test {
 
 	 	assertEquals(2, getNumberOfResults(bootAgent))
 
-		val childAgent = getResult(bootAgent, typeof(UUID), 0)
+		val childAgent = getFirstResultOfType(bootAgent, typeof(UUID))
 		childAgent.assertNotNull
 
-		val initEvent0 = getResult(bootAgent, typeof(Initialized), 1)
+		val initEvent0 = getFirstResultOfType(bootAgent, typeof(Initialized))
 		initEvent0.assertNotNull
 		childAgent.assertEquals(initEvent0.source.UUID)
 		
@@ -86,14 +86,14 @@ class Bug861Test {
 	@DisplayName("Emit with scope")
 	def runWithScope(extension rc : SreRunContext) : void {
 		typeof(SreTimeoutException).whenException [
-			typeof(BootAgent1).runSre(VERY_SHORT_TIMEOUT)
+			typeof(BootAgent1).runSre(SHORT_TIMEOUT)
 		].verify [
 			assertEquals(2, getNumberOfResults(bootAgent))
 
-			val childAgent = getResult(bootAgent, typeof(UUID), 0)
+			val childAgent = getFirstResultOfType(bootAgent, typeof(UUID))
 			childAgent.assertNotNull
 
-			val initEvent0 = getResult(bootAgent, typeof(Initialized), 1)
+			val initEvent0 = getFirstResultOfType(bootAgent, typeof(Initialized))
 			initEvent0.assertNotNull
 			childAgent.assertEquals(initEvent0.source.UUID)
 

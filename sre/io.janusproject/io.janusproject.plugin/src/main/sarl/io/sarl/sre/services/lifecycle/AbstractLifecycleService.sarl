@@ -31,11 +31,13 @@ import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.logging.LoggingService
 import java.text.MessageFormat
 import java.util.UUID
+import java.util.concurrent.ConcurrentLinkedDeque
+import java.util.concurrent.atomic.AtomicReference
+import java.util.logging.Level
 import javax.inject.Provider
 import javax.inject.Singleton
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
-import java.util.concurrent.ConcurrentLinkedDeque
 
 /** 
  * Implementation of a spawning service that is based on the other services of the SRE platform.
@@ -147,13 +149,13 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	 * @param spawningAgent the spawning agent.
 	 * @param context the context in which the agents were spawned.
 	 * @param agentClazz the type of the spawned agents.
-	 * @param agents the spawned agents.
+	 * @param agent the spawned agent.
 	 * @param initializationParameters the initialization parameters.
 	 */
 	protected def fireAgentSpawned(spawningAgent : UUID, context : Context, agentClazz : Class<? extends Agent>,
-		agents : ConcurrentLinkedDeque<Agent>, initializationParameters : Object*) {
+		^agent : Agent, initializationParameters : Object*) {
 		this.globalListeners.notifyListeners(typeof(LifecycleServiceListener)) [
-			agentSpawned(spawningAgent, context, agentClazz, agents, initializationParameters)
+			agentSpawned(spawningAgent, context, agentClazz, ^agent, initializationParameters)
 		]
 	}
 
@@ -184,10 +186,9 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 			return false
 		}
 	}
-
 	def spawnAgent(nbAgents : int, spawningAgent : UUID, parent : Context, agentId : UUID,
-		agentClazz : Class<? extends Agent>, params : Object*) : SpawnResult {
-		spawnAgent(nbAgents, spawningAgent, parent, agentClazz, params) [
+		agentClazz : Class<? extends Agent>, callback : LifecycleSpawnCallback, params : Object*) {
+		spawnAgent(nbAgents, spawningAgent, parent, agentClazz, callback, params) [
 			if (agentId !== null && it === 0) {
 				return agentId
 			}
@@ -204,79 +205,77 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	}
 
 	protected def spawnAgent(nbAgents : int, spawningAgent : UUID, parent : Context,
-		agentClazz : Class<? extends Agent>, params : Object[], agentIds : (int)=>UUID) : SpawnResult {
-
-		val agents : ConcurrentLinkedDeque<Agent> = new ConcurrentLinkedDeque<Agent>()
-		val errors : ConcurrentLinkedDeque<Throwable> = new ConcurrentLinkedDeque<Throwable>()
+		agentClazz : Class<? extends Agent>, callback : LifecycleSpawnCallback, params : Object[],
+		agentIds : (int)=>UUID) {
 		if (canSpawnAgent && nbAgents > 0) {
-			// Create the list of the spawned agents during this function execution
-			try {
-				// Check if the version of the SARL agent class is compatible.
-				if (this.sarlSpecificationChecker === null ||
-					!this.sarlSpecificationChecker.isValidSarlElement(agentClazz)) {
-					errors += new InvalidSarlSpecificationException(agentClazz)
-				} else {
-					// Create the shared injector that is also able to create the agent instance.
-					val agentInstanceCreator = this.agentCreatorProvider.getAgentCreator(agentClazz, parent.ID,
-						nbAgents, dynamicSkillProviders, agentIds)
-					// Create the block of code for creating a single agent
-					val agentCreator : Runnable = [
-						val ^agent = agentInstanceCreator.get()
-						if (^agent === null) {
-							throw new CannotSpawnException(agentClazz)
-						}
-						// Start the agent's life
-						var life = getLife(^agent)
-						try {
-							var started = false
-							try {
-								started = life.start(this.skillUninstaller, getLoggingService, spawningAgent, parent,
-									params)
-							} catch (e : Throwable) {
-								errors += new CannotSpawnException(agentClazz, e)
-							}
-							if (started) {
-								// Add the agent in the system. It is synchronized because additions may occur in parallel
-								agents += ^agent
+			// Check if the version of the SARL agent class is compatible.
+			if (this.sarlSpecificationChecker === null ||
+				!this.sarlSpecificationChecker.isValidSarlElement(agentClazz)) {
+				throw new InvalidSarlSpecificationException(agentClazz)
+			}
+			
+			// The following variable enables to get the identifier of the first spawned agent.
+			var firstAgentIdentifier = new AtomicReference<UUID>
+			
+			// Create the shared injector that is also able to create the agent instance.
+			val agentInstanceCreator = this.agentCreatorProvider.getAgentCreator(agentClazz, parent.ID,
+				nbAgents, dynamicSkillProviders, agentIds)
+			// Create the block of code for creating a single agent
+			val agentCreator : Runnable = [
+				val ^agent = agentInstanceCreator.get()
+				if (^agent === null) {
+					throw new CannotSpawnException(agentClazz)
+				}
 
-								^agent.onAgentCreated
-							} else if (parent.emptyRootContext) {
-								// The agent seems to be the boot agent, and it has failed to be launched.
-								// Moreover the root context is still empty.
-								// The safer decision should be to stop the kernel.
-								onAgentFrameworkStop
-							}
-						} catch (e : Throwable) {
-							errors += new CannotSpawnException(agentClazz, e)
-						}
-					]
-					// Create a single agent with a sequential call; or multiple agents in parallel
-					if (nbAgents > 1) {
-						this.executor.executeBlockingTask(nbAgents, CREATION_POOL_SIZE, agentCreator)
-					} else {
-						agentCreator.run
+				// Notify about the agent creation in the memory
+				firstAgentIdentifier.compareAndSet(null, ^agent.ID)
+
+				// Start the agent's life
+				var life = getLife(^agent)
+				var started = false
+				var spawnError : Throwable = null
+				try {
+					started = life.start(this.skillUninstaller, getLoggingService, spawningAgent, parent,
+						params)
+				} catch (e : Throwable) {
+					started = false
+					spawnError = new CannotSpawnException(agentClazz, e)
+				}
+				if (started) {
+					// Add the agent in the system. It is synchronized because additions may occur in parallel
+					^agent.onAgentCreated
+					fireAgentSpawningEvents(spawningAgent, parent, agentClazz, params, ^agent)
+				} else {
+					if (spawnError !== null) {
+						loggingService.kernelLogger.log(Level::SEVERE, spawnError.message, spawnError)
 					}
-					// Fire the general spawning event
-					if (!agents.empty) {
-						fireAgentSpawningEvents(spawningAgent, parent, agentClazz, params, agents)
+					if (parent.emptyRootContext) {
+						// The agent seems to be the boot agent, and it has failed to be launched.
+						// Moreover the root context is still empty.
+						// The safer decision should be to stop the kernel.
+						onAgentFrameworkStop
 					}
 				}
-			} catch (e : CannotSpawnException) {
-				errors += e
-			} catch (e : Throwable) {
-				errors += new CannotSpawnException(agentClazz, e)
+			]
+			if (nbAgents > 1) {
+				this.executor.executeBlockingTask(loggingService.kernelLogger, nbAgents, CREATION_POOL_SIZE, agentCreator)
+			} else {
+				this.executor.executeAsap(loggingService.kernelLogger, agentCreator)
+			}
+			
+			// ASSUMPTION : the callback is called only one time.
+			if (callback !== null) {
+				// Wait for the agent starting
+				var id = firstAgentIdentifier.get
+				while (id === null) {
+					Thread::yield
+					id = firstAgentIdentifier.get
+				}
+				callback.firstAgentSpawned(id)
 			}
 		} else {
-			errors += new SpawnDisabledException(parent.ID, agentClazz)
+			throw new SpawnDisabledException(parent.ID, agentClazz)
 		}
-
-		//Returning just the UUID not the whole agent
-		val agentUUIDs : ConcurrentLinkedDeque<UUID> = new ConcurrentLinkedDeque<UUID>()
-		for(a : agents) {
-			agentUUIDs.add(a.ID)
-		}
-		
-		return new SpawnResult(agentUUIDs, errors)
 	}
 
 	/** This function is called each time the agent framework should be stopped.
@@ -310,15 +309,13 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	 * @param spawningAgent the creator.
 	 * @param parent the context in which the agents are created.
 	 * @param agentClazz the type of the spawned agents.
-	 * @param spawnedAgents the spawnedAgents.
+	 * @param spawnedAgent the spawned agent.
 	 */
 	protected def fireAgentSpawningEvents(spawningAgent : UUID, parent : Context, agentClazz : Class<? extends Agent>,
-		params : Object[], spawnedAgents : ConcurrentLinkedDeque<Agent>) {
-		spawningAgent.fireAgentSpawned(parent, agentClazz, spawnedAgents, params)
+		params : Object[], spawnedAgent : Agent) {
+		spawningAgent.fireAgentSpawned(parent, agentClazz, spawnedAgent, params)
 		val spaceID = parent.defaultSpace.spaceID
-		for (^agent : spawnedAgents) {
-			this.platformContextEventEmitter.memberJoined(parent, spaceID, ^agent.ID, agentClazz.name)
-		}
+		this.platformContextEventEmitter.memberJoined(parent, spaceID, spawnedAgent.ID, agentClazz.name)
 	}
 
 	/** Replies if the given context is the root context and is empty.

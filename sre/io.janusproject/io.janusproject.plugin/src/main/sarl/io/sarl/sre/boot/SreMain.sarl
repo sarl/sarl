@@ -41,18 +41,18 @@ import io.sarl.sre.boot.configs.subconfigs.BootConfig
 import io.sarl.sre.boot.configs.subconfigs.RootContextType
 import io.sarl.sre.services.lifecycle.KernelAgentLifecycleListener
 import io.sarl.sre.services.lifecycle.LifecycleService
+import io.sarl.sre.services.lifecycle.LifecycleSpawnCallback
 import io.sarl.sre.services.logging.LoggingService
+import java.lang.ref.WeakReference
 import java.util.List
 import java.util.UUID
 import org.apache.log4j.Logger
 import org.arakhne.afc.bootique.log4j.configs.Level
 import org.arakhne.afc.bootique.log4j.configs.Log4jIntegrationConfig
 import org.arakhne.afc.bootique.variables.VariableNames
-import org.arakhne.afc.util.OutputParameter
 import org.eclipse.xtend.lib.annotations.Accessors
 
 import static io.sarl.bootstrap.SRE.*
-import java.util.concurrent.ConcurrentLinkedDeque
 
 /** Class that implements the standard main function for running a SARL run-time environment
  * with bootique modules.
@@ -80,6 +80,12 @@ class SreMain implements SREBootstrap {
 	var userDefinedContextId : UUID
 
 	var userDefinedSpaceId : UUID
+	
+	val spawnCallback : SpawningCallback
+	
+	new {
+		this.spawnCallback = new SpawningCallback(this)
+	}
 	
 	/** Set the Bootique runtime instance.
 	 *
@@ -274,7 +280,7 @@ class SreMain implements SREBootstrap {
 	}
 	
 	def startAgent(nbAgents : int, agentCls : Class<? extends Agent>,
-		params : Object*) : Iterable<UUID> throws Exception {
+		params : Object*) {
 		val propName = VariableNames::toPropertyName(BootConfig::BOOT_AGENT_NAME)
 		val old = System::setProperty(propName, agentCls.name)
 		var kernel : Kernel
@@ -287,21 +293,12 @@ class SreMain implements SREBootstrap {
 				System::setProperty(propName, old)
 			}
 		}
-		var ids = new OutputParameter<ConcurrentLinkedDeque<UUID>>(new ConcurrentLinkedDeque<UUID>)
-		kernel.spawn(nbAgents, agentCls, [
-			ids.set(it)
-			if (this.isResetableBootAgent) {
-				this.lastBootAgent = it.head
-				
-			}
-		], params)
-		
-		return ids.get		
+		kernel.spawn(nbAgents, agentCls, this.spawnCallback, params)
 	}
 
 	/** Start the boot agent if it is specified in the boot configuration.
 	 */
-	def startBootAgent : UUID {
+	def startBootAgent {
 		var config = this.runtime.getInstance(typeof(SreConfig)).boot
 		var bootAgent = config.getBootAgent(this.class.classLoader)
 		assert bootAgent !== null
@@ -309,7 +306,7 @@ class SreMain implements SREBootstrap {
 		startAgent(bootAgent, args)
 	}
 
-	def startAgent(agentCls : Class<? extends Agent>, params : Object*) : UUID throws Exception {
+	def startAgent(agentCls : Class<? extends Agent>, params : Object*) {
 		val propName = VariableNames::toPropertyName(BootConfig::BOOT_AGENT_NAME)
 		assert propName !== null
 		var alreadyLaunched = System::getProperty(propName)
@@ -318,17 +315,10 @@ class SreMain implements SREBootstrap {
 			System::setProperty(propName, agentCls.name)
 		}
 		val kernel = ensureKernelInstance(null, null)
-		val id = new OutputParameter<UUID>
-		kernel.spawn(agentCls, [
-			id.set(it)
-			if (this.isResetableBootAgent) {
-				this.lastBootAgent = it
-			}
-		], params)
-		return id.get
+		kernel.spawn(agentCls, this.spawnCallback, params)
 	}
 	
-	def startAgentWithID(agentCls : Class<? extends Agent>, agentID : UUID, params : Object*) throws Exception {
+	def startAgentWithID(agentCls : Class<? extends Agent>, agentID : UUID, params : Object*) {
 		val propName = VariableNames::toPropertyName(BootConfig::BOOT_AGENT_NAME)
 		assert propName !== null
 		var alreadyLaunched = System::getProperty(propName)
@@ -337,11 +327,7 @@ class SreMain implements SREBootstrap {
 			System::setProperty(propName, agentCls.name)
 		}
 		val kernel = ensureKernelInstance(null, null)
-		kernel.spawn(agentID, agentCls, [
-			if (this.isResetableBootAgent) {
-				this.lastBootAgent = it
-			}
-		], params)
+		kernel.spawn(agentID, agentCls, this.spawnCallback, params)
 	}
 
 	@SuppressWarnings("discouraged_reference")
@@ -369,6 +355,32 @@ class SreMain implements SREBootstrap {
 			}
 		}
 		return null
+	}
+
+	/** Spawning callback.
+	 * 
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.11
+	 */
+	private static class SpawningCallback implements LifecycleSpawnCallback {
+
+		val enclosingType : WeakReference<SreMain>
+
+		new (enclosingType : SreMain) {
+			assert enclosingType !== null
+			this.enclosingType = new WeakReference(enclosingType)
+		}
+
+		override firstAgentSpawned(id : UUID) {
+			val ethis = this.enclosingType.get
+			if (ethis.isResetableBootAgent) {
+				ethis.lastBootAgent = id
+			}
+		}
+
 	}
 
 }

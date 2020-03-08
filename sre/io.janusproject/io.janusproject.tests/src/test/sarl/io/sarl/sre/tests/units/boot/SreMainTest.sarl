@@ -34,6 +34,7 @@ import io.sarl.sre.boot.configs.subconfigs.BootConfig
 import io.sarl.sre.boot.configs.subconfigs.InvalidAgentNameException
 import io.sarl.sre.boot.configs.subconfigs.NoBootAgentNameException
 import io.sarl.sre.services.lifecycle.LifecycleService
+import io.sarl.sre.services.lifecycle.LifecycleSpawnCallback
 import io.sarl.sre.services.logging.LoggingService
 import io.sarl.sre.tests.testutils.agents.IddleTestingAgent
 import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
@@ -42,10 +43,8 @@ import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
-import java.util.concurrent.ConcurrentLinkedDeque
 import org.arakhne.afc.bootique.log4j.configs.Level
 import org.arakhne.afc.bootique.log4j.configs.Log4jIntegrationConfig
-import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
@@ -158,20 +157,18 @@ class SreMainTest {
 		this.kernel = typeof(Kernel).mock
 		when(this.kernel.rootContext).thenReturn(this.rootContext)
 		when(this.kernel.getService(typeof(Class).any)).thenReturn(typeof(LifecycleService).mock)
-
-		doAnswer [
-			var callback = it.arguments.get(1) as (UUID) => void
-			callback?.apply(this.id0)
+		// Invoke the callback directly in order to evaluate its own code
+		doAnswer([
+			val callback = it.getArgument(1) as LifecycleSpawnCallback
+			callback.firstAgentSpawned(this.id0)
 			return null
-		].when(this.kernel).spawn(typeof(Class).any, typeof(Procedure1).any, typeof(Object).any);
-
-		doAnswer [
-			var callback = it.arguments.get(2) as (ConcurrentLinkedDeque<UUID>)=>void
-			var deque = new ConcurrentLinkedDeque
-			deque += this.id0
-			callback?.apply(deque)
+		]).when(this.kernel).spawn(any, any, any)
+		// Invoke the callback directly in order to evaluate its own code
+		doAnswer([
+			val callback = it.getArgument(2) as LifecycleSpawnCallback
+			callback.firstAgentSpawned(this.id0)
 			return null
-		].when(this.kernel).spawn(anyInt, typeof(Class).any, typeof(Procedure1).any, typeof(Object).any)
+		]).when(this.kernel).spawn(anyInt, any, any, any)
 
 		this.injector = typeof(Injector).mock
 		when(this.injector.getInstance(typeof(Class).any)).thenAnswer [
@@ -344,10 +341,9 @@ class SreMainTest {
 		createBootiqueMock
 		createConfiguration(typeof(IddleTestingAgent))
 		this.bootstrap.startWithoutAgent(this.bootique)
-		var id = this.bootstrap.startAgent(typeof(IddleTestingAgent), "a")
-		assertEquals(this.id0, id)
+		this.bootstrap.startAgent(typeof(IddleTestingAgent), "a")
 		var arg0 = ArgumentCaptor::forClass(typeof(Class))
-		var arg1 = ArgumentCaptor::forClass(typeof(Procedure1))
+		var arg1 = ArgumentCaptor::forClass(typeof(LifecycleSpawnCallback))
 		var arg2 = ArgumentCaptor::forClass(typeof(Object[]))
 		this.kernel.verify.spawn(arg0.capture, arg1.capture, arg2.capture)
 		assertEquals(typeof(IddleTestingAgent), arg0.value)
@@ -361,13 +357,10 @@ class SreMainTest {
 		createBootiqueMock
 		createConfiguration(typeof(IddleTestingAgent))
 		this.bootstrap.startWithoutAgent(this.bootique)
-		var id = this.bootstrap.startAgent(1, typeof(IddleTestingAgent), "a")
-		var iterator = id.iterator
-		assertEquals(this.id0, iterator.next)
-		assertFalse(iterator.hasNext)
+		this.bootstrap.startAgent(1, typeof(IddleTestingAgent), "a")
 		var arg0 = ArgumentCaptor::forClass(typeof(int))
 		var arg1 = ArgumentCaptor::forClass(typeof(Class))
-		var arg2 = ArgumentCaptor::forClass(typeof(Procedure1))
+		var arg2 = ArgumentCaptor::forClass(typeof(LifecycleSpawnCallback))
 		var arg3 = ArgumentCaptor::forClass(typeof(Object[]))
 		this.kernel.verify.spawn(arg0.capture.intValue, arg1.capture, arg2.capture, arg3.capture)
 		assertEquals(1, arg0.value)
@@ -417,10 +410,9 @@ class SreMainTest {
 		]
 		createConfiguration(typeof(IddleTestingAgent), configInstance)
 		this.bootstrap.startWithoutAgent(this.bootique)
-		var id = this.bootstrap.startBootAgent
-		assertEquals(this.id0, id)
+		this.bootstrap.startBootAgent
 		var arg0 = ArgumentCaptor::forClass(typeof(Class))
-		var arg1 = ArgumentCaptor::forClass(typeof(Procedure1))
+		var arg1 = ArgumentCaptor::forClass(typeof(LifecycleSpawnCallback))
 		var arg2 = ArgumentCaptor::forClass(typeof(Object[]))
 		this.kernel.verify.spawn(arg0.capture, arg1.capture, arg2.capture)
 		assertEquals(typeof(IddleTestingAgent), arg0.value)

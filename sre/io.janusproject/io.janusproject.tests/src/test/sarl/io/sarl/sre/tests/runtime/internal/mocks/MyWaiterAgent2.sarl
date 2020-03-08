@@ -21,6 +21,7 @@
 
 package io.sarl.sre.tests.runtime.internal.mocks
 
+import io.sarl.core.AgentSpawned
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Lifecycle
 import io.sarl.core.MemberJoined
@@ -43,9 +44,13 @@ agent MyWaiterAgent2 extends TestingAgent {
 
 	override runAgentTest : RunPolicy {
 		in(500) [
-			this.spawnId = typeof(MySpawnedAgent2).spawn(buildAgentInitializationParameters)
+			typeof(MySpawnedAgent2).spawn(buildAgentInitializationParameters)
 		]
 		return null
+	}
+
+	on AgentSpawned {
+		this.spawnId = occurrence.agentID
 	}
 
 	on MemberJoined {

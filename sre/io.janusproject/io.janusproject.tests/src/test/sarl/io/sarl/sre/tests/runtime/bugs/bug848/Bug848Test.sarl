@@ -61,16 +61,13 @@ class Bug848Test {
 		typeof(TAgent1a).runSre
 
 		var bootAgent = getBootAgent
-		assertEquals(2, getNumberOfResults(bootAgent))
-		val childAgent = getResult(bootAgent, typeof(UUID), 0)
-		assertNotNull(childAgent)
-		var spawnEvents1 : Triplet<Boolean, UUID, Collection<UUID>> = getResult(bootAgent, typeof(Triplet), 1)
+		assertEquals(1, getNumberOfResults(bootAgent))
+		var spawnEvents1 : Triplet<Boolean, UUID, UUID> = getResult(bootAgent, typeof(Triplet), 0)
 		assertNotNull(spawnEvents1)
-		assertTrue(spawnEvents1.getA().booleanValue)
+		assertTrue(spawnEvents1.a.booleanValue)
 		assertEquals(bootAgent, spawnEvents1.b)
-		assertEquals(1, spawnEvents1.getC().size)
-		assertEquals(childAgent, spawnEvents1.c.iterator.next)
-
+		
+		var childAgent = spawnEvents1.c
 		assertEquals(0, getNumberOfResults(childAgent))
 	}
 

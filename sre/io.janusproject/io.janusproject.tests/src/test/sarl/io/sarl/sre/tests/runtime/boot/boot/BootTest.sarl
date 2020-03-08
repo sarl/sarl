@@ -78,7 +78,7 @@ class BootTest {
 		System::setProperty(VariableNames::toPropertyName(BootConfig::ROOT_CONTEXT_BOOT_TYPE_NAME),
 			RootContextType::DEFAULT.name)
 		typeof(BootAgent0).runSre
-		assertNull(bootAgent)
+		assertNotNull(bootAgent)
 	}
 
 	@Test
@@ -95,7 +95,7 @@ class BootTest {
 				RootContextType::DEFAULT.name)
 		typeof(BootAgent0).runSre
 		var id = getResult(typeof(UUID), 0)
-		assertNull(id)
+		assertEquals(UUID::fromString(BootConfig::ROOT_CONTEXT_ID_VALUE), id)
 	}
 
 	@Test
@@ -115,7 +115,8 @@ class BootTest {
 				RootContextType::BOOT_AGENT_NAME.name)
 		typeof(BootAgent0).runSre
 		var id = getResult(typeof(UUID), 0)
-		assertNull(id)
+		var expected = UUID::nameUUIDFromBytes(typeof(BootAgent0).name.bytes)
+		assertEquals(expected, id)
 	}
 
 	@Test
@@ -136,7 +137,7 @@ class BootTest {
 				RootContextType::RANDOM.name)
 		typeof(BootAgent0).runSre
 		var id = getResult(typeof(UUID), 0)
-		assertNull(id)
+		assertNotNull(id)
 	}
 
 	@Test

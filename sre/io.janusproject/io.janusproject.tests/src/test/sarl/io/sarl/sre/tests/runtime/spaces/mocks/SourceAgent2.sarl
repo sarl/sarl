@@ -27,6 +27,7 @@ import io.sarl.core.Lifecycle
 import io.sarl.core.MemberLeft
 import io.sarl.core.Schedules
 import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.core.AgentSpawned
 
 /**
  * @author $Author: sgalland$
@@ -39,12 +40,15 @@ agent SourceAgent2 extends TestingAgent {
 	uses Behaviors, Lifecycle, Schedules, InnerContextAccess
 	
 	def runAgentTest : RunPolicy {
-		var id = typeof(TargetAgent).spawnInContext(innerContext, agentInitializationParameters)
-		addResult(id)
+		typeof(TargetAgent).spawnInContext(innerContext, agentInitializationParameters)
+		return RunPolicy::STANDARD
+	}
+
+	on AgentSpawned [occurrence.source.UUID == ID] {
+		addResult(occurrence.agentID)
 		in(1000) [
 			wake(new TestEvent(ID))
 		]
-		return RunPolicy::STANDARD
 	}
 
 	on MemberLeft {

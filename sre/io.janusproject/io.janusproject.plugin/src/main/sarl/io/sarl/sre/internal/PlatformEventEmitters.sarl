@@ -56,7 +56,6 @@ import io.sarl.sre.spaces.SpaceParticipantListenerFactory
 import java.lang.ref.WeakReference
 import java.text.MessageFormat
 import java.util.UUID
-import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.logging.Logger
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
@@ -207,18 +206,17 @@ class AgentEventEmitter implements LifecycleServiceListener {
 	}
 
 	override agentSpawned(spawningAgent : UUID, parent : Context, agentType : Class<? extends Agent>,
-		spawnedAgents : ConcurrentLinkedDeque<Agent>, initializationParameters : Object[]) {
-		val identifiers = spawnedAgents.map[it.ID]
-		this.logger.config [MessageFormat::format(Messages::AgentEventEmitter_0, identifiers)]
+		spawnedAgent : Agent, initializationParameters : Object[]) {
+		val agentId = spawnedAgent.ID
+		this.logger.config[MessageFormat::format(Messages::AgentEventEmitter_0, agentId)]
 		 // Send the event in the default space.
 		val defSpace = parent.defaultSpace
 		assert defSpace !== null, "A context does not contain a default space"
 		val source = new Address(defSpace.spaceID, spawningAgent ?: parent.ID)
 		assert source !== null
-		val ^event = new AgentSpawned(source, agentType.name, identifiers)
+		val ^event = new AgentSpawned(source, agentId, agentType.name)
 		// The first parameter is null because the event has an address.
-		// TODO: Not efficient filtering
-		defSpace.emit(null, ^event) [!identifiers.contains(it.UUID)]
+		defSpace.emit(null, ^event) [agentId != it.UUID]
 	}
 	
 	override agentDestroyed(^agent : Agent, outerContexts : Iterable<ContextReference>) {

@@ -20,21 +20,34 @@
  */
 package io.sarl.sre.tests.runtime.bugs.bug861.mocks
 
+import io.sarl.core.AgentSpawned
 import io.sarl.core.Lifecycle
 import io.sarl.sre.tests.testutils.agents.TestingAgent
+import java.util.concurrent.atomic.AtomicBoolean
 
 agent BootAgent1 extends TestingAgent {
 
 	uses Lifecycle
 
+	val done = new AtomicBoolean
+
 	override runAgentTest : RunPolicy {
-		var id = typeof(EmptyAgent1).spawn(agentInitializationParameters)
-		addResult(id)
+		typeof(EmptyAgent1).spawn(agentInitializationParameters)
 		return RunPolicy::STANDARD
+	}
+
+	on AgentSpawned {
+		addResult(occurrence.agentID)
+		if (this.done.getAndSet(true)) {
+			killMe
+		}
 	}
 
 	on Initialized {
 		addResult(occurrence)
+		if (this.done.getAndSet(true)) {
+			killMe
+		}
 	}
 
 }

@@ -27,6 +27,8 @@ import io.sarl.core.Lifecycle
 import io.sarl.core.Schedules
 import io.sarl.sre.tests.testutils.agents.TestingAgent
 import java.util.UUID
+import io.sarl.core.AgentSpawned
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * @author $Author: sgalland$
@@ -41,15 +43,23 @@ agent MyWaiterAgent1 extends TestingAgent {
 
 	var spawnId : UUID
 
+	val done = new AtomicBoolean
+
 	override runAgentTest : RunPolicy {
 		in(500) [
-			var id = typeof(MySpawnedAgent1).spawn(buildAgentInitializationParameters)
-			synchronized (this) {
-				this.spawnId = id
-			}
-			assert id !== null
+			typeof(MySpawnedAgent1).spawn(buildAgentInitializationParameters)
 		]
 		return null
+	}
+
+	on AgentSpawned {
+		synchronized (this) {
+			this.spawnId = occurrence.agentID
+		}
+		assert this.spawnId !== null
+		if (this.done.getAndSet(true)) {
+			killMe
+		}
 	}
 
 	on AgentKilled {
@@ -60,7 +70,9 @@ agent MyWaiterAgent1 extends TestingAgent {
 			assert this.spawnId !== null
 			addResult(this.spawnId)
 		}
-		killMe
+		if (this.done.getAndSet(true)) {
+			killMe
+		}
 	}
 
 }

@@ -25,7 +25,6 @@ import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Lifecycle
 import io.sarl.core.Schedules
 import io.sarl.sre.tests.testutils.agents.TestingAgent
-import java.util.Collection
 import java.util.UUID
 import org.arakhne.afc.util.Triplet
 
@@ -43,8 +42,8 @@ agent TAgent1b extends TestingAgent {
 	}
 
 	on AgentSpawned [occurrence.agentType != typeof(TAgent1a).name] {
-		var pair = new Triplet<Boolean, UUID, Collection<UUID>>(occurrence.isFromMe, occurrence.source.UUID,
-				occurrence.agentIdentifiers)
+		var pair = new Triplet<Boolean, UUID, UUID>(occurrence.isFromMe, occurrence.source.UUID,
+				occurrence.agentID)
 		addResult(pair)
 		stop
 	}

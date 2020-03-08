@@ -65,8 +65,8 @@ class EventRoutingTest {
 		kern.spawn(typeof(SourceAgent), null, agentInitializationParameters)
 		waitForTheKernel(STANDARD_TIMEOUT)
 		
-		var adr = getResult(typeof(Address), 0)
-		var id = getResult(typeof(UUID), 1)
+		var adr = getFirstResultOfType(typeof(Address))
+		var id = getFirstResultOfType(typeof(UUID))
 		adr.assertNotNull
 		id.assertNotNull
 		id.assertEquals(adr.UUID)

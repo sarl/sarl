@@ -23,14 +23,11 @@ package io.sarl.sre.tests.runtime.bugs.bug861.mocks
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Lifecycle
 import io.sarl.sre.tests.testutils.agents.TestingAgent
-import java.util.concurrent.atomic.AtomicBoolean
 
 agent EmptyAgent0 extends TestingAgent {
 	
 	uses DefaultContextInteractions, Lifecycle
 	
-	val done = new AtomicBoolean
-
 	def runAgentTest : RunPolicy {
 		new Initialized().emit
 		return RunPolicy::STANDARD
@@ -38,15 +35,7 @@ agent EmptyAgent0 extends TestingAgent {
 
 	on Initialized {
 		addResult(occurrence)
-		if (this.done.getAndSet(true)) {
-			killMe
-		}
-	}
-
-	on CommitSuicide {
-		if (this.done.getAndSet(true)) {
-			killMe
-		}
+		killMe
 	}
 	
 }

@@ -43,22 +43,22 @@ agent MyWaiterAgent0 extends TestingAgent {
 	
 	override runAgentTest : RunPolicy {
 		in(500) [
-			var id = typeof(MySpawnedAgent0).spawn(buildAgentInitializationParameters)
-			synchronized (this) {
-				this.spawnId = id
-			}
-			assert id !== null
+			typeof(MySpawnedAgent0).spawn(buildAgentInitializationParameters)
 		]
 		return null
 	}
 
 	on AgentSpawned {
+		synchronized (this) {
+			this.spawnId = occurrence.agentID
+		}
+		assert this.spawnId !== null
+
 		addResult("SPAWNER")
 		addResult(occurrence)
 		addResult(ID)
 		addResult(defaultSpace.spaceID)
 		synchronized (this) {
-			assert this.spawnId !== null
 			addResult(this.spawnId)
 		}
 		killMe
