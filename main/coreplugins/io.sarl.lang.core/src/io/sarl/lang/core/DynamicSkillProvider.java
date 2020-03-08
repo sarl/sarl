@@ -23,8 +23,6 @@ package io.sarl.lang.core;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-
-
 /** This interface represents a provider of built-in capacities.
  * The built-in capacities are assumed to be provided by
  * the runtime platform.
@@ -35,18 +33,41 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 0.6
  */
-@FunctionalInterface
 public interface DynamicSkillProvider {
 
-	/** Install the built-in skill that corresponds to the given capacity into the given container.
+	/** A provider that provides nothing.
 	 *
-	 * <p>If the given type of capacity depends on another builtin capacity, the corresponding skill is also installed.
+	 * @since 0.11
+	 */
+	DynamicSkillProvider EMPTY_PROVIDER = new DynamicSkillProvider() {
+
+		@Override
+		public Skill createSkill(Class<? extends Capacity> capacity) {
+			return null;
+		}
+
+		@Override
+		public boolean isSkillProviding(Class<? extends Capacity> capacity) {
+			return false;
+		}
+
+	};
+
+	/** Create the built-in skill that corresponds to the given capacity into the given container.
 	 *
-	 * @param container the container for which the built-in capacities must be retrieved.
 	 * @param capacity the type of the capacity to retrieve.
-	 * @return the skill that is installed into the agent.
+	 * @return the skill that should be installed into the sill container or {@code null} if none.
 	 */
 	@Pure
-	AtomicSkillReference installSkill(AbstractSkillContainer container, Class<? extends Capacity> capacity);
+	Skill createSkill(Class<? extends Capacity> capacity);
+
+	/** Replies if this provider could provide the built-in skill that corresponds to the given capacity.
+	 *
+	 * @param capacity the type of the capacity to retrieve.
+	 * @return {@code true} if an instance of skill could be provided for the given capacity.
+	 * @since 0.11
+	 */
+	@Pure
+	boolean isSkillProviding(Class<? extends Capacity> capacity);
 
 }
