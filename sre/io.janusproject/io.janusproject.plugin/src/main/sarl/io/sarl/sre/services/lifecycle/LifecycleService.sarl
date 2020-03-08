@@ -72,19 +72,6 @@ interface LifecycleService extends Service {
 	def killAgent(^agent : Agent) : boolean
 
 	/** 
-	 * Replies if the given agent could be killed
-	 * 
-	 * <p>An agent could be killed only if it does not contain sub-agents.
-	 * 
-	 * <p>Because the agent reference is passed to this function, only the objects which have this reference
-	 * could kill the agent.
-	 * 
-	 * @param agent the agent to kill.
-	 * @return {@code true} if the agent could be killed.
-	 */
-	def isKillableAgent(^agent : Agent) : boolean
-
-	/** 
 	 * Add a listener on the changes in the current state of an agent.
 	 *
 	 * @param agentLifecycleListener the listener on the any change in the life-cycle of the agent.

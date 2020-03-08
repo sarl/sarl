@@ -168,24 +168,6 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 		]
 	}
 
-	def isKillableAgent(^agent : Agent) : boolean {
-		try {
-			var innerContext = getLifeOrNull(^agent)?.innerContext
-			if (innerContext !== null) {
-				var participants = innerContext.defaultSpace.participants
-				if (participants !== null) {
-
-					if (participants.size > 1 || (participants.size == 1 && !participants.contains(^agent.ID))) {
-						return false
-					}
-
-				}
-			}
-			return true
-		} catch (exception : Throwable) {
-			return false
-		}
-	}
 	def spawnAgent(nbAgents : int, spawningAgent : UUID, parent : Context, agentId : UUID,
 		agentClazz : Class<? extends Agent>, callback : LifecycleSpawnCallback, params : Object*) {
 		spawnAgent(nbAgents, spawningAgent, parent, agentClazz, callback, params) [
@@ -338,15 +320,60 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 		context !== null && context.rootContext && context.defaultSpace.participants.empty
 	}
 
+	/** Replies if the given agent could be kill according to the SARL specification.
+	 *
+	 * <p>An agent could be kill if is has no internal member.
+	 *
+	 * @param life the internal data structure for the agent.
+	 * @param id the identifier of the agent.
+	 * @return {@code true} if the agent could be killed.
+	 */
+	def isKillableAgent(life : AgentLife, id : UUID) : boolean {
+		if (life !== null) {
+			try {
+				var innerContext = life.innerContext
+				if (innerContext !== null) {
+					var participants = innerContext.defaultSpace.participants
+					if (participants !== null) {
+
+						if (participants.size > 1 || (participants.size == 1 && !participants.contains(id))) {
+							return false
+						}
+
+					}
+				}
+				return true
+			} catch (exception : Throwable) {
+				//
+			}
+		}
+		return false
+	}
+
+	/** Replies if the agent is alive. This function is usually invoked to determine if the agent is killable.
+	 * 
+	 * @param life the internal data structure for the agent.
+	 * @return {@code true} if the agent is alive.
+	 * @since 0.11
+	 */
+	def isAlive(life : AgentLife) : boolean {
+		life.state.isAlive
+	}
+
 	def killAgent(^agent : Agent) : boolean {
 		// We should check if it is possible to kill the agent BEFORE killing it.
-		if (this.running && ^agent.isKillableAgent()) {
-			var life = getLife(^agent)
-			var defaultContext = life.defaultContext
-			var contexts = life.stop(this.skillUninstaller, getLoggingService)
-			^agent.onAgentKilled
-			fireAgentDestructionEvents(^agent, defaultContext, contexts)
-			return true
+		if (this.running) {
+			val life = getLifeOrNull(^agent)
+			if (life !== null) {
+				val agentId = ^agent.ID
+				if (life.isAlive && life.isKillableAgent(agentId)) {
+					var defaultContext = life.defaultContext
+					var contexts = life.stop(this.skillUninstaller, getLoggingService)
+					^agent.onAgentKilled
+					fireAgentDestructionEvents(^agent, defaultContext, contexts)
+					return true
+				}
+			}
 		}
 
 		return false
