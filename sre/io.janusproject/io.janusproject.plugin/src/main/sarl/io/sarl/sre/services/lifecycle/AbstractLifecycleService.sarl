@@ -361,21 +361,18 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	}
 
 	def killAgent(^agent : Agent) : boolean {
-		// We should check if it is possible to kill the agent BEFORE killing it.
-		if (this.running) {
-			val life = getLifeOrNull(^agent)
-			if (life !== null) {
-				val agentId = ^agent.ID
-				if (life.isAlive && life.isKillableAgent(agentId)) {
-					var defaultContext = life.defaultContext
-					var contexts = life.stop(this.skillUninstaller, getLoggingService)
-					^agent.onAgentKilled
-					fireAgentDestructionEvents(^agent, defaultContext, contexts)
-					return true
-				}
+		val life = getLifeOrNull(^agent)
+		if (life !== null) {
+			val agentId = ^agent.ID
+			// We should check if it is possible to kill the agent BEFORE killing it.
+			if (life.isAlive && life.isKillableAgent(agentId)) {
+				var defaultContext = life.defaultContext
+				var contexts = life.stop(this.skillUninstaller, getLoggingService)
+				^agent.onAgentKilled
+				fireAgentDestructionEvents(^agent, defaultContext, contexts)
+				return true
 			}
 		}
-
 		return false
 	}
 
