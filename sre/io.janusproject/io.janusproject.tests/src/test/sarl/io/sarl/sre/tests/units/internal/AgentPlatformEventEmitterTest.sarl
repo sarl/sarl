@@ -33,8 +33,8 @@ import io.sarl.lang.core.SpaceID
 import io.sarl.sre.internal.AgentEventEmitter
 import io.sarl.sre.services.context.Context
 import io.sarl.sre.services.lifecycle.AgentLife
-import io.sarl.sre.tests.testutils.agents.IddleTestingAgent
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.agents.IddleTestingAgent
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension

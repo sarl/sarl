@@ -23,19 +23,14 @@ package io.sarl.sre.tests.units.internal.mocks
 import io.sarl.core.Behaviors
 import io.sarl.core.Logging
 import io.sarl.lang.core.Skill
-import io.sarl.sre.tests.testutils.agents.TestingAgent
 import java.util.UUID
 
-agent MyAgent0 extends TestingAgent {
+agent MyAgent0 {
 
 	new (beh : Behaviors, log : Logging, parentID : UUID, agentID : UUID) {
 		super(parentID, agentID)
 		setSkill(beh as Skill)
 		setSkill(log as Skill)
-	}
-	
-	def runAgentTest : RunPolicy {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
 }

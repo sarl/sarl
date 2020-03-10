@@ -36,9 +36,9 @@ import io.sarl.sre.boot.configs.subconfigs.NoBootAgentNameException
 import io.sarl.sre.services.lifecycle.LifecycleService
 import io.sarl.sre.services.lifecycle.LifecycleSpawnCallback
 import io.sarl.sre.services.logging.LoggingService
-import io.sarl.sre.tests.testutils.agents.IddleTestingAgent
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
-import io.sarl.sre.tests.testutils.mockito.ModuleMock
+import io.sarl.sre.test.framework.agents.IddleTestingAgent
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.mockito.ModuleMock
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension

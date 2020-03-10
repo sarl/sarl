@@ -24,7 +24,7 @@ package io.sarl.sre.tests.units.naming
 import com.google.common.util.concurrent.Service
 import io.sarl.sre.naming.ServiceName
 import io.sarl.sre.services.logging.LoggingService
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.net.URI

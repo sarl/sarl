@@ -19,12 +19,15 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.tests.testutils.exception
+package io.sarl.sre.test.framework.^extension
 
-import java.util.logging.LogRecord
+import java.util.Properties
+import org.junit.jupiter.api.^extension.AfterEachCallback
+import org.junit.jupiter.api.^extension.BeforeEachCallback
+import org.junit.jupiter.api.^extension.ExtensionContext
 
 /**
- * Error is detected in the logged messages.
+ * JUnit 5 extension that is saving and restoring system properties.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -32,25 +35,24 @@ import java.util.logging.LogRecord
  * @mavenartifactid $ArtifactId$
  * @since 0.11
  */
-class SreLogException extends Exception {
+class PropertyRestoreExtension implements BeforeEachCallback, AfterEachCallback {
 
-	val record : LogRecord
-
-	/** Constructor.
-	 *
-	 * @param cause the cause of the error.
-	 */
-	new (cause : LogRecord) {
-		super(cause.message)
-		this.record = cause
+	var savedProperties : Properties
+	
+	override beforeEach(context : ExtensionContext) throws Exception {
+		 // Clear the system properties
+		 val props = System::getProperties
+		 this.savedProperties = props.clone as Properties
 	}
-
-	/** Replies the log record that is the cause of this exception.
-	 *
-	 * @return the log record.
-	 */
-	def getLogRecord : LogRecord {
-		this.record
+	
+	override afterEach(context : ExtensionContext) throws Exception {
+		val sp = this.savedProperties
+		this.savedProperties = null
+		if (sp !== null) {
+			val props = System::getProperties
+			props.clear
+			props.putAll(sp)
+		}
 	}
 
 }

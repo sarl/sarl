@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.tests.testutils.mockito
+package io.sarl.sre.test.framework.mockito
 
 import com.google.inject.Binder
 import com.google.inject.Module

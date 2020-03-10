@@ -27,7 +27,7 @@ import io.sarl.lang.core.Agent
 import io.sarl.lang.core.SREutils
 import io.sarl.lang.core.Skill
 import io.sarl.sre.services.lifecycle.BasicSkillUninstaller
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.tests.units.services.lifecycle.mocks.InnerSkill
 import io.sarl.sre.tests.units.services.lifecycle.mocks.LifeSkill
 import io.sarl.sre.tests.units.services.lifecycle.mocks.MyAgent2

@@ -19,44 +19,22 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.tests.testutils.^extension
+package io.sarl.sre.test.framework.mockito
 
-import com.google.common.util.concurrent.Service
-import com.google.common.util.concurrent.Service.State
+import java.util.concurrent.Executor
 
 /**
- * JUnit 5 extension that is saving and restoring system properties.
+ * Mock of a Java executor.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.11
  */
-final class ServiceManagementExtension {
+class ExecutorMock implements Executor {
 
-	private new {
-	}
-
-	/** Start the given service manually.
-	 * 
-	 * @param service the service to start.
-	 */
-	@SuppressWarnings("discouraged_reference")
-	static def startServiceManually(service : Service) {
-		service.startAsync
-		var state = service.state
-		while (state !== null && state !== State::STOPPING && state !== State::FAILED && state !== State::RUNNING) {
-			try {
-				Thread::sleep(1)
-			} catch (e : Throwable) {
-				// Ignore any exception
-			}
-			state = service.state
-		}
-		if (state === State::FAILED) {
-			throw new RuntimeException(service.failureCause)
-		}
+	override execute(command : Runnable) {
+		command.run
 	}
 
 }

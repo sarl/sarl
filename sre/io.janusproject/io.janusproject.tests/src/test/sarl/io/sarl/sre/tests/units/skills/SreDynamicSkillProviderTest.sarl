@@ -35,7 +35,7 @@ import io.sarl.lang.core.Skill
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.capacities.InternalSchedules
 import io.sarl.sre.skills.SreDynamicSkillProvider
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension

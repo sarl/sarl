@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2020 the original authors or authors.
+ * Copyright (C) 2014-@RELEASE_YEAR@ the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,22 +19,8 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.tests.testutils.mockito
+package io.sarl.sre.tests.runtime.bugs.bug976.mocks
 
-import java.util.concurrent.Executor
+event Taskgo
 
-/**
- * Mock of a Java executor.
- *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- */
-class ExecutorMock implements Executor {
-
-	override execute(command : Runnable) {
-		command.run
-	}
-
-}
+event Back

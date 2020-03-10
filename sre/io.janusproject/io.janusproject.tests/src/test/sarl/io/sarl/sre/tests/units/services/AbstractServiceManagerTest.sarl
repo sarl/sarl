@@ -26,7 +26,7 @@ import io.sarl.sre.boot.configs.SreConfig
 import io.sarl.sre.boot.configs.subconfigs.ServicesConfig
 import io.sarl.sre.services.AbstractServiceManager
 import io.sarl.sre.services.logging.JulLoggerCreator
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.tests.units.services.mocks.SreServ1
 import io.sarl.sre.tests.units.services.mocks.SreServ1Impl
 import io.sarl.sre.tests.units.services.mocks.SreServ2

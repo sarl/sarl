@@ -1,0 +1,129 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2020 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.test.framework.skills
+
+import io.sarl.sre.test.framework.Constants
+import io.sarl.sre.test.framework.context.SreRunContext
+import java.util.Collection
+import java.util.List
+import java.util.UUID
+import java.util.concurrent.CopyOnWriteArrayList
+import org.eclipse.xtend.lib.annotations.Accessors
+
+/**
+ * A skill that provides the agent with testing functions.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.11
+ */
+skill TestingSkill implements TestingCapacity {
+
+	val results = new CopyOnWriteArrayList<Object>
+
+	val context : SreRunContext
+
+	val initializationParameters : Object[]
+
+	@Accessors(PUBLIC_GETTER)
+	var spawner : UUID
+
+	new (initializationParameters : Object[]) {
+		this.initializationParameters = initializationParameters
+		this.context = initializationParameters.get(0) as SreRunContext
+	}
+	
+	override uninstall {
+		synchronized (this) {
+			if (this.context !== null) {
+				val id = owner.ID
+				for (r : this.results) {
+					this.context.addResult(id, r)
+				}
+			}
+		}
+	}
+
+	override addResult(result : Object) {
+		getModifiableResults.add(result)
+	}
+
+	@Pure
+	override getNumberOfResults : int {
+		return getModifiableResults.size
+	}
+
+	override addResults(results : Collection<?>) {
+		getModifiableResults.addAll(results)
+	}
+
+	@Pure
+	override getUnmodifiableResults : List<Object> {
+		return getModifiableResults.unmodifiableView
+	}
+
+	@Pure
+	override getModifiableResults : CopyOnWriteArrayList<Object> {
+		return this.results
+	}
+
+	@Pure
+	override getAgentInitializationParameters : Object[] {
+		this.initializationParameters
+	}
+
+	@Pure
+	override buildAgentInitializationParameters(values : Object*) : Object[] {
+		synchronized (this) {
+			if (values === null || values.length == 0) {
+				return #[this.context]
+			}
+			var l = newArrayList()
+			var ll : List<Object> = values
+			l.add(this.context)
+			l.addAll(ll)
+			var t : Object[] = l
+			return t
+		}
+	}
+
+	@SuppressWarnings("discouraged_reference")
+	override waitAndDo(condition : ()=>boolean, timeout : int = Constants::STANDARD_TIMEOUT, code : ()=>void) {
+		assert condition !== null
+		assert code !== null
+		var endTime : long
+		if (timeout >= 0) {
+			endTime = System::currentTimeMillis() + timeout * 1000
+		} else {
+			endTime = -1
+		}
+		while (!condition.apply && (endTime == -1 || System.currentTimeMillis() <= endTime)) {
+			Thread.sleep(100)
+		}
+		if (endTime == -1 || System.currentTimeMillis() <= endTime) {
+			code.apply
+		}
+	}
+
+}

@@ -19,9 +19,11 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.tests.testutils
+package io.sarl.sre.test.framework
 
-/**
+import java.util.logging.Level
+
+/*
  * Constants for testing SRE.
  *
  * @author $Author: sgalland$
@@ -80,5 +82,9 @@ final class Constants {
 	 * @see #SHORT_TIMEOUT
 	 */
 	public static val NO_TIMEOUT = -1
+
+	/** The logging level when logging is enable during tests.
+	 */
+	public static val TEST_LOGGING_LEVEL = Level::ALL
 
 }

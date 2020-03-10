@@ -24,7 +24,7 @@ package io.sarl.sre.tests.units.services.executor
 import io.sarl.sre.services.executor.AbstractExecutorService
 import io.sarl.sre.services.executor.EarlyExitException
 import io.sarl.sre.services.executor.ExecutorService
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
@@ -35,7 +35,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 import org.mockito.ArgumentCaptor
 
-import static io.sarl.sre.tests.testutils.^extension.ServiceManagementExtension.*
 import static io.sarl.tests.api.tools.TestAssertions.*
 import static org.junit.jupiter.api.Assertions.*
 import static org.mockito.ArgumentMatchers.*
@@ -121,11 +120,7 @@ abstract class AbstractExecutorServiceTest<T extends AbstractExecutorService> {
 			list.add(i)
 		}
 
-		try {
-			this.service.applyBlockingConsumer(this.logger, list) [ throw new RuntimeException ]
-			fail("Expecting exception " + typeof(RuntimeException).name)
-		} catch (ex : RuntimeException) {
-		}
+		this.service.applyBlockingConsumer(this.logger, list) [ throw new RuntimeException ]
 
 		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
 		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
@@ -153,19 +148,61 @@ abstract class AbstractExecutorServiceTest<T extends AbstractExecutorService> {
 			list.add(i)
 		}
 
-		try {
-			this.service.applyBlockingConsumer(this.logger, list) [
-				throw new RuntimeException(new IllegalStateException)
-			]
-			fail("Expecting exception " + typeof(IllegalStateException).name)
-		} catch (ex : IllegalStateException) {
-		}
+		this.service.applyBlockingConsumer(this.logger, list) [
+			throw new RuntimeException(new IllegalStateException)
+		]
 
 		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
 		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
 		this.logger.verify(atLeastOnce).log(capturedLevel.capture, any, capturedException.capture)
 		assertSame(Level::SEVERE, capturedLevel.value)
 		assertInstanceOf(typeof(IllegalStateException), capturedException.value)
+	}
+
+	@Test
+	def applyBlockingConsumer_exception_noLogger_01 {
+		var list = <Integer>newArrayList
+		for (i : 0 ..< 100) {
+			list.add(i)
+		}
+
+		typeof(RuntimeException).assertException [
+			this.service.applyBlockingConsumer(null, list)[
+				throw new RuntimeException
+			]
+		]
+
+		verifyNoInteractions(this.logger)
+	}
+
+	@Test
+	def applyBlockingConsumer_exception_noLogger_02 {
+		var list = <Integer>newArrayList
+		for (i : 0 ..< 100) {
+			list.add(i)
+		}
+
+		this.service.applyBlockingConsumer(null, list) [
+			ExecutorService.neverReturn
+		]
+
+		verifyNoInteractions(this.logger)
+	}
+
+	@Test
+	def applyBlockingConsumer_exception_noLogger_03 {
+		var list = <Integer>newArrayList
+		for (i : 0 ..< 100) {
+			list.add(i)
+		}
+
+		typeof(IllegalStateException).assertException [
+			this.service.applyBlockingConsumer(null, list) [
+				throw new RuntimeException(new IllegalStateException)
+			]
+		]
+
+		verifyNoInteractions(this.logger)
 	}
 
 	@Test

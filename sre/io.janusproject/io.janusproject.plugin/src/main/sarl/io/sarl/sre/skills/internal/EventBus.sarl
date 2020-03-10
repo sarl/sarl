@@ -22,7 +22,8 @@ package io.sarl.sre.skills.internal
 
 import io.sarl.lang.core.Event
 import io.sarl.sre.capacities.InternalSchedules
-import io.sarl.sre.services.executor.EarlyExitException
+import io.sarl.sre.internal.eventguard.BehaviorGuardEvaluator
+import io.sarl.sre.internal.eventguard.BehaviorGuardEvaluatorRegistry
 import io.sarl.sre.services.executor.SreRunnable
 import java.util.Collection
 import java.util.concurrent.ConcurrentLinkedDeque
@@ -31,8 +32,6 @@ import java.util.concurrent.ExecutionException
 import java.util.function.Supplier
 import java.util.logging.Logger
 import org.arakhne.afc.util.OutputParameter
-import io.sarl.sre.internal.eventguard.BehaviorGuardEvaluatorRegistry
-import io.sarl.sre.internal.eventguard.BehaviorGuardEvaluator
 
 /** 
  * The class in charge of dispatching every single events coming from the outside of this agent (i.e. from a space) or from an
@@ -221,22 +220,19 @@ class EventBus {
 		assert ^event !== null
 		val runException = new OutputParameter
 		var asyncTask = new SreRunnable(logger) {
-			def run {
-				try {
-					val behaviorGuardEvaluators = EventBus.this.behaviorGuardEvaluatorRegistry.getBehaviorGuardEvaluators(^event)
-					if (behaviorGuardEvaluators !== null && !behaviorGuardEvaluators.empty) {
-						// Could be null when the corresponding events is not listen by an agent, i.e. system event like ParticpantJoined
-						var behaviorsMethodsToExecute = ^event.evaluateGuards(behaviorGuardEvaluators, logger)
-						if (behaviorsMethodsToExecute !== null && !behaviorsMethodsToExecute.empty) {
-							behaviorsMethodsToExecute.executeAsynchronouslyBehaviorMethods
-						}
+			def internalRun {
+				val behaviorGuardEvaluators = EventBus.this.behaviorGuardEvaluatorRegistry.getBehaviorGuardEvaluators(^event)
+				if (behaviorGuardEvaluators !== null && !behaviorGuardEvaluators.empty) {
+					// Could be null when the corresponding events is not listen by an agent, i.e. system event like ParticpantJoined
+					var behaviorsMethodsToExecute = ^event.evaluateGuards(behaviorGuardEvaluators, logger)
+					if (behaviorsMethodsToExecute !== null && !behaviorsMethodsToExecute.empty) {
+						behaviorsMethodsToExecute.executeAsynchronouslyBehaviorMethods
 					}
-				} catch (e : Exception) {
-					// Catch exception for notifying the caller
-							runException.set(e)
-					// Do the standard behavior too -> logging
-							throw new RuntimeException(e)
 				}
+			}
+			def onError(e : Throwable) {
+				// Catch exception for notifying the caller
+				runException.set(e)
 			}
 		}
 		
@@ -275,26 +271,18 @@ class EventBus {
 
 			for (evaluator : behaviorGuardEvaluators) {
 				this.executor.executeAsap(new SreRunnable(logger) {
-					def run {
+					def internalRun {
 						try {
 							val behaviorsMethodsToExecutePerTarget = new ConcurrentLinkedDeque
 							evaluator.evaluateGuard(^event, behaviorsMethodsToExecutePerTarget)
 							behaviorsMethodsToExecute.addCollection(behaviorsMethodsToExecutePerTarget)
-						} catch (e : EarlyExitException) {
-							// Ignore this exception
-						} catch (e : RuntimeException) {
-							// Catch exception for notifying the caller
-							runException.set(e)
-							// Do the standard behavior too -> logging
-							throw e
-						} catch (e : Exception) {
-							// Catch exception for notifying the caller
-							runException.set(e)
-							// Do the standard behavior too -> logging
-							throw new RuntimeException(e)
 						} finally {
 							doneSignal.countDown
 						}
+					}
+					def onError(e : Throwable) {
+						// Catch exception for notifying the caller
+						runException.set(e)
 					}
 				})
 			}
@@ -365,24 +353,16 @@ class EventBus {
 
 			for (runnable : behaviorsMethodsToExecute) {
 				this.executor.executeAsap(new SreRunnable(logger) {
-					def run {
+					def internalRun {
 						try {
 							runnable.run
-						} catch (e : EarlyExitException) {
-							// Ignore this exception
-						} catch (e : RuntimeException) {
-							// Catch exception for notifying the caller
-							runException.set(e)
-							// Do the standard behavior too -> logging
-							throw e;
-						} catch (e : Exception) {
-							// Catch exception for notifying the caller
-							runException.set(e)
-							// Do the standard behavior too -> logging
-							throw new RuntimeException(e)
 						} finally {
 							doneSignal.countDown
 						}
+					}
+					def onError(e : Throwable) {
+						// Catch exception for notifying the caller
+						runException.set(e)
 					}
 				});
 			}

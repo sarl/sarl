@@ -19,12 +19,10 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.tests.testutils.^extension
+package io.sarl.sre.test.framework.^extension
 
-import java.util.Properties
-import org.junit.jupiter.api.^extension.AfterEachCallback
-import org.junit.jupiter.api.^extension.BeforeEachCallback
-import org.junit.jupiter.api.^extension.ExtensionContext
+import com.google.common.util.concurrent.Service
+import com.google.common.util.concurrent.Service.State
 
 /**
  * JUnit 5 extension that is saving and restoring system properties.
@@ -35,23 +33,29 @@ import org.junit.jupiter.api.^extension.ExtensionContext
  * @mavenartifactid $ArtifactId$
  * @since 0.11
  */
-class PropertyRestoreExtension implements BeforeEachCallback, AfterEachCallback {
+final class ServiceManagementExtension {
 
-	var savedProperties : Properties
-	
-	override beforeEach(context : ExtensionContext) throws Exception {
-		 // Clear the system properties
-		 val props = System::getProperties
-		 this.savedProperties = props.clone as Properties
+	private new {
 	}
-	
-	override afterEach(context : ExtensionContext) throws Exception {
-		val sp = this.savedProperties
-		this.savedProperties = null
-		if (sp !== null) {
-			val props = System::getProperties
-			props.clear
-			props.putAll(sp)
+
+	/** Start the given service manually.
+	 * 
+	 * @param service the service to start.
+	 */
+	@SuppressWarnings("discouraged_reference")
+	static def startServiceManually(service : Service) {
+		service.startAsync
+		var state = service.state
+		while (state !== null && state !== State::STOPPING && state !== State::FAILED && state !== State::RUNNING) {
+			try {
+				Thread::sleep(1)
+			} catch (e : Throwable) {
+				// Ignore any exception
+			}
+			state = service.state
+		}
+		if (state === State::FAILED) {
+			throw new RuntimeException(service.failureCause)
 		}
 	}
 

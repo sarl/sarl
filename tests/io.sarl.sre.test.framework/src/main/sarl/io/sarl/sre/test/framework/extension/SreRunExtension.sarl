@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.tests.testutils.^extension
+package io.sarl.sre.test.framework.^extension
 
 import io.sarl.bootstrap.SRE
 import java.lang.reflect.Method
@@ -30,6 +30,8 @@ import org.junit.jupiter.api.^extension.ParameterResolver
 import org.junit.jupiter.api.^extension.ReflectiveInvocationContext
 
 import static io.sarl.bootstrap.SRE.*
+import io.sarl.sre.test.framework.context.SreRunContext
+import io.sarl.lang.annotation.PrivateAPI
 
 /**
  * JUnit 5 extension that is running the SRE.
@@ -56,6 +58,8 @@ class SreRunExtension implements ParameterResolver, InvocationInterceptor {
 		return context
 	}
 
+	@SuppressWarnings("use_reserved_sarl_annotation")
+	@PrivateAPI(isCallerOnly = true)
 	override interceptTestMethod(invocation : Invocation<Void>,
 		invocationContext : ReflectiveInvocationContext<Method>,
 		extensionContext : ExtensionContext) {

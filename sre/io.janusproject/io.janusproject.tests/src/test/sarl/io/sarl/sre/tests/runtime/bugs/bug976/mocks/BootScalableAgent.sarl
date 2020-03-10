@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2020 the original authors or authors.
+ * Copyright (C) 2014-@RELEASE_YEAR@ the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,30 +19,21 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.tests.testutils.exception
+package io.sarl.sre.tests.runtime.bugs.bug976.mocks
 
-/**
- * Timeout when running the SRE.
- *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- * @since 0.11
- */
-class SreTimeoutException extends Exception {
+import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.sre.tests.testutils.agents.TestingAgent.RunPolicy
+import io.sarl.core.Lifecycle
 
-	/** Constructor.
-	 *
-	 * @param cause a possible cause of the timeout
-	 */
-	new (cause : Throwable) {
-		super(cause)
+agent BootScalableAgent extends TestingAgent {
+	
+	uses Lifecycle
+
+	def runAgentTest : RunPolicy {
+		for (i : 0 .. 10000) {
+			typeof(ScalableAgent).spawn(buildAgentInitializationParameters(i))
+		}
+		return RunPolicy::IMMEDIATE_KILLING
 	}
-
-	/** Constructor.
-	 */
-	new () {
-	}
-
+	
 }

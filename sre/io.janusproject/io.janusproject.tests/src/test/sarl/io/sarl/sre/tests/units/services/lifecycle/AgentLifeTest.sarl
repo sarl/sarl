@@ -38,7 +38,7 @@ import io.sarl.sre.services.lifecycle.AgentState
 import io.sarl.sre.services.lifecycle.ContextReference
 import io.sarl.sre.services.lifecycle.SkillUninstaller
 import io.sarl.sre.services.logging.LoggingService
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.tests.units.services.lifecycle.mocks.MyAgent1
 import io.sarl.sre.tests.units.services.lifecycle.mocks.MyLogging
 import io.sarl.sre.tests.units.services.lifecycle.mocks.MySkill
@@ -52,6 +52,7 @@ import java.util.Iterator
 import java.util.List
 import java.util.TreeSet
 import java.util.UUID
+import java.util.concurrent.CopyOnWriteArraySet
 import java.util.logging.Level
 import java.util.logging.Logger
 import org.junit.jupiter.api.BeforeEach
@@ -74,7 +75,6 @@ import static extension org.mockito.ArgumentMatchers.any
 import static extension org.mockito.Mockito.spy
 import static extension org.mockito.Mockito.times
 import static extension org.mockito.Mockito.verify
-import java.util.concurrent.CopyOnWriteArraySet
 
 /**
  * @author $Author: sgalland$
