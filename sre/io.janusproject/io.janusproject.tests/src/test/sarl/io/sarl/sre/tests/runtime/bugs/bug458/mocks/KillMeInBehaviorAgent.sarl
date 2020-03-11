@@ -24,8 +24,8 @@ package io.sarl.sre.tests.runtime.bugs.bug458.mocks
 import io.sarl.core.Behaviors
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Destroy
+import io.sarl.core.Initialize
 import io.sarl.core.Schedules
-import io.sarl.sre.tests.testutils.agents.TestingAgent
 
 /**
  * @author $Author: sgalland$
@@ -34,17 +34,16 @@ import io.sarl.sre.tests.testutils.agents.TestingAgent
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("potential_field_synchronization_problem")
-agent KillMeInBehaviorAgent extends TestingAgent {
+agent KillMeInBehaviorAgent {
 
 	uses Behaviors, Schedules, DefaultContextInteractions
 
 	var ^behavior : KillMeBehavior
 
-	override runAgentTest : RunPolicy {
+	on Initialize {
 		this.^behavior = new KillMeBehavior(this)
 		registerBehavior(this.^behavior)
 		in(500) [emit(new FakeEvent)]
-		return null
 	}
 
 	on Destroy {

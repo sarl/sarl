@@ -21,9 +21,11 @@
 
 package io.sarl.sre.tests.runtime.bugs.bug481.mocks
 
+import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 import io.sarl.sre.tests.runtime.bugs.bug481.Bug481Test
-import io.sarl.sre.tests.testutils.agents.TestingAgent
 import java.util.UUID
 
 /**
@@ -33,15 +35,17 @@ import java.util.UUID
  * @mavenartifactid $ArtifactId$
  * @see https://github.com/sarl/sarl/issues/481
  */
-agent SpawnerAgent extends TestingAgent {
+agent SpawnerAgent {
 
 	uses Lifecycle
 
 	val agents = <UUID>newHashSet
-	
-	override runAgentTest : RunPolicy {
+
+	uses TestingCapacity
+
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
 		spawn(Bug481Test::NB_AGENTS, typeof(ChildAgent), buildAgentInitializationParameters)
-		return null
 	}
 
 	on ReadyEvent {

@@ -142,6 +142,15 @@ public abstract class AgentTrait extends AgentProtectedAPIObject {
 	}
 
 	@Override
+	@SafeVarargs
+	protected final void setSkillIfAbsent(Skill skill, Class<? extends Capacity>... capacities) {
+		final Agent owner = getOwner();
+		if (owner != null) {
+			owner.setSkillIfAbsent(skill, capacities);
+		}
+	}
+
+	@Override
 	protected <S extends Capacity> S clearSkill(Class<S> capacity) {
 		final Agent owner = getOwner();
 		if (owner == null) {

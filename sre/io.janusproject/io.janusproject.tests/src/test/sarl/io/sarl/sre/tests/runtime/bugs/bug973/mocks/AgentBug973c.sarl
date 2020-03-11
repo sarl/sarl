@@ -20,14 +20,21 @@
  */
 package io.sarl.sre.tests.runtime.bugs.bug973.mocks
 
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 
-agent AgentBug973c extends TestingAgent {
+agent AgentBug973c {
+
+	uses Lifecycle
+
+	uses TestingCapacity
 
 	var theSkill : SkillBug973
-
-	@SuppressWarnings("potential_field_synchronization_problem")
-	override runAgentTest : RunPolicy {
+	
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
 		// Add a fake skill in order to have at least 2 registered skills
 		new FakeSkillBug973().setSkill
 
@@ -35,7 +42,7 @@ agent AgentBug973c extends TestingAgent {
 		addResult(this.theSkill)
 		this.theSkill.setSkill
 
-		return RunPolicy::IMMEDIATE_KILLING
+		killMe
 	}
 
 }

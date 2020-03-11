@@ -74,7 +74,7 @@ public class Agent extends AbstractSkillContainer {
 			final Map<Class<? extends Capacity>, Skill> builtinCapacities = provider.getBuiltinCapacities(this);
 			if (builtinCapacities != null && !builtinCapacities.isEmpty()) {
 				for (final Entry<Class<? extends Capacity>, Skill> bic : builtinCapacities.entrySet()) {
-					$setSkill(bic.getValue(), bic.getKey());
+					$setSkill(bic.getValue(), false, bic.getKey());
 				}
 			}
 		}

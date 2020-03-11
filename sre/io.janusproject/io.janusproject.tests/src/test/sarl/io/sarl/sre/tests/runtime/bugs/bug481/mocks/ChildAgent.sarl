@@ -22,7 +22,8 @@
 package io.sarl.sre.tests.runtime.bugs.bug481.mocks
 
 import io.sarl.core.DefaultContextInteractions
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
 
 /** 
  * @author $Author: sgalland$
@@ -31,13 +32,13 @@ import io.sarl.sre.tests.testutils.agents.TestingAgent
  * @mavenartifactid $ArtifactId$
  * @see https://github.com/sarl/sarl/issues/481
  */
-agent ChildAgent extends TestingAgent {
+agent ChildAgent {
 
-	uses DefaultContextInteractions
+	uses DefaultContextInteractions, Lifecycle
 
-	override runAgentTest : RunPolicy {
+	on Initialize {
 		emit(new ReadyEvent)
-		return RunPolicy::IMMEDIATE_KILLING
+		killMe
 	}
 
 }

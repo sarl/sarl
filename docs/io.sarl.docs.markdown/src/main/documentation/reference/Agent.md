@@ -613,7 +613,7 @@ implemented capacity.
 In the following example, the agent is creating the [:skiskill:] skill. This instance is associated with
 the corresponding capacity [:capcap:] with the function `[:setskillfctfull]{[:setskillfct](setSkill)(Skill, Class<? extends Capacity>*)}`.
 
-When the function `setSkill` is returning, the agent becomes able to use the skill.
+When the function [:setskillfct:] is returning, the agent becomes able to use the skill.
 
 		[:Success:]
 			package io.sarl.docs.reference.ar
@@ -637,6 +637,32 @@ When the function `setSkill` is returning, the agent becomes able to use the ski
 			}
 		[:End:]
 
+
+
+If some cases, you may want to set the skill if one was not set up before. The specific behavior
+is supported by `[:setskillifabsfctfull]{[:setskillifabsfct](setSkillIfabsent)(Skill, Class<? extends Capacity>*)}`.
+
+		[:Success:]
+			package io.sarl.docs.reference.ar
+			import io.sarl.core.Logging
+			import io.sarl.core.Initialize
+			capacity Cap {
+				def action
+			}
+			skill [:skiskill](Ski) implements [:capcap](Cap) {
+				uses Logging
+				def action {
+					info("Action")
+				}
+			}
+			[:On]
+			agent MyAgent {
+				on Initialize {
+					var theSkill = new Ski
+					[:setskillifabsfct!](theSkill)
+				}
+			}
+		[:End:]
 
 ### Giving a Built-in Skill to an Agent
 

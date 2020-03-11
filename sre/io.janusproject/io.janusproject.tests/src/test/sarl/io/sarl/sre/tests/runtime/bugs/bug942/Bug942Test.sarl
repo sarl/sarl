@@ -20,12 +20,12 @@
  */
 package io.sarl.sre.tests.runtime.bugs.bug942
 
+import io.sarl.sre.test.framework.context.SreRunContext
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.^extension.SreRunExtension
 import io.sarl.sre.tests.runtime.bugs.bug942.mocks.AgentBug942
 import io.sarl.sre.tests.runtime.bugs.bug942.mocks.Data
 import io.sarl.sre.tests.runtime.bugs.bug942.mocks.EventBug942
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
-import io.sarl.sre.tests.testutils.^extension.SreRunContext
-import io.sarl.sre.tests.testutils.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
@@ -34,10 +34,9 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static io.sarl.sre.tests.testutils.Constants.*
+import static io.sarl.sre.test.framework.Constants.*
 
-import static extension org.junit.jupiter.api.Assertions.assertEquals
-import static extension org.junit.jupiter.api.Assertions.assertNotNull
+import static extension org.junit.jupiter.api.Assertions.*
 
 /** Tests for issue #942: Check if the source of an event received in Behavior is correct.
  *
@@ -62,12 +61,12 @@ class Bug942Test {
 	@SuppressWarnings("discouraged_reference")
 	@Test
 	def doTest(extension rc : SreRunContext) : void {
-		var kern = typeof(AgentBug942).setupTheSreKernel(null, null)
+		typeof(AgentBug942).setupTheSreKernel(null, null)
 
 		Thread::sleep(1000)
 
 		val sender = UUID::randomUUID
-		val ^space = kern.rootContext.defaultSpace
+		val ^space = rootContext.defaultSpace
 		
 		^space.emit(sender, new EventBug942)
 

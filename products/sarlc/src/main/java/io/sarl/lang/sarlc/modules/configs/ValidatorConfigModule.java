@@ -40,7 +40,7 @@ import org.arakhne.afc.bootique.variables.VariableDecls;
  */
 public class ValidatorConfigModule extends AbstractModule {
 
-	private static final String NOWARN_OPTION = "nowarn"; //$NON-NLS-1$
+	private static final String WNONE_OPTION = "wnone"; //$NON-NLS-1$
 
 	private static final String WALL_OPTION = "wall"; //$NON-NLS-1$
 
@@ -50,9 +50,9 @@ public class ValidatorConfigModule extends AbstractModule {
 	protected void configure() {
 		VariableDecls.extend(binder()).declareVar(IGNORE_WARNINGS_NAME);
 		extend(binder()).addOption(OptionMetadata.builder(
-				NOWARN_OPTION, Messages.ValidatorConfigModule_0)
+				WNONE_OPTION, Messages.ValidatorConfigModule_0)
 				.build())
-			.mapConfigPath(NOWARN_OPTION, IGNORE_WARNINGS_NAME);
+			.mapConfigPath(WNONE_OPTION, IGNORE_WARNINGS_NAME);
 
 		VariableDecls.extend(binder()).declareVar(ALL_WARNINGS_NAME);
 		extend(binder()).addOption(OptionMetadata.builder(

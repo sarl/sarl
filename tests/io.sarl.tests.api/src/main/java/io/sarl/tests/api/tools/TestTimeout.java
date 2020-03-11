@@ -34,6 +34,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class TestTimeout {
 
+	private static final int TIME_OUT = 5000;
+	
 	private TestTimeout() {
 		//
 	}
@@ -45,7 +47,18 @@ public class TestTimeout {
 	 * @since 0.10
 	 */
 	public static TimeOutHandler startTimeOut(boolean enable) {
-		return startTimeOut(enable, null);
+		return startTimeOut(TIME_OUT, enable);
+	}
+
+	/** Start a time out on the operation.
+	 *
+	 * @param timeout the duration before time out.
+	 * @param enable programmatic flag for enabling the time out.
+	 * @return the time out manager.
+	 * @since 0.11
+	 */
+	public static TimeOutHandler startTimeOut(int timeout, boolean enable) {
+		return startTimeOut(timeout, enable, null);
 	}
 
 	/** Start a time out on the operation.
@@ -54,7 +67,17 @@ public class TestTimeout {
 	 * @since 0.9
 	 */
 	public static TimeOutHandler startTimeOut() {
-		return startTimeOut(true, null);
+		return startTimeOut(TIME_OUT);
+	}
+
+	/** Start a time out on the operation.
+	 *
+	 * @param timeout the duration before time out.
+	 * @return the time out manager.
+	 * @since 0.11
+	 */
+	public static TimeOutHandler startTimeOut(int timeout) {
+		return startTimeOut(timeout, true, null);
 	}
 
 	/** Start a time out on the operation.
@@ -65,7 +88,19 @@ public class TestTimeout {
 	 * @since 0.11
 	 */
 	public static TimeOutHandler startTimeOut(boolean enable, Predicate predicate) {
-		final TimeOutHandler handler = newTimeOut(predicate);
+		return startTimeOut(TIME_OUT, enable, predicate);
+	}
+
+	/** Start a time out on the operation.
+	 *
+	 * @param timeout the duration before time out.
+	 * @param enable programmatic flag for enabling the time out.
+	 * @param predicate the condition for stopping the timeout loop.
+	 * @return the time out manager.
+	 * @since 0.11
+	 */
+	public static TimeOutHandler startTimeOut(int timeout, boolean enable, Predicate predicate) {
+		final TimeOutHandler handler = newTimeOut(timeout, predicate);
 		if (enable) {
 			handler.startAsync();
 		}
@@ -79,7 +114,18 @@ public class TestTimeout {
 	 * @since 0.11
 	 */
 	public static TimeOutHandler startTimeOut(Predicate predicate) {
-		return startTimeOut(true, predicate);
+		return startTimeOut(TIME_OUT, predicate);
+	}
+
+	/** Start a time out on the operation.
+	 *
+	 * @param timeout the duration before time out.
+	 * @param predicate the condition for stopping the timeout loop.
+	 * @return the time out manager.
+	 * @since 0.11
+	 */
+	public static TimeOutHandler startTimeOut(int timeout, Predicate predicate) {
+		return startTimeOut(timeout, true, predicate);
 	}
 
 	/** Create a timeout object.
@@ -89,7 +135,18 @@ public class TestTimeout {
 	 * @since 0.11
 	 */
 	public static TimeOutHandler newTimeOut(Predicate predicate) {
-		return new TimeOutHandler(predicate);
+		return newTimeOut(TIME_OUT, predicate);
+	}
+
+	/** Create a timeout object.
+	 *
+	 * @param timeout the duration before time out.
+	 * @param predicate the condition for stopping the timeout loop.
+	 * @return the time out object.
+	 * @since 0.11
+	 */
+	public static TimeOutHandler newTimeOut(int timeout, Predicate predicate) {
+		return new TimeOutHandler(timeout, predicate);
 	}
 
 	/** An object for managing the time out of operations.
@@ -120,8 +177,6 @@ public class TestTimeout {
 	 */
 	public static class TimeOutHandler implements Runnable {
 
-		private static final int TIME_OUT = 10000;
-		
 		private Thread thread;
 
 		private Thread threadToBreak;
@@ -131,13 +186,16 @@ public class TestTimeout {
 		private final AtomicBoolean timeout = new AtomicBoolean();
 
 		private final Predicate predicate;
-		
+
+		private final int timeoutDuration;
+	
 		/** Constructor.
 		 *
 		 * @param predicate the condition for stopping the timeout loop.
 		 * @since 0.11
 		 */
-		TimeOutHandler(Predicate predicate) {
+		TimeOutHandler(int duration, Predicate predicate) {
+			this.timeoutDuration = duration;
 			this.predicate = predicate;
 		}
 
@@ -158,7 +216,7 @@ public class TestTimeout {
 
 		@Override
 		public void run() {
-			final long endTime = System.currentTimeMillis() + TIME_OUT;
+			final long endTime = System.currentTimeMillis() + this.timeoutDuration;
 			while (TimeOutHandler.this.continueLoop.get()
 					&& System.currentTimeMillis() <= endTime) {
 				Thread.yield();

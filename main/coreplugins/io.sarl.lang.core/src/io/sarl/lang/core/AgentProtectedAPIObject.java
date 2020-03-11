@@ -90,11 +90,23 @@ public abstract class AgentProtectedAPIObject extends SRESpecificDataContainer {
 	 *
 	 * @param <S> - type of the skill.
 	 * @param capacities the capacity or the capacities to set.
-	 * @param skill implementaion of <code>capacity</code>.
+	 * @param skill implementation of <code>capacity</code>.
 	 * @return the skill that was set.
+	 * @see #setSkillIfAbsent(Skill, Class...)
 	 */
 	@SuppressWarnings("unchecked")
 	protected abstract <S extends Skill> S setSkill(S skill, Class<? extends Capacity>... capacities);
+
+	/**
+	 * Set the skill for the {@link Capacity} <code>capacity</code> if the mapping is not yet set.
+	 *
+	 * @param capacities the capacity or the capacities to set.
+	 * @param skill implementation of <code>capacity</code>.
+	 * @see #setSkill(Skill, Class...)
+	 * @since 0.11
+	 */
+	@SuppressWarnings("unchecked")
+	protected abstract void setSkillIfAbsent(Skill skill, Class<? extends Capacity>... capacities);
 
 	/**
 	 * Clears the Skill associated with the capacity.

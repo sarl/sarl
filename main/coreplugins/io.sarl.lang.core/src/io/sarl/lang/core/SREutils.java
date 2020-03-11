@@ -133,7 +133,20 @@ public final class SREutils {
 	 */
 	public static AtomicSkillReference setInternalSkill(AbstractSkillContainer container, Skill skill, Class<? extends Capacity>[] capacities) {
 		assert capacities != null;
-		return container.$setSkill(skill, capacities);
+		return container.$setSkill(skill, false, capacities);
+	}
+
+	/** Set the internal skill of a skill container if the skill is not yet mapped.
+	 *
+	 * @param container the container.
+	 * @param skill the skill instance to attach to the container.
+	 * @param capacities the list of implemented capacities. This array cannot be {@code null}.
+	 * @return the reference to the skill.
+	 * @since 0.11
+	 */
+	public static AtomicSkillReference setInternalSkillIfAbsent(AbstractSkillContainer container, Skill skill, Class<? extends Capacity>[] capacities) {
+		assert capacities != null;
+		return container.$setSkill(skill, true, capacities);
 	}
 
 	/** Replies the internal skill of a skill container.

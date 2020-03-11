@@ -22,7 +22,9 @@
 package io.sarl.sre.tests.runtime.services.executor
 
 import io.sarl.lang.annotation.PrivateAPI
-import io.sarl.sre.Kernel
+import io.sarl.sre.test.framework.context.SreRunContext
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.^extension.SreRunExtension
 import io.sarl.sre.tests.runtime.services.executor.mocks.AtFixedDelayAgent
 import io.sarl.sre.tests.runtime.services.executor.mocks.CancelTaskAgent
 import io.sarl.sre.tests.runtime.services.executor.mocks.EveryAgent
@@ -30,19 +32,19 @@ import io.sarl.sre.tests.runtime.services.executor.mocks.ExecuteAgent
 import io.sarl.sre.tests.runtime.services.executor.mocks.GetActiveTasksAgent
 import io.sarl.sre.tests.runtime.services.executor.mocks.InAgent
 import io.sarl.sre.tests.runtime.services.executor.mocks.WaiterAgent
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
-import io.sarl.sre.tests.testutils.^extension.SreRunContext
-import io.sarl.sre.tests.testutils.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.List
 import java.util.UUID
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static io.sarl.sre.tests.testutils.Constants.*
+import static io.sarl.sre.test.framework.Constants.*
 import static io.sarl.tests.api.tools.TestAssertions.*
 import static org.junit.jupiter.api.Assertions.*
+
+import static extension io.sarl.tests.api.tools.TestUtils.*
 
 /**
  * @author $Author: sgalland$
@@ -91,14 +93,13 @@ abstract class AbstractExecutorServiceRunTest {
 	@Test
 	@SuppressWarnings("use_reserved_sarl_annotation")
 	@PrivateAPI(isCallerOnly = true)
+	@Disabled
 	def every_01(extension rc : SreRunContext) {
 		val kern = typeof(WaiterAgent).setupTheSreKernel(null, null)
-		kern.spawn(typeof(EveryAgent), null, getAgentInitializationParameters)
-		try {
-			waitForTheKernel(STANDARD_TIMEOUT)
-		} finally {
-			Kernel::executeForcedAgentStop(kern)
-		}
+		kern.startAgent(typeof(EveryAgent), null, getAgentInitializationParameters)
+
+		waitForTheKernel(STANDARD_TIMEOUT)
+
 		var all = allResults
 		assertEquals(1, all.size)
 		assertEquals(2, all.get(0))
@@ -117,11 +118,11 @@ abstract class AbstractExecutorServiceRunTest {
 		typeof(GetActiveTasksAgent).runSre
 		var all = allResults
 		assertEquals(3, all.size)
-		var actives1 = all.get(typeof(List), 0)
+		var actives1 = all.elementAt(typeof(List), 0)
 		assertContains(actives1, "T1")
-		var actives2 = all.get(typeof(List), 1)
+		var actives2 = all.elementAt(typeof(List), 1)
 		assertContains(actives2, "T1", "T2")
-		var actives3 = all.get(typeof(List), 2)
+		var actives3 = all.elementAt(typeof(List), 2)
 		assertContains(actives3)
 	}
 
@@ -131,16 +132,16 @@ abstract class AbstractExecutorServiceRunTest {
 		var all = allResults
 		assertEquals(4, all.size)
 		// After creating T1
-		var actives1 = all.get(typeof(List), 0)
+		var actives1 = all.elementAt(typeof(List), 0)
 		assertContains(actives1, "T1")
 		// After creating T1 and T2
-		var actives2 = all.get(typeof(List), 1)
+		var actives2 = all.elementAt(typeof(List), 1)
 		assertContains(actives2, "T1", "T2")
 		// After cancel T1. T2 is still active
-		var actives3 = all.get(typeof(List), 2)
+		var actives3 = all.elementAt(typeof(List), 2)
 		assertContains(actives3, "T2")
 		// Inside on destroy
-		var actives4 = all.get(typeof(List), 3)
+		var actives4 = all.elementAt(typeof(List), 3)
 		assertContains(actives4)
 	}
 

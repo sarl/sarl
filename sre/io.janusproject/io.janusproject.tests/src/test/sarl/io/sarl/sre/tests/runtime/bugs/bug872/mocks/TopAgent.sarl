@@ -21,17 +21,21 @@
 package io.sarl.sre.tests.runtime.bugs.bug872.mocks
 
 import io.sarl.core.AgentKilled
+import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 
-agent TopAgent extends TestingAgent {
+agent TopAgent {
 
 	uses Lifecycle, InnerContextAccess
 
-	override runAgentTest : RunPolicy {
+	uses TestingCapacity
+
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
 		typeof(InnerAgent).spawnInContext(innerContext, getAgentInitializationParameters)
-		return null
 	}
 
 	on AgentKilled {

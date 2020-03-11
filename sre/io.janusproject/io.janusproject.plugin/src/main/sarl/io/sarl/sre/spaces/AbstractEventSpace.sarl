@@ -212,10 +212,11 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 		// The reception process should be treated into a separate thread in order
 		// to never block the sender process.
 		val participants = getScopedParticipants(scope)
-		participants.forEach [
-			it.getParticipant.receiveEvent(^event)
-		]
-
+		if (participants !== null) {
+			for (it : participants) {
+				it.getParticipant.receiveEvent(^event)
+			}
+		}
 	}
 
 }

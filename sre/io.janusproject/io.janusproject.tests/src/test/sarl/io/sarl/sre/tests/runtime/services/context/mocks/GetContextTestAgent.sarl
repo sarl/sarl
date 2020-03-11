@@ -22,8 +22,10 @@
 package io.sarl.sre.tests.runtime.services.context.mocks
 
 import io.sarl.core.ExternalContextAccess
+import io.sarl.core.Initialize
 import io.sarl.sre.boot.configs.subconfigs.BootConfig
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 import java.util.UUID
 
 /**
@@ -32,15 +34,18 @@ import java.util.UUID
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent GetContextTestAgent extends TestingAgent {
+agent GetContextTestAgent {
 
 	uses ExternalContextAccess
 
-	override runAgentTest : RunPolicy {
+	uses TestingCapacity
+
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
 		var ctx = getContext(UUID::fromString(BootConfig::ROOT_CONTEXT_ID_VALUE))
 		addResult(ID)
 		addResult(ctx)
-		return RunPolicy::DIFFERED_KILLING
+		killMeSoon
 	}
 
 }

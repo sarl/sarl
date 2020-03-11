@@ -21,13 +21,15 @@
 
 package io.sarl.sre.tests.runtime.spaces.mocks
 
+import io.sarl.core.AgentSpawned
 import io.sarl.core.Behaviors
+import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
 import io.sarl.core.MemberLeft
 import io.sarl.core.Schedules
-import io.sarl.sre.tests.testutils.agents.TestingAgent
-import io.sarl.core.AgentSpawned
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 
 /**
  * @author $Author: sgalland$
@@ -35,13 +37,15 @@ import io.sarl.core.AgentSpawned
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent SourceAgent2 extends TestingAgent {
+agent SourceAgent2 {
 
 	uses Behaviors, Lifecycle, Schedules, InnerContextAccess
+
+	uses TestingCapacity
 	
-	def runAgentTest : RunPolicy {
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
 		typeof(TargetAgent).spawnInContext(innerContext, agentInitializationParameters)
-		return RunPolicy::STANDARD
 	}
 
 	on AgentSpawned [occurrence.source.UUID == ID] {

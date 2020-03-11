@@ -202,21 +202,23 @@ class JreExecutorService extends AbstractExecutorService implements PreReleasabl
 	}
 
 	def schedule(logger : Logger, delay : long, unit : TimeUnit, command : Runnable) : ScheduledFuture<?> {
-		scheduledExecutorService.schedule(command.protectRunnable(logger), delay, unit)
+		scheduledExecutorService.schedule(command.protectRunnable(logger), delay, unit ?: TimeUnit::MILLISECONDS)
 	}
 
 	def schedule(logger : Logger, delay : long, unit : TimeUnit, command : Callable<T>) : ScheduledFuture<T> with T {
-		scheduledExecutorService.schedule(command.protectCallable(logger), delay, unit)
+		scheduledExecutorService.schedule(command.protectCallable(logger), delay, unit ?: TimeUnit::MILLISECONDS)
 	}
 
 	def scheduleAtFixedRate(logger : Logger, initialDelay : long, period : long,
 		unit : TimeUnit, command : Runnable) : ScheduledFuture<?> {
-		scheduledExecutorService.scheduleAtFixedRate(command.protectRunnable(logger), initialDelay, period, unit)
+		scheduledExecutorService.scheduleAtFixedRate(command.protectRunnable(logger), initialDelay, period,
+			unit ?: TimeUnit::MILLISECONDS)
 	}
 
 	def scheduleWithFixedDelay(logger : Logger, initialDelay : long, delay : long,
 		unit : TimeUnit, command : Runnable) : ScheduledFuture<?> {
-		scheduledExecutorService.scheduleWithFixedDelay(command.protectRunnable(logger), initialDelay, delay, unit)
+		scheduledExecutorService.scheduleWithFixedDelay(command.protectRunnable(logger), initialDelay, delay,
+			unit ?: TimeUnit::MILLISECONDS)
 	}
 
 	def remove(task : Runnable) : boolean {

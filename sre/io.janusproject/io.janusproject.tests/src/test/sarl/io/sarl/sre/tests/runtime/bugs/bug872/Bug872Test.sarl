@@ -20,10 +20,10 @@
  */
 package io.sarl.sre.tests.runtime.bugs.bug872
 
+import io.sarl.sre.test.framework.context.SreRunContext
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.^extension.SreRunExtension
 import io.sarl.sre.tests.runtime.bugs.bug872.mocks.TopAgent
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
-import io.sarl.sre.tests.testutils.^extension.SreRunContext
-import io.sarl.sre.tests.testutils.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import org.junit.jupiter.api.DisplayName
@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static io.sarl.sre.tests.testutils.Constants.*
+import static io.sarl.sre.test.framework.Constants.*
 import static org.junit.jupiter.api.Assertions.*
 
 /** Tests for issue #872: Invalid synchronization of the member agent collection.

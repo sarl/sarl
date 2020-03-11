@@ -19,21 +19,17 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.tests.testutils.^extension
+package io.sarl.sre.test.framework.context
 
-import com.google.inject.Module
+import io.sarl.bootstrap.SRE
+import io.sarl.bootstrap.SREBootstrap
 import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Agent
-import io.sarl.sre.Kernel
-import io.sarl.sre.boot.SreMain
-import io.sarl.sre.boot.configs.subconfigs.BootConfig
-import io.sarl.sre.services.lifecycle.LifecycleSpawnCallback
-import io.sarl.sre.services.logging.LoggingService
-import io.sarl.sre.tests.testutils.agents.TestingAgent
-import io.sarl.sre.tests.testutils.exception.SreLogException
-import io.sarl.sre.tests.testutils.exception.SreTimeoutException
+import io.sarl.lang.core.AgentContext
+import io.sarl.sre.test.framework.Constants
+import io.sarl.sre.test.framework.exception.SreLogException
+import io.sarl.sre.test.framework.exception.SreTimeoutException
 import java.util.List
-import java.util.Map
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
@@ -47,13 +43,12 @@ import org.arakhne.afc.bootique.variables.VariableNames
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.opentest4j.AssertionFailedError
 
-import static io.sarl.sre.tests.testutils.Constants.STANDARD_TIMEOUT
 import static org.junit.jupiter.api.Assertions.*
 
 import static extension org.junit.jupiter.api.Assertions.assertEquals
 
 /**
- * Context for running the SRE.
+ * Context for running the SRE. This context is thread-safe.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -63,25 +58,19 @@ import static extension org.junit.jupiter.api.Assertions.assertEquals
  */
 class SreRunContext {
 
-	/** The logging level when logging is enable during tests.
-	 */
-	public static val TEST_LOGGING_LEVEL = Level::ALL
-
 	/** 
-	 * Reference to the instance of the SRE kernel.
+	 * Reference to the instance of the root context.
 	 */
 	@Accessors(PUBLIC_GETTER)
-	var sreKernel : Kernel
+	volatile var rootContext : AgentContext
 
 	/** 
 	 * Reference to the instance of the SRE bootstrap.
 	 */
 	@Accessors(PUBLIC_GETTER)
-	var bootstrap : SreMain
+	volatile var bootstrap : SREBootstrap
 
-	val globalResults = new ConcurrentHashMap<UUID, List<Object>>
-
-	var module : Class<? extends Module>
+	val globalResults = new ConcurrentHashMap<UUID, CopyOnWriteArrayList<Object>>
 
 	val directFailureCause = new AtomicReference<Throwable>
 
@@ -91,22 +80,6 @@ class SreRunContext {
 	 */
 	def getBootAgent : UUID {
 		this.bootstrap.bootAgentIdentifier
-	}
-
-	/** 
-	 * Replies result at the given index of the run of the agent.
-	 * 
-	 * @param source - the source of the data.
-	 * @param type - the type of the result.
-	 * @param index - the index of the result.
-	 * @return the value; or {@code null} if no result.
-	 */
-	def get(source : List<?>, type : Class<T>, index : int) : T with T {
-		var element = source.get(index);
-		if (element === null || type.isInstance(element)) {
-			return type.cast(element);
-		}
-		return null
 	}
 
 	private def key(agentId : UUID) : UUID {
@@ -211,11 +184,9 @@ class SreRunContext {
 	 */
 	def addResult(agentId : UUID = null, value : Object) : void {
 		val id = agentId.key
-		var res = this.globalResults.get(id)
-		if (res === null) {
-			res = new CopyOnWriteArrayList
-			this.globalResults.put(id, res)
-		}
+		var res = this.globalResults.computeIfAbsent(id) [
+			new CopyOnWriteArrayList
+		]
 		res += value
 	}
 
@@ -223,7 +194,7 @@ class SreRunContext {
 	 * Replies all the results for all the agents.
 	 * @return the results.
 	 */
-	def getAllResultsPerAgent() : Map<UUID, List<Object>> {
+	def getAllResultsPerAgent() : ConcurrentHashMap<UUID, CopyOnWriteArrayList<Object>> {
 		return globalResults
 	}
 
@@ -244,7 +215,7 @@ class SreRunContext {
 	 * @return the parameters.
 	 */
 	def getAgentInitializationParameters : Object[] {
-		#[allResultsPerAgent]
+		#[this]
 	}
 
 	/** 
@@ -286,41 +257,22 @@ class SreRunContext {
 	 */
 	@SuppressWarnings("use_reserved_sarl_annotation")
 	@PrivateAPI(isCallerOnly = true)
-	def runSre(type : Class<? extends TestingAgent>, loggingLevel : Level = null,
+	def runSre(type : Class<? extends Agent>, loggingLevel : Level = null,
 		trackMode : LogTrackingMode = null,
-		timeout : int = STANDARD_TIMEOUT) : Kernel {
+		timeout : int = Constants::STANDARD_TIMEOUT) : SREBootstrap {
 		val kern = setupTheSreKernel(type, loggingLevel, trackMode)
 		try {
 			waitForTheKernel(timeout)
 		} catch (exception : SreTimeoutException | TimeoutException) {
-			Kernel::executeKernelStopWhenNoAgentAlive(kern)
+			kern.shutdown(true)
 			throw exception
 		}
 		return kern
 	}
-
-	/** Replies the module that should be injected in order to proceed tests.
-	 * 
-	 * @return the module, never {@code null}.
-	 */
-	def getTestingModule : Class<? extends Module> {
-		this.module
-	}
-
-	/** Replies the module that should be injected in order to proceed tests.
-	 * 
-	 * @param module the module, never {@code null}.
-	 */
-	def setTestingModule(module : Class<? extends Module>) {
-		assert module !== null
-		this.module = module
-	}
 	
-	/** Assert that the given kernel has no error on its logs.
-	 * 
-	 * @param kern the kernel.
+	/** Assert that the context has no error on its logs.
 	 */
-	def assertNoErrorLog(kern : Kernel) {
+	def assertNoErrorLogInResults {
 		for (obj : getResults(null)) {
 			if (obj instanceof LogRecord) {
 				throw new AssertionFailedError("Unexpected error log", "", obj.toString)
@@ -352,8 +304,8 @@ class SreRunContext {
 	 * @return the kernel.
 	 * @throws Exception - if the kernel cannot be launched.
 	 */
-	def setupTheSreKernel(type : Class<? extends TestingAgent>, loggingLevel : Level, trackMode : LogTrackingMode) : Kernel {
-		System::setProperty(VariableNames::toPropertyName(BootConfig::BOOT_AGENT_NAME), type.name)
+	def setupTheSreKernel(type : Class<? extends Agent>, loggingLevel : Level,
+		trackMode : LogTrackingMode) : SREBootstrap {
 		var k = setupTheSreKernel(loggingLevel, trackMode)
 		this.bootstrap.startAgent(type, getAgentInitializationParameters)
 		return k
@@ -367,18 +319,16 @@ class SreRunContext {
 	 * @return the kernel.
 	 * @throws Exception - if the kernel cannot be launched.
 	 */
-	def setupTheSreKernel(loggingLevel : Level, trackMode : LogTrackingMode) : Kernel {
-		assertNull(this.sreKernel, "SRE already launched.")
+	def setupTheSreKernel(loggingLevel : Level, trackMode : LogTrackingMode) : SREBootstrap {
+		assertNull(this.rootContext, "SRE already launched.")
 		val tm = trackMode ?: LogTrackingMode::FAIL_ON_ERROR
-		val lvl = loggingLevel ?: TEST_LOGGING_LEVEL
+		val lvl = loggingLevel ?: Constants::TEST_LOGGING_LEVEL
 		val glvl = org.arakhne.afc.bootique.log4j.configs.Level::valueOf(lvl)
 		System::setProperty(VariableNames::toPropertyName(Log4jIntegrationConfig::LEVEL), glvl.name)
-		val module = getTestingModule
 		this.globalResults.clear
-		this.bootstrap = new SreMain
-		this.bootstrap.startWithoutAgent(module)
-		this.sreKernel = this.bootstrap.kernel
-		val logger = this.sreKernel.getService(typeof(LoggingService)).platformLogger
+		this.bootstrap = SRE::getBootstrap
+		this.rootContext = this.bootstrap.startWithoutAgent
+		val logger = this.bootstrap.kernelLogger
 		switch (tm) {
 			case SILENT: {
 				for (handler : logger.handlers) {
@@ -405,7 +355,7 @@ class SreRunContext {
 				logger.addHandler(FAILURE_LOG_HANDLER)
 			}
 		}
-		return this.sreKernel
+		return this.bootstrap
 	}
 
 	static val IDDLE_LOG_HANDLER = new Handler {
@@ -471,16 +421,16 @@ class SreRunContext {
 	 * @throws Exception - if the kernel cannot be launched.
 	 */
 	@SuppressWarnings("discouraged_reference")
-	def waitForTheKernel(timeout : int, predicate : (Map<UUID, List<Object>>)=>boolean) {
+	def waitForTheKernel(timeout : int, predicate : (ConcurrentHashMap<UUID, CopyOnWriteArrayList<Object>>)=>boolean) {
 		var endTime : long
 		if (timeout >= 0) {
 			endTime = System::currentTimeMillis() + timeout.seconds
 		} else {
 			endTime = -1
 		}
-		var isSreRunning = this.sreKernel.running
+		var isSreRunning = this.bootstrap.running
 		while (this.directFailureCause.get === null && isSreRunning && (endTime == -1 || System.currentTimeMillis() <= endTime)) {
-			isSreRunning = this.sreKernel.isRunning() || (predicate !== null && (!(predicate.apply(this.globalResults))))
+			isSreRunning = this.bootstrap.isRunning() || (predicate !== null && (!(predicate.apply(this.globalResults))))
 			Thread.sleep(100)
 		}
 		val directException = this.directFailureCause.get
@@ -502,40 +452,18 @@ class SreRunContext {
 	}
 
 	/** 
-	 * Forget any reference to a Janus kernel.
+	 * Forget any reference to a SRE kernel.
 	 */
-	package def shutdown : void {
+	@SuppressWarnings("use_reserved_sarl_annotation")
+	@PrivateAPI
+	def shutdown : void {
 		var m = this.bootstrap
 		this.bootstrap = null
 		if (m !== null) {
 			m.shutdown(false)
 		}
-		this.sreKernel = null
-		this.module = null
+		this.rootContext = null
 		this.globalResults.clear
 	}
 
-	/** 
-	 * Spawn an agent of the given type, and pass the parameters replied by
-	 * {@link #getAgentInitializationParameters()} and the given parameters to its initialization function.
-	 * 
-	 * @param kernel the kernel.
-	 * @param agent the type of the agent to spawn.
-	 * @param callback the function invoked each time an agent is spawned.
-	 * @param params the list of the parameters to pass to the agent initialization function.
-	 * @return the identifier of the agent, never {@code null}.
-	 */
-	def spawnInTest(kernel : Kernel, ^agent : Class<? extends Agent>, callback : LifecycleSpawnCallback, arguments : Object*) {
-		var allParameters : Object[]
-		if (arguments === null || arguments.length === 0) {
-			allParameters = agentInitializationParameters
-		} else {
-			var ags = agentInitializationParameters
-			var tab = newArrayOfSize(ags.length + arguments.length)
-			System::arraycopy(ags, 0, tab, 0, ags.length)
-			System::arraycopy(arguments, 0, tab, ags.length, arguments.length)
-			allParameters = tab
-		}
-		kernel.spawn(^agent, callback, allParameters)
-	}
 }

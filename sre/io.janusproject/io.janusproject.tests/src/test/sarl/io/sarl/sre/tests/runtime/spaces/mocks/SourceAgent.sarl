@@ -22,7 +22,9 @@
 package io.sarl.sre.tests.runtime.spaces.mocks
 
 import io.sarl.core.DefaultContextInteractions
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.core.Initialize
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 
 /**
  * @author $Author: sgalland$
@@ -30,13 +32,16 @@ import io.sarl.sre.tests.testutils.agents.TestingAgent
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent SourceAgent extends TestingAgent {
+agent SourceAgent {
 
 	uses DefaultContextInteractions
 	
-	def runAgentTest : RunPolicy {
+	uses TestingCapacity
+	
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
 		emit(new TestEvent(ID))
-		return RunPolicy::DIFFERED_KILLING
+		killMeSoon
 	}
 	
 }

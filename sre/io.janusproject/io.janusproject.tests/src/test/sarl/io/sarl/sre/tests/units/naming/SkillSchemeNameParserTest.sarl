@@ -25,7 +25,7 @@ import io.sarl.sre.naming.NameParser
 import io.sarl.sre.naming.SarlName
 import io.sarl.sre.naming.SkillName
 import io.sarl.sre.naming.SkillSchemeNameParser
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.tests.units.naming.mocks.CapacityMock
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension

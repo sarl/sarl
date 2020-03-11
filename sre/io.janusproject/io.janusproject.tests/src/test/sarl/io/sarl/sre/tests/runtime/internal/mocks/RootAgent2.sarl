@@ -25,10 +25,12 @@ import io.sarl.core.AgentKilled
 import io.sarl.core.AgentSpawned
 import io.sarl.core.ContextJoined
 import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
 import io.sarl.core.Schedules
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 
 /**
  * @author $Author: sgalland$
@@ -36,15 +38,17 @@ import io.sarl.sre.tests.testutils.agents.TestingAgent
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent RootAgent2 extends TestingAgent {
+agent RootAgent2 {
 
 	uses Schedules, Lifecycle, InnerContextAccess, DefaultContextInteractions
 
-	override runAgentTest : RunPolicy {
+	uses TestingCapacity
+
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
 		in(500) [
 			typeof(ChildAgent2).spawnInContext(innerContext, buildAgentInitializationParameters)
 		]
-		return null
 	}
 
 	on AgentSpawned [typeof(ChildAgent2).name == occurrence.agentType] {

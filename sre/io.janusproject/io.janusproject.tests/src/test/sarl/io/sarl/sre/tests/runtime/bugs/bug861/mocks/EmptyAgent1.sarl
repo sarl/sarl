@@ -21,16 +21,20 @@
 package io.sarl.sre.tests.runtime.bugs.bug861.mocks
 
 import io.sarl.core.DefaultContextInteractions
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 
-agent EmptyAgent1 extends TestingAgent {
+agent EmptyAgent1 {
 	
 	uses DefaultContextInteractions, Lifecycle
 
-	def runAgentTest : RunPolicy {
-		new Initialized().emit [getSpawner == it.UUID]
-		return RunPolicy::STANDARD
+	uses TestingCapacity
+
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
+		new Initialized().emit[getSpawner == it.UUID]
 	}
 
 	on Initialized {

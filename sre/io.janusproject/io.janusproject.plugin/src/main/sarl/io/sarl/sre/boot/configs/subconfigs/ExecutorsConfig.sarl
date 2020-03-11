@@ -277,60 +277,62 @@ class ExecutorsConfig {
  */
 class ExecutorsConfigModule extends AbstractModule {
 
-	static val XMXTHREADS_OPTION = "mxthreads"
+	static val MAXTHREADS_OPTION = "max-threads"
 
-	static val XMNTHREADS_OPTION = "mnthreads"
+	static val MINTHREADS_OPTION = "min-threads"
 
-	static val XKEEPALIVE_OPTION = "keepAlive"
+	static val KEEPALIVE_OPTION = "keep-alive"
 
-	static val XTHREADTIMEOUT_OPTION = "threadTimeout"
+	static val THREADTIMEOUT_OPTION = "thread-timeout"
 
-	static val XINTERNALERRORLOGLEVEL_OPTION = "internalErrorLogLevel"
+	static val INTERNALERRORLOGLEVEL_OPTION = "internal-error-log-level"
 
-	static val XTHREADPURGE_OPTION = "threadPurge"
+	static val THREADPURGE_OPTION = "thread-purge"
 	
 	override configure : void {
 		VariableDecls::extend(binder).declareVar(MAX_NUMBER_OF_THREADS_IN_EXECUTOR_NAME)
 		binder.extend.addOption(
-			OptionMetadata::builder(XMXTHREADS_OPTION, Messages::ExecutorsConfigModule_0)
+			OptionMetadata::builder(MAXTHREADS_OPTION,
+				MessageFormat::format(Messages::ExecutorsConfigModule_0, MAX_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE))
 			.valueRequired(Messages::ExecutorsConfigModule_5)
 			.build)
-			.mapConfigPath(XMXTHREADS_OPTION, MAX_NUMBER_OF_THREADS_IN_EXECUTOR_NAME)
+			.mapConfigPath(MAXTHREADS_OPTION, MAX_NUMBER_OF_THREADS_IN_EXECUTOR_NAME)
 
 		VariableDecls::extend(binder).declareVar(MIN_NUMBER_OF_THREADS_IN_EXECUTOR_NAME)
-		binder.extend.addOption(OptionMetadata::builder(XMNTHREADS_OPTION, Messages::ExecutorsConfigModule_1)
+		binder.extend.addOption(OptionMetadata::builder(MINTHREADS_OPTION,
+			MessageFormat::format(Messages::ExecutorsConfigModule_1, MIN_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE))
 			.valueRequired(Messages::ExecutorsConfigModule_5)
 			.build)
-			.mapConfigPath(XMNTHREADS_OPTION, MIN_NUMBER_OF_THREADS_IN_EXECUTOR_NAME)
+			.mapConfigPath(MINTHREADS_OPTION, MIN_NUMBER_OF_THREADS_IN_EXECUTOR_NAME)
 
 		VariableDecls::extend(binder).declareVar(THREAD_KEEP_ALIVE_DURATION_NAME)
-		binder.extend.addOption(OptionMetadata::builder(XKEEPALIVE_OPTION,
+		binder.extend.addOption(OptionMetadata::builder(KEEPALIVE_OPTION,
 			MessageFormat::format(Messages::ExecutorsConfigModule_2, THREAD_KEEP_ALIVE_DURATION_VALUE))
 			.valueRequired(Messages::ExecutorsConfigModule_6)
 			.build)
-			.mapConfigPath(XKEEPALIVE_OPTION, THREAD_KEEP_ALIVE_DURATION_NAME)
+			.mapConfigPath(KEEPALIVE_OPTION, THREAD_KEEP_ALIVE_DURATION_NAME)
 
 		VariableDecls::extend(binder).declareVar(THREAD_TIMEOUT_NAME)
 		binder.extend.addOption(OptionMetadata::builder(
-			XTHREADTIMEOUT_OPTION,
+			THREADTIMEOUT_OPTION,
 				MessageFormat::format(Messages::ExecutorsConfigModule_3, THREAD_TIMEOUT_VALUE))
 				.valueRequired(Messages::ExecutorsConfigModule_7)
 				.build)
-				.mapConfigPath(XTHREADTIMEOUT_OPTION, THREAD_TIMEOUT_NAME)
+				.mapConfigPath(THREADTIMEOUT_OPTION, THREAD_TIMEOUT_NAME)
 
 		VariableDecls::extend(binder).declareVar(INTERNAL_ERROR_VERBOSE_LEVEL_NAME)
 		binder.extend.addOption(OptionMetadata::builder(
-				XINTERNALERRORLOGLEVEL_OPTION,
+				INTERNALERRORLOGLEVEL_OPTION,
 				MessageFormat::format(Messages::ExecutorsConfigModule_4, INTERNAL_ERROR_VERBOSE_LEVEL_VALUE.toString))
 				.valueRequired(Messages::ExecutorsConfigModule_8)
 				.build)
-				.mapConfigPath(XINTERNALERRORLOGLEVEL_OPTION, INTERNAL_ERROR_VERBOSE_LEVEL_NAME)
+				.mapConfigPath(INTERNALERRORLOGLEVEL_OPTION, INTERNAL_ERROR_VERBOSE_LEVEL_NAME)
 
 		VariableDecls::extend(binder).declareVar(PERIODIC_THREAD_POOL_PURGE_NAME)
 		binder.extend.addOption(
-			OptionMetadata::builder(XTHREADPURGE_OPTION,
+			OptionMetadata::builder(THREADPURGE_OPTION,
 				MessageFormat::format(Messages::ExecutorsConfigModule_9, PERIODIC_THREAD_POOL_PURGE_VALUE.toString)).
-				valueRequired(Messages::ExecutorsConfigModule_10).build).mapConfigPath(XTHREADPURGE_OPTION,
+				valueRequired(Messages::ExecutorsConfigModule_10).build).mapConfigPath(THREADPURGE_OPTION,
 					PERIODIC_THREAD_POOL_PURGE_NAME)
 	}
 

@@ -30,8 +30,8 @@ import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.Scope
 import io.sarl.lang.core.SpaceID
 import io.sarl.sre.internal.ContextMemberEventEmitter
-import io.sarl.sre.tests.testutils.agents.IddleTestingAgent
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.agents.ShortLifeTestingAgent
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
@@ -96,7 +96,7 @@ class ContextMemberEventEmitterTest {
 		var spaceidobj = new SpaceID(ctxid, spaceid, typeof(OpenEventSpaceSpecification))
 		when(^space.spaceID).thenReturn(spaceidobj)
 		when(ctx.defaultSpace).thenReturn(^space)
-		this.emitter.memberJoined(ctx, spaceidobj, this.agentId, typeof(IddleTestingAgent).name)
+		this.emitter.memberJoined(ctx, spaceidobj, this.agentId, typeof(ShortLifeTestingAgent).name)
 
 		var ^event = ArgumentCaptor::forClass(typeof(Event))
 		var scope = ArgumentCaptor::forClass(typeof(Scope))
@@ -120,7 +120,7 @@ class ContextMemberEventEmitterTest {
 		var spaceidobj = new SpaceID(ctxid, spaceid, typeof(OpenEventSpaceSpecification))
 		when(^space.spaceID).thenReturn(spaceidobj)
 		when(ctx.defaultSpace).thenReturn(^space)
-		this.emitter.memberLeft(ctx, spaceidobj, this.agentId, typeof(IddleTestingAgent).name)
+		this.emitter.memberLeft(ctx, spaceidobj, this.agentId, typeof(ShortLifeTestingAgent).name)
 
 		var ^event = ArgumentCaptor::forClass(typeof(Event))
 		var scope = ArgumentCaptor::forClass(typeof(Scope))

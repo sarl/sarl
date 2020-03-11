@@ -21,21 +21,20 @@
 
 package io.sarl.sre.tests.runtime.services.logging.mocks
 
+import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.core.Schedules
-import io.sarl.sre.tests.testutils.agents.TestingAgent
 
-agent VerboseAgent extends TestingAgent {
+agent VerboseAgent {
 	
 	uses Logging, Schedules, Lifecycle
 	
-	def runAgentTest : RunPolicy {
+	on Initialize {
 		in(1000) [
 			error("This is a welcome message")
 			killMe
 		]
-		return null
 	}
 	
 }

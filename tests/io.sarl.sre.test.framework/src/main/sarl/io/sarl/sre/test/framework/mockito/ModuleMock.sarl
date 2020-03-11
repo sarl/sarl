@@ -19,22 +19,22 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.tests.testutils.mockito
+package io.sarl.sre.test.framework.mockito
 
-import java.util.concurrent.Executor
+import com.google.inject.Binder
+import com.google.inject.Module
 
 /**
- * Mock of a Java executor.
+ * Mock of an injection module.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class ExecutorMock implements Executor {
+class ModuleMock implements Module {
 
-	override execute(command : Runnable) {
-		command.run
+	override configure(binder : Binder) {
 	}
-
+	
 }

@@ -21,6 +21,9 @@
 
 package io.sarl.sre.tests.runtime.services.lifecycle
 
+import io.sarl.sre.test.framework.context.SreRunContext
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.^extension.SreRunExtension
 import io.sarl.sre.tests.runtime.services.lifecycle.mocks.DestroyKillTestAgent
 import io.sarl.sre.tests.runtime.services.lifecycle.mocks.EventHanlderKillTestAgent
 import io.sarl.sre.tests.runtime.services.lifecycle.mocks.InitializeKillTestAgent
@@ -30,9 +33,6 @@ import io.sarl.sre.tests.runtime.services.lifecycle.mocks.NoChildNoInnerContextI
 import io.sarl.sre.tests.runtime.services.lifecycle.mocks.OneAgentSpawnTestAgent
 import io.sarl.sre.tests.runtime.services.lifecycle.mocks.TaskKillTestAgent
 import io.sarl.sre.tests.runtime.services.lifecycle.mocks.ThreeAgentsSpawnTestAgent
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
-import io.sarl.sre.tests.testutils.^extension.SreRunContext
-import io.sarl.sre.tests.testutils.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import org.junit.jupiter.api.BeforeEach

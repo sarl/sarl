@@ -23,29 +23,26 @@ package io.sarl.sre.tests.runtime.internal
 
 import io.sarl.core.ParticipantLeft
 import io.sarl.lang.core.SpaceID
+import io.sarl.sre.test.framework.context.SreRunContext
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.^extension.SreRunExtension
 import io.sarl.sre.tests.runtime.internal.mocks.JoinerAgent1
 import io.sarl.sre.tests.runtime.internal.mocks.JoinerAgent3
 import io.sarl.sre.tests.runtime.internal.mocks.SpyAgent1
 import io.sarl.sre.tests.runtime.internal.mocks.SpyAgent3
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
-import io.sarl.sre.tests.testutils.^extension.SreRunContext
-import io.sarl.sre.tests.testutils.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
-import org.arakhne.afc.util.OutputParameter
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static io.sarl.sre.tests.testutils.Constants.*
+import static io.sarl.sre.test.framework.Constants.*
 
-import static extension org.junit.jupiter.api.Assertions.assertEquals
-import static extension org.junit.jupiter.api.Assertions.assertNotEquals
-import static extension org.junit.jupiter.api.Assertions.assertNotNull
-import static extension org.junit.jupiter.api.Assertions.assertNotSame
-import static extension org.junit.jupiter.api.Assertions.assertNull
+import static extension org.junit.jupiter.api.Assertions.*
 
 /**
  * @author $Author: sgalland$
@@ -63,7 +60,8 @@ import static extension org.junit.jupiter.api.Assertions.assertNull
 @Tag("run")
 class OnParticipantLeftTest {
 
-	@Test
+	@RepeatedTest(5)
+	@Disabled
 	@DisplayName("ParticipantLeft in default space")
 	@SuppressWarnings("discouraged_reference")
 	def runParticipantLeftInDefaultSpace(extension rc : SreRunContext) {
@@ -71,9 +69,8 @@ class OnParticipantLeftTest {
 
 		Thread::sleep(1000)
 
-		val id : OutputParameter<UUID> = new OutputParameter
-
-		kern.spawnInTest(typeof(JoinerAgent1), [id.set(it)])
+		val id = UUID.randomUUID
+		kern.startAgentWithID(typeof(JoinerAgent1), id, agentInitializationParameters)
 
 		waitForTheKernel(STANDARD_TIMEOUT)
 
@@ -83,14 +80,15 @@ class OnParticipantLeftTest {
 		var spcid0 = getResult(bootAgent, typeof(SpaceID), 1)
 		spcid0.assertNotNull
 
-		var evt1 = getResult(id.get, typeof(ParticipantLeft), 0)
+		var evt1 = getResult(id, typeof(ParticipantLeft), 0)
 		evt1.assertNull
 
-		id.get.assertEquals(evt0.source.UUID)
+		id.assertEquals(evt0.source.UUID)
 		spcid0.assertEquals(evt0.spaceID)
 	}
 
 	@Test
+	@Disabled
 	@DisplayName("ParticipantLeft in other space")
 	@SuppressWarnings("discouraged_reference")
 	def runParticipantLeftInOtherSpace(extension rc : SreRunContext) {
@@ -98,9 +96,9 @@ class OnParticipantLeftTest {
 
 		Thread::sleep(1000)
 
-		val id : OutputParameter<UUID> = new OutputParameter
+		val id = UUID::randomUUID
 
-		kern.spawnInTest(typeof(JoinerAgent3), [id.set(it)])
+		kern.startAgentWithID(typeof(JoinerAgent3), id, agentInitializationParameters)
 
 		waitForTheKernel(NO_TIMEOUT)
 
@@ -110,17 +108,17 @@ class OnParticipantLeftTest {
 		var spcid0 = getResult(bootAgent, typeof(SpaceID), 1)
 		spcid0.assertNotNull
 
-		var spcid1 = getResult(id.get, typeof(SpaceID), 0)
+		var spcid1 = getResult(id, typeof(SpaceID), 0)
 		spcid1.assertNotNull
 
-		var evt1 = getResult(id.get, typeof(ParticipantLeft), 1)
+		var evt1 = getResult(id, typeof(ParticipantLeft), 1)
 		evt1.assertNotNull
 		
 		spcid0.assertNotEquals(spcid1)
 		evt0.assertNotSame(evt1)
 
 		spcid0.assertEquals(evt0.source.spaceID)
-		id.get.assertEquals(evt0.source.UUID)
+		id.assertEquals(evt0.source.UUID)
 		spcid1.assertEquals(evt0.spaceID)
 
 		spcid0.assertEquals(evt1.source.spaceID)

@@ -64,25 +64,25 @@ public class CompilerConfigModule extends AbstractModule {
 
 	private static final String ENCODING_OPTION = "encoding"; //$NON-NLS-1$
 
-	private static final String JAVASOURCE_OPTION = "javasource"; //$NON-NLS-1$
+	private static final String JAVASOURCE_OPTION = "java-source"; //$NON-NLS-1$
 
-	private static final String JAVACOMPILER_OPTION = "javacompiler"; //$NON-NLS-1$
+	private static final String JAVACOMPILER_OPTION = "java-compiler"; //$NON-NLS-1$
 
-	private static final String WRITETRACES_OPTION = "writetraces"; //$NON-NLS-1$
+	private static final String WRITETRACES_OPTION = "write-traces"; //$NON-NLS-1$
 
-	private static final String WRITESTORAGES_OPTION = "writestorages"; //$NON-NLS-1$
+	private static final String WRITESTORAGES_OPTION = "write-storages"; //$NON-NLS-1$
 
-	private static final String GENERATEINLINES_OPTION = "generateinlines"; //$NON-NLS-1$
+	private static final String GENERATEINLINES_OPTION = "generate-inlines"; //$NON-NLS-1$
 
-	private static final String GENERATEPURES_OPTION = 	"generatepures"; //$NON-NLS-1$
+	private static final String GENERATEPURES_OPTION = 	"generate-pures"; //$NON-NLS-1$
 
-	private static final String GENERATEEQUALITYTESTS_OPTION = "generateequalitytests"; //$NON-NLS-1$
+	private static final String GENERATEEQUALITYTESTS_OPTION = "generate-equality-tests"; //$NON-NLS-1$
 
-	private static final String GENERATETOSTRING_OPTION = "generatetostring"; //$NON-NLS-1$
+	private static final String GENERATETOSTRING_OPTION = "generate-tostring"; //$NON-NLS-1$
 
-	private static final String GENERATECLONES_OPTION = "generateclones"; //$NON-NLS-1$
+	private static final String GENERATECLONES_OPTION = "generate-clones"; //$NON-NLS-1$
 
-	private static final String GENERATESERIALS_OPTION = "generateserials"; //$NON-NLS-1$
+	private static final String GENERATESERIALS_OPTION = "generate-serials"; //$NON-NLS-1$
 
 	@Override
 	protected void configure() {

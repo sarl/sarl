@@ -21,6 +21,7 @@
 
 package io.sarl.sre.tests.units.services.lifecycle
 
+import io.sarl.sre.boot.configs.subconfigs.LifecycleConfig
 import io.sarl.sre.internal.SequenceListenerNotifier
 import io.sarl.sre.internal.SmartListenerCollection
 import io.sarl.sre.services.context.ExternalContextMemberListener
@@ -46,11 +47,12 @@ class StandardLifecycleServiceTest extends AbstractLifecycleServiceTest<Standard
 
 	override newService(executor : ExecutorService, logger : LoggingService, skillUninstaller : SkillUninstaller,
 		agentCreatorProvider : AgentCreatorProvider, contextListenerProvider : Provider<ExternalContextMemberListener>,
-		lifecycleListenerProvider : Provider<LifecycleServiceListener>) : StandardLifecycleService {
+		lifecycleListenerProvider : Provider<LifecycleServiceListener>,
+		lifecycleConfig : Provider<LifecycleConfig>) : StandardLifecycleService {
 		var coll = new SmartListenerCollection(new SequenceListenerNotifier)
 		return new StandardLifecycleService(this.checker, agentCreatorProvider,
 			coll, lifecycleListenerProvider, contextListenerProvider,
-			skillUninstaller, executor, logger);
+			skillUninstaller, executor, logger, lifecycleConfig.get);
 	}
 
 }

@@ -21,19 +21,23 @@
 
 package io.sarl.sre.tests.runtime.bugs.bug981.mocks
 
-import io.sarl.sre.tests.testutils.agents.TestingAgent
-import io.sarl.sre.tests.testutils.agents.TestingAgent.RunPolicy
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.Schedules
-import io.sarl.core.DefaultContextInteractions
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 
-agent Launcher0 extends TestingAgent {
+agent Launcher0 {
 
 	uses Lifecycle, Schedules, DefaultContextInteractions
 
 	val COUNT = 100
 
-	def runAgentTest : RunPolicy {
+	uses TestingCapacity
+
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
 		for (var i : int = 0; i < COUNT; i++) {
 			typeof(MyAgent0).spawn(buildAgentInitializationParameters(i))
 		}
@@ -41,7 +45,6 @@ agent Launcher0 extends TestingAgent {
 			emit(new Die)
 			killMe
 		]
-		return RunPolicy::STANDARD
 	}
 
 }

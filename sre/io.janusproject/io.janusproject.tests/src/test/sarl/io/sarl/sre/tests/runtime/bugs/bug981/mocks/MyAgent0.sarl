@@ -21,18 +21,12 @@
 
 package io.sarl.sre.tests.runtime.bugs.bug981.mocks
 
-import io.sarl.sre.tests.testutils.agents.TestingAgent
-import io.sarl.sre.tests.testutils.agents.TestingAgent.RunPolicy
 import io.sarl.core.Lifecycle
 
-agent MyAgent0 extends TestingAgent {
+agent MyAgent0 {
 
 	uses Lifecycle
 	
-	def runAgentTest : RunPolicy {
-		return RunPolicy::STANDARD
-	}
-
 	on Die {
 		killMe
 	}

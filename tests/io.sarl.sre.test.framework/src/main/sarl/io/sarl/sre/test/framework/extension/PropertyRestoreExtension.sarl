@@ -19,22 +19,40 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.tests.testutils.mockito
+package io.sarl.sre.test.framework.^extension
 
-import com.google.inject.Binder
-import com.google.inject.Module
+import java.util.Properties
+import org.junit.jupiter.api.^extension.AfterEachCallback
+import org.junit.jupiter.api.^extension.BeforeEachCallback
+import org.junit.jupiter.api.^extension.ExtensionContext
 
 /**
- * Mock of an injection module.
+ * JUnit 5 extension that is saving and restoring system properties.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.11
  */
-class ModuleMock implements Module {
+class PropertyRestoreExtension implements BeforeEachCallback, AfterEachCallback {
 
-	override configure(binder : Binder) {
+	var savedProperties : Properties
+	
+	override beforeEach(context : ExtensionContext) throws Exception {
+		 // Clear the system properties
+		 val props = System::getProperties
+		 this.savedProperties = props.clone as Properties
 	}
 	
+	override afterEach(context : ExtensionContext) throws Exception {
+		val sp = this.savedProperties
+		this.savedProperties = null
+		if (sp !== null) {
+			val props = System::getProperties
+			props.clear
+			props.putAll(sp)
+		}
+	}
+
 }

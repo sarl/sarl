@@ -369,6 +369,11 @@
 				<version>${sarl.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>io.sarl</groupId>
+				<artifactId>io.sarl.sre.test.framework</artifactId>
+				<version>${sarl.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>io.sarl.lang</groupId>
 				<artifactId>io.sarl.lang.tests</artifactId>
 				<version>${sarl.version}</version>

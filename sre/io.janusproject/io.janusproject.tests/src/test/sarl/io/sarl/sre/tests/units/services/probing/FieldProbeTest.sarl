@@ -30,7 +30,7 @@ import io.sarl.sre.services.probing.FieldProbe
 import io.sarl.sre.services.probing.IProbeListener
 import io.sarl.sre.services.probing.IProbeReleaseListener
 import io.sarl.sre.services.probing.Probe
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.net.URI

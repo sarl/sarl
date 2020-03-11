@@ -23,8 +23,10 @@ package io.sarl.sre.tests.units.skills.internal
 
 import io.sarl.lang.core.Event
 import io.sarl.sre.capacities.InternalSchedules
+import io.sarl.sre.internal.eventguard.BehaviorGuardEvaluator
+import io.sarl.sre.internal.eventguard.BehaviorGuardEvaluatorRegistry
 import io.sarl.sre.skills.internal.EventBus
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
@@ -48,8 +50,6 @@ import static extension org.junit.jupiter.api.Assertions.assertNotNull
 import static extension org.mockito.ArgumentMatchers.any
 import static extension org.mockito.Mockito.times
 import static extension org.mockito.Mockito.verify
-import io.sarl.sre.internal.eventguard.BehaviorGuardEvaluatorRegistry
-import io.sarl.sre.internal.eventguard.BehaviorGuardEvaluator
 
 /**
  * @author $Author: sgalland$

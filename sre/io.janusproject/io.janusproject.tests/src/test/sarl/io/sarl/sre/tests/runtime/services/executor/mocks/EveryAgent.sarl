@@ -22,9 +22,11 @@
 package io.sarl.sre.tests.runtime.services.executor.mocks
 
 import io.sarl.core.Destroy
+import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.Schedules
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 import java.util.concurrent.atomic.AtomicInteger
 
 /**
@@ -33,20 +35,22 @@ import java.util.concurrent.atomic.AtomicInteger
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent EveryAgent extends TestingAgent {
+agent EveryAgent {
 
 	uses Schedules, Lifecycle
 
 	var nb = new AtomicInteger(0)
-	
-	override runAgentTest : RunPolicy {
+
+	uses TestingCapacity
+
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
 		every(1000) [
 			var n = nb.incrementAndGet
 			if (n == 2) {
 				killMe
 			}
 		]
-		return RunPolicy::STANDARD
 	}
 
 	on Destroy {

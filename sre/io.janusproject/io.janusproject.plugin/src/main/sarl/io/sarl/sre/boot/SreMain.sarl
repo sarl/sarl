@@ -331,15 +331,22 @@ class SreMain implements SREBootstrap {
 	}
 
 	@SuppressWarnings("discouraged_reference")
-	def shutdown(blocking : boolean) throws InterruptedException {
-		var kern = this.kernel
+	def shutdown(blocking : boolean, timeout : int) {
+		var kern = getKernel
 		this.kernel = null
 		if (kern !== null) {
 			var stopBehavior = kern.shutdownTrigger
 			stopBehavior.run
 			if (blocking) {
-				while (kern.running) {
-					Thread::yield
+				if (timeout > 0) {
+					val endTime = System::currentTimeMillis + timeout
+					while (kern.running && System::currentTimeMillis <= endTime) {
+						Thread::yield
+					}
+				} else {
+					while (kern.running) {
+						Thread::yield
+					}
 				}
 			}
 		}

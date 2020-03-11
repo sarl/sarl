@@ -27,7 +27,7 @@ import io.sarl.lang.core.Agent
 import io.sarl.lang.core.SpaceID
 import io.sarl.sre.services.context.AbstractContextService
 import io.sarl.sre.services.context.Context
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
@@ -39,14 +39,14 @@ import org.junit.jupiter.api.^extension.ExtendWith
 import static org.junit.jupiter.api.Assertions.*
 import static org.mockito.Mockito.*
 
-import static extension io.sarl.sre.tests.testutils.^extension.ServiceManagementExtension.startServiceManually
+import static extension io.sarl.sre.test.framework.^extension.ServiceManagementExtension.*
 import static extension io.sarl.tests.api.tools.TestMockito.mock
 import static extension org.junit.jupiter.api.Assertions.assertFalse
 import static extension org.junit.jupiter.api.Assertions.assertNotNull
 import static extension org.junit.jupiter.api.Assertions.assertNull
 import static extension org.junit.jupiter.api.Assertions.assertTrue
 
-/**
+/** 
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

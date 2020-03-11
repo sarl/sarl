@@ -21,23 +21,27 @@
 
 package io.sarl.sre.tests.runtime.internal.eventguard.mocks
 
-import io.sarl.sre.tests.testutils.agents.TestingAgent
 import io.sarl.core.DefaultContextInteractions
-import io.sarl.core.Schedules
+import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
+import io.sarl.core.Schedules
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 
-abstract agent Agent0 extends TestingAgent {
+abstract agent Agent0 {
 
 	uses DefaultContextInteractions, Schedules, Lifecycle
 
-	def runAgentTest : RunPolicy {
+	uses TestingCapacity
+
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
 		in(1000) [
 			new Event0().emit
 		]
 		in(2000) [
 			killMe
 		]
-		return RunPolicy::STANDARD
 	}
 
 	def myfunction : void {

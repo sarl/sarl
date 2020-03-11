@@ -257,6 +257,9 @@ final class AgentLife {
 		assert dyingAgent !== null
 
 		try {
+			// Copy the external event listener in order to unregistered it later.
+			var listener = this.eventBus.associatedEventBusListener
+
 			// Pre-stage for uninstalling the skills (BIC and user defined)
 			var skills : CopyOnWriteArraySet<? extends Skill>
 			try {
@@ -288,9 +291,6 @@ final class AgentLife {
 			var contexts = getEnclosingContexts
 
 			enclosingContextsCopy += contexts
-
-			// Copy the external event listener in order to unregistered it later.
-			var listener = this.eventBus.associatedEventBusListener
 
 			// Final stage for uninstalling the skills (BIC and user defined)
 			try {

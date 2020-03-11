@@ -31,6 +31,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Set of utility classes that provide additional assertion functions.
  *
@@ -57,6 +58,7 @@ public final class TestUtils {
 	 * @param operand2 the second array.
 	 * @return the merge.
 	 */
+	@Pure
 	public static String[] merge(String[] operand1, String[] operand2) {
 		if (operand1 == null) {
 			if (operand2 == null) {
@@ -113,6 +115,7 @@ public final class TestUtils {
 	 *
 	 * @return <code>true</code> if the runtime environment is Eclipse.
 	 */
+	@Pure
 	public static boolean isEclipseRuntimeEnvironment() {
 		final String cmd = System.getProperty("sun.java.command", "");
 		// Assuming that the Maven launcher is providing an absolute path to the launcher.
@@ -134,6 +137,7 @@ public final class TestUtils {
 	 *
 	 * @return the stack trace.
 	 */
+	@Pure
 	public static StackTraceElement[] getStackTrace() {
 		try {
 			throw new Exception();
@@ -154,6 +158,7 @@ public final class TestUtils {
 	 * @return the line separator from the {@code "line.separator"} property, or {@code "\n"}.
 	 * @since 0.5
 	 */
+	@Pure
 	public static String getLineSeparator() {
 		final String nl = System.getProperty("line.separator");
 		if (Strings.isNullOrEmpty(nl)) {
@@ -168,6 +173,7 @@ public final class TestUtils {
 	 * @param lines the lines in the string.
 	 * @return the complete multi-line string.
 	 */
+	@Pure
 	public static String multilineString(Object... lines) {
 		return Joiner.on(getLineSeparator()).join(lines);
 	}
@@ -179,6 +185,7 @@ public final class TestUtils {
 	 * @param isNaNEqual indicates if the NaN value is equals to itself.
 	 * @return <code>true</code> or <code>false</code>
 	 */
+	@Pure
 	public static boolean isEpsilonEquals(double v1, double v2, boolean isNaNEqual) {
 		if (v1 == v2) {
 			return true;
@@ -205,6 +212,7 @@ public final class TestUtils {
 	 * @param precision is the number of decimal digits to test.
 	 * @return <code>true</code> or <code>false</code>
 	 */
+	@Pure
 	public static boolean isEpsilonEquals(BigDecimal v1, BigDecimal v2, int precision) {
 		final BigDecimal ma = v1.movePointRight(precision);
 		final BigDecimal mb = v2.movePointRight(precision);
@@ -216,6 +224,38 @@ public final class TestUtils {
 		aa = ma.setScale(0, BigDecimal.ROUND_DOWN);
 		bb = mb.setScale(0, BigDecimal.ROUND_DOWN);
 		return aa.compareTo(bb) == 0;
+	}
+
+	/** 
+	 * Replies result at the given index of the run of the agent.
+	 * 
+	 * @param source - the source of the data.
+	 * @param type - the type of the result.
+	 * @param index - the index of the result.
+	 * @return the value; or {@code null} if no result.
+	 */
+	@Pure
+	public static <T> T elementAt(List<?> source, Class<T> type, int index) {
+		final Object element = source.get(index);
+		if (element == null || type.isInstance(element)) {
+			return type.cast(element);
+		}
+		return null;
+	}
+
+	/** Replies the simple name of the given type name
+	 * 
+	 * @param typeName the fully qualified name of a type.
+	 */
+	@Pure
+	public static String simpleTypeName(String typeName) {
+		final int index1 = typeName.lastIndexOf("$");
+		final int index2 = typeName.lastIndexOf(".");
+		final int index = Math.max(index1, index2);
+			if (index >= 0) {
+				return typeName.substring(index + 1);
+			}
+		return typeName;
 	}
 
 }

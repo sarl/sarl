@@ -22,7 +22,9 @@
 package io.sarl.sre.tests.runtime.boot.boot.mocks
 
 import io.sarl.core.DefaultContextInteractions
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.core.Initialize
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 
 /**
  * @author $Author: sgalland$
@@ -30,14 +32,17 @@ import io.sarl.sre.tests.testutils.agents.TestingAgent
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent BootAgent1 extends TestingAgent {
+agent BootAgent1 {
 
 	uses DefaultContextInteractions
 
-	override runAgentTest : RunPolicy {
+	uses TestingCapacity
+
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
 		var id = defaultContext.ID
-		addResult(id)
-		return RunPolicy::DIFFERED_KILLING
+		id.addResult
+		killMeSoon
 	}
 
 }

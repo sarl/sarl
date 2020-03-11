@@ -30,11 +30,9 @@ import io.sarl.lang.core.Capacities
 import io.sarl.lang.core.SREutils
 import io.sarl.lang.core.Skill
 import io.sarl.sre.capacities.InternalSchedules
-import io.sarl.sre.services.executor.EarlyExitException
 import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.executor.SreRunnable
 import java.lang.ref.WeakReference
-import java.text.MessageFormat
 import java.util.Map
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
@@ -638,6 +636,8 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 
 		protected val agentTaskRef : WeakReference<TaskDescription>
 
+		val state = new ThreadLocal<TaskTermination>
+
 		new (^skill : SchedulesSkill, ^agent : Agent, task : TaskDescription, logger : Logger) {
 			super(logger)
 			assert ^skill !== null
@@ -662,7 +662,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 			return TaskTermination::NO_PROCEDURE_RUN
 		}
 
-		final override run {
+		final override internalRun {
 			val taskDescription = this.agentTaskRef.get
 			if (taskDescription === null) {
 				throw new RuntimeException(Messages.SchedulesSkill_0)
@@ -678,30 +678,25 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 			if (!preRun) {
 				return
 			}
-			val ^skill = this.^skill?.get
-			assert ^skill !== null
-			var mustBeFinished = TaskTermination::PROCEDURE_RUN
-			try {
-				try {
-					mustBeFinished = task.coreRun
-				} catch (ex : EarlyExitException) {
-					throw ex
-				} catch (ex : InterruptedException) {
-					throw ex
-				} catch (ex : Throwable) {
-					mustBeFinished = TaskTermination::ERROR_IN_PROCEDURE
-					this.logger.severe(
-						MessageFormat::format(Messages.SchedulesSkill_1, ex, toString, ex.getLocalizedMessage))
-				} finally {
-					val finishTask = postRun(mustBeFinished)
-					if (finishTask) {
-						^skill.finishTask(task, false, true, true);
-					}
-				}
-			} catch (ex : EarlyExitException) {
-				ex.runPostTreatment(this.logger)
-			} catch (ex : InterruptedException) {
-				// Ignore this exception
+			this.state.set(TaskTermination::PROCEDURE_RUN)
+			val mustBeFinished = task.coreRun
+			this.state.set(mustBeFinished)
+		}
+	
+		def onError(e : Throwable) {
+			this.state.set(TaskTermination::ERROR_IN_PROCEDURE)
+		}
+
+		final def onFinished {
+			val finishTask = postRun(this.state.get)
+			if (finishTask) {
+				val taskDescription = this.agentTaskRef.get
+				assert taskDescription !== null
+				val task = taskDescription.task
+				assert task !== null
+				val ^skill = this.^skill?.get
+				assert ^skill !== null
+				^skill.finishTask(task, false, true, true);
 			}
 		}
 

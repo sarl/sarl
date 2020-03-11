@@ -21,9 +21,11 @@
 
 package io.sarl.sre.tests.runtime.services.lifecycle.mocks
 
+import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.Schedules
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 
 /**
  * @author $Author: sgalland$
@@ -31,15 +33,17 @@ import io.sarl.sre.tests.testutils.agents.TestingAgent
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent TaskKillTestAgent extends TestingAgent {
+agent TaskKillTestAgent {
 
 	uses Schedules, Lifecycle
 
-	override runAgentTest : RunPolicy {
+	uses TestingCapacity
+	
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
 		addResult("1")
 		in(1000) [killMe]
 		addResult("2")
-		return null
 	}
 
 }

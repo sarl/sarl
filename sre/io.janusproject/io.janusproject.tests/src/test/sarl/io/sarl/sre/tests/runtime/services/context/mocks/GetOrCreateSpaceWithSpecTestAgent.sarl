@@ -22,8 +22,11 @@
 package io.sarl.sre.tests.runtime.services.context.mocks
 
 import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
 import io.sarl.core.OpenEventSpaceSpecification
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 import java.util.UUID
 
 import static org.junit.jupiter.api.Assertions.*
@@ -34,11 +37,14 @@ import static org.junit.jupiter.api.Assertions.*
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent GetOrCreateSpaceWithSpecTestAgent extends TestingAgent {
+agent GetOrCreateSpaceWithSpecTestAgent {
 
-	uses DefaultContextInteractions
+	uses DefaultContextInteractions, Lifecycle
 
-	override runAgentTest : RunPolicy {
+	uses TestingCapacity
+
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
 		var id = UUID::randomUUID
 		var ctx = defaultContext
 		var ^space = ctx.getOrCreateSpaceWithSpec(typeof(OpenEventSpaceSpecification), id)
@@ -48,7 +54,7 @@ agent GetOrCreateSpaceWithSpecTestAgent extends TestingAgent {
 		}
 		for (sp : ctx.spaces) {
 			if (id == sp.spaceID.ID) {
-			addResult("FOUND1")
+				addResult("FOUND1")
 			}
 		}
 		var space2 = ctx.getOrCreateSpaceWithSpec(typeof(OpenEventSpaceSpecification), id)
@@ -63,7 +69,7 @@ agent GetOrCreateSpaceWithSpecTestAgent extends TestingAgent {
 		}
 		var space4 = ctx.getOrCreateSpaceWithSpec(typeof(MySpaceSpec), id)
 		assertSame(space3, space4)
-		return RunPolicy::IMMEDIATE_KILLING
+		killMe
 	}
 
 }

@@ -25,7 +25,6 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 import io.sarl.lang.core.Agent
 import io.sarl.core.Behaviors
-import io.sarl.core.Destroy
 import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle

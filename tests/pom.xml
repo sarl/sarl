@@ -20,6 +20,7 @@
 	<modules>
 		<module>io.sarl.tests.testdata</module>
 		<module>io.sarl.tests.api</module>
+		<module>io.sarl.sre.test.framework</module>
 		<module>io.sarl.lang.core.tests</module>
 		<module>io.sarl.lang.tests</module>
 		<module>io.sarl.util.tests</module>

@@ -21,18 +21,23 @@
 
 package io.sarl.sre.tests.runtime.internal
 
+import io.sarl.sre.test.framework.context.SreRunContext
+import io.sarl.sre.test.framework.exception.SreTimeoutException
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.^extension.SreRunExtension
 import io.sarl.sre.tests.runtime.internal.mocks.RootAgent0
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
-import io.sarl.sre.tests.testutils.^extension.SreRunContext
-import io.sarl.sre.tests.testutils.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Tag
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static io.sarl.tests.api.tools.TestAssertions.*
+import static io.sarl.sre.test.framework.Constants.*
+
+import static extension io.sarl.tests.api.tools.TestAssertions.*
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Disabled
 
 /**
  * @author $Author: sgalland$
@@ -51,12 +56,18 @@ import static io.sarl.tests.api.tools.TestAssertions.*
 class OnMemberJoinedTest {
 
 	@Test
+	@Disabled
 	def run(extension rc : SreRunContext) {
-		typeof(RootAgent0).runSre
-		assertContains(allResults,
-				"ROOT:ChildAgent0", // Spawning
-				"ROOT:Child2Agent0", // Arrival of Child2 within the Inner context of Root.
-				"CHILD1:Child2Agent0") // Arrival of Child2 within the Inner context of Root.
+		typeof(SreTimeoutException).whenException [
+			typeof(RootAgent0).runSre(VERY_SHORT_TIMEOUT)
+		].verify [
+			allResults.assertContains(
+				"ROOT: spawned ChildAgent0",
+				"ROOT: joined Child2Agent0 in default space",
+				"ROOT: joined ChildAgent0 in inner space",
+				"ROOT: joined Child2Agent in inner space",
+				"CHILD1: joined Child2Agent0")
+		]
 	}
 
 }

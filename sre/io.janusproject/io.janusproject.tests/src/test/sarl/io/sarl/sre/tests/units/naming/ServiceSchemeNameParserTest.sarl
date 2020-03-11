@@ -26,7 +26,7 @@ import io.sarl.sre.naming.SarlName
 import io.sarl.sre.naming.ServiceName
 import io.sarl.sre.naming.ServiceSchemeNameParser
 import io.sarl.sre.services.logging.LoggingService
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension

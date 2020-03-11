@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-2020 the original authors or authors.
+ * Copyright (C) 2014-@RELEASE_YEAR@ the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,30 +18,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.sre.tests.runtime.bugs.bug942.mocks
 
-import io.sarl.core.Behaviors
-import io.sarl.core.Lifecycle
+package io.sarl.sre.tests.runtime.bugs.bug976.mocks
+
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
 import io.sarl.core.Schedules
-import io.sarl.sre.tests.testutils.agents.TestingAgent
 
-agent AgentBug942 extends TestingAgent {
+agent ScalableAgent {
+	
+	uses Schedules, DefaultContextInteractions
 
-	uses Schedules, Lifecycle, Behaviors
-
-	override runAgentTest : RunPolicy {
-		val beh = new BehaviorBug942(this)
-		beh.registerBehavior
-		return RunPolicy::STANDARD
+	on Initialize {
+		every(1000)[emit(new Taskgo)]
 	}
 
-	on EventBug942 {
-		addResult(new Data("ag", occurrence.getSource()));
-		in(1000) [killMe]
+	on Taskgo {
+		emit(new Back)
 	}
-
-	def addResultFrombehavior(data : Object) {
-		addResult(data)
-	}
-
+	
 }

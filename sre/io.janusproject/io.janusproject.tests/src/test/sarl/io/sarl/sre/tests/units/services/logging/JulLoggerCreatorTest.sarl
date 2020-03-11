@@ -25,7 +25,7 @@ import io.sarl.sre.boot.configs.SreConfig
 import io.sarl.sre.boot.configs.subconfigs.LoggingConfig
 import io.sarl.sre.boot.configs.subconfigs.ServicesConfig
 import io.sarl.sre.services.logging.JulLoggerCreator
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension

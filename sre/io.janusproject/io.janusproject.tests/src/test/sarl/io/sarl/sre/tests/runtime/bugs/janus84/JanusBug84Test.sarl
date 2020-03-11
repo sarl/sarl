@@ -21,10 +21,10 @@
 
 package io.sarl.sre.tests.runtime.bugs.janus84
 
+import io.sarl.sre.test.framework.context.SreRunContext
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.^extension.SreRunExtension
 import io.sarl.sre.tests.runtime.bugs.janus84.mocks.KilledInInitAgent
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
-import io.sarl.sre.tests.testutils.^extension.SreRunContext
-import io.sarl.sre.tests.testutils.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import org.junit.jupiter.api.DisplayName
@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static io.sarl.tests.api.tools.TestAssertions.*
+import static extension io.sarl.tests.api.tools.TestAssertions.*
 
 /**
  * Unit test for the issue #84: Problem with calling killMe in Initialize behavior of an agent.
@@ -55,8 +55,8 @@ class JanusBug84Test {
 
 	@Test
 	def killMeInInit(extension rc : SreRunContext) {
-		var kern = typeof(KilledInInitAgent).runSre
-		assertNoErrorLog(kern)
+		typeof(KilledInInitAgent).runSre
+		assertNoErrorLogInResults
 		assertContains(getResults)
 	}
 

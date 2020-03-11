@@ -21,10 +21,12 @@
 
 package io.sarl.sre.tests.runtime.services.lifecycle.mocks
 
+import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
 import io.sarl.core.Schedules
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 
 /**
  * @author $Author: sgalland$
@@ -32,11 +34,14 @@ import io.sarl.sre.tests.testutils.agents.TestingAgent
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent NoChildInnerContextIsKillableTestAgent extends TestingAgent {
+agent NoChildInnerContextIsKillableTestAgent {
 
 	uses Lifecycle, Schedules, InnerContextAccess
 
-	override runAgentTest : RunPolicy {
+	uses TestingCapacity
+
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
 		addResult("1")
 		var ctx = getInnerContext
 		assert ctx !== null
@@ -44,7 +49,6 @@ agent NoChildInnerContextIsKillableTestAgent extends TestingAgent {
 			addResult("2")
 			killMe
 		]
-		return null
 	}
 
 }

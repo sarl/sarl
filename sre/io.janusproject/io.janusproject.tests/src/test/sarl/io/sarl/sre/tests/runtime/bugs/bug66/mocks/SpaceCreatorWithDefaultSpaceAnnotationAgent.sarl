@@ -21,20 +21,25 @@
 package io.sarl.sre.tests.runtime.bugs.bug66.mocks
 
 import io.sarl.core.DefaultContextInteractions
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.core.Initialize
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 import java.util.UUID
 
-agent SpaceCreatorWithDefaultSpaceAnnotationAgent extends TestingAgent {
+agent SpaceCreatorWithDefaultSpaceAnnotationAgent {
 
 	uses DefaultContextInteractions
 
-	override runAgentTest : RunPolicy {
+	uses TestingCapacity
+
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
 		val ctx = defaultContext
 		val dftSpc = ctx.defaultSpace
 		val ^space = ctx.getOrCreateSpaceWithSpec(typeof(MySpaceSpecificationWithDefaultSpaceAnnotation), UUID::randomUUID)
 		dftSpc.addResult
 		^space.addResult
-		return RunPolicy::DIFFERED_KILLING
+		killMeSoon
 	}
 
 }

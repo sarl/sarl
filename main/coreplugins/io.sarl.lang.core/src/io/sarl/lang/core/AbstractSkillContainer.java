@@ -88,19 +88,26 @@ public abstract class AbstractSkillContainer extends AgentProtectedAPIObject imp
 	@Override
 	@SafeVarargs
 	protected final <S extends Skill> S setSkill(S skill, Class<? extends Capacity>... capacities) {
-		$setSkill(skill, capacities);
+		$setSkill(skill, false, capacities);
 		return skill;
+	}
+
+	@Override
+	@SafeVarargs
+	protected final void setSkillIfAbsent(Skill skill, Class<? extends Capacity>... capacities) {
+		$setSkill(skill, true, capacities);
 	}
 
 	/** Add a skill to the agent.
 	 *
 	 * @param skill the new skill.
+	 * @param ifabsent indicates if the skill mapping is set up if it is absent.
 	 * @param capacities the implemented capacities by the skill.
 	 * @return the reference to the skill.
-	 * @since 16.0
+	 * @since 0.11
 	 */
 	@SafeVarargs
-	protected final AtomicSkillReference $setSkill(Skill skill, Class<? extends Capacity>... capacities) {
+	protected final AtomicSkillReference $setSkill(Skill skill, boolean ifabsent, Class<? extends Capacity>... capacities) {
 		assert skill != null : "the skill parameter must not be null"; //$NON-NLS-1$
 		$attachOwner(skill);
 		AtomicSkillReference newRef = null;
@@ -110,7 +117,7 @@ public abstract class AbstractSkillContainer extends AgentProtectedAPIObject imp
 				final Class<?> type = element.getRawType();
 				if (Capacity.class.isAssignableFrom(type) && !Capacity.class.equals(type)) {
 					final Class<? extends Capacity> capacityType = type.asSubclass(Capacity.class);
-					newRef = registerSkill(skill, capacityType, newRef);
+					newRef = registerSkill(skill, ifabsent, capacityType, newRef);
 				}
 			}
 		} else {
@@ -122,7 +129,7 @@ public abstract class AbstractSkillContainer extends AgentProtectedAPIObject imp
 							"the skill must implement the given capacity " //$NON-NLS-1$
 							+ capacity.getName());
 				}
-				newRef = registerSkill(skill, capacity, newRef);
+				newRef = registerSkill(skill, ifabsent, capacity, newRef);
 			}
 		}
 		return newRef;
@@ -135,11 +142,19 @@ public abstract class AbstractSkillContainer extends AgentProtectedAPIObject imp
 	 */
 	protected abstract void $attachOwner(Skill skill);
 
-	private AtomicSkillReference registerSkill(Skill skill, Class<? extends Capacity> capacity, AtomicSkillReference firstRef) {
-		final AtomicSkillReference newReference = new AtomicSkillReference(skill);
-		final AtomicSkillReference oldReference = $getSkillRepository().put(capacity, newReference);
-		if (oldReference != null) {
-			oldReference.clear();
+	private AtomicSkillReference registerSkill(Skill skill, boolean ifabsent,
+			Class<? extends Capacity> capacity, AtomicSkillReference firstRef) {
+		final AtomicSkillReference newReference;
+		if (ifabsent) {
+			newReference = $getSkillRepository().computeIfAbsent(capacity, it -> {
+				return new AtomicSkillReference(skill);
+			});
+		} else {
+			newReference =  new AtomicSkillReference(skill);
+			final AtomicSkillReference oldReference = $getSkillRepository().put(capacity, newReference);
+			if (oldReference != null) {
+				oldReference.clear();
+			}
 		}
 		if (firstRef == null) {
 			return newReference;

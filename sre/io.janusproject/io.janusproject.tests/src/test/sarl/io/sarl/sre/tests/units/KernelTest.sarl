@@ -28,8 +28,8 @@ import io.sarl.sre.services.context.ContextService
 import io.sarl.sre.services.lifecycle.LifecycleService
 import io.sarl.sre.services.lifecycle.LifecycleSpawnCallback
 import io.sarl.sre.services.logging.LoggingService
-import io.sarl.sre.tests.testutils.agents.IddleTestingAgent
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.agents.ShortLifeTestingAgent
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
@@ -129,7 +129,7 @@ class KernelTest {
 
 	@Test
 	def spawnClassObjectArray {
-		this.kernel.spawn(typeof(IddleTestingAgent), null, 1, "a")
+		this.kernel.spawn(typeof(ShortLifeTestingAgent), null, 1, "a")
 		
 		var capturedNb = ArgumentCaptor::forClass(typeof(int))
 		var capturedSpawner = ArgumentCaptor::forClass(typeof(UUID))
@@ -144,7 +144,7 @@ class KernelTest {
 		assertNull(capturedSpawner.value)
 		assertSame(this.rootContext, capturedContext.value)
 		assertNull(capturedAgentId.value)
-		assertEquals(typeof(IddleTestingAgent), capturedAgentType.value)
+		assertEquals(typeof(ShortLifeTestingAgent), capturedAgentType.value)
 		assertEquals(1, capturedParams.allValues.get(0))
 		assertEquals("a", capturedParams.allValues.get(1))
 	}
@@ -153,7 +153,7 @@ class KernelTest {
 	def spawnUUIDClassObjectArray : void {
 		var expectedId = UUID::randomUUID
 
-		this.kernel.spawn(expectedId, typeof(IddleTestingAgent), null, 1, "a");
+		this.kernel.spawn(expectedId, typeof(ShortLifeTestingAgent), null, 1, "a");
 		
 		var capturedNb = ArgumentCaptor::forClass(typeof(int))
 		var capturedSpawner = ArgumentCaptor::forClass(typeof(UUID))
@@ -169,7 +169,7 @@ class KernelTest {
 		assertNull(capturedSpawner.value)
 		assertSame(this.rootContext, capturedContext.value)
 		assertSame(expectedId, capturedAgentId.value)
-		assertEquals(typeof(IddleTestingAgent), capturedAgentType.value)
+		assertEquals(typeof(ShortLifeTestingAgent), capturedAgentType.value)
 		assertSame(null, capturedCallback.value)
 		assertEquals(1, capturedParams.allValues.get(0))
 		assertEquals("a", capturedParams.allValues.get(1))
@@ -177,7 +177,7 @@ class KernelTest {
 
 	@Test
 	def spawnIntClassObjectArray {
-		this.kernel.spawn(34, typeof(IddleTestingAgent),
+		this.kernel.spawn(34, typeof(ShortLifeTestingAgent),
 			null,
 			1, "a")
 		
@@ -195,7 +195,7 @@ class KernelTest {
 		assertNull(capturedSpawner.value)
 		assertSame(this.rootContext, capturedContext.value)
 		assertNull(capturedAgentId.value)
-		assertEquals(typeof(IddleTestingAgent), capturedAgentType.value)
+		assertEquals(typeof(ShortLifeTestingAgent), capturedAgentType.value)
 		assertSame(null, capturedCallback.value)
 		assertEquals(1, capturedParams.allValues.get(0))
 		assertEquals("a", capturedParams.allValues.get(1))

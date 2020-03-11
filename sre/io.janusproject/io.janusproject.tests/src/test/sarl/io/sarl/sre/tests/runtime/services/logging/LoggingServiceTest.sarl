@@ -21,11 +21,11 @@
 
 package io.sarl.sre.tests.runtime.services.logging
 
+import io.sarl.sre.test.framework.context.LogTrackingMode
+import io.sarl.sre.test.framework.context.SreRunContext
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.^extension.SreRunExtension
 import io.sarl.sre.tests.runtime.services.logging.mocks.VerboseAgent
-import io.sarl.sre.tests.testutils.^extension.LogTrackingMode
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
-import io.sarl.sre.tests.testutils.^extension.SreRunContext
-import io.sarl.sre.tests.testutils.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.logging.LogRecord
@@ -34,8 +34,7 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static extension org.junit.jupiter.api.Assertions.assertEquals
-import static extension org.junit.jupiter.api.Assertions.assertNotNull
+import static extension org.junit.jupiter.api.Assertions.*
 
 /** 
  * @author $Author: sgalland$

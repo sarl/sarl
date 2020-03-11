@@ -25,7 +25,7 @@ import io.sarl.sre.naming.BehaviorName
 import io.sarl.sre.naming.BehaviorSchemeNameParser
 import io.sarl.sre.naming.NameParser
 import io.sarl.sre.naming.SarlName
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.tests.units.naming.mocks.BehaviorMock
 import io.sarl.sre.tests.units.naming.mocks.CapacityMock
 import io.sarl.tests.api.Nullable

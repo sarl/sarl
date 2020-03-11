@@ -28,7 +28,7 @@ import io.sarl.sre.naming.NameParser
 import io.sarl.sre.naming.ServiceSchemeNameParser
 import io.sarl.sre.naming.SkillSchemeNameParser
 import io.sarl.sre.naming.SpaceSchemeNameParser
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension

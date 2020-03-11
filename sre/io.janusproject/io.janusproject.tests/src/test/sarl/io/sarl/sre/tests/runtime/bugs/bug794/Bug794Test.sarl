@@ -21,6 +21,9 @@
 
 package io.sarl.sre.tests.runtime.bugs.bug794
 
+import io.sarl.sre.test.framework.context.SreRunContext
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.^extension.SreRunExtension
 import io.sarl.sre.tests.runtime.bugs.bug794.mocks.SpawnerAgent1
 import io.sarl.sre.tests.runtime.bugs.bug794.mocks.SpawnerAgent10
 import io.sarl.sre.tests.runtime.bugs.bug794.mocks.SpawnerAgent2
@@ -32,9 +35,6 @@ import io.sarl.sre.tests.runtime.bugs.bug794.mocks.SpawnerAgent6
 import io.sarl.sre.tests.runtime.bugs.bug794.mocks.SpawnerAgent7
 import io.sarl.sre.tests.runtime.bugs.bug794.mocks.SpawnerAgent8
 import io.sarl.sre.tests.runtime.bugs.bug794.mocks.SpawnerAgent9
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
-import io.sarl.sre.tests.testutils.^extension.SreRunContext
-import io.sarl.sre.tests.testutils.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import org.junit.jupiter.api.DisplayName

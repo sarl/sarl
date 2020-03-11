@@ -64,7 +64,7 @@ public class SarlcConfigModule extends AbstractModule {
 
 	private static final String TEMP_DIR_OPTION = "tempdir"; //$NON-NLS-1$
 
-	private static final String BOOTCLASSPATH_OPTION = "bootclasspath"; //$NON-NLS-1$
+	private static final String BOOTCLASSPATH_OPTION = "boot-classpath"; //$NON-NLS-1$
 
 	private static final String GENERATOR_OPTION = "generator"; //$NON-NLS-1$
 
