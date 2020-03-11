@@ -20,8 +20,9 @@ class MyAppFxViewerController extends FxViewerController {
 	def initialize {
 		// Launching of the agent-side of the application
 		if (!this.launched.getAndSet(true)) {
-			// First launch => start the agent framework with an agent of type MyAgent.
-			this.launchedAgent = startAgentApplication(typeof(MyAgent)) [
+			// First launch => start the agent framework with an agent of type MyAgent and the computed id.
+			val id = UUID::randomUUID
+			startAgentApplication(typeof(MyAgent), id) [
 				// TODO: Put any action that must be done after the first agent launching
 			]
 		}
