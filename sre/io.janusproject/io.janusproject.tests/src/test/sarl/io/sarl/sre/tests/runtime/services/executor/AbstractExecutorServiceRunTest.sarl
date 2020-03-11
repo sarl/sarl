@@ -36,6 +36,7 @@ import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.List
 import java.util.UUID
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
@@ -92,6 +93,7 @@ abstract class AbstractExecutorServiceRunTest {
 	@Test
 	@SuppressWarnings("use_reserved_sarl_annotation")
 	@PrivateAPI(isCallerOnly = true)
+	@Disabled
 	def every_01(extension rc : SreRunContext) {
 		val kern = typeof(WaiterAgent).setupTheSreKernel(null, null)
 		kern.startAgent(typeof(EveryAgent), null, getAgentInitializationParameters)

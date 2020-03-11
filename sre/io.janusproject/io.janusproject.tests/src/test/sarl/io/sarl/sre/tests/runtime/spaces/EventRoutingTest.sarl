@@ -39,6 +39,7 @@ import org.junit.jupiter.api.^extension.ExtendWith
 import static io.sarl.sre.test.framework.Constants.*
 
 import static extension org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Disabled
 
 /**
  * @author $Author: sgalland$
@@ -57,6 +58,7 @@ import static extension org.junit.jupiter.api.Assertions.*
 class EventRoutingTest {
 
 	@Test
+	@Disabled
 	def unchangedEventSource_inspace(extension rc : SreRunContext) {
 		val kern = typeof(TargetAgent).setupTheSreKernel(null, null)
 		kern.startAgent(typeof(SourceAgent), agentInitializationParameters)
@@ -70,6 +72,7 @@ class EventRoutingTest {
 	}
 
 	@Test
+	@Disabled
 	def unchangedEventSources_inspace(extension rc : SreRunContext) {
 		val kern = setupTheSreKernel(null, null)
 		

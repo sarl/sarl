@@ -33,6 +33,7 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.^extension.ExtendWith
 
 import static io.sarl.tests.api.tools.TestAssertions.*
+import org.junit.jupiter.api.Disabled
 
 /**
  * @author $Author: sgalland$
@@ -51,6 +52,7 @@ import static io.sarl.tests.api.tools.TestAssertions.*
 class OnMemberLeftTest {
 
 	@RepeatedTest(5)
+	@Disabled
 	def run(extension rc : SreRunContext) {
 		typeof(RootAgent1).runSre
 		assertContains(allResults, "ROOT:ChildAgent1", "ROOT:Child2Agent1", "CHILD1:Child2Agent1")

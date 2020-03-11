@@ -33,6 +33,7 @@ import io.sarl.sre.tests.runtime.internal.mocks.SpyAgent3
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Tag
@@ -60,6 +61,7 @@ import static extension org.junit.jupiter.api.Assertions.*
 class OnParticipantLeftTest {
 
 	@RepeatedTest(5)
+	@Disabled
 	@DisplayName("ParticipantLeft in default space")
 	@SuppressWarnings("discouraged_reference")
 	def runParticipantLeftInDefaultSpace(extension rc : SreRunContext) {
@@ -86,6 +88,7 @@ class OnParticipantLeftTest {
 	}
 
 	@Test
+	@Disabled
 	@DisplayName("ParticipantLeft in other space")
 	@SuppressWarnings("discouraged_reference")
 	def runParticipantLeftInOtherSpace(extension rc : SreRunContext) {

@@ -406,13 +406,13 @@ class InvalidAgentNameException extends RuntimeException {
  */
 class BootConfigModule extends AbstractModule {
 
-	static val ROOT_CONTEXT_ID_OPTION = "rootContextId"
+	static val ROOT_CONTEXT_ID_OPTION = "root-context-id"
 
-	static val DEFAULT_SPACE_ID_OPTION = "defaultSpaceId"
+	static val DEFAULT_SPACE_ID_OPTION = "default-space-id"
 
 	static val NAME_OPTION = "name"
 
-	static val BOOT_TYPE_OPTION = "bootType"
+	static val BOOT_TYPE_OPTION = "boot-type"
 
 	override configure : void {
 		VariableDecls::extend(binder).declareVar(BOOT_AGENT_NAME)

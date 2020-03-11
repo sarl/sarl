@@ -230,31 +230,31 @@ class ServicesConfig {
  */
 class ServicesConfigModule extends AbstractModule {
 
-	static val XSERVICESTARTTIMEOUT_OPTION = "serviceStartTimeout"
+	static val SERVICESTARTTIMEOUT_OPTION = "service-start-timeout"
 
-	static val XSERVICESTOPTIMEOUT_OPTION = "serviceStopTimeout"
+	static val SERVICESTOPTIMEOUT_OPTION = "service-stop-timeout"
 
-	static val XASYNCPROBEUPDATE_OPTION = "asyncProbeUpdate"
+	static val ASYNCPROBEUPDATE_OPTION = "async-probe-update"
 
 	override configure : void {
 		VariableDecls::extend(binder).declareVar(START_TIMEOUT_NAME)
 		binder.extend.addOption(
-			OptionMetadata::builder(XSERVICESTARTTIMEOUT_OPTION,
+			OptionMetadata::builder(SERVICESTARTTIMEOUT_OPTION,
 				MessageFormat::format(Messages::ServicesConfigModule_0, START_TIMEOUT_VALUE))
 				.valueRequired(Messages::ServicesConfigModule_2)
-				.build).mapConfigPath(XSERVICESTARTTIMEOUT_OPTION, START_TIMEOUT_NAME)
+				.build).mapConfigPath(SERVICESTARTTIMEOUT_OPTION, START_TIMEOUT_NAME)
 
 		VariableDecls::extend(binder).declareVar(STOP_TIMEOUT_NAME)
-		binder.extend.addOption(OptionMetadata::builder(XSERVICESTOPTIMEOUT_OPTION,
+		binder.extend.addOption(OptionMetadata::builder(SERVICESTOPTIMEOUT_OPTION,
 				MessageFormat::format(Messages::ServicesConfigModule_1, STOP_TIMEOUT_VALUE))
 			.valueRequired(Messages::ServicesConfigModule_2)
-			.build).mapConfigPath(XSERVICESTOPTIMEOUT_OPTION, STOP_TIMEOUT_NAME)
+			.build).mapConfigPath(SERVICESTOPTIMEOUT_OPTION, STOP_TIMEOUT_NAME)
 
 		VariableDecls::extend(binder).declareVar(ASYNCHRONOUS_PROBE_UPDATE_NAME)
 		binder.extend.addOption(
-			OptionMetadata::builder(XASYNCPROBEUPDATE_OPTION,
+			OptionMetadata::builder(ASYNCPROBEUPDATE_OPTION,
 				MessageFormat::format(Messages::ServicesConfigModule_3, ASYNCHRONOUS_PROBE_UPDATE_NAME)).valueRequired(
-				Messages::ServicesConfigModule_4).build).mapConfigPath(XASYNCPROBEUPDATE_OPTION,
+				Messages::ServicesConfigModule_4).build).mapConfigPath(ASYNCPROBEUPDATE_OPTION,
 					ASYNCHRONOUS_PROBE_UPDATE_NAME)
 	}
 

@@ -33,6 +33,7 @@ import io.sarl.sre.tests.runtime.internal.mocks.SpyAgent2
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Tag
@@ -60,6 +61,7 @@ import static extension org.junit.jupiter.api.Assertions.*
 class OnParticipantJoinedTest {
 
 	@RepeatedTest(5)
+	@Disabled
 	@DisplayName("ParticipantJoined in default space")
 	@SuppressWarnings("discouraged_reference")
 	def runParticipantJoinedInDefaultSpace(extension rc : SreRunContext) {
@@ -83,6 +85,7 @@ class OnParticipantJoinedTest {
 	}
 
 	@Test
+	@Disabled
 	@DisplayName("ParticipantJoined in other space")
 	@SuppressWarnings("discouraged_reference")
 	def runParticipantJoinedInOtherSpace(extension rc : SreRunContext) {

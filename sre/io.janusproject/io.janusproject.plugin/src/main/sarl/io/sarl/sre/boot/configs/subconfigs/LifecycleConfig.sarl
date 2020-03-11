@@ -28,6 +28,7 @@ import io.bootique.annotation.BQConfig
 import io.bootique.annotation.BQConfigProperty
 import io.bootique.meta.application.OptionMetadata
 import java.lang.reflect.Type
+import java.text.MessageFormat
 import java.util.Collections
 import java.util.Map
 import org.arakhne.afc.bootique.variables.VariableDecls
@@ -36,7 +37,6 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import static io.sarl.sre.boot.configs.subconfigs.LifecycleConfig.*
 
 import static extension io.bootique.BQCoreModule.extend
-import java.text.MessageFormat
 
 /** 
  * Configuration for the agent lifecycle management.
@@ -163,32 +163,32 @@ class LifecycleConfig {
  */
 class LifecycleConfigModule extends AbstractModule {
 
-	static val XINJECTAGENT_OPTION = "injectagents"
+	static val INJECTAGENT_OPTION = "inject-agents"
 
-	static val XKERNELSTOPTIMEOUTONSPAWN_OPTION = "kernelstopdelayonspawn"
+	static val KERNELSTOPTIMEOUTONSPAWN_OPTION = "kernel-stop-delay-on-spawn"
 
-	static val XAGENTSPAWNINGCOUNTPERTHREAD = "agentspawnsperthread"
+	static val AGENTSPAWNINGCOUNTPERTHREAD = "agent-spawns-per-thread"
 	
 	override configure : void {
 		VariableDecls::extend(binder).declareVar(CREATE_AGENT_WITH_INJECTOR_NAME)
 		binder.extend.addOption(
-			OptionMetadata::builder(XINJECTAGENT_OPTION,
+			OptionMetadata::builder(INJECTAGENT_OPTION,
 				MessageFormat::format(Messages::LifecycleConfigModule_0, CREATE_AGENT_WITH_INJECTOR_VALUE))
-			.valueRequired(Messages::LifecycleConfigModule_1).build).mapConfigPath(XINJECTAGENT_OPTION,
+			.valueRequired(Messages::LifecycleConfigModule_1).build).mapConfigPath(INJECTAGENT_OPTION,
 			CREATE_AGENT_WITH_INJECTOR_NAME)
 
 		VariableDecls::extend(binder).declareVar(KERNEL_STOP_DELAY_ON_SPAWN_NAME)
 		binder.extend.addOption(
-			OptionMetadata::builder(XKERNELSTOPTIMEOUTONSPAWN_OPTION,
+			OptionMetadata::builder(KERNELSTOPTIMEOUTONSPAWN_OPTION,
 				MessageFormat::format(Messages::LifecycleConfigModule_2, KERNEL_STOP_DELAY_ON_SPAWN_VALUE)).valueRequired(
-				Messages::LifecycleConfigModule_3).build).mapConfigPath(XKERNELSTOPTIMEOUTONSPAWN_OPTION,
+				Messages::LifecycleConfigModule_3).build).mapConfigPath(KERNELSTOPTIMEOUTONSPAWN_OPTION,
 			KERNEL_STOP_DELAY_ON_SPAWN_NAME)
 
 		VariableDecls::extend(binder).declareVar(AGENT_SPAWNING_COUNT_PER_THREAD_NAME)
 		binder.extend.addOption(
-			OptionMetadata::builder(XAGENTSPAWNINGCOUNTPERTHREAD,
+			OptionMetadata::builder(AGENTSPAWNINGCOUNTPERTHREAD,
 				MessageFormat::format(Messages::LifecycleConfigModule_4, AGENT_SPAWNING_COUNT_PER_THREAD_VALUE)).valueRequired(
-				Messages::LifecycleConfigModule_5).build).mapConfigPath(XAGENTSPAWNINGCOUNTPERTHREAD,
+				Messages::LifecycleConfigModule_5).build).mapConfigPath(AGENTSPAWNINGCOUNTPERTHREAD,
 			AGENT_SPAWNING_COUNT_PER_THREAD_NAME)
 	}
 
