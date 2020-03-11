@@ -82,23 +82,6 @@ class SreRunContext {
 		this.bootstrap.bootAgentIdentifier
 	}
 
-	/** 
-	 * Replies result at the given index of the run of the agent.
-	 * 
-	 * @param source - the source of the data.
-	 * @param type - the type of the result.
-	 * @param index - the index of the result.
-	 * @return the value; or {@code null} if no result.
-	 */
-	@Pure
-	static def get(source : List<?>, type : Class<T>, index : int) : T with T {
-		var element = source.get(index);
-		if (element === null || type.isInstance(element)) {
-			return type.cast(element);
-		}
-		return null
-	}
-
 	private def key(agentId : UUID) : UUID {
 		var id = agentId
 		if (id === null) {
@@ -344,7 +327,7 @@ class SreRunContext {
 		System::setProperty(VariableNames::toPropertyName(Log4jIntegrationConfig::LEVEL), glvl.name)
 		this.globalResults.clear
 		this.bootstrap = SRE::getBootstrap
-		this.bootstrap.startWithoutAgent
+		this.rootContext = this.bootstrap.startWithoutAgent
 		val logger = this.bootstrap.kernelLogger
 		switch (tm) {
 			case SILENT: {

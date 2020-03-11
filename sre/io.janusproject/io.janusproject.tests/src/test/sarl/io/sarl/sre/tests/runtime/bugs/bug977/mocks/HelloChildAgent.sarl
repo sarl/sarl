@@ -25,21 +25,27 @@ import io.sarl.core.Destroy
 import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.Schedules
+import io.sarl.sre.test.framework.skills.TestingCapacity
 
 agent HelloChildAgent extends AbstractAgent {
 	
 	uses Lifecycle, Schedules
-	
+
+	uses TestingCapacity
+
 	on Initialize {
+		occurrence.ensureSkill
 		addResult("3")
 		in(1000)[killMe]
 	} 
 	
 	on Initialize {
+		occurrence.ensureSkill
 		addResult("4")
 	}
 	
-	on Initialize[i>=0] {
+	on Initialize [i >= 0] {
+		occurrence.ensureSkill
 		addResult("5")
 	}
 	

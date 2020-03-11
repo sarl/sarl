@@ -22,8 +22,10 @@
 package io.sarl.sre.tests.runtime.bugs.bug546.mocks
 
 import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 import java.util.UUID
 
 /**
@@ -34,16 +36,18 @@ import java.util.UUID
  * @see https://github.com/sarl/sarl/issues/546
  */
 @SuppressWarnings("potential_field_synchronization_problem")
-agent ChildAgent extends TestingAgent {
+agent ChildAgent {
 
 	uses DefaultContextInteractions, Lifecycle
 
 	var waiterId : UUID
-	
-	override runAgentTest : RunPolicy {
+
+	uses TestingCapacity
+
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
 		this.waiterId = agentInitializationParameters.get(1) as UUID
 		emit(new Hello) [it.UUID == this.waiterId]
-		return RunPolicy::STANDARD
 	}
 	
 	on KillYou {

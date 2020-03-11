@@ -87,4 +87,8 @@ final class Constants {
 	 */
 	public static val TEST_LOGGING_LEVEL = Level::ALL
 
+	/** Time to consider before doing a differed kill.
+	 */
+	public static val DIFFERED_KILLING_DURATION = 1000
+
 }

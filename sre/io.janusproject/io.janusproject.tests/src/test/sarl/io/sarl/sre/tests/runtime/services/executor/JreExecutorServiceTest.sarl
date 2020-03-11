@@ -21,12 +21,11 @@
 package io.sarl.sre.tests.runtime.services.executor;
 
 import io.sarl.lang.annotation.PrivateAPI
-import io.sarl.sre.Kernel
 import io.sarl.sre.boot.configs.subconfigs.ExecutorsConfig
 import io.sarl.sre.services.executor.JreExecutorService
 import io.sarl.sre.services.lifecycle.LifecycleService
+import io.sarl.sre.test.framework.context.SreRunContext
 import io.sarl.sre.tests.runtime.services.executor.mocks.CancelTaskAgent2
-import io.sarl.sre.tests.testutils.^extension.SreRunContext
 import java.util.List
 import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.ThreadPoolExecutor
@@ -37,9 +36,10 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 
-import static io.sarl.sre.tests.testutils.Constants.*
+import static io.sarl.sre.test.framework.Constants.*
 import static io.sarl.tests.api.tools.TestAssertions.*
 
+import static extension io.sarl.tests.api.tools.TestUtils.*
 import static extension org.junit.jupiter.api.Assertions.assertEquals
 import static extension org.junit.jupiter.api.Assertions.assertFalse
 
@@ -79,29 +79,25 @@ class JreExecutorServiceTest extends AbstractExecutorServiceRunTest {
 			var seq = sexec.queue
 			nb1.set(seq.size)
 		]
-		try {
-			waitForTheKernel(EXTRA_TIMEOUT)
-		} finally {
-			Kernel::executeForcedAgentStop(kern)
-		}
+		waitForTheKernel(EXTRA_TIMEOUT)
 
 		// Check the number of active tasks into the agent
 		var all = allResults
 		assertEquals(5, all.size)
 		// After creating T1
-		var actives1 = all.get(typeof(List), 0)
+		var actives1 = all.elementAt(typeof(List), 0)
 		assertContains(actives1, "T1")
 		// After creating T1 and T2
-		var actives2 = all.get(typeof(List), 1)
+		var actives2 = all.elementAt(typeof(List), 1)
 		assertContains(actives2, "T1", "T2")
 		// After creating T1, T2 and T3
-		var actives3 = all.get(typeof(List), 2)
+		var actives3 = all.elementAt(typeof(List), 2)
 		assertContains(actives3, "T1", "T2", "T3")
 		// After cancel T1. T2 and T3 are still active
-		var actives4 = all.get(typeof(List), 3)
+		var actives4 = all.elementAt(typeof(List), 3)
 		assertContains(actives4, "T2", "T3")
 		// Inside on destroy
-		var actives5 = all.get(typeof(List), 4)
+		var actives5 = all.elementAt(typeof(List), 4)
 		assertContains(actives5)
 
 		// Check the number of tasks at the kernel level

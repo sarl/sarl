@@ -18,7 +18,7 @@
 		</dependency>
 		<dependency>
 			<groupId>io.sarl</groupId>
-			<artifactId>io.sarl.tests.api</artifactId>
+			<artifactId>io.sarl.sre.test.framework</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

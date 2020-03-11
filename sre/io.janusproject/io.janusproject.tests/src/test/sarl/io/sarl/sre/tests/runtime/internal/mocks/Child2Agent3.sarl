@@ -24,11 +24,13 @@ package io.sarl.sre.tests.runtime.internal.mocks
 import io.sarl.core.ContextLeft
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.ExternalContextAccess
+import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.core.Schedules
 import io.sarl.lang.core.AgentContext
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 import java.util.UUID
 
 /**
@@ -38,13 +40,16 @@ import java.util.UUID
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("potential_field_synchronization_problem")
-agent Child2Agent3 extends TestingAgent {
+agent Child2Agent3 {
 	
 	uses Schedules, ExternalContextAccess, Lifecycle, Logging, DefaultContextInteractions
 
 	var contextID : UUID
 
-	override runAgentTest : RunPolicy {
+	uses TestingCapacity
+
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
 		loggingName = "CHILD2"
 		val newContext = getAgentInitializationParameters.get(1) as AgentContext
 		this.contextID = newContext.ID
@@ -53,7 +58,6 @@ agent Child2Agent3 extends TestingAgent {
 				in(500) [leftContext]
 			}
 		]
-		return null
 	}
 	
 	def leftContext {

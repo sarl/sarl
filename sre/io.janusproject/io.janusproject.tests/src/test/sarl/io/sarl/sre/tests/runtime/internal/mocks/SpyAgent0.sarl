@@ -21,10 +21,12 @@
 
 package io.sarl.sre.tests.runtime.internal.mocks
 
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.ParticipantJoined
-import io.sarl.sre.tests.testutils.agents.TestingAgent
-import io.sarl.core.DefaultContextInteractions
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 
 /**
  * @author $Author: sgalland$
@@ -32,12 +34,14 @@ import io.sarl.core.DefaultContextInteractions
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent SpyAgent0 extends TestingAgent {
+agent SpyAgent0 {
 
 	uses Lifecycle, DefaultContextInteractions
 
-	override runAgentTest : RunPolicy {
-		return null
+	uses TestingCapacity
+
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
 	}
 
 	on ParticipantJoined {

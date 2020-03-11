@@ -22,9 +22,11 @@
 package io.sarl.sre.tests.runtime.bugs.bug546.mocks
 
 import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.Schedules
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 import java.util.UUID
 
 import static io.sarl.sre.tests.runtime.bugs.bug546.Constants.*
@@ -36,19 +38,21 @@ import static io.sarl.sre.tests.runtime.bugs.bug546.Constants.*
  * @mavenartifactid $ArtifactId$
  * @see https://github.com/sarl/sarl/issues/546
  */
-agent SendingAgent extends TestingAgent {
+agent SendingAgent {
 
 	uses Schedules, Lifecycle, DefaultContextInteractions
 
-	override runAgentTest : RunPolicy {
-		val parentID = this.agentInitializationParameters.get(1) as UUID
+	uses TestingCapacity
+
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
+		val parentID = agentInitializationParameters.get(1) as UUID
 		in(500) [
 			for (i : 0..<NB_EVENTS) {
 				emit(new MyEvent) [it.UUID == parentID]
 			}
 			killMe
 		]
-		return null
 	}
 
 }

@@ -22,16 +22,15 @@
 package io.sarl.sre.tests.runtime.bugs.bug976.mocks
 
 import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
 import io.sarl.core.Schedules
-import io.sarl.sre.tests.testutils.agents.TestingAgent
 
-agent ScalableAgent extends TestingAgent {
+agent ScalableAgent {
 	
 	uses Schedules, DefaultContextInteractions
 
-	def runAgentTest : RunPolicy {
+	on Initialize {
 		every(1000)[emit(new Taskgo)]
-		return RunPolicy::STANDARD
 	}
 
 	on Taskgo {

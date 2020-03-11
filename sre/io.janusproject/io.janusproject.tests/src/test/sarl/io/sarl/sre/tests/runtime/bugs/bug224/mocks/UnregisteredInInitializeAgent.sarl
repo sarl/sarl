@@ -22,7 +22,9 @@
 package io.sarl.sre.tests.runtime.bugs.bug224.mocks
 
 import io.sarl.core.Behaviors
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.core.Initialize
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 
 /**
  * @author $Author: sgalland$
@@ -32,18 +34,21 @@ import io.sarl.sre.tests.testutils.agents.TestingAgent
  * @see https://github.com/sarl/sarl/issues/224
  */
 @SuppressWarnings("potential_field_synchronization_problem")
-agent UnregisteredInInitializeAgent extends TestingAgent {
+agent UnregisteredInInitializeAgent {
 
 	uses Behaviors
 
 	var ^behavior : MyBehavior
 
-	override runAgentTest : RunPolicy {
+	uses TestingCapacity
+
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
 		this.^behavior = new MyBehavior(this)
 		addResult(this.^behavior)
 		registerBehavior(this.^behavior)
 		unregisterBehavior(this.^behavior)
-		return RunPolicy::DIFFERED_KILLING
+		killMeSoon
 	}
 
 }

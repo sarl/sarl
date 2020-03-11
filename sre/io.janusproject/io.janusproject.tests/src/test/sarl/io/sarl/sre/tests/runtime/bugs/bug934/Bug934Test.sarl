@@ -23,11 +23,11 @@ package io.sarl.sre.tests.runtime.bugs.bug934
 
 import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.Space
+import io.sarl.sre.test.framework.context.SreRunContext
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.^extension.SreRunExtension
 import io.sarl.sre.tests.runtime.bugs.bug934.mocks.WithIdAgent
 import io.sarl.sre.tests.runtime.bugs.bug934.mocks.WithSpecAgent
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
-import io.sarl.sre.tests.testutils.^extension.SreRunContext
-import io.sarl.sre.tests.testutils.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
@@ -36,13 +36,9 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static io.sarl.sre.tests.testutils.Constants.*
+import static io.sarl.sre.test.framework.Constants.*
 
-import static extension org.junit.jupiter.api.Assertions.assertEquals
-import static extension org.junit.jupiter.api.Assertions.assertNotEquals
-import static extension org.junit.jupiter.api.Assertions.assertNotNull
-import static extension org.junit.jupiter.api.Assertions.assertNotSame
-import static extension org.junit.jupiter.api.Assertions.assertSame
+import static extension org.junit.jupiter.api.Assertions.*
 
 /** Tests for issue #934: Agents communication enabled through space without being registered to it.
  * 

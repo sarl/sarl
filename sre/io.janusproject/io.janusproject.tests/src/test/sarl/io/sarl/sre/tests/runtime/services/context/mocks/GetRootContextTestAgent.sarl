@@ -22,16 +22,21 @@
 package io.sarl.sre.tests.runtime.services.context.mocks
 
 import io.sarl.core.ExternalContextAccess
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.core.Initialize
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 
-agent GetRootContextTestAgent extends TestingAgent {
+agent GetRootContextTestAgent {
 
 	uses ExternalContextAccess
 
-	override runAgentTest : RunPolicy {
+	uses TestingCapacity
+
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
 		var ctx = universeContext
 		addResult(ctx)
-		return RunPolicy::DIFFERED_KILLING
+		killMeSoon
 	}
 
 }

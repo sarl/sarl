@@ -23,8 +23,10 @@ package io.sarl.sre.tests.runtime.bugs.bug546.mocks
 
 import io.sarl.core.AgentKilled
 import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 import java.util.concurrent.atomic.AtomicInteger
 
 import static io.sarl.sre.tests.runtime.bugs.bug546.Constants.*
@@ -37,7 +39,7 @@ import static io.sarl.sre.tests.runtime.bugs.bug546.Constants.*
  * @see https://github.com/sarl/sarl/issues/546
  */
 @SuppressWarnings("potential_field_synchronization_problem")
-agent InitAndWaitAgent0 extends TestingAgent {
+agent InitAndWaitAgent0 {
 
 	uses Lifecycle, DefaultContextInteractions
 
@@ -45,11 +47,13 @@ agent InitAndWaitAgent0 extends TestingAgent {
 
 	var nbKilled = new AtomicInteger
 
-	override runAgentTest : RunPolicy {
+	uses TestingCapacity
+
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
 		for (i : 0 ..< NB_AGENTS) {
 			typeof(ChildAgent).spawn(buildAgentInitializationParameters(ID))
 		}
-		return null
 	}
 
 	on Hello {

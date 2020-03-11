@@ -21,9 +21,9 @@
 
 package io.sarl.sre.tests.runtime.bugs.bug794.mocks
 
+import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.Schedules
-import io.sarl.sre.tests.testutils.agents.TestingAgent
 
 /**
  * @author $Author: sgalland$
@@ -32,13 +32,12 @@ import io.sarl.sre.tests.testutils.agents.TestingAgent
  * @mavenartifactid $ArtifactId$
  * @see https://github.com/sarl/sarl/issues/794
  */
-agent SpawnerAgent extends TestingAgent {
+agent SpawnerAgent {
 
 	uses Lifecycle, Schedules
 
-	override runAgentTest : RunPolicy {
-		in(1000) [killMe]
-		return null
+	on Initialize {
+		in(1000)[killMe]
 	}
 
 }

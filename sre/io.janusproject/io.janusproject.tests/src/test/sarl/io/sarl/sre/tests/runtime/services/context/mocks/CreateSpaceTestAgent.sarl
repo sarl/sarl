@@ -22,8 +22,11 @@
 package io.sarl.sre.tests.runtime.services.context.mocks
 
 import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
 import io.sarl.core.OpenEventSpaceSpecification
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 import java.util.UUID
 
 /**
@@ -32,11 +35,14 @@ import java.util.UUID
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent CreateSpaceTestAgent extends TestingAgent {
+agent CreateSpaceTestAgent {
 
-	uses DefaultContextInteractions
+	uses DefaultContextInteractions, Lifecycle
 
-	override runAgentTest : RunPolicy {
+	uses TestingCapacity
+
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
 		var id = UUID::randomUUID
 		var ctx = defaultContext
 		var ^space = ctx.createSpace(typeof(OpenEventSpaceSpecification), id)
@@ -46,7 +52,7 @@ agent CreateSpaceTestAgent extends TestingAgent {
 				addResult("FOUND")
 			}
 		}
-		return RunPolicy::IMMEDIATE_KILLING
+		killMe
 	}
 
 }

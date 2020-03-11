@@ -23,12 +23,14 @@ package io.sarl.sre.tests.runtime.internal.mocks
 
 import io.sarl.core.Behaviors
 import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.OpenEventSpaceSpecification
-import io.sarl.core.Schedules
-import io.sarl.sre.tests.testutils.agents.TestingAgent
-import java.util.UUID
 import io.sarl.core.ParticipantLeft
+import io.sarl.core.Schedules
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
+import java.util.UUID
 
 /**
  * @author $Author: sgalland$
@@ -36,11 +38,14 @@ import io.sarl.core.ParticipantLeft
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent JoinerAgent3 extends TestingAgent {
+agent JoinerAgent3 {
 
 	uses DefaultContextInteractions, Schedules, Behaviors, Lifecycle
 
-	override runAgentTest : RunPolicy {
+	uses TestingCapacity
+
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
 		var id = UUID::randomUUID
 		val spc = defaultContext.getOrCreateSpaceWithSpec(typeof(OpenEventSpaceSpecification), id)
 		spc.register(asEventListener)
@@ -48,7 +53,6 @@ agent JoinerAgent3 extends TestingAgent {
 		in(500) [
 			spc.unregister(asEventListener)
 		]
-		return RunPolicy::STANDARD
 	}
 
 	on ParticipantLeft [it.source.UUID != ID] {

@@ -22,8 +22,6 @@
 package io.sarl.sre.tests.runtime.services.namespace.mocks
 
 import io.sarl.core.Lifecycle
-import io.sarl.sre.tests.testutils.agents.TestingAgent
-import io.sarl.sre.tests.testutils.agents.TestingAgent.RunPolicy
 
 /**
  * @author $Author: sgalland$
@@ -32,7 +30,7 @@ import io.sarl.sre.tests.testutils.agents.TestingAgent.RunPolicy
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-agent NamespaceTestAgent extends TestingAgent {
+agent NamespaceTestAgent {
 
 	uses Lifecycle
 
@@ -46,10 +44,6 @@ agent NamespaceTestAgent extends TestingAgent {
 
 	on StopTest {
 		killMe
-	}
-	
-	def runAgentTest : RunPolicy {
-		return RunPolicy::STANDARD
 	}
 	
 }

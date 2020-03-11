@@ -21,6 +21,9 @@
 
 package io.sarl.sre.tests.runtime.bugs.bug224
 
+import io.sarl.sre.test.framework.context.SreRunContext
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.^extension.SreRunExtension
 import io.sarl.sre.tests.runtime.bugs.bug224.mocks.MyBehavior
 import io.sarl.sre.tests.runtime.bugs.bug224.mocks.RegisteredInDestroyAgent
 import io.sarl.sre.tests.runtime.bugs.bug224.mocks.RegisteredInHandlerAgent
@@ -28,9 +31,6 @@ import io.sarl.sre.tests.runtime.bugs.bug224.mocks.RegisteredInInitializeAgent
 import io.sarl.sre.tests.runtime.bugs.bug224.mocks.UnregisteredInDestroyAgent
 import io.sarl.sre.tests.runtime.bugs.bug224.mocks.UnregisteredInHandlerAgent
 import io.sarl.sre.tests.runtime.bugs.bug224.mocks.UnregisteredInInitializeAgent
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
-import io.sarl.sre.tests.testutils.^extension.SreRunContext
-import io.sarl.sre.tests.testutils.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import org.junit.jupiter.api.DisplayName

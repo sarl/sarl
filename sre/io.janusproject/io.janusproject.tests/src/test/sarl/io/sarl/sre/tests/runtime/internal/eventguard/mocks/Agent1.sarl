@@ -21,7 +21,11 @@
 
 package io.sarl.sre.tests.runtime.internal.eventguard.mocks
 
+import io.sarl.sre.test.framework.skills.TestingCapacity
+
 agent Agent1 extends Agent0 {
+
+	uses TestingCapacity
 
 	override myfunction : void {
 		addResult("myfunction in Agent1")

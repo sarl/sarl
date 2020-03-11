@@ -23,25 +23,33 @@ package io.sarl.sre.tests.runtime.bugs.bug977.mocks
 
 import io.sarl.core.Destroy
 import io.sarl.core.Initialize
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 
-abstract agent AbstractAgent extends TestingAgent {
+abstract agent AbstractAgent {
 
 	protected var i : int = 0
 
-	// on Initialize
-	def runAgentTest : RunPolicy {
-		addResult("1")
-		return RunPolicy::STANDARD
+	uses TestingCapacity
+
+	def ensureSkill(e : Initialize) : void {
+		setSkill(new TestingSkill(e))
 	}
 
-	on Initialize[i<0] {
+	on Initialize {
+		occurrence.ensureSkill
+		addResult("1")
+	}
+
+	on Initialize [i < 0] {
+		occurrence.ensureSkill
 		addResult("-1-")
 		i++
 	}
 	
 	/* A disjoint condition from the previous */
-	on Initialize[i>=0] {
+	on Initialize [i >= 0] {
+		occurrence.ensureSkill
 		addResult("2")
 		i--
 	}

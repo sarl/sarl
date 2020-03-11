@@ -21,9 +21,9 @@
 
 package io.sarl.sre.tests.runtime.bugs.bug613.mocks
 
+import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.Schedules
-import io.sarl.sre.tests.testutils.agents.TestingAgent
 
 /**
  * @author $Author: sgalland$
@@ -31,13 +31,12 @@ import io.sarl.sre.tests.testutils.agents.TestingAgent
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent TAgent1 extends TestingAgent {
+agent TAgent1 {
 
 	uses Schedules, Lifecycle
 
-	override runAgentTest : RunPolicy {
-		in(100) [killMe]
-		return null
+	on Initialize {
+		in(100)[killMe]
 	}
 
 }

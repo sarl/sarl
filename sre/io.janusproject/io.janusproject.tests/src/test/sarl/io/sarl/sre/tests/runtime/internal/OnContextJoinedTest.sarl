@@ -21,15 +21,15 @@
 
 package io.sarl.sre.tests.runtime.internal
 
+import io.sarl.sre.test.framework.context.SreRunContext
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.^extension.SreRunExtension
 import io.sarl.sre.tests.runtime.internal.mocks.RootAgent2
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
-import io.sarl.sre.tests.testutils.^extension.SreRunContext
-import io.sarl.sre.tests.testutils.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Tag
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
 import static io.sarl.tests.api.tools.TestAssertions.*
@@ -49,8 +49,8 @@ import static io.sarl.tests.api.tools.TestAssertions.*
 @DisplayName("run: on ContextJoined test")
 @Tag("run")
 class OnContextJoinedTest {
-		
-	@Test
+
+	@RepeatedTest(5)
 	def run(extension rc : SreRunContext) {
 		typeof(RootAgent2).runSre
 		assertContains(allResults, "CHILD2")

@@ -22,9 +22,11 @@
 package io.sarl.sre.tests.runtime.services.executor.mocks
 
 import io.sarl.core.Destroy
+import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.Schedules
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 import java.util.ArrayList
 
 /**
@@ -33,12 +35,15 @@ import java.util.ArrayList
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent CancelTaskAgent extends TestingAgent {
+agent CancelTaskAgent {
 	
 	uses Schedules, Lifecycle
 
-	override runAgentTest : RunPolicy {
-		var t1 = every(500) []
+	uses TestingCapacity
+
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
+		var t1 = every(500)[]
 		t1.name = "T1"
 		addResult(new ArrayList(getActiveTasks))
 		var t2 = in(1000) [
@@ -48,7 +53,6 @@ agent CancelTaskAgent extends TestingAgent {
 		addResult(new ArrayList(getActiveTasks))
 		t1.cancel
 		addResult(new ArrayList(getActiveTasks))
-		return RunPolicy::STANDARD
 	}
 
 	on Destroy {

@@ -21,18 +21,22 @@
 package io.sarl.sre.tests.runtime.bugs.bug942.mocks
 
 import io.sarl.core.Behaviors
+import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.Schedules
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 
-agent AgentBug942 extends TestingAgent {
+agent AgentBug942 {
 
 	uses Schedules, Lifecycle, Behaviors
 
-	override runAgentTest : RunPolicy {
+	uses TestingCapacity
+
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
 		val beh = new BehaviorBug942(this)
 		beh.registerBehavior
-		return RunPolicy::STANDARD
 	}
 
 	on EventBug942 {

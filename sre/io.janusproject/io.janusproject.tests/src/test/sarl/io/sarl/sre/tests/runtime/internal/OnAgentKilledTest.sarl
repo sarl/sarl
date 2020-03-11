@@ -23,20 +23,22 @@ package io.sarl.sre.tests.runtime.internal
 
 import io.sarl.core.AgentKilled
 import io.sarl.lang.core.SpaceID
+import io.sarl.sre.test.framework.context.SreRunContext
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.^extension.SreRunExtension
 import io.sarl.sre.tests.runtime.internal.mocks.MySpawnedAgent1
 import io.sarl.sre.tests.runtime.internal.mocks.MyWaiterAgent1
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
-import io.sarl.sre.tests.testutils.^extension.SreRunContext
-import io.sarl.sre.tests.testutils.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Tag
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
 import static org.junit.jupiter.api.Assertions.*
+
+import static extension io.sarl.tests.api.tools.TestUtils.*
 
 /**
  * @author $Author: sgalland$
@@ -53,17 +55,17 @@ import static org.junit.jupiter.api.Assertions.*
 @DisplayName("run: on AgentKilled test")
 @Tag("run")
 class OnAgentKilledTest {
-		
-	@Test
+
+	@RepeatedTest(5)
 	def run(extension rc : SreRunContext) {
 		typeof(MyWaiterAgent1).runSre
 		
 		var all = allResults
 		assertEquals(4, all.size)
-		assertEquals("SPAWNER", all.get(typeof(String), 0))
-		var ^event = all.get(typeof(AgentKilled), 1)
-		var ^space = all.get(typeof(SpaceID), 2)
-		var spawnId = all.get(typeof(UUID), 3)
+		assertEquals("SPAWNER", all.elementAt(typeof(String), 0))
+		var ^event = all.elementAt(typeof(AgentKilled), 1)
+		var ^space = all.elementAt(typeof(SpaceID), 2)
+		var spawnId = all.elementAt(typeof(UUID), 3)
 
 		assertNotNull(^event)
 		assertEquals(typeof(MySpawnedAgent1).name, ^event.agentType)

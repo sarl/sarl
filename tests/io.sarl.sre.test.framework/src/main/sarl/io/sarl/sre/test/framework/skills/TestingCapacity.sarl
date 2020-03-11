@@ -21,7 +21,6 @@
 
 package io.sarl.sre.test.framework.skills
 
-import io.sarl.lang.core.DefaultSkill
 import io.sarl.sre.test.framework.Constants
 import java.util.Collection
 import java.util.List
@@ -37,7 +36,6 @@ import java.util.concurrent.CopyOnWriteArrayList
  * @mavenartifactid $ArtifactId$
  * @since 0.11
  */
-@DefaultSkill(typeof(TestingSkill))
 capacity TestingCapacity {
 
 	/** 
@@ -108,5 +106,9 @@ capacity TestingCapacity {
 	@SuppressWarnings("discouraged_reference")
 	def waitAndDo(condition : () => boolean, timeout : int = Constants::STANDARD_TIMEOUT,
 		code : ()=>void)
+
+	/** Kill the agent after a short delay.
+	 */
+	def killMeSoon
 
 }

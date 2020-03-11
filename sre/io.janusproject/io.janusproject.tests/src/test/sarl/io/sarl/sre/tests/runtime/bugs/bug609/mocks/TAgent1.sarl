@@ -22,8 +22,10 @@
 package io.sarl.sre.tests.runtime.bugs.bug609.mocks
 
 import io.sarl.core.Destroy
+import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 
 /**
  * 
@@ -33,11 +35,14 @@ import io.sarl.sre.tests.testutils.agents.TestingAgent
  * @mavenartifactid $ArtifactId$
  * @see https://github.com/sarl/sarl/issues/609
  */
-agent TAgent1 extends TestingAgent {
+agent TAgent1 {
 
 	uses Lifecycle
 
-	override runAgentTest : RunPolicy {
+	uses TestingCapacity
+
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
 		killMe
 	}
 

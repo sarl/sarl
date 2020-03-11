@@ -24,12 +24,12 @@ package io.sarl.sre.tests.runtime.services.namespace
 import io.sarl.lang.util.OutParameter
 import io.sarl.sre.services.namespace.FieldAccess
 import io.sarl.sre.services.namespace.NamespaceService
+import io.sarl.sre.test.framework.context.SreRunContext
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.^extension.SreRunExtension
 import io.sarl.sre.tests.runtime.services.namespace.mocks.ChangeField
 import io.sarl.sre.tests.runtime.services.namespace.mocks.NamespaceTestAgent
 import io.sarl.sre.tests.runtime.services.namespace.mocks.StopTest
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
-import io.sarl.sre.tests.testutils.^extension.SreRunContext
-import io.sarl.sre.tests.testutils.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
@@ -37,8 +37,8 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static io.sarl.sre.tests.testutils.Constants.*
 import static io.sarl.tests.api.tools.TestTimeout.*
+import static io.sarl.sre.test.framework.Constants.*
 
 import static extension org.junit.jupiter.api.Assertions.*
 
@@ -96,10 +96,10 @@ abstract class AbstractNamespaceServiceTest {
 		namedObject.assertNotNull
 
 		service.runTestCase_beforeChangeField(namedObject)
-		kern.rootContext.defaultSpace.emit(UUID::randomUUID, new ChangeField)
+		rootContext.defaultSpace.emit(UUID::randomUUID, new ChangeField)
 		service.runTestCase_beforeStopTest(namedObject)
 		Thread::sleep(1.seconds)
-		kern.rootContext.defaultSpace.emit(UUID::randomUUID, new StopTest)
+		rootContext.defaultSpace.emit(UUID::randomUUID, new StopTest)
 		service.runTestCase_afterStopTest(namedObject)
 
 		waitForTheKernel(NO_TIMEOUT)

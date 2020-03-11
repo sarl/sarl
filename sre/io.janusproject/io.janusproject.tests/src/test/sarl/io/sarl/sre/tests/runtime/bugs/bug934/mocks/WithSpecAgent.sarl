@@ -22,8 +22,10 @@
 package io.sarl.sre.tests.runtime.bugs.bug934.mocks
 
 import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
 import io.sarl.core.OpenEventSpaceSpecification
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 import java.util.UUID
 
 /**
@@ -34,22 +36,25 @@ import java.util.UUID
  * @see "https://github.com/sarl/sarl/issues/934"
  */
 @SuppressWarnings("all")
-agent WithSpecAgent extends TestingAgent {
+agent WithSpecAgent {
 
 	uses DefaultContextInteractions
 
-	override runAgentTest {
-			var ds = defaultSpace
-			ds.addResult
-			var id1 = UUID::randomUUID
-			id1.addResult
-			var spc1 = defaultContext.getOrCreateSpaceWithSpec(typeof(OpenEventSpaceSpecification), id1)
-			spc1.addResult
-			var id2 = UUID::randomUUID
-			id2.addResult
-			var spc2 = defaultContext.getOrCreateSpaceWithSpec(typeof(OpenEventSpaceSpecification), id2)
-			spc2.addResult
-			return RunPolicy::DIFFERED_KILLING
-		}
+	uses TestingCapacity
+
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
+		var ds = defaultSpace
+		ds.addResult
+		var id1 = UUID::randomUUID
+		id1.addResult
+		var spc1 = defaultContext.getOrCreateSpaceWithSpec(typeof(OpenEventSpaceSpecification), id1)
+		spc1.addResult
+		var id2 = UUID::randomUUID
+		id2.addResult
+		var spc2 = defaultContext.getOrCreateSpaceWithSpec(typeof(OpenEventSpaceSpecification), id2)
+		spc2.addResult
+		killMeSoon
+	}
 
 }

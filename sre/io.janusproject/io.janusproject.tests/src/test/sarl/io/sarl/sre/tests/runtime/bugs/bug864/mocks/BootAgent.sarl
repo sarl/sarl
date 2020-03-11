@@ -20,14 +20,14 @@
  */
 package io.sarl.sre.tests.runtime.bugs.bug864.mocks
 
+import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
-import io.sarl.sre.tests.testutils.agents.TestingAgent
 
-agent BootAgent extends TestingAgent {
+agent BootAgent {
 
 	uses Lifecycle
 
-	override runAgentTest : RunPolicy {
+	on Initialize {
 		killMe
 	}
 

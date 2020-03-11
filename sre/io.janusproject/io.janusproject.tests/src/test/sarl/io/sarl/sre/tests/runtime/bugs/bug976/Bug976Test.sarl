@@ -20,21 +20,21 @@
  */
 package io.sarl.sre.tests.runtime.bugs.bug976
 
+import io.sarl.sre.test.framework.context.LogTrackingMode
+import io.sarl.sre.test.framework.context.SreRunContext
+import io.sarl.sre.test.framework.exception.SreTimeoutException
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.^extension.SreRunExtension
 import io.sarl.sre.tests.runtime.bugs.bug976.mocks.BootScalableAgent
-import io.sarl.sre.tests.testutils.exception.SreTimeoutException
-import io.sarl.sre.tests.testutils.^extension.LogTrackingMode
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
-import io.sarl.sre.tests.testutils.^extension.SreRunContext
-import io.sarl.sre.tests.testutils.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
 import static extension io.sarl.tests.api.tools.TestAssertions.*
-import org.junit.jupiter.api.Disabled
 
 /** Tests for issue #976: UnimplementedCapacityException when getting logging capacity.
  *

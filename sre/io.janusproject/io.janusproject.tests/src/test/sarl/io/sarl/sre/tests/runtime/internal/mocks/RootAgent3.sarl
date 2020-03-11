@@ -25,11 +25,13 @@ import io.sarl.core.AgentSpawned
 import io.sarl.core.Behaviors
 import io.sarl.core.ContextLeft
 import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.core.Schedules
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 
 /**
  * @author $Author: sgalland$
@@ -37,16 +39,18 @@ import io.sarl.sre.tests.testutils.agents.TestingAgent
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent RootAgent3 extends TestingAgent {
+agent RootAgent3 {
 
 	uses Lifecycle, InnerContextAccess, Logging, Behaviors, DefaultContextInteractions, Schedules
 
-	override runAgentTest : RunPolicy {
+	uses TestingCapacity
+
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
 		loggingName = "ROOT"
 		in(500) [
 			typeof(ChildAgent3).spawnInContext(innerContext, buildAgentInitializationParameters)
 		]
-		return null
 	}
 
 	on AgentSpawned [typeof(ChildAgent3).name == occurrence.agentType] {

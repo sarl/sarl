@@ -20,17 +20,16 @@
  */
 package io.sarl.sre.tests.runtime.bugs.bug872.mocks
 
+import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.Schedules
-import io.sarl.sre.tests.testutils.agents.TestingAgent
 
-agent InnerAgent extends TestingAgent {
+agent InnerAgent {
 
 	uses Schedules, Lifecycle
 
-	override runAgentTest : RunPolicy {
-		in(1000) [killMe]
-		return null
+	on Initialize {
+		in(1000)[killMe]
 	}
 	
 }

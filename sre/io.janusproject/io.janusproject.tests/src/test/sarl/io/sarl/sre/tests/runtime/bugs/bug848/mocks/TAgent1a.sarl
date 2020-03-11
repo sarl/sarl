@@ -21,9 +21,11 @@
 package io.sarl.sre.tests.runtime.bugs.bug848.mocks
 
 import io.sarl.core.AgentSpawned
+import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.Schedules
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicBoolean
 import org.arakhne.afc.util.Triplet
@@ -34,17 +36,19 @@ import org.arakhne.afc.util.Triplet
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent TAgent1a extends TestingAgent {
+agent TAgent1a {
 
 	uses Lifecycle, Schedules
 
 	val done = new AtomicBoolean
 
-	override runAgentTest : RunPolicy {
+	uses TestingCapacity
+
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
 		in(1.seconds) [
 			typeof(TAgent1b).spawn(buildAgentInitializationParameters)
 		]
-		return RunPolicy::STANDARD
 	}
 
 	on AgentSpawned {

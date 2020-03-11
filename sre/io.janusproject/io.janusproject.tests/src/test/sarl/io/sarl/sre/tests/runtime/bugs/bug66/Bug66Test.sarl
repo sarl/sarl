@@ -21,12 +21,12 @@
 package io.sarl.sre.tests.runtime.bugs.bug66
 
 import io.sarl.lang.core.EventSpace
+import io.sarl.sre.test.framework.context.SreRunContext
+import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.test.framework.^extension.SreRunExtension
 import io.sarl.sre.tests.runtime.bugs.bug66.mocks.MySpace
 import io.sarl.sre.tests.runtime.bugs.bug66.mocks.SpaceCreatorWithDefaultSpaceAnnotationAgent
 import io.sarl.sre.tests.runtime.bugs.bug66.mocks.SpaceCreatorWithNamedAnnotationAgent
-import io.sarl.sre.tests.testutils.^extension.PropertyRestoreExtension
-import io.sarl.sre.tests.testutils.^extension.SreRunContext
-import io.sarl.sre.tests.testutils.^extension.SreRunExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import org.junit.jupiter.api.DisplayName
@@ -34,9 +34,7 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static extension org.junit.jupiter.api.Assertions.assertEquals
-import static extension org.junit.jupiter.api.Assertions.assertNotNull
-import static extension org.junit.jupiter.api.Assertions.assertSame
+import static extension org.junit.jupiter.api.Assertions.*
 
 /**
  * Unit test for the issue #66: Injection of the default space in a Space implementation.

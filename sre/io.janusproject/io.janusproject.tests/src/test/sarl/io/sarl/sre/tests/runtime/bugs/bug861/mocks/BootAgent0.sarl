@@ -21,19 +21,23 @@
 package io.sarl.sre.tests.runtime.bugs.bug861.mocks
 
 import io.sarl.core.AgentSpawned
+import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 import java.util.concurrent.atomic.AtomicBoolean
 
-agent BootAgent0 extends TestingAgent {
+agent BootAgent0 {
 
 	uses Lifecycle
 
 	val done = new AtomicBoolean
 
-	override runAgentTest : RunPolicy {
+	uses TestingCapacity
+
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
 		typeof(EmptyAgent0).spawn(buildAgentInitializationParameters)
-		return RunPolicy::STANDARD
 	}
 
 	on AgentSpawned {

@@ -21,8 +21,10 @@
 
 package io.sarl.sre.tests.runtime.spaces.mocks
 
+import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 
 /**
  * @author $Author: sgalland$
@@ -30,14 +32,16 @@ import io.sarl.sre.tests.testutils.agents.TestingAgent
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent TargetAgent extends TestingAgent {
+agent TargetAgent {
 
 	uses Lifecycle
-	
-	def runAgentTest : RunPolicy {
-		return RunPolicy::STANDARD
-	}
 
+	uses TestingCapacity
+	
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
+	}
+	
 	@SuppressWarnings("discouraged_occurrence_readonly_use")
 	on TestEvent {
 		occurrence.source.addResult

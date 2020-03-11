@@ -21,9 +21,11 @@
 
 package io.sarl.sre.tests.runtime.services.executor.mocks
 
+import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.Schedules
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 import java.util.UUID
 
 /**
@@ -32,16 +34,18 @@ import java.util.UUID
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent InAgent extends TestingAgent {
+agent InAgent {
 
 	uses Schedules, Lifecycle
 
-	override runAgentTest : RunPolicy {
+	uses TestingCapacity
+
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
 		in(2000) [
 			addResult(UUID::randomUUID)
 			killMe
 		]
-		return null
 	}
 
 }

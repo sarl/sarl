@@ -21,7 +21,7 @@
 
 package io.sarl.sre.tests.runtime.bugs.janus91.mocks
 
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.core.Initialize
 
 /**
  * @author $Author: sgalland$
@@ -29,9 +29,9 @@ import io.sarl.sre.tests.testutils.agents.TestingAgent
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent ExceptionInInitAgent extends TestingAgent {
+agent ExceptionInInitAgent {
 
-	override runAgentTest : RunPolicy {
+	on Initialize {
 		throw new TestException
 	}
 

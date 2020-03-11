@@ -22,9 +22,13 @@
 package io.sarl.sre.tests.runtime.internal.mocks
 
 import io.sarl.core.AgentKilled
+import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.MemberLeft
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
+
+import static extension io.sarl.tests.api.tools.TestUtils.*
 
 /**
  * @author $Author: sgalland$
@@ -32,16 +36,18 @@ import io.sarl.sre.tests.testutils.agents.TestingAgent
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent ChildAgent1 extends TestingAgent {
+agent ChildAgent1 {
 
 	uses Lifecycle
 
-	override runAgentTest : RunPolicy {
-		return null
+	uses TestingCapacity
+
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
 	}
 
 	on MemberLeft {
-		addResult("CHILD1:" + occurrence.agentType.simpleName)
+		addResult("CHILD1:" + occurrence.agentType.simpleTypeName)
 	}
 
 	on AgentKilled {

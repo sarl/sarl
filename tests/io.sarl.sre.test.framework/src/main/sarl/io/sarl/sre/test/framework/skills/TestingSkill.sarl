@@ -21,6 +21,8 @@
 
 package io.sarl.sre.test.framework.skills
 
+import io.sarl.core.Lifecycle
+import io.sarl.core.Schedules
 import io.sarl.sre.test.framework.Constants
 import io.sarl.sre.test.framework.context.SreRunContext
 import java.util.Collection
@@ -28,6 +30,7 @@ import java.util.List
 import java.util.UUID
 import java.util.concurrent.CopyOnWriteArrayList
 import org.eclipse.xtend.lib.annotations.Accessors
+import io.sarl.core.Initialize
 
 /**
  * A skill that provides the agent with testing functions.
@@ -40,6 +43,8 @@ import org.eclipse.xtend.lib.annotations.Accessors
  */
 skill TestingSkill implements TestingCapacity {
 
+	uses Schedules, Lifecycle
+
 	val results = new CopyOnWriteArrayList<Object>
 
 	val context : SreRunContext
@@ -47,11 +52,12 @@ skill TestingSkill implements TestingCapacity {
 	val initializationParameters : Object[]
 
 	@Accessors(PUBLIC_GETTER)
-	var spawner : UUID
+	val spawner : UUID
 
-	new (initializationParameters : Object[]) {
-		this.initializationParameters = initializationParameters
-		this.context = initializationParameters.get(0) as SreRunContext
+	new (^event : Initialize) {
+		this.initializationParameters = ^event.parameters
+		this.context = this.initializationParameters.get(0) as SreRunContext
+		this.spawner = ^event.spawner
 	}
 	
 	override uninstall {
@@ -124,6 +130,10 @@ skill TestingSkill implements TestingCapacity {
 		if (endTime == -1 || System.currentTimeMillis() <= endTime) {
 			code.apply
 		}
+	}
+
+	override killMeSoon {
+		in(Constants::DIFFERED_KILLING_DURATION) [killMe]
 	}
 
 }

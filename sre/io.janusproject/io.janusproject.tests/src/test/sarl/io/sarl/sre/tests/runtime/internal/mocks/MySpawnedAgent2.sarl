@@ -21,10 +21,12 @@
 
 package io.sarl.sre.tests.runtime.internal.mocks
 
+import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.MemberJoined
 import io.sarl.core.Schedules
-import io.sarl.sre.tests.testutils.agents.TestingAgent
+import io.sarl.sre.test.framework.skills.TestingCapacity
+import io.sarl.sre.test.framework.skills.TestingSkill
 
 /**
  * @author $Author: sgalland$
@@ -32,13 +34,14 @@ import io.sarl.sre.tests.testutils.agents.TestingAgent
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent MySpawnedAgent2 extends TestingAgent {
+agent MySpawnedAgent2 {
 
 	uses Schedules, Lifecycle
+	uses TestingCapacity
 
-	override runAgentTest : RunPolicy {
-		in(500) [killMe]
-		return null
+	on Initialize {
+		setSkill(new TestingSkill(occurrence))
+		in(500)[killMe]
 	}
 
 	on MemberJoined {

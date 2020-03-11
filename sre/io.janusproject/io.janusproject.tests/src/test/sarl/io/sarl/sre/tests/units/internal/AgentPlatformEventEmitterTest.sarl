@@ -33,7 +33,7 @@ import io.sarl.lang.core.SpaceID
 import io.sarl.sre.internal.AgentEventEmitter
 import io.sarl.sre.services.context.Context
 import io.sarl.sre.services.lifecycle.AgentLife
-import io.sarl.sre.test.framework.agents.IddleTestingAgent
+import io.sarl.sre.test.framework.agents.ShortLifeTestingAgent
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
@@ -112,16 +112,16 @@ class AgentEventEmitterTest {
 		this.parent = typeof(Context).mock
 		when(parent.ID).thenReturn(this.contextID)
 		when(parent.defaultSpace).thenReturn(this.defaultSpace)
-		this.agent1 = new IddleTestingAgent(this.contextID, UUID.randomUUID()).spy
+		this.agent1 = new ShortLifeTestingAgent(this.contextID, UUID.randomUUID()).spy
 		this.params = #[]
-		this.agent2 = new IddleTestingAgent(this.contextID, UUID.randomUUID()).spy
+		this.agent2 = new ShortLifeTestingAgent(this.contextID, UUID.randomUUID()).spy
 		this.life2 = AgentLife::getLife(this.agent2)
 		this.emitter = new AgentEventEmitter(this.logger)
 	}
 	
 	@Test
 	def agentSpawned {
-		this.emitter.agentSpawned(this.contextID, this.parent, typeof(IddleTestingAgent), agent1, params);
+		this.emitter.agentSpawned(this.contextID, this.parent, typeof(ShortLifeTestingAgent), agent1, params);
 		
 		var ^event = ArgumentCaptor::forClass(typeof(Event))
 		var scope = ArgumentCaptor::forClass(typeof(Scope))
@@ -132,7 +132,7 @@ class AgentEventEmitterTest {
 		assertInstanceOf(typeof(AgentSpawned), evt)
 		var spaceEvent = evt as AgentSpawned
 		assertNotNull(spaceEvent.source)
-		assertEquals(typeof(IddleTestingAgent).name, spaceEvent.agentType)
+		assertEquals(typeof(ShortLifeTestingAgent).name, spaceEvent.agentType)
 		agent1.ID.assertSame(spaceEvent.agentID)
 	}
 
