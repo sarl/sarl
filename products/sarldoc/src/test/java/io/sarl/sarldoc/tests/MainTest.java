@@ -238,8 +238,8 @@ public class MainTest {
 		
 		final int retcode = Main.run(
 				"--encoding", "UTF-8",
-				"--javasource", SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT,
-				"--javacompiler", JavaCompiler.JAVAC.name(),
+				"--java-source", SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT,
+				"--java-compiler", JavaCompiler.JAVAC.name(),
 				"--tempdir", this.tempFolder.getAbsolutePath(),
 				"--directory", this.genFolder.getAbsolutePath(),
 				"--outputdir", this.binFolder.getAbsolutePath(),
@@ -280,8 +280,8 @@ public class MainTest {
 		final int retcode = Main.run(
 				"--fake",
 				"--encoding", "UTF-8",
-				"--javasource", SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT,
-				"--javacompiler", JavaCompiler.JAVAC.name(),
+				"--java-source", SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT,
+				"--java-compiler", JavaCompiler.JAVAC.name(),
 				"--tempdir", this.tempFolder.getAbsolutePath(),
 				"--directory", this.genFolder.getAbsolutePath(),
 				"--outputdir", this.binFolder.getAbsolutePath(),
