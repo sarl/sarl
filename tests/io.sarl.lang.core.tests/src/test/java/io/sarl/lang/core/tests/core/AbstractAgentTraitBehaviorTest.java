@@ -43,6 +43,7 @@ import io.sarl.lang.core.Event;
 import io.sarl.lang.core.Skill;
 import io.sarl.lang.core.SpaceID;
 import io.sarl.lang.core.UnimplementedCapacityException;
+import io.sarl.lang.core.tests.core.AbstractAgentTraitBehaviorTest.Capacity1.ContextAwareCapacityWrapper;
 import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.Nullable;
 
@@ -145,6 +146,33 @@ public abstract class AbstractAgentTraitBehaviorTest extends AbstractSarlTest {
 		result = invokeFunc(instance.getClass(), instance, Capacity.class, 
 				"getSkill", new Class[] {Class.class}, Capacity1.class);
 		assertInstanceOf(Capacity1.class, result);
+	}
+
+	@Test
+	public void setSkillIfAbsent() throws Exception {
+		Skill1 skill = new Skill1();
+		//
+		Object instance = getInstance();
+		invokeProc(instance.getClass(), instance,
+				"setSkillIfAbsent", new Class[] {Skill.class, Class[].class}, skill, new Class[] {Capacity1.class});
+		Object result = invokeFunc(instance.getClass(), instance, Object.class,
+						"getSkill", new Class[] {Class.class}, Capacity1.class);
+		while (result instanceof Capacity.ContextAwareCapacityWrapper) {
+			result = ((Capacity.ContextAwareCapacityWrapper<?>) result).getDelegate();
+		}
+		//
+		assertSame(skill, result);
+		//
+		Skill1 skill2 = new Skill1();
+		invokeProc(instance.getClass(), instance,
+				"setSkillIfAbsent", new Class[] {Skill.class, Class[].class}, skill2, new Class[] {Capacity1.class});
+		result = invokeFunc(instance.getClass(), instance, Object.class,
+						"getSkill", new Class[] {Class.class}, Capacity1.class);
+		while (result instanceof Capacity.ContextAwareCapacityWrapper) {
+			result = ((Capacity.ContextAwareCapacityWrapper<?>) result).getDelegate();
+		}
+		//
+		assertSame(skill, result);
 	}
 
 	@Test

@@ -106,21 +106,13 @@ public class AbstractSkillContainerTest extends AbstractSarlTest {
 		assertNoSkill(Skill1.class);
 		assertNoSkill(Skill2.class);
 
-		try {
+		assertException(InvalidParameterException.class, () -> {
 			this.container.setSkill_Fake(new Skill2(), Capacity1.class);
-			fail("Expecting the exception InvalidParameterException, but got no exception."); //$NON-NLS-1$
-		}
-		catch(InvalidParameterException exception) {
-			//
-		}
+		});
 
-		try {
+		assertException(InvalidParameterException.class, () -> {
 			this.container.setSkill_Fake(new Skill3(), Capacity1.class);
-			fail("Expecting the exception InvalidParameterException, but got no exception."); //$NON-NLS-1$
-		}
-		catch(InvalidParameterException exception) {
-			//
-		}
+		});
 
 		s2 = new Skill2();
 		r = this.container.setSkill_Fake(s2, Capacity2.class);
@@ -130,21 +122,13 @@ public class AbstractSkillContainerTest extends AbstractSarlTest {
 		assertNoSkill(Skill1.class);
 		assertNoSkill(Skill2.class);
 
-		try {
+		assertException(InvalidParameterException.class, () -> {
 			this.container.setSkill_Fake(new Skill1(), Capacity2.class);
-			fail("Expecting the exception InvalidParameterException, but got no exception."); //$NON-NLS-1$
-		}
-		catch(InvalidParameterException exception) {
-			//
-		}
+		});
 
-		try {
+		assertException(InvalidParameterException.class, () -> {
 			this.container.setSkill_Fake(new Skill3(), Capacity2.class);
-			fail("Expecting the exception InvalidParameterException, but got no exception."); //$NON-NLS-1$
-		}
-		catch(InvalidParameterException exception) {
-			//
-		}
+		});
 	}
 
 	@Test
@@ -166,6 +150,74 @@ public class AbstractSkillContainerTest extends AbstractSarlTest {
 		assertNoSkill(Skill1.class);
 		assertNoSkill(Skill2.class);
 	}
+
+	@Test
+	public void setSkillIfAbsent() throws Exception {
+		Skill s1, s2;
+		Object r;
+
+		assertNoSkill(Capacity1.class);
+		assertNoSkill(Capacity2.class);
+		assertNoSkill(Skill1.class);
+		assertNoSkill(Skill2.class);
+
+		s1 = new Skill1();
+		this.container.setSkillIfAbsent_Fake(s1, Capacity1.class);
+		r = this.container.getSkill_Fake(Capacity1.class);
+		assertSame(s1, r);
+		assertSkill(Capacity1.class, s1);
+		assertNoSkill(Capacity2.class);
+		assertNoSkill(Skill1.class);
+		assertNoSkill(Skill2.class);
+
+		assertException(InvalidParameterException.class, () -> {
+			this.container.setSkillIfAbsent_Fake(new Skill2(), Capacity1.class);
+		});
+
+		assertException(InvalidParameterException.class, () -> {
+			this.container.setSkillIfAbsent_Fake(new Skill3(), Capacity1.class);
+		});
+
+		s2 = new Skill4();
+		this.container.setSkillIfAbsent_Fake(s2, Capacity1.class);
+		r = this.container.getSkill_Fake(Capacity1.class);
+		assertSame(s1, r);
+
+		assertException(InvalidParameterException.class, () -> {
+			this.container.setSkillIfAbsent_Fake(new Skill1(), Capacity2.class);
+		});
+
+		assertException(InvalidParameterException.class, () -> {
+			this.container.setSkillIfAbsent_Fake(new Skill3(), Capacity2.class);
+		});
+	}
+
+	@Test
+	public void setSkillIfAbsent_withoutCapacity() throws Exception {
+		Skill s4;
+		Object r;
+
+		assertNoSkill(Capacity1.class);
+		assertNoSkill(Capacity2.class);
+		assertNoSkill(Skill1.class);
+		assertNoSkill(Skill2.class);
+		assertNoSkill(Skill4.class);
+
+		s4 = new Skill4();
+		this.container.setSkillIfAbsent_Fake(s4);
+		r = this.container.getSkill_Fake(Capacity2.class);
+		
+		assertSame(s4, r);
+		assertSkill(Capacity1.class, s4);
+		assertSkill(Capacity2.class, s4);
+		assertNoSkill(Skill1.class);
+		assertNoSkill(Skill2.class);
+
+		Skill s2 = new Skill2();
+		this.container.setSkillIfAbsent_Fake(s2);
+		r = this.container.getSkill_Fake(Capacity2.class);
+		assertSame(s4, r);
+}
 
 	@Test
 	public void clearSkill_multipleCapacityImplementation() throws Exception {
@@ -282,21 +334,14 @@ public class AbstractSkillContainerTest extends AbstractSarlTest {
 		assertNoSkill(Skill1.class);
 		assertNoSkill(Skill2.class);
 
-		try {
+		assertException(InvalidParameterException.class, () -> {
 			this.container.operator_mappedTo(Capacity1.class, new Skill2());
-			fail("Expecting the exception InvalidParameterException, but got no exception."); //$NON-NLS-1$
-		}
-		catch(InvalidParameterException exception) {
-			//
-		}
+		});
 
-		try {
+		assertException(InvalidParameterException.class, () -> {
 			this.container.operator_mappedTo(Capacity1.class, new Skill3());
 			fail("Expecting the exception InvalidParameterException, but got no exception."); //$NON-NLS-1$
-		}
-		catch(InvalidParameterException exception) {
-			//
-		}
+		});
 
 		s2 = new Skill2();
 		this.container.operator_mappedTo(Capacity2.class, s2);
@@ -305,21 +350,14 @@ public class AbstractSkillContainerTest extends AbstractSarlTest {
 		assertNoSkill(Skill1.class);
 		assertNoSkill(Skill2.class);
 
-		try {
+		assertException(InvalidParameterException.class, () -> {
 			this.container.operator_mappedTo(Capacity2.class, new Skill1());
 			fail("Expecting the exception InvalidParameterException, but got no exception."); //$NON-NLS-1$
-		}
-		catch(InvalidParameterException exception) {
-			//
-		}
+		});
 
-		try {
+		assertException(InvalidParameterException.class, () -> {
 			this.container.operator_mappedTo(Capacity2.class, new Skill3());
-			fail("Expecting the exception InvalidParameterException, but got no exception."); //$NON-NLS-1$
-		}
-		catch(InvalidParameterException exception) {
-			//
-		}
+		});
 	}
 
 	@Test
@@ -494,10 +532,18 @@ public class AbstractSkillContainerTest extends AbstractSarlTest {
 			this.id = id;
 		}
 
+		public <S extends Capacity> S getSkill_Fake(Class<S> capacity) {
+			return getSkill(capacity);
+		}
+
 		public <S extends Skill> S setSkill_Fake(S skill, Class<? extends Capacity>... capacity) {
 			return setSkill(skill, capacity);
 		}
 		
+		public void setSkillIfAbsent_Fake(Skill skill, Class<? extends Capacity>... capacity) {
+			setSkillIfAbsent(skill, capacity);
+		}
+
 		@Override
 		public AtomicSkillReference $getSkill(Class<? extends Capacity> capacity) {
 			return super.$getSkill(capacity);

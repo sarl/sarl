@@ -506,11 +506,40 @@ It is possible for a behavior to assign a skill to its agent.
 				uses Logging
 				def action { info("Action") }
 			}
+			[:On]
 			behavior MyBehavior {
 				new (owner : Agent) {
 					super(owner)
 					var theSkill = new Ski
 					setSkill( theSkill, Cap )
+				}
+			}
+		[:End:]
+
+
+
+
+
+If some cases, you may want to set the skill if one was not set up before. The specific behavior
+is supported by `[:setskillifabsfctfull]{[:setskillifabsfct](setSkillIfAbsent)(Skill, Class<? extends Capacity>*)}`.
+
+		[:Success:]
+			package io.sarl.docs.reference.br
+			import io.sarl.core.Logging
+			import io.sarl.lang.core.Agent
+			capacity Cap {
+				def action
+			}
+			skill Ski implements Cap {
+				uses Logging
+				def action { info("Action") }
+			}
+			[:On]
+			behavior MyBehavior {
+				new (owner : Agent) {
+					super(owner)
+					var theSkill = new Ski
+					setSkillIfAbsent( theSkill, Cap )
 				}
 			}
 		[:End:]
