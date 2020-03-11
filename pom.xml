@@ -24,29 +24,24 @@
 	<!-- ======================================= -->
 
 	<properties>
-		<!-- Java Configuration for compiling this project (useful for the SARL development team) -->
+		<!-- Java Configuration for compiling this project (useful for the SARL 
+			development team) -->
 		<sarl-dsl.min.jdk.version>1.8</sarl-dsl.min.jdk.version>
 		<sarl-dsl.min.jre.environment>JavaSE-${sarl-dsl.min.jdk.version}</sarl-dsl.min.jre.environment>
 		<sarl-dsl.max.jdk.version>1.8</sarl-dsl.max.jdk.version>
 		<sarl-dsl.next.unsupported.jdk.version>1.9</sarl-dsl.next.unsupported.jdk.version>
 
-		<!-- Java Configuration for running the SARL tools (IDE, sarlc, sarldoc...):
-		     ***********
-		     * CAUTION *
-		     ***********
-		     The versions below must include the versions for the properties "sarl-dsl.*"
-		-->
+		<!-- Java Configuration for running the SARL tools (IDE, sarlc, sarldoc...): 
+			*********** * CAUTION * *********** The versions below must include the versions 
+			for the properties "sarl-dsl.*" -->
 		<sarl-run.min.jdk.version>1.8</sarl-run.min.jdk.version>
 		<sarl-run.min.jre.environment>JavaSE-${sarl-run.min.jdk.version}</sarl-run.min.jre.environment>
 		<sarl-run.max.jdk.version>11</sarl-run.max.jdk.version>
 		<sarl-run.next.unsupported.jdk.version>12</sarl-run.next.unsupported.jdk.version>
 
-		<!-- Java Configuration that should be used by the projects compiled with SARL IDE or sarlc:
-		     ***********
-		     * CAUTION *
-		     ***********
-		     The versions below must include the versions for the properties "sarl-run.*"
-		 -->
+		<!-- Java Configuration that should be used by the projects compiled with 
+			SARL IDE or sarlc: *********** * CAUTION * *********** The versions below 
+			must include the versions for the properties "sarl-run.*" -->
 		<user.min.jdk.version>1.8</user.min.jdk.version>
 		<user.min.jre.environment>JavaSE-${user.min.jdk.version}</user.min.jre.environment>
 		<user.max.jdk.version>11</user.max.jdk.version>
@@ -808,6 +803,25 @@
 							<version>${junit5.version}</version>
 						</dependency>
 					</dependencies>
+					<configuration>
+						<statelessTestsetReporter
+							implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5Xml30StatelessReporter">
+							<usePhrasedFileName>false</usePhrasedFileName>
+							<usePhrasedTestSuiteClassName>true</usePhrasedTestSuiteClassName>
+							<usePhrasedTestCaseClassName>true</usePhrasedTestCaseClassName>
+							<usePhrasedTestCaseMethodName>true</usePhrasedTestCaseMethodName>
+						</statelessTestsetReporter>
+						<consoleOutputReporter
+							implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5ConsoleOutputReporter">
+							<usePhrasedFileName>false</usePhrasedFileName>
+						</consoleOutputReporter>
+						<statelessTestsetInfoReporter
+							implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5StatelessTestsetInfoReporter">
+							<usePhrasedFileName>false</usePhrasedFileName>
+							<usePhrasedClassNameInRunning>true</usePhrasedClassNameInRunning>
+							<usePhrasedClassNameInTestCaseSummary>true</usePhrasedClassNameInTestCaseSummary>
+						</statelessTestsetInfoReporter>
+					</configuration>
 				</plugin>
 
 				<plugin>
@@ -1372,26 +1386,12 @@
 	</profiles>
 
 	<repositories>
-		<!--<repository>
-			<id>org.eclipse.xtext-snapshot</id>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</repository>-->
-		<!--<repository>
-			<id>org.arakhne-snapshot</id>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<url>http://download.tuxfamily.org/arakhne/maven</url>
-		</repository>-->
+		<!--<repository> <id>org.eclipse.xtext-snapshot</id> <snapshots> <enabled>true</enabled> 
+			</snapshots> <releases> <enabled>true</enabled> </releases> <url>https://oss.sonatype.org/content/repositories/snapshots</url> 
+			</repository> -->
+		<!--<repository> <id>org.arakhne-snapshot</id> <snapshots> <enabled>true</enabled> 
+			</snapshots> <releases> <enabled>true</enabled> </releases> <url>http://download.tuxfamily.org/arakhne/maven</url> 
+			</repository> -->
 	</repositories>
 
 </project>
