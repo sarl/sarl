@@ -53,6 +53,7 @@ import java.util.EventListener
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedDeque
+import java.util.concurrent.ConcurrentMap
 import java.util.concurrent.ConcurrentSkipListSet
 import java.util.concurrent.TimeUnit
 import java.util.logging.Logger
@@ -108,7 +109,7 @@ abstract class SpaceRepository implements SpaceListener {
 
 	/** Replies the internal map that contains the spaces
 	 */
-	protected abstract def getSharedStructure : ConcurrentHashMap<UUID, SpaceDescription>
+	protected abstract def getSharedStructure : ConcurrentMap<UUID, SpaceDescription>
 
 	/** Create a space description.
 	 * 
@@ -173,7 +174,7 @@ abstract class SpaceRepository implements SpaceListener {
 		return defaultSpace
 	}
 
-	private def createSpaceFirstInstance(spec : Class<? extends SpaceSpecification<S>>, spaceID : SpaceID,
+	protected def createSpaceFirstInstance(spec : Class<? extends SpaceSpecification<S>>, spaceID : SpaceID,
 		creationParams : Object[]) : S with S extends Space {
 		assert spaceID.spaceSpecification === null ||
 			spaceID.spaceSpecification == spec, "The specification type is invalid"
