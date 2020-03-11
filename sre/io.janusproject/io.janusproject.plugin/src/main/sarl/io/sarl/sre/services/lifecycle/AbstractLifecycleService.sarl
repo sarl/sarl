@@ -23,6 +23,7 @@ package io.sarl.sre.services.lifecycle
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.DynamicSkillProvider
 import io.sarl.sarlspecification.SarlSpecificationChecker
+import io.sarl.sre.boot.configs.subconfigs.LifecycleConfig
 import io.sarl.sre.internal.SmartListenerCollection
 import io.sarl.sre.services.AbstractSreService
 import io.sarl.sre.services.context.Context
@@ -38,6 +39,7 @@ import javax.inject.Provider
 import javax.inject.Singleton
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
+import java.lang.ref.WeakReference
 
 /** 
  * Implementation of a spawning service that is based on the other services of the SRE platform.
@@ -50,9 +52,7 @@ import static io.sarl.sre.services.lifecycle.AgentLife.*
 @Singleton
 abstract class AbstractLifecycleService extends AbstractSreService implements LifecycleService {
 
-		/** Maximum number of agents to be launch by a single thread.
-		 */
-	static val CREATION_POOL_SIZE = 128
+	static val INTERNAL_TIME_OUT = 5000
 
 	val globalListeners : SmartListenerCollection<?>
 
@@ -70,6 +70,8 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 
 	val executor : ExecutorService
 
+	val lifecycleConfig : LifecycleConfig
+
 	var userDynamicSkillProviders : ConcurrentLinkedDeque<DynamicSkillProvider>
 
 	/** 
@@ -84,17 +86,19 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	 * @param externalContextListener the listener at the platform scale on context membership events.
 	 * @param skillUninstaller the object this is able to uninstall the skills.
 	 * @param executor the executor service.
+	 * @param lifecycleConfig the configuration of the lifecycle service.
 	 * @param logger the logging service.
 	 */
 	new (sarlSpecificationChecker : SarlSpecificationChecker, creator : AgentCreatorProvider,
 		globalListeners : SmartListenerCollection<?>, lifecycleListener : Provider<LifecycleServiceListener>,
 		externalContextListener : Provider<ExternalContextMemberListener>, skillUninstaller : SkillUninstaller,
-		executor : ExecutorService, logger : LoggingService) {
+		executor : ExecutorService, logger : LoggingService, lifecycleConfig : LifecycleConfig) {
 		this.sarlSpecificationChecker = sarlSpecificationChecker
 		this.agentCreatorProvider = creator
 		this.globalListeners = globalListeners
 		this.skillUninstaller = skillUninstaller
 		this.executor = executor
+		this.lifecycleConfig = lifecycleConfig
 		this.logger = logger
 		this.platformLifecycleEventEmitter = lifecycleListener.get
 		this.platformContextEventEmitter = externalContextListener.get
@@ -196,6 +200,9 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 				throw new InvalidSarlSpecificationException(agentClazz)
 			}
 
+			// Test if the agent is the first in the root content
+			val firstAgentInRootContent = parent.isEmptyRootContext
+
 			// The following variable enables to get the identifier of the first spawned agent.
 			var firstAgentIdentifier = new AtomicReference<UUID>
 			
@@ -231,33 +238,92 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 					if (spawnError !== null) {
 						loggingService.kernelLogger.log(Level::SEVERE, spawnError.message, spawnError)
 					}
-					if (parent.emptyRootContext) {
-						// The agent seems to be the boot agent, and it has failed to be launched.
-						// Moreover the root context is still empty.
-						// The safer decision should be to stop the kernel.
-						onAgentFrameworkStop
+					// The agent may be the boot agent, and it may have failed to be launched.
+					// When the root context is still empty the safer decision should be to stop the kernel.
+					// In some cases, the agent that is just not started has spawned another agent
+					// into its "on Initialize" before it returns on failure or with "killMe".
+					// Then, we should give the opportunity to the spawned sub-agent to properly
+					// start before stopping the SRE.
+					if (firstAgentInRootContent) {
+						parent.startShutdownLookup
 					}
 				}
 			]
 			if (nbAgents > 1) {
-				this.executor.executeBlockingTask(loggingService.kernelLogger, nbAgents, CREATION_POOL_SIZE, agentCreator)
+				this.executor.executeBlockingTask(loggingService.kernelLogger, nbAgents,
+					this.lifecycleConfig.agentSpawningCountPerThread, agentCreator)
 			} else {
 				this.executor.executeAsap(loggingService.kernelLogger, agentCreator)
 			}
-			
-			// ASSUMPTION : the callback is called only one time.
+
+			// ASSUMPTION : the callback should be called only one time.
 			if (callback !== null) {
 				// Wait for the agent starting
 				var id = firstAgentIdentifier.get
-				while (id === null) {
+				val endTime = System::currentTimeMillis + INTERNAL_TIME_OUT
+				while (id === null && System::currentTimeMillis <= endTime) {
 					Thread::yield
 					id = firstAgentIdentifier.get
+				}
+				if (id === null) {
+					throw new IllegalStateException
 				}
 				callback.firstAgentSpawned(id)
 			}
 		} else {
 			throw new SpawnDisabledException(parent.ID, agentClazz)
 		}
+	}
+
+	private def startShutdownLookup(parent : Context) {
+		val duration = this.lifecycleConfig.kernelStopDelayOnSpawn
+		val lookup = new ShutdownLookUp(this, parent, duration)
+		lookup.start
+	}
+
+	/** 
+	 * A class that is looking for notifying when the last agent has leaved.
+	 * 
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.11
+	 */
+	private static class ShutdownLookUp implements Runnable {
+	
+		val enclosing : WeakReference<AbstractLifecycleService>
+	
+		val parent : Context
+
+		val duration : int
+	
+		package new (enclosing : AbstractLifecycleService, parent : Context, duration : int) {
+			this.enclosing = new WeakReference(enclosing)
+			this.parent = parent
+			this.duration = duration
+		}
+
+		def run {
+			val ec = this.enclosing.get
+			if (ec !== null) {
+				if (ec.isEmptyRootContext(this.parent)) {
+					ec.onAgentFrameworkStop
+				}
+			}
+		}
+
+		def start : void {
+			val ec = this.enclosing.get
+			if (ec !== null) {
+				if (this.duration > 0) {
+					ec.executor.schedule(this.duration, this)
+				} else {
+					run
+				}
+			}
+		}
+		
 	}
 
 	/** This function is called each time the agent framework should be stopped.

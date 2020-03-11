@@ -28,6 +28,8 @@ import io.sarl.lang.core.DynamicSkillProvider
 import io.sarl.lang.core.SREutils
 import io.sarl.sarlspecification.SarlSpecificationChecker
 import io.sarl.sre.KernelScope
+import io.sarl.sre.boot.configs.SreConfig
+import io.sarl.sre.boot.configs.subconfigs.LifecycleConfig
 import io.sarl.sre.internal.SmartListenerCollection
 import io.sarl.sre.services.context.ExternalContextMemberListener
 import io.sarl.sre.services.executor.ExecutorService
@@ -64,6 +66,7 @@ class InjectionBasedLifecycleService extends AbstractLifecycleService {
 	 * @param skillUninstaller the object this is able to uninstall the skills.
 	 * @param executor the executor service.
 	 * @param logger the logging service.
+	 * @param sreConfig the configuration of the SRE.
 	 */
 	@Inject
 	new (injector : Injector, sarlSpecificationChecker : SarlSpecificationChecker,
@@ -73,10 +76,11 @@ class InjectionBasedLifecycleService extends AbstractLifecycleService {
 		@KernelScope externalContextListener : Provider<ExternalContextMemberListener>,
 		skillUninstaller : SkillUninstaller,
 		executor : ExecutorService,
-		logger : LoggingService) {
+		logger : LoggingService,
+		sreConfig : SreConfig) {
 		this(sarlSpecificationChecker, new CreatorFactory(injector, skillProvider),
 			globalListeners, lifecycleListener, externalContextListener,
-			skillUninstaller, executor, logger)
+			skillUninstaller, executor, logger, sreConfig.services.lifecycle)
 	}
 
 	/** 
@@ -92,13 +96,15 @@ class InjectionBasedLifecycleService extends AbstractLifecycleService {
 	 * @param skillUninstaller the object this is able to uninstall the skills.
 	 * @param executor the executor service.
 	 * @param logger the logging service.
+	 * @param lifecycleConfig the configuration of the lifecycle service.
 	 */
 	new (sarlSpecificationChecker : SarlSpecificationChecker, creator : AgentCreatorProvider,
 		globalListeners : SmartListenerCollection<?>, lifecycleListener : Provider<LifecycleServiceListener>,
 		externalContextListener : Provider<ExternalContextMemberListener>,
-		skillUninstaller : SkillUninstaller, executor : ExecutorService, logger : LoggingService) {
+		skillUninstaller : SkillUninstaller, executor : ExecutorService, logger : LoggingService,
+		lifecycleConfig : LifecycleConfig) {
 		super(sarlSpecificationChecker, creator, globalListeners, lifecycleListener,
-			externalContextListener, skillUninstaller, executor, logger)
+			externalContextListener, skillUninstaller, executor, logger, lifecycleConfig)
 	}
 
 	/** 

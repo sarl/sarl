@@ -23,9 +23,6 @@ package io.sarl.sre.tests.runtime.boot.shutdown.mocks
 
 import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
-import io.sarl.sre.test.framework.agents.InfiniteLifeTestingAgent
-import io.sarl.sre.test.framework.skills.TestingCapacity
-import io.sarl.sre.test.framework.skills.TestingSkill
 
 /**
  * @author $Author: sgalland$
@@ -33,15 +30,11 @@ import io.sarl.sre.test.framework.skills.TestingSkill
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent ShutdownAgent2Mock {
+agent ShutdownAgent4Mock {
 
 	uses Lifecycle
-	
-	uses TestingCapacity
 
 	on Initialize {
-		setSkill(new TestingSkill(occurrence))
-		typeof(InfiniteLifeTestingAgent).spawn(buildAgentInitializationParameters)
 		killMe
 	}
 
