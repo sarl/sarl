@@ -47,7 +47,7 @@ public class ExtraLanguageListCommand extends CommandWithMetadata {
 
 	/** Name of the option for enabling the progress bar.
 	 */
-	public static final String EXTRA_LANGUAGE_LIST_OPTION_NAME = "printgenerators"; //$NON-NLS-1$
+	public static final String EXTRA_LANGUAGE_LIST_OPTION_NAME = "print-generators"; //$NON-NLS-1$
 
 	/** Name of the option for enabling the progress bar.
 	 */
