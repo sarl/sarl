@@ -42,7 +42,7 @@ agent MyAgent0 {
 	on Initialize {
 		setSkill(new TestingSkill(occurrence))
 		addResult("AGENT")
-		new MyBehavior0(this, modifiableResults).registerBehavior
+		new MyBehavior0(this).registerBehavior
 		killMe
 	}
 			

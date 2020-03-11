@@ -25,7 +25,6 @@ import io.sarl.sre.test.framework.Constants
 import java.util.Collection
 import java.util.List
 import java.util.UUID
-import java.util.concurrent.CopyOnWriteArrayList
 
 /**
  * A capacity that provides the agent with testing functions.
@@ -73,13 +72,6 @@ capacity TestingCapacity {
 	 */
 	@Pure
 	def getUnmodifiableResults : List<Object>
-
-	/** 
-	 * Replies a modifiable view on the results for the current agent.
-	 * @return the results.
-	 */
-	@Pure
-	def getModifiableResults : CopyOnWriteArrayList<Object>
 
 	/** Replies the initialization parameters of the agents.
 	 *
