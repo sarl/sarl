@@ -234,13 +234,13 @@ public final class SRE {
 		}
 
 		@Override
-		public void shutdown(boolean blocking) {
-			throw new UnsupportedOperationException();
+		public <T> T getService(Class<T> serviceType) {
+			return null;
 		}
 
 		@Override
-		public <T> T getService(Class<T> serviceType) {
-			return null;
+		public void shutdown(boolean blocking, int timeout) throws InterruptedException {
+			throw new UnsupportedOperationException();
 		}
 
 	}

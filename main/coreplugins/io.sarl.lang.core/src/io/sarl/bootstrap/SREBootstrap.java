@@ -275,14 +275,51 @@ public interface SREBootstrap {
 	/**
 	 * Stop the SRE without an agent.
 	 * This function may cause the agents to stop during the run of a behavior.
+	 * This function has no timeout.
 	 * This function returns when the kernel and all its services are stopped.
 	 *
 	 * @throws InterruptedException the shutdown process is interrupted.
 	 * @since 0.10
 	 * @see #shutdown(boolean)
+	 * @see #shutdown(int)
+	 * @see #shutdown(boolean, int)
 	 */
 	default void shutdown() throws InterruptedException {
-		shutdown(true);
+		shutdown(true, -1);
+	}
+
+	/**
+	 * Stop the SRE without an agent.
+	 * This function may cause the agents to stop during the run of a behavior.
+	 * This function has no timeout.
+	 *
+	 * @param blocking indicates if the functions is blocked until the shutdown task is finished.
+	 *     If it is {@code true}, the function returns when the kernel is down. If it is
+	 *     {@code false}, the function could return before the kernel is down.
+	 * @throws InterruptedException the shutdown process is interrupted.
+	 * @since 0.10
+	 * @see #shutdown()
+	 * @see #shutdown(int)
+	 * @see #shutdown(boolean, int)
+	 */
+	default void shutdown(boolean blocking) throws InterruptedException {
+		shutdown(blocking, -1);
+	}
+
+	/**
+	 * Stop the SRE without an agent.
+	 * This function may cause the agents to stop during the run of a behavior.
+	 * This function returns when the kernel and all its services are stopped.
+	 *
+	 * @param timeout the maximal duration to wait for the shutdown, in milliseconds.
+	 * @throws InterruptedException the shutdown process is interrupted.
+	 * @since 0.11
+	 * @see #shutdown()
+	 * @see #shutdown(boolean)
+	 * @see #shutdown(int)
+	 */
+	default void shutdown(int timeout) throws InterruptedException {
+		shutdown(true, timeout);
 	}
 
 	/**
@@ -292,11 +329,14 @@ public interface SREBootstrap {
 	 * @param blocking indicates if the functions is blocked until the shutdown task is finished.
 	 *     If it is {@code true}, the function returns when the kernel is down. If it is
 	 *     {@code false}, the function could return before the kernel is down.
+	 * @param timeout the maximal duration to wait for the shutdown, in milliseconds.
 	 * @throws InterruptedException the shutdown process is interrupted.
-	 * @since 0.10
+	 * @since 0.11
 	 * @see #shutdown()
+	 * @see #shutdown(boolean)
+	 * @see #shutdown(int)
 	 */
-	void shutdown(boolean blocking) throws InterruptedException;
+	void shutdown(boolean blocking, int timeout) throws InterruptedException;
 
 	/** Replies the service of the given type that is implemented into the SRE.
 	 *
