@@ -1,0 +1,18 @@
+package io.sarl.sre.network.services
+
+import io.sarl.sre.spaces.EventTransportService
+
+import javax.inject.Singleton
+import io.sarl.lang.core.Event
+import io.sarl.lang.core.EventSpace
+import io.sarl.lang.core.Scope
+import io.sarl.lang.core.Address
+
+@Singleton
+class HazelcastEventTransportService implements EventTransportService {
+	
+	def routeEvent(^event : Event, ^space : EventSpace, scope : Scope<? super Address>) : boolean {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+}

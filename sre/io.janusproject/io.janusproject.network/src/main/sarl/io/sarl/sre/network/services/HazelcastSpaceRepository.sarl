@@ -1,0 +1,169 @@
+package io.sarl.sre.network.services
+
+import com.google.inject.Injector
+import com.hazelcast.core.EntryEvent;
+import com.hazelcast.core.EntryListener;
+import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.map.IMap;
+import com.hazelcast.map.MapEvent;
+import io.sarl.lang.core.Space
+import io.sarl.lang.core.SpaceID
+import io.sarl.lang.core.SpaceSpecification
+import io.sarl.sre.boot.configs.SreConfig
+import io.sarl.sre.internal.SmartListenerCollection
+import io.sarl.sre.services.context.LocalSpaceRepository
+import io.sarl.sre.services.context.SpaceRepository.SpaceDescription
+import io.sarl.sre.services.executor.ExecutorService
+import java.util.ArrayList
+import java.util.Iterator
+import java.util.List
+import java.util.Map.Entry
+import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
+import javax.inject.Inject
+
+class HazelcastSpaceRepository extends LocalSpaceRepository {
+
+	var hazelcastInstance : HazelcastInstance;
+
+	/** 
+	 * The set of the id of all spaces stored in this repository This set must be
+	 * distributed and synchronized all over the network.
+	 */
+	var spaceIDs : IMap<SpaceID, Object[]>
+
+	var spaceIDsListerner : EntryListener<SpaceID, Object[]>
+
+	@Inject
+	new(injector : Injector, executor : ExecutorService, config : SreConfig,
+		internalStructure : ConcurrentHashMap<UUID, SpaceDescription>, listenerCollection : SmartListenerCollection<?>,
+		iHazelcastInstance : HazelcastInstance, distributedSpaceMapName : String) {
+		super(injector, executor, config, listenerCollection)
+		hazelcastInstance = iHazelcastInstance
+		spaceIDs = this.hazelcastInstance.getMap(distributedSpaceMapName);
+		/*spaceIDsListerner = new EntryListener<SpaceID, Object[]>() {
+
+			public override def entryAdded(^event : EntryEvent<SpaceID, Object[]>) {
+				assert spaceIDs.containsKey(key);
+				ensureLocalSpaceDefinition(key, value);
+			}
+
+			public override def entryEvicted(^event : EntryEvent<SpaceID, Object[]>) {
+				assert !spaceIDs.containsKey(^event.getKey());
+				removeLocalSpaceDefinition(^event.getKey(), false);
+			}
+
+			public override def entryRemoved(^event : EntryEvent<SpaceID, Object[]>) {
+				assert !spaceIDs.containsKey(^event.getKey());
+				removeLocalSpaceDefinition(^event.getKey(), false);
+			}
+
+			public override def entryUpdated(^event : EntryEvent<SpaceID, Object[]>) {
+				//
+			}
+
+			public override def mapCleared(^event : MapEvent) {
+				removeLocalSpaceDefinitions(false);
+			}
+
+			public override def mapEvicted(^event : MapEvent) {
+			}
+		}*/
+
+	}
+
+	protected override def createSpaceFirstInstance(spec : Class<? extends SpaceSpecification<S>>, spaceID : SpaceID,
+		creationParams : Object[]) : S with S extends Space {
+
+		this.spaceIDs.putIfAbsent(spaceID, creationParams);
+
+		return super.createSpaceFirstInstance(spec, spaceID, creationParams);
+
+	}
+
+	/** 
+	 * Remove a remote space.
+	 * 
+	 * @param id                 identifier of the space
+	 * @param isLocalDestruction indicates if the destruction is initiated by the
+	 * local kernel.
+	 */
+	/*protected def removeLocalSpaceDefinition(id : SpaceID, isLocalDestruction : boolean) {
+
+		val ^space : Space = this.spaces.remove(id);
+		if (^space != null) {
+			this.spacesBySpec.remove(id.getSpaceSpecification(), id);
+		}
+
+		if (^space != null) {
+			fireSpaceRemoved(^space, isLocalDestruction);
+		}
+	}*/
+
+	/** 
+	 * Remove all the remote spaces.
+	 * 
+	 * @param isLocalDestruction indicates if the destruction is initiated by the
+	 * local kernel.
+	 */
+	/*protected def removeLocalSpaceDefinitions(isLocalDestruction : boolean) {
+			var removedSpaces : List<Space> = null;
+	
+			if (!this.spaces.isEmpty()) {
+				removedSpaces = new ArrayList<Space>(this.spaces.size());
+			}
+	
+			if (removedSpaces != null) {		
+				val iterator: Iterator<Entry<SpaceID, Space>>  = this.spaces.entrySet().iterator();				
+				var ^space :Space;
+				var id : SpaceID;
+				while (iterator.hasNext()) {
+		
+					var entry : Entry<SpaceID, Space> = iterator.next();
+					id = entry.getKey();
+		
+					^space = entry.getValue();
+					iterator.remove();
+					this.spacesBySpec.remove(id.getSpaceSpecification(), id);
+					removedSpaces.add(^space);
+				}
+		
+				for (s : removedSpaces) {
+					fireSpaceRemoved(s, isLocalDestruction);
+				}
+			}
+	}*/
+
+	/** 
+	 * Remove all the remote spaces.
+	 * 
+	 * @param isLocalDestruction indicates if the destruction is initiated by the
+	 * local kernel.
+	 */
+	/*protected def removeLocalSpaceDefinitions(isLocalDestruction : boolean ) {
+		var removedSpaces:List<Space>  = null;
+
+		if (!this.spaces.isEmpty()) {
+			removedSpaces = new ArrayList<>(this.spaces.size());
+		}
+
+		if (removedSpaces != null) {
+			val iterator: Iterator<Entry<SpaceID, Space>>  = this.spaces.entrySet().iterator();			
+			^space : Space;
+			id:SpaceID ;
+			while (iterator.hasNext()) {
+				val entry: Entry<SpaceID, Space>  = iterator.next();
+				id = entry.getKey();
+				^space = entry.getValue();
+				iterator.remove();
+				this.spacesBySpec.remove(id.getSpaceSpecification(), id);
+				removedSpaces.add( ^space);
+			}
+
+			for ( s : removedSpaces) {
+				fireSpaceRemoved(s, isLocalDestruction);
+			}
+		}
+	}	*/
+	
+}

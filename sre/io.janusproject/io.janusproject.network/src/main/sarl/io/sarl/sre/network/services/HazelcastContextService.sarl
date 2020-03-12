@@ -1,0 +1,18 @@
+package io.sarl.sre.network.services
+
+import com.hazelcast.map.IMap
+import io.sarl.lang.core.SpaceID
+import io.sarl.sre.services.context.MemoryBasedContextService
+import java.util.UUID
+
+class HazelcastContextService extends MemoryBasedContextService {
+
+	/** 
+	 * Map linking a context id to its associated default space id. This map must be
+	 * distributed and synchronized all over the network
+	 */
+	var defaultSpaces: IMap<UUID, SpaceID> 
+	
+	
+	
+}
