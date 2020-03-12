@@ -22,6 +22,7 @@ package io.sarl.lang.tests.general.compilation.oop;
 
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -36,6 +37,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("Compilation: interface")
 public class InterfaceCompilerTest {
 
 	@Nested

@@ -32,6 +32,7 @@ import static org.mockito.Mockito.doReturn;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.core.Address;
@@ -46,6 +47,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("Agent")
 public class AgentTest extends AbstractSarlTest {
 
 	private UUID id;

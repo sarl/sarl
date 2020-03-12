@@ -28,6 +28,7 @@ import org.eclipse.xtext.xbase.lib.Functions;
 import org.eclipse.xtext.xbase.lib.Procedures;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.docs.doclet.utils.SARLFeatureAccess;
@@ -48,6 +49,7 @@ import io.sarl.lang.services.SARLGrammarKeywordAccess;
  * @since 0.7
  */
 @SuppressWarnings("all")
+@DisplayName("SARLFeatureAccess")
 public final class SARLFeatureAccessTest {
 
 	private io.sarl.lang.services.SARLGrammarKeywordAccess original;

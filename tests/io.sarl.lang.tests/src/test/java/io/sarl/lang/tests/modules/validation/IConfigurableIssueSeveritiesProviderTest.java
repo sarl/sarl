@@ -29,6 +29,7 @@ import com.google.inject.Inject;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.validation.IssueSeverities;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlScript;
@@ -45,6 +46,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @since 0.5
  */
 @SuppressWarnings("all")
+@DisplayName("IConfigurableIssueSeveritiesProvider")
 public class IConfigurableIssueSeveritiesProviderTest extends AbstractSarlTest {
 
 	private static final String SNIPSET = multilineString(

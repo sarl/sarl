@@ -23,6 +23,7 @@ package io.sarl.docs.doclet.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.docs.doclet.utils.Utils;
@@ -36,6 +37,7 @@ import io.sarl.lang.annotation.DefaultValue;
  * @since 0.7
  */
 @SuppressWarnings("all")
+@DisplayName("Utils")
 public final class UtilsTest {
 
 	@Test

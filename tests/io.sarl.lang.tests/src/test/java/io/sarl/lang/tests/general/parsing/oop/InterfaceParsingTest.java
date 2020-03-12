@@ -33,6 +33,7 @@ import org.eclipse.xtext.common.types.JvmTypeConstraint;
 import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.eclipse.xtext.common.types.TypesPackage;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -53,9 +54,11 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("Syntax: interface")
 public class InterfaceParsingTest {
 
 	@Nested
+	@DisplayName("Syntax: interface as top element")
 	public class TopInterfaceTest extends AbstractSarlTest {
 
 		protected SarlInterface getInterface(SarlScript script) {
@@ -298,6 +301,7 @@ public class InterfaceParsingTest {
 	}
 
 	@Nested
+	@DisplayName("Syntax: interface inside class")
 	public class InsideClassTest extends AbstractSarlTest {
 
 		protected SarlInterface getInterface(SarlScript script) {
@@ -588,6 +592,7 @@ public class InterfaceParsingTest {
 	}
 
 	@Nested
+	@DisplayName("Syntax: interface inside agent")
 	public class InsideAgentTest extends AbstractSarlTest {
 
 		protected SarlInterface getInterface(SarlScript script) {
@@ -852,6 +857,7 @@ public class InterfaceParsingTest {
 	}
 
 	@Nested
+	@DisplayName("Syntax: interface inside behavior")
 	public class InsideBehaviorTest extends AbstractSarlTest {
 
 		protected SarlInterface getInterface(SarlScript script) {
@@ -1142,6 +1148,7 @@ public class InterfaceParsingTest {
 	}
 
 	@Nested
+	@DisplayName("Syntax: interfacce inside skill")
 	public class InsideSkillTest extends AbstractSarlTest {
 
 		protected SarlInterface getInterface(SarlScript script) {
@@ -1448,6 +1455,7 @@ public class InterfaceParsingTest {
 	}
 
 	@Nested
+	@DisplayName("Syntax: interface general tests")
 	public class GenericTest extends AbstractSarlTest {
 
 		@Test

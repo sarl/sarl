@@ -29,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.core.SpaceID;
@@ -42,6 +43,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings({"rawtypes","unchecked"})
+@DisplayName("SpaceID with specification")
 public class SpaceIDWithSpecificationTest extends AbstractSarlTest {
 
 	private UUID contextID;

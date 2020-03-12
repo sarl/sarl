@@ -38,6 +38,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.core.AbstractSkillContainer;
@@ -58,6 +59,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("AbstractSkillContainer")
 public class AbstractSkillContainerTest extends AbstractSarlTest {
 
 	private UUID id;

@@ -38,6 +38,7 @@ import org.eclipse.xtext.diagnostics.Diagnostic;
 import org.eclipse.xtext.xbase.XNullLiteral;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XbasePackage;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlAction;
@@ -55,6 +56,7 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("Syntax: var")
 public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test

@@ -33,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.eclipse.xtend.core.validation.IssueCodes;
 import org.eclipse.xtext.common.types.JvmVisibility;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -53,9 +54,11 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("Syntax: annotation")
 public class AnnotationTypeParsingTest extends AbstractSarlTest {
 
 	@Nested
+	@DisplayName("Syntax: annotation as top element")
 	public class TopAnnotationTypeTest extends AbstractSarlTest {
 
 		protected SarlAnnotationType getAnnotationType(SarlScript script) {
@@ -269,6 +272,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 	}
 
 	@Nested
+	@DisplayName("Syntax: annotation inside class")
 	public class InsideClassTest extends AbstractSarlTest {
 
 		protected SarlAnnotationType getAnnotationType(SarlScript script) {
@@ -523,6 +527,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 	}
 
 	@Nested
+	@DisplayName("Syntax: annotation inside agent")
 	public class InsideAgentTest extends AbstractSarlTest {
 
 		protected SarlAnnotationType getAnnotationType(SarlScript script) {
@@ -762,6 +767,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 	}
 
 	@Nested
+	@DisplayName("Syntax: annotation inside behavior")
 	public class InsideBehaviorTest extends AbstractSarlTest {
 
 		protected SarlAnnotationType getAnnotationType(SarlScript script) {
@@ -1016,6 +1022,7 @@ public class AnnotationTypeParsingTest extends AbstractSarlTest {
 	}
 
 	@Nested
+	@DisplayName("Syntax: annotation inside skill")
 	public class InsideSkillTest extends AbstractSarlTest {
 
 		protected SarlAnnotationType getAnnotationType(SarlScript script) {

@@ -35,6 +35,7 @@ import com.google.inject.Inject;
 import org.eclipse.xtext.serializer.ISerializer;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlAction;
@@ -49,6 +50,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("Syntax: early exit statements")
 public class EarlyExistParsingTest extends AbstractSarlTest {
 
 	@Inject

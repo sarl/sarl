@@ -13,6 +13,7 @@ import static io.sarl.tests.api.tools.TestValidator.validate;
 
 import org.eclipse.xtend.core.validation.IssueCodes;
 import org.eclipse.xtext.xbase.XbasePackage;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlPackage;
@@ -27,6 +28,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @see "https://github.com/eclipse/xtext-xtend/pull/192"
  */
 @SuppressWarnings("all")
+@DisplayName("SARL compliance to the Java 8 OO standards")
 public class Java8ValidationTest extends AbstractSarlTest {
 
 	/**

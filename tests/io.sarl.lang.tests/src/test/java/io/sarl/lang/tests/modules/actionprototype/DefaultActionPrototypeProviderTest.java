@@ -55,6 +55,7 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.xbase.XExpression;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -86,6 +87,7 @@ import io.sarl.tests.api.Nullable;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings({"javadoc", "nls", "incomplete-switch"})
+@DisplayName("DefaultActionPrototypeProvider")
 public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 
 	static int index;
@@ -229,6 +231,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 	 * @mavenartifactid $ArtifactId$
 	 */
 	@Nested
+	@DisplayName("DefaultActionPrototypeProvider without default values")
 	public class NoDefaultValues extends AbstractSarlTest {
 
 		@Inject
@@ -851,6 +854,7 @@ public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 	 * @mavenartifactid $ArtifactId$
 	 */
 	@Nested
+	@DisplayName("DefaultActionPrototypeProvider with default values")
 	public class DefaultValues extends AbstractSarlTest {
 
 		@Inject

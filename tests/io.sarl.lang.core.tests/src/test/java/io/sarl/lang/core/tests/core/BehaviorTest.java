@@ -23,6 +23,7 @@ package io.sarl.lang.core.tests.core;
 import static io.sarl.tests.api.tools.TestAssertions.assertInstanceOf;
 import static io.sarl.tests.api.tools.TestReflections.invokeFunc;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.core.Behavior;
@@ -36,6 +37,7 @@ import io.sarl.lang.core.Skill;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("Behavior")
 public class BehaviorTest extends AbstractAgentTraitBehaviorTest {
 
 	@Override

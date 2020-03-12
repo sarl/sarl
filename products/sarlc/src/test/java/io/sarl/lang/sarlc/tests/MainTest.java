@@ -40,6 +40,7 @@ import org.arakhne.afc.vmutil.FileSystem;
 import org.arakhne.afc.vmutil.Resources;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -57,6 +58,7 @@ import io.sarl.maven.bootiqueapp.utils.SystemPath;
  * @since 0.10
  */
 @SuppressWarnings("all")
+@DisplayName("Entry point test")
 public class MainTest {
 
 	private static final boolean CAPTURE_OUTPUTS = true;

@@ -32,6 +32,7 @@ import org.eclipse.xtext.util.IAcceptor;
 import org.eclipse.xtext.xbase.lib.Pair;
 import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.eclipse.xtext.xbase.testing.CompilationTestHelper.Result;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -49,6 +50,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("Compilation: @Inline")
 public class InlineFunctionTest extends AbstractSarlTest {
 
 	@Inject

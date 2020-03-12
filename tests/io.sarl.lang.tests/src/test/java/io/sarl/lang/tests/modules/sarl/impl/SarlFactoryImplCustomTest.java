@@ -27,6 +27,7 @@ import static io.sarl.tests.api.tools.TestValidator.validate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlAgent;
@@ -57,6 +58,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("ecore: custom SarlFactory")
 public class SarlFactoryImplCustomTest extends AbstractSarlTest {
 
 	@Test

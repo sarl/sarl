@@ -22,6 +22,7 @@ package io.sarl.lang.core.tests.scoping.extensions.time;
 
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -36,6 +37,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("TimeExtensions - compilation")
 public class TimeExtensionsCompilerTest extends AbstractSarlTest {
 
 	@Test

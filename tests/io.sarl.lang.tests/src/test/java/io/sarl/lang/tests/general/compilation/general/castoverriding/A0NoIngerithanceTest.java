@@ -26,6 +26,7 @@ import static io.sarl.tests.api.tools.TestValidator.validate;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.common.types.TypesPackage;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -48,6 +49,7 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  */
 @GlobalCompilationSuite
 @SuppressWarnings("all")
+@DisplayName("Compilation: cast operator without inheritance")
 public class A0NoIngerithanceTest extends AbstractSarlTest {
 
 	private static final String NO_FUNCTION_SARL = multilineString(

@@ -34,6 +34,7 @@ import org.eclipse.xtext.diagnostics.Diagnostic;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlAgent;
@@ -49,6 +50,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("Syntax: type casting")
 public class DataTypeParsingTest extends AbstractSarlTest {
 
 	@Test

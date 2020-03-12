@@ -28,6 +28,7 @@ import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlAction;
@@ -43,6 +44,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("TimeExtensions - syntax")
 public class TimeExtensionsParsingTest extends AbstractSarlTest {
 
 	@Test

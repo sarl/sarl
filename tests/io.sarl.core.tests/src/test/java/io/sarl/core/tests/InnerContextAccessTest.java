@@ -26,6 +26,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.core.AgentContext;
@@ -40,6 +41,7 @@ import io.sarl.lang.core.SpaceID;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@DisplayName("InnerContextAccess")
 public class InnerContextAccessTest extends AbstractSarlCoreTest<Capacity> {
 
 	/**

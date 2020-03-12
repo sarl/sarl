@@ -25,6 +25,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
 
 import io.sarl.lang.scoping.extensions.time.TimeExtensions;
 
@@ -35,6 +36,7 @@ import io.sarl.lang.scoping.extensions.time.TimeExtensions;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("TimeExtensions")
 public class TimeExtensionsTest {
 
 	@Test

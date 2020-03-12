@@ -32,6 +32,7 @@ import com.google.inject.Injector;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.xtext.xbase.lib.IntegerRange;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -46,6 +47,7 @@ import io.sarl.maven.docs.markdown.MarkdownParser;
  * @since 0.6
  */
 @SuppressWarnings("all")
+@DisplayName("MarkdownParser")
 public class MarkdownParserTest {
 
 	private static File file(String basename) {

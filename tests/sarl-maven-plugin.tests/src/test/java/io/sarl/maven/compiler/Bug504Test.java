@@ -29,6 +29,7 @@ import java.nio.file.Path;
 
 import org.apache.maven.it.Verifier;
 import org.apache.maven.shared.utils.io.FileUtils;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -41,6 +42,7 @@ import io.sarl.lang.sarl.SarlPackage;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("Bug #504")
 public class Bug504Test extends AbstractMojoTest {
 
 	@Test

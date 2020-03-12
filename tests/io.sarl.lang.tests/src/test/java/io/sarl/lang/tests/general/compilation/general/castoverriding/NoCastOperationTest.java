@@ -25,6 +25,7 @@ import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
 
 import org.eclipse.xtext.common.types.TypesPackage;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -46,6 +47,7 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  */
 @GlobalCompilationSuite
 @SuppressWarnings("all")
+@DisplayName("Compilation: unnecessary as operator")
 public class NoCastOperationTest extends AbstractSarlTest {
 
 	private static final String PRIMITIVE_PRIMITIVE_SARL_00 = multilineString(

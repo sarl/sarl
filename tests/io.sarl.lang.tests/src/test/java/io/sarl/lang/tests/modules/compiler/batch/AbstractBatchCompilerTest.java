@@ -30,6 +30,7 @@ import java.nio.charset.Charset;
 import com.google.common.io.Files;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.xtext.util.Strings;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
