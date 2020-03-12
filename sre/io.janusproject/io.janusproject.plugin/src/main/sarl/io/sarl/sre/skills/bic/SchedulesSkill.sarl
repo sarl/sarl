@@ -634,7 +634,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 
 		protected val ^agent : WeakReference<Agent>
 
-		protected val agentTaskRef : WeakReference<TaskDescription>
+		protected val agentTaskRef : TaskDescription
 
 		val state = new ThreadLocal<TaskTermination>
 
@@ -645,7 +645,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 			assert task !== null
 			this.^skill = new WeakReference(^skill)
 			this.^agent = new WeakReference(^agent)
-			this.agentTaskRef = new WeakReference(task)
+			this.agentTaskRef = task
 		}
 
 		protected def coreRun(task : AgentTask) : TaskTermination {
@@ -663,7 +663,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 		}
 
 		final override internalRun {
-			val taskDescription = this.agentTaskRef.get
+			val taskDescription = this.agentTaskRef
 			if (taskDescription === null) {
 				throw new RuntimeException(Messages.SchedulesSkill_0)
 			}
@@ -690,7 +690,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 		final def onFinished {
 			val finishTask = postRun(this.state.get)
 			if (finishTask) {
-				val taskDescription = this.agentTaskRef.get
+				val taskDescription = this.agentTaskRef
 				assert taskDescription !== null
 				val task = taskDescription.task
 				assert task !== null
@@ -763,7 +763,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 		}
 
 		private def canRun : boolean {
-			var taskDescription = this.agentTaskRef.get
+			var taskDescription = this.agentTaskRef
 			if (taskDescription !== null) {
 				var future = taskDescription.future
 				return future !== null && !future.done && !future.cancelled
