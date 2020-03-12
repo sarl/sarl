@@ -126,7 +126,7 @@ agent HelloChildAgent extends AbstractAgent{
 	}
 	
 	on AgentSpawned {
-		info("AgentSpawned, agentID:" + occurrence.agentIdentifiers + " AgentType: " + occurrence.agentType)		
+		info("AgentSpawned, agentID:" + occurrence.agentID + " AgentType: " + occurrence.agentType)		
 	}
 	
 	on AgentKilled {

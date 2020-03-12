@@ -21,6 +21,7 @@
 
 package io.sarl.demos.gameoflife.game
 
+import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import java.util.List
@@ -39,7 +40,7 @@ import org.arakhne.afc.vmutil.locale.Locale
  */
 skill DefaultGridManagerSkill implements GridManager {
 
-	uses Lifecycle, Logging
+	uses Lifecycle, Logging, DefaultContextInteractions
 
 	val listeners = <EnvironmentListener>newArrayList
 
@@ -73,7 +74,8 @@ skill DefaultGridManagerSkill implements GridManager {
 				for (j : 0 ..< height) {
 					// FIXME: agents created 2 times ?
 					// FIXME: double agent spawning apparently come from: https://github.com/sarl/sarl/issues/525
-					val uuid = CellAgent.spawn
+					val uuid = UUID::randomUUID
+					CellAgent.spawnInContextWithID(uuid, defaultContext)
 
 					grid.set(i, j, Pair.of(uuid, false))
 

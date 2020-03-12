@@ -33,7 +33,7 @@ import static io.sarl.examples.tests.ExamplesTestUtils.getSourcePath;
 import static io.sarl.examples.tests.ExamplesTestUtils.isMavenProject;
 import static io.sarl.examples.tests.ExamplesTestUtils.readExtensionPointFromXml;
 import static io.sarl.examples.tests.ExamplesTestUtils.readXmlNode;
-import static io.sarl.examples.tests.ExamplesTestUtils.unpackFiles;
+import static io.sarl.examples.tests.ExamplesTestUtils.*;
 import static io.sarl.examples.tests.ExamplesTestUtils.assertFile;
 import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.LAUNCH_PROPERTY_FILE;
 import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.readLaunchConfigurationFromXml;
@@ -43,8 +43,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static io.sarl.tests.api.tools.TestUtils.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -55,11 +57,13 @@ import org.eclipse.xtext.util.Strings;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
+import org.opentest4j.TestAbortedException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
 import io.sarl.lang.util.OutParameter;
+import io.sarl.tests.api.tools.TestUtils;
 
 /** Class for testing the examples.
  *
@@ -72,6 +76,21 @@ import io.sarl.lang.util.OutParameter;
 @DisplayName("Testing all the SARL examples")
 public class ExamplesTest {
 
+	private static List<File> installFiles(ExampleDescription example, File projectRoot, boolean skipIfInvalidPom) throws Exception {
+		// The behavior is different in Eclipse Junit and Maven surefire.
+		final List<File> installedFiles;
+		if (isEclipseRuntimeEnvironment()) {
+			if (skipIfInvalidPom && isMavenProject(example.sourceFolder)) {
+				// Pom file is not valid because Maven has not yet applied the macro replacements into the file.
+				throw new TestAbortedException();
+			}
+			installedFiles = copySourceFiles(projectRoot, example.sourceFolder);
+		} else {
+			installedFiles = unpackFiles(projectRoot, example.archive);
+		}
+		return installedFiles;
+	}
+	
 	/** Replies the dynamics tests for the examples' paths.
 	 *
 	 * @return the dynamic tests.
@@ -91,11 +110,11 @@ public class ExamplesTest {
 	 * @throws Exception in case of error for recovering the example descriptions.
 	 */
 	@TestFactory
-	@DisplayName("SARL Compilation")
+	@DisplayName("SARL compilation of archives")
 	public Stream<DynamicTest> compilation() throws Exception {
 		return dynamicTests(example -> {
-			final File projectRoot = createProject(); 
-			final List<File> installedFiles = unpackFiles(projectRoot, example.archive);
+			final File projectRoot = createProject();
+			final List<File> installedFiles = installFiles(example, projectRoot, true);
 			assertFalse(installedFiles.isEmpty(), () -> "No installed file in " + projectRoot);
 			if (isMavenProject(example.sourceFolder)) {
 				// Maven compilation
@@ -119,7 +138,7 @@ public class ExamplesTest {
 	public Stream<DynamicTest> launchConfiguration() throws Exception {
 		return dynamicTests(example -> {
 			final File projectRoot = createProject(); 
-			final List<File> installedFiles = unpackFiles(projectRoot, example.archive);
+			final List<File> installedFiles = installFiles(example, projectRoot, true);
 			final File launchConfiguration = new File(projectRoot, LAUNCH_PROPERTY_FILE);
 			assumeTrue(launchConfiguration.exists());
 
@@ -159,7 +178,7 @@ public class ExamplesTest {
 	public Stream<DynamicTest> fileToOpenInEditor() throws Exception {
 		return dynamicTests(example -> {
 			final File projectRoot = createProject(); 
-			final List<File> installedFiles = unpackFiles(projectRoot, example.archive);
+			final List<File> installedFiles = installFiles(example, projectRoot, false);
 			final File pluginFile = new File(DEFAULT_RELATIVE_PATH, "plugin.xml");
 			final Document document = readXmlContent(pluginFile);
 			Node node = readXmlNode(document, "plugin");

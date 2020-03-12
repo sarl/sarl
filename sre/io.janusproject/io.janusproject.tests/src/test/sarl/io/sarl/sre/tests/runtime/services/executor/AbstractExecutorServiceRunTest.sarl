@@ -21,7 +21,6 @@
 
 package io.sarl.sre.tests.runtime.services.executor
 
-import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.sre.test.framework.context.SreRunContext
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.^extension.SreRunExtension
@@ -31,20 +30,18 @@ import io.sarl.sre.tests.runtime.services.executor.mocks.EveryAgent
 import io.sarl.sre.tests.runtime.services.executor.mocks.ExecuteAgent
 import io.sarl.sre.tests.runtime.services.executor.mocks.GetActiveTasksAgent
 import io.sarl.sre.tests.runtime.services.executor.mocks.InAgent
-import io.sarl.sre.tests.runtime.services.executor.mocks.WaiterAgent
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.List
 import java.util.UUID
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
 import static io.sarl.sre.test.framework.Constants.*
 import static io.sarl.tests.api.tools.TestAssertions.*
-import static org.junit.jupiter.api.Assertions.*
 
 import static extension io.sarl.tests.api.tools.TestUtils.*
+import static extension org.junit.jupiter.api.Assertions.*
 
 /**
  * @author $Author: sgalland$
@@ -81,28 +78,25 @@ abstract class AbstractExecutorServiceRunTest {
 	@Test
 	def every_00(extension rc : SreRunContext) {
 		typeof(EveryAgent).runSre
-		// Wait two more seconds in order to give a chance to the every task to be run even if the agent is died
-		Thread::sleep(2000)
 		var all = allResults
-		assertEquals(1, all.size)
-		assertEquals(2, all.get(0))
+		assertEquals(2, all.size)
+		all.get(0).assertNotNull
+		assertEquals(2, all.get(1))
 	}
 
 	/** Every task should be stopped when kill me is invoked
 	 */
 	@Test
-	@SuppressWarnings("use_reserved_sarl_annotation")
-	@PrivateAPI(isCallerOnly = true)
-	@Disabled
 	def every_01(extension rc : SreRunContext) {
-		val kern = typeof(WaiterAgent).setupTheSreKernel(null, null)
-		kern.startAgent(typeof(EveryAgent), null, getAgentInitializationParameters)
+		val kern = setupTheSreKernel(null, null)
+		val id = UUID::randomUUID
+		kern.startAgentWithID(typeof(EveryAgent), id, getAgentInitializationParameters)
 
 		waitForTheKernel(STANDARD_TIMEOUT)
 
-		var all = allResults
-		assertEquals(1, all.size)
-		assertEquals(2, all.get(0))
+		var all = getResults(id)
+		id.assertEquals(all.get(0))
+		2. assertEquals(all.get(1))
 	}
 	
 	@Test

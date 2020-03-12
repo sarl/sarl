@@ -101,12 +101,13 @@ abstract class FxViewerController implements EventListener {
 	}
 
 	/** Start the agent application.
-	 *
+	 * 
 	 * @param agentType the type of the agent to launch.
+	 * @param agentID is the identifier of the agent.
 	 * @param whenAgentLaunched the lambda that is called when the agent is really launched.
+	 * @since 0.11
 	 */
-	def startAgentApplication(agentType : Class<? extends Agent>,
-		whenAgentLaunched : () => void) {
+	def startAgentApplication(agentType : Class<? extends Agent>, agentID : UUID = null, whenAgentLaunched : ()=>void) {
 		var bootstrap = SRE::bootstrap
 		if (!bootstrap.active) {
 			throw new IllegalStateException(Messages::FxViewerController_0)
@@ -115,11 +116,15 @@ abstract class FxViewerController implements EventListener {
 		this.globalSpace = context.defaultSpace as OpenEventSpace
 		this.UISpace = context.createSpace(typeof(OpenEventSpaceSpecification), ID)
 		new LaunchingCallback(ID, this.globalSpace, whenAgentLaunched)
-		bootstrap.startAgent(agentType, this)
+		if (agentID !== null) {
+			bootstrap.startAgentWithID(agentType, agentID, this)
+		} else {
+			bootstrap.startAgent(agentType, this)
+		}
 	}
 
 	/** Catch exit event from JavaFX. Stop the agents and the JavaFX user interface.
-	 *
+	 * 
 	 * @param event the JavaFx event that is the source of the exit.
 	 */
 	@FXML

@@ -132,7 +132,8 @@ class BoidsSimulation implements EventListener {
 
 		defaultSARLContext = kernel.startWithoutAgent
 
-		environment = kernel.startAgent(typeof(Environment), height, width)
+		environment = UUID::randomUUID
+		kernel.startAgentWithID(typeof(Environment), environment, height, width)
 
 		launchAllBoids
 		^space = defaultSARLContext.defaultSpace as OpenEventSpace
@@ -160,7 +161,8 @@ class BoidsSimulation implements EventListener {
 		var initialPosition = new Vector2d((Math::random - 0.5) * width, (Math::random - 0.5) * height)
 		var initialVitesse = new Vector2d(Math::random - 0.5, Math::random - 0.5)
 
-		var b = kernel.startAgent(typeof(Boid), environment, p, initialPosition, initialVitesse, boidName)
+		var b = UUID::randomUUID
+		kernel.startAgentWithID(typeof(Boid), b, environment, p, initialPosition, initialVitesse, boidName)
 		this.boidBodies.put(b, new PerceivedBoidBody(p, b, initialPosition, initialVitesse))
 
 		if (Settings::isLogActivated) {

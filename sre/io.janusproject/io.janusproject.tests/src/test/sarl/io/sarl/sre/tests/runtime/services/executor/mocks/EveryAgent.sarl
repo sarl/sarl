@@ -45,6 +45,7 @@ agent EveryAgent {
 
 	on Initialize {
 		setSkill(new TestingSkill(occurrence))
+		addResult(ID)
 		every(1000) [
 			var n = nb.incrementAndGet
 			if (n == 2) {

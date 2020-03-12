@@ -46,8 +46,8 @@ agent HolarchyManager {
 	uses Lifecycle, Schedules, DefaultContextInteractions, Logging
 
 	on Initialize {
-			/* Spawn a first holon that will in turn spawn a whole hierarchy of holons
-			 */
+		/* Spawn a first holon that will in turn spawn a whole hierarchy of holons
+		 */
 		spawn(Holon, #[])
 	}
 
@@ -96,12 +96,14 @@ agent Holon {
 				info("Create the child #" + i + " at level " + count)
 				/* spawn a new sub-holon (a holon inside his own internal context)
 				 */
-				childUIDs.add(spawnInContext(Holon, innerContext, count, i))
+				val aid = UUID::randomUUID
+				spawnInContextWithID(Holon, aid, innerContext, count, i)
+				childUIDs.add(aid)
 			}
 			
 			/* check every seconds if he's himself the last remaining holon as member of its internal context event space 
-		 * in this case, its means that all of its members are dead, he can thus die peacefully
-		 * TEMPORAL APPROACH TO DESTROY THE HOLARCHY not the best one, it is better to rely on event to manage the holarchy destruction see the Memberleft on clause
+			 * in this case, its means that all of its members are dead, he can thus die peacefully
+			 * TEMPORAL APPROACH TO DESTROY THE HOLARCHY not the best one, it is better to rely on event to manage the holarchy destruction see the Memberleft on clause
 			 * */
 			// task("toto").every(1000) [
 			// if (innerContext.defaultSpace.participants.size == 1) {

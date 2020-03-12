@@ -109,7 +109,8 @@ class FireworksFxViewerController extends FxViewerController {
 		var ^event = new SetupSettings(this.rocketQuantity, this.fireQuantity,
 			this.gravity, this.draw_zone.width)
 		if (!this.launched) {
-			this.launchedAgent = startAgentApplication(typeof(LaunchingArea)) [
+			this.launchedAgent = UUID::randomUUID
+			startAgentApplication(typeof(LaunchingArea), this.launchedAgent) [
 				^event.emitToAgents
 			]
 			this.launch_button.disable = false

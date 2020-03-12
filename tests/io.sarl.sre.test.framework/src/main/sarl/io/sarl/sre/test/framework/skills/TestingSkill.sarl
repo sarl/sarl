@@ -21,16 +21,16 @@
 
 package io.sarl.sre.test.framework.skills
 
+import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.Schedules
 import io.sarl.sre.test.framework.Constants
 import io.sarl.sre.test.framework.context.SreRunContext
+import java.util.ArrayList
 import java.util.Collection
 import java.util.List
 import java.util.UUID
-import java.util.concurrent.CopyOnWriteArrayList
 import org.eclipse.xtend.lib.annotations.Accessors
-import io.sarl.core.Initialize
 
 /**
  * A skill that provides the agent with testing functions.
@@ -45,7 +45,7 @@ skill TestingSkill implements TestingCapacity {
 
 	uses Schedules, Lifecycle
 
-	val results = new CopyOnWriteArrayList<Object>
+	val results = new ArrayList<Object>
 
 	val context : SreRunContext
 
@@ -72,16 +72,22 @@ skill TestingSkill implements TestingCapacity {
 	}
 
 	override addResult(result : Object) {
-		getModifiableResults.add(result)
+		synchronized (this) {
+			getModifiableResults.add(result)
+		}
 	}
 
 	@Pure
 	override getNumberOfResults : int {
-		return getModifiableResults.size
+		synchronized (this) {
+			return getModifiableResults.size
+		}
 	}
 
 	override addResults(results : Collection<?>) {
-		getModifiableResults.addAll(results)
+		synchronized (this) {
+			getModifiableResults.addAll(results)
+		}
 	}
 
 	@Pure
@@ -90,8 +96,10 @@ skill TestingSkill implements TestingCapacity {
 	}
 
 	@Pure
-	override getModifiableResults : CopyOnWriteArrayList<Object> {
-		return this.results
+	def getModifiableResults : List<Object> {
+		synchronized (this) {
+			return this.results
+		}
 	}
 
 	@Pure

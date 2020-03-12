@@ -415,6 +415,58 @@ public final class ExamplesTestUtils {
 		return installedFiles;
 	}
 
+	/** Copy the files from the given source folder into the root folder.
+	 *
+	 * @param root the root folder.
+	 * @param sourceFolder the folder to copy.
+	 * @return the list of extracted files.
+	 * @throws Exception if cannot unpack.
+	 * @since 0.11
+	 */
+	public static List<File> copySourceFiles(File root, File sourceFolder) throws Exception {
+		List<File> folders = new ArrayList<>();
+		if (sourceFolder.isDirectory()) {
+			final File absSourceFolder = sourceFolder.getAbsoluteFile().getCanonicalFile();
+			folders.add(sourceFolder);
+			while (!folders.isEmpty()) {
+				final File folder = folders.remove(0);
+				for (final File file : folder.listFiles()) {
+					if (file.isDirectory()) {
+						folders.add(file);
+					} else if (file.isFile()) {
+						if (!isIgnorableFile(file)) {
+							final File absFile = file.getAbsoluteFile().getCanonicalFile();
+							final File relPathFile = FileSystem.makeRelative(absFile, absSourceFolder);
+							final File targetFile = FileSystem.join(root, relPathFile);
+							targetFile.getParentFile().mkdirs();
+							FileSystem.copy(file, targetFile);
+						}
+					}
+				}
+			}
+		}
+
+		final List<File> installedFiles = new ArrayList<>();
+		folders = new ArrayList<>();
+		folders.add(root);
+		while (!folders.isEmpty()) {
+			final File folder = folders.remove(0);
+			for (final File file : folder.listFiles()) {
+				if (file.isDirectory()) {
+					folders.add(file);
+				} else if (file.isFile()) {
+					if (!isIgnorableFile(file)) {
+						final File relPathFile = FileSystem.makeRelative(file, root);
+						installedFiles.add(relPathFile);
+					} else {
+						file.delete();
+					}
+				}
+			}
+		}
+		return installedFiles;
+	}
+
 	private static boolean isIgnorableFile(File file) {
 		final String name = file.getName();
 		return ".classpath".equals(name) || ".project".equals(name);

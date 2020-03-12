@@ -19,12 +19,9 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.tests.runtime.internal.mocks
+package io.sarl.sre.tests.runtime.boot.bootstrap.mocks
 
-import io.sarl.core.Behaviors
-import io.sarl.core.Destroy
 import io.sarl.core.Initialize
-import io.sarl.core.Lifecycle
 import io.sarl.sre.test.framework.skills.TestingCapacity
 import io.sarl.sre.test.framework.skills.TestingSkill
 
@@ -34,20 +31,14 @@ import io.sarl.sre.test.framework.skills.TestingSkill
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent MyAgent1 {
-
-	uses Behaviors, Lifecycle
+agent TestIdAgent0 {
 
 	uses TestingCapacity
 
 	on Initialize {
 		setSkill(new TestingSkill(occurrence))
-		new MyBehavior1(this).registerBehavior
-		killMe
-	}
-	
-	on Destroy {
-		addResult("AGENT")
+		addResult(ID)
+		killMeSoon
 	}
 
 }
