@@ -20,6 +20,7 @@
  */
 package io.sarl.lang.tests.modules.formatting2.expressions;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -33,6 +34,7 @@ import io.sarl.lang.tests.modules.formatting2.AbstractMemberFormatterTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("format: expressions")
 public class XExpressionFormatterTest {
 
 	/**

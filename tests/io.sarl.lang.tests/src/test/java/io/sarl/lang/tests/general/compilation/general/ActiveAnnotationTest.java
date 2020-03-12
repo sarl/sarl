@@ -23,6 +23,7 @@ package io.sarl.lang.tests.general.compilation.general;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -37,9 +38,11 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("Compilation: active annotations")
 public class ActiveAnnotationTest {
 	
 	@Nested
+	@DisplayName("Compilation: @Accessors")
 	public class AccessorsTest extends AbstractSarlTest {
 
 		@Test
@@ -307,6 +310,7 @@ public class ActiveAnnotationTest {
 	}
 
 	@Nested
+	@DisplayName("Compilation: @Data")
 	public class DataTest extends AbstractSarlTest {
 
 		@Test
@@ -384,6 +388,7 @@ public class ActiveAnnotationTest {
 	}
 
 	@Nested
+	@DisplayName("Compilation: @Delegate")
 	public class DelegateTest extends AbstractSarlTest {
 
 		@Test
@@ -495,6 +500,7 @@ public class ActiveAnnotationTest {
 	}
 
 	@Nested
+	@DisplayName("Compilation: @ToString")
 	public class ToStringTest extends AbstractSarlTest {
 
 		@Test

@@ -24,6 +24,7 @@ import static io.sarl.tests.api.tools.TestUtils.multilineString;
 
 import com.google.inject.Inject;
 import org.eclipse.xtext.util.Strings;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
@@ -39,6 +40,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("format: comments")
 public class DocumentationFormatterTest {
 
 	@Nested

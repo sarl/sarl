@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.core.Address;
@@ -36,6 +37,7 @@ import io.sarl.lang.core.Event;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@DisplayName("MemberLeft")
 public class MemberLeftTest extends AbstractSarlCoreTest<Event> {
 
 	/**

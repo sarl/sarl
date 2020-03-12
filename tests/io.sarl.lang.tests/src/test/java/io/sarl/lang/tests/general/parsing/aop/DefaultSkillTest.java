@@ -18,13 +18,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.lang.tests.general.parsing.general;
+package io.sarl.lang.tests.general.parsing.aop;
 
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
 
 import org.eclipse.xtext.xbase.XbasePackage;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlScript;
@@ -38,6 +39,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("Syntax: @DefaultSkill")
 public class DefaultSkillTest extends AbstractSarlTest {
 		
 	@Test

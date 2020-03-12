@@ -22,6 +22,7 @@ package io.sarl.lang.tests.modules.serializer;
 
 import static io.sarl.tests.api.tools.TestEObjects.capacity;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -30,6 +31,7 @@ import org.junit.jupiter.api.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@DisplayName("serialization: capacity")
 public class CapacitySerializerTest extends AbstractSerializerTest {
 
 	@Test

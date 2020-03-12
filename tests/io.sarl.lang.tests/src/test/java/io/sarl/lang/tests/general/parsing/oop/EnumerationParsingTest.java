@@ -29,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.eclipse.xtext.common.types.JvmVisibility;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -48,9 +49,11 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("Syntax: enum")
 public class EnumerationParsingTest {
 
 	@Nested
+	@DisplayName("Syntax: enum as top element")
 	public class TopEnumerationTest extends AbstractSarlTest {
 
 		protected SarlEnumeration getEnumeration(SarlScript script) {
@@ -257,6 +260,7 @@ public class EnumerationParsingTest {
 	}
 
 	@Nested
+	@DisplayName("Syntax: enum inside class")
 	public class InsideClassTest extends AbstractSarlTest {
 
 		protected SarlEnumeration getEnumeration(SarlScript script) {
@@ -504,6 +508,7 @@ public class EnumerationParsingTest {
 	}
 
 	@Nested
+	@DisplayName("Syntax: enum inside agent")
 	public class InsideAgentTest extends AbstractSarlTest {
 
 		protected SarlEnumeration getEnumeration(SarlScript script) {
@@ -735,6 +740,7 @@ public class EnumerationParsingTest {
 	}
 
 	@Nested
+	@DisplayName("Syntax: enum inside behavior")
 	public class InsideBehaviorTest extends AbstractSarlTest {
 
 		protected SarlEnumeration getEnumeration(SarlScript script) {
@@ -982,6 +988,7 @@ public class EnumerationParsingTest {
 	}
 
 	@Nested
+	@DisplayName("Syntax: enum inside skill")
 	public class InsideSkillTest extends AbstractSarlTest {
 
 		protected SarlEnumeration getEnumeration(SarlScript script) {

@@ -24,6 +24,7 @@ import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlScript;
@@ -36,6 +37,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("Syntax: assert")
 public class AssertKeywordTest extends AbstractSarlTest {
 
 	@Test

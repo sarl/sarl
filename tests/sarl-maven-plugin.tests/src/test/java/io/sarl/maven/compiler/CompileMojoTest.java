@@ -21,6 +21,7 @@
 package io.sarl.maven.compiler;
 
 import org.apache.maven.it.VerificationException;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -30,6 +31,7 @@ import org.junit.jupiter.api.Test;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("mojo: compile")
 public class CompileMojoTest extends AbstractMojoTest {
 
 	@Test

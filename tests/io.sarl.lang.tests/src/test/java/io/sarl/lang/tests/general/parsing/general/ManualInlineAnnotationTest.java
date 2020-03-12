@@ -26,6 +26,7 @@ import static io.sarl.tests.api.tools.TestValidator.validate;
 
 import com.google.common.base.Throwables;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationsPackage;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlScript;
@@ -39,6 +40,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("Syntax: @Inline - explicit")
 public class ManualInlineAnnotationTest extends AbstractSarlTest {
 
 	@Test

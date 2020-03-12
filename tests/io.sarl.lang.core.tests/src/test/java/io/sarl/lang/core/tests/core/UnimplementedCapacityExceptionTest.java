@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.core.Capacity;
@@ -37,6 +38,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@DisplayName("UnimplementedCapacityException")
 public class UnimplementedCapacityExceptionTest extends AbstractSarlTest {
 
 	private UUID agentID;

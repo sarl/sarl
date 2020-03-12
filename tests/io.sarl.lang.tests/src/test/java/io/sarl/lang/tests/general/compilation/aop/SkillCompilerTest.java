@@ -26,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.eclipse.xtext.util.IAcceptor;
 import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.eclipse.xtext.xbase.testing.CompilationTestHelper.Result;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -41,9 +42,11 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("Compilation: Skill")
 public class SkillCompilerTest {
 
 	@Nested
+	@DisplayName("Field")
 	public class FieldTest extends AbstractSarlTest {
 
 		@Test
@@ -718,6 +721,7 @@ public class SkillCompilerTest {
 	}
 
 	@Nested
+	@DisplayName("Action")
 	public class ActionTest extends AbstractSarlTest {
 
 		@Test
@@ -1413,6 +1417,7 @@ public class SkillCompilerTest {
 	}
 
 	@Nested
+	@DisplayName("Return type")
 	public class ReturnTypeTest extends AbstractSarlTest {
 
 		@Test
@@ -1820,6 +1825,7 @@ public class SkillCompilerTest {
 	}
 
 	@Nested
+	@DisplayName("As top element")
 	public class TopElementTest extends AbstractSarlTest {
 
 		@Test

@@ -22,6 +22,8 @@ package io.sarl.lang.tests.general.compilation.general.castoverriding;
 
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 
+import org.junit.jupiter.api.DisplayName;
+
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
 import io.sarl.tests.api.AbstractSarlTest;
@@ -38,6 +40,7 @@ import io.sarl.tests.api.globalcompilation.ResourceSetGlobalCompilationContext;
  * @since 0.9
  */
 @SuppressWarnings("all")
+@DisplayName("Compilation: multiple cast functions")
 public class ManyDefinitionsTest {
 
 	/** This class enables to test the linking decision to multiple getter functions.
@@ -49,6 +52,7 @@ public class ManyDefinitionsTest {
 	 * @since 0.9
 	 */
 	@GlobalCompilationSuite
+	@DisplayName("Multiple functions")
 	public static class StandardFunctionCalls extends AbstractSarlTest {
 
 		private final String STATIC_EXTFIELD_EXTPARAM_INSTANCE_LOCALFUNCTION_A_SARL = multilineString(
@@ -399,6 +403,7 @@ public class ManyDefinitionsTest {
 	 * @since 0.9
 	 */
 	@GlobalCompilationSuite
+	@DisplayName("Compilation: Casting functions")
 	public static class CastFunctionCalls extends AbstractSarlTest {
 
 		private final String STATIC_EXTFIELD_EXTPARAM_INSTANCE_LOCALFUNCTION_A_SARL = multilineString(

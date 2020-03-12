@@ -44,6 +44,7 @@ import org.junit.jupiter.api.^extension.ExtendWith
 
 import static io.sarl.tests.api.tools.TestAssertions.*
 import static org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Disabled
 
 /**
  * Unit test for the issue #794: Spawn function first parameter strange behavior.
@@ -61,6 +62,7 @@ import static org.junit.jupiter.api.Assertions.*
 	typeof(SreRunExtension)
 ])
 @DisplayName("run: Bug #794")
+@Disabled
 @Tag("run")
 class Bug794Test {
 

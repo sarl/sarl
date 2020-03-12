@@ -27,6 +27,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
 import org.apache.maven.it.Verifier;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -41,6 +42,7 @@ import io.sarl.lang.sarl.SarlPackage;
  * @see "https://github.com/sarl/sarl/issues/865"
  */
 @SuppressWarnings("all")
+@DisplayName("Bug #865")
 public class Bug865Test extends AbstractMojoTest {
 
 	private static Verifier verifier = null;

@@ -26,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
@@ -38,6 +39,7 @@ import io.sarl.lang.sarl.actionprototype.ActionPrototype;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("ActionParameterTypes")
 public class ActionParameterTypesTest {
 
 	@Test

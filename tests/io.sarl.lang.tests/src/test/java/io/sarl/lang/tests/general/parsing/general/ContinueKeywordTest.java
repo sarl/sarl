@@ -25,6 +25,7 @@ import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
 
 import org.eclipse.xtext.xbase.XbasePackage;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlPackage;
@@ -39,6 +40,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("Syntax: continue")
 public class ContinueKeywordTest extends AbstractSarlTest {
 
 	@Test

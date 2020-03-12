@@ -22,6 +22,7 @@ package io.sarl.lang.tests.modules.formatting2.members;
 
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -35,6 +36,7 @@ import io.sarl.lang.tests.modules.formatting2.AbstractMemberFormatterTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("format: def")
 public class ActionFormatterTest {
 
 	/**

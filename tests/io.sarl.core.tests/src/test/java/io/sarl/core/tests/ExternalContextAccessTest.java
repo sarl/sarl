@@ -26,6 +26,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.core.AgentContext;
@@ -42,6 +43,7 @@ import io.sarl.lang.core.SpaceID;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@DisplayName("ExternalContextAccess")
 public class ExternalContextAccessTest extends AbstractSarlCoreTest<Capacity> {
 
 	/**

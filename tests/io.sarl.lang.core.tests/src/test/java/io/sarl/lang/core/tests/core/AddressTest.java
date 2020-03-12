@@ -30,6 +30,7 @@ import static org.mockito.Mockito.when;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.core.Address;
@@ -42,6 +43,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@DisplayName("Address")
 public class AddressTest extends AbstractSarlTest {
 
 	private SpaceID spaceID;

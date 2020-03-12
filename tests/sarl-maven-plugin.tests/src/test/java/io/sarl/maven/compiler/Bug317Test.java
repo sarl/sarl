@@ -26,6 +26,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
 import org.apache.maven.it.Verifier;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -35,6 +36,7 @@ import org.junit.jupiter.api.Test;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("Bug #317")
 public class Bug317Test extends AbstractMojoTest {
 
 	@Test

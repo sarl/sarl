@@ -22,6 +22,8 @@
 package io.sarl.sre.test.framework.^extension
 
 import io.sarl.bootstrap.SRE
+import io.sarl.lang.annotation.PrivateAPI
+import io.sarl.sre.test.framework.context.SreRunContext
 import java.lang.reflect.Method
 import org.junit.jupiter.api.^extension.ExtensionContext
 import org.junit.jupiter.api.^extension.InvocationInterceptor
@@ -30,8 +32,8 @@ import org.junit.jupiter.api.^extension.ParameterResolver
 import org.junit.jupiter.api.^extension.ReflectiveInvocationContext
 
 import static io.sarl.bootstrap.SRE.*
-import io.sarl.sre.test.framework.context.SreRunContext
-import io.sarl.lang.annotation.PrivateAPI
+
+import static extension java.lang.Boolean.*
 
 /**
  * JUnit 5 extension that is running the SRE.
@@ -44,9 +46,14 @@ import io.sarl.lang.annotation.PrivateAPI
  */
 class SreRunExtension implements ParameterResolver, InvocationInterceptor {
 
+	val SKIP_PROPERTY = "srerun.test.skip"
+
 	override supportsParameter(parameterContext : ParameterContext, extensionContext : ExtensionContext) : boolean {
 		if (parameterContext.index === 0) {
-			return parameterContext.parameter.type === typeof(SreRunContext)
+			if (parameterContext.parameter.type === typeof(SreRunContext)) {
+				val prop = SKIP_PROPERTY.getBoolean
+				return !prop
+			}
 		}
 		return false
 	}

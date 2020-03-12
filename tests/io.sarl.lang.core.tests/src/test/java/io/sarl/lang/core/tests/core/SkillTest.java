@@ -20,6 +20,8 @@
  */
 package io.sarl.lang.core.tests.core;
 
+import org.junit.jupiter.api.DisplayName;
+
 import io.sarl.lang.core.Skill;
 
 /**
@@ -29,6 +31,7 @@ import io.sarl.lang.core.Skill;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("Skill")
 public class SkillTest extends AbstractAgentTraitBehaviorTest {
 
 	@Override

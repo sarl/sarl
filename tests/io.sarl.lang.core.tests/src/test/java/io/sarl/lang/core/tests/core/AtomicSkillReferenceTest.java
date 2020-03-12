@@ -27,6 +27,7 @@ import static org.mockito.Mockito.spy;
 import static io.sarl.tests.api.tools.TestMockito.mock;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
@@ -42,6 +43,7 @@ import io.sarl.tests.api.Nullable;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("AtomicSkillReference")
 public class AtomicSkillReferenceTest extends AbstractSarlTest {
 
 	@Nullable

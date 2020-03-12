@@ -25,6 +25,7 @@ import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
 
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationsPackage;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -38,9 +39,11 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("Syntax: active annotations")
 public class ActiveAnnotationTest {
 
 	@Nested
+	@DisplayName("Syntax: @Accessors")
 	public class AccessorsTest extends AbstractSarlTest {
 		
 		@Test
@@ -343,6 +346,7 @@ public class ActiveAnnotationTest {
 	}
 
 	@Nested
+	@DisplayName("Syntax: @Data")
 	public class DataTest extends AbstractSarlTest {
 		
 		@Test
@@ -429,6 +433,7 @@ public class ActiveAnnotationTest {
 	}
 
 	@Nested
+	@DisplayName("Syntax: @Delegate")
 	public class DelegateTest extends AbstractSarlTest {
 		
 		@Test
@@ -537,6 +542,7 @@ public class ActiveAnnotationTest {
 	}
 
 	@Nested
+	@DisplayName("Syntax: @ToString")
 	public class ToStringTest extends AbstractSarlTest {
 		
 		@Test
@@ -623,6 +629,7 @@ public class ActiveAnnotationTest {
 	}
 
 	@Nested
+	@DisplayName("Syntax: @EqualsHashCode")
 	public class EqualsHashCodeTest extends AbstractSarlTest {
 		
 		@Test
@@ -712,6 +719,7 @@ public class ActiveAnnotationTest {
 	}
 
 	@Nested
+	@DisplayName("Syntax: @FinalFieldsConstructor")
 	public class FinalFieldsConstructorTest extends AbstractSarlTest {
 		
 		@Test

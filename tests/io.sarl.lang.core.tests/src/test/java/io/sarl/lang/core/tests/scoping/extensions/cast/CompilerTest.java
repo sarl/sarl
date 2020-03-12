@@ -26,6 +26,7 @@ import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
 
 import org.eclipse.xtext.common.types.TypesPackage;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -44,6 +45,7 @@ import io.sarl.tests.api.globalcompilation.ResourceSetGlobalCompilationContext;
  */
 @GlobalCompilationSuite
 @SuppressWarnings("all")
+@DisplayName("Cast operators - compilation")
 public class CompilerTest extends AbstractSarlTest {
 
 	private static final String STRING_AS_BOOLEAN_SARL = multilineString(

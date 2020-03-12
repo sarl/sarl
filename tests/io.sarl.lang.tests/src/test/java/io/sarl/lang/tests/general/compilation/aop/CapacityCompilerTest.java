@@ -23,6 +23,7 @@ package io.sarl.lang.tests.general.compilation.aop;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -37,6 +38,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("Compilation: Capacity")
 public class CapacityCompilerTest extends AbstractSarlTest {
 
 	@Test

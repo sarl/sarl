@@ -26,6 +26,7 @@ import static io.sarl.tests.api.tools.TestValidator.validate;
 
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlScript;
@@ -38,6 +39,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
+@DisplayName("Syntax: forbidden calls")
 public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
