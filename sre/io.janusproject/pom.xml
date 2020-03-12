@@ -25,7 +25,7 @@
 			<modules>
 				<module>io.janusproject.plugin</module>
 				<module>io.janusproject.kernel</module>
-				<module>io.janusproject.network</module>
+				<!--module>io.janusproject.network</module-->
 				<module>io.janusproject.tests</module>
 				<module>io.janusproject.eclipse</module>
 				<module>io.janusproject.feature</module>
@@ -42,7 +42,7 @@
 			<modules>
 				<module>io.janusproject.plugin</module>
 				<module>io.janusproject.kernel</module>
-				<module>io.janusproject.network</module>
+				<!--module>io.janusproject.network</module-->
 			</modules>
 		</profile>
 	</profiles>
