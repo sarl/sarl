@@ -133,7 +133,7 @@ The booting agent becomes:
 					}
 				}
 				
-				on [:agentspawnedevent](AgentSpawned) [!it.agentIdentifiers.contains(ID)] {
+				on [:agentspawnedevent](AgentSpawned) [it.agentID != ID] {
 					var n = this.count.incrementAndGet
 					if (n === 100) {
 						emit(new StartApplication)

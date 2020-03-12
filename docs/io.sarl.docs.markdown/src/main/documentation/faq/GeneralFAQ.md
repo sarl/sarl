@@ -266,7 +266,7 @@ be handled, say by a coordinator, to know the agent is now alive! For example:
                 [:On]
                 on [:agspawnedevt](AgentSpawned) {
                     info("Agent {0} of type {1} has been created successfully and is now alive!",
-                        occurrence.agentIdentifiers, occurrence.agentType)
+                        occurrence.agentID, occurrence.agentType)
                 }
                 [:Off]
             }

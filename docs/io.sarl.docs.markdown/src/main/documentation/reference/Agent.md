@@ -640,7 +640,7 @@ When the function [:setskillfct:] is returning, the agent becomes able to use th
 
 
 If some cases, you may want to set the skill if one was not set up before. The specific behavior
-is supported by `[:setskillifabsfctfull]{[:setskillifabsfct](setSkillIfabsent)(Skill, Class<? extends Capacity>*)}`.
+is supported by `[:setskillifabsfctfull]{[:setskillifabsfct](setSkillIfAbsent)(Skill, Class<? extends Capacity>*)}`.
 
 		[:Success:]
 			package io.sarl.docs.reference.ar

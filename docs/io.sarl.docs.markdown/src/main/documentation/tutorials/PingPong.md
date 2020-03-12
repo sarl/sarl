@@ -396,7 +396,7 @@ for launching an agent of the given type.
 When the boot agent has launched the two expected agents,
 it is killing itself. This is done with the [:killmefct:]
 function, which is provided by the [:lifecyclecap:] capacity too.
-[:Fact:]{typeof(io.sarl.core.Lifecycle).shouldHaveMethod("spawn(java.lang.Class, java.lang.Object[]) : java.util.UUID")}
+[:Fact:]{typeof(io.sarl.core.Lifecycle).shouldHaveMethod("spawn(java.lang.Class, java.lang.Object[])")}
 [:Fact:]{typeof(io.sarl.core.Lifecycle).shouldHaveMethod("killMe")}
 
 		[:Success:]

@@ -34,7 +34,6 @@ Therefore, it is actually created on top of the other built-in capacities.
 			"[:getdefaultaddress](getDefaultAddress) : io.sarl.lang.core.Address",
 			"[:emit](emit)(io.sarl.lang.core.Event)",
 			"emit(io.sarl.lang.core.Event, io.sarl.lang.core.Scope)",
-			"[:willreceive](willReceive)(java.util.UUID, io.sarl.lang.core.Event)",
 			"[:isdefaultcontext](isDefaultContext)(io.sarl.lang.core.AgentContext) : boolean",
 			"isDefaultContext(java.util.UUID) : boolean",
 			"[:isdefaultspace](isDefaultSpace)(io.sarl.lang.core.Space) : boolean",
@@ -263,45 +262,6 @@ example becomes:
 In the previous code, the receiver of the event is given by the formal parameter [:receiverid:].
 The scope restricts the receiver according to this identifier.
 
-
-For an abstract point of view, the previous emitting call may be explained with "the event is emitted to the receiver".
-Sometimes, the developer would like to write a code that corresponds to the sentence "the receiver will receive the event".
-In order to enable this approach to the developer, the SARL API provides the function:
-
-		[:Success:]
-			package io.sarl.docs.reference.bic
-			import io.sarl.lang.core.Event
-			import io.sarl.lang.core.Scope
-			import io.sarl.lang.core.Address
-			import java.util.UUID
-			interface Tmp {
-				def [:emit!](e : Event, scope : Scope<Address>)
-			[:On]
-				def [:willreceive!]([:receiverid!] : UUID, ^event : Event) {
-					emit(^event) [ it.UUID == [:receiverid!] ]
-				}
-			[:Off]
-			}
-		[:End:]
-
-The initial example in this section becomes:
-
-		[:Success:]
-			package io.sarl.docs.reference.bic
-			import io.sarl.core.DefaultContextInteractions
-			import io.sarl.lang.core.Event
-			import java.util.UUID
-			event MyEvent
-			[:On]
-			agent A {
-				uses DefaultContextInteractions
-			
-				def myaction([:receiverid](receiverId) : UUID) {
-					var ^event : Event = new MyEvent
-					[:receiverid!].willReceive(^event) 
-				}
-			}
-		[:End:]
 
 
 

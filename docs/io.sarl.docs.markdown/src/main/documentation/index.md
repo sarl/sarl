@@ -33,10 +33,6 @@
 
 * [English Auction with Holons](./tutorials/HolonicAuction.md)
 
-### Creating a SARL Run-time Environment
-
-* [Creating a SARL Run-time Environment for the tinyMAS platform](./tutorials/CreateSREWithTinyMAS.md)
-
 ## Best Practices with SARL
 
 * [Event Creation with a Builder](./bestpractices/EventBuilder.md)
