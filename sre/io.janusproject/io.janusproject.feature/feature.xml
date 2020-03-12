@@ -250,7 +250,6 @@
       <import plugin="org.eclipse.xtend.lib" version="2.20.0" match="greaterOrEqual"/>
       <import plugin="stax2-api" version="4.2.0" match="greaterOrEqual"/>
       <import plugin="io.janusproject.plugin" version="0.11.0" match="greaterOrEqual"/>
-      <!--import plugin="io.janusproject.network" version="0.11.0" match="greaterOrEqual"/-->
       <import plugin="io.sarl.eclipse" version="0.11.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jdt.core" version="3.20.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.runtime" version="3.17.0" match="greaterOrEqual"/>
@@ -265,13 +264,6 @@
 
    <plugin
          id="io.janusproject.plugin"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="io.janusproject.network"
          download-size="0"
          install-size="0"
          version="0.0.0"
