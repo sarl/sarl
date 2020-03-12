@@ -113,14 +113,12 @@ class StandardLifecycleService extends AbstractLifecycleService {
 	 */
 	private static class CreatorFactory extends AbstractCreatorFactory {
 
-		var creationIndex = 0
-
 		def getAgentCreator(
 			agentClazz : Class<T>,
 			parent : UUID,
 			nbAgents : int,
 			skillProviders : Iterable<DynamicSkillProvider>,
-			agentId : (int)=>UUID) : Provider<T> with T extends Agent {
+			agentId : ()=>UUID) : Provider<T> with T extends Agent {
 			val cons = agentClazz.agentConstructor
 			val sproviders = skillProviders.mergeSkillProviders
 			return [
@@ -131,13 +129,8 @@ class StandardLifecycleService extends AbstractLifecycleService {
 		@SuppressWarnings("use_reserved_sarl_annotation")
 		@PrivateAPI(isCallerOnly = true)
 		private def createAgent(constructor : Constructor<T>, agentClazz : Class<T>,
-				parentId : UUID, agentId : (int)=>UUID, skillProvider : DynamicSkillProvider) : T with T extends Agent {
-			var idx : int
-			synchronized (this) {
-				idx = this.creationIndex
-				this.creationIndex++
-			}
-			var aid = agentId.apply(idx)
+				parentId : UUID, agentId : ()=>UUID, skillProvider : DynamicSkillProvider) : T with T extends Agent {
+			var aid = agentId.apply()
 			try {
 				var ^agent = constructor.newInstance(parentId, aid)
 				SREutils::setDynamicSkillProvider(^agent, skillProvider)

@@ -180,19 +180,17 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 	 * @return the matching participants.
 	 */
 	protected def getScopedParticipants(scope : Scope<? super Address>) : ConcurrentLinkedDeque<Participant> {
-		//TODO change the prototype of this function to replace stream by a concurrent collection
 		if (scope === null) {
-			
-			return new ConcurrentLinkedDeque(this.internalParticipantStructure.values);
+			return new ConcurrentLinkedDeque(this.internalParticipantStructure.values)
 		}
 		// return this.internalParticipantStructure.values.stream.filter [scope.matches(it.address)]
-		val scopedParticpants = new ConcurrentLinkedDeque();
+		val scopedParticipants = new ConcurrentLinkedDeque
 		for(p : this.internalParticipantStructure.values) {
 			if (scope.matches(p.address)) {
-				scopedParticpants.add(p)
+				scopedParticipants.add(p)
 			}
 		}
-		return scopedParticpants
+		return scopedParticipants
 	}
 
 	/** 

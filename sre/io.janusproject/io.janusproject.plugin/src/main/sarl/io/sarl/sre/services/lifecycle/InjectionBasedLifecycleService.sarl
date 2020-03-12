@@ -129,7 +129,7 @@ class InjectionBasedLifecycleService extends AbstractLifecycleService {
 			parent : UUID,
 			nbAgents : int,
 			skillProviders : Iterable<DynamicSkillProvider>,
-			agentId : (int) => UUID) : Provider<T> with T extends Agent {
+			agentId : () => UUID) : Provider<T> with T extends Agent {
 			var sproviders = skillProviders.mergeSkillProviders
 			val agentInjectionModule = new JustInTimeAgentInjectionModule<T>(agentClazz, parent, agentId, sproviders)
 			val agentInjector = this.injector.createChildInjector(agentInjectionModule)
@@ -163,11 +163,9 @@ class InjectionBasedLifecycleService extends AbstractLifecycleService {
 
 		val skillProvider : DynamicSkillProvider
 
-		var identifierComputer : (int) => UUID
+		var identifierComputer : () => UUID
 
-		var creationIndex = 0
-
-		package new (agentType : Class<T>, parentID : UUID, agentID : (int) => UUID, skillProvider : DynamicSkillProvider) {
+		package new (agentType : Class<T>, parentID : UUID, agentID : () => UUID, skillProvider : DynamicSkillProvider) {
 			assert agentType !== null
 			assert parentID !== null
 			this.agentType = agentType
@@ -201,12 +199,7 @@ class InjectionBasedLifecycleService extends AbstractLifecycleService {
 		}
 
 		def get : T {
-			var idx : int
-			synchronized (this) {
-				idx = this.creationIndex
-				this.creationIndex ++
-			}
-			var aid = this.identifierComputer.apply(idx)
+			var aid = this.identifierComputer.apply()
 			assert this.constructor1 !== null || this.constructor2 !== null
 			try {
 				if (this.constructor2 !== null) {

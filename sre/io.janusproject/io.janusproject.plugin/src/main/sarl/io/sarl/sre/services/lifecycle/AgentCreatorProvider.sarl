@@ -43,10 +43,10 @@ interface AgentCreatorProvider {
 	 * @param nbAgents the number of agents to create.
 	 * @param skillProviders is a list of additionnal skill providers that should be considered by the created agent.
 	 * @param agentId lambda function which replies the identifier
-	 *      of the agent to be created at the given index.
+	 *      of the agent to be created.
 	 */
 	def getAgentCreator(agentClazz : Class<T>, parent : UUID, nbAgents : int,
-		skillProviders : Iterable<DynamicSkillProvider>, agentId : (int) => UUID) : Provider<T> with T extends Agent
+		skillProviders : Iterable<DynamicSkillProvider>, agentId : () => UUID) : Provider<T> with T extends Agent
 
 }
 
