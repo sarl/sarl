@@ -56,6 +56,7 @@ public class Messages extends NLS {
 	public static String GenerateTestsMojo_9;
 	public static String GenerateTestsMojo_10;
 	public static String GenerateTestsMojo_11;
+	public static String GenerateTestsMojo_12;
 	public static String InitializeMojo_0;
 	public static String InitializeMojo_1;
 	public static String InitializeMojo_2;

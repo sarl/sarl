@@ -244,13 +244,15 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		}
 
 		// Do not change the "Test" postfix because it is used by Surefire for detecting test classes.
-		final String generalTestName = toTestName(inputFile) + "Test"; //$NON-NLS-1$
+		final String basicTestName = toTestName(inputFile);
+		final String generalTestName = basicTestName + "Test"; //$NON-NLS-1$
 
 		final ImportManager importManager = new ImportManager();
 		final TraceableTreeAppendable it = new TraceableTreeAppendable(importManager);
 
-		it.append("@").append(DisplayName.class).append("(\"")
-			.append(inputFile.getName()).append("\")").newLine();
+		final String displayName = toClassDisplayName(relativeInputFile, basicTestName, generalTestName);
+		
+		it.append("@").append(DisplayName.class).append("(\"").append(displayName).append("\")").newLine();
 		it.append("public class ").append(generalTestName).append(" extends ")
 			.append(BASE_PACKAGE).append(".AbstractBaseTest").append(" {").increaseIndentation().newLine();
 		
@@ -789,6 +791,11 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 			nm = name;
 		}
 		return MessageFormat.format(nm, index, component.getLinenoInSourceFile());
+	}
+
+	private static String toClassDisplayName(File inputFile, String basicTestName, String generalTestName) {
+		return MessageFormat.format(Messages.GenerateTestsMojo_12, inputFile.getName(), basicTestName, generalTestName,
+				inputFile.getParentFile().getPath());
 	}
 
 	private static String str(Object obj) {
