@@ -114,25 +114,24 @@ class StandardLifecycleService extends AbstractLifecycleService {
 	private static class CreatorFactory extends AbstractCreatorFactory {
 
 		def getAgentCreator(
-			agentClazz : Class<T>,
+			agentClazz : Class<? extends Agent>,
 			parent : UUID,
 			nbAgents : int,
-			skillProviders : Iterable<DynamicSkillProvider>,
-			agentId : ()=>UUID) : Provider<T> with T extends Agent {
+			skillProviders : Iterable<DynamicSkillProvider>) : (UUID)=>Agent {
 			val cons = agentClazz.agentConstructor
 			val sproviders = skillProviders.mergeSkillProviders
 			return [
-				cons.createAgent(agentClazz, parent, agentId, sproviders)
+				cons.createAgent(agentClazz, parent, it, sproviders)
 			]
 		}
 
 		@SuppressWarnings("use_reserved_sarl_annotation")
 		@PrivateAPI(isCallerOnly = true)
-		private def createAgent(constructor : Constructor<T>, agentClazz : Class<T>,
-				parentId : UUID, agentId : ()=>UUID, skillProvider : DynamicSkillProvider) : T with T extends Agent {
-			var aid = agentId.apply()
+		private def createAgent(constructor : Constructor<? extends Agent>, agentClazz : Class<? extends Agent>,
+				parentId : UUID, agentId : UUID, skillProvider : DynamicSkillProvider) : Agent {
+			assert agentId !== null
 			try {
-				var ^agent = constructor.newInstance(parentId, aid)
+				var ^agent = constructor.newInstance(parentId, agentId)
 				SREutils::setDynamicSkillProvider(^agent, skillProvider)
 				return ^agent
 			} catch (exception : Exception) {

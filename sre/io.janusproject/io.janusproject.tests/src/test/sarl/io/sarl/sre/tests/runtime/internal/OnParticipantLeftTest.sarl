@@ -33,9 +33,7 @@ import io.sarl.sre.tests.runtime.internal.mocks.SpyAgent3
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
@@ -60,35 +58,41 @@ import static extension org.junit.jupiter.api.Assertions.*
 @Tag("run")
 class OnParticipantLeftTest {
 
-	@RepeatedTest(5)
-	@Disabled
+	@Test
 	@DisplayName("ParticipantLeft in default space")
 	@SuppressWarnings("discouraged_reference")
 	def runParticipantLeftInDefaultSpace(extension rc : SreRunContext) {
-		var kern = typeof(SpyAgent1).setupTheSreKernel(null, null)
+		var kern = setupTheSreKernel(null, null)
 
-		Thread::sleep(1000)
+		val id1 = UUID.randomUUID
+		val id2 = UUID.randomUUID
+		System.out.println("id1=" + id1)
+		System.out.println("id2=" + id2)
 
-		val id = UUID.randomUUID
-		kern.startAgentWithID(typeof(JoinerAgent1), id, agentInitializationParameters)
+		val lock = id1.waitForAgentSpawned
 
-		waitForTheKernel(STANDARD_TIMEOUT)
+		kern.startAgentWithID(typeof(SpyAgent1), id1, agentInitializationParameters)
 
-		var evt0 = getResult(bootAgent, typeof(ParticipantLeft), 0)
+		lock.doWait
+
+		kern.startAgentWithID(typeof(JoinerAgent1), id2, agentInitializationParameters)
+
+		waitForTheKernel(-1/*STANDARD_TIMEOUT*/)
+
+		var evt0 = id1.getResult(typeof(ParticipantLeft), 0)
 		evt0.assertNotNull
 
-		var spcid0 = getResult(bootAgent, typeof(SpaceID), 1)
+		var spcid0 = id1.getResult(typeof(SpaceID), 1)
 		spcid0.assertNotNull
 
-		var evt1 = getResult(id, typeof(ParticipantLeft), 0)
+		var evt1 = id2.getResult(typeof(ParticipantLeft), 0)
 		evt1.assertNull
 
-		id.assertEquals(evt0.source.UUID)
+		id2.assertEquals(evt0.source.UUID)
 		spcid0.assertEquals(evt0.spaceID)
 	}
 
 	@Test
-	@Disabled
 	@DisplayName("ParticipantLeft in other space")
 	@SuppressWarnings("discouraged_reference")
 	def runParticipantLeftInOtherSpace(extension rc : SreRunContext) {
