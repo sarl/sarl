@@ -1,17 +1,17 @@
-/*
+/* 
  * $Id$
- *
+ * 
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
- *
- * Copyright (C) 2014-@RELEASE_YEAR@ the original authors or authors.
- *
+ * 
+ * Copyright (C) 2014-2020 the original authors or authors.
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -43,19 +43,20 @@ event HolarchyDestroyed
  */
 agent HolarchyManager {
 
-	uses Lifecycle, Schedules, DefaultContextInteractions, Logging
+	uses Lifecycle, Schedules, Logging
 
 	on Initialize {
-		/* Spawn a first holon that will in turn spawn a whole hierarchy of holons
-		 */
-		spawn(Holon, #[])
+			/* Spawn a first holon that will in turn spawn a whole hierarchy of holons
+			 */
+		spawn(Holon)
+		loggingName = "Holarchy Manager"
 	}
 
 	/* Wait the HolarchyDestroyed event to die
 	 */
 	on HolarchyDestroyed {
 		info("Holarchy destroyed. Waiting awhile to ensure that all pending context destruction is processed.")
-		in(5000) [
+		in(3000) [
 			killMe
 		]
 	}
@@ -70,44 +71,47 @@ agent Holon {
 
 	uses Lifecycle, InnerContextAccess, Schedules, DefaultContextInteractions, Logging
 
-	val depth = 3
+	val depthInitial = 2
 	val childCount = 2
 	var childUIDs = new ConcurrentLinkedQueue<UUID>
 
 	var isRoot : boolean
 
 	on Initialize {
-		var count : Integer
+		var depth : Integer
 
 		if (occurrence.parameters.isEmpty) {
-			count = depth
+			depth = depthInitial
 			isRoot = true
+			loggingName = "ROOT AGENT"
 		} else {
 			isRoot = false
-			count = occurrence.parameters.get(0) as Integer
-			if(count === null) count = 0
+			depth = occurrence.parameters.get(0) as Integer
+			if(depth === null) depth = 0
 
-			loggingName = "Holon_" + depth + "_" + occurrence.parameters.get(1) as Integer
+				// loggingName = "Holon_Depth:" + depth + "_Num:" + occurrence.parameters.get(1) as Integer
 		}
 
-		if (isRoot || count > 0) {
-			count = count - 1
+		if (isRoot || depth > 0) {
+			depth = depth - 1
 			for (i : 1 .. childCount) {
-				info("Create the child #" + i + " at level " + count)
+				val aid = UUID::randomUUID
+				info("Create the child #" + i + " at depth " + depth + " with ID : " + aid)
+
 				/* spawn a new sub-holon (a holon inside his own internal context)
 				 */
-				val aid = UUID::randomUUID
-				spawnInContextWithID(Holon, aid, innerContext, count, i)
-				childUIDs.add(aid)
+				childUIDs.add(aid) // import to add before spawning, because spawning is done in a subthread
+				spawnInContextWithID(Holon, aid, innerContext, depth, i)
+
 			}
 			
 			/* check every seconds if he's himself the last remaining holon as member of its internal context event space 
 			 * in this case, its means that all of its members are dead, he can thus die peacefully
-			 * TEMPORAL APPROACH TO DESTROY THE HOLARCHY not the best one, it is better to rely on event to manage the holarchy destruction see the Memberleft on clause
+		     * TEMPORAL APPROACH TO DESTROY THE HOLARCHY not the best one, it is better to rely on event to manage the holarchy destruction see the ParticipantLeft on clause
 			 * */
-			// task("toto").every(1000) [
-			// if (innerContext.defaultSpace.participants.size == 1) {
-			// info("No more child: I'm killing myself.")
+				// task("toto").every(1000) [
+				// if (innerContext.defaultSpace.participants.size == 1) {
+				// info("No more child: I'm killing myself.")
 			// task("toto").cancel /* Cancel the task */
 			// killMe /* Dying */
 			// }
@@ -124,9 +128,12 @@ agent Holon {
 	}
 
 	on MemberLeft {
+		// Could also worked with
+		// on ParticipantLeft [occurrence.spaceID.contextID == innerContext.ID] { // Being sure the corresponding event comes from my internal context
 		// Event-based holarchy destruction
-		if (childUIDs.contains(occurrence.agentID)) {
-			childUIDs.remove(occurrence.agentID)
+		var childID = occurrence.source.UUID
+		if (childUIDs.contains(childID)) {
+			childUIDs.remove(childID)
 			if (childUIDs.size <= 0) {
 				info("No more child: I'm killing myself.")
 				killMe
