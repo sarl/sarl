@@ -30,6 +30,7 @@ import io.sarl.sre.services.context.Context
 import io.sarl.sre.services.context.ExternalContextMemberListener
 import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.logging.LoggingService
+import java.lang.ref.WeakReference
 import java.text.MessageFormat
 import java.util.UUID
 import java.util.concurrent.ConcurrentLinkedDeque
@@ -37,10 +38,9 @@ import java.util.concurrent.atomic.AtomicReference
 import java.util.logging.Level
 import javax.inject.Provider
 import javax.inject.Singleton
+import org.eclipse.xtext.xbase.lib.Functions.Function0
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
-import java.lang.ref.WeakReference
-import org.eclipse.xtext.xbase.lib.Functions.Function0
 
 /** 
  * Implementation of a spawning service that is based on the other services of the SRE platform.
@@ -200,7 +200,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 		}
 	
 		def apply : UUID {
-			val id = this.agentId.getAndSet(null)
+			val id = this.agentId?.getAndSet(null)
 			if (id === null) {
 				return UUID::randomUUID
 			}
@@ -235,16 +235,19 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 			
 			// Create the shared injector that is also able to create the agent instance.
 			val agentInstanceCreator = this.agentCreatorProvider.getAgentCreator(agentClazz, parent.ID,
-				nbAgents, dynamicSkillProviders, agentIds)
+				nbAgents, dynamicSkillProviders)
 			// Create the block of code for creating a single agent
 			val agentCreator : Runnable = [
-				val ^agent = agentInstanceCreator.get()
+				val aid = agentIds.apply
+
+				// Notify about the agent creation in the memory
+				firstAgentIdentifier.compareAndSet(null, aid)
+
+				// Effectively create the agent
+				val ^agent = agentInstanceCreator.apply(aid)
 				if (^agent === null) {
 					throw new CannotSpawnException(agentClazz)
 				}
-
-				// Notify about the agent creation in the memory
-				firstAgentIdentifier.compareAndSet(null, ^agent.ID)
 
 				// Start the agent's life
 				var life = getLife(^agent)
@@ -286,12 +289,11 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 			// ASSUMPTION : the callback should be called only one time.
 			if (callback !== null) {
 				// Wait for the agent starting
-				var id = firstAgentIdentifier.get
 				val endTime = System::currentTimeMillis + INTERNAL_TIME_OUT
-				while (id === null && System::currentTimeMillis <= endTime) {
+				while (firstAgentIdentifier.get === null && System::currentTimeMillis <= endTime) {
 					Thread::yield
-					id = firstAgentIdentifier.get
 				}
+				val id = firstAgentIdentifier.get
 				if (id === null) {
 					throw new IllegalStateException
 				}

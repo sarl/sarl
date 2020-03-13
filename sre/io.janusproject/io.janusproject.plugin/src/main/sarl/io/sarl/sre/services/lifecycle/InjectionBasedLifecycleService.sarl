@@ -20,7 +20,6 @@
  */
 package io.sarl.sre.services.lifecycle
 
-import com.google.inject.AbstractModule
 import com.google.inject.Injector
 import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Agent
@@ -124,95 +123,51 @@ class InjectionBasedLifecycleService extends AbstractLifecycleService {
 			this.injector = injector
 		}
 	
+		@SuppressWarnings("use_reserved_sarl_annotation")
+		@PrivateAPI(isCallerOnly = true)
 		def getAgentCreator(
-			agentClazz : Class<T>,
+			agentClazz : Class<? extends Agent>,
 			parent : UUID,
 			nbAgents : int,
-			skillProviders : Iterable<DynamicSkillProvider>,
-			agentId : () => UUID) : Provider<T> with T extends Agent {
+			skillProviders : Iterable<DynamicSkillProvider>) : (UUID)=>Agent {
 			var sproviders = skillProviders.mergeSkillProviders
-			val agentInjectionModule = new JustInTimeAgentInjectionModule<T>(agentClazz, parent, agentId, sproviders)
-			val agentInjector = this.injector.createChildInjector(agentInjectionModule)
-			return [
-				agentInjector.getInstance(agentClazz)
-			]
-		}
-	
-	}
-	
-	/** 
-	 * An injection module that is able to inject the parent ID and agent ID when creating an agent.
-	 * 
-	 * @param <T> the type of the generated agent.
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	@SuppressWarnings("use_reserved_sarl_annotation")
-	@PrivateAPI(isCallerOnly = true)
-	private static class JustInTimeAgentInjectionModule<T extends Agent> extends AbstractModule implements Provider<T> {
 
-		val agentType : Class<T>
-
-		val constructor1 : Constructor<T>
-
-		val constructor2 : Constructor<T> 
-
-		val parentID : UUID
-
-		val skillProvider : DynamicSkillProvider
-
-		var identifierComputer : () => UUID
-
-		package new (agentType : Class<T>, parentID : UUID, agentID : () => UUID, skillProvider : DynamicSkillProvider) {
-			assert agentType !== null
-			assert parentID !== null
-			this.agentType = agentType
-			this.parentID = parentID
-			this.identifierComputer = agentID
-			this.skillProvider = skillProvider
-			var cons : Constructor<T> = null
+			assert agentClazz!== null
 			var e1 : Exception = null
+			var cons1 : Constructor<? extends Agent>
 			try {
-				cons = this.agentType.getConstructor(typeof(UUID), typeof(UUID))
+				cons1 = agentClazz.getConstructor(typeof(UUID), typeof(UUID))
 			} catch (exception : Exception) {
-				cons = null
 				e1 = exception
+				cons1 = null
 			}
-			this.constructor1 = cons
 			var e2 : Exception = null
+			var cons2 : Constructor<? extends Agent>
 			try {
-				cons = this.agentType.getConstructor(typeof(UUID), typeof(UUID), typeof(DynamicSkillProvider))
+				cons2 = agentClazz.getConstructor(typeof(UUID), typeof(UUID), typeof(DynamicSkillProvider))
 			} catch (exception : Exception) {
-				cons = null
 				e2 = exception
-}
-			this.constructor2 = cons
-			if (this.constructor1 === null && this.constructor2 === null) {
-				throw new CannotSpawnException(this.agentType, e1 ?: e2)
+				cons2 = null
 			}
-		}
+			if (cons1 === null && cons2 === null) {
+				throw new CannotSpawnException(agentClazz, e1 ?: e2)
+			}
 
-		def configure {
-			bind(this.agentType).toProvider(this)
-		}
-
-		def get : T {
-			var aid = this.identifierComputer.apply()
-			assert this.constructor1 !== null || this.constructor2 !== null
-			try {
-				if (this.constructor2 !== null) {
-					this.constructor2.accessible = true
-					return this.constructor2.newInstance(this.parentID, aid, this.skillProvider)
+			val constructor1 = cons2
+			val constructor2 = cons2
+			return [
+				var ag : Agent
+				if (constructor2 !== null) {
+					constructor2.accessible = true
+					ag = constructor2.newInstance(parent, it, sproviders)
+				} else {
+					constructor1.accessible = true
+					var ^agent = constructor1.newInstance(parent, it)
+					SREutils::setDynamicSkillProvider(^agent, sproviders)
 				}
-				this.constructor1.accessible = true
-				var ^agent = this.constructor1.newInstance(this.parentID, aid)
-				SREutils::setDynamicSkillProvider(^agent, this.skillProvider)
-				return ^agent
-			} catch (exception : Exception) {
-				throw new CannotSpawnException(this.agentType, exception)
-			}
+				this.injector.injectMembers(ag)
+				return ag
+			]
 		}
 
 	}

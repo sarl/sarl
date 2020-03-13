@@ -60,8 +60,7 @@ import static extension org.junit.jupiter.api.Assertions.*
 @Tag("run")
 class OnParticipantJoinedTest {
 
-	@RepeatedTest(5)
-	@Disabled
+	@Test
 	@DisplayName("ParticipantJoined in default space")
 	@SuppressWarnings("discouraged_reference")
 	def runParticipantJoinedInDefaultSpace(extension rc : SreRunContext) {
@@ -85,7 +84,6 @@ class OnParticipantJoinedTest {
 	}
 
 	@Test
-	@Disabled
 	@DisplayName("ParticipantJoined in other space")
 	@SuppressWarnings("discouraged_reference")
 	def runParticipantJoinedInOtherSpace(extension rc : SreRunContext) {
