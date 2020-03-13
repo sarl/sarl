@@ -200,7 +200,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 		}
 	
 		def apply : UUID {
-			val id = this.agentId.getAndSet(null)
+			val id = this.agentId?.getAndSet(null)
 			if (id === null) {
 				return UUID::randomUUID
 			}
