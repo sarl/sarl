@@ -50,11 +50,6 @@ public class SREBootstrapMock implements SREBootstrap {
 	}
 
 	@Override
-	public UUID getBootAgentIdentifier() {
-		throw new IllegalStateException();
-	}
-
-	@Override
 	public AgentContext startWithoutAgent() {
 		throw new IllegalStateException();
 	}

@@ -21,15 +21,14 @@
 
 package io.sarl.javafx
 
-import java.util.concurrent.atomic.AtomicBoolean
-
-import io.sarl.lang.core.Agent
 import io.sarl.core.Behaviors
 import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
 import io.sarl.core.MemberLeft
 import io.sarl.core.OpenEventSpace
+import io.sarl.lang.core.Agent
+import java.util.concurrent.atomic.AtomicBoolean
 
 /** Specific behavior for an agent that supports killing from a JavaFX application.  
  *
@@ -93,7 +92,7 @@ behavior FXBehavior extends FXKillSupportBehavior {
 	/** Installation.
 	 */
 	on Initialize {
-		this.uiSpace.register(asEventListener)
+		this.uiSpace.register(asEventListener, false)
 	}
 
 	/** Uninstallation.

@@ -34,7 +34,9 @@ import io.sarl.lang.core.SpaceSpecification
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated since 0.11, no replacement
  */
+@Deprecated
 interface RestrictedAccessEventSpaceSpecification extends SpaceSpecification<RestrictedAccessEventSpace> {
 
 	/** Defines the permission to access to a {@link RestrictedAccessEventSpace space}.

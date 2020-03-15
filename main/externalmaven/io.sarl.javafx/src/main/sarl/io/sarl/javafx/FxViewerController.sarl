@@ -74,7 +74,7 @@ abstract class FxViewerController implements EventListener {
 		var s = this.^space
 		s?.unregister(this)
 		s = this.^space = ^space
-		s?.register(this)
+		s?.register(this, true)
 	}
 
 	/** Replies the space for interaction between SARL agents and UI.
@@ -186,7 +186,7 @@ abstract class FxViewerController implements EventListener {
 			this.id = id
 			this.whenAgentLaunched = whenAgentLaunched
 			this.rootSpace = rootSpace
-			this.rootSpace.register(this)
+			this.rootSpace.register(this, true)
 		}
 
 		/** Get ID of the object on the space that is used for supporting the interactions between

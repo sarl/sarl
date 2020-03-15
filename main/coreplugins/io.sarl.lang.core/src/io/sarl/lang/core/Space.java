@@ -22,49 +22,83 @@
 package io.sarl.lang.core;
 
 import java.util.UUID;
-import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
- * Agents in SARL can interact only via Interaction Spaces. A space is the support of the event-driven interaction between agents respecting the rules
+ * Agents in SARL can interact only via Interaction Spaces.
+ * A space is the support of the event-driven interaction between agents respecting the rules
  * defined in various Space Specifications.
  *
+ * <p>Participants to the space are software entities, e.g. agents that are participating
+ * to the interaction in the space.
+ * Two types of participant are forseen:<ul>
+ * <li><i>strong participant</i>: this is the standard or regular type. If the space has a
+ * strong participant, it is considered as an not empty space and cannot be destroyed from the system.</li>
+ * <li><i>weak participant</i>: this is a special type. If the space has only weak participants,
+ * i.e. no strong participant is involved, it is considered as en empty space and could be destroy from the system.</li>
+ * <li></li>
+ * </ul>
+ *
  * @author $Author: srodriguez$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 public interface Space {
 
-    /**
-     * Replies the Identification of this Interaction {@link Space}.
-     *
-     * @return the space's id
-     * @deprecated replaced by {@link #getSpaceID()}, to increase readability in the SARL code
-     */
-    @Pure
-    @Deprecated
-    @Inline("getSpaceID()")
-    default SpaceID getID() {
-    	return getSpaceID();
-    }
+	/**
+	 * Replies the Identification of this Interaction {@link Space}.
+	 *
+	 * @return the space's id
+	 */
+	@Pure
+	SpaceID getSpaceID();
 
-    /**
-     * Replies the Identification of this Interaction {@link Space}.
-     *
-     * @return the space's id
-     */
-    @Pure
-    SpaceID getSpaceID();
+	/**
+	 * Replies if the space could be considered as empty.
+	 * Usually an empty space is a space without relevant participant, i.e. weak participants are
+	 * ignored by this function.
+	 *
+	 * @return {@code true} if the space could be considered as empty.
+	 * @since 0.11
+	 */
+	@Pure
+	@Inline(value = "($0getNumberOfStrongParticipants() == 0)", constantExpression = true)
+	default boolean isPseudoEmpty() {
+		return getNumberOfStrongParticipants() == 0;
+	}
 
-    /**
-     * Returns the IDs of all agents interacting in this space all over the network.
-     *
-     * @return participants IDs
-     */
-    @Pure
-    ConcurrentSkipListSet<UUID> getParticipants();
+	/**
+	 * Replies if the space is empty or the given identifier is associated to the only one participant to the space.
+	 * Weak participants are ignored by this function.
+	 *
+	 * @param id the identifier to test.
+	 * @return {@code true} if space if empty or the identifier is associated to the only one participant.
+	 * @since 0.11
+	 */
+	@Pure
+	boolean isPseudoEmpty(UUID id);
+
+	/**
+	 * Replies the number of strong participants to the space.
+	 * This function ignores the weak participants.
+	 *
+	 * @return the number of participants.
+	 * @since 0.11
+	 */
+	@Pure
+	int getNumberOfStrongParticipants();
+
+	/** Apply the given procedure to each of the strong participants.
+	 * This function ignores the weak participants.
+	 *
+	 * @param callback the lambda to invoke.
+	 * @since 0.11
+	 */
+	void forEachStrongParticipant(Procedure1<? super UUID> callback);
 
 }

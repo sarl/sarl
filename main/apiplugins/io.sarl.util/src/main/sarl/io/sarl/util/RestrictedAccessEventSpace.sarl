@@ -39,7 +39,9 @@ import io.sarl.lang.core.EventSpace
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated since 0.11, no replacement
  */
+@Deprecated
 interface RestrictedAccessEventSpace extends EventSpace {
 
 	/**

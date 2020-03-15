@@ -26,10 +26,18 @@ import io.sarl.lang.core.EventListener
 import io.sarl.lang.core.EventSpace
 
 /**
- * Event driven interaction space where agent are free register and unregister themselves.
- * Agents should only register once in this type of space.
+ * Event driven interaction space where participants (agents, etc) are free register and unregister themselves.
+ * A participant should only register once in this type of space.
+ *
+ * <p>A participant is a software entity that is registered in order to receive the events that are emitted into
+ * the space. A participant is usually an agent, but not restricted to this type of software entity.
+ * It could be also a user-interface module.
+ *
+ * <p>A weak participant is participant that could be considered as not a first-order member of the space.
+ * When a participant is weak, it is not considered by functions such as {@link #isPseudoEmpty(java.lang.UUID)}.
  *
  * @author $Author: srodriguez$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -37,28 +45,31 @@ import io.sarl.lang.core.EventSpace
 interface OpenEventSpace extends EventSpace {
 
 	/**
-	 * Registers the entity inside this space.
-	 * After registering a new agent, the Space should emit a MemberJoined
+	 * Registers the participant inside this space.
+	 * After registering a new participant, the Space should emit a ParticipantJoined
 	 * event where the source is the address of the newly registered agent.
 	 *
 	 * <p>If the agent is already registered the address is return, but the listener is not replaced.
 	 *
-	 * @param entity the entity to register.
+	 * @param participant the participant to register.
+	 * @param weakParticipant indicates to the space that the given participant could be considered as a weak participant.
+	 *     The meaning of the concept of weak participant is described into the OpenEventSpace documentation.
 	 * @return the entity's address in this space
 	 * @fires ParticipantJoined in its enclosing Context default space.
+	 * @since 0.11
 	 */
-	def register(entity : EventListener) : Address fires ParticipantJoined
+	def register(participant : EventListener, weakParticipant : boolean) : Address fires ParticipantJoined
 
 	/**
 	 * Unregisters the entity inside this space.
-	 * Before unregistering an agent, the Space should emit a MemberLeft
+	 * After unregistering an agent, the Space should emit a ParticipantLeft
 	 * event where the source is the address of the unregistered agent.
 	 *
-	 * @param entity the entity to unregister.
+	 * @param participant the participant to unregister.
 	 * @return the former entity's address
 	 * @fires ParticipantJoined in its enclosing Context default space.
 	 */
-	def unregister(entity : EventListener) : Address fires ParticipantLeft
+	def unregister(participant : EventListener) : Address fires ParticipantLeft
 
 }
 
