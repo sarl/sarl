@@ -88,16 +88,6 @@ public interface SREBootstrap {
 	 */
 	void startAgentWithID(Class<? extends Agent> agentCls, UUID agentID, Object... params) throws Exception;
 
-	/**
-	 * Replies the identifier of the boot agent from the system's properties. The boot agent is launched with
-	 * {@link #startAgent(int, Class, Object...)}.
-	 *
-	 * @return the identifier of the boot agent, or {@code null} if it is unknown.
-	 * @see #startAgent(int, Class, Object...)
-	 */
-	@Pure
-	UUID getBootAgentIdentifier();
-
 	/** Replies if the bootstrap could be used.
 	 *
 	 * <p>If the bootstrap cannot be used, it cannot launch agent.
@@ -156,23 +146,6 @@ public interface SREBootstrap {
 	 */
 	default void setBootAgentTypeContextUUID() {
 		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * Force the SRE platform to use the identifier hard-coded in the source code for its default context.
-	 *
-	 * <p>This function has no effect if the agent framework is already launched.
-	 *
-	 * @since 0.7
-	 * @see #setUniverseContextUUID(UUID)
-	 * @see #getUniverseContextUUID()
-	 * @see #setUniverseSpaceUUID(UUID)
-	 * @see #getUniverseSpaceUUID()
-	 * @deprecated see {@link #setSpecificContextUUID()}
-	 */
-	@Deprecated
-	default void setDefaultContextUUID() {
-		setSpecificContextUUID();
 	}
 
 	/**

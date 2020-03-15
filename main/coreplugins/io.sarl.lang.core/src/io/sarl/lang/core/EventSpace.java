@@ -52,46 +52,6 @@ public interface EventSpace extends Space {
 	 *
 	 * <p>This function does not change the source of the event if it was set.
 	 *
-	 * <p>If the given event has no specified source, the caller of the emit function is assumed
-	 * to set the source's address to the address of the "current" agent. The concept of "current"
-	 * agent depends on the capabilities of the run-time platform. Usually, it is the
-	 * agent that is the cause of the emit.
-	 *
-	 * @param event the event to emit in the space.
-	 * @param scope the definition of the list of receivers of the event.
-	 * @deprecated see {@link #emit(UUID, Event, Scope)}, since 0.6
-	 */
-	@Deprecated
-	@Inline(value = "emit(null, $1, $2)")
-	default void emit(Event event, Scope<Address> scope) {
-		emit(null, event, scope);
-	}
-
-	/**
-	 * Emits the event inside this space. All registered agents will receive the event.
-	 *
-	 * <p>This function does not change the source of the event if it was set.
-	 *
-	 * <p>If the given event has no specified source, the caller of the emit function is assumed
-	 * to set the source's address to the address of the "current" agent. The concept of "current"
-	 * agent depends on the capabilities of the run-time platform. Usually, it is the
-	 * agent that is the cause of the emit.
-	 *
-	 * @param event the event to emit in the space.
-	 * @deprecated see {@link #emit(UUID, Event)}, since 0.6
-	 */
-	@Inline(value = "emit(null, $1, null)")
-	@Deprecated
-	default void emit(Event event) {
-		emit(null, event, null);
-	}
-
-	/**
-	 * Emits the event inside this space with the given scope. Only agents
-	 * matching the scope will receive the event.
-	 *
-	 * <p>This function does not change the source of the event if it was set.
-	 *
 	 * <p>If the given event has no specified source, the emit function uses the
 	 * {@code eventSource} parameter to set the source's address.
 	 *

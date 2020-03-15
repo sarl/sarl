@@ -219,11 +219,6 @@ public final class SRE {
 		}
 
 		@Override
-		public UUID getBootAgentIdentifier() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
 		public boolean isActive() {
 			return false;
 		}
