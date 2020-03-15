@@ -28,10 +28,11 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * This class describes all the addresses used by the kernel to identify its
- * elements.
+ * This class describes all the addresses used by the space to identify its
+ * participants.
  *
  * @author $Author: srodriguez$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -40,10 +41,7 @@ public class Address extends SRESpecificDataContainer implements Serializable, C
 
 	private static final long serialVersionUID = 1519844913685586094L;
 
-	/**
-	 * The global unique identifier of this kernel.
-	 */
-	private final UUID agentId;
+	private final UUID participantId;
 
 	private final SpaceID spaceId;
 
@@ -51,12 +49,12 @@ public class Address extends SRESpecificDataContainer implements Serializable, C
 	 * Create an address based on the specified identifier.
 	 *
 	 * @param spaceId the identifier of the space related to this address.
-	 * @param agentId is the identifier of the address.
+	 * @param participantId is the identifier of the participant.
 	 */
-	public Address(SpaceID spaceId, UUID agentId) {
-		assert agentId != null;
+	public Address(SpaceID spaceId, UUID participantId) {
+		assert participantId != null;
 		assert spaceId != null;
-		this.agentId = agentId;
+		this.participantId = participantId;
 		this.spaceId = spaceId;
 	}
 
@@ -65,26 +63,26 @@ public class Address extends SRESpecificDataContainer implements Serializable, C
 	public String toString() {
 		final ToStringBuilder builder = new ToStringBuilder(this);
 		builder.add("type", getClass().getSimpleName()); //$NON-NLS-1$
-		builder.add("agentId", this.agentId); //$NON-NLS-1$
+		builder.add("participantId", this.participantId); //$NON-NLS-1$
 		builder.add("spaceId", this.spaceId); //$NON-NLS-1$
 		return builder.toString();
 	}
 
 	/**
-	 * Replies the identifier associated to this address.
+	 * Replies the participant identifier associated to this address.
 	 *
-	 * @return the identifier associated to this address.
+	 * @return the participant identifier associated to this address.
 	 */
 	@Pure
 	public UUID getUUID() {
-		return this.agentId;
+		return this.participantId;
 	}
 
 	@Override
 	@Pure
 	public int hashCode() {
 		int result = 1;
-		result = 31 * result + ((this.agentId == null) ? 0 : this.agentId.hashCode());
+		result = 31 * result + ((this.participantId == null) ? 0 : this.participantId.hashCode());
 		result = 31 * result + ((this.spaceId == null) ? 0 : this.spaceId.hashCode());
 		return result;
 	}
@@ -115,7 +113,7 @@ public class Address extends SRESpecificDataContainer implements Serializable, C
 	 */
 	@Pure
 	public boolean equals(Address address) {
-		return address != null && this.agentId.equals(address.getUUID())
+		return address != null && this.participantId.equals(address.getUUID())
 				&& this.spaceId.equals(address.getSpaceID());
 	}
 
@@ -159,7 +157,7 @@ public class Address extends SRESpecificDataContainer implements Serializable, C
 		if (address == null) {
 			return 1;
 		}
-		return this.agentId.compareTo(address.getUUID());
+		return this.participantId.compareTo(address.getUUID());
 	}
 
 	/** Replies the ID of the space related to this address.
