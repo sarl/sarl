@@ -103,7 +103,7 @@ skill BehaviorsSkill extends Skill implements Behaviors {
 		// for real posting
 		val life = getLife(owner)
 		if (life.state.alive) {
-			var context = life.innerContext
+			var context = life.getInnerContext(null)
 			if (context !== null) {
 				val defSpace = context.defaultSpace
 				^event.source = life.addressInInnerDefaultSpace

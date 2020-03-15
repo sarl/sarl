@@ -22,11 +22,11 @@
 package io.sarl.sre.tests.runtime.internal.mocks
 
 import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
 import io.sarl.core.ParticipantLeft
+import io.sarl.core.Schedules
 import io.sarl.sre.test.framework.skills.TestingCapacity
 import io.sarl.sre.test.framework.skills.TestingSkill
-import io.sarl.core.Schedules
-import io.sarl.core.Lifecycle
 
 /**
  * @author $Author: sgalland$
@@ -40,7 +40,6 @@ agent JoinerAgent1 {
 
 	on Initialize {
 		setSkill(new TestingSkill(occurrence))
-		System::out.println("Joiner(id2) = " + ID)
 		in(500) [
 			killMe
 		]

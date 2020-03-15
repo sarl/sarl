@@ -21,7 +21,6 @@
 
 package io.sarl.sre.tests.runtime.services.probing
 
-import io.sarl.lang.util.OutParameter
 import io.sarl.sre.services.probing.Probe
 import io.sarl.sre.services.probing.ProbeService
 import io.sarl.sre.test.framework.context.SreRunContext
@@ -35,11 +34,11 @@ import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.List
 import java.util.UUID
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
 import static io.sarl.sre.test.framework.Constants.*
-import static io.sarl.tests.api.tools.TestTimeout.*
 
 import static extension org.junit.jupiter.api.Assertions.*
 
@@ -65,7 +64,7 @@ abstract class AbstractProbeServiceTest {
 	}
 
 	@SuppressWarnings("discouraged_reference")
-	protected def runTestCase(extension rc : SreRunContext) : Probe<Integer> {
+	protected def runTestCase(extension rc : SreRunContext, urlBuilder : (UUID)=>String) : Probe<Integer> {
 		runTestCase_prepare
 
 		var kern = setupTheSreKernel(null, null)
@@ -75,24 +74,19 @@ abstract class AbstractProbeServiceTest {
 		this.changedProbes = newArrayList
 		this.releasedProbes = newArrayList
 
-		bootstrap.startAgent(typeof(ProbedAgent), getAgentInitializationParameters)
+		val bid = UUID::randomUUID
+		val w0 = waitForAgentSpawned(bid)
 
-		val bid = bootstrap.bootAgentIdentifier
-		bid.assertNotNull
-		val url : String = "agent:" + bid + "#myfield"
+		kern.startAgentWithID(typeof(ProbedAgent), bid, getAgentInitializationParameters)
 
-		// Wait for the starting of the agent. The agent is accessible when it is started, and
-		// member of a default space.
-		val probeParam = new OutParameter
-		val to = newTimeOut [
-			val obj = service.probe(url, typeof(Integer))
-			probeParam.set(obj)
-			return obj !== null
-		]
-		to.run
-		to.isTimeout.assertFalse
-		val probe = probeParam.get
-		probe.assertNotNull
+		w0.doWait
+
+		val url = urlBuilder.apply(bid)
+
+		val probe = service.probe(url, typeof(Integer))
+		if (probe === null) {
+			return null
+		}
 
 		probe.addProbeListener [
 			synchronized (this.changedProbes) {
@@ -113,14 +107,15 @@ abstract class AbstractProbeServiceTest {
 		rootContext.defaultSpace.emit(UUID::randomUUID, new StopTest)
 		service.runTestCase_afterStopTest(probe)
 
-		waitForTheKernel(NO_TIMEOUT)
+		waitForTheKernel(STANDARD_TIMEOUT)
 
 		return probe
 	}
 
 	@Test
+	@DisplayName("Probe agent field")
 	def probeAgentField(extension rc : SreRunContext) {
-		var probe = rc.runTestCase
+		var probe = rc.runTestCase ["agent:" + it + "#myfield"]
 		
 		1.assertEquals(changedProbes.size)
 
@@ -133,6 +128,13 @@ abstract class AbstractProbeServiceTest {
 		probe.assertSame(releasedProbes.get(0))
 	}
 
+	@Test
+	@DisplayName("Probe unknown agent field")
+	def probeAgentUnkwonField(extension rc : SreRunContext) {
+		var probe = rc.runTestCase["agent:" + it + "#myfield_unkwon"]
+		probe.assertNull
+	}
+	
 	protected abstract def runTestCase_prepare
 
 	protected abstract def runTestCase_beforeChangeField(service : ProbeService, probe : Probe<Integer>)

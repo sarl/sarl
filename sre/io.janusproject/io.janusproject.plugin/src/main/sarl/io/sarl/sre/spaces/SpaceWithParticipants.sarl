@@ -27,7 +27,7 @@ import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 
 /** 
- * Space with participants.
+ * Space with participants that exhibits the participants' list.
  * 
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -39,11 +39,26 @@ import java.util.concurrent.ConcurrentHashMap
 @PrivateAPI
 interface SpaceWithParticipants extends Space {
 
-	/** Replies the internal data structure for storing the space's participants.
+	/** Replies the internal data structure for storing the strong space's participants.
 	 * 
-	 * @return the entire participant structure.
+	 * @return the entire strong participant structure, never {@code null}
+	 * @since 0.11
 	 */
-	def getInternalParticipantStructure : ConcurrentHashMap<UUID, Participant>
+	def getInternalStrongParticipantStructure : ConcurrentHashMap<UUID, Participant>
+
+	/** Replies the internal data structure for storing the weak space's participants.
+	 * 
+	 * @return the entire weak participant structure, or {@code null} if none.
+	 * @since 0.11
+	 */
+	def getInternalWeakParticipantStructure : ConcurrentHashMap<UUID, Participant>
+
+	/** Replies the internal data structure for storing the weak space's participants.
+	 * 
+	 * @return the entire weak participant structure, never {@code null}.
+	 * @since 0.11
+	 */
+	def ensureInternalWeakParticipantStructure : ConcurrentHashMap<UUID, Participant>
 
 }
 

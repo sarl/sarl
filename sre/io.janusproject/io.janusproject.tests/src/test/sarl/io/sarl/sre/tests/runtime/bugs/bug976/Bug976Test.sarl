@@ -28,7 +28,6 @@ import io.sarl.sre.test.framework.^extension.SreRunExtension
 import io.sarl.sre.tests.runtime.bugs.bug976.mocks.BootScalableAgent
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
@@ -57,10 +56,9 @@ import static extension io.sarl.tests.api.tools.TestAssertions.*
 class Bug976Test {
 
 	@Test
-	@Disabled
 	def run(extension rc : SreRunContext) : void {
 		typeof(SreTimeoutException).assertException [
-			typeof(BootScalableAgent).runSre(LogTrackingMode::STANDARD_LOGGER_BEHAVIOR_AND_FAIL_ON_ERROR)
+			typeof(BootScalableAgent).runSre
 		]
 	}
 

@@ -35,11 +35,11 @@ import io.sarl.sre.services.context.SpaceRepository.SpaceDescription
 import io.sarl.sre.services.context.SpaceRepositoryListener
 import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
+import io.sarl.sre.tests.units.services.context.mocks.SpaceMock
+import io.sarl.sre.tests.units.services.context.mocks.SpaceMockSpecification
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
-import io.sarl.util.RestrictedAccessEventSpace
-import io.sarl.util.RestrictedAccessEventSpaceSpecification
 import java.util.Map
 import java.util.UUID
 import org.arakhne.afc.util.IntegerList
@@ -129,8 +129,8 @@ abstract class AbstractSpaceRepositoryTest<T extends SpaceRepository,
 		this.internalStructure.put(id2, desc2)
 		
 		var id3 = UUID::randomUUID
-		sid = new SpaceID(contextId, id3, typeof(RestrictedAccessEventSpaceSpecification))
-		^space = typeof(RestrictedAccessEventSpace).mock
+		sid = new SpaceID(contextId, id3, typeof(SpaceMockSpecification))
+		^space = typeof(SpaceMock).mock
 		when(^space.spaceID).thenReturn(sid)
 		var desc3 = new SpaceDescription(sid, ^space)
 		this.internalStructure.put(id3, desc3)

@@ -71,7 +71,7 @@ abstract class AbstractContextServiceTest {
 		assertEquals(2, results.size)
 		assertInstanceOf(typeof(UUID), results.get(0))
 		var agentId = results.get(0) as UUID
-		assertEquals(getBootAgent, agentId)
+		assertEquals(bootAgentId, agentId)
 		assertInstanceOf(typeof(AgentContext), results.get(1))
 		assertEquals(UUID::fromString(BootConfig::ROOT_CONTEXT_ID_VALUE), (results.get(1) as AgentContext).ID)
 	}

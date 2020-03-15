@@ -45,7 +45,7 @@ agent NoChildInnerContextIsKillableTestAgent {
 		addResult("1")
 		var ctx = getInnerContext
 		assert ctx !== null
-		in(1000) [
+		in(500) [
 			addResult("2")
 			killMe
 		]

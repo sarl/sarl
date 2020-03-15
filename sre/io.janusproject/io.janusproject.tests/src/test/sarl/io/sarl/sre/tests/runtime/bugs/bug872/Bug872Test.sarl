@@ -57,7 +57,7 @@ class Bug872Test {
 	@Test
 	def run_01(extension rc : SreRunContext) {
 		typeof(TopAgent).runSre(SHORT_TIMEOUT)
-		assertFalse(bootAgent.getResult(typeof(Boolean), 0))
+		assertFalse(bootAgentId.getResult(typeof(Boolean), 0))
 	}
 
 }

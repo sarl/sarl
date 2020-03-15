@@ -66,7 +66,7 @@ class Bug848Test {
 		typeof(SreTimeoutException).whenException [
 			typeof(TAgent1a).runSre(SHORT_TIMEOUT)
 		].verify [
-			var bootAgent = getBootAgent
+			var bootAgent = bootAgentId
 			assertEquals(1, getNumberOfResults(bootAgent))
 			var spawnEvents1 : Triplet<Boolean, UUID, UUID> = getResult(bootAgent, typeof(Triplet), 0)
 			assertNotNull(spawnEvents1)

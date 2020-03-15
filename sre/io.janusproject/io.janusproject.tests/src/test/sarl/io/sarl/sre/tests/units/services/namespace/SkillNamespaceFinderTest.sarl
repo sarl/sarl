@@ -117,8 +117,12 @@ class SkillNamespaceFinderTest {
 		when(participant0.participant).thenReturn(listener0)
 		var map0 = new ConcurrentHashMap
 		map0.put(this.aid0, participant0)
+		var map0b = new ConcurrentHashMap
+		map0b.put(UUID::randomUUID, typeof(Participant).mock)
+		map0b.put(UUID::randomUUID, typeof(Participant).mock)
 		var spc0 = typeof(MySpace).mock
-		when(spc0.internalParticipantStructure).thenReturn(map0)
+		when(spc0.internalStrongParticipantStructure).thenReturn(map0)
+		when(spc0.internalWeakParticipantStructure).thenReturn(map0)
 		var ctx0 = typeof(Context).mock
 		when(ctx0.defaultSpace).thenReturn(spc0)
 
@@ -132,9 +136,13 @@ class SkillNamespaceFinderTest {
 		when(participant1.participant).thenReturn(listener1)
 		var map1 = new ConcurrentHashMap
 		map1.put(this.aid1, participant1)
+		var map1b = new ConcurrentHashMap
+		map1b.put(UUID::randomUUID, typeof(Participant).mock)
+		map1b.put(UUID::randomUUID, typeof(Participant).mock)
 		this.sid1 = UUID::randomUUID
 		var spc1 = typeof(MySpace).mock
-		when(spc1.internalParticipantStructure).thenReturn(map1)
+		when(spc1.internalStrongParticipantStructure).thenReturn(map1)
+		when(spc1.internalWeakParticipantStructure).thenReturn(map1b)
 		this.cid1 = UUID::randomUUID
 		var ctx1 = typeof(Context).mock
 		when(ctx1.getSpace(any(typeof(UUID)))).thenAnswer [

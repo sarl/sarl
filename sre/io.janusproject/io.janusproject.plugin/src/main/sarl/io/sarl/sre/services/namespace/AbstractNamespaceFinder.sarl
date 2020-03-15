@@ -83,7 +83,7 @@ abstract class AbstractNamespaceFinder<N extends SarlName, O> implements INamesp
 				}
 			}
 			if (^space instanceof SpaceWithParticipants) {
-				var participantMap = ^space.internalParticipantStructure
+				var participantMap = ^space.internalStrongParticipantStructure
 				var participant = participantMap.get(agentId)
 				if (participant !== null) {
 					var listener = participant.participant

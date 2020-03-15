@@ -66,8 +66,6 @@ class OnParticipantLeftTest {
 
 		val id1 = UUID.randomUUID
 		val id2 = UUID.randomUUID
-		System.out.println("id1=" + id1)
-		System.out.println("id2=" + id2)
 
 		val lock = id1.waitForAgentSpawned
 
@@ -77,7 +75,7 @@ class OnParticipantLeftTest {
 
 		kern.startAgentWithID(typeof(JoinerAgent1), id2, agentInitializationParameters)
 
-		waitForTheKernel(-1/*STANDARD_TIMEOUT*/)
+		waitForTheKernel(STANDARD_TIMEOUT)
 
 		var evt0 = id1.getResult(typeof(ParticipantLeft), 0)
 		evt0.assertNotNull
@@ -96,37 +94,42 @@ class OnParticipantLeftTest {
 	@DisplayName("ParticipantLeft in other space")
 	@SuppressWarnings("discouraged_reference")
 	def runParticipantLeftInOtherSpace(extension rc : SreRunContext) {
-		var kern = typeof(SpyAgent3).setupTheSreKernel(null, null)
+		var kern = setupTheSreKernel(null, null)
 
-		Thread::sleep(1000)
+		val id1 = UUID.randomUUID
+		val id2 = UUID.randomUUID
 
-		val id = UUID::randomUUID
+		val lock = id1.waitForAgentSpawned
 
-		kern.startAgentWithID(typeof(JoinerAgent3), id, agentInitializationParameters)
+		kern.startAgentWithID(typeof(SpyAgent3), id1, agentInitializationParameters)
 
-		waitForTheKernel(NO_TIMEOUT)
+		lock.doWait
 
-		var evt0 = getResult(bootAgent, typeof(ParticipantLeft), 0)
+		kern.startAgentWithID(typeof(JoinerAgent3), id2, agentInitializationParameters)
+
+		waitForTheKernel(STANDARD_TIMEOUT)
+
+		var evt0 = getResult(id1, typeof(ParticipantLeft), 0)
 		evt0.assertNotNull
 
-		var spcid0 = getResult(bootAgent, typeof(SpaceID), 1)
+		var spcid0 = getResult(id1, typeof(SpaceID), 1)
 		spcid0.assertNotNull
 
-		var spcid1 = getResult(id, typeof(SpaceID), 0)
+		var spcid1 = getResult(id2, typeof(SpaceID), 0)
 		spcid1.assertNotNull
 
-		var evt1 = getResult(id, typeof(ParticipantLeft), 1)
+		var evt1 = getResult(id2, typeof(ParticipantLeft), 1)
 		evt1.assertNotNull
 		
 		spcid0.assertNotEquals(spcid1)
 		evt0.assertNotSame(evt1)
 
 		spcid0.assertEquals(evt0.source.spaceID)
-		id.assertEquals(evt0.source.UUID)
+		id2.assertEquals(evt0.source.UUID)
 		spcid1.assertEquals(evt0.spaceID)
 
 		spcid0.assertEquals(evt1.source.spaceID)
-		bootAgent.assertEquals(evt1.source.UUID)
+		id1.assertEquals(evt1.source.UUID)
 		spcid0.assertEquals(evt1.spaceID)
 	}
 

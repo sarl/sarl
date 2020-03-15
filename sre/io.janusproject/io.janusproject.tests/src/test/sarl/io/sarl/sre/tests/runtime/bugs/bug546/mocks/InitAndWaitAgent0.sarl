@@ -58,16 +58,13 @@ agent InitAndWaitAgent0 {
 
 	on Hello {
 		var n = this.nbHello.incrementAndGet
-		System::out.println("Hello #" + n)
 		if (n >= NB_AGENTS) {
-			System::out.println("Emit destroy order")
 			emit(new KillYou)
 		}
 	}
 
 	on AgentKilled {
 		var n = this.nbKilled.incrementAndGet
-		System::out.println("Bye #" + n)
 		if (n >= NB_AGENTS) {
 			killMe
 		}

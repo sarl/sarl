@@ -39,15 +39,27 @@ import static extension io.sarl.tests.api.tools.TestMockito.mock
  */
 class XAbstractEventSpaceMock extends AbstractEventSpace {
 	
-	var participants : ConcurrentHashMap<UUID, Participant> 
-	
-	new (participants : ConcurrentHashMap<UUID, Participant>, spaceId : SpaceID) {
+	var participants1 : ConcurrentHashMap<UUID, Participant>
+
+	var participants2 : ConcurrentHashMap<UUID, Participant>
+
+	new (participants1 : ConcurrentHashMap<UUID, Participant>, participants2 : ConcurrentHashMap<UUID, Participant>,
+		spaceId : SpaceID) {
 		super(spaceId, typeof(SpaceParticipantListener).mock, typeof(LoggingService).mock)
-		this.participants = participants
-	}
-	
-	def getInternalParticipantStructure : ConcurrentHashMap<UUID, Participant> {
-		return this.participants
+		this.participants1 = participants1
+		this.participants2 = participants2
 	}
 
+	def getInternalStrongParticipantStructure : ConcurrentHashMap<UUID, Participant> {
+		return this.participants1
+	}
+	
+	def getInternalWeakParticipantStructure : ConcurrentHashMap<UUID, Participant> {
+		return this.participants2
+	}
+	
+	def ensureInternalWeakParticipantStructure : ConcurrentHashMap<UUID, Participant> {
+		return this.participants2
+	}
+	
 }

@@ -51,6 +51,7 @@ import static io.sarl.tests.api.tools.TestAssertions.*
 class OnContextLeftTest {
 
 	@RepeatedTest(5)
+	@DisplayName("run")
 	def run(extension rc : SreRunContext) {
 		typeof(RootAgent3).runSre
 		assertContains(allResults, "CHILD2") // Child2 left the inner context of ROOT

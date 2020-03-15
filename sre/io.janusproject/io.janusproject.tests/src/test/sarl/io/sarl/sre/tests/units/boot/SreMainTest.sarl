@@ -34,7 +34,6 @@ import io.sarl.sre.boot.configs.subconfigs.BootConfig
 import io.sarl.sre.boot.configs.subconfigs.InvalidAgentNameException
 import io.sarl.sre.boot.configs.subconfigs.NoBootAgentNameException
 import io.sarl.sre.services.lifecycle.LifecycleService
-import io.sarl.sre.services.lifecycle.LifecycleSpawnCallback
 import io.sarl.sre.services.logging.LoggingService
 import io.sarl.sre.test.framework.agents.ShortLifeTestingAgent
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
@@ -42,7 +41,6 @@ import io.sarl.sre.test.framework.mockito.ModuleMock
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
-import java.util.UUID
 import org.arakhne.afc.bootique.log4j.configs.Level
 import org.arakhne.afc.bootique.log4j.configs.Log4jIntegrationConfig
 import org.junit.jupiter.api.BeforeEach
@@ -52,7 +50,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
 import static io.sarl.tests.api.tools.TestAssertions.*
-import static org.mockito.ArgumentMatchers.*
 
 import static extension io.sarl.tests.api.tools.TestAssertions.assertException
 import static extension io.sarl.tests.api.tools.TestMockito.mock
@@ -93,7 +90,6 @@ class SreMainTest {
 		"internal-error-log-level",
 		"json",
 		"keep-alive",
-		"kernel-stop-delay-on-spawn",
 		"log",
 		"min-threads",
 		"max-threads",
@@ -125,9 +121,6 @@ class SreMainTest {
 	var rootContext : AgentContext
 
 	@Nullable
-	var id0 : UUID
-
-	@Nullable
 	var configurationFactory : ConfigurationFactory
 
 	@Nullable
@@ -153,25 +146,12 @@ class SreMainTest {
 	
 	private def createBootiqueMock(instances : (Class<?>) => Object = null) {
 		this.loggingService = typeof(LoggingService).mock
-		this.id0 = UUID::randomUUID
 		this.configurationFactory = typeof(ConfigurationFactory).mock
 		this.rootContext = typeof(AgentContext).mock
 		this.kernel = typeof(Kernel).mock
 		when(this.kernel.rootContext).thenReturn(this.rootContext)
 		when(this.kernel.getService(typeof(Class).any)).thenReturn(typeof(LifecycleService).mock)
 		when(this.kernel.shutdownTrigger).thenReturn(typeof(Runnable).mock)
-		// Invoke the callback directly in order to evaluate its own code
-		doAnswer([
-			val callback = it.getArgument(1) as LifecycleSpawnCallback
-			callback.firstAgentSpawned(this.id0)
-			return null
-		]).when(this.kernel).spawn(any, any, any)
-		// Invoke the callback directly in order to evaluate its own code
-		doAnswer([
-			val callback = it.getArgument(2) as LifecycleSpawnCallback
-			callback.firstAgentSpawned(this.id0)
-			return null
-		]).when(this.kernel).spawn(anyInt, any, any, any)
 
 		this.injector = typeof(Injector).mock
 		when(this.injector.getInstance(typeof(Class).any)).thenAnswer [
@@ -328,31 +308,16 @@ class SreMainTest {
 	}
 
 	@Test
-	def getBootAgentIdentifier_start0 {
-		assertNull(this.bootstrap.bootAgentIdentifier)
-	}
-
-	@Test
-	def getBootAgentIdentifier_start1 {
-		createBootiqueMock
-		this.bootstrap.startWithoutAgent(this.bootique)
-		assertNull(this.bootstrap.bootAgentIdentifier)
-	}
-
-	@Test
 	def startAgentClassObjectArray {
 		createBootiqueMock
 		typeof(ShortLifeTestingAgent).createConfiguration
 		this.bootstrap.startWithoutAgent(this.bootique)
 		this.bootstrap.startAgent(typeof(ShortLifeTestingAgent), "a")
 		var arg0 = typeof(Class).forClass
-		var arg1 = typeof(LifecycleSpawnCallback).forClass
-		var arg2 = typeof(Object[]).forClass
-		this.kernel.verify.spawn(arg0.capture, arg1.capture, arg2.capture)
+		var arg1 = typeof(Object[]).forClass
+		this.kernel.verify.spawn(arg0.capture, arg1.capture)
 		typeof(ShortLifeTestingAgent).assertEquals(arg0.value)
-		arg1.value.assertNotNull
-		"a".assertEquals(arg2.allValues.get(0))
-		this.id0.assertEquals(this.bootstrap.bootAgentIdentifier)
+		"a".assertEquals(arg1.allValues.get(0))
 	}
 
 	@Test
@@ -363,14 +328,11 @@ class SreMainTest {
 		this.bootstrap.startAgent(1, typeof(ShortLifeTestingAgent), "a")
 		var arg0 = typeof(int).forClass
 		var arg1 = typeof(Class).forClass
-		var arg2 = typeof(LifecycleSpawnCallback).forClass
-		var arg3 = typeof(Object[]).forClass
-		this.kernel.verify.spawn(arg0.capture.intValue, arg1.capture, arg2.capture, arg3.capture)
+		var arg2 = typeof(Object[]).forClass
+		this.kernel.verify.spawn(arg0.capture.intValue, arg1.capture, arg2.capture)
 		1.assertEquals(arg0.value)
 		typeof(ShortLifeTestingAgent).assertEquals(arg1.value)
-		arg2.value.assertNotNull
-		"a".assertEquals(arg3.allValues.get(0))
-		this.id0.assertEquals(this.bootstrap.bootAgentIdentifier)
+		"a".assertEquals(arg2.allValues.get(0))
 	}
 
 	@Test
@@ -415,13 +377,10 @@ class SreMainTest {
 		this.bootstrap.startWithoutAgent(this.bootique)
 		this.bootstrap.startBootAgent
 		var arg0 = typeof(Class).forClass
-		var arg1 = typeof(LifecycleSpawnCallback).forClass
-		var arg2 = typeof(Object[]).forClass
-		this.kernel.verify.spawn(arg0.capture, arg1.capture, arg2.capture)
+		var arg1 = typeof(Object[]).forClass
+		this.kernel.verify.spawn(arg0.capture, arg1.capture)
 		typeof(ShortLifeTestingAgent).assertEquals(arg0.value)
-		arg1.value.assertNotNull
-		"a".assertEquals(arg2.allValues.get(0))
-		this.id0.assertEquals(this.bootstrap.bootAgentIdentifier)
+		"a".assertEquals(arg1.allValues.get(0))
 	}
 
 	@Test

@@ -237,6 +237,10 @@ class AgentEventEmitter implements LifecycleServiceListener {
 		}
 	}
 	
+	override agentSpawnFailure(spawningAgent : UUID, parent : Context, agentType : Class<? extends Agent>) {
+		this.logger.config[MessageFormat::format(Messages::AgentEventEmitter_2, agentType.name)]
+	}
+	
 }
 
 /** Emit the context member platform events.
@@ -259,31 +263,28 @@ class ContextMemberEventEmitter implements ExternalContextMemberListener {
 		this.logger = logger
 	}
 
-	override memberJoined(joinedContext : AgentContext, joinedContextSpaceId : SpaceID,
+	override memberJoined(joinedContext : AgentContext, defaultSpace : SpaceID,
 		joiningAgentID : UUID, joiningAgentType : String) {
 		val contextID = joinedContext.ID
 		this.logger.config [
 			MessageFormat::format(Messages::ContextMemberEventEmitter_2, joiningAgentID, contextID)
 		]
 		val defSpace = joinedContext.defaultSpace
-		val source = new Address(joinedContextSpaceId, contextID)
+		val source = new Address(defaultSpace, contextID)
 		// The first parameter is null because the event has an address.
-		defSpace.emit(null, new MemberJoined(source, contextID, joiningAgentID, joiningAgentType)) [
+		defSpace.emit(null, new MemberJoined(source, joiningAgentID, joiningAgentType)) [
 			it.UUID != joiningAgentID
 		]
 	}
 
-	override memberLeft(leftContext : AgentContext, leftContextSpaceId : SpaceID, leftMemberID : UUID,
+	override memberLeft(leftContext : AgentContext, defaultSpace : SpaceID, leftMemberID : UUID,
 		agentType : String) {
 		val contextID = leftContext.ID
 		this.logger.config [
-			MessageFormat::format(
-				Messages::ContextMemberEventEmitter_3,
-				leftMemberID,
-				contextID
-		)]
+			MessageFormat::format( Messages::ContextMemberEventEmitter_3,
+				leftMemberID, contextID)]
 		val defSpace = leftContext.defaultSpace
-		val source = new Address(leftContextSpaceId, leftMemberID)
+		val source = new Address(defaultSpace, leftContext.ID)
 		// The first parameter is null because the event has an address.
 		defSpace.emit(null, new MemberLeft(source, leftMemberID, agentType)) [
 			it.UUID != leftMemberID

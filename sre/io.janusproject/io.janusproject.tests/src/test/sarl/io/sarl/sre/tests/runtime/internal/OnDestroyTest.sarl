@@ -52,6 +52,7 @@ import static io.sarl.tests.api.tools.TestAssertions.*
 class OnDestroyTest {
 
 	@RepeatedTest(5)
+	@DisplayName("Within agent and behavior")
 	def withinAgentAndBehavior(extension rc : SreRunContext) {
 		typeof(MyAgent1).runSre(SHORT_TIMEOUT)
 		assertNoExceptionInResults

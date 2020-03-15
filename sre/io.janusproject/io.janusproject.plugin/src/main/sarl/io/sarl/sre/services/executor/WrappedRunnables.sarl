@@ -175,6 +175,7 @@ class SreRunnable extends SreExecutable implements Runnable {
 		wrappedRunnable?.run
 	}
 
+	@SuppressWarnings("discouraged_reference")
 	final def run {
 		try {
 			this.exception = null

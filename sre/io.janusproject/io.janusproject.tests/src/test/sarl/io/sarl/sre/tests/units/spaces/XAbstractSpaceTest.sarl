@@ -28,7 +28,6 @@ import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
-import java.util.concurrent.ConcurrentSkipListSet
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
@@ -55,9 +54,16 @@ class XAbstractSpaceTest {
 	def getSpaceID {
 		var spaceId = new SpaceID(UUID::randomUUID, UUID::randomUUID, typeof(OpenEventSpaceSpecification))
 		var base = new AbstractSpace(spaceId) {
-			def getParticipants : ConcurrentSkipListSet<UUID> {
+			def forEachStrongParticipant(callback : (UUID)=>void) {
 				throw new UnsupportedOperationException
 			}
+			def getNumberOfStrongParticipants : int {
+				throw new UnsupportedOperationException
+			}
+			def isPseudoEmpty(id : UUID) : boolean {
+				throw new UnsupportedOperationException
+			}
+			
 		}
 		assertEquals(spaceId, base.spaceID)
 	}

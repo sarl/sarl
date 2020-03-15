@@ -29,11 +29,14 @@ import io.sarl.sre.services.AbstractSreService
 import io.sarl.sre.services.context.Context
 import io.sarl.sre.services.context.ExternalContextMemberListener
 import io.sarl.sre.services.executor.ExecutorService
+import io.sarl.sre.services.executor.Runnables
 import io.sarl.sre.services.logging.LoggingService
 import java.lang.ref.WeakReference
 import java.text.MessageFormat
 import java.util.UUID
 import java.util.concurrent.ConcurrentLinkedDeque
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.atomic.AtomicReference
 import java.util.logging.Level
 import javax.inject.Provider
@@ -52,8 +55,6 @@ import static io.sarl.sre.services.lifecycle.AgentLife.*
  */
 @Singleton
 abstract class AbstractLifecycleService extends AbstractSreService implements LifecycleService {
-
-	static val INTERNAL_TIME_OUT = 5000
 
 	val globalListeners : SmartListenerCollection<?>
 
@@ -74,6 +75,8 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	val lifecycleConfig : LifecycleConfig
 
 	var userDynamicSkillProviders : ConcurrentLinkedDeque<DynamicSkillProvider>
+
+	val spawnQueries = new AtomicLong
 
 	/** 
 	 * Constructs the service.
@@ -174,8 +177,8 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	}
 
 	def spawnAgent(nbAgents : int, spawningAgent : UUID, parent : Context, agentId : UUID,
-		agentClazz : Class<? extends Agent>, callback : LifecycleSpawnCallback, params : Object*) {
-		spawnAgent(nbAgents, spawningAgent, parent, agentClazz, callback, params, new AgentIdProvider(agentId))
+		agentClazz : Class<? extends Agent>, params : Object[]) {
+		spawnAgent(nbAgents, spawningAgent, parent, agentClazz, params, new AgentIdProvider(agentId))
 	}
 
 	/** 
@@ -218,7 +221,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	}
 
 	protected def spawnAgent(nbAgents : int, spawningAgent : UUID, parent : Context,
-		agentClazz : Class<? extends Agent>, callback : LifecycleSpawnCallback, params : Object[],
+		agentClazz : Class<? extends Agent>, params : Object[],
 		agentIds : ()=>UUID) {
 		if (canSpawnAgent && nbAgents > 0) {
 			// Check if the version of the SARL agent class is compatible.
@@ -227,21 +230,14 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 				throw new InvalidSarlSpecificationException(agentClazz)
 			}
 
-			// Test if the agent is the first in the root content
-			val firstAgentInRootContent = parent.isEmptyRootContext
+			val spawnQueryAccess = new SpawnQueries(this)
 
-			// The following variable enables to get the identifier of the first spawned agent.
-			var firstAgentIdentifier = new AtomicReference<UUID>
-			
 			// Create the shared injector that is also able to create the agent instance.
 			val agentInstanceCreator = this.agentCreatorProvider.getAgentCreator(agentClazz, parent.ID,
 				nbAgents, dynamicSkillProviders)
 			// Create the block of code for creating a single agent
 			val agentCreator : Runnable = [
 				val aid = agentIds.apply
-
-				// Notify about the agent creation in the memory
-				firstAgentIdentifier.compareAndSet(null, aid)
 
 				// Effectively create the agent
 				val ^agent = agentInstanceCreator.apply(aid)
@@ -259,6 +255,8 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 				} catch (e : Throwable) {
 					started = false
 					spawnError = new CannotSpawnException(agentClazz, e)
+				} finally {
+					spawnQueryAccess.done
 				}
 				if (started) {
 					// Add the agent in the system. It is synchronized because additions may occur in parallel
@@ -268,15 +266,14 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 					if (spawnError !== null) {
 						loggingService.kernelLogger.log(Level::SEVERE, spawnError.message, spawnError)
 					}
+					fireAgentSpawningErrorEvents(spawningAgent, parent, agentClazz)
 					// The agent may be the boot agent, and it may have failed to be launched.
 					// When the root context is still empty the safer decision should be to stop the kernel.
 					// In some cases, the agent that is just not started has spawned another agent
 					// into its "on Initialize" before it returns on failure or with "killMe".
 					// Then, we should give the opportunity to the spawned sub-agent to properly
 					// start before stopping the SRE.
-					if (firstAgentInRootContent) {
-						parent.startShutdownLookup
-					}
+					parent.startShutdownLookup
 				}
 			]
 			if (nbAgents > 1) {
@@ -285,74 +282,14 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 			} else {
 				this.executor.executeAsap(loggingService.kernelLogger, agentCreator)
 			}
-
-			// ASSUMPTION : the callback should be called only one time.
-			if (callback !== null) {
-				// Wait for the agent starting
-				val endTime = System::currentTimeMillis + INTERNAL_TIME_OUT
-				while (firstAgentIdentifier.get === null && System::currentTimeMillis <= endTime) {
-					Thread::yield
-				}
-				val id = firstAgentIdentifier.get
-				if (id === null) {
-					throw new IllegalStateException
-				}
-				callback.firstAgentSpawned(id)
-			}
 		} else {
 			throw new SpawnDisabledException(parent.ID, agentClazz)
 		}
 	}
 
 	private def startShutdownLookup(parent : Context) {
-		val duration = this.lifecycleConfig.kernelStopDelayOnSpawn
-		val lookup = new ShutdownLookUp(this, parent, duration)
+		val lookup = new ShutdownLookUp(this, parent)
 		lookup.start
-	}
-
-	/** 
-	 * A class that is looking for notifying when the last agent has leaved.
-	 * 
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 0.11
-	 */
-	private static class ShutdownLookUp implements Runnable {
-	
-		val enclosing : WeakReference<AbstractLifecycleService>
-	
-		val parent : Context
-
-		val duration : int
-	
-		package new (enclosing : AbstractLifecycleService, parent : Context, duration : int) {
-			this.enclosing = new WeakReference(enclosing)
-			this.parent = parent
-			this.duration = duration
-		}
-
-		def run {
-			val ec = this.enclosing.get
-			if (ec !== null) {
-				if (ec.isEmptyRootContext(this.parent)) {
-					ec.onAgentFrameworkStop
-				}
-			}
-		}
-
-		def start : void {
-			val ec = this.enclosing.get
-			if (ec !== null) {
-				if (this.duration > 0) {
-					ec.executor.schedule(this.duration, this)
-				} else {
-					run
-				}
-			}
-		}
-		
 	}
 
 	/** This function is called each time the agent framework should be stopped.
@@ -395,14 +332,14 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 		this.platformContextEventEmitter.memberJoined(parent, spaceID, spawnedAgent.ID, agentClazz.name)
 	}
 
-	/** Replies if the given context is the root context and is empty.
+	/** Fire the events related a failure of agent spawn.
 	 * 
-	 * @param context the agent context to test.
-	 * @return {@code true} if the given context is the root context, and it is empty.
-	 * @Otherwise {@code false}.
+	 * @param spawningAgent the creator.
+	 * @param parent the context in which the agents are created.
+	 * @param agentClazz the type of the spawned agents.
 	 */
-	protected def isEmptyRootContext(context : ContextReference) {
-		context.context.isEmptyRootContext
+	protected def fireAgentSpawningErrorEvents(spawningAgent : UUID, parent : Context, agentClazz : Class<? extends Agent>) {
+		this.platformLifecycleEventEmitter.agentSpawnFailure(spawningAgent, parent, agentClazz)
 	}
 
 	/** Replies if the given context is the root context and is empty.
@@ -412,7 +349,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	 * @Otherwise {@code false}.
 	 */
 	protected def isEmptyRootContext(context : Context) {
-		context !== null && context.rootContext && context.defaultSpace.participants.empty
+		context !== null && context.rootContext && context.defaultSpace.isPseudoEmpty
 	}
 
 	/** Replies if the given agent could be kill according to the SARL specification.
@@ -426,15 +363,10 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	def isKillableAgent(life : AgentLife, id : UUID) : boolean {
 		if (life !== null) {
 			try {
-				var innerContext = life.innerContext
+				var innerContext = life.getInnerContext(null)
 				if (innerContext !== null) {
-					var participants = innerContext.defaultSpace.participants
-					if (participants !== null) {
-
-						if (participants.size > 1 || (participants.size == 1 && !participants.contains(id))) {
-							return false
-						}
-
+					if (!innerContext.defaultSpace.isPseudoEmpty(id)) {
+						return false
 					}
 				}
 				return true
@@ -465,6 +397,8 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 				var contexts = life.stop(this.skillUninstaller, getLoggingService)
 				^agent.onAgentKilled
 				fireAgentDestructionEvents(^agent, defaultContext, contexts)
+				// Test if the agent is the latest on this kernel.
+				defaultContext.context?.startShutdownLookup
 				return true
 			}
 		}
@@ -489,13 +423,9 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 		// Leave the default context because the ExternalContextAccessSkill does not fire events related
 		// to the default space.
 		this.platformContextEventEmitter.memberLeft(defaultContextBeforeKilled.context,
-			defaultContextBeforeKilled.addressInDefaultSpace.spaceID, ^agent.ID, ^agent.class.name)
+			defaultContextBeforeKilled.defaultSpace.spaceID, ^agent.ID, ^agent.class.name)
 		// Fire the agent destroy event
 		^agent.fireAgentDestroy(leavedContexts)
-		// Test if the agent is the latest on this kernel.
-		if (defaultContextBeforeKilled.emptyRootContext) {
-			onAgentFrameworkStop
-		}
 	}
 
 	/** Replies the dynamic skill providers that are defined by the user of the service.
@@ -535,6 +465,81 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 				this.userDynamicSkillProviders = null
 			}
 		}
+	}
+
+	/** 
+	 * A class enables to update the number of "spawn" queries and supporting the
+	 * multiple spawning of agents within a single call to "spawn".
+	 * 
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.11
+	 */
+	private static class SpawnQueries {
+
+		val enclosing : WeakReference<AbstractLifecycleService>
+
+		val used = new AtomicBoolean(false)
+
+		new (enclosing : AbstractLifecycleService) {
+			enclosing.spawnQueries.incrementAndGet
+			this.enclosing = new WeakReference(enclosing)
+		}
+
+		def done : void {
+			if (!this.used.getAndSet(true)) {
+				var ec = this.enclosing.get
+				if (ec !== null) {
+					ec.spawnQueries.accumulateAndGet(-1) [
+						var nv = $0 + $1
+						if (nv < 0) {
+							return 0
+						}
+						return nv
+					]
+				}
+			}
+		}
+
+	}
+
+	/** 
+	 * A class that is looking for stopping the SRE kernel when o more agent is alive.
+	 * 
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.11
+	 */
+	private static class ShutdownLookUp implements Runnable {
+
+		val enclosing : WeakReference<AbstractLifecycleService>
+
+		val parent : Context
+
+		package new (enclosing : AbstractLifecycleService, parent : Context) {
+			this.enclosing = new WeakReference(enclosing)
+			this.parent = parent
+		}
+
+		@SuppressWarnings("discouraged_reference")
+		def run {
+			val ec = this.enclosing.get
+			if (ec !== null) {
+				val nb = ec.spawnQueries.get
+				if (nb === 0 && ec.isEmptyRootContext(this.parent)) {
+					ec.onAgentFrameworkStop
+				}
+			}
+		}
+
+		def start : void {
+			Runnables::named(this, Messages::AbstractLifecycleService_0).run
+		}
+
 	}
 
 }

@@ -110,11 +110,11 @@ interface ExternalContextMemberListener extends EventListener {
 	 * that a new agent joined this context.
 	 * 
 	 * @param joinedContext the newly joined context to notify its members
-	 * @param joinedContextSpaceId the identifier of the default space inside {@code joinedContext}.
+	 * @param defaultSpace the identifier of the default space inside {@code joinedContext}.
 	 * @param joiningAgentID the identifier of the new member.
 	 * @param joiningAgentType the name of the agent type that has joined the context.
 	 */
-	def memberJoined(joinedContext : AgentContext, joinedContextSpaceId : SpaceID, joiningAgentID : UUID,
+	def memberJoined(joinedContext : AgentContext, defaultSpace : SpaceID, joiningAgentID : UUID,
 		joiningAgentType : String)
 
 	/** 
@@ -122,11 +122,11 @@ interface ExternalContextMemberListener extends EventListener {
 	 * that an agent has left this context.
 	 * 
 	 * @param leftContext the context that will be left
-	 * @param leftContextSpaceId the identifier of the default space inside {@code leftContext}.
+	 * @param defaultSpaceId the identifier of the default space inside {@code leftContext}.
 	 * @param leftAgentID the identifier of the agent that has left the context.
 	 * @param leftAgentType the name of the agent type that has left the context.
 	 */
-	def memberLeft(leftContext : AgentContext, leftContextSpaceId : SpaceID, leftMemberID : UUID,
+	def memberLeft(leftContext : AgentContext, defaultSpaceId : SpaceID, leftMemberID : UUID,
 		agentType : String)
 
 }

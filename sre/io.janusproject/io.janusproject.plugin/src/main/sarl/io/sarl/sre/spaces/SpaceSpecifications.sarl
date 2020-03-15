@@ -125,7 +125,9 @@ class SreOpenEventSpaceSpecification extends AbstractSreEventSpaceSpecification 
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated since 0.11, no replacement
  */
+@Deprecated
 class SreRestrictedAccessEventSpaceSpecification implements RestrictedAccessEventSpaceSpecification {
 
 	var injector : Injector

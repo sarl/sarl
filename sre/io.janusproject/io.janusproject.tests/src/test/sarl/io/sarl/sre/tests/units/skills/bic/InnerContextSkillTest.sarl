@@ -39,22 +39,22 @@ import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
-import java.util.concurrent.ConcurrentSkipListSet
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
-import org.mockito.ArgumentCaptor
 
-import static io.sarl.tests.api.tools.TestAssertions.*
 import static io.sarl.tests.api.tools.TestReflections.*
-import static org.junit.jupiter.api.Assertions.*
 import static org.junit.jupiter.api.Assumptions.*
 import static org.mockito.ArgumentMatchers.*
 import static org.mockito.Mockito.*
 
+import static extension io.sarl.tests.api.tools.TestAssertions.*
 import static extension io.sarl.tests.api.tools.TestMockito.mock
+import static extension org.junit.jupiter.api.Assertions.*
+import static extension org.mockito.ArgumentCaptor.*
 import static extension org.mockito.Mockito.verify
 
 /**
@@ -107,6 +107,7 @@ class InnerContextSkillTest {
 	}
 
 	@Test
+	@DisplayName("Creation and initialization")
 	def getInnerContext_init : void {
 		var ctx = typeof(Context).mock
 		when(this.service.createContext(any, any, any(typeof(Agent)))).thenReturn(ctx)
@@ -115,16 +116,17 @@ class InnerContextSkillTest {
 		
 		var context = this.^skill.innerContext
 		
-		assertSame(ctx, context)
+		ctx.assertSame(context)
 		
-		var listener = ArgumentCaptor::forClass(typeof(EventListener))
-		^space.verify(only).register(listener.capture)
-		assertNotNull(listener.value)
+		var listener = typeof(EventListener).forClass
+		^space.verify.register(listener.capture, eq(false))
+		listener.value.assertNotNull
 
 		this.service.verify(only).createContext(any, any, any(typeof(Agent)))
 	}
 	
 	@Test
+	@DisplayName("Two calls to getInnerContext")
 	def getInnerContext_twoCalls : void {
 		var ctx = typeof(Context).mock
 		when(this.service.createContext(any, any, any(typeof(Agent)))).thenReturn(ctx)
@@ -134,12 +136,12 @@ class InnerContextSkillTest {
 		var context1 = this.^skill.getInnerContext
 		var context2 = this.^skill.getInnerContext
 		
-		assertSame(ctx, context1)
-		assertSame(ctx, context2)
+		ctx.assertSame(context1)
+		ctx.assertSame(context2)
 		
-		var listener = ArgumentCaptor::forClass(typeof(EventListener))
-		^space.verify(only).register(listener.capture)
-		assertNotNull(listener.value)
+		var listener = typeof(EventListener).forClass
+		^space.verify(only).register(listener.capture, eq(false))
+		listener.value.assertNotNull
 
 		this.service.verify(only).createContext(any, any, any(typeof(Agent)))
 	}
@@ -160,62 +162,70 @@ class InnerContextSkillTest {
 		return this.^skill.getInnerContext as Context
 	}
 	
-	@Test
+	@RepeatedTest(5)
+	@DisplayName("isInnerDefaultSpace(UUID) with random id")
 	def isInnerDefaultSpaceUUID_noInnerContextInstance {
-		assertFalse(this.^skill.isInnerDefaultSpace(UUID::randomUUID))
+		this.^skill.isInnerDefaultSpace(UUID::randomUUID).assertFalse
 	}
 
-	@Test
+	@RepeatedTest(5)
+	@DisplayName("isInnerDefaultSpace(UUID) with inner space instance")
 	def isInnerDefaultSpaceUUID_withInnerContextInstance {
 		var innerSpaceID = forceInnerContextCreation.defaultSpace.spaceID
 		
-		assertTrue(this.^skill.isInnerDefaultSpace(innerSpaceID.ID))
-		assertFalse(this.^skill.isInnerDefaultSpace(UUID::randomUUID))
+		this.^skill.isInnerDefaultSpace(innerSpaceID.ID).assertTrue
+		this.^skill.isInnerDefaultSpace(UUID::randomUUID).assertFalse
 	}
 
-	@Test
+	@RepeatedTest(5)
+	@DisplayName("isInnerDefaultSpace(UUID) without inner space instance")
 	def isInnerDefaultSpaceSpaceID_noInnerContextInstance {
 		var otherId = new SpaceID(this.parentID, UUID::randomUUID, typeof(OpenEventSpaceSpecification))
-		assertFalse(this.^skill.isInnerDefaultSpace(otherId))
+		this.^skill.isInnerDefaultSpace(otherId).assertFalse
 	}
 
-	@Test
+	@RepeatedTest(5)
+	@DisplayName("isInnerDefaultSpace(SpaceID) with inner space instance")
 	def isInnerDefaultSpaceSpaceID_withInnerContextInstance {
 		var otherId = new SpaceID(this.parentID, UUID::randomUUID, typeof(OpenEventSpaceSpecification))
 		forceInnerContextCreation
 		
-		assertTrue(this.^skill.isInnerDefaultSpace(this.innerSpaceID))
-		assertFalse(this.^skill.isInnerDefaultSpace(otherId))
+		this.^skill.isInnerDefaultSpace(this.innerSpaceID).assertTrue
+		this.^skill.isInnerDefaultSpace(otherId).assertFalse
 	}
 
-	@Test
+	@RepeatedTest(5)
+	@DisplayName("isInnerDefaultSpace(SpaceID) without inner space instance")
 	def isInnerDefaultSpaceSpace_noInnerContextInstance {
 		var otherId = new SpaceID(this.parentID, UUID::randomUUID, typeof(OpenEventSpaceSpecification))
-		assertFalse(this.^skill.isInnerDefaultSpace(otherId))
+		this.^skill.isInnerDefaultSpace(otherId).assertFalse
 	}
 
-	@Test
+	@RepeatedTest(5)
+	@DisplayName("isInnerDefaultSpace(Space) with inner space instance")
 	def isInnerDefaultSpaceSpace_withInnerContextInstance {
 		var innerContext = forceInnerContextCreation
 		var otherId = new SpaceID(this.parentID, UUID::randomUUID, typeof(OpenEventSpaceSpecification))
 		var otherSpace = typeof(Space).mock
 		when(otherSpace.spaceID).thenReturn(otherId)
 		
-		assertTrue(this.^skill.isInnerDefaultSpace(innerContext.defaultSpace))
-		assertFalse(this.^skill.isInnerDefaultSpace(otherSpace))
+		this.^skill.isInnerDefaultSpace(innerContext.defaultSpace).assertTrue
+		this.^skill.isInnerDefaultSpace(otherSpace).assertFalse
 	}
 
-	@Test
+	@RepeatedTest(5)
+	@DisplayName("isInnerDefaultSpace(Space) without inner space instance")
 	def isInInnerDefaultSpace_noInnerContextInstance {
 		var otherId = new SpaceID(this.parentID, UUID::randomUUID, typeof(OpenEventSpaceSpecification))
 		var adr = typeof(Address).mock
 		when(adr.spaceID).thenReturn(otherId)
 		var ^event = typeof(Event).mock
 		when(^event.source).thenReturn(adr)
-		assertFalse(this.^skill.isInInnerDefaultSpace(^event))
+		this.^skill.isInInnerDefaultSpace(^event).assertFalse
 	}
 
-	@Test
+	@RepeatedTest(5)
+	@DisplayName("isInInnerDefaultSpace with inner space instance")
 	def isInInnerDefaultSpace_withInnerContextInstance {
 		var innerContext = forceInnerContextCreation
 		var otherId = new SpaceID(this.parentID, UUID::randomUUID, typeof(OpenEventSpaceSpecification))
@@ -228,90 +238,92 @@ class InnerContextSkillTest {
 		var event2 = typeof(Event).mock
 		when(event2.source).thenReturn(adr2)
 		
-		assertTrue(this.^skill.isInInnerDefaultSpace(event1))
-		assertFalse(this.^skill.isInInnerDefaultSpace(event2))
+		this.^skill.isInInnerDefaultSpace(event1).assertTrue
+		this.^skill.isInInnerDefaultSpace(event2).assertFalse
 	}
 
 	@Test
+	@DisplayName("getMemberAgentCount without inner space instance")
 	def getMemberAgentCount_noInnerContextInstance {
-		assertEquals(0, this.^skill.memberAgentCount)
+		0.assertEquals(this.^skill.memberAgentCount)
 	}
 
 	@Test
+	@DisplayName("getMemberAgentCount with inner space instance and no agent")
 	def getMemberAgentCount_withInnerContextInstance_noAgent {
 		var innerContext = forceInnerContextCreation
-		var col0 = new ConcurrentSkipListSet
-		col0 += this.parentID
-		when(innerContext.defaultSpace.participants).thenReturn(col0)
-		assertEquals(0, this.^skill.memberAgentCount)
+		when(innerContext.defaultSpace.numberOfStrongParticipants).thenReturn(1)
+		0.assertEquals(this.^skill.memberAgentCount)
 	}
 
 	@Test
+	@DisplayName("getMemberAgentCount with inner space instance and 2 agents")
 	def getMemberAgentCount_withInnerContextInstance_twoAgents {
 		var innerContext = forceInnerContextCreation
-		var id1 = UUID::randomUUID
-		var id2 = UUID::randomUUID
-		var ids = new ConcurrentSkipListSet
-		ids += this.parentID
-		ids += id1
-		ids += id2
-		when(innerContext.defaultSpace.participants).thenReturn(ids)
-		assertEquals(2, this.^skill.memberAgentCount)
+		when(innerContext.defaultSpace.numberOfStrongParticipants).thenReturn(3)
+		2.assertEquals(this.^skill.memberAgentCount)
 	}
 
 	@Test
+	@DisplayName("getMemberAgents without inner space instance")
 	def getMemberAgents_noInnerContextInstance {
-		assertFalse(this.^skill.memberAgents.iterator.hasNext)
+		this.^skill.memberAgents.iterator.hasNext.assertFalse
 	}
 
 	@Test
+	@DisplayName("getMemberAgents with inner space instance and no agent")
 	def getMemberAgents_withInnerContextInstance_noAgent {
 		var innerContext = forceInnerContextCreation
-		var ids = new ConcurrentSkipListSet
-		ids += this.parentID
-		when(innerContext.defaultSpace.participants).thenReturn(ids)
-		assertFalse(this.^skill.memberAgents.iterator.hasNext)
+		var ^space = innerContext.defaultSpace
+		doAnswer [
+			(it.getArgument(0) as (UUID)=>void).apply(this.parentID)
+			return null
+		].when(^space).forEachStrongParticipant(any)
+
+		this.^skill.memberAgents.iterator.hasNext.assertFalse
 	}
 
 	@Test
+	@DisplayName("getMemberAgents with inner space instance and 2 agents")
 	def getMemberAgents_withInnerContextInstance_twoAgents {
 		var innerContext = forceInnerContextCreation
+		var ^space = innerContext.defaultSpace
 		var id1 = UUID::randomUUID
 		var id2 = UUID::randomUUID
-		var ids = new ConcurrentSkipListSet
-		ids += this.parentID
-		ids += id1
-		ids += id2
-		when(innerContext.defaultSpace.participants).thenReturn(ids)
+		doAnswer [
+			val f = it.getArgument(0) as (UUID)=>void
+			f.apply(this.parentID)
+			f.apply(id1)
+			f.apply(id2)
+			return null
+		].when(^space).forEachStrongParticipant(any)
 		var actual = this.^skill.memberAgents
-		assertContains(actual, id1, id2)
+		actual.assertContains(id1, id2)
 	}
 
 	@Test
+	@DisplayName("hasMemberAgent without inner space instance")
 	def hasMemberAgent_noInnerContextInstance {
-		assertFalse(this.^skill.hasMemberAgent)
+		this.^skill.hasMemberAgent.assertFalse
 	}
 
 	@Test
+	@DisplayName("hasMemberAgent with inner space instance and no agent")
 	def hasMemberAgent_withInnerContextInstance_noAgent {
 		var innerContext = forceInnerContextCreation
-		var ids = new ConcurrentSkipListSet
-		ids += this.parentID
-		when(innerContext.defaultSpace.participants).thenReturn(ids)
-		assertFalse(this.^skill.hasMemberAgent)
+		var ^space = innerContext.defaultSpace
+		when(^space.isPseudoEmpty(any)).thenReturn(false)
+		when(^space.isPseudoEmpty(this.parentID)).thenReturn(true)
+		this.^skill.hasMemberAgent.assertFalse
 	}
 
 	@Test
+	@DisplayName("hasMemberAgent with inner space instance and 2 agents")
 	def hasMemberAgent_withInnerContextInstance_twoAgents {
 		var innerContext = forceInnerContextCreation
-		var id1 = UUID::randomUUID
-		var id2 = UUID::randomUUID
-		var ids = new ConcurrentSkipListSet
-		ids += this.parentID
-		ids += id1
-		ids += id2
-		when(innerContext.defaultSpace.participants).thenReturn(ids)
-		assertTrue(this.^skill.hasMemberAgent)
+		var ^space = innerContext.defaultSpace
+		when(^space.isPseudoEmpty(any)).thenReturn(false)
+		this.^skill.hasMemberAgent.assertTrue
 	}
 
 }

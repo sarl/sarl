@@ -77,7 +77,13 @@ skill LifecycleSkill implements Lifecycle {
 		val life = getLife(owner)
 		if (life.state.alive) {
 			var o = this.owner
-			this.lifecycle.spawnAgent(1, o.ID, life.defaultContext.context, null, agentType, null, params)
+			this.lifecycle.spawnAgent(
+				1, // single agent
+				o.ID, // owner
+				life.defaultContext.context,
+				null, // agent id
+				agentType,
+				params)
 		}
 	}
 
@@ -85,28 +91,56 @@ skill LifecycleSkill implements Lifecycle {
 		val life = getLife(owner)
 		if (life.state.alive) {
 			var o = this.owner
-			this.lifecycle.spawnAgent(nbAgents, o.ID, life.defaultContext.context, null, agentType, null, params)
+			assert o !== null
+			this.lifecycle.spawnAgent(
+				nbAgents,
+				o.ID, // owner
+				life.defaultContext.context,
+				null, // agent id
+				agentType,
+				params)
 		}
 	}
 
 	def spawnInContext(agentClass : Class<? extends Agent>, context : AgentContext, params : Object*) {
 		if (getLife(owner).state.alive) {
 			var o = this.owner
-			this.lifecycle.spawnAgent(1, o.ID, context as Context, null, agentClass, null, params)
+			assert o !== null
+			this.lifecycle.spawnAgent(
+				1, // single agent
+				o.ID,
+				context as Context,
+				null, // agent id
+				agentClass,
+				params)
 		}
 	}
 
 	def spawnInContext(nbAgents : int, agentClass : Class<? extends Agent>, context : AgentContext, params : Object*) {
 		if (getLife(owner).state.alive) {
 			var o = this.owner
-			this.lifecycle.spawnAgent(nbAgents, o.ID, context as Context, null, agentClass, null, params)
+			assert o !== null
+			this.lifecycle.spawnAgent(
+				nbAgents,
+				o.ID, //owner
+				context as Context,
+				null, // agent id
+				agentClass,
+				params)
 		}
 	}
 
 	def spawnInContextWithID(agentClass : Class<? extends Agent>, agentID : UUID, context : AgentContext, params : Object*) {
 		if (getLife(owner).state.alive) {
 			var o = this.owner
-			this.lifecycle.spawnAgent(1, o.ID, context as Context, agentID, agentClass, null, params)
+			assert o !== null
+			this.lifecycle.spawnAgent(
+				1, // single agent
+				o.ID, // owner
+				context as Context,
+				agentID,
+				agentClass,
+				params)
 		}
 	}
 

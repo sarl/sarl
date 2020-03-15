@@ -23,6 +23,7 @@ package io.sarl.sre.tests.runtime.internal.mocks
 
 import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
 import io.sarl.core.MemberJoined
 import io.sarl.core.Schedules
 import io.sarl.lang.core.AgentContext
@@ -39,7 +40,7 @@ import static extension io.sarl.tests.api.tools.TestUtils.*
  */
 agent Child2Agent0 {
 	
-	uses Schedules, ExternalContextAccess
+	uses Schedules, ExternalContextAccess, Lifecycle
 
 	uses TestingCapacity
 
@@ -55,6 +56,10 @@ agent Child2Agent0 {
 
 	on MemberJoined {
 		addResult("CHILD2: joined " + occurrence.agentType.simpleTypeName)
+	}
+
+	on Bye {
+		killMe
 	}
 
 }

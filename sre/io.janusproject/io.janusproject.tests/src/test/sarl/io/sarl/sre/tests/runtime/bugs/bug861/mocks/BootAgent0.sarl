@@ -37,7 +37,6 @@ agent BootAgent0 {
 
 	on Initialize {
 		setSkill(new TestingSkill(occurrence))
-		typeof(EmptyAgent0).spawn(buildAgentInitializationParameters)
 	}
 
 	on AgentSpawned {

@@ -64,7 +64,7 @@ class Bug934Test {
 	def withSpec(extension rc : SreRunContext) {
 		typeof(WithSpecAgent).runSre(SHORT_TIMEOUT)
 
-		var id = getBootAgent
+		var id = getBootAgentId
 		5.assertEquals(id.numberOfResults)
 		
 		var defaultSpace = id.getResult(typeof(EventSpace), 0)
@@ -97,7 +97,7 @@ class Bug934Test {
 	def withId(extension rc : SreRunContext) {
 		typeof(WithIdAgent).runSre(SHORT_TIMEOUT)
 
-		var id = getBootAgent
+		var id = getBootAgentId
 		5.assertEquals(id.numberOfResults)
 		
 		var defaultSpace = id.getResult(typeof(EventSpace), 0)

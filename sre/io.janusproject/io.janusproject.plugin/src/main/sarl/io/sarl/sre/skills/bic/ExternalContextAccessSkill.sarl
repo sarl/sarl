@@ -85,7 +85,7 @@ skill ExternalContextAccessSkill extends Skill implements ExternalContextAccess 
 		var life = getLifeOrNull(owner)
 		if (life !== null) {
 			// Unregister from the external context.
-		// The unregistration to the default context is be done into the AgentLife class.
+			// The unregistration to the default context is be done into the AgentLife class.
 			var contexts = life.externalContexts
 			var identifiers = <UUID>newArrayList
 
@@ -171,7 +171,7 @@ skill ExternalContextAccessSkill extends Skill implements ExternalContextAccess 
 			val adr = new Address(defaultSpaceID, agentID)
 			life.addExternalContext(context, adr)
 
-			defaultSpace.register(associatedEventBusListener)
+			defaultSpace.register(associatedEventBusListener, false)
 
 			this.externalEventEmitter.memberJoined(context, defaultSpaceID, agentID, this.owner.class.name)
 			this.internalEventEmitter.contextJoined(contextID, expectedDefaultSpaceID)

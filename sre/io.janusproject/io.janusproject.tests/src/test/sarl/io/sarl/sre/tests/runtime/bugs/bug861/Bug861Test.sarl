@@ -26,6 +26,7 @@ import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.^extension.SreRunExtension
 import io.sarl.sre.tests.runtime.bugs.bug861.mocks.BootAgent0
 import io.sarl.sre.tests.runtime.bugs.bug861.mocks.BootAgent1
+import io.sarl.sre.tests.runtime.bugs.bug861.mocks.EmptyAgent0
 import io.sarl.sre.tests.runtime.bugs.bug861.mocks.Initialized
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
@@ -63,14 +64,25 @@ class Bug861Test {
 	@Test
 	@DisplayName("Emit without scope")
 	def runWithoutScope(extension rc : SreRunContext) : void {
-		typeof(BootAgent0).runSre
+		var kern = setupTheSreKernel(null, null)
 
-	 	assertEquals(2, getNumberOfResults(bootAgent))
+		val id0 = UUID::randomUUID
+		var w0 = waitForAgentSpawned(id0)
 
-		val childAgent = getFirstResultOfType(bootAgent, typeof(UUID))
+		kern.startAgentWithID(typeof(BootAgent0), id0, agentInitializationParameters)
+
+		w0.doWait
+
+		kern.startAgent(typeof(EmptyAgent0), agentInitializationParameters)
+		
+		waitForTheKernel(STANDARD_TIMEOUT)
+		
+		assertEquals(2, getNumberOfResults(bootAgentId))
+
+		val childAgent = getFirstResultOfType(bootAgentId, typeof(UUID))
 		childAgent.assertNotNull
 
-		val initEvent0 = getFirstResultOfType(bootAgent, typeof(Initialized))
+		val initEvent0 = getFirstResultOfType(bootAgentId, typeof(Initialized))
 		initEvent0.assertNotNull
 		childAgent.assertEquals(initEvent0.source.UUID)
 		
@@ -87,12 +99,12 @@ class Bug861Test {
 		typeof(SreTimeoutException).whenException [
 			typeof(BootAgent1).runSre(VERY_SHORT_TIMEOUT)
 		].verify [
-			assertEquals(2, getNumberOfResults(bootAgent))
+			assertEquals(2, getNumberOfResults(bootAgentId))
 
-			val childAgent = getFirstResultOfType(bootAgent, typeof(UUID))
+			val childAgent = getFirstResultOfType(bootAgentId, typeof(UUID))
 			childAgent.assertNotNull
 
-			val initEvent0 = getFirstResultOfType(bootAgent, typeof(Initialized))
+			val initEvent0 = getFirstResultOfType(bootAgentId, typeof(Initialized))
 			initEvent0.assertNotNull
 			childAgent.assertEquals(initEvent0.source.UUID)
 

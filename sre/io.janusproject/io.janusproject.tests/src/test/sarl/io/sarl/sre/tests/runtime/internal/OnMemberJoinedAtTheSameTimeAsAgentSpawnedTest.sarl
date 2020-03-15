@@ -57,6 +57,7 @@ import static extension io.sarl.tests.api.tools.TestUtils.*
 class OnMemberJoinedAtTheSameTimeAsAgentSpawnedTest {
 
 	@RepeatedTest(5)
+	@DisplayName("run")
 	def run(extension rc : SreRunContext) {
 		typeof(MyWaiterAgent2).runSre
 		

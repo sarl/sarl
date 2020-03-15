@@ -306,7 +306,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 			}
 			if (description !== null) {
 				var future = description.future
-				if (future !== null && registered && !future.done && !future.cancelled) {//TODO could have a problem here
+				if (future !== null && registered && !future.done && !future.cancelled) {
 					throw new IllegalStateException(Messages::SchedulesSkill_2)
 				}
 			} else {
@@ -648,6 +648,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 			this.agentTaskRef = task
 		}
 
+		@SuppressWarnings("discouraged_reference")
 		protected def coreRun(task : AgentTask) : TaskTermination {
 			val owner = ^agent?.get
 			assert owner !== null
@@ -662,6 +663,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 			return TaskTermination::NO_PROCEDURE_RUN
 		}
 
+		@SuppressWarnings("discouraged_reference")
 		final override internalRun {
 			val taskDescription = this.agentTaskRef
 			if (taskDescription === null) {
@@ -678,15 +680,29 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 			if (!preRun) {
 				return
 			}
-			this.state.set(TaskTermination::PROCEDURE_RUN)
-			val mustBeFinished = task.coreRun
-			this.state.set(mustBeFinished)
+			val th = Thread::currentThread
+			val oldThreadName = th.name
+			try {
+				// TODO Thread name change may be removed to gain run-time efficiency
+				val taskName = task.name
+				if (!taskName.isNullOrEmpty) {
+					th.name =  taskName
+				}
+				//
+				this.state.set(TaskTermination::PROCEDURE_RUN)
+				val mustBeFinished = task.coreRun
+				this.state.set(mustBeFinished)
+			} finally {
+				th.name = oldThreadName
+			}
 		}
-	
+
+		@SuppressWarnings("discouraged_reference")
 		def onError(e : Throwable) {
 			this.state.set(TaskTermination::ERROR_IN_PROCEDURE)
 		}
 
+		@SuppressWarnings("discouraged_reference")
 		final def onFinished {
 			val finishTask = postRun(this.state.get)
 			if (finishTask) {

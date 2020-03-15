@@ -42,7 +42,6 @@ agent SpyAgent1 {
 
 	on Initialize {
 		setSkill(new TestingSkill(occurrence))
-		System::out.println("Spy(id1) = " + ID)
 	}
 
 	on ParticipantLeft {

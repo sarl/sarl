@@ -51,7 +51,6 @@ agent ChildAgent {
 	}
 	
 	on KillYou {
-		System::out.println("Bye")
 		killMe
 	}
 

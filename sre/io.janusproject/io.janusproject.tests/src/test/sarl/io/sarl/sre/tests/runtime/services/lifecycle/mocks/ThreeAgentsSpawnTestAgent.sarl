@@ -40,7 +40,7 @@ agent ThreeAgentsSpawnTestAgent {
 
 	on Initialize {
 		setSkill(new TestingSkill(occurrence))
-		spawn(3, typeof(FakeAgent3), buildAgentInitializationParameters)
+		spawn(3, typeof(FakeAgent3), buildAgentInitializationParameters(1))
 		killMe
 	}
 

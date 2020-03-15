@@ -55,7 +55,12 @@ abstract class SarlName implements Cloneable, Serializable, Comparable<SarlName>
 		this.uri = uri
 	}
 
-	/** Replies the scheme of this name. */
+	override toString : String {
+		this.uri.toString
+	}
+
+	/** Replies the scheme of this name.
+	 */
 	def getScheme : NameScheme {
 		if (this.scheme === null) {
 			this.scheme = INameParser::getSchemeObject(toURI.scheme)

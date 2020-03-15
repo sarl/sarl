@@ -62,7 +62,6 @@ import org.junit.jupiter.api.Disabled
 	typeof(SreRunExtension)
 ])
 @DisplayName("run: Bug #794")
-@Disabled
 @Tag("run")
 class Bug794Test {
 

@@ -40,7 +40,7 @@ agent OneAgentSpawnTestAgent {
 
 	on Initialize {
 		setSkill(new TestingSkill(occurrence))
-		spawn(typeof(FakeAgent3), buildAgentInitializationParameters)
+		typeof(FakeAgent3).spawn(buildAgentInitializationParameters(1))
 		killMe
 	}
 

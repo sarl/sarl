@@ -30,9 +30,8 @@ import io.sarl.sre.services.IServiceManager
 import io.sarl.sre.services.context.ContextService
 import io.sarl.sre.services.lifecycle.KernelAgentLifecycleListener
 import io.sarl.sre.services.lifecycle.LifecycleService
-import io.sarl.sre.services.lifecycle.LifecycleSpawnCallback
 import io.sarl.sre.services.logging.LoggingService
-import io.sarl.sre.spaces.AbstractEventSpace
+import io.sarl.sre.spaces.SpaceWithParticipants
 import java.lang.Thread.UncaughtExceptionHandler
 import java.lang.annotation.Retention
 import java.lang.annotation.Target
@@ -147,12 +146,11 @@ class Kernel {
 	 * Spawn an agent of the given type, and pass the parameters to its initialization function.
 	 * 
 	 * @param agent the type of the agent to spawn.
-	 * @param callback function that is invoked when an identifier of spawned agent is known.
 	 * @param arguments the list of the parameters to pass to the agent initialization function.
 	 * @return the identifier of the agent, never {@code null}.
 	 */
-	def spawn(^agent : Class<? extends Agent>, callback : LifecycleSpawnCallback, arguments : Object*) {
-		this.spawnService.spawnAgent(1, null, this.contextService.rootContext, null, ^agent, callback, arguments)
+	def spawn(^agent : Class<? extends Agent>, arguments : Object*) {
+		this.spawnService.spawnAgent(1, null, this.contextService.rootContext, null, ^agent, arguments)
 	}
 
 	/** 
@@ -160,11 +158,10 @@ class Kernel {
 	 * 
 	 * @param nbAgents the number of agents to spawn.
 	 * @param agent the type of the agents to spawn.
-	 * @param callback function that is invoked when an identifier of spawned agent is known.
 	 * @param params the list of the parameters to pass to the agent initialization function.
 	 */
-	def spawn(nbAgents : int, ^agent : Class<? extends Agent>, callback : LifecycleSpawnCallback, params : Object*) {
-		this.spawnService.spawnAgent(nbAgents, null, this.contextService.rootContext, null, ^agent, callback, params)
+	def spawn(nbAgents : int, ^agent : Class<? extends Agent>, params : Object*) {
+		this.spawnService.spawnAgent(nbAgents, null, this.contextService.rootContext, null, ^agent, params)
 	}
 
 	/** 
@@ -172,11 +169,10 @@ class Kernel {
 	 * 
 	 * @param agentID the identifier of the agent to spawn. If {@code null} the identifier is randomly selected.
 	 * @param agent the type of the agent to spawn.
-	 * @param callback function that is invoked when an identifier of spawned agent is known.
 	 * @param params the list of the parameters to pass to the agent initialization function.
 	 */
-	def spawn(agentID : UUID, ^agent : Class<? extends Agent>, callback : LifecycleSpawnCallback, params : Object*) {
-		this.spawnService.spawnAgent(1, null, this.contextService.rootContext, agentID, ^agent, callback, params)
+	def spawn(agentID : UUID, ^agent : Class<? extends Agent>, params : Object*) {
+		this.spawnService.spawnAgent(1, null, this.contextService.rootContext, agentID, ^agent, params)
 	}
 
 	/** 
@@ -217,7 +213,7 @@ class Kernel {
 		kern.isRunning.set(false)
 	}
 
-	/** Run the standard algorithm for stopping the agents on the kernel..
+	/** Run the standard algorithm for stopping the agents on the kernel.
 	 * 
 	 * @param kern the kernel to stop the agent inside.
 	 * @return the number of killed agents.
@@ -236,9 +232,9 @@ class Kernel {
 		val iter = contexts.iterator
 		while (iter.hasNext) {
 			val context = iter.next
-			val ^space = context.defaultSpace as AbstractEventSpace
+			val ^space = context.defaultSpace as SpaceWithParticipants
 
-			for (participant : ^space.internalParticipantStructure.values) {
+			for (participant : ^space.internalStrongParticipantStructure.values) {
 				val listener = participant.participant
 				if (listener instanceof InformedEventListener) {
 					val ag = listener.ownerInstance

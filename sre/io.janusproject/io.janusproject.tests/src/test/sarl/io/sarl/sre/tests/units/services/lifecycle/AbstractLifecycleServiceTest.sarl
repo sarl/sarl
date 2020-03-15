@@ -53,27 +53,28 @@ import io.sarl.sre.tests.units.services.lifecycle.mocks.MyEventBus
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.util.ArrayList
+import java.util.List
 import java.util.UUID
-import java.util.concurrent.ConcurrentSkipListSet
-import java.util.concurrent.CopyOnWriteArraySet
 import java.util.concurrent.Future
 import java.util.logging.Logger
 import javax.inject.Provider
 import org.eclipse.xtext.xbase.lib.Functions.Function1
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 import org.mockito.ArgumentCaptor
 
 import static io.sarl.sre.test.framework.^extension.ServiceManagementExtension.*
-import static io.sarl.tests.api.tools.TestAssertions.*
-import static org.junit.jupiter.api.Assertions.*
 import static org.mockito.ArgumentMatchers.*
 import static org.mockito.Mockito.*
 
 import static extension io.sarl.sre.services.lifecycle.AgentLife.*
+import static extension io.sarl.tests.api.tools.TestAssertions.*
 import static extension io.sarl.tests.api.tools.TestAssertions.assertException
 import static extension io.sarl.tests.api.tools.TestMockito.mock
+import static extension org.junit.jupiter.api.Assertions.*
 import static extension org.mockito.ArgumentMatchers.any
 import static extension org.mockito.Mockito.spy
 import static extension org.mockito.Mockito.verify
@@ -151,16 +152,16 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 
 		this.executor = typeof(ExecutorService).mock
 		// Execute the code synchronously only for testing purpose
-		doAnswer([
+		doAnswer[
 			val r = it.getArgument(1) as Runnable
 			r.run
 			return typeof(Future).mock
-		]).when(this.executor).executeAsap(typeof(Logger).any, typeof(Runnable).any)
+		].when(this.executor).executeAsap(typeof(Logger).any, typeof(Runnable).any)
 		
 		this.logger = typeof(LoggingService).mock
 		when(this.logger.kernelLogger).thenReturn(typeof(Logger).mock)
 		this.skillUninstaller = typeof(SkillUninstaller).mock
-		when(this.skillUninstaller.uninstallSkillsBeforeDestroy(any)).thenReturn(new CopyOnWriteArraySet)
+		when(this.skillUninstaller.uninstallSkillsBeforeDestroy(any)).thenReturn(new ArrayList)
 
 		this.service = newService(
 			this.executor,
@@ -188,10 +189,19 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 		AgentLife::getLife(this.^agent).innerContext = innerContext
 		var ^space = typeof(OpenEventSpace).mock
 		when(innerContext.defaultSpace).thenReturn(^space)
-		var set = new ConcurrentSkipListSet<UUID>
-		set += this.agentId
-		set += ids
-		when(^space.participants).thenReturn(set)
+		doAnswer[
+			var f = it.getArgument(0, typeof(Function1))
+			f.apply(this.agentId)
+			for (id : ids) {
+				f.apply(id)
+			}
+			return null			
+		].when(^space).forEachStrongParticipant(any)
+		if (ids.length == 0) {
+			when(^space.isPseudoEmpty(any)).thenReturn(true)
+		} else {
+			when(^space.isPseudoEmpty(any)).thenReturn(false)
+		}
 	}
 
 	private def createOuterContext(^agent : Agent) : Context {
@@ -201,37 +211,52 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 		var ^space = typeof(OpenEventSpace).mock
 		when(context.defaultSpace).thenReturn(^space)
 		when(^space.spaceID).thenReturn(new SpaceID(contextId, UUID::randomUUID, typeof(OpenEventSpaceSpecification)))
-		var set = new ConcurrentSkipListSet<UUID>
-		set += this.agentId
-		set += #[^agent.ID]
-		when(^space.participants).thenReturn(set)
+		doAnswer[
+			var f = it.getArgument(0, typeof(Function1))
+			f.apply(this.agentId)
+			f.apply(^agent.ID)
+			return null
+		].when(^space).forEachStrongParticipant(any)
 		return context
 	}
 
 	@Test
-	def isKillableAgent_noInnerContext {
-		assertTrue(this.service.isKillableAgent(this.^agent.getLife, this.^agent.ID))
+	@DisplayName("isKillableAgent empty inner context instance - service started")
+	def isKillableAgent_emptyInnerContext_serviceStarted {
+		startService
+		createInnerContext
+		this.service.isKillableAgent(this.^agent.getLife, this.^agent.ID).assertTrue
 	}
 
 	@Test
+	@DisplayName("isKillableAgent without inner context instance")
+	def isKillableAgent_noInnerContext {
+		this.service.isKillableAgent(this.^agent.getLife, this.^agent.ID).assertTrue
+	}
+
+	@Test
+	@DisplayName("isKillableAgent with empty inner context instance")
 	def isKillableAgent_emptyInnerContext {
 		createInnerContext
-		assertTrue(this.service.isKillableAgent(this.^agent.getLife, this.^agent.ID))
+		this.service.isKillableAgent(this.^agent.getLife, this.^agent.ID).assertTrue
 	}
 
 	@Test
+	@DisplayName("isKillableAgent with 1 sub agent")
 	def isKillableAgent_oneChild {
 		createInnerContext(UUID::randomUUID)
-		assertFalse(this.service.isKillableAgent(this.^agent.getLife, this.^agent.ID))
+		this.service.isKillableAgent(this.^agent.getLife, this.^agent.ID).assertFalse
 	}
 
 	@Test
+	@DisplayName("isKillableAgent with 2 sub agents")
 	def isKillableAgent_twoChild {
 		createInnerContext(UUID::randomUUID, UUID::randomUUID)
-		assertFalse(this.service.isKillableAgent(this.^agent.getLife, this.^agent.ID))
+		this.service.isKillableAgent(this.^agent.getLife, this.^agent.ID).assertFalse
 	}
 
 	@Test
+	@DisplayName("spawnAgent 0 agent when service stopped")
 	def spawnAgent_0_serviceNotStarted {
 		typeof(SpawnDisabledException).assertException [
 			this.service.spawnAgent(0, null, this.outContext, null, null, null)
@@ -239,6 +264,7 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 	}
 	
 	@Test
+	@DisplayName("spawnAgent 0 agent")
 	def spawnAgent_0 {
 		startService
 		typeof(SpawnDisabledException).assertException [
@@ -247,19 +273,15 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 	}
 
 	@Test
+	@DisplayName("spawnAgent 1 agent when service stopped")
 	def spawnAgent_1_serviceNotStarted {
 		typeof(SpawnDisabledException).assertException [
 			this.service.spawnAgent(1, null, this.outContext, null, null, null)
 		]
 	}
 
-	def assertNoException(ex : Throwable) : void {
-		if (ex !== null) {
-			throw new RuntimeException(ex)
-		}
-	}
-
 	@Test
+	@DisplayName("spawnAgent 1 agent")
 	def spawnAgent_1 {
 		startService
 		var newAgentId = UUID::randomUUID
@@ -271,10 +293,10 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 		
 		when(this.checker.isValidSarlElement(any)).thenReturn(true)
 		
-		this.service.spawnAgent(1, this.agentId, this.outContext, newAgentId, typeof(MyAgent0), null, 1, "a")
+		this.service.spawnAgent(1, this.agentId, this.outContext, newAgentId, typeof(MyAgent0), #[1, "a"])
 
 		// Agent State
-		assertSame(AgentState.ALIVE, AgentLife::getLife(this.agent2).state)
+		AgentState.ALIVE.assertSame(AgentLife::getLife(this.agent2).state)
 		
 		// Agent Initialize
 		var capEvent = ArgumentCaptor::forClass(typeof(Event))
@@ -282,13 +304,13 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 		var capThrownExceptions = ArgumentCaptor::forClass(typeof(boolean))
 		this.eventBus.verify.fireEventAndWait(capEvent.capture, capGatherEvents.capture.booleanValue,
 			capThrownExceptions.capture.booleanValue)
-		assertTrue(capGatherEvents.value)
-		assertTrue(capThrownExceptions.value)
-		assertInstanceOf(typeof(Initialize), capEvent.value)
+		capGatherEvents.value.assertTrue
+		capThrownExceptions.value.assertTrue
+		typeof(Initialize).assertInstanceOf(capEvent.value)
 		var initEvent = capEvent.value as Initialize
-		assertNotNull(initEvent.source)
-		assertEquals(this.agentId, initEvent.spawner)
-		assertContains(initEvent.parameters, 1, "a")
+		initEvent.source.assertNotNull
+		this.agentId.assertEquals(initEvent.spawner)
+		initEvent.parameters.assertContains(1, "a")
 
 		// Agent spawned
 		var capSpawningAgent = ArgumentCaptor::forClass(typeof(UUID))
@@ -302,42 +324,44 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 				capAgentType.capture,
 				capAgents.capture,
 				capParams.capture)
-		assertEquals(this.agentId, capSpawningAgent.value)
-		assertSame(this.outContext, capParentContext.value)
-		assertSame(typeof(MyAgent0), capAgentType.value)
-		assertContains(#[capParams.value], 1, "a")
-		assertSame(this.agent2, capAgents.value)
+		this.agentId.assertEquals(capSpawningAgent.value)
+		this.outContext.assertSame(capParentContext.value)
+		typeof(MyAgent0).assertSame(capAgentType.value)
+		capParams.value.assertContains(1, "a")
+		this.agent2.assertSame(capAgents.value)
 
 		// Kernel event.
 		verifyNoMoreInteractions(listener2)
 	}
 
 	@Test
+	@DisplayName("spawnAgent 1 agent no specification")
 	def spawnAgent_1_noSpec {
 		startService
 		var newAgentId = UUID::randomUUID
 		typeof(InvalidSarlSpecificationException).assertException [
-			this.service.spawnAgent(1, this.agentId, this.outContext, newAgentId, typeof(InvalidMyAgent1),
-				null, 1, "a")
+			this.service.spawnAgent(1, this.agentId, this.outContext, newAgentId, typeof(InvalidMyAgent1), #[1, "a"])
 		]
 	}
 
 	@Test
+	@DisplayName("spawnAgent 1 agent invalid specification")
 	def spawnAgent_1_invalidSpec {
 		startService
 		var newAgentId = UUID::randomUUID
 		typeof(InvalidSarlSpecificationException).assertException [
-			this.service.spawnAgent(1, this.agentId, this.outContext, newAgentId, typeof(InvalidMyAgent2),
-				null, 1, "a")
+			this.service.spawnAgent(1, this.agentId, this.outContext, newAgentId, typeof(InvalidMyAgent2), #[1, "a"])
 		]
 	}
 
 	@Test
+	@DisplayName("killAgent without inner context instance - no service")
 	def killAgent_noInnerContext_serviceNotStarted {
-		assertFalse(this.service.killAgent(this.^agent))
+		this.service.killAgent(this.^agent).assertFalse
 	}
 
 	@Test
+	@DisplayName("killAgent without inner context instance")
 	def killAgent_noInnerContext_serviceStarted {
 		var listener1 = typeof(LifecycleServiceListener).mock
 		this.service.addLifecycleServiceListener(listener1)
@@ -353,18 +377,18 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 				new Address(outerContext.defaultSpace.spaceID, this.^agent.ID))
 		AgentLife::getLife(this.agent2).state = AgentState::ALIVE
 
-		assertTrue(this.service.killAgent(this.agent2))
+		this.service.killAgent(this.agent2).assertTrue
 		
 		// Uninstall the skills
 		var capAgent = ArgumentCaptor::forClass(typeof(Agent))
 		this.skillUninstaller.verify.uninstallSkillsBeforeDestroy(capAgent.capture)
-		assertSame(this.agent2, capAgent.value)
+		this.agent2.assertSame(capAgent.value)
 		
 		capAgent = ArgumentCaptor::forClass(typeof(Agent))
-		var capSkills = ArgumentCaptor::forClass(typeof(CopyOnWriteArraySet))
+		var capSkills = ArgumentCaptor::forClass(typeof(List))
 		this.skillUninstaller.verify.uninstallSkillsAfterDestroy(capAgent.capture, capSkills.capture)
-		assertSame(this.agent2, capAgent.value)
-		assertNotNull(capSkills.value)
+		this.agent2.assertSame(capAgent.value)
+		capSkills.value.assertNotNull
 
 		// Destroy event
 		var capEvent = ArgumentCaptor::forClass(typeof(Event))
@@ -372,48 +396,21 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 		var capThrownExceptions = ArgumentCaptor::forClass(typeof(boolean))
 		this.eventBus.verify.fireEventAndWait(capEvent.capture, capGatherEvents.capture.booleanValue,
 			capThrownExceptions.capture.booleanValue)
-		assertFalse(capGatherEvents.value)
-		assertFalse(capThrownExceptions.value)
-		assertInstanceOf(typeof(Destroy), capEvent.value)
+		capGatherEvents.value.assertFalse
+		capThrownExceptions.value.assertFalse
+		typeof(Destroy).assertInstanceOf(capEvent.value)
 		var destroyEvent = capEvent.value as Destroy
-		assertNotNull(destroyEvent.source)
+		destroyEvent.source.assertNotNull
 		
 		// Agent destroy notification
 		capAgent = ArgumentCaptor::forClass(typeof(Agent))
 		var capContexts : ArgumentCaptor<Iterable<ContextReference>> = ArgumentCaptor::forClass(typeof(Iterable))
 		listener1.verify.agentDestroyed(capAgent.capture, capContexts.capture)
-		assertEquals(this.agent2, capAgent.value)
-		assertContains(
-			capContexts.value.map [it.getContext],
-				defaultContext, outerContext)
+		this.agent2.assertEquals(capAgent.value)
+		capContexts.value.map[it.getContext].assertContains(defaultContext, outerContext)
 		
 		// Kernel destroy
 		verifyNoMoreInteractions(listener2)
-	}
-
-	@Test
-	def killAgent_emptyInnerContext_serviceNotStarted {
-		createInnerContext
-		assertTrue(this.service.isKillableAgent(this.^agent.getLife, this.^agent.ID))
-	}
-
-	@Test
-	def killAgent_emptyInnerContext_serviceStarted {
-		startService
-		createInnerContext
-		assertTrue(this.service.isKillableAgent(this.^agent.getLife, this.^agent.ID))
-	}
-
-	@Test
-	def killAgent_oneChild {
-		createInnerContext(UUID::randomUUID)
-		assertFalse(this.service.isKillableAgent(this.^agent.getLife, this.^agent.ID))
-	}
-
-	@Test
-	def killAgent_twoChild {
-		createInnerContext(UUID::randomUUID, UUID::randomUUID)
-		assertFalse(this.service.isKillableAgent(this.^agent.getLife, this.^agent.ID))
 	}
 
 }

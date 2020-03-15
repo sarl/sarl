@@ -52,7 +52,6 @@ import java.util.Iterator
 import java.util.List
 import java.util.TreeSet
 import java.util.UUID
-import java.util.concurrent.CopyOnWriteArraySet
 import java.util.logging.Level
 import java.util.logging.Logger
 import org.junit.jupiter.api.BeforeEach
@@ -63,7 +62,6 @@ import org.junit.jupiter.api.^extension.ExtendWith
 import org.mockito.ArgumentCaptor
 
 import static io.sarl.tests.api.tools.TestAssertions.*
-import static org.junit.jupiter.api.Assertions.*
 import static org.mockito.ArgumentMatchers.anyString
 import static org.mockito.Mockito.*
 import static org.mockito.Mockito.doAnswer
@@ -71,6 +69,7 @@ import static org.mockito.Mockito.reset
 import static org.mockito.Mockito.verifyNoMoreInteractions
 
 import static extension io.sarl.tests.api.tools.TestMockito.mock
+import static extension org.junit.jupiter.api.Assertions.*
 import static extension org.mockito.ArgumentMatchers.any
 import static extension org.mockito.Mockito.spy
 import static extension org.mockito.Mockito.times
@@ -114,11 +113,13 @@ class AgentLifeTest {
 	}
 
 	@Test
+	@DisplayName("getAgent")
 	def getAgent {
 		assertSame(this.^agent, this.life.^agent)
 	}
 
 	@Test
+	@DisplayName("setAgent")
 	def setAgent {
 		var ag = typeof(Agent).mock
 		this.life.^agent = ag
@@ -126,35 +127,48 @@ class AgentLifeTest {
 	}
 
 	@Test
+	@DisplayName("getState")
 	def getState {
 		assertSame(AgentState::UNSTARTED, this.life.state)
 	}
 
 	@Test
+	@DisplayName("setState")
 	def setState {
 		this.life.state = AgentState::DEAD
 		assertSame(AgentState::DEAD, this.life.state)
 	}
 
 	@Test
+	@DisplayName("setInnerContext")
 	def setInnerContext {
 		var ctx2 = typeof(Context).mock
 		var ctx1 = this.life.setInnerContext(ctx2)
 		assertNull(ctx1)
-		assertSame(ctx2, this.life.innerContext)
+		assertSame(ctx2, this.life.getInnerContext(null))
 
 		var ctx3 = typeof(Context).mock
 		ctx1 = this.life.setInnerContext(ctx3)
 		assertSame(ctx2, ctx1)
-		assertSame(ctx3, this.life.innerContext)
+		assertSame(ctx3, this.life.getInnerContext(null))
 	}
 
 	@Test
+	@DisplayName("getInnerContext without factory")
 	def getInnerContext {
-		assertNull(this.life.innerContext)
+		assertNull(this.life.getInnerContext(null))
 	}
 
 	@Test
+	@DisplayName("getInnerContext with factory")
+	def getInnerContext_withFactory {
+		val m = typeof(Context).mock
+		m.assertSame(this.life.getInnerContext([m]))
+	}
+
+	
+	@Test
+	@DisplayName("getAddressInInnerDefaultSpace")
 	def getAddressInInnerDefaultSpace {
 		var adr = this.life.addressInInnerDefaultSpace
 		assertNotNull(adr)
@@ -164,12 +178,14 @@ class AgentLifeTest {
 	}
 
 	@Test
+	@DisplayName("getExternalContexts")
 	def getExternalContexts {
 		var context = this.life.externalContexts
 		assertFalse(context.iterator.hasNext)
 	}
 
 	@Test
+	@DisplayName("getEnclosingContexts without enclosing context")
 	def getEnclosingContexts_0 {
 		// No enclosing context
 		var context = this.life.enclosingContexts
@@ -177,6 +193,7 @@ class AgentLifeTest {
 	}
 
 	@Test
+	@DisplayName("getEnclosingContexts with enclosing context")
 	def getEnclosingContexts_1 {
 		// One enclosing context: the default context
 		var ctx = typeof(Context).mock
@@ -194,6 +211,7 @@ class AgentLifeTest {
 	}
 
 	@Test
+	@DisplayName("getEnclosingContexts with 2 enclosing contexts")
 	def getEnclosingContexts_2 {
 		// Two external contexts: ctx1 and ctx2
 		var minmax = #[UUID::randomUUID, UUID::randomUUID].sort
@@ -212,6 +230,7 @@ class AgentLifeTest {
 	}
 
 	@Test
+	@DisplayName("getEnclosingContexts with 3 enclosing contexts")
 	def getEnclosingContexts_3 {
 		var minmax = #[UUID::randomUUID, UUID::randomUUID, UUID::randomUUID].sort
 		var ctx0 = typeof(Context).mock
@@ -234,6 +253,7 @@ class AgentLifeTest {
 	}
 
 	@Test
+	@DisplayName("getEnclosingContexts with 4 enclosing contexts")
 	def getEnclosingContexts_4 {
 		var minmax = #[UUID::randomUUID, UUID::randomUUID, UUID::randomUUID].sort
 		var ctx0 = typeof(Context).mock
@@ -257,12 +277,14 @@ class AgentLifeTest {
 	}
 
 	@Test
+	@DisplayName("getExternalContexts without external context")
 	def getExternalContexts_0 {
 		var context = this.life.externalContexts
 		assertFalse(context.iterator.hasNext)
 	}
 
 	@Test
+	@DisplayName("getExternalContexts with 1 external context")
 	def getExternalContexts_1 {
 		var ctx = typeof(Context).mock
 		var adr = typeof(Address).mock
@@ -274,6 +296,7 @@ class AgentLifeTest {
 	}
 	
 	@Test
+	@DisplayName("getExternalContexts with 2 external contexts")
 	def getExternalContexts_2 {
 		var minmax = #[UUID::randomUUID, UUID::randomUUID].sort
 		var ctx1 = typeof(Context).mock
@@ -291,6 +314,7 @@ class AgentLifeTest {
 	}
 
 	@Test
+	@DisplayName("getExternalContexts with 3 external contexts")
 	def getExternalContexts_3 {
 		var minmax = #[UUID::randomUUID, UUID::randomUUID, UUID::randomUUID].sort
 		var ctx0 = typeof(Context).mock
@@ -312,11 +336,13 @@ class AgentLifeTest {
 	}
 
 	@Test
+	@DisplayName("getExternalContextCount without external contexts")
 	def getExternalContextCount_0 {
 		assertEquals(0, this.life.externalContextCount)
 	}
 
 	@Test
+	@DisplayName("getExternalContextCount with 1 external context")
 	def getExternalContextCount_1 {
 		var ctx = typeof(Context).mock
 		var adr = typeof(Address).mock
@@ -325,6 +351,7 @@ class AgentLifeTest {
 	}
 	
 	@Test
+	@DisplayName("getExternalContextCount with 2 external contexts")
 	def getExternalContextCount_2 {
 		var minmax = #[UUID::randomUUID, UUID::randomUUID].sort
 		var ctx1 = typeof(Context).mock
@@ -339,6 +366,7 @@ class AgentLifeTest {
 	}
 
 	@Test
+	@DisplayName("getExternalContextCount with 3 external contexts")
 	def getExternalContextCount_3 {
 		var minmax = #[UUID::randomUUID, UUID::randomUUID, UUID::randomUUID].sort
 		var ctx0 = typeof(Context).mock
@@ -358,6 +386,7 @@ class AgentLifeTest {
 	}
 
 	@Test
+	@DisplayName("setDefaultContext")
 	def setDefaultContext {
 		var ctx = typeof(Context).mock
 		this.life.setDefaultContext(ctx, typeof(Address).mock)
@@ -370,7 +399,8 @@ class AgentLifeTest {
 	}
 
 	@Test
-	def defaultContext {
+	@DisplayName("getDefaultContext")
+	def getDefaultContext {
 		assertNull(this.life.defaultContext)
 		var ctx = typeof(Context).mock
 		this.life.setDefaultContext(ctx, typeof(Address).mock)
@@ -381,6 +411,7 @@ class AgentLifeTest {
 	}
 
 	@Test
+	@DisplayName("addExternalContext")
 	def addExternalContext {
 		var minmax : List<UUID> = #[UUID::randomUUID, UUID::randomUUID]
 		var ctx1 = typeof(Context).mock
@@ -448,6 +479,7 @@ class AgentLifeTest {
 	}
 
 	@Test
+	@DisplayName("removeExternalContext(Context)")
 	def removeExternalContextContext {
 		var ctx1 = typeof(Context).mock
 		when(ctx1.ID).thenReturn(UUID::randomUUID)
@@ -471,6 +503,7 @@ class AgentLifeTest {
 	}
 
 	@Test
+	@DisplayName("removeExternalContext(ContextReference)")
 	def removeExternalContextContextReference {
 		var ctx1 = typeof(Context).mock
 		when(ctx1.ID).thenReturn(UUID::randomUUID)
@@ -495,9 +528,10 @@ class AgentLifeTest {
 	}
 
 	@Test
+	@DisplayName("start with failing on Initialize")
 	def start_failingInOnInitialize : void {
 		var installer = typeof(SkillUninstaller).mock
-		when(installer.uninstallSkillsBeforeDestroy(any)).thenReturn(new CopyOnWriteArraySet)
+		when(installer.uninstallSkillsBeforeDestroy(any)).thenReturn(new ArrayList)
 		var logger = typeof(LoggingService).mock
 		var loglog = typeof(Logger).mock
 		when(logger.kernelLogger).thenReturn(loglog)
@@ -532,11 +566,12 @@ class AgentLifeTest {
 	}
 
 	@Test
+	@DisplayName("start")
 	def start_success : void {
 		var eventListener = typeof(InformedEventListener).mock
 		when(this.eventBus.associatedEventBusListener).thenReturn(eventListener)
 		var installer = typeof(SkillUninstaller).mock
-		when(installer.uninstallSkillsBeforeDestroy(any)).thenReturn(new CopyOnWriteArraySet)
+		when(installer.uninstallSkillsBeforeDestroy(any)).thenReturn(new ArrayList)
 		var logger = typeof(LoggingService).mock
 		var loglog = typeof(Logger).mock
 		when(logger.kernelLogger).thenReturn(loglog)
@@ -581,9 +616,10 @@ class AgentLifeTest {
 	}
 
 	@Test
+	@DisplayName("stop")
 	def stop {
 		var installer = typeof(SkillUninstaller).mock
-		var it = new CopyOnWriteArraySet(Collections.singletonList(this.eventBus))
+		var it = new ArrayList(Collections.singletonList(this.eventBus))
 		when(installer.uninstallSkillsBeforeDestroy(any)).thenReturn(it)
 		var logger = typeof(LoggingService).mock
 		
@@ -594,7 +630,7 @@ class AgentLifeTest {
 		var ^agent = ArgumentCaptor::forClass(typeof(Agent))
 		installer.verify.uninstallSkillsBeforeDestroy(^agent.capture)
 		assertSame(this.^agent, ^agent.value)
-		var skills = ArgumentCaptor::forClass(typeof(CopyOnWriteArraySet))
+		var skills = ArgumentCaptor::forClass(typeof(List))
 		installer.verify.uninstallSkillsAfterDestroy(^agent.capture, skills.capture)
 		assertSame(this.^agent, ^agent.value)
 		var iterator = skills.value.iterator

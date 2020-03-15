@@ -28,7 +28,6 @@ import io.sarl.sre.tests.runtime.bugs.bug977.mocks.SharedGuardEvaluationAgent0
 import io.sarl.sre.tests.runtime.bugs.bug977.mocks.SharedGuardEvaluationAgent1
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.RepetitionInfo
@@ -58,12 +57,11 @@ import static extension io.sarl.tests.api.tools.TestAssertions.*
 class Bug977Test {
 
 	@RepeatedTest(10)
-	@Disabled
 	@DisplayName("Inheritance of event handlers and functions")
 	def runInheritanceBehaviorExampleCode(extension rc : SreRunContext) : void {
 		typeof(HelloChildAgent).runSre
 
-		val all = getResults(bootAgent)
+		val all = getResults(bootAgentId)
 
 		all.assertContains(
 			// Execute: on Initialize
@@ -74,23 +72,21 @@ class Bug977Test {
 	}
 
 	@RepeatedTest(10)
-	@Disabled
 	@DisplayName("Shared guard evaluation without value change")
 	def runSharedGuardEvaluationWithoutValueChange(extension rc : SreRunContext, info : RepetitionInfo) : void {
 		typeof(SharedGuardEvaluationAgent0).runSre
 
-		val all = getResults(bootAgent)
+		val all = getResults(bootAgentId)
 
 		all.assertContains("a", "c", "d", "f")
 	}
 
 	@RepeatedTest(10)
-	@Disabled
 	@DisplayName("Shared guard evaluation with value change")
 	def runSharedGuardEvaluationWithValueChange(extension rc : SreRunContext) : void {
 		typeof(SharedGuardEvaluationAgent1).runSre
 
-		val all = getResults(bootAgent)
+		val all = getResults(bootAgentId)
 
 		all.assertContains("a", "c", "d", "f")
 	}

@@ -35,7 +35,8 @@ import io.sarl.sre.tests.units.services.lifecycle.mocks.MySkill0
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
-import java.util.concurrent.CopyOnWriteArraySet
+import java.util.ArrayList
+import java.util.List
 import java.util.concurrent.atomic.AtomicInteger
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -81,8 +82,8 @@ class BasicSkillUninstallerTest {
 	}
 
 	@PrivateAPI(isCallerOnly = true)
-	private static def getStoredSkills(^agent : Agent) : CopyOnWriteArraySet<Skill> {
-		new CopyOnWriteArraySet(Collections2.transform(SREutils::getSkillRepository(^agent).values, [it.get]))
+	private static def getStoredSkills(^agent : Agent) : List<Skill> {
+		new ArrayList(Collections2.transform(SREutils::getSkillRepository(^agent).values, [it.get]))
 	}
 
 	@Test

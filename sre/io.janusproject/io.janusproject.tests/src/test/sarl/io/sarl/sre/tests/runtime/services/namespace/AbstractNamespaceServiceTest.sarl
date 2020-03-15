@@ -21,7 +21,6 @@
 
 package io.sarl.sre.tests.runtime.services.namespace
 
-import io.sarl.lang.util.OutParameter
 import io.sarl.sre.services.namespace.FieldAccess
 import io.sarl.sre.services.namespace.NamespaceService
 import io.sarl.sre.test.framework.context.SreRunContext
@@ -34,10 +33,10 @@ import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static io.sarl.tests.api.tools.TestTimeout.*
 import static io.sarl.sre.test.framework.Constants.*
 
 import static extension org.junit.jupiter.api.Assertions.*
@@ -70,30 +69,30 @@ abstract class AbstractNamespaceServiceTest {
 	}
 
 	@SuppressWarnings("discouraged_reference")
-	protected def runTestCase(extension rc : SreRunContext, type : Class<T>) : T with T {
+	protected def runTestCase(extension rc : SreRunContext, type : Class<T>, 
+		throwIfNull : boolean = true, urlBuilder : (UUID)=>String) : T with T {
 		runTestCase_prepare
 
 		var kern = setupTheSreKernel(null, null)
 		var service = kern.getService(typeof(NamespaceService))
 		service.assertNotNull
 
-		bootstrap.startAgent(typeof(NamespaceTestAgent), getAgentInitializationParameters)
+		val bid = UUID::randomUUID
+		
+		var w0 = waitForAgentSpawned(bid)
+		
+		kern.startAgentWithID(typeof(NamespaceTestAgent), bid, getAgentInitializationParameters)
 
-		var bid = bootstrap.bootAgentIdentifier
-		bid.assertNotNull
+		w0.doWait
 
-		// Wait for the starting of the agent. The agent is accessible when it is started, and
-		// member of a default space.
-		val namedObjectParam = new OutParameter
-		val to = newTimeOut [
-			val obj = service.findObject("agent:" + bid + "#myfield")
-			namedObjectParam.set(obj)
-			return obj !== null
-		]
-		to.run
-		to.isTimeout.assertFalse
-		val namedObject = namedObjectParam.get
-		namedObject.assertNotNull
+		val namedObject = service.findObject(urlBuilder.apply(bid))
+		if (namedObject === null) {
+			if (throwIfNull) {
+				namedObject.assertNotNull
+			} else {
+				return null				
+			}
+		}
 
 		service.runTestCase_beforeChangeField(namedObject)
 		rootContext.defaultSpace.emit(UUID::randomUUID, new ChangeField)
@@ -102,23 +101,13 @@ abstract class AbstractNamespaceServiceTest {
 		rootContext.defaultSpace.emit(UUID::randomUUID, new StopTest)
 		service.runTestCase_afterStopTest(namedObject)
 
-		waitForTheKernel(NO_TIMEOUT)
+		waitForTheKernel(STANDARD_TIMEOUT)
 
 		return type.cast(namedObject)
 	}
 
-	@Test
-	def accessAgentField(extension rc : SreRunContext) : void {
-		var field = rc.runTestCase(typeof(FieldAccess))
-		
-		"myfield".assertEquals(field.field.name)
-
-		"int".assertEquals(field.field.type.simpleName)
-
-		24.assertEquals(field.get as Integer)
-	}
-
-	@Test
+	@RepeatedTest(5)
+	@DisplayName("Unknown agent")
 	def accessUnknownAgent(extension rc : SreRunContext) : void {
 		var service = rc.startTestingFramework
 
@@ -126,6 +115,25 @@ abstract class AbstractNamespaceServiceTest {
 
 		var namedObject = service.findObject("agent:" + id + "#myfield")
 		namedObject.assertNull
+	}
+
+	@RepeatedTest(5)
+	@DisplayName("Get agent field")
+	def accessAgentField(extension rc : SreRunContext) : void {
+		var field = rc.runTestCase(typeof(FieldAccess)) ["agent:" + it + "#myfield"]
+
+		"myfield".assertEquals(field.field.name)
+
+		"int".assertEquals(field.field.type.simpleName)
+
+		24.assertEquals(field.get as Integer)
+	}
+
+	@RepeatedTest(5)
+	@DisplayName("Unknown field")
+	def accessAgentUnknownField(extension rc : SreRunContext) : void {
+		var x = rc.runTestCase(typeof(FieldAccess), false)["agent:" + it + "#myfield_unknown"]
+		x.assertNull
 	}
 
 	protected abstract def runTestCase_prepare

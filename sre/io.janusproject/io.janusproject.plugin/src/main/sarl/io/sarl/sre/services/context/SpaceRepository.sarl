@@ -44,9 +44,7 @@ import io.sarl.sre.spaces.SpaceListener
 import io.sarl.sre.spaces.SpaceParticipantListenerFactory
 import io.sarl.sre.spaces.SreEventSpaceSpecification
 import io.sarl.sre.spaces.SreOpenEventSpaceSpecification
-import io.sarl.sre.spaces.SreRestrictedAccessEventSpaceSpecification
 import io.sarl.util.DefaultSpace
-import io.sarl.util.RestrictedAccessEventSpaceSpecification
 import java.io.Serializable
 import java.lang.ref.WeakReference
 import java.util.EventListener
@@ -484,10 +482,7 @@ abstract class SpaceRepository implements SpaceListener {
 
 	override destroyableSpace(^space : Space) {
 		var run : Runnable = [
-			var participants = ^space.participants
-			var couldBeDestroyed : boolean = participants.empty
-
-			if (couldBeDestroyed) {
+			if (^space.isPseudoEmpty) {
 				removeSpace(^space)
 			}
 		]
@@ -593,20 +588,6 @@ abstract class SpaceRepository implements SpaceListener {
 			@KernelScope spaceParticipantListenerFactory : Provider<SpaceParticipantListenerFactory>,
 			logger : LoggingService) : OpenEventSpaceSpecification {
 			new SreOpenEventSpaceSpecification(injector, defaultSpace,
-				spaceParticipantListenerFactory.get, logger)
-		}
-
-		/** This injection definition is for the spaces that are not a default space.
-		 * 
-		 * <p>Note: This provider must be defined into this "temp" module because it depends on the
-		 * definition of the default space injection.
-		 */
-		@Provides
-		def provideRestrictedAccessEventSpaceSpecification(injector : Injector,
-			@DefaultSpace defaultSpace : OpenEventSpace,
-			@KernelScope spaceParticipantListenerFactory : Provider<SpaceParticipantListenerFactory>,
-			logger : LoggingService) : RestrictedAccessEventSpaceSpecification {
-			new SreRestrictedAccessEventSpaceSpecification(injector, defaultSpace,
 				spaceParticipantListenerFactory.get, logger)
 		}
 

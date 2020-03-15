@@ -57,6 +57,7 @@ import static extension io.sarl.tests.api.tools.TestUtils.*
 class OnAgentSpawnedTest {
 
 	@RepeatedTest(5)
+	@DisplayName("run")
 	def run(extension rc : SreRunContext) {
 		typeof(MyWaiterAgent0).runSre
 		

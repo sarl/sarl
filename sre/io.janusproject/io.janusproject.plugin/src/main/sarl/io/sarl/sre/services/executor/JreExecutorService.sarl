@@ -71,7 +71,7 @@ class JreExecutorService extends AbstractExecutorService implements PreReleasabl
 		this.jreSchedules = scheduledService
 	}
 
-	/**
+	/** 
 	 * Replies the JRE service for scheduled tasks.
 	 * 
 	 * @param the JRE service.

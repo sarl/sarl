@@ -55,7 +55,7 @@ interface LifecycleService extends Service {
 	 * @param params the list of the parameters to pass to the agent initialization function.
 	 */
 	def spawnAgent(nbAgents : int, spawningAgent : UUID, parent : Context, agentId : UUID,
-		agentClazz : Class<? extends Agent>, callback : LifecycleSpawnCallback, params : Object*)
+		agentClazz : Class<? extends Agent>, params : Object[])
 
 	/**
 	 * Kill the given agent.
@@ -146,6 +146,17 @@ interface LifecycleServiceListener extends EventListener {
 	 */
 	def agentDestroyed(^agent : Agent, outerContexts : Iterable<ContextReference>)
 
+	/** 
+	 * Invoked when the agent spawning has failed.
+	 * 
+	 * @param spawningAgent the identifier of the agent which spawns the given agent.
+	 * @param parent the context in which the agent was created.
+	 * @param agentType the type of the spawned agents.
+	 * @param spawnedAgent the spawned agent.
+	 * @param initializationParameters list of parameters that were passed to the agent.
+	 */
+	def agentSpawnFailure(spawningAgent : UUID, parent : Context, agentType : Class<? extends Agent>)
+
 }
 
 /** 
@@ -162,28 +173,5 @@ interface KernelAgentLifecycleListener extends EventListener {
 	 * Invoked when the kernel agent is destroyed.
 	 */
 	def kernelAgentDestroyed
-
-}
-
-/** 
- * Callback object for the spawn of agents.
- * 
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- * @since 0.11
- */
-@FunctionalInterface
-interface LifecycleSpawnCallback {
-
-	/**
-	 * Invoked when the service has spawned the first agent with the given identifier.
-	 * Usually, this callback function in invoked between the agent instance creation and the
-	 * rest of the spawning process.
-	 *
-	 * @param id the identifier of the agent.
-	 */
-	def firstAgentSpawned(id : UUID)
 
 }

@@ -57,7 +57,7 @@ class LoggingServiceTest {
 		typeof(VerboseAgent).runSre(null, LogTrackingMode::ADD_TO_AGENT_RESULTS)
 		var record = typeof(LogRecord).getResult(0)
 		record.assertNotNull;
-		("AGENT-" + bootAgent.toString).assertEquals(record.loggerName)
+		("AGENT-" + bootAgentId.toString).assertEquals(record.loggerName)
 		"This is a welcome message".assertEquals(record.message)
 	}
 

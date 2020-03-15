@@ -33,9 +33,7 @@ import io.sarl.sre.tests.runtime.internal.mocks.SpyAgent2
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
@@ -64,22 +62,28 @@ class OnParticipantJoinedTest {
 	@DisplayName("ParticipantJoined in default space")
 	@SuppressWarnings("discouraged_reference")
 	def runParticipantJoinedInDefaultSpace(extension rc : SreRunContext) {
-		var kern = typeof(SpyAgent0).setupTheSreKernel(null, null)
+		var kern = setupTheSreKernel(null, null)
 
-		Thread::sleep(1000)
+		val id1 = UUID::randomUUID
+		val id2 = UUID::randomUUID
 
-		val id = UUID::randomUUID
-		kern.startAgentWithID(typeof(JoinerAgent0), id, agentInitializationParameters)
+		var w1 = waitForAgentSpawned(id1)
+
+		kern.startAgentWithID(typeof(SpyAgent0), id1, agentInitializationParameters)
+
+		w1.doWait
+
+		kern.startAgentWithID(typeof(JoinerAgent0), id2, agentInitializationParameters)
 
 		waitForTheKernel(STANDARD_TIMEOUT)
 		
-		var evt = getResult(bootAgent, typeof(ParticipantJoined), 0)
+		var evt = getResult(id1, typeof(ParticipantJoined), 0)
 		evt.assertNotNull
 
-		var spcid = getResult(bootAgent, typeof(SpaceID), 1)
+		var spcid = getResult(id1, typeof(SpaceID), 1)
 		spcid.assertNotNull
 
-		id.assertEquals(evt.source.UUID)
+		id2.assertEquals(evt.source.UUID)
 		spcid.assertEquals(evt.spaceID)
 	}
 
@@ -87,27 +91,33 @@ class OnParticipantJoinedTest {
 	@DisplayName("ParticipantJoined in other space")
 	@SuppressWarnings("discouraged_reference")
 	def runParticipantJoinedInOtherSpace(extension rc : SreRunContext) {
-		var kern = typeof(SpyAgent2).setupTheSreKernel(null, null)
+		var kern = setupTheSreKernel(null, null)
 
-		Thread::sleep(1000)
+		val id1 = UUID::randomUUID
+		val id2 = UUID::randomUUID
 
-		val id = UUID::randomUUID
-		kern.startAgentWithID(typeof(JoinerAgent2), id, agentInitializationParameters)
+		var w1 = waitForAgentSpawned(id1)
+
+		kern.startAgentWithID(typeof(SpyAgent2), id1, agentInitializationParameters)
+
+		w1.doWait
+
+		kern.startAgentWithID(typeof(JoinerAgent2), id2, agentInitializationParameters)
 
 		waitForTheKernel(STANDARD_TIMEOUT)
 
-		var evt = getResult(bootAgent, typeof(ParticipantJoined), 0)
+		var evt = getResult(id1, typeof(ParticipantJoined), 0)
 		evt.assertNotNull
 
-		var spcid0 = getResult(bootAgent, typeof(SpaceID), 1)
+		var spcid0 = getResult(id1, typeof(SpaceID), 1)
 		spcid0.assertNotNull
 
-		var spcid1 = getResult(id, typeof(SpaceID), 0)
+		var spcid1 = getResult(id2, typeof(SpaceID), 0)
 		spcid1.assertNotNull
 
 		spcid0.assertNotEquals(spcid1)
 
-		id.assertEquals(evt.source.UUID)
+		id2.assertEquals(evt.source.UUID)
 		spcid1.assertEquals(evt.spaceID)
 	}
 

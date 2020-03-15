@@ -52,7 +52,7 @@ import org.junit.jupiter.api.Disabled
 class OnMemberLeftTest {
 
 	@RepeatedTest(5)
-	@Disabled
+	@DisplayName("run")
 	def run(extension rc : SreRunContext) {
 		typeof(RootAgent1).runSre
 		assertContains(allResults, "ROOT:ChildAgent1", "ROOT:Child2Agent1", "CHILD1:Child2Agent1")

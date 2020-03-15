@@ -24,7 +24,6 @@ package io.sarl.sre.tests.runtime.services.context.mocks
 import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
 import java.util.UUID
-import java.util.concurrent.ConcurrentSkipListSet
 
 /**
  * @author $Author: sgalland$
@@ -43,9 +42,16 @@ class MySpace implements Space {
 	override getSpaceID : SpaceID {
 		this.id
 	}
-
-	override getParticipants : ConcurrentSkipListSet<UUID> {
-		new ConcurrentSkipListSet
+	
+	def forEachStrongParticipant(callback : (UUID)=>void) {
+	}
+	
+	def getNumberOfStrongParticipants : int {
+		0
+	}
+	
+	def isPseudoEmpty(id : UUID) : boolean {
+		true
 	}
 	
 }

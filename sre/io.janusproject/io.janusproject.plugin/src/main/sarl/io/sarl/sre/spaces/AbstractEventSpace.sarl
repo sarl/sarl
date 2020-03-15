@@ -31,7 +31,6 @@ import io.sarl.sre.services.logging.LoggingService
 import java.text.MessageFormat
 import java.util.UUID
 import java.util.concurrent.ConcurrentLinkedDeque
-import java.util.concurrent.ConcurrentSkipListSet
 import java.util.logging.Level
 import javax.inject.Inject
 import org.eclipse.xtend.lib.annotations.Accessors
@@ -91,13 +90,17 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 		this.eventTransportService = router
 	}
 
-	protected final def registerToSpace(entity : EventListener) : Address {
+	protected final def registerToSpace(entity : EventListener, weakParticipant : boolean) : Address {
 		assert entity !== null
 		var id = entity.ID
 		var address = new Address(this.spaceID, id)
 		var participant = Participant::createAndInit(address, entity)
 
-		this.internalParticipantStructure.put(id, participant)
+		if (weakParticipant) {
+			ensureInternalWeakParticipantStructure.put(id, participant)
+		} else {
+			internalStrongParticipantStructure.put(id, participant)
+		}
 
 		getSpaceParticipantListener?.participantJoined(participant)
 		return address
@@ -108,9 +111,16 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 		var participant : Participant = null
 		var becomesEmpty : boolean
 
-		var structure = this.internalParticipantStructure
+		var structure = this.internalStrongParticipantStructure
 		participant = structure.remove(entity.ID)
 		becomesEmpty = structure.empty
+		if (participant === null) {
+			// Try a weak listener
+			structure = this.internalWeakParticipantStructure
+			if (structure !== null) {
+				participant = structure.remove(entity.ID)
+			}
+		}
 
 		if (participant !== null) {
 			if (becomesEmpty) {
@@ -126,21 +136,17 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 		assert id !== null
 		var participant : Participant = null
 
-		participant = this.internalParticipantStructure.get(id)
+		participant = this.internalStrongParticipantStructure.get(id)
 		if (participant !== null) {
 			return participant.address
 		}
+
+		participant = this.internalWeakParticipantStructure?.get(id)
+		if (participant !== null) {
+			return participant.address
+		}
+
 		return null
-	}
-
-	@Deprecated
-	final def getParticipants : ConcurrentSkipListSet<UUID> {
-		new ConcurrentSkipListSet<UUID>(this.internalParticipantStructure.keySet)
-	}
-
-	@Deprecated
-	final def emit(^event : Event, scope : Scope<Address>) {
-		emit(null, ^event, scope)
 	}
 
 	final def emit(eventSource : UUID, ^event : Event, scope : Scope<Address>) {
@@ -180,14 +186,30 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 	 * @return the matching participants.
 	 */
 	protected def getScopedParticipants(scope : Scope<? super Address>) : ConcurrentLinkedDeque<Participant> {
-		if (scope === null) {
-			return new ConcurrentLinkedDeque(this.internalParticipantStructure.values)
-		}
-		// return this.internalParticipantStructure.values.stream.filter [scope.matches(it.address)]
 		val scopedParticipants = new ConcurrentLinkedDeque
-		for(p : this.internalParticipantStructure.values) {
-			if (scope.matches(p.address)) {
-				scopedParticipants.add(p)
+		if (scope === null) {
+			for (p : internalStrongParticipantStructure.values) {
+				scopedParticipants += p
+			}
+			val struct = internalWeakParticipantStructure
+			if (struct !== null) {
+				for (p : struct.values) {
+					scopedParticipants += p
+				}
+			}
+		} else {
+			for (p : internalStrongParticipantStructure.values) {
+				if (scope.matches(p.address)) {
+					scopedParticipants += p
+				}
+			}
+			val struct = internalWeakParticipantStructure
+			if (struct !== null) {
+				for (p : struct.values) {
+					if (scope.matches(p.address)) {
+						scopedParticipants += p
+					}
+				}
 			}
 		}
 		return scopedParticipants
@@ -215,6 +237,30 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 				it.getParticipant.receiveEvent(^event)
 			}
 		}
+	}
+
+	@Pure
+	override getNumberOfStrongParticipants : int {
+		internalStrongParticipantStructure.size
+	}
+
+	@Pure
+	override isPseudoEmpty(id : UUID) : boolean {
+		val struct = internalStrongParticipantStructure
+		val sz = struct.size
+		if (sz <= 0) {
+			return true
+		}
+		if (id !== null) {
+			return sz === 1 && struct.containsKey(id)
+		}
+		return false
+	}
+
+	override forEachStrongParticipant(callback : (UUID)=>void) {
+		for (participant : internalStrongParticipantStructure.values) {
+			callback.apply(participant.address.UUID)
+		}	
 	}
 
 }

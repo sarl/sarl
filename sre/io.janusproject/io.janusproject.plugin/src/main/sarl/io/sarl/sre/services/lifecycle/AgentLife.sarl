@@ -37,12 +37,15 @@ import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.services.context.Context
 import io.sarl.sre.services.logging.LoggingService
 import java.lang.ref.WeakReference
+import java.util.List
 import java.util.Map
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedDeque
-import java.util.concurrent.CopyOnWriteArraySet
+import java.util.concurrent.locks.ReadWriteLock
+import java.util.concurrent.locks.ReentrantReadWriteLock
 import java.util.logging.Level
+import javax.inject.Provider
 
 import static extension io.sarl.lang.core.SREutils.*
 
@@ -64,9 +67,13 @@ final class AgentLife {
 
 	var agentInstance : Agent
 
-	volatile var innerContextInstance : Context
+	var innerContextInstance : Context
+
+	val innerContextLock : ReadWriteLock
 
 	volatile var innerSpaceAddress : Address
+
+	val innerSpaceAddressLock : ReadWriteLock
 
 	var externalContextInstances : ConcurrentHashMap<UUID, ContextReference>
 
@@ -80,6 +87,7 @@ final class AgentLife {
 	 * If this data structure does not exists, it is automatically created.
 	 * 
 	 * @param agent the instance of the agent for which the life description should be retrieved
+	 * @param lockProvider the provider of locks
 	 * @see #getLifeOrNull
 	 */
 	static def getLife(^agent : Agent) : AgentLife {
@@ -87,7 +95,7 @@ final class AgentLife {
 		// object is done when spawning the agent, that is synchronously executed.
 		var life = ^agent.getSreSpecificData(typeof(AgentLife))
 		if (life === null) {
-			life = new AgentLife()
+			life = new AgentLife [new ReentrantReadWriteLock]
 			life.^agent = ^agent
 			^agent.sreSpecificData = life
 		}
@@ -106,6 +114,15 @@ final class AgentLife {
 		// Do not need to synchronize this code because the creation of the agent life
 		// object is done when spawning the agent, that is synchronously executed.
 		return ^agent.getSreSpecificData(typeof(AgentLife))
+	}
+
+	/** Constructor.
+	 *
+	 * @param lockProvider the provider of locks
+	 */
+	new (lockProvider : Provider<ReadWriteLock>) {
+		this.innerContextLock = lockProvider.get
+		this.innerSpaceAddressLock = lockProvider.get
 	}
 
 	def toString : String {
@@ -217,7 +234,7 @@ final class AgentLife {
 		var defaultSpace = spawningContext.defaultSpace
 		var addressWithinDefaultSpace = new Address(defaultSpace.spaceID, ^agent.ID)
 		setDefaultContext(spawningContext, addressWithinDefaultSpace)
-		defaultSpace.register(eb.associatedEventBusListener)
+		defaultSpace.register(eb.associatedEventBusListener, false)
 		return eb
 	}
 
@@ -226,16 +243,30 @@ final class AgentLife {
 	 * <p>This function removes the agent from the default space of its default context.
 	 * 
 	 * @param listener the listener on space events that must be unregistered.
+	 * @param enclosingContexts is the list of context for which we should be sure that the agent is out.
 	 */
-	protected def detachAgentFromPlatform(listener : EventListener) : void {
+	protected def detachAgentFromPlatform(listener : EventListener, enclosingContexts : ConcurrentLinkedDeque<ContextReference>) : void {
 		var contextReference : ContextReference = this.defaultContextInstance
 
 		// Unregister the agent on its parent default space.
+		var theDefaultSpace : OpenEventSpace = null
 		if (contextReference !== null) {
 			var ds = contextReference.defaultSpace
 			if (ds !== null) {
-				ds.unregister(listener)
+				theDefaultSpace = ds
 			}
+		}
+		
+		// Ensure that the agent is outside all the external contexts
+		for (ctxRef : enclosingContexts) {
+			val spc = ctxRef.defaultSpace
+			if (spc !== null && theDefaultSpace !== spc) {
+				spc.unregister(listener)
+			}
+		}
+
+		if (theDefaultSpace !== null) {
+			theDefaultSpace.unregister(listener)
 		}
 	}
 
@@ -261,12 +292,12 @@ final class AgentLife {
 			var listener = this.eventBus.associatedEventBusListener
 
 			// Pre-stage for uninstalling the skills (BIC and user defined)
-			var skills : CopyOnWriteArraySet<? extends Skill>
+			var skills : List<? extends Skill>
 			try {
 				skills = skillUninstaller.uninstallSkillsBeforeDestroy(dyingAgent)
 			} catch (e : Throwable) {
 				logger.kernelLogger.log(Level::SEVERE, e.localizedMessage, e)
-				skills = new CopyOnWriteArraySet
+				skills = newArrayList
 			}
 			
 			assert skills !== null
@@ -300,7 +331,7 @@ final class AgentLife {
 			}
 
 			// Detach the agent form the platform
-			listener.detachAgentFromPlatform
+			detachAgentFromPlatform(listener, enclosingContextsCopy)
 
 			// Force unregistration to the enclosing spaces
 			return enclosingContextsCopy
@@ -349,17 +380,46 @@ final class AgentLife {
 	 * @return the previous context, or {@code null}.
 	 */
 	def setInnerContext(innerContext : Context) : Context {
-		var old : Context = this.innerContextInstance
-		this.innerContextInstance = innerContext
-		return old
+		val lock = this.innerContextLock.writeLock
+		lock.lock
+		try {
+			var old = this.innerContextInstance
+			this.innerContextInstance = innerContext
+			return old
+		} finally {
+			lock.unlock
+		}
 	}
 
 	/** Replies the inner context reference.
 	 * 
+	 * @param creator is invoked to create the inner context thread-safely. If is it {@code null},
+	 *     the context will not be created on-the-fly if it is not already known.
 	 * @return the instance of inner context, or {@code null}
 	 */
-	def getInnerContext : Context {
-		return this.innerContextInstance
+	def getInnerContext(creator : (AgentLife)=>Context) : Context {
+		val rlock = this.innerContextLock.readLock
+		var ctx : Context 
+		rlock.lock
+		try {
+			ctx = this.innerContextInstance
+		} finally {
+			rlock.unlock
+		}
+		if (ctx === null && creator !== null) {
+			val wlock = this.innerContextLock.writeLock
+			wlock.lock
+			try {
+				ctx = this.innerContextInstance
+				if (ctx === null) {
+					this.innerContextInstance = creator.apply(this)
+					ctx = this.innerContextInstance
+				}
+			} finally {
+				wlock.unlock
+			}
+		}
+		return ctx
 	}
 
 	/** Replies the address of the agent into the default space of its inner context.
@@ -367,12 +427,28 @@ final class AgentLife {
 	 * @return the address, never {@code null}.
 	 */
 	def getAddressInInnerDefaultSpace : Address {
-		var adr : Address = this.innerSpaceAddress
+		val rlock = this.innerSpaceAddressLock.readLock
+		var adr : Address
+		rlock.lock
+		try {
+			adr = this.innerSpaceAddress
+		} finally {
+			rlock.unlock
+		}
 		if (adr === null) {
-			var aid = this.^agent.ID
-			var spaceid = new SpaceID(aid, UUID::randomUUID, typeof(OpenEventSpaceSpecification))
-			adr = new Address(spaceid, aid);
-			this.innerSpaceAddress = adr
+			val wlock = this.innerSpaceAddressLock.writeLock
+			wlock.lock
+			try {
+				adr = this.innerSpaceAddress
+				if (adr === null) {
+					var aid = this.^agent.ID
+					var spaceid = new SpaceID(aid, UUID::randomUUID, typeof(OpenEventSpaceSpecification))
+					adr = new Address(spaceid, aid);
+					this.innerSpaceAddress = adr
+				}
+			} finally {
+				wlock.unlock
+			}
 		}
 		return adr
 	}

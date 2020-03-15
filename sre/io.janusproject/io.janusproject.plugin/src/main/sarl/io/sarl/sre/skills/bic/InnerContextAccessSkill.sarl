@@ -30,10 +30,11 @@ import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.services.context.ContextService
 import io.sarl.sre.services.lifecycle.AgentLife
 import java.util.UUID
+import java.util.concurrent.ConcurrentSkipListSet
 import javax.inject.Inject
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
-import java.util.concurrent.ConcurrentSkipListSet
+import java.util.concurrent.atomic.AtomicBoolean
 
 /** 
  * SRE implementation of SARL's {@link InnerContextAccess} built-in capacity.
@@ -84,24 +85,20 @@ skill InnerContextAccessSkill extends Skill implements InnerContextAccess {
 
 	def getInnerContext : AgentContext {
 		val myself = owner
-		var newContext = false
+		var newContext = new AtomicBoolean(false)
 		var life = getLife(myself)
-		var context = life.innerContext
-		if (context === null) {
-			context = life.innerContext
-			if (context === null) {
-				var spaceId = life.addressInInnerDefaultSpace.spaceID
-				context = this.contextService.createContext(spaceId.contextID, spaceId.ID, myself)
-				life.innerContext = context
-				newContext = true
-			}
-		}
-		if (newContext) {
+		var context = life.getInnerContext [
+			var spaceId = it.addressInInnerDefaultSpace.spaceID
+			var nctx= this.contextService.createContext(spaceId.contextID, spaceId.ID, myself)
+			newContext.set(true)
+			return nctx
+		]
+		if (newContext.get) {
 			// Register the agent in the default space
 			var ^space = context.defaultSpace
 			// Unregister the agent from the default space
 			val listener = associatedEventBusListener
-			^space.register(listener)
+			^space.register(listener, false)
 		}
 		return context
 	}
@@ -121,58 +118,44 @@ skill InnerContextAccessSkill extends Skill implements InnerContextAccess {
 	}
 
 	def isInnerDefaultSpace(spaceID : SpaceID) : boolean {
-		val context = getLife(owner).innerContext
+		val context = getLife(owner).getInnerContext(null)
 		context !== null && spaceID == context.defaultSpace.spaceID
 	}
 
 	def isInnerDefaultSpace(spaceID : UUID) : boolean {
-		val context = getLife(owner).innerContext
+		val context = getLife(owner).getInnerContext(null)
 		context !== null && spaceID == context.defaultSpace.spaceID.ID
 	}
 
 	def getMemberAgentCount : int {
-		val context = getLife(owner).innerContext
+		val context = getLife(owner).getInnerContext(null)
 		if (context !== null) {
-			val participants = context.defaultSpace.participants
-			assert participants !== null
-			var count : int
-
-			assert !context.rootContext, "An inner context cannot be a root context"
-			assert participants.contains(
-				owner.ID), "The agent must be a participant of its inner conntext's default space"
-			count = participants.size - 1
-
-			return count
+			val nb = context.defaultSpace.numberOfStrongParticipants
+			assert nb >= 1, "The agent must be a participant of its inner conntext's default space"
+			return nb - 1
 		}
 		return 0
 	}
 
 	def getMemberAgents : ConcurrentSkipListSet<UUID> {
-		val context = getLife(owner).innerContext
+		val context = getLife(owner).getInnerContext(null)
 		if (context !== null) {
-			val participants : ConcurrentSkipListSet<UUID> = context.defaultSpace.participants
-			assert participants !== null
-			var filtered = new ConcurrentSkipListSet<UUID>()
-
-			for(p : participants) {
-				if (p != this.owner.ID) {
-					filtered.add(p)
+			var filtered = new ConcurrentSkipListSet
+			val oid = this.owner.ID
+			context.defaultSpace.forEachStrongParticipant [
+				if (it != oid) {
+					filtered.add(it)
 				}
-			}
-			
+			]
 			return filtered
 		}
-		return new ConcurrentSkipListSet < UUID > ()
+		return new ConcurrentSkipListSet
 	}
 
 	def hasMemberAgent : boolean {
-		val context = getLife(owner).innerContext
+		val context = getLife(owner).getInnerContext(null)
 		if (context !== null) {
-			val participants = context.defaultSpace.participants
-			assert participants !== null
-
-			return (participants.size > 1) || ((participants.size == 1) && (!participants.contains(this.owner.ID)))
-
+			return !context.defaultSpace.isPseudoEmpty(owner.ID)
 		}
 		return false;
 	}

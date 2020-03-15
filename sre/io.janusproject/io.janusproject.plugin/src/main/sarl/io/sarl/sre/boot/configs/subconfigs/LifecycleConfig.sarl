@@ -70,29 +70,12 @@ class LifecycleConfig {
 	public static val CREATE_AGENT_WITH_INJECTOR_VALUE = false
 
 	/** 
-	 * Name of property that indicates the minimal duration (in millis) between the failing of
-	 * an agent start and the stopping of the SRE kernel, if the failing agent is
-	 * the first/last one.
-	 * 
-	 * @see #KERNEL_STOP_DELAY_ON_SPAWN_VALUE
-	 */
-	public static val KERNEL_STOP_DELAY_ON_SPAWN_NAME = PREFIX + ".kernelStopDelayOnSpawn"
-
-	/** 
-	 * Indicates the minimal duration (in millis) between the failing of
-	 * an agent start and the stopping of the SRE kernel, if the failing agent is
-	 * the first/last one.
-	 * 
-	 * @see #KERNEL_STOP_DELAY_ON_SPAWN_NAME
-	 */
-	public static val KERNEL_STOP_DELAY_ON_SPAWN_VALUE = 500
-
-	/** 
 	 * Name of property that indicates the maximal number of agents that could be spawn by a single
 	 * thread of the lifecycle service. This value is used to create threads that are spawning
 	 * blocks of agents.
 	 * 
 	 * @see #AGENT_SPAWNING_COUNT_PER_THREAD_VALUE
+	 * @since 0.11
 	 */
 	public static val AGENT_SPAWNING_COUNT_PER_THREAD_NAME = PREFIX + ".agentSpawningCountPerThread"
 
@@ -102,6 +85,7 @@ class LifecycleConfig {
 	 * blocks of agents.
 	 * 
 	 * @see #AGENT_SPAWNING_COUNT_PER_THREAD_NAME
+	 * @since 0.11
 	 */
 	public static val AGENT_SPAWNING_COUNT_PER_THREAD_VALUE = 128
 
@@ -109,9 +93,6 @@ class LifecycleConfig {
 
 	@Accessors(PUBLIC_GETTER)
 	var createAgentsWithInjector : boolean = CREATE_AGENT_WITH_INJECTOR_VALUE
-
-	@Accessors(PUBLIC_GETTER)
-	var kernelStopDelayOnSpawn : int = KERNEL_STOP_DELAY_ON_SPAWN_VALUE
 
 	@Accessors(PUBLIC_GETTER)
 	var agentSpawningCountPerThread : int = AGENT_SPAWNING_COUNT_PER_THREAD_VALUE
@@ -124,18 +105,6 @@ class LifecycleConfig {
 	@BQConfigProperty("Is agents created with the injection mechanism")
 	def setCreateAgentsWithInjector(useInjector : boolean) : void {
 		this.createAgentsWithInjector = useInjector
-	}
-
-	/** Change the minimal duration (in millis) between the failing of
-	 * an agent start and the stopping of the SRE kernel, if the failing agent is
-	 * the first/last one.
-	 * 
-	 * @param duration the duration in millis.
-	 * @since 0.11
-	 */
-	@BQConfigProperty("Delay to stop the kernel after an agent spawn has failed")
-	def setKernelStopDelayOnSpawn(duration : int) : void {
-		this.kernelStopDelayOnSpawn = if (duration > 0) duration else 0
 	}
 
 	/** Change the maximal number of agents that could be spawn by a single
@@ -165,8 +134,6 @@ class LifecycleConfigModule extends AbstractModule {
 
 	static val INJECTAGENT_OPTION = "inject-agents"
 
-	static val KERNELSTOPTIMEOUTONSPAWN_OPTION = "kernel-stop-delay-on-spawn"
-
 	static val AGENTSPAWNINGCOUNTPERTHREAD = "agent-spawns-per-thread"
 	
 	override configure : void {
@@ -176,13 +143,6 @@ class LifecycleConfigModule extends AbstractModule {
 				MessageFormat::format(Messages::LifecycleConfigModule_0, CREATE_AGENT_WITH_INJECTOR_VALUE))
 			.valueRequired(Messages::LifecycleConfigModule_1).build).mapConfigPath(INJECTAGENT_OPTION,
 			CREATE_AGENT_WITH_INJECTOR_NAME)
-
-		VariableDecls::extend(binder).declareVar(KERNEL_STOP_DELAY_ON_SPAWN_NAME)
-		binder.extend.addOption(
-			OptionMetadata::builder(KERNELSTOPTIMEOUTONSPAWN_OPTION,
-				MessageFormat::format(Messages::LifecycleConfigModule_2, KERNEL_STOP_DELAY_ON_SPAWN_VALUE)).valueRequired(
-				Messages::LifecycleConfigModule_3).build).mapConfigPath(KERNELSTOPTIMEOUTONSPAWN_OPTION,
-			KERNEL_STOP_DELAY_ON_SPAWN_NAME)
 
 		VariableDecls::extend(binder).declareVar(AGENT_SPAWNING_COUNT_PER_THREAD_NAME)
 		binder.extend.addOption(

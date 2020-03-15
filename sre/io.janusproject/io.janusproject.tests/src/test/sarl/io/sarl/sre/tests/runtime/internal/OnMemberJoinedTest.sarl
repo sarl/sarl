@@ -22,22 +22,31 @@
 package io.sarl.sre.tests.runtime.internal
 
 import io.sarl.sre.test.framework.context.SreRunContext
-import io.sarl.sre.test.framework.exception.SreTimeoutException
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.^extension.SreRunExtension
+import io.sarl.sre.tests.runtime.internal.mocks.Bye
+import io.sarl.sre.tests.runtime.internal.mocks.Child2Agent0
+import io.sarl.sre.tests.runtime.internal.mocks.ChildAgent0
 import io.sarl.sre.tests.runtime.internal.mocks.RootAgent0
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.util.UUID
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
 import static io.sarl.sre.test.framework.Constants.*
 
 import static extension io.sarl.tests.api.tools.TestAssertions.*
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.Disabled
+import io.sarl.sre.services.probing.ProbeService
+import io.sarl.lang.core.AgentContext
+import static extension org.junit.jupiter.api.Assertions.*
+import io.sarl.sre.services.namespace.NamespaceService
+import io.sarl.lang.core.Agent
+import io.sarl.lang.core.SREutils
+import io.sarl.core.InnerContextAccess
+import io.sarl.lang.annotation.PrivateAPI
 
 /**
  * @author $Author: sgalland$
@@ -55,19 +64,46 @@ import org.junit.jupiter.api.Disabled
 @Tag("run")
 class OnMemberJoinedTest {
 
+	//@RepeatedTest(5)
 	@Test
-	@Disabled
+	@DisplayName("run")
+	@PrivateAPI(isCallerOnly = true)
 	def run(extension rc : SreRunContext) {
-		typeof(SreTimeoutException).whenException [
-			typeof(RootAgent0).runSre(VERY_SHORT_TIMEOUT)
-		].verify [
-			allResults.assertContains(
-				"ROOT: spawned ChildAgent0",
-				"ROOT: joined Child2Agent0 in default space",
-				"ROOT: joined ChildAgent0 in inner space",
-				"ROOT: joined Child2Agent in inner space",
-				"CHILD1: joined Child2Agent0")
+		var kern = setupTheSreKernel(null, null)
+		
+		val id0 = UUID::randomUUID
+		waitForAgentSpawned(id0) [
+			kern.startAgentWithID(typeof(RootAgent0), id0, agentInitializationParameters)
 		]
+
+		val id1 = UUID::randomUUID
+		waitForAgentSpawned(id1) [
+			kern.startAgentWithID(typeof(ChildAgent0), id1, agentInitializationParameters)
+		]
+		
+		val names = kern.getService(typeof(NamespaceService))
+		val ag = names.findObject("agent:" + id0, typeof(Agent))
+		ag.assertNotNull
+		var access = SREutils::getInternalSkill(ag, typeof(InnerContextAccess))
+		access.assertNotNull
+		var ctx = access.innerContext
+		ctx.assertNotNull
+
+		val id2 = UUID::randomUUID
+		waitForAgentSpawned(id2) [
+			kern.startAgentWithID(typeof(Child2Agent0), id2, buildAgentInitializationParameters(ctx))
+		]
+
+		rootContext.defaultSpace.emit(UUID::randomUUID, new Bye)
+		
+		waitForTheKernel(STANDARD_TIMEOUT)
+
+		allResults.assertContains(
+			"ROOT: spawned ChildAgent0",
+			"ROOT: joined Child2Agent0 in default space",
+			"ROOT: joined ChildAgent0 in inner space",
+			"ROOT: joined Child2Agent in inner space",
+			"CHILD1: joined Child2Agent0")
 	}
 
 }

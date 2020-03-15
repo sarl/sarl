@@ -110,8 +110,8 @@ class OpenLocalEventSpaceTest {
 			].when(this.executor).executeAsap(typeof(Runnable).any)
 	}
 
-	private def doRegister : void {
-		this.^space.register(this.listener)
+	private def doRegister(weak : boolean) : void {
+		this.^space.register(this.listener, weak)
 	}
 
 	private def doUnregister : void {
@@ -119,22 +119,32 @@ class OpenLocalEventSpaceTest {
 	}
 
 	@Test
-	def getAddressUUID {
+	def getAddressUUID_false {
 		assertNull(this.^space.getAddress(this.listener.ID))
-		doRegister
+		doRegister(false)
 		assertEquals(this.address, this.^space.getAddress(this.listener.ID))
 		doUnregister
 		assertNull(this.^space.getAddress(this.listener.ID))
 	}
 
 	@Test
-	def register {
+	def getAddressUUID_true {
+		assertNull(this.^space.getAddress(this.listener.ID))
+		doRegister(true)
+		assertEquals(this.address, this.^space.getAddress(this.listener.ID))
+		doUnregister
+		assertNull(this.^space.getAddress(this.listener.ID))
+	}
+
+	
+	@Test
+	def register_true {
 		var ^event = typeof(Event).mock
 		when(^event.source).thenReturn(this.address)
 		this.^space.emit(null, ^event, null)
 		verifyNoMoreInteractions(this.listener)
 
-		doRegister
+		doRegister(true)
 
 		^event = typeof(Event).mock
 		when(^event.source).thenReturn(this.address)
@@ -147,13 +157,32 @@ class OpenLocalEventSpaceTest {
 	}
 
 	@Test
-	def unregister {
+	def register_false {
 		var ^event = typeof(Event).mock
 		when(^event.source).thenReturn(this.address)
 		this.^space.emit(null, ^event, null)
 		verifyNoMoreInteractions(this.listener)
 
-		doRegister
+		doRegister(false)
+
+		^event = typeof(Event).mock
+		when(^event.source).thenReturn(this.address)
+		this.^space.emit(null, ^event, null)
+
+		var argument = ArgumentCaptor::forClass(typeof(Event))
+
+		this.listener.verify.receiveEvent(argument.capture)
+		assertSame(^event, argument.value)
+	}
+	
+	@Test
+	def unregister_true {
+		var ^event = typeof(Event).mock
+		when(^event.source).thenReturn(this.address)
+		this.^space.emit(null, ^event, null)
+		verifyNoMoreInteractions(this.listener)
+
+		doRegister(true)
 		doUnregister
 
 		^event = typeof(Event).mock
@@ -166,8 +195,28 @@ class OpenLocalEventSpaceTest {
 	}
 
 	@Test
-	def destoryableSpaceEvent {
-		doRegister
+	def unregister_false {
+		var ^event = typeof(Event).mock
+		when(^event.source).thenReturn(this.address)
+		this.^space.emit(null, ^event, null)
+		verifyNoMoreInteractions(this.listener)
+
+		doRegister(false)
+		doUnregister
+
+		^event = typeof(Event).mock
+		when(^event.source).thenReturn(this.address)
+		this.^space.emit(null, ^event, null)
+
+		var argument = ArgumentCaptor::forClass(typeof(Event))
+		this.listener.verify(never).receiveEvent(argument.capture)
+
+	}
+
+	
+	@Test
+	def destoryableSpaceEvent_true {
+		doRegister(true)
 		var listener = typeof(SpaceListener).mock
 		this.^space.spaceListenerIfNone = listener
 		doUnregister
@@ -175,5 +224,16 @@ class OpenLocalEventSpaceTest {
 		listener.verify.destroyableSpace(dspace.capture)
 		assertSame(this.^space, dspace.value)
 	}
-	
+
+	@Test
+	def destoryableSpaceEvent_false {
+		doRegister(false)
+		var listener = typeof(SpaceListener).mock
+		this.^space.spaceListenerIfNone = listener
+		doUnregister
+		var dspace = ArgumentCaptor::forClass(typeof(Space))
+		listener.verify.destroyableSpace(dspace.capture)
+		assertSame(this.^space, dspace.value)
+	}
+
 }

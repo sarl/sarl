@@ -143,7 +143,7 @@ class ExecutorServiceModule extends AbstractModule {
 	 */
 	@Provides
 	@Singleton
-	def provideExecutorService(configuration : Provider<SreConfig>,
+	def provideJvmExecutorService(configuration : Provider<SreConfig>,
 		rejectedExecutionHandler : Provider<RejectedExecutionHandler>) : ExecutorService {
 		var executor : ExecutorService = null
 		var cfg = configuration.get.services.executors
@@ -181,7 +181,11 @@ class ExecutorServiceModule extends AbstractModule {
 		var executor = Executors.newScheduledThreadPool(max)		
 		if (rejectedExecutionHandler !== null && executor instanceof ThreadPoolExecutor) {
 			(executor as ThreadPoolExecutor).rejectedExecutionHandler = rejectedExecutionHandler.get;
-			(executor as ScheduledThreadPoolExecutor).removeOnCancelPolicy = true
+		}
+		if (executor instanceof ScheduledThreadPoolExecutor) {
+			executor.removeOnCancelPolicy = true
+			//executor.continueExistingPeriodicTasksAfterShutdownPolicy = false
+			//executor.executeExistingDelayedTasksAfterShutdownPolicy = false
 		}
 		return executor
 	}

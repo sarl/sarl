@@ -19,13 +19,9 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.tests.runtime.services.lifecycle.mocks
+package io.sarl.sre.tests.units.services.context.mocks
 
-import io.sarl.core.Initialize
-import io.sarl.core.Lifecycle
-import io.sarl.core.Schedules
-import io.sarl.sre.test.framework.skills.TestingCapacity
-import io.sarl.sre.test.framework.skills.TestingSkill
+import io.sarl.lang.core.SpaceSpecification
 
 /**
  * @author $Author: sgalland$
@@ -33,16 +29,6 @@ import io.sarl.sre.test.framework.skills.TestingSkill
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent FakeAgent3 {
-
-	uses Schedules, Lifecycle
-
-	uses TestingCapacity
-
-	on Initialize {
-		setSkill(new TestingSkill(occurrence))
-		addResult("SPAWNED#" + occurrence.parameters.get(1))
-		in(500) [killMe]
-	}
+interface SpaceMockSpecification extends SpaceSpecification<SpaceMock> {
 
 }
