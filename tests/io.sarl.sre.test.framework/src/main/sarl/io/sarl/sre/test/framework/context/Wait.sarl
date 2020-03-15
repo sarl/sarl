@@ -23,9 +23,10 @@ package io.sarl.sre.test.framework.context
 
 import io.sarl.sre.test.framework.exception.SreTimeoutException
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicReference
+import org.eclipse.xtend.lib.annotations.ToString
 
 import static io.sarl.sre.test.framework.Constants.*
-import org.eclipse.xtend.lib.annotations.ToString
 
 /**
  * OBject that enables to wait for a specific thing.
@@ -41,23 +42,33 @@ class Wait {
 	
 	val lock : AtomicBoolean
 
-	new (lock : AtomicBoolean) {
+	val errorContainer : AtomicReference<Throwable>
+
+	package new (lock : AtomicBoolean, errorContainer : AtomicReference<Throwable>) {
 		this.lock = lock
+		this.errorContainer = errorContainer
 	}
 
 	/** Wait. */
 	def doWait(timeout : int = STANDARD_TIMEOUT) : void {
 		if (timeout > 0) {
-			val endTime = System::currentTimeMillis + timeout
-			while (!this.lock.get && System::currentTimeMillis <= endTime) {
+			val endTime = System::currentTimeMillis + timeout.seconds
+			while (!this.lock.get && this.errorContainer.get === null && System::currentTimeMillis <= endTime) {
 				Thread::sleep(100)
 			}
-			if (!this.lock.get) {
+			val directException = this.errorContainer.get
+			if (directException !== null) {
+				throw directException
+			} else if (!this.lock.get) {
 				throw new SreTimeoutException
 			}
 		} else {
-			while (!this.lock.get) {
+			while (!this.lock.get && this.errorContainer.get === null) {
 				Thread::sleep(100)
+			}
+			val directException = this.errorContainer.get
+			if (directException !== null) {
+				throw directException
 			}
 		}
 	}

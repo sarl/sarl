@@ -46,12 +46,12 @@ import java.util.logging.LogRecord
 import org.arakhne.afc.bootique.log4j.configs.Log4jIntegrationConfig
 import org.arakhne.afc.bootique.variables.VariableNames
 import org.eclipse.xtend.lib.annotations.Accessors
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
 import org.opentest4j.AssertionFailedError
 
 import static org.junit.jupiter.api.Assertions.*
 
 import static extension org.junit.jupiter.api.Assertions.assertEquals
-import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
 
 /**
  * Context for running the SRE. This context is thread-safe.
@@ -85,22 +85,27 @@ class SreRunContext {
 	@SuppressWarnings("raw_type")
 	val eventListeners = new CopyOnWriteArrayList<Procedure1>
 
-	
-	/** Replies the identifier of the lastly booted agent.
-	 * 
-	 * @return the identifier of the agent, or {@code null} if no agent was booted.
-	 */
-	def getBootAgent : UUID {
-		this.bootstrap.bootAgentIdentifier
+	@Accessors(PUBLIC_GETTER)
+	volatile var bootAgentId : UUID
+
+	def getBootOrFirstAgentId : UUID {
+		var id = getBootAgentId
+		if (id === null) {
+			val ks = this.globalResults.keys
+			if (ks.hasMoreElements) {
+				id = ks.nextElement
+			}
+		}
+		return id
 	}
 
 	private def key(agentId : UUID) : UUID {
 		var id = agentId
 		if (id === null) {
-			id = bootAgent
+			id = getBootAgentId
 		}
 		if (id === null) {
-			return UUID::randomUUID
+			throw new IllegalArgumentException
 		}
 		return id
 	}
@@ -108,7 +113,8 @@ class SreRunContext {
 	/** 
 	 * Replies result at the given index of the run of the agent.
 	 * 
-	 * @param agentId the identifier of the agent.
+	 * @param agentId the identifier of the agent. If {@code null}, the value replied by {@link #getBootAgentId()}
+	 * is used.
 	 * @param type - the type of the result.
 	 * @param index - the index of the result.
 	 * @return the value; or {@code null} if no result.
@@ -128,7 +134,8 @@ class SreRunContext {
 	/** 
 	 * Replies first result of the given type of the run of the agent.
 	 * 
-	 * @param agentId the identifier of the agent.
+	 * @param agentId the identifier of the agent. If {@code null}, the value replied by {@link #getBootAgentId()}
+	 *    is used.
 	 * @param type - the type of the result.
 	 * @return the value; or {@code null} if no result.
 	 * @since 0.11
@@ -151,6 +158,8 @@ class SreRunContext {
 
 	/** Replies the number of results that are provided by the agent.
 	 * 
+	 * @param agentId the identifier of the agent. If {@code null}, the value replied by {@link #getBootAgentId()}
+	 * is used.
 	 * @return the number of results.
 	 */
 	def getNumberOfResults(agentId : UUID = null) : int {
@@ -164,18 +173,20 @@ class SreRunContext {
 	/** 
 	 * Test if the number of results provided by the SRE platform is equal to the given number.
 	 * 
-	 * @param expected - the expected number of results.
+	 * @param agentId the identifier of the agent for which the results must be retrieved.
+	 * @param expected - the expected number of results. If {@code null}, the value replied by {@link #getBootAgentId()}
+	 * is used.
 	 */
-	def assertNumberOfResults(expected : int) {
-		expected.assertEquals(getNumberOfResults)["Invalid number of results provided by the platform."]
+	def assertNumberOfResults(expected : int, agentId : UUID = null) {
+		expected.assertEquals(agentId.numberOfResults)["Invalid number of results provided by the platform."]
 	}
 
 	/** 
 	 * Replies result for the boot agent or the agent with the given identifier.
 	 * 
 	 * @param agentId the identifier of the agent for which the results must be retrieved.
-	 * If {@code null} or not provided, the results associated to the boot agent are
-	 * replied.
+	 * If {@code null}, the value replied by {@link #getBootAgentId()}
+	 * is used.
 	 * @return the results.
 	 */
 	def getResults(agentId : UUID = null) : List<Object> {
@@ -190,8 +201,8 @@ class SreRunContext {
 	 * Add a value to the list of results.
 	 * 
 	 * @param agentId the identifier of the agent for which the results must be retrieved.
-	 * If {@code null} or not provided, the results associated to the boot agent are
-	 * replied.
+	 * If {@code null}, the value replied by {@link #getBootAgentId()}
+	 * is used.
 	 * @param value the new value.
 	 */
 	def addResult(agentId : UUID = null, value : Object) : void {
@@ -199,14 +210,14 @@ class SreRunContext {
 		var res = this.globalResults.computeIfAbsent(id) [
 			new CopyOnWriteArrayList
 		]
-		res += value
+		res.add(value)
 	}
 
 	/** 
 	 * Replies all the results for all the agents.
 	 * @return the results.
 	 */
-	def getAllResultsPerAgent() : ConcurrentHashMap<UUID, CopyOnWriteArrayList<Object>> {
+	def getAllResultsPerAgent : ConcurrentHashMap<UUID, CopyOnWriteArrayList<Object>> {
 		return globalResults
 	}
 
@@ -214,7 +225,7 @@ class SreRunContext {
 	 * Replies all the results for all the agents.
 	 * @return the results.
 	 */
-	def getAllResults() : List<Object> {
+	def getAllResults : List<Object> {
 		var all = newArrayList
 		for (values : this.globalResults.values) {
 			all.addAll(values)
@@ -231,9 +242,24 @@ class SreRunContext {
 	}
 
 	/** 
+	 * Replies the initialization parameters for the agents.
+	 *
+	 * @param params the additional parameters
+	 * @return the value replied by {@link #getAgentInitializationParameters} followed by the arguments.
+	 */
+	def buildAgentInitializationParameters(params : Object*) : Object[] {
+		val t = <Object>newArrayOfSize(params.length + 1)
+		t.set(0, this)
+		System::arraycopy(params, 0, t, 1, params.length)
+		return t
+	}
+
+	
+	/** 
 	 * Replies the index of the first result of the given type starting at the given index.
 	 * 
-	 * @param agentId the identifier of the agent.
+	 * @param agentId the identifier of the agent. If {@code null}, the value replied by {@link #getBootAgentId()}
+	 * is used.
 	 * @param type - the type of the result.
 	 * @param fromIndex - the start index.
 	 * @return the index; or <code>-1</code> if not found.
@@ -285,7 +311,7 @@ class SreRunContext {
 	/** Assert that the context has no error on its logs.
 	 */
 	def assertNoErrorLogInResults {
-		for (obj : getResults(null)) {
+		for (obj : allResults) {
 			if (obj instanceof LogRecord) {
 				throw new AssertionFailedError("Unexpected error log", "", obj.toString)
 			}
@@ -333,13 +359,18 @@ class SreRunContext {
 	 */
 	def setupTheSreKernel(loggingLevel : Level, trackMode : LogTrackingMode) : SREBootstrap {
 		assertNull(this.rootContext, "SRE already launched.")
+
 		val tm = trackMode ?: LogTrackingMode::FAIL_ON_ERROR
 		val lvl = loggingLevel ?: Constants::TEST_LOGGING_LEVEL
 		val glvl = org.arakhne.afc.bootique.log4j.configs.Level::valueOf(lvl)
 		System::setProperty(VariableNames::toPropertyName(Log4jIntegrationConfig::LEVEL), glvl.name)
+
 		this.globalResults.clear
+		this.bootAgentId = null
+
 		this.bootstrap = SRE::getBootstrap
 		this.rootContext = this.bootstrap.startWithoutAgent
+
 		val logger = this.bootstrap.kernelLogger
 		switch (tm) {
 			case SILENT: {
@@ -355,7 +386,7 @@ class SreRunContext {
 				for (handler : logger.handlers) {
 					logger.removeHandler(handler)
 				}
-				logger.addHandler(RESULT_FILLER_LOG_HANDLER)
+				logger.addHandler(LOG_IN_RESULTS_LOG_HANDLER)
 			}
 			case FAIL_ON_ERROR: {
 				for (handler : logger.handlers) {
@@ -367,6 +398,13 @@ class SreRunContext {
 				logger.addHandler(FAILURE_LOG_HANDLER)
 			}
 		}
+
+		onAgentSpawned [
+			if (this.bootAgentId === null) {
+				this.bootAgentId = it.agentID
+			}
+		]
+
 		return this.bootstrap
 	}
 
@@ -381,7 +419,8 @@ class SreRunContext {
 		}
 	}
 
-	val RESULT_FILLER_LOG_HANDLER = new Handler {
+	val LOG_IN_RESULTS_LOG_HANDLER = new Handler {
+
 		override publish(record : LogRecord) {
 			if (record.level === Level.SEVERE) {
 				addResult(record)
@@ -393,6 +432,7 @@ class SreRunContext {
 
 		override close {
 		}
+
 	}
 
 	val FAILURE_LOG_HANDLER = new Handler {
@@ -434,32 +474,41 @@ class SreRunContext {
 	 */
 	@SuppressWarnings("discouraged_reference")
 	def waitForTheKernel(timeout : int, predicate : (ConcurrentHashMap<UUID, CopyOnWriteArrayList<Object>>)=>boolean) {
-		var endTime : long
-		if (timeout >= 0) {
-			endTime = System::currentTimeMillis() + timeout.seconds
-		} else {
-			endTime = -1
-		}
-		var isSreRunning = this.bootstrap.running
-		while (this.directFailureCause.get === null && isSreRunning && (endTime == -1 || System.currentTimeMillis() <= endTime)) {
-			isSreRunning = this.bootstrap.isRunning() || (predicate !== null && (!(predicate.apply(this.globalResults))))
-			Thread.sleep(100)
-		}
-		val directException = this.directFailureCause.get
-		if (directException !== null) {
-			throw directException
-		} else if (isSreRunning) {
-			var cause : Throwable = null
-			for (result : allResults) {
-				if (result instanceof Throwable) {
-					cause = result
-					break
+		val th = Thread::currentThread
+		val oldName = th.name
+		try {
+			th.name = "Wait-SRE-Test-Run"
+			var endTime : long
+			if (timeout >= 0) {
+				endTime = System::currentTimeMillis() + timeout.seconds
+			} else {
+				endTime = -1
+			}
+			var isSreRunning = this.bootstrap.running
+			while (this.directFailureCause.get === null && isSreRunning &&
+				(endTime == -1 || System.currentTimeMillis() <= endTime)) {
+				isSreRunning = this.bootstrap.isRunning() ||
+					(predicate !== null && (!(predicate.apply(this.globalResults))))
+				Thread.sleep(100)
+			}
+			val directException = this.directFailureCause.get
+			if (directException !== null) {
+				throw directException
+			} else if (isSreRunning) {
+				var cause : Throwable = null
+				for (result : allResults) {
+					if (result instanceof Throwable) {
+						cause = result
+						break
+					}
 				}
+				if (cause !== null) {
+					throw new SreTimeoutException(cause)
+				}
+				throw new SreTimeoutException
 			}
-			if (cause !== null) {
-				throw new SreTimeoutException(cause)
-			}
-			throw new SreTimeoutException
+		} finally {
+			th.name = oldName
 		}
 	}
 
@@ -509,7 +558,8 @@ class SreRunContext {
 					SreRunContext.this.contextId
 				}
 
-			})
+			},
+			true)
 		}
 	}
 
@@ -523,17 +573,28 @@ class SreRunContext {
 
 	/** Register a listener on agent spawned that is waiting for a specific agent.
 	 * 
+	 * <p>If the {@code code} is provided, this function executes the {@code code}
+	 * and wait for the spawning of the agent with the given {@code id}.
+	 * If the {@code code} is {@code null}, the returned object should enable to wait for
+	 * the agent spawned event.
+	 * 
 	 * @param id the identifier of the agent to wait for.
+	 * @param code the code to run and wait for the agent spawned..
 	 * @return the object that permits to wait for the spawn.
 	 */
-	def waitForAgentSpawned(id : UUID) : Wait {
+	def waitForAgentSpawned(id : UUID, code : (UUID)=>void = null) : Wait {
 		val lock = new AtomicBoolean
 		onAgentSpawned [
 			if (it.agentID == id) {
 				lock.set(true)
 			}
 		]
-		return new Wait(lock)
+		val w = new Wait(lock, this.directFailureCause)
+		if (code !== null) {
+			code.apply(id)
+			w.doWait
+		}
+		return w
 	}
 
 }

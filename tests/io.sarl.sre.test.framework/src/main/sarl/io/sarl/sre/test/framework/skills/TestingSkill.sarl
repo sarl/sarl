@@ -58,15 +58,20 @@ skill TestingSkill implements TestingCapacity {
 		this.initializationParameters = ^event.parameters
 		this.context = this.initializationParameters.get(0) as SreRunContext
 		this.spawner = ^event.spawner
+		assert this.context !== null
 	}
 	
 	override uninstall {
 		synchronized (this) {
-			if (this.context !== null) {
-				val id = owner.ID
-				for (r : this.results) {
-					this.context.addResult(id, r)
+			val ctx = this.context
+			if (ctx !== null) {
+				synchronized (ctx) {
+					val id = owner.ID
+					for (r : this.results) {
+						ctx.addResult(id, r)
+					}
 				}
+				this.results.clear
 			}
 		}
 	}
@@ -113,11 +118,9 @@ skill TestingSkill implements TestingCapacity {
 			if (values === null || values.length == 0) {
 				return #[this.context]
 			}
-			var l = newArrayList()
-			var ll : List<Object> = values
-			l.add(this.context)
-			l.addAll(ll)
-			var t : Object[] = l
+			var t : Object[] = newArrayOfSize(values.length + 1)
+			t.set(0, this.context)
+			System::arraycopy(values, 0, t, 1, values.length)
 			return t
 		}
 	}
