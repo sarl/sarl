@@ -289,9 +289,9 @@ final event MemberJoined {
 	 * @param agentID the identifier of the agent.
 	 * @param agentType fully qualified name of the type of the agent.
 	 */
-	new (source : Address, contextID : UUID, agentID : UUID, agentType : String) {
+	new (source : Address, agentID : UUID, agentType : String) {
 		setSource(source)
-		this.parentContextID = contextID
+		this.parentContextID = source.UUID
 		this.agentID = agentID
 		this.agentType = agentType
 	}
@@ -329,13 +329,12 @@ final event MemberExcluded {
 	/** Construct the event.
 	 *
 	 * @param source the address of the emitter.
-	 * @param contextID the identifier of the context.
 	 * @param agentID the identifier of the agent.
 	 * @param agentType fully qualified name of the type of the agent.
 	 */
-	new (source : Address, contextID : UUID, agentID : UUID, agentType : String) {
+	new (source : Address, agentID : UUID, agentType : String) {
 		setSource(source)
-		this.parentContextID = contextID
+		this.parentContextID = source.UUID
 		this.agentID = agentID
 		this.agentType = agentType
 	}
