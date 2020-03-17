@@ -42,14 +42,14 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
-import org.mockito.ArgumentCaptor
 
-import static io.sarl.tests.api.tools.TestAssertions.*
-import static org.junit.jupiter.api.Assertions.*
 import static org.mockito.ArgumentMatchers.*
 import static org.mockito.Mockito.*
 
+import static extension io.sarl.tests.api.tools.TestAssertions.*
 import static extension io.sarl.tests.api.tools.TestMockito.mock
+import static extension org.junit.jupiter.api.Assertions.*
+import static extension org.mockito.ArgumentCaptor.*
 import static extension org.mockito.Mockito.spy
 import static extension org.mockito.Mockito.verify
 
@@ -98,16 +98,16 @@ class ContextMemberEventEmitterTest {
 		when(ctx.defaultSpace).thenReturn(^space)
 		this.emitter.memberJoined(ctx, spaceidobj, this.agentId, typeof(ShortLifeTestingAgent).name)
 
-		var ^event = ArgumentCaptor::forClass(typeof(Event))
-		var scope = ArgumentCaptor::forClass(typeof(Scope))
+		var ^event = typeof(Event).forClass
+		var scope = typeof(Scope).forClass
 		^space.verify.emit(any, ^event.capture, scope.capture)
-		assertNotNull(^event.value)
-		assertInstanceOf(typeof(MemberJoined), ^event.value)
+		^event.value.assertNotNull
+		typeof(MemberJoined).assertInstanceOf(^event.value)
 		var evt = ^event.value as MemberJoined
-		assertNotNull(evt.source)
-		assertEquals(this.agentId, evt.agentID)
-		assertEquals(ctxid, evt.source.UUID)
-		assertNotNull(scope.value)
+		evt.source.assertNotNull
+		this.agentId.assertEquals(evt.agentID)
+		ctxid.assertEquals(evt.source.UUID)
+		scope.value.assertNotNull
 	}
 
 	@Test
@@ -122,14 +122,15 @@ class ContextMemberEventEmitterTest {
 		when(ctx.defaultSpace).thenReturn(^space)
 		this.emitter.memberLeft(ctx, spaceidobj, this.agentId, typeof(ShortLifeTestingAgent).name)
 
-		var ^event = ArgumentCaptor::forClass(typeof(Event))
-		var scope = ArgumentCaptor::forClass(typeof(Scope))
+		var ^event = typeof(Event).forClass
+		var scope = typeof(Scope).forClass
 		^space.verify.emit(any, ^event.capture, scope.capture)
-		assertNotNull(^event.value)
-		assertInstanceOf(typeof(MemberLeft), ^event.value)
+		^event.value.assertNotNull
+		typeof(MemberLeft).assertInstanceOf(^event.value)
 		var evt = ^event.value as MemberLeft
-		assertNotNull(evt.source)
-		assertEquals(this.agentId, evt.agentID)
-		assertNotNull(scope.value)
+		evt.source.assertNotNull
+		this.agentId.assertEquals(evt.agentID)
+		ctxid.assertEquals(evt.source.UUID)
+		scope.value.assertNotNull
 	}
 }
