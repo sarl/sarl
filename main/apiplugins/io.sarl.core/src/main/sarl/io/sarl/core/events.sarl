@@ -173,12 +173,6 @@ final event AgentSpawned {
  */
 final event AgentKilled {
 
-	/** The identifier of the killed agent.
-	 * @deprecated since 0.7, See the event source.
-	 */
-	@Deprecated
-	val agentID : UUID
-
 	/** The fully qualified name of the type of the killed agent.
 	 */
 	val agentType : String
@@ -186,12 +180,10 @@ final event AgentKilled {
 	/** Construct the event.
 	 *
 	 * @param source the address of the emitter.
-	 * @param agentID the identifier of the killed agent.
 	 * @param agentType fully qualified name of the type of the agent.
 	 */
-	new (source : Address, agentID : UUID, agentType : String) {
+	new (source : Address, agentType : String) {
 		setSource(source)
-		this.agentID = agentID
 		this.agentType = agentType
 	}
 
@@ -268,12 +260,6 @@ final event SpaceDestroyed {
  */
 final event MemberJoined {
 
-	/** The identifier of the context that the member joined.
-	 * @deprecated See the event source
-	 */
-	@Deprecated
-	val parentContextID : UUID
-
 	/** The identifier of the agent that has joined the context.
 	 */
 	val agentID : UUID
@@ -291,7 +277,6 @@ final event MemberJoined {
 	 */
 	new (source : Address, agentID : UUID, agentType : String) {
 		setSource(source)
-		this.parentContextID = source.UUID
 		this.agentID = agentID
 		this.agentType = agentType
 	}
@@ -312,12 +297,6 @@ final event MemberJoined {
  */
 final event MemberExcluded {
 
-	/** The identifier of the context from which the member was excluded.
-	 * @deprecated See source
-	 */
-	@Deprecated
-	val parentContextID : UUID
-
 	/** The identifier of the agent that was excluded from the context.
 	 */
 	val agentID : UUID
@@ -334,7 +313,6 @@ final event MemberExcluded {
 	 */
 	new (source : Address, agentID : UUID, agentType : String) {
 		setSource(source)
-		this.parentContextID = source.UUID
 		this.agentID = agentID
 		this.agentType = agentType
 	}

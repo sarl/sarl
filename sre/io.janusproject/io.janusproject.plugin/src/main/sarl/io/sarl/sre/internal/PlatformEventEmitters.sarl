@@ -226,7 +226,8 @@ class AgentEventEmitter implements LifecycleServiceListener {
 		val events = <AgentKilled>newArrayOfSize(size)
 		var i = 0
 		for (contextReference : outerContexts) {
-			val ^event = new AgentKilled(contextReference.addressInDefaultSpace, ^agent.ID, ^agent.class.name)
+			val ^event = new AgentKilled(
+				contextReference.addressInDefaultSpace, ^agent.class.name)
 			spaces.set(i, contextReference.defaultSpace)
 			events.set(i, ^event)
 			i++
