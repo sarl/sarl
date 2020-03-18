@@ -51,7 +51,7 @@ public class AgentKilledTest extends AbstractSarlCoreTest<Event> {
 	 */
 	@Test
 	public void memberCount() {
-		assertEquals(3, this.type.getDeclaredFields().length);
+		assertEquals(2, this.type.getDeclaredFields().length);
 		assertEquals(1, this.type.getDeclaredConstructors().length);
 	}
 
@@ -65,13 +65,6 @@ public class AgentKilledTest extends AbstractSarlCoreTest<Event> {
 	/**
 	 */
 	@Test
-	public void agentID() {
-		assertField("agentID", UUID.class); //$NON-NLS-1$
-	}
-
-	/**
-	 */
-	@Test
 	public void agentType() {
 		assertField("agentType", String.class); //$NON-NLS-1$
 	}
@@ -80,7 +73,7 @@ public class AgentKilledTest extends AbstractSarlCoreTest<Event> {
 	 */
 	@Test
 	public void constructor() {
-		assertConstructor(Address.class, UUID.class, String.class);
+		assertConstructor(Address.class, String.class);
 	}
 
 }
