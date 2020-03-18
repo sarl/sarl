@@ -90,7 +90,15 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 		this.eventTransportService = router
 	}
 
-	protected final def registerToSpace(entity : EventListener, weakParticipant : boolean) : Address {
+	/**
+	 * Register the specified entity on this space
+	 * @param entity - the entity to be registered
+	 * @param weakParticipant - boolean (default true) specifying if the specified entity may prevent the space 
+	 * from the destruction if it is the only remaining entity within this space. 
+	 * A Weak participant will not prevent the space from begin destroyed if it is the only one staying in it, a Strong participant will prevent it.
+	 * A space containing only Weak participants will be destroyed by the SRE Kernel  
+	 */
+	protected final def registerToSpace(entity : EventListener, weakParticipant : boolean = true) : Address {
 		assert entity !== null
 		var id = entity.ID
 		var address = new Address(this.spaceID, id)
