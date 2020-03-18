@@ -51,7 +51,7 @@ public class MemberJoinedTest extends AbstractSarlCoreTest<Event> {
 	 */
 	@Test
 	public void memberCount() {
-		assertEquals(4, this.type.getDeclaredFields().length);
+		assertEquals(3, this.type.getDeclaredFields().length);
 		assertEquals(1, this.type.getDeclaredConstructors().length);
 	}
 
@@ -60,13 +60,6 @@ public class MemberJoinedTest extends AbstractSarlCoreTest<Event> {
 	@Test
 	public void serialVersionUID() {
 		assertField("serialVersionUID", long.class); //$NON-NLS-1$
-	}
-
-	/**
-	 */
-	@Test
-	public void parentContextID() {
-		assertField("parentContextID", UUID.class); //$NON-NLS-1$
 	}
 
 	/**
@@ -87,7 +80,7 @@ public class MemberJoinedTest extends AbstractSarlCoreTest<Event> {
 	 */
 	@Test
 	public void constructor() {
-		assertConstructor(Address.class, UUID.class, UUID.class, String.class);
+		assertConstructor(Address.class, UUID.class, String.class);
 	}
 
 }
