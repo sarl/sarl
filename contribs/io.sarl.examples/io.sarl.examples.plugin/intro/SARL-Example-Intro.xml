@@ -93,7 +93,7 @@
 		</group>
 
  		<group style-id="quick-links" id="quick-links">
- 			<link style-id="content-link" label="Fireworks in SARL"
+ 			<link style-id="content-link" label="Sierpinky's fractals"
  				url="http://org.eclipse.ui.intro/execute?command=org.eclipse.ui.newWizard%28newWizardId%3Dio.sarl.demos.sierpinskyfractals%29"
  				id="JavaFX-SierPinskyFracatals-Sample">
  				<text>
