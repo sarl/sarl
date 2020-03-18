@@ -131,7 +131,7 @@ agent Holon {
 		// Could also worked with
 		// on ParticipantLeft [occurrence.spaceID.contextID == innerContext.ID] { // Being sure the corresponding event comes from my internal context
 		// Event-based holarchy destruction
-		var childID = occurrence.source.UUID
+		var childID = occurrence.agentID // use the source of the event if you switch to Participantleft
 		if (childUIDs.contains(childID)) {
 			childUIDs.remove(childID)
 			if (childUIDs.size <= 0) {
@@ -143,8 +143,9 @@ agent Holon {
 
 	on Destroy {
 		if (isRoot) {
-			/* the top super-holon die, it sends an HolarchyDestroyed to the holoarchy manager
-			 */
+
+				/* the top super-holon die, it sends an HolarchyDestroyed to the holarchy manager
+				 */
 			emit(new HolarchyDestroyed)
 		}
 	}
