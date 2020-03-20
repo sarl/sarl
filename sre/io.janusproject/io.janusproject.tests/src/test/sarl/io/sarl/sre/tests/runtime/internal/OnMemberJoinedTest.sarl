@@ -21,32 +21,28 @@
 
 package io.sarl.sre.tests.runtime.internal
 
+import io.sarl.core.OpenEventSpaceSpecification
 import io.sarl.sre.test.framework.context.SreRunContext
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.^extension.SreRunExtension
 import io.sarl.sre.tests.runtime.internal.mocks.Bye
-import io.sarl.sre.tests.runtime.internal.mocks.Child2Agent0
-import io.sarl.sre.tests.runtime.internal.mocks.ChildAgent0
-import io.sarl.sre.tests.runtime.internal.mocks.RootAgent0
+import io.sarl.sre.tests.runtime.internal.mocks.ByeBye
+import io.sarl.sre.tests.runtime.internal.mocks.MemberJoinedAgent0
+import io.sarl.sre.tests.runtime.internal.mocks.MemberJoinedAgent1
+import io.sarl.sre.tests.runtime.internal.mocks.MemberJoinedAgent2
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Tag
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
 import static io.sarl.sre.test.framework.Constants.*
 
+import static extension io.sarl.sre.tests.framework.SreTestUtilities.*
 import static extension io.sarl.tests.api.tools.TestAssertions.*
-import io.sarl.sre.services.probing.ProbeService
-import io.sarl.lang.core.AgentContext
 import static extension org.junit.jupiter.api.Assertions.*
-import io.sarl.sre.services.namespace.NamespaceService
-import io.sarl.lang.core.Agent
-import io.sarl.lang.core.SREutils
-import io.sarl.core.InnerContextAccess
-import io.sarl.lang.annotation.PrivateAPI
 
 /**
  * @author $Author: sgalland$
@@ -64,34 +60,24 @@ import io.sarl.lang.annotation.PrivateAPI
 @Tag("run")
 class OnMemberJoinedTest {
 
-	//@RepeatedTest(5)
-	@Test
-	@DisplayName("run")
-	@PrivateAPI(isCallerOnly = true)
-	def run(extension rc : SreRunContext) {
+	@RepeatedTest(10)
+	@DisplayName("In root context's default space")
+	def inDefaultSpace(extension rc : SreRunContext) {
 		var kern = setupTheSreKernel(null, null)
 		
 		val id0 = UUID::randomUUID
 		waitForAgentSpawned(id0) [
-			kern.startAgentWithID(typeof(RootAgent0), id0, agentInitializationParameters)
+			kern.startAgentWithID(typeof(MemberJoinedAgent0), id0, buildAgentInitializationParameters(1))
 		]
 
 		val id1 = UUID::randomUUID
 		waitForAgentSpawned(id1) [
-			kern.startAgentWithID(typeof(ChildAgent0), id1, agentInitializationParameters)
+			kern.startAgentWithID(typeof(MemberJoinedAgent0), id1, buildAgentInitializationParameters(2))
 		]
-		
-		val names = kern.getService(typeof(NamespaceService))
-		val ag = names.findObject("agent:" + id0, typeof(Agent))
-		ag.assertNotNull
-		var access = SREutils::getInternalSkill(ag, typeof(InnerContextAccess))
-		access.assertNotNull
-		var ctx = access.innerContext
-		ctx.assertNotNull
 
 		val id2 = UUID::randomUUID
 		waitForAgentSpawned(id2) [
-			kern.startAgentWithID(typeof(Child2Agent0), id2, buildAgentInitializationParameters(ctx))
+			kern.startAgentWithID(typeof(MemberJoinedAgent0), id2, buildAgentInitializationParameters(3))
 		]
 
 		rootContext.defaultSpace.emit(UUID::randomUUID, new Bye)
@@ -99,11 +85,83 @@ class OnMemberJoinedTest {
 		waitForTheKernel(STANDARD_TIMEOUT)
 
 		allResults.assertContains(
-			"ROOT: spawned ChildAgent0",
-			"ROOT: joined Child2Agent0 in default space",
-			"ROOT: joined ChildAgent0 in inner space",
-			"ROOT: joined Child2Agent in inner space",
-			"CHILD1: joined Child2Agent0")
+			"AG1: joined MemberJoinedAgent0 " + id1 + " in default space",
+			"AG1: joined MemberJoinedAgent0 " + id2 + " in default space",
+			"AG2: joined MemberJoinedAgent0 " + id2 + " in default space"
+		)
+	}
+
+	@RepeatedTest(10)
+	@DisplayName("In root context's other space")
+	def inOtherSpace(extension rc : SreRunContext) {
+		var kern = setupTheSreKernel(null, null)
+		
+		val spaceId = UUID::randomUUID
+		val ^space = rootContext.createSpace(typeof(OpenEventSpaceSpecification), spaceId)
+		
+		val id0 = UUID::randomUUID
+		waitForAgentSpawned(id0) [
+			kern.startAgentWithID(typeof(MemberJoinedAgent1), id0, buildAgentInitializationParameters(1, ^space))
+		]
+
+		val id1 = UUID::randomUUID
+		waitForAgentSpawned(id1) [
+			kern.startAgentWithID(typeof(MemberJoinedAgent1), id1, buildAgentInitializationParameters(2, ^space))
+		]
+
+		val id2 = UUID::randomUUID
+		waitForAgentSpawned(id2) [
+			kern.startAgentWithID(typeof(MemberJoinedAgent1), id2, buildAgentInitializationParameters(3, ^space))
+		]
+
+		rootContext.defaultSpace.emit(UUID::randomUUID, new Bye)
+
+		waitForTheKernel(STANDARD_TIMEOUT)
+
+		allResults.assertContains(
+			"AG1: joined MemberJoinedAgent1 " + id1 + " in default space",
+			"AG1: joined MemberJoinedAgent1 " + id2 + " in default space",
+			"AG2: joined MemberJoinedAgent1 " + id2 + " in default space"
+		)
+	}
+
+	@RepeatedTest(10)
+	@DisplayName("In agent's inner space")
+	def inInnerSpace(extension rc : SreRunContext) {
+		var kern = setupTheSreKernel(null, null)
+
+		val id0 = UUID::randomUUID
+		waitForAgentSpawned(id0) [
+			kern.startAgentWithID(typeof(MemberJoinedAgent2), id0, buildAgentInitializationParameters(1))
+		]
+
+		val innerContext = rc.getInnerContextForAgent(id0)
+		innerContext.assertNotNull
+		val ^space = innerContext.defaultSpace
+
+		val id1 = UUID::randomUUID
+		waitForAgentSpawned(id1, ^space) [
+			rc.startAgentInContextWithID(innerContext, typeof(MemberJoinedAgent0), id1, buildAgentInitializationParameters(2))
+		]
+
+		val id2 = UUID::randomUUID
+		waitForAgentSpawned(id2, ^space) [
+			rc.startAgentInContextWithID(innerContext, typeof(MemberJoinedAgent0), id2, buildAgentInitializationParameters(3))
+		]
+
+		waitForAgentKilled(#[id1, id2], ^space) [
+			^space.emit(UUID::randomUUID, new Bye)
+		]
+
+		rootContext.defaultSpace.emit(UUID::randomUUID, new ByeBye)
+
+		waitForTheKernel(STANDARD_TIMEOUT)
+
+		allResults.assertContains(
+			"AG1: joined MemberJoinedAgent0 " + id1 + " in inner space",
+			"AG1: joined MemberJoinedAgent0 " + id2 + " in inner space",
+			"AG2: joined MemberJoinedAgent0 " + id2 + " in default space"
+		)
 	}
 
 }

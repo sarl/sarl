@@ -21,7 +21,6 @@
 
 package io.sarl.sre.tests.runtime.internal.mocks
 
-import io.sarl.core.AgentSpawned
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
@@ -31,6 +30,8 @@ import io.sarl.sre.test.framework.skills.TestingCapacity
 import io.sarl.sre.test.framework.skills.TestingSkill
 
 import static extension io.sarl.tests.api.tools.TestUtils.*
+import io.sarl.core.OpenEventSpace
+import io.sarl.core.Behaviors
 
 /**
  * @author $Author: sgalland$
@@ -38,18 +39,21 @@ import static extension io.sarl.tests.api.tools.TestUtils.*
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent RootAgent0 {
+agent MemberJoinedAgent1 {
 
-	uses Lifecycle, InnerContextAccess, DefaultContextInteractions
+	uses Lifecycle, InnerContextAccess, DefaultContextInteractions, Behaviors
 
 	uses TestingCapacity
 
+	var number : int
+
+	var ^space : OpenEventSpace
+
 	on Initialize {
 		setSkill(new TestingSkill(occurrence))
-	}
-
-	on AgentSpawned [typeof(ChildAgent0).name == occurrence.agentType] {
-		addResult("ROOT: spawned " + occurrence.agentType.simpleTypeName)
+		this.number = occurrence.parameters.get(1) as Integer
+		this.^space = occurrence.parameters.get(2) as OpenEventSpace
+		this.^space.register(asEventListener)
 	}
 
 	on MemberJoined {
@@ -61,7 +65,7 @@ agent RootAgent0 {
 		} else {
 			msg = "other"
 		}
-		addResult("ROOT: joined " + occurrence.agentType.simpleTypeName + " in " + msg + " space")
+		addResult("AG" + this.number + ": joined " + occurrence.agentType.simpleTypeName + " " + occurrence.agentID + " in " + msg + " space")
 	}
 
 	on Bye {
