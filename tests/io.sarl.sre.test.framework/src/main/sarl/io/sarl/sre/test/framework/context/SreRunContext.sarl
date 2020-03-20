@@ -666,7 +666,6 @@ class SreRunContext {
 	def waitForAgentKilled(identifiers : UUID[], ^space : OpenEventSpace = null, code : ()=>void = null) : Wait {
 		val lock = new ConcurrentSkipListSet(identifiers)
 		onAgentKilled(^space) [
-			System.out.println("killed: " + it.source.UUID)
 			lock.remove(it.source.UUID)
 		]
 		val w = new CollectionWait(lock, this.directFailureCause)

@@ -54,12 +54,12 @@ interface OpenEventSpace extends EventSpace {
 	 * @param participant the participant to register.
 	 * @param weakParticipant indicates to the space that the given participant could be considered as a weak participant.
 	 * 	A Weak participant will not prevent the space from begin destroyed if it is the only one staying in it, a Strong participant will prevent the space destruction.
-	 * 	A space containing only Weak participants will be destroyed by the SRE Kernel
+	 * 	A space containing only Weak participants will be destroyed by the SRE Kernel. The default value is {@ode false}.
 	 * @return the entity's address in this space
 	 * @fires ParticipantJoined in its enclosing Context default space.
 	 * @since 0.11
 	 */
-	def register(participant : EventListener, weakParticipant : boolean = true) : Address fires ParticipantJoined
+	def register(participant : EventListener, weakParticipant : boolean = false) : Address fires ParticipantJoined
 
 	/**
 	 * Unregisters the entity inside this space.
