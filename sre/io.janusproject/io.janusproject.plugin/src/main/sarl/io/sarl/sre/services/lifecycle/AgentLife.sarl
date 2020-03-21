@@ -63,21 +63,19 @@ import static extension io.sarl.lang.core.SREutils.*
 @PrivateAPI(isCallerOnly = true)
 final class AgentLife {
 
-	volatile var state = AgentState::UNSTARTED
+	val lock : ReadWriteLock
+
+	var stateObject = AgentState::UNSTARTED
 
 	var agentInstance : Agent
 
 	var innerContextInstance : Context
 
-	val innerContextLock : ReadWriteLock
-
-	volatile var innerSpaceAddress : Address
-
-	val innerSpaceAddressLock : ReadWriteLock
+	var innerSpaceAddress : Address
 
 	var externalContextInstances : ConcurrentHashMap<UUID, ContextReference>
 
-	volatile var defaultContextInstance : ContextReference
+	var defaultContextInstance : ContextReference
 
 	var loggingCapacity : AtomicSkillReference
 
@@ -121,12 +119,11 @@ final class AgentLife {
 	 * @param lockProvider the provider of locks
 	 */
 	new (lockProvider : Provider<ReadWriteLock>) {
-		this.innerContextLock = lockProvider.get
-		this.innerSpaceAddressLock = lockProvider.get
+		this.lock = lockProvider.get
 	}
 
-	def toString : String {
-		this.^agent?.ID + "[" + this.state.name + "]"
+	override toString : String {
+		this.^agent?.ID + "[" + getState.name + "]"
 	}
 
 	/** Replies the agent's logger.
@@ -176,11 +173,27 @@ final class AgentLife {
 	 */
 	def start(skillUninstaller : SkillUninstaller, logger : LoggingService, spawningAgent : UUID,
 		spawningContext : Context, initializationParameters : Object*) : boolean {
-		var st : AgentState = this.state
+		val rlock0 = this.lock.readLock
+		var st : AgentState
+		rlock0.lock
+		try {
+			st = this.stateObject
+		} finally {
+			rlock0.unlock
+		}
 		if (st === AgentState::UNSTARTED) {
 			try {
-				this.state = AgentState::INITIALIZING
-				st = AgentState::INITIALIZING
+				val wlock0 = this.lock.writeLock
+				wlock0.lock
+				try {
+					st = this.stateObject
+					if (st !== AgentState::UNSTARTED) {
+						return false
+					}
+					this.stateObject = AgentState::INITIALIZING
+				} finally {
+					wlock0.unlock
+				}
 
 				var eb = spawningContext.attachAgentToPlatform
 
@@ -192,8 +205,21 @@ final class AgentLife {
 				var delayedEvents = eb.fireEventAndWait(initEvent, true, true)
 
 				// State may have changed
-				if (this.state === AgentState::INITIALIZING) {
-					this.state = AgentState::ALIVE
+				val rlock1 = this.lock.readLock
+				rlock1.lock
+				try {
+					st = this.stateObject
+				} finally {
+					rlock1.unlock
+				}
+				if (st === AgentState::INITIALIZING) {
+					val wlock1 = this.lock.writeLock
+					wlock1.lock
+					try {
+						this.stateObject = AgentState::ALIVE
+					} finally {
+						wlock1.unlock
+					}
 					if (delayedEvents !== null) {
 						for (delayedEvent : delayedEvents) {
 							eb.fireEvent(delayedEvent)
@@ -213,9 +239,8 @@ final class AgentLife {
 				stop(skillUninstaller, logger, true)
 				throw e
 			}
-		} else {
-			return false
 		}
+		return false
 	}
 
 	/** Set up the agent in order to be attached properly to the plaform.
@@ -246,7 +271,14 @@ final class AgentLife {
 	 * @param enclosingContexts is the list of context for which we should be sure that the agent is out.
 	 */
 	protected def detachAgentFromPlatform(listener : EventListener, enclosingContexts : ConcurrentLinkedDeque<ContextReference>) : void {
-		var contextReference : ContextReference = this.defaultContextInstance
+		val rlock = this.lock.readLock
+		var contextReference : ContextReference
+		rlock.lock
+		try {
+			contextReference = this.defaultContextInstance
+		} finally {
+			rlock.unlock
+		}
 
 		// Unregister the agent on its parent default space.
 		var theDefaultSpace : OpenEventSpace = null
@@ -341,7 +373,13 @@ final class AgentLife {
 		} finally {
 			// Clear the references
 			dyingAgent.setSreSpecificData(null)
-			this.defaultContextInstance = null
+			val wlock = this.lock.writeLock
+			wlock.lock
+			try {
+				this.defaultContextInstance = null
+			} finally {
+				wlock.unlock
+			}
 			this.externalContextInstances = null
 			this.agentInstance = null
 			this.state = AgentState::DEAD
@@ -364,14 +402,26 @@ final class AgentLife {
 	/** Replies the agent state.
 	 */
 	def getState : AgentState {
-		return this.state
+		val lock = this.lock.readLock
+		lock.lock
+		try {
+			return this.stateObject
+		} finally {
+			lock.unlock
+		}
 	}
 
 	/** Change the agent state.
 	 */
 	def setState(state : AgentState) {
 		assert state !== null
-		this.state = state
+		val lock = this.lock.writeLock
+		lock.lock
+		try {
+			this.stateObject = state
+		} finally {
+			lock.unlock
+		}
 	}
 
 	/** Set the inner context reference.
@@ -380,7 +430,7 @@ final class AgentLife {
 	 * @return the previous context, or {@code null}.
 	 */
 	def setInnerContext(innerContext : Context) : Context {
-		val lock = this.innerContextLock.writeLock
+		val lock = this.lock.writeLock
 		lock.lock
 		try {
 			var old = this.innerContextInstance
@@ -398,7 +448,7 @@ final class AgentLife {
 	 * @return the instance of inner context, or {@code null}
 	 */
 	def getInnerContext(creator : (AgentLife)=>Context) : Context {
-		val rlock = this.innerContextLock.readLock
+		val rlock = this.lock.readLock
 		var ctx : Context 
 		rlock.lock
 		try {
@@ -407,12 +457,13 @@ final class AgentLife {
 			rlock.unlock
 		}
 		if (ctx === null && creator !== null) {
-			val wlock = this.innerContextLock.writeLock
+			val newInstance = creator.apply(this)
+			val wlock = this.lock.writeLock
 			wlock.lock
 			try {
 				ctx = this.innerContextInstance
 				if (ctx === null) {
-					this.innerContextInstance = creator.apply(this)
+					this.innerContextInstance = newInstance
 					ctx = this.innerContextInstance
 				}
 			} finally {
@@ -427,7 +478,7 @@ final class AgentLife {
 	 * @return the address, never {@code null}.
 	 */
 	def getAddressInInnerDefaultSpace : Address {
-		val rlock = this.innerSpaceAddressLock.readLock
+		val rlock = this.lock.readLock
 		var adr : Address
 		rlock.lock
 		try {
@@ -436,14 +487,13 @@ final class AgentLife {
 			rlock.unlock
 		}
 		if (adr === null) {
-			val wlock = this.innerSpaceAddressLock.writeLock
+			var aid = this.^agent.ID
+			var spaceid = new SpaceID(aid, UUID::randomUUID, typeof(OpenEventSpaceSpecification))
+			adr = new Address(spaceid, aid);
+			val wlock = this.lock.writeLock
 			wlock.lock
 			try {
-				adr = this.innerSpaceAddress
-				if (adr === null) {
-					var aid = this.^agent.ID
-					var spaceid = new SpaceID(aid, UUID::randomUUID, typeof(OpenEventSpaceSpecification))
-					adr = new Address(spaceid, aid);
+				if (this.innerSpaceAddress === null) {
 					this.innerSpaceAddress = adr
 				}
 			} finally {
@@ -462,11 +512,17 @@ final class AgentLife {
 	def addExternalContext(context : Context, address : Address) : ContextReference {
 		assert context !== null
 		assert address !== null
-		var continueAddition = false
 
-		continueAddition = this.defaultContextInstance === null || context.ID != this.defaultContextInstance.context.ID
+		val rlock = this.lock.readLock
+		var cr : ContextReference
+		rlock.lock
+		try {
+			cr = this.defaultContextInstance
+		} finally {
+			rlock.unlock
+		}
 
-		if (continueAddition) {
+		if (cr === null || context.ID != cr.context.ID) {
 			var ref = new ContextReference(this, context, address)
 
 			ensureExternalContextInstances.put(context.ID, ref)
@@ -514,7 +570,14 @@ final class AgentLife {
 	def getExternalContexts : ConcurrentLinkedDeque<ContextReference> {
 		var result = new ConcurrentLinkedDeque
 		val instances = this.externalContextInstances
-		val dc = this.defaultContextInstance
+		val rlock = this.lock.readLock
+		var dc : ContextReference
+		rlock.lock
+		try {
+			dc = this.defaultContextInstance
+		} finally {
+			rlock.unlock
+		}
 		if (instances !== null) {
 			val dcId = dc?.context?.ID
 			var foundDefaultContext = false
@@ -548,7 +611,14 @@ final class AgentLife {
 	 * @see {@link #getExternalContexts()}
 	 */
 	def getEnclosingContexts : ConcurrentLinkedDeque<ContextReference> {
-		val dc = this.defaultContextInstance
+		val rlock = this.lock.readLock
+		var dc : ContextReference
+		rlock.lock
+		try {
+			dc = this.defaultContextInstance
+		} finally {
+			rlock.unlock
+		}
 		val ec = this.externalContextInstances
 		if (dc !== null) {
 			var result = new ConcurrentLinkedDeque
@@ -581,11 +651,10 @@ final class AgentLife {
 	 * @return the context, or {@code null} 
 	 */
 	def getExternalContext(identifier : UUID) : ContextReference {
-
-		if (this.externalContextInstances !== null) {
-			return this.externalContextInstances.get(identifier)
+		val col = this.externalContextInstances
+		if (col !== null) {
+			return col.get(identifier)
 		}
-
 		return null
 	}
 
@@ -599,8 +668,15 @@ final class AgentLife {
 		assert context !== null
 		assert address !== null
 		val nc = new ContextReference(this, context, address)
-		var oldDefaultSpace : ContextReference = this.defaultContextInstance
-		this.defaultContextInstance = nc
+		var oldDefaultSpace : ContextReference 
+		val wlock = this.lock.writeLock
+		wlock.lock
+		try {
+			oldDefaultSpace = this.defaultContextInstance
+			this.defaultContextInstance = nc
+		} finally {
+			wlock.unlock
+		}
 		removeExternalContext(context)
 		return oldDefaultSpace
 	}
@@ -619,7 +695,13 @@ final class AgentLife {
 	 * @return the default context, never {@code null}.
 	 */
 	def getDefaultContext : ContextReference {
-		return this.defaultContextInstance
+		val lock = this.lock.readLock
+		lock.lock
+		try {
+			return this.defaultContextInstance
+		} finally {
+			lock.unlock
+		}
 	}
 
 }

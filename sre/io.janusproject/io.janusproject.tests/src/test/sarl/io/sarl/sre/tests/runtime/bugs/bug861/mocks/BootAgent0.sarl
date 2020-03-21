@@ -25,13 +25,11 @@ import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.sre.test.framework.skills.TestingCapacity
 import io.sarl.sre.test.framework.skills.TestingSkill
-import java.util.concurrent.atomic.AtomicBoolean
+import io.sarl.sre.tests.runtime.internal.mocks.Bye
 
 agent BootAgent0 {
 
 	uses Lifecycle
-
-	val done = new AtomicBoolean
 
 	uses TestingCapacity
 
@@ -41,16 +39,14 @@ agent BootAgent0 {
 
 	on AgentSpawned {
 		addResult(occurrence.agentID)
-		if (this.done.getAndSet(true)) {
-			killMe
-		}
 	}
 
 	on Initialized {
 		addResult(occurrence)
-		if (this.done.getAndSet(true)) {
-			killMe
-		}
+	}
+
+	on Bye {
+		killMe
 	}
 
 }
