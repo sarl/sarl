@@ -54,6 +54,7 @@ import org.opentest4j.AssertionFailedError
 import static org.junit.jupiter.api.Assertions.*
 
 import static extension org.junit.jupiter.api.Assertions.assertEquals
+import static io.sarl.sre.test.framework.Constants.*
 
 /**
  * Context for running the SRE. This context is thread-safe.
@@ -421,7 +422,7 @@ class SreRunContext {
 	val LOG_IN_RESULTS_LOG_HANDLER = new Handler {
 
 		override publish(record : LogRecord) {
-			if (record.level === Level.SEVERE) {
+			if (record.level === Level.SEVERE || record.level === Level.WARNING) {
 				addResult(record)
 			}
 		}
@@ -581,10 +582,11 @@ class SreRunContext {
 	 * 
 	 * @param id the identifier of the agent to wait for.
 	 * @param space the space to listen into. If {@code null}, the default space of the root context is used.
+	 * @param timeout is the time to wait for the spawn event.
 	 * @param code the code to run and wait for the agent spawned.
 	 * @return the object that permits to wait for the spawn.
 	 */
-	def waitForAgentSpawned(id : UUID, ^space : OpenEventSpace = null, code : (UUID)=>void = null) : Wait {
+	def waitForAgentSpawned(id : UUID, ^space : OpenEventSpace = null, timeout : int = STANDARD_TIMEOUT, code : (UUID)=>void = null) : Wait {
 		val lock = new AtomicBoolean
 		onAgentSpawned(^space) [
 			if (it.agentID == id) {
@@ -594,7 +596,7 @@ class SreRunContext {
 		val w = new BooleanWait(lock, this.directFailureCause)
 		if (code !== null) {
 			code.apply(id)
-			w.doWait
+			w.doWait(timeout)
 		}
 		return w
 	}
@@ -608,10 +610,12 @@ class SreRunContext {
 	 * 
 	 * @param identifiers are the identifiers of the agents to wait for.
 	 * @param space the space to listen into. If {@code null}, the default space of the root context is used.
+	 * @param code the code to run and wait for the agent kill.
 	 * @param code the code to run and wait for the agent spawned.
 	 * @return the object that permits to wait for the spawn.
 	 */
-	def waitForAgentSpawned(identifiers : UUID[], ^space : OpenEventSpace = null, code : ()=>void = null) : Wait {
+	def waitForAgentSpawned(identifiers : UUID[], ^space : OpenEventSpace = null, timeout : int = STANDARD_TIMEOUT,
+		code : ()=>void = null) : Wait {
 		val lock = new ConcurrentSkipListSet(identifiers)
 		onAgentSpawned(^space) [
 			lock.remove(it.agentID)
@@ -619,7 +623,7 @@ class SreRunContext {
 		val w = new CollectionWait(lock, this.directFailureCause)
 		if (code !== null) {
 			code.apply()
-			w.doWait
+			w.doWait(timeout)
 		}
 		return w
 	}
