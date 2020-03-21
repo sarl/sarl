@@ -21,13 +21,17 @@
 
 package io.sarl.sre.tests.runtime.internal.mocks
 
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.ExternalContextAccess
 import io.sarl.core.Initialize
-import io.sarl.core.MemberJoined
+import io.sarl.core.InnerContextAccess
+import io.sarl.core.Lifecycle
+import io.sarl.core.MemberLeft
+import io.sarl.sre.services.context.Context
 import io.sarl.sre.test.framework.skills.TestingCapacity
 import io.sarl.sre.test.framework.skills.TestingSkill
 
 import static extension io.sarl.tests.api.tools.TestUtils.*
-import io.sarl.core.Lifecycle
 
 /**
  * @author $Author: sgalland$
@@ -35,20 +39,39 @@ import io.sarl.core.Lifecycle
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent ChildAgent0 {
+agent MemberLeftAgent1 {
 
-	uses Lifecycle
+	uses Lifecycle, InnerContextAccess, DefaultContextInteractions, ExternalContextAccess
 
 	uses TestingCapacity
 
+	var number : int
+
 	on Initialize {
 		setSkill(new TestingSkill(occurrence))
+		this.number = occurrence.parameters.get(1) as Integer
+		var octx = occurrence.parameters.get(2) as Context
+		var ictx = innerContext
+		assert ictx !== null
+		if (octx !== null) {
+			join(octx.ID, octx.defaultSpace.spaceID.ID)
+		}
 	}
 
-	on MemberJoined {
-		addResult("CHILD1: joined " + occurrence.agentType.simpleTypeName)
+	on MemberLeft {
+		var msg : String
+		if (occurrence.inInnerDefaultSpace) {
+			msg = "inner"
+		} else if (occurrence.inDefaultSpace) {
+			msg = "default"
+		} else {
+			msg = "other"
+		}
+		addResult(
+			"AG" + this.number + ": joined " + occurrence.agentType.simpleTypeName + " " + occurrence.agentID + " in " +
+				msg + " space")
 	}
-	
+
 	on Bye {
 		killMe
 	}

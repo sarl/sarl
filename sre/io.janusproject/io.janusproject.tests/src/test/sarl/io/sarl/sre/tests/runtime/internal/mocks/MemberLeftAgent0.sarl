@@ -21,14 +21,11 @@
 
 package io.sarl.sre.tests.runtime.internal.mocks
 
-import io.sarl.core.AgentKilled
-import io.sarl.core.AgentSpawned
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
 import io.sarl.core.MemberLeft
-import io.sarl.core.Schedules
 import io.sarl.sre.test.framework.skills.TestingCapacity
 import io.sarl.sre.test.framework.skills.TestingSkill
 
@@ -40,29 +37,35 @@ import static extension io.sarl.tests.api.tools.TestUtils.*
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent RootAgent1 {
+agent MemberLeftAgent0 {
 
-	uses Schedules, Lifecycle, InnerContextAccess, DefaultContextInteractions
+	uses Lifecycle, InnerContextAccess, DefaultContextInteractions
 
 	uses TestingCapacity
 
+	var number : int
+
 	on Initialize {
 		setSkill(new TestingSkill(occurrence))
-		in(500) [
-			typeof(ChildAgent1).spawnInContext(innerContext, buildAgentInitializationParameters)
-		]
+		this.number = occurrence.parameters.get(1) as Integer
 	}
 
-	on AgentSpawned [typeof(ChildAgent1).name == occurrence.agentType] {
-		typeof(Child2Agent1).spawn(buildAgentInitializationParameters(innerContext))
+	on MemberLeft {
+		var msg : String
+		if (occurrence.inInnerDefaultSpace) {
+			msg = "inner"
+		} else if (occurrence.inDefaultSpace) {
+			msg = "default"
+		} else {
+			msg = "other"
+		}
+		addResult(
+			"AG" + this.number + ": joined " + occurrence.agentType.simpleTypeName + " " + occurrence.agentID + " in " +
+				msg + " space")
 	}
 
-	on MemberLeft [!occurrence.isInDefaultSpace] {
-		addResult("ROOT:" + occurrence.agentType.simpleTypeName)
-	}
-
-	on AgentKilled {
-		in(1000) [killMe]
+	on Bye {
+		killMe
 	}
 
 }

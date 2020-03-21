@@ -246,7 +246,7 @@ final event SpaceDestroyed {
 
 }
 
-/** Notifies other members the member with agentID has effectively 
+/** Notifies the other members that the member with the identifier agentID has effectively 
  * integrated the holon context.
  * The event is fired within the default space of the context in which the new agent entered.
  * The joining agent does not receive this event.
@@ -283,7 +283,7 @@ final event MemberJoined {
 
 }
 
-/** Notifies other members the member with agentID was 
+/** Notifies the other other members that the member with the identifier agentID was 
  * excluded (forced to leave) the holon context parentContextID.
  * The event is fired within the default space of the context from which the agent was excluded.
  * The excluded agent does not receive this event.
@@ -319,7 +319,7 @@ final event MemberExcluded {
 
 }
 
-/** Notifies other members the member with agentID has left the holon context.
+/** Notifies the other members that the member with the identifier agentID has left the holon context.
  * The event is fired within the default space of the context from which the agent has left.
  * The left agent does not receive this event.
  * The source of the event is the parent agent.

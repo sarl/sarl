@@ -47,52 +47,93 @@ skill DefaultContextInteractionsSkill extends Skill implements DefaultContextInt
 
 
 	def getDefaultContext : AgentContext {
-		getLife(owner).defaultContext.context
+		val life = getLife(owner)
+		assert life !== null
+		val reference = life.defaultContext
+		assert reference !== null
+		val context = reference.context
+		assert context !== null
+		return context
 	}
 
 	def getDefaultSpace : EventSpace {
-		getLife(owner).defaultContext.defaultSpace
+		val life = getLife(owner)
+		assert life !== null
+		val reference = life.defaultContext
+		assert reference !== null
+		val ^space = reference.defaultSpace
+		assert ^space !== null
+		return ^space
 	}
 
 	def getDefaultAddress : Address {
-		getLife(owner).defaultContext.addressInDefaultSpace
+		val life = getLife(owner)
+		assert life !== null
+		val reference = life.defaultContext
+		assert reference !== null
+		val adr = reference.addressInDefaultSpace
+		assert adr !== null
+		return adr
 	}
 
 	def isDefaultContext(context : AgentContext) : boolean {
-		context.ID.isDefaultContext
+		assert context !== null
+		val id = context.ID
+		assert id !== null
+		return id.isDefaultContext
 	}
 
 	def isDefaultContext(contextID : UUID) : boolean {
-		contextID == this.defaultContext.ID
+		assert contextID !== null
+		val context = defaultContext
+		assert context !== null
+		return contextID == context.ID
 	}
 
 	def isDefaultSpace(^space : Space) : boolean {
-		^space.spaceID.isDefaultSpace
+		assert ^space !== null
+		val id = ^space.spaceID
+		assert id !== null
+		return id.isDefaultSpace
 	}
 
 	def isDefaultSpace(^space : SpaceID) : boolean {
-		^space == this.defaultSpace.spaceID
+		assert ^space !== null
+		val dspace = defaultSpace
+		assert dspace !== null
+		return ^space == dspace.spaceID
 	}
 
 	def isDefaultSpace(^space : UUID) : boolean {
-		^space == this.defaultSpace.spaceID.ID
+		assert ^space !== null
+		val dspace = defaultSpace
+		assert dspace !== null
+		val spaceid = dspace.spaceID
+		assert spaceid !== null
+		return ^space == spaceid.ID
 	}
 
 	def isInDefaultSpace(^event : Event) : boolean {
 		if (^event !== null) {
 			val adr = ^event.source
 			if (adr !== null) {
-				return adr.spaceID.isDefaultSpace
+				val spaceid = adr.spaceID
+				assert spaceid !== null
+				return spaceid.isDefaultSpace
 			}
 		}
 		return false
 	}
 
 	def emit(^event : Event, scope : Scope<Address> = null) {
-		^event.source = this.defaultAddress
-		this.defaultSpace.emit(ID, ^event, scope)
+		assert ^event !== null
+		^event.source = defaultAddress
+		val dspace = defaultSpace
+		assert dspace !== null
+		dspace.emit(ID, ^event, scope)
 	}
 
+	@Deprecated
 	def willReceive(receiver : UUID, ^event : Event) {
 		^event.emit [it.UUID == receiver]
 	}
