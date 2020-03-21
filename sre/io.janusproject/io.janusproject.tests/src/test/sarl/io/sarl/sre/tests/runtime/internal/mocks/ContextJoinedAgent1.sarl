@@ -21,16 +21,17 @@
 
 package io.sarl.sre.tests.runtime.internal.mocks
 
-import io.sarl.core.AgentKilled
-import io.sarl.core.AgentSpawned
+import io.sarl.core.Behaviors
 import io.sarl.core.ContextJoined
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
 import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
-import io.sarl.core.Schedules
+import io.sarl.core.OpenEventSpace
 import io.sarl.sre.test.framework.skills.TestingCapacity
 import io.sarl.sre.test.framework.skills.TestingSkill
+import io.sarl.sre.services.context.Context
+import io.sarl.core.ExternalContextAccess
 
 /**
  * @author $Author: sgalland$
@@ -38,28 +39,40 @@ import io.sarl.sre.test.framework.skills.TestingSkill
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent RootAgent2 {
+agent ContextJoinedAgent1 {
 
-	uses Schedules, Lifecycle, InnerContextAccess, DefaultContextInteractions
+	uses Lifecycle, InnerContextAccess, DefaultContextInteractions, ExternalContextAccess
 
 	uses TestingCapacity
 
+	var number : int
+
 	on Initialize {
 		setSkill(new TestingSkill(occurrence))
-		in(500) [
-			typeof(ChildAgent2).spawnInContext(innerContext, buildAgentInitializationParameters)
-		]
+		this.number = occurrence.parameters.get(1) as Integer
+		var octx = occurrence.parameters.get(2) as Context
+		var ictx = innerContext
+		assert ictx !== null
+		if (octx !== null) {
+			join(octx.ID, octx.defaultSpace.spaceID.ID)
+		}
 	}
 
-	on AgentSpawned [typeof(ChildAgent2).name == occurrence.agentType] {
-		typeof(Child2Agent2).spawn(buildAgentInitializationParameters(innerContext))
-	}
-	
-	on ContextJoined [!occurrence.isInDefaultSpace] {
-		addResult("ROOT")
+	on ContextJoined {
+		var msg : String
+		if (occurrence.inInnerDefaultSpace) {
+			msg = "inner"
+		} else if (occurrence.inDefaultSpace) {
+			msg = "default"
+		} else {
+			msg = "other"
+		}
+		addResult(
+			"AG" + this.number + ": joined " + occurrence.source.UUID + " " + occurrence.holonContextID + " in " + msg +
+				" space")
 	}
 
-	on AgentKilled {
+	on Bye {
 		killMe
 	}
 

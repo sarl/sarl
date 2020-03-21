@@ -24,15 +24,22 @@ package io.sarl.sre.tests.runtime.internal
 import io.sarl.sre.test.framework.context.SreRunContext
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.^extension.SreRunExtension
-import io.sarl.sre.tests.runtime.internal.mocks.RootAgent2
+import io.sarl.sre.tests.runtime.internal.mocks.Bye
+import io.sarl.sre.tests.runtime.internal.mocks.ContextJoinedAgent0
+import io.sarl.sre.tests.runtime.internal.mocks.ContextJoinedAgent1
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.util.UUID
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static io.sarl.tests.api.tools.TestAssertions.*
+import static io.sarl.sre.test.framework.Constants.*
+
+import static extension io.sarl.sre.tests.framework.SreTestUtilities.*
+import static extension io.sarl.tests.api.tools.TestAssertions.*
+import static extension org.junit.jupiter.api.Assertions.*
 
 /**
  * @author $Author: sgalland$
@@ -46,15 +53,76 @@ import static io.sarl.tests.api.tools.TestAssertions.*
 	typeof(PropertyRestoreExtension),
 	typeof(SreRunExtension)
 ])
-@DisplayName("run: on ContextJoined test")
+@DisplayName("run: on MemberJoined test")
 @Tag("run")
 class OnContextJoinedTest {
 
-	@RepeatedTest(5)
-	@DisplayName("run")
-	def run(extension rc : SreRunContext) {
-		typeof(RootAgent2).runSre
-		assertContains(allResults, "CHILD2")
+	@RepeatedTest(10)
+	@DisplayName("In root context")
+	def inRootContext(extension rc : SreRunContext) {
+		var kern = setupTheSreKernel(null, null)
+
+		val id0 = UUID::randomUUID
+		waitForAgentSpawned(id0) [
+			kern.startAgentWithID(typeof(ContextJoinedAgent0), id0, buildAgentInitializationParameters(1))
+		]
+		
+		val id1 = UUID::randomUUID
+		waitForAgentSpawned(id1) [
+			kern.startAgentWithID(typeof(ContextJoinedAgent0), id1, buildAgentInitializationParameters(2))
+		]
+
+		val id2 = UUID::randomUUID
+		waitForAgentSpawned(id2) [
+			kern.startAgentWithID(typeof(ContextJoinedAgent0), id2, buildAgentInitializationParameters(3))
+		]
+
+		rootContext.defaultSpace.emit(UUID::randomUUID, new Bye)
+
+		waitForTheKernel(STANDARD_TIMEOUT)
+
+		// There is no context joint for the default context.
+		// Consequently, no ContextJoined event is fired
+		allResults.assertContains()
+	}
+
+	@RepeatedTest(10)
+	@DisplayName("In other context")
+	def inOtherContext(extension rc : SreRunContext) {
+		var kern = setupTheSreKernel(null, null)
+
+		val id0 = UUID::randomUUID
+		waitForAgentSpawned(id0) [
+			kern.startAgentWithID(typeof(ContextJoinedAgent1), id0, buildAgentInitializationParameters(1, null))
+		]
+
+		val innerContext = rc.getInnerContextForAgent(id0)
+		innerContext.assertNotNull
+
+		val id1 = UUID::randomUUID
+		waitForAgentSpawned(id1) [
+			kern.startAgentWithID(typeof(ContextJoinedAgent1), id1, buildAgentInitializationParameters(2, innerContext))
+		]
+
+		val id2 = UUID::randomUUID
+		waitForAgentSpawned(id2) [
+			kern.startAgentWithID(typeof(ContextJoinedAgent1), id2, buildAgentInitializationParameters(3, innerContext))
+		]
+
+		// Kill the inner agents, first
+		waitForAgentKilled(#[id1, id2]) [
+			innerContext.defaultSpace.emit(UUID::randomUUID, new Bye)[it.UUID != id0]	
+		]
+		
+		// Kill the containing agent, second
+		rootContext.defaultSpace.emit(UUID::randomUUID, new Bye)
+
+		waitForTheKernel(STANDARD_TIMEOUT)
+
+		allResults.assertContains(
+			"AG2: joined " + id1 + " " + id0 + " in inner space",
+			"AG3: joined " + id2 + " " + id0 + " in inner space"
+		)
 	}
 
 }
