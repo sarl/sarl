@@ -354,7 +354,7 @@ final event MemberLeft {
 
 }
 
-/** Notifies behaviors the agent has joined a new super-holon.
+/** Notifies the behaviors of the agent that it has joined a new super-holon.
  * The event is fired within the internal bus of the agent that have joined a super-holon.
  * The source of the event is the agent itself.
  *
@@ -386,7 +386,7 @@ final event ContextJoined {
 }
 
 /**
- * Notifies behaviors the agent has left a super-holon.
+ * Notifies the behaviors of the agent that it has left a super-holon.
  * The event is fired within the internal bus of the agent that have left a super-holon.
  * The source of the event is the agent itself.
  *
