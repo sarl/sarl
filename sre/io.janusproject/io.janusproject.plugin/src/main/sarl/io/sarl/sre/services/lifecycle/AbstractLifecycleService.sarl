@@ -32,7 +32,7 @@ import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.executor.Runnables
 import io.sarl.sre.services.logging.LoggingService
 import java.lang.ref.WeakReference
-import java.text.MessageFormat
+import static java.text.MessageFormat.*
 import java.util.UUID
 import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.atomic.AtomicBoolean
@@ -388,11 +388,11 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	}
 
 	def killAgent(^agent : Agent) : boolean {
+		val agentId = ^agent.ID
 		val life = getLifeOrNull(^agent)
-		if (life !== null) {
-			val agentId = ^agent.ID
+		if (life !== null && life.isAlive) {
 			// We should check if it is possible to kill the agent BEFORE killing it.
-			if (life.isAlive && life.isKillableAgent(agentId)) {
+			if (life.isKillableAgent(agentId)) {
 				var defaultContext = life.defaultContext
 				var contexts = life.stop(this.skillUninstaller, getLoggingService)
 				^agent.onAgentKilled
@@ -400,7 +400,15 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 				// Test if the agent is the latest on this kernel.
 				defaultContext.context?.startShutdownLookup
 				return true
+			} else {
+				this.loggingService.kernelLogger.warning [
+					format(Messages::AbstractLifecycleService_1, agentId)
+				]
 			}
+		} else {
+			this.loggingService.kernelLogger.warning [
+				format(Messages::AbstractLifecycleService_2, agentId)
+			]
 		}
 		return false
 	}
@@ -555,7 +563,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 class InvalidSarlSpecificationException extends RuntimeException {
 
 	new (agentType : Class<? extends Agent>) {
-		super(MessageFormat::format(Messages::InvalidSarlSpecificationException_0, agentType.name))
+		super(format(Messages::InvalidSarlSpecificationException_0, agentType.name))
 	}
 
 }
@@ -577,7 +585,7 @@ class SpawnDisabledException extends RuntimeException {
 		 * - the type of the agent to spawn.
 		 */
 	new (parentID : UUID, agentClazz : Class<? extends Agent>) {
-		super(MessageFormat.format(Messages.SpawnDisabledException_0, parentID, agentClazz));
+		super(format(Messages.SpawnDisabledException_0, parentID, agentClazz));
 	}
 
 }
