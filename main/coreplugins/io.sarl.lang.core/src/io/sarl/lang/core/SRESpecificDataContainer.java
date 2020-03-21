@@ -35,7 +35,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  */
 public abstract class SRESpecificDataContainer {
 
-	private transient Object sreSpecificData;
+	private transient volatile Object sreSpecificData;
 
 	/** Replies the data associated to this agent trait by the SRE.
 	 *
