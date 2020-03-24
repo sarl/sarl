@@ -57,36 +57,42 @@ import static extension org.junit.jupiter.api.Assertions.*
 @Tag("run")
 class OnMemberLeftTest {
 
-	@RepeatedTest(10)
+	@RepeatedTest(20)
 	@DisplayName("In default context")
 	def inDefaultContext(extension rc : SreRunContext) {
 		var kern = setupTheSreKernel(null, null)
 
 		val id0 = UUID::randomUUID
 		waitForAgentSpawned(id0) [
-			kern.startAgentWithID(typeof(MemberLeftAgent0), id0, buildAgentInitializationParameters(1))
+			kern.startAgentWithID(typeof(MemberLeftAgent0), id0, buildAgentInitializationParameters(1, false))
 		]
 
 		val id1 = UUID::randomUUID
 		waitForAgentSpawned(id1) [
-			kern.startAgentWithID(typeof(MemberLeftAgent0), id1, buildAgentInitializationParameters(2))
+			kern.startAgentWithID(typeof(MemberLeftAgent0), id1, buildAgentInitializationParameters(2, true))
 		]
 
 		val id2 = UUID::randomUUID
 		waitForAgentSpawned(id2) [
-			kern.startAgentWithID(typeof(MemberLeftAgent0), id2, buildAgentInitializationParameters(3))
+			kern.startAgentWithID(typeof(MemberLeftAgent0), id2, buildAgentInitializationParameters(3, false))
+		]
+
+		// Kill one agent to generate the MemberLeft event
+		waitForAgentKilled(id1) [
+			rootContext.defaultSpace.emit(UUID::randomUUID, new Bye)[it.UUID == id1]
 		]
 
 		rootContext.defaultSpace.emit(UUID::randomUUID, new Bye)
 
 		waitForTheKernel(STANDARD_TIMEOUT)
 
-		// There is no context joint for the default context.
-		// Consequently, no ContextJoined event is fired
-		allResults.assertContains()
+		allResults.assertContains(
+			"AG1: joined MemberLeftAgent0 " + id1 + " in default space",
+			"AG3: joined MemberLeftAgent0 " + id1 + " in default space"
+		)
 	}
 
-	@RepeatedTest(10)
+	@RepeatedTest(20)
 	@DisplayName("In other context")
 	def inOtherContext(extension rc : SreRunContext) {
 		var kern = setupTheSreKernel(null, null)
