@@ -101,7 +101,6 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 
 		// Must be done to enable the memory free of these mutual references between InternalBusSkill and ExternalEventBusAccessor
 		var listener = this.eventListener
-		this.eventListener = null
 		if (listener instanceof ExternalEventBusAccessor) {
 			listener.nullifyOwner
 		}
