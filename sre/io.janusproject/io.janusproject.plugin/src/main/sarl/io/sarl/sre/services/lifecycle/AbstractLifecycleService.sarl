@@ -277,7 +277,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 				}
 			]
 			if (nbAgents > 1) {
-				this.executor.executeBlockingTask(loggingService.kernelLogger, nbAgents,
+				this.executor.executeNotBlockingTask(loggingService.kernelLogger, nbAgents,
 					this.lifecycleConfig.agentSpawningCountPerThread, agentCreator)
 			} else {
 				this.executor.executeAsap(loggingService.kernelLogger, agentCreator)

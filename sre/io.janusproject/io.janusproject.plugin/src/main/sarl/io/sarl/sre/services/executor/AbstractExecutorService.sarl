@@ -222,4 +222,39 @@ abstract class AbstractExecutorService extends AbstractSreService implements Exe
 		StreamSupport::stream(collection.spliterator, true).forEach(task.protectConsumer(logger))
 	}
 
+	/** Execute the given task in parallel but do not wait for the termination.
+	 * 
+	 * @param task the task to run.
+	 * @param nbExecutions number of runs
+	 * @param runGroupSize the size of a parallel group
+	 */
+	protected final def executeInThreadsWithoutWaiting(task : SreRunnable, nbExecutions : int, runGroupSize : int) {
+		assert runGroupSize >= 1
+		val es = executorService
+		if (runGroupSize > 1) {
+			val numberOfGroups = nbExecutions / runGroupSize
+			val rest = nbExecutions - numberOfGroups * runGroupSize
+			for (var i = 0; i < numberOfGroups; i++) {
+				es.execute [
+					for (var j = 0; j < runGroupSize; j++) {
+						task.run
+					}
+				]
+			}
+			if (rest > 0) {
+				es.execute [
+					for (var j = 0; j < rest; j++) {
+						task.run
+					}
+				]
+			}
+		} else {
+			for (var i = 0; i < nbExecutions; i++) {
+				es.execute [
+					task.run
+				]
+			}
+		}
+	}
+
 }
