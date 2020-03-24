@@ -27,6 +27,8 @@ import io.sarl.sre.services.context.ContextService
 import io.sarl.sre.services.lifecycle.LifecycleService
 import io.sarl.sre.test.framework.context.SreRunContext
 import java.util.UUID
+import io.sarl.sre.services.lifecycle.AgentState
+import io.sarl.sre.services.lifecycle.AgentLife
 
 /** Various utilities for helping to set up the tests for the SRE.
  * These utilities are specific to the Janus framework.
@@ -64,6 +66,19 @@ final class SreTestUtilities {
 		val lifeService = rc.bootstrap.getService(typeof(LifecycleService))
 		assert lifeService !== null
 		lifeService.spawnAgent(1, context.ID, context, id, type, params)
+	}
+
+	/** Replies the state of the agent.
+	 * 
+	 * @param agent the agent for which the state should be retrieved.
+	 * @return the agent's state.
+	 */
+	static def getAgentState(^agent : Agent) : AgentState {
+		val life = AgentLife::getLifeOrNull(^agent)
+		if (life !== null) {
+			return life.state
+		}
+		return null
 	}
 
 }
