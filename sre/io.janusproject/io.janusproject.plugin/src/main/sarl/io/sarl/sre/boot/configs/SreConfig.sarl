@@ -44,6 +44,7 @@ import javax.inject.Singleton
 import com.google.inject.Provides
 import com.google.inject.Injector
 import com.google.inject.Module
+import io.sarl.sre.boot.configs.subconfigs.ContextsConfig
 
 /** 
  * Configuration for the SARL run-time environment. 
@@ -75,6 +76,8 @@ class SreConfig {
 
 	var servicesConfig : ServicesConfig
 
+	var contextsConfig : ContextsConfig
+	
 	/** Change the class path.
 	 * 
 	 * @param path the class path.
@@ -133,6 +136,28 @@ class SreConfig {
 	@BQConfigProperty("Configuration for the SRE services.")
 	def setServices(config : ServicesConfig) {
 		this.servicesConfig = config
+	}
+
+	/** Replies the SRE context repository's configuration.
+	 * 
+	 * @return the SRE context repository's configuration.
+	 * @since 0.11
+	 */
+	def getContexts : ContextsConfig {
+		if (this.contextsConfig === null) {
+			this.contextsConfig = new ContextsConfig
+		}
+		return this.contextsConfig
+	}
+
+	/** Change the context repository's configuration.
+	 * 
+	 * @param config the context repository's' configuration.
+	 * @since 0.11
+	 */
+	@BQConfigProperty("Configuration for the SRE context repository.")
+	def setContexts(config : ContextsConfig) {
+		this.contextsConfig = config
 	}
 
 }

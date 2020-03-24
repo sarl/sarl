@@ -7,6 +7,7 @@ io.sarl.sre.boot.configs.subconfigs.BootConfigModuleProvider
 io.sarl.sre.boot.configs.subconfigs.ExecutorsConfigModuleProvider
 io.sarl.sre.boot.configs.subconfigs.ServicesConfigModuleProvider
 io.sarl.sre.boot.configs.subconfigs.LifecycleConfigModuleProvider
+io.sarl.sre.boot.configs.subconfigs.ContextsConfigModuleProvider
 
 io.sarl.sre.boot.internal.internal.ListenerNotifierModuleProvider
 io.sarl.sre.boot.internal.internal.PlatformEventEmitterModuleProvider
