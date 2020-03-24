@@ -20,10 +20,12 @@
  */
 package io.sarl.core.tests;
 
+import static io.sarl.tests.api.tools.TestAssertions.assertException;
 import static io.sarl.tests.api.tools.TestMockito.mock;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doReturn;
@@ -51,11 +53,14 @@ import io.sarl.tests.api.AbstractSarlTest;
 @DisplayName("AgentTask")
 public class AgentTaskTest extends AbstractSarlTest {
 
+	private String name;
+	
 	private AgentTask task;
 
 	@BeforeEach
 	public void setUp() {
-		this.task = new AgentTask();
+		this.name = UUID.randomUUID().toString();
+		this.task = new AgentTask(this.name);
 	}
 
 	@Test
@@ -94,19 +99,26 @@ public class AgentTaskTest extends AbstractSarlTest {
 
 	@Test
 	public void getName() {
-		assertNull(this.task.getName());
+		assertSame(this.name, this.task.getName());
 		String name = UUID.randomUUID().toString();
 		this.task.setTaskName(name);
 		assertSame(name, this.task.getName());
 	}
 
 	@Test
-	public void setTaskName() {
+	@DisplayName("setTaskName(String)")
+	public void setTaskName_notNnull() {
 		String name = UUID.randomUUID().toString();
 		this.task.setTaskName(name);
 		assertSame(name, this.task.getName());
-		this.task.setTaskName(null);
-		assertNull(this.task.getName());
+	}
+
+	@Test
+	@DisplayName("setTaskName(null)")
+	public void setTaskName_null() throws Exception {
+		assertException(AssertionError.class, () -> {
+			this.task.setTaskName(null);
+		});
 	}
 
 	@Test
