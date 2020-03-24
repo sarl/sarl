@@ -44,7 +44,7 @@ agent PingAgent {
 		val taskVar = task("waiting_for_partner")
 		
 		taskVar.every(1000) [
-			if (defaultSpace.participants.size > 1) {
+			if (defaultSpace.numberOfStrongParticipants > 1) {
 				info("Pong Agent detected.")
 				info("Sending Ping #0")
 				emit( new Ping(0) )
