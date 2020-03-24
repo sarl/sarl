@@ -33,8 +33,7 @@ import io.sarl.sre.capacities.InternalSchedules
 import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.executor.SreRunnable
 import java.lang.ref.WeakReference
-import java.util.Map
-import java.util.UUID
+import java.util.Collection
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentSkipListSet
 import java.util.concurrent.ExecutionException
@@ -86,31 +85,23 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 
 	protected override prepareUninstallation {
 		// Cancel the tasks as soon as possible in the uninstallation process
-		cancelAllRunningTasks
+		// The future submitted tasks will not be cancelled in order to let "on Destroy"
+		// to be run.
+		cancelAllRunningTasks(false)
 	}
 
 	protected override uninstall {
 		// Cancel the tasks that were creating during the destruction stage (in the Destroy event handler)
-		cancelAllRunningTasks
-	}
-
-	/** Replies the map that store the active tasks.
-	 * If the map is not created before, this function creates it.
-	 * 
-	 * <p>This function is not thread-safe.
-	 */
-	private def getRepository : Map<String, TaskDescription> {
-		if (this.activeTaskRepository === null) {
-			this.activeTaskRepository = new ConcurrentHashMap<String,TaskDescription> 
-		}
-		this.activeTaskRepository
+		cancelAllRunningTasks(true)
 	}
 
 	/** Cancel all the running tasks.
 	 * 
 	 * <p>This function is not thread-safe.
+	 *
+	 * @param interruptThreads indicates if the threads must be interrupted or not.
 	 */
-	private def cancelAllRunningTasks {
+	private def cancelAllRunningTasks(interruptThreads : boolean) {
 		var activeTasks = this.activeTaskRepository
 		this.activeTaskRepository = null
 		if (activeTasks !== null) {
@@ -119,11 +110,32 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 				if (description !== null) {
 					var task = description.task
 					if (task !== null) {
-						finishTask(task, true, false, false)
+						finishTask(task, true, interruptThreads, false, true)
 					}
 				}
 			}
 		}
+	}
+
+	/** Replies the map that store the active tasks.
+	 * If the map is not created before, this function creates it.
+	 * 
+	 * <p>This function is not thread-safe.
+	 */
+	private def getRepository : ConcurrentHashMap<String, TaskDescription> {
+		if (this.activeTaskRepository === null) {
+			this.activeTaskRepository = new ConcurrentHashMap<String,TaskDescription> 
+		}
+		return this.activeTaskRepository
+	}
+
+	private def ensureTaskName(name : String = null) : String {
+		if (name.isNullOrEmpty) {
+			// see http://www.cowtowncoder.com/blog/archives/2010/10/entry_429.html
+			// Don't use UUID::randomUUID way too slow
+			return "t" + this.taskCountID.incrementAndGet
+		}
+		return name
 	}
 
 	/** Create a task.
@@ -143,22 +155,14 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 		updateBehaviorReference : boolean) : TaskDescription {
 
 		var description : TaskDescription = null
-		var realName : String
-		if (name.isNullOrEmpty) {
-			// see http://www.cowtowncoder.com/blog/archives/2010/10/entry_429.html
-			// Don't use UUID::randomUUID way too slow
-			taskCountID.incrementAndGet
-			realName = "task-" + taskCountID 	//+ uuidTimeBasedGenerator.generate().toString
-		} else {
-			realName = name
-
-			description = this.activeTaskRepository?.get(realName)
-
+		var realName = name.ensureTaskName
+		if (realName === name) {
+			description = getRepository.get(realName)
 		}
 
 		if (description === null) {
 			val caller = Capacities::getCaller ?: this.owner
-			val task = new AgentTask(caller)
+			val task = new AgentTask(realName, caller)
 			task.taskName = realName
 			task.guard = AgentTask::TRUE_GUARD
 			description = new TaskDescription(task)
@@ -207,7 +211,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 		SREutils::setSreSpecificData(newTask, description, typeof(TaskDescription))
 		val name = newTask.name
 		if (name.isNullOrEmpty) {
-			newTask.taskName = "task-" + UUID::randomUUID.toString
+			newTask.taskName = ensureTaskName
 		}
 		description.task = newTask
 		description.future = null
@@ -222,12 +226,14 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	 * 
 	 * @param name the task.
 	 * @param cancelTask indicates if the task should be canceled by this function.
+	 * @param forceThreadInterruption if {@code cancelTask} evaluates to {@code true}, this parameter permits
+	 *    to enable or disable the interruption of the thread's task.
 	 * @param updateTaskList indicates if the task list must be updated by removing the task.
 	 * @param updateBehaviorReference indicates if the behavior reference to the task must be updated by removing the reference.
 	 * @return {@code true} if the task was successfully finished.
 	 */
-	private def finishTask(task : AgentTask, cancelTask : boolean, updateTaskList : boolean,
-		updateBehaviorReference : boolean) : boolean {
+	private def finishTask(task : AgentTask, cancelTask : boolean, forceThreadInterruption : boolean,
+		updateTaskList : boolean, updateBehaviorReference : boolean) : boolean {
 		assert task !== null
 		// Remove the reference of the behavior to the task.
 		if (updateBehaviorReference) {
@@ -236,7 +242,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 		// Remove the task from the global list.
 		var description : TaskDescription = null
 		if (updateTaskList && !task.name.nullOrEmpty) {
-			description = this.activeTaskRepository?.remove(task.name)
+			description = getRepository.remove(task.name)
 		}
 		if (cancelTask) {
 			// Force the stop of the task.
@@ -249,7 +255,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 				description.future = null
 				if (future !== null && !future.done && !future.cancelled) {
 					// Task is running. Force its stop. Canceling the not running tasks and removing the running ones
-					var b1 = future.cancel(true);
+					var b1 = future.cancel(forceThreadInterruption);
 					if (b1) {
 						if (future instanceof Runnable) {
 							this.executorService.remove(future)
@@ -274,7 +280,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 		}
 		var description = SREutils::getSreSpecificData(task, typeof(TaskDescription))
 		if (description === null && !task.name.nullOrEmpty) {
-			description = this.activeTaskRepository?.get(task.name)
+			description = getRepository.get(task.name)
 		}
 		return description
 	}
@@ -297,7 +303,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 				description = null
 			} else {
 
-				description = this.activeTaskRepository?.get(task.name)
+				description = getRepository.get(task.name)
 
 			}
 			var registered = description !== null
@@ -341,7 +347,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 		if (tasksToCancel !== null) {
 			for (taskToCancel : tasksToCancel.map[it.get]) {
 				if (taskToCancel !== null) {
-					taskToCancel.finishTask(true, true, false)
+					taskToCancel.finishTask(true, true, true, false)
 				}
 			}
 		}
@@ -362,31 +368,20 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 
 	def setName(task : AgentTask, name : String) {
 		if (getLife(owner).state.alive) {
-			val realName = if(name.isNullOrEmpty) "task-" + UUID::randomUUID.toString else name
+			val realName = name.ensureTaskName
 			val prefix = realName + "-"
 			var i = 0
 			var nm = realName
-			var atr : ConcurrentHashMap<String, TaskDescription>
+			val atr = getRepository
 
-			atr = this.activeTaskRepository
-
-			if (atr !== null) {
-
-				atr = this.activeTaskRepository
-				if (atr !== null) {
-					var desc = atr.remove(task.name)
-					if (desc !== null) {
-						while (atr.containsKey(nm)) {
-							i++
-							nm = prefix + i
-						}
-						task.taskName = nm
-						atr.put(nm, desc)
-					}
-				} else {
-					task.taskName = nm
+			var desc = atr.remove(task.name)
+			if (desc !== null) {
+				while (atr.containsKey(nm)) {
+					i++
+					nm = prefix + i
 				}
-
+				task.taskName = nm
+				atr.put(nm, desc)
 			} else {
 				task.taskName = nm
 			}
@@ -395,7 +390,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 
 	def executeAsap(task : Runnable) : AgentTask {
 		if (task !== null) {
-			var description = preRunTask(null) [task.run]
+			var description = preRunTask(null)[task.run]
 			var logger = getLogger
 			val future = this.executorService.executeAsap(logger,
 				new SingleRunner(this, this.owner, description, logger))
@@ -404,6 +399,10 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 		}
 	}
 
+	def executeBlockingTasks(task : Collection<Runnable>, thrownExceptions : boolean) {
+		this.executorService.executeBlockingTasks(logger, thrownExceptions, task)
+	}
+	
 	def execute(task : AgentTask = null, procedure : (Agent)=>void) : AgentTask {
 		var description = preRunTask(task, procedure)
 		var logger = getLogger
@@ -480,7 +479,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 			if (description !== null) {
 				var future = description.future
 				if (future !== null && !future.done && !future.cancelled && future.cancel(mayInterruptIfRunning)) {
-					return finishTask(task, true, true, true)
+					return finishTask(task, true, true, true, true)
 				}
 			}
 		}
@@ -488,10 +487,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 	}
 
 	def getActiveTasks : ConcurrentSkipListSet<String> {
-		if (this.activeTaskRepository !== null) {
-			return new ConcurrentSkipListSet<String>(this.activeTaskRepository.keySet)
-		}
-		return new ConcurrentSkipListSet<String>();
+		return new ConcurrentSkipListSet<String>(getRepository.keySet)
 	}
 
 	/** 
@@ -712,7 +708,7 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 				assert task !== null
 				val ^skill = this.^skill?.get
 				assert ^skill !== null
-				^skill.finishTask(task, false, true, true);
+				^skill.finishTask(task, false, false, true, true);
 			}
 		}
 
