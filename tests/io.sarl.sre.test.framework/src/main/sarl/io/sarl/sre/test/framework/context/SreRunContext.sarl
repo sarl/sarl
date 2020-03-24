@@ -26,6 +26,7 @@ import io.sarl.bootstrap.SREBootstrap
 import io.sarl.core.AgentKilled
 import io.sarl.core.AgentSpawned
 import io.sarl.core.OpenEventSpace
+import io.sarl.core.SpaceDestroyed
 import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AgentContext
@@ -51,10 +52,10 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
 import org.opentest4j.AssertionFailedError
 
+import static io.sarl.sre.test.framework.Constants.*
 import static org.junit.jupiter.api.Assertions.*
 
 import static extension org.junit.jupiter.api.Assertions.assertEquals
-import static io.sarl.sre.test.framework.Constants.*
 
 /**
  * Context for running the SRE. This context is thread-safe.
@@ -573,6 +574,15 @@ class SreRunContext {
 		typeof(AgentKilled).registerEventHandler(^space, code)
 	}
 
+	/** Register the given code for space destroyed.
+	 * 
+	 * @param space the space to listen into. If {@code null}, the default space of the root context is used.
+	 * @param code the code to run on space destroyed.
+	 */
+	def onSpaceDestroyed(^space : OpenEventSpace = null, code : (SpaceDestroyed)=>void) {
+		typeof(SpaceDestroyed).registerEventHandler(^space, code)
+	}
+
 	/** Register a listener on agent spawned that is waiting for a specific agent.
 	 * 
 	 * <p>If the {@code code} is provided, this function executes the {@code code}
@@ -676,6 +686,34 @@ class SreRunContext {
 		if (code !== null) {
 			code.apply()
 			w.doWait
+		}
+		return w
+	}
+
+	/** Register a listener on space destroyed event that is waiting for a specific space destruction.
+	 * 
+	 * <p>If the {@code code} is provided, this function executes the {@code code}
+	 * and wait for the destruction event for the space with the given {@code id}.
+	 * If the {@code code} is {@code null}, the returned object should enable to wait for
+	 * the space destroyed event.
+	 * 
+	 * @param identifier are the identifier of the space to wait for.
+	 * @param space the space to listen into. If {@code null}, the default space of the root context is used.
+	 * @param timeout the max timeout to apply for waiting.
+	 * @param code the code to run and wait for the space destruction event.
+	 * @return the object that permits to wait for the destruction.
+	 */
+	def waitForSpaceDestroyed(identifier : UUID, ^space : OpenEventSpace = null, timeout : int = STANDARD_TIMEOUT, code : ()=>void = null) : Wait {
+		val lock = new AtomicBoolean
+		onSpaceDestroyed(^space) [
+			if (it.spaceID.ID == identifier) {
+				lock.set(true)
+			}
+		]
+		val w = new BooleanWait(lock, this.directFailureCause)
+		if (code !== null) {
+			code.apply()
+			w.doWait(timeout)
 		}
 		return w
 	}
