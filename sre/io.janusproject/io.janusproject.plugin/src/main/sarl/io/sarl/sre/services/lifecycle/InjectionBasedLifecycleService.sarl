@@ -41,7 +41,7 @@ import java.util.concurrent.ConcurrentLinkedDeque
 
 /** 
  * Implementation of a spawning service that is using injection mechanism
- * for creatin the agent.
+ * for creating the agent.
  * 
  * @author $Author: srodriguez$
  * @author $Author: sgalland$
