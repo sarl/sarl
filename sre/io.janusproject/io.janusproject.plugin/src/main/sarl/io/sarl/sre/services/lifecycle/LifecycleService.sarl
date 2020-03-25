@@ -39,6 +39,22 @@ import java.util.UUID
 interface LifecycleService extends Service {
 
 	/** 
+	 * Enable or disable the spawning of agents.
+	 * 
+	 * @param enable indicates if the spawning of agents is enable or disable.
+	 * @since 0.11
+	 */
+	def setSpawnEnable(enable : boolean)
+
+	/** 
+	 * Replies if the spawning of agents is enabled or disabled.
+	 * 
+	 * @return the flag that indicates if the spawning of agents is enable or disable.
+	 * @since 0.11
+	 */
+	def getSpawnEnable : boolean
+
+	/** 
 	 * Spawn agents of the given type, and pass the parameters to its initialization function.
 	 *
 	 * <p>This function is blocking until all the agents are spawned.

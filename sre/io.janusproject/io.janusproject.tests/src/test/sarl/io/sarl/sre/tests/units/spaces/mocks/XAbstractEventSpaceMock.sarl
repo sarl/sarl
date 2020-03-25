@@ -50,7 +50,7 @@ class XAbstractEventSpaceMock extends AbstractEventSpace {
 		this.participants2 = participants2
 	}
 
-	def getInternalStrongParticipantStructure : ConcurrentHashMap<UUID, Participant> {
+	def getInternalStrongParticipantStructure(copy : boolean) : ConcurrentHashMap<UUID, Participant> {
 		return this.participants1
 	}
 	

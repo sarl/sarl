@@ -34,7 +34,6 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.RepetitionInfo
 import org.junit.jupiter.api.Tag
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
 import static extension io.sarl.tests.api.tools.TestAssertions.*
@@ -59,8 +58,7 @@ import static extension io.sarl.tests.api.tools.TestAssertions.*
 @Tag("run")
 class Bug977Test {
 
-	//@RepeatedTest(10)
-	@Test
+	@RepeatedTest(10)
 	@DisplayName("Inheritance of event handlers and functions")
 	def runInheritanceBehaviorExampleCode(extension rc : SreRunContext) : void {
 		var kern = setupTheSreKernel(null, null)

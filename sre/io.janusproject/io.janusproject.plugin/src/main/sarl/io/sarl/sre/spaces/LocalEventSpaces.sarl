@@ -51,8 +51,11 @@ class OpenLocalEventSpace extends AbstractEventSpace implements OpenEventSpace {
 
 	volatile var weakRepository : ConcurrentHashMap<UUID, Participant>
 	
-	override getInternalStrongParticipantStructure : ConcurrentHashMap<UUID, Participant> {
-		this.strongRepository 
+	override getInternalStrongParticipantStructure(copy : boolean) : ConcurrentHashMap<UUID, Participant> {
+		if (copy) {
+			return new ConcurrentHashMap(this.strongRepository)
+		}
+		return this.strongRepository 
 	}
 
 	override getInternalWeakParticipantStructure : ConcurrentHashMap<UUID, Participant> {
@@ -117,8 +120,11 @@ class RestrictedAccessLocalEventSpace extends AbstractEventSpace implements Rest
 		this.accessPermission = accessPermission
 	}
 
-	override getInternalStrongParticipantStructure : ConcurrentHashMap<UUID, Participant> {
-		this.repository
+	override getInternalStrongParticipantStructure(copy : boolean) : ConcurrentHashMap<UUID, Participant> {
+		if (copy) {
+			return new ConcurrentHashMap(this.repository)
+		}
+		return this.repository
 	}
 
 	override getInternalWeakParticipantStructure : ConcurrentHashMap<UUID, Participant> {

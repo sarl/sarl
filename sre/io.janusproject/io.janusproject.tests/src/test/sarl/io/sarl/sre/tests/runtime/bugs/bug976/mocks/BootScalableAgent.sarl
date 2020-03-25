@@ -34,7 +34,7 @@ agent BootScalableAgent {
 
 	on Initialize {
 		setSkill(new TestingSkill(occurrence))
-		for (i : 0 .. 10000) {
+		for (i : 0 ..< 10000) {
 			typeof(ScalableAgent).spawn(buildAgentInitializationParameters(i))
 		}
 		killMe

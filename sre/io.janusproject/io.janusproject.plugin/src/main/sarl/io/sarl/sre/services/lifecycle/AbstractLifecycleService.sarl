@@ -78,6 +78,8 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 
 	val spawnQueries = new AtomicLong
 
+	val spawnEnable = new AtomicBoolean(true)
+
 	/** 
 	 * Constructs the service.
 	 * 
@@ -108,6 +110,14 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 		this.platformContextEventEmitter = externalContextListener.get
 	}
 
+	override getSpawnEnable : boolean {
+		spawnEnable.get
+	}
+
+	override setSpawnEnable(enable : boolean) {
+		spawnEnable.set(enable)
+	}
+	
 	/** Replies the backend logging service.
 	 * 
 	 * @return the logging service.
@@ -217,7 +227,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	 * @return {@code true} if the service can spawn an agent.
 	 */
 	def canSpawnAgent : boolean {
-		isRunning
+		isRunning && getSpawnEnable
 	}
 
 	protected def spawnAgent(nbAgents : int, spawningAgent : UUID, parent : Context,
