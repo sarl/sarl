@@ -46,6 +46,7 @@ interface SpaceWithParticipants extends Space {
 	 */
 	def forEachStrongParticipant(callback : (UUID, Participant) => void);
 
+
 	/** Apply the given procedure to each of the weak participants.
 	 * This function ignores the strong participants.
 	 *

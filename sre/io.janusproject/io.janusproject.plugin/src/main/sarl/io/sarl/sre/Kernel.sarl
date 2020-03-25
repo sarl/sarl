@@ -29,6 +29,7 @@ import io.sarl.sre.boot.configs.SreConfig
 import io.sarl.sre.capacities.InformedEventListener
 import io.sarl.sre.services.IServiceManager
 import io.sarl.sre.services.context.ContextService
+import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.lifecycle.KernelAgentLifecycleListener
 import io.sarl.sre.services.lifecycle.LifecycleService
 import io.sarl.sre.services.logging.LoggingService
@@ -47,6 +48,7 @@ import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton
 import org.eclipse.xtend.lib.annotations.Accessors
+import java.util.concurrent.atomic.AtomicInteger
 
 /** 
  * This class represents the Kernel of the SRE platform.
@@ -232,38 +234,40 @@ class Kernel {
 	@SuppressWarnings("use_reserved_sarl_annotation")
 	@PrivateAPI
 	static def executeForcedAgentStop(kern : Kernel) : int {
+		val executorService = kern.getService(typeof(ExecutorService))
 		val contextService = kern.getService(typeof(ContextService))
 		val lifeCycleService = kern.getService(typeof(LifecycleService))
-		assert contextService !== null && lifeCycleService !== null
+		assert executorService !== null && contextService !== null && lifeCycleService !== null
+
+		lifeCycleService.spawnEnable = false
+
 		val contexts = contextService.allContexts
-		val encounteredAgents = <UUID>newTreeSet(null)
-		val agents = newArrayList
+		val agents = <UUID, Runnable>newTreeMap(null)
+
+		var nb = new AtomicInteger(0)
 
 		val iter = contexts.iterator
 		while (iter.hasNext) {
 			val context = iter.next
 			val ^space = context.defaultSpace as SpaceWithParticipants
-
 			^space.forEachStrongParticipant [ id, p |
 				val listener = p.participant
+
 				if (listener instanceof InformedEventListener) {
 					val ag = listener.ownerInstance
 					assert ag !== null
-					if (encounteredAgents += ag.ID) {
-						agents += ag
-					}
+					agents.put(ag.ID) [
+						if (lifeCycleService.killAgent(ag)) {
+							nb.incrementAndGet
+						}
+					]
 				}
 			]
 
 		}
 
-		var nb = 0
-		for (ag : agents) {
-			if (lifeCycleService.killAgent(ag)) {
-				nb++
-			}
-		}
-		return nb
+		executorService.executeBlockingTasks(agents.values)
+		return nb.get
 	}
 
 	/** 

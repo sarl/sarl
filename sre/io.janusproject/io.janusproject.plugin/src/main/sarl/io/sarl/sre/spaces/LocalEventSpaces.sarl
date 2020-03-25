@@ -49,14 +49,6 @@ class OpenLocalEventSpace extends AbstractEventSpace implements OpenEventSpace {
 
 
 	
-	/*override getInternalStrongParticipantStructure : ConcurrentHashMap<UUID, Participant> {
-		this.strongRepository 
-	}
-
-	override getInternalWeakParticipantStructure : ConcurrentHashMap<UUID, Participant> {
-		this.weakRepository
-	}*/
-	
 	def register(entity : EventListener, weakParticipant : boolean) : Address {
 		entity.registerToSpace(weakParticipant)
 	}
@@ -106,15 +98,6 @@ class RestrictedAccessLocalEventSpace extends AbstractEventSpace implements Rest
 		this.accessPermission = accessPermission
 	}
 
-	/*override getInternalStrongParticipantStructure : ConcurrentHashMap<UUID, Participant> {
-		this.repository
-	}
-
-	override getInternalWeakParticipantStructure : ConcurrentHashMap<UUID, Participant> {
-		null
-	}*/
-
-	
 	/** 
 	 * Replies the Access Control List.
 	 * 
