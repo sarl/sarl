@@ -221,6 +221,11 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 		isRunning
 	}
 
+	/**
+	 * This lock is very important, it corrects the bug detected in the boids simulation and SARL Benchmarks
+	 * In particular, the number of calls to the spawn function was not coherent with the corresponding number of strong agents spawned in the defaultcontext.defaultspace
+	 * Both lock on agentCreatorProvider.getAgentCreator and life.start are REQUIRED
+	 */
 	val lock : ReentrantLock = new ReentrantLock
 
 	protected def spawnAgent(nbAgents : int, spawningAgent : UUID, parent : Context,
