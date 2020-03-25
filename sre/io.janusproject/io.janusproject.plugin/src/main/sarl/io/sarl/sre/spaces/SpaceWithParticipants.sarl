@@ -49,11 +49,18 @@ interface SpaceWithParticipants extends Space {
 
 	/** Apply the given procedure to each of the weak participants.
 	 * This function ignores the strong participants.
-	 *
+	 * 
 	 * @param callback the lambda to invoke.
 	 * @since 0.11
 	 */
 	def forEachWeakParticipant(callback : (UUID, Participant)=>void);
 
-	def getListenerFromStrongParticipant(target : UUID):EventListener;
+	/** Replies the event listener with the given identifier into the registered strong participants.
+	 * 
+	 * @param target the identifier of the event listener to search for.
+	 * @return the event listener or {@code null} if there is no event listener found.
+	 * @since 0.11
+	 */
+	def getListenerFromStrongParticipant(target : UUID) : EventListener
+
 }
