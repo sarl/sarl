@@ -52,16 +52,17 @@ skill MySkill implements InternalEventBusCapacity {
 	}
 
 	@SuppressWarnings("potential_field_synchronization_problem")
-	override fireEventAndWait(^event : Event, gatherEvents : boolean, thrownExceptions : boolean) : Iterable<Event> {
+	override fireEventAndWait(^event : Event, gatherEvents : boolean,
+		thrownExceptions : boolean) : ConcurrentLinkedDeque<Event> {
 		if (this.failure) {
 			throw new RuntimeException
 		}
-		emptyList
+		new ConcurrentLinkedDeque
 	}
 
 	@SuppressWarnings("potential_field_synchronization_problem")
 	override fireEventAndWait(^event : Event, gatherEvents : boolean, thrownExceptions : boolean,
-		listener : Object) : Iterable<Event> {
+		listener : Object) : ConcurrentLinkedDeque<Event> {
 		if (this.failure) {
 			throw new RuntimeException
 		}

@@ -60,6 +60,12 @@ class XAbstractSpaceTest {
 			def getNumberOfStrongParticipants : int {
 				throw new UnsupportedOperationException
 			}
+			def forEachWeakParticipant(callback : (UUID)=>void) {
+				throw new UnsupportedOperationException
+			}
+			def getNumberOfWeakParticipants : int {
+				throw new UnsupportedOperationException
+			}
 			def isPseudoEmpty(id : UUID) : boolean {
 				throw new UnsupportedOperationException
 			}

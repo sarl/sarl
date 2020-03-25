@@ -42,14 +42,21 @@ class MySpace implements Space {
 	override getSpaceID : SpaceID {
 		this.id
 	}
-	
+
 	def forEachStrongParticipant(callback : (UUID)=>void) {
 	}
-	
+
 	def getNumberOfStrongParticipants : int {
 		0
 	}
-	
+
+	def forEachWeakParticipant(callback : (UUID)=>void) {
+	}
+
+	def getNumberOfWeakParticipants : int {
+		0
+	}
+
 	def isPseudoEmpty(id : UUID) : boolean {
 		true
 	}

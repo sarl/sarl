@@ -44,11 +44,13 @@ skill MyEventBus implements InternalEventBusCapacity {
 	override unregisterEventBusListener(type : Class<?>, callback : (Object)=>boolean) {
 	}
 
-	override fireEventAndWait(^event : Event, gatherEvents : boolean, thrownExceptions : boolean) : Iterable<Event> {
+	override fireEventAndWait(^event : Event, gatherEvents : boolean,
+		thrownExceptions : boolean) : ConcurrentLinkedDeque<Event> {
 		null
 	}
 
-	override fireEventAndWait(^event : Event, gatherEvents : boolean, thrownExceptions : boolean, listener : Object) : Iterable<Event> {
+	override fireEventAndWait(^event : Event, gatherEvents : boolean, thrownExceptions : boolean,
+		listener : Object) : ConcurrentLinkedDeque<Event> {
 		null
 	}
 

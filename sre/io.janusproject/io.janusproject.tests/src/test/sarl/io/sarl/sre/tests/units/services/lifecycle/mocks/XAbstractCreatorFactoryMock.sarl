@@ -25,6 +25,7 @@ import io.sarl.lang.core.Agent
 import io.sarl.lang.core.DynamicSkillProvider
 import io.sarl.sre.services.lifecycle.AbstractCreatorFactory
 import java.util.UUID
+import java.util.concurrent.ConcurrentLinkedDeque
 
 /**
  * @author $Author: sgalland$
@@ -36,7 +37,7 @@ import java.util.UUID
 class XAbstractCreatorFactoryMock extends AbstractCreatorFactory {
 	
 	def getAgentCreator(agentClazz : Class<? extends Agent>, parent : UUID, nbAgents : int,
-		skillProviders : Iterable<DynamicSkillProvider>) : (UUID)=>Agent {
+		skillProviders : ConcurrentLinkedDeque<DynamicSkillProvider>) : (UUID)=>Agent {
 		null
 	}
 	

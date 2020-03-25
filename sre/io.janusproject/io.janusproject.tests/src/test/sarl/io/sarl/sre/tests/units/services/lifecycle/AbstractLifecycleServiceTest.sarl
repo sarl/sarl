@@ -56,6 +56,7 @@ import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.ArrayList
 import java.util.List
 import java.util.UUID
+import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.Future
 import java.util.logging.Logger
 import javax.inject.Provider
@@ -148,7 +149,7 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 		when(agentProvider.apply(any)).thenReturn(this.^agent2)
 		this.agentCreatorProvider = typeof(AgentCreatorProvider).mock
 		when(this.agentCreatorProvider.getAgentCreator(typeof(Class).any,
-			typeof(UUID).any, anyInt, typeof(Iterable).any)).thenReturn(agentProvider)
+			typeof(UUID).any, anyInt, typeof(ConcurrentLinkedDeque).any)).thenReturn(agentProvider)
 
 		this.executor = typeof(ExecutorService).mock
 		// Execute the code synchronously only for testing purpose
@@ -404,7 +405,8 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 		
 		// Agent destroy notification
 		capAgent = ArgumentCaptor::forClass(typeof(Agent))
-		var capContexts : ArgumentCaptor<Iterable<ContextReference>> = ArgumentCaptor::forClass(typeof(Iterable))
+		var capContexts : ArgumentCaptor<ConcurrentLinkedDeque<ContextReference>> = ArgumentCaptor::forClass(
+			typeof(ConcurrentLinkedDeque))
 		listener1.verify.agentDestroyed(capAgent.capture, capContexts.capture)
 		this.agent2.assertEquals(capAgent.value)
 		capContexts.value.map[it.getContext].assertContains(defaultContext, outerContext)

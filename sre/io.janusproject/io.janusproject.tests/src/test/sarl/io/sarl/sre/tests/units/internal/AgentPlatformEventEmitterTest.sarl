@@ -39,6 +39,7 @@ import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
+import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.logging.Logger
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -157,7 +158,7 @@ class AgentEventEmitterTest {
 		when(ctx.ID).thenReturn(secondContext)
 		var ref2 = this.life2.addExternalContext(ctx, adr2)
 		
-		var contexts = #[ref1, ref2]
+		var contexts = new ConcurrentLinkedDeque(#[ref1, ref2])
 		
 		this.emitter.agentDestroyed(agent2, contexts)
 

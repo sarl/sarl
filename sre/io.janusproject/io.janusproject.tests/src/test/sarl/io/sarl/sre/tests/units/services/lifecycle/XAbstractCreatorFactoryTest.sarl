@@ -29,6 +29,7 @@ import io.sarl.sre.tests.units.services.lifecycle.mocks.MyCap
 import io.sarl.sre.tests.units.services.lifecycle.mocks.XAbstractCreatorFactoryMock
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.util.concurrent.ConcurrentLinkedDeque
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
@@ -64,7 +65,7 @@ class XAbstractCreatorFactoryTest {
 	def mergeSkillProviders_0_emptyIterable : void {
 		var factory = new XAbstractCreatorFactoryMock
 		//
-		var provider = factory.mergeSkillProviders(emptyList)
+		var provider = factory.mergeSkillProviders(new ConcurrentLinkedDeque)
 		//
 		provider.assertNull
 	}
@@ -75,7 +76,7 @@ class XAbstractCreatorFactoryTest {
 		var factory = new XAbstractCreatorFactoryMock
 		//
 		var subprovider0 = DynamicSkillProvider::EMPTY_PROVIDER
-		var provider = factory.mergeSkillProviders(#[subprovider0])
+		var provider = factory.mergeSkillProviders(new ConcurrentLinkedDeque(#[subprovider0]))
 		//
 		provider.assertNotNull
 		//
@@ -91,7 +92,7 @@ class XAbstractCreatorFactoryTest {
 		//
 		val expected0 = typeof(Skill).mock
 		var subprovider0 = new Provider(expected0)
-		var provider = factory.mergeSkillProviders(#[subprovider0])
+		var provider = factory.mergeSkillProviders(new ConcurrentLinkedDeque(#[subprovider0]))
 		//
 		provider.assertNotNull
 		//
@@ -109,7 +110,7 @@ class XAbstractCreatorFactoryTest {
 		var subprovider0 = new Provider(expected0)
 		val expected1 = typeof(Skill).mock
 		var subprovider1 = new Provider(expected1)
-		var provider = factory.mergeSkillProviders(#[subprovider0, subprovider1])
+		var provider = factory.mergeSkillProviders(new ConcurrentLinkedDeque(#[subprovider0, subprovider1]))
 		//
 		provider.assertNotNull
 		//
@@ -126,7 +127,7 @@ class XAbstractCreatorFactoryTest {
 		var subprovider0 = DynamicSkillProvider::EMPTY_PROVIDER
 		val expected1 = typeof(Skill).mock
 		var subprovider1 = new Provider(expected1)
-		var provider = factory.mergeSkillProviders(#[subprovider0, subprovider1])
+		var provider = factory.mergeSkillProviders(new ConcurrentLinkedDeque(#[subprovider0, subprovider1]))
 		//
 		provider.assertNotNull
 		//
@@ -142,7 +143,7 @@ class XAbstractCreatorFactoryTest {
 		//
 		var subprovider0 = DynamicSkillProvider::EMPTY_PROVIDER
 		var subprovider1 = DynamicSkillProvider::EMPTY_PROVIDER
-		var provider = factory.mergeSkillProviders(#[subprovider0, subprovider1])
+		var provider = factory.mergeSkillProviders(new ConcurrentLinkedDeque(#[subprovider0, subprovider1]))
 		//
 		provider.assertNotNull
 		//
@@ -172,7 +173,7 @@ class XAbstractCreatorFactoryTest {
 		var orig = DynamicSkillProvider::EMPTY_PROVIDER
 		var factory = new XAbstractCreatorFactoryMock(orig)
 		//
-		var provider = factory.mergeSkillProviders(emptyList)
+		var provider = factory.mergeSkillProviders(new ConcurrentLinkedDeque)
 		//
 		var s = provider.createSkill(typeof(MyCap))
 		//
@@ -186,7 +187,7 @@ class XAbstractCreatorFactoryTest {
 		var factory = new XAbstractCreatorFactoryMock(orig)
 		//
 		var subprovider0 = DynamicSkillProvider::EMPTY_PROVIDER
-		var provider = factory.mergeSkillProviders(#[subprovider0])
+		var provider = factory.mergeSkillProviders(new ConcurrentLinkedDeque(#[subprovider0]))
 		//
 		provider.assertNotNull
 		//
@@ -203,7 +204,7 @@ class XAbstractCreatorFactoryTest {
 		//
 		val expected0 = typeof(Skill).mock
 		var subprovider0 = new Provider(expected0)
-		var provider = factory.mergeSkillProviders(#[subprovider0])
+		var provider = factory.mergeSkillProviders(new ConcurrentLinkedDeque(#[subprovider0]))
 		//
 		provider.assertNotNull
 		//
@@ -222,7 +223,7 @@ class XAbstractCreatorFactoryTest {
 		var subprovider0 = new Provider(expected0)
 		val expected1 = typeof(Skill).mock
 		var subprovider1 = new Provider(expected1)
-		var provider = factory.mergeSkillProviders(#[subprovider0, subprovider1])
+		var provider = factory.mergeSkillProviders(new ConcurrentLinkedDeque(#[subprovider0, subprovider1]))
 		//
 		provider.assertNotNull
 		//
@@ -240,7 +241,7 @@ class XAbstractCreatorFactoryTest {
 		var subprovider0 = DynamicSkillProvider::EMPTY_PROVIDER
 		val expected1 = typeof(Skill).mock
 		var subprovider1 = new Provider(expected1)
-		var provider = factory.mergeSkillProviders(#[subprovider0, subprovider1])
+		var provider = factory.mergeSkillProviders(new ConcurrentLinkedDeque(#[subprovider0, subprovider1]))
 		//
 		provider.assertNotNull
 		//
@@ -257,7 +258,7 @@ class XAbstractCreatorFactoryTest {
 		//
 		var subprovider0 = DynamicSkillProvider::EMPTY_PROVIDER
 		var subprovider1 = DynamicSkillProvider::EMPTY_PROVIDER
-		var provider = factory.mergeSkillProviders(#[subprovider0, subprovider1])
+		var provider = factory.mergeSkillProviders(new ConcurrentLinkedDeque(#[subprovider0, subprovider1]))
 		//
 		provider.assertNotNull
 		//
@@ -289,7 +290,7 @@ class XAbstractCreatorFactoryTest {
 		var orig = new Provider(expected)
 		var factory = new XAbstractCreatorFactoryMock(orig)
 		//
-		var provider = factory.mergeSkillProviders(emptyList)
+		var provider = factory.mergeSkillProviders(new ConcurrentLinkedDeque)
 		//
 		provider.assertNotNull
 		//
@@ -306,7 +307,7 @@ class XAbstractCreatorFactoryTest {
 		var factory = new XAbstractCreatorFactoryMock(orig)
 		//
 		var subprovider0 = DynamicSkillProvider::EMPTY_PROVIDER
-		var provider = factory.mergeSkillProviders(#[subprovider0])
+		var provider = factory.mergeSkillProviders(new ConcurrentLinkedDeque(#[subprovider0]))
 		//
 		provider.assertNotNull
 		//
@@ -324,7 +325,7 @@ class XAbstractCreatorFactoryTest {
 		//
 		val expected0 = typeof(Skill).mock
 		var subprovider0 = new Provider(expected0)
-		var provider = factory.mergeSkillProviders(#[subprovider0])
+		var provider = factory.mergeSkillProviders(new ConcurrentLinkedDeque(#[subprovider0]))
 		//
 		provider.assertNotNull
 		//
@@ -344,7 +345,7 @@ class XAbstractCreatorFactoryTest {
 		var subprovider0 = new Provider(expected0)
 		val expected1 = typeof(Skill).mock
 		var subprovider1 = new Provider(expected1)
-		var provider = factory.mergeSkillProviders(#[subprovider0, subprovider1])
+		var provider = factory.mergeSkillProviders(new ConcurrentLinkedDeque(#[subprovider0, subprovider1]))
 		//
 		provider.assertNotNull
 		//
@@ -363,7 +364,7 @@ class XAbstractCreatorFactoryTest {
 		var subprovider0 = DynamicSkillProvider::EMPTY_PROVIDER
 		val expected1 = typeof(Skill).mock
 		var subprovider1 = new Provider(expected1)
-		var provider = factory.mergeSkillProviders(#[subprovider0, subprovider1])
+		var provider = factory.mergeSkillProviders(new ConcurrentLinkedDeque(#[subprovider0, subprovider1]))
 		//
 		provider.assertNotNull
 		//
@@ -381,7 +382,7 @@ class XAbstractCreatorFactoryTest {
 		//
 		var subprovider0 = DynamicSkillProvider::EMPTY_PROVIDER
 		var subprovider1 = DynamicSkillProvider::EMPTY_PROVIDER
-		var provider = factory.mergeSkillProviders(#[subprovider0, subprovider1])
+		var provider = factory.mergeSkillProviders(new ConcurrentLinkedDeque(#[subprovider0, subprovider1]))
 		//
 		provider.assertNotNull
 		//
