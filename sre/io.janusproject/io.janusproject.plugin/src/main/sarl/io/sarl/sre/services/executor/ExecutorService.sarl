@@ -208,7 +208,7 @@ interface ExecutorService extends Service {
 	 * @param task the task to submit.
 	 * @param thrownExceptions indicates if the exceptions in the given tasks are thrown forward by this function.
 	 * @param logger the logger to use for errors.
-	 * @since 0.6.0
+	 * @since 0.6
 	 */
 	def executeBlockingTasks(logger : Logger = null, thrownExceptions : boolean = false, task : Collection<Runnable>)
 	
@@ -225,7 +225,7 @@ interface ExecutorService extends Service {
 	 * @param logger the logger to use for errors.
 	 * @param collection the collection of elements to iterate on.
 	 * @param task the task to submit. Be sure that the task is synchronized on the given collection.
-	 * @since 0.6.0
+	 * @since 0.6
 	 */
 	def applyBlockingConsumer(logger : Logger = null, collection : Iterable<T>, task : Consumer<? super T>) with T
 
@@ -262,9 +262,44 @@ interface ExecutorService extends Service {
 	 * @param runGroupSize the number of tasks to be run by a single thread.
 	 * @return the number of successful runs.
 	 * @throws InterruptedException when the function cannot wait for task termination.
-	 * @since 0.5.0
+	 * @since 0.5
 	 */
 	def executeBlockingTask(logger : Logger = null, nbExecutions : int, runGroupSize : int,
 		task : Runnable) : int
+
+	/** 
+	 * Submit a single task multiple times to the executor service.
+	 * 
+	 * <p>The same task instance will be submit to the executor service.
+	 * 
+	 * <p>{@code runGroupSize} indicates how many number of times the task will be run on
+	 * a single thread.
+	 * 
+	 * <p>This function is equivalent to:
+	 * <pre><code>
+	 * for(i in [ 1 .. (nbExecutions/runGroupSize) ])
+	 * do
+	 * execute({
+	 * for(j in [1..runGroupSize]) {
+	 * task.run
+	 * }
+	 * })
+	 * done
+	 * </code></pre>
+	 * 
+	 * <p>Caution: if a {@code task} is failing, the exception will be output on the logger. This function never fails.
+	 * 
+	 * <p>According to the implementation of the service, the given task may be run in the same or separated thread
+	 * than the one of the caller.
+	 * 
+	 * <p>If an exception occurs into the given consume, the exception is logged. It is never thrown by this function.
+	 * 
+	 * @param logger the logger to use for errors.
+	 * @param task the task to submit.
+	 * @param nbExecutions the number of times the task must be run, usually greater than 1.
+	 * @param runGroupSize the number of tasks to be run by a single thread.
+	 * @since 0.11
+	 */
+	def executeNotBlockingTask(logger : Logger = null, nbExecutions : int, runGroupSize : int, task : Runnable)
 
 }

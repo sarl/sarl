@@ -189,6 +189,10 @@ class JreExecutorService extends AbstractExecutorService implements PreReleasabl
 		executeInThreadsAndWait(task.protectRunnable(logger), nbExecutions, runGroupSize)
 	}
 
+	def executeNotBlockingTask(logger : Logger, nbExecutions : int, runGroupSize : int, task : Runnable) {
+		executeInThreadsWithoutWaiting(task.protectRunnable(logger), nbExecutions, runGroupSize)
+	}
+
 	def executeAsap(logger : Logger, task : Runnable) : Future<?> {
 		executorService.submit(task.protectRunnable(logger))
 	}

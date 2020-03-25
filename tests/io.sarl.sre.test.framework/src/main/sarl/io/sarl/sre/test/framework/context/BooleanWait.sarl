@@ -19,43 +19,33 @@
  * limitations under the License.
  */
 
-package io.sarl.lang.core;
+package io.sarl.sre.test.framework.context
 
-import org.eclipse.xtext.xbase.lib.Pure;
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicReference
+import org.eclipse.xtend.lib.annotations.ToString
 
-/** This class defines the protected API of an object that could contains SRE specific data.
- *
- * <p>Any SRE-specific data into this object is assumed to be transient (not serializable).
+/**
+ * OBject that enables to wait for a specific thing.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.6
+ * @since 0.11
  */
-public abstract class SRESpecificDataContainer {
+@ToString
+class BooleanWait extends Wait {
+	
+	val lock : AtomicBoolean
 
-	private transient volatile Object sreSpecificData;
-
-	/** Replies the data associated to this agent trait by the SRE.
-	 *
-	 * @param <S> the type of the data.
-	 * @param type the type of the data.
-	 * @return the SRE-specific data.
-	 * @since 0.5
-	 */
-	@Pure
-	<S> S $getSreSpecificData(Class<S> type) {
-		return type.cast(this.sreSpecificData);
+	package new (lock : AtomicBoolean, errorContainer : AtomicReference<Throwable>) {
+		super(errorContainer)
+		this.lock = lock
 	}
 
-	/** Change the data associated to this agent trait by the SRE.
-	 *
-	 * @param data the SRE-specific data.
-	 * @since 0.5
-	 */
-	void $setSreSpecificData(Object data) {
-		this.sreSpecificData = data;
+	protected override isLocked : boolean {
+		!this.lock.get
 	}
-
+	
 }

@@ -21,13 +21,16 @@
 
 package io.sarl.sre.tests.runtime.internal.mocks
 
+import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
-import io.sarl.core.MemberJoined
+import io.sarl.core.InnerContextAccess
+import io.sarl.core.Lifecycle
+import io.sarl.core.MemberLeft
 import io.sarl.sre.test.framework.skills.TestingCapacity
 import io.sarl.sre.test.framework.skills.TestingSkill
 
 import static extension io.sarl.tests.api.tools.TestUtils.*
-import io.sarl.core.Lifecycle
+import static extension io.sarl.sre.tests.framework.SreTestUtilities.*
 
 /**
  * @author $Author: sgalland$
@@ -35,20 +38,37 @@ import io.sarl.core.Lifecycle
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent ChildAgent0 {
+agent MemberLeftAgent0 {
 
-	uses Lifecycle
+	uses Lifecycle, InnerContextAccess, DefaultContextInteractions
 
 	uses TestingCapacity
 
+	var number : int
+
 	on Initialize {
 		setSkill(new TestingSkill(occurrence))
+		this.number = occurrence.parameters.get(1) as Integer
 	}
 
-	on MemberJoined {
-		addResult("CHILD1: joined " + occurrence.agentType.simpleTypeName)
+	on MemberLeft {
+		// The agent should be alive
+		val agentState = getAgentState
+		assert agentState !== null && agentState.alive
+		//
+		var msg : String
+		if (occurrence.inInnerDefaultSpace) {
+			msg = "inner"
+		} else if (occurrence.inDefaultSpace) {
+			msg = "default"
+		} else {
+			msg = "other"
+		}
+		addResult(
+			"AG" + this.number + ": joined " + occurrence.agentType.simpleTypeName + " " + occurrence.agentID + " in " +
+				msg + " space")
 	}
-	
+
 	on Bye {
 		killMe
 	}

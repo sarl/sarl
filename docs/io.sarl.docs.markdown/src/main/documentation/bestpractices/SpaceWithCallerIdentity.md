@@ -119,8 +119,14 @@ In order to enable the creation of an instance of [:myspacename!], a space speci
 			    }
 			    def getID : SpaceID {
 			    }
-			    def getParticipants : ConcurrentSkipListSet<UUID> {
+			    def isPseudoEmpty(id : UUID) {
+			    	false
 			    }
+				def getNumberOfStrongParticipants : int {
+					0
+				}
+				def forEachStrongParticipant(cb : (UUID)=>void) {
+				}
 			}
 			[:On]
 			class [:myspacespecname]([:myspacename!]Specification) implements SpaceSpecification<[:myspacename!]> {
@@ -158,8 +164,14 @@ Back to the example, the code for the skill is:
 			    }
 			    def getID : SpaceID {
 			    }
-			    def getParticipants : ConcurrentSkipListSet<UUID> {
+			    def isPseudoEmpty(id : UUID) {
+			    	false
 			    }
+				def getNumberOfStrongParticipants : int {
+					0
+				}
+				def forEachStrongParticipant(cb : (UUID)=>void) {
+				}
 			}
 			class [:myspacespecname]([:myspacename!]Specification) implements SpaceSpecification<[:myspacename!]> {
 				def create(id : SpaceID, params : Object*) : [:myspacename!] {
@@ -221,8 +233,14 @@ to give the instance of the caller to the space. The code of the skill becomes:
 			    }
 			    def getID : SpaceID {
 			    }
-			    def getParticipants : ConcurrentSkipListSet<UUID> {
+			    def isPseudoEmpty(id : UUID) {
+			    	true
 			    }
+				def getNumberOfStrongParticipants : int {
+					0
+				}
+				def forEachStrongParticipant(cb : (UUID)=>void) {
+				}
 			}
 			[:On]
 			skill [:myskillname](MySkill) implements [:mycapacityname!] {

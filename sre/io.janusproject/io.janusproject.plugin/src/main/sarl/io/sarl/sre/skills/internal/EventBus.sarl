@@ -20,6 +20,7 @@
  */
 package io.sarl.sre.skills.internal
 
+import com.google.common.collect.Collections2
 import io.sarl.lang.core.Event
 import io.sarl.sre.capacities.InternalSchedules
 import io.sarl.sre.internal.eventguard.BehaviorGuardEvaluator
@@ -27,7 +28,6 @@ import io.sarl.sre.internal.eventguard.BehaviorGuardEvaluatorRegistry
 import io.sarl.sre.services.executor.SreRunnable
 import java.util.Collection
 import java.util.concurrent.ConcurrentLinkedDeque
-import java.util.concurrent.CountDownLatch
 import java.util.concurrent.ExecutionException
 import java.util.function.Supplier
 import java.util.logging.Logger
@@ -243,6 +243,13 @@ class EventBus {
 		}
 	}
 
+	private static def buildRunnable(evaluator : BehaviorGuardEvaluator, ^event : Event,
+		output : ConcurrentLinkedDeque<Runnable>) : Runnable {
+		[
+			evaluator.evaluateGuard(^event, output)
+		]
+	}
+
 	/** 
 	 * Evaluate the guard associated to the specified {@code event} and returns the list of behaviors methods that must be
 	 * executed.
@@ -255,6 +262,7 @@ class EventBus {
 	 * @return the collection of couple associating a object and its collection of behavior methods that must be executed.
 	 * @throws InvocationTargetException - exception when you try to execute a method by reflection and this method doesn't exist.
 	 */
+	@SuppressWarnings("potential_inefficient_value_conversion")
 	protected def evaluateGuards(^event : Event,
 		behaviorGuardEvaluators : ConcurrentLinkedDeque<BehaviorGuardEvaluator>,
 		logger : Logger) : Collection<Runnable> {
@@ -263,64 +271,17 @@ class EventBus {
 		assert behaviorGuardEvaluators !== null
 		assert behaviorGuardEvaluators.size() > 0
 
-		val behaviorsMethodsToExecute = new ConcurrentMultiList
+		val behaviorsMethodsToExecute = new ConcurrentLinkedDeque
 		val eval = behaviorGuardEvaluators.size
 		if (eval > 1) {
-			val doneSignal = new CountDownLatch(eval)
-			val runException = new OutputParameter
-
-			for (evaluator : behaviorGuardEvaluators) {
-				this.executor.executeAsap(new SreRunnable(logger) {
-					def internalRun {
-						try {
-							val behaviorsMethodsToExecutePerTarget = new ConcurrentLinkedDeque
-							evaluator.evaluateGuard(^event, behaviorsMethodsToExecutePerTarget)
-							behaviorsMethodsToExecute.addCollection(behaviorsMethodsToExecutePerTarget)
-						} finally {
-							doneSignal.countDown
-						}
-					}
-					def onError(e : Throwable) {
-						// Catch exception for notifying the caller
-						runException.set(e)
-					}
-				})
-			}
-
-			// Wait for all Behaviors runnable to complete before continuing
-			try {
-				doneSignal.await
-			} catch (ex : InterruptedException) {
-				// This exception occurs when one of the launched task kills the agent before
-				// all the
-				// submitted tasks are finished. Keep in mind that killing an agent should kill
-				// the
-				// launched tasks.
-				// Example of code that is generating this issue:
-				//
-				// on Initialize {
-				// in (100) [
-				// killMe
-				// ]
-				// }
-				//
-				// In this example, the killMe is launched before the Initialize code is
-				// finished;
-				// and because the Initialize event is fired through the current function, it
-				// causes the InterruptedException.
-			}
-
-			// Re-throw the run-time exception
-			if (runException.get() !== null) {
-				throw new ExecutionException(runException.get)
-			}
-
+			val guardCodes = Collections2.transform(behaviorGuardEvaluators) [
+				it.buildRunnable(^event, behaviorsMethodsToExecute)
+			]
+			this.executor.executeBlockingTasks(guardCodes, true)
 		} else {
 			// When you have a single guard to evaluate we cannot create a thread because we must be sure the guard evaluation
 			// is finished before executing the corresponding behaviors
-			var behaviorsMethodsToExecutePerTarget = new ConcurrentLinkedDeque
-			behaviorGuardEvaluators.first.evaluateGuard(^event, behaviorsMethodsToExecutePerTarget)
-			behaviorsMethodsToExecute.addCollection(behaviorsMethodsToExecutePerTarget)
+			behaviorGuardEvaluators.first.evaluateGuard(^event, behaviorsMethodsToExecute)
 		}
 
 		return behaviorsMethodsToExecute
@@ -342,58 +303,11 @@ class EventBus {
 	 */
 	protected def executeBehaviorMethodsInParalellWithSynchroAtTheEnd(behaviorsMethodsToExecute : Collection<Runnable>,
 		thrownExceptions : boolean, logger : Logger) {
-		// code from steph this.executor.executeBlockingTasks(logger, thrownExceptions, behaviorsMethodsToExecute)
 		assert behaviorsMethodsToExecute !== null
 		assert behaviorsMethodsToExecute.size() > 0
 
 		if (behaviorsMethodsToExecute.size() > 1) {
-			val doneSignal = new CountDownLatch(behaviorsMethodsToExecute.size)
-
-			val runException = new OutputParameter
-
-			for (runnable : behaviorsMethodsToExecute) {
-				this.executor.executeAsap(new SreRunnable(logger) {
-					def internalRun {
-						try {
-							runnable.run
-						} finally {
-							doneSignal.countDown
-						}
-					}
-					def onError(e : Throwable) {
-						// Catch exception for notifying the caller
-						runException.set(e)
-					}
-				});
-			}
-
-			// Wait for all Behaviors runnable to complete before continuing
-			try {
-				doneSignal.await
-			} catch (ex : InterruptedException) {
-				// This exception occurs when one of the launched task kills the agent before
-				// all the
-				// submitted tasks are finished. Keep in mind that killing an agent should kill
-				// the
-				// launched tasks.
-				// Example of code that is generating this issue:
-				//
-				// on Initialize {
-				// in (100) [
-				// killMe
-				// ]
-				// }
-				//
-				// In this example, the killMe is launched before the Initialize code is
-				// finished;
-				// and because the Initialize event is fired through the current function, it
-				// causes the InterruptedException.
-			}
-
-			// Re-throw the run-time exception
-			if (runException.get() !== null) {
-				throw new ExecutionException(runException.get)
-			}
+			this.executor.executeBlockingTasks(behaviorsMethodsToExecute, thrownExceptions)
 		} else {
 			val r0 = behaviorsMethodsToExecute.iterator.next
 			assert r0 !== null

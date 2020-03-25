@@ -23,6 +23,7 @@ package io.sarl.sre.capacities
 import io.sarl.core.Schedules
 import io.sarl.lang.core.Behavior
 import io.sarl.core.AgentTask
+import java.util.Collection
 
 /** 
  * Capacity for executing tasks with specific functions for the SRE platform.
@@ -54,5 +55,21 @@ capacity InternalSchedules extends Schedules {
 	 * @since 0.11
 	 */
 	def executeAsap(task : Runnable) : AgentTask
+
+	/**
+	 * Submit tasks to the executor service and wait for the termination of all the tasks.
+	 * This function ensures that the caller's thread is blocked until all the given tasks have been finished.
+	 * 
+	 * <p>According to the implementation of the service, the given tasks may be run in the same or separated thread
+	 * than the one of the caller.
+	 * 
+	 * <p>If an exception occurs into the given task, the exception is thrown if {@code thrownExceptions}
+	 * evaluates to {@code true}. If it is evaluates to {@code false}, the exception is logged.
+	 * 
+	 * @param task the task to submit.
+	 * @param thrownExceptions indicates if the exceptions in the given tasks are thrown forward by this function.
+	 * @since 0.11
+	 */
+	def executeBlockingTasks(task : Collection<Runnable>, thrownExceptions : boolean = false)
 
 }

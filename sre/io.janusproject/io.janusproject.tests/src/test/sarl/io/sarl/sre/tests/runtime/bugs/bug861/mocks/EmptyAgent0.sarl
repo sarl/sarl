@@ -20,25 +20,20 @@
  */
 package io.sarl.sre.tests.runtime.bugs.bug861.mocks
 
-import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
-import io.sarl.sre.test.framework.skills.TestingCapacity
-import io.sarl.sre.test.framework.skills.TestingSkill
+import io.sarl.sre.tests.runtime.internal.mocks.Bye
+import io.sarl.core.DefaultContextInteractions
 
 agent EmptyAgent0 {
 	
-	uses DefaultContextInteractions, Lifecycle
-
-	uses TestingCapacity
+	uses Lifecycle, DefaultContextInteractions
 
 	on Initialize {
-		setSkill(new TestingSkill(occurrence))
-		new Initialized().emit
+		emit(new Initialized)
 	}
 
-	on Initialized {
-		addResult(occurrence)
+	on Bye {
 		killMe
 	}
 	

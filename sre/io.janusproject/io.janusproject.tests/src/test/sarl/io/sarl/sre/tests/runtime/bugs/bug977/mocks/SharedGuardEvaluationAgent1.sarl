@@ -33,41 +33,48 @@ agent SharedGuardEvaluationAgent1 {
 	uses TestingCapacity
 
 	on Initialize {
-		setSkill(new TestingSkill(occurrence))
+		setSkillIfAbsent(new TestingSkill(occurrence))
 		killMeSoon
 	}
 
 	on Initialize {
+		setSkillIfAbsent(new TestingSkill(occurrence))
 		addResult("a")
 		i.set(10)
 	}
 	
 	on Initialize [i.get < 3] {
+		setSkillIfAbsent(new TestingSkill(occurrence))
 		addResult("b")
 		i.set(10)
 	}
 
 	on Initialize [i.get <= 3] {
+		setSkillIfAbsent(new TestingSkill(occurrence))
 		addResult("c")
 		i.set(10)
 	}
 
 	on Initialize [i.get == 3] {
+		setSkillIfAbsent(new TestingSkill(occurrence))
 		addResult("d")
 		i.set(10)
 	}
 
 	on Initialize [i.get != 3] {
+		setSkillIfAbsent(new TestingSkill(occurrence))
 		addResult("e")
 		i.set(10)
 	}
 	
 	on Initialize [i.get >= 3] {
+		setSkillIfAbsent(new TestingSkill(occurrence))
 		addResult("f")
 		i.set(10)
 	}
 
 	on Initialize [i.get > 3] {
+		setSkillIfAbsent(new TestingSkill(occurrence))
 		addResult("g")
 		i.set(10)
 	}

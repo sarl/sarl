@@ -26,6 +26,7 @@ import io.sarl.lang.core.Agent
 import io.sarl.lang.core.Behavior
 import io.sarl.sre.capacities.InternalSchedules
 import java.util.concurrent.ConcurrentSkipListSet
+import java.util.Collection
 
 /**
  * @author $Author: sgalland$
@@ -77,6 +78,10 @@ skill MyInternalSchedulesSkill implements InternalSchedules {
 	override executeAsap(task : Runnable) : AgentTask {
 		null
 	}
+
+	override executeBlockingTasks(task : Collection<Runnable>, thrownExceptions : boolean) {
+	}
+	
 	
 	override unregisterTasksForBehavior(^behavior : Behavior) {
 	}

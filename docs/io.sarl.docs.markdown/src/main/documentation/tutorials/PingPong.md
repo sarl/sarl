@@ -365,7 +365,7 @@ one agent belonging to the default space. If not, the agent is sending the initi
 				on Initialize {
 					val task = task("[:taskname](waiting_for_partner)")
 					task.[:every](every)(1000) [
-						if (defaultSpace.participants.size > 1) {
+						if (defaultSpace.numberOfStrongParticipants > 1) {
 							emit( new Ping(0) )
 							task.cancel
 						}

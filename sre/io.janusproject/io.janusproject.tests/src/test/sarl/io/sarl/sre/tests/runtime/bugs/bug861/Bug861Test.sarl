@@ -40,6 +40,7 @@ import static io.sarl.sre.test.framework.Constants.*
 
 import static extension io.sarl.tests.api.tools.TestAssertions.*
 import static extension org.junit.jupiter.api.Assertions.*
+import io.sarl.sre.tests.runtime.internal.mocks.Bye
 
 /** Tests for issue #861: Cannot use emit function in the Initialize handler.
  *
@@ -67,28 +68,30 @@ class Bug861Test {
 		var kern = setupTheSreKernel(null, null)
 
 		val id0 = UUID::randomUUID
-		var w0 = waitForAgentSpawned(id0)
+		waitForAgentSpawned(id0) [
+			kern.startAgentWithID(typeof(BootAgent0), id0, agentInitializationParameters)
+		]
 
-		kern.startAgentWithID(typeof(BootAgent0), id0, agentInitializationParameters)
-
-		w0.doWait
-
-		kern.startAgent(typeof(EmptyAgent0), agentInitializationParameters)
+		val id1 = UUID::randomUUID
+		waitForAgentSpawned(id1) [
+			kern.startAgentWithID(typeof(EmptyAgent0), id1, agentInitializationParameters)
+		]
+	
+		rootContext.defaultSpace.emit(UUID::randomUUID, new Bye)
 		
 		waitForTheKernel(STANDARD_TIMEOUT)
 		
-		assertEquals(2, getNumberOfResults(bootAgentId))
+		assertEquals(2, getNumberOfResults(id0))
 
-		val childAgent = getFirstResultOfType(bootAgentId, typeof(UUID))
+		val childAgent = getFirstResultOfType(id0, typeof(UUID))
 		childAgent.assertNotNull
+		id1.assertEquals(childAgent)
 
-		val initEvent0 = getFirstResultOfType(bootAgentId, typeof(Initialized))
+		val initEvent0 = getFirstResultOfType(id0, typeof(Initialized))
 		initEvent0.assertNotNull
 		childAgent.assertEquals(initEvent0.source.UUID)
 		
-		assertEquals(1, getNumberOfResults(childAgent))
-
-		val initEvent1 = getResult(childAgent, typeof(Initialized), 0)
+		val initEvent1 = getResult(id0, typeof(Initialized), 0)
 		initEvent1.assertNotNull
 		childAgent.assertEquals(initEvent1.source.UUID)
 	}

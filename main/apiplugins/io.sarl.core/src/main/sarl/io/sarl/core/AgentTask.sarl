@@ -54,11 +54,15 @@ class AgentTask extends SRESpecificDataContainer {
 	val initiator : Object
 
 	/** Construct an AgentTask with the given initiator.
+	 *
+	 * @param name the name of the task.
 	 * @param initiator the object that has initiated the execution of this task.
 	 *     If the value is {@code null} (the default value of the argument), the agent is assumed to
 	 *     be the initiator.
 	 */
-	new(initiator : Object = null) {
+	new(name : String, initiator : Object = null) {
+		assert name !== null
+		this.name = name
 		this.initiator = initiator
 	}
 
@@ -101,7 +105,7 @@ class AgentTask extends SRESpecificDataContainer {
 	 * @return the name.
 	 */
 	def getName : String {
-		this.name
+		return this.name
 	}
 
 	/** Change the name of this task.
@@ -113,6 +117,7 @@ class AgentTask extends SRESpecificDataContainer {
 	@SuppressWarnings("use_reserved_sarl_annotation")
 	@PrivateAPI
 	def setTaskName(name : String) : void {
+		assert name !== null
 		this.name = name
 	}
 

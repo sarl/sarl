@@ -47,18 +47,16 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
-import org.mockito.ArgumentCaptor
+import static extension org.mockito.ArgumentCaptor.*
 
-import static io.sarl.tests.api.tools.TestAssertions.*
+import static extension io.sarl.tests.api.tools.TestAssertions.*
 import static io.sarl.tests.api.tools.TestReflections.*
-import static org.junit.jupiter.api.Assertions.*
-import static org.mockito.Mockito.*
+import static extension org.junit.jupiter.api.Assertions.*
+import static extension org.mockito.Mockito.*
 
 import static extension io.sarl.tests.api.tools.TestAssertions.assertException
 import static extension io.sarl.tests.api.tools.TestMockito.mock
-import static extension org.mockito.ArgumentMatchers.any
-import static extension org.mockito.Mockito.spy
-import static extension org.mockito.Mockito.times
+import static extension org.mockito.ArgumentMatchers.*
 
 /**
  * @author $Author: sgalland$
@@ -99,10 +97,13 @@ class SchedulesSkillTest {
 
 	@Nullable
 	var time : MyTimeSkill
-	
-	@BeforeEach
-	
+
+	@Nullable
+	var taskName : String
+
+	@BeforeEach	
 	def setUp : void {
+		this.taskName = UUID::randomUUID.toString
 		this.contextId = UUID::randomUUID
 		this.^agentId = UUID::randomUUID
 		this.executor = typeof(ExecutorService).mock
@@ -120,69 +121,77 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("task(null) when not alive")
 	def task_nullName_notAlive {
 		var task = this.^skill.task(null)
 		assertNull(task)
 	}
 
 	@Test
+	@DisplayName("task(null) when alive")
 	def task_nullName_alive {
 		forceAlive
 		var task = this.^skill.task(null)
-		assertNotNull(task)
-		assertSame(this.^agent, task.initiator)
-		assertTrue(task.name.startsWith("task-"))
-		assertNull(task.procedure)
+		task.assertNotNull
+		this.^agent.assertSame(task.initiator)
+		task.name.assertNotNull
+		task.procedure.assertNull
 	}
 
 	@Test
+	@DisplayName("task(String) when not alive")
 	def task_withName_notAlive {
 		var name = UUID::randomUUID.toString
 		var task = this.^skill.task(name)
-		assertNull(task)
+		task.assertNull
 	}
 
 	@Test
+	@DisplayName("task(String) when alive")
 	def task_withName_alive {
 		forceAlive
 		var name = UUID::randomUUID.toString
 		var task = this.^skill.task(name)
-		assertNotNull(task)
-		assertSame(this.^agent, task.initiator)
-		assertEquals(name, task.name)
-		assertNull(task.procedure)
+		task.assertNotNull
+		this.^agent.assertSame(task.initiator)
+		name.assertEquals(task.name)
+		task.procedure.assertNull
 	}
 
 	@Test
+	@DisplayName("setName(null) when not alive")
 	def setName_nullName_notAlive {
-		var task = new AgentTask
+		var task = new AgentTask(this.taskName)
 		this.^skill.setName(task, null)
-		assertNull(task.name)
+		this.taskName.assertSame(task.name)
 	}
 
 	@Test
+	@DisplayName("setName(null) when alive")
 	def setName_nullName_alive {
 		forceAlive
-		var task = new AgentTask
+		var task = new AgentTask(this.taskName)
 		this.^skill.setName(task, null)
-		assertNotNullOrEmpty(task.name)
+		task.name.assertNotNullOrEmpty
 	}
 
 	@Test
+	@DisplayName("setName(String) when not alive")
 	def setName_withName_notAlive {
 		var name = UUID::randomUUID.toString
-		var task = new AgentTask
+		var task = new AgentTask(this.taskName)
 		this.^skill.setName(task, name)
-		assertNull(task.name)
+		this.taskName.assertSame(task.name)
 	}
 
 	@Test
+	@DisplayName("setName(String) when alive")
 	def setName_withName_alive {
 		forceAlive()
 		var name = UUID::randomUUID.toString
-		var task = new AgentTask
+		var task = new AgentTask(this.taskName)
 		this.^skill.setName(task, name)
-		assertEquals(name, task.name)
+		name.assertEquals(task.name)
 	}
 
 	private def testNoTask(alive : boolean, allowFunctionRunWhenNotAlive : boolean,
@@ -202,15 +211,15 @@ class SchedulesSkillTest {
 		var task = call.apply(null, procedure)
 
 		if (alive || allowFunctionRunWhenNotAlive) {
-			assertNotNull(task)
-			assertSame(AgentTask.TRUE_GUARD, task.guard)
-			assertFalse(task.name.isNullOrEmpty)
-			assertSame(this.^agent, task.initiator)
-			assertSame(procedure, task.procedure)
-			assertEquals(1, this.^skill.activeTasks.size)
+			task.assertNotNull
+			AgentTask.TRUE_GUARD.assertSame(task.guard)
+			task.name.isNullOrEmpty.assertFalse
+			this.^agent.assertSame(task.initiator)
+			procedure.assertSame(task.procedure)
+			1.assertEquals(this.^skill.activeTasks.size)
 		} else {
-			assertNull(task)
-			assertEquals(0, this.^skill.activeTasks.size)
+			task.assertNull
+			0.assertEquals(this.^skill.activeTasks.size)
 		}
 		
 		specialTest.apply(alive)
@@ -231,29 +240,28 @@ class SchedulesSkillTest {
 		executorConfig.apply(future)
 		var procedure : (Agent)=>void = []
 
-		var otask = new AgentTask(this)
+		var otask = new AgentTask(this.taskName, this)
 		var taskName = UUID::randomUUID.toString
 		otask.taskName = taskName
 		otask = otask.spy
 		
 		var task = call.apply(otask, procedure)
 
-		assertSame(otask, task)
+		otask.assertSame(task)
 		
 		if (alive || allowFunctionRunWhenNotAlive) {
-			var capturedProcedure = ArgumentCaptor::forClass(typeof(Procedure1))
-			verify(task).setProcedure(capturedProcedure.capture)
-			assertSame(procedure, capturedProcedure.value)
+			var capturedProcedure = typeof(Procedure1).forClass
+			task.verify.setProcedure(capturedProcedure.capture)
+			procedure.assertSame(capturedProcedure.value)
 
-			assertEquals(1, this.^skill.activeTasks.size)
-			assertContains(this.^skill.activeTasks, taskName)
+			1.assertEquals(this.^skill.activeTasks.size)
+			this.^skill.activeTasks.assertContains(taskName)
 		} else {
 			verifyNoMoreInteractions(task)
 
-			assertEquals(0, this.^skill.activeTasks.size)
+			0.assertEquals(this.^skill.activeTasks.size)
 		}
-		
-		
+
 		specialTest.apply(alive)
 	}
 
@@ -271,16 +279,16 @@ class SchedulesSkillTest {
 		executorConfig.apply(future)
 		var procedure : (Agent)=>void = []
 
-		var otask = new AgentTask(this)
+		var otask = new AgentTask(this.taskName, this)
 		var taskName = UUID::randomUUID.toString
 		otask.setTaskName(taskName)
-		otask = spy(otask)
+		otask = otask.spy
 		
 		var task = call.apply(otask, procedure)
-		assertSame(otask, task)
+		otask.assertSame(task)
 
 		var task2 = call.apply(otask, procedure)
-		assertSame(otask, task2)
+		otask.assertSame(task2)
 	}
 
 	@PrivateAPI(isCallerOnly = true)
@@ -298,10 +306,10 @@ class SchedulesSkillTest {
 		executorConfig.apply(future)
 		var procedure : (Agent)=>void = []
 
-		var otask = new AgentTask(this)
+		var otask = new AgentTask(this.taskName, this)
 		var taskName = UUID::randomUUID.toString
 		otask.setTaskName(taskName)
-		otask = spy(otask)
+		otask = otask.spy
 
 		this.^skill.execute(otask) []
 		reset(otask, this.executor)
@@ -310,18 +318,18 @@ class SchedulesSkillTest {
 
 		var task = call.apply(otask, procedure)
 
-		assertSame(otask, task)
+		otask.assertSame(task)
 		
 		if (alive || allowFunctionRunWhenNotAlive) {
-			var capturedProcedure = ArgumentCaptor::forClass(typeof(Procedure1))
-			verify(task).setProcedure(capturedProcedure.capture)
-			assertSame(procedure, capturedProcedure.value)
+			var capturedProcedure = typeof(Procedure1).forClass
+			task.verify.setProcedure(capturedProcedure.capture)
+			procedure.assertSame(capturedProcedure.value)
 		} else {
 			verifyNoMoreInteractions(task)
 		}
 		
-		assertEquals(1, this.^skill.activeTasks.size)
-		assertContains(this.^skill.activeTasks, taskName)
+		1.assertEquals(this.^skill.activeTasks.size)
+		this.^skill.activeTasks.assertContains(taskName)
 		
 		specialTest.apply(alive)
 	}
@@ -341,10 +349,10 @@ class SchedulesSkillTest {
 		executorConfig.apply(future)
 		var procedure : (Agent)=>void =  []
 
-		var otask = new AgentTask(this)
+		var otask = new AgentTask(this.taskName, this)
 		var taskName = UUID::randomUUID.toString
 		otask.setTaskName(taskName)
-		otask = spy(otask)
+		otask = otask.spy
 
 		this.^skill.execute(otask) []
 		reset(otask, this.executor)
@@ -353,29 +361,29 @@ class SchedulesSkillTest {
 
 		var task = call.apply(otask, procedure)
 
-		assertSame(otask, task)
+		otask.assertSame(task)
 		
 		if (alive || allowFunctionRunWhenNotAlive) {
-			var capturedProcedure = ArgumentCaptor::forClass(typeof(Procedure1))
-			verify(task).setProcedure(capturedProcedure.capture)
-			assertSame(procedure, capturedProcedure.value)
+			var capturedProcedure = typeof(Procedure1).forClass
+			task.verify.setProcedure(capturedProcedure.capture)
+			procedure.assertSame(capturedProcedure.value)
 		} else {
 			verifyNoMoreInteractions(task)
 		}
 		
-		assertEquals(1, this.^skill.activeTasks.size)
-		assertContains(this.^skill.activeTasks, taskName)
+		1.assertEquals(this.^skill.activeTasks.size)
+		this.^skill.activeTasks.assertContains(taskName)
 		
 		specialTest.apply(alive)
 	}
 	
 	private def getExecuteTester : (boolean)=>void {
 		[alive |
-			var capturedLogger = ArgumentCaptor::forClass(typeof(Logger))
-			var capturedProcedure2 = ArgumentCaptor::forClass(typeof(Runnable))
-			verify(this.executor, only).executeAsap(capturedLogger.capture, capturedProcedure2.capture)
-			assertSame(this.rawLogger, capturedLogger.value)
-			assertNotNull(capturedProcedure2.value)
+			var capturedLogger = forClass(typeof(Logger))
+			var capturedProcedure2 = typeof(Runnable).forClass
+			this.executor.verify(only).executeAsap(capturedLogger.capture, capturedProcedure2.capture)
+			this.rawLogger.assertSame(capturedLogger.value)
+			capturedProcedure2.value.assertNotNull
 		]
 	}
 
@@ -384,6 +392,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("execute(no task) when not alive")
 	def execute_noTask_notAlive {
 		testNoTask(
 			false,
@@ -395,6 +404,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("execute(no task) when alive")
 	def execute_noTask_alive {
 		testNoTask(
 			true,
@@ -406,6 +416,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("execute(not started task) when not alive")
 	def execute_task_notStarted_notAlive {
 		testNotStartedTask(
 			false,
@@ -417,6 +428,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("execute(not started task) when alive")
 	def execute_task_notStarted_alive {
 		testNotStartedTask(
 			true,
@@ -428,6 +440,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("execute(running task) when not alive")
 	def execute_task_notFinished_notAlive {
 		typeof(IllegalStateException).assertException [
 			testNotFinishedTask(false, [a, b|this.^skill.execute(a, b)], getExecuteExecutorConfig, typeof(Future))
@@ -435,6 +448,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("execute(running task) when alive")
 	def execute_task_notFinished_alive {
 		typeof(IllegalStateException).assertException [
 			testNotFinishedTask(true, [a, b|this.^skill.execute(a, b)], getExecuteExecutorConfig, typeof(Future))
@@ -442,6 +456,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("execute(finished task) when not alive")
 	def execute_task_finished_notAlive {
 		testFinishedTask(
 			false,
@@ -452,6 +467,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("execute(finished task) when alive")
 	def execute_task_finished_alive {
 		testFinishedTask(
 			true,
@@ -463,6 +479,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("execute(cancelled task) when not alive")
 	def execute_task_cancelled_notAlive {
 		testCancelledTask(
 			false,
@@ -474,6 +491,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("execute(cancelled task) when alive")
 	def execute_task_cancelled_alive {
 		testCancelledTask(
 			true,
@@ -487,18 +505,18 @@ class SchedulesSkillTest {
 	private def getInTester : (boolean)=>void {
 		[alive |
 			if (alive) {
-				var capturedLogger = ArgumentCaptor::forClass(typeof(Logger))
-				var capturedDelay = ArgumentCaptor::forClass(typeof(long))
-				var capturedUnit = ArgumentCaptor::forClass(typeof(TimeUnit))
-				var capturedProcedure = ArgumentCaptor::forClass(typeof(Runnable))
-				verify(this.executor, only).schedule(capturedLogger.capture,
+				var capturedLogger = typeof(Logger).forClass
+				var capturedDelay = typeof(long).forClass
+				var capturedUnit = typeof(TimeUnit).forClass
+				var capturedProcedure = typeof(Runnable).forClass
+				this.executor.verify(only).schedule(capturedLogger.capture,
 						capturedDelay.capture.longValue,
 						capturedUnit.capture,
 						capturedProcedure.capture)
-				assertSame(this.rawLogger, capturedLogger.value)
-				assertEquals(34, capturedDelay.value.intValue)
-				assertEquals(TimeUnit::MILLISECONDS, capturedUnit.value)
-				assertNotNull(capturedProcedure.value)
+				this.rawLogger.assertSame(capturedLogger.value)
+				34.assertEquals(capturedDelay.value.intValue)
+				TimeUnit::MILLISECONDS.assertEquals(capturedUnit.value)
+				capturedProcedure.value.assertNotNull
 			} else {
 				verifyNoMoreInteractions(this.executor)
 			}
@@ -513,6 +531,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("in(no task) when not alive")
 	def in_noTask_notAlive {
 		testNoTask(
 			false,
@@ -524,6 +543,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("in(no task) when alive")
 	def in_noTask_alive {
 		testNoTask(
 			true,
@@ -535,6 +555,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("in(not started task) when not alive")
 	def in_task_notStarted_notAlive {
 		testNotStartedTask(
 			false,
@@ -546,6 +567,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("in(not started task) when alive")
 	def in_task_notStarted_alive {
 		testNotStartedTask(
 			true,
@@ -556,6 +578,8 @@ class SchedulesSkillTest {
 			getInTester)
 	}
 
+	@Test
+	@DisplayName("in(running task) when not alive")
 	def in_task_notFinished_notAlive {
 		testNotFinishedTask(
 			false,
@@ -565,6 +589,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("in(running task) when alive")
 	def in_task_notFinished_alive {
 		typeof(IllegalStateException).assertException [
 			testNotFinishedTask(true, [a, b|this.^skill.in(a, 34, b)], getInExecutorConfig, typeof(ScheduledFuture))
@@ -572,6 +597,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("in(finished task) when not alive")
 	def in_task_finished_notAlive {
 		testFinishedTask(
 			false,
@@ -583,6 +609,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("in(finished task) when alive")
 	def in_task_finished_alive {
 		testFinishedTask(
 			true,
@@ -594,6 +621,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("in(cancelled task) when not alive")
 	def in_task_cancelled_notAlive {
 		testCancelledTask(
 			false,
@@ -605,6 +633,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("in(cancelled task) when alive")
 	def in_task_cancelled_alive {
 		testCancelledTask(
 			true,
@@ -618,21 +647,21 @@ class SchedulesSkillTest {
 	private def getEveryTester : (boolean)=>void {
 		[alive |
 			if (alive) {
-				var capturedLogger = ArgumentCaptor::forClass(typeof(Logger))
-				var capturedDelay = ArgumentCaptor::forClass(typeof(long))
-				var capturedPeriod = ArgumentCaptor::forClass(typeof(long))
-				var capturedUnit = ArgumentCaptor::forClass(typeof(TimeUnit))
-				var capturedProcedure = ArgumentCaptor::forClass(typeof(Runnable))
-				verify(this.executor, only).scheduleAtFixedRate(capturedLogger.capture,
+				var capturedLogger = typeof(Logger).forClass
+				var capturedDelay = typeof(long).forClass
+				var capturedPeriod = typeof(long).forClass
+				var capturedUnit = typeof(TimeUnit).forClass
+				var capturedProcedure = typeof(Runnable).forClass
+				this.executor.verify(only).scheduleAtFixedRate(capturedLogger.capture,
 						capturedDelay.capture.longValue,
 						capturedPeriod.capture.longValue,
 						capturedUnit.capture,
 						capturedProcedure.capture)
-				assertSame(this.rawLogger, capturedLogger.value)
-				assertEquals(0, capturedDelay.value.intValue)
-				assertEquals(34, capturedPeriod.value.intValue)
-				assertEquals(TimeUnit::MILLISECONDS, capturedUnit.value)
-				assertNotNull(capturedProcedure.value)
+				this.rawLogger.assertSame(capturedLogger.value)
+				0.assertEquals(capturedDelay.value.intValue)
+				34.assertEquals(capturedPeriod.value.intValue)
+				TimeUnit::MILLISECONDS.assertEquals(capturedUnit.value)
+				capturedProcedure.value.assertNotNull
 			} else {
 				verifyNoMoreInteractions(this.executor)
 			}
@@ -647,6 +676,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("every(no task) when not alive")
 	def every_noTask_notAlive {
 		testNoTask(
 			false,
@@ -659,6 +689,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("every(no task) when alive")
 	def every_noTask_alive {
 		testNoTask(
 			true,
@@ -670,6 +701,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("every(not started task) when not alive")
 	def every_task_notStarted_notAlive {
 		testNotStartedTask(
 			false,
@@ -681,6 +713,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("every(not started task) when alive")
 	def every_task_notStarted_alive {
 		testNotStartedTask(
 			true,
@@ -692,6 +725,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("every(running task) when not alive")
 	def every_task_notFinished_notAlive {
 		testNotFinishedTask(
 			false,
@@ -701,6 +735,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("every(running task) when alive")
 	def every_task_notFinished_alive {
 		typeof(IllegalStateException).assertException [
 			testNotFinishedTask(true, [a, b|this.^skill.every(a, 34, b)], getEveryExecutorConfig,
@@ -709,6 +744,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("every(finished task) when not alive")
 	def every_task_finished_notAlive {
 		testFinishedTask(
 			false,
@@ -720,6 +756,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("every(finished task) when alive")
 	def every_task_finished_alive {
 		testFinishedTask(
 			true,
@@ -731,6 +768,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("every(cancelled task) when not alive")
 	def every_task_cancelled_notAlive {
 		testCancelledTask(
 			false,
@@ -742,6 +780,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("every(cancelled task) when alive")
 	def every_task_cancelled_alive {
 		testCancelledTask(
 			true,
@@ -755,21 +794,21 @@ class SchedulesSkillTest {
 	private def getAtFixedDelayTester : (boolean)=>void {
 		[alive |
 			if (alive) {
-				var capturedLogger = ArgumentCaptor::forClass(typeof(Logger))
-				var capturedDelay = ArgumentCaptor::forClass(typeof(long))
-				var capturedPeriod = ArgumentCaptor::forClass(typeof(long))
-				var capturedUnit = ArgumentCaptor::forClass(typeof(TimeUnit))
-				var capturedProcedure = ArgumentCaptor::forClass(typeof(Runnable))
-				verify(this.executor, only).scheduleWithFixedDelay(capturedLogger.capture,
+				var capturedLogger = typeof(Logger).forClass
+				var capturedDelay = typeof(long).forClass
+				var capturedPeriod = typeof(long).forClass
+				var capturedUnit = typeof(TimeUnit).forClass
+				var capturedProcedure = typeof(Runnable).forClass
+				this.executor.verify(only).scheduleWithFixedDelay(capturedLogger.capture,
 						capturedDelay.capture.longValue,
 						capturedPeriod.capture.longValue,
 						capturedUnit.capture,
 						capturedProcedure.capture)
-				assertSame(this.rawLogger, capturedLogger.value)
-				assertEquals(0, capturedDelay.value.intValue)
-				assertEquals(34, capturedPeriod.value.intValue)
-				assertEquals(TimeUnit::MILLISECONDS, capturedUnit.value)
-				assertNotNull(capturedProcedure.value)
+				this.rawLogger.assertSame(capturedLogger.value)
+				0.assertEquals(capturedDelay.value.intValue)
+				34.assertEquals(capturedPeriod.value.intValue)
+				TimeUnit::MILLISECONDS.assertEquals(capturedUnit.value)
+				capturedProcedure.value.assertNotNull
 			} else {
 				verifyNoMoreInteractions(this.executor)
 			}
@@ -782,6 +821,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("atFixedDelay(no task) when not alive")
 	def atFixedDelay_noTask_notAlive {
 		testNoTask(
 			false,
@@ -793,6 +833,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("atFixedDelay(no task) when alive")
 	def atFixedDelay_noTask_alive {
 		testNoTask(true, false, [a, b | this.^skill.atFixedDelay(34, b)],
 			getAtFixedDelayExecutorConfig,
@@ -801,6 +842,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("atFixedDelay(not started task) when not alive")
 	def atFixedDelay_task_notStarted_notAlive {
 		testNotStartedTask(false, false, [a, b | this.^skill.atFixedDelay(a, 34, b)],
 			getAtFixedDelayExecutorConfig,
@@ -809,6 +851,7 @@ class SchedulesSkillTest {
 	}		
 
 	@Test
+	@DisplayName("atFixedDelay(not started task) when alive")
 	def atFixedDelay_task_notStarted_alive {
 		testNotStartedTask(true, false, [a, b | this.^skill.atFixedDelay(a, 34, b)],
 			getAtFixedDelayExecutorConfig,
@@ -817,6 +860,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("atFixedDelay(running task) when not alive")
 	def atFixedDelay_task_notFinished_notAlive {
 		testNotFinishedTask(false, [a, b | this.^skill.atFixedDelay(a, 34, b)],
 			getAtFixedDelayExecutorConfig(),
@@ -824,6 +868,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("atFixedDelay(running task) when alive")
 	def atFixedDelay_task_notFinished_alive {
 		typeof(IllegalStateException).assertException [
 			testNotFinishedTask(true, [a, b|this.^skill.atFixedDelay(a, 34, b)], getAtFixedDelayExecutorConfig(),
@@ -832,6 +877,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("atFixedDelay(finished task) when not alive")
 	def atFixedDelay_task_finished_notAlive {
 		testFinishedTask(false, false, [a, b | this.^skill.atFixedDelay(a, 34, b)],
 			getAtFixedDelayExecutorConfig,
@@ -840,6 +886,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("atFixedDelay(finished task) when alive")
 	def atFixedDelay_task_finished_alive {
 		testFinishedTask(true, false, [a, b | this.^skill.atFixedDelay(a, 34, b)],
 			getAtFixedDelayExecutorConfig,
@@ -848,6 +895,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("atFixedDelay(cancelled task) when not alive")
 	def atFixedDelay_task_cancelled_notAlive {
 		testCancelledTask(false, false, [a, b | this.^skill.atFixedDelay(a, 34, b)],
 			getAtFixedDelayExecutorConfig,
@@ -856,6 +904,7 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("atFixedDelay(cancelled task) when alive")
 	def atFixedDelay_task_cancelled_alive {
 		testCancelledTask(true, false, [a, b | this.^skill.atFixedDelay(a, 34, b)],
 			getAtFixedDelayExecutorConfig,
@@ -864,29 +913,33 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("isCanceled(null)")
 	def isCanceled_nullTask {
-		assertFalse(this.^skill.isCanceled(null))
+		this.^skill.isCanceled(null).assertFalse
 	}
 
 	@Test
-	@PrivateAPI(isCallerOnly=true)
+	@PrivateAPI(isCallerOnly = true)
+	@DisplayName("isCanceled(not submitted)")
 	def isCanceled_notSubmitted {
-		var task = new AgentTask(this)
+		var task = new AgentTask(this.taskName, this)
 		var taskName = UUID::randomUUID.toString
 		task.setTaskName(taskName)
 		task = task.spy
-		assertFalse(this.^skill.isCanceled(task))
+		this.^skill.isCanceled(task).assertFalse
 	}
 
 	@Test
+	@DisplayName("isCanceled(running)")
 	def isCanceled_running {
 		var future = typeof(Future).mock
 		when(this.executor.executeAsap(any, typeof(Runnable).any)).thenReturn(future)
 		var task = this.^skill.execute []
-		assertFalse(this.^skill.isCanceled(task))
+		this.^skill.isCanceled(task).assertFalse
 	}
 
 	@Test
+	@DisplayName("isCanceled(finished)")
 	def isCanceled_finished {
 		var future = typeof(Future).mock
 		when(this.executor.executeAsap(any, typeof(Runnable).any)).thenReturn(future)
@@ -897,47 +950,51 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("isCanceled(cancelled)")
 	def isCanceled_cancelled {
 		var future = typeof(Future).mock
 		when(this.executor.executeAsap(any, typeof(Runnable).any)).thenReturn(future)
 		when(future.isCancelled()).thenReturn(true)
 
 		var task = this.^skill.execute []
-		assertTrue(this.^skill.isCanceled(task))
+		this.^skill.isCanceled(task).assertTrue
 	}
 
 	@Test
-	@PrivateAPI(isCallerOnly=true)
+	@PrivateAPI(isCallerOnly = true)
+	@DisplayName("cancel(not submitted)")
 	def cancel_notSubmitted : void {
 		var future = typeof(Future).mock
 		when(this.executor.executeAsap(any, typeof(Runnable).any)).thenReturn(future)
 		when(future.cancel(typeof(boolean).any.booleanValue)).thenReturn(true)
 
-		var task = new AgentTask(this)
+		var task = new AgentTask(this.taskName, this)
 		var taskName = UUID::randomUUID.toString
 		task.setTaskName(taskName)
-		task = spy(task)
+		task = task.spy
 
-		assertFalse(this.^skill.cancel(task))
-		assertTrue(this.^skill.activeTasks.isEmpty)
+		this.^skill.cancel(task).assertFalse
+		this.^skill.activeTasks.isEmpty.assertTrue
 		
-		var capturedInterrupt = ArgumentCaptor::forClass(typeof(boolean))
+		var capturedInterrupt = typeof(boolean).forClass
 		verify(future, 0.times).cancel(capturedInterrupt.capture.booleanValue)
 	}
 
 	@Test
+	@DisplayName("cancel(running) when not alive")
 	def cancel_running_notAlive {
 		var future = typeof(ScheduledFuture).mock
 		getInExecutorConfig.apply(future)
 		when(future.cancel(typeof(boolean).any.booleanValue)).thenReturn(true)
 		
 		var task = this.^skill.in(10000) []
-		assertFalse(this.^skill.cancel(task))
-		assertTrue(this.^skill.activeTasks.isEmpty)
+		this.^skill.cancel(task).assertFalse
+		this.^skill.activeTasks.isEmpty.assertTrue
 		verifyNoMoreInteractions(future)
 	}
 
 	@Test
+	@DisplayName("cancel(running) when alive")
 	def cancel_running_alive {
 		var future = typeof(ScheduledFuture).mock
 		getInExecutorConfig.apply(future)
@@ -946,15 +1003,16 @@ class SchedulesSkillTest {
 		forceAlive()
 		
 		var task = this.^skill.in(10000) []
-		assertTrue(this.^skill.cancel(task))
-		assertTrue(this.^skill.activeTasks.isEmpty)
+		this.^skill.cancel(task).assertTrue
+		this.^skill.activeTasks.isEmpty.assertTrue
 		
-		var capturedInterrupt = ArgumentCaptor::forClass(typeof(boolean))
+		var capturedInterrupt = typeof(boolean).forClass
 		verify(future, atLeastOnce).cancel(capturedInterrupt.capture.booleanValue)
 		assertTrue(capturedInterrupt.value)
 	}
 
 	@Test
+	@DisplayName("cancel(finished) when not alive")
 	def cancel_finished_notAlive {
 		var future = typeof(ScheduledFuture).mock
 		getInExecutorConfig.apply(future)
@@ -962,13 +1020,14 @@ class SchedulesSkillTest {
 		when(future.cancel(typeof(boolean).any.booleanValue)).thenReturn(true)
 		
 		var task = this.^skill.in(10000) []
-		assertFalse(this.^skill.cancel(task))
-		assertContains(this.^skill.activeTasks)
+		this.^skill.cancel(task).assertFalse
+		this.^skill.activeTasks.assertContains()
 		
 		verifyNoMoreInteractions(future)
 	}
 
 	@Test
+	@DisplayName("cancel(finished) when alive")
 	def cancel_finished_alive : void {
 		var future = typeof(ScheduledFuture).mock
 		getInExecutorConfig.apply(future)
@@ -978,15 +1037,16 @@ class SchedulesSkillTest {
 		forceAlive()
 		
 		var task = this.^skill.in(10000) []
-		assertFalse(this.^skill.cancel(task))
+		this.^skill.cancel(task).assertFalse
 		// Caution, the task was artificially finished by forcing the value replied y isDone
-		assertContains(this.^skill.activeTasks, task.name)
+		this.^skill.activeTasks.assertContains(task.name)
 		
-		var capturedInterrupt = ArgumentCaptor::forClass(typeof(boolean))
-		verify(future, times(0)).cancel(capturedInterrupt.capture.booleanValue)
+		var capturedInterrupt = forClass(typeof(boolean))
+		verify(future, 0.times).cancel(capturedInterrupt.capture.booleanValue)
 	}
 
 	@Test
+	@DisplayName("cancel(cancelled) when not alive")
 	def cancel_cancelled_notAlive {
 		var future = typeof(ScheduledFuture).mock
 		getInExecutorConfig.apply(future)
@@ -994,12 +1054,13 @@ class SchedulesSkillTest {
 		when(future.cancel(typeof(boolean).any.booleanValue)).thenReturn(true)
 		
 		var task = this.^skill.in(10000) []
-		assertFalse(this.^skill.cancel(task))
-		assertContains(this.^skill.activeTasks)
+		this.^skill.cancel(task).assertFalse
+		this.^skill.activeTasks.assertContains()
 		verifyNoMoreInteractions(future)
 	}
 
 	@Test
+	@DisplayName("cancel(cancelled) when alive")
 	def cancel_cancelled_alive : void {
 		var future = typeof(ScheduledFuture).mock
 		getInExecutorConfig.apply(future)
@@ -1009,36 +1070,40 @@ class SchedulesSkillTest {
 		forceAlive()
 		
 		var task = this.^skill.in(10000) []
-		assertFalse(this.^skill.cancel(task))
+		this.^skill.cancel(task).assertFalse
 		// Caution, the task was artificially finished by forcing the value replied y isDone
-		assertContains(this.^skill.activeTasks, task.name)
+		this.^skill.activeTasks.assertContains(task.name)
 		
-		var capturedInterrupt = ArgumentCaptor::forClass(typeof(boolean))
-		verify(future, times(0)).cancel(capturedInterrupt.capture.booleanValue)
+		var capturedInterrupt = forClass(typeof(boolean))
+		verify(future, 0.times).cancel(capturedInterrupt.capture.booleanValue)
 	}
 
 	@Test
+	@DisplayName("getActiveTasks w/o submission")
 	def getActiveTasks_nothing {
 		var tasks = this.^skill.activeTasks
-		assertTrue(tasks.isEmpty)
+		tasks.isEmpty.assertTrue
 	}
 
 	@Test
+	@DisplayName("getActiveTasks w/ 1 submission")
 	def getActiveTasks_oneTask {
 		var task = this.^skill.execute []
 		var tasks = this.^skill.activeTasks
-		assertContains(tasks, task.name)
+		tasks.assertContains(task.name)
 	}
 
 	@Test
+	@DisplayName("getActiveTasks w/ 2 submissions")
 	def getActiveTasks_twoTasks {
 		var task1 = this.^skill.execute []
 		var task2 = this.^skill.execute []
 		var tasks = this.^skill.activeTasks
-		assertContains(tasks, task1.name, task2.name)
+		tasks.assertContains(task1.name, task2.name)
 	}
 
 	@Test
+	@DisplayName("getActiveTasks w/ 2 submissions first cancelled")
 	def getActiveTasks_twoTasks_firstCancelled {
 		when(this.executor.executeAsap(any, typeof(Runnable).any)).thenAnswer [
 			var future = typeof(Future).mock
@@ -1048,12 +1113,13 @@ class SchedulesSkillTest {
 
 		var task1 = this.^skill.execute []
 		var task2 = this.^skill.execute []
-		assertTrue(this.^skill.cancel(task1))
+		this.^skill.cancel(task1).assertTrue
 		var tasks = this.^skill.activeTasks
-		assertContains(tasks, task2.name)
+		tasks.assertContains(task2.name)
 	}
 
 	@Test
+	@DisplayName("getActiveTasks w/ 2 submissions second cancelled")
 	def getActiveTasks_twoTasks_secondCancelled {
 		when(this.executor.executeAsap(any, typeof(Runnable).any)).thenAnswer [
 			var future = typeof(Future).mock
@@ -1063,89 +1129,91 @@ class SchedulesSkillTest {
 
 		var task1 = this.^skill.execute []
 		var task2 = this.^skill.execute []
-		assertTrue(this.^skill.cancel(task2))
+		this.^skill.cancel(task2).assertTrue
 		var tasks = this.^skill.activeTasks
-		assertContains(tasks, task1.name)
+		tasks.assertContains(task1.name)
 	}
 
 	@Test
-	@PrivateAPI(isCallerOnly=true)
+	@PrivateAPI(isCallerOnly = true)
+	@DisplayName("unregisterTasksForBehavior when not alive")
 	def unregisterTasksForBehavior_notAlive {
 		var beh = new MyBehavior(this.^agent)
 		
 		var future = typeof(ScheduledFuture).mock
 		getInExecutorConfig.apply(future)
 
-		var task1 = new AgentTask(beh)
+		var task1 = new AgentTask(this.taskName, beh)
 		var taskName = UUID::randomUUID.toString
 		task1.setTaskName(taskName)
-		task1 = spy(task1)
+		task1 = task1.spy
 		this.^skill.in(task1, 10000) []
 
-		var task2 = new AgentTask(this.^agent)
+		var task2 = new AgentTask(this.taskName, this.^agent)
 		taskName = UUID::randomUUID.toString
 		task2.setTaskName(taskName)
-		task2 = spy(task2)
+		task2 = task2.spy
 		this.^skill.in(task2, 10000) []
 
-		var task3 = new AgentTask(beh)
+		var task3 = new AgentTask(this.taskName, beh)
 		taskName = UUID::randomUUID.toString
 		task3.setTaskName(taskName)
-		task3 = spy(task3)
+		task3 = task3.spy
 		this.^skill.in(task3, 10000) []
 		
 		this.^skill.unregisterTasksForBehavior(beh)
 		
-		assertContains(this.^skill.activeTasks)
+		this.^skill.activeTasks.assertContains()
 	}
 
 	@Test
 	@PrivateAPI(isCallerOnly = true)
+	@DisplayName("unregisterTasksForBehavior when alive")
 	def unregisterTasksForBehavior_alive {
 		var beh = new MyBehavior(this.^agent)
 		
 		var future = typeof(ScheduledFuture).mock
 		getInExecutorConfig.apply(future)
 
-		var task1 = new AgentTask(beh)
+		var task1 = new AgentTask(this.taskName, beh)
 		var taskName = UUID::randomUUID.toString
 		task1.setTaskName(taskName)
-		task1 = spy(task1)
+		task1 = task1.spy
 		
 		forceAlive()
 		
 		this.^skill.in(task1, 10000) []
 
-		var task2 = new AgentTask(this.^agent)
+		var task2 = new AgentTask(this.taskName, this.^agent)
 		taskName = UUID::randomUUID.toString
 		task2.setTaskName(taskName)
-		task2 = spy(task2)
+		task2 = task2.spy
 		this.^skill.in(task2, 10000) []
 
-		var task3 = new AgentTask(beh)
+		var task3 = new AgentTask(this.taskName, beh)
 		taskName = UUID::randomUUID.toString
 		task3.setTaskName(taskName)
-		task3 = spy(task3)
+		task3 = task3.spy
 		this.^skill.in(task3, 10000) []
 		
 		this.^skill.unregisterTasksForBehavior(beh)
 		
-		assertContains(this.^skill.activeTasks, task2.name)
+		this.^skill.activeTasks.assertContains(task2.name)
 	}
 
 	private def getAtTester : (boolean)=>void {
 		[ alive |
 			if (alive) {
-				var capturedLogger = ArgumentCaptor::forClass(typeof(Logger))
-				var capturedDelay = ArgumentCaptor::forClass(typeof(long))
-				var capturedUnit = ArgumentCaptor::forClass(typeof(TimeUnit))
-				var capturedProcedure = ArgumentCaptor::forClass(typeof(Runnable))
-				verify(this.executor, only).schedule(capturedLogger.capture, capturedDelay.capture.longValue,
+				var capturedLogger = typeof(Logger).forClass
+				var capturedDelay = typeof(long).forClass
+				var capturedUnit = typeof(TimeUnit).forClass
+				var capturedProcedure = typeof(Runnable).forClass
+				this.executor.verify(only).schedule(capturedLogger.capture, capturedDelay.capture.longValue,
 					capturedUnit.capture, capturedProcedure.capture)
-				assertSame(this.rawLogger, capturedLogger.value)
-				assertEquals(34, capturedDelay.value.intValue)
-				assertEquals(TimeUnit::MILLISECONDS, capturedUnit.value)
-				assertNotNull(capturedProcedure.value)
+				this.rawLogger.assertSame(capturedLogger.value)
+				34.assertEquals(capturedDelay.value.intValue)
+				TimeUnit::MILLISECONDS.assertEquals(capturedUnit.value)
+				capturedProcedure.value.assertNotNull
 			} else {
 				verifyNoMoreInteractions(this.executor)
 			}
@@ -1159,33 +1227,40 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("at(no task) when not alive")
 	def at_noTask_notAlive {
 		testNoTask(false, false, [a, b|this.^skill.at(34, b)], getAtExecutorConfig, typeof(ScheduledFuture),
 			getAtTester)
 	}
 
 	@Test
+	@DisplayName("at(no task) when alive")
 	def at_noTask_alive {
 		testNoTask(true, false, [a, b|this.^skill.at(34, b)], getAtExecutorConfig, typeof(ScheduledFuture), getAtTester)
 	}
 
 	@Test
+	@DisplayName("at(not started task) when not alive")
 	def at_task_notStarted_notAlive {
 		testNotStartedTask(false, false, [a, b|this.^skill.at(a, 34, b)], getAtExecutorConfig, typeof(ScheduledFuture),
 			getAtTester)
 	}
 
 	@Test
+	@DisplayName("at(not started task) when alive")
 	def at_task_notStarted_alive {
 		testNotStartedTask(true, false, [a, b|this.^skill.at(a, 34, b)], getAtExecutorConfig, typeof(ScheduledFuture),
 			getAtTester)
 	}
 
+	@Test
+	@DisplayName("at(running task) when not alive")
 	def at_task_notFinished_notAlive {
 		testNotFinishedTask(false, [a, b|this.^skill.at(a, 34, b)], getAtExecutorConfig, typeof(ScheduledFuture))
 	}
 
 	@Test
+	@DisplayName("at(running task) when alive")
 	def at_task_notFinished_alive {
 		typeof(IllegalStateException).assertException [
 			testNotFinishedTask(true, [a, b|this.^skill.at(a, 34, b)], getAtExecutorConfig, typeof(ScheduledFuture))
@@ -1193,24 +1268,28 @@ class SchedulesSkillTest {
 	}
 
 	@Test
+	@DisplayName("at(finished task) when not alive")
 	def at_task_finished_notAlive {
 		testFinishedTask(false, false, [a, b|this.^skill.at(a, 34, b)], getAtExecutorConfig, typeof(ScheduledFuture),
 			getAtTester)
 	}
 
 	@Test
+	@DisplayName("at(finished task) when alive")
 	def at_task_finished_alive {
 		testFinishedTask(true, false, [a, b|this.^skill.at(a, 34, b)], getAtExecutorConfig, typeof(ScheduledFuture),
 			getAtTester)
 	}
 
 	@Test
+	@DisplayName("at(cancelled task) when not alive")
 	def at_task_cancelled_notAlive {
 		testCancelledTask(false, false, [a, b|this.^skill.at(a, 34, b)], getInExecutorConfig, typeof(ScheduledFuture),
 			getAtTester)
 	}
 
 	@Test
+	@DisplayName("at(cancelled task) when alive")
 	def at_task_cancelled_alive {
 		testCancelledTask(true, false, [a, b|this.^skill.at(a, 34, b)], getInExecutorConfig, typeof(ScheduledFuture),
 			getAtTester)

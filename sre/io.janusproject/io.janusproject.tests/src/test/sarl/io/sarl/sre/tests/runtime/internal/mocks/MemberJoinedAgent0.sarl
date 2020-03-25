@@ -18,31 +18,48 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.sre.tests.runtime.bugs.bug861.mocks
 
-import io.sarl.core.AgentSpawned
+package io.sarl.sre.tests.runtime.internal.mocks
+
+import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
+import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
+import io.sarl.core.MemberJoined
 import io.sarl.sre.test.framework.skills.TestingCapacity
 import io.sarl.sre.test.framework.skills.TestingSkill
-import io.sarl.sre.tests.runtime.internal.mocks.Bye
 
-agent BootAgent0 {
+import static extension io.sarl.tests.api.tools.TestUtils.*
 
-	uses Lifecycle
+/**
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+agent MemberJoinedAgent0 {
+
+	uses Lifecycle, InnerContextAccess, DefaultContextInteractions
 
 	uses TestingCapacity
 
+	var number : int
+
 	on Initialize {
 		setSkill(new TestingSkill(occurrence))
+		this.number = occurrence.parameters.get(1) as Integer
 	}
 
-	on AgentSpawned {
-		addResult(occurrence.agentID)
-	}
-
-	on Initialized {
-		addResult(occurrence)
+	on MemberJoined {
+		var msg : String
+		if (occurrence.inInnerDefaultSpace) {
+			msg = "inner"
+		} else if (occurrence.inDefaultSpace) {
+			msg = "default"
+		} else {
+			msg = "other"
+		}
+		addResult("AG" + this.number + ": joined " + occurrence.agentType.simpleTypeName + " " + occurrence.agentID + " in " + msg + " space")
 	}
 
 	on Bye {

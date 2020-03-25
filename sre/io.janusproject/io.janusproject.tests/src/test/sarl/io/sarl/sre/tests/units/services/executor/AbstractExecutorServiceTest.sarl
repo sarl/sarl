@@ -313,7 +313,6 @@ abstract class AbstractExecutorServiceTest<T extends AbstractExecutorService> {
 		exception.assertSame(capturedException.value)
 	}
 
-
 	@Test
 	@DisplayName("executeBlockingTask 1 task")
 	def executeBlockingTask_noException_1task {
@@ -541,6 +540,240 @@ abstract class AbstractExecutorServiceTest<T extends AbstractExecutorService> {
 
 		verify(this.executor, times(1)).execute(any)
 		
+		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
+		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
+		this.logger.verify(4.times).log(capturedLevel.capture, any, capturedException.capture)
+		Level.SEVERE.assertSame(capturedLevel.value)
+		exception.assertSame(capturedException.value)
+	}
+
+	@Test
+	@DisplayName("executeNotBlockingTask 1 task")
+	def executeNotBlockingTask_noException_1task {
+		var run = typeof(Runnable).mock
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return null
+		]).when(this.executor).execute(any)
+
+		this.service.executeNotBlockingTask(this.logger, 1, 100, run)
+
+		this.executor.verify(1.times).execute(any)
+
+		run.verify(1.times).run
+
+		verifyNoMoreInteractions(this.logger)
+	}
+
+	@Test
+	@DisplayName("executeNotBlockingTask 4 tasks with 1 task per group")
+	def executeNotBlockingTask_noException_4tasks_1member {
+		var run = typeof(Runnable).mock
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return null
+		]).when(this.executor).execute(any)
+
+		this.service.executeNotBlockingTask(this.logger, 4, 1, run)
+
+		this.executor.verify(4.times).execute(any)
+
+		run.verify(4.times).run
+
+		verifyNoMoreInteractions(this.logger)
+	}
+
+	@Test
+	@DisplayName("executeNotBlockingTask 4 tasks with 2 tasks per group")
+	def executeNotBlockingTask_noException_4tasks_2members {
+		var run = typeof(Runnable).mock
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return null
+		]).when(this.executor).execute(any)
+
+		this.service.executeNotBlockingTask(this.logger, 4, 2, run)
+
+		this.executor.verify(2.times).execute(any)
+
+		run.verify(4.times).run
+
+		verifyNoMoreInteractions(this.logger)
+	}
+
+	@Test
+	@DisplayName("executeNotBlockingTask 4 tasks with 3 tasks per group")
+	def executeNotBlockingTask_noException_4tasks_3members {
+		var run = typeof(Runnable).mock
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return null
+		]).when(this.executor).execute(any)
+
+		this.service.executeNotBlockingTask(this.logger, 4, 3, run)
+
+		this.executor.verify(2.times).execute(any)
+
+		run.verify(4.times).run
+
+		verifyNoMoreInteractions(this.logger)
+	}
+
+	@Test
+	@DisplayName("executeNotBlockingTask 4 tasks with 4 tasks per group")
+	def executeNotBlockingTask_noException_4tasks_4members {
+		var run = typeof(Runnable).mock
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return null
+		]).when(this.executor).execute(any)
+
+		this.service.executeNotBlockingTask(this.logger, 4, 4, run)
+
+		this.executor.verify(1.times).execute(any)
+
+		run.verify(4.times).run
+
+		verifyNoMoreInteractions(this.logger)
+	}
+
+	@Test
+	@DisplayName("executeNotBlockingTask 4 tasks with 5 tasks per group")
+	def executeNotBlockingTask_noException_4tasks_5members {
+		var run = typeof(Runnable).mock
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return null
+		]).when(this.executor).execute(any)
+
+		this.service.executeBlockingTask(this.logger, 4, 5, run)
+
+		this.executor.verify(1.times).execute(any)
+
+		run.verify(4.times).run
+
+		verifyNoMoreInteractions(this.logger)
+	}
+
+	@Test
+	@DisplayName("executeNotBlockingTask 1 erroneous task")
+	def executeNotBlockingTask_exception_1task {
+		var exception = typeof(RuntimeException).mock
+		var run : Runnable = [throw exception]
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return null
+		]).when(this.executor).execute(any)
+
+		this.service.executeNotBlockingTask(this.logger, 1, 100, run)
+
+		this.executor.verify(1.times).execute(any)
+
+		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
+		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
+		this.logger.verify(1.times).log(capturedLevel.capture, any, capturedException.capture)
+		Level::SEVERE.assertSame(capturedLevel.value)
+		exception.assertSame(capturedException.value)
+	}
+
+	@Test
+	@DisplayName("executeNotBlockingTask 4 erroneous task with 1 task per group")
+	def executeNotBlockingTask_exception_4tasks_1member {
+		var exception = typeof(RuntimeException).mock
+		var run : Runnable = [throw exception]
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return null
+		]).when(this.executor).execute(any)
+
+		this.service.executeNotBlockingTask(this.logger, 4, 1, run)
+
+		this.executor.verify(4.times).execute(any)
+
+		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
+		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
+		this.logger.verify(4.times).log(capturedLevel.capture, any, capturedException.capture)
+		Level::SEVERE.assertSame(capturedLevel.value)
+		exception.assertSame(capturedException.value)
+	}
+
+	@Test
+	@DisplayName("executeNotBlockingTask 4 erroneous task with 2 tasks per group")
+	def executeNotBlockingTask_exception_4tasks_2members {
+		var exception = typeof(RuntimeException).mock
+		var run : Runnable = [throw exception]
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return null
+		]).when(this.executor).execute(any)
+
+		this.service.executeNotBlockingTask(this.logger, 4, 2, run)
+
+		this.executor.verify(2.times).execute(any)
+
+		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
+		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
+		this.logger.verify(4.times).log(capturedLevel.capture, any, capturedException.capture)
+		Level::SEVERE.assertSame(capturedLevel.value)
+		exception.assertSame(capturedException.value)
+	}
+
+	@Test
+	@DisplayName("executeNotBlockingTask 4 erroneous task with 3 tasks per group")
+	def executeNotBlockingTask_exception_4tasks_3members {
+		var exception = typeof(RuntimeException).mock
+		var run : Runnable = [throw exception]
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return null
+		]).when(this.executor).execute(any)
+
+		this.service.executeBlockingTask(this.logger, 4, 3, run)
+
+		this.executor.verify(2.times).execute(any)
+
+		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
+		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
+		this.logger.verify(4.times).log(capturedLevel.capture, any, capturedException.capture)
+		Level::SEVERE.assertSame(capturedLevel.value)
+		exception.assertSame(capturedException.value)
+	}
+
+	@Test
+	@DisplayName("executeNotBlockingTask 4 erroneous task with 3 tasks per group")
+	def executeNotBlockingTask_exception_4tasks_4members {
+		var exception = typeof(RuntimeException).mock
+		var run : Runnable = [throw exception]
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return null
+		]).when(this.executor).execute(any)
+
+		this.service.executeNotBlockingTask(this.logger, 4, 4, run)
+
+		this.executor.verify(1.times).execute(any)
+
+		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
+		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
+		this.logger.verify(4.times).log(capturedLevel.capture, any, capturedException.capture)
+		Level::SEVERE.assertSame(capturedLevel.value)
+		exception.assertSame(capturedException.value)
+	}
+
+	@Test
+	@DisplayName("executeNotBlockingTask 4 erroneous task with 5 tasks per group")
+	def executeNotBlockingTask_exception_4tasks_5members {
+		var exception = typeof(RuntimeException).mock
+		var run : Runnable = [throw exception]
+		doAnswer([
+			(it.getArgument(0) as Runnable).run
+			return null
+		]).when(this.executor).execute(any)
+
+		this.service.executeNotBlockingTask(this.logger, 4, 5, run)
+
+		verify(this.executor, times(1)).execute(any)
+
 		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
 		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
 		this.logger.verify(4.times).log(capturedLevel.capture, any, capturedException.capture)

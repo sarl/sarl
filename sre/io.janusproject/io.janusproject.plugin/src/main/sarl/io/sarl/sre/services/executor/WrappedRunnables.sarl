@@ -184,12 +184,16 @@ class SreRunnable extends SreExecutable implements Runnable {
 			ex.runPostTreatment(this.logger)
 		} catch (ex : InterruptedException) {
 			// Ignore this exception
+			// Clear the interrupted flag
+			Thread::interrupted
 		} catch (ex : Throwable) {
 			val cause = ex.rootCause
 			if (cause instanceof EarlyExitException) {
 				cause.runPostTreatment(this.logger)
 			} else if (cause instanceof InterruptedException) {
 				// Ignore this exception
+				// Clear the interrupted flag
+				Thread::interrupted
 			} else {
 				this.exception = cause;
 				val log = getLogger

@@ -25,6 +25,7 @@ import com.google.inject.BindingAnnotation
 import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AgentContext
+import io.sarl.sre.boot.configs.SreConfig
 import io.sarl.sre.capacities.InformedEventListener
 import io.sarl.sre.services.IServiceManager
 import io.sarl.sre.services.context.ContextService
@@ -45,6 +46,7 @@ import java.util.logging.Logger
 import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton
+import org.eclipse.xtend.lib.annotations.Accessors
 
 /** 
  * This class represents the Kernel of the SRE platform.
@@ -79,17 +81,25 @@ class Kernel {
 
 	val contextService : ContextService
 
+	@Accessors(PUBLIC_GETTER)
+	val configuration : SreConfig
+	
 	/** 
 	 * Constructs a SRE kernel.
 	 * 
 	 * @param serviceManager is the instance of the service manager that must be used by the kernel.
 	 * The service manager must already have registered services inside itself.
 	 * @param exceptionHandler is the handler of the uncaught exceptions.
+	 * @param configuration is the provider of SRE configuration.
 	 */
 	@SuppressWarnings("discouraged_reference")
 	@Inject
-	new (serviceManager : Provider<IServiceManager>, exceptionHandler : Provider<UncaughtExceptionHandler>) {
+	new (
+		serviceManager : Provider<IServiceManager>,
+		exceptionHandler : Provider<UncaughtExceptionHandler>,
+		configuration : Provider<SreConfig>) {
 		// Initialize the fields
+		this.configuration = configuration.get
 		this.stopListener = createKernelListener
 		this.serviceManager = serviceManager.get
 		this.loggingService = this.serviceManager.getService(typeof(LoggingService))

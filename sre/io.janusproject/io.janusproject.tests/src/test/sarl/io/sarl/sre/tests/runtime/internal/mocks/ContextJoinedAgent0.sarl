@@ -21,14 +21,13 @@
 
 package io.sarl.sre.tests.runtime.internal.mocks
 
-import io.sarl.core.AgentKilled
+import io.sarl.core.ContextJoined
+import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
+import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
-import io.sarl.core.MemberLeft
 import io.sarl.sre.test.framework.skills.TestingCapacity
 import io.sarl.sre.test.framework.skills.TestingSkill
-
-import static extension io.sarl.tests.api.tools.TestUtils.*
 
 /**
  * @author $Author: sgalland$
@@ -36,21 +35,32 @@ import static extension io.sarl.tests.api.tools.TestUtils.*
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-agent ChildAgent1 {
+agent ContextJoinedAgent0 {
 
-	uses Lifecycle
+	uses Lifecycle, InnerContextAccess, DefaultContextInteractions
 
 	uses TestingCapacity
 
+	var number : int
+
 	on Initialize {
 		setSkill(new TestingSkill(occurrence))
+		this.number = occurrence.parameters.get(1) as Integer
 	}
 
-	on MemberLeft {
-		addResult("CHILD1:" + occurrence.agentType.simpleTypeName)
+	on ContextJoined {
+		var msg : String
+		if (occurrence.inInnerDefaultSpace) {
+			msg = "inner"
+		} else if (occurrence.inDefaultSpace) {
+			msg = "default"
+		} else {
+			msg = "other"
+		}
+		addResult("AG" + this.number + ": joined " + occurrence.source.UUID + " " + occurrence.holonContextID + " in " + msg + " space")
 	}
 
-	on AgentKilled {
+	on Bye {
 		killMe
 	}
 

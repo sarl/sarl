@@ -36,6 +36,7 @@ import io.sarl.lang.core.SpaceID
 import io.sarl.lang.core.SpaceSpecification
 import io.sarl.sre.KernelScope
 import io.sarl.sre.boot.configs.SreConfig
+import io.sarl.sre.boot.configs.subconfigs.ContextsConfig
 import io.sarl.sre.internal.SmartListenerCollection
 import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.logging.LoggingService
@@ -77,7 +78,7 @@ abstract class SpaceRepository implements SpaceListener {
 
 	val executor : ExecutorService
 
-	val destroyDelay : int
+	val contextsRepositoryConfig : ContextsConfig
 
 	val listeners : SmartListenerCollection<?>
 
@@ -101,7 +102,7 @@ abstract class SpaceRepository implements SpaceListener {
 		listenerCollection : SmartListenerCollection<?>) {
 		this.injector = injector
 		this.executor = executor
-		this.destroyDelay = config.services.executors.keepAliveDuration
+		this.contextsRepositoryConfig = config.contexts
 		this.listeners = listenerCollection
 	}
 
@@ -486,7 +487,8 @@ abstract class SpaceRepository implements SpaceListener {
 				removeSpace(^space)
 			}
 		]
-		this.executor.schedule(this.destroyDelay, TimeUnit::SECONDS, run)
+		val delay = this.contextsRepositoryConfig.spaceDestructionCallbackDelay
+		this.executor.schedule(delay, TimeUnit::MILLISECONDS, run)
 	}
 
 	/** 

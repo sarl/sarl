@@ -23,8 +23,10 @@ package io.sarl.sre.test.framework.context
 
 import io.sarl.bootstrap.SRE
 import io.sarl.bootstrap.SREBootstrap
+import io.sarl.core.AgentKilled
 import io.sarl.core.AgentSpawned
 import io.sarl.core.OpenEventSpace
+import io.sarl.core.SpaceDestroyed
 import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AgentContext
@@ -36,6 +38,7 @@ import io.sarl.sre.test.framework.exception.SreTimeoutException
 import java.util.List
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ConcurrentSkipListSet
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.TimeoutException
 import java.util.concurrent.atomic.AtomicBoolean
@@ -49,6 +52,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
 import org.opentest4j.AssertionFailedError
 
+import static io.sarl.sre.test.framework.Constants.*
 import static org.junit.jupiter.api.Assertions.*
 
 import static extension org.junit.jupiter.api.Assertions.assertEquals
@@ -81,9 +85,6 @@ class SreRunContext {
 	val globalResults = new ConcurrentHashMap<UUID, CopyOnWriteArrayList<Object>>
 
 	val directFailureCause = new AtomicReference<Throwable>
-
-	@SuppressWarnings("raw_type")
-	val eventListeners = new CopyOnWriteArrayList<Procedure1>
 
 	@Accessors(PUBLIC_GETTER)
 	volatile var bootAgentId : UUID
@@ -422,7 +423,7 @@ class SreRunContext {
 	val LOG_IN_RESULTS_LOG_HANDLER = new Handler {
 
 		override publish(record : LogRecord) {
-			if (record.level === Level.SEVERE) {
+			if (record.level === Level.SEVERE || record.level === Level.WARNING) {
 				addResult(record)
 			}
 		}
@@ -527,48 +528,59 @@ class SreRunContext {
 		this.globalResults.clear
 	}
 
-	private def fireAgentSpawned(^event : Event) {
-		for (listener : this.eventListeners) {
-			listener.apply(^event as Event)
-		}
-	}
+	private def registerEventHandler(type : Class<? extends Event>, ^space : OpenEventSpace, code : Procedure1<?>) {
+		val callback = code as (Event)=>void
+		val spc = if (^space === null) this.rootContext.defaultSpace as OpenEventSpace else ^space;
+		spc.register(new EventListener {
 
-	/** Register the given code for agent spawns.
-	 *
-	 * @param type the type of the expected event.
-	 * @param code the code to run on agent spawned.
-	 */
-	def onEvent(type : Class<? extends Event>, code : (Event)=>void) {
-		type.registerEventHandler(code)
-	}
-	
-	private def registerEventHandler(type : Class<? extends Event>, code : Procedure1<?>) {
-		val first = this.eventListeners.empty
-		this.eventListeners.add(code)
-		if (first) {
-			(rootContext.defaultSpace as OpenEventSpace).register(new EventListener {
-
-				def receiveEvent(^event : Event) {
-					if (type.isInstance(^event)) {
-						fireAgentSpawned(^event)
-					}
+			def receiveEvent(^event : Event) {
+				if (type.isInstance(^event)) {
+					callback.apply(^event)
 				}
+			}
 
-				def getID : UUID {
-					SreRunContext.this.contextId
-				}
+			def getID : UUID {
+				SreRunContext.this.contextId
+			}
 
-			},
-			true)
-		}
+		}, true)
 	}
 
 	/** Register the given code for agent spawns.
 	 * 
+	 * @param type the type of the expected event.
+	 * @param space the space to listen into. If {@code null}, the default space of the root context is used.
 	 * @param code the code to run on agent spawned.
 	 */
-	def onAgentSpawned(code : (AgentSpawned)=>void) {
-		typeof(AgentSpawned).registerEventHandler(code)
+	def onEvent(type : Class<? extends Event>, ^space : OpenEventSpace = null, code : (Event)=>void) {
+		type.registerEventHandler(^space, code)
+	}
+	
+	/** Register the given code for agent spawns.
+	 * 
+	 * @param space the space to listen into. If {@code null}, the default space of the root context is used.
+	 * @param code the code to run on agent spawned.
+	 */
+	def onAgentSpawned(^space : OpenEventSpace = null, code : (AgentSpawned)=>void) {
+		typeof(AgentSpawned).registerEventHandler(^space, code)
+	}
+
+	/** Register the given code for agent kills.
+	 * 
+	 * @param space the space to listen into. If {@code null}, the default space of the root context is used.
+	 * @param code the code to run on agent killing.
+	 */
+	def onAgentKilled(^space : OpenEventSpace = null, code : (AgentKilled)=>void) {
+		typeof(AgentKilled).registerEventHandler(^space, code)
+	}
+
+	/** Register the given code for space destroyed.
+	 * 
+	 * @param space the space to listen into. If {@code null}, the default space of the root context is used.
+	 * @param code the code to run on space destroyed.
+	 */
+	def onSpaceDestroyed(^space : OpenEventSpace = null, code : (SpaceDestroyed)=>void) {
+		typeof(SpaceDestroyed).registerEventHandler(^space, code)
 	}
 
 	/** Register a listener on agent spawned that is waiting for a specific agent.
@@ -579,20 +591,129 @@ class SreRunContext {
 	 * the agent spawned event.
 	 * 
 	 * @param id the identifier of the agent to wait for.
-	 * @param code the code to run and wait for the agent spawned..
+	 * @param space the space to listen into. If {@code null}, the default space of the root context is used.
+	 * @param timeout is the time to wait for the spawn event.
+	 * @param code the code to run and wait for the agent spawned.
 	 * @return the object that permits to wait for the spawn.
 	 */
-	def waitForAgentSpawned(id : UUID, code : (UUID)=>void = null) : Wait {
+	def waitForAgentSpawned(id : UUID, ^space : OpenEventSpace = null, timeout : int = STANDARD_TIMEOUT, code : (UUID)=>void = null) : Wait {
 		val lock = new AtomicBoolean
-		onAgentSpawned [
+		onAgentSpawned(^space) [
 			if (it.agentID == id) {
 				lock.set(true)
 			}
 		]
-		val w = new Wait(lock, this.directFailureCause)
+		val w = new BooleanWait(lock, this.directFailureCause)
+		if (code !== null) {
+			code.apply(id)
+			w.doWait(timeout)
+		}
+		return w
+	}
+
+	/** Register a listener on agent spawned that is waiting for a specific agent.
+	 * 
+	 * <p>If the {@code code} is provided, this function executes the {@code code}
+	 * and wait for the spawning of the agent with the given {@code id}.
+	 * If the {@code code} is {@code null}, the returned object should enable to wait for
+	 * the agent spawned event.
+	 * 
+	 * @param identifiers are the identifiers of the agents to wait for.
+	 * @param space the space to listen into. If {@code null}, the default space of the root context is used.
+	 * @param code the code to run and wait for the agent kill.
+	 * @param code the code to run and wait for the agent spawned.
+	 * @return the object that permits to wait for the spawn.
+	 */
+	def waitForAgentSpawned(identifiers : UUID[], ^space : OpenEventSpace = null, timeout : int = STANDARD_TIMEOUT,
+		code : ()=>void = null) : Wait {
+		val lock = new ConcurrentSkipListSet(identifiers)
+		onAgentSpawned(^space) [
+			lock.remove(it.agentID)
+		]
+		val w = new CollectionWait(lock, this.directFailureCause)
+		if (code !== null) {
+			code.apply()
+			w.doWait(timeout)
+		}
+		return w
+	}
+
+	/** Register a listener on agent kills that is waiting for a specific agent.
+	 * 
+	 * <p>If the {@code code} is provided, this function executes the {@code code}
+	 * and wait for the killing of the agent with the given {@code id}.
+	 * If the {@code code} is {@code null}, the returned object should enable to wait for
+	 * the agent kill event.
+	 * 
+	 * @param id the identifier of the agent to wait for.
+	 * @param space the space to listen into. If {@code null}, the default space of the root context is used.
+	 * @param code the code to run and wait for the agent killing.
+	 * @return the object that permits to wait for the kills.
+	 */
+	def waitForAgentKilled(id : UUID, ^space : OpenEventSpace = null, code : (UUID)=>void = null) : Wait {
+		val lock = new AtomicBoolean
+		onAgentKilled(^space) [
+			if (it.source.UUID == id) {
+				lock.set(true)
+			}
+		]
+		val w = new BooleanWait(lock, this.directFailureCause)
 		if (code !== null) {
 			code.apply(id)
 			w.doWait
+		}
+		return w
+	}
+
+	/** Register a listener on agent kills that is waiting for a specific agent.
+	 * 
+	 * <p>If the {@code code} is provided, this function executes the {@code code}
+	 * and wait for the killing of the agent with the given {@code id}.
+	 * If the {@code code} is {@code null}, the returned object should enable to wait for
+	 * the agent kill event.
+	 * 
+	 * @param identifiers are the identifiers of the agents to wait for.
+	 * @param space the space to listen into. If {@code null}, the default space of the root context is used.
+	 * @param code the code to run and wait for the agent killing.
+	 * @return the object that permits to wait for the kills.
+	 */
+	def waitForAgentKilled(identifiers : UUID[], ^space : OpenEventSpace = null, code : ()=>void = null) : Wait {
+		val lock = new ConcurrentSkipListSet(identifiers)
+		onAgentKilled(^space) [
+			lock.remove(it.source.UUID)
+		]
+		val w = new CollectionWait(lock, this.directFailureCause)
+		if (code !== null) {
+			code.apply()
+			w.doWait
+		}
+		return w
+	}
+
+	/** Register a listener on space destroyed event that is waiting for a specific space destruction.
+	 * 
+	 * <p>If the {@code code} is provided, this function executes the {@code code}
+	 * and wait for the destruction event for the space with the given {@code id}.
+	 * If the {@code code} is {@code null}, the returned object should enable to wait for
+	 * the space destroyed event.
+	 * 
+	 * @param identifier are the identifier of the space to wait for.
+	 * @param space the space to listen into. If {@code null}, the default space of the root context is used.
+	 * @param timeout the max timeout to apply for waiting.
+	 * @param code the code to run and wait for the space destruction event.
+	 * @return the object that permits to wait for the destruction.
+	 */
+	def waitForSpaceDestroyed(identifier : UUID, ^space : OpenEventSpace = null, timeout : int = STANDARD_TIMEOUT, code : ()=>void = null) : Wait {
+		val lock = new AtomicBoolean
+		onSpaceDestroyed(^space) [
+			if (it.spaceID.ID == identifier) {
+				lock.set(true)
+			}
+		]
+		val w = new BooleanWait(lock, this.directFailureCause)
+		if (code !== null) {
+			code.apply()
+			w.doWait(timeout)
 		}
 		return w
 	}

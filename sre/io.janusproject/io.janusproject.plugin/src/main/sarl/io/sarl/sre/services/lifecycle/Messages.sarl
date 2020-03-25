@@ -47,6 +47,8 @@ final class Messages extends NLS {
 	public static var SpawnDisabledException_0 : String
 
 	public static var AbstractLifecycleService_0 : String
+	public static var AbstractLifecycleService_1 : String
+	public static var AbstractLifecycleService_2 : String
 
 	private new {
 	}

@@ -28,3 +28,11 @@ package io.sarl.sre.tests.runtime.internal.mocks
  * @mavenartifactid $ArtifactId$
  */
 event Bye
+
+/** 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+event ByeBye

@@ -58,11 +58,22 @@ SARL provides an interface that is representing all the spaces:
 
 		[:ShowType:]{io.sarl.lang.core.[:spacedef](Space)}
 		[:Fact:]{typeof(io.sarl.lang.core.Space).shouldHaveMethod("[:getspaceidfct](getSpaceID) : io.sarl.lang.core.SpaceID")}
-		[:Fact:]{typeof(io.sarl.lang.core.Space).shouldHaveMethod("[:getparticipantsfct](getParticipants) : java.util.concurrent.ConcurrentSkipListSet")}
+		[:Fact:]{typeof(io.sarl.lang.core.Space).shouldHaveMethod("[:getnumberofstrongparticipantsfct](getNumberOfStrongParticipants) : int")}
+		[:Fact:]{typeof(io.sarl.lang.core.Space).shouldHaveMethod("[:ispseudoemptyfct](isPseudoEmpty) : boolean")}
+		[:Fact:]{typeof(io.sarl.lang.core.Space).shouldHaveMethod("isPseudoEmpty(java.util.UUID) : boolean")}
 
 The [:getspaceidfct:] function replies the identifier of the space.
-The [:getparticipantsfct:] function replies the identifiers
-of the agents belonging to the space.
+
+Participants to the space are software entities, e.g. agents that are participating to the interaction in the space.
+Two types of participant are forseen:
+
+* *strong participant*: this is the standard or regular type. If the space has a strong participant, it is considered as an not empty space and cannot be destroyed from the system;
+* *weak participant*: this is a special type. If the space has only weak participants, i.e. no strong participant is involved, it is considered as en empty space and could be destroy from the system.
+
+The [:getnumberofstrongparticipantsfct:] function replies the number of strong participants that are registered to the space.
+The [:ispseudoemptyfct] function replies if the space has at least a strong participant registered.
+If the parameter is given, it is the identifier of the participant that should be ignored. In other words,
+the [:ispseudoemptyfct] function replies if another strong participant than the one with the given identifier is registered.
 
 
 ### Event Space
@@ -175,10 +186,25 @@ Below, the implementation extends one of the abstract classes provided by the [J
 			class PhysicSpaceImpl extends AbstractEventSpace implements PhysicSpace {
 				val [:entityfield](entities) = <[:uuid](UUID), PhysicObject>newHashMap
 				
-				val participantMap = new ConcurrentHashMap<UUID, Participant>
+				val strongRepository = new ConcurrentHashMap<UUID, Participant>
 
-				def getInternalParticipantStructure : ConcurrentHashMap<UUID, Participant> {
-					return this.participantMap
+				var weakRepository : ConcurrentHashMap<UUID, Participant>
+
+				override getInternalStrongParticipantStructure : ConcurrentHashMap<UUID, Participant> {
+					this.strongRepository 
+				}
+			
+				override getInternalWeakParticipantStructure : ConcurrentHashMap<UUID, Participant> {
+					this.weakRepository
+				}
+
+				override ensureInternalWeakParticipantStructure : ConcurrentHashMap<UUID, Participant> {
+					var r = this.weakRepository
+					if (r === null) {
+						this.weakRepository = new ConcurrentHashMap
+						r = this.weakRepository
+					}
+					return this.weakRepository
 				}
 
 				def [:moveobjectfct](moveObject)(identifier : UUID, x : float, y : float, z : float) {
@@ -240,7 +266,9 @@ This specification may create the space instance according to rules, or provide 
 				def unbindBody(listener : EventListener) { }
 				def getID : SpaceID { null }
 				def getSpaceID : SpaceID { null }
-				def getParticipants : ConcurrentSkipListSet<UUID> { null }
+				def isPseudoEmpty(id : UUID) : boolean { true }
+				def getNumberOfStrongParticipants : int { 0 }
+				def forEachStrongParticipant(cb : (UUID)=>void) {}
 			}
 			[:On]
 			class PhysicSpaceSpecification implements [:spacespecdef](SpaceSpecification)<PhysicSpace> {
@@ -287,7 +315,9 @@ The following example illustrates the first method of marking of an object field
                 new (obj : OpenEventSpace) {}
                 def getID : SpaceID { null }
                 def getSpaceID : SpaceID { null }
-                def getParticipants : ConcurrentSkipListSet<UUID> { null }
+				def isPseudoEmpty(id : UUID) : boolean { true }
+				def getNumberOfStrongParticipants : int { 0 }
+				def forEachStrongParticipant(cb : (UUID)=>void) {}
             }
             [:On]
             class MySpaceSpecification implements SpaceSpecification<MySpace> {
@@ -320,7 +350,9 @@ The following example illustrates the second method of marking of an object fiel
                 new (obj : OpenEventSpace) {}
                 def getID : SpaceID { null }
                 def getSpaceID : SpaceID { null }
-                def getParticipants : ConcurrentSkipListSet<UUID> { null }
+				def isPseudoEmpty(id : UUID) : boolean { true }
+				def getNumberOfStrongParticipants : int { 0 }
+				def forEachStrongParticipant(cb : (UUID)=>void) {}
             }
             [:On]
             class MySpaceSpecification implements SpaceSpecification<MySpace> {

@@ -25,33 +25,30 @@ import io.sarl.core.Destroy
 import io.sarl.core.Initialize
 import io.sarl.sre.test.framework.skills.TestingCapacity
 import io.sarl.sre.test.framework.skills.TestingSkill
+import java.util.concurrent.atomic.AtomicInteger
 
 abstract agent AbstractAgent {
 
-	protected var i : int = 0
+	protected var i = new AtomicInteger(0)
 
 	uses TestingCapacity
 
-	def ensureSkill(e : Initialize) : void {
-		setSkill(new TestingSkill(e))
-	}
-
 	on Initialize {
-		occurrence.ensureSkill
+		setSkillIfAbsent(new TestingSkill(occurrence))
 		addResult("1")
 	}
 
 	on Initialize [i < 0] {
-		occurrence.ensureSkill
+		setSkillIfAbsent(new TestingSkill(occurrence))
 		addResult("-1-")
-		i++
+		i.incrementAndGet
 	}
 	
 	/* A disjoint condition from the previous */
 	on Initialize [i >= 0] {
-		occurrence.ensureSkill
+		setSkillIfAbsent(new TestingSkill(occurrence))
 		addResult("2")
-		i--
+		i.decrementAndGet
 	}
 
 	def sayGoodBye : void {
