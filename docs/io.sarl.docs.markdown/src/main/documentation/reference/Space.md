@@ -190,7 +190,10 @@ Below, the implementation extends one of the abstract classes provided by the [J
 
 				var weakRepository : ConcurrentHashMap<UUID, Participant>
 
-				override getInternalStrongParticipantStructure : ConcurrentHashMap<UUID, Participant> {
+				override getInternalStrongParticipantStructure(copy : boolean) : ConcurrentHashMap<UUID, Participant> {
+					if (copy) {
+						return new ConcurrentHashMap(this.strongRepository)
+					}
 					this.strongRepository 
 				}
 			

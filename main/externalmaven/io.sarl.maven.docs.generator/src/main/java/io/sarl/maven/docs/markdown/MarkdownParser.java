@@ -108,7 +108,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 
 	/** The default format, compatible with {@link MessageFormat} for the section titles.
 	 */
-	public static final String DEFAULT_SECTION_TITLE_FORMAT = "{0}{1}. {2}"; //$NON-NLS-1$
+	public static final String DEFAULT_SECTION_TITLE_FORMAT = "{0} {1}. {2}"; //$NON-NLS-1$
 
 	/** The default format, compatible with {@link MessageFormat} for the outline entry without auto-numbering.
 	 */
@@ -126,6 +126,9 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 
 	private static final String SECTION_PATTERN_TITLE_EXTRACTOR =
 			"^(?:[#]+)\\s*((?:[0-9]+(?:\\.[0-9]+)*\\.?)?\\s*.*?\\s*(?:\\{\\s*([a-z\\-]+)\\s*\\})?)\\s*$"; //$NON-NLS-1$
+
+	private static final String SECTION_PATTERN_TITLE_EXTRACTOR_WITHOUT_MD_PREFIX =
+			"^\\s*([0-9]+(?:\\.[0-9]+)*\\.?)\\s*(.*?)$"; //$NON-NLS-1$
 
 	private IntegerRange outlineDepthRange = new IntegerRange(DEFAULT_OUTLINE_TOP_LEVEL, DEFAULT_OUTLINE_TOP_LEVEL);
 
@@ -518,7 +521,8 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 		final Pattern pattern = Pattern.compile(SECTION_PATTERN_AUTONUMBERING);
 		NodeVisitor visitor = new NodeVisitor(
 				new VisitHandler<>(Paragraph.class, it -> {
-					final Matcher matcher = pattern.matcher(it.getContentChars());
+					final CharSequence paragraphText = it.getContentChars();
+					final Matcher matcher = pattern.matcher(paragraphText);
 					if (matcher.find()) {
 						final String number = matcher.group(2);
 						final String title = matcher.group(3);
@@ -529,10 +533,21 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 				}));
 		visitor.visitChildren(document);
 
+		final Pattern pattern1 = Pattern.compile(SECTION_PATTERN_TITLE_EXTRACTOR_WITHOUT_MD_PREFIX);
 		visitor = new NodeVisitor(
 				new VisitHandler<>(Heading.class, it -> {
 					String key = it.getAnchorRefId();
-					final String title = it.getAnchorRefText();
+					String title = it.getText().toString();
+					// Sometimes, the title already contains the section number.
+					// It should be removed.
+					final Matcher matcher = pattern1.matcher(title);
+					if (matcher.find()) {
+						final String number = matcher.group(1);
+						title = matcher.group(2);
+						if (Strings.isEmpty(key)) {
+							key = computeHeaderId(number, title);
+						}
+					}
 					final String key2 = computeHeaderId(null, title);
 					if (Strings.isEmpty(key)) {
 						key = key2;

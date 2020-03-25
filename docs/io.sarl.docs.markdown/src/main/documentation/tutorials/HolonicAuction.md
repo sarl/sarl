@@ -1,4 +1,4 @@
-Ok# English Auction with Holons
+# English Auction with Holons
 
 [:Outline:]
 

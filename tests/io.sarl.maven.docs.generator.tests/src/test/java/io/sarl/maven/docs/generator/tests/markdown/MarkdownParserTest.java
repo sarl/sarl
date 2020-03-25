@@ -76,7 +76,7 @@ public class MarkdownParserTest {
 			this.parser.setOutlineDepthRange(new IntegerRange(1, Integer.MAX_VALUE));
 			this.parser.setAutoSectionNumbering(true);
 			String value = this.parser.transform(file);
-			assertEquals("#1. Title\n\n##1.1. Title 0\n\nthis is a fake text done for testing. this is a fake text done "
+			assertEquals("# 1. Title\n\n## 1.1. Title 0\n\nthis is a fake text done for testing. this is a fake text done "
 					+ "for testing. this is a fake text done for testing.\n\n\n"
 					+ "> * [1. Title](#1-title)\n"
 					+ "> \t* [1.1. Title 0](#1-1-title-0)\n"
@@ -86,12 +86,12 @@ public class MarkdownParserTest {
 					+ "> \t* [2.2. Title 4](#2-2-title-4)\n"
 					+ "> \t* [2.3. Title 5](#2-3-title-5)\n"
 					+ "> * [3. Title 6](#3-title-6)\n"
-					+ "\n\n\nthis is a fake text done for testing.\n\n#2. Title 1\n\n"
+					+ "\n\n\nthis is a fake text done for testing.\n\n# 2. Title 1\n\n"
 					+ "this is a fake text done for testing. this is a fake text done for testing. this is a\n"
-					+ "\n##2.1. Title 2\n\nfake text done for testing. this is a fake text\n\n###2.1.1. Title 3\n\n"
-					+ "##2.2. Title 4\n\n##2.3. Title 5\n\ndone for testing. this is a fake text done\nfor testing. "
+					+ "\n## 2.1. Title 2\n\nfake text done for testing. this is a fake text\n\n### 2.1.1. Title 3\n\n"
+					+ "## 2.2. Title 4\n\n## 2.3. Title 5\n\ndone for testing. this is a fake text done\nfor testing. "
 					+ "this is a fake text done for testing. this is a fake text done for testing. this is a fake "
-					+ "text done\n\n#3. Title 6\n\nfor testing. this is a fake text done for testing. this is a fake "
+					+ "text done\n\n# 3. Title 6\n\nfor testing. this is a fake text done for testing. this is a fake "
 					+ "text done for testing.",
 					value);
 		}
@@ -102,7 +102,7 @@ public class MarkdownParserTest {
 			this.parser.setOutlineDepthRange(new IntegerRange(2, Integer.MAX_VALUE));
 			this.parser.setAutoSectionNumbering(true);
 			String value = this.parser.transform(file);
-			assertEquals("# Title\n\n##1. Title 0\n\nthis is a fake text done for testing. this is a fake text done "
+			assertEquals("# Title\n\n## 1. Title 0\n\nthis is a fake text done for testing. this is a fake text done "
 					+ "for testing. this is a fake text done for testing.\n\n\n"
 					+ "> * [1. Title 0](#1-title-0)\n"
 					+ "> * [2. Title 2](#2-title-2)\n"
@@ -111,8 +111,8 @@ public class MarkdownParserTest {
 					+ "> * [4. Title 5](#4-title-5)\n"
 					+ "\n\n\nthis is a fake text done for testing.\n\n# Title 1\n\n"
 					+ "this is a fake text done for testing. this is a fake text done for testing. this is a\n"
-					+ "\n##2. Title 2\n\nfake text done for testing. this is a fake text\n\n###2.1. Title 3\n\n"
-					+ "##3. Title 4\n\n##4. Title 5\n\ndone for testing. this is a fake text done\nfor testing. "
+					+ "\n## 2. Title 2\n\nfake text done for testing. this is a fake text\n\n### 2.1. Title 3\n\n"
+					+ "## 3. Title 4\n\n## 4. Title 5\n\ndone for testing. this is a fake text done\nfor testing. "
 					+ "this is a fake text done for testing. this is a fake text done for testing. this is a fake "
 					+ "text done\n\n# Title 6\nfor testing. this is a fake text done for testing. this is a fake "
 					+ "text done for testing.",
@@ -130,7 +130,7 @@ public class MarkdownParserTest {
 					+ "> * [1. Title 3](#1-title-3)\n"
 					+ "\n\n\nthis is a fake text done for testing.\n\n# Title 1\n\n"
 					+ "this is a fake text done for testing. this is a fake text done for testing. this is a\n"
-					+ "\n## Title 2\n\nfake text done for testing. this is a fake text\n\n###1. Title 3\n\n"
+					+ "\n## Title 2\n\nfake text done for testing. this is a fake text\n\n### 1. Title 3\n\n"
 					+ "## Title 4\n\n## Title 5\n\ndone for testing. this is a fake text done\nfor testing. "
 					+ "this is a fake text done for testing. this is a fake text done for testing. this is a fake "
 					+ "text done\n\n# Title 6\nfor testing. this is a fake text done for testing. this is a fake "
