@@ -234,8 +234,8 @@ class Kernel {
 			val context = iter.next
 			val ^space = context.defaultSpace as SpaceWithParticipants
 
-			for (participant : ^space.internalStrongParticipantStructure.values) {
-				val listener = participant.participant
+			^space.forEachStrongParticipant [ id, p |
+				val listener = p.participant
 				if (listener instanceof InformedEventListener) {
 					val ag = listener.ownerInstance
 					assert ag !== null
@@ -243,7 +243,7 @@ class Kernel {
 						agents += ag
 					}
 				}
-			}
+			]
 
 		}
 

@@ -30,6 +30,7 @@ import io.sarl.lang.core.SpaceID
 import io.sarl.sre.services.logging.LoggingService
 import java.text.MessageFormat
 import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.logging.Level
 import javax.inject.Inject
@@ -67,6 +68,10 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 	@Accessors(PUBLIC_GETTER)
 	var spaceParticipantListener : SpaceParticipantListener
 
+	val strongRepository = new ConcurrentHashMap<UUID, Participant>
+
+	val weakRepository = new ConcurrentHashMap<UUID, Participant>
+
 	/** Constructor.
 	 * 
 	 * @param id identifier of the space.
@@ -103,11 +108,12 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 		var id = entity.ID
 		var address = new Address(this.spaceID, id)
 		var participant = Participant::createAndInit(address, entity)
-
+		assert(id !== null)
+		assert(participant !== null)
 		if (weakParticipant) {
-			ensureInternalWeakParticipantStructure.put(id, participant)
+			this.weakRepository.putIfAbsent(id, participant)
 		} else {
-			internalStrongParticipantStructure.put(id, participant)
+			this.strongRepository.putIfAbsent(id, participant)
 		}
 
 		getSpaceParticipantListener?.participantJoined(participant)
@@ -119,15 +125,13 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 		var participant : Participant = null
 		var becomesEmpty : boolean
 
-		var structure = this.internalStrongParticipantStructure
+		var structure = this.strongRepository
 		participant = structure.remove(entity.ID)
 		becomesEmpty = structure.empty
 		if (participant === null) {
 			// Try a weak listener
-			structure = this.internalWeakParticipantStructure
-			if (structure !== null) {
-				participant = structure.remove(entity.ID)
-			}
+			structure = this.weakRepository
+			participant = structure.remove(entity.ID)
 		}
 
 		if (participant !== null) {
@@ -144,12 +148,12 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 		assert id !== null
 		var participant : Participant = null
 
-		participant = this.internalStrongParticipantStructure.get(id)
+		participant = this.strongRepository.get(id)
 		if (participant !== null) {
 			return participant.address
 		}
 
-		participant = this.internalWeakParticipantStructure?.get(id)
+		participant = this.weakRepository?.get(id)
 		if (participant !== null) {
 			return participant.address
 		}
@@ -196,29 +200,15 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 	protected def getScopedParticipants(scope : Scope<? super Address>) : ConcurrentLinkedDeque<Participant> {
 		val scopedParticipants = new ConcurrentLinkedDeque
 		if (scope === null) {
-			for (p : internalStrongParticipantStructure.values) {
-				scopedParticipants += p
-			}
-			val struct = internalWeakParticipantStructure
-			if (struct !== null) {
-				for (p : struct.values) {
-					scopedParticipants += p
-				}
-			}
+			strongRepository.forEach[id, participant|scopedParticipants += participant]		
+			weakRepository.forEach[id, participant|scopedParticipants += participant]
 		} else {
-			for (p : internalStrongParticipantStructure.values) {
-				if (scope.matches(p.address)) {
-					scopedParticipants += p
-				}
-			}
-			val struct = internalWeakParticipantStructure
-			if (struct !== null) {
-				for (p : struct.values) {
-					if (scope.matches(p.address)) {
-						scopedParticipants += p
-					}
-				}
-			}
+			strongRepository.filter[id, p|scope.matches(p.address)].forEach [ id, participant |
+				scopedParticipants += participant
+			]
+			weakRepository.filter[id, p|scope.matches(p.address)].forEach [ id, participant |
+				scopedParticipants += participant
+			]
 		}
 		return scopedParticipants
 	}
@@ -249,12 +239,18 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 
 	@Pure
 	override getNumberOfStrongParticipants : int {
-		internalStrongParticipantStructure.size
+		strongRepository.size
 	}
 
 	@Pure
+	def getNumberOfWeakParticipants : int {
+		weakRepository.size
+	}
+
+
+	@Pure
 	override isPseudoEmpty(id : UUID) : boolean {
-		val struct = internalStrongParticipantStructure
+		val struct = strongRepository
 		val sz = struct.size
 		if (sz <= 0) {
 			return true
@@ -266,9 +262,24 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 	}
 
 	override forEachStrongParticipant(callback : (UUID)=>void) {
-		for (participant : internalStrongParticipantStructure.values) {
-			callback.apply(participant.address.UUID)
-		}	
+		strongRepository.forEach[id, participant|callback.apply(id)] 	// see if participant.address.UUID is better
 	}
 
+	override forEachWeakParticipant(callback : (UUID)=>void) {
+		weakRepository.forEach[id, participant|callback.apply(id)] 		// see if participant.address.UUID is better
+	}
+
+	override forEachStrongParticipant(callback : (UUID, Participant)=>void) {
+		strongRepository.forEach[id, participant|callback.apply(id, participant)]
+	}
+
+	override forEachWeakParticipant(callback : (UUID, Participant)=>void) {
+		weakRepository.forEach[id, participant|callback.apply(id, participant)]		
+	}
+
+	override getListenerFromStrongParticipant(target : UUID) : EventListener {
+		var participant = this.strongRepository?.get(target)
+		return participant.participant		
+	}
+	
 }

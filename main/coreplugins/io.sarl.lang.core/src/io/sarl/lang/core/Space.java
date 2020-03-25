@@ -93,6 +93,16 @@ public interface Space {
 	@Pure
 	int getNumberOfStrongParticipants();
 
+	/**
+	 * Replies the number of strong participants to the space.
+	 * This function ignores the weak participants.
+	 *
+	 * @return the number of participants.
+	 * @since 0.11
+	 */
+	@Pure
+	int getNumberOfWeakParticipants();
+
 	/** Apply the given procedure to each of the strong participants.
 	 * This function ignores the weak participants.
 	 *
@@ -100,5 +110,13 @@ public interface Space {
 	 * @since 0.11
 	 */
 	void forEachStrongParticipant(Procedure1<? super UUID> callback);
+
+	/** Apply the given procedure to each of the weak participants.
+	 * This function ignores the strong participants.
+	 *
+	 * @param callback the lambda to invoke.
+	 * @since 0.11
+	 */
+	void forEachWeakParticipant(Procedure1<? super UUID> callback);
 
 }

@@ -229,6 +229,7 @@ final class AgentLife {
 	protected def attachAgentToPlatform(spawningContext : Context) : InternalEventBusCapacity {
 		// Set up the internal bus
 		val eb = getEventBus
+		assert(eb !== null)
 		//
 		// Register the agent on its parent default space.
 		var defaultSpace = spawningContext.defaultSpace

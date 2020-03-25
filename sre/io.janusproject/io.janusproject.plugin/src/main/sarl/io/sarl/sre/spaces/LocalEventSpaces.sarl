@@ -47,26 +47,15 @@ import java.util.concurrent.ConcurrentHashMap
  */
 class OpenLocalEventSpace extends AbstractEventSpace implements OpenEventSpace {
 
-	val strongRepository = new ConcurrentHashMap<UUID, Participant>
 
-	volatile var weakRepository : ConcurrentHashMap<UUID, Participant>
 	
-	override getInternalStrongParticipantStructure : ConcurrentHashMap<UUID, Participant> {
+	/*override getInternalStrongParticipantStructure : ConcurrentHashMap<UUID, Participant> {
 		this.strongRepository 
 	}
 
 	override getInternalWeakParticipantStructure : ConcurrentHashMap<UUID, Participant> {
 		this.weakRepository
-	}
-
-	override ensureInternalWeakParticipantStructure : ConcurrentHashMap<UUID, Participant> {
-		var r = this.weakRepository
-		if (r === null) {
-			this.weakRepository = new ConcurrentHashMap
-			r = this.weakRepository
-		}
-		return this.weakRepository
-	}
+	}*/
 	
 	def register(entity : EventListener, weakParticipant : boolean) : Address {
 		entity.registerToSpace(weakParticipant)
@@ -117,17 +106,14 @@ class RestrictedAccessLocalEventSpace extends AbstractEventSpace implements Rest
 		this.accessPermission = accessPermission
 	}
 
-	override getInternalStrongParticipantStructure : ConcurrentHashMap<UUID, Participant> {
+	/*override getInternalStrongParticipantStructure : ConcurrentHashMap<UUID, Participant> {
 		this.repository
 	}
 
 	override getInternalWeakParticipantStructure : ConcurrentHashMap<UUID, Participant> {
 		null
-	}
+	}*/
 
-	override ensureInternalWeakParticipantStructure : ConcurrentHashMap<UUID, Participant> {
-		null
-	}
 	
 	/** 
 	 * Replies the Access Control List.
