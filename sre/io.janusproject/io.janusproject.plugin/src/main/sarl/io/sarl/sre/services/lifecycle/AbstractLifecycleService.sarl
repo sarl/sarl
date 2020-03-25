@@ -146,7 +146,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	 * @param agents the destroyed agent.
 	 * @param outerContexts the contexts in which the agent w destroyed.
 	 */
-	protected def fireAgentDestroy(^agent : Agent, outerContexts : Iterable<ContextReference>) {
+	protected def fireAgentDestroy(^agent : Agent, outerContexts : ConcurrentLinkedDeque<ContextReference>) {
 		// Notify the listeners on the spawn events (not restricted to a single agent)
 		this.globalListeners.notifyListeners(typeof(LifecycleServiceListener)) [
 			agentDestroyed(^agent, outerContexts)
@@ -435,7 +435,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	}
 
 	protected def fireAgentDestructionEvents(^agent : Agent, defaultContextBeforeKilled : ContextReference,
-		leavedContexts : Iterable<ContextReference>) {
+		leavedContexts : ConcurrentLinkedDeque<ContextReference>) {
 		// Leave the default context because the ExternalContextAccessSkill does not fire events related
 		// to the default space.
 		this.platformContextEventEmitter.memberLeft(defaultContextBeforeKilled.context,

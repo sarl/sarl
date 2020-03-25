@@ -54,6 +54,7 @@ abstract class AbstractCreatorFactory implements AgentCreatorProvider {
 	 */
 	def mergeSkillProviders(providers : ConcurrentLinkedDeque<DynamicSkillProvider>) : DynamicSkillProvider {
 		if (providers !== null) {
+			//TODO tune this iterator call that seems to be useless or not the best option
 			var iterator = providers.iterator
 			if (iterator.hasNext) {
 				if (this.skillProvider === null) {
@@ -74,9 +75,9 @@ abstract class AbstractCreatorFactory implements AgentCreatorProvider {
 	 */
 	private static class CreatorFactory0 implements DynamicSkillProvider {
 
-		val providers : Iterable<DynamicSkillProvider>
+		val providers : ConcurrentLinkedDeque<DynamicSkillProvider>
 
-		new (providers : Iterable<DynamicSkillProvider>) {
+		new (providers : ConcurrentLinkedDeque<DynamicSkillProvider>) {
 			this.providers = providers
 		}
 

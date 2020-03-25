@@ -59,6 +59,7 @@ import java.util.UUID
 import java.util.logging.Logger
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
+import java.util.concurrent.ConcurrentLinkedDeque
 
 /** Emit the space platform events.
  *
@@ -219,7 +220,7 @@ class AgentEventEmitter implements LifecycleServiceListener {
 		defSpace.emit(null, ^event) [agentId != it.UUID]
 	}
 	
-	override agentDestroyed(^agent : Agent, outerContexts : Iterable<ContextReference>) {
+	override agentDestroyed(^agent : Agent, outerContexts : ConcurrentLinkedDeque<ContextReference>) {
 		this.logger.config[MessageFormat::format(Messages::AgentEventEmitter_1, ^agent.ID)]
 		val size = outerContexts.size
 		val spaces = <EventSpace>newArrayOfSize(size)

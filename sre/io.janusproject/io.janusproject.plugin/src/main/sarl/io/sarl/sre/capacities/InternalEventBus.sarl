@@ -92,7 +92,7 @@ capacity InternalEventBusCapacity {
 	 * @since 0.7
 	 */
 	def fireEventAndWait(^event : Event, gatherEvents : boolean, thrownExceptions : boolean,
-		listener : Object) : Iterable<Event>
+		listener : Object) : ConcurrentLinkedDeque<Event>
 
 	/** Fire the given event into the agent context, and wait for the execution of all the event handlers.
 	 * 
@@ -111,7 +111,7 @@ capacity InternalEventBusCapacity {
 	 *     to the agent's logger, and never thrown outside this function.
 	 * @return the events that were received during the execution of this function. These events are not fired into the agent context yet.  
 	 */
-	def fireEventAndWait(^event : Event, gatherEvents : boolean, thrownExceptions : boolean) : Iterable<Event>
+	def fireEventAndWait(^event : Event, gatherEvents : boolean, thrownExceptions : boolean) : ConcurrentLinkedDeque<Event>
 
 	/** Fire the given event into the agent context, and do not wait for the termination of the event handlers.
 	 * 

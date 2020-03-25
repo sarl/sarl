@@ -191,7 +191,7 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 		return new ConcurrentLinkedDeque<Event>
 	}
 
-	def fireEventAndWait(^event : Event, gatherEvents : boolean, thrownExceptions : boolean) : Iterable<Event> {
+	def fireEventAndWait(^event : Event, gatherEvents : boolean, thrownExceptions : boolean) : ConcurrentLinkedDeque<Event> {
 		if (getLife(owner).state.blockingEventHandling) {
 			val logger = getLogger
 			if (gatherEvents) {
@@ -211,7 +211,7 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 			}
 			this.eventBus.immediateDispatch(^event, thrownExceptions, logger)
 		}
-		return emptyList
+		return new ConcurrentLinkedDeque<Event>
 	}
 
 	def fireEvent(^event : Event) {
