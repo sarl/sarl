@@ -720,7 +720,7 @@ final class ContextReference implements Comparable<ContextReference>, Cloneable 
 
 	val life : WeakReference<AgentLife>
 
-	val contextInstance : WeakReference<Context>
+	val contextInstance : Context
 
 	var defaultAddress : Address
 
@@ -734,41 +734,41 @@ final class ContextReference implements Comparable<ContextReference>, Cloneable 
 		assert context !== null
 		assert address !== null
 		this.life = new WeakReference(life)
-		this.contextInstance = new WeakReference(context)
+		this.contextInstance = context
 		this.defaultAddress = address
 	}
 
 	override clone : ContextReference {
-		new ContextReference(this.life.get, this.contextInstance.get, this.defaultAddress)
+		new ContextReference(this.life.get, this.contextInstance, this.defaultAddress)
 	}
 
 	override toString : String {
-		var context = this.contextInstance?.get
+		var context = this.contextInstance
 		if(context === null) "[?]" else context.toString
 	}
 
 	override compareTo(o : ContextReference) : int {
 		if(o === null) return Integer::MAX_VALUE
-		return this.contextInstance.get.ID <=> o.contextInstance.get.ID
+		return this.contextInstance.ID <=> o.contextInstance.ID
 	}
 
 	/** Replies the context.
 	 */
 	def getContext : Context {
-		this.contextInstance.get
+		this.contextInstance
 	}
 
 	/** Replies the default space.
 	 */
 	def getDefaultSpace : OpenEventSpace {
-		this.contextInstance.get.defaultSpace
+		this.contextInstance.defaultSpace
 	}
 
 	/** Replies the address of the agent into the default space.
 	 */
 	def getAddressInDefaultSpace : Address {
 		if (this.defaultAddress === null) {
-			this.defaultAddress = this.contextInstance.get.defaultSpace.getAddress(this.life.get.^agent.ID)
+			this.defaultAddress = this.contextInstance.defaultSpace.getAddress(this.life.get.^agent.ID)
 		}
 		this.defaultAddress
 	}
