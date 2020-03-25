@@ -37,6 +37,7 @@ import java.lang.reflect.Constructor
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Provider
+import java.util.concurrent.ConcurrentLinkedDeque
 
 /** 
  * Implementation of a spawning service that is using injection mechanism
@@ -129,7 +130,7 @@ class InjectionBasedLifecycleService extends AbstractLifecycleService {
 			agentClazz : Class<? extends Agent>,
 			parent : UUID,
 			nbAgents : int,
-			skillProviders : Iterable<DynamicSkillProvider>) : (UUID)=>Agent {
+			skillProviders : ConcurrentLinkedDeque<DynamicSkillProvider>) : (UUID)=>Agent {
 			var sproviders = skillProviders.mergeSkillProviders
 
 			assert agentClazz!== null

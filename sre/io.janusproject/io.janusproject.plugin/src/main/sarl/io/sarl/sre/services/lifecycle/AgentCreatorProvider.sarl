@@ -23,6 +23,7 @@ package io.sarl.sre.services.lifecycle
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.DynamicSkillProvider
 import java.util.UUID
+import java.util.concurrent.ConcurrentLinkedDeque
 
 /** 
  * Provider of agent instance creator.
@@ -44,7 +45,7 @@ interface AgentCreatorProvider {
 	 * @return the instance of the creator of agent instances.
 	 */
 	def getAgentCreator(agentClazz : Class<? extends Agent>, parent : UUID, nbAgents : int,
-		skillProviders : Iterable<DynamicSkillProvider>) : (UUID)=>Agent
+		skillProviders : ConcurrentLinkedDeque<DynamicSkillProvider>) : (UUID)=>Agent
 
 }
 

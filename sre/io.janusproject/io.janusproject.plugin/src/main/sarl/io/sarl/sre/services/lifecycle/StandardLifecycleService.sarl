@@ -34,6 +34,7 @@ import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.logging.LoggingService
 import java.lang.reflect.Constructor
 import java.util.UUID
+import java.util.concurrent.ConcurrentLinkedDeque
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -117,7 +118,7 @@ class StandardLifecycleService extends AbstractLifecycleService {
 			agentClazz : Class<? extends Agent>,
 			parent : UUID,
 			nbAgents : int,
-			skillProviders : Iterable<DynamicSkillProvider>) : (UUID)=>Agent {
+			skillProviders : ConcurrentLinkedDeque<DynamicSkillProvider>) : (UUID)=>Agent {
 			val cons = agentClazz.agentConstructor
 			val sproviders = skillProviders.mergeSkillProviders
 			return [

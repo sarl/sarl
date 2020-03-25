@@ -23,6 +23,7 @@ package io.sarl.sre.services.lifecycle
 import io.sarl.lang.core.Capacity
 import io.sarl.lang.core.DynamicSkillProvider
 import io.sarl.lang.core.Skill
+import java.util.concurrent.ConcurrentLinkedDeque
 
 /**
  * Abstract implementation of a factory of agent creator that provides the parent ID and agent ID to the created agent.
@@ -51,7 +52,7 @@ abstract class AbstractCreatorFactory implements AgentCreatorProvider {
 	 * @param providers is the list of skill providers to be integrated into the skill provider.
 	 * @return the skill provider to give to the agents.
 	 */
-	def mergeSkillProviders(providers : Iterable<DynamicSkillProvider>) : DynamicSkillProvider {
+	def mergeSkillProviders(providers : ConcurrentLinkedDeque<DynamicSkillProvider>) : DynamicSkillProvider {
 		if (providers !== null) {
 			var iterator = providers.iterator
 			if (iterator.hasNext) {
@@ -111,7 +112,7 @@ abstract class AbstractCreatorFactory implements AgentCreatorProvider {
 
 		val skillProvider : DynamicSkillProvider
 
-		new (skillProvider : DynamicSkillProvider, providers : Iterable<DynamicSkillProvider>) {
+		new (skillProvider : DynamicSkillProvider, providers : ConcurrentLinkedDeque<DynamicSkillProvider>) {
 			super(providers)
 			this.skillProvider = skillProvider
 		}
