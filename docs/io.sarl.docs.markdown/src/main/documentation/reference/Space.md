@@ -106,15 +106,6 @@ And, the function [:unregisterfct:] fires the event `ParticipantLeft`.
 [:Fact:]{typeof(io.sarl.core.ParticipantLeft)}
 
 
-### Restricted Access Event Space
-
-When an event space needs to control the registration access, it should be a "restricted access event space":
-
-		[:ShowType:](io.sarl.util.RestrictedAccessEventSpace)
-
-The functions given by this type of space permits implementing a space with restricted access, based on the standard Java API.
-
-
 ##	Defining a Space
 
 The definition of a new space must be done with object-oriented language's features.
