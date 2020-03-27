@@ -260,6 +260,9 @@
       <import plugin="org.eclipse.jdt.launching" version="3.16.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.xbase.lib" version="2.20.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtend.lib.macro"/>
+      <import plugin="com.google.guava.failureaccess" version="1.0.1" match="greaterOrEqual"/>
+      <import plugin="java-uuid-generator" version="4.0.1" match="greaterOrEqual"/>
+      <import plugin="com.fasterxml.jackson.core.jackson-annotations" version="2.10.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
