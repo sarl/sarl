@@ -42,6 +42,7 @@ import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.launching.config.ILaunchConfigurationAccessor;
 import io.sarl.eclipse.launching.config.ILaunchConfigurationConfigurator;
+import io.sarl.eclipse.runtime.ISREInstall;
 
 /**
  * The main launch configuration tab for SARL applications.
@@ -55,7 +56,7 @@ import io.sarl.eclipse.launching.config.ILaunchConfigurationConfigurator;
  * @mavenartifactid $ArtifactId$
  * @since 0.7
  */
-public class SARLApplicationMainLaunchConfigurationTab extends JavaMainTab {
+public class SARLApplicationMainLaunchConfigurationTab extends JavaMainTab implements ISreChangeListener {
 
 	private volatile SoftReference<Image> image;
 
@@ -76,6 +77,11 @@ public class SARLApplicationMainLaunchConfigurationTab extends JavaMainTab {
 	/** Construct a main configuration tab for SARL application.
 	 */
 	public SARLApplicationMainLaunchConfigurationTab() {
+		//
+	}
+
+	@Override
+	public void sreChanged(ISREInstall sre) {
 		//
 	}
 

@@ -79,13 +79,6 @@ public interface ILaunchConfigurationAccessor {
 	 */
 	boolean getUseProjectSREFlag(ILaunchConfiguration configuration);
 
-	/** Replies if the SRE should show its logo.
-	 *
-	 * @param configuration the configuration.
-	 * @return <code>true</code> if the logo should be shown.
-	 */
-	boolean getShowLogoFlag(ILaunchConfiguration configuration);
-
 	/** Replies if the SRE should log information messages, or error messages.
 	 *
 	 * @param configuration the configuration.

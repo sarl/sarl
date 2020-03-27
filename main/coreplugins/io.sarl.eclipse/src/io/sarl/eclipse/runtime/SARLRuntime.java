@@ -872,11 +872,11 @@ public final class SARLRuntime {
 		if (manifestFile.canRead()) {
 			try (InputStream manifestStream = new FileInputStream(manifestFile)) {
 				final Manifest manifest = new Manifest(manifestStream);
-				final Attributes sarlSection = manifest.getAttributes(SREConstants.MANIFEST_SECTION_SRE);
+				final Attributes sarlSection = manifest.getAttributes(SREManifestPreferenceConstants.MANIFEST_SECTION_SRE);
 				if (sarlSection == null) {
 					return false;
 				}
-				final String sarlVersion = sarlSection.getValue(SREConstants.MANIFEST_SARL_SPEC_VERSION);
+				final String sarlVersion = sarlSection.getValue(SREManifestPreferenceConstants.MANIFEST_SARL_SPEC_VERSION);
 				if (sarlVersion == null || sarlVersion.isEmpty()) {
 					return false;
 				}
@@ -930,11 +930,11 @@ public final class SARLRuntime {
 			if (manifest == null) {
 				return false;
 			}
-			final Attributes sarlSection = manifest.getAttributes(SREConstants.MANIFEST_SECTION_SRE);
+			final Attributes sarlSection = manifest.getAttributes(SREManifestPreferenceConstants.MANIFEST_SECTION_SRE);
 			if (sarlSection == null) {
 				return false;
 			}
-			final String sarlVersion = sarlSection.getValue(SREConstants.MANIFEST_SARL_SPEC_VERSION);
+			final String sarlVersion = sarlSection.getValue(SREManifestPreferenceConstants.MANIFEST_SARL_SPEC_VERSION);
 			if (sarlVersion == null || sarlVersion.isEmpty()) {
 				return false;
 			}
@@ -984,7 +984,7 @@ public final class SARLRuntime {
 	 * @see #containsPackedBootstrap(File)
 	 */
 	public static boolean containsUnpackedBootstrap(File directory) {
-		final String[] elements = SREConstants.SERVICE_SRE_BOOTSTRAP.split("/"); //$NON-NLS-1$
+		final String[] elements = SREManifestPreferenceConstants.SERVICE_SRE_BOOTSTRAP.split("/"); //$NON-NLS-1$
 		File serviceFile = directory;
 		for (final String element : elements) {
 			serviceFile = new File(serviceFile, element);
@@ -1045,7 +1045,7 @@ public final class SARLRuntime {
 	 */
 	public static boolean containsPackedBootstrap(File jarFile) {
 		try (JarFile jFile = new JarFile(jarFile)) {
-			final ZipEntry jEntry = jFile.getEntry(SREConstants.SERVICE_SRE_BOOTSTRAP);
+			final ZipEntry jEntry = jFile.getEntry(SREManifestPreferenceConstants.SERVICE_SRE_BOOTSTRAP);
 			if (jEntry != null) {
 				try (InputStream is = jFile.getInputStream(jEntry)) {
 					try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
@@ -1141,7 +1141,7 @@ public final class SARLRuntime {
 
 	private static String getDeclaredBootstrapInJar(File jarFile) {
 		try (JarFile jFile = new JarFile(jarFile)) {
-			final ZipEntry jEntry = jFile.getEntry(SREConstants.SERVICE_SRE_BOOTSTRAP);
+			final ZipEntry jEntry = jFile.getEntry(SREManifestPreferenceConstants.SERVICE_SRE_BOOTSTRAP);
 			if (jEntry != null) {
 				try (InputStream is = jFile.getInputStream(jEntry)) {
 					try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
@@ -1162,7 +1162,7 @@ public final class SARLRuntime {
 	}
 
 	private static String getDeclaredBootstrapInFolder(File directory) {
-		final String[] elements = SREConstants.SERVICE_SRE_BOOTSTRAP.split("/"); //$NON-NLS-1$
+		final String[] elements = SREManifestPreferenceConstants.SERVICE_SRE_BOOTSTRAP.split("/"); //$NON-NLS-1$
 		File serviceFile = directory;
 		for (final String element : elements) {
 			serviceFile = new File(serviceFile, element);

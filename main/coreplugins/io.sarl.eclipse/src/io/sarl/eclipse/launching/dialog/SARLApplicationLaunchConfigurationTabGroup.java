@@ -41,10 +41,13 @@ public class SARLApplicationLaunchConfigurationTabGroup extends AbstractSARLLaun
 
 	@Override
 	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
+		final SARLApplicationMainLaunchConfigurationTab mainTab = new SARLApplicationMainLaunchConfigurationTab();
+		final SARLRuntimeEnvironmentTab sreTab = new SARLRuntimeEnvironmentTab(false);
+		sreTab.addSreChangeListener(mainTab);
 		final ILaunchConfigurationTab[] tabs = new ILaunchConfigurationTab[] {
-			new SARLApplicationMainLaunchConfigurationTab(),
+			mainTab,
 			new JavaArgumentsTab(),
-			new SARLRuntimeEnvironmentTab(false),
+			sreTab,
 			getClasspathTab(dialog),
 			new SourceLookupTab(),
 			new EnvironmentTab(),

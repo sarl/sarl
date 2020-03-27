@@ -155,11 +155,10 @@ public interface ILaunchConfigurationConfigurator {
 	/** Change the option flags for the SRE launching.
 	 *
 	 * @param configuration the configuration to change.
-	 * @param showLogo indicates if the logo of the SRE could be shown. If null, the default is used.
 	 * @param showLogInfo indicates if informations are logged or only errors. If null, the default is used.
 	 * @param offline indicates if the SRE is supposed to be run offline. If null, the default is used.
 	 */
-	void setLaunchingFlags(ILaunchConfigurationWorkingCopy configuration, Boolean showLogo, Boolean showLogInfo,
+	void setLaunchingFlags(ILaunchConfigurationWorkingCopy configuration, Boolean showLogInfo,
 			Boolean offline);
 
 	/** Change the name of the project associated to the launch configuration.

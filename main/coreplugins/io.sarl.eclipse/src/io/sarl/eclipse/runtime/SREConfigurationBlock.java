@@ -616,6 +616,7 @@ public class SREConfigurationBlock {
 		SARLRuntime.addSREInstallChangedListener(this.sreListener);
 
 		updateEnableState();
+		firePropertyChange();
 	}
 
 	/** Dispose the block.

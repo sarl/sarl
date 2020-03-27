@@ -98,10 +98,6 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 
 	private String programArguments = Utilities.EMPTY_STRING;
 
-	private String cliLogoOff;
-
-	private String cliLogoOn;
-
 	private String cliShowInfo;
 
 	private String cliHideInfo;
@@ -113,6 +109,8 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 	private String cliBootAgentContextID;
 
 	private String cliSreOffline;
+
+	private String cliSreOnline;
 
 	private String cliNoMoreOption;
 
@@ -207,7 +205,7 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 				final Manifest manifest = jFile.getManifest();
 				//
 				// Main class
-				this.manifestMainClass = manifest.getMainAttributes().getValue(SREConstants.MANIFEST_MAIN_CLASS);
+				this.manifestMainClass = manifest.getMainAttributes().getValue(SREManifestPreferenceConstants.MANIFEST_MAIN_CLASS);
 				if (Strings.isNullOrEmpty(this.manifestMainClass)) {
 					throw new SREException(MessageFormat.format(Messages.StandardSREInstall_0, getId()));
 				}
@@ -215,13 +213,13 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 					setMainClass(this.manifestMainClass);
 				}
 				// Get SARL section:
-				final Attributes sarlSection = manifest.getAttributes(SREConstants.MANIFEST_SECTION_SRE);
+				final Attributes sarlSection = manifest.getAttributes(SREManifestPreferenceConstants.MANIFEST_SECTION_SRE);
 				if (sarlSection == null) {
 					throw new SREException(Messages.StandardSREInstall_1);
 				}
 				//
 				// SARL version
-				final String sarlVersion = sarlSection.getValue(SREConstants.MANIFEST_SARL_SPEC_VERSION);
+				final String sarlVersion = sarlSection.getValue(SREManifestPreferenceConstants.MANIFEST_SARL_SPEC_VERSION);
 				String minVersion = null;
 				String maxVersion = null;
 				if (!Strings.isNullOrEmpty(sarlVersion)) {
@@ -243,13 +241,13 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 				}
 				//
 				// SRE Name
-				this.manifestName = Strings.nullToEmpty(sarlSection.getValue(SREConstants.MANIFEST_SRE_NAME));
+				this.manifestName = Strings.nullToEmpty(sarlSection.getValue(SREManifestPreferenceConstants.MANIFEST_SRE_NAME));
 				if (forceSettings || Strings.isNullOrEmpty(getNameNoDefault())) {
 					setName(this.manifestName);
 				}
 				//
 				// VM arguments
-				final String vmArgs = Strings.nullToEmpty(sarlSection.getValue(SREConstants.MANIFEST_VM_ARGUMENTS));
+				final String vmArgs = Strings.nullToEmpty(sarlSection.getValue(SREManifestPreferenceConstants.MANIFEST_VM_ARGUMENTS));
 				if (!this.vmArguments.equals(vmArgs)) {
 					final PropertyChangeEvent event = new PropertyChangeEvent(this,
 							ISREInstallChangedListener.PROPERTY_VM_ARGUMENTS, this.vmArguments, Strings.nullToEmpty(vmArgs));
@@ -264,19 +262,18 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 				//
 				// Specific CLI Options
 				this.optionBuffer = null;
-				this.cliLogoOn = sarlSection.getValue(SREConstants.MANIFEST_CLI_SHOW_LOGO);
-				this.cliLogoOff = sarlSection.getValue(SREConstants.MANIFEST_CLI_HIDE_LOGO);
-				this.cliShowInfo = sarlSection.getValue(SREConstants.MANIFEST_CLI_SHOW_INFO);
-				this.cliHideInfo = sarlSection.getValue(SREConstants.MANIFEST_CLI_HIDE_INFO);
-				this.cliDefaultContextID = sarlSection.getValue(SREConstants.MANIFEST_CLI_DEFAULT_CONTEXT_ID);
-				this.cliRandomContextID = sarlSection.getValue(SREConstants.MANIFEST_CLI_RANDOM_CONTEXT_ID);
-				this.cliBootAgentContextID = sarlSection.getValue(SREConstants.MANIFEST_CLI_BOOT_AGENT_CONTEXT_ID);
-				this.cliSreOffline = sarlSection.getValue(SREConstants.MANIFEST_CLI_SRE_OFFLINE);
-				this.cliNoMoreOption = sarlSection.getValue(SREConstants.MANIFEST_CLI_NO_MORE_OPTION);
-				this.cliEmbedded = sarlSection.getValue(SREConstants.MANIFEST_CLI_EMBEDDED);
+				this.cliShowInfo = sarlSection.getValue(SRECommandLineOptions.CLI_SHOW_INFO);
+				this.cliHideInfo = sarlSection.getValue(SRECommandLineOptions.CLI_HIDE_INFO);
+				this.cliDefaultContextID = sarlSection.getValue(SRECommandLineOptions.CLI_DEFAULT_CONTEXT_ID);
+				this.cliRandomContextID = sarlSection.getValue(SRECommandLineOptions.CLI_RANDOM_CONTEXT_ID);
+				this.cliBootAgentContextID = sarlSection.getValue(SRECommandLineOptions.CLI_BOOT_AGENT_CONTEXT_ID);
+				this.cliSreOffline = sarlSection.getValue(SRECommandLineOptions.CLI_SRE_OFFLINE);
+				this.cliSreOnline = sarlSection.getValue(SRECommandLineOptions.CLI_SRE_ONLINE);
+				this.cliNoMoreOption = sarlSection.getValue(SRECommandLineOptions.CLI_NO_MORE_OPTION);
+				this.cliEmbedded = sarlSection.getValue(SRECommandLineOptions.CLI_EMBEDDED);
 				//
 				// Program arguments
-				final String programArgs = Strings.nullToEmpty(sarlSection.getValue(SREConstants.MANIFEST_PROGRAM_ARGUMENTS));
+				final String programArgs = Strings.nullToEmpty(sarlSection.getValue(SREManifestPreferenceConstants.MANIFEST_PROGRAM_ARGUMENTS));
 				if (!this.programArguments.equals(programArgs)) {
 					final PropertyChangeEvent event = new PropertyChangeEvent(this,
 							ISREInstallChangedListener.PROPERTY_PROGRAM_ARGUMENTS, this.programArguments, programArgs);
@@ -299,7 +296,7 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 					rtcpEntry.setClasspathProperty(IRuntimeClasspathEntry.USER_CLASSES);
 					classPath.add(rtcpEntry);
 					//
-					final String classPathStr = manifest.getMainAttributes().getValue(SREConstants.MANIFEST_CLASS_PATH);
+					final String classPathStr = manifest.getMainAttributes().getValue(SREManifestPreferenceConstants.MANIFEST_CLASS_PATH);
 					final IPath rootPath = this.jarFile.removeLastSegments(1);
 					if (!Strings.isNullOrEmpty(classPathStr)) {
 						for (final String cpElement : classPathStr.split(Pattern.quote(":"))) { //$NON-NLS-1$
@@ -318,7 +315,7 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 				}
 				//
 				// Bootstrap
-				final ZipEntry jEntry = jFile.getEntry(SREConstants.SERVICE_SRE_BOOTSTRAP);
+				final ZipEntry jEntry = jFile.getEntry(SREManifestPreferenceConstants.SERVICE_SRE_BOOTSTRAP);
 				String bootstrap = null;
 				if (jEntry != null) {
 					try (InputStream is = jFile.getInputStream(jEntry)) {
@@ -393,31 +390,31 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 			resolveDirtyFields(true);
 		}
 		final IPath path = getJarFile();
-		element.setAttribute(SREConstants.XML_LIBRARY_PATH, path.toPortableString());
+		element.setAttribute(SREXmlPreferenceConstants.XML_LIBRARY_PATH, path.toPortableString());
 		final String name = Strings.nullToEmpty(getName());
 		if (!name.equals(this.manifestName)) {
-			element.setAttribute(SREConstants.XML_SRE_NAME, name);
+			element.setAttribute(SREXmlPreferenceConstants.XML_SRE_NAME, name);
 		}
 		final String mainClass = Strings.nullToEmpty(getMainClass());
 		if (!mainClass.equals(this.manifestMainClass)) {
-			element.setAttribute(SREConstants.XML_MAIN_CLASS, mainClass);
+			element.setAttribute(SREXmlPreferenceConstants.XML_MAIN_CLASS, mainClass);
 		}
 		final String bootstrap = Strings.nullToEmpty(getBootstrap());
 		if (!Strings.isNullOrEmpty(bootstrap)) {
-			element.setAttribute(SREConstants.XML_BOOTSTRAP, bootstrap);
+			element.setAttribute(SREXmlPreferenceConstants.XML_BOOTSTRAP, bootstrap);
 		} else {
-			element.removeAttribute(SREConstants.XML_BOOTSTRAP);
+			element.removeAttribute(SREXmlPreferenceConstants.XML_BOOTSTRAP);
 		}
 		final List<IRuntimeClasspathEntry> libraries = getClassPathEntries();
 		if (libraries.size() != 1 || !libraries.get(0).getClasspathEntry().getPath().equals(this.jarFile)) {
 			final IPath rootPath = path.removeLastSegments(1);
 			for (final IRuntimeClasspathEntry location : libraries) {
-				final Element libraryNode = document.createElement(SREConstants.XML_LIBRARY_LOCATION);
-				libraryNode.setAttribute(SREConstants.XML_SYSTEM_LIBRARY_PATH,
+				final Element libraryNode = document.createElement(SREXmlPreferenceConstants.XML_LIBRARY_LOCATION);
+				libraryNode.setAttribute(SREXmlPreferenceConstants.XML_SYSTEM_LIBRARY_PATH,
 						makeRelativePath(location.getPath(), path, rootPath));
-				libraryNode.setAttribute(SREConstants.XML_PACKAGE_ROOT_PATH,
+				libraryNode.setAttribute(SREXmlPreferenceConstants.XML_PACKAGE_ROOT_PATH,
 						makeRelativePath(location.getSourceAttachmentRootPath(), path, rootPath));
-				libraryNode.setAttribute(SREConstants.XML_SOURCE_PATH,
+				libraryNode.setAttribute(SREXmlPreferenceConstants.XML_SOURCE_PATH,
 						makeRelativePath(location.getSourceAttachmentPath(), path, rootPath));
 				/* No javadoc path accessible from ClasspathEntry
 				final URL javadoc = location.getJavadocLocation();
@@ -434,21 +431,21 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 	@SuppressWarnings("checkstyle:npathcomplexity")
 	public void setFromXML(Element element) throws IOException {
 		final IPath path = parsePath(
-				element.getAttribute(SREConstants.XML_LIBRARY_PATH), null, null);
+				element.getAttribute(SREXmlPreferenceConstants.XML_LIBRARY_PATH), null, null);
 		try {
 			if (path != null) {
 				setJarFile(path);
 
-				final String name = element.getAttribute(SREConstants.XML_SRE_NAME);
+				final String name = element.getAttribute(SREXmlPreferenceConstants.XML_SRE_NAME);
 				if (!Strings.isNullOrEmpty(name)) {
 					setName(name);
 				}
-				final String mainClass = element.getAttribute(SREConstants.XML_MAIN_CLASS);
+				final String mainClass = element.getAttribute(SREXmlPreferenceConstants.XML_MAIN_CLASS);
 				if (!Strings.isNullOrEmpty(mainClass)) {
 					setMainClass(mainClass);
 				}
 
-				final String bootstrap = element.getAttribute(SREConstants.XML_BOOTSTRAP);
+				final String bootstrap = element.getAttribute(SREXmlPreferenceConstants.XML_BOOTSTRAP);
 				if (!Strings.isNullOrEmpty(bootstrap)) {
 					setBootstrap(bootstrap);
 				}
@@ -458,19 +455,19 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 				final IPath rootPath = path.removeLastSegments(1);
 				for (int i = 0; i < children.getLength(); ++i) {
 					final Node node = children.item(i);
-					if (node instanceof Element && SREConstants.XML_LIBRARY_LOCATION.equalsIgnoreCase(node.getNodeName())) {
+					if (node instanceof Element && SREXmlPreferenceConstants.XML_LIBRARY_LOCATION.equalsIgnoreCase(node.getNodeName())) {
 						final Element libraryNode = (Element) node;
 						final IPath systemLibraryPath = parsePath(
-								libraryNode.getAttribute(SREConstants.XML_SYSTEM_LIBRARY_PATH), null, rootPath);
+								libraryNode.getAttribute(SREXmlPreferenceConstants.XML_SYSTEM_LIBRARY_PATH), null, rootPath);
 						if (systemLibraryPath != null) {
 							final IPath packageRootPath = parsePath(
-									libraryNode.getAttribute(SREConstants.XML_PACKAGE_ROOT_PATH),
+									libraryNode.getAttribute(SREXmlPreferenceConstants.XML_PACKAGE_ROOT_PATH),
 									Path.EMPTY, rootPath);
 							final IPath sourcePath = parsePath(
-									libraryNode.getAttribute(SREConstants.XML_SOURCE_PATH), Path.EMPTY, rootPath);
+									libraryNode.getAttribute(SREXmlPreferenceConstants.XML_SOURCE_PATH), Path.EMPTY, rootPath);
 							URL javadoc = null;
 							try {
-								final String urlTxt = libraryNode.getAttribute(SREConstants.XML_JAVADOC_PATH);
+								final String urlTxt = libraryNode.getAttribute(SREXmlPreferenceConstants.XML_JAVADOC_PATH);
 								javadoc = new URL(urlTxt);
 							} catch (Throwable exception) {
 								//
@@ -549,16 +546,15 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 		Map<String, String> options = (this.optionBuffer == null) ? null : this.optionBuffer.get();
 		if (options == null) {
 			options = Maps.newHashMap();
-			putIfNotempty(options, SREConstants.MANIFEST_CLI_SHOW_LOGO, this.cliLogoOn);
-			putIfNotempty(options, SREConstants.MANIFEST_CLI_HIDE_LOGO, this.cliLogoOff);
-			putIfNotempty(options, SREConstants.MANIFEST_CLI_SHOW_INFO, this.cliShowInfo);
-			putIfNotempty(options, SREConstants.MANIFEST_CLI_HIDE_INFO, this.cliHideInfo);
-			putIfNotempty(options, SREConstants.MANIFEST_CLI_DEFAULT_CONTEXT_ID, this.cliDefaultContextID);
-			putIfNotempty(options, SREConstants.MANIFEST_CLI_RANDOM_CONTEXT_ID, this.cliRandomContextID);
-			putIfNotempty(options, SREConstants.MANIFEST_CLI_BOOT_AGENT_CONTEXT_ID, this.cliBootAgentContextID);
-			putIfNotempty(options, SREConstants.MANIFEST_CLI_SRE_OFFLINE, this.cliSreOffline);
-			putIfNotempty(options, SREConstants.MANIFEST_CLI_NO_MORE_OPTION, this.cliNoMoreOption);
-			putIfNotempty(options, SREConstants.MANIFEST_CLI_EMBEDDED, this.cliEmbedded);
+			putIfNotempty(options, SRECommandLineOptions.CLI_SHOW_INFO, this.cliShowInfo);
+			putIfNotempty(options, SRECommandLineOptions.CLI_HIDE_INFO, this.cliHideInfo);
+			putIfNotempty(options, SRECommandLineOptions.CLI_DEFAULT_CONTEXT_ID, this.cliDefaultContextID);
+			putIfNotempty(options, SRECommandLineOptions.CLI_RANDOM_CONTEXT_ID, this.cliRandomContextID);
+			putIfNotempty(options, SRECommandLineOptions.CLI_BOOT_AGENT_CONTEXT_ID, this.cliBootAgentContextID);
+			putIfNotempty(options, SRECommandLineOptions.CLI_SRE_OFFLINE, this.cliSreOffline);
+			putIfNotempty(options, SRECommandLineOptions.CLI_SRE_ONLINE, this.cliSreOnline);
+			putIfNotempty(options, SRECommandLineOptions.CLI_NO_MORE_OPTION, this.cliNoMoreOption);
+			putIfNotempty(options, SRECommandLineOptions.CLI_EMBEDDED, this.cliEmbedded);
 			this.optionBuffer = new SoftReference<>(options);
 		}
 		return Collections.unmodifiableMap(options);

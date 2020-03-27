@@ -35,7 +35,7 @@ import io.sarl.bootstrap.SRE;
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.launching.config.RootContextIdentifierType;
 import io.sarl.eclipse.runtime.ISREInstall;
-import io.sarl.eclipse.runtime.SREConstants;
+import io.sarl.eclipse.runtime.SRECommandLineOptions;
 
 /**
  * Implementation of an eclipse LauncConfigurationDelegate to launch SARL agent.
@@ -80,36 +80,32 @@ public class SARLAgentLaunchConfigurationDelegate extends AbstractSARLLaunchConf
 		String options = null;
 
 		if (getConfigurationAccessor().isEmbeddedSRE(configuration)) {
-			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_EMBEDDED));
-		}
-
-		if (getConfigurationAccessor().getShowLogoFlag(configuration)) {
-			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_SHOW_LOGO));
-		} else {
-			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_HIDE_LOGO));
+			options = join(options, cliOptions.get(SRECommandLineOptions.CLI_EMBEDDED));
 		}
 
 		if (getConfigurationAccessor().getShowLogInfoFlag(configuration)) {
-			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_SHOW_INFO));
+			options = join(options, cliOptions.get(SRECommandLineOptions.CLI_SHOW_INFO));
 		} else {
-			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_HIDE_INFO));
+			options = join(options, cliOptions.get(SRECommandLineOptions.CLI_HIDE_INFO));
 		}
 
 		if (getConfigurationAccessor().getOfflineFlag(configuration)) {
-			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_SRE_OFFLINE));
+			options = join(options, cliOptions.get(SRECommandLineOptions.CLI_SRE_OFFLINE));
+		} else {
+			options = join(options, cliOptions.get(SRECommandLineOptions.CLI_SRE_ONLINE));
 		}
 
 		final RootContextIdentifierType type = getConfigurationAccessor().getDefaultContextIdentifier(configuration);
 		switch (type) {
 		case RANDOM_CONTEXT_ID:
-			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_RANDOM_CONTEXT_ID));
+			options = join(options, cliOptions.get(SRECommandLineOptions.CLI_RANDOM_CONTEXT_ID));
 			break;
 		case BOOT_AGENT_CONTEXT_ID:
-			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_BOOT_AGENT_CONTEXT_ID));
+			options = join(options, cliOptions.get(SRECommandLineOptions.CLI_BOOT_AGENT_CONTEXT_ID));
 			break;
 		case DEFAULT_CONTEXT_ID:
 		default:
-			options = join(options, cliOptions.get(SREConstants.MANIFEST_CLI_DEFAULT_CONTEXT_ID));
+			options = join(options, cliOptions.get(SRECommandLineOptions.CLI_DEFAULT_CONTEXT_ID));
 			break;
 		}
 
@@ -117,7 +113,7 @@ public class SARLAgentLaunchConfigurationDelegate extends AbstractSARLLaunchConf
 
 		// Add the command line option that mark the difference between the SRE's options and
 		// the arguments for the boot agent
-		final String noMoreOption = cliOptions.get(SREConstants.MANIFEST_CLI_NO_MORE_OPTION);
+		final String noMoreOption = cliOptions.get(SRECommandLineOptions.CLI_NO_MORE_OPTION);
 
 		// Make the complete command line
 		return join(sreArgs1, sreArgs2, options, bootAgent, noMoreOption, standardProgramArguments);
