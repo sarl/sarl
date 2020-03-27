@@ -718,7 +718,7 @@ final class AgentLife {
  */
 final class ContextReference implements Comparable<ContextReference>, Cloneable {
 
-	val life : WeakReference<AgentLife>
+	val life : AgentLife
 
 	val contextInstance : Context
 
@@ -733,13 +733,13 @@ final class ContextReference implements Comparable<ContextReference>, Cloneable 
 		assert life !== null
 		assert context !== null
 		assert address !== null
-		this.life = new WeakReference(life)
+		this.life = life
 		this.contextInstance = context
 		this.defaultAddress = address
 	}
 
 	override clone : ContextReference {
-		new ContextReference(this.life.get, this.contextInstance, this.defaultAddress)
+		new ContextReference(this.life, this.contextInstance, this.defaultAddress)
 	}
 
 	override toString : String {
@@ -768,8 +768,9 @@ final class ContextReference implements Comparable<ContextReference>, Cloneable 
 	 */
 	def getAddressInDefaultSpace : Address {
 		if (this.defaultAddress === null) {
-			this.defaultAddress = this.contextInstance.defaultSpace.getAddress(this.life.get.^agent.ID)
+			this.defaultAddress = this.contextInstance.defaultSpace.getAddress(this.life.^agent.ID)
 		}
+		assert(this.defaultAddress !== null)
 		this.defaultAddress
 	}
 
