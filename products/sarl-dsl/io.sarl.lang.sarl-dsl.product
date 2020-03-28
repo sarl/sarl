@@ -101,7 +101,6 @@
       <feature id="org.eclipse.emf.codegen.ui.source" installMode="root"/>
       <feature id="org.eclipse.emf.mwe2.language.sdk" installMode="root"/>
       <feature id="org.eclipse.lsp4j.sdk" installMode="root"/>
-      <feature id="org.eclipse.m2e.logback.feature" installMode="root"/>
       <feature id="org.eclipse.emf.codegen" installMode="root"/>
       <feature id="org.eclipse.xtext.xtext.ui.graph" installMode="root"/>
       <feature id="org.eclipse.equinox.p2.core.feature" installMode="root"/>

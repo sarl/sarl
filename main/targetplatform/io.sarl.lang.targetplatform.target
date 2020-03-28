@@ -62,7 +62,6 @@
 			<unit id="org.eclipse.jdt.source.feature.group" version="3.18.200.v20191210-0610"/>
 			<unit id="org.eclipse.lsp4j.sdk.feature.group" version="0.8.1.v20190925-0747"/>
 			<unit id="org.eclipse.m2e.feature.feature.group" version="1.14.0.20191209-1925"/>
-			<unit id="org.eclipse.m2e.logback.feature.feature.group" version="1.14.0.20191209-1925"/>
 			<unit id="org.eclipse.oomph.setup.feature.group" version="1.15.0.v20191209-1132"/>
 			<unit id="org.eclipse.pde.feature.group" version="3.14.200.v20191210-0610"/>
 			<unit id="org.eclipse.pde.source.feature.group" version="3.14.200.v20191210-0610"/>

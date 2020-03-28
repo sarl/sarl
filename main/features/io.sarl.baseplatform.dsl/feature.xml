@@ -274,10 +274,6 @@ for the SARL DSL Environment
          version="0.0.0"/>
 
    <includes
-         id="org.eclipse.m2e.logback.feature"
-         version="0.0.0"/>
-
-   <includes
          id="org.sonatype.m2e.mavenarchiver.feature"
          version="0.0.0"/>
 
@@ -423,28 +419,6 @@ for the SARL DSL Environment
          download-size="0"
          install-size="0"
          version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="ch.qos.logback.classic"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="ch.qos.logback.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="ch.qos.logback.slf4j"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
          unpack="false"/>
 
    <plugin
