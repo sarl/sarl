@@ -159,6 +159,7 @@
       <feature id="org.jboss.tools.maven.apt.feature" installMode="root"/>
       <feature id="org.eclipse.emf.databinding" installMode="root"/>
       <feature id="org.eclipse.oomph.setup.core" installMode="root"/>
+      <feature id="org.eclipse.m2e.logback.feature" installMode="root"/>
    </features>
 
    <configurations>
