@@ -279,9 +279,12 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 					outputFolder, testOutputFolder);
 
 			// SARL specific configuration
+			final IFolder testGenerationFolderFolder = testGenerationFolder.get();
+			final IPath testGenerationFolderPath = testGenerationFolderFolder == null ? null
+					: testGenerationFolderFolder.getProjectRelativePath();
 			SARLPreferences.setSpecificSARLConfigurationFor(project,
 					generationFolder.get().getProjectRelativePath(),
-					testGenerationFolder.get().getProjectRelativePath());
+					testGenerationFolderPath);
 			subMonitor.worked(1);
 
 			// Create the Java project
@@ -338,27 +341,50 @@ public class SARLProjectConfigurator implements ProjectConfigurator, IProjectUnc
 		final IFolder testOutputFolder = ensureOutputFolder(project,
 				SARLConfig.FOLDER_TEST_BIN, true, createFolders, monitor.newChild(1));
 		if (sourcePaths != null) {
-			sourcePaths.set(new IFolder[] {sourceSarlFolder, sourceJavaFolder, resourcesFolder});
+			assert sourceSarlFolder != null : "sourceSarlFolder must not be null";
+			if (sourceJavaFolder != null) {
+				if (resourcesFolder != null) {
+					sourcePaths.set(new IFolder[] {sourceSarlFolder, sourceJavaFolder, resourcesFolder});
+				} else {
+					sourcePaths.set(new IFolder[] {sourceSarlFolder, sourceJavaFolder});
+				}
+			} else if (resourcesFolder != null) {
+				sourcePaths.set(new IFolder[] {sourceSarlFolder, resourcesFolder});
+			} else {
+				sourcePaths.set(new IFolder[] {sourceSarlFolder});
+			}
 		}
 		if (testSourcePaths != null) {
-			testSourcePaths.set(new IFolder[] {testSourceSarlFolder});
+			if (testSourceSarlFolder != null) {
+				testSourcePaths.set(new IFolder[] {testSourceSarlFolder});
+			} else {
+				testSourcePaths.set(new IFolder[] {});
+			}
 		}
 		if (generationPaths != null) {
+			assert generationFolder != null : "generationFolder must not be null";
 			generationPaths.set(new IFolder[] {generationFolder});
 		}
 		if (testGenerationPaths != null) {
-			testGenerationPaths.set(new IFolder[] {testGenerationFolder});
+			if (testGenerationFolder != null) {
+				testGenerationPaths.set(new IFolder[] {testGenerationFolder});
+			} else {
+				testGenerationPaths.set(new IFolder[] {});
+			}
 		}
 		if (standardGenerationFolder != null) {
+			assert generationFolder != null : "generationFolder must not be null";
 			standardGenerationFolder.set(generationFolder);
 		}
-		if (testingGenerationFolder != null) {
+		if (testingGenerationFolder != null && testGenerationFolder != null) {
 			testingGenerationFolder.set(testGenerationFolder);
 		}
 		if (classOutput != null) {
+			assert outputFolder != null : "outputFolder must not be null";
 			classOutput.set(outputFolder);
 		}
 		if (testClassOutput != null) {
+			assert testOutputFolder != null : "testOutputFolder must not be null";
 			testClassOutput.set(testOutputFolder);
 		}
 	}

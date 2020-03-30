@@ -290,37 +290,40 @@ public class NewSarlProjectWizard extends NewElementWizard implements IExecutabl
 	 * @param compilerCompliance the Java version that is supported by the project.
 	 */
 	protected void createDefaultMavenPom(IJavaProject project, String compilerCompliance) {
-		// Get the template resource.
-		final URL templateUrl = getPomTemplateLocation();
-		if (templateUrl != null) {
-			final String compliance = Strings.isNullOrEmpty(compilerCompliance)
-					? SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH : compilerCompliance;
-			final String groupId = getDefaultMavenGroupId();
-			// Read the template and do string replacement.
-			final StringBuilder content = new StringBuilder();
-			try (BufferedReader reader = new BufferedReader(new InputStreamReader(templateUrl.openStream()))) {
-				String line = reader.readLine();
-				while (line != null) {
-					line = line.replaceAll(Pattern.quote("@GROUP_ID@"), groupId); //$NON-NLS-1$
-					line = line.replaceAll(Pattern.quote("@PROJECT_NAME@"), project.getElementName()); //$NON-NLS-1$
-					line = line.replaceAll(Pattern.quote("@PROJECT_VERSION@"), DEFAULT_MAVEN_PROJECT_VERSION); //$NON-NLS-1$
-					line = line.replaceAll(Pattern.quote("@SARL_VERSION@"), SARLVersion.SARL_RELEASE_VERSION_MAVEN); //$NON-NLS-1$
-					line = line.replaceAll(Pattern.quote("@JAVA_VERSION@"), compliance); //$NON-NLS-1$
-					line = line.replaceAll(Pattern.quote("@FILE_ENCODING@"), Charset.defaultCharset().displayName()); //$NON-NLS-1$
-					content.append(line).append("\n"); //$NON-NLS-1$
-					line = reader.readLine();
+		final IFile pomFile = project.getProject().getFile("pom.xml"); //$NON-NLS-1$
+		// Do not create the pom if already present.
+		if (!pomFile.exists()) {
+			// Get the template resource.
+			final URL templateUrl = getPomTemplateLocation();
+			if (templateUrl != null) {
+				final String compliance = Strings.isNullOrEmpty(compilerCompliance)
+						? SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH : compilerCompliance;
+				final String groupId = getDefaultMavenGroupId();
+				// Read the template and do string replacement.
+				final StringBuilder content = new StringBuilder();
+				try (BufferedReader reader = new BufferedReader(new InputStreamReader(templateUrl.openStream()))) {
+					String line = reader.readLine();
+					while (line != null) {
+						line = line.replaceAll(Pattern.quote("@GROUP_ID@"), groupId); //$NON-NLS-1$
+						line = line.replaceAll(Pattern.quote("@PROJECT_NAME@"), project.getElementName()); //$NON-NLS-1$
+						line = line.replaceAll(Pattern.quote("@PROJECT_VERSION@"), DEFAULT_MAVEN_PROJECT_VERSION); //$NON-NLS-1$
+						line = line.replaceAll(Pattern.quote("@SARL_VERSION@"), SARLVersion.SARL_RELEASE_VERSION_MAVEN); //$NON-NLS-1$
+						line = line.replaceAll(Pattern.quote("@JAVA_VERSION@"), compliance); //$NON-NLS-1$
+						line = line.replaceAll(Pattern.quote("@FILE_ENCODING@"), Charset.defaultCharset().displayName()); //$NON-NLS-1$
+						content.append(line).append("\n"); //$NON-NLS-1$
+						line = reader.readLine();
+					}
+				} catch (IOException exception) {
+					throw new RuntimeIOException(exception);
 				}
-			} catch (IOException exception) {
-				throw new RuntimeIOException(exception);
-			}
-			// Write the pom
-			final IFile pomFile = project.getProject().getFile("pom.xml"); //$NON-NLS-1$
-			try (StringInputStream is = new StringInputStream(content.toString())) {
-				pomFile.create(is, true, new NullProgressMonitor());
-			} catch (CoreException exception) {
-				throw new RuntimeException(exception);
-			} catch (IOException exception) {
-				throw new RuntimeIOException(exception);
+				// Write the pom
+				try (StringInputStream is = new StringInputStream(content.toString())) {
+					pomFile.create(is, true, new NullProgressMonitor());
+				} catch (CoreException exception) {
+					throw new RuntimeException(exception);
+				} catch (IOException exception) {
+					throw new RuntimeIOException(exception);
+				}
 			}
 		}
 	}
