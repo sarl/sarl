@@ -23,7 +23,11 @@ package io.sarl.eclipse.wizards.sarlapp;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+
 import javax.inject.Inject;
 
 import org.eclipse.core.resources.IProject;
@@ -71,6 +75,8 @@ public class ExportSarlApplicationPage extends FixedFatJarExportPage  {
 	@Inject
 	private ILaunchConfigurationAccessor configAccessor;
 
+	private final Set<String> selectedJavaProjects;
+
 	/** Construct a wizard page for exporting a SARL application within a Jar file.
 	 *
 	 * @param jarPackage description of the package.
@@ -78,8 +84,37 @@ public class ExportSarlApplicationPage extends FixedFatJarExportPage  {
 	 */
 	public ExportSarlApplicationPage(JarPackageData jarPackage, IStructuredSelection selection) {
 		super(jarPackage, selection);
+		this.selectedJavaProjects = getSelectedJavaProjects(selection);
 		setTitle(Messages.ExportSarlApplicationPage_0);
 		setDescription(Messages.ExportSarlApplicationPage_1);
+	}
+
+	/** Extract the names of the selected projects in order to use them for filtering.
+	 *
+	 * @param selection the current Eclipse selection.
+	 * @return the names of the projects.
+	 * @since 0.11
+	 */
+	private static Set<String> getSelectedJavaProjects(IStructuredSelection selection) {
+		final Set<String> selectedProjects = new HashSet<>();
+		final Iterator<?> iter = selection.iterator();
+		while (iter.hasNext()) {
+			final Object selectedElement= iter.next();
+			if (selectedElement instanceof Iterable<?>) {
+				final Iterator<?> subiter = ((Iterable<?>) selectedElement).iterator();
+				while (subiter.hasNext()) {
+					final Object selectedSubElement = subiter.next();
+					if (selectedSubElement instanceof IJavaProject) {
+						final IJavaProject javaProject = (IJavaProject) selectedSubElement;
+						selectedProjects.add(javaProject.getElementName());
+					}
+				}
+			} else if (selectedElement instanceof IJavaProject) {
+				final IJavaProject javaProject = (IJavaProject) selectedElement;
+				selectedProjects.add(javaProject.getElementName());
+			}
+		}
+		return selectedProjects;
 	}
 
 	@Override
@@ -90,9 +125,9 @@ public class ExportSarlApplicationPage extends FixedFatJarExportPage  {
 			final ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
 			ILaunchConfigurationType type = manager.getLaunchConfigurationType(
 					LaunchConfigurationConstants.ID_AGENT_LAUNCH_CONFIGURATION);
-			getLaunchConfiguration(result, type, manager);
+			getLaunchConfiguration(result, type, manager, this.selectedJavaProjects);
 			type = manager.getLaunchConfigurationType(LaunchConfigurationConstants.ID_APPLICATION_LAUNCH_CONFIGURATION);
-			getLaunchConfiguration(result, type, manager);
+			getLaunchConfiguration(result, type, manager, this.selectedJavaProjects);
 		} catch (CoreException e) {
 			JavaPlugin.log(e);
 		}
@@ -101,13 +136,15 @@ public class ExportSarlApplicationPage extends FixedFatJarExportPage  {
 	}
 
 	private static void getLaunchConfiguration(List<ExistingLaunchConfigurationElement> result, ILaunchConfigurationType type,
-			ILaunchManager manager) throws CoreException {
+			ILaunchManager manager, Set<String> selectedProjects) throws CoreException {
 		final ILaunchConfiguration[] launchconfigs = manager.getLaunchConfigurations(type);
 		for (int i = 0; i < launchconfigs.length; ++i) {
 			final ILaunchConfiguration launchconfig = launchconfigs[i];
 			if (!launchconfig.getAttribute(IDebugUIConstants.ATTR_PRIVATE, false)) {
 				final String projectName = launchconfig.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, ""); //$NON-NLS-1$
-				result.add(new ExistingLaunchConfigurationElement(launchconfig, projectName));
+				if (selectedProjects.isEmpty() || selectedProjects.contains(projectName)) {
+					result.add(new ExistingLaunchConfigurationElement(launchconfig, projectName));
+				}
 			}
 		}
 	}
