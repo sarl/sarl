@@ -100,14 +100,18 @@ public final class SARLPreferences {
 	/** Configure the given project for using a specific configuration
 	 * related to SARL.
 	 *
-	 * @param project the project.
-	 * @param outputPath the path where SARL compiler is generating the Java code.
-	 * @param testOutputPath the path where SARL compiler is generating the Java code for testing.
+	 * @param project the project; never {@code null}.
+	 * @param outputPath the path where SARL compiler is generating the Java code; may be {@code null}
+	 *      if {@code testOutputPath} is not {@code null}.
+	 * @param testOutputPath the path where SARL compiler is generating the Java code for testing; may be {@code null}
+	 *      if {@code outputPath} is not {@code null}.
 	 * @since 0.11
 	 */
 	public static void setSpecificSARLConfigurationFor(
 			IProject project,
 			IPath outputPath, IPath testOutputPath) {
+		assert project != null;
+
 		final IPreferenceStore preferenceStore = getSARLPreferencesFor(project);
 		// Force to use a specific configuration for the SARL
 		preferenceStore.setValue(IS_PROJECT_SPECIFIC, true);
@@ -176,14 +180,15 @@ public final class SARLPreferences {
 	 * @return the output path for SARL compiler if the project has a specific configuration,
 	 *     otherwise {@code null}.
 	 */
-	public static IPath getSARLOutputPathFor(
-			IProject project) {
+	public static IPath getSARLOutputPathFor(IProject project) {
 		assert project != null;
 		final IPreferenceStore preferenceStore = getSARLPreferencesFor(project);
 		if (preferenceStore.getBoolean(IS_PROJECT_SPECIFIC)) {
-			String key;
-			for (final OutputConfiguration projectConfiguration : getXtextConfigurationsFor(project)) {
-				key = BuilderPreferenceAccess.getKey(
+			final OutputConfiguration projectConfiguration = Iterables.find(
+					getXtextConfigurationsFor(project),
+					it -> Objects.equals(it.getName(), IFileSystemAccess.DEFAULT_OUTPUT));
+			if (projectConfiguration != null) {
+				final String key = BuilderPreferenceAccess.getKey(
 						projectConfiguration,
 						EclipseOutputConfigurationProvider.OUTPUT_DIRECTORY);
 				final String path = preferenceStore.getString(key);
