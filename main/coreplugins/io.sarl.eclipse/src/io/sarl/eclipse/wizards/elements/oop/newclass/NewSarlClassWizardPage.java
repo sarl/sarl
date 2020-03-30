@@ -21,6 +21,7 @@
 
 package io.sarl.eclipse.wizards.elements.oop.newclass;
 
+import com.google.common.base.Strings;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.SubMonitor;
@@ -84,7 +85,13 @@ public class NewSarlClassWizardPage extends AbstractNewSarlElementWizardPage {
 		final ScriptSourceAppender scriptBuilder = this.codeBuilderFactory.buildScript(
 				getPackageFragment().getElementName(), typeProvider);
 		final ISarlClassBuilder clazz = scriptBuilder.addSarlClass(getTypeName());
-		clazz.setExtends(getSuperClass());
+		final String superType = getSuperClass();
+		// Do not add the "Object" type because it is the default.
+		if (Strings.isNullOrEmpty(superType) || Object.class.getName().equals(superType)) {
+			clazz.setExtends(null);
+		} else {
+			clazz.setExtends(superType);
+		}
 		for (final String type : getSuperInterfaces()) {
 			clazz.addImplements(type);
 		}
@@ -96,7 +103,7 @@ public class NewSarlClassWizardPage extends AbstractNewSarlElementWizardPage {
 				true,
 				() -> clazz.addSarlConstructor(),
 				name -> clazz.addOverrideSarlAction(name),
-				getSuperClass(),
+				superType,
 				getSuperInterfaces());
 		mon.worked(2);
 		scriptBuilder.build(appender);
