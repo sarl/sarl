@@ -26,6 +26,7 @@
 				<module>io.sarl.lang.ui</module>
 				<module>io.sarl.eclipse</module>
 				<module>io.sarl.m2e</module>
+				<module>io.sarl.eclipse-slf4j</module>
 			</modules>
 		</profile>
 		<profile>

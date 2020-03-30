@@ -22,3 +22,4 @@ Require-Bundle: io.sarl.eclipse;bundle-version="0.11.0",
  com.google.inject;bundle-version="4.1.0"
 Export-Package: io.sarl.examples,
  io.sarl.examples.wizard
+Import-Package: io.sarl.m2e.wizards.importproject

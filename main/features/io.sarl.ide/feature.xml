@@ -244,6 +244,7 @@ tools upon the Eclipse IDE.
       <import plugin="org.eclipse.ui.console" version="3.9.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui" version="3.115.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.intro" version="3.5.800" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.intro.quicklinks" version="1.0.400" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.intro.universal" version="3.3.700" match="greaterOrEqual"/>
       <import plugin="org.arakhne.afc.core.vmutils" version="16.0.0" match="greaterOrEqual"/>
       <import plugin="com.google.gson" version="2.8.5" match="greaterOrEqual"/>
@@ -274,7 +275,8 @@ tools upon the Eclipse IDE.
       <import plugin="org.eclipse.core.runtime" version="3.3.0" match="compatible"/>
       <import plugin="org.eclipse.equinox.common"/>
       <import plugin="org.eclipse.xtext"/>
-      <import plugin="org.eclipse.ui.intro.quicklinks" version="1.0.400" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.workbench" version="3.117.0" match="greaterOrEqual"/>
+      <import plugin="slf4j.api" version="2.0.0.alpha1" match="greaterOrEqual"/>
    </requires>
 
    <plugin
@@ -317,6 +319,14 @@ tools upon the Eclipse IDE.
          download-size="0"
          install-size="0"
          version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="io.sarl.eclipse-slf4j"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
          unpack="false"/>
 
 </feature>
