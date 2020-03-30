@@ -199,6 +199,10 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 	 */
 	protected static final String UNINSTALL_SKILL_NAME = "uninstall"; //$NON-NLS-1$
 
+	/** Name of the SARL skill prepareUninstallation function.
+	 */
+	protected static final String PREPARE_UNINSTALL_SKILL_NAME = "prepareUninstallation"; //$NON-NLS-1$
+
 	private static final int STEPS = 8;
 
 	private static final String SETTINGS_CREATECONSTR = "create_constructor"; //$NON-NLS-1$
@@ -1367,6 +1371,14 @@ public abstract class AbstractNewSarlElementWizardPage extends NewTypeWizardPage
 				elementTypeName));
 		IExpressionBuilder expr = block.addExpression();
 		createInfoCall(expr, "Installing the " + elementTypeName);  //$NON-NLS-1$
+
+		action = actionAdder.apply(PREPARE_UNINSTALL_SKILL_NAME);
+		block = action.getExpression();
+		block.setInnerDocumentation(MessageFormat.format(
+				Messages.AbstractNewSarlElementWizardPage_25,
+				elementTypeName));
+		expr = block.addExpression();
+		createInfoCall(expr, "Preparing the uninstallation of the " + elementTypeName);  //$NON-NLS-1$
 
 		action = actionAdder.apply(UNINSTALL_SKILL_NAME);
 		block = action.getExpression();
