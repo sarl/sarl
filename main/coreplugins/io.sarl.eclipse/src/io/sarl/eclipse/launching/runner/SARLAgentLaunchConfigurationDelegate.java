@@ -33,6 +33,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 
 import io.sarl.bootstrap.SRE;
 import io.sarl.eclipse.SARLEclipseConfig;
+import io.sarl.eclipse.launching.config.ILaunchConfigurationAccessor;
 import io.sarl.eclipse.launching.config.RootContextIdentifierType;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.SRECommandLineOptions;
@@ -123,18 +124,33 @@ public class SARLAgentLaunchConfigurationDelegate extends AbstractSARLLaunchConf
 	 * Returns the main type name specified by the given launch configuration,
 	 * or {@code null} if none.
 	 *
+	 * @param accessor the accessor to the launch configuration attributes.
+	 * @param configuration launch configuration
+	 * @return the main type name specified by the given launch configuration,
+	 *         or {@code null} if none
+	 * @throws CoreException if unable to retrieve the attribute
+	 * @since 0.11
+	 */
+	public static String getAgentName(ILaunchConfigurationAccessor accessor, ILaunchConfiguration configuration) throws CoreException {
+		final String agentName = accessor.getAgent(configuration);
+		if (agentName == null) {
+			return null;
+		}
+		return VariablesPlugin.getDefault().getStringVariableManager()
+				.performStringSubstitution(agentName);
+	}
+
+	/**
+	 * Returns the main type name specified by the given launch configuration,
+	 * or {@code null} if none.
+	 *
 	 * @param configuration launch configuration
 	 * @return the main type name specified by the given launch configuration,
 	 *         or {@code null} if none
 	 * @throws CoreException if unable to retrieve the attribute
 	 */
 	protected String getAgentName(ILaunchConfiguration configuration) throws CoreException {
-		final String agentName = getConfigurationAccessor().getAgent(configuration);
-		if (agentName == null) {
-			return null;
-		}
-		return VariablesPlugin.getDefault().getStringVariableManager()
-				.performStringSubstitution(agentName);
+		return getAgentName(getConfigurationAccessor(), configuration);
 	}
 
 	/**

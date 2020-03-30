@@ -773,7 +773,8 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 		return false;
 	}
 
-	private static IType findMainMethodByName(String name, IPackageFragmentRoot[] classpathResources, IRunnableContext context) {
+	// TODO Replace "private" by "protected into the JDT.
+	protected static IType findMainMethodByName(String name, IPackageFragmentRoot[] classpathResources, IRunnableContext context) {
 
 		List<IResource> resources= JarPackagerUtil.asResources(classpathResources);
 		if (resources == null) {
@@ -941,7 +942,6 @@ public class FixedFatJarExportPage extends AbstractJarDestinationWizardPage  {
 
 		return classpathResources;
 	}
-
 
 	public void exportAntScript(MultiStatus status) {
 		if (!fAntScriptSaveCheckbox.getSelection())

@@ -27,7 +27,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
 import javax.inject.Inject;
 
 import org.eclipse.core.resources.IProject;
@@ -99,7 +98,7 @@ public class ExportSarlApplicationPage extends FixedFatJarExportPage  {
 		final Set<String> selectedProjects = new HashSet<>();
 		final Iterator<?> iter = selection.iterator();
 		while (iter.hasNext()) {
-			final Object selectedElement= iter.next();
+			final Object selectedElement = iter.next();
 			if (selectedElement instanceof Iterable<?>) {
 				final Iterator<?> subiter = ((Iterable<?>) selectedElement).iterator();
 				while (subiter.hasNext()) {
@@ -123,10 +122,7 @@ public class ExportSarlApplicationPage extends FixedFatJarExportPage  {
 
 		try {
 			final ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
-			ILaunchConfigurationType type = manager.getLaunchConfigurationType(
-					LaunchConfigurationConstants.ID_AGENT_LAUNCH_CONFIGURATION);
-			getLaunchConfiguration(result, type, manager, this.selectedJavaProjects);
-			type = manager.getLaunchConfigurationType(LaunchConfigurationConstants.ID_APPLICATION_LAUNCH_CONFIGURATION);
+			final ILaunchConfigurationType type = manager.getLaunchConfigurationType(LaunchConfigurationConstants.ID_APPLICATION_LAUNCH_CONFIGURATION);
 			getLaunchConfiguration(result, type, manager, this.selectedJavaProjects);
 		} catch (CoreException e) {
 			JavaPlugin.log(e);
@@ -205,7 +201,7 @@ public class ExportSarlApplicationPage extends FixedFatJarExportPage  {
 	 * @exception CoreException
 	 *                if unable to retrieve the attribute
 	 */
-	public static IJavaProject getJavaProject(ILaunchConfiguration configuration)
+	protected static IJavaProject getJavaProject(ILaunchConfiguration configuration)
 			throws CoreException {
 		String projectName = getJavaProjectName(configuration);
 		if (projectName != null) {
