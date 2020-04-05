@@ -21,6 +21,8 @@
 
 package io.sarl.sre.tests.runtime.boot.bootstrap
 
+import io.sarl.bootstrap.SREBootstrap
+import io.sarl.bootstrap.SREListener
 import io.sarl.sre.boot.configs.subconfigs.BootConfig
 import io.sarl.sre.boot.configs.subconfigs.RootContextType
 import io.sarl.sre.test.framework.context.SreRunContext
@@ -39,8 +41,11 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static extension org.junit.jupiter.api.Assertions.*
 import static io.sarl.sre.test.framework.Constants.*
+
+import static extension org.junit.jupiter.api.Assertions.*
+import static extension org.mockito.ArgumentCaptor.*
+import static extension org.mockito.Mockito.*
 
 /**
  * @author $Author: sgalland$
@@ -116,6 +121,27 @@ class BootstrapTest {
 		var actual = getFirstResultOfType(id, typeof(UUID))
 		actual.assertNotNull
 		id.assertEquals(actual)
+	}
+
+	@Test
+	@DisplayName("sreStopped")
+	def sreStartedStopped(extension rc : SreRunContext) {
+		val observer = typeof(SREListener).mock
+		
+		val kern = setupTheSreKernel(null, null)
+		kern.addSREListener(observer)
+
+		val id = UUID::randomUUID
+		kern.startAgentWithID(typeof(TestIdAgent0), id, agentInitializationParameters)
+		waitForTheKernel(SHORT_TIMEOUT)
+
+		var arg = typeof(SREBootstrap).forClass
+
+		// Never called because the event is fired before setupTheSreKernel returns
+		observer.verify(never).sreStarted(any)
+
+		observer.verify(1.times).sreStopped(arg.capture)
+		kern.assertSame(arg.value)
 	}
 
 }

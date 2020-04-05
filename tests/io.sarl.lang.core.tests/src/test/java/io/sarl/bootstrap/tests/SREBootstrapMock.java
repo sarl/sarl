@@ -23,6 +23,7 @@ package io.sarl.bootstrap.tests;
 import java.util.UUID;
 
 import io.sarl.bootstrap.SREBootstrap;
+import io.sarl.bootstrap.SREListener;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AgentContext;
 
@@ -61,6 +62,16 @@ public class SREBootstrapMock implements SREBootstrap {
 
 	@Override
 	public <T> T getService(Class<T> serviceType) {
+		throw new IllegalStateException();
+	}
+
+	@Override
+	public void addSREListener(SREListener listener) {
+		throw new IllegalStateException();
+	}
+
+	@Override
+	public void removeSREListener(SREListener listener) {
 		throw new IllegalStateException();
 	}
 

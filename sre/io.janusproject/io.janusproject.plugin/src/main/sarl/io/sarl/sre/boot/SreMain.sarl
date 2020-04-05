@@ -33,6 +33,7 @@ import io.bootique.help.HelpOptions
 import io.bootique.meta.application.ApplicationMetadata
 import io.sarl.bootstrap.SRE
 import io.sarl.bootstrap.SREBootstrap
+import io.sarl.bootstrap.SREListener
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AgentContext
 import io.sarl.sre.Kernel
@@ -48,6 +49,7 @@ import org.apache.log4j.Logger
 import org.arakhne.afc.bootique.log4j.configs.Level
 import org.arakhne.afc.bootique.log4j.configs.Log4jIntegrationConfig
 import org.arakhne.afc.bootique.variables.VariableNames
+import org.arakhne.afc.util.ListenerCollection
 import org.eclipse.xtend.lib.annotations.Accessors
 
 import static io.sarl.bootstrap.SRE.*
@@ -74,6 +76,8 @@ class SreMain implements SREBootstrap {
 	var userDefinedContextId : UUID
 
 	var userDefinedSpaceId : UUID
+
+	val listeners = new ListenerCollection<SREListener>
 	
 	/** Set the Bootique runtime instance.
 	 *
@@ -243,9 +247,11 @@ class SreMain implements SREBootstrap {
 			val listener : KernelAgentLifecycleListener = [
 				this.kernel = null
 				this.runtime = null
+				fireSREStopped
 			]
 			k.getService(typeof(LifecycleService)).addKernelAgentLifecycleListener(listener)
 			this.kernel = k
+			fireSREStarted
 		}
 		// Force the bootstrap to be this object
 		SRE::bootstrap = this
@@ -345,6 +351,48 @@ class SreMain implements SREBootstrap {
 			}
 		}
 		return null
+	}
+
+	override addSREListener(listener : SREListener) {
+		if (listener !== null) {
+			this.listeners.add(typeof(SREListener), listener)
+		}
+	}
+
+	override removeSREListener(listener : SREListener) {
+		if (listener !== null) {
+			this.listeners.remove(typeof(SREListener), listener)
+		}
+	}
+
+	/** Notifies the observers that the SRE has been started.
+	 *
+	 * @since 0.11
+	 */
+	protected def fireSREStarted {
+		val observers = this.listeners.getListeners(typeof(SREListener))
+		for (observer : observers) {
+			try {
+				observer.sreStarted(this)
+			} catch (exception : Throwable) {
+				getKernelLogger.log(java.util.logging.Level::SEVERE, exception.localizedMessage, exception)
+			}
+		}
+	}
+
+	/** Notifies the observers that the SRE has been stopped.
+	 * 
+	 * @since 0.11
+	 */
+	protected def fireSREStopped {
+		val observers = this.listeners.getListeners(typeof(SREListener))
+		for (observer : observers) {
+			try {
+				observer.sreStopped(this)
+			} catch (exception : Throwable) {
+				getKernelLogger.log(java.util.logging.Level::SEVERE, exception.localizedMessage, exception)
+			}
+		}
 	}
 
 }

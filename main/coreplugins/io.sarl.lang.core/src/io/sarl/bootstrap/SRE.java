@@ -238,6 +238,16 @@ public final class SRE {
 			throw new UnsupportedOperationException();
 		}
 
+		@Override
+		public void addSREListener(SREListener listener) {
+			//
+		}
+
+		@Override
+		public void removeSREListener(SREListener listener) {
+			//
+		}
+
 	}
 
 }

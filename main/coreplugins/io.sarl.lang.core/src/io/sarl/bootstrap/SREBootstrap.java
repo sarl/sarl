@@ -321,4 +321,20 @@ public interface SREBootstrap {
 	@Pure
 	<T> T getService(Class<T> serviceType);
 
+	/**
+	 * Add an observer on the SRE.
+	 *
+	 * @param listener the observer to add.
+	 * @since 0.11
+	 */
+	void addSREListener(SREListener listener);
+
+	/**
+	 * Remove the given observer on the SRE.
+	 *
+	 * @param listener the observer to remove.
+	 * @since 0.11
+	 */
+	void removeSREListener(SREListener listener);
+
 }

@@ -26,6 +26,8 @@ import io.bootique.BQRuntime
 import io.bootique.Bootique
 import io.bootique.command.CommandOutcome
 import io.bootique.config.ConfigurationFactory
+import io.sarl.bootstrap.SREBootstrap
+import io.sarl.bootstrap.SREListener
 import io.sarl.lang.core.AgentContext
 import io.sarl.sre.Kernel
 import io.sarl.sre.boot.SreMain
@@ -541,6 +543,182 @@ class SreMainTest {
 		this.bootstrap.kernel.assertNull
 		this.bootstrap.isRunning.assertFalse
 		var x = this.kernel.verify(1.times).shutdownTrigger
+	}
+
+	@Test
+	@DisplayName("addSREListener with 1 observer")
+	def addSREListener01 : void {
+		val observer = typeof(SREListener).mock
+		this.bootstrap.addSREListener(observer)
+		val meth = typeof(SreMain).getDeclaredMethod("fireSREStarted")
+		meth.accessible = true
+		meth.invoke(this.bootstrap)
+		val argument = typeof(SREBootstrap).forClass
+		observer.verify(only).sreStarted(argument.capture)
+		this.bootstrap.assertSame(argument.value)
+	}
+
+	@Test
+	@DisplayName("addSREListener with 2 observers")
+	def addSREListener02 : void {
+		val observer0 = typeof(SREListener).mock
+		this.bootstrap.addSREListener(observer0)
+		val observer1 = typeof(SREListener).mock
+		this.bootstrap.addSREListener(observer1)
+		val meth = typeof(SreMain).getDeclaredMethod("fireSREStarted")
+		meth.accessible = true
+		meth.invoke(this.bootstrap)
+		val argument = typeof(SREBootstrap).forClass
+		observer0.verify(only).sreStarted(argument.capture)
+		this.bootstrap.assertSame(argument.value)
+		observer1.verify(only).sreStarted(argument.capture)
+		this.bootstrap.assertSame(argument.value)
+	}
+
+	@Test
+	@DisplayName("addSREListener with 3 observers")
+	def addSREListener03 : void {
+		val observer0 = typeof(SREListener).mock
+		this.bootstrap.addSREListener(observer0)
+		val observer1 = typeof(SREListener).mock
+		this.bootstrap.addSREListener(observer1)
+		val observer2 = typeof(SREListener).mock
+		this.bootstrap.addSREListener(observer2)
+		val meth = typeof(SreMain).getDeclaredMethod("fireSREStarted")
+		meth.accessible = true
+		meth.invoke(this.bootstrap)
+		val argument = typeof(SREBootstrap).forClass
+		observer0.verify(only).sreStarted(argument.capture)
+		this.bootstrap.assertSame(argument.value)
+		observer1.verify(only).sreStarted(argument.capture)
+		this.bootstrap.assertSame(argument.value)
+		observer2.verify(only).sreStarted(argument.capture)
+		this.bootstrap.assertSame(argument.value)
+	}
+
+	@Test
+	@DisplayName("removeSREListener with 1 observer")
+	def removeSREListener01 : void {
+		val observer = typeof(SREListener).mock
+		this.bootstrap.addSREListener(observer)
+
+		this.bootstrap.removeSREListener(observer)
+
+		val meth = typeof(SreMain).getDeclaredMethod("fireSREStarted")
+		meth.accessible = true
+		meth.invoke(this.bootstrap)
+		observer.verify(never).sreStarted(any)
+	}
+
+	@Test
+	@DisplayName("removeSREListener with 2 observers")
+	def removeSREListener02 : void {
+		val observer0 = typeof(SREListener).mock
+		this.bootstrap.addSREListener(observer0)
+		val observer1 = typeof(SREListener).mock
+		this.bootstrap.addSREListener(observer1)
+
+		this.bootstrap.removeSREListener(observer0)
+
+		val meth = typeof(SreMain).getDeclaredMethod("fireSREStarted")
+		meth.accessible = true
+		meth.invoke(this.bootstrap)
+
+		val argument = typeof(SREBootstrap).forClass
+
+		observer0.verify(never).sreStarted(any)
+
+		observer1.verify(only).sreStarted(argument.capture)
+		this.bootstrap.assertSame(argument.value)
+	}
+
+	@Test
+	@DisplayName("removeSREListener with 3 observers")
+	def removeSREListener03 : void {
+		val observer0 = typeof(SREListener).mock
+		this.bootstrap.addSREListener(observer0)
+		val observer1 = typeof(SREListener).mock
+		this.bootstrap.addSREListener(observer1)
+		val observer2 = typeof(SREListener).mock
+		this.bootstrap.addSREListener(observer2)
+
+		this.bootstrap.removeSREListener(observer0)
+
+		val meth = typeof(SreMain).getDeclaredMethod("fireSREStarted")
+		meth.accessible = true
+		meth.invoke(this.bootstrap)
+
+		val argument = typeof(SREBootstrap).forClass
+
+		observer0.verify(never).sreStarted(any)
+
+		observer1.verify(only).sreStarted(argument.capture)
+		this.bootstrap.assertSame(argument.value)
+
+		observer2.verify(only).sreStarted(argument.capture)
+		this.bootstrap.assertSame(argument.value)
+	}
+
+	@Test
+	def fireSREStarted : void {
+		val observer0 = typeof(SREListener).mock
+		this.bootstrap.addSREListener(observer0)
+		val observer1 = typeof(SREListener).mock
+		this.bootstrap.addSREListener(observer1)
+		val observer2 = typeof(SREListener).mock
+		this.bootstrap.addSREListener(observer2)
+
+		val meth = typeof(SreMain).getDeclaredMethod("fireSREStarted")
+		meth.accessible = true
+		meth.invoke(this.bootstrap)
+
+		val argument = typeof(SREBootstrap).forClass
+
+		observer0.verify(only).sreStarted(argument.capture)
+		this.bootstrap.assertSame(argument.value)
+
+		observer0.verify(never).sreStopped(any)
+
+		observer1.verify(only).sreStarted(argument.capture)
+		this.bootstrap.assertSame(argument.value)
+
+		observer1.verify(never).sreStopped(any)
+
+		observer2.verify(only).sreStarted(argument.capture)
+		this.bootstrap.assertSame(argument.value)
+
+		observer2.verify(never).sreStopped(any)
+	}
+
+	@Test
+	def fireSREStopped : void {
+		val observer0 = typeof(SREListener).mock
+		this.bootstrap.addSREListener(observer0)
+		val observer1 = typeof(SREListener).mock
+		this.bootstrap.addSREListener(observer1)
+		val observer2 = typeof(SREListener).mock
+		this.bootstrap.addSREListener(observer2)
+
+		val meth = typeof(SreMain).getDeclaredMethod("fireSREStopped")
+		meth.accessible = true
+		meth.invoke(this.bootstrap)
+
+		val argument = typeof(SREBootstrap).forClass
+
+		observer0.verify(never).sreStarted(argument.capture)
+
+		observer0.verify(only).sreStopped(argument.capture)
+		this.bootstrap.assertSame(argument.value)
+
+		observer1.verify(never).sreStarted(argument.capture)
+
+		observer1.verify(only).sreStopped(argument.capture)
+		this.bootstrap.assertSame(argument.value)
+
+		observer2.verify(never).sreStarted(argument.capture)
+
+		observer2.verify(only).sreStopped(argument.capture)
+		this.bootstrap.assertSame(argument.value)
 	}
 
 }
