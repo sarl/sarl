@@ -995,7 +995,7 @@ public class SarlCompiler extends XtendCompiler {
 						if (enableExpressionNaming) {
 							final String refName = getReferenceName(root, appendable);
 							if (!forceNaming || Strings.isEmpty(refName)) {
-								final String proposedName = "$" + makeJavaIdentifier(getFavoriteVariableName(root)); //$NON-NLS-1$
+								final String proposedName = Utils.HIDDEN_MEMBER_CHARACTER + makeJavaIdentifier(getFavoriteVariableName(root));
 								appendable.declareSyntheticVariable(root, proposedName);
 							}
 						}
