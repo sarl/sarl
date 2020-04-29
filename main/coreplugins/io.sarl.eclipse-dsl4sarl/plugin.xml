@@ -1,0 +1,44 @@
+<?eclipse version="3.0"?>
+
+<plugin>
+    <extension
+          id="io_sarl_lang_sarl_dsl_product"
+          point="org.eclipse.core.runtime.products">
+       <product
+             application="org.eclipse.ui.ide.workbench"
+             name="%product.name">
+          <property
+                name="aboutText"
+                value="%about.general.text">
+          </property>
+          <property
+                name="aboutImage"
+                value="icons/eclipse-about-banner.png">
+          </property>
+          <property
+                name="appName"
+                value="%product.name">
+          </property>
+          <property
+                name="startupProgressRect"
+                value="5,280,442,15">
+          </property>
+          <property
+                name="startupForegroundColor"
+                value="F3F3F3">
+          </property>
+          <property
+                name="startupMessageRect"
+                value="7,252,330,20">
+          </property>
+          <property
+                name="windowImages"
+                value="/io.sarl.eclipse-dsl4sarl/icons/sarl_16.png,/io.sarl.eclipse-dsl4sarl/icons/sarl_32.png,/io.sarl.eclipse-dsl4sarl/icons/sarl_48.png,/io.sarl.eclipse-dsl4sarl/icons/sarl_64.png,/io.sarl.eclipse-dsl4sarl/icons/sarl_128.png,/io.sarl.eclipse-dsl4sarl/icons/sarl_256.png">
+          </property>
+          <property
+                name="preferenceCustomization"
+                value="platform:/plugin/io.sarl.eclipse-dsl4sarl/plugin_customization.ini">
+          </property>
+       </product>
+    </extension>
+</plugin>

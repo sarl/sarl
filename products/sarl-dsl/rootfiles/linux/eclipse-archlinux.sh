@@ -25,5 +25,5 @@ then
 	. "$HOME/.eclipserc"
 fi
 
-echo "Launching SARL IDE ${project.version}"
-exec "$CDIR/eclipse-sarl-dsl" $VMARGS "$@"
+echo "Launching Eclipse-DSL for SARL Developers ${project.version}"
+exec "$CDIR/eclipse" $VMARGS "$@"
