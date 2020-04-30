@@ -113,20 +113,14 @@ In order to enable the creation of an instance of [:myspacename!], a space speci
 			class [:myspacename!] implements [:spacetype!] {
 				def [:fctname!](callerIdentity : UUID, parameter : Object) {
 				}
-				new (id : SpaceID) {
-				}
-			    def getSpaceID : SpaceID {
-			    }
-			    def getID : SpaceID {
-			    }
-			    def isPseudoEmpty(id : UUID) {
-			    	false
-			    }
-				def getNumberOfStrongParticipants : int {
-					0
-				}
-				def forEachStrongParticipant(cb : (UUID)=>void) {
-				}
+				new (id : SpaceID) {}
+			    def getSpaceID : SpaceID {}
+			    def getID : SpaceID {}
+			    def isPseudoEmpty(id : UUID) { false }
+				def getNumberOfStrongParticipants : int { 0 }
+				def getNumberOfWeakParticipants : int { 0 }
+				def forEachStrongParticipant(cb : (UUID)=>void) {}
+				def forEachWeakParticipant(cb : (UUID)=>void) {}
 			}
 			[:On]
 			class [:myspacespecname]([:myspacename!]Specification) implements SpaceSpecification<[:myspacename!]> {
@@ -156,22 +150,15 @@ Back to the example, the code for the skill is:
 				def [:fctname!](parameter : Object)
 			}
 			class [:myspacename!] implements [:spacetype!] {
-				def [:fctname!](callerIdentity : UUID, parameter : Object) {
-				}
-				new (id : SpaceID) {
-				}
-			    def getSpaceID : SpaceID {
-			    }
-			    def getID : SpaceID {
-			    }
-			    def isPseudoEmpty(id : UUID) {
-			    	false
-			    }
-				def getNumberOfStrongParticipants : int {
-					0
-				}
-				def forEachStrongParticipant(cb : (UUID)=>void) {
-				}
+				def [:fctname!](callerIdentity : UUID, parameter : Object) {}
+				new (id : SpaceID) {}
+			    def getSpaceID : SpaceID {}
+			    def getID : SpaceID {}
+			    def isPseudoEmpty(id : UUID) { false }
+				def getNumberOfStrongParticipants : int { 0 }
+				def getNumberOfWeakParticipants : int { 0 }
+				def forEachStrongParticipant(cb : (UUID)=>void) {}
+				def forEachWeakParticipant(cb : (UUID)=>void) {}
 			}
 			class [:myspacespecname]([:myspacename!]Specification) implements SpaceSpecification<[:myspacename!]> {
 				def create(id : SpaceID, params : Object*) : [:myspacename!] {
@@ -225,22 +212,15 @@ to give the instance of the caller to the space. The code of the skill becomes:
 				def [:fctname!](parameter : Object)
 			}
 			class [:myspacename!] implements [:spacetype!] {
-				def [:fctname!](callerIdentity : Object, parameter : Object) {
-				}
-				new (id : SpaceID) {
-				}
-			    def getSpaceID : SpaceID {
-			    }
-			    def getID : SpaceID {
-			    }
-			    def isPseudoEmpty(id : UUID) {
-			    	true
-			    }
-				def getNumberOfStrongParticipants : int {
-					0
-				}
-				def forEachStrongParticipant(cb : (UUID)=>void) {
-				}
+				def [:fctname!](callerIdentity : Object, parameter : Object) {}
+				new (id : SpaceID) {}
+			    def getSpaceID : SpaceID {}
+			    def getID : SpaceID {}
+			    def isPseudoEmpty(id : UUID) { true }
+				def getNumberOfStrongParticipants : int { 0 }
+				def getNumberOfWeakParticipants : int { 0 }
+				def forEachStrongParticipant(cb : (UUID)=>void) {}
+				def forEachWeakParticipant(cb : (UUID)=>void) {}
 			}
 			[:On]
 			skill [:myskillname](MySkill) implements [:mycapacityname!] {

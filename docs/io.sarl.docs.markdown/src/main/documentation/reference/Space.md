@@ -177,30 +177,6 @@ Below, the implementation extends one of the abstract classes provided by the [J
 			class PhysicSpaceImpl extends AbstractEventSpace implements PhysicSpace {
 				val [:entityfield](entities) = <[:uuid](UUID), PhysicObject>newHashMap
 				
-				val strongRepository = new ConcurrentHashMap<UUID, Participant>
-
-				var weakRepository : ConcurrentHashMap<UUID, Participant>
-
-				override getInternalStrongParticipantStructure(copy : boolean) : ConcurrentHashMap<UUID, Participant> {
-					if (copy) {
-						return new ConcurrentHashMap(this.strongRepository)
-					}
-					this.strongRepository 
-				}
-			
-				override getInternalWeakParticipantStructure : ConcurrentHashMap<UUID, Participant> {
-					this.weakRepository
-				}
-
-				override ensureInternalWeakParticipantStructure : ConcurrentHashMap<UUID, Participant> {
-					var r = this.weakRepository
-					if (r === null) {
-						this.weakRepository = new ConcurrentHashMap
-						r = this.weakRepository
-					}
-					return this.weakRepository
-				}
-
 				def [:moveobjectfct](moveObject)(identifier : UUID, x : float, y : float, z : float) {
 					synchronized (this.entities) {
 						var o = this.entities.get(identifier)
@@ -262,7 +238,9 @@ This specification may create the space instance according to rules, or provide 
 				def getSpaceID : SpaceID { null }
 				def isPseudoEmpty(id : UUID) : boolean { true }
 				def getNumberOfStrongParticipants : int { 0 }
+				def getNumberOfWeakParticipants : int { 0 }
 				def forEachStrongParticipant(cb : (UUID)=>void) {}
+				def forEachWeakParticipant(cb : (UUID)=>void) {}
 			}
 			[:On]
 			class PhysicSpaceSpecification implements [:spacespecdef](SpaceSpecification)<PhysicSpace> {
@@ -311,7 +289,9 @@ The following example illustrates the first method of marking of an object field
                 def getSpaceID : SpaceID { null }
 				def isPseudoEmpty(id : UUID) : boolean { true }
 				def getNumberOfStrongParticipants : int { 0 }
+				def getNumberOfWeakParticipants : int { 0 }
 				def forEachStrongParticipant(cb : (UUID)=>void) {}
+				def forEachWeakParticipant(cb : (UUID)=>void) {}
             }
             [:On]
             class MySpaceSpecification implements SpaceSpecification<MySpace> {
@@ -346,7 +326,9 @@ The following example illustrates the second method of marking of an object fiel
                 def getSpaceID : SpaceID { null }
 				def isPseudoEmpty(id : UUID) : boolean { true }
 				def getNumberOfStrongParticipants : int { 0 }
+				def getNumberOfWeakParticipants : int { 0 }
 				def forEachStrongParticipant(cb : (UUID)=>void) {}
+				def forEachWeakParticipant(cb : (UUID)=>void) {}
             }
             [:On]
             class MySpaceSpecification implements SpaceSpecification<MySpace> {
