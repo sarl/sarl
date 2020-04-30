@@ -54,7 +54,7 @@ import static extension org.junit.jupiter.api.Assertions.*
 import static extension org.mockito.ArgumentMatchers.any
 import static extension org.mockito.Mockito.*
 import static extension org.mockito.MockitoAnnotations.initMocks
-import org.junit.jupiter.api.Disabled
+import java.util.Set
 
 /**
  * @author $Author: sgalland$
@@ -69,7 +69,6 @@ import org.junit.jupiter.api.Disabled
 ])
 @DisplayName("unit: AbstractEventSpace test")
 @Tag("unit")
-@Disabled
 class XAbstractEventSpaceTest {
 
 	@Nullable
@@ -132,7 +131,7 @@ class XAbstractEventSpaceTest {
 		].when(this.executor).executeAsap(typeof(Runnable).any)
 	}
 
-	private def register(registerAgent2 : boolean = true, registerAgent3 : boolean = true) : void {
+	private def register(registerAgent2 : boolean = true, registerAgent3 : boolean = true, nbWeaks : int = 1) : Set<UUID> {
 		var participant1 = typeof(Participant).mock
 		when(participant1.address).thenReturn(this.address)
 		when(participant1.participant).thenReturn(this.listener1)
@@ -152,11 +151,16 @@ class XAbstractEventSpaceTest {
 			this.strongParticipants.put(id3, participant3)
 		}
 
-		val id1w = UUID::randomUUID
-		var participant1w = typeof(Participant).mock
-		when(participant1w.address).thenReturn(new Address(this.spaceId, id1w))
-		when(participant1w.participant).thenReturn(typeof(InformedEventListener).mock)
-		this.weakParticipants.put(id1w, participant1w)
+		val weaks = newHashSet
+		for (i : 1 .. nbWeaks) {
+			val id1w = UUID::randomUUID
+			var participant1w = typeof(Participant).mock
+			when(participant1w.address).thenReturn(new Address(this.spaceId, id1w))
+			when(participant1w.participant).thenReturn(typeof(InformedEventListener).mock)
+			this.weakParticipants.put(id1w, participant1w)
+			weaks += id1w
+		}
+		return weaks
 	}
 
 	@Test
@@ -327,11 +331,59 @@ class XAbstractEventSpaceTest {
 
 	@Test
 	@DisplayName("getNumberOfStrongParticipants with 3 participants")
-	def getNumberOfStrongParticipants_registration {
+	def getNumberOfStrongParticipants_registration3 {
 		register
 		3.assertEquals(this.^space.numberOfStrongParticipants)
 	}
-	
+
+	@Test
+	@DisplayName("getNumberOfWeakParticipants without participant")
+	def getNumberOfWeakParticipants_registration0 {
+		0.assertEquals(this.^space.numberOfWeakParticipants)
+	}
+
+	@Test
+	@DisplayName("getNumberOfWeakParticipants with 1 strong and 1 weak")
+	def getNumberOfWeakParticipants_registration1 {
+		register(false, false)
+		1.assertEquals(this.^space.numberOfWeakParticipants)
+	}
+
+	@Test
+	@DisplayName("getNumberOfWeakParticipants with 2 strongs and 1 weak")
+	def getNumberOfWeakParticipants_registration2 {
+		register(true, false)
+		1.assertEquals(this.^space.numberOfWeakParticipants)
+	}
+
+	@Test
+	@DisplayName("getNumberOfWeakParticipants with 3 strongs and 1 weak")
+	def getNumberOfWeakParticipants_registration3 {
+		register
+		1.assertEquals(this.^space.numberOfWeakParticipants)
+	}
+
+	@Test
+	@DisplayName("getNumberOfWeakParticipants with 1 strong and 2 weaks")
+	def getNumberOfWeakParticipants_registration4 {
+		register(false, false, 2)
+		2.assertEquals(this.^space.numberOfWeakParticipants)
+	}
+
+	@Test
+	@DisplayName("getNumberOfWeakParticipants with 2 strongs and 2 weaks")
+	def getNumberOfWeakParticipants_registration5 {
+		register(true, false, 2)
+		2.assertEquals(this.^space.numberOfWeakParticipants)
+	}
+
+	@Test
+	@DisplayName("getNumberOfWeakParticipants with 3 strongs and 2 weaks")
+	def getNumberOfWeakParticipants_registration6 {
+		register(true, true, 2)
+		2.assertEquals(this.^space.numberOfWeakParticipants)
+	}
+
 	@RepeatedTest(5)
 	@DisplayName("isPseudoEmpty(UUID) without participant")
 	def isPseudoEmptyUUID_noRegistration : void {
@@ -429,6 +481,59 @@ class XAbstractEventSpaceTest {
 		3.assertEquals(col.size)
 		col.contains(this.agentId).assertTrue
 		col.contains(this.agentId2).assertTrue
+	}
+
+	@Test
+	@DisplayName("forEachWeakParticipant without participant")
+	def forEachWeakParticipant_registration0 : void {
+		val col = newArrayList
+		this.^space.forEachWeakParticipant[col += it]
+		col.empty.assertTrue
+	}
+
+	@Test
+	@DisplayName("forEachWeakParticipant with 1 strong and 1 weak")
+	def forEachWeakParticipant_registration1 : void {
+		val weaks = register(false, false)
+		val col = newArrayList
+		this.^space.forEachWeakParticipant[col += it]
+		weaks.assertContainsCollection(col)
+	}
+
+	@Test
+	@DisplayName("forEachWeakParticipant with 2 strongs and 1 weak")
+	def forEachWeakParticipant_registration2 : void {
+		val weaks = register(true, false)
+		val col = newArrayList
+		this.^space.forEachWeakParticipant[col += it]
+		weaks.assertContainsCollection(col)
+	}
+
+	@Test
+	@DisplayName("forEachWeakParticipant with 3 strongs and 1 weak")
+	def forEachWeakParticipant_registration3 : void {
+		val weaks = register
+		val col = newArrayList
+		this.^space.forEachWeakParticipant[col += it]
+		weaks.assertContainsCollection(col)
+	}
+
+	@Test
+	@DisplayName("forEachWeakParticipant with 2 strongs and 2 weaks")
+	def forEachWeakParticipant_registration4 : void {
+		val weaks = register(true, false, 2)
+		val col = newArrayList
+		this.^space.forEachWeakParticipant[col += it]
+		weaks.assertContainsCollection(col)
+	}
+
+	@Test
+	@DisplayName("forEachWeakParticipant with 3 strongs and 2 weaks")
+	def forEachWeakParticipant_registration5 : void {
+		val weaks = register(true, true, 2)
+		val col = newArrayList
+		this.^space.forEachWeakParticipant[col += it]
+		weaks.assertContainsCollection(col)
 	}
 
 }

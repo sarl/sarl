@@ -68,9 +68,9 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 	@Accessors(PUBLIC_GETTER)
 	var spaceParticipantListener : SpaceParticipantListener
 
-	val strongRepository = new ConcurrentHashMap<UUID, Participant>
+	val strongRepository : ConcurrentHashMap<UUID, Participant>
 
-	val weakRepository = new ConcurrentHashMap<UUID, Participant>
+	val weakRepository : ConcurrentHashMap<UUID, Participant>
 
 	/** Constructor.
 	 * 
@@ -80,9 +80,35 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 	 * @param logger the logger service.
 	 */
 	new (spaceId : SpaceID, participantListener : SpaceParticipantListener, logger : LoggingService) {
+		this(spaceId, participantListener, logger, null, null)
+	}
+
+	/** Constructor.
+	 * 
+	 * @param id identifier of the space.
+	 * @param lockProvider the provider of synchronization locks.
+	 * @param participantListener the platform listener on participant events.
+	 * @param logger the logger service.
+	 */
+	protected new (
+		spaceId : SpaceID,
+		participantListener : SpaceParticipantListener,
+		logger : LoggingService,
+		strongRepository : ConcurrentHashMap<UUID, Participant>,
+		weakRepository : ConcurrentHashMap<UUID, Participant>) {
 		super(spaceId)
 		this.spaceParticipantListener = participantListener
 		this.logger = logger
+		if (strongRepository === null) {
+			this.strongRepository = new ConcurrentHashMap
+		} else {
+			this.strongRepository = strongRepository
+		}
+		if (weakRepository === null) {
+			this.weakRepository = new ConcurrentHashMap
+		} else {
+			this.weakRepository = weakRepository
+		}
 	}
 
 	/** Set the event router.
