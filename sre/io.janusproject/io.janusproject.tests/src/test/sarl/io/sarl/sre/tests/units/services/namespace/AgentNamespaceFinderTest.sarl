@@ -37,9 +37,7 @@ import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
-import java.util.concurrent.ConcurrentHashMap
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
@@ -66,7 +64,6 @@ import static extension org.junit.jupiter.api.Assertions.assertSame
 ])
 @DisplayName("unit: AgentNamespaceFinder test")
 @Tag("unit")
-@Disabled
 class AgentNamespaceServiceTest {
 
 	@Nullable
@@ -107,12 +104,14 @@ class AgentNamespaceServiceTest {
 		when(listener0.ownerInstance).thenReturn(this.ag0)
 		var participant0 = typeof(Participant).mock
 		when(participant0.participant).thenReturn(listener0)
-		var map0 = new ConcurrentHashMap
-		map0.put(this.aid0, participant0)
-		var map0b = new ConcurrentHashMap
-		map0b.put(UUID::randomUUID, typeof(Participant).mock)
-		map0b.put(UUID::randomUUID, typeof(Participant).mock)
 		var spc0 = typeof(MySpace).mock
+		when(spc0.getListenerFromStrongParticipant(any)).thenAnswer [
+			val id = (it.getArgument(0) as UUID)
+			if (id == this.aid0) {
+				return participant0.participant
+			}
+			return null
+		]
 		var ctx0 = typeof(Context).mock
 		when(ctx0.defaultSpace).thenReturn(spc0)
 
@@ -123,13 +122,15 @@ class AgentNamespaceServiceTest {
 		when(listener1.ownerInstance).thenReturn(this.ag1)
 		var participant1 = typeof(Participant).mock
 		when(participant1.participant).thenReturn(listener1)
-		var map1 = new ConcurrentHashMap
-		map1.put(this.aid1, participant1)
-		var map1b = new ConcurrentHashMap
-		map1b.put(UUID::randomUUID, typeof(Participant).mock)
-		map1b.put(UUID::randomUUID, typeof(Participant).mock)
 		this.sid1 = UUID::randomUUID
 		var spc1 = typeof(MySpace).mock
+		when(spc1.getListenerFromStrongParticipant(any)).thenAnswer [
+			val id = (it.getArgument(0) as UUID)
+			if (id == this.aid1) {
+				return participant1.participant
+			}
+			return null
+		]
 		this.cid1 = UUID::randomUUID
 		var ctx1 = typeof(Context).mock
 		when(ctx1.getSpace(any(typeof(UUID)))).thenAnswer [
