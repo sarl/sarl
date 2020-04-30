@@ -27,6 +27,7 @@ import io.sarl.sre.test.framework.^extension.SreRunExtension
 import io.sarl.sre.tests.runtime.bugs.bug976.mocks.BootScalableAgent
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
@@ -53,6 +54,7 @@ import static io.sarl.tests.api.tools.TestAssertions.*
 ])
 @DisplayName("run: Bug #976")
 @Tag("run")
+@Disabled
 class Bug976Test {
 
 	@Test

@@ -33,6 +33,7 @@ import io.sarl.sre.tests.runtime.internal.mocks.MemberJoinedAgent2
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Tag
@@ -58,6 +59,7 @@ import static extension org.junit.jupiter.api.Assertions.*
 ])
 @DisplayName("run: on MemberJoined test")
 @Tag("run")
+@Disabled
 class OnMemberJoinedTest {
 
 	@RepeatedTest(10)

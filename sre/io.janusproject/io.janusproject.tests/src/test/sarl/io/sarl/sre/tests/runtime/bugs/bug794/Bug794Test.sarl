@@ -37,6 +37,7 @@ import io.sarl.sre.tests.runtime.bugs.bug794.mocks.SpawnerAgent8
 import io.sarl.sre.tests.runtime.bugs.bug794.mocks.SpawnerAgent9
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
@@ -44,7 +45,6 @@ import org.junit.jupiter.api.^extension.ExtendWith
 
 import static io.sarl.tests.api.tools.TestAssertions.*
 import static org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.Disabled
 
 /**
  * Unit test for the issue #794: Spawn function first parameter strange behavior.
@@ -63,6 +63,7 @@ import org.junit.jupiter.api.Disabled
 ])
 @DisplayName("run: Bug #794")
 @Tag("run")
+@Disabled
 class Bug794Test {
 
 	@Test

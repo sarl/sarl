@@ -37,6 +37,7 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.^extension.ExtendWith
 
 import static extension io.sarl.tests.api.tools.TestAssertions.*
+import org.junit.jupiter.api.Disabled
 
 /** Tests for issue #977: Problem with multiple initialize event in Behavior inheritance demos.
  *
@@ -60,6 +61,7 @@ class Bug977Test {
 
 	@RepeatedTest(10)
 	@DisplayName("Inheritance of event handlers and functions")
+	@Disabled
 	def runInheritanceBehaviorExampleCode(extension rc : SreRunContext) : void {
 		var kern = setupTheSreKernel(null, null)
 
