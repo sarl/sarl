@@ -46,6 +46,7 @@ import static io.sarl.sre.test.framework.Constants.*
 import static io.sarl.tests.api.tools.TestTimeout.*
 
 import static extension io.sarl.tests.api.tools.TestAssertions.*
+import org.junit.jupiter.api.Disabled
 
 /**
  * @author $Author: sgalland$
@@ -88,6 +89,7 @@ class ShutdownTest {
 
 	@RepeatedTest(5)
 	@DisplayName("infinite-loop agent")
+	@Disabled
 	def shutdownWithAliveAgent(extension rc : SreRunContext) {
 		typeof(InfiniteLifeTestingAgent).setupTheSreKernel(null, null)
 		Thread::sleep(DELAY)

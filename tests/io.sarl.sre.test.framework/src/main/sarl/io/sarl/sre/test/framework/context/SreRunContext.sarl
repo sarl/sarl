@@ -300,7 +300,11 @@ class SreRunContext {
 		try {
 			waitForTheKernel(timeout)
 		} catch (exception : SreTimeoutException | TimeoutException) {
-			kern.shutdown(true)
+			try {
+				kern.shutdown(true, STANDARD_TIMEOUT)
+			} catch (exception0 : Throwable) {
+				//
+			}
 			throw exception
 		}
 		return kern
@@ -484,7 +488,7 @@ class SreRunContext {
 			}
 			var isSreRunning = this.bootstrap.running
 			while (this.directFailureCause.get === null && isSreRunning &&
-				(endTime == -1 || System.currentTimeMillis() <= endTime)) {
+				(endTime == -1 || System::currentTimeMillis() <= endTime)) {
 				isSreRunning = this.bootstrap.isRunning() ||
 					(predicate !== null && (!(predicate.apply(this.globalResults))))
 				Thread.sleep(100)

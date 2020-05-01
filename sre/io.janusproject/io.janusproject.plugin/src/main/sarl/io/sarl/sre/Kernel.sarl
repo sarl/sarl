@@ -327,7 +327,7 @@ class Kernel {
 		 */
 		@SuppressWarnings("discouraged_reference")
 		def startAsync {
-			val thread = Executors::defaultThreadFactory().newThread(this)
+			val thread = Executors::defaultThreadFactory.newThread(this)
 			thread => [
 				name = "SRE kernel shutdown" // $NON-NLS-1$
 				daemon = false

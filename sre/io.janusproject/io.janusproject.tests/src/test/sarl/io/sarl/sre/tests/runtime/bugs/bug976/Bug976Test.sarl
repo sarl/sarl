@@ -32,7 +32,6 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static io.sarl.sre.test.framework.Constants.*
 import static io.sarl.tests.api.tools.TestAssertions.*
 
 /** Tests for issue #976: UnimplementedCapacityException when getting logging capacity.
@@ -58,7 +57,7 @@ class Bug976Test {
 	@Test
 	def run(extension rc : SreRunContext) : void {
 		assertException(SreTimeoutException) [
-			typeof(BootScalableAgent).runSre(SHORT_TIMEOUT)
+			typeof(BootScalableAgent).runSre
 		]
 	}
 

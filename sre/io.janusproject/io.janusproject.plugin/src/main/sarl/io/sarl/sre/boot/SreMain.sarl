@@ -53,6 +53,7 @@ import org.arakhne.afc.util.ListenerCollection
 import org.eclipse.xtend.lib.annotations.Accessors
 
 import static io.sarl.bootstrap.SRE.*
+import java.util.concurrent.Executors
 
 /** Class that implements the standard main function for running a SARL run-time environment
  * with bootique modules.
@@ -325,7 +326,14 @@ class SreMain implements SREBootstrap {
 		this.kernel = null
 		if (kern !== null) {
 			var stopBehavior = kern.shutdownTrigger
-			stopBehavior.run
+			assert stopBehavior !== null
+			// Asynchronous execution of the shutdown code
+			val thread = Executors::defaultThreadFactory.newThread(stopBehavior)
+			thread => [
+				name = "SRE kernel shutdown" // $NON-NLS-1$
+				daemon = false
+				start
+			]
 			if (blocking) {
 				if (timeout > 0) {
 					val endTime = System::currentTimeMillis + timeout
