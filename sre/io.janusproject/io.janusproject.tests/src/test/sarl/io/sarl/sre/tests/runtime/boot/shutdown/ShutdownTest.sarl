@@ -46,7 +46,6 @@ import static io.sarl.sre.test.framework.Constants.*
 import static io.sarl.tests.api.tools.TestTimeout.*
 
 import static extension io.sarl.tests.api.tools.TestAssertions.*
-import org.junit.jupiter.api.Disabled
 
 /**
  * @author $Author: sgalland$
@@ -89,12 +88,11 @@ class ShutdownTest {
 
 	@RepeatedTest(5)
 	@DisplayName("infinite-loop agent")
-	@Disabled
 	def shutdownWithAliveAgent(extension rc : SreRunContext) {
 		typeof(InfiniteLifeTestingAgent).setupTheSreKernel(null, null)
 		Thread::sleep(DELAY)
 		startTimeOut(Constants::VERY_SHORT_TIMEOUT, false) [
-			bootstrap.shutdown(true)
+			bootstrap.shutdown(true, Constants::SHORT_TIMEOUT)
 			return !bootstrap.isRunning
 		].run
 	}
@@ -106,7 +104,7 @@ class ShutdownTest {
 		sre.startAgent(typeof(InfiniteLifeTestingAgent), agentInitializationParameters)
 		Thread::sleep(DELAY)
 		startTimeOut(Constants::VERY_SHORT_TIMEOUT, false) [
-			bootstrap.shutdown(true)
+			bootstrap.shutdown(true, Constants::SHORT_TIMEOUT)
 			return !bootstrap.isRunning
 		].run
 	}
