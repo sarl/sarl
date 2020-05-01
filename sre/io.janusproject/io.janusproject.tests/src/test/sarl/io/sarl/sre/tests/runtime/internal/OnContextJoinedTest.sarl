@@ -30,7 +30,6 @@ import io.sarl.sre.tests.runtime.internal.mocks.ContextJoinedAgent1
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Tag
@@ -60,7 +59,6 @@ class OnContextJoinedTest {
 
 	@RepeatedTest(10)
 	@DisplayName("In root context")
-	@Disabled
 	def inRootContext(extension rc : SreRunContext) {
 		var kern = setupTheSreKernel(null, null)
 
@@ -90,7 +88,6 @@ class OnContextJoinedTest {
 
 	@RepeatedTest(10)
 	@DisplayName("In other context")
-	@Disabled
 	def inOtherContext(extension rc : SreRunContext) {
 		var kern = setupTheSreKernel(null, null)
 

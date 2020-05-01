@@ -37,7 +37,6 @@ import io.sarl.sre.tests.runtime.bugs.bug794.mocks.SpawnerAgent8
 import io.sarl.sre.tests.runtime.bugs.bug794.mocks.SpawnerAgent9
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
@@ -63,7 +62,6 @@ import static org.junit.jupiter.api.Assertions.*
 ])
 @DisplayName("run: Bug #794")
 @Tag("run")
-@Disabled
 class Bug794Test {
 
 	@Test

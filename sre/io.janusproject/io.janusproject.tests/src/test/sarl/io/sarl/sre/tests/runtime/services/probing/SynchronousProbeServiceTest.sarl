@@ -25,7 +25,6 @@ import io.sarl.sre.boot.configs.subconfigs.ServicesConfig
 import io.sarl.sre.services.probing.Probe
 import io.sarl.sre.services.probing.ProbeService
 import org.arakhne.afc.bootique.variables.VariableNames
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
 
@@ -37,7 +36,6 @@ import org.junit.jupiter.api.Tag
  */
 @DisplayName("run: SynchronousProbe service test")
 @Tag("run")
-@Disabled
 class SynchronousProbeServiceTest extends AbstractProbeServiceTest {
 
 	protected def runTestCase_prepare {
