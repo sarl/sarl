@@ -21,29 +21,10 @@
 
 package io.sarl.sre.tests.runtime.services.namespace.mocks
 
-import io.sarl.core.Lifecycle
-
 /**
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("all")
-agent NamespaceTestAgent {
-
-	uses Lifecycle
-
-	var myfield = 12
-
-	on ChangeField {
-		synchronized (this) {
-			this.myfield = 24
-		}
-	}
-
-	on StopTest {
-		killMe
-	}
-	
-}
+event StopTest

@@ -42,6 +42,7 @@ import static io.sarl.sre.test.framework.Constants.*
 import static extension io.sarl.sre.tests.framework.SreTestUtilities.*
 import static extension io.sarl.tests.api.tools.TestAssertions.*
 import static extension org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
 
 /**
  * @author $Author: sgalland$
@@ -57,10 +58,10 @@ import static extension org.junit.jupiter.api.Assertions.*
 ])
 @DisplayName("run: on SpaceDestroyed test")
 @Tag("run")
-@Disabled
 class SpaceDestroyedTest {
 
-	@RepeatedTest(10)
+	//@RepeatedTest(10)
+	@Test
 	@DisplayName("In default context")
 	@SuppressWarnings("discouraged_reference")
 	def run(extension rc : SreRunContext) {

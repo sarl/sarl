@@ -49,7 +49,6 @@ import java.util.logging.LogRecord
 import org.arakhne.afc.bootique.log4j.configs.Log4jIntegrationConfig
 import org.arakhne.afc.bootique.variables.VariableNames
 import org.eclipse.xtend.lib.annotations.Accessors
-import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
 import org.opentest4j.AssertionFailedError
 
 import static io.sarl.sre.test.framework.Constants.*
@@ -67,8 +66,6 @@ import static extension org.junit.jupiter.api.Assertions.assertEquals
  * @since 0.11
  */
 class SreRunContext {
-
-	val contextId = UUID::randomUUID
 
 	/** 
 	 * Reference to the instance of the root context.
@@ -528,21 +525,22 @@ class SreRunContext {
 		this.globalResults.clear
 	}
 
-	private def registerEventHandler(type : Class<? extends Event>, ^space : OpenEventSpace, code : Procedure1<?>) {
-		val callback = code as (Event)=>void
+	/** Register the test API as a weak participant into the space.
+	 */
+	private def registerEventHandler(type : Class<T>, ^space : OpenEventSpace, listenerId : UUID, code : (T)=>void) with T extends Event {
+		assert type !== null
+		assert listenerId !== null
+		assert code !== null
 		val spc = if (^space === null) this.rootContext.defaultSpace as OpenEventSpace else ^space;
 		spc.register(new EventListener {
-
 			def receiveEvent(^event : Event) {
 				if (type.isInstance(^event)) {
-					callback.apply(^event)
+					code.apply(type.cast(^event))
 				}
 			}
-
 			def getID : UUID {
-				SreRunContext.this.contextId
+				listenerId
 			}
-
 		}, true)
 	}
 
@@ -553,7 +551,7 @@ class SreRunContext {
 	 * @param code the code to run on agent spawned.
 	 */
 	def onEvent(type : Class<? extends Event>, ^space : OpenEventSpace = null, code : (Event)=>void) {
-		type.registerEventHandler(^space, code)
+		type.registerEventHandler(^space, UUID::randomUUID, code)
 	}
 	
 	/** Register the given code for agent spawns.
@@ -562,7 +560,7 @@ class SreRunContext {
 	 * @param code the code to run on agent spawned.
 	 */
 	def onAgentSpawned(^space : OpenEventSpace = null, code : (AgentSpawned)=>void) {
-		typeof(AgentSpawned).registerEventHandler(^space, code)
+		typeof(AgentSpawned).registerEventHandler(^space, UUID::randomUUID, code)
 	}
 
 	/** Register the given code for agent kills.
@@ -571,7 +569,7 @@ class SreRunContext {
 	 * @param code the code to run on agent killing.
 	 */
 	def onAgentKilled(^space : OpenEventSpace = null, code : (AgentKilled)=>void) {
-		typeof(AgentKilled).registerEventHandler(^space, code)
+		typeof(AgentKilled).registerEventHandler(^space, UUID::randomUUID, code)
 	}
 
 	/** Register the given code for space destroyed.
@@ -580,7 +578,7 @@ class SreRunContext {
 	 * @param code the code to run on space destroyed.
 	 */
 	def onSpaceDestroyed(^space : OpenEventSpace = null, code : (SpaceDestroyed)=>void) {
-		typeof(SpaceDestroyed).registerEventHandler(^space, code)
+		typeof(SpaceDestroyed).registerEventHandler(^space, UUID::randomUUID, code)
 	}
 
 	/** Register a listener on agent spawned that is waiting for a specific agent.
@@ -647,10 +645,11 @@ class SreRunContext {
 	 * 
 	 * @param id the identifier of the agent to wait for.
 	 * @param space the space to listen into. If {@code null}, the default space of the root context is used.
+	 * @param timeout the waiting duration before a timeout.
 	 * @param code the code to run and wait for the agent killing.
 	 * @return the object that permits to wait for the kills.
 	 */
-	def waitForAgentKilled(id : UUID, ^space : OpenEventSpace = null, code : (UUID)=>void = null) : Wait {
+	def waitForAgentKilled(id : UUID, ^space : OpenEventSpace = null, timeout : int = STANDARD_TIMEOUT, code : (UUID)=>void = null) : Wait {
 		val lock = new AtomicBoolean
 		onAgentKilled(^space) [
 			if (it.source.UUID == id) {
@@ -660,7 +659,7 @@ class SreRunContext {
 		val w = new BooleanWait(lock, this.directFailureCause)
 		if (code !== null) {
 			code.apply(id)
-			w.doWait
+			w.doWait(timeout)
 		}
 		return w
 	}
@@ -674,10 +673,11 @@ class SreRunContext {
 	 * 
 	 * @param identifiers are the identifiers of the agents to wait for.
 	 * @param space the space to listen into. If {@code null}, the default space of the root context is used.
+	 * @param timeout the waiting duration before a timeout.
 	 * @param code the code to run and wait for the agent killing.
 	 * @return the object that permits to wait for the kills.
 	 */
-	def waitForAgentKilled(identifiers : UUID[], ^space : OpenEventSpace = null, code : ()=>void = null) : Wait {
+	def waitForAgentKilled(identifiers : UUID[], ^space : OpenEventSpace = null, timeout : int = STANDARD_TIMEOUT, code : ()=>void = null) : Wait {
 		val lock = new ConcurrentSkipListSet(identifiers)
 		onAgentKilled(^space) [
 			lock.remove(it.source.UUID)
@@ -685,7 +685,7 @@ class SreRunContext {
 		val w = new CollectionWait(lock, this.directFailureCause)
 		if (code !== null) {
 			code.apply()
-			w.doWait
+			w.doWait(timeout)
 		}
 		return w
 	}

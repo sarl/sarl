@@ -23,9 +23,11 @@ package io.sarl.sre.tests.runtime.internal
 
 import io.sarl.core.AgentSpawned
 import io.sarl.lang.core.SpaceID
+import io.sarl.sre.test.framework.Constants
 import io.sarl.sre.test.framework.context.SreRunContext
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.^extension.SreRunExtension
+import io.sarl.sre.tests.runtime.internal.mocks.DifferedKillAgent
 import io.sarl.sre.tests.runtime.internal.mocks.MySpawnedAgent0
 import io.sarl.sre.tests.runtime.internal.mocks.MyWaiterAgent0
 import io.sarl.tests.api.extensions.ContextInitExtension
@@ -56,9 +58,9 @@ import static extension io.sarl.tests.api.tools.TestUtils.*
 @Tag("run")
 class OnAgentSpawnedTest {
 
-	@RepeatedTest(5)
-	@DisplayName("run")
-	def run(extension rc : SreRunContext) {
+	@RepeatedTest(20)
+	@DisplayName("strong participants")
+	def strongParticipants(extension rc : SreRunContext) {
 		typeof(MyWaiterAgent0).runSre
 		
 		var all = allResults
@@ -75,5 +77,18 @@ class OnAgentSpawnedTest {
 		assertEquals(^space, ^event.source.spaceID)
 		assertEquals(^event.agentID, spawnId)
 	}
-	
+
+	/** This test checks if the weak participants are also notified with the AgentSpawned events.
+	 * The testing API of the SRE uses weak participants for reacting to the events.
+	 */
+	@RepeatedTest(20)
+	@DisplayName("weak participants")
+	def weakParticipants(extension rc : SreRunContext) : void {
+		var kern = setupTheSreKernel(null, null)
+		val aid = UUID::randomUUID
+		waitForAgentSpawned(aid, Constants::NO_TIMEOUT) [
+			kern.startAgentWithID(typeof(DifferedKillAgent), aid, agentInitializationParameters)
+		]
+	}
+
 }

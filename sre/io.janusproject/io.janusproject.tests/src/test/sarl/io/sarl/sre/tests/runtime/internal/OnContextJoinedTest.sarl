@@ -56,11 +56,11 @@ import static extension org.junit.jupiter.api.Assertions.*
 ])
 @DisplayName("run: on MemberJoined test")
 @Tag("run")
-@Disabled
 class OnContextJoinedTest {
 
 	@RepeatedTest(10)
 	@DisplayName("In root context")
+	@Disabled
 	def inRootContext(extension rc : SreRunContext) {
 		var kern = setupTheSreKernel(null, null)
 
@@ -90,6 +90,7 @@ class OnContextJoinedTest {
 
 	@RepeatedTest(10)
 	@DisplayName("In other context")
+	@Disabled
 	def inOtherContext(extension rc : SreRunContext) {
 		var kern = setupTheSreKernel(null, null)
 

@@ -21,10 +21,14 @@
 
 package io.sarl.sre.tests.runtime.services.namespace
 
-import io.sarl.sre.services.namespace.NamespaceService
-import org.junit.jupiter.api.Disabled
+import io.sarl.sre.services.namespace.FieldAccess
+import io.sarl.sre.test.framework.context.SreRunContext
+import java.util.UUID
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.RepeatedTest
+
+import static extension org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
 
 /**
  * @author $Author: sgalland$
@@ -32,21 +36,37 @@ import org.junit.jupiter.api.Tag
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@DisplayName("run: FinderBasedNamespace service test")
-@Tag("run")
-@Disabled
 class FinderBasedNamespaceServiceTest extends AbstractNamespaceServiceTest {
 
-	protected override runTestCase_prepare {
+	@RepeatedTest(5)
+	@DisplayName("Unknown agent")
+	def accessUnknownAgent(extension rc : SreRunContext) : void {
+		var service = rc.startTestingFramework
+
+		val id = UUID::randomUUID
+
+		var namedObject = service.findObject("agent:" + id + "#myfield")
+		namedObject.assertNull
 	}
 
-	protected override runTestCase_beforeChangeField(service : NamespaceService, namedObject : Object) {
-	}
+//	@RepeatedTest(5)
+//	@DisplayName("Get agent field")
+//	def accessAgentField(extension rc : SreRunContext) : void {
+//		var field = rc.runTestCase(typeof(FieldAccess)) ["agent:" + it + "#myfield"]
+//
+//		"myfield".assertEquals(field.field.name)
+//
+//		"int".assertEquals(field.field.type.simpleName)
+//
+//		24.assertEquals(field.get as Integer)
+//	}
 
-	protected override runTestCase_beforeStopTest(service : NamespaceService, namedObject : Object) {
-	}
-
-	protected override runTestCase_afterStopTest(service : NamespaceService, namedObject : Object) {
+	//@RepeatedTest(5)
+	@Test
+	@DisplayName("Unknown field in known agent")
+	def accessAgentUnknownField(extension rc : SreRunContext) : void {
+		var x = rc.runTestCase(typeof(FieldAccess), false)["agent:" + it + "#myfield_unknown"]
+		x.assertNull
 	}
 
 }

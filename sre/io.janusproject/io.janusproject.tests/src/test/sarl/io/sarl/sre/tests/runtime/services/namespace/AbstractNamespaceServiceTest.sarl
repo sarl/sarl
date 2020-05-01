@@ -21,7 +21,6 @@
 
 package io.sarl.sre.tests.runtime.services.namespace
 
-import io.sarl.sre.services.namespace.FieldAccess
 import io.sarl.sre.services.namespace.NamespaceService
 import io.sarl.sre.test.framework.context.SreRunContext
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
@@ -32,9 +31,6 @@ import io.sarl.sre.tests.runtime.services.namespace.mocks.StopTest
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.^extension.ExtendWith
 
 import static io.sarl.sre.test.framework.Constants.*
@@ -55,11 +51,6 @@ import static extension org.junit.jupiter.api.Assertions.*
 ])
 abstract class AbstractNamespaceServiceTest {
 
-	@BeforeEach
-	def setUp : void {
-		//
-	}
-
 	protected def startTestingFramework(extension rc : SreRunContext) : NamespaceService {
 		runTestCase_prepare
 		var kern = setupTheSreKernel(null, null)
@@ -71,17 +62,14 @@ abstract class AbstractNamespaceServiceTest {
 	@SuppressWarnings("discouraged_reference")
 	protected def runTestCase(extension rc : SreRunContext, type : Class<T>, 
 		throwIfNull : boolean = true, urlBuilder : (UUID)=>String) : T with T {
-		runTestCase_prepare
-
-		var kern = setupTheSreKernel(null, null)
-		var service = kern.getService(typeof(NamespaceService))
-		service.assertNotNull
+		
+		var service = rc.startTestingFramework
 
 		val bid = UUID::randomUUID
 		
 		var w0 = waitForAgentSpawned(bid)
 		
-		kern.startAgentWithID(typeof(NamespaceTestAgent), bid, getAgentInitializationParameters)
+		rc.bootstrap.startAgentWithID(typeof(NamespaceTestAgent), bid, getAgentInitializationParameters)
 
 		w0.doWait
 
@@ -106,42 +94,16 @@ abstract class AbstractNamespaceServiceTest {
 		return type.cast(namedObject)
 	}
 
-	@RepeatedTest(5)
-	@DisplayName("Unknown agent")
-	def accessUnknownAgent(extension rc : SreRunContext) : void {
-		var service = rc.startTestingFramework
-
-		val id = UUID::randomUUID
-
-		var namedObject = service.findObject("agent:" + id + "#myfield")
-		namedObject.assertNull
+	protected def runTestCase_prepare {
 	}
 
-	@RepeatedTest(5)
-	@DisplayName("Get agent field")
-	def accessAgentField(extension rc : SreRunContext) : void {
-		var field = rc.runTestCase(typeof(FieldAccess)) ["agent:" + it + "#myfield"]
-
-		"myfield".assertEquals(field.field.name)
-
-		"int".assertEquals(field.field.type.simpleName)
-
-		24.assertEquals(field.get as Integer)
+	protected def runTestCase_beforeChangeField(service : NamespaceService, namedObject : Object) {
 	}
 
-	@RepeatedTest(5)
-	@DisplayName("Unknown field")
-	def accessAgentUnknownField(extension rc : SreRunContext) : void {
-		var x = rc.runTestCase(typeof(FieldAccess), false)["agent:" + it + "#myfield_unknown"]
-		x.assertNull
+	protected def runTestCase_beforeStopTest(service : NamespaceService, namedObject : Object) {
 	}
 
-	protected abstract def runTestCase_prepare
-
-	protected abstract def runTestCase_beforeChangeField(service : NamespaceService, namedObject : Object)
-
-	protected abstract def runTestCase_beforeStopTest(service : NamespaceService, namedObject : Object)
-
-	protected abstract def runTestCase_afterStopTest(service : NamespaceService, namedObject : Object)
+	protected def runTestCase_afterStopTest(service : NamespaceService, namedObject : Object) {
+	}
 
 }

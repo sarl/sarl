@@ -124,12 +124,12 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 	/**
 	 * Register the specified entity on this space
 	 * @param entity - the entity to be registered
-	 * @param weakParticipant - boolean (default true) specifying if the specified entity may prevent the space 
+	 * @param weakParticipant - boolean specifying if the specified entity may prevent the space 
 	 * from the destruction if it is the only remaining entity within this space. 
 	 * A Weak participant will not prevent the space from begin destroyed if it is the only one staying in it, a Strong participant will prevent it.
 	 * A space containing only Weak participants will be destroyed by the SRE Kernel  
 	 */
-	protected final def registerToSpace(entity : EventListener, weakParticipant : boolean = true) : Address {
+	protected final def registerToSpace(entity : EventListener, weakParticipant : boolean) : Address {
 		assert entity !== null
 		var id = entity.ID
 		var address = new Address(this.spaceID, id)
@@ -137,9 +137,13 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 		assert(id !== null)
 		assert(participant !== null)
 		if (weakParticipant) {
-			this.weakRepository.putIfAbsent(id, participant)
+			assert !this.strongRepository.containsKey(id), "You cannot register a space participant as weak and strong at the same time"
+			assert !this.weakRepository.containsKey(id), "Multiple registration of the same space participant"
+			this.weakRepository.put(id, participant)
 		} else {
-			this.strongRepository.putIfAbsent(id, participant)
+			assert !this.weakRepository.containsKey(id), "You cannot register a space participant as weak and strong at the same time"
+			assert !this.strongRepository.containsKey(id), "Multiple registration of the same space participant"
+			this.strongRepository.put(id, participant)
 		}
 
 		getSpaceParticipantListener?.participantJoined(participant)
@@ -226,14 +230,20 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 	protected def getScopedParticipants(scope : Scope<? super Address>) : ConcurrentLinkedDeque<Participant> {
 		val scopedParticipants = new ConcurrentLinkedDeque
 		if (scope === null) {
-			strongRepository.forEach[id, participant|scopedParticipants += participant]		
-			weakRepository.forEach[id, participant|scopedParticipants += participant]
+			// No scope => add all the strong and weak participants
+			scopedParticipants += this.strongRepository.values
+			scopedParticipants += this.weakRepository.values
 		} else {
-			strongRepository.filter[id, p|scope.matches(p.address)].forEach [ id, participant |
-				scopedParticipants += participant
+			// Scope => add the strong and weak participants that are matching the scope
+			this.strongRepository.forEachValue(1) [element |
+				if (scope.matches(element.address)) {
+					scopedParticipants += element
+				}
 			]
-			weakRepository.filter[id, p|scope.matches(p.address)].forEach [ id, participant |
-				scopedParticipants += participant
+			this.weakRepository.forEachValue(1) [ element |
+				if (scope.matches(element.address)) {
+					scopedParticipants += element
+				}
 			]
 		}
 		return scopedParticipants
@@ -255,28 +265,27 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 		// The emit process is run in the current thread.
 		// The reception process should be treated into a separate thread in order
 		// to never block the sender process.
-		val participants = getScopedParticipants(scope)
-		if (participants !== null) {
-			for (it : participants) {
-				it.getParticipant.receiveEvent(^event)
-			}
+		val participants = scope.scopedParticipants
+		assert participants !== null
+		for (it : participants) {
+			it.getParticipant.receiveEvent(^event)
 		}
 	}
 
 	@Pure
 	override getNumberOfStrongParticipants : int {
-		strongRepository.size
+		this.strongRepository.size
 	}
 
 	@Pure
 	def getNumberOfWeakParticipants : int {
-		weakRepository.size
+		this.weakRepository.size
 	}
 
 
 	@Pure
 	override isPseudoEmpty(id : UUID) : boolean {
-		val struct = strongRepository
+		val struct = this.strongRepository
 		val sz = struct.size
 		if (sz <= 0) {
 			return true
@@ -288,24 +297,26 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 	}
 
 	override forEachStrongParticipant(callback : (UUID)=>void) {
-		strongRepository.forEach[id, participant|callback.apply(id)] 	// see if participant.address.UUID is better
+		// TODO: see if participant.address.UUID is better
+		this.strongRepository.forEach[id, participant|callback.apply(id)]
 	}
 
 	override forEachWeakParticipant(callback : (UUID)=>void) {
-		weakRepository.forEach[id, participant|callback.apply(id)] 		// see if participant.address.UUID is better
+		// TODO: see if participant.address.UUID is better
+		this.weakRepository.forEach[id, participant|callback.apply(id)]
 	}
 
 	override forEachStrongParticipant(callback : (UUID, Participant)=>void) {
-		strongRepository.forEach[id, participant|callback.apply(id, participant)]
+		this.strongRepository.forEach[id, participant|callback.apply(id, participant)]
 	}
 
 	override forEachWeakParticipant(callback : (UUID, Participant)=>void) {
-		weakRepository.forEach[id, participant|callback.apply(id, participant)]		
+		this.weakRepository.forEach[id, participant|callback.apply(id, participant)]		
 	}
 
 	override getListenerFromStrongParticipant(target : UUID) : EventListener {
 		var participant = this.strongRepository?.get(target)
-		return participant.participant		
+		return participant?.participant		
 	}
 	
 }

@@ -6,7 +6,7 @@
  *
  * Copyright (C) 2014-2020 the original authors or authors.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -19,9 +19,11 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.tests.runtime.services.namespace.mocks
+package io.sarl.sre.tests.runtime.internal.mocks
 
+import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
+import io.sarl.core.Schedules
 
 /**
  * @author $Author: sgalland$
@@ -29,21 +31,12 @@ import io.sarl.core.Lifecycle
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("all")
-agent NamespaceTestAgent {
-
-	uses Lifecycle
-
-	var myfield = 12
-
-	on ChangeField {
-		synchronized (this) {
-			this.myfield = 24
-		}
-	}
-
-	on StopTest {
-		killMe
-	}
+agent DifferedKillAgent {
 	
+	uses Schedules, Lifecycle
+
+	on Initialize {
+		in(500) [ killMe ]
+	}
+
 }
