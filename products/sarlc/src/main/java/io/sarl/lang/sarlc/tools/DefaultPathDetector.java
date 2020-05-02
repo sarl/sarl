@@ -86,8 +86,8 @@ public class DefaultPathDetector implements PathDetector {
 	public void resolve(List<String>  args) throws IOException {
 		if (this.sarlOutputPath == null || this.tempPath == null || this.classOutputPath == null) {
 			final Iterable<File> cliFiles = Iterables.transform(
-					args,
-					it -> toFile(it));
+				args,
+				it -> toFile(it));
 			File root = determineCommonRoot(Iterables.concat(
 					cliFiles,
 					Collections.singleton(this.sarlOutputPath),

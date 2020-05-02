@@ -968,8 +968,8 @@ public abstract class AbstractSARLLaunchConfigurationDelegate extends AbstractJa
 				// a SRE that is inside the class path.
 				// The name of the main class is then no saved in the launch configuration properties.
 				final ISREInstall sre = getSREInstallFor(this.configuration,
-						AbstractSARLLaunchConfigurationDelegate.this.configAccessor,
-						cfg -> getJavaProject(cfg));
+					AbstractSARLLaunchConfigurationDelegate.this.configAccessor,
+					cfg -> getJavaProject(cfg));
 				if (sre != null) {
 					setMainTypeName(sre.getMainClass());
 				}

@@ -379,7 +379,7 @@ public abstract class AbstractConversionTable extends AbstractExtraControl {
 		final String rawValue = Strings.emptyIfNull(ctrl.getValue(preferenceName));
 		final List<Pair<String, String>> conversions = new ArrayList<>();
 		ExtraLanguagePreferenceAccess.parseConverterPreferenceValue(rawValue,
-				(source, target) -> conversions.add(new Pair<>(source, target)));
+			(source, target) -> conversions.add(new Pair<>(source, target)));
 		setTypeConversions(conversions, false);
 	}
 

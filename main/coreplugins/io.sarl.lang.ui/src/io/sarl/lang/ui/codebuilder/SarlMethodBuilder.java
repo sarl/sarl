@@ -154,7 +154,7 @@ public class SarlMethodBuilder extends XtendMethodBuilder {
 				final JvmTypeParameter typeParameter = iterator.next();
 				appendable.append(this.keywords.protectKeyword(typeParameter.getName()));
 				final Iterable<JvmUpperBound> upperBounds =
-						Iterables.filter(Iterables.filter(typeParameter.getConstraints(), JvmUpperBound.class),
+					Iterables.filter(Iterables.filter(typeParameter.getConstraints(), JvmUpperBound.class),
 						it -> !it.getTypeReference().getIdentifier().equals(objectId));
 				final Iterator<JvmUpperBound> iterator2 = upperBounds.iterator();
 				if (iterator2.hasNext()) {

@@ -95,17 +95,17 @@ public class NewSarlBehaviorWizardPage extends AbstractNewSarlElementWizardPage 
 		behavior.setDocumentation(comment);
 		mon.worked(1);
 		createStandardSARLEventTemplates(Messages.NewSarlBehaviorWizardPage_4,
-				name -> behavior.addSarlBehaviorUnit(name),
-				name -> behavior.addSarlCapacityUses(name));
+			name -> behavior.addSarlBehaviorUnit(name),
+			name -> behavior.addSarlCapacityUses(name));
 		mon.worked(2);
 		if (behavior.getSarlBehavior().getExtends() != null) {
 			createInheritedMembers(
-					Behavior.class.getCanonicalName(),
-					behavior.getSarlBehavior(),
-					true,
-					() -> behavior.addSarlConstructor(),
-					name -> behavior.addOverrideSarlAction(name),
-					getSuperClass());
+				Behavior.class.getCanonicalName(),
+				behavior.getSarlBehavior(),
+				true,
+				() -> behavior.addSarlConstructor(),
+				name -> behavior.addOverrideSarlAction(name),
+				getSuperClass());
 		}
 		mon.worked(3);
 		scriptBuilder.build(appender);

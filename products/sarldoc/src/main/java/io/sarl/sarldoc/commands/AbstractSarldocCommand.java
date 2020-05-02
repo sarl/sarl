@@ -579,8 +579,8 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 		final Set<String> allFiles = new TreeSet<>();
 		final PathTraverser pathTraverser = new PathTraverser();
 		final Multimap<String, org.eclipse.emf.common.util.URI> pathes = pathTraverser.resolvePathes(
-				sourcePaths.toFilenameList(),
-				input -> Objects.equals(JAVA_FILE_EXTENSION, input.fileExtension()));
+			sourcePaths.toFilenameList(),
+			input -> Objects.equals(JAVA_FILE_EXTENSION, input.fileExtension()));
 		for (final Entry<String, org.eclipse.emf.common.util.URI> entry : pathes.entries()) {
 			final String filename = entry.getValue().toFileString();
 			final File file = FileSystem.convertStringToFile(filename);

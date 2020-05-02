@@ -97,7 +97,7 @@ public class SARLJdtPackageRenameParticipant extends AbstractProcessorBasedRenam
 			resourceObjects = Collections.emptyList();
 		}
 		return Iterators.filter(Iterators.filter(resourceObjects.iterator(), IFile.class),
-				it -> it.getName().endsWith(this.fileExtension));
+			it -> it.getName().endsWith(this.fileExtension));
 	}
 
 	@Override

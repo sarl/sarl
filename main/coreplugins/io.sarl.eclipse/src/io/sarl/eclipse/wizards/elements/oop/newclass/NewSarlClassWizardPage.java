@@ -98,13 +98,13 @@ public class NewSarlClassWizardPage extends AbstractNewSarlElementWizardPage {
 		clazz.setDocumentation(comment);
 		mon.worked(1);
 		createInheritedMembers(
-				Object.class.getCanonicalName(),
-				clazz.getSarlClass(),
-				true,
-				() -> clazz.addSarlConstructor(),
-				name -> clazz.addOverrideSarlAction(name),
-				superType,
-				getSuperInterfaces());
+			Object.class.getCanonicalName(),
+			clazz.getSarlClass(),
+			true,
+			() -> clazz.addSarlConstructor(),
+			name -> clazz.addOverrideSarlAction(name),
+			superType,
+			getSuperInterfaces());
 		mon.worked(2);
 		scriptBuilder.build(appender);
 		mon.done();

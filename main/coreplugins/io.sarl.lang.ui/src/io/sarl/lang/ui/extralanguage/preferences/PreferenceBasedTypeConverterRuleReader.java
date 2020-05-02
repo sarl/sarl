@@ -53,7 +53,7 @@ public class PreferenceBasedTypeConverterRuleReader extends TypeConverterRuleRea
 			final String rawValue = ExtraLanguagePreferenceAccess.getString(store, context.getPreferenceID(),
 							ExtraLanguagePreferenceAccess.TYPE_CONVERSION_PROPERTY);
 			return ExtraLanguagePreferenceAccess.parseConverterPreferenceValue(rawValue,
-					(source, target) -> result.put(source, target));
+				(source, target) -> result.put(source, target));
 		}
 		return false;
 	}

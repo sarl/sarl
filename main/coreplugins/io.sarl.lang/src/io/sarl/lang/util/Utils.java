@@ -1763,7 +1763,7 @@ public final class Utils {
 		final XAbstractFeatureCall rootFeatureCall;
 		if (container instanceof XMemberFeatureCall || container instanceof XFeatureCall) {
 			rootFeatureCall = (XAbstractFeatureCall) getFirstContainerForPredicate(featureCall,
-					it -> it.eContainer() != null && !(it.eContainer() instanceof XMemberFeatureCall || it.eContainer() instanceof XFeatureCall));
+				it -> it.eContainer() != null && !(it.eContainer() instanceof XMemberFeatureCall || it.eContainer() instanceof XFeatureCall));
 		} else {
 			rootFeatureCall = featureCall;
 		}

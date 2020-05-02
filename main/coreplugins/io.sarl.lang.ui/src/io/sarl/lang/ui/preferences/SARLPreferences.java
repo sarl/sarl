@@ -185,8 +185,8 @@ public final class SARLPreferences {
 		final IPreferenceStore preferenceStore = getSARLPreferencesFor(project);
 		if (preferenceStore.getBoolean(IS_PROJECT_SPECIFIC)) {
 			final OutputConfiguration projectConfiguration = Iterables.find(
-					getXtextConfigurationsFor(project),
-					it -> Objects.equals(it.getName(), IFileSystemAccess.DEFAULT_OUTPUT));
+				getXtextConfigurationsFor(project),
+				it -> Objects.equals(it.getName(), IFileSystemAccess.DEFAULT_OUTPUT));
 			if (projectConfiguration != null) {
 				final String key = BuilderPreferenceAccess.getKey(
 						projectConfiguration,
@@ -209,8 +209,8 @@ public final class SARLPreferences {
 		final IOutputConfigurationProvider configurationProvider =
 				injector.getInstance(IOutputConfigurationProvider.class);
 		final OutputConfiguration config = Iterables.find(
-				configurationProvider.getOutputConfigurations(),
-				it -> Objects.equals(it.getName(), IFileSystemAccess.DEFAULT_OUTPUT));
+			configurationProvider.getOutputConfigurations(),
+			it -> Objects.equals(it.getName(), IFileSystemAccess.DEFAULT_OUTPUT));
 		if (config != null) {
 			final String path = config.getOutputDirectory();
 			if (!Strings.isNullOrEmpty(path)) {
@@ -233,8 +233,8 @@ public final class SARLPreferences {
 		final IOutputConfigurationProvider configurationProvider =
 				injector.getInstance(IOutputConfigurationProvider.class);
 		final OutputConfiguration config = Iterables.find(
-				configurationProvider.getOutputConfigurations(),
-				it -> Objects.equals(it.getName(), SARLConfig.TEST_OUTPUT_CONFIGURATION));
+			configurationProvider.getOutputConfigurations(),
+			it -> Objects.equals(it.getName(), SARLConfig.TEST_OUTPUT_CONFIGURATION));
 		if (config != null) {
 			final String path = config.getOutputDirectory();
 			if (!Strings.isNullOrEmpty(path)) {

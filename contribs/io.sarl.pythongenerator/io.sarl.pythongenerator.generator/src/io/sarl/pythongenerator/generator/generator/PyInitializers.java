@@ -62,9 +62,9 @@ public final class PyInitializers {
 
 	private static List<Pair<String, String>> loadPropertyFile(String filename) {
 		return AbstractExtraLanguageGenerator.loadPropertyFile(filename,
-				PyGeneratorPlugin.getDefault(),
-				PyInitializers.class,
-				exception -> PyGeneratorPlugin.getDefault().createStatus(IStatus.ERROR, exception));
+			PyGeneratorPlugin.getDefault(),
+			PyInitializers.class,
+			exception -> PyGeneratorPlugin.getDefault().createStatus(IStatus.ERROR, exception));
 	}
 
 	/** Replies the initializer for the type converter.

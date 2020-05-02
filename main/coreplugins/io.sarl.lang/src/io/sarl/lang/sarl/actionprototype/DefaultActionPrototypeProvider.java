@@ -527,8 +527,7 @@ public class DefaultActionPrototypeProvider implements IActionPrototypeProvider 
 					fieldName = Utils.createNameForHiddenDefaultValueAttribute(fieldId);
 				}
 
-				final JvmField field = Iterables.find(target.getDeclaredFields(),
-						it -> Objects.equals(it.getSimpleName(), fieldName),
+				final JvmField field = Iterables.find(target.getDeclaredFields(), it -> Objects.equals(it.getSimpleName(), fieldName),
 						null);
 				if (field != null) {
 					final String value = this.annotationUtils.findStringValue(field, SarlSourceCode.class);

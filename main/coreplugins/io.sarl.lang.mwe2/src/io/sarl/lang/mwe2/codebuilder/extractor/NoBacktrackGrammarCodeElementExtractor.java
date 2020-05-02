@@ -57,7 +57,7 @@ public class NoBacktrackGrammarCodeElementExtractor extends AbstractCodeElementE
 		if (topRule != null) {
 			final EClassifier commonType = getGeneratedTypeFor(topRule);
 			final Iterable<Action> filteredElements = Iterables.filter(GrammarUtil.containedActions(topRule),
-					it -> !Strings.isEmpty(it.getFeature()));
+				it -> !Strings.isEmpty(it.getFeature()));
 			return Iterables.transform(filteredElements, it -> {
 				final EClassifier classifier = it.getType().getClassifier();
 				final String name = classifier.getName();
@@ -122,8 +122,8 @@ public class NoBacktrackGrammarCodeElementExtractor extends AbstractCodeElementE
 			final EObject consContainer = getContainerInRule(grammarContainer, expressionAssignment);
 			if (consContainer != null
 				&& !IterableExtensions.exists(GrammarUtil.containedAssignments(consContainer),
-						it -> getCodeBuilderConfig()
-						.getMemberNameExtensionGrammarName().equals(it.getFeature()))) {
+					it -> getCodeBuilderConfig()
+					.getMemberNameExtensionGrammarName().equals(it.getFeature()))) {
 				final EClassifier classifier = getGeneratedTypeFor(consContainer);
 				if (!treatedConstructors.contains(classifier.getName())) {
 					treatedConstructors.add(classifier.getName());

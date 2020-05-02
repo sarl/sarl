@@ -1686,7 +1686,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 					&& context.getParentContext() == null
 					&& this.annotationFinder.findAnnotation(operation, Inline.class) == null) {
 				context.getPostFinalizationElements().add(
-						() -> this.inlineExpressionCompiler.appendInlineAnnotation(operation, source));
+					() -> this.inlineExpressionCompiler.appendInlineAnnotation(operation, source));
 			}
 
 			// Add @Override annotation
@@ -2326,7 +2326,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 
 					// Create the body
 					setBody(op,
-							it -> {
+						it -> {
 							it.append(redefinedOperation.getSimpleName());
 							it.append("("); //$NON-NLS-1$
 							it.append(IterableExtensions.join(arguments, ", ")); //$NON-NLS-1$
@@ -3580,8 +3580,7 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		}), it -> (JvmConstructor) it);
 
 		// Sort the constructor in order to always add them in the same order.
-		final SortedSet<Pair<JvmConstructor, ActionParameterTypes>> sortedConstructors = new TreeSet<>(
-				(elt1, elt2) -> elt1.getValue().compareTo(elt2.getValue()));
+		final SortedSet<Pair<JvmConstructor, ActionParameterTypes>> sortedConstructors = new TreeSet<>((elt1, elt2) -> elt1.getValue().compareTo(elt2.getValue()));
 		for (final JvmConstructor constructor : constructors) {
 			final ActionParameterTypes types = this.sarlSignatureProvider.createParameterTypesFromJvmModel(
 					constructor.isVarArgs(), constructor.getParameters());

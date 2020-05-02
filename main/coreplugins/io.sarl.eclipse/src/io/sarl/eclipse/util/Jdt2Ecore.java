@@ -502,7 +502,7 @@ public class Jdt2Ecore {
 					final ISarlConstructorBuilder cons = codeBuilder.addConstructor();
 					// Create parameters
 					final IFormalParameterBuilder[] sarlParams = createFormalParametersWith(
-							name -> cons.addParameter(name), constructor);
+						name -> cons.addParameter(name), constructor);
 					// Create the block
 					final IBlockExpressionBuilder block = cons.getExpression();
 					// Create thre super-call expression
@@ -543,7 +543,7 @@ public class Jdt2Ecore {
 					final ISarlActionBuilder action = codeBuilder.addAction(operation.getElementName());
 					action.setReturnType(Signature.toString(operation.getReturnType()));
 					final IFormalParameterBuilder[] sarlParams = createFormalParametersWith(
-							name -> action.addParameter(name), operation);
+						name -> action.addParameter(name), operation);
 					if (context != null) {
 						final JvmType type = this.typeReferences.findDeclaredType(
 								operation.getDeclaringType().getFullyQualifiedName(),

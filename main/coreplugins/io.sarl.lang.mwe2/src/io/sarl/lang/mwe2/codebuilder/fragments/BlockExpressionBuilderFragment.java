@@ -866,7 +866,7 @@ public class BlockExpressionBuilderFragment extends AbstractSubCodeBuilderFragme
 				if (rule != null) {
 					final BlockExpressionContextDescription description =
 							getCodeElementExtractor().visitMemberElements(containerDescription, rule, null,
-						(it, grammarContainer, memberContainer, classifier) -> {
+								(it, grammarContainer, memberContainer, classifier) -> {
 									final Assignment expressionAssignment = findAssignmentFromTerminalPattern(
 											memberContainer,
 											getExpressionConfig().getBlockExpressionGrammarPattern());
