@@ -86,6 +86,9 @@ class SreRunContext {
 	@Accessors(PUBLIC_GETTER)
 	volatile var bootAgentId : UUID
 
+	@Accessors
+	var executableName : String
+
 	def getBootOrFirstAgentId : UUID {
 		var id = getBootAgentId
 		if (id === null) {

@@ -62,6 +62,7 @@ class SreRunExtension implements ParameterResolver, InvocationInterceptor {
 		SRE::resetServiceLoader
 		SRE::bootstrap = null
 		var context = new SreRunContext
+		context.executableName = parameterContext.declaringExecutable.declaringClass.name + "#" + parameterContext.declaringExecutable.name
 		return context
 	}
 
