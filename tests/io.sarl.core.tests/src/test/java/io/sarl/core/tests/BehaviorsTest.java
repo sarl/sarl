@@ -27,6 +27,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.core.Behavior;
@@ -43,6 +44,8 @@ import io.sarl.lang.core.Scope;
  */
 @SuppressWarnings("all")
 @DisplayName("Behaviors")
+@Tag("unit")
+@Tag("api")
 public class BehaviorsTest extends AbstractSarlCoreTest<Capacity> {
 
 	@BeforeEach

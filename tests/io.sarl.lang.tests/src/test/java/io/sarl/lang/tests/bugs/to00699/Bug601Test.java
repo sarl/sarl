@@ -28,6 +28,7 @@ import static io.sarl.tests.api.tools.TestValidator.validate;
 import org.eclipse.xtend.core.xtend.XtendPackage;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlPackage;
@@ -46,6 +47,8 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  */
 @DisplayName("Bug #601")
 @SuppressWarnings("all")
+@Tag("core")
+@Tag("sarlValidation")
 public class Bug601Test extends AbstractSarlTest {
 
 	private static final String SNIPSET1 = multilineString(

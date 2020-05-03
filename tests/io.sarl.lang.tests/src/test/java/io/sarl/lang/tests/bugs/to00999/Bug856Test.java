@@ -27,6 +27,7 @@ import static io.sarl.tests.api.tools.TestValidator.validate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -47,6 +48,7 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  */
 @DisplayName("Bug #856")
 @SuppressWarnings("all")
+@Tag("core")
 public class Bug856Test extends AbstractSarlTest {
 
 	private static final String SNIPSET01 = multilineString(
@@ -89,6 +91,7 @@ public class Bug856Test extends AbstractSarlTest {
 			"");
 
 	@Test
+	@Tag("sarlValidation")
 	public void parsing_01() throws Exception {
 		SarlScript mas = file(getParseHelper(), SNIPSET01);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -96,6 +99,7 @@ public class Bug856Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void compiling_01() throws Exception {
 		getCompileHelper().compile(SNIPSET01, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug856.SomeClass");
@@ -162,6 +166,7 @@ public class Bug856Test extends AbstractSarlTest {
 			"");
 
 	@Test
+	@Tag("sarlValidation")
 	public void parsing_02() throws Exception {
 		SarlScript mas = file(getParseHelper(), SNIPSET02);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -169,6 +174,7 @@ public class Bug856Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void compiling_02() throws Exception {
 		getCompileHelper().compile(SNIPSET02, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug856.SomeClass");

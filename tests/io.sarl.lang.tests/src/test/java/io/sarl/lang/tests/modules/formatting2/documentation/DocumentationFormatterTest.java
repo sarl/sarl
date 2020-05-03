@@ -26,6 +26,7 @@ import com.google.inject.Inject;
 import org.eclipse.xtext.util.Strings;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
 
@@ -41,6 +42,8 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("format: comments")
+@Tag("core")
+@Tag("codeFormat")
 public class DocumentationFormatterTest {
 
 	@Nested

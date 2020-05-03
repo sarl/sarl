@@ -48,7 +48,8 @@ import static extension org.junit.jupiter.api.Assertions.*
 	typeof(SreRunExtension)
 ])
 @DisplayName("run: event and function overriding test")
-@Tag("run")
+@Tag("sre-run")
+@Tag("janus")
 class BehaviorGuardEvaluatorRegistryTest {
 		
 	@Test

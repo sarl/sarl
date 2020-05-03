@@ -27,6 +27,7 @@ import static io.sarl.tests.api.tools.TestValidator.validate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -46,6 +47,7 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  */
 @DisplayName("Bug #643")
 @SuppressWarnings("all")
+@Tag("core")
 public class Bug643Test extends AbstractSarlTest {
 
 	private static final String SNIPSET1 = multilineString(
@@ -99,6 +101,7 @@ public class Bug643Test extends AbstractSarlTest {
 			"");
 
 	@Test
+	@Tag("sarlValidation")
 	public void parsing_01() throws Exception {
 		SarlScript mas = file(getParseHelper(), SNIPSET1);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -106,6 +109,7 @@ public class Bug643Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void compiling_01() throws Exception {
 		getCompileHelper().compile(SNIPSET1, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug643.TreeNode");

@@ -23,6 +23,7 @@ package io.sarl.lang.tests.modules.serializer;
 import static io.sarl.tests.api.tools.TestEObjects.behavior;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -32,6 +33,8 @@ import org.junit.jupiter.api.Test;
  * @mavenartifactid $ArtifactId$
  */
 @DisplayName("serialization: behavior")
+@Tag("core")
+@Tag("serialization")
 public class BehaviorSerializerTest extends AbstractSerializerTest {
 
 	@Test

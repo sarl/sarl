@@ -27,6 +27,7 @@ import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlScript;
@@ -46,6 +47,7 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  */
 @DisplayName("Bug #909")
 @SuppressWarnings("all")
+@Tag("core")
 public class Bug909Test extends AbstractSarlTest {
 
 	private static final String SARL_CODE = multilineString(
@@ -74,6 +76,7 @@ public class Bug909Test extends AbstractSarlTest {
 			"}");
 
 	@Test
+	@Tag("sarlValidation")
 	public void parsing() throws Exception {
 		SarlScript mas = file(getParseHelper(), SARL_CODE);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -81,6 +84,7 @@ public class Bug909Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void compiling() throws Exception {
 		final TimeOutHandler handler = startTimeOut();
 		try {

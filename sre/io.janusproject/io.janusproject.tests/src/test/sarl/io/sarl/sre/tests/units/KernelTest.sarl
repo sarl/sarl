@@ -62,6 +62,7 @@ import io.sarl.sre.boot.configs.SreConfig
 	typeof(JavaVersionCheckExtension),
 	typeof(PropertyRestoreExtension)
 ])
+@Tag("janus")
 @Tag("unit")
 @DisplayName("unit: Kernel test")
 class KernelTest {

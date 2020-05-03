@@ -46,6 +46,7 @@ import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.osgi.framework.Version;
 
@@ -71,6 +72,8 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("Utils")
+@Tag("core")
+@Tag("unit")
 public class UtilsTest extends AbstractSarlTest {
 
 	@Test

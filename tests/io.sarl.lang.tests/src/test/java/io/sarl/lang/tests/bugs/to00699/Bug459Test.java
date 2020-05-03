@@ -28,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -44,6 +45,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @DisplayName("Bug #459")
 @SuppressWarnings("all")
+@Tag("core")
 public class Bug459Test {
 
 	protected static final String SNIPSET1 = multilineString(
@@ -85,6 +87,7 @@ public class Bug459Test {
 			"}");
 
 	@Nested
+	@Tag("compileToJava")
 	public class Compilation extends AbstractSarlTest {
 
 		@Test
@@ -436,6 +439,7 @@ public class Bug459Test {
 	}
 
 	@Nested
+	@Tag("sarlValidation")
 	public class Parsing extends AbstractSarlTest {
 
 		@Test

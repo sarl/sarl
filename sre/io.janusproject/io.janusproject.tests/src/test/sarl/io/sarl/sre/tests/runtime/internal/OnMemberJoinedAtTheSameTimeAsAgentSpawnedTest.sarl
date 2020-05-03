@@ -53,7 +53,8 @@ import static extension io.sarl.tests.api.tools.TestUtils.*
 	typeof(SreRunExtension)
 ])
 @DisplayName("run: on MemberJoined+AgentSpawned test")
-@Tag("run")
+@Tag("sre-run")
+@Tag("janus")
 class OnMemberJoinedAtTheSameTimeAsAgentSpawnedTest {
 
 	@RepeatedTest(5)

@@ -31,6 +31,7 @@ import org.junit.jupiter.api.Tag
  * @mavenartifactid $ArtifactId$
  */
 @DisplayName("run: LocalSpaceRepository test")
-@Tag("run")
+@Tag("sre-run")
+@Tag("janus")
 class LocalSpaceRepositoryTest extends AbstractSpaceRepositoryTest {
 }

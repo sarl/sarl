@@ -21,6 +21,7 @@
 package io.sarl.lang.core.tests.core;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 
 import io.sarl.lang.core.Skill;
 
@@ -32,6 +33,8 @@ import io.sarl.lang.core.Skill;
  */
 @SuppressWarnings("all")
 @DisplayName("Skill")
+@Tag("unit")
+@Tag("core")
 public class SkillTest extends AbstractAgentTraitBehaviorTest {
 
 	@Override

@@ -35,6 +35,7 @@ import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.TypesFactory;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -52,6 +53,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @DisplayName("Bug #92")
 @SuppressWarnings("all")
+@Tag("core")
 public class Bug92Test extends AbstractSarlTest {
 
 	protected static void assertInstance(Class<?> expected, Object actual) {
@@ -74,6 +76,7 @@ public class Bug92Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlParsing")
 	public void attributeDeclarationSyntax_inferredDouble() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
@@ -96,6 +99,7 @@ public class Bug92Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlParsing")
 	public void attributeDeclarationSyntax_Double() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
@@ -120,6 +124,7 @@ public class Bug92Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlParsing")
 	public void attributeDeclarationSyntax_double() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
@@ -145,6 +150,7 @@ public class Bug92Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void attributeDeclarationCompiler_inferredDouble() throws Exception {
 		getCompileHelper().assertCompilesTo(
 				multilineString(
@@ -217,6 +223,7 @@ public class Bug92Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void attributeDeclarationCompiler_Double() throws Exception {
 		getCompileHelper().assertCompilesTo(
 				multilineString(
@@ -295,6 +302,7 @@ public class Bug92Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void attributeDeclarationCompiler_double() throws Exception {
 		getCompileHelper().assertCompilesTo(
 				multilineString(
@@ -367,6 +375,7 @@ public class Bug92Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void originialCode_withDoubleType() throws Exception {
 		final String source = multilineString(
 				"capacity ComputeEnergyCapacity {",
@@ -560,6 +569,7 @@ public class Bug92Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void originialCode_withoutDoubleType() throws Exception {
 		final String source = multilineString(
 				"capacity ComputeEnergyCapacity {",

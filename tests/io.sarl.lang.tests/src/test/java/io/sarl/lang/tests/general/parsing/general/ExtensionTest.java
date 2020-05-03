@@ -25,6 +25,7 @@ import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlPackage;
@@ -40,9 +41,11 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("Syntax: extension")
+@Tag("core")
 public class ExtensionTest extends AbstractSarlTest {
 
 	@Test
+	@Tag("sarlValidation")
 	public void localExtension() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"class LocalExtensionTest {",
@@ -56,6 +59,7 @@ public class ExtensionTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void extensionImports() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import java.util.List",
@@ -71,6 +75,7 @@ public class ExtensionTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void extensionProviderOnFieldVariable_valid() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import java.util.ArrayList",
@@ -90,6 +95,7 @@ public class ExtensionTest extends AbstractSarlTest {
 	 * @throws Exception - any problem.
 	 */
 	@Test
+	@Tag("sarlValidation")
 	public void extensionProviderOnFieldVariable_missedType() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import java.util.ArrayList",
@@ -107,6 +113,7 @@ public class ExtensionTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void extensionProviderOnFieldValue() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import java.util.ArrayList",
@@ -121,6 +128,7 @@ public class ExtensionTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void extensionProviderOnParameter() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"class ExtensionProvider {",
@@ -136,6 +144,7 @@ public class ExtensionTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void extensionProviderOnLocalVariable() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"class ExtensionProvider {",
@@ -152,6 +161,7 @@ public class ExtensionTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void extensionProviderOnLocalValue() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"class ExtensionProvider {",

@@ -26,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 
 import io.sarl.lang.scoping.extensions.time.TimeExtensions;
 
@@ -37,6 +38,8 @@ import io.sarl.lang.scoping.extensions.time.TimeExtensions;
  */
 @SuppressWarnings("all")
 @DisplayName("TimeExtensions")
+@Tag("core")
+@Tag("unit")
 public class TimeExtensionsTest {
 
 	@Test

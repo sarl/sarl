@@ -50,7 +50,8 @@ import static io.sarl.sre.test.framework.Constants.*
 	typeof(SreRunExtension)
 ])
 @DisplayName("run: Bug #546 - Large event set")
-@Tag("run")
+@Tag("sre-run")
+@Tag("janus")
 class LargeEventSetTest {
 
 	@Test

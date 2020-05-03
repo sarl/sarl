@@ -61,6 +61,7 @@ import static extension org.mockito.Mockito.verify
 ])
 @DisplayName("unit: shutdown QuietThreadExecutorPolicy test")
 @Tag("unit")
+@Tag("janus")
 class ShutdownQuietThreadExecutorPolicyTest {
 	
 	@Nullable

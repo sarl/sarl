@@ -64,6 +64,7 @@ import static extension org.junit.jupiter.api.Assertions.assertSame
 ])
 @DisplayName("unit: AgentNamespaceFinder test")
 @Tag("unit")
+@Tag("janus")
 class AgentNamespaceServiceTest {
 
 	@Nullable

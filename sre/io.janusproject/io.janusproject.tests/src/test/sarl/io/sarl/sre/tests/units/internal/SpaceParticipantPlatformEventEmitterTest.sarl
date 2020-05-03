@@ -67,6 +67,7 @@ import static extension org.mockito.Mockito.verify
 ])
 @DisplayName("unit: SpaceParticipantEventEmitter test")
 @Tag("unit")
+@Tag("janus")
 class SpaceParticipantEventEmitterTest {
 
 	@Nullable

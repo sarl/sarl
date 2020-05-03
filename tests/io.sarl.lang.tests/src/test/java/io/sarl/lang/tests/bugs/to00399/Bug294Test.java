@@ -25,6 +25,7 @@ import java.util.Collection;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -40,6 +41,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @DisplayName("Bug #294")
 @SuppressWarnings("all")
+@Tag("core")
 public class Bug294Test {
 
 	private static final String capacityCode = multilineString(
@@ -72,6 +74,7 @@ public class Bug294Test {
 	 * @mavenartifactid $ArtifactId$
 	 */
 	@Nested
+	@Tag("compileToJava")
 	public class CompilerTests extends AbstractSarlTest {
 
 		@Test

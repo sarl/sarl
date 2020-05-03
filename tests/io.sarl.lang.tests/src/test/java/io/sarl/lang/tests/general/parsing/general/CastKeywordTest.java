@@ -25,6 +25,7 @@ import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlScript;
@@ -38,9 +39,11 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("Syntax: as")
+@Tag("core")
 public class CastKeywordTest extends AbstractSarlTest {
 
 	@Test
+	@Tag("sarlValidation")
 	public void assertTrue() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",

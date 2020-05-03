@@ -42,6 +42,7 @@ import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlAction;
@@ -62,12 +63,14 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("Syntax: parameter default values")
+@Tag("core")
 public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 
 	@Nested
 	public class AgentAction extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_1p() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
@@ -95,6 +98,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void action_1p_invalid1() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
@@ -110,6 +114,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void action_1p_invalid2() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
@@ -125,6 +130,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_1p_returnValue() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
@@ -153,6 +159,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_5p_0() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
@@ -180,6 +187,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_5p_1() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
@@ -207,6 +215,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_5p_2() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
@@ -234,6 +243,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_5p_3() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
@@ -261,6 +271,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_5p_4() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
@@ -288,6 +299,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_5p_0_3() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
@@ -315,6 +327,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_5p_0_3_4() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
@@ -342,6 +355,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_5p_0_2_4() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
@@ -369,6 +383,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_5p_0_1_2_3() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
@@ -396,6 +411,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_5p_0_1_2_3_4() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
@@ -423,6 +439,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void action_3p_vararg_2() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
@@ -438,6 +455,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_3p_vararg_1() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
@@ -469,6 +487,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_3p_vararg_0() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
@@ -500,6 +519,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_3p_vararg_0_1() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
@@ -531,6 +551,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void multipleActionDefinitionsInAgent() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
@@ -581,6 +602,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 	public class BehaviorConstructor extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlParsing")
 		public void constructor_1p() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
@@ -606,6 +628,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void constructor_1p_invalid1() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
@@ -621,6 +644,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void constructor_1p_invalid2() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
@@ -636,6 +660,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void constructor_5p_0() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
@@ -661,6 +686,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void constructor_5p_1() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
@@ -686,6 +712,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void constructor_5p_2() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
@@ -711,6 +738,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void constructor_5p_3() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
@@ -736,6 +764,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void constructor_5p_4() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
@@ -761,6 +790,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void constructor_5p_0_3() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
@@ -786,6 +816,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void constructor_5p_0_3_4() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
@@ -817,6 +848,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void constructor_5p_0_2_4() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
@@ -848,6 +880,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void constructor_5p_0_1_2_3() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
@@ -874,6 +907,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void constructor_5p_0_1_2_3_4() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
@@ -900,6 +934,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void constructor_3p_vararg_2() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
@@ -916,6 +951,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void constructor_3p_vararg_1() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
@@ -946,6 +982,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void constructor_3p_vararg_0() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
@@ -976,6 +1013,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void constructor_3p_vararg_0_1() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
@@ -1006,6 +1044,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void constructorCast_String2int() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.test",
@@ -1022,6 +1061,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void constructorCast_int2double() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
@@ -1048,6 +1088,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void constructorCast_double2int() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
@@ -1068,6 +1109,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 	public class CapacityAction extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_1p() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -1091,6 +1133,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void action_1p_invalid1() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
@@ -1104,6 +1147,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void action_1p_invalid2() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
@@ -1117,6 +1161,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_5p_0() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -1140,6 +1185,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_5p_1() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -1163,6 +1209,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_5p_2() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -1186,6 +1233,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_5p_3() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -1209,6 +1257,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_5p_4() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -1232,6 +1281,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_5p_0_3() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -1255,6 +1305,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_5p_0_3_4() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -1278,6 +1329,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_5p_0_2_4() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -1301,6 +1353,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_5p_0_1_2_3() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -1329,6 +1382,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_5p_0_1_2_3_4() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -1352,6 +1406,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void action_3p_vararg_2() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
@@ -1365,6 +1420,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_3p_vararg_1() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -1389,6 +1445,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_3p_vararg_0() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -1413,6 +1470,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_3p_vararg_0_1() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -1445,6 +1503,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 	public class SkillAction extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_1p() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -1490,6 +1549,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void action_1p_invalid1() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
@@ -1507,6 +1567,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void action_1p_invalid2() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
@@ -1524,6 +1585,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_5p_0() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -1573,6 +1635,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_5p_1() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -1622,6 +1685,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_5p_2() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -1671,6 +1735,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_5p_3() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -1720,6 +1785,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_5p_4() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -1769,6 +1835,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_5p_0_3() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -1818,6 +1885,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_5p_0_3_4() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -1867,6 +1935,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_5p_0_2_4() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -1916,6 +1985,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_5p_0_1_2_3() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -1965,6 +2035,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_5p_0_1_2_3_4() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -2014,6 +2085,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_3p_vararg_2() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
@@ -2031,6 +2103,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_3p_vararg_1() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -2079,6 +2152,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_3p_vararg_0() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -2127,6 +2201,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_3p_vararg_0_1() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -2175,6 +2250,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void overridingCapacitySkill() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -2230,6 +2306,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void multipleActionDefinitionsInSkill() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {}",
@@ -2279,6 +2356,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void missedActionImplementation_0() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -2343,6 +2421,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void missedActionImplementation_1() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
@@ -2362,6 +2441,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void missedActionImplementation_2() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
@@ -2387,6 +2467,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 	public class BehaviorAction extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlValidation")
 		public void actionCast_String2int() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
@@ -2402,6 +2483,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void actionCast_int2double() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
@@ -2433,6 +2515,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void actionCast_double2int() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
@@ -2448,6 +2531,7 @@ public class ArgDefaultValueParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void multipleActionDefinitionsInBehavior() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",

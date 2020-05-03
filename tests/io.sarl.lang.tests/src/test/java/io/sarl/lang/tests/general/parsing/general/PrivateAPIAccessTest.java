@@ -27,6 +27,7 @@ import static io.sarl.tests.api.tools.TestValidator.validate;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlScript;
@@ -41,9 +42,11 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("Syntax: @PrivateAPIAccess")
+@Tag("core")
 public class PrivateAPIAccessTest extends AbstractSarlTest {
 
 	@Test
+	@Tag("sarlValidation")
 	public void privateFunctionPublicCaller_01() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import foo.PrivateAPIObject",
@@ -61,6 +64,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void privateFunctionPrivateCaller_01() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.PrivateAPI",
@@ -77,6 +81,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void privateFunctionPrivateCaller_02() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.PrivateAPI",
@@ -93,6 +98,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void privateFunctionPublicCaller_02() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import foo.PrivateAPIObject2",
@@ -110,6 +116,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void privateFunctionPrivateCaller_03() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.PrivateAPI",
@@ -126,6 +133,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void privateFunctionPrivateCaller_04() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.PrivateAPI",
@@ -142,6 +150,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void ambigousPrivateAPI_01() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.PrivateAPI",
@@ -161,6 +170,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void ambigousPrivateAPI_02() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.PrivateAPI",
@@ -178,6 +188,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void ambigousPrivateAPI_03() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.PrivateAPI",
@@ -195,6 +206,7 @@ public class PrivateAPIAccessTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void ambigousPrivateAPI_04() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.PrivateAPI",

@@ -26,6 +26,7 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.core.Event;
@@ -37,6 +38,8 @@ import io.sarl.lang.core.Event;
  * @mavenartifactid $ArtifactId$
  */
 @DisplayName("ContextLeft")
+@Tag("unit")
+@Tag("api")
 public class ContextLeftTest extends AbstractSarlCoreTest<Event> {
 
 	/**

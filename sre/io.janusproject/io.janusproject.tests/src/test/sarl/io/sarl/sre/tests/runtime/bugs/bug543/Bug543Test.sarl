@@ -57,7 +57,8 @@ import static extension io.sarl.tests.api.tools.TestAssertions.*
 	typeof(SreRunExtension)
 ])
 @DisplayName("run: Bug #543")
-@Tag("run")
+@Tag("sre-run")
+@Tag("janus")
 class Bug543Test {
 
 	@Test

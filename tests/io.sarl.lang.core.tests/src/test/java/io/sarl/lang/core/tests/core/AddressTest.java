@@ -31,6 +31,7 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.core.Address;
@@ -44,6 +45,8 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @DisplayName("Address")
+@Tag("unit")
+@Tag("core")
 public class AddressTest extends AbstractSarlTest {
 
 	private SpaceID spaceID;

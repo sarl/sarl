@@ -28,6 +28,7 @@ import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlScript;
@@ -42,12 +43,14 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("Syntax: discouraged system calls")
+@Tag("core")
 public class DiscouragedSystemCallTest {
 
 	@Nested
 	public class ConsoleTest extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemConsole_agent_action() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
@@ -63,6 +66,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemConsole_agent_behaviorUnit() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
@@ -79,6 +83,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemConsole_behavior_action() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
@@ -94,6 +99,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemConsole_behavior_behaviorUnit() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
@@ -110,6 +116,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemConsole_behavior_constructor() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.SARLInjectorProvider;",
@@ -128,6 +135,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemConsole_skill_action() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
@@ -144,6 +152,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemConsole_skill_constructor() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
@@ -162,6 +171,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemConsole_agent_action_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -184,6 +194,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemConsole_skill_action_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -210,6 +221,7 @@ public class DiscouragedSystemCallTest {
 	public class ErrCallTest extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemErr_agent_action() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
@@ -225,6 +237,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemErr_agent_behaviorUnit() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
@@ -241,6 +254,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemErr_behavior_action() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
@@ -256,6 +270,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemErr_behavior_behaviorUnit() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
@@ -272,6 +287,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemErr_behavior_constructor() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
@@ -289,6 +305,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemErr_skill_action() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
@@ -305,6 +322,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemErr_skill_constructor() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
@@ -323,6 +341,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemErr_agent_action_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -339,6 +358,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemErr_agent_behaviorUnit_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -356,6 +376,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemErr_behavior_action_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -372,6 +393,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemErr_behavior_behaviorUnit_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -389,6 +411,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemErr_behavior_constructor_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -407,6 +430,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemErr_skill_action_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -424,6 +448,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemErr_skill_constructor_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
@@ -448,6 +473,7 @@ public class DiscouragedSystemCallTest {
 	public class OutCallTest extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemOut_agent_action() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
@@ -463,6 +489,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemOut_agent_behaviorUnit() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
@@ -479,6 +506,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemOut_behavior_action() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
@@ -494,6 +522,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemOut_behavior_behaviorUnit() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
@@ -510,6 +539,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemOut_behavior_constructor() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
@@ -527,6 +557,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemOut_skill_action() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
@@ -543,6 +574,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemOut_skill_constructor() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
@@ -561,6 +593,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemOut_agent_action_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -577,6 +610,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void systemOut_agent_behaviorUnit_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -594,6 +628,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemOut_behavior_action_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -610,6 +645,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemOut_behavior_behaviorUnit_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -627,6 +663,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemOut_behavior_constructor_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -645,6 +682,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemOut_skill_action_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -662,6 +700,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemOut_skill_constructor_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
@@ -686,6 +725,7 @@ public class DiscouragedSystemCallTest {
 	public class SetErrCallTest extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemSetErr_agent_action() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
@@ -701,6 +741,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemSetErr_agent_behaviorUnit() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
@@ -717,6 +758,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemSetErr_behavior_action() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
@@ -732,6 +774,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemSetErr_behavior_behaviorUnit() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
@@ -748,6 +791,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemSetErr_behavior_constructor() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
@@ -765,6 +809,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemSetErr_skill_action() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
@@ -781,6 +826,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemSetErr_skill_constructor() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
@@ -799,6 +845,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemSetErr_agent_action_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -815,6 +862,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemSetErr_agent_behaviorUnit_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -832,6 +880,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemSetErr_behavior_action_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -848,6 +897,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemSetErr_behavior_behaviorUnit_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -865,6 +915,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemSetErr_behavior_constructor_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -883,6 +934,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemSetErr_skill_action_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -900,6 +952,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemSetErr_skill_constructor_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
@@ -924,6 +977,7 @@ public class DiscouragedSystemCallTest {
 	public class SetOutCallTest extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemSetOut_agent_action() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
@@ -939,6 +993,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemSetOut_agent_behaviorUnit() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
@@ -955,6 +1010,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemSetOut_behavior_action() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
@@ -970,6 +1026,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemSetOut_behavior_behaviorUnit() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
@@ -986,6 +1043,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemSetOut_behavior_constructor() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
@@ -1003,6 +1061,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemSetOut_skill_action() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
@@ -1019,6 +1078,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemSetOut_skill_constructor() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
@@ -1037,6 +1097,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemSetOut_agent_action_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -1053,6 +1114,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemSetOut_agent_behaviorUnit_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -1070,6 +1132,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemSetOut_behavior_action_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -1086,6 +1149,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemSetOut_behavior_behaviorUnit_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -1103,6 +1167,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemSetOut_behavior_constructor_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -1121,6 +1186,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemSetOut_skill_action_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -1138,6 +1204,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemSetOut_skill_constructor_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
@@ -1162,6 +1229,7 @@ public class DiscouragedSystemCallTest {
 	public class OutputImplicitCallTest extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlValidation")
 		public void println_agent_action() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
@@ -1177,6 +1245,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void println_agent_behaviorUnit() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
@@ -1193,6 +1262,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void println_behavior_action() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
@@ -1208,6 +1278,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void println_behavior_behaviorUnit() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
@@ -1224,6 +1295,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void println_behavior_constructor() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
@@ -1241,6 +1313,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void println_skill_action() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
@@ -1257,6 +1330,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void println_skill_constructor() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
@@ -1280,6 +1354,7 @@ public class DiscouragedSystemCallTest {
 	public class InheritedChannelCallTest extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemInheritedChannel_agent_action() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
@@ -1295,6 +1370,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemInheritedChannel_agent_behaviorUnit() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
@@ -1311,6 +1387,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemInheritedChannel_behavior_action() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
@@ -1326,6 +1403,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemInheritedChannel_behavior_behaviorUnit() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
@@ -1342,6 +1420,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemInheritedChannel_behavior_constructor() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
@@ -1359,6 +1438,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemInheritedChannel_skill_action() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
@@ -1375,6 +1455,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemInheritedChannel_skill_constructor() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
@@ -1393,6 +1474,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemInheritedChannel_agent_action_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -1409,6 +1491,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemInheritedChannel_agent_behaviorUnit_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -1426,6 +1509,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemInheritedChannel_behavior_action_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -1442,6 +1526,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemInheritedChannel_behavior_behaviorUnit_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -1459,6 +1544,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemInheritedChannel_behavior_constructor_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -1477,6 +1563,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemInheritedChannel_skill_action_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -1494,6 +1581,7 @@ public class DiscouragedSystemCallTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void systemInheritedChannel_skill_constructor_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",

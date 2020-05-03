@@ -29,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -49,6 +50,7 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  */
 @DisplayName("Bug #852")
 @SuppressWarnings("all")
+@Tag("core")
 public class Bug852Test extends AbstractSarlTest {
 
 	private static final String SNIPSET01 = multilineString(
@@ -506,6 +508,7 @@ public class Bug852Test extends AbstractSarlTest {
 			"}");
 
 	@Test
+	@Tag("sarlValidation")
 	public void parsing_01() throws Exception {
 		SarlScript mas = file(getParseHelper(), SNIPSET01);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -513,6 +516,7 @@ public class Bug852Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void compiling_01() throws Exception {
 		getCompileHelper().compile(SNIPSET01, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug852.SomeAgent");
@@ -521,6 +525,7 @@ public class Bug852Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void parsing_02() throws Exception {
 		SarlScript mas = file(getParseHelper(), SNIPSET02);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -528,6 +533,7 @@ public class Bug852Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void compiling_02() throws Exception {
 		getCompileHelper().compile(SNIPSET02, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug852.SomeAgent");
@@ -536,6 +542,7 @@ public class Bug852Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void parsing_03() throws Exception {
 		SarlScript mas = file(getParseHelper(), SNIPSET03);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -543,6 +550,7 @@ public class Bug852Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void compiling_03() throws Exception {
 		getCompileHelper().compile(SNIPSET03, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug852.SomeAgent");
@@ -551,6 +559,7 @@ public class Bug852Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void parsing_04() throws Exception {
 		SarlScript mas = file(getParseHelper(), SNIPSET04);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -558,6 +567,7 @@ public class Bug852Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void compiling_04() throws Exception {
 		getCompileHelper().compile(SNIPSET04, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug852.SomeAgent");
@@ -566,6 +576,7 @@ public class Bug852Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void parsing_05() throws Exception {
 		SarlScript mas = file(getParseHelper(), SNIPSET05);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -573,6 +584,7 @@ public class Bug852Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void compiling_05() throws Exception {
 		getCompileHelper().compile(SNIPSET05, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug852.SomeAgent");
@@ -581,6 +593,7 @@ public class Bug852Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void parsing_06() throws Exception {
 		SarlScript mas = file(getParseHelper(), SNIPSET06);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -588,6 +601,7 @@ public class Bug852Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void compiling_06() throws Exception {
 		getCompileHelper().compile(SNIPSET06, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug852.SomeAgent");
@@ -598,6 +612,7 @@ public class Bug852Test extends AbstractSarlTest {
 	// TODO: Enable when the issue on implicitly imported functions is fixed.
 	@Disabled
 	@Test
+	@Tag("sarlValidation")
 	public void parsing_07() throws Exception {
 		SarlScript mas = file(getParseHelper(), SNIPSET07);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -607,6 +622,7 @@ public class Bug852Test extends AbstractSarlTest {
 	// TODO: Enable when the issue on implicitly imported functions is fixed.
 	@Disabled
 	@Test
+	@Tag("compileToJava")
 	public void compiling_07() throws Exception {
 		getCompileHelper().compile(SNIPSET07, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug852.SomeAgent");
@@ -615,6 +631,7 @@ public class Bug852Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void parsing_08() throws Exception {
 		SarlScript mas = file(getParseHelper(), SNIPSET08);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -622,6 +639,7 @@ public class Bug852Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void compiling_08() throws Exception {
 		getCompileHelper().compile(SNIPSET08, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug852.SomeAgent");
@@ -632,6 +650,7 @@ public class Bug852Test extends AbstractSarlTest {
 	// TODO: Enable when the issue on implicitly imported functions is fixed.
 	@Disabled
 	@Test
+	@Tag("sarlValidation")
 	public void parsing_09() throws Exception {
 		SarlScript mas = file(getParseHelper(), SNIPSET09);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -641,6 +660,7 @@ public class Bug852Test extends AbstractSarlTest {
 	// TODO: Enable when the issue on implicitly imported functions is fixed.
 	@Disabled
 	@Test
+	@Tag("compileToJava")
 	public void compiling_09() throws Exception {
 		getCompileHelper().compile(SNIPSET09, (it) -> {
 			final String actual = it.getGeneratedCode("io.sarl.lang.tests.bug852.SomeAgent");
@@ -649,6 +669,7 @@ public class Bug852Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void parsing_10() throws Exception {
 		SarlScript mas = file(getParseHelper(), SNIPSET10);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);

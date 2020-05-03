@@ -43,6 +43,7 @@ import org.junit.jupiter.api.Tag
  */
 @DisplayName("unit: StandardLifecycleService test")
 @Tag("unit")
+@Tag("janus")
 class StandardLifecycleServiceTest extends AbstractLifecycleServiceTest<StandardLifecycleService> {
 
 	override newService(executor : ExecutorService, logger : LoggingService, skillUninstaller : SkillUninstaller,

@@ -22,6 +22,7 @@ import static io.sarl.tests.api.tools.TestValidator.validate;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlScript;
@@ -40,9 +41,11 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @DisplayName("Bugs #208 and #810")
 @SuppressWarnings("all")
+@Tag("core")
 public class Bug208And810Test {
 	
 	@Nested
+	@Tag("sarlValidation")
 	public class WithProblem extends AbstractSarlTest {
 		
 		private final String SOURCE_04 = multilineString(
@@ -159,6 +162,7 @@ public class Bug208And810Test {
 	}
 
 	@Nested
+	@Tag("sarlValidation")
 	public class WithoutProblem extends AbstractSarlTest {
 		
 		private final String SOURCE_01 = multilineString(

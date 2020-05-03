@@ -27,6 +27,7 @@ import static io.sarl.tests.api.tools.TestValidator.validate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -47,6 +48,7 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  */
 @DisplayName("Bug #819")
 @SuppressWarnings("all")
+@Tag("core")
 public class Bug819Test extends AbstractSarlTest {
 
 	private static final String SNIPSET01 = multilineString(
@@ -204,6 +206,7 @@ public class Bug819Test extends AbstractSarlTest {
 			"");
 
 	@Test
+	@Tag("sarlValidation")
 	public void parsing_01() throws Exception {
 		SarlScript mas = file(getParseHelper(), SNIPSET01);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -211,6 +214,7 @@ public class Bug819Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void compiling_01() throws Exception {
 		getCompileHelper().compile(SNIPSET01, (it) -> {
 			String actual = it.getGeneratedCode("Agent3");

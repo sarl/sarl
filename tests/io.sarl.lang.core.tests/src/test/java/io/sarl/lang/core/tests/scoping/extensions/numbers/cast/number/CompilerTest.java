@@ -27,6 +27,7 @@ import static io.sarl.tests.api.tools.TestValidator.validate;
 
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -48,6 +49,8 @@ import io.sarl.tests.api.globalcompilation.ResourceSetGlobalCompilationContext;
 @GlobalCompilationSuite
 @SuppressWarnings("all")
 @DisplayName("Compiling Number cast operator")
+@Tag("core")
+@Tag("compileToJava")
 public class CompilerTest extends AbstractSarlTest {
 
 	private static final String AS_BYTE_SARL = multilineString(

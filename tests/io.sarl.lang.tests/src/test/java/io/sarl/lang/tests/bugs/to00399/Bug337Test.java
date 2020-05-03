@@ -25,6 +25,7 @@ import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlScript;
@@ -38,6 +39,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @DisplayName("Bug #337")
 @SuppressWarnings("all")
+@Tag("core")
 public class Bug337Test extends AbstractSarlTest {
 
 	private String snippet = multilineString(
@@ -57,6 +59,7 @@ public class Bug337Test extends AbstractSarlTest {
 			"}");
 
 	@Test
+	@Tag("sarlValidation")
 	public void bug337() throws Exception {
 		SarlScript mas = file(getParseHelper(), snippet);
 		validate(getValidationHelper(), getInjector(), mas).assertNoErrors();

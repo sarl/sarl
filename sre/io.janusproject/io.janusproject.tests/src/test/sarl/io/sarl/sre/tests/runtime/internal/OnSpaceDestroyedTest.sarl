@@ -57,7 +57,8 @@ import org.junit.jupiter.api.Test
 	typeof(SreRunExtension)
 ])
 @DisplayName("run: on SpaceDestroyed test")
-@Tag("run")
+@Tag("sre-run")
+@Tag("janus")
 class SpaceDestroyedTest {
 
 	//@RepeatedTest(10)

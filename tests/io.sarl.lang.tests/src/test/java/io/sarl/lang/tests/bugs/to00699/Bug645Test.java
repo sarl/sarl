@@ -28,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.eclipse.xtext.diagnostics.Diagnostic;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -46,6 +47,7 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  */
 @DisplayName("Bug #645")
 @SuppressWarnings("all")
+@Tag("core")
 public class Bug645Test extends AbstractSarlTest {
 
 	private static final String SNIPSET1 = multilineString(
@@ -123,6 +125,7 @@ public class Bug645Test extends AbstractSarlTest {
 			"");
 
 	@Test
+	@Tag("sarlValidation")
 	public void validating_01() throws Exception {
 		Validator validator = validate(getValidationHelper(), getInjector(), file(getParseHelper(), SNIPSET1));
 		validator.assertError(
@@ -133,6 +136,7 @@ public class Bug645Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void compiling_01() throws Exception {
 		getCompileHelper().compile(SNIPSET1, (it) -> {
 			assertEquals(EXPECTED_YYY1, it.getGeneratedCode("io.sarl.lang.tests.bug645.YYY"), "Invalid YYY");

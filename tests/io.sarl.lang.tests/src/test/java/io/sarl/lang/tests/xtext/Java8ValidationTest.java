@@ -14,6 +14,7 @@ import static io.sarl.tests.api.tools.TestValidator.validate;
 import org.eclipse.xtend.core.validation.IssueCodes;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlPackage;
@@ -29,6 +30,8 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("SARL compliance to the Java 8 OO standards")
+@Tag("core")
+@Tag("sarlValidation")
 public class Java8ValidationTest extends AbstractSarlTest {
 
 	/**

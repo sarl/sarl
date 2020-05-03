@@ -26,6 +26,7 @@ import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlScript;
@@ -43,6 +44,8 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  */
 @DisplayName("Bug #739")
 @SuppressWarnings("all")
+@Tag("core")
+@Tag("sarlValidation")
 public class Bug739Test extends AbstractSarlTest {
 
 	private static final String SNIPSET1 = multilineString(

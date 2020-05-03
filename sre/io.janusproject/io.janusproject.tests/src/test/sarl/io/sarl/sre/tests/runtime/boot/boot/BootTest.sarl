@@ -54,7 +54,8 @@ import static org.junit.jupiter.api.Assertions.*
 	typeof(SreRunExtension)
 ])
 @DisplayName("run: Boot test")
-@Tag("run")
+@Tag("sre-run")
+@Tag("janus")
 class BootTest {
 
 	@Nullable

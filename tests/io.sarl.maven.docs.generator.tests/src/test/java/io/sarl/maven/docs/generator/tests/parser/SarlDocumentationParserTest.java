@@ -32,7 +32,6 @@ import java.util.List;
 
 import com.google.common.io.Resources;
 import com.google.inject.Injector;
-import org.apache.commons.lang3.tuple.MutableTriple;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -54,6 +53,8 @@ import io.sarl.maven.docs.parser.ValidationComponentData;
  */
 @SuppressWarnings("all")
 @DisplayName("SarlDocumentationParser")
+@org.junit.jupiter.api.Tag("maven")
+@org.junit.jupiter.api.Tag("unit")
 public class SarlDocumentationParserTest {
 
 	private static File file(String basename) {

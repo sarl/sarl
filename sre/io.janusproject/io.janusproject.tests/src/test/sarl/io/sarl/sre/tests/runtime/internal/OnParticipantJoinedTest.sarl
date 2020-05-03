@@ -55,7 +55,8 @@ import static extension org.junit.jupiter.api.Assertions.*
 	typeof(SreRunExtension)
 ])
 @DisplayName("run: on ParticipantJoined test")
-@Tag("run")
+@Tag("sre-run")
+@Tag("janus")
 class OnParticipantJoinedTest {
 
 	@Test

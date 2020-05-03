@@ -27,6 +27,7 @@ import static io.sarl.tests.api.tools.TestValidator.validate;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 import org.eclipse.xtext.xtype.XtypePackage;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlPackage;
@@ -43,9 +44,11 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("Syntax: general syntax")
+@Tag("core")
 public class GeneralSyntaxTest extends AbstractSarlTest {
 
 	@Test
+	@Tag("sarlValidation")
 	public void wildCardImports() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.docs.reference.gsr",
@@ -60,6 +63,7 @@ public class GeneralSyntaxTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void noParamNoReturnActionInClass() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"abstract class Light {",
@@ -71,6 +75,7 @@ public class GeneralSyntaxTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void noParamNoReturnActionInInterface() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"interface Light {",
@@ -82,6 +87,7 @@ public class GeneralSyntaxTest extends AbstractSarlTest {
 	}
 	
 	@Test
+	@Tag("sarlValidation")
 	public void sarlKeywordAsIdentifier() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.lang.tests.behavior.mypackage",
@@ -93,6 +99,7 @@ public class GeneralSyntaxTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void javaKeywordAsIdentifier() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.lang.tests.null.mypackage",

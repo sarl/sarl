@@ -71,6 +71,7 @@ import static extension org.mockito.Mockito.verify
 ])
 @DisplayName("unit: AsynchronousProbeService test")
 @Tag("unit")
+@Tag("janus")
 class AsynchronousProbeServiceTest {
 
 	@Nullable

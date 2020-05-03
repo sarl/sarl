@@ -48,7 +48,8 @@ import static io.sarl.tests.api.tools.TestAssertions.*
 	typeof(SreRunExtension)
 ])
 @DisplayName("run: on Destroy test")
-@Tag("run")
+@Tag("sre-run")
+@Tag("janus")
 class OnDestroyTest {
 
 	@RepeatedTest(5)

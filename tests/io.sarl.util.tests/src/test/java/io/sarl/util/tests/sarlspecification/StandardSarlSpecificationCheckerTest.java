@@ -31,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.osgi.framework.Version;
 
@@ -47,6 +48,8 @@ import io.sarl.sarlspecification.StandardSarlSpecificationChecker;
  */
 @SuppressWarnings("all")
 @DisplayName("StandardSarlSpecificationChecker")
+@Tag("api")
+@Tag("unit")
 public class StandardSarlSpecificationCheckerTest {
 
 	private SarlSpecificationChecker checker;

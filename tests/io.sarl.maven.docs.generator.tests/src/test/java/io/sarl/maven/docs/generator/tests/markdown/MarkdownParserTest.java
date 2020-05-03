@@ -48,6 +48,7 @@ import io.sarl.maven.docs.markdown.MarkdownParser;
  */
 @SuppressWarnings("all")
 @DisplayName("MarkdownParser")
+@org.junit.jupiter.api.Tag("maven")
 public class MarkdownParserTest {
 
 	private static File file(String basename) {
@@ -59,6 +60,7 @@ public class MarkdownParserTest {
 	}
 
 	@Nested
+	@org.junit.jupiter.api.Tag("unit")
 	public class TransformTest {
 
 		private MarkdownParser parser;

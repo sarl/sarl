@@ -37,6 +37,7 @@ import com.google.common.base.Strings;
 import org.eclipse.xtend.core.validation.IssueCodes;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlAction;
@@ -58,12 +59,14 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("Syntax: variadic parameters")
+@Tag("core")
 public class VarArgsParsingTest {
 
 	@Nested
 	public class AgentTest extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_singleParam() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
@@ -91,6 +94,7 @@ public class VarArgsParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void inAgentAction() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A1 {",
@@ -119,6 +123,7 @@ public class VarArgsParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void action_invalid() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
@@ -139,6 +144,7 @@ public class VarArgsParsingTest {
 	public class BehaviorTest extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_singleParam() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
@@ -167,6 +173,7 @@ public class VarArgsParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
@@ -195,6 +202,7 @@ public class VarArgsParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void action_invalid() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
@@ -210,6 +218,7 @@ public class VarArgsParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void constructor_singleParam() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
@@ -236,6 +245,7 @@ public class VarArgsParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void constructor() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
@@ -262,6 +272,7 @@ public class VarArgsParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void constructor_invalid() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
@@ -278,6 +289,7 @@ public class VarArgsParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void multipleActionDefinitionsInBehavior_0() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
@@ -315,6 +327,7 @@ public class VarArgsParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void multipleActionDefinitionsInBehavior_1() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"behavior B1 {",
@@ -354,6 +367,7 @@ public class VarArgsParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void multipleActionDefinitionsInBehavior_2() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
@@ -377,6 +391,7 @@ public class VarArgsParsingTest {
 	public class SkillTest extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_singleParam() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {}",
@@ -412,6 +427,7 @@ public class VarArgsParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {}",
@@ -447,6 +463,7 @@ public class VarArgsParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void action_invalid() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {}",
@@ -463,6 +480,7 @@ public class VarArgsParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void constructor_singleParam() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {}",
@@ -495,6 +513,7 @@ public class VarArgsParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void constructor() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {}",
@@ -527,6 +546,7 @@ public class VarArgsParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void constructor_invalid() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {}",
@@ -548,6 +568,7 @@ public class VarArgsParsingTest {
 	public class CapacityTest extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlParsing")
 		public void action_singleParam() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -574,6 +595,7 @@ public class VarArgsParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void action() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -600,6 +622,7 @@ public class VarArgsParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void action_invalid() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
@@ -618,6 +641,7 @@ public class VarArgsParsingTest {
 	public class EventTest extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlParsing")
 		public void constructor_singleParam() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"event E1 {",
@@ -643,6 +667,7 @@ public class VarArgsParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void constructor() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"event E1 {",
@@ -668,6 +693,7 @@ public class VarArgsParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void constructor_invalid() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 {",

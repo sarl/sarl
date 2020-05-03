@@ -54,7 +54,8 @@ import static extension org.junit.jupiter.api.Assertions.*
 	typeof(SreRunExtension)
 ])
 @DisplayName("run: on MemberLeft test")
-@Tag("run")
+@Tag("sre-run")
+@Tag("janus")
 class OnMemberLeftTest {
 
 	@RepeatedTest(20)

@@ -24,6 +24,7 @@ import static io.sarl.tests.api.tools.TestUtils.multilineString;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.tests.modules.formatting2.AbstractMemberFormatterTest;
@@ -37,6 +38,8 @@ import io.sarl.lang.tests.modules.formatting2.AbstractMemberFormatterTest;
  */
 @SuppressWarnings("all")
 @DisplayName("format: uses")
+@Tag("core")
+@Tag("codeFormat")
 public class CapacityUsesFormatterTest {
 
 	/**

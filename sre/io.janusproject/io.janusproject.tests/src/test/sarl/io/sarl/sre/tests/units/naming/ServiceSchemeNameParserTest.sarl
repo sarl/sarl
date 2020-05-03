@@ -55,6 +55,7 @@ import static extension org.junit.jupiter.api.Assertions.assertNull
 ])
 @DisplayName("unit: service NameParser test")
 @Tag("unit")
+@Tag("janus")
 class ServiceSchemeNameParserTest {
 
 	val SERVICE_ID = typeof(LoggingService).name

@@ -61,7 +61,8 @@ import static org.junit.jupiter.api.Assertions.*
 	typeof(SreRunExtension)
 ])
 @DisplayName("run: Bug #794")
-@Tag("run")
+@Tag("sre-run")
+@Tag("janus")
 class Bug794Test {
 
 	@Test

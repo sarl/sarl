@@ -65,6 +65,7 @@ import static extension org.mockito.Mockito.verify
 	typeof(PropertyRestoreExtension)
 ])
 @DisplayName("unit: LifecycleSkill test")
+@Tag("janus")
 @Tag("unit")
 class LifecycleSkillTest {
 

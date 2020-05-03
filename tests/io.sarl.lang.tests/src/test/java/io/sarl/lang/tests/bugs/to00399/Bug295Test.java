@@ -27,6 +27,7 @@ import static io.sarl.tests.api.tools.TestValidator.validate;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlScript;
@@ -40,6 +41,8 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @DisplayName("Bug #295")
 @SuppressWarnings("all")
+@Tag("core")
+@Tag("sarlValidation")
 public class Bug295Test extends AbstractSarlTest {
 
 	private String snippet = multilineString(

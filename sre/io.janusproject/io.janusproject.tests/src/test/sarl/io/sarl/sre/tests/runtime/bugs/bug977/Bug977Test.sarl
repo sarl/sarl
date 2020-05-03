@@ -37,6 +37,7 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.^extension.ExtendWith
 
 import static extension io.sarl.tests.api.tools.TestAssertions.*
+import static io.sarl.sre.test.framework.Constants.*
 
 /** Tests for issue #977: Problem with multiple initialize event in Behavior inheritance demos.
  *
@@ -55,7 +56,8 @@ import static extension io.sarl.tests.api.tools.TestAssertions.*
 	typeof(SreRunExtension)
 ])
 @DisplayName("run: Bug #977")
-@Tag("run")
+@Tag("sre-run")
+@Tag("janus")
 class Bug977Test {
 
 	@RepeatedTest(10)
@@ -70,7 +72,7 @@ class Bug977Test {
 
 		rootContext.defaultSpace.emit(UUID::randomUUID, new Bye)
 
-		waitForTheKernel(-1)//STANDARD_TIMEOUT)
+		waitForTheKernel(STANDARD_TIMEOUT)
 
 		val all = getResults(id0)
 

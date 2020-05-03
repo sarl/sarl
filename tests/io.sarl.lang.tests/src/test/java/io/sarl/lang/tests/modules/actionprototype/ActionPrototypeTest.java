@@ -29,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
@@ -42,6 +43,8 @@ import io.sarl.lang.sarl.actionprototype.ActionPrototype;
  */
 @SuppressWarnings("all")
 @DisplayName("ActionPrototype")
+@Tag("core")
+@Tag("unit")
 public class ActionPrototypeTest {
 
 	private ActionParameterTypes parameters;

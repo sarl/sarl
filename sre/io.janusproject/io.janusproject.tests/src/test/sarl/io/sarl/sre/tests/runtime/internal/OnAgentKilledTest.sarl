@@ -53,7 +53,8 @@ import static extension io.sarl.tests.api.tools.TestUtils.*
 	typeof(SreRunExtension)
 ])
 @DisplayName("run: on AgentKilled test")
-@Tag("run")
+@Tag("sre-run")
+@Tag("janus")
 class OnAgentKilledTest {
 
 	@RepeatedTest(5)

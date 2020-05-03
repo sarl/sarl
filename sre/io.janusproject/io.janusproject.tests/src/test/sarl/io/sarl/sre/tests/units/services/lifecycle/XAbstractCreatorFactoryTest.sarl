@@ -31,6 +31,7 @@ import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.concurrent.ConcurrentLinkedDeque
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
@@ -48,6 +49,8 @@ import static extension org.junit.jupiter.api.Assertions.*
 	typeof(JavaVersionCheckExtension),
 	typeof(PropertyRestoreExtension)
 ])
+@Tag("janus")
+@Tag("unit")
 class XAbstractCreatorFactoryTest {
 
 	@Test

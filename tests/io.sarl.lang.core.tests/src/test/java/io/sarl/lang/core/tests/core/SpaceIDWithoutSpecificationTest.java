@@ -31,6 +31,7 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.core.SpaceID;
@@ -43,6 +44,8 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @DisplayName("SpaceID without specification")
+@Tag("unit")
+@Tag("core")
 public class SpaceIDWithoutSpecificationTest extends AbstractSarlTest {
 
 	private UUID contextID;

@@ -40,6 +40,7 @@ import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlConstructor;
@@ -58,12 +59,14 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("Syntax: event")
+@Tag("core")
 public class EventParsingTest extends AbstractSarlTest {
 
 	@Nested
 	public class TopElementTest extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidExtend_0() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
@@ -78,6 +81,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidExtend_1() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
@@ -92,6 +96,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidExtend_2() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 {",
@@ -106,6 +111,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidExtend_3() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 {",
@@ -120,6 +126,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidExtend_4() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 {",
@@ -134,6 +141,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void eventmodifier_public() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -154,6 +162,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void eventmodifier_none() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -174,6 +183,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void eventmodifier_private() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -185,6 +195,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void eventmodifier_protected() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -196,6 +207,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void eventmodifier_package() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -216,6 +228,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void eventmodifier_abstract() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -227,6 +240,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void eventmodifier_static() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -238,6 +252,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void eventmodifier_dispatch() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -249,6 +264,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void eventmodifier_final() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -269,6 +285,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void eventmodifier_strictfp() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -280,6 +297,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void eventmodifier_native() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -291,6 +309,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void eventmodifier_volatile() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -302,6 +321,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void eventmodifier_synchronized() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -313,6 +333,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void eventmodifier_transient() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -324,6 +345,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void eventmodifier_public_package() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -341,6 +363,7 @@ public class EventParsingTest extends AbstractSarlTest {
 	public class FieldTest extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_public() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -368,6 +391,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_private() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -380,6 +404,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_protected() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -392,6 +417,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_package() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -404,6 +430,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_none() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -431,6 +458,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_abstract() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -443,6 +471,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_static() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -455,6 +484,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_dispatch() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -467,6 +497,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_final_var() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -480,6 +511,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_strictfp() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -492,6 +524,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_native() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -504,6 +537,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_volatile() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -516,6 +550,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_synchronized() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -528,6 +563,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_transient() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -540,6 +576,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_protected_private() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -553,6 +590,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void missedFinalFieldInitialization() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 {",
@@ -567,6 +605,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void completeFinalFieldInitialization() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"event E1 {",
@@ -595,6 +634,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidSarlFieldName_0() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 {",
@@ -610,6 +650,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidSarlFieldName_1() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 {",
@@ -625,6 +666,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidSarlFieldName_2() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 {",
@@ -640,6 +682,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidSarlFieldName_3() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 {",
@@ -655,6 +698,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void discouragedSarlFieldName_0() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 {",
@@ -670,6 +714,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void multipleVariableDefinition() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 {",
@@ -685,6 +730,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void multipleValueDefinition() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 {",
@@ -700,6 +746,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void fieldNameShadowing() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E0 {",
@@ -722,6 +769,7 @@ public class EventParsingTest extends AbstractSarlTest {
 	public class ConstructorTest extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_public() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -744,6 +792,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_private() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -766,6 +815,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_protected() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -788,6 +838,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_package() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -810,6 +861,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_none() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -832,6 +884,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_abstract() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -844,6 +897,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_static() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -856,6 +910,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_dispatch() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -868,6 +923,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_final() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -880,6 +936,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_strictfp() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -892,6 +949,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_native() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -904,6 +962,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_volatile() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -916,6 +975,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_synchronized() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -928,6 +988,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_transient() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -940,6 +1001,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_protected_private() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -953,6 +1015,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void validImplicitSuperConstructor() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.test",
@@ -984,6 +1047,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void missedImplicitSuperConstructor_1() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.test",
@@ -1003,6 +1067,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void missedImplicitSuperConstructor_2() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.test",
@@ -1022,6 +1087,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void notMissedImplicitSuperConstructor() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.test",
@@ -1036,6 +1102,7 @@ public class EventParsingTest extends AbstractSarlTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidArgumentTypeToSuperConstructor() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.test",

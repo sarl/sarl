@@ -35,6 +35,7 @@ import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlAgent;
@@ -51,9 +52,11 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("Syntax: type casting")
+@Tag("core")
 public class DataTypeParsingTest extends AbstractSarlTest {
 
 	@Test
+	@Tag("sarlValidation")
 	public void intToDouble() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
@@ -67,6 +70,7 @@ public class DataTypeParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlParsing")
 	public void doubleToDouble_1() throws Exception {
 		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 				"agent A1 {",
@@ -89,6 +93,7 @@ public class DataTypeParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void doubleToDouble_2() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
@@ -102,6 +107,7 @@ public class DataTypeParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void doubleToDouble_3() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
@@ -115,6 +121,7 @@ public class DataTypeParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlParsing")
 	public void doubleToDouble_4() throws Exception {
 		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 				"agent A1 {",

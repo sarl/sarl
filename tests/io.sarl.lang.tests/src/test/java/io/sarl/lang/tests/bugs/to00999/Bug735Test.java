@@ -28,6 +28,7 @@ import static io.sarl.tests.api.tools.TestValidator.validate;
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlScript;
@@ -45,6 +46,8 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  */
 @SuppressWarnings("all")
 @DisplayName("Bug #735")
+@Tag("core")
+@Tag("sarlValidation")
 public class Bug735Test {
 	
 	@DisplayName("Bug #735 - no ignore")

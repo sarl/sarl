@@ -23,6 +23,7 @@ package io.sarl.lang.tests.general.compilation.general.castoverriding;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
@@ -41,6 +42,8 @@ import io.sarl.tests.api.globalcompilation.ResourceSetGlobalCompilationContext;
  */
 @SuppressWarnings("all")
 @DisplayName("Compilation: multiple cast functions")
+@Tag("core")
+@Tag("compileToJava")
 public class ManyDefinitionsTest {
 
 	/** This class enables to test the linking decision to multiple getter functions.

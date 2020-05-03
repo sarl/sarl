@@ -26,6 +26,7 @@ import static io.sarl.tests.api.tools.TestValidator.validate;
 
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlPackage;
@@ -41,9 +42,11 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("Syntax: @SuppressWarnings")
+@Tag("core")
 public class SuppressWarningsTest extends AbstractSarlTest {
 
 	@Test
+	@Tag("sarlValidation")
 	public void noAnnotation() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.lang.tests.test",
@@ -55,6 +58,7 @@ public class SuppressWarningsTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void annotation_all() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.lang.tests.test",
@@ -67,6 +71,7 @@ public class SuppressWarningsTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void annotation_correctId() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.lang.tests.test",
@@ -79,6 +84,7 @@ public class SuppressWarningsTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void annotation_invalidId() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.lang.tests.test",
@@ -91,6 +97,7 @@ public class SuppressWarningsTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void annotation_all_inlist() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.lang.tests.test",
@@ -103,6 +110,7 @@ public class SuppressWarningsTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void annotation_correctId_inlist() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.lang.tests.test",
@@ -115,6 +123,7 @@ public class SuppressWarningsTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void annotation_invalidId_inlist() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.lang.tests.test",
@@ -128,6 +137,7 @@ public class SuppressWarningsTest extends AbstractSarlTest {
 
 
 	@Test
+	@Tag("sarlValidation")
 	public void expression_noSuppression() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.lang.tests.test",
@@ -143,6 +153,7 @@ public class SuppressWarningsTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void expression_suppression_01() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.lang.tests.test",
@@ -159,6 +170,7 @@ public class SuppressWarningsTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void expression_suppression_02() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.lang.tests.test",

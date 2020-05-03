@@ -24,6 +24,7 @@ package io.sarl.lang.core.tests.scoping.extensions.numbers.comparison.shortprimi
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
@@ -42,6 +43,8 @@ import io.sarl.tests.api.globalcompilation.ResourceSetGlobalCompilationContext;
 @GlobalCompilationSuite
 @SuppressWarnings("all")
 @DisplayName("Compiling short comparison operators")
+@Tag("core")
+@Tag("compileToJava")
 public class CompilerTest extends AbstractSarlTest {
 
 	@GlobalCompilationTestContribution

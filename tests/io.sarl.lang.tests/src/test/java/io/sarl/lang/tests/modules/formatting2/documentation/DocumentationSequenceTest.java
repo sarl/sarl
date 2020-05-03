@@ -21,6 +21,7 @@
 package io.sarl.lang.tests.modules.formatting2.documentation;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.tests.modules.formatting2.AbstractMemberFormatterTest;
@@ -35,6 +36,8 @@ import io.sarl.lang.tests.modules.formatting2.AbstractMemberFormatterTest;
  */
 @SuppressWarnings("all")
 @DisplayName("format: sequence of comments")
+@Tag("core")
+@Tag("codeFormat")
 public class DocumentationSequenceTest extends AbstractMemberFormatterTest {
 
 	@Override

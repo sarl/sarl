@@ -27,6 +27,7 @@ import static io.sarl.tests.api.tools.TestValidator.validate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -47,6 +48,7 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  */
 @DisplayName("Bug #918")
 @SuppressWarnings("all")
+@Tag("core")
 public class Bug918Test extends AbstractSarlTest {
 
 	private static final String SARL_CODE = multilineString(
@@ -190,6 +192,7 @@ public class Bug918Test extends AbstractSarlTest {
 			"");
 
 	@Test
+	@Tag("sarlValidation")
 	public void parsing() throws Exception {
 		SarlScript mas = file(getParseHelper(), SARL_CODE);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -197,6 +200,7 @@ public class Bug918Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void compilingX() throws Exception {
 		getCompileHelper().compile(SARL_CODE, (it) -> {
 			String actual;
@@ -206,6 +210,7 @@ public class Bug918Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void compilingY() throws Exception {
 		getCompileHelper().compile(SARL_CODE, (it) -> {
 			String actual;

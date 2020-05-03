@@ -48,6 +48,7 @@ import static extension org.junit.jupiter.api.Assertions.*
  */
 @DisplayName("unit: StaticBehaviorGuardEvaluatorDictionary test")
 @Tag("unit")
+@Tag("janus")
 class StaticBehaviorGuardEvaluatorDictionaryTest {
 
 	@Test

@@ -33,6 +33,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.tests.api.AbstractSarlTest;
@@ -46,6 +47,8 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("Calling float arithmetic operators")
+@Tag("core")
+@Tag("unit")
 public class CodeTest extends AbstractSarlTest {
 
 	private static float left = 4f;

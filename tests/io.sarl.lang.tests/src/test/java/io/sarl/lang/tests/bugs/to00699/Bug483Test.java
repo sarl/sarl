@@ -27,6 +27,7 @@ import static io.sarl.tests.api.tools.TestValidator.validate;
 
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlScript;
@@ -43,6 +44,8 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @DisplayName("Bug #483")
 @SuppressWarnings("all")
+@Tag("core")
+@Tag("sarlValidation")
 public class Bug483Test extends AbstractSarlTest {
 
 	@Test

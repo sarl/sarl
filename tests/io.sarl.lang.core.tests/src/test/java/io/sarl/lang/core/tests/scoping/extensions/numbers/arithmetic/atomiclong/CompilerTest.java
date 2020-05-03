@@ -25,6 +25,7 @@ import static io.sarl.tests.api.tools.TestUtils.multilineString;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.sarl.SarlPackage;
@@ -46,6 +47,8 @@ import io.sarl.tests.api.globalcompilation.ResourceSetGlobalCompilationContext;
 @DisplayName("Compiling atomic long operators")
 @GlobalCompilationSuite
 @Disabled("not yet added to the compiler")
+@Tag("core")
+@Tag("compileToJava")
 public class CompilerTest extends AbstractSarlTest {
 
 	@GlobalCompilationTestContribution

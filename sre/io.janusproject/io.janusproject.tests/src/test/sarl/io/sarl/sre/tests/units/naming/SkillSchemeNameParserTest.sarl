@@ -56,6 +56,7 @@ import static extension org.junit.jupiter.api.Assertions.assertNull
 ])
 @DisplayName("unit: skill NameParser test")
 @Tag("unit")
+@Tag("janus")
 class SkillSchemeNameParserTest {
 
 	protected static val CONTEXT_ID = "2a2c6de4-8327-431b-a916-97a05caafe14"

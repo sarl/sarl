@@ -31,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlAgent;
@@ -50,6 +51,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("Syntax: enum")
+@Tag("core")
 public class EnumerationParsingTest {
 
 	@Nested
@@ -61,6 +63,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void classmodifier_public() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -79,6 +82,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void classmodifier_none() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -97,6 +101,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_private() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -108,6 +113,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_protected() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -119,6 +125,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void classmodifier_package() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -137,6 +144,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_abstract() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -148,6 +156,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_static() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -159,6 +168,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_dispatch() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -170,6 +180,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_final() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -181,6 +192,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_strictfp() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -192,6 +204,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_native() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -203,6 +216,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_volatile() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -214,6 +228,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_synchronized() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -225,6 +240,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_transient() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -236,6 +252,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_abstract_final() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -247,6 +264,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_public_package() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -269,6 +287,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void classmodifier_public() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -289,6 +308,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void classmodifier_none() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -309,6 +329,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void classmodifier_private() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -329,6 +350,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void classmodifier_protected() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -349,6 +371,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void classmodifier_package() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -369,6 +392,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_abstract() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -382,6 +406,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void classmodifier_static() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -402,6 +427,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_dispatch() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -415,6 +441,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_final() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -428,6 +455,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_strictfp() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -441,6 +469,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_native() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -454,6 +483,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_volatile() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -467,6 +497,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_synchronized() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -480,6 +511,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_transient() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -493,6 +525,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_public_package() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -517,6 +550,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_public() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -529,6 +563,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void classmodifier_none() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -549,6 +584,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void classmodifier_private() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -569,6 +605,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void classmodifier_protected() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -589,6 +626,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void classmodifier_package() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -609,6 +647,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_abstract() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -621,6 +660,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void classmodifier_static() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -641,6 +681,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_dispatch() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -653,6 +694,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_final() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -665,6 +707,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_strictfp() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -677,6 +720,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_native() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -689,6 +733,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_volatile() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -701,6 +746,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_synchronized() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -713,6 +759,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_transient() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -725,6 +772,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_public_package() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -749,6 +797,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void classmodifier_public() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -769,6 +818,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void classmodifier_none() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -789,6 +839,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void classmodifier_private() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -809,6 +860,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void classmodifier_protected() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -829,6 +881,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void classmodifier_package() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -849,6 +902,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_abstract() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -862,6 +916,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void classmodifier_static() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -882,6 +937,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_dispatch() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -895,6 +951,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_final() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -908,6 +965,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_strictfp() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -921,6 +979,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_native() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -934,6 +993,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_volatile() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -947,6 +1007,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_synchronized() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -960,6 +1021,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_transient() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -973,6 +1035,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_public_package() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -997,6 +1060,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void classmodifier_public() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1018,6 +1082,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void classmodifier_none() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1039,6 +1104,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void classmodifier_private() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1060,6 +1126,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void classmodifier_protected() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1081,6 +1148,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void classmodifier_package() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1102,6 +1170,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_abstract() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1116,6 +1185,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void classmodifier_static() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1137,6 +1207,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_dispatch() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1151,6 +1222,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_final() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1165,6 +1237,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_strictfp() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1179,6 +1252,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_native() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1193,6 +1267,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_volatile() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1207,6 +1282,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_synchronized() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1221,6 +1297,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_transient() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1235,6 +1312,7 @@ public class EnumerationParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void classmodifier_public_package() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",

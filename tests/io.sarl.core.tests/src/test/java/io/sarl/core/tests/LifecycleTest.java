@@ -26,6 +26,7 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.core.AgentContext;
@@ -38,6 +39,8 @@ import io.sarl.lang.core.Capacity;
  * @mavenartifactid $ArtifactId$
  */
 @DisplayName("Lifecycle")
+@Tag("unit")
+@Tag("api")
 public class LifecycleTest extends AbstractSarlCoreTest<Capacity> {
 
 	/**

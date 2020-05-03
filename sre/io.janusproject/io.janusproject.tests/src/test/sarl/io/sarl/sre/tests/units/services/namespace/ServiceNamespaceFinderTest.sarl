@@ -59,6 +59,7 @@ import static extension org.junit.jupiter.api.Assertions.assertSame
 ])
 @DisplayName("unit: ServiceNamespaceFinder test")
 @Tag("unit")
+@Tag("janus")
 class ServiceNamespaceFinderTest {
 
 	@Nullable

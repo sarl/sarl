@@ -27,6 +27,7 @@ import static io.sarl.tests.api.tools.TestValidator.validate;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationsPackage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlScript;
@@ -40,6 +41,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("Syntax: active annotations")
+@Tag("core")
 public class ActiveAnnotationTest {
 
 	@Nested
@@ -47,6 +49,7 @@ public class ActiveAnnotationTest {
 	public class AccessorsTest extends AbstractSarlTest {
 		
 		@Test
+		@Tag("sarlValidation")
 		public void inClassField_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Accessors",
@@ -58,6 +61,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inClassField_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Accessors",
@@ -70,6 +74,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inClass_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Accessors",
@@ -81,6 +86,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inClass_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Accessors",
@@ -93,6 +99,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inAgentField_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Accessors",
@@ -106,6 +113,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inAgentField_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Accessors",
@@ -120,6 +128,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inAgent_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Accessors",
@@ -133,6 +142,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inAgent_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Accessors",
@@ -147,6 +157,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inBehaviorField_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Accessors",
@@ -160,6 +171,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inBehaviorField_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Accessors",
@@ -174,6 +186,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inBehavior_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Accessors",
@@ -187,6 +200,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inBehavior_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Accessors",
@@ -201,6 +215,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inSkillField_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Accessors",
@@ -215,6 +230,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inSkillField_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Accessors",
@@ -230,6 +246,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inSkill_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Accessors",
@@ -244,6 +261,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inSkill_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Accessors",
@@ -259,6 +277,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inEventField_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Accessors",
@@ -273,6 +292,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inEventField_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Accessors",
@@ -288,6 +308,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inEvent_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Accessors",
@@ -302,6 +323,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inEvent_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Accessors",
@@ -317,6 +339,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inCapacity_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Accessors",
@@ -330,6 +353,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inCapacity_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Accessors",
@@ -350,6 +374,7 @@ public class ActiveAnnotationTest {
 	public class DataTest extends AbstractSarlTest {
 		
 		@Test
+		@Tag("sarlValidation")
 		public void inClass_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Data",
@@ -361,6 +386,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inAgent_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Data",
@@ -375,6 +401,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inBehavior_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Data",
@@ -389,6 +416,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inSkill_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Data",
@@ -404,6 +432,7 @@ public class ActiveAnnotationTest {
 		}
 		
 		@Test
+		@Tag("sarlValidation")
 		public void inEvent_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Data",
@@ -418,6 +447,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inCapacity_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Data",
@@ -437,6 +467,7 @@ public class ActiveAnnotationTest {
 	public class DelegateTest extends AbstractSarlTest {
 		
 		@Test
+		@Tag("sarlValidation")
 		public void inClass_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Delegate",
@@ -451,6 +482,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inClass_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Delegate",
@@ -470,6 +502,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inAgent_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Delegate",
@@ -484,6 +517,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inBehavior_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Delegate",
@@ -498,6 +532,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inSkill_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Delegate",
@@ -513,6 +548,7 @@ public class ActiveAnnotationTest {
 		}
 		
 		@Test
+		@Tag("sarlValidation")
 		public void inEvent_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Delegate",
@@ -527,6 +563,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inCapacity_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.Delegate",
@@ -546,6 +583,7 @@ public class ActiveAnnotationTest {
 	public class ToStringTest extends AbstractSarlTest {
 		
 		@Test
+		@Tag("sarlValidation")
 		public void inClass_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.ToString",
@@ -557,6 +595,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inAgent_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.ToString",
@@ -571,6 +610,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inBehavior_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.ToString",
@@ -585,6 +625,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inSkill_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.ToString",
@@ -600,6 +641,7 @@ public class ActiveAnnotationTest {
 		}
 		
 		@Test
+		@Tag("sarlValidation")
 		public void inEvent_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.ToString",
@@ -614,6 +656,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inCapacity_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.ToString",
@@ -633,6 +676,7 @@ public class ActiveAnnotationTest {
 	public class EqualsHashCodeTest extends AbstractSarlTest {
 		
 		@Test
+		@Tag("sarlValidation")
 		public void inClass_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.EqualsHashCode",
@@ -647,6 +691,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inAgent_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.EqualsHashCode",
@@ -661,6 +706,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inBehavior_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.EqualsHashCode",
@@ -675,6 +721,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inSkill_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.EqualsHashCode",
@@ -690,6 +737,7 @@ public class ActiveAnnotationTest {
 		}
 		
 		@Test
+		@Tag("sarlValidation")
 		public void inEvent_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.EqualsHashCode",
@@ -704,6 +752,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inCapacity_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.EqualsHashCode",
@@ -723,6 +772,7 @@ public class ActiveAnnotationTest {
 	public class FinalFieldsConstructorTest extends AbstractSarlTest {
 		
 		@Test
+		@Tag("sarlValidation")
 		public void inClass_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor",
@@ -737,6 +787,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inAgent_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor",
@@ -751,6 +802,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inBehavior_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor",
@@ -765,6 +817,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inSkill_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor",
@@ -780,6 +833,7 @@ public class ActiveAnnotationTest {
 		}
 		
 		@Test
+		@Tag("sarlValidation")
 		public void inEvent_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor",
@@ -794,6 +848,7 @@ public class ActiveAnnotationTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inCapacity_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor",

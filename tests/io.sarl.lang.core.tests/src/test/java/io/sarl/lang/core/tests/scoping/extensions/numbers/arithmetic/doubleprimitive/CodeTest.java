@@ -30,6 +30,7 @@ import static io.sarl.lang.scoping.extensions.numbers.arithmetic.PrimitiveDouble
 import static io.sarl.tests.api.tools.TestAssertions.assertEpsilonEquals;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.tests.api.AbstractSarlTest;
@@ -43,6 +44,8 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("Calling double arithmetic operators")
+@Tag("core")
+@Tag("unit")
 public class CodeTest extends AbstractSarlTest {
 
 	private static double left = 4.;

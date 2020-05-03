@@ -33,6 +33,7 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.core.Address;
@@ -48,6 +49,8 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("Agent")
+@Tag("unit")
+@Tag("core")
 public class AgentTest extends AbstractSarlTest {
 
 	private UUID id;

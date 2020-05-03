@@ -46,6 +46,7 @@ import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlAction;
@@ -69,12 +70,14 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("Syntax: agent")
+@Tag("core")
 public class AgentParsingTest {
 
 	@Nested
 	public class TopElementTest extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlParsing")
 		public void declaration() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -97,6 +100,7 @@ public class AgentParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidExtend() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
@@ -111,6 +115,7 @@ public class AgentParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void recursiveAgentExtension_0() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 extends A1 {",
@@ -124,6 +129,7 @@ public class AgentParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void recursiveAgentExtension_1() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 extends A2 {",
@@ -139,6 +145,7 @@ public class AgentParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void recursiveAgentExtension_2() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 extends A3 {",
@@ -156,6 +163,7 @@ public class AgentParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void sequenceAgentDefinition_valid00() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 extends A2 {",
@@ -186,6 +194,7 @@ public class AgentParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void sequenceAgentDefinition_valid01() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"agent A3 {",
@@ -216,6 +225,7 @@ public class AgentParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void agentmodifier_public() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -239,6 +249,7 @@ public class AgentParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void agentmodifier_none() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -262,6 +273,7 @@ public class AgentParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void agentmodifier_private() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -274,6 +286,7 @@ public class AgentParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void agentmodifier_protected() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -286,6 +299,7 @@ public class AgentParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void agentmodifier_package() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -309,6 +323,7 @@ public class AgentParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void agentmodifier_abstract() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -332,6 +347,7 @@ public class AgentParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void agentmodifier_static() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -344,6 +360,7 @@ public class AgentParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void agentmodifier_dispatch() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -355,6 +372,7 @@ public class AgentParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void agentmodifier_final() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -378,6 +396,7 @@ public class AgentParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void agentmodifier_strictfp() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -389,6 +408,7 @@ public class AgentParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void agentmodifier_native() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -401,6 +421,7 @@ public class AgentParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void agentmodifier_volatile() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -413,6 +434,7 @@ public class AgentParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void agentmodifier_synchronized() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -424,6 +446,7 @@ public class AgentParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void agentmodifier_transient() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -435,6 +458,7 @@ public class AgentParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void agentmodifier_abstract_final() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -447,6 +471,7 @@ public class AgentParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_abstract_action_0() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -459,6 +484,7 @@ public class AgentParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_abstract_action_1() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -471,6 +497,7 @@ public class AgentParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_abstract_action_2() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -493,6 +520,7 @@ public class AgentParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_abstract_action_3() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -519,6 +547,7 @@ public class AgentParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void agentmodifier_public_package() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",

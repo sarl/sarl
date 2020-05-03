@@ -38,6 +38,7 @@ import org.eclipse.xtext.testing.util.ParseHelper;
 import org.eclipse.xtext.xbase.typesystem.util.CommonTypeComputationServices;
 import org.eclipse.xtext.xbase.validation.UIStrings;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlField;
@@ -57,6 +58,8 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  */
 @DisplayName("Bug #776")
 @SuppressWarnings("all")
+@Tag("core")
+@Tag("sarlValidation")
 public class Bug776Test extends AbstractSarlTest {
 
 	@Inject

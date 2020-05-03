@@ -28,6 +28,7 @@ import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlScript;
@@ -41,12 +42,14 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("Syntax: Thread support")
+@Tag("core")
 public class ThreadTypeTest {
 
 	@Nested
 	public class SleepFunction extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlValidation")
 		public void inAgent_inFunction_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
@@ -63,6 +66,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inAgent_inEventHandler_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event Evt",
@@ -79,6 +83,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inAgent_inConstructor_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
@@ -95,6 +100,7 @@ public class ThreadTypeTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inAgent_inFunction_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
@@ -112,6 +118,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inAgent_inEventHandler_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
@@ -129,6 +136,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inAgent_inConstructor_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
@@ -146,6 +154,7 @@ public class ThreadTypeTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inAgent_inFunction_03() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static extension java.lang.Thread.*",
@@ -163,6 +172,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inAgent_inEventHandler_03() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static extension java.lang.Thread.*",
@@ -180,6 +190,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inAgent_inConstructor_03() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static extension java.lang.Thread.*",
@@ -197,6 +208,7 @@ public class ThreadTypeTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inBehavior_inFunction_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
@@ -213,6 +225,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inBehavior_inEventHandler_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event Evt",
@@ -229,6 +242,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inBehavior_inConstructor_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
@@ -246,6 +260,7 @@ public class ThreadTypeTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inBehavior_inFunction_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
@@ -263,6 +278,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inBehavior_inEventHandler_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
@@ -280,6 +296,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inBehavior_inConstructor_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
@@ -298,6 +315,7 @@ public class ThreadTypeTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inBehavior_inFunction_03() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static extension java.lang.Thread.*",
@@ -315,6 +333,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inBehavior_inEventHandler_03() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static extension java.lang.Thread.*",
@@ -332,6 +351,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inBehavior_inConstructor_03() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
@@ -350,6 +370,7 @@ public class ThreadTypeTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inSkill_inFunction_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"skill S1 {",
@@ -366,6 +387,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inSkill_inEventHandler_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event Evt",
@@ -382,6 +404,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inSkill_inConstructor_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"skill S1 {",
@@ -397,6 +420,7 @@ public class ThreadTypeTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inSkill_inFunction_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
@@ -414,6 +438,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inSkill_inEventHandler_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
@@ -431,6 +456,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inSkill_inConstructor_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
@@ -447,6 +473,7 @@ public class ThreadTypeTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inSkill_inFunction_03() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static extension java.lang.Thread.*",
@@ -464,6 +491,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inSkill_inEventHandler_03() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static extension java.lang.Thread.*",
@@ -481,6 +509,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inSkill_inConstructor_03() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static extension java.lang.Thread.*",
@@ -497,6 +526,7 @@ public class ThreadTypeTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inClass_inFunction_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"class C1 {",
@@ -513,6 +543,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inClass_inConstructor_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"class C1 {",
@@ -528,6 +559,7 @@ public class ThreadTypeTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inClass_inFunction_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
@@ -545,6 +577,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inClass_inConstructor_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
@@ -561,6 +594,7 @@ public class ThreadTypeTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inClass_inFunction_03() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static extension java.lang.Thread.*",
@@ -578,6 +612,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inClass_inConstructor_03() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static extension java.lang.Thread.*",
@@ -599,6 +634,7 @@ public class ThreadTypeTest {
 	public class YieldFunction extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlValidation")
 		public void inAgent_inFunction_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
@@ -615,6 +651,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inAgent_inEventHandler_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event Evt",
@@ -631,6 +668,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inAgent_inConstructor_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
@@ -647,6 +685,7 @@ public class ThreadTypeTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inAgent_inFunction_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
@@ -664,6 +703,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inAgent_inEventHandler_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
@@ -681,6 +721,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inAgent_inConstructor_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
@@ -698,6 +739,7 @@ public class ThreadTypeTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inBehavior_inFunction_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
@@ -714,6 +756,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inBehavior_inEventHandler_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event Evt",
@@ -730,6 +773,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inBehavior_inConstructor_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
@@ -747,6 +791,7 @@ public class ThreadTypeTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inBehavior_inFunction_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
@@ -764,6 +809,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inBehavior_inEventHandler_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
@@ -781,6 +827,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inBehavior_inConstructor_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
@@ -799,6 +846,7 @@ public class ThreadTypeTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inSkill_inFunction_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"skill S1 {",
@@ -815,6 +863,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inSkill_inEventHandler_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event Evt",
@@ -831,6 +880,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inSkill_inConstructor_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"skill S1 {",
@@ -846,6 +896,7 @@ public class ThreadTypeTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inSkill_inFunction_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
@@ -863,6 +914,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inSkill_inEventHandler_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
@@ -880,6 +932,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inSkill_inConstructor_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
@@ -896,6 +949,7 @@ public class ThreadTypeTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inClass_inFunction_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"class C1 {",
@@ -912,6 +966,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inClass_inConstructor_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"class C1 {",
@@ -927,6 +982,7 @@ public class ThreadTypeTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void inClass_inFunction_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",
@@ -944,6 +1000,7 @@ public class ThreadTypeTest {
 		}
 	
 		@Test
+		@Tag("sarlValidation")
 		public void inClass_inConstructor_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.Thread.*",

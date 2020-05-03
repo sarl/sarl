@@ -34,6 +34,7 @@ import java.util.UUID;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.bootstrap.SRE;
@@ -49,6 +50,8 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("SRE")
+@Tag("unit")
+@Tag("core")
 public class SRETest extends AbstractSarlTest {
 
 	@BeforeEach

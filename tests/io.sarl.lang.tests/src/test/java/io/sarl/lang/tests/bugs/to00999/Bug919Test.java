@@ -28,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -48,6 +49,7 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  */
 @DisplayName("Bug #919")
 @SuppressWarnings("all")
+@Tag("core")
 public class Bug919Test extends AbstractSarlTest {
 
 	private static final String SARL_CODE = multilineString(
@@ -93,6 +95,7 @@ public class Bug919Test extends AbstractSarlTest {
 			"");
 
 	@Test
+	@Tag("sarlValidation")
 	public void parsing() throws Exception {
 		SarlScript mas = file(getParseHelper(), SARL_CODE);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -100,6 +103,7 @@ public class Bug919Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void compiling() throws Exception {
 		getCompileHelper().compile(SARL_CODE, (it) -> {
 			String actual;
@@ -116,6 +120,7 @@ public class Bug919Test extends AbstractSarlTest {
 			"}");
 
 	@Test
+	@Tag("sarlValidation")
 	public void parsingParameterDeclaration() throws Exception {
 		SarlScript mas = file(getParseHelper(), PARAMETER_DECLARATION_SARL_CODE);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -140,6 +145,7 @@ public class Bug919Test extends AbstractSarlTest {
 			"}");
 
 	@Test
+	@Tag("sarlValidation")
 	public void parsingLambdaParameterDeclaration() throws Exception {
 		SarlScript mas = file(getParseHelper(), LAMBDA_PARAMETER_DECLARATION_SARL_CODE);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -159,6 +165,7 @@ public class Bug919Test extends AbstractSarlTest {
 			"}");
 
 	@Test
+	@Tag("sarlValidation")
 	public void parsingLocalVariableDeclaration() throws Exception {
 		SarlScript mas = file(getParseHelper(), LOCAL_VARIABLE_DECLARATION_SARL_CODE);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -178,6 +185,7 @@ public class Bug919Test extends AbstractSarlTest {
 			"}");
 
 	@Test
+	@Tag("sarlValidation")
 	public void parsingFieldDeclaration() throws Exception {
 		SarlScript mas = file(getParseHelper(), FIELD_DECLARATION_SARL_CODE);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -195,6 +203,7 @@ public class Bug919Test extends AbstractSarlTest {
 			"}");
 
 	@Test
+	@Tag("sarlValidation")
 	public void parsingActionDeclaration() throws Exception {
 		SarlScript mas = file(getParseHelper(), ACTION_DECLARATION_SARL_CODE);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -249,6 +258,7 @@ public class Bug919Test extends AbstractSarlTest {
 			"");
 
 	@Test
+	@Tag("sarlValidation")
 	public void parsingDollarVariableReference() throws Exception {
 		SarlScript mas = file(getParseHelper(), DOLLAR_VARIABLE_REFERENCE_SARL_CODE);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -256,6 +266,7 @@ public class Bug919Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void compilingDollarVariableReference() throws Exception {
 		getCompileHelper().compile(DOLLAR_VARIABLE_REFERENCE_SARL_CODE, (it) -> {
 			String actual;
@@ -273,6 +284,7 @@ public class Bug919Test extends AbstractSarlTest {
 			"}");
 
 	@Test
+	@Tag("sarlValidation")
 	public void parsingInvalidDollarVariableReference() throws Exception {
 		SarlScript mas = file(getParseHelper(), INVALID_DOLLAR_VARIABLE_REFERENCE_SARL_CODE);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);

@@ -24,6 +24,7 @@ import static io.sarl.tests.api.tools.TestAssertions.assertInstanceOf;
 import static io.sarl.tests.api.tools.TestReflections.invokeFunc;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.core.Behavior;
@@ -38,6 +39,8 @@ import io.sarl.lang.core.Skill;
  */
 @SuppressWarnings("all")
 @DisplayName("Behavior")
+@Tag("unit")
+@Tag("core")
 public class BehaviorTest extends AbstractAgentTraitBehaviorTest {
 
 	@Override

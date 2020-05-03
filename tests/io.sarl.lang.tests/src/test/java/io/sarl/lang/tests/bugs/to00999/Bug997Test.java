@@ -28,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -48,6 +49,8 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  */
 @DisplayName("Bug #997")
 @SuppressWarnings("all")
+@Tag("core")
+@Tag("sarlParsing")
 public class Bug997Test extends AbstractSarlTest {
 
 	/** Expression elements are inside the same resource as the expression.

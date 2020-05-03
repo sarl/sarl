@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -42,6 +43,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @DisplayName("Bug #312")
 @SuppressWarnings("all")
+@Tag("core")
 public class Bug312Test {
 
 	@Nested
@@ -56,12 +58,14 @@ public class Bug312Test {
 				"}");
 
 		@Test
+		@Tag("sarlValidation")
 		public void bug312() throws Exception {
 			SarlScript mas = file(getParseHelper(), snippet);
 			validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 		}
 
 		@Test
+		@Tag("compileToJava")
 		public void testCompiler() throws Exception {
 			final String expected = multilineString(
 					"import io.sarl.lang.annotation.DefaultValue;",

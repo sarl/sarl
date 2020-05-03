@@ -27,6 +27,7 @@ import static io.sarl.tests.api.tools.TestValidator.validate;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -46,6 +47,7 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  */
 @DisplayName("Bug #600")
 @SuppressWarnings("all")
+@Tag("core")
 public class Bug600Test {
 
 	@Nested
@@ -196,6 +198,7 @@ public class Bug600Test {
 				"}");
 
 		@Test
+		@Tag("sarlValidation")
 		public void parsing_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), SNIPSET1);
 			final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -203,6 +206,7 @@ public class Bug600Test {
 		}
 
 		@Test
+		@Tag("compileToJava")
 		public void compiling_01() throws Exception {
 			getCompileHelper().assertCompilesTo(SNIPSET1, multilineString(
 					"package io.sarl.lang.tests.bug600;",
@@ -237,6 +241,7 @@ public class Bug600Test {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void parsing_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), SNIPSET2);
 			final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -244,6 +249,7 @@ public class Bug600Test {
 		}
 
 		@Test
+		@Tag("compileToJava")
 		public void compiling_02() throws Exception {
 			getCompileHelper().assertCompilesTo(SNIPSET2, multilineString(
 					"package io.sarl.lang.tests.bug600;",
@@ -278,6 +284,7 @@ public class Bug600Test {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void parsing_03() throws Exception {
 			SarlScript mas = file(getParseHelper(), SNIPSET3);
 			final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -285,6 +292,7 @@ public class Bug600Test {
 		}
 
 		@Test
+		@Tag("compileToJava")
 		public void compiling_03() throws Exception {
 			getCompileHelper().assertCompilesTo(SNIPSET3, multilineString(
 					"package io.sarl.lang.tests.bug600;",
@@ -319,6 +327,7 @@ public class Bug600Test {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void parsing_04() throws Exception {
 			SarlScript mas = file(getParseHelper(), SNIPSET4);
 			final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -326,6 +335,7 @@ public class Bug600Test {
 		}
 
 		@Test
+		@Tag("compileToJava")
 		public void compiling_04() throws Exception {
 			getCompileHelper().assertCompilesTo(SNIPSET4, multilineString(
 					"package io.sarl.lang.tests.bug600;",
@@ -360,6 +370,7 @@ public class Bug600Test {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void parsing_05() throws Exception {
 			SarlScript mas = file(getParseHelper(), SNIPSET5);
 			final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -367,6 +378,7 @@ public class Bug600Test {
 		}
 
 		@Test
+		@Tag("compileToJava")
 		public void compiling_05() throws Exception {
 			getCompileHelper().assertCompilesTo(SNIPSET5, multilineString(
 					"package io.sarl.lang.tests.bug600;",
@@ -401,6 +413,7 @@ public class Bug600Test {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void parsing_06() throws Exception {
 			SarlScript mas = file(getParseHelper(), SNIPSET6);
 			final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -408,6 +421,7 @@ public class Bug600Test {
 		}
 
 		@Test
+		@Tag("compileToJava")
 		public void compiling_06() throws Exception {
 			getCompileHelper().assertCompilesTo(SNIPSET6, multilineString(
 					"package io.sarl.lang.tests.bug600;",
@@ -442,6 +456,7 @@ public class Bug600Test {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void parsing_07() throws Exception {
 			SarlScript mas = file(getParseHelper(), SNIPSET7);
 			final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -449,6 +464,7 @@ public class Bug600Test {
 		}
 
 		@Test
+		@Tag("compileToJava")
 		public void compiling_07() throws Exception {
 			getCompileHelper().assertCompilesTo(SNIPSET7, multilineString(
 					"package io.sarl.lang.tests.bug600;",
@@ -483,6 +499,7 @@ public class Bug600Test {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void parsing_08() throws Exception {
 			SarlScript mas = file(getParseHelper(), SNIPSET8);
 			final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -490,6 +507,7 @@ public class Bug600Test {
 		}
 
 		@Test
+		@Tag("compileToJava")
 		public void compiling_08() throws Exception {
 			getCompileHelper().assertCompilesTo(SNIPSET8, multilineString(
 					"package io.sarl.lang.tests.bug600;",
@@ -673,6 +691,7 @@ public class Bug600Test {
 				"}");
 
 		@Test
+		@Tag("sarlValidation")
 		public void parsing_01() throws Exception {
 			SarlScript mas = file(getParseHelper(), SNIPSET1);
 			final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -680,6 +699,7 @@ public class Bug600Test {
 		}
 
 		@Test
+		@Tag("compileToJava")
 		public void compiling_01() throws Exception {
 			getCompileHelper().assertCompilesTo(SNIPSET1, multilineString(
 					"package io.sarl.lang.tests.bug600;",
@@ -722,6 +742,7 @@ public class Bug600Test {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void parsing_02() throws Exception {
 			SarlScript mas = file(getParseHelper(), SNIPSET2);
 			final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -729,6 +750,7 @@ public class Bug600Test {
 		}
 
 		@Test
+		@Tag("compileToJava")
 		public void compiling_02() throws Exception {
 			getCompileHelper().assertCompilesTo(SNIPSET2, multilineString(
 					"package io.sarl.lang.tests.bug600;",
@@ -771,6 +793,7 @@ public class Bug600Test {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void parsing_03() throws Exception {
 			SarlScript mas = file(getParseHelper(), SNIPSET3);
 			final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -778,6 +801,7 @@ public class Bug600Test {
 		}
 
 		@Test
+		@Tag("compileToJava")
 		public void compiling_03() throws Exception {
 			getCompileHelper().assertCompilesTo(SNIPSET3, multilineString(
 					"package io.sarl.lang.tests.bug600;",
@@ -820,6 +844,7 @@ public class Bug600Test {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void parsing_04() throws Exception {
 			SarlScript mas = file(getParseHelper(), SNIPSET4);
 			final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -827,6 +852,7 @@ public class Bug600Test {
 		}
 
 		@Test
+		@Tag("compileToJava")
 		public void compiling_04() throws Exception {
 			getCompileHelper().assertCompilesTo(SNIPSET4, multilineString(
 					"package io.sarl.lang.tests.bug600;",
@@ -869,6 +895,7 @@ public class Bug600Test {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void parsing_05() throws Exception {
 			SarlScript mas = file(getParseHelper(), SNIPSET5);
 			final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -876,6 +903,7 @@ public class Bug600Test {
 		}
 
 		@Test
+		@Tag("compileToJava")
 		public void compiling_05() throws Exception {
 			getCompileHelper().assertCompilesTo(SNIPSET5, multilineString(
 					"package io.sarl.lang.tests.bug600;",
@@ -918,6 +946,7 @@ public class Bug600Test {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void parsing_06() throws Exception {
 			SarlScript mas = file(getParseHelper(), SNIPSET6);
 			final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -925,6 +954,7 @@ public class Bug600Test {
 		}
 
 		@Test
+		@Tag("compileToJava")
 		public void compiling_06() throws Exception {
 			getCompileHelper().assertCompilesTo(SNIPSET6, multilineString(
 					"package io.sarl.lang.tests.bug600;",
@@ -967,6 +997,7 @@ public class Bug600Test {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void parsing_07() throws Exception {
 			SarlScript mas = file(getParseHelper(), SNIPSET7);
 			final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -974,6 +1005,7 @@ public class Bug600Test {
 		}
 
 		@Test
+		@Tag("compileToJava")
 		public void compiling_07() throws Exception {
 			getCompileHelper().assertCompilesTo(SNIPSET7, multilineString(
 					"package io.sarl.lang.tests.bug600;",
@@ -1016,6 +1048,7 @@ public class Bug600Test {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void parsing_08() throws Exception {
 			SarlScript mas = file(getParseHelper(), SNIPSET8);
 			final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -1023,6 +1056,7 @@ public class Bug600Test {
 		}
 
 		@Test
+		@Tag("compileToJava")
 		public void compiling_08() throws Exception {
 			getCompileHelper().assertCompilesTo(SNIPSET8, multilineString(
 					"package io.sarl.lang.tests.bug600;",

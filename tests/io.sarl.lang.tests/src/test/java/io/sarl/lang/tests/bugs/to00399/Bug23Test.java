@@ -26,6 +26,7 @@ import static io.sarl.tests.api.tools.TestValidator.validate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -41,6 +42,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @DisplayName("Bug #23")
 @SuppressWarnings("all")
+@Tag("core")
 public class Bug23Test extends AbstractSarlTest {
 
 	private String snippet = multilineString(
@@ -61,12 +63,14 @@ public class Bug23Test extends AbstractSarlTest {
 
 
 	@Test
+	@Tag("sarlValidation")
 	public void bug23() throws Exception {
 		SarlScript mas = file(getParseHelper(), snippet);
 		validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void myAgentSpawnedCompile() throws Exception {
 		final String expectedMyAgentSpawned = multilineString(
 				"import io.sarl.lang.annotation.SarlElementType;",

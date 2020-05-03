@@ -26,6 +26,7 @@ import static io.sarl.tests.api.tools.TestValidator.validate;
 
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlPackage;
@@ -41,9 +42,11 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("Syntax: break")
+@Tag("core")
 public class BreakKeywordTest extends AbstractSarlTest {
 
 	@Test
+	@Tag("sarlValidation")
 	public void insideFunction() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
@@ -59,6 +62,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void insideIfThen() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
@@ -76,6 +80,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void insideField() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
@@ -91,6 +96,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void insideWhileWithoutBranch() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
@@ -110,6 +116,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void insideWhileWithBranch() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
@@ -126,6 +133,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void insideDoWhileWithoutBranch() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
@@ -145,6 +153,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void insideDoWhileWithBranch() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
@@ -161,6 +170,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void insideForWithoutBranch() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
@@ -175,6 +185,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void insideForWithBranch() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
@@ -189,6 +200,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void insideBasicForWithoutBranch() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
@@ -206,6 +218,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void insideBasicForWithBranch() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
@@ -223,6 +236,7 @@ public class BreakKeywordTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void unreachableCode() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",

@@ -30,6 +30,7 @@ import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.validation.IssueSeverities;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlScript;
@@ -47,6 +48,8 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("IConfigurableIssueSeveritiesProvider")
+@Tag("core")
+@Tag("unit")
 public class IConfigurableIssueSeveritiesProviderTest extends AbstractSarlTest {
 
 	private static final String SNIPSET = multilineString(

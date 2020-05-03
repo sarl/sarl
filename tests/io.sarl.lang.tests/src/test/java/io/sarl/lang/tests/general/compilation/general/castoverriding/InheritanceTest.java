@@ -26,6 +26,7 @@ import static io.sarl.tests.api.tools.TestValidator.validate;
 
 import org.eclipse.xtext.common.types.TypesPackage;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -49,6 +50,8 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
 @GlobalCompilationSuite
 @SuppressWarnings("all")
 @DisplayName("Compilation: Inheritance of casting operators")
+@Tag("core")
+@Tag("compileToJava")
 public class InheritanceTest extends AbstractSarlTest {
 
 	private static final String TO_A3_FROM_A1_SARL = multilineString(

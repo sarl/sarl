@@ -28,6 +28,7 @@ import java.nio.file.Path;
 
 import org.apache.maven.it.Verifier;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -43,6 +44,8 @@ import io.sarl.lang.sarl.SarlPackage;
  */
 @SuppressWarnings("all")
 @DisplayName("Bug #850")
+@Tag("maven")
+@Tag("mvn-run")
 public class Bug850Test extends AbstractMojoTest {
 
 	private static Verifier verifier = null;

@@ -57,6 +57,7 @@ import org.eclipse.xtext.xbase.XExpression;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.invocation.InvocationOnMock;
@@ -88,6 +89,8 @@ import io.sarl.tests.api.Nullable;
  */
 @SuppressWarnings({"javadoc", "nls", "incomplete-switch"})
 @DisplayName("DefaultActionPrototypeProvider")
+@Tag("core")
+@Tag("unit")
 public class DefaultActionPrototypeProviderTest extends AbstractSarlTest {
 
 	static int index;

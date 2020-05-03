@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.google.inject.Inject;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.impl.SarlSkillImplCustom;
@@ -38,6 +39,8 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("ecore: custom SarlSkill")
+@Tag("core")
+@Tag("unit")
 public class SarlSkillImplCustomTest extends AbstractSarlTest {
 
 	@Inject

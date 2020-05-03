@@ -24,6 +24,7 @@ import static io.sarl.tests.api.tools.TestUtils.multilineString;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -38,6 +39,8 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("Compilation: annotation")
+@Tag("core")
+@Tag("compileToJava")
 public class AnnotationTypeCompilerTest {
 
 	@Nested

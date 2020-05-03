@@ -35,6 +35,8 @@ import org.eclipse.xtext.resource.IResourceFactory;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.util.StringInputStream;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.formatting2.FormatterFacade;
@@ -48,7 +50,10 @@ import io.sarl.tests.api.AbstractSarlTest;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-public abstract class FormatterFacadeTest extends AbstractSarlTest {
+@DisplayName("Formatter facade")
+@Tag("core")
+@Tag("codeFormat")
+public class FormatterFacadeTest extends AbstractSarlTest {
 
 	@Inject
 	private FormatterFacade facade;
@@ -57,6 +62,7 @@ public abstract class FormatterFacadeTest extends AbstractSarlTest {
 	private IResourceFactory resourceFactory;
 
 	@Test
+	@DisplayName("Format string 0")
 	public void formatString0() {
 		String source = "event E1 { var i : int }"
 				+ "agent A1 {"
@@ -84,6 +90,7 @@ public abstract class FormatterFacadeTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@DisplayName("Format string 1")
 	public void formatString1() {
 		String source = "/*Top comment*/agent Myagent {}";
 		String expected = multilineString(
@@ -97,6 +104,7 @@ public abstract class FormatterFacadeTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@DisplayName("Format string 2")
 	public void formatString2() {
 		String source = multilineString(
 				"/*Top comment.",
@@ -115,6 +123,7 @@ public abstract class FormatterFacadeTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@DisplayName("Format string 3")
 	public void formatString3() {
 		String source = multilineString(
 				"/* Top comment.",
@@ -153,6 +162,7 @@ public abstract class FormatterFacadeTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@DisplayName("Format resource")
 	public void formatResource0() throws IOException {
 		String source = "event E1 { var i : int }"
 				+ "agent A1 {"

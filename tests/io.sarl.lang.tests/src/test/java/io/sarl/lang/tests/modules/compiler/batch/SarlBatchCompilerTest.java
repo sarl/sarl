@@ -29,6 +29,7 @@ import javax.inject.Provider;
 
 import org.eclipse.xtext.validation.Issue;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
 
@@ -41,6 +42,8 @@ import io.sarl.lang.compiler.batch.SarlBatchCompiler;
  */
 @SuppressWarnings("all")
 @DisplayName("SarlBatchCompiler")
+@Tag("core")
+@Tag("compiler-run")
 public class SarlBatchCompilerTest extends AbstractBatchCompilerTest {
 
 	@Inject

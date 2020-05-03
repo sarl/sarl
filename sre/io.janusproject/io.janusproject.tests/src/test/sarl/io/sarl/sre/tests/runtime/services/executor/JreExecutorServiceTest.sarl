@@ -50,7 +50,8 @@ import static extension org.junit.jupiter.api.Assertions.assertFalse
  * @mavenartifactid $ArtifactId$
  */
 @DisplayName("run: JreExecutor service test")
-@Tag("run")
+@Tag("sre-run")
+@Tag("janus")
 class JreExecutorServiceTest extends AbstractExecutorServiceRunTest {
 
 	@BeforeEach

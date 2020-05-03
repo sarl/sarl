@@ -26,9 +26,10 @@ import io.sarl.sre.test.framework.context.SreRunContext
 import java.util.UUID
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.RepeatedTest
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
 
 import static extension org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.Test
 
 /**
  * @author $Author: sgalland$
@@ -36,6 +37,9 @@ import org.junit.jupiter.api.Test
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@Tag("sre-run")
+@Tag("janus")
+@DisplayName("run: FinderBasedNamespace service test")
 class FinderBasedNamespaceServiceTest extends AbstractNamespaceServiceTest {
 
 	@RepeatedTest(5)

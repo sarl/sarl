@@ -24,6 +24,7 @@ import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -39,6 +40,8 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("Compilation: Capacity")
+@Tag("core")
+@Tag("compileToJava")
 public class CapacityCompilerTest extends AbstractSarlTest {
 
 	@Test

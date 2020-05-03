@@ -27,6 +27,7 @@ import java.nio.file.Path;
 
 import org.apache.maven.it.Verifier;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -37,6 +38,8 @@ import org.junit.jupiter.api.Test;
  */
 @SuppressWarnings("all")
 @DisplayName("Bug #317")
+@Tag("maven")
+@Tag("mvn-run")
 public class Bug317Test extends AbstractMojoTest {
 
 	@Test

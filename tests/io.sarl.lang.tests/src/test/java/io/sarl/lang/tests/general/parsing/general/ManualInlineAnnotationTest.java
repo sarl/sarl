@@ -27,6 +27,7 @@ import static io.sarl.tests.api.tools.TestValidator.validate;
 import com.google.common.base.Throwables;
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationsPackage;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlScript;
@@ -41,9 +42,11 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("Syntax: @Inline - explicit")
+@Tag("core")
 public class ManualInlineAnnotationTest extends AbstractSarlTest {
 
 	@Test
+	@Tag("sarlValidation")
 	public void testDefaultValue() throws Exception {
 		try {
 			SarlScript mas = file(getParseHelper(), multilineString(

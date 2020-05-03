@@ -44,6 +44,7 @@ import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlAction;
@@ -63,12 +64,14 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("Syntax: behavior")
+@Tag("core")
 public class BehaviorParsingTest {
 
 	@Nested
 	public class TopElementTest extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidExtend_0() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 				"capacity C1 {",
@@ -83,6 +86,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidExtend_1() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
@@ -97,6 +101,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidExtend_2() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 extends B1 {",
@@ -109,6 +114,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidExtend_3() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 extends B2 {",
@@ -123,6 +129,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidExtend_4() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 extends B2 {",
@@ -139,6 +146,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidExtend_5() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B3 extends B2 {",
@@ -155,6 +163,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void duplicateTypeNames() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.test",
@@ -172,6 +181,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void behaviormodifier_public() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -192,6 +202,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void behaviormodifier_none() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -212,6 +223,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void behaviormodifier_private() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -223,6 +235,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void behaviormodifier_protected() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -234,6 +247,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void behaviormodifier_package() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -254,6 +268,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void behaviormodifier_abstract() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -274,6 +289,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void behaviormodifier_static() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -285,6 +301,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void behaviormodifier_dispatch() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -296,6 +313,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void behaviormodifier_final() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -316,6 +334,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void behaviormodifier_strictfp() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -327,6 +346,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void behaviormodifier_native() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -338,6 +358,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void behaviormodifier_volatile() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -349,6 +370,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void behaviormodifier_synchronized() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -360,6 +382,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void behaviormodifier_transient() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -371,6 +394,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void behaviormodifier_abstract_final() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -383,6 +407,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_abstract_action_error_0() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -396,6 +421,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_abstract_action_error_1() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -409,6 +435,7 @@ public class BehaviorParsingTest {
 		}
 		
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_abstract_action_warning() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -435,6 +462,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_abstract_action() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -459,6 +487,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void behaviormodifier_public_package() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -476,6 +505,7 @@ public class BehaviorParsingTest {
 	public class ActionTest extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_override_notRecommended() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -491,6 +521,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_override_invalid() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -506,6 +537,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_override_valid() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -519,6 +551,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void multipleActionDefinition() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
@@ -534,6 +567,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidActionName() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
@@ -555,6 +589,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void incompatibleReturnType_0() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
@@ -574,6 +609,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void incompatibleReturnType_1() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
@@ -593,6 +629,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void incompatibleReturnType_2() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
@@ -612,6 +649,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void incompatibleReturnType_3() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
@@ -632,6 +670,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void compatibleReturnType_0() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 				"behavior B1 {",
@@ -677,6 +716,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void compatibleReturnType_1() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 				"behavior B1 {",
@@ -722,6 +762,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void multipleParameterNames() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
@@ -736,6 +777,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_public() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -763,6 +805,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_private() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -790,6 +833,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_protected() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -817,6 +861,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_package() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -844,6 +889,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_none() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -871,6 +917,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_abstract() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -898,6 +945,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_no_abstract() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -925,6 +973,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_static() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -937,6 +986,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_dispatch() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -964,6 +1014,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_final_var() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -991,6 +1042,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_strictfp() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1003,6 +1055,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_native() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1015,6 +1068,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_volatile() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1027,6 +1081,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_synchronized() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1054,6 +1109,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_transient() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1066,6 +1122,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_protected_private() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1079,6 +1136,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_dispatch_final() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1111,6 +1169,7 @@ public class BehaviorParsingTest {
 	public class FieldTest extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlValidation")
 		public void multipleVariableDefinition() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
@@ -1126,6 +1185,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void multipleValueDefinition() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
@@ -1141,6 +1201,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidAttributeName_0() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
@@ -1156,6 +1217,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidAttributeName_1() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
@@ -1171,6 +1233,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidAttributeName_2() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
@@ -1186,6 +1249,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidAttributeName_3() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
@@ -1201,6 +1265,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidAttributeName_4() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
@@ -1216,6 +1281,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void missedFinalFieldInitialization() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
@@ -1230,6 +1296,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void completeFinalFieldInitialization() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 				"behavior B1 {",
@@ -1258,6 +1325,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void fieldNameShadowing() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 				"behavior B1 {",
@@ -1276,6 +1344,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_public() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1304,6 +1373,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_private() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1332,6 +1402,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_protected() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1360,6 +1431,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_package() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1388,6 +1460,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_none() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1416,6 +1489,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_abstract() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1428,6 +1502,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_static() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1440,6 +1515,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_dispatch() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1452,6 +1528,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_final_var() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1465,6 +1542,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_strictfp() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1477,6 +1555,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_native() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1489,6 +1568,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_volatile() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1501,6 +1581,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_synchronized() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1513,6 +1594,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_transient() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1525,6 +1607,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_protected_private() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1543,6 +1626,7 @@ public class BehaviorParsingTest {
 	public class ConstructorTest extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlParsing")
 		public void validImplicitSuperConstructor() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 				"package io.sarl.test",
@@ -1575,6 +1659,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void missedImplicitSuperConstructor_1() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.test",
@@ -1592,6 +1677,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void missedImplicitSuperConstructor_2() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.test",
@@ -1612,6 +1698,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void notMissedImplicitSuperConstructor() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.test",
@@ -1628,6 +1715,7 @@ public class BehaviorParsingTest {
 
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidArgumentTypeToSuperConstructor() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 				"package io.sarl.test",
@@ -1649,6 +1737,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_public() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1671,6 +1760,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_private() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1694,6 +1784,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_protected() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1717,6 +1808,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_package() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1740,6 +1832,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_none() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1763,6 +1856,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_abstract() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1775,6 +1869,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_static() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1787,6 +1882,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_dispatch() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1799,6 +1895,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_final() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1811,6 +1908,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_strictfp() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1823,6 +1921,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_native() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1835,6 +1934,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_volatile() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1847,6 +1947,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_synchronized() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1859,6 +1960,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_transient() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1871,6 +1973,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_protected_private() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1889,6 +1992,7 @@ public class BehaviorParsingTest {
 	public class CapacityUsesTest extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlValidation")
 		public void multipleCapacityUses_0() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 				"capacity C1 {}",
@@ -1906,6 +2010,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void multipleCapacityUses_1() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 				"capacity C1 {}",
@@ -1929,6 +2034,7 @@ public class BehaviorParsingTest {
 	public class GenericTest extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlParsing")
 		public void functionGeneric_X_sarlNotation() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1952,6 +2058,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void functionGeneric_X_javaNotation() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1975,6 +2082,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void functionGeneric_XextendsNumber_sarlNotation() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -2002,6 +2110,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void functionGeneric_XextendsNumber_javaNotation() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -2029,6 +2138,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void functionGeneric_XY_sarlNotation() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -2056,6 +2166,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void functionGeneric_XY_javaNotation() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -2083,6 +2194,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void functionGeneric_XYextendsX_sarlNotation() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -2114,6 +2226,7 @@ public class BehaviorParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void functionGeneric_XYextendsX_javaNotation() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",

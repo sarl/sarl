@@ -32,6 +32,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.tests.api.AbstractSarlTest;
@@ -44,6 +45,8 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("Calling big integer cast operator")
+@Tag("core")
+@Tag("unit")
 public class CodeTest extends AbstractSarlTest {
 
 	private static BigInteger left = BigInteger.valueOf(4);

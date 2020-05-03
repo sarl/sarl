@@ -55,7 +55,8 @@ import static extension io.sarl.tests.api.tools.TestUtils.*
 	typeof(SreRunExtension)
 ])
 @DisplayName("run: on AgentSpawned test")
-@Tag("run")
+@Tag("sre-run")
+@Tag("janus")
 class OnAgentSpawnedTest {
 
 	@RepeatedTest(20)

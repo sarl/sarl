@@ -25,6 +25,7 @@ import static io.sarl.tests.api.tools.TestUtils.multilineString;
 import static io.sarl.tests.api.tools.TestValidator.validate;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlScript;
@@ -38,9 +39,11 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("Syntax: assert")
+@Tag("core")
 public class AssertKeywordTest extends AbstractSarlTest {
 
 	@Test
+	@Tag("sarlValidation")
 	public void assertTrue() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
@@ -54,6 +57,7 @@ public class AssertKeywordTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void assertBooleanTrue() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
@@ -67,6 +71,7 @@ public class AssertKeywordTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void assertFalse() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
@@ -80,6 +85,7 @@ public class AssertKeywordTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void assertBooleanFalse() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
@@ -93,6 +99,7 @@ public class AssertKeywordTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void assertOnParameter() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
@@ -106,6 +113,7 @@ public class AssertKeywordTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void assertComplexBooleanExpression() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
@@ -120,6 +128,7 @@ public class AssertKeywordTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void assertTrueWithMessage() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",
@@ -133,6 +142,7 @@ public class AssertKeywordTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void assertComplexBooleanExpressionWithMessage() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"agent A1 {",

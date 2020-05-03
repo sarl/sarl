@@ -35,7 +35,8 @@ import org.junit.jupiter.api.Tag
  * @mavenartifactid $ArtifactId$
  */
 @DisplayName("run: AsynchronousProbe service test")
-@Tag("run")
+@Tag("sre-run")
+@Tag("janus")
 class AsynchronousProbeServiceTest extends AbstractProbeServiceTest {
 
 	protected def runTestCase_prepare {

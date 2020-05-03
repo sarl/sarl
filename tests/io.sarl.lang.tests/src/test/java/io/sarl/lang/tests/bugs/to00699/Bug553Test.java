@@ -27,6 +27,7 @@ import static io.sarl.tests.api.tools.TestValidator.validate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -43,6 +44,7 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  */
 @DisplayName("Bug #553")
 @SuppressWarnings("all")
+@Tag("core")
 public class Bug553Test extends AbstractSarlTest {
 
 	private static final String SNIPSET = multilineString(
@@ -107,6 +109,7 @@ public class Bug553Test extends AbstractSarlTest {
 			"");
 	
 	@Test
+	@Tag("sarlValidation")
 	public void validation() throws Exception {
 		SarlScript mas = file(getParseHelper(), SNIPSET);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -114,6 +117,7 @@ public class Bug553Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void compilation() throws Exception {
 		getCompileHelper().compile(SNIPSET, (it) -> {
 			assertEquals(EXPECTED, it.getGeneratedCode("io.sarl.lang.tests.bug553.TestAgent"));

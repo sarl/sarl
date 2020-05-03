@@ -26,6 +26,7 @@ import static io.sarl.tests.api.tools.TestValidator.validate;
 
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotationsPackage;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlScript;
@@ -40,9 +41,11 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("Syntax: discouraged annotations")
+@Tag("core")
 public class DiscouragedAnnotationTest extends AbstractSarlTest {
 
 	@Test
+	@Tag("sarlValidation")
 	public void defaultValue() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.DefaultValue",
@@ -58,6 +61,7 @@ public class DiscouragedAnnotationTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void defaultValueSource() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.DefaultValueSource",
@@ -74,6 +78,7 @@ public class DiscouragedAnnotationTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void defaultValueUse() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.DefaultValueUse",
@@ -90,6 +95,7 @@ public class DiscouragedAnnotationTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void firedEvent() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.FiredEvent",
@@ -106,6 +112,7 @@ public class DiscouragedAnnotationTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void importedCapacityFeature() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.ImportedCapacityFeature",
@@ -121,6 +128,7 @@ public class DiscouragedAnnotationTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void perceptGuardEvaluator() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.PerceptGuardEvaluator",
@@ -137,6 +145,7 @@ public class DiscouragedAnnotationTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void sarlSourceCode() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.SarlSourceCode",
@@ -153,6 +162,7 @@ public class DiscouragedAnnotationTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void sarlSpecification() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.SarlSpecification",
@@ -169,6 +179,7 @@ public class DiscouragedAnnotationTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void syntheticMember() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.SyntheticMember",
@@ -185,6 +196,7 @@ public class DiscouragedAnnotationTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void earlyExit_onFunction() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.EarlyExit",
@@ -201,6 +213,7 @@ public class DiscouragedAnnotationTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void earlyExit_onAgent() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.EarlyExit",
@@ -217,6 +230,7 @@ public class DiscouragedAnnotationTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void earlyExit_onEvent() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.EarlyExit",

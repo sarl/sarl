@@ -39,6 +39,7 @@ import org.eclipse.xtext.xbase.XNullLiteral;
 import org.eclipse.xtext.xbase.XNumberLiteral;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlAction;
@@ -57,9 +58,11 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  */
 @SuppressWarnings("all")
 @DisplayName("Syntax: var")
+@Tag("core")
 public class VarDeclarationParsingTest extends AbstractSarlTest {
 
 	@Test
+	@Tag("sarlValidation")
 	public void variableDeclaration_SarlFieldScope_xtend() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 			"import java.util.List",
@@ -77,6 +80,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void variableDeclaration_localScope_xtend() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 			"agent A1 {",
@@ -102,6 +106,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlParsing")
 	public void variableDeclaration_SarlFieldScope() throws Exception {
 		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 			"import java.util.List",
@@ -137,6 +142,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlParsing")
 	public void variableDeclaration_localScope() throws Exception {
 		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 			"import java.util.List",
@@ -167,6 +173,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void valueDeclaration_SarlFieldScope_xtend() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 			"import java.util.List",
@@ -184,6 +191,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void valueDeclaration_localScope_xtend() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 			"agent A1 {",
@@ -209,6 +217,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlParsing")
 	public void valueDeclaration_SarlFieldScope() throws Exception {
 		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 			"import java.util.List",
@@ -244,6 +253,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlParsing")
 	public void valueDeclaration_localScope() throws Exception {
 		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 			"agent A1 {",
@@ -271,6 +281,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void forLoop_xtend() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 			"import java.util.List",
@@ -290,6 +301,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlParsing")
 	public void forLoop_inferredType() throws Exception {
 		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 			"import java.util.List",
@@ -323,6 +335,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlParsing")
 	public void forLoop_explicitType() throws Exception {
 		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 			"import java.util.List",
@@ -356,6 +369,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void catch_xtend() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 			"agent A1 {",
@@ -376,6 +390,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlParsing")
 	public void catch_oneType() throws Exception {
 		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 			"agent A1 {",
@@ -405,6 +420,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void multicatch_xtend() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 			"agent A1 {",
@@ -428,6 +444,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlParsing")
 	public void multicatch_oneType() throws Exception {
 		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 			"agent A1 {",
@@ -460,6 +477,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void closure_xtend() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 			"agent A1 {",
@@ -480,6 +498,7 @@ public class VarDeclarationParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlParsing")
 	public void closure_twoParams() throws Exception {
 		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 			"agent A1 {",

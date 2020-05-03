@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -45,6 +46,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @DisplayName("Bug #505")
 @SuppressWarnings("all")
+@Tag("core")
 public class Bug505Test extends AbstractSarlTest {
 
 	private String snippet1 = multilineString(
@@ -103,12 +105,14 @@ public class Bug505Test extends AbstractSarlTest {
 			"}");
 
 	@Test
+	@Tag("sarlValidation")
 	public void snipset1() throws Exception {
 		SarlScript mas = file(getParseHelper(), snippet1);
 		validate(getValidationHelper(), getInjector(), mas).assertNoErrors();
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void snipset1Compilation() throws Exception {
 		final String expected = multilineString(
 				"import io.sarl.lang.annotation.SarlElementType;",
@@ -163,12 +167,14 @@ public class Bug505Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void snipset2() throws Exception {
 		SarlScript mas = file(getParseHelper(), snippet2);
 		validate(getValidationHelper(), getInjector(), mas).assertNoIssues();
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void snipset2Compilation() throws Exception {
 		final String expected = multilineString(
 				"import io.sarl.lang.annotation.SarlElementType;",
@@ -196,12 +202,14 @@ public class Bug505Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void snipset3() throws Exception {
 		SarlScript mas = file(getParseHelper(), snippet3);
 		validate(getValidationHelper(), getInjector(), mas).assertNoIssues();
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void snipset3Compilation() throws Exception {
 		final String expected = multilineString(
 				"import io.sarl.lang.annotation.SarlElementType;",
@@ -229,12 +237,14 @@ public class Bug505Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void snipset4() throws Exception {
 		SarlScript mas = file(getParseHelper(), snippet4);
 		validate(getValidationHelper(), getInjector(), mas).assertNoIssues();
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void snipset4Compilation() throws Exception {
 		final String expected = multilineString(
 				"import io.sarl.lang.annotation.SarlElementType;",
@@ -289,6 +299,7 @@ public class Bug505Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void snipset5() throws Exception {
 		SarlScript mas = file(getParseHelper(), snippet5);
 		validate(getValidationHelper(), getInjector(), mas).assertWarning(
@@ -297,6 +308,7 @@ public class Bug505Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void snipset5Compilation() throws Exception {
 		final String expected = multilineString(
 				"import io.sarl.lang.annotation.SarlElementType;",

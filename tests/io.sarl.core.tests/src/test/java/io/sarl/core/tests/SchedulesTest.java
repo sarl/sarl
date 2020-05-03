@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.core.AgentTask;
@@ -38,6 +39,8 @@ import io.sarl.lang.core.Capacity;
  */
 @SuppressWarnings("all")
 @DisplayName("Schedules")
+@Tag("unit")
+@Tag("api")
 public class SchedulesTest extends AbstractSarlCoreTest<Capacity> {
 
 	@BeforeEach

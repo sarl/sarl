@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.google.inject.Inject;
 import org.eclipse.xtext.common.types.JvmVisibility;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlFactory;
@@ -43,6 +44,8 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("ecore: custom SarlClass")
+@Tag("core")
+@Tag("unit")
 public class SarlClassImplCustomTest extends AbstractSarlTest {
 
 	@Inject

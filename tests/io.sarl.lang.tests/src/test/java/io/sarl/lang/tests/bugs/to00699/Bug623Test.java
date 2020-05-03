@@ -27,6 +27,7 @@ import static io.sarl.tests.api.tools.TestValidator.validate;
 
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -46,6 +47,7 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  */
 @DisplayName("Bug #623")
 @SuppressWarnings("all")
+@Tag("core")
 public class Bug623Test extends AbstractSarlTest {
 
 	private static final String SNIPSET1 = multilineString(
@@ -84,6 +86,7 @@ public class Bug623Test extends AbstractSarlTest {
 			"}");
 
 	@Test
+	@Tag("sarlValidation")
 	public void parsing_01() throws Exception {
 		SarlScript mas = file(getParseHelper(), SNIPSET1);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -91,6 +94,7 @@ public class Bug623Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void compiling_01() throws Exception {
 		getCompileHelper().assertCompilesTo(SNIPSET1, multilineString(
 				"package io.sarl.lang.tests.bug623;",
@@ -123,6 +127,7 @@ public class Bug623Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void parsing_02() throws Exception {
 		SarlScript mas = file(getParseHelper(), SNIPSET2);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -130,6 +135,7 @@ public class Bug623Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void compiling_02() throws Exception {
 		getCompileHelper().assertCompilesTo(SNIPSET2, multilineString(
 				"package io.sarl.lang.tests.bug623;",
@@ -163,6 +169,7 @@ public class Bug623Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void parsing_03() throws Exception {
 		SarlScript mas = file(getParseHelper(), SNIPSET3);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
@@ -170,6 +177,7 @@ public class Bug623Test extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("compileToJava")
 	public void compiling_03() throws Exception {
 		getCompileHelper().assertCompilesTo(SNIPSET3, multilineString(
 				"package io.sarl.lang.tests.bug623;",

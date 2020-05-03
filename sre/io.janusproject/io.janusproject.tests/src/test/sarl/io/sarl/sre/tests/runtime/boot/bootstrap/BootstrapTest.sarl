@@ -60,7 +60,8 @@ import static extension org.mockito.Mockito.*
 	typeof(SreRunExtension)
 ])
 @DisplayName("run: Bootstrap test")
-@Tag("run")
+@Tag("sre-run")
+@Tag("janus")
 class BootstrapTest {
 
 	@Nullable

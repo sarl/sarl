@@ -36,6 +36,7 @@ import org.eclipse.xtext.serializer.ISerializer;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlAction;
@@ -51,12 +52,14 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("Syntax: early exit statements")
+@Tag("core")
 public class EarlyExistParsingTest extends AbstractSarlTest {
 
 	@Inject
 	private ISerializer serializer;
 	
 	@Test
+	@Tag("sarlParsing")
 	public void earlyExistFunction_inAction_lastExpression_0() throws Exception {
 		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 				"import io.sarl.lang.annotation.EarlyExit",
@@ -88,6 +91,7 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlParsing")
 	public void earlyExistFunction_inAction_lastExpression_1() throws Exception {
 		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 				"import io.sarl.lang.annotation.EarlyExit",
@@ -120,6 +124,7 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void earlyExistFunction_inAction_penultimateExpression_0() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.EarlyExit",
@@ -143,6 +148,7 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void earlyExistFunction_inAction_penultimateExpression_1() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.EarlyExit",
@@ -166,6 +172,7 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void earlyExistFunction_inIf_0() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.EarlyExit",
@@ -192,6 +199,7 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlParsing")
 	public void earlyExistFunction_inIf_1() throws Exception {
 		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 				"import io.sarl.lang.annotation.EarlyExit",
@@ -228,6 +236,7 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlParsing")
 	public void earlyExistFunction_inIf_2() throws Exception {
 		SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 				"import io.sarl.lang.annotation.EarlyExit",
@@ -264,6 +273,7 @@ public class EarlyExistParsingTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void earlyExistFunction_inWhile_0() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.annotation.EarlyExit",

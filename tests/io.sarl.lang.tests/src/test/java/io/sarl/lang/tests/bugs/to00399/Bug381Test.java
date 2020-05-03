@@ -32,6 +32,7 @@ import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.eclipse.xtext.xbase.testing.CompilationTestHelper.Result;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -47,6 +48,7 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @DisplayName("Bug #381")
 @SuppressWarnings("all")
+@Tag("core")
 public class Bug381Test {
 
 	protected static String snippetWithSarlSyntaxWithLocalType = multilineString(
@@ -104,6 +106,7 @@ public class Bug381Test {
 			"}");
 
 	@Nested
+	@Tag("sarlValidation")
 	public class ParserTest extends AbstractSarlTest {
 
 		@Test
@@ -145,6 +148,7 @@ public class Bug381Test {
 	}
 
 	@Nested
+	@Tag("compileToJava")
 	public class CompilerTest extends AbstractSarlTest {
 		
 		@Test

@@ -52,6 +52,7 @@ import static extension org.junit.jupiter.api.Assertions.assertSame
 ])
 @DisplayName("unit: FieldAccess test")
 @Tag("unit")
+@Tag("janus")
 class FieldAccessTest {
 
 	private static class ObjectMock {

@@ -29,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.google.inject.Inject;
 import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.SARLVersion;
@@ -50,6 +51,8 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
  */
 @DisplayName("Bug #885")
 @SuppressWarnings("all")
+@Tag("core")
+@Tag("compileToJava")
 public class Bug885Test extends AbstractSarlTest {
 
 	@Inject

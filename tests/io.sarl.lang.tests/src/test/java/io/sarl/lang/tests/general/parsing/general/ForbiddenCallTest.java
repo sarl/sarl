@@ -27,6 +27,7 @@ import static io.sarl.tests.api.tools.TestValidator.validate;
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlScript;
@@ -40,9 +41,11 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("Syntax: forbidden calls")
+@Tag("core")
 public class ForbiddenCallTest extends AbstractSarlTest {
 
 	@Test
+	@Tag("sarlValidation")
 	public void systemExit_agent_action() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 			"agent A1 {",
@@ -58,6 +61,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void systemExit_agent_behaviorUnit() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 			"event E1 { }",
@@ -74,6 +78,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void systemExit_behavior_action() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 			"behavior B1 {",
@@ -89,6 +94,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void systemExit_behavior_behaviorUnit() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 			"event E1 { }",
@@ -105,6 +111,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void systemExit_behavior_constructor() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 			"event E1 { }",
@@ -122,6 +129,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void systemExit_skill_action() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 			"capacity C1 { }",
@@ -138,6 +146,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void systemExit_skill_constructor() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 			"capacity C1 { }",
@@ -156,6 +165,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void systemExit_agent_action_staticImport() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 			"import static java.lang.System.*",
@@ -172,6 +182,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void systemExit_agent_behaviorUnit_staticImport() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 			"import static java.lang.System.*",
@@ -189,6 +200,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void systemExit_behavior_action_staticImport() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 			"import static java.lang.System.*",
@@ -205,6 +217,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void systemExit_behavior_behaviorUnit_staticImport() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 			"import static java.lang.System.*",
@@ -222,6 +235,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void systemExit_behavior_constructor_staticImport() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 			"import io.sarl.lang.core.Agent",
@@ -241,6 +255,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void systemExit_skill_action_staticImport() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 			"import static java.lang.System.*",
@@ -258,6 +273,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void systemExit_skill_constructor_staticImport() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 			"import io.sarl.lang.core.Agent",
@@ -278,6 +294,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void systemExit_agent_action_extension() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 			"import static extension java.lang.System.*",
@@ -294,6 +311,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void systemExit_agent_behaviorUnit_extension() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 			"import static extension java.lang.System.*",
@@ -311,6 +329,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void systemExit_behavior_action_extension() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 			"import static extension java.lang.System.*",
@@ -327,6 +346,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void systemExit_behavior_behaviorUnit_extension() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 			"import static extension java.lang.System.*",
@@ -344,6 +364,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void systemExit_behavior_constructor_extension() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 			"import io.sarl.lang.core.Agent",
@@ -363,6 +384,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void systemExit_skill_action_extension() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 			"import static extension java.lang.System.*",
@@ -380,6 +402,7 @@ public class ForbiddenCallTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void systemExit_skill_constructor_extension() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 			"import io.sarl.lang.core.Agent",

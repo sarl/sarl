@@ -27,6 +27,7 @@ import static io.sarl.tests.api.tools.TestValidator.validate;
 import org.eclipse.xtext.diagnostics.Diagnostic;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlPackage;
@@ -41,12 +42,14 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @DisplayName("Bug #356")
 @SuppressWarnings("all")
+@Tag("core")
 public class Bug356Test {
 
 	protected static String snippet = multilineString(
 			"agent");
 
 	@Nested
+	@Tag("sarlValidation")
 	public class ParserTest extends AbstractSarlTest {
 
 		@Test

@@ -26,6 +26,7 @@ import static io.sarl.tests.api.tools.TestValidator.validate;
 
 import org.eclipse.xtext.xbase.XbasePackage;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlScript;
@@ -40,9 +41,11 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("Syntax: @DefaultSkill")
+@Tag("core")
 public class DefaultSkillTest extends AbstractSarlTest {
 		
 	@Test
+	@Tag("sarlValidation")
 	public void valid() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.core.DefaultSkill",
@@ -58,6 +61,7 @@ public class DefaultSkillTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void notASkill() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.core.DefaultSkill",
@@ -75,6 +79,7 @@ public class DefaultSkillTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void notACapacityImplementation() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.core.DefaultSkill",
@@ -96,6 +101,7 @@ public class DefaultSkillTest extends AbstractSarlTest {
 	}
 
 	@Test
+	@Tag("sarlValidation")
 	public void validSubType() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 				"import io.sarl.lang.core.DefaultSkill",

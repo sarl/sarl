@@ -48,6 +48,7 @@ import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.validation.Issue;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.sarl.lang.sarl.SarlAction;
@@ -68,12 +69,14 @@ import io.sarl.tests.api.AbstractSarlTest;
  */
 @SuppressWarnings("all")
 @DisplayName("Syntax: capacity")
+@Tag("core")
 public class CapacityParsingTest {
 	
 	@Nested
 	public class TopElementTest extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidCapacityExtend_0() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
@@ -88,6 +91,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidCapacityExtend_1() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
@@ -104,6 +108,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidCapacityExtend_2() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
@@ -120,6 +125,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidCapacityExtend_3() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
@@ -138,6 +144,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidCapacityExtend_4() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
@@ -156,6 +163,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidCapacityExtend_5() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
@@ -174,6 +182,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidCapacityExtend_6() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 extends java.lang.Cloneable {",
@@ -186,6 +195,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidCapacityExtend_7() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
@@ -200,6 +210,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidCapacityExtend_8() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
@@ -214,6 +225,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidCapacityExtend_9() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
@@ -230,6 +242,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidCapacityExtend_10() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
@@ -246,6 +259,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidCapacityExtend_11() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
@@ -262,6 +276,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidCapacityExtend_12() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 extends C1 {",
@@ -274,6 +289,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidCapacityExtend_13() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 extends C2 {",
@@ -288,6 +304,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidCapacityExtend_14() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 extends C3 {",
@@ -304,6 +321,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidCapacityExtend_15() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
@@ -317,6 +335,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidCapacityExtend_16() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
@@ -330,6 +349,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidCapacityExtend_17() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
@@ -343,6 +363,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void inheritance() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity CapTest1 {",
@@ -382,6 +403,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void emptyCapacity() throws Exception {
 			SarlScript mas = file(getParseHelper(), "capacity C1 { }");
 			validate(getValidationHelper(), getInjector(), mas).assertWarning(
@@ -391,6 +413,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void capacitymodifier_public() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -409,6 +432,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void capacitymodifier_none() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -427,6 +451,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void capacitymodifier_private() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -439,6 +464,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void capacitymodifier_protected() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -451,6 +477,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void capacitymodifier_package() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -469,6 +496,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void capacitymodifier_abstract() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -481,6 +509,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void capacitymodifier_static() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -493,6 +522,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void capacitymodifier_dispatch() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -505,6 +535,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void capacitymodifier_final() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -517,6 +548,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void capacitymodifier_strictfp() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -529,6 +561,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void capacitymodifier_native() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -541,6 +574,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void capacitymodifier_volatile() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -553,6 +587,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void capacitymodifier_synchronized() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -565,6 +600,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void capacitymodifier_transient() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -577,6 +613,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void capacitymodifier_public_package() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -594,6 +631,7 @@ public class CapacityParsingTest {
 	public class ActionTest extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_override_notRecommended() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -609,6 +647,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_override_invalid() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -624,6 +663,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_override_valid() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -637,6 +677,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void multipleActionDefinitionInCapacity() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
@@ -652,6 +693,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void multipleActionDefinitionInSkill() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
@@ -668,6 +710,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidActionNameInCapacity() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
@@ -683,6 +726,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_public() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -709,6 +753,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_private() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -721,6 +766,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_protected() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -733,6 +779,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_package() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -745,6 +792,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void modifier_none() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -771,6 +819,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_abstract() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -783,6 +832,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_static() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -795,6 +845,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_dispatch() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -807,6 +858,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_final() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -819,6 +871,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_strictfp() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -831,6 +884,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_native() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -843,6 +897,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_volatile() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -855,6 +910,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_synchronized() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -867,6 +923,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_transient() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -879,6 +936,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void modifier_protected_private() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -897,6 +955,7 @@ public class CapacityParsingTest {
 	public class CapacityUsesTest extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlValidation")
 		public void invalidCapacityTypeForUses() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
@@ -916,6 +975,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void agentUnsuedCapacity_0() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
@@ -942,6 +1002,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void agentUnsuedCapacity_1() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {",
@@ -973,6 +1034,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void agentUnsuedCapacity_2() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"capacity C1 {",
@@ -1031,6 +1093,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void multipleCapacityUses_0() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {}",
@@ -1048,6 +1111,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlValidation")
 		public void multipleCapacityUses_1() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 {}",
@@ -1071,6 +1135,7 @@ public class CapacityParsingTest {
 	public class GenericTest extends AbstractSarlTest {
 
 		@Test
+		@Tag("sarlParsing")
 		public void functionGeneric_X_sarlNotation() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1094,6 +1159,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void functionGeneric_X_javaNotation() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1117,6 +1183,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void functionGeneric_XextendsNumber_sarlNotation() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1144,6 +1211,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void functionGeneric_XextendsNumber_javaNotation() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1171,6 +1239,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void functionGeneric_XY_sarlNotation() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1198,6 +1267,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void functionGeneric_XY_javaNotation() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1225,6 +1295,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void functionGeneric_XYextendsX_sarlNotation() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
@@ -1256,6 +1327,7 @@ public class CapacityParsingTest {
 		}
 
 		@Test
+		@Tag("sarlParsing")
 		public void functionGeneric_XYextendsX_javaNotation() throws Exception {
 			SarlScript mas = file(getParseHelper(), getValidationHelper(), multilineString(
 					"package io.sarl.lang.tests.test",
