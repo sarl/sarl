@@ -39,6 +39,7 @@ import static extension io.sarl.tests.api.tools.TestUtils.*
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("potential_field_synchronization_problem", "discouraged_occurrence_readonly_use")
 agent MemberLeftAgent1 {
 
 	uses Lifecycle, InnerContextAccess, DefaultContextInteractions, ExternalContextAccess

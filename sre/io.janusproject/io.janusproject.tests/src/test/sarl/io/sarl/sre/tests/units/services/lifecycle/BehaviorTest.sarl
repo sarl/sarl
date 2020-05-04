@@ -52,6 +52,7 @@ import static extension io.sarl.tests.api.tools.TestMockito.mock
 @DisplayName("unit: Behavior test")
 @Tag("unit")
 @Tag("janus")
+@Tag("sre-unit")
 class BehaviorTest {
 
 	@Nullable

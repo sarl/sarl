@@ -55,6 +55,7 @@ import static extension io.sarl.tests.api.tools.TestMockito.mock
 @DisplayName("unit: TimeSkill test")
 @Tag("unit")
 @Tag("janus")
+@Tag("sre-unit")
 class TimeSkillTest {
 
 	@Nullable

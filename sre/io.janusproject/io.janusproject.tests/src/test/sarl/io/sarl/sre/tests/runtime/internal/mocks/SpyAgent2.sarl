@@ -34,6 +34,7 @@ import io.sarl.sre.test.framework.skills.TestingSkill
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("discouraged_occurrence_readonly_use")
 agent SpyAgent2 {
 
 	uses Lifecycle, DefaultContextInteractions

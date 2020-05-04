@@ -47,6 +47,7 @@ import static extension org.junit.jupiter.api.Assertions.*
 @DisplayName("unit: MutableBoolean test")
 @Tag("unit")
 @Tag("janus")
+@Tag("sre-unit")
 class MutableBooleanTest {
 
 	@Test

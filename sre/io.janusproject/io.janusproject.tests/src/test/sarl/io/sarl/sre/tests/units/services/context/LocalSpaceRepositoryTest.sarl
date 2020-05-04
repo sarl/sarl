@@ -39,6 +39,7 @@ import org.junit.jupiter.api.Tag
 @DisplayName("unit: LocalSpaceRepository test")
 @Tag("unit")
 @Tag("janus")
+@Tag("sre-unit")
 class LocalSpaceRepositoryTest extends AbstractSpaceRepositoryTest<LocalSpaceRepository, ConcurrentHashMap<UUID, SpaceDescription>> {
 
 	protected def newSpaceRepository : LocalSpaceRepository {

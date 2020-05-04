@@ -65,6 +65,7 @@ import java.util.Collection
 @DisplayName("unit: InternalSchedulesSkill test")
 @Tag("unit")
 @Tag("janus")
+@Tag("sre-unit")
 class InternalSchedulesSkillTest {
 
 	@Nullable

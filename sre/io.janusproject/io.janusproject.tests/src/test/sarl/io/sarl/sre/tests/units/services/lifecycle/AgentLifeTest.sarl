@@ -89,6 +89,7 @@ import static extension org.mockito.Mockito.verify
 @DisplayName("unit: AgentLife test")
 @Tag("unit")
 @Tag("janus")
+@Tag("sre-unit")
 class AgentLifeTest {
 
 	@Nullable

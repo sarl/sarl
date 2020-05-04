@@ -70,6 +70,7 @@ import java.util.Set
 @DisplayName("unit: AbstractEventSpace test")
 @Tag("unit")
 @Tag("janus")
+@Tag("sre-unit")
 class XAbstractEventSpaceTest {
 
 	@Nullable

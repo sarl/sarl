@@ -22,9 +22,9 @@ package io.sarl.sre.services.logging.jul
 
 import io.sarl.sre.boot.configs.SreConfig
 import io.sarl.sre.boot.configs.subconfigs.LoggingConfig
-import java.io.PrintStream
 import java.util.logging.Formatter
 import java.util.logging.Level
+import java.util.logging.LogManager
 import java.util.logging.Logger
 import javax.inject.Provider
 
@@ -38,80 +38,34 @@ import javax.inject.Provider
  */
 class JulLoggerCreator {
 
+	public val PLATFORM_LOGGER_NAME_PREFIX = "Janus-SRE"
+
 	val defaultLevel : Level
 
-	val loggerProvider : Provider<Logger>
-
 	val configProvider : Provider<SreConfig>
+
+	val loggerProvider : (String)=>Logger
 
 	var config : LoggingConfig
 
 	var defaultProgramName : String
-
-	var consoleFormatter : Formatter
 
 	var platformFormatter : Formatter
 
 	/** Build a logger creator.
 	 *
 	 * @param defaultLevel the logging level for new loggers.
-	 * @param loggerProvider the provider of loggers.
 	 * @param configProvider the provider of SRE configuration.
+	 * @param loggerProvider the provider of loggers to use; if {@code null}, the default JUL log manager is used.
 	 */
-	new (defaultLevel : Level, loggerProvider : Provider<Logger>, configProvider : Provider<SreConfig>) {
+	new (defaultLevel : Level, configProvider : Provider<SreConfig>, loggerProvider : (String)=>Logger = null) {
 		this.defaultLevel = defaultLevel
-		this.loggerProvider = loggerProvider
 		this.configProvider = configProvider
-	}
-
-	/** Replies the log formatter for the console messages.
-	 *
-	 * @return the log formatter, never {@code null}.
-	 */
-	synchronized def getConsoleFormatter : Formatter {
-		if (this.consoleFormatter === null) {
-			this.consoleFormatter = createConsoleFormatter
+		if (loggerProvider === null) {
+			this.loggerProvider = [ Logger::getLogger(it) ]
+		} else {
+			this.loggerProvider = loggerProvider
 		}
-		return this.consoleFormatter
-	}
-
-	/** Change the log formatter for the console messages.
-	 * 
-	 * @param formatter the log formatter, or {@code null} to use the default.
-	 */
-	synchronized def setConsoleFormatter(formatter : Formatter) {
-		this.consoleFormatter = formatter
-	}
-
-	/** Create a formatter for the console messages.
-	 *
-	 * @return the newly created instance of formatter.
-	 */
-	protected def createConsoleFormatter : Formatter {
-		new JulPatternFormatter(this.loggingConfig.platformMessageFormat)
-	}
-
-	/** 
-	 * Create a logger with the given output for the console.
-	 * 
-	 * @param name the name of the new logger.
-	 * @param output the output.
-	 * @return the logger.
-	 * @since 0.7.0
-	 */
-	def createConsoleLogger(name : String, output : PrintStream) : Logger {
-		val logger = this.loggerProvider.get
-		val nhandler = new JulOutputStreamConsoleHandler(output, getConsoleFormatter)
-		var allHandlers = logger.handlers
-		if (allHandlers !== null) {
-			for (handler : allHandlers) {
-				logger.removeHandler(handler)
-			}
-		}
-		logger.addHandler(nhandler)
-		logger.useParentHandlers = false
-		logger.level = this.defaultLevel
-		return logger
 	}
 
 	/** Replies the log formatter for the SRE kernel.
@@ -162,7 +116,10 @@ class JulLoggerCreator {
 	 * @since 0.7.0
 	 */
 	def createPlatformLogger() : Logger {
-		val logger = this.loggerProvider.get
+		LogManager::logManager.reset
+		val kernelId = this.configProvider.get.boot.rootContextID
+		val loggerName = PLATFORM_LOGGER_NAME_PREFIX + "-K-" + kernelId
+		val logger = this.loggerProvider.apply(loggerName)
 		val stderr = new JulStandardErrorOutputConsoleHandler(getPlatformFormatter)
 		stderr.level = Level::ALL
 		val stdout = new JulStandardOutputConsoleHandler(getPlatformFormatter)
@@ -176,7 +133,7 @@ class JulLoggerCreator {
 		logger.addHandler(stderr)
 		logger.addHandler(stdout)
 		logger.useParentHandlers = false
-		logger.level = Level::ALL
+		logger.level = this.defaultLevel
 		return logger
 	}
 
@@ -194,11 +151,11 @@ class JulLoggerCreator {
 		} else {
 			name
 		}
-		val logger = Logger::getLogger(thename)
+		val logger = this.loggerProvider.apply(PLATFORM_LOGGER_NAME_PREFIX + "-M-" + thename)
 		if (parent !== null) {
 			logger.parent = parent
+			logger.useParentHandlers = true
 		}
-		logger.useParentHandlers = true
 		logger.level = this.defaultLevel
 		return logger
 	}

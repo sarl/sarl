@@ -46,6 +46,7 @@ import java.util.concurrent.atomic.AtomicReference
 import java.util.logging.Handler
 import java.util.logging.Level
 import java.util.logging.LogRecord
+import java.util.logging.Logger
 import org.arakhne.afc.bootique.log4j.configs.Log4jIntegrationConfig
 import org.arakhne.afc.bootique.variables.VariableNames
 import org.eclipse.xtend.lib.annotations.Accessors
@@ -376,32 +377,15 @@ class SreRunContext {
 		this.bootstrap = SRE::getBootstrap
 		this.rootContext = this.bootstrap.startWithoutAgent
 
-		val logger = this.bootstrap.kernelLogger
-		switch (tm) {
-			case SILENT: {
-				for (handler : logger.handlers) {
-					logger.removeHandler(handler)
-				}
-				logger.addHandler(IDDLE_LOG_HANDLER)
+		var logger = this.bootstrap.kernelLogger
+		while (logger !== null) {
+			if (logger.useParentHandlers) {
+				logger.clearLogger
+			} else {
+				logger.level = lvl
+				logger.resetLogger(tm)
 			}
-			case STANDARD_LOGGER_BEHAVIOR: {
-				// Do nothing special with the logger
-			}
-			case ADD_TO_AGENT_RESULTS: {
-				for (handler : logger.handlers) {
-					logger.removeHandler(handler)
-				}
-				logger.addHandler(LOG_IN_RESULTS_LOG_HANDLER)
-			}
-			case FAIL_ON_ERROR: {
-				for (handler : logger.handlers) {
-					logger.removeHandler(handler)
-				}
-				logger.addHandler(FAILURE_LOG_HANDLER)
-			}
-			case STANDARD_LOGGER_BEHAVIOR_AND_FAIL_ON_ERROR: {
-				logger.addHandler(FAILURE_LOG_HANDLER)
-			}
+			logger = logger.parent
 		}
 
 		onAgentSpawned [
@@ -411,6 +395,35 @@ class SreRunContext {
 		]
 
 		return this.bootstrap
+	}
+
+	private def clearLogger(logger : Logger) {
+		for (handler : logger.handlers) {
+			logger.removeHandler(handler)
+		}
+	}
+
+	private def resetLogger(logger : Logger, tm : LogTrackingMode) {
+		switch (tm) {
+			case SILENT: {
+				logger.clearLogger
+				logger.addHandler(IDDLE_LOG_HANDLER)
+			}
+			case STANDARD_LOGGER_BEHAVIOR: {
+				// Do nothing special with the logger
+			}
+			case ADD_TO_AGENT_RESULTS: {
+				logger.clearLogger
+				logger.addHandler(LOG_IN_RESULTS_LOG_HANDLER)
+			}
+			case FAIL_ON_ERROR: {
+				logger.clearLogger
+				logger.addHandler(FAILURE_LOG_HANDLER)
+			}
+			case STANDARD_LOGGER_BEHAVIOR_AND_FAIL_ON_ERROR: {
+				logger.addHandler(FAILURE_LOG_HANDLER)
+			}
+		}
 	}
 
 	static val IDDLE_LOG_HANDLER = new Handler {

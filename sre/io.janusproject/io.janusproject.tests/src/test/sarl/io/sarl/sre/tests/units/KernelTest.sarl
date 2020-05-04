@@ -64,6 +64,7 @@ import io.sarl.sre.boot.configs.SreConfig
 ])
 @Tag("janus")
 @Tag("unit")
+@Tag("sre-unit")
 @DisplayName("unit: Kernel test")
 class KernelTest {
 

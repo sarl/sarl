@@ -60,6 +60,7 @@ import io.sarl.lang.core.Behavior
 @DisplayName("unit: BehaviorGuardEvaluatorRegistry test")
 @Tag("unit")
 @Tag("janus")
+@Tag("sre-unit")
 class BehaviorGuardEvaluatorRegistryTest {
 
 	@Nullable

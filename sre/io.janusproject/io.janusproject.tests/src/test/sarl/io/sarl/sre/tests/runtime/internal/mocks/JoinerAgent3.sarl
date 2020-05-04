@@ -38,6 +38,7 @@ import java.util.UUID
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("discouraged_occurrence_readonly_use")
 agent JoinerAgent3 {
 
 	uses DefaultContextInteractions, Schedules, Behaviors, Lifecycle

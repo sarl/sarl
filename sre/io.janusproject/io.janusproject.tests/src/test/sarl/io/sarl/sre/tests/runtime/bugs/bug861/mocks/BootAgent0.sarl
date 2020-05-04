@@ -27,6 +27,7 @@ import io.sarl.sre.test.framework.skills.TestingCapacity
 import io.sarl.sre.test.framework.skills.TestingSkill
 import io.sarl.sre.tests.runtime.internal.mocks.Bye
 
+@SuppressWarnings("discouraged_occurrence_readonly_use")
 agent BootAgent0 {
 
 	uses Lifecycle

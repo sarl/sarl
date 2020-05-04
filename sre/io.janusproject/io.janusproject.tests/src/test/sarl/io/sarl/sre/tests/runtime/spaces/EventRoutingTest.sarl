@@ -59,8 +59,18 @@ class EventRoutingTest {
 
 	@Test
 	def unchangedEventSource_inspace(extension rc : SreRunContext) {
-		val kern = typeof(TargetAgent).setupTheSreKernel(null, null)
-		kern.startAgent(typeof(SourceAgent), agentInitializationParameters)
+		val kern = setupTheSreKernel(null, null)
+
+		val ag1 = UUID::randomUUID
+		waitForAgentSpawned(ag1) [
+			kern.startAgentWithID(typeof(TargetAgent), ag1, agentInitializationParameters)
+		]
+
+		val ag2 = UUID::randomUUID
+		waitForAgentSpawned(ag2) [
+			kern.startAgentWithID(typeof(SourceAgent), ag2, agentInitializationParameters)
+		]
+
 		waitForTheKernel(STANDARD_TIMEOUT)
 		
 		var adr = getFirstResultOfType(typeof(Address))
@@ -75,12 +85,20 @@ class EventRoutingTest {
 		val kern = setupTheSreKernel(null, null)
 		
 		val ag1 = UUID::randomUUID
-		kern.startAgentWithID(typeof(TargetAgent), ag1, agentInitializationParameters)
+		waitForAgentSpawned(ag1) [
+			kern.startAgentWithID(typeof(TargetAgent), ag1, agentInitializationParameters)
+		]
 
 		val ag2 = UUID::randomUUID
-		kern.startAgentWithID(typeof(TargetAgent), ag2, agentInitializationParameters)
+		waitForAgentSpawned(ag2) [
+			kern.startAgentWithID(typeof(TargetAgent), ag2, agentInitializationParameters)
+		]
 
-		kern.startAgent(typeof(SourceAgent), agentInitializationParameters)
+		val ag3 = UUID::randomUUID
+		waitForAgentSpawned(ag3) [
+			kern.startAgentWithID(typeof(SourceAgent), ag3, agentInitializationParameters)
+		]
+
 		waitForTheKernel(STANDARD_TIMEOUT)
 
 		var adr1 = getResult(ag1, typeof(Address), 0)

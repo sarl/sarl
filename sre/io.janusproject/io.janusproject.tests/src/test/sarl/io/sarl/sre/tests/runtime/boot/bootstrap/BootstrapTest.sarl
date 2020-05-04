@@ -46,6 +46,7 @@ import static io.sarl.sre.test.framework.Constants.*
 import static extension org.junit.jupiter.api.Assertions.*
 import static extension org.mockito.ArgumentCaptor.*
 import static extension org.mockito.Mockito.*
+import org.junit.jupiter.api.RepeatedTest
 
 /**
  * @author $Author: sgalland$
@@ -62,6 +63,7 @@ import static extension org.mockito.Mockito.*
 @DisplayName("run: Bootstrap test")
 @Tag("sre-run")
 @Tag("janus")
+@Tag("sre-run-tmp")
 class BootstrapTest {
 
 	@Nullable
@@ -76,7 +78,7 @@ class BootstrapTest {
 		this.bootID = UUID::nameUUIDFromBytes(typeof(BootAgent1).name.bytes)
 	}
 
-	@Test
+	@RepeatedTest(5)
 	@DisplayName("Default context ID")
 	def defaultContextUUID(extension rc : SreRunContext) {
 		System::setProperty(VariableNames::toPropertyName(BootConfig::ROOT_CONTEXT_BOOT_TYPE_NAME),
@@ -87,7 +89,7 @@ class BootstrapTest {
 		assertEquals(defaultID, id)
 	}
 
-	@Test
+	@RepeatedTest(5)
 	@DisplayName("Name-based context ID")
 	def bootContextUUID(extension rc : SreRunContext) {
 		System::setProperty(VariableNames::toPropertyName(BootConfig::ROOT_CONTEXT_BOOT_TYPE_NAME),
@@ -99,7 +101,7 @@ class BootstrapTest {
 		assertEquals(bootID, id)
 	}
 
-	@Test
+	@RepeatedTest(5)
 	@DisplayName("Random context ID")
 	def randomContextUUID(extension rc : SreRunContext) {
 		System::setProperty(VariableNames::toPropertyName(BootConfig::ROOT_CONTEXT_BOOT_TYPE_NAME),
@@ -111,7 +113,7 @@ class BootstrapTest {
 		assertNotEquals(bootID, id)
 	}
 
-	@Test
+	@RepeatedTest(5)
 	@DisplayName("startAgentWithID(Class, UUID)")
 	def startAgentWithID(extension rc : SreRunContext) {
 		val kern = setupTheSreKernel(null, null)
@@ -124,7 +126,7 @@ class BootstrapTest {
 		id.assertEquals(actual)
 	}
 
-	@Test
+	@RepeatedTest(5)
 	@DisplayName("sreStopped")
 	def sreStartedStopped(extension rc : SreRunContext) {
 		val observer = typeof(SREListener).mock

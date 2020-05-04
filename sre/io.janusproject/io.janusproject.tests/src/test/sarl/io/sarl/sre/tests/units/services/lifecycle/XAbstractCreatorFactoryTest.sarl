@@ -51,6 +51,7 @@ import static extension org.junit.jupiter.api.Assertions.*
 ])
 @Tag("janus")
 @Tag("unit")
+@Tag("sre-unit")
 class XAbstractCreatorFactoryTest {
 
 	@Test

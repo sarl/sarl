@@ -49,6 +49,7 @@ import static org.junit.jupiter.api.Assertions.*
 @DisplayName("unit: AbstractSpace test")
 @Tag("unit")
 @Tag("janus")
+@Tag("sre-unit")
 class XAbstractSpaceTest {
 
 	@Test

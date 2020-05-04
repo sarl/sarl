@@ -74,6 +74,7 @@ import static extension org.mockito.Mockito.spy
 @DisplayName("unit: BehaviorNamespaceFinder test")
 @Tag("unit")
 @Tag("janus")
+@Tag("sre-unit")
 class BehaviorNamespaceFinderTest {
 
 	@Nullable

@@ -30,6 +30,7 @@ agent AgentBug973b {
 
 	var theSkill : SkillBug973
 
+	@SuppressWarnings("potential_field_synchronization_problem")
 	on Initialize {
 		setSkill(new TestingSkill(occurrence))
 		// Add a fake skill in order to have at least 2 registered skills

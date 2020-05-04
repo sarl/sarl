@@ -44,6 +44,7 @@ import org.junit.jupiter.api.Tag
 @DisplayName("unit: InjectionBasedLifecycleService test")
 @Tag("unit")
 @Tag("janus")
+@Tag("sre-unit")
 class InjectionBasedLifecycleServiceTest extends AbstractLifecycleServiceTest<InjectionBasedLifecycleService> {
 	
 	override newService(executor : ExecutorService, logger : LoggingService, skillUninstaller : SkillUninstaller,

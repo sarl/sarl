@@ -54,6 +54,7 @@ import static extension org.mockito.Mockito.spy
 @DisplayName("unit: SpaceName test")
 @Tag("unit")
 @Tag("janus")
+@Tag("sre-unit")
 class SpaceNameTest {
 
 	@Nullable

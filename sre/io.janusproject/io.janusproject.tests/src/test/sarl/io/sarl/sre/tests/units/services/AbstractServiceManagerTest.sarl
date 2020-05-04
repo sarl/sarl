@@ -40,7 +40,6 @@ import io.sarl.sre.tests.units.services.mocks.SreServ5Impl
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
-import java.io.PrintStream
 import java.util.List
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.logging.Logger
@@ -113,7 +112,6 @@ abstract class AbstractServiceManagerTest<T extends AbstractServiceManager> {
 		this.loggerCreator = typeof(JulLoggerCreator).mock
 		when(this.loggerCreator.createPlatformLogger).thenReturn(this.logger)
 		when(this.loggerCreator.createModuleLogger(any, typeof(Logger).any)).thenReturn(this.logger)
-		when(this.loggerCreator.createConsoleLogger(any, typeof(PrintStream).any)).thenReturn(this.logger)
 		this.counter = new AtomicInteger
 		this.counter2 = new AtomicInteger
 		this.service1 = new SreServ1Impl(counter, counter2)

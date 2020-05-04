@@ -22,6 +22,7 @@
 package io.sarl.sre.tests.units.services.logging.jul
 
 import io.sarl.sre.boot.configs.SreConfig
+import io.sarl.sre.boot.configs.subconfigs.BootConfig
 import io.sarl.sre.boot.configs.subconfigs.LoggingConfig
 import io.sarl.sre.boot.configs.subconfigs.ServicesConfig
 import io.sarl.sre.services.logging.jul.JulLoggerCreator
@@ -33,18 +34,19 @@ import java.util.UUID
 import java.util.logging.Level
 import java.util.logging.Logger
 import javax.inject.Provider
+import org.eclipse.xtext.xbase.lib.Functions.Function1
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
-import org.mockito.ArgumentCaptor
 
-import static org.junit.jupiter.api.Assertions.*
-import static org.mockito.Mockito.*
+import static org.mockito.ArgumentMatchers.*
 
 import static extension io.sarl.tests.api.tools.TestMockito.mock
-import static extension org.mockito.Mockito.times
+import static extension org.junit.jupiter.api.Assertions.*
+import static extension org.mockito.ArgumentCaptor.*
+import static extension org.mockito.Mockito.*
 
 /**
  * @author $Author: sgalland$
@@ -60,13 +62,17 @@ import static extension org.mockito.Mockito.times
 @DisplayName("unit: JulLoggerCreator test")
 @Tag("unit")
 @Tag("janus")
+@Tag("sre-unit")
 class JulLoggerCreatorTest {
 
 	@Nullable
-	var loggerProvider : Provider<Logger>
+	var loggerProvider : (String)=>Logger
 
 	@Nullable
-	var logger : Logger
+	var logger0 : Logger
+
+	@Nullable
+	var logger1 : Logger
 
 	@Nullable
 	var configProvider : Provider<SreConfig>
@@ -74,15 +80,31 @@ class JulLoggerCreatorTest {
 	@Nullable
 	var config : SreConfig
 	
+	@SuppressWarnings("potential_inefficient_value_conversion")
 	@BeforeEach
 	def setUp : void {
-		this.loggerProvider = typeof(Provider).mock
-		this.logger = typeof(Logger).mock
-		when(this.loggerProvider.get).thenReturn(this.logger)
+		this.loggerProvider = typeof(Function1).mock
+		this.logger0 = typeof(Logger).mock
+		this.logger1 = typeof(Logger).mock
+		when(this.loggerProvider.apply(any)).thenAnswer [
+			val name = it.getArgument(0) as String
+			if (name.contains("-K-")) {
+				return this.logger0
+			}
+			if (name.contains("-M-")) {
+				return this.logger1
+			}
+			return null
+		]
 
 		this.configProvider = typeof(Provider).mock
 		this.config = typeof(SreConfig).mock
 		when(this.configProvider.get).thenReturn(this.config)
+
+		var bootConfig = typeof(BootConfig).mock
+		when(this.config.boot).thenReturn(bootConfig)
+		
+		when(bootConfig.rootContextID).thenReturn(UUID::randomUUID)
 
 		var servicesConfig = typeof(ServicesConfig).mock
 		when(this.config.services).thenReturn(servicesConfig)
@@ -94,24 +116,26 @@ class JulLoggerCreatorTest {
 
 	@Test
 	def createPlatformLogger {
-		var expectedLevel = Level::ALL
-		var creator = new JulLoggerCreator(Level::CONFIG, this.loggerProvider, this.configProvider)
+		var expectedLevel = Level::CONFIG
+		var creator = new JulLoggerCreator(Level::CONFIG, this.configProvider, this.loggerProvider)
 		var logger = creator.createPlatformLogger
-		assertSame(this.logger, logger)
-		var argument0 = ArgumentCaptor::forClass(typeof(Level))
-		verify(logger, 1.times).level = argument0.capture
-		assertEquals(expectedLevel, argument0.value)
+		this.logger0.assertSame(logger)
+		var argument0 = typeof(Level).forClass
+		logger.verify(1.times).level = argument0.capture
+		expectedLevel.assertEquals(argument0.value)
 	}
 
 	@Test
 	def createAgentLogger {
 		var expectedLevel = Level::CONFIG
-		var creator = new JulLoggerCreator(Level::CONFIG, this.loggerProvider, this.configProvider)
+		var creator = new JulLoggerCreator(Level::CONFIG, this.configProvider, this.loggerProvider)
 		var parent = creator.createPlatformLogger
 		var name = UUID::randomUUID.toString
 		var logger = creator.createModuleLogger(name, parent)
-		assertNotSame(this.logger, logger)
-		assertEquals(expectedLevel, logger.level)
+		this.logger1.assertSame(logger)
+		val actualLevel = typeof(Level).forClass
+		logger.verify.level = actualLevel.capture
+		expectedLevel.assertEquals(actualLevel.value)
 	}
 
 }

@@ -38,6 +38,7 @@ import static extension io.sarl.sre.tests.framework.SreTestUtilities.*
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("potential_field_synchronization_problem")
 agent MemberLeftAgent0 {
 
 	uses Lifecycle, InnerContextAccess, DefaultContextInteractions

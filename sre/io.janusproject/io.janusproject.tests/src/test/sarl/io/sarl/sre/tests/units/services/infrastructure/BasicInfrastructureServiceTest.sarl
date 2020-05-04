@@ -48,6 +48,7 @@ import static org.junit.jupiter.api.Assertions.*
 @DisplayName("unit: BasicInfrastructureService test")
 @Tag("unit")
 @Tag("janus")
+@Tag("sre-unit")
 class BasicInfrastructureServiceTest {
 
 	@Nullable

@@ -37,6 +37,7 @@ import org.junit.jupiter.api.Tag
 @DisplayName("unit: GoogleServiceManager test")
 @Tag("unit")
 @Tag("janus")
+@Tag("sre-unit")
 class GoogleServiceManagerTest extends AbstractServiceManagerTest<GoogleServiceManager> {
 
 	override newServiceManagerInstance(loggerCreator : JulLoggerCreator, services : Iterable<? extends Service>,
