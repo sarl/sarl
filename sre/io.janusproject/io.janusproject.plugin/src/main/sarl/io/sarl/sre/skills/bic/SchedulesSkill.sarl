@@ -32,6 +32,8 @@ import io.sarl.lang.core.Skill
 import io.sarl.sre.capacities.InternalSchedules
 import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.executor.SreRunnable
+import io.sarl.sre.services.lifecycle.AgentLife
+import io.sarl.sre.services.lifecycle.AgentState
 import java.lang.ref.WeakReference
 import java.util.Collection
 import java.util.concurrent.ConcurrentHashMap
@@ -661,6 +663,11 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 
 		@SuppressWarnings("discouraged_reference")
 		final override internalRun {
+			// Do not run the alive
+			val agentLife = AgentLife::getLifeOrNull(this.^agent.get)
+			if (agentLife === null || agentLife.state === AgentState::DEAD) {
+				ExecutorService::neverReturn
+			}
 			val taskDescription = this.agentTaskRef
 			if (taskDescription === null) {
 				throw new RuntimeException(Messages.SchedulesSkill_0)

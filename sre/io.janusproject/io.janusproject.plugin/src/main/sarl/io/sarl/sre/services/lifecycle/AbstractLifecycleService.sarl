@@ -421,7 +421,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 				^agent.onAgentKilled
 				fireAgentDestructionEvents(^agent, defaultContext, contexts)
 				// Test if the agent is the latest on this kernel.
-				defaultContext.context?.startShutdownLookup
+				defaultContext?.context?.startShutdownLookup
 				return true
 			} else {
 				this.loggingService.kernelLogger.warning [

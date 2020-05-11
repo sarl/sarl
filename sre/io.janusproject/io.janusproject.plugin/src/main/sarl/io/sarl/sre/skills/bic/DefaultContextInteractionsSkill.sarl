@@ -50,30 +50,30 @@ skill DefaultContextInteractionsSkill extends Skill implements DefaultContextInt
 		val life = getLife(owner)
 		assert life !== null
 		val reference = life.defaultContext
-		assert reference !== null
-		val context = reference.context
-		assert context !== null
-		return context
+		if (reference === null) {
+			return null
+		}
+		return reference.context
 	}
 
 	def getDefaultSpace : EventSpace {
 		val life = getLife(owner)
 		assert life !== null
 		val reference = life.defaultContext
-		assert reference !== null
-		val ^space = reference.defaultSpace
-		assert ^space !== null
-		return ^space
+		if (reference === null) {
+			return null
+		}
+		return reference.defaultSpace
 	}
 
 	def getDefaultAddress : Address {
 		val life = getLife(owner)
 		assert life !== null
 		val reference = life.defaultContext
-		assert reference !== null
-		val adr = reference.addressInDefaultSpace
-		assert adr !== null
-		return adr
+		if (reference === null) {
+			return null
+		}
+		return reference.addressInDefaultSpace
 	}
 
 	def isDefaultContext(context : AgentContext) : boolean {
@@ -127,10 +127,13 @@ skill DefaultContextInteractionsSkill extends Skill implements DefaultContextInt
 
 	def emit(^event : Event, scope : Scope<Address> = null) {
 		assert ^event !== null
-		^event.source = defaultAddress
 		val dspace = defaultSpace
-		assert dspace !== null
-		dspace.emit(ID, ^event, scope)
+		if (dspace !== null) {
+			val adr = defaultAddress
+			assert adr !== null
+			^event.source = adr
+			dspace.emit(ID, ^event, scope)
+		}
 	}
 
 	@Deprecated

@@ -76,29 +76,35 @@ skill LifecycleSkill implements Lifecycle {
 	def spawn(agentType : Class<? extends Agent>, params : Object*) {
 		val life = getLife(owner)
 		if (life.state.alive) {
-			var o = this.owner
-			this.lifecycle.spawnAgent(
-				1, // single agent
-				o.ID, // owner
-				life.defaultContext.context,
-				null, // agent id
-				agentType,
-				params)
+			val ctx = life.defaultContext?.context
+			if (ctx !== null) {
+				var o = this.owner
+				this.lifecycle.spawnAgent(
+					1, // single agent
+					o.ID, // owner
+					ctx,
+					null, // agent id
+					agentType,
+					params)
+			}
 		}
 	}
 
 	def spawn(nbAgents : int, agentType : Class<? extends Agent>, params : Object*) {
 		val life = getLife(owner)
 		if (life.state.alive) {
-			var o = this.owner
-			assert o !== null
-			this.lifecycle.spawnAgent(
-				nbAgents,
-				o.ID, // owner
-				life.defaultContext.context,
-				null, // agent id
-				agentType,
-				params)
+			val ctx = life.defaultContext?.context
+			if (ctx !== null) {
+				var o = this.owner
+				assert o !== null
+				this.lifecycle.spawnAgent(
+					nbAgents,
+					o.ID, // owner
+					ctx,
+					null, // agent id
+					agentType,
+					params)
+			}
 		}
 	}
 
@@ -117,7 +123,7 @@ skill LifecycleSkill implements Lifecycle {
 	}
 
 	def spawnInContext(nbAgents : int, agentClass : Class<? extends Agent>, context : AgentContext, params : Object*) {
-		if (getLife(owner).state.alive) {
+		if (getLife(owner).state.alive && context !== null) {
 			var o = this.owner
 			assert o !== null
 			this.lifecycle.spawnAgent(
@@ -131,7 +137,7 @@ skill LifecycleSkill implements Lifecycle {
 	}
 
 	def spawnInContextWithID(agentClass : Class<? extends Agent>, agentID : UUID, context : AgentContext, params : Object*) {
-		if (getLife(owner).state.alive) {
+		if (getLife(owner).state.alive && context !== null) {
 			var o = this.owner
 			assert o !== null
 			this.lifecycle.spawnAgent(
