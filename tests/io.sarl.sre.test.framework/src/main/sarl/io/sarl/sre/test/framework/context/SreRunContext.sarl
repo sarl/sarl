@@ -378,6 +378,7 @@ class SreRunContext {
 		this.rootContext = this.bootstrap.startWithoutAgent
 
 		var logger = this.bootstrap.kernelLogger
+		val klogger = logger
 		while (logger !== null) {
 			if (logger.useParentHandlers) {
 				logger.clearLogger
@@ -393,6 +394,11 @@ class SreRunContext {
 				this.bootAgentId = it.agentID
 			}
 		]
+
+		if (klogger !== null) {
+			klogger.level = lvl
+			klogger.info("Starting SRE test: " + getExecutableName)
+		}		
 
 		return this.bootstrap
 	}

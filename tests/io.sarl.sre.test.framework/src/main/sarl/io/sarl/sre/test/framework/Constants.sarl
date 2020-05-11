@@ -85,7 +85,7 @@ final class Constants {
 
 	/** The logging level when logging is enable during tests.
 	 */
-	public static val TEST_LOGGING_LEVEL = Level::ALL
+	public static val TEST_LOGGING_LEVEL = Level::INFO
 
 	/** Time to consider before doing a differed kill.
 	 */
