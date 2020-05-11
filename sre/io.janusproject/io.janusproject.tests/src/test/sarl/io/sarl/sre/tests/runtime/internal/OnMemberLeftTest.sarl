@@ -22,9 +22,9 @@
 package io.sarl.sre.tests.runtime.internal
 
 import io.sarl.sre.test.framework.context.SreRunContext
+import io.sarl.sre.test.framework.events.Bye
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.^extension.SreRunExtension
-import io.sarl.sre.tests.runtime.internal.mocks.Bye
 import io.sarl.sre.tests.runtime.internal.mocks.MemberLeftAgent0
 import io.sarl.sre.tests.runtime.internal.mocks.MemberLeftAgent1
 import io.sarl.tests.api.extensions.ContextInitExtension
@@ -99,7 +99,7 @@ class OnMemberLeftTest {
 		var kern = setupTheSreKernel(null, null)
 
 		val id0 = UUID::randomUUID
-		waitForAgentSpawned(id0) [
+		id0.waitForAgentSpawned [
 			kern.startAgentWithID(typeof(MemberLeftAgent1), id0, buildAgentInitializationParameters(1, null))
 		]
 
@@ -107,18 +107,21 @@ class OnMemberLeftTest {
 		innerContext.assertNotNull
 
 		val id1 = UUID::randomUUID
-		waitForAgentSpawned(id1) [
+		id1.waitForAgentSpawned [
 			kern.startAgentWithID(typeof(MemberLeftAgent1), id1, buildAgentInitializationParameters(2, innerContext))
 		]
 
 		val id2 = UUID::randomUUID
-		waitForAgentSpawned(id2) [
+		id2.waitForAgentSpawned [
 			kern.startAgentWithID(typeof(MemberLeftAgent1), id2, buildAgentInitializationParameters(3, innerContext))
 		]
 
 		// Kill the inner agents, first
-		waitForAgentKilled(#[id1, id2]) [
-			innerContext.defaultSpace.emit(UUID::randomUUID, new Bye)[it.UUID != id0]
+		id1.waitForAgentKilled [
+			innerContext.defaultSpace.emit(UUID::randomUUID, new Bye) [it.UUID == id1]
+		]
+		id2.waitForAgentKilled [
+			innerContext.defaultSpace.emit(UUID::randomUUID, new Bye)[it.UUID == id2]
 		]
 
 		// Kill the containing agent, second
@@ -127,10 +130,12 @@ class OnMemberLeftTest {
 		waitForTheKernel(STANDARD_TIMEOUT)
 
 		allResults.assertContains(
-			"AG1: joined MemberLeftAgent1 " + id1 + " in default space",
-			"AG1: joined MemberLeftAgent1 " + id1 + " in inner space",
-			"AG1: joined MemberLeftAgent1 " + id2 + " in default space",
-			"AG1: joined MemberLeftAgent1 " + id2 + " in inner space"
+			"AG1: memberLeft MemberLeftAgent1 " + id1 + " in default space",
+			"AG1: memberLeft MemberLeftAgent1 " + id1 + " in inner space",
+			"AG1: memberLeft MemberLeftAgent1 " + id2 + " in default space",
+			"AG1: memberLeft MemberLeftAgent1 " + id2 + " in inner space",
+			"AG3: memberLeft MemberLeftAgent1 " + id1 + " in default space",
+			"AG3: memberLeft MemberLeftAgent1 " + id1 + " in other space"
 		)
 	}
 

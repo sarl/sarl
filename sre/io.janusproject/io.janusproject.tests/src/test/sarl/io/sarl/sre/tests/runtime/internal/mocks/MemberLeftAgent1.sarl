@@ -28,10 +28,12 @@ import io.sarl.core.InnerContextAccess
 import io.sarl.core.Lifecycle
 import io.sarl.core.MemberLeft
 import io.sarl.sre.services.context.Context
+import io.sarl.sre.test.framework.events.Bye
 import io.sarl.sre.test.framework.skills.TestingCapacity
 import io.sarl.sre.test.framework.skills.TestingSkill
 
 import static extension io.sarl.tests.api.tools.TestUtils.*
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * @author $Author: sgalland$
@@ -46,11 +48,11 @@ agent MemberLeftAgent1 {
 
 	uses TestingCapacity
 
-	var number : int
+	val number = new AtomicInteger
 
 	on Initialize {
 		setSkill(new TestingSkill(occurrence))
-		this.number = occurrence.parameters.get(1) as Integer
+		this.number.set(occurrence.parameters.get(1) as Integer)
 		var octx = occurrence.parameters.get(2) as Context
 		var ictx = innerContext
 		assert ictx !== null
@@ -69,7 +71,7 @@ agent MemberLeftAgent1 {
 			msg = "other"
 		}
 		addResult(
-			"AG" + this.number + ": joined " + occurrence.agentType.simpleTypeName + " " + occurrence.agentID + " in " +
+			"AG" + this.number.get + ": memberLeft " + occurrence.agentType.simpleTypeName + " " + occurrence.agentID + " in " +
 				msg + " space")
 	}
 

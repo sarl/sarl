@@ -34,11 +34,6 @@ agent SharedGuardEvaluationAgent1 {
 
 	on Initialize {
 		setSkillIfAbsent(new TestingSkill(occurrence))
-		killMeSoon
-	}
-
-	on Initialize {
-		setSkillIfAbsent(new TestingSkill(occurrence))
 		addResult("a")
 		i.set(10)
 	}

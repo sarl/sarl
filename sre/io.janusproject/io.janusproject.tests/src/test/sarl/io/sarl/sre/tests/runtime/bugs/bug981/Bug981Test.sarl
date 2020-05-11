@@ -51,6 +51,7 @@ import org.junit.jupiter.api.^extension.ExtendWith
 @DisplayName("run: Bug #981")
 @Tag("sre-run")
 @Tag("janus")
+@Tag("sre-run-tmp")
 class Bug981Test {
 
 	@Test

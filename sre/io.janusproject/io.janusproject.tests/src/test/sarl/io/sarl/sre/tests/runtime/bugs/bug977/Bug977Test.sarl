@@ -21,12 +21,12 @@
 package io.sarl.sre.tests.runtime.bugs.bug977
 
 import io.sarl.sre.test.framework.context.SreRunContext
+import io.sarl.sre.test.framework.events.Bye
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.^extension.SreRunExtension
 import io.sarl.sre.tests.runtime.bugs.bug977.mocks.HelloChildAgent
 import io.sarl.sre.tests.runtime.bugs.bug977.mocks.SharedGuardEvaluationAgent0
 import io.sarl.sre.tests.runtime.bugs.bug977.mocks.SharedGuardEvaluationAgent1
-import io.sarl.sre.tests.runtime.internal.mocks.Bye
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
 import java.util.UUID
@@ -39,6 +39,7 @@ import org.junit.jupiter.api.^extension.ExtendWith
 import static io.sarl.sre.test.framework.Constants.*
 
 import static extension io.sarl.tests.api.tools.TestAssertions.*
+import org.junit.jupiter.api.Disabled
 
 /** Tests for issue #977: Problem with multiple initialize event in Behavior inheritance demos.
  *
@@ -59,6 +60,7 @@ import static extension io.sarl.tests.api.tools.TestAssertions.*
 @DisplayName("run: Bug #977")
 @Tag("sre-run")
 @Tag("janus")
+@Disabled
 class Bug977Test {
 
 	@RepeatedTest(10)
@@ -88,7 +90,16 @@ class Bug977Test {
 	@RepeatedTest(10)
 	@DisplayName("Shared guard evaluation without value change")
 	def runSharedGuardEvaluationWithoutValueChange(extension rc : SreRunContext, info : RepetitionInfo) : void {
-		typeof(SharedGuardEvaluationAgent0).runSre
+		var kern = setupTheSreKernel(null, null)
+
+		val id0 = UUID::randomUUID
+		waitForAgentSpawned(id0) [
+			kern.startAgentWithID(typeof(SharedGuardEvaluationAgent0), id0, agentInitializationParameters)
+		]
+
+		rootContext.defaultSpace.emit(UUID::randomUUID, new Bye)
+
+		waitForTheKernel(STANDARD_TIMEOUT)
 
 		val all = getResults(bootAgentId)
 
@@ -98,7 +109,16 @@ class Bug977Test {
 	@RepeatedTest(10)
 	@DisplayName("Shared guard evaluation with value change")
 	def runSharedGuardEvaluationWithValueChange(extension rc : SreRunContext) : void {
-		typeof(SharedGuardEvaluationAgent1).runSre
+		var kern = setupTheSreKernel(null, null)
+
+		val id0 = UUID::randomUUID
+		waitForAgentSpawned(id0) [
+			kern.startAgentWithID(typeof(SharedGuardEvaluationAgent1), id0, agentInitializationParameters)
+		]
+
+		rootContext.defaultSpace.emit(UUID::randomUUID, new Bye)
+
+		waitForTheKernel(STANDARD_TIMEOUT)
 
 		val all = getResults(bootAgentId)
 

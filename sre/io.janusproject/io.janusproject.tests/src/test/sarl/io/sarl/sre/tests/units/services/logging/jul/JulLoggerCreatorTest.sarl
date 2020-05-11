@@ -88,13 +88,10 @@ class JulLoggerCreatorTest {
 		this.logger1 = typeof(Logger).mock
 		when(this.loggerProvider.apply(any)).thenAnswer [
 			val name = it.getArgument(0) as String
-			if (name.contains("-K-")) {
+			if (name.startsWith(JulLoggerCreator::PLATFORM_LOGGER_NAME_PREFIX)) {
 				return this.logger0
 			}
-			if (name.contains("-M-")) {
-				return this.logger1
-			}
-			return null
+			return this.logger1
 		]
 
 		this.configProvider = typeof(Provider).mock

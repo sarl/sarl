@@ -24,9 +24,9 @@ package io.sarl.sre.tests.runtime.bugs.bug977.mocks
 import io.sarl.core.Destroy
 import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
+import io.sarl.sre.test.framework.events.Bye
 import io.sarl.sre.test.framework.skills.TestingCapacity
 import io.sarl.sre.test.framework.skills.TestingSkill
-import io.sarl.sre.tests.runtime.internal.mocks.Bye
 
 agent HelloChildAgent extends AbstractAgent {
 	

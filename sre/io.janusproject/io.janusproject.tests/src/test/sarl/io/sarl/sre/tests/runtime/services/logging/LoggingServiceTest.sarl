@@ -51,6 +51,7 @@ import static extension org.junit.jupiter.api.Assertions.*
 @DisplayName("run: Logging service test")
 @Tag("sre-run")
 @Tag("janus")
+@Tag("sre-run-tmp")
 class LoggingServiceTest {
 
 	@Test

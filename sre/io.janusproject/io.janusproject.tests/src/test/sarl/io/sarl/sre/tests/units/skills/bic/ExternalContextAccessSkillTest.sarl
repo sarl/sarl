@@ -49,18 +49,17 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
-import org.mockito.ArgumentCaptor
 
-import static io.sarl.tests.api.tools.TestAssertions.*
 import static io.sarl.tests.api.tools.TestReflections.*
-import static org.junit.jupiter.api.Assertions.*
+import static java.util.UUID.*
 import static org.mockito.ArgumentMatchers.*
-import static org.mockito.Mockito.*
 
+import static extension io.sarl.sre.services.lifecycle.AgentLife.*
+import static extension io.sarl.tests.api.tools.TestAssertions.*
 import static extension io.sarl.tests.api.tools.TestMockito.mock
-import static extension org.mockito.Mockito.spy
-import static extension org.mockito.Mockito.times
-import static extension org.mockito.Mockito.verify
+import static extension org.junit.jupiter.api.Assertions.*
+import static extension org.mockito.ArgumentCaptor.*
+import static extension org.mockito.Mockito.*
 
 /**
  * @author $Author: sgalland$
@@ -117,8 +116,8 @@ class ExternalContextAccessSkillTest {
 	
 	@BeforeEach
 	def setUp : void {
-		this.contextId = UUID::randomUUID
-		this.^agentId = UUID::randomUUID
+		this.contextId = randomUUID
+		this.^agentId = randomUUID
 		this.eventBusListener = typeof(InformedEventListener).mock
 		this.eventBus = new MyInternalEventBusSkill2().spy
 		when(this.eventBus.associatedEventBusListener).thenReturn(this.eventBusListener)
@@ -126,7 +125,7 @@ class ExternalContextAccessSkillTest {
 		this.service = typeof(ContextService).mock
 		when(this.service.rootContext).thenReturn(this.rootContext)
 		this.^agent = spy(new MyAgent4(contextId, this.^agentId, this.eventBus))
-		var defSpaceId = new SpaceID(this.contextId, UUID::randomUUID, typeof(OpenEventSpaceSpecification))
+		var defSpaceId = new SpaceID(this.contextId, randomUUID, typeof(OpenEventSpaceSpecification))
 		var adr = new Address(defSpaceId, this.^agentId)
 		this.defaultSpace = typeof(OpenEventSpace).mock
 		when(this.defaultSpace.spaceID).thenReturn(defSpaceId)
@@ -150,7 +149,7 @@ class ExternalContextAccessSkillTest {
 		when(space1.spaceID).thenReturn(sid1)
 		when(ctx1.defaultSpace).thenReturn(space1)
 		var adr1 = new Address(sid1, this.^agentId)
-		AgentLife::getLife(this.^agent).addExternalContext(ctx1, adr1)
+		this.^agent.getLife.addExternalContext(ctx1, adr1)
 		return #[ctx1]
 	}
 
@@ -164,75 +163,82 @@ class ExternalContextAccessSkillTest {
 		when(space2.spaceID).thenReturn(sid2)
 		when(ctx2.defaultSpace).thenReturn(space2)
 		var adr2 = new Address(sid2, this.^agentId)
-		AgentLife::getLife(this.^agent).addExternalContext(ctx2, adr2)
+		this.^agent.getLife.addExternalContext(ctx2, adr2)
 
 		return #[first.get(0), ctx2]
 	}
 
 	@Test
 	def getUniverseContext {
-		assertSame(this.rootContext, this.^skill.universeContext)
+		this.rootContext.assertSame(this.^skill.universeContext)
 	}
 
 	@Test
+	@DisplayName("getContext(UUID) without external context")
 	def getContext_noExternalContext {
-		assertSame(this.defaultContext, this.^skill.getContext(this.contextId))
-		assertNull(this.^skill.getContext(UUID::randomUUID))
+		this.defaultContext.assertSame(this.^skill.getContext(this.contextId))
+		this.^skill.getContext(randomUUID).assertNull
 	}
 
 	@Test
+	@DisplayName("getContext(UUID) with 2 external contexts")
 	def getContext_withExternalContext {
 		var ctx = forceTwoExternalContextCreation
-		assertSame(this.defaultContext, this.^skill.getContext(this.contextId))
+		this.defaultContext.assertSame(this.^skill.getContext(this.contextId))
 		for (c : ctx) {
-			assertSame(c, this.^skill.getContext(c.ID))
+			c.assertSame(this.^skill.getContext(c.ID))
 		}
-		assertNull(this.^skill.getContext(UUID::randomUUID))
+		this.^skill.getContext(randomUUID).assertNull
 	}
 
 	@Test
+	@DisplayName("getAllContexts() without external context")
 	def getAllContexts_noExternalContext {
 		var actual = this.^skill.allContexts
-		assertContains(actual, this.defaultContext)
+		actual.assertContains(this.defaultContext)
 	}
 
 	@Test
+	@DisplayName("getAllContexts() with 2 external contexts")
 	def getAllContexts_withExternalContext {
 		var ctx = forceTwoExternalContextCreation
 		var actual = this.^skill.allContexts
-		assertContains(actual, ctx.get(0), ctx.get(1), this.defaultContext)
+		actual.assertContains(ctx.get(0), ctx.get(1), this.defaultContext)
 	}
 
 	@Test
+	@DisplayName("isInSpace(Event, UUID)")
 	def isInSpaceUUID {
-		var spaceId1 = UUID::randomUUID
-		var spaceId2 = UUID::randomUUID
+		var spaceId1 = randomUUID
+		var spaceId2 = randomUUID
 		var ^event = typeof(Event).mock
 		var adr1 = new Address(new SpaceID(this.contextId, spaceId1, typeof(OpenEventSpaceSpecification)), this.^agentId)
 		when(^event.source).thenReturn(adr1)
 		
-		assertTrue(this.^skill.isInSpace(^event, spaceId1))
-		assertFalse(this.^skill.isInSpace(^event, spaceId2))
+		this.^skill.isInSpace(^event, spaceId1).assertTrue
+		this.^skill.isInSpace(^event, spaceId2).assertFalse
 	}
 
 	@Test
+	@DisplayName("isInSpace(Event, SpaceID)")
 	def isInSpaceSpaceID {
-		var spaceId1 = UUID::randomUUID
-		var spaceId2 = UUID::randomUUID
+		var spaceId1 = randomUUID
+		var spaceId2 = randomUUID
 		var ^event = typeof(Event).mock
 		var adr1 = new Address(new SpaceID(this.contextId, spaceId1, typeof(OpenEventSpaceSpecification)), this.^agentId)
 		when(^event.source).thenReturn(adr1)
 		
-		assertTrue(this.^skill.isInSpace(^event, new SpaceID(this.contextId, spaceId1, typeof(OpenEventSpaceSpecification))))
-		assertFalse(this.^skill.isInSpace(^event, new SpaceID(this.contextId, spaceId2, typeof(OpenEventSpaceSpecification))))
-		assertFalse(this.^skill.isInSpace(^event, new SpaceID(UUID::randomUUID, spaceId1, typeof(OpenEventSpaceSpecification))))
-		assertFalse(this.^skill.isInSpace(^event, new SpaceID(UUID::randomUUID, spaceId2, typeof(OpenEventSpaceSpecification))))
+		this.^skill.isInSpace(^event, new SpaceID(this.contextId, spaceId1, typeof(OpenEventSpaceSpecification))).assertTrue
+		this.^skill.isInSpace(^event, new SpaceID(this.contextId, spaceId2, typeof(OpenEventSpaceSpecification))).assertFalse
+		this.^skill.isInSpace(^event, new SpaceID(randomUUID, spaceId1, typeof(OpenEventSpaceSpecification))).assertFalse
+		this.^skill.isInSpace(^event, new SpaceID(randomUUID, spaceId2, typeof(OpenEventSpaceSpecification))).assertFalse
 	}
 
 	@Test
+	@DisplayName("isInSpace(Event, Space)")
 	def isInSpaceSpace {
-		var spaceId1 = UUID::randomUUID
-		var spaceId2 = UUID::randomUUID
+		var spaceId1 = randomUUID
+		var spaceId2 = randomUUID
 		var ^event = typeof(Event).mock
 		var adr1 = new Address(new SpaceID(this.contextId, spaceId1, typeof(OpenEventSpaceSpecification)), this.^agentId)
 		when(^event.source).thenReturn(adr1)
@@ -244,54 +250,58 @@ class ExternalContextAccessSkillTest {
 		when(space2.spaceID).thenReturn(new SpaceID(this.contextId, spaceId2, typeof(OpenEventSpaceSpecification)))
 
 		var space3 = typeof(Space).mock
-		when(space3.spaceID).thenReturn(new SpaceID(UUID::randomUUID, spaceId1, typeof(OpenEventSpaceSpecification)))
+		when(space3.spaceID).thenReturn(new SpaceID(randomUUID, spaceId1, typeof(OpenEventSpaceSpecification)))
 
 		var space4 = typeof(Space).mock
-		when(space4.spaceID).thenReturn(new SpaceID(UUID::randomUUID, spaceId2, typeof(OpenEventSpaceSpecification)))
+		when(space4.spaceID).thenReturn(new SpaceID(randomUUID, spaceId2, typeof(OpenEventSpaceSpecification)))
 
-		assertTrue(this.^skill.isInSpace(^event, space1))
-		assertFalse(this.^skill.isInSpace(^event, space2))
-		assertFalse(this.^skill.isInSpace(^event, space3))
-		assertFalse(this.^skill.isInSpace(^event, space4))
+		this.^skill.isInSpace(^event, space1).assertTrue
+		this.^skill.isInSpace(^event, space2).assertFalse
+		this.^skill.isInSpace(^event, space3).assertFalse
+		this.^skill.isInSpace(^event, space4).assertFalse
 	}
 
 	@Test
+	@DisplayName("join(UUID, UUID) the default context")
 	def join_defaultContext {
-		assertFalse(this.^skill.join(this.contextId, this.defaultSpace.spaceID.ID))
+		this.^skill.join(this.contextId, this.defaultSpace.spaceID.ID).assertFalse
 		
 		var actual = this.^skill.allContexts
-		assertContains(actual, this.defaultContext)
+		actual.assertContains(this.defaultContext)
 		verifyNoMoreInteractions(emitter1)
 		verifyNoMoreInteractions(emitter2)
 	}
 
 	@Test
+	@DisplayName("join(UUID, UUID) an already joined external context")
 	def join_joinedExternalContext {
 		var ctxs = forceTwoExternalContextCreation
 		
-		assertFalse(this.^skill.join(ctxs.get(0).ID, ctxs.get(0).defaultSpace.spaceID.ID))
+		this.^skill.join(ctxs.get(0).ID, ctxs.get(0).defaultSpace.spaceID.ID).assertFalse
 		
 		var actual = this.^skill.allContexts
-		assertContains(actual, this.defaultContext, ctxs.get(0), ctxs.get(1))
+		actual.assertContains(this.defaultContext, ctxs.get(0), ctxs.get(1))
 		verifyNoMoreInteractions(emitter1)
 		verifyNoMoreInteractions(emitter2)
 	}
 
 	@Test
+	@DisplayName("join(UUID, UUID) unknown context")
 	def join_unknownContext {
-		assertFalse(this.^skill.join(UUID::randomUUID, this.defaultSpace.spaceID.ID))
+		this.^skill.join(randomUUID, this.defaultSpace.spaceID.ID).assertFalse
 		
 		var actual = this.^skill.allContexts
-		assertContains(actual, this.defaultContext)
+		actual.assertContains(this.defaultContext)
 		verifyNoMoreInteractions(emitter1)
 		verifyNoMoreInteractions(emitter2)
 	}
 
 	@Test
+	@DisplayName("join(UUID, UUID) with invalid space id")
 	def join_invalidSpaceId {
 		// Create a context into the context service
-		var ctxId = UUID::randomUUID
-		var spId = UUID::randomUUID
+		var ctxId = randomUUID
+		var spId = randomUUID
 		var ^space = typeof(OpenEventSpace).mock
 		when(^space.spaceID).thenReturn(new SpaceID(ctxId, spId, typeof(OpenEventSpaceSpecification)))
 		var context = typeof(Context).mock
@@ -299,19 +309,20 @@ class ExternalContextAccessSkillTest {
 		when(context.ID).thenReturn(ctxId)
 		when(this.service.getContext(any)).thenReturn(context)
 		
-		assertFalse(this.^skill.join(ctxId, this.defaultSpace.spaceID.ID))
+		this.^skill.join(ctxId, this.defaultSpace.spaceID.ID).assertFalse
 
 		var actual = this.^skill.allContexts
-		assertContains(actual, this.defaultContext)
+		actual.assertContains(this.defaultContext)
 		verifyNoMoreInteractions(emitter1)
 		verifyNoMoreInteractions(emitter2)
 	}
 
 	@Test
+	@DisplayName("join(UUID, UUID) with 1 external context when agent is not alive")
 	def join_validSpaceId_firstExternalContext_notAlive {
 		// Create a context into the context service
-		var ctxId = UUID::randomUUID
-		var spId = UUID::randomUUID
+		var ctxId = randomUUID
+		var spId = randomUUID
 		var ^space = typeof(OpenEventSpace).mock
 		when(^space.spaceID).thenReturn(new SpaceID(ctxId, spId, typeof(OpenEventSpaceSpecification)))
 		var context = typeof(Context).mock
@@ -319,14 +330,15 @@ class ExternalContextAccessSkillTest {
 		when(context.ID).thenReturn(ctxId)
 		when(this.service.getContext(any)).thenReturn(context)
 
-		assertFalse(this.^skill.join(ctxId, spId))
+		this.^skill.join(ctxId, spId).assertFalse
 	}
 
 	@Test
+	@DisplayName("join(UUID, UUID) with 1 external context when agent is alive")
 	def join_validSpaceId_firstExternalContext_alive {
 		// Create a context into the context service
-		var ctxId = UUID::randomUUID
-		var spId = UUID::randomUUID
+		var ctxId = randomUUID
+		var spId = randomUUID
 		var ^space = typeof(OpenEventSpace).mock
 		when(^space.spaceID).thenReturn(new SpaceID(ctxId, spId, typeof(OpenEventSpaceSpecification)))
 		var context = typeof(Context).mock
@@ -335,39 +347,40 @@ class ExternalContextAccessSkillTest {
 		when(this.service.getContext(any)).thenReturn(context)
 
 		// Force alive
-		AgentLife::getLife(this.^agent).setState(AgentState::ALIVE)
+		this.^agent.getLife.state = AgentState::ALIVE
 		
-		assertTrue(this.^skill.join(ctxId, spId))
+		this.^skill.join(ctxId, spId).assertTrue
 		
 		var actual = this.^skill.allContexts
-		assertContains(actual, this.defaultContext, context)
+		actual.assertContains(this.defaultContext, context)
 		
-		var captedContextId = ArgumentCaptor::forClass(typeof(UUID))
-		var captedSpaceId = ArgumentCaptor::forClass(typeof(UUID))
-		verify(emitter2, times(1)).contextJoined(captedContextId.capture, captedSpaceId.capture)
-		assertEquals(ctxId, captedContextId.value)
-		assertEquals(spId, captedSpaceId.value)
+		var captedContextId = typeof(UUID).forClass
+		var captedSpaceId = typeof(UUID).forClass
+		emitter2.verify(1.times).contextJoined(captedContextId.capture, captedSpaceId.capture)
+		ctxId.assertEquals(captedContextId.value)
+		spId.assertEquals(captedSpaceId.value)
 
-		var captedContext = ArgumentCaptor::forClass(typeof(AgentContext))
-		var captedSpaceID = ArgumentCaptor::forClass(typeof(SpaceID))
-		var captedAgentID = ArgumentCaptor::forClass(typeof(UUID))
-		var captedType = ArgumentCaptor::forClass(typeof(String))
+		var captedContext = typeof(AgentContext).forClass
+		var captedSpaceID = typeof(SpaceID).forClass
+		var captedAgentID = typeof(UUID).forClass
+		var captedType = typeof(String).forClass
 		emitter1.verify(1.times).memberJoined(
 				captedContext.capture, captedSpaceID.capture,
 				captedAgentID.capture, captedType.capture)
-		assertSame(context, captedContext.value)
-		assertEquals(new SpaceID(ctxId, spId, typeof(OpenEventSpaceSpecification)), captedSpaceID.value)
-		assertEquals(this.^agentId, captedAgentID.value)
-		assertEquals(this.^agent.class.name, captedType.value)
+		context.assertSame(captedContext.value)
+		new SpaceID(ctxId, spId, typeof(OpenEventSpaceSpecification)).assertEquals(captedSpaceID.value)
+		this.^agentId.assertEquals(captedAgentID.value)
+		this.^agent.class.name.assertEquals(captedType.value)
 	}
 
 	@Test
+	@DisplayName("join(UUID, UUID) with 2 external contexts when agent is not alive")
 	def join_validSpaceId_withExternalContexts_notAlive {
 		forceTwoExternalContextCreation
 		
 		// Create a context into the context service
-		var ctxId = UUID::randomUUID
-		var spId = UUID::randomUUID
+		var ctxId = randomUUID
+		var spId = randomUUID
 		var ^space = typeof(OpenEventSpace).mock
 		when(^space.spaceID).thenReturn(new SpaceID(ctxId, spId, typeof(OpenEventSpaceSpecification)))
 		var context = typeof(Context).mock
@@ -375,16 +388,17 @@ class ExternalContextAccessSkillTest {
 		when(context.ID).thenReturn(ctxId)
 		when(this.service.getContext(any)).thenReturn(context)
 
-		assertFalse(this.^skill.join(ctxId, spId))
+		this.^skill.join(ctxId, spId).assertFalse
 	}
 
 	@Test
+	@DisplayName("join(UUID, UUID) with 2 external contexts when agent is alive")
 	def join_validSpaceId_withExternalContexts_alive {
 		var ctxs = forceTwoExternalContextCreation
 		
 		// Create a context into the context service
-		var ctxId = UUID::randomUUID
-		var spId = UUID::randomUUID
+		var ctxId = randomUUID
+		var spId = randomUUID
 		var ^space = typeof(OpenEventSpace).mock
 		when(^space.spaceID).thenReturn(new SpaceID(ctxId, spId, typeof(OpenEventSpaceSpecification)))
 		var context = typeof(Context).mock
@@ -393,128 +407,143 @@ class ExternalContextAccessSkillTest {
 		when(this.service.getContext(any)).thenReturn(context)
 
 		// Force alive
-		AgentLife::getLife(this.^agent).state = AgentState::ALIVE
+		this.^agent.getLife.state = AgentState::ALIVE
 
-		assertTrue(this.^skill.join(ctxId, spId))
+		this.^skill.join(ctxId, spId).assertTrue
 		
 		var actual = this.^skill.allContexts
-		assertContains(actual, this.defaultContext, ctxs.get(0), ctxs.get(1), context)
+		actual.assertContains(this.defaultContext, ctxs.get(0), ctxs.get(1), context)
 
-		var captedContextId = ArgumentCaptor::forClass(typeof(UUID))
-		var captedSpaceId = ArgumentCaptor::forClass(typeof(UUID))
+		var captedContextId = typeof(UUID).forClass
+		var captedSpaceId = typeof(UUID).forClass
 		emitter2.verify(1.times).contextJoined(captedContextId.capture, captedSpaceId.capture)
-		assertEquals(ctxId, captedContextId.value)
-		assertEquals(spId, captedSpaceId.value)
+		ctxId.assertEquals(captedContextId.value)
+		spId.assertEquals(captedSpaceId.value)
 
-		var captedContext = ArgumentCaptor::forClass(typeof(AgentContext))
-		var captedSpaceID= ArgumentCaptor::forClass(typeof(SpaceID))
-		var captedAgentID = ArgumentCaptor::forClass(typeof(UUID))
-		var captedType = ArgumentCaptor::forClass(typeof(String))
+		var captedContext = typeof(AgentContext).forClass
+		var captedSpaceID = typeof(SpaceID).forClass
+		var captedAgentID = typeof(UUID).forClass
+		var captedType = typeof(String).forClass
 		emitter1.verify(1.times).memberJoined(
 				captedContext.capture, captedSpaceID.capture,
 				captedAgentID.capture, captedType.capture)
-		assertSame(context, captedContext.value)
-		assertEquals(new SpaceID(ctxId, spId, typeof(OpenEventSpaceSpecification)), captedSpaceID.value)
-		assertEquals(this.^agentId, captedAgentID.value)
-		assertEquals(this.^agent.class.name, captedType.value)
+		context.assertSame(captedContext.value)
+		new SpaceID(ctxId, spId, typeof(OpenEventSpaceSpecification)).assertEquals(captedSpaceID.value)
+		this.^agentId.assertEquals(captedAgentID.value)
+		this.^agent.class.name.assertEquals(captedType.value)
 	}
 
 	@Test
+	@DisplayName("leave(UUID) from unknown context")
 	def leave_unknownContext {
-		assertFalse(this.^skill.leave(UUID::randomUUID))
+		this.^skill.leave(randomUUID).assertFalse
 		
 		var actual = this.^skill.allContexts
-		assertContains(actual, this.defaultContext)
-		assertSame(this.defaultContext,
-			AgentLife::getLife(this.^agent).defaultContext.context)
+		actual.assertContains(this.defaultContext)
+		this.defaultContext.assertSame(this.^agent.getLife.defaultContext.context)
 		verifyNoMoreInteractions(emitter1)
 		verifyNoMoreInteractions(emitter2)
 	}
 
 	@Test
+	@DisplayName("leave(UUID) from default context without external context")
 	def leave_defaultContext_noExternalContext {
-		assertFalse(this.^skill.leave(this.contextId))
+		this.^skill.leave(this.contextId).assertFalse
 		
 		var actual = this.^skill.allContexts
-		assertContains(actual, this.defaultContext)
-		assertSame(this.defaultContext,
-			AgentLife::getLife(this.^agent).defaultContext.context)
+		actual.assertContains(this.defaultContext)
+		this.defaultContext.assertSame(this.^agent.getLife.defaultContext.context)
 		verifyNoMoreInteractions(emitter1)
 		verifyNoMoreInteractions(emitter2)
 	}
 
 	@Test
+	@DisplayName("leave(UUID) from default context without 2 external contexts")
 	def leave_defaultContext_twoExternalContext {
 		var ctxs = forceTwoExternalContextCreation
 
-		assertFalse(this.^skill.leave(this.contextId))
+		this.^skill.leave(this.contextId).assertTrue
 		
 		var actual = this.^skill.allContexts
-		assertContains(actual, this.defaultContext, ctxs.get(0), ctxs.get(1))
-		assertSame(this.defaultContext,
-			AgentLife::getLife(this.^agent).defaultContext.context)
-		verifyNoMoreInteractions(emitter1)
-		verifyNoMoreInteractions(emitter2)
+		actual.assertContains(ctxs.get(0), ctxs.get(1))
+		ctxs.get(0).assertSame(this.^agent.getLife.defaultContext.context)
+
+		var captedContextId = typeof(UUID).forClass
+		emitter2.verify(1.times).contextLeft(captedContextId.capture)
+		this.contextId.assertEquals(captedContextId.value)
+
+		var captedContext = typeof(AgentContext).forClass
+		var captedSpaceID = typeof(SpaceID).forClass
+		var captedAgentID = typeof(UUID).forClass
+		var captedType = typeof(String).forClass
+		emitter1.verify(1.times).memberLeft(captedContext.capture, captedSpaceID.capture, captedAgentID.capture,
+			captedType.capture)
+		this.defaultContext.assertSame(captedContext.value)
+		new SpaceID(this.contextId, this.defaultSpace.spaceID.ID, typeof(OpenEventSpaceSpecification)).assertEquals(
+			captedSpaceID.value)
+		this.^agentId.assertEquals(captedAgentID.value)
+		this.^agent.class.name.assertEquals(captedType.value)
 	}
 
 	@Test
+	@DisplayName("leave(UUID) from default context without 1 external context")
 	def leave_defaultContext_oneExternalContext {
 		var ctxs = forceOneExternalContextCreation
 
-		assertTrue(this.^skill.leave(this.contextId))
+		this.^skill.leave(this.contextId).assertTrue
 		
 		var actual = this.^skill.allContexts
-		assertContains(actual, ctxs.get(0))
-		assertSame(ctxs.get(0), AgentLife::getLife(this.^agent).defaultContext.context)
+		actual.assertContains(ctxs.get(0))
+		ctxs.get(0).assertSame(this.^agent.getLife.defaultContext.context)
 
-		var captedContextId = ArgumentCaptor::forClass(typeof(UUID))
+		var captedContextId = typeof(UUID).forClass
 		emitter2.verify(1.times).contextLeft(captedContextId.capture)
-		assertEquals(this.contextId, captedContextId.value)
+		this.contextId.assertEquals(captedContextId.value)
 
-		var captedContext = ArgumentCaptor::forClass(typeof(AgentContext))
-		var captedSpaceID = ArgumentCaptor::forClass(typeof(SpaceID))
-		var captedAgentID = ArgumentCaptor::forClass(typeof(UUID))
-		var captedType = ArgumentCaptor::forClass(typeof(String))
+		var captedContext = typeof(AgentContext).forClass
+		var captedSpaceID = typeof(SpaceID).forClass
+		var captedAgentID = typeof(UUID).forClass
+		var captedType = typeof(String).forClass
 		emitter1.verify(1.times).memberLeft(captedContext.capture, captedSpaceID.capture, captedAgentID.capture, captedType.capture)
-		assertSame(this.defaultContext, captedContext.value)
-		assertEquals(new SpaceID(
+		this.defaultContext.assertSame(captedContext.value)
+		new SpaceID(
 				this.contextId,
 				this.defaultSpace.spaceID.ID,
-				typeof(OpenEventSpaceSpecification)),
+				typeof(OpenEventSpaceSpecification)).assertEquals(
 				captedSpaceID.value)
-		assertEquals(this.^agentId, captedAgentID.value)
-		assertEquals(this.^agent.class.name, captedType.value)
+		this.^agentId.assertEquals(captedAgentID.value)
+		this.^agent.class.name.assertEquals(captedType.value)
 	}
 
 	@Test
+	@DisplayName("leave(UUID) from external context")
 	def leave_externalContext {
 		var ctxs = forceTwoExternalContextCreation
 
-		assertTrue(this.^skill.leave(ctxs.get(1).ID))
+		this.^skill.leave(ctxs.get(1).ID).assertTrue
 		
 		var actual = this.^skill.allContexts
-		assertContains(actual, this.defaultContext, ctxs.get(0))
-		assertSame(this.defaultContext,
-			AgentLife::getLife(this.^agent).defaultContext.context)
+		actual.assertContains(this.defaultContext, ctxs.get(0))
+		this.defaultContext.assertSame(this.^agent.getLife.defaultContext.context)
 
 
-		var captedContextId = ArgumentCaptor::forClass(typeof(UUID))
+		var captedContextId = typeof(UUID).forClass
 		emitter2.verify(1.times).contextLeft(captedContextId.capture)
-		assertEquals(ctxs.get(1).ID, captedContextId.value)
+		ctxs.get(1).ID.assertEquals(captedContextId.value)
 
-		var captedContext = ArgumentCaptor::forClass(typeof(AgentContext))
-		var captedSpaceID = ArgumentCaptor::forClass(typeof(SpaceID))
-		var captedAgentID = ArgumentCaptor::forClass(typeof(UUID))
-		var captedType = ArgumentCaptor::forClass(typeof(String))
+		var captedContext = typeof(AgentContext).forClass
+		var captedSpaceID = typeof(SpaceID).forClass
+		var captedAgentID = typeof(UUID).forClass
+		var captedType = typeof(String).forClass
 		emitter1.verify(1.times).memberLeft(captedContext.capture, captedSpaceID.capture, captedAgentID.capture, captedType.capture)
-		assertSame(ctxs.get(1), captedContext.value)
-		assertEquals(new SpaceID(
+		ctxs.get(1).assertSame(captedContext.value)
+		new SpaceID(
 				ctxs.get(1).ID,
 				ctxs.get(1).defaultSpace.spaceID.ID,
-				typeof(OpenEventSpaceSpecification)),
+				typeof(OpenEventSpaceSpecification)).assertEquals(
 				captedSpaceID.value)
-		assertEquals(this.^agentId, captedAgentID.value)
-		assertEquals(this.^agent.class.name, captedType.value)
+		this.^agentId.assertEquals(captedAgentID.value)
+		this.^agent.class.name.assertEquals(captedType.value)
 	}
 
 }
