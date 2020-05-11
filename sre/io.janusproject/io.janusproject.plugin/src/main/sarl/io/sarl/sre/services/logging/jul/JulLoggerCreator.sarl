@@ -38,7 +38,8 @@ import javax.inject.Provider
  */
 class JulLoggerCreator {
 
-	public val PLATFORM_LOGGER_NAME_PREFIX = "Janus-SRE"
+	/** Prefix for the logger names. */
+	public static val PLATFORM_LOGGER_NAME_PREFIX = "Janus-SRE-"
 
 	val defaultLevel : Level
 
@@ -118,11 +119,14 @@ class JulLoggerCreator {
 	def createPlatformLogger() : Logger {
 		LogManager::logManager.reset
 		val kernelId = this.configProvider.get.boot.rootContextID
-		val loggerName = PLATFORM_LOGGER_NAME_PREFIX + "-K-" + kernelId
+		val loggerName = PLATFORM_LOGGER_NAME_PREFIX + kernelId
 		val logger = this.loggerProvider.apply(loggerName)
-		val stderr = new JulStandardErrorOutputConsoleHandler(getPlatformFormatter)
+		assert logger !== null
+		val formatter = getPlatformFormatter
+		assert formatter !== null
+		val stderr = new JulStandardErrorOutputConsoleHandler(formatter)
 		stderr.level = Level::ALL
-		val stdout = new JulStandardOutputConsoleHandler(getPlatformFormatter)
+		val stdout = new JulStandardOutputConsoleHandler(formatter)
 		stdout.level = Level::ALL
 		var allHandlers = logger.handlers
 		if (allHandlers !== null) {
@@ -151,7 +155,7 @@ class JulLoggerCreator {
 		} else {
 			name
 		}
-		val logger = this.loggerProvider.apply(PLATFORM_LOGGER_NAME_PREFIX + "-M-" + thename)
+		val logger = this.loggerProvider.apply(thename)
 		if (parent !== null) {
 			logger.parent = parent
 			logger.useParentHandlers = true
