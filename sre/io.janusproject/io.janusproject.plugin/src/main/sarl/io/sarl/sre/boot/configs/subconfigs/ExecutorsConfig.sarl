@@ -68,7 +68,7 @@ class ExecutorsConfig {
 	 * 
 	 * @see #MAX_NUMBER_OF_THREADS_IN_EXECUTOR_NAME
 	 */
-	public static val MAX_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE = 1024
+	public static val MAX_NUMBER_OF_THREADS_IN_EXECUTOR_VALUE = 512
 
 	/** 
 	 * Name of the property for the minimal number of threads to keep in the pool, even if they are idle.
