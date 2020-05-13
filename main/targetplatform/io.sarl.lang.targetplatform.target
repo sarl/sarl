@@ -80,7 +80,7 @@
 			<unit id="org.sonatype.tycho.m2e.feature.feature.group" version="0.8.1.201704211436"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-			<repository location="https://checkstyle.org/eclipse-cs/update"/>
+			<repository location="https://dl.bintray.com/eclipse-cs/eclipse-cs/8.31.0/"/>
 			<unit id="net.sf.eclipsecs.feature.group" version="8.31.0.202004271730"/>
 		</location>
 	</locations>
