@@ -33,6 +33,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
 import static io.sarl.tests.api.tools.TestAssertions.*
+import org.junit.jupiter.api.Disabled
 
 /** Tests for issue #976: UnimplementedCapacityException when getting logging capacity.
  *
@@ -53,6 +54,7 @@ import static io.sarl.tests.api.tools.TestAssertions.*
 @DisplayName("run: Bug #976")
 @Tag("sre-run")
 @Tag("janus")
+@Disabled
 class Bug976Test {
 
 	@Test

@@ -74,14 +74,14 @@ class SreRunExtension implements ParameterResolver, InvocationInterceptor {
 		try {
 			invocation.proceed
 		} finally {
-			SRE::resetServiceLoader
-			SRE::bootstrap = null
 			if (invocationContext.arguments.size === 1) {
 				var arg = invocationContext.arguments.get(0)
 				if (arg instanceof SreRunContext) {
 					arg.shutdown
 				}
 			}
+			SRE::resetServiceLoader
+			SRE::bootstrap = null
 		}
 	}
 	

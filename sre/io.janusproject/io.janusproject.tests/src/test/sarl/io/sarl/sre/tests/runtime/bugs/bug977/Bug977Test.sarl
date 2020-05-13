@@ -65,6 +65,7 @@ class Bug977Test {
 
 	@RepeatedTest(10)
 	@DisplayName("Inheritance of event handlers and functions")
+	@Disabled
 	def runInheritanceBehaviorExampleCode(extension rc : SreRunContext) : void {
 		var kern = setupTheSreKernel(null, null)
 
@@ -108,6 +109,7 @@ class Bug977Test {
 
 	@RepeatedTest(10)
 	@DisplayName("Shared guard evaluation with value change")
+	@Disabled
 	def runSharedGuardEvaluationWithValueChange(extension rc : SreRunContext) : void {
 		var kern = setupTheSreKernel(null, null)
 

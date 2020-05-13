@@ -66,7 +66,7 @@ skill LifecycleSkill implements Lifecycle {
 			postTreatment = [getLife(owner).state = AgentState::DYING]
 		} else if (state == AgentState::ALIVE) {
 			// Synchronous killing
-			postTreatment = [this.lifecycle.killAgent(this.owner)]
+			postTreatment = [this.lifecycle.killAgent(this.owner, false)]
 		}
 		// Never return from the killMe
 		Thread::yield

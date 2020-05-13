@@ -358,7 +358,7 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 	@Test
 	@DisplayName("killAgent without inner context instance - no service")
 	def killAgent_noInnerContext_serviceNotStarted {
-		this.service.killAgent(this.^agent).assertFalse
+		this.service.killAgent(this.^agent, true).assertFalse
 	}
 
 	@Test
@@ -378,7 +378,7 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 				new Address(outerContext.defaultSpace.spaceID, this.^agent.ID))
 		AgentLife::getLife(this.agent2).state = AgentState::ALIVE
 
-		this.service.killAgent(this.agent2).assertTrue
+		this.service.killAgent(this.agent2, true).assertTrue
 		
 		// Uninstall the skills
 		var capAgent = ArgumentCaptor::forClass(typeof(Agent))

@@ -41,6 +41,7 @@ final class Messages extends NLS {
 	public static var Kernel_0 : String
 	public static var Kernel_1 : String
 	public static var Kernel_2 : String
+	public static var Kernel_3 : String
 	
 	private new {
 	}

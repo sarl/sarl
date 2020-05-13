@@ -305,7 +305,7 @@ class SreRunContext {
 			waitForTheKernel(timeout)
 		} catch (exception : SreTimeoutException | TimeoutException) {
 			try {
-				kern.shutdown(true, STANDARD_TIMEOUT)
+				kern.shutdown(true, STANDARD_TIMEOUT.seconds as int)
 			} catch (exception0 : Throwable) {
 				//
 			}
@@ -545,7 +545,7 @@ class SreRunContext {
 		var m = this.bootstrap
 		this.bootstrap = null
 		if (m !== null) {
-			m.shutdown(false)
+			m.shutdown(true)
 		}
 		this.rootContext = null
 		this.globalResults.clear

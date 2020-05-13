@@ -53,6 +53,7 @@ import org.arakhne.afc.util.ListenerCollection
 import org.eclipse.xtend.lib.annotations.Accessors
 
 import static io.sarl.bootstrap.SRE.*
+import java.util.concurrent.atomic.AtomicReference
 import java.util.concurrent.Executors
 
 /** Class that implements the standard main function for running a SARL run-time environment
@@ -66,8 +67,7 @@ import java.util.concurrent.Executors
  */
 class SreMain implements SREBootstrap {
 
-	@Accessors(PUBLIC_GETTER)
-	var kernel : Kernel
+	val kernel = new AtomicReference<Kernel>
 
 	@Accessors(PUBLIC_GETTER)
 	var runtime : BQRuntime
@@ -80,6 +80,14 @@ class SreMain implements SREBootstrap {
 
 	val listeners = new ListenerCollection<SREListener>
 	
+	/** Replies the reference to the kernel.
+	 *
+	 * @return the reference to the kernel.
+	 */
+	def getKernel : Kernel {
+		return this.kernel.get
+	}
+
 	/** Set the Bootique runtime instance.
 	 *
 	 * @param runtime the new Bootique runtime.
@@ -94,7 +102,8 @@ class SreMain implements SREBootstrap {
 	}
 
 	override isRunning : boolean {
-		return this.kernel !== null && this.kernel.isRunning
+		val k = getKernel
+		return k !== null && k.isRunning
 	}
 
 	override setRandomContextUUID {
@@ -225,7 +234,7 @@ class SreMain implements SREBootstrap {
 	}
 	
 	private def ensureKernelInstance(bootique : Bootique, module : Class<? extends Module>, args : String*) : Kernel {
-		var k = this.kernel
+		var k = getKernel
 		if (k === null) {
 			var runtime = ensureBootiqueRuntimeInstance(bootique, module, args)
 			val injector = runtime.getInstance(typeof(Injector))
@@ -246,17 +255,17 @@ class SreMain implements SREBootstrap {
 			}
 			k = injector.getInstance(typeof(Kernel))
 			val listener : KernelAgentLifecycleListener = [
-				this.kernel = null
+				this.kernel.set(null)
 				this.runtime = null
 				fireSREStopped
 			]
 			k.getService(typeof(LifecycleService)).addKernelAgentLifecycleListener(listener)
-			this.kernel = k
+			this.kernel.set(k)
 			fireSREStarted
 		}
 		// Force the bootstrap to be this object
 		SRE::bootstrap = this
-		return this.kernel
+		return getKernel
 	}
 
 	/** Start the agent framework without agent.
@@ -322,36 +331,26 @@ class SreMain implements SREBootstrap {
 
 	@SuppressWarnings("discouraged_reference")
 	def shutdown(blocking : boolean, timeout : int) {
-		var kern = getKernel
-		this.kernel = null
+		val kern = this.kernel.getAndSet(null)
 		if (kern !== null) {
-			var stopBehavior = kern.shutdownTrigger
-			assert stopBehavior !== null
-			// Asynchronous execution of the shutdown code
-			val thread = Executors::defaultThreadFactory.newThread(stopBehavior)
-			thread => [
-				name = "SRE kernel shutdown" // $NON-NLS-1$
-				daemon = false
-				start
-			]
 			if (blocking) {
-				if (timeout > 0) {
-					val endTime = System::currentTimeMillis + timeout
-					while (kern.running && System::currentTimeMillis <= endTime) {
-						Thread::yield
-					}
-				} else {
-					while (kern.running) {
-						Thread::yield
-					}
-				}
+				kern.shutdown(timeout)
+			} else {
+				val th = Executors::defaultThreadFactory.newThread [
+					kern.shutdown(timeout)
+				]
+				th => [
+					daemon = true
+					name = "SRE Forced Async Shutdown"
+					start
+				]
 			}
 		}
 	}
 
 	override getService(serviceType : Class<T>) : T with T {
 		if (typeof(Service).isAssignableFrom(serviceType)) {
-			var kern = this.kernel
+			var kern = getKernel
 			if (kern !== null) {
 				var castedServiceType = serviceType.asSubclass(typeof(Service))
 				var serv = kern.getService(castedServiceType)

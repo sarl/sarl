@@ -29,9 +29,10 @@ import io.sarl.sre.boot.configs.SreConfig
 import io.sarl.sre.capacities.InformedEventListener
 import io.sarl.sre.services.IServiceManager
 import io.sarl.sre.services.context.ContextService
-import io.sarl.sre.services.executor.ExecutorService
+import io.sarl.sre.services.lifecycle.ContextReference
 import io.sarl.sre.services.lifecycle.KernelAgentLifecycleListener
 import io.sarl.sre.services.lifecycle.LifecycleService
+import io.sarl.sre.services.lifecycle.LifecycleServiceListener.LifecycleServiceAdapter
 import io.sarl.sre.services.logging.LoggingService
 import io.sarl.sre.spaces.SpaceWithParticipants
 import java.lang.Thread.UncaughtExceptionHandler
@@ -39,6 +40,8 @@ import java.lang.annotation.Retention
 import java.lang.annotation.Target
 import java.lang.ref.WeakReference
 import java.util.UUID
+import java.util.concurrent.ConcurrentLinkedDeque
+import java.util.concurrent.ConcurrentSkipListSet
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.logging.Level
@@ -48,7 +51,6 @@ import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton
 import org.eclipse.xtend.lib.annotations.Accessors
-import java.util.concurrent.atomic.AtomicInteger
 
 /** 
  * This class represents the Kernel of the SRE platform.
@@ -72,6 +74,9 @@ class Kernel {
 
 	// value is true because the SRE kernel is running as soon as it is created.
 	val isRunning = new AtomicBoolean(true)
+
+	// value is false because the SRE kernel is not stopping.
+	val isStopping = new AtomicBoolean(false)
 
 	val stopListener : AsynchronousKernelStoppingListener
 
@@ -210,41 +215,43 @@ class Kernel {
 	/** Run the standard algorithm for stopping properly the kernel when no
 	 * agent is alive.
 	 * 
-	 * @param kern the kernel to stop.
+	 * @param internalStop indicates if the stop was invoked internally or from outside invoker.
 	 */
 	@SuppressWarnings("use_reserved_sarl_annotation")
 	@PrivateAPI
-	static def executeKernelStopWhenNoAgentAlive(kern : Kernel) {
-		val logger = kern.logger
-		logger.info(Messages.Kernel_0)
-		if (kern.stopListener !== null) {
-			kern.spawnService.removeKernelAgentLifecycleListener(kern.stopListener)
+	package def executeKernelStopWhenNoAgentAlive(internalStop : boolean) {
+		if (!this.isStopping.getAndSet(true)) {
+			val logger = getLogger
+			logger.info(if(internalStop) Messages.Kernel_0 else Messages.Kernel_3)
+			val ss = this.spawnService
+			val sl = this.stopListener
+			if (sl !== null && ss !== null) {
+				ss.removeKernelAgentLifecycleListener(sl)
+			}
+			this.serviceManager.stopServices(logger)
+			logger.info(Messages.Kernel_1)
+			this.isRunning.set(false)
 		}
-		kern.serviceManager.stopServices(logger)
-		logger.info(Messages.Kernel_1)
-		kern.isRunning.set(false)
 	}
 
-	/** Run the standard algorithm for stopping the agents on the kernel.
+	/** 
+	 * Shutdown the kernel.
 	 * 
-	 * @param kern the kernel to stop the agent inside.
-	 * @return the number of killed agents.
+	 * @param timeout the maximum amount of milliseconds to wait for the shutdown.
 	 * @since 0.10
 	 */
 	@SuppressWarnings("use_reserved_sarl_annotation")
-	@PrivateAPI
-	static def executeForcedAgentStop(kern : Kernel) : int {
-		val executorService = kern.getService(typeof(ExecutorService))
-		val contextService = kern.getService(typeof(ContextService))
-		val lifeCycleService = kern.getService(typeof(LifecycleService))
-		assert executorService !== null && contextService !== null && lifeCycleService !== null
+	@PrivateAPI(isCallerOnly = true)
+	def shutdown(timeout : int = -1) {
+		val contextService = typeof(ContextService).getService
+		val lifeCycleService = typeof(LifecycleService).getService
+		assert contextService !== null && lifeCycleService !== null
 
 		lifeCycleService.spawnEnable = false
 
 		val contexts = contextService.allContexts
-		val agents = <UUID, Runnable>newTreeMap(null)
-
-		var nb = new AtomicInteger(0)
+		val agentIds = new ConcurrentSkipListSet<UUID>
+		val codes = new ConcurrentLinkedDeque<Runnable>
 
 		val iter = contexts.iterator
 		while (iter.hasNext) {
@@ -252,45 +259,40 @@ class Kernel {
 			val ^space = context.defaultSpace as SpaceWithParticipants
 			^space.forEachStrongParticipant [ id, p |
 				val listener = p.participant
-
 				if (listener instanceof InformedEventListener) {
 					val ag = listener.ownerInstance
 					assert ag !== null
-					agents.put(ag.ID) [
-						if (lifeCycleService.killAgent(ag)) {
-							nb.incrementAndGet
-						}
-					]
+					if (agentIds.add(ag.ID)) {
+						codes.add [
+							lifeCycleService.killAgent(ag, true)
+						]
+					}
 				}
 			]
-
 		}
 
-		executorService.executeBlockingTasks(agents.values)
-		return nb.get
-	}
-
-	/** 
-	 * Replies a behavior that shutdowns the kernel.
-	 * 
-	 * <p>The returned trigger invokes the functions {@link #executeForcedAgentStop(Kernel)}
-	 * and {@link #executeKernelStopWhenNoAgentAlive(Kernel)} depending on the size of the
-	 * agents' collection.
-	 * 
-	 * <p>The provided trigger does not run the stopping behavior into a separate thread.
-	 * 
-	 * @return the logger of the kernel.
-	 * @since 0.10
-	 */
-	@SuppressWarnings("use_reserved_sarl_annotation")
-	@PrivateAPI(isCallerOnly = true)
-	def getShutdownTrigger : Runnable {
-		[
-			var nbKilled = executeForcedAgentStop
-			if (nbKilled == 0) {
-				executeKernelStopWhenNoAgentAlive
+		lifeCycleService.addLifecycleServiceListener(new LifecycleServiceAdapter() {
+			override agentDestroyed(^agent : Agent, outerContexts : ConcurrentLinkedDeque<ContextReference>) {
+				agentIds.remove(^agent.ID)
 			}
-		]
+		})
+
+		for (shutdownCode : codes) {
+			shutdownCode.run
+		}
+
+		if (timeout > 0) {
+			val endTime = System::currentTimeMillis + timeout
+			while (!agentIds.empty && System::currentTimeMillis <= endTime) {
+				Thread::yield
+			}
+		} else {
+			while (!agentIds.empty) {
+				Thread::yield
+			}
+		}
+
+		executeKernelStopWhenNoAgentAlive(false)
 	}
 
 	/** 
@@ -339,7 +341,7 @@ class Kernel {
 		@SuppressWarnings("use_reserved_sarl_annotation")
 		@PrivateAPI(isCallerOnly = true)
 		override run {
-			this.kernel.get.executeKernelStopWhenNoAgentAlive
+			this.kernel.get.executeKernelStopWhenNoAgentAlive(true)
 		}
 
 		override uncaughtException(thread : Thread, exception : Throwable) {

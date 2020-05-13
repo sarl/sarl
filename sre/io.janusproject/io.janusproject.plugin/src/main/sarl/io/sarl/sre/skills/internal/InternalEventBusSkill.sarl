@@ -30,6 +30,7 @@ import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.capacities.InternalSchedules
 import java.util.UUID
 import java.util.concurrent.ConcurrentLinkedDeque
+import java.util.concurrent.atomic.AtomicReference
 import javax.inject.Inject
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
@@ -56,7 +57,7 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 
 	var isEventBufferEnabled = false
 
-	var eventBuffer : ConcurrentLinkedDeque<Event> = null
+	val eventBuffer = new AtomicReference<ConcurrentLinkedDeque<Event>>
 
 	@SuppressWarnings("raw_type")
 	@Inject
@@ -94,10 +95,10 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 
 	protected override uninstall {
 		var bus = this.eventBus
-		this.eventBuffer = null;
 		if (bus !== null) {
 			bus.unregisterAll(null)
 		}
+		this.eventBuffer.set(null);
 
 		// Must be done to enable the memory free of these mutual references between InternalBusSkill and ExternalEventBusAccessor
 		var listener = this.eventListener
@@ -161,10 +162,11 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 	 * @return an unmodifiable iterable of the buffered elements.
 	 */
 	def getBufferedEvents : ConcurrentLinkedDeque<Event> {
-		if (this.eventBuffer === null) {
+		val buf = this.eventBuffer.get
+		if (buf === null) {
 			return new ConcurrentLinkedDeque<Event>();
 		}
-		return new ConcurrentLinkedDeque(this.eventBuffer)
+		return new ConcurrentLinkedDeque(buf)
 	}
 
 	def fireEventAndWait(^event : Event, gatherEvents : boolean, thrownExceptions : boolean,
@@ -181,9 +183,7 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 					this.isEventBufferEnabled = wasEnabled
 				}
 
-				var cache = this.eventBuffer
-				this.eventBuffer = null
-				return cache
+				return this.eventBuffer.getAndSet(null)
 
 			}
 			this.eventBus.immediateDispatchTo(listener, ^event, thrownExceptions, logger)
@@ -204,9 +204,7 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 					this.isEventBufferEnabled = wasEnabled
 				}
 
-				var cache = this.eventBuffer
-				this.eventBuffer = null
-				return cache
+				return this.eventBuffer.getAndSet(null)
 
 			}
 			this.eventBus.immediateDispatch(^event, thrownExceptions, logger)
@@ -219,12 +217,13 @@ skill InternalEventBusSkill extends Skill implements InternalEventBusCapacity {
 			var mustBuf : boolean = this.isEventBufferEnabled
 
 			if (mustBuf) {
-
-				if (this.eventBuffer === null) {
-					this.eventBuffer = new ConcurrentLinkedDeque
-				}
-				this.eventBuffer += ^event
-
+				var buf = this.eventBuffer.updateAndGet [
+					if (it === null) {
+						return new ConcurrentLinkedDeque
+					}
+					return it
+				]
+				buf.add(^event)
 			} else {
 				this.eventBus.asyncDispatch(^event, getLogger)
 			}

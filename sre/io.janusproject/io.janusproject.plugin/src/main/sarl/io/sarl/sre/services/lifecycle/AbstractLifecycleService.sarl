@@ -410,12 +410,12 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 		life.state.isAlive
 	}
 
-	def killAgent(^agent : Agent) : boolean {
+	def killAgent(^agent : Agent, forceKillable : boolean) : boolean {
 		val agentId = ^agent.ID
 		val life = getLifeOrNull(^agent)
 		if (life !== null && life.isAlive) {
 			// We should check if it is possible to kill the agent BEFORE killing it.
-			if (life.isKillableAgent(agentId)) {
+			if (forceKillable || life.isKillableAgent(agentId)) {
 				var defaultContext = life.defaultContext
 				var contexts = life.stop(this.skillUninstaller, getLoggingService)
 				^agent.onAgentKilled
