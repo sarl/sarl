@@ -25,12 +25,14 @@ import io.sarl.core.Initialize
 import io.sarl.sre.test.framework.skills.TestingCapacity
 import java.util.concurrent.atomic.AtomicInteger
 import io.sarl.sre.test.framework.skills.TestingSkill
+import io.sarl.sre.test.framework.events.Bye
+import io.sarl.core.Lifecycle
 
 agent SharedGuardEvaluationAgent0 {
 
 	protected val i = new AtomicInteger(3)
 
-	uses TestingCapacity
+	uses TestingCapacity, Lifecycle
 
 	on Initialize {
 		setSkillIfAbsent(new TestingSkill(occurrence))
@@ -65,6 +67,10 @@ agent SharedGuardEvaluationAgent0 {
 	on Initialize [i.get > 3] {
 		setSkillIfAbsent(new TestingSkill(occurrence))
 		addResult("g")
+	}
+
+	on Bye {
+		killMe
 	}
 
 }

@@ -22,6 +22,8 @@
 package io.sarl.sre.tests.runtime.bugs.bug977.mocks
 
 import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
+import io.sarl.sre.test.framework.events.Bye
 import io.sarl.sre.test.framework.skills.TestingCapacity
 import io.sarl.sre.test.framework.skills.TestingSkill
 import java.util.concurrent.atomic.AtomicInteger
@@ -30,7 +32,7 @@ agent SharedGuardEvaluationAgent1 {
 
 	protected val i = new AtomicInteger(3)
 
-	uses TestingCapacity
+	uses TestingCapacity, Lifecycle
 
 	on Initialize {
 		setSkillIfAbsent(new TestingSkill(occurrence))
@@ -72,6 +74,10 @@ agent SharedGuardEvaluationAgent1 {
 		setSkillIfAbsent(new TestingSkill(occurrence))
 		addResult("g")
 		i.set(10)
+	}
+
+	on Bye {
+		killMe
 	}
 
 }
