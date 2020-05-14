@@ -238,6 +238,12 @@ class Kernel {
 	 * Shutdown the kernel.
 	 * 
 	 * @param timeout the maximum amount of milliseconds to wait for the shutdown.
+	 *      If the provided value is strictly positive, it is the number of milliseconds
+	 *      to wait for the termination of the shutdown. If the provided value is equal
+	 *      to {@code 0}, the function returns as soon as the shutdown process is launch
+	 *      (no waiting for the termination of the shutdown). If the value is strictly
+	 *      negative, the function waits forever for the termination of the shutdown
+	 *      process. The default value is {@code -1}.
 	 * @since 0.10
 	 */
 	@SuppressWarnings("use_reserved_sarl_annotation")
@@ -286,7 +292,7 @@ class Kernel {
 			while (!agentIds.empty && System::currentTimeMillis <= endTime) {
 				Thread::yield
 			}
-		} else {
+		} else if (timeout != 0) {
 			while (!agentIds.empty) {
 				Thread::yield
 			}

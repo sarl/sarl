@@ -305,7 +305,7 @@ class SreRunContext {
 			waitForTheKernel(timeout)
 		} catch (exception : SreTimeoutException | TimeoutException) {
 			try {
-				kern.shutdown(true, STANDARD_TIMEOUT.seconds as int)
+				kern.shutdown(STANDARD_TIMEOUT.seconds as int)
 			} catch (exception0 : Throwable) {
 				//
 			}

@@ -24,6 +24,7 @@ package io.sarl.bootstrap;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import io.sarl.lang.core.Agent;
@@ -257,14 +258,19 @@ public interface SREBootstrap {
 	 * @see #shutdown(int)
 	 * @see #shutdown(boolean, int)
 	 */
+	@Inline("shutdown(-1)")
 	default void shutdown() throws InterruptedException {
-		shutdown(true, -1);
+		shutdown(-1);
 	}
 
 	/**
 	 * Stop the SRE without an agent.
 	 * This function may cause the agents to stop during the run of a behavior.
 	 * This function has no timeout.
+	 *
+	 * <p>If the argument's value is evaluated to {@code true}, the {@link #shutdown(int)}
+	 * functions is invoked with negative timeout; Otherwise the {@link #shutdown(int)}
+	 * functions is invoked with {@code 0} value.
 	 *
 	 * @param blocking indicates if the functions is blocked until the shutdown task is finished.
 	 *     If it is {@code true}, the function returns when the kernel is down. If it is
@@ -275,8 +281,9 @@ public interface SREBootstrap {
 	 * @see #shutdown(int)
 	 * @see #shutdown(boolean, int)
 	 */
+	@Inline("shutdown(($1) ? -1 : 0)")
 	default void shutdown(boolean blocking) throws InterruptedException {
-		shutdown(blocking, -1);
+		shutdown(blocking ? -1 : 0);
 	}
 
 	/**
@@ -284,32 +291,20 @@ public interface SREBootstrap {
 	 * This function may cause the agents to stop during the run of a behavior.
 	 * This function returns when the kernel and all its services are stopped.
 	 *
-	 * @param timeout the maximal duration to wait for the shutdown, in milliseconds.
+	 * @param timeout the maximum amount of milliseconds to wait for the shutdown.
+	 *      If the provided value is strictly positive, it is the number of milliseconds
+	 *      to wait for the termination of the shutdown. If the provided value is equal
+	 *      to {@code 0}, the function returns as soon as the shutdown process is launch
+	 *      (no waiting for the termination of the shutdown). If the value is strictly
+	 *      negative, the function waits forever for the termination of the shutdown
+	 *      process. The default value is {@code -1}.
 	 * @throws InterruptedException the shutdown process is interrupted.
 	 * @since 0.11
 	 * @see #shutdown()
 	 * @see #shutdown(boolean)
 	 * @see #shutdown(int)
 	 */
-	default void shutdown(int timeout) throws InterruptedException {
-		shutdown(true, timeout);
-	}
-
-	/**
-	 * Stop the SRE without an agent.
-	 * This function may cause the agents to stop during the run of a behavior.
-	 *
-	 * @param blocking indicates if the functions is blocked until the shutdown task is finished.
-	 *     If it is {@code true}, the function returns when the kernel is down. If it is
-	 *     {@code false}, the function could return before the kernel is down.
-	 * @param timeout the maximal duration to wait for the shutdown, in milliseconds.
-	 * @throws InterruptedException the shutdown process is interrupted.
-	 * @since 0.11
-	 * @see #shutdown()
-	 * @see #shutdown(boolean)
-	 * @see #shutdown(int)
-	 */
-	void shutdown(boolean blocking, int timeout) throws InterruptedException;
+	void shutdown(int timeout) throws InterruptedException;
 
 	/** Replies the service of the given type that is implemented into the SRE.
 	 *

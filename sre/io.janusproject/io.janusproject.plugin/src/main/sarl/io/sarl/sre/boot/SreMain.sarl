@@ -45,16 +45,16 @@ import io.sarl.sre.services.lifecycle.LifecycleService
 import io.sarl.sre.services.logging.LoggingService
 import java.util.List
 import java.util.UUID
+import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicReference
+import java.util.logging.Level
 import org.apache.log4j.Logger
-import org.arakhne.afc.bootique.log4j.configs.Level
 import org.arakhne.afc.bootique.log4j.configs.Log4jIntegrationConfig
 import org.arakhne.afc.bootique.variables.VariableNames
 import org.arakhne.afc.util.ListenerCollection
 import org.eclipse.xtend.lib.annotations.Accessors
 
 import static io.sarl.bootstrap.SRE.*
-import java.util.concurrent.atomic.AtomicReference
-import java.util.concurrent.Executors
 
 /** Class that implements the standard main function for running a SARL run-time environment
  * with bootique modules.
@@ -66,6 +66,8 @@ import java.util.concurrent.Executors
  * @since 0.9
  */
 class SreMain implements SREBootstrap {
+
+	static val BACKGROUND_SHUTDOWN_TIMEOUT = 20000
 
 	val kernel = new AtomicReference<Kernel>
 
@@ -139,7 +141,7 @@ class SreMain implements SREBootstrap {
 
 	override setVerboseLevel(level : int) {
 		var config = ensureBootiqueRuntimeInstance(null, null).getInstance(typeof(Log4jIntegrationConfig))
-		var levels = Level::values
+		var levels = org.arakhne.afc.bootique.log4j.configs.Level::values
 		var lvl = if (level < 0) 0 else (if (level >= levels.length) levels.length - 1 else level)
 		var levelObject = levels.get(lvl)
 		config.level = levelObject
@@ -330,14 +332,14 @@ class SreMain implements SREBootstrap {
 	}
 
 	@SuppressWarnings("discouraged_reference")
-	def shutdown(blocking : boolean, timeout : int) {
+	def shutdown(timeout : int) {
 		val kern = this.kernel.getAndSet(null)
 		if (kern !== null) {
-			if (blocking) {
+			if (timeout !== 0) {
 				kern.shutdown(timeout)
 			} else {
 				val th = Executors::defaultThreadFactory.newThread [
-					kern.shutdown(timeout)
+					kern.shutdown(BACKGROUND_SHUTDOWN_TIMEOUT)
 				]
 				th => [
 					daemon = true
@@ -382,7 +384,7 @@ class SreMain implements SREBootstrap {
 			try {
 				observer.sreStarted(this)
 			} catch (exception : Throwable) {
-				getKernelLogger.log(java.util.logging.Level::SEVERE, exception.localizedMessage, exception)
+				getKernelLogger.log(Level::SEVERE, exception.localizedMessage, exception)
 			}
 		}
 	}
@@ -397,7 +399,7 @@ class SreMain implements SREBootstrap {
 			try {
 				observer.sreStopped(this)
 			} catch (exception : Throwable) {
-				getKernelLogger.log(java.util.logging.Level::SEVERE, exception.localizedMessage, exception)
+				getKernelLogger.log(Level::SEVERE, exception.localizedMessage, exception)
 			}
 		}
 	}

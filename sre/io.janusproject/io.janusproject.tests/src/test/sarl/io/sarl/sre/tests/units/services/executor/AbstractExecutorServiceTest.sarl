@@ -21,7 +21,6 @@
 
 package io.sarl.sre.tests.units.services.executor
 
-import io.sarl.sre.services.executor.AbstractExecutorService
 import io.sarl.sre.services.executor.EarlyExitException
 import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
@@ -59,7 +58,7 @@ import static extension org.mockito.Mockito.verify
 	typeof(JavaVersionCheckExtension),
 	typeof(PropertyRestoreExtension)
 ])
-abstract class AbstractExecutorServiceTest<T extends AbstractExecutorService> {
+abstract class AbstractExecutorServiceTest<T extends ExecutorService> {
 
 	@Nullable
 	protected var executor : java.util.concurrent.ExecutorService

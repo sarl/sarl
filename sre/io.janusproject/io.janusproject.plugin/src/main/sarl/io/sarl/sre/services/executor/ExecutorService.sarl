@@ -185,6 +185,15 @@ interface ExecutorService extends Service {
 	 */
 	def purge
 
+	/** 
+	 * Replies the number of tasks that this service has to run.
+	 * The tasks that are considered are runnable, callable and scheduled tasks.
+	 * When is a task is running or scheduled for a future run, it is counted.
+	 *
+	 * @return the number of tasks that are run or to be run.
+	 * @since 0.11
+	 */
+	def getTaskCount: long
 
 	/**
 	 * Removes this task from the executor's internal queue if it is present, thus causing it not to be run

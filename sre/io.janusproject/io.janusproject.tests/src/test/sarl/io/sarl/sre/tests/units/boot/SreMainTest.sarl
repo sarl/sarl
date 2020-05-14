@@ -530,18 +530,6 @@ class SreMainTest {
 		this.bootstrap.isRunning.assertFalse
 	}
 
-	@SuppressWarnings("unused_local_variable")
-	@Test
-	def shutdownBooleanInt_01 : void {
-		createBootiqueMock
-		this.bootstrap.startWithoutAgent
-
-		this.bootstrap.shutdown(true, 1000)
-
-		this.bootstrap.kernel.assertNull
-		this.bootstrap.isRunning.assertFalse
-	}
-
 	@Test
 	@DisplayName("addSREListener with 1 observer")
 	def addSREListener01 : void {

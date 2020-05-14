@@ -234,8 +234,8 @@ public final class SRE {
 		}
 
 		@Override
-		public void shutdown(boolean blocking, int timeout) throws InterruptedException {
-			throw new UnsupportedOperationException();
+		public void shutdown(int timeout) throws InterruptedException {
+			//
 		}
 
 		@Override
