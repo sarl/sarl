@@ -33,11 +33,11 @@
           </property>
           <property
                 name="windowImages"
-                value="/io.sarl.eclipse-dsl4sarl/icons/sarl_16.png,/io.sarl.eclipse-dsl4sarl/icons/sarl_32.png,/io.sarl.eclipse-dsl4sarl/icons/sarl_48.png,/io.sarl.eclipse-dsl4sarl/icons/sarl_64.png,/io.sarl.eclipse-dsl4sarl/icons/sarl_128.png,/io.sarl.eclipse-dsl4sarl/icons/sarl_256.png">
+                value="icons/sarl_16.png,icons/sarl_32.png,icons/sarl_48.png,icons/sarl_64.png,icons/sarl_128.png,icons/sarl_256.png">
           </property>
           <property
                 name="preferenceCustomization"
-                value="platform:/plugin/io.sarl.eclipse-dsl4sarl/plugin_customization.ini">
+                value="platform:/plugin/io.sarl.eclipse/plugin_customization.ini">
           </property>
        </product>
     </extension>
