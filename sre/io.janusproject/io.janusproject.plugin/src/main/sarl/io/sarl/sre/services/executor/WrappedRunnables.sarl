@@ -28,6 +28,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 
 /** 
  * Abstract implementation of a task that could be run on the JRE executor service.
+ * See {@link Runnables} for creating an instance.
  * 
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -42,10 +43,12 @@ abstract class SreExecutable {
 
 	val logger : Logger
 
-	/** 
+	/** Constructor.
+	 * See {@link Runnables} for creating an instance.
+	 *
 	 * @param logger the logger to use.
 	 */
-	new (logger : Logger) {
+	protected new (logger : Logger) {
 		this.logger = logger
 	}
 
@@ -127,7 +130,8 @@ abstract class SreExecutable {
 
 /** 
  * A specific SRE runnable that is catching the {@link EarlyExitException}.
- *
+ * See {@link Runnables} for creating an instance.
+ * 
  * <p>The behavior of this runnable regarding the exceptions depends on the
  * definition of the logger. If a logger is defined, the exceptions are logged out but never
  * thrown to the Java execution layer. If a logger is not defined, the exceptions are thrown
@@ -144,20 +148,24 @@ class SreRunnable extends SreExecutable implements Runnable {
 
 	val runnable : Runnable
 
-	/** 
+	/** Constructor.
+	 * See {@link Runnables} for creating an instance.
+	 *
 	 * @param runnable the wrapped task.
 	 * @param logger the logger to use.
 	 */
-	new (runnable : Runnable, logger : Logger) {
+	protected new (runnable : Runnable, logger : Logger) {
 		super(logger)
 		assert runnable !== null
 		this.runnable = runnable
 	}
 
-	/** 
+	/** Constructor.
+	 * See {@link Runnables} for creating an instance.
+	 *
 	 * @param logger the logger to use.
 	 */
-	new (logger : Logger) {
+	protected new (logger : Logger) {
 		super(logger)
 		this.runnable = null
 	}
@@ -227,7 +235,8 @@ class SreRunnable extends SreExecutable implements Runnable {
 
 /** 
  * A specific SRE callable that is catching the {@link EarlyExitException}.
- *
+ * See {@link Runnables} for creating an instance.
+ * 
  * <p>The behavior of this callable regarding the exceptions depends on the
  * definition of the logger. If a logger is defined, the exceptions are logged out but never
  * thrown to the Java execution layer. If a logger is not defined, the exceptions are thrown
@@ -245,11 +254,13 @@ class SreCallable<T> extends SreExecutable implements Callable<T> {
 
 	val callable : Callable<T>
 
-	/**
+	/** Constructor.
+	 * See {@link Runnables} for creating an instance.
+	 *
 	 * @param callable the wrapped task.
 	 * @param logger the logger to use.
 	 */
-	new (callable : Callable<T>, logger : Logger) {
+	protected new (callable : Callable<T>, logger : Logger) {
 		super(logger)
 		assert callable !== null
 		this.callable = callable
@@ -342,11 +353,13 @@ class SreConsumer<T> extends SreExecutable implements Consumer<T> {
 
 	val consumer : Consumer<T>
 
-	/** 
+	/** Constructor.
+	 * See {@link Runnables} for creating an instance.
+	 *
 	 * @param consumer the wrapped task.
 	 * @param logger the logger to use.
 	 */
-	new (consumer : Consumer<T>, logger : Logger) {
+	protected new (consumer : Consumer<T>, logger : Logger) {
 		super(logger)
 		assert consumer !== null
 		this.consumer = consumer
@@ -423,6 +436,7 @@ class SreConsumer<T> extends SreExecutable implements Consumer<T> {
 
 /** 
  * A specific SRE runnable for kernel tasks.
+ * See {@link Runnables} for creating an instance.
  * 
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -439,7 +453,13 @@ class SreKernelRunnable implements Runnable {
 	@Accessors(PUBLIC_GETTER)
 	val name : String
 
-	new (source : Runnable, name : String) {
+	/** Constructor.
+	 * See {@link Runnables} for creating an instance.
+	 *
+	 * @param source the runnable to wrap.
+	 * @param name the name of the thread.
+	 */
+	protected new (source : Runnable, name : String) {
 		assert source !== null
 		this.source = source
 		this.name = name

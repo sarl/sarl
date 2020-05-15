@@ -32,6 +32,7 @@ import java.util.concurrent.ExecutionException
 import java.util.function.Supplier
 import java.util.logging.Logger
 import org.arakhne.afc.util.OutputParameter
+import io.sarl.sre.services.executor.Runnables
 
 /** 
  * The class in charge of dispatching every single events coming from the outside of this agent (i.e. from a space) or from an
@@ -311,7 +312,7 @@ class EventBus {
 		} else {
 			val r0 = behaviorsMethodsToExecute.iterator.next
 			assert r0 !== null
-			var r1 : Runnable = new SreRunnable(r0, logger)
+			var r1 : Runnable = Runnables::protectRunnable(r0, logger)
 			r1.run
 		}
 
