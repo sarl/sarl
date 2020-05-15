@@ -20,20 +20,26 @@
  */
 package io.sarl.sre.tests.runtime.bugs.bug976
 
+import io.sarl.sre.test.framework.context.LogTrackingMode
 import io.sarl.sre.test.framework.context.SreRunContext
-import io.sarl.sre.test.framework.exception.SreTimeoutException
+import io.sarl.sre.test.framework.events.Bye
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.^extension.SreRunExtension
 import io.sarl.sre.tests.runtime.bugs.bug976.mocks.BootScalableAgent
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.util.UUID
+import java.util.logging.Level
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static io.sarl.tests.api.tools.TestAssertions.*
-import org.junit.jupiter.api.Disabled
+import static io.sarl.sre.test.framework.Constants.*
+import static extension org.junit.jupiter.api.Assertions.*
+import io.sarl.sre.services.lifecycle.SpawnDisabledException
+import io.sarl.sre.test.framework.exception.SreTimeoutException
+import java.util.logging.LogRecord
 
 /** Tests for issue #976: UnimplementedCapacityException when getting logging capacity.
  *
@@ -54,14 +60,70 @@ import org.junit.jupiter.api.Disabled
 @DisplayName("run: Bug #976")
 @Tag("sre-run")
 @Tag("janus")
-@Disabled
+@Tag("long-test")
 class Bug976Test {
 
+	private def run(extension rc : SreRunContext, nb : int) : void {
+		var kern = setupTheSreKernel(Level::SEVERE, LogTrackingMode::ADD_TO_AGENT_RESULTS)
+
+		val id0 = UUID::randomUUID
+		kern.startAgentWithID(typeof(BootScalableAgent), id0, buildAgentInitializationParameters(nb))
+
+		// Give the chance to the spawned agents to be executed.
+		Thread::sleep(EXTRA_TIMEOUT)
+
+		rootContext.defaultSpace.emit(UUID::randomUUID, new Bye)
+
+		try {
+			waitForTheKernel(STANDARD_TIMEOUT)
+		} catch (ex : SreTimeoutException) {
+			// Ignore this exception because the BootScalableAgent could not be able
+			// to spawn the huge number of agents into the given time.
+			// The speed of the spawning is not the purpose of this test. Only the
+			// fact that the UnimplementedCapacityException is thrown is under interest.
+		}
+		
+		// No error should be logged
+		val results = getAllResults
+		if (!results.empty) {
+			for (r : results) {
+				if (r instanceof SpawnDisabledException) {
+					// Ignore this error because the BootScalableAgent may want to spawn an agent when the
+					// testing framework stops the test.
+				} else if (r instanceof Throwable) {
+					fail("Error when running an agent behavior", r)
+				} else if (r instanceof LogRecord) {
+					if (r.level === Level::SEVERE) {
+						val th = r.thrown
+						if (th !== null) {
+							fail(r.message, th)
+						} else {
+							fail(r.message)
+						}
+					}
+				} else {
+					fail("Unexpected result: " + r)
+				}
+			}
+		}
+	}
+
 	@Test
-	def run(extension rc : SreRunContext) : void {
-		assertException(SreTimeoutException) [
-			typeof(BootScalableAgent).runSre
-		]
+	@DisplayName("up to 10000 agents")
+	def run10000(extension rc : SreRunContext) : void {
+		rc.run(10000)
+	}
+
+	@Test
+	@DisplayName("up to 100 agents")
+	def run100(extension rc : SreRunContext) : void {
+		rc.run(100)
+	}
+
+	@Test
+	@DisplayName("up to 1000 agents")
+	def run1000(extension rc : SreRunContext) : void {
+		rc.run(1000)
 	}
 
 }

@@ -250,9 +250,10 @@ class SreRunContext {
 	 * @return the value replied by {@link #getAgentInitializationParameters} followed by the arguments.
 	 */
 	def buildAgentInitializationParameters(params : Object*) : Object[] {
-		val t = <Object>newArrayOfSize(params.length + 1)
-		t.set(0, this)
-		System::arraycopy(params, 0, t, 1, params.length)
+		val original = agentInitializationParameters
+		val t = <Object>newArrayOfSize(params.length + original.length)
+		System::arraycopy(original, 0, t, 0, original.length)
+		System::arraycopy(params, 0, t, original.length, params.length)
 		return t
 	}
 

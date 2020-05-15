@@ -23,20 +23,29 @@ package io.sarl.sre.tests.runtime.bugs.bug976.mocks
 
 import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
+import io.sarl.core.Logging
+import io.sarl.sre.test.framework.events.Bye
 import io.sarl.sre.test.framework.skills.TestingCapacity
 import io.sarl.sre.test.framework.skills.TestingSkill
 
 agent BootScalableAgent {
 	
-	uses Lifecycle
+	uses Lifecycle, Logging
 
 	uses TestingCapacity
 
 	on Initialize {
+		val nb : int = occurrence.parameters.get(1) as Integer
 		setSkill(new TestingSkill(occurrence))
-		for (i : 0 ..< 10000) {
+		for (i : 0 ..< nb) {
+			info("Spawning agent #" + i)
+			//System.out.println(i)
 			typeof(ScalableAgent).spawn(buildAgentInitializationParameters(i))
+			Thread::yield
 		}
+	}
+	
+	on Bye {
 		killMe
 	}
 	

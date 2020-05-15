@@ -21,20 +21,21 @@
 
 package io.sarl.sre.tests.runtime.bugs.bug976.mocks
 
-import io.sarl.core.DefaultContextInteractions
 import io.sarl.core.Initialize
-import io.sarl.core.Schedules
+import io.sarl.core.Lifecycle
+import io.sarl.core.Logging
+import io.sarl.sre.test.framework.events.Bye
 
 agent ScalableAgent {
 	
-	uses Schedules, DefaultContextInteractions
+	uses Lifecycle, Logging
 
 	on Initialize {
-		every(1000)[emit(new Taskgo)]
+		info("Start agent #" + occurrence.parameters.get(1) as Integer)
 	}
 
-	on Taskgo {
-		emit(new Back)
+	on Bye {
+		killMe
 	}
 	
 }
