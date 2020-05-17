@@ -32,6 +32,10 @@
                 value="7,252,330,20">
           </property>
           <property
+	            name="cssTheme"
+	            value="org.eclipse.e4.ui.css.theme.e4_classic">
+	      </property>
+          <property
                 name="windowImages"
                 value="icons/sarl_16.png,icons/sarl_32.png,icons/sarl_48.png,icons/sarl_64.png,icons/sarl_128.png,icons/sarl_256.png">
           </property>

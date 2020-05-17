@@ -289,6 +289,10 @@ for the SARL DSL Environment
          id="net.sf.eclipsecs"
          version="0.0.0"/>
 
+   <includes
+         id="org.eclipse.egit"
+         version="0.0.0"/>
+
    <requires>
       <import plugin="org.eclipse.swt" version="3.4.0" match="compatible"/>
       <import plugin="org.eclipse.emf.ecore.xmi"/>
@@ -340,6 +344,8 @@ for the SARL DSL Environment
       <import plugin="org.eclipse.emf.ecore" version="2.20.0" match="compatible"/>
       <import plugin="org.eclipse.emf.edit" version="2.13.0" match="compatible"/>
       <import plugin="org.eclipse.xsd" version="2.15.0" match="compatible"/>
+      <import plugin="org.eclipse.core.runtime" version="3.17.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.workbench" version="3.117.0" match="greaterOrEqual"/>
       <import plugin="org.antlr.runtime" version="3.2.0" match="greaterOrEqual"/>
    </requires>
 
