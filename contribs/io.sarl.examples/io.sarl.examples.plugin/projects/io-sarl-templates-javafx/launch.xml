@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<launchConfigurations>
+<launchConfigurations id="io.sarl.templates.javafx">
 	<application class="io.sarl.template.javafx.MyAppLauncher" name="JavaFX template application" />
 </launchConfigurations>

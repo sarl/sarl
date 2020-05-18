@@ -37,6 +37,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -206,13 +207,14 @@ public final class ExamplesTestUtils {
 		return null;
 	}
 	
-	/** Read the XML node that describes an extension point..
+	/** Read the XML node that describes a file to open
 	 *
 	 * @param root the root.
 	 * @param exampleZipFile the filename of the example's archive.
 	 * @return the extension point node.
+	 * @since 0.11
 	 */
-	public static Node readExtensionPointFromXml(Node root, File exampleZipFile) {
+	public static Node readFileToOpenFromXml(Node root, File exampleZipFile) {
 		NodeList nodes = root.getChildNodes();
 		final int len = nodes.getLength();
 		for (int i = 0; i < len; ++i) {
@@ -521,6 +523,39 @@ public final class ExamplesTestUtils {
 		getTempPath(rootPath).mkdirs();
 		FileSystem.deleteOnExit(rootPath);
 		return rootPath;
+	}
+
+	/** Read the XML nodes that describes the wizard classes.
+	 *
+	 * @param root the root.
+	 * @param exampleId the identifier of the example.
+	 * @return the class names.
+	 * @since 0.11
+	 */
+	public static List<String> readWizardClassesFromXml(Node root, String exampleId) {
+		final List<String> classNames = new ArrayList<>();
+		final Node pluginNode = readXmlNode(root, "plugin");
+		if (pluginNode != null) {
+			NodeList nodes = pluginNode.getChildNodes();
+			final int len = nodes.getLength();
+			for (int i = 0; i < len; ++i) {
+				Node node = nodes.item(i);
+				if (node != null) {
+					if ("extension".equals(node.getNodeName())
+						&& "org.eclipse.ui.newWizards".equals(readXmlAttribute(node, "point"))) {
+						final Node wizardNode = readXmlNode(node, "wizard");
+						if (wizardNode != null) {
+							final String id = readXmlAttribute(wizardNode, "id");
+							if (Objects.equals(exampleId, id)) {
+								final String className = readXmlAttribute(wizardNode, "class");
+								classNames.add(className);
+							}
+						}
+					}
+				}
+			}
+		}
+		return classNames;
 	}
 
 }

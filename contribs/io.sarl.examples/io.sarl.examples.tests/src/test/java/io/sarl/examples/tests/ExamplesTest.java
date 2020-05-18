@@ -22,32 +22,35 @@
 package io.sarl.examples.tests;
 
 import static io.sarl.examples.tests.ExamplesTestUtils.DEFAULT_RELATIVE_PATH;
+import static io.sarl.examples.tests.ExamplesTestUtils.assertFile;
 import static io.sarl.examples.tests.ExamplesTestUtils.assertNoIssue;
 import static io.sarl.examples.tests.ExamplesTestUtils.compileFiles;
 import static io.sarl.examples.tests.ExamplesTestUtils.compileMaven;
+import static io.sarl.examples.tests.ExamplesTestUtils.copySourceFiles;
 import static io.sarl.examples.tests.ExamplesTestUtils.createProject;
 import static io.sarl.examples.tests.ExamplesTestUtils.dynamicTests;
-import static io.sarl.examples.tests.ExamplesTestUtils.getSarlBatchCompiler;
 import static io.sarl.examples.tests.ExamplesTestUtils.getSourceGenPath;
 import static io.sarl.examples.tests.ExamplesTestUtils.getSourcePath;
 import static io.sarl.examples.tests.ExamplesTestUtils.isMavenProject;
-import static io.sarl.examples.tests.ExamplesTestUtils.readExtensionPointFromXml;
+import static io.sarl.examples.tests.ExamplesTestUtils.readFileToOpenFromXml;
+import static io.sarl.examples.tests.ExamplesTestUtils.readWizardClassesFromXml;
 import static io.sarl.examples.tests.ExamplesTestUtils.readXmlNode;
-import static io.sarl.examples.tests.ExamplesTestUtils.*;
-import static io.sarl.examples.tests.ExamplesTestUtils.assertFile;
+import static io.sarl.examples.tests.ExamplesTestUtils.unpackFiles;
 import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.LAUNCH_PROPERTY_FILE;
 import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.readLaunchConfigurationFromXml;
 import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.readXmlAttribute;
 import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.readXmlContent;
+import static io.sarl.tests.api.tools.TestUtils.isEclipseRuntimeEnvironment;
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
-import static io.sarl.tests.api.tools.TestUtils.*;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import org.arakhne.afc.vmutil.FileSystem;
@@ -57,13 +60,12 @@ import org.eclipse.xtext.util.Strings;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
+import org.opentest4j.AssertionFailedError;
 import org.opentest4j.TestAbortedException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import io.sarl.lang.compiler.batch.SarlBatchCompiler;
-import io.sarl.lang.util.OutParameter;
-import io.sarl.tests.api.tools.TestUtils;
+import io.sarl.examples.SARLExampleExecutableExtensionFactory;
 
 /** Class for testing the examples.
  *
@@ -182,7 +184,7 @@ public class ExamplesTest {
 			final File pluginFile = new File(DEFAULT_RELATIVE_PATH, "plugin.xml");
 			final Document document = readXmlContent(pluginFile);
 			Node node = readXmlNode(document, "plugin");
-			node = readExtensionPointFromXml(node, example.archive);
+			node = readFileToOpenFromXml(node, example.archive);
 			assumeTrue(node != null);
 			
 			String locationStr = readXmlAttribute(node, "location");
@@ -202,6 +204,47 @@ public class ExamplesTest {
 					assertFile(file);
 				}
 			}
+		});
+	}
+
+	/** Replies the dynamics tests for example wizard injection.
+	 *
+	 * @return the dynamic tests.
+	 * @throws Exception in case of error for recovering the plugin's description.
+	 * @since 0.11
+	 */
+	@TestFactory
+	@DisplayName("Definition of example wizards")
+	public Stream<DynamicTest> exampleWizards() throws Exception {
+		final File pluginFile = new File(DEFAULT_RELATIVE_PATH, "plugin.xml");
+		final Document document = readXmlContent(pluginFile);
+		assertNotNull(document, "Cannot read XML from the plugin.xml file");
+		final String prefix = SARLExampleExecutableExtensionFactory.class.getName() + ":";
+		return dynamicTests(false, example -> {
+			final File projectRoot = createProject(); 
+			final List<File> installedFiles = installFiles(example, projectRoot, false);
+			final File launchConfiguration = new File(projectRoot, LAUNCH_PROPERTY_FILE);
+			assumeTrue(launchConfiguration.exists());
+
+			final Document launchDocument = readXmlContent(launchConfiguration);
+			assertNotNull(launchDocument, "Expecting the example identifier into the launch.xml file");
+			final Node configurationNode = readXmlNode(launchDocument, "launchConfigurations");
+			assertNotNull(configurationNode, "Expecting the example identifier into the launch.xml file");
+			final String exampleId = readXmlAttribute(configurationNode, "id");
+			assertFalse(Strings.isEmpty(exampleId), "Expecting the example identifier into the launch.xml file");
+
+			final List<String> classNames = readWizardClassesFromXml(document, exampleId);
+			boolean foundOne = false;
+			for (final String className : classNames) {
+				assertNotNull(className, "Unexpected null value for a wizard class name of " + exampleId);
+				if (!className.startsWith(prefix)) {
+					throw new AssertionFailedError("Wizard class of " + exampleId + " must be loaded with the extension factory",
+							prefix + "package.classname", className);
+				}
+				foundOne = true;
+			}
+
+			assertTrue(foundOne, "Expecting definition of a wizard for the example " + exampleId);
 		});
 	}
 

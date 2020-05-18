@@ -76,8 +76,27 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 
 	private List<ConfigurationToLaunch> configurationsToLaunch;
 
-	@Inject
 	private ILaunchConfigurationConfigurator launchConfigConfigurator;
+
+	/** Change the launch configuration configurator.
+	 *
+	 * @param launchConfigConfigurator the new configurator.
+	 * @since 0.11
+	 */
+	@Inject
+	public void setLaunchConfigurationConfigurator(ILaunchConfigurationConfigurator launchConfigConfigurator) {
+		this.launchConfigConfigurator = launchConfigConfigurator;
+	}
+
+	/** Replies the launch configuration configurator.
+	 *
+	 * @return configurator.
+	 * @since 0.11
+	 */
+	public ILaunchConfigurationConfigurator getLaunchConfigurationConfigurator() {
+		assert this.launchConfigConfigurator != null : "Extension factory is missed for the example in the plugin.xml file";
+		return this.launchConfigConfigurator;
+	}
 
 	@Override
 	public void addPages() {
@@ -170,7 +189,7 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 		if (this.configurationPage.isLaunchConfigurationInstallable()) {
 			try {
 				final List<ConfigurationToLaunch> configs = getConfigurationsToLaunch(project);
-				configs.forEach(it -> {
+				for (final ConfigurationToLaunch it : configs) {
 					try {
 						if (it.isAgentLaunch()) {
 							createAgentLaunchConfiguration(project, it.getType(), it.getName());
@@ -182,11 +201,15 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 								io.sarl.eclipse.util.Messages.AbstractSarlScriptInteractiveSelector_1,
 								exception.getStatus().getMessage(), exception);
 					}
-				});
+				}
 			} catch (CoreException exception) {
 				SARLExamplePlugin.getDefault().openError(getShell(),
 						io.sarl.eclipse.util.Messages.AbstractSarlScriptInteractiveSelector_1,
 						exception.getStatus().getMessage(), exception);
+			} catch (Exception exception) {
+				SARLExamplePlugin.getDefault().openError(getShell(),
+						io.sarl.eclipse.util.Messages.AbstractSarlScriptInteractiveSelector_1,
+						exception.getMessage(), exception);
 			}
 		}
 
@@ -233,8 +256,12 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 	 */
 	protected void createApplicationLaunchConfiguration(IProject project, String mainClassfullyQualifedName,
 			String configurationName) throws CoreException {
-		this.launchConfigConfigurator.newApplicationLaunchConfiguration(project.getName(),
-				configurationName, mainClassfullyQualifedName, SarlStandardClasspathProvider.class);
+		final ILaunchConfigurationConfigurator configurator = getLaunchConfigurationConfigurator();
+		if (configurator != null) {
+			final String projectName = project.getName();
+			configurator.newApplicationLaunchConfiguration(projectName,
+					configurationName, mainClassfullyQualifedName, SarlStandardClasspathProvider.class);
+		}
 	}
 
 	/** Create the application launch configuration.
@@ -247,8 +274,12 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 	 */
 	protected void createAgentLaunchConfiguration(IProject project, String agentFullyQualifiedName,
 			String configurationName) throws CoreException {
-		this.launchConfigConfigurator.newAgentLaunchConfiguration(project.getName(),
-				configurationName, agentFullyQualifiedName);
+		final ILaunchConfigurationConfigurator configurator = getLaunchConfigurationConfigurator();
+		if (configurator != null) {
+			final String projectName = project.getName();
+			configurator.newAgentLaunchConfiguration(projectName,
+					configurationName, agentFullyQualifiedName);
+		}
 	}
 
 	@Override
