@@ -469,7 +469,7 @@
 	<extension point="org.eclipse.ui.newWizards">
 	    <wizard id="io.sarl.demos.boids.awt"
 	        name="%io_sarl_demos_boids_awt_Name"
-	        class="io.sarl.examples.wizard.SarlExampleInstallerWizard"
+	        class="io.sarl.examples.SARLExampleExecutableExtensionFactory:io.sarl.examples.wizard.SarlExampleInstallerWizard"
 	        category="org.eclipse.ui.Examples/io.sarl.UIExamples"
 	        icon="/icons/io-sarl-demos-boids-awt.png"
 	        project="true">
@@ -480,7 +480,7 @@
 	<extension point="org.eclipse.ui.newWizards">
 	    <wizard id="io.sarl.demos.boids.awt"
 	        name="%io_sarl_demos_boids_awt_Name"
-	        class="io.sarl.examples.wizard.SarlExampleInstallerWizard"
+	        class="io.sarl.examples.SARLExampleExecutableExtensionFactory:io.sarl.examples.wizard.SarlExampleInstallerWizard"
 	        category="io.sarl.eclipse.category.wizards/io.sarl.project.UIExamples"
 	        icon="/icons/io-sarl-demos-boids-awt.png"
 	        project="true">
