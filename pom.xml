@@ -926,11 +926,11 @@
 							</group>
 							<group>
 								<title>Tools for SARL Run-time Environments</title>
-								<packages>io.sarl.eventdispatching:io.sarl.sarlspecification</packages>
+								<packages>io.sarl.bootstrap*:io.sarl.sarlspecification</packages>
 							</group>
 							<group>
 								<title>Janus Run-time Environment</title>
-								<packages>io.janusproject*</packages>
+								<packages>io.sarl.sre*</packages>
 							</group>
 						</groups>
 						<tags>
