@@ -27,24 +27,21 @@ import io.sarl.sre.services.PreReleasableService
 import java.lang.Thread.UncaughtExceptionHandler
 import java.lang.ref.WeakReference
 import java.util.Collection
-import java.util.LinkedList
-import java.util.List
 import java.util.concurrent.Callable
-import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Future
 import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.ScheduledFuture
+import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
-import java.util.concurrent.atomic.AtomicInteger
 import java.util.function.Consumer
 import java.util.logging.Logger
 import java.util.stream.StreamSupport
 import javax.inject.Inject
 import javax.inject.Singleton
 
+import static extension io.sarl.sre.services.executor.JreExecutorUtils.*
 import static extension io.sarl.sre.services.executor.Runnables.*
-import java.util.concurrent.ScheduledThreadPoolExecutor
 
 /** 
  * Service that executes the tasks asynchronously (in threads) with the JRE executor service.
@@ -103,196 +100,9 @@ class JreExecutorService extends AbstractSreService implements ExecutorService, 
 		return nb
 	}
 
-	/** Execute the given tasks in parallel and wait for the termination.
-	 * 
-	 * @param tasks the tasks to run.
-	 * @param thrownExceptions indicates if the exceptions in the tasks are thrown into a combined exception.
-	 * @param a callback for wrapping the tasks.
-	 */
-	protected def executeInThreadsAndWait(tasks : Collection<Runnable>, thrownExceptions : boolean,
-		wrapper : (boolean, Runnable)=>Runnable) {
-		var runExceptions : List<Throwable> = null
-
-		if (tasks.size == 1) {
-			val runnable = tasks.head
-			assert runnable !== null
-			if (thrownExceptions) {
-				val finalRunExceptions = new LinkedList<Throwable>
-				runExceptions = finalRunExceptions
-				try {
-					// Catch the early-exit exception
-					wrapper.apply(false, runnable).run
-				} catch (e : Throwable) {
-					finalRunExceptions += e
-				}
-			} else {
-				wrapper.apply(true, runnable).run
-			}
-		} else {
-			val doneSignal = new CountDownLatch(tasks.size)
-			if (thrownExceptions) {
-				val finalRunExceptions = new LinkedList<Throwable>
-				runExceptions = finalRunExceptions
-				for (runnable : tasks) {
-					var wrunnable : Runnable = [
-						try {
-							// Catch the early-exit exception
-							wrapper.apply(false, runnable).run
-						} catch (e : Throwable) {
-							synchronized (finalRunExceptions) {
-								finalRunExceptions += e
-							}
-						} finally {
-							doneSignal.countDown
-						}
-					]
-					this.executorService.execute(wrunnable)
-				}
-			} else {
-				for (runnable : tasks) {
-					this.executorService.execute [
-						try {
-							// Catch the early-exit exception
-							wrapper.apply(true, runnable).run
-						} finally {
-							doneSignal.countDown
-						}
-					]
-				}
-			}
-
-			// Wait
-			try {
-				doneSignal.await
-			} catch (ex : InterruptedException) {
-			}
-		}
-
-		// Re-throw the run-time exception
-		if (runExceptions !== null && !runExceptions.empty) {
-			var iterator = runExceptions.iterator
-			val firstException = iterator.next
-			while (iterator.hasNext) {
-				firstException.addSuppressed(iterator.next)
-			}
-			throw firstException
-		}
-	}
-
-	/** Execute the given task in parallel and wait for the termination.
-	 * 
-	 * @param task the task to run.
-	 * @param nbExecutions number of runs
-	 * @param runGroupSize the size of a parallel group
-	 */
-	protected final def executeInThreadsAndWait(task : SreRunnable, nbExecutions : int, runGroupSize : int) : int {
-		assert runGroupSize >= 1
-		val es = executorService
-		if (nbExecutions > 1) {
-			val errors = new AtomicInteger
-			var doneSignal : CountDownLatch
-			if (runGroupSize > 1) {
-				val numberOfGroups = nbExecutions / runGroupSize
-				val rest = nbExecutions - numberOfGroups * runGroupSize
-				if (rest > 0) {
-					doneSignal = new CountDownLatch(numberOfGroups + 1)
-				} else {
-					doneSignal = new CountDownLatch(numberOfGroups)
-				}
-				val finalSignal = doneSignal
-				for (var i = 0; i < numberOfGroups; i++) {
-					es.execute [
-						try {
-							for (var j = 0; j < runGroupSize; j++) {
-								task.run
-								if (!task.success) {
-									errors.incrementAndGet
-								}
-							}
-						} finally {
-							finalSignal.countDown
-						}
-					]
-				}
-				if (rest > 0) {
-					es.execute [
-						try {
-							for (var j = 0; j < rest; j++) {
-								task.run
-								if (!task.success) {
-									errors.incrementAndGet
-								}
-							}
-						} finally {
-							finalSignal.countDown
-						}
-					]
-				}
-			} else {
-				doneSignal = new CountDownLatch(nbExecutions)
-				val finalSignal = doneSignal
-				for (var i = 0; i < nbExecutions; i++) {
-					es.execute [
-						try {
-							task.run
-							if (!task.success) {
-								errors.incrementAndGet
-							}
-						} finally {
-							finalSignal.countDown
-						}
-					]
-				}
-			}
-			// Wait for all creators to complete before continuing
-			doneSignal.await
-			return nbExecutions - errors.get
-		}
-		if (nbExecutions == 1) {
-			task.run
-			return if(task.success) 1 else 0
-		}
-		return 0
-	}
-
 	override applyBlockingConsumer(logger : Logger, collection : Iterable<T>, task : Consumer<? super T>) with T {
 		// Assuming that the task is properly synchronized on the collection.
 		StreamSupport::stream(collection.spliterator, true).forEach(task.protectConsumer(logger))
-	}
-
-	/** Execute the given task in parallel but do not wait for the termination.
-	 * 
-	 * @param task the task to run.
-	 * @param nbExecutions number of runs
-	 * @param runGroupSize the size of a parallel group
-	 */
-	protected final def executeInThreadsWithoutWaiting(task : SreRunnable, nbExecutions : int, runGroupSize : int) {
-		assert runGroupSize >= 1
-		val es = executorService
-		if (runGroupSize > 1) {
-			val numberOfGroups = nbExecutions / runGroupSize
-			val rest = nbExecutions - numberOfGroups * runGroupSize
-			for (var i = 0; i < numberOfGroups; i++) {
-				es.execute [
-					for (var j = 0; j < runGroupSize; j++) {
-						task.run
-					}
-				]
-			}
-			if (rest > 0) {
-				es.execute [
-					for (var j = 0; j < rest; j++) {
-						task.run
-					}
-				]
-			}
-		} else {
-			for (var i = 0; i < nbExecutions; i++) {
-				es.execute [
-					task.run
-				]
-			}
-		}
 	}
 
 	/** 
@@ -403,18 +213,18 @@ class JreExecutorService extends AbstractSreService implements ExecutorService, 
 
 	def executeBlockingTasks(logger : Logger, thrownExceptions : boolean = false,
 		tasks : Collection<Runnable>) {
-		tasks.executeInThreadsAndWait(thrownExceptions) [catchErrors, runnable |
+		getExecutorService.executeInThreadsAndWait(tasks, thrownExceptions) [ catchErrors, runnable |
 			if(catchErrors) runnable.protectRunnable(logger) else runnable.protectRunnable(null)
 		]
 	}
 
 	def executeBlockingTask(logger : Logger,
 		nbExecutions : int, runGroupSize : int, task : Runnable) : int {
-		executeInThreadsAndWait(task.protectRunnable(logger), nbExecutions, runGroupSize)
+		getExecutorService.executeInThreadsAndWait(task.protectRunnable(logger), nbExecutions, runGroupSize)
 	}
 
 	def executeNotBlockingTask(logger : Logger, nbExecutions : int, runGroupSize : int, task : Runnable) {
-		executeInThreadsWithoutWaiting(task.protectRunnable(logger), nbExecutions, runGroupSize)
+		getExecutorService.executeInThreadsWithoutWaiting(task.protectRunnable(logger), nbExecutions, runGroupSize)
 	}
 
 	def executeAsap(logger : Logger, task : Runnable) : Future<?> {
