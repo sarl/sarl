@@ -208,7 +208,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	 * @mavenartifactid $ArtifactId$
 	 * @since 0.11
 	 */
-	private static class AgentIdProvider implements Function0<UUID> {
+	protected static class AgentIdProvider implements Function0<UUID> {
 
 		var agentId : AtomicReference<UUID>
 
@@ -562,7 +562,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	 * @mavenartifactid $ArtifactId$
 	 * @since 0.11
 	 */
-	private static class ShutdownLookUp implements Runnable {
+	protected static class ShutdownLookUp implements Runnable {
 
 		val enclosing : WeakReference<AbstractLifecycleService>
 
