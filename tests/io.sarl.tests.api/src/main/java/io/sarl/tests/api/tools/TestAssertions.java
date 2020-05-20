@@ -145,7 +145,17 @@ public final class TestAssertions {
 	 * @param expected the expected objects.
 	 */
 	public static void assertContains(Iterable<?> actual, Object... expected) {
-		assertContainsCollection(actual, Arrays.asList(expected));
+		assertContainsMsg(actual, null, expected);
+	}
+
+	/** Test if the actual collection/iterable contains all the expected objects.
+	 *
+	 * @param actual the collection to test.
+	 * @param message the error message.
+	 * @param expected the expected objects.
+	 */
+	public static void assertContainsMsg(Iterable<?> actual, Supplier<String> message, Object... expected) {
+		assertContainsCollection(actual, Arrays.asList(expected), message);
 	}
 
 	/** Test if the actual collection/iterable contains all the expected objects.
@@ -154,6 +164,16 @@ public final class TestAssertions {
 	 * @param expected the expected objects.
 	 */
 	public static void assertContainsCollection(Iterable<?> actual, Iterable<?> expected) {
+		assertContainsCollection(actual, expected, null);
+	}
+
+	/** Test if the actual collection/iterable contains all the expected objects.
+	 *
+	 * @param actual the collection to test.
+	 * @param expected the expected objects.
+	 * @param message the error message.
+	 */
+	public static void assertContainsCollection(Iterable<?> actual, Iterable<?> expected, Supplier<String> message) {
 		assertNotNull(actual);
 		Collection<Object> la = new ArrayList<>();
 		Iterables.addAll(la, actual);
@@ -172,12 +192,22 @@ public final class TestAssertions {
 		}
 
 		if (!unexpectedElements.isEmpty()) {
+			if (!le.isEmpty()) {
+				final String emsg = message != null ? "\n" + message.get() : "";
+				throw new AssertionFailedError(
+						"Unexpected elements:\n" + unexpectedElements.toString()
+						+ "\nExpecting the following elements:\n" + le.toString() + emsg,
+						toString(expected),
+						toString(actual));
+			}
+			final String emsg = message != null ? "\n" + message.get() : "";
 			throw new AssertionFailedError(
-					"Unexpected elements:\n" + unexpectedElements.toString(),
+					"Unexpected elements:\n" + unexpectedElements.toString() + emsg,
 					toString(expected),
 					toString(actual));
 		} else if (!le.isEmpty()) {
-			throw new AssertionFailedError("Expecting the following elements:\n" + le.toString(),
+			final String emsg = message != null ? "\n" + message.get() : "";
+			throw new AssertionFailedError("Expecting the following elements:\n" + le.toString() + emsg,
 					toString(expected),
 					toString(actual));
 		}

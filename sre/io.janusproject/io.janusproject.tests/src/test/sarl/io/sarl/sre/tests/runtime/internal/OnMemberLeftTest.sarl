@@ -87,7 +87,10 @@ class OnMemberLeftTest {
 
 		waitForTheKernel(STANDARD_TIMEOUT)
 
-		allResults.assertContains(
+		allResults.assertContainsMsg(
+			[
+				"id0 => " + id0 + "\nid1 => " + id1 + "\nid2 => " + id2
+			],
 			"AG1: joined MemberLeftAgent0 " + id1 + " in default space",
 			"AG3: joined MemberLeftAgent0 " + id1 + " in default space"
 		)
