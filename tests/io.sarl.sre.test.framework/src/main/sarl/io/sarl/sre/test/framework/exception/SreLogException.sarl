@@ -41,7 +41,7 @@ class SreLogException extends Exception {
 	 * @param cause the cause of the error.
 	 */
 	new (cause : LogRecord) {
-		super(cause.message)
+		super(cause.message, cause.thrown)
 		this.record = cause
 	}
 
