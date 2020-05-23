@@ -106,13 +106,6 @@ Export-Package: io.sarl.sre;
    org.eclipse.osgi.util,
    io.bootique,
    javax.inject",
- io.sarl.sre.boot.internal.spaces;
-  uses:="org.eclipse.osgi.util,
-   com.google.inject,
-   io.bootique,
-   io.sarl.sre.services.logging,
-   io.sarl.core,
-   javax.inject",
  io.sarl.sre.capacities;
   uses:="io.sarl.lang.core,
    io.sarl.sre.skills.internal,

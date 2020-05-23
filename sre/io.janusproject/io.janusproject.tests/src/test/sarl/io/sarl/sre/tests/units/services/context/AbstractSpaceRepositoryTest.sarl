@@ -21,8 +21,6 @@
 
 package io.sarl.sre.tests.units.services.context
 
-import com.google.inject.Injector
-import com.google.inject.Key
 import io.sarl.core.OpenEventSpace
 import io.sarl.core.OpenEventSpaceSpecification
 import io.sarl.lang.core.Space
@@ -34,6 +32,7 @@ import io.sarl.sre.services.context.SpaceRepository
 import io.sarl.sre.services.context.SpaceRepository.SpaceDescription
 import io.sarl.sre.services.context.SpaceRepositoryListener
 import io.sarl.sre.services.executor.ExecutorService
+import io.sarl.sre.spaces.SreSpaceSpecificationFactory
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.tests.units.services.context.mocks.SpaceMock
 import io.sarl.sre.tests.units.services.context.mocks.SpaceMockSpecification
@@ -71,9 +70,6 @@ import static extension org.mockito.MockitoAnnotations.initMocks
 abstract class AbstractSpaceRepositoryTest<T extends SpaceRepository,
 			M extends Map<UUID, SpaceDescription>> {
 
-	@Nullable
-	protected var injector : Injector
-
 	@Mock
 	protected var executor : ExecutorService
 	
@@ -82,7 +78,10 @@ abstract class AbstractSpaceRepositoryTest<T extends SpaceRepository,
 
 	@Nullable
 	protected var executorsConfig : ExecutorsConfig
-	
+
+	@Nullable
+	protected var specificationFactory : SreSpaceSpecificationFactory
+
 	@Nullable
 	protected var internalStructure : M
 	
@@ -91,12 +90,14 @@ abstract class AbstractSpaceRepositoryTest<T extends SpaceRepository,
 
 	@BeforeEach
 	def setUp : void {
-		this.injector = typeof(Injector).mock
 		this.executorsConfig = typeof(ExecutorsConfig).mock
 		var services = typeof(ServicesConfig).mock
 		when(services.getExecutors).thenReturn(this.executorsConfig)		
 		this.configuration = typeof(SreConfig).mock
 		when(this.configuration.services).thenReturn(services)
+		this.specificationFactory = typeof(SreSpaceSpecificationFactory).mock
+		when(this.specificationFactory.createOpenEventSpaceSpecificationForDefaultSpace(any)).thenReturn(null)
+		when(this.specificationFactory.createOpenEventSpaceSpecificationInInnerContext(any, any)).thenReturn(null)
 		this.initMocks
 		this.internalStructure = newInternalStructure
 		this.repository = newSpaceRepository
@@ -255,8 +256,7 @@ abstract class AbstractSpaceRepositoryTest<T extends SpaceRepository,
 		when(^space.spaceID).thenReturn(sid)
 		var specification = typeof(OpenEventSpaceSpecification).mock
 		when(specification.create(any, any)).thenReturn(^space)
-		var classType : Key<OpenEventSpaceSpecification> = any
-		when(this.injector.getInstance(classType)).thenReturn(specification)
+		when(this.specificationFactory.createOpenEventSpaceSpecificationForDefaultSpace(any)).thenReturn(specification)
 
 		var createdSpace = this.repository.createSpace(sid, typeof(OpenEventSpaceSpecification))
 		
@@ -297,8 +297,7 @@ abstract class AbstractSpaceRepositoryTest<T extends SpaceRepository,
 		when(^space.spaceID).thenReturn(sid)
 		var specification = typeof(OpenEventSpaceSpecification).mock
 		when(specification.create(any, any)).thenReturn(^space)
-		var classType : Key<OpenEventSpaceSpecification> = any
-		when(this.injector.getInstance(classType)).thenReturn(specification)
+		when(this.specificationFactory.createOpenEventSpaceSpecificationForDefaultSpace(any)).thenReturn(specification)
 
 		var createdSpace = this.repository.getOrCreateSpaceWithSpec(sid, typeof(OpenEventSpaceSpecification))
 		
@@ -329,8 +328,7 @@ abstract class AbstractSpaceRepositoryTest<T extends SpaceRepository,
 		when(^space.spaceID).thenReturn(sid)
 		var specification = typeof(OpenEventSpaceSpecification).mock
 		when(specification.create(any, any)).thenReturn(^space)
-		var classType : Key<OpenEventSpaceSpecification> = any
-		when(this.injector.getInstance(classType)).thenReturn(specification)
+		when(this.specificationFactory.createOpenEventSpaceSpecificationForDefaultSpace(any)).thenReturn(specification)
 
 		var createdSpace = this.repository.getOrCreateSpaceWithID(sid, typeof(OpenEventSpaceSpecification))
 		
@@ -362,8 +360,8 @@ abstract class AbstractSpaceRepositoryTest<T extends SpaceRepository,
 		when(^space.spaceID).thenReturn(sid)
 		var specification = typeof(OpenEventSpaceSpecification).mock
 		when(specification.create(any, any)).thenReturn(^space)
-		var classType : Key<OpenEventSpaceSpecification> = any
-		when(this.injector.getInstance(classType)).thenReturn(specification)
+		when(this.specificationFactory.createOpenEventSpaceSpecificationForDefaultSpace(any)).thenReturn(specification)
+
 		var createdSpace = this.repository.getOrCreateSpaceWithID(sid, typeof(OpenEventSpaceSpecification))
 		
 		var spaceArg = ArgumentCaptor::forClass(typeof(Space))
@@ -384,8 +382,8 @@ abstract class AbstractSpaceRepositoryTest<T extends SpaceRepository,
 		when(^space.spaceID).thenReturn(sid)
 		var specification = typeof(OpenEventSpaceSpecification).mock
 		when(specification.create(any, any)).thenReturn(^space)
-		var classType : Key<OpenEventSpaceSpecification> = any
-		when(this.injector.getInstance(classType)).thenReturn(specification)
+		when(this.specificationFactory.createOpenEventSpaceSpecificationForDefaultSpace(any)).thenReturn(specification)
+
 		var fake = this.repository.getOrCreateSpaceWithID(sid, typeof(OpenEventSpaceSpecification))
 		
 		var listener = typeof(SpaceRepositoryListener).mock
@@ -413,8 +411,7 @@ abstract class AbstractSpaceRepositoryTest<T extends SpaceRepository,
 		when(^space.spaceID).thenReturn(sid)
 		var specification = typeof(OpenEventSpaceSpecification).mock
 		when(specification.create(any, any)).thenReturn(^space)
-		var classType : Key<OpenEventSpaceSpecification> = any
-		when(this.injector.getInstance(classType)).thenReturn(specification)
+		when(this.specificationFactory.createOpenEventSpaceSpecificationForDefaultSpace(any)).thenReturn(specification)
 
 		this.repository.removeSpaceRepositoryListener(listener)
 		

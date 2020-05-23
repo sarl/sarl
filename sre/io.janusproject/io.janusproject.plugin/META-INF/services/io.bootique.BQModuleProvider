@@ -31,5 +31,3 @@ io.sarl.sre.boot.internal.services.ProbeServiceModuleProvider
 
 io.sarl.sre.boot.internal.skills.BuiltinCapacityModuleProvider
 io.sarl.sre.boot.internal.skills.EventBusModuleProvider
-
-io.sarl.sre.boot.internal.spaces.SpacesModuleProvider

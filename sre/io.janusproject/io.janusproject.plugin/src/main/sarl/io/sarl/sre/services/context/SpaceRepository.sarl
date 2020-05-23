@@ -22,29 +22,22 @@ package io.sarl.sre.services.context
 
 import com.google.inject.AbstractModule
 import com.google.inject.Injector
-import com.google.inject.Key
-import com.google.inject.Provides
 import com.google.inject.name.Names
 import io.sarl.core.OpenEventSpace
 import io.sarl.core.OpenEventSpaceSpecification
 import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.EventSpace
-import io.sarl.lang.core.EventSpaceSpecification
 import io.sarl.lang.core.SREutils
 import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
 import io.sarl.lang.core.SpaceSpecification
-import io.sarl.sre.KernelScope
 import io.sarl.sre.boot.configs.SreConfig
 import io.sarl.sre.boot.configs.subconfigs.ContextsConfig
 import io.sarl.sre.internal.SmartListenerCollection
 import io.sarl.sre.services.executor.ExecutorService
-import io.sarl.sre.services.logging.LoggingService
 import io.sarl.sre.spaces.AbstractSpace
 import io.sarl.sre.spaces.SpaceListener
-import io.sarl.sre.spaces.SpaceParticipantListenerFactory
-import io.sarl.sre.spaces.SreEventSpaceSpecification
-import io.sarl.sre.spaces.SreOpenEventSpaceSpecification
+import io.sarl.sre.spaces.SreSpaceSpecificationFactory
 import io.sarl.util.DefaultSpace
 import java.io.Serializable
 import java.lang.ref.WeakReference
@@ -57,7 +50,8 @@ import java.util.concurrent.ConcurrentSkipListSet
 import java.util.concurrent.TimeUnit
 import java.util.logging.Logger
 import javax.inject.Inject
-import javax.inject.Provider
+import io.sarl.sre.services.context.SpaceRepository.SpaceSpecificationKey
+import java.util.Objects
 
 /** 
  * A repository of spaces specific to a given context.
@@ -82,6 +76,8 @@ abstract class SpaceRepository implements SpaceListener {
 
 	val listeners : SmartListenerCollection<?>
 
+	val specs = new ConcurrentHashMap<SpaceSpecificationKey, SpaceSpecification<?>>
+
 	val spacesBySpec = new ConcurrentHashMap<Class<? extends SpaceSpecification<?>>, ConcurrentSkipListSet<SpaceDescription>>
 
 	/** Reference to the default space of the owning context.
@@ -89,21 +85,25 @@ abstract class SpaceRepository implements SpaceListener {
 	 */
 	var defaultSpace : WeakReference<OpenEventSpace>
 
+	val specificationFactory : SreSpaceSpecificationFactory
+
 	/** Constructor.
 	 * 
 	 * @param injector the injector.
 	 * @param executor the asynchronous execution service.
 	 * @param config the configuration.
+	 * @param specificiationFactory the factory of space spacification.
 	 * @param listenerCollection the instance of the listener collection.
-	 * @param lock the locking object that must be used to synchronize this repository.
 	 */
 	@Inject
 	new (injector : Injector, executor : ExecutorService, config : SreConfig,
+		specificationFactory : SreSpaceSpecificationFactory,
 		listenerCollection : SmartListenerCollection<?>) {
 		this.injector = injector
 		this.executor = executor
 		this.contextsRepositoryConfig = config.contexts
 		this.listeners = listenerCollection
+		this.specificationFactory = specificationFactory
 	}
 
 	/** Replies the internal map that contains the spaces
@@ -173,23 +173,35 @@ abstract class SpaceRepository implements SpaceListener {
 		return defaultSpace
 	}
 
+	private def getSpaceSpecificationInstance(spec : Class<T>) : T with T extends SpaceSpecification<?> {
+		var defaultSpace : OpenEventSpace = this.defaultSpace?.get
+		val key = new SpaceSpecificationKey(spec, defaultSpace === null)
+		val instance = spec.cast(this.specs.computeIfAbsent(key) [
+			var specInstance : SpaceSpecification<?>
+			if (it.isDefaultSpace) {
+				// Usually, this case cover the creation of the default space within a context
+				specInstance = this.specificationFactory.createOpenEventSpaceSpecificationForDefaultSpace(spec)
+				this.injector.injectMembers(specInstance)
+			} else {
+				// Usually, this case is for the creation of the spaces that are not the default space
+				specInstance = this.specificationFactory.createOpenEventSpaceSpecificationInInnerContext(spec, defaultSpace)
+				val defaultSpaceInjectionModule = new JustInTimeDefaultSpaceInjectionModule(defaultSpace)
+				val defaultSpaceInjector = this.injector.createChildInjector(defaultSpaceInjectionModule)
+				defaultSpaceInjector.injectMembers(specInstance)
+			}
+			assert specInstance !== null
+			return specInstance
+		])
+		assert instance !== null
+		return instance
+	}
+
 	protected def createSpaceFirstInstance(spec : Class<? extends SpaceSpecification<S>>, spaceID : SpaceID,
 		creationParams : Object[]) : S with S extends Space {
 		assert spaceID.spaceSpecification === null ||
 			spaceID.spaceSpecification == spec, "The specification type is invalid"
 
-		var defaultSpace : OpenEventSpace = this.defaultSpace?.get
-
-		var spaceSpecificationInstance : SpaceSpecification<S>
-		if (defaultSpace === null) {
-			// Usually, this case cover the creation of the default space within a context
-			spaceSpecificationInstance = this.injector.getInstance(Key.get(spec, typeof(KernelScope)))
-		} else {
-			// Usually, this case is for the creation of the spaces that are not the default space
-			val defaultSpaceInjectionModule = new JustInTimeDefaultSpaceInjectionModule(defaultSpace)
-			val defaultSpaceInjector = this.injector.createChildInjector(defaultSpaceInjectionModule)
-			spaceSpecificationInstance = defaultSpaceInjector.getInstance(spec)
-		}
+		val spaceSpecificationInstance = spec.spaceSpecificationInstance
 
 		// Split the call to create() to let the JVM to create the "empty" array for creation parameters.
 		var ^space : S
@@ -207,11 +219,10 @@ abstract class SpaceRepository implements SpaceListener {
 		id.life(description)
 		val spaces = sharedStructure
 
-		var list = this.spacesBySpec.get(id.spaceSpecification)
-		if (list === null) {
-			list = new ConcurrentSkipListSet<SpaceDescription>
-			this.spacesBySpec.put(id.spaceSpecification, list)
-		}
+		val list = this.spacesBySpec.computeIfAbsent(
+			id.spaceSpecification) [
+			new ConcurrentSkipListSet<SpaceDescription>
+		]
 		list += description
 
 		spaces.put(id.ID, description)
@@ -236,11 +247,10 @@ abstract class SpaceRepository implements SpaceListener {
 			var spaceId = ^space.spaceID
 			^space.life(description)
 			spaceId.life(description)
-			var list = this.spacesBySpec.get(spaceId.spaceSpecification)
-			if (list === null) {
-				list = new ConcurrentSkipListSet<SpaceDescription>
-				this.spacesBySpec.put(spaceId.spaceSpecification, list)
-			}
+			val list = this.spacesBySpec.computeIfAbsent(
+				spaceId.spaceSpecification) [
+				new ConcurrentSkipListSet<SpaceDescription>
+			]
 			list += description
 			if (^space instanceof AbstractSpace) {
 				^space.spaceListenerIfNone = this
@@ -253,7 +263,7 @@ abstract class SpaceRepository implements SpaceListener {
 		if (description.getSpace === null) {
 			val id = description.spaceID
 			assert id !== null
-			val ^space = this.injector.getInstance(id.spaceSpecification).create(id)
+			val ^space = id.spaceSpecification.spaceSpecificationInstance.create(id)
 			assert ^space !== null
 			description.setSpace = ^space
 			^space.life(description)
@@ -567,30 +577,48 @@ abstract class SpaceRepository implements SpaceListener {
 			typeof(OpenEventSpace).bind.annotatedWith(typeof(DefaultSpace)).toInstance(this.defaultSpace)
 		}
 
-		/** This injection definition is for the spaces that are not a default space.
-		 * 
-		 * <p>Note: This provider must be defined into this "temp" module because it depends on the
-		 * definition of the default space injection.
-		 */
-		@Provides
-		def provideEventSpaceSpecification(injector : Injector, @DefaultSpace defaultSpace : OpenEventSpace,
-			@KernelScope spaceParticipantListenerFactory : Provider<SpaceParticipantListenerFactory>,
-			logger : LoggingService) : EventSpaceSpecification {
-			new SreEventSpaceSpecification(injector, defaultSpace, spaceParticipantListenerFactory.get,
-				logger)
+	}
+
+	/** 
+	 * Key for a space specification.
+	 * 
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.11
+	 */
+	@org.eclipse.xtend.lib.annotations.Data
+	static class SpaceSpecificationKey implements Serializable, Comparable<SpaceSpecificationKey> {
+
+		val type : Class<? extends SpaceSpecification<?>>
+
+		val isDefaultSpace : boolean
+
+		override compareTo(o : SpaceSpecificationKey) : int {
+			if (o === this) return 0
+			if (o === null) return 1
+			var cmp = this.isDefaultSpace <=> o.isDefaultSpace
+			if(cmp !== 0) return cmp
+			cmp = this.type.name <=> o.type.name
+			return cmp
 		}
 
-		/** This injection definition is for the spaces that are not a default space.
-		 * 
-		 * <p>Note: This provider must be defined into this "temp" module because it depends on the
-		 * definition of the default space injection.
-		 */
-		@Provides
-		def provideOpenEventSpaceSpecification(injector : Injector, @DefaultSpace defaultSpace : OpenEventSpace,
-			@KernelScope spaceParticipantListenerFactory : Provider<SpaceParticipantListenerFactory>,
-			logger : LoggingService) : OpenEventSpaceSpecification {
-			new SreOpenEventSpaceSpecification(injector, defaultSpace,
-				spaceParticipantListenerFactory.get, logger)
+		override equals(obj : Object) : boolean {
+			if (this === obj) return true
+			if (obj === null) return false
+			if (this.class !== obj.class) return false
+			val other = obj as SpaceSpecificationKey
+			if (other.isDefaultSpace !== this.isDefaultSpace) return false
+			if (type !== other.type) return false
+			return true;
+		}	
+
+		override hashCode() : int {
+			var prime = 31
+			var result = prime * 0 + Boolean::hashCode(this.isDefaultSpace)
+			result = prime * result + Objects::hashCode(this.isDefaultSpace)
+			return result
 		}
 
 	}

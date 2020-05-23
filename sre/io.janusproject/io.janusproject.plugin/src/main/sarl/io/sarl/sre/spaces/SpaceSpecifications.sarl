@@ -27,7 +27,12 @@ import io.sarl.core.OpenEventSpaceSpecification
 import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.EventSpaceSpecification
 import io.sarl.lang.core.SpaceID
+import io.sarl.lang.core.SpaceSpecification
 import io.sarl.sre.services.logging.LoggingService
+import javax.inject.Inject
+import javax.inject.Provider
+import javax.inject.Singleton
+import io.sarl.sre.KernelScope
 
 /** 
  * Abstract specification for standard event spaces into the SRE. 
@@ -106,6 +111,71 @@ class SreOpenEventSpaceSpecification extends AbstractSreEventSpaceSpecification 
 	
 	def ^create(id : SpaceID, params : Object*) : OpenEventSpace {
 		id.createSpaceInstance(params)
+	}
+
+}
+
+/** 
+ * Factory of space specification for SRE. 
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+@Singleton
+class SreSpaceSpecificationFactory {
+
+	@Inject
+	var injector : Injector
+
+	@Inject
+	@KernelScope
+	var spaceParticipantListenerFactory : Provider<SpaceParticipantListenerFactory>
+
+	@Inject
+	var logger : Provider<LoggingService>
+
+	/** Create the space specification for an event space that is supposed to be the default space.
+	 * 
+	 * @param type the type of the space specification.
+	 * @param defaultSpace the instance of the default space.
+	 * @return the specification.
+	 */
+	protected def newSpaceSpecification(type : Class<? extends SpaceSpecification<?>>, defaultSpace : OpenEventSpace) : SpaceSpecification<?> {
+		assert type !== null
+		if (type == typeof(OpenEventSpaceSpecification)) {
+			return new SreOpenEventSpaceSpecification(this.injector, defaultSpace,
+				this.spaceParticipantListenerFactory.get, this.logger.get)
+		}
+		if (type == typeof(EventSpaceSpecification)) {
+			return new SreEventSpaceSpecification(this.injector, defaultSpace,
+				this.spaceParticipantListenerFactory.get, this.logger.get)
+		}
+		return type.newInstance
+	}
+
+	/** Create the space specification for an event space that is supposed to be the default space.
+	 *
+	 * @param <S> the type of the space specification.
+	 * @param type the type of the space specification.
+	 * @return the specification.
+	 */
+	def createOpenEventSpaceSpecificationForDefaultSpace(type : Class<S>) : S with S extends SpaceSpecification<?> {
+		val specification : SpaceSpecification<?> = type.newSpaceSpecification(null)
+		return type.cast(specification)
+	}
+
+	/** Create the space specification for an event space that is supposed to be not the default space.
+	 * 
+	 * @param <S> the type of the space specification.
+	 * @param type the type of the space specification.
+	 * @param defaultSpace the default space of the context.
+	 * @return the specification.
+	 */
+	def createOpenEventSpaceSpecificationInInnerContext(type : Class<S>, defaultSpace : OpenEventSpace) : S with S extends SpaceSpecification<?> {
+		val specification : SpaceSpecification<?> = type.newSpaceSpecification(defaultSpace)
+		return type.cast(specification)
 	}
 
 }

@@ -27,6 +27,7 @@ import io.sarl.sre.services.executor.ExecutorService
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
+import io.sarl.sre.spaces.SreSpaceSpecificationFactory
 
 /** 
  * A repository of spaces specific to a given context.
@@ -47,7 +48,8 @@ class LocalSpaceRepository extends SpaceRepository {
 	 * 
 	 * @param injector the injector.
 	 * @param executor the asynchronous execution service.
-	 * @param configFactory accessor to the configuration.
+	 * @param config accessor to the configuration.
+	 * @param specificationFactory the factory of space specifications.
 	 * @param listenerCollection the instance of the listener collection.
 	 * @param lockProvider the provider of the locking objects that must be used to synchronize this repository.
 	 */
@@ -56,8 +58,9 @@ class LocalSpaceRepository extends SpaceRepository {
 		injector : Injector,
 		executor : ExecutorService,
 		config : SreConfig,
+		specificationFactory : SreSpaceSpecificationFactory,
 		listenerCollection : SmartListenerCollection<?>) {
-		this(injector, executor, config, null, listenerCollection)
+		this(injector, executor, config, specificationFactory, null, listenerCollection)
 	}
 
 	/** Constructor.
@@ -65,13 +68,15 @@ class LocalSpaceRepository extends SpaceRepository {
 	 * @param injector the injector.
 	 * @param executor the asynchronous execution service.
 	 * @param config the configuration.
+	 * @param specificationFactory the factory of space specifications.
 	 * @param listenerCollection the instance of the listener collection.
 	 * @param lockProvider the provider of the locking objects that must be used to synchronize this repository.
 	 */
 	new (injector : Injector, executor : ExecutorService, config : SreConfig,
+		specificationFactory : SreSpaceSpecificationFactory,
 		internalStructure : ConcurrentHashMap<UUID, SpaceDescription>,
 		listenerCollection : SmartListenerCollection<?>) {
-		super(injector, executor, config, listenerCollection)
+		super(injector, executor, config, specificationFactory, listenerCollection)
 		if (internalStructure !== null) {
 			this.spaces = internalStructure
 		} else {
