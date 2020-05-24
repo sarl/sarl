@@ -158,6 +158,27 @@ public final class TestAssertions {
 		assertContainsCollection(actual, Arrays.asList(expected), message);
 	}
 
+	/** Test if the actual collection/iterable contains at least the expected objects.
+	 *
+	 * @param actual the collection to test.
+	 * @param expected the expected objects.
+	 * @since 0.11
+	 */
+	public static void assertContainsAtLeast(Iterable<?> actual, Object... expected) {
+		assertContainsAtLeastMsg(actual, null, expected);
+	}
+
+	/** Test if the actual collection/iterable contains at least the expected objects.
+	 *
+	 * @param actual the collection to test.
+	 * @param message the error message.
+	 * @param expected the expected objects.
+	 * @since 0.11
+	 */
+	public static void assertContainsAtLeastMsg(Iterable<?> actual, Supplier<String> message, Object... expected) {
+		assertContainsAtLeastCollection(actual, Arrays.asList(expected), message);
+	}
+
 	/** Test if the actual collection/iterable contains all the expected objects.
 	 *
 	 * @param actual the collection to test.
@@ -206,6 +227,47 @@ public final class TestAssertions {
 					toString(expected),
 					toString(actual));
 		} else if (!le.isEmpty()) {
+			final String emsg = message != null ? "\n" + message.get() : "";
+			throw new AssertionFailedError("Expecting the following elements:\n" + le.toString() + emsg,
+					toString(expected),
+					toString(actual));
+		}
+	}
+
+	/** Test if the actual collection/iterable contains at least the expected objects.
+	 *
+	 * @param actual the collection to test.
+	 * @param expected the expected objects.
+	 * @since 0.11
+	 */
+	public static void assertContainsAtLeastCollection(Iterable<?> actual, Iterable<?> expected) {
+		assertContainsAtLeastCollection(actual, expected, null);
+	}
+
+	/** Test if the actual collection/iterable contains at least the expected objects.
+	 *
+	 * @param actual the collection to test.
+	 * @param expected the expected objects.
+	 * @param message the error message.
+	 * @since 0.11
+	 */
+	public static void assertContainsAtLeastCollection(Iterable<?> actual, Iterable<?> expected, Supplier<String> message) {
+		assertNotNull(actual);
+		Collection<Object> la = new ArrayList<>();
+		Iterables.addAll(la, actual);
+		Collection<Object> le = new ArrayList<>();
+		Iterables.addAll(le, expected);
+
+		Iterator<?> it1 = la.iterator();
+		while (it1.hasNext()) {
+			Object ac = it1.next();
+			it1.remove();
+			if (ac != null) {
+				le.remove(ac);
+			}
+		}
+
+		if (!le.isEmpty()) {
 			final String emsg = message != null ? "\n" + message.get() : "";
 			throw new AssertionFailedError("Expecting the following elements:\n" + le.toString() + emsg,
 					toString(expected),
