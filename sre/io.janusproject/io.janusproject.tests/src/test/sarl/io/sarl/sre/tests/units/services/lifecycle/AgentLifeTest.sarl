@@ -56,18 +56,20 @@ import java.util.logging.Level
 import java.util.logging.Logger
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 import org.mockito.ArgumentCaptor
 
-import static io.sarl.tests.api.tools.TestAssertions.*
 import static org.mockito.ArgumentMatchers.anyString
 import static org.mockito.Mockito.*
 import static org.mockito.Mockito.doAnswer
 import static org.mockito.Mockito.reset
 import static org.mockito.Mockito.verifyNoMoreInteractions
 
+import static extension io.sarl.sre.services.lifecycle.AgentLife.*
+import static extension io.sarl.tests.api.tools.TestAssertions.*
 import static extension io.sarl.tests.api.tools.TestMockito.mock
 import static extension org.junit.jupiter.api.Assertions.*
 import static extension org.mockito.ArgumentMatchers.any
@@ -109,7 +111,7 @@ class AgentLifeTest {
 		this.eventBus = new MySkill().spy
 		this.logging = new MyLogging().spy
 		this.^agent = new MyAgent1(this.eventBus, this.logging).spy
-		this.life = AgentLife::getLife(^agent)
+		this.life = ^agent.getLife
 		// Remove the interaction
 		reset(this.eventBus)
 	}
@@ -117,7 +119,7 @@ class AgentLifeTest {
 	@Test
 	@DisplayName("getAgent")
 	def getAgent {
-		assertSame(this.^agent, this.life.^agent)
+		this.^agent.assertSame(this.life.^agent)
 	}
 
 	@Test
@@ -125,20 +127,20 @@ class AgentLifeTest {
 	def setAgent {
 		var ag = typeof(Agent).mock
 		this.life.^agent = ag
-		assertSame(ag, this.life.^agent)
+		ag.assertSame(this.life.^agent)
 	}
 
 	@Test
 	@DisplayName("getState")
 	def getState {
-		assertSame(AgentState::UNSTARTED, this.life.state)
+		AgentState::UNSTARTED.assertSame(this.life.state)
 	}
 
 	@Test
 	@DisplayName("setState")
 	def setState {
 		this.life.state = AgentState::DEAD
-		assertSame(AgentState::DEAD, this.life.state)
+		AgentState::DEAD.assertSame(this.life.state)
 	}
 
 	@Test
@@ -146,19 +148,19 @@ class AgentLifeTest {
 	def setInnerContext {
 		var ctx2 = typeof(Context).mock
 		var ctx1 = this.life.setInnerContext(ctx2)
-		assertNull(ctx1)
-		assertSame(ctx2, this.life.getInnerContext(null))
+		ctx1.assertNull
+		ctx2.assertSame(this.life.getInnerContext(null))
 
 		var ctx3 = typeof(Context).mock
 		ctx1 = this.life.setInnerContext(ctx3)
-		assertSame(ctx2, ctx1)
-		assertSame(ctx3, this.life.getInnerContext(null))
+		ctx2.assertSame(ctx1)
+		ctx3.assertSame(this.life.getInnerContext(null))
 	}
 
 	@Test
 	@DisplayName("getInnerContext without factory")
 	def getInnerContext {
-		assertNull(this.life.getInnerContext(null))
+		this.life.getInnerContext(null).assertNull
 	}
 
 	@Test
@@ -173,17 +175,17 @@ class AgentLifeTest {
 	@DisplayName("getAddressInInnerDefaultSpace")
 	def getAddressInInnerDefaultSpace {
 		var adr = this.life.addressInInnerDefaultSpace
-		assertNotNull(adr)
-		assertEquals(this.^agent.ID, adr.UUID)
-		assertEquals(this.^agent.ID, adr.spaceID.contextID)
-		assertNotEquals(this.^agent.ID, adr.spaceID.ID)
+		adr.assertNotNull
+		this.^agent.ID.assertEquals(adr.UUID)
+		this.^agent.ID.assertEquals(adr.spaceID.contextID)
+		this.^agent.ID.assertNotEquals(adr.spaceID.ID)
 	}
 
 	@Test
 	@DisplayName("getExternalContexts")
 	def getExternalContexts {
 		var context = this.life.externalContexts
-		assertFalse(context.iterator.hasNext)
+		context.iterator.hasNext.assertFalse
 	}
 
 	@Test
@@ -191,7 +193,7 @@ class AgentLifeTest {
 	def getEnclosingContexts_0 {
 		// No enclosing context
 		var context = this.life.enclosingContexts
-		assertFalse(context.iterator.hasNext)
+		context.iterator.hasNext.assertFalse
 	}
 
 	@Test
@@ -204,12 +206,12 @@ class AgentLifeTest {
 		var context = this.life.enclosingContexts
 		var iterator = context.iterator
 		
-		assertTrue(iterator.hasNext)
+		iterator.hasNext.assertTrue
 		var ref = iterator.next
-		assertSame(ctx, ref.context)
-		assertSame(adr, ref.addressInDefaultSpace)
+		ctx.assertSame(ref.context)
+		adr.assertSame(ref.addressInDefaultSpace)
 
-		assertFalse(iterator.hasNext)
+		iterator.hasNext.assertFalse
 	}
 
 	@Test
@@ -294,7 +296,7 @@ class AgentLifeTest {
 		var context = this.life.externalContexts
 		var iterator = context.iterator
 		
-		assertFalse(iterator.hasNext)
+		iterator.hasNext.assertFalse
 	}
 	
 	@Test
@@ -340,7 +342,7 @@ class AgentLifeTest {
 	@Test
 	@DisplayName("getExternalContextCount without external contexts")
 	def getExternalContextCount_0 {
-		assertEquals(0, this.life.externalContextCount)
+		0.assertEquals(this.life.externalContextCount)
 	}
 
 	@Test
@@ -349,7 +351,7 @@ class AgentLifeTest {
 		var ctx = typeof(Context).mock
 		var adr = typeof(Address).mock
 		this.life.setDefaultContext(ctx, adr)
-		assertEquals(0, this.life.externalContextCount)
+		0.assertEquals(this.life.externalContextCount)
 	}
 	
 	@Test
@@ -364,7 +366,7 @@ class AgentLifeTest {
 		var adr2 = typeof(Address).mock
 		this.life.addExternalContext(ctx1, adr1)
 		this.life.addExternalContext(ctx2, adr2)
-		assertEquals(2, this.life.externalContextCount)
+		2.assertEquals(this.life.externalContextCount)
 	}
 
 	@Test
@@ -384,7 +386,7 @@ class AgentLifeTest {
 		this.life.addExternalContext(ctx1, adr1)
 		this.life.addExternalContext(ctx2, adr2)
 		
-		assertEquals(2, this.life.externalContextCount)
+		2.assertEquals(this.life.externalContextCount)
 	}
 
 	@Test
@@ -395,9 +397,9 @@ class AgentLifeTest {
 		assertSame(ctx, this.life.defaultContext.context)
 		ctx = typeof(Context).mock
 		var ref = this.life.setDefaultContext(ctx, typeof(Address).mock)
-		assertSame(ctx, this.life.defaultContext.context)
-		assertNotNull(ref)
-		assertNotEquals(ref.context, ctx)
+		ctx.assertSame(this.life.defaultContext.context)
+		ref.assertNotNull
+		ref.context.assertNotEquals(ctx)
 	}
 
 	@Test
@@ -406,10 +408,10 @@ class AgentLifeTest {
 		assertNull(this.life.defaultContext)
 		var ctx = typeof(Context).mock
 		this.life.setDefaultContext(ctx, typeof(Address).mock)
-		assertSame(ctx, this.life.defaultContext.context)
+		ctx.assertSame(this.life.defaultContext.context)
 		ctx = typeof(Context).mock
 		this.life.setDefaultContext(ctx, typeof(Address).mock)
-		assertSame(ctx, this.life.defaultContext.context)
+		ctx.assertSame(this.life.defaultContext.context)
 	}
 
 	@Test
@@ -425,12 +427,12 @@ class AgentLifeTest {
 		var ref1 = this.life.addExternalContext(ctx1, adr1)
 		var ref2 = this.life.addExternalContext(ctx2, adr2)
 		
-		assertNotNull(ref1)
-		assertSame(ctx1, ref1.context)
-		assertSame(adr1, ref1.addressInDefaultSpace)
-		assertNotNull(ref2)
-		assertSame(ctx2, ref2.context)
-		assertSame(adr2, ref2.addressInDefaultSpace)
+		ref1.assertNotNull
+		ctx1.assertSame(ref1.context)
+		adr1.assertSame(ref1.addressInDefaultSpace)
+		ref2.assertNotNull
+		ctx2.assertSame(ref2.context)
+		adr2.assertSame(ref2.addressInDefaultSpace)
 		
 		var context = this.life.externalContexts
 		var iterator = context.iterator
@@ -494,9 +496,9 @@ class AgentLifeTest {
 		
 		var rref = this.life.removeExternalContext(ctx1)
 
-		assertNotNull(rref)
-		assertSame(ctx1, rref.context)
-		assertSame(adr1, rref.addressInDefaultSpace)
+		rref.assertNotNull
+		ctx1.assertSame(rref.context)
+		adr1.assertSame(rref.addressInDefaultSpace)
 
 		var context = this.life.externalContexts
 		var iterator = context.iterator
@@ -521,12 +523,12 @@ class AgentLifeTest {
 		var context = this.life.externalContexts
 		var iterator = context.iterator
 		
-		assertTrue(iterator.hasNext)
+		iterator.hasNext.assertTrue
 		var ref = iterator.next
-		assertSame(ctx2, ref.context)
-		assertSame(adr2, ref.addressInDefaultSpace)
+		ctx2.assertSame(ref.context)
+		adr2.assertSame(ref.addressInDefaultSpace)
 
-		assertFalse(iterator.hasNext)
+		iterator.hasNext.assertFalse
 	}
 
 	@Test
@@ -554,7 +556,7 @@ class AgentLifeTest {
 			//
 		}
 		
-		assertSame(AgentState.DEAD, this.life.getState())
+		AgentState.DEAD.assertSame(this.life.getState())
 		
 		var ^event = ArgumentCaptor::forClass(typeof(Event))
 		var gath = ArgumentCaptor::forClass(typeof(boolean))
@@ -562,9 +564,9 @@ class AgentLifeTest {
 		this.eventBus.verify(2.times).fireEventAndWait(^event.capture, gath.capture.booleanValue,
 			thro.capture.booleanValue)
 		var e0 = ^event.allValues.get(0)
-		assertInstanceOf(typeof(Initialize), e0)
+		typeof(Initialize).assertInstanceOf(e0)
 		var e1 = ^event.allValues.get(1)
-		assertInstanceOf(typeof(Destroy), e1)
+		typeof(Destroy).assertInstanceOf(e1)
 	}
 
 	@Test
@@ -592,26 +594,26 @@ class AgentLifeTest {
 		var defaultSpaceID = new SpaceID(parent, UUID::randomUUID, typeof(OpenEventSpaceSpecification))
 		when(defaultSpace.spaceID).thenReturn(defaultSpaceID)
 		
-		assertTrue(this.life.start(installer, logger, spawner, spawningContext, params))
+		this.life.start(installer, logger, spawner, spawningContext, params).assertTrue
 		
-		assertSame(AgentState::ALIVE, this.life.state)
+		AgentState::ALIVE.assertSame(this.life.state)
 		
 		var x = this.eventBus.verify(1.times).associatedEventBusListener
-		assertNull(x)
+		x.assertNull
 
 		var ^event = ArgumentCaptor::forClass(typeof(Event))
 		var gath = ArgumentCaptor::forClass(typeof(boolean))
 		var thro = ArgumentCaptor::forClass(typeof(boolean))
 		this.eventBus.verify(1.times).fireEventAndWait(^event.capture, gath.capture.booleanValue,
 			thro.capture.booleanValue)
-		assertInstanceOf(typeof(Initialize), ^event.value)
+		typeof(Initialize).assertInstanceOf(^event.value)
 		var init = ^event.value as Initialize
-		assertNotNull(init.source)
-		assertSame(params, init.parameters)
-		assertEquals(spawner, init.spawner)
+		init.source.assertNotNull
+		params.assertSame(init.parameters)
+		spawner.assertEquals(init.spawner)
 		
-		assertTrue(gath.value)
-		assertTrue(thro.value)
+		gath.value.assertTrue;
+		thro.value.assertTrue
 		
 		verifyNoMoreInteractions(installer)
 		verifyNoMoreInteractions(this.eventBus)
@@ -627,34 +629,52 @@ class AgentLifeTest {
 		
 		this.life.stop(installer, logger, true)
 		
-		assertSame(AgentState::DEAD, this.life.state)
+		AgentState::DEAD.assertSame(this.life.state)
 		
 		var ^agent = ArgumentCaptor::forClass(typeof(Agent))
 		installer.verify.uninstallSkillsBeforeDestroy(^agent.capture)
-		assertSame(this.^agent, ^agent.value)
+		this.^agent.assertSame(^agent.value)
 		var skills = ArgumentCaptor::forClass(typeof(List))
 		installer.verify.uninstallSkillsAfterDestroy(^agent.capture, skills.capture)
-		assertSame(this.^agent, ^agent.value)
+		this.^agent.assertSame(^agent.value)
 		var iterator = skills.value.iterator
-		assertTrue(iterator.hasNext)
-		assertSame(this.eventBus, iterator.next)
-		assertFalse(iterator.hasNext)
+		iterator.hasNext.assertTrue
+		this.eventBus.assertSame(iterator.next)
+		iterator.hasNext.assertFalse
 		
 		var ^event = ArgumentCaptor::forClass(typeof(Event))
 		var gath = ArgumentCaptor::forClass(typeof(boolean))
 		var thro = ArgumentCaptor::forClass(typeof(boolean))
 		this.eventBus.verify.fireEventAndWait(^event.capture, gath.capture.booleanValue, thro.capture.booleanValue)
-		assertInstanceOf(typeof(Destroy), ^event.value)
+		typeof(Destroy).assertInstanceOf(^event.value)
 		var destroy = ^event.value as Destroy
-		assertNotNull(destroy.source)
+		destroy.source.assertNotNull
 		
-		assertFalse(gath.value)
-		assertFalse(thro.value)
+		gath.value.assertFalse;
+		thro.value.assertFalse
 		
 		var x = this.eventBus.verify(1.times).associatedEventBusListener
-		assertNull(x)
+		x.assertNull
 
 		verifyNoMoreInteractions(installer, this.eventBus)
+	}
+
+	@RepeatedTest(10)
+	@DisplayName("getEventBus")
+	def getEventBus {
+		val eb0 = this.life.eventBus
+		eb0.assertNotNull
+		val eb1 = this.life.eventBus
+		eb0.assertSame(eb1)
+	}
+
+	@RepeatedTest(10)
+	@DisplayName("getAgentLogger")
+	def getAgentLogger {
+		val al0 = this.life.agentLogger
+		al0.assertNotNull
+		val al1 = this.life.agentLogger
+		al0.assertSame(al1)
 	}
 
 }
