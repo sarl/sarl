@@ -709,7 +709,8 @@ public class SarlCompiler extends XtendCompiler {
 	}
 
 	@Override
-	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:nestedifdepth"})
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:nestedifdepth",
+		"checkstyle:cyclomaticcomplexity"})
 	protected void _toJavaExpression(XCastedExpression expr, ITreeAppendable appendable) {
 		final LightweightTypeReference fromType = toLightweight(getType(expr.getTarget()), expr);
 		final LightweightTypeReference toType = toLightweight(expr.getType(), expr);
@@ -811,7 +812,12 @@ public class SarlCompiler extends XtendCompiler {
 			}
 		}
 		// Generate the standard Java cast operator
-		if (toType.isAssignableFrom(fromType)) {
+		if (toType.getType().equals(fromType.getType()) && fromType.isRawType() && !toType.isRawType()) {
+			// Base type are compatible; but we need to check generic types.
+			// Eg: Map to Map<A, B>
+			// In this case the case is mandatory for Java
+			super._toJavaExpression(expr, appendable);
+		} else if (toType.isAssignableFrom(fromType)) {
 			internalToConvertedExpression(expr.getTarget(), appendable, toType);
 		} else {
 			super._toJavaExpression(expr, appendable);

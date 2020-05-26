@@ -42,7 +42,7 @@ image:https://cla-assistant.io/readme/badge/sarl/sarl?style=flat-square[link=htt
 [align="center",width="40%",frame="topbot",cols="2*^",options="header"]
 |==========================
 2+| Build Status 
-| CIAD CI / Linux footnote:[Ubuntu 14.04 LTS Server Edition 64 bits, Java 8, Maven 3.6.2] |image:https://ci-ciad.utbm.fr/teamcity/app/rest/builds/buildType:(id:Sarl_Build)/statusIcon[link=https://ci-ciad.utbm.fr/teamcity/viewType.html?buildTypeId=Sarl_Build]
+| CIAD CI / Linux footnote:[Linux 4.15.0-102, OpenJDK 1.8, Maven 3.6.2] |image:https://ci-ciad.utbm.fr/teamcity/app/rest/builds/buildType:(id:Sarl_Build)/statusIcon[link=https://ci-ciad.utbm.fr/teamcity/viewType.html?buildTypeId=Sarl_Build]
 | Travis CI / Linux footnote:[Ubuntu 16.04 LTS 64 bits, OpenJDK 1.8.0_242, Maven 3.6.3] and OSX footnote:[OSX 10.12, Xcode 8.3, OracleJDK 1.8.0_112, Maven 3.6.3] |image:https://travis-ci.org/sarl/sarl.svg?branch=master[link=https://travis-ci.org/sarl/sarl]
 | AppVeyor CI / Windows footnote:[Visual Studio 2019, OracleJDK 1.8.0_162, Maven 3.6.3] |image:https://ci.appveyor.com/api/projects/status/github/sarl/sarl?branch=master&svg=true[link=https://ci.appveyor.com/project/gallandarakhneorg/sarl]
 |==========================
