@@ -39,6 +39,13 @@
 			<groupId>io.sarl.maven</groupId>
 			<artifactId>io.sarl.maven.batchcompiler</artifactId>
 		</dependency>
+		<!-- The following Jackson declaration are temporary fix for issue #1007 -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-xml</artifactId>
+			<version>${jacksonapi.version}</version>
+		</dependency>
+		<!-- End of the fix section -->
 	</dependencies>
 
 	<!-- ======================================= -->
