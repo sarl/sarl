@@ -2,11 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: io.sarl.tests.testdata;singleton:=true
 Automatic-Module-Name: io.sarl.tests.testdata
-Bundle-Version: 0.10.0
+Bundle-Version: 0.10.1
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Name: %Bundle-Name
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: io.sarl.lang.core;bundle-version="0.10.0"
+Require-Bundle: io.sarl.lang.core;bundle-version="0.10.1"
 Export-Package: foo,
  foo.bug787,
  foo.bug799,

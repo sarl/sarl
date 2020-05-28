@@ -416,7 +416,10 @@ public final class Boot {
 							final File file = FileSystem.convertURLToFile(url);
 							if (file != null && file.isDirectory()) {
 								try {
-									url = new URL(URISchemeType.FILE.name(), "", file.getAbsolutePath() + "/"); //$NON-NLS-1$//$NON-NLS-2$
+									url = new URL(
+											URISchemeType.FILE.name(),
+											Strings.nullToEmpty(url.getHost()),
+											url.getPath() + "/"); //$NON-NLS-1$
 								} catch (MalformedURLException e) {
 									//
 								}

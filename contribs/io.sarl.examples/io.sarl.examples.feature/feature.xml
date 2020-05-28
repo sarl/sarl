@@ -2,7 +2,7 @@
 <feature
       id="io.sarl.examples.feature"
       label="Examples for SARL"
-      version="0.10.0"
+      version="0.10.1"
       plugin="io.sarl.examples.plugin">
 
    <description url="http://www.sarl.io/about/">
@@ -222,8 +222,8 @@
    </url>
 
    <requires>
-      <import plugin="io.sarl.eclipse" version="0.10.0" match="greaterOrEqual"/>
-      <import plugin="io.sarl.m2e" version="0.10.0" match="greaterOrEqual"/>
+      <import plugin="io.sarl.eclipse" version="0.10.1" match="greaterOrEqual"/>
+      <import plugin="io.sarl.m2e" version="0.10.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.common.ui" version="2.18.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui" version="3.114.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.runtime" version="3.16.0" match="greaterOrEqual"/>

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>io.sarl</groupId>
 		<artifactId>io.sarl.tycho-parent</artifactId>
-		<version>0.10.0</version>
+		<version>0.10.1</version>
 		<relativePath>../tycho-parent</relativePath>
 	</parent>
 

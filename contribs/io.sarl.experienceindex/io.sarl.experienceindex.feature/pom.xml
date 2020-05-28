@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>io.sarl.experienceindex</groupId>
 		<artifactId>io.sarl.experienceindex</artifactId>
-		<version>0.10.0</version>
+		<version>0.10.1</version>
 	</parent>
 
 	<artifactId>io.sarl.experienceindex.feature</artifactId>

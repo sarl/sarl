@@ -70,7 +70,7 @@ public class StandardSarlSpecificationCheckerTest {
 		assertEquals(Version.parseVersion("10000000.0"), this.checker.getSarlSpecificationVersionObject(Type5.class));
 		assertEquals(Version.parseVersion("10000000.0.0"), this.checker.getSarlSpecificationVersionObject(Type5.class));
 		assertEquals(Version.parseVersion("0.10"), this.checker.getSarlSpecificationVersionObject(Type6.class));
-		assertEquals(Version.parseVersion("0.10.0"), this.checker.getSarlSpecificationVersionObject(Type6.class));
+		assertEquals(Version.parseVersion("0.10.1"), this.checker.getSarlSpecificationVersionObject(Type6.class));
 	}
 
 	@Test

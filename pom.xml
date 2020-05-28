@@ -6,7 +6,7 @@
 
 	<groupId>io.sarl</groupId>
 	<artifactId>io.sarl</artifactId>
-	<version>0.10.0</version>
+	<version>0.10.1</version>
 
 	<name>SARL Agent Oriented Programming Language</name>
 	<url>${sarlUrl}</url>
@@ -53,7 +53,7 @@
 		<user.next.unsupported.jdk.version>12</user.next.unsupported.jdk.version>
 
 		<!-- Version of the SARL API -->
-		<sarl.version>0.10.0</sarl.version>
+		<sarl.version>0.10.1</sarl.version>
 		<janus.version>2.${sarl.version}</janus.version>
 		<sarl.maven.compiler.version>${sarl.version}</sarl.maven.compiler.version>
 
@@ -112,6 +112,8 @@
 		<sarl.maven.repository.url>http://maven.sarl.io</sarl.maven.repository.url>
 		<!--  Version of the SLF4J Logging API -->
 		<slf4j.version>2.0.0-alpha1</slf4j.version>
+		<!--  Version of the Hazelcast API -->
+		<hazelcast.version>3.11.2</hazelcast.version>
 	</properties>
 
 	<!-- ======================================= -->
@@ -499,7 +501,7 @@
 			<dependency>
 				<groupId>com.hazelcast</groupId>
 				<artifactId>hazelcast</artifactId>
-				<version>3.12.1</version>
+				<version>${hazelcast.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.zeromq</groupId>

@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>io.sarl</groupId>
 		<artifactId>io.sarl</artifactId>
-		<version>0.10.0</version>
+		<version>0.10.1</version>
 	</parent>
 
 	<artifactId>io.sarl.tycho-parent</artifactId>
@@ -86,6 +86,41 @@
 							<id>org.zeromq.jeromq</id>
 							<restrictTo>
 								<version>${zeromq.version}</version>
+							</restrictTo>
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>com.hazelcast</id>
+							<restrictTo>
+								<version>${hazelcast.version}</version>
+							</restrictTo>
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.arakhne.afc.core.references</id>
+							<restrictTo>
+								<version>${afc.version}</version>
+							</restrictTo>
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.arakhne.afc.core.text</id>
+							<restrictTo>
+								<version>${afc.version}</version>
+							</restrictTo>
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.arakhne.afc.core.util</id>
+							<restrictTo>
+								<version>${afc.version}</version>
+							</restrictTo>
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.arakhne.afc.core.vmutils</id>
+							<restrictTo>
+								<version>${afc.version}</version>
 							</restrictTo>
 						</filter>
 					</filters>

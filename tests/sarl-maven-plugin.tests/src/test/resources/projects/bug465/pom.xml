@@ -6,7 +6,7 @@
 
 	<groupId>io.sarl.maven.compiler.tests</groupId>
 	<artifactId>this-is-for-test-only</artifactId>
-	<version>0.10.0</version>
+	<version>0.10.1</version>
 	<name>This is for Test ONLY</name>
 	
 	<properties>
@@ -36,7 +36,7 @@
 			<plugin>
 				<groupId>io.sarl.maven</groupId>
 				<artifactId>sarl-maven-plugin</artifactId>
-				<version>0.10.0</version>
+				<version>0.10.1</version>
 				<extensions>true</extensions>
 				<configuration>
 					<source>${javac.level}</source>
