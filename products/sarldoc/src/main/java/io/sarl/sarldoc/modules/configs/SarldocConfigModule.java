@@ -22,6 +22,7 @@
 package io.sarl.sarldoc.modules.configs;
 
 import static io.bootique.BQCoreModule.extend;
+import static io.sarl.sarldoc.configs.SarldocConfig.DOC_OUTPUT_DIRECTORY_FILE;
 import static io.sarl.sarldoc.configs.SarldocConfig.DOC_OUTPUT_DIRECTORY_NAME;
 import static io.sarl.sarldoc.configs.SarldocConfig.ENABLE_AUTHOR_TAG_NAME;
 import static io.sarl.sarldoc.configs.SarldocConfig.ENABLE_DEPRECATED_TAG_NAME;
@@ -91,7 +92,7 @@ public class SarldocConfigModule extends AbstractModule {
 		VariableDecls.extend(binder()).declareVar(DOC_OUTPUT_DIRECTORY_NAME);
 		extend(binder()).addOption(OptionMetadata.builder(
 				Constants.DOCUMENTATION_OUTPUT_DIRECTORY_OPTION,
-				Messages.SarldocConfigModule_1)
+				MessageFormat.format(Messages.SarldocConfigModule_1, DOC_OUTPUT_DIRECTORY_FILE))
 				.valueRequired(Messages.SarldocConfigModule_4)
 				.build())
 			.mapConfigPath(Constants.DOCUMENTATION_OUTPUT_DIRECTORY_OPTION, DOC_OUTPUT_DIRECTORY_NAME);
