@@ -253,7 +253,7 @@ class ServicesConfigModule extends AbstractModule {
 		VariableDecls::extend(binder).declareVar(ASYNCHRONOUS_PROBE_UPDATE_NAME)
 		binder.extend.addOption(
 			OptionMetadata::builder(ASYNCPROBEUPDATE_OPTION,
-				MessageFormat::format(Messages::ServicesConfigModule_3, ASYNCHRONOUS_PROBE_UPDATE_NAME)).valueRequired(
+				MessageFormat::format(Messages::ServicesConfigModule_3, ASYNCHRONOUS_PROBE_UPDATE_VALUE)).valueRequired(
 				Messages::ServicesConfigModule_4).build).mapConfigPath(ASYNCPROBEUPDATE_OPTION,
 					ASYNCHRONOUS_PROBE_UPDATE_NAME)
 	}

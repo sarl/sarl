@@ -44,6 +44,9 @@ final class Messages extends NLS {
 	public static var BootConfigModule_1 : String
 	public static var BootConfigModule_2 : String
 	public static var BootConfigModule_3 : String
+	public static var BootConfigModule_4 : String
+	public static var BootConfigModule_5 : String
+	public static var BootConfigModule_6 : String
 	public static var BootConfigModuleProvider_0 : String
 	public static var ExecutorsConfigModule_0 : String
 	public static var ExecutorsConfigModule_1 : String

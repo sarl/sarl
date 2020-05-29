@@ -422,7 +422,7 @@ class BootConfigModule extends AbstractModule {
 			OptionMetadata::builder(
 				ROOT_CONTEXT_ID_OPTION,
 				MessageFormat::format(Messages::BootConfigModule_0, ROOT_CONTEXT_ID_VALUE)
-			).build
+			).valueRequired(Messages::BootConfigModule_5).build
 		).mapConfigPath(ROOT_CONTEXT_ID_OPTION, ROOT_CONTEXT_ID_NAME)
 
 		VariableDecls::extend(binder).declareVar(ROOT_DEFAULT_SPACE_ID_NAME);
@@ -430,24 +430,24 @@ class BootConfigModule extends AbstractModule {
 			OptionMetadata::builder(
 				DEFAULT_SPACE_ID_OPTION,
 				MessageFormat::format(Messages::BootConfigModule_1, ROOT_DEFAULT_SPACE_ID_VALUE)
-			).build
-		).mapConfigPath(DEFAULT_SPACE_ID_OPTION, ROOT_DEFAULT_SPACE_ID_VALUE)
+			).valueRequired(Messages::BootConfigModule_5).build
+		).mapConfigPath(DEFAULT_SPACE_ID_OPTION, ROOT_DEFAULT_SPACE_ID_NAME)
 
 		VariableDecls::extend(binder).declareVar(PROGRAM_NAME_NAME);
 		binder.extend.addOption(
 			OptionMetadata::builder(
 				NAME_OPTION,
 				MessageFormat::format(Messages::BootConfigModule_2, PROGRAM_NAME_VALUE)
-			).build
+			).valueRequired(Messages::BootConfigModule_6).build
 		).mapConfigPath(NAME_OPTION, PROGRAM_NAME_NAME)
 
 		VariableDecls::extend(binder).declareVar(ROOT_CONTEXT_BOOT_TYPE_NAME);
 		binder.extend.addOption(
 			OptionMetadata::builder(
 				BOOT_TYPE_OPTION,
-				MessageFormat::format(Messages::BootConfigModule_3, RootContextType::^default,
+				MessageFormat::format(Messages::BootConfigModule_3, RootContextType::^default.toJsonString,
 					RootContextType::jsonLabels))
-				.build
+				.valueRequired(Messages::BootConfigModule_4).build
 		).mapConfigPath(BOOT_TYPE_OPTION, ROOT_CONTEXT_BOOT_TYPE_NAME)
 	}
 

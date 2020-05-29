@@ -1,6 +1,5 @@
 io.sarl.sre.boot.commands.RunSingleAgentCommandModuleProvider
 io.sarl.sre.boot.commands.RunWithoutAgentCommandModuleProvider
-io.sarl.sre.boot.commands.VersionCommandModuleProvider
 
 io.sarl.sre.boot.configs.SreConfigModuleProvider
 io.sarl.sre.boot.configs.subconfigs.BootConfigModuleProvider

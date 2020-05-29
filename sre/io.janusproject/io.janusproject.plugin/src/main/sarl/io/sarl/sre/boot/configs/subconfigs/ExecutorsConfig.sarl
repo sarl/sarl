@@ -323,7 +323,7 @@ class ExecutorsConfigModule extends AbstractModule {
 		VariableDecls::extend(binder).declareVar(INTERNAL_ERROR_VERBOSE_LEVEL_NAME)
 		binder.extend.addOption(OptionMetadata::builder(
 				INTERNALERRORLOGLEVEL_OPTION,
-				MessageFormat::format(Messages::ExecutorsConfigModule_4, INTERNAL_ERROR_VERBOSE_LEVEL_VALUE.toString))
+				MessageFormat::format(Messages::ExecutorsConfigModule_4, INTERNAL_ERROR_VERBOSE_LEVEL_VALUE.toJsonString))
 				.valueRequired(Messages::ExecutorsConfigModule_8)
 				.build)
 				.mapConfigPath(INTERNALERRORLOGLEVEL_OPTION, INTERNAL_ERROR_VERBOSE_LEVEL_NAME)
