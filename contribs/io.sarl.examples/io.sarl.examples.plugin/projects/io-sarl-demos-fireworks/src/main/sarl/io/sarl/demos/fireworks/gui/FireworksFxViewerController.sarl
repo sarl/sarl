@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-@RELEASE_YEAR@ the original authors or authors.
+ * Copyright (C) 2014-2020 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -95,7 +95,7 @@ class FireworksFxViewerController extends FxViewerController {
 				gc.fill = fire.color
 				fire.positions.forEach(pos |
 					{
-					gc.fillOval(pos.get(0), pos.get(1), 3, 3)
+					gc.fillOval(pos.key, pos.value, 3, 3)
 					})
 			]
 			wait.playFromStart

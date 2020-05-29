@@ -4,7 +4,7 @@
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
  *
- * Copyright (C) 2014-@RELEASE_YEAR@ the original authors or authors.
+ * Copyright (C) 2014-2020 the original authors or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,7 +72,7 @@ class RocketsPos {
  */
 class FirePos {
 
-	var positions : List<Vector<Double>>
+	var positions : Vector<Pair<Double, Double>>
 
 	var color : Color
 
@@ -80,7 +80,7 @@ class FirePos {
 		positions
 	}
 
-	def setPositions(positions : List<Vector<Double>>) {
+	def setPositions(positions : Vector<Pair<Double, Double>>) {
 		this.positions = positions
 	}
 
@@ -129,7 +129,7 @@ class Positions {
 		}
 	}
 
-	def setFirePosition(id : UUID, rocketID : UUID, positions : List<Vector<Double>>) {
+	def setFirePosition(id : UUID, rocketID : UUID, positions : Vector<Pair<Double, Double>>) {
 		var pos = new FirePos
 		pos.positions = positions
 		synchronized (fire) {

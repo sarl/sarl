@@ -1,24 +1,23 @@
-/*
+/* 
  * $Id$
- *
+ * 
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
- *
- * Copyright (C) 2014-@RELEASE_YEAR@ the original authors or authors.
- *
+ * 
+ * Copyright (C) 2014-2020 the original authors or authors.
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.sarl.demos.fireworks.agents
 
 import io.sarl.core.AgentTask
@@ -34,13 +33,13 @@ import io.sarl.demos.fireworks.events.FireReady
 import io.sarl.demos.fireworks.events.Freeze
 import io.sarl.demos.fireworks.events.UpdateFirePosition
 import io.sarl.javafx.AppExit
-import java.util.ArrayList
 import java.util.List
 import java.util.UUID
 import java.util.Vector
+import java.util.concurrent.CopyOnWriteArrayList
 
 /** Fire agent moving with a nice trajectory.
- *
+ * 
  * @author Antoine Bartuccio
  * @author Nicolas Gaud
  */
@@ -50,8 +49,7 @@ agent Fire {
 
 	val id = UUID::randomUUID
 
-	var x : List<Double>
-	var y : List<Double>
+	var xy : CopyOnWriteArrayList<Pair<Double, Double>>
 	var lifetime = 300
 	var frozen = false
 	var destroyed = false
@@ -64,7 +62,7 @@ agent Fire {
 	var parentID : UUID
 	var move : AgentTask
 	var parentAgent : UUID
-	var gravity: double
+	var gravity : double
 
 	/** Freeze itself.
 	 */
@@ -80,11 +78,15 @@ agent Fire {
 	 */
 	on Initialize {
 		loggingName = "Fire-" + this.ID
-		x = new ArrayList
-		y = new ArrayList
+		xy = new CopyOnWriteArrayList
+
 		if (occurrence.parameters.size == 5) {
-			x += occurrence.parameters.get(0) as Double
-			y += occurrence.parameters.get(1) as Double
+
+			var x : Double = occurrence.parameters.get(0) as Double
+			var y : Double = occurrence.parameters.get(1) as Double
+			var p = new Pair<Double, Double>(x, y)
+			xy += p
+
 			grid = occurrence.parameters.get(2) as Positions
 			parentID = occurrence.parameters.get(3) as UUID
 			gravity = occurrence.parameters.get(4) as Double
@@ -95,10 +97,10 @@ agent Fire {
 
 		xf = Math::random * 10 - Math::random * 5
 		yf = Math::random * 10 + 1
-		
+
 		vx = xf * 20
 		vy = yf * 30
-		
+
 	}
 
 	/** Trigger fixed delay for waking UpdateFirePosition.
@@ -114,31 +116,36 @@ agent Fire {
 	on UpdateFirePosition [occurrence.isFromMe && !frozen && !destroyed] {
 		var newx : double
 		var newy : double
-		
-		vy = vy - gravity * Configuration::FIRE_LIFECYCLE_SCHEDULING_RATE / 10.0
-		
-		newx = x.last + vx * Configuration::FIRE_LIFECYCLE_SCHEDULING_RATE / 1000.0
-		newy = y.last + vy * Configuration::FIRE_LIFECYCLE_SCHEDULING_RATE / 1000.0
+		val rate = Configuration::FIRE_LIFECYCLE_SCHEDULING_RATE
 
-		x += newx
-		y += newy
+		vy = vy - gravity * rate / 10.0
+
+		var lastP = xy.last
+		newx = lastP.key + vx * rate / 1000.0
+		newy = lastP.value + vy * rate / 1000.0
+
+		xy += new Pair<Double,Double>(newx,newy)
+		
 
 		if (grid !== null) {
-			var list = new ArrayList<Vector<Double>>
-			x.forEach [pos |
+			var list = new Vector<Pair<Double,Double>>(xy)
+
+			/*x.forEach [ pos |
 				{
 					var nvect = new Vector<Double>(2)
 					nvect += pos
 					list += nvect
 				}
 			]
-			y.forEach [pos, i |
+
+			y.forEach [ pos, i |
 				{
 					var nvect = list.get(i)
 					nvect += pos
 					list.set(i, nvect)
 				}
-			]
+			]*/
+
 			grid.setFirePosition(id, parentID, list)
 		}
 
@@ -147,7 +154,7 @@ agent Fire {
 		if (lifetime <= 0) {
 			grid.removeFirePosition(id)
 			cleanBeforeExit
-			in(1.seconds) [killMe]
+			in(1.seconds)[killMe]
 		}
 	}
 
@@ -164,7 +171,7 @@ agent Fire {
 	on AppExit [!exited && isFrom(this.parentID)] {
 		frozen = true
 		cleanBeforeExit
-		emit(new AppExit) [it.UUID == this.parentAgent]
+		emit(new AppExit)[it.UUID == this.parentAgent]
 		killMe
 	}
 
