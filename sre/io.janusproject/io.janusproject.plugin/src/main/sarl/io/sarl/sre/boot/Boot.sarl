@@ -22,6 +22,7 @@ package io.sarl.sre.boot
 
 import io.bootique.help.HelpOption
 import java.util.List
+import io.sarl.sre.boot.configs.SreConfig
 
 /** 
  * This is the class that permits to boot programmatically the SRE platform with the Bootique API.
@@ -39,7 +40,7 @@ class Boot {
 	 * @return the default name of the program.
 	 */
 	static def getDefaultSreProgramName : String {
-		return "janus"
+		return SreConfig::DEFAULT_PROGRAM_NAME
 	}
 
 	/** Create the instance of the bootique main launcher.

@@ -15,12 +15,6 @@
 	<url>${janusUrl}</url>
 	<inceptionYear>2008</inceptionYear>
 
-	<properties>
-		<jkernel.version>2.${project.version}</jkernel.version>
-		<cliRunnerMainClass>io.sarl.sre.boot.Boot</cliRunnerMainClass>
-		<bootstrap>io.sarl.sre.boot.SreMain</bootstrap>
-	</properties>
-
 	<build>
 		<plugins>
 			<!-- CAUTION:
@@ -70,11 +64,11 @@
 							</regexFlags>
 							<replacements>
 								<replacement>
-									<token>(RELEASE_VERSION *= *")([^"]+)(";)</token>
-									<value>$1${janus.release_version}$3</value>
+									<token>(RELEASE_VERSION *= *")([^"]+)(";?)</token>
+									<value>$1${janus.version}$3</value>
 								</replacement>
 								<replacement>
-									<token>(IS_STABLE *= *)([^;]+)(;)</token>
+									<token>(IS_STABLE *= *)([truefals]+)(;?)</token>
 									<value>$1${sarl.is_stable_version}$3</value>
 								</replacement>
 							</replacements>
