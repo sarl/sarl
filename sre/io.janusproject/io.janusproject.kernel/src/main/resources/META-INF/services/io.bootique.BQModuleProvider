@@ -1,0 +1,2 @@
+io.sarl.sre.boot.internal.cli.JanusApplicationModuleProvider
+io.sarl.sre.boot.internal.cli.VersionCommandModuleProvider

@@ -12,4 +12,10 @@
       <scope>runtime</scope>
     </dependencySet>
   </dependencySets>
+  <containerDescriptorHandlers>
+		<!-- Merge service description's files in a proper way -->
+		<containerDescriptorHandler>
+			<handlerName>metaInf-services</handlerName>
+		</containerDescriptorHandler>
+  </containerDescriptorHandlers>
 </assembly>

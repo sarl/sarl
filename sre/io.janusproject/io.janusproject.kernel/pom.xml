@@ -90,33 +90,51 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.arakhne.afc.bootique</groupId>
-			<artifactId>bootique-log4j</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.arakhne.afc.bootique</groupId>
-			<artifactId>bootique-variables</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.arakhne.afc.bootique</groupId>
-			<artifactId>bootique-synopsishelp</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.arakhne.afc.bootique</groupId>
-			<artifactId>bootique-printconfig</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.arakhne.afc.bootique</groupId>
-			<artifactId>bootique-applicationdata2</artifactId>
+			<groupId>io.sarl.maven</groupId>
+			<artifactId>io.sarl.maven.bootiqueapp</artifactId>
 		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>io.sarl.maven</groupId>
+				<artifactId>sarl-maven-plugin</artifactId>
+				<!-- Maven extension mechanism seems not working due to the tycho module type.
+				     The different goals must be explicitly provided. -->
+				<executions>
+					<execution>
+						<id>sarl-compiler-init</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>initialize</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>sarl-compiler-compile</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>sarl-compiler-clean</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<source>${sarl-dsl.min.jdk.version}</source>
+					<target>${sarl-dsl.min.jdk.version}</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
+					<runJavaCompiler>true</runJavaCompiler>
+					<generateInlines>true</generateInlines>
+					<generateStorageFiles>true</generateStorageFiles>
+					<generateTraceFiles>true</generateTraceFiles>
+				</configuration>
+			</plugin>
 			<plugin>
 				<!-- to create a jar with all dependencies -->
 				<groupId>org.apache.maven.plugins</groupId>
