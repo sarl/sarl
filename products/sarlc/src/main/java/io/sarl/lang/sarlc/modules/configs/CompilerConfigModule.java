@@ -97,7 +97,9 @@ public class CompilerConfigModule extends AbstractModule {
 		VariableDecls.extend(binder()).declareVar(JAVA_VERSION_NAME);
 		extend(binder()).addOption(OptionMetadata.builder(
 				JAVASOURCE_OPTION,
-				Messages.CompilerConfigModule_2)
+				MessageFormat.format(Messages.CompilerConfigModule_2,
+						SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH,
+						SARLVersion.INCOMPATIBLE_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT))
 				.valueOptionalWithDefault(Messages.CompilerConfigModule_3, SARLVersion.MINIMAL_JDK_VERSION_IN_SARL_PROJECT_CLASSPATH)
 				.build())
 			.mapConfigPath(JAVASOURCE_OPTION, JAVA_VERSION_NAME);
