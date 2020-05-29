@@ -51,21 +51,42 @@ public class VersionCommand extends CommandWithMetadata {
 	 * @param bootLogger the logger.
 	 */
 	public VersionCommand(BootLogger bootLogger) {
+		this(bootLogger, VersionCommand.class, Messages.VersionCommand_0);
+	}
+
+	/** Constructor.
+	 *
+	 * @param bootLogger the logger.
+	 * @param commandType the type of the command.
+	 * @param description the description of the command.
+	 * @since 0.11
+	 */
+	protected VersionCommand(BootLogger bootLogger, Class<? extends VersionCommand> commandType,
+			String description) {
 		super(CommandMetadata
-	            .builder(VersionCommand.class)
-	            .description(Messages.VersionCommand_0)
+	            .builder(commandType)
+	            .description(description)
 	            .name(CLI_NAME));
 		this.bootLogger = bootLogger;
 	}
 
-	@Override
-	public CommandOutcome run(Cli cli) {
-		final StringBuilder text = new StringBuilder();
-		text.append(MessageFormat.format(Messages.VersionCommand_1,
+	/** Replies the message that should be output by the command.
+	 *
+	 * @return the message.
+	 * @since 0.11
+	 */
+	protected String getVersionMessage() {
+		return MessageFormat.format(Messages.VersionCommand_1,
 				SARLVersion.SARL_RELEASE_VERSION, SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING,
 				System.getProperty("java.vm.name"), //$NON-NLS-1$
 				System.getProperty("java.version"), //$NON-NLS-1$
-				System.getProperty("java.home"))); //$NON-NLS-1$
+				System.getProperty("java.home")); //$NON-NLS-1$
+	}
+	
+	@Override
+	public CommandOutcome run(Cli cli) {
+		final StringBuilder text = new StringBuilder();
+		text.append(getVersionMessage());
 		this.bootLogger.stdout(text.toString());
 		return CommandOutcome.succeeded();
 	}
