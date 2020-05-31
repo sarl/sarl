@@ -3,10 +3,10 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: io.janusproject.plugin;singleton:=true
 Automatic-Module-Name: io.janusproject.plugin
-Bundle-Version: 0.11.0.qualifier
+Bundle-Version: 0.12.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: io.sarl.core;bundle-version="0.11.0",
- io.sarl.util;bundle-version="0.11.0",
+Require-Bundle: io.sarl.core;bundle-version="0.12.0",
+ io.sarl.util;bundle-version="0.12.0",
  org.eclipse.osgi;bundle-version="3.15.100",
  org.apache.commons.cli;bundle-version="1.4.0",
  org.arakhne.afc.core.vmutils;bundle-version="16.0.0",
