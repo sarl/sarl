@@ -2,7 +2,7 @@
 <feature
       id="io.janusproject.feature"
       label="Janus SARL Runtime Environment"
-      version="0.11.0.qualifier"
+      version="0.12.0.qualifier"
       plugin="io.janusproject.plugin">
 
    <description url="http://www.sarl.io/about/">
@@ -222,8 +222,8 @@
    </url>
 
    <requires>
-      <import plugin="io.sarl.core" version="0.11.0" match="greaterOrEqual"/>
-      <import plugin="io.sarl.util" version="0.11.0" match="greaterOrEqual"/>
+      <import plugin="io.sarl.core" version="0.12.0" match="greaterOrEqual"/>
+      <import plugin="io.sarl.util" version="0.12.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.osgi" version="3.15.100" match="greaterOrEqual"/>
       <import plugin="org.apache.commons.cli" version="1.4.0" match="greaterOrEqual"/>
       <import plugin="org.arakhne.afc.core.vmutils" version="16.0.0" match="greaterOrEqual"/>
@@ -249,8 +249,8 @@
       <import plugin="org.apache.log4j" version="1.2.15" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtend.lib" version="2.20.0" match="greaterOrEqual"/>
       <import plugin="stax2-api" version="4.2.0" match="greaterOrEqual"/>
-      <import plugin="io.janusproject.plugin" version="0.11.0" match="greaterOrEqual"/>
-      <import plugin="io.sarl.eclipse" version="0.11.0" match="greaterOrEqual"/>
+      <import plugin="io.janusproject.plugin" version="0.12.0" match="greaterOrEqual"/>
+      <import plugin="io.sarl.eclipse" version="0.12.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jdt.core" version="3.20.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.runtime" version="3.17.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.workbench" version="3.117.0" match="greaterOrEqual"/>
