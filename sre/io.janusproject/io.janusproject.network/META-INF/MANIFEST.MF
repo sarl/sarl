@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: io.janusproject.network;singleton:=true
-Bundle-Version: 0.11.0.qualifier
+Bundle-Version: 0.11.0
 Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: io.sarl.core;bundle-version="0.11.0",
  io.sarl.util;bundle-version="0.11.0", 

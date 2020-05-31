@@ -11,8 +11,9 @@ For setting up the development environment of SARL, please follow our recommenda
 [align="center",width="40%",frame="topbot",cols="2*^",options="header"]
 |==========================
 2+| Build Status 
-| Linux and OSX |image:https://travis-ci.org/sarl/sarl.svg?branch=master[link=https://travis-ci.org/sarl/sarl]
-| Windows |image:https://ci.appveyor.com/api/projects/status/github/sarl/sarl?branch=master&svg=true[link=https://ci.appveyor.com/project/gallandarakhneorg/sarl]
+| CIAD CI / Linux footnote:[Linux 4.15.0-102, OpenJDK 1.8, Maven 3.6.2] |image:https://ci-ciad.utbm.fr/teamcity/app/rest/builds/buildType:(id:Sarl_Build)/statusIcon[link=https://ci-ciad.utbm.fr/teamcity/viewType.html?buildTypeId=Sarl_Build]
+| Travis CI / Linux footnote:[Ubuntu 16.04 LTS 64 bits, OpenJDK 1.8.0_242, Maven 3.6.3] and OSX footnote:[OSX 10.12, Xcode 8.3, OracleJDK 1.8.0_112, Maven 3.6.3] |image:https://travis-ci.org/sarl/sarl.svg?branch=master[link=https://travis-ci.org/sarl/sarl]
+| AppVeyor CI / Windows footnote:[Visual Studio 2019, OracleJDK 1.8.0_162, Maven 3.6.3] |image:https://ci.appveyor.com/api/projects/status/github/sarl/sarl?branch=master&svg=true[link=https://ci.appveyor.com/project/gallandarakhneorg/sarl]
 |==========================
 
 == 1. Issues
@@ -75,22 +76,27 @@ According to the link:https://github.com/lukaszlenart/launch4j-maven-plugin/issu
 
 For setting up the development environment, you should follow the steps:
 
-* Download the *Eclipse IDE for Java and DSL Developers* from https://eclipse.org/downloads/eclipse-packages/. This version of Eclipse includes the Java tools *and* the Xtext tools.
-** Version: `2019-09` or higher (please ask to the developper's community on link:https://gitter.im/sarl/Lobby[Gitter]).
-* Launch the *Eclipse IDE for Java and DSL Developers*, and configure it (look&feel, etc.)
-* Install the Checkstyle CS-Eclipse plugin.
-** Version: `8.18`.
-* Import the Eclipse preferences for SARL developers, which are stored into the `dev-tools` folder.
-* Import the SARL project: `Menu File > Import > Maven > Existing Maven Project`
-** Select the folder in which you have cloned the SARL project (see Section 2.1);
-** Click on `Finish`.
-* Set the Eclipse target platform, i.e. the definition of the Eclipse plugins to be imported by the project.
-** Open the target platform file `io.sarl.lang.targetplatform.target` in the project `io.sarl.lang.targetplatform`;
-** Wait for all the entries in the target file to be refreshed, i.e each location must contains the list of the features to be imported;
-** Click on `Set as Target Platform` or `Reload Target Platform` at the upper right corner of the file editor.
-* Sometimes, the Maven Eclipse Plugin (a.k.a. m2e) does not have its connector installed by default. In this case, errors should appears in the `pom.xml` files. After displaying the popup window of the error, click on `Discover m2e connector` and follow the instructions.
-* The Checkstyle plugin may need to install specific connectors. Do an action that is similar as the one in the previous step.
-* Clean and compile the project: `Menu Project > Clean`. 
+* Option 1: Eclipse SARL DSL
+** Go to folder `products/sarl-dsl/target/products/io.sarl.lang.sarl-dsl.product`, and select the Eclipse DSL with SARL that is corresponding to your operating system.
+** Launch the *Eclipse IDE*, and configure it (look&feel, etc.)
+* Option 2: Manual installation of the Eclipse environment
+** Download the *Eclipse IDE for Java and DSL Developers* from https://eclipse.org/downloads/eclipse-packages/. This version of Eclipse includes the Java tools *and* the Xtext tools.
+*** Version: `2019-09` or higher (please ask to the developper's community on link:https://gitter.im/sarl/Lobby[Gitter]).
+** Launch the *Eclipse IDE for Java and DSL Developers*, and configure it (look&feel, etc.)
+** Install manually the Checkstyle CS-Eclipse plugin.
+*** Version: `8.32`.
+* For all options:
+** Import the Eclipse preferences for SARL developers, which are stored into the `dev-tools` folder.
+** Import the SARL project: `Menu File > Import > Maven > Existing Maven Project`
+*** Select the folder in which you have cloned the SARL project (see Section 2.1);
+*** Click on `Finish`.
+** Set the Eclipse target platform, i.e. the definition of the Eclipse plugins to be imported by the project.
+*** Open the target platform file `io.sarl.lang.targetplatform.target` in the project `io.sarl.lang.targetplatform`;
+*** Wait for all the entries in the target file to be refreshed, i.e each location must contains the list of the features to be imported;
+*** Click on `Set as Target Platform` or `Reload Target Platform` at the upper right corner of the file editor.
+** Sometimes, the Maven Eclipse Plugin (a.k.a. m2e) does not have its connector installed by default. In this case, errors should appears in the `pom.xml` files. After displaying the popup window of the error, click on `Discover m2e connector` and follow the instructions.
+** The Checkstyle plugin may need to install specific connectors. Do an action that is similar as the one in the previous step.
+** Clean and compile the project: `Menu Project > Clean`. 
 
 === 2.4. Compilation of SARL before Contributing
 
