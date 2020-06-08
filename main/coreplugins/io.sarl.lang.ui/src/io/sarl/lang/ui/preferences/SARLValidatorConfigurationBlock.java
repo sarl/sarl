@@ -113,6 +113,8 @@ public class SARLValidatorConfigurationBlock extends XtendValidatorConfiguration
 				Messages.SARLValidatorConfigurationBlock_8);
 		builder.addComboBox(IssueCodes.USED_RESERVED_SARL_ANNOTATION,
 				Messages.SARLValidatorConfigurationBlock_7);
+		builder.addComboBox(IssueCodes.PROGRAMMATIC_ISSUE_ANNOTATION,
+				Messages.SARLValidatorConfigurationBlock_20);
 	}
 
 	@Override

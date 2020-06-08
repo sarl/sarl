@@ -976,6 +976,17 @@ public class SARLQuickfixProvider extends XtendQuickfixProvider {
 		AnnotationRemoveModification.accept(this, issue, acceptor);
 	}
 
+	/** Quick fix for the discouraged annotation uses.
+	 *
+	 * @param issue the issue.
+	 * @param acceptor the quick fix acceptor.
+	 * @since 0.12
+	 */
+	@Fix(io.sarl.lang.validation.IssueCodes.PROGRAMMATIC_ISSUE_ANNOTATION)
+	public void fixProgrammaticIssueAnnotation(final Issue issue, IssueResolutionAcceptor acceptor) {
+		AnnotationRemoveModification.accept(this, issue, acceptor);
+	}
+
 	/** Quick fix for the manual definition of inline statements.
 	 *
 	 * @param issue the issue.

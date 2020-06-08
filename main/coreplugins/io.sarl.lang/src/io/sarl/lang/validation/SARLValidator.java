@@ -49,6 +49,7 @@ import static io.sarl.lang.validation.IssueCodes.MANUAL_INLINE_DEFINITION;
 import static io.sarl.lang.validation.IssueCodes.MISSING_BODY;
 import static io.sarl.lang.validation.IssueCodes.POTENTIAL_FIELD_SYNCHRONIZATION_PROBLEM;
 import static io.sarl.lang.validation.IssueCodes.POTENTIAL_INEFFICIENT_VALUE_CONVERSION;
+import static io.sarl.lang.validation.IssueCodes.PROGRAMMATIC_ISSUE_ANNOTATION;
 import static io.sarl.lang.validation.IssueCodes.REDUNDANT_CAPACITY_USE;
 import static io.sarl.lang.validation.IssueCodes.REDUNDANT_INTERFACE_IMPLEMENTATION;
 import static io.sarl.lang.validation.IssueCodes.RETURN_TYPE_SPECIFICATION_IS_RECOMMENDED;
@@ -153,7 +154,11 @@ import org.eclipse.xtend.lib.annotations.EqualsHashCode;
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor;
 import org.eclipse.xtend.lib.annotations.ToString;
 import org.eclipse.xtext.EcoreUtil2;
+import org.eclipse.xtext.common.types.JvmAnnotationReference;
+import org.eclipse.xtext.common.types.JvmAnnotationTarget;
+import org.eclipse.xtext.common.types.JvmAnnotationValue;
 import org.eclipse.xtext.common.types.JvmConstructor;
+import org.eclipse.xtext.common.types.JvmCustomAnnotationValue;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.common.types.JvmExecutable;
 import org.eclipse.xtext.common.types.JvmField;
@@ -162,6 +167,7 @@ import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmStringAnnotationValue;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.JvmVisibility;
@@ -190,6 +196,7 @@ import org.eclipse.xtext.xbase.XFeatureCall;
 import org.eclipse.xtext.xbase.XForLoopExpression;
 import org.eclipse.xtext.xbase.XMemberFeatureCall;
 import org.eclipse.xtext.xbase.XPostfixOperation;
+import org.eclipse.xtext.xbase.XStringLiteral;
 import org.eclipse.xtext.xbase.XSynchronizedExpression;
 import org.eclipse.xtext.xbase.XTypeLiteral;
 import org.eclipse.xtext.xbase.XUnaryOperation;
@@ -214,6 +221,7 @@ import org.eclipse.xtext.xtype.XComputedTypeReference;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.annotation.EarlyExit;
+import io.sarl.lang.annotation.IssueOnCall;
 import io.sarl.lang.controlflow.ISarlEarlyExitComputer;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Behavior;
@@ -2257,6 +2265,7 @@ public class SARLValidator extends AbstractSARLValidator {
 			final QualifiedName reservedPackage = this.qualifiedNameConverter.toQualifiedName(
 					EarlyExit.class.getPackage().getName());
 			final String earlyExitAnnotation = EarlyExit.class.getName();
+			final String issueOnCallAnnotation = IssueOnCall.class.getName();
 			for (final XAnnotation annotation : annotationTarget.getAnnotations()) {
 				final JvmType type = annotation.getAnnotationType();
 				if (type != null && !type.eIsProxy()) {
@@ -2268,7 +2277,7 @@ public class SARLValidator extends AbstractSARLValidator {
 									annotation,
 									USED_RESERVED_SARL_ANNOTATION);
 						}
-					} else {
+					} else if (!Objects.equal(type.getIdentifier(), issueOnCallAnnotation)) {
 						final QualifiedName annotationName = this.qualifiedNameConverter.toQualifiedName(
 								type.getIdentifier());
 						if (annotationName.startsWith(reservedPackage)) {
@@ -2276,6 +2285,55 @@ public class SARLValidator extends AbstractSARLValidator {
 									MessageFormat.format(Messages.SARLValidator_87, type.getSimpleName()),
 									annotation,
 									USED_RESERVED_SARL_ANNOTATION);
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+	/** Check if element has an programmatic issue message.
+	 *
+	 * @param expression the expression.
+	 * @since 0.12
+	 */
+	@Check(CheckType.FAST)
+	@SuppressWarnings("checkstyle:nestedifdepth")
+	public void checkProgrammaticIssueMessage(XAbstractFeatureCall expression) {
+		if (!isIgnored(PROGRAMMATIC_ISSUE_ANNOTATION)) {
+			if (expression != null && expression.getFeature() != null) {
+				final JvmIdentifiableElement feature = expression.getFeature();
+				if (feature instanceof JvmAnnotationTarget) {
+					final JvmAnnotationTarget target = (JvmAnnotationTarget) feature;
+					final String annoName = IssueOnCall.class.getName();
+					for (final JvmAnnotationReference annotation : target.getAnnotations()) {
+						if (Objects.equal(annoName, annotation.getAnnotation().getIdentifier())) {
+							final List<JvmAnnotationValue> values = annotation.getValues();
+							if (values.isEmpty()) {
+								break;
+							}
+							final String message;
+							if (values.get(0) instanceof JvmStringAnnotationValue) {
+								message = Strings.concat("", ((JvmStringAnnotationValue) values.get(0)).getValues()); //$NON-NLS-1$
+							} else if (values.get(0) instanceof JvmCustomAnnotationValue) {
+								final StringBuilder b = new StringBuilder();
+								for (final Object obj : ((JvmCustomAnnotationValue) values.get(0)).getValues()) {
+									if (obj instanceof XStringLiteral) {
+										b.append(((XStringLiteral) obj).getValue());
+									}
+								}
+								message = b.toString();
+							} else {
+								break;
+							}
+							if (Strings.isEmpty(message)) {
+								break;
+							}
+							addIssue(
+									MessageFormat.format(Messages.SARLValidator_99, message),
+									expression,
+									PROGRAMMATIC_ISSUE_ANNOTATION);
 						}
 					}
 				}

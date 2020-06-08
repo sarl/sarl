@@ -135,6 +135,13 @@ public final class IssueCodes {
 			ISSUE_CODE_PREFIX + "use_reserved_sarl_annotation"; //$NON-NLS-1$
 
 	/**
+	 * A SARL annotation is used. They are supposed to never be in the SARL code directly.
+	 * @since 0.12
+	 */
+	public static final String PROGRAMMATIC_ISSUE_ANNOTATION =
+			ISSUE_CODE_PREFIX + "programmatic_issue_annotation"; //$NON-NLS-1$
+
+	/**
 	 * The occurrence use is invalid because the occurrence is a read-only variable.
 	 * @since 0.5
 	 */
