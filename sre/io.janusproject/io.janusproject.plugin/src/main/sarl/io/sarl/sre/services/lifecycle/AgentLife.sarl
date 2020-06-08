@@ -259,7 +259,7 @@ final class AgentLife {
 		var defaultSpace = spawningContext.defaultSpace
 		var addressWithinDefaultSpace = new Address(defaultSpace.spaceID, ^agent.ID)
 		setDefaultContext(spawningContext, addressWithinDefaultSpace)
-		defaultSpace.register(eb.associatedEventBusListener, false)
+		defaultSpace.registerStrongParticipant(eb.associatedEventBusListener)
 		return eb
 	}
 

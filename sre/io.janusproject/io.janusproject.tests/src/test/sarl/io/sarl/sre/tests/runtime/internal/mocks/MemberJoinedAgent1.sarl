@@ -55,7 +55,7 @@ agent MemberJoinedAgent1 {
 		setSkill(new TestingSkill(occurrence))
 		this.number = occurrence.parameters.get(1) as Integer
 		this.^space = occurrence.parameters.get(2) as OpenEventSpace
-		this.^space.register(asEventListener)
+		this.^space.registerStrongParticipant(asEventListener)
 	}
 
 	on MemberJoined {

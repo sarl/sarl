@@ -49,7 +49,7 @@ agent JoinerAgent3 {
 		setSkill(new TestingSkill(occurrence))
 		var id = UUID::randomUUID
 		val spc = defaultContext.getOrCreateSpaceWithSpec(typeof(OpenEventSpaceSpecification), id)
-		spc.register(asEventListener, true)
+		spc.registerWeakParticipant(asEventListener)
 		addResult(spc.spaceID)
 		in(500) [
 			spc.unregister(asEventListener)

@@ -24,6 +24,7 @@ package io.sarl.core
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.EventListener
 import io.sarl.lang.core.EventSpace
+import io.sarl.lang.annotation.IssueOnCall
 
 /**
  * Event driven interaction space where participants (agents, etc) are free register and unregister themselves.
@@ -52,16 +53,54 @@ interface OpenEventSpace extends EventSpace {
 	 * <p>If the agent is already registered the address is return, but the listener is not replaced.
 	 *
 	 * @param participant the participant to register.
-	 * @param weakParticipant indicates to the space that the given participant could be considered as a weak participant.
-	 * 	A Weak participant will not prevent the space from begin destroyed if it is the only one staying in it, a Strong participant will prevent the space destruction.
-	 * 	A space containing only Weak participants will be destroyed by the SRE Kernel. The default value is {@ode false}.
 	 * @return the entity's address in this space
 	 * @fires ParticipantJoined in its enclosing Context default space.
-	 * @since 0.11
+	 * @deprecated since 0.12, see {@link #registerStrongParticipant(EventListener)} and
+	 *     {@link #registerStrongParticipant(EventListener).
 	 */
-	def register(participant : EventListener, weakParticipant : boolean = false) : Address fires ParticipantJoined
+	@IssueOnCall("Prefer calling registerStrongParticipant() or registerWeakParticipant()")
+	def register(participant : EventListener, weakParticipant : boolean = false) : Address fires ParticipantJoined {
+		if (weakParticipant) {
+			participant.registerWeakParticipant
+		} else {
+			participant.registerStrongParticipant
+		}
+	}
 
-	/**
+	/** 
+	 * Registers the strong participant inside this space.
+	 * A Weak participant will not prevent the space from begin destroyed if it is the only one staying in it, a Strong participant will prevent the space destruction.
+	 * A space containing only Weak participants will be destroyed by the SRE Kernel.
+	 * After registering a new participant, the Space should emit a ParticipantJoined
+	 * event where the source is the address of the newly registered agent.
+	 * 
+	 * <p>If the agent is already registered the address is return, but the listener is not replaced.
+	 * 
+	 * @param participant the participant to register.
+	 * @return the entity's address in this space
+	 * @fires ParticipantJoined in its enclosing Context default space.
+	 * @since 0.12
+	 */
+	def registerStrongParticipant(participant : EventListener) : Address fires ParticipantJoined
+
+	/** 
+	 * Registers the weak participant inside this space.
+	 * A Weak participant will not prevent the space from begin destroyed if it is the only one staying in it, a Strong participant will prevent the space destruction.
+	 * A space containing only Weak participants will be destroyed by the SRE Kernel.
+	 * After registering a new participant, the Space should emit a ParticipantJoined
+	 * event where the source is the address of the newly registered agent.
+	 * 
+	 * <p>If the agent is already registered the address is return, but the listener is not replaced.
+	 * 
+	 * @param participant the participant to register.
+	 * @return the entity's address in this space
+	 * @fires ParticipantJoined in its enclosing Context default space.
+	 * @since 0.12
+	 */
+	def registerWeakParticipant(participant : EventListener) : Address fires ParticipantJoined
+
+	
+	/** 
 	 * Unregisters the entity inside this space.
 	 * After unregistering an agent, the Space should emit a ParticipantLeft
 	 * event where the source is the address of the unregistered agent.

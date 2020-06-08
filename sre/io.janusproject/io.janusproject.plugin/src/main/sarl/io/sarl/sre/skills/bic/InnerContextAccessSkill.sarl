@@ -98,7 +98,7 @@ skill InnerContextAccessSkill extends Skill implements InnerContextAccess {
 			var ^space = context.defaultSpace
 			// Unregister the agent from the default space
 			val listener = associatedEventBusListener
-			^space.register(listener, false)
+			^space.registerStrongParticipant(listener)
 		}
 		return context
 	}

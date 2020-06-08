@@ -37,10 +37,17 @@ import io.sarl.lang.core.EventListener
  */
 class OpenLocalEventSpace extends AbstractEventSpace implements OpenEventSpace {
 
-
-	
+	@Deprecated
 	def register(entity : EventListener, weakParticipant : boolean) : Address {
 		entity.registerToSpace(weakParticipant)
+	}
+
+	def registerStrongParticipant(entity : EventListener) : Address {
+		entity.registerToSpace(false)
+	}
+
+	def registerWeakParticipant(entity : EventListener) : Address {
+		entity.registerToSpace(true)
 	}
 
 	def unregister(entity : EventListener) : Address {

@@ -175,7 +175,7 @@ skill ExternalContextAccessSkill extends Skill implements ExternalContextAccess 
 			val adr = new Address(defaultSpaceID, agentID)
 			life.addExternalContext(context, adr)
 
-			defaultSpace.register(associatedEventBusListener, false)
+			defaultSpace.registerStrongParticipant(associatedEventBusListener)
 
 			this.externalEventEmitter.memberJoined(context, defaultSpaceID, agentID, this.owner.class.name)
 			this.internalEventEmitter.contextJoined(contextID, expectedDefaultSpaceID)

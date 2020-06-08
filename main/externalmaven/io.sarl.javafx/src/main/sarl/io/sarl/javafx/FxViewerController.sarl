@@ -23,13 +23,13 @@ package io.sarl.javafx
 
 import io.sarl.bootstrap.SRE
 import io.sarl.core.AgentSpawned
+import io.sarl.core.OpenEventSpace
+import io.sarl.core.OpenEventSpaceSpecification
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventListener
 import io.sarl.lang.core.Scope
-import io.sarl.core.OpenEventSpace
-import io.sarl.core.OpenEventSpaceSpecification
 import java.util.UUID
 import javafx.application.Platform
 import javafx.^event.ActionEvent
@@ -74,7 +74,7 @@ abstract class FxViewerController implements EventListener {
 		var s = this.^space
 		s?.unregister(this)
 		s = this.^space = ^space
-		s?.register(this, true)
+		s?.registerWeakParticipant(this)
 	}
 
 	/** Replies the space for interaction between SARL agents and UI.
@@ -186,7 +186,7 @@ abstract class FxViewerController implements EventListener {
 			this.id = id
 			this.whenAgentLaunched = whenAgentLaunched
 			this.rootSpace = rootSpace
-			this.rootSpace.register(this, true)
+			this.rootSpace.registerWeakParticipant(this)
 		}
 
 		/** Get ID of the object on the space that is used for supporting the interactions between

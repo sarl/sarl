@@ -92,7 +92,7 @@ behavior FXBehavior extends FXKillSupportBehavior {
 	/** Installation.
 	 */
 	on Initialize {
-		this.uiSpace.register(asEventListener, false)
+		this.uiSpace.registerStrongParticipant(asEventListener)
 	}
 
 	/** Uninstallation.

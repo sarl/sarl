@@ -113,7 +113,11 @@ class OpenLocalEventSpaceTest {
 	}
 
 	private def doRegister(weak : boolean) : void {
-		this.^space.register(this.listener, weak)
+		if (weak) {
+			this.^space.registerWeakParticipant(this.listener)
+		} else {
+			this.^space.registerStrongParticipant(this.listener)
+		}
 	}
 
 	private def doUnregister : void {
@@ -140,7 +144,7 @@ class OpenLocalEventSpaceTest {
 
 	
 	@Test
-	def register_true {
+	def registerWeakParticipant {
 		var ^event = typeof(Event).mock
 		when(^event.source).thenReturn(this.address)
 		this.^space.emit(null, ^event, null)
@@ -159,7 +163,7 @@ class OpenLocalEventSpaceTest {
 	}
 
 	@Test
-	def register_false {
+	def registerStrongParticipant {
 		var ^event = typeof(Event).mock
 		when(^event.source).thenReturn(this.address)
 		this.^space.emit(null, ^event, null)

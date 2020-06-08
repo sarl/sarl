@@ -46,7 +46,7 @@ agent PongAgent {
 	on Initialize {
 		comspace = defaultContext.getOrCreateSpaceWithSpec(typeof(OpenEventSpaceSpecification),
 			occurrence.parameters.get(0) as UUID)
-		comspace.register(asEventListener())
+		comspace.registerStrongParticipant(asEventListener())
 		MAX_ITERATION = occurrence.parameters.get(1) as Integer
 	}
 

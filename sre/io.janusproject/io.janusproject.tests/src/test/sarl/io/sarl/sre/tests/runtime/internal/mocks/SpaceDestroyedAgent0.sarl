@@ -58,7 +58,7 @@ agent SpaceDestroyedAgent0 {
 		if (occurrence.parameters.size > 2) {
 			this.^space = occurrence.parameters.get(2) as OpenEventSpace
 			if (this.^space !== null) {
-				this.^space.register(asEventListener)
+				this.^space.registerStrongParticipant(asEventListener)
 			}
 		}
 	}

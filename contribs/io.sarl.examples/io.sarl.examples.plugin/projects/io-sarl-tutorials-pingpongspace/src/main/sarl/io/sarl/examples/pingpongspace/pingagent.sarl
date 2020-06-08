@@ -49,7 +49,7 @@ agent PingAgent {
 		comspace = defaultContext.getOrCreateSpaceWithSpec(typeof(OpenEventSpaceSpecification),
 			occurrence.parameters.get(0) as UUID)
 
-		comspace.register(asEventListener())
+		comspace.registerStrongParticipant(asEventListener())
 
 		info("Waiting for Pong Agent")
 

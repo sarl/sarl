@@ -559,7 +559,7 @@ class SreRunContext {
 		assert listenerId !== null
 		assert code !== null
 		val spc = if (^space === null) this.rootContext.defaultSpace as OpenEventSpace else ^space;
-		spc.register(new EventListener {
+		spc.registerWeakParticipant(new EventListener {
 			def receiveEvent(^event : Event) {
 				if (type.isInstance(^event)) {
 					code.apply(type.cast(^event))
@@ -568,7 +568,7 @@ class SreRunContext {
 			def getID : UUID {
 				listenerId
 			}
-		}, true)
+		})
 	}
 
 	/** Register the given code for agent spawns.

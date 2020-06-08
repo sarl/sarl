@@ -121,7 +121,7 @@ class InnerContextSkillTest {
 		ctx.assertSame(context)
 		
 		var listener = typeof(EventListener).forClass
-		^space.verify.register(listener.capture, eq(false))
+		^space.verify.registerStrongParticipant(listener.capture)
 		listener.value.assertNotNull
 
 		this.service.verify(only).createContext(any, any, any(typeof(Agent)))
@@ -142,7 +142,7 @@ class InnerContextSkillTest {
 		ctx.assertSame(context2)
 		
 		var listener = typeof(EventListener).forClass
-		^space.verify(only).register(listener.capture, eq(false))
+		^space.verify(only).registerStrongParticipant(listener.capture)
 		listener.value.assertNotNull
 
 		this.service.verify(only).createContext(any, any, any(typeof(Agent)))

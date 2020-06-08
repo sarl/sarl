@@ -129,7 +129,7 @@ the [:behaviorscap:] capacity).
 					^space = defaultContext.[:contextcreator](getOrCreateSpaceWithSpec)(
 						typeof(OpenEventSpaceSpecification),
 						occurrence.parameters.get(0) as UUID)
-					^space.[:registerfct](register)(asEventListener())
+					^space.[:registerfct](registerStrongParticipant)(asEventListener())
 				}
 			}
 		[:End:]
@@ -167,7 +167,7 @@ receiving a [:pingevent:] event.
 					^space = defaultContext.getOrCreateSpaceWithSpec(
 						typeof(OpenEventSpaceSpecification),
 						occurrence.parameters.get(0) as UUID)
-					^space.register(asEventListener())
+					^space.registerStrongParticipant(asEventListener())
 				}
 
 				on Ping {
@@ -233,7 +233,7 @@ stored in the received [:pingevent:] event.
 					^space = defaultContext.getOrCreateSpaceWithSpec(
 						typeof(OpenEventSpaceSpecification),
 						[:occkw](occurrence).parameters.get(0) as UUID)
-					^space.register(asEventListener())
+					^space.registerStrongParticipant(asEventListener())
 				}
 
 				on Ping {
@@ -291,7 +291,7 @@ It permits to restrict to the initial sender of the [:pingevent:] event: [:scopi
 					^space = defaultContext.getOrCreateSpaceWithSpec(
 						typeof(OpenEventSpaceSpecification),
 						occurrence.parameters.get(0) as UUID)
-					^space.register(asEventListener())
+					^space.registerStrongParticipant(asEventListener())
 				}
 
 				on Ping {
@@ -330,7 +330,7 @@ The initial definition of the ping agent is:
 					^space = defaultContext.getOrCreateSpaceWithSpec(
 						typeof(OpenEventSpaceSpecification),
 						occurrence.parameters.get(0) as UUID)
-					^space.register(asEventListener())
+					^space.registerStrongParticipant(asEventListener())
 				}
 			}
 		[:End:]
@@ -365,7 +365,7 @@ defined in the agent.
 					^space = defaultContext.getOrCreateSpaceWithSpec(
 						typeof(OpenEventSpaceSpecification),
 						occurrence.parameters.get(0) as UUID)
-					^space.register(asEventListener())
+					^space.registerStrongParticipant(asEventListener())
 				}
 
 				on Pong {
@@ -415,7 +415,7 @@ The receiving of the [:pingevent:] event is restricted to the sender of the
 					^space = defaultContext.getOrCreateSpaceWithSpec(
 						typeof(OpenEventSpaceSpecification),
 						occurrence.parameters.get(0) as UUID)
-					^space.register(asEventListener())
+					^space.registerStrongParticipant(asEventListener())
 				}
 
 				on Pong {
@@ -465,7 +465,7 @@ receiving the [:initevent:] event.
 					^space = defaultContext.getOrCreateSpaceWithSpec(
 						typeof(OpenEventSpaceSpecification),
 						occurrence.parameters.get(0) as UUID)
-					^space.register(asEventListener())
+					^space.registerStrongParticipant(asEventListener())
 					var evt = new Ping(0)
 					^space.emit( evt )
 				}
@@ -531,7 +531,7 @@ one agent belonging to the default space. If not, the agent is sending the initi
 					^space = defaultContext.getOrCreateSpaceWithSpec(
 						typeof(OpenEventSpaceSpecification),
 						occurrence.parameters.get(0) as UUID)
-					^space.register(asEventListener())
+					^space.registerStrongParticipant(asEventListener())
 					val task = task("[:taskname](waiting_for_partner)")
 					task.[:everyfct](every)(1000) [
 						if (defaultSpace.numberOfStrongParticipants > 1) {
