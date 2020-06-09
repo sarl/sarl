@@ -1028,7 +1028,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 		int lineno = 1;
 		while (tmpOffset < offset) {
 			++lineno;
-			tmpOffset = seq.endOfLineAnyEOL(tmpOffset + seq.eolLength(tmpOffset));
+			tmpOffset = seq.endOfLineAnyEOL(tmpOffset + seq.eolStartLength(tmpOffset));
 		}
 		return lineno;
 	}

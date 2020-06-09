@@ -253,6 +253,8 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		final String displayName = toClassDisplayName(relativeInputFile, basicTestName, generalTestName);
 		
 		it.append("@").append(DisplayName.class).append("(\"").append(displayName).append("\")").newLine();
+		it.append("@").append(Tag.class).append("(\"documentation\")").newLine();
+		it.append("@").append(Tag.class).append("(\"doc\")").newLine();
 		it.append("public class ").append(generalTestName).append(" extends ")
 			.append(BASE_PACKAGE).append(".AbstractBaseTest").append(" {").increaseIndentation().newLine();
 		
@@ -294,6 +296,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 			it.append("@").append(Test.class).newLine();
 			it.append("@").append(DisplayName.class).append("(\"").append(displayName).append("\")").newLine();
 			it.append("@").append(Tag.class).append("(\"success\")").newLine();
+			it.append("@").append(Tag.class).append("(\"success_").append(Integer.toString(i)).append("\")").newLine();
 			it.append("public void ").append(actionName).append("() throws ")
 				.append(Exception.class).append(" {").increaseIndentation().newLine();
 			it.append(List.class).append("<String> issues = getScriptExecutor().compile(")
@@ -331,6 +334,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 			it.append("@").append(Test.class).newLine();
 			it.append("@").append(DisplayName.class).append("(\"").append(displayName).append("\")").newLine();
 			it.append("@").append(Tag.class).append("(\"failure\")").newLine();
+			it.append("@").append(Tag.class).append("(\"failure_").append(Integer.toString(i)).append("\")").newLine();
 			it.append("public void ").append(actionName).append("() throws ")
 				.append(Exception.class).append(" {").increaseIndentation().newLine();
 			it.append(List.class).append("<String> issues = getScriptExecutor().compile(")
@@ -368,6 +372,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 			it.append("@").append(Test.class).newLine();
 			it.append("@").append(DisplayName.class).append("(\"").append(displayName).append("\")").newLine();
 			it.append("@").append(Tag.class).append("(\"fact\")").newLine();
+			it.append("@").append(Tag.class).append("(\"fact_").append(Integer.toString(i)).append("\")").newLine();
 			it.append("public void ").append(actionName).append("() throws ")
 				.append(Exception.class).append(" {").increaseIndentation().newLine();
 			it.append("final String expected = ").append(Utils.class).append(".dump(")
@@ -425,6 +430,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 			it.append("@").append(Test.class).newLine();
 			it.append("@").append(DisplayName.class).append("(\"").append(displayName).append("\")").newLine();
 			it.append("@").append(Tag.class).append("(\"other\")").newLine();
+			it.append("@").append(Tag.class).append("(\"other_").append(Integer.toString(i)).append("\")").newLine();
 			it.append("public void ").append(actionName).append("() throws ")
 				.append(Exception.class).append(" {").increaseIndentation().newLine();
 			component.generateValidationCode(it);
@@ -519,7 +525,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		it.append("msg.append(message).append(\"\\n\");").decreaseIndentation().newLine();
 		it.append("}").newLine();
 		it.append("throw new ").append(AssertionFailedError.class)
-		.append("(\"Expecting no issue but find one [line:\" + lineno + \"]\", \"\", msg.toString());")
+		.append("(\"Expecting no issue but find one [line:\" + lineno + \"]\\n\" + msg, \"\", msg.toString());")
 		.decreaseIndentation().newLine();
 		it.append("}").decreaseIndentation().newLine();
 		it.append("}").newLine();

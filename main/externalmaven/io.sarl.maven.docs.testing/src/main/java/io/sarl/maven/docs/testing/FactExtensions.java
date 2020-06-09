@@ -22,6 +22,8 @@
 package io.sarl.maven.docs.testing;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -29,9 +31,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 
+import com.google.inject.ImplementedBy;
 import org.arakhne.afc.vmutil.ClasspathUtil;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.xtext.xbase.lib.Functions.Function3;
+import org.eclipse.xtext.xbase.lib.Pure;
+
+import io.sarl.lang.typesystem.IPureOperationNameValidator;
 
 /** Extended Functions for writting facts within the documentation.
  *
@@ -44,8 +50,26 @@ import org.eclipse.xtext.xbase.lib.Functions.Function3;
 @SuppressWarnings({"checkstyle:methodname"})
 public final class FactExtensions {
 
+	private static IPureOperationNameValidator nameValidator;
+
 	private FactExtensions() {
 		//
+	}
+
+	private static IPureOperationNameValidator getOperationNameValidator() {
+		synchronized (FactExtensions.class) {
+			if (nameValidator == null) {
+				ImplementedBy anno = IPureOperationNameValidator.class.getAnnotation(ImplementedBy.class);
+				assert anno != null;
+				try {
+					nameValidator = (IPureOperationNameValidator) anno.value().getDeclaredConstructor().newInstance();
+				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+					throw new Error(e);
+				}
+			}
+			return nameValidator;
+		}
 	}
 
 	/** Replies the first declared field matching with the given marcher.
@@ -150,6 +174,33 @@ public final class FactExtensions {
 			}
 		}
 		return m1.isEmpty() == m2.isEmpty();
+	}
+
+	/** Replies if the given function is marked as pure or its names is considered as pure.
+	 * This function does not test the purity of the associated code.
+	 *
+	 * @param type the type in which the function is declared.
+	 * @param name the name of the function.
+	 * @param parameters the type of the arguments.
+	 * @return {@code true} if the function is pure.
+	 * @throws SecurityException if the function declaration cannot be accessed.
+	 * @throws NoSuchMethodException if the function cannot be found.
+	 * @since 0.12
+	 */
+	public static boolean isPureFunctionPrototype(Class<?> type, String name, Class<?>... parameters) {
+		Method method;
+		try {
+			method = type.getDeclaredMethod(name, parameters);
+		} catch (NoSuchMethodException | SecurityException e) {
+			return false;
+		}
+		if (method.getAnnotation(Pure.class) != null) {
+			return true;
+		}
+		if (getOperationNameValidator().isNamePatternForNotPureOperation(method.getName())) {
+			return false;
+		}
+		return getOperationNameValidator().isNamePatternForPureOperation(method.getName());
 	}
 
 }
