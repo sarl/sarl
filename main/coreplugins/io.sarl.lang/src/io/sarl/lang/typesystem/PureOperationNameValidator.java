@@ -24,9 +24,6 @@ package io.sarl.lang.typesystem;
 import java.util.regex.Pattern;
 import javax.inject.Singleton;
 
-import org.eclipse.xtend.core.xtend.XtendFunction;
-import org.eclipse.xtext.common.types.JvmOperation;
-
 /**
  * Test if names are for pure or not pure operations.
  *
@@ -123,42 +120,14 @@ public class PureOperationNameValidator implements IPureOperationNameValidator {
 		return Pattern.compile(fullPattern.toString());
 	}
 
-	/** Replies if the given operation has a name which is assumed to be for a pure function by default.
-	 *
-	 * @param name the simple name of the operation.
-	 * @return {@code true} if the operation has a side effects.
-	 */
-	protected boolean isNamePatternForPureOperation(String name) {
+	@Override
+	public boolean isNamePatternForPureOperation(String name) {
 		return name != null && this.purePattern.matcher(name).matches();
 	}
 
 	@Override
-	public boolean isNamePatternForPureOperation(JvmOperation operation) {
-		return isNamePatternForPureOperation(operation.getSimpleName());
-	}
-
-	@Override
-	public boolean isNamePatternForPureOperation(XtendFunction operation) {
-		return isNamePatternForPureOperation(operation.getName());
-	}
-
-	/** Replies if the given expression has a side effect in the context of the given operation.
-	 *
-	 * @param name the simple name of the operation.
-	 * @return {@code true} if the operation has a side effects.
-	 */
-	protected boolean isNamePatternForNotPureOperation(String name) {
+	public boolean isNamePatternForNotPureOperation(String name) {
 		return name != null && this.notPurePattern.matcher(name).matches();
-	}
-
-	@Override
-	public boolean isNamePatternForNotPureOperation(JvmOperation operation) {
-		return isNamePatternForNotPureOperation(operation.getSimpleName());
-	}
-
-	@Override
-	public boolean isNamePatternForNotPureOperation(XtendFunction operation) {
-		return isNamePatternForNotPureOperation(operation.getName());
 	}
 
 }
