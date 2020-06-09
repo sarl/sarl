@@ -21,9 +21,10 @@
 
 package io.sarl.experienceindex.eclipse
 
-import org.eclipse.ui.plugin.AbstractUIPlugin
 import org.eclipse.jface.resource.ImageDescriptor
+import org.eclipse.jface.resource.ResourceLocator
 import org.eclipse.swt.graphics.Image
+import org.eclipse.ui.plugin.AbstractUIPlugin
 
 /**
  * Plugin.
@@ -72,8 +73,9 @@ class SarlExperienceIndexPlugin extends AbstractUIPlugin {
 	def getImageDescriptor(imagePath : String) : ImageDescriptor {
 		var descriptor = this.imageRegistry.getDescriptor(imagePath)
 		if (descriptor === null) {
-			descriptor = AbstractUIPlugin::imageDescriptorFromPlugin(PLUGIN_ID, imagePath)
-			if (descriptor !== null) {
+			val odescriptor = ResourceLocator::imageDescriptorFromBundle(PLUGIN_ID, imagePath)
+			if (odescriptor.isPresent) {
+				descriptor = odescriptor.get
 				this.imageRegistry.put(imagePath, descriptor)
 			}
 		}
@@ -88,9 +90,9 @@ class SarlExperienceIndexPlugin extends AbstractUIPlugin {
 	def getImage(imagePath : String) : Image {
 		var descriptor = this.imageRegistry.getDescriptor(imagePath)
 		if (descriptor === null) {
-			descriptor = AbstractUIPlugin::imageDescriptorFromPlugin(PLUGIN_ID, imagePath)
-			if (descriptor !== null) {
-				var img = descriptor.createImage
+			val odescriptor = ResourceLocator::imageDescriptorFromBundle(PLUGIN_ID, imagePath)
+			if (odescriptor.present) {
+				var img = odescriptor.get.createImage
 				this.imageRegistry.put(imagePath, img)
 				return img
 			}

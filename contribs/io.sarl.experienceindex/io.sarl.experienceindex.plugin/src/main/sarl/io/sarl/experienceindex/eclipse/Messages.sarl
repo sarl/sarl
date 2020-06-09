@@ -34,7 +34,8 @@ import org.eclipse.osgi.util.NLS
  */
 final class Messages extends NLS {
 
-	private static val BUNDLE_NAME = {
+	@SuppressWarnings("unused_private_member")
+	static val BUNDLE_NAME = {
 		val name = "io.sarl.experienceindex.eclipse.messages"
 		// initialize resource bundle
 		NLS.initializeMessages(name, typeof(Messages))

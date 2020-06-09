@@ -209,7 +209,7 @@ final class SarlExperienceIndex {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class SEI {
+	static class SEI {
 
 		var base = Float::NaN
 		var cpu = Float::NaN
@@ -299,7 +299,7 @@ final class SarlExperienceIndex {
 	 * @throws Exception in case of error.
 	 */
 	@SuppressWarnings("discouraged_reference")
-	public strictfp static def main(args : String*) : void {
+	strictfp static def main(args : String*) : void {
 		println(MessageFormat::format(Messages::SarlExperienceIndex_1, VERSION))
 		val SEI = janusExperienceIndex
 		println(MessageFormat::format(Messages::SarlExperienceIndex_2, SEI.baseScore.wrap))
@@ -314,7 +314,7 @@ final class SarlExperienceIndex {
 	 * @param canceller the object that permits to stop the computation before its end.
 	 * @return the current SEI.
 	 */
-	public static def getJanusExperienceIndex(canceller : SeiCanceler = null) : SEI {
+	static def getJanusExperienceIndex(canceller : SeiCanceler = null) : SEI {
 		baseScore(canceller)
 		SEI_SINGLETON
 	}
@@ -324,7 +324,7 @@ final class SarlExperienceIndex {
 	 * @param canceller the object that permits to stop the computation before its end.
 	 * @return the global SEI.
 	 */
-	public strictfp static def baseScore(canceller : SeiCanceler = null) : float {
+	strictfp static def baseScore(canceller : SeiCanceler = null) : float {
 		var clr = canceller.wrap
 		var score = SEI_SINGLETON.baseScore
 		if (!clr.canceled && Float::isNaN(score)) {
@@ -353,7 +353,7 @@ final class SarlExperienceIndex {
 	 * @param canceller the object that permits to stop the computation before its end.
 	 * @return the CPU score.
 	 */
-	public strictfp static def cpuScore(canceller : SeiCanceler = null) : float {
+	strictfp static def cpuScore(canceller : SeiCanceler = null) : float {
 		val clr = canceller.wrap
 		var score = SEI_SINGLETON.cpuScore
 		if (!clr.canceled && Float::isNaN(score)) {
@@ -380,11 +380,12 @@ final class SarlExperienceIndex {
 		}
 	}
 
+	@SuppressWarnings("unused_local_variable")
 	private strictfp static def computeArithmeticScore(canceller : SeiCanceler) : float {
 		try {
 			var s = System::nanoTime
 			for (var i = 0; i < 100000000; i++) {
-				Math::atan2(123, 456)
+				var atanResult = Math::atan2(123, 456)
 				if (canceller.canceled) return Float::NaN
 			}
 			var e = System::nanoTime
@@ -539,6 +540,7 @@ final class SarlExperienceIndex {
 	 * @param canceller the object that permits to stop the computation before its end.
 	 * @return the Memory score.
 	 */
+	@SuppressWarnings("unused_local_variable")
 	strictfp static def memoryScore(canceller : SeiCanceler = null) : float {
 		val clr = canceller.wrap
 		var score = SEI_SINGLETON.memoryScore
