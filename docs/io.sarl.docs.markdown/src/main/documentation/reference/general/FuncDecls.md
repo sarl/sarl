@@ -409,6 +409,177 @@ In the example, the calls to the [:gettypefct:] functions produces the output:
 	[:strmsg!]
 
 
+## Purity of the Functions
+
+### General Definition
+
+A [pure function](https://en.wikipedia.org/wiki/Pure_function) is a function that has the following properties:
+
+1. Its return value is the same for the same arguments (no variation with local static variables, non-local variables, 
+   mutable reference arguments or input streams from I/O devices).
+2. Its evaluation has no side effects (no mutation of local static variables, non-local variables, mutable
+   reference arguments or I/O streams).
+
+Most of the time, a pure function is a computational analogue of a mathematical function. Some authors, particularly from the
+imperative language community, use the term "pure" for all functions that just have the above property.
+
+In SARL, a pure function is a function that has no side-effect on the state of the invoked object,  the static state, and
+I/O targets. The following examples of SARL functions are pure:
+
+		[:Success:]
+			package io.sarl.docs.reference.oop
+			class MyClass {
+			[:On]
+				def floor(value : double) : double {
+					val fvalue = value as int
+					return fvalue
+				}
+
+				def max(a : double, b : double) : double {
+					if (a >= b) a
+					else b
+				}
+
+				def f : void {
+					var x = 0
+					x++
+				}
+			[:Off]
+			}
+		[:End:]
+
+ The following examples of SARL functions are impure:
+
+		[:Success:]
+			package io.sarl.docs.reference.oop
+			[:On]
+			class MyClass {
+
+				var ifield : int
+
+				static var sfield : int
+
+				def incrementField : void {
+					this.ifield ++
+				}
+
+				def incrementGlobalField : void {
+					sfield ++
+				}
+
+				static def incrementGlobalField2 : void {
+					sfield ++
+				}
+			}
+			[:Off]
+		[:End:]
+
+
+### I/O in Pure Functions
+
+I/O is inherently impure: input operations undermine
+[referential transparency](https://en.wikipedia.org/wiki/Referential_transparency),
+and output operations create side effects.
+Nevertheless, there is a sense in which function can perform input or output and still be pure, if the sequence of
+operations on the relevant I/O devices is modeled explicitly as both an argument and a result, and I/O operations are
+taken to fail when the input sequence does not describe the operations actually taken since the program began execution.
+
+The second point ensures that the only sequence usable as an argument must change with each I/O action; the first allows
+different calls to an I/O-performing function to return different results on account of the sequence arguments having changed.
+
+
+### Automatic Determination of the Function Purity in SARL
+
+SARL compiler tries to figure out if the functions have side-effect. 
+It does some clever analysis of the name of the method (e.g., getters) and also tries to check if the
+body has any method that is impure, i.e., that may have side-effects.
+
+SARL compiler considers the following cases for determining if a function must be tagged as pure or not:
+
+1. The function name follows one of the regular expression pattern that corresponds to functions that are
+   usually pure:
+   * For getter functions:
+     * name starts with `get`, `has` or `is`
+		[:Fact:]{typeof(java.lang.String).isPureFunctionPrototype("getBytes")}
+     * name equals to `length`
+		[:Fact:]{typeof(java.lang.String).isPureFunctionPrototype("length")}
+   * For comparison functions:
+     * name equals to `equals`, `hashCode`, `compare` or `compareTo`.
+		[:Fact:]{typeof(java.lang.Object).isPureFunctionPrototype("equals", typeof(java.lang.Object))}
+		[:Fact:]{typeof(java.lang.Object).isPureFunctionPrototype("hashCode")}
+		[:Fact:]{typeof(java.lang.Integer).isPureFunctionPrototype("compare", typeof(int), typeof(int))}
+		[:Fact:]{typeof(java.lang.Comparable).isPureFunctionPrototype("compareTo", typeof(java.lang.Object))}
+   * For container functions:
+     * name equals to `size`
+		[:Fact:]{typeof(java.util.Collection).isPureFunctionPrototype("size")}
+     * name starts with `contains`, optionally followed by characters according to the
+       [camel-case standard](https://en.wikipedia.org/wiki/Camel_case)
+		[:Fact:]{typeof(java.util.Collection).isPureFunctionPrototype("contains", typeof(Object))}
+   * For iteration:
+     * name equals to `iterator`
+		[:Fact:]{typeof(java.lang.Iterable).isPureFunctionPrototype("iterator")}
+   * For cloning:
+     * name equals to `clone`
+		[:Fact:]{typeof(java.lang.Object).isPureFunctionPrototype("clone")}
+   * For data conversion:
+     * name starts with `to` following the [camel-case standard](https://en.wikipedia.org/wiki/Camel_case)
+		[:Fact:]{typeof(java.lang.Object).isPureFunctionPrototype("toString")}
+   * For well-known pure functions:
+   	 * name equals to one of `abs`, `acos`, `asin`, `atan`, `atan2`, `cbrt`, `ceil`, `cos`, `cosh`, `exp`, `floor`,
+   	   `hypot`, `log`, `log10`, `log1p`, `max`, `min`, `pow`, `random`, `rint`, `round`, `scalb`, `signum`, `sin`,
+   	   `sinh`, `sqrt`, `tan`, `tanh`, `ulp`.
+		[:Fact:]{typeof(java.lang.Math).isPureFunctionPrototype("abs", typeof(double))}
+		[:Fact:]{typeof(java.lang.Math).isPureFunctionPrototype("acos", typeof(double))}
+		[:Fact:]{typeof(java.lang.Math).isPureFunctionPrototype("asin", typeof(double))}
+		[:Fact:]{typeof(java.lang.Math).isPureFunctionPrototype("atan", typeof(double))}
+		[:Fact:]{typeof(java.lang.Math).isPureFunctionPrototype("atan2", typeof(double), typeof(double))}
+		[:Fact:]{typeof(java.lang.Math).isPureFunctionPrototype("cbrt", typeof(double))}
+		[:Fact:]{typeof(java.lang.Math).isPureFunctionPrototype("ceil", typeof(double))}
+		[:Fact:]{typeof(java.lang.Math).isPureFunctionPrototype("cos", typeof(double))}
+		[:Fact:]{typeof(java.lang.Math).isPureFunctionPrototype("cosh", typeof(double))}
+		[:Fact:]{typeof(java.lang.Math).isPureFunctionPrototype("exp", typeof(double))}
+		[:Fact:]{typeof(java.lang.Math).isPureFunctionPrototype("floor", typeof(double))}
+		[:Fact:]{typeof(java.lang.Math).isPureFunctionPrototype("hypot", typeof(double), typeof(double))}
+		[:Fact:]{typeof(java.lang.Math).isPureFunctionPrototype("log", typeof(double))}
+		[:Fact:]{typeof(java.lang.Math).isPureFunctionPrototype("log10", typeof(double))}
+		[:Fact:]{typeof(java.lang.Math).isPureFunctionPrototype("log1p", typeof(double))}
+		[:Fact:]{typeof(java.lang.Math).isPureFunctionPrototype("max", typeof(double), typeof(double))}
+		[:Fact:]{typeof(java.lang.Math).isPureFunctionPrototype("min", typeof(double), typeof(double))}
+		[:Fact:]{typeof(java.lang.Math).isPureFunctionPrototype("pow", typeof(double), typeof(double))}
+		[:Fact:]{typeof(java.lang.Math).isPureFunctionPrototype("random")}
+		[:Fact:]{typeof(java.lang.Math).isPureFunctionPrototype("rint", typeof(double))}
+		[:Fact:]{typeof(java.lang.Math).isPureFunctionPrototype("round", typeof(double))}
+		[:Fact:]{typeof(java.lang.Math).isPureFunctionPrototype("signum", typeof(float))}
+		[:Fact:]{typeof(java.lang.Math).isPureFunctionPrototype("sin", typeof(double))}
+		[:Fact:]{typeof(java.lang.Math).isPureFunctionPrototype("sinh", typeof(double))}
+		[:Fact:]{typeof(java.lang.Math).isPureFunctionPrototype("sqrt", typeof(double))}
+		[:Fact:]{typeof(java.lang.Math).isPureFunctionPrototype("tan", typeof(double))}
+		[:Fact:]{typeof(java.lang.Math).isPureFunctionPrototype("tanh", typeof(double))}
+		[:Fact:]{typeof(java.lang.Math).isPureFunctionPrototype("ulp", typeof(double))}
+2. The code of the function, *if it is written in SARL*, is analyzed in order to determine if it contains no
+   call to a side-effect (impure) features.
+
+If none of the cases above is matching the current definition of a function, then the function is assumed to be impure.
+
+
+### Manually Tagging of Pure Functions
+
+In the case the SARL compiler is not able to automatically determine the purity of a function, but you are sure that the function
+is pure, it is possible to mark the function as pure manually.
+
+        [:Success:]
+            package io.sarl.docs.faq.syntax
+            agent X {
+                [:On]
+				@Pure
+				def myFunction() : int {
+					// Do something complex
+					return 0
+				}
+                [:Off]
+            }
+        [:End:]
+
 
 [:Include:](../generalsyntaxref.inc)
 
