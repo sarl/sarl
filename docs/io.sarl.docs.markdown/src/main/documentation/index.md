@@ -11,7 +11,7 @@
 * [Run SARL Agent from the Command Line](./gettingstarted/RunSARLAgentCLI.md)
 * [Run SARL Agent from a Java Program](./gettingstarted/RunSARLAgentJava.md)
 
-## Frequently Asked Questions  (FAQ)
+## Frequently Asked Questions (FAQ)
 
 * [General FAQ on SARL](./faq/GeneralFAQ.md)
 * [SARL Syntax FAQ](./faq/SyntaxFAQ.md)
