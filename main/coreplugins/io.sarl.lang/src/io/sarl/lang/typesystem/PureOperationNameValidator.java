@@ -44,16 +44,39 @@ public class PureOperationNameValidator implements IPureOperationNameValidator {
 	 * considered as pure.
 	 */
 	public static final String[] SPECIAL_PURE_FUNCTION_NAME_PATTERNS = {
+		"abs", //$NON-NLS-1$
+		"a?cos", //$NON-NLS-1$
+		"a?sin", //$NON-NLS-1$
+		"atan2?", //$NON-NLS-1$
+		"cbrt", //$NON-NLS-1$
+		"ceil", //$NON-NLS-1$
 		"clone", //$NON-NLS-1$
+		"compare", //$NON-NLS-1$
+		"compareTo", //$NON-NLS-1$
 		"contains(?:[A-Z1-9_][a-zA-Z1-9_]*)?", //$NON-NLS-1$
+		"cosh", //$NON-NLS-1$
 		"equals", //$NON-NLS-1$
+		"exp", //$NON-NLS-1$
+		"floor", //$NON-NLS-1$
 		"get(?:[A-Z1-9_][a-zA-Z1-9_]*)?", //$NON-NLS-1$
 		"has[A-Z1-9_][a-zA-Z1-9_]*", //$NON-NLS-1$
 		"hashCode", //$NON-NLS-1$
+		"hypot", //$NON-NLS-1$
 		"is[A-Z1-9_][a-zA-Z1-9_]*", //$NON-NLS-1$
 		"iterator", //$NON-NLS-1$
 		"length", //$NON-NLS-1$
+		"log(?:1[0p])?", //$NON-NLS-1$
+		"max", //$NON-NLS-1$
+		"min", //$NON-NLS-1$
+		"pow", //$NON-NLS-1$
+		"random", //$NON-NLS-1$
+		"rint", //$NON-NLS-1$
+		"round", //$NON-NLS-1$
+		"si(?:(?:gnum)|(?:nh))", //$NON-NLS-1$
+		"sqrt", //$NON-NLS-1$
+		"tanh?", //$NON-NLS-1$
 		"to[A-Z1-9_][a-zA-Z1-9_]*", //$NON-NLS-1$
+		"ulp", //$NON-NLS-1$
 		"size", //$NON-NLS-1$
 	};
 
