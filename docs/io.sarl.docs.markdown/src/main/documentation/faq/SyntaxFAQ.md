@@ -434,5 +434,32 @@ Check SARL documentation on that [here](../reference/general/Operators.html#coll
 
 
 
+### Error "Expression with side effect is not allowed in guards"
+
+The enforcement of no-side-effect in guards was introduced in version 0.9: guard expression must not have side effect.
+
+SARL compiler tries to figure out if the functions used in the behavior guard have side-effect. 
+It does some clever analysis of the name of the method (e.g., getters) and also tries to check if the
+body has any method that is not [pure](https://en.wikipedia.org/wiki/Pure_function) (i.e., that may have side-effects).
+
+If this analysis does not work, the programmer can mark a method as pure using `@Pure` annotation, e.g.,:
+
+
+        [:Success:]
+            package io.sarl.docs.faq.syntax
+            interface E_MoveRandomly {}
+            agent X {
+                [:On]
+				@Pure
+				def MT_getEntityState(param : E_MoveRandomly) : int {
+					// Do something complex
+					return 0
+				}
+                [:Off]
+            }
+        [:End:]
+
+Details on the [documentation page for function definition](../reference/general/FuncDecls.html#purity-of-the-functions).
+
 [:Include:](../legal.inc)
 
