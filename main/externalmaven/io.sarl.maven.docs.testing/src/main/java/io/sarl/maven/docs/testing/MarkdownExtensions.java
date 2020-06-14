@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import io.bootique.help.HelpOption;
 import org.apache.commons.cli.Option;
@@ -220,9 +221,13 @@ public final class MarkdownExtensions {
 						buffer.append(" | "); //$NON-NLS-1$
 					}
 					if (column != null) {
-						String text = column.replaceAll("[ \t\n\r\f]+", " "); //$NON-NLS-1$ //$NON-NLS-2$
+						String text = column;
 						text = text.replaceAll("\\<", "&lt;");  //$NON-NLS-1$//$NON-NLS-2$
 						text = text.replaceAll("\\>", "&gt;");  //$NON-NLS-1$//$NON-NLS-2$
+						text = text.replaceAll("\n+", "<br>"); //$NON-NLS-1$ //$NON-NLS-2$
+						text = text.replaceAll("[ \t\r\f]+", " "); //$NON-NLS-1$ //$NON-NLS-2$
+						text = text.replaceAll(Pattern.quote("&p.lt;"), "<");  //$NON-NLS-1$//$NON-NLS-2$
+						text = text.replaceAll(Pattern.quote("&p.gt;"), ">");  //$NON-NLS-1$//$NON-NLS-2$
 						buffer.append(text);
 					}
 				}
