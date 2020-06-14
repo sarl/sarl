@@ -32,7 +32,7 @@ public final class SyntaxIssueCodes {
 
 	/** Prefix related to SARL for the issue codes.
 	 */
-	public static final String ISSUE_CODE_PREFIX = "io.sarl.lang.parser.SyntaxIssueCodes."; //$NON-NLS-1$
+	protected static final String ISSUE_CODE_PREFIX = "io.sarl.lang.parser.SyntaxIssueCodes."; //$NON-NLS-1$
 
 	/** Identifier of the issue related to the invalid used of a reserved keyword.
 	 */

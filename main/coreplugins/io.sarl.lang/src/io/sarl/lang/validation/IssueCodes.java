@@ -34,7 +34,7 @@ public final class IssueCodes {
 
 	/** Prefix related to SARL for the issue codes.
 	 */
-	public static final String ISSUE_CODE_PREFIX = "io.sarl.lang.validation.IssueCodes."; //$NON-NLS-1$
+	protected static final String ISSUE_CODE_PREFIX = "io.sarl.lang.validation.IssueCodes."; //$NON-NLS-1$
 
 	/**
 	 * An interface is implemented, but it is already implemented by the super type,

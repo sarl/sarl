@@ -118,7 +118,7 @@ public class SARLEarlyExitValidator extends XtendEarlyExitValidator {
 			}
 		}
 		if (expression != null) {
-			error("Unreachable expression.", expression, null, IssueCodes.UNREACHABLE_CODE); //$NON-NLS-1$
+			error(Messages.SARLEarlyExitValidator_0, expression, null, IssueCodes.UNREACHABLE_CODE); //$NON-NLS-1$
 			return true;
 		}
 		return false;

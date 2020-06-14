@@ -1043,7 +1043,7 @@ public class SARLValidator extends AbstractSARLValidator {
 						for (final ActionParameterTypes defaultSignature : defaultSignatures) {
 							issueData.add(defaultSignature.toString());
 						}
-						error(Messages.SARLValidator_33,
+						error(MessageFormat.format(Messages.SARLValidator_33, supertype.getSimpleName()),
 								member,
 								null,
 								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
@@ -1344,7 +1344,7 @@ public class SARLValidator extends AbstractSARLValidator {
 			final String validName = Utils.fixHiddenMember(field.getName());
 			error(MessageFormat.format(
 					Messages.SARLValidator_41,
-					field.getName()),
+					field.getName(), Messages.SARLValidator_100),
 					field,
 					XTEND_FIELD__NAME,
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
@@ -1352,8 +1352,8 @@ public class SARLValidator extends AbstractSARLValidator {
 					validName);
 		} else if (this.grammarAccess.getOccurrenceKeyword().equals(field.getName())) {
 			error(MessageFormat.format(
-					Messages.SARLValidator_41,
-					this.grammarAccess.getOccurrenceKeyword()),
+					Messages.SARLValidator_101,
+					this.grammarAccess.getOccurrenceKeyword(), Messages.SARLValidator_100),
 					field,
 					XTEND_FIELD__NAME,
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
@@ -1411,16 +1411,16 @@ public class SARLValidator extends AbstractSARLValidator {
 		final QualifiedName name = Utils.getQualifiedName(inferredParam);
 		if (isReallyDisallowedName(name)) {
 			error(MessageFormat.format(
-					Messages.SARLValidator_14,
-					parameter.getName()),
+					Messages.SARLValidator_41,
+					parameter.getName(), Messages.SARLValidator_14),
 					parameter,
 					XtendPackage.Literals.XTEND_PARAMETER__NAME,
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 					VARIABLE_NAME_DISALLOWED);
 		} else if (this.grammarAccess.getOccurrenceKeyword().equals(parameter.getName())) {
 			error(MessageFormat.format(
-					Messages.SARLValidator_14,
-					this.grammarAccess.getOccurrenceKeyword()),
+					Messages.SARLValidator_100,
+					this.grammarAccess.getOccurrenceKeyword(), Messages.SARLValidator_14),
 					parameter,
 					XtendPackage.Literals.XTEND_PARAMETER__NAME,
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
@@ -1440,16 +1440,16 @@ public class SARLValidator extends AbstractSARLValidator {
 			final QualifiedName name = Utils.getQualifiedName(param);
 			if (isReallyDisallowedName(name)) {
 				error(MessageFormat.format(
-						Messages.SARLValidator_14,
-						param.getName()),
+						Messages.SARLValidator_41,
+						param.getName(), Messages.SARLValidator_14),
 						closure,
 						XbasePackage.Literals.XCLOSURE__DECLARED_FORMAL_PARAMETERS,
 						index,
 						VARIABLE_NAME_DISALLOWED);
 			} else if (this.grammarAccess.getOccurrenceKeyword().equals(param.getName())) {
 				error(MessageFormat.format(
-						Messages.SARLValidator_14,
-						this.grammarAccess.getOccurrenceKeyword()),
+						Messages.SARLValidator_100,
+						this.grammarAccess.getOccurrenceKeyword(), Messages.SARLValidator_14),
 						closure,
 						XbasePackage.Literals.XCLOSURE__DECLARED_FORMAL_PARAMETERS,
 						index,
@@ -1469,16 +1469,16 @@ public class SARLValidator extends AbstractSARLValidator {
 		final QualifiedName name = QualifiedName.create(variable.getQualifiedName('.').split("\\.")); //$NON-NLS-1$
 		if (isReallyDisallowedName(name)) {
 			error(MessageFormat.format(
-					Messages.SARLValidator_15,
-					variable.getName()),
+					Messages.SARLValidator_41,
+					variable.getName(), Messages.SARLValidator_15),
 					variable,
 					XbasePackage.Literals.XVARIABLE_DECLARATION__NAME,
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 					VARIABLE_NAME_DISALLOWED);
 		} else if (this.grammarAccess.getOccurrenceKeyword().equals(variable.getName())) {
 			error(MessageFormat.format(
-					Messages.SARLValidator_15,
-					this.grammarAccess.getOccurrenceKeyword()),
+					Messages.SARLValidator_100,
+					this.grammarAccess.getOccurrenceKeyword(), Messages.SARLValidator_15),
 					variable,
 					XbasePackage.Literals.XVARIABLE_DECLARATION__NAME,
 					ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
@@ -1970,7 +1970,7 @@ public class SARLValidator extends AbstractSARLValidator {
 				false);
 	}
 
-	/** Check the implemeted type.
+	/** Check the implemented type.
 	 *
 	 * @param element the child type.
 	 * @param feature the syntactic feature related to the supertypes.
@@ -2172,7 +2172,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	/** Check for abstract methods.
 	 *
 	 * <p>Override the Xtend behavior for: <ul>
-	 * <li>not generating an error when a return type is missed. Indeed, the return type if "void" by default.</li>
+	 * <li>not generating an error when a return type is missed. Indeed, the return type is "void" by default.</li>
 	 * <li>generating a warning when "abstract" is missed.</li>
 	 * </ul>
 	 */
@@ -2934,7 +2934,7 @@ public class SARLValidator extends AbstractSARLValidator {
 			if (container != null) {
 				if (isOOType(container)) {
 					if (!isOOActiveAnnotation(annotation)) {
-						error(MessageFormat.format(Messages.SARLValidator_90, container.getName()),
+						error(MessageFormat.format(Messages.SARLValidator_34, container.getName()),
 								annotation,
 								null,
 								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
@@ -3181,7 +3181,7 @@ public class SARLValidator extends AbstractSARLValidator {
 										message.toString(),
 										type.getSimpleName(),
 										msg2.toString());
-								warning(m.toString(), member, location, org.eclipse.xtext.xbase.validation.IssueCodes.RAW_TYPE);
+								addIssue(m.toString(), member, location, org.eclipse.xtext.xbase.validation.IssueCodes.RAW_TYPE);
 							}
 							return;
 						}
@@ -3192,6 +3192,20 @@ public class SARLValidator extends AbstractSARLValidator {
 				}
 			}
 		}
+	}
+
+	@Check
+	@Override
+	protected void checkInferedApi(XtendFunction method) {
+		// Ignore "org.eclipse.xtend.core.validation.IssueCodes.api_type_inference" issue code
+		// because it is already supported by other checking functions.
+	}
+
+	@Check
+	@Override
+	protected void checkInferedApi(XtendField field) {
+		// Ignore "org.eclipse.xtend.core.validation.IssueCodes.api_type_inference" issue code
+		// because it is already supported by other checking functions.
 	}
 
 	/** The modifier validator for constructors.

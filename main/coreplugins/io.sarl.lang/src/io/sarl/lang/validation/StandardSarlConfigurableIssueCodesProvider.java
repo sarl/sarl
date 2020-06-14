@@ -114,7 +114,7 @@ public class StandardSarlConfigurableIssueCodesProvider extends XtendConfigurabl
 
 		acceptor.accept(create(
 				IssueCodes.PROGRAMMATIC_ISSUE_ANNOTATION,
-				SeverityConverter.SEVERITY_WARNING));
+				SeverityConverter.SEVERITY_ERROR));
 
 		acceptor.accept(create(
 				IssueCodes.MANUAL_INLINE_DEFINITION,
