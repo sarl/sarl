@@ -70,6 +70,7 @@
 	* [Assertions](./reference/general/Assertion.md)
 * Meta-programming:
 	* [Active annotations](./reference/general/ActiveAnnotations.md)
+* [Compiler Errors](./reference/CompilerErrors.md)
 * [Comparison between SARL and other Languages](./reference/LanguageComparison.md)
 
 ### Agent-Oriented Programming
@@ -81,14 +82,17 @@
 * [Behavior Reference](./reference/Behavior.md)
 * [Built-in Capacity Reference](./reference/BIC.md)
 * [Space Reference](./reference/Space.md)
+* [Compiler Errors](./reference/CompilerErrors.md)
 
 ### Object-Oriented Programming
 
 * [Basic Object-Oriented Programming Support](./reference/OOP.md)
 * [Comparison between SARL and other Languages](./reference/LanguageComparison.md)
+* [Compiler Errors](./reference/CompilerErrors.md)
 
 ## Compilation and Generation Infrastructure
 
+* [Compiler Errors](./reference/CompilerErrors.md)
 * [Basics of the SARL Compilation Process](./compilation/Basics.md)
 * [Generation to the Python Language](./compilation/PythonGeneration.md)
 
