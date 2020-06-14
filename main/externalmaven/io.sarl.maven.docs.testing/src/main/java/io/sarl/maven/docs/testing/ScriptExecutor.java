@@ -41,6 +41,18 @@ import io.sarl.lang.compiler.batch.ICompilatedResourceReceiver;
 @ImplementedBy(SarlScriptExecutor.class)
 public interface ScriptExecutor {
 
+	/** Name of the system property that should contains the filename of the
+	 * documentation file that is currently parsed.
+	 * @since 0.12
+	 */
+	public static final String PROP_CURRENT_FILE = "SARL_DOC_CURRENT_FILE"; //$NON-NLS-1$
+
+	/** Name of the system property that should contains the filename of the
+	 * folder in which is located the documentation file that is currently parsed.
+	 * @since 0.12
+	 */
+	public static final String PROP_CURRENT_FOLDER = "SARL_DOC_CURRENT_FOLDER"; //$NON-NLS-1$
+
 	/** Change the folder that the executor should used for its temporary data.
 	 *
 	 * @param dirname the folder name.

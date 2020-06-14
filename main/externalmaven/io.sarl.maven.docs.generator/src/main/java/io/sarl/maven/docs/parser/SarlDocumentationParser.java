@@ -2253,6 +2253,8 @@ public class SarlDocumentationParser {
 					if (!Strings.isNullOrEmpty(code)) {
 						final ScriptExecutor executor = context.getScriptExecutor();
 						if (executor != null) {
+							System.setProperty(ScriptExecutor.PROP_CURRENT_FILE, context.getCurrentFile().getAbsolutePath());
+							System.setProperty(ScriptExecutor.PROP_CURRENT_FOLDER, context.getCurrentFile().getParentFile().getAbsolutePath());
 							try {
 								final Object result = executor.execute(context.getLineNo(), code);
 								if (result != null) {
@@ -2327,6 +2329,8 @@ public class SarlDocumentationParser {
 					if (!Strings.isNullOrEmpty(code)) {
 						final ScriptExecutor executor = context.getScriptExecutor();
 						if (executor != null) {
+							System.setProperty(ScriptExecutor.PROP_CURRENT_FILE, context.getCurrentFile().getAbsolutePath());
+							System.setProperty(ScriptExecutor.PROP_CURRENT_FOLDER, context.getCurrentFile().getParentFile().getAbsolutePath());
 							try {
 								final Object result = executor.execute(context.getLineNo(), code);
 								if (result != null) {
