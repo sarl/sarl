@@ -177,7 +177,7 @@
 	{
 		"code": "io.sarl.lang.validation.IssueCodes.programmatic_issue_annotation",
 		"message": "*any-message*",
-		"cause": "It is possible to generate issue messages when a feature is used or invoked from the SARL code. The specification of the issue message is done with the annotation `@IssueOnCall` that takes an message (*any-message*). This annotation is attached to the feature for which a call must generate the issue",
+		"cause": "It is possible to generate issue messages when a feature is used or invoked from the SARL code. The specification of the issue message is done by using one of the annotations `@ErrorOnCall`, `@WarningOnCall` or `@InfoOnCall` that takes an message (*any-message*). This annotation is attached to the feature for which a call must generate the issue",
 		"level": "c/error"
 	},
 	{
@@ -527,7 +527,7 @@
 	{
 		"code": "org.eclipse.xtend.core.validation.IssueCodes.duplicate_field",
 		"message": "Duplicate extension with same type",
-		"cause": "[Extension on fields](./reference/Extension.html) is supported by SARL syntax. This error message is generated when two extensions have the same name. It is forbidden because they generate two hidden fields with the same name",
+		"cause": "[Extension on fields](./general/Extension.md) is supported by SARL syntax. This error message is generated when two extensions have the same name. It is forbidden because they generate two hidden fields with the same name",
 		"solution": "Rename one of the extensions",
 		"level": "error"
 	},
@@ -934,7 +934,7 @@
 	{
 		"code": "org.eclipse.xtend.core.validation.IssueCodes.invalid_extension_type",
 		"message": "The primitive type *name* is not a valid extension",
-		"cause": "[Extension on fields](./reference/Extension.html) is supported by SARL syntax. The purpose is to call the member of an object or a type that is marked by `extension`. A primitive type has no member. Consequently, using the `extension` on a variable of primitive type is impossile",
+		"cause": "[Extension on fields](./general/Extension.md) is supported by SARL syntax. The purpose is to call the member of an object or a type that is marked by `extension`. A primitive type has no member. Consequently, using the `extension` on a variable of primitive type is impossile",
 		"solution": "Remove `extension`; or replace the primitive type by its object-oriented equivalent",
 		"level": "error"
 	},

@@ -28,10 +28,6 @@
 			<artifactId>io.sarl.maven.docs.testing</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>io.sarl</groupId>
-			<artifactId>io.sarl.eclipse</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>io.janusproject</groupId>
 			<artifactId>io.janusproject.kernel</artifactId>
 		</dependency>
@@ -42,23 +38,6 @@
 		<dependency>
 			<groupId>io.sarl</groupId>
 			<artifactId>io.sarl.sarldoc</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.sarl.maven</groupId>
-			<artifactId>sarl-maven-plugin</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.sarl.lang</groupId>
-			<artifactId>io.sarl.lang.core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.sarl.lang</groupId>
-			<artifactId>io.sarl.lang</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.arakhne.afc.slf4j</groupId>
-			<artifactId>slf4j-log4j</artifactId>
-			<version>16.0</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -130,7 +109,11 @@
 
 					<autoSectionNumbering>true</autoSectionNumbering>
 					<addSectionLabels>true</addSectionLabels>
+
+					<outline>true</outline>
 					<outlineStyleId>page_outline</outlineStyleId>
+					<!-- <outlineExternalMarker>{:toc}</outlineExternalMarker> -->
+					<kramdown>true</kramdown>
 
 					<localLinkValidation>true</localLinkValidation>
 					<remoteLinkValidation>false</remoteLinkValidation>
