@@ -18,8 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package io.sarl.lang.tests.bugs.to01399;
+package io.sarl.lang.tests.general.parsing.general;
 
 import static io.sarl.tests.api.tools.TestEObjects.file;
 import static io.sarl.tests.api.tools.TestUtils.multilineString;
@@ -35,31 +34,27 @@ import io.sarl.lang.validation.IssueCodes;
 import io.sarl.tests.api.AbstractSarlTest;
 import io.sarl.tests.api.tools.TestValidator.Validator;
 
-/** Testing class for issue: Replace register function in Space by registerStrongParticipant and registerWeakParticipant.
- *
- * <p>https://github.com/sarl/sarl/issues/1008
- *
+/**
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @see "https://github.com/sarl/sarl/issues/1008"
  */
-@DisplayName("Bug #1008")
 @SuppressWarnings("all")
+@DisplayName("Syntax: programmatic warnings")
 @Tag("core")
-@Tag("sarlParsing")
-public class Bug1008Test extends AbstractSarlTest {
+@Tag("sarlValidation")
+public class WarningOnCallTest extends AbstractSarlTest {
 
-	private static final String SARL_CODE_01a = multilineString(
-			"package io.sarl.lang.tests.bug1008",
-			"import io.sarl.lang.annotation.ErrorOnCall",
+	private static final String SARL_CODE_01 = multilineString(
+			"package io.sarl.lang.tests.issueOnCallTest",
+			"import io.sarl.lang.annotation.WarningOnCall",
 			"interface XXX {",
-			"   @ErrorOnCall(\"This is a message\")",
+			"   @WarningOnCall(\"This is a message\")",
 			"   def myfct : void",
 			"   def myfct2 : void",
 			"}",
-			"class Bug1008Case {",
+			"class IssueOnCallTestCase {",
 			"  def fct(obj : XXX) : void {",
 			"     obj.myfct;",
 			"     obj.myfct2",
@@ -67,24 +62,24 @@ public class Bug1008Test extends AbstractSarlTest {
 			"}");
 
 	@Test
-	@DisplayName("instance access w/ annotation")
-	public void parsing01a() throws Exception {
-		SarlScript mas = file(getParseHelper(), SARL_CODE_01a);
+	@DisplayName("default instance access w/ annotation")
+	public void defaultInstanceAnnotation() throws Exception {
+		SarlScript mas = file(getParseHelper(), SARL_CODE_01);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
 		validator
-			.assertError(
+			.assertWarning(
 				XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 				IssueCodes.PROGRAMMATIC_ISSUE_ANNOTATION,
 				"This is a message");
 	}
 
-	private static final String SARL_CODE_01b = multilineString(
-			"package io.sarl.lang.tests.bug1008",
+	private static final String SARL_CODE_02 = multilineString(
+			"package io.sarl.lang.tests.issueOnCallTest",
 			"interface XXX {",
 			"   def myfct : void",
 			"   def myfct2 : void",
 			"}",
-			"class Bug1008Case {",
+			"class IssueOnCallTestCase {",
 			"  def fct(obj : XXX) : void {",
 			"     obj.myfct;",
 			"     obj.myfct2",
@@ -93,56 +88,56 @@ public class Bug1008Test extends AbstractSarlTest {
 
 	@Test
 	@DisplayName("instance access w/o annotation")
-	public void parsing01b() throws Exception {
-		SarlScript mas = file(getParseHelper(), SARL_CODE_01b);
+	public void instanceWithoutAnnotation() throws Exception {
+		SarlScript mas = file(getParseHelper(), SARL_CODE_02);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
 		validator.assertNoIssues();
 	}
 
-	private static final String SARL_CODE_02a = multilineString(
-			"package io.sarl.lang.tests.bug1008",
-			"import io.sarl.lang.annotation.ErrorOnCall",
+	private static final String SARL_CODE_3 = multilineString(
+			"package io.sarl.lang.tests.issueOnCallTest",
+			"import io.sarl.lang.annotation.WarningOnCall",
 			"class XXX {",
-			"   @ErrorOnCall(\"This is a message\")",
+			"   @WarningOnCall(\"This is a message\")",
 			"   static def myfct : void {}",
 			"   static def myfct2 : void {}",
 			"}",
-			"class Bug1008Case {",
+			"class IssueOnCallTestCase {",
 			"  def fct : void {",
-			"     XXX::myfct;",
-			"     XXX::myfct2",
+			"     XXX.myfct;",
+			"     XXX.myfct2",
 			"  }",
 			"}");
 
 	@Test
-	@DisplayName("static access w/ annotation")
-	public void parsing02a() throws Exception {
-		SarlScript mas = file(getParseHelper(), SARL_CODE_02a);
+	@DisplayName("default static access w/ annotation")
+	public void defaultStaticAnnotation() throws Exception {
+		SarlScript mas = file(getParseHelper(), SARL_CODE_3);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
 		validator
-			.assertError(
+			.assertWarning(
 				XbasePackage.eINSTANCE.getXAbstractFeatureCall(),
 				IssueCodes.PROGRAMMATIC_ISSUE_ANNOTATION,
 				"This is a message");
 	}
 
-	private static final String SARL_CODE_02b = multilineString(
-			"package io.sarl.lang.tests.bug1008",
+	private static final String SARL_CODE_4 = multilineString(
+			"package io.sarl.lang.tests.issueOnCallTest",
 			"class XXX {",
 			"   static def myfct : void {}",
 			"   static def myfct2 : void {}",
 			"}",
-			"class Bug1008Case {",
+			"class IssueOnCallTestCase {",
 			"  def fct : void {",
-			"     XXX::myfct;",
-			"     XXX::myfct2",
+			"     XXX.myfct;",
+			"     XXX.myfct2",
 			"  }",
 			"}");
 
 	@Test
 	@DisplayName("static access w/o annotation")
-	public void parsing02b() throws Exception {
-		SarlScript mas = file(getParseHelper(), SARL_CODE_02b);
+	public void staticWithoutAnnotation() throws Exception {
+		SarlScript mas = file(getParseHelper(), SARL_CODE_4);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
 		validator.assertNoIssues();
 	}

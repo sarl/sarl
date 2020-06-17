@@ -21,10 +21,10 @@
 
 package io.sarl.core
 
+import io.sarl.lang.annotation.WarningOnCall
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.EventListener
 import io.sarl.lang.core.EventSpace
-import io.sarl.lang.annotation.IssueOnCall
 
 /**
  * Event driven interaction space where participants (agents, etc) are free register and unregister themselves.
@@ -58,7 +58,8 @@ interface OpenEventSpace extends EventSpace {
 	 * @deprecated since 0.12, see {@link #registerStrongParticipant(EventListener)} and
 	 *     {@link #registerStrongParticipant(EventListener).
 	 */
-	@IssueOnCall("Prefer calling registerStrongParticipant() or registerWeakParticipant()")
+	@SuppressWarnings("use_reserved_sarl_annotation")
+	@WarningOnCall("Prefer calling registerStrongParticipant() or registerWeakParticipant()")
 	def register(participant : EventListener, weakParticipant : boolean = false) : Address fires ParticipantJoined {
 		if (weakParticipant) {
 			participant.registerWeakParticipant

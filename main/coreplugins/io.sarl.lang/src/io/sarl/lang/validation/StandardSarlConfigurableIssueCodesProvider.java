@@ -113,10 +113,6 @@ public class StandardSarlConfigurableIssueCodesProvider extends XtendConfigurabl
 				SeverityConverter.SEVERITY_WARNING));
 
 		acceptor.accept(create(
-				IssueCodes.PROGRAMMATIC_ISSUE_ANNOTATION,
-				SeverityConverter.SEVERITY_ERROR));
-
-		acceptor.accept(create(
 				IssueCodes.MANUAL_INLINE_DEFINITION,
 				SeverityConverter.SEVERITY_WARNING));
 

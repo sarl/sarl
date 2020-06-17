@@ -221,7 +221,9 @@ import org.eclipse.xtext.xtype.XComputedTypeReference;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.lang.annotation.EarlyExit;
-import io.sarl.lang.annotation.IssueOnCall;
+import io.sarl.lang.annotation.ErrorOnCall;
+import io.sarl.lang.annotation.InfoOnCall;
+import io.sarl.lang.annotation.WarningOnCall;
 import io.sarl.lang.controlflow.ISarlEarlyExitComputer;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.Behavior;
@@ -2265,7 +2267,9 @@ public class SARLValidator extends AbstractSARLValidator {
 			final QualifiedName reservedPackage = this.qualifiedNameConverter.toQualifiedName(
 					EarlyExit.class.getPackage().getName());
 			final String earlyExitAnnotation = EarlyExit.class.getName();
-			final String issueOnCallAnnotation = IssueOnCall.class.getName();
+			final String errorOnCallAnnotation = ErrorOnCall.class.getName();
+			final String warningOnCallAnnotation = WarningOnCall.class.getName();
+			final String infoOnCallAnnotation = InfoOnCall.class.getName();
 			for (final XAnnotation annotation : annotationTarget.getAnnotations()) {
 				final JvmType type = annotation.getAnnotationType();
 				if (type != null && !type.eIsProxy()) {
@@ -2277,7 +2281,9 @@ public class SARLValidator extends AbstractSARLValidator {
 									annotation,
 									USED_RESERVED_SARL_ANNOTATION);
 						}
-					} else if (!Objects.equal(type.getIdentifier(), issueOnCallAnnotation)) {
+					} else if (!Objects.equal(type.getIdentifier(), errorOnCallAnnotation)
+							&& !Objects.equal(type.getIdentifier(), warningOnCallAnnotation)
+							&& !Objects.equal(type.getIdentifier(), infoOnCallAnnotation)) {
 						final QualifiedName annotationName = this.qualifiedNameConverter.toQualifiedName(
 								type.getIdentifier());
 						if (annotationName.startsWith(reservedPackage)) {
@@ -2292,6 +2298,22 @@ public class SARLValidator extends AbstractSARLValidator {
 		}
 	}
 
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity"})
+	private static String parseIssueOnCallAnnotation(List<JvmAnnotationValue> values) {
+		final StringBuilder message = new StringBuilder();
+		for (final JvmAnnotationValue value : values) {
+			if (value instanceof JvmStringAnnotationValue) {
+				message.append(((JvmStringAnnotationValue) value).getValues());
+			} else if (value instanceof JvmCustomAnnotationValue) {
+				for (final Object obj : ((JvmCustomAnnotationValue) value).getValues()) {
+					if (obj instanceof XStringLiteral) {
+						message.append(((XStringLiteral) obj).getValue());
+					}
+				}
+			}
+		}
+		return message.toString();
+	}
 
 	/** Check if element has an programmatic issue message.
 	 *
@@ -2301,38 +2323,39 @@ public class SARLValidator extends AbstractSARLValidator {
 	@Check(CheckType.FAST)
 	@SuppressWarnings("checkstyle:nestedifdepth")
 	public void checkProgrammaticIssueMessage(XAbstractFeatureCall expression) {
-		if (!isIgnored(PROGRAMMATIC_ISSUE_ANNOTATION)) {
-			if (expression != null && expression.getFeature() != null) {
-				final JvmIdentifiableElement feature = expression.getFeature();
-				if (feature instanceof JvmAnnotationTarget) {
-					final JvmAnnotationTarget target = (JvmAnnotationTarget) feature;
-					final String annoName = IssueOnCall.class.getName();
-					for (final JvmAnnotationReference annotation : target.getAnnotations()) {
-						if (Objects.equal(annoName, annotation.getAnnotation().getIdentifier())) {
-							final List<JvmAnnotationValue> values = annotation.getValues();
-							if (values.isEmpty()) {
-								break;
-							}
-							final String message;
-							if (values.get(0) instanceof JvmStringAnnotationValue) {
-								message = Strings.concat("", ((JvmStringAnnotationValue) values.get(0)).getValues()); //$NON-NLS-1$
-							} else if (values.get(0) instanceof JvmCustomAnnotationValue) {
-								final StringBuilder b = new StringBuilder();
-								for (final Object obj : ((JvmCustomAnnotationValue) values.get(0)).getValues()) {
-									if (obj instanceof XStringLiteral) {
-										b.append(((XStringLiteral) obj).getValue());
-									}
-								}
-								message = b.toString();
-							} else {
-								break;
-							}
-							if (Strings.isEmpty(message)) {
-								break;
-							}
-							addIssue(
+		if (expression != null && expression.getFeature() != null) {
+			final JvmIdentifiableElement feature = expression.getFeature();
+			if (feature instanceof JvmAnnotationTarget) {
+				final JvmAnnotationTarget target = (JvmAnnotationTarget) feature;
+				final String errorAnnoName = ErrorOnCall.class.getName();
+				final String warningAnnoName = WarningOnCall.class.getName();
+				final String infoAnnoName = InfoOnCall.class.getName();
+				for (final JvmAnnotationReference annotation : target.getAnnotations()) {
+					final List<JvmAnnotationValue> values = annotation.getValues();
+					if (!values.isEmpty()) {
+						if (Objects.equal(errorAnnoName, annotation.getAnnotation().getIdentifier())) {
+							final String message = parseIssueOnCallAnnotation(values);
+							error(
 									MessageFormat.format(Messages.SARLValidator_99, message),
 									expression,
+									null,
+									ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+									PROGRAMMATIC_ISSUE_ANNOTATION);
+						} else if (Objects.equal(warningAnnoName, annotation.getAnnotation().getIdentifier())) {
+							final String message = parseIssueOnCallAnnotation(values);
+							warning(
+									MessageFormat.format(Messages.SARLValidator_99, message),
+									expression,
+									null,
+									ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+									PROGRAMMATIC_ISSUE_ANNOTATION);
+						} else if (Objects.equal(infoAnnoName, annotation.getAnnotation().getIdentifier())) {
+							final String message = parseIssueOnCallAnnotation(values);
+							info(
+									MessageFormat.format(Messages.SARLValidator_99, message),
+									expression,
+									null,
+									ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
 									PROGRAMMATIC_ISSUE_ANNOTATION);
 						}
 					}
