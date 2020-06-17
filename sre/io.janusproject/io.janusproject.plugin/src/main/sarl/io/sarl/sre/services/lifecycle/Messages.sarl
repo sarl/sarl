@@ -38,8 +38,6 @@ final class Messages extends NLS {
 		NLS.initializeMessages(BUNDLE_NAME, typeof(Messages))
 	}
 
-	public static var InjectionBasedLifecycleService_0 : String
-
 	public static var CannotSpawnException_0 : String
 
 	public static var InvalidSarlSpecificationException_0 : String

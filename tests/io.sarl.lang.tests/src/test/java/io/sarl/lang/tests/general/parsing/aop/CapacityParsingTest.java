@@ -285,7 +285,7 @@ public class CapacityParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
-					"The inheritance hierarchy of 'C1' is inconsistent");
+					"The inheritance hierarchy of C1 contains cycles");
 		}
 
 		@Test
@@ -331,7 +331,7 @@ public class CapacityParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
-					"The inheritance hierarchy of 'C3' is inconsistent");
+					"The inheritance hierarchy of C3 contains cycles");
 		}
 
 		@Test
@@ -345,7 +345,7 @@ public class CapacityParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
-					"The inheritance hierarchy of 'C3' is inconsistent");
+					"The inheritance hierarchy of C3 contains cycles");
 		}
 
 		@Test
@@ -359,7 +359,7 @@ public class CapacityParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlCapacity(),
 					org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
-					"The inheritance hierarchy of 'C3' is inconsistent");
+					"The inheritance hierarchy of C3 contains cycles");
 		}
 
 		@Test

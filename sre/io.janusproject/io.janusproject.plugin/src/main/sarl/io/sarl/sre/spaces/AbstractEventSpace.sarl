@@ -35,6 +35,7 @@ import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.logging.Level
 import javax.inject.Inject
 import org.eclipse.xtend.lib.annotations.Accessors
+import io.sarl.sre.IssueCodes
 
 /** 
  * Abstract implementation of an event space.
@@ -202,7 +203,7 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 			}
 		} catch (e : Throwable) {
 			this.logger.kernelLogger.log(Level::SEVERE,
-				MessageFormat::format(Messages::AbstractEventSpace_0, ^event, scope, e), e)
+				MessageFormat::format(Messages::AbstractEventSpace_0, IssueCodes::CANNOT_EMIT_IN_SPACE, ^event, scope, e), e)
 		}
 	}
 

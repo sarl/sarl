@@ -127,7 +127,7 @@ public class Bug919Test extends AbstractSarlTest {
 		validator.assertError(
 				SarlPackage.eINSTANCE.getSarlFormalParameter(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
-				"Invalid parameter name '$1'");
+				"Invalid name '$1'");
 	}
 
 	private static final String LAMBDA_PARAMETER_DECLARATION_SARL_CODE = multilineString(
@@ -152,7 +152,7 @@ public class Bug919Test extends AbstractSarlTest {
 		validator.assertError(
 				XbasePackage.eINSTANCE.getXClosure(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
-				"Invalid parameter name '$3'");
+				"Invalid name '$3'");
 	}
 
 	private static final String LOCAL_VARIABLE_DECLARATION_SARL_CODE = multilineString(
@@ -172,7 +172,7 @@ public class Bug919Test extends AbstractSarlTest {
 		validator.assertError(
 				XbasePackage.eINSTANCE.getXVariableDeclaration(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
-				"Invalid variable name '$2'");
+				"Invalid name '$2'");
 	}
 
 	private static final String FIELD_DECLARATION_SARL_CODE = multilineString(
@@ -192,7 +192,7 @@ public class Bug919Test extends AbstractSarlTest {
 		validator.assertError(
 				SarlPackage.eINSTANCE.getSarlField(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
-				"Invalid attribute name '$2'");
+				"Invalid name '$2'");
 	}
 
 	private static final String ACTION_DECLARATION_SARL_CODE = multilineString(

@@ -370,7 +370,7 @@ public class Bug590Test extends AbstractSarlTest {
 		validator.assertError(
 				SarlPackage.eINSTANCE.getSarlConstructor(),
 				IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR,
-				"Undefined default constructor");
+				"No default constructor in super type MessageFormat");
 	}
 
 	@Test

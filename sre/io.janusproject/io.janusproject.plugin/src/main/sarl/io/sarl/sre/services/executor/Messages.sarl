@@ -38,10 +38,10 @@ final class Messages extends NLS {
 		NLS.initializeMessages(BUNDLE_NAME, typeof(Messages))
 	}
 
+	public static var VerboseThreadExecutorPolicy_0 : String
 	public static var AbortPolicy_0 : String
 	public static var AbortPolicy_1 : String
 	public static var AbortPolicy_2 : String
-	public static var AbortPolicy_3 : String
 
 	private new {
 	}

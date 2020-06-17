@@ -92,7 +92,7 @@ public class Bug601Test extends AbstractSarlTest {
 		validator.assertError(
 				SarlPackage.eINSTANCE.getSarlFormalParameter(),
 				IssueCodes.VARIABLE_NAME_DISALLOWED,
-				"Invalid parameter name 'occurrence'");
+				"Invalid name 'occurrence'");
 	}
 
 	@Test
@@ -102,7 +102,7 @@ public class Bug601Test extends AbstractSarlTest {
 		validator.assertError(
 				SarlPackage.eINSTANCE.getSarlField(),
 				IssueCodes.VARIABLE_NAME_DISALLOWED,
-				"Invalid attribute name 'occurrence'");
+				"Invalid name 'occurrence'");
 	}
 
 	@Test
@@ -112,7 +112,7 @@ public class Bug601Test extends AbstractSarlTest {
 		validator.assertError(
 				SarlPackage.eINSTANCE.getSarlField(),
 				IssueCodes.VARIABLE_NAME_DISALLOWED,
-				"Invalid attribute name 'occurrence'");
+				"Invalid name 'occurrence'");
 	}
 
 	@Test
@@ -122,7 +122,7 @@ public class Bug601Test extends AbstractSarlTest {
 		validator.assertError(
 				XtendPackage.eINSTANCE.getXtendVariableDeclaration(),
 				IssueCodes.VARIABLE_NAME_DISALLOWED,
-				"Invalid variable name 'occurrence'");
+				"Invalid name 'occurrence'");
 	}
 
 	@Test
@@ -132,7 +132,7 @@ public class Bug601Test extends AbstractSarlTest {
 		validator.assertError(
 				XtendPackage.eINSTANCE.getXtendVariableDeclaration(),
 				IssueCodes.VARIABLE_NAME_DISALLOWED,
-				"Invalid variable name 'occurrence'");
+				"Invalid name 'occurrence'");
 	}
 
 }

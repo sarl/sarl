@@ -646,7 +646,7 @@ public class EventParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
-					"Invalid attribute name '$FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'");
+					"Invalid name '$FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'");
 		}
 
 		@Test
@@ -662,7 +662,7 @@ public class EventParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
-					"Invalid attribute name '$FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'");
+					"Invalid name '$FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'");
 		}
 
 		@Test
@@ -1063,7 +1063,7 @@ public class EventParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR,
-					"Undefined default constructor in the super-type");
+					"No default constructor in super type E1");
 		}
 
 		@Test
@@ -1083,7 +1083,7 @@ public class EventParsingTest extends AbstractSarlTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlConstructor(),
 					org.eclipse.xtend.core.validation.IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR,
-					"Undefined default constructor in the super-type");
+					"No default constructor in super type E1");
 		}
 
 		@Test

@@ -110,7 +110,7 @@ public class BehaviorParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlBehavior(),
 				org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
-				"The inheritance hierarchy of 'B1' is inconsistent");
+				"The inheritance hierarchy of B1 contains cycles");
 		}
 
 		@Test
@@ -1213,7 +1213,7 @@ public class BehaviorParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlField(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
-				"Invalid attribute name '$FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'");
+				"Invalid name '$FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'");
 		}
 
 		@Test
@@ -1229,7 +1229,7 @@ public class BehaviorParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlField(),
 				org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
-				"Invalid attribute name '$FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'");
+				"Invalid name '$FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'");
 		}
 
 		@Test
@@ -1673,7 +1673,7 @@ public class BehaviorParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlConstructor(),
 				org.eclipse.xtend.core.validation.IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR,
-				"Undefined default constructor in the super-type");
+				"No default constructor in super type B1");
 		}
 
 		@Test
@@ -1694,7 +1694,7 @@ public class BehaviorParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 				SarlPackage.eINSTANCE.getSarlConstructor(),
 				org.eclipse.xtend.core.validation.IssueCodes.MUST_INVOKE_SUPER_CONSTRUCTOR,
-				"Undefined default constructor in the super-type");
+				"No default constructor in super type B1");
 		}
 
 		@Test

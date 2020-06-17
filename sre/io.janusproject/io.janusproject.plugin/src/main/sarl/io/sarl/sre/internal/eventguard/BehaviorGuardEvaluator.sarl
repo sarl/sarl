@@ -27,6 +27,7 @@ import java.text.MessageFormat
 import java.util.Collection
 
 import com.google.common.base.Strings
+import io.sarl.sre.IssueCodes
 
 /**
  * Describes each class having one of its methods annotated with {@code PerceptGuardEvaluator} annotation corresponding to the
@@ -75,9 +76,11 @@ class BehaviorGuardEvaluator implements Comparable<BehaviorGuardEvaluator> {
 			this.method.accessible = true
 			this.method.invoke(this.target, ^event, behaviorsMethodsToExecute)
 		} catch (e : IllegalArgumentException) {
-			throw new Error(MessageFormat::format(Messages::BehaviorGuardEvaluator_0, ^event), e)
+			throw new Error(
+				MessageFormat::format(Messages::BehaviorGuardEvaluator_0, IssueCodes::EVENT_GUARD_ERROR, ^event), e)
 		} catch (e : IllegalAccessException) {
-			throw new Error(MessageFormat::format(Messages::BehaviorGuardEvaluator_1, ^event), e)
+			throw new Error(
+				MessageFormat::format(Messages::BehaviorGuardEvaluator_1, IssueCodes::EVENT_GUARD_ERROR, ^event), e)
 		} catch (e : InvocationTargetException) {
 			if (e.cause instanceof Error) {
 				throw e.cause as Error

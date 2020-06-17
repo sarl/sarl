@@ -22,6 +22,7 @@ package io.sarl.sre.services.lifecycle
 
 import io.sarl.lang.core.Agent
 import java.text.MessageFormat
+import io.sarl.sre.IssueCodes
 
 /** 
  * This exception is thrown when an agent cannot be spawned.
@@ -40,6 +41,7 @@ class CannotSpawnException extends RuntimeException {
 	new (agentClazz : Class<? extends Agent>, cause : Throwable = null) {
 		super(MessageFormat::format(
 			Messages::CannotSpawnException_0,
+			IssueCodes::SPAWN_ERROR,
 			agentClazz, cause?.localizedMessage),
 			cause)
 	}

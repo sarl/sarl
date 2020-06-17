@@ -125,7 +125,7 @@ public class AgentParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlAgent(),
 					org.eclipse.xtend.core.validation.IssueCodes.CYCLIC_INHERITANCE,
-					"The inheritance hierarchy of 'A1' is inconsistent");
+					"The inheritance hierarchy of A1 contains cycles");
 		}
 
 		@Test
@@ -899,7 +899,7 @@ public class AgentParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
-					"Invalid attribute name '$FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'");
+					"Invalid name '$FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'");
 		}
 
 		@Test
@@ -914,7 +914,7 @@ public class AgentParsingTest {
 			validate(getValidationHelper(), getInjector(), mas).assertError(
 					SarlPackage.eINSTANCE.getSarlField(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.VARIABLE_NAME_DISALLOWED,
-					"Invalid attribute name '$FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'");
+					"Invalid name '$FORMAL_PARAMETER_DEFAULT_VALUE_MYFIELD'");
 		}
 
 		@Test

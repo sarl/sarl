@@ -29,6 +29,7 @@ import java.util.concurrent.ThreadPoolExecutor
 import java.util.logging.Level
 import java.util.logging.LogRecord
 import javax.inject.Singleton
+import io.sarl.sre.IssueCodes
 
 /** 
  * Abstract implementation of the thread executor policies for rejected tasks and
@@ -120,20 +121,23 @@ abstract class AbstractLoggingThreadExecutorPolicy extends AbstractThreadExecuto
 			if (!this.logger.kernelLogger.isLoggable(Level::FINEST)) {
 				return
 			}
-			record = new LogRecord(Level::FINEST, MessageFormat::format(Messages::AbortPolicy_1, taskId, taskName))
+			record = new LogRecord(Level::FINEST, MessageFormat::format(Messages::AbortPolicy_0,
+				IssueCodes::TASK_CANCEL, taskId, taskName))
 		} else if (cause instanceof InterruptedException || exception instanceof InterruptedException) {
 			// Avoid too much processing if the error could not be logged
 			if (!this.logger.kernelLogger.isLoggable(Level::FINEST)) {
 				return
 			}
-			record = new LogRecord(Level::FINEST, MessageFormat::format(Messages::AbortPolicy_2, taskId, taskName))
+			record = new LogRecord(Level::FINEST, MessageFormat::format(Messages::AbortPolicy_1,
+				IssueCodes::TASK_INTERRUPT, taskId, taskName))
 		} else {
 			// Avoid too much processing if the error could not be logged
 			if (!this.logger.kernelLogger.isLoggable(Level::SEVERE)) {
 				return
 			}
 			record = new LogRecord(Level::SEVERE,
-				MessageFormat::format(Messages::AbortPolicy_3, cause.localizedMessage, taskId, taskName))
+				MessageFormat::format(Messages::AbortPolicy_2, IssueCodes::TASK_ERROR, cause.localizedMessage, taskId,
+				taskName))
 		}
 
 		record.setThrown(cause)
@@ -166,7 +170,9 @@ class VerboseThreadExecutorPolicy extends AbstractLoggingThreadExecutorPolicy {
 
 	override rejectedExecution(runnable : Runnable, executor : ThreadPoolExecutor) {
 		if (!runRejectedTask(runnable, executor)) {
-			val record = new LogRecord(Level::FINE, MessageFormat::format(Messages::AbortPolicy_0, runnable.toString))
+			val record = new LogRecord(Level::FINE,
+				MessageFormat::format(Messages::VerboseThreadExecutorPolicy_0,
+				IssueCodes::TASK_REJECT, runnable.toString))
 			this.logger.kernelLogger.log(record)
 		}
     }

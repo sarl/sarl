@@ -1421,7 +1421,7 @@ public class SARLValidator extends AbstractSARLValidator {
 					VARIABLE_NAME_DISALLOWED);
 		} else if (this.grammarAccess.getOccurrenceKeyword().equals(parameter.getName())) {
 			error(MessageFormat.format(
-					Messages.SARLValidator_100,
+					Messages.SARLValidator_101,
 					this.grammarAccess.getOccurrenceKeyword(), Messages.SARLValidator_14),
 					parameter,
 					XtendPackage.Literals.XTEND_PARAMETER__NAME,
@@ -1450,7 +1450,7 @@ public class SARLValidator extends AbstractSARLValidator {
 						VARIABLE_NAME_DISALLOWED);
 			} else if (this.grammarAccess.getOccurrenceKeyword().equals(param.getName())) {
 				error(MessageFormat.format(
-						Messages.SARLValidator_100,
+						Messages.SARLValidator_101,
 						this.grammarAccess.getOccurrenceKeyword(), Messages.SARLValidator_14),
 						closure,
 						XbasePackage.Literals.XCLOSURE__DECLARED_FORMAL_PARAMETERS,
@@ -1479,7 +1479,7 @@ public class SARLValidator extends AbstractSARLValidator {
 					VARIABLE_NAME_DISALLOWED);
 		} else if (this.grammarAccess.getOccurrenceKeyword().equals(variable.getName())) {
 			error(MessageFormat.format(
-					Messages.SARLValidator_100,
+					Messages.SARLValidator_101,
 					this.grammarAccess.getOccurrenceKeyword(), Messages.SARLValidator_15),
 					variable,
 					XbasePackage.Literals.XVARIABLE_DECLARATION__NAME,

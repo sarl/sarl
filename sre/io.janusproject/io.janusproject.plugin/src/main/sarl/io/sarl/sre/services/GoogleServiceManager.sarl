@@ -29,6 +29,7 @@ import io.sarl.sre.boot.configs.subconfigs.ServicesConfig
 import java.text.MessageFormat
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
+import io.sarl.sre.IssueCodes
 
 /** 
  * Implementation of a service manager based on the Google service manager.
@@ -53,7 +54,9 @@ class GoogleServiceManager extends AbstractServiceManager {
 		this.googleManager = sm
 		this.googleManager.addListener(new Listener() {
 			def failure(service : Service) {
-				getLogger.severe(MessageFormat::format(Messages::GoogleServiceManager_0, service.class.name))
+				getLogger.severe(
+					MessageFormat::format(Messages::GoogleServiceManager_0,
+						IssueCodes::SERVICE_MANAGER_ERROR, service.class.name))
 			}
 		})
 	}

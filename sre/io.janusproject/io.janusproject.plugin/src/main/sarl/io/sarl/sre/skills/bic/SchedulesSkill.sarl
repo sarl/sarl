@@ -49,6 +49,8 @@ import javax.inject.Inject
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
 import static io.sarl.sre.services.lifecycle.BehaviorLife.*
+import static java.text.MessageFormat.*
+import io.sarl.sre.IssueCodes
 
 /** 
  * Skill that permits to execute tasks with an executor service.
@@ -315,7 +317,8 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 			if (description !== null) {
 				var future = description.future
 				if (future !== null && registered && !future.done && !future.cancelled) {
-					throw new IllegalStateException(Messages::SchedulesSkill_2)
+					throw new IllegalStateException(
+						format(Messages::SchedulesSkill_1, IssueCodes::AGENT_TASK_ALREADY_LAUNCHED))
 				}
 			} else {
 				description = new TaskDescription()
@@ -670,11 +673,11 @@ skill SchedulesSkill extends Skill implements InternalSchedules {
 			}
 			val taskDescription = this.agentTaskRef
 			if (taskDescription === null) {
-				throw new RuntimeException(Messages.SchedulesSkill_0)
+				throw new RuntimeException(format(Messages.SchedulesSkill_0, IssueCodes::NULL_AGENT_TASK))
 			}
 			val task = taskDescription.task
 			if (task === null) {
-				throw new RuntimeException(Messages.SchedulesSkill_0)
+				throw new RuntimeException(format(Messages.SchedulesSkill_0, IssueCodes::NULL_AGENT_TASK))
 			}
 			val future = taskDescription.future
 			if (future !== null && (future.done || future.cancelled)) {

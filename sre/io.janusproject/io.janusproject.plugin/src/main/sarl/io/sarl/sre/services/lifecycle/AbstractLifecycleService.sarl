@@ -45,6 +45,7 @@ import org.eclipse.xtext.xbase.lib.Functions.Function0
 
 import static io.sarl.sre.services.lifecycle.AgentLife.*
 import static java.text.MessageFormat.*
+import io.sarl.sre.IssueCodes
 
 /** 
  * Implementation of a spawning service that is based on the other services of the SRE platform.
@@ -442,12 +443,13 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 				return true
 			} else {
 				this.loggingService.kernelLogger.warning [
-					format(Messages::AbstractLifecycleService_1, agentId)
+					format(Messages::AbstractLifecycleService_1,
+						IssueCodes::NOT_KILLABLE_ERROR, agentId)
 				]
 			}
 		} else {
 			this.loggingService.kernelLogger.warning [
-				format(Messages::AbstractLifecycleService_2, agentId)
+				format(Messages::AbstractLifecycleService_2, IssueCodes::NOT_ALIVE_ERROR, agentId)
 			]
 		}
 		return false
@@ -603,7 +605,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 class InvalidSarlSpecificationException extends RuntimeException {
 
 	new (agentType : Class<? extends Agent>) {
-		super(format(Messages::InvalidSarlSpecificationException_0, agentType.name))
+		super(format(Messages::InvalidSarlSpecificationException_0, IssueCodes::INVALID_SARL_SPECIFICATION, agentType.name))
 	}
 
 }
@@ -625,7 +627,7 @@ class SpawnDisabledException extends RuntimeException {
 		 * - the type of the agent to spawn.
 		 */
 	new (parentID : UUID, agentClazz : Class<? extends Agent>) {
-		super(format(Messages.SpawnDisabledException_0, parentID, agentClazz));
+		super(format(Messages.SpawnDisabledException_0, IssueCodes::DISABLED_SPAWN, parentID, agentClazz));
 	}
 
 }
