@@ -141,7 +141,7 @@ class BoidsSimulation implements EventListener {
 		this.myGUI = new EnvironmentGui(^space, height, width, this.boidBodies)
 
 		//Registering to receive GUIRepaint events
-		^space.register(this)
+		^space.registerWeakParticipant(this)
 		// Sending start to Environment
 		^space.emit(id, new Start(this.boidBodies))
 	}

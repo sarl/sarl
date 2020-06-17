@@ -91,7 +91,7 @@ agent LaunchingArea {
 	on Initialize [!occurrence.parameters.empty] {
 		loggingName = "LaunchingArea-" + this.ID
 		var ctrl = occurrence.parameters.get(0) as FireworksFxViewerController
-		ctrl.UISpace.register(asEventListener)
+		ctrl.UISpace.registerStrongParticipant(asEventListener)
 		ctrl.listenAndDraw(grid)
 		info("Finishing initialization of Launching Area")
 	}
