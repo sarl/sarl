@@ -27,7 +27,7 @@ import java.net.URLClassLoader;
 /** An isolated class loader.
  * This class loader does nto invokes its parent before its how behavior.
  * This is a difference with the standard class loading contract.
- * Additionally, the parent class loader is the system class loader. 
+ * Additionally, the parent class loader is the system class loader.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -38,7 +38,7 @@ import java.net.URLClassLoader;
 final class IsolatedURLClassLoader extends URLClassLoader {
 
 	private final ClassLoader parentClassLoader = ClassLoader.getSystemClassLoader();
-	
+
 	/** Constructor.
 	 *
 	 * @param urls the class path for this loader.

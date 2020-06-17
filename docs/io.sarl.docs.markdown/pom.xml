@@ -39,6 +39,16 @@
 			<groupId>io.sarl</groupId>
 			<artifactId>io.sarl.sarldoc</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.sarl.maven</groupId>
+			<artifactId>sarl-maven-plugin</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

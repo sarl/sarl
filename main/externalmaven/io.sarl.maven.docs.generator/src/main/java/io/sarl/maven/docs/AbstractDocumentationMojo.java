@@ -173,7 +173,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 
 	@Component
 	private ToolchainManager toolchainManager;
-	
+
 	private ReflectExtensions reflect;
 
 	private static boolean isFileExtension(File filename, String[] extensions) {
@@ -557,7 +557,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 		}
 		return files;
 	}
-	
+
 	/** Replies a class loader that is able to read the classes from the class path.
 	 *
 	 * @param parent the parent class loader.

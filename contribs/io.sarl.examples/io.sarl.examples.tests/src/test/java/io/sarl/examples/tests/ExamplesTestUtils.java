@@ -96,7 +96,7 @@ public final class ExamplesTestUtils {
 	public static final String MAVEN_COMMAND = "mvn"; //$NON-NLS-1$
 
 	// TODO Remove this definition when moving to Java 9 or higher (because JavaFX is mavenized)
-	public static final String DEFAULT_JAVAFX_PATH = "/home/sgalland/git/sarl/contribs/io.sarl.examples/io.sarl.examples.tests/../../../build-tools/libs/jfxrt.jar"; //$NON-NLS-1$
+	public static final String DEFAULT_JAVAFX_PATH = "/home/sgalland/git/sarl.dsl/contribs/io.sarl.examples/io.sarl.examples.tests/../../../build-tools/libs/jfxrt.jar"; //$NON-NLS-1$
 
 	private volatile static List<ExampleDescription> ARCHIVE_BUFFER = null;
 

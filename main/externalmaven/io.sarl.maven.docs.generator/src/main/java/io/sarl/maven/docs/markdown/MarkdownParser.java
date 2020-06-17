@@ -158,9 +158,9 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 
 	private boolean generateOutline = true;
 
-	private String externalOutlineMarker = null;
+	private String externalOutlineMarker;
 
-	private boolean kramdown = false;
+	private boolean kramdown;
 
 	@Override
 	@Inject
@@ -460,7 +460,8 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	}
 
 	/** Change the flag that indicates if the bug fixes related to Kramdown are enabled.
-	 * For example, the automatic section numbering is not 
+	 * For example, the automatic section numbering is not working as expected into
+	 * Kramdown; so that is should be fixed into our code.
 	 *
 	 * @param enable is {@code true} if the bug fixes are enabled.
 	 * @since 0.12
@@ -816,7 +817,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 		return false;
 	}
 
-	/** Update the outline tags: numbering of the sections, generation of the outline
+	/** Update the outline tags: numbering of the sections, generation of the outline.
 	 *
 	 * @param content the content with outline tag.
 	 * @return the content with expended outline.
@@ -980,7 +981,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 		if (isKramdownFix()) {
 			id = id .replaceAll("\\.", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		id = id.replaceAll("[^a-zA-Z0-9.]+", "-"); //$NON-NLS-1$ //$NON-NLS-2$
+		id = id.replaceAll("[^a-zA-Z0-9]+", "-"); //$NON-NLS-1$ //$NON-NLS-2$
 		id = id.toLowerCase();
 		id = id.replaceFirst("^[^a-zA-Z0-9]+", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		id = id.replaceFirst("[^a-zA-Z0-9]+$", ""); //$NON-NLS-1$ //$NON-NLS-2$
