@@ -1,6 +1,6 @@
 " Vim syntax file
 " Language: SARL
-" Version: 0.11
+" Version: 0.12
 " 
 "  $Id$
 " 

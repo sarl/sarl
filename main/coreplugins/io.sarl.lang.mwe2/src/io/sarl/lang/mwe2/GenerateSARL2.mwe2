@@ -627,6 +627,10 @@ Workflow {
     				singleton = true
     				eager = true
     			}
+    			runtime = {
+    				bind = "org.eclipse.xtext.xbase.interpreter.IExpressionInterpreter"
+    				to = "io.sarl.lang.interpreter.SarlExpressionInterpreter"
+    			}
 
     			ui = {
     				bind = "io.sarl.lang.extralanguage.IExtraLanguageContributions"

@@ -24,7 +24,7 @@
 	  limitations under the License.
 
 -->
-<!-- Style for SARL 0.11 -->
+<!-- Style for SARL 0.12 -->
 
 <language id="sarl" _name="SARL" version="2.0" _section="Source">
  <metadata>
