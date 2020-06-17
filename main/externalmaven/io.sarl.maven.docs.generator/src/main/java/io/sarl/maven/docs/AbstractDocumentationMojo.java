@@ -22,7 +22,9 @@
 package io.sarl.maven.docs;
 
 import java.io.File;
+import java.io.IOError;
 import java.io.IOException;
+import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,7 +60,6 @@ import org.apache.maven.toolchain.ToolchainPrivate;
 import org.apache.maven.toolchain.java.JavaToolchain;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
-import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.util.ReflectExtensions;
@@ -79,10 +80,6 @@ import io.sarl.maven.docs.testing.ScriptExecutor;
  * @since 0.6
  */
 public abstract class AbstractDocumentationMojo extends AbstractMojo {
-
-	/** Name of the default source directory.
-	 */
-	public static final String DEFAULT_SOURCE_DIRECTORY = "src/main/documentation"; //$NON-NLS-1$
 
 	/**
 	 * Location of the temp directory.
@@ -176,7 +173,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 
 	@Component
 	private ToolchainManager toolchainManager;
-
+	
 	private ReflectExtensions reflect;
 
 	private static boolean isFileExtension(File filename, String[] extensions) {
@@ -216,7 +213,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 		} else {
 			this.inferredSourceDirectories = Lists.newArrayList(this.project.getCompileSourceRoots());
 			this.inferredSourceDirectories.addAll(this.sourceDirectories);
-			this.inferredSourceDirectories.add(DEFAULT_SOURCE_DIRECTORY);
+			this.inferredSourceDirectories.add(Constants.DEFAULT_SOURCE_DIRECTORY);
 		}
 
 		getLog().info(Messages.AbstractDocumentationMojo_0);
@@ -227,7 +224,8 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 			this.reflect = this.injector.getInstance(ReflectExtensions.class);
 		}
 
-		this.targetLanguageFileExtension = this.injector.getInstance(Key.get(String.class, Names.named(Constants.FILE_EXTENSIONS)));
+		this.targetLanguageFileExtension = this.injector.getInstance(Key.get(String.class, Names.named(
+				org.eclipse.xtext.Constants.FILE_EXTENSIONS)));
 
 		final String errorMessage = internalExecute();
 		if (!Strings.isEmpty(errorMessage)) {
@@ -397,13 +395,15 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 
 		final ScriptExecutor scriptExecutor = internalParser.getScriptExecutor();
 		final StringBuilder cp = new StringBuilder();
-		for (final File cpElement : getClassPath()) {
+		final List<File> fullCp = getClassPath();
+		for (final File cpElement : fullCp) {
 			if (cp.length() > 0) {
 				cp.append(File.pathSeparator);
 			}
 			cp.append(cpElement.getAbsolutePath());
 		}
 		scriptExecutor.setClassPath(cp.toString());
+		scriptExecutor.setClassLoaderBuilder(it -> getProjectClassLoader(it, fullCp, fullCp.size()));
 		final String bootPath = getBootClassPath();
 		if (!Strings.isEmpty(bootPath)) {
 			scriptExecutor.setBootClassPath(bootPath);
@@ -537,16 +537,17 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	 */
 	protected List<File> getClassPath() throws IOException {
 		final Set<String> classPath = new LinkedHashSet<>();
-		classPath.add(this.session.getCurrentProject().getBuild().getSourceDirectory());
+		final MavenProject curProj = this.session.getCurrentProject();
+		classPath.add(curProj.getBuild().getSourceDirectory());
 		try {
-			classPath.addAll(this.session.getCurrentProject().getCompileClasspathElements());
+			classPath.addAll(curProj.getCompileClasspathElements());
 		} catch (DependencyResolutionRequiredException e) {
 			throw new IOException(e.getLocalizedMessage(), e);
 		}
-		for (final Artifact dep : this.session.getCurrentProject().getArtifacts()) {
+		for (final Artifact dep : curProj.getArtifacts()) {
 			classPath.add(dep.getFile().getAbsolutePath());
 		}
-		classPath.remove(this.session.getCurrentProject().getBuild().getOutputDirectory());
+		classPath.remove(curProj.getBuild().getOutputDirectory());
 		final List<File> files = new ArrayList<>();
 		for (final String filename : classPath) {
 			final File file = new File(filename);
@@ -555,6 +556,27 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 			}
 		}
 		return files;
+	}
+	
+	/** Replies a class loader that is able to read the classes from the class path.
+	 *
+	 * @param parent the parent class loader.
+	 * @param classPath the additional class path.
+	 * @param size the size of the class path.
+	 * @return the class loader.
+	 */
+	private ClassLoader getProjectClassLoader(ClassLoader parent, Iterable<File> classPath, int size) {
+		try {
+			final URL[] urls = new URL[size];
+			int i = 0;
+			for (final File localFile : classPath) {
+				urls[i] = localFile.toURI().toURL();
+				++i;
+			}
+			return new IsolatedURLClassLoader(urls);
+		} catch (IOException exception) {
+			throw new IOError(exception);
+		}
 	}
 
 	/** Replies the boot classpath.

@@ -102,6 +102,33 @@ public class GenerateMojo extends AbstractDocumentationMojo {
 	protected String outlineDepth;
 
 	/**
+	 * Indicates if the outline must be automatically generated.
+	 *
+	 * @since 0.12
+	 */
+	@Parameter(defaultValue = "true", required = false)
+	protected boolean outline;
+
+	/**
+	 * Specify an external marker that must be written in place of the automatically generated outline.
+	 * This marker is used by the Markdown generator to create automatically the outline, by itself.
+	 *
+	 * @since 0.12
+	 */
+	@Parameter(defaultValue = "", required = false)
+	protected String outlineExternalMarker;
+
+	/**
+	 * Specify if the external Markdown generator is Kramdown. Several internal behaviors are integrated
+	 * into the documentation generator in order to fix the bugs of Kramdown (mostly related to the unexpected
+	 * auto-formating of the section header reference marks).
+	 *
+	 * @since 0.12
+	 */
+	@Parameter(defaultValue = "false", required = false)
+	protected boolean kramdown;
+
+	/**
 	 * Indicates if the YAML header should be added.
 	 */
 	@Parameter(defaultValue = "false", required = false)
@@ -130,6 +157,9 @@ public class GenerateMojo extends AbstractDocumentationMojo {
 			mdParser.setMarkdownToHtmlReferenceTransformation(this.md2html);
 			mdParser.setPureHtmlReferenceTransformation(this.transformPureHtmlLinks);
 			mdParser.setOutlineStyleId(this.outlineStyleId);
+			mdParser.setOutlineExternalMarker(this.outlineExternalMarker);
+			mdParser.setOutlineGeneration(this.outline);
+			mdParser.setKramdownFix(this.kramdown);
 		}
 		return parser;
 	}

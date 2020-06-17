@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -39,7 +40,6 @@ import org.arakhne.afc.vmutil.json.JsonBuffer;
 import org.arakhne.afc.vmutil.json.JsonableObject;
 import org.eclipse.xtext.diagnostics.Diagnostic;
 import org.eclipse.xtext.util.Strings;
-import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.slf4j.LoggerFactory;
 
@@ -273,11 +273,11 @@ public final class IssueDatabaseExtensions {
 	@Pure
 	public static List<IssueDescription> sort(List<IssueDescription> descriptions) {
 		descriptions.sort((a, b) -> {
-			int cmp = a.getDisplayCode().compareTo(b.getDisplayCode());
+			int cmp = a.getDisplayCode().compareToIgnoreCase(b.getDisplayCode());
 			if (cmp != 0) {
 				return cmp;
 			}
-			cmp = a.getCodePrefix().compareTo(b.getCodePrefix());
+			cmp = a.getCodePrefix().compareToIgnoreCase(b.getCodePrefix());
 			if (cmp != 0) {
 				return cmp;
 			}
@@ -285,7 +285,7 @@ public final class IssueDatabaseExtensions {
 			if (cmp != 0) {
 				return cmp;
 			}
-			return a.message.compareTo(b.message);
+			return a.message.compareToIgnoreCase(b.message);
 		});
 		return descriptions;
 	}
@@ -298,34 +298,23 @@ public final class IssueDatabaseExtensions {
 		return "\n";
 	}
 
-	/** Validate the issue codes in order they are found into the SARL, Xtend, Xbase and Xtext issue codes.
+	/** Validate the fact that all the issue codes within the given argument are found into
+	 * the SARL, Xtend, Xbase and Xtext issue codes.
 	 *
-	 * @param descriptions the list of issue descriptions to render.
+	 * @param descriptions the list of issue descriptions to validate.
 	 * @return {@code descriptions}
 	 */
 	@Pure
-	@Inline("validate($1, true)")
-	public static List<IssueDescription> validate(List<IssueDescription> descriptions) {
-		return validate(descriptions, true);
-	}
-
-	/** Validate the issue codes in order they are found into the SARL, Xtend, Xbase and Xtext issue codes.
-	 *
-	 * @param descriptions the list of issue descriptions to render.
-	 * @param failIfNotDocumented indicates if the function failed if an issue code is not documented.
-	 * @return {@code descriptions}
-	 */
-	@Pure
-	public static List<IssueDescription> validate(List<IssueDescription> descriptions, boolean failIfNotDocumented) {
-		final Set<String> definedCodes = buildIssueCodeList();
+	public static List<IssueDescription> validateSarl(List<IssueDescription> descriptions) {
+		final Set<String> definedCodes = buildSarlIssueCodeList();
 		getLogger().info("Found " + definedCodes.size() + " issue codes from the SARL compiler source code");
-		if (!validateIssueCodes(descriptions, failIfNotDocumented, definedCodes)) {
-			throw new IllegalStateException("Error when validating the documented issue codes. See error(s) above for details.");
+		if (!validateIssueCodes(descriptions, definedCodes, "SARL")) {
+			throw new IllegalStateException("Error when validating the documented SARL issue codes. See error(s) above for details.");
 		}
 		return descriptions;
 	}
 
-	private static boolean validateIssueCodes(List<IssueDescription> descriptions, boolean failIfNotDocumented, Set<String> definedCodes) {
+	private static boolean validateIssueCodes(List<IssueDescription> descriptions, Set<String> definedCodes, String label) {
 		boolean success = true;
 		final Set<String> notDocumentedCodes = new TreeSet<>();
 		notDocumentedCodes.addAll(definedCodes);
@@ -333,7 +322,7 @@ public final class IssueDatabaseExtensions {
 			notDocumentedCodes.remove(description.getCode());
 			if (!definedCodes.contains(description.getCode())) {
 				success = false;
-				getLogger().error("Too much documented: '" + description.getCode() + "'. This issue code is not found into the SARL source code");
+				getLogger().error("Too much documented: '" + description.getCode() + "'. This issue code is not found into the " + label + " source code");
 			}
 		}
 		if (!success) {
@@ -341,12 +330,29 @@ public final class IssueDatabaseExtensions {
 		}
 		for (String notDocumentedCode : notDocumentedCodes) {
 			success = false;
-			getLogger().error("Not enough documented: '" + notDocumentedCode + "'. This issue code has no documentation");
+			getLogger().error("Not enough documented: '" + notDocumentedCode + "'. This " + label + " issue code has no documentation");
 		}
 		return success;
 	}
 
-	private static Set<String> buildIssueCodeList() {
+	/** Validate the fact that all the issue codes within the given argument are found into
+	 * the Janus run-time environment.
+	 *
+	 * @param descriptions the list of issue descriptions to validate.
+	 * @param issueListList the classes that contains the issue codes.
+	 * @return {@code descriptions}
+	 */
+	@Pure
+	public static List<IssueDescription> validate(List<IssueDescription> descriptions, Collection<Class<?>> issueListList) {
+		final Set<String> definedCodes = buildIssueCodeList(issueListList);
+		getLogger().info("Found " + definedCodes.size() + " issue codes from the Janus source code");
+		if (!validateIssueCodes(descriptions, definedCodes, "Janus")) {
+			throw new IllegalStateException("Error when validating the documented Janus issue codes. See error(s) above for details.");
+		}
+		return descriptions;
+	}
+
+	private static Set<String> buildSarlIssueCodeList() {
 		final Set<String> codes = new TreeSet<>();
 		// Validation issues
 		extractIssueCodes(IssueCodes.class, codes);
@@ -360,6 +366,14 @@ public final class IssueDatabaseExtensions {
 		codes.add(Diagnostic.SYNTAX_DIAGNOSTIC_WITH_RANGE);
 		// Linking issues
 		codes.add(Diagnostic.LINKING_DIAGNOSTIC);
+		return codes;
+	}
+
+	private static Set<String> buildIssueCodeList(Collection<Class<?>> types) {
+		final Set<String> codes = new TreeSet<>();
+		for (final Class<?> type : types) {
+			extractIssueCodes(type, codes);
+		}
 		return codes;
 	}
 

@@ -29,12 +29,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.UnaryOperator;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 
 import com.google.common.io.Files;
 import com.google.inject.Injector;
-import com.google.inject.Provider;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.diagnostics.Severity;
@@ -48,6 +49,7 @@ import org.slf4j.helpers.NOPLogger;
 import io.sarl.lang.compiler.batch.CleaningPolicy;
 import io.sarl.lang.compiler.batch.ICompilatedResourceReceiver;
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
+import io.sarl.lang.interpreter.SarlExpressionInterpreter;
 import io.sarl.lang.sarl.SarlClass;
 import io.sarl.lang.sarl.SarlField;
 import io.sarl.lang.sarl.SarlScript;
@@ -65,6 +67,8 @@ public class SarlScriptExecutor implements ScriptExecutor {
 	private File tmpFolder = null;
 
 	private String classpath = Strings.emptyIfNull(null);
+
+	private UnaryOperator<ClassLoader> classLoaderBuilder;
 
 	private String bootClasspath = Strings.emptyIfNull(null);
 
@@ -92,6 +96,11 @@ public class SarlScriptExecutor implements ScriptExecutor {
 	@Override
 	public void setClassPath(String classpath) {
 		this.classpath = Strings.emptyIfNull(classpath);
+	}
+
+	@Override
+	public void setClassLoaderBuilder(UnaryOperator<ClassLoader> builder) {
+		this.classLoaderBuilder = builder;
 	}
 
 	@Override
@@ -181,7 +190,7 @@ public class SarlScriptExecutor implements ScriptExecutor {
 		try {
 			assertNoIssue(lineno, issues);
 			if (resources.isEmpty()) {
-				throw new IllegalStateException("No Xtext resource created [line:" + lineno + "]"); //$NON-NLS-1$ //$NON-NLS-2$
+				throw new NoXtextResourceException(lineno);
 			}
 			for (Resource resource : resources) {
 				SarlScript script = (SarlScript) resource.getContents().get(0);
@@ -189,6 +198,10 @@ public class SarlScriptExecutor implements ScriptExecutor {
 				SarlField field = (SarlField) clazz.getMembers().get(0);
 				XExpression xexpression = field.getInitialValue();
 				final IExpressionInterpreter interpreter = this.interpreterProvider.get();
+				if (interpreter instanceof SarlExpressionInterpreter && this.classLoaderBuilder != null) {
+					final SarlExpressionInterpreter exprEvaluator = (SarlExpressionInterpreter) interpreter;
+					exprEvaluator.expandClassLoader(this.classLoaderBuilder);
+				}
 				IEvaluationResult result = interpreter.evaluate(xexpression);
 				if (result.getException() == null) {
 					return result.getResult();

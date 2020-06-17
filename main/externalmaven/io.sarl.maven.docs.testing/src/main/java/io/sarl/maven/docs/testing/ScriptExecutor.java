@@ -24,6 +24,7 @@ package io.sarl.maven.docs.testing;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.UnaryOperator;
 
 import com.google.inject.ImplementedBy;
 import org.arakhne.afc.vmutil.FileSystem;
@@ -59,11 +60,20 @@ public interface ScriptExecutor {
 	 */
 	void setTempFolder(File dirname);
 
-	/** Change the classpath that the executor should used.
+	/** Change the classpath that the compiler should used.
 	 *
 	 * @param classpath the classpath.
 	 */
 	void setClassPath(String classpath);
+
+	/** Change the builder of class loader for this executor.
+	 * The contract is that the builder replies a class loader that is child of the class loader
+	 * given as argument to the builder's creation function.
+	 *
+	 * @param builder class loader.
+	 * @since 0.12
+	 */
+	void setClassLoaderBuilder(UnaryOperator<ClassLoader> builder);
 
 	/** Change the boot classpath that the executor should used.
 	 *

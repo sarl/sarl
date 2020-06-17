@@ -86,6 +86,9 @@ public final class MarkdownExtensions {
 			return ""; //$NON-NLS-1$
 		}
 		final List<Option> optList = new ArrayList<>(options.getOptions());
+		if (optList.isEmpty()) {
+			return ""; //$NON-NLS-1$
+		}
 		Collections.sort(optList, new OptionComparator());
 
 		final StringBuilder buffer = new StringBuilder();

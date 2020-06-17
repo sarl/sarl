@@ -156,6 +156,12 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 
 	private boolean transformPureHtmlReferences = true;
 
+	private boolean generateOutline = true;
+
+	private String externalOutlineMarker = null;
+
+	private boolean kramdown = false;
+
 	@Override
 	@Inject
 	public void setDocumentParser(SarlDocumentationParser parser) {
@@ -413,6 +419,63 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	 */
 	public String getSectionNumberFormat() {
 		return this.sectionNumberFormat;
+	}
+
+	/** Set if the outline must be generated or not by this parser.
+	 *
+	 * @param enable {@code true} if the outline is automatically generated.
+	 * @since 0.12
+	 */
+	public void setOutlineGeneration(boolean enable) {
+		this.generateOutline = enable;
+	}
+
+	/** Replies if the outline must be generated or not by this parser.
+	 *
+	 * @return {@code true} if the outline is automatically generated.
+	 * @since 0.12
+	 */
+	public boolean isOutlineGeneration() {
+		return this.generateOutline;
+	}
+
+	/** Set the external marker that is used by a Markdown generator in order to
+	 * automatically generate the outline.
+	 *
+	 * @param marker the external marker; or {@code null} if none.
+	 * @since 0.12
+	 */
+	public void setOutlineExternalMarker(String marker) {
+		this.externalOutlineMarker = marker;
+	}
+
+	/** Replies the external marker that is used by a Markdown generator in order to
+	 * automatically generate the outline.
+	 *
+	 * @return the external marker; or {@code null} if none.
+	 * @since 0.12
+	 */
+	public String getOutlineExternalMarker() {
+		return this.externalOutlineMarker;
+	}
+
+	/** Change the flag that indicates if the bug fixes related to Kramdown are enabled.
+	 * For example, the automatic section numbering is not 
+	 *
+	 * @param enable is {@code true} if the bug fixes are enabled.
+	 * @since 0.12
+	 */
+	public void setKramdownFix(boolean enable) {
+		this.kramdown = enable;
+	}
+
+	/** Replies if the bug fixes related to Kramdown are enabled.
+	 *
+	 * @return {@code true} if the bug fixes are enabled.
+	 * @since 0.12
+	 */
+	public boolean isKramdownFix() {
+		return this.kramdown;
 	}
 
 	/** Change the level at which the titles may appear in the outline.
@@ -753,7 +816,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 		return false;
 	}
 
-	/** Update the outline tags.
+	/** Update the outline tags: numbering of the sections, generation of the outline
 	 *
 	 * @param content the content with outline tag.
 	 * @return the content with expended outline.
@@ -878,7 +941,14 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 		}
 
 		final String outlineTag = getDocumentParser().getOutlineOutputTag();
-		return newContent.replaceAll(Pattern.quote(outlineTag), outline.toString());
+		if (isOutlineGeneration()) {
+			final String externalMarker = getOutlineExternalMarker();
+			if (!Strings.isEmpty(externalMarker)) {
+				return newContent.replaceAll(Pattern.quote(outlineTag), Matcher.quoteReplacement(externalMarker));
+			}
+			return newContent.replaceAll(Pattern.quote(outlineTag), outline.toString());
+		}
+		return newContent.replaceAll(Pattern.quote(outlineTag), ""); //$NON-NLS-1$
 	}
 
 	/** Create the id of a section header.
@@ -889,9 +959,12 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	 * @param headerText the section header text.
 	 * @return the identifier.
 	 */
-	public static String computeHeaderId(String headerNumber, String headerText) {
-		final String fullText = Strings.emptyIfNull(headerNumber) + " " + Strings.emptyIfNull(headerText); //$NON-NLS-1$
-		return computeHeaderId(fullText);
+	public String computeHeaderId(String headerNumber, String headerText) {
+		if (Strings.isEmpty(headerNumber)) {
+			return computeHeaderIdForText(Strings.emptyIfNull(headerText));
+		}
+		final String nb = computeHeaderIdForNumber(headerNumber);
+		return nb + "-" + computeHeaderIdForText(Strings.emptyIfNull(headerText)); //$NON-NLS-1$
 	}
 
 	/** Create the id of a section header.
@@ -900,8 +973,32 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	 *
 	 * @param header the section header text.
 	 * @return the identifier.
+	 * @since 0.12
 	 */
-	public static String computeHeaderId(String header) {
+	private String computeHeaderIdForNumber(String header) {
+		String id = header;
+		if (isKramdownFix()) {
+			id = id .replaceAll("\\.", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		id = id.replaceAll("[^a-zA-Z0-9.]+", "-"); //$NON-NLS-1$ //$NON-NLS-2$
+		id = id.toLowerCase();
+		id = id.replaceFirst("^[^a-zA-Z0-9]+", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		id = id.replaceFirst("[^a-zA-Z0-9]+$", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		if (Strings.isEmpty(id)) {
+			return "section"; //$NON-NLS-1$
+		}
+		return id;
+	}
+
+	/** Create the id of a section header.
+	 *
+	 * <p>The ID format follows the ReadCarpet standards.
+	 *
+	 * @param header the section header text.
+	 * @return the identifier.
+	 * @since 0.12
+	 */
+	private String computeHeaderIdForText(String header) {
 		String id = header.replaceAll("[^a-zA-Z0-9]+", "-"); //$NON-NLS-1$ //$NON-NLS-2$
 		id = id.toLowerCase();
 		id = id.replaceFirst("^[^a-zA-Z0-9]+", ""); //$NON-NLS-1$ //$NON-NLS-2$

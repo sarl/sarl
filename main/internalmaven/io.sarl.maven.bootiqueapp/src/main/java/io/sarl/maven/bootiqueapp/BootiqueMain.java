@@ -95,11 +95,14 @@ public class BootiqueMain {
 
 	/** Create the compiler runtime.
 	 *
+	 * @param sarlLanguageSetup indicates if the SARL language setup should be realized.
 	 * @param args the command line arguments.
 	 * @return the runtime.
 	 */
-	protected BQRuntime createRuntime(String... args) {
-		SARLStandaloneSetup.doPreSetup();
+	protected BQRuntime createRuntime(boolean sarlLanguageSetup, String... args) {
+		if (sarlLanguageSetup) {
+			SARLStandaloneSetup.doPreSetup();
+		}
 		Bootique bootique = Bootique.app(args).autoLoadModules();
 		if (this.providers != null) {
 			for (final BQModuleProvider provider : this.providers) {
@@ -107,7 +110,9 @@ public class BootiqueMain {
 			}
 		}
 		final BQRuntime runtime = bootique.createRuntime();
-		SARLStandaloneSetup.doPostSetup(runtime.getInstance(Injector.class));
+		if (sarlLanguageSetup) {
+			SARLStandaloneSetup.doPostSetup(runtime.getInstance(Injector.class));
+		}
 		return runtime;
 	}
 
@@ -132,7 +137,7 @@ public class BootiqueMain {
 			if (isExperimental()) {
 				rootLogger.warn(Messages.BootiqueMain_0);
 			}
-			final BQRuntime runtime = createRuntime(args);
+			final BQRuntime runtime = createRuntime(true, args);
 
 			// Reconfigure the logger because, now, the configuration is accessible
 			runtime.getInstance(Log4jIntegrationConfig.class).configureLogger(rootLogger);
@@ -185,14 +190,14 @@ public class BootiqueMain {
 	 * @return the options of the program.
 	 */
 	public List<HelpOption> getOptions() {
-		final BQRuntime runtime = createRuntime();
+		final BQRuntime runtime = createRuntime(false);
 		final ApplicationMetadata application = runtime.getInstance(ApplicationMetadata.class);
 		final HelpOptions helpOptions = new HelpOptions();
 
-		application.getCommands().forEach(c -> {
+		/*application.getCommands().forEach(c -> {
 			helpOptions.add(c.asOption());
 			c.getOptions().forEach(o -> helpOptions.add(o));
-		});
+		});*/
 
 		application.getOptions().forEach(o -> helpOptions.add(o));
 

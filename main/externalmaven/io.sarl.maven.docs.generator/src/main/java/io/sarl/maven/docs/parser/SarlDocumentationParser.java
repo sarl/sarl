@@ -56,6 +56,7 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
 import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.util.OutParameter;
+import io.sarl.maven.docs.testing.NoXtextResourceException;
 import io.sarl.maven.docs.testing.ReflectExtensions;
 import io.sarl.maven.docs.testing.ScriptExecutor;
 
@@ -2261,12 +2262,12 @@ public class SarlDocumentationParser {
 									final String stringResult = Strings.nullToEmpty(Objects.toString(result));
 									return stringResult;
 								}
-							} catch (IllegalStateException e) {
-								// Triggered when a documentation file does not contain Xtext code
-								// It is ignored
-							} catch (Exception exception) {
-								Throwables.throwIfUnchecked(exception);
-							    throw new RuntimeException(exception);
+							} catch (NoXtextResourceException exception) {
+								// Ignore this exception because it is already logged by the SARL compiler
+							} catch (Throwable exception) {
+								final Throwable root = Throwables.getRootCause(exception);
+								Throwables.throwIfUnchecked(root);
+							    throw new RuntimeException(root);
 							}
 						}
 					}
@@ -2337,12 +2338,12 @@ public class SarlDocumentationParser {
 									final String stringResult = Strings.nullToEmpty(Objects.toString(result));
 									return formatBlockText(stringResult, context.getOutputLanguage(), context.getBlockCodeFormat());
 								}
-							} catch (IllegalStateException e) {
-								// Triggered when a documentation file does not contain Xtext code
-								// It is ignored
-							} catch (Exception exception) {
-								Throwables.throwIfUnchecked(exception);
-							    throw new RuntimeException(exception);
+							} catch (NoXtextResourceException exception) {
+								// Ignore this exception because it is already logged by the SARL compiler
+							} catch (Throwable exception) {
+								final Throwable root = Throwables.getRootCause(exception);
+								Throwables.throwIfUnchecked(root);
+							    throw new RuntimeException(root);
 							}
 						}
 					}
