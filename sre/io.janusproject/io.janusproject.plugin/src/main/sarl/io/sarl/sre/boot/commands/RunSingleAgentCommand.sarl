@@ -50,6 +50,16 @@ import io.sarl.sre.IssueCodes
  */
 class RunSingleAgentCommand extends AbstractRunCommand {
 
+	/** Constructor with all the fields set to {@code null}.
+	 * A command created with this constructor cannot be run. But is could be used for obtaining the
+	 * command options.
+	 *
+	 * @since 0.12
+	 */
+	new {
+		this(null)
+	}
+
 	/** Constructor.
 	 *
 	 * @param configuration the configuration of the tool.

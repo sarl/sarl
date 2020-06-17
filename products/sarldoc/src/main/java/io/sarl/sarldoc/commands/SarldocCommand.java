@@ -65,6 +65,16 @@ public class SarldocCommand extends AbstractSarldocCommand {
 
 	private final Provider<CommandManager> commandManagerProvider;
 
+	/** Constructor with all the fields set to {@code null}.
+	 * A command created with this constructor cannot be run. But is could be used for obtaining the
+	 * command options.
+	 *
+	 * @since 0.12
+	 */
+	public SarldocCommand() {
+		this(null, null, null, null, null, null, null);
+	}
+
 	/** Constructor.
 	 *
 	 * @param sarldocClassLoader the dynamic class loader that could be used by sarldoc.

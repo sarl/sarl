@@ -67,6 +67,16 @@ public class CompilerCommand extends CommandWithMetadata {
 
 	private final Provider<ProgressBarConfig> progressConfig;
 
+	/** Constructor with all the fields set to {@code null}.
+	 * A command created with this constructor cannot be run. But is could be used for obtaining the
+	 * command options.
+	 *
+	 * @since 0.12
+	 */
+	public CompilerCommand() {
+		this(null, null, null, null);
+	}
+
 	/** Constructor.
 	 *
 	 * @param compiler the SARL batch compiler.
