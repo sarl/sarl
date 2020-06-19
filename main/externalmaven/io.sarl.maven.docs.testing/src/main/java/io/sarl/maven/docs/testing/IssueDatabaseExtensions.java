@@ -212,8 +212,9 @@ public final class IssueDatabaseExtensions {
 		for (int i = 0; i < descriptions.size(); ++i) {
 			final IssueDescription description = descriptions.get(i);
 			if (description.level != IssueLevel.IGNORE) {
-				final List<String> line = new ArrayList<>();
-	
+				final List<String> columns = new ArrayList<>();
+
+				// Column "N."
 				if (Strings.equal(prevIssue == null ? null : prevIssue.getCode(), description.getCode())) {
 					++minor;
 				} else {
@@ -227,10 +228,10 @@ public final class IssueDatabaseExtensions {
 				} else {
 					nextIssue = null;
 				}
-	
-				line.add(formatIndex(major, minor, prevIssue, description, nextIssue));
-				
-				line.add(description.getDisplayCode());
+
+				columns.add(formatIndex(major, minor, prevIssue, description, nextIssue));
+
+				// Column "Message and Description"
 				final StringBuilder msg = new StringBuilder();
 				msg.append(head("Message:")).append(description.message).append(nl());
 				msg.append(head("Cause:")).append(description.cause);
@@ -240,10 +241,23 @@ public final class IssueDatabaseExtensions {
 				if (!Strings.isEmpty(description.delegate)) {
 					msg.append(nl()).append(head("Delegated to:")).append(description.delegate);
 				}
-				line.add(msg.toString());
-				line.add(description.level.getLabel(description.delegate, description.defaultLevel));
-				content.add(line);
+				columns.add(msg.toString());
+
+				// Column "Level"
+				columns.add(description.level.getLabel(description.delegate, description.defaultLevel));
 	
+				// Column "Code"
+				final StringBuilder code = new StringBuilder();
+				code.append("[");
+				code.append(description.getShortDisplayCode());
+				code.append("](: \"");
+				code.append(description.getLongDisplayCode());
+				code.append("\")");
+				columns.add(code.toString());
+
+				
+				content.add(columns);
+
 				prevIssue = description;
 			}
 		}
@@ -273,7 +287,7 @@ public final class IssueDatabaseExtensions {
 	@Pure
 	public static List<IssueDescription> sort(List<IssueDescription> descriptions) {
 		descriptions.sort((a, b) -> {
-			int cmp = a.getDisplayCode().compareToIgnoreCase(b.getDisplayCode());
+			int cmp = a.getShortDisplayCode().compareToIgnoreCase(b.getShortDisplayCode());
 			if (cmp != 0) {
 				return cmp;
 			}
@@ -409,7 +423,7 @@ public final class IssueDatabaseExtensions {
 	
 		/** Internal display code of the issue.
 		 */
-		private final String displayCode;
+		private final String shortDisplayCode;
 
 		/** Error message associated to the issue.
 		 */
@@ -443,9 +457,9 @@ public final class IssueDatabaseExtensions {
 			final int lastIndex = code.lastIndexOf('.');
 			this.rawCode = code.replaceAll(Pattern.quote("&dot;"), ".");
 			if (lastIndex >= 0 && lastIndex < code.length() - 1) {
-				this.displayCode = code.substring(lastIndex + 1).replaceAll(Pattern.quote("&dot;"), ".");
+				this.shortDisplayCode = code.substring(lastIndex + 1).replaceAll(Pattern.quote("&dot;"), ".");
 			} else {
-				this.displayCode = code;
+				this.shortDisplayCode = code;
 			}
 		}
 		
@@ -460,7 +474,7 @@ public final class IssueDatabaseExtensions {
 		@Override
 		public void toJson(JsonBuffer buf) {
 			buf.add("rawCode", this.rawCode);
-			buf.add("displayCode", this.displayCode);
+			buf.add("displayCode", this.shortDisplayCode);
 			buf.add("message", this.message);
 			buf.add("cause", this.cause);
 			buf.add("solving", this.solution);
@@ -491,8 +505,16 @@ public final class IssueDatabaseExtensions {
 		 *
 		 * @return the display code.
 		 */
-		public String getDisplayCode() {
-			return this.displayCode;
+		public String getShortDisplayCode() {
+			return this.shortDisplayCode;
+		}
+
+		/** Replies the full code to be displayed.
+		 *
+		 * @return the display code.
+		 */
+		public String getLongDisplayCode() {
+			return this.rawCode;
 		}
 
 		private IssueLevel getSortLevel() {
