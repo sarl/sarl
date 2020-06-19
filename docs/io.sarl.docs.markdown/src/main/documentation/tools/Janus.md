@@ -54,16 +54,28 @@ occur because of one of the used library. In these errors are not necessary docu
 on [Gitter](https://gitter.im/sarl/Lobby) or [Google Group](http://www.sarl.io/community/forums.html) with the
 SARL community.
 
-The code column gives the internal code of the issue.
+The "N." column provides a number that could be used in order to make easier your discussions with the SARL developers on the forums.
+
+The column "Message and Description" contains information and details on each issue.
 The **message** gives a template of typical message that is given by the compiler.
-The **cause** describes the source of the issue.
+The **cause** describes the source of the issue, and provides a short explanation of the cause of the issue.
 The **solving** provides guidelines to fix the issue when it is possible.
-The level column indicates the expected level of the issue (error or warning).
+
+The "Level" column indicates the level of importance for the issue.
+It may be:
+* "error": the issue makes Janus failing and stopping.
+* "warning": the issue is an important message that may have implication on the quality of your program.
+* "info": the issue is a simple information message from the compiler. The impact on the quality of your program is low.
+
+
+The code of the issue, which is appended at the end of the messages, corresponds to the content of the "Code" column below.
+This code may have a short format (e.g., the one shown in the column), or a long format (e.g., if you move your mouse pointer on the code, you should see the long format of the code into a pop-up window).
+The long code is provided by the SARL compiler at the end of the issue messages.
 
 
 
-| N. | Code  | Message and Description | Level              |
-| -- | ----- | ----------------------- | ------------------ |
+| N. | Message and Description | Level | Code |
+| -- | ----------------------- | ----- | ---- |
 [:Dynamic:]{
 	readIssueDescriptions.validate(io.sarl.sre.IssueCodes::issueCodeContainers).sort.asTable.renderToMarkdown
 }

@@ -1359,7 +1359,7 @@
 	{
 		"code": "org.eclipse.xtext.xbase.validation.IssueCodes.invalid_inner_expression",
 		"message": "Expression with side effect is not allowed in guards",
-		"cause": "The guard that is specified for a behavior unit has side effect, i.e. it modifies the state of the current agent/behavior/skill, or of another object. According to the SARL specification, the behavior units' guards must not have any side-effect because the guard's expression could be evaluated in parallel for different behavior units on the same event. In order to be consistent between the different evaluations of the guard, the guard expression cannot change the state of any object",
+		"cause": "The guard that is specified for a behavior unit may have side effect, i.e. it may modify the state of the current agent/behavior/skill, or of another object. According to the SARL specification, the behavior units' guards must not have any side-effect because the guard's expression could be evaluated in parallel for different behavior units on the same event. In order to be consistent between the different evaluations of the guard, the guard expression cannot change the state of any object",
 		"solution": "Rewrite the guard expression to avoid the uses of side-effect expressions",
 		"level": "error"
 	},
