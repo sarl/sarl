@@ -39,13 +39,13 @@ import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.testing.util.ParseHelper;
-import org.eclipse.xtext.testing.validation.ValidationTestHelper;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.validation.Issue;
 import org.eclipse.xtext.xbase.lib.Pair;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 
 import io.sarl.lang.sarl.SarlScript;
+import io.sarl.tests.api.tools.SarlValidationTestHelper;
 
 /** Context for the {@link ResourceSetGlobalCompilationUnitExtension massive compilation extension}.
  *
@@ -73,7 +73,7 @@ public class ResourceSetGlobalCompilationContext {
 
 	private final ParseHelper<SarlScript> parser;
 
-	private final ValidationTestHelper validator;
+	private final SarlValidationTestHelper validator;
 
 	private final Map<String, Pair<String, String>> expectedJava = new TreeMap<>();
 
@@ -92,7 +92,8 @@ public class ResourceSetGlobalCompilationContext {
 	 * @param parser the SARL parser.
 	 * @param validator the validator.
 	 */
-	ResourceSetGlobalCompilationContext(String basePackage, Injector injector, ParseHelper<SarlScript> parser, ValidationTestHelper validator) {
+	ResourceSetGlobalCompilationContext(String basePackage, Injector injector, ParseHelper<SarlScript> parser,
+			SarlValidationTestHelper validator) {
 		assert basePackage != null;
 		assert injector != null;
 		assert parser != null;

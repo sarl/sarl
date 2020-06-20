@@ -25,13 +25,13 @@ import javax.inject.Inject;
 import com.google.inject.Injector;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.util.ParseHelper;
-import org.eclipse.xtext.testing.validation.ValidationTestHelper;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.ExtendedSARLInjectorProvider;
 import io.sarl.tests.api.extensions.AbstractInjectorExtension;
+import io.sarl.tests.api.tools.SarlValidationTestHelper;
 
 /** Abstract JUnit5 extension for running tests within a global compilation process. 
  *
@@ -55,7 +55,7 @@ public class AbstractResourceSetGlobalCompilationExtension extends AbstractInjec
 	private Injector injector;
 
 	@Inject
-	private ValidationTestHelper validator;
+	private SarlValidationTestHelper validator;
 
 	/** Get the compilation context.
 	 *
