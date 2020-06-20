@@ -23,6 +23,8 @@ package io.sarl.lang.sarlc.modules.commands;
 
 import static io.bootique.BQCoreModule.extend;
 
+import java.util.logging.Logger;
+
 import com.google.inject.AbstractModule;
 import com.google.inject.Binding;
 import com.google.inject.Injector;
@@ -33,7 +35,6 @@ import com.google.inject.matcher.AbstractMatcher;
 import com.google.inject.spi.ProvisionListener;
 import io.bootique.config.ConfigurationFactory;
 import io.bootique.meta.application.OptionMetadata;
-import org.apache.log4j.Logger;
 
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
 import io.sarl.lang.sarlc.commands.CompilerCommand;
@@ -124,7 +125,7 @@ public class CompilerCommandModule extends AbstractModule {
 			final ProgressBarConfig cfg = this.commandConfig.get();
 			if (cfg.getEnable() && object instanceof Logger) {
 				final Logger logger = (Logger) object;
-				logger.setLevel(cfg.getLevel().toLog4j());
+				logger.setLevel(cfg.getLevel());
 			}
 		}
 

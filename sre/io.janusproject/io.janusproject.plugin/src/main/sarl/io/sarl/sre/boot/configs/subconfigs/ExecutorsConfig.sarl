@@ -31,13 +31,13 @@ import java.lang.reflect.Type
 import java.text.MessageFormat
 import java.util.Collections
 import java.util.Map
-import org.arakhne.afc.bootique.log4j.configs.Level
 import org.arakhne.afc.bootique.variables.VariableDecls
 import org.eclipse.xtend.lib.annotations.Accessors
 
 import static io.sarl.sre.boot.configs.subconfigs.ExecutorsConfig.*
 
 import static extension io.bootique.BQCoreModule.extend
+import java.util.logging.Level
 
 /** 
  * Configuration for the parallel executors.
@@ -126,7 +126,7 @@ class ExecutorsConfig {
 	 * 
 	 * @see #INTERNAL_ERROR_VERBOSE_LEVEL_NAME
 	 */
-	public static val INTERNAL_ERROR_VERBOSE_LEVEL_VALUE = Level::DEBUG
+	public static val INTERNAL_ERROR_VERBOSE_LEVEL_VALUE = Level::ALL
 
 	/** 
 	 * Name of the property that indicates if the executor service is purging the thread queues periodically.
@@ -323,7 +323,7 @@ class ExecutorsConfigModule extends AbstractModule {
 		VariableDecls::extend(binder).declareVar(INTERNAL_ERROR_VERBOSE_LEVEL_NAME)
 		binder.extend.addOption(OptionMetadata::builder(
 				INTERNALERRORLOGLEVEL_OPTION,
-				MessageFormat::format(Messages::ExecutorsConfigModule_4, INTERNAL_ERROR_VERBOSE_LEVEL_VALUE.toJsonString))
+				MessageFormat::format(Messages::ExecutorsConfigModule_4, INTERNAL_ERROR_VERBOSE_LEVEL_VALUE.name.toLowerCase))
 				.valueRequired(Messages::ExecutorsConfigModule_8)
 				.build)
 				.mapConfigPath(INTERNALERRORLOGLEVEL_OPTION, INTERNAL_ERROR_VERBOSE_LEVEL_NAME)

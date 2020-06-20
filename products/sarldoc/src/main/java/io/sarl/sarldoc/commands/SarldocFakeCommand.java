@@ -24,13 +24,13 @@ package io.sarl.sarldoc.commands;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 import javax.inject.Provider;
 
 import io.bootique.cli.Cli;
 import io.bootique.command.CommandOutcome;
 import org.arakhne.afc.vmutil.DynamicURLClassLoader;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
-import org.slf4j.Logger;
 
 import io.sarl.lang.sarlc.configs.SarlcConfig;
 import io.sarl.lang.sarlc.tools.PathDetector;

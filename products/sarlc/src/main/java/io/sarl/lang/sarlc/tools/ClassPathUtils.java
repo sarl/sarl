@@ -22,8 +22,8 @@
 package io.sarl.lang.sarlc.tools;
 
 import java.text.MessageFormat;
-
-import org.slf4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import io.sarl.lang.sarlc.configs.SarlcConfig;
 import io.sarl.maven.bootiqueapp.utils.SystemPath;
@@ -58,20 +58,20 @@ public final class ClassPathUtils {
 			try {
 				classpathProvider.getBootClasspath(fullClassPath, logger);
 			} catch (Throwable exception) {
-				logger.error(exception.getLocalizedMessage(), exception);
+				logger.log(Level.SEVERE, exception.getLocalizedMessage(), exception);
 			}
 		}
-		logger.debug(MessageFormat.format(Messages.ClassPathUtils_0, fullClassPath.toString()));
+		logger.fine(MessageFormat.format(Messages.ClassPathUtils_0, fullClassPath.toString()));
 		final SystemPath userClassPath = new SystemPath();
 		userClassPath.addEntries(cfg.getClasspath());
 		if (userClassPath.isEmpty()) {
 			try {
 				classpathProvider.getClasspath(userClassPath, logger);
 			} catch (Throwable exception) {
-				logger.error(exception.getLocalizedMessage(), exception);
+				logger.log(Level.SEVERE, exception.getLocalizedMessage(), exception);
 			}
 		}
-		logger.debug(MessageFormat.format(Messages.ClassPathUtils_1, userClassPath.toString()));
+		logger.fine(MessageFormat.format(Messages.ClassPathUtils_1, userClassPath.toString()));
 		fullClassPath.addEntries(userClassPath);
 		return fullClassPath;
 	}

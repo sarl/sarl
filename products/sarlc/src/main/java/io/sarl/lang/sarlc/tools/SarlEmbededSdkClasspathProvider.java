@@ -32,6 +32,8 @@ import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.jar.JarFile;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.google.common.base.Strings;
 import com.google.inject.Singleton;
@@ -39,7 +41,6 @@ import org.arakhne.afc.vmutil.ClasspathUtil;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.slf4j.Logger;
 
 import io.sarl.lang.SARLVersion;
 import io.sarl.maven.bootiqueapp.utils.SystemPath;
@@ -83,7 +84,7 @@ public class SarlEmbededSdkClasspathProvider implements SARLClasspathProvider {
 	private static boolean uncompressEmbeddedSdk(URL url, File output, Logger logger) {
 		final File sdkFile = FileSystem.convertURLToFile(url);
 		if (sdkFile == null || !output.mkdirs() || !output.isDirectory()) {
-			logger.error(MessageFormat.format(Messages.SarlEmbededSdkClasspathProvider_3, output.getAbsoluteFile()));
+			logger.severe(MessageFormat.format(Messages.SarlEmbededSdkClasspathProvider_3, output.getAbsoluteFile()));
 			return false;
 		}
 		try (JarFile jarFile = new JarFile(sdkFile)) {
@@ -117,7 +118,7 @@ public class SarlEmbededSdkClasspathProvider implements SARLClasspathProvider {
 			});
 			return found.get();
 		} catch (IOException exception) {
-			logger.error(exception.getLocalizedMessage(), exception);
+			logger.log(Level.SEVERE, exception.getLocalizedMessage(), exception);
 			// Delete the output folder if some error occurs
 			try {
 				FileSystem.delete(output);
@@ -136,7 +137,7 @@ public class SarlEmbededSdkClasspathProvider implements SARLClasspathProvider {
 		if (embeddedSdk.isDirectory()) {
 			final File[] content = new File(embeddedSdk, EMBEDDED_SDK_CONTAINER).listFiles();
 			if (content != null) {
-				logger.debug(MessageFormat.format(Messages.SarlEmbededSdkClasspathProvider_0, embeddedSdk.getAbsoluteFile()));
+				logger.fine(MessageFormat.format(Messages.SarlEmbededSdkClasspathProvider_0, embeddedSdk.getAbsoluteFile()));
 				for (final File library : content) {
 					path.add(library);
 				}
@@ -182,10 +183,10 @@ public class SarlEmbededSdkClasspathProvider implements SARLClasspathProvider {
 	public void getBootClasspath(SystemPath path, Logger logger) {
 		final URL url = getSingleArchiveFromClasspath();
 		if (url == null) {
-			logger.debug(Messages.SarlEmbededSdkClasspathProvider_1);
+			logger.fine(Messages.SarlEmbededSdkClasspathProvider_1);
 			getJvmClasspath(path);
 		} else if (!extractEmbeddedClasspath(url, path, logger)) {
-			logger.debug(Messages.SarlEmbededSdkClasspathProvider_2);
+			logger.fine(Messages.SarlEmbededSdkClasspathProvider_2);
 			getJvmClasspath(path);
 		}
 	}

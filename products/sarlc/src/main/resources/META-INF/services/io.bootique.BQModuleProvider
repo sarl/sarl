@@ -1,5 +1,4 @@
 io.sarl.maven.bootiqueapp.lang.SARLRuntimeModuleProvider
-io.sarl.lang.sarlc.modules.general.SLF4JLoggerModuleProvider
 io.sarl.lang.sarlc.modules.general.SarlBatchCompilerModuleProvider
 io.sarl.lang.sarlc.modules.configs.CompilerConfigModuleProvider
 io.sarl.lang.sarlc.modules.configs.SarlcConfigModuleProvider

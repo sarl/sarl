@@ -36,6 +36,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 import javax.inject.Provider;
 
 import com.google.common.base.Strings;
@@ -47,7 +48,6 @@ import io.bootique.meta.application.CommandMetadata;
 import org.arakhne.afc.vmutil.DynamicURLClassLoader;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.xtext.mwe.PathTraverser;
-import org.slf4j.Logger;
 
 import io.sarl.lang.sarlc.configs.SarlcConfig;
 import io.sarl.lang.sarlc.tools.ClassPathUtils;
@@ -346,7 +346,7 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 			logger.info(MessageFormat.format(Messages.SarldocCommand_8, HTTP_PROTOCOL_NAME, url));
 			System.setProperty(HTTP_HOST_PROPERTY_NAME, httpHost);
 			System.setProperty(HTTP_PORT_PROPERTY_NAME, httpPort);
-			logger.debug(MessageFormat.format(Messages.SarldocCommand_9, HTTP_PROTOCOL_NAME, httpNoProxy));
+			logger.fine(MessageFormat.format(Messages.SarldocCommand_9, HTTP_PROTOCOL_NAME, httpNoProxy));
 			System.setProperty(HTTP_NONPROXYHOST_PROPERTY_NAME, httpNoProxy);
 		}
 
@@ -360,7 +360,7 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 			logger.info(MessageFormat.format(Messages.SarldocCommand_8, HTTPS_PROTOCOL_NAME, url));
 			System.setProperty(HTTPS_HOST_PROPERTY_NAME, httpsHost);
 			System.setProperty(HTTPS_PORT_PROPERTY_NAME, httpsPort);
-			logger.debug(MessageFormat.format(Messages.SarldocCommand_9, HTTPS_PROTOCOL_NAME, httpsNoProxy));
+			logger.fine(MessageFormat.format(Messages.SarldocCommand_9, HTTPS_PROTOCOL_NAME, httpsNoProxy));
 			System.setProperty(HTTPS_NONPROXYHOST_PROPERTY_NAME, httpsNoProxy);
 		}
 	}

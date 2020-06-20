@@ -48,7 +48,10 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.function.Predicate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
+
 import javax.inject.Provider;
 
 import com.google.common.base.CharMatcher;
@@ -104,8 +107,6 @@ import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.resource.BatchLinkableResource;
 import org.eclipse.xtext.xbase.resource.BatchLinkableResourceStorageWritable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import io.sarl.lang.SARLConfig;
 import io.sarl.lang.compiler.GeneratorConfig2;
@@ -479,7 +480,7 @@ public class SarlBatchCompiler {
 	 */
 	public Logger getLogger() {
 		if (this.logger == null) {
-			this.logger = LoggerFactory.getLogger(getClass());
+			this.logger = Logger.getLogger(getClass().getName());
 		}
 		return this.logger;
 	}
@@ -1262,8 +1263,8 @@ public class SarlBatchCompiler {
 			if (!configureWorkspace(resourceSet, monitor)) {
 				return false;
 			}
-			if (getLogger().isDebugEnabled()) {
-				getLogger().debug(Utils.dump(getGeneratorConfig(), false));
+			if (getLogger().isLoggable(Level.FINEST)) {
+				getLogger().finest(Utils.dump(getGeneratorConfig(), false));
 			}
 			monitor.worked(2);
 			monitor.subTask(Messages.SarlBatchCompiler_43);
@@ -1276,8 +1277,8 @@ public class SarlBatchCompiler {
 			if (this.generatorConfigProvider2 instanceof GeneratorConfigProvider2) {
 				((GeneratorConfigProvider2) this.generatorConfigProvider2).install(resourceSet, getGeneratorConfig2());
 			}
-			if (getLogger().isDebugEnabled()) {
-				getLogger().debug(Utils.dump(getGeneratorConfig2(), false));
+			if (getLogger().isLoggable(Level.FINEST)) {
+				getLogger().finest(Utils.dump(getGeneratorConfig2(), false));
 			}
 			if (monitor.isCanceled()) {
 				return false;
@@ -1323,8 +1324,8 @@ public class SarlBatchCompiler {
 					if (monitor.isCanceled()) {
 						return false;
 					}
-					if (getLogger().isDebugEnabled()) {
-						getLogger().debug(Messages.SarlBatchCompiler_3);
+					if (getLogger().isLoggable(Level.FINEST)) {
+						getLogger().finest(Messages.SarlBatchCompiler_3);
 					}
 				}
 				monitor.worked(10);
@@ -1472,10 +1473,10 @@ public class SarlBatchCompiler {
 			switch (issue.getSeverity()) {
 			case ERROR:
 				hasError = true;
-				getLogger().error(issueMessage);
+				getLogger().severe(issueMessage);
 				break;
 			case WARNING:
-				getLogger().warn(issueMessage);
+				getLogger().warning(issueMessage);
 				break;
 			case INFO:
 				getLogger().info(issueMessage);
@@ -1495,7 +1496,7 @@ public class SarlBatchCompiler {
 	 * @since 0.8
 	 */
 	protected void reportInternalWarning(String message) {
-		getLogger().warn(message);
+		getLogger().warning(message);
 		if (getReportInternalProblemsAsIssues()) {
 			final org.eclipse.emf.common.util.URI uri  = null;
 			final Issue.IssueImpl issue = new Issue.IssueImpl();
@@ -1514,7 +1515,7 @@ public class SarlBatchCompiler {
 	 * @since 0.8
 	 */
 	protected void reportInternalWarning(String message, Throwable exception) {
-		getLogger().warn(message, exception);
+		getLogger().log(Level.WARNING, message, exception);
 		if (getReportInternalProblemsAsIssues()) {
 			final org.eclipse.emf.common.util.URI uri  = null;
 			final Issue.IssueImpl issue = new Issue.IssueImpl();
@@ -1533,7 +1534,7 @@ public class SarlBatchCompiler {
 	 * @since 0.8
 	 */
 	protected void reportInternalError(String message, Throwable exception) {
-		getLogger().error(message, exception);
+		getLogger().log(Level.SEVERE, message, exception);
 		if (getReportInternalProblemsAsIssues()) {
 			final org.eclipse.emf.common.util.URI uri  = null;
 			final Issue.IssueImpl issue = new Issue.IssueImpl();
@@ -1552,7 +1553,7 @@ public class SarlBatchCompiler {
 	 * @since 0.8
 	 */
 	protected void reportInternalError(String message, Object... parameters) {
-		getLogger().error(message, parameters);
+		getLogger().severe(MessageFormat.format(message, parameters));
 		if (getReportInternalProblemsAsIssues()) {
 			final org.eclipse.emf.common.util.URI uri  = null;
 			final Issue.IssueImpl issue = new Issue.IssueImpl();
@@ -1572,7 +1573,7 @@ public class SarlBatchCompiler {
 	protected void generateJavaFiles(Iterable<Resource> validatedResources, IProgressMonitor progress) {
 		assert progress != null;
 		progress.subTask(Messages.SarlBatchCompiler_49);
-		getLogger().info(Messages.SarlBatchCompiler_28, getOutputPath());
+		getLogger().info(MessageFormat.format(Messages.SarlBatchCompiler_28, getOutputPath()));
 		final JavaIoFileSystemAccess javaIoFileSystemAccess = this.javaIoFileSystemAccessProvider.get();
 		javaIoFileSystemAccess.setOutputConfigurations(this.outputConfigurations);
 		// The function configureWorkspace should set the output paths with absolute paths.
@@ -1588,8 +1589,8 @@ public class SarlBatchCompiler {
 			if (progress.isCanceled()) {
 				return;
 			}
-			if (getLogger().isDebugEnabled()) {
-				getLogger().debug(Messages.SarlBatchCompiler_23, resource.getURI().lastSegment());
+			if (getLogger().isLoggable(Level.FINEST)) {
+				getLogger().finest(MessageFormat.format(Messages.SarlBatchCompiler_23, resource.getURI().lastSegment()));
 			}
 			if (isWriteStorageFiles() && resource instanceof StorageAwareResource) {
 				final StorageAwareResource storageAwareResource = (StorageAwareResource) resource;
@@ -1627,8 +1628,8 @@ public class SarlBatchCompiler {
 			if (progress.isCanceled()) {
 				return;
 			}
-			if (getLogger().isDebugEnabled()) {
-				getLogger().debug(Messages.SarlBatchCompiler_26, resource.getURI().lastSegment());
+			if (getLogger().isLoggable(Level.FINEST)) {
+				getLogger().finest(MessageFormat.format(Messages.SarlBatchCompiler_26, resource.getURI().lastSegment()));
 			}
 			EcoreUtil.resolveAll(resource);
 			EcoreUtil2.resolveLazyCrossReferences(resource, CancelIndicator.NullImpl);
@@ -1654,8 +1655,8 @@ public class SarlBatchCompiler {
 				return issuesToReturn;
 			}
 			if (isSourceFile(resource)) {
-				if (getLogger().isDebugEnabled()) {
-					getLogger().debug(Messages.SarlBatchCompiler_22, resource.getURI().lastSegment());
+				if (getLogger().isLoggable(Level.FINEST)) {
+					getLogger().finest(MessageFormat.format(Messages.SarlBatchCompiler_22, resource.getURI().lastSegment()));
 				}
 				final IResourceServiceProvider resourceServiceProvider = IResourceServiceProvider.Registry.INSTANCE
 						.getResourceServiceProvider(resource.getURI());
@@ -1678,15 +1679,15 @@ public class SarlBatchCompiler {
 					}
 					if (!hasValidationError) {
 						if (!issues.isEmpty()) {
-							if (getLogger().isDebugEnabled()) {
-								getLogger().debug(Messages.SarlBatchCompiler_39, resource.getURI().lastSegment());
+							if (getLogger().isLoggable(Level.FINEST)) {
+								getLogger().finest(MessageFormat.format(Messages.SarlBatchCompiler_39, resource.getURI().lastSegment()));
 							}
 							issuesToReturn.addAll(issues);
 						}
 						validResources.add(resource);
 					} else {
-						if (getLogger().isDebugEnabled()) {
-							getLogger().debug(Messages.SarlBatchCompiler_39, resource.getURI().lastSegment());
+						if (getLogger().isLoggable(Level.FINEST)) {
+							getLogger().finest(MessageFormat.format(Messages.SarlBatchCompiler_39, resource.getURI().lastSegment()));
 						}
 						issuesToReturn.addAll(issues);
 					}
@@ -1753,12 +1754,12 @@ public class SarlBatchCompiler {
 		}
 		getLogger().info(Messages.SarlBatchCompiler_25);
 		final Iterable<File> sources = Iterables.concat(getSourcePaths(), Collections.singleton(getOutputPath()));
-		if (getLogger().isDebugEnabled()) {
-			getLogger().debug(Messages.SarlBatchCompiler_29, toPathString(sources));
+		if (getLogger().isLoggable(Level.FINEST)) {
+			getLogger().finest(MessageFormat.format(Messages.SarlBatchCompiler_29, toPathString(sources)));
 		}
 		final List<File> classpath = getClassPath();
-		if (getLogger().isDebugEnabled()) {
-			getLogger().debug(Messages.SarlBatchCompiler_30, toPathString(classpath));
+		if (getLogger().isLoggable(Level.FINEST)) {
+			getLogger().finest(MessageFormat.format(Messages.SarlBatchCompiler_30, toPathString(classpath)));
 		}
 		return runJavaCompiler(classOutputPath, sources, classpath, true, true, progress);
 	}
@@ -1825,9 +1826,9 @@ public class SarlBatchCompiler {
 		final Writer debugWriter = new Writer() {
 			@Override
 			public void write(char[] data, int offset, int count) throws IOException {
-				if (getLogger().isDebugEnabled()) {
+				if (getLogger().isLoggable(Level.FINEST)) {
 					final String message = String.copyValueOf(data, offset, count);
-					getLogger().debug(message);
+					getLogger().finest(message);
 				}
 			}
 
@@ -1878,8 +1879,8 @@ public class SarlBatchCompiler {
 		if (progress.isCanceled()) {
 			return null;
 		}
-		if (getLogger().isDebugEnabled()) {
-			getLogger().debug(Messages.SarlBatchCompiler_19, outputDirectory);
+		if (getLogger().isLoggable(Level.FINEST)) {
+			getLogger().finest(MessageFormat.format(Messages.SarlBatchCompiler_19, outputDirectory));
 		}
 		final JavaIoFileSystemAccess fileSystemAccess = this.javaIoFileSystemAccessProvider.get();
 		if (progress.isCanceled()) {
@@ -1891,8 +1892,8 @@ public class SarlBatchCompiler {
 			if (progress.isCanceled()) {
 				return null;
 			}
-			if (getLogger().isDebugEnabled()) {
-				getLogger().debug(Messages.SarlBatchCompiler_20, resource.getURI());
+			if (getLogger().isLoggable(Level.FINEST)) {
+				getLogger().finest(MessageFormat.format(Messages.SarlBatchCompiler_20, resource.getURI()));
 			}
 			final IResourceDescription description = this.resourceDescriptionManager.getResourceDescription(resource);
 			this.stubGenerator.doGenerateStubs(fileSystemAccess, description);
@@ -1926,8 +1927,8 @@ public class SarlBatchCompiler {
 				if (progress.isCanceled()) {
 					return;
 				}
-				if (getLogger().isDebugEnabled()) {
-					getLogger().debug(Messages.SarlBatchCompiler_7, uri);
+				if (getLogger().isLoggable(Level.FINEST)) {
+					getLogger().finest(MessageFormat.format(Messages.SarlBatchCompiler_7, uri));
 				}
 				resourceSet.getResource(uri, true);
 			}
@@ -1958,8 +1959,8 @@ public class SarlBatchCompiler {
 	 */
 	protected boolean cleanFolder(File parentFolder, FileFilter filter) {
 		try {
-			if (getLogger().isDebugEnabled()) {
-				getLogger().debug(Messages.SarlBatchCompiler_9, parentFolder.toString());
+			if (getLogger().isLoggable(Level.FINEST)) {
+				getLogger().finest(MessageFormat.format(Messages.SarlBatchCompiler_9, parentFolder.toString()));
 			}
 			return Files.cleanFolder(parentFolder, null, true, true);
 		} catch (FileNotFoundException e) {
@@ -1976,8 +1977,8 @@ public class SarlBatchCompiler {
 		assert progress != null;
 		progress.subTask(Messages.SarlBatchCompiler_55);
 		final File output = getOutputPath();
-		if (getLogger().isDebugEnabled()) {
-			getLogger().debug(Messages.SarlBatchCompiler_35, output);
+		if (getLogger().isLoggable(Level.FINEST)) {
+			getLogger().finest(MessageFormat.format(Messages.SarlBatchCompiler_35, output));
 		}
 		if (output == null) {
 			reportInternalError(Messages.SarlBatchCompiler_36);
@@ -1989,8 +1990,8 @@ public class SarlBatchCompiler {
 				return false;
 			}
 			try {
-				if (getLogger().isDebugEnabled()) {
-					getLogger().debug(Messages.SarlBatchCompiler_37, sourcePath);
+				if (getLogger().isLoggable(Level.FINEST)) {
+					getLogger().finest(MessageFormat.format(Messages.SarlBatchCompiler_37, sourcePath));
 				}
 				if (isContainedIn(output.getCanonicalFile(), sourcePath.getCanonicalFile())) {
 					reportInternalError(Messages.SarlBatchCompiler_10, output, sourcePath);
@@ -2034,13 +2035,13 @@ public class SarlBatchCompiler {
 
 		if (this.baseUri != null) {
 			if (this.baseUri.isFile()) {
-				if (getLogger().isDebugEnabled()) {
-					getLogger().debug(Messages.SarlBatchCompiler_32, this.baseUri);
+				if (getLogger().isLoggable(Level.FINEST)) {
+					getLogger().finest(MessageFormat.format(Messages.SarlBatchCompiler_32, this.baseUri));
 				}
 				return new File(this.baseUri.toFileString());
 			}
-			if (getLogger().isDebugEnabled()) {
-				getLogger().debug(Messages.SarlBatchCompiler_33, this.baseUri);
+			if (getLogger().isLoggable(Level.FINEST)) {
+				getLogger().finest(MessageFormat.format(Messages.SarlBatchCompiler_33, this.baseUri));
 			}
 		}
 
@@ -2116,8 +2117,8 @@ public class SarlBatchCompiler {
 			return false;
 		}
 
-		if (getLogger().isDebugEnabled()) {
-			getLogger().debug(Messages.SarlBatchCompiler_31, this.baseUri);
+		if (getLogger().isLoggable(Level.FINEST)) {
+			getLogger().finest(MessageFormat.format(Messages.SarlBatchCompiler_31, this.baseUri));
 		}
 
 		final File commonRoot = determineCommonRoot(
@@ -2127,8 +2128,8 @@ public class SarlBatchCompiler {
 			return false;
 		}
 
-		if (getLogger().isDebugEnabled()) {
-			getLogger().debug(Messages.SarlBatchCompiler_34, commonRoot);
+		if (getLogger().isLoggable(Level.FINEST)) {
+			getLogger().finest(MessageFormat.format(Messages.SarlBatchCompiler_34, commonRoot));
 		}
 		if (commonRoot == null) {
 			reportInternalError(Messages.SarlBatchCompiler_12);
@@ -2221,8 +2222,8 @@ public class SarlBatchCompiler {
 		} else {
 			classpath = Iterables.concat(getClassPath(), getSourcePaths());
 		}
-		if (getLogger().isDebugEnabled()) {
-			getLogger().debug(Messages.SarlBatchCompiler_17, classpath);
+		if (getLogger().isLoggable(Level.FINEST)) {
+			getLogger().finest(MessageFormat.format(Messages.SarlBatchCompiler_17, classpath));
 		}
 		if (progress.isCanceled()) {
 			return;

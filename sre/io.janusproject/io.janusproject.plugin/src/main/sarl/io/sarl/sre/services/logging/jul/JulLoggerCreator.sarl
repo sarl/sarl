@@ -27,6 +27,8 @@ import java.util.logging.Level
 import java.util.logging.LogManager
 import java.util.logging.Logger
 import javax.inject.Provider
+import org.eclipse.xtend.lib.annotations.Accessors
+import javax.inject.Singleton
 
 /** 
  * Helper for creating a JUL logger.
@@ -41,6 +43,7 @@ class JulLoggerCreator {
 	/** Prefix for the logger names. */
 	public static val PLATFORM_LOGGER_NAME_PREFIX = "Janus-SRE-"
 
+	@Accessors
 	val defaultLevel : Level
 
 	val configProvider : Provider<SreConfig>
@@ -93,7 +96,7 @@ class JulLoggerCreator {
 	 * @return the newly created instance of formatter.
 	 */
 	protected def createPlatformFormatter : Formatter {
-		new JulPatternFormatter(this.loggingConfig.platformMessageFormat)
+		new SreJulPatternFormatter(this.loggingConfig.platformMessageFormat)
 	}
 
 	protected def getLoggingConfig : LoggingConfig {

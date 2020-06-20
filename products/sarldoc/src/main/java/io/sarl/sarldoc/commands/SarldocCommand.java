@@ -28,6 +28,7 @@ import java.lang.reflect.Method;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 import javax.inject.Provider;
 
 import com.google.common.base.Strings;
@@ -37,7 +38,6 @@ import io.bootique.command.CommandOutcome;
 import io.bootique.command.ManagedCommand;
 import org.arakhne.afc.vmutil.DynamicURLClassLoader;
 import org.arakhne.afc.vmutil.FileSystem;
-import org.slf4j.Logger;
 
 import io.sarl.lang.sarlc.commands.CompilerCommand;
 import io.sarl.lang.sarlc.configs.SarlcConfig;
@@ -235,7 +235,7 @@ public class SarldocCommand extends AbstractSarldocCommand {
 		@Override
 		protected void log(String message) {
 			if (message.startsWith(JAVADOC_NOTE_PREFIX)) {
-				this.logger.warn(message.substring(JAVADOC_NOTE_PREFIX.length()).trim());
+				this.logger.warning(message.substring(JAVADOC_NOTE_PREFIX.length()).trim());
 				this.warningCount.incrementAndGet();
 			} else {
 				this.logger.info(message);
@@ -265,7 +265,7 @@ public class SarldocCommand extends AbstractSarldocCommand {
 
 		@Override
 		protected void log(String message) {
-			this.logger.warn(message);
+			this.logger.warning(message);
 			this.warningCount.incrementAndGet();
 		}
 
@@ -292,7 +292,7 @@ public class SarldocCommand extends AbstractSarldocCommand {
 
 		@Override
 		protected void log(String message) {
-			this.logger.error(message);
+			this.logger.severe(message);
 			this.errorCount.incrementAndGet();
 		}
 

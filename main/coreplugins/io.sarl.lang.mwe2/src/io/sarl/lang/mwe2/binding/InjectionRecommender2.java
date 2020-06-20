@@ -24,11 +24,11 @@ package io.sarl.lang.mwe2.binding;
 import java.lang.reflect.Method;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 import javax.inject.Inject;
 
 import com.google.common.annotations.Beta;
 import com.ibm.icu.text.MessageFormat;
-import org.apache.log4j.Logger;
 import org.eclipse.xtend.core.XtendRuntimeModule;
 import org.eclipse.xtend.ide.XtendUiModule;
 import org.eclipse.xtext.service.SingletonBinding;
@@ -54,7 +54,7 @@ public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {
 
 	/** Logger.
 	 */
-	protected static final Logger LOG = Logger.getLogger(InjectionRecommender2.class);
+	protected static final Logger LOG = Logger.getLogger(InjectionRecommender2.class.getName());
 
 	private static final String CONFIGURE_PREFIX = "configure"; //$NON-NLS-1$
 
@@ -227,7 +227,7 @@ public class InjectionRecommender2 extends AbstractXtextGeneratorFragment {
 							label));
 					hasRecommend = true;
 				}
-				LOG.warn(MessageFormat.format("\t{1}", //$NON-NLS-1$
+				LOG.warning(MessageFormat.format("\t{1}", //$NON-NLS-1$
 						label, sourceElement.getKeyString()));
 			}
 		}

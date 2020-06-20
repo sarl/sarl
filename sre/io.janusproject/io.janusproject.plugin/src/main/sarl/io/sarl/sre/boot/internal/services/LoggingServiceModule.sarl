@@ -27,16 +27,15 @@ import com.google.inject.Module
 import com.google.inject.Provides
 import io.bootique.BQModule
 import io.bootique.BQModuleProvider
-import io.sarl.sre.services.logging.jul.JulLoggingService
 import io.sarl.sre.services.logging.LoggingService
 import io.sarl.sre.services.logging.QuietLoggingService
-import org.arakhne.afc.bootique.log4j.configs.Level
-import org.arakhne.afc.bootique.log4j.configs.Log4jIntegrationConfig
+import io.sarl.sre.services.logging.jul.JulLoggerCreator
+import io.sarl.sre.services.logging.jul.JulLoggingService
+import java.util.logging.Level
+import javax.inject.Provider
+import javax.inject.Singleton
 
 import static extension com.google.inject.multibindings.Multibinder.*
-import javax.inject.Singleton
-import io.sarl.sre.services.logging.jul.JulLoggerCreator
-import javax.inject.Provider
 
 /** 
  * Module for the logging services.
@@ -55,17 +54,17 @@ class LoggingServiceModule extends AbstractModule {
 	/** 
 	 * Replies the verbose level.
 	 * 
-	 * @param configFactory the bootique configuration for log4j.
+	 * @param loggerCreator the creator of loggers.
 	 * @param injector the injector of the members.
 	 * @return the verbose level.
 	 */
 	@Provides
 	@Singleton
-	def provideLoggingService(loggingConfig : Provider<Log4jIntegrationConfig>, injector : Injector) : LoggingService {
-		var level = loggingConfig.get.level
+	def provideLoggingService(loggingCreator : Provider<JulLoggerCreator>, injector : Injector) : LoggingService {
+		val creator = loggingCreator.get
 		var srv : LoggingService
-		if (level != Level::OFF) {
-			srv = new JulLoggingService(injector.getInstance(typeof(JulLoggerCreator)))
+		if (creator.defaultLevel.intValue < Level::OFF.intValue) {
+			srv = new JulLoggingService(creator)
 		} else {
 			srv = new QuietLoggingService
 		}

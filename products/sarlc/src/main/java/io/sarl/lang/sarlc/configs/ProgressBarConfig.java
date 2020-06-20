@@ -21,10 +21,11 @@
 
 package io.sarl.lang.sarlc.configs;
 
+import java.util.logging.Level;
+
 import io.bootique.annotation.BQConfig;
 import io.bootique.annotation.BQConfigProperty;
 import io.bootique.config.ConfigurationFactory;
-import org.arakhne.afc.bootique.log4j.configs.Level;
 
 /**
  * Configuration for the compiler command.
@@ -56,7 +57,7 @@ public class ProgressBarConfig {
 	/**
 	 * Default logger level when the progress bar is active.
 	 */
-	public static final Level DEFAULT_LEVEL = Level.ERROR;
+	public static final Level DEFAULT_LEVEL = Level.SEVERE;
 
 	/**
 	 * Name of the property that contains the output path for the Java byte code.

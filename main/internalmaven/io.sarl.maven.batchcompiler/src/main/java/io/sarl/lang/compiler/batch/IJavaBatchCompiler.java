@@ -24,10 +24,10 @@ package io.sarl.lang.compiler.batch;
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.logging.Logger;
 
 import com.google.inject.ImplementedBy;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.slf4j.Logger;
 
 /** An object that represents a Java compiler.
  *

@@ -27,6 +27,8 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.google.common.base.Throwables;
 import com.google.common.collect.Iterables;
@@ -42,7 +44,6 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.xtext.util.Strings;
-import org.slf4j.Logger;
 
 import io.sarl.lang.compiler.batch.IJavaBatchCompiler;
 import io.sarl.lang.compiler.batch.OptimizationLevel;
@@ -155,7 +156,7 @@ final class MavenBatchCompiler implements IJavaBatchCompiler {
 			}
 		} catch (Exception exception) {
 			if (logger != null) {
-				logger.error(exception.getLocalizedMessage(), Throwables.getRootCause(exception));
+				logger.log(Level.SEVERE, exception.getLocalizedMessage(), Throwables.getRootCause(exception));
 			}
 		}
 		return false;
@@ -170,7 +171,7 @@ final class MavenBatchCompiler implements IJavaBatchCompiler {
 		if (pluginArtifact != null) {
 			return pluginArtifact.getVersion();
 		}
-		logger.warn(MessageFormat.format(Messages.MavenBatchCompiler_0, DEFAULT_COMPILER_VERSION));
+		logger.warning(MessageFormat.format(Messages.MavenBatchCompiler_0, DEFAULT_COMPILER_VERSION));
 		return DEFAULT_COMPILER_VERSION;
 	}
 

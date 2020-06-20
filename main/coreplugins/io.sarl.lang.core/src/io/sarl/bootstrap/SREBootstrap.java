@@ -226,7 +226,20 @@ public interface SREBootstrap {
 	 *
 	 * <p>This function has no effect if the agent framework is already launched.
 	 *
-	 * @param level the verbosity level.
+	 * <p>The value of the {@code level} argument does not depend on a specific logging infrastructure.
+	 * Indeed, JUL, Log4J and SLF4J attach different numeric values to the different logging levels.
+	 * Consequently, the numerical values that are assummed by this function are: <ul>
+	 * <li>{@code &lt;= 0}: off, no logging.</li>
+	 * <li>{@code = 1}: errors only.</li>
+	 * <li>{@code = 2}: errors and warnings.</li>
+	 * <li>{@code = 3}: errors, warnings and info.</li>
+	 * <li>{@code = 4}: errors, warnings, info, debug 1.</li>
+	 * <li>{@code = 5}: errors, warnings, info, debug 1 to 2.</li>
+	 * <li>{@code = 6}: errors, warnings, info, debug 1 to 3.</li>
+	 * <li>{@code = 7}: all messages.</li>
+	 * </ul>
+	 *
+	 * @param level the verbosity level. See explanation in the documentation of this function.
 	 * @throws UnsupportedOperationException a runtime exception
 	 * @since 0.7
 	 */

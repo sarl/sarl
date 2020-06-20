@@ -48,8 +48,7 @@ import java.util.UUID
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicReference
 import java.util.logging.Level
-import org.apache.log4j.Logger
-import org.arakhne.afc.bootique.log4j.configs.Log4jIntegrationConfig
+import java.util.logging.Logger
 import org.arakhne.afc.bootique.variables.VariableNames
 import org.arakhne.afc.util.ListenerCollection
 import org.eclipse.xtend.lib.annotations.Accessors
@@ -140,18 +139,39 @@ class SreMain implements SREBootstrap {
 	}
 
 	override setVerboseLevel(level : int) {
-		var config = ensureBootiqueRuntimeInstance(null, null).getInstance(typeof(Log4jIntegrationConfig))
-		var levels = org.arakhne.afc.bootique.log4j.configs.Level::values
-		var lvl = if (level < 0) 0 else (if (level >= levels.length) levels.length - 1 else level)
-		var levelObject = levels.get(lvl)
-		config.level = levelObject
-		var logger = getKernelLogger
+		val logger = kernelLogger
 		if (logger !== null) {
-			logger.level = levelObject.toJul
+			switch (level) {
+				case 1: {
+					logger.level = Level::SEVERE
+				}
+				case 2: {
+					logger.level = Level::WARNING
+				}
+				case 3: {
+					logger.level = Level::INFO
+				}
+				case 4: {
+					logger.level = Level::FINE
+				}
+				case 5: {
+					logger.level = Level::FINER
+				}
+				case 6: {
+					logger.level = Level::FINEST
+				}
+				default: {
+					if (level <= 0) {
+						logger.level = Level::OFF
+					} else {
+						logger.level = Level::ALL
+					}
+				}
+			}
 		}
 	}
 
-	override getKernelLogger : java.util.logging.Logger {
+	override getKernelLogger : Logger {
 		if (isActive) {
 			var service = this.runtime.getInstance(typeof(LoggingService))
 			return service.platformLogger
@@ -199,19 +219,19 @@ class SreMain implements SREBootstrap {
 			val outcome = runtime.run
 			if (outcome !== null) {
 				if (!outcome.success && outcome.exception !== null) {
-					Logger::rootLogger.error(outcome.message, outcome.exception)
+					Logger::getGlobal.log(Level::SEVERE, outcome.message, outcome.exception)
 				}
 				return outcome.exitCode
 			}
 		} catch (exception : ProvisionException) {
 			val ex = Throwables::getRootCause(exception)
 			if (ex !== null) {
-				Logger::rootLogger.error(ex.localizedMessage)
+				Logger::getGlobal.log(Level::SEVERE, ex.localizedMessage, ex)
 			} else {
-				Logger.rootLogger.error(exception.localizedMessage)
+				Logger::getGlobal.severe(exception.localizedMessage)
 			}
 		} catch (exception : Throwable) {
-			Logger::rootLogger.error(exception.localizedMessage)
+			Logger::getGlobal.log(Level::SEVERE, exception.localizedMessage, exception)
 		}
 		return 255
 	}

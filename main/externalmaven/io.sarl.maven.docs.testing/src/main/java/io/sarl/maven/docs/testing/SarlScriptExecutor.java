@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.UnaryOperator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -44,7 +46,6 @@ import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.interpreter.IEvaluationResult;
 import org.eclipse.xtext.xbase.interpreter.IExpressionInterpreter;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
-import org.slf4j.helpers.NOPLogger;
 
 import io.sarl.lang.compiler.batch.CleaningPolicy;
 import io.sarl.lang.compiler.batch.ICompilatedResourceReceiver;
@@ -157,7 +158,9 @@ public class SarlScriptExecutor implements ScriptExecutor {
 		compiler.setAllWarningSeverities(Severity.IGNORE);
 		compiler.setWarningSeverity(IssueCodes.DEPRECATED_MEMBER_REFERENCE, Severity.ERROR);
 		compiler.setJavaCompilerVerbose(false);
-		compiler.setLogger(NOPLogger.NOP_LOGGER);
+		final Logger nopLogger = Logger.getAnonymousLogger();
+		nopLogger.setLevel(Level.OFF);
+		compiler.setLogger(nopLogger);
 		if (issues != null) {
 			compiler.addIssueMessageListener((issue, uri, message) -> {
 				if (issue.isSyntaxError() || issue.getSeverity() == Severity.ERROR) {

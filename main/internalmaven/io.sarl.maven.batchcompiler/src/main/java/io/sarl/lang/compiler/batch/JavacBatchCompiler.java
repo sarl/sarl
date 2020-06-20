@@ -26,10 +26,14 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
+import java.text.MessageFormat;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 
@@ -39,7 +43,6 @@ import org.apache.commons.io.output.WriterOutputStream;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.Strings;
-import org.slf4j.Logger;
 
 /** A wrapper on top of the Oracle Java Compiler (javac).
  *
@@ -169,8 +172,8 @@ public class JavacBatchCompiler implements IJavaBatchCompiler {
 		final String[] arguments = new String[commandLineArguments.size()];
 		commandLineArguments.toArray(arguments);
 
-		if (logger != null && logger.isDebugEnabled()) {
-			logger.debug(Messages.JavacBatchCompiler_0, Strings.concat(" ", commandLineArguments)); //$NON-NLS-1$
+		if (logger != null && logger.isLoggable(Level.FINEST)) {
+			logger.finest(MessageFormat.format(Messages.JavacBatchCompiler_0, Strings.concat(" ", commandLineArguments))); //$NON-NLS-1$
 		}
 
 		if (!hasSourceFile || progress.isCanceled()) {

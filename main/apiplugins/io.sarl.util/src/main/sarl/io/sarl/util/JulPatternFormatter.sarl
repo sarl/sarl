@@ -18,14 +18,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.sre.services.logging.jul
+
+package io.sarl.util
 
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.util.Date
 import java.util.logging.Formatter
 import java.util.logging.LogRecord
-import java.util.regex.Pattern
 
 /** JUL formatter based on pattern.
  *
@@ -42,7 +42,7 @@ import java.util.regex.Pattern
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.11
+ * @since 0.12
  */
 class JulPatternFormatter extends Formatter {
 
@@ -50,16 +50,21 @@ class JulPatternFormatter extends Formatter {
 
     val dat = new Date
 
+    /** Constructor.
+     *
+     * @param pattern the pattern that is compatible with {@link String#format(String, Object...)}.
+     */
 	new (pattern : String) {
 		assert !pattern.isNullOrEmpty
 		this.pattern = pattern
 	}
 
-	def format(record : LogRecord) : String {
-		this.dat.time = record.getMillis
+	override format(record : LogRecord) : String {
+		this.dat.time = record.millis
 		val source = new StringBuilder
 		val scn = record.sourceClassName
-		if (!scn.nullOrEmpty) {
+		val logName = record.loggerName
+		if (!scn.isNullOrEmpty) {
 			source.append(scn)
 			val smn = record.sourceMethodName
 			if (!smn.isNullOrEmpty) {
@@ -67,13 +72,13 @@ class JulPatternFormatter extends Formatter {
 				source.append(smn)
             }
 		} else {
-			source.append(record.loggerName)
+			source.append(logName)
 		}
-		var message = record.formatMessage
+		val message = record.formatMessage
 		var throwable : String
 		if (record.thrown !== null) {
             val sw = new StringWriter
-			try (val pw = new PrintWriter(sw)) {
+			try (var pw = new PrintWriter(sw)) {
 				pw.println
 				record.thrown.printStackTrace(pw)
 			}
@@ -81,16 +86,22 @@ class JulPatternFormatter extends Formatter {
 		} else {
 			throwable = ""
 		}
-		val logName = record.loggerName.replaceFirst("^" +
-			Pattern::quote(JulLoggerCreator::PLATFORM_LOGGER_NAME_PREFIX),
-			"")
-		return String::format(
+		return String.format(
 			this.pattern,
-			dat, source,
-			logName,
+			this.dat, source,
+			logName.filterLogName,
 			record.level.localizedName,
 			message,
 			throwable)
 	}
 
+	/** Filter the log name in order to computer the one that is displayed into the log.
+	 *
+	 * @param logName the log name to filter.
+	 * @return the displyable log name.
+	 */
+	protected def filterLogName(logName : String) : String {
+		logName
+	}
+	
 }

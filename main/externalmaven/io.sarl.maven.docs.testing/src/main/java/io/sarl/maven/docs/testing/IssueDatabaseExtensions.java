@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import com.google.gson.Gson;
@@ -41,7 +42,6 @@ import org.arakhne.afc.vmutil.json.JsonableObject;
 import org.eclipse.xtext.diagnostics.Diagnostic;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.slf4j.LoggerFactory;
 
 import io.sarl.lang.validation.IssueCodes;
 import io.sarl.lang.validation.SyntaxIssueCodes;
@@ -58,12 +58,12 @@ public final class IssueDatabaseExtensions {
 
 	private static String DEFAULT_ISSUE_DESCRIPTION_FILENAME = "issue_descriptions.json"; //$NON-NLS-1$
 	
-	private static org.slf4j.Logger LOGGER;
+	private static Logger LOGGER;
 	
-	private static org.slf4j.Logger getLogger() {
+	private static Logger getLogger() {
 		synchronized (IssueDatabaseExtensions.class) {
 			if (LOGGER == null) {
-				LOGGER = LoggerFactory.getLogger(IssueDatabaseExtensions.class);
+				LOGGER = Logger.getLogger(IssueDatabaseExtensions.class.getName());
 			}
 			return LOGGER;
 		}
@@ -336,7 +336,7 @@ public final class IssueDatabaseExtensions {
 			notDocumentedCodes.remove(description.getCode());
 			if (!definedCodes.contains(description.getCode())) {
 				success = false;
-				getLogger().error("Too much documented: '" + description.getCode() + "'. This issue code is not found into the " + label + " source code");
+				getLogger().severe("Too much documented: '" + description.getCode() + "'. This issue code is not found into the " + label + " source code");
 			}
 		}
 		if (!success) {
@@ -344,7 +344,7 @@ public final class IssueDatabaseExtensions {
 		}
 		for (String notDocumentedCode : notDocumentedCodes) {
 			success = false;
-			getLogger().error("Not enough documented: '" + notDocumentedCode + "'. This " + label + " issue code has no documentation");
+			getLogger().severe("Not enough documented: '" + notDocumentedCode + "'. This " + label + " issue code has no documentation");
 		}
 		return success;
 	}

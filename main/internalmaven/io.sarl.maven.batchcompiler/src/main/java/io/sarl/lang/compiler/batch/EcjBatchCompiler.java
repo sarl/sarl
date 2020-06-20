@@ -23,8 +23,11 @@ package io.sarl.lang.compiler.batch;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Singleton;
@@ -33,7 +36,6 @@ import org.eclipse.jdt.core.compiler.CompilationProgress;
 import org.eclipse.jdt.core.compiler.batch.BatchCompiler;
 import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.Strings;
-import org.slf4j.Logger;
 
 /** A wrapper on top of the Eclipse Compiler for Java (ECJ).
  *
@@ -161,8 +163,8 @@ public class EcjBatchCompiler implements IJavaBatchCompiler {
 		final String[] arguments = new String[commandLineArguments.size()];
 		commandLineArguments.toArray(arguments);
 
-		if (logger != null && logger.isDebugEnabled()) {
-			logger.debug(Messages.EcjBatchCompiler_0, Strings.concat("\n", commandLineArguments)); //$NON-NLS-1$
+		if (logger != null && logger.isLoggable(Level.FINEST)) {
+			logger.finest(MessageFormat.format(Messages.EcjBatchCompiler_0, Strings.concat("\n", commandLineArguments))); //$NON-NLS-1$
 		}
 
 		if (progress.isCanceled()) {

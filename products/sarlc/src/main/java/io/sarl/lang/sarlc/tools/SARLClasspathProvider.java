@@ -21,8 +21,9 @@
 
 package io.sarl.lang.sarlc.tools;
 
+import java.util.logging.Logger;
+
 import com.google.inject.ImplementedBy;
-import org.slf4j.Logger;
 
 import io.sarl.maven.bootiqueapp.utils.SystemPath;
 

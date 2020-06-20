@@ -18,36 +18,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.sarl.sre.services.logging.jul
 
-package io.sarl.lang.sarlc.modules.general;
+import java.util.regex.Pattern
+import io.sarl.util.JulPatternFormatter
 
-import com.google.inject.Module;
-import io.bootique.BQModule;
-import io.bootique.BQModuleProvider;
-
-/** Provider of the module for the SLF4J logger.
+/** SRE-specific JUL formatter based on pattern.
  *
+ * <p>The format string may contains one of the following elements:<ul>
+ * <li><code>%1</code>: the date,</li>
+ * <li><code>%2</code>: the name of the calling function,</li>
+ * <li><code>%3</code>: the name of the logger,</li>
+ * <li><code>%4</code>: the logging level,</li>
+ * <li><code>%5</code>: the message, and</li>
+ * <li><code>%6</code>: the throwable.</li>
+ * </ul>
+ * 
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.10
+ * @since 0.11
  */
-public class SLF4JLoggerModuleProvider implements BQModuleProvider {
+class SreJulPatternFormatter extends JulPatternFormatter {
 
-	@Override
-	public Module module() {
-		return new SLF4jLoggerModule();
+	protected override filterLogName(logName : String) : String {
+		logName.replaceFirst("^" + Pattern::quote(JulLoggerCreator::PLATFORM_LOGGER_NAME_PREFIX), "")
 	}
-
-	@Override
-    public BQModule.Builder moduleBuilder() {
-        return BQModule
-                .builder(module())
-                .overrides(overrides())
-                .providerName(name())
-                .configs(configs())
-                .description(Messages.SLF4JLoggerModuleProvider_0);
-    }
 
 }

@@ -22,6 +22,7 @@
 package io.sarl.lang.sarlc.modules.general;
 
 import java.util.Map.Entry;
+import java.util.logging.Logger;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
@@ -30,7 +31,6 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.util.Strings;
-import org.slf4j.Logger;
 
 import io.sarl.lang.compiler.batch.IJavaBatchCompiler;
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;

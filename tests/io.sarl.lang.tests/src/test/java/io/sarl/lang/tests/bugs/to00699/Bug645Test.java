@@ -131,8 +131,8 @@ public class Bug645Test extends AbstractSarlTest {
 		validator.assertError(
 				SarlPackage.eINSTANCE.getSarlClass(),
 				Diagnostic.SYNTAX_DIAGNOSTIC,
-				"extraneous input 'DDD'");
-		assertEquals(1, validator.getIssues().size(), () -> "Too many issues: " + validator.getIssues().toString());
+				"extraneous input 'DDD'")
+			.assertNoIssues();
 	}
 
 	@Test

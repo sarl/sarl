@@ -24,10 +24,10 @@ package io.sarl.lang.mwe2.codebuilder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import org.apache.log4j.Logger;
 import org.eclipse.xtext.GrammarUtil;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -60,7 +60,7 @@ import io.sarl.lang.mwe2.codebuilder.fragments.ScriptBuilderFragment;
  */
 public class CodeBuilderFragment2 extends AbstractStubGeneratingFragment {
 
-	private static final Logger LOG = Logger.getLogger(CodeBuilderFragment2.class);
+	private static final Logger LOG = Logger.getLogger(CodeBuilderFragment2.class.getName());
 
 	private Collection<AbstractSubCodeBuilderFragment> subFragments;
 
@@ -121,7 +121,7 @@ public class CodeBuilderFragment2 extends AbstractStubGeneratingFragment {
 		final IXtextProjectConfig generalProjectConfig = getProjectConfig();
 		final IBundleProjectConfig ideProjectConfig = generalProjectConfig.getGenericIde();
 		if (!ideProjectConfig.isEnabled()) {
-			LOG.debug("Generic IDE project is disabled. Skipping the generation of the code builder."); //$NON-NLS-1$
+			LOG.finest("Generic IDE project is disabled. Skipping the generation of the code builder."); //$NON-NLS-1$
 			return;
 		}
 

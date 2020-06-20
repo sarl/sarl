@@ -46,10 +46,6 @@
 			<artifactId>maven-clean-plugin</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.arakhne.afc.slf4j</groupId>
-			<artifactId>slf4j-maven</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>io.sarl.maven</groupId>
 			<artifactId>io.sarl.maven.batchcompiler</artifactId>
 		</dependency>

@@ -33,6 +33,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
+import java.util.logging.Handler;
+import java.util.logging.Logger;
 import javax.inject.Provider;
 
 import com.google.common.collect.Iterables;
@@ -59,9 +61,6 @@ import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.util.ReflectExtensions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.impl.StaticLoggerBinder;
 
 import io.sarl.lang.SARLStandaloneSetup;
 import io.sarl.lang.compiler.batch.CleaningPolicy;
@@ -289,9 +288,14 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 		}
 		compiler.setExtraLanguageGenerators(builder.toString());
 
-		StaticLoggerBinder.getSingleton().registerMavenLogger(getLog());
-		final Logger logger = LoggerFactory.getLogger(getClass());
+		final Logger logger = Logger.getLogger(getClass().getName());
+		logger.setUseParentHandlers(false);
+		for (final Handler h : logger.getHandlers()) {
+			logger.removeHandler(h);
+		}
+		logger.addHandler(new MavenJulHandler(getLog()));
 		compiler.setLogger(logger);
+
 		compiler.setIssueMessageFormatter((issue, uriToProblem) -> {
 			final String filename;
 			if (uriToProblem != null) {

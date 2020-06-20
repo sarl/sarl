@@ -23,11 +23,11 @@ package io.sarl.lang.mwe2.binding;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.inject.Inject;
 
 import com.google.inject.Injector;
 import com.ibm.icu.text.MessageFormat;
-import org.apache.log4j.Logger;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xtext.generator.AbstractXtextGeneratorFragment;
@@ -47,7 +47,7 @@ public class InjectionFragment2 extends AbstractXtextGeneratorFragment {
 
 	/** Logger.
 	 */
-	protected static final Logger LOG = Logger.getLogger(InjectionFragment2.class);
+	protected static final Logger LOG = Logger.getLogger(InjectionFragment2.class.getName());
 
 	@Inject
 	private Injector injector;

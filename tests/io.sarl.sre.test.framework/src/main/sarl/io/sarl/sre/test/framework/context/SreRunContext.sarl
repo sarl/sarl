@@ -32,6 +32,7 @@ import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AgentContext
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventListener
+import io.sarl.maven.bootiqueapp.config.LogConfig
 import io.sarl.sre.test.framework.Constants
 import io.sarl.sre.test.framework.exception.SreLogException
 import io.sarl.sre.test.framework.exception.SreTimeoutException
@@ -47,7 +48,6 @@ import java.util.logging.Handler
 import java.util.logging.Level
 import java.util.logging.LogRecord
 import java.util.logging.Logger
-import org.arakhne.afc.bootique.log4j.configs.Log4jIntegrationConfig
 import org.arakhne.afc.bootique.variables.VariableNames
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.opentest4j.AssertionFailedError
@@ -369,8 +369,7 @@ class SreRunContext {
 
 		val tm = trackMode ?: LogTrackingMode::FAIL_ON_ERROR
 		val lvl = loggingLevel ?: Constants::TEST_LOGGING_LEVEL
-		val glvl = org.arakhne.afc.bootique.log4j.configs.Level::valueOf(lvl)
-		System::setProperty(VariableNames::toPropertyName(Log4jIntegrationConfig::LEVEL), glvl.name)
+		System::setProperty(VariableNames::toPropertyName(LogConfig::LEVEL), lvl.name)
 
 		this.globalResults.clear
 		this.bootAgentId = null

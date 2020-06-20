@@ -43,8 +43,6 @@ import io.sarl.sre.test.framework.mockito.ModuleMock
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
-import org.arakhne.afc.bootique.log4j.configs.Level
-import org.arakhne.afc.bootique.log4j.configs.Log4jIntegrationConfig
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
@@ -62,6 +60,8 @@ import static extension org.mockito.ArgumentCaptor.*
 import static extension org.mockito.ArgumentMatchers.any
 import static extension org.mockito.Mockito.spy
 import static extension org.mockito.Mockito.verify
+import io.sarl.maven.bootiqueapp.config.LogConfig
+import java.util.logging.Level
 
 /**
  * @author $Author: sgalland$
@@ -272,13 +272,13 @@ class SreMainTest {
 
 	@Test
 	def setVerboseLevel {
-		var configInstance = new Log4jIntegrationConfig
+		var configInstance = new LogConfig
 		createBootiqueMock [
-			if (it == typeof(Log4jIntegrationConfig)) {
+			if (it == typeof(LogConfig)) {
 				return configInstance
 			}
 		]
-		var config = this.runtime.getInstance(typeof(Log4jIntegrationConfig))
+		var config = this.runtime.getInstance(typeof(LogConfig))
 		
 		assertEquals(Level::INFO, config.level)
 
@@ -289,7 +289,7 @@ class SreMainTest {
 		assertEquals(Level::OFF, config.level)
 
 		this.bootstrap.verboseLevel = 1
-		assertEquals(Level::ERROR, config.level)
+		assertEquals(Level::SEVERE, config.level)
 
 		this.bootstrap.verboseLevel = 2
 		assertEquals(Level::WARNING, config.level)
@@ -298,15 +298,18 @@ class SreMainTest {
 		assertEquals(Level::INFO, config.level)
 
 		this.bootstrap.verboseLevel = 4
-		assertEquals(Level::DEBUG, config.level)
+		assertEquals(Level::FINE, config.level)
 
 		this.bootstrap.verboseLevel = 5
-		assertEquals(Level::TRACE, config.level)
+		assertEquals(Level::FINER, config.level)
 
 		this.bootstrap.verboseLevel = 6
-		assertEquals(Level::ALL, config.level)
+		assertEquals(Level::FINEST, config.level)
 
 		this.bootstrap.verboseLevel = 7
+		assertEquals(Level::ALL, config.level)
+
+		this.bootstrap.verboseLevel = 8
 		assertEquals(Level::ALL, config.level)
 	}
 

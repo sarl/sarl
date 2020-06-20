@@ -22,10 +22,11 @@
 package io.sarl.lang.compiler.batch;
 
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.log4j.Priority;
 import org.apache.log4j.spi.LoggerFactory;
-import org.slf4j.Logger;
 
 /** Apache logger that is converting info messages to debug messages.
  *
@@ -57,16 +58,16 @@ final class InternalXtextLogger extends org.apache.log4j.Logger {
 		case Priority.FATAL_INT:
 		case Priority.ERROR_INT:
 			if (exception != null) {
-				this.logger.error(Objects.toString(message), exception);
+				this.logger.log(Level.SEVERE, Objects.toString(message), exception);
 			} else {
-				this.logger.error(Objects.toString(message));
+				this.logger.severe(Objects.toString(message));
 			}
 			break;
 		case Priority.WARN_INT:
 			if (exception != null) {
-				this.logger.warn(Objects.toString(message), exception);
+				this.logger.log(Level.WARNING, Objects.toString(message), exception);
 			} else {
-				this.logger.warn(Objects.toString(message));
+				this.logger.warning(Objects.toString(message));
 			}
 			break;
 		case Priority.ALL_INT:
@@ -74,9 +75,9 @@ final class InternalXtextLogger extends org.apache.log4j.Logger {
 		case Priority.DEBUG_INT:
 		default:
 			if (exception != null) {
-				this.logger.debug(Objects.toString(message), exception);
+				this.logger.log(Level.FINEST, Objects.toString(message), exception);
 			} else {
-				this.logger.debug(Objects.toString(message));
+				this.logger.finest(Objects.toString(message));
 			}
 			break;
 		}
