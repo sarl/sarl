@@ -21,7 +21,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>io.sarl.maven</groupId>
-			<artifactId>io.sarl.maven.bootiqueapp</artifactId>
+			<artifactId>io.sarl.maven.bootiquebatchcompiler</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>me.tongfei</groupId>

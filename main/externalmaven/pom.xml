@@ -19,6 +19,8 @@
 	<!-- ======================================= -->
 	<modules>
 		<module>io.sarl.maven.sdk</module>
+		<module>io.sarl.maven.bootiqueapp</module>
+		<module>io.sarl.maven.bootiquebatchcompiler</module>
 		<module>io.sarl.maven.docs.generator</module>
 		<module>io.sarl.maven.docs.testing</module>
 		<module>io.sarl.javafx</module>
