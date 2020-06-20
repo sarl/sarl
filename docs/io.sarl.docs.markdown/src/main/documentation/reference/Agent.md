@@ -387,6 +387,8 @@ variable as the keywords `this` and `it`.
 
 ### Initialization Handler
 
+#### General Description
+
 When an agent is ready to be executed by the runtime environment, it receives the [:initializeevent:] event.
 This event is defined as:
 
@@ -420,7 +422,7 @@ It contains the list of the parameters given to the spawning function (as specif
 		[:End:]
 
 
-### Guarded Initialization Handler
+#### Guarded Initialization Handler
 
 Because [:initializeevent:] is an event, the handler in the agent could use a guard. This feature enables
 the developer to write different initialization blocks depending on the guards of the handlers.
@@ -446,7 +448,140 @@ no parameter. The second event handler is executed when the event has at least o
 		[:End:]
 
 
+#### Execution of the Initialization Handler
+
+The `on Initialize` event handler in agents is a bit special, as it is the code run when an agent is born.
+As such, its execution is more "synchronous" than other on-behavior rules. In particular:
+
+1. Any event emitted within an `on Initialize`, will not be processed until that
+   `on Initialize` code finishes. So, your agent initialization should not depend
+   (and wait) on any fired event being processed, as they won't!
+2. When spawning an agent in `on Initialize`, the spawn instructions will return only
+   after the agent has been created. However, creation of the agent (i.e., of the
+   corresponding object) does not include initialization of the agent via its 
+   `on Initialize` handler. Said so, the Java thread manager may process those
+   initialization processes of the new agent before continuing with the execution
+   of the spawning agent (and this seems to be the case in many Linux boxes
+   where the executor service of Java tends to have the same behavior during
+   all the runs). If you change computer, it may be different. In the following
+   example, the thread executor service of Java seems to give the priority to
+   the `on Initialize` of [:agenttwoname:] instead of continuing the run of the
+   spawn function.
+
+        [:Success:]
+            package io.sarl.docs.faq.general
+            import io.sarl.core.Initialize
+            import io.sarl.core.Logging
+            import io.sarl.core.Lifecycle
+            [:On]
+            agent Agent1 {
+                uses Logging, Lifecycle
+                var agent_name = "agent1"
+                on Initialize {
+                    info(agent_name + " spawned")
+                    info(agent_name + " spawning Agent2")
+                    spawn(Agent2)
+                    info(agent_name + " end")
+                }
+            }
+
+            agent [:agenttwoname](Agent2) {
+                uses Logging
+                var agent_name = "agent2"
+                on Initialize {
+                    info(agent_name + " spawned")
+                    info(agent_name + " sleeping")
+                    Thread::sleep(5000)
+                    info(agent_name + " woke up")
+                    info(agent_name + " end")
+                }
+                on Initialize {
+                    info(agent_name + " init2")
+                    info(agent_name + " init2 end")
+                }
+            }
+        [:End:]
+
+The output has been:
+
+```
+Launching the agent: Agent1
+agent1 spawned
+agent1 spawning Agent2
+agent2 spawned
+agent2 init2
+agent2 sleeping
+agent2 init2 end
+agent2 woke up
+agent2 end
+agent1 end
+```
+
+Here it appears as the `on Initialize` behaviors have been run all before
+the execution resumes after the `spawn()` statement, but this is just one way
+and one should not rely on that behavior being guaranteed: once the spawned
+agent is created, the `spawn()` commands returns.
+
+
+#### Multiple Initialization Handlers
+
+It is allowed to declare multiple initialization handlers into a single agent type, as illustrated by:
+
+        [:Success:]
+            package io.sarl.docs.faq.general
+            import io.sarl.core.Initialize
+            import io.sarl.core.Logging
+            [:On]
+            agent Agent3 {
+            	uses Logging
+                on Initialize {
+                    info("1")
+                }
+                on Initialize {
+                    info("2")
+                }
+                on Initialize {
+                    info("3")
+                }
+            }
+        [:End:]
+
+According to the SARL operational semantic, the three event handlers for `Initialize` are run in parallel.
+The initialization event handlers are not constructors (as defined in object-oriented programming paradigm),
+they are reacting to the receiving of an `Initialize` occurrence.
+Consequently, we could say that there is a single `Initialize` occurrence during the whole life of an agent;
+But, it may have multiple handlers to react to the receiving of this event.
+
+
+#### Initialization Handler within the Inheritance Hierarchy
+
+The example in the previous section could be extended in order to illustrate how the initialization handlers
+are run when the type of the agent (here [:agent4name:]) is declared within a inheritance hierarchy.
+
+        [:Success:]
+            package io.sarl.docs.faq.general
+            import io.sarl.core.Initialize
+            import io.sarl.core.Logging
+            [:On]
+            agent [:agent4name](Agent4) extends [:agent3name](Agent3) {
+            	uses Logging
+                on Initialize {
+                    info("4")
+                }
+                on Initialize {
+                    info("5")
+                }
+            }
+        [:End:]
+
+According to the SARL operational semantic, all the initialization handlers are run in parallel.
+In the previous example, five event handlers will be run: three are defined into [:agent3name:], and
+two are defined into [:agent4name:]. This mechanism is generalized to all the events within an agent.
+
+
 ### Destruction Handler
+
+#### General Description
 
 The counterpart of [:initializeevent:] is the event [:destroyevent:]. This event is defined as:
 
@@ -469,7 +604,7 @@ Example:
 		[:End:]
 
 
-### Guarded Destruction Handler
+#### Guarded Destruction Handler
 
 As for [:initializeevent:], the handlers of the [:destroyevent:] event could be guarded.
 

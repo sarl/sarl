@@ -283,6 +283,9 @@ variable as the keywords `this` and `it`.
 
 ### Initialization Handler
 
+
+#### General Description
+
 When a behavior is ready to be executed by the runtime environment, usually when it
 is registered in its owning agent, it receives the [:initializeevent:] event.
 This event is defined as:
@@ -306,7 +309,7 @@ It contains the list of the parameters given that are never set for behaviors.
 		[:End:]
 
 
-### Guarded Initialization Handler
+#### Guarded Initialization Handler
 
 Because [:initializeevent:] is an event, the handler in the behavior could use a guard. This feature enables
 the developer to write different initialization blocks depending on the guards of the handlers.
@@ -331,7 +334,81 @@ no parameter. The second event handler is executed when the event has at least o
 		[:End:]
 
 
+#### Execution of the Initialization Handler
+
+The `on Initialize` event handler in behaviors is a bit special, as it is the code run when a behavior is attached to its agent.
+As such, its execution is more "synchronous" than other on-behavior rules. In particular:
+
+1. Any event emitted within an `on Initialize`, will not be processed until that
+   `on Initialize` code finishes. So, your behavior initialization should not depend
+   (and wait) on any fired event being processed, as they won't!
+2. When spawning an agent in `on Initialize`, the spawn instructions will return only
+   after the agent has been created. However, creation of the agent (i.e., of the
+   corresponding object) does not include initialization of the agent via its 
+   `on Initialize` handler. Said so, the Java thread manager may process those
+   initialization processes of the new agent before continuing with the execution
+   of the spawning agent (and this seems to be the case in many Linux boxes
+   where the executor service of Java tends to have the same behavior during
+   all the runs). If you change computer, it may be different. 
+
+
+#### Multiple Initialization Handlers
+
+It is allowed to declare multiple initialization handlers into a single behavior type, as illustrated by:
+
+        [:Success:]
+            package io.sarl.docs.faq.general
+            import io.sarl.core.Initialize
+            import io.sarl.core.Logging
+            [:On]
+            behavior Beh1 {
+            	uses Logging
+                on Initialize {
+                    info("1")
+                }
+                on Initialize {
+                    info("2")
+                }
+                on Initialize {
+                    info("3")
+                }
+            }
+        [:End:]
+
+According to the SARL operational semantic, the three event handlers for `Initialize` are run in parallel.
+The initialization event handlers are not constructors (as defined in object-oriented programming paradigm),
+they are reacting to the receiving of an `Initialize` occurrence.
+
+
+#### Initialization Handler within the Inheritance Hierarchy
+
+The example in the previous section could be extended in order to illustrate how the initialization handlers
+are run when the type of the behavior (here [:beh2name:]) is declared within a inheritance hierarchy.
+
+        [:Success:]
+            package io.sarl.docs.faq.general
+            import io.sarl.core.Initialize
+            import io.sarl.core.Logging
+            [:On]
+            agent [:beh2name](Beh2) extends [:beh1name](Beh1) {
+            	uses Logging
+                on Initialize {
+                    info("4")
+                }
+                on Initialize {
+                    info("5")
+                }
+            }
+        [:End:]
+
+According to the SARL operational semantic, all the initialization handlers are run in parallel.
+In the previous example, five event handlers will be run: three are defined into [:beh1name:], and
+two are defined into [:beh2name:]. This mechanism is generalized to all the events within a behavior.
+
+
 ### Destruction Handler
+
+#### General Description
 
 The counterpart of [:initializeevent:] is the event [:destroyevent:]. This event is defined as:
 
@@ -354,7 +431,7 @@ Example:
 		[:End:]
 
 
-### Guarded Destruction Handler
+#### Guarded Destruction Handler
 
 As for [:initializeevent:], the handlers of the [:destroyevent:] event could be guarded.
 
