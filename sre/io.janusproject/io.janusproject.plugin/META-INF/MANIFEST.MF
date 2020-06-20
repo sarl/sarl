@@ -5,37 +5,19 @@ Bundle-SymbolicName: io.janusproject.plugin;singleton:=true
 Automatic-Module-Name: io.janusproject.plugin
 Bundle-Version: 0.12.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: io.sarl.core;bundle-version="0.12.0",
- io.sarl.util;bundle-version="0.12.0",
- org.eclipse.osgi;bundle-version="3.15.100",
- org.apache.commons.cli;bundle-version="1.4.0",
- org.arakhne.afc.core.vmutils;bundle-version="16.0.0",
- org.arakhne.afc.core.util;bundle-version="16.0.0",
- org.arakhne.afc.core.inputoutput;bundle-version="16.0.0",
- com.google.gson;bundle-version="2.8.5",
- javax.inject;bundle-version="1.0.0",
- aopalliance;bundle-version="1.0.0",
- com.google.inject;bundle-version="4.1.0",
- com.fasterxml.jackson.core.jackson-annotations;bundle-version="2.10.0",
- com.fasterxml.jackson.core.jackson-core;bundle-version="2.10.0.pr1",
- com.fasterxml.jackson.core.jackson-databind;bundle-version="2.10.0.pr1",
- com.fasterxml.jackson.dataformat.jackson-dataformat-xml;bundle-version="2.10.1",
- com.fasterxml.jackson.dataformat.jackson-dataformat-yaml;bundle-version="2.10.0.pr1",
- com.fasterxml.jackson.module.jackson-module-jaxb-annotations;bundle-version="2.10.1",
- org.yaml.snakeyaml;bundle-version="1.24.0",
- jakarta.xml.bind-api;bundle-version="2.3.2",
- io.bootique;bundle-version="1.0.0",
- org.arakhne.afc.bootique.log4j;bundle-version="16.0.0",
- org.arakhne.afc.bootique.variables;bundle-version="16.0.0",
- net.sf.jopt-simple.jopt-simple;bundle-version="5.0.3",
- jul.to.slf4j;bundle-version="2.0.0.alpha1",
- org.apache.log4j;bundle-version="1.2.15",
- org.eclipse.xtend.lib;bundle-version="2.20.0",
- stax2-api;bundle-version="4.2.0",
- com.google.guava.failureaccess;bundle-version="1.0.1",
- java-uuid-generator;bundle-version="4.0.1"
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %Bundle-Vendor
+Require-Bundle: io.sarl.core;bundle-version="0.12.0",
+ io.sarl.util;bundle-version="0.12.0",
+ io.bootique;bundle-version="1.0.0",
+ org.arakhne.afc.bootique.variables;bundle-version="16.0.0",
+ com.google.inject;bundle-version="4.1.0",
+ javax.inject;bundle-version="1.0.0",
+ org.eclipse.osgi;bundle-version="3.15.100",
+ org.eclipse.xtend.lib;bundle-version="2.20.0",
+ org.arakhne.afc.core.util;bundle-version="16.0.0",
+ org.arakhne.afc.core.inputoutput;bundle-version="16.0.0",
+ com.fasterxml.jackson.core.jackson-annotations;bundle-version="2.10.0"
 Export-Package: io.sarl.sre;
   uses:="io.sarl.lang.core,
    org.eclipse.osgi.util,
@@ -118,6 +100,7 @@ Export-Package: io.sarl.sre;
    io.sarl.sre.services.context,
    org.arakhne.afc.util,
    io.sarl.sre.services.lifecycle",
+ io.sarl.sre.internal.eventguard,
  io.sarl.sre.naming,
  io.sarl.sre.services;
   uses:="io.sarl.sre.boot.configs,
@@ -164,6 +147,7 @@ Export-Package: io.sarl.sre;
    io.sarl.sre.services,
    javax.inject",
  io.sarl.sre.services.logging;uses:="io.sarl.sre.services,com.google.common.util.concurrent,javax.inject",
+ io.sarl.sre.services.logging.jul,
  io.sarl.sre.services.namespace;
   uses:="io.sarl.lang.core,
    com.google.inject,
