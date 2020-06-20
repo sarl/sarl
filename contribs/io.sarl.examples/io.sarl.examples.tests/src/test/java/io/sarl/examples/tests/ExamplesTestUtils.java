@@ -41,6 +41,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 import com.google.inject.Injector;
@@ -52,7 +54,6 @@ import org.eclipse.xtext.xbase.lib.Pair;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
 import org.junit.jupiter.api.DynamicTest;
 import org.opentest4j.AssertionFailedError;
-import org.slf4j.helpers.NOPLogger;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -357,7 +358,9 @@ public final class ExamplesTestUtils {
 		compiler.setAllWarningSeverities(Severity.IGNORE);
 		compiler.setWarningSeverity(IssueCodes.DEPRECATED_MEMBER_REFERENCE, Severity.ERROR);
 		compiler.setJavaCompilerVerbose(false);
-		compiler.setLogger(NOPLogger.NOP_LOGGER);
+		final Logger nopLogger = Logger.getAnonymousLogger();
+		nopLogger.setLevel(Level.OFF);
+		compiler.setLogger(nopLogger);
 		compiler.addIssueMessageListener((issue, uri, message) -> {
 			if (issue.isSyntaxError() || issue.getSeverity().compareTo(Severity.ERROR) >= 0) {
 				final Integer line = issue.getLineNumber();
