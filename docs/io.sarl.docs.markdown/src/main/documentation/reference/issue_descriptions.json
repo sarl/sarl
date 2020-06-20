@@ -201,9 +201,16 @@
 	},
 	{
 		"code": "io.sarl.lang.validation.IssueCodes.discouraged_occurrence_readonly_use",
-		"message": "Possible invalid usage of 'occurrence. The value of the feature 'occurrence' or one of its component seems to be copied within a local variable. Because side effect is not allowed on 'occurrence', it may cause an unexpected or invalid running behavior. You have to ensure by yourself that the usage of 'occurrence' is valid",
+		"message": "Possible invalid usage of 'occurrence'. The value of the feature 'occurrence' or one of its component seems to be copied within a local variable. Because side effect is not allowed on 'occurrence', it may cause an unexpected or invalid running behavior. You have to ensure by yourself that the usage of 'occurrence' is valid",
 		"cause": "Message is clear",
 		"solution": "Rewrite your code to avoid the use of the impure function(s)",
+		"level": "c/warning"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.discouraged_occurrence_readonly_use",
+		"message": "Possible invalid usage of 'occurrence'. The value of the feature 'occurrence' or one of its component is used as an argument of a function. This function is not marked as a pure function, i.e. without side effect. Because side effect is not allowed on 'occurrence', it may cause an unexpected or invalid running behavior. You have to ensure by yourself that the usage of 'occurrence' is valid",
+		"cause": "Message is clear",
+		"solution": "Mark with `@Pure` the function that takes `occurrence` as argument; or Change your code to avoid the passing of `occurrence` to the concerned function",
 		"level": "c/warning"
 	},
 	{
