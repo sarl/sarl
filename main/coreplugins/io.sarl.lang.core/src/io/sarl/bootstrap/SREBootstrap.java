@@ -224,7 +224,8 @@ public interface SREBootstrap {
 	/**
 	 * Force the verbosity level.
 	 *
-	 * <p>This function has no effect if the agent framework is already launched.
+	 * <p>This function may have no effect if the agent framework is already launched. This depends on the implementation
+	 * of the SRE.
 	 *
 	 * <p>The value of the {@code level} argument does not depend on a specific logging infrastructure.
 	 * Indeed, JUL, Log4J and SLF4J attach different numeric values to the different logging levels.

@@ -142,6 +142,9 @@
 						<manifest>
 							<mainClass>${cliRunnerMainClass}</mainClass>
 						</manifest>
+						<manifestEntries>
+							<Automatic-Module-Name>${project.artifactId}</Automatic-Module-Name>
+						</manifestEntries>
 					</archive>
 				</configuration>
 				<executions>

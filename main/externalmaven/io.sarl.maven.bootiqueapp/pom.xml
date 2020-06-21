@@ -44,6 +44,21 @@
 		<!-- End of the fix section -->
 	</dependencies>
 
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Automatic-Module-Name>${project.artifactId}</Automatic-Module-Name>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 	<!-- ======================================= -->
 	<!-- ==== Release Management === -->
 	<!-- ======================================= -->
