@@ -1069,7 +1069,7 @@
 	{
 		"code": "org.eclipse.xtend.core.validation.IssueCodes.invalid_return_type_in_case_of_junit_annotation",
 		"message": "JUnit method *func-name* must be void but is *type-name*",
-		"cause": "By specification, the functions that are dedicated to JUnit must return void. This issue is generated when an function with a JUnit annotation does not return `void`",
+		"cause": "By specification, the functions that are dedicated to JUnit must return void. This issue is generated when an function with a JUnit annotation does not return `void`. The supported versions of Junit are 4 and 5",
 		"solution": "Replace the return type by `void`",
 		"level": "error"
 	},
