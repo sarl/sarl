@@ -21,6 +21,7 @@
 
 package io.sarl.maven.bootiqueapp.config;
 
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,7 +40,7 @@ import org.eclipse.xtext.util.Strings;
  * @since 0.12
  */
 @BQConfig("Configuration of the loggers")
-public class LogConfig {
+public class LogConfig implements Comparable<LogConfig> {
 
 	/** 
 	 * Prefix for the configuration entries of the logger modules.
@@ -82,12 +83,22 @@ public class LogConfig {
 	/** Replies the level.
 	 *
 	 * @return the level.
+	 * @see #getJulLevel()
 	 */
 	public LogLevel getLevel() {
 		if (this.level == null) {
 			this.level = new LogLevel(DEFAULT_LEVEL);
 		}
 		return this.level;
+	}
+
+	/** Replies the JUL level.
+	 *
+	 * @return the level.
+	 * @see #getLevel()
+	 */
+	public Level getJulLevel() {
+		return getLevel().getJul();
 	}
 
 	/** Change the level.
@@ -97,6 +108,18 @@ public class LogConfig {
 	@BQConfigProperty("Logging level of a given logger and its children.")
 	public void setLevel(LogLevel level) {
 		this.level = level;
+	}
+
+	/** Change the level.
+	 *
+	 * @param level the level.
+	 */
+	public void setJulLevel(Level level) {
+		if (level == null) {
+			setLevel(null);
+		} else {
+			setLevel(new LogLevel(level));
+		}
 	}
 
 	/** Configure the given logger from the configuration.
@@ -144,6 +167,43 @@ public class LogConfig {
 	@BQConfigProperty("Log format specification used by child appenders unless redefined at the appender level, or not relevant for a given type of appender. The spec is compatible with Log4j framework. Default format is '" + DEFAULT_LOG_FORMAT + "'.")
 	public void setLogFormat(String format) {
 		this.logFormat = format;
+	}
+
+	@Override
+	public String toString() {
+		return Objects.toString(this.level);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof LogConfig) {
+			final LogConfig cfg = (LogConfig) obj;
+			return Objects.equals(this.level, cfg.level);
+		}
+		return false;
+	}
+
+
+	@Override
+	public int hashCode() {
+		return this.level == null ? 0 : this.level.hashCode();
+	}
+
+	@Override
+	public int compareTo(LogConfig o) {
+		if (o == null) {
+			return 1;
+		}
+		if (this.level == o.level) {
+			return 0;
+		}
+		if (this.level == null) {
+			return o.level == null ? 0 : -1;
+		}
+		if (o.level == null) {
+			return 1;
+		}
+		return Integer.compare(this.level.intValue(), o.level.intValue());
 	}
 
 }

@@ -28,9 +28,9 @@ import io.bootique.BQModule
 import io.bootique.BQModuleProvider
 import io.sarl.sre.boot.configs.SreConfig
 import io.sarl.sre.services.logging.jul.JulLoggerCreator
+import java.util.logging.Level
 import javax.inject.Provider
 import javax.inject.Singleton
-import java.util.logging.Logger
 
 /** 
  * Module for the creator of loggers.
@@ -48,17 +48,21 @@ class LoggerCreatorModule extends AbstractModule {
 	/** 
 	 * Replies the creator of loggers.
 	 * 
-	 * @param defaultLoggerProvider the provider of a default logger, that is used to extract the base configuration.
 	 * @param sreConfig the provider of configuration.
 	 * @param injector the injector of the members.
 	 * @return the logger creator.
 	 */
 	@Provides
 	@Singleton
-	def provideLoggerCreator(defaultLoggerProvider : Provider<Logger>, sreConfig : Provider<SreConfig>,
-		injector : Injector) : JulLoggerCreator {
-		var creator = new JulLoggerCreator(
-			defaultLoggerProvider.get.level,
+	def provideLoggerCreator(sreConfig : Provider<SreConfig>, injector : Injector) : JulLoggerCreator {
+		// This is a reflection code because the LogConfig class is not within the Eclipse plugin classpath.
+		val configType = Class::forName("io.sarl.maven.bootiqueapp.config.LogConfig")
+		val logConfig = injector.getInstance(configType)
+		val method1 = configType.getDeclaredMethod("getJulLevel")
+		val logLevel = method1.invoke(logConfig) as Level	
+
+		val creator = new JulLoggerCreator(
+			logLevel,
 			sreConfig)
 		injector.injectMembers(creator)
 		return creator

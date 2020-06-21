@@ -29,6 +29,7 @@ import io.bootique.config.ConfigurationFactory
 import io.sarl.bootstrap.SREBootstrap
 import io.sarl.bootstrap.SREListener
 import io.sarl.lang.core.AgentContext
+import io.sarl.maven.bootiqueapp.config.LogConfig
 import io.sarl.sre.Kernel
 import io.sarl.sre.boot.SreMain
 import io.sarl.sre.boot.configs.SreConfig
@@ -43,15 +44,16 @@ import io.sarl.sre.test.framework.mockito.ModuleMock
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.util.logging.Level
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 
-import static io.sarl.tests.api.tools.TestAssertions.*
 import static org.mockito.Mockito.*
 
+import static extension io.sarl.tests.api.tools.TestAssertions.*
 import static extension io.sarl.tests.api.tools.TestAssertions.assertException
 import static extension io.sarl.tests.api.tools.TestMockito.mock
 import static extension org.junit.jupiter.api.Assertions.*
@@ -60,8 +62,6 @@ import static extension org.mockito.ArgumentCaptor.*
 import static extension org.mockito.ArgumentMatchers.any
 import static extension org.mockito.Mockito.spy
 import static extension org.mockito.Mockito.verify
-import io.sarl.maven.bootiqueapp.config.LogConfig
-import java.util.logging.Level
 
 /**
  * @author $Author: sgalland$
@@ -214,31 +214,31 @@ class SreMainTest {
 
 	@Test
 	def getKernel_start0 {
-		assertNull(this.bootstrap.kernel)
+		this.bootstrap.kernel.assertNull
 	}
 
 	@Test
 	def getKernel_start1 {
 		createBootiqueMock
 		this.bootstrap.startWithoutAgent(this.bootique)
-		assertSame(this.kernel, this.bootstrap.kernel)
+		this.kernel.assertSame(this.bootstrap.kernel)
 	}
 
 	@Test
 	def getRuntime_start0 {
-		assertNull(this.bootstrap.runtime)
+		this.bootstrap.runtime.assertNull
 	}
 
 	@Test
 	def getRuntime_start1 {
 		createBootiqueMock
 		this.bootstrap.startWithoutAgent(this.bootique)
-		assertSame(this.runtime, this.bootstrap.runtime)
+		this.runtime.assertSame(this.bootstrap.runtime)
 	}
 
 	@Test
 	def getService_start0 {
-		assertNull(this.bootstrap.getService(typeof(LoggingService)))
+		this.bootstrap.getService(typeof(LoggingService)).assertNull
 	}
 
 	@Test
@@ -247,27 +247,27 @@ class SreMainTest {
 		this.bootstrap.startWithoutAgent(this.bootique)
 		var serv = this.bootstrap.getService(typeof(LifecycleService))
 		serv.assertNotNull
-		assertInstanceOf(typeof(LifecycleService), serv)
+		typeof(LifecycleService).assertInstanceOf(serv)
 	}
 
 	@Test
 	def getOptions {
 		var opts = this.bootstrap.options
-		assertNotNull(opts)
+		opts.assertNotNull
 		var names = opts.map[it.option.name]
-		assertContainsCollection(names, DEFAULT_OPTIONS)
+		names.assertContainsCollection(DEFAULT_OPTIONS)
 	}
 
 	@Test
 	def isActive_start0 {
-		assertTrue(this.bootstrap.active)
+		this.bootstrap.active.assertTrue
 	}
 
 	@Test
 	def isActive_start1 {
 		createBootiqueMock
 		this.bootstrap.startWithoutAgent(this.bootique)
-		assertTrue(this.bootstrap.active)
+		this.bootstrap.active.assertTrue
 	}
 
 	@Test
@@ -280,37 +280,37 @@ class SreMainTest {
 		]
 		var config = this.runtime.getInstance(typeof(LogConfig))
 		
-		assertEquals(Level::INFO, config.level)
+		Level::INFO.assertEquals(config.julLevel)
 
 		this.bootstrap.verboseLevel = -1
-		assertEquals(Level::OFF, config.level)
+		Level::OFF.assertEquals(config.julLevel)
 
 		this.bootstrap.verboseLevel = 0
-		assertEquals(Level::OFF, config.level)
+		Level::OFF.assertEquals(config.julLevel)
 
 		this.bootstrap.verboseLevel = 1
-		assertEquals(Level::SEVERE, config.level)
+		Level::SEVERE.assertEquals(config.julLevel)
 
 		this.bootstrap.verboseLevel = 2
-		assertEquals(Level::WARNING, config.level)
+		Level::WARNING.assertEquals(config.julLevel)
 
 		this.bootstrap.verboseLevel = 3
-		assertEquals(Level::INFO, config.level)
+		Level::INFO.assertEquals(config.julLevel)
 
 		this.bootstrap.verboseLevel = 4
-		assertEquals(Level::FINE, config.level)
+		Level::FINE.assertEquals(config.julLevel)
 
 		this.bootstrap.verboseLevel = 5
-		assertEquals(Level::FINER, config.level)
+		Level::FINER.assertEquals(config.julLevel)
 
 		this.bootstrap.verboseLevel = 6
-		assertEquals(Level::FINEST, config.level)
+		Level::FINEST.assertEquals(config.julLevel)
 
 		this.bootstrap.verboseLevel = 7
-		assertEquals(Level::ALL, config.level)
+		Level::ALL.assertEquals(config.julLevel)
 
 		this.bootstrap.verboseLevel = 8
-		assertEquals(Level::ALL, config.level)
+		Level::ALL.assertEquals(config.julLevel)
 	}
 
 	@Test

@@ -28,7 +28,6 @@ import java.util.logging.LogManager
 import java.util.logging.Logger
 import javax.inject.Provider
 import org.eclipse.xtend.lib.annotations.Accessors
-import javax.inject.Singleton
 
 /** 
  * Helper for creating a JUL logger.

@@ -139,36 +139,46 @@ class SreMain implements SREBootstrap {
 	}
 
 	override setVerboseLevel(level : int) {
-		val logger = kernelLogger
-		if (logger !== null) {
-			switch (level) {
-				case 1: {
-					logger.level = Level::SEVERE
-				}
-				case 2: {
-					logger.level = Level::WARNING
-				}
-				case 3: {
-					logger.level = Level::INFO
-				}
-				case 4: {
-					logger.level = Level::FINE
-				}
-				case 5: {
-					logger.level = Level::FINER
-				}
-				case 6: {
-					logger.level = Level::FINEST
-				}
-				default: {
-					if (level <= 0) {
-						logger.level = Level::OFF
-					} else {
-						logger.level = Level::ALL
-					}
+		var julLevel : Level
+		switch (level) {
+			case 1: {
+				julLevel = Level::SEVERE
+			}
+			case 2: {
+				julLevel = Level::WARNING
+			}
+			case 3: {
+				julLevel = Level::INFO
+			}
+			case 4: {
+				julLevel = Level::FINE
+			}
+			case 5: {
+				julLevel = Level::FINER
+			}
+			case 6: {
+				julLevel = Level::FINEST
+			}
+			default: {
+				if (level <= 0) {
+					julLevel = Level::OFF
+				} else {
+					julLevel = Level::ALL
 				}
 			}
 		}
+		val runtime = getRuntime
+		if (runtime !== null) {
+			// This is a reflection code because the LogConfig class is not within the Eclipse plugin classpath.
+			val configType = Class::forName("io.sarl.maven.bootiqueapp.config.LogConfig")
+			val logConfig = runtime.getInstance(configType)
+			val method1 = configType.getDeclaredMethod("setJulLevel", typeof(Level))
+			method1.invoke(logConfig, julLevel)
+		}		
+		val logger = kernelLogger
+		if (logger !== null) {
+			logger.level = julLevel
+		}		
 	}
 
 	override getKernelLogger : Logger {
