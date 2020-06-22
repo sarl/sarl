@@ -24,16 +24,17 @@ package io.janusproject.eclipse.sre;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
+import java.util.logging.Level;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
-import org.arakhne.afc.bootique.log4j.configs.Level;
 import org.eclipse.core.runtime.IPath;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import io.janusproject.eclipse.buildpath.JanusClasspathContainer;
 import io.janusproject.eclipse.buildpath.JanusClasspathContainerInitializer;
+import io.sarl.api.bootiquebase.config.LogLevel;
 import io.sarl.bootstrap.SREBootstrap;
 import io.sarl.eclipse.runtime.AbstractSREInstall;
 import io.sarl.eclipse.runtime.SRECommandLineOptions;
@@ -115,8 +116,8 @@ public class JanusSREInstall extends AbstractSREInstall {
 	public Map<String, String> getAvailableCommandLineOptions() {
 		final Map<String, String> options = Maps.newHashMap();
 		// Logging
-		options.put(SRECommandLineOptions.CLI_SHOW_INFO, formatCommandLineOption(LOG_CLI_OPTION, Level.INFO.toJsonString()));
-		options.put(SRECommandLineOptions.CLI_HIDE_INFO, formatCommandLineOption(LOG_CLI_OPTION, Level.WARNING.toJsonString()));
+		options.put(SRECommandLineOptions.CLI_SHOW_INFO, formatCommandLineOption(LOG_CLI_OPTION, new LogLevel(Level.INFO).toJsonString()));
+		options.put(SRECommandLineOptions.CLI_HIDE_INFO, formatCommandLineOption(LOG_CLI_OPTION, new LogLevel(Level.WARNING).toJsonString()));
 		// Networking
 		//options.put(SRECommandLineOptions.CLI_SRE_OFFLINE, formatCommandLineOption(null, null));
 		//options.put(SRECommandLineOptions.CLI_SRE_ONLINE, formatCommandLineOption(null, null));

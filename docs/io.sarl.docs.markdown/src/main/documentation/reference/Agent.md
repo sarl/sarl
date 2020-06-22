@@ -562,6 +562,8 @@ are run when the type of the agent (here [:agent4name:]) is declared within a in
             package io.sarl.docs.faq.general
             import io.sarl.core.Initialize
             import io.sarl.core.Logging
+            agent Agent3 {
+            }
             [:On]
             agent [:agent4name](Agent4) extends [:agent3name](Agent3) {
             	uses Logging

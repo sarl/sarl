@@ -6,7 +6,7 @@
  *
  * Copyright (C) 2014-2020 the original authors or authors.
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -18,34 +18,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.sarl.api.bootiquebase.config
 
-package io.sarl.maven.bootiqueapp.config;
-
-import org.eclipse.osgi.util.NLS;
+import org.eclipse.osgi.util.NLS
 
 /** Messages for the SRE configuration.
- *
+ * 
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @ExcludeFromApidoc
  */
-public final class Messages extends NLS {
+final class Messages extends NLS {
 
-	static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages";
+	static val BUNDLE_NAME = typeof(Messages).package.name + ".messages"
 
-	static {
+	static new {
 		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+		NLS::initializeMessages(BUNDLE_NAME, typeof(Messages))
 	}
 
-	public static String LogConfigModule_0;
-	public static String LogConfigModule_1;
-	public static String LogConfigModuleProvider_0;
+	public static var LogConfigModule_0 : String
+	public static var LogConfigModule_1 : String
+	public static var LogConfigModuleProvider_0 : String
 
-	private Messages() {
-		//
+	private new {
 	}
 
 }

@@ -16,6 +16,10 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>io.sarl</groupId>
+			<artifactId>io.sarl.api.bootiquebase</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.arakhne.afc.bootique</groupId>
 			<artifactId>bootique-applicationdata2</artifactId>
 		</dependency>

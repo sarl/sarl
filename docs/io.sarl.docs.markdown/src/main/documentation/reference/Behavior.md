@@ -389,8 +389,10 @@ are run when the type of the behavior (here [:beh2name:]) is declared within a i
             package io.sarl.docs.faq.general
             import io.sarl.core.Initialize
             import io.sarl.core.Logging
+            behavior Beh1 {
+            }
             [:On]
-            agent [:beh2name](Beh2) extends [:beh1name](Beh1) {
+            behavior [:beh2name](Beh2) extends [:beh1name](Beh1) {
             	uses Logging
                 on Initialize {
                     info("4")

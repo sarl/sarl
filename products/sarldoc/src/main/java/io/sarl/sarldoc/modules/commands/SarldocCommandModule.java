@@ -62,7 +62,7 @@ public class SarldocCommandModule extends AbstractModule {
 	 * @param cconfig the provider of sarlc configuration.
 	 * @param defaultBootClasspath the provider of the default boot class path.
 	 * @param pathDetector the provider of path detector.
-	 * @param loggerProvider the provider of SLF4J logger.
+	 * @param loggerProvider the provider of JUL logger.
 	 * @return the command.
 	 */
 	@SuppressWarnings("static-method")

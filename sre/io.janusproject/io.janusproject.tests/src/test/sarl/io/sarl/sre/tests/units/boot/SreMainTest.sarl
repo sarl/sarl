@@ -29,7 +29,6 @@ import io.bootique.config.ConfigurationFactory
 import io.sarl.bootstrap.SREBootstrap
 import io.sarl.bootstrap.SREListener
 import io.sarl.lang.core.AgentContext
-import io.sarl.maven.bootiqueapp.config.LogConfig
 import io.sarl.sre.Kernel
 import io.sarl.sre.boot.SreMain
 import io.sarl.sre.boot.configs.SreConfig
@@ -62,6 +61,7 @@ import static extension org.mockito.ArgumentCaptor.*
 import static extension org.mockito.ArgumentMatchers.any
 import static extension org.mockito.Mockito.spy
 import static extension org.mockito.Mockito.verify
+import io.sarl.api.bootiquebase.config.LogConfig
 
 /**
  * @author $Author: sgalland$

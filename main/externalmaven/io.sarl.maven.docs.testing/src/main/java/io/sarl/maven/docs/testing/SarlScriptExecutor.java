@@ -167,7 +167,7 @@ public class SarlScriptExecutor implements ScriptExecutor {
 				if (issue.isSyntaxError() || issue.getSeverity() == Severity.ERROR) {
 					final Integer line = issue.getLineNumber();
 					final int issueLine = (line == null ? 0 : line.intValue()) + lineno;
-					issues.add(MessageFormat.format(Messages.OperatorExtensions_1, message, issueLine));
+					issues.add(MessageFormat.format(Messages.SarlScriptExecutor_1, message, issueLine));
 				}
 			});
 		}

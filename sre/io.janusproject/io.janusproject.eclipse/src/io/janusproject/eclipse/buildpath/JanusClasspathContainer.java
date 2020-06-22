@@ -60,6 +60,7 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 			//
 			"com.google.inject", //$NON-NLS-1$
 			"io.bootique", //$NON-NLS-1$
+			"io.sarl.api.bootiquebase", //$NON-NLS-1$
 			"javax.inject", //$NON-NLS-1$
 			"org.arakhne.afc.bootique.variables", //$NON-NLS-1$
 			"org.arakhne.afc.core.inputoutput", //$NON-NLS-1$

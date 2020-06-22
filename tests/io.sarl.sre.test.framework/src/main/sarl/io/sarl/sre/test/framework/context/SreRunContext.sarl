@@ -32,7 +32,6 @@ import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AgentContext
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventListener
-import io.sarl.maven.bootiqueapp.config.LogConfig
 import io.sarl.sre.test.framework.Constants
 import io.sarl.sre.test.framework.exception.SreLogException
 import io.sarl.sre.test.framework.exception.SreTimeoutException
@@ -56,6 +55,7 @@ import static io.sarl.sre.test.framework.Constants.*
 import static org.junit.jupiter.api.Assertions.*
 
 import static extension org.junit.jupiter.api.Assertions.assertEquals
+import io.sarl.api.bootiquebase.config.LogConfig
 
 /**
  * Context for running the SRE. This context is thread-safe.

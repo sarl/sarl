@@ -1,32 +1,28 @@
-/* 
+/*
  * $Id$
- * 
+ *
  * SARL is an general-purpose agent programming language.
  * More details on http://www.sarl.io
- * 
+ *
  * Copyright (C) 2014-2020 the original authors or authors.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.sarl.api.bootiquebase.config
 
-package io.sarl.maven.bootiqueapp.config;
-
-import java.util.logging.Level;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-import org.eclipse.xtext.util.Strings;
-import org.eclipse.xtext.xbase.lib.Pure;
+import java.util.logging.Level
+import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonValue
 
 /** 
  * Logging level that is dedicated to be compatible with the configuration files, e.g. Json.
@@ -37,40 +33,40 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 0.12
  */
-public class LogLevel {
+class LogLevel {
 
-	private final Level level;
+	val level : Level
 
 	/** Constructor.
 	 *
 	 * @param lvl the JUL level.
 	 */
-	LogLevel(Level lvl) {
-		assert lvl != null;
-		this.level = lvl;
+	new (lvl : Level) {
+		assert lvl !== null
+		this.level = lvl
 	}
 
 	/** Parse the given string to obtain a log level.
-	 *
+	 * 
 	 * @param name the string to parse.
 	 * @return the log level.
 	 */
 	@JsonCreator
 	@Pure
-	public static LogLevel fromJson(String name) {
-		if (Strings.isEmpty(name)) {
-			throw new NullPointerException("Name is null");
+	static def fromJson(name : String) : LogLevel {
+		if (name.isNullOrEmpty) {
+			throw new NullPointerException("Name is null")
 		}
-		Level lvl = null;
+		var lvl : Level = null
 		try {
-			lvl = Level.parse(name.toUpperCase());
-		} catch (Throwable exception) {
-			lvl = null;
+			lvl = Level::parse(name.toUpperCase)
+		} catch (exception : Throwable) {
+			lvl = null
 		}
-		if (lvl == null) {
-			lvl = LogConfig.DEFAULT_LEVEL;
+		if (lvl === null) {
+			lvl = LogConfig::DEFAULT_LEVEL
 		}
-		return new LogLevel(lvl);
+		return new LogLevel(lvl)
 	}
 
 	/** Replies the preferred string representation of the level within a Json stream.
@@ -79,8 +75,8 @@ public class LogLevel {
 	 */
 	@JsonValue
 	@Pure
-	public String toJsonString() {
-		return this.level.getName().toLowerCase();
+	def toJsonString : String {
+		this.level.name.toLowerCase
 	}
 
 	/** Replies the JUL level associated to this logging level.
@@ -88,8 +84,8 @@ public class LogLevel {
 	 * @return the JUL level
 	 */
 	@Pure
-	public Level getJul() {
-		return this.level;
+	def getJul : Level  {
+		this.level
 	}
 
 	/** Replies int representation of this level.
@@ -97,8 +93,8 @@ public class LogLevel {
 	 * @return the int representation of this level.
 	 */
 	@Pure
-	public int intValue() {
-		return this.level.intValue();
+	def intValue : int {
+		this.level.intValue
 	}
 
 }

@@ -9,6 +9,7 @@ Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: io.sarl.core;bundle-version="0.12.0",
  io.sarl.util;bundle-version="0.12.0",
+ io.sarl.api.bootiquebase;bundle-version="0.12.0",
  io.bootique;bundle-version="1.0.0",
  org.arakhne.afc.bootique.variables;bundle-version="16.0.0",
  com.google.inject;bundle-version="4.1.0",

@@ -36,7 +36,6 @@
 						<plugin id="com.fasterxml.jackson.dataformat.jackson-dataformat-yaml"/>
 						<plugin id="com.fasterxml.jackson.module.jackson-module-jaxb-annotations"/> 
 						<plugin id="net.sf.jopt-simple.jopt-simple"/>
-						<plugin id="jul.to.slf4j"/>
 						<plugin id="io.bootique"/>
 						<plugin id="org.yaml.snakeyaml"/> 
 						<plugin id="stax2-api"/>

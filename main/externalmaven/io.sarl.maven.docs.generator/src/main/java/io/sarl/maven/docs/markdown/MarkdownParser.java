@@ -1165,6 +1165,10 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	protected Iterable<DynamicValidationComponent> createValidatorComponents(Link it, File currentFile,
 			DynamicValidationContext context) {
 		final Collection<DynamicValidationComponent> components = new ArrayList<>();
+		if (Strings.equal(":", it.getUrl().toStringOrNull())) { //$NON-NLS-1$
+			// Special case: the hyperlink is not referencing something
+			return components;
+		}
 		if (isLocalFileReferenceValidation() || isRemoteReferenceValidation()) {
 			final int lineno = computeLineNo(it);
 			final URL url = FileSystem.convertStringToURL(it.getUrl().toString(), true);
@@ -1254,7 +1258,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 					}
 				});
 			}
-			// No need to validate the current file's existency and anchor.
+			// No need to validate the current file's existence and anchor.
 			return null;
 		}
 		if (!fn.isAbsolute()) {

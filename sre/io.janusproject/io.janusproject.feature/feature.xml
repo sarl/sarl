@@ -224,8 +224,8 @@
    <requires>
       <import plugin="io.sarl.core" version="0.12.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.util" version="0.12.0" match="greaterOrEqual"/>
+      <import plugin="io.sarl.api.bootiquebase" version="0.12.0" match="greaterOrEqual"/>
       <import plugin="io.bootique" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.arakhne.afc.bootique.log4j" version="16.0.0" match="greaterOrEqual"/>
       <import plugin="org.arakhne.afc.bootique.variables" version="16.0.0" match="greaterOrEqual"/>
       <import plugin="com.google.inject" version="4.1.0" match="greaterOrEqual"/>
       <import plugin="javax.inject" version="1.0.0" match="greaterOrEqual"/>
@@ -245,6 +245,8 @@
       <import plugin="org.eclipse.jdt.launching" version="3.16.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.xbase.lib" version="2.20.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtend.lib.macro"/>
+      <import plugin="io.sarl.lang.core" version="0.12.0" match="greaterOrEqual"/>
+      <import plugin="com.fasterxml.jackson.core.jackson-annotations" version="2.11.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
@@ -354,7 +356,35 @@
          unpack="false"/>
 
    <plugin
-         id="jul.to.slf4j"
+         id="io.sarl.api.bootiquebase"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.yaml.snakeyaml"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="stax2-api"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.fasterxml.jackson.module.jackson-module-jaxb-annotations"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="jakarta.xml.bind-api"
          download-size="0"
          install-size="0"
          version="0.0.0"
