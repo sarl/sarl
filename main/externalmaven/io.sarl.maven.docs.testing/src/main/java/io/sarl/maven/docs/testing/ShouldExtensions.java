@@ -616,7 +616,7 @@ public final class ShouldExtensions {
 					try {
 						paramType = ReflectionUtil.forName(typeName);
 					} catch (ClassNotFoundException e) {
-						throw new ShouldException("Type not found: " + typeName); //$NON-NLS-1$
+						throw new ShouldException(MessageFormat.format(Messages.ShouldExtensions_2, typeName));
 					}
 					final Object tmpArray = Array.newInstance(paramType, 0);
 					types[i] = tmpArray.getClass();
@@ -624,7 +624,7 @@ public final class ShouldExtensions {
 					try {
 						types[i] = ReflectionUtil.forName(params[i]);
 					} catch (ClassNotFoundException e) {
-						throw new ShouldException("Type not found: " + params[i]); //$NON-NLS-1$
+						throw new ShouldException(MessageFormat.format(Messages.ShouldExtensions_2, params[i]));
 					}
 				}
 			}
@@ -636,7 +636,7 @@ public final class ShouldExtensions {
 				method = null;
 			}
 			if (method == null) {
-				throw new ShouldException("Unable to find a function with the prototype: " + name); //$NON-NLS-1$
+				throw new ShouldException(MessageFormat.format(Messages.ShouldExtensions_3, name));
 			}
 			final boolean validReturnType;
 			if (returnText == null || returnText.isEmpty()) {
@@ -647,7 +647,7 @@ public final class ShouldExtensions {
 				try {
 					rtype = ReflectionUtil.forName(returnText);
 				} catch (ClassNotFoundException exception) {
-					throw new ShouldException("Type not found: " + returnText); //$NON-NLS-1$
+					throw new ShouldException(MessageFormat.format(Messages.ShouldExtensions_2, returnText));
 				}
 				validReturnType = rtype.equals(method.getReturnType());
 			}
@@ -656,12 +656,11 @@ public final class ShouldExtensions {
 				if ((deprecated && deprecatedAnnotation != null) || (!deprecated && deprecatedAnnotation == null)) {
 					return method;
 				}
-				throw new ShouldException("Deprecated method for the prototype: " + name); //$NON-NLS-1$
+				throw new ShouldException(MessageFormat.format(Messages.ShouldExtensions_4, name));
 			}
-			throw new ShouldException("Invalid return type for the prototype: " + name //$NON-NLS-1$
-					+ "\nactual: " + method.getReturnType().getName()); //$NON-NLS-1$
+			throw new ShouldException(MessageFormat.format(Messages.ShouldExtensions_5, name, method.getReturnType().getName()));
 		}
-		throw new ShouldException("Prototype not found: " + name + "\nSearch pattern: " + pattern); //$NON-NLS-1$ //$NON-NLS-2$
+		throw new ShouldException(MessageFormat.format(Messages.ShouldExtensions_6, name, pattern));
 	}
 
 	/** Ensure that the given type has the given methods.

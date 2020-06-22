@@ -146,7 +146,6 @@ public class BootiqueMain {
 				return outcome.getExitCode();
 			}
 			rootLogger.severe(exception.getLocalizedMessage());
-			return ERROR_CODE;
 		} catch (ProvisionException exception) {
 			final Set<String> msgs = new HashSet<>();
 			for (final Message message : exception.getErrorMessages()) {

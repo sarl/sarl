@@ -22,6 +22,7 @@
 package io.sarl.maven.docs.testing;
 
 import java.lang.reflect.Field;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -70,8 +71,6 @@ public final class OperatorExtensions {
 	private static final boolean SHOW_ERROR_ASSOCIATIVITY = false;
 	
 	private static final boolean SHOW_ERROR_PRECEDENCE = false;
-
-	private static Injector injector;
 
 	private static Provider<ParseHelper<SarlScript>> parser;
 
@@ -155,9 +154,9 @@ public final class OperatorExtensions {
 			}
 		}
 		final StringBuilder result = new StringBuilder();
-		result.append("| Operators"); //$NON-NLS-1$
+		result.append("| ").append(Messages.OperatorExtensions_0); //$NON-NLS-1$
 		append(result, ' ', length1 - 9);
-		result.append(" | Associativity"); //$NON-NLS-1$
+		result.append(" | ").append(Messages.OperatorExtensions_1); //$NON-NLS-1$
 		append(result, ' ', length2 - 13);
 		result.append(" |\n"); //$NON-NLS-1$
 		result.append("| "); //$NON-NLS-1$				
@@ -213,26 +212,23 @@ public final class OperatorExtensions {
 		Iterator<List<String>> iterator = operators.iterator();
 		for (final List<String> actualGroup : precedenceGroups) {
 			if (!iterator.hasNext()) {
-				error(logger, "Expected operator precedence is missed.", operators, precedenceGroups); //$NON-NLS-1$
+				error(logger, Messages.OperatorExtensions_2, operators, precedenceGroups); //$NON-NLS-1$
 				return false;
 			}
 			final List<String> originalExpectedGroup = iterator.next();
 			final List<String> expectedGroup = new ArrayList<>(originalExpectedGroup);
 			if (expectedGroup.size() != actualGroup.size()) {
-				error(logger, "Not same groups.\nActual: " + actualGroup //$NON-NLS-1$
-						+ ".\nExpected: " + originalExpectedGroup + ".", operators, precedenceGroups); //$NON-NLS-1$ //$NON-NLS-2$
+				error(logger, MessageFormat.format(Messages.OperatorExtensions_3, actualGroup, originalExpectedGroup), operators, precedenceGroups); //$NON-NLS-1$ //$NON-NLS-2$
 				return false;
 			}
 			for (final String actualOp : actualGroup) {
 				if (!expectedGroup.remove(actualOp)) {
-					error(logger, "Not same groups.\nActual: " + actualGroup //$NON-NLS-1$
-							+ ".\nExpected: " + originalExpectedGroup + ".", operators, precedenceGroups); //$NON-NLS-1$ //$NON-NLS-2$
+					error(logger, MessageFormat.format(Messages.OperatorExtensions_3, actualGroup, originalExpectedGroup), operators, precedenceGroups); //$NON-NLS-1$ //$NON-NLS-2$
 					return false;
 				}
 			}
 			if (!expectedGroup.isEmpty()) {
-				error(logger, "Not same groups.\nActual: " + actualGroup //$NON-NLS-1$
-						+ ".\nExpected: " + originalExpectedGroup + ".", operators, precedenceGroups); //$NON-NLS-1$ //$NON-NLS-2$
+				error(logger, MessageFormat.format(Messages.OperatorExtensions_3, actualGroup, originalExpectedGroup), operators, precedenceGroups); //$NON-NLS-1$ //$NON-NLS-2$
 				return false;
 			}
 		}
@@ -242,15 +238,12 @@ public final class OperatorExtensions {
 	private static void error(java.util.logging.Logger logger, String message, List<List<String>> expectedPrecedence,
 			List<List<String>> actualPrecedence) {
 		logger.severe(message);
-		logger.severe("EXPECTED:\n" + expectedPrecedence); //$NON-NLS-1$
-		logger.severe("ACTUAL:\n" + actualPrecedence); //$NON-NLS-1$
+		logger.severe(MessageFormat.format(Messages.OperatorExtensions_4, expectedPrecedence));
+		logger.severe(MessageFormat.format(Messages.OperatorExtensions_5, actualPrecedence));
 	}
 
 	private static Injector getInjector() {
-		if (injector == null) {
-			injector = DocumentationSetup.doSetup();
-		}
-		return injector;
+		return DocumentationSetup.doSetup();
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -840,20 +833,20 @@ public final class OperatorExtensions {
 
 			@Override
 			public String toLabel() {
-				return "not associative"; //$NON-NLS-1$
+				return Messages.OperatorExtensions_6;
 			}
 			
 		},
 		LEFT_TO_RIGHT {
 			@Override
 			public String toLabel() {
-				return "left to right"; //$NON-NLS-1$
+				return Messages.OperatorExtensions_7;
 			}
 		},
 		RIGHT_TO_LEFT {
 			@Override
 			public String toLabel() {
-				return "right to left"; //$NON-NLS-1$
+				return Messages.OperatorExtensions_8;
 			}
 		};
 		

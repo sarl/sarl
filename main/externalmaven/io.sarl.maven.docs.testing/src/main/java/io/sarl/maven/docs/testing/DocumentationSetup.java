@@ -21,15 +21,14 @@
 
 package io.sarl.maven.docs.testing;
 
+import java.util.Arrays;
+
 import com.google.inject.Binder;
-import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.Singleton;
-import com.google.inject.util.Modules;
 import org.eclipse.xtext.xbase.scoping.batch.ImplicitlyImportedFeatures;
 
-import io.sarl.lang.SARLRuntimeModule;
 import io.sarl.lang.SARLStandaloneSetup;
 
 /** Implicitly imported extensions for the testing of the documentation.
@@ -43,6 +42,8 @@ import io.sarl.lang.SARLStandaloneSetup;
 @SuppressWarnings({"checkstyle:methodname"})
 public class DocumentationSetup extends SARLStandaloneSetup {
 
+	private static Injector globalInjector;
+	
 	/** Construct the provider.
 	 */
 	public DocumentationSetup() {
@@ -54,12 +55,24 @@ public class DocumentationSetup extends SARLStandaloneSetup {
 	 * @return the injector.
 	 */
 	public static Injector doSetup() {
-		return new DocumentationSetup().createInjectorAndDoEMFRegistration();
+		synchronized (DocumentationSetup.class) {
+			if (globalInjector == null) {
+				globalInjector = new DocumentationSetup().createInjectorAndDoEMFRegistration();
+			}
+			return globalInjector;
+		}
 	}
 
 	@Override
 	public Injector createInjector() {
-		return Guice.createInjector(Modules.override(new SARLRuntimeModule()).with(new DocumentationModule()));
+		return createInjector(new Module[0]);
+	}
+	
+	@Override
+	public Injector createInjector(Module... modules) {
+		final Module[] nmodules = Arrays.copyOf(modules, modules.length + 1);
+		nmodules[nmodules.length - 1] = new DocumentationModule();
+		return super.createInjector(nmodules);
 	}
 
 	/** Module for the documentation generator.

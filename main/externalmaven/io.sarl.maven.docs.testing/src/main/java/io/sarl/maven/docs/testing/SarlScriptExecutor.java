@@ -26,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -166,7 +167,7 @@ public class SarlScriptExecutor implements ScriptExecutor {
 				if (issue.isSyntaxError() || issue.getSeverity() == Severity.ERROR) {
 					final Integer line = issue.getLineNumber();
 					final int issueLine = (line == null ? 0 : line.intValue()) + lineno;
-					issues.add(message + "(line " + issueLine + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+					issues.add(MessageFormat.format(Messages.OperatorExtensions_1, message, issueLine));
 				}
 			});
 		}
@@ -225,7 +226,7 @@ public class SarlScriptExecutor implements ScriptExecutor {
 			for (String message : issues) {
 				msg.append(message).append("\n"); //$NON-NLS-1$
 			}
-			fail("Expecting no issue but find one [line:" + lineno + "]" + msg.toString()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			fail(MessageFormat.format(Messages.SarlScriptExecutor_0, lineno, msg.toString()));
 		}
 	}
 

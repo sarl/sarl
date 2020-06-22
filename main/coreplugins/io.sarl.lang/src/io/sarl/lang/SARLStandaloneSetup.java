@@ -87,6 +87,14 @@ public class SARLStandaloneSetup extends SARLStandaloneSetupGenerated {
 		return injector;
 	}
 
+	@Override
+	public Injector createInjectorAndDoEMFRegistration() {
+		doPreSetup();
+		final Injector injector = createInjector();
+		register(injector);
+		return injector;
+	}
+
 	/** Create the injector based on the given set of modules and prepare the EMF infrastructure.
 	 *
 	 * @param modules the injection modules that are overriding the standard SARL module.

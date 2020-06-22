@@ -26,6 +26,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -141,35 +142,29 @@ public final class IssueDatabaseExtensions {
 					IssueLevel defaultLevel = null;
 					level = IssueLevel.fromJson(levelStr);
 					if (level == null) {
-						throw new IllegalStateException("Error when reading the Json file: Illegal issue level for issue '"
-								+ code + "': " + levelStr);
+						throw new IllegalStateException(MessageFormat.format(Messages.IssueDatabaseExtensions_0, code, levelStr));
 					}
 					if (level == IssueLevel.DELEGATE) {
 						delegate = level.getDelegate(levelStr);
 						if (Strings.isEmpty(delegate)) {
-							throw new IllegalStateException("Error when reading the Json file: Illegal delegate issue code for issue '"
-									+ code + "': " + levelStr);
+							throw new IllegalStateException(MessageFormat.format(Messages.IssueDatabaseExtensions_1, code, levelStr));
 						}
 					}
 					if (level == IssueLevel.CONFIGURABLE || level == IssueLevel.DELEGATE) {
 						defaultLevel = level.getDefaultLevel(levelStr);
 						if (defaultLevel == null) {
-							throw new IllegalStateException("Error when reading the Json file: Illegal default configurable issue level for issue '"
-									+ code + "': " + levelStr);
+							throw new IllegalStateException(MessageFormat.format(Messages.IssueDatabaseExtensions_2, code, levelStr));
 						}
 					}
 					if (level != IssueLevel.IGNORE) {
 						if (Strings.isEmpty(message)) {
-							throw new IllegalStateException("Error when reading the Json file: Unspecified message for issue '"
-									+ code + "'");
+							throw new IllegalStateException(MessageFormat.format(Messages.IssueDatabaseExtensions_3, code));
 						}
 						if (Strings.isEmpty(cause)) {
-							throw new IllegalStateException("Error when reading the Json file: Unspecified cause description for issue '"
-									+ code + "'");
+							throw new IllegalStateException(MessageFormat.format(Messages.IssueDatabaseExtensions_4, code));
 						}
 						if (Strings.isEmpty(levelStr)) {
-							throw new IllegalStateException("Error when reading the Json file: Unspecified level for issue '"
-									+ code + "'");
+							throw new IllegalStateException(MessageFormat.format(Messages.IssueDatabaseExtensions_5, code));
 						}
 					}
 					final IssueDescription description = new IssueDescription(code);
@@ -184,9 +179,9 @@ public final class IssueDatabaseExtensions {
 			}
 			reader.endArray();
 		} catch (IOException e) {
-			throw new RuntimeException("Error when reading the Json file: " + e.getLocalizedMessage(), e);
+			throw new RuntimeException(MessageFormat.format(Messages.IssueDatabaseExtensions_6, e.getLocalizedMessage()), e);
 		}
-		getLogger().info("Read " + props.size() + " descriptions of issues from " + filename.getName());
+		getLogger().info(MessageFormat.format(Messages.IssueDatabaseExtensions_7, props.size(), filename.getName()));
 		return props;
 	}
 
@@ -233,13 +228,13 @@ public final class IssueDatabaseExtensions {
 
 				// Column "Message and Description"
 				final StringBuilder msg = new StringBuilder();
-				msg.append(head("Message:")).append(description.message).append(nl());
-				msg.append(head("Cause:")).append(description.cause);
+				msg.append(head(Messages.IssueDatabaseExtensions_8)).append(description.message).append(nl());
+				msg.append(head(Messages.IssueDatabaseExtensions_9)).append(description.cause);
 				if (!Strings.isEmpty(description.solution)) {
-					msg.append(nl()).append(head("Solving:")).append(description.solution);
+					msg.append(nl()).append(head(Messages.IssueDatabaseExtensions_10)).append(description.solution);
 				}
 				if (!Strings.isEmpty(description.delegate)) {
-					msg.append(nl()).append(head("Delegated to:")).append(description.delegate);
+					msg.append(nl()).append(head(Messages.IssueDatabaseExtensions_11)).append(description.delegate);
 				}
 				columns.add(msg.toString());
 
@@ -261,7 +256,7 @@ public final class IssueDatabaseExtensions {
 				prevIssue = description;
 			}
 		}
-		getLogger().info("Generate table for " + descriptions.size() + " messages and " + major + " issues");
+		getLogger().info(MessageFormat.format(Messages.IssueDatabaseExtensions_12, descriptions.size(), major));
 		return content;
 	}
 
@@ -321,9 +316,9 @@ public final class IssueDatabaseExtensions {
 	@Pure
 	public static List<IssueDescription> validateSarl(List<IssueDescription> descriptions) {
 		final Set<String> definedCodes = buildSarlIssueCodeList();
-		getLogger().info("Found " + definedCodes.size() + " issue codes from the SARL compiler source code");
+		getLogger().info(MessageFormat.format(Messages.IssueDatabaseExtensions_13, definedCodes.size()));
 		if (!validateIssueCodes(descriptions, definedCodes, "SARL")) {
-			throw new IllegalStateException("Error when validating the documented SARL issue codes. See error(s) above for details.");
+			throw new IllegalStateException(Messages.IssueDatabaseExtensions_14);
 		}
 		return descriptions;
 	}
@@ -336,7 +331,7 @@ public final class IssueDatabaseExtensions {
 			notDocumentedCodes.remove(description.getCode());
 			if (!definedCodes.contains(description.getCode())) {
 				success = false;
-				getLogger().severe("Too much documented: '" + description.getCode() + "'. This issue code is not found into the " + label + " source code");
+				getLogger().severe(MessageFormat.format(Messages.IssueDatabaseExtensions_15, description.getCode(), label));
 			}
 		}
 		if (!success) {
@@ -344,7 +339,7 @@ public final class IssueDatabaseExtensions {
 		}
 		for (String notDocumentedCode : notDocumentedCodes) {
 			success = false;
-			getLogger().severe("Not enough documented: '" + notDocumentedCode + "'. This " + label + " issue code has no documentation");
+			getLogger().severe(MessageFormat.format(Messages.IssueDatabaseExtensions_16, notDocumentedCode, label));
 		}
 		return success;
 	}
@@ -359,9 +354,9 @@ public final class IssueDatabaseExtensions {
 	@Pure
 	public static List<IssueDescription> validate(List<IssueDescription> descriptions, Collection<Class<?>> issueListList) {
 		final Set<String> definedCodes = buildIssueCodeList(issueListList);
-		getLogger().info("Found " + definedCodes.size() + " issue codes from the Janus source code");
+		getLogger().info(MessageFormat.format(Messages.IssueDatabaseExtensions_17, definedCodes.size()));
 		if (!validateIssueCodes(descriptions, definedCodes, "Janus")) {
-			throw new IllegalStateException("Error when validating the documented Janus issue codes. See error(s) above for details.");
+			throw new IllegalStateException(Messages.IssueDatabaseExtensions_18);
 		}
 		return descriptions;
 	}
@@ -544,7 +539,7 @@ public final class IssueDatabaseExtensions {
 			}
 			@Override
 			public String getLabel(String delegate, IssueLevel defaultLevel) {
-				return "Error";
+				return Messages.IssueDatabaseExtensions_19;
 			}
 			@Override
 			public String getDelegate(String json) {
@@ -564,7 +559,7 @@ public final class IssueDatabaseExtensions {
 			}
 			@Override
 			public String getLabel(String delegate, IssueLevel defaultLevel) {
-				return "Warning";
+				return Messages.IssueDatabaseExtensions_20;
 			}
 			@Override
 			public String getDelegate(String json) {
@@ -584,7 +579,7 @@ public final class IssueDatabaseExtensions {
 			}
 			@Override
 			public String getLabel(String delegate, IssueLevel defaultLevel) {
-				return "Information";
+				return Messages.IssueDatabaseExtensions_21;
 			}
 			@Override
 			public String getDelegate(String json) {
@@ -604,7 +599,7 @@ public final class IssueDatabaseExtensions {
 			}
 			@Override
 			public String getLabel(String delegate, IssueLevel defaultLevel) {
-				return "Ignored";
+				return Messages.IssueDatabaseExtensions_22;
 			}
 			@Override
 			public String getDelegate(String json) {
@@ -625,9 +620,9 @@ public final class IssueDatabaseExtensions {
 			@Override
 			public String getLabel(String delegate, IssueLevel defaultLevel) {
 				if (defaultLevel != null) {
-					return "Configurable; Default is: " + defaultLevel.getLabel(null, null);
+					return MessageFormat.format(Messages.IssueDatabaseExtensions_23, defaultLevel.getLabel(null, null));
 				}
-				return "Configurable";
+				return Messages.IssueDatabaseExtensions_24;
 			}
 			@Override
 			public String getDelegate(String json) {
@@ -658,9 +653,9 @@ public final class IssueDatabaseExtensions {
 			@Override
 			public String getLabel(String delegate, IssueLevel defaultLevel) {
 				if (defaultLevel != null) {
-					return "Delegated; Default is: " + defaultLevel.getLabel(null, null);
+					return MessageFormat.format(Messages.IssueDatabaseExtensions_25, defaultLevel.getLabel(null, null));
 				}
-				return "Delegated";
+				return Messages.IssueDatabaseExtensions_26;
 			}
 			@Override
 			public String getDelegate(String json) {

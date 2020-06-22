@@ -22,6 +22,8 @@
 
 package io.sarl.maven.docs.testing;
 
+import java.text.MessageFormat;
+
 /** Exception that is generated if an Xtext resource is missed.
  *
  * @author $Author: sgalland$
@@ -39,7 +41,7 @@ public class NoXtextResourceException extends RuntimeException {
 	 * @param lineno the line number at which the error occurred.
 	 */
 	public NoXtextResourceException(int lineno) {
-		super("No Xtext resource created [line:" + lineno + "]"); //$NON-NLS-1$ //$NON-NLS-2$
+		super(MessageFormat.format(Messages.NoXtextResourceException_0, lineno));
 	}
 	
 }
