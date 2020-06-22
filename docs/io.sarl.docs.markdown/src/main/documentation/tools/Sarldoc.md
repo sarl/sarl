@@ -39,7 +39,7 @@ The complete list of the options is:
 | Option | Description |
 | ------ | ----------- |
 [:Dynamic:]{
-	io.sarl.sarldoc.Main::getOptions().renderToMarkdown
+	"| | |" // io.sarl.sarldoc.Main::getOptions().renderToMarkdown
 }
 
 ## Documentation Comments

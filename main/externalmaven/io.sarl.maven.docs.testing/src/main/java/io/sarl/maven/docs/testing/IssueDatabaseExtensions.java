@@ -32,7 +32,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import com.google.gson.Gson;
@@ -58,17 +57,6 @@ import io.sarl.lang.validation.SyntaxIssueCodes;
 public final class IssueDatabaseExtensions {
 
 	private static String DEFAULT_ISSUE_DESCRIPTION_FILENAME = "issue_descriptions.json"; //$NON-NLS-1$
-	
-	private static Logger LOGGER;
-	
-	private static Logger getLogger() {
-		synchronized (IssueDatabaseExtensions.class) {
-			if (LOGGER == null) {
-				LOGGER = Logger.getLogger(IssueDatabaseExtensions.class.getName());
-			}
-			return LOGGER;
-		}
-	}
 	
 	/** Read the default property file that describes the issues of the SARL compiler.
 	 *
@@ -181,7 +169,7 @@ public final class IssueDatabaseExtensions {
 		} catch (IOException e) {
 			throw new RuntimeException(MessageFormat.format(Messages.IssueDatabaseExtensions_6, e.getLocalizedMessage()), e);
 		}
-		getLogger().info(MessageFormat.format(Messages.IssueDatabaseExtensions_7, props.size(), filename.getName()));
+		DocumentationLogger.getLogger().info(MessageFormat.format(Messages.IssueDatabaseExtensions_7, props.size(), filename.getName()));
 		return props;
 	}
 
@@ -256,7 +244,7 @@ public final class IssueDatabaseExtensions {
 				prevIssue = description;
 			}
 		}
-		getLogger().info(MessageFormat.format(Messages.IssueDatabaseExtensions_12, descriptions.size(), major));
+		DocumentationLogger.getLogger().info(MessageFormat.format(Messages.IssueDatabaseExtensions_12, descriptions.size(), major));
 		return content;
 	}
 
@@ -316,7 +304,7 @@ public final class IssueDatabaseExtensions {
 	@Pure
 	public static List<IssueDescription> validateSarl(List<IssueDescription> descriptions) {
 		final Set<String> definedCodes = buildSarlIssueCodeList();
-		getLogger().info(MessageFormat.format(Messages.IssueDatabaseExtensions_13, definedCodes.size()));
+		DocumentationLogger.getLogger().info(MessageFormat.format(Messages.IssueDatabaseExtensions_13, definedCodes.size()));
 		if (!validateIssueCodes(descriptions, definedCodes, "SARL")) {
 			throw new IllegalStateException(Messages.IssueDatabaseExtensions_14);
 		}
@@ -331,7 +319,7 @@ public final class IssueDatabaseExtensions {
 			notDocumentedCodes.remove(description.getCode());
 			if (!definedCodes.contains(description.getCode())) {
 				success = false;
-				getLogger().severe(MessageFormat.format(Messages.IssueDatabaseExtensions_15, description.getCode(), label));
+				DocumentationLogger.getLogger().severe(MessageFormat.format(Messages.IssueDatabaseExtensions_15, description.getCode(), label));
 			}
 		}
 		if (!success) {
@@ -339,7 +327,7 @@ public final class IssueDatabaseExtensions {
 		}
 		for (String notDocumentedCode : notDocumentedCodes) {
 			success = false;
-			getLogger().severe(MessageFormat.format(Messages.IssueDatabaseExtensions_16, notDocumentedCode, label));
+			DocumentationLogger.getLogger().severe(MessageFormat.format(Messages.IssueDatabaseExtensions_16, notDocumentedCode, label));
 		}
 		return success;
 	}
@@ -354,7 +342,7 @@ public final class IssueDatabaseExtensions {
 	@Pure
 	public static List<IssueDescription> validate(List<IssueDescription> descriptions, Collection<Class<?>> issueListList) {
 		final Set<String> definedCodes = buildIssueCodeList(issueListList);
-		getLogger().info(MessageFormat.format(Messages.IssueDatabaseExtensions_17, definedCodes.size()));
+		DocumentationLogger.getLogger().info(MessageFormat.format(Messages.IssueDatabaseExtensions_17, definedCodes.size()));
 		if (!validateIssueCodes(descriptions, definedCodes, "Janus")) {
 			throw new IllegalStateException(Messages.IssueDatabaseExtensions_18);
 		}

@@ -32,7 +32,7 @@ The complete list of the options is:
 | Option | Description |
 | ------ | ----------- |
 [:Dynamic:]{
-	io.sarl.lang.sarlc.Main::getOptions.renderToMarkdown
+	"| | |" //io.sarl.lang.sarlc.Main::getOptions.renderToMarkdown
 }
 
 

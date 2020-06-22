@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOError;
 import java.io.IOException;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,6 +38,9 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
@@ -68,6 +72,7 @@ import io.sarl.maven.docs.markdown.MarkdownParser;
 import io.sarl.maven.docs.parser.AbstractMarkerLanguageParser;
 import io.sarl.maven.docs.parser.SarlDocumentationParser;
 import io.sarl.maven.docs.parser.SarlDocumentationParser.ParsingException;
+import io.sarl.maven.docs.testing.DocumentationLogger;
 import io.sarl.maven.docs.testing.DocumentationSetup;
 import io.sarl.maven.docs.testing.ScriptExecutor;
 
@@ -195,6 +200,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	protected abstract String getSkippingMessage();
 
 	@Override
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	public final void execute() throws MojoExecutionException  {
 		final String skipMessage = getSkippingMessage();
 		if (!Strings.isEmpty(skipMessage)) {
@@ -217,6 +223,17 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 		}
 
 		getLog().info(Messages.AbstractDocumentationMojo_0);
+
+		// Fix the logger configuration
+		final Logger docLogger = DocumentationLogger.getLogger();
+		final Handler[] handlers = docLogger.getHandlers();
+		for (final Handler handler : handlers) {
+			docLogger.removeHandler(handler);
+		}
+		docLogger.setUseParentHandlers(false);
+		docLogger.setLevel(Level.ALL);
+		docLogger.addHandler(new MavenJulHandler(getLog()));
+
 		this.injector = DocumentationSetup.doSetup();
 		assert this.injector != null;
 
@@ -558,7 +575,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 		return files;
 	}
 
-	/** Replies a class loader that is able to read the classes from the class path.
+	/** Replies a class loader that is able to read the classes from the Maven class path.
 	 *
 	 * @param parent the parent class loader.
 	 * @param classPath the additional class path.
@@ -573,7 +590,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 				urls[i] = localFile.toURI().toURL();
 				++i;
 			}
-			return new IsolatedURLClassLoader(urls);
+			return new URLClassLoader(urls, getClass().getClassLoader());
 		} catch (IOException exception) {
 			throw new IOError(exception);
 		}
