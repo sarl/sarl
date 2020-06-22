@@ -224,7 +224,8 @@
    <requires>
       <import plugin="io.sarl.core" version="0.12.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.util" version="0.12.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.osgi" version="3.15.100" match="greaterOrEqual"/>      
+      <import plugin="org.eclipse.osgi" version="3.15.100" match="greaterOrEqual"/>
+      <import plugin="log4j" version="1.2.17" match="greaterOrEqual"/>         
       <import plugin="org.arakhne.afc.core.util" version="16.0.0" match="greaterOrEqual"/>
       <import plugin="org.arakhne.afc.core.inputoutput" version="16.0.0" match="greaterOrEqual"/>
       <import plugin="javax.inject" version="1.0.0" match="greaterOrEqual"/>
@@ -235,7 +236,9 @@
       <import plugin="com.fasterxml.jackson.core.jackson-databind" version="2.11.0" match="greaterOrEqual"/>
       <import plugin="com.fasterxml.jackson.dataformat.jackson-dataformat-xml" version="2.11.0" match="greaterOrEqual"/>
       <import plugin="com.fasterxml.jackson.dataformat.jackson-dataformat-yaml" version="2.11.0" match="greaterOrEqual"/>
-      <import plugin="com.fasterxml.jackson.module.jackson-module-jaxb-annotations" version="2.11.0" match="greaterOrEqual"/>      
+      <import plugin="com.fasterxml.jackson.module.jackson-module-jaxb-annotations" version="2.11.0" match="greaterOrEqual"/>   
+      <import plugin="jakarta.xml.bind-api" version="2.3.2" match="greaterOrEqual"/>   
+      <import plugin="jakarta.activation-api" version="1.2.1" match="greaterOrEqual"/>
       <import plugin="io.bootique" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.arakhne.afc.bootique.log4j" version="16.0.0" match="greaterOrEqual"/>
       <import plugin="org.arakhne.afc.bootique.variables" version="16.0.0" match="greaterOrEqual"/>
@@ -254,6 +257,12 @@
       <import plugin="org.eclipse.xtext.xbase.lib" version="2.20.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtend.lib.macro"/>
    </requires>
+   <plugin
+         id="log4j"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="io.janusproject.plugin"
@@ -366,7 +375,21 @@
          download-size="0"
          install-size="0"
          version="0.0.0"
-         unpack="false"/>         
+         unpack="false"/>
+         
+   <plugin
+         id="jakarta.xml.bind-api"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/> 
+         
+   <plugin
+         id="jakarta.activation-api"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>           
 
    <plugin
          id="net.sf.jopt-simple.jopt-simple"

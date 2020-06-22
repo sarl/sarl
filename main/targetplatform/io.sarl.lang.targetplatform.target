@@ -12,7 +12,7 @@
 			<unit id="org.arakhne.afc.bootique.log4j" version="16.0.0"/>
 			<unit id="org.arakhne.afc.bootique.variables" version="16.0.0"/>
 			<unit id="org.mockito.mockito-core" version="3.2.4"/>
-			<unit id="org.objenesis" version="2.6.0"/>						
+			<unit id="org.objenesis" version="2.6.0"/>			
 			<unit id="com.fasterxml.jackson.core.jackson-core" version="2.11.0"/>
 			<unit id="com.fasterxml.jackson.core.jackson-databind" version="2.11.0"/>
 			<unit id="com.fasterxml.jackson.core.jackson-annotations" version="2.11.0"/>
@@ -22,6 +22,9 @@
 			<unit id="net.sf.jopt-simple.jopt-simple" version="5.0.3"/>
 			<unit id="slf4j.api" version="2.0.0.alpha1"/>			
 			<unit id="jul.to.slf4j" version="2.0.0.alpha1"/>
+			<unit id="jakarta.xml.bind-api" version="2.3.2"/>
+			<unit id="jakarta.activation-api" version="1.2.1"/>
+			<unit id="log4j" version="1.2.17"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 			<repository location="https://download.jboss.org/jbosstools/photon/snapshots/builds/m2e-apt/latest/all/repo/"/>

@@ -17,7 +17,8 @@
 				<groupId>org.eclipse.tycho.extras</groupId>
 				<artifactId>tycho-source-feature-plugin</artifactId>
 				<configuration>
-					<excludes>
+					<excludes>					
+						<plugin id="log4j"/>
 						<plugin id="aopalliance"/>
 						<plugin id="org.apache.commons.cli"/>
 						<plugin id="org.arakhne.afc.core.util"/>
@@ -37,10 +38,9 @@
 						<plugin id="com.fasterxml.jackson.module.jackson-module-jaxb-annotations"/> 
 						<plugin id="net.sf.jopt-simple.jopt-simple"/>
 						<plugin id="jul.to.slf4j"/>
-						<plugin id="io.bootique"/>
-						<plugin id="org.yaml.snakeyaml"/> 
-						<plugin id="stax2-api"/>
+						<plugin id="io.bootique"/>					
 						<plugin id="jakarta.xml.bind-api"/>
+						<plugin id="jakarta.activation-api"/>
 					</excludes>
 				</configuration>
 			</plugin>

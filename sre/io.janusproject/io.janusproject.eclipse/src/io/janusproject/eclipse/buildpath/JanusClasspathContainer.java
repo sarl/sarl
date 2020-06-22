@@ -57,6 +57,7 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 			"com.google.inject", //$NON-NLS-1$
 			"org.arakhne.afc.core.util", //$NON-NLS-1$
 			"org.arakhne.afc.core.inputoutput", //$NON-NLS-1$
+			"log4j", //$NON-NLS-1$
 			"javax.inject", //$NON-NLS-1$
 			"aopalliance", //$NON-NLS-1$
 			"com.google.inject", //$NON-NLS-1$
@@ -66,6 +67,8 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 			"com.fasterxml.jackson.dataformat.jackson-dataformat-xml", //$NON-NLS-1$
 			"com.fasterxml.jackson.dataformat.jackson-dataformat-yaml", //$NON-NLS-1$
 			"com.fasterxml.jackson.module.jackson-module-jaxb-annotations", //$NON-NLS-1$
+			"jakarta.xml.bind-api", //$NON-NLS-1$
+			"jakarta.activation-api", //$NON-NLS-1$
 			"io.bootique", //$NON-NLS-1$
 			"org.arakhne.afc.bootique.log4j", //$NON-NLS-1$
 			"org.arakhne.afc.bootique.variables", //$NON-NLS-1$
