@@ -27,6 +27,7 @@ import io.bootique.help.HelpOption;
 
 import io.sarl.lang.sarlc.modules.general.SarlcApplicationModuleProvider;
 import io.sarl.maven.bootiqueapp.BootiqueMain;
+import io.sarl.maven.bootiqueapp.batchcompiler.BootiqueBatchCompilerMain;
 
 /** Main entry point for the SARL batch compiler.
  *
@@ -78,7 +79,7 @@ public final class Main {
 	 * @return the main launcher.
 	 */
 	protected static BootiqueMain createMainObject() {
-		return new BootiqueMain(new SarlcApplicationModuleProvider());
+		return new BootiqueBatchCompilerMain(new SarlcApplicationModuleProvider());
 	}
 
 	/** Replies the options of the program.

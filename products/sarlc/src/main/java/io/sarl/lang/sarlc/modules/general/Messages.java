@@ -39,7 +39,6 @@ public class Messages extends NLS {
 	public static String SarlcApplicationModule_1;
 	public static String SarlcApplicationModule_2;
 	public static String SarlcApplicationModuleProvider_0;
-	public static String SLF4JLoggerModuleProvider_0;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
