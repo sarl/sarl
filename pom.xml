@@ -67,7 +67,7 @@
 			see compositeContent.{xml,jar,xz,xml.xz} file) -->
 		<xpand.version>R201605260315</xpand.version>
 		<!-- Version of Guice (package: com.google.inject:guice). -->
-		<guice.version>4.1.0</guice.version>
+		<guice.version>4.2.3</guice.version>
 		<!-- Version of the OSGi module that provides the NLS (package: osgi) -->
 		<osgi.nls.version>3.10.0-v20140606-1445</osgi.nls.version>
 		<!-- Version of the Arakhne Foundation classes -->
@@ -487,11 +487,6 @@
 			<dependency>
 				<groupId>com.google.inject</groupId>
 				<artifactId>guice</artifactId>
-				<version>${guice.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.google.inject.extensions</groupId>
-				<artifactId>guice-multibindings</artifactId>
 				<version>${guice.version}</version>
 			</dependency>
 			<dependency>
