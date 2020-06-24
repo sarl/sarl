@@ -69,13 +69,11 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 			//
 			// List of plugins that are included into the Janus feature for running Janus into Eclipse
 			//
-			"aopalliance", //$NON-NLS-1$
 			"com.fasterxml.jackson.core.jackson-core", //$NON-NLS-1$
 			"com.fasterxml.jackson.core.jackson-databind", //$NON-NLS-1$
 			"com.fasterxml.jackson.dataformat.jackson-dataformat-xml", //$NON-NLS-1$
 			"com.fasterxml.jackson.dataformat.jackson-dataformat-yaml", //$NON-NLS-1$
 			"com.fasterxml.jackson.module.jackson-module-jaxb-annotations", //$NON-NLS-1$
-			"com.google.inject.multibindings", //$NON-NLS-1$
 			"net.sf.jopt-simple.jopt-simple", //$NON-NLS-1$
 		};
 		final String[] array = new String[SARLClasspathContainer.SARL_ROOT_BUNDLE_NAMES.length + array1.length];

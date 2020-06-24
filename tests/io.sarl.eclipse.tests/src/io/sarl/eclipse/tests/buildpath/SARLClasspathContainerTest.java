@@ -94,10 +94,8 @@ public class SARLClasspathContainerTest extends AbstractSarlUiTest {
 		Iterable<String> iterable = this.container.getBundleDependencies();
 		assertNotNull(iterable);
 		assertPartlyContains(iterable,
-			"aopalliance",
 			"com.google.guava",
 			"com.google.inject",
-			"com.google.inject.multibindings",
 			"io.sarl.core",
 			"io.sarl.lang.core",
 			"io.sarl.util",

@@ -18,7 +18,6 @@
 				<artifactId>tycho-source-feature-plugin</artifactId>
 				<configuration>
 					<excludes>
-						<plugin id="aopalliance"/>
 						<plugin id="org.apache.commons.cli"/>
 						<plugin id="org.arakhne.afc.core.util"/>
 						<plugin id="org.arakhne.afc.core.vmutils"/>
