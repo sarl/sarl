@@ -24,6 +24,7 @@ import io.sarl.lang.core.Capacity
 import java.net.URI
 import java.util.StringTokenizer
 import java.util.UUID
+import io.sarl.bootstrap.SREClassLoader
 
 /** 
  * Parser of skill names that is accepting URI-based syntax.
@@ -67,7 +68,7 @@ class SkillSchemeNameParser extends AbstractSchemeNameParser<SkillName> {
 					if (tokenizer.hasMoreTokens) {
 						val token3 = tokenizer.nextToken
 						return new SkillName(name, UUID::fromString(token0), UUID::fromString(token1),
-							UUID::fromString(token2), Class::forName(token3) as Class<? extends Capacity>)
+							UUID::fromString(token2), SREClassLoader::loadClass(token3, this.class.classLoader) as Class<? extends Capacity>)
 					}
 					return new SkillName(name, UUID::fromString(token0), null, UUID::fromString(token1),
 						Class::forName(token2) as Class<? extends Capacity>)

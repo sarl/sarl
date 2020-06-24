@@ -155,7 +155,8 @@ public final class SRE {
 		if (args.length > 1) {
 			System.arraycopy(args, 1, params, 0, params.length);
 		}
-		final Class<? extends Agent> type = (Class<? extends Agent>) Class.forName(args[0]);
+		final Class<? extends Agent> type = (Class<? extends Agent>) SREClassLoader.loadClass(args[0],
+				SRE.class.getClassLoader());
 		getBootstrap().startAgent(type, params);
 	}
 

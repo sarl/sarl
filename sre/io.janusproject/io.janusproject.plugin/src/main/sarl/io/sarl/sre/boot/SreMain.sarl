@@ -54,6 +54,8 @@ import org.arakhne.afc.bootique.variables.VariableNames
 import org.arakhne.afc.util.ListenerCollection
 import org.eclipse.xtend.lib.annotations.Accessors
 
+import static io.sarl.bootstrap.SRE.*
+
 /** Class that implements the standard main function for running a SARL run-time environment
  * with bootique modules.
  *
@@ -327,7 +329,7 @@ class SreMain implements SREBootstrap {
 	 */
 	def startBootAgent {
 		var config = this.runtime.getInstance(typeof(SreConfig)).boot
-		var bootAgent = config.getBootAgent(this.class.classLoader)
+		var bootAgent = config.loadBootAgent
 		assert bootAgent !== null
 		var args = config.agentStartArgs
 		startAgent(bootAgent, args)

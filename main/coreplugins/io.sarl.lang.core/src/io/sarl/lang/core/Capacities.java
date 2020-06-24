@@ -25,6 +25,8 @@ import java.lang.reflect.Constructor;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import io.sarl.bootstrap.SREClassLoader;
+
 /** Utility functions related to the capacities.
  *
  * @author $Author: sgalland$
@@ -88,7 +90,7 @@ public final class Capacities {
 	public static <C extends Capacity> C createSkillDelegator(Skill originalSkill, Class<C> capacity, AgentTrait capacityCaller)
 			throws Exception {
 		final String name = capacity.getName() + CAPACITY_WRAPPER_NAME;
-		final Class<?> type = Class.forName(name, true, capacity.getClassLoader());
+		final Class<?> type = SREClassLoader.loadClass(name, true, Capacities.class.getClassLoader());
 		final Constructor<?> cons = type.getDeclaredConstructor(capacity, AgentTrait.class);
 		return capacity.cast(cons.newInstance(originalSkill, capacityCaller));
 	}

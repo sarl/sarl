@@ -25,6 +25,7 @@ import io.bootique.command.CommandWithMetadata
 import io.bootique.meta.application.CommandMetadata
 import io.sarl.bootstrap.SRE
 import io.sarl.bootstrap.SREBootstrap
+import io.sarl.bootstrap.SREClassLoader
 import io.sarl.lang.core.Agent
 import io.sarl.sre.boot.configs.SreConfig
 import io.sarl.sre.boot.configs.subconfigs.BootConfig
@@ -69,7 +70,7 @@ abstract class AbstractRunCommand extends CommandWithMetadata {
 	 */
 	protected def isAgentType(value : String) : boolean {
 		try {
-			var t = Class::forName(value)
+			var t = SREClassLoader::loadClass(value, true, this.class.classLoader)
 			if (t !== null && typeof(Agent).isAssignableFrom(t)) {
 				return true
 			}
@@ -160,7 +161,7 @@ abstract class AbstractRunCommand extends CommandWithMetadata {
 	 * @param config the configuration to use.
 	 */
 	protected def startAgentsFromConfig(bootstrap : SREBootstrap, config : BootConfig) : void {
-		var bootAgent = config.getBootAgent(class.classLoader)
+		var bootAgent = config.loadBootAgent
 		bootstrap.startAgent(bootAgent, config.agentStartArgs)
 	}
 

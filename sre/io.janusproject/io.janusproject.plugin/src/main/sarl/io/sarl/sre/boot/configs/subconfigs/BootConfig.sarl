@@ -31,6 +31,7 @@ import io.bootique.annotation.BQConfigProperty
 import io.bootique.meta.application.OptionMetadata
 import io.sarl.bootstrap.SRE
 import io.sarl.bootstrap.SREBootstrap
+import io.sarl.bootstrap.SREClassLoader
 import io.sarl.lang.core.Agent
 import io.sarl.sre.boot.configs.SreConfig
 import java.lang.reflect.Type
@@ -39,13 +40,13 @@ import java.util.Collections
 import java.util.Map
 import java.util.UUID
 import javax.inject.Named
+import javax.inject.Provider
 import javax.inject.Singleton
 import org.arakhne.afc.bootique.variables.VariableDecls
 
 import static io.sarl.sre.boot.configs.subconfigs.BootConfig.*
 
 import static extension io.bootique.BQCoreModule.extend
-import javax.inject.Provider
 
 /** 
  * Configuration for specifying the SRE booting parameters.
@@ -165,16 +166,22 @@ class BootConfig {
 
 	/** Replies the type of the agent to launch at boot time.
 	 *
-	 * @param classLoader the class loader to use for retrieving the agent type.
 	 * @return the agent type.
 	 */
-	def getBootAgent(classLoader : ClassLoader) : Class<? extends Agent> {
+	def loadBootAgent : Class<? extends Agent> {
 		if (this.bootAgentType === null) {
-			var type = classLoader.loadClass(getBootAgent)
-			if (type !== null && typeof(Agent).isAssignableFrom(type)) {
+			val agentTypeName = getBootAgent
+			if (agentTypeName.isNullOrEmpty) {
+				throw new InvalidAgentNameException(Messages::BootConfig_2)
+			}
+			var type = SREClassLoader::loadClass(agentTypeName, this.class.classLoader)
+			if (type === null) {
+				throw new InvalidAgentNameException(MessageFormat::format(Messages::BootConfig_0, agentTypeName))
+			} else if (typeof(Agent).isAssignableFrom(type)) {
 				this.bootAgentType = type.asSubclass(typeof(Agent))
 			} else {
-				throw new InvalidAgentNameException
+				throw new InvalidAgentNameException(
+					MessageFormat::format(Messages::BootConfig_1, agentTypeName, typeof(Agent).name))
 			}
 		}
 		return this.bootAgentType
@@ -459,7 +466,7 @@ class BootConfigModule extends AbstractModule {
 	@Provides
 	@Named(BOOT_AGENT_NAME)
 	def getBootAgentType(config : Provider<SreConfig>) : Class<? extends Agent> {
-		config.get.boot.getBootAgent(getClass.getClassLoader)
+		config.get.boot.loadBootAgent
 	}
 
 	/** Replies the programmatic bootstrap for the SRE.

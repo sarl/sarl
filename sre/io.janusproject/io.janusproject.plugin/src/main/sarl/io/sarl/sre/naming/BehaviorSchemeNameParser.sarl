@@ -24,6 +24,7 @@ import io.sarl.lang.core.Behavior
 import java.net.URI
 import java.util.StringTokenizer
 import java.util.UUID
+import io.sarl.bootstrap.SREClassLoader
 
 /** 
  * Parser of behavior names that is accepting URI-based syntax.
@@ -71,7 +72,7 @@ class BehaviorSchemeNameParser extends AbstractSchemeNameParser<BehaviorName> {
 							val token4 = tokenizer.nextToken
 							return new BehaviorName(name, UUID::fromString(token0),
 								UUID::fromString(token1), UUID::fromString(token2),
-								Class::forName(token3) as Class<? extends Behavior>,
+								SREClassLoader::loadClass(token3, this.class.classLoader) as Class<? extends Behavior>,
 								Integer.parseUnsignedInt(token4, 10))
 						}
 						// 4 components

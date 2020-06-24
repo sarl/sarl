@@ -40,6 +40,9 @@ final class Messages extends NLS {
 		NLS.initializeMessages(BUNDLE_NAME, typeof(Messages))
 	}
 
+	public static var BootConfig_0 : String
+	public static var BootConfig_1 : String
+	public static var BootConfig_2 : String
 	public static var BootConfigModule_0 : String
 	public static var BootConfigModule_1 : String
 	public static var BootConfigModule_2 : String

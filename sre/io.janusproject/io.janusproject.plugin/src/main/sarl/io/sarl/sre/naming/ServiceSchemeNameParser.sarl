@@ -23,6 +23,7 @@ package io.sarl.sre.naming
 import com.google.common.util.concurrent.Service
 import java.net.URI
 import java.util.StringTokenizer
+import io.sarl.bootstrap.SREClassLoader
 
 /** 
  * Parser of service names that is accepting URI-based syntax.
@@ -57,7 +58,7 @@ class ServiceSchemeNameParser extends AbstractSchemeNameParser<ServiceName> {
 		val tokenizer = new StringTokenizer(name.path, "/")
 		if (tokenizer.hasMoreTokens) {
 			val token = tokenizer.nextToken
-			return new ServiceName(name, Class::forName(token) as Class<? extends Service>)
+			return new ServiceName(name, SREClassLoader::loadClass(token, this.class.classLoader) as Class<? extends Service>)
 		}
 		return null
 	}
