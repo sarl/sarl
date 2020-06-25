@@ -26,18 +26,24 @@
 		<dependency>
 			<groupId>org.eclipse.xtend</groupId>
 			<artifactId>org.eclipse.xtend.core</artifactId>
-		</dependency>
-		<!-- Force the version of Guava because the Xbase is no more forcing a 
-			specific version (version range use) and its transitive dependencies -->
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>com.google.inject</groupId>
+					<artifactId>guice</artifactId>
+		        </exclusion>
+			</exclusions>
 		</dependency>
 		<!-- Force the version of Guice because the Xbase is using an invalid version -->
 		<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
 			<classifier>no_aop</classifier>
+		</dependency>
+		<!-- Force the version of Guava because the Xbase is no more forcing a 
+			specific version (version range use) and its transitive dependencies -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
 		</dependency>
 		<!-- Force the version of ASM -->
 		<dependency>

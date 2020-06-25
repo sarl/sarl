@@ -64,7 +64,8 @@ workspace/
 
 #Others
 **/.DS_Store
-sarlide.sh
-sarldslide.sh
+sarlide
+sarlide-setjava
+sarldslide
 dbg.log
 
