@@ -921,7 +921,7 @@ public class Bug593Test {
 					"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"@SuppressWarnings(\"all\")",
 					"public interface Tuple2f<T extends Object> extends Serializable {",
-					"  public abstract T fct();",
+					"  T fct();",
 					"}",
 					""));
 		}
@@ -949,7 +949,7 @@ public class Bug593Test {
 					"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"@SuppressWarnings(\"all\")",
 					"public interface Tuple2f<T extends Object> extends Serializable, Cloneable {",
-					"  public abstract T fct();",
+					"  T fct();",
 					"}",
 					""));
 		}
@@ -976,7 +976,7 @@ public class Bug593Test {
 					"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"@SuppressWarnings(\"all\")",
 					"public interface Tuple2f<T extends Object> extends Serializable, Cloneable, Comparable<T> {",
-					"  public abstract T fct();",
+					"  T fct();",
 					"}",
 					""));
 		}
@@ -1003,7 +1003,7 @@ public class Bug593Test {
 					"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 					"@SuppressWarnings(\"all\")",
 					"public interface Tuple2f<T extends Tuple2f<?>> extends Serializable, Cloneable, Comparable<T> {",
-					"  public abstract T fct();",
+					"  T fct();",
 					"}",
 					""));
 		}

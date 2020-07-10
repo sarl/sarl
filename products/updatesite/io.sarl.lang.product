@@ -286,6 +286,7 @@
       <feature id="org.eclipse.equinox.p2.user.ui" installMode="root"/>
       <feature id="org.eclipse.xtext.xbase" installMode="root"/>
       <feature id="org.eclipse.equinox.p2.extras.feature" installMode="root"/>
+      <feature id="org.eclipse.m2e.sse.ui.feature" installMode="root"/>
       <feature id="org.eclipse.m2e.feature" installMode="root"/>
       <feature id="org.eclipse.rcp" installMode="root"/>
       <feature id="org.eclipse.ecf.core.feature" installMode="root"/>

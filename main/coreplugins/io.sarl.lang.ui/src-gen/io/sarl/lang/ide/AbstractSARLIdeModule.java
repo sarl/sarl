@@ -27,6 +27,8 @@ import com.google.inject.Binder;
 import com.google.inject.name.Names;
 import io.sarl.lang.ide.contentassist.antlr.SARLParser;
 import io.sarl.lang.ide.contentassist.antlr.internal.InternalSARLLexer;
+import org.eclipse.xtext.common.types.xtext.AbstractTypeScopeProvider;
+import org.eclipse.xtext.common.types.xtext.ui.JdtBasedSimpleTypeScopeProvider;
 import org.eclipse.xtext.ide.LexerIdeBindings;
 import org.eclipse.xtext.ide.editor.contentassist.FQNPrefixMatcher;
 import org.eclipse.xtext.ide.editor.contentassist.IPrefixMatcher;
@@ -82,6 +84,11 @@ public abstract class AbstractSARLIdeModule extends DefaultXbaseIdeModule {
 	// contributed by org.eclipse.xtext.xtext.generator.ui.refactoring.RefactorElementNameFragment2
 	public Class<? extends IRenameStrategy2> bindIRenameStrategy2() {
 		return IRenameStrategy2.DefaultImpl.class;
+	}
+	
+	// contributed by io.sarl.lang.mwe2.codebuilder.CodeBuilderFragment2
+	public void configureconfigureAbstractTypeScopeProviderForSourceAppender(Binder binder) {
+		binder.bind(AbstractTypeScopeProvider.class).annotatedWith(Names.named("io.sarl.lang.codebuilder.appenders.SourceAppender.providerType")).to(JdtBasedSimpleTypeScopeProvider.class);
 	}
 	
 }

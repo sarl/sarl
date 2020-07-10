@@ -319,7 +319,7 @@
 		<repository>
 			<id>org.eclipse.ide.lastest</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/2019-12/</url>
+			<url>http://download.eclipse.org/releases/2020-06/</url>
 		</repository>
 		<!-- Arakhne libraries -->
 		<repository>
@@ -337,7 +337,7 @@
 		<repository>
 			<id>org.checkstyle.eclipse-cs.update</id>
 			<layout>p2</layout>
-			<url>https://checkstyle.org/eclipse-cs/update/</url>
+			<url>https://dl.bintray.com/eclipse-cs/eclipse-cs/${checkstyle.full.version}/</url>
 		</repository>
 		<!-- For pre-installing the m2e connectors -->
 		<repository>
@@ -353,7 +353,7 @@
 		<repository>
 			<id>org.maven.m2e.connectors.tycho.update.lastest</id>
 			<layout>p2</layout>
-			<url>https://repo1.maven.org/maven2/.m2e/connectors/m2eclipse-tycho/0.8.1/N/LATEST/</url>
+			<url>https://repo1.maven.org/maven2/.m2e/connectors/m2eclipse-tycho/0.9.0/N/LATEST/</url>
 		</repository>
 	</repositories>
 

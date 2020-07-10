@@ -26,7 +26,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.google.inject.Injector;
-import org.eclipse.xtext.generator.IGeneratorFragment;
 import org.eclipse.xtext.util.Strings;
 
 import io.sarl.lang.mwe2.externalspec.AbstractCsyntaxHighlightingFragment2;

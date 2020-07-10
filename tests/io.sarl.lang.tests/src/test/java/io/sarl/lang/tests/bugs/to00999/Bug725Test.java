@@ -68,7 +68,7 @@ public class Bug725Test extends AbstractSarlTest {
 			"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 			"@SuppressWarnings(\"all\")",
 			"public interface Boot {",
-			"  public static void main(final String... args) {",
+			"  static void main(final String... args) {",
 			"  }",
 			"}",
 			"");
@@ -91,7 +91,7 @@ public class Bug725Test extends AbstractSarlTest {
 			"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 			"@SuppressWarnings(\"all\")",
 			"public interface Boot {",
-			"  public default void main(final String... args) {",
+			"  default void main(final String... args) {",
 			"  }",
 			"}",
 			"");
@@ -114,7 +114,7 @@ public class Bug725Test extends AbstractSarlTest {
 			"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 			"@SuppressWarnings(\"all\")",
 			"public interface Boot {",
-			"  public abstract void main(final String... args);",
+			"  void main(final String... args);",
 			"}",
 			"");
 	
@@ -136,9 +136,9 @@ public class Bug725Test extends AbstractSarlTest {
 			"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 			"@SuppressWarnings(\"all\")",
 			"public interface Boot {",
-			"  public abstract void main(final String... args);",
+			"  void main(final String... args);",
 			"  ",
-			"  public static void fct() {",
+			"  static void fct() {",
 			"  }",
 			"}",
 			"");
@@ -161,9 +161,9 @@ public class Bug725Test extends AbstractSarlTest {
 			"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 			"@SuppressWarnings(\"all\")",
 			"public interface Boot {",
-			"  public abstract void main(final String... args);",
+			"  void main(final String... args);",
 			"  ",
-			"  public default void fct() {",
+			"  default void fct() {",
 			"  }",
 			"}",
 			"");
@@ -186,9 +186,9 @@ public class Bug725Test extends AbstractSarlTest {
 			"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 			"@SuppressWarnings(\"all\")",
 			"public interface Boot {",
-			"  public abstract void main(final String... args);",
+			"  void main(final String... args);",
 			"  ",
-			"  public abstract void fct();",
+			"  void fct();",
 			"}",
 			"");
 

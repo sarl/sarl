@@ -32,7 +32,6 @@ import com.google.common.base.Joiner;
 import com.google.common.io.Files;
 import com.google.inject.Injector;
 import com.ibm.icu.text.SimpleDateFormat;
-import org.eclipse.xtext.generator.IGeneratorFragment;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xtext.generator.CodeConfig;
 

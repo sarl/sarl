@@ -27,7 +27,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.inject.Injector;
-import org.eclipse.xtext.generator.IGeneratorFragment;
 
 import io.sarl.lang.mwe2.externalspec.AbstractScriptHighlightingFragment2;
 import io.sarl.lang.mwe2.externalspec.IStyleAppendable;

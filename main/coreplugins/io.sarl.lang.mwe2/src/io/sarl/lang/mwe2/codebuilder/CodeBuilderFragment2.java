@@ -150,7 +150,7 @@ public class CodeBuilderFragment2 extends AbstractStubGeneratingFragment {
 		}
 		createRuntimeBindings().contributeTo(getLanguage().getRuntimeGenModule());
 		createEclipseBindings().contributeTo(getLanguage().getEclipsePluginGenModule());
-		createIdeaBindings().contributeTo(getLanguage().getIdeaGenModule());
+		createIdeaBindings().contributeTo(getLanguage().getIdeGenModule());
 		createWebBindings().contributeTo(getLanguage().getWebGenModule());
 
 		final Set<String> exportedPackages = getProjectConfig().getRuntime().getManifest().getExportedPackages();

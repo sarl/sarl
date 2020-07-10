@@ -33,7 +33,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import com.google.inject.Injector;
-import org.eclipse.xtext.generator.IGeneratorFragment;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xtext.generator.CodeConfig;
 

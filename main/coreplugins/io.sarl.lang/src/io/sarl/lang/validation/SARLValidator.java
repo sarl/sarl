@@ -3163,8 +3163,13 @@ public class SARLValidator extends AbstractSARLValidator {
 	@Override
 	protected void checkCast(JvmTypeReference concreteSyntax, LightweightTypeReference toType, LightweightTypeReference fromType) {
 		super.checkCast(concreteSyntax, toType, fromType);
-		// FIXME: Remove when PR is merged ()
-		reportCastWarnings(concreteSyntax, toType, fromType);
+		// The first test is for notifying that an unnecessary cast is found
+		// The second test is for avoiding to have duplicate warning; because the super checkCast has
+		// already reported a warning for the specific case when the toType and fromType are equal
+		if (toType.isAssignableFrom(fromType)
+				&& 	!toType.getIdentifier().equals(fromType.getIdentifier())) {
+			reportCastWarnings(concreteSyntax, toType, fromType);
+		}
 	}
 
 	/** Report the warnings associated to the casted expressions.

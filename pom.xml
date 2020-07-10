@@ -55,14 +55,14 @@
 		<!-- The versions of the following Xtext libraries are available at: https://eclipse.org/Xtext/documentation/350_continuous_integration.html -->
 
 		<!-- Version of the Xtext API -->
-		<xtext.version>2.20.0</xtext.version>
-		<xtext.version.current>2.20.0</xtext.version.current>
-		<xtext.version.next>2.20.1</xtext.version.next>
-		<xtext.version.javadoc>2.20</xtext.version.javadoc>
+		<xtext.version>2.22.0</xtext.version>
+		<xtext.version.current>2.22.0</xtext.version.current>
+		<xtext.version.next>2.22.1</xtext.version.next>
+		<xtext.version.javadoc>2.22</xtext.version.javadoc>
 
 		<!-- Version of the MWE2 library (used for accessing the mwe2 P2 http://download.eclipse.org/modeling/emft/mwe/updates/releases/, 
 			see compositeContent.{xml,jar,xz,xml.xz} file) -->
-		<mwe2.version>2.11.0</mwe2.version>
+		<mwe2.version>2.11.3</mwe2.version>
 		<!-- Version of the Xpand library (used for accessing the Xpand P2 http://download.eclipse.org/modeling/m2t/xpand/updates/releases/, 
 			see compositeContent.{xml,jar,xz,xml.xz} file) -->
 		<xpand.version>R201605260315</xpand.version>
@@ -74,16 +74,19 @@
 		<afc.version>16.0</afc.version>
 		<afc.osgi.version>${afc.version}.0</afc.osgi.version>
 		<!-- Version of the Guava API -->
-		<guava.version>27.1-jre</guava.version>
+		<guava.version>28.0-jre</guava.version>
 		<!-- Version of the javax.inject module -->
 		<javaxinject.version>1</javaxinject.version>
 		<!-- Version of the Tycho module, (search for tycho-maven-plugin on Maven 
 			central) -->
 		<tycho.version>1.7.0</tycho.version>
 		<!-- Version of the SWT library (search for org.eclipse.platform:org.eclipse.swt.gtk.linux.x86_64) -->
-		<swt.version>3.114.0</swt.version>
+		<swt.version>3.114.100</swt.version>
 		<!-- Version of JavaFX (search for org.openjfx:*) -->
 		<openjfx.version>11.0.2</openjfx.version>
+		<!-- Version of Checkstyle. Must be the same version as inside Eclipse IDE (com.puppycrawl.tools:checkstyle) -->
+		<checkstyle.version>8.32</checkstyle.version>
+		<checkstyle.full.version>${checkstyle.version}.0</checkstyle.full.version>
 
 		<!-- Build ID Format (used in Eclipse about dialog) -->
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
@@ -96,15 +99,15 @@
 		<!-- Default encoding of the source files -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- Maven API version. This version should be supported by m2e. Search 
-			for maven-core on central. -->
+			for maven-core on central (maven-core) -->
 		<maven.api.version>3.6.3</maven.api.version>
-		<!-- Version of the Maven Java compiler. -->
+		<!-- Version of the Maven Java compiler (maven-compiler-plugin). -->
 		<mavencompiler.version>3.8.1</mavencompiler.version>
 		<!-- String to put after the copyright sign -->
 		<copyrighters>the original authors or authors</copyrighters>
 		<!-- URL of the Maven repositories of SARL (use in POM and documentation) -->
 		<sarl.maven.repository.url>http://maven.sarl.io</sarl.maven.repository.url>
-		<!-- Version of Junit 5 library -->
+		<!-- Version of Junit 5 library (junit-jupiter-engine) -->
 		<junit5.version>5.7.0-M1</junit5.version>
 		<!-- The following Jackson declaration are temporary fix for issue #1007 -->
 		<jacksonapi.version>2.10.0</jacksonapi.version>
@@ -321,6 +324,11 @@
 			</dependency>
 			<dependency>
 				<groupId>io.sarl</groupId>
+				<artifactId>io.sarl.lang.ui</artifactId>
+				<version>${sarl.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.sarl</groupId>
 				<artifactId>io.sarl.eclipse</artifactId>
 				<version>${sarl.version}</version>
 			</dependency>
@@ -498,12 +506,12 @@
 			<dependency>
 				<groupId>commons-io</groupId>
 				<artifactId>commons-io</artifactId>
-				<version>2.6</version>
+				<version>2.7</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.code.gson</groupId>
 				<artifactId>gson</artifactId>
-				<version>2.8.5</version>
+				<version>2.8.6</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.guava</groupId>
@@ -513,7 +521,7 @@
 			<dependency>
 				<groupId>io.bootique</groupId>
 				<artifactId>bootique</artifactId>
-				<version>1.0</version>
+				<version>1.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.javassist</groupId>
@@ -583,7 +591,7 @@
 			<dependency>
 				<groupId>com.vladsch.flexmark</groupId>
 				<artifactId>flexmark</artifactId>
-				<version>0.61.30</version>
+				<version>0.62.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.jsoup</groupId>
@@ -608,7 +616,7 @@
 			<dependency>
 				<groupId>com.google.errorprone</groupId>
 				<artifactId>error_prone_annotations</artifactId>
-				<version>2.3.4</version>
+				<version>2.4.0</version>
 			</dependency>
 			<dependency>
 				<groupId>me.tongfei</groupId>
@@ -647,7 +655,7 @@
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
 				<artifactId>wagon-webdav-jackrabbit</artifactId>
-				<version>3.4.0</version>
+				<version>3.4.1</version>
 			</extension>
 		</extensions>
 		<pluginManagement>
@@ -690,7 +698,7 @@
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>build-helper-maven-plugin</artifactId>
-					<version>3.1.0</version>
+					<version>3.2.0</version>
 				</plugin>
 
 				<plugin>
@@ -746,7 +754,7 @@
 					<groupId>org.codehaus.gmavenplus</groupId>
 					<artifactId>gmavenplus-plugin</artifactId>
 					<!-- version 1.6 does not work because a function is not found -->
-					<version>1.7.1</version>
+					<version>1.9.0</version>
 				</plugin>
 
 				<plugin>
@@ -770,7 +778,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>3.0.0-M4</version>
+					<version>3.0.0-M5</version>
 					<dependencies>
 						<dependency>
 							<groupId>org.junit.jupiter</groupId>
@@ -860,8 +868,7 @@
 						<dependency>
 							<groupId>com.puppycrawl.tools</groupId>
 							<artifactId>checkstyle</artifactId>
-							<!-- Same version as inside Eclipse IDE -->
-							<version>8.32</version>
+							<version>${checkstyle.version}</version>
 						</dependency>
 					</dependencies>
 				</plugin>

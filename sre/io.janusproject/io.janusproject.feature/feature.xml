@@ -225,28 +225,27 @@
       <import plugin="io.sarl.core" version="0.12.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.util" version="0.12.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.api.bootiquebase" version="0.12.0" match="greaterOrEqual"/>
-      <import plugin="io.bootique" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.arakhne.afc.bootique.variables" version="16.0.0" match="greaterOrEqual"/>
+      <import plugin="com.google.inject" version="4.2.3" match="greaterOrEqual"/>
       <import plugin="javax.inject" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.osgi" version="3.15.100" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtend.lib" version="2.20.0" match="greaterOrEqual"/>
       <import plugin="org.arakhne.afc.core.util" version="16.0.0" match="greaterOrEqual"/>
       <import plugin="org.arakhne.afc.core.inputoutput" version="16.0.0" match="greaterOrEqual"/>
-      <import plugin="com.fasterxml.jackson.core.jackson-annotations" version="2.10.0" match="greaterOrEqual"/>
+      <import plugin="com.fasterxml.jackson.core.jackson-annotations" version="2.11.0" match="greaterOrEqual"/>
       <import plugin="io.janusproject.plugin" version="0.12.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.eclipse" version="0.12.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jdt.core" version="3.20.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.runtime" version="3.17.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui.workbench" version="3.117.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jdt.ui" version="3.20.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jface" version="3.18.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.swt" version="3.113.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jdt.launching" version="3.16.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtext.xbase.lib" version="2.20.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtend.lib.macro"/>
       <import plugin="io.sarl.lang.core" version="0.12.0" match="greaterOrEqual"/>
-      <import plugin="com.fasterxml.jackson.core.jackson-annotations" version="2.11.0" match="greaterOrEqual"/>
-      <import plugin="com.google.inject" version="4.2.3" match="greaterOrEqual"/>
+      <import plugin="io.bootique" version="1.1.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.osgi" version="3.15.300" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtend.lib" version="2.22.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.core" version="3.22.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.runtime" version="3.18.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.workbench" version="3.119.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.ui" version="3.21.100" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jface" version="3.20.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.swt" version="3.114.100" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.launching" version="3.17.100" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.xbase.lib" version="2.22.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin

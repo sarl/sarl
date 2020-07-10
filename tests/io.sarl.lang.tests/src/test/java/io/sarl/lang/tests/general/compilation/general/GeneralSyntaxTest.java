@@ -90,9 +90,9 @@ public class GeneralSyntaxTest extends AbstractSarlTest {
 				"@SarlElementType(" + SarlPackage.SARL_INTERFACE + ")",
 				"@SuppressWarnings(\"all\")",
 				"public interface Light {",
-				"  public abstract void turnOn();",
+				"  void turnOn();",
 				"  ",
-				"  public abstract void turnOff();",
+				"  void turnOff();",
 				"}",
 				""
 				);

@@ -27,6 +27,16 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>io.sarl</groupId>
+			<artifactId>io.sarl.lang.ui</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.sarl</groupId>
+			<artifactId>io.sarl.eclipse</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>io.sarl.examples</groupId>
 			<artifactId>io.sarl.examples.plugin</artifactId>
 			<version>${sarl.version}</version>

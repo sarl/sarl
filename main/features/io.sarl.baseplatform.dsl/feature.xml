@@ -298,13 +298,13 @@ for the SARL DSL Environment
       <import plugin="org.eclipse.emf.ecore.xmi"/>
       <import plugin="org.eclipse.emf.ecore"/>
       <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.emf.mwe2.runtime" version="2.11.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.emf.mwe2.runtime" version="2.11.3" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.runtime" version="3.5.0" match="compatible"/>
       <import plugin="org.apache.httpcomponents.httpclient" version="4.0.0" match="compatible"/>
       <import plugin="org.eclipse.emf.common" version="2.10.0" match="compatible"/>
       <import plugin="org.eclipse.emf.ecore" version="2.10.0" match="compatible"/>
       <import plugin="org.eclipse.emf.ecore.xmi" version="2.10.0" match="compatible"/>
-      <import plugin="org.eclipse.oomph.util" version="1.12.0" match="compatible"/>
+      <import plugin="org.eclipse.oomph.util" version="1.14.0" match="compatible"/>
       <import plugin="org.eclipse.core.expressions" version="3.4.0" match="compatible"/>
       <import plugin="org.eclipse.core.filebuffers" version="3.5.0" match="compatible"/>
       <import plugin="org.eclipse.jface.text" version="3.5.0" match="compatible"/>
@@ -324,17 +324,18 @@ for the SARL DSL Environment
       <import plugin="org.eclipse.oomph.resources.edit" version="1.10.0" match="compatible"/>
       <import plugin="org.eclipse.oomph.preferences" version="1.11.0" match="compatible"/>
       <import plugin="org.eclipse.oomph.setup.edit" version="1.14.0" match="compatible"/>
-      <import plugin="org.eclipse.oomph.setup.ui" version="1.15.0" match="compatible"/>
-      <import plugin="org.eclipse.oomph.setup.sync" version="1.11.0" match="compatible"/>
+      <import plugin="org.eclipse.oomph.setup.ui" version="1.17.0" match="compatible"/>
+      <import plugin="org.eclipse.oomph.setup.sync" version="1.12.0" match="compatible"/>
       <import plugin="org.eclipse.oomph.workingsets.edit" version="1.10.0" match="compatible"/>
       <import plugin="org.eclipse.oomph.workingsets.editor" version="1.11.0" match="compatible"/>
       <import plugin="org.eclipse.equinox.p2.metadata" version="2.0.0" match="compatible"/>
-      <import plugin="org.eclipse.oomph.ui" version="1.13.0" match="compatible"/>
+      <import plugin="org.eclipse.oomph.ui" version="1.14.0" match="compatible"/>
       <import plugin="org.eclipse.ui.ide" version="3.5.0" match="compatible"/>
-      <import plugin="org.eclipse.oomph.setup.p2.edit" version="1.11.0" match="compatible"/>
-      <import plugin="org.eclipse.oomph.p2.edit" version="1.11.0" match="compatible"/>
-      <import plugin="org.eclipse.oomph.p2.ui" version="1.12.0" match="compatible"/>
+      <import plugin="org.eclipse.oomph.setup.p2.edit" version="1.12.0" match="compatible"/>
+      <import plugin="org.eclipse.oomph.p2.edit" version="1.13.0" match="compatible"/>
+      <import plugin="org.eclipse.oomph.p2.ui" version="1.13.0" match="compatible"/>
       <import plugin="org.eclipse.oomph.workingsets" version="1.10.0" match="compatible"/>
+      <import plugin="org.eclipse.oomph.ui" version="1.13.0" match="compatible"/>
       <import plugin="org.eclipse.core.runtime" version="3.4.0" match="compatible"/>
       <import plugin="org.eclipse.core.resources" version="3.4.0" match="compatible"/>
       <import plugin="org.eclipse.draw2d" version="3.7.0" match="compatible"/>
@@ -344,8 +345,8 @@ for the SARL DSL Environment
       <import plugin="org.eclipse.emf.ecore" version="2.20.0" match="compatible"/>
       <import plugin="org.eclipse.emf.edit" version="2.13.0" match="compatible"/>
       <import plugin="org.eclipse.xsd" version="2.15.0" match="compatible"/>
-      <import plugin="org.eclipse.core.runtime" version="3.17.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui.workbench" version="3.117.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.runtime" version="3.18.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.workbench" version="3.119.0" match="greaterOrEqual"/>
       <import plugin="org.antlr.runtime" version="3.2.0" match="greaterOrEqual"/>
    </requires>
 
@@ -571,6 +572,35 @@ for the SARL DSL Environment
          download-size="0"
          install-size="0"
          version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.google.guava"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="aopalliance"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.arakhne.afc.bootique.variables"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jgit.ssh.jsch"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
          unpack="false"/>
 
 </feature>

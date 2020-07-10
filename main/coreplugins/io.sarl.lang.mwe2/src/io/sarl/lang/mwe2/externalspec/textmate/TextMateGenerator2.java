@@ -36,7 +36,6 @@ import java.util.UUID;
 import com.google.common.io.Files;
 import com.google.inject.Injector;
 import org.eclipse.xtext.common.types.JvmType;
-import org.eclipse.xtext.generator.IGeneratorFragment;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.compiler.ISourceAppender;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;

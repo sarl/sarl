@@ -24,7 +24,6 @@ package io.sarl.lang.mwe2.externalspec.latex;
 import java.text.MessageFormat;
 
 import com.google.inject.Injector;
-import org.eclipse.xtext.generator.IGeneratorFragment;
 
 import io.sarl.lang.mwe2.externalspec.IStyleAppendable;
 
