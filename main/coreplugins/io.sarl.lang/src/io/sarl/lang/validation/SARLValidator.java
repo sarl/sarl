@@ -131,6 +131,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.typesystem.LocalClassAwareTypeNames;
 import org.eclipse.xtend.core.validation.ModifierValidator;
 import org.eclipse.xtend.core.validation.XtendValidator;
@@ -262,6 +263,7 @@ import io.sarl.lang.sarl.SarlSpace;
 import io.sarl.lang.sarl.actionprototype.ActionParameterTypes;
 import io.sarl.lang.sarl.actionprototype.IActionPrototypeProvider;
 import io.sarl.lang.services.SARLGrammarKeywordAccess;
+import io.sarl.lang.typesystem.FeatureCallAdapter;
 import io.sarl.lang.typesystem.IImmutableTypeValidator;
 import io.sarl.lang.typesystem.IOperationHelper;
 import io.sarl.lang.typesystem.InheritanceHelper;
@@ -405,7 +407,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	private SarlJvmModelAssociations associations;
 
 	@Inject
-	private FeatureNameValidator featureNames_;
+	private FeatureNameValidator featureNames;
 
 	@Inject
 	private IActionPrototypeProvider sarlActionSignatures;
@@ -609,7 +611,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check(CheckType.NORMAL)
 	@Override
-	@SuppressWarnings("checkstyle:npathcomplexity")
+	@SuppressWarnings({ "checkstyle:npathcomplexity", "restriction" })
 	public void checkClassPath(XtendFile sarlScript) {
 		final TypeReferences typeReferences = getServices().getTypeReferences();
 
@@ -1292,7 +1294,7 @@ public class SARLValidator extends AbstractSARLValidator {
 	 * @return {@code true} if the name is really disallowed.
 	 */
 	private boolean isReallyDisallowedName(QualifiedName name) {
-		if (this.featureNames_.isDisallowedName(name)) {
+		if (this.featureNames.isDisallowedName(name)) {
 			return true;
 		}
 		final String base = name.getLastSegment();
@@ -1322,7 +1324,7 @@ public class SARLValidator extends AbstractSARLValidator {
 					INVALID_MEMBER_NAME,
 					validName);
 		} else if (!isIgnored(DISCOURAGED_FUNCTION_NAME)
-				&& this.featureNames_.isDiscouragedName(name)) {
+				&& this.featureNames.isDiscouragedName(name)) {
 			warning(MessageFormat.format(
 					Messages.SARLValidator_39,
 					action.getName()),
@@ -3128,36 +3130,68 @@ public class SARLValidator extends AbstractSARLValidator {
 		// Validation of the casting according to the SARL specification of this operator.
 		if (cast instanceof SarlCastedExpression) {
 			final SarlCastedExpression sarlCast = (SarlCastedExpression) cast;
-			final JvmOperation operation = sarlCast.getFeature();
-			if (operation != null) {
-				// We have to test the unnecessary cast because because it is tested into the standard process
-				final JvmTypeReference concreteSyntax = sarlCast.getType();
-				if (concreteSyntax != null) {
-					final LightweightTypeReference toType = toLightweightTypeReference(cast.getType());
-					reportCastWarnings(
-							concreteSyntax,
-							toType,
-							getActualType(cast.getTarget()));
-
-					if (!isIgnored(POTENTIAL_INEFFICIENT_VALUE_CONVERSION)) {
-						final LightweightTypeReference fromType = toLightweightTypeReference(operation.getReturnType());
-						final String message;
-						if (Strings.equal(concreteSyntax.getIdentifier(), fromType.getIdentifier())) {
-							message = MessageFormat.format(Messages.SARLValidator_97, operation.getSimpleName());
-						} else {
-							message = MessageFormat.format(Messages.SARLValidator_98, operation.getSimpleName(),
-									toType.getHumanReadableName(), fromType.getHumanReadableName());
-						}
-						addIssue(message, concreteSyntax, POTENTIAL_INEFFICIENT_VALUE_CONVERSION);
-					}
-				}
-
-				// Break to avoid the standard validation for casted expressions
+			if (checkOverrideableCasts(sarlCast)) {
 				return;
 			}
 		}
 		// Standard check of the types.
 		super.checkCasts(cast);
+	}
+
+	/** Check if the given cast expression has an associated overriding function.
+	 *
+	 * @param cast the SARL cast expression.
+	 * @return {@code true} to avoid to do the "standard" cast test (because this function has already did it for example).
+	 */
+	protected boolean checkOverrideableCasts(SarlCastedExpression cast) {
+		final JvmOperation operation = cast.getFeature();
+		if (operation != null) {
+			// We have to test the unnecessary cast because because it is tested into the standard process
+			final JvmTypeReference concreteSyntax = cast.getType();
+			if (concreteSyntax != null) {
+				final LightweightTypeReference toType = toLightweightTypeReference(cast.getType());
+				reportCastWarnings(
+						concreteSyntax,
+						toType,
+						getActualType(cast.getTarget()));
+
+				if (!isIgnored(POTENTIAL_INEFFICIENT_VALUE_CONVERSION)) {
+					final LightweightTypeReference fromType = toLightweightTypeReference(operation.getReturnType());
+					final String message;
+					if (Strings.equal(concreteSyntax.getIdentifier(), fromType.getIdentifier())) {
+						message = MessageFormat.format(Messages.SARLValidator_97, operation.getSimpleName());
+					} else {
+						message = MessageFormat.format(Messages.SARLValidator_98, operation.getSimpleName(),
+								toType.getHumanReadableName(), fromType.getHumanReadableName());
+					}
+					addIssue(message, concreteSyntax, POTENTIAL_INEFFICIENT_VALUE_CONVERSION);
+				}
+			}
+			// Break to avoid the standard validation for casted expressions
+			return true;
+		}
+		return false;
+	}
+
+	/** Test if the enclosing cast expression is unsed in an context that make the casting operation
+	 * mandatory in order to avoid ambiguity.
+	 *
+	 * @param concreteSyntax the concrete type from the SARL source code
+	 * @param toType the real target type
+	 * @param fromType the real from type (same as the concrete syntax type)
+	 * @return {@code true} if the context of a casting operation is used for
+	 *      invoking a feature with some ambiguity.
+	 */
+	protected boolean isAmbiguousCastContext(JvmTypeReference concreteSyntax, LightweightTypeReference toType, LightweightTypeReference fromType) {
+		final SarlCastedExpression cast = EcoreUtil2.getContainerOfType(concreteSyntax, SarlCastedExpression.class);
+		if (cast != null && cast.eContainer() instanceof XAbstractFeatureCall) {
+			final XAbstractFeatureCall call = (XAbstractFeatureCall) cast.eContainer();
+			final FeatureCallAdapter adapter = (FeatureCallAdapter) EcoreUtil.getAdapter(call.eAdapters(), FeatureCallAdapter.class);
+			if (adapter != null) {
+				return adapter.getCallCandidates().size() > 1;
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -3167,7 +3201,9 @@ public class SARLValidator extends AbstractSARLValidator {
 		// The second test is for avoiding to have duplicate warning; because the super checkCast has
 		// already reported a warning for the specific case when the toType and fromType are equal
 		if (toType.isAssignableFrom(fromType)
-				&& 	!toType.getIdentifier().equals(fromType.getIdentifier())) {
+				&& !toType.getIdentifier().equals(fromType.getIdentifier())
+				&& !isAmbiguousCastContext(concreteSyntax, toType, fromType)) {
+			// In some cases, the use of the "as" operator is mandatory to avoid ambiguity into the enclosing type
 			reportCastWarnings(concreteSyntax, toType, fromType);
 		}
 	}

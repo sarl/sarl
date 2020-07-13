@@ -43,7 +43,6 @@ import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.xtend.core.compiler.XtendCompiler;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmAnnotationAnnotationValue;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
@@ -98,6 +97,7 @@ import org.eclipse.xtext.xbase.typesystem.IResolvedTypes;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 import org.eclipse.xtext.xbase.util.XExpressionHelper;
 
+import io.sarl.lang.bugfixes.pending.bug626.Bug626XtendCompiler;
 import io.sarl.lang.controlflow.ISarlEarlyExitComputer;
 import io.sarl.lang.jvmmodel.Messages;
 import io.sarl.lang.jvmmodel.SARLJvmModelInferrer;
@@ -145,7 +145,7 @@ import io.sarl.lang.util.Utils;
  * @since 0.4
  */
 @SuppressWarnings("checkstyle:classfanoutcomplexity")
-public class SarlCompiler extends XtendCompiler {
+public class SarlCompiler extends Bug626XtendCompiler {
 
 	private static final String INLINE_VARIABLE_PREFIX = "$"; //$NON-NLS-1$
 
@@ -712,26 +712,22 @@ public class SarlCompiler extends XtendCompiler {
 	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:nestedifdepth",
 		"checkstyle:cyclomaticcomplexity"})
 	protected void _toJavaExpression(XCastedExpression expr, ITreeAppendable appendable) {
-		final LightweightTypeReference fromType = toLightweight(getType(expr.getTarget()), expr);
+		final XExpression target = expr.getTarget();
+		final LightweightTypeReference fromType = toLightweight(getType(target), expr);
 		final LightweightTypeReference toType = toLightweight(expr.getType(), expr);
 		if (expr instanceof SarlCastedExpression) {
 			final SarlCastedExpression cast = (SarlCastedExpression) expr;
 			final JvmOperation operation = cast.getFeature();
 			if (operation != null) {
-
-				/*if ("A0".equals(fromType.getSimpleName()) && "String".equals(toType.getSimpleName())) {
-					System.out.println(fromType.getHumanReadableName() + " -> " + toType.getHumanReadableName());
-				}*/
-
 				final boolean hasNullInputTest = !fromType.isPrimitive() && !fromType.isPrimitiveVoid()
-						&& !isLiteral(expr.getTarget());
+						&& !isLiteral(target);
 
 				final XExpression receiver = cast.getReceiver();
 				final XExpression argument = cast.getArgument();
 
 				if (hasNullInputTest) {
 					appendable.append("("); //$NON-NLS-1$
-					internalToConvertedExpression(expr.getTarget(), appendable, fromType);
+					internalToConvertedExpression(target, appendable, fromType);
 					appendable.append(" == null ? "); //$NON-NLS-1$
 					appendDefaultLiteral(appendable, toType);
 					appendable.append(" : "); //$NON-NLS-1$
@@ -763,7 +759,7 @@ public class SarlCompiler extends XtendCompiler {
 							it.append("."); //$NON-NLS-1$
 						} else if (receiver != null) {
 							final LightweightTypeReference receiverType;
-							if (receiver == expr.getTarget()) {
+							if (receiver == target) {
 								receiverType = fromType;
 							} else {
 								receiverType = toLightweight(getType(receiver), expr);
@@ -790,8 +786,8 @@ public class SarlCompiler extends XtendCompiler {
 						it.append("("); //$NON-NLS-1$
 
 						if (argument != null) {
-							if (argument == expr.getTarget()) {
-								internalToConvertedExpression(expr.getTarget(), it, fromType);
+							if (argument == target) {
+								internalToConvertedExpression(target, it, fromType);
 							} else {
 								appendArgument(argument, it, false);
 							}
@@ -818,7 +814,25 @@ public class SarlCompiler extends XtendCompiler {
 			// In this case the case is mandatory for Java
 			super._toJavaExpression(expr, appendable);
 		} else if (toType.isAssignableFrom(fromType)) {
-			internalToConvertedExpression(expr.getTarget(), appendable, toType);
+			// Force the cast when the input value is of any type (e.g. null)
+			if (fromType.isAny()) {
+				doCastConversion(toType, appendable, it -> {
+					final ITreeAppendable it1 = it.trace(expr, true);
+					internalToConvertedExpression(target, it1);
+				});
+			} else {
+				// Force cast when the type is refined, e.g. into an "instanceof" block
+				final IResolvedTypes resolvedTypes = getResolvedTypes(expr);
+				final boolean refined = resolvedTypes.isRefinedType(target);
+				if (refined) {
+					doCastConversion(toType, appendable, it -> {
+						final ITreeAppendable it1 = it.trace(expr, true);
+						internalToConvertedExpression(target, it1);
+					});
+				} else {
+					internalToConvertedExpression(target, appendable, toType);
+				}
+			}
 		} else {
 			super._toJavaExpression(expr, appendable);
 		}

@@ -23,6 +23,7 @@ package io.sarl.tests.api.tools;
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.isEmpty;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.util.List;
@@ -347,6 +348,7 @@ public class TestValidator {
 		}
 
 		private void assertIssue(Severity severity, EClass objectType, String code, int offset, String... messageParts) {
+			assertNotNull(objectType);
 			final List<Issue> issues = getIssues();
 			final Iterable<Issue> fissues = this.testHelper.matchIssues(this.resource, objectType, code, offset,
 					-1, severity, issues, messageParts);

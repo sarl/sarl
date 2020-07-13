@@ -25,6 +25,7 @@ import java.util.List;
 
 import com.google.common.base.Throwables;
 import com.google.inject.Inject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend.core.typesystem.XtendTypeComputer;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.common.types.JvmAnnotationReference;
@@ -35,7 +36,9 @@ import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.diagnostics.Severity;
 import org.eclipse.xtext.validation.EObjectDiagnosticImpl;
+import org.eclipse.xtext.xbase.XAbstractFeatureCall;
 import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.xtext.xbase.typesystem.computation.IFeatureLinkingCandidate;
 import org.eclipse.xtext.xbase.typesystem.computation.ILinkingCandidate;
 import org.eclipse.xtext.xbase.typesystem.computation.ITypeComputationState;
 import org.eclipse.xtext.xbase.typesystem.internal.AbstractTypeComputationState;
@@ -240,4 +243,20 @@ public class SARLTypeComputer extends XtendTypeComputer {
 		}
 	}
 
+	@Override
+	protected void _computeTypes(final XAbstractFeatureCall featureCall, ITypeComputationState state) {
+		// Save the different candidates that could be invoked
+		final List<? extends IFeatureLinkingCandidate> candidates = state.getLinkingCandidates(featureCall);
+		if (candidates.size() > 1) {
+			FeatureCallAdapter adapter = (FeatureCallAdapter) EcoreUtil.getAdapter(featureCall.eAdapters(), FeatureCallAdapter.class);
+			if (adapter == null) {
+				adapter = new FeatureCallAdapter();
+				featureCall.eAdapters().add(adapter);
+			}
+			adapter.setCallCandidates(candidates);
+		}
+		super._computeTypes(featureCall, state);
+	}
+
 }
+
