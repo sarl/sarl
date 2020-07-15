@@ -89,6 +89,22 @@ class LifecycleConfig {
 	 */
 	public static val AGENT_SPAWNING_COUNT_PER_THREAD_VALUE = 128
 
+	/** 
+	 * Name of property that indicates the type of the event bus to create for each agent.
+	 * 
+	 * @see #EVENT_BUS_TYPE_VALUE
+	 * @since 0.12
+	 */
+	public static val EVENT_BUS_TYPE_NAME = PREFIX + ".eventBusType"
+	
+	/** 
+	 * Indicates the type of event bus to create for each agent.
+	 * 
+	 * @see #EVENT_BUS_TYPE_NAME
+	 * @since 0.12
+	 */
+	public static val EVENT_BUS_TYPE_VALUE = EventBusType::^default
+
 
 
 	@Accessors(PUBLIC_GETTER)
@@ -97,7 +113,19 @@ class LifecycleConfig {
 	@Accessors(PUBLIC_GETTER)
 	var agentSpawningCountPerThread : int = AGENT_SPAWNING_COUNT_PER_THREAD_VALUE
 
-	
+	@Accessors(PUBLIC_GETTER)
+	var eventBusType : EventBusType = EVENT_BUS_TYPE_VALUE
+
+	/** Change the type of event bus to be created for each agent.
+	 * 
+	 * @param type the type of event bus.
+	 * @since 0.12
+	 */
+	@BQConfigProperty("Specify the type of event bus to be created by each agent")
+	def setEventBusType(type : EventBusType) : void {
+		this.eventBusType = type ?: EventBusType.^default
+	}
+
 	/** Change the flag that indicates if the agents must be created with injector, or not.
 	 *
 	 * @param useInjector is {@code true} if the agents should be created by an injector.
@@ -134,6 +162,8 @@ class LifecycleConfigModule extends AbstractModule {
 
 	static val INJECTAGENT_OPTION = "inject-agents"
 
+	static val EVENTBUSTYPE_OPTION = "event-bus"
+
 	static val AGENTSPAWNINGCOUNTPERTHREAD = "agent-spawns-per-thread"
 	
 	override configure : void {
@@ -150,6 +180,14 @@ class LifecycleConfigModule extends AbstractModule {
 				MessageFormat::format(Messages::LifecycleConfigModule_4, AGENT_SPAWNING_COUNT_PER_THREAD_VALUE)).valueRequired(
 				Messages::LifecycleConfigModule_5).build).mapConfigPath(AGENTSPAWNINGCOUNTPERTHREAD,
 			AGENT_SPAWNING_COUNT_PER_THREAD_NAME)
+
+		VariableDecls::extend(binder).declareVar(EVENT_BUS_TYPE_NAME)
+		binder.extend.addOption(
+			OptionMetadata::builder(EVENTBUSTYPE_OPTION,
+				MessageFormat::format(Messages::LifecycleConfigModule_6, EVENT_BUS_TYPE_VALUE.toJsonString))
+				.valueRequired(MessageFormat::format(Messages::LifecycleConfigModule_7, EventBusType::jsonLabels))
+				.build)
+				.mapConfigPath(EVENTBUSTYPE_OPTION, EVENT_BUS_TYPE_NAME)
 	}
 
 }

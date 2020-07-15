@@ -22,17 +22,17 @@ package io.sarl.sre.skills.internal
 
 import com.google.common.collect.Collections2
 import io.sarl.lang.core.Event
+import io.sarl.lang.util.OutParameter
 import io.sarl.sre.capacities.InternalSchedules
-import io.sarl.sre.internal.eventguard.BehaviorGuardEvaluator
-import io.sarl.sre.internal.eventguard.BehaviorGuardEvaluatorRegistry
+import io.sarl.sre.internal.eventguard.IBehaviorGuardEvaluator
+import io.sarl.sre.internal.eventguard.IBehaviorGuardEvaluatorRegistry
+import io.sarl.sre.services.executor.Runnables
 import io.sarl.sre.services.executor.SreRunnable
 import java.util.Collection
 import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.ExecutionException
 import java.util.function.Supplier
 import java.util.logging.Logger
-import io.sarl.sre.services.executor.Runnables
-import io.sarl.lang.util.OutParameter
 
 /** 
  * The class in charge of dispatching every single events coming from the outside of this agent (i.e. from a space) or from an
@@ -51,7 +51,7 @@ class EventBus {
 		 * ("on" clause in SARL behavior). This class has been inspired by the com.google.common.eventbus.SuscriberRegistry class of
 		 * Google Guava library.
 		 */
-	val behaviorGuardEvaluatorRegistry : BehaviorGuardEvaluatorRegistry
+	val behaviorGuardEvaluatorRegistry : IBehaviorGuardEvaluatorRegistry
 
 	/** 
 	 * The skill that gives access to the scheduling capacity of the agent
@@ -64,7 +64,7 @@ class EventBus {
 	 * @param taskScheduler a provider of scheduler for the agent tasks that may be invoked on demand.
 	 * @param dispatcher the event dispatcher.
 	 */
-	new (taskSchedulerProvider : Supplier<InternalSchedules>, dispatcher : BehaviorGuardEvaluatorRegistry) {
+	new (taskSchedulerProvider : Supplier<InternalSchedules>, dispatcher : IBehaviorGuardEvaluatorRegistry) {
 		assert taskSchedulerProvider !== null
 		assert dispatcher !== null
 		this.taskSchedulerSupplier = taskSchedulerProvider
@@ -244,7 +244,7 @@ class EventBus {
 		}
 	}
 
-	private static def buildRunnable(evaluator : BehaviorGuardEvaluator, ^event : Event,
+	private static def buildRunnable(evaluator : IBehaviorGuardEvaluator, ^event : Event,
 		output : ConcurrentLinkedDeque<Runnable>) : Runnable {
 		[
 			evaluator.evaluateGuard(^event, output)
@@ -265,7 +265,7 @@ class EventBus {
 	 */
 	@SuppressWarnings("potential_inefficient_value_conversion")
 	protected def evaluateGuards(^event : Event,
-		behaviorGuardEvaluators : ConcurrentLinkedDeque<BehaviorGuardEvaluator>,
+		behaviorGuardEvaluators : ConcurrentLinkedDeque<? extends IBehaviorGuardEvaluator>,
 		logger : Logger) : Collection<Runnable> {
 
 		assert ^event !== null

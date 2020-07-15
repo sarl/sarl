@@ -29,7 +29,7 @@ package io.sarl.lang.core;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public abstract class Behavior extends AgentTrait {
+public abstract class Behavior extends AgentTrait implements IBehaviorGuardEvaluatorReceiver {
 
 	/**
 	 * Construct a behavior for the given agent.

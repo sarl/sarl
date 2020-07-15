@@ -1,0 +1,159 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2020 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.internal.eventguard.polymorphic
+
+import io.sarl.lang.annotation.PerceptGuardEvaluator
+import io.sarl.lang.annotation.PrivateAPI
+import io.sarl.lang.core.Event
+import io.sarl.lang.core.IBehaviorGuardEvaluatorReceiver
+import io.sarl.sre.internal.MutableBoolean
+import io.sarl.sre.internal.eventguard.AbstractBehaviorGuardEvaluatorRegistry
+import io.sarl.sre.internal.eventguard.IBehaviorGuardEvaluator
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.CopyOnWriteArraySet
+
+import static extension io.sarl.lang.core.SREutils.*
+import java.util.Comparator
+
+/** 
+ * Registry of all {@code IBehaviorGuardEvaluator}.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+@SuppressWarnings("use_reserved_sarl_annotation")
+@PrivateAPI(isCallerOnly = true)
+class PolymorphicBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEvaluatorRegistry<PolymorphicBehaviorGuardEvaluator> {
+
+	static val CLASS_COMPARATOR : Comparator<Class<? extends Event>> = [a,b|
+		if (a == b) {
+			return 0
+		}
+		if (a === null) {
+			return -1
+		}
+		if (b === null) {
+			return 1
+		}
+		return a.name <=> b.name
+	]
+
+	/** 
+	 * All registered guard evaluator receivers, indexed by event type.
+	 * 
+	 * <p>The {@link CopyOnWriteArraySet} values make it easy and relatively lightweight to get an immutable snapshot of all current
+	 * receivers to an event without any locking.
+	 */
+	val evaluators : ConcurrentHashMap<Class<? extends Event>, CopyOnWriteArraySet<PolymorphicBehaviorGuardEvaluator>>
+
+	/** 
+	 * Instanciates a new registry linked with the {@link PerceptGuardEvaluator} annotation.
+	 * 
+	 * <p>The registry will use concurrent data structures.
+	 * 
+	 * @param internalMap the internal map.
+	 */
+	new {
+		this.evaluators = new ConcurrentHashMap
+	}
+
+	/** Replies the internal data structure.
+	 * 
+	 * @return the internal data structure
+	 */
+	@Pure
+	override getInternalDataStructure : ConcurrentHashMap<Class<? extends Event>, CopyOnWriteArraySet<PolymorphicBehaviorGuardEvaluator>> {
+		this.evaluators
+	}
+	
+	protected override getInternalEvaluatorMapper : (PolymorphicBehaviorGuardEvaluator)=>IBehaviorGuardEvaluator {
+		[
+			it
+		]
+	}
+	
+	protected override getInternalEvaluatorFilter : (PolymorphicBehaviorGuardEvaluator, Event)=>boolean {
+		[
+			val filter = $0.filter
+			return filter === null || filter.apply($1)
+		]
+	}
+
+	override register(listener : Object, filter : (Event)=>boolean, callback : (Object)=>void = null) {
+		if (listener instanceof IBehaviorGuardEvaluatorReceiver) {
+			val hasCallback = new MutableBoolean(callback !== null)
+			var evaluator = new PolymorphicBehaviorGuardEvaluator(listener, filter)
+
+			val events = newTreeSet(CLASS_COMPARATOR)
+			listener.doGetSupportedEvents(events)
+
+			if (!events.isEmpty) {
+				for (eventType : events) {
+					val evaluators = internalDataStructure.computeIfAbsent(eventType) [
+						new CopyOnWriteArraySet
+					]
+					val success = evaluators += evaluator
+					if (!success) {
+						hasCallback.set(false)
+					}
+				}
+			}
+
+			if (hasCallback.get) {
+				callback.apply(listener)
+			}
+		} else {
+			throw new IllegalArgumentException
+		}
+	}
+
+	override unregister(listener : Object, callback : (Object)=>void) {
+		assert listener !== null
+		assert !(listener instanceof Class), "illegal argument type. Class is not allowed as listener."
+		if (listener instanceof IBehaviorGuardEvaluatorReceiver) {
+			val events = newTreeSet(CLASS_COMPARATOR)
+			listener.doGetSupportedEvents(events)
+			val hasCallback = new MutableBoolean(callback !== null)
+
+			if (!events.isEmpty) {
+				for (eventType : events) {
+					val evaluators = internalDataStructure.get(eventType)
+					if (evaluators !== null) {
+						val success = evaluators.removeIf [
+							listener === it.target
+						]
+						if (success && hasCallback.get) {
+							hasCallback.set(false)
+							callback.apply(listener)
+						}
+					}
+				}
+			}
+		} else {
+			throw new IllegalArgumentException
+		}
+	}
+	
+}

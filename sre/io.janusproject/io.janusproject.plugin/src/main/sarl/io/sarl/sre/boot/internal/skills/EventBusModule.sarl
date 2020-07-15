@@ -22,10 +22,14 @@ package io.sarl.sre.boot.internal.skills
 
 import com.google.inject.AbstractModule
 import com.google.inject.Module
+import com.google.inject.Provides
 import io.bootique.BQModule
 import io.bootique.BQModuleProvider
-import io.sarl.sre.skills.internal.DefaultEventBusFactory
+import io.sarl.sre.boot.configs.SreConfig
 import io.sarl.sre.skills.internal.EventBusFactory
+import io.sarl.sre.skills.internal.PolymorphicEventBusFactory
+import io.sarl.sre.skills.internal.ReflectEventBusFactory
+import javax.inject.Provider
 import javax.inject.Singleton
 
 /** 
@@ -39,7 +43,23 @@ import javax.inject.Singleton
 class EventBusModule extends AbstractModule {
 
 	protected override configure {
-		typeof(EventBusFactory).bind.to(typeof(DefaultEventBusFactory)).in(typeof(Singleton))
+		//
+	}
+
+	@Provides
+	@Singleton
+	def providesEventBusFactory(sreConfig : Provider<SreConfig>) : EventBusFactory {
+		var cfg = sreConfig.get
+		var type = cfg.services.lifecycle.eventBusType
+		assert type !== null
+		switch (type) {
+			case POLYMORPHIC: {
+				return new PolymorphicEventBusFactory
+			}
+			default: {
+				return new ReflectEventBusFactory
+			}
+		}
 	}
 
 }

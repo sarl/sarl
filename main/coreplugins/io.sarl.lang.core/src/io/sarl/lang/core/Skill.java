@@ -39,7 +39,7 @@ import io.sarl.lang.annotation.PrivateAPI;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public abstract class Skill extends AgentTrait {
+public abstract class Skill extends AgentTrait implements IBehaviorGuardEvaluatorReceiver {
 
 	private final AtomicInteger referencesFromCapacityMap = new AtomicInteger();
 

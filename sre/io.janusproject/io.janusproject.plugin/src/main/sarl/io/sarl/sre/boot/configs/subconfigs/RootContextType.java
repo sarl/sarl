@@ -87,9 +87,9 @@ public enum RootContextType {
 		return DEFAULT;
 	}
 
-	/** Replies the default type of context id computation.
+	/** Replies the Json labels for the types of context id.
 	 *
-	 * @return the default type.
+	 * @return the labels.
 	 */
 	public static String getJsonLabels() {
 		final StringBuilder buffer = new StringBuilder();

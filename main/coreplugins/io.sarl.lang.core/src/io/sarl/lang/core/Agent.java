@@ -46,7 +46,7 @@ import io.sarl.lang.annotation.SarlSpecification;
  * @mavenartifactid $ArtifactId$
  */
 @SarlSpecification(SARLVersion.SPECIFICATION_RELEASE_VERSION_STRING)
-public class Agent extends AbstractSkillContainer {
+public class Agent extends AbstractSkillContainer implements IBehaviorGuardEvaluatorReceiver {
 
 	private final UUID id;
 

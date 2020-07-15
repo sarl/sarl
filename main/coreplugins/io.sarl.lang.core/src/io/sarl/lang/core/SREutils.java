@@ -21,6 +21,8 @@
 
 package io.sarl.lang.core;
 
+import java.util.Collection;
+import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -221,6 +223,27 @@ public final class SREutils {
 	 */
 	public static void doSkillUninstallation(Skill skill) {
 		skill.uninstall();
+	}
+
+	/** Do the guard evaluations of the behavior units.
+	 *
+	 * @param receiver is the object that receives the events.
+	 * @param event is the event that causes the evaluation.
+	 * @param behaviorsMethodsToExecute receives the behavior unit methods.
+	 * @since 0.12
+	 */
+	public static void doEvaluateBehaviorGuards(IBehaviorGuardEvaluatorReceiver receiver, Object event, Collection<Runnable> behaviorsMethodsToExecute) {
+		receiver.$evaluateBehaviorGuards(event, behaviorsMethodsToExecute);
+	}
+
+	/** Retrieve the events' types that are supported by the given receiver.
+	 *
+	 * @param receiver is the object that receives the events.
+	 * @param events is the set to fill out with the supported events' types.
+	 * @since 0.12
+	 */
+	public static void doGetSupportedEvents(IBehaviorGuardEvaluatorReceiver receiver, Set<Class<? extends Event>> events) {
+		receiver.$getSupportedEvents(events);
 	}
 
 }

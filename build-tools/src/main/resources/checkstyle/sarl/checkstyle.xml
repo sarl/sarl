@@ -33,7 +33,7 @@
 
 	<!-- Files shold not be too large. -->
 	<module name="FileLength">
-		<property name="max" value="4000" />
+		<property name="max" value="6000" />
 	</module>
 
 	<!-- No trailing white spaces for minimizing the size of the files. -->

@@ -2498,64 +2498,187 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 				return;
 			}
 
-			final JvmTypeReference voidType = this._typeReferenceBuilder.typeRef(Void.TYPE);
-			final JvmTypeReference runnableType = this._typeReferenceBuilder.typeRef(Runnable.class);
-			final JvmTypeReference collectionType = this._typeReferenceBuilder.typeRef(Collection.class, runnableType);
+			final Map<JvmTypeReference, Set<String>> guardDefs = new TreeMap<>((a, b) -> {
+				return a.getQualifiedName().compareTo(b.getQualifiedName());
+			});
+
 			for (final Pair<SarlBehaviorUnit, Collection<Procedure1<? super ITreeAppendable>>> evaluators : allEvaluators) {
-				final SarlBehaviorUnit source = evaluators.getKey();
-				// Determine the name of the operation for the behavior output
-				final String behName = Utils.createNameForHiddenGuardGeneralEvaluatorMethod(source.getName().getSimpleName());
-
-				// Create the main function
-				final JvmOperation operation = this.typesFactory.createJvmOperation();
-
-				// Annotation for the event bus
-
-				appendGeneratedAnnotation(operation, context);
-				addAnnotationSafe(operation, PerceptGuardEvaluator.class);
-
-				// Guard evaluator unit parameters
-				// - Event occurrence
-				JvmFormalParameter jvmParam = this.typesFactory.createJvmFormalParameter();
-				jvmParam.setName(this.grammarKeywordAccess.getOccurrenceKeyword());
-				jvmParam.setParameterType(this.typeBuilder.cloneWithProxies(source.getName()));
-				this.associator.associate(source, jvmParam);
-				operation.getParameters().add(jvmParam);
-				// - List of runnables
-				jvmParam = this.typesFactory.createJvmFormalParameter();
-				jvmParam.setName(RUNNABLE_COLLECTION);
-				jvmParam.setParameterType(this.typeBuilder.cloneWithProxies(collectionType));
-				operation.getParameters().add(jvmParam);
-
-				operation.setAbstract(false);
-				operation.setNative(false);
-				operation.setSynchronized(false);
-				operation.setStrictFloatingPoint(false);
-				operation.setFinal(false);
-				operation.setVisibility(JvmVisibility.PRIVATE);
-				operation.setStatic(false);
-				operation.setSimpleName(behName);
-				operation.setReturnType(this.typeBuilder.cloneWithProxies(voidType));
-				container.getMembers().add(operation);
-
-				setBody(operation, it -> {
-					it.append("assert "); //$NON-NLS-1$
-					it.append(this.grammarKeywordAccess.getOccurrenceKeyword());
-					it.append(" != null;"); //$NON-NLS-1$
-					it.newLine();
-					it.append("assert "); //$NON-NLS-1$
-					it.append(RUNNABLE_COLLECTION);
-					it.append(" != null;"); //$NON-NLS-1$
-					for (final Procedure1<? super ITreeAppendable> code : evaluators.getValue()) {
-						it.newLine();
-						code.apply(it);
-					}
-				});
-
-				this.associator.associatePrimary(source, operation);
-				this.typeBuilder.copyDocumentationTo(source, operation);
+				final String behName = appendEventGuardEvaluatorForReflectMethod(evaluators, container, context);
+				final Set<String> functionNames = guardDefs.computeIfAbsent(evaluators.getKey().getName(), it -> new TreeSet<>());
+				functionNames.add(behName);
 			}
+
+			appendEventGuardEvaluatorsForPolymorphicMethod(guardDefs, container, context);
 		}
+	}
+
+	/** Append the guard evaluators for the polymorphic method.
+	 *
+	 * @param guardDefs the definition of the guards.
+	 * @param container the receiver of the generated components.
+	 * @param context the generation context.
+	 * @since 0.12
+	 */
+	protected void appendEventGuardEvaluatorsForPolymorphicMethod(Map<JvmTypeReference, Set<String>> guardDefs,
+			JvmGenericType container, GenerationContext context) {
+		final JvmTypeReference voidType = this._typeReferenceBuilder.typeRef(Void.TYPE);
+
+		// Function "$getSupportedEvents"
+		final JvmOperation eventTypeOperation = this.typesFactory.createJvmOperation();
+		appendGeneratedAnnotation(eventTypeOperation, context);
+		addAnnotationSafe(eventTypeOperation, Override.class);
+
+		eventTypeOperation.setAbstract(false);
+		eventTypeOperation.setNative(false);
+		eventTypeOperation.setSynchronized(false);
+		eventTypeOperation.setStrictFloatingPoint(false);
+		eventTypeOperation.setFinal(false);
+		eventTypeOperation.setVisibility(JvmVisibility.PUBLIC);
+		eventTypeOperation.setStatic(false);
+		eventTypeOperation.setSimpleName("$getSupportedEvents"); //$NON-NLS-1$
+		eventTypeOperation.setReturnType(this.typeBuilder.cloneWithProxies(voidType));
+
+		final JvmFormalParameter jvmParam0 = this.typesFactory.createJvmFormalParameter();
+		jvmParam0.setName("toBeFilled"); //$NON-NLS-1$
+		jvmParam0.setParameterType(this._typeReferenceBuilder.typeRef(Set.class,
+				this._typeReferenceBuilder.typeRef(Class.class,
+					this._typeReferenceBuilder.wildcardExtends(
+						this._typeReferenceBuilder.typeRef(Event.class)))));
+		eventTypeOperation.getParameters().add(jvmParam0);
+
+		container.getMembers().add(eventTypeOperation);
+
+		setBody(eventTypeOperation, it -> {
+			it.append("super.$getSupportedEvents(toBeFilled);"); //$NON-NLS-1$
+			for (final JvmTypeReference type : guardDefs.keySet()) {
+				it.newLine();
+				it.append("toBeFilled.add("); //$NON-NLS-1$
+				it.append(type.getType());
+				it.append(".class);"); //$NON-NLS-1$
+			}
+		});
+
+		// Function "$evaluateBehaviorGuards"
+		final JvmTypeReference runnableType = this._typeReferenceBuilder.typeRef(Runnable.class);
+		final JvmTypeReference collectionType = this._typeReferenceBuilder.typeRef(Collection.class, runnableType);
+		final JvmOperation evaluateOperation = this.typesFactory.createJvmOperation();
+		appendGeneratedAnnotation(evaluateOperation, context);
+		addAnnotationSafe(evaluateOperation, Override.class);
+
+		evaluateOperation.setAbstract(false);
+		evaluateOperation.setNative(false);
+		evaluateOperation.setSynchronized(false);
+		evaluateOperation.setStrictFloatingPoint(false);
+		evaluateOperation.setFinal(false);
+		evaluateOperation.setVisibility(JvmVisibility.PUBLIC);
+		evaluateOperation.setStatic(false);
+		evaluateOperation.setSimpleName("$evaluateBehaviorGuards"); //$NON-NLS-1$
+		evaluateOperation.setReturnType(this.typeBuilder.cloneWithProxies(voidType));
+
+		final JvmFormalParameter jvmParam1 = this.typesFactory.createJvmFormalParameter();
+		jvmParam1.setName("event"); //$NON-NLS-1$
+		jvmParam1.setParameterType(this._typeReferenceBuilder.typeRef(Object.class));
+		evaluateOperation.getParameters().add(jvmParam1);
+
+		final JvmFormalParameter jvmParam2 = this.typesFactory.createJvmFormalParameter();
+		jvmParam2.setName("callbacks"); //$NON-NLS-1$
+		jvmParam2.setParameterType(this.typeBuilder.cloneWithProxies(collectionType));
+		evaluateOperation.getParameters().add(jvmParam2);
+
+		container.getMembers().add(evaluateOperation);
+
+		setBody(evaluateOperation, it -> {
+			it.append("super.$evaluateBehaviorGuards(event, callbacks);"); //$NON-NLS-1$
+			for (final Entry<JvmTypeReference, Set<String>> entry : guardDefs.entrySet()) {
+				it.newLine();
+				it.append("if (event instanceof "); //$NON-NLS-1$
+				it.append(entry.getKey().getType());
+				it.append(") {"); //$NON-NLS-1$
+				it.increaseIndentation().newLine();
+				it.append("final "); //$NON-NLS-1$
+				it.append(entry.getKey().getType());
+				it.append(" occurrence = ("); //$NON-NLS-1$
+				it.append(entry.getKey().getType());
+				it.append(") event;"); //$NON-NLS-1$
+				for (final String meth : entry.getValue()) {
+					it.newLine();
+					it.append(meth);
+					it.append("(occurrence, callbacks);"); //$NON-NLS-1$
+				}
+				it.decreaseIndentation().newLine();
+				it.append("}"); //$NON-NLS-1$
+			}
+		});
+	}
+
+	/** Append the guard evaluators for the reflection-based method.
+	 *
+	 * @param evaluators the guard evaluators to generate.
+	 * @param container the receiver of the generated components.
+	 * @param context the generation context.
+	 * @return the name of the generated function.
+	 * @since 0.12
+	 */
+	protected String appendEventGuardEvaluatorForReflectMethod(Pair<SarlBehaviorUnit, Collection<Procedure1<? super ITreeAppendable>>> evaluators,
+			JvmGenericType container, GenerationContext context) {
+		final SarlBehaviorUnit source = evaluators.getKey();
+		final JvmTypeReference voidType = this._typeReferenceBuilder.typeRef(Void.TYPE);
+		final JvmTypeReference runnableType = this._typeReferenceBuilder.typeRef(Runnable.class);
+		final JvmTypeReference collectionType = this._typeReferenceBuilder.typeRef(Collection.class, runnableType);
+
+		// Determine the name of the operation for the behavior output
+		final String behName = Utils.createNameForHiddenGuardGeneralEvaluatorMethod(source.getName().getSimpleName());
+
+		// Create the main function
+		final JvmOperation operation = this.typesFactory.createJvmOperation();
+
+		// Annotation for the event bus
+
+		appendGeneratedAnnotation(operation, context);
+		addAnnotationSafe(operation, PerceptGuardEvaluator.class);
+
+		// Guard evaluator unit parameters
+		// - Event occurrence
+		JvmFormalParameter jvmParam = this.typesFactory.createJvmFormalParameter();
+		jvmParam.setName(this.grammarKeywordAccess.getOccurrenceKeyword());
+		jvmParam.setParameterType(this.typeBuilder.cloneWithProxies(source.getName()));
+		this.associator.associate(source, jvmParam);
+		operation.getParameters().add(jvmParam);
+		// - List of runnables
+		jvmParam = this.typesFactory.createJvmFormalParameter();
+		jvmParam.setName(RUNNABLE_COLLECTION);
+		jvmParam.setParameterType(this.typeBuilder.cloneWithProxies(collectionType));
+		operation.getParameters().add(jvmParam);
+
+		operation.setAbstract(false);
+		operation.setNative(false);
+		operation.setSynchronized(false);
+		operation.setStrictFloatingPoint(false);
+		operation.setFinal(false);
+		operation.setVisibility(JvmVisibility.PRIVATE);
+		operation.setStatic(false);
+		operation.setSimpleName(behName);
+		operation.setReturnType(this.typeBuilder.cloneWithProxies(voidType));
+		container.getMembers().add(operation);
+
+		setBody(operation, it -> {
+			it.append("assert "); //$NON-NLS-1$
+			it.append(this.grammarKeywordAccess.getOccurrenceKeyword());
+			it.append(" != null;"); //$NON-NLS-1$
+			it.newLine();
+			it.append("assert "); //$NON-NLS-1$
+			it.append(RUNNABLE_COLLECTION);
+			it.append(" != null;"); //$NON-NLS-1$
+			for (final Procedure1<? super ITreeAppendable> code : evaluators.getValue()) {
+				it.newLine();
+				code.apply(it);
+			}
+		});
+
+		this.associator.associatePrimary(source, operation);
+		this.typeBuilder.copyDocumentationTo(source, operation);
+
+		return behName;
 	}
 
 	/** Append the @FunctionalInterface to the given type if it is a functional interface according
