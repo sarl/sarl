@@ -35,7 +35,7 @@ import static io.sarl.examples.tests.ExamplesTestUtils.isMavenProject;
 import static io.sarl.examples.tests.ExamplesTestUtils.readFileToOpenFromXml;
 import static io.sarl.examples.tests.ExamplesTestUtils.readWizardClassesFromXml;
 import static io.sarl.examples.tests.ExamplesTestUtils.readXmlNode;
-import static io.sarl.examples.tests.ExamplesTestUtils.unpackFiles;
+import static io.sarl.examples.tests.ExamplesTestUtils.*;
 import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.LAUNCH_PROPERTY_FILE;
 import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.readLaunchConfigurationFromXml;
 import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.readXmlAttribute;
@@ -90,6 +90,7 @@ public class ExamplesTest {
 		} else {
 			installedFiles = unpackFiles(projectRoot, example.archive);
 		}
+		preparePomFileForTest(projectRoot);
 		return installedFiles;
 	}
 	

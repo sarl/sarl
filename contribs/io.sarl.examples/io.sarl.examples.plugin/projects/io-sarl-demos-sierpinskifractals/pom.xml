@@ -8,7 +8,7 @@
 
 	<properties>
 		<sarl.version>@SARL_VERSION@</sarl.version>
-		<target.jdk.version>@JAVA_VERSION@</target.jdk.version>
+		<target.jdk.version>@USER_JAVA_VERSION@</target.jdk.version>
 		<project.build.sourceEncoding>@FILE_ENCODING@</project.build.sourceEncoding>
 	</properties>
 	

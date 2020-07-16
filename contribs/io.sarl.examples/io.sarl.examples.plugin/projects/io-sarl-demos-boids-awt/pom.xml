@@ -10,7 +10,7 @@
 	<properties>
 		<sarl.version>@SARL_VERSION@</sarl.version>
 		<afc.version>@AFC_VERSION@</afc.version>
-		<compiler.level>@JAVA_VERSION@</compiler.level>
+		<compiler.level>@USER_JAVA_VERSION@</compiler.level>
 		<project.build.sourceEncoding>@FILE_ENCODING@</project.build.sourceEncoding>
 	</properties>
 

@@ -27,6 +27,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
@@ -43,12 +46,14 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import com.google.inject.Injector;
 import org.arakhne.afc.vmutil.ClasspathUtil;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.xtext.diagnostics.Severity;
+import org.eclipse.xtext.util.RuntimeIOException;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.Pair;
 import org.eclipse.xtext.xbase.validation.IssueCodes;
@@ -95,6 +100,10 @@ public final class ExamplesTestUtils {
 	/** Name of maven command.
 	 */
 	public static final String MAVEN_COMMAND = "mvn"; //$NON-NLS-1$
+
+	/** Current Java version.
+	 */
+	public static final String CURRENT_JAVA_VERSION = "1.8"; //$NON-NLS-1$
 
 	// TODO Remove this definition when moving to Java 9 or higher (because JavaFX is mavenized)
 	public static final String DEFAULT_JAVAFX_PATH = "/home/sgalland/git/sarl.dsl/contribs/io.sarl.examples/io.sarl.examples.tests/../../../build-tools/libs/jfxrt.jar"; //$NON-NLS-1$
@@ -289,6 +298,35 @@ public final class ExamplesTestUtils {
 		}
 	}
 
+	/** Prepare the pom file for a test.
+	 *
+	 * @param root the root directory where the pom file is located.
+	 * @since 0.12
+	 */
+	public static void preparePomFileForTest(File root) {
+		final File pomFile = new File(root, "pom.xml"); //$NON-NLS-1$
+		if (pomFile.exists() && pomFile.canWrite()) {
+			// Read the pom
+			final StringBuilder content = new StringBuilder();
+			try (BufferedReader reader = new BufferedReader(new FileReader(pomFile))) {
+				String line = reader.readLine();
+				while (line != null) {
+					line = line.replaceAll(Pattern.quote("@USER_JAVA_VERSION@"), CURRENT_JAVA_VERSION); //$NON-NLS-1$
+					content.append(line).append("\n"); //$NON-NLS-1$
+					line = reader.readLine();
+				}
+			} catch (Exception exception) {
+				throw new RuntimeIOException(exception);
+			}
+			// Write the pom
+			try (FileWriter os = new FileWriter(pomFile)) {
+				os.write(content.toString());
+			} catch (IOException exception) {
+				throw new RuntimeIOException(exception);
+			}
+		}
+	}
+	
 	/** Compile the given project with the standard maven tool.
 	 *
 	 * @param compiler the SARL compiler to use.

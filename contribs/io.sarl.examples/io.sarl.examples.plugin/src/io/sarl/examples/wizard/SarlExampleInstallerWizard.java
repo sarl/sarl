@@ -25,10 +25,14 @@ import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.LAUNCH_PROP
 import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.readLaunchConfigurationFromXml;
 import static io.sarl.examples.wizard.SarlExampleLaunchConfiguration.readXmlContent;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 
 import org.eclipse.core.resources.IFile;
@@ -38,10 +42,14 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.debug.internal.ui.SWTFactory;
 import org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard;
+import org.eclipse.jdt.launching.AbstractVMInstall;
+import org.eclipse.jdt.launching.IVMInstall;
+import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -50,6 +58,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.intro.IIntroManager;
 import org.eclipse.ui.intro.IIntroPart;
+import org.eclipse.xtext.util.RuntimeIOException;
+import org.eclipse.xtext.util.StringInputStream;
+import org.osgi.framework.Version;
 import org.w3c.dom.Document;
 
 import io.sarl.eclipse.launching.config.ILaunchConfigurationConfigurator;
@@ -57,6 +68,7 @@ import io.sarl.eclipse.launching.shortcuts.SarlStandardClasspathProvider;
 import io.sarl.eclipse.natures.SARLProjectConfigurator;
 import io.sarl.examples.SARLExamplePlugin;
 import io.sarl.lang.SARLConfig;
+import io.sarl.lang.SARLVersion;
 import io.sarl.m2e.wizards.importproject.MavenImportUtils;
 
 /** Wizard for importing SARL samples.
@@ -150,6 +162,18 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 		final IProject project = projectDescriptor.getProject();
 
 		final IFile pomFile = project.getFile(Path.fromOSString("pom.xml")); //$NON-NLS-1$
+		final boolean hasPomFile = pomFile.exists();
+		if (hasPomFile) {
+			// Search for specific keywords into the pom file, and replace them by the user configuration.
+			String compliance = SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT;
+			final IVMInstall vmInstall = JavaRuntime.getDefaultVMInstall();
+			if (vmInstall instanceof AbstractVMInstall) {
+				final AbstractVMInstall jvmInstall = (AbstractVMInstall) vmInstall;
+				final Version vers = Version.parseVersion(jvmInstall.getJavaVersion());
+				compliance = vers.getMajor() + "." + vers.getMinor();
+			}
+			updatePomContent(pomFile, compliance);
+		}
 		if (this.configurationPage.isMavenNatureEnabled() && pomFile.exists()) {
 			// The project should be a Maven project.
 			final IPath descriptionFilename = project.getFile(new Path(IProjectDescription.DESCRIPTION_FILE_NAME)).getLocation();
@@ -214,6 +238,35 @@ public class SarlExampleInstallerWizard extends ExampleInstallerWizard {
 		}
 
 		mon.done();
+	}
+
+	private void updatePomContent(IFile pomFile, String jdkCompliance) {
+		// Read the pom
+		final StringBuilder content = new StringBuilder();
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(pomFile.getContents()))) {
+			String line = reader.readLine();
+			while (line != null) {
+				line = line.replaceAll(Pattern.quote("@USER_JAVA_VERSION@"), jdkCompliance); //$NON-NLS-1$
+				content.append(line).append("\n"); //$NON-NLS-1$
+				line = reader.readLine();
+			}
+		} catch (Exception exception) {
+			throw new RuntimeIOException(exception);
+		}
+		// Delete the pom
+		try {
+			pomFile.delete(true, false, new NullProgressMonitor());
+		} catch (CoreException exception) {
+			throw new RuntimeException(exception);
+		}
+		// Write the pom
+		try (StringInputStream is = new StringInputStream(content.toString())) {
+			pomFile.create(is, true, new NullProgressMonitor());
+		} catch (CoreException exception) {
+			throw new RuntimeException(exception);
+		} catch (IOException exception) {
+			throw new RuntimeIOException(exception);
+		}
 	}
 
 	/** Replies the configurations to launch.

@@ -66,6 +66,10 @@
 									<value>$1${mvn.command}$3</value>
 								</replacement>
 								<replacement>
+									<token>(CURRENT_JAVA_VERSION *= *")([^"]+)(";)</token>
+									<value>$1${sarl-dsl.min.jdk.version}$3</value>
+								</replacement>
+								<replacement>
 									<token>(DEFAULT_JAVAFX_PATH *= *")([^"]+)(";)</token>
 									<value>$1${openjfx.fxml.linux.path}$3</value>
 								</replacement>
