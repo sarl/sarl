@@ -36,6 +36,7 @@ import static io.sarl.lang.validation.IssueCodes.DISCOURAGED_CAPACITY_DEFINITION
 import static io.sarl.lang.validation.IssueCodes.DISCOURAGED_FUNCTION_NAME;
 import static io.sarl.lang.validation.IssueCodes.DISCOURAGED_LOOP_BREAKING_KEYWORD_USE;
 import static io.sarl.lang.validation.IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE;
+import static io.sarl.lang.validation.IssueCodes.GENERIC_TYPE_NAME_SHADOWING;
 import static io.sarl.lang.validation.IssueCodes.INVALID_CAPACITY_TYPE;
 import static io.sarl.lang.validation.IssueCodes.INVALID_DEFAULT_SKILL_ANNOTATION;
 import static io.sarl.lang.validation.IssueCodes.INVALID_EXTENDED_TYPE;
@@ -170,8 +171,10 @@ import org.eclipse.xtext.common.types.JvmOperation;
 import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
 import org.eclipse.xtext.common.types.JvmStringAnnotationValue;
 import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.common.types.JvmVisibility;
+import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import org.eclipse.xtext.naming.QualifiedName;
@@ -1302,6 +1305,39 @@ public class SARLValidator extends AbstractSARLValidator {
 			return true;
 		}
 		return false;
+	}
+
+	/** Check if the given generic type has a name that is shadowing an enclosing generic type.
+	 *
+	 * @param type the generic type parameter to check.
+	 * @since 0.12
+	 */
+	@Check
+	public void checkGenericTypeNameShadowing(JvmTypeParameter type) {
+		final XtendMember declarator = EcoreUtil2.getContainerOfType(type.eContainer(), XtendMember.class);
+		if (declarator instanceof XtendFunction && !Utils.isHiddenMember(type.getName())) {
+			final XtendTypeDeclaration enclosingType = declarator.getDeclaringType();
+			List<JvmTypeParameter> params = null;
+			if (enclosingType instanceof XtendClass) {
+				params = ((XtendClass) enclosingType).getTypeParameters();
+			} else if (enclosingType instanceof XtendInterface) {
+				params = ((XtendInterface) enclosingType).getTypeParameters();
+			}
+			if (params != null && !params.isEmpty()) {
+				// Do not need to loop on the enclosing types since all the inner types must be declared as static
+				for (final JvmTypeParameter declaredType : params) {
+					if (Strings.equal(type.getSimpleName(), declaredType.getSimpleName())) {
+						error(
+								MessageFormat.format(Messages.SARLValidator_5, type.getSimpleName(), enclosingType.getName()),
+								type,
+								TypesPackage.Literals.JVM_TYPE_PARAMETER__NAME,
+								ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
+								GENERIC_TYPE_NAME_SHADOWING);
+						return;
+					}
+				}
+			}
+		}
 	}
 
 	/** Check if the given action has a valid name.

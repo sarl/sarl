@@ -195,8 +195,8 @@ abstract class AbstractBehaviorGuardEvaluatorRegistry<T> implements IBehaviorGua
 	}
 
 	@Pure
-	override getRegisteredEventListeners(type : Class<T>) : ConcurrentSkipListSet<T> with T {
-		var result : ConcurrentSkipListSet<T> = new ConcurrentSkipListSet(ObjectComparator::SINGLETON)
+	override getRegisteredEventListeners(type : Class<TT>) : ConcurrentSkipListSet<TT> with TT {
+		var result : ConcurrentSkipListSet<TT> = new ConcurrentSkipListSet(ObjectComparator::SINGLETON)
 		getRegisteredEventListeners(type, result)
 		return result
 	}

@@ -2348,6 +2348,13 @@
 		"message": "*any-message*",
 		"cause": "This error is generated when your SARL code has an improper syntax, and cannot be parsed by the SARL compiler. The error message provides the detail of the invalid syntax and the position into your source code that is under failure",
 		"level": "error"
+	},
+	{
+		"code": "io.sarl.lang.validation.IssueCodes.generic_type_name_shadowing",
+		"message": "The generic type parameter '*name*' is hiding the generic type parameter of '*type-name*'",
+		"cause": "This error is generated you declared a generic type parameter for an action that has the same name as another generic type parameter that is declared into the enclosing type (class, or interface)",
+		"solution": "Change the *name*",
+		"level": "error"
 	}
 ]
 

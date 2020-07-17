@@ -232,6 +232,13 @@ public final class IssueCodes {
 	public static final String POTENTIAL_INEFFICIENT_VALUE_CONVERSION =
 			ISSUE_CODE_PREFIX + "potential_inefficient_value_conversion"; //$NON-NLS-1$
 
+	/**
+	 * A generic type name is shadowing another generic type name.
+	 * @since 0.12
+	 */
+	public static final String GENERIC_TYPE_NAME_SHADOWING =
+			ISSUE_CODE_PREFIX + "generic_type_name_shadowing"; //$NON-NLS-1$
+
 	private IssueCodes() {
 		//
 	}

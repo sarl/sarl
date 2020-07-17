@@ -8,6 +8,7 @@ The main features coming from the Java language are supported by SARL too. The f
 differences between the SARL, Java, Xtend and Scala languages, excluding any feature provided by the development
 environment (Eclipse, IntelliJ...)
 
+
 <table><thead>
 <tr><th></th><th>SARL</th><th>Java</th><th>Xtend</th><th>Scala</th></tr>
 </thead><tbody>
@@ -154,6 +155,7 @@ environment (Eclipse, IntelliJ...)
 			<td style="background: yellow; color: black;">Partial: <a href="./general/Types.md#primitive-types">primitive</a> and <a href="./general/Types.md#primitive-types">wrapper</a> types</td>
 			<td style="background: green; color: white;">Yes</td></tr>
 </tbody></table>
+
 
 
 ## References
