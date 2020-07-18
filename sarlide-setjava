@@ -1,0 +1,95 @@
+#!/usr/bin/env perl
+
+use strict;
+use File::Basename;
+
+my $CDIR = dirname("$0");
+my $INIFILE = $ENV['DEVEL_SARL_INI_FILE'] || "$CDIR/products/updatesite/target/products/io.sarl.lang.product/linux/gtk/x86_64/eclipse-sarl.ini";
+
+my $JVM = '';
+my $JVM11 = $ENV['DEVEL_SARL_JAVA_HOME_11'] || "/usr/lib/jvm/java-11-openjdk-amd64/bin";
+my $JVM8openjdk = $ENV['DEVEL_SARL_JAVA_HOME_8'] || "/usr/lib/jvm/java-8-openjdk-amd64/bin";
+my $JVM8oracle = $ENV['DEVEL_SARL_JAVA_HOME_8_ORACLE'] || "/usr/lib/jvm/java-8-oracle-amd64/bin";
+
+sub usage {
+	print STDERR ("usage: $0 [11|8|8-openjdk|11-oracle]\n");
+	exit(255);
+}
+
+sub checkIniFile() {
+	print STDOUT "Ini file: $INIFILE\n"; 
+	unless (-r "$INIFILE") {
+		print STDERR ("$INIFILE: Cannot read\n");
+		usage();
+	}
+}
+
+sub selectJvm() {
+	$JVM = '';
+	if ($ARGV[0]) {
+		if ($ARGV[0] eq '11') {
+			$JVM = $JVM11;
+		} elsif ($ARGV[0] eq '8' || $ARGV[0] eq '8-openjdk') {
+			$JVM = $JVM8openjdk;
+		} elsif ($ARGV[0] eq '8-oracle') {
+			$JVM = $JVM8oracle;
+		} else {
+			usage();
+		}
+	}
+}
+
+sub readIniFile() {
+	local *FID;
+	open(*FID, "< $INIFILE") or die("$INIFILE: $!\n");
+	my $content = '';
+	while (my $line = <FID>) {
+		$content .= "$line";
+	}
+	close(*FID);
+	return "$content";
+}
+
+sub updateIniContent($) {
+	if ($_[0] =~ /^-vm$/m) {
+		$_[0] =~ s/-vm[\n\r]+[^\n\r]+[\n\r]+/-vm\n$JVM\n/s;
+	} else {
+		$_[0] =~ s/^-vmargs/-vm\n$JVM\n-vmargs/m;
+	}
+}
+
+sub getCurrentJvm($) {
+	if ($_[0] =~ /[\n\r]+-vm[\n\r]+([^\n\r]+)[\n\r]+/s) {
+		return "$1";
+	} else {
+		return '';
+	}
+}
+
+sub writeIniFile($) {
+	my $content = $_[0] or die("not enough argument\n");
+	unless (-w "$INIFILE") {
+		print STDERR ("$INIFILE: Cannot write\n");
+		usage();
+	}
+	open(*FID, "> $INIFILE") or die("$INIFILE: $!\n");
+	print FID ($content);
+	close(*FID);
+}
+
+checkIniFile();
+my $content = readIniFile();
+
+selectJvm();
+if ($JVM) {
+	print STDOUT ("Forcing JVM to: $JVM\n");
+	updateIniContent($content);
+	writeIniFile($content);
+	print STDOUT ("Done\n");
+} else {
+	my $currentjvm = getCurrentJvm($content);
+	print STDOUT ("Current JVM: ".($currentjvm || 'system default')."\n");
+}
+
+exit(0);
+
