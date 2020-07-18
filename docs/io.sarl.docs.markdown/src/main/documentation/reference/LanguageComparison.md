@@ -8,153 +8,64 @@ The main features coming from the Java language are supported by SARL too. The f
 differences between the SARL, Java, Xtend and Scala languages, excluding any feature provided by the development
 environment (Eclipse, IntelliJ...)
 
+## Agent-Oriented Programming Features
 
-<table><thead>
-<tr><th></th><th>SARL</th><th>Java</th><th>Xtend</th><th>Scala</th></tr>
-</thead><tbody>
-<tr><td colspan=5><strong>Agent-oriented programming</strong></td></tr>
-<tr><td><a href="../index.md#agent-oriented-programming">Agent, Capacity, Skill, Behavior...</a></td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: yellow; color: black;">Partial: actor paradigm</td></tr>
-<tr><td colspan=5><strong>Object-oriented programming</strong></td></tr>
-<tr><td><a href="./OOP.md">Definition of class and interface types</a></td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: green; color: white;">Yes</td></tr>
-<tr><td><a href="./OOP.md#enumeration">Object-oriented enumeration</a>
-			<td style="background: orange; color: white;">No, only constants could be defined</td>
-			<td style="background: green; color: white;">Yes, constants and functions could be defined</td>
-			<td style="background: orange; color: white;">No, only constants could be defined</td>
-			<td style="background: green; color: white;">Yes, constants and functions could be defined</td></tr>
-<tr><td><a href="./OOP.md#annotation-type">Definition of annotation types</a></td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: green; color: white;">Yes</td></tr>
-<tr><td><a href="./OOP.md#static-constructor-definition">Definition of static constructors</a></td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: yellow; color: black;">See companion object</td></tr>
-<tr><td>Inheritance of constructors</td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: orange; color: white;">No</td></tr>
-<tr><td><a href="./general/ActiveAnnotations.md#Data">Automatic creation of read-only data structure</a></td>
-			<td style="background: yellow; color: black;">Manual with <code>@Data</code> annotation</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: yellow; color: black;">Manual with <code>@Data</code> annotation</td>
-			<td style="background: orange; color: white;">No</td></tr>
-<tr><td><a href="./general/ActiveAnnotations.md#Accessors">Automatic creation of getters and setters</a></td>
-			<td style="background: yellow; color: black;">Manual with <code>@Accessors</code> annotation</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: yellow; color: black;">Manual with <code>@Accessors</code> annotation</td>
-			<td style="background: green; color: white;">Yes</td></tr>
-<tr><td>Automatic creation of final-field constructor</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: yellow; color: black;">Manual with <code>@FinalFieldsConstructor</code> annotation</td>
-			<td style="background: orange; color: white;">No</td></tr>
-<tr><td>Automatic creation of <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#equals-java.lang.Object-"><code>equals()</code></a>
-            and <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#hashCode--"><code>hashCode()</code></a></td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: yellow; color: black;">Manual with <code>@EqualsHashCode</code> annotation</td>
-			<td style="background: green; color: white;">Yes, see case class</td></tr>
-<tr><td>Automatic creation of <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#clone--"><code>clone()</code></a>
-            when <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Cloneable.html">cloneable type</a></td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: green; color: white;">Yes</td></tr>
-<tr><td>Automatic creation of a serialVersionUID field when
-        <a href="https://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html">serializable type</a></td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: yellow; color: black;">Manual with <code>@SerialVersionUID</code></td></tr>
-<tr><td><a href="./general/ActiveAnnotations.md#ToString">Automatic creation of the <code>toString()</code> function.</a></td>
-			<td style="background: yellow; color: black;">Manual with <code>@ToString</code> annotation</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: yellow; color: black;">Manual with <code>@ToString</code> annotation</td>
-			<td style="background: green; color: white;">Yes, see case class</td></tr>
-<tr><td colspan=5><strong>Functions, Procedures and Operators</strong></td></tr>
-<tr><td><a href="./general/FuncDecls.md#7-dispatch-function">Definition of dispatch functions</a></td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: orange; color: white;">No</td></tr>
-<tr><td><a href="./general/Extension.md">Extension methods</a></td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: green; color: white;">Yes</td></tr>
-<tr><td><a href="./general/FuncDecls.md#variadic-function">Definition of variadic functions</a></td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: green; color: white;">Yes</td></tr>
-<tr><td><a href="./general/FuncDecls.md#default-value-for-the-formal-parameters">Definition of default values for the formal parameters</a></td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: green; color: white;">Yes</td></tr>
-<tr><td><a href="./general/Operators.md#operator-overloading">Operator overloading (except assignment and casting, see below)</a></td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: green; color: white;">Yes</td></tr>
-<tr><td><a href="./general/Cast.md">Cast operator overloading</a></td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: orange; color: white;">No</td></tr>
-<tr><td><a href="./general/Operators.md">Assignment operator overloading</a></td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: orange; color: white;">No</td></tr>
-<tr><td>Automatic detection of <a href="http://download.eclipse.org/modeling/tmf/xtext/javadoc/2.9/org/eclipse/xtext/xbase/lib/Pure.html">pure functions</a> and marking</td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: orange; color: white;">No</td></tr>
-<tr><td colspan=5><strong>Expressions</strong></td></tr>
-<tr><td><a href="./general/Lambda.md">Definition of lambda expressions</a></td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: green; color: white;">Yes</td></tr>
-<tr><td><a href="./general/VarDecls.md#typing">Inference of types</a></td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: green; color: white;">Yes</td></tr>
-<tr><td><a href="./general/LoopExpression.md#breaking-a-loop">Support the <code>break</code> statement</a></td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: green; color: white;">Yes</td></tr>
-<tr><td><a href="./general/LoopExpression.md#jump-to-the-next-iteration">Support the <code>continue</code> statement</a></td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: orange; color: white;">No</td>
-			<td style="background: green; color: white;">Yes</td></tr>
-<tr><td><a href="./general/Cast.md#implicit-conversions">Implicit typecasting between number values</a>, including <code>AtomicInteger</code>, <code>AtomicLong</code>, <code>AtomicDouble</code>, <code>BigInteger</code>, and <code>BigDecimal</code></td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: yellow; color: black;">Partial: <a href="./general/Types.md#primitive-types">primitive</a> to <a href="./general/Types.md#primitive-types">primitive</a> types, primitive to object <a href="./general/Types.md#primitive-types">wrapper</a> types, and object <a href="./general/Types.md#primitive-types">wrapper</a> to <a href="./general/Types.md#primitive-types">primitive</a> types</td>
-			<td style="background: yellow; color: black;">Partial: <a href="./general/Types.md#primitive-types">primitive</a> to <a href="./general/Types.md#primitive-types">primitive</a> types, primitive to object <a href="./general/Types.md#primitive-types">wrapper</a> types, and object <a href="./general/Types.md#primitive-types">wrapper</a> to <a href="./general/Types.md#primitive-types">primitive</a> types</td>
-			<td style="background: green; color: white;">Yes</td></tr>
-<tr><td><a href="./general/Operators.md">Arithmetic operations with any type of number as operand</a>, including <code>AtomicInteger</code>, <code>AtomicLong</code>, <code>AtomicDouble</code>, <code>BigInteger</code>, and <code>BigDecimal</code></td>
-			<td style="background: green; color: white;">Yes</td>
-			<td style="background: yellow; color: black;">Partial: <a href="./general/Types.md#primitive-types">primitive</a> and <a href="./general/Types.md#primitive-types">wrapper</a> types</td>
-			<td style="background: yellow; color: black;">Partial: <a href="./general/Types.md#primitive-types">primitive</a> and <a href="./general/Types.md#primitive-types">wrapper</a> types</td>
-			<td style="background: green; color: white;">Yes</td></tr>
-</tbody></table>
+
+|                                                                               |SARL |Java|Xtend| Scala                   |
+|:----------------------------------------------------------------------------- |:---:|:--:|:---:|:-----------------------:|
+| [Agent, Capacity, Skill, Behavior...](../index.md#agent-oriented-programming) | Yes | <span style="color: red;">No</span> | <span style="color: red;">No</span>  | <span style="color: orange;">Partial: actor paradigm</span> |
+
+
+
+## Object-Oriented Programming Features
+
+
+|                                                                               |SARL |Java|Xtend| Scala                   |
+|:----------------------------------------------------------------------------- |:---:|:--:|:---:|:-----------------------:|
+| [Definition of class and interface types](./OOP.md)                           | Yes |Yes | Yes | Yes                     |
+| [Object-oriented enumeration](./OOP.md#enumeration)                           | <span style="color: orange;">No, only constants could be defined</span> | Yes, constants and functions could be defined | <span style="color: red;">No, only constants could be defined</span> | Yes, constants and functions could be defined |
+| [Definition of annotation types](./OOP.md#annotation-type)                    | Yes |Yes | Yes | Yes                     |
+| [Definition of static constructors](./OOP.md#static-constructor-definition)   | Yes | Yes | <span style="color: red;">No</span> | <span style="color: orange;">See companion object</span> |
+| Inheritance of constructors                                                   | Yes | <span style="color: red;">No</span> | <span style="color: red;">No</span> | <span style="color: red;">No</span> |
+| [Automatic creation of read-only data structure](./general/ActiveAnnotations.md#Data) | <span style="color: orange;">Manual with `@Data` annotation</span> | <span style="color: red;">No</span> | <span style="color: orange;">Manual with `@Data` annotation</span>| <span style="color: red;">No</span> |
+| [Automatic creation of getters and setters](./general/ActiveAnnotations.md#Accessors) | <span style="color: orange;">Manual with `Accessors` annotation</span> | <span style="color: red;">No</span> | <span style="color: orange;">Manual with @Accessors annotation</span> | Yes |
+| Automatic creation of final-field constructor                                  | <span style="color: red;">No</span> | <span style="color: red;">No</span> | <span style="color: orange;">Manual with `@FinalFieldsConstructor` annotation</span> | <span style="color: red;">No</span> |
+| Automatic creation of [equals()](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#equals-java.lang.Object-)
+            and [hashCode()](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#hashCode--) | Yes | <span style="color: red;">No</span> | <span style="color: orange;">Manual with @EqualsHashCode annotation</span> | Yes, see case class |
+| Automatic creation of [clone()](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#clone--) when cloneable type | Yes | <span style="color: red;">No</span> | <span style="color: red;">No</span> | Yes |
+| Automatic creation of a serialVersionUID field when
+        [serializable type](https://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html) | Yes | <span style="color: red;">No</span> | <span style="color: red;">No</span> | <span style="color: orange;">Manual with `@SerialVersionUID`</span> |
+| [Automatic creation of the toString() function](./general/ActiveAnnotations.md#ToString) | <span style="color: orange;">Manual with `@ToString` annotation</span> | <span style="color: red;">No</span> | <span style="color: orange;">Manual with `@ToString` annotation</span> | Yes, see case class |
+
+
+
+## Functions, Procedures and Operators
+
+
+|                                                                               |SARL |Java|Xtend| Scala                   |
+|:----------------------------------------------------------------------------- |:---:|:--:|:---:|:-----------------------:|
+| [Definition of dispatch functions](./general/FuncDecls.md#7-dispatch-function) | Yes | <span style="color: red;">No</span> | Yes | <span style="color: red;">No</span> |
+| [Extension methods](./general/Extension.md) | Yes | <span style="color: red;">No</span> | Yes | Yes |
+| [Definition of variadic functions](./general/FuncDecls.md#variadic-function) | Yes | Yes | Yes | Yes |
+| [Definition of default values for the formal parameters](./general/FuncDecls.md#default-value-for-the-formal-parameters) | Yes | <span style="color: red;">No</span> | <span style="color: red;">No</span> | Yes |
+| [Operator overloading](./general/Operators.md#operator-overloading) (except assignment and casting, see below) | Yes | <span style="color: red;">No</span> | Yes | Yes |
+| [Cast operator overloading](./general/Cast.md) | Yes | <span style="color: red;">No</span> | <span style="color: red;">No</span> | <span style="color: red;">No</span> |
+| [Assignment operator overloading](./general/Operators.md) | <span style="color: red;">No</span> | <span style="color: red;">No</span> | <span style="color: red;">No</span> | <span style="color: red;">No</span> |
+| Automatic detection of [pure functions](http://download.eclipse.org/modeling/tmf/xtext/javadoc/2.9/org/eclipse/xtext/xbase/lib/Pure.html) and marking | Yes | <span style="color: red;">No</span> | <span style="color: red;">No</span> | <span style="color: red;">No</span> |
+
+
+
+## Code Expressions
+
+
+|                                                                               |SARL |Java|Xtend| Scala                   |
+|:----------------------------------------------------------------------------- |:---:|:--:|:---:|:-----------------------:|
+| [Definition of lambda expressions](./general/Lambda.md) | Yes | Yes | Yes | Yes |
+| [Inference of types](./general/VarDecls.md#typing) | Yes | <span style="color: red;">No</span> | Yes | Yes |
+| [Support the break statement](./general/LoopExpression.md#breaking-a-loop) | Yes | Yes | <span style="color: red;">No</span> | Yes |
+| [Support the continue statement](./general/LoopExpression.md#jump-to-the-next-iteration) | Yes | Yes | <span style="color: red;">No</span> | Yes |
+| [Implicit typecasting between number values](./general/Cast.md#implicit-conversions), including `AtomicInteger`, `AtomicLong`, `AtomicDouble`, `BigInteger`, and `BigDecimal` | Yes | <span style="color: orange;">Partial: [primitive](./general/Types.md#primitive-types) to [primitive types](./general/Types.md#primitive-types), primitive to [object wrapper types](./general/Types.md#primitive-types), and [object wrapper](./general/Types.md#primitive-types) to [primitive types](./general/Types.md#primitive-types)</span> | <span style="color: orange;">Partial: [primitive](./general/Types.md#primitive-types) to [primitive types](./general/Types.md#primitive-types), primitive to [object wrapper types](./general/Types.md#primitive-types), and [object wrapper](./general/Types.md#primitive-types) to [primitive types](./general/Types.md#primitive-types)</span> | Yes |
+| [Arithmetic operations with any type of number as operand](./general/Operators.md), including `AtomicInteger`, `AtomicLong`, `AtomicDouble`, `BigInteger`, and `BigDecimal` | Yes | <span style="color: orange;">Partial: [primitive](./general/Types.md#primitive-types) and [wrapper types](./general/Types.md#primitive-types) | Partial: primitive and [wrapper types](./general/Types.md#primitive-types) | Yes |
 
 
 

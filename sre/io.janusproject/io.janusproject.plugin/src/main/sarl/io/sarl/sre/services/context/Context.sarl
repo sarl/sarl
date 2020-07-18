@@ -133,8 +133,8 @@ class Context extends AgentTrait implements AgentContext {
 		var ds : OpenEventSpace = this.defaultSpaceInstance
 		if (ds === null) {
 			var spaceID = new SpaceID(ID, this.defaultSpaceID, typeof(OpenEventSpaceSpecification))
-			ds = instance.createDefaultSpace(spaceID)
-			this.defaultSpaceInstance = ds
+			this.defaultSpaceInstance = instance.createDefaultSpace(spaceID)
+			ds = this.defaultSpaceInstance
 		}
 		if (addListener) {
 			instance.addSpaceRepositoryListener(getPlatformEventEmitter)
