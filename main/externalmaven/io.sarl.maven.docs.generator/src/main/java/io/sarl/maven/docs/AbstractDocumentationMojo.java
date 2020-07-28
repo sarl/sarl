@@ -24,6 +24,8 @@ package io.sarl.maven.docs;
 import java.io.File;
 import java.io.IOError;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.text.MessageFormat;
@@ -323,6 +325,7 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	 * @param exception the error.
 	 * @return the error message.
 	 */
+	@SuppressWarnings("checkstyle:all")
 	protected String formatErrorMessage(File inputFile, Throwable exception) {
 		File filename;
 		int lineno = 0;
@@ -359,11 +362,22 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 		}
 		msg.append(": "); //$NON-NLS-1$
 		final Throwable rootEx = Throwables.getRootCause(exception);
-		if (addExceptionName) {
+		if (rootEx != null && (addExceptionName || rootEx != exception)) {
 			msg.append(rootEx.getClass().getName());
 			msg.append(" - "); //$NON-NLS-1$
 		}
 		msg.append(rootEx.getLocalizedMessage());
+		if (rootEx != null) {
+			try (StringWriter swriter = new StringWriter()) {
+				try (PrintWriter writer = new PrintWriter(swriter)) {
+					rootEx.printStackTrace(writer);
+				}
+				msg.append("\n"); // $NON-NLS-1$
+				msg.append(swriter.toString());
+			} catch (IOException exception2) {
+				throw new Error(exception2);
+			}
+		}
 		return msg.toString();
 	}
 
@@ -587,7 +601,13 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 			final URL[] urls = new URL[size];
 			int i = 0;
 			for (final File localFile : classPath) {
-				urls[i] = localFile.toURI().toURL();
+				final URL localUrl = FileSystem.convertFileToURL(localFile);
+				if (localFile.isDirectory()) {
+					final String name = localUrl.toExternalForm() + "/"; //$NON-NLS-1$
+					urls[i] = new URL(name);
+				} else {
+					urls[i] = localUrl;
+				}
 				++i;
 			}
 			return new URLClassLoader(urls, getClass().getClassLoader());
