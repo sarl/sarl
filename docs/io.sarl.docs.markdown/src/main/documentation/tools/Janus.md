@@ -41,7 +41,10 @@ the classpath of your application, more options may become available.
 | Option | Description |
 | ------ | ----------- |
 [:Dynamic:]{
-	io.sarl.sre.boot.Boot::getOptions.renderToMarkdown
+	runShellSilently(
+		makeExecName("..", "..", "..", "..", "..", "..", "sre", "io.janusproject", "io.janusproject.kernel", "target", "janus"),
+		"generatemarkdownhelp".makeCliOption)
+
 }
 
 

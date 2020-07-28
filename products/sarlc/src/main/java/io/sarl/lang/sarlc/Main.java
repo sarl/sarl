@@ -21,10 +21,6 @@
 
 package io.sarl.lang.sarlc;
 
-import java.util.List;
-
-import io.bootique.help.HelpOption;
-
 import io.sarl.lang.sarlc.modules.general.SarlcApplicationModuleProvider;
 import io.sarl.maven.bootiqueapp.BootiqueMain;
 import io.sarl.maven.bootiqueapp.batchcompiler.BootiqueBatchCompilerMain;
@@ -80,14 +76,6 @@ public final class Main {
 	 */
 	protected static BootiqueMain createMainObject() {
 		return new BootiqueBatchCompilerMain(new SarlcApplicationModuleProvider());
-	}
-
-	/** Replies the options of the program.
-	 *
-	 * @return the options of the program.
-	 */
-	public static List<HelpOption> getOptions() {
-		return createMainObject().getOptions();
 	}
 
 }

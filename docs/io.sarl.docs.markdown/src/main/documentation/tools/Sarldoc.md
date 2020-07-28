@@ -39,7 +39,9 @@ The complete list of the options is:
 | Option | Description |
 | ------ | ----------- |
 [:Dynamic:]{
-	"| | |" // io.sarl.sarldoc.Main::getOptions().renderToMarkdown
+	runShellSilently(
+		makeExecName("..", "..", "..", "..", "..", "..", "products", "sarldoc", "target", "sarldoc"),
+		"generatemarkdownhelp".makeCliOption)
 }
 
 ## Documentation Comments

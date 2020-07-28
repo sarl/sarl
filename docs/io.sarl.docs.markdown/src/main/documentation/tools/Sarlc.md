@@ -32,9 +32,10 @@ The complete list of the options is:
 | Option | Description |
 | ------ | ----------- |
 [:Dynamic:]{
-	"| | |" //io.sarl.lang.sarlc.Main::getOptions.renderToMarkdown
+	runShellSilently(
+		makeExecName("..", "..", "..", "..", "..", "..", "products", "sarlc", "target", "sarlc"),
+		"generatemarkdownhelp".makeCliOption)
 }
-
 
 [:Include:](../legal.inc)
 

@@ -244,25 +244,6 @@ class SreMain implements SREBootstrap {
 		return 255
 	}
 
-	/** Replies the options of the program.
-	 *
-	 * @return the options of the program.
-	 */
-	def getOptions : List<HelpOption> {
-		val runtime = ensureBootiqueRuntimeInstance(null, null)
-		val application = runtime.getInstance(typeof(ApplicationMetadata))
-		val helpOptions = new HelpOptions
-
-		application.commands.forEach [ c |
-			helpOptions.add(c.asOption)
-			c.options.forEach [o | helpOptions.add(o)]
-		]
-
-		application.options.forEach [o | helpOptions.add(o)]
-
-		return helpOptions.options
-	}
-	
 	private def ensureKernelInstance(bootique : Bootique, module : Class<? extends Module>, args : String*) : Kernel {
 		var k = getKernel
 		if (k === null) {

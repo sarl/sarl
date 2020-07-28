@@ -51,14 +51,6 @@ class Boot {
 		new SreMain
 	}
 
-	/** Replies the options of the program.
-	 * 
-	 * @return the options of the program.
-	 */
-	static def getOptions : List<HelpOption> {
-		createMainObject.options
-	}
-
 	/** Main program.
 	 *
 	 * @param args the command line arguments.
