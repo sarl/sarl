@@ -21,6 +21,7 @@
 
 package io.sarl.maven.bootiqueapp;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -30,6 +31,7 @@ import java.util.logging.Logger;
 
 import com.google.common.base.Strings;
 import com.google.inject.CreationException;
+import com.google.inject.Injector;
 import com.google.inject.ProvisionException;
 import com.google.inject.spi.Message;
 import io.bootique.BQModuleProvider;
@@ -38,9 +40,8 @@ import io.bootique.Bootique;
 import io.bootique.BootiqueException;
 import io.bootique.command.CommandOutcome;
 import io.bootique.help.HelpOption;
-import io.bootique.help.HelpOptions;
-import io.bootique.meta.application.ApplicationMetadata;
 
+import io.sarl.maven.bootiqueapp.mdhelp.GenerateMarkdownHelpCommand;
 import io.sarl.util.JulPatternFormatter;
 
 /** Class that implements the standard main function for running a SARL application
@@ -95,13 +96,43 @@ public class BootiqueMain {
 	}
 
 	/** Create the compiler runtime.
+	 * This function loads any modules available on class-path that expose {@code BQModuleProvider} provider.
+	 * Use with caution, you may load more modules than you expected.
+	 * Make sure only needed Bootique dependencies are included on class-path.
+	 * If in doubt, switch to explicit Module loading via {@link #createRuntime(Class[], String...)}.
 	 *
-	 * @param sarlLanguageSetup indicates if the SARL language setup should be realized.
 	 * @param args the command line arguments.
 	 * @return the runtime.
 	 */
 	protected BQRuntime createRuntime(String... args) {
 		Bootique bootique = Bootique.app(args).autoLoadModules();
+		return createRuntime(bootique);
+	}
+
+	/** Create the compiler runtime.
+	 *
+	 * @param modules the list of module to be loaded.
+	 * @param args the command line arguments.
+	 * @return the runtime.
+	 * @since 0.12
+	 */
+	protected BQRuntime createRuntime(Class<? extends BQModuleProvider>[] modules, String... args) {
+		Bootique bootique = Bootique.app(args);
+		for (final Class<? extends BQModuleProvider> providerType : modules) {
+			BQModuleProvider provider;
+			try {
+				provider = providerType.getConstructor().newInstance();
+			} catch (Throwable exception) {
+				provider = null;
+			}
+			if (provider != null) {
+				bootique = bootique.module(provider);
+			}
+		}
+		return createRuntime(bootique);
+	}
+
+	private BQRuntime createRuntime(Bootique bootique) {
 		if (this.providers != null) {
 			for (final BQModuleProvider provider : this.providers) {
 				bootique = bootique.module(provider);
@@ -173,22 +204,49 @@ public class BootiqueMain {
 	}
 
 	/** Replies the options of the program.
+	 * This function loads any modules available on class-path that expose {@code BQModuleProvider} provider.
+	 * Use with caution, you may load more modules than you expected.
+	 * Make sure only needed Bootique dependencies are included on class-path.
+	 * If in doubt, switch to explicit Module loading via {@link #getOptionsForModules(Class...)}.
 	 *
 	 * @return the options of the program.
 	 */
-	public List<HelpOption> getOptions() {
+	public final List<HelpOption> getOptions() {
 		final BQRuntime runtime = createRuntime();
-		final ApplicationMetadata application = runtime.getInstance(ApplicationMetadata.class);
-		final HelpOptions helpOptions = new HelpOptions();
+		return GenerateMarkdownHelpCommand.getOptions(runtime.getInstance(Injector.class));
+	}
 
-		/*application.getCommands().forEach(c -> {
-			helpOptions.add(c.asOption());
-			c.getOptions().forEach(o -> helpOptions.add(o));
-		});*/
+	/** Replies the options of the program that are provided by a specific set of modules.
+	 *
+	 * @param modules the list of modules to be loaded.
+	 * @return the options of the program.
+	 * @since 0.12
+	 */
+	public final List<HelpOption> getOptionsForModules(Class<? extends BQModuleProvider>[] modules) {
+		final BQRuntime runtime = createRuntime(modules);
+		return GenerateMarkdownHelpCommand.getOptions(runtime.getInstance(Injector.class));
+	}
 
-		application.getOptions().forEach(o -> helpOptions.add(o));
-
-		return helpOptions.getOptions();
+	/** Replies the statically defined modules.
+	 *
+	 * @param names the list of fully-qualified names of the modules providers.
+	 * @return the list of the providers.
+	 * @since 0.12
+	 */
+	@SuppressWarnings("unchecked")
+	public static Class<? extends BQModuleProvider>[] getStaticModuleProvidersFor(String[] names) {
+		final List<Class<? extends BQModuleProvider>> providers = new ArrayList<>(names.length);
+		for (int i = 0; i < names.length; ++i) {
+			try {
+				final Class<?> type = Class.forName(names[i]);
+				if (type != null && BQModuleProvider.class.isAssignableFrom(type)) {
+					providers.add(type.asSubclass(BQModuleProvider.class));
+				}
+			} catch (Throwable exception) {
+				//
+			}
+		}
+		return providers.toArray(new Class[providers.size()]);
 	}
 
 }

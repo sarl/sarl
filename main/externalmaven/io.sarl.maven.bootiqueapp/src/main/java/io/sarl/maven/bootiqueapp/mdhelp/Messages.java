@@ -19,40 +19,28 @@
  * limitations under the License.
  */
 
-package io.sarl.maven.bootiqueapp.version;
+package io.sarl.maven.bootiqueapp.mdhelp;
 
-import static io.bootique.BQCoreModule.extend;
+import org.eclipse.osgi.util.NLS;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
-import io.bootique.log.BootLogger;
-
-/** Module for the command for printing out the version.
+/** Messages for the SARL batch compiler.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.8
+ * @ExcludeFromApidoc
  */
-public class VersionCommandModule extends AbstractModule {
-
-	@Override
-	protected void configure() {
-		extend(binder()).addCommand(VersionCommand.class);
+@SuppressWarnings("all")
+public class Messages extends NLS {
+	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
+	public static String GenerateMarkdownHelpCommand_0;
+	public static String GenerateMarkdownHelpCommandModuleProvider_0;
+	static {
+		// initialize resource bundle
+		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
 	}
 
-	/** Provide the command for displaying the version.
-	 *
-	 * @param bootLogger the logger.
-	 * @return the command.
-	 */
-	@SuppressWarnings("static-method")
-	@Provides
-	@Singleton
-	public VersionCommand provideVersionCommand(BootLogger bootLogger) {
-		return new VersionCommand(bootLogger);
+	private Messages() {
 	}
-
 }

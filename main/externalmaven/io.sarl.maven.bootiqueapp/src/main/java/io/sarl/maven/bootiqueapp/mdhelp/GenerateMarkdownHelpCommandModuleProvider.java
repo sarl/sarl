@@ -19,40 +19,35 @@
  * limitations under the License.
  */
 
-package io.sarl.maven.bootiqueapp.version;
+package io.sarl.maven.bootiqueapp.mdhelp;
 
-import static io.bootique.BQCoreModule.extend;
+import com.google.inject.Module;
+import io.bootique.BQModule;
+import io.bootique.BQModuleProvider;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
-import io.bootique.log.BootLogger;
-
-/** Module for the command for printing out the version.
+/** Provider of the module for displaying the help on the standard output using a Markdown format.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.8
+ * @since 0.12
  */
-public class VersionCommandModule extends AbstractModule {
+public class GenerateMarkdownHelpCommandModuleProvider implements BQModuleProvider {
 
 	@Override
-	protected void configure() {
-		extend(binder()).addCommand(VersionCommand.class);
+	public Module module() {
+		return new GenerateMarkdownHelpCommandModule();
 	}
 
-	/** Provide the command for displaying the version.
-	 *
-	 * @param bootLogger the logger.
-	 * @return the command.
-	 */
-	@SuppressWarnings("static-method")
-	@Provides
-	@Singleton
-	public VersionCommand provideVersionCommand(BootLogger bootLogger) {
-		return new VersionCommand(bootLogger);
-	}
+	@Override
+    public BQModule.Builder moduleBuilder() {
+        return BQModule
+                .builder(module())
+                .overrides(overrides())
+                .providerName(name())
+                .configs(configs())
+                .description(Messages.GenerateMarkdownHelpCommandModuleProvider_0);
+    }
 
 }

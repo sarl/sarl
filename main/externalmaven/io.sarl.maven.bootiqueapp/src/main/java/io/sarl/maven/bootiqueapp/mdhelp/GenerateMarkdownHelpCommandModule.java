@@ -19,40 +19,40 @@
  * limitations under the License.
  */
 
-package io.sarl.maven.bootiqueapp.version;
+package io.sarl.maven.bootiqueapp.mdhelp;
 
 import static io.bootique.BQCoreModule.extend;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Injector;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import io.bootique.log.BootLogger;
 
-/** Module for the command for printing out the version.
+/** Module for displaying the help on the standard output using a Markdown format.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.8
+ * @since 0.12
  */
-public class VersionCommandModule extends AbstractModule {
+public class GenerateMarkdownHelpCommandModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		extend(binder()).addCommand(VersionCommand.class);
+		extend(binder()).addCommand(GenerateMarkdownHelpCommand.class);
 	}
 
-	/** Provide the command for displaying the version.
+	/** Provide the command for displaying the help options.
 	 *
-	 * @param bootLogger the logger.
+	 * @param injector the injector.
 	 * @return the command.
 	 */
 	@SuppressWarnings("static-method")
 	@Provides
 	@Singleton
-	public VersionCommand provideVersionCommand(BootLogger bootLogger) {
-		return new VersionCommand(bootLogger);
+	public GenerateMarkdownHelpCommand provideGenerateMarkdownHelpCommand(Injector injector) {
+		return new GenerateMarkdownHelpCommand(injector);
 	}
 
 }
