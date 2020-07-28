@@ -22,6 +22,7 @@
 package io.sarl.lang.interpreter;
 
 import java.util.function.UnaryOperator;
+import javax.inject.Inject;
 
 import com.google.inject.Provider;
 import org.eclipse.xtext.common.types.util.JavaReflectAccess;
@@ -58,6 +59,7 @@ public class SarlExpressionInterpreter extends XbaseInterpreter {
 	}
 
 	@Override
+	@Inject
 	public void setClassLoader(ClassLoader classLoader) {
 		super.setClassLoader(classLoader);
 		this.classLoader = classLoader;
@@ -67,9 +69,12 @@ public class SarlExpressionInterpreter extends XbaseInterpreter {
 	 * The interpreter's class loader is the result of the given builder to which the current class loader is provided.
 	 *
 	 * @param builder the class loader builder.
+	 * @return the expand class loader.
 	 */
-	public void expandClassLoader(UnaryOperator<ClassLoader> builder) {
-		super.setClassLoader(builder.apply(this.classLoader));
+	public ClassLoader expandClassLoader(UnaryOperator<ClassLoader> builder) {
+		final ClassLoader expandClassLoader =  builder.apply(this.classLoader);
+		super.setClassLoader(expandClassLoader);
+		return expandClassLoader;
 	}
 
 }
