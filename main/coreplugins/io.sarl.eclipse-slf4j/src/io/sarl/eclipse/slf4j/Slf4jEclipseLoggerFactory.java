@@ -21,8 +21,8 @@
 
 package io.sarl.eclipse.slf4j;
 
-import org.eclipse.core.internal.runtime.InternalPlatform;
 import org.eclipse.core.runtime.ILog;
+import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleReference;
 import org.slf4j.ILoggerFactory;
@@ -60,7 +60,7 @@ public class Slf4jEclipseLoggerFactory implements ILoggerFactory {
 	 */
 	protected synchronized ILog getEclipseLogger() {
 		if (this.eclipseLogger == null) {
-			this.eclipseLogger = InternalPlatform.getDefault().getLog(getBundle());
+			this.eclipseLogger = Platform.getLog(getBundle());
 		}
 		return this.eclipseLogger;
 	}
