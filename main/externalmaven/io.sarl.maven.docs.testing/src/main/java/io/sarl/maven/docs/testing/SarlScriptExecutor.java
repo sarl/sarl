@@ -204,7 +204,8 @@ public class SarlScriptExecutor implements ScriptExecutor {
 				final IExpressionInterpreter interpreter = this.interpreterProvider.get();
 				if (interpreter instanceof SarlExpressionInterpreter && this.classLoaderBuilder != null) {
 					final SarlExpressionInterpreter exprEvaluator = (SarlExpressionInterpreter) interpreter;
-					exprEvaluator.expandClassLoader(this.classLoaderBuilder);
+					final ClassLoader expandClassLoader = exprEvaluator.expandClassLoader(this.classLoaderBuilder);
+					System.getProperties().put(ScriptExecutor.PROP_CLASS_LOADER, expandClassLoader);
 				}
 				IEvaluationResult result = interpreter.evaluate(xexpression);
 				if (result.getException() == null) {

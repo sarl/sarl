@@ -54,6 +54,11 @@ public interface ScriptExecutor {
 	 */
 	public static final String PROP_CURRENT_FOLDER = "SARL_DOC_CURRENT_FOLDER"; //$NON-NLS-1$
 
+	/** Name of the system property that should contains class loader for the executed script.
+	 * @since 0.12
+	 */
+	public static final String PROP_CLASS_LOADER = "SARL_DOC_SCRIPT_CLASS_LOADER"; //$NON-NLS-1$
+
 	/** Change the folder that the executor should used for its temporary data.
 	 *
 	 * @param dirname the folder name.

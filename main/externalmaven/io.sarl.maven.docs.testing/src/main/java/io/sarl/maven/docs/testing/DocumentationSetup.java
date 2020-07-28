@@ -94,6 +94,7 @@ public class DocumentationSetup extends SARLStandaloneSetup {
 		@Override
 		public void configure(Binder binder) {
 			binder.bind(ImplicitlyImportedFeatures.class).to(DocumentationImplicitlyImportedFeatures.class).in(Singleton.class);
+			binder.bind(ScriptExecutor.class).to(SarlScriptExecutor.class).in(Singleton.class);
 		}
 		
 	}

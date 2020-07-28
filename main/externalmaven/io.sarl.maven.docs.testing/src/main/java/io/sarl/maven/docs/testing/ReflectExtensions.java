@@ -24,6 +24,7 @@ package io.sarl.maven.docs.testing;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
@@ -39,6 +40,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 import java.util.function.Function;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -447,6 +449,24 @@ public final class ReflectExtensions {
 			}
 		}
 		return result;
+	}
+
+	/** Run a method on the given instance.
+	 *
+	 * @param instance is the object instance.
+	 * @param methodName the name of the method.
+	 * @return the configuration.
+	 * @throws SecurityException if the method cannot be accessed.
+	 * @throws NoSuchMethodException  is the method is undefined.
+	 * @throws InvocationTargetException if the method cannot be invoked.
+	 * @throws IllegalArgumentException if the arguments to the method are invalid.
+	 * @throws IllegalAccessException if the access to the method is invalid.
+	 * @since 0.12
+	 */
+	public static Object callStaticMethod(Class<?> type, String methodName) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		final Method method = type.getMethod(methodName);
+		final Object value = method.invoke(null);
+		return value;
 	}
 
 }
