@@ -252,14 +252,6 @@ class SreMainTest {
 	}
 
 	@Test
-	def getOptions {
-		var opts = this.bootstrap.options
-		opts.assertNotNull
-		var names = opts.map[it.option.name]
-		names.assertContainsCollection(DEFAULT_OPTIONS)
-	}
-
-	@Test
 	def isActive_start0 {
 		this.bootstrap.active.assertTrue
 	}

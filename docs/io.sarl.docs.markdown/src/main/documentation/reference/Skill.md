@@ -16,7 +16,7 @@ A *Capacity* is the specification of a collection of Actions. This specification
 makes no assumptions about the implementation of each Action. It is used to specify 
 what an Agent can do, what behavior is required for its execution.
 
-A *Skill* is a collections of Actions implementing a Capacity as described in
+A *Skill* is a collection of Actions implementing a Capacity as described in
 this specification.
 
 

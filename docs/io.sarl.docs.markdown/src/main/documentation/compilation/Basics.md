@@ -22,7 +22,7 @@ run an agent-based system:
   the Java compilation is a collection of binary files (a.k.a. byte-code files) that may be run by a virtual machine.
 * **SARL Run-time Environment:** The SARL Run-time Environment (SRE) is a collection of tools that enables the
   run of an agent-based application written with SARL. Such an SRE must implement each service and feature that are
-  assumed to be provided by the run-time environment. When the target platform is Java-based, the SRE is composed by
+  assumed to be provided by the run-time environment for running a SARL program. When the target platform is Java-based, the SRE is composed by
   a standard Java Runtime Environment (JRE), and the Janus Java library, which provides the base classes for running
   agents written with SARL. In this latest example, a command-line tool is provided for launching the Janus platform:
   [janus](../tools/Janus.md).

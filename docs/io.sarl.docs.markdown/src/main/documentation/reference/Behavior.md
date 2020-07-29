@@ -7,7 +7,7 @@ Before reading this document, we recommend that you read
 the [General Syntax Reference](./GeneralSyntax.md),
 and the [Agent Reference](./Agent.md).
 
-A Behavior is the specification of a collection of behavior units.
+A Behavior is the specification of a collection of behavior units (or event handlers).
 This Behavior may be used by an agent for building its global behavior.
 
 
