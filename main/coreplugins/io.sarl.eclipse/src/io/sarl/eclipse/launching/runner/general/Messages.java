@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.eclipse.launching.runner;
+package io.sarl.eclipse.launching.runner.general;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -34,16 +34,16 @@ import org.eclipse.osgi.util.NLS;
 @SuppressWarnings("all")
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
-	public static String SARLLaunchConfigurationDelegate_0;
-	public static String SARLLaunchConfigurationDelegate_1;
-	public static String SARLLaunchConfigurationDelegate_2;
-	public static String SARLLaunchConfigurationDelegate_3;
-	public static String SARLLaunchConfigurationDelegate_4;
-	public static String SARLLaunchConfigurationDelegate_5;
-	public static String SARLLaunchConfigurationDelegate_6;
-	public static String SARLLaunchConfigurationDelegate_7;
-	public static String SARLLaunchConfigurationDelegate_8;
+	public static String AbstractLaunchProcess_0;
+	public static String AbstractLaunchProcess_1;
+	public static String AbstractLaunchProcess_2;
+	public static String AbstractLaunchProcess_3;
+	public static String AbstractLaunchProcess_4;
+	public static String AbstractLaunchProcess_5;
+	public static String AbstractSARLLaunchConfiguration_0;
 	public static String EmbeddedVMRunner_0;
+	public static String SrepathUtils_0;
+	public static String SrepathUtils_1;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

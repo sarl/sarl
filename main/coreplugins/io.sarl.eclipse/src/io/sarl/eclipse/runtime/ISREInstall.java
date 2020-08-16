@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
@@ -240,9 +242,14 @@ public interface ISREInstall extends Cloneable {
 		} else if (libraries instanceof List<?>) {
 			list = (List<IRuntimeClasspathEntry>) libraries;
 		} else {
+			final Set<String> added = new TreeSet<>();
 			list = new ArrayList<>();
 			for (final IRuntimeClasspathEntry cpe : libraries) {
-				list.add(cpe);
+				final String location = cpe.getLocation();
+				assert location != null;
+				if (added.add(location)) {
+					list.add(cpe);
+				}
 			}
 		}
 		setClassPathEntries(list);

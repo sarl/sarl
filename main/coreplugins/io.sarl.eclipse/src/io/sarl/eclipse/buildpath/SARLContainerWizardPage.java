@@ -61,7 +61,7 @@ public class SARLContainerWizardPage extends NewElementWizardPage implements ICl
 		composite.setLayout(new FillLayout());
 		final Label label = new Label(composite, SWT.NONE);
 		final StringBuilder text = new StringBuilder();
-		for (final String entry : SARLClasspathContainer.SARL_ROOT_BUNDLE_NAMES) {
+		for (final String entry : SARLClasspathContainer.SARL_DEPENDENCY_BUNDLE_NAMES) {
 			text.append(entry);
 			text.append("\n"); //$NON-NLS-1$
 		}

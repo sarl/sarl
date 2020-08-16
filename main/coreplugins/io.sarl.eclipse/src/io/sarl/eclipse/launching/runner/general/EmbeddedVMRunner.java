@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.eclipse.launching.runner;
+package io.sarl.eclipse.launching.runner.general;
 
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;

@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.eclipse.launching.runner;
+package io.sarl.eclipse.launching.runner.agent;
 
 import java.util.Map;
 import java.util.Objects;
@@ -35,6 +35,9 @@ import io.sarl.bootstrap.SRE;
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.launching.config.ILaunchConfigurationAccessor;
 import io.sarl.eclipse.launching.config.RootContextIdentifierType;
+import io.sarl.eclipse.launching.runner.general.AbstractLaunchProcess;
+import io.sarl.eclipse.launching.runner.general.AbstractSARLLaunchConfiguration;
+import io.sarl.eclipse.launching.runner.general.ILaunchProcess;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.SRECommandLineOptions;
 
@@ -49,11 +52,11 @@ import io.sarl.eclipse.runtime.SRECommandLineOptions;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SARLAgentLaunchConfigurationDelegate extends AbstractSARLLaunchConfigurationDelegate {
+public class SARLAgentLaunchConfiguration extends AbstractSARLLaunchConfiguration {
 
 	@Override
 	protected ILaunchProcess createLaunchingProcess(ILaunchConfiguration configuration, String mode, ILaunch launch) {
-		return new LaunchProcess(configuration, mode, launch);
+		return new LaunchProcess(this, configuration, mode, launch);
 	}
 
 	@Override
@@ -179,21 +182,22 @@ public class SARLAgentLaunchConfigurationDelegate extends AbstractSARLLaunchConf
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private class LaunchProcess extends AbstractLaunchProcess {
+	private static class LaunchProcess extends AbstractLaunchProcess<SARLAgentLaunchConfiguration> {
 
 		/** Constructor.
+		 * @param owner the owner of the process.
 		 * @param configuration the launch configuration.
 		 * @param mode the launching mode.
 		 * @param launch the launching
 		 */
-		LaunchProcess(ILaunchConfiguration configuration, String mode, ILaunch launch) {
-			super(configuration, mode, launch);
+		LaunchProcess(SARLAgentLaunchConfiguration owner, ILaunchConfiguration configuration, String mode, ILaunch launch) {
+			super(owner, configuration, mode, launch);
 		}
 
 		@Override
 		protected void readConfigurationParameters(IProgressMonitor monitor) throws CoreException {
 			super.readConfigurationParameters(monitor);
-			verifyAgentName(this.configuration);
+			getOwner().verifyAgentName(this.configuration);
 		}
 
 	}

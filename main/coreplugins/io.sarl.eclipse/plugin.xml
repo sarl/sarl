@@ -168,7 +168,7 @@
 
  	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
         <launchConfigurationType
-              delegate="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.launching.runner.SARLAgentLaunchConfigurationDelegate"
+              delegate="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.launching.runner.agent.SARLAgentLaunchConfiguration"
               delegateDescription="%launch.agent.description"
               delegateName="%launch.agent"
               id="io.sarl.eclipse.debug.AgentLaunchConfigType"
@@ -179,7 +179,7 @@
               sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer">
         </launchConfigurationType>
         <launchConfigurationType
-              delegate="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.launching.runner.SARLApplicationLaunchConfigurationDelegate"
+              delegate="io.sarl.eclipse.SARLEclipseExecutableExtensionFactory:io.sarl.eclipse.launching.runner.application.SARLApplicationLaunchConfiguration"
               delegateDescription="%launch.application.description"
               delegateName="%launch.application"
               id="io.sarl.eclipse.debug.ApplicationLaunchConfigType"

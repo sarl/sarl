@@ -51,7 +51,7 @@ public class SARLClasspathContainerInitializer extends ClasspathContainerInitial
 	public void initialize(IPath containerPath, IJavaProject project)
 			throws CoreException {
 		if (CONTAINER_ID.equals(containerPath)) {
-			final IClasspathContainer container = new SARLClasspathContainer(containerPath);
+			final IClasspathContainer container = new SARLClasspathContainer(containerPath, project);
 			JavaCore.setClasspathContainer(containerPath,
 					new IJavaProject[] {project},
 					new IClasspathContainer[] {container},

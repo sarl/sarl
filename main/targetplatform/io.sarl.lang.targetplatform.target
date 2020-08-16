@@ -11,7 +11,14 @@
 			<unit id="net.sf.jopt-simple.jopt-simple" version="5.0.3"/>
 			<unit id="stax2-api" version="4.2.0"/>
 			<unit id="slf4j.api" version="2.0.0.alpha1"/>
+			<unit id="com.fasterxml.jackson.core.jackson-annotations" version="2.11.0"/>
+			<unit id="com.fasterxml.jackson.core.jackson-core" version="2.11.0"/>
+			<unit id="com.fasterxml.jackson.core.jackson-databind" version="2.11.0"/>
+			<unit id="com.fasterxml.jackson.dataformat.jackson-dataformat-xml" version="2.11.0"/>
+			<unit id="com.fasterxml.jackson.dataformat.jackson-dataformat-yaml" version="2.11.0"/>
+			<unit id="com.fasterxml.jackson.module.jackson-module-jaxb-annotations" version="2.11.0"/>
 			<unit id="org.arakhne.afc.bootique.applicationdata2" version="16.0.0"/>
+			<unit id="org.arakhne.afc.bootique.log4j" version="16.0.0"/>
 			<unit id="org.arakhne.afc.bootique.printconfig" version="16.0.0"/>
 			<unit id="org.arakhne.afc.bootique.synopsishelp" version="16.0.0"/>
 			<unit id="org.arakhne.afc.bootique.variables" version="16.0.0"/>
@@ -20,7 +27,7 @@
 			<unit id="org.arakhne.afc.core.text" version="16.0.0"/>
 			<unit id="org.arakhne.afc.core.util" version="16.0.0"/>
 			<unit id="org.arakhne.afc.core.vmutils" version="16.0.0"/>
-			<unit id="com.fasterxml.jackson.core.jackson-annotations" version="2.11.0"/>
+			<unit id="org.arakhne.afc.slf4j.log4j" version="16.0.0"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 			<repository location="https://download.jboss.org/jbosstools/photon/snapshots/builds/m2e-apt/latest/all/repo/"/>

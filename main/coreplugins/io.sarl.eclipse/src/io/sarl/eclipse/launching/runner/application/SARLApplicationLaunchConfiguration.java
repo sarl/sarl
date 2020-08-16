@@ -19,12 +19,15 @@
  * limitations under the License.
  */
 
-package io.sarl.eclipse.launching.runner;
+package io.sarl.eclipse.launching.runner.application;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 
+import io.sarl.eclipse.launching.runner.general.AbstractLaunchProcess;
+import io.sarl.eclipse.launching.runner.general.AbstractSARLLaunchConfiguration;
+import io.sarl.eclipse.launching.runner.general.ILaunchProcess;
 import io.sarl.eclipse.runtime.ISREInstall;
 
 /**
@@ -39,11 +42,11 @@ import io.sarl.eclipse.runtime.ISREInstall;
  * @mavenartifactid $ArtifactId$
  * @since 0.7
  */
-public class SARLApplicationLaunchConfigurationDelegate extends AbstractSARLLaunchConfigurationDelegate {
+public class SARLApplicationLaunchConfiguration extends AbstractSARLLaunchConfiguration {
 
 	@Override
 	protected ILaunchProcess createLaunchingProcess(ILaunchConfiguration configuration, String mode, ILaunch launch) {
-		return new LaunchProcess(configuration, mode, launch);
+		return new LaunchProcess(this, configuration, mode, launch);
 	}
 
 	@Override
@@ -61,15 +64,16 @@ public class SARLApplicationLaunchConfigurationDelegate extends AbstractSARLLaun
 	 * @mavenartifactid $ArtifactId$
 	 * @sincec 0.7
 	 */
-	private class LaunchProcess extends AbstractLaunchProcess {
+	private class LaunchProcess extends AbstractLaunchProcess<SARLApplicationLaunchConfiguration> {
 
 		/** Constructor.
+		 * @param owner the owner of the process.
 		 * @param configuration the launch configuration.
 		 * @param mode the launching mode.
 		 * @param launch the launching
 		 */
-		LaunchProcess(ILaunchConfiguration configuration, String mode, ILaunch launch) {
-			super(configuration, mode, launch);
+		LaunchProcess(SARLApplicationLaunchConfiguration owner, ILaunchConfiguration configuration, String mode, ILaunch launch) {
+			super(owner, configuration, mode, launch);
 		}
 
 	}

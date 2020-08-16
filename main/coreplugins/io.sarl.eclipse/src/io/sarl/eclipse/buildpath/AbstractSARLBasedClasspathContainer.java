@@ -28,6 +28,9 @@ import java.util.TreeSet;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.launching.IVMInstall;
+import org.eclipse.jdt.launching.JavaRuntime;
 
 /** Classpath container dedicated to the SARL environment.
  *
@@ -57,11 +60,36 @@ public abstract class AbstractSARLBasedClasspathContainer implements IClasspathC
 
 	private final IPath containerPath;
 
+	private IJavaProject project;
+
 	/** Constructor.
 	 * @param containerPath the path of the container, e.g. the project.
+	 * @param javaProject the reference to the containing Java project
+	 * @since 0.12
 	 */
-	public AbstractSARLBasedClasspathContainer(IPath containerPath) {
+	public AbstractSARLBasedClasspathContainer(IPath containerPath, IJavaProject javaProject) {
 		this.containerPath = containerPath;
+		this.project = javaProject;
+	}
+
+	/** Replies if the associated project is module or not.
+	 *
+	 * @return {@code true} if the project is module; otherwise {@code false}.
+	 */
+	protected boolean isModular() {
+		try {
+			if (JavaRuntime.isModularProject(this.project)) {
+				return true;
+			}
+			IVMInstall vm = JavaRuntime.getVMInstall(this.project);
+			if (vm == null) {
+				vm = JavaRuntime.getDefaultVMInstall();
+			}
+			return JavaRuntime.isModularJava(vm);
+		} catch (Throwable exception) {
+			//
+		}
+		return false;
 	}
 
 	/** Replies the list of the symbolic names of the bundle dependencies.
