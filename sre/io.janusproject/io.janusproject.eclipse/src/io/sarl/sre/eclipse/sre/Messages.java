@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.janusproject.eclipse.sre;
+package io.sarl.sre.eclipse.sre;
 
 import org.eclipse.osgi.util.NLS;
 

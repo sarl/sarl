@@ -959,12 +959,12 @@ public class SREsPreferencePage extends PreferencePage implements IWorkbenchPref
 				final ISREInstall sre = (ISREInstall) element;
 				switch (columnIndex) {
 				case 0:
+					final String name = sre.getName();
 					if (getDefaultSRE() == element) {
 						return MessageFormat.format(
-								JREMessages.InstalledJREsBlock_7,
-								sre.getName());
+								JREMessages.InstalledJREsBlock_7, name);
 					}
-					return sre.getName();
+					return name;
 				case 1:
 					return sre.getLocation();
 				default:

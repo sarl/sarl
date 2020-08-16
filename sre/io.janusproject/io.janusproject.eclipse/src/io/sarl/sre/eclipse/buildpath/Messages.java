@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.janusproject.eclipse.buildpath;
+package io.sarl.sre.eclipse.buildpath;
 
 import org.eclipse.osgi.util.NLS;
 

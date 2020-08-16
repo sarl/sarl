@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.janusproject.eclipse.buildpath;
+package io.sarl.sre.eclipse.buildpath;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -32,7 +32,7 @@ import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 
-import io.janusproject.eclipse.JanusEclipsePlugin;
+import io.sarl.sre.eclipse.JanusEclipsePlugin;
 
 /** Initializer of the classpath container dedicated to the Janus platform.
  *
@@ -51,7 +51,7 @@ public class JanusClasspathContainerInitializer extends ClasspathContainerInitia
 	public void initialize(IPath containerPath, IJavaProject project)
 			throws CoreException {
 		if (CONTAINER_ID.equals(containerPath)) {
-			final IClasspathContainer container = new JanusClasspathContainer(containerPath);
+			final IClasspathContainer container = new JanusClasspathContainer(containerPath, project);
 			JavaCore.setClasspathContainer(containerPath,
 					new IJavaProject[] {project},
 					new IClasspathContainer[] {container},

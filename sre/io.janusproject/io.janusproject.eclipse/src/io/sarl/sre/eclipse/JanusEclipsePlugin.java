@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.janusproject.eclipse;
+package io.sarl.sre.eclipse;
 
 import com.google.common.base.Strings;
 import org.eclipse.core.runtime.IStatus;

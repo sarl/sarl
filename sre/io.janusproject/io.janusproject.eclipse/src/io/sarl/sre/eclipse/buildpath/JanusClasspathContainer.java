@@ -19,21 +19,24 @@
  * limitations under the License.
  */
 
-package io.janusproject.eclipse.buildpath;
+package io.sarl.sre.eclipse.buildpath;
 
+import java.util.HashSet;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.IJavaProject;
 import org.osgi.framework.Bundle;
 
-import io.janusproject.eclipse.JanusEclipsePlugin;
 import io.sarl.eclipse.buildpath.AbstractSARLBasedClasspathContainer;
 import io.sarl.eclipse.buildpath.SARLClasspathContainer;
 import io.sarl.eclipse.util.BundleUtil;
 import io.sarl.eclipse.util.BundleUtil.IBundleDependencies;
 import io.sarl.eclipse.util.Utilities.SARLBundleJavadocURLMappings;
+import io.sarl.sre.eclipse.JanusEclipsePlugin;
 
 /** Classpath container dedicated to the Janus platform.
  *
@@ -46,50 +49,49 @@ import io.sarl.eclipse.util.Utilities.SARLBundleJavadocURLMappings;
  */
 public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer {
 
-	/** Names of the reference libraries that are required to compile the Janus
-	 * code and run any SARL-based Java code.
+	/** Name of the property file that contains the reference libraries that are required run
+	 * within Eclipse IDE any SARL-based Java code based on Janus.
 	 */
-	public static final String[] JANUS_ROOT_BUNDLE_NAMES;
+	public static final String JANUS_DEPENDENCY_BUNDLE_NAMES_PROPERTY_FILE;
+
+	/** Names of the reference libraries that are required to run within Eclipse IDE any SARL-based Java code based on Janus.
+	 */
+	public static final String[] JANUS_DEPENDENCY_BUNDLE_NAMES;
 
 	static {
-		final String[] array1 = new String[] {
-			JanusEclipsePlugin.JANUS_KERNEL_PLUGIN_ID,
-			//
-			// List of plugins that are defined into the Janus plugin.
-			// SARL libraries are already included by default. Do not write them again
-			//
-			"com.google.inject", //$NON-NLS-1$
-			"io.bootique", //$NON-NLS-1$
-			"io.sarl.api.bootiquebase", //$NON-NLS-1$
-			"javax.inject", //$NON-NLS-1$
-			"org.arakhne.afc.bootique.variables", //$NON-NLS-1$
-			"org.arakhne.afc.core.inputoutput", //$NON-NLS-1$
-			"org.arakhne.afc.core.util", //$NON-NLS-1$
-			"com.fasterxml.jackson.core.jackson-annotations", //$NON-NLS-1$
-			//
-			// List of plugins that are included into the Janus feature for running Janus into Eclipse
-			//
-			"com.fasterxml.jackson.core.jackson-core", //$NON-NLS-1$
-			"com.fasterxml.jackson.core.jackson-databind", //$NON-NLS-1$
-			"com.fasterxml.jackson.dataformat.jackson-dataformat-xml", //$NON-NLS-1$
-			"com.fasterxml.jackson.dataformat.jackson-dataformat-yaml", //$NON-NLS-1$
-			"com.fasterxml.jackson.module.jackson-module-jaxb-annotations", //$NON-NLS-1$
-			"net.sf.jopt-simple.jopt-simple", //$NON-NLS-1$
-		};
-		final String[] array = new String[SARLClasspathContainer.SARL_ROOT_BUNDLE_NAMES.length + array1.length];
-		System.arraycopy(SARLClasspathContainer.SARL_ROOT_BUNDLE_NAMES, 0, array, 0, SARLClasspathContainer.SARL_ROOT_BUNDLE_NAMES.length);
-		System.arraycopy(array1, 0, array, SARLClasspathContainer.SARL_ROOT_BUNDLE_NAMES.length, array1.length);
-		JANUS_ROOT_BUNDLE_NAMES = array;
+		JANUS_DEPENDENCY_BUNDLE_NAMES_PROPERTY_FILE = "/" //$NON-NLS-1$
+				+ JanusClasspathContainer.class.getPackage().getName().replace(".", "/") //$NON-NLS-1$//$NON-NLS-2$
+				+ "/janus-bundles"; //$NON-NLS-1$
+		final ResourceBundle bundle = ResourceBundle.getBundle(JANUS_DEPENDENCY_BUNDLE_NAMES_PROPERTY_FILE);
+
+		final Set<String> libs = new HashSet<>();
+
+		for (final String lib : SARLClasspathContainer.SARL_DEPENDENCY_BUNDLE_NAMES) {
+			libs.add(lib);
+		}
+
+		for (final String lib : bundle.getString("JANUS_BUNDLES").split("[ \t\n\r\f]*,[ \\t\\n\\r\\f]*")) { //$NON-NLS-1$//$NON-NLS-2$
+			libs.add(lib.trim());
+		}
+
+		for (final String lib : bundle.getString("JANUS_ECLIPSE_BUNDLES").split("[ \t\n\r\f]*,[ \\t\\n\\r\\f]*")) { //$NON-NLS-1$//$NON-NLS-2$
+			libs.add(lib.trim());
+		}
+
+		String[] allLibs = new String[libs.size()];
+		allLibs = libs.toArray(allLibs);
+		JANUS_DEPENDENCY_BUNDLE_NAMES = allLibs;
 	}
 
-	private static final String JAVADOC_URL = "http://www.janusproject.io/apidocs/"; //$NON-NLS-1$
+	private static final String JAVADOC_URL = "http://www.sarl.io/docs/api/"; //$NON-NLS-1$
 
 	/** Constructor.
 	 *
 	 * @param containerPath the path of the container, e.g. the project.
+	 * @param javaProject the associated JAva project.
 	 */
-	public JanusClasspathContainer(IPath containerPath) {
-		super(containerPath);
+	public JanusClasspathContainer(IPath containerPath, IJavaProject javaProject) {
+		super(containerPath, javaProject);
 	}
 
 	@Override
@@ -102,10 +104,11 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 	 * @return the classpath.
 	 */
 	public static IBundleDependencies getJanusPlatformClasspath() {
-		final Bundle bundle = Platform.getBundle(JanusEclipsePlugin.JANUS_KERNEL_PLUGIN_ID);
-		return BundleUtil.resolveBundleDependencies(bundle,
+		final Bundle bundle = Platform.getBundle(JanusEclipsePlugin.PLUGIN_ID);
+		final IBundleDependencies resolvedBundles = BundleUtil.resolveBundleDependencies(bundle,
 				new JanusBundleJavadocURLMappings(),
-				JANUS_ROOT_BUNDLE_NAMES);
+				JANUS_DEPENDENCY_BUNDLE_NAMES);
+		return resolvedBundles;
 	}
 
 	@Override

@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.janusproject.eclipse.buildpath;
+package io.sarl.sre.eclipse.buildpath;
 
 import java.text.MessageFormat;
 
@@ -61,7 +61,7 @@ public class JanusContainerWizardPage extends NewElementWizardPage implements IC
 		composite.setLayout(new FillLayout());
 		final Label label = new Label(composite, SWT.NONE);
 		final StringBuilder text = new StringBuilder();
-		for (final String entry : JanusClasspathContainer.JANUS_ROOT_BUNDLE_NAMES) {
+		for (final String entry : JanusClasspathContainer.JANUS_DEPENDENCY_BUNDLE_NAMES) {
 			text.append(entry);
 			text.append("\n"); //$NON-NLS-1$
 		}

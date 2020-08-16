@@ -19,12 +19,11 @@
  * limitations under the License.
  */
 
-package io.janusproject.eclipse.sre;
+package io.sarl.sre.eclipse.sre;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
-import java.util.logging.Level;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
@@ -32,17 +31,15 @@ import org.eclipse.core.runtime.IPath;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import io.janusproject.eclipse.buildpath.JanusClasspathContainer;
-import io.janusproject.eclipse.buildpath.JanusClasspathContainerInitializer;
-import io.sarl.api.bootiquebase.config.LogLevel;
 import io.sarl.bootstrap.SREBootstrap;
 import io.sarl.eclipse.runtime.AbstractSREInstall;
 import io.sarl.eclipse.runtime.SRECommandLineOptions;
 import io.sarl.eclipse.util.BundleUtil.IBundleDependencies;
 import io.sarl.sre.boot.Boot;
-import io.sarl.sre.boot.configs.SreConfig;
 import io.sarl.sre.boot.configs.subconfigs.BootConfigModule;
 import io.sarl.sre.boot.configs.subconfigs.RootContextType;
+import io.sarl.sre.eclipse.buildpath.JanusClasspathContainer;
+import io.sarl.sre.eclipse.buildpath.JanusClasspathContainerInitializer;
 
 /**
  * Provide Janus as a SRE install.
@@ -61,7 +58,7 @@ public class JanusSREInstall extends AbstractSREInstall {
 	public static final String JANUS_SRE_ID = "io.janusproject.plugin.sre"; //$NON-NLS-1$
 
 	// TODO: the Log4jIntegrationModule does not provide a public field with the name of the option.
-	private static final String LOG_CLI_OPTION = "log"; //$NON-NLS-1$
+	//private static final String LOG_CLI_OPTION = "log"; //$NON-NLS-1$
 
 	private static final String OPTION_TERMINATOR = "--"; //$NON-NLS-1$
 
@@ -85,8 +82,6 @@ public class JanusSREInstall extends AbstractSREInstall {
 		this.janusSREInstallPath = dependencies.getBundleBinaryPath();
 		assert this.janusSREInstallPath != null;
 		this.location = this.janusSREInstallPath.toPortableString();
-		//TODO Verify that PREFIX is the correct replacement of the previous config that was .JANUS_DEFAULT_PLATFORM_NAME
-		setName(SreConfig.PREFIX);
 		setMainClass(Boot.class.getName());
 		setBootstrap(SREBootstrap.class.getName());
 		//
@@ -116,8 +111,8 @@ public class JanusSREInstall extends AbstractSREInstall {
 	public Map<String, String> getAvailableCommandLineOptions() {
 		final Map<String, String> options = Maps.newHashMap();
 		// Logging
-		options.put(SRECommandLineOptions.CLI_SHOW_INFO, formatCommandLineOption(LOG_CLI_OPTION, new LogLevel(Level.INFO).toJsonString()));
-		options.put(SRECommandLineOptions.CLI_HIDE_INFO, formatCommandLineOption(LOG_CLI_OPTION, new LogLevel(Level.WARNING).toJsonString()));
+		//options.put(SRECommandLineOptions.CLI_SHOW_INFO, formatCommandLineOption(LOG_CLI_OPTION, new LogLevel(Level.INFO).toJsonString()));
+		//options.put(SRECommandLineOptions.CLI_HIDE_INFO, formatCommandLineOption(LOG_CLI_OPTION, new LogLevel(Level.WARNING).toJsonString()));
 		// Networking
 		//options.put(SRECommandLineOptions.CLI_SRE_OFFLINE, formatCommandLineOption(null, null));
 		//options.put(SRECommandLineOptions.CLI_SRE_ONLINE, formatCommandLineOption(null, null));
