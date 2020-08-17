@@ -25,6 +25,22 @@ import java.io.File;
 import java.net.InetAddress;
 import java.net.URI;
 import java.net.URL;
+import java.security.Permission;
+import java.time.Clock;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.MonthDay;
+import java.time.OffsetDateTime;
+import java.time.OffsetTime;
+import java.time.Period;
+import java.time.Year;
+import java.time.YearMonth;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
@@ -52,12 +68,35 @@ public class DefaultImmutableTypeValidator implements IImmutableTypeValidator {
 		URL.class,
 		URI.class,
 		Enum.class,
-		Number.class,
+		Byte.class,
+		Short.class,
+		Integer.class,
+		Long.class,
+		Double.class,
+		Float.class,
+		Character.class,
+		Boolean.class,
 		Date.class,
 		File.class,
 		Locale.class,
 		InetAddress.class,
 		StackTraceElement.class,
+		Permission.class,
+		Clock.class,
+		Duration.class,
+		Instant.class,
+		LocalDate.class,
+		LocalDateTime.class,
+		LocalTime.class,
+		MonthDay.class,
+		OffsetDateTime.class,
+		OffsetTime.class,
+		Period.class,
+		Year.class,
+		YearMonth.class,
+		ZonedDateTime.class,
+		ZoneId.class,
+		ZoneOffset.class,
 	};
 
 	@Override
