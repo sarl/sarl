@@ -2466,6 +2466,19 @@ public class SARLValidator extends AbstractSARLValidator {
 		return call instanceof XMemberFeatureCall ? (XMemberFeatureCall) call : null;
 	}
 
+	private boolean isImmutable(EObject element) {
+		LightweightTypeReference calledFeatureType = null;
+		if (element instanceof XExpression) {
+			calledFeatureType = getActualType((XExpression) element);
+		} else if (element instanceof JvmIdentifiableElement) {
+			calledFeatureType = getActualType((JvmIdentifiableElement) element);
+		}
+		if (calledFeatureType != null) {
+			return this.immutableTypeValidator.isImmutable(calledFeatureType);
+		}
+		return false;
+	}
+
 	@SuppressWarnings({"checkstyle:nestedifdepth", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	private void checkUnmodifiableFeatureAccess(boolean enableWarning, EObject readOnlyExpression, String keywordName) {
 		final OutParameter<EObject> container = new OutParameter<>();
@@ -2484,6 +2497,7 @@ public class SARLValidator extends AbstractSARLValidator {
 		if (failure.get().booleanValue()) {
 			return;
 		}
+
 		final EObject expression = sequence == null ? readOnlyExpression : sequence;
 
 		if (Utils.getContainerOfType(expression, container, directContainerChild,
@@ -2501,6 +2515,15 @@ public class SARLValidator extends AbstractSARLValidator {
 					return;
 				}
 			} else if (enableWarning && container.get() instanceof XVariableDeclaration) {
+				final EObject directContainerChildInstance = directContainerChild.get();
+
+				// We have validated that the chain of calls on the read-only variable does not contain
+				// a call to an impure feature (see the first test in this function).
+				// If the last called feature is of a read-only type, then it is safe to use it anywhere.
+				if (isImmutable(directContainerChildInstance)) {
+					return;
+				}
+
 				final XVariableDeclaration declaration = (XVariableDeclaration) container.get();
 				if (directContainerChild.get() == declaration.getRight()) {
 					// Inside the initial value of a variable.
@@ -2523,6 +2546,15 @@ public class SARLValidator extends AbstractSARLValidator {
 			if (Utils.getContainerOfType(expression, container, directContainerChild,
 					XAbstractFeatureCall.class, XConstructorCall.class)) {
 				final EObject directExpressionContainer = container.get();
+				final EObject directContainerChildInstance = directContainerChild.get();
+
+				// We have validated that the chain of calls on the read-only variable does not contain
+				// a call to an impure feature (see the first test in this function).
+				// If the last called feature is of a read-only type, then it is safe to use it anywhere.
+				if (isImmutable(directContainerChildInstance)) {
+					return;
+				}
+
 				// Skip operators because they have no side effects
 				if (directExpressionContainer instanceof XBinaryOperation
 						|| directExpressionContainer instanceof XUnaryOperation) {
@@ -2537,7 +2569,9 @@ public class SARLValidator extends AbstractSARLValidator {
 							INVALID_OCCURRENCE_READONLY_USE);
 					return;
 				}
-				// Function argument: direct passing, if function has side effect => WARNING
+				// Function argument:
+				// In all the other cases, the value is passed directly and could be accessed from
+				// within the called function, if this function has side effect => WARNING
 				final List<XExpression> arguments;
 				final List<LightweightTypeReference> parameters;
 				final boolean hasSideEffects;
@@ -2566,7 +2600,7 @@ public class SARLValidator extends AbstractSARLValidator {
 				}
 				if (arguments != null && hasSideEffects) {
 					assert parameters != null;
-					final int index = arguments.indexOf(directContainerChild.get());
+					final int index = arguments.indexOf(directContainerChildInstance);
 					if (index >= 0 && !parameters.isEmpty()) {
 						final boolean isPrimitive;
 						final int endIndex = parameters.size() - 1;
@@ -2626,12 +2660,12 @@ public class SARLValidator extends AbstractSARLValidator {
 	 */
 	@Check
 	public void checkUnmodifiableEventAccess(SarlBehaviorUnit unit) {
-		final boolean enable1 = !isIgnored(DISCOURAGED_OCCURRENCE_READONLY_USE);
+		final boolean enable = !isIgnored(DISCOURAGED_OCCURRENCE_READONLY_USE);
 		final XExpression root = unit.getExpression();
 		final String occurrenceKw = this.grammarAccess.getOccurrenceKeyword();
 		for (final XFeatureCall child : EcoreUtil2.getAllContentsOfType(root, XFeatureCall.class)) {
 			if (occurrenceKw.equals(child.getFeature().getIdentifier())) {
-				checkUnmodifiableFeatureAccess(enable1, child, occurrenceKw);
+				checkUnmodifiableFeatureAccess(enable, child, occurrenceKw);
 			}
 		}
 	}

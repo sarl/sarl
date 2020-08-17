@@ -129,11 +129,6 @@ public class Bug1013Test extends AbstractSarlTest {
 		SarlScript mas = file(getParseHelper(), SARL_CODE_02);
 		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
 		validator
-			.assertWarning(
-				XbasePackage.eINSTANCE.getXMemberFeatureCall(),
-				IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE,
-				"Possible invalid usage of 'occurrence'",
-				"used as an argument of a function")
 			.assertNoIssues();
 	}
 
@@ -177,12 +172,6 @@ public class Bug1013Test extends AbstractSarlTest {
 				774,
 				"Possible invalid usage of 'occurrence'",
 				"be copied within a local variable")
-			.assertWarning(
-				XbasePackage.eINSTANCE.getXMemberFeatureCall(),
-				IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE,
-				733,
-				"Possible invalid usage of 'occurrence'",
-				"used as an argument of a function")
 			.assertNoIssues();
 	}
 
@@ -225,12 +214,6 @@ public class Bug1013Test extends AbstractSarlTest {
 				774,
 				"Possible invalid usage of 'occurrence'",
 				"be copied within a local variable")
-			.assertWarning(
-				XbasePackage.eINSTANCE.getXMemberFeatureCall(),
-				IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE,
-				733,
-				"Possible invalid usage of 'occurrence'",
-				"used as an argument of a function")
 			.assertWarning(
 					XtendPackage.eINSTANCE.getXtendVariableDeclaration(),
 					org.eclipse.xtext.xbase.validation.IssueCodes.UNUSED_LOCAL_VARIABLE,

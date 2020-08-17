@@ -308,9 +308,8 @@ public class Bug483Test extends AbstractSarlTest {
 	public void updateObjectSetter_09() throws Exception {
 		SarlScript mas = file(getParseHelper(), multilineString(
 			"package io.sarl.lang.tests.bug483",
-			"import java.math.BigInteger",
 			"class XXX {",
-			"  def getValue() : BigInteger { null }",
+			"  def getValue() : Integer { null }",
 			"}",
 			"event E1 {",
 			"  var attr : XXX",
@@ -319,7 +318,7 @@ public class Bug483Test extends AbstractSarlTest {
 			"    on E1 {",
 			"       myfct(occurrence.attr.value);",
 			"    }",
-			"    def myfct(p : BigInteger) { }",
+			"    def myfct(p : Integer) { }",
 			"}"));
 		validate(getValidationHelper(), getInjector(), mas).assertNoIssues();
 	}
@@ -342,6 +341,28 @@ public class Bug483Test extends AbstractSarlTest {
 			"    def myfct(p : MyEnum) { }",
 			"}"));
 		validate(getValidationHelper(), getInjector(), mas).assertNoIssues();
+	}
+
+	@Test
+	public void updateObjectSetter_11() throws Exception {
+		SarlScript mas = file(getParseHelper(), multilineString(
+			"package io.sarl.lang.tests.bug483",
+			"import java.math.BigInteger",
+			"class XXX {",
+			"  def getValue() : BigInteger { null }",
+			"}",
+			"event E1 {",
+			"  var attr : XXX",
+			"}",
+			"agent TestAgent {",
+			"    on E1 {",
+			"       myfct(occurrence.attr.value);",
+			"    }",
+			"    def myfct(p : BigInteger) { }",
+			"}"));
+		validate(getValidationHelper(), getInjector(), mas).assertWarning(
+				XbasePackage.eINSTANCE.getXMemberFeatureCall(),
+				IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE);
 	}
 
 	@Test
