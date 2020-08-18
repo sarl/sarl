@@ -53,6 +53,7 @@ public class DocumentationImplicitlyImportedFeatures extends SARLImplicitlyImpor
 		xtextList.add(0, OperatorExtensions.class);
 		xtextList.add(0, ReflectExtensions.class);
 		xtextList.add(0, ShellExtensions.class);
+		xtextList.add(0, CollectionExtensions.class);
 		return xtextList;
 	}
 
@@ -67,6 +68,7 @@ public class DocumentationImplicitlyImportedFeatures extends SARLImplicitlyImpor
 		xtextList.add(0, OperatorExtensions.class);
 		xtextList.add(0, ReflectExtensions.class);
 		xtextList.add(0, ShellExtensions.class);
+		xtextList.add(0, CollectionExtensions.class);
 		return xtextList;
 	}
 

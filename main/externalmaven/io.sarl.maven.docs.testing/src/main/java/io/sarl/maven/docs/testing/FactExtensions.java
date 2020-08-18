@@ -39,7 +39,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import io.sarl.lang.typesystem.IPureOperationNameValidator;
 
-/** Extended Functions for writting facts within the documentation.
+/** Extended Functions for writing facts within the documentation.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

@@ -71,6 +71,42 @@ The following chart summarizes the default values for the above data types.
 | `String` or any object | `null`        |
 
 
+## Immutable Types
+
+All objects in SARL has an internal state (composed of the values of the different attributes, transitively).
+As SARL is a strongly-typed language, each object is of a given type.
+This type is said to be immutable when the internal state of a object of this type remains constant after it has been entirely created.
+In other words, the values of the object's attributes cannot be changed after the object's construction.
+ 
+Several types are always immutable in SARL (mostly from the Java API itself):
+
+| Immutable Types |
+| --------------- |
+[:Dynamic:]{
+	io.sarl.lang.typesystem.DefaultImmutableTypeValidator.IMMUTABLE_TYPES.sort.toVerticalStringMatrix.renderToMarkdown
+}
+
+Additionally, you could define your own data type that is assumed to be immutable.
+This definition is based on the usage of a specific annotation that is attached to your type.
+The complete list of annotations that mark the types as immutable is:
+
+| Annotations for Immutable Types |
+| ------------------------------- |
+[:Dynamic:]{
+	io.sarl.lang.typesystem.DefaultImmutableTypeValidator.IMMUTABLE_TYPE_ANNOTATIONS.sort.toVerticalStringMatrix.renderToMarkdown
+}
+
+For illustration, the [:dataannon:] annotation, that is described in the [active annotation documentation](./ActiveAnnotations.md#2-data),
+could be used as below:
+
+		[:Success:]
+			import org.eclipse.xtend.lib.annotations.Data 
+			[:On]
+			[:dataannon](@Data) class Person {
+			  [:valkw](val) firstName : String
+			  val lastName : String
+			}
+		[:End:]
 
 
 [:Include:](../generalsyntaxref.inc)
