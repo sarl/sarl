@@ -45,7 +45,13 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import org.eclipse.xtend.lib.annotations.Data;
+import org.eclipse.xtext.common.types.JvmAnnotationTarget;
+import org.eclipse.xtext.common.types.JvmType;
+import org.eclipse.xtext.common.types.util.AnnotationLookup;
+import org.eclipse.xtext.util.Pair;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
 /**
@@ -62,7 +68,12 @@ import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 @Singleton
 public class DefaultImmutableTypeValidator implements IImmutableTypeValidator {
 
-	private static final Class<?>[] IMMUTABLE_TYPES = {
+	/** List of the well-known immutable types from Java, that are also considered as
+	 * immutable in SARL.
+	 *
+	 * @since 0.12
+	 */
+	public static final Class<?>[] IMMUTABLE_TYPES = {
 		String.class,
 		UUID.class,
 		URL.class,
@@ -99,18 +110,102 @@ public class DefaultImmutableTypeValidator implements IImmutableTypeValidator {
 		ZoneOffset.class,
 	};
 
+	/** List of the annotations that are known to mark the types as immutable.
+	 *
+	 * @since 0.12
+	 */
+	@SuppressWarnings("deprecation")
+	public static final Class<?>[] IMMUTABLE_TYPE_ANNOTATIONS = {
+		Data.class,
+		org.eclipse.xtend.lib.Data.class,
+	};
+
+	/** Finder of annotations.
+	 */
+	private AnnotationLookup annotationFinder;
+
+	/** Change the JVM annotation finder that is used by this immutable type validator.
+	 *
+	 * @param finder the new finder, must not be {@code null}.
+	 */
+	@Inject
+	public void setAnnotationLookup(AnnotationLookup finder) {
+		assert finder != null;
+		this.annotationFinder = finder;
+	}
+
 	@Override
 	public boolean isImmutable(LightweightTypeReference type) {
 		assert type != null;
-		final LightweightTypeReference ref = type.getPrimitiveIfWrapperType();
-		if (ref.isArray()) {
+		// Several special types are assumed to be always mutable
+		if (isAlwaysMutable(type)) {
 			return false;
 		}
-		if (ref.isPrimitive() || ref.isPrimitiveVoid()) {
+		// Even if the primitive wrappers are in the IMMUTABLE_TYPES list, this
+		// test enables to exit early from the function in case the type is a
+		// primitive type or one of the associated wrapper types
+		if (isAlwaysImmutable(type)) {
 			return true;
 		}
+		// Test if the type is annotated with one of the known annotations
+		if (hasImmutableAnnotation(type)) {
+			return true;
+		}
+		// Test the type itself
+		return isRegisteredImmutableType(type);
+	}
+
+	/** Replies if the given type is always assumed to be mutable.
+	 *
+	 * @param ref the type to test.
+	 * @return {@code true} if the given type is always mutable; or {@code false} if
+	 *     it is not known yet that the type is mutable or not.
+	 */
+	protected boolean isAlwaysMutable(LightweightTypeReference ref) {
+		return ref.isArray() || ref.isAnonymous() || ref.isAny() || ref.isUnknown() || ref.isFunctionType();
+	}
+
+	/** Replies if the given type is always assumed to be immutable.
+	 *
+	 * @param ref the type to test.
+	 * @return {@code true} if the given type is always immutable; or {@code false} if
+	 *     it is not known yet that the type is immutable or not.
+	 */
+	protected boolean isAlwaysImmutable(LightweightTypeReference ref) {
+		final LightweightTypeReference pref = ref.getPrimitiveIfWrapperType();
+		return pref.isPrimitive() || pref.isPrimitiveVoid();
+	}
+
+	/** Replies if the given type is marked with an annotation that makes it immutable.
+	 *
+	 * @param ref the type to test.
+	 * @return {@code true} if the given type is annotated with an immutable type annotation; or {@code false} if
+	 *     it is not known yet that the type is immutable or not.
+	 * @see #IMMUTABLE_TYPE_ANNOTATIONS
+	 */
+	protected boolean hasImmutableAnnotation(LightweightTypeReference ref) {
+		final JvmType backType = ref.getType();
+		if (backType instanceof JvmAnnotationTarget) {
+			final JvmAnnotationTarget target = (JvmAnnotationTarget) backType;
+			for (final Class<?> jvmType : IMMUTABLE_TYPE_ANNOTATIONS) {
+				if (this.annotationFinder.findAnnotation(target, jvmType.getCanonicalName()) != null) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	/** Replies if the given type is known as an immutable type.
+	 *
+	 * @param ref the type to test.
+	 * @return {@code true} if the given type is an immutable type; or {@code false} if
+	 *     it is not known yet that the type is immutable or not.
+	 * @see #IMMUTABLE_TYPES
+	 */
+	protected boolean isRegisteredImmutableType(LightweightTypeReference ref) {
 		for (final Class<?> jvmType : IMMUTABLE_TYPES) {
-			if (type.isSubtypeOf(jvmType)) {
+			if (ref.isSubtypeOf(jvmType)) {
 				return true;
 			}
 		}
