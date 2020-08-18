@@ -22,6 +22,7 @@
 package io.sarl.lang.typesystem;
 
 import java.io.File;
+import java.lang.annotation.Annotation;
 import java.net.InetAddress;
 import java.net.URI;
 import java.net.URL;
@@ -54,6 +55,8 @@ import org.eclipse.xtext.common.types.util.AnnotationLookup;
 import org.eclipse.xtext.util.Pair;
 import org.eclipse.xtext.xbase.typesystem.references.LightweightTypeReference;
 
+import io.sarl.lang.core.Event;
+
 /**
  * Tool for validating the types against their immutability.
  *
@@ -78,6 +81,7 @@ public class DefaultImmutableTypeValidator implements IImmutableTypeValidator {
 		UUID.class,
 		URL.class,
 		URI.class,
+		Annotation.class,
 		Enum.class,
 		Byte.class,
 		Short.class,
@@ -108,6 +112,9 @@ public class DefaultImmutableTypeValidator implements IImmutableTypeValidator {
 		ZonedDateTime.class,
 		ZoneId.class,
 		ZoneOffset.class,
+		Pair.class,
+		org.eclipse.xtext.xbase.lib.Pair.class,
+		Event.class,
 	};
 
 	/** List of the annotations that are known to mark the types as immutable.
