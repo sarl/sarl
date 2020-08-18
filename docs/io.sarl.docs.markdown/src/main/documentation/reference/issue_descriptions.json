@@ -195,7 +195,7 @@
 	{
 		"code": "io.sarl.lang.validation.IssueCodes.discouraged_occurrence_readonly_use",
 		"message": "Possible invalid usage of 'occurrence'. A impure function is detected into the sequence of calls on 'occurrence'. Because a impure function has a possible side effect and side effect is not allowed on 'occurrence', it may cause an unexpected or invalid running behavior. You have to ensure by yourself that the usage of 'occurrence' is valid",
-		"cause": "Message is clear",
+		"cause": "The keyword `occurrence` represents the current instance of the just-received event within a behavior unit. It is assumed within the SARL operational semantics that `occurrence` instance is an unmodifiable event in order to ensure consistency between the different behavior units that handle the `occurrence`. This message is generated one component of the `occurrence` event is used in a way that its value may be changed. The SARL compiler is not sure that a change is applied to the `occurrence` from the code analysis. It notifies you that you have to double check the usage of `occurrence` and validate that no side-effect exist on it. If the used component of `occurrence` is of immutable type, then this issue does not exist",
 		"solution": "Rewrite your code to avoid the use of the impure function(s)",
 		"level": "c/warning"
 	},
