@@ -93,6 +93,7 @@
 ### SARL Development Toolkit (SDK) and Programming Interface (API)
 
 * [Programmatic Access to the SARL Run-time Environment](./api/SRE.md)
+* [Naming and Namespaces](./api/Naming.md)
 
 ## Compilation and Generation Infrastructure
 
