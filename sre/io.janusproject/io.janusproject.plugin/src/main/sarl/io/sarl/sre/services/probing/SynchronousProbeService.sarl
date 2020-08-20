@@ -20,14 +20,15 @@
  */
 package io.sarl.sre.services.probing
 
+import io.sarl.api.naming.namespace.NamespaceService
 import io.sarl.api.naming.parser.INameParser
+import io.sarl.api.probing.Probe
 import io.sarl.sre.internal.SmartListenerCollection
 import java.net.URI
 import java.util.HashMap
 import java.util.Map
 import javax.inject.Inject
 import javax.inject.Provider
-import io.sarl.api.naming.namespace.NamespaceService
 
 /** 
  * This class is the implementation of a probe service that is updating the values synchronously.

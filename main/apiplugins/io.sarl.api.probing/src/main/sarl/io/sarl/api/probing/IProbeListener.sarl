@@ -18,25 +18,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.sre.services.probing
+package io.sarl.api.probing
 
 import java.util.EventListener
 
 /** 
- * Listener on probe releases.
+ * Listener on probe changes.
  * 
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.10
+ * @since 0.12
  */
-interface IProbeReleaseListener extends EventListener {
+interface IProbeListener extends EventListener {
 
-	/** Invoked when a probe was released.
+	/** Invoked when the value of a probe has changed.
 	 *
-	 * @param probe is the released probe. 
+	 * @param probe the probe that has changed.
 	 */
-	def onProbeReleasedProbe(probe : Probe<?>)
+	def probeValueChanged(probe : Probe<?>)
 
 }

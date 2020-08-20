@@ -24,12 +24,12 @@ package io.sarl.sre.tests.units.services.probing
 import io.sarl.api.naming.name.SarlName
 import io.sarl.api.naming.namespace.FieldAccess
 import io.sarl.api.naming.scheme.NameScheme
+import io.sarl.api.probing.IProbeListener
+import io.sarl.api.probing.IProbeReleaseListener
+import io.sarl.api.probing.Probe
 import io.sarl.sre.internal.SequenceListenerNotifier
 import io.sarl.sre.internal.SmartListenerCollection
 import io.sarl.sre.services.probing.FieldProbe
-import io.sarl.sre.services.probing.IProbeListener
-import io.sarl.sre.services.probing.IProbeReleaseListener
-import io.sarl.sre.services.probing.Probe
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension

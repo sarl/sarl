@@ -18,7 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.sre.services.probing
+package io.sarl.api.probing
 
 import java.net.URI
 
@@ -29,7 +29,7 @@ import java.net.URI
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.10
+ * @since 0.12
  */
 interface Probe<T> {
 

@@ -18,12 +18,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.sre.services.probing
+package io.sarl.api.probing
 
 import com.google.common.util.concurrent.Service
-import io.sarl.api.naming.name.SarlName
 import java.net.URI
 import java.util.Collection
+import io.sarl.api.naming.name.SarlName
 
 /** 
  * This service provides probing mechanisms.
@@ -32,7 +32,7 @@ import java.util.Collection
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.10
+ * @since 0.12
  */
 interface ProbeService extends Service {
 

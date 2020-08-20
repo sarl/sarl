@@ -21,6 +21,7 @@
 package io.sarl.sre.services.probing
 
 import io.sarl.api.naming.namespace.FieldAccess
+import io.sarl.api.probing.IProbeReleaseListener
 import io.sarl.sre.internal.SmartListenerCollection
 import java.net.URI
 import javax.inject.Provider

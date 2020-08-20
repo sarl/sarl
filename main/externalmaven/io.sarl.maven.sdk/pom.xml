@@ -30,6 +30,10 @@
 			<groupId>io.sarl</groupId>
 			<artifactId>io.sarl.api.naming</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>io.sarl</groupId>
+			<artifactId>io.sarl.api.probing</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

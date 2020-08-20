@@ -21,8 +21,8 @@
 
 package io.sarl.sre.tests.runtime.services.probing
 
-import io.sarl.sre.services.probing.Probe
-import io.sarl.sre.services.probing.ProbeService
+import io.sarl.api.probing.Probe
+import io.sarl.api.probing.ProbeService
 import io.sarl.sre.test.framework.context.SreRunContext
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.^extension.SreRunExtension
