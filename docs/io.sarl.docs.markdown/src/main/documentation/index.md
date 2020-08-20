@@ -90,6 +90,10 @@
 * [Comparison between SARL and other Languages](./reference/LanguageComparison.md)
 * [Compiler Errors](./reference/CompilerErrors.md)
 
+### SARL Development Toolkit (SDK) and Programming Interface (API)
+
+* [Programmatic Access to the SARL Run-time Environment](./api/SRE.md)
+
 ## Compilation and Generation Infrastructure
 
 * [Compiler Errors](./reference/CompilerErrors.md)

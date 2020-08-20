@@ -119,7 +119,9 @@ public interface SREBootstrap {
 	 * @param isOffline the offline flag.
 	 * @throws UnsupportedOperationException a runtime exception
 	 * @since 0.7
+	 * @deprecated since 0.12, no direct replacement
 	 */
+	@Deprecated
 	default void setOffline(boolean isOffline) {
 		throw new UnsupportedOperationException();
 	}
@@ -137,7 +139,7 @@ public interface SREBootstrap {
 	}
 
 	/**
-	 * Force the SRE platform to use a default context identifier that tis build upon the classname of the boot agent. It means
+	 * Force the SRE platform to use a default context identifier that is build upon the classname of the boot agent. It means
 	 * that the UUID is always the same for a given classname.
 	 *
 	 * <p>This function has no effect if the agent framework is already launched.
@@ -261,7 +263,7 @@ public interface SREBootstrap {
 	}
 
 	/**
-	 * Stop the SRE without an agent.
+	 * Stop the SRE.
 	 * This function may cause the agents to stop during the run of a behavior.
 	 * This function has no timeout.
 	 * This function returns when the kernel and all its services are stopped.
@@ -278,7 +280,7 @@ public interface SREBootstrap {
 	}
 
 	/**
-	 * Stop the SRE without an agent.
+	 * Stop the SRE.
 	 * This function may cause the agents to stop during the run of a behavior.
 	 * This function has no timeout.
 	 *
@@ -301,7 +303,7 @@ public interface SREBootstrap {
 	}
 
 	/**
-	 * Stop the SRE without an agent.
+	 * Stop the SRE.
 	 * This function may cause the agents to stop during the run of a behavior.
 	 * This function returns when the kernel and all its services are stopped.
 	 *

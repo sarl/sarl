@@ -11,23 +11,15 @@ The default SRE is the [Janus platform](http://www.janusproject.io).
 
 ## Definition of the SRE Bootstrap
 
-In the SARL API, a bootstrap is definition is provided.
+In the SARL API, a bootstrap definition is provided.
 It represents an access point to the SRE from any program.
-This access point may be used for accessing the features of the underlying SRE,
-independently of the implementation.
+This access point may be used for accessing by code the features of the underlying SRE,
+independently of the concrete implementation.
 In other words, the SRE Bootstrap gives access to the standard SRE functions without
 forcing you to add an explicit dependency to the SRE Library, e.g. Janus, into your
 application classpath.
 
-The SARL API defines a SRE bootstrap as:
-
-		[:ShowType:]([:bootstrap]$io.sarl.bootstrap.SREBootstrap$)
-
-
-A run-time environment, such as [Janus](http://www.janusproject.io) must provide a service implementing this bootstrap interface.
-The standard Java service management feature is used. in other words, the SRE should
-[declare the service implementation](https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html) into
-its `META-INF/services/[:bootstrap!]` file.
+The definition of the SARL API for using the bootstrap is detailled in the [reference page on SRE](../api/SRE.md).
 
 
 ## Using the SRE Bootstrap
@@ -78,7 +70,7 @@ It is the role of the SARL run-time environment to create this instance for you,
 
 
 In the case you want to launch more than one agent programmatically,
-you could call the [:startfct:] function the number of times you need.
+you could call the [:startfct:] function with the number of agent instances you need.
 
 
 ## Direct Access to the API of the Janus SRE
