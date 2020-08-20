@@ -24,8 +24,11 @@ import com.google.inject.AbstractModule
 import com.google.inject.Module
 import io.bootique.BQModule
 import io.bootique.BQModuleProvider
-import io.sarl.sre.naming.INameParser
-import io.sarl.sre.naming.NameParser
+import io.sarl.api.naming.parser.UriBasedNameParser
+import io.sarl.api.naming.parser.INameParser
+import io.sarl.api.naming.parser.ISchemeNameParser
+import java.util.Set
+import javax.inject.Inject
 import javax.inject.Singleton
 
 /** 
@@ -40,7 +43,26 @@ import javax.inject.Singleton
 class NameParserModule extends AbstractModule {
 
 	protected override configure {
-		typeof(INameParser).bind.to(typeof(NameParser)).in(typeof(Singleton))
+		typeof(INameParser).bind.to(typeof(InjectedNameParser)).in(typeof(Singleton))
+	}
+
+	/** 
+	 * Injectable implementation of the name parser.
+	 * 
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.12
+	 */
+	static class InjectedNameParser extends UriBasedNameParser {
+
+		@SuppressWarnings("raw_type")
+		@Inject
+		override setSchemeNameParsers(@SchemeNameParsers parsers : Set<ISchemeNameParser>) {
+			super.setSchemeNameParsers(parsers)
+		}
+
 	}
 
 }

@@ -22,6 +22,7 @@
 			<modules>
 				<module>io.sarl.util</module>
 				<module>io.sarl.core</module>
+				<module>io.sarl.api.naming</module>
 				<module>io.sarl.api.bootiquebase</module>
 			</modules>
 		</profile>

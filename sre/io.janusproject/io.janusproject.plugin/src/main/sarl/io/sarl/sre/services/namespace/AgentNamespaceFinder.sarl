@@ -20,9 +20,9 @@
  */
 package io.sarl.sre.services.namespace
 
+import io.sarl.api.naming.name.AgentName
+import io.sarl.api.naming.scheme.NameScheme
 import io.sarl.lang.core.Agent
-import io.sarl.sre.naming.AgentName
-import io.sarl.sre.naming.NameScheme
 import io.sarl.sre.services.context.ContextService
 import javax.inject.Inject
 import javax.inject.Singleton

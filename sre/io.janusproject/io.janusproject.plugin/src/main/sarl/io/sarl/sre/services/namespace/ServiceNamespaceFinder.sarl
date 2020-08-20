@@ -22,10 +22,11 @@ package io.sarl.sre.services.namespace
 
 import com.google.common.util.concurrent.Service
 import com.google.inject.Injector
-import io.sarl.sre.naming.NameScheme
-import io.sarl.sre.naming.ServiceName
-import org.eclipse.xtend.lib.annotations.Accessors
+import io.sarl.api.naming.name.ServiceName
+import io.sarl.api.naming.namespace.INamespaceFinder
+import io.sarl.api.naming.scheme.NameScheme
 import javax.inject.Inject
+import org.eclipse.xtend.lib.annotations.Accessors
 
 /** 
  * Implementation of a finder of service into the namespaces.

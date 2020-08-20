@@ -21,10 +21,10 @@
 
 package io.sarl.sre.tests.units.services.namespace
 
+import io.sarl.api.naming.name.SpaceName
+import io.sarl.api.naming.scheme.NameScheme
 import io.sarl.core.OpenEventSpace
 import io.sarl.lang.annotation.PrivateAPI
-import io.sarl.sre.naming.NameScheme
-import io.sarl.sre.naming.SpaceName
 import io.sarl.sre.services.context.Context
 import io.sarl.sre.services.context.ContextService
 import io.sarl.sre.services.namespace.SpaceNamespaceFinder

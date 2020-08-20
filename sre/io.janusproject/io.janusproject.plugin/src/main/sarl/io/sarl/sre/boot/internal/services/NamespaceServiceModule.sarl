@@ -25,8 +25,11 @@ import com.google.inject.AbstractModule
 import com.google.inject.Module
 import io.bootique.BQModule
 import io.bootique.BQModuleProvider
-import io.sarl.sre.services.namespace.FinderBasedNamespaceService
-import io.sarl.sre.services.namespace.NamespaceService
+import io.sarl.api.naming.namespace.FinderBasedNamespaceService
+import io.sarl.api.naming.namespace.INamespaceFinder
+import io.sarl.api.naming.namespace.NamespaceService
+import java.util.Set
+import javax.inject.Inject
 import javax.inject.Singleton
 
 import static extension com.google.inject.multibindings.Multibinder.*
@@ -43,9 +46,28 @@ import static extension com.google.inject.multibindings.Multibinder.*
 class NamespaceServiceModule extends AbstractModule {
 
 	protected override configure {
-		typeof(NamespaceService).bind.to(typeof(FinderBasedNamespaceService)).in(typeof(Singleton))
+		typeof(NamespaceService).bind.to(typeof(InjectedFinderBasedNamespaceService)).in(typeof(Singleton))
 
 		binder.newSetBinder(typeof(Service), typeof(SreServices)).addBinding.to(typeof(NamespaceService))
+	}
+
+	/** 
+	 * Injectable implementation of the name space service.
+	 * 
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.12
+	 */
+	static class InjectedFinderBasedNamespaceService extends FinderBasedNamespaceService {
+
+		@SuppressWarnings("raw_type")
+		@Inject
+		def setNamespaceFinders(finders : Set<INamespaceFinder>) {
+			super.setNamespaceFinders(finders)
+		}
+
 	}
 
 }

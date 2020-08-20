@@ -20,12 +20,12 @@
  */
 package io.sarl.sre.services.namespace
 
+import io.sarl.api.naming.name.BehaviorName
+import io.sarl.api.naming.scheme.NameScheme
 import io.sarl.core.Behaviors
 import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Behavior
 import io.sarl.lang.core.SREutils
-import io.sarl.sre.naming.BehaviorName
-import io.sarl.sre.naming.NameScheme
 import io.sarl.sre.services.context.ContextService
 import javax.inject.Inject
 import javax.inject.Singleton

@@ -25,6 +25,7 @@
 		<module>io.sarl.lang.tests</module>
 		<module>io.sarl.util.tests</module>
 		<module>io.sarl.core.tests</module>
+		<module>io.sarl.api.naming.tests</module>
 		<module>sarl-maven-plugin.tests</module>
 		<module>io.sarl.maven.docs.generator.tests</module>
 

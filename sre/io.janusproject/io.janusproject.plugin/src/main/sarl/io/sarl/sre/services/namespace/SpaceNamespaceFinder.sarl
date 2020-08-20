@@ -20,9 +20,9 @@
  */
 package io.sarl.sre.services.namespace
 
+import io.sarl.api.naming.name.SpaceName
+import io.sarl.api.naming.scheme.NameScheme
 import io.sarl.lang.core.Space
-import io.sarl.sre.naming.NameScheme
-import io.sarl.sre.naming.SpaceName
 import io.sarl.sre.services.context.Context
 import io.sarl.sre.services.context.ContextService
 import javax.inject.Inject

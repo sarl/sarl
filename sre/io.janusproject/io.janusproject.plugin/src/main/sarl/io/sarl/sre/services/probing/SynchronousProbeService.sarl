@@ -20,14 +20,14 @@
  */
 package io.sarl.sre.services.probing
 
+import io.sarl.api.naming.parser.INameParser
 import io.sarl.sre.internal.SmartListenerCollection
-import io.sarl.sre.naming.NameParser
-import io.sarl.sre.services.namespace.NamespaceService
 import java.net.URI
 import java.util.HashMap
 import java.util.Map
 import javax.inject.Inject
 import javax.inject.Provider
+import io.sarl.api.naming.namespace.NamespaceService
 
 /** 
  * This class is the implementation of a probe service that is updating the values synchronously.
@@ -50,7 +50,7 @@ class SynchronousProbeService extends AbstractProbeService {
 	 * @param lockProvider the provider of synchronization locks.
 	 */
 	@Inject
-	new (namespaceService : NamespaceService, nameParser : NameParser,
+	new (namespaceService : NamespaceService, nameParser : INameParser,
 		listenerCollectionProvider : Provider<SmartListenerCollection<?>>) {
 		this(new HashMap, namespaceService, nameParser, listenerCollectionProvider)
 	}
@@ -63,7 +63,7 @@ class SynchronousProbeService extends AbstractProbeService {
 	 * @param listenerCollectionProvider the provider of listener collections. 
 	 * @param lockProvider the provider of synchronization locks.
 	 */
-	new (internalStructure : Map<URI, Probe<?>>, namespaceService : NamespaceService, nameParser : NameParser,
+	new (internalStructure : Map<URI, Probe<?>>, namespaceService : NamespaceService, nameParser : INameParser,
 		listenerCollectionProvider : Provider<SmartListenerCollection<?>>) {
 		super(internalStructure, namespaceService, nameParser, listenerCollectionProvider)
 	}

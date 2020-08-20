@@ -9,6 +9,7 @@ Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: io.sarl.core;bundle-version="0.12.0",
  io.sarl.util;bundle-version="0.12.0",
+ io.sarl.api.naming;bundle-version="0.12.0",
  io.sarl.api.bootiquebase;bundle-version="0.12.0",
  io.bootique;bundle-version="1.1.0",
  org.arakhne.afc.bootique.variables;bundle-version="16.0.0",
@@ -80,7 +81,6 @@ Export-Package: io.sarl.sre;
    com.google.inject,
    org.eclipse.osgi.util,
    io.sarl.sre.services.executor,
-   io.sarl.sre.naming,
    org.arakhne.afc.bootique.log4j.configs,
    javax.inject",
  io.sarl.sre.boot.internal.skills;
@@ -102,7 +102,6 @@ Export-Package: io.sarl.sre;
    org.arakhne.afc.util,
    io.sarl.sre.services.lifecycle",
  io.sarl.sre.internal.eventguard,
- io.sarl.sre.naming,
  io.sarl.sre.services;
   uses:="io.sarl.sre.boot.configs,
    org.eclipse.osgi.util,

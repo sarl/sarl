@@ -21,15 +21,14 @@
 
 package io.sarl.sre.tests.units.services.probing
 
+import io.sarl.api.naming.name.ContextName
+import io.sarl.api.naming.name.SarlName
+import io.sarl.api.naming.namespace.FieldAccess
+import io.sarl.api.naming.parser.UriBasedNameParser
+import io.sarl.api.naming.scheme.NameScheme
 import io.sarl.sre.internal.SequenceListenerNotifier
 import io.sarl.sre.internal.SmartListenerCollection
-import io.sarl.sre.naming.ContextName
-import io.sarl.sre.naming.NameParser
-import io.sarl.sre.naming.NameScheme
-import io.sarl.sre.naming.SarlName
 import io.sarl.sre.services.executor.ExecutorService
-import io.sarl.sre.services.namespace.FieldAccess
-import io.sarl.sre.services.namespace.NamespaceService
 import io.sarl.sre.services.probing.AsynchronousProbeService
 import io.sarl.sre.services.probing.Probe
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
@@ -57,6 +56,7 @@ import static extension org.mockito.ArgumentMatchers.any
 import static extension org.mockito.Mockito.spy
 import static extension org.mockito.Mockito.times
 import static extension org.mockito.Mockito.verify
+import io.sarl.api.naming.namespace.NamespaceService
 
 /**
  * @author $Author: sgalland$
@@ -82,7 +82,7 @@ class AsynchronousProbeServiceTest {
 	var namespaceService : NamespaceService
 
 	@Nullable
-	var nameParser : NameParser
+	var nameParser : UriBasedNameParser
 
 	@Nullable
 	var executorService : ExecutorService
@@ -107,7 +107,7 @@ class AsynchronousProbeServiceTest {
 		when(this.fieldAccess.name).thenReturn(this.nameObject)
 		this.namespaceService = typeof(NamespaceService).mock
 		when(this.namespaceService.findObject(typeof(SarlName).any)).thenReturn(this.fieldAccess)
-		this.nameParser = typeof(NameParser).mock
+		this.nameParser = typeof(UriBasedNameParser).mock
 		when(this.nameParser.normalize(any(typeof(URI)))).thenAnswer[it.getArgument(0)]
 		when(this.nameParser.decode(any(typeof(URI)))).thenAnswer [
 			if (it.getArgument(0) === this.uri0) {

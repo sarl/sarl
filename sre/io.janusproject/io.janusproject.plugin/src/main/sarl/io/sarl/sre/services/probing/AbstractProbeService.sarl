@@ -20,18 +20,18 @@
  */
 package io.sarl.sre.services.probing
 
+import io.sarl.api.naming.name.SarlName
+import io.sarl.api.naming.namespace.FieldAccess
+import io.sarl.api.naming.parser.INameParser
 import io.sarl.sre.internal.SmartListenerCollection
-import io.sarl.sre.naming.NameParser
-import io.sarl.sre.naming.SarlName
 import io.sarl.sre.services.AbstractSreService
-import io.sarl.sre.services.namespace.FieldAccess
-import io.sarl.sre.services.namespace.NamespaceService
 import java.net.URI
 import java.util.Collection
 import java.util.Map
 import java.util.UUID
 import java.util.concurrent.ConcurrentLinkedDeque
 import javax.inject.Provider
+import io.sarl.api.naming.namespace.NamespaceService
 
 /** 
  * This class is the standard implementation of a probe service.
@@ -46,7 +46,7 @@ abstract class AbstractProbeService extends AbstractSreService implements ProbeS
 
 	val namespace : NamespaceService
 
-	val nameParser : NameParser
+	val nameParser : INameParser
 
 	val probes : Map<URI, Probe<?>>
 
@@ -60,7 +60,7 @@ abstract class AbstractProbeService extends AbstractSreService implements ProbeS
 	 * @param listenerCollectionProvider the provider of listener collections. 
 	 * @param lockProvider the provider of synchronization locks.
 	 */
-	protected new (internalStructure : Map<URI, Probe<?>>, namespaceService : NamespaceService, nameParser : NameParser,
+	protected new (internalStructure : Map<URI, Probe<?>>, namespaceService : NamespaceService, nameParser : INameParser,
 		listenerCollectionProvider : Provider<SmartListenerCollection<?>>) {
 		this.probes = internalStructure
 		this.namespace = namespaceService

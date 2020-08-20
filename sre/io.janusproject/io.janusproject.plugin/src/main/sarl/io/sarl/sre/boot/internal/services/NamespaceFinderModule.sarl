@@ -25,10 +25,10 @@ import com.google.inject.BindingAnnotation
 import com.google.inject.Module
 import io.bootique.BQModule
 import io.bootique.BQModuleProvider
+import io.sarl.api.naming.namespace.INamespaceFinder
 import io.sarl.sre.services.namespace.AgentNamespaceFinder
 import io.sarl.sre.services.namespace.BehaviorNamespaceFinder
 import io.sarl.sre.services.namespace.ContextNamespaceFinder
-import io.sarl.sre.services.namespace.INamespaceFinder
 import io.sarl.sre.services.namespace.ServiceNamespaceFinder
 import io.sarl.sre.services.namespace.SkillNamespaceFinder
 import io.sarl.sre.services.namespace.SpaceNamespaceFinder

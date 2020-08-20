@@ -21,14 +21,14 @@
 package io.sarl.sre.services.probing
 
 import com.google.common.util.concurrent.Service
+import io.sarl.api.naming.namespace.FieldAccess
+import io.sarl.api.naming.scheme.NameScheme
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AgentTrait
 import io.sarl.lang.core.Behavior
 import io.sarl.sre.internal.SmartListenerCollection
-import io.sarl.sre.naming.NameScheme
 import io.sarl.sre.services.lifecycle.AgentLife
 import io.sarl.sre.services.lifecycle.BehaviorLife
-import io.sarl.sre.services.namespace.FieldAccess
 import java.net.URI
 import javax.inject.Provider
 import org.eclipse.xtend.lib.annotations.Accessors

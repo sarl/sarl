@@ -25,13 +25,13 @@ import com.google.inject.BindingAnnotation
 import com.google.inject.Module
 import io.bootique.BQModule
 import io.bootique.BQModuleProvider
-import io.sarl.sre.naming.AgentSchemeNameParser
-import io.sarl.sre.naming.BehaviorSchemeNameParser
-import io.sarl.sre.naming.ContextSchemeNameParser
-import io.sarl.sre.naming.ISchemeNameParser
-import io.sarl.sre.naming.ServiceSchemeNameParser
-import io.sarl.sre.naming.SkillSchemeNameParser
-import io.sarl.sre.naming.SpaceSchemeNameParser
+import io.sarl.api.naming.parser.AgentSchemeNameParser
+import io.sarl.api.naming.parser.BehaviorSchemeNameParser
+import io.sarl.api.naming.parser.ContextSchemeNameParser
+import io.sarl.api.naming.parser.ISchemeNameParser
+import io.sarl.api.naming.parser.ServiceSchemeNameParser
+import io.sarl.api.naming.parser.SkillSchemeNameParser
+import io.sarl.api.naming.parser.SpaceSchemeNameParser
 import java.lang.annotation.Retention
 import java.lang.annotation.Target
 

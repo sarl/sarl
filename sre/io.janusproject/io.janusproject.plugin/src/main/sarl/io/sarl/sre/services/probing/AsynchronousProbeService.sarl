@@ -21,15 +21,15 @@
 package io.sarl.sre.services.probing
 
 import io.sarl.sre.internal.SmartListenerCollection
-import io.sarl.sre.naming.NameParser
 import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.executor.Runnables
-import io.sarl.sre.services.namespace.NamespaceService
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 import javax.inject.Provider
 import org.eclipse.xtend.lib.annotations.Accessors
-import java.util.concurrent.ConcurrentHashMap
+import io.sarl.api.naming.parser.INameParser
+import io.sarl.api.naming.namespace.NamespaceService
 
 /** 
  * This class is the implementation of a probe service that is updating the values asynchronously.
@@ -62,7 +62,7 @@ class AsynchronousProbeService extends AbstractProbeService {
 	 * @param lockProvider the provider of synchronization locks.
 	 */
 	@Inject
-	new (service : ExecutorService, namespaceService : NamespaceService, nameParser : NameParser,
+	new (service : ExecutorService, namespaceService : NamespaceService, nameParser : INameParser,
 		listenerCollectionProvider : Provider<SmartListenerCollection<?>>) {
 		super(new ConcurrentHashMap, namespaceService, nameParser, listenerCollectionProvider)
 		this.executor = service

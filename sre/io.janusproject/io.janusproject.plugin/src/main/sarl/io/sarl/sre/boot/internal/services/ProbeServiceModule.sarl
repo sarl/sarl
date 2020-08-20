@@ -27,11 +27,11 @@ import com.google.inject.Module
 import com.google.inject.Provides
 import io.bootique.BQModule
 import io.bootique.BQModuleProvider
+import io.sarl.api.naming.namespace.NamespaceService
+import io.sarl.api.naming.parser.INameParser
 import io.sarl.sre.boot.configs.SreConfig
 import io.sarl.sre.internal.SmartListenerCollection
-import io.sarl.sre.naming.NameParser
 import io.sarl.sre.services.executor.ExecutorService
-import io.sarl.sre.services.namespace.NamespaceService
 import io.sarl.sre.services.probing.AsynchronousProbeService
 import io.sarl.sre.services.probing.ProbeService
 import io.sarl.sre.services.probing.SynchronousProbeService
@@ -66,7 +66,7 @@ class ProbeServiceModule extends AbstractModule {
 	@Provides
 	def providesProbeService(sreConfig : Provider<SreConfig>, injector : Injector,
 		service : Provider<ExecutorService>, namespaceService : Provider<NamespaceService>,
-		nameParser : Provider<NameParser>,
+		nameParser : Provider<INameParser>,
 		listenerCollectionProvider : Provider<SmartListenerCollection<?>>) : ProbeService {
 		var ps : ProbeService
 		var cfgInstance = sreConfig.get
