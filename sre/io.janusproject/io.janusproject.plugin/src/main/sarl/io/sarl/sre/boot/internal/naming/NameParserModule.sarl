@@ -46,23 +46,23 @@ class NameParserModule extends AbstractModule {
 		typeof(INameParser).bind.to(typeof(InjectedNameParser)).in(typeof(Singleton))
 	}
 
-	/** 
-	 * Injectable implementation of the name parser.
-	 * 
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 0.12
-	 */
-	static class InjectedNameParser extends UriBasedNameParser {
+}
 
-		@SuppressWarnings("raw_type")
-		@Inject
-		override setSchemeNameParsers(@SchemeNameParsers parsers : Set<ISchemeNameParser>) {
-			super.setSchemeNameParsers(parsers)
-		}
+/** 
+ * Injectable implementation of the name parser.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+class InjectedNameParser extends UriBasedNameParser {
 
+	@SuppressWarnings("raw_type")
+	@Inject
+	override setSchemeNameParsers(@SchemeNameParsers parsers : Set<ISchemeNameParser>) {
+		super.setSchemeNameParsers(parsers)
 	}
 
 }

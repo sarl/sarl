@@ -20,12 +20,9 @@
  */
 package io.sarl.api.naming.namespace
 
-import io.sarl.api.naming.name.SarlName
-import io.sarl.api.naming.namespace.FieldAccess
-import io.sarl.api.naming.namespace.NamespaceService
-import io.sarl.api.naming.parser.INameParser
-import javax.inject.Inject
 import com.google.common.util.concurrent.AbstractService
+import io.sarl.api.naming.name.SarlName
+import io.sarl.api.naming.parser.INameParser
 
 /** 
  * Abstract implementation of a service that manages name spaces into the SRE.
@@ -81,10 +78,11 @@ abstract class AbstractNamespaceService extends AbstractService implements Names
 
 	/** Change the name parser used by this service.
 	 *
+	 * <p>This function could be overloaded by sub-types in order to inject the name parser.
+	 * 
 	 * @param parser the name parser, never {@code null}
 	 * @since 0.11
 	 */
-	@Inject
 	def setNameParser(parser : INameParser) {
 		this.nameParser = parser
 	}

@@ -5,6 +5,12 @@
 **/io.sarl.util/src/main/generated-sources/
 **/io.sarl.api.bootiquebase/src-gen/
 **/io.sarl.api.bootiquebase/src/main/generated-sources/
+**/io.sarl.api.naming/src-gen/
+**/io.sarl.api.naming/src/main/generated-sources/
+**/io.sarl.api.naming.tests/src-gen/
+**/io.sarl.api.naming.tests/src/test/generated-sources/
+**/io.sarl.api.probing/src-gen/
+**/io.sarl.api.probing/src/main/generated-sources/
 **/io.sarl.javafx/src-gen/
 **/io.sarl.javafx/src/main/generated-sources/
 **/io.sarl.lang.ui/src/main/generated-sources/

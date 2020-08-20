@@ -33,6 +33,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 import static extension com.google.inject.multibindings.Multibinder.*
+import io.sarl.api.naming.parser.INameParser
 
 /** 
  * Module for the namespace services.
@@ -51,23 +52,28 @@ class NamespaceServiceModule extends AbstractModule {
 		binder.newSetBinder(typeof(Service), typeof(SreServices)).addBinding.to(typeof(NamespaceService))
 	}
 
-	/** 
-	 * Injectable implementation of the name space service.
-	 * 
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 0.12
-	 */
-	static class InjectedFinderBasedNamespaceService extends FinderBasedNamespaceService {
+}
 
-		@SuppressWarnings("raw_type")
-		@Inject
-		def setNamespaceFinders(finders : Set<INamespaceFinder>) {
-			super.setNamespaceFinders(finders)
-		}
+/** 
+ * Injectable implementation of the name space service.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+class InjectedFinderBasedNamespaceService extends FinderBasedNamespaceService {
 
+	@Inject
+	def setNameParser(parser : INameParser) {
+		super.setNameParser(parser)
+	}
+
+	@SuppressWarnings("raw_type")
+	@Inject
+	def setNamespaceFinders(@NamespaceFinders finders : Set<INamespaceFinder>) {
+		super.setNamespaceFinders(finders)
 	}
 
 }
