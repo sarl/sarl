@@ -97,7 +97,7 @@ For starting the SRE without agent, you have to invoke [:startWithoutAgentFct:]:
 				static def main(arguments : String*) {
 					[:On]
 					var bootstrap = SRE::getBootstrap
-					var context = boostrap.[:startWithoutAgentFct](startWithoutAgent)
+					var context = bootstrap.[:startWithoutAgentFct](startWithoutAgent)
 					[:Off]			
 				}
 			}
@@ -119,7 +119,7 @@ Both of them are launching an agent of a given type. For example, the following 
 				static def main(arguments : String*) {
 					[:On]
 					var bootstrap = SRE::getBootstrap
-					var context = boostrap.[:startAgentFct](startAgent)(typeof([:myagent!]))
+					bootstrap.[:startAgentFct](startAgent)(typeof([:myagent!]))
 					[:Off]			
 				}
 			}
@@ -136,7 +136,7 @@ In the following example, [:numberofagents!] agents are launched into the SRE.
 				static def main(arguments : String*) {
 					[:On]
 					var bootstrap = SRE::getBootstrap
-					var context = boostrap.startAgent([:numberofagents](5), typeof([:myagent!]))
+					bootstrap.startAgent([:numberofagents](5), typeof([:myagent!]))
 					[:Off]			
 				}
 			}
@@ -155,8 +155,8 @@ precision floating point number [:param2:].
 				static def main(arguments : String*) {
 					[:On]
 					var bootstrap = SRE::getBootstrap
-					var context = boostrap.startAgent([:numberofagents](5), typeof([:myagent!]), [:param1]("arg1"), [:param2](4.5))
-					[:Off]			
+					bootstrap.startAgent(typeof([:myagent!]), [:param1]$"arg1"$, [:param2]$4.5$)
+					[:Off]
 				}
 			}
 		[:End:]
@@ -195,7 +195,7 @@ This function enables to pass initialization arguments to the launched agent.
 					[:On]
 					var theIdentifier : UUID = computeOrGetTheAgentIdentifier()
 					var bootstrap = SRE::getBootstrap
-					boostrap.[:startAgentWithIDFct](startAgentWithID)(typeof([:myagent!]), theIdentifier)
+					bootstrap.[:startAgentWithIDFct](startAgentWithID)(typeof([:myagent!]), theIdentifier)
 					[:Off]			
 				}
 			}
@@ -234,12 +234,12 @@ the SRE is stopping. The following code shows you the start and stop of the SRE.
 		[:Success:]
 			package io.sarl.docs.bootstrap
 			import io.sarl.bootstrap.SRE
-			agent [:MyAgent!] {}
+			agent [:myagent!] {}
 			class MyProgram {
 				static def main(arguments : String*) {
 					[:On]
 					var bootstrap = SRE::getBootstrap
-					boostrap.startAgent([:numberofagents!], typeof([:myagent!]))
+					bootstrap.startAgent([:numberofagents!], typeof([:myagent!]))
 					bootstrap.[:shutdownFct](shutdown)
 					[:Off]
 				}
@@ -253,12 +253,12 @@ In the following example, we are waiting 15 seconds for stopping the SRE.
 		[:Success:]
 			package io.sarl.docs.bootstrap
 			import io.sarl.bootstrap.SRE
-			agent [:MyAgent!] {}
+			agent [:myagent!] {}
 			class MyProgram {
 				static def main(arguments : String*) {
 					[:On]
 					var bootstrap = SRE::getBootstrap
-					boostrap.startAgent([:numberofagents!], typeof([:myagent!]))
+					bootstrap.startAgent([:numberofagents!], typeof([:myagent!]))
 					bootstrap.[:shutdownFct](shutdown)(1500)
 					[:Off]
 				}
@@ -290,13 +290,13 @@ The following functions are provided on the SRE bootstrap to change the SRE conf
 			class MyProgram {
 				static def main(arguments : String*) {
 					var bootstrap = SRE::getBootstrap
-					bootstrap.[:setRandomContextUUID](setRandomContextUUID)
-					bootstrap.[:setBootAgentTypeContextUUID](setBootAgentTypeContextUUID)
-					bootstrap.[:setSpecificContextUUID](setSpecificContextUUID)
-					bootstrap.[:setUniverseContextUUID](setUniverseContextUUID)(UUID:randomUUID)
-					var id0 : UUID = bootstrap.[:getUniverseContextUUID](getUniverseContextUUID)
-					bootstrap.[:setUniverseSpaceUUID](setUniverseSpaceUUID)(UUID:randomUUID)
-					var id1 : UUID = bootstrap.[:getUniverseSpaceUUID](getUniverseSpaceUUID)
+					bootstrap.[:setRandomContextUUID]$setRandomContextUUID$
+					bootstrap.[:setBootAgentTypeContextUUID]$setBootAgentTypeContextUUID$
+					bootstrap.[:setSpecificContextUUID]$setSpecificContextUUID$
+					bootstrap.[:setUniverseContextUUID]$setUniverseContextUUID$(UUID::randomUUID)
+					var id0 : UUID = bootstrap.[:getUniverseContextUUID]$getUniverseContextUUID$
+					bootstrap.[:setUniverseSpaceUUID]$setUniverseSpaceUUID$(UUID::randomUUID)
+					var id1 : UUID = bootstrap.[:getUniverseSpaceUUID]$getUniverseSpaceUUID$
 				}
 			}
 		[:End:]
@@ -333,7 +333,7 @@ You could control in a generic way the verbose level of the kernel logger by cal
 			class MyProgram {
 				static def main(arguments : String*) {
 					[:On]
-					var [bootstrap = [:sre](SRE)::getBootstrap
+					var bootstrap = SRE::getBootstrap
 					bootstrap.[:setVerboseLevelFct](setVerboseLevel)(2)
 					[:Off]
 				}

@@ -27,6 +27,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.TypeVariable;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -2652,9 +2653,26 @@ public class SarlDocumentationParser {
 				return ""; //$NON-NLS-1$
 			}
 
+			private void appendGenericTypes(StringBuilder it, Class<?> type) {
+				if (type.getTypeParameters() != null && type.getTypeParameters().length > 0) {
+					it.append("<"); //$NON-NLS-1$
+					boolean first = true;
+					for (final TypeVariable<?> genType : type.getTypeParameters()) {
+						if (first) {
+							first = false;
+						} else {
+							it.append(", ");
+						}
+						it.append(genType.getName());
+					}
+					it.append(">"); //$NON-NLS-1$
+				}
+			}
+
 			private String extractInterface(Class<?> type) {
 				final StringBuilder it = new StringBuilder();
 				it.append("interface ").append(type.getSimpleName()); //$NON-NLS-1$
+				appendGenericTypes(it, type);
 				if (type.getSuperclass() != null && !Object.class.equals(type.getSuperclass())) {
 					it.append(" extends ").append(type.getSuperclass().getSimpleName()); //$NON-NLS-1$
 				}
@@ -2677,7 +2695,7 @@ public class SarlDocumentationParser {
 
 			private String extractAnnotation(Class<?> type) {
 				final StringBuilder it = new StringBuilder();
-				it.append("interface ").append(type.getSimpleName()); //$NON-NLS-1$
+				it.append("annotation ").append(type.getSimpleName()); //$NON-NLS-1$
 				it.append(" {\n"); //$NON-NLS-1$
 				ReflectExtensions.appendPublicMethods(it, true, type);
 				it.append("}"); //$NON-NLS-1$
@@ -2686,7 +2704,8 @@ public class SarlDocumentationParser {
 
 			private String extractClass(Class<?> type) {
 				final StringBuilder it = new StringBuilder();
-				it.append("interface ").append(type.getSimpleName()); //$NON-NLS-1$
+				it.append("class ").append(type.getSimpleName()); //$NON-NLS-1$
+				appendGenericTypes(it, type);
 				if (type.getSuperclass() != null && !Object.class.equals(type.getSuperclass())) {
 					it.append(" extends ").append(type.getSuperclass().getSimpleName()); //$NON-NLS-1$
 				}

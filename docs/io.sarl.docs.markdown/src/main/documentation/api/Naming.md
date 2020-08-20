@@ -167,7 +167,8 @@ The Namespace service is defined as:
 
 		[:ShowType:](io.sarl.api.naming.namespace.NamespaceService)
 
-The functions `findObject` search for an object based on the given name (whatever it is an object of type `SarlName` representing the super-type of all the names, or a string representation of the URI).
+The functions `findObject` search for an object based on the given name (whatever it is an object of type
+`SarlName` representing the super-type of all the names, an URI, or a string representation of an URI).
 
 To use this service, you have to get it from the SRE, as illustrated below:
 
@@ -179,7 +180,7 @@ To use this service, you have to get it from the SRE, as illustrated below:
 				static def main(arguments : String*) {
 					[:On]
 					var bootstrap = SRE::getBootstrap
-					var namingService = boostrap.getService(typeof(NamespaceService))
+					var namingService = bootstrap.getService(typeof(NamespaceService))
 					var theAgent = namingService.findObject("agent:a7fbd4cc-9e1a-48c3-8ee8-3a7974ccb05c")
 					[:Off]			
 				}

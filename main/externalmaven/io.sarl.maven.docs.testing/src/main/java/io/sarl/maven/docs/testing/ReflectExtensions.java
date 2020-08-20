@@ -29,6 +29,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 import java.net.URL;
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -151,12 +153,27 @@ public final class ReflectExtensions {
 	 */
 	public static void appendPublicMethods(StringBuilder it, boolean indent, Function<Method, String> nameFormatter, 
 			Iterable<? extends Class<?>> types) {
+		appendMethods(it, indent, nameFormatter, types, (it0) -> {
+			return Flags.isPublic(it0.getModifiers()) && !Utils.isHiddenMember(it0.getName())
+				&& !isDeprecated(it0) && !it0.isSynthetic()
+				&& it0.getAnnotation(SyntheticMember.class) == null;
+		});
+	}
+
+	/** Extract the methods from the given types.
+	 *
+	 * @param it the output.
+	 * @param indent indicates if the code should be indented.
+	 * @param nameFormatter the formatter for the function's names. If {@code null}, no formatting is applied.
+	 * @param types the types to parse.
+	 * @param selector the selector of method.
+	 */
+	private static void appendMethods(StringBuilder it, boolean indent, Function<Method, String> nameFormatter, 
+			Iterable<? extends Class<?>> types, Predicate<Method> selector) {
 		final List<String> lines = new LinkedList<>();
 		for (final Class<?> type : types) {
 			for (final Method method : type.getDeclaredMethods()) {
-				if (Flags.isPublic(method.getModifiers()) && !Utils.isHiddenMember(method.getName())
-						&& !isDeprecated(method) && !method.isSynthetic()
-						&& method.getAnnotation(SyntheticMember.class) == null) {
+				if (selector.test(method)) {
 					final StringBuilder line = new StringBuilder();
 					if (indent) {
 						line.append("\t"); //$NON-NLS-1$
@@ -198,6 +215,16 @@ public final class ReflectExtensions {
 							&& !Objects.equals(method.getGenericReturnType(), void.class)) {
 						line.append(" : "); //$NON-NLS-1$
 						toType(line, method.getGenericReturnType(), false);
+					}
+					boolean first = true;
+					for (final TypeVariable<Method> typeVariable : method.getTypeParameters()) {
+						if (first) {
+							line.append(" with ");
+							first = false;
+						} else {
+							line.append(", ");
+						}
+						line.append(typeVariable.getTypeName());
 					}
 					line.append("\n"); //$NON-NLS-1$
 					lines.add(line.toString());
@@ -316,6 +343,8 @@ public final class ReflectExtensions {
 		} else if (type instanceof GenericArrayType) {
 			toType(it, ((GenericArrayType) type).getGenericComponentType(), false);
 			it.append("[]"); //$NON-NLS-1$
+		} else if (type instanceof TypeVariable<?>) {
+			it.append(((TypeVariable<?>) type).getName());
 		} else {
 			it.append(Object.class.getSimpleName());
 		}
