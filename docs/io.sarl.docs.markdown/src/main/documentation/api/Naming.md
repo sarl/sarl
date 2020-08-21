@@ -153,6 +153,27 @@ The general syntax of the service names is defined by the following BNF grammar 
 		SERVICE_NAME = "service:" <ODSL> <ID> <FRG>
 
 
+### Naming for Artifact
+
+According to the Agent&Artifact metamodel, an artifact in a multi-agent system is a component of the agent environment
+Each artifact may be referred by an URI-based name in which the scheme is always `artifact`.
+There is neither authority nor query part in the service name.
+Please note that because the concept of artifact is not related to the agent society directly, the underlying SRE may
+not provide a support for it.
+ 
+The path of the artifact name specifies the identification of the artifact, i.e. its identifier. You could refer a artifact with:
+
+* Referring an artifact from its identifier. In this case, you have to specify only the artifact's identifier, e.g. `artifact:37b13185-a9d5-43e5-9d7b-da2fa3ba3d54`. 
+
+Where, `37b13185-a9d5-43e5-9d7b-da2fa3ba3d54` is the identifier of the artifact.
+
+The fragment part is the name of an attribute/field that is declared into the referred artifact. If the fragment part is specified, then the URI refers to the field itself.
+
+The general syntax of the service names is defined by the following BNF grammar (BNF rules in the previous section are re-used):
+
+		ARTIFACT_NAME = "artifact:" <ODSL> <UUID> <FRG>
+
+
 
 ## Namespace Service
 

@@ -36,6 +36,7 @@ import java.lang.annotation.Retention
 import java.lang.annotation.Target
 
 import static extension com.google.inject.multibindings.Multibinder.*
+import io.sarl.api.naming.parser.ArtifactSchemeNameParser
 
 /**
  * Module for the scheme name parsers.
@@ -55,7 +56,8 @@ class SchemeNameParserModule extends AbstractModule {
 		ens.addBinding.to(typeof(SpaceSchemeNameParser))
 		ens.addBinding.to(typeof(AgentSchemeNameParser))
 		ens.addBinding.to(typeof(SkillSchemeNameParser))
-		ens.addBinding.to(typeof(BehaviorSchemeNameParser))		
+		ens.addBinding.to(typeof(BehaviorSchemeNameParser))	
+		ens.addBinding.to(typeof(ArtifactSchemeNameParser))	
 	}
 
 }
