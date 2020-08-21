@@ -94,7 +94,7 @@
 
 * [Programmatic Access to the SARL Run-time Environment](./api/SRE.md)
 * [Naming and Namespaces](./api/Naming.md)
-* [SRe Observation and Probes](./api/Probing.md)
+* [SRE Observation and Probes](./api/Probing.md)
 
 ## Compilation and Generation Infrastructure
 

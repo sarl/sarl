@@ -33,6 +33,7 @@ Consequently, the observable objects a the fields declared within an:
 * agent context
 * space
 * service
+* artifact (if the SRE supports this concept)
 
 ## Probe: generic observer implementation
 
@@ -64,14 +65,14 @@ The functions are:
 * `isActive`: Reply if this probe is active. When a probe is active, it could be synchronized to the observed object.
 * `isInvalid`: Reply if this probe is invalid. When a probe is invalid, the value replied by `getValue` may not corresponds to the observed element's value.
 
-The following functions are provided for convenience, but they should be used with caution:
+The following function is provided for convenience, but it should be used with caution:
 * `setValue`: Force the observed field to have a specific value (brokes the agent's autonomy)
 
 ### Observe the Probe
 
 The observer software design pattern that enables to be notified when the observed value changed in implemented into the probe.
 According to the standard implementation best practices of the Java programming language, an observer (in this design pattern)
-is named a listener, and it defined by an interface. Two types of observers are defined on probes: [:probelistener:]
+is named a listener, and it is defined by an interface. Two types of observers are defined on probes: [:probelistener:]
 and [:probereleaselistener:].
 
 [:probelistener:] is defined as:
@@ -102,12 +103,15 @@ It is defined as:
 Creating a probe is done by calling the `probe` function. Basically, you need to specify the [name](./Naming.md) of the
 observed field, the expected type of the value, and optionally the name of the probe. 
 
-From the probe service, you could force the synchronization of all the managed probes by calling the `sync` function.
+Through the probe service, you could force the synchronization of all the managed probes by calling the `sync` function.
+This function forces all the probes to write the new values into the observed fields and to read the lastest values
+of these fields.
 
-Finally, two functions are provided from retrieving the list of the managed probes `getProbes` and releasing all
-the probes `releaseAllProbes`.
+Finally, two functions are provided:
+* `getProbes` for retrieving the list of the managed probes
+* `releaseAllProbes` releasing all the probes such that they become inactive.
 
-To use this service, you have to get it from the SRE, as illustrated below:
+To use the probe service, you have to get it from the SRE, as illustrated below:
 
 		[:Success:]
 			package io.sarl.docs.namespace
@@ -118,20 +122,50 @@ To use this service, you have to get it from the SRE, as illustrated below:
 					[:On]
 					var bootstrap = SRE::getBootstrap
 					var probeService = bootstrap.getService(typeof(ProbeService))
-					var probe = probeService.probe("agent:[:agentid]$a7fbd4cc-9e1a-48c3-8ee8-3a7974ccb05c$#[:emergencyfield]$emergency$", typeof([:fieldtype]$Integer$), "[:probename]$My Probe$")
-					while (true) {
-						System.out.println("Probe: " + probe.value)
-					}
 					[:Off]			
 				}
 			}
 		[:End:]
 
-In this example, the probe service is obtained from the SRE.
-An probe is attached to the field named [:emergencyfield:] of type [:fieldtype:] that is defined within the agent [:agentid:].
+Then, an probe is attached to the field named [:emergencyfield:] of type [:fieldtype:] that is defined within the agent [:agentid:].
 The name [:probename:] is given to the probe. 
 The example loops for displaying the observed value (of course it is not the most efficient usage of a probe).
 
+		[:Success:]
+			package io.sarl.docs.namespace
+			import io.sarl.bootstrap.SRE
+			import io.sarl.api.probing.ProbeService
+			class MyProgram {
+				static def main(arguments : String*) {
+					var bootstrap = SRE::getBootstrap
+					var probeService = bootstrap.getService(typeof(ProbeService))
+					[:On]
+					var probe = probeService.probe("agent:[:agentid]$a7fbd4cc-9e1a-48c3-8ee8-3a7974ccb05c$#[:emergencyfield]$emergency$", typeof([:fieldtype]$Integer$), "[:probename]$My Probe$")
+					[:Off]			
+				}
+			}
+		[:End:]
+
+Then, you could use the value that is extracted by the probe. The example below loops for displaying the observed
+value (of course it is not the most efficient usage of a probe).
+
+		[:Success:]
+			package io.sarl.docs.namespace
+			import io.sarl.bootstrap.SRE
+			import io.sarl.api.probing.ProbeService
+			class MyProgram {
+				static def main(arguments : String*) {
+					var bootstrap = SRE::getBootstrap
+					var probeService = bootstrap.getService(typeof(ProbeService))
+					var probe = probeService.probe("", typeof(Integer), "")
+					[:On]
+					while (true) {
+						println("Probe: " + probe.value)
+					}
+					[:Off]			
+				}
+			}
+		[:End:]
 
 [:Include:](../legal.inc)
 
