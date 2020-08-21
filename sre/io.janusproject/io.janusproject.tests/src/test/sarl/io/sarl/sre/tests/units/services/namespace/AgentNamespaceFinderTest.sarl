@@ -22,7 +22,6 @@
 package io.sarl.sre.tests.units.services.namespace
 
 import io.sarl.api.naming.name.AgentName
-import io.sarl.api.naming.scheme.NameScheme
 import io.sarl.core.OpenEventSpace
 import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Agent
@@ -155,7 +154,7 @@ class AgentNamespaceServiceTest {
 
 	@Test
 	def getScheme : void {
-		NameScheme::AGENT.assertEquals(this.finder.scheme)
+		AgentName::SCHEME.assertEquals(this.finder.scheme)
 	}
 
 	@Test

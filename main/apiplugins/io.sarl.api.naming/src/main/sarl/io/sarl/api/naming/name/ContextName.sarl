@@ -36,6 +36,9 @@ import io.sarl.lang.annotation.PrivateAPI
  */
 class ContextName extends SarlName {
 
+	/** Scheme for contexts. */
+	public static val SCHEME = "context"
+
 	@Accessors
 	val contextId : UUID
 

@@ -20,8 +20,6 @@
  */
 package io.sarl.sre.boot
 
-import io.bootique.help.HelpOption
-import java.util.List
 import io.sarl.sre.boot.configs.SreConfig
 
 /** 

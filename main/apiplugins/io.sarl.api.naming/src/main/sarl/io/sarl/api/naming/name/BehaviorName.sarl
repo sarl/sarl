@@ -37,6 +37,9 @@ import io.sarl.lang.annotation.PrivateAPI
  */
 class BehaviorName extends SarlName {
 
+	/** Scheme for behaviors. */
+	public static val SCHEME = "behavior"
+
 	@Accessors
 	val contextId : UUID
 

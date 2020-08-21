@@ -21,11 +21,8 @@
 package io.sarl.api.naming.parser
 
 import io.sarl.api.naming.name.SarlName
-import io.sarl.api.naming.scheme.NameScheme
 import java.net.URI
 import java.util.Set
-
-import static extension io.sarl.api.naming.scheme.NameSchemes.*
 
 /** 
  * Default implementation of a parser of names that is accepting URI-based syntax.
@@ -38,7 +35,7 @@ import static extension io.sarl.api.naming.scheme.NameSchemes.*
  */
 class UriBasedNameParser implements INameParser {
 
-	val schemeNameParser = <NameScheme, ISchemeNameParser<?>>newTreeMap(null)
+	val schemeNameParser = <String, ISchemeNameParser<?>>newTreeMap(null)
 
 	/** Construct a name parser based on the given scheme parsers.
 	 *
@@ -72,8 +69,8 @@ class UriBasedNameParser implements INameParser {
 		this.schemeNameParser.put(parser.scheme, parser)
 	}
 
-	override removeSchemeNameParser(scheme : NameScheme) : ISchemeNameParser<?> {
-		assert scheme !== null
+	override removeSchemeNameParser(scheme : String) : ISchemeNameParser<?> {
+		assert !scheme.isNullOrEmpty
 		this.schemeNameParser.remove(scheme)
 	}
 
@@ -81,12 +78,11 @@ class UriBasedNameParser implements INameParser {
 	def normalize(name : URI) : URI {
 		try {
 			val scheme = name.scheme
-			val schemeObj = scheme.schemeObject
-			if (schemeObj !== null
+			if (!scheme.isNullOrEmpty
 				&& name.query.isNullOrEmpty
 				&& name.userInfo.isNullOrEmpty
 				&& name.port === -1) {
-				var parser = this.schemeNameParser.get(schemeObj)
+				var parser = this.schemeNameParser.get(scheme)
 				if (parser !== null) {
 					return parser.refactor(name)
 				}
@@ -101,8 +97,8 @@ class UriBasedNameParser implements INameParser {
 	override decode(name : URI) : SarlName {
 		try {
 			if (name !== null && name.path !== null && name.path.startsWith("/")) {
-				var scheme = name.scheme.getSchemeObject
-				if (scheme !== null) {
+				var scheme = name.scheme
+				if (!scheme.isNullOrEmpty) {
 					var parser = this.schemeNameParser.get(scheme)
 					if (parser !== null) {
 						return parser.decode(name)

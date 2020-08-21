@@ -22,7 +22,6 @@
 package io.sarl.sre.tests.units.services.namespace
 
 import io.sarl.api.naming.name.SpaceName
-import io.sarl.api.naming.scheme.NameScheme
 import io.sarl.core.OpenEventSpace
 import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.sre.services.context.Context
@@ -138,7 +137,7 @@ class SpaceNamespaceFinderTest {
 
 	@Test
 	def getScheme : void {
-		NameScheme::SPACE.assertEquals(this.finder.scheme)
+		SpaceName::SCHEME.assertEquals(this.finder.scheme)
 	}
 
 	@Test

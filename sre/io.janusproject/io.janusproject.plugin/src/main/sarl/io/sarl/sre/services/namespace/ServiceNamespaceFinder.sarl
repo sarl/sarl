@@ -24,7 +24,6 @@ import com.google.common.util.concurrent.Service
 import com.google.inject.Injector
 import io.sarl.api.naming.name.ServiceName
 import io.sarl.api.naming.namespace.INamespaceFinder
-import io.sarl.api.naming.scheme.NameScheme
 import javax.inject.Inject
 import org.eclipse.xtend.lib.annotations.Accessors
 
@@ -51,8 +50,8 @@ class ServiceNamespaceFinder implements INamespaceFinder<ServiceName, Service> {
 		this.injector = injector
 	}
 
-	override getScheme : NameScheme {
-		NameScheme::SERVICE
+	override getScheme : String {
+		ServiceName::SCHEME
 	}
 
 	override find(name : ServiceName) : Service {

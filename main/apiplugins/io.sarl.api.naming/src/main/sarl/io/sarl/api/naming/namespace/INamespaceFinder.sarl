@@ -21,7 +21,6 @@
 package io.sarl.api.naming.namespace
 
 import io.sarl.api.naming.name.SarlName
-import io.sarl.api.naming.scheme.NameScheme
 
 /** 
  * A tool that is able to find a specific type of object from a name into the SRE.
@@ -41,7 +40,7 @@ interface INamespaceFinder<N extends SarlName, O> {
 
 	/** Replies the name scheme supported by this finder. */
 	@Pure
-	def getScheme : NameScheme
+	def getScheme : String
 
 	/** Find and replies the object with the given name.
 	 * 

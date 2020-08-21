@@ -26,7 +26,6 @@ import io.sarl.api.naming.name.SarlName
 import io.sarl.api.naming.namespace.FieldAccess
 import io.sarl.api.naming.namespace.NamespaceService
 import io.sarl.api.naming.parser.UriBasedNameParser
-import io.sarl.api.naming.scheme.NameScheme
 import io.sarl.api.probing.Probe
 import io.sarl.sre.internal.SequenceListenerNotifier
 import io.sarl.sre.internal.SmartListenerCollection
@@ -57,6 +56,7 @@ import static extension org.mockito.ArgumentMatchers.any
 import static extension org.mockito.Mockito.spy
 import static extension org.mockito.Mockito.times
 import static extension org.mockito.Mockito.verify
+import io.sarl.api.naming.name.SpaceName
 
 /**
  * @author $Author: sgalland$
@@ -102,7 +102,7 @@ class AsynchronousProbeServiceTest {
 	@BeforeEach
 	def setUp : void {
 		this.nameObject = typeof(SarlName).mock
-		when(this.nameObject.scheme).thenReturn(NameScheme::SPACE)
+		when(this.nameObject.scheme).thenReturn(SpaceName::SCHEME)
 		this.fieldAccess = typeof(FieldAccess).mock
 		when(this.fieldAccess.name).thenReturn(this.nameObject)
 		this.namespaceService = typeof(NamespaceService).mock
@@ -125,7 +125,7 @@ class AsynchronousProbeServiceTest {
 			[coll])
 		this.service = this.service.spy
 		this.name0 = typeof(ContextName).mock
-		when(this.name0.scheme).thenReturn(NameScheme::CONTEXT)
+		when(this.name0.scheme).thenReturn(ContextName::SCHEME)
 		this.uri0 = URI::create("context:myid")
 		when(this.name0.toURI).thenReturn(this.uri0)
 	}

@@ -31,7 +31,6 @@ import io.sarl.api.naming.parser.ContextSchemeNameParser
 import io.sarl.api.naming.parser.INameParser
 import io.sarl.api.naming.parser.ISchemeNameParser
 import io.sarl.api.naming.parser.UriBasedNameParser
-import io.sarl.api.naming.scheme.NameScheme
 import io.sarl.api.naming.tests.namespace.mocks.MyContext
 import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.AgentContext
@@ -106,8 +105,9 @@ class FinderBasedNamespaceServiceTest {
 		this.nameParser = new UriBasedNameParser
 		this.nameParser.schemeNameParsers = Collections::singleton(this.schemeParser)
 
+
 		this.finder = typeof(INamespaceFinder).mock
-		when(this.finder.scheme).thenReturn(NameScheme::CONTEXT)
+		when(this.finder.scheme).thenReturn(ContextName::SCHEME)
 		when(this.finder.find(any)).thenAnswer [
 			val name : SarlName = it.getArgument(0)
 			if (name instanceof ContextName) {
@@ -134,7 +134,7 @@ class FinderBasedNamespaceServiceTest {
 	@Test
 	def findObjectWithoutFragment_00 : void {
 		var name = typeof(ContextName).mock
-		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.scheme).thenReturn(ContextName::SCHEME)
 		when(name.contextId).thenReturn(this.cid0)
 		this.ctx0.assertSame(this.service.findObjectWithoutFragment(name))
 	}
@@ -142,7 +142,7 @@ class FinderBasedNamespaceServiceTest {
 	@Test
 	def findObjectWithoutFragment_01 : void {
 		var name = typeof(ContextName).mock
-		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.scheme).thenReturn(ContextName::SCHEME)
 		when(name.contextId).thenReturn(this.cid0)
 		when(name.fragment).thenReturn("myfield")
 		when(name.hasFragment).thenReturn(true)
@@ -152,7 +152,7 @@ class FinderBasedNamespaceServiceTest {
 	@Test
 	def findObjectWithoutFragment_02 : void {
 		var name = typeof(ContextName).mock
-		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.scheme).thenReturn(ContextName::SCHEME)
 		when(name.contextId).thenReturn(this.cid0)
 		when(name.fragment).thenReturn("xyz")
 		when(name.hasFragment).thenReturn(true)
@@ -162,14 +162,14 @@ class FinderBasedNamespaceServiceTest {
 	@Test
 	def findObjectWithoutFragment_03 : void {
 		var name = typeof(SpaceName).mock
-		when(name.scheme).thenReturn(NameScheme::SPACE)
+		when(name.scheme).thenReturn(SpaceName::SCHEME)
 		this.service.findObjectWithoutFragment(name).assertNull
 	}
 
 	@Test
 	def findObject_SarlName_00 : void {
 		var name = typeof(ContextName).mock
-		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.scheme).thenReturn(ContextName::SCHEME)
 		when(name.contextId).thenReturn(this.cid0)
 		this.ctx0.assertSame(this.service.findObject(name))
 	}
@@ -177,7 +177,7 @@ class FinderBasedNamespaceServiceTest {
 	@Test
 	def findObject_SarlName_01 : void {
 		var name = typeof(ContextName).mock
-		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.scheme).thenReturn(ContextName::SCHEME)
 		when(name.contextId).thenReturn(this.cid0)
 		when(name.fragment).thenReturn("myfield")
 		when(name.hasFragment).thenReturn(true)
@@ -193,7 +193,7 @@ class FinderBasedNamespaceServiceTest {
 	@Test
 	def findObject_SarlName_02 : void {
 		var name = typeof(ContextName).mock
-		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.scheme).thenReturn(ContextName::SCHEME)
 		when(name.contextId).thenReturn(this.cid0)
 		when(name.fragment).thenReturn("xyz")
 		when(name.hasFragment).thenReturn(true)
@@ -203,7 +203,7 @@ class FinderBasedNamespaceServiceTest {
 	@Test
 	def findObject_SarlName_03 : void {
 		var name = typeof(SpaceName).mock
-		when(name.scheme).thenReturn(NameScheme::SPACE)
+		when(name.scheme).thenReturn(SpaceName::SCHEME)
 		this.service.findObject(name).assertNull
 	}
 
@@ -251,7 +251,7 @@ class FinderBasedNamespaceServiceTest {
 	@Test
 	def findObject_SarlName_Class_00_Context : void {
 		var name = typeof(ContextName).mock
-		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.scheme).thenReturn(ContextName::SCHEME)
 		when(name.contextId).thenReturn(this.cid0)
 		this.ctx0.assertSame(this.service.findObject(name, typeof(AgentContext)))
 	}
@@ -259,7 +259,7 @@ class FinderBasedNamespaceServiceTest {
 	@Test
 	def findObject_SarlName_Class_00_Object : void {
 		var name = typeof(ContextName).mock
-		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.scheme).thenReturn(ContextName::SCHEME)
 		when(name.contextId).thenReturn(this.cid0)
 		this.ctx0.assertSame(this.service.findObject(name, typeof(Object)))
 	}
@@ -267,7 +267,7 @@ class FinderBasedNamespaceServiceTest {
 	@Test
 	def findObject_SarlName_Class_00_Integer : void {
 		var name = typeof(ContextName).mock
-		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.scheme).thenReturn(ContextName::SCHEME)
 		when(name.contextId).thenReturn(this.cid0)
 		this.service.findObject(name, typeof(Integer)).assertNull
 	}
@@ -275,7 +275,7 @@ class FinderBasedNamespaceServiceTest {
 	@Test
 	def findObject_SarlName_Class_01_Context : void {
 		var name = typeof(ContextName).mock
-		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.scheme).thenReturn(ContextName::SCHEME)
 		when(name.contextId).thenReturn(this.cid0)
 		when(name.fragment).thenReturn("myfield")
 		when(name.hasFragment).thenReturn(true)
@@ -285,7 +285,7 @@ class FinderBasedNamespaceServiceTest {
 	@Test
 	def findObject_SarlName_Class_01_Object : void {
 		var name = typeof(ContextName).mock
-		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.scheme).thenReturn(ContextName::SCHEME)
 		when(name.contextId).thenReturn(this.cid0)
 		when(name.fragment).thenReturn("myfield")
 		when(name.hasFragment).thenReturn(true)
@@ -301,7 +301,7 @@ class FinderBasedNamespaceServiceTest {
 	@Test
 	def findObject_SarlName_Class_01_FieldAccess : void {
 		var name = typeof(ContextName).mock
-		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.scheme).thenReturn(ContextName::SCHEME)
 		when(name.contextId).thenReturn(this.cid0)
 		when(name.fragment).thenReturn("myfield")
 		when(name.hasFragment).thenReturn(true)
@@ -315,7 +315,7 @@ class FinderBasedNamespaceServiceTest {
 	@Test
 	def findObject_SarlName_Class_01_Integer : void {
 		var name = typeof(ContextName).mock
-		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.scheme).thenReturn(ContextName::SCHEME)
 		when(name.contextId).thenReturn(this.cid0)
 		when(name.fragment).thenReturn("myfield")
 		when(name.hasFragment).thenReturn(true)
@@ -325,7 +325,7 @@ class FinderBasedNamespaceServiceTest {
 	@Test
 	def findObject_SarlName_Class_02_Context : void {
 		var name = typeof(ContextName).mock
-		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.scheme).thenReturn(ContextName::SCHEME)
 		when(name.contextId).thenReturn(this.cid0)
 		when(name.fragment).thenReturn("xyz")
 		when(name.hasFragment).thenReturn(true)
@@ -335,7 +335,7 @@ class FinderBasedNamespaceServiceTest {
 	@Test
 	def findObject_SarlName_Class_02_Object : void {
 		var name = typeof(ContextName).mock
-		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.scheme).thenReturn(ContextName::SCHEME)
 		when(name.contextId).thenReturn(this.cid0)
 		when(name.fragment).thenReturn("xyz")
 		when(name.hasFragment).thenReturn(true)
@@ -345,7 +345,7 @@ class FinderBasedNamespaceServiceTest {
 	@Test
 	def findObject_SarlName_Class_02_FieldAccess : void {
 		var name = typeof(ContextName).mock
-		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.scheme).thenReturn(ContextName::SCHEME)
 		when(name.contextId).thenReturn(this.cid0)
 		when(name.fragment).thenReturn("xyz")
 		when(name.hasFragment).thenReturn(true)
@@ -355,7 +355,7 @@ class FinderBasedNamespaceServiceTest {
 	@Test
 	def findObject_SarlName_Class_02_Integer : void {
 		var name = typeof(ContextName).mock
-		when(name.scheme).thenReturn(NameScheme::CONTEXT)
+		when(name.scheme).thenReturn(ContextName::SCHEME)
 		when(name.contextId).thenReturn(this.cid0)
 		when(name.fragment).thenReturn("xyz")
 		when(name.hasFragment).thenReturn(true)
@@ -365,28 +365,28 @@ class FinderBasedNamespaceServiceTest {
 	@Test
 	def findObject_SarlName_Class_03_Context : void {
 		var name = typeof(SpaceName).mock
-		when(name.scheme).thenReturn(NameScheme::SPACE)
+		when(name.scheme).thenReturn(SpaceName::SCHEME)
 		this.service.findObject(name, typeof(AgentContext)).assertNull
 	}
 
 	@Test
 	def findObject_SarlName_Class_03_Object : void {
 		var name = typeof(SpaceName).mock
-		when(name.scheme).thenReturn(NameScheme::SPACE)
+		when(name.scheme).thenReturn(SpaceName::SCHEME)
 		this.service.findObject(name, typeof(Object)).assertNull
 	}
 
 	@Test
 	def findObject_SarlName_Class_03_FieldAccess : void {
 		var name = typeof(SpaceName).mock
-		when(name.scheme).thenReturn(NameScheme::SPACE)
+		when(name.scheme).thenReturn(SpaceName::SCHEME)
 		this.service.findObject(name, typeof(FieldAccess)).assertNull
 	}
 
 	@Test
 	def findObject_SarlName_Class_03_Integer : void {
 		var name = typeof(SpaceName).mock
-		when(name.scheme).thenReturn(NameScheme::SPACE)
+		when(name.scheme).thenReturn(SpaceName::SCHEME)
 		this.service.findObject(name, typeof(Integer)).assertNull
 	}
 

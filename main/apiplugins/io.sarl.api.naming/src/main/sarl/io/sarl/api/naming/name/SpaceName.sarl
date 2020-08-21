@@ -36,6 +36,9 @@ import io.sarl.lang.annotation.PrivateAPI
  */
 class SpaceName extends SarlName {
 
+	/** Scheme for spaces. */
+	public static val SCHEME = "space"
+
 	@Accessors
 	val contextId : UUID
 

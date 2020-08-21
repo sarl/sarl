@@ -21,11 +21,10 @@
 package io.sarl.api.naming.parser
 
 import io.sarl.api.naming.name.SarlName
-import io.sarl.api.naming.scheme.NameScheme
 import java.net.URI
 
 /** 
- * Parser of names
+ * Parser of names that is supporting multiple URI-based schemes.
  * 
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -84,6 +83,6 @@ interface INameParser {
 	 * @param scheme the associated scheme, never {@code null}.
 	 * @return the name parser that was associated to the name protocol.
 	 */
-	def removeSchemeNameParser(scheme: NameScheme) : ISchemeNameParser<?>
+	def removeSchemeNameParser(scheme: String) : ISchemeNameParser<?>
 
 }

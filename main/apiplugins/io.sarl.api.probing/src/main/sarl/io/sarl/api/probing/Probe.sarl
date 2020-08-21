@@ -25,6 +25,7 @@ import java.net.URI
 /** 
  * Probe implementation.
  * 
+ * @param <T> the type of value that is obtained by the probe.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

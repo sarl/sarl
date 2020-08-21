@@ -21,7 +21,6 @@
 package io.sarl.api.naming.namespace
 
 import io.sarl.api.naming.name.SarlName
-import io.sarl.api.naming.scheme.NameScheme
 import java.util.Set
 
 /** 
@@ -37,7 +36,7 @@ import java.util.Set
 class FinderBasedNamespaceService extends AbstractNamespaceService {
 
 	@SuppressWarnings("raw_type")
-	val finders = <NameScheme, INamespaceFinder>newTreeMap(null)
+	val finders = <String, INamespaceFinder>newTreeMap(null)
 
 	/** Change the set of namespace finders that is used by this service.
 	 *
@@ -67,7 +66,8 @@ class FinderBasedNamespaceService extends AbstractNamespaceService {
 	 * 
 	 * @param scheme the scheme of the finder to remove. 
 	 */
-	def removeNamespaceFinder(scheme : NameScheme) : void {
+	def removeNamespaceFinder(scheme : String) : void {
+		assert !scheme.isNullOrEmpty
 		this.finders.remove(scheme)
 	}
 

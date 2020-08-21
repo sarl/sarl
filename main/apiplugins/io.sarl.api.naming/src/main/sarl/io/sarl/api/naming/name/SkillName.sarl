@@ -37,6 +37,9 @@ import io.sarl.lang.annotation.PrivateAPI
  */
 class SkillName extends SarlName {
 
+	/** Scheme for skills. */
+	public static val SCHEME = "skill"
+
 	@Accessors
 	val contextId : UUID
 

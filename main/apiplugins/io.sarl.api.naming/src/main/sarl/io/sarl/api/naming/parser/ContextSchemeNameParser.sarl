@@ -21,7 +21,6 @@
 package io.sarl.api.naming.parser
 
 import io.sarl.api.naming.name.ContextName
-import io.sarl.api.naming.scheme.NameScheme
 import java.net.URI
 import java.util.StringTokenizer
 import java.util.UUID
@@ -43,9 +42,9 @@ class ContextSchemeNameParser extends AbstractSchemeNameParser<ContextName> {
 
 	/** Constructor.
 	 * 
-	 * @param scheme the name scheme that is supported by this parser. By default it is {@link NameScheme.CONTEXT}.
+	 * @param scheme the name scheme that is supported by this parser. By default it is {@link ContextName::SCHEME}.
 	 */
-	new (scheme : NameScheme = NameScheme::CONTEXT) {
+	new (scheme : String = ContextName::SCHEME) {
 		super(scheme)
 	}
 

@@ -21,7 +21,6 @@
 package io.sarl.api.naming.parser
 
 import io.sarl.api.naming.name.AgentName
-import io.sarl.api.naming.scheme.NameScheme
 import java.net.URI
 import java.util.StringTokenizer
 import java.util.UUID
@@ -45,9 +44,9 @@ class AgentSchemeNameParser extends AbstractSchemeNameParser<AgentName> {
 
 	/** Constructor.
 	 *
-	 * @param scheme the name scheme that is supported by this parser. By default it is {@link NameScheme.AGENT}.
+	 * @param scheme the name scheme that is supported by this parser. By default it is {@link AgentName::SCHEME}.
 	 */
-	new (scheme : NameScheme = NameScheme::AGENT) {
+	new (scheme : String = AgentName::SCHEME) {
 		super(scheme)
 	}
 

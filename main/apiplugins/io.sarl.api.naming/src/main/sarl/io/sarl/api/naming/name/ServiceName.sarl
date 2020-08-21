@@ -36,6 +36,9 @@ import io.sarl.lang.annotation.PrivateAPI
  */
 class ServiceName extends SarlName {
 
+	/** Scheme for services. */
+	public static val SCHEME = "service"
+
 	@Accessors
 	val serviceType : Class<? extends Service>
 

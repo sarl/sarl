@@ -21,7 +21,6 @@
 package io.sarl.sre.services.namespace
 
 import io.sarl.api.naming.name.SpaceName
-import io.sarl.api.naming.scheme.NameScheme
 import io.sarl.lang.core.Space
 import io.sarl.sre.services.context.Context
 import io.sarl.sre.services.context.ContextService
@@ -49,8 +48,8 @@ class SpaceNamespaceFinder extends AbstractNamespaceFinder<SpaceName, Space> {
 		super(service)
 	}
 	
-	override getScheme : NameScheme {
-		NameScheme::SPACE
+	override getScheme : String {
+		SpaceName::SCHEME
 	}
 
 	override find(name : SpaceName) : Space {

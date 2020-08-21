@@ -21,7 +21,6 @@
 package io.sarl.sre.services.namespace
 
 import io.sarl.api.naming.name.SkillName
-import io.sarl.api.naming.scheme.NameScheme
 import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.SREutils
 import io.sarl.lang.core.Skill
@@ -51,8 +50,8 @@ class SkillNamespaceFinder extends AbstractNamespaceFinder<SkillName, Skill> {
 		super(service)
 	}
 	
-	override getScheme : NameScheme {
-		NameScheme::SKILL
+	override getScheme : String {
+		SkillName::SCHEME
 	}
 
 	@SuppressWarnings("use_reserved_sarl_annotation")

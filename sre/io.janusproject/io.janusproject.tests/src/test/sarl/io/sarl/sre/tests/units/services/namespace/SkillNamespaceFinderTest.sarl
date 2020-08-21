@@ -22,7 +22,6 @@
 package io.sarl.sre.tests.units.services.namespace
 
 import io.sarl.api.naming.name.SkillName
-import io.sarl.api.naming.scheme.NameScheme
 import io.sarl.core.OpenEventSpace
 import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Agent
@@ -166,7 +165,7 @@ class SkillNamespaceFinderTest {
 
 	@Test
 	def getScheme : void {
-		NameScheme::SKILL.assertEquals(this.finder.scheme)
+		SkillName::SCHEME.assertEquals(this.finder.scheme)
 	}
 
 	@Test

@@ -22,7 +22,6 @@ package io.sarl.sre.services.probing
 
 import com.google.common.util.concurrent.Service
 import io.sarl.api.naming.namespace.FieldAccess
-import io.sarl.api.naming.scheme.NameScheme
 import io.sarl.api.probing.IProbeReleaseListener
 import io.sarl.lang.core.Agent
 import io.sarl.lang.core.AgentTrait
@@ -33,6 +32,12 @@ import io.sarl.sre.services.lifecycle.BehaviorLife
 import java.net.URI
 import javax.inject.Provider
 import org.eclipse.xtend.lib.annotations.Accessors
+import io.sarl.api.naming.name.AgentName
+import io.sarl.api.naming.name.BehaviorName
+import io.sarl.api.naming.name.SkillName
+import io.sarl.api.naming.name.ContextName
+import io.sarl.api.naming.name.SpaceName
+import io.sarl.api.naming.name.ServiceName
 
 /** 
  * Abstract probe implementation is linked to a field. A probe is thread-safe.
@@ -110,9 +115,9 @@ abstract class AbstractFieldProbe<T> extends AbstractProbe<T> {
 		}
 	}
 
-	private static def createActivation(scheme : NameScheme) : (Object)=>boolean {
+	private static def createActivation(scheme : String) : (Object)=>boolean {
 		switch (scheme) {
-			case AGENT: {
+			case AgentName::SCHEME: {
 				return [
 					var life = AgentLife::getLifeOrNull(it as Agent)
 					if (life !== null) {
@@ -121,13 +126,13 @@ abstract class AbstractFieldProbe<T> extends AbstractProbe<T> {
 					return false
 				]
 			}
-			case BEHAVIOR: {
+			case BehaviorName::SCHEME: {
 				return [
 					return BehaviorLife::getLifeOrNull(it as Behavior) !== null
 				]
 			}
-			case SKILL,
-			case CONTEXT: {
+			case SkillName::SCHEME,
+			case ContextName::SCHEME: {
 				return [
 					var ag = (it as AgentTrait).owner
 					if (ag !== null) {
@@ -139,10 +144,10 @@ abstract class AbstractFieldProbe<T> extends AbstractProbe<T> {
 					return false
 				]
 			}
-			case SPACE: {
+			case SpaceName::SCHEME: {
 				return [true]
 			}
-			case SERVICE: {
+			case ServiceName::SCHEME: {
 				return [(it as Service).isRunning]
 			}
 		}

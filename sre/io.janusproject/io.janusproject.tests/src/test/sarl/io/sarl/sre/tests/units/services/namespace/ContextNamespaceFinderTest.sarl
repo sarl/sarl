@@ -44,7 +44,6 @@ import static extension org.junit.jupiter.api.Assertions.assertEquals
 import static extension org.junit.jupiter.api.Assertions.assertNull
 import static extension org.junit.jupiter.api.Assertions.assertSame
 import io.sarl.api.naming.name.ContextName
-import io.sarl.api.naming.scheme.NameScheme
 
 /**
  * @author $Author: sgalland$
@@ -110,7 +109,7 @@ class ContextNamespaceFinderTest {
 
 	@Test
 	def getScheme : void {
-		NameScheme::CONTEXT.assertEquals(this.finder.scheme)
+		ContextName::SCHEME.assertEquals(this.finder.scheme)
 	}
 
 	@Test

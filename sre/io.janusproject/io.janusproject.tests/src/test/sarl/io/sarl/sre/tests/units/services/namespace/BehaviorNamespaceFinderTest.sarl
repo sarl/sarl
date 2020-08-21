@@ -58,7 +58,6 @@ import static extension org.junit.jupiter.api.Assertions.assertNull
 import static extension org.junit.jupiter.api.Assertions.assertSame
 import static extension org.mockito.Mockito.spy
 import io.sarl.api.naming.name.BehaviorName
-import io.sarl.api.naming.scheme.NameScheme
 
 /**
  * @author $Author: sgalland$
@@ -184,7 +183,7 @@ class BehaviorNamespaceFinderTest {
 
 	@Test
 	def getScheme : void {
-		NameScheme::BEHAVIOR.assertEquals(this.finder.scheme)
+		BehaviorName::SCHEME.assertEquals(this.finder.scheme)
 	}
 
 	@Test

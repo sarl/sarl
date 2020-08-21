@@ -22,7 +22,6 @@ package io.sarl.api.naming.parser
 
 import io.sarl.bootstrap.SREClassLoader
 import io.sarl.api.naming.name.SkillName
-import io.sarl.api.naming.scheme.NameScheme
 import io.sarl.lang.core.Capacity
 import java.net.URI
 import java.util.StringTokenizer
@@ -47,9 +46,9 @@ class SkillSchemeNameParser extends AbstractSchemeNameParser<SkillName> {
 
 	/** Constructor.
 	 * 
-	 * @param scheme the name scheme that is supported by this parser. By default it is {@link NameScheme.SKILL}.
+	 * @param scheme the name scheme that is supported by this parser. By default it is {@link SkillName.SCHEME}.
 	 */
-	new (scheme : NameScheme = NameScheme::SKILL) {
+	new (scheme : String = SkillName::SCHEME) {
 		super(scheme)
 	}
 

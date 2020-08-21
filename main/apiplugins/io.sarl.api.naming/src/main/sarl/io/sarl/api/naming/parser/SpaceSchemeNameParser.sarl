@@ -21,7 +21,6 @@
 package io.sarl.api.naming.parser
 
 import io.sarl.api.naming.name.SpaceName
-import io.sarl.api.naming.scheme.NameScheme
 import java.net.URI
 import java.util.StringTokenizer
 import java.util.UUID
@@ -43,9 +42,9 @@ class SpaceSchemeNameParser extends AbstractSchemeNameParser<SpaceName> {
 
 	/** Constructor.
 	 * 
-	 * @param scheme the name scheme that is supported by this parser. By default it is {@link NameScheme.SPACE}.
+	 * @param scheme the name scheme that is supported by this parser. By default it is {@link SpaceName.SCHEME}.
 	 */
-	new (scheme : NameScheme = NameScheme::SPACE) {
+	new (scheme : String = SpaceName::SCHEME) {
 		super(scheme)
 	}
 

@@ -21,7 +21,6 @@
 package io.sarl.sre.services.namespace
 
 import io.sarl.api.naming.name.BehaviorName
-import io.sarl.api.naming.scheme.NameScheme
 import io.sarl.core.Behaviors
 import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.Behavior
@@ -51,8 +50,8 @@ class BehaviorNamespaceFinder extends AbstractNamespaceFinder<BehaviorName, Beha
 		super(service)
 	}
 
-	override getScheme : NameScheme {
-		NameScheme::BEHAVIOR
+	override getScheme : String {
+		BehaviorName::SCHEME
 	}
 
 	@SuppressWarnings("use_reserved_sarl_annotation")

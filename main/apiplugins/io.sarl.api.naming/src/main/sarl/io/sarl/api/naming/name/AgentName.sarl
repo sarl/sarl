@@ -36,6 +36,9 @@ import io.sarl.lang.annotation.PrivateAPI
  */
 class AgentName extends SarlName {
 
+	/** Scheme for agents. */
+	public static val SCHEME = "agent"
+
 	@Accessors
 	val contextId : UUID
 

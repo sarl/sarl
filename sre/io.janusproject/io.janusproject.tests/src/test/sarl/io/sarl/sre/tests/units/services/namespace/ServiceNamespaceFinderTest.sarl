@@ -23,7 +23,6 @@ package io.sarl.sre.tests.units.services.namespace
 
 import com.google.inject.Injector
 import io.sarl.api.naming.name.ServiceName
-import io.sarl.api.naming.scheme.NameScheme
 import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.sre.services.lifecycle.LifecycleService
 import io.sarl.sre.services.logging.LoggingService
@@ -90,7 +89,7 @@ class ServiceNamespaceFinderTest {
 
 	@Test
 	def getScheme : void {
-		NameScheme::SERVICE.assertEquals(this.finder.scheme)
+		ServiceName::SCHEME.assertEquals(this.finder.scheme)
 	}
 
 	@Test

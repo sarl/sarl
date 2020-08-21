@@ -46,11 +46,11 @@ import java.util.logging.Logger
  */
 class EventBus {
 
-		/** 
-		 * The registry of all {@code BehaviorGuardEvaluator} classes containing a method to evaluate the guard of a given behavior
-		 * ("on" clause in SARL behavior). This class has been inspired by the com.google.common.eventbus.SuscriberRegistry class of
-		 * Google Guava library.
-		 */
+	/** 
+	 * The registry of all {@code BehaviorGuardEvaluator} classes containing a method to evaluate the guard of a given behavior
+	 * ("on" clause in SARL behavior). This class has been inspired by the com.google.common.eventbus.SuscriberRegistry class of
+	 * Google Guava library.
+	 */
 	val behaviorGuardEvaluatorRegistry : IBehaviorGuardEvaluatorRegistry
 
 	/** 
@@ -174,7 +174,7 @@ class EventBus {
 		val behaviorGuardEvaluators = this.behaviorGuardEvaluatorRegistry.getBehaviorGuardEvaluators(^event)
 
 		if (behaviorGuardEvaluators !== null && !behaviorGuardEvaluators.empty) {
-			val behaviorsMethodsToExecute = ^event.evaluateGuards(behaviorGuardEvaluators, logger)
+			val behaviorsMethodsToExecute = evaluateGuards(^event, behaviorGuardEvaluators, logger)
 			if (behaviorsMethodsToExecute !== null && !behaviorsMethodsToExecute.empty) {
 				behaviorsMethodsToExecute.executeBehaviorMethodsInParalellWithSynchroAtTheEnd(thrownExceptions, logger)
 			}
@@ -201,7 +201,7 @@ class EventBus {
 			getBehaviorGuardEvaluatorsFor(^event, listener)
 
 		if (behaviorGuardEvaluators !== null && behaviorGuardEvaluators.size() > 0) {
-			val behaviorsMethodsToExecute = ^event.evaluateGuards(behaviorGuardEvaluators, logger)
+			val behaviorsMethodsToExecute = evaluateGuards(^event, behaviorGuardEvaluators, logger)
 			if (behaviorsMethodsToExecute !== null && !behaviorsMethodsToExecute.empty) {
 				behaviorsMethodsToExecute.executeBehaviorMethodsInParalellWithSynchroAtTheEnd(thrownExceptions, logger)
 			}
@@ -225,7 +225,7 @@ class EventBus {
 				val behaviorGuardEvaluators = EventBus.this.behaviorGuardEvaluatorRegistry.getBehaviorGuardEvaluators(^event)
 				if (behaviorGuardEvaluators !== null && !behaviorGuardEvaluators.empty) {
 					// Could be null when the corresponding events is not listen by an agent, i.e. system event like ParticpantJoined
-					var behaviorsMethodsToExecute = ^event.evaluateGuards(behaviorGuardEvaluators, logger)
+					var behaviorsMethodsToExecute = evaluateGuards(^event, behaviorGuardEvaluators, logger)
 					if (behaviorsMethodsToExecute !== null && !behaviorsMethodsToExecute.empty) {
 						behaviorsMethodsToExecute.executeAsynchronouslyBehaviorMethods
 					}

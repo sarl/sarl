@@ -20,8 +20,6 @@
  */
 package io.sarl.api.naming.name
 
-import io.sarl.api.naming.scheme.NameScheme
-import io.sarl.api.naming.scheme.NameSchemes
 import java.io.Serializable
 import java.lang.ref.WeakReference
 import java.net.URI
@@ -50,8 +48,6 @@ abstract class SarlName implements Cloneable, Serializable, Comparable<SarlName>
 
 	val uri : URI
 
-	var scheme : NameScheme
-
 	protected new (uri : URI) {
 		assert uri !== null
 		this.uri = uri
@@ -63,11 +59,8 @@ abstract class SarlName implements Cloneable, Serializable, Comparable<SarlName>
 
 	/** Replies the scheme of this name.
 	 */
-	def getScheme : NameScheme {
-		if (this.scheme === null) {
-			this.scheme = NameSchemes::getSchemeObject(toURI.scheme)
-		}
-		return this.scheme
+	def getScheme : String {
+		return this.uri.scheme.toLowerCase
 	}
 
 	@Pure

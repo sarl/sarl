@@ -21,7 +21,6 @@
 package io.sarl.api.naming.parser
 
 import io.sarl.api.naming.name.SarlName
-import io.sarl.api.naming.scheme.NameScheme
 import java.net.URI
 
 /** 
@@ -38,7 +37,7 @@ interface ISchemeNameParser<N extends SarlName> {
 
 	/** Replies the name scheme that is supported by this parser. */
 	@Pure
-	def getScheme : NameScheme
+	def getScheme : String
 
 	/** Refactor the given URI in order to fit the name specification. */
 	@Pure

@@ -23,7 +23,6 @@ package io.sarl.sre.tests.units.services.probing
 
 import io.sarl.api.naming.name.SarlName
 import io.sarl.api.naming.namespace.FieldAccess
-import io.sarl.api.naming.scheme.NameScheme
 import io.sarl.api.probing.IProbeListener
 import io.sarl.api.probing.IProbeReleaseListener
 import io.sarl.api.probing.Probe
@@ -54,6 +53,7 @@ import static extension org.junit.jupiter.api.Assertions.assertSame
 import static extension org.junit.jupiter.api.Assertions.assertTrue
 import static extension org.mockito.Mockito.times
 import static extension org.mockito.Mockito.verify
+import io.sarl.api.naming.name.SpaceName
 
 /**
  * @author $Author: sgalland$
@@ -96,7 +96,7 @@ class FieldProbeTest {
 	@BeforeEach
 	def setUp : void {
 		this.nameObject = typeof(SarlName).mock
-		when(this.nameObject.scheme).thenReturn(NameScheme::SPACE)
+		when(this.nameObject.scheme).thenReturn(SpaceName::SCHEME)
 		this.field = typeof(FieldAccess).mock
 		when(this.field.name).thenReturn(this.nameObject)
 		when(this.field.get).thenReturn(34)

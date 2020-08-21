@@ -23,7 +23,6 @@ package io.sarl.api.naming.parser
 import com.google.common.util.concurrent.Service
 import io.sarl.bootstrap.SREClassLoader
 import io.sarl.api.naming.name.ServiceName
-import io.sarl.api.naming.scheme.NameScheme
 import java.net.URI
 import java.util.StringTokenizer
 
@@ -44,9 +43,9 @@ class ServiceSchemeNameParser extends AbstractSchemeNameParser<ServiceName> {
 
 	/** Constructor.
 	 * 
-	 * @param scheme the name scheme that is supported by this parser. By default it is {@link NameScheme.SERVICE}.
+	 * @param scheme the name scheme that is supported by this parser. By default it is {@link ServiceName::SCHEME}.
 	 */
-	new (scheme : NameScheme = NameScheme::SERVICE) {
+	new (scheme : String = ServiceName::SCHEME) {
 		super(scheme)
 	}
 	

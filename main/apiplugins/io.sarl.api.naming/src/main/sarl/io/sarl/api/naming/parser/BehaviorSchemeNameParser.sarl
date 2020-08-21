@@ -22,7 +22,6 @@ package io.sarl.api.naming.parser
 
 import io.sarl.bootstrap.SREClassLoader
 import io.sarl.api.naming.name.BehaviorName
-import io.sarl.api.naming.scheme.NameScheme
 import io.sarl.lang.core.Behavior
 import java.net.URI
 import java.util.StringTokenizer
@@ -47,9 +46,9 @@ class BehaviorSchemeNameParser extends AbstractSchemeNameParser<BehaviorName> {
 
 	/** Constructor.
 	 * 
-	 * @param scheme the name scheme that is supported by this parser. By default it is {@link NameScheme.BEHAVIOR}.
+	 * @param scheme the name scheme that is supported by this parser. By default it is {@link BehaviorName::SCHEME}.
 	 */
-	new (scheme : NameScheme = NameScheme::BEHAVIOR) {
+	new (scheme : String = BehaviorName::SCHEME) {
 		super(scheme)
 	}
 

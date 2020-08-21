@@ -22,7 +22,6 @@
 package io.sarl.api.naming.tests.name
 
 import io.sarl.api.naming.name.SarlName
-import io.sarl.api.naming.scheme.NameScheme
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
@@ -108,7 +107,7 @@ class SarlNameTest {
 
 	@Test
 	def getScheme {
-		NameScheme::SPACE.assertSame(this.name.scheme)
+		"space".assertEquals(this.name.scheme)
 	}
 
 }
