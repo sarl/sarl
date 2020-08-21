@@ -30,8 +30,9 @@ import javax.annotation.Nullable
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Tag
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
 
 import static extension io.sarl.tests.api.tools.TestAssertions.assertException
 import static extension io.sarl.tests.api.tools.TestMockito.mock
@@ -65,9 +66,6 @@ class FieldAccessTest {
 	var objectMock : ObjectMock
 
 	@Nullable
-	var accessor : FieldAccess
-
-	@Nullable
 	var nameMock : SarlName
 
 	
@@ -76,47 +74,76 @@ class FieldAccessTest {
 		this.nameMock = typeof(SarlName).mock
 		this.field = typeof(ObjectMock).getDeclaredField("fld")
 		this.objectMock = new ObjectMock
-		this.accessor = new FieldAccess(this.nameMock, this.field, this.objectMock)
 	}
 
-	@Test
-	def getName {
-		this.nameMock.assertSame(this.accessor.name)
+	@ParameterizedTest
+	@ValueSource(booleans = #[true, false])
+	def getName(writable : boolean) {
+		var accessor = new FieldAccess(this.nameMock, this.field, this.objectMock, writable)
+		this.nameMock.assertSame(accessor.name)
 	}
 
-	@Test
-	def getField {
-		this.field.assertSame(this.accessor.field)
+	@ParameterizedTest
+	@ValueSource(booleans = #[true, false])
+	def getField(writable : boolean) {
+		var accessor = new FieldAccess(this.nameMock, this.field, this.objectMock, writable)
+		this.field.assertSame(accessor.field)
 	}
 
-	@Test
-	def getInstance {
-		this.objectMock.assertSame(this.accessor.instance)
+	@ParameterizedTest
+	@ValueSource(booleans = #[true, false])
+	def getInstance(writable : boolean) {
+		var accessor = new FieldAccess(this.nameMock, this.field, this.objectMock, writable)
+		this.objectMock.assertSame(accessor.instance)
 	}
 
-	@Test
-	def get {
-		34.assertEquals(this.accessor.get)
+	@ParameterizedTest
+	@ValueSource(booleans = #[true, false])
+	def get(writable : boolean) {
+		var accessor = new FieldAccess(this.nameMock, this.field, this.objectMock, writable)
+		34.assertEquals(accessor.get)
 	}
 
-	@Test
-	def set_success {
-		var old = this.accessor.set(128)
-		34.assertEquals(old)
-		128.assertEquals(this.accessor.get)
-		128.assertEquals(this.objectMock.fld)
+	@ParameterizedTest
+	@ValueSource(booleans = #[true, false])
+	@DisplayName("set with valid type")
+	def set_validType(writable : boolean) {
+		var accessor = new FieldAccess(this.nameMock, this.field, this.objectMock, writable)
+		if (writable) {
+			var old = accessor.set(128)
+			34.assertEquals(old)
+			128.assertEquals(accessor.get)
+			128.assertEquals(this.objectMock.fld)
+		} else {
+			typeof(IllegalAccessException).assertException [
+				accessor.set("abc")
+			]
+			34.assertEquals(accessor.get)
+			34.assertEquals(this.objectMock.fld)
+		}
 	}
 
-	@Test
-	def set_invalidType : void {
-		typeof(IllegalArgumentException).assertException [
-			this.accessor.set("abc")
-		]
+	@ParameterizedTest
+	@ValueSource(booleans = #[true, false])
+	@DisplayName("set with invalid type")
+	def set_invalidType(writable : boolean) {
+		var accessor = new FieldAccess(this.nameMock, this.field, this.objectMock, writable)
+		if (writable) {
+			typeof(IllegalArgumentException).assertException [
+				accessor.set("abc")
+			]
+		} else {
+			typeof(IllegalAccessException).assertException [
+				accessor.set("abc")
+			]
+		}
 	}
 
-	@Test
-	def toStringTest {
-		"fld".assertEquals(this.accessor.toString)
+	@ParameterizedTest
+	@ValueSource(booleans = #[true, false])
+	def toStringTest(writable : boolean) {
+		var accessor = new FieldAccess(this.nameMock, this.field, this.objectMock, writable)
+		"fld".assertEquals(accessor.toString)
 	}
 
 }

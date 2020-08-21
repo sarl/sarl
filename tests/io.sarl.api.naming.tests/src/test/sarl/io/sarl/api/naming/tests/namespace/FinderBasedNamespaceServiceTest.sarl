@@ -24,14 +24,16 @@ package io.sarl.api.naming.tests.namespace
 import io.sarl.api.naming.name.ContextName
 import io.sarl.api.naming.name.SarlName
 import io.sarl.api.naming.name.SpaceName
+import io.sarl.api.naming.namespace.AnnotationFieldAccessValidator
 import io.sarl.api.naming.namespace.FieldAccess
 import io.sarl.api.naming.namespace.FinderBasedNamespaceService
+import io.sarl.api.naming.namespace.IFieldAccessValidator
 import io.sarl.api.naming.namespace.INamespaceFinder
 import io.sarl.api.naming.parser.ContextSchemeNameParser
 import io.sarl.api.naming.parser.INameParser
 import io.sarl.api.naming.parser.ISchemeNameParser
 import io.sarl.api.naming.parser.UriBasedNameParser
-import io.sarl.api.naming.tests.namespace.mocks.MyContext
+import io.sarl.api.naming.tests.namespace.mocks.MyContext3
 import io.sarl.lang.annotation.PrivateAPI
 import io.sarl.lang.core.AgentContext
 import io.sarl.tests.api.Nullable
@@ -79,6 +81,9 @@ class FinderBasedNamespaceServiceTest {
 	@Nullable
 	var nameParser : UriBasedNameParser
 
+	@Nullable
+	var fieldAccessValidator : AnnotationFieldAccessValidator
+
 	@SuppressWarnings("raw_type")
 	@Nullable
 	var schemeParser : ISchemeNameParser
@@ -98,13 +103,14 @@ class FinderBasedNamespaceServiceTest {
 	def setUp : void {
 		// Default space creation
 		this.cid0 = UUID::randomUUID
-		this.ctx0 = new MyContext().spy
+		this.ctx0 = new MyContext3().spy
 
 		this.schemeParser = new ContextSchemeNameParser
 
 		this.nameParser = new UriBasedNameParser
 		this.nameParser.schemeNameParsers = Collections::singleton(this.schemeParser)
 
+		this.fieldAccessValidator = new AnnotationFieldAccessValidator
 
 		this.finder = typeof(INamespaceFinder).mock
 		when(this.finder.scheme).thenReturn(ContextName::SCHEME)
@@ -120,6 +126,7 @@ class FinderBasedNamespaceServiceTest {
 
 		this.service = new FinderBasedNamespaceService
 		this.service.nameParser = this.nameParser
+		this.service.fieldAccessValidator = this.fieldAccessValidator
 		this.service.namespaceFinders = Collections::singleton(this.finder)
 	}
 
@@ -129,6 +136,14 @@ class FinderBasedNamespaceServiceTest {
 		var parser = typeof(INameParser).mock
 		this.service.nameParser = parser
 		parser.assertSame(this.service.nameParser)
+	}
+
+	@Test
+	def getFieldAccessValidator : void {
+		this.fieldAccessValidator.assertSame(this.service.fieldAccessValidator)
+		var validator = typeof(IFieldAccessValidator).mock
+		this.service.fieldAccessValidator = validator
+		validator.assertSame(this.service.fieldAccessValidator)
 	}
 
 	@Test

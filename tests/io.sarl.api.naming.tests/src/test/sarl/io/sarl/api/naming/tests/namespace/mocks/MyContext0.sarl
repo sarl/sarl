@@ -35,7 +35,7 @@ import java.util.concurrent.ConcurrentLinkedDeque
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class MyContext implements AgentContext {
+class MyContext0 implements AgentContext {
 
 	@SuppressWarnings("unused_private_member")
 	val myfield : int = 34

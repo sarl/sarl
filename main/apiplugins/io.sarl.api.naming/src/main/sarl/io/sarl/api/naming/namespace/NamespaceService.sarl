@@ -47,6 +47,15 @@ interface NamespaceService extends Service {
 	@Pure
 	def getNameParser : INameParser
 
+	/** 
+	 * Replies the validator for the access to the fields that is used by this service.
+	 * 
+	 * @return The field access validator.
+	 * @since 0.12
+	 */
+	@Pure
+	def getFieldAccessValidator : IFieldAccessValidator
+
 	/**
 	 * Finds and replies the object with the given name and of the given type.
 	 *

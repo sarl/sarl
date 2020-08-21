@@ -22,6 +22,7 @@ package io.sarl.api.naming.parser
 
 import io.sarl.api.naming.name.SarlName
 import java.net.URI
+import java.util.Collections
 import java.util.Set
 
 /** 
@@ -59,7 +60,7 @@ class UriBasedNameParser implements INameParser {
 		if (parsers !== null) {
 			this.schemeNameParser.clear
 			for (parser : parsers) {
-				parser.addSchemeNameParser
+				parser?.addSchemeNameParser
 			}
 		}
 	}	
@@ -72,6 +73,11 @@ class UriBasedNameParser implements INameParser {
 	override removeSchemeNameParser(scheme : String) : ISchemeNameParser<?> {
 		assert !scheme.isNullOrEmpty
 		this.schemeNameParser.remove(scheme)
+	}
+
+	@Pure
+	def getSupportedSchemes : Set<String> {
+		return Collections::unmodifiableSet(this.schemeNameParser.keySet)
 	}
 
 	@Pure	

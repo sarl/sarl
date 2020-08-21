@@ -37,6 +37,8 @@ abstract class AbstractNamespaceService extends AbstractService implements Names
 
 	var nameParser : INameParser
 	
+	var fieldAccessValidator : IFieldAccessValidator
+
 	protected final override doStart {
 		try {
 			onStart
@@ -87,6 +89,22 @@ abstract class AbstractNamespaceService extends AbstractService implements Names
 		this.nameParser = parser
 	}
 
+	@Pure
+	override getFieldAccessValidator : IFieldAccessValidator {
+		this.fieldAccessValidator
+	}
+
+	/** Change the field access validator used by this service.
+	 *
+	 * <p>This function could be overloaded by sub-types in order to inject the field access validator.
+	 * 
+	 * @param validator the field access validator, never {@code null}
+	 * @since 0.12
+	 */
+	def setFieldAccessValidator(validator : IFieldAccessValidator) {
+		this.fieldAccessValidator = validator
+	}
+
 	final override findObject(name : SarlName, type : Class<T>) : T with T {
 		assert type !== null
 		var obj = findObject(name)
@@ -121,18 +139,32 @@ abstract class AbstractNamespaceService extends AbstractService implements Names
 		return associatedObject
 	}
 
-	private static def getDeclaredField(obj : Object, name : SarlName) : FieldAccess {
+	private def getDeclaredField(obj : Object, name : SarlName) : FieldAccess {
 		var type = obj.class
-		while (type !== null && ( typeof(Object) != type )) {
-			try {
-				var field = type.getDeclaredField(name.fragment)
-				if (field !== null) {
-					return new FieldAccess(name, field, obj)
-				} 
-			} catch (ex : Throwable) {
-				//
+		val fav = getFieldAccessValidator
+		if (fav !== null) {
+			while (type !== null && ( typeof(Object) != type )) {
+				try {
+					var field = type.getDeclaredField(name.fragment)
+					if (field !== null) {
+						val right = fav.getFieldAccessRight(obj, field)
+						switch (right) {
+							case WRITE: {
+								return new FieldAccess(name, field, obj, true)
+							}
+							case READ: {
+								return new FieldAccess(name, field, obj, false)
+							}
+							default: {
+								// No field
+							}
+						}
+					} 
+				} catch (ex : Throwable) {
+					//
+				}
+				type = type.superclass
 			}
-			type = type.superclass
 		}
 		return null
 	}

@@ -156,6 +156,8 @@ The general syntax of the service names is defined by the following BNF grammar 
 
 ## Namespace Service
 
+### General Principles
+
 According to the [public API of the SRE](./SRE.md), it is possible to retrieve a service that is implemented and executed by the SRE.
 A service dedicated to finding SARL elements into the SRE environment based on their names is defined into the SARL API. It is named the Namespace service.
 
@@ -186,6 +188,152 @@ To use this service, you have to get it from the SRE, as illustrated below:
 				}
 			}
 		[:End:]
+
+### Field Accessor
+
+In the case the given name targets a field (when it has a fragment part), the Namespace service create
+a specific proxy of type [:fieldaccesstype:] in order to have access to the field.
+This type is defined as:
+
+		[:ShowType:](io.sarl.api.naming.namespace.[:fieldaccesstype]$FieldAccess$)
+
+This accessor type enables to have access to the object instance and to the field value.
+However, the instance of [:fieldaccesstype:] is provided only if the field is observable.
+ 
+
+## Observable and Not Observable Fields
+
+Observation means that data or information could be extracted from the observed object.
+Because an agent is defined as an autonomous entity, the agent should be able to enable or disable the
+access to one of its fields.
+
+In the standard SRE, this observability flag could be defined statically by annotating the obsevable field,
+or one of its enclosing type, with the [:observableannotation:] annotation.
+A second standard method is to implement a dedicated agent skill implementing the capacity [:accesscap:]
+that enables the agent to manage the access rights to its fields dynamically.
+
+By default, into the SRE, the algorithm for checking the field access from an invoking entity is:
+* if the field is marked as observable with an [:observableannotation:] annotation then
+  * The access to the field is granted to the invoking entity (read-only or writable, depending on the annotation's specification)
+* else
+  * if the field is located into an agent element then
+    * if the agent is equiped with a [:accesscap:] skill then
+      * if the agent's skill grants the access
+        * The access to the field is granted to the invoking entity (read-only or writable)
+      * else
+        * The access to the field is denied to the invoking entity. It will be notified that the field was not found.
+    * else
+      * The access to the field is denied to the invoking entity. It will be notified that the field was not found.
+  * else
+    * The access to the field is denied to the invoking entity. It will be notified that the field was not found.
+
+
+### @Obsersable Annotation
+
+In the following example, two fields are defined for the agent [:myagent:].
+The first field is named [:obsfield:] and it is marked as observable because it is annotated with [:observableannotation:].
+The second field is named [:nobsfield:] and it is not observable. 
+
+		[:Success:]
+			package io.sarl.docs.namespace
+			import io.sarl.api.naming.namespace.Observable
+			[:On]
+			agent [:myagent](MyAgent) {
+
+				[:observableannotation](@Observable)
+				var [:obsfield](observableField) : int
+
+				var [:nobsfield](notObservableField) : int
+
+			}
+		[:End:]
+
+Consequently, even if the field [:nobsfield:] is declared, it will never be found by the Namespace space because it is hidden.
+
+As described above, the [:observableannotation:] annotation could be attached to one of the enclosing type in order to mark all the
+declared fields within a type as observable.
+In the following example, the two fields [:obsfield1:] and [:obsfield2:] are observable because the type [:myagent2:]
+is marked with the [:observableannotation:] annotation.
+ 
+		[:Success:]
+			package io.sarl.docs.namespace
+			import io.sarl.api.naming.namespace.Observable
+			[:On]
+			[:observableannotation](@Observable)
+			agent [:myagent2](MyAgent2) {
+
+				var [:obsfield1](observableField1) : int
+
+				var [:obsfield2](observableField2) : int
+
+			}
+		[:End:]
+
+### Capacity to Manage the Access Rights
+
+In order to enable an agent to manage the accesses to its own fields, you could equip this agent with a skill that implements
+the [:accesscap:] capacity:
+
+		[:ShowType:](io.sarl.api.naming.namespace.[:accesscap]$FieldAccessValidationCapacity$)
+
+When an agent owns a skill implementing [:accesscap:], this skill is included into the right checking for accessing to
+the fields of the agent, its behaviors and its skills.
+
+Let the agent implementation below: 
+
+		[:Success:]
+			package io.sarl.docs.namespace
+			import java.lang.reflect.Field
+			import io.sarl.core.Initialize
+			import io.sarl.api.naming.namespace.FieldAccessValidationCapacity
+			import io.sarl.api.naming.namespace.FieldAccessRight
+			skill AccessRightSkill implements FieldAccessValidationCapacity {
+				def getFieldAccessRight(field : Field) : FieldAccessRight { null }
+			}
+			[:On]
+			agent [:myagent!] {
+
+				var [:field1](field1) : int
+
+				var [:field2](field2) : int
+
+				on Initialize {
+					setSkill(new [:accessskill]$AccessRightSkill$)
+				}
+
+			}
+		[:End:]
+
+In this agent, two fields are defined and named [:field1:] and [:field2:].
+We equip the agent with the [:accessskill:] skill that implements the [:accesscap:] capacity:
+
+		[:Success:]
+			package io.sarl.docs.namespace
+			import java.lang.reflect.Field
+			import io.sarl.core.Initialize
+			import io.sarl.api.naming.namespace.FieldAccessValidationCapacity
+			import io.sarl.api.naming.namespace.FieldAccessRight
+			[:On]
+			skill AccessRightSkill implements FieldAccessValidationCapacity {
+				def getFieldAccessRight(field : Field) : [:accessrights]$FieldAccessRight$ {
+					if (field.name == "[:field1!]") {
+						return FieldAccessRight::[:accessrightsread]$READ$
+					}
+					if (field.name == "[:field2!]") {
+						return FieldAccessRight::[:accessrightswrite]$WRITE$
+					}
+					return FieldAccessRight::[:accessrightsnone]$NONE$
+				}
+			}
+		[:End:]
+
+This skill gives the reading access to the field [:field1:], and the reading/writing accesses to the field [:field2:].
+Any other field cannot be observed.
+
+Three levels of obersavility are defined into the enumeration [:accessrights:]:
+* [:accessrightsnone:] The field cannot be observed.
+* [:accessrightsread:] The field's value could be read, but never changed from the outside of the agent. 
+* [:accessrightswrite:] The field's value could be read and/or write from the outside of the agent. 
 
 
 

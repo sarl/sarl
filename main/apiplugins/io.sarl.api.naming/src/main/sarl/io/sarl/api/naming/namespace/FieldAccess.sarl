@@ -45,17 +45,22 @@ class FieldAccess {
 	@Accessors(PUBLIC_GETTER)
 	val instance : Object
 
+	@Accessors(PUBLIC_GETTER)
+	val writable : boolean
+
 	/** Constructor.
 	 *
 	 * @param name the name of the field.
 	 * @param field the field declaration.
 	 * @param instance the object to have access to.
+	 * @param writable indicates if the field is writeable through this accessor.
 	 */
-	new (name : SarlName, field : Field, instance : Object) {
+	new (name : SarlName, field : Field, instance : Object, writable : boolean) {
 		assert !Modifier::isStatic(field.modifiers)
 		this.name = name
 		this.field = field
 		this.instance = instance
+		this.writable = writable
 		this.field.accessible = true
 	}
 
@@ -78,18 +83,23 @@ class FieldAccess {
 	 * @param value the field's value.
 	 * @return the value before setting.
 	 * @throws IllegalArgumentException if the given value cannot be assigned to the field.
+	 * @throws IllegalAccessException if the field cannot be written.
 	 */
-	def set(value : Object) : Object throws IllegalArgumentException {
-		try {
-			val oldValue = this.field.get(this.instance)
-			this.field.set(this.instance, value)
-			return oldValue
-		} catch (ex : IllegalArgumentException) {
-			throw ex
-		} catch (ex : Throwable) {
-			//
+	def set(value : Object) : Object throws IllegalArgumentException, IllegalAccessException {
+		if (this.writable) {
+			try {
+				val oldValue = this.field.get(this.instance)
+				this.field.set(this.instance, value)
+				return oldValue
+			} catch (ex : IllegalArgumentException) {
+				throw ex
+			} catch (ex : Throwable) {
+				//
+			}
+			return null
+		} else {
+			throw new IllegalAccessException
 		}
-		return null
 	}
 
 	@Pure

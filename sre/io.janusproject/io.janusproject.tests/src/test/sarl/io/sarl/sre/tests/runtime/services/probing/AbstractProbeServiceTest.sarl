@@ -41,6 +41,7 @@ import org.junit.jupiter.api.^extension.ExtendWith
 import static io.sarl.sre.test.framework.Constants.*
 
 import static extension org.junit.jupiter.api.Assertions.*
+import io.sarl.sre.tests.runtime.services.probing.mocks.ProbedObservableAgent
 
 /**
  * @author $Author: sgalland$
@@ -64,7 +65,7 @@ abstract class AbstractProbeServiceTest {
 	}
 
 	@SuppressWarnings("discouraged_reference")
-	protected def runTestCase(extension rc : SreRunContext, urlBuilder : (UUID)=>String) : Probe<Integer> {
+	protected def runTestCase(extension rc : SreRunContext, observable : boolean, urlBuilder : (UUID)=>String) : Probe<Integer> {
 		runTestCase_prepare
 
 		var kern = setupTheSreKernel(null, null)
@@ -77,7 +78,8 @@ abstract class AbstractProbeServiceTest {
 		val bid = UUID::randomUUID
 		val w0 = waitForAgentSpawned(bid)
 
-		kern.startAgentWithID(typeof(ProbedAgent), bid, getAgentInitializationParameters)
+		val agentType = if (observable) typeof(ProbedObservableAgent) else typeof(ProbedAgent)
+		kern.startAgentWithID(agentType, bid, getAgentInitializationParameters)
 
 		w0.doWait
 
@@ -113,9 +115,18 @@ abstract class AbstractProbeServiceTest {
 	}
 
 	@Test
-	@DisplayName("Probe agent field")
-	def probeAgentField(extension rc : SreRunContext) {
-		var probe = rc.runTestCase ["agent:" + it + "#myfield"]
+	@DisplayName("Not-observable agent field")
+	def probeNotObservableAgentField(extension rc : SreRunContext) {
+		rc.runTestCase(false) ["agent:" + it + "#myfield"]
+
+		0.assertEquals(changedProbes.size)
+		0.assertEquals(releasedProbes.size)
+	}
+
+	@Test
+	@DisplayName("Observable agent field")
+	def probeObservableAgentField(extension rc : SreRunContext) {
+		var probe = rc.runTestCase(true) ["agent:" + it + "#myfield"]
 		
 		1.assertEquals(changedProbes.size)
 
@@ -129,12 +140,12 @@ abstract class AbstractProbeServiceTest {
 	}
 
 	@Test
-	@DisplayName("Probe unknown agent field")
+	@DisplayName("Unknown field")
 	def probeAgentUnkwonField(extension rc : SreRunContext) {
-		var probe = rc.runTestCase["agent:" + it + "#myfield_unkwon"]
+		var probe = rc.runTestCase(true) ["agent:" + it + "#myfield_unkwon"]
 		probe.assertNull
 	}
-	
+
 	protected abstract def runTestCase_prepare
 
 	protected abstract def runTestCase_beforeChangeField(service : ProbeService, probe : Probe<Integer>)

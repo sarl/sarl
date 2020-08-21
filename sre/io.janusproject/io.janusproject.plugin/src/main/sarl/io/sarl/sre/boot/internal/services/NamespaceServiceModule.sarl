@@ -23,17 +23,23 @@ package io.sarl.sre.boot.internal.services
 import com.google.common.util.concurrent.Service
 import com.google.inject.AbstractModule
 import com.google.inject.Module
+import com.google.inject.Provides
 import io.bootique.BQModule
 import io.bootique.BQModuleProvider
+import io.sarl.api.naming.namespace.AnnotationFieldAccessValidator
+import io.sarl.api.naming.namespace.CapacityFieldAccessValidator
+import io.sarl.api.naming.namespace.CascadeFieldAccessValidator
 import io.sarl.api.naming.namespace.FinderBasedNamespaceService
+import io.sarl.api.naming.namespace.IFieldAccessValidator
 import io.sarl.api.naming.namespace.INamespaceFinder
 import io.sarl.api.naming.namespace.NamespaceService
+import io.sarl.api.naming.namespace.OwnerTypeFieldAccessValidator
+import io.sarl.api.naming.parser.INameParser
 import java.util.Set
 import javax.inject.Inject
 import javax.inject.Singleton
 
 import static extension com.google.inject.multibindings.Multibinder.*
-import io.sarl.api.naming.parser.INameParser
 
 /** 
  * Module for the namespace services.
@@ -50,6 +56,16 @@ class NamespaceServiceModule extends AbstractModule {
 		typeof(NamespaceService).bind.to(typeof(InjectedFinderBasedNamespaceService)).in(typeof(Singleton))
 
 		binder.newSetBinder(typeof(Service), typeof(SreServices)).addBinding.to(typeof(NamespaceService))
+	}
+
+	@Provides
+	@Singleton
+	def provideFieldAccessValidator : IFieldAccessValidator {
+		val defaultValidator = new CascadeFieldAccessValidator
+		defaultValidator.addValidator(new AnnotationFieldAccessValidator)
+		defaultValidator.addValidator(new CapacityFieldAccessValidator)
+		defaultValidator.addValidator(new OwnerTypeFieldAccessValidator)
+		return defaultValidator
 	}
 
 }
@@ -72,8 +88,13 @@ class InjectedFinderBasedNamespaceService extends FinderBasedNamespaceService {
 
 	@SuppressWarnings("raw_type")
 	@Inject
-	def setNamespaceFinders(@NamespaceFinders finders : Set<INamespaceFinder>) {
+	override setNamespaceFinders(@NamespaceFinders finders : Set<INamespaceFinder>) {
 		super.setNamespaceFinders(finders)
+	}
+
+	@Inject
+	override setFieldAccessValidator(validator : IFieldAccessValidator) {
+		super.setFieldAccessValidator(validator)
 	}
 
 }
