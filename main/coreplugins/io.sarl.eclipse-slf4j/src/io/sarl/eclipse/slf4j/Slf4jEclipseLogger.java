@@ -35,7 +35,9 @@ import org.slf4j.Marker;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 0.11
+ * @deprecated Remove when SLF4J is properly configured for Eclipse.
  */
+@Deprecated
 public class Slf4jEclipseLogger implements Logger {
 
 	private final ILog logger;

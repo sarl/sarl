@@ -36,7 +36,9 @@ import org.slf4j.spi.SLF4JServiceProvider;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 0.11
+ * @deprecated Remove when SLF4J is properly configured for Eclipse.
  */
+@Deprecated
 public class Slf4jEclipseLoggerServiceProvider implements SLF4JServiceProvider {
 
 	/**
