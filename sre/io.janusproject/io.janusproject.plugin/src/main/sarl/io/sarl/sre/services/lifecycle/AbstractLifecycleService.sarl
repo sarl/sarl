@@ -46,6 +46,7 @@ import org.eclipse.xtext.xbase.lib.Functions.Function0
 import static io.sarl.sre.services.lifecycle.AgentLife.*
 import static java.text.MessageFormat.*
 import io.sarl.sre.IssueCodes
+import org.eclipse.xtend.lib.annotations.Accessors
 
 /** 
  * Implementation of a spawning service that is based on the other services of the SRE platform.
@@ -72,6 +73,7 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 
 	val platformContextEventEmitter : ExternalContextMemberListener
 
+	@Accessors(PROTECTED_GETTER)
 	val executor : ExecutorService
 
 	val lifecycleConfig : LifecycleConfig
@@ -317,10 +319,10 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 
 			]
 			if (nbAgents > 1) {
-				this.executor.executeNotBlockingTask(loggingService.kernelLogger, nbAgents,
+				getExecutor.executeNotBlockingTask(loggingService.kernelLogger, nbAgents,
 					this.lifecycleConfig.agentSpawningCountPerThread, agentCreator)
 			} else {
-				this.executor.executeAsap(loggingService.kernelLogger, agentCreator)
+				getExecutor.executeAsap(loggingService.kernelLogger, agentCreator)
 			}
 		} else {
 			throw new SpawnDisabledException(parent.ID, agentClazz)

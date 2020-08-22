@@ -197,8 +197,7 @@ class EventBus {
 		assert ^event !== null
 		assert listener !== null
 
-		val behaviorGuardEvaluators = this.behaviorGuardEvaluatorRegistry.
-			getBehaviorGuardEvaluatorsFor(^event, listener)
+		val behaviorGuardEvaluators = this.behaviorGuardEvaluatorRegistry.getBehaviorGuardEvaluatorsFor(^event, listener)
 
 		if (behaviorGuardEvaluators !== null && behaviorGuardEvaluators.size() > 0) {
 			val behaviorsMethodsToExecute = evaluateGuards(^event, behaviorGuardEvaluators, logger)
