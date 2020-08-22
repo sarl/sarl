@@ -29,7 +29,7 @@
 		</dependency>
 
 		<dependency>
-			<groupId>io.janusproject</groupId>
+			<groupId>io.janusproject.sre</groupId>
 			<artifactId>io.janusproject.plugin</artifactId>
 			<version>${sarl.version}</version>
 		</dependency>

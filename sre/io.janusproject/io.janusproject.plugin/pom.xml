@@ -8,7 +8,6 @@
 		<version>0.12.0-SNAPSHOT</version>
 	</parent>
 
-	<groupId>io.janusproject</groupId>
 	<artifactId>io.janusproject.plugin</artifactId>
 	<packaging>eclipse-plugin</packaging>
 	<name>Janus Project</name>
