@@ -138,7 +138,7 @@
 							<jre>
 								<minVersion>${sarl-run.min.jdk.version}.0</minVersion> 
 								<jdkPreference>jdkOnly</jdkPreference>
-								<runtimeBits>64/32</runtimeBits>
+								<runtimeBits>64</runtimeBits>
 							</jre>
 							<versionInfo>
 								<fileVersion>${sarl.release_version}.0</fileVersion>
