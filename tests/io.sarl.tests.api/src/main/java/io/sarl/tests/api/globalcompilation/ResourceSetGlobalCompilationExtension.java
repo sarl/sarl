@@ -48,6 +48,7 @@ import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
 import io.sarl.tests.api.ExtendedSARLInjectorProvider;
+import io.sarl.tests.api.tools.TestUtils;
 
 /** JUnit5 extension for making a test class as including a
  * global compilation of a resource set. 
@@ -130,12 +131,13 @@ class ResourceSetGlobalCompilationExtension extends AbstractResourceSetGlobalCom
 							final String expected = entry.getValue().getValue();
 							final DynamicTest test = dynamicTest("Java compilation - " + functionName, () -> {
 								assertEquals(expected, actual, () -> {
+									final String diff = TestUtils.differences(expected, actual);
 									if (!Strings.isEmpty(functionName)) {
-										return functionName;
+										return functionName + ", RAW DIFF = " + diff;
 									}
 									final int index1 = id.lastIndexOf('.');
 									final int index0 = id.lastIndexOf('.', index1 - 1) + 1;
-									return entry.getKey().substring(index0, index1);
+									return entry.getKey().substring(index0, index1) + ", RAW DIFF = " + diff;
 								});
 							});
 							dynamicTestResults.add(test);

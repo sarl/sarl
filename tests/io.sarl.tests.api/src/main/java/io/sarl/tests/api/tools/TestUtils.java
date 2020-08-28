@@ -31,6 +31,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
+import org.eclipse.xtext.util.DiffUtil;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Set of utility classes that provide additional assertion functions.
@@ -252,10 +253,34 @@ public final class TestUtils {
 		final int index1 = typeName.lastIndexOf("$");
 		final int index2 = typeName.lastIndexOf(".");
 		final int index = Math.max(index1, index2);
-			if (index >= 0) {
-				return typeName.substring(index + 1);
-			}
+		if (index >= 0) {
+			return typeName.substring(index + 1);
+		}
 		return typeName;
+	}
+
+	/** Replies a string describing the differences between two strings.
+	 *
+	 * @param a the first string.
+	 * @param b the second string
+	 * @return the description of the difference.
+	 * @since 0.12
+	 */
+	@Pure
+	public static String differences(String a, String b) {
+		// Replace the special "hidden" characters
+		final String ca = diffClean(a);
+		final String cb = diffClean(b);
+		String diff = DiffUtil.diff(ca, cb);
+		return diff;
+	}
+
+	private static String diffClean(String a) {
+		String ca = a.replace("\n", "<<\\n>>");
+		ca = ca.replace("\r", "<<\\r>>");
+		ca = ca.replace("\t", "<<\\t>>");
+		ca = ca.replace("\f", "<<\\f>>");
+		return ca;
 	}
 
 }
