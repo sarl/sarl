@@ -74,17 +74,17 @@ class ReflectBehaviorGuardEvaluatorRegistry extends AbstractBehaviorGuardEvaluat
 	}
 
 	@Pure
-	protected override getInternalEvaluatorMapper : (GuardedEvaluator)=>IBehaviorGuardEvaluator {
-		[
-			it.evaluator
-		]
-	}
-
-	@Pure
 	protected override getInternalEvaluatorFilter : (GuardedEvaluator, Event)=>boolean {
 		[
 			val filter = $0.registrationGuard
 			return filter === null || filter.apply($1)
+		]
+	}
+
+	@Pure
+	protected override getInternalEvaluatorMapper : (GuardedEvaluator)=>IBehaviorGuardEvaluator {
+		[
+			it.evaluator
 		]
 	}
 
