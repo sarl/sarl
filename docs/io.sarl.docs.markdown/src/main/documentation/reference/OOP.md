@@ -1541,10 +1541,6 @@ as reordering memory operations and caching the variable in a CPU register. Usin
 instructs the compiler not to apply these optimizations. This guarantees that a reading thread
 always reads the variable from memory (or from a shared cache), never from a local cache.
 
-<note>From now, it is better to use
-[atomic references](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/atomic/package-summary.html)
-in place of volatile variables.</note>
-
 		[:Success:]
 			package io.sarl.docs.reference.oop
 			[:On]
