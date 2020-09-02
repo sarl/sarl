@@ -179,8 +179,9 @@ Announce the new version of SARL on:
 * SARL's Facebook page https://www.facebook.com/sarllanguage/
 * SARL Gitter https://gitter.im/sarl/Lobby
 * Linked-in https://www.linkedin.com/
+* ResearchGate https://www.researchgate.net
 * CIAD laboratory Intranet 
-* Research mailing lists 
+* Research mailing lists (bull-ia@gdria.fr, bull-i3@irit.fr, sma@loria.fr, sage-announce@mailman.sage.org, tccc-announce@COMSOC.ORG, ecoop-info@ecoop.org, agents@cs.umbc.edu, pvs@csl.sri.com, mycolleagues@mailman.ufsc.br, icec@listserver.tue.nl, irma-list@irma-international.org, distributed-computing-announce@datasys.cs.iit.edu, stcos-announce@ieee.net, ahsntc-mailing-list@list.trlab.ca, computational.science@lists.iccsa.org, ant-conf@acadia.ca, latincolleagues@mailman.ufsc.br , authors@mailman.ufsc.br , appsem@lists.tcs.ifi.lmu.de, chi-Jobs@acm.org, cl-isabelle-users@lists.cam.ac.uk, clean-list@science.ru.nl, concurrency@listserver.tue.nl, cscw-all@jiscmail.ac.uk, easst-members@lists.le.ac.uk, events@fmeurope.org, gratra@lists.uni-paderborn.de, haskell@haskell.org, announce@aosd.net, multiagent@yahoogroups.com, petrinet@informatik.uni-hamburg.de, prog-lang@cs.uiuc.edu, seworld@sigsoft.org, types-announce@lists.seas.upenn.edu, zforum@comlab.ox.ac.uk, aixia@aixia.it, event-request@in.tu-clausthal.de)
 
 == 4) PHASE 4: DEVELOPMENT VERSION
 
