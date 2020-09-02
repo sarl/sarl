@@ -69,7 +69,10 @@ public class SarlcConfig {
 
 	/**
 	 * Name of the property that contains the Java boot classpath.
+	 *
+	 * @since 0.12 not replacement because of Java 11.
 	 */
+	@Deprecated
 	public static final String JAVA_BOOT_CLASSPATH_NAME = PREFIX + ".javaBootClasspath"; //$NON-NLS-1$
 
 	/**
@@ -86,6 +89,7 @@ public class SarlcConfig {
 
 	private String bootClasspath;
 
+	@Deprecated
 	private String javaBootClasspath;
 
 	private File outputPath;
@@ -147,7 +151,9 @@ public class SarlcConfig {
 	/** Replies the Java boot classpath.
 	 *
 	 * @return the Java boot classpath
+	 * @since 0.12 not replacement because of Java 11.
 	 */
+	@Deprecated
 	public String  getJavaBootClasspath() {
 		return this.javaBootClasspath;
 	}
@@ -155,7 +161,9 @@ public class SarlcConfig {
 	/** Change the Java boot class path.
 	 *
 	 * @param path the Java boot class path.
+	 * @since 0.12 not replacement because of Java 11.
 	 */
+	@Deprecated
 	@BQConfigProperty("Java boot class path for the SARL compiler.")
 	public void setJavaBootClasspath(String  path) {
 		this.javaBootClasspath = path;
