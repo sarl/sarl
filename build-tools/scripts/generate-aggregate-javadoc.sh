@@ -30,11 +30,16 @@ do
 done
 echo "Source Paths: ${SOURCE_PATH}"
 
+if [ -z "$MAVEN_CMD" ]
+then
+	MAVEN_CMD="mvn"
+fi
+
 # Build the documentation
-if mvn -Dmaven.test.skip=true -Dcheckstyle.skip=true -DpublicSarlApiModuleSet=true clean install org.arakhne.afc.maven:tag-replacer:generatereplacesrc
+if "$MAVEN_CMD" -Dmaven.test.skip=true -Dcheckstyle.skip=true -DpublicSarlApiModuleSet=true clean install org.arakhne.afc.maven:tag-replacer:generatereplacesrc
 then
 
-	exec mvn -Dmaven.test.skip=true -Dcheckstyle.skip=true -DpublicSarlApiModuleSet=true "-Dsourcepath=${SOURCE_PATH}" javadoc:aggregate
+	exec "$MAVEN_CMD" -Dmaven.test.skip=true -Dcheckstyle.skip=true -DpublicSarlApiModuleSet=true "-Dsourcepath=${SOURCE_PATH}" javadoc:aggregate
 
 fi
 

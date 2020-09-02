@@ -51,9 +51,9 @@ then
 
 	shift
 	
-	if [ -z "$MVN_CMD" ]
+	if [ -z "$MAVEN_CMD" ]
 	then
-		MVN_CMD=mvn
+		MAVEN_CMD=mvn
 	fi
 
 	PASSPHRASE=`ssh-askpass "Please enter your passphrase for signing the files:"`
@@ -65,8 +65,8 @@ then
 		echo "Assuming 'maven-sources-plugin:jar' is activated"
 		echo "Have you activated the released profile? -DperformRelease=true"
 
-		echo $MVN_CMD -Dgpg.passphrase="<hidden>" -Darguments=-Dgpg.passphrase="<hidden>" "$@"  clean verify
-		$MVN_CMD -Dgpg.passphrase="$PASSPHRASE" -Darguments=-Dgpg.passphrase="$PASSPHRASE" "$@"  clean verify || exit 255
+		echo "$MAVEN_CMD" -Dgpg.passphrase="<hidden>" -Darguments=-Dgpg.passphrase="<hidden>" "$@"  clean verify
+		"$MAVEN_CMD" -Dgpg.passphrase="$PASSPHRASE" -Darguments=-Dgpg.passphrase="$PASSPHRASE" "$@"  clean verify || exit 255
 		
 		CDIR=`pwd`
 

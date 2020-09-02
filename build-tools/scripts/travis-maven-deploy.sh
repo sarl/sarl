@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+if [ -z "$MAVEN_CMD" ]
+then
+	MAVEN_CMD="mvn"
+fi
+
 if test "${TRAVIS_EVENT_TYPE}" = 'cron'
 then
 
@@ -23,7 +28,7 @@ then
 
 	if test "${TRAVIS_OS_NAME}" = 'linux' -a "${TRAVIS_PULL_REQUEST}" = 'false' -a -z "${TRAVIS_TAG}" -a "${TRAVIS_BRANCH}" = 'master'
 	then
-		exec mvn -B $MAVEN_DEPLOYMENT_OPTS "-Djavax.net.ssl.trustStore=$HTTPS_KEYSTORE_FILE" "-Djavax.net.ssl.trustStorePassword=$HTTPS_KEYSTORE_PWD" "-Djavax.net.ssl.keyStore=$HTTPS_KEYSTORE_FILE" "-Djavax.net.ssl.keyStorePassword=$HTTPS_KEYSTORE_PWD" deploy --settings "$MAVEN_DEPLOYMENT_SETTING"
+	exec "$MAVEN_CMD" -B $MAVEN_DEPLOYMENT_OPTS "-Djavax.net.ssl.trustStore=$HTTPS_KEYSTORE_FILE" "-Djavax.net.ssl.trustStorePassword=$HTTPS_KEYSTORE_PWD" "-Djavax.net.ssl.keyStore=$HTTPS_KEYSTORE_FILE" "-Djavax.net.ssl.keyStorePassword=$HTTPS_KEYSTORE_PWD" deploy --settings "$MAVEN_DEPLOYMENT_SETTING"
 
 	else
 
