@@ -152,7 +152,7 @@ class SreSpaceSpecificationFactory {
 			return new SreEventSpaceSpecification(this.injector, defaultSpace,
 				this.spaceParticipantListenerFactory.get, this.logger.get)
 		}
-		return type.newInstance
+		return type.declaredConstructor.newInstance
 	}
 
 	/** Create the space specification for an event space that is supposed to be the default space.
