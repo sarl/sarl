@@ -24,11 +24,13 @@ package io.sarl.maven.compiler;
 import java.io.File;
 import java.text.MessageFormat;
 
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.ResolutionScope;
+import org.apache.maven.project.MavenProject;
 
 /** Initialization mojo for the SARL Maven compiler.
  *
@@ -42,17 +44,19 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 public class InitializeMojo extends AbstractSarlMojo {
 
 	@Override
-	protected void executeMojo() throws MojoExecutionException, MojoFailureException {
+	protected void executeMojo() throws MojoExecutionException, MojoFailureException, DependencyResolutionRequiredException {
+		final MavenProject project = this.mavenHelper.getSession().getCurrentProject();
 		for (final File f : new File[] {getInput(), getOutput()}) {
 			final String absPath = f.getAbsolutePath();
 			getLog().info(MessageFormat.format(Messages.InitializeMojo_0, absPath));
-			this.mavenHelper.getSession().getCurrentProject().addCompileSourceRoot(absPath);
+			project.addCompileSourceRoot(absPath);
 		}
 		for (final File f : new File[] {getTestInput(), getTestOutput()}) {
 			final String absPath = f.getAbsolutePath();
 			getLog().info(MessageFormat.format(Messages.InitializeMojo_1, absPath));
-			this.mavenHelper.getSession().getCurrentProject().addTestCompileSourceRoot(absPath);
+			project.addTestCompileSourceRoot(absPath);
 		}
 	}
 
 }
+

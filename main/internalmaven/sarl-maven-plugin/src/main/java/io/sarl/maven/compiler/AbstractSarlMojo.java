@@ -31,6 +31,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.maven.artifact.ArtifactUtils;
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.artifact.resolver.ResolutionErrorHandler;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Dependency;
@@ -130,9 +131,10 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 			ensureDefaultParameterValues();
 			prepareExecution();
 			executeMojo();
-		} catch (Exception e) {
-			getLog().error(e.getLocalizedMessage(), e);
+		} catch (MojoExecutionException | MojoFailureException e) {
 			throw e;
+		} catch (Throwable e) {
+			throw new MojoExecutionException(e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -234,8 +236,9 @@ public abstract class AbstractSarlMojo extends AbstractMojo {
 	 *     exception causes a "BUILD ERROR" message to be displayed.
 	 * @throws MojoFailureException if an expected problem (such as a compilation failure)
 	 *     occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed.
+	 * @throws DependencyResolutionRequiredException if a dependency cannot be resolved.
 	 */
-	protected abstract void executeMojo() throws MojoExecutionException, MojoFailureException;
+	protected abstract void executeMojo() throws MojoExecutionException, MojoFailureException, DependencyResolutionRequiredException;
 
 	/** Execute another MOJO.
 	 *

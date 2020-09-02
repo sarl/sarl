@@ -113,7 +113,7 @@ public enum JavaCompiler {
 	 * @return the java compiler.
 	 */
 	public static JavaCompiler getDefault() {
-		return ECJ;
+		return JAVAC;
 	}
 
 }

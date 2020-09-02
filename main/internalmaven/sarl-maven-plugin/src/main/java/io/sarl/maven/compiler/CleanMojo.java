@@ -23,6 +23,7 @@ package io.sarl.maven.compiler;
 
 import java.text.MessageFormat;
 
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -41,7 +42,7 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 public class CleanMojo extends AbstractSarlMojo {
 
 	@Override
-	protected void executeMojo() throws MojoExecutionException, MojoFailureException {
+	protected void executeMojo() throws MojoExecutionException, MojoFailureException, DependencyResolutionRequiredException {
 		final String cleanerGroupId = this.mavenHelper.getConfig("cleaner.groupId"); //$NON-NLS-1$
 		final String cleanerArtifactId = this.mavenHelper.getConfig("cleaner.artifactId"); //$NON-NLS-1$
 		final String cleanerVersion = this.mavenHelper.getPluginDependencyVersion(cleanerGroupId, cleanerArtifactId);
