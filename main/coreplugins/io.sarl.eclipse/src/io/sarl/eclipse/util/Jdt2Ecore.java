@@ -69,7 +69,6 @@ import org.eclipse.xtext.xbase.XbaseFactory;
 
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.lang.annotation.DefaultValue;
-import io.sarl.lang.annotation.Generated;
 import io.sarl.lang.annotation.SarlSourceCode;
 import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.codebuilder.builders.IBlockExpressionBuilder;
@@ -96,6 +95,8 @@ import io.sarl.lang.util.Utils;
 @Singleton
 @SuppressWarnings({"static-method", "checkstyle:classfanoutcomplexity"})
 public class Jdt2Ecore {
+
+	private static final String GENERATED_NAME = "Generated"; //$NON-NLS-0$
 
 	@Inject
 	private TypeReferences typeReferences;
@@ -322,7 +323,7 @@ public class Jdt2Ecore {
 	 */
 	public boolean isGeneratedOperation(IMethod method) {
 		return getAnnotation(method, SyntheticMember.class.getName()) != null
-				|| getAnnotation(method, Generated.class.getName()) != null;
+				|| getAnnotation(method, GENERATED_NAME) != null;
 	}
 
 	/** Replies the annotation with the given qualified name.
