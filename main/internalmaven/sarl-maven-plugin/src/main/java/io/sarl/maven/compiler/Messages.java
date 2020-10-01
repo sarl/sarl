@@ -76,6 +76,7 @@ public class Messages extends NLS {
 	public static String AbstractCompileMojo_0;
 	public static String AbstractCompileMojo_1;
 	public static String AbstractCompileMojo_2;
+	public static String AbstractCompileMojo_3;
 	public static String Utils_0;
 	public static String Utils_1;
 	static {
