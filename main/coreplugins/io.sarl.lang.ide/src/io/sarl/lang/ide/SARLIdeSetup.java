@@ -35,6 +35,7 @@ import io.sarl.lang.SARLStandaloneSetup;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.12
  */
 public class SARLIdeSetup extends SARLStandaloneSetup {
 

@@ -22,12 +22,13 @@
 package io.sarl.lang.ide;
 
 /**
- * Use this class to register ide components.
+ * Use this class to register IDE components of the SARL suite.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.12
  */
 public class SARLIdeModule extends AbstractSARLIdeModule {
 	//

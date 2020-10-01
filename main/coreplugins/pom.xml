@@ -24,6 +24,7 @@
 				<module>io.sarl.lang.core</module>
 				<module>io.sarl.lang</module>
 				<module>io.sarl.lang.ui</module>
+				<module>io.sarl.lang.ide</module>
 				<module>io.sarl.eclipse</module>
 				<module>io.sarl.m2e</module>
 				<module>io.sarl.eclipse-dsl4sarl</module>

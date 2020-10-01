@@ -52,14 +52,17 @@ var baseName = "io.sarl.lang"
 var runtimeProjectName = "${baseName}"
 var projectPath = "${rootPath}/${runtimeProjectName}"
 
-var uiProjectName = "${baseName}.ui"
-var uiProjectPath = "${rootPath}/${uiProjectName}"
+var genericUiProjectName = "${baseName}.ui"
+var genericUiProjectPath = "${rootPath}/${genericUiProjectName}"
+
+var ideProjectName = "${baseName}.ide"
+var ideProjectPath = "${rootPath}/${ideProjectName}"
 
 var testProjectName = "io.sarl.tests.api"
 var testProjectPath = "${overallRootPath}/tests/${testProjectName}"
 
-var testUiProjectName = "${testProjectName}.ui"
-var testUiProjectPath = "${overallRootPath}/tests/${testUiProjectName}"
+var testEclipseProjectName = "${testProjectName}.ui"
+var testEclipseProjectPath = "${overallRootPath}/tests/${testEclipseProjectName}"
 
 var externalToolPath = "${overallRootPath}/formatting-styles"
 
@@ -107,13 +110,16 @@ Workflow {
 		directory = "${projectPath}/src-gen"
 	}
  	component = DirectoryCleaner {
-		directory = "${uiProjectPath}/src-gen"
+		directory = "${genericUiProjectPath}/src-gen"
+	}
+ 	component = DirectoryCleaner {
+		directory = "${ideProjectPath}/src-gen"
 	}
   	component = DirectoryCleaner {
 		directory = "${testProjectPath}/src/generated/java"
 	}
   	component = DirectoryCleaner {
-		directory = "${testUiProjectPath}/src-gen"
+		directory = "${testEclipseProjectPath}/src-gen"
 	}
    	component = DirectoryCleaner {
 		directory = "${prettifyToolPath}"
@@ -142,17 +148,19 @@ Workflow {
  		configuration = SarlGeneratorModule {
 			// Project configuration
 			project = StandardProjectConfig auto-inject {
+				baseName = baseName
+				rootPath = rootPath
 				runtime = auto-inject {
 					enabled = true
 					name = runtimeProjectName
 				}
 				eclipsePlugin = auto-inject {
 					enabled = true
-					name = uiProjectName
+					name = genericUiProjectName
 				}
 				genericIde = auto-inject {
 					enabled = true
-					name = uiProjectName
+					name = ideProjectName
 				}
 				runtimeTest = auto-inject {
 					enabled = true
@@ -160,7 +168,7 @@ Workflow {
 				}
 				eclipsePluginTest = auto-inject {
 					enabled = true
-					root = testUiProjectPath
+					root = testEclipseProjectPath
 				}
 				mavenLayout = false
 				createEclipseMetaData = true
