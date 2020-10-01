@@ -61,6 +61,7 @@ import java.util.logging.LogRecord
 @Tag("sre-run")
 @Tag("janus")
 @Tag("long-test")
+@SuppressWarnings("all")
 class Bug976Test {
 
 	private def run(extension rc : SreRunContext, nb : int) : void {

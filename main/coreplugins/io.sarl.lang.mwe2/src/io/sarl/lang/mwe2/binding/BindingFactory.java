@@ -367,14 +367,10 @@ public class BindingFactory {
 			// But it's for having something working!
 			try {
 				final Field field = module.getClass().getDeclaredField("bindings"); //$NON-NLS-1$
-				final boolean accessible = field.isAccessible();
-				try {
-					field.setAccessible(true);
-					final Collection<?> hiddenBindings = (Collection<?>) field.get(module);
-					hiddenBindings.removeAll(this.removableBindings);
-				} finally {
-					field.setAccessible(accessible);
-				}
+				// TODO Is this compatible with Java 11?
+				field.setAccessible(true);
+				final Collection<?> hiddenBindings = (Collection<?>) field.get(module);
+				hiddenBindings.removeAll(this.removableBindings);
 			} catch (Exception exception) {
 				throw new IllegalStateException(exception);
 			}

@@ -70,6 +70,7 @@ import org.junit.jupiter.api.Disabled
 @Tag("sre-run")
 @Tag("janus")
 @Disabled
+@SuppressWarnings("all")
 class EventHandlingPerformanceTest {
 
 	private static def stats(writer : CsvWriter, dataList : Collection<Double>, method : String, context : String, nbHandlers : int, nbEvents : int) {

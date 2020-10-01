@@ -35,6 +35,7 @@ import java.util.ArrayList
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("all")
 agent CancelTaskAgent2 {
 	
 	uses Schedules, Lifecycle

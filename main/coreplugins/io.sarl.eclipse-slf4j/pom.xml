@@ -9,7 +9,6 @@
 		<relativePath>../../../tycho-parent/tycho-parent-ui</relativePath>
 	</parent>
 	
-	<groupId>io.sarl</groupId>
 	<artifactId>io.sarl.eclipse-slf4j</artifactId>
 	<packaging>eclipse-plugin</packaging>
 	<name>SLF4J Logger for Eclipse</name>

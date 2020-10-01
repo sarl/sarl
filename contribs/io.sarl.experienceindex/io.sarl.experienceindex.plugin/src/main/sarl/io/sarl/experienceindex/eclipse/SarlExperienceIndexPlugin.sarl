@@ -88,16 +88,8 @@ class SarlExperienceIndexPlugin extends AbstractUIPlugin {
 	 * @return the image.
 	 */
 	def getImage(imagePath : String) : Image {
-		var descriptor = this.imageRegistry.getDescriptor(imagePath)
-		if (descriptor === null) {
-			val odescriptor = ResourceLocator::imageDescriptorFromBundle(PLUGIN_ID, imagePath)
-			if (odescriptor.present) {
-				var img = odescriptor.get.createImage
-				this.imageRegistry.put(imagePath, img)
-				return img
-			}
-		}
-		return null
+		val descriptor = getImageDescriptor(imagePath)
+		return descriptor?.createImage
 	}
 
 }

@@ -64,6 +64,7 @@ import static extension org.junit.jupiter.api.Assertions.*
 @DisplayName("run: Kernel shutdown test")
 @Tag("sre-run")
 @Tag("janus")
+@SuppressWarnings("all")
 class ShutdownTest {
 
 	val DELAY = 500

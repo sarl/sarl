@@ -81,9 +81,8 @@ public class SerializableProxy implements Serializable {
 			}
 		}
 		if (compatible != null) {
-			if (!compatible.isAccessible()) {
-				compatible.setAccessible(true);
-			}
+			// TODO Is this compatible with Java 11?
+			compatible.setAccessible(true);
 			try {
 				final Object[] arguments = new Object[this.values.length + 1];
 				System.arraycopy(this.values, 0, arguments, 1, this.values.length);

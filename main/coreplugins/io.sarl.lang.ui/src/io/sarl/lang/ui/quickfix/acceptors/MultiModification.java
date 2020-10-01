@@ -90,7 +90,7 @@ public final class MultiModification extends SARLSemanticModification {
 		}
 
 		if (selected != null) {
-			final SARLSemanticModification modification = selected.newInstance();
+			final SARLSemanticModification modification = selected.getDeclaredConstructor().newInstance();
 			modification.setIssue(getIssue());
 			modification.setTools(getTools());
 			modification.apply(element, context);
