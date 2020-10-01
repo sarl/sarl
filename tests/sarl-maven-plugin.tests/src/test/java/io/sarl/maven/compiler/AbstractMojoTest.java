@@ -200,6 +200,7 @@ public abstract class AbstractMojoTest {
 		Verifier verifier = new Verifier(baseDir.getAbsolutePath());
 		verifier.setAutoclean(false);
 		verifier.setDebug(false);
+		verifier.addCliOption("-o"); //$NON-NLS-1$
 		final String m2home = findDefaultMavenHome();
 		if (m2home != null && !m2home.isEmpty()) {
 			verifier.setForkJvm(false);

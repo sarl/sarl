@@ -34,6 +34,7 @@ import org.eclipse.xtext.xbase.testing.OnTheFlyJavaCompiler2;
 
 import io.sarl.lang.SARLStandaloneSetup;
 import io.sarl.lang.SARLVersion;
+import io.sarl.lang.compiler.batch.SarlBatchCompilerUtils;
 import io.sarl.lang.tests.SARLInjectorProvider;
 
 /** Override the module definition for tests only.
@@ -91,8 +92,7 @@ public class ExtendedSARLInjectorProvider extends SARLInjectorProvider {
 
 		@Override
 		public OnTheFlyJavaCompiler2 get() {
-			final String minJava = SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT;
-			final JavaVersion jversion = JavaVersion.fromQualifier(minJava);
+			final JavaVersion jversion = SarlBatchCompilerUtils.parserJavaVersion(null);
 			return new OnTheFlyJavaCompiler2(
 					SARLInjectorProvider.class.getClassLoader(),
 					jversion);

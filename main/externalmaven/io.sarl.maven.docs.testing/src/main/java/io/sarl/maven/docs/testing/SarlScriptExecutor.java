@@ -51,6 +51,7 @@ import org.eclipse.xtext.xbase.validation.IssueCodes;
 import io.sarl.lang.compiler.batch.CleaningPolicy;
 import io.sarl.lang.compiler.batch.ICompilatedResourceReceiver;
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
+import io.sarl.lang.compiler.batch.SarlBatchCompilerUtils;
 import io.sarl.lang.interpreter.SarlExpressionInterpreter;
 import io.sarl.lang.sarl.SarlClass;
 import io.sarl.lang.sarl.SarlField;
@@ -68,11 +69,13 @@ public class SarlScriptExecutor implements ScriptExecutor {
 
 	private File tmpFolder = null;
 
-	private String classpath = Strings.emptyIfNull(null);
+	private String bootClassPath = Strings.emptyIfNull(null);
+
+	private String classPath = Strings.emptyIfNull(null);
+
+	private String modulePath = Strings.emptyIfNull(null);
 
 	private UnaryOperator<ClassLoader> classLoaderBuilder;
-
-	private String bootClasspath = Strings.emptyIfNull(null);
 
 	private String sourceVersion = Strings.emptyIfNull(null);
 
@@ -97,7 +100,12 @@ public class SarlScriptExecutor implements ScriptExecutor {
 
 	@Override
 	public void setClassPath(String classpath) {
-		this.classpath = Strings.emptyIfNull(classpath);
+		this.classPath = Strings.emptyIfNull(classpath);
+	}
+
+	@Override
+	public void setModulePath(String modulePath) {
+		this.modulePath = Strings.emptyIfNull(modulePath);
 	}
 
 	@Override
@@ -106,13 +114,19 @@ public class SarlScriptExecutor implements ScriptExecutor {
 	}
 
 	@Override
+	@Deprecated
 	public void setBootClassPath(String classpath) {
-		this.bootClasspath = Strings.emptyIfNull(classpath);
+		this.bootClassPath = Strings.emptyIfNull(classpath);
 	}
 
 	@Override
 	public void setJavaSourceVersion(String version) {
 		this.sourceVersion = Strings.emptyIfNull(version);
+	}
+
+	@Override
+	public boolean isModuleSupported() {
+		return SarlBatchCompilerUtils.isModuleSupported(this.sourceVersion);
 	}
 
 	private File createRootFolder() throws IOException {
@@ -138,6 +152,7 @@ public class SarlScriptExecutor implements ScriptExecutor {
 		return file;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public CompiledFile compile(int lineno, String code, List<String> issues, ICompilatedResourceReceiver receiver) throws Exception {
 		File rootFolder = createRootFolder();
@@ -153,8 +168,12 @@ public class SarlScriptExecutor implements ScriptExecutor {
 		compiler.setGenerateInlineAnnotation(false);
 		compiler.setGenerateSyntheticSuppressWarnings(true);
 		compiler.setCleaningPolicy(CleaningPolicy.NO_CLEANING);
-		compiler.setClassPath(this.classpath);
-		compiler.setBootClassPath(this.bootClasspath);
+		compiler.setClassPath(this.classPath);
+		if (isModuleSupported()) {
+			compiler.setModulePath(this.modulePath);
+		} else {
+			compiler.setBootClassPath(this.bootClassPath);
+		}
 		compiler.setJavaSourceVersion(this.sourceVersion);
 		compiler.setAllWarningSeverities(Severity.IGNORE);
 		compiler.setWarningSeverity(IssueCodes.DEPRECATED_MEMBER_REFERENCE, Severity.ERROR);

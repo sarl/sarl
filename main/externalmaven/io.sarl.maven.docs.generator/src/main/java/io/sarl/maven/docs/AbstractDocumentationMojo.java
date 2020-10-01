@@ -70,6 +70,7 @@ import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.util.ReflectExtensions;
 
+import io.sarl.lang.compiler.batch.SarlBatchCompilerUtils;
 import io.sarl.maven.docs.markdown.MarkdownParser;
 import io.sarl.maven.docs.parser.AbstractMarkerLanguageParser;
 import io.sarl.maven.docs.parser.SarlDocumentationParser;
@@ -406,8 +407,10 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	 * @throws MojoExecutionException if the parser cannot be created.
 	 * @throws IOException if a classpath entry cannot be found.
 	 */
-	@SuppressWarnings("checkstyle:npathcomplexity")
+	@SuppressWarnings({ "checkstyle:npathcomplexity", "deprecation" })
 	protected AbstractMarkerLanguageParser createLanguageParser(File inputFile) throws MojoExecutionException, IOException {
+		final JavaVersion javaVersion = SarlBatchCompilerUtils.parserJavaVersion(this.source);
+
 		final AbstractMarkerLanguageParser parser;
 		if (isFileExtension(inputFile, MarkdownParser.MARKDOWN_FILE_EXTENSIONS)) {
 			parser = this.injector.getInstance(MarkdownParser.class);
@@ -434,19 +437,21 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 			cp.append(cpElement.getAbsolutePath());
 		}
 		scriptExecutor.setClassPath(cp.toString());
+		final StringBuilder mp = new StringBuilder();
+		final List<File> fullMp = getModulePath();
+		for (final File mpElement : fullMp) {
+			if (mp.length() > 0) {
+				mp.append(File.pathSeparator);
+			}
+			mp.append(mpElement.getAbsolutePath());
+		}
+		scriptExecutor.setModulePath(mp.toString());
 		scriptExecutor.setClassLoaderBuilder(it -> getProjectClassLoader(it, fullCp, fullCp.size()));
 		final String bootPath = getBootClassPath();
 		if (!Strings.isEmpty(bootPath)) {
 			scriptExecutor.setBootClassPath(bootPath);
 		}
-		JavaVersion version = null;
-		if (!Strings.isEmpty(this.source)) {
-			version = JavaVersion.fromQualifier(this.source);
-		}
-		if (version == null) {
-			version = JavaVersion.JAVA8;
-		}
-		scriptExecutor.setJavaSourceVersion(version.getQualifier());
+		scriptExecutor.setJavaSourceVersion(javaVersion.getQualifier());
 		scriptExecutor.setTempFolder(this.tempDirectory.getAbsoluteFile());
 
 		internalParser.addLowPropertyProvider(createProjectProperties());
@@ -589,6 +594,17 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 		return files;
 	}
 
+	/** Replies the current module-path.
+	 *
+	 * @return the current module-path.
+	 * @throws IOException on failure.
+	 * @since 0.12
+	 */
+	protected List<File> getModulePath() throws IOException {
+		final List<File> files = new ArrayList<>();
+		return files;
+	}
+
 	/** Replies a class loader that is able to read the classes from the Maven class path.
 	 *
 	 * @param parent the parent class loader.
@@ -620,7 +636,9 @@ public abstract class AbstractDocumentationMojo extends AbstractMojo {
 	 *
 	 * @return the boot classpath.
 	 * @throws IOException in case of error.
+	 * @deprecated since 0.12, will be remove definitively when Jaa 8 is no more supported.
 	 */
+	@Deprecated
 	protected String getBootClassPath() throws IOException {
 		final Toolchain toolchain = this.toolchainManager.getToolchainFromBuildContext("jdk", this.session); //$NON-NLS-1$
 		if (toolchain instanceof JavaToolchain && toolchain instanceof ToolchainPrivate) {

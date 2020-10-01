@@ -28,6 +28,7 @@ import java.util.function.UnaryOperator;
 
 import com.google.inject.ImplementedBy;
 import org.arakhne.afc.vmutil.FileSystem;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import io.sarl.lang.compiler.batch.ICompilatedResourceReceiver;
 
@@ -71,6 +72,13 @@ public interface ScriptExecutor {
 	 */
 	void setClassPath(String classpath);
 
+	/** Change the module-path that the compiler should used.
+	 *
+	 * @param modulePath the module-path.
+	 * @since 0.12
+	 */
+	void setModulePath(String modulePath);
+
 	/** Change the builder of class loader for this executor.
 	 * The contract is that the builder replies a class loader that is child of the class loader
 	 * given as argument to the builder's creation function.
@@ -83,7 +91,9 @@ public interface ScriptExecutor {
 	/** Change the boot classpath that the executor should used.
 	 *
 	 * @param classpath the boot classpath.
+	 * @deprecated since 0.12, will be removed definitively when JAva 8 is not more supported.
 	 */
+	@Deprecated
 	void setBootClassPath(String classpath);
 
 	/** Change the version of the Java sources.
@@ -91,6 +101,14 @@ public interface ScriptExecutor {
 	 * @param version the version.
 	 */
 	void setJavaSourceVersion(String version);
+
+	/** Replies if the version of Java supports Java modules.
+	 *
+	 * @return {@code true} if the Java modules are supported.
+	 * @since 0.12
+	 */
+	@Pure
+	boolean isModuleSupported();
 
 	/** Compile the given code and replies the issues.
 	 *

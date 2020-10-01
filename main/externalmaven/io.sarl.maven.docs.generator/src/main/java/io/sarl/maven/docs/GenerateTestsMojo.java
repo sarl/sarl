@@ -455,7 +455,7 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 		}
 	}*/
 
-	@SuppressWarnings({"checkstyle:methodlength", "checkstyle:npathcomplexity"})
+	@SuppressWarnings({"checkstyle:methodlength", "checkstyle:npathcomplexity", "deprecation"})
 	private void generateAbstractTest(File outputFolder) throws IOException {
 		getLog().debug(Messages.GenerateTestsMojo_5); //$NON-NLS-1$
 		final ImportManager importManager = new ImportManager();
@@ -482,6 +482,15 @@ public class GenerateTestsMojo extends AbstractDocumentationMojo {
 			cp.append(cpElement.getAbsolutePath());
 		}
 		it.append("scriptExecutor.setClassPath(\"").append(str(cp)).append("\");").newLine();
+
+		final StringBuilder mp = new StringBuilder();
+		for (final File mpElement : getModulePath()) {
+			if (mp.length() > 0) {
+				mp.append(File.pathSeparator);
+			}
+			mp.append(mpElement.getAbsolutePath());
+		}
+		it.append("scriptExecutor.setModulePath(\"").append(str(mp)).append("\");").newLine();
 
 		final String bootPath = getBootClassPath();
 		if (!Strings.isEmpty(bootPath)) {

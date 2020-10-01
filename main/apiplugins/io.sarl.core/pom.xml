@@ -84,10 +84,10 @@
 				</executions>
 				<configuration>
 					<tycho>true</tycho>
+					<fixClasspathJdtJse>true</fixClasspathJdtJse>
 					<source>${sarl-dsl.min.jdk.version}</source>
 					<target>${sarl-dsl.min.jdk.version}</target>
 					<encoding>${project.build.sourceEncoding}</encoding>
-					<runJavaCompiler>true</runJavaCompiler>
 					<generateInlines>true</generateInlines>
 					<generateStorageFiles>true</generateStorageFiles>
 					<generateTraceFiles>true</generateTraceFiles>

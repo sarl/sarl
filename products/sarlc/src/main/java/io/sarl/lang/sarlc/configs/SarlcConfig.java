@@ -68,6 +68,12 @@ public class SarlcConfig {
 	public static final String CLASSPATH_NAME = PREFIX + ".classpath"; //$NON-NLS-1$
 
 	/**
+	 * Name of the property that contains the module-path.
+	 * @since 0.12
+	 */
+	public static final String MODULEPATH_NAME = PREFIX + ".modulepath"; //$NON-NLS-1$
+
+	/**
 	 * Name of the property that contains the Java boot classpath.
 	 *
 	 * @deprecated Since 0.12 not replacement because of Java 11.
@@ -85,7 +91,9 @@ public class SarlcConfig {
 	 */
 	public static final String EXTRA_GENERATOR_NAME = PREFIX + ".extraGenerators"; //$NON-NLS-1$
 
-	private String classpath;
+	private String classPath;
+
+	private String modulePath;
 
 	private String bootClasspath;
 
@@ -119,7 +127,7 @@ public class SarlcConfig {
 	 * @return the classpath
 	 */
 	public String getClasspath() {
-		return this.classpath;
+		return this.classPath;
 	}
 
 	/** Change the class path.
@@ -128,7 +136,25 @@ public class SarlcConfig {
 	 */
 	@BQConfigProperty("Class path for the SARL compiler.")
 	public void setClasspath(String  path) {
-		this.classpath = path;
+		this.classPath = path;
+	}
+
+	/** Replies the module-path.
+	 *
+	 * @return the module-path
+	 * @since 0.12
+	 */
+	public String getModulePath() {
+		return this.modulePath;
+	}
+
+	/** Change the module-path.
+	 *
+	 * @param path the module-path.
+	 */
+	@BQConfigProperty("Module path for the SARL compiler.")
+	public void setModulePath(String  path) {
+		this.modulePath = path;
 	}
 
 	/** Replies the boot classpath.

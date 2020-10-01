@@ -48,7 +48,9 @@ import io.bootique.meta.application.CommandMetadata;
 import org.arakhne.afc.vmutil.DynamicURLClassLoader;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.xtext.mwe.PathTraverser;
+import org.eclipse.xtext.util.JavaVersion;
 
+import io.sarl.lang.compiler.batch.SarlBatchCompilerUtils;
 import io.sarl.lang.sarlc.configs.SarlcConfig;
 import io.sarl.lang.sarlc.tools.ClassPathUtils;
 import io.sarl.lang.sarlc.tools.PathDetector;
@@ -134,6 +136,8 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 	private static final String SOURCEPATH_FLAG = "-sourcepath"; //$NON-NLS-1$
 
 	private static final String CLASSPATH_FLAG = "-classpath"; //$NON-NLS-1$
+
+	private static final String MODULEPATH_FLAG = "-modulepath"; //$NON-NLS-1$
 
 	private static final String SMALLD_FLAG = "-d"; //$NON-NLS-1$
 
@@ -389,11 +393,9 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 		}
 
 		// Java version
-		final String javaVersion = cconfig.getCompiler().getJavaVersion();
-		if (!Strings.isNullOrEmpty(javaVersion)) {
-			cmd.add(SOURCE_FLAG);
-			cmd.add(javaVersion);
-		}
+		final JavaVersion javaVersion = SarlBatchCompilerUtils.parserJavaVersion(cconfig.getCompiler().getJavaVersion());
+		cmd.add(SOURCE_FLAG);
+		cmd.add(javaVersion.getQualifier());
 
 		// Documentation title
 		final String title = docconfig.getTitle();
@@ -462,7 +464,8 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 
 		// Class path
 		final SARLClasspathProvider classpathProvider = this.defaultClasspath.get();
-		final SystemPath fullClassPath = ClassPathUtils.buildClassPath(classpathProvider, cconfig, logger);
+		final SystemPath fullClassPath = ClassPathUtils.buildClassPath(classpathProvider, cconfig, javaVersion, logger);
+		final SystemPath fullModulePath = ClassPathUtils.buildModulePath(classpathProvider, cconfig, javaVersion, logger);
 
 		File toolsjar = null;
 
@@ -497,6 +500,11 @@ public abstract class AbstractSarldocCommand extends CommandWithMetadata {
 
 		cmd.add(CLASSPATH_FLAG);
 		cmd.add(fullClassPath.toString());
+
+		if (SarlBatchCompilerUtils.isModuleSupported(javaVersion)) {
+			cmd.add(MODULEPATH_FLAG);
+			cmd.add(fullModulePath.toString());
+		}
 
 		// Output folder
 		cmd.add(SMALLD_FLAG);

@@ -44,7 +44,9 @@ public interface SARLClasspathProvider {
 	 * @param path the classpath to fill.
 	 * @param logger the logger to use for notifying about the process of the task.
 	 * @since 0.10
+	 * @deprecated since 0.12, will be removed definitively when support of Java 8 is removed.
 	 */
+	@Deprecated
 	void getBootClasspath(SystemPath path, Logger logger);
 
 	/** Replies the class path that must be used for compiling a SARL program.
@@ -52,7 +54,27 @@ public interface SARLClasspathProvider {
 	 * @param path the classpath to fill.
 	 * @param logger the logger to use for notifying about the process of the task.
 	 * @since 0.10
+	 * @deprecated since 0.12, see {@link #getClassPath(SystemPath, Logger)}.
 	 */
-	void getClasspath(SystemPath path, Logger logger);
+	@Deprecated
+	default void getClasspath(SystemPath path, Logger logger) {
+		getClassPath(path, logger);
+	}
+
+	/** Replies the class path that must be used for compiling a SARL program.
+	 *
+	 * @param path the classpath to fill.
+	 * @param logger the logger to use for notifying about the process of the task.
+	 * @since 0.12
+	 */
+	void getClassPath(SystemPath path, Logger logger);
+
+	/** Replies the module-path that must be used for compiling a SARL program.
+	 *
+	 * @param path the module-path to fill.
+	 * @param logger the logger to use for notifying about the process of the task.
+	 * @since 0.12
+	 */
+	void getModulePath(SystemPath path, Logger logger);
 
 }

@@ -18,37 +18,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.maven.compiler;
 
-import org.apache.maven.it.VerificationException;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+package io.sarl.lang.compiler.batch;
 
-/**
+/** Exception that is thrown when the SARL batch compiler cannot be created.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.12
  */
-@SuppressWarnings("all")
-@DisplayName("mojo: compile")
-@Tag("maven")
-@Tag("mvn-run")
-public class CompileMojoTest extends AbstractMojoTest {
+public class InvalidSarlBatchCompilerError extends Error {
 
-	@Test
-	public void invalidXtext() throws Exception {
-		assertException(VerificationException.class, () -> {
-			executeMojo("prj1", "compile");
-		});
+	private static final long serialVersionUID = 2124788845031567919L;
+
+	/** Constructor with the standard error message.
+	 */
+	public InvalidSarlBatchCompilerError() {
+		super(Messages.InvalidSarlBatchCompilerException_0);
 	}
-
-	@Test
-	public void invalidSdk() throws Exception {
-		assertException(VerificationException.class, () -> {
-			executeMojo("prj2", "compile");
-		});
+	
+	/** Constructor with the standard error message and a cause.
+	 *
+	 * @param cause the cause of the exception.
+	 */
+	public InvalidSarlBatchCompilerError(Throwable cause) {
+		super(Messages.InvalidSarlBatchCompilerException_0, cause);
 	}
 
 }

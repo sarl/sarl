@@ -391,7 +391,8 @@ public final class ExamplesTestUtils {
 		compiler.setGenerateInlineAnnotation(false);
 		compiler.setGenerateSyntheticSuppressWarnings(true);
 		compiler.setCleaningPolicy(CleaningPolicy.NO_CLEANING);
-		compiler.setClassPath(getClasspath());
+		compiler.setClassPath(getClassPath());
+		compiler.setModulePath(getModulePath());
 		compiler.setJavaSourceVersion(SARLVersion.MINIMAL_JDK_VERSION_FOR_SARL_COMPILATION_ENVIRONMENT);
 		compiler.setAllWarningSeverities(Severity.IGNORE);
 		compiler.setWarningSeverity(IssueCodes.DEPRECATED_MEMBER_REFERENCE, Severity.ERROR);
@@ -412,7 +413,7 @@ public final class ExamplesTestUtils {
 		return issues;
 	}
 
-	private static List<File> getClasspath() throws Exception {
+	private static List<File> getClassPath() throws Exception {
 		final List<File> classpath = new ArrayList<>();
 		final Iterator<URL> iterator = ClasspathUtil.getClasspath();
 		while (iterator.hasNext()) {
@@ -425,6 +426,10 @@ public final class ExamplesTestUtils {
 			}
 		}
 		return classpath;
+	}
+
+	private static List<File> getModulePath() throws Exception {
+		return Collections.emptyList();
 	}
 
 	/** Unpack the given zip file into the root folder.

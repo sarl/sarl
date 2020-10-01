@@ -28,11 +28,12 @@ import java.util.logging.Logger;
 
 import com.google.inject.ImplementedBy;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** An object that represents a Java compiler.
  *
- * <p>By default, the {@link EcjBatchCompiler Eclipse Compiler for Java is used} in order
- * to generate byte code that is the same as inside the SARL IDE.
+ * <p>If not specific injection configuration is defined, the {@link JavacBatchCompiler Javac batch compiler}
+ * is used as the default implementation of this interface.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -48,7 +49,7 @@ public interface IJavaBatchCompiler {
 	 * @param classDirectory the output directory.
 	 * @param sourcePathDirectories the source directories.
 	 * @param classPathEntries classpath entries.
-	 * @param bootClassPathEntries the classpath entries for the boot.
+	 * @param modulePathEntries classpath entries. No more used.
 	 * @param javaVersion the version of Java that is the target, e.g. {@code 1.8}.
 	 * @param encoding the encoding of the files.
 	 * @param isCompilerMoreVerbose indicates if the Java compiler should be more verbose.
@@ -57,11 +58,12 @@ public interface IJavaBatchCompiler {
 	 * @param errWriter the standard error writer.
 	 * @param logger the logger to use for debugging messages.
 	 * @param progress monitor of the progress of the compilation.
-	 * @return the success status. Replies <code>false</code> if the activity is canceled.
+	 * @return the success status; Never {@code null}.
 	 */
 	@SuppressWarnings("checkstyle:parameternumber")
-	boolean compile(File classDirectory, Iterable<File> sourcePathDirectories,
+	CompilerStatus compile(File classDirectory, Iterable<File> sourcePathDirectories,
 			Iterable<File> classPathEntries,
+			Iterable<File> modulePathEntries,
 			List<File> bootClassPathEntries,
 			String javaVersion,
 			String encoding,
@@ -71,5 +73,13 @@ public interface IJavaBatchCompiler {
 			PrintWriter errWriter,
 			Logger logger,
 			IProgressMonitor progress);
+
+	/** Replies the name of the Java compiler.
+	 *
+	 * @return the name, never {@code null}.
+	 * @since 0.12
+	 */
+	@Pure
+	String getName();
 
 }

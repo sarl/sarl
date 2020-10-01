@@ -23,14 +23,14 @@ package io.sarl.lang.compiler.batch;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.text.MessageFormat;
-import java.util.Deque;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.ServiceLoader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -53,15 +53,22 @@ import org.eclipse.xtext.util.Strings;
  * @since 0.8
  */
 @Singleton
-public class JavacBatchCompiler implements IJavaBatchCompiler {
+public class JavacBatchCompiler extends AbstractJavaBatchCompiler {
 
+	@Override
+	public String getName() {
+		return "Javac"; //$NON-NLS-1$
+	}
+	
 	@Override
 	@SuppressWarnings({ "checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
 		"checkstyle:npathcomplexity", "resource" })
-	public boolean compile(File classDirectory, Iterable<File> sourcePathDirectories,
+	public CompilerStatus compile(File classDirectory, Iterable<File> sourcePathDirectories,
 			Iterable<File> classPathEntries,
+			Iterable<File> modulePathEntries,
 			List<File> bootClassPathEntries,
-			String javaVersion,
+			JavaVersion javaVersion,
+			boolean isModuleSupport,
 			String encoding,
 			boolean isCompilerMoreVerbose,
 			OptimizationLevel optimizationLevel,
@@ -71,6 +78,9 @@ public class JavacBatchCompiler implements IJavaBatchCompiler {
 			IProgressMonitor progress) {
 		assert progress != null;
 
+		//
+		// Optimization
+		//
 		final List<String> commandLineArguments = Lists.newArrayList();
 		if (optimizationLevel != null) {
 			switch (optimizationLevel) {
@@ -85,90 +95,113 @@ public class JavacBatchCompiler implements IJavaBatchCompiler {
 				commandLineArguments.add("-g"); //$NON-NLS-1$
 			}
 		}
+
+		//
+		// Verbosity
+		//
 		commandLineArguments.add("-nowarn"); //$NON-NLS-1$
 		if (isCompilerMoreVerbose) {
 			commandLineArguments.add("-verbose"); //$NON-NLS-1$
 		}
 		if (progress.isCanceled()) {
-			return false;
+			return CompilerStatus.CANCELED;
 		}
-		if (!bootClassPathEntries.isEmpty() && !Strings.isEmpty(javaVersion)) {
-			final JavaVersion jversion = JavaVersion.fromQualifier(javaVersion);
-			if (!jversion.isAtLeast(JavaVersion.JAVA9)) {
-				final StringBuilder cmd = new StringBuilder();
-				boolean first = true;
-				for (final File entry : bootClassPathEntries) {
-					if (progress.isCanceled()) {
-						return false;
-					}
-					if (entry.exists()) {
-						if (first) {
-							first = false;
-						} else {
-							cmd.append(File.pathSeparator);
-						}
-						cmd.append(entry.getAbsolutePath());
-					}
-				}
-				if (cmd.length() > 0) {
-					commandLineArguments.add("-bootclasspath"); //$NON-NLS-1$
-					commandLineArguments.add(cmd.toString());
-				}
+
+		//
+		// Boot classpath
+		//
+		// TODO: Remove when Java 8 is no more supported
+		if (!bootClassPathEntries.isEmpty() && !isModuleSupport) {
+			final String path = buildPath(bootClassPathEntries, progress);
+			if (path == null || progress.isCanceled()) {
+				return CompilerStatus.CANCELED;
+			}
+			if (!Strings.isEmpty(path)) {
+				commandLineArguments.add("-bootclasspath"); //$NON-NLS-1$
+				commandLineArguments.add(path);
 			}
 		}
-		final Iterator<File> classPathIterator = classPathEntries.iterator();
-		if (classPathIterator.hasNext()) {
-			final StringBuilder cmd = new StringBuilder();
-			boolean first = true;
-			while (classPathIterator.hasNext()) {
-				final File classpathPath = classPathIterator.next();
-				if (progress.isCanceled()) {
-					return false;
-				}
-				if (classpathPath.exists()) {
-					if (first) {
-						first = false;
-					} else {
-						cmd.append(File.pathSeparator);
-					}
-					cmd.append(classpathPath.getAbsolutePath());
-				}
+
+		//
+		// Classpath
+		//
+		String path = buildPath(classPathEntries, progress);
+		if (path == null || progress.isCanceled()) {
+			return CompilerStatus.CANCELED;
+		}
+		if (!Strings.isEmpty(path)) {
+			commandLineArguments.add("-cp"); //$NON-NLS-1$
+			commandLineArguments.add(path);
+		}
+
+		//
+		// Modulepath
+		//
+		if (isModuleSupport) {
+			path = buildPath(modulePathEntries, progress);
+			if (path == null || progress.isCanceled()) {
+				return CompilerStatus.CANCELED;
 			}
-			if (cmd.length() > 0) {
-				commandLineArguments.add("-cp"); //$NON-NLS-1$
-				commandLineArguments.add(cmd.toString());
+			if (!Strings.isEmpty(path)) {
+				commandLineArguments.add("-p"); //$NON-NLS-1$
+				commandLineArguments.add(path);
 			}
 		}
-		if (progress.isCanceled()) {
-			return false;
-		}
+		
+		//
+		// Output directory
+		//
 		if (!classDirectory.exists()) {
 			classDirectory.mkdirs();
 		}
 		commandLineArguments.add("-d"); //$NON-NLS-1$
 		commandLineArguments.add(classDirectory.getAbsolutePath());
+
+		//
+		// Source and target version of Java
+		//
 		commandLineArguments.add("-source"); //$NON-NLS-1$
-		commandLineArguments.add(javaVersion);
+		commandLineArguments.add(javaVersion.getQualifier());
 		commandLineArguments.add("-target"); //$NON-NLS-1$
-		commandLineArguments.add(javaVersion);
+		commandLineArguments.add(javaVersion.getQualifier());
+		if (javaVersion.isAtLeast(JavaVersion.JAVA11)) {
+			commandLineArguments.add("-release"); //$NON-NLS-1$
+			commandLineArguments.add(javaVersion.getQualifier());
+		}
+
+		//
+		// File encoding
+		//
 		if (!Strings.isEmpty(encoding)) {
 			commandLineArguments.add("-encoding"); //$NON-NLS-1$
 			commandLineArguments.add(encoding);
 		}
 		if (progress.isCanceled()) {
-			return false;
+			return CompilerStatus.CANCELED;
 		}
 
+		//
+		// Source folders
+		//
 		boolean hasSourceFile = false;
 		for (final File sourceFolder : sourcePathDirectories) {
 			if (progress.isCanceled()) {
-				return false;
+				return CompilerStatus.CANCELED;
 			}
 			if (addJavaFilesDeeply(commandLineArguments, sourceFolder.getAbsoluteFile())) {
 				hasSourceFile = true;
 			}
 		}
+		if (!hasSourceFile) {
+			return CompilerStatus.NOTHING_TO_COMPILE;
+		}
+		if (progress.isCanceled()) {
+			return CompilerStatus.CANCELED;
+		}
 
+		//
+		// Invoke the javac compiler
+		//
 		final String[] arguments = new String[commandLineArguments.size()];
 		commandLineArguments.toArray(arguments);
 
@@ -176,57 +209,39 @@ public class JavacBatchCompiler implements IJavaBatchCompiler {
 			logger.finest(MessageFormat.format(Messages.JavacBatchCompiler_0, Strings.concat(" ", commandLineArguments))); //$NON-NLS-1$
 		}
 
-		if (!hasSourceFile || progress.isCanceled()) {
-			return false;
+		final WriterOutputStream stdout = new WriterOutputStream(outWriter, Charset.defaultCharset());
+
+		final JavacErrorStream stderr = new JavacErrorStream(errWriter, logger);
+
+		if (progress.isCanceled()) {
+			return CompilerStatus.CANCELED;
 		}
 
-		final OutputStream stdout = new WriterOutputStream(outWriter, Charset.defaultCharset());
-
-		final OutputStream stderr = new JavacErrorStream(errWriter, logger);
-
-		final JavaCompiler systemCompiler = ToolProvider.getSystemJavaCompiler();
+		final JavaCompiler systemCompiler = getSystemJavaCompiler();
 		final int retcode = systemCompiler.run(null, stdout, stderr, arguments);
-		return retcode == 0;
+		return retcode == 0 ? CompilerStatus.COMPILATION_SUCCESS : CompilerStatus.COMPILATION_FAILURE;
 	}
 
-	private static boolean addJavaFilesDeeply(List<String> list, File root) {
-		final Deque<File> folders = new LinkedList<>();
-		if (root.exists()) {
-			if (root.isDirectory()) {
-				folders.addLast(root);
-			} else {
-				list.add(root.getAbsolutePath());
-				return true;
-			}
-		}
-		boolean changed = false;
-		while (!folders.isEmpty()) {
-			final File current = folders.removeFirst();
-			assert current.isDirectory();
-			for (final File subfile : current.listFiles(name -> isJavaExtension(name))) {
-				if (subfile.isDirectory()) {
-					folders.addLast(subfile);
-				} else {
-					list.add(subfile.getAbsolutePath());
-					changed = true;
+	/** Replies the JDK compiler.
+	 *
+	 * @return the JDK compiler.
+	 * @since 0.12
+	 */
+	protected JavaCompiler getSystemJavaCompiler() {
+		final PrivilegedAction<JavaCompiler> action = () -> ToolProvider.getSystemJavaCompiler();
+		final JavaCompiler standardCompiler = AccessController.doPrivileged(action);
+		if (standardCompiler == null) {
+			// This branch is defined for solving the problem introduced by JMS modules.
+			ServiceLoader<JavaCompiler> sl = ServiceLoader.load(JavaCompiler.class);
+			final Iterator<JavaCompiler> iter = sl.iterator();
+			while (iter.hasNext()) {
+				JavaCompiler tool = iter.next();
+				if (tool != null) {
+					return tool;
 				}
 			}
 		}
-		return changed;
-	}
-
-	private static boolean isJavaExtension(File file) {
-		if (file != null) {
-			if (file.isDirectory()) {
-				return true;
-			}
-			final String name = file.getName();
-			final int index = name.lastIndexOf('.');
-			if (index > 1 && ".java".equalsIgnoreCase(name.substring(index))) { //$NON-NLS-1$
-				return true;
-			}
-		}
-		return false;
+		return standardCompiler;
 	}
 
 	/** Wrap a stderr writer for supporting specific Javac error messages.

@@ -192,7 +192,12 @@ public class SarlEmbededSdkClasspathProvider implements SARLClasspathProvider {
 	}
 
 	@Override
-	public void getClasspath(SystemPath path, Logger logger) {
+	public void getClassPath(SystemPath path, Logger logger) {
+		//
+	}
+
+	@Override
+	public void getModulePath(SystemPath path, Logger logger) {
 		//
 	}
 

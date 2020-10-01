@@ -6,7 +6,7 @@
  *
  * Copyright (C) 2014-2020 the original authors or authors.
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -19,33 +19,27 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.tests.units.skills.bic.mocks;
+package io.sarl.lang.compiler.batch;
 
-import io.sarl.lang.core.Agent;
-import io.sarl.lang.core.AtomicSkillReference;
-import io.sarl.lang.core.Capacity;
-import io.sarl.sre.tests.units.skills.bic.LoggingSkillTest;
-
-import java.util.UUID;
-
-/**
+/** A factory of the Oracle Java Compiler (javac).
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.12
  */
-public class MyAgent2 extends Agent {
+public class JavacBatchCompilerFactory implements IJavaBatchCompilerFactory {
 
-	private final LoggingSkillTest test;
-
-	public MyAgent2(UUID agentId, LoggingSkillTest test) {
-		super(agentId, null);
-		this.test = test;
+	@Override
+	public IJavaBatchCompiler createBatchCompiler() {
+		return new JavacBatchCompiler();
 	}
 
 	@Override
-	protected AtomicSkillReference $getSkill(Class<? extends Capacity> capacity) {
-		return new AtomicSkillReference(this.test.skill);
+	public Class<? extends IJavaBatchCompiler> getType() {
+		return JavacBatchCompiler.class;
 	}
 
 }
+

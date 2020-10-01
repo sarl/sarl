@@ -6,7 +6,7 @@
  *
  * Copyright (C) 2014-2020 the original authors or authors.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -18,12 +18,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.maven.compiler;
 
-import org.apache.maven.it.VerificationException;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+package io.sarl.sre.tests.units.skills.bic.mocks
+
+import java.util.UUID
+import io.sarl.lang.core.Agent
+import io.sarl.core.Logging
+import io.sarl.sre.skills.bic.LoggingSkill
+import io.sarl.lang.core.SREutils
+import io.sarl.lang.annotation.PrivateAPI
 
 /**
  * @author $Author: sgalland$
@@ -32,23 +35,15 @@ import org.junit.jupiter.api.Test;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-@DisplayName("mojo: compile")
-@Tag("maven")
-@Tag("mvn-run")
-public class CompileMojoTest extends AbstractMojoTest {
+class MyAgent2 extends Agent {
 
-	@Test
-	public void invalidXtext() throws Exception {
-		assertException(VerificationException.class, () -> {
-			executeMojo("prj1", "compile");
-		});
+	val logSkill : LoggingSkill
+
+	@PrivateAPI(isCallerOnly = true)
+	new (agentID : UUID, logSkill : LoggingSkill) {
+		super(UUID::randomUUID, agentID)
+		this.logSkill = logSkill
+		SREutils::setInternalSkill(this, this.logSkill, #[typeof(Logging)])
 	}
-
-	@Test
-	public void invalidSdk() throws Exception {
-		assertException(VerificationException.class, () -> {
-			executeMojo("prj2", "compile");
-		});
-	}
-
+	
 }

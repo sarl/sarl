@@ -36,6 +36,7 @@ public class Messages extends NLS {
 	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
 	public static String ClassPathUtils_0;
 	public static String ClassPathUtils_1;
+	public static String ClassPathUtils_2;
 	public static String SarlEmbededSdkClasspathProvider_0;
 	public static String SarlEmbededSdkClasspathProvider_1;
 	public static String SarlEmbededSdkClasspathProvider_2;

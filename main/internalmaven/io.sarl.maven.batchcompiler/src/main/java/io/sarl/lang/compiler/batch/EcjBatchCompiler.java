@@ -37,7 +37,7 @@ import org.eclipse.jdt.core.compiler.batch.BatchCompiler;
 import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.Strings;
 
-/** A wrapper on top of the Eclipse Compiler for Java (ECJ).
+/** A wrapper on top of the Eclipse Compiler for Java (ECJ), aka. JDT.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -46,15 +46,22 @@ import org.eclipse.xtext.util.Strings;
  * @since 0.8
  */
 @Singleton
-public class EcjBatchCompiler implements IJavaBatchCompiler {
+public class EcjBatchCompiler extends AbstractJavaBatchCompiler {
+
+	@Override
+	public String getName() {
+		return "Eclipse JDT Compiler"; //$NON-NLS-1$
+	}
 
 	@Override
 	@SuppressWarnings({ "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity",
 		"checkstyle:parameternumber" })
-	public boolean compile(File classDirectory, Iterable<File> sourcePathDirectories,
-			Iterable<File> classPathEntries,
+	public CompilerStatus compile(File classDirectory, Iterable<File> sourcePathDirectories,
+			Iterable<File> classPathEntries_,
+			Iterable<File> modulePathEntries,
 			List<File> bootClassPathEntries,
-			String javaVersion,
+			JavaVersion javaVersion,
+			boolean isModuleSupport,
 			String encoding,
 			boolean isCompilerMoreVerbose,
 			OptimizationLevel optimizationLevel,
@@ -63,7 +70,11 @@ public class EcjBatchCompiler implements IJavaBatchCompiler {
 			Logger logger,
 			IProgressMonitor progress) {
 		assert progress != null;
+
 		final List<String> commandLineArguments = Lists.newArrayList();
+		//
+		// Optimization
+		//
 		if (optimizationLevel != null) {
 			switch (optimizationLevel) {
 			case G2:
@@ -79,100 +90,121 @@ public class EcjBatchCompiler implements IJavaBatchCompiler {
 				commandLineArguments.add("-preserveAllLocals"); //$NON-NLS-1$
 			}
 		}
+		//
+		// Verbosity
+		//
 		commandLineArguments.add("-nowarn"); //$NON-NLS-1$
 		if (isCompilerMoreVerbose) {
 			commandLineArguments.add("-verbose"); //$NON-NLS-1$
 		}
 		if (progress.isCanceled()) {
-			return false;
+			return CompilerStatus.CANCELED;
 		}
-		if (!bootClassPathEntries.isEmpty() && !Strings.isEmpty(javaVersion)) {
-			final JavaVersion jversion = JavaVersion.fromQualifier(javaVersion);
-			if (!jversion.isAtLeast(JavaVersion.JAVA9)) {
-				final StringBuilder cmd = new StringBuilder();
-				boolean first = true;
-				for (final File entry : bootClassPathEntries) {
-					if (progress.isCanceled()) {
-						return false;
-					}
-					if (entry.exists()) {
-						if (first) {
-							first = false;
-						} else {
-							cmd.append(File.pathSeparator);
-						}
-						cmd.append(entry.getAbsolutePath());
-					}
-				}
-				if (cmd.length() > 0) {
-					commandLineArguments.add("-bootclasspath"); //$NON-NLS-1$
-					commandLineArguments.add(cmd.toString());
-				}
+		//
+		// Boot classpath
+		//
+		if (!bootClassPathEntries.isEmpty() && !isModuleSupport) {
+			final String path = buildPath(classPathEntries_, progress);
+			if (path == null) {
+				return CompilerStatus.CANCELED;
+			}
+			if (!Strings.isEmpty(path)) {
+				commandLineArguments.add("-bootclasspath"); //$NON-NLS-1$
+				commandLineArguments.add(path);
 			}
 		}
-		final Iterator<File> classPathIterator = classPathEntries.iterator();
+		//
+		// Classpath
+		//
+		final Iterator<File> classPathIterator = classPathEntries_.iterator();
 		if (classPathIterator.hasNext()) {
-			final StringBuilder cmd = new StringBuilder();
-			boolean first = true;
-			while (classPathIterator.hasNext()) {
-				final File classpathPath = classPathIterator.next();
-				if (progress.isCanceled()) {
-					return false;
-				}
-				if (classpathPath.exists()) {
-					if (first) {
-						first = false;
-					} else {
-						cmd.append(File.pathSeparator);
-					}
-					cmd.append(classpathPath.getAbsolutePath());
-				}
+			final String path = buildPath(classPathEntries_, progress);
+			if (path == null) {
+				return CompilerStatus.CANCELED;
 			}
-			if (cmd.length() > 0) {
+			if (!Strings.isEmpty(path)) {
 				commandLineArguments.add("-cp"); //$NON-NLS-1$
-				commandLineArguments.add(cmd.toString());
+				commandLineArguments.add(path);
 			}
 		}
 		if (progress.isCanceled()) {
-			return false;
+			return CompilerStatus.CANCELED;
 		}
+		//
+		// Module-path
+		//
+		if (isModuleSupport) {
+			final String path = buildPath(modulePathEntries, progress);
+			if (path == null) {
+				return CompilerStatus.CANCELED;
+			}
+			if (!Strings.isEmpty(path)) {
+				commandLineArguments.add("-p"); //$NON-NLS-1$
+				commandLineArguments.add(path);
+			}
+		}
+		//
+		// Output directory
+		//
 		if (!classDirectory.exists()) {
 			classDirectory.mkdirs();
 		}
 		commandLineArguments.add("-d"); //$NON-NLS-1$
 		commandLineArguments.add(classDirectory.getAbsolutePath());
-		commandLineArguments.add("-" + javaVersion); //$NON-NLS-1$
+		//
+		// Java version support
+		//
+		commandLineArguments.add("-" + javaVersion.getQualifier()); //$NON-NLS-1$
+		//
+		// Error management
+		//
 		commandLineArguments.add("-proceedOnError"); //$NON-NLS-1$
+		//
+		// File encoding
+		//
 		if (!Strings.isEmpty(encoding)) {
 			commandLineArguments.add("-encoding"); //$NON-NLS-1$
 			commandLineArguments.add(encoding);
 		}
 		if (progress.isCanceled()) {
-			return false;
+			return CompilerStatus.CANCELED;
 		}
 
+		//
+		// Source folders
+		//
 		for (final File sourceFolder : sourcePathDirectories) {
 			if (progress.isCanceled()) {
-				return false;
+				return CompilerStatus.CANCELED;
 			}
 			if (sourceFolder.exists()) {
 				commandLineArguments.add(sourceFolder.getAbsolutePath());
 			}
 		}
 
+		//
+		// Run the Eclipse compiler
+		//
 		final String[] arguments = new String[commandLineArguments.size()];
 		commandLineArguments.toArray(arguments);
 
 		if (logger != null && logger.isLoggable(Level.FINEST)) {
-			logger.finest(MessageFormat.format(Messages.EcjBatchCompiler_0, Strings.concat("\n", commandLineArguments))); //$NON-NLS-1$
+			final StringBuilder buf = new StringBuilder();
+			for (final String str : commandLineArguments) {
+				if (!Strings.isEmpty(str)) {
+					buf.append(str).append("\n"); //$NON-NLS-1$
+				}
+			}
+			logger.finest(MessageFormat.format(Messages.EcjBatchCompiler_0, buf.toString()));
 		}
 
 		if (progress.isCanceled()) {
-			return false;
+			return CompilerStatus.CANCELED;
 		}
 
-		return BatchCompiler.compile(arguments, outWriter, errWriter,
+		final boolean status = BatchCompiler.compile(arguments, outWriter, errWriter,
 				new ProgressMonitorCompilationProgress(progress));
+		return status ? CompilerStatus.COMPILATION_SUCCESS : CompilerStatus.COMPILATION_FAILURE;
 	}
 
 	/** Wrap a Eclipse IProgressMonitor into a JDT compilation progress.
@@ -222,3 +254,4 @@ public class EcjBatchCompiler implements IJavaBatchCompiler {
 	}
 
 }
+

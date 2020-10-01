@@ -100,7 +100,6 @@
 					<encoding>${project.build.sourceEncoding}</encoding>
 					<input>src/main/sarl</input>
 					<output>src/main/generated-sources/sarl</output>
-					<runJavaCompiler>true</runJavaCompiler>
 					<generateInlines>true</generateInlines>
 					<generateStorageFiles>true</generateStorageFiles>
 					<generateTraceFiles>true</generateTraceFiles>

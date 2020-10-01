@@ -23,11 +23,12 @@ package io.sarl.maven.compiler;
 
 import com.google.common.base.Strings;
 import org.apache.maven.project.MavenProject;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import io.sarl.lang.compiler.batch.EcjBatchCompiler;
 import io.sarl.lang.compiler.batch.IJavaBatchCompiler;
 import io.sarl.lang.compiler.batch.JavacBatchCompiler;
-import io.sarl.lang.compiler.batch.SarlBatchCompiler;
+import io.sarl.lang.compiler.batch.SarlBatchCompilerUtils;
 
 /**
  * Type of Java compielr to use by the SARL compiler.
@@ -43,6 +44,11 @@ public enum JavaCompiler {
 	 */
 	MAVEN {
 		@Override
+		public Class<? extends IJavaBatchCompiler> getImplementationType() {
+			return MavenBatchCompiler.class;
+		}
+
+		@Override
 		public IJavaBatchCompiler newCompilerInstance(MavenProject project, MavenHelper helper, boolean isTestContext) {
 			return new MavenBatchCompiler(helper, isTestContext);
 		}
@@ -52,14 +58,24 @@ public enum JavaCompiler {
 	 */
 	NONE {
 		@Override
+		public Class<? extends IJavaBatchCompiler> getImplementationType() {
+			return SarlBatchCompilerUtils.getDefaultJavaBatchCompilerImplementationType();
+		}
+
+		@Override
 		public IJavaBatchCompiler newCompilerInstance(MavenProject project, MavenHelper helper, boolean isTestContext) {
-			return SarlBatchCompiler.newDefaultJavaBatchCompiler();
+			return SarlBatchCompilerUtils.newDefaultJavaBatchCompiler();
 		}
 	},
 
 	/** Eclipse Compiler for Java (ECJ).
 	 */
 	ECJ {
+		@Override
+		public Class<? extends IJavaBatchCompiler> getImplementationType() {
+			return EcjBatchCompiler.class;
+		}
+
 		@Override
 		public IJavaBatchCompiler newCompilerInstance(MavenProject project, MavenHelper helper, boolean isTestContext) {
 			return new EcjBatchCompiler();
@@ -69,6 +85,11 @@ public enum JavaCompiler {
 	/** Oracle Java Compiler (javac).
 	 */
 	JAVAC {
+		@Override
+		public Class<? extends IJavaBatchCompiler> getImplementationType() {
+			return JavacBatchCompiler.class;
+		}
+
 		@Override
 		public IJavaBatchCompiler newCompilerInstance(MavenProject project, MavenHelper helper, boolean isTestContext) {
 			return new JavacBatchCompiler();
@@ -108,12 +129,46 @@ public enum JavaCompiler {
 	 */
 	public abstract IJavaBatchCompiler newCompilerInstance(MavenProject project, MavenHelper helper, boolean isTestContext);
 
+	/** Replies the standard implementation type for the type of compiler.
+	 *
+	 * @return the implementation type.
+	 * @since 0.12
+	 */
+	@Pure
+	public abstract Class<? extends IJavaBatchCompiler> getImplementationType();
+
+	/** Replies the enumeration type that corresponds to the given type of compiler.
+	 *
+	 * @param type the implementation type to test for.
+	 * @return the compiler type, or {@code null} if unknown or undetermined. The {@link #NONE} cannot
+	 *     be replied by this function.
+	 * @since 0.12
+	 */
+	@Pure
+	public static JavaCompiler fromImplementationType(Class<? extends IJavaBatchCompiler> type) {
+		if (type != null) {
+			for (final JavaCompiler compiler : JavaCompiler.values()) {
+				if (compiler != NONE) {
+					final Class<? extends IJavaBatchCompiler> implementation = compiler.getImplementationType();
+					if (implementation != null && implementation.isAssignableFrom(type)) {
+						return compiler;
+					}
+				}
+			}
+		}
+		return null;
+	}
+
 	/** Replies the default Java compiler.
 	 *
 	 * @return the java compiler.
 	 */
 	public static JavaCompiler getDefault() {
-		return JAVAC;
+		final JavaCompiler jc = fromImplementationType(SarlBatchCompilerUtils.getDefaultJavaBatchCompilerImplementationType());
+		if (jc != null) {
+			return jc;
+		}
+		return ECJ;
 	}
 
 }

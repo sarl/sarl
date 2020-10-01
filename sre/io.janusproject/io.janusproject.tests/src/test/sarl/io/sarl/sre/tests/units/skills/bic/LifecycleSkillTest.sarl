@@ -29,7 +29,6 @@ import io.sarl.sre.services.lifecycle.AgentState
 import io.sarl.sre.services.lifecycle.LifecycleService
 import io.sarl.sre.skills.bic.LifecycleSkill
 import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
-import io.sarl.sre.tests.units.skills.bic.mocks.MyAgent2
 import io.sarl.sre.tests.units.skills.bic.mocks.MyAgent3
 import io.sarl.tests.api.Nullable
 import io.sarl.tests.api.extensions.ContextInitExtension
@@ -105,7 +104,7 @@ class LifecycleSkillTest {
 	@Test
 	@DisplayName("spawn(Class, Object*) with dead agent")
 	def spawn_notAlive : void{
-		this.^skill.spawn(typeof(MyAgent2), 1, "value")
+		this.^skill.spawn(typeof(MyAgent3), 1, "value")
 		verifyNoMoreInteractions(this.service)
 	}
 
@@ -114,7 +113,7 @@ class LifecycleSkillTest {
 	def spawn_alive : void {
 		forceAlive
 		
-		this.^skill.spawn(typeof(MyAgent2), 1, "value")
+		this.^skill.spawn(typeof(MyAgent3), 1, "value")
 		
 		var argument0 = typeof(int).forClass
 		var argument1 = typeof(UUID).forClass
@@ -129,14 +128,14 @@ class LifecycleSkillTest {
 		this.spawnerID.assertSame(argument1.value)
 		this.context.assertSame(argument2.value)
 		argument3.value.assertNull
-		typeof(MyAgent2).assertEquals(argument4.value)
+		typeof(MyAgent3).assertEquals(argument4.value)
 		argument6.value.assertContains(1, "value")
 	}
 
 	@Test
 	@DisplayName("spawn(int, Class, Object*) with dead agent")
 	def spawnInteger_notAlive {
-		this.^skill.spawn(3, typeof(MyAgent2), 1, "value")
+		this.^skill.spawn(3, typeof(MyAgent3), 1, "value")
 		verifyNoMoreInteractions(this.service)
 	}
 
@@ -145,7 +144,7 @@ class LifecycleSkillTest {
 	def spawnInteger_alive : void {
 		forceAlive
 		
-		this.^skill.spawn(3, typeof(MyAgent2), 1, "value")
+		this.^skill.spawn(3, typeof(MyAgent3), 1, "value")
 		
 		var argument0 = typeof(int).forClass
 		var argument1 = typeof(UUID).forClass
@@ -159,7 +158,7 @@ class LifecycleSkillTest {
 		this.spawnerID.assertSame(argument1.value)
 		this.context.assertSame(argument2.value)
 		argument3.value.assertNull
-		typeof(MyAgent2).assertEquals(argument4.value)
+		typeof(MyAgent3).assertEquals(argument4.value)
 		argument6.value.assertContains(1, "value")
 	}
 
@@ -167,7 +166,7 @@ class LifecycleSkillTest {
 	@DisplayName("spawnInContext(Class, Context, Object*) with dead agent")
 	def spawnInContext_notAlive : void {
 		var otherContext = typeof(Context).mock
-		this.^skill.spawnInContext(typeof(MyAgent2), otherContext, 1, "value")
+		this.^skill.spawnInContext(typeof(MyAgent3), otherContext, 1, "value")
 		verifyNoMoreInteractions(this.service)
 	}
 
@@ -178,7 +177,7 @@ class LifecycleSkillTest {
 
 		forceAlive
 		
-		this.^skill.spawnInContext(typeof(MyAgent2), otherContext, 1, "value")
+		this.^skill.spawnInContext(typeof(MyAgent3), otherContext, 1, "value")
 		
 		var argument0 = typeof(int).forClass
 		var argument1 = typeof(UUID).forClass
@@ -192,7 +191,7 @@ class LifecycleSkillTest {
 		this.spawnerID.assertSame(argument1.value)
 		otherContext.assertSame(argument2.value)
 		argument3.value.assertNull
-		typeof(MyAgent2).assertEquals(argument4.value)
+		typeof(MyAgent3).assertEquals(argument4.value)
 		argument6.value.assertContains(1, "value")
 	}
 
@@ -200,7 +199,7 @@ class LifecycleSkillTest {
 	@DisplayName("spawnInContext(int, Class, Context, Object*) with dead agent")
 	def spawnInContextInteger_notAlive : void {
 		var otherContext = typeof(Context).mock
-		this.^skill.spawnInContext(3, typeof(MyAgent2), otherContext, 1, "value")
+		this.^skill.spawnInContext(3, typeof(MyAgent3), otherContext, 1, "value")
 		verifyNoMoreInteractions(this.service)
 	}
 
@@ -211,7 +210,7 @@ class LifecycleSkillTest {
 
 		forceAlive
 
-		this.^skill.spawnInContext(3, typeof(MyAgent2), otherContext, 1, "value")
+		this.^skill.spawnInContext(3, typeof(MyAgent3), otherContext, 1, "value")
 		
 		var argument0 = typeof(int).forClass
 		var argument1 = typeof(UUID).forClass
@@ -225,7 +224,7 @@ class LifecycleSkillTest {
 		this.spawnerID.assertSame(argument1.value)
 		otherContext.assertSame(argument2.value)
 		argument3.value.assertNull
-		typeof(MyAgent2).assertEquals(argument4.value)
+		typeof(MyAgent3).assertEquals(argument4.value)
 		argument6.value.assertContains(1, "value")
 	}
 
@@ -234,7 +233,7 @@ class LifecycleSkillTest {
 	def spawnInContextWithID_notAlive : void {
 		var agentID = UUID::randomUUID
 		var otherContext = typeof(Context).mock
-		this.^skill.spawnInContextWithID(typeof(MyAgent2), agentID, otherContext, 1, "value")
+		this.^skill.spawnInContextWithID(typeof(MyAgent3), agentID, otherContext, 1, "value")
 		verifyNoMoreInteractions(this.service)
 	}
 
@@ -246,7 +245,7 @@ class LifecycleSkillTest {
 
 		forceAlive
 
-		this.^skill.spawnInContextWithID(typeof(MyAgent2), agentID, otherContext, 1, "value")
+		this.^skill.spawnInContextWithID(typeof(MyAgent3), agentID, otherContext, 1, "value")
 		
 		var argument0 = typeof(int).forClass
 		var argument1 = typeof(UUID).forClass
@@ -260,7 +259,7 @@ class LifecycleSkillTest {
 		this.spawnerID.assertSame(argument1.value)
 		otherContext.assertSame(argument2.value)
 		agentID.assertSame(argument3.value)
-		typeof(MyAgent2).assertEquals(argument4.value)
+		typeof(MyAgent3).assertEquals(argument4.value)
 		argument6.value.assertContains(1, "value")
 	}
 

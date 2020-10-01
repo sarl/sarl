@@ -18,37 +18,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.maven.compiler;
 
-import org.apache.maven.it.VerificationException;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+package io.sarl.lang.compiler.batch;
 
-/**
+/** A for the Eclipse Compiler for Java (ECJ), aka. JDT.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.12
  */
-@SuppressWarnings("all")
-@DisplayName("mojo: compile")
-@Tag("maven")
-@Tag("mvn-run")
-public class CompileMojoTest extends AbstractMojoTest {
+public class EcjBatchCompilerFactory implements IJavaBatchCompilerFactory {
 
-	@Test
-	public void invalidXtext() throws Exception {
-		assertException(VerificationException.class, () -> {
-			executeMojo("prj1", "compile");
-		});
+	@Override
+	public IJavaBatchCompiler createBatchCompiler() {
+		return new EcjBatchCompiler();
 	}
 
-	@Test
-	public void invalidSdk() throws Exception {
-		assertException(VerificationException.class, () -> {
-			executeMojo("prj2", "compile");
-		});
+	@Override
+	public Class<? extends IJavaBatchCompiler> getType() {
+		return EcjBatchCompiler.class;
 	}
 
 }
+

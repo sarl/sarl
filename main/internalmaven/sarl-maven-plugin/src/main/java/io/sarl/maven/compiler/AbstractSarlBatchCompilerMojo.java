@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
@@ -58,7 +59,6 @@ import org.apache.maven.toolchain.ToolchainPrivate;
 import org.apache.maven.toolchain.java.JavaToolchain;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.xtext.diagnostics.Severity;
-import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.util.ReflectExtensions;
 
@@ -67,6 +67,7 @@ import io.sarl.lang.compiler.batch.CleaningPolicy;
 import io.sarl.lang.compiler.batch.IJavaBatchCompiler;
 import io.sarl.lang.compiler.batch.OptimizationLevel;
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
+import io.sarl.lang.compiler.batch.SarlBatchCompilerUtils;
 
 /** Abstract mojo that is able to use the SARL batch compiler.
  *
@@ -89,7 +90,13 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	@Parameter(readonly = true, defaultValue = "${basedir}/.settings/io.sarl.lang.SARL.prefs")
 	private String propertiesFileLocation;
 
-	private List<File> bufferedClasspath;
+	private List<File> bufferedClassPath;
+
+	private List<File> bufferedTestClassPath;
+
+	private List<File> bufferedModulePath;
+
+	private List<File> bufferedTestModulePath;
 
 	@Override
 	protected void prepareExecution() throws MojoExecutionException {
@@ -236,14 +243,15 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 	/** Run compilation.
 	 *
 	 * @param classPath the classpath
+	 * @param modulePath the module-path
 	 * @param sourcePaths the source paths.
 	 * @param sarlOutputPath the output path for receiving the SARL code.
 	 * @param classOutputPath the output path for receiving the Java class files.
 	 * @throws MojoExecutionException if error.
 	 * @throws MojoFailureException if failure.
 	 */
-	@SuppressWarnings("checkstyle:npathcomplexity")
-	protected void compile(List<File> classPath, List<File> sourcePaths, File sarlOutputPath,
+	@SuppressWarnings({ "checkstyle:npathcomplexity", "deprecation" })
+	protected void compile(List<File> classPath, List<File> modulePath, List<File> sourcePaths, File sarlOutputPath,
 			File classOutputPath) throws MojoExecutionException, MojoFailureException {
 		final SarlBatchCompiler compiler = getBatchCompiler();
 		final MavenProject project = getProject();
@@ -264,8 +272,8 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 		compiler.setTempDirectory(getTempDirectory());
 		compiler.setCleaningPolicy(CleaningPolicy.NO_CLEANING);
 		compiler.setClassPath(classPath);
-		final String bootClassPath = getBootClassPath();
-		compiler.setBootClassPath(bootClassPath);
+		compiler.setModulePath(modulePath);
+		compiler.setBootClassPath(getBootClassPath());
 		final List<File> filteredSourcePaths = Lists.newArrayList(filtered);
 		compiler.setSourcePath(filteredSourcePaths);
 		compiler.setOutputPath(sarlOutputPath);
@@ -328,14 +336,11 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 		}
 	}
 
+	@Deprecated
 	private String getBootClassPath() throws MojoExecutionException {
 		// Bootclasspath is only supported on Java8 and older
-		final String sourceVersionStr = getSourceVersion();
-		if (!Strings.isEmpty(sourceVersionStr)) {
-			final JavaVersion sourceVersion = JavaVersion.fromQualifier(sourceVersionStr);
-			if (sourceVersion != null && sourceVersion.isAtLeast(JavaVersion.JAVA9)) {
-				return ""; //$NON-NLS-1$
-			}
+		if (SarlBatchCompilerUtils.isModuleSupported(getSourceVersion())) {
+			return ""; //$NON-NLS-1$
 		}
 		final Toolchain toolchain = this.toolchainManager.getToolchainFromBuildContext("jdk", this.mavenHelper.getSession()); //$NON-NLS-1$
 		if (toolchain instanceof JavaToolchain && toolchain instanceof ToolchainPrivate) {
@@ -438,69 +443,200 @@ public abstract class AbstractSarlBatchCompilerMojo extends AbstractSarlMojo {
 		return null;
 	}
 
-	/** Replies the classpath for the standard code.
+	/** Update the classpath file list by adding the given files and ensuring
+	 * they exists when it is necessary.
 	 *
-	 * @return the current classpath.
-	 * @throws MojoExecutionException on failure.
-	 * @see #getTestClassPath()
+	 * @param classpathFiles the list of classpath files to update.
+	 * @param duplicateAvoider the set of files that are already inside the classpath.
+	 * @param isMandatory indicates if the must be physically present on the disk.
+	 *     If {@code true} and the given file does not exist, it is created by using
+	 *     {@link File#mkdirs()}.
+	 * @param warnIfMissed indicates if a warning must be generated if the files are missed
+	 *     from the disk.
+	 * @param files the list of files to add to the classpath.
+	 * @since 0.12
 	 */
-	protected List<File> getClassPath() throws MojoExecutionException {
-		if (this.bufferedClasspath == null) {
-			final Set<String> classPath = new LinkedHashSet<>();
-			final MavenProject project = getProject();
-			classPath.add(project.getBuild().getSourceDirectory());
-			try {
-				classPath.addAll(project.getCompileClasspathElements());
-			} catch (DependencyResolutionRequiredException e) {
-				throw new MojoExecutionException(e.getLocalizedMessage(), e);
-			}
-			for (final Artifact dep : project.getArtifacts()) {
-				classPath.add(dep.getFile().getAbsolutePath());
-			}
-			classPath.remove(project.getBuild().getOutputDirectory());
-			final List<File> files = new ArrayList<>();
-			for (final String filename : classPath) {
-				final File file = new File(filename);
-				if (file.exists()) {
-					files.add(file);
-				} else {
-					getLog().warn(MessageFormat.format(Messages.AbstractSarlBatchCompilerMojo_10, filename));
+	protected void updateAtomicallyClasspathFiles(List<File> classpathFiles,
+			Set<String> duplicateAvoider, boolean isMandatory,
+			boolean warnIfMissed, Iterable<String> files) {
+		for (final String file : files) {
+			if (duplicateAvoider.add(file)) {
+				final File fileObj = new File(file);
+				if (fileObj.exists()) {
+					classpathFiles.add(fileObj);
+				} else if (isMandatory) {
+					if (!fileObj.mkdirs()) {
+						getLog().warn(MessageFormat.format(Messages.AbstractSarlBatchCompilerMojo_10, file));
+					} else {
+						classpathFiles.add(fileObj);
+					}
+				} else if (warnIfMissed) {
+					getLog().warn(MessageFormat.format(Messages.AbstractSarlBatchCompilerMojo_10, file));
 				}
 			}
-			this.bufferedClasspath = files;
 		}
-		return this.bufferedClasspath;
 	}
 
-	/** Replies the classpath for the test code.
+	/** Build the classpath for the standard code.
 	 *
 	 * @return the current classpath.
 	 * @throws MojoExecutionException on failure.
-	 * @since 0.8
+	 * @since 0.12
+	 * @see #buildTestClassPath()
 	 * @see #getClassPath()
 	 */
-	protected List<File> getTestClassPath() throws MojoExecutionException {
-		final Set<String> classPath = new LinkedHashSet<>();
+	protected List<File> buildClassPath() throws MojoExecutionException {
+		final Set<String> duplicateAvoider = new LinkedHashSet<>();
+		final List<File> classpathFiles = new ArrayList<>();
 		final MavenProject project = getProject();
-		classPath.add(project.getBuild().getTestSourceDirectory());
+		updateAtomicallyClasspathFiles(
+				classpathFiles, duplicateAvoider,
+				true, true,
+				Collections.singleton(project.getBuild().getOutputDirectory()));
+		updateAtomicallyClasspathFiles(
+				classpathFiles, duplicateAvoider,
+				false, false,
+				Collections.singleton(project.getBuild().getSourceDirectory()));
 		try {
-			classPath.addAll(project.getTestClasspathElements());
+			updateAtomicallyClasspathFiles(
+					classpathFiles, duplicateAvoider,
+					false, true,
+					project.getCompileClasspathElements());
 		} catch (DependencyResolutionRequiredException e) {
 			throw new MojoExecutionException(e.getLocalizedMessage(), e);
 		}
 		for (final Artifact dep : project.getArtifacts()) {
-			classPath.add(dep.getFile().getAbsolutePath());
+			updateAtomicallyClasspathFiles(
+					classpathFiles, duplicateAvoider,
+					false, true,
+					Collections.singleton(dep.getFile().getAbsolutePath()));
 		}
-		final List<File> files = new ArrayList<>();
-		for (final String filename : classPath) {
-			final File file = new File(filename);
-			if (file.exists()) {
-				files.add(file);
-			} else {
-				getLog().warn(MessageFormat.format(Messages.AbstractSarlBatchCompilerMojo_10, filename));
-			}
+		return classpathFiles;
+	}
+
+	/** Replies the classpath for the standard code.
+	 * This function build and save the classpath into a buffer.
+	 *
+	 * @return the current classpath.
+	 * @throws MojoExecutionException on failure.
+	 * @see #buildClassPath()
+	 * @see #getTestClassPath()
+	 */
+	protected final List<File> getClassPath() throws MojoExecutionException {
+		if (this.bufferedClassPath == null) {
+			this.bufferedClassPath = buildClassPath();
 		}
-		return files;
+		return this.bufferedClassPath;
+	}
+
+	/** Build the classpath for the test code.
+	 *
+	 * @return the current classpath.
+	 * @throws MojoExecutionException on failure.
+	 * @since 0.12
+	 * @see #getTestClassPath()
+	 * @see #buildClassPath()
+	 */
+	protected List<File> buildTestClassPath() throws MojoExecutionException {
+		final Set<String> duplicateAvoider = new LinkedHashSet<>();
+		final List<File> classpathFiles = new ArrayList<>();
+		final MavenProject project = getProject();
+		updateAtomicallyClasspathFiles(
+				classpathFiles, duplicateAvoider,
+				true, true,
+				Collections.singleton(project.getBuild().getTestOutputDirectory()));
+		updateAtomicallyClasspathFiles(
+				classpathFiles, duplicateAvoider,
+				false, false,
+				Collections.singleton(project.getBuild().getTestSourceDirectory()));
+		try {
+			updateAtomicallyClasspathFiles(
+					classpathFiles, duplicateAvoider,
+					false, true,
+					project.getTestClasspathElements());
+		} catch (DependencyResolutionRequiredException e) {
+			throw new MojoExecutionException(e.getLocalizedMessage(), e);
+		}
+		for (final Artifact dep : project.getArtifacts()) {
+			updateAtomicallyClasspathFiles(
+					classpathFiles, duplicateAvoider,
+					false, true,
+					Collections.singleton(dep.getFile().getAbsolutePath()));
+		}
+		return classpathFiles;
+	}
+
+	/** Replies the classpath for the test code.
+	 * This function build and save the classpath into a buffer.
+	 *
+	 * @return the current classpath.
+	 * @throws MojoExecutionException on failure.
+	 * @since 0.8
+	 * @see #buildTestClassPath()
+	 * @see #getClassPath()
+	 */
+	protected final List<File> getTestClassPath() throws MojoExecutionException {
+		if (this.bufferedTestClassPath == null) {
+			this.bufferedTestClassPath = buildTestClassPath();
+		}
+		return this.bufferedTestClassPath;
+	}
+
+	/** Build the module-path for the standard code.
+	 *
+	 * @return the current module-path.
+	 * @throws MojoExecutionException on failure.
+	 * @since 0.12
+	 * @see #buildTestModulePath()
+	 * @see #getModulePath()
+	 */
+	protected List<File> buildModulePath() throws MojoExecutionException {
+		final List<File> modulePathFiles = new ArrayList<>();
+		return modulePathFiles;
+	}
+
+	/** Replies the module-path for the standard code.
+	 * This function build and save the module-path into a buffer.
+	 *
+	 * @return the current module-path.
+	 * @throws MojoExecutionException on failure.
+	 * @see #buildModulePath()
+	 * @see #getTestModulePath()
+	 */
+	protected final List<File> getModulePath() throws MojoExecutionException {
+		if (this.bufferedModulePath == null) {
+			this.bufferedModulePath = buildModulePath();
+		}
+		return this.bufferedModulePath;
+	}
+
+	/** Build the module-path for the test code.
+	 *
+	 * @return the current module-path.
+	 * @throws MojoExecutionException on failure.
+	 * @since 0.12
+	 * @see #getTestModulePath()
+	 * @see #buildModulePath()
+	 */
+	protected List<File> buildTestModulePath() throws MojoExecutionException {
+		final List<File> modulePathFiles = new ArrayList<>();
+		return modulePathFiles;
+	}
+
+	/** Replies the module-path for the test code.
+	 * This function build and save the module-path into a buffer.
+	 *
+	 * @return the current module-path.
+	 * @throws MojoExecutionException on failure.
+	 * @since 0.12
+	 * @see #buildTestModulePath()
+	 * @see #getModulePath()
+	 */
+	protected final List<File> getTestModulePath() throws MojoExecutionException {
+		if (this.bufferedTestModulePath == null) {
+			this.bufferedTestModulePath = buildTestModulePath();
+		}
+		return this.bufferedTestModulePath;
 	}
 
 	/** Child injection module for the SARL maven plugin.

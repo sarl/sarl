@@ -35,6 +35,7 @@ import static io.sarl.sre.test.framework.Constants.*
  * @mavenartifactid $ArtifactId$
  * @since 0.11
  */
+@SuppressWarnings("all")
 abstract class Wait {
 	
 	val errorContainer : AtomicReference<Throwable>

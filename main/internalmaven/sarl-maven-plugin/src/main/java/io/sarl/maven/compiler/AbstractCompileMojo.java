@@ -71,13 +71,6 @@ public abstract class AbstractCompileMojo extends AbstractSarlBatchCompilerMojo 
 	@Parameter
 	private File tempDirectory;
 
-	/** Indicates if the Java compiler must be invoked by the SARL maven plugin.
-	 * @deprecated see {@link #javaCompiler} for replacement.
-	 */
-	@Parameter(defaultValue = "true", required = false)
-	@Deprecated
-	private boolean runJavaCompiler;
-
 	/** Indicates the Java compiler to be invoked by the SARL maven plugin.
 	 */
 	@Parameter(required = false)
@@ -275,7 +268,7 @@ public abstract class AbstractCompileMojo extends AbstractSarlBatchCompilerMojo 
 		buffer.append("source = ").append(this.source).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
 		buffer.append("encoding = ").append(this.encoding).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
 		buffer.append("tempDirectory = ").append(this.tempDirectory).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
-		buffer.append("runJavaCompiler = ").append(this.runJavaCompiler).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
+		buffer.append("javaCompiler = ").append(this.javaCompiler).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
 		buffer.append("generateInlines = ").append(this.generateInlines).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
 		buffer.append("generateTraceFiles = ").append(this.generateTraceFiles).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
 		buffer.append("generateStorageFiles = ").append(this.generateStorageFiles).append("\n"); //$NON-NLS-1$//$NON-NLS-2$

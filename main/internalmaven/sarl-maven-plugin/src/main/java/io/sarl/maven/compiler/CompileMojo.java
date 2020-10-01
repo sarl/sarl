@@ -97,8 +97,9 @@ public class CompileMojo extends AbstractCompileMojo {
 			}
 		}
 		final List<File> classPath = getClassPath();
+		final List<File> modulePath = getModulePath();
 		project.addCompileSourceRoot(outputDirectory.getAbsolutePath());
-		compile(classPath, compileSourceRoots, outputDirectory,
+		compile(classPath, modulePath, compileSourceRoots, outputDirectory,
 				makeAbsolute(new File(getProject().getBuild().getOutputDirectory())));
 	}
 

@@ -81,7 +81,6 @@ public class Messages extends NLS {
 	public static String SarlBatchCompiler_5;
 	public static String SarlBatchCompiler_50;
 	public static String SarlBatchCompiler_51;
-	public static String SarlBatchCompiler_52;
 	public static String SarlBatchCompiler_53;
 	public static String SarlBatchCompiler_54;
 	public static String SarlBatchCompiler_55;
@@ -93,11 +92,17 @@ public class Messages extends NLS {
 	public static String SarlBatchCompiler_61;
 	public static String SarlBatchCompiler_62;
 	public static String SarlBatchCompiler_63;
+	public static String SarlBatchCompiler_64;
+	public static String SarlBatchCompiler_65;
 	public static String SarlBatchCompiler_7;
 	public static String SarlBatchCompiler_8;
 	public static String SarlBatchCompiler_9;
 	public static String EcjBatchCompiler_0;
 	public static String JavacBatchCompiler_0;
+	public static String CompilerStatus_0;
+	public static String CompilerStatus_1;
+	public static String CompilerStatus_2;
+	public static String InvalidSarlBatchCompilerException_0;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

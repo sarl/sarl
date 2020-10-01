@@ -18,37 +18,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.sarl.maven.compiler;
 
-import org.apache.maven.it.VerificationException;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+package io.sarl.lang.compiler.batch;
 
-/**
+import org.eclipse.xtext.xbase.lib.Pure;
+
+/** An object that represents a Java compiler factory.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.12
  */
-@SuppressWarnings("all")
-@DisplayName("mojo: compile")
-@Tag("maven")
-@Tag("mvn-run")
-public class CompileMojoTest extends AbstractMojoTest {
+public interface IJavaBatchCompilerFactory {
 
-	@Test
-	public void invalidXtext() throws Exception {
-		assertException(VerificationException.class, () -> {
-			executeMojo("prj1", "compile");
-		});
-	}
+	/** Create an instance of the batch compiler.
+	 *
+	 * @return the instance.
+	 */
+	@Pure
+	IJavaBatchCompiler createBatchCompiler();
 
-	@Test
-	public void invalidSdk() throws Exception {
-		assertException(VerificationException.class, () -> {
-			executeMojo("prj2", "compile");
-		});
-	}
+	/** Replies the type of compiler that is created by this factory.
+	 *
+	 * @return the type of the created compiler.
+	 */
+	@Pure
+	Class<? extends IJavaBatchCompiler> getType();
 
 }
+

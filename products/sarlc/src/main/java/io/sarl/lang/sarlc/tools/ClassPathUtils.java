@@ -25,6 +25,9 @@ import java.text.MessageFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.xtext.util.JavaVersion;
+
+import io.sarl.lang.compiler.batch.SarlBatchCompilerUtils;
 import io.sarl.lang.sarlc.configs.SarlcConfig;
 import io.sarl.maven.bootiqueapp.utils.SystemPath;
 
@@ -47,26 +50,32 @@ public final class ClassPathUtils {
 	 *
 	 * @param classpathProvider the default class path provider.
 	 * @param cfg the current configuration.
+	 * @param jversion the version of Java that is the target.
 	 * @param logger the logger to use.
 	 * @return the concrete class path.
 	 */
+	@SuppressWarnings("deprecation")
 	public static SystemPath buildClassPath(SARLClasspathProvider classpathProvider, SarlcConfig cfg,
-			Logger logger) {
+			JavaVersion jversion, Logger logger) {
 		final SystemPath fullClassPath = new SystemPath();
-		fullClassPath.addEntries(cfg.getBootClasspath());
-		if (fullClassPath.isEmpty()) {
-			try {
-				classpathProvider.getBootClasspath(fullClassPath, logger);
-			} catch (Throwable exception) {
-				logger.log(Level.SEVERE, exception.getLocalizedMessage(), exception);
+		// Boot class path
+		if (!SarlBatchCompilerUtils.isModuleSupported(jversion)) {
+			fullClassPath.addEntries(cfg.getBootClasspath());
+			if (fullClassPath.isEmpty()) {
+				try {
+					classpathProvider.getBootClasspath(fullClassPath, logger);
+				} catch (Throwable exception) {
+					logger.log(Level.SEVERE, exception.getLocalizedMessage(), exception);
+				}
 			}
 		}
 		logger.fine(MessageFormat.format(Messages.ClassPathUtils_0, fullClassPath.toString()));
+		// User class path
 		final SystemPath userClassPath = new SystemPath();
 		userClassPath.addEntries(cfg.getClasspath());
 		if (userClassPath.isEmpty()) {
 			try {
-				classpathProvider.getClasspath(userClassPath, logger);
+				classpathProvider.getClassPath(userClassPath, logger);
 			} catch (Throwable exception) {
 				logger.log(Level.SEVERE, exception.getLocalizedMessage(), exception);
 			}
@@ -74,6 +83,34 @@ public final class ClassPathUtils {
 		logger.fine(MessageFormat.format(Messages.ClassPathUtils_1, userClassPath.toString()));
 		fullClassPath.addEntries(userClassPath);
 		return fullClassPath;
+	}
+
+	/** Build the standard module-path based on the given configuration and the default class path provider.
+	 *
+	 * @param classpathProvider the default class path provider.
+	 * @param cfg the current configuration.
+	 * @param jversion the version of Java that is the target.
+	 * @param logger the logger to use.
+	 * @return the concrete module-path.
+	 */
+	public static SystemPath buildModulePath(SARLClasspathProvider classpathProvider, SarlcConfig cfg,
+			JavaVersion jversion, Logger logger) {
+		final SystemPath fullModulePath = new SystemPath();
+		if (SarlBatchCompilerUtils.isModuleSupported(jversion)) {
+			// User module path
+			final SystemPath userModulePath = new SystemPath();
+			userModulePath.addEntries(cfg.getModulePath());
+			if (userModulePath.isEmpty()) {
+				try {
+					classpathProvider.getModulePath(userModulePath, logger);
+				} catch (Throwable exception) {
+					logger.log(Level.SEVERE, exception.getLocalizedMessage(), exception);
+				}
+			}
+			logger.fine(MessageFormat.format(Messages.ClassPathUtils_2, userModulePath.toString()));
+			fullModulePath.addEntries(userModulePath);
+		}
+		return fullModulePath;
 	}
 
 }

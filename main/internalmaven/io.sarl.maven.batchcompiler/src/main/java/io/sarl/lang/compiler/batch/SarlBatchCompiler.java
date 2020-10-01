@@ -58,7 +58,6 @@ import com.google.common.base.CharMatcher;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
-import com.google.inject.ImplementedBy;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -128,7 +127,8 @@ import io.sarl.lang.validation.IConfigurableIssueSeveritiesProvider;
  * @mavenartifactid $ArtifactId$
  * @since 0.5
  */
-@SuppressWarnings({"checkstyle:classfanoutcomplexity", "checkstyle:methodcount", "checkstyle:classdataabstractioncoupling"})
+@SuppressWarnings({"checkstyle:classfanoutcomplexity", "checkstyle:methodcount",
+	"checkstyle:classdataabstractioncoupling"})
 public class SarlBatchCompiler {
 
 	private static final String BINCLASS_FOLDER_PREFIX = "classes"; //$NON-NLS-1$
@@ -138,8 +138,6 @@ public class SarlBatchCompiler {
 	private static final String INTERNAL_ERROR_CODE = SarlBatchCompiler.class.getName() + ".internal_error"; //$NON-NLS-1$
 
 	private static final Predicate<IExtraLanguageContribution> DISABLER = it -> false;
-
-	private static Class<? extends IJavaBatchCompiler> defaultJavaBatchCompiler;
 
 	/** The provider of resource sets.
 	 */
@@ -156,6 +154,8 @@ public class SarlBatchCompiler {
 	private List<File> bootClasspath;
 
 	private List<File> classpath;
+
+	private List<File> modulepath;
 
 	private String encoding;
 
@@ -267,28 +267,6 @@ public class SarlBatchCompiler {
 		this.javaCompiler = compiler;
 	}
 
-	/** Create a default Java batch compiler, without injection.
-	 *
-	 * @return the Java batch compiler.
-	 * @since 0.8
-	 */
-	public static IJavaBatchCompiler newDefaultJavaBatchCompiler() {
-		try {
-			synchronized (SarlBatchCompiler.class) {
-				if (defaultJavaBatchCompiler == null) {
-					final ImplementedBy annotation = IJavaBatchCompiler.class.getAnnotation(ImplementedBy.class);
-					assert annotation != null;
-					final Class<?> type = annotation.value();
-					assert type != null;
-					defaultJavaBatchCompiler = type.asSubclass(IJavaBatchCompiler.class);
-				}
-				return defaultJavaBatchCompiler.newInstance();
-			}
-		} catch (Exception exception) {
-			throw new RuntimeException(exception);
-		}
-	}
-
 	/** Replies the Java compiler.
 	 *
 	 * @return the Java compiler
@@ -296,7 +274,7 @@ public class SarlBatchCompiler {
 	 */
 	public IJavaBatchCompiler getJavaCompiler() {
 		if (this.javaCompiler == null) {
-			this.javaCompiler = newDefaultJavaBatchCompiler();
+			this.javaCompiler = SarlBatchCompilerUtils.newDefaultJavaBatchCompiler();
 		}
 		return this.javaCompiler;
 	}
@@ -685,10 +663,11 @@ public class SarlBatchCompiler {
 	 *
 	 * @param bootClasspath the new boot classpath.
 	 * @see "https://www.oracle.com/technetwork/java/javase/9-relnote-issues-3704069.html"
+	 * @deprecated since 0.12, will be definitively removed when support of Java 8 is removed.
 	 */
+	@Deprecated
 	public void setBootClassPath(String bootClasspath) {
-		final JavaVersion version = JavaVersion.fromQualifier(getJavaSourceVersion());
-		if (version.isAtLeast(JavaVersion.JAVA9)) {
+		if (isModuleSupported()) {
 			reportInternalWarning(MessageFormat.format(Messages.SarlBatchCompiler_63, bootClasspath));
 		}
 		if (Strings.isEmpty(bootClasspath)) {
@@ -706,10 +685,11 @@ public class SarlBatchCompiler {
 	 *
 	 * @param bootClasspath the new boot classpath.
 	 * @see "https://www.oracle.com/technetwork/java/javase/9-relnote-issues-3704069.html"
+	 * @deprecated since 0.12, will be definitively removed when support of Java 8 is removed.
 	 */
+	@Deprecated
 	public void setBootClassPath(Collection<File> bootClasspath) {
-		final JavaVersion version = JavaVersion.fromQualifier(getJavaSourceVersion());
-		if (version.isAtLeast(JavaVersion.JAVA9)) {
+		if (isModuleSupported()) {
 			reportInternalWarning(MessageFormat.format(Messages.SarlBatchCompiler_63,
 					Joiner.on(File.pathSeparator).join(bootClasspath)));
 		}
@@ -725,8 +705,10 @@ public class SarlBatchCompiler {
 	 *
 	 * @return the boot classpath.
 	 * @see "https://www.oracle.com/technetwork/java/javase/9-relnote-issues-3704069.html"
+	 * @deprecated since 0.12, will be definitively removed when support of Java 8 is removed.
 	 */
 	@Pure
+	@Deprecated
 	public List<File> getBootClassPath() {
 		if (this.bootClasspath == null) {
 			return Collections.emptyList();
@@ -765,6 +747,53 @@ public class SarlBatchCompiler {
 			return Collections.emptyList();
 		}
 		return Collections.unmodifiableList(this.classpath);
+	}
+
+	/** Change the module-path.
+	 * This function does nothing if the current version of Java is not supporting modules.
+	 *
+	 * <p>The module-path is a list the names of folders or jar files that are separated by {@link File#pathSeparator}.
+	 *
+	 * @param modulepath the new module-path.
+	 * @since 0.12
+	 */
+	public void setModulePath(String modulepath) {
+		if (isModuleSupported()) {
+			this.modulepath = new ArrayList<>();
+			for (final String path : Strings.split(modulepath, File.pathSeparator)) {
+				this.modulepath.add(normalizeFile(path));
+			}
+		} else {
+			this.modulepath = null;
+		}
+	}
+
+	/** Change the module-path.
+	 * This function does nothing if the current version of Java is not supporting modules.
+	 *
+	 * @param modulepath the new module-path.
+	 * @since 0.12
+	 */
+	public void setModulePath(Collection<File> modulepath) {
+		if (isModuleSupported()) {
+			this.modulepath = new ArrayList<>(modulepath);
+		} else {
+			this.modulepath = null;
+		}
+	}
+
+	/** Replies the module-path.
+	 * This function replies the empty list if the current version of Java is not supporting modules.
+	 *
+	 * @return the module-path.
+	 * @since 0.12
+	 */
+	@Pure
+	public List<File> getModulePath() {
+		if (this.modulepath == null) {
+			return Collections.emptyList();
+		}
+		return Collections.unmodifiableList(this.modulepath);
 	}
 
 	/** Change the path where the Xtext stubs are generated.
@@ -918,6 +947,35 @@ public class SarlBatchCompiler {
 	@Pure
 	public String getJavaSourceVersion() {
 		return getGeneratorConfig().getJavaSourceVersion().getQualifier();
+	}
+
+	/** Replies if the current batch compiler (and its undergoing Java compiler) supports the Java modules.
+	 *
+	 * @return {@code true} if the Java modules are supported.
+	 * @since 0.12
+	 */
+	@Pure
+	public boolean isModuleSupported() {
+		return SarlBatchCompilerUtils.isModuleSupported(getJavaSourceVersion());
+	}
+
+	/** Replies if the current project is modular.
+	 * A project is module when it defines the "module-info.java" file.
+	 *
+	 * @return {@code true} if the project is detected as modular.
+	 * @since 0.12
+	 */
+	@Pure
+	public boolean isModularProject() {
+		if (isModuleSupported()) {
+			for (final File folder : getSourcePaths()) {
+				final File infoFile = new File(folder, "module-info.java");
+				if (infoFile.isFile()) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	/** Replies the compiler generate the Xbase expressions.
@@ -1313,19 +1371,21 @@ public class SarlBatchCompiler {
 					return false;
 				}
 				monitor.worked(8);
-				if (!preCompileStubs(stubSourceDirectory, stubClassDirectory, monitor)) {
-					if (monitor.isCanceled()) {
-						return false;
+				CompilerStatus compilerStatus = preCompileStubs(stubSourceDirectory, stubClassDirectory, monitor);
+				if (!compilerStatus.isSuccess() && compilerStatus != CompilerStatus.NOTHING_TO_COMPILE) {
+					if (compilerStatus != CompilerStatus.CANCELED) {
+						reportInternalError(MessageFormat.format(Messages.SarlBatchCompiler_2, compilerStatus.getFailureExplanation()));
 					}
-					reportInternalWarning(Messages.SarlBatchCompiler_2);
+					return false;
 				}
 				monitor.worked(9);
-				if (!preCompileJava(stubSourceDirectory, stubClassDirectory, monitor)) {
-					if (monitor.isCanceled()) {
+				compilerStatus = preCompileJava(stubSourceDirectory, stubClassDirectory, monitor);
+				if (!compilerStatus.isSuccess() && compilerStatus != CompilerStatus.NOTHING_TO_COMPILE) {
+					if (compilerStatus == CompilerStatus.CANCELED) {
 						return false;
 					}
 					if (getLogger().isLoggable(Level.FINEST)) {
-						getLogger().finest(Messages.SarlBatchCompiler_3);
+						getLogger().finest(MessageFormat.format(Messages.SarlBatchCompiler_3, compilerStatus.getFailureExplanation()));
 					}
 				}
 				monitor.worked(10);
@@ -1366,10 +1426,15 @@ public class SarlBatchCompiler {
 			}
 			monitor.worked(15);
 			if (isJavaPostCompilationEnable()) {
-				postCompileJava(monitor);
-				if (monitor.isCanceled()) {
+				final CompilerStatus compilerStatus = postCompileJava(monitor);
+				if (!compilerStatus.isSuccess() && compilerStatus != CompilerStatus.NOTHING_TO_COMPILE) {
+					if (compilerStatus != CompilerStatus.CANCELED) {
+						reportInternalError(MessageFormat.format(Messages.SarlBatchCompiler_2, compilerStatus.getFailureExplanation()));
+					}
 					return false;
 				}
+			} else {
+				reportInternalWarning(Messages.SarlBatchCompiler_65);
 			}
 			monitor.worked(16);
 		} finally {
@@ -1529,7 +1594,7 @@ public class SarlBatchCompiler {
 
 	/** Reports the given error message.
 	 *
-	 * @param message the warning message.
+	 * @param message the error message.
 	 * @param exception the source of the exception.
 	 * @since 0.8
 	 */
@@ -1548,7 +1613,7 @@ public class SarlBatchCompiler {
 
 	/** Reports the given error message.
 	 *
-	 * @param message the warning message.
+	 * @param message the error message.
 	 * @param parameters the values of the parameters that must be dynamically replaced within the message text.
 	 * @since 0.8
 	 */
@@ -1563,6 +1628,16 @@ public class SarlBatchCompiler {
 			issue.setSeverity(Severity.ERROR);
 			notifiesIssueMessageListeners(issue, uri, message);
 		}
+	}
+
+	/** Reports the given information message.
+	 *
+	 * @param message the information message.
+	 * @param parameters the values of the parameters that must be dynamically replaced within the message text.
+	 * @since 0.12
+	 */
+	protected void reportInternalInfo(String message, Object... parameters) {
+		getLogger().info(MessageFormat.format(message, parameters));
 	}
 
 	/** Generate the Java files from the SARL scripts.
@@ -1715,13 +1790,13 @@ public class SarlBatchCompiler {
 	 * @param sourceDirectory the source directory where stubs are stored.
 	 * @param classDirectory the output directory, where stub binary files should be generated.
 	 * @param progress monitor of the progress of the compilation.
-	 * @return the success status. Replies <code>false</code> if the activity is canceled.
+	 * @return the success status.
 	 */
-	protected boolean preCompileStubs(File sourceDirectory, File classDirectory, IProgressMonitor progress) {
+	protected CompilerStatus preCompileStubs(File sourceDirectory, File classDirectory, IProgressMonitor progress) {
 		assert progress != null;
 		progress.subTask(Messages.SarlBatchCompiler_50);
 		return runJavaCompiler(classDirectory, Collections.singletonList(sourceDirectory), getClassPath(),
-				false, false, progress);
+				getModulePath(), true, false, progress);
 	}
 
 	/** Compile the java files before the compilation of the project's files.
@@ -1729,39 +1804,54 @@ public class SarlBatchCompiler {
 	 * @param sourceDirectory the source directory where java files are stored.
 	 * @param classDirectory the output directory, where binary files should be generated.
 	 * @param progress monitor of the progress of the compilation.
-	 * @return the success status. Replies <code>false</code> if the activity is canceled.
+	 * @return the success status.
 	 */
-	protected boolean preCompileJava(File sourceDirectory, File classDirectory, IProgressMonitor progress) {
+	protected CompilerStatus preCompileJava(File sourceDirectory, File classDirectory, IProgressMonitor progress) {
 		assert progress != null;
 		progress.subTask(Messages.SarlBatchCompiler_51);
+		final Iterable<File> cp;
+		final Iterable<File> mp;
+		if (isModuleSupported()) {
+			cp = Iterables.concat(Collections.singleton(sourceDirectory), getClassPath());
+			mp = Collections.emptyList();
+		} else {
+			cp = Iterables.concat(Collections.singleton(sourceDirectory), getClassPath());
+			mp = Collections.emptyList();
+		}
 		return runJavaCompiler(classDirectory, getSourcePaths(),
-				Iterables.concat(Collections.singleton(sourceDirectory), getClassPath()),
-				false, true, progress);
+				cp, mp,
+				false, false, progress);
 	}
 
 	/** Compile the java files after the compilation of the project's files.
 	 *
 	 * @param progress monitor of the progress of the compilation.
-	 * @return the success status. Replies <code>false</code> if the activity is canceled.
+	 * @return the success status.
 	 */
-	protected boolean postCompileJava(IProgressMonitor progress) {
+	protected CompilerStatus postCompileJava(IProgressMonitor progress) {
 		assert progress != null;
-		progress.subTask(Messages.SarlBatchCompiler_52);
+		final String msg = MessageFormat.format(Messages.SarlBatchCompiler_25, getJavaCompiler().getName());
+		progress.subTask(msg);
+		getLogger().info(msg);
 		final File classOutputPath = getClassOutputPath();
 		if (classOutputPath == null) {
 			getLogger().info(Messages.SarlBatchCompiler_24);
-			return true;
+			return CompilerStatus.COMPILATION_SUCCESS;
 		}
-		getLogger().info(Messages.SarlBatchCompiler_25);
 		final Iterable<File> sources = Iterables.concat(getSourcePaths(), Collections.singleton(getOutputPath()));
 		if (getLogger().isLoggable(Level.FINEST)) {
 			getLogger().finest(MessageFormat.format(Messages.SarlBatchCompiler_29, toPathString(sources)));
 		}
 		final List<File> classpath = getClassPath();
+		final List<File> modulepath = getModulePath();
 		if (getLogger().isLoggable(Level.FINEST)) {
-			getLogger().finest(MessageFormat.format(Messages.SarlBatchCompiler_30, toPathString(classpath)));
+			if (isModuleSupported()) {
+				getLogger().finest(MessageFormat.format(Messages.SarlBatchCompiler_64, toPathString(classpath), toPathString(modulepath)));
+			} else {
+				getLogger().finest(MessageFormat.format(Messages.SarlBatchCompiler_30, toPathString(classpath)));
+			}
 		}
-		return runJavaCompiler(classOutputPath, sources, classpath, true, true, progress);
+		return runJavaCompiler(classOutputPath, sources, classpath, modulepath, true, true, progress);
 	}
 
 	private static String toPathString(Iterable<File> files) {
@@ -1780,37 +1870,41 @@ public class SarlBatchCompiler {
 	 * @param classDirectory the output directory.
 	 * @param sourcePathDirectories the source directories.
 	 * @param classPathEntries classpath entries.
+	 * @param modulePathEntries classpath entries.
 	 * @param enableCompilerOutput indicates if the Java compiler output is displayed.
 	 * @param enableOptimization indicates if the Java compiler must applied optimization flags.
 	 * @param progress monitor of the progress of the compilation.
-	 * @return the success status. Replies <code>false</code> if the activity is canceled.
+	 * @return the success status.
 	 * @see IJavaBatchCompiler
 	 */
 	@SuppressWarnings({ "resource" })
-	protected boolean runJavaCompiler(File classDirectory, Iterable<File> sourcePathDirectories,
-			Iterable<File> classPathEntries, boolean enableCompilerOutput,
+	protected CompilerStatus runJavaCompiler(File classDirectory, Iterable<File> sourcePathDirectories,
+			Iterable<File> classPathEntries, Iterable<File> modulePathEntries, boolean enableCompilerOutput,
 			boolean enableOptimization, IProgressMonitor progress) {
 		String encoding = this.encodingProvider.getDefaultEncoding();
 		if (Strings.isEmpty(encoding)) {
 			encoding = null;
 		}
 		if (progress.isCanceled()) {
-			return false;
+			return CompilerStatus.CANCELED;
 		}
-		final PrintWriter outWriter = getStubCompilerOutputWriter();
+		final PrintWriter outWriter;
 		final PrintWriter errWriter;
 		if (enableCompilerOutput) {
+			outWriter = getInfoCompilerOutputWriter();
 			errWriter = getErrorCompilerOutputWriter();
 		} else {
-			errWriter = getStubCompilerOutputWriter();
+			outWriter = getDebugCompilerOutputWriter();
+			errWriter = getDebugCompilerOutputWriter();
 		}
 		if (progress.isCanceled()) {
-			return false;
+			return CompilerStatus.CANCELED;
 		}
 		return getJavaCompiler().compile(
 				classDirectory,
 				sourcePathDirectories,
 				classPathEntries,
+				modulePathEntries,
 				getBootClassPath(),
 				getJavaSourceVersion(),
 				encoding,
@@ -1822,7 +1916,7 @@ public class SarlBatchCompiler {
 				progress);
 	}
 
-	private PrintWriter getStubCompilerOutputWriter() {
+	private PrintWriter getDebugCompilerOutputWriter() {
 		final Writer debugWriter = new Writer() {
 			@Override
 			public void write(char[] data, int offset, int count) throws IOException {
@@ -1851,6 +1945,27 @@ public class SarlBatchCompiler {
 			public void write(char[] data, int offset, int count) throws IOException {
 				final String message = String.copyValueOf(data, offset, count);
 				reportInternalError(message);
+			}
+
+			@Override
+			public void flush() throws IOException {
+				//
+			}
+
+			@Override
+			public void close() throws IOException {
+				//
+			}
+		};
+		return new PrintWriter(debugWriter);
+	}
+
+	private PrintWriter getInfoCompilerOutputWriter() {
+		final Writer debugWriter = new Writer() {
+			@Override
+			public void write(char[] data, int offset, int count) throws IOException {
+				final String message = String.copyValueOf(data, offset, count);
+				reportInternalInfo(message);
 			}
 
 			@Override
@@ -2215,12 +2330,39 @@ public class SarlBatchCompiler {
 		assert progress != null;
 		progress.subTask(Messages.SarlBatchCompiler_58);
 		final Iterable<File> classpath;
+		final Iterable<File> modulepath;
 		if (temporaryClassDirectory != null) {
-			classpath = Iterables.concat(
-					Collections.singletonList(temporaryClassDirectory),
-					getClassPath(), getSourcePaths());
+			if (isModuleSupported()) {
+				if (isModularProject()) {
+					classpath = getClassPath();
+					modulepath = Iterables.concat(
+							Collections.singletonList(temporaryClassDirectory),
+							getModulePath(), getSourcePaths());
+				} else {
+					classpath = Iterables.concat(
+							Collections.singletonList(temporaryClassDirectory),
+							getClassPath(), getSourcePaths());
+					modulepath = getModulePath();
+				}
+			} else {
+				classpath = Iterables.concat(
+						Collections.singletonList(temporaryClassDirectory),
+						getClassPath(), getSourcePaths());
+				modulepath = Collections.emptyList();
+			}
+		} else if (isModuleSupported()) {
+			if (isModularProject()) {
+				classpath = getClassPath();
+				modulepath = Iterables.concat(
+						getModulePath(), getSourcePaths());
+			} else {
+				classpath = Iterables.concat(
+						getClassPath(), getSourcePaths());
+				modulepath = getModulePath();
+			}
 		} else {
 			classpath = Iterables.concat(getClassPath(), getSourcePaths());
+			modulepath = Collections.emptyList();
 		}
 		if (getLogger().isLoggable(Level.FINEST)) {
 			getLogger().finest(MessageFormat.format(Messages.SarlBatchCompiler_17, classpath));
@@ -2239,7 +2381,7 @@ public class SarlBatchCompiler {
 		if (progress.isCanceled()) {
 			return;
 		}
-		this.jvmTypesClassLoader = createClassLoader(classpath, parentClassLoader);
+		this.jvmTypesClassLoader = createClassLoader(classpath, modulepath, parentClassLoader);
 		if (progress.isCanceled()) {
 			return;
 		}
@@ -2254,22 +2396,15 @@ public class SarlBatchCompiler {
 
 		// for annotation processing we need to have the compiler's classpath as a parent.
 		progress.subTask(Messages.SarlBatchCompiler_59);
-		this.annotationProcessingClassLoader = createClassLoader(classpath, getCurrentClassLoader());
+		this.annotationProcessingClassLoader = createClassLoader(classpath, modulepath, getCurrentClassLoader());
 		if (progress.isCanceled()) {
 			return;
 		}
 		resourceSet.eAdapters().add(new ProcessorInstanceForJvmTypeProvider.ProcessorClassloaderAdapter(this.annotationProcessingClassLoader));
 	}
 
-	/** Create the project class loader.
-	 *
-	 * @param jarsAndFolders the project class path.
-	 * @param parentClassLoader the parent class loader.
-	 * @return the class loader for the project.
-	 */
-	@SuppressWarnings("static-method")
-	protected ClassLoader createClassLoader(Iterable<File> jarsAndFolders, ClassLoader parentClassLoader) {
-		return new URLClassLoader(Iterables.toArray(Iterables.transform(jarsAndFolders, from -> {
+	private static Iterable<URL> toURL(Iterable<File> files) {
+		return Iterables.transform(files, from -> {
 			try {
 				final URL url = from.toURI().toURL();
 				assert url != null;
@@ -2277,7 +2412,24 @@ public class SarlBatchCompiler {
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
-		}), URL.class), parentClassLoader);
+		});
+	}
+	
+	/** Create the project class loader.
+	 *
+	 * @param classPath the project class path.
+	 * @param modulePath the project class path.
+	 * @param parentClassLoader the parent class loader.
+	 * @return the class loader for the project.
+	 */
+	@SuppressWarnings("static-method")
+	protected ClassLoader createClassLoader(Iterable<File> classPath, Iterable<File> modulePath, ClassLoader parentClassLoader) {
+		if (isModuleSupported()) {
+			return new URLClassLoader(Iterables.toArray(
+					toURL(Iterables.concat(classPath, modulePath)),
+					URL.class), parentClassLoader);
+		}
+		return new URLClassLoader(Iterables.toArray(toURL(classPath), URL.class), parentClassLoader);
 	}
 
 	/** Null-safe destruction of the given class loaders.

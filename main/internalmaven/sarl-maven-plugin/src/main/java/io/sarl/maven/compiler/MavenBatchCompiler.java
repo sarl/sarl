@@ -45,6 +45,7 @@ import org.codehaus.plexus.util.xml.Xpp3DomUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.xtext.util.Strings;
 
+import io.sarl.lang.compiler.batch.CompilerStatus;
 import io.sarl.lang.compiler.batch.IJavaBatchCompiler;
 import io.sarl.lang.compiler.batch.OptimizationLevel;
 
@@ -83,10 +84,16 @@ final class MavenBatchCompiler implements IJavaBatchCompiler {
 	}
 
 	@Override
+	public String getName() {
+		return "Maven compiler"; //$NON-NLS-1$
+	}
+
+	@Override
 	@SuppressWarnings({"checkstyle:parameternumber"})
-	public boolean compile(File classDirectory,
+	public CompilerStatus compile(File classDirectory,
 			Iterable<File> sourcePathDirectories,
 			Iterable<File> classPathEntries,
+			Iterable<File> modulePathEntries,
 			List<File> bootClassPathEntries,
 			String javaVersion,
 			String encoding,
@@ -151,7 +158,7 @@ final class MavenBatchCompiler implements IJavaBatchCompiler {
 
 					final MojoExecution execution = new MojoExecution(mojoDescriptor, configuration);
 					this.helper.executeMojo(execution);
-					return true;
+					return CompilerStatus.COMPILATION_SUCCESS;
 				}
 			}
 		} catch (Exception exception) {
@@ -159,7 +166,7 @@ final class MavenBatchCompiler implements IJavaBatchCompiler {
 				logger.log(Level.SEVERE, exception.getLocalizedMessage(), Throwables.getRootCause(exception));
 			}
 		}
-		return false;
+		return CompilerStatus.COMPILATION_FAILURE;
 	}
 
 	private String findVersion(Logger logger) throws MojoExecutionException {

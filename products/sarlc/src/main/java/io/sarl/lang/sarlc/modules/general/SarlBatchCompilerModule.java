@@ -30,11 +30,13 @@ import com.google.inject.Provider;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import org.eclipse.xtext.diagnostics.Severity;
+import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.util.Strings;
 
 import io.sarl.lang.compiler.batch.IJavaBatchCompiler;
 import io.sarl.lang.compiler.batch.SarlBatchCompiler;
 import io.sarl.lang.compiler.batch.SarlBatchCompiler.IssueMessageFormatter;
+import io.sarl.lang.compiler.batch.SarlBatchCompilerUtils;
 import io.sarl.lang.sarlc.configs.SarlcConfig;
 import io.sarl.lang.sarlc.configs.subconfigs.CompilerConfig;
 import io.sarl.lang.sarlc.configs.subconfigs.JavaCompiler;
@@ -82,7 +84,7 @@ public class SarlBatchCompilerModule extends AbstractModule {
 	 * @param logger the logger.
 	 * @return the SARL batch compiler
 	 */
-	@SuppressWarnings({"static-method", "checkstyle:npathcomplexity"})
+	@SuppressWarnings({"static-method", "checkstyle:npathcomplexity", "deprecation"})
 	@Provides
 	@Singleton
 	public SarlBatchCompiler provideSarlBatchCompiler(
@@ -97,21 +99,21 @@ public class SarlBatchCompilerModule extends AbstractModule {
 		final SarlBatchCompiler compiler = new SarlBatchCompiler();
 		injector.injectMembers(compiler);
 
-		final SARLClasspathProvider classpathProvider = defaultClasspath.get();
-		final SystemPath fullClassPath;
-		fullClassPath = ClassPathUtils.buildClassPath(classpathProvider, cfg, logger.get());
-		compiler.setClassPath(fullClassPath.toFileList());
-
-		if (!Strings.isEmpty(cfg.getJavaBootClasspath())) {
-			compiler.setBootClassPath(cfg.getJavaBootClasspath());
-		}
-
 		if (!Strings.isEmpty(compilerConfig.getFileEncoding())) {
 			compiler.setFileEncoding(compilerConfig.getFileEncoding());
 		}
 
-		if (!Strings.isEmpty(compilerConfig.getJavaVersion())) {
-			compiler.setJavaSourceVersion(compilerConfig.getJavaVersion());
+		final JavaVersion jversion = SarlBatchCompilerUtils.parserJavaVersion(compilerConfig.getJavaVersion());
+		compiler.setJavaSourceVersion(jversion.getQualifier());
+
+		final SARLClasspathProvider classpathProvider = defaultClasspath.get();
+		final SystemPath fullClassPath = ClassPathUtils.buildClassPath(classpathProvider, cfg, jversion, logger.get());
+		compiler.setClassPath(fullClassPath.toFileList());
+		final SystemPath fullModulePath = ClassPathUtils.buildModulePath(classpathProvider, cfg, jversion, logger.get());
+		compiler.setModulePath(fullModulePath.toFileList());
+
+		if (!SarlBatchCompilerUtils.isModuleSupported(jversion) && !Strings.isEmpty(cfg.getJavaBootClasspath())) {
+			compiler.setBootClassPath(cfg.getJavaBootClasspath());
 		}
 
 		final JavaCompiler jcompiler = compilerConfig.getJavaCompiler();

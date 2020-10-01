@@ -79,7 +79,7 @@ class LoggingSkillTest {
 	protected var logService : LoggingService
 
 	@Nullable
-	public var ^skill : LoggingSkill
+	protected var ^skill : LoggingSkill
 
 	@Nullable
 	protected var logger : Logger
@@ -105,9 +105,9 @@ class LoggingSkillTest {
 		when(this.logService.createAgentLogger(any, any)).thenReturn(this.logger)
 		//
 		var agentId = UUID::randomUUID
-		this.owner = new MyAgent2(agentId, this)
-		this.owner = this.owner.spy
 		this.^skill = new LoggingSkill(this.logService)
+		this.owner = new MyAgent2(agentId, this.^skill)
+		this.owner = this.owner.spy
 		invokeProc(this.^skill.class, this.^skill, "setOwner", #[typeof(Agent)], this.^owner)
 	}
 

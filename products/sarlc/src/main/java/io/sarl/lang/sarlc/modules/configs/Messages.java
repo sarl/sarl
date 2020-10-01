@@ -43,6 +43,7 @@ public class Messages extends NLS {
 	public static String SarlcConfigModule_6;
 	public static String SarlcConfigModule_7;
 	public static String SarlcConfigModule_8;
+	public static String SarlcConfigModule_9;
 	public static String SarlcConfigModuleProvider_0;
 	public static String CompilerConfigModule_0;
 	public static String CompilerConfigModule_1;

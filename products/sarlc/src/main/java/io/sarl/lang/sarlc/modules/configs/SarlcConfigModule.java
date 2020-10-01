@@ -26,6 +26,7 @@ import static io.sarl.lang.sarlc.configs.SarlcConfig.BOOT_CLASSPATH_NAME;
 import static io.sarl.lang.sarlc.configs.SarlcConfig.CLASSPATH_NAME;
 import static io.sarl.lang.sarlc.configs.SarlcConfig.CLASS_OUTPUT_PATH_NAME;
 import static io.sarl.lang.sarlc.configs.SarlcConfig.EXTRA_GENERATOR_NAME;
+import static io.sarl.lang.sarlc.configs.SarlcConfig.MODULEPATH_NAME;
 import static io.sarl.lang.sarlc.configs.SarlcConfig.OUTPUT_PATH_NAME;
 import static io.sarl.lang.sarlc.configs.SarlcConfig.TEMP_DIRECTORY_NAME;
 
@@ -61,6 +62,10 @@ public class SarlcConfigModule extends AbstractModule {
 	private static final String CLASSPATH_LONG_OPTION = "classpath"; //$NON-NLS-1$
 
 	private static final String CLASSPATH_SHORT_OPTION = "cp"; //$NON-NLS-1$
+
+	private static final String MODULEPATH_LONG_OPTION = "modulepath"; //$NON-NLS-1$
+
+	private static final String MODULEPATH_SHORT_OPTION = "p"; //$NON-NLS-1$
 
 	private static final String TEMP_DIR_OPTION = "tempdir"; //$NON-NLS-1$
 
@@ -111,6 +116,21 @@ public class SarlcConfigModule extends AbstractModule {
 				.valueRequired(Messages.SarlcConfigModule_4)
 				.build())
 			.mapConfigPath(CLASSPATH_SHORT_OPTION, CLASSPATH_NAME);
+
+		VariableDecls.extend(binder()).declareVar(MODULEPATH_NAME);
+		final String mpDescription = MessageFormat.format(Messages.SarlcConfigModule_9,
+				VariableNames.toEnvironmentVariableName(MODULEPATH_NAME), MODULEPATH_SHORT_OPTION,
+				MODULEPATH_LONG_OPTION);
+		extend(binder()).addOption(OptionMetadata.builder(
+				MODULEPATH_LONG_OPTION, mpDescription)
+				.valueRequired(Messages.SarlcConfigModule_4)
+				.build())
+			.mapConfigPath(MODULEPATH_LONG_OPTION, MODULEPATH_NAME);
+		extend(binder()).addOption(OptionMetadata.builder(
+				MODULEPATH_SHORT_OPTION, mpDescription)
+				.valueRequired(Messages.SarlcConfigModule_4)
+				.build())
+			.mapConfigPath(MODULEPATH_SHORT_OPTION, MODULEPATH_NAME);
 
 		VariableDecls.extend(binder()).declareVar(BOOT_CLASSPATH_NAME);
 		extend(binder()).addOption(OptionMetadata.builder(
