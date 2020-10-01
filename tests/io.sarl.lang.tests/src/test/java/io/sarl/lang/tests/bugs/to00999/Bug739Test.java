@@ -48,24 +48,6 @@ import io.sarl.tests.api.tools.TestValidator.Validator;
 @Tag("sarlValidation")
 public class Bug739Test extends AbstractSarlTest {
 
-	private static final String SNIPSET1 = multilineString(
-			"package io.sarl.lang.tests.bug739",
-			"import io.sarl.lang.core.Agent",
-			"import io.sarl.lang.core.BuiltinCapacitiesProvider",
-			"import io.sarl.lang.core.Capacity",
-			"import io.sarl.lang.core.Skill",
-			"class XXX implements BuiltinCapacitiesProvider {",
-			"	override builtinCapacities(^agent : Agent, skillMappingCallback : (Class<? extends Capacity>, Skill)=>void) {",
-			"	}",
-			"}");
-
-	@Test
-	public void snipset1() throws Exception {
-		SarlScript mas = file(getParseHelper(), SNIPSET1);
-		final Validator validator = validate(getValidationHelper(), getInjector(), mas);
-		validator.assertNoErrors();
-	}
-
 	private static final String SNIPSET2 = multilineString(
 			"package io.sarl.lang.tests.bug739",
 			"interface YYY {",

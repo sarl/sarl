@@ -24,7 +24,6 @@ package foo;
 import java.util.UUID;
 
 import io.sarl.lang.core.Agent;
-import io.sarl.lang.core.BuiltinCapacitiesProvider;
 
 /**
  * @author $Author: sgalland$
@@ -32,17 +31,7 @@ import io.sarl.lang.core.BuiltinCapacitiesProvider;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("deprecation")
 public final class MockFinalAgent extends Agent {
-
-	/**
-	 * @param provider
-	 * @param parent
-	 * @param uuid
-	 */
-	public MockFinalAgent(BuiltinCapacitiesProvider provider, UUID parent, UUID uuid) {
-		super(provider, parent, uuid);
-	}
 
 	/**
 	 * @param parent

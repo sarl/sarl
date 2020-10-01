@@ -21,8 +21,6 @@
 
 package io.sarl.lang.core;
 
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.UUID;
 import javax.inject.Inject;
 
@@ -51,34 +49,6 @@ public class Agent extends AbstractSkillContainer implements IBehaviorGuardEvalu
 	private final UUID id;
 
 	private final UUID parentID;
-
-	/**
-	 * Creates a new agent with a parent <code>parentID</code> and initialize the built-in capacity
-	 * with the given provider.
-	 *
-	 * @param provider the provider of built-in capacities for this agent. If {@code null}, the builtin
-	 *     capacities will not be initialized.
-	 * @param parentID the agent's parent.
-	 * @param agentID the identifier of the agent, or
-	 *                  {@code null} for computing it randomly.
-	 * @deprecated See {@link #Agent(UUID, UUID, DynamicSkillProvider)}.
-	 */
-	@Deprecated
-	@Inject
-	public Agent(
-			BuiltinCapacitiesProvider provider,
-			UUID parentID,
-			UUID agentID) {
-		this(parentID, agentID);
-		if (provider != null) {
-			final Map<Class<? extends Capacity>, Skill> builtinCapacities = provider.getBuiltinCapacities(this);
-			if (builtinCapacities != null && !builtinCapacities.isEmpty()) {
-				for (final Entry<Class<? extends Capacity>, Skill> bic : builtinCapacities.entrySet()) {
-					$setSkill(bic.getValue(), false, bic.getKey());
-				}
-			}
-		}
-	}
 
 	/**
 	 * Creates a new agent with a parent <code>parentID</code> without initializing the built-in capacities.

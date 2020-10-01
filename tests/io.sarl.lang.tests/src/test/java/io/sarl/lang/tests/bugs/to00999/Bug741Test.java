@@ -53,7 +53,6 @@ public class Bug741Test extends AbstractSarlTest {
 	private static final String SNIPSET1 = multilineString(
 			"package io.sarl.lang.tests.bug741",
 			"import io.sarl.lang.core.Agent",
-			"import io.sarl.lang.core.BuiltinCapacitiesProvider",
 			"import io.sarl.lang.core.Capacity",
 			"import io.sarl.lang.core.Skill",
 			"class X {",
