@@ -12,54 +12,56 @@ in top-level features, such as [:agentkw:].
 
 The standard function declaration follows the following syntax:
 
-	[:defkw!] NAME [([PARAMETER, PARAMETER, PARAMETER...])] [: RETURN TYPE] [BLOCK]
+```text
+[:defkw!] NAME [([PARAMETER, PARAMETER, PARAMETER...])] [: RETURN TYPE] [BLOCK]
+```
 
 
-<note>The parameters are implicitly declared with the keyword [:valkw:] so are read-only.</note>
+> **_Note:_** The parameters are implicitly declared with the keyword [:valkw:] so are read-only.
 
 The following code gives examples of function declarations:
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			[:agentkw](agent) A {
-				[:valkw](val) myfield = 1
-				[:On]
-				// No parameter.
-				// Return type: void
-				[:defkw](def) action1 {
-				}
-				
-				// No parameter.
-				// Return type: int
-				def action2 : int {
-					return 0
-				}
-				
-				// Parameter 1, named 'a', of type int.
-				// Return type: void
-				def action3(a : int) {
-				}
-				
-				// Parameter 1, named 'a', of type int.
-				// Parameter 2, named 'b', of type String.
-				// Return type: void
-				def action4(a : int, b : String) {
-				}
-				
-				// Parameter 1, named 'a', of type int.
-				// Return type: double
-				def action5(a : int) : double {
-					return 0
-				}
-				
-				// Parameter 1, named 'a', of type int.
-				// Parameter 2, named 'b', of type String.
-				// Return type: String
-				def action6(a : int, b : String) : String {
-				}
-				[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	[:agentkw](agent) A {
+		[:valkw](val) myfield = 1
+		[:On]
+		// No parameter.
+		// Return type: void
+		[:defkw](def) action1 {
+		}
+		
+		// No parameter.
+		// Return type: int
+		def action2 : int {
+			return 0
+		}
+		
+		// Parameter 1, named 'a', of type int.
+		// Return type: void
+		def action3(a : int) {
+		}
+		
+		// Parameter 1, named 'a', of type int.
+		// Parameter 2, named 'b', of type String.
+		// Return type: void
+		def action4(a : int, b : String) {
+		}
+		
+		// Parameter 1, named 'a', of type int.
+		// Return type: double
+		def action5(a : int) : double {
+			return 0
+		}
+		
+		// Parameter 1, named 'a', of type int.
+		// Parameter 2, named 'b', of type String.
+		// Return type: String
+		def action6(a : int, b : String) : String {
+		}
+		[:Off]
+	}
+[:End:]
 
 
 ## Declare exceptions in the function prototype
@@ -72,9 +74,9 @@ it is better to let a method further down the call stack handle the exception.
 If a function doesn't catch the checked exceptions that can occur within
 it, the function may specify that it can throw these exceptions.
 
-<note>This specification is optional since the SARL compiler determines the
-exceptions that are not catched, and assumes that they are implicitly
-thrown outside the function.</note>
+> **_Note:_** This specification is optional since the SARL compiler determines the
+> exceptions that are not catched, and assumes that they are implicitly
+> thrown outside the function.
 
 The declaration of the thrown exceptions is done with the 
 [:throwskw:] keyword, followed by a list of thrown exception types.
@@ -85,15 +87,15 @@ parameters and no return type.
 This function indicates to its caller that it could throw an exception of
 type [:exceptioninstance:]. 
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			agent A {
-				[:On]
-				def [:myaction](myaction) [:throwskw](throws) [:exceptioninstance](IllegalStateException) {
-				}
-				[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	agent A {
+		[:On]
+		def [:myaction](myaction) [:throwskw](throws) [:exceptioninstance](IllegalStateException) {
+		}
+		[:Off]
+	}
+[:End:]
 
 
 ## Generic Function
@@ -115,7 +117,7 @@ generic functions:
 
 A generic method's body is declared like that of any other method.
 
-<note>Type parameters can represent only reference types, not primitive types (like `int`, `double` and `char`).</note>
+> **_Note:_** Type parameters can represent only reference types, not primitive types (like `int`, `double` and `char`).
 
 Two syntaxes are allowed for defining the type parameters of the actions: the [:withkw:] syntax, and the bracket syntax.
 
@@ -128,18 +130,18 @@ keyword, between the function's return type and the function's body.
 In the following example, the function specifies a type [:T:], which is used both
 as type for the element parameter and the generic type of the Collection.
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			import java.util.Collection
-			agent A {
-				[:On]
-				def addAndReturn(element : [:T!], collection : Collection<[:T!]>) : [:T!] [:withkw](with) [:T](T) {
-				    collection.add(element)
-				    return element
-				}
-				[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	import java.util.Collection
+	agent A {
+		[:On]
+		def addAndReturn(element : [:T!], collection : Collection<[:T!]>) : [:T!] [:withkw](with) [:T](T) {
+		    collection.add(element)
+		    return element
+		}
+		[:Off]
+	}
+[:End:]
 
 
 ### Definition with brackets
@@ -150,18 +152,18 @@ appears before the function's name.
 In the following example, the function specifies a type [:T:], which is used both
 as type for the element parameter and the generic type of the Collection.
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			import java.util.Collection
-			agent A {
-				[:On]
-				def <[:T!]> addAndReturn(element : [:T!], collection : Collection<[:T!]>) : [:T!] {
-				    collection.add(element)
-				    return element
-				}
-				[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	import java.util.Collection
+	agent A {
+		[:On]
+		def <[:T!]> addAndReturn(element : [:T!], collection : Collection<[:T!]>) : [:T!] {
+		    collection.add(element)
+		    return element
+		}
+		[:Off]
+	}
+[:End:]
 
 
 ### Bounded Type Parameters
@@ -174,18 +176,18 @@ To declare a bounded type parameter, list the type parameter's name, followed by
 [:extendskw:] keyword, followed by a class name. This keyword indicates that [:T:]
 must be a subtype of the following type.
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			import java.util.Collection
-			agent A {
-				[:On]
-				def print(value : [:T!]) with [:T!] [:extendskw](extends) Number {
-				    System.out.println("Type = " + value.getClass)
-				    System.out.println("Value = " + value)
-				}
-				[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	import java.util.Collection
+	agent A {
+		[:On]
+		def print(value : [:T!]) with [:T!] [:extendskw](extends) Number {
+		    System.out.println("Type = " + value.getClass)
+		    System.out.println("Value = " + value)
+		}
+		[:Off]
+	}
+[:End:]
 
 
 ## Variadic Function
@@ -203,53 +205,53 @@ In other languages, such as Java and C++, the variadic operator is `...`.
 
 In the following example, two variadic functions are defined:
  
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			import java.util.Collection
-			import io.sarl.core.Logging
-			agent A {
-				uses Logging
-				[:On]
-				// Function with indefinite number of integers as parameters
-				def action1(v : int[:starop](*)) {
-					for (value : v) {
-						info(value)
-					}
-				}
-
-				// Function which takes a boolean, a double and an indefinite 
-				// number of integers as parameters
-				def action2(a : boolean, b : double, c : int*) {
-					info(a)
-					info(b)
-					for (value : c) {
-						info(value)
-					}
-				}
-				[:Off]
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	import java.util.Collection
+	import io.sarl.core.Logging
+	agent A {
+		uses Logging
+		[:On]
+		// Function with indefinite number of integers as parameters
+		def action1(v : int[:starop](*)) {
+			for (value : v) {
+				info(value)
 			}
-		[:End:]
+		}
+
+		// Function which takes a boolean, a double and an indefinite 
+		// number of integers as parameters
+		def action2(a : boolean, b : double, c : int*) {
+			info(a)
+			info(b)
+			for (value : c) {
+				info(value)
+			}
+		}
+		[:Off]
+	}
+[:End:]
 
 Examples of calls to the two previous variadic functions are:
  
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			import java.util.Collection
-			agent A {
-				def action1(v : int*) { }
-				def action2(a : boolean, b : double, c : int*) { }
-				def calls {
-					[:On]
-					action1()
-					action1(1)
-					action1(1, 3)
-					action2(true, 3.0)
-					action2(true, 3.0, 1)
-					action2(true, 3.0, 1, 5)
-					[:Off]
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	import java.util.Collection
+	agent A {
+		def action1(v : int*) { }
+		def action2(a : boolean, b : double, c : int*) { }
+		def calls {
+			[:On]
+			action1()
+			action1(1)
+			action1(1, 3)
+			action2(true, 3.0)
+			action2(true, 3.0, 1)
+			action2(true, 3.0, 1, 5)
+			[:Off]
+		}
+	}
+[:End:]
 
 
 ## Default Value for the Formal Parameters
@@ -261,65 +263,65 @@ the action can skip passing a value for the corresponding argument.
 And, when the function is called, the default value is given to the
 skipped argument.
 
-<importantnote> In SARL, if a formal parameter has a default value, the following formal
-parameters do not need to have default values as well. This is a major
-difference with the default values in other languages, such as C++.</importantnote>
+> **_Important Note:_** In SARL, if a formal parameter has a default value, the following formal
+> parameters do not need to have default values as well. This is a major
+> difference with the default values in other languages, such as C++.
  
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			import java.util.Collection
-			import io.sarl.core.Logging
-			agent A {
-				uses Logging
-				[:On]
-				// Function with one parameter with a default value.
-				def action1(v : int = 5) {
-					info("v == " + v)
-				}
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	import java.util.Collection
+	import io.sarl.core.Logging
+	agent A {
+		uses Logging
+		[:On]
+		// Function with one parameter with a default value.
+		def action1(v : int = 5) {
+			info("v == " + v)
+		}
 
-				// Function which takes a boolean, a double and an integer as parameters.
-				// The first and third parameters have default values. 
-				def action2(a : boolean=true, b : double, c : int=7) {
-					info("a == " + a)
-					info("b == " + b)
-					info("c == " + c)
-				}
-				[:Off]
-			}
-		[:End:]
+		// Function which takes a boolean, a double and an integer as parameters.
+		// The first and third parameters have default values. 
+		def action2(a : boolean=true, b : double, c : int=7) {
+			info("a == " + a)
+			info("b == " + b)
+			info("c == " + c)
+		}
+		[:Off]
+	}
+[:End:]
 
 
 Examples of calls to the two previous functions are:
  
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			import java.util.Collection
-			agent A {
-				def action1(v : int = 5) {}
-				def action2(a : boolean=true, b : double, c : int=7) {}
-				def calls {
-					[:On]
-					// v == 1
-					action1(1)
-					
-					// v == 5
-					action1()
-					
-					// a == true, b == 3.0, c == 1
-					action2(true, 3.0, 1)
-					
-					// a == false, b == 4.0, c == 7
-					action2(false, 4.0)
-					
-					// a == true, b == 7.0, c == 56
-					action2(7.0, 56)
-					
-					// a == true, b == 9.0, c == 7
-					action2(9.0)
-					[:Off]
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	import java.util.Collection
+	agent A {
+		def action1(v : int = 5) {}
+		def action2(a : boolean=true, b : double, c : int=7) {}
+		def calls {
+			[:On]
+			// v == 1
+			action1(1)
+			
+			// v == 5
+			action1()
+			
+			// a == true, b == 3.0, c == 1
+			action2(true, 3.0, 1)
+			
+			// a == false, b == 4.0, c == 7
+			action2(false, 4.0)
+			
+			// a == true, b == 7.0, c == 56
+			action2(7.0, 56)
+			
+			// a == true, b == 9.0, c == 7
+			action2(9.0)
+			[:Off]
+		}
+	}
+[:End:]
 
 
 ## Mixing Variadic Parameter and Default Values
@@ -327,17 +329,17 @@ Examples of calls to the two previous functions are:
 It is possible to mix the variadic parameter and the default values,
 except that the variadic parameter cannot have a default value. 
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			import java.util.Collection
-			import io.sarl.core.Logging
-			agent A {
-				uses Logging
-				[:On]
-				def action(v : int = 5, a : float*) { }
-				[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	import java.util.Collection
+	import io.sarl.core.Logging
+	agent A {
+		uses Logging
+		[:On]
+		def action(v : int = 5, a : float*) { }
+		[:Off]
+	}
+[:End:]
 
 
 ## Dispatch Function
@@ -350,63 +352,66 @@ you would like to have polymorphic behavior.
 
 The [:dispatchmodifier:] modifier permits defining a dispatch method.
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			class MyClass {
-				def println(o : Object) {
-				}
-			[:On]
-				[:dispatchmodifier!] def getType(x : Integer) { 
-				  "[:intmsg](it's an int)" 
-				}
+[:Success:]
+	package io.sarl.docs.reference.oop
+	class MyClass {
+		def println(o : Object) {
+		}
+	[:On]
+		[:dispatchmodifier!] def getType(x : Integer) { 
+		  "[:intmsg](it's an int)" 
+		}
 
-				[:dispatchmodifier!] def getType(x : String) { 
-				  "[:strmsg](it's a string)" 
-				}
+		[:dispatchmodifier!] def getType(x : String) { 
+		  "[:strmsg](it's a string)" 
+		}
 
-				[:dispatchmodifier](dispatch) def [:gettypefct](getType)(x : Number) { 
-				  "[:numbermsg](it's a number)" 
-				}
-				 
-				def clientCode {
-					getType(4.5).println
-					getType(4).println
-					getType("a string").println
-				}
-			[:Off]
-			}
-		[:End:]
+		[:dispatchmodifier](dispatch) def [:gettypefct](getType)(x : Number) { 
+		  "[:numbermsg](it's a number)" 
+		}
+		 
+		def clientCode {
+			getType(4.5).println
+			getType(4).println
+			getType("a string").println
+		}
+	[:Off]
+	}
+[:End:]
 
 
 For a set of visible dispatch methods in the current type hierarchy with the same name and
 the same number of arguments, the compiler infers a synthetic dispatcher method.
 From the example above, the SARL compiler infers the following function, named the synthesized dispatcher.
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			class MyClass {
-			[:On]
-				def printType(x : Object) { 
-				  if (x instanceof Integer) {
-				    printType(x as Integer)
-				  } else if (x instanceof Number) {
-				    printType(x as Number)
-				  } else if (x instanceof String) {
-				    printType(x as String)
-				  }
-				}
-			[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	class MyClass {
+	[:On]
+		def printType(x : Object) { 
+		  if (x instanceof Integer) {
+		    printType(x as Integer)
+		  } else if (x instanceof Number) {
+		    printType(x as Number)
+		  } else if (x instanceof String) {
+		    printType(x as String)
+		  }
+		}
+	[:Off]
+	}
+[:End:]
+
 
 This dispatcher uses the common super type of all declared arguments.
 Client code always binds to the synthesized dispatcher method.
 
 In the example, the calls to the [:gettypefct:] functions produces the output:
 
-	[:numbermsg!]
-	[:intmsg!]
-	[:strmsg!]
+```text
+[:numbermsg!]
+[:intmsg!]
+[:strmsg!]
+```
 
 
 ## Purity of the Functions
@@ -426,53 +431,53 @@ imperative language community, use the term "pure" for all functions that just h
 In SARL, a pure function is a function that has no side-effect on the state of the invoked object,  the static state, and
 I/O targets. The following examples of SARL functions are pure:
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			class MyClass {
-			[:On]
-				def floor(value : double) : double {
-					val fvalue = value as int
-					return fvalue
-				}
+[:Success:]
+	package io.sarl.docs.reference.oop
+	class MyClass {
+	[:On]
+		def floor(value : double) : double {
+			val fvalue = value as int
+			return fvalue
+		}
 
-				def max(a : double, b : double) : double {
-					if (a >= b) a
-					else b
-				}
+		def max(a : double, b : double) : double {
+			if (a >= b) a
+			else b
+		}
 
-				def f : void {
-					var x = 0
-					x++
-				}
-			[:Off]
-			}
-		[:End:]
+		def f : void {
+			var x = 0
+			x++
+		}
+	[:Off]
+	}
+[:End:]
 
  The following examples of SARL functions are impure:
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			[:On]
-			class MyClass {
+[:Success:]
+	package io.sarl.docs.reference.oop
+	[:On]
+	class MyClass {
 
-				var ifield : int
+		var ifield : int
 
-				static var sfield : int
+		static var sfield : int
 
-				def incrementField : void {
-					this.ifield ++
-				}
+		def incrementField : void {
+			this.ifield ++
+		}
 
-				def incrementGlobalField : void {
-					sfield ++
-				}
+		def incrementGlobalField : void {
+			sfield ++
+		}
 
-				static def incrementGlobalField2 : void {
-					sfield ++
-				}
-			}
-			[:Off]
-		[:End:]
+		static def incrementGlobalField2 : void {
+			sfield ++
+		}
+	}
+	[:Off]
+[:End:]
 
 
 ### I/O in Pure Functions
@@ -567,18 +572,18 @@ If none of the cases above is matching the current definition of a function, the
 In the case the SARL compiler is not able to automatically determine the purity of a function, but you are sure that the function
 is pure, it is possible to mark the function as pure manually.
 
-        [:Success:]
-            package io.sarl.docs.faq.syntax
-            agent X {
-                [:On]
-				@Pure
-				def myFunction() : int {
-					// Do something complex
-					return 0
-				}
-                [:Off]
-            }
-        [:End:]
+[:Success:]
+    package io.sarl.docs.faq.syntax
+    agent X {
+        [:On]
+		@Pure
+		def myFunction() : int {
+			// Do something complex
+			return 0
+		}
+        [:Off]
+    }
+[:End:]
 
 
 [:Include:](../generalsyntaxref.inc)

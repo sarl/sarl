@@ -33,24 +33,24 @@ Below, a Skill is defined to output messages on the standard console
 Note that all the Actions defined in the Capacity must
 have a definition (with a body containing code) in the Skill.
 
-		[:Success:]
-			package io.sarl.docs.reference.sr
-			capacity Logging {
-				// Log an information message
-				def info(text : String)
-				// Log a debugging message
-				def debug(text : String)
-			}
-			[:On]
-			[:skillkw](skill) ConsoleLogging implements Logging {
-				def info(text : String) {
-					System.out.println(text)
-				}
-				def debug(text : String) {
-					System.err.println(text)
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.sr
+	capacity Logging {
+		// Log an information message
+		def info(text : String)
+		// Log a debugging message
+		def debug(text : String)
+	}
+	[:On]
+	[:skillkw](skill) ConsoleLogging implements Logging {
+		def info(text : String) {
+			System.out.println(text)
+		}
+		def debug(text : String) {
+			System.err.println(text)
+		}
+	}
+[:End:]
 
 
 ### Field Definition
@@ -62,57 +62,57 @@ The following example defines a Skill that uses the standard Java logging librar
 To avoid creating an instance of the Java logger each time the Capacity's Actions are invoked, an instance
 of the Java logger is created and stored in a field of the Skill.
 
-		[:Success:]
-			package io.sarl.docs.reference.sr
-			import java.util.logging.Logger
-			capacity Logging {
-				// Log an information message
-				def info(text : String)
-				// Log a debugging message
-				def debug(text : String)
-			}
-			[:On]
-			skill StandardJavaLogging implements Logging {
-				// A field is defined in the Skill
-				val logger = Logger.anonymousLogger
-				def info(text : String) {
-					logger.info(text)
-				}
-				def debug(text : String) {
-					logger.fine(text)
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.sr
+	import java.util.logging.Logger
+	capacity Logging {
+		// Log an information message
+		def info(text : String)
+		// Log a debugging message
+		def debug(text : String)
+	}
+	[:On]
+	skill StandardJavaLogging implements Logging {
+		// A field is defined in the Skill
+		val logger = Logger.anonymousLogger
+		def info(text : String) {
+			logger.info(text)
+		}
+		def debug(text : String) {
+			logger.fine(text)
+		}
+	}
+[:End:]
 
 
 ### Action Definition
 
 It is possible to declare methods in the Skill in addition to those specified by the Capacity. 
 
-		[:Success:]
-			package io.sarl.docs.reference.sr
-			import java.util.logging.Logger
-			capacity Logging {
-				// Log an information message
-				def info(text : String)
-				// Log a debugging message
-				def debug(text : String)
-			}
-			[:On]
-			skill MyLogging implements Logging {
-				def info(text : String) {
-					output(text)
-				}
-				def debug(text : String) {
-					output(text)
-				}
-				// Define an utility function
-				// that is outputting the text
-				def output(t : String) {
-					System.err.println(t)
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.sr
+	import java.util.logging.Logger
+	capacity Logging {
+		// Log an information message
+		def info(text : String)
+		// Log a debugging message
+		def debug(text : String)
+	}
+	[:On]
+	skill MyLogging implements Logging {
+		def info(text : String) {
+			output(text)
+		}
+		def debug(text : String) {
+			output(text)
+		}
+		// Define an utility function
+		// that is outputting the text
+		def output(t : String) {
+			System.err.println(t)
+		}
+	}
+[:End:]
 
 
 ### Initialization of a skill
@@ -125,22 +125,22 @@ In order to enable the developer to write a code that is run when the skill is a
 [:installfct:] could be defined and implemented. The code below provides an example in which the value
 returned by [:getownerfct:] is checked.
 
-		[:Success:]
-			package io.sarl.docs.reference.sr
-			import java.util.logging.Logger
-			capacity Logging {
-				def info(text : String)
-			}
-			skill StandardJavaLogging implements Logging {
-				def info(text : String) {}
-			[:On]
-				def [:installfct](install) {
-					// Initialization of the skill
-					assert [:getownerfct](getOwner) !== null
-				}
-			[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.sr
+	import java.util.logging.Logger
+	capacity Logging {
+		def info(text : String)
+	}
+	skill StandardJavaLogging implements Logging {
+		def info(text : String) {}
+	[:On]
+		def [:installfct](install) {
+			// Initialization of the skill
+			assert [:getownerfct](getOwner) !== null
+		}
+	[:Off]
+	}
+[:End:]
 
 
 ### Uninitialization of a skill
@@ -148,21 +148,21 @@ returned by [:getownerfct:] is checked.
 In a similar way as [:installfct:], it is possible to execute a code when the skill is detached from it owning agent.
 For this purpose, the [:uninstallfct:] function should be defined, as illustrated below: 
 
-		[:Success:]
-			package io.sarl.docs.reference.sr
-			import java.util.logging.Logger
-			capacity Logging {
-				def info(text : String)
-			}
-			skill StandardJavaLogging implements Logging {
-				def info(text : String) {}
-			[:On]
-				def [:uninstallfct](uninstall) {
-					// Do uninstallation statements
-				}
-			[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.sr
+	import java.util.logging.Logger
+	capacity Logging {
+		def info(text : String)
+	}
+	skill StandardJavaLogging implements Logging {
+		def info(text : String) {}
+	[:On]
+		def [:uninstallfct](uninstall) {
+			// Do uninstallation statements
+		}
+	[:Off]
+	}
+[:End:]
 
 
 ### Constructor Definition
@@ -171,39 +171,37 @@ It is not necessary to specify a constructor for Skills unless a value will be i
 
 Two constructors are defined in the abstract `Skill` class: 
 
-	[:ShowType:](io.sarl.lang.core.[:skilltype]{Skill})
-
+[:ShowType:](io.sarl.lang.core.[:skilltype]{Skill})
 
 Example of constructor definition:
-
-		[:Success:]
-			package io.sarl.docs.reference.sr
-			import java.util.logging.Logger
-			capacity Logging {
-				// Log an information message
-				def info(text : String)
-				// Log a debugging message
-				def debug(text : String)
-			}
-			skill StandardJavaLogging implements Logging {
-				// A field is defined in the Skill
-				val logger : Logger
-			[:On]
-				// The constructor is mandatory
-				// for defining the field "logger"
-				new (l : Logger) {
-					super() // Call the super's constructor
-					logger = l
-				}
-			[:Off]
-				def info(text : String) {
-					logger.info(text)
-				}
-				def debug(text : String) {
-					logger.fine(text)
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.sr
+	import java.util.logging.Logger
+	capacity Logging {
+		// Log an information message
+		def info(text : String)
+		// Log a debugging message
+		def debug(text : String)
+	}
+	skill StandardJavaLogging implements Logging {
+		// A field is defined in the Skill
+		val logger : Logger
+	[:On]
+		// The constructor is mandatory
+		// for defining the field "logger"
+		new (l : Logger) {
+			super() // Call the super's constructor
+			logger = l
+		}
+	[:Off]
+		def info(text : String) {
+			logger.info(text)
+		}
+		def debug(text : String) {
+			logger.fine(text)
+		}
+	}
+[:End:]
 
 
 If no constructor is defined in the skill type and a super-type is declared, implicit constructors will be assumed.
@@ -221,38 +219,39 @@ All the Actions defined in a Capacity must have an implementation in the related
 
 If two implemented Capacities include the same Action signature, it must be implemented only once in the Skill.
 
-		[:Success:]
-			package io.sarl.docs.reference.sr
-			import java.util.logging.Logger
-			capacity [:capacitytype1](Logging) {
-				// Log an information message
-				def info(text : String)
-				// Log a debugging message
-				def debug(text : String)
-			}
-			[:On]
-			capacity [:capacitytype2](LogReader) {
-				def open(filename : String) : int
-				def info(t : String)
-				def close(fid : int)
-			}
+[:Success:]
+	package io.sarl.docs.reference.sr
+	import java.util.logging.Logger
+	capacity [:capacitytype1](Logging) {
+		// Log an information message
+		def info(text : String)
+		// Log a debugging message
+		def debug(text : String)
+	}
+	[:On]
+	capacity [:capacitytype2](LogReader) {
+		def open(filename : String) : int
+		def info(t : String)
+		def close(fid : int)
+	}
 
-			skill [:skilltype1](MyLogging) implements Logging, LogReader {
-				// Shared implementation for the methods
-				// defind in the two Capacities.
-				def info(text : String) {
-					System.out.println(text)
-				}
-				def debug(text : String) {
-					System.out.println(text)
-				}
-				def open(filename : String) : int {
-					return 0
-				}
-				def close(fid : int) {
-				}
-			}
-		[:End:]
+	skill [:skilltype1](MyLogging) implements Logging, LogReader {
+		// Shared implementation for the methods
+		// defind in the two Capacities.
+		def info(text : String) {
+			System.out.println(text)
+		}
+		def debug(text : String) {
+			System.out.println(text)
+		}
+		def open(filename : String) : int {
+			return 0
+		}
+		def close(fid : int) {
+		}
+	}
+[:End:]
+
 
 ### Extending a Skill
 
@@ -261,33 +260,33 @@ feature of SARL, which has the same semantics as the inheritance mechanism of th
 
 The extended Skill is specified just after the [:extendskw:] keyword.
 
-<veryimportantnote> A Skill type can extend __only one__ other Skill type.  This is similar
-to the constraint on the extension of classes in the Java language.</veryimportantnote>
+> **_Very Important Note:_** A Skill type can extend __only one__ other Skill type.  This is similar
+> to the constraint on the extension of classes in the Java language.
 
 In the following code, the `StandardJavaLogging` Skill (defined above) is extended to override the info output.
 
-		[:Success:]
-			package io.sarl.docs.reference.sr
-			import io.sarl.lang.core.Capacity
-			capacity Logging {
-				// Log an information message
-				def info(text : String)
-				// Log a debugging message
-				def debug(text : String)
-			}
-			skill StandardJavaLogging implements Logging {
-				def info(text : String) {
-				}
-				def debug(text : String) {
-				}
-			}
-			[:On]
-			skill ExtendedLogging [:extendskw](extends) StandardJavaLogging {
-				def info(text : String) {
-					super.info("INFO: "+text)
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.sr
+	import io.sarl.lang.core.Capacity
+	capacity Logging {
+		// Log an information message
+		def info(text : String)
+		// Log a debugging message
+		def debug(text : String)
+	}
+	skill StandardJavaLogging implements Logging {
+		def info(text : String) {
+		}
+		def debug(text : String) {
+		}
+	}
+	[:On]
+	skill ExtendedLogging [:extendskw](extends) StandardJavaLogging {
+		def info(text : String) {
+			super.info("INFO: "+text)
+		}
+	}
+[:End:]
 
 
 ### Modifiers
@@ -311,21 +310,21 @@ A Skill may be declared with one or more modifiers, which affect its runtime beh
 
 Examples:
 
-		[:Success:]
-			package io.sarl.docs.reference.sr
-			import io.sarl.lang.core.Capacity
-			capacity CapacityExample {
-			}
-			[:On]
-			[:publicmodifier](public) skill Example1 implements CapacityExample {
-			}
-			[:packagemodifier](package) skill Example2 implements CapacityExample {
-			}
-			[:abstractmodifier](abstract) skill Example3 implements CapacityExample {
-			}
-			[:finalmodifier](final) skill Example4 implements CapacityExample {
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.sr
+	import io.sarl.lang.core.Capacity
+	capacity CapacityExample {
+	}
+	[:On]
+	[:publicmodifier](public) skill Example1 implements CapacityExample {
+	}
+	[:packagemodifier](package) skill Example2 implements CapacityExample {
+	}
+	[:abstractmodifier](abstract) skill Example3 implements CapacityExample {
+	}
+	[:finalmodifier](final) skill Example4 implements CapacityExample {
+	}
+[:End:]
 
 
 #### Field Modifiers
@@ -340,20 +339,20 @@ The modifiers for the fields in a Skill are:
 
 Examples:
 
-		[:Success:]
-			package io.sarl.docs.reference.sr
-			import io.sarl.lang.core.Capacity
-			capacity CapacityExample {
-			}
-			public skill Example1 implements CapacityExample {
-			[:On]
-				public var example1 : Object
-				[:protectedmodifier](protected) var example2 : Object
-				package var example3 : Object
-				[:privatemodifier](private) var example4 : Object
-			[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.sr
+	import io.sarl.lang.core.Capacity
+	capacity CapacityExample {
+	}
+	public skill Example1 implements CapacityExample {
+	[:On]
+		public var example1 : Object
+		[:protectedmodifier](protected) var example2 : Object
+		package var example3 : Object
+		[:privatemodifier](private) var example4 : Object
+	[:Off]
+	}
+[:End:]
 
 
 #### Method Modifiers
@@ -371,31 +370,31 @@ The modifiers for the methods in a Skill are:
 
 Examples:
 
-		[:Success:]
-			package io.sarl.docs.reference.sr
-			import io.sarl.lang.core.Capacity
-			capacity CapacityExample {
-			}
-			abstract skill Example1 implements CapacityExample {
-			[:On]
-				// Public access function
-				public def example1 { }
-				// Protected access function
-				protected def example2 { }
-				// Package access function
-				package def example3 { }
-				// Private access function
-				private def example4 { }
-				// Abstract function
-				abstract def example5
-				// Not-overridable function
-				final def example6 { }
-				// Dispatch functions
-				[:dispatchmodifier](dispatch) def example7(p : Integer) { }
-				dispatch def example7(p : Float) { }
-			[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.sr
+	import io.sarl.lang.core.Capacity
+	capacity CapacityExample {
+	}
+	abstract skill Example1 implements CapacityExample {
+	[:On]
+		// Public access function
+		public def example1 { }
+		// Protected access function
+		protected def example2 { }
+		// Package access function
+		package def example3 { }
+		// Private access function
+		private def example4 { }
+		// Abstract function
+		abstract def example5
+		// Not-overridable function
+		final def example6 { }
+		// Dispatch functions
+		[:dispatchmodifier](dispatch) def example7(p : Integer) { }
+		dispatch def example7(p : Float) { }
+	[:Off]
+	}
+[:End:]
 
 
 ## Built-in Skills

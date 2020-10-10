@@ -13,23 +13,24 @@ method.
 A lambda expression is code surrounded by square brackets (inspired from Smalltalk).
 Like a method declaration, a lambda expression may declare parameters.
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			import java.awt.^event.ActionEvent
-			import javax.swing.JTextField
-			agent A {
-				def example {
-					val textField = new JTextField
-					// Define a lambda expression that take an ActionEvent as parameter.
-					// It is defined as a function of type: (ActionEvent) => void
-					textField.addActionListener(
-						[:On]
-						[ e : [:actionevent](ActionEvent) [:tube](|)
-							textField.text = "Something happened!" + e.toString
-						][:Off])
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	import java.awt.^event.ActionEvent
+	import javax.swing.JTextField
+	agent A {
+		def example {
+			val textField = new JTextField
+			// Define a lambda expression that take an ActionEvent as parameter.
+			// It is defined as a function of type: (ActionEvent) => void
+			textField.addActionListener(
+				[:On]
+				[ e : [:actionevent](ActionEvent) [:tube](|)
+					textField.text = "Something happened!" + e.toString
+				][:Off])
+		}
+	}
+[:End:]
+
 
 The lambda above has one parameter called [:e:] which is of type [:actionevent:].
 The code after the [:tube:] operator is the internal code of the lambda expression.
@@ -40,23 +41,24 @@ The code after the [:tube:] operator is the internal code of the lambda expressi
 You do not have to specify the type explicitly because it can be inferred from the context.
 For example, when using inferred type, the code in the previous section becomes:
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			import java.awt.^event.ActionEvent
-			import javax.swing.JTextField
-			agent A {
-				def example {
-					val textField = new JTextField
-					// Define a lambda expression that take an ActionEvent as parameter.
-					// It is defined as a function of type: (ActionEvent) => void
-					textField.addActionListener(
-						[:On]
-						[ [:e](e) |
-							textField.text = "Something happened!" + e.toString
-						][:Off])
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	import java.awt.^event.ActionEvent
+	import javax.swing.JTextField
+	agent A {
+		def example {
+			val textField = new JTextField
+			// Define a lambda expression that take an ActionEvent as parameter.
+			// It is defined as a function of type: (ActionEvent) => void
+			textField.addActionListener(
+				[:On]
+				[ [:e](e) |
+					textField.text = "Something happened!" + e.toString
+				][:Off])
+		}
+	}
+[:End:]
+
 
 The type of [:e:] is inferred according to its usage.
 
@@ -70,24 +72,25 @@ for these parameters, which is to leave the declaration including the vertical b
 
 The name of the single parameter becomes [:it:].
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			import java.awt.^event.ActionEvent
-			import javax.swing.JTextField
-			agent A {
-				def example {
-					val textField = new JTextField
-					// Define a lambda expression that take an ActionEvent as parameter.
-					// It is defined as a function of type: (ActionEvent) => void
-					textField.addActionListener(
-						[:On]
-						[
-							textField.text = "Something happened!" + [:it](it).toString
-						][:Off])
-					
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	import java.awt.^event.ActionEvent
+	import javax.swing.JTextField
+	agent A {
+		def example {
+			val textField = new JTextField
+			// Define a lambda expression that take an ActionEvent as parameter.
+			// It is defined as a function of type: (ActionEvent) => void
+			textField.addActionListener(
+				[:On]
+				[
+					textField.text = "Something happened!" + [:it](it).toString
+				][:Off])
+			
+		}
+	}
+[:End:]
+
 
 ### Case of multiple parameters
 
@@ -98,53 +101,55 @@ The implicit name for the first parameter is `$0`, `$1` for the second,
 
 Let the following interface declaration:
 
-        [:Success:]
-            package io.sarl.docs.reference.gsr
-            [:On]
-            interface [:MyInterfacename](MyInterface) {
-                def [:MyInterfacenamefct](myfct)(a : int, b : int, c : int)
-            }
-            [:Off]
-        [:End:]
+[:Success:]
+    package io.sarl.docs.reference.gsr
+    [:On]
+    interface [:MyInterfacename](MyInterface) {
+        def [:MyInterfacenamefct](myfct)(a : int, b : int, c : int)
+    }
+    [:Off]
+[:End:]
+
 
 The following code is a lambda expression implementing the [:MyInterfacename:] interface.
 Because the [:MyInterfacenamefct:] function has four formal parameters, the lambda expression 
 has four parameters with implicit the following implicit names: `$0`, `$1`, and `$2`.
 
-        [:Success:]
-            package io.sarl.docs.reference.gsr
-            interface MyInterface {
-                def myfct(a : int, b : int, c : int) : int
-            }
-            agent A {
-                def called(p : MyInterface) {}
-                def example {
-                    called(
-                    [:On]
-                    [
-                        $0 + $1 + $2
-                    ]
-                    [:Off])
-                }
-            }
-        [:End:]
+[:Success:]
+    package io.sarl.docs.reference.gsr
+    interface MyInterface {
+        def myfct(a : int, b : int, c : int) : int
+    }
+    agent A {
+        def called(p : MyInterface) {}
+        def example {
+            called(
+            [:On]
+            [
+                $0 + $1 + $2
+            ]
+            [:Off])
+        }
+    }
+[:End:]
+
 
 ## Empty List of Parameters
 
 A lambda expression with zero arguments is written with a bar after the opening bracket:
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			agent A {
-				def example {
-					[:On]
-					val runnable : Runnable = [ |
-							println("Hello I'm executed!")
-						]
-					[:Off]
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	agent A {
+		def example {
+			[:On]
+			val runnable : Runnable = [ |
+					println("Hello I'm executed!")
+				]
+			[:Off]
+		}
+	}
+[:End:]
 
 
 ## Short notation of a Lambda Expression
@@ -154,47 +159,47 @@ declaration could be missed. It specific syntax is called the short notation of 
 
 Consider the following definition of a function with lambda expression as a single parameter:
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			agent A {
-				[:On]
-				def aFunction(aParameter : (Object) => Object) {
-				}
-				[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	agent A {
+		[:On]
+		def aFunction(aParameter : (Object) => Object) {
+		}
+		[:Off]
+	}
+[:End:]
 
 
 The call to the previously defined function with the short notation is:
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			agent A {
-				def aFunction(aParameter : (Object) => Object) {
-				}
-				def caller {
-					[:On]
-					aFunction(a | new Object)
-					[:Off]
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	agent A {
+		def aFunction(aParameter : (Object) => Object) {
+		}
+		def caller {
+			[:On]
+			aFunction(a | new Object)
+			[:Off]
+		}
+	}
+[:End:]
 
 
 This call is equivalent to the following one, with the standard notation:
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			agent A {
-				def aFunction(aParameter : (Object) => Object) {
-				}
-				def caller {
-					[:On]
-					aFunction([a | new Object])
-					[:Off]
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	agent A {
+		def aFunction(aParameter : (Object) => Object) {
+		}
+		def caller {
+			[:On]
+			aFunction([a | new Object])
+			[:Off]
+		}
+	}
+[:End:]
 
 
 As for the standard notation, the parameter and the bar could be missed when their is no formal parameter.
@@ -207,37 +212,38 @@ When the last argument of a method call is a lambda, it can be passed right afte
 For instance if you want to sort some strings by their length, you could use either of the following two examples.
 The first example uses the notation with the lambda expression inside the argument list.
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			import java.util.List
-			import java.util.Collections
-			agent A {
-				def example {
-					[:On]
-					var t : List<String>
-					// Lambda expression is written outside the parenthesis
-					Collections.sort(t, [ a, b | a.length - b.length ])
-					[:Off]
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	import java.util.List
+	import java.util.Collections
+	agent A {
+		def example {
+			[:On]
+			var t : List<String>
+			// Lambda expression is written outside the parenthesis
+			Collections.sort(t, [ a, b | a.length - b.length ])
+			[:Off]
+		}
+	}
+[:End:]
+
 
 The second example uses the notation with the lambda expression outside the argument list.
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			import java.util.List
-			import java.util.Collections
-			agent A {
-				def example {
-					[:On]
-					var t : List<String>
-					// Lambda expression is written outside the parenthesis
-					Collections.sort(t) [ a, b | a.length - b.length ]
-					[:Off]
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	import java.util.List
+	import java.util.Collections
+	agent A {
+		def example {
+			[:On]
+			var t : List<String>
+			// Lambda expression is written outside the parenthesis
+			Collections.sort(t) [ a, b | a.length - b.length ]
+			[:Off]
+		}
+	}
+[:End:]
 
 
 ## Type of a Lambda Expression
@@ -250,14 +256,15 @@ The syntax for specifying the type of a lambda is: `(parameter types) [:mapto](=
 The following example defines a variable [:f:], which is a lambda taking one parameter of [:strtype:], and
 returning a value of [:booltype:]. 
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			agent A {
-				[:On]
-				var [:f](f) : ([:strtype]{String}) [:mapto!] [:booltype](Boolean)
-				[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	agent A {
+		[:On]
+		var [:f](f) : ([:strtype]{String}) [:mapto!] [:booltype](Boolean)
+		[:Off]
+	}
+[:End:]
+
 
 If the lambda is a procedure, i.e. it has no return type, then the return type to specify must be `void`.
 
@@ -272,16 +279,16 @@ different numbers of parameters.
 
 For example, the SARL erasure `(String) [:mapto!] Boolean` may be written with the Java notation:
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			import org.eclipse.xtext.xbase.lib.Functions
-			agent A {
-				[:On]
-				// Same type of function.
-				var f2 : Functions.[:f1](Function1)<? super String,? extends Boolean>
-				[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	import org.eclipse.xtext.xbase.lib.Functions
+	agent A {
+		[:On]
+		// Same type of function.
+		var f2 : Functions.[:f1](Function1)<? super String,? extends Boolean>
+		[:Off]
+	}
+[:End:]
 
 
 The [:f1:] interface represents a function with a single formal parameter (with the type equals to the first generic parameter),

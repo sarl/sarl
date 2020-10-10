@@ -37,14 +37,26 @@ public class InvalidAnchorLabelException extends RuntimeException {
 
 	private final String anchor;
 
+	private final int line;
+
 	/** Constructor.
 	 *
 	 * @param anchor the failing anchor.
+	 * @param line the number of the line at which the error occurs.
 	 * @param existingAnchors the set of existing anchors.
+	 * @since 0.12
 	 */
-	public InvalidAnchorLabelException(String anchor, String... existingAnchors) {
-		super(MessageFormat.format(Messages.InvalidAnchorLabelException_0, anchor, format(existingAnchors)));
+	public InvalidAnchorLabelException(String anchor, int line, String... existingAnchors) {
+		super(errorMessage(anchor, line, existingAnchors));
 		this.anchor = anchor;
+		this.line = line;
+	}
+
+	private static String errorMessage(String anchor, int line, String... existingAnchors) {
+		if (line < 0) {
+			return MessageFormat.format(Messages.InvalidAnchorLabelException_1, anchor, format(existingAnchors));
+		}
+		return MessageFormat.format(Messages.InvalidAnchorLabelException_0, anchor, Integer.toString(line), format(existingAnchors));
 	}
 
 	private static String format(String[] anchors) {
@@ -64,6 +76,15 @@ public class InvalidAnchorLabelException extends RuntimeException {
 	 */
 	public String getAnchor() {
 		return this.anchor;
+	}
+
+	/** Replies the line at which the failing anchor is located.
+	 *
+	 * @return the line number.
+	 * @since 0.12
+	 */
+	public int getLine() {
+		return this.line;
 	}
 
 }

@@ -24,7 +24,9 @@ Such identification enables interaction with representations of the resource ove
 
 Each URI following the general following format (where parts between brackets are optional):
 
-		scheme:[//authority]path[?query][#fragment]
+```text
+scheme:[//authority]path[?query][#fragment]
+```
 
 The URI generic syntax consists of a hierarchical sequence of five components:
 * Scheme: A non-empty scheme component followed by a colon (`:`), consisting of a sequence of characters beginning with a letter and followed by any combination of letters, digits, plus (`+`), period (`.`), or hyphen (`-`). The scheme name refers to a specification for assigning identifiers within that scheme.
@@ -52,12 +54,14 @@ The fragment part is the name of an attribute/field that is declared into the re
 
 The general syntax of the agent names is defined by the following BNF grammar:
 
-		AGENT_NAME = "agent:" <ODSL> <CTX> <UUID> <FRG>
-		ODSL = "/" OSL | <empty>
-		OSL = "/" | <empty>
-		CTX = <UUID> "/" SPC | <empty>
-		SPC = <UUID> "/" | <empty>
-		FRG = "#" <ID> | <empty>
+```text
+AGENT_NAME = "agent:" <ODSL> <CTX> <UUID> <FRG>
+ODSL = "/" OSL | <empty>
+OSL = "/" | <empty>
+CTX = <UUID> "/" SPC | <empty>
+SPC = <UUID> "/" | <empty>
+FRG = "#" <ID> | <empty>
+```
 		
 
 ### Naming for Behaviors
@@ -77,9 +81,10 @@ The fragment part is the name of an attribute/field that is declared into the re
 
 The general syntax of the behavior names is defined by the following BNF grammar (BNF rules in the previous section are re-used):
 
-		BEHAVIOR_NAME = "behavior:" <ODSL> <CTX> <UUID> "/" <ID> <IDX> <FRG>
-		IDX = "/" <INTEGER> | <empty>
-
+```text
+BEHAVIOR_NAME = "behavior:" <ODSL> <CTX> <UUID> "/" <ID> <IDX> <FRG>
+IDX = "/" <INTEGER> | <empty>
+```
 
 ### Naming for Skills
 
@@ -98,7 +103,9 @@ The fragment part is the name of an attribute/field that is declared into the re
 
 The general syntax of the skill names is defined by the following BNF grammar (BNF rules in the previous sections are re-used):
 
-		SKILL_NAME = "skill:" <ODSL> <CTX> <SPC> <UUID> "/" <ID> <FRG>
+```text
+SKILL_NAME = "skill:" <ODSL> <CTX> <SPC> <UUID> "/" <ID> <FRG>
+```
 
 ### Naming for Context
 
@@ -114,7 +121,9 @@ The fragment part is the name of an attribute/field that is declared into the re
 
 The general syntax of the agent names is defined by the following BNF grammar (BNF rules in the previous section are re-used):
 
-		CONTEXT_NAME = "context:" <ODSL> <UUID> <FRG>
+```text
+CONTEXT_NAME = "context:" <ODSL> <UUID> <FRG>
+```
 
 
 ### Naming for Space
@@ -132,8 +141,9 @@ The fragment part is the name of an attribute/field that is declared into the re
 
 The general syntax of the space names is defined by the following BNF grammar (BNF rules in the previous section are re-used):
 
-		SPACE_NAME = "space:" <ODSL> <UUID> "/" <UUID> <FRG>
-
+```text
+SPACE_NAME = "space:" <ODSL> <UUID> "/" <UUID> <FRG>
+```
 
 ### Naming for Service
 
@@ -150,7 +160,9 @@ The fragment part is the name of an attribute/field that is declared into the re
 
 The general syntax of the service names is defined by the following BNF grammar (BNF rules in the previous section are re-used):
 
-		SERVICE_NAME = "service:" <ODSL> <ID> <FRG>
+```text
+SERVICE_NAME = "service:" <ODSL> <ID> <FRG>
+```
 
 
 ### Naming for Artifact
@@ -171,8 +183,9 @@ The fragment part is the name of an attribute/field that is declared into the re
 
 The general syntax of the service names is defined by the following BNF grammar (BNF rules in the previous section are re-used):
 
-		ARTIFACT_NAME = "artifact:" <ODSL> <UUID> <FRG>
-
+```text
+ARTIFACT_NAME = "artifact:" <ODSL> <UUID> <FRG>
+```
 
 
 ## Namespace Service
@@ -188,27 +201,28 @@ If an object that is corresponding to the given name is found, then the Namespac
 
 The Namespace service is defined as:
 
-		[:ShowType:](io.sarl.api.naming.namespace.NamespaceService)
+[:ShowType:](io.sarl.api.naming.namespace.NamespaceService)
 
 The functions `findObject` search for an object based on the given name (whatever it is an object of type
 `SarlName` representing the super-type of all the names, an URI, or a string representation of an URI).
 
 To use this service, you have to get it from the SRE, as illustrated below:
 
-		[:Success:]
-			package io.sarl.docs.namespace
-			import io.sarl.bootstrap.SRE
-			import io.sarl.api.naming.namespace.NamespaceService
-			class MyProgram {
-				static def main(arguments : String*) {
-					[:On]
-					var bootstrap = SRE::getBootstrap
-					var namingService = bootstrap.getService(typeof(NamespaceService))
-					var theAgent = namingService.findObject("agent:a7fbd4cc-9e1a-48c3-8ee8-3a7974ccb05c")
-					[:Off]			
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.namespace
+	import io.sarl.bootstrap.SRE
+	import io.sarl.api.naming.namespace.NamespaceService
+	class MyProgram {
+		static def main(arguments : String*) {
+			[:On]
+			var bootstrap = SRE::getBootstrap
+			var namingService = bootstrap.getService(typeof(NamespaceService))
+			var theAgent = namingService.findObject("agent:a7fbd4cc-9e1a-48c3-8ee8-3a7974ccb05c")
+			[:Off]			
+		}
+	}
+[:End:]
+
 
 ### Field Accessor
 
@@ -216,7 +230,8 @@ In the case the given name targets a field (when it has a fragment part), the Na
 a specific proxy of type [:fieldaccesstype:] in order to have access to the field.
 This type is defined as:
 
-		[:ShowType:](io.sarl.api.naming.namespace.[:fieldaccesstype]$FieldAccess$)
+[:ShowType:](io.sarl.api.naming.namespace.[:fieldaccesstype]$FieldAccess$)
+
 
 This accessor type enables to have access to the object instance and to the field value.
 However, the instance of [:fieldaccesstype:] is provided only if the field is observable.
@@ -255,19 +270,20 @@ In the following example, two fields are defined for the agent [:myagent:].
 The first field is named [:obsfield:] and it is marked as observable because it is annotated with [:observableannotation:].
 The second field is named [:nobsfield:] and it is not observable. 
 
-		[:Success:]
-			package io.sarl.docs.namespace
-			import io.sarl.api.naming.namespace.Observable
-			[:On]
-			agent [:myagent](MyAgent) {
+[:Success:]
+	package io.sarl.docs.namespace
+	import io.sarl.api.naming.namespace.Observable
+	[:On]
+	agent [:myagent](MyAgent) {
 
-				[:observableannotation](@Observable)
-				var [:obsfield](observableField) : int
+		[:observableannotation](@Observable)
+		var [:obsfield](observableField) : int
 
-				var [:nobsfield](notObservableField) : int
+		var [:nobsfield](notObservableField) : int
 
-			}
-		[:End:]
+	}
+[:End:]
+
 
 Consequently, even if the field [:nobsfield:] is declared, it will never be found by the Namespace space because it is hidden.
 
@@ -276,77 +292,80 @@ declared fields within a type as observable.
 In the following example, the two fields [:obsfield1:] and [:obsfield2:] are observable because the type [:myagent2:]
 is marked with the [:observableannotation:] annotation.
  
-		[:Success:]
-			package io.sarl.docs.namespace
-			import io.sarl.api.naming.namespace.Observable
-			[:On]
-			[:observableannotation](@Observable)
-			agent [:myagent2](MyAgent2) {
+[:Success:]
+	package io.sarl.docs.namespace
+	import io.sarl.api.naming.namespace.Observable
+	[:On]
+	[:observableannotation](@Observable)
+	agent [:myagent2](MyAgent2) {
 
-				var [:obsfield1](observableField1) : int
+		var [:obsfield1](observableField1) : int
 
-				var [:obsfield2](observableField2) : int
+		var [:obsfield2](observableField2) : int
 
-			}
-		[:End:]
+	}
+[:End:]
+
 
 ### Capacity to Manage the Access Rights
 
 In order to enable an agent to manage the accesses to its own fields, you could equip this agent with a skill that implements
 the [:accesscap:] capacity:
 
-		[:ShowType:](io.sarl.api.naming.namespace.[:accesscap]$FieldAccessValidationCapacity$)
+[:ShowType:](io.sarl.api.naming.namespace.[:accesscap]$FieldAccessValidationCapacity$)
+
 
 When an agent owns a skill implementing [:accesscap:], this skill is included into the right checking for accessing to
 the fields of the agent, its behaviors and its skills.
 
 Let the agent implementation below: 
 
-		[:Success:]
-			package io.sarl.docs.namespace
-			import java.lang.reflect.Field
-			import io.sarl.core.Initialize
-			import io.sarl.api.naming.namespace.FieldAccessValidationCapacity
-			import io.sarl.api.naming.namespace.FieldAccessRight
-			skill AccessRightSkill implements FieldAccessValidationCapacity {
-				def getFieldAccessRight(field : Field) : FieldAccessRight { null }
-			}
-			[:On]
-			agent [:myagent!] {
+[:Success:]
+	package io.sarl.docs.namespace
+	import java.lang.reflect.Field
+	import io.sarl.core.Initialize
+	import io.sarl.api.naming.namespace.FieldAccessValidationCapacity
+	import io.sarl.api.naming.namespace.FieldAccessRight
+	skill AccessRightSkill implements FieldAccessValidationCapacity {
+		def getFieldAccessRight(field : Field) : FieldAccessRight { null }
+	}
+	[:On]
+	agent [:myagent!] {
 
-				var [:field1](field1) : int
+		var [:field1](field1) : int
 
-				var [:field2](field2) : int
+		var [:field2](field2) : int
 
-				on Initialize {
-					setSkill(new [:accessskill]$AccessRightSkill$)
-				}
+		on Initialize {
+			setSkill(new [:accessskill]$AccessRightSkill$)
+		}
 
-			}
-		[:End:]
+	}
+[:End:]
 
 In this agent, two fields are defined and named [:field1:] and [:field2:].
 We equip the agent with the [:accessskill:] skill that implements the [:accesscap:] capacity:
 
-		[:Success:]
-			package io.sarl.docs.namespace
-			import java.lang.reflect.Field
-			import io.sarl.core.Initialize
-			import io.sarl.api.naming.namespace.FieldAccessValidationCapacity
-			import io.sarl.api.naming.namespace.FieldAccessRight
-			[:On]
-			skill AccessRightSkill implements FieldAccessValidationCapacity {
-				def getFieldAccessRight(field : Field) : [:accessrights]$FieldAccessRight$ {
-					if (field.name == "[:field1!]") {
-						return FieldAccessRight::[:accessrightsread]$READ$
-					}
-					if (field.name == "[:field2!]") {
-						return FieldAccessRight::[:accessrightswrite]$WRITE$
-					}
-					return FieldAccessRight::[:accessrightsnone]$NONE$
-				}
+[:Success:]
+	package io.sarl.docs.namespace
+	import java.lang.reflect.Field
+	import io.sarl.core.Initialize
+	import io.sarl.api.naming.namespace.FieldAccessValidationCapacity
+	import io.sarl.api.naming.namespace.FieldAccessRight
+	[:On]
+	skill AccessRightSkill implements FieldAccessValidationCapacity {
+		def getFieldAccessRight(field : Field) : [:accessrights]$FieldAccessRight$ {
+			if (field.name == "[:field1!]") {
+				return FieldAccessRight::[:accessrightsread]$READ$
 			}
-		[:End:]
+			if (field.name == "[:field2!]") {
+				return FieldAccessRight::[:accessrightswrite]$WRITE$
+			}
+			return FieldAccessRight::[:accessrightsnone]$NONE$
+		}
+	}
+[:End:]
+
 
 This skill gives the reading access to the field [:field1:], and the reading/writing accesses to the field [:field2:].
 Any other field cannot be observed.
@@ -359,4 +378,3 @@ Three levels of obersavility are defined into the enumeration [:accessrights:]:
 
 
 [:Include:](../legal.inc)
-

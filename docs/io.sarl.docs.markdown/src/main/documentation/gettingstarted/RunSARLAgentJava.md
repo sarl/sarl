@@ -27,46 +27,52 @@ The definition of the SARL API for using the bootstrap is detailled in the [refe
 In order to help you to use the bootstrap functions, the SARL API provides a static utility type, named [:sre:].
 In the following Java code, the [:sre:] utility type is used for retrieving the bootstrap.
  
-		[:Success:]
-			package io.sarl.docs.bootstrap
-			import io.sarl.bootstrap.SRE
-			class MyProgram {
-			
-				static def main(arguments : String*) {
-					var bootstrap = [:sre](SRE)::getBootstrap
-				}
-			
-			}
-		[:End:]
-		public class MyProgram {
-		
-			public static void main(String[] arguments) {
-				SREBootstrap bootstrap = [:sre!].getBootstrap();
-			}
-		
+[:Success:]
+	package io.sarl.docs.bootstrap
+	import io.sarl.bootstrap.SRE
+	class MyProgram {
+	
+		static def main(arguments : String*) {
+			var bootstrap = [:sre](SRE)::getBootstrap
 		}
+	
+	}
+[:End:]
+
+```java
+public class MyProgram {
+
+	public static void main(String[] arguments) {
+		SREBootstrap bootstrap = [:sre!].getBootstrap();
+	}
+
+}
+```
 
 
 Then, it is possible to use the bootstrap for launching an agent. In the following example, a agent of type
 [:myagent:] is launched. Please note that you must not create an instance of an agent by yourself.
 It is the role of the SARL run-time environment to create this instance for you, with the proper initialization.
 
-		[:Success:]
-			package io.sarl.docs.bootstrap
-			import io.sarl.bootstrap.SRE
-			agent [:myagent](MyAgent) {
-			}
-			class MyProgram {
-			
-				static def main(arguments : String*) {
-					var bootstrap = [:sre!]::getBootstrap
-					bootstrap.[:startfct](startAgent)(typeof([:myagent!]))
-				}
-			
-			}
-		[:End:]
-		SREBootstrap bootstrap = [:sre!].getBootstrap();
-		bootstrap.[:startfct!]([:myagent!].class)
+[:Success:]
+	package io.sarl.docs.bootstrap
+	import io.sarl.bootstrap.SRE
+	agent [:myagent](MyAgent) {
+	}
+	class MyProgram {
+	
+		static def main(arguments : String*) {
+			var bootstrap = [:sre!]::getBootstrap
+			bootstrap.[:startfct](startAgent)(typeof([:myagent!]))
+		}
+	
+	}
+[:End:]
+
+```java
+SREBootstrap bootstrap = [:sre!].getBootstrap();
+bootstrap.[:startfct!]([:myagent!].class)
+```
 
 
 In the case you want to launch more than one agent programmatically,
@@ -96,44 +102,47 @@ pass with the [:initevent:] event to the launched agent.
 [:Fact:]{io.sarl.core.[:initevent](Initialize)}
 
 
-<importantnode>The Janus platform enables to launch a single agent at start-up.
-If you want to launch more agents, please read the next section.</importantnote>
+> **_Very Important Note:_** The Janus platform enables to launch a single agent at start-up.
+> If you want to launch more agents, please read the next section.
 
-		[:Success:]
-			import io.sarl.sre.boot.Boot
-			import myprogram.MyAgent
-			class MyProgram {
-			 	static def main(args : String*) {
-					[:boot](Boot)::createMainObject.[:startjanus](startAgent)(
-						typeof([:agenttype]{MyAgent}),
-						args)
-				}
-			}
-		[:End:]
-		import io.sarl.sre.boot.Boot;
-		import myprogram.MyAgent;
-		public class MyProgram {
-		 	public static void main(String[] args) {
-				[:boot!].createMainObject.[:startjanus!]([:agenttype!].class, args);
-			}
+[:Success:]
+	import io.sarl.sre.boot.Boot
+	import myprogram.MyAgent
+	class MyProgram {
+	 	static def main(args : String*) {
+			[:boot](Boot)::createMainObject.[:startjanus](startAgent)(
+				typeof([:agenttype]{MyAgent}),
+				args)
 		}
+	}
+[:End:]
+
+```java
+import io.sarl.sre.boot.Boot;
+import myprogram.MyAgent;
+public class MyProgram {
+ 	public static void main(String[] args) {
+		[:boot!].createMainObject.[:startjanus!]([:agenttype!].class, args);
+	}
+}
+```
 
 
 In  the case you want to launch more than one agent programmatically,
 you could use the [:kernel:] instance provided by Janus.
 This instance is replied by the [:getkernel:] function of the [:boot:] class.
 
-		[:Success:]
-			[:Off]
-			import io.sarl.sre.boot.Boot
-			import io.sarl.sre.boot.[:kernel](SreMain)
-			class MyProgram {
-			 	def fct : void {
-					var sremain = Boot.createMainObject
-					var kernel = sremain.[:getkernel](getKernel)
-				}
-			}
-		[:End:]
+[:Success:]
+	[:Off]
+	import io.sarl.sre.boot.Boot
+	import io.sarl.sre.boot.[:kernel](SreMain)
+	class MyProgram {
+	 	def fct : void {
+			var sremain = Boot.createMainObject
+			var kernel = sremain.[:getkernel](getKernel)
+		}
+	}
+[:End:]
 
 
 ## What's next?
@@ -145,4 +154,3 @@ Please read the rest of the documentation for obtaining more details.
 
 
 [:Include:](../legal.inc)
-

@@ -9,9 +9,11 @@ expressions.
 A block expression is surrounded by curly braces. The expressions in a block can be terminated
 by an optional semicolon.
 
-	[:beginblock!]
-		<sequence of expressions>
-	[:endblock!]
+```text
+[:beginblock!]
+	<sequence of expressions>
+[:endblock!]
+```
 
 ## Type and Value of a Block Expression
 
@@ -24,20 +26,20 @@ The type of a block is the returned type (i.e., of the last expression). Empty b
 In the following example, the block type is [:blocktype:] because the last expressions in all the
 possible execution paths are all of type [:blocktype:].
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			agent A {
-				var greeting = "abc"
-				def block : [:blocktype](String) [:On][:beginblock]({)
-					var x = greeting
-					if (x == "Hello") {
-						x + " World!" 
-					} else {
-						x
-					}
-				[:endblock](})[:Off]
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	agent A {
+		var greeting = "abc"
+		def block : [:blocktype](String) [:On][:beginblock]({)
+			var x = greeting
+			if (x == "Hello") {
+				x + " World!" 
+			} else {
+				x
 			}
-		[:End:]
+		[:endblock](})[:Off]
+	}
+[:End:]
 
 
 

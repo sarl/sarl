@@ -16,7 +16,7 @@ is observed or not. In this case, it cannot adapt its behavior on its observatio
 Because an agent is defined as an autonomous entity, the agent is supposed to be enabled to specify if a part of itself
 is observable or not, i.e. to specify the access rights.
 
-<caution>The right access management is not yet supported by the SARL API</caution>
+> **_Caution:_** The right access management is not yet supported by the SARL API.
 
 ## What is Observable?
 
@@ -53,7 +53,7 @@ Then, the probe could be read to obtain the data, or the observer could be notif
 
 A probe is defined as:
 
-		[:ShowType:](io.sarl.api.probing.Probe)
+[:ShowType:](io.sarl.api.probing.Probe)
 
 The functions are:
 * `getName`: Reply the name of the probe, that is constant.
@@ -77,14 +77,16 @@ and [:probereleaselistener:].
 
 [:probelistener:] is defined as:
 
-		[:ShowType:](io.sarl.api.probing.[:probelistener]$IProbeListener$)
+[:ShowType:](io.sarl.api.probing.[:probelistener]$IProbeListener$)
+
 
 It corresponds to the observer on value changes.
 
 
 [:probereleaselistener:] is defined as:
 
-		[:ShowType:](io.sarl.api.probing.[:probereleaselistener]$IProbeReleaseListener$)
+[:ShowType:](io.sarl.api.probing.[:probereleaselistener]$IProbeReleaseListener$)
+
 
 It corresponds to the observer on the release of a probe.
 
@@ -97,7 +99,8 @@ The functions `addProbeListener`, `addProbeReleaseListener`, `removeProbeListene
 In order to manage and run the different probes, the SRE must implement a dedicated service: the [:probeservicename:].
 It is defined as:
 
-		[:ShowType:](io.sarl.api.probing.[:probeservicename]$ProbeService$)
+[:ShowType:](io.sarl.api.probing.[:probeservicename]$ProbeService$)
+
 
 
 Creating a probe is done by calling the `probe` function. Basically, you need to specify the [name](./Naming.md) of the
@@ -113,59 +116,61 @@ Finally, two functions are provided:
 
 To use the probe service, you have to get it from the SRE, as illustrated below:
 
-		[:Success:]
-			package io.sarl.docs.namespace
-			import io.sarl.bootstrap.SRE
-			import io.sarl.api.probing.ProbeService
-			class MyProgram {
-				static def main(arguments : String*) {
-					[:On]
-					var bootstrap = SRE::getBootstrap
-					var probeService = bootstrap.getService(typeof(ProbeService))
-					[:Off]			
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.namespace
+	import io.sarl.bootstrap.SRE
+	import io.sarl.api.probing.ProbeService
+	class MyProgram {
+		static def main(arguments : String*) {
+			[:On]
+			var bootstrap = SRE::getBootstrap
+			var probeService = bootstrap.getService(typeof(ProbeService))
+			[:Off]			
+		}
+	}
+[:End:]
+
 
 Then, an probe is attached to the field named [:emergencyfield:] of type [:fieldtype:] that is defined within the agent [:agentid:].
 The name [:probename:] is given to the probe. 
 The example loops for displaying the observed value (of course it is not the most efficient usage of a probe).
 
-		[:Success:]
-			package io.sarl.docs.namespace
-			import io.sarl.bootstrap.SRE
-			import io.sarl.api.probing.ProbeService
-			class MyProgram {
-				static def main(arguments : String*) {
-					var bootstrap = SRE::getBootstrap
-					var probeService = bootstrap.getService(typeof(ProbeService))
-					[:On]
-					var probe = probeService.probe("agent:[:agentid]$a7fbd4cc-9e1a-48c3-8ee8-3a7974ccb05c$#[:emergencyfield]$emergency$", typeof([:fieldtype]$Integer$), "[:probename]$My Probe$")
-					[:Off]			
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.namespace
+	import io.sarl.bootstrap.SRE
+	import io.sarl.api.probing.ProbeService
+	class MyProgram {
+		static def main(arguments : String*) {
+			var bootstrap = SRE::getBootstrap
+			var probeService = bootstrap.getService(typeof(ProbeService))
+			[:On]
+			var probe = probeService.probe("agent:[:agentid]$a7fbd4cc-9e1a-48c3-8ee8-3a7974ccb05c$#[:emergencyfield]$emergency$", typeof([:fieldtype]$Integer$), "[:probename]$My Probe$")
+			[:Off]			
+		}
+	}
+[:End:]
+
 
 Then, you could use the value that is extracted by the probe. The example below loops for displaying the observed
 value (of course it is not the most efficient usage of a probe).
 
-		[:Success:]
-			package io.sarl.docs.namespace
-			import io.sarl.bootstrap.SRE
-			import io.sarl.api.probing.ProbeService
-			class MyProgram {
-				static def main(arguments : String*) {
-					var bootstrap = SRE::getBootstrap
-					var probeService = bootstrap.getService(typeof(ProbeService))
-					var probe = probeService.probe("", typeof(Integer), "")
-					[:On]
-					while (true) {
-						println("Probe: " + probe.value)
-					}
-					[:Off]			
-				}
+[:Success:]
+	package io.sarl.docs.namespace
+	import io.sarl.bootstrap.SRE
+	import io.sarl.api.probing.ProbeService
+	class MyProgram {
+		static def main(arguments : String*) {
+			var bootstrap = SRE::getBootstrap
+			var probeService = bootstrap.getService(typeof(ProbeService))
+			var probe = probeService.probe("", typeof(Integer), "")
+			[:On]
+			while (true) {
+				println("Probe: " + probe.value)
 			}
-		[:End:]
+			[:Off]			
+		}
+	}
+[:End:]
+
 
 [:Include:](../legal.inc)
-

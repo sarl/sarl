@@ -6,15 +6,16 @@
 The SARL programming language is statically-typed, which means that all variables and parameters must first be declared before
 they can be used. This involves stating the variable's type and name, as you've already seen:
 
-		[:Success:]
-			class X {
-				def fct {
-					[:On]
-					var [:varname](gear) : [:inttype](int) = [:initvalue](1)
-					[:Off]
-				}
-			}
-		[:End:]
+[:Success:]
+	class X {
+		def fct {
+			[:On]
+			var [:varname](gear) : [:inttype](int) = [:initvalue](1)
+			[:Off]
+		}
+	}
+[:End:]
+
 		
 Doing so tells your program that a field named [:varname:] exists, holds numerical data, and has an initial
 value of [:initvalue:]. A variable's data type determines the values it may contain, plus the operations that
@@ -28,6 +29,7 @@ may be performed on it. In addition to [:inttype:], the SARL programming languag
 
 A primitive type is predefined by the language and is named by a reserved keyword. Primitive values do not
 share state with other primitive values. The eight primitive data types supported by the SARL programming language are:
+
 
 | Type      | Object Equivalent (Wrapper) | Definition                                            |
 | --------- | --------------------------- | ----------------------------------------------------- |
@@ -58,6 +60,7 @@ will be set to a reasonable default by the compiler. Generally speaking, this de
 depending on the data type. Relying on such default values, however, is generally considered bad programming style.
 
 The following chart summarizes the default values for the above data types.
+
 
 | Data Type              | Default Value |
 | ---------------------- | ------------- |
@@ -99,14 +102,14 @@ The complete list of annotations that mark the types as immutable is:
 For illustration, the [:dataannon:] annotation, that is described in the [active annotation documentation](./ActiveAnnotations.md#2-data),
 could be used as below:
 
-		[:Success:]
-			import org.eclipse.xtend.lib.annotations.Data 
-			[:On]
-			[:dataannon](@Data) class Person {
-			  [:valkw](val) firstName : String
-			  val lastName : String
-			}
-		[:End:]
+[:Success:]
+	import org.eclipse.xtend.lib.annotations.Data 
+	[:On]
+	[:dataannon](@Data) class Person {
+	  [:valkw](val) firstName : String
+	  val lastName : String
+	}
+[:End:]
 
 
 [:Include:](../generalsyntaxref.inc)

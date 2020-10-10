@@ -71,6 +71,7 @@ public abstract class AbstractJavaBatchCompiler implements IJavaBatchCompiler {
 	 * @param list the list to fill out.
 	 * @param root the root folder to explore.
 	 * @return {@code true} if a file was added into the {@code list}.
+	 * @see #addFolderIfJavaFileDeeply(List, File)
 	 */
 	protected boolean addJavaFilesDeeply(List<String> list, File root) {
 		final Deque<File> folders = new LinkedList<>();
@@ -86,16 +87,44 @@ public abstract class AbstractJavaBatchCompiler implements IJavaBatchCompiler {
 		while (!folders.isEmpty()) {
 			final File current = folders.removeFirst();
 			assert current.isDirectory();
-			for (final File subfile : current.listFiles(name -> isJavaExtension(name))) {
+			for (final File subfile : current.listFiles()) {
 				if (subfile.isDirectory()) {
 					folders.addLast(subfile);
-				} else {
+				} else if (isJavaExtension(subfile)) {
 					list.add(subfile.getAbsolutePath());
 					changed = true;
 				}
 			}
 		}
 		return changed;
+	}
+
+	/** Fill the given root folder to the list if a Java file is found inside, recursively.
+	 *
+	 * @param list the list to fill out.
+	 * @param root the root folder to explore.
+	 * @return {@code true} if a file was added into the {@code list}.
+	 * @since 0.12
+	 * @see #addJavaFilesDeeply(List, File)
+	 */
+	protected boolean addFolderIfJavaFileDeeply(List<String> list, File root) {
+		final Deque<File> folders = new LinkedList<>();
+		if (root.exists() && root.isDirectory()) {
+			folders.addLast(root);
+		}
+		while (!folders.isEmpty()) {
+			final File current = folders.removeFirst();
+			assert current.isDirectory();
+			for (final File subfile : current.listFiles()) {
+				if (subfile.isDirectory()) {
+					folders.addLast(subfile);
+				} else if (isJavaExtension(subfile)) {
+					list.add(root.getAbsolutePath());
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	/** Replies if the given file is a JAva source file, i.e. with {@code .java} file extension.

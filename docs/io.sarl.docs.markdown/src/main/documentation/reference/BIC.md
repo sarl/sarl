@@ -37,7 +37,7 @@ and the spaces by the small color boxes in the contexts.
 Each built-in capacity is detailed inside a dedicated section:
 
 * [Behaviors](./bic/Behaviors.md)
-* [DefaultContxtInteractions](./bic/DefaultContextInteractions.md)
+* [DefaultContextInteractions](./bic/DefaultContextInteractions.md)
 * [ExternalContextAccess](./bic/ExternalContextAccess.md)
 * [InnerContextAccess](./bic/InnerContextAccess.md)
 * [Lifecycle](./bic/Lifecycle.md)

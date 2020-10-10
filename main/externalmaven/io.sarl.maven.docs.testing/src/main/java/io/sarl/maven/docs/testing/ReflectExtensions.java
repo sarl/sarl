@@ -21,6 +21,7 @@
 
 package io.sarl.maven.docs.testing;
 
+import java.io.File;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.GenericArrayType;
@@ -42,11 +43,13 @@ import java.util.Objects;
 import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import com.google.common.collect.Iterables;
+import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.xtext.util.Strings;
 import org.eclipse.xtext.xbase.lib.Functions;
@@ -59,6 +62,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import io.sarl.lang.SARLVersion;
 import io.sarl.lang.annotation.DefaultValue;
 import io.sarl.lang.annotation.SarlSourceCode;
 import io.sarl.lang.annotation.SyntheticMember;
@@ -382,7 +386,28 @@ public final class ReflectExtensions {
 		assert mavenPluginArtifactId != null;
 		assert classContext != null;
 		final String resourceName = String.format(PLUGIN_HELP_PATH, mavenPluginGroupId, mavenPluginArtifactId);
-		final URL url = classContext.getResource(resourceName);
+		URL url = classContext.getResource(resourceName);
+		if (url == null) {
+			// Try to find the plugin's help description as a global resource
+			url = ClassLoader.getSystemClassLoader().getResource(resourceName);
+			if (url == null) {
+				// Try to find the plugin's help description as a local file
+				try {
+					File userFile = FileSystem.join(FileSystem.getUserHomeDirectory(),
+							".m2", "repository"); //$NON-NLS-1$ //$NON-NLS-2$
+					for (final String element : mavenPluginGroupId.split(Pattern.quote("."))) { //$NON-NLS-1$
+						userFile = new File(userFile, element);
+					}
+					userFile = FileSystem.join(userFile,
+							mavenPluginArtifactId,
+							SARLVersion.SARL_RELEASE_VERSION_MAVEN,
+							mavenPluginArtifactId + "-" + SARLVersion.SARL_RELEASE_VERSION_MAVEN + ".jar"); //$NON-NLS-1$ //$NON-NLS-2$
+					url = FileSystem.toJarURL(userFile, resourceName);
+				} catch (Throwable exception) {
+					//
+				}
+			}
+		}
 		if (url != null) {
 			try (InputStream is = url.openStream()) {
 				final DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -418,7 +443,7 @@ public final class ReflectExtensions {
 				}
 
 				return new ArrayList<>(documentation.values());
-			} catch (Exception exception) {
+			} catch (Throwable exception) {
 				//
 			}
 		}

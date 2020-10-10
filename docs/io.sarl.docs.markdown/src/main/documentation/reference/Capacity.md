@@ -30,18 +30,18 @@ a Capacity: no attribute or field is allowed, and no body (code) for the Action 
 The definition of a Capacity is done with the [:capacitykw:] keyword. Below, a Capacity that permits logging messages
 is defined. This Capacity enables an Agent to log information and debugging messages.
 
-<note>Defining a Capacity without Actions is a symptom of a design problem.</note>
+> **_Note:_** Defining a Capacity without Actions is a symptom of a design problem.
 
-		[:Success:]
-			package io.sarl.docs.reference.cr
-			[:On]
-			[:capacitykw](capacity) [:loggingcap](Logging) {
-				// Log an information message
-				def info(text : String)
-				// Log a debugging message
-				def debug(text : String)
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.cr
+	[:On]
+	[:capacitykw](capacity) [:loggingcap](Logging) {
+		// Log an information message
+		def info(text : String)
+		// Log a debugging message
+		def debug(text : String)
+	}
+[:End:]
 
 
 ### Extending a Capacity
@@ -52,23 +52,23 @@ object-oriented language.
 
 The extended Capacity is specified just after the [:extendskw:] keyword.
 
-<veryimportantnote> A Capacity type can extend __zero-to-many__ other Capacity types.
-This is similar to the implementation of interfaces in the Java language.</veryimportantnote>
+> **_Very Important Note:_** A Capacity type can extend __zero-to-many__ other Capacity types.
+> This is similar to the implementation of interfaces in the Java language.
 
 In the following code, the [:loggingcap:] Capacity (defined above) is extended to enabling the output of error messages.
 
-		[:Success:]
-			package io.sarl.docs.reference.cr
-			capacity Logging {
-				def info(text : String)
-				def debug(text : String)
-			}
-			[:On]
-			capacity ErrorLogging [:extendskw](extends) Logging {
-				// Log a error message
-				def error(text : String)
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.cr
+	capacity Logging {
+		def info(text : String)
+		def debug(text : String)
+	}
+	[:On]
+	capacity ErrorLogging [:extendskw](extends) Logging {
+		// Log a error message
+		def error(text : String)
+	}
+[:End:]
 
 
 ### Extending Multiple Capacities
@@ -76,19 +76,19 @@ In the following code, the [:loggingcap:] Capacity (defined above) is extended t
 In some situations, it is useful to define a Capacity by extending more than one Capacity.
 Below, the [:cap3cap:] Capacity is defined as an extension of the Capacities [:cap1cap:] and [:cap2cap:].
 
-		[:Success:]
-			package io.sarl.docs.reference.cr
-			[:On]
-			capacity [:cap1cap](Cap1) {
-				def action1
-			}
-			capacity [:cap2cap](Cap2) {
-				def action2
-			}
-			capacity [:cap3cap](Cap3) extends Cap1, Cap2 {
-				def action3
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.cr
+	[:On]
+	capacity [:cap1cap](Cap1) {
+		def action1
+	}
+	capacity [:cap2cap](Cap2) {
+		def action2
+	}
+	capacity [:cap3cap](Cap3) extends Cap1, Cap2 {
+		def action3
+	}
+[:End:]
 
 
 ### Modifiers
@@ -110,14 +110,14 @@ A Capacity may be declared with one or more modifiers, which affect its runtime 
 
 Examples:
 
-		[:Success:]
-			package io.sarl.docs.reference.cr
-			[:On]
-			[:publicmodifier](public) capacity Example1 {
-			}
-			[:packagemodifier](package) capacity Example2 {
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.cr
+	[:On]
+	[:publicmodifier](public) capacity Example1 {
+	}
+	[:packagemodifier](package) capacity Example2 {
+	}
+[:End:]
 
 
 #### Method Modifiers
@@ -129,15 +129,15 @@ The modifiers for the Actions (methods) in a Capacity are:
 
 Example:
 
-		[:Success:]
-			package io.sarl.docs.reference.cr
-			capacity Capacity1 {
-			[:On]
-				// Public access function
-				public def example1
-			[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.cr
+	capacity Capacity1 {
+	[:On]
+		// Public access function
+		public def example1
+	[:Off]
+	}
+[:End:]
 
 
 ## Built-in Capacities
@@ -145,8 +145,8 @@ Example:
 Several Capacities are defined and reserved by the SARL Core Specification.
 They compose the minimal set of Capacities that a runtime environment must support to run a SARL program.
 
-<veryimportantnote> You must not define a Capacity with a fully qualified name equals to one
-of the reserved Capacities.</veryimportantnote>
+> **_Very Important Note:_** You must not define a Capacity with a fully qualified name equals to one
+> of the reserved Capacities.
 
 The built-in Capacities are defined in the [Built-in Capacity Reference](./BIC.md).
 
@@ -188,19 +188,19 @@ The [:defaultskillannon] annotation specifies that an instance of [:myskilldecl:
 
 Examples:
 
-		[:Success:]
-			package io.sarl.docs.reference.cr
-			import io.sarl.lang.core.DefaultSkill
-			[:On]
-			[:defaultskillannon](@DefaultSkill)(typeof(MySkill))
-			capacity [:mycapacitydecl](MyCapacity) {
-				def myfunction
-			}
-			skill [:myskilldecl](MySkill) implements MyCapacity {
-				def myfunction {
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.cr
+	import io.sarl.lang.core.DefaultSkill
+	[:On]
+	[:defaultskillannon](@DefaultSkill)(typeof(MySkill))
+	capacity [:mycapacitydecl](MyCapacity) {
+		def myfunction
+	}
+	skill [:myskilldecl](MySkill) implements MyCapacity {
+		def myfunction {
+		}
+	}
+[:End:]
 
 
 [:Include:](../legal.inc)

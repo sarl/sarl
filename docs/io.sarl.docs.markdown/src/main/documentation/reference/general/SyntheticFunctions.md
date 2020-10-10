@@ -18,18 +18,19 @@ modifier are accessed by the enclosing class.
 In the following code, the [:field:] field is accessed from the [:function:] function. The SARL compiler generates a synthetic
 function for enabling this access.
 
-		[:Success:]
-			[:On]class EnclosingClass {
-			
-				static class InnerClass {
-					var [:field](privateField) : int
-				}
-			
-				def [:function](fct)(param : InnerClass) {
-					System.out.println(param.privateField)
-				}
-			}[:Off]
-		[:End:]
+[:Success:]
+	[:On]class EnclosingClass {
+	
+		static class InnerClass {
+			var [:field](privateField) : int
+		}
+	
+		def [:function](fct)(param : InnerClass) {
+			System.out.println(param.privateField)
+		}
+	}[:Off]
+[:End:]
+
 
 ## Synthetic or Default Constructors
 
@@ -40,49 +41,48 @@ When the current type has not a super-type, the compiler generates a default con
 For example, the [:type:] class is defined without explicit constructor. An instance of this type may be created by
 invoking the implicit/generated default constructor, as illustrated in the [:function:] function.
 
-		[:Success:]
-			[:On]class [:type](MyType) {
-			}
-			
-			class CallingType {
-			
-				def [:function!] {
-					new MyType
-				}
-			
-			}[:Off]
-		[:End:]
+[:Success:]
+	[:On]class [:type](MyType) {
+	}
+	
+	class CallingType {
+	
+		def [:function!] {
+			new MyType
+		}
+	
+	}[:Off]
+[:End:]
 
 
 When the current type has a super-type, the compiler generates a default constructor in the current type for each visible
 constructor in the super-type. In this case, the generated constructors have the same erasure, i.e. parameters as the super-type's
 constructors.
 
-		[:Success:]
-			[:On]class [:supertype](MySuperType) {
-				new (param1 : int, param2 : String = null) {
-				}
-				new (param3 : String) {
-				}
-			}
-			
-			class [:subtype](SubType) extends [:supertype!] {
-			}
-			
-			class CallingType {
-			
-				def [:function!] {
-					// Call the firstsynthetic constructor
-					new SubType(14)
-					new SubType(14, "")
-			
-					// Call the second synthetic constructor
-					new SubType("")
-				}
-			
-			}[:Off]
-		[:End:]
-
+[:Success:]
+	[:On]class [:supertype](MySuperType) {
+		new (param1 : int, param2 : String = null) {
+		}
+		new (param3 : String) {
+		}
+	}
+	
+	class [:subtype](SubType) extends [:supertype!] {
+	}
+	
+	class CallingType {
+	
+		def [:function!] {
+			// Call the firstsynthetic constructor
+			new SubType(14)
+			new SubType(14, "")
+	
+			// Call the second synthetic constructor
+			new SubType("")
+		}
+	
+	}[:Off]
+[:End:]
 
 
 ## Equality Test Functions
@@ -103,6 +103,7 @@ for two different types of equality:
 The first type of equality is supported by the `===` equality test, and the `!==` innequality test.
 The second type of equality is supported by the `==` equality test, and the `!=` innequality test.
 
+
 ### Semantic Equality
 
 Because the SARL code is translated to Java code by the SARL compiler, the `==` operator is mapped to the Java `equals(Object)`
@@ -118,17 +119,17 @@ Indeed, the SARL compiler generates a synthetic `equals` function when fields of
 
 For example, consider the following SARL code:
 
-		[:Success:]
-			[:On]class [:type!] {
-			
-				var field1 : int
-				
-				var field2 : float
-				
-				var field3 : String
-			
-			}[:Off]
-		[:End:]
+[:Success:]
+	[:On]class [:type!] {
+	
+		var field1 : int
+		
+		var field2 : float
+		
+		var field3 : String
+	
+	}[:Off]
+[:End:]
 
 The SARL compiler generates the following `equals` function in the Java code:
 

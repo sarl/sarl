@@ -83,6 +83,7 @@ public class Messages extends NLS {
 	public static String OperatorExtensions_8;
 	public static String SarlScriptExecutor_0;
 	public static String SarlScriptExecutor_1;
+	public static String MarkdownEmptyArrayException_0;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

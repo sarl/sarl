@@ -44,21 +44,21 @@ In SARL, the names of the features (agents, variables, fields, etc.)
 cannot be one of the keywords of SARL or Java.
 For example, since [:eventkw:] is a keyword in SARL, the following is illegal:
 
-		[:Failure:]
-			package io.sarl.docs.reference.gsr
-			[:On]
-			import io.sarl.[:eventkw](event).ActionEvent
-		[:End:] 
+[:Failure:]
+	package io.sarl.docs.reference.gsr
+	[:On]
+	import io.sarl.[:eventkw](event).ActionEvent
+[:End:] 
 
 To solve this problem (since some names come from Java, and
 this language has different keywords than SARL), it
 is possible to prefix the name fragment with the character `^`:
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			[:On]
-			import io.sarl.^[:eventkw!].ActionEvent
-		[:End:] 
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	[:On]
+	import io.sarl.^[:eventkw!].ActionEvent
+[:End:] 
 
 
 ## Statement Syntax
@@ -74,27 +74,28 @@ line, you end the line with the `\` character.
 
 For instance, the two following lines are equivalent:
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			class MyType {
-				def myaction {
-					[:On]
-					var myVariable : int = 5
-					[:Off]
-				}
-			}
-		[:End:] 
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	class MyType {
+		def myaction {
+			[:On]
+			var myVariable : int = 5
+			[:Off]
+		}
+	}
+[:End:] 
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			class MyType {
-				def myaction {
-					[:On]
-					var myVariable : int = 5;
-					[:Off]
-				}
-			}
-		[:End:] 
+
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	class MyType {
+		def myaction {
+			[:On]
+			var myVariable : int = 5;
+			[:Off]
+		}
+	}
+[:End:] 
 
 
 ## Details on the SARL language elements

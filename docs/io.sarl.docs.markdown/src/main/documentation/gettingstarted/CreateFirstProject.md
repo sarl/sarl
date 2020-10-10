@@ -48,8 +48,8 @@ composed of four source folders:
 
 The default output folder is [:src5:]. [:Fact:]{io.sarl.lang.SARLConfig::FOLDER_BIN == "[:src5](target/classes)"}
 
-<note>The names of these folders are following the conventions of a Maven-based project (described below). In this way, you will
-be able to turn the Maven nature on your SARL project on/off.</note>
+> **_Note:_** The names of these folders are following the conventions of a Maven-based project (described below). In this way, you will
+> be able to turn the Maven nature on your SARL project on/off.
 
 ![Source Code Folders](./new_sarl_project_screen_3.png)
 
@@ -124,9 +124,9 @@ Replace the version number [:sarl.version:] of SARL with the one you want to use
 The Maven configuration is based on the use of [:pluginname:]. This plugin is in charge of compiling the SARL and
 the Java files. Details about the [:pluginname:] may be found on [this page](../tools/MavenSarlPlugin.md).
 
-<important>You must set the `extensions` tag to true for the [:pluginname:] plugin. If you missed to set it, the plugin
-will not able to be integrated in the Maven life-cycle. The consequence will be that only the Java compiler will be
-invoked.</important>
+> **_Important Note:_** You must set the `extensions` tag to true for the [:pluginname:] plugin. If you missed to set it, the plugin
+> will not able to be integrated in the Maven life-cycle. The consequence will be that only the Java compiler will be
+> invoked.
 
 ### Configuration of a runtime environment (optional)
 
@@ -138,8 +138,8 @@ In several specific cases, you may want to include the runtime environment into 
 this case, you could replace the Maven dependency to the SARL sdk (as defined in the previous section) by a Maven dependency
 to the runtime environment library.
 
-<caution>Replacing the SARL sdk library by the run-time environment library within the Maven dependencies is not the
-recommended approach by the SARL core developers.</caution>
+> **_Caution:_** Replacing the SARL sdk library by the run-time environment library within the Maven dependencies is not the
+> recommended approach by the SARL core developers.
 
 The runtime environment that is recommended by the developers of SARL is [Janus](http://www.janusproject.io). 
 
@@ -186,10 +186,10 @@ You could search on the [Maven Central Repository](http://search.maven.org/) for
 ```
 
 
-<important>If you want to have the dependencies to both `io.sarl.maven.sdk` and `io.janusproject.kernel` in your
-POM file, you must be sure that the imported version of the Google Guava library is the one provided by the Janus
-platform. For ensuring this, you must specify the version of the Guava library by defining it in the "dependencyManagement"
-section of your pom file.</important>
+> **_Important Note:_** If you want to have the dependencies to both `io.sarl.maven.sdk` and `io.janusproject.kernel` in your
+> POM file, you must be sure that the imported version of the Google Guava library is the one provided by the Janus
+> platform. For ensuring this, you must specify the version of the Guava library by defining it in the "dependencyManagement"
+> section of your pom file.
 
 ## What's next?
 

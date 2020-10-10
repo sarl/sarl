@@ -18,8 +18,8 @@ The SARL launch configuration is recommended.
 For launching the SARL agents on the runtime environment inside the SARL Eclipse IDE, you must
 define a *Run Configuration*.
 
-<veryimportant>If your project is Maven-based, you could not use this method for launching your
-application. You must use the [Java launch configuration](#create-a-java-launch-configuration).</veryimportant>
+> **_Very Important Note:_** If your project is Maven-based, you could not use this method for launching your
+> application. You must use the [Java launch configuration](#create-a-java-launch-configuration).
 
 
 ### Create a Java application configuration
@@ -64,6 +64,8 @@ After adding the SRE's JAR file, you obtain a dialog box similar to:
 
 
 ![Add Janus](./EclipseRunConfiguration_0_2.png)
+
+
 
 ### Give parameters to the Agent
 
@@ -172,17 +174,17 @@ The following example gives the values `FirstParam` and
 For retrieving the values passed on the command line, you must handle the `Initialize` event, as illustrated
 by the following example:
 
-		[:Success:]
-			package io.sarl.docs.gettingstarted.runsarlagent
-			import io.sarl.core.Logging
-			import io.sarl.core.Initialize
-			[:On]agent MyAgent {
-				uses Logging
-				on Initialize {
-					println("Command line parameters: " + occurrence.parameters)
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.gettingstarted.runsarlagent
+	import io.sarl.core.Logging
+	import io.sarl.core.Initialize
+	[:On]agent MyAgent {
+		uses Logging
+		on Initialize {
+			println("Command line parameters: " + occurrence.parameters)
+		}
+	}
+[:End:]
 
 
 ## What's next?
@@ -194,4 +196,3 @@ In the next section, we will learn how to launch your SARL project from the comm
 
 
 [:Include:](../legal.inc)
-

@@ -5,17 +5,17 @@ value of another type unless that type is implicitly convertible to the variable
 For example, the `String` cannot be implicitly converted to `int`. Therefore, after you declare [:ivar:] as an [:inttype:], you
 cannot assign the string [:hellostr:] to it, as the following code shows:
 
-		[:Failure:]
-			package io.sarl.docs.reference.gsr
-			class A {
-				def fct {
-					[:On]
-					var [:ivar](i) : [:inttype](int)
-					i = [:hellostr]("Hello") // Error: "Cannot cast String to int"
-					[:Off]
-				}
-			}
-		[:End:]
+[:Failure:]
+	package io.sarl.docs.reference.gsr
+	class A {
+		def fct {
+			[:On]
+			var [:ivar](i) : [:inttype](int)
+			i = [:hellostr]("Hello") // Error: "Cannot cast String to int"
+			[:Off]
+		}
+	}
+[:End:]
 
 
 However, you might sometimes need to copy a value into a variable or method parameter of another type.
@@ -42,18 +42,18 @@ the variable without being truncated or rounded off. For example, a variable of 
 can store any value that an int (32-bit integer) can store. In the following example, the compiler implicitly
 converts the value of [:numvar:] on the right to a type long before assigning it to [:bignumvar:].
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			class A {
-				def fct : long {
-					[:On]
-					var [:numvar](num) : int = 2147483647
-					var [:bignumvar](bigNum) : long = num
-					[:Off]
-					return bigNum
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	class A {
+		def fct : long {
+			[:On]
+			var [:numvar](num) : int = 2147483647
+			var [:bignumvar](bigNum) : long = num
+			[:Off]
+			return bigNum
+		}
+	}
+[:End:]
 
 
 The following table shows the predefined implicit conversions between SARL types.
@@ -91,54 +91,55 @@ intend to make the conversion and that you are aware that data loss might occur.
 the value or variable to be converted, followed by the [:askw:] keyword and the type that you are casting.
 The following program casts a [:doubletype:] to an [:inttype:]. The program will not compile without the cast.
 
-		[:Success:]
-			class Test {
-			    static def Main : [:inttype!] {
-			    	[:On]
-			        var x : [:doubletype](double) = 1234.7
-			        var a : [:inttype!]
-			        // Cast [:doubletype!] to [:inttype!].
-			        a = x [:askw](as) [:inttype!]
-			        [:Off]
-			    }
-			}
-		[:End:]
+[:Success:]
+	class Test {
+	    static def Main : [:inttype!] {
+	    	[:On]
+	        var x : [:doubletype](double) = 1234.7
+	        var a : [:inttype!]
+	        // Cast [:doubletype!] to [:inttype!].
+	        a = x [:askw](as) [:inttype!]
+	        [:Off]
+	    }
+	}
+[:End:]
 
-		[:Failure:]
-			class Test {
-			    static def Main : [:inttype!] {
-			        var x : [:doubletype](double) = 1234.7
-			        var a : [:inttype!]
-			        // Cast [:doubletype!] to [:inttype!].
-			        a = x
-			    }
-			}
-		[:End:]
+
+[:Failure:]
+	class Test {
+	    static def Main : [:inttype!] {
+	        var x : [:doubletype](double) = 1234.7
+	        var a : [:inttype!]
+	        // Cast [:doubletype!] to [:inttype!].
+	        a = x
+	    }
+	}
+[:End:]
 
 
 For object types, an explicit cast is required if you need to convert from a base type to a derived type:
 
-		[:Success:]
-			class Animal {}
-			class Giraffe extends Animal {}
-			class Test {
-			    static def Main : Object {
-			    	[:On]
-			    	// Create a new derived type
-			        var g = new Giraffe
-			        
-			        // implicit conversion to base type is safe.
-			        var a : Animal = g
-			        
-			        // Explicit conversion is required to cast back to derived type.
-			        // Note: This will compile but will throw an exception at run time if the right-side
-			        // object is not in fact a Giraffe.
-			        var g2 : Giraffe
-			        g2 = a as Giraffe
-			        [:Off]
-			    }
-			}
-		[:End:]
+[:Success:]
+	class Animal {}
+	class Giraffe extends Animal {}
+	class Test {
+	    static def Main : Object {
+	    	[:On]
+	    	// Create a new derived type
+	        var g = new Giraffe
+	        
+	        // implicit conversion to base type is safe.
+	        var a : Animal = g
+	        
+	        // Explicit conversion is required to cast back to derived type.
+	        // Note: This will compile but will throw an exception at run time if the right-side
+	        // object is not in fact a Giraffe.
+	        var g2 : Giraffe
+	        g2 = a as Giraffe
+	        [:Off]
+	    }
+	}
+[:End:]
 
 
 A casting operation between reference types does not change the run-time type of the underlying object; it only changes
@@ -171,28 +172,28 @@ In some reference type conversions, the compiler cannot determine whether a cast
 a casting operation that compiles correctly to fail at run time. As shown in the following example, a type cast
 that fails at run time will cause an [:classcastexception:] to be thrown.
 
-		[:Success:]
-	    	[:On]
-			class Animal {}
-			
-			class [:reptiletype](Reptile) extends Animal {}
-			
-			class [:mammaltype](Mammal) extends Animal {}
-			
-			class Test {
-			    static def main {
-			    	test(new Mammal())
-			    }
+[:Success:]
+	[:On]
+	class Animal {}
+	
+	class [:reptiletype](Reptile) extends Animal {}
+	
+	class [:mammaltype](Mammal) extends Animal {}
+	
+	class Test {
+	    static def main {
+	    	test(new Mammal())
+	    }
 
-				static def test(a : Animal) {
-					// Cause a [:classcastexception](ClassCastException) at run time
-					// because [:mammaltype!] is not convertible to [:reptiletype].
-					var r : Reptile
-					r = a as Reptile
-				}
-			}
-	        [:Off]
-		[:End:]
+		static def test(a : Animal) {
+			// Cause a [:classcastexception](ClassCastException) at run time
+			// because [:mammaltype!] is not convertible to [:reptiletype].
+			var r : Reptile
+			r = a as Reptile
+		}
+	}
+    [:Off]
+[:End:]
 
 
 SARL provides the [:instanceofoperator:] operator to enable you to test for compatibility before actually performing a cast.
@@ -200,16 +201,17 @@ SARL provides the [:instanceofoperator:] operator to enable you to test for comp
 The [:instanceofoperator:] operator evaluates type compatibility at runtime. It determines whether an object instance or
 the result of an expression can be converted to a specified type. It has the syntax:
 
-		[:Success:]
-			class type { }
-			class Test {
-			    static def main(expr : Object) {
-			    	[:On]
-			    	[:exprvar](expr) [:instanceofoperator](instanceof) [:typevar](type)
-			    	[:Off]
-			    }
-			}
-		[:End:]
+[:Success:]
+	class type { }
+	class Test {
+	    static def main(expr : Object) {
+	    	[:On]
+	    	[:exprvar](expr) [:instanceofoperator](instanceof) [:typevar](type)
+	    	[:Off]
+	    }
+	}
+[:End:]
+
 
 where [:exprvar:] is an expression that evaluates to an instance of some type, and [:typevar:] is the name of the
 type to which the result of [:exprvar:] is to be converted. The [:instanceofoperator:] operator is `true` if
@@ -241,38 +243,40 @@ In the following example, the function [:tointegerfct:] is defined for convertin
 When the expression [:castexpr1:] is evaluated by the compiler, the function [:tointegerfct:] is discovered and used
 for proceeding the cast.
  
-		[:Success:]
-	    	[:On]
-			class [:typetype](Type) {
-				def [:tointegerfct](toInteger) : [:integertype](Integer) { 0 }
-			}
-			class Test {
-			    def main {
-			    	var obj : Type
-			    	var value = [:castexpr1](obj as Integer)
-			    }
-			}
-			[:Off]
-		[:End:]
+[:Success:]
+	[:On]
+	class [:typetype](Type) {
+		def [:tointegerfct](toInteger) : [:integertype](Integer) { 0 }
+	}
+	class Test {
+	    def main {
+	    	var obj : Type
+	    	var value = [:castexpr1](obj as Integer)
+	    }
+	}
+	[:Off]
+[:End:]
+
 
 In the second example below, the function [:tointegerfct:] is defined in the same class as the one where the cast operator is
 defined.
 When the expression [:castexpr1:] is evaluated by the compiler, the function [:tointegerfct:] is discovered and used
 for proceeding the cast.
  
-		[:Success:]
-	    	[:On]
-			class Type {
-			}
-			class Test {
-			    def main {
-			    	var obj : Type
-			    	var value = obj as Integer
-			    }
-				def [:tointegerfct!](v : Type) : [:integertype](Integer) { 0 }
-			}
-	    	[:Off]
-		[:End:]
+[:Success:]
+	[:On]
+	class Type {
+	}
+	class Test {
+	    def main {
+	    	var obj : Type
+	    	var value = obj as Integer
+	    }
+		def [:tointegerfct!](v : Type) : [:integertype](Integer) { 0 }
+	}
+	[:Off]
+[:End:]
+
 
 Any function that is declared into the scope of the cast operator, and following the rules that are described above, may
 be a candidate for being the cast operator function.
@@ -282,35 +286,34 @@ be a candidate for being the cast operator function.
 The two previous example have an object type as the cast type. The two following examples have the basic type [:inttype:].
 The declarations of the [:tointegerfct:] are replaced by declarations of [:intvaluefct:].
 
-		[:Success:]
-	    	[:On]
-			class [:typetype](Type) {
-				def [:intvaluefct](intValue) : [:inttype!] { 0 }
-			}
-			class Test {
-			    def main {
-			    	var obj : Type
-			    	var value = obj as int
-			    }
-			}
-			[:Off]
-		[:End:]
+[:Success:]
+	[:On]
+	class [:typetype](Type) {
+		def [:intvaluefct](intValue) : [:inttype!] { 0 }
+	}
+	class Test {
+	    def main {
+	    	var obj : Type
+	    	var value = obj as int
+	    }
+	}
+	[:Off]
+[:End:]
 
- 
-		[:Success:]
-	    	[:On]
-			class Type {
-			}
-			class Test {
-			    def main {
-			    	var obj : Type
-			    	var value = obj as int
-			    }
-				def [:intvaluefct!](v : Type) : [:inttype!] { 0 }
-			}
-	    	[:Off]
-		[:End:]
 
+[:Success:]
+	[:On]
+	class Type {
+	}
+	class Test {
+	    def main {
+	    	var obj : Type
+	    	var value = obj as int
+	    }
+		def [:intvaluefct!](v : Type) : [:inttype!] { 0 }
+	}
+	[:Off]
+[:End:]
 
 
 [:Include:](../generalsyntaxref.inc)

@@ -9,29 +9,30 @@ Switch statements come in two main variants: a structured switch, as in Pascal, 
 and an unstructured switch, as in C, which functions as a type of goto.
 ** The SARL language uses structured switchs. **
 
-<importantnote>The switch expression is very different from Java's switch statement. The use of switch is
-not limited to certain values, but can be used for any object reference.
-The operator `==` or its Java-equivalent `Object.equals(Object)` are
-used to compare the value in the case with the one you are switching over.</importantnote>
+> **_Important Note:_** The switch expression is very different from Java's switch statement. The use of switch is
+> not limited to certain values, but can be used for any object reference.
+> The operator `==` or its Java-equivalent `Object.equals(Object)` are
+> used to compare the value in the case with the one you are switching over.
 
 ## Switch Cases
 
 Consider the following example.
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			agent A {
-				var [:mainexpr](myString) = "abc"
-				def example1 : String {
-					[:On]
-					[:switchkw](switch) [:mainexpr!] {
-					[:case](case) 'some' : [:returnexpr]("It's some string.")
-					[:case!] 'other' : "another string."
-					}
-					[:Off]
-				}
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	agent A {
+		var [:mainexpr](myString) = "abc"
+		def example1 : String {
+			[:On]
+			[:switchkw](switch) [:mainexpr!] {
+			[:case](case) 'some' : [:returnexpr]("It's some string.")
+			[:case!] 'other' : "another string."
 			}
-		[:End:]
+			[:Off]
+		}
+	}
+[:End:]
+
 
 The main expression [:mainexpr:] is evaluated first and then compared to each 
 [:case:] sequentially. If the case expression is of type boolean, the case matches 
@@ -47,49 +48,51 @@ statement in SARL.
 The main expression, i.e. the parameter of [:switchkw:] can also be a computed value instead 
 of a field or variable.
 
-<importantnote>A case must contains an expression. If you want to do nothing
-for a given case, put an empty block after the colon character.</importantnote>
+> **_Important Note:_** A case must contains an expression. If you want to do nothing
+> for a given case, put an empty block after the colon character.
 
 ## Default Case
 
 If none of the cases is matching, the [:default:] case matches automatically if it is specified
 in the code.
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			agent A {
-				var myString = "abc"
-				def example1 : String {
-					[:On]
-					[:switchkw!] [:mainexpr!] {
-					[:case!] 'some' : [:returnexpr!]
-					[:case!] 'other' : "another string."
-					[:default](default): "default string"
-					}
-					[:Off]
-				}
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	agent A {
+		var myString = "abc"
+		def example1 : String {
+			[:On]
+			[:switchkw!] [:mainexpr!] {
+			[:case!] 'some' : [:returnexpr!]
+			[:case!] 'other' : "another string."
+			[:default](default): "default string"
 			}
-		[:End:]
+			[:Off]
+		}
+	}
+[:End:]
+
 
 ## Case Guards
 
 Consider the following example.
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			agent A {
-				var myString = "abc"
-				def example1 : String {
-					[:On]
-					[:switchkw!] [:mainexpr!] {
-					[:case!] 'some' : [:returnexpr]("It's some string.")
-					[:case!] 'other' : "another string."
-					[:case!] [:caseguard]{myString.length > 5} : "It's a long string."
-					}
-					[:Off]
-				}
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	agent A {
+		var myString = "abc"
+		def example1 : String {
+			[:On]
+			[:switchkw!] [:mainexpr!] {
+			[:case!] 'some' : [:returnexpr]("It's some string.")
+			[:case!] 'other' : "another string."
+			[:case!] [:caseguard]{myString.length > 5} : "It's a long string."
 			}
-		[:End:]
+			[:Off]
+		}
+	}
+[:End:]
+
 
 The expression [:caseguard:] is the guard of the case.
 The associated case matches only if the guard expression is evaluated to `true`.
@@ -107,20 +110,20 @@ A case with both a type guard and a predicate only matches if both conditions ma
 If the switch value is a field, parameter or variable, it is automatically casted
 to the given type within the predicate and the case body.
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			agent A {
-				var myString = "abc"
-				def example1 : String {
-					[:On]
-					[:switchkw!] [:mainexpr!] {
-					String [:case!] [:mainexpr!].length == 5 : "It's string of length 5."
-					String : "a string."
-					}
-					[:Off]
-				}
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	agent A {
+		var myString = "abc"
+		def example1 : String {
+			[:On]
+			[:switchkw!] [:mainexpr!] {
+			String [:case!] [:mainexpr!].length == 5 : "It's string of length 5."
+			String : "a string."
 			}
-		[:End:]
+			[:Off]
+		}
+	}
+[:End:]
 
 
 ## Fall Through
@@ -129,23 +132,23 @@ You can have multiple type guards and cases separated with a comma, to
 have all of them share the same then part.
 
 In the following example, the value [:value1:] is replied if one of the two first cases matches.
-Otherwisen, the value associated to the default case is used.
+Otherwise, the value associated to the default case is used.
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			agent A {
-				var myString = "abc"
-				def example1 : String {
-					[:On]
-					[:switchkw!] [:mainexpr!] {
-					case [:mainexpr!].length==5,
-					case 'some' : "[:value1](a string)"
-					default: "Default"
-					}
-					[:Off]
-				}
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	agent A {
+		var myString = "abc"
+		def example1 : String {
+			[:On]
+			[:switchkw!] [:mainexpr!] {
+			case [:mainexpr!].length==5,
+			case 'some' : "[:value1](a string)"
+			default: "Default"
 			}
-		[:End:]
+			[:Off]
+		}
+	}
+[:End:]
 
 
 [:Include:](../generalsyntaxref.inc)

@@ -22,8 +22,8 @@ The elements that are explained in this tutorial are:
 * the emit of events from the super-agent to its sub-agent;
 * the emit of events from the sub-agent to its super-agent.
 
-<note>The communication between the sub-agents is out of the scope of this tutorial. For interested
-readers, the [Agent Reference](../reference/Agent.md) may be read.</note>
+> **_Note:_** The communication between the sub-agents is out of the scope of this tutorial. For interested
+> readers, the [Agent Reference](../reference/Agent.md) may be read.
 
 The source code related to this tutorial may be found in the
 [Github of the SARL demos]([:githublnk!]).
@@ -72,12 +72,12 @@ Therefore, every agent can be seen as a part of a larger
 [holon](https://en.wikipedia.org/wiki/Holon_(philosophy)) _and_ at the same time be composed 
 by other agents that exist in its _inner context_. 
 
-<note> According to the SARL specifications, all the agents in a context belong to
-the default space of this context. This property is important
-for designing the communication links between two adjacent levels
-in the hierarchy of agents. The default space of the inner context
-becomes the natural place where the super-agent and
-its sub-agents are interacting.</note>
+> **_Note:_** According to the SARL specifications, all the agents in a context belong to
+> the default space of this context. This property is important
+> for designing the communication links between two adjacent levels
+> in the hierarchy of agents. The default space of the inner context
+> becomes the natural place where the super-agent and
+> its sub-agents are interacting.
 
 
 ## Definitions of the events
@@ -92,15 +92,15 @@ bid inside.
 The [:priceevent:] event is the event sent by the auctioneer for notifying a bidder that
 the price has changed. This event contains the new price.
 
-		[:Success:][:On]
-			package io.sarl.docs.tutorials.holonicauction
-			event [:priceevent](Price) {
-				val price : float
-				new(price : float) {
-					this.price = price
-				}
-			}
-		[:End:]
+[:Success:][:On]
+	package io.sarl.docs.tutorials.holonicauction
+	event [:priceevent](Price) {
+		val price : float
+		new(price : float) {
+			this.price = price
+		}
+	}
+[:End:]
 
 
 ### Playing event
@@ -108,15 +108,15 @@ the price has changed. This event contains the new price.
 The [:bidevent:] event is the event sent by a bidder to the auctioneer.
 This event contains the value of the bid.
 
-		[:Success:]
-			package io.sarl.docs.tutorials.holonicauction
-			[:On]event [:bidevent](Bid) {
-				val value : float
-				new(value : float) {
-					this.value = value
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.tutorials.holonicauction
+	[:On]event [:bidevent](Bid) {
+		val value : float
+		new(value : float) {
+			this.value = value
+		}
+	}
+[:End:]
 
 
 ## Definition of the bidder
@@ -132,19 +132,19 @@ a random number generator (from the Java library). The [:maxprice:] attribute is
 of the price that the bidder will consider for bidding.
 The bidder selects the maximum price between 100 and 1000 randomly.
 
-		[:Success:]
-			package io.sarl.docs.tutorials.holonicauction
-			import java.util.Random
-			import io.sarl.core.Initialize
-			[:On]agent Bidder {
-				val random = new Random
-				var [:maxprice](maxPrice) : float
-				
-				on Initialize {
-					maxPrice = [:random](random).nextFloat() * 900f + 100f
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.tutorials.holonicauction
+	import java.util.Random
+	import io.sarl.core.Initialize
+	[:On]agent Bidder {
+		val random = new Random
+		var [:maxprice](maxPrice) : float
+		
+		on Initialize {
+			maxPrice = [:random](random).nextFloat() * 900f + 100f
+		}
+	}
+[:End:]
 
 
 ### Bidding
@@ -155,67 +155,66 @@ The bidding must occur when the auctioneer is notifying a new price, i.e. when t
 The bidder computes the new price. If this last is not exceeding the maximal
 price, then the bidder is sending its bid in a [:bidevent:] event.
 
-<importantnote label="Interaction Principle">
-For sending data to its super-agent, a sub-agent must
-fire an event in the default space of the inner context
-of the super-agent. The [:emitfct:] function is supporting this interaction.
-</importantnote>
+> **_Interaction Principle:_**
+> For sending data to its super-agent, a sub-agent must
+> fire an event in the default space of the inner context
+> of the super-agent. The [:emitfct:] function is supporting this interaction.
 
-<cautionnote>The [:bidevent:] event is sent in the default space. But there is no
-restriction on the event's recipient. It means that the super-agent __and__ the
-other sub-agents will receive this event.</cautionnote>
+> **_Caution:_** The [:bidevent:] event is sent in the default space. But there is no
+> restriction on the event's recipient. It means that the super-agent __and__ the
+> other sub-agents will receive this event.
 
-		[:Success:]
-			package io.sarl.docs.tutorials.holonicauction
-			import java.util.Random
-			import io.sarl.core.Initialize
-			import io.sarl.core.DefaultContextInteractions
-			import io.sarl.core.Logging
-			event Price {
-				val price : float
-				new(price : float) {
-					this.price = price
-				}
-			}
-			event Bid {
-				val value : float
-				new(value : float) {
-					this.value = value
-				}
-			}
-			[:On]agent Bidder {
-				val random = new Random
-				var maxPrice : float
-				var myLastBid : float
-				
-				on Initialize {
-					maxPrice = random.nextFloat() * 900f + 100f
-				}
-				
-				uses DefaultContextInteractions, Logging
-			
-				on Price {
-					if(occurrence.price == myLastBid) {
-						println("I do not bet, I am the winner with :" + myLastBid)
-					} else {
-						if(occurrence.price < maxPrice) {
-							var priceIncrease = random.nextFloat() * 50f
-							if (priceIncrease > 0) {
-								var newPrice = occurrence.price + priceIncrease
-								if (newPrice <= maxPrice) {
-									[:emitfct](emit)(new Bid(newPrice))
-									myLastBid = newPrice
-								} else {
-									println(" I give up, this is beyond my resources : " + myLastBid)
-								}
-							}
+[:Success:]
+	package io.sarl.docs.tutorials.holonicauction
+	import java.util.Random
+	import io.sarl.core.Initialize
+	import io.sarl.core.DefaultContextInteractions
+	import io.sarl.core.Logging
+	event Price {
+		val price : float
+		new(price : float) {
+			this.price = price
+		}
+	}
+	event Bid {
+		val value : float
+		new(value : float) {
+			this.value = value
+		}
+	}
+	[:On]agent Bidder {
+		val random = new Random
+		var maxPrice : float
+		var myLastBid : float
+		
+		on Initialize {
+			maxPrice = random.nextFloat() * 900f + 100f
+		}
+		
+		uses DefaultContextInteractions, Logging
+	
+		on Price {
+			if(occurrence.price == myLastBid) {
+				println("I do not bet, I am the winner with :" + myLastBid)
+			} else {
+				if(occurrence.price < maxPrice) {
+					var priceIncrease = random.nextFloat() * 50f
+					if (priceIncrease > 0) {
+						var newPrice = occurrence.price + priceIncrease
+						if (newPrice <= maxPrice) {
+							[:emitfct](emit)(new Bid(newPrice))
+							myLastBid = newPrice
 						} else {
-							println("I dropped to " + myLastBid)
+							println(" I give up, this is beyond my resources : " + myLastBid)
 						}
 					}
+				} else {
+					println("I dropped to " + myLastBid)
 				}
 			}
-		[:End:]
+		}
+	}
+[:End:]
 
 
 ### Restrict the bid to the auctioneer
@@ -225,62 +224,61 @@ scope for the event.
 For supporting the holonic communication from the sub-agent to the super-agent, the scope
 of the event corresponds to the address of the super-agent in the default space.
 
-<note>The ID of the super-agent, and the ID of the inner context of this super-agent are
-always the same.</note>
+> **_Note:_** The ID of the super-agent, and the ID of the inner context of this super-agent are always the same.
 
 Below, we update the bidding behavior by creating a scope, and providing it to the [:emitfct:] function.
 
-		[:Success:]
-			package io.sarl.docs.tutorials.holonicauction
-			import java.util.Random
-			import io.sarl.core.Initialize
-			import io.sarl.core.DefaultContextInteractions
-			import io.sarl.core.Logging
-			event Price {
-				val price : float
-				new(price : float) {
-					this.price = price
-				}
-			}
-			event Bid {
-				val value : float
-				new(value : float) {
-					this.value = value
-				}
-			}
-			[:On]agent Bidder {
-				val random = new Random
-				var maxPrice : float
-				var myLastBid : float
-				
-				on Initialize {
-					maxPrice = random.nextFloat() * 900f + 100f
-				}
-			
-				uses DefaultContextInteractions, Logging
-			
-				on Price {
-					if(occurrence.price == myLastBid) {
-						println("I do not bet, I am the winner with :" + myLastBid)
-					} else {
-						if(occurrence.price < maxPrice) {
-							var priceIncrease = random.nextFloat() * 50f
-							if (priceIncrease > 0) {
-								var newPrice = occurrence.price + priceIncrease
-								if (newPrice <= maxPrice) {
-									emit(new Bid(newPrice)) [ it.UUID == defaultContext.ID]
-									myLastBid = newPrice
-								} else {
-									println(" I give up, this is beyond my resources : " + myLastBid)
-								}
-							}
+[:Success:]
+	package io.sarl.docs.tutorials.holonicauction
+	import java.util.Random
+	import io.sarl.core.Initialize
+	import io.sarl.core.DefaultContextInteractions
+	import io.sarl.core.Logging
+	event Price {
+		val price : float
+		new(price : float) {
+			this.price = price
+		}
+	}
+	event Bid {
+		val value : float
+		new(value : float) {
+			this.value = value
+		}
+	}
+	[:On]agent Bidder {
+		val random = new Random
+		var maxPrice : float
+		var myLastBid : float
+		
+		on Initialize {
+			maxPrice = random.nextFloat() * 900f + 100f
+		}
+	
+		uses DefaultContextInteractions, Logging
+	
+		on Price {
+			if(occurrence.price == myLastBid) {
+				println("I do not bet, I am the winner with :" + myLastBid)
+			} else {
+				if(occurrence.price < maxPrice) {
+					var priceIncrease = random.nextFloat() * 50f
+					if (priceIncrease > 0) {
+						var newPrice = occurrence.price + priceIncrease
+						if (newPrice <= maxPrice) {
+							emit(new Bid(newPrice)) [ it.UUID == defaultContext.ID]
+							myLastBid = newPrice
 						} else {
-							println("I dropped to " + myLastBid)
+							println(" I give up, this is beyond my resources : " + myLastBid)
 						}
 					}
+				} else {
+					println("I dropped to " + myLastBid)
 				}
 			}
-		[:End:]
+		}
+	}
+[:End:]
 
 
 ### Definition of the auctioneer
@@ -301,37 +299,36 @@ the [:behcap:] capacity. This function does the same as:
 
 innerContext.defaultSpace.emit(new Price(50))
 
-<importantnote labe="Interaction Principle">
-For sending data to its sub-agents, a super-agent must fire an event in the default space
-of its inner context. The [:wakefct:] function is supporting this interaction.
-</importantnote>
+> **_Interaction Principle:_** 
+> For sending data to its sub-agents, a super-agent must fire an event in the default space
+> of its inner context. The [:wakefct:] function is supporting this interaction.
 
-		[:Success:]
-			package io.sarl.docs.tutorials.holonicauction
-			import java.util.Random
-			import io.sarl.core.Behaviors
-			import io.sarl.core.Initialize
-			import io.sarl.lang.core.Address
-			event Price {
-				val price : float
-				new(price : float) {
-					this.price = price
-				}
-			}
-			[:On]agent Auctioneer {
-								
-				uses [:behcap](Behaviors)
-				
-				var maxBid = 0f
-				var winner : Address
-				var hasBid = false 
-				var isAuctionOpened = true
-				
-				on Initialize {
-					[:wakefct](wake)(new Price(50))
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.tutorials.holonicauction
+	import java.util.Random
+	import io.sarl.core.Behaviors
+	import io.sarl.core.Initialize
+	import io.sarl.lang.core.Address
+	event Price {
+		val price : float
+		new(price : float) {
+			this.price = price
+		}
+	}
+	[:On]agent Auctioneer {
+						
+		uses [:behcap](Behaviors)
+		
+		var maxBid = 0f
+		var winner : Address
+		var hasBid = false 
+		var isAuctionOpened = true
+		
+		on Initialize {
+			[:wakefct](wake)(new Price(50))
+		}
+	}
+[:End:]
 
 
 #### Create the bidders
@@ -342,39 +339,39 @@ This function permits creating an agent in a particular context.
 For obtaining the inner context, we need to use the [:innercap:] capacity,
 which provides the [:getinner:s] function. Below, we create the three bidders. 
 
-		[:Success:]
-			package io.sarl.docs.tutorials.holonicauction
-			import java.util.Random
-			import io.sarl.lang.core.Address
-			import io.sarl.core.Behaviors
-			import io.sarl.core.InnerContextAccess
-			import io.sarl.core.Lifecycle
-			import io.sarl.core.Initialize
-			event Price {
-				val price : float
-				new(price : float) {
-					this.price = price
-				}
+[:Success:]
+	package io.sarl.docs.tutorials.holonicauction
+	import java.util.Random
+	import io.sarl.lang.core.Address
+	import io.sarl.core.Behaviors
+	import io.sarl.core.InnerContextAccess
+	import io.sarl.core.Lifecycle
+	import io.sarl.core.Initialize
+	event Price {
+		val price : float
+		new(price : float) {
+			this.price = price
+		}
+	}
+	agent Bidder {}
+	[:On]agent Auctioneer {
+						
+		uses Behaviors, [:lifecyclecap](Lifecycle), [:innercap](InnerContextAccess)
+		
+		var maxBid = 0f
+		var winner : Address
+		var hasBid = false 
+		var isAuctionOpened = true
+		
+		on Initialize {
+			for(i : 1..3) {
+				[:sicfct](spawnInContext)(typeof(Bidder), [:getinner](getInnerContext))
 			}
-			agent Bidder {}
-			[:On]agent Auctioneer {
-								
-				uses Behaviors, [:lifecyclecap](Lifecycle), [:innercap](InnerContextAccess)
-				
-				var maxBid = 0f
-				var winner : Address
-				var hasBid = false 
-				var isAuctionOpened = true
-				
-				on Initialize {
-					for(i : 1..3) {
-						[:sicfct](spawnInContext)(typeof(Bidder), [:getinner](getInnerContext))
-					}
-					
-					wake(new Price(50))
-				}
-			}
-		[:End:]
+			
+			wake(new Price(50))
+		}
+	}
+[:End:]
 
 
 #### Receive the bids
@@ -385,52 +382,52 @@ to execute the behavior only if the auction is still opened. We will see later w
 the auction is closed. If the value of the received bid is greater than the current
 price, the source of the [:bidevent:] event becomes the new potential winner. 
 
-		[:Success:]
-			package io.sarl.docs.tutorials.holonicauction
-			import java.util.Random
-			import io.sarl.lang.core.Address
-			import io.sarl.core.Behaviors
-			import io.sarl.core.InnerContextAccess
-			import io.sarl.core.Lifecycle
-			import io.sarl.core.Initialize
-			event Price {
-				val price : float
-				new(price : float) {
-					this.price = price
-				}
+[:Success:]
+	package io.sarl.docs.tutorials.holonicauction
+	import java.util.Random
+	import io.sarl.lang.core.Address
+	import io.sarl.core.Behaviors
+	import io.sarl.core.InnerContextAccess
+	import io.sarl.core.Lifecycle
+	import io.sarl.core.Initialize
+	event Price {
+		val price : float
+		new(price : float) {
+			this.price = price
+		}
+	}
+	event Bid {
+		val value : float
+		new(value : float) {
+			this.value = value
+		}
+	}
+	agent Bidder {}
+	[:On]agent Auctioneer {
+						
+		uses Behaviors, Lifecycle, InnerContextAccess
+		
+		var maxBid = 0f
+		var winner : Address
+		var hasBid = false 
+		var [:isopened](isAuctionOpened) = true
+		
+		on Initialize {
+			for(i : 1..3) {
+				spawnInContext(Bidder, innerContext)
 			}
-			event Bid {
-				val value : float
-				new(value : float) {
-					this.value = value
-				}
+			
+			wake(new Price(50))
+		}
+		
+		on Bid [ isAuctionOpened ] {
+			if (occurrence.value > maxBid) {
+				maxBid = occurrence.value
+				winner = occurrence.source
 			}
-			agent Bidder {}
-			[:On]agent Auctioneer {
-								
-				uses Behaviors, Lifecycle, InnerContextAccess
-				
-				var maxBid = 0f
-				var winner : Address
-				var hasBid = false 
-				var [:isopened](isAuctionOpened) = true
-				
-				on Initialize {
-					for(i : 1..3) {
-						spawnInContext(Bidder, innerContext)
-					}
-					
-					wake(new Price(50))
-				}
-				
-				on Bid [ isAuctionOpened ] {
-					if (occurrence.value > maxBid) {
-						maxBid = occurrence.value
-						winner = occurrence.source
-					}
-				}
-			}
-		[:End:]
+		}
+	}
+[:End:]
 
 
 #### Stop the auction
@@ -447,71 +444,71 @@ In the task's code, we test if a bid was received. If not, the auctioneer closes
 and outputs the appropriate message. To delay the task executor about the first ten seconds,
 we use the [:infct:] function provided by the capacity.
 
-		[:Success:]
-			package io.sarl.docs.tutorials.holonicauction
-			import java.util.Random
-			import io.sarl.lang.core.Address
-			import io.sarl.core.Behaviors
-			import io.sarl.core.InnerContextAccess
-			import io.sarl.core.Lifecycle
-			import io.sarl.core.Schedules
-			import io.sarl.core.Logging
-			import io.sarl.core.Initialize
-			event Price {
-				val price : float
-				new(price : float) {
-					this.price = price
-				}
+[:Success:]
+	package io.sarl.docs.tutorials.holonicauction
+	import java.util.Random
+	import io.sarl.lang.core.Address
+	import io.sarl.core.Behaviors
+	import io.sarl.core.InnerContextAccess
+	import io.sarl.core.Lifecycle
+	import io.sarl.core.Schedules
+	import io.sarl.core.Logging
+	import io.sarl.core.Initialize
+	event Price {
+		val price : float
+		new(price : float) {
+			this.price = price
+		}
+	}
+	event Bid {
+		val value : float
+		new(value : float) {
+			this.value = value
+		}
+	}
+	agent Bidder {}
+	[:On]agent Auctioneer {
+						
+		uses Behaviors, Lifecycle, InnerContextAccess, [:schedcap](Schedules), Logging
+		
+		var maxBid = 0f
+		var winner : Address
+		var hasBid = false 
+		var isAuctionOpened = true
+		
+		on Initialize {
+			for(i : 1..3) {
+				spawnInContext(Bidder, innerContext)
 			}
-			event Bid {
-				val value : float
-				new(value : float) {
-					this.value = value
-				}
-			}
-			agent Bidder {}
-			[:On]agent Auctioneer {
-								
-				uses Behaviors, Lifecycle, InnerContextAccess, [:schedcap](Schedules), Logging
-				
-				var maxBid = 0f
-				var winner : Address
-				var hasBid = false 
-				var isAuctionOpened = true
-				
-				on Initialize {
-					for(i : 1..3) {
-						spawnInContext(Bidder, innerContext)
-					}
-					
-					wake(new Price(50))
+			
+			wake(new Price(50))
 
-					[:infct](in)(10000) [
-						val waitTask = task("wait-task")
-						waitTask.[:everyfct](every)(10000) [
-							if (!hasBid) {
-								isAuctionOpened = false
-								if (winner === null) {
-									println("No winner")
-								} else {
-									println("The winner is " + winner
-										+ " with the bid of " + maxBid)
-								}
-							}
-							hasBid = false
-						]
-					]
-				}
-				
-				on Bid [ isAuctionOpened ] {
-					hasBid = true
-					if (occurrence.value > maxBid) {
-						maxBid = occurrence.value
-						winner = occurrence.source
+			[:infct](in)(10000) [
+				val waitTask = task("wait-task")
+				waitTask.[:everyfct](every)(10000) [
+					if (!hasBid) {
+						isAuctionOpened = false
+						if (winner === null) {
+							println("No winner")
+						} else {
+							println("The winner is " + winner
+								+ " with the bid of " + maxBid)
+						}
 					}
-				}
+					hasBid = false
+				]
+			]
+		}
+		
+		on Bid [ isAuctionOpened ] {
+			hasBid = true
+			if (occurrence.value > maxBid) {
+				maxBid = occurrence.value
+				winner = occurrence.source
 			}
-		[:End:]
+		}
+	}
+[:End:]
 
 
 #### Synchronize the operations
@@ -527,75 +524,75 @@ that two blocks of code, which are synchronized on the
 same Object (the argument of the operator) cannot be
 executed in parallel by different threads.
 
-		[:Success:]
-			package io.sarl.docs.tutorials.holonicauction
-			import java.util.Random
-			import io.sarl.lang.core.Address
-			import io.sarl.core.Behaviors
-			import io.sarl.core.InnerContextAccess
-			import io.sarl.core.Lifecycle
-			import io.sarl.core.Schedules
-			import io.sarl.core.Logging
-			import io.sarl.core.Initialize
-			event Price {
-				val price : float
-				new(price : float) {
-					this.price = price
-				}
+[:Success:]
+	package io.sarl.docs.tutorials.holonicauction
+	import java.util.Random
+	import io.sarl.lang.core.Address
+	import io.sarl.core.Behaviors
+	import io.sarl.core.InnerContextAccess
+	import io.sarl.core.Lifecycle
+	import io.sarl.core.Schedules
+	import io.sarl.core.Logging
+	import io.sarl.core.Initialize
+	event Price {
+		val price : float
+		new(price : float) {
+			this.price = price
+		}
+	}
+	event Bid {
+		val value : float
+		new(value : float) {
+			this.value = value
+		}
+	}
+	agent Bidder {}
+	[:On]agent Auctioneer {
+						
+		uses Behaviors, Lifecycle, InnerContextAccess, Schedules, Logging
+		
+		var maxBid = 0f
+		var winner : Address
+		var hasBid = false 
+		var isAuctionOpened = true
+		
+		on Initialize {
+			for(i : 1..3) {
+				spawnInContext(Bidder, innerContext)
 			}
-			event Bid {
-				val value : float
-				new(value : float) {
-					this.value = value
-				}
-			}
-			agent Bidder {}
-			[:On]agent Auctioneer {
-								
-				uses Behaviors, Lifecycle, InnerContextAccess, Schedules, Logging
-				
-				var maxBid = 0f
-				var winner : Address
-				var hasBid = false 
-				var isAuctionOpened = true
-				
-				on Initialize {
-					for(i : 1..3) {
-						spawnInContext(Bidder, innerContext)
-					}
-					
-					wake(new Price(50))
+			
+			wake(new Price(50))
 
-					in(10000) [
-						val waitTask = task("wait-task")
-						waitTask.every(10000) [
-							synchronized(this) {
-								if (!hasBid) {
-									isAuctionOpened = false
-									if (winner === null) {
-										println("No winner")
-									} else {
-										println("The winner is " + winner
-											+ " with the bid of " + maxBid)
-									}
-								}
-								hasBid = false
+			in(10000) [
+				val waitTask = task("wait-task")
+				waitTask.every(10000) [
+					synchronized(this) {
+						if (!hasBid) {
+							isAuctionOpened = false
+							if (winner === null) {
+								println("No winner")
+							} else {
+								println("The winner is " + winner
+									+ " with the bid of " + maxBid)
 							}
-						]
-					]
-				}
-				
-				on Bid [ isAuctionOpened ] {
-					[:sync](synchronized)(this) {
-						hasBid = true
-						if (occurrence.value > maxBid) {
-							maxBid = occurrence.value
-							winner = occurrence.source
 						}
+						hasBid = false
 					}
+				]
+			]
+		}
+		
+		on Bid [ isAuctionOpened ] {
+			[:sync](synchronized)(this) {
+				hasBid = true
+				if (occurrence.value > maxBid) {
+					maxBid = occurrence.value
+					winner = occurrence.source
 				}
 			}
-		[:End:]
+		}
+	}
+[:End:]
 
 
 ### Stop the agents
@@ -606,10 +603,10 @@ cause all the agents waiting something that will never append.
 
 __We need to stop the agents.__
 
-<importantnote> In the specification of SARL, a super-agent cannot be killed
-if there is some other agent belonging to its inner context.
-Consequently, for stopping the agents, we need to stop the
-sub-agents before the super-agent.</importantnote>
+> **_Important Note:_** In the specification of SARL, a super-agent cannot be killed
+> if there is some other agent belonging to its inner context.
+> Consequently, for stopping the agents, we need to stop the
+> sub-agents before the super-agent.
 
 
 #### StopAuction event
@@ -618,10 +615,10 @@ Because the determination of the end of the agent's life is made by the auctione
 this last must notify its sub-agents that it is time to commit a suicide.
 We introduce the [:stopauctionevent:] event that is used for this particular notification task.
 
-		[:Success:]
-			package io.sarl.docs.tutorials.holonicauction
-			[:On]event [:stopauctionevent](StopAuction)
-		[:End:]
+[:Success:]
+	package io.sarl.docs.tutorials.holonicauction
+	[:On]event [:stopauctionevent](StopAuction)
+[:End:]
 
 
 #### Kill the bidder
@@ -631,52 +628,52 @@ event.
 When it is received, the bidder agent is killing itself by calling the [:killme:] function.
 This function is provided by the [:lifecyclecap:] capacity.
 
-		[:Success:]
-			package io.sarl.docs.tutorials.holonicauction
-			import java.util.Random
-			import io.sarl.core.Initialize
-			import io.sarl.core.DefaultContextInteractions
-			import io.sarl.core.Lifecycle
-			event Price {
-				val price : float
-				new(price : float) {
-					this.price = price
+[:Success:]
+	package io.sarl.docs.tutorials.holonicauction
+	import java.util.Random
+	import io.sarl.core.Initialize
+	import io.sarl.core.DefaultContextInteractions
+	import io.sarl.core.Lifecycle
+	event Price {
+		val price : float
+		new(price : float) {
+			this.price = price
+		}
+	}
+	event Bid {
+		val value : float
+		new(value : float) {
+			this.value = value
+		}
+	}
+	event StopAuction
+	[:On]agent Bidder {
+		val random = new Random()
+		var maxPrice : float
+		
+		on Initialize {
+			maxPrice = random.nextFloat() * 900f + 100f
+		}
+	
+		uses DefaultContextInteractions
+	
+		on Price {
+			var priceIncrease = random.nextFloat() * 50f
+			if (priceIncrease > 0) {
+				var newPrice = occurrence.price + priceIncrease
+				if (newPrice <= maxPrice) {
+					emit(new Bid(newPrice)) [ it.UUID == defaultContext.ID]
 				}
 			}
-			event Bid {
-				val value : float
-				new(value : float) {
-					this.value = value
-				}
-			}
-			event StopAuction
-			[:On]agent Bidder {
-				val random = new Random()
-				var maxPrice : float
-				
-				on Initialize {
-					maxPrice = random.nextFloat() * 900f + 100f
-				}
-			
-				uses DefaultContextInteractions
-			
-				on Price {
-					var priceIncrease = random.nextFloat() * 50f
-					if (priceIncrease > 0) {
-						var newPrice = occurrence.price + priceIncrease
-						if (newPrice <= maxPrice) {
-							emit(new Bid(newPrice)) [ it.UUID == defaultContext.ID]
-						}
-					}
-				}
-				
-				uses Lifecycle
-				
-				on StopAuction {
-					[:killme](killMe)
-				}
-			}
-		[:End:]
+		}
+		
+		uses Lifecycle
+		
+		on StopAuction {
+			[:killme](killMe)
+		}
+	}
+[:End:]
 
 
 #### Kill the auctioneer
@@ -691,85 +688,84 @@ This function is provided by the [:innercap:] capacity.
 The periodic task must also be stopped. The [:cancelfct:] function is invoked on the periodic task
 to stop its execution.
 
-		[:Success:]
-			package io.sarl.docs.tutorials.holonicauction
-			import java.util.Random
-			import io.sarl.lang.core.Address
-			import io.sarl.core.Behaviors
-			import io.sarl.core.InnerContextAccess
-			import io.sarl.core.Lifecycle
-			import io.sarl.core.Schedules
-			import io.sarl.core.Logging
-			import io.sarl.core.Initialize
-			event Price {
-				val price : float
-				new(price : float) {
-					this.price = price
-				}
+[:Success:]
+	package io.sarl.docs.tutorials.holonicauction
+	import java.util.Random
+	import io.sarl.lang.core.Address
+	import io.sarl.core.Behaviors
+	import io.sarl.core.InnerContextAccess
+	import io.sarl.core.Lifecycle
+	import io.sarl.core.Schedules
+	import io.sarl.core.Logging
+	import io.sarl.core.Initialize
+	event Price {
+		val price : float
+		new(price : float) {
+			this.price = price
+		}
+	}
+	event Bid {
+		val value : float
+		new(value : float) {
+			this.value = value
+		}
+	}
+	event StopAuction
+	agent Bidder {}
+	[:On]agent Auctioneer {
+						
+		uses Behaviors, Lifecycle, InnerContextAccess, Schedules, Logging
+		
+		var maxBid = 0f
+		var winner : Address
+		var hasBid = false 
+		var isAuctionOpened = true
+		
+		on Initialize {
+			for(i : 1..3) {
+				spawnInContext(Bidder, innerContext)
 			}
-			event Bid {
-				val value : float
-				new(value : float) {
-					this.value = value
-				}
-			}
-			event StopAuction
-			agent Bidder {}
-			[:On]agent Auctioneer {
-								
-				uses Behaviors, Lifecycle, InnerContextAccess, Schedules, Logging
-				
-				var maxBid = 0f
-				var winner : Address
-				var hasBid = false 
-				var isAuctionOpened = true
-				
-				on Initialize {
-					for(i : 1..3) {
-						spawnInContext(Bidder, innerContext)
-					}
-					
-					wake(new Price(50))
+			
+			wake(new Price(50))
 
-					in(10000) [
-						val waitTask = task("wait-task")
-						waitTask.every(10000) [
-							synchronized(this) {
-								if (!isAuctionOpened) {
-									if (![:hmafct](hasMemberAgent)) {
-										waitTask.[:cancelfct](cancel)
-										killMe
-									}
-								} else {
-									if (!hasBid) {
-										isAuctionOpened = false
-										if (winner === null) {
-											println("No winner")
-										} else {
-											println("The winner is " + winner
-												+ " with the bid of " + maxBid)
-										}
-										wake(new StopAuction)
-									}
-									hasBid = false
-								}
-							}
-						]
-					]
-				}
-				
-				on Bid [ isAuctionOpened ] {
+			in(10000) [
+				val waitTask = task("wait-task")
+				waitTask.every(10000) [
 					synchronized(this) {
-						hasBid = true
-						if (occurrence.value > maxBid) {
-							maxBid = occurrence.value
-							winner = occurrence.source
+						if (!isAuctionOpened) {
+							if (![:hmafct](hasMemberAgent)) {
+								waitTask.[:cancelfct](cancel)
+								killMe
+							}
+						} else {
+							if (!hasBid) {
+								isAuctionOpened = false
+								if (winner === null) {
+									println("No winner")
+								} else {
+									println("The winner is " + winner
+										+ " with the bid of " + maxBid)
+								}
+								wake(new StopAuction)
+							}
+							hasBid = false
 						}
 					}
+				]
+			]
+		}
+		
+		on Bid [ isAuctionOpened ] {
+			synchronized(this) {
+				hasBid = true
+				if (occurrence.value > maxBid) {
+					maxBid = occurrence.value
+					winner = occurrence.source
 				}
 			}
-		[:End:]
+		}
+	}
+[:End:]
 
 
 [:Include:](../legal.inc)
-

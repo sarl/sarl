@@ -19,44 +19,45 @@ In the following code, the type of agent [:myagentname:] is defined.
 This type of agent emits an [:myeventname:] event when the application starts, i.e. when the agent is initialized.
 It also logs the message [:msg1:] when the agent is initialized.
 
-		[:Success:]
-			package io.sarl.docs.tutorials.masinitialization
-			import io.sarl.core.DefaultContextInteractions
-			import io.sarl.core.Logging
-			import io.sarl.core.Initialize
-			[:On]
-			event [:myeventname](MyEvent)
+[:Success:]
+	package io.sarl.docs.tutorials.masinitialization
+	import io.sarl.core.DefaultContextInteractions
+	import io.sarl.core.Logging
+	import io.sarl.core.Initialize
+	[:On]
+	event [:myeventname](MyEvent)
 
-			agent [:myagentname](MyAgent) {
-				uses DefaultContextInteractions, Logging
-				[:initializeblock](on Initialize) {
-					[:emit](emit)(new MyEvent)
-				}
+	agent [:myagentname](MyAgent) {
+		uses DefaultContextInteractions, Logging
+		[:initializeblock](on Initialize) {
+			[:emit](emit)(new MyEvent)
+		}
 
-				[:myeventblock](on MyEvent) {
-					info([:msg1]("Event received"))
-				}
-			}
-		[:End:]
+		[:myeventblock](on MyEvent) {
+			info([:msg1]("Event received"))
+		}
+	}
+[:End:]
+
 
 For starting the system, we could define a booting agent that starts 100 agents of the previously defined type:
 
-		[:Success:]
-			package io.sarl.docs.tutorials.masinitialization
-			import io.sarl.core.Initialize
-			import io.sarl.core.Lifecycle
-			event MyEvent
-			agent MyAgent {}
-			[:On]agent BootAgent {
-				uses Lifecycle
-				on Initialize {
-					for (i : 1..100) {
-						[:spawnfct](spawn)(typeof(MyAgent))
-					}
-					killMe
-				}
+[:Success:]
+	package io.sarl.docs.tutorials.masinitialization
+	import io.sarl.core.Initialize
+	import io.sarl.core.Lifecycle
+	event MyEvent
+	agent MyAgent {}
+	[:On]agent BootAgent {
+		uses Lifecycle
+		on Initialize {
+			for (i : 1..100) {
+				[:spawnfct](spawn)(typeof(MyAgent))
 			}
-		[:End:]
+			killMe
+		}
+	}
+[:End:]
 
 There is no warranty that the following sentences are true:
 * The order of the agent initialization is the same as the order of the [:spawnfct:] calls;
@@ -87,66 +88,69 @@ A possible solution to the previously mentionned problem is to split the startin
 
 Consequently, the agent's code may be redefined as follow:
 
-		[:Success:]
-			package io.sarl.docs.tutorials.masinitialization
-			import io.sarl.core.DefaultContextInteractions
-			import io.sarl.core.Logging
-			event MyEvent
-			[:On]
-			event [:startappevent](StartApplication)
+[:Success:]
+	package io.sarl.docs.tutorials.masinitialization
+	import io.sarl.core.DefaultContextInteractions
+	import io.sarl.core.Logging
+	event MyEvent
+	[:On]
+	event [:startappevent](StartApplication)
 
-			agent MyAgent {
-				uses DefaultContextInteractions, Logging
-				[:initializeblock](on StartApplication) {
-					[:emit](emit)(new MyEvent)
-				}
+	agent MyAgent {
+		uses DefaultContextInteractions, Logging
+		[:initializeblock](on StartApplication) {
+			[:emit](emit)(new MyEvent)
+		}
 
-				[:myeventblock](on MyEvent) {
-					info([:msg2]("Event received"))
-				}
-			}
-		[:End:]
+		[:myeventblock](on MyEvent) {
+			info([:msg2]("Event received"))
+		}
+	}
+[:End:]
+
 		
 The agent emits the [:myeventname:] event only when the application has started.
 This application-start event is represented by the [:startappevent:] event.
 
 The booting agent becomes:
 
-		[:Success:]
-			package io.sarl.docs.tutorials.masinitialization
-			import io.sarl.core.Initialize
-			import io.sarl.core.Lifecycle
-			import io.sarl.core.AgentSpawned
-			import io.sarl.core.DefaultContextInteractions
-			import java.util.concurrent.atomic.AtomicInteger
-			event StartApplication
-			agent MyAgent {}
-			[:On]
-			agent BootAgent {
-				uses Lifecycle, DefaultContextInteractions
-				
-				var count = new AtomicInteger
-				
-				on Initialize {
-					for (i : 1..100) {
-						spawn(typeof(MyAgent))
-					}
-				}
-				
-				on [:agentspawnedevent](AgentSpawned) [it.agentID != ID] {
-					var n = this.count.incrementAndGet
-					if (n === 100) {
-						emit(new StartApplication)
-						killMe
-					}
-				}
+[:Success:]
+	package io.sarl.docs.tutorials.masinitialization
+	import io.sarl.core.Initialize
+	import io.sarl.core.Lifecycle
+	import io.sarl.core.AgentSpawned
+	import io.sarl.core.DefaultContextInteractions
+	import java.util.concurrent.atomic.AtomicInteger
+	event StartApplication
+	agent MyAgent {}
+	[:On]
+	agent BootAgent {
+		uses Lifecycle, DefaultContextInteractions
+		
+		var count = new AtomicInteger
+		
+		on Initialize {
+			for (i : 1..100) {
+				spawn(typeof(MyAgent))
 			}
-		[:End:]
+		}
+		
+		on [:agentspawnedevent](AgentSpawned) [it.agentID != ID] {
+			var n = this.count.incrementAndGet
+			if (n === 100) {
+				emit(new StartApplication)
+				killMe
+			}
+		}
+	}
+[:End:]
+
 
 The two major steps of the multiagent system initialization are implemented.
 First, when the boot agent starts its life, it is spawning all the agents.
 Each time an agent is spawned, the booting agent is notified with an [:agentspawnedevent:] event.
 When the number of spawned agents reaches 100, the booting agent notifies about the application start
 and commits a suicide.
+
 
 [:Include:](../legal.inc)

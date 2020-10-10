@@ -28,20 +28,21 @@ import io.sarl.sre.test.framework.^extension.PropertyRestoreExtension
 import io.sarl.sre.test.framework.^extension.SreRunExtension
 import io.sarl.sre.tests.runtime.services.probing.mocks.ChangeField
 import io.sarl.sre.tests.runtime.services.probing.mocks.ProbedAgent
+import io.sarl.sre.tests.runtime.services.probing.mocks.ProbedObservableAgent
 import io.sarl.sre.tests.runtime.services.probing.mocks.StopTest
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
+import java.util.Collections
 import java.util.List
 import java.util.UUID
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.^extension.ExtendWith
 
 import static io.sarl.sre.test.framework.Constants.*
 
 import static extension org.junit.jupiter.api.Assertions.*
-import io.sarl.sre.tests.runtime.services.probing.mocks.ProbedObservableAgent
 
 /**
  * @author $Author: sgalland$
@@ -72,8 +73,8 @@ abstract class AbstractProbeServiceTest {
 		var service = kern.getService(typeof(ProbeService))
 		service.assertNotNull
 
-		this.changedProbes = newArrayList
-		this.releasedProbes = newArrayList
+		this.changedProbes = Collections::synchronizedList(newArrayList)
+		this.releasedProbes = Collections::synchronizedList(newArrayList)
 
 		val bid = UUID::randomUUID
 		val w0 = waitForAgentSpawned(bid)
@@ -91,15 +92,11 @@ abstract class AbstractProbeServiceTest {
 		}
 
 		probe.addProbeListener [
-			synchronized (this.changedProbes) {
-				this.changedProbes += Pair::of(it, it.value)
-			}
+			this.changedProbes += Pair::of(it, it.value)
 		]
 
 		probe.addProbeReleaseListener [
-			synchronized (this.releasedProbes) {
-				this.releasedProbes += it
-			}
+			this.releasedProbes += it
 		]
 
 		service.runTestCase_beforeChangeField(probe)
@@ -114,7 +111,7 @@ abstract class AbstractProbeServiceTest {
 		return probe
 	}
 
-	@Test
+	@RepeatedTest(10)
 	@DisplayName("Not-observable agent field")
 	def probeNotObservableAgentField(extension rc : SreRunContext) {
 		rc.runTestCase(false) ["agent:" + it + "#myfield"]
@@ -123,7 +120,7 @@ abstract class AbstractProbeServiceTest {
 		0.assertEquals(releasedProbes.size)
 	}
 
-	@Test
+	@RepeatedTest(10)
 	@DisplayName("Observable agent field")
 	def probeObservableAgentField(extension rc : SreRunContext) {
 		var probe = rc.runTestCase(true) ["agent:" + it + "#myfield"]
@@ -139,7 +136,7 @@ abstract class AbstractProbeServiceTest {
 		probe.assertSame(releasedProbes.get(0))
 	}
 
-	@Test
+	@RepeatedTest(10)
 	@DisplayName("Unknown field")
 	def probeAgentUnkwonField(extension rc : SreRunContext) {
 		var probe = rc.runTestCase(true) ["agent:" + it + "#myfield_unkwon"]

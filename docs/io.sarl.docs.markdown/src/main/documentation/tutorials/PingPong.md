@@ -49,15 +49,15 @@ The [:indexvar:] attribute is a _value_, for making it unmodifiable after its in
 
 For setting the value of the [:indexvar:] value, it is mandatory to define a constructor. 
 
-		[:Success:]
-			package io.sarl.docs.tutorials.pingpong
-			event [:pingevent](Ping) {
-				val [:indexvar](index) : int
-				new(i : int) {
-					this.index = i
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.tutorials.pingpong
+	event [:pingevent](Ping) {
+		val [:indexvar](index) : int
+		new(i : int) {
+			this.index = i
+		}
+	}
+[:End:]
 
 
 ### Pong Event
@@ -67,15 +67,15 @@ The [:pongevent:] is an event that contains the index of the [:pingevent:] event
 
 The [:indexvar:] attribute is also a _value_, and it must be set in a constructor. 
 
-		[:Success:]
-			package io.sarl.docs.tutorials.pingpong
-			[:On]event [:pongevent](Pong) {
-				val index : int
-				new(i : int) {
-					this.index = i
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.tutorials.pingpong
+	[:On]event [:pongevent](Pong) {
+		val index : int
+		new(i : int) {
+			this.index = i
+		}
+	}
+[:End:]
 
 
 ## Pong agent
@@ -89,11 +89,11 @@ agent that is waiting for [:pingevent:] events, and replying
 
 The initial definition of the pong agent is:
 
-		[:Success:]
-			package io.sarl.docs.tutorials.pingpong
-			[:On]agent [:pongagent](PongAgent) {
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.tutorials.pingpong
+	[:On]agent [:pongagent](PongAgent) {
+	}
+[:End:]
 
 
 ### Handling the Ping event
@@ -107,19 +107,19 @@ permits to define a handler of events.
 This handler will be invoked by the runtime environment
 each time the agent is receiving a [:pingevent:] event.
 
-		[:Success:]
-			package io.sarl.docs.tutorials.pingpong
-			event Ping {
-				val index : int
-				new (i : int) {
-					this.index = i
-				}
-			}
-			[:On]agent PongAgent {
-				[:onkw](on) Ping {
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.tutorials.pingpong
+	event Ping {
+		val index : int
+		new (i : int) {
+			this.index = i
+		}
+	}
+	[:On]agent PongAgent {
+		[:onkw](on) Ping {
+		}
+	}
+[:End:]
 
 
 ### Replying to Ping with a Pong
@@ -145,28 +145,29 @@ is the index stored in the [:pingevent:] event. For accessing the occurrence of 
 In the following example, the [:pongevent:] event is built with the index argument
 stored in the received [:pingevent:] event.
 
-		[:Success:]
-			package io.sarl.docs.tutorials.pingpong
-			import io.sarl.core.DefaultContextInteractions
-			event Ping {
-				val index : int
-				new (i : int) {
-					this.index = i
-				}
-			}
-			event Pong {
-				val index : int
-				new (i : int) {
-					this.index = i
-				}
-			}
-			[:On]agent PongAgent {
-				[:useskw](uses) [:intercap](DefaultContextInteractions)
-				on Ping {
-					emit( new Pong( [:occurrencekw](occurrence).index ) )
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.tutorials.pingpong
+	import io.sarl.core.DefaultContextInteractions
+	event Ping {
+		val index : int
+		new (i : int) {
+			this.index = i
+		}
+	}
+	event Pong {
+		val index : int
+		new (i : int) {
+			this.index = i
+		}
+	}
+	[:On]agent PongAgent {
+		[:useskw](uses) [:intercap](DefaultContextInteractions)
+		on Ping {
+			emit( new Pong( [:occurrencekw](occurrence).index ) )
+		}
+	}
+[:End:]
+
 
 ### Restricting the scope of the Pong event
 
@@ -186,29 +187,29 @@ If you have to scope to a single address or a single identifier, you should use 
 as illustrated in the following code. In this code, the scope permits to restrict to the initial sender
 of the [:pingevent:] event. 
 
-		[:Success:]
-			package io.sarl.docs.tutorials.pingpong
-			import io.sarl.core.DefaultContextInteractions
-			event Ping {
-				val index : int
-				new (i : int) {
-					this.index = i
-				}
-			}
-			event Pong {
-				val index : int
-				new (i : int) {
-					this.index = i
-				}
-			}
-			[:On]agent PongAgent {
-				uses DefaultContextInteractions
-				on Ping {
-					emit(new Pong( occurrence.index ))
-						[ it == occurrence.source ]
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.tutorials.pingpong
+	import io.sarl.core.DefaultContextInteractions
+	event Ping {
+		val index : int
+		new (i : int) {
+			this.index = i
+		}
+	}
+	event Pong {
+		val index : int
+		new (i : int) {
+			this.index = i
+		}
+	}
+	[:On]agent PongAgent {
+		uses DefaultContextInteractions
+		on Ping {
+			emit(new Pong( occurrence.index ))
+				[ it == occurrence.source ]
+		}
+	}
+[:End:]
 
 
 ## Ping Agent
@@ -221,11 +222,11 @@ The third step of this tutorial is the definition of the agent that is sending [
 
 The initial definition of the ping agent is:
 
-		[:Success:]
-			package io.sarl.docs.tutorials.pingpong
-			[:On]agent PingAgent {
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.tutorials.pingpong
+	[:On]agent PingAgent {
+	}
+[:End:]
 
 
 ### Handling the Pong event
@@ -233,19 +234,19 @@ The initial definition of the ping agent is:
 The ping agent needs to handle the [:pongevent:] events. For that, a "behavior unit" must be defined in the
 agent.
 
-		[:Success:]
-			package io.sarl.docs.tutorials.pingpong
-			event Pong {
-				val index : int
-				new (i : int) {
-					this.index = i
-				}
-			}
-			[:On]agent PingAgent {
-				on Pong {
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.tutorials.pingpong
+	event Pong {
+		val index : int
+		new (i : int) {
+			this.index = i
+		}
+	}
+	[:On]agent PingAgent {
+		on Pong {
+		}
+	}
+[:End:]
 
 
 ### Re-sending a Ping when receiving a Pong
@@ -257,29 +258,30 @@ This new [:pingevent:] event has an index greater than the one of the [:pongeven
 The receiving of the [:pingevent:] event is restricted to the sender of the
 [:pongevent:] event.
 
-		[:Success:]
-			package io.sarl.docs.tutorials.pingpong
-			import io.sarl.core.DefaultContextInteractions
-			event Ping {
-				val index : int
-				new (i : int) {
-					this.index = i
-				}
-			}
-			event Pong {
-				val index : int
-				new (i : int) {
-					this.index = i
-				}
-			}
-			[:On]agent PingAgent {
-				uses DefaultContextInteractions
-				on Pong {
-					emit(new Ping( occurrence.index + 1 ))
-						[ it == occurrence.source ]
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.tutorials.pingpong
+	import io.sarl.core.DefaultContextInteractions
+	event Ping {
+		val index : int
+		new (i : int) {
+			this.index = i
+		}
+	}
+	event Pong {
+		val index : int
+		new (i : int) {
+			this.index = i
+		}
+	}
+	[:On]agent PingAgent {
+		uses DefaultContextInteractions
+		on Pong {
+			emit(new Ping( occurrence.index + 1 ))
+				[ it == occurrence.source ]
+		}
+	}
+[:End:]
+
 
 ### Sending the first Ping
 
@@ -289,33 +291,33 @@ of the [:pingevent:] event.
 This emit is done when the ping agent is started, i.e. when the agent is
 receiving the [:initevent:] event.
 
-		[:Success:]
-			package io.sarl.docs.tutorials.pingpong
-			import io.sarl.core.DefaultContextInteractions
-			import io.sarl.core.Initialize
-			event Ping {
-				val index : int
-				new (i : int) {
-					this.index = i
-				}
-			}
-			event Pong {
-				val index : int
-				new (i : int) {
-					this.index = i
-				}
-			}
-			[:On]agent PingAgent {
-				uses DefaultContextInteractions
-				on Pong {
-					emit(new Ping( occurrence.index + 1 ))
-						[ it == occurrence.source ]
-				}
-				on [:initevent](Initialize) {
-					emit( new Ping(0) )
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.tutorials.pingpong
+	import io.sarl.core.DefaultContextInteractions
+	import io.sarl.core.Initialize
+	event Ping {
+		val index : int
+		new (i : int) {
+			this.index = i
+		}
+	}
+	event Pong {
+		val index : int
+		new (i : int) {
+			this.index = i
+		}
+	}
+	[:On]agent PingAgent {
+		uses DefaultContextInteractions
+		on Pong {
+			emit(new Ping( occurrence.index + 1 ))
+				[ it == occurrence.source ]
+		}
+		on [:initevent](Initialize) {
+			emit( new Ping(0) )
+		}
+	}
+[:End:]
 
 
 ### Delaying the sending of the first Ping
@@ -339,40 +341,40 @@ In this periodically executed code, the agent is testing if it is the only
 one agent belonging to the default space. If not, the agent is sending the initial
 [:pingevent:] event, and stopping the periodic task.
 
-		[:Success:]
-			package io.sarl.docs.tutorials.pingpong
-			import io.sarl.core.DefaultContextInteractions
-			import io.sarl.core.Initialize
-			import io.sarl.core.Schedules
-			event Ping {
-				val index : int
-				new (i : int) {
-					this.index = i
+[:Success:]
+	package io.sarl.docs.tutorials.pingpong
+	import io.sarl.core.DefaultContextInteractions
+	import io.sarl.core.Initialize
+	import io.sarl.core.Schedules
+	event Ping {
+		val index : int
+		new (i : int) {
+			this.index = i
+		}
+	}
+	event Pong {
+		val index : int
+		new (i : int) {
+			this.index = i
+		}
+	}
+	[:On]agent PingAgent {
+		uses DefaultContextInteractions, [:schedcap](Schedules)
+		on Pong {
+			emit(new Ping( occurrence.index + 1 ))
+				[ it == occurrence.source ]
+		}
+		on Initialize {
+			val task = task("[:taskname](waiting_for_partner)")
+			task.[:every](every)(1000) [
+				if (defaultSpace.numberOfStrongParticipants > 1) {
+					emit( new Ping(0) )
+					task.cancel
 				}
-			}
-			event Pong {
-				val index : int
-				new (i : int) {
-					this.index = i
-				}
-			}
-			[:On]agent PingAgent {
-				uses DefaultContextInteractions, [:schedcap](Schedules)
-				on Pong {
-					emit(new Ping( occurrence.index + 1 ))
-						[ it == occurrence.source ]
-				}
-				on Initialize {
-					val task = task("[:taskname](waiting_for_partner)")
-					task.[:every](every)(1000) [
-						if (defaultSpace.numberOfStrongParticipants > 1) {
-							emit( new Ping(0) )
-							task.cancel
-						}
-					]
-				}
-			}
-		[:End:]
+			]
+		}
+	}
+[:End:]
 
 
 ## Launch the agents
@@ -399,21 +401,21 @@ function, which is provided by the [:lifecyclecap:] capacity too.
 [:Fact:]{typeof(io.sarl.core.Lifecycle).shouldHaveMethod("spawn(java.lang.Class, java.lang.Object[])")}
 [:Fact:]{typeof(io.sarl.core.Lifecycle).shouldHaveMethod("killMe")}
 
-		[:Success:]
-			package io.sarl.docs.tutorials.pingpong
-			import io.sarl.core.Initialize
-			import io.sarl.core.Lifecycle
-			agent PongAgent { }
-			agent PingAgent { }
-			[:On]agent [:bootagent](BootAgent) {
-				uses [:lifecyclecap](Lifecycle)
-				on Initialize {
-					spawn(PongAgent)
-					spawn(PingAgent)
-					[:killmefct](killMe)
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.tutorials.pingpong
+	import io.sarl.core.Initialize
+	import io.sarl.core.Lifecycle
+	agent PongAgent { }
+	agent PingAgent { }
+	[:On]agent [:bootagent](BootAgent) {
+		uses [:lifecyclecap](Lifecycle)
+		on Initialize {
+			spawn(PongAgent)
+			spawn(PingAgent)
+			[:killmefct](killMe)
+		}
+	}
+[:End:]
 
 
 [:Include:](../legal.inc)

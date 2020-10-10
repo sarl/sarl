@@ -128,7 +128,7 @@ public final class MarkdownExtensions {
 	 */
 	protected static String _renderToMarkdown(List<List<String>> table) {
 		if (table == null || table.isEmpty()) {
-			return ""; //$NON-NLS-1$
+			throw new MarkdownEmptyArrayException();
 		}
 		final StringBuilder buffer = new StringBuilder();
 		for (final List<String> line : table) {

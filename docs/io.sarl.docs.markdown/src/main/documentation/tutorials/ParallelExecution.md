@@ -27,27 +27,28 @@ The event firing mechanism could be divided into three steps:
 Each of these steps are basically run in different threads.
 Let the following code:
 
-		[:Success:]
-			package io.sarl.docs.tutorials.parallelexecution
-			import io.sarl.core.DefaultContextInteractions
-			import io.sarl.core.Logging
-			import io.sarl.core.Initialize
-			agent PongAgent { }
-			agent PingAgent { }
-			event MyEvent
-			[:On]agent MyAgent {
-				uses DefaultContextInteractions, Logging
+[:Success:]
+	package io.sarl.docs.tutorials.parallelexecution
+	import io.sarl.core.DefaultContextInteractions
+	import io.sarl.core.Logging
+	import io.sarl.core.Initialize
+	agent PongAgent { }
+	agent PingAgent { }
+	event MyEvent
+	[:On]agent MyAgent {
+		uses DefaultContextInteractions, Logging
 
-				[:initializeblock](on Initialize) {
-					[:emit](emit)(new MyEvent)
-					info([:msg1]("Event sent"))
-				}
+		[:initializeblock](on Initialize) {
+			[:emit](emit)(new MyEvent)
+			info([:msg1]("Event sent"))
+		}
 
-				[:myeventblock](on MyEvent) {
-					info([:msg2]("Event received"))
-				}
-			}
-		[:End:]
+		[:myeventblock](on MyEvent) {
+			info([:msg2]("Event received"))
+		}
+	}
+[:End:]
+
 
 The call to [:emit:] is run within the thread of the calling block, i.e. [:initializeblock:].
 The event is provides to the SRE, that is routing this event within a dedicated "hidden" thread.
@@ -57,8 +58,8 @@ is started nor terminated when the function returns.
 In order to allow the parallel treatment of the events by an agent, each event handler, e.g. [:myeventblock:]
 is run in a dedicated thread.
 
-<caution>In the previous example, there is no warranty about the order of printing of the two messages. Because of the parallel execution
-of the threads, the [:msg2:] message may be displayed before the [:msg1:] message.</caution>
+> **_Caution:_** In the previous example, there is no warranty about the order of printing of the two messages.
+> Because of the parallel execution of the threads, the [:msg2:] message may be displayed before the [:msg1:] message.
 
 ## Agent Spawning
 
@@ -78,35 +79,35 @@ Steps 2 to 5 are run within an internal thread of the SRE.
 
 Let the following code:
 
-		[:Success:]
-			package io.sarl.docs.tutorials.parallelexecution
-			import io.sarl.core.Lifecycle
-			import io.sarl.core.Logging
-			import io.sarl.core.AgentSpawned
-			import io.sarl.core.Initialize
-			agent PongAgent { }
-			agent PingAgent { }
-			event MyEvent
-			[:On]agent MyAgent {
-				uses Lifecycle, Logging
+[:Success:]
+	package io.sarl.docs.tutorials.parallelexecution
+	import io.sarl.core.Lifecycle
+	import io.sarl.core.Logging
+	import io.sarl.core.AgentSpawned
+	import io.sarl.core.Initialize
+	agent PongAgent { }
+	agent PingAgent { }
+	event MyEvent
+	[:On]agent MyAgent {
+		uses Lifecycle, Logging
 
-				[:initializeblock](on Initialize) {
-					spawn(typeof(MyAgent2))
-					info([:msg1]("Spawn query called"))
-				}
+		[:initializeblock](on Initialize) {
+			spawn(typeof(MyAgent2))
+			info([:msg1]("Spawn query called"))
+		}
 
-				[:agentspawnedblock](on AgentSpawned) {
-					info([:msg2]("Agent was spawned"))
-				}
-			}
-			agent MyAgent2 {
-				uses Logging
+		[:agentspawnedblock](on AgentSpawned) {
+			info([:msg2]("Agent was spawned"))
+		}
+	}
+	agent MyAgent2 {
+		uses Logging
 
-				[:initializeblock!] {
-					info([:msg3]("Do initialization"))
-				}
-			}
-		[:End:]
+		[:initializeblock!] {
+			info([:msg3]("Do initialization"))
+		}
+	}
+[:End:]
 
 The [:msg3:] message is always logged before the [:msg2:] message because the executed code corresponds to
 steps 5 and 4, respectively. These steps are run on the same thread.
@@ -135,32 +136,33 @@ Steps 2 to 4 are run within an internal thread of the SRE.
 
 Let the following code:
 
-		[:Success:]
-			package io.sarl.docs.tutorials.parallelexecution
-			import io.sarl.core.Lifecycle
-			import io.sarl.core.Logging
-			import io.sarl.core.AgentKilled
-			import io.sarl.core.Initialize
-			import io.sarl.core.Destroy
-			agent PongAgent { }
-			agent PingAgent { }
-			event MyEvent
-			[:On]agent MyAgent {
-				uses Lifecycle, Logging
+[:Success:]
+	package io.sarl.docs.tutorials.parallelexecution
+	import io.sarl.core.Lifecycle
+	import io.sarl.core.Logging
+	import io.sarl.core.AgentKilled
+	import io.sarl.core.Initialize
+	import io.sarl.core.Destroy
+	agent PongAgent { }
+	agent PingAgent { }
+	event MyEvent
+	[:On]agent MyAgent {
+		uses Lifecycle, Logging
 
-				[:initializeblock](on Initialize) {
-					killMe
-				}
+		[:initializeblock](on Initialize) {
+			killMe
+		}
 
-				[:destroyblock](on Destroy) {
-					info([:msg1a]("Do destruction"))
-				}
+		[:destroyblock](on Destroy) {
+			info([:msg1a]("Do destruction"))
+		}
 
-				[:agentspawnedblock](on AgentKilled) {
-					info([:msg2b]("Agent was killed"))
-				}
-			}
-		[:End:]
+		[:agentspawnedblock](on AgentKilled) {
+			info([:msg2b]("Agent was killed"))
+		}
+	}
+[:End:]
+
 
 The [:msg2b:] message is always logged after the [:msg1a:] message because the executed code corresponds to
 steps 4 and 3, respectively. These steps are run on the same thread.

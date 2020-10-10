@@ -24,15 +24,15 @@ the operations of the space.
 
 In the following example, the [:mycapacityname:] capacity is defined with the [:fctname:] function. 
 
-		[:Success:]
-			[:On]
-			capacity [:mycapacityname](MyCapacity) {
-			
-				def [:fctname](functionAccessibleToTheAgent)(parameter : Object)
-			
-			}
-			[:Off]
-		[:End:]
+[:Success:]
+	[:On]
+	capacity [:mycapacityname](MyCapacity) {
+	
+		def [:fctname](functionAccessibleToTheAgent)(parameter : Object)
+	
+	}
+	[:Off]
+[:End:]
 
 
 ## Space Definition
@@ -41,95 +41,97 @@ Currently, the definition of a space into SARL with specific keywords is not yet
 You must define a space with the definition of a class that extends the [:spacetype:] type.
 In the following example, the [:myspacename:] space is declared:
 
-		[:Success:]
-			import io.sarl.lang.core.Space
-			import io.sarl.lang.core.SpaceID
-			import java.util.concurrent.ConcurrentSkipListSet
-			import java.util.UUID
-			abstract [:On]
-			class [:myspacename](MySpace) implements [:spacetype](Space) {
-			
-				val id : SpaceID
+[:Success:]
+	import io.sarl.lang.core.Space
+	import io.sarl.lang.core.SpaceID
+	import java.util.concurrent.ConcurrentSkipListSet
+	import java.util.UUID
+	abstract [:On]
+	class [:myspacename](MySpace) implements [:spacetype](Space) {
+	
+		val id : SpaceID
 
-				new (id : SpaceID) {
-					this.id = id
-				}
+		new (id : SpaceID) {
+			this.id = id
+		}
 
-			    def getSpaceID : SpaceID {
-			    	this.id
-			    }
+	    def getSpaceID : SpaceID {
+	    	this.id
+	    }
 
-			    def getParticipants : ConcurrentSkipListSet<UUID> {
-			    	null
-			    }
+	    def getParticipants : ConcurrentSkipListSet<UUID> {
+	    	null
+	    }
 
-			}
-			[:Off]
-		[:End:]
+	}
+	[:Off]
+[:End:]
+
 
 The [:fctname:] function, initially defined into the [:mycapacityname:] capacity must be defined into the
 [:myspacename:] space. But for enabling the space to have the identity of the function caller, the identity
 must be given as formal parameter, in addition to the already defined parameters.
 Back to the example, the code becomes:
 
-		[:Success:]
-			import io.sarl.lang.core.Space
-			import io.sarl.lang.core.SpaceID
-			import java.util.concurrent.ConcurrentSkipListSet
-			import java.util.UUID
-			abstract [:On]
-			class [:myspacename](MySpace) implements [:spacetype](Space) {
-			
-				def [:fctname!](callerIdentity : UUID, parameter : Object) {
-					// Do something
-				}
+[:Success:]
+	import io.sarl.lang.core.Space
+	import io.sarl.lang.core.SpaceID
+	import java.util.concurrent.ConcurrentSkipListSet
+	import java.util.UUID
+	abstract [:On]
+	class [:myspacename](MySpace) implements [:spacetype](Space) {
+	
+		def [:fctname!](callerIdentity : UUID, parameter : Object) {
+			// Do something
+		}
 
-				val id : SpaceID
+		val id : SpaceID
 
-				new (id : SpaceID) {
-					this.id = id
-				}
+		new (id : SpaceID) {
+			this.id = id
+		}
 
-			    def getSpaceID : SpaceID {
-			    	this.id
-			    }
+	    def getSpaceID : SpaceID {
+	    	this.id
+	    }
 
-			    def getParticipants : ConcurrentSkipListSet<UUID> {
-			    	null
-			    }
+	    def getParticipants : ConcurrentSkipListSet<UUID> {
+	    	null
+	    }
 
-			}
-			[:Off]
-		[:End:]
+	}
+	[:Off]
+[:End:]
+
 
 In order to enable the creation of an instance of [:myspacename!], a space specification must be defined:
 
-		[:Success:]
-			import io.sarl.lang.core.Space
-			import io.sarl.lang.core.SpaceID
-			import io.sarl.lang.core.SpaceSpecification
-			import java.util.concurrent.ConcurrentSkipListSet
-			import java.util.UUID
-			class [:myspacename!] implements [:spacetype!] {
-				def [:fctname!](callerIdentity : UUID, parameter : Object) {
-				}
-				new (id : SpaceID) {}
-			    def getSpaceID : SpaceID {}
-			    def getID : SpaceID {}
-			    def isPseudoEmpty(id : UUID) { false }
-				def getNumberOfStrongParticipants : int { 0 }
-				def getNumberOfWeakParticipants : int { 0 }
-				def forEachStrongParticipant(cb : (UUID)=>void) {}
-				def forEachWeakParticipant(cb : (UUID)=>void) {}
-			}
-			[:On]
-			class [:myspacespecname]([:myspacename!]Specification) implements SpaceSpecification<[:myspacename!]> {
-				def create(id : SpaceID, params : Object*) : [:myspacename!] {
-					new [:myspacename!](id)
-				}
-			}
-			[:Off]
-		[:End:]
+[:Success:]
+	import io.sarl.lang.core.Space
+	import io.sarl.lang.core.SpaceID
+	import io.sarl.lang.core.SpaceSpecification
+	import java.util.concurrent.ConcurrentSkipListSet
+	import java.util.UUID
+	class [:myspacename!] implements [:spacetype!] {
+		def [:fctname!](callerIdentity : UUID, parameter : Object) {
+		}
+		new (id : SpaceID) {}
+	    def getSpaceID : SpaceID {}
+	    def getID : SpaceID {}
+	    def isPseudoEmpty(id : UUID) { false }
+		def getNumberOfStrongParticipants : int { 0 }
+		def getNumberOfWeakParticipants : int { 0 }
+		def forEachStrongParticipant(cb : (UUID)=>void) {}
+		def forEachWeakParticipant(cb : (UUID)=>void) {}
+	}
+	[:On]
+	class [:myspacespecname]([:myspacename!]Specification) implements SpaceSpecification<[:myspacename!]> {
+		def create(id : SpaceID, params : Object*) : [:myspacename!] {
+			new [:myspacename!](id)
+		}
+	}
+	[:Off]
+[:End:]
 
 
 
@@ -140,42 +142,43 @@ The main role of this skill is to determine the identity of the operation's call
 it to the space.
 Back to the example, the code for the skill is:
 
-		[:Success:]
-			import io.sarl.lang.core.Space
-			import io.sarl.lang.core.SpaceID
-			import io.sarl.lang.core.SpaceSpecification
-			import java.util.concurrent.ConcurrentSkipListSet
-			import java.util.UUID
-			capacity [:mycapacityname!] {
-				def [:fctname!](parameter : Object)
-			}
-			class [:myspacename!] implements [:spacetype!] {
-				def [:fctname!](callerIdentity : UUID, parameter : Object) {}
-				new (id : SpaceID) {}
-			    def getSpaceID : SpaceID {}
-			    def getID : SpaceID {}
-			    def isPseudoEmpty(id : UUID) { false }
-				def getNumberOfStrongParticipants : int { 0 }
-				def getNumberOfWeakParticipants : int { 0 }
-				def forEachStrongParticipant(cb : (UUID)=>void) {}
-				def forEachWeakParticipant(cb : (UUID)=>void) {}
-			}
-			class [:myspacespecname]([:myspacename!]Specification) implements SpaceSpecification<[:myspacename!]> {
-				def create(id : SpaceID, params : Object*) : [:myspacename!] {
-					new [:myspacename!](id)
-				}
-			}
-			[:On]
-			skill [:myskillname](MySkill) implements [:mycapacityname!] {
+[:Success:]
+	import io.sarl.lang.core.Space
+	import io.sarl.lang.core.SpaceID
+	import io.sarl.lang.core.SpaceSpecification
+	import java.util.concurrent.ConcurrentSkipListSet
+	import java.util.UUID
+	capacity [:mycapacityname!] {
+		def [:fctname!](parameter : Object)
+	}
+	class [:myspacename!] implements [:spacetype!] {
+		def [:fctname!](callerIdentity : UUID, parameter : Object) {}
+		new (id : SpaceID) {}
+	    def getSpaceID : SpaceID {}
+	    def getID : SpaceID {}
+	    def isPseudoEmpty(id : UUID) { false }
+		def getNumberOfStrongParticipants : int { 0 }
+		def getNumberOfWeakParticipants : int { 0 }
+		def forEachStrongParticipant(cb : (UUID)=>void) {}
+		def forEachWeakParticipant(cb : (UUID)=>void) {}
+	}
+	class [:myspacespecname]([:myspacename!]Specification) implements SpaceSpecification<[:myspacename!]> {
+		def create(id : SpaceID, params : Object*) : [:myspacename!] {
+			new [:myspacename!](id)
+		}
+	}
+	[:On]
+	skill [:myskillname](MySkill) implements [:mycapacityname!] {
 
-				var [:spacename](^space) : [:myspacename!]
+		var [:spacename](^space) : [:myspacename!]
 
-				def [:fctname!](parameter : Object) {
-					this.[:spacename!].[:fctname!](this.owner.ID, parameter)
-				}
-			}
-			[:Off]
-		[:End:]
+		def [:fctname!](parameter : Object) {
+			this.[:spacename!].[:fctname!](this.owner.ID, parameter)
+		}
+	}
+	[:Off]
+[:End:]
+
 
 In the previous code, the reference to the space is put into a skill's field, named [:spacename:].
 This field is not initialized in the previous example. You could initialize it into the installation function of
@@ -191,9 +194,9 @@ Sometimes, it is useful to obtain the instance of the object, which has called t
 The caller may be the agent itself or one of its behaviors.
 The definition of the abstract type [:skilltype:] includes the [:getcallerfct:] function:
 
-		[:Fact:]{typeof(io.sarl.lang.core.[:skilltype](Skill)).shouldHaveMethod(
-			"[:getcallerfct](getCaller) : io.sarl.lang.core.AgentTrait")
-		}
+[:Fact:]{typeof(io.sarl.lang.core.[:skilltype](Skill)).shouldHaveMethod(
+	"[:getcallerfct](getCaller) : io.sarl.lang.core.AgentTrait")
+}
 
 Into the skill's functions, you could use this function for obtaining the skill function's caller.
 This function replies the behavior instance, which has called the function, or `ǹull` if the caller
@@ -202,41 +205,39 @@ is the agent.
 Back to the previous example, let's change the type of caller identity from `UUID` to `Object` in order
 to give the instance of the caller to the space. The code of the skill becomes:
 
-		[:Success:]
-			import io.sarl.lang.core.Space
-			import io.sarl.lang.core.SpaceID
-			import io.sarl.lang.core.SpaceSpecification
-			import java.util.concurrent.ConcurrentSkipListSet
-			import java.util.UUID
-			capacity [:mycapacityname!] {
-				def [:fctname!](parameter : Object)
-			}
-			class [:myspacename!] implements [:spacetype!] {
-				def [:fctname!](callerIdentity : Object, parameter : Object) {}
-				new (id : SpaceID) {}
-			    def getSpaceID : SpaceID {}
-			    def getID : SpaceID {}
-			    def isPseudoEmpty(id : UUID) { true }
-				def getNumberOfStrongParticipants : int { 0 }
-				def getNumberOfWeakParticipants : int { 0 }
-				def forEachStrongParticipant(cb : (UUID)=>void) {}
-				def forEachWeakParticipant(cb : (UUID)=>void) {}
-			}
-			[:On]
-			skill [:myskillname](MySkill) implements [:mycapacityname!] {
-			
-				var [:spacename](^space) : [:myspacename!]
-			
-				def [:fctname!](parameter : Object) {
-					var theCaller = getCaller ?: this.owner
-					this.[:spacename!].[:fctname!](theCaller, parameter)
-				}
+[:Success:]
+	import io.sarl.lang.core.Space
+	import io.sarl.lang.core.SpaceID
+	import io.sarl.lang.core.SpaceSpecification
+	import java.util.concurrent.ConcurrentSkipListSet
+	import java.util.UUID
+	capacity [:mycapacityname!] {
+		def [:fctname!](parameter : Object)
+	}
+	class [:myspacename!] implements [:spacetype!] {
+		def [:fctname!](callerIdentity : Object, parameter : Object) {}
+		new (id : SpaceID) {}
+	    def getSpaceID : SpaceID {}
+	    def getID : SpaceID {}
+	    def isPseudoEmpty(id : UUID) { true }
+		def getNumberOfStrongParticipants : int { 0 }
+		def getNumberOfWeakParticipants : int { 0 }
+		def forEachStrongParticipant(cb : (UUID)=>void) {}
+		def forEachWeakParticipant(cb : (UUID)=>void) {}
+	}
+	[:On]
+	skill [:myskillname](MySkill) implements [:mycapacityname!] {
+	
+		var [:spacename](^space) : [:myspacename!]
+	
+		def [:fctname!](parameter : Object) {
+			var theCaller = getCaller ?: this.owner
+			this.[:spacename!].[:fctname!](theCaller, parameter)
+		}
 
-			}
-			[:Off]
-		[:End:]
-
+	}
+	[:Off]
+[:End:]
 
 
 [:Include:](../legal.inc)
-

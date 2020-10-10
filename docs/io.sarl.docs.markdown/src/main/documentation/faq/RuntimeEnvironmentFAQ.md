@@ -123,7 +123,7 @@ version of the SARL tools, which are embedded in Eclipse.
 
 For solving this problem, you must download the latest
 [Janus platform](http://www.janusproject.io), and install it in your Eclipse
-(Menu <code>Window&gt; Preferences&gt; SARL&gt; Installed SREs</code>).
+(Menu `Window&gt; Preferences&gt; SARL&gt; Installed SREs`).
 
 
 ### Error: "Incompatible SRE with SARL 1.1.1.1. Version must be lower than 0.0.0."
@@ -196,7 +196,7 @@ how the Java executor is running the handlers on the threads.
 ### How events are treated by the run-time environment?
 
 When the event `e` of type `E` is received by an agent the following algorithm is applied:
-```
+```text
 if "on Initialize" is currently running then
    add e to a buffer of events.
 else if "on Destroy" is currently running then
@@ -264,4 +264,3 @@ You should submit your issue on
 
 
 [:Include:](../legal.inc)
-

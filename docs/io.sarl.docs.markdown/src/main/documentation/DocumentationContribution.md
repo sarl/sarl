@@ -18,13 +18,17 @@ The Mardown support is extended in order to:
 Markdown standard enables to specify hypertext links to resources that are outside the current Markdown document.
 The syntax is:
 
-		[label](url)
+```text
+[label](url)
+```
 
 
 If the given URL is a link to a local Markdown resource within the SARL documentation, you have to specify the
 local path (following the URL standard notation), e.g.:
 
-		[My link 1](./index.md) 
+```text
+[My link 1](./index.md) 
+```
 
 The result of the parsing of this link is: [My link 1](./index.md).
 
@@ -32,7 +36,9 @@ The result of the parsing of this link is: [My link 1](./index.md).
 It has the same effect to have the file extensions `.html` or `.md` for the targeted resource. For example, the previous
 example is equivalent to:
 
-		[My link 2](./index.html) 
+```text
+[My link 2](./index.html) 
+```
 
 The result of the parsing of this link is: [My link 2](./index.html).
 
@@ -41,7 +47,9 @@ Sometimes, it is useful to point an internal section out within the targeted res
 notation. The format of the anchor name is the title of the section, in lower case, with all characters that are not
 alphanumeric to be replaced by the `-` character. 
 
-		[My link 3](./index.html#3-1-event-communication)
+```
+[My link 3](./index.html#3-1-event-communication)
+```
 		
 The result of the parsing of this link is: [My link 3](./index.md#3-1-event-communication).
 

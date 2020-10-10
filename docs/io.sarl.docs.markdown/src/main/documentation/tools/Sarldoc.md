@@ -18,8 +18,9 @@ documentation pattern for SARL code.
 
 The [:name:] tool takes arguments:
 
-
-	[:name!] [OPTIONS] <[:srcfolder](source folder)>...
+```text
+[:name!] [OPTIONS] <[:srcfolder](source folder)>...
+```
 
 
 The [:name:] tool takes at least one [:srcfolder:] from which the SARL files are read.
@@ -27,7 +28,9 @@ The [:name:] tool takes at least one [:srcfolder:] from which the SARL files are
 You could change the behavior of the [:name:] compiler with the command-line options.
 For obtaining a list of the options, type:
 
-	[:name!] -h
+```text
+[:name!] -h
+```
 
 
 ## Command-Line Options
@@ -56,15 +59,15 @@ A documentation comment consists of the characters between `/**` and `*/` that e
 allowed on each line and are described further in the following section. The text in a comment can continue
 onto multiple lines.
 
-    [:Success:]
-        [:On]
-        /**
-		 * This is the typical format of a simple documentation comment
-		 * that spans two lines.
-		 */
-        [:Off]
-        class X {}
-    [:End:]
+[:Success:]
+    [:On]
+    /**
+	 * This is the typical format of a simple documentation comment
+	 * that spans two lines.
+	 */
+    [:Off]
+    class X {}
+[:End:]
 
 #### Placement of Comments
 
@@ -82,15 +85,16 @@ It is possible to have a comment with only a tag section and no main description
 after the tag section begins. The argument to a tag can span multiple lines. There can be any number of tags, and some
 types of tags can be repeated while others cannot. For example, this [:seetag:] tag starts the tag section:
 
-    [:Success:]
-        [:On]
-        /**
-		 * This sentence holds the main description for this documentation comment.
-		 * [:seetag](@see) java.lang.Object
-		 */
-        [:Off]
-        class X {}
-    [:End:]
+[:Success:]
+    [:On]
+    /**
+	 * This sentence holds the main description for this documentation comment.
+	 * [:seetag](@see) java.lang.Object
+	 */
+    [:Off]
+    class X {}
+[:End:]
+
 
 #### Block and Inline Tags
 
@@ -108,14 +112,15 @@ text can span multiple lines.
 An inline tag is allowed and interpreted anywhere that text is allowed. The following example contains the
 [:deprecatedtag:] block tag and the `[:startlinktag!]}" inline tag.
 
-    [:Success:]
-        [:On]
-        /**
-         * [:deprecatedtag](@deprecated) As of SARL 1.1, replaced by [:startlinktag]({@link) #setBounds(int,int,int,int)}
-         */
-        [:Off]
-        class X {}
-    [:End:]
+[:Success:]
+    [:On]
+    /**
+     * [:deprecatedtag](@deprecated) As of SARL 1.1, replaced by [:startlinktag]({@link) #setBounds(int,int,int,int)}
+     */
+    [:Off]
+    class X {}
+[:End:]
+
 
 #### Write comments in HTML
 
@@ -128,15 +133,16 @@ For example, entities for the less than symbol (`<`) and the greater than symbol
 and `&gt;`. Similarly, the ampersand (`&`) should be written as `&amp;`. The bold HTML tag [:boldhtmltag:] is shown
 in the following example.
 
-    [:Success:]
-        [:On]
-        /**
-         * This is a [:boldhtmltag](<b>)doc</b> comment.
-         * @see java.lang.Object
-         */
-        [:Off]
-        class X {}
-    [:End:]
+[:Success:]
+    [:On]
+    /**
+     * This is a [:boldhtmltag](<b>)doc</b> comment.
+     * @see java.lang.Object
+     */
+    [:Off]
+    class X {}
+[:End:]
+
 
 #### Leading Asterisks
 
@@ -158,8 +164,8 @@ the top of the HTML page.
 The [:name:] command allows method comment inheritance in type declarations to fill in missing text or to explicitly
 inherit method comments. Constructors, fields, and nested types do not inherit documentation comments.
 
-<caution>The source file for an inherited method must be on the path for the documentation comment to be available to
-copy. Neither the class nor its package needs to be passed in on the command line.</caution>
+> **_Caution:_** The source file for an inherited method must be on the path for the documentation comment to be available to
+> copy. Neither the class nor its package needs to be passed in on the command line.
 
 When a main description, or `@return`, `@param`, or `@throws` tag is missing from a method comment, the [:name:] command
 copies the corresponding main description or tag comment from the method it overrides or implements (if any).

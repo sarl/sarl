@@ -22,8 +22,8 @@ of a binary expression. They work automatically when the corresponding infix ope
 | a %= b   | Alias to: `a = a % b`                   | [:Fact:]${var a : int = 5; a %= 6; a} == 5$
 
 
-<note>The assignment operator is the only one operator that cannot be overridden yet.
-See the [operator overloading section](#operator-overloading) for details.</note>
+> **_Note:_** The assignment operator is the only one operator that cannot be overridden yet.
+> See the [operator overloading section](#operator-overloading) for details.
 
 
 ## Arithmetic operators
@@ -133,16 +133,17 @@ a numeric value.
 | a &gt;&gt;&gt; b | operator\_tripleGreaterThan | Shift the unsigned bit representation of a to the left by b units | [:Fact:]$(-8 >>> 3) == 536870911$
 
 
-		[:Failure:]
-			package io.sarl.docs.reference.gsr
-			class X {
-				def myfct {
-					var a = 5
-					var b = 6
-					var c = (a <<< b)
-				}
-			}
-		[:End:]
+[:Failure:]
+	package io.sarl.docs.reference.gsr
+	class X {
+		def myfct {
+			var a = 5
+			var b = 6
+			var c = (a <<< b)
+		}
+	}
+[:End:]
+
 
 Each operator has an associated function name. This function contains
 the concrete implementation of the operational semantic of the
@@ -261,18 +262,18 @@ This section presents a collection of operators that are not related to the cate
                                                    scope in order to do something on it. b must be a lambda expression.              |
 | a &lt;&gt; b           | operator\_diamond     | Not yet supported.                                                                |
 
-		[:Fact:]$(null ?: 'a') == "a"$
-		[:Fact:]$('b' ?: 'a') == "b"$
-		[:Failure:]
-			package io.sarl.docs.reference.gsr
-			class X {
-				def myfct {
-					var a = 5
-					var b = 6
-					var c = (a <> b)
-				}
-			}
-		[:End:]
+[:Fact:]$(null ?: 'a') == "a"$
+[:Fact:]$('b' ?: 'a') == "b"$
+[:Failure:]
+	package io.sarl.docs.reference.gsr
+	class X {
+		def myfct {
+			var a = 5
+			var b = 6
+			var c = (a <> b)
+		}
+	}
+[:End:]
 
 
 Each operator has an associated function name. This function contains
@@ -283,21 +284,22 @@ operator. This function can be redefined as explained in the
 For an example of the [:mapto:] operator, consider the class `Person` with two attributes inside: [:attr1:] and [:attr2:].
 The creation of an instance of `Person` could be done with:
 
-		[:Failure:]
-			package io.sarl.docs.reference.gsr
-			class X {
-				def myfct : Object {
-					[:On]
-					new Person => [
-						[:attr1](firstName) = 'Han'[:semicolon](;)
-						[:attr2](lastName) = 'Solo'
-					]
-					[:Off]
-				}
-			}
-		[:End:]
+[:Failure:]
+	package io.sarl.docs.reference.gsr
+	class X {
+		def myfct : Object {
+			[:On]
+			new Person => [
+				[:attr1](firstName) = 'Han'[:semicolon](;)
+				[:attr2](lastName) = 'Solo'
+			]
+			[:Off]
+		}
+	}
+[:End:]
 
-<note>Note how the [:semicolon:] allows two expressions on one line</note>
+
+> **_Note:_** Note how the [:semicolon:] allows two expressions on one line.
 
 In this example, the instance of Person is created and passed to the
 lambda expression. Inside this expression, the new Person instance is accessible with the `it`
@@ -376,35 +378,35 @@ The function that is defining the operator must be named with the [:operatorpref
 for each operand associated with the operator. In the example, the addition of two pairs [:pair1:] and [:pair2:].
 gives the pair (a,d).
  
- 		[:Success:]
- 			package io.sarl.docs.reference.gsr
-			agent A {
-				[:On]
-				def [:operatorprefix](operator_)plus(
-							a : [:pairtype](Pair)<Integer,Integer>,
-							b : Pair<Integer,Integer>) : Pair<Integer,Integer> {
-					return new Pair(a.key, b.value)
-				}
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	agent A {
+		[:On]
+		def [:operatorprefix](operator_)plus(
+					a : [:pairtype](Pair)<Integer,Integer>,
+					b : Pair<Integer,Integer>) : Pair<Integer,Integer> {
+			return new Pair(a.key, b.value)
+		}
 
-				def example {
-					var x = [:pair1](1 -> 3)
-					var y = [:pair2](4 -> 5)
-					
-					// Old-fashion-style call to the overloaded operator
-					var z1 = operator_plus(x, y)
-					
-					// Operator-style call to the overloaded operator
-					var z2 = x [:plusop](+) y 
-					
-					// z1 == (1 -> 5)
-					println(z1.toString)
-					
-					// z2 == (1 -> 5)
-					println(z2.toString)
-				}
-				[:Off]
-			}
- 		[:End:]
+		def example {
+			var x = [:pair1](1 -> 3)
+			var y = [:pair2](4 -> 5)
+			
+			// Old-fashion-style call to the overloaded operator
+			var z1 = operator_plus(x, y)
+			
+			// Operator-style call to the overloaded operator
+			var z2 = x [:plusop](+) y 
+			
+			// z1 == (1 -> 5)
+			println(z1.toString)
+			
+			// z2 == (1 -> 5)
+			println(z2.toString)
+		}
+		[:Off]
+	}
+[:End:]
 
 In addition to the overloading of the operators that are described on this page, it 
 is possible to overload the casting operator. See [details](./Cast.md).

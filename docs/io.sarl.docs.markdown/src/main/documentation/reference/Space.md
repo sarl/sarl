@@ -56,11 +56,11 @@ SARL provides a collection of interfaces that are representing different types o
 
 SARL provides an interface that is representing all the spaces:
 
-		[:ShowType:]{io.sarl.lang.core.[:spacedef](Space)}
-		[:Fact:]{typeof(io.sarl.lang.core.Space).shouldHaveMethod("[:getspaceidfct](getSpaceID) : io.sarl.lang.core.SpaceID")}
-		[:Fact:]{typeof(io.sarl.lang.core.Space).shouldHaveMethod("[:getnumberofstrongparticipantsfct](getNumberOfStrongParticipants) : int")}
-		[:Fact:]{typeof(io.sarl.lang.core.Space).shouldHaveMethod("[:ispseudoemptyfct](isPseudoEmpty) : boolean")}
-		[:Fact:]{typeof(io.sarl.lang.core.Space).shouldHaveMethod("isPseudoEmpty(java.util.UUID) : boolean")}
+[:ShowType:]{io.sarl.lang.core.[:spacedef](Space)}
+[:Fact:]{typeof(io.sarl.lang.core.Space).shouldHaveMethod("[:getspaceidfct](getSpaceID) : io.sarl.lang.core.SpaceID")}
+[:Fact:]{typeof(io.sarl.lang.core.Space).shouldHaveMethod("[:getnumberofstrongparticipantsfct](getNumberOfStrongParticipants) : int")}
+[:Fact:]{typeof(io.sarl.lang.core.Space).shouldHaveMethod("[:ispseudoemptyfct](isPseudoEmpty) : boolean")}
+[:Fact:]{typeof(io.sarl.lang.core.Space).shouldHaveMethod("isPseudoEmpty(java.util.UUID) : boolean")}
 
 The [:getspaceidfct:] function replies the identifier of the space.
 
@@ -80,11 +80,10 @@ the [:ispseudoemptyfct] function replies if another strong participant than the 
 
 Spaces that are based on event propagation mechanism are defined as:
 
-		[:ShowType:]{io.sarl.lang.core.[:eventspacedef](EventSpace)}
-		[:Fact:]{typeof(io.sarl.lang.core.EventSpace).shouldHaveMethod("[:getadrfct](getAddress)(java.util.UUID) : io.sarl.lang.core.Address")}
-		[:Fact:]{typeof(io.sarl.lang.core.EventSpace).shouldHaveMethod("[:emitfct](emit)(java.util.UUID,io.sarl.lang.core.Event, io.sarl.lang.core.[:scopedef](Scope))")}
-		[:Fact:]{typeof(io.sarl.lang.core.EventSpace).shouldHaveMethod("emit(java.util.UUID,io.sarl.lang.core.Event)")}
-
+[:ShowType:]{io.sarl.lang.core.[:eventspacedef](EventSpace)}
+[:Fact:]{typeof(io.sarl.lang.core.EventSpace).shouldHaveMethod("[:getadrfct](getAddress)(java.util.UUID) : io.sarl.lang.core.Address")}
+[:Fact:]{typeof(io.sarl.lang.core.EventSpace).shouldHaveMethod("[:emitfct](emit)(java.util.UUID,io.sarl.lang.core.Event, io.sarl.lang.core.[:scopedef](Scope))")}
+[:Fact:]{typeof(io.sarl.lang.core.EventSpace).shouldHaveMethod("emit(java.util.UUID,io.sarl.lang.core.Event)")}
 
 The [:getadrfct:] function replies the address in the space of the agent that has the given identifier.
 The [:emitfct:] functions permits fire of an event in the space.
@@ -94,9 +93,9 @@ The [:emitfct:] functions permits fire of an event in the space.
 
 Event spaces that are allowing the agents to be register and unregister are "open event spaces":
 
-		[:ShowType:](io.sarl.core.OpenEventSpace)
-		[:Fact:]{typeof(io.sarl.core.OpenEventSpace).shouldHaveMethod("[:registerfct](register)(io.sarl.lang.core.[:eventlistener](EventListener)) : io.sarl.lang.core.Address")}
-		[:Fact:]{typeof(io.sarl.core.OpenEventSpace).shouldHaveMethod("[:unregisterfct](unregister)(io.sarl.lang.core.EventListener) : io.sarl.lang.core.Address")}
+[:ShowType:](io.sarl.core.OpenEventSpace)
+[:Fact:]{typeof(io.sarl.core.OpenEventSpace).shouldHaveMethod("[:registerfct](register)(io.sarl.lang.core.[:eventlistener](EventListener)) : io.sarl.lang.core.Address")}
+[:Fact:]{typeof(io.sarl.core.OpenEventSpace).shouldHaveMethod("[:unregisterfct](unregister)(io.sarl.lang.core.EventListener) : io.sarl.lang.core.Address")}
 
 The functions [:registerfct:] and [:unregisterfct:] permit an agent to be involved or not.
 The function [:registerfct:] fires the event `ParticipantJoined`.
@@ -128,17 +127,17 @@ the functions provided by the space.
 The new space type must extend one of the predefined types, below [:spacetypename:]. In the following example, the new space
 is related to the physic environment in which the agents may evolve.
 
-		[:Success:]
-			import io.sarl.lang.core.Space
-			import java.util.UUID
-			import io.sarl.lang.core.EventListener
-			[:On]
-			interface PhysicSpace extends [:spacetypename](Space) {
-				def moveObject(identifier : UUID, x : float, y : float, z : float)
-				def bindBody(^agent : EventListener)
-				def unbindBody(^agent : EventListener)
-			}
-		[:End:]
+[:Success:]
+	import io.sarl.lang.core.Space
+	import java.util.UUID
+	import io.sarl.lang.core.EventListener
+	[:On]
+	interface PhysicSpace extends [:spacetypename](Space) {
+		def moveObject(identifier : UUID, x : float, y : float, z : float)
+		def bindBody(^agent : EventListener)
+		def unbindBody(^agent : EventListener)
+	}
+[:End:]
 
 This space permits to move an object, i.e. the physical representation of the agent 
 (named body). Additionally, the space gives to the agent the ability to be binded to its body, and
@@ -147,58 +146,58 @@ The [:eventlistener:] type is the event listening mechanism associated to the ag
 the `Behaviors` built-in capacity (see the corresponding
 [built-in capacity reference](./bic/Behaviors.md) for details).
 
-		[:Fact:]{typeof(io.sarl.core.Behaviors)}
+[:Fact:]{typeof(io.sarl.core.Behaviors)}
 
 
 ### Basic Implementation
 
 The definition of the space implementation depends upon the runtime environment.
 
-<caution>This section of the space reference document may evolved in future releases of SARL. Please activate
-the "deprecated feature use" warning in your compilation configuration for ensuring
-that you will be notified about any major changes on this part of the API.</caution>
+> **_Caution:_** This section of the space reference document may evolved in future releases of SARL. Please activate
+> the "deprecated feature use" warning in your compilation configuration for ensuring
+> that you will be notified about any major changes on this part of the API.
 
 Below, the implementation extends one of the abstract classes provided by the [Janus Platform](http://www.janusproject.io).
 
-		[:Success:]
-			import io.sarl.lang.core.Space
-			import io.sarl.lang.core.SpaceID
-			import io.sarl.lang.core.EventListener
-			import io.sarl.sre.spaces.AbstractEventSpace
-			import io.sarl.sre.spaces.Participant
-			import java.util.concurrent.ConcurrentHashMap
-			import java.util.UUID
-			interface PhysicSpace extends Space {
-			}
-			class PhysicObject {
-				def move(x : float, y : float, z : float) { }
-			}
-			[:On]
-			class PhysicSpaceImpl extends AbstractEventSpace implements PhysicSpace {
-				val [:entityfield](entities) = <[:uuid](UUID), PhysicObject>newHashMap
-				
-				def [:moveobjectfct](moveObject)(identifier : UUID, x : float, y : float, z : float) {
-					synchronized (this.entities) {
-						var o = this.entities.get(identifier)
-						if (o !== null) {
-							o.move(x, y, z)
-						}
-					}
+[:Success:]
+	import io.sarl.lang.core.Space
+	import io.sarl.lang.core.SpaceID
+	import io.sarl.lang.core.EventListener
+	import io.sarl.sre.spaces.AbstractEventSpace
+	import io.sarl.sre.spaces.Participant
+	import java.util.concurrent.ConcurrentHashMap
+	import java.util.UUID
+	interface PhysicSpace extends Space {
+	}
+	class PhysicObject {
+		def move(x : float, y : float, z : float) { }
+	}
+	[:On]
+	class PhysicSpaceImpl extends AbstractEventSpace implements PhysicSpace {
+		val [:entityfield](entities) = <[:uuid](UUID), PhysicObject>newHashMap
+		
+		def [:moveobjectfct](moveObject)(identifier : UUID, x : float, y : float, z : float) {
+			synchronized (this.entities) {
+				var o = this.entities.get(identifier)
+				if (o !== null) {
+					o.move(x, y, z)
 				}
+			}
+		}
 
-				def bindBody(listener : EventListener) {
-					synchronized (this.entities) {
-						entities.put(listener.ID, new [:physicobject](PhysicObject))
-					}
-				}
-
-				def unbindBody(listener : EventListener) {
-					synchronized (this.entities) {
-						entities.remove(listener.ID)
-					}
-				}
+		def bindBody(listener : EventListener) {
+			synchronized (this.entities) {
+				entities.put(listener.ID, new [:physicobject](PhysicObject))
 			}
-		[:End:]
+		}
+
+		def unbindBody(listener : EventListener) {
+			synchronized (this.entities) {
+				entities.remove(listener.ID)
+			}
+		}
+	}
+[:End:]
 
 
 The physic space contains a collection of objects, namely [:entityfield:].
@@ -208,10 +207,10 @@ When an agent wants to move an object by calling the [:moveobjectfct:] method,
 the space is retrieving the instance of this object in the [:entityfield:], and
 move it. 
 
-<important>The previous implementation has a major problem: it does not permit
-to distribute the information and the interaction objects over a computer network. The space is
-the support of the interaction. Consequently, it should provide the mechanisms for
-routing the events to all the agents other the computer network.</important>
+> **_Important Note::_** The previous implementation has a major problem: it does not permit
+> to distribute the information and the interaction objects over a computer network. The space is
+> the support of the interaction. Consequently, it should provide the mechanisms for
+> routing the events to all the agents other the computer network.
 
 
 
@@ -220,35 +219,36 @@ routing the events to all the agents other the computer network.</important>
 For creating instances of spaces, it is necessary to define a space specification.
 This specification may create the space instance according to rules, or provide information and rules to the spaces.
 
-		[:Success:]
-			import io.sarl.lang.core.Space
-			import io.sarl.lang.core.SpaceSpecification
-			import io.sarl.lang.core.SpaceID
-			import io.sarl.lang.core.EventListener
-			import java.util.concurrent.ConcurrentSkipListSet
-			import java.util.UUID
-			interface PhysicSpace extends Space {
-			}
-			class PhysicSpaceImpl implements PhysicSpace {
-				new (id : SpaceID) { }
-				def moveObject(identifier : UUID, x : float, y : float, z : float) { }
-				def bindBody(listener : EventListener) { }
-				def unbindBody(listener : EventListener) { }
-				def getID : SpaceID { null }
-				def getSpaceID : SpaceID { null }
-				def isPseudoEmpty(id : UUID) : boolean { true }
-				def getNumberOfStrongParticipants : int { 0 }
-				def getNumberOfWeakParticipants : int { 0 }
-				def forEachStrongParticipant(cb : (UUID)=>void) {}
-				def forEachWeakParticipant(cb : (UUID)=>void) {}
-			}
-			[:On]
-			class PhysicSpaceSpecification implements [:spacespecdef](SpaceSpecification)<PhysicSpace> {
-				def create(id : SpaceID, params : Object*) : [:physicspacedef](PhysicSpace) {
-					return new PhysicSpaceImpl(id)
-				}
-			}
-		[:End:]
+[:Success:]
+	import io.sarl.lang.core.Space
+	import io.sarl.lang.core.SpaceSpecification
+	import io.sarl.lang.core.SpaceID
+	import io.sarl.lang.core.EventListener
+	import java.util.concurrent.ConcurrentSkipListSet
+	import java.util.UUID
+	interface PhysicSpace extends Space {
+	}
+	class PhysicSpaceImpl implements PhysicSpace {
+		new (id : SpaceID) { }
+		def moveObject(identifier : UUID, x : float, y : float, z : float) { }
+		def bindBody(listener : EventListener) { }
+		def unbindBody(listener : EventListener) { }
+		def getID : SpaceID { null }
+		def getSpaceID : SpaceID { null }
+		def isPseudoEmpty(id : UUID) : boolean { true }
+		def getNumberOfStrongParticipants : int { 0 }
+		def getNumberOfWeakParticipants : int { 0 }
+		def forEachStrongParticipant(cb : (UUID)=>void) {}
+		def forEachWeakParticipant(cb : (UUID)=>void) {}
+	}
+	[:On]
+	class PhysicSpaceSpecification implements [:spacespecdef](SpaceSpecification)<PhysicSpace> {
+		def create(id : SpaceID, params : Object*) : [:physicspacedef](PhysicSpace) {
+			return new PhysicSpaceImpl(id)
+		}
+	}
+[:End:]
+
 
 The example above is the specification related to the first implementation of the [:physicspacedef:].
 
@@ -272,76 +272,76 @@ apply:
 
 The following example illustrates the first method of marking of an object field:
 
-        [:Success:]
-            import java.util.UUID
-            import io.sarl.lang.core.SpaceID
-            import io.sarl.lang.core.SpaceSpecification
-            import io.sarl.lang.core.Space
-            import io.sarl.core.OpenEventSpace
-            import java.util.concurrent.ConcurrentSkipListSet
-            import javax.inject.Inject
-            import com.google.inject.name.Named
-            interface MySpace extends Space {
-            }
-            class MySpaceImpl implements MySpace {
-                new (obj : OpenEventSpace) {}
-                def getID : SpaceID { null }
-                def getSpaceID : SpaceID { null }
-				def isPseudoEmpty(id : UUID) : boolean { true }
-				def getNumberOfStrongParticipants : int { 0 }
-				def getNumberOfWeakParticipants : int { 0 }
-				def forEachStrongParticipant(cb : (UUID)=>void) {}
-				def forEachWeakParticipant(cb : (UUID)=>void) {}
-            }
-            [:On]
-            class MySpaceSpecification implements SpaceSpecification<MySpace> {
+[:Success:]
+    import java.util.UUID
+    import io.sarl.lang.core.SpaceID
+    import io.sarl.lang.core.SpaceSpecification
+    import io.sarl.lang.core.Space
+    import io.sarl.core.OpenEventSpace
+    import java.util.concurrent.ConcurrentSkipListSet
+    import javax.inject.Inject
+    import com.google.inject.name.Named
+    interface MySpace extends Space {
+    }
+    class MySpaceImpl implements MySpace {
+        new (obj : OpenEventSpace) {}
+        def getID : SpaceID { null }
+        def getSpaceID : SpaceID { null }
+		def isPseudoEmpty(id : UUID) : boolean { true }
+		def getNumberOfStrongParticipants : int { 0 }
+		def getNumberOfWeakParticipants : int { 0 }
+		def forEachStrongParticipant(cb : (UUID)=>void) {}
+		def forEachWeakParticipant(cb : (UUID)=>void) {}
+    }
+    [:On]
+    class MySpaceSpecification implements SpaceSpecification<MySpace> {
 
-                @Inject
-                [:namedannotation](@Named)("defaultSpace")
-                var defaultSpace : OpenEventSpace
+        @Inject
+        [:namedannotation](@Named)("defaultSpace")
+        var defaultSpace : OpenEventSpace
 
-                def create(id : SpaceID, params : Object*) : MySpace {
-                    return new MySpaceImpl(this.defaultSpace)
-                }
-            }
-        [:End:]
+        def create(id : SpaceID, params : Object*) : MySpace {
+            return new MySpaceImpl(this.defaultSpace)
+        }
+    }
+[:End:]
 
 
 
 The following example illustrates the second method of marking of an object field:
 
-        [:Success:]
-            import java.util.UUID
-            import io.sarl.lang.core.SpaceID
-            import io.sarl.lang.core.SpaceSpecification
-            import io.sarl.lang.core.Space
-            import io.sarl.core.OpenEventSpace
-            import java.util.concurrent.ConcurrentSkipListSet
-            import javax.inject.Inject
-            interface MySpace extends Space {
-            }
-            class MySpaceImpl implements MySpace {
-                new (obj : OpenEventSpace) {}
-                def getID : SpaceID { null }
-                def getSpaceID : SpaceID { null }
-				def isPseudoEmpty(id : UUID) : boolean { true }
-				def getNumberOfStrongParticipants : int { 0 }
-				def getNumberOfWeakParticipants : int { 0 }
-				def forEachStrongParticipant(cb : (UUID)=>void) {}
-				def forEachWeakParticipant(cb : (UUID)=>void) {}
-            }
-            [:On]
-            class MySpaceSpecification implements SpaceSpecification<MySpace> {
+[:Success:]
+    import java.util.UUID
+    import io.sarl.lang.core.SpaceID
+    import io.sarl.lang.core.SpaceSpecification
+    import io.sarl.lang.core.Space
+    import io.sarl.core.OpenEventSpace
+    import java.util.concurrent.ConcurrentSkipListSet
+    import javax.inject.Inject
+    interface MySpace extends Space {
+    }
+    class MySpaceImpl implements MySpace {
+        new (obj : OpenEventSpace) {}
+        def getID : SpaceID { null }
+        def getSpaceID : SpaceID { null }
+		def isPseudoEmpty(id : UUID) : boolean { true }
+		def getNumberOfStrongParticipants : int { 0 }
+		def getNumberOfWeakParticipants : int { 0 }
+		def forEachStrongParticipant(cb : (UUID)=>void) {}
+		def forEachWeakParticipant(cb : (UUID)=>void) {}
+    }
+    [:On]
+    class MySpaceSpecification implements SpaceSpecification<MySpace> {
 
-                @Inject
-                @io.sarl.util.[:defaultspaceannotation](DefaultSpace)
-                var defaultSpace : OpenEventSpace
+        @Inject
+        @io.sarl.util.[:defaultspaceannotation](DefaultSpace)
+        var defaultSpace : OpenEventSpace
 
-                def create(id : SpaceID, params : Object*) : MySpace {
-                    return new MySpaceImpl(this.defaultSpace)
-                }
-            }
-        [:End:]
+        def create(id : SpaceID, params : Object*) : MySpace {
+            return new MySpaceImpl(this.defaultSpace)
+        }
+    }
+[:End:]
 
 
 

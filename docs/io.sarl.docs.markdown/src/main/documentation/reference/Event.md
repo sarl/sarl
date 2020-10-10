@@ -40,7 +40,7 @@ the event in a [Space](./Space.md).
 The sending API is detailed in the [Built-in Capacity
 Reference](./BIC.md).
 
-<note>There is no message concept in SARL. All communication is done by using an [:eventtype:].</note>
+> **_Note:_** There is no message concept in SARL. All communication is done by using an [:eventtype:].
 
 [:Fact:]{typeof(io.sarl.lang.core.[:eventtype](Event))}
 
@@ -60,12 +60,12 @@ The example below contains the definition of [:eventtype1:] and [:eventtype2:], 
 The first event is defined with the "empty block" syntax.
 The second event is defined with the "nothing" syntax.
 
-		[:Success:]
-			[:packagekw](package) io.sarl.docs.reference.er
-			[:On]
-			[:eventkw](event) [:eventtype1](Event1) {  }
-			event [:eventtype2](Event2)
-		[:End:]
+[:Success:]
+	[:packagekw](package) io.sarl.docs.reference.er
+	[:On]
+	[:eventkw](event) [:eventtype1](Event1) {  }
+	event [:eventtype2](Event2)
+[:End:]
 
 
 ### Define an event with attributes
@@ -85,17 +85,17 @@ Each declaration of the attributes illustrates one possible syntax for defining 
 
 According to the type inference mechanism used by SARL, the attribute [:code4:] will have the type [:code5:].
 
-<note> Because of the use of the [:varkw:] keyword, the values of these attributes can be modified.</note>
+> **_Note:_** Because of the use of the [:varkw:] keyword, the values of these attributes can be modified.
 
-		[:Success:]
-			package io.sarl.docs.reference.er
-			[:On]
-			event [:eventtype3](MyEvent) {
-				[:code1]([:varkw]{var} number : Integer)
-				[:code2](var string = "abc")
-				[:code3](var [:code4]{something}) : [:code5](Object)
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.er
+	[:On]
+	event [:eventtype3](MyEvent) {
+		[:code1]([:varkw]{var} number : Integer)
+		[:code2](var string = "abc")
+		[:code3](var [:code4]{something}) : [:code5](Object)
+	}
+[:End:]
 
 
 ### Define an event with value attributes
@@ -103,30 +103,31 @@ According to the type inference mechanism used by SARL, the attribute [:code4:] 
 Events in SARL will carry data that is unmodifiable 
 when an attribute is defined using the [:valmodifier:] keyword.
 
-<importantnote> The [:valmodifier:] keyword has the same semantics as the `final` modifier in
-the Java language. It means that an element defined with [:valmodifier:] can be initialized only once. It
-also means that the element is read-only.
-But if the element is a reference to an object, then the referenced object
-is not read-only (only the initial reference is).</importantnote>
+> **_Important Note:_** The [:valmodifier:] keyword has the same semantics as the `final` modifier in
+> the Java language. It means that an element defined with [:valmodifier:] can be initialized only once. It
+> also means that the element is read-only.
+> But if the element is a reference to an object, then the referenced object
+> is not read-only (only the initial reference is).
 
 Because the [:valmodifier:] keyword defines a single-initialization
 variable, there should be a way to specify the initial value.
 The initial value can be specified at the end of the [:valmodifier:]
 directive or by specifying a constructor.
 
-		[:Success:]
-			package io.sarl.docs.reference.er
-			import io.sarl.lang.core.Agent
-			[:On]
-			event MyEvent {
-				[:valmodifier](val) string = "abcd"
-				val number : Integer
-				
-				new(nb : Integer) {
-					number = nb
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.er
+	import io.sarl.lang.core.Agent
+	[:On]
+	event MyEvent {
+		[:valmodifier](val) string = "abcd"
+		val number : Integer
+		
+		new(nb : Integer) {
+			number = nb
+		}
+	}
+[:End:]
+
 
 If no constructor is defined in the event type and a super-type is declared, implicit constructors will be assumed.
 Implicit constructors has the same prototypes as the constructors of the super type.
@@ -143,8 +144,8 @@ mechanism as the Java object-oriented language.
 
 The extended event is specified just after the [:extendsfw:] keyword.
 
-<veryimportantnote> An event type can extend __only one__ other event type.  This is similar to the
-model for class extensions in the Java language.</veryimportantnote>
+> **_Very Important Note:_** An event type can extend __only one__ other event type.  This is similar to the
+> model for class extensions in the Java language.
 
 #### Declaration
 
@@ -155,45 +156,45 @@ It is now possible to create instances of these events. For [:eventtype1:], only
 is available. For [:eventtype2:], two attributes are available ([:eventtype2:] inherits one field from
 [:eventtype2:] and defines one field).
 
-		[:Success:]
-			package io.sarl.docs.reference.er
-			import io.sarl.lang.core.Agent
-			[:On]
-			event Event1 {
-				var [:stringfield](string) : String
-			}
-			event Event2 [:extendsfw](extends) Event1 {
-				var [:numberfield](number) : int
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.er
+	import io.sarl.lang.core.Agent
+	[:On]
+	event Event1 {
+		var [:stringfield](string) : String
+	}
+	event Event2 [:extendsfw](extends) Event1 {
+		var [:numberfield](number) : int
+	}
+[:End:]
 
 
 #### Use
 
 The following code illustrates the use of event instances.
 
-		[:Success:]
-			package io.sarl.docs.reference.er
-			event Event1 {
-				var string : String
-			}
-			event Event2 extends Event1 {
-				var number : int
-			}
-			class X {
-				def myfct {
-			[:On]
-					// Create an instance of Event1 and set its attribute.
-					var e1 = new Event1
-					e1.string = "abc"
-					// Create an instance of Event2 and set its attributes.
-					var e2 = new Event2
-					e2.string = "abc"
-					e2.number = 345
-			[:Off]
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.er
+	event Event1 {
+		var string : String
+	}
+	event Event2 extends Event1 {
+		var number : int
+	}
+	class X {
+		def myfct {
+	[:On]
+			// Create an instance of Event1 and set its attribute.
+			var e1 = new Event1
+			e1.string = "abc"
+			// Create an instance of Event2 and set its attributes.
+			var e2 = new Event2
+			e2.string = "abc"
+			e2.number = 345
+	[:Off]
+		}
+	}
+[:End:]
 
 
 ### Modifiers
@@ -217,16 +218,16 @@ An event may be declared with one or more modifiers, which affect its behavior:
 
 Examples:
 
-		[:Success:]
-			package io.sarl.docs.reference.er
-			[:On]
-			[:publicmodifier](public) event Example1 {
-			}
-			[:packagemodifier](package) event Example2 {
-			}
-			[:finalmodifier](final) event Example3 {
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.er
+	[:On]
+	[:publicmodifier](public) event Example1 {
+	}
+	[:packagemodifier](package) event Example2 {
+	}
+	[:finalmodifier](final) event Example3 {
+	}
+[:End:]
 
 
 #### Field Modifiers
@@ -238,14 +239,14 @@ The modifiers for the fields in an event are:
 
 Example:
 
-		[:Success:]
-			package io.sarl.docs.reference.er
-			event MyEvent {
-			[:On]
-				public var example1 : Object
-			[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.er
+	event MyEvent {
+	[:On]
+		public var example1 : Object
+	[:Off]
+	}
+[:End:]
 
 
 ## Reserved Events
@@ -253,8 +254,8 @@ Example:
 Several events are defined and reserved by the SARL Core Specification.
 They describe the minimal set of events that a runtime environment must support to run a SARL program.
 
-<veryimportantnote> You must not define an event with a fully qualified name equals to one of the reserved
-events.</veryimportantnote>
+> **_Very Important Note:_** You must not define an event with a fully qualified name equals to one of the reserved
+> events.
 
 Two types of reserved events exist:
 

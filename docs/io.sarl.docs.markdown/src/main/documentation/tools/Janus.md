@@ -13,20 +13,23 @@ For launching the Janus platform from a command-line shell, you could use the [:
 
 The [:name:] tool takes arguments:
 
-
-	[:name!] [OPTIONS] <[:agname](agent_fully_qualified_name)>
+```text
+[:name!] [OPTIONS] <[:agname](agent_fully_qualified_name)>
+```
 
 
 The [:agname:] is the name of the agent to launch. This name is equal to the
 fully qualified name of the agent's type.
 
-<note>Janus enables to launch only one agent from the command-line shell. If you want to launch
-more than one agent, you should launch a first agent, which will create the other agents.</note>
+> **_Note::_** Janus enables to launch only one agent from the command-line shell. If you want to launch
+> more than one agent, you should launch a first agent, which will create the other agents.
 
 You could change the behavior of the [:name:] tool with the command-line options.
 For obtaining a list of the options, type:
 
-	[:name!] -help
+```texts
+[:name!] -help
+```
 
 
 ## Command-Line Options

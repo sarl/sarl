@@ -173,13 +173,20 @@ public class EcjBatchCompiler extends AbstractJavaBatchCompiler {
 		//
 		// Source folders
 		//
+		boolean hasSourceFile = false;
 		for (final File sourceFolder : sourcePathDirectories) {
 			if (progress.isCanceled()) {
 				return CompilerStatus.CANCELED;
 			}
-			if (sourceFolder.exists()) {
-				commandLineArguments.add(sourceFolder.getAbsolutePath());
+			if (addFolderIfJavaFileDeeply(commandLineArguments, sourceFolder.getAbsoluteFile())) {
+				hasSourceFile = true;
 			}
+		}
+		if (!hasSourceFile) {
+			return CompilerStatus.NOTHING_TO_COMPILE;
+		}
+		if (progress.isCanceled()) {
+			return CompilerStatus.CANCELED;
 		}
 
 		//

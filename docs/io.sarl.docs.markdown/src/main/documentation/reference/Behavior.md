@@ -23,12 +23,12 @@ The following code illustrates the definition of a behavior named [:behaviortype
 
 Basically, this behavior does nothing, and does not react on events.
 
-		[:Success:]
-			package io.sarl.docs.reference.br
-			[:On]
-			[:behaviorkw](behavior) [:behaviortype1](MyBehavior) {
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.br
+	[:On]
+	[:behaviorkw](behavior) [:behaviortype1](MyBehavior) {
+	}
+[:End:]
 
 
 ### Behavior Attributes
@@ -40,16 +40,16 @@ According to the [General Syntax Reference](./GeneralSyntax.md), the attributes 
 modifiable (when declared with the [:varmodifier:] keyword), or unmodifiable (when declared with the
 [:valmodifier:] keyword).
 
-		[:Success:]
-			package io.sarl.docs.reference.br
-			[:On]
-			behavior [:behaviortype1!] {
-				// Defining a modifiable element of the mental state
-				[:varmodifier](var) mentalStateElement1 : String
-				// Defining an unmodifiable element of the mental state
-				[:valmodifier](val) mentalStateElement2 : boolean = true
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.br
+	[:On]
+	behavior [:behaviortype1!] {
+		// Defining a modifiable element of the mental state
+		[:varmodifier](var) mentalStateElement1 : String
+		// Defining an unmodifiable element of the mental state
+		[:valmodifier](val) mentalStateElement2 : boolean = true
+	}
+[:End:]
 
 
 ### Behavior Actions
@@ -59,22 +59,22 @@ It is allowed to define actions (methods) in the behavior. The syntax described 
 
 The example below illustrates the creation of type actions.
 
-		[:Success:]
-			package io.sarl.docs.reference.br
-			import io.sarl.core.Logging
-			[:On]
-			behavior [:behaviortype1!] {
-				uses Logging
-				// Defining an action without parameter nor return type
-				def myAction1 {
-					info("Hello world")
-				}
-				// Defining an action with a variadic parameter and no return type
-				def myAction2(param : int*) {
-					info("params are " + param)
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.br
+	import io.sarl.core.Logging
+	[:On]
+	behavior [:behaviortype1!] {
+		uses Logging
+		// Defining an action without parameter nor return type
+		def myAction1 {
+			info("Hello world")
+		}
+		// Defining an action with a variadic parameter and no return type
+		def myAction2(param : int*) {
+			info("params are " + param)
+		}
+	}
+[:End:]
 
 
 ### Extending a Behavior
@@ -85,27 +85,27 @@ mechanism as the Java object-oriented language.
 
 The extended behavior is specified just after the [:extendskw:] keyword.
 
-<veryimportantnote> A behavior type can extend __only one__ other behavior type. This is close
-to the constraint on the extension of classes in the Java language.</veryimportantnote>
+> **_Very Important Note:_** A behavior type can extend __only one__ other behavior type. This is close
+> to the constraint on the extension of classes in the Java language.
 
 In the following code, a first behavior is defined with the name [:behaviortype1:] and an attribute named [:attrfield:].
 A second behavior [:behaviortype2!] is defined as the extension of the first behavior. It contains a function named
 [:actiondef:], which is displaying the inherited attribute.
 
-		[:Success:]
-			package io.sarl.docs.reference.br
-			import io.sarl.core.Logging
-			[:On]
-			behavior [:behaviortype1!] {
-				protected var [:attrfield](attr) : String
-			}
-			behavior [:behaviortype2](MySubBehavior) [:extendskw](extends) [:behaviortype1!] {
-				uses Logging
-				def [:actiondef](action) {
-					info(attr)
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.br
+	import io.sarl.core.Logging
+	[:On]
+	behavior [:behaviortype1!] {
+		protected var [:attrfield](attr) : String
+	}
+	behavior [:behaviortype2](MySubBehavior) [:extendskw](extends) [:behaviortype1!] {
+		uses Logging
+		def [:actiondef](action) {
+			info(attr)
+		}
+	}
+[:End:]
 
 
 ### Instancing and Use of a Behavior
@@ -117,25 +117,25 @@ In the following example, a behavior of type [:behaviortype1:] is instanced (wit
 owner/parameter). This new behavior is then registered into the agent for enabling the reception of
 the events in the behavior.
 
-		[:Success:]
-			package io.sarl.docs.reference.br
-			import io.sarl.core.Logging
-			import io.sarl.core.Initialize
-			import io.sarl.core.Behaviors
-			behavior [:behaviortype1!] { }
-			[:On]
-			agent MyAgent {
-				uses Behaviors
-				on Initialize {
-					// Create the instance of the behavior
-					var beh = new [:behaviortype1!](this) // <- the parameter is the agent
-					
-					// Register the behavior for receiving the events.
-					// This function is given by the Behaviors capacity
-					registerBehavior(beh)
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.br
+	import io.sarl.core.Logging
+	import io.sarl.core.Initialize
+	import io.sarl.core.Behaviors
+	behavior [:behaviortype1!] { }
+	[:On]
+	agent MyAgent {
+		uses Behaviors
+		on Initialize {
+			// Create the instance of the behavior
+			var beh = new [:behaviortype1!](this) // <- the parameter is the agent
+			
+			// Register the behavior for receiving the events.
+			// This function is given by the Behaviors capacity
+			registerBehavior(beh)
+		}
+	}
+[:End:]
 
 
 ### Modifiers
@@ -160,18 +160,18 @@ A behavior may be declared with one or more modifiers, which affect its runtime 
 
 Examples:
 
-		[:Success:]
-			package io.sarl.docs.reference.br
-			[:On]
-			[:publicmodifier](public) behavior Example1 {
-			}
-			[:packagemodifier](package) behavior Example2 {
-			}
-			[:abstractmodifier](abstract) behavior Example3 {
-			}
-			[:finalmodifier](final) behavior Example4 {
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.br
+	[:On]
+	[:publicmodifier](public) behavior Example1 {
+	}
+	[:packagemodifier](package) behavior Example2 {
+	}
+	[:abstractmodifier](abstract) behavior Example3 {
+	}
+	[:finalmodifier](final) behavior Example4 {
+	}
+[:End:]
 
 
 #### Field Modifiers
@@ -186,17 +186,17 @@ The modifiers for the fields in a behavior are:
 
 Examples:
 
-		[:Success:]
-			package io.sarl.docs.reference.br
-			behavior MyBehavior {
-			[:On]
-				[:publicmodifier](public) var example0 : Object
-				[:protectedmodifier](protected) var example1 : Object
-				package var example2 : Object
-				[:privatemodifier](private) var example3 : Object
-			[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.br
+	behavior MyBehavior {
+	[:On]
+		[:publicmodifier](public) var example0 : Object
+		[:protectedmodifier](protected) var example1 : Object
+		package var example2 : Object
+		[:privatemodifier](private) var example3 : Object
+	[:Off]
+	}
+[:End:]
 
 
 #### Method Modifiers
@@ -214,28 +214,28 @@ The modifiers for the methods in a behavior are:
 
 Examples:
 
-		[:Success:]
-			package io.sarl.docs.reference.br
-			abstract behavior MyBehavior {
-			[:On]
-				// Public access function
-				public def example0 { }
-				// Protected access function
-				protected def example1 { }
-				// Package access function
-				package def example2 { }
-				// Private access function
-				private def example3 { }
-				// Abstract function
-				abstract def example4
-				// Not-overridable function
-				final def example5 { }
-				// Dispatch functions
-				[:dispatchmodifier](dispatch) def example7(p : Integer) { }
-				dispatch def example7(p : Float) { }
-			[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.br
+	abstract behavior MyBehavior {
+	[:On]
+		// Public access function
+		public def example0 { }
+		// Protected access function
+		protected def example1 { }
+		// Package access function
+		package def example2 { }
+		// Private access function
+		private def example3 { }
+		// Abstract function
+		abstract def example4
+		// Not-overridable function
+		final def example5 { }
+		// Dispatch functions
+		[:dispatchmodifier](dispatch) def example7(p : Integer) { }
+		dispatch def example7(p : Float) { }
+	[:Off]
+	}
+[:End:]
 
 
 ## Behavior Units of a Behavior
@@ -256,20 +256,20 @@ and received by the agents, and their behaviors, belonging to these spaces.
 A behavior may indicate that it is interesting for receiving an event by specifying
 an event handler using the following syntax:
 
-		[:Success:]
-			package io.sarl.docs.reference.ar
-			event EventName
-			behavior Behavior1 {
-				@Pure
-				def Guard : boolean { true }
-				def Statements : void { }
-			[:On]
-				on [:eventtype1](EventName) [ [:guard](Guard) ] {
-					[:statements](Statements)
-				}
-			[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.ar
+	event EventName
+	behavior Behavior1 {
+		@Pure
+		def Guard : boolean { true }
+		def Statements : void { }
+	[:On]
+		on [:eventtype1](EventName) [ [:guard](Guard) ] {
+			[:statements](Statements)
+		}
+	[:Off]
+	}
+[:End:]
 
 
 [:eventtype1:] is the name of event to wait for [:guard:] is the optional specification of a predicate
@@ -290,23 +290,22 @@ When a behavior is ready to be executed by the runtime environment, usually when
 is registered in its owning agent, it receives the [:initializeevent:] event.
 This event is defined as:
 
-		[:ShowType:](io.sarl.core.[:initializeevent]{Initialize})
-
+[:ShowType:](io.sarl.core.[:initializeevent]{Initialize})
 
 It contains the list of the parameters given that are never set for behaviors.
 
-		[:Success:]
-			package io.sarl.docs.reference.ar
-			import io.sarl.core.Logging
-			import io.sarl.core.Initialize
-			[:On]
-			behavior MyBehavior {
-				uses Logging
-				on [:initializeevent!] {
-					info("I'm initializing my behavior")
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.ar
+	import io.sarl.core.Logging
+	import io.sarl.core.Initialize
+	[:On]
+	behavior MyBehavior {
+		uses Logging
+		on [:initializeevent!] {
+			info("I'm initializing my behavior")
+		}
+	}
+[:End:]
 
 
 #### Guarded Initialization Handler
@@ -317,21 +316,21 @@ the developer to write different initialization blocks depending on the guards o
 In the following example, the first event handler is executed when the [:initializeevent:] event has
 no parameter. The second event handler is executed when the event has at least one parameter.
 
-		[:Success:]
-			package io.sarl.docs.reference.ar
-			import io.sarl.core.Logging
-			import io.sarl.core.Initialize
-			[:On]
-			behavior MyBehavior {
-				uses Logging
-				on [:initializeevent!] [ [:occurrencekw](occurrence).parameters.empty ] {
-					info("First initialization")
-				}
-				on [:initializeevent!] [ ! occurrence.parameters.empty ] {
-					info("First initialization")
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.ar
+	import io.sarl.core.Logging
+	import io.sarl.core.Initialize
+	[:On]
+	behavior MyBehavior {
+		uses Logging
+		on [:initializeevent!] [ [:occurrencekw](occurrence).parameters.empty ] {
+			info("First initialization")
+		}
+		on [:initializeevent!] [ ! occurrence.parameters.empty ] {
+			info("First initialization")
+		}
+	}
+[:End:]
 
 
 #### Execution of the Initialization Handler
@@ -356,24 +355,25 @@ As such, its execution is more "synchronous" than other on-behavior rules. In pa
 
 It is allowed to declare multiple initialization handlers into a single behavior type, as illustrated by:
 
-        [:Success:]
-            package io.sarl.docs.faq.general
-            import io.sarl.core.Initialize
-            import io.sarl.core.Logging
-            [:On]
-            behavior Beh1 {
-            	uses Logging
-                on Initialize {
-                    info("1")
-                }
-                on Initialize {
-                    info("2")
-                }
-                on Initialize {
-                    info("3")
-                }
-            }
-        [:End:]
+[:Success:]
+    package io.sarl.docs.faq.general
+    import io.sarl.core.Initialize
+    import io.sarl.core.Logging
+    [:On]
+    behavior Beh1 {
+    	uses Logging
+        on Initialize {
+            info("1")
+        }
+        on Initialize {
+            info("2")
+        }
+        on Initialize {
+            info("3")
+        }
+    }
+[:End:]
+
 
 According to the SARL operational semantic, the three event handlers for `Initialize` are run in parallel.
 The initialization event handlers are not constructors (as defined in object-oriented programming paradigm),
@@ -385,23 +385,24 @@ they are reacting to the receiving of an `Initialize` occurrence.
 The example in the previous section could be extended in order to illustrate how the initialization handlers
 are run when the type of the behavior (here [:beh2name:]) is declared within a inheritance hierarchy.
 
-        [:Success:]
-            package io.sarl.docs.faq.general
-            import io.sarl.core.Initialize
-            import io.sarl.core.Logging
-            behavior Beh1 {
-            }
-            [:On]
-            behavior [:beh2name](Beh2) extends [:beh1name](Beh1) {
-            	uses Logging
-                on Initialize {
-                    info("4")
-                }
-                on Initialize {
-                    info("5")
-                }
-            }
-        [:End:]
+[:Success:]
+    package io.sarl.docs.faq.general
+    import io.sarl.core.Initialize
+    import io.sarl.core.Logging
+    behavior Beh1 {
+    }
+    [:On]
+    behavior [:beh2name](Beh2) extends [:beh1name](Beh1) {
+    	uses Logging
+        on Initialize {
+            info("4")
+        }
+        on Initialize {
+            info("5")
+        }
+    }
+[:End:]
+
 
 According to the SARL operational semantic, all the initialization handlers are run in parallel.
 In the previous example, five event handlers will be run: three are defined into [:beh1name:], and
@@ -414,23 +415,23 @@ two are defined into [:beh2name:]. This mechanism is generalized to all the even
 
 The counterpart of [:initializeevent:] is the event [:destroyevent:]. This event is defined as:
 
-		[:ShowType:](io.sarl.core.Destroy)
+[:ShowType:](io.sarl.core.Destroy)
 
 
 Example:
 
-		[:Success:]
-			package io.sarl.docs.reference.ar
-			import io.sarl.core.Logging
-			import io.sarl.core.Destroy
-			[:On]
-			behavior MyBehavior {
-				uses Logging
-				on [:destroyevent](Destroy) {
-					info("Destroying the behavior")
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.ar
+	import io.sarl.core.Logging
+	import io.sarl.core.Destroy
+	[:On]
+	behavior MyBehavior {
+		uses Logging
+		on [:destroyevent](Destroy) {
+			info("Destroying the behavior")
+		}
+	}
+[:End:]
 
 
 #### Guarded Destruction Handler
@@ -441,22 +442,22 @@ In the following example, the first event handler is executed when the [:destroy
 and there is resource stored in the corresponding field. The second event handler is executed
 when there is no resource.
 
-		[:Success:]
-			package io.sarl.docs.reference.ar
-			import io.sarl.core.Logging
-			import io.sarl.core.Destroy
-			[:On]
-			behavior MyBehavior {
-				uses Logging
-				var resource : Object
-				on Destroy [ resource !== null ] {
-					info("Destroying the behavior when there is a resource")
-				}
-				on Destroy [ resource === null ] {
-					info("Destroying the behavior when there is no resource")
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.ar
+	import io.sarl.core.Logging
+	import io.sarl.core.Destroy
+	[:On]
+	behavior MyBehavior {
+		uses Logging
+		var resource : Object
+		on Destroy [ resource !== null ] {
+			info("Destroying the behavior when there is a resource")
+		}
+		on Destroy [ resource === null ] {
+			info("Destroying the behavior when there is no resource")
+		}
+	}
+[:End:]
 
 
 ### Reactive Behavior Units
@@ -468,18 +469,18 @@ In the following example, the behavior is reacting to the reception of the [:eve
 
 As for all the event handlers, it could be guarded by a predicate.
 
-		[:Success:]
-			package io.sarl.docs.reference.ar
-			import io.sarl.core.Logging
-			event SomethingChanged
-			[:On]
-			behavior MyBehavior {
-				uses Logging
-				on [:eventtype2](SomethingChanged) {
-					info("Reactive behavior")
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.ar
+	import io.sarl.core.Logging
+	event SomethingChanged
+	[:On]
+	behavior MyBehavior {
+		uses Logging
+		on [:eventtype2](SomethingChanged) {
+			info("Reactive behavior")
+		}
+	}
+[:End:]
 
 
 ### Parallel Execution of the Reactive Behavior Units
@@ -489,21 +490,21 @@ When an event is received and the guard of the corresponding handler is true, th
 When multiple event handlers are triggered at the same time, they are all executed in parallel.
 In the following example, the two handlers for the [:eventtype2:] event are executed in parallel.
 
-		[:Success:]
-			package io.sarl.docs.reference.ar
-			import io.sarl.core.Logging
-			event [:eventtype2!]
-			[:On]
-			behavior MyBehavior {
-				uses Logging
-				on [:eventtype2!] {
-					info("First reactive behavior")
-				}
-				on [:eventtype2!] {
-					info("Second reactive behavior")
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.ar
+	import io.sarl.core.Logging
+	event [:eventtype2!]
+	[:On]
+	behavior MyBehavior {
+		uses Logging
+		on [:eventtype2!] {
+			info("First reactive behavior")
+		}
+		on [:eventtype2!] {
+			info("Second reactive behavior")
+		}
+	}
+[:End:]
 
 
 ### Pro-active Behavior Units
@@ -519,21 +520,21 @@ by the agent or one of its behaviors. The schedule mechanism is provided by the
 [[:schedulescap:] built-in capacity](./BIC.md).
 In the following example, the agent execute its proactive behavior every second.
 
-		[:Success:]
-			package io.sarl.docs.reference.ar
-			import io.sarl.core.Logging
-			import io.sarl.core.Initialize
-			import io.sarl.core.Schedules
-			[:On]
-			behavior MyBehavior {
-				uses [:schedulescap](Schedules), Logging
-				on Initialize {
-					every(1000) [
-						info("Run a pro-active behavior")
-					]
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.ar
+	import io.sarl.core.Logging
+	import io.sarl.core.Initialize
+	import io.sarl.core.Schedules
+	[:On]
+	behavior MyBehavior {
+		uses [:schedulescap](Schedules), Logging
+		on Initialize {
+			every(1000) [
+				info("Run a pro-active behavior")
+			]
+		}
+	}
+[:End:]
 
 
 ## Capacities and Skills
@@ -552,21 +553,21 @@ the [Capacity Reference](./Capacity.md), and the [Skill Reference](./Skill.md).
 
 In the rest of this section, it is assumed that the following capacity and skill are defined:
 
-		[:Success:]
-			package io.sarl.docs.reference.ar
-			import io.sarl.core.Logging
-			[:On]
-			capacity Cap {
-				def action
-			}
-			
-			skill Ski implements Cap {
-				uses Logging
-				def action {
-					info("Action")
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.ar
+	import io.sarl.core.Logging
+	[:On]
+	capacity Cap {
+		def action
+	}
+	
+	skill Ski implements Cap {
+		uses Logging
+		def action {
+			info("Action")
+		}
+	}
+[:End:]
 
 
 ### Giving a Skill to the Associated Agent
@@ -574,54 +575,51 @@ In the rest of this section, it is assumed that the following capacity and skill
 When a behavior must use a capacity, its agent must own an implementation of this capacity: a skill.
 It is possible for a behavior to assign a skill to its agent.
 
-		[:Success:]
-			package io.sarl.docs.reference.br
-			import io.sarl.core.Logging
-			[:importkw](import) io.sarl.lang.core.Agent
-			capacity Cap {
-				def action
-			}
-			skill Ski implements Cap {
-				uses Logging
-				def action { info("Action") }
-			}
-			[:On]
-			behavior MyBehavior {
-				new (owner : Agent) {
-					super(owner)
-					var theSkill = new Ski
-					setSkill( theSkill, Cap )
-				}
-			}
-		[:End:]
-
-
-
+[:Success:]
+	package io.sarl.docs.reference.br
+	import io.sarl.core.Logging
+	[:importkw](import) io.sarl.lang.core.Agent
+	capacity Cap {
+		def action
+	}
+	skill Ski implements Cap {
+		uses Logging
+		def action { info("Action") }
+	}
+	[:On]
+	behavior MyBehavior {
+		new (owner : Agent) {
+			super(owner)
+			var theSkill = new Ski
+			setSkill( theSkill, Cap )
+		}
+	}
+[:End:]
 
 
 If some cases, you may want to set the skill if one was not set up before. The specific behavior
 is supported by `[:setskillifabsfctfull]{[:setskillifabsfct](setSkillIfAbsent)(Skill, Class<? extends Capacity>*)}`.
 
-		[:Success:]
-			package io.sarl.docs.reference.br
-			import io.sarl.core.Logging
-			import io.sarl.lang.core.Agent
-			capacity Cap {
-				def action
-			}
-			skill Ski implements Cap {
-				uses Logging
-				def action { info("Action") }
-			}
-			[:On]
-			behavior MyBehavior {
-				new (owner : Agent) {
-					super(owner)
-					var theSkill = new Ski
-					setSkillIfAbsent( theSkill, Cap )
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.br
+	import io.sarl.core.Logging
+	import io.sarl.lang.core.Agent
+	capacity Cap {
+		def action
+	}
+	skill Ski implements Cap {
+		uses Logging
+		def action { info("Action") }
+	}
+	[:On]
+	behavior MyBehavior {
+		new (owner : Agent) {
+			super(owner)
+			var theSkill = new Ski
+			setSkillIfAbsent( theSkill, Cap )
+		}
+	}
+[:End:]
 
 
 ### Using a Capacity with the Getters
@@ -631,25 +629,25 @@ For invoking a function implemented by a skill, the two following steps must be 
 * Retrieve the skill instance: the function `[:getskillfct](getSkill)(Class<? extends Capacity>)` permits retrieving the skill associated to the given capacity;
 * Invoke the capacity's action on the retrieved skill.
 
-<note>This method of invocation is not recommended by the SARL developers.
-You should prefer the use of the extension methods (see below).</note>
+> **_Note:_** This method of invocation is not recommended by the SARL developers.
+> You should prefer the use of the extension methods (see below).
 
-		[:Success:]
-			package io.sarl.docs.reference.ar
-			capacity Cap {
-				def action
-			}
-			event SomeEvent
-			[:On]
-			behavior MyBehavior {
-				on SomeEvent {
-					// Retreive the capacity implementation
-					var s = [:getskillfct!](Cap)
-					// Run the action of the skill
-					s.action
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.ar
+	capacity Cap {
+		def action
+	}
+	event SomeEvent
+	[:On]
+	behavior MyBehavior {
+		on SomeEvent {
+			// Retreive the capacity implementation
+			var s = [:getskillfct!](Cap)
+			// Run the action of the skill
+			s.action
+		}
+	}
+[:End:]
 
 
 ### Using a Capacity with the Extension Methods
@@ -665,21 +663,21 @@ After a capacity was "imported", it is possible to directly call the functions o
 (according to the extension method syntax). In the following example, the action
 with the name [:actiondef:] is invoked. This action is defined in the [:capcap:] capacity. 
 
-		[:Success:]
-			package io.sarl.docs.reference.ar
-			capacity Cap {
-				def action
-			}
-			event SomeEvent
-			[:On]
-			behavior MyBehavior {
-				[:useskw](uses) [:capcap](Cap)
-				on SomeEvent {
-					// Run the action of the skill
-					[:actiondef](action)
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.ar
+	capacity Cap {
+		def action
+	}
+	event SomeEvent
+	[:On]
+	behavior MyBehavior {
+		[:useskw](uses) [:capcap](Cap)
+		on SomeEvent {
+			// Run the action of the skill
+			[:actiondef](action)
+		}
+	}
+[:End:]
 
 
 

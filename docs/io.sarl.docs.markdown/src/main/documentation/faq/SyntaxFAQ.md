@@ -27,42 +27,42 @@ to zero.  Consequently:
 * [:number3:] is incorrect;
 * [:number4:] is incorrect.
 
-		[:Success:]
-			package io.sarl.docs.faq.syntax
-			agent A {
-				def action : double {
-					var a = [:number1](123.0)
-					return a
-				}
-			}
-		[:End:]
-		[:Success:]
-			package io.sarl.docs.faq.syntax
-			agent A {
-				def action : double {
-					var a = [:number2](0.123)
-					return a
-				}
-			}
-		[:End:]
-		[:Failure:]
-			package io.sarl.docs.faq.syntax
-			agent A {
-				def action : double {
-					var a = [:number3](123.)
-					return a
-				}
-			}
-		[:End:]
-		[:Failure:]
-			package io.sarl.docs.faq.syntax
-			agent A {
-				def action : double {
-					var a = [:number4](.123)
-					return a
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.faq.syntax
+	agent A {
+		def action : double {
+			var a = [:number1](123.0)
+			return a
+		}
+	}
+[:End:]
+[:Success:]
+	package io.sarl.docs.faq.syntax
+	agent A {
+		def action : double {
+			var a = [:number2](0.123)
+			return a
+		}
+	}
+[:End:]
+[:Failure:]
+	package io.sarl.docs.faq.syntax
+	agent A {
+		def action : double {
+			var a = [:number3](123.)
+			return a
+		}
+	}
+[:End:]
+[:Failure:]
+	package io.sarl.docs.faq.syntax
+	agent A {
+		def action : double {
+			var a = [:number4](.123)
+			return a
+		}
+	}
+[:End:]
 
 
 
@@ -78,9 +78,9 @@ that corresponds to a keyword, then it is possible
 to obtain a package name with one of its components
 equals to a SARL keyword:
 
-		[:Success:]
-			package io.sarl.docs.faq.syntax.[:hat](^)[:agent](agent)
-		[:End:]
+[:Success:]
+	package io.sarl.docs.faq.syntax.[:hat](^)[:agent](agent)
+[:End:]
 
 
 
@@ -93,29 +93,30 @@ must be done with a closure.
 
 Consider the definition of the following interface:
 
-		[:Success:][:On]
-	       interface MyInterface {
-	            def myfunction(parameter : Object) : void
-	       }
-		[:End:]
+[:Success:][:On]
+   interface MyInterface {
+        def myfunction(parameter : Object) : void
+   }
+[:End:]
+
 
 The on-the-fly definition and instantiation of an instance of this interface,
 a.k.a. anonymous class definition in the Java community, could be written is SARL
 with the following closure:
 
-		[:Success:]
-			package io.sarl.docs.faq.syntax
-			import java.util.List
- 			interface MyInterface {
- 				def myfunction(parameter : Object) : void
- 			}
-			agent A {
-				def action : void {
-					[:On]var instance : MyInterface
-					instance = [ parameter | /* The code of myfunction() */ ] [:Off]
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.faq.syntax
+	import java.util.List
+	interface MyInterface {
+		def myfunction(parameter : Object) : void
+	}
+	agent A {
+		def action : void {
+			[:On]var instance : MyInterface
+			instance = [ parameter | /* The code of myfunction() */ ] [:Off]
+		}
+	}
+[:End:]
 
 
 ### Java syntax for anonymous classes is allowed
@@ -126,23 +127,22 @@ must be done with a closure (see previous question).
 The Java-based syntax for defining an anonymous class's instance is allowed, but not recommended
 in the SARL language. It means that the following code is valid:
 
-		[:Success:]
-			package io.sarl.docs.faq.syntax
-			import java.util.List
- 			interface MyInterface {
- 				def myfunction(parameter : Object) : void
- 			}
-			agent A {
-				def action : void {
-					[:On]var instance = new MyInterface() {
-						def myfunction(parameter : Object) {
-							/* The code of myfunction() */
-						}
-					}[:Off]
+[:Success:]
+	package io.sarl.docs.faq.syntax
+	import java.util.List
+	interface MyInterface {
+		def myfunction(parameter : Object) : void
+	}
+	agent A {
+		def action : void {
+			[:On]var instance = new MyInterface() {
+				def myfunction(parameter : Object) {
+					/* The code of myfunction() */
 				}
-			}
-		[:End:]
-
+			}[:Off]
+		}
+	}
+[:End:]
 
 
 
@@ -161,14 +161,13 @@ The `b` variable is not a real constant because it is a reference to an object.
 The reference is constant, *but* the referred object is not. Consequently, it is still
 possible to call the setters of `b`. 
 
-		[:Success:]
-			package io.sarl.docs.faq.syntax
-			agent A {
-				[:On][:valkw](val) a : int = 4
-				val b : Object = new Object[:Off]
-			}
-		[:End:]
-
+[:Success:]
+	package io.sarl.docs.faq.syntax
+	agent A {
+		[:On][:valkw](val) a : int = 4
+		val b : Object = new Object[:Off]
+	}
+[:End:]
 
 
 ### Why can not a static field be defined in an agent type declaration (agent, skill, behavior)?
@@ -195,19 +194,18 @@ In SARL, the array type may be written with the classic array syntax, such as
 SARL considers that the each array is a list of something.
 Consequently, retrieving the values of the array must be done with `get(int)`.
 
-		[:Success:]
-			package io.sarl.docs.faq.syntax
-			import java.util.List
-			agent A {
-				def action : boolean {
-					[:On]var a : Integer[] = #[1, 2, 3]
-					var b : List<Integer> = newArrayList(1, 2, 3)
-					
-					a.get(0) == b.get(0)[:Off]
-				}
-			}
-		[:End:]
-
+[:Success:]
+	package io.sarl.docs.faq.syntax
+	import java.util.List
+	agent A {
+		def action : boolean {
+			[:On]var a : Integer[] = #[1, 2, 3]
+			var b : List<Integer> = newArrayList(1, 2, 3)
+			
+			a.get(0) == b.get(0)[:Off]
+		}
+	}
+[:End:]
 
 
 ## Generic Types
@@ -217,27 +215,27 @@ Consequently, retrieving the values of the array must be done with `get(int)`.
 In SARL, the empty generic parameter list, written `<>` is
 not supported: a generic type expression must be written between them.
 
-		[:Failure:]
-			package io.sarl.docs.faq.syntax
-			import java.util.List
-			import java.util.ArrayList
-			agent A {
-				var a : List<Integer> = new ArrayList<>()
-			}
-		[:End:]
+[:Failure:]
+	package io.sarl.docs.faq.syntax
+	import java.util.List
+	import java.util.ArrayList
+	agent A {
+		var a : List<Integer> = new ArrayList<>()
+	}
+[:End:]
 
 For solving this problem, two choices: i) add a type expression between
-< and >; ii) remove the generic parameter list.
+`<` and `>`; ii) remove the generic parameter list.
 
-		[:Success:]
-			package io.sarl.docs.faq.syntax
-			import java.util.List
-			import java.util.ArrayList
-			agent A {
-				[:On]var firstSolution : List<Integer> = new ArrayList<Integer>
-				var secondSolution : List<Integer> = new ArrayList[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.faq.syntax
+	import java.util.List
+	import java.util.ArrayList
+	agent A {
+		[:On]var firstSolution : List<Integer> = new ArrayList<Integer>
+		var secondSolution : List<Integer> = new ArrayList[:Off]
+	}
+[:End:]
 
 
 
@@ -278,26 +276,27 @@ When the calling a capacity function, the SARL compiler complains with an "ambig
 In the code below, the function [:myfct:] is defined in the capacities [:c1:] and [:c2:].
 The call to [:myfct:] in the agent definition is the place where the error occurs.
 
-		[:Failure:]
-			package io.sarl.docs.faq.syntax
-			event Initialize
-			[:On]capacity [:c1](C1) {
-				def [:myfct](myfunction)
-				def myfunction2
-			}
-			capacity [:c2](C2) {
-				def myfunction
-				def myfunction3
-			}
-			agent MyAgent {
-				[:useskw](uses) C1, C2
-				on Initialize {
-				    myfunction
-				    myfunction2
-				    myfunction3
-				}
-			}
-		[:End:]
+[:Failure:]
+	package io.sarl.docs.faq.syntax
+	event Initialize
+	[:On]capacity [:c1](C1) {
+		def [:myfct](myfunction)
+		def myfunction2
+	}
+	capacity [:c2](C2) {
+		def myfunction
+		def myfunction3
+	}
+	agent MyAgent {
+		[:useskw](uses) C1, C2
+		on Initialize {
+		    myfunction
+		    myfunction2
+		    myfunction3
+		}
+	}
+[:End:]
+
 
 This error is standard because the functions of the capacities [:c1:] and [:c2:] are implicitly accessible
 in the scope of the agent definition, see [:useskw:] keyword definition. The SARL compiler is then unable
@@ -308,27 +307,26 @@ For solving this issue, the developer must explicitly call the correct version o
 getting the capacity. The following code is the correct call to the function if the function in the
 capacity [:c1:] should be called:
 
-		[:Success:]
-			package io.sarl.docs.faq.syntax
-			event Initialize
-			capacity C1 {
-				def myfunction
-				def myfunction2
-			}
-			capacity C2 {
-				def myfunction
-				def myfunction3
-			}
-			agent MyAgent {
-				[:useskw](uses) C1, C2
-				on Initialize {
-					[:On]getSkill(C1).myfunction[:Off]
-				    myfunction2
-				    myfunction3
-				}
-			}
-		[:End:]
-
+[:Success:]
+	package io.sarl.docs.faq.syntax
+	event Initialize
+	capacity C1 {
+		def myfunction
+		def myfunction2
+	}
+	capacity C2 {
+		def myfunction
+		def myfunction3
+	}
+	agent MyAgent {
+		[:useskw](uses) C1, C2
+		on Initialize {
+			[:On]getSkill(C1).myfunction[:Off]
+		    myfunction2
+		    myfunction3
+		}
+	}
+[:End:]
 
 
 ### How to return two values?
@@ -336,16 +334,17 @@ capacity [:c1:] should be called:
 SARL comes with a `Pair<A,B>` class to build an object for storing two values, nicknamed "key" and "value". It comes useful when a method has
 to return two values instead of just one. For example, the following function returns the next floor and direction that an elevator has to serve:
 
-        [:Success:]
-            package io.sarl.docs.faq.syntax
-            agent X {
-                [:On]
-                def kb_getNextJob() : Pair<Integer, Double> {
-                    //...
-                }
-                [:Off]
-            }
-        [:End:]
+[:Success:]
+    package io.sarl.docs.faq.syntax
+    agent X {
+        [:On]
+        def kb_getNextJob() : Pair<Integer, Double> {
+            //...
+        }
+        [:Off]
+    }
+[:End:]
+
 
 As of Java 8, and as part of JavaFX, Java provides this `Pair<A,B>` class; check [here](https://www.geeksforgeeks.org/pair-class-in-java/) and
 [here](https://docs.oracle.com/javase/8/javafx/api/javafx/util/Pair.html). Note Pairs are different from `Map`, which can be seen as a collection
@@ -367,27 +366,28 @@ Check SARL documentation on that [here](../reference/general/Operators.html#coll
 
 Consider this code:
 
-        [:Success:]
-            package io.sarl.docs.faq.syntax
-            import java.util.UUID
-	        import java.util.Map
-            event CarArrivedPercept {
-                var car : UUID
-                var floor : int
-            }
-            class CarDescription {
-                def getFloor : int {0}
-                def setFloor(n : int) {}
-            }
-            agent X {
-                var cars : Map<UUID, CarDescription>
-                [:On]
-                on CarArrivedPercept {
-                    cars.[:getfct](get)([:occcar](occurrence.car)).floor = [:occkw](occurrence).floor
-                }
-                [:Off]
-            }
-        [:End:]
+[:Success:]
+    package io.sarl.docs.faq.syntax
+    import java.util.UUID
+    import java.util.Map
+    event CarArrivedPercept {
+        var car : UUID
+        var floor : int
+    }
+    class CarDescription {
+        def getFloor : int {0}
+        def setFloor(n : int) {}
+    }
+    agent X {
+        var cars : Map<UUID, CarDescription>
+        [:On]
+        on CarArrivedPercept {
+            cars.[:getfct](get)([:occcar](occurrence.car)).floor = [:occkw](occurrence).floor
+        }
+        [:Off]
+    }
+[:End:]
+
 
 We know that [:occkw:] is static, so cannot be changed. However, in the above code,
 [:occcar:], is not being changed/assigned, but just used to refer to another entity
@@ -397,27 +397,28 @@ of the [:getfct:], and complain with warning.
 
 Consider this code:
 
-        [:Failure:]
-            package io.sarl.docs.faq.syntax
-            import java.util.UUID
-            import java.util.Map
-            event CarArrivedPercept {
-                var car : UUID
-                var floor : int
-            }
-            class CarDescription {
-                def getFloor : int {0}
-                def setFloor(n : int) {}
-            }
-            agent X {
-                var cars : Map<UUID, CarDescription>
-                [:On]
-                on CarArrivedPercept {
-                    [:occfloorerror](occurrence.floor = 1)
-                }
-                [:Off]
-            }
-        [:End:]
+[:Failure:]
+    package io.sarl.docs.faq.syntax
+    import java.util.UUID
+    import java.util.Map
+    event CarArrivedPercept {
+        var car : UUID
+        var floor : int
+    }
+    class CarDescription {
+        def getFloor : int {0}
+        def setFloor(n : int) {}
+    }
+    agent X {
+        var cars : Map<UUID, CarDescription>
+        [:On]
+        on CarArrivedPercept {
+            [:occfloorerror](occurrence.floor = 1)
+        }
+        [:Off]
+    }
+[:End:]
+
 
 The line [:occfloorerror:] generates an error because in this case the SARL compiler
 is sure that the [:occkw:] instance is changed.
@@ -425,29 +426,28 @@ is sure that the [:occkw:] instance is changed.
 
 In order to avoid the warning above, you could write the code as:
 
-        [:Success:]
-            package io.sarl.docs.faq.syntax
-            import java.util.UUID
-            import java.util.Map
-            event CarArrivedPercept {
-                var car : UUID
-                var floor : int
-            }
-            class CarDescription {
-                def getFloor : int {0}
-                def setFloor(n : int) {}
-            }
-            agent X {
-                var cars : Map<UUID, CarDescription>
-                [:On]
-                on CarArrivedPercept {
-                    var c = occurrence.car
-                    cars.get(c).floor = occurrence.floor
-                }
-                [:Off]
-            }
-        [:End:]
-
+[:Success:]
+    package io.sarl.docs.faq.syntax
+    import java.util.UUID
+    import java.util.Map
+    event CarArrivedPercept {
+        var car : UUID
+        var floor : int
+    }
+    class CarDescription {
+        def getFloor : int {0}
+        def setFloor(n : int) {}
+    }
+    agent X {
+        var cars : Map<UUID, CarDescription>
+        [:On]
+        on CarArrivedPercept {
+            var c = occurrence.car
+            cars.get(c).floor = occurrence.floor
+        }
+        [:Off]
+    }
+[:End:]
 
 
 ### Error "Expression with side effect is not allowed in guards"
@@ -460,20 +460,20 @@ body has any method that is not [pure](https://en.wikipedia.org/wiki/Pure_functi
 
 If this analysis does not work, the programmer can mark a method as pure using `@Pure` annotation, e.g.,:
 
+[:Success:]
+    package io.sarl.docs.faq.syntax
+    interface E_MoveRandomly {}
+    agent X {
+        [:On]
+		@Pure
+		def MT_getEntityState(param : E_MoveRandomly) : int {
+			// Do something complex
+			return 0
+		}
+        [:Off]
+    }
+[:End:]
 
-        [:Success:]
-            package io.sarl.docs.faq.syntax
-            interface E_MoveRandomly {}
-            agent X {
-                [:On]
-				@Pure
-				def MT_getEntityState(param : E_MoveRandomly) : int {
-					// Do something complex
-					return 0
-				}
-                [:Off]
-            }
-        [:End:]
 
 Details on the [documentation page for function definition](../reference/general/FuncDecls.html#purity-of-the-functions).
 
@@ -498,14 +498,10 @@ Yes. Since the SARL compiler generates valid Java code including the documentati
 you could generate the documentation of your SARL program with the standard javadoc
 tool applied on the generated Java files.
 
-Additionnally, you could use a specific Javadoc doclet in order to generate a documentation 
-that follows the SARL syntax, intead of the Java syntax.
+Additionally, you could use a specific Javadoc doclet in order to generate a documentation 
+that follows the SARL syntax, instead of the Java syntax.
 
 You could find details on the page dedicated to the [Maven documentation plugin](../tools/APIDocumentation.md). 
 
 
-
-
-
 [:Include:](../legal.inc)
-

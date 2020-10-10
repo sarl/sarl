@@ -2,7 +2,12 @@
 
 [:Outline:]
 
-SARL enables to declare objects with an object-oriented programming approach.
+SARL enables to declare objects with an object-oriented programming approach for convenience to develop complex programs, i.e.
+the SARL developer must not learn another language such as Java for programming the objects that are used within the
+SARL program.
+Because of this convenience, the support of object-oriented programming may be less complete than in main stream object programming
+languages.
+ 
 This document describes the basic support of object-oriented programming provided by SARL.
 Before reading this document, we recommend that you read
 the [General Syntax Reference](./GeneralSyntax.md).
@@ -13,7 +18,7 @@ The basics of OOP are enabled in the SARL scripts. If you need more complex or m
 complete support of the OOP, you should use a dedicated language, such as Java,
 [Xtend](https://eclipse.org/xtend/), or [Scala](http://www.scala-lang.org/).
 
-<note>The SARL Eclipse product includes the tools for programming with the Java and Xtend languages.</note>
+> **_Note:_** The SARL Eclipse product includes the tools for programming with the Java and Xtend languages.
 
 
 ## Comparison between SARL and Other Languages
@@ -35,11 +40,11 @@ For defining a class, you could use the [:classkw:] keyword. The following examp
 The members of the class, i.e. the fields, methods and constructors must be written between the braces that are
 following the class declaration.
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			[:On]
-			[:classkw](class) [:classname](MyClass) {  }
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	[:On]
+	[:classkw](class) [:classname](MyClass) {  }
+[:End:]
 
 
 ### Class Inheritance
@@ -55,28 +60,28 @@ method [:getfullnamefct:]. These will also be available in class Employee, which
 
 The definition of the inheritance relationship between two classes is done with the [:extendskw:] keyword.
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			[:On]
-			class [:persontype](Person) {
-				
-				var [:firstnamefield](firstName) : String
-				var [:lastnamefield](lastName) : String
-				
-				def [:getfullnamefct](getFullName) : String {
-					this.firstName + " " + this.lastName
-				}
+[:Success:]
+	package io.sarl.docs.reference.oop
+	[:On]
+	class [:persontype](Person) {
+		
+		var [:firstnamefield](firstName) : String
+		var [:lastnamefield](lastName) : String
+		
+		def [:getfullnamefct](getFullName) : String {
+			this.firstName + " " + this.lastName
+		}
 
-			}
-			
-			class [:employeetype](Employee) [:extendskw](extends) Person {
-				
-				var [:positionfield](position) : String
-				
-				var [:salaryfield](salary) : float
-			
-			}
-		[:End:]
+	}
+	
+	class [:employeetype](Employee) [:extendskw](extends) Person {
+		
+		var [:positionfield](position) : String
+		
+		var [:salaryfield](salary) : float
+	
+	}
+[:End:]
 
 
 ### Define a Generic Class
@@ -98,37 +103,37 @@ To declare a bounded type parameter, list the type parameter's name, followed by
 
 Example:
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			[:On]
-			class AType<T> {
-			
-				var t : T
-			
-				def add(t : T) {
-					this.t = t
-				}
-			
-				def get : T {
-					return this.t
-				}
-			
-			}
-			
-			class Vector<T extends Number> {
-			
-				var x : T
-				var y : T
-			
-				def norm : Vector<? extends Number> {
-					var v = new Vector
-					var n = Math::sqrt(this.x.floatValue**2 + this.y.floatValue**2)
-					v.x = this.x.floatValue / n
-					v.y = this.y.floatValue / n
-					return v
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	[:On]
+	class AType<T> {
+	
+		var t : T
+	
+		def add(t : T) {
+			this.t = t
+		}
+	
+		def get : T {
+			return this.t
+		}
+	
+	}
+	
+	class Vector<T extends Number> {
+	
+		var x : T
+		var y : T
+	
+		def norm : Vector<? extends Number> {
+			var v = new Vector
+			var n = Math::sqrt(this.x.floatValue**2 + this.y.floatValue**2)
+			v.x = this.x.floatValue / n
+			v.y = this.y.floatValue / n
+			return v
+		}
+	}
+[:End:]
 
 
 ### Constructor Definition
@@ -141,22 +146,23 @@ Constructors can also delegate to other constructors using ```[:thiskw!](args...
 If the super class does not define a no-argument constructor, you have to explicitly call
 one using ```[:superkw!](args...)``` as the first expression in the body of the constructor.
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			class AnotherClass {
-			  new (s : String) { }
-			}
-			[:On]
-			class MyClass extends AnotherClass {
-			  [:newkw](new) (s : String) {
-			    [:superkw](super)(s)
-			  }
-			
-			  new() {
-			    [:thiskw](this)("default")
-			  }
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	class AnotherClass {
+	  new (s : String) { }
+	}
+	[:On]
+	class MyClass extends AnotherClass {
+	  [:newkw](new) (s : String) {
+	    [:superkw](super)(s)
+	  }
+	
+	  new() {
+	    [:thiskw](this)("default")
+	  }
+	}
+[:End:]
+
 
 If no constructor is defined in the type and a super-type is declared, implicit constructors will be assumed.
 Implicit constructors has the same prototypes as the constructors of the super type.
@@ -174,17 +180,18 @@ It means the field must be intialized into the field declaration or into a stati
 The static constructor is defined with the [:newkw:] prefixed by the [:staticmodifier:].
 The code block of the static constructor contains an assignment that is initializing the [:astaticfield:] field.
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			[:On]
-			class MyClass {
-			  static val [:astaticfield](staticField) : int
-			  
-			  static [:newkw!] {
-			    staticField = 2
-			  }
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	[:On]
+	class MyClass {
+	  static val [:astaticfield](staticField) : int
+	  
+	  static [:newkw!] {
+	    staticField = 2
+	  }
+	}
+[:End:]
+
 
 Static constructors have the following properties:
 
@@ -236,20 +243,20 @@ A top class may be declared with one or more modifiers, which affect its runtime
 
 Examples:
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			[:On]
-			[:publicmodifier](public) class TopClass1 {
-			}
-			[:packagemodifier](package) class TopClass2 {
-			}
-			[:abstractmodifier](abstract) class TopClass3 {
-			}
-			[:finalmodifier](final) class TopClass4 {
-			}
-			[:strictfpmodifier](strictfp) class TopClass5 {
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	[:On]
+	[:publicmodifier](public) class TopClass1 {
+	}
+	[:packagemodifier](package) class TopClass2 {
+	}
+	[:abstractmodifier](abstract) class TopClass3 {
+	}
+	[:finalmodifier](final) class TopClass4 {
+	}
+	[:strictfpmodifier](strictfp) class TopClass5 {
+	}
+[:End:]
 
 
 #### Nested Class Modifiers
@@ -266,35 +273,34 @@ A nested class may be declared with one or more modifiers, which affect its runt
 * [:staticmodifier:]: the inner class do not have access to the non-static members of the enclosing type.
 * [:strictfpmodifier:]: avoid the methods of the class to use intermediate floating number formats.
 
-<note>Terminology: Nested classes are divided into two categories: static and non-static.
-Nested classes that are declared static are called <i>static nested classes</i>.
-Non-static nested classes are called <i>inner classes</i>.</note>
+> **_Terminology::_** Nested classes are divided into two categories: static and non-static.
+> Nested classes that are declared static are called **static nested classes**.
+> Non-static nested classes are called **inner classes**.
 
-<note>The modifiers may differ from the previously described, depending on the enclosing type, e.g. agent.</note>
+> **_Note:_** The modifiers may differ from the previously described, depending on the enclosing type, e.g. agent.
 
-<caution>Until now, all the nested classes must be declared as static. This restriction may be removed in later
-versions.</caution>
+> **_Caution:_** Until now, all the nested classes must be declared as static. This restriction may be removed in later versions.
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			[:On]
-			class EnclosingClass {
-				public static class NestedClass1 {
-				}
-				[:protectedmodifier](protected) static class NestedClass2 {
-				}
-				package static class NestedClass3 {
-				}
-				[:privatemodifier](private) static class NestedClass4 {
-				}
-				abstract static class NestedClass5 {
-				}
-				final static class NestedClass6 {
-				}
-				strictfp static class NestedClass7 {
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	[:On]
+	class EnclosingClass {
+		public static class NestedClass1 {
+		}
+		[:protectedmodifier](protected) static class NestedClass2 {
+		}
+		package static class NestedClass3 {
+		}
+		[:privatemodifier](private) static class NestedClass4 {
+		}
+		abstract static class NestedClass5 {
+		}
+		final static class NestedClass6 {
+		}
+		strictfp static class NestedClass7 {
+		}
+	}
+[:End:]
 
 
 #### Field Modifiers
@@ -312,20 +318,20 @@ The modifiers for the fields in a class are:
 
 Examples:
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			public abstract class MyClass1 {
-			[:On]
-				public var a : Object
-				protected var b : Object
-				package var c : Object
-				private var d : Object
-				static var e : Object
-				[:transientmodifier](transient) var h : Object
-				[:volatilemodifier](volatile) var g : Object
-			[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	public abstract class MyClass1 {
+	[:On]
+		public var a : Object
+		protected var b : Object
+		package var c : Object
+		private var d : Object
+		static var e : Object
+		[:transientmodifier](transient) var h : Object
+		[:volatilemodifier](volatile) var g : Object
+	[:Off]
+	}
+[:End:]
 
 
 #### Method Modifiers
@@ -347,26 +353,26 @@ The modifiers for the methods in a class are:
 
 Examples:
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			public abstract class MyClass1 {
-			[:On]
-				public def fct1 { }
-				protected def fct2 { }
-				package def fct3 { }
-				private def fct4 { }
-				abstract def fct5
-				final def fct6 { }
-				[:nativemodifier](native) def fct7
-				static def fct8 { }
-				strictfp def fct9 { }
-				[:synchronizedmodifier](synchronized) def fct10 { }
-				// Dispatch functions
-				[:dispatchmodifier](dispatch) def fct11(p : Integer) { }
-				dispatch def fct11(p : Float) { }
-			[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	public abstract class MyClass1 {
+	[:On]
+		public def fct1 { }
+		protected def fct2 { }
+		package def fct3 { }
+		private def fct4 { }
+		abstract def fct5
+		final def fct6 { }
+		[:nativemodifier](native) def fct7
+		static def fct8 { }
+		strictfp def fct9 { }
+		[:synchronizedmodifier](synchronized) def fct10 { }
+		// Dispatch functions
+		[:dispatchmodifier](dispatch) def fct11(p : Integer) { }
+		dispatch def fct11(p : Float) { }
+	[:Off]
+	}
+[:End:]
 
 
 #### Constructor Modifiers
@@ -381,17 +387,17 @@ The modifiers for the constructors of a class are:
 
 Examples:
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			public abstract class MyClass1 {
-			[:On]
-				public new(p : int) { }
-				protected new(p : float) { }
-				package new(p : char) { }
-				private new(p : boolean) { }
-			[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	public abstract class MyClass1 {
+	[:On]
+		public new(p : int) { }
+		protected new(p : float) { }
+		package new(p : char) { }
+		private new(p : boolean) { }
+	[:Off]
+	}
+[:End:]
 
 
 ### Method Overriding
@@ -418,33 +424,33 @@ Since the first name and last name are already sequenced in the function
 its behavior. The [:overridemodifier:] keyword is specified for clearly marking this
 implementation of [:getfullnamefct:] as an override of the parent's implementation.
 
-<note>The return type of the [:getfullnamefct:] method (called with the name [:fullnamefct:],
-according to the [property access syntax](./general/MemberAccess.md#property-syntax))
-is not specified in the overriding prototype since it could be inferred by the SARL compiler.</note>
+> **_Nnote:_** The return type of the [:getfullnamefct:] method (called with the name [:fullnamefct:],
+> according to the [property access syntax](./general/MemberAccess.md#property-syntax))
+> is not specified in the overriding prototype since it could be inferred by the SARL compiler.
 
 For preventing a function to be overridden, you should add the [:finalmodifier:] modifier in the signature of
 the method (as in Java).
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			class [:persontype](Person) {
-				var firstName : String
-				var lastName : String
-			
-				def [:getfullnamefct](getFullName) : String {
-					this.firstName + " " + this.lastName
-				}
-			}
-			[:On]
-			class [:personextype](PersonEx) extends Person {
-				
-				var title : String
-				
-				[:overridemodifier](override) getFullName {
-					return title + " " + super.[:fullnamefct](fullName)
-				} 
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	class [:persontype](Person) {
+		var firstName : String
+		var lastName : String
+	
+		def [:getfullnamefct](getFullName) : String {
+			this.firstName + " " + this.lastName
+		}
+	}
+	[:On]
+	class [:personextype](PersonEx) extends Person {
+		
+		var title : String
+		
+		[:overridemodifier](override) getFullName {
+			return title + " " + super.[:fullnamefct](fullName)
+		} 
+	}
+[:End:]
 
 
 ### Accessing Local Variables of the Enclosing Scope
@@ -453,30 +459,27 @@ Local classes (or nested classes, i.e. classes defined inside an other type) hav
 the [:staticmodifier:] modifier. It means that a nested class cannot have access to the
 fields and methods of the instance of the enclosing type. Only accesses to static members are allowed.
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			[:On]
-			class EnclosingClass {
-				static var field1 : int
-				static def fct1 {
-				}
+[:Success:]
+	package io.sarl.docs.reference.oop
+	[:On]
+	class EnclosingClass {
+		static var field1 : int
+		static def fct1 {
+		}
 
-				static class NestedClass {
-					def fct2 : int {
-						// Explicit type specification for the field access
-						EnclosingClass::field1
-					}
-			
-					def fct3 {
-						// Implicit type specification for the function's call
-						fct1
-					}
-				}
+		static class NestedClass {
+			def fct2 : int {
+				// Explicit type specification for the field access
+				EnclosingClass::field1
 			}
-		[:End:]
-
-
+	
+			def fct3 {
+				// Implicit type specification for the function's call
+				fct1
+			}
+		}
 	}
+[:End:]
 
 
 ## Interface
@@ -496,14 +499,14 @@ is) must have functions called X,Y,Z, etc.
 
 In the following example, the [:lighttype:] interface is defined with the two methods [:turnonfct:] and [:turnofffct:].
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			[:On]
-			interface [:lighttype](Light) {
-				def [:turnonfct](turnOn)
-				def [:turnofffct](turnOff)
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	[:On]
+	interface [:lighttype](Light) {
+		def [:turnonfct](turnOn)
+		def [:turnofffct](turnOff)
+	}
+[:End:]
 
 
 ### Interface Inheritance
@@ -511,18 +514,18 @@ In the following example, the [:lighttype:] interface is defined with the two me
 It is possible to specialize the definition of an interface. In the following example, the [:varlight:]
 interface that is refining the previous [:lighttype:] interface and add specific functions.
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			interface Light {
-				def turnOn
-				def turnOff
-			}
-			[:On]
-			interface [:varlight](VariableIntensityLight) extends Light {
-				def setLightIntensity(intensity : float)
-				def getLightIntensity : float
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	interface Light {
+		def turnOn
+		def turnOff
+	}
+	[:On]
+	interface [:varlight](VariableIntensityLight) extends Light {
+		def setLightIntensity(intensity : float)
+		def getLightIntensity : float
+	}
+[:End:]
 
 
 ### Define a Generic Interface
@@ -544,19 +547,19 @@ To declare a bounded type parameter, list the type parameter's name, followed by
 
 Examples:
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			[:On]
-			interface AnInterface<T> {
-				def add(t : T)
-			
-				def get : T
-			}
-			
-			interface Vector<T extends Number> {
-				def norm : Vector<? extends Number>
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	[:On]
+	interface AnInterface<T> {
+		def add(t : T)
+	
+		def get : T
+	}
+	
+	interface Vector<T extends Number> {
+		def norm : Vector<? extends Number>
+	}
+[:End:]
 
 
 ### Interface Implementation
@@ -567,23 +570,23 @@ The class must provide an implementation of all the functions defined in the int
 The only one exception is when the class is abstract. In this case, the derived classes must implement the
 functions of the interface.
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			interface Light {
-			  def turnOn
-			  def turnOff
-			}
-			[:On]
-			class TheLight [:implementskw](implements) Light {
-				var isSwitchedOn = false
-				def turnOn {
-					this.isSwitchedOn = true
-				}
-				def turnOff {
-					this.isSwitchedOn = false
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	interface Light {
+	  def turnOn
+	  def turnOff
+	}
+	[:On]
+	class TheLight [:implementskw](implements) Light {
+		var isSwitchedOn = false
+		def turnOn {
+			this.isSwitchedOn = true
+		}
+		def turnOff {
+			this.isSwitchedOn = false
+		}
+	}
+[:End:]
 
 
 ### Default Implementation of Interface Functions
@@ -594,25 +597,25 @@ not providing one. This feature is known as the default method mechanism.
 In the following example, two default implementations of the [:turnonfct:] and [:turnofffct:] functions are provided.
 The implementing class needs to provide a function code only for the [:switchfct:] function:
  
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			[:On]
-			interface Light {
-				def turnOn {
-					switchLight(true)
-				}
-				def turnOff {
-					switchLight(false)
-				}
-				def [:switchfct](switchLight)(state : boolean)
-			}
-			class TheLight implements Light {
-				var isSwitchedOn = false
-				def switchLight(state : boolean) {
-					this.isSwitchedOn = state
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	[:On]
+	interface Light {
+		def turnOn {
+			switchLight(true)
+		}
+		def turnOff {
+			switchLight(false)
+		}
+		def [:switchfct](switchLight)(state : boolean)
+	}
+	class TheLight implements Light {
+		var isSwitchedOn = false
+		def switchLight(state : boolean) {
+			this.isSwitchedOn = state
+		}
+	}
+[:End:]
 
 
 ### Modifiers
@@ -635,18 +638,18 @@ A top interface may be declared with one or more modifiers, which affect its run
 
 Examples:
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			[:On]
-			public interface TopInterface1 {
-			}
-			package interface TopInterface2 {
-			}
-			abstract interface TopInterface3 {
-			}
-			strictfp interface TopInterface4 {
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	[:On]
+	public interface TopInterface1 {
+	}
+	package interface TopInterface2 {
+	}
+	abstract interface TopInterface3 {
+	}
+	strictfp interface TopInterface4 {
+	}
+[:End:]
 
 
 #### Nested Interface Modifiers
@@ -662,32 +665,32 @@ A nested interface may be declared with one or more modifiers, which affect its 
 * [:staticmodifier:]: the inner interface do not have access to the non-static members of the enclosing type.
 * [:strictfpmodifier:]: avoid the methods of the interface to use intermediate floating number formats.
 
-<note>Terminology: Nested interfaces are divided into two categories: static and non-static.
-Nested interfaces that are declared static are called <i>static nested interfaces</i>.
-Non-static nested interfaces are called <i>inner interfaces</i>.</note>
+> **_Terminology::_** Nested interfaces are divided into two categories: static and non-static.
+> Nested interfaces that are declared static are called **static nested interfaces**.
+> Non-static nested interfaces are called **inner interfaces**.
 
-<note>The modifiers may differ from the previously described, depending on the enclosing type, e.g. agent.</note>
+> **_Note:_** The modifiers may differ from the previously described, depending on the enclosing type, e.g. agent.
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			[:On]
-			class EnclosingClass {
-				public interface NestedInterface1 {
-				}
-				protected interface NestedInterface2 {
-				}
-				package interface NestedInterface3 {
-				}
-				private interface NestedInterface4 {
-				}
-				abstract interface NestedInterface5 {
-				}
-				static interface NestedInterface6 {
-				}
-				strictfp interface NestedInterface7 {
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	[:On]
+	class EnclosingClass {
+		public interface NestedInterface1 {
+		}
+		protected interface NestedInterface2 {
+		}
+		package interface NestedInterface3 {
+		}
+		private interface NestedInterface4 {
+		}
+		abstract interface NestedInterface5 {
+		}
+		static interface NestedInterface6 {
+		}
+		strictfp interface NestedInterface7 {
+		}
+	}
+[:End:]
 
 
 #### Field Modifiers
@@ -698,17 +701,17 @@ The modifiers for the fields in an interface are:
 	* [:publicmodifier:]: there are no restrictions on accessing the field (default);
 * [:staticmodifier:]: the field is a class field, not an instance field (default).
 
-<caution>Only fields defined with `val` can be put in an interface.</caution>
+> **_Caution:_** Only fields defined with `val` can be put in an interface.
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			public interface MyInterface1 {
-			[:On]
-				public val a : Object;
-				static val e : Object;
-			[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	public interface MyInterface1 {
+	[:On]
+		public val a : Object;
+		static val e : Object;
+	[:Off]
+	}
+[:End:]
 
 
 #### Method Modifiers
@@ -721,15 +724,15 @@ The modifiers for the methods in an interface are:
 
 Examples:
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			public interface MyInterface1 {
-			[:On]
-				public def fct1
-				abstract def fct5
-			[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	public interface MyInterface1 {
+	[:On]
+		public def fct1
+		abstract def fct5
+	[:Off]
+	}
+[:End:]
 
 
 ## Enumeration
@@ -745,14 +748,14 @@ that you cannot define methods nor attributes in the enumeration.
 For defining an enumeration, you could use the [:enumkw:] keyword.
 The following example defines the enumeration [:myenumtype:] with two constants: 
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			[:On]
-			[:enumkw](enum) [:myenumtype](MyEnum) {
-				CONSTANT_1,
-				CONSTANT_2
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	[:On]
+	[:enumkw](enum) [:myenumtype](MyEnum) {
+		CONSTANT_1,
+		CONSTANT_2
+	}
+[:End:]
 
 
 ### Modifiers
@@ -772,16 +775,16 @@ A top enumeration may be declared with one or more modifiers, which affect its r
 
 Examples:
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			[:On]
-			public enum TopEnumeration1 {
-				CST1, CST2
-			}
-			package enum TopEnumeration2 {
-				CST3, CST4
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	[:On]
+	public enum TopEnumeration1 {
+		CST1, CST2
+	}
+	package enum TopEnumeration2 {
+		CST3, CST4
+	}
+[:End:]
 
 
 #### Nested Enumeration Modifiers
@@ -795,33 +798,33 @@ A nested interface may be declared with one or more modifiers, which affect its 
 	* [:privatemodifier:]: the enumeration is accessible only within its class.
 * [:staticmodifier:]: the inner enumeration do not have access to the non-static members of the enclosing type.
 
-<note>Terminology: Nested enumerations are divided into two categories: static and non-static.
-Nested enumerations that are declared static are called <i>static nested enumerations</i>.
-Non-static nested enumerations are called <i>inner enumerations</i>.</note>
+> **_Terminology::_**  Nested enumerations are divided into two categories: static and non-static.
+> Nested enumerations that are declared static are called **static nested enumerations**.
+> Non-static nested enumerations are called **inner enumerations**.
 
-<note>The modifiers may differ from the previously described, depending on the enclosing type, e.g. agent.</note>
+> **_Note:_** The modifiers may differ from the previously described, depending on the enclosing type, e.g. agent.
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			[:On]
-			class EnclosingClass {
-				public enum NestedClass1 {
-					CST1, CST2
-				}
-				protected enum NestedClass2 {
-					CST3, CST4
-				}
-				package enum NestedClass3 {
-					CST5, CST6
-				}
-				private enum NestedClass4 {
-					CST7, CST8
-				}
-				static enum NestedClass5 {
-					CST9, CST10
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	[:On]
+	class EnclosingClass {
+		public enum NestedClass1 {
+			CST1, CST2
+		}
+		protected enum NestedClass2 {
+			CST3, CST4
+		}
+		package enum NestedClass3 {
+			CST5, CST6
+		}
+		private enum NestedClass4 {
+			CST7, CST8
+		}
+		static enum NestedClass5 {
+			CST9, CST10
+		}
+	}
+[:End:]
 
 
 ## Annotation Type
@@ -844,15 +847,15 @@ This annotation defines three parameters:
 
 Examples:
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			[:On]
-			[:annotationkw](annotation) [:annotationtype](MyAnnotation) {
-			  val [:valuefield](value) : String[]
-			  val [:istrickyfield](isTricky) : boolean = [:falsekw](false)
-			  val [:lotterynumberfield](lotteryNumbers) : int[] = #[ 42, 137 ]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	[:On]
+	[:annotationkw](annotation) [:annotationtype](MyAnnotation) {
+	  val [:valuefield](value) : String[]
+	  val [:istrickyfield](isTricky) : boolean = [:falsekw](false)
+	  val [:lotterynumberfield](lotteryNumbers) : int[] = #[ 42, 137 ]
+	}
+[:End:]
 
 
 ### Modifiers
@@ -874,16 +877,16 @@ A top annotation type may be declared with one or more modifiers, which affect i
 
 Examples:
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			[:On]
-			public annotation TopAnnotationType1 {
-			}
-			package annotation TopAnnotationType2 {
-			}
-			abstract annotation TopAnnotationType3 {
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	[:On]
+	public annotation TopAnnotationType1 {
+	}
+	package annotation TopAnnotationType2 {
+	}
+	abstract annotation TopAnnotationType3 {
+	}
+[:End:]
 
 
 #### Nested Annotation Type Modifiers
@@ -898,30 +901,30 @@ A nested annotation type may be declared with one or more modifiers, which affec
 * [:abstractmodifier:]: the annotation type is abstract and cannot be instanced.
 * [:staticmodifier:]: the inner annotation type do not have access to the non-static members of the enclosing type.
 
-<note>Terminology: Nested annotation types are divided into two categories: static and non-static.
-Nested annotation types that are declared static are called <i>static nested annotation types</i>.
-Non-static nested annotation types are called <i>inner annotation types</i>.</note>
+> **_Terminology::_** Nested annotation types are divided into two categories: static and non-static.
+> Nested annotation types that are declared static are called **static nested annotation types**.
+> Non-static nested annotation types are called**inner annotation types**.
 
-<note>The modifiers may differ from the previously described, depending on the enclosing type, e.g. agent.</note>
+> **_Note:_** The modifiers may differ from the previously described, depending on the enclosing type, e.g. agent.
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			[:On]
-			class EnclosingClass {
-				public annotation NestedAnnotationType1 {
-				}
-				protected annotation NestedAnnotationType2 {
-				}
-				package annotation NestedAnnotationType3 {
-				}
-				private annotation NestedAnnotationType4 {
-				}
-				abstract annotation NestedAnnotationType5 {
-				}
-				static annotation NestedAnnotationType6 {
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	[:On]
+	class EnclosingClass {
+		public annotation NestedAnnotationType1 {
+		}
+		protected annotation NestedAnnotationType2 {
+		}
+		package annotation NestedAnnotationType3 {
+		}
+		private annotation NestedAnnotationType4 {
+		}
+		abstract annotation NestedAnnotationType5 {
+		}
+		static annotation NestedAnnotationType6 {
+		}
+	}
+[:End:]
 
 
 #### Value Modifiers
@@ -934,15 +937,15 @@ The modifiers for the values in an annotation type are:
 
 Examples:
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			annotation MyAnnotationType1 {
-			[:On]
-				public val val1 : int
-				static val val2 : int
-			[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	annotation MyAnnotationType1 {
+	[:On]
+		public val val1 : int
+		static val val2 : int
+	[:Off]
+	}
+[:End:]
 
 
 ## Anonymous Class
@@ -960,36 +963,36 @@ the class in another expression.
 The following example, [:anontype:], uses anonymous classes in the
 initialization statements of the local variables [:frenchfield:] and [:spanishfield:]:
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			[:On]
-			interface HelloWorld {
-			    def greetSomeone(someone : String)
-			}
+[:Success:]
+	package io.sarl.docs.reference.oop
+	[:On]
+	interface HelloWorld {
+	    def greetSomeone(someone : String)
+	}
 
-			class [:anontype](HelloWorldAnonymousClasses) {
-			    def sayHello {
-			        var [:frenchfield](frenchGreeting) = new HelloWorld {
-			            var name = "tout le monde"
-			            def greetSomeone(someone : String) {
-			                name = someone
-			                println("Salut " + name)
-			            }
-			        }
-			
-			        var [:spanishfield](spanishGreeting) = new HelloWorld {
-			            var name = "mundo"
-			            def greetSomeone(someone : String) {
-			                name = someone
-			                println("Hola, " + name)
-			            }
-			        }
+	class [:anontype](HelloWorldAnonymousClasses) {
+	    def sayHello {
+	        var [:frenchfield](frenchGreeting) = new HelloWorld {
+	            var name = "tout le monde"
+	            def greetSomeone(someone : String) {
+	                name = someone
+	                println("Salut " + name)
+	            }
+	        }
+	
+	        var [:spanishfield](spanishGreeting) = new HelloWorld {
+	            var name = "mundo"
+	            def greetSomeone(someone : String) {
+	                name = someone
+	                println("Hola, " + name)
+	            }
+	        }
 
-			        frenchGreeting.greetSomeone("Marc")
-			        spanishGreeting.greetSomeone("Marco")
-			    }
-			}
-		[:End:]
+	        frenchGreeting.greetSomeone("Marc")
+	        spanishGreeting.greetSomeone("Marco")
+	    }
+	}
+[:End:]
 
 
 ### Syntax of Anonymous Classes
@@ -1011,25 +1014,25 @@ Because an anonymous class definition is an expression, it must be part of a sta
 In this example, the anonymous class expression is part of the statement that instantiates
 the [:frenchfield2:] object.
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-		    interface [:anontype2](HelloWorld) {
-		        def greetSomeone(someone : String)
-		    }
-			class HelloWorldAnonymousClasses {
-			    def sayHello {
-			[:On]
-					var [:frenchfield2](frenchGreeting) = new HelloWorld {
-					    var name = "tout le monde"
-					    def greetSomeone(someone : String) {
-					        name = someone
-					        println("Salut " + name)
-					    }
-					}
-			[:Off]
-				}
+[:Success:]
+	package io.sarl.docs.reference.oop
+    interface [:anontype2](HelloWorld) {
+        def greetSomeone(someone : String)
+    }
+	class HelloWorldAnonymousClasses {
+	    def sayHello {
+	[:On]
+			var [:frenchfield2](frenchGreeting) = new HelloWorld {
+			    var name = "tout le monde"
+			    def greetSomeone(someone : String) {
+			        name = someone
+			        println("Salut " + name)
+			    }
 			}
-		[:End:]
+	[:Off]
+		}
+	}
+[:End:]
 
 
 ### Accessing Local Variables of the Enclosing Scope, and Declaring and Accessing Members of the Anonymous Class
@@ -1046,28 +1049,28 @@ Anonymous classes have restrictions with respect to their members:
 * You cannot declare static initializers or member interfaces in an anonymous class.
 * An anonymous class can have static members provided that they are constant variables.
 
-<note>You can declare the following in anonymous classes: fields, extra methods
-(even if they do not implement any methods of the supertype), instance initializers, 
-local classes. However, you cannot declare constructors in an anonymous class.</note>
+> **_Note:_** You can declare the following in anonymous classes: fields, extra methods
+> (even if they do not implement any methods of the supertype), instance initializers, 
+> local classes. However, you cannot declare constructors in an anonymous class.
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-		    interface HelloWorld {
-		        def greetSomeone(someone : String)
-		    }
-			[:On]
-			class HelloWorldAnonymousClasses {
-				var name : String
-				def sayHello {
-					var frenchGreeting = new HelloWorld {
-						def greetSomeone(someone : String) {
-							name = someone
-							println("Salut " + name)
-						}
-					}
+[:Success:]
+	package io.sarl.docs.reference.oop
+    interface HelloWorld {
+        def greetSomeone(someone : String)
+    }
+	[:On]
+	class HelloWorldAnonymousClasses {
+		var name : String
+		def sayHello {
+			var frenchGreeting = new HelloWorld {
+				def greetSomeone(someone : String) {
+					name = someone
+					println("Salut " + name)
 				}
 			}
-		[:End:]
+		}
+	}
+[:End:]
 
 
 
@@ -1084,27 +1087,27 @@ Abstract types cannot be instantiated, but they can be derived.
 An abstract method is a method that is declared without an implementation 
 (without braces, and followed by a semicolon), like this:
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			abstract class MyType {
-			[:On]
-				abstract def moveTo(deltaX : double, deltaY : double)
-			[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	abstract class MyType {
+	[:On]
+		abstract def moveTo(deltaX : double, deltaY : double)
+	[:Off]
+	}
+[:End:]
 
 
 If a type includes abstract methods, then the type itself must be declared abstract, as in:
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			[:On]
-			abstract class GraphicObject {
-				// declare fields
-				// declare nonabstract methods
-				abstract def draw
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	[:On]
+	abstract class GraphicObject {
+		// declare fields
+		// declare nonabstract methods
+		abstract def draw
+	}
+[:End:]
 
 
 When an abstract type is derived, the subtype usually provides implementations for all of the
@@ -1153,37 +1156,37 @@ The fourth column indicates whether all types have access to the member.
 
 Examples:
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			[:On]
-			class C1 {
-			   [:publicmodifier](public) def pubfct {}
-			   [:protectedmodifier](protected) def protfct {}
-			   [:packagemodifier](package) def packfct {}
-			   [:privatemodifier](private) def privfct {}
-			
-			   def test0 {
-			   	pubfct;
-			   	protfct;
-			   	packfct;
-			    privfct;
-			   }
-			}
-			class C2 extends C1 {
-			   def test1 {
-			   	pubfct;
-			   	protfct;
-			   	packfct;
-			   }
-			}
-			class C3 {
-			   def test3(obj : C1) {
-			   	obj.pubfct;
-			   	obj.protfct;
-			   	obj.packfct;
-			   }
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	[:On]
+	class C1 {
+	   [:publicmodifier](public) def pubfct {}
+	   [:protectedmodifier](protected) def protfct {}
+	   [:packagemodifier](package) def packfct {}
+	   [:privatemodifier](private) def privfct {}
+	
+	   def test0 {
+	   	pubfct;
+	   	protfct;
+	   	packfct;
+	    privfct;
+	   }
+	}
+	class C2 extends C1 {
+	   def test1 {
+	   	pubfct;
+	   	protfct;
+	   	packfct;
+	   }
+	}
+	class C3 {
+	   def test3(obj : C1) {
+	   	obj.pubfct;
+	   	obj.protfct;
+	   	obj.packfct;
+	   }
+	}
+[:End:]
 
 
 ### dispatch Modifier
@@ -1199,32 +1202,32 @@ For a set of visible dispatch methods in the current type hierarchy with the sam
 the same number of arguments, the compiler infers a synthetic dispatcher method.
 This dispatcher uses the common super type of all declared arguments.
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			class MyClass {
-				def println(o : Object) {
-				}
-			[:On]
-				[:dispatchmodifier](dispatch) def getType(x : Number) { 
-				  "it's a number" 
-				}
-				 
-				[:dispatchmodifier!] def getType(x : Integer) { 
-				  "it's an int" 
-				}
+[:Success:]
+	package io.sarl.docs.reference.oop
+	class MyClass {
+		def println(o : Object) {
+		}
+	[:On]
+		[:dispatchmodifier](dispatch) def getType(x : Number) { 
+		  "it's a number" 
+		}
+		 
+		[:dispatchmodifier!] def getType(x : Integer) { 
+		  "it's an int" 
+		}
 
-				[:dispatchmodifier!] def getType(x : String) { 
-				  "it's a string" 
-				}
+		[:dispatchmodifier!] def getType(x : String) { 
+		  "it's a string" 
+		}
 
-				def clientCode {
-					getType(4.5).println
-					getType(4).println
-					getType("a string").println
-				}
-			[:Off]
-			}
-		[:End:]
+		def clientCode {
+			getType(4.5).println
+			getType(4).println
+			getType("a string").println
+		}
+	[:Off]
+	}
+[:End:]
 
 
 ### extension Modifier
@@ -1236,46 +1239,46 @@ Extension methods allow adding new methods to existing  types without modifying 
 helpful as they can greatly improve the readability. They use a simple syntactic trick: the first parameter of a method
 can either be passed in after opening the parentheses or before the method call. For example, given a method:
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			class MyClass {
-			[:On]
-				def removeVowels(s : String) { 
-					s.replaceAll("[aeiouAEIOU]", "") 
-				}
-			[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	class MyClass {
+	[:On]
+		def removeVowels(s : String) { 
+			s.replaceAll("[aeiouAEIOU]", "") 
+		}
+	[:Off]
+	}
+[:End:]
 
 
 We can call this method either like in Java:
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			class MyClass {
-				def removeVowels(s : String) { }
-				def tmp {
-			[:On]
-					removeVowels("Hello") 
-			[:Off]
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	class MyClass {
+		def removeVowels(s : String) { }
+		def tmp {
+	[:On]
+			removeVowels("Hello") 
+	[:Off]
+		}
+	}
+[:End:]
 
 
 or as an extension method of String:
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			class MyClass {
-				def removeVowels(s : String) { }
-				def tmp {
-			[:On]
-					"Hello".removeVowels 
-			[:Off]
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	class MyClass {
+		def removeVowels(s : String) { }
+		def tmp {
+	[:On]
+			"Hello".removeVowels 
+	[:Off]
+		}
+	}
+[:End:]
 
 
 By adding the [:extensionmodifier:] keyword to a field, a local variable or a parameter declaration, its
@@ -1284,36 +1287,36 @@ instance methods become extension methods.
 In the following example, three functions are defined for illustrating the three types of
 extension providers.
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			import java.util.ArrayList
-			[:On]
-			class Examples {
-				//
-				// Example of an extension provider on a class field.
-				//
-				[:extensionmodifier](extension) var list : ArrayList<String> = newArrayList
-				
-				def extensionFieldExample(value : String) : boolean {
-					value.contains // calls this.list.contains(value)
-				}
-				
-				//
-				// Example of an extension provider on a method parameter.
-				//
-				def extensionParameterExample(value : String, extension o : ArrayList<String>) : boolean {
-					value.contains // calls o.contains(value)
-				}
-				
-				//
-				// Example of an extension provider on a local variable.
-				//
-				def extensionLocalVariableExample(value : String) : boolean {
-					extension var o : ArrayList<String> = newArrayList
-					value.contains // calls o.contains(value)
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	import java.util.ArrayList
+	[:On]
+	class Examples {
+		//
+		// Example of an extension provider on a class field.
+		//
+		[:extensionmodifier](extension) var list : ArrayList<String> = newArrayList
+		
+		def extensionFieldExample(value : String) : boolean {
+			value.contains // calls this.list.contains(value)
+		}
+		
+		//
+		// Example of an extension provider on a method parameter.
+		//
+		def extensionParameterExample(value : String, extension o : ArrayList<String>) : boolean {
+			value.contains // calls o.contains(value)
+		}
+		
+		//
+		// Example of an extension provider on a local variable.
+		//
+		def extensionLocalVariableExample(value : String) : boolean {
+			extension var o : ArrayList<String> = newArrayList
+			value.contains // calls o.contains(value)
+		}
+	}
+[:End:]
 
 
 ### final Modifier
@@ -1325,9 +1328,9 @@ Once a final variable has been assigned, it always contains the same value. If a
 holds a reference to an object, then the state of the object may be changed by operations on the
 object, but the variable will always refer to the same object.
 
-<caution>The SARL compiler complains if you write the [:finalmodifier:] modifer in conjonction with the [:varmodifier:]
-or [:valmodifier:] modifiers. Indeed, the [:valmodifier:] modifier defines a final variable; and the
-[:varmodifier:] modifier defines a no-final variable.</caution>
+> **_Caution:_** The SARL compiler complains if you write the [:finalmodifier:] modifer in conjonction with the [:varmodifier:]
+> or [:valmodifier:] modifiers. Indeed, the [:valmodifier:] modifier defines a final variable; and the
+> [:varmodifier:] modifier defines a no-final variable.
 
 This applies also to arrays, because arrays are objects; if a final variable holds a reference to
 an array, then the components of the array may be changed by operations on the array, but the variable
@@ -1341,28 +1344,28 @@ A final type cannot be derived. Doing this can confer security and efficiency be
 of the Java standard library classes are final, such as `java.lang.System` and
 `java.lang.String`. All methods in a final type are implicitly final.
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			class C {
-				[:varmodifier](var) xxx = 1
-			}
-			[:On]
-			class A {
-				//
-				// Final field
-				//
-				[:valmodifier](val) field = 4
-				
-				//
-				// Final method
-				//
-				[:finalmodifier](final) def cannotBeOverriden {
-				}
-			}
-			final class B {
-				// This class cannot be derived
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	class C {
+		[:varmodifier](var) xxx = 1
+	}
+	[:On]
+	class A {
+		//
+		// Final field
+		//
+		[:valmodifier](val) field = 4
+		
+		//
+		// Final method
+		//
+		[:finalmodifier](final) def cannotBeOverriden {
+		}
+	}
+	final class B {
+		// This class cannot be derived
+	}
+[:End:]
 
 
 ### native Modifier
@@ -1370,17 +1373,17 @@ of the Java standard library classes are final, such as `java.lang.System` and
 The [:nativemodifier:] keyword is applied to a method to indicate that the method is implemented in
 native code, i.e. outside SARL and Java, using the Java Native Interface.
 
-<note>This modifier is provided for enabling agents to access to low-level resources that
-are not supported by the Java API. You should not use this modifier if you can use
-a higher-level API in place of.</note>
+> **_Note:_** This modifier is provided for enabling agents to access to low-level resources that
+> are not supported by the Java API. You should not use this modifier if you can use
+> a higher-level API in place of.
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			[:On]
-			class A {
-				[:nativemodifier](native) def fct
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	[:On]
+	class A {
+		[:nativemodifier](native) def fct
+	}
+[:End:]
 
 
 ### static Modifier
@@ -1395,30 +1398,30 @@ rather than with any instance. Every instance of the type shares a static field,
 fixed location in memory. Any instance can change the value of a static variable, but static variables
 can also be manipulated without creating an instance of the type.
 
-<note>Constants are usually defined as final static fields</note>
+> **_Note:_** Constants are usually defined as final static fields.
 
 Static methods, which have the [:staticmodifier:] modifier in their declarations, should be invoked with the
 type name, without the need for creating an instance of the type. 
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			[:On]
-			class A {
-				//
-				// Static field
-				//
-				[:staticmodifier](static) var field : int
-				//
-				// Constant
-				//
-				static val constant = 4
-				//
-				// Static method
-				//
-				static def aMethod {
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	[:On]
+	class A {
+		//
+		// Static field
+		//
+		[:staticmodifier](static) var field : int
+		//
+		// Constant
+		//
+		static val constant = 4
+		//
+		// Static method
+		//
+		static def aMethod {
+		}
+	}
+[:End:]
 
 
 ### strictfp Modifier
@@ -1452,13 +1455,13 @@ From the VM perspective, turning on this higher precision means the following:
 The [:strictfp:] modifier accomplishes this by truncating all intermediate values to IEEE single precision and
 double precision, as occurred in earlier versions of the JVM.
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			[:On]
-			class A {
-				[:strictfp](strictfp) def fct { }
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	[:On]
+	class A {
+		[:strictfp](strictfp) def fct { }
+	}
+[:End:]
 
 
 ### synchronized Modifier
@@ -1479,25 +1482,25 @@ object's variables are done through synchronized methods.
 can be safely read through non-synchronized methods, once the object is constructed)
 This strategy is effective, but can present problems with liveness.
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			[:On]
-			class SynchronizedCounter {
-				var c = 0
-			
-				[:synchronizedmodifier](synchronized) def increment {
-					c++
-				}
-			
-				synchronized def decrement {
-					c--
-				}
-			
-				synchronized def value {
-					return c
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	[:On]
+	class SynchronizedCounter {
+		var c = 0
+	
+		[:synchronizedmodifier](synchronized) def increment {
+			c++
+		}
+	
+		synchronized def decrement {
+			c--
+		}
+	
+		synchronized def value {
+			return c
+		}
+	}
+[:End:]
 
 
 ### transient Modifier
@@ -1510,13 +1513,13 @@ The [:transientmodifier:] modifier is a keyword used as a field modifier.
 When a field is declared transient, it would not be serialized even if the type to which it belongs
 is serialized.
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			[:On]
-			class A {
-				[:transientmodifier](transient) var field : int = 4
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	[:On]
+	class A {
+		[:transientmodifier](transient) var field : int = 4
+	}
+[:End:]
 
 
 ### volatile Modifier
@@ -1541,13 +1544,13 @@ as reordering memory operations and caching the variable in a CPU register. Usin
 instructs the compiler not to apply these optimizations. This guarantees that a reading thread
 always reads the variable from memory (or from a shared cache), never from a local cache.
 
-		[:Success:]
-			package io.sarl.docs.reference.oop
-			[:On]
-				class A {
-					[:volatilemodifier](volatile) var field : int = 4
-				}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.oop
+	[:On]
+		class A {
+			[:volatilemodifier](volatile) var field : int = 4
+		}
+[:End:]
 
 
 ## References

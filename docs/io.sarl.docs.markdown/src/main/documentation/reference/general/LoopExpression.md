@@ -14,36 +14,37 @@ The for's variable is local and final, hence cannot be updated.
 The type of a for loop is `void`. The type of the local variable can be inferred from the
 iterable or array that is processed, e.g. in the following example [:v:] is of type [:type:].
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			agent A {
-				def example {
-					[:On]
-					var tab : [:type](String)[]
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	agent A {
+		def example {
+			[:On]
+			var tab : [:type](String)[]
 
-					for ([:v](v) : tab) {
-						println(v)
-					}
-					[:Off]
-				}
+			for ([:v](v) : tab) {
+				println(v)
 			}
-		[:End:]
+			[:Off]
+		}
+	}
+[:End:]
+
 
 You could specify the expected type for the local variable with the [:askw:] following the local variable:
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			agent A {
-				def example {
-					var tab : String[]
-					[:On]
-					for (v [:askw](as) String : tab) {
-						println(v)
-					}
-					[:Off]
-				}
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	agent A {
+		def example {
+			var tab : String[]
+			[:On]
+			for (v [:askw](as) String : tab) {
+				println(v)
 			}
-		[:End:]
+			[:Off]
+		}
+	}
+[:End:]
 
 
 ## Traditional Java For Loop
@@ -55,18 +56,18 @@ body-expression is executed. On any subsequent iterations the update-expression
 is executed instead of the init-expression. This happens until the predicate
 returns `false`. The type of a for loop is `void`.
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			agent A {
-				def example {
-					[:On]
-					for (var i = 0; i<123; i++) {
-						println(i)
-					}
-					[:Off]
-				}
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	agent A {
+		def example {
+			[:On]
+			for (var i = 0; i<123; i++) {
+				println(i)
 			}
-		[:End:]
+			[:Off]
+		}
+	}
+[:End:]
 
 
 ## While Loop
@@ -74,20 +75,20 @@ returns `false`. The type of a for loop is `void`.
 A while loop is used to execute a certain expression unless the predicate is evaluated to
 `false`. The type of a while loop is `void`.
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			agent A {
-				def example {
-					[:On]
-					var i = 0
-					while (i<123) {
-						println(i)
-						i++
-					}
-					[:Off]
-				}
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	agent A {
+		def example {
+			[:On]
+			var i = 0
+			while (i<123) {
+				println(i)
+				i++
 			}
-		[:End:]
+			[:Off]
+		}
+	}
+[:End:]
 
 
 ## Do-While Loop
@@ -97,21 +98,21 @@ to `false`. The difference to the while loop is that the execution starts by
 executing the block once before evaluating the predicate for the first time. 
 The type of a while loop is `void`.
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			agent A {
-				def example {
-					[:On]
-					var i = 0
-					do {
-						println(i)
-						i++
-					}
-					while (i<123)
-					[:Off]
-				}
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	agent A {
+		def example {
+			[:On]
+			var i = 0
+			do {
+				println(i)
+				i++
 			}
-		[:End:]
+			while (i<123)
+			[:Off]
+		}
+	}
+[:End:]
 
 
 ## Breaking a loop
@@ -121,21 +122,21 @@ When this keyword is run, the control flow exits for the nearest
 enclosing loop, and run the statement that is just following the loop
 expression in the sequence of instructions.
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			agent A {
-				def example {
-					var tab : String[]
-					[:On]
-					for (v : tab) {
-						if (v == 1) {
-							[:break](break)
-						}
-					}
-					[:Off]
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	agent A {
+		def example {
+			var tab : String[]
+			[:On]
+			for (v : tab) {
+				if (v == 1) {
+					[:break](break)
 				}
 			}
-		[:End:]
+			[:Off]
+		}
+	}
+[:End:]
 
 
 ## Jump to the next iteration
@@ -146,21 +147,21 @@ When this keyword is run, the control flow jumps to the next iteration
 for the nearest enclosing loop, and run the statement that is just at
 the beginning of the loop's block expression.
 
-		[:Success:]
-			package io.sarl.docs.reference.gsr
-			agent A {
-				def example {
-					var tab : String[]
-					[:On]
-					for (v : tab) {
-						if (v == 1) {
-							[:continue](continue)
-						}
-					}
-					[:Off]
+[:Success:]
+	package io.sarl.docs.reference.gsr
+	agent A {
+		def example {
+			var tab : String[]
+			[:On]
+			for (v : tab) {
+				if (v == 1) {
+					[:continue](continue)
 				}
 			}
-		[:End:]
+			[:Off]
+		}
+	}
+[:End:]
 
 
 

@@ -433,10 +433,12 @@ public abstract class AbstractMarkerLanguageParser {
 		/** Validate the given anchor and reply the one that is validated.
 		 *
 		 * @param anchor the anchor to validate.
+		 * @param line the number of the line at which the anchor is located into the file.  If negative value, the line number is unknown.
 		 * @return the validated anchor text.
 		 * @throws InvalidAnchorLabelException a runtime exception
+		 * @since 0.12
 		 */
-		public String validateAnchor(String anchor) {
+		public String validateAnchor(String anchor, int line) {
 			if (!this.anchorToTitle.containsKey(anchor)) {
 				String anc = this.simpleAnchorToAnchor.get(anchor);
 				if (!Strings.isEmpty(anc) && anc != MANY) {
@@ -453,7 +455,7 @@ public abstract class AbstractMarkerLanguageParser {
 					++i;
 				}
 				Arrays.sort(anchors);
-				throw new InvalidAnchorLabelException(anchor, anchors);
+				throw new InvalidAnchorLabelException(anchor, line, anchors);
 			}
 			return anchor;
 		}

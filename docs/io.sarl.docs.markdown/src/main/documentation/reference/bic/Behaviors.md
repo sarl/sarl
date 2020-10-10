@@ -13,33 +13,34 @@ high-level abstraction for holonic multi-agent system development.
 The definition of a behavior is not detailed in this reference document.
 Please read the [Behavior Reference](../Behavior.md) for details.
 
-		<!--- Test that all the documented functions are defined in the capacity, and no function is missed to be
-		      documented --> 
-		[:Fact:]{typeof(io.sarl.core.[:behaviors!]).shouldHaveMethods(
-			"[:registerbehavior](registerBehavior)(io.sarl.lang.core.Behavior, org.eclipse.xtext.xbase.lib.Functions$Function1, java.lang.Object[]) : io.sarl.lang.core.Behavior",
-			"[:registerbehavior](registerBehavior)(io.sarl.lang.core.Behavior, java.lang.Object[]) : io.sarl.lang.core.Behavior",
-			"[:unregisterbehavior](unregisterBehavior)(io.sarl.lang.core.Behavior) : io.sarl.lang.core.Behavior",
-			"[:wake](wake)(io.sarl.lang.core.Event, io.sarl.lang.core.Scope)",
-			"wake(io.sarl.lang.core.Event)",
-			"[:aseventlistener](asEventListener) : io.sarl.lang.core.EventListener",
-			"[:hasregisteredbehavior](hasRegisteredBehavior) : boolean",
-			"[:getregisteredbehaviors](getRegisteredBehaviors) : java.util.concurrent.ConcurrentLinkedDeque")
-		}
+<!--- Test that all the documented functions are defined in the capacity, and no function is missed to be
+      documented --> 
+[:Fact:]{typeof(io.sarl.core.[:behaviors!]).shouldHaveMethods(
+	"[:registerbehavior](registerBehavior)(io.sarl.lang.core.Behavior, org.eclipse.xtext.xbase.lib.Functions$Function1, java.lang.Object[]) : io.sarl.lang.core.Behavior",
+	"[:registerbehavior](registerBehavior)(io.sarl.lang.core.Behavior, java.lang.Object[]) : io.sarl.lang.core.Behavior",
+	"[:unregisterbehavior](unregisterBehavior)(io.sarl.lang.core.Behavior) : io.sarl.lang.core.Behavior",
+	"[:wake](wake)(io.sarl.lang.core.Event, io.sarl.lang.core.Scope)",
+	"wake(io.sarl.lang.core.Event)",
+	"[:aseventlistener](asEventListener) : io.sarl.lang.core.EventListener",
+	"[:hasregisteredbehavior](hasRegisteredBehavior) : boolean",
+	"[:getregisteredbehaviors](getRegisteredBehaviors) : java.util.concurrent.ConcurrentLinkedDeque")
+}
 
 
 ## Registering a Behavior
 
 Assuming that a behavior was already defined, it is possible for an agent to register this behavior:
 
-		[:Success:]
-			package io.sarl.docs.reference.bic
-			import io.sarl.lang.core.Behavior
-			interface Tmp {
-			[:On]
-				def [:registerbehavior!](attitude : Behavior) : Behavior
-			[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.bic
+	import io.sarl.lang.core.Behavior
+	interface Tmp {
+	[:On]
+		def [:registerbehavior!](attitude : Behavior) : Behavior
+	[:Off]
+	}
+[:End:]
+
 
 This function takes the behavior to be registered, and replies the same behavior.
 When a behavior is registered, it is receiving the events in the default space of
@@ -47,63 +48,63 @@ the inner context of the agent, or received by the agent itself.
 
 An example of call to the registration function is:
 
-		[:Success:]
-			package io.sarl.docs.reference.bic
-			import io.sarl.core.Behaviors
-			import io.sarl.lang.core.Behavior
-			behavior MyBehavior {
-				new () {
-					super(null)
-				}
-			}
-			agent A {
-				uses Behaviors
-				def action {
-					[:On]
-					var beh = new MyBehavior
-					[:registerbehavior!](beh)
-					[:Off]
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.bic
+	import io.sarl.core.Behaviors
+	import io.sarl.lang.core.Behavior
+	behavior MyBehavior {
+		new () {
+			super(null)
+		}
+	}
+	agent A {
+		uses Behaviors
+		def action {
+			[:On]
+			var beh = new MyBehavior
+			[:registerbehavior!](beh)
+			[:Off]
+		}
+	}
+[:End:]
 
 
 According to the SARL syntax reference, the example could be also written as: 
 
-		[:Success:]
-			package io.sarl.docs.reference.bic
-			import io.sarl.core.Behaviors
-			import io.sarl.lang.core.Behavior
-			behavior MyBehavior {
-				new () {
-					super(null)
-				}
-			}
-			agent A {
-				uses Behaviors
-				def action {
-					[:On]
-					var beh = new MyBehavior
-					beh.[:registerbehavior!]
-					[:Off]
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.bic
+	import io.sarl.core.Behaviors
+	import io.sarl.lang.core.Behavior
+	behavior MyBehavior {
+		new () {
+			super(null)
+		}
+	}
+	agent A {
+		uses Behaviors
+		def action {
+			[:On]
+			var beh = new MyBehavior
+			beh.[:registerbehavior!]
+			[:Off]
+		}
+	}
+[:End:]
 
 
 ## Unregistering a Behavior
 
 Assuming that a behavior was already registered, it is possible for an agent to unregister it:
 
-		[:Success:]
-			package io.sarl.docs.reference.bic
-			import io.sarl.lang.core.Behavior
-			interface Tmp {
-			[:On]
-				def [:unregisterbehavior!](attitude : Behavior) : Behavior
-			[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.bic
+	import io.sarl.lang.core.Behavior
+	interface Tmp {
+	[:On]
+		def [:unregisterbehavior!](attitude : Behavior) : Behavior
+	[:Off]
+	}
+[:End:]
 
 
 This function takes the behavior to be unregistered, and replies the same behavior.
@@ -111,26 +112,26 @@ When a behavior is unregistering, it is no more receiving the events
 in the default space of the inner context of the agent, and the ones received by the
 agent itself.
 
-		[:Success:]
-			package io.sarl.docs.reference.bic
-			import io.sarl.core.Behaviors
-			import io.sarl.lang.core.Behavior
-			behavior MyBehavior {
-				new () {
-					super(null)
-				}
-			}
-			[:On]
-			agent A {
-				uses Behaviors
-				var b : MyBehavior
-				var c : Behavior
-				def myaction {
-					b = new MyBehavior
-					c = [:unregisterbehavior!](b)
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.bic
+	import io.sarl.core.Behaviors
+	import io.sarl.lang.core.Behavior
+	behavior MyBehavior {
+		new () {
+			super(null)
+		}
+	}
+	[:On]
+	agent A {
+		uses Behaviors
+		var b : MyBehavior
+		var c : Behavior
+		def myaction {
+			b = new MyBehavior
+			c = [:unregisterbehavior!](b)
+		}
+	}
+[:End:]
 
 
 ## Registering a Behavior with an event filter
@@ -140,16 +141,16 @@ register this behavior that may received only the events matching a specific
 filtering function. For registering such a behavior with its filter, the
 following function could be used:
 
-		[:Success:]
-			package io.sarl.docs.reference.bic
-			import io.sarl.lang.core.Behavior
-			import io.sarl.lang.core.Event
-			interface Tmp {
-			[:On]
-				def [:registerbehavior!](attitude : Behavior, filter : (Event) => boolean) : Behavior
-			[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.bic
+	import io.sarl.lang.core.Behavior
+	import io.sarl.lang.core.Event
+	interface Tmp {
+	[:On]
+		def [:registerbehavior!](attitude : Behavior, filter : (Event) => boolean) : Behavior
+	[:Off]
+	}
+[:End:]
 
 
 This function takes the behavior to be registered, and replies the same behavior.
@@ -162,50 +163,50 @@ If the function replies `false`, the event is discarded to the behavior.
 
 An example of call to the registration function is:
 
-		[:Success:]
-			package io.sarl.docs.reference.bic
-			import io.sarl.core.Behaviors
-			import io.sarl.lang.core.Behavior
-			behavior MyBehavior {
-				new () {
-					super(null)
-				}
-			}
-			event MyEvent
-			agent A {
-				uses Behaviors
-				def action {
-					[:On]
-					var beh = new MyBehavior
-					[:registerbehavior!](beh, [^event | ^event instanceof MyEvent])
-					[:Off]
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.bic
+	import io.sarl.core.Behaviors
+	import io.sarl.lang.core.Behavior
+	behavior MyBehavior {
+		new () {
+			super(null)
+		}
+	}
+	event MyEvent
+	agent A {
+		uses Behaviors
+		def action {
+			[:On]
+			var beh = new MyBehavior
+			[:registerbehavior!](beh, [^event | ^event instanceof MyEvent])
+			[:Off]
+		}
+	}
+[:End:]
 
 
 According to the SARL syntax reference, the example could be also written as: 
 
-		[:Success:]
-			package io.sarl.docs.reference.bic
-			import io.sarl.core.Behaviors
-			import io.sarl.lang.core.Behavior
-			behavior MyBehavior {
-				new () {
-					super(null)
-				}
-			}
-			event MyEvent
-			agent A {
-				uses Behaviors
-				def action {
-					[:On]
-					var beh = new MyBehavior
-					beh.[:registerbehavior!] [^event | ^event instanceof MyEvent]
-					[:Off]
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.bic
+	import io.sarl.core.Behaviors
+	import io.sarl.lang.core.Behavior
+	behavior MyBehavior {
+		new () {
+			super(null)
+		}
+	}
+	event MyEvent
+	agent A {
+		uses Behaviors
+		def action {
+			[:On]
+			var beh = new MyBehavior
+			beh.[:registerbehavior!] [^event | ^event instanceof MyEvent]
+			[:Off]
+		}
+	}
+[:End:]
 
 
 ## Executing a Behavior
@@ -213,18 +214,18 @@ According to the SARL syntax reference, the example could be also written as:
 A behavior is executed through its event handlers. Consequently, for running a behavior, it is mandatory
 to wake it with an event. This particular feature is supported by:
 
-		[:Success:]
-			package io.sarl.docs.reference.bic
-			import io.sarl.lang.core.Behavior
-			import io.sarl.lang.core.Scope
-			import io.sarl.lang.core.Address
-			import io.sarl.lang.core.Event
-			interface Tmp {
-			[:On]
-				def [:wake!](evt : Event, scope : Scope<Address> = null)
-			[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.bic
+	import io.sarl.lang.core.Behavior
+	import io.sarl.lang.core.Scope
+	import io.sarl.lang.core.Address
+	import io.sarl.lang.core.Event
+	interface Tmp {
+	[:On]
+		def [:wake!](evt : Event, scope : Scope<Address> = null)
+	[:Off]
+	}
+[:End:]
 
 
 This function emits the given event into the inner context of the agent (in the default space).
@@ -233,31 +234,31 @@ If a scope is provided, it is used for filtering the agents that will
 receive the event. The filterable agents are the current agent itself, and
 all the sub-agents (sub-holons) that were created inside the current agent.
 
-<importantnote>Because a behavior has no associated address, it cannot be
-filtered by the scope. All the agent's behaviors that are waiting for a given event will 
-be executed.</importantnote>
+> **_Important Note:_** Because a behavior has no associated address, it cannot be
+> filtered by the scope. All the agent's behaviors that are waiting for a given event will 
+> be executed.
 
-		[:Success:]
-			package io.sarl.docs.reference.bic
-			import io.sarl.core.Behaviors
-			import io.sarl.lang.core.Event
-			import io.sarl.lang.core.Scope
-			import io.sarl.lang.core.Address
-			event MyEvent
-			agent A {
-				uses Behaviors
-				def action {
-					[:On]
-					var e : Event
-					e = new MyEvent
-					[:wake!](e)
-					[:wake!](e, null)
-					var scope : Scope<Address> = [ it.UUID !== null ]
-					[:wake!](e, scope)
-					[:Off]
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.bic
+	import io.sarl.core.Behaviors
+	import io.sarl.lang.core.Event
+	import io.sarl.lang.core.Scope
+	import io.sarl.lang.core.Address
+	event MyEvent
+	agent A {
+		uses Behaviors
+		def action {
+			[:On]
+			var e : Event
+			e = new MyEvent
+			[:wake!](e)
+			[:wake!](e, null)
+			var scope : Scope<Address> = [ it.UUID !== null ]
+			[:wake!](e, scope)
+			[:Off]
+		}
+	}
+[:End:]
 
 
 ## Creating an Event Listener
@@ -266,74 +267,74 @@ Sometimes, it is useful or mandatory for an agent to listen on the events in a
 given space. The following function permits retrieving the event listener of
 the agent:
 
-		[:Success:]
-			package io.sarl.docs.reference.bic
-			import io.sarl.lang.core.EventListener
-			interface Tmp {
-			[:On]
-				def [:aseventlistener!] : EventListener
-			[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.bic
+	import io.sarl.lang.core.EventListener
+	interface Tmp {
+	[:On]
+		def [:aseventlistener!] : EventListener
+	[:Off]
+	}
+[:End:]
 
 
 The listener replied by this function is the one used by the agent (and its behaviors)
 for listening events related to all the contexts (default, external, and inner).
 
-		[:Success:]
-			package io.sarl.docs.reference.bic
-			import io.sarl.core.Behaviors
-			import io.sarl.lang.core.EventListener
-			event MyEvent
-			agent A {
-				uses Behaviors
-				def action {
-					[:On]
-					var l : EventListener
-					l = [:aseventlistener!]
-					[:Off]
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.bic
+	import io.sarl.core.Behaviors
+	import io.sarl.lang.core.EventListener
+	event MyEvent
+	agent A {
+		uses Behaviors
+		def action {
+			[:On]
+			var l : EventListener
+			l = [:aseventlistener!]
+			[:Off]
+		}
+	}
+[:End:]
 
 
 ## Accessing to the collection of the registered behaviors
 
 Two functions are provided for accessing to the collection of the registered behaviors:
 
-		[:Success:]
-			package io.sarl.docs.reference.bic
-			import io.sarl.lang.core.Behavior
-			import java.util.concurrent.ConcurrentLinkedDeque
-			interface Tmp {
-			[:On]
-				def [:hasregisteredbehavior!] : boolean
-				def [:getregisteredbehaviors!] : ConcurrentLinkedDeque<Behavior>
-			[:Off]
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.bic
+	import io.sarl.lang.core.Behavior
+	import java.util.concurrent.ConcurrentLinkedDeque
+	interface Tmp {
+	[:On]
+		def [:hasregisteredbehavior!] : boolean
+		def [:getregisteredbehaviors!] : ConcurrentLinkedDeque<Behavior>
+	[:Off]
+	}
+[:End:]
 
 
 The [:hasregisteredbehavior!] replies a boolean value, which is indicating if
 a behavior is registered.
 The [:getregisteredbehaviors!] replies an unmodifiable collection of the registered behaviors.
 
-		[:Success:]
-			package io.sarl.docs.reference.bic
-			import io.sarl.core.Behaviors
-			import io.sarl.lang.core.Behavior
-			import io.sarl.lang.core.EventListener
-			import java.util.concurrent.ConcurrentLinkedDeque
-			agent A {
-				uses Behaviors
-				def myaction {
-					[:On]
-					var b : boolean = hasRegisteredBehavior
-					var c : ConcurrentLinkedDeque<Behavior> = getRegisteredBehaviors
-					[:Off]
-				}
-			}
-		[:End:]
+[:Success:]
+	package io.sarl.docs.reference.bic
+	import io.sarl.core.Behaviors
+	import io.sarl.lang.core.Behavior
+	import io.sarl.lang.core.EventListener
+	import java.util.concurrent.ConcurrentLinkedDeque
+	agent A {
+		uses Behaviors
+		def myaction {
+			[:On]
+			var b : boolean = hasRegisteredBehavior
+			var c : ConcurrentLinkedDeque<Behavior> = getRegisteredBehaviors
+			[:Off]
+		}
+	}
+[:End:]
 
 
 

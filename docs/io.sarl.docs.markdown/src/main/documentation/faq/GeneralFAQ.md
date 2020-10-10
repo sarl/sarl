@@ -256,22 +256,21 @@ The SARL examples have been put into several categories:
 An event [:agspawnedevt:] will be emitted when an agent has been created and can
 be handled, say by a coordinator, to know the agent is now alive! For example:
 
-        [:Success:]
-            package io.sarl.docs.faq.general
-            import io.sarl.core.AgentSpawned
-            import io.sarl.core.Logging
-            import java.util.Map
-            agent X {
-                uses Logging
-                [:On]
-                on [:agspawnedevt](AgentSpawned) {
-                    info("Agent {0} of type {1} has been created successfully and is now alive!",
-                        occurrence.agentID, occurrence.agentType)
-                }
-                [:Off]
-            }
-        [:End:]
-
+[:Success:]
+    package io.sarl.docs.faq.general
+    import io.sarl.core.AgentSpawned
+    import io.sarl.core.Logging
+    import java.util.Map
+    agent X {
+        uses Logging
+        [:On]
+        on [:agspawnedevt](AgentSpawned) {
+            info("Agent {0} of type {1} has been created successfully and is now alive!",
+                occurrence.agentID, occurrence.agentType)
+        }
+        [:Off]
+    }
+[:End:]
 
 
 ### Be careful on the emit of events in "on Initialize"
@@ -294,43 +293,44 @@ As such, its execution is more "synchronous" than other on-behavior rules. In pa
    the `on Initialize` of [:agenttwoname:] instead of continuing the run of the
    spawn function.
 
-        [:Success:]
-            package io.sarl.docs.faq.general
-            import io.sarl.core.Initialize
-            import io.sarl.core.Logging
-            import io.sarl.core.Lifecycle
-            [:On]
-            agent Agent1 {
-                uses Logging, Lifecycle
-                var agent_name = "agent1"
-                on Initialize {
-                    info(agent_name + " spawned")
-                    info(agent_name + " spawning Agent2")
-                    spawn(Agent2)
-                    info(agent_name + " end")
-                }
-            }
+[:Success:]
+    package io.sarl.docs.faq.general
+    import io.sarl.core.Initialize
+    import io.sarl.core.Logging
+    import io.sarl.core.Lifecycle
+    [:On]
+    agent Agent1 {
+        uses Logging, Lifecycle
+        var agent_name = "agent1"
+        on Initialize {
+            info(agent_name + " spawned")
+            info(agent_name + " spawning Agent2")
+            spawn(Agent2)
+            info(agent_name + " end")
+        }
+    }
 
-            agent [:agenttwoname](Agent2) {
-                uses Logging
-                var agent_name = "agent2"
-                on Initialize {
-                    info(agent_name + " spawned")
-                    info(agent_name + " sleeping")
-                    Thread::sleep(5000)
-                    info(agent_name + " woke up")
-                    info(agent_name + " end")
-                }
-                on Initialize {
-                    info(agent_name + " init2")
-                    info(agent_name + " init2 end")
-                }
-            }
-        [:End:]
+    agent [:agenttwoname](Agent2) {
+        uses Logging
+        var agent_name = "agent2"
+        on Initialize {
+            info(agent_name + " spawned")
+            info(agent_name + " sleeping")
+            Thread::sleep(5000)
+            info(agent_name + " woke up")
+            info(agent_name + " end")
+        }
+        on Initialize {
+            info(agent_name + " init2")
+            info(agent_name + " init2 end")
+        }
+    }
+[:End:]
+
 
 The output has been:
 
-```
+```text
 Launching the agent: Agent1
 agent1 spawned
 agent1 spawning Agent2
@@ -363,7 +363,7 @@ Additionally, several run-time errors from the [Janus framework](../tools/Janus.
 You can use `@SupressWarnings(...)` annotations in the entities you do not want
 to be warned. For example, a typical warning SARL will give is lack of
 synchronization for variables that can be accessed/edited concurrently:
-```
+```text
 [WARNING] The field noToSpawn should be synchronized for avoiding value inconsistency
 due to parallel execution. [BootMultiSWIAgents.sarl:70]
 ```
@@ -371,14 +371,15 @@ due to parallel execution. [BootMultiSWIAgents.sarl:70]
 To get rid of such warnings, assuming you are aware of the potential issue and
 have planned for it, you can do:
 
-        [:Success:]
-            package io.sarl.docs.faq.general
-            [:On]
-            @SuppressWarnings("potential_field_synchronization_problem")
-            agent BootMultiSWIAgents {
-                //...
-            }
-        [:End:]
+[:Success:]
+    package io.sarl.docs.faq.general
+    [:On]
+    @SuppressWarnings("potential_field_synchronization_problem")
+    agent BootMultiSWIAgents {
+        //...
+    }
+[:End:]
+
 
 See the [Issue Codes](https://github.com/sarl/sarl/blob/master/main/coreplugins/io.sarl.lang/src/io/sarl/lang/validation/IssueCodes.java)
 for a complete list of what can be suppressed.
@@ -408,4 +409,3 @@ You should submit your issue on [this page](https://github.com/sarl/sarl/issues/
 
 
 [:Include:](../legal.inc)
-

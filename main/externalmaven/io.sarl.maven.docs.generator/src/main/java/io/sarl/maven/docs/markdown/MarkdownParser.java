@@ -34,6 +34,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -629,6 +630,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	 * @param references the references into the document.
 	 * @return the result of the transformation.
 	 */
+	@SuppressWarnings("checkstyle:nestedifdepth")
 	protected String transformHtmlLinks(String content, ReferenceContext references) {
 		if (!isPureHtmlReferenceTransformation()) {
 			return content;
@@ -640,21 +642,24 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 		// Visit the links and record the transformations
 		final org.jsoup.select.NodeVisitor visitor = new org.jsoup.select.NodeVisitor() {
 			@Override
-			public void tail(org.jsoup.nodes.Node node, int index) {
+			public void tail(org.jsoup.nodes.Node node, int depth) {
 				//
 			}
 
 			@Override
-			public void head(org.jsoup.nodes.Node node, int index) {
+			public void head(org.jsoup.nodes.Node node, int depth) {
 				if (node instanceof Element) {
 					final Element tag = (Element) node;
 					if ("a".equals(tag.nodeName()) && tag.hasAttr("href")) { //$NON-NLS-1$ //$NON-NLS-2$
 						final String href = tag.attr("href"); //$NON-NLS-1$
 						if (!Strings.isEmpty(href)) {
 							URL url = FileSystem.convertStringToURL(href, true);
-							url = transformURL(url, references);
+							url = transformURL(url, -1, references);
 							if (url != null) {
-								replacements.put(href, convertURLToString(url));
+								final String newUrl = convertURLToString(url);
+								if (!Strings.isEmpty(newUrl) && !Objects.equals(href, newUrl)) {
+									replacements.put(href, newUrl);
+								}
 							}
 						}
 					}
@@ -704,7 +709,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 		final NodeVisitor visitor = new NodeVisitor(
 				new VisitHandler<>(Link.class, it -> {
 					URL url = FileSystem.convertStringToURL(it.getUrl().toString(), true);
-					url = transformURL(url, references);
+					url = transformURL(url, it.getLineNumber(), references);
 					if (url != null) {
 						replacements.put(it.getUrl(), convertURLToString(url));
 					}
@@ -748,15 +753,17 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	 * <p>This function replaces the anchor to the local reference with the correct one (modified by outline feature).
 	 *
 	 * @param link the link to transform.
+	 * @param line the number of the line at which the link is located. If negative value, the line number is unknown.
 	 * @param references the set of references from the local document.
 	 * @return the result of the transformation. {@code null} if the link should not changed.
+	 * @since 0.12
 	 */
-	protected URL transformURL(URL link, ReferenceContext references) {
+	protected URL transformURL(URL link, int line, ReferenceContext references) {
 		if (URISchemeType.FILE.isURL(link)) {
 			File filename = FileSystem.convertURLToFile(link);
 			if (Strings.isEmpty(filename.getName())) {
 				// This is a link to the local document.
-				final String anchor = transformURLAnchor(filename, link.getRef(), references);
+				final String anchor = transformURLAnchor(filename, line, link.getRef(), references);
 				final URL url = FileSystemAddons.convertFileToURL(filename, true);
 				if (!Strings.isEmpty(anchor)) {
 					try {
@@ -771,7 +778,7 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 			final String extension = FileSystem.extension(filename);
 			if (isMarkdownFileExtension(extension)) {
 				filename = FileSystem.replaceExtension(filename, ".html"); //$NON-NLS-1$
-				final String anchor = transformURLAnchor(filename, link.getRef(), null);
+				final String anchor = transformURLAnchor(filename, line, link.getRef(), null);
 				final URL url = FileSystemAddons.convertFileToURL(filename, true);
 				if (!Strings.isEmpty(anchor)) {
 					try {
@@ -789,16 +796,17 @@ public class MarkdownParser extends AbstractMarkerLanguageParser {
 	/** Transform the anchor of an URL from Markdown format to HTML format.
 	 *
 	 * @param file the linked file.
+	 * @param line the number of the line at which the anchor is located. If negative value, the line number is unknown.
 	 * @param anchor the anchor to transform.
 	 * @param references the set of references from the local document, or {@code null}.
 	 * @return the result of the transformation.
-	 * @since 0.7
+	 * @since 0.12
 	 */
 	@SuppressWarnings("static-method")
-	protected String transformURLAnchor(File file, String anchor, ReferenceContext references) {
+	protected String transformURLAnchor(File file, int line, String anchor, ReferenceContext references) {
 		String anc = anchor;
 		if (references != null) {
-			anc = references.validateAnchor(anc);
+			anc = references.validateAnchor(anc, line);
 		}
 		return anc;
 	}

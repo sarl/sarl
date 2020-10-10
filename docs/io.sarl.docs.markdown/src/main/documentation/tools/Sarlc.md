@@ -12,7 +12,9 @@ A command-line compiler is a tool that could be invoked from the command-line sh
 The [:name:] tool takes arguments:
 
 
-	[:name!] [OPTIONS] <[:srcfolder](source folder)>...
+```text
+[:name!] [OPTIONS] <[:srcfolder](source folder)>...
+```
 
 
 The [:name:] tool takes at least one [:srcfolder:] from which the SARL files are read.
@@ -20,7 +22,9 @@ The [:name:] tool takes at least one [:srcfolder:] from which the SARL files are
 You could change the behavior of the [:name:] compiler with the command-line options.
 For obtaining a list of the options, type:
 
-	[:name!] -h
+```text
+[:name!] -h
+```
 
 
 ## Command-Line Options

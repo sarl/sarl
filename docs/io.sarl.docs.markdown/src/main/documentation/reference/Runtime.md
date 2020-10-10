@@ -36,19 +36,19 @@ Let an *agent entry point* be a part of the agent behavior that is reacting to a
 In SARL, the entry points are by default the behavior event handlers, a.k.a. behavior units, specified with the [:onkw:] keyword,
 as illustrated below:
 
-		[:Success:]
-			package io.sarl.docs.reference.runtime
-			event MyEvent
-			[:On]
-			agent AgentExample {
-				[:onkw](on) MyEvent {
-					// Do something
-				}
-				on MyEvent {
-					// Do another thing
-				}
-			}
-		[:End:] 
+[:Success:]
+	package io.sarl.docs.reference.runtime
+	event MyEvent
+	[:On]
+	agent AgentExample {
+		[:onkw](on) MyEvent {
+			// Do something
+		}
+		on MyEvent {
+			// Do another thing
+		}
+	}
+[:End:] 
 
 
 To implement bio-inspired behaviors, agents may react in parallel to multiple external stimuli.
@@ -84,20 +84,21 @@ the implemented general algorithm.
 
 Let consider the following agent definition:
 
-		[:Success:]
-			package io.sarl.docs.reference.runtime
-			[:On]
-			agent [:agent1name](Agent1) {
-				on [:event1name](MyEvent) {
-			        println("A")
-				}
-				on [:event2name](MyEvent2) {
-				}
-			}
+[:Success:]
+	package io.sarl.docs.reference.runtime
+	[:On]
+	agent [:agent1name](Agent1) {
+		on [:event1name](MyEvent) {
+	        println("A")
+		}
+		on [:event2name](MyEvent2) {
+		}
+	}
 
-			event MyEvent
-			event MyEvent2
-		[:End:] 
+	event MyEvent
+	event MyEvent2
+[:End:] 
+
 
 This agent definition contains two event handlers: one for events of type [:event1name:], and one for events of type [:event2name:].
 The sequence diagram that corresponds to the sending and receiving of an occurrence of type [:event1name:] by [:agent1name:] is provided below.
@@ -120,22 +121,23 @@ an event space (this part of the API is not detailed in this section).
 
 It is also possible to define multiple event handlers into an agent definition, as illustrated by the following SARL code:
 
-		[:Success:]
-			package io.sarl.docs.reference.runtime
-			event MyEvent
-			event MyEvent2
-			[:On]
-			agent [:agent2](Agent2) {
-				on MyEvent {
-			        println("A")
-				}
-				on MyEvent {
-			        println("B")
-				}
-				on MyEvent2 {
-				}
-			}
-		[:End:] 
+[:Success:]
+	package io.sarl.docs.reference.runtime
+	event MyEvent
+	event MyEvent2
+	[:On]
+	agent [:agent2](Agent2) {
+		on MyEvent {
+	        println("A")
+		}
+		on MyEvent {
+	        println("B")
+		}
+		on MyEvent2 {
+		}
+	}
+[:End:] 
+
 
 This agent definition contains three event handlers: two for events of type [:event1name:], and one for events of type [:event2name:].
 The sequence diagram that corresponds to the receiving of an occurrence of type [:event1name:]  by [:agent2:] is provided below:
@@ -150,20 +152,21 @@ The difference is related to the number of threads that are created: one for eac
 
 When the agent definition extends another agent definition, as illustrated by the following SARL code, the event handlers are inherited.
 
-		[:Success:]
-			package io.sarl.docs.reference.runtime
-			event MyEvent
-			agent Agent2 {}
-			[:On]
-			agent [:subagent2](SubAgent2) extends Agent2 {
-				on MyEvent {
-			        println("C")
-				}
-				on MyEvent {
-			        println("D")
-				}
-			}
-		[:End:] 
+[:Success:]
+	package io.sarl.docs.reference.runtime
+	event MyEvent
+	agent Agent2 {}
+	[:On]
+	agent [:subagent2](SubAgent2) extends Agent2 {
+		on MyEvent {
+	        println("C")
+		}
+		on MyEvent {
+	        println("D")
+		}
+	}
+[:End:] 
+
 
 In the previous code, two event handlers are added into the definition of [:subagent2:].
 These two event handlers are added to the list of available event handlers for the event [:event1name:].
@@ -171,8 +174,8 @@ Therefore, the agent [:subagent2:] displays `A` and `B` from the inherited defin
 and `D` from the [:subagent2:] definition.
 And, because of the parallel execution of the four event handlers, there is no fixed order for displaying `A`, `B`, `C`, `D`.
 
-<caution>Event handlers are inherited, but there is no overriding of event handler. In other words, you cannot replace/override
-the code of an event handler that is inherited.</caution>
+> **_Caution:_** Event handlers are inherited, but there is no overriding of event handler. In other words, you cannot replace/override
+> the code of an event handler that is inherited.
 
 
 #### General Process for Event Handling
@@ -213,27 +216,28 @@ The skill implementing the capacity is registering the created behavior as a eve
 Let's consider a typical race condition where we calculate the sum, and multiple event handlers (i.e. threads) execute the
 [:calculateevent:] event:
 
-		[:Success:]
-			package io.sarl.docs.reference.runtime
-			event Calculate
-			[:On]
-			agent AgentExample {
+[:Success:]
+	package io.sarl.docs.reference.runtime
+	event Calculate
+	[:On]
+	agent AgentExample {
 
-			    var [:sumfield](sum) = 0
+	    var [:sumfield](sum) = 0
 
-				def getSum : int {
-					this.sum
-				}
+		def getSum : int {
+			this.sum
+		}
 
-				def setSum(v : int) {
-					this.sum = v
-				}
+		def setSum(v : int) {
+			this.sum = v
+		}
 
-				on [:calculateevent](Calculate) {
-			        setSum(getSum + 1)
-				}
-			}
-		[:End:] 
+		on [:calculateevent](Calculate) {
+	        setSum(getSum + 1)
+		}
+	}
+[:End:] 
+
 
 Since the event handler is executed in parallel (see previous section), if multiple occurrences of [:calculateevent:] are fired, then a multi-threading issues
 for accessing to the [:sumfield:] may occur.
@@ -243,8 +247,8 @@ execution fails almost every time with an inconsistent actual output e.g.: `965`
 
 A simple way to avoid the race condition is to make the operation thread-safe by using the `[:sync](synchronized)` keyword.
 
-<caution>If a field is assessed from a function called from an event handler, then the synchronization issue still may occur, if neither
-the function is synchronized nor the event handler.</caution> 
+> **_Caution:_** If a field is assessed from a function called from an event handler, then the synchronization issue
+> still may occur, if neither the function is synchronized nor the event handler. 
 
 
 ### The Synchronized Keyword
@@ -253,8 +257,8 @@ The [:sync:] keyword is included into the SARL language in order to let you cont
 accesses to shared data.
 This keyword is formally defined in a dedicated [reference page](./general/Synchronization.md).
 
-<caution>The SARL compiler does not apply automatic synchronization to your code yet (it is planned for a future release).
-You have to manage the [:sync:] keyword manually by yourself.</caution>
+> **_Caution:_** The SARL compiler does not apply automatic synchronization to your code yet (it is planned for a future release).
+> You have to manage the [:sync:] keyword manually by yourself.
 
 
 ## Event Sending Run-time Sequence
