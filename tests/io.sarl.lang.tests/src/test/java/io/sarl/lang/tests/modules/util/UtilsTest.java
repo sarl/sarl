@@ -269,7 +269,15 @@ public class UtilsTest extends AbstractSarlTest {
 		assertTrue(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("9"));
 		assertTrue(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("10"));
 		assertTrue(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("11"));
-		assertFalse(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("12"));
+		assertTrue(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("12"));
+		assertTrue(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("13"));
+		assertTrue(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("14"));
+		assertFalse(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("15"));
+		assertFalse(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("16"));
+		assertFalse(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("17"));
+		assertFalse(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("18"));
+		assertFalse(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("19"));
+		assertFalse(Utils.isCompatibleJDKVersionWithSARLCompilationEnvironment("20"));
 	}
 
 	@Test
@@ -285,7 +293,15 @@ public class UtilsTest extends AbstractSarlTest {
 		assertTrue(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("9"));
 		assertTrue(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("10"));
 		assertTrue(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("11"));
-		assertFalse(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("12"));
+		assertTrue(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("12"));
+		assertTrue(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("13"));
+		assertTrue(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("14"));
+		assertFalse(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("15"));
+		assertFalse(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("16"));
+		assertFalse(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("17"));
+		assertFalse(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("18"));
+		assertFalse(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("19"));
+		assertFalse(Utils.isCompatibleJDKVersionWhenInSARLProjectClasspath("20"));
 	}
 
 	@Test

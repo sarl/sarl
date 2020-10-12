@@ -119,7 +119,7 @@ public abstract class AbstractMojoTest {
 		}
 	}
 
-	/** Helper for writting a multiline string in unit tests.
+	/** Helper for writing a multiline string in unit tests.
 	 *
 	 * @param lines the lines in the string.
 	 * @return the complete multiline string.

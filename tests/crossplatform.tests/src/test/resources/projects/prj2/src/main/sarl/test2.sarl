@@ -1,0 +1,13 @@
+package crossplatform.tests
+
+import java.util.Random
+
+behavior MyBehavior {
+
+	val random = new Random
+
+	def myFct {
+		random.nextInt
+	}
+
+}
