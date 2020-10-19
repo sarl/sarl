@@ -6,36 +6,93 @@ use File::Basename;
 my $CDIR = dirname("$0");
 my $INIFILE = $ENV['DEVEL_SARL_INI_FILE'] || "$CDIR/products/updatesite/target/products/io.sarl.lang.product/linux/gtk/x86_64/eclipse-sarl.ini";
 
-my $JVM = '';
-my $JVM11 = $ENV['DEVEL_SARL_JAVA_HOME_11'] || "/usr/lib/jvm/java-11-openjdk-amd64/bin";
-my $JVM8openjdk = $ENV['DEVEL_SARL_JAVA_HOME_8'] || "/usr/lib/jvm/java-8-openjdk-amd64/bin";
-my $JVM8oracle = $ENV['DEVEL_SARL_JAVA_HOME_8_ORACLE'] || "/usr/lib/jvm/java-8-oracle-amd64/bin";
+my $JVM_ROOT = "/usr/lib/jvm";
 
-sub usage {
-	print STDERR ("usage: $0 [11|8|8-openjdk|11-oracle]\n");
+sub findJdks(;$) {
+	my $root = shift || '';
+	if (!$root) {
+		$root = $JVM_ROOT;
+	}
+	local *DIR;
+	opendir(DIR, "$root") or die("$root: $!");
+	my %jdks = ();
+	while (my $file = readdir(DIR)) {
+		if ($file =~ /^java\-([0-9.]+)\-([^-]+)/ ) {
+			my $version = "$1";
+			my $vendor = "$2";
+			if ($version =~ /^1\.([0-9]+)/) {
+				$version = "$1";
+			} elsif ($version =~ /^([0-9]+)/) {
+				$version = "$1";
+			}
+			my $dir = "$root/$file";
+			my $bin = "$dir/bin/javac";
+			if (-x "$bin") {
+				$jdks{"$version"}{"$vendor"} = "$dir";
+			}
+		}
+	}
+	closedir(DIR);
+	return %jdks;
+}
+
+sub buildJdkKeys(\%) {
+	my $jdkref = shift;
+	my %jdks = %{$jdkref};
+	my %keys = ();
+	foreach my $version (keys %jdks) {
+		my @k = keys %{$jdks{$version}};
+		if (@k > 1) {
+			foreach my $vendor (keys %{$jdks{$version}}) {
+				$keys{"$version-$vendor"} = $jdks{$version}{$vendor};
+			}
+		} else {
+			my $vendor = $k[0];
+			my $jdkdir = $jdks{$version}{$vendor};
+			$keys{"$version"} = $jdkdir;
+		}
+	}
+	return %keys;
+}
+
+sub printUsage(@) {
+	my @list = sort {
+		my $cmp = $a <=> $b;
+		if ($cmp == 0) {
+			$cmp = $a cmp $b;
+		}
+		return $cmp;
+	} @_;
+	print STDERR ("usage: $0 [");
+	my $first = 1;
+	foreach my $k (@list) {
+		if ($first) {
+			$first = 0;
+		} else {
+			print STDERR (" | ");
+		}
+		print STDERR ("$k");
+	}
+	print STDERR ("]\n");
 	exit(255);
 }
 
-sub checkIniFile() {
-	print STDOUT "Ini file: $INIFILE\n"; 
-	unless (-r "$INIFILE") {
-		print STDERR ("$INIFILE: Cannot read\n");
-		usage();
+sub printUsage2($@) {
+	my $content = shift || '';
+	if ($content =~ /-vm[\n\r]+([^\n\r]+)[\n\r]+/s) {
+		my $jvm = "$1";
+		print STDERR ("Current JVM: $jvm\n");
+	} elsif ($content =~ /-vm[\n\r]+([^\n\r]+)$/s) {
+		my $jvm = "$1";
+		print STDERR ("Current JVM: $jvm\n");
 	}
+	printUsage(@_);
 }
 
-sub selectJvm() {
-	$JVM = '';
-	if ($ARGV[0]) {
-		if ($ARGV[0] eq '11') {
-			$JVM = $JVM11;
-		} elsif ($ARGV[0] eq '8' || $ARGV[0] eq '8-openjdk') {
-			$JVM = $JVM8openjdk;
-		} elsif ($ARGV[0] eq '8-oracle') {
-			$JVM = $JVM8oracle;
-		} else {
-			usage();
-		}
+sub checkIniFile(@) {
+	unless (-r "$INIFILE") {
+		print STDERR ("$INIFILE: Cannot read\n");
+		printUsage(@_);
 	}
 }
 
@@ -50,20 +107,29 @@ sub readIniFile() {
 	return "$content";
 }
 
-sub updateIniContent($) {
-	if ($_[0] =~ /^-vm$/m) {
-		$_[0] =~ s/-vm[\n\r]+[^\n\r]+[\n\r]+/-vm\n$JVM\n/s;
-	} else {
-		$_[0] =~ s/^-vmargs/-vm\n$JVM\n-vmargs/m;
+sub selectJvm(\%) {
+	my $jdkref = shift;
+	my %jdks = %{$jdkref};
+	my $jvm = '';
+	if ($ARGV[0]) {
+		foreach my $k (keys %jdks) {
+			if ($ARGV[0] eq $k) {
+				return $jdks{$k};
+			}
+		}
 	}
+	return $jvm;
 }
 
-sub getCurrentJvm($) {
-	if ($_[0] =~ /[\n\r]+-vm[\n\r]+([^\n\r]+)[\n\r]+/s) {
-		return "$1";
+sub updateIniContent(@) {
+	my $jvm = shift || die("no JVM provided\n");
+	my $content = shift || die("no content\n");
+	if ($content =~ /^-vm$/m) {
+		$content =~ s/-vm[\n\r]+[^\n\r]+[\n\r]+/-vm\n$jvm\n/s;
 	} else {
-		return '';
+		$content =~ s/^-vmargs/-vm\n$jvm\n-vmargs/m;
 	}
+	return $content;
 }
 
 sub writeIniFile($) {
@@ -77,19 +143,25 @@ sub writeIniFile($) {
 	close(*FID);
 }
 
-checkIniFile();
+my %jdks =  findJdks();
+my %jdkkeys = buildJdkKeys(%jdks);
+checkIniFile(keys %jdkkeys);
 my $content = readIniFile();
 
-selectJvm();
-if ($JVM) {
-	print STDOUT ("Forcing JVM to: $JVM\n");
-	updateIniContent($content);
-	writeIniFile($content);
-	print STDOUT ("Done\n");
-} else {
-	my $currentjvm = getCurrentJvm($content);
-	print STDOUT ("Current JVM: ".($currentjvm || 'system default')."\n");
+my $jvm = selectJvm(%jdkkeys);
+
+if (!$jvm) {
+	printUsage2("$content", keys %jdkkeys);
 }
+
+print STDOUT ("Forcing JVM to: $jvm\n");
+
+
+print STDOUT ("Ini file: $INIFILE\n"); 
+
+$content = updateIniContent("$jvm", $content);
+
+writeIniFile("$content"); 
 
 exit(0);
 
