@@ -163,7 +163,8 @@ public final class TestUtils {
 	public static String getLineSeparator() {
 		final String nl = System.getProperty("line.separator");
 		if (Strings.isNullOrEmpty(nl)) {
-			return "\n";
+			throw new Error("NO LINE SEPARATOR DEFINED");
+			//return "\n";
 		}
 		return nl;
 	}
@@ -176,7 +177,24 @@ public final class TestUtils {
 	 */
 	@Pure
 	public static String multilineString(Object... lines) {
-		return Joiner.on(getLineSeparator()).join(lines);
+		final StringBuilder buffer = new StringBuilder();
+		final String nl = getLineSeparator();
+		boolean first = true;
+		for (final Object obj : lines) {
+			if (first) {
+				first = false;
+			} else {
+				buffer.append(nl);
+			}
+			if (obj != null) {
+				if (obj instanceof CharSequence) {
+					buffer.append((CharSequence) obj);
+				} else {
+					buffer.append(obj.toString());
+				}
+			}
+		}
+		return buffer.toString();
 	}
 
 	/** Replies if two values are equals at epsilon.
