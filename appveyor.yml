@@ -21,7 +21,7 @@ install:
   - cmd: echo %JAVA_OPTS%
 
 build_script:
-  - mvn -B -e -P!generateproduct -Dmaven.test.skip=true -Dio.sarl.docs.tests.skip=true clean install
+  - mvn -B -e -P!generateproduct clean install
 
 cache:
   - C:\maven\ -> appveyor.yml

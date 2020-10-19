@@ -27,7 +27,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
@@ -286,19 +285,8 @@ public final class TestUtils {
 	 */
 	@Pure
 	public static String differences(String a, String b) {
-		// Replace the special "hidden" characters
-		final String ca = diffClean(a);
-		final String cb = diffClean(b);
-		String diff = DiffUtil.diff(ca, cb);
+		final String diff = DiffUtil.diff(a,  b);
 		return diff;
-	}
-
-	private static String diffClean(String a) {
-		String ca = a.replace("\n", "<<\\n>>");
-		ca = ca.replace("\r", "<<\\r>>");
-		ca = ca.replace("\t", "<<\\t>>");
-		ca = ca.replace("\f", "<<\\f>>");
-		return ca;
 	}
 
 }

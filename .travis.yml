@@ -2,8 +2,8 @@
 
 language: java
 
-# For enabling the generation of the native executables
-sudo: required
+dist: xenial
+os: linux
 
 # Environment variables for all the OS
 env:
@@ -17,7 +17,7 @@ env:
     - HTTPS_KEYSTORE_FILE: "./build-tools/keyring/https.jks"
 
 # Compilation matrix
-matrix:
+jobs:
   fast_finish: true
   include:
     - os: linux
