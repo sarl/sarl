@@ -20,7 +20,7 @@
  */
 package io.sarl.tests.api.globalcompilation;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 import java.lang.reflect.Modifier;
@@ -130,7 +130,7 @@ class ResourceSetGlobalCompilationExtension extends AbstractResourceSetGlobalCom
 							final String functionName = entry.getValue().getKey();
 							final String expected = entry.getValue().getValue();
 							final DynamicTest test = dynamicTest("Java compilation - " + functionName, () -> {
-								assertEquals(expected, actual, () -> {
+								assertEqualsExceptNewLines(expected, actual, () -> {
 									final String diff = TestUtils.differences(expected, actual);
 									if (!Strings.isEmpty(functionName)) {
 										return functionName + ", RAW DIFF = " + diff;

@@ -169,7 +169,6 @@ public class Bug1013Test extends AbstractSarlTest {
 			.assertWarning(
 				XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 				IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE,
-				774,
 				"Possible invalid usage of 'occurrence'",
 				"be copied within a local variable")
 			.assertNoIssues();
@@ -211,7 +210,6 @@ public class Bug1013Test extends AbstractSarlTest {
 			.assertWarning(
 				XbasePackage.eINSTANCE.getXMemberFeatureCall(),
 				IssueCodes.DISCOURAGED_OCCURRENCE_READONLY_USE,
-				774,
 				"Possible invalid usage of 'occurrence'",
 				"be copied within a local variable")
 			.assertWarning(
