@@ -46,6 +46,7 @@ import org.eclipse.xtext.xbase.validation.IssueCodes;
 
 import io.sarl.lang.sarl.SarlScript;
 import io.sarl.tests.api.tools.SarlValidationTestHelper;
+import io.sarl.tests.api.tools.TestUtils;
 
 /** Context for the {@link ResourceSetGlobalCompilationUnitExtension massive compilation extension}.
  *
@@ -178,10 +179,11 @@ public class ResourceSetGlobalCompilationContext {
 	 */
 	public void compileTo(String sarlExpression, String javaExpression) throws Exception {
 		final String packageName = buildPackageName();
-		final String inputCode = "package " + packageName + "\n" + sarlExpression; //$NON-NLS-1$ //$NON-NLS-2$
+		final String inputCode = "package " + packageName + TestUtils.getLineSeparator() + sarlExpression; //$NON-NLS-1$ //$NON-NLS-2$
 		final SarlScript script = file(inputCode, isValidationRunInEachTestFunction(), true);
 		final String qualifiedName = packageName + "." + script.getXtendTypes().get(script.getXtendTypes().size() - 1).getName(); //$NON-NLS-1$
-		final String expectedJava = "package " + packageName + ";\n\n" + javaExpression; //$NON-NLS-1$ //$NON-NLS-2$
+		final String expectedJava = "package " + packageName + ";" //$NON-NLS-1$ //$NON-NLS-2$
+				+ TestUtils.getLineSeparator() + TestUtils.getLineSeparator()+ javaExpression;
 		this.expectedJava.put(qualifiedName, Pair.of(this.currentMethod, expectedJava));
 	}
 
@@ -215,7 +217,7 @@ public class ResourceSetGlobalCompilationContext {
 	 */
 	public void compileToUnexpectedCastError(String sarlExpression) throws Exception {
 		final String packageName = buildPackageName();
-		final String inputCode = "package " + packageName + "\n" + sarlExpression; //$NON-NLS-1$ //$NON-NLS-2$
+		final String inputCode = "package " + packageName + TestUtils.getLineSeparator() + sarlExpression; //$NON-NLS-1$
 		validate(this.validator, this.injector,
 				file(inputCode, true, true).eResource()).assertError(
 					TypesPackage.eINSTANCE.getJvmParameterizedTypeReference(),

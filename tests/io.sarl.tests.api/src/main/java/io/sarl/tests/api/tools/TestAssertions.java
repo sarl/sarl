@@ -1115,6 +1115,19 @@ public final class TestAssertions {
 		return null;
 	}
 
+	/** Assert that the two strings are equal except for the new-line characters.
+	 *
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @param message the supplier of error message. 
+	 * @since 0.12
+	 */
+	public static void assertEqualsExceptNewLines(String expected, String actual, Supplier<String> message) {
+		final String e = expected.replaceAll("[\n\r]+", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		final String a = actual.replaceAll("[\n\r]+", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals(e, a, message);
+	}
+
 	/** Code to be run.
 	 *
 	 * @author $Author: sgalland$
