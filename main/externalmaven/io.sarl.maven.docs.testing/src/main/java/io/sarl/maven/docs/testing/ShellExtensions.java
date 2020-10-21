@@ -66,7 +66,7 @@ public final class ShellExtensions {
 			break;
 		case MACOSX:
 			buffer.append(command[command.length - 1]);
-			buffer.append(".cmd"); //$NON-NLS-1$
+			//buffer.append(".cmd"); //$NON-NLS-1$
 			break;
 		default:
 			buffer.append(command[command.length - 1]);
