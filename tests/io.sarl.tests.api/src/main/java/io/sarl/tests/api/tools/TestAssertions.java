@@ -1128,6 +1128,19 @@ public final class TestAssertions {
 		assertEquals(e, a, message);
 	}
 
+	/** Assert that the two strings are equal except for the new-line characters.
+	 *
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @since 0.12
+	 */
+	public static void assertEqualsExceptNewLines(String expected, String actual) {
+		assertEqualsExceptNewLines(expected, actual, () -> {
+			final String diff = TestUtils.differences(expected, actual);
+			return "Not equal. " + diff;
+		});
+	}
+
 	/** Code to be run.
 	 *
 	 * @author $Author: sgalland$

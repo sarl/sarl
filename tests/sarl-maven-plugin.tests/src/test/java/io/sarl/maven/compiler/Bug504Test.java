@@ -20,7 +20,7 @@
  */
 package io.sarl.maven.compiler;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
@@ -58,7 +58,7 @@ public class Bug504Test extends AbstractMojoTest {
 		verifier.assertFilePresent(path.toString());
 		File file = new File(verifier.getBasedir(), path.toString());
 		String fileContent = FileUtils.fileRead(file);
-		assertEquals(multilineString(
+		assertEqualsExceptNewLines(multilineString(
 				"package io.sarl.elevatorsim;",
 				"",
 				"import io.sarl.elevatorsim.SimulatorPush;",

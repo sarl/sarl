@@ -22,6 +22,7 @@ package io.sarl.maven.compiler;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static io.sarl.tests.api.tools.TestAssertions.*;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -54,7 +55,7 @@ public class Bug465Test extends AbstractMojoTest {
 				"io", "sarl", "maven", "compiler", "tests", "MyAgent.java");
 		assertNotNull(path);
 		verifier.assertFilePresent(path.toString());
-		assertEquals(multilineString(
+		assertEqualsExceptNewLines(multilineString(
 				"package io.sarl.maven.compiler.tests;",
 				"import io.sarl.core.DefaultContextInteractions;",
 				"import io.sarl.core.Initialize;",
