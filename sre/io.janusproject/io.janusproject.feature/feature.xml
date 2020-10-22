@@ -235,6 +235,7 @@
       <import plugin="org.arakhne.afc.core.inputoutput" version="16.0.0" match="greaterOrEqual"/>
       <import plugin="com.fasterxml.jackson.core.jackson-annotations" version="2.11.0" match="greaterOrEqual"/>
       <import plugin="io.janusproject.plugin" version="0.12.0" match="greaterOrEqual"/>
+      <import plugin="io.janusproject.network" version="0.12.0" match="greaterOrEqual"/>
       <import plugin="io.sarl.eclipse" version="0.12.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jdt.core" version="3.22.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.runtime" version="3.18.0" match="greaterOrEqual"/>
@@ -258,6 +259,13 @@
          version="0.0.0"
          unpack="false"/>
 
+   <plugin
+         id="io.janusproject.network"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+         
    <plugin
          id="org.arakhne.afc.core.util"
          download-size="0"
@@ -372,13 +380,6 @@
 
    <plugin
          id="jakarta.xml.bind-api"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="io.janusproject.network"
          download-size="0"
          install-size="0"
          version="0.0.0"
