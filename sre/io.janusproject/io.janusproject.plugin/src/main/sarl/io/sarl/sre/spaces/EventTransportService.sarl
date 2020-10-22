@@ -41,11 +41,11 @@ import javax.inject.Singleton
 interface EventTransportService {
 
 	/** 
-	 * Route the given event into 
+	 * Manages events transmission, deciding when to forward it on the network or/and to route it locally
 	 * 
-	 * <p>This function emits the event <strong>only on the internal event bus</strong> of the listeners.
+	 * <p>Locally, this function emits the event <strong>only on the internal event bus</strong> of the listeners.
 	 * 
-	 * <p>This function launch a task for each matching listener.
+	 * <p>Locally, this function launches a task for each matching listener.
 	 * 
 	 * @param event the event to emit.
 	 * @param ^space the local space in which the event should be routed.
