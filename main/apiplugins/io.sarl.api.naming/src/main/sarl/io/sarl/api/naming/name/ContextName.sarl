@@ -27,7 +27,11 @@ import io.sarl.lang.annotation.PrivateAPI
 
 /** 
  * This class represents a context name.
- * 
+ *
+ * <p>The component of a context name is: <ul>
+ * <li>{@code contextId} (mandatory) : the identifier of the context itself.</li>
+ * </ul>
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

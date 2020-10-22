@@ -27,7 +27,12 @@ import io.sarl.lang.annotation.PrivateAPI
 
 /** 
  * This class represents a space name.
- * 
+ *
+ * <p>The different components of a space name are: <ul>
+ * <li>{@code contextId} (mandatory) : the identifier of the context in which the space is located.</li>
+ * <li>{@code spaceId} (mandatory) : the identifier of the space.</li>
+ * </ul>
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
