@@ -32,9 +32,9 @@ import io.sarl.sre.tests.runtime.services.probing.mocks.ProbedObservableAgent
 import io.sarl.sre.tests.runtime.services.probing.mocks.StopTest
 import io.sarl.tests.api.extensions.ContextInitExtension
 import io.sarl.tests.api.extensions.JavaVersionCheckExtension
-import java.util.Collections
-import java.util.List
+import java.util.Queue
 import java.util.UUID
+import java.util.concurrent.ConcurrentLinkedQueue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.RepeatedTest
@@ -58,8 +58,8 @@ import static extension org.junit.jupiter.api.Assertions.*
 ])
 abstract class AbstractProbeServiceTest {
 
-	var changedProbes : List<Pair<Probe<?>, Object>>
-	var releasedProbes : List<Probe<?>>
+	var changedProbes : Queue<Pair<Probe<?>, Object>>
+	var releasedProbes : Queue<Probe<?>>
 
 	@BeforeEach
 	def setUp : void {
@@ -73,8 +73,8 @@ abstract class AbstractProbeServiceTest {
 		var service = kern.getService(typeof(ProbeService))
 		service.assertNotNull
 
-		this.changedProbes = Collections::synchronizedList(newArrayList)
-		this.releasedProbes = Collections::synchronizedList(newArrayList)
+		this.changedProbes = new ConcurrentLinkedQueue
+		this.releasedProbes = new ConcurrentLinkedQueue
 
 		val bid = UUID::randomUUID
 		val w0 = waitForAgentSpawned(bid)
