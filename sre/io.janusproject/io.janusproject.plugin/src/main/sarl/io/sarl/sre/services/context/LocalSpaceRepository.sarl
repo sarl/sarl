@@ -21,13 +21,14 @@
 package io.sarl.sre.services.context
 
 import com.google.inject.Injector
+import io.sarl.lang.core.Space
 import io.sarl.sre.boot.configs.SreConfig
 import io.sarl.sre.internal.SmartListenerCollection
 import io.sarl.sre.services.executor.ExecutorService
+import io.sarl.sre.spaces.SreSpaceSpecificationFactory
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
-import io.sarl.sre.spaces.SreSpaceSpecificationFactory
 
 /** 
  * A repository of spaces specific to a given context.
@@ -87,6 +88,27 @@ class LocalSpaceRepository extends SpaceRepository {
 	
 	protected override getSharedStructure : ConcurrentHashMap<UUID, SpaceDescription> {
 		this.spaces
+	}
+
+	def existsSpace(spaceUUID : UUID) : boolean {
+		this.spaces.contains(spaceUUID)
+	}
+	
+	def removeSpaceIfEmpty(spaceUUID : UUID) {
+		var spaceToRemove: Space = this.spaces.get(spaceUUID).^space
+		if (spaceToRemove.isPseudoEmpty) {
+			super.removeSpace(spaceToRemove)
+		} 		
+	}
+	
+	def removeAllSpacesIfEmpty() {
+		var spaceToRemove: Space
+		for (spaceDesc : this.spaces.values) {
+			spaceToRemove = spaceDesc.^space
+			if (spaceToRemove.isPseudoEmpty) {
+				super.removeSpace(spaceToRemove)
+			} 
+		}
 	}
 
 }
