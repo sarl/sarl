@@ -20,7 +20,7 @@
  */
 package io.sarl.maven.compiler;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.nio.file.FileSystems;
@@ -122,7 +122,7 @@ public class Bug850Test extends AbstractMojoTest {
 				"io", "sarl", "maven", "bug850", "Agent1.java");
 		assertNotNull(path);
 		verifier.assertFilePresent(path.toString());
-		assertEquals(EXPECTED_AGENT1, readFile(verifier, path));
+		assertEqualsExceptNewLines(EXPECTED_AGENT1, readFile(verifier, path));
 	}
 
 	private static final String EXPECTED_AGENT2 = multilineString(
@@ -192,7 +192,7 @@ public class Bug850Test extends AbstractMojoTest {
 				"io", "sarl", "maven", "bug850", "Agent2.java");
 		assertNotNull(path);
 		verifier.assertFilePresent(path.toString());
-		assertEquals(EXPECTED_AGENT2, readFile(verifier, path));
+		assertEqualsExceptNewLines(EXPECTED_AGENT2, readFile(verifier, path));
 	}
 
 
@@ -261,7 +261,7 @@ public class Bug850Test extends AbstractMojoTest {
 				"io", "sarl", "maven", "bug850", "Agent3.java");
 		assertNotNull(path);
 		verifier.assertFilePresent(path.toString());
-		assertEquals(EXPECTED_AGENT3, readFile(verifier, path));
+		assertEqualsExceptNewLines(EXPECTED_AGENT3, readFile(verifier, path));
 	}
 
 	private static final String EXPECTED_AGENT4 = multilineString(
@@ -330,7 +330,7 @@ public class Bug850Test extends AbstractMojoTest {
 				"io", "sarl", "maven", "bug850", "Agent4.java");
 		assertNotNull(path);
 		verifier.assertFilePresent(path.toString());
-		assertEquals(EXPECTED_AGENT4, readFile(verifier, path));
+		assertEqualsExceptNewLines(EXPECTED_AGENT4, readFile(verifier, path));
 	}
 
 }

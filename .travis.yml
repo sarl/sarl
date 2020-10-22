@@ -10,7 +10,8 @@ env:
   global:
     - MAVEN_VERSION: "3.6.3"
     - MAVEN_OPTS: "-XX:+CMSClassUnloadingEnabled -Xmx3g" 
-    - MAVEN_COMPILATION_OPTS: "\"-e -P!generateproduct -Dmaven.test.skip=true -Dio.sarl.docs.tests.skip=true\""
+#    - MAVEN_COMPILATION_OPTS: "\"-e -P!generateproduct -Dmaven.test.skip=true -Dio.sarl.docs.tests.skip=true\""
+    - MAVEN_COMPILATION_OPTS: "\"-e -P!generateproduct\""
     - MAVEN_TEST_OPTS: "\"-e -P!generateproduct\""
     - MAVEN_DEPLOYMENT_SETTING: "./build-tools/src/main/resources/maven/deploy-settings.xml"
     - MAVEN_DEPLOYMENT_OPTS: "\"-DskipTests -Dmaven.test.skip=true -Dcheckstyle.skip=true\""

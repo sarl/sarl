@@ -17,6 +17,11 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>io.sarl</groupId>
+			<artifactId>io.sarl.lang.sarlc</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>io.sarl.lang</groupId>
 			<artifactId>io.sarl.lang.core</artifactId>
 			<scope>test</scope>

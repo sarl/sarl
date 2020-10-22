@@ -35,7 +35,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Objects;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,11 +44,10 @@ import org.apache.maven.shared.utils.io.FileUtils;
 import org.eclipse.xtext.util.JavaVersion;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure3;
 import org.junit.ComparisonFailure;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DynamicTest;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
@@ -68,13 +66,16 @@ import io.sarl.lang.SARLVersion;
  */
 @SuppressWarnings("all")
 @DisplayName("Testing SARL compilation on different platforms")
+@Tag("crossplatform")
 public class CrossPlatformTest {
 
 	private static final String ROOT_FOLDER_FOR_JDK = "/usr/lib/jvm"; // $NON-NLS-1$
 
 	private static final String PATTERN = "^java-([^-]+)"; // $NON-NLS-1$
 
-	private static final String SARLC_BIN = "../../products/sarlc/target/sarlc";
+	private static final String SARLC_BIN_0 = "products/sarlc/target/sarlc";
+
+	private static final String SARLC_BIN_1 = "../../" + SARLC_BIN_0;
 
 	/** Helper for writing a multiline string in unit tests.
 	 *
@@ -308,9 +309,22 @@ public class CrossPlatformTest {
 	 * @throws Exception any exception.
 	 */
 	protected void executeSarlc(String projectName, int jversion, File jdk) throws Exception {
-		final File sarlcExec = new File(SARLC_BIN);
+		File sarlcExec = new File(SARLC_BIN_1);
+		if (!sarlcExec.isFile()) {
+			sarlcExec = new File(SARLC_BIN_0);
+			if (!sarlcExec.isFile()) {
+				final File currDir = new File("").getAbsoluteFile(); //$NON-NLS-1$
+				throw new FileNotFoundException("Cannot find the sarlc binary file: " //$NON-NLS-1$
+						+ SARLC_BIN_0 + " or "
+						+ SARLC_BIN_1 + ". Rerun the maven compilation of the entire SARL project.\n" //$NON-NLS-1$
+						+ "Current directory: " + currDir); //$NON-NLS-1$
+			}
+		}
 		if (!sarlcExec.canExecute()) {
-			throw new FileNotFoundException("Cannot find the sarlc binary file. Rerun the maven compilation of the entire SARL project.");
+			final File currDir = new File("").getAbsoluteFile(); //$NON-NLS-1$
+			throw new IllegalAccessException("Cannot execute the sarlc binary file: " //$NON-NLS-1$
+					+ sarlcExec.getName() + ".\n" //$NON-NLS-1$
+					+ "Current directory: " + currDir); //$NON-NLS-1$
 		}
 		
 		String tempDirPath = System.getProperty("maven.test.tmpdir", //$NON-NLS-1$
@@ -365,7 +379,7 @@ public class CrossPlatformTest {
 	@TestFactory
 	@DisplayName("maven")
 	@EnabledOnOs(OS.LINUX)
-	public List<DynamicTest> mavenCompilation() throws Exception {
+	public List<DynamicTest> mavenCompilationOnLinux() throws Exception {
 		return buildTests((project, jversion, jdk) -> {
 			try {
 				executeMojo(project, "compile", jversion, jdk);
@@ -378,7 +392,7 @@ public class CrossPlatformTest {
 	@TestFactory
 	@DisplayName("sarlc")
 	@EnabledOnOs(OS.LINUX)
-	public List<DynamicTest> sarlcCompilation() throws Exception {
+	public List<DynamicTest> sarlcCompilationOnLinux() throws Exception {
 		return buildTests((project, jversion, jdk) -> {
 			try {
 				executeSarlc(project, jversion, jdk);

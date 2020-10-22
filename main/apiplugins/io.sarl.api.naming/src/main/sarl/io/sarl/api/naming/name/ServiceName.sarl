@@ -27,7 +27,11 @@ import io.sarl.lang.annotation.PrivateAPI
 
 /** 
  * This class represents a service name.
- * 
+ *
+ * <p>The components of a service name is: <ul>
+ * <li>{@code serviceType} (mandatory) : the fully qualified name of the service interface for the service implementation to retrieve.</li>
+ * </ul>
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

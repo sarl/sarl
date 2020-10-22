@@ -26,8 +26,15 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import io.sarl.lang.annotation.PrivateAPI
 
 /** 
- * This class represents a space name.
- * 
+ * This class represents an agent name.
+ *
+ * <p>The different components of an agent name are: <ul>
+ * <li>{@code contextId} (optional) : the identifier of the context in which the agent is located.
+ *     If it is {@code null}, the the {@code spaceId} component is equal to {@code null}.</li>
+ * <li>{@code spaceId} (optional) : the identifier of the space in which the agent is registered.</li>
+ * <li>{@code agentId} (mandatory) : the identifier of the agent.</li>
+ * </ul>
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

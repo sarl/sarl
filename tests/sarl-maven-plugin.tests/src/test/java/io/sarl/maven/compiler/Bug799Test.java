@@ -20,7 +20,7 @@
  */
 package io.sarl.maven.compiler;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static io.sarl.tests.api.tools.TestAssertions.assertEqualsExceptNewLines;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.nio.file.FileSystems;
@@ -80,7 +80,7 @@ public class Bug799Test extends AbstractMojoTest {
 				"io", "sarl", "maven", "bug799", "A.java");
 		assertNotNull(path);
 		verifier.assertFilePresent(path.toString());
-		assertEquals(EXPECTED_A, readFile(verifier, path));
+		assertEqualsExceptNewLines(EXPECTED_A, readFile(verifier, path));
 	}
 
 }
