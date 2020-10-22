@@ -1,5 +1,56 @@
 package io.sarl.sre.network
 
+import com.google.inject.AbstractModule
+import com.google.inject.Module
+import com.google.inject.Provides
+import com.hazelcast.core.Hazelcast
+import com.hazelcast.core.HazelcastInstance
+import io.bootique.BQModule
+import io.bootique.BQModuleProvider
+import io.sarl.sre.boot.internal.services.ContextServiceModule
+import io.sarl.sre.network.services.HazelcastContextService
+import io.sarl.sre.network.services.HazelcastEventTransportService
+import io.sarl.sre.network.services.HazelcastSpaceRepository
+import io.sarl.sre.services.context.ContextService
+import io.sarl.sre.services.context.SpaceRepository
+import io.sarl.sre.spaces.EventTransportService
+import java.util.Collection
+import javax.inject.Singleton
+
+class NetworkModule extends AbstractModule {
+
+	protected override configure {
+		typeof(SpaceRepository).bind.to(typeof(HazelcastSpaceRepository))
+		typeof(ContextService).bind.to(typeof(HazelcastContextService)).in(typeof(Singleton))
+		typeof(EventTransportService).bind.to(typeof(HazelcastEventTransportService)).in(typeof(Singleton))
+		
+	}
+
+	@Provides
+	@Singleton
+	def provideHazelcastInstance() : HazelcastInstance {
+		Hazelcast.newHazelcastInstance
+	}
+	
+	
+}
+
+class NetworkModuleProvider implements BQModuleProvider {
+
+	override module : Module {
+		return new NetworkModule
+	}
+
+	override moduleBuilder : BQModule.Builder {
+		return BQModule::builder(module).overrides(overrides).providerName(name).configs(configs).description(
+			"First version of SRE Network Module");
+	}
+	
+	override overrides : Collection<Class<? extends Module>> {
+		#[ContextServiceModule]
+	}
+
+}
 
 
 
