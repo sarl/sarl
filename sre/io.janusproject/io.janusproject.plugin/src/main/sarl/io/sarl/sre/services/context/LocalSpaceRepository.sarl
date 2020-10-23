@@ -28,6 +28,7 @@ import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.spaces.SreSpaceSpecificationFactory
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ConcurrentMap
 import javax.inject.Inject
 
 /** 
@@ -86,7 +87,7 @@ class LocalSpaceRepository extends SpaceRepository {
 	}
 
 	
-	protected override getSharedStructure : ConcurrentHashMap<UUID, SpaceDescription> {
+	protected override getSharedStructure : ConcurrentMap<UUID, SpaceDescription> {
 		this.spaces
 	}
 
