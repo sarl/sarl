@@ -51,6 +51,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		@Tag("sarlValidation")
+		@DisplayName("Syntax: discouraged system.console in agent action")
 		public void systemConsole_agent_action() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
@@ -67,6 +68,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		@Tag("sarlValidation")
+		@DisplayName("Syntax: discouraged system.console in agent behavior unit")
 		public void systemConsole_agent_behaviorUnit() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
@@ -84,6 +86,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		@Tag("sarlValidation")
+		@DisplayName("Syntax: discouraged system.console in behavior action")
 		public void systemConsole_behavior_action() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
@@ -100,6 +103,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		@Tag("sarlValidation")
+		@DisplayName("Syntax: discouraged system.console in behavior behavior unit")
 		public void systemConsole_behavior_behaviorUnit() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
@@ -117,6 +121,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		@Tag("sarlValidation")
+		@DisplayName("Syntax: discouraged system.console in behavior constructor")
 		public void systemConsole_behavior_constructor() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.SARLInjectorProvider;",
@@ -136,6 +141,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		@Tag("sarlValidation")
+		@DisplayName("Syntax: discouraged system.console in skill action")
 		public void systemConsole_skill_action() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
@@ -153,6 +159,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		@Tag("sarlValidation")
+		@DisplayName("Syntax: discouraged system.console in skill constructor")
 		public void systemConsole_skill_constructor() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
@@ -172,6 +179,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		@Tag("sarlValidation")
+		@DisplayName("Syntax: discouraged system.console in agent static import")
 		public void systemConsole_agent_action_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -195,6 +203,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		@Tag("sarlValidation")
+		@DisplayName("Syntax: discouraged system.console in skill static import")
 		public void systemConsole_skill_action_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -222,6 +231,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		@Tag("sarlValidation")
+		@DisplayName("Syntax: discouraged system.err in agent static import")
 		public void systemErr_agent_action() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"agent A1 {",
@@ -238,6 +248,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		@Tag("sarlValidation")
+		@DisplayName("Syntax: discouraged system.err in agent behavior unit")
 		public void systemErr_agent_behaviorUnit() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
@@ -255,6 +266,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		@Tag("sarlValidation")
+		@DisplayName("Syntax: discouraged system.err in agent behavior action")
 		public void systemErr_behavior_action() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"behavior B1 {",
@@ -271,6 +283,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		@Tag("sarlValidation")
+		@DisplayName("Syntax: discouraged system.err in behavior behavior unit")
 		public void systemErr_behavior_behaviorUnit() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"event E1 { }",
@@ -288,6 +301,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		@Tag("sarlValidation")
+		@DisplayName("Syntax: discouraged system.err in behavior constructor")
 		public void systemErr_behavior_constructor() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
@@ -306,6 +320,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		@Tag("sarlValidation")
+		@DisplayName("Syntax: discouraged system.err in skill action")
 		public void systemErr_skill_action() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"capacity C1 { }",
@@ -323,6 +338,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		@Tag("sarlValidation")
+		@DisplayName("Syntax: discouraged system.err in skill constructor")
 		public void systemErr_skill_constructor() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import io.sarl.lang.core.Agent",
@@ -342,6 +358,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		@Tag("sarlValidation")
+		@DisplayName("Syntax: discouraged system.err in agent static import and action")
 		public void systemErr_agent_action_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -359,6 +376,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		@Tag("sarlValidation")
+		@DisplayName("Syntax: discouraged system.err in agent static import and behavior unit")
 		public void systemErr_agent_behaviorUnit_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -377,6 +395,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		@Tag("sarlValidation")
+		@DisplayName("Syntax: discouraged system.err in behavior static import and action")
 		public void systemErr_behavior_action_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -394,6 +413,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		@Tag("sarlValidation")
+		@DisplayName("Syntax: discouraged system.err in behavior static import and behavior unit")
 		public void systemErr_behavior_behaviorUnit_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
@@ -412,6 +432,7 @@ public class DiscouragedSystemCallTest {
 
 		@Test
 		@Tag("sarlValidation")
+		@DisplayName("Syntax: discouraged system.err in behavior static import and constructor")
 		public void systemErr_behavior_constructor_staticImport() throws Exception {
 			SarlScript mas = file(getParseHelper(), multilineString(
 					"import static java.lang.System.*",
