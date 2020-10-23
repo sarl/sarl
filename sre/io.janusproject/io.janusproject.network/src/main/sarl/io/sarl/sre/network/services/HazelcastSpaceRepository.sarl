@@ -22,12 +22,13 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.logging.Level
 import java.util.logging.Logger
 import javax.inject.Inject
+import javax.inject.Named
 
 class HazelcastSpaceRepository extends LocalSpaceRepository {
-	
-	/**
-	 * Local Hazelcast instance
-	 */
+
+		/** 
+		 * Local Hazelcast instance
+		 */
 	var hazelcastInstance : HazelcastInstance;
 
 	/** 
@@ -51,17 +52,18 @@ class HazelcastSpaceRepository extends LocalSpaceRepository {
 	 */
 	var kernelLogger : Logger;
 
+	public static val HAZELCAST_SPACE_ID_MAP_NAME = "io.sarl.network.distributedSpaceIDMapName"
+
 	@Inject
 	new(injector : Injector, executor : ExecutorService, config : SreConfig,
 		specificationFactory : SreSpaceSpecificationFactory,
 		internalStructure : ConcurrentHashMap<UUID, SpaceDescription>, listenerCollection : SmartListenerCollection<?>,
-		icontextService : ContextService, iHazelcastInstance : HazelcastInstance, distributedSpaceMapName : String,
-		logger : LoggingService) {
-		super(injector, executor, config, specificationFactory, internalStructure, listenerCollection)
+		icontextService : ContextService, iHazelcastInstance : HazelcastInstance,logger : LoggingService) {
+		super(injector, executor, config, specificationFactory, listenerCollection)
 		contextService = icontextService
 		hazelcastInstance = iHazelcastInstance
 		kernelLogger = logger.kernelLogger
-		spaceIDs = this.hazelcastInstance.getMap(distributedSpaceMapName);
+		spaceIDs = this.hazelcastInstance.getMap(HAZELCAST_SPACE_ID_MAP_NAME);
 
 		var spaceIDsListerner = new EntryListener<SpaceID, Object[]>() {
 
@@ -99,13 +101,15 @@ class HazelcastSpaceRepository extends LocalSpaceRepository {
 
 	}
 
+
 	protected override createSpaceFirstInstance(spec : Class<? extends SpaceSpecification<S>>, spaceID : SpaceID,
 		creationParams : Object[]) : S with S extends Space {
 
 		// checking that the enclosing context of this new space already exists locally before creating the space
 		var localContext = contextService.getContext(spaceID.contextID)
 		if (localContext === null) {
-			kernelLogger.log(Level::SEVERE, "ERROR: Creating a space but the corresponding enclosing context did not exist locally")
+			kernelLogger.log(Level::SEVERE,
+				"ERROR: Creating a space but the corresponding enclosing context did not exist locally")
 		}
 		this.spaceIDs.putIfAbsent(spaceID, creationParams);
 

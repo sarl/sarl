@@ -40,9 +40,9 @@ import javax.inject.Singleton
 @Singleton
 class HazelcastEventTransportService implements EventTransportService {
 
-	/** 
-	 * Local Hazelcast instance
-	 */
+		/** 
+		 * Local Hazelcast instance
+		 */
 	var hazelcastInstance : HazelcastInstance;
 
 	/** 
@@ -85,16 +85,16 @@ class HazelcastEventTransportService implements EventTransportService {
 
 				if (topicListenerIDs.get(newTopicName.item) === null) {
 
-					var topic : ITopic<Event> = HazelcastEventTransportService.this.hazelcastInstance.getTopic(
+					var topic : ITopic<TopicMessage> = HazelcastEventTransportService.this.hazelcastInstance.getTopic(
 						newTopicName.item)
 
-					var messageListener : MessageListener<Event>
+					var messageListener : MessageListener<TopicMessage>
 
-					if (newTopicName.item.startsWith(HAZELCAST_SARL_TOPICS_ROOTWILCARD + AgentName.SCHEME)) {
+					/*if (newTopicName.item.startsWith(HAZELCAST_SARL_TOPICS_ROOTWILCARD + AgentName.SCHEME)) {
 						messageListener = new MessageListener<Event>() {
 
 							def onMessage(incomingMessage : Message<Event>) {
-								kernelLogger.log(Level::INFO,"Receiving distant message")
+								kernelLogger.log(Level::INFO, "Receiving distant message")
 								// Agent: io.sarl.topics.agent.contextId[36 characters].spaceId[36 characters].agentId[36 characters]
 								var eventToDispatchLocally = incomingMessage.messageObject
 								var contextUIIDString = newTopicName.item.substring(21, 57)
@@ -106,7 +106,7 @@ class HazelcastEventTransportService implements EventTransportService {
 
 								var context : Context = HazelcastEventTransportService.this.contextService.getContext(
 									contextUUID)
-								//FIXME manage a distributed version of scoped participants providing every single participants over the network
+								// FIXME manage a distributed version of scoped participants providing every single participants over the network
 								if (context !== null) {
 									for (localSpace : context.spaces) {
 										if (localSpace.spaceID.ID === spaceUIID) {
@@ -161,8 +161,40 @@ class HazelcastEventTransportService implements EventTransportService {
 							}
 
 						}
-					}
+					 * }
+					 */
+					messageListener = new MessageListener<TopicMessage>() {
 
+						def onMessage(incomingMessage : Message<TopicMessage>) {
+							// Space: io.sarl.topics.space.contextId.spaceId
+							var eventToDispatchLocally = incomingMessage.messageObject.transferredEvent
+							var contextUIIDString = newTopicName.item.substring(21, 57)
+							var spaceUIIDString = newTopicName.item.substring(58, 94)
+							var contextUUID : UUID = UUID.fromString(contextUIIDString)
+							var spaceUIID = UUID.fromString(spaceUIIDString)
+
+							var context : Context = HazelcastEventTransportService.this.contextService.getContext(
+								contextUUID)
+							if (context !== null) {
+								for (localSpace : context.spaces) {
+									if (localSpace.spaceID.ID === spaceUIID) {
+										kernelLogger.log(Level::INFO,
+												"Receiving distant Space message from the space" + spaceUIID +
+											"  of the Context " + contextUUID + "and dispatching this event locally")
+										(localSpace as AbstractEventSpace).emit(eventToDispatchLocally.source.UUID,
+											eventToDispatchLocally,
+											incomingMessage.messageObject.trasnferredScope as Scope<Address>)
+									}
+								}
+							} else {
+								kernelLogger.log(Level::SEVERE,
+									"ERROR: Receiving distant message from the space" + spaceUIID +
+											"  of the Context " + contextUUID +
+											"but this context does not exist locally")
+							}
+						}
+
+						}
 					var listenerID = topic.addMessageListener(messageListener)
 					topicListenerIDs.put(newTopicName.item, listenerID)
 
@@ -185,8 +217,8 @@ class HazelcastEventTransportService implements EventTransportService {
 
 	def routeEvent(^event : Event, ^space : EventSpace, scope : Scope<? super Address>) : boolean {
 
-		val participants = (^space as AbstractEventSpace).getScopedParticipants(scope)
-		if (participants !== null && participants.size > 0) { // using agent scheme topic naming:  Agent: io.sarl.topics.agent.contextId[36 characters].spaceId[36 characters].agentId[36 characters]
+		//val participants = (^space as AbstractEventSpace).getScopedParticipants(scope)
+		/*if (participants !== null && participants.size > 0) { // using agent scheme topic naming:  Agent: io.sarl.topics.agent.contextId[36 characters].spaceId[36 characters].agentId[36 characters]
 			for (it : participants) {
 				var topicName : String = HAZELCAST_SARL_TOPICS_ROOTWILCARD + "." + AgentName.SCHEME + "." +
 					^space.spaceID.contextID + "." + ^space.spaceID.ID + "." + it.address.UUID
@@ -200,9 +232,26 @@ class HazelcastEventTransportService implements EventTransportService {
 			var spaceTopic : ITopic = this.hazelcastInstance.getTopic(topicName);
 			kernelLogger.log(Level::INFO, "About to emit a network Space message")
 			spaceTopic.publish(^event)
+		 * }
+		 */
+		var topicName : String = HAZELCAST_SARL_TOPICS_ROOTWILCARD + "." + SpaceName.SCHEME + "." +
+			^space.spaceID.contextID + "." + ^space.spaceID.ID
+		var spaceTopic : ITopic<TopicMessage> = this.hazelcastInstance.getTopic(topicName);
+		kernelLogger.log(Level::INFO, "About to emit a network Space message")
+		spaceTopic.publish(new TopicMessage(^event,scope))
+		true
+	}
+
+	static class TopicMessage {
+
+		var transferredEvent : Event
+		var trasnferredScope : Scope<? super Address>
+
+		new(e : Event, s : Scope<? super Address>) {
+			transferredEvent = e
+			trasnferredScope = s
 		}
 
-		true
 	}
 
 }
