@@ -7,17 +7,19 @@ import com.hazelcast.core.HazelcastInstance
 import com.hazelcast.topic.ITopic
 import com.hazelcast.topic.Message
 import com.hazelcast.topic.MessageListener
-import io.sarl.api.naming.name.AgentName
 import io.sarl.api.naming.name.SpaceName
 import io.sarl.lang.core.Address
 import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.Scope
+import io.sarl.lang.core.SpaceID
+import io.sarl.sre.boot.configs.SreConfig
 import io.sarl.sre.services.context.Context
 import io.sarl.sre.services.context.ContextService
 import io.sarl.sre.services.logging.LoggingService
 import io.sarl.sre.spaces.AbstractEventSpace
 import io.sarl.sre.spaces.EventTransportService
+import java.io.Serializable
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import java.util.logging.Level
@@ -70,7 +72,8 @@ class HazelcastEventTransportService implements EventTransportService {
 	public static val HAZELCAST_SARL_TOPICS_ROOTWILCARD = "io.sarl.topics."
 
 	@Inject
-	new(iHazelcastInstance : HazelcastInstance, icontextService : ContextService, logger : LoggingService) {
+	new(iHazelcastInstance : HazelcastInstance, icontextService : ContextService,
+		logger : LoggingService) {
 		contextService = icontextService
 		hazelcastInstance = iHazelcastInstance
 
@@ -79,170 +82,35 @@ class HazelcastEventTransportService implements EventTransportService {
 		topicListenerIDs = new ConcurrentHashMap<String, UUID>();
 		this.availableTopicsName = this.hazelcastInstance.getSet(HAZELCAST_SARL_TOPICS_NAME_SET);
 
-		var itemListener : ItemListener<String> = new ItemListener<String>() {
-
-			def itemAdded(newTopicName : ItemEvent<String>) {
-
-				if (topicListenerIDs.get(newTopicName.item) === null) {
-
-					var topic : ITopic<TopicMessage> = HazelcastEventTransportService.this.hazelcastInstance.getTopic(
-						newTopicName.item)
-
-					var messageListener : MessageListener<TopicMessage>
-
-					/*if (newTopicName.item.startsWith(HAZELCAST_SARL_TOPICS_ROOTWILCARD + AgentName.SCHEME)) {
-						messageListener = new MessageListener<Event>() {
-
-							def onMessage(incomingMessage : Message<Event>) {
-								kernelLogger.log(Level::INFO, "Receiving distant message")
-								// Agent: io.sarl.topics.agent.contextId[36 characters].spaceId[36 characters].agentId[36 characters]
-								var eventToDispatchLocally = incomingMessage.messageObject
-								var contextUIIDString = newTopicName.item.substring(21, 57)
-								var spaceUIIDString = newTopicName.item.substring(58, 94)
-								var agentUIIDString = newTopicName.item.substring(95)
-								var contextUUID : UUID = UUID.fromString(contextUIIDString)
-								var spaceUIID = UUID.fromString(spaceUIIDString)
-								var agentUIID = UUID.fromString(agentUIIDString)
-
-								var context : Context = HazelcastEventTransportService.this.contextService.getContext(
-									contextUUID)
-								// FIXME manage a distributed version of scoped participants providing every single participants over the network
-								if (context !== null) {
-									for (localSpace : context.spaces) {
-										if (localSpace.spaceID.ID === spaceUIID) {
-											kernelLogger.log(Level::INFO,
-												"Receiving distant Agent message from the space" + spaceUIID +
-													"  of the Context " + contextUUID + " for the agent " + agentUIID +
-													"and dispatching this event locally")
-											(localSpace as AbstractEventSpace).emit(eventToDispatchLocally.source.UUID,
-												eventToDispatchLocally)[it.UUID === agentUIID]
-										}
-									}
-								} else {
-									kernelLogger.log(Level::SEVERE,
-										"ERROR: Receiving distant message from the space" + spaceUIID +
-											"  of the Context " + contextUUID + " for the agent " + agentUIID +
-											"but this context does not exist locally")
-								}
-							}
-
-						}
-
-					} else if (newTopicName.item.startsWith(HAZELCAST_SARL_TOPICS_ROOTWILCARD + SpaceName.SCHEME)) {
-						messageListener = new MessageListener<Event>() {
-
-							def onMessage(incomingMessage : Message<Event>) {
-								// Space: io.sarl.topics.space.contextId.spaceId
-								var eventToDispatchLocally = incomingMessage.messageObject
-								var contextUIIDString = newTopicName.item.substring(21, 57)
-								var spaceUIIDString = newTopicName.item.substring(58, 94)
-								var contextUUID : UUID = UUID.fromString(contextUIIDString)
-								var spaceUIID = UUID.fromString(spaceUIIDString)
-
-								var context : Context = HazelcastEventTransportService.this.contextService.getContext(
-									contextUUID)
-								if (context !== null) {
-									for (localSpace : context.spaces) {
-										if (localSpace.spaceID.ID === spaceUIID) {
-											kernelLogger.log(Level::INFO,
-												"Receiving distant Space message from the space" + spaceUIID +
-													"  of the Context " + contextUUID +
-													"and dispatching this event locally")
-											(localSpace as AbstractEventSpace).emit(eventToDispatchLocally.source.UUID,
-												eventToDispatchLocally)
-										}
-									}
-								} else {
-									kernelLogger.log(Level::SEVERE,
-										"ERROR: Receiving distant message from the space" + spaceUIID +
-											"  of the Context " + contextUUID +
-											"but this context does not exist locally")
-								}
-							}
-
-						}
-					 * }
-					 */
-					messageListener = new MessageListener<TopicMessage>() {
-
-						def onMessage(incomingMessage : Message<TopicMessage>) {
-							// Space: io.sarl.topics.space.contextId.spaceId
-							var eventToDispatchLocally = incomingMessage.messageObject.transferredEvent
-							var contextUIIDString = newTopicName.item.substring(21, 57)
-							var spaceUIIDString = newTopicName.item.substring(58, 94)
-							var contextUUID : UUID = UUID.fromString(contextUIIDString)
-							var spaceUIID = UUID.fromString(spaceUIIDString)
-
-							var context : Context = HazelcastEventTransportService.this.contextService.getContext(
-								contextUUID)
-							if (context !== null) {
-								for (localSpace : context.spaces) {
-									if (localSpace.spaceID.ID === spaceUIID) {
-										kernelLogger.log(Level::INFO,
-												"Receiving distant Space message from the space" + spaceUIID +
-											"  of the Context " + contextUUID + "and dispatching this event locally")
-										(localSpace as AbstractEventSpace).emit(eventToDispatchLocally.source.UUID,
-											eventToDispatchLocally,
-											incomingMessage.messageObject.trasnferredScope as Scope<Address>)
-									}
-								}
-							} else {
-								kernelLogger.log(Level::SEVERE,
-									"ERROR: Receiving distant message from the space" + spaceUIID +
-											"  of the Context " + contextUUID +
-											"but this context does not exist locally")
-							}
-						}
-
-						}
-					var listenerID = topic.addMessageListener(messageListener)
-					topicListenerIDs.put(newTopicName.item, listenerID)
-
-				}
-			}
-
-			def itemRemoved(removedTopicName : ItemEvent<String>) {
-				var topic : ITopic<Event> = HazelcastEventTransportService.this.hazelcastInstance.getTopic(
-					removedTopicName.item)
-				var existingListenerID = topicListenerIDs.get(removedTopicName.item)
-				topic.removeMessageListener(existingListenerID)
-				topicListenerIDs.remove(existingListenerID)
-
-			}
-
-		}
-		availableTopicsName.addItemListener(itemListener, true)
-
+		availableTopicsName.addItemListener(new TopicNameListener(this.kernelLogger,this.hazelcastInstance,this.topicListenerIDs,this.contextService), true)
+		
+		// Registering topic for the defaultSpace of defaultContext		
+		var defaultSpaceRootContextTopicName : String = getTopicNameFromSpaceID(icontextService.rootContext.defaultSpace.spaceID)
+		this.availableTopicsName.add(defaultSpaceRootContextTopicName)
+		var defaultSpaceRootContextTopic : ITopic<TopicMessage> = this.hazelcastInstance.getReliableTopic(
+			defaultSpaceRootContextTopicName); // useful to ensure initialization of the topic before sending message
+		var listenerID = defaultSpaceRootContextTopic.addMessageListener(
+			new TopicMessageListener(this.kernelLogger, defaultSpaceRootContextTopicName, contextService))
+		topicListenerIDs.put(defaultSpaceRootContextTopicName, listenerID)
+		
 	}
 
 	def routeEvent(^event : Event, ^space : EventSpace, scope : Scope<? super Address>) : boolean {
-
-		//val participants = (^space as AbstractEventSpace).getScopedParticipants(scope)
-		/*if (participants !== null && participants.size > 0) { // using agent scheme topic naming:  Agent: io.sarl.topics.agent.contextId[36 characters].spaceId[36 characters].agentId[36 characters]
-			for (it : participants) {
-				var topicName : String = HAZELCAST_SARL_TOPICS_ROOTWILCARD + "." + AgentName.SCHEME + "." +
-					^space.spaceID.contextID + "." + ^space.spaceID.ID + "." + it.address.UUID
-				var agentTopic : ITopic = this.hazelcastInstance.getTopic(topicName);
-				kernelLogger.log(Level::INFO, "About to emit a network Agent message")
-				agentTopic.publish(^event)
-			}
-		} else { // using space scheme topic naming: Space: io.sarl.topics.space.contextId.spaceId
-			var topicName : String = HAZELCAST_SARL_TOPICS_ROOTWILCARD + "." + SpaceName.SCHEME + "." +
-				^space.spaceID.contextID + "." + ^space.spaceID.ID
-			var spaceTopic : ITopic = this.hazelcastInstance.getTopic(topicName);
-			kernelLogger.log(Level::INFO, "About to emit a network Space message")
-			spaceTopic.publish(^event)
-		 * }
-		 */
-		var topicName : String = HAZELCAST_SARL_TOPICS_ROOTWILCARD + "." + SpaceName.SCHEME + "." +
-			^space.spaceID.contextID + "." + ^space.spaceID.ID
-		var spaceTopic : ITopic<TopicMessage> = this.hazelcastInstance.getTopic(topicName);
-		kernelLogger.log(Level::INFO, "About to emit a network Space message")
-		spaceTopic.publish(new TopicMessage(^event,scope))
+		// FIXME Extract topic name creation in a dedicated function
+		var topicName : String = getTopicNameFromSpaceID(^space.spaceID)
+		var spaceTopic : ITopic<TopicMessage> = this.hazelcastInstance.getReliableTopic(topicName);
+		kernelLogger.log(Level::INFO,
+			"About to publish a network message (type="+^event.class+") on space " + ^space.spaceID.ID + " in the context " +
+				^space.spaceID.contextID + " using the topic named " + topicName)
+		spaceTopic.publish(new TopicMessage(^event, scope))
 		true
 	}
 
-	static class TopicMessage {
+	static def getTopicNameFromSpaceID(spaceID : SpaceID) : String {
+		(HAZELCAST_SARL_TOPICS_ROOTWILCARD + SpaceName.SCHEME + "." + spaceID.contextID + "." + spaceID.ID)		
+	}
+
+	static class TopicMessage implements Serializable {
 
 		var transferredEvent : Event
 		var trasnferredScope : Scope<? super Address>
@@ -250,6 +118,109 @@ class HazelcastEventTransportService implements EventTransportService {
 		new(e : Event, s : Scope<? super Address>) {
 			transferredEvent = e
 			trasnferredScope = s
+		}
+
+	}
+
+	static class TopicNameListener implements ItemListener<String> {
+
+		/** 
+		 * SRE Kernel logger
+		 */
+		var kernelLogger : Logger;
+
+		/** 
+		 * Local Hazelcast instance
+		 */
+		var hazelcastInstance : HazelcastInstance;
+
+		/** 
+		 * Map associating to each locally defined topic its corresponding listener ID
+		 */
+		var topicListenerIDs : ConcurrentHashMap<String, UUID>
+
+		/** 
+		 * ContextService used to check if the enclosing context exists when creating a new local space according to netwrok space creation event
+		 */
+		var contextService : ContextService
+
+		new(logger : Logger, hzl : HazelcastInstance, itopicListenerIDs : ConcurrentHashMap<String, UUID>,
+			icontextService : ContextService) {
+			kernelLogger = logger
+			hazelcastInstance = hzl
+			topicListenerIDs = itopicListenerIDs
+			contextService=icontextService
+		}
+
+		def itemAdded(newTopicName : ItemEvent<String>) {
+			kernelLogger.log(Level::INFO,
+				"HazelcastEventTransportService: New space topic created with the following name" + newTopicName.item)
+
+			if (!topicListenerIDs.containsKey(newTopicName.item)) {
+				kernelLogger.log(Level::INFO,
+					"HazelcastEventTransportService: Adding listener for the following space" + newTopicName.item)
+				var topic : ITopic<TopicMessage> = this.hazelcastInstance.getReliableTopic(newTopicName.item)
+				var listenerID = topic.addMessageListener(new TopicMessageListener(this.kernelLogger,newTopicName.item,contextService))
+				topicListenerIDs.put(newTopicName.item, listenerID)
+			}
+		}
+
+		def itemRemoved(removedTopicName : ItemEvent<String>) {			
+			kernelLogger.log(Level::INFO,
+				"HazelcastEventTransportService: Existing space topic removed with the following name" + removedTopicName.item)
+			var topic : ITopic<Event> = this.hazelcastInstance.getReliableTopic(removedTopicName.item)
+			var existingListenerID = topicListenerIDs.get(removedTopicName.item)
+			topic.removeMessageListener(existingListenerID)
+			topicListenerIDs.remove(existingListenerID)
+
+		}
+
+	}
+
+	static class TopicMessageListener implements MessageListener<TopicMessage> {
+
+		/** 
+		 * SRE Kernel logger
+		 */
+		var kernelLogger : Logger;
+		
+		var listenTopicName : String
+
+		/** 
+		 * ContextService used to check if the enclosing context exists when creating a new local space according to netwrok space creation event
+		 */
+		var contextService : ContextService
+
+		new(logger : Logger, topicName : String, icontextService : ContextService) {
+			kernelLogger = logger;
+			listenTopicName = topicName
+			contextService = icontextService
+		}
+
+		def onMessage(incomingMessage : Message<TopicMessage>) {
+			// Space: io.sarl.topics.space.contextId.spaceId
+			var eventToDispatchLocally = incomingMessage.messageObject.transferredEvent
+			var contextUIIDString = listenTopicName.substring(21, 57)
+			var spaceUIIDString = listenTopicName.substring(58, 94)
+			var contextUUID : UUID = UUID.fromString(contextUIIDString)
+			var spaceUIID = UUID.fromString(spaceUIIDString)
+
+			var context : Context = contextService.getContext(contextUUID)
+			if (context !== null) {
+				for (localSpace : context.spaces) {
+					if (localSpace.spaceID.ID === spaceUIID) {
+						kernelLogger.log(Level::INFO,
+							"Receiving distant Space message from the space" + spaceUIID + "  of the Context " +
+								contextUUID + "and dispatching this event locally")
+						(localSpace as AbstractEventSpace).emit(eventToDispatchLocally.source.UUID,
+							eventToDispatchLocally, incomingMessage.messageObject.trasnferredScope as Scope<Address>)
+					}
+				}
+			} else {
+				kernelLogger.log(Level::SEVERE,
+					"ERROR: Receiving distant message from the space" + spaceUIID + "  of the Context " + contextUUID +
+						"but this context does not exist locally")
+			}
 		}
 
 	}

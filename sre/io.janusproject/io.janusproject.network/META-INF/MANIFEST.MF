@@ -4,8 +4,7 @@ Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: io.janusproject.network;singleton:=true
 Bundle-Version: 0.12.0.qualifier
 Bundle-Vendor: %Bundle-Vendor
-Export-Package: io.sarl.sre.network,
- io.sarl.sre.network.boot,
+Export-Package: io.sarl.sre.network.boot,
  io.sarl.sre.network.services
 Require-Bundle: io.sarl.core;bundle-version="0.12.0",
  io.sarl.util;bundle-version="0.12.0",
