@@ -42,6 +42,11 @@
 			<version>${sarl.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.shared</groupId>
+			<artifactId>maven-verifier</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

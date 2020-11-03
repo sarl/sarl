@@ -34,6 +34,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.Iterator;
@@ -50,6 +51,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import com.google.inject.Injector;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.arakhne.afc.vmutil.ClasspathUtil;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.eclipse.xtext.diagnostics.Severity;
@@ -182,7 +185,7 @@ public final class ExamplesTestUtils {
 				description.sourceFolder = projectSourceFolder;
 				list.add(description);
 			}
-	
+
 			ARCHIVE_BUFFER = list;
 		}
 		return Collections.unmodifiableList(ARCHIVE_BUFFER);
@@ -273,11 +276,31 @@ public final class ExamplesTestUtils {
 		}
 	}
 
+	/** Build a string representation of a folder, recursively.
+	 *
+	 * @param file the root file.
+	 * @return the string representation
+	 * @since 0.12
+	 */
+	public static String buildFolderTree(File root) {
+		final Collection<File> files = FileUtils.listFilesAndDirs(root,
+				TrueFileFilter.INSTANCE,
+				TrueFileFilter.INSTANCE);
+		final StringBuilder str = new StringBuilder();
+		for (final File file : files) {
+			str.append(file.getAbsolutePath());
+			str.append("\n"); //$NON-NLS-2$
+		}
+		return str.toString();
+	}
+
 	/** Assert file exists.
 	 *
 	 * @param file the file to test.
+	 * @param root the root file.
+	 * @since 0.12
 	 */
-	public static void assertFile(File file) {
+	public static void assertFile(File file, File root) {
 		assertNotNull(file, "The filename cannot be null");
 		if (!file.exists()) {
 			File parent = file.getParentFile();
@@ -288,13 +311,16 @@ public final class ExamplesTestUtils {
 			}
 			for (final File lparent : parents) {
 				if (!lparent.exists()) {
-					fail("Parent folder not found: " + lparent.getAbsolutePath() + "\nFor file: " + file.getAbsolutePath());
+					fail("Parent folder not found: " + lparent.getAbsolutePath()
+						+ "\nFor file: " + file.getAbsolutePath()
+						+ "\nTree:\n" + buildFolderTree(root));
 					return;
 				}
 			}
 			fail("File not found: " + file.getAbsolutePath()
 					+ "\nSibling files are: "
-					+ Strings.concat("\n", Arrays.asList(file.getParentFile().list())));
+					+ Strings.concat("\n", Arrays.asList(file.getParentFile().list()))
+					+ "\nTree:\n" + buildFolderTree(root));
 		}
 	}
 
@@ -326,6 +352,25 @@ public final class ExamplesTestUtils {
 			}
 		}
 	}
+
+	/** Search the given command on the operating system path.
+	 *
+	 * @param command the command to search for.
+	 * @return the command path.
+	 * @since 0.12
+	 */
+	public static String whichCommand(String command) {
+		String paths = System.getenv("PATH");
+		if (!Strings.isEmpty(paths)) {
+			for (final String path : paths.split(Pattern.quote(File.pathSeparator))) {
+				final File exec = FileSystem.join(FileSystem.convertStringToFile(path), command);
+				if (exec != null && exec.canExecute()) {
+					return exec.getAbsolutePath();
+				}
+			}
+		}
+		return command;
+	}
 	
 	/** Compile the given project with the standard maven tool.
 	 *
@@ -344,14 +389,20 @@ public final class ExamplesTestUtils {
 		compiledFile.createNewFile();
 		
 		final String[] command = new String[] {
-				MAVEN_COMMAND, "-q", "clean", "package"
+				whichCommand(MAVEN_COMMAND), "-q", "clean", "package"
 		};
-		// TODO Remove this definition when moving to JAva 9 or higher (because JavaFX is mavenized)
-		final String[] environmentVariables = new String[] {
+		final ProcessBuilder processBuilder = new ProcessBuilder(command);
+		processBuilder.directory(root);
+		// TODO Remove this definition when moving to Java 9 or higher (because JavaFX is mavenized)
+		processBuilder.environment().put(
+				"OPENJFX_LIB_PATH", DEFAULT_JAVAFX_PATH);
+		final Process p = processBuilder.start();
+		p.waitFor();
+		/*final String[] environmentVariables = new String[] {
 				"OPENJFX_LIB_PATH=" + DEFAULT_JAVAFX_PATH,
 		};
 		final Process p = Runtime.getRuntime().exec(command, environmentVariables, root);
-		p.waitFor();
+		p.waitFor();*/
 		final StringBuilder output = new StringBuilder();
 		output.append("Exit code: ").append(p.exitValue()).append("\n");
 		final BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
