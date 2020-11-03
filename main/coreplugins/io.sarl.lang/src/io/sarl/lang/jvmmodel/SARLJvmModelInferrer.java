@@ -108,6 +108,7 @@ import org.eclipse.xtext.linking.ILinker;
 import org.eclipse.xtext.xbase.XAssignment;
 import org.eclipse.xtext.xbase.XBlockExpression;
 import org.eclipse.xtext.xbase.XBooleanLiteral;
+import org.eclipse.xtext.xbase.XConstructorCall;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.XVariableDeclaration;
 import org.eclipse.xtext.xbase.compiler.GeneratorConfig;
@@ -847,7 +848,14 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 		try {
 			final JvmGenericType inferredJvmType = this.typesFactory.createJvmGenericType();
 			inferredJvmType.setSimpleName(localClassName);
-			inferredJvmType.setAnonymous(!hasAdditionalMembers(anonymousClass));
+			// --- End Xtend Part
+
+			// Issue #1028: Force the "isAnonymous" flag because the capabilities of the Java compiler enables.
+			final boolean isAnonymous = container instanceof JvmConstructor
+					|| !hasAdditionalMembers(anonymousClass);
+			inferredJvmType.setAnonymous(isAnonymous);
+
+			// --- Begin Xtend Part
 			inferredJvmType.setFinal(true);
 			setVisibility(inferredJvmType, anonymousClass);
 			inferredJvmType.getSuperTypes().add(this.typeBuilder.inferredType(anonymousClass));
@@ -878,6 +886,13 @@ public class SARLJvmModelInferrer extends XtendJvmModelInferrer {
 						anonymousClass,
 						inferredJvmType,
 						context);
+
+				// --- Begin Xtend Part
+				final XConstructorCall constructorCall = anonymousClass.getConstructorCall();
+				for (final XExpression actualParameter : constructorCall.getArguments()) {
+					this.associator.associateLogicalContainer(actualParameter, container);
+				}
+				// --- End Xtend Part
 			} finally {
 				closeContext(context);
 			}
