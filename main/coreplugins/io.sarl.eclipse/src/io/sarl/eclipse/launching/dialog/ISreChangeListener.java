@@ -32,7 +32,7 @@ import io.sarl.eclipse.runtime.ISREInstall;
  * @mavenartifactid $ArtifactId$
  * @since 0.11
  */
-interface ISreChangeListener {
+public interface ISreChangeListener {
 
 	/** Invoked when the SRE has changed.
 	 *

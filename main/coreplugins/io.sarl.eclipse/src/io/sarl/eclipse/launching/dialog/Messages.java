@@ -41,7 +41,6 @@ public class Messages extends NLS {
 	public static String MainLaunchConfigurationTab_12;
 	public static String MainLaunchConfigurationTab_13;
 	public static String MainLaunchConfigurationTab_15;
-	public static String MainLaunchConfigurationTab_16;
 	public static String MainLaunchConfigurationTab_2;
 	public static String MainLaunchConfigurationTab_3;
 	public static String MainLaunchConfigurationTab_4;

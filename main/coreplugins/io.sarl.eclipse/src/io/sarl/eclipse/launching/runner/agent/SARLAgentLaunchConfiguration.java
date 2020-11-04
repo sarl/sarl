@@ -93,12 +93,6 @@ public class SARLAgentLaunchConfiguration extends AbstractSARLLaunchConfiguratio
 			options = join(options, cliOptions.get(SRECommandLineOptions.CLI_HIDE_INFO));
 		}
 
-		if (getConfigurationAccessor().getOfflineFlag(configuration)) {
-			options = join(options, cliOptions.get(SRECommandLineOptions.CLI_SRE_OFFLINE));
-		} else {
-			options = join(options, cliOptions.get(SRECommandLineOptions.CLI_SRE_ONLINE));
-		}
-
 		final RootContextIdentifierType type = getConfigurationAccessor().getDefaultContextIdentifier(configuration);
 		switch (type) {
 		case RANDOM_CONTEXT_ID:

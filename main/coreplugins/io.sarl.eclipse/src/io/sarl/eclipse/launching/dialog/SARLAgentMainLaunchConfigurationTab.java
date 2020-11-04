@@ -97,8 +97,6 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 
 	private Button showLogInfoButton;
 
-	private Button offlineButton;
-
 	private Button runInEclipseButton;
 
 	private Button enableAssertionsInDebugModeButton;
@@ -134,12 +132,6 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 			final String warnOpt = options.getOrDefault(SRECommandLineOptions.CLI_HIDE_INFO, NO_OPT);
 			this.showLogInfoButton.setText(MessageFormat.format(Messages.MainLaunchConfigurationTab_15, infoOpt, warnOpt));
 			this.showLogInfoButton.setEnabled(!Objects.equals(infoOpt, NO_OPT));
-		}
-		if (this.offlineButton != null) {
-			final String offlineOpt = options.getOrDefault(SRECommandLineOptions.CLI_SRE_OFFLINE, NO_OPT);
-			final String onlineOpt = options.getOrDefault(SRECommandLineOptions.CLI_SRE_ONLINE, NO_OPT);
-			this.offlineButton.setText(MessageFormat.format(Messages.MainLaunchConfigurationTab_16, offlineOpt, onlineOpt));
-			this.offlineButton.setEnabled(!Objects.equals(offlineOpt, NO_OPT));
 		}
 		if (this.defaultContextIdentifierButton != null) {
 			final String opt = options.getOrDefault(SRECommandLineOptions.CLI_DEFAULT_CONTEXT_ID, NO_OPT);
@@ -265,8 +257,6 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 		final Group group = SWTFactory.createGroup(parent, text, 1, 1, GridData.FILL_HORIZONTAL);
 		this.showLogInfoButton = createCheckButton(group, MessageFormat.format(Messages.MainLaunchConfigurationTab_15, NO_OPT));
 		this.showLogInfoButton.addSelectionListener(this.defaultListener);
-		this.offlineButton = createCheckButton(group, MessageFormat.format(Messages.MainLaunchConfigurationTab_16, NO_OPT));
-		this.offlineButton.addSelectionListener(this.defaultListener);
 		this.enableAssertionsInRunModeButton = createCheckButton(group, Messages.SARLMainLaunchConfigurationTab_2);
 		this.enableAssertionsInRunModeButton.addSelectionListener(this.defaultListener);
 		this.enableAssertionsInDebugModeButton = createCheckButton(group, Messages.SARLMainLaunchConfigurationTab_1);
@@ -312,12 +302,10 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	 */
 	protected void updateLaunchOptionsFromConfig(ILaunchConfiguration config) {
 		final boolean showLogInfo = this.accessor.getShowLogInfoFlag(config);
-		final boolean offline = this.accessor.getOfflineFlag(config);
 		final boolean runInEclipse = this.accessor.isEmbeddedSRE(config);
 		final boolean enableAssertionsRun = this.accessor.isAssertionEnabledInRunMode(config);
 		final boolean enableAssertionsDebug = this.accessor.isAssertionEnabledInDebugMode(config);
 		this.showLogInfoButton.setSelection(showLogInfo);
-		this.offlineButton.setSelection(offline);
 		this.enableAssertionsInRunModeButton.setSelection(enableAssertionsRun);
 		this.enableAssertionsInDebugModeButton.setSelection(enableAssertionsDebug);
 		this.runInEclipseButton.setSelection(runInEclipse);
@@ -426,8 +414,7 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 		this.configurator.setAgent(config, Strings.emptyToNull(this.agentNameTextField.getText().trim()));
 		this.configurator.setDefaultContextIdentifier(config, getSelectedContextIdentifierType());
 		this.configurator.setLaunchingFlags(config,
-				this.showLogInfoButton.getSelection(),
-				this.offlineButton.getSelection());
+				this.showLogInfoButton.getSelection());
 		this.configurator.setAssertionEnabledInRunMode(config, this.enableAssertionsInRunModeButton.getSelection());
 		this.configurator.setAssertionEnabledInDebugMode(config, this.enableAssertionsInDebugModeButton.getSelection());
 		this.configurator.setEmbeddedSRE(config, this.runInEclipseButton.getSelection());
@@ -462,7 +449,7 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	 * @param config the config to set with the launch options.
 	 */
 	protected void initializeLaunchOptions(ILaunchConfigurationWorkingCopy config) {
-		this.configurator.setLaunchingFlags(config, null, null);
+		this.configurator.setLaunchingFlags(config, null);
 	}
 
 	private String extractNameFromJavaElement(final IJavaElement javaElement) {

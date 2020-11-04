@@ -154,6 +154,12 @@ public final class SARLEclipseConfig {
 	 */
 	public static final String SUBMIT_ISSUE_WIZARD_DIALOG_IMAGE = "icons/sarl_submit_issue_dialog.png"; //$NON-NLS-1$
 
+	/**
+	 * Name of the extension points for the factory of launch configuration panels.
+	 * (value <code>"sarlLaunchConfigurationPanels"</code>).
+	 */
+	public static final String EXTENSION_POINT_LAUNCH_CONFIGURATION_PANEL_FACTORY = "sarlLaunchConfigurationPanels"; //$NON-NLS-1$
+
 	private SARLEclipseConfig() {
 		//
 	}

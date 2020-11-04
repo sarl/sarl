@@ -86,13 +86,6 @@ public interface ILaunchConfigurationAccessor {
 	 */
 	boolean getShowLogInfoFlag(ILaunchConfiguration configuration);
 
-	/** Replies if the SRE should be run offline.
-	 *
-	 * @param configuration the configuration.
-	 * @return <code>true</code> if the SRE should be run offline.
-	 */
-	boolean getOfflineFlag(ILaunchConfiguration configuration);
-
 	/** Replies the name of the project attached to the configuration.
 	 *
 	 * @param configuration the configuration.

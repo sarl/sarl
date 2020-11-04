@@ -71,12 +71,6 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	public static final String ATTR_SHOW_LOG_INFO = SARLEclipsePlugin.PLUGIN_ID + ".SHOW_LOG_INFO"; //$NON-NLS-1$
 
 	/**
-	 * Launch configuration attribute key. The value indicates if the SRE should be
-	 * launched offline.
-	 */
-	public static final String ATTR_SRE_OFFLINE = SARLEclipsePlugin.PLUGIN_ID + ".SRE_OFFLINE"; //$NON-NLS-1$
-
-	/**
 	 * Launch configuration attribute key. The value is the identifier of the SRE;
 	 */
 	public static final String ATTR_SARL_RUNTIME_ENVIRONMENT = SARLEclipsePlugin.PLUGIN_ID
@@ -129,8 +123,6 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	public static final String SARL_APPLICATION_LAUNCH_CONFIG_TYPE = "io.sarl.eclipse.debug.ApplicationLaunchConfigType"; //$NON-NLS-1$
 
 	private static final boolean DEFAULT_SHOW_LOG_INFO = true;
-
-	private static final boolean DEFAULT_OFFLINE = true;
 
 	private static final boolean DEFAULT_USE_SYSTEM_SRE = true;
 
@@ -216,7 +208,7 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 		final ILaunchConfigurationWorkingCopy wc = configType.newInstance(null, launchManager.generateLaunchConfigurationName(id));
 		setProjectName(wc, projectName);
 		setDefaultContextIdentifier(wc, null);
-		setLaunchingFlags(wc, DEFAULT_SHOW_LOG_INFO, DEFAULT_OFFLINE);
+		setLaunchingFlags(wc, DEFAULT_SHOW_LOG_INFO);
 		setRuntimeConfiguration(wc, SARLRuntime.getDefaultSREInstall(), DEFAULT_USE_SYSTEM_SRE, DEFAULT_USE_PROJECT_SRE, resetJavaMainClass);
 		JavaMigrationDelegate.updateResourceMapping(wc);
 		return wc;
@@ -285,12 +277,9 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	}
 
 	@Override
-	public void setLaunchingFlags(ILaunchConfigurationWorkingCopy configuration, Boolean showLogInfo,
-			Boolean offline) {
+	public void setLaunchingFlags(ILaunchConfigurationWorkingCopy configuration, Boolean showLogInfo) {
 		configuration.setAttribute(ATTR_SHOW_LOG_INFO,
 				showLogInfo == null ? DEFAULT_SHOW_LOG_INFO : showLogInfo.booleanValue());
-		configuration.setAttribute(ATTR_SRE_OFFLINE,
-				offline == null ? DEFAULT_OFFLINE : offline.booleanValue());
 	}
 
 	@Override
@@ -384,15 +373,6 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 			return configuration.getAttribute(ATTR_SHOW_LOG_INFO, DEFAULT_SHOW_LOG_INFO);
 		} catch (CoreException e) {
 			return DEFAULT_SHOW_LOG_INFO;
-		}
-	}
-
-	@Override
-	public boolean getOfflineFlag(ILaunchConfiguration configuration) {
-		try {
-			return configuration.getAttribute(ATTR_SRE_OFFLINE, DEFAULT_OFFLINE);
-		} catch (CoreException e) {
-			return DEFAULT_OFFLINE;
 		}
 	}
 

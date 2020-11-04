@@ -21,32 +21,37 @@
 
 package io.sarl.eclipse.launching.dialog;
 
+import java.util.List;
+
 import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 
 /**
- * Tab group object for configuration the run of an agent.
+ * Interface that is implemented a factory of launch configurations panels dedicated to SARL.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 0.12
  */
-public class SARLAgentLaunchConfigurationTabGroup extends AbstractSARLLaunchConfigurationTabGroup {
+public interface ISarlLaunchConfigurationPanelFactory {
 
-	@Override
-	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
-		final ILaunchConfigurationTab[] tabs = buildTabList(dialog, mode, list -> {
-			final SARLAgentMainLaunchConfigurationTab mainTab = new SARLAgentMainLaunchConfigurationTab();
-			final SARLRuntimeEnvironmentTab sreTab = new SARLRuntimeEnvironmentTab(true);
-			sreTab.addSreChangeListener(mainTab);
-			// Add before the dynamically provided panels
-			list.add(0, mainTab);
-			list.add(1, new SARLArgumentsTab());
-			list.add(2, sreTab);
-			return true;
-		});
-		setTabs(tabs);
+	/** Create the instance of the launch configuration panel.
+	 *
+	 * @return the instance.
+	 */
+	ILaunchConfigurationTab newLaunchConfigurationPanel();
+
+	/** Determine if the panel should be created with {@link #newLaunchConfigurationPanel()}.
+	 *
+	 * @param dialog the launch configuration panel.
+	 * @param mode the running mode.
+	 * @param list the list of panels that were already created.
+	 * @return {@code true} if the launch configuration panel should be created.
+	 */
+	default boolean canCreatePanel(ILaunchConfigurationDialog dialog, String mode, List<ILaunchConfigurationTab> list) {
+		return true;
 	}
 
 }

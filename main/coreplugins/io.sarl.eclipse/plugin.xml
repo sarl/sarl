@@ -487,6 +487,7 @@
    <extension-point id="sreInstallations" name="%sreInstallations" schema="schema/sreInstallations.exsd"/>
    <extension-point id="sreInstallPages" name="%sreInstallPages" schema="schema/sreInstallPages.exsd"/>
    <extension-point id="projectSREProviderFactory" name="%projectSREProviderFactory" schema="schema/projectSREProviderFactory.exsd"/>
+   <extension-point id="sarlLaunchConfigurationPanels" name="%sarlLaunchConfigurationPanels" schema="schema/sarlLaunchConfigurationPanels.exsd"/>
    
   <!-- Project configurators -->
    <extension

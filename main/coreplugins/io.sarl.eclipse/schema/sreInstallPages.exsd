@@ -6,7 +6,7 @@
          <meta.schema plugin="io.sarl.eclipse" id="sreInstallPages" name="%sreInstallPages"/>
       </appInfo>
       <documentation>
-         Provide the a page for the configuration wizard of SREs.
+         Provide a page for the configuration wizard of SREs.
       </documentation>
    </annotation>
 
@@ -113,7 +113,7 @@
          <meta.section type="copyright"/>
       </appInfo>
       <documentation>
-         Copyright 2014-2015 the original authors and authors.
+         Copyright 2014-2020 the original authors and authors.
 
 Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
 you may not use this file except in compliance with the License.

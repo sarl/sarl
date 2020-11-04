@@ -53,14 +53,6 @@ public final class SRECommandLineOptions {
 	 */
 	public static final String CLI_BOOT_AGENT_CONTEXT_ID = "CLI-BootAgent-Context-ID"; //$NON-NLS-1$
 
-	/** Field name for CLI option for launching the SRE offline.
-	 */
-	public static final String CLI_SRE_OFFLINE = "CLI-Offline"; //$NON-NLS-1$
-
-	/** Field name for CLI option for launching the SRE online.
-	 */
-	public static final String CLI_SRE_ONLINE = "CLI-Online"; //$NON-NLS-1$
-
 	/** Field name for CLI option that disabling options.
 	 */
 	public static final String CLI_NO_MORE_OPTION = "CLI-No-More-Option"; //$NON-NLS-1$

@@ -156,10 +156,8 @@ public interface ILaunchConfigurationConfigurator {
 	 *
 	 * @param configuration the configuration to change.
 	 * @param showLogInfo indicates if informations are logged or only errors. If null, the default is used.
-	 * @param offline indicates if the SRE is supposed to be run offline. If null, the default is used.
 	 */
-	void setLaunchingFlags(ILaunchConfigurationWorkingCopy configuration, Boolean showLogInfo,
-			Boolean offline);
+	void setLaunchingFlags(ILaunchConfigurationWorkingCopy configuration, Boolean showLogInfo);
 
 	/** Change the name of the project associated to the launch configuration.
 	 *

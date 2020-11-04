@@ -21,11 +21,8 @@
 
 package io.sarl.eclipse.launching.dialog;
 
-import org.eclipse.debug.ui.CommonTab;
-import org.eclipse.debug.ui.EnvironmentTab;
 import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
-import org.eclipse.debug.ui.sourcelookup.SourceLookupTab;
 import org.eclipse.jdt.debug.ui.launchConfigurations.JavaArgumentsTab;
 
 /**
@@ -41,18 +38,16 @@ public class SARLApplicationLaunchConfigurationTabGroup extends AbstractSARLLaun
 
 	@Override
 	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
-		final SARLApplicationMainLaunchConfigurationTab mainTab = new SARLApplicationMainLaunchConfigurationTab();
-		final SARLRuntimeEnvironmentTab sreTab = new SARLRuntimeEnvironmentTab(false);
-		sreTab.addSreChangeListener(mainTab);
-		final ILaunchConfigurationTab[] tabs = new ILaunchConfigurationTab[] {
-			mainTab,
-			new JavaArgumentsTab(),
-			sreTab,
-			getClasspathTab(dialog),
-			new SourceLookupTab(),
-			new EnvironmentTab(),
-			new CommonTab(),
-		};
+		final ILaunchConfigurationTab[] tabs = buildTabList(dialog, mode, list -> {
+			final SARLApplicationMainLaunchConfigurationTab mainTab = new SARLApplicationMainLaunchConfigurationTab();
+			final SARLRuntimeEnvironmentTab sreTab = new SARLRuntimeEnvironmentTab(false);
+			sreTab.addSreChangeListener(mainTab);
+			// Add before the dynamically provided panels
+			list.add(0, mainTab);
+			list.add(1, new JavaArgumentsTab());
+			list.add(2, sreTab);
+			return true;
+		});
 		setTabs(tabs);
 	}
 

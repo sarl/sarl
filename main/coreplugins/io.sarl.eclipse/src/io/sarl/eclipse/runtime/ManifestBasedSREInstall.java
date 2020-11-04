@@ -108,10 +108,6 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 
 	private String cliBootAgentContextID;
 
-	private String cliSreOffline;
-
-	private String cliSreOnline;
-
 	private String cliNoMoreOption;
 
 	private String cliEmbedded;
@@ -267,8 +263,6 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 				this.cliDefaultContextID = sarlSection.getValue(SRECommandLineOptions.CLI_DEFAULT_CONTEXT_ID);
 				this.cliRandomContextID = sarlSection.getValue(SRECommandLineOptions.CLI_RANDOM_CONTEXT_ID);
 				this.cliBootAgentContextID = sarlSection.getValue(SRECommandLineOptions.CLI_BOOT_AGENT_CONTEXT_ID);
-				this.cliSreOffline = sarlSection.getValue(SRECommandLineOptions.CLI_SRE_OFFLINE);
-				this.cliSreOnline = sarlSection.getValue(SRECommandLineOptions.CLI_SRE_ONLINE);
 				this.cliNoMoreOption = sarlSection.getValue(SRECommandLineOptions.CLI_NO_MORE_OPTION);
 				this.cliEmbedded = sarlSection.getValue(SRECommandLineOptions.CLI_EMBEDDED);
 				//
@@ -551,8 +545,6 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 			putIfNotempty(options, SRECommandLineOptions.CLI_DEFAULT_CONTEXT_ID, this.cliDefaultContextID);
 			putIfNotempty(options, SRECommandLineOptions.CLI_RANDOM_CONTEXT_ID, this.cliRandomContextID);
 			putIfNotempty(options, SRECommandLineOptions.CLI_BOOT_AGENT_CONTEXT_ID, this.cliBootAgentContextID);
-			putIfNotempty(options, SRECommandLineOptions.CLI_SRE_OFFLINE, this.cliSreOffline);
-			putIfNotempty(options, SRECommandLineOptions.CLI_SRE_ONLINE, this.cliSreOnline);
 			putIfNotempty(options, SRECommandLineOptions.CLI_NO_MORE_OPTION, this.cliNoMoreOption);
 			putIfNotempty(options, SRECommandLineOptions.CLI_EMBEDDED, this.cliEmbedded);
 			this.optionBuffer = new SoftReference<>(options);
