@@ -208,7 +208,7 @@ class HazelcastEventTransportService implements EventTransportService {
 			var context : Context = contextService.getContext(contextUUID)
 			if (context !== null) {
 				for (localSpace : context.spaces) {
-					if (localSpace.spaceID.ID === spaceUIID) {
+					if (localSpace.spaceID.ID.equals(spaceUIID)) {
 						kernelLogger.log(Level::INFO,
 							"Receiving distant Space message from the space" + spaceUIID + "  of the Context " +
 								contextUUID + "and dispatching this event locally")
