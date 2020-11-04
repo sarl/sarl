@@ -21,26 +21,24 @@
 
 package io.sarl.sre.eclipse.network;
 
-import org.eclipse.osgi.util.NLS;
+import org.eclipse.debug.ui.ILaunchConfigurationTab;
 
-/** Localized Messages.
+import io.sarl.eclipse.launching.dialog.ISarlLaunchConfigurationPanelFactory;
+
+/**
+ * Provider of the launch configuration panel for the Janus network.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @ExcludeFromApidoc
+ * @since 0.12
  */
-@SuppressWarnings("all")
-public class Messages extends NLS {
-	private static final String BUNDLE_NAME = Messages.class.getPackage().getName() + ".messages"; //$NON-NLS-1$
-	public static String JanusLaunchNetworkTab_0;
-	public static String JanusLaunchNetworkTab_1;
-	static {
-		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+public class JanusLaunchNetworkTabFactory implements ISarlLaunchConfigurationPanelFactory {
+
+	@Override
+	public ILaunchConfigurationTab newLaunchConfigurationPanel() {
+		return new JanusLaunchNetworkTab();
 	}
 
-	private Messages() {
-	}
 }

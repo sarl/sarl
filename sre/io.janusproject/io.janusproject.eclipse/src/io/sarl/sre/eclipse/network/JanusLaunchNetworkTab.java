@@ -25,8 +25,11 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.internal.ui.SWTFactory;
 import org.eclipse.jdt.debug.ui.launchConfigurations.JavaLaunchTab;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 
@@ -40,6 +43,10 @@ import org.eclipse.ui.PlatformUI;
  * @since 0.12
  */
 public class JanusLaunchNetworkTab extends JavaLaunchTab {
+
+	private Button enableNetworkButton;
+
+	private final WidgetListener defaultListener = new WidgetListener();
 
 	/** Construct the tab for configuration of the SRE networking feature.
 	 */
@@ -62,13 +69,8 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 		final Font font = parent.getFont();
 		final Composite topComp = SWTFactory.createComposite(parent, font, 1, 1, GridData.FILL_HORIZONTAL, 0, 0);
 
-		/*fJREBlock = new JREsComboBlock(true);
-		fJREBlock.setDefaultJREDescriptor(getDefaultJREDescriptor());
-		fJREBlock.setSpecificJREDescriptor(getSpecificJREDescriptor());
-		fJREBlock.createControl(topComp);
-		Control control = fJREBlock.getControl();
-		fJREBlock.addPropertyChangeListener(fCheckListener);
-		control.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));*/
+		this.enableNetworkButton = createCheckButton(topComp, Messages.JanusLaunchNetworkTab_1);
+		this.enableNetworkButton.addSelectionListener(this.defaultListener);
 
 		setControl(topComp);
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(getControl(), getHelpContextId());
@@ -107,6 +109,32 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy config) {
 		//
+	}
+
+	/** Listener of events in internal components for refreshing the tab.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private class WidgetListener implements SelectionListener {
+
+		WidgetListener() {
+			//
+		}
+
+		@Override
+		public void widgetDefaultSelected(SelectionEvent event) {
+			//
+		}
+
+		@SuppressWarnings("synthetic-access")
+		@Override
+		public void widgetSelected(SelectionEvent event) {
+			updateLaunchConfigurationDialog();
+		}
+
 	}
 
 }

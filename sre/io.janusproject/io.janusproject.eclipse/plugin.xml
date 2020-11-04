@@ -23,4 +23,9 @@
       </classpathContainerPage>
    </extension>
 
+	<extension
+         point="io.sarl.eclipse.sarlLaunchConfigurationPanels">
+   		<panel class="io.sarl.sre.eclipse.network.JanusLaunchNetworkTabFactory" />
+   </extension>
+
 </plugin>
