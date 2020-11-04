@@ -46,7 +46,7 @@ capacity ExternalContextAccess {
 	/**
 	 * Replies all contexts this agent is a member of, including the default context.
 	 *
-	 * @return the list of the agent contexts.
+	 * @return the list of the known agent contexts.
 	 */	 
 	@Pure
 	def getAllContexts : ConcurrentLinkedDeque<AgentContext>

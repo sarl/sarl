@@ -228,7 +228,7 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 	 * @param scope the scope.
 	 * @return the matching participants.
 	 */
-	protected def getScopedParticipants(scope : Scope<? super Address>) : ConcurrentLinkedDeque<Participant> {
+	def getScopedParticipants(scope : Scope<? super Address>) : ConcurrentLinkedDeque<Participant> {
 		val scopedParticipants = new ConcurrentLinkedDeque
 		if (scope === null) {
 			// No scope => add all the strong and weak participants

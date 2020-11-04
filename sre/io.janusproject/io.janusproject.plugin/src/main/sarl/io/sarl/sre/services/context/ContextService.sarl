@@ -86,7 +86,7 @@ interface ContextService extends Service {
 	def removeContext(contextID : UUID) : Context
 
 	/** 
-	 * Replies all the contexts.
+	 * Replies all the known contexts.
 	 * 
 	 * @return a view on all the contexts.
 	 * @since 0.10

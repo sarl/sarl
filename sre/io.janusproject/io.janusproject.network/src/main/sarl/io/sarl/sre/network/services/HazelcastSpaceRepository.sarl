@@ -1,29 +1,35 @@
 package io.sarl.sre.network.services
 
 import com.google.inject.Injector
-import com.hazelcast.core.EntryEvent;
-import com.hazelcast.core.EntryListener;
-import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.map.IMap;
-import com.hazelcast.map.MapEvent;
+import com.hazelcast.collection.ISet
+import com.hazelcast.core.EntryEvent
+import com.hazelcast.core.EntryListener
+import com.hazelcast.core.HazelcastInstance
+import com.hazelcast.map.IMap
+import com.hazelcast.map.MapEvent
+import io.sarl.api.naming.name.SpaceName
 import io.sarl.lang.core.Space
 import io.sarl.lang.core.SpaceID
 import io.sarl.lang.core.SpaceSpecification
 import io.sarl.sre.boot.configs.SreConfig
 import io.sarl.sre.internal.SmartListenerCollection
+import io.sarl.sre.services.context.ContextService
 import io.sarl.sre.services.context.LocalSpaceRepository
 import io.sarl.sre.services.context.SpaceRepository.SpaceDescription
 import io.sarl.sre.services.executor.ExecutorService
-import java.util.ArrayList
-import java.util.Iterator
-import java.util.List
-import java.util.Map.Entry
+import io.sarl.sre.services.logging.LoggingService
+import io.sarl.sre.spaces.SreSpaceSpecificationFactory
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
+import java.util.logging.Level
+import java.util.logging.Logger
 import javax.inject.Inject
 
 class HazelcastSpaceRepository extends LocalSpaceRepository {
 
+	/** 
+	 * Local Hazelcast instance
+	 */
 	var hazelcastInstance : HazelcastInstance;
 
 	/** 
@@ -32,138 +38,136 @@ class HazelcastSpaceRepository extends LocalSpaceRepository {
 	 */
 	var spaceIDs : IMap<SpaceID, Object[]>
 
-	var spaceIDsListerner : EntryListener<SpaceID, Object[]>
+	/** 
+	 * ContextService used to check if the enclosing context exists when creating a new local space according to netwrok space creation event
+	 */
+	var contextService : ContextService
+
+	/** 
+	 * ID of the listener defined on spaceIDs map
+	 */
+	var spaceIDsListernerID : UUID
+
+	/** 
+	 * Set of existing distributed topics (at least one per space)
+	 */
+	var availableTopicsName : ISet<String>
+
+	/** 
+	 * SRE Kernel logger
+	 */
+	var kernelLogger : Logger;
+
+	public static val HAZELCAST_SPACE_ID_MAP_NAME = "io.sarl.network.distributedSpaceIDMapName"
 
 	@Inject
 	new(injector : Injector, executor : ExecutorService, config : SreConfig,
+		specificationFactory : SreSpaceSpecificationFactory,
 		internalStructure : ConcurrentHashMap<UUID, SpaceDescription>, listenerCollection : SmartListenerCollection<?>,
-		iHazelcastInstance : HazelcastInstance, distributedSpaceMapName : String) {
-		super(injector, executor, config, listenerCollection)
+		icontextService : ContextService, iHazelcastInstance : HazelcastInstance, logger : LoggingService) {
+		super(injector, executor, config, specificationFactory, listenerCollection)
+		contextService = icontextService
 		hazelcastInstance = iHazelcastInstance
-		spaceIDs = this.hazelcastInstance.getMap(distributedSpaceMapName);
-		/*spaceIDsListerner = new EntryListener<SpaceID, Object[]>() {
+		kernelLogger = logger.kernelLogger
+		kernelLogger.log(Level::INFO, "Creating HazelcastSpaceRepository")
+		availableTopicsName = this.hazelcastInstance.getSet(
+			HazelcastEventTransportService.HAZELCAST_SARL_TOPICS_NAME_SET);
+		spaceIDs = this.hazelcastInstance.getMap(HAZELCAST_SPACE_ID_MAP_NAME);
 
-			public override def entryAdded(^event : EntryEvent<SpaceID, Object[]>) {
-				assert spaceIDs.containsKey(key);
-				ensureLocalSpaceDefinition(key, value);
+		var spaceIDsListerner = new EntryListener<SpaceID, Object[]>() {
+
+			override entryAdded(^event : EntryEvent<SpaceID, Object[]>) {
+				assert spaceIDs.containsKey(^event.getKey());
+				ensureLocalSpaceDefinition(^event.getKey(), ^event.value);
 			}
 
-			public override def entryEvicted(^event : EntryEvent<SpaceID, Object[]>) {
+			override entryEvicted(^event : EntryEvent<SpaceID, Object[]>) {
 				assert !spaceIDs.containsKey(^event.getKey());
 				removeLocalSpaceDefinition(^event.getKey(), false);
 			}
 
-			public override def entryRemoved(^event : EntryEvent<SpaceID, Object[]>) {
+			override entryRemoved(^event : EntryEvent<SpaceID, Object[]>) {
 				assert !spaceIDs.containsKey(^event.getKey());
 				removeLocalSpaceDefinition(^event.getKey(), false);
 			}
 
-			public override def entryUpdated(^event : EntryEvent<SpaceID, Object[]>) {
+			override entryUpdated(^event : EntryEvent<SpaceID, Object[]>) {
 				//
 			}
 
-			public override def mapCleared(^event : MapEvent) {
-				removeLocalSpaceDefinitions(false);
+			override mapCleared(^event : MapEvent) {
+				removeLocalSpaceDefinitions();
 			}
 
-			public override def mapEvicted(^event : MapEvent) {
+			override mapEvicted(^event : MapEvent) {
 			}
-		}*/
+
+			override entryExpired(^event : EntryEvent<SpaceID, Object[]>) {
+			}
+
+		}
+		spaceIDsListernerID = spaceIDs.addEntryListener(spaceIDsListerner, true)
+		kernelLogger.log(Level::INFO, "End of Creating HazelcastSpaceRepository")
 
 	}
 
-	protected override def createSpaceFirstInstance(spec : Class<? extends SpaceSpecification<S>>, spaceID : SpaceID,
+	protected override createSpaceFirstInstance(spec : Class<? extends SpaceSpecification<S>>, spaceID : SpaceID,
 		creationParams : Object[]) : S with S extends Space {
 
+		// checking that the enclosing context of this new space already exists locally before creating the space
+		var localContext = contextService.getContext(spaceID.contextID)
+		if (localContext === null) {
+			kernelLogger.log(Level::SEVERE,
+				"ERROR: Creating a space but the corresponding enclosing context did not exist locally")
+		}
 		this.spaceIDs.putIfAbsent(spaceID, creationParams);
+		// FIXME Extract topic name creation in a dedicated function
+		var topicName : String = HazelcastEventTransportService.getTopicNameFromSpaceID(spaceID)
+		kernelLogger.log(Level::INFO,
+			"HazelcastSpaceRepository: New space created "+spaceID+", adding a new topic named " + topicName)
+		this.availableTopicsName.add(topicName)
 
 		return super.createSpaceFirstInstance(spec, spaceID, creationParams);
 
 	}
 
 	/** 
-	 * Remove a remote space.
+	 * Add the existing, but not yet known, spaces into this repository.
 	 * 
-	 * @param id                 identifier of the space
-	 * @param isLocalDestruction indicates if the destruction is initiated by the
-	 * local kernel.
+	 * @param id identifier of the space
+	 * @param initializationParameters parameters for initialization.
 	 */
-	/*protected def removeLocalSpaceDefinition(id : SpaceID, isLocalDestruction : boolean) {
-
-		val ^space : Space = this.spaces.remove(id);
-		if (^space != null) {
-			this.spacesBySpec.remove(id.getSpaceSpecification(), id);
+	protected def ensureLocalSpaceDefinition(id : SpaceID, initializationParameters : Object[]) with S extends Space {
+		if (!existsSpace(id.ID)) {
+			var spec : Class<? extends SpaceSpecification<S>> = id.
+				spaceSpecification as Class<? extends SpaceSpecification<S>>
+			super.createSpace(id, spec, initializationParameters)
 		}
+	}
 
-		if (^space != null) {
-			fireSpaceRemoved(^space, isLocalDestruction);
-		}
-	}*/
+	protected def removeLocalSpaceDefinition(id : SpaceID, isLocalDestruction : boolean) {
+		// FIXME Extract topic name creation in a dedicated function
+		var topicName : String = HazelcastEventTransportService.HAZELCAST_SARL_TOPICS_ROOTWILCARD + SpaceName.SCHEME +
+			"." + id.contextID + "." + id.ID
+		kernelLogger.log(Level::INFO, "HazelcastSpaceRepository: Space removed, removing the topic named " + topicName)
+		this.availableTopicsName.remove(topicName)
+		super.removeSpaceIfEmpty(id.ID)
+	}
 
 	/** 
-	 * Remove all the remote spaces.
+	 * Remove all the local/remote spaces.
 	 * 
-	 * @param isLocalDestruction indicates if the destruction is initiated by the
-	 * local kernel.
 	 */
-	/*protected def removeLocalSpaceDefinitions(isLocalDestruction : boolean) {
-			var removedSpaces : List<Space> = null;
-	
-			if (!this.spaces.isEmpty()) {
-				removedSpaces = new ArrayList<Space>(this.spaces.size());
-			}
-	
-			if (removedSpaces != null) {		
-				val iterator: Iterator<Entry<SpaceID, Space>>  = this.spaces.entrySet().iterator();				
-				var ^space :Space;
-				var id : SpaceID;
-				while (iterator.hasNext()) {
-		
-					var entry : Entry<SpaceID, Space> = iterator.next();
-					id = entry.getKey();
-		
-					^space = entry.getValue();
-					iterator.remove();
-					this.spacesBySpec.remove(id.getSpaceSpecification(), id);
-					removedSpaces.add(^space);
-				}
-		
-				for (s : removedSpaces) {
-					fireSpaceRemoved(s, isLocalDestruction);
-				}
-			}
-	}*/
+	protected def removeLocalSpaceDefinitions() {
+		// FIXME update this.availableTopicsName to remove all empty spaces that are effectively empty all over the network
+		super.removeAllSpacesIfEmpty
+	}
 
-	/** 
-	 * Remove all the remote spaces.
-	 * 
-	 * @param isLocalDestruction indicates if the destruction is initiated by the
-	 * local kernel.
-	 */
-	/*protected def removeLocalSpaceDefinitions(isLocalDestruction : boolean ) {
-		var removedSpaces:List<Space>  = null;
+	protected override safeDestroy {
+		super.safeDestroy
+		// TODO check if it is really necessary to clean this distributed map of spaces, because it will impact other kernels staying active on the network
+		this.spaceIDs.clear
+		this.spaceIDs.removeEntryListener(this.spaceIDsListernerID);
+	}
 
-		if (!this.spaces.isEmpty()) {
-			removedSpaces = new ArrayList<>(this.spaces.size());
-		}
-
-		if (removedSpaces != null) {
-			val iterator: Iterator<Entry<SpaceID, Space>>  = this.spaces.entrySet().iterator();			
-			^space : Space;
-			id:SpaceID ;
-			while (iterator.hasNext()) {
-				val entry: Entry<SpaceID, Space>  = iterator.next();
-				id = entry.getKey();
-				^space = entry.getValue();
-				iterator.remove();
-				this.spacesBySpec.remove(id.getSpaceSpecification(), id);
-				removedSpaces.add( ^space);
-			}
-
-			for ( s : removedSpaces) {
-				fireSpaceRemoved(s, isLocalDestruction);
-			}
-		}
-	}	*/
-	
 }
