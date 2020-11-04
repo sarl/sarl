@@ -53,4 +53,8 @@ class AsynchronousProbeServiceTest extends AbstractProbeServiceTest {
 	protected def runTestCase_afterStopTest(service : ProbeService, probe : Probe<Integer>) {
 	}
 	
+	protected def runTestCase_afterShutdown(service : ProbeService, probe : Probe<Integer>) {
+		probe.sync
+	}
+
 }

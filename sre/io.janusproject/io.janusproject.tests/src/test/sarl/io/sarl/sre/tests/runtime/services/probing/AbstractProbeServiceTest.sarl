@@ -108,6 +108,8 @@ abstract class AbstractProbeServiceTest {
 
 		waitForTheKernel(STANDARD_TIMEOUT)
 
+		service.runTestCase_afterShutdown(probe)
+
 		return probe
 	}
 
@@ -150,5 +152,7 @@ abstract class AbstractProbeServiceTest {
 	protected abstract def runTestCase_beforeStopTest(service : ProbeService, probe : Probe<Integer>)
 
 	protected abstract def runTestCase_afterStopTest(service : ProbeService, probe : Probe<Integer>)
+
+	protected abstract def runTestCase_afterShutdown(service : ProbeService, probe : Probe<Integer>)
 
 }

@@ -155,7 +155,7 @@ abstract class AbstractProbeService extends AbstractSreService implements ProbeS
 	}
 
 	override sync {
-		this.probes.values.parallelStream.forEach [
+		this.probes.values.forEach [
 			it.sync
 		]
 	}

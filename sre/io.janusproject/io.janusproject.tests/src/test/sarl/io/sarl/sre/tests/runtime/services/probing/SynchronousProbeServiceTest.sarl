@@ -56,4 +56,8 @@ class SynchronousProbeServiceTest extends AbstractProbeServiceTest {
 		service.sync
 	}
 
+	protected def runTestCase_afterShutdown(service : ProbeService, probe : Probe<Integer>) {
+		service.sync
+	}
+
 }

@@ -142,7 +142,6 @@ public class SARLJvmGenerator extends XtendGenerator {
 		}
 		final String qn = type.getQualifiedName();
 		if (!Strings.isEmpty(qn)) {
-			final String fn = qn.replace('.', '/') + ".java"; //$NON-NLS-1$
 			final CharSequence content = generateType(type, this.generatorConfigProvider.get(type));
 			final String outputConfigurationName;
 			final Boolean isTest = this.resourceTypeDetector.isTestResource(type.eResource());
@@ -151,6 +150,7 @@ public class SARLJvmGenerator extends XtendGenerator {
 			} else {
 				outputConfigurationName = IFileSystemAccess.DEFAULT_OUTPUT;
 			}
+			final String fn = qn.replace('.', '/') + ".java"; //$NON-NLS-1$
 			fsa.generateFile(fn, outputConfigurationName, content);
 		}
 	}

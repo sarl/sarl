@@ -166,7 +166,7 @@ public class ExamplesTest {
 				final String filename = type.replaceAll("\\.", File.separator).concat(".java");
 				File file = FileSystem.convertStringToFile(filename);
 				file = FileSystem.join(root, file);
-				assertFile(file);
+				assertFile(file, projectRoot);
 			});
 		});
 	}
@@ -202,7 +202,7 @@ public class ExamplesTest {
 					// Format 3: <qualified-filename>
 					final File folder = getSourcePath(projectRoot);
 					file = FileSystem.join(folder, location.toFile());
-					assertFile(file);
+					assertFile(file, projectRoot);
 				}
 			}
 		});

@@ -65,7 +65,7 @@ import io.sarl.lang.SARLVersion;
  * @since 0.12
  */
 @SuppressWarnings("all")
-@DisplayName("Testing SARL compilation on different platforms")
+@DisplayName("Testing SARL compilation on different JDK")
 @Tag("crossplatform")
 public class CrossPlatformTest {
 
