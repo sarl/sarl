@@ -39,18 +39,26 @@ public interface ISarlLaunchConfigurationPanelFactory {
 
 	/** Create the instance of the launch configuration panel.
 	 *
+	 * @param dialog the launch configuration panel.
+	 * @param mode the running mode.
+	 * @param list the list of panels that were already created.
+	 * @param runtimeTab the reference to the runtime tab if it is added to the dialog box. It may
+	 *     be {@code null} if no run-time panel was added into the list.
 	 * @return the instance.
 	 */
-	ILaunchConfigurationTab newLaunchConfigurationPanel();
+	ILaunchConfigurationTab newLaunchConfigurationPanel(ILaunchConfigurationDialog dialog, String mode,
+			List<ILaunchConfigurationTab> list, ISarlRuntimeEnvironmentTab runtimeTab);
 
 	/** Determine if the panel should be created with {@link #newLaunchConfigurationPanel()}.
 	 *
 	 * @param dialog the launch configuration panel.
 	 * @param mode the running mode.
 	 * @param list the list of panels that were already created.
+	 * @param runtimeTab the reference to the runtime tab if it is added to the dialog box.
 	 * @return {@code true} if the launch configuration panel should be created.
 	 */
-	default boolean canCreatePanel(ILaunchConfigurationDialog dialog, String mode, List<ILaunchConfigurationTab> list) {
+	default boolean canCreatePanel(ILaunchConfigurationDialog dialog, String mode, List<ILaunchConfigurationTab> list,
+			ISarlRuntimeEnvironmentTab runtimeTab) {
 		return true;
 	}
 

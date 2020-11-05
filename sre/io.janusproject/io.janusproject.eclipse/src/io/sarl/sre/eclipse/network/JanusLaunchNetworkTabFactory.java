@@ -21,9 +21,13 @@
 
 package io.sarl.sre.eclipse.network;
 
+import java.util.List;
+
+import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 
 import io.sarl.eclipse.launching.dialog.ISarlLaunchConfigurationPanelFactory;
+import io.sarl.eclipse.launching.dialog.ISarlRuntimeEnvironmentTab;
 
 /**
  * Provider of the launch configuration panel for the Janus network.
@@ -37,8 +41,13 @@ import io.sarl.eclipse.launching.dialog.ISarlLaunchConfigurationPanelFactory;
 public class JanusLaunchNetworkTabFactory implements ISarlLaunchConfigurationPanelFactory {
 
 	@Override
-	public ILaunchConfigurationTab newLaunchConfigurationPanel() {
-		return new JanusLaunchNetworkTab();
+	public ILaunchConfigurationTab newLaunchConfigurationPanel(ILaunchConfigurationDialog dialog, String mode,
+			List<ILaunchConfigurationTab> list, ISarlRuntimeEnvironmentTab runtimeTab) {
+		final JanusLaunchNetworkTab tab = new JanusLaunchNetworkTab();
+		/*if (runtimeTab != null) {
+			runtimeTab.addSreChangeListener(tab);
+		}*/
+		return tab;
 	}
 
 }

@@ -69,7 +69,7 @@ import io.sarl.lang.util.Utils;
  * @mavenartifactid $ArtifactId$
  * @see JavaJRETab
  */
-public class SARLRuntimeEnvironmentTab extends JavaJRETab {
+public class SARLRuntimeEnvironmentTab extends JavaJRETab implements ISarlRuntimeEnvironmentTab {
 
 	private final boolean resetJvaMainClass;
 
@@ -169,13 +169,14 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 		}
 	}
 
-	/** Add the listener on the SRE changes.
-	 *
-	 * @param listener the listener.
-	 * @since 0.11
-	 */
-	void addSreChangeListener(ISreChangeListener listener) {
+	@Override
+	public void addSreChangeListener(ISreChangeListener listener) {
 		this.sreChangeListeners.add(listener);
+	}
+
+	@Override
+	public void removeSreChangeListener(ISreChangeListener listener) {
+		this.sreChangeListeners.remove(listener);
 	}
 
 	/** Replies the block that permits to configure the SRE.
@@ -240,6 +241,7 @@ public class SARLRuntimeEnvironmentTab extends JavaJRETab {
 		if (blk != null) {
 			blk.dispose();
 		}
+		this.sreChangeListeners.clear();
 	}
 
 	@Override

@@ -21,35 +21,27 @@
 
 package io.sarl.eclipse.launching.dialog;
 
-import org.eclipse.debug.ui.ILaunchConfigurationDialog;
-import org.eclipse.debug.ui.ILaunchConfigurationTab;
-import org.eclipse.jdt.debug.ui.launchConfigurations.JavaArgumentsTab;
-
 /**
- * Tab group object for configuring the run of a Java application embedding SARL.
+ * Interace for representing any tab for the SARL run-time environment configuration. 
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.7
+ * @since 0.12
  */
-public class SARLApplicationLaunchConfigurationTabGroup extends AbstractSARLLaunchConfigurationTabGroup {
+public interface ISarlRuntimeEnvironmentTab {
 
-	@Override
-	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
-		final ILaunchConfigurationTab[] tabs = buildTabList(dialog, mode, list -> {
-			// Add before the dynamically provided panels
-			final SARLApplicationMainLaunchConfigurationTab mainTab = new SARLApplicationMainLaunchConfigurationTab();
-			list.add(0, mainTab);
-			list.add(1, new JavaArgumentsTab());
-			list.add(2, new SARLRuntimeEnvironmentTab(false));
+	/** Add the listener on the SRE changes.
+	 *
+	 * @param listener the listener.
+	 */
+	void addSreChangeListener(ISreChangeListener listener);
 
-			addSreChangeListeners(list, mainTab);
-
-			return true;
-		});
-		setTabs(tabs);
-	}
+	/** Remove the listener on the SRE changes.
+	 *
+	 * @param listener the listener.
+	 */
+	void removeSreChangeListener(ISreChangeListener listener);
 
 }

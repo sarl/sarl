@@ -24,6 +24,7 @@ package io.sarl.eclipse.launching.dialog;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import javax.inject.Inject;
 
 import com.google.inject.Injector;
@@ -108,6 +109,7 @@ public abstract class AbstractSARLLaunchConfigurationTabGroup extends AbstractLa
 	 * @param builder the builder that is able to fill out the list of panels. The parameter of the procedure
 	 *     is the list to fill with the panels.
 	 * @return the list of tabs to be added into the panel, before they are injected.
+	 * @since 0.12
 	 * @see #setTabs(ILaunchConfigurationTab...)
 	 */
 	protected ILaunchConfigurationTab[] buildTabList(
@@ -119,10 +121,19 @@ public abstract class AbstractSARLLaunchConfigurationTabGroup extends AbstractLa
 
 		final Boolean addStandardPanels = builder.apply(list);
 
+		// Find the SARL run-time environment tab
+		ISarlRuntimeEnvironmentTab runtimeTab = null;
+		for (final ILaunchConfigurationTab tab : list) {
+			if (tab instanceof ISarlRuntimeEnvironmentTab) {
+				runtimeTab = (ISarlRuntimeEnvironmentTab) tab;
+				break;
+			}
+		}
+
 		final List<ISarlLaunchConfigurationPanelFactory> factories = getFactoriesFromExtension();
 		for (final ISarlLaunchConfigurationPanelFactory factory : factories) {
-			if (factory.canCreatePanel(dialog, mode, list)) {
-				final ILaunchConfigurationTab panel = factory.newLaunchConfigurationPanel();
+			if (factory.canCreatePanel(dialog, mode, list, runtimeTab)) {
+				final ILaunchConfigurationTab panel = factory.newLaunchConfigurationPanel(dialog, mode, list, runtimeTab);
 				if (panel != null) {
 					list.add(panel);
 				}
@@ -163,6 +174,26 @@ public abstract class AbstractSARLLaunchConfigurationTabGroup extends AbstractLa
 			return factories;
 		}
 		return Collections.emptyList();
+	}
+
+	/** Register the given SRE listener on any change of SRE selection into the run-time environment tab.
+	 * This function does nothing if there is no tab for the run-time environment into the given list.
+	 *
+	 * @param listOfTabs is the list of the registered tabs.
+	 * @param listeners is the list of the objects to register as listener on the SRE selection changes.
+	 * @since 0.12
+	 */
+	protected static void addSreChangeListeners(List<ILaunchConfigurationTab> listOfTabs, ISreChangeListener... listeners) {
+		if (listOfTabs != null && listeners != null) {
+			for (final ILaunchConfigurationTab tab : listOfTabs) {
+				if (tab instanceof ISarlRuntimeEnvironmentTab) {
+					final ISarlRuntimeEnvironmentTab runtimeTab = (ISarlRuntimeEnvironmentTab) tab;
+					for (final ISreChangeListener listener : listeners) {
+						runtimeTab.addSreChangeListener(listener);
+					}
+				}
+			}
+		}
 	}
 
 	/** Replies the preferred tab for configuring the classpath.
