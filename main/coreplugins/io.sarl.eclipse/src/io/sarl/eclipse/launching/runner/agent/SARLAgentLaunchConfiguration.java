@@ -21,6 +21,8 @@
 
 package io.sarl.eclipse.launching.runner.agent;
 
+import static io.sarl.eclipse.launching.config.LaunchConfigurationUtils.join;
+
 import java.util.Map;
 import java.util.Objects;
 
@@ -62,7 +64,7 @@ public class SARLAgentLaunchConfiguration extends AbstractSARLLaunchConfiguratio
 	@Override
 	protected String getProgramArguments(ILaunchConfiguration configuration, ISREInstall sre,
 			String standardProgramArguments) throws CoreException {
-		// Retreive the classname of the boot agent.
+		// Retrieve the classname of the boot agent.
 		final String bootAgent = getAgentName(configuration);
 
 		// Special case: the boot class is a simple one provided within the SARL library.
@@ -72,11 +74,14 @@ public class SARLAgentLaunchConfiguration extends AbstractSARLLaunchConfiguratio
 
 		final IStringVariableManager substitutor = VariablesPlugin.getDefault().getStringVariableManager();
 
-		// Retreive the SRE arguments from the SRE configuration
+		// Retrieve the SRE arguments from the SRE configuration
 		final String sreArgs1 = substitutor.performStringSubstitution(sre.getSREArguments());
 
-		// Retreive the SRE arguments from the launch configuration
+		// Retrieve the SRE arguments from the launch configuration
 		final String sreArgs2 = substitutor.performStringSubstitution(getConfigurationAccessor().getSRELaunchingArguments(configuration));
+
+		// Retrieve the extra SRE arguments from the launch configuration
+		final String sreArgs3 = substitutor.performStringSubstitution(getConfigurationAccessor().getExtraSRELaunchingArguments(configuration));
 
 		// Add the options corresponding to the general setting of the launch configuration.
 		final Map<String, String> cliOptions = sre.getAvailableCommandLineOptions();
@@ -114,7 +119,7 @@ public class SARLAgentLaunchConfiguration extends AbstractSARLLaunchConfiguratio
 		final String noMoreOption = cliOptions.get(SRECommandLineOptions.CLI_NO_MORE_OPTION);
 
 		// Make the complete command line
-		return join(sreArgs1, sreArgs2, options, bootAgent, noMoreOption, standardProgramArguments);
+		return join(sreArgs1, sreArgs2, sreArgs3, options, bootAgent, noMoreOption, standardProgramArguments);
 	}
 
 	/**

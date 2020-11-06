@@ -115,18 +115,71 @@ public interface ILaunchConfigurationAccessor {
 	String getAgentLaunchingArguments(ILaunchConfiguration configuration);
 
 	/** Replies the arguments to pass to the SRE.
+	 * These arguments are used only when launching an SRE directly, not when launching a Java application.
+	 * For passing arguments to the Java application also, see {@link #getJRELaunchingArguments(ILaunchConfiguration)}.
 	 *
 	 * @param configuration the configuration.
 	 * @return the arguments, never null
+	 * @see #getExtraSRELaunchingArguments(ILaunchConfiguration)
 	 */
 	String getSRELaunchingArguments(ILaunchConfiguration configuration);
 
+	/** Replies the arguments to pass to the SRE from a given contributor.
+	 *
+	 * @param configuration the configuration.
+	 * @param contributorId the identifier of the contributor.
+	 * @return the arguments, never null
+	 * @since 0.12
+	 * @see #getSRELaunchingArguments(ILaunchConfiguration)
+	 * @see #getExtraSRELaunchingArguments(ILaunchConfiguration)
+	 */
+	String getExtraSRELaunchingArguments(ILaunchConfiguration configuration, String contributorId);
+
+	/** Replies the arguments to pass to the SRE by all the contributors.
+	 * These arguments are used only when launching an SRE directly, not when launching a Java application.
+	 * For passing arguments to the Java application also, see {@link #getExtraJRELaunchingArguments(ILaunchConfiguration)}.
+	 *
+	 * @param configuration the configuration to change.
+	 * @return the arguments to give to the SRE.
+	 * @since 0.12
+	 * @see #getSRELaunchingArguments(ILaunchConfiguration)
+	 * @see #getExtraSRELaunchingArguments(ILaunchConfiguration, String)
+	 */
+	String getExtraSRELaunchingArguments(ILaunchConfiguration configuration);
+
 	/** Replies the arguments to pass to the JRE.
+	 * These arguments are passed to all applications, either it is an agent-based launching application or
+	 * a Java application.
+	 * For passing arguments to only the agent-based application, see {@link #getSRELaunchingArguments(ILaunchConfiguration)}.
 	 *
 	 * @param configuration the configuration.
 	 * @return the arguments, never null
 	 */
 	String getJRELaunchingArguments(ILaunchConfiguration configuration);
+
+	/** Replies the arguments to pass to the JRE from a given contributor.
+	 *
+	 * @param configuration the configuration.
+	 * @param contributorId the identifier of the contributor.
+	 * @return the arguments, never null
+	 * @since 0.12
+	 * @see #getSRELaunchingArguments(ILaunchConfiguration)
+	 * @see #getExtraSRELaunchingArguments(ILaunchConfiguration)
+	 */
+	String getExtraJRELaunchingArguments(ILaunchConfiguration configuration, String contributorId);
+
+	/** Replies the arguments to pass to the SRE by all the contributors.
+	 * These arguments are passed to all applications, either it is an agent-based launching application or
+	 * a Java application.
+	 * For passing arguments to only the agent-based application, see {@link #getExtraSRELaunchingArguments(ILaunchConfiguration)}.
+	 *
+	 * @param configuration the configuration to change.
+	 * @return the arguments to give to the SRE.
+	 * @since 0.12
+	 * @see #getSRELaunchingArguments(ILaunchConfiguration)
+	 * @see #getExtraSRELaunchingArguments(ILaunchConfiguration, String)
+	 */
+	String getExtraJRELaunchingArguments(ILaunchConfiguration configuration);
 
 	/** Replies the agent should be launched in the current Eclipse VM.
 	 *

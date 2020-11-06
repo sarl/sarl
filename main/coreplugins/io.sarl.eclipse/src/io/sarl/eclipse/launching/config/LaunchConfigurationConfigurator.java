@@ -24,6 +24,7 @@ package io.sarl.eclipse.launching.config;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import javax.inject.Singleton;
 
 import com.google.common.base.Strings;
@@ -89,10 +90,29 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 			+ ".USE_PROJECT_SARL_RUNTIME_ENVIRONMENT"; //$NON-NLS-1$
 
 	/**
-	 * Launch configuration attribute key. The value is the arguments for the SRE;
+	 * Launch configuration attribute key. The value is the arguments for the SRE.
+	 *
+	 * @since 0.12
+	 */
+	public static final String ATTR_CONTRIB_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS_POSTFIX = ".CONTRIB_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS"; //$NON-NLS-1$
+
+	/**
+	 * Launch configuration attribute key. The value is the arguments for the SRE.
 	 */
 	public static final String ATTR_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS = SARLEclipsePlugin.PLUGIN_ID
 			+ ".SARL_RUNTIME_ENVIRONMENT_ARGUMENTS"; //$NON-NLS-1$
+
+	/**
+	 * Extra launch configuration attribute key. The value is the extra arguments for the SRE.
+	 * @since 0.12
+	 */
+	public static final String ATTR_EXTRA_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS = ".EXTRA_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS"; //$NON-NLS-1$
+
+	/**
+	 * Extra launch configuration attribute key. The value is the extra arguments for the JRE.
+	 * @since 0.12
+	 */
+	public static final String ATTR_EXTRA_VM_ARGUMENTS = ".EXTRA_VM_ARGUMENTS"; //$NON-NLS-1$
 
 	/**
 	 * Launch configuration attribute key. The value indicates if the agents are run in the same VM as
@@ -313,8 +333,22 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	}
 
 	@Override
+	public void setExtraSRELaunchingArguments(ILaunchConfigurationWorkingCopy configuration, String contributorId,
+			String arguments) {
+		final String attrName = contributorId + ATTR_EXTRA_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS;
+		configuration.setAttribute(attrName, arguments);
+	}
+
+	@Override
 	public void setJRELaunchingArguments(ILaunchConfigurationWorkingCopy configuration, String arguments) {
 		configuration.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, arguments);
+	}
+
+	@Override
+	public void setExtraJRELaunchingArguments(ILaunchConfigurationWorkingCopy configuration, String contributorId,
+			String arguments) {
+		final String attrName = contributorId + ATTR_EXTRA_VM_ARGUMENTS;
+		configuration.setAttribute(attrName, arguments);
 	}
 
 	@Override
@@ -433,9 +467,71 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	}
 
 	@Override
+	public String getExtraSRELaunchingArguments(ILaunchConfiguration configuration, String contributorId) {
+		try {
+			final String attrName = contributorId + ATTR_EXTRA_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS;
+			return Strings.nullToEmpty(configuration.getAttribute(attrName, (String) null));
+		} catch (CoreException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public String getExtraSRELaunchingArguments(ILaunchConfiguration configuration) {
+		final StringBuilder builder = new StringBuilder();
+		try {
+			for (final String key : configuration.getAttributes().keySet()) {
+				if (key.endsWith(ATTR_EXTRA_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS)) {
+					final String value = Strings.nullToEmpty(configuration.getAttribute(key, (String) null));
+					if (!Strings.isNullOrEmpty(value)) {
+						if (builder.length() > 0) {
+							builder.append(" "); //$NON-NLS-1$
+						}
+						builder.append(value);
+					}
+				}
+			}
+			return builder.toString();
+		} catch (CoreException e) {
+			return null;
+		}
+	}
+
+	@Override
 	public String getJRELaunchingArguments(ILaunchConfiguration configuration) {
 		try {
 			return Strings.nullToEmpty(configuration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, (String) null));
+		} catch (CoreException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public String getExtraJRELaunchingArguments(ILaunchConfiguration configuration, String contributorId) {
+		try {
+			final String attrName = contributorId + ATTR_EXTRA_VM_ARGUMENTS;
+			return Strings.nullToEmpty(configuration.getAttribute(attrName, (String) null));
+		} catch (CoreException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public String getExtraJRELaunchingArguments(ILaunchConfiguration configuration) {
+		final StringBuilder builder = new StringBuilder();
+		try {
+			for (final String key : configuration.getAttributes().keySet()) {
+				if (key.endsWith(ATTR_EXTRA_VM_ARGUMENTS)) {
+					final String value = Strings.nullToEmpty(configuration.getAttribute(key, (String) null));
+					if (!Strings.isNullOrEmpty(value)) {
+						if (builder.length() > 0) {
+							builder.append(" "); //$NON-NLS-1$
+						}
+						builder.append(value);
+					}
+				}
+			}
+			return builder.toString();
 		} catch (CoreException e) {
 			return null;
 		}

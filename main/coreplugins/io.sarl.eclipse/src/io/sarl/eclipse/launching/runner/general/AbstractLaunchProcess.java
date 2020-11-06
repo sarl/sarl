@@ -21,6 +21,8 @@
 
 package io.sarl.eclipse.launching.runner.general;
 
+import static io.sarl.eclipse.launching.config.LaunchConfigurationUtils.join;
+
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.text.MessageFormat;
@@ -343,39 +345,60 @@ public abstract class AbstractLaunchProcess<T extends AbstractSARLLaunchConfigur
 	 * @param monitor the progress monitor.
 	 * @throws CoreException if a parameter cannot be extracted.
 	 */
-	protected void readLaunchingArguments(IProgressMonitor monitor) throws CoreException {
+	protected final void readLaunchingArguments(IProgressMonitor monitor) throws CoreException {
 		monitor.subTask(
 				Messages.AbstractLaunchProcess_1);
 
 		final AbstractSARLLaunchConfiguration own = getOwner();
 
 		// Program & VM arguments
-		final String pgmArgs = own.getProgramArguments(this.configuration);
-		final StringBuilder vmArgs = new StringBuilder(own.getVMArguments(this.configuration));
+		final String pgmArgs = getProgramArguments(own);
+		final String vmArgs = getVMArguments(own);
+
+		setExecutionArguments(new ExecutionArguments(vmArgs, pgmArgs));
+
+		// VM-specific attributes
+		setVirtualMachineAttributes(own.getVMSpecificAttributesMap(this.configuration));
+	}
+
+	/** Build the program arguments.
+	 *
+	 * @param own the configuration.
+	 * @return the program arguments.
+	 * @throws CoreException if a parameter cannot be extracted.
+	 * @since 0.12
+	 */
+	protected String getProgramArguments(AbstractSARLLaunchConfiguration own) throws CoreException {
+		return own.getProgramArguments(this.configuration);
+	}
+
+	/** Build the VM arguments.
+	 *
+	 * @param own the configuration.
+	 * @return the VM arguments.
+	 * @throws CoreException if a parameter cannot be extracted.
+	 * @since 0.12
+	 */
+	protected String getVMArguments(AbstractSARLLaunchConfiguration own) throws CoreException {
+		final String vmArgs = own.getVMArguments(this.configuration);
 
 		final String modeArgs = own.getVMArguments(this.configuration, this.mode);
-		if (!Strings.isEmpty(modeArgs)) {
-			if (vmArgs.length() > 0) {
-				vmArgs.append(" "); //$NON-NLS-1$
-			}
-			vmArgs.append(modeArgs);
-		}
 
 		// Add -ea option if in debug mode
+		final String eaArg;
 		if ((Objects.equals(this.mode,  ILaunchManager.RUN_MODE)
 				&& own.getConfigurationAccessor().isAssertionEnabledInRunMode(this.configuration))
 				|| (Objects.equals(this.mode,  ILaunchManager.DEBUG_MODE)
 						&& own.getConfigurationAccessor().isAssertionEnabledInDebugMode(this.configuration))) {
-			if (vmArgs.length() > 0) {
-				vmArgs.append(" "); //$NON-NLS-1$
-			}
-			vmArgs.append(OPTION_ENABLEASSERTIONS);
+			eaArg = OPTION_ENABLEASSERTIONS;
+		} else {
+			eaArg = null;
 		}
 
-		setExecutionArguments(new ExecutionArguments(vmArgs.toString(), pgmArgs));
+		// Add special arguments that are provided by contributors
+		final String extraJreArgs = own.getConfigurationAccessor().getExtraJRELaunchingArguments(this.configuration);
 
-		// VM-specific attributes
-		setVirtualMachineAttributes(own.getVMSpecificAttributesMap(this.configuration));
+		return join(vmArgs, modeArgs, eaArg, extraJreArgs);
 	}
 
 	/** Validate the extracted values from the launch configuration.

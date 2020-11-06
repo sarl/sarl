@@ -21,6 +21,8 @@
 
 package io.sarl.eclipse.launching.runner.general;
 
+import static io.sarl.eclipse.launching.config.LaunchConfigurationUtils.join;
+
 import java.io.File;
 import java.lang.ref.SoftReference;
 import java.text.MessageFormat;
@@ -28,9 +30,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+
 import javax.inject.Inject;
 
-import com.google.common.base.Strings;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -571,24 +573,6 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 		final IStringVariableManager substitutor = VariablesPlugin.getDefault().getStringVariableManager();
 		final String sreArgs = substitutor.performStringSubstitution(sre.getJVMArguments());
 		return join(sreArgs, launchConfigArgs);
-	}
-
-	/** Replies a string that is the concatenation of the given values.
-	 *
-	 * @param values the values to merge.
-	 * @return the concatenation result.
-	 */
-	protected static String join(String... values) {
-		final StringBuilder buffer = new StringBuilder();
-		for (final String value : values) {
-			if (!Strings.isNullOrEmpty(value)) {
-				if (buffer.length() > 0) {
-					buffer.append(" "); //$NON-NLS-1$
-				}
-				buffer.append(value);
-			}
-		}
-		return buffer.toString();
 	}
 
 	@Override

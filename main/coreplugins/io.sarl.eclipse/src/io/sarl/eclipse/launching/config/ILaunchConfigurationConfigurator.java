@@ -21,6 +21,8 @@
 
 package io.sarl.eclipse.launching.config;
 
+import java.util.List;
+
 import com.google.inject.ImplementedBy;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -191,8 +193,24 @@ public interface ILaunchConfigurationConfigurator {
 	 *
 	 * @param configuration the configuration to change.
 	 * @param arguments the arguments to give to the SRE.
+	 * @see #setExtraSRELaunchingArguments(ILaunchConfigurationWorkingCopy, String, List)
 	 */
 	void setSRELaunchingArguments(ILaunchConfigurationWorkingCopy configuration, String arguments);
+
+	/** Change the command-line arguments to give to the SRE and for a specific contributor ID.
+	 *
+	 * <p>This function differs from {@link #setSRELaunchingArguments(ILaunchConfigurationWorkingCopy, String) in
+	 * the fact that the given arguments are associated to the given contributor in this function.
+	 * In {@link #setSRELaunchingArguments(ILaunchConfigurationWorkingCopy, String)}, the arguments are not
+	 * associated to a specific contributor.
+	 *
+	 * @param configuration the configuration to change.
+	 * @param contributorId the identifier of the contributor.
+	 * @param arguments the arguments to give to the SRE.
+	 * @since 0.12
+	 * @see #setSRELaunchingArguments(ILaunchConfigurationWorkingCopy, String)
+	 */
+	void setExtraSRELaunchingArguments(ILaunchConfigurationWorkingCopy configuration, String contributorId, String arguments);
 
 	/** Change the command-line arguments to give to the JRE.
 	 *
@@ -200,6 +218,21 @@ public interface ILaunchConfigurationConfigurator {
 	 * @param arguments the arguments to give to the JRE.
 	 */
 	void setJRELaunchingArguments(ILaunchConfigurationWorkingCopy configuration, String arguments);
+
+	/** Change the command-line arguments to give to the JRE and for a specific contributor ID.
+	 *
+	 * <p>This function differs from {@link #setJRELaunchingArguments(ILaunchConfigurationWorkingCopy, String) in
+	 * the fact that the given arguments are associated to the given contributor in this function.
+	 * In {@link #setJRELaunchingArguments(ILaunchConfigurationWorkingCopy, String)}, the arguments are not
+	 * associated to a specific contributor.
+	 *
+	 * @param configuration the configuration to change.
+	 * @param contributorId the identifier of the contributor.
+	 * @param arguments the arguments to give to the JRE.
+	 * @since 0.12
+	 * @see #setSRELaunchingArguments(ILaunchConfigurationWorkingCopy, String)
+	 */
+	void setExtraJRELaunchingArguments(ILaunchConfigurationWorkingCopy configuration, String contributorId, String arguments);
 
 	/** Set if the agent should be launched in the current Eclipse VM.
 	 *

@@ -50,8 +50,7 @@ public class SARLApplicationLaunchConfiguration extends AbstractSARLLaunchConfig
 	}
 
 	@Override
-	protected String getProgramArguments(ILaunchConfiguration configuration, ISREInstall sre,
-			String standardProgramArguments) throws CoreException {
+	protected String getProgramArguments(ILaunchConfiguration configuration, ISREInstall sre, String standardProgramArguments) throws CoreException {
 		return standardProgramArguments;
 	}
 
