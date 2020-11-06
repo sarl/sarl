@@ -85,8 +85,6 @@ import io.sarl.eclipse.util.Utilities;
  */
 public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab implements ISreChangeListener {
 
-	private static final String NO_OPT = "--"; //$NON-NLS-1$
-
 	private volatile SoftReference<Image> image;
 
 	private volatile String lastAgentNameError;
@@ -127,26 +125,27 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	public void sreChanged(ISREInstall sre) {
 		final Map<String, String> options = sre == null ? Collections.emptyMap() : sre.getAvailableCommandLineOptions();
 		assert options != null;
+		final String noOpt = SarlSwtFactory.getCommandLineOptionPrefix();
 		if (this.showLogInfoButton != null) {
-			final String infoOpt = options.getOrDefault(SRECommandLineOptions.CLI_SHOW_INFO, NO_OPT);
-			final String warnOpt = options.getOrDefault(SRECommandLineOptions.CLI_HIDE_INFO, NO_OPT);
+			final String infoOpt = options.getOrDefault(SRECommandLineOptions.CLI_SHOW_INFO, noOpt);
+			final String warnOpt = options.getOrDefault(SRECommandLineOptions.CLI_HIDE_INFO, noOpt);
 			this.showLogInfoButton.setText(MessageFormat.format(Messages.MainLaunchConfigurationTab_15, infoOpt, warnOpt));
-			this.showLogInfoButton.setEnabled(!Objects.equals(infoOpt, NO_OPT));
+			this.showLogInfoButton.setEnabled(!Objects.equals(infoOpt, noOpt));
 		}
 		if (this.defaultContextIdentifierButton != null) {
-			final String opt = options.getOrDefault(SRECommandLineOptions.CLI_DEFAULT_CONTEXT_ID, NO_OPT);
+			final String opt = options.getOrDefault(SRECommandLineOptions.CLI_DEFAULT_CONTEXT_ID, noOpt);
 			this.defaultContextIdentifierButton.setText(MessageFormat.format(Messages.MainLaunchConfigurationTab_11, opt));
-			this.defaultContextIdentifierButton.setEnabled(!Objects.equals(opt, NO_OPT));
+			this.defaultContextIdentifierButton.setEnabled(!Objects.equals(opt, noOpt));
 		}
 		if (this.randomContextIdentifierButton != null) {
-			final String opt = options.getOrDefault(SRECommandLineOptions.CLI_RANDOM_CONTEXT_ID, NO_OPT);
+			final String opt = options.getOrDefault(SRECommandLineOptions.CLI_RANDOM_CONTEXT_ID, noOpt);
 			this.randomContextIdentifierButton.setText(MessageFormat.format(Messages.MainLaunchConfigurationTab_12, opt));
-			this.randomContextIdentifierButton.setEnabled(!Objects.equals(opt, NO_OPT));
+			this.randomContextIdentifierButton.setEnabled(!Objects.equals(opt, noOpt));
 		}
 		if (this.bootContextIdentifierButton != null) {
-			final String opt = options.getOrDefault(SRECommandLineOptions.CLI_BOOT_AGENT_CONTEXT_ID, NO_OPT);
+			final String opt = options.getOrDefault(SRECommandLineOptions.CLI_BOOT_AGENT_CONTEXT_ID, noOpt);
 			this.bootContextIdentifierButton.setText(MessageFormat.format(Messages.MainLaunchConfigurationTab_13, opt));
-			this.bootContextIdentifierButton.setEnabled(!Objects.equals(opt, NO_OPT));
+			this.bootContextIdentifierButton.setEnabled(!Objects.equals(opt, noOpt));
 		}
 	}
 
@@ -225,11 +224,12 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	 */
 	protected void createContextIdentifierTypeEditor(Composite parent, String text) {
 		final Group group = SWTFactory.createGroup(parent, text, 1, 1, GridData.FILL_HORIZONTAL);
-		this.defaultContextIdentifierButton = createRadioButton(group, MessageFormat.format(Messages.MainLaunchConfigurationTab_11, NO_OPT));
+		final String noOpt = SarlSwtFactory.getCommandLineOptionPrefix();
+		this.defaultContextIdentifierButton = createRadioButton(group, MessageFormat.format(Messages.MainLaunchConfigurationTab_11, noOpt));
 		this.defaultContextIdentifierButton.addSelectionListener(this.defaultListener);
-		this.randomContextIdentifierButton = createRadioButton(group, MessageFormat.format(Messages.MainLaunchConfigurationTab_12, NO_OPT));
+		this.randomContextIdentifierButton = createRadioButton(group, MessageFormat.format(Messages.MainLaunchConfigurationTab_12, noOpt));
 		this.randomContextIdentifierButton.addSelectionListener(this.defaultListener);
-		this.bootContextIdentifierButton = createRadioButton(group, MessageFormat.format(Messages.MainLaunchConfigurationTab_13, NO_OPT));
+		this.bootContextIdentifierButton = createRadioButton(group, MessageFormat.format(Messages.MainLaunchConfigurationTab_13, noOpt));
 		this.bootContextIdentifierButton.addSelectionListener(this.defaultListener);
 	}
 
@@ -255,7 +255,8 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	 */
 	protected void createLaunchOptionEditor(Composite parent, String text) {
 		final Group group = SWTFactory.createGroup(parent, text, 1, 1, GridData.FILL_HORIZONTAL);
-		this.showLogInfoButton = createCheckButton(group, MessageFormat.format(Messages.MainLaunchConfigurationTab_15, NO_OPT));
+		final String noOpt = SarlSwtFactory.getCommandLineOptionPrefix();
+		this.showLogInfoButton = createCheckButton(group, MessageFormat.format(Messages.MainLaunchConfigurationTab_15, noOpt));
 		this.showLogInfoButton.addSelectionListener(this.defaultListener);
 		this.enableAssertionsInRunModeButton = createCheckButton(group, Messages.SARLMainLaunchConfigurationTab_2);
 		this.enableAssertionsInRunModeButton.addSelectionListener(this.defaultListener);

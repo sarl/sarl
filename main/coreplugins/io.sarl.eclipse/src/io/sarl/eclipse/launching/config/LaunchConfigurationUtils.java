@@ -21,6 +21,7 @@
 
 package io.sarl.eclipse.launching.config;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -56,6 +57,16 @@ public final class LaunchConfigurationUtils {
 	 * @since 0.12
 	 */
 	public static String join(String... values) {
+		return join(Arrays.asList(values));
+	}
+
+	/** Replies a string that is the concatenation of the given values.
+	 *
+	 * @param values the values to merge.
+	 * @return the concatenation result.
+	 * @since 0.12
+	 */
+	public static String join(Iterable<String> values) {
 		final StringBuilder buffer = new StringBuilder();
 		for (final String value : values) {
 			if (!Strings.isNullOrEmpty(value)) {
@@ -116,9 +127,9 @@ public final class LaunchConfigurationUtils {
 	 */
 	public abstract static class OutputExtraArguments<T extends OutputExtraArguments<?>> {
 
-		/** The arguments.
+		/** The arguments to set.
 		 */
-		protected final StringBuilder arguments = new StringBuilder();
+		protected final Map<String, String> argumentsToSet = new HashMap<>();
 
 		private final String contributorId;
 
@@ -134,6 +145,18 @@ public final class LaunchConfigurationUtils {
 			return this.contributorId;
 		}
 
+		/** Clear the argument with the given variable name.
+		 *
+		 * @param name the name of the variable.
+		 * @return {@code this}.
+		 */
+		@SuppressWarnings("unchecked")
+		public T clearArg(String name) {
+			final String varName = VariableNames.toPropertyName(name);
+			this.argumentsToSet.remove(varName);
+			return (T) this;
+		}
+
 		/** Create an argument with the given variable name and its associated value.
 		 *
 		 * @param name the name of the variable.
@@ -145,10 +168,7 @@ public final class LaunchConfigurationUtils {
 			if (!Strings.isNullOrEmpty(value)) {
 				final String varName = VariableNames.toPropertyName(name);
 				final String arg = DECL_PREFIX + varName + DECL_INFIX + value;
-				if (this.arguments.length() > 0) {
-					this.arguments.append(" "); //$NON-NLS-1$
-				}
-				this.arguments.append(arg);
+				this.argumentsToSet.put(varName, arg);
 			}
 			return (T) this;
 		}
@@ -244,7 +264,7 @@ public final class LaunchConfigurationUtils {
 		@SuppressWarnings("unchecked")
 		public final T apply(ILaunchConfigurationWorkingCopy configuration, ILaunchConfigurationConfigurator configurator) {
 			writeArguments(configuration, configurator);
-			this.arguments.setLength(0);
+			this.argumentsToSet.clear();
 			return (T) this;
 		}
 
@@ -270,7 +290,8 @@ public final class LaunchConfigurationUtils {
 		@Override
 		protected void writeArguments(ILaunchConfigurationWorkingCopy configuration,
 				ILaunchConfigurationConfigurator configurator) {
-			configurator.setExtraSRELaunchingArguments(configuration, getContributorId(), this.arguments.toString());
+			final String args = join(this.argumentsToSet.values());
+			configurator.setExtraSRELaunchingArguments(configuration, getContributorId(), args);
 		}
 
 	}
@@ -293,7 +314,8 @@ public final class LaunchConfigurationUtils {
 		@Override
 		protected void writeArguments(ILaunchConfigurationWorkingCopy configuration,
 				ILaunchConfigurationConfigurator configurator) {
-			configurator.setExtraJRELaunchingArguments(configuration, getContributorId(), this.arguments.toString());
+			final String args = join(this.argumentsToSet.values());
+			configurator.setExtraJRELaunchingArguments(configuration, getContributorId(), args);
 		}
 
 	}

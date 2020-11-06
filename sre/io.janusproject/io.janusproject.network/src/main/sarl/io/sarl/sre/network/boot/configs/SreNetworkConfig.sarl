@@ -44,6 +44,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import static io.sarl.sre.network.boot.configs.SreNetworkConfig.*
 
 import static extension io.bootique.BQCoreModule.extend
+import java.util.UUID
 
 /** 
  * Configuration for the networking features of the SRE. 
@@ -70,7 +71,7 @@ class SreNetworkConfig {
 	/** 
 	 * Default name of the program.
 	 */
-	public static val DEFAULT_ENABLE_VALUE = false
+	public static val DEFAULT_ENABLE_VALUE = true
 
 	/** 
 	 * Name of the property that contains the name of the Hazelcast cluster.
@@ -134,6 +135,24 @@ class SreNetworkConfig {
 		this.enable = enable
 	}
 
+	/** Replies a cluster name following the standard naming convention.
+	 *
+	 * @param rootContextId is the identifier of the root context of the SRE.
+	 * @return the cluster name.
+	 */
+	static def createStandardClusterName(rootContextId : UUID) : String {
+		rootContextId.toString.createStandardClusterName
+	}
+
+	/** Replies a cluster name following the standard naming convention.
+	 *
+	 * @param rootContextId is the identifier of the root context of the SRE.
+	 * @return the cluster name.
+	 */
+	static def createStandardClusterName(rootContextId : String) : String {
+		CLUSTER_NAME_PREFIX + rootContextId
+	}
+
 	/** Replies the name of the Hazelcast cluster name.
 	 * 
 	 * @param generalConfiguration the reference to the general SRE configuration.
@@ -144,7 +163,7 @@ class SreNetworkConfig {
 		val explicitName = getExplicitClusterName
 		if (explicitName.isNullOrEmpty) {
 			val id = generalConfiguration.boot.rootContextID
-			return CLUSTER_NAME_PREFIX + id.toString
+			return id.createStandardClusterName
 		}
 		return explicitName
 	}

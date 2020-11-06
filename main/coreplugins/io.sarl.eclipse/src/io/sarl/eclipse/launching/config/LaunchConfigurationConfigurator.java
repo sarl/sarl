@@ -114,6 +114,12 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	public static final String ATTR_EXTRA_VM_ARGUMENTS = ".EXTRA_VM_ARGUMENTS"; //$NON-NLS-1$
 
 	/**
+	 * Extra classpath provider attribute key. The value is the identifier of an extra classpath provider.
+	 * @since 0.12
+	 */
+	public static final String ATTR_EXTRA_CLASSPATH_PROVIDER = ".EXTRA_CLASSPATH_PROVIDER"; //$NON-NLS-1$
+
+	/**
 	 * Launch configuration attribute key. The value indicates if the agents are run in the same VM as
 	 * the Eclipse product.
 	 */
@@ -576,6 +582,40 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	@Override
 	public void setAssertionEnabledInRunMode(ILaunchConfigurationWorkingCopy configuration, boolean enable) {
 		configuration.setAttribute(ATTR_ENABLE_ASSERTIONS_IN_RUN_MODE, enable);
+	}
+
+	@Override
+	public String getExtraClasspathProvider(ILaunchConfiguration configuration, String contributorId) {
+		try {
+			final String attrName = contributorId + ATTR_EXTRA_CLASSPATH_PROVIDER;
+			return Strings.nullToEmpty(configuration.getAttribute(attrName, (String) null));
+		} catch (CoreException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public void setExtraClasspathProvider(ILaunchConfigurationWorkingCopy configuration, String contributorId, String classpathContainerId) {
+		final String attrName = contributorId + ATTR_EXTRA_CLASSPATH_PROVIDER;
+		configuration.setAttribute(attrName, classpathContainerId);
+	}
+
+	@Override
+	public List<String> getExtraClasspathProviders(ILaunchConfiguration configuration) {
+		final List<String> identifiers = new ArrayList<>();
+		try {
+			for (final String key : configuration.getAttributes().keySet()) {
+				if (key.endsWith(ATTR_EXTRA_CLASSPATH_PROVIDER)) {
+					final String value = Strings.nullToEmpty(configuration.getAttribute(key, (String) null));
+					if (!Strings.isNullOrEmpty(value)) {
+						identifiers.add(value);
+					}
+				}
+			}
+		} catch (CoreException e) {
+			//
+		}
+		return identifiers;
 	}
 
 }

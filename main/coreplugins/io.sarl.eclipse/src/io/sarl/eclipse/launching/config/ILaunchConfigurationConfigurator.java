@@ -261,4 +261,16 @@ public interface ILaunchConfigurationConfigurator {
 	 */
 	void setAssertionEnabledInRunMode(ILaunchConfigurationWorkingCopy configuration, boolean enable);
 
+	/** Change the identifier of the classpath provider that is injected into the classpath by the given contributor.
+	 *
+	 * <p>A classpath provider has a specific definition of a set of libraries that is considered to be included into the
+	 * application classpath.
+	 *
+	 * @param configuration the configuration to change.
+	 * @param contributorId the identifier of the contributor.
+	 * @param classpathProviderId the identifier of the classpath provider.
+	 * @since 0.12
+	 */
+	void setExtraClasspathProvider(ILaunchConfigurationWorkingCopy configuration, String contributorId, String classpathProviderId);
+
 }

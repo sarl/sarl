@@ -58,6 +58,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import io.sarl.eclipse.launching.LaunchConfigurationConstants;
 import io.sarl.eclipse.launching.config.ILaunchConfigurationAccessor;
 import io.sarl.eclipse.launching.runner.general.SrePathUtils;
+import io.sarl.eclipse.launching.runner.general.SrePathUtils.ExtraClassPathProviders;
 
 /**
  * SARL wizard page for exporting a SARL application into a single Jar file.
@@ -75,6 +76,8 @@ public class ExportSarlApplicationPage extends FixedFatJarExportPage  {
 	private ILaunchConfigurationAccessor configAccessor;
 
 	private final Set<String> selectedJavaProjects;
+
+	private final ExtraClassPathProviders extraClasspathProviders = new ExtraClassPathProviders();
 
 	/** Construct a wizard page for exporting a SARL application within a Jar file.
 	 *
@@ -148,7 +151,7 @@ public class ExportSarlApplicationPage extends FixedFatJarExportPage  {
 	@Override
 	protected IPath[] getClasspath(ILaunchConfiguration configuration) throws CoreException {
 		IRuntimeClasspathEntry[] entries = SrePathUtils.computeUnresolvedSARLRuntimeClasspath(
-				configuration, this.configAccessor, cfg -> getJavaProject(cfg));
+				configuration, this.configAccessor, cfg -> getJavaProject(cfg), this.extraClasspathProviders);
 
 		entries = JavaRuntime.resolveRuntimeClasspath(entries, configuration);
 

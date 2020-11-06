@@ -23,7 +23,10 @@ package io.sarl.eclipse.launching.runner.general;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -35,6 +38,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.internal.launching.LaunchingPlugin;
+import org.eclipse.jdt.internal.launching.RuntimeClasspathProvider;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.JavaRuntime;
 
@@ -68,13 +73,15 @@ public final class SrePathUtils {
 	 * @param configuration the configuration that provides the classpath.
 	 * @param configAccessor the accessor to the SRE configuration.
 	 * @param projectAccessor the accessor to the Java project.
+	 * @param classpathProviders the accessor of classpath providers.
 	 * @return the filtered entries.
 	 * @throws CoreException if impossible to get the classpath.
 	 */
 	public static IRuntimeClasspathEntry[] computeUnresolvedSARLRuntimeClasspath(ILaunchConfiguration configuration,
 			ILaunchConfigurationAccessor configAccessor,
-			IJavaProjectAccessor projectAccessor) throws CoreException {
-		// Get the classpath from the configuration.
+			IJavaProjectAccessor projectAccessor,
+			ExtraClassPathProviders classpathProviders) throws CoreException {
+		// Get the classpath from the configuration (Java classpath).
 		final IRuntimeClasspathEntry[] entries = JavaRuntime.computeUnresolvedRuntimeClasspath(configuration);
 		//
 		final Set<String> addedEntries = new TreeSet<>();
@@ -99,6 +106,26 @@ public final class SrePathUtils {
 				} else if (addedEntries.add(location)) {
 					filteredEntries.add(entry);
 				}
+			}
+		}
+		// Get classpath from the extra contributors
+		for (final String containerId : configAccessor.getExtraClasspathProviders(configuration)) {
+			final RuntimeClasspathProvider provider = classpathProviders.getProvider(containerId);
+			if (provider != null) {
+				final IRuntimeClasspathEntry[] extraEntries = provider.computeUnresolvedClasspath(configuration);
+				if (extraEntries != null) {
+					for (final IRuntimeClasspathEntry extraEntry : extraEntries) {
+						final String location = extraEntry.getLocation();
+						if (location == null) {
+							filteredEntries.add(extraEntry);
+						} else if (addedEntries.add(location)) {
+							filteredEntries.add(extraEntry);
+						}
+					}
+				}
+			} else {
+				throw new CoreException(SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
+						"Classpath provider not found: " + containerId));
 			}
 		}
 		return filteredEntries.toArray(new IRuntimeClasspathEntry[filteredEntries.size()]);
@@ -235,6 +262,44 @@ public final class SrePathUtils {
 			throw new CoreException(SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR, MessageFormat.format(
 					io.sarl.eclipse.launching.dialog.Messages.RuntimeEnvironmentTab_5,
 					sre.getName())));
+		}
+	}
+
+	/** Accessor to the extra classpath providers.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.12
+	 */
+	public static class ExtraClassPathProviders {
+
+		private Map<String, RuntimeClasspathProvider> cpProviders;
+
+		/** Replies the class path provider.
+		 *
+		 * @param identifier the identifier of the classpath provider.
+		 * @return the provider or {@code null} if none.
+		 */
+		public RuntimeClasspathProvider getProvider(String identifier) {
+			ensureProviders();
+			return this.cpProviders.get(identifier);
+		}
+
+		protected void ensureProviders() {
+			if (this.cpProviders == null) {
+				this.cpProviders = new HashMap<>();
+				final IExtensionPoint point = Platform.getExtensionRegistry().getExtensionPoint(
+						LaunchingPlugin.ID_PLUGIN, JavaRuntime.EXTENSION_POINT_RUNTIME_CLASSPATH_PROVIDERS);
+				if (point != null) {
+					final IConfigurationElement[] extensions = point.getConfigurationElements();
+					for (final IConfigurationElement element : Arrays.asList(extensions)) {
+						final RuntimeClasspathProvider res = new RuntimeClasspathProvider(element);
+						this.cpProviders.put(res.getIdentifier(), res);
+					}
+				}
+			}
 		}
 	}
 

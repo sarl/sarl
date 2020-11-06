@@ -605,6 +605,11 @@
 				<version>3.3.3</version>
 			</dependency>
 			<dependency>
+				<groupId>com.hazelcast</groupId>
+				<artifactId>hazelcast</artifactId>
+				<version>4.0.3</version>
+			</dependency>
+			<dependency>
 				<groupId>com.vladsch.flexmark</groupId>
 				<artifactId>flexmark</artifactId>
 				<version>0.62.2</version>

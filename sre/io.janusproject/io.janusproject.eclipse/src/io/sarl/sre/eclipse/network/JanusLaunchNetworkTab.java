@@ -21,13 +21,19 @@
 
 package io.sarl.sre.eclipse.network;
 
+import static io.sarl.eclipse.launching.dialog.SarlSwtFactory.createSpinner;
+import static org.eclipse.debug.internal.ui.SWTFactory.createComposite;
+import static org.eclipse.debug.internal.ui.SWTFactory.createLabel;
+import static org.eclipse.debug.internal.ui.SWTFactory.createSingleText;
+import static org.eclipse.debug.internal.ui.SWTFactory.createWrapLabel;
+
+import java.text.MessageFormat;
 import javax.inject.Inject;
 
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.internal.ui.SWTFactory;
 import org.eclipse.jdt.debug.ui.launchConfigurations.JavaLaunchTab;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -63,6 +69,10 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 	/** Identifier of the contributor for the launch configuration.
 	 */
 	public static final String CONTRIBUTOR_ID = "io.sarl.sre.network"; //$NON-NLS-1$
+
+	private static final int MIN_CLUSTER_SIZE = 1;
+
+	private static final int MAX_CLUSTER_SIZE = 100;
 
 	private Button enableNetworkButton;
 
@@ -105,40 +115,36 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 		return "io.sarl.sre.eclipse.network.janusLaunchNetworkTab"; //$NON-NLS-1$
 	}
 
-	private static Spinner createSpinner(Composite parent, int hspan, int min, int max, int increment, int pageIncrement) {
-		Spinner spinner = new Spinner(parent, SWT.SINGLE | SWT.BORDER);
-		spinner.setFont(parent.getFont());
-		spinner.setMinimum(min);
-		spinner.setMaximum(max);
-		spinner.setIncrement(increment);
-		spinner.setPageIncrement(pageIncrement);
-		spinner.setDigits(0);
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalSpan = hspan;
-		spinner.setLayoutData(gd);
-		return spinner;
-	}
-
 	@Override
 	public void createControl(Composite parent) {
-		final Composite topComp = SWTFactory.createComposite(parent, parent.getFont(), 2, 1, GridData.FILL_HORIZONTAL, 5, 5);
+		final Composite topComp = createComposite(parent, parent.getFont(), 2, 1, GridData.FILL_HORIZONTAL, 5, 5);
+
+		createWrapLabel(topComp, Messages.JanusLaunchNetworkTab_5, 2);
+
+		createVerticalSpacer(topComp, 2);
+		createSeparator(parent, 2);
+		createVerticalSpacer(topComp, 2);
 
 		this.enableNetworkButton = SWTFactory.createCheckButton(topComp, Messages.JanusLaunchNetworkTab_1, null, false, 2);
 		this.enableNetworkButton.addSelectionListener(this.defaultListener);
 
+		createVerticalSpacer(topComp, 2);
 		createSeparator(parent, 2);
-		
-		this.clusterNameLabel = SWTFactory.createLabel(topComp, Messages.JanusLaunchNetworkTab_2, 1);
-		this.clusterNameText = SWTFactory.createSingleText(topComp, 1);
+		createVerticalSpacer(topComp, 2);
+
+		this.clusterNameLabel = createLabel(topComp, Messages.JanusLaunchNetworkTab_2, 1);
+		this.clusterNameText = createSingleText(topComp, 1);
+		this.clusterNameText.setMessage(MessageFormat.format(Messages.JanusLaunchNetworkTab_7,
+				SreNetworkConfig.createStandardClusterName(Messages.JanusLaunchNetworkTab_6)));
 		this.clusterNameText.addModifyListener(this.defaultListener);
 
-		this.minClusterSizeLabel = SWTFactory.createLabel(topComp, Messages.JanusLaunchNetworkTab_3, 1);
-		this.minClusterSizeSpinner = createSpinner(topComp, 1, 1, 1000, 1, 1);
+		this.minClusterSizeLabel = createLabel(topComp, Messages.JanusLaunchNetworkTab_3, 1);
+		this.minClusterSizeSpinner = createSpinner(topComp, 1, MIN_CLUSTER_SIZE, MAX_CLUSTER_SIZE);
 		this.minClusterSizeSpinner.addModifyListener(this.defaultListener);
 
 		this.portAutoIncrementButton = SWTFactory.createCheckButton(topComp, Messages.JanusLaunchNetworkTab_4, null, false, 2);
 		this.portAutoIncrementButton.addSelectionListener(this.defaultListener);
-		
+
 		setControl(topComp);
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(getControl(), getHelpContextId());
 		updateComponentStates();
@@ -168,25 +174,47 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 	}
 
 	@Override
-	public void setDefaults(ILaunchConfigurationWorkingCopy config) {
+	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 		final OutputExtraJreArguments arguments = LaunchConfigurationUtils.createOutputExtraJreArguments(CONTRIBUTOR_ID);
-		arguments.arg(SreNetworkConfig.ENABLE_NAME, SreNetworkConfig.DEFAULT_ENABLE_VALUE);
-		arguments.arg(SreNetworkConfig.CLUSTER_NAME_NAME, SreNetworkConfig.DEFAULT_CLUSTER_NAME_VALUE);
-		arguments.arg(SreNetworkConfig.MIN_CLUSTER_SIZE_NAME, SreNetworkConfig.DEFAULT_MIN_CLUSTER_SIZE_VALUE);
-		arguments.arg(SreNetworkConfig.PORT_AUTO_INCREMENT_NAME, SreNetworkConfig.DEFAULT_PORT_AUTO_INCREMENT_VALUE);
-		arguments.apply(config, this.configurator);
+		final boolean enable = SreNetworkConfig.DEFAULT_ENABLE_VALUE;
+		if (enable) {
+			arguments.arg(SreNetworkConfig.ENABLE_NAME, enable);
+			arguments.arg(SreNetworkConfig.CLUSTER_NAME_NAME, SreNetworkConfig.DEFAULT_CLUSTER_NAME_VALUE);
+			arguments.arg(SreNetworkConfig.MIN_CLUSTER_SIZE_NAME, SreNetworkConfig.DEFAULT_MIN_CLUSTER_SIZE_VALUE);
+			arguments.arg(SreNetworkConfig.PORT_AUTO_INCREMENT_NAME, SreNetworkConfig.DEFAULT_PORT_AUTO_INCREMENT_VALUE);
+			this.configurator.setExtraClasspathProvider(configuration, CONTRIBUTOR_ID,
+					JanusNetworkClasspathProvider.class.getName());
+		} else {
+			arguments.clearArg(SreNetworkConfig.ENABLE_NAME);
+			arguments.clearArg(SreNetworkConfig.CLUSTER_NAME_NAME);
+			arguments.clearArg(SreNetworkConfig.MIN_CLUSTER_SIZE_NAME);
+			arguments.clearArg(SreNetworkConfig.PORT_AUTO_INCREMENT_NAME);
+			this.configurator.setExtraClasspathProvider(configuration, CONTRIBUTOR_ID, null);
+		}
+		arguments.apply(configuration, this.configurator);
 	}
 
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		final OutputExtraJreArguments arguments = LaunchConfigurationUtils.createOutputExtraJreArguments(CONTRIBUTOR_ID);
-		arguments.arg(SreNetworkConfig.ENABLE_NAME, this.enableNetworkButton.getSelection());
-		arguments.arg(SreNetworkConfig.CLUSTER_NAME_NAME, this.clusterNameText.getText());
-		arguments.arg(SreNetworkConfig.MIN_CLUSTER_SIZE_NAME, this.minClusterSizeSpinner.getSelection());
-		arguments.arg(SreNetworkConfig.PORT_AUTO_INCREMENT_NAME, this.portAutoIncrementButton.getSelection());
+		final boolean enable = this.enableNetworkButton.getSelection();
+		if (enable) {
+			arguments.arg(SreNetworkConfig.ENABLE_NAME, enable);
+			arguments.arg(SreNetworkConfig.CLUSTER_NAME_NAME, this.clusterNameText.getText());
+			arguments.arg(SreNetworkConfig.MIN_CLUSTER_SIZE_NAME, this.minClusterSizeSpinner.getSelection());
+			arguments.arg(SreNetworkConfig.PORT_AUTO_INCREMENT_NAME, this.portAutoIncrementButton.getSelection());
+			this.configurator.setExtraClasspathProvider(configuration, CONTRIBUTOR_ID,
+					JanusNetworkClasspathProvider.class.getName());
+		} else {
+			arguments.clearArg(SreNetworkConfig.ENABLE_NAME);
+			arguments.clearArg(SreNetworkConfig.CLUSTER_NAME_NAME);
+			arguments.clearArg(SreNetworkConfig.MIN_CLUSTER_SIZE_NAME);
+			arguments.clearArg(SreNetworkConfig.PORT_AUTO_INCREMENT_NAME);
+			this.configurator.setExtraClasspathProvider(configuration, CONTRIBUTOR_ID, null);
+		}
 		arguments.apply(configuration, this.configurator);
 	}
-	
+
 	/** Listener of events in internal components for refreshing the tab.
 	 *
 	 * @author $Author: sgalland$
@@ -215,7 +243,7 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 		}
 
 		@Override
-		public void modifyText(ModifyEvent e) {
+		public void modifyText(ModifyEvent event) {
 			updateLaunchConfigurationDialog();
 		}
 

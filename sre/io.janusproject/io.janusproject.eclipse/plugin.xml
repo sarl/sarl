@@ -28,4 +28,12 @@
    		<panel class="io.sarl.sre.eclipse.network.JanusLaunchNetworkTabFactory" />
    </extension>
 
+   <extension
+         point="org.eclipse.jdt.launching.classpathProviders">
+      <classpathProvider
+            class="io.sarl.sre.eclipse.network.JanusNetworkClasspathProvider"
+            id="io.sarl.sre.eclipse.network.JanusNetworkClasspathProvider">
+      </classpathProvider>
+   </extension>
+
 </plugin>

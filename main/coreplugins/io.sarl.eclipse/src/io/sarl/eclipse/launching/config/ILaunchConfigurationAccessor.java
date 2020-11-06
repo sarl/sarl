@@ -21,6 +21,8 @@
 
 package io.sarl.eclipse.launching.config;
 
+import java.util.List;
+
 import com.google.inject.ImplementedBy;
 import org.eclipse.debug.core.ILaunchConfiguration;
 
@@ -207,5 +209,28 @@ public interface ILaunchConfigurationAccessor {
 	 * @since 0.5
 	 */
 	boolean isAssertionEnabledInRunMode(ILaunchConfiguration configuration);
+
+	/** Replies the identifier of the classpath provider  that is injected into the classpath by the given contributor.
+	 *
+	 * <p>A classpath provider has a specific definition of a set of libraries that is considered to be included into the
+	 * application classpath.
+	 *
+	 * @param configuration the configuration to change.
+	 * @param contributorId the identifier of the contributor.
+	 * @return the identifier of the classpath provider.
+	 * @since 0.12
+	 */
+	String getExtraClasspathProvider(ILaunchConfiguration configuration, String contributorId);
+
+	/** Replies the identifiers of the classpath providers that are injected into the classpath by the contributors.
+	 *
+	 * <p>A classpath provider has a specific definition of a set of libraries that is considered to be included into the
+	 * application classpath.
+	 *
+	 * @param configuration the configuration to change.
+	 * @return the identifiers of the classpath providers.
+	 * @since 0.12
+	 */
+	List<String> getExtraClasspathProviders(ILaunchConfiguration configuration);
 
 }

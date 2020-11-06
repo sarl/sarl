@@ -51,6 +51,7 @@ import org.eclipse.jdt.launching.LibraryLocation;
 import io.sarl.eclipse.SARLEclipseConfig;
 import io.sarl.eclipse.SARLEclipsePlugin;
 import io.sarl.eclipse.launching.config.ILaunchConfigurationAccessor;
+import io.sarl.eclipse.launching.runner.general.SrePathUtils.ExtraClassPathProviders;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.SARLRuntime;
 
@@ -81,6 +82,8 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 	private SoftReference<String[]> bufferedClasspath;
 
 	private SoftReference<String[]> bufferedModulepath;
+
+	private SoftReference<ExtraClassPathProviders> bufferedClasspathProviders;
 
 	/** Replies the configuration accessor.
 	 *
@@ -137,6 +140,19 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 			this.bufferedModulepath.clear();
 			this.bufferedModulepath = null;
 		}
+		if (this.bufferedClasspathProviders != null) {
+			this.bufferedClasspathProviders.clear();
+			this.bufferedClasspathProviders = null;
+		}
+	}
+
+	private ExtraClassPathProviders ensureClasspathProvidersBuffer() {
+		ExtraClassPathProviders providers = this.bufferedClasspathProviders == null ? null : this.bufferedClasspathProviders.get();
+		if (providers == null) {
+			providers = new ExtraClassPathProviders();
+			this.bufferedClasspathProviders = new SoftReference<>(providers);
+		}
+		return providers;
 	}
 
 	/** Replies the raw (unresolved) class path for the SARL application.
@@ -153,7 +169,8 @@ public abstract class AbstractSARLLaunchConfiguration extends AbstractJavaLaunch
 				return entries;
 			}
 		}
-		final IRuntimeClasspathEntry[] entries = SrePathUtils.computeUnresolvedSARLRuntimeClasspath(configuration, this.configAccessor, cfg -> getJavaProject(cfg));
+		final IRuntimeClasspathEntry[] entries = SrePathUtils.computeUnresolvedSARLRuntimeClasspath(configuration, this.configAccessor,
+			cfg -> getJavaProject(cfg), ensureClasspathProvidersBuffer());
 		if (entries == null) {
 			throw new CoreException(SARLEclipsePlugin.getDefault().createStatus(IStatus.ERROR,
 					"Unable to computer the raw classpath from the launch configuration")); //$NON-NLS-1$
