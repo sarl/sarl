@@ -24,6 +24,9 @@ package io.sarl.sre.eclipse;
 import com.google.common.base.Strings;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ResourceLocator;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
@@ -32,7 +35,6 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- *
  */
 public class JanusEclipsePlugin extends AbstractUIPlugin {
 
@@ -158,6 +160,35 @@ public class JanusEclipsePlugin extends AbstractUIPlugin {
 	@SuppressWarnings("static-method")
 	public IStatus createOkStatus() {
 		return Status.OK_STATUS;
+	}
+
+	/** Replies the image stored in the current Eclipse plugin.
+	 *
+	 * @param imagePath path of the image.
+	 * @return the image.
+	 */
+	public Image getImage(String imagePath) {
+		final ImageDescriptor descriptor = getImageDescriptor(imagePath);
+		if (descriptor == null) {
+			return null;
+		}
+		return descriptor.createImage();
+	}
+
+	/** Replies the image descriptor for the given image path.
+	 *
+	 * @param imagePath path of the image.
+	 * @return the image descriptor.
+	 */
+	public ImageDescriptor getImageDescriptor(String imagePath) {
+		ImageDescriptor descriptor = getImageRegistry().getDescriptor(imagePath);
+		if (descriptor == null) {
+			descriptor = ResourceLocator.imageDescriptorFromBundle(PLUGIN_ID, imagePath).orElse(null);
+			if (descriptor != null) {
+				getImageRegistry().put(imagePath, descriptor);
+			}
+		}
+		return descriptor;
 	}
 
 }

@@ -195,8 +195,7 @@ class SreConfigModule extends AbstractModule {
 		binder.extend.addOption(OptionMetadata.builder(CLASSPATH_SHORT_OPTION, cpDescription)
 				.valueRequired(Messages::SreConfigModule_1)
 				.build)
-				.mapConfigPath(CLASSPATH_SHORT_OPTION, CLASSPATH_NAME)
-				
+				.mapConfigPath(CLASSPATH_SHORT_OPTION, CLASSPATH_NAME)				
 	}
 
 	/** Replies the instance of the SRE configuration.
