@@ -199,7 +199,7 @@ public interface ILaunchConfigurationConfigurator {
 
 	/** Change the command-line arguments to give to the SRE and for a specific contributor ID.
 	 *
-	 * <p>This function differs from {@link #setSRELaunchingArguments(ILaunchConfigurationWorkingCopy, String) in
+	 * <p>This function differs from {@link #setSRELaunchingArguments(ILaunchConfigurationWorkingCopy, String)} in
 	 * the fact that the given arguments are associated to the given contributor in this function.
 	 * In {@link #setSRELaunchingArguments(ILaunchConfigurationWorkingCopy, String)}, the arguments are not
 	 * associated to a specific contributor.
@@ -221,7 +221,7 @@ public interface ILaunchConfigurationConfigurator {
 
 	/** Change the command-line arguments to give to the JRE and for a specific contributor ID.
 	 *
-	 * <p>This function differs from {@link #setJRELaunchingArguments(ILaunchConfigurationWorkingCopy, String) in
+	 * <p>This function differs from {@link #setJRELaunchingArguments(ILaunchConfigurationWorkingCopy, String)} in
 	 * the fact that the given arguments are associated to the given contributor in this function.
 	 * In {@link #setJRELaunchingArguments(ILaunchConfigurationWorkingCopy, String)}, the arguments are not
 	 * associated to a specific contributor.

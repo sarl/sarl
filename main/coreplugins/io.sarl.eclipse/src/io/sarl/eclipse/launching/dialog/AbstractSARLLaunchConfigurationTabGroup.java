@@ -24,7 +24,6 @@ package io.sarl.eclipse.launching.dialog;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import javax.inject.Inject;
 
 import com.google.inject.Injector;

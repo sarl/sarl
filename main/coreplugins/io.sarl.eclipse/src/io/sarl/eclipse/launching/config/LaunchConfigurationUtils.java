@@ -31,8 +31,7 @@ import org.arakhne.afc.bootique.variables.VariableNames;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 
-/**
- * Uitlity functions for the launch configurations.
+/** Utility functions for the launch configurations.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -49,7 +48,6 @@ public final class LaunchConfigurationUtils {
 	private LaunchConfigurationUtils() {
 		//
 	}
-
 
 	/** Replies a string that is the concatenation of the given values.
 	 *
@@ -71,8 +69,8 @@ public final class LaunchConfigurationUtils {
 	}
 
 	/** Create a contributor-specific list  to pass SRE arguments to a launch configuration.
-	 * 
-	 * @param contributId the identifier of the contributor.
+	 *
+	 * @param contributorId the identifier of the contributor.
 	 * @return the argument list
 	 */
 	public static OutputExtraSreArguments createOutputExtraSreArguments(String contributorId) {
@@ -80,8 +78,8 @@ public final class LaunchConfigurationUtils {
 	}
 
 	/** Create a contributor-specific to read SRE arguments from a launch configuration.
-	 * 
-	 * @param contributId the identifier of the contributor.
+	 *
+	 * @param contributorId the identifier of the contributor.
 	 * @return the argument list
 	 */
 	public static InputExtraSreArguments createInputExtraSreArguments(String contributorId) {
@@ -89,8 +87,8 @@ public final class LaunchConfigurationUtils {
 	}
 
 	/** Create a contributor-specific list  to pass JRE arguments to a launch configuration.
-	 * 
-	 * @param contributId the identifier of the contributor.
+	 *
+	 * @param contributorId the identifier of the contributor.
 	 * @return the argument list
 	 */
 	public static OutputExtraJreArguments createOutputExtraJreArguments(String contributorId) {
@@ -98,8 +96,8 @@ public final class LaunchConfigurationUtils {
 	}
 
 	/** Create a contributor-specific to read JRE arguments from a launch configuration.
-	 * 
-	 * @param contributId the identifier of the contributor.
+	 *
+	 * @param contributorId the identifier of the contributor.
 	 * @return the argument list
 	 */
 	public static InputExtraJreArguments createInputExtraJreArguments(String contributorId) {
@@ -116,13 +114,13 @@ public final class LaunchConfigurationUtils {
 	 * @mavenartifactid $ArtifactId$
 	 * @since 0.12
 	 */
-	public static abstract class OutputExtraArguments<T extends OutputExtraArguments<?>> {
-
-		private final String contributorId;
+	public abstract static class OutputExtraArguments<T extends OutputExtraArguments<?>> {
 
 		/** The arguments.
 		 */
 		protected final StringBuilder arguments = new StringBuilder();
+
+		private final String contributorId;
 
 		OutputExtraArguments(String contributorId) {
 			this.contributorId = contributorId;
@@ -247,7 +245,7 @@ public final class LaunchConfigurationUtils {
 		public final T apply(ILaunchConfigurationWorkingCopy configuration, ILaunchConfigurationConfigurator configurator) {
 			writeArguments(configuration, configurator);
 			this.arguments.setLength(0);
-			return (T) this;			
+			return (T) this;
 		}
 
 		protected abstract void writeArguments(ILaunchConfigurationWorkingCopy configuration, ILaunchConfigurationConfigurator configurator);
@@ -257,7 +255,6 @@ public final class LaunchConfigurationUtils {
 	/**
 	 * Arguments to a launch configuration.
 	 *
-	 * @param <T> the type of the arguments list
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -281,7 +278,6 @@ public final class LaunchConfigurationUtils {
 	/**
 	 * Arguments to a launch configuration.
 	 *
-	 * @param <T> the type of the arguments list
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -305,17 +301,20 @@ public final class LaunchConfigurationUtils {
 	/**
 	 * Arguments from a launch configuration.
 	 *
+	 * @param <T> the type of the arguments list
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 * @since 0.12
 	 */
-	public static abstract class InputExtraArguments<T extends InputExtraArguments<?>> {
+	public abstract static class InputExtraArguments<T extends InputExtraArguments<?>> {
+
+		/** List of arguments.
+		 */
+		protected final Map<String, String> arguments = new HashMap<>();
 
 		private final String contributorId;
-
-		protected final Map<String, String> arguments = new HashMap<>();
 
 		InputExtraArguments(String contributorId) {
 			this.contributorId = contributorId;

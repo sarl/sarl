@@ -22,7 +22,7 @@
 package io.sarl.eclipse.launching.dialog;
 
 /**
- * Interace for representing any tab for the SARL run-time environment configuration. 
+ * Interace for representing any tab for the SARL run-time environment configuration.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
