@@ -1,3 +1,24 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2020 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.sarl.sre.network.services
 
 import com.google.inject.Injector
@@ -15,16 +36,24 @@ import io.sarl.sre.boot.configs.SreConfig
 import io.sarl.sre.internal.SmartListenerCollection
 import io.sarl.sre.services.context.ContextService
 import io.sarl.sre.services.context.LocalSpaceRepository
-import io.sarl.sre.services.context.SpaceRepository.SpaceDescription
 import io.sarl.sre.services.executor.ExecutorService
 import io.sarl.sre.services.logging.LoggingService
 import io.sarl.sre.spaces.SreSpaceSpecificationFactory
+import java.text.MessageFormat
 import java.util.UUID
-import java.util.concurrent.ConcurrentHashMap
 import java.util.logging.Level
 import java.util.logging.Logger
 import javax.inject.Inject
 
+/** Implementation of a space repository that is connected to remote SRE with Hazelcast framework.
+ *
+ * @author $Author: ngaud$
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
 class HazelcastSpaceRepository extends LocalSpaceRepository {
 
 	/** 
@@ -63,13 +92,13 @@ class HazelcastSpaceRepository extends LocalSpaceRepository {
 	@Inject
 	new(injector : Injector, executor : ExecutorService, config : SreConfig,
 		specificationFactory : SreSpaceSpecificationFactory,
-		internalStructure : ConcurrentHashMap<UUID, SpaceDescription>, listenerCollection : SmartListenerCollection<?>,
+		listenerCollection : SmartListenerCollection<?>,
 		icontextService : ContextService, iHazelcastInstance : HazelcastInstance, logger : LoggingService) {
 		super(injector, executor, config, specificationFactory, listenerCollection)
 		contextService = icontextService
 		hazelcastInstance = iHazelcastInstance
 		kernelLogger = logger.kernelLogger
-		kernelLogger.log(Level::INFO, "Creating HazelcastSpaceRepository")
+		kernelLogger.log(Level::INFO, Messages::HazelcastSpaceRepository_0)
 		availableTopicsName = this.hazelcastInstance.getSet(
 			HazelcastEventTransportService.HAZELCAST_SARL_TOPICS_NAME_SET);
 		spaceIDs = this.hazelcastInstance.getMap(HAZELCAST_SPACE_ID_MAP_NAME);
@@ -107,7 +136,7 @@ class HazelcastSpaceRepository extends LocalSpaceRepository {
 
 		}
 		spaceIDsListernerID = spaceIDs.addEntryListener(spaceIDsListerner, true)
-		kernelLogger.log(Level::INFO, "End of Creating HazelcastSpaceRepository")
+		kernelLogger.log(Level::INFO, Messages::HazelcastSpaceRepository_1)
 
 	}
 
@@ -117,14 +146,12 @@ class HazelcastSpaceRepository extends LocalSpaceRepository {
 		// checking that the enclosing context of this new space already exists locally before creating the space
 		var localContext = contextService.getContext(spaceID.contextID)
 		if (localContext === null) {
-			kernelLogger.log(Level::SEVERE,
-				"ERROR: Creating a space but the corresponding enclosing context did not exist locally")
+			kernelLogger.log(Level::SEVERE, Messages::HazelcastSpaceRepository_2)
 		}
 		this.spaceIDs.putIfAbsent(spaceID, creationParams);
 		// FIXME Extract topic name creation in a dedicated function
 		var topicName : String = HazelcastEventTransportService.getTopicNameFromSpaceID(spaceID)
-		kernelLogger.log(Level::INFO,
-			"HazelcastSpaceRepository: New space created "+spaceID+", adding a new topic named " + topicName)
+		kernelLogger.log(Level::INFO, MessageFormat::format(Messages::HazelcastSpaceRepository_3, spaceID, topicName))
 		this.availableTopicsName.add(topicName)
 
 		return super.createSpaceFirstInstance(spec, spaceID, creationParams);
@@ -149,7 +176,7 @@ class HazelcastSpaceRepository extends LocalSpaceRepository {
 		// FIXME Extract topic name creation in a dedicated function
 		var topicName : String = HazelcastEventTransportService.HAZELCAST_SARL_TOPICS_ROOTWILCARD + SpaceName.SCHEME +
 			"." + id.contextID + "." + id.ID
-		kernelLogger.log(Level::INFO, "HazelcastSpaceRepository: Space removed, removing the topic named " + topicName)
+		kernelLogger.log(Level::INFO, MessageFormat::format(Messages::HazelcastSpaceRepository_4, topicName))
 		this.availableTopicsName.remove(topicName)
 		super.removeSpaceIfEmpty(id.ID)
 	}

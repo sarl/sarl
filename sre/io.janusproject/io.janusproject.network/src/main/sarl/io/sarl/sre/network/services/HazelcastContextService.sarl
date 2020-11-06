@@ -1,3 +1,24 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2020 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.sarl.sre.network.services
 
 import com.google.inject.Injector
@@ -17,12 +38,21 @@ import java.util.UUID
 import java.util.logging.Level
 import java.util.logging.Logger
 import javax.inject.Inject
+import java.text.MessageFormat
 
+/** Implementation of a context-space service that is connected to remote SRE with the Hazelcast framework.
+ *
+ * @author $Author: ngaud$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
 class HazelcastContextService extends MemoryBasedContextService {
 
-		/** 
-		 * Local Hazelcast instance
-		 */
+	/** 
+	 * Local Hazelcast instance
+	 */
 	var hazelcastInstance : HazelcastInstance;
 
 	/** 
@@ -43,7 +73,7 @@ class HazelcastContextService extends MemoryBasedContextService {
 
 	@Inject
 	new(sreConfig : SreConfig, @KernelScope rootContext : Context, injector : Injector, factory : ContextFactory,
-		iHazelcastInstance : HazelcastInstance, distributedContextSpaceMapName : String, logger : LoggingService) {
+		iHazelcastInstance : HazelcastInstance, logger : LoggingService) {
 		super(rootContext, injector, factory);
 
 		hazelcastInstance = iHazelcastInstance;
@@ -54,25 +84,24 @@ class HazelcastContextService extends MemoryBasedContextService {
 		kernelLogger.log(Level::INFO, "RootSpaceID from BootCOnfig: " + sreConfig.boot.rootSpaceID)
 		kernelLogger.log(Level::INFO, "RootID from rootContext: " + rootContext.ID)
 		kernelLogger.log(Level::INFO, "RootSpaceID from rootContext: " + rootContext.defaultSpace.spaceID.ID)*/
-		kernelLogger.log(Level::INFO, "About to get map")
+		kernelLogger.log(Level::INFO, Messages::HazelcastContextService_0)
 		defaultSpaces = this.hazelcastInstance.getMap(sreConfig.boot.rootContextID.toString());
 
-// Can't access to that rootContext.defaultSpace 
+		// Can't access to that rootContext.defaultSpace 
 		// registering root context, the root context is created differently than other contexts using a call to the ContextFactory directly
-		kernelLogger.log(Level::INFO, "Registering Root Context on distributed map")
+		kernelLogger.log(Level::INFO, Messages::HazelcastContextService_1)
 		this.defaultSpaces.putIfAbsent(sreConfig.boot.rootContextID, sreConfig.boot.rootSpaceID);
 
-		kernelLogger.log(Level::INFO, "About to create listener")
+		kernelLogger.log(Level::INFO, Messages::HazelcastContextService_2)
 
 		var defaultSpacesListener : EntryListener<UUID, UUID> = new DefaultSpacesMapListener(this)
 		defaultSpacesListenerID = defaultSpaces.addEntryListener(defaultSpacesListener, true)
-		kernelLogger.log(Level::INFO, "End of Creating HazelcastContextService")
+		kernelLogger.log(Level::INFO, Messages::HazelcastContextService_3)
 
 	}
 
 	protected def newContextInstance(contextID : UUID, defaultSpaceID : UUID, owner : Agent) : Context {
-		kernelLogger.log(Level::INFO,
-			"From HazelcastContextService adding new Context " + contextID + " and its default space " + defaultSpaceID)
+		kernelLogger.log(Level::INFO, MessageFormat::format(Messages::HazelcastContextService_4, contextID, defaultSpaceID))
 		this.defaultSpaces.putIfAbsent(contextID, defaultSpaceID);
 
 		return super.newContextInstance(contextID, defaultSpaceID, owner)
@@ -89,18 +118,14 @@ class HazelcastContextService extends MemoryBasedContextService {
 	}
 
 	protected def ensureDefaultSpaceDefinition(contextID : UUID, defaultSpaceID : UUID, owner : Agent) {
-		kernelLogger.log(Level::INFO,
-			"Creating local space " + defaultSpaceID + " of the Context " + contextID + " following a network request")
+		kernelLogger.log(Level::INFO, MessageFormat::format(Messages::HazelcastContextService_5, defaultSpaceID, contextID))
 
 		if (!this.contextInternalStructure.containsKey(contextID)) {
 			// Assuming the first request we got, is the one corresponding to the default space
 			super.createContext(contextID, defaultSpaceID, owner);
 		} else {
 			if (getContext(contextID).defaultSpace.spaceID.ID != defaultSpaceID) {
-				kernelLogger.log(Level::SEVERE,
-					"ERROR: Trying to create a local space" + defaultSpaceID +
-						"  considered as the default space of the Context " + contextID +
-						" following a network request, but is is not")
+				kernelLogger.log(Level::SEVERE, MessageFormat::format(Messages::HazelcastContextService_6, defaultSpaceID, contextID))
 			}
 		}
 	}
@@ -110,16 +135,11 @@ class HazelcastContextService extends MemoryBasedContextService {
 
 			if (getContext(contextID).defaultSpace.spaceID.ID === defaultSpaceID) {
 
-				kernelLogger.log(Level::INFO,
-					"Removing local space " + defaultSpaceID + " of the Context " + contextID +
-						" following a network request")
+				kernelLogger.log(Level::INFO, MessageFormat::format(Messages::HazelcastContextService_7, defaultSpaceID, contextID))
 				super.removeContext(contextID)
 
 			} else {
-				kernelLogger.log(Level::SEVERE,
-					"ERROR: Trying to remove a local space" + defaultSpaceID +
-						"  considered as the default space of the Context " + contextID +
-						" following a network request, but is is not")
+				kernelLogger.log(Level::SEVERE, MessageFormat::format(Messages::HazelcastContextService_8, defaultSpaceID, contextID))
 			}
 
 		}
@@ -132,7 +152,15 @@ class HazelcastContextService extends MemoryBasedContextService {
 		defaultSpaces.removeEntryListener(defaultSpacesListenerID)
 	}
 
-	static class DefaultSpacesMapListener implements EntryListener<UUID, UUID> {
+	/** Listener on Hazelcast's shared map events.
+	 *
+	 * @author $Author: ngaud$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.12
+	 */
+	protected static class DefaultSpacesMapListener implements EntryListener<UUID, UUID> {
 		var hazelcastContextService : HazelcastContextService
 
 

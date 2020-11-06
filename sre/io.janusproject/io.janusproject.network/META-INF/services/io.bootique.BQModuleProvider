@@ -1,1 +1,2 @@
-io.sarl.sre.network.boot.NetworkModuleProvider
+io.sarl.sre.network.boot.internal.NetworkModuleProvider
+io.sarl.sre.network.boot.configs.SreNetworkConfigModuleProvider

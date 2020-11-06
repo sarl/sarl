@@ -1,3 +1,24 @@
+/*
+ * $Id$
+ *
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ *
+ * Copyright (C) 2014-2020 the original authors or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.sarl.sre.network.services
 
 import com.hazelcast.collection.ISet
@@ -13,13 +34,13 @@ import io.sarl.lang.core.Event
 import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.Scope
 import io.sarl.lang.core.SpaceID
-import io.sarl.sre.boot.configs.SreConfig
 import io.sarl.sre.services.context.Context
 import io.sarl.sre.services.context.ContextService
 import io.sarl.sre.services.logging.LoggingService
 import io.sarl.sre.spaces.AbstractEventSpace
 import io.sarl.sre.spaces.EventTransportService
 import java.io.Serializable
+import java.text.MessageFormat
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import java.util.logging.Level
@@ -31,20 +52,27 @@ import javax.inject.Singleton
  * Implementation of a MTS using Hazeclast topics to distribute messages over a network of SARL's SREs. 
  * For EventSpace, the Hazelcast topics' messages contains events
  * 
- * <p>Topics' naming conventions (based on io.sarl.api.naming: 
- * Context: io.sarl.topics.context.contextId
- * Space: io.sarl.topics.space.contextId.spaceId
- * Agent: io.sarl.topics.agent.contextId.spaceId.agentId
- * Skill: io.sarl.topics.skill.contextId.spaceId.agentId.capacityType
- * Behavior: io.sarl.topics.behavior.contextId.spaceId.agentId.behaviorType.behaviorIndex
- * Skill: io.sarl.topics.service.serviceType
+ * <p>Topics' naming conventions (based on io.sarl.api.naming): <ul>
+ * <li>Context: io.sarl.topics.context.contextId</li>
+ * <li>Space: io.sarl.topics.space.contextId.spaceId</li>
+ * <li>Agent: io.sarl.topics.agent.contextId.spaceId.agentId</li>
+ * <li>Skill: io.sarl.topics.skill.contextId.spaceId.agentId.capacityType</li>
+ * <li>Behavior: io.sarl.topics.behavior.contextId.spaceId.agentId.behaviorType.behaviorIndex</li>
+ * <li>Skill: io.sarl.topics.service.serviceType</li>
+ * </ul>
+ *
+ * @author $Author: ngaud$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
  */
 @Singleton
 class HazelcastEventTransportService implements EventTransportService {
 
-		/** 
-		 * Local Hazelcast instance
-		 */
+	/** 
+	 * Local Hazelcast instance
+	 */
 	var hazelcastInstance : HazelcastInstance;
 
 	/** 
@@ -99,9 +127,8 @@ class HazelcastEventTransportService implements EventTransportService {
 		// FIXME Extract topic name creation in a dedicated function
 		var topicName : String = getTopicNameFromSpaceID(^space.spaceID)
 		var spaceTopic : ITopic<TopicMessage> = this.hazelcastInstance.getReliableTopic(topicName);
-		kernelLogger.log(Level::INFO,
-			"About to publish a network message (type="+^event.class+") on space " + ^space.spaceID.ID + " in the context " +
-				^space.spaceID.contextID + " using the topic named " + topicName)
+		kernelLogger.log(Level::INFO, MessageFormat::format(Messages::HazelcastEventTransportService_0,
+				^event.class, ^space.spaceID.ID, ^space.spaceID.contextID, topicName))
 		spaceTopic.publish(new TopicMessage(^event, scope))
 		true
 	}
@@ -110,10 +137,18 @@ class HazelcastEventTransportService implements EventTransportService {
 		(HAZELCAST_SARL_TOPICS_ROOTWILCARD + SpaceName.SCHEME + "." + spaceID.contextID + "." + spaceID.ID)		
 	}
 
+	/** Envelope for Hazelcast messages.
+	 *
+	 * @author $Author: ngaud$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.12
+	 */
 	static class TopicMessage implements Serializable {
 
-		var transferredEvent : Event
-		var trasnferredScope : Scope<? super Address>
+		val transferredEvent : Event
+		val trasnferredScope : Scope<? super Address>
 
 		new(e : Event, s : Scope<? super Address>) {
 			transferredEvent = e
@@ -122,7 +157,15 @@ class HazelcastEventTransportService implements EventTransportService {
 
 	}
 
-	static class TopicNameListener implements ItemListener<String> {
+	/** Listener on Hazelcast events.
+	 *
+	 * @author $Author: ngaud$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.12
+	 */
+	protected static class TopicNameListener implements ItemListener<String> {
 
 		/** 
 		 * SRE Kernel logger
@@ -153,12 +196,10 @@ class HazelcastEventTransportService implements EventTransportService {
 		}
 
 		def itemAdded(newTopicName : ItemEvent<String>) {
-			kernelLogger.log(Level::INFO,
-				"HazelcastEventTransportService: New space topic created with the following name" + newTopicName.item)
+			kernelLogger.log(Level::INFO, MessageFormat::format(Messages::TopicNameListener_0, newTopicName.item))
 
 			if (!topicListenerIDs.containsKey(newTopicName.item)) {
-				kernelLogger.log(Level::INFO,
-					"HazelcastEventTransportService: Adding listener for the following space" + newTopicName.item)
+				kernelLogger.log(Level::INFO, MessageFormat::format(Messages::TopicNameListener_1, newTopicName.item))
 				var topic : ITopic<TopicMessage> = this.hazelcastInstance.getReliableTopic(newTopicName.item)
 				var listenerID = topic.addMessageListener(new TopicMessageListener(this.kernelLogger,newTopicName.item,contextService))
 				topicListenerIDs.put(newTopicName.item, listenerID)
@@ -166,8 +207,7 @@ class HazelcastEventTransportService implements EventTransportService {
 		}
 
 		def itemRemoved(removedTopicName : ItemEvent<String>) {			
-			kernelLogger.log(Level::INFO,
-				"HazelcastEventTransportService: Existing space topic removed with the following name" + removedTopicName.item)
+			kernelLogger.log(Level::INFO, MessageFormat::format(Messages::TopicNameListener_2, removedTopicName.item))
 			var topic : ITopic<Event> = this.hazelcastInstance.getReliableTopic(removedTopicName.item)
 			var existingListenerID = topicListenerIDs.get(removedTopicName.item)
 			topic.removeMessageListener(existingListenerID)
@@ -177,7 +217,15 @@ class HazelcastEventTransportService implements EventTransportService {
 
 	}
 
-	static class TopicMessageListener implements MessageListener<TopicMessage> {
+	/** Envelope for Hazelcast topic messages.
+	 *
+	 * @author $Author: ngaud$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 0.12
+	 */
+	protected static class TopicMessageListener implements MessageListener<TopicMessage> {
 
 		/** 
 		 * SRE Kernel logger
@@ -209,17 +257,14 @@ class HazelcastEventTransportService implements EventTransportService {
 			if (context !== null) {
 				for (localSpace : context.spaces) {
 					if (localSpace.spaceID.ID.equals(spaceUIID)) {
-						kernelLogger.log(Level::INFO,
-							"Receiving distant Space message from the space" + spaceUIID + "  of the Context " +
-								contextUUID + "and dispatching this event locally")
+						kernelLogger.log(Level::INFO, MessageFormat::format(Messages::TopicMessageListener_0, 
+							spaceUIID, contextUUID))
 						(localSpace as AbstractEventSpace).emit(eventToDispatchLocally.source.UUID,
 							eventToDispatchLocally, incomingMessage.messageObject.trasnferredScope as Scope<Address>)
 					}
 				}
 			} else {
-				kernelLogger.log(Level::SEVERE,
-					"ERROR: Receiving distant message from the space" + spaceUIID + "  of the Context " + contextUUID +
-						"but this context does not exist locally")
+				kernelLogger.log(Level::SEVERE, MessageFormat::format(Messages::TopicMessageListener_1, spaceUIID, contextUUID))
 			}
 		}
 

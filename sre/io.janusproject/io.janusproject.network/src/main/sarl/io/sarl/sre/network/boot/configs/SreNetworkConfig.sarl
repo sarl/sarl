@@ -1,0 +1,296 @@
+/* 
+ * $Id$
+ * 
+ * SARL is an general-purpose agent programming language.
+ * More details on http://www.sarl.io
+ * 
+ * Copyright (C) 2014-2020 the original authors or authors.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.sarl.sre.network.boot.configs
+
+import com.google.inject.AbstractModule
+import com.google.inject.Injector
+import com.google.inject.Module
+import com.google.inject.Provides
+import io.bootique.BQModule
+import io.bootique.BQModuleProvider
+import io.bootique.annotation.BQConfig
+import io.bootique.annotation.BQConfigProperty
+import io.bootique.config.ConfigurationFactory
+import io.bootique.meta.application.OptionMetadata
+import io.sarl.sre.boot.configs.SreConfig
+import java.lang.reflect.Type
+import java.text.MessageFormat
+import java.util.Collections
+import java.util.Map
+import javax.inject.Singleton
+import org.arakhne.afc.bootique.variables.VariableDecls
+import org.arakhne.afc.bootique.variables.VariableNames
+import org.eclipse.xtend.lib.annotations.Accessors
+
+import static io.sarl.sre.network.boot.configs.SreNetworkConfig.*
+
+import static extension io.bootique.BQCoreModule.extend
+
+/** 
+ * Configuration for the networking features of the SRE. 
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+@BQConfig("Configuration for the SRE networking feature")
+class SreNetworkConfig {
+
+	/** 
+	 * Prefix for the configuration entries of the modules.
+	 */
+	public static val PREFIX = "sreNetwork"
+
+	/** 
+	 * Name of the property that enable or disable the networking features.
+	 */
+	public static val ENABLE_NAME = PREFIX + ".enable"; // $NON-NLS-1$
+
+	/** 
+	 * Default name of the program.
+	 */
+	public static val DEFAULT_ENABLE_VALUE = false
+
+	/** 
+	 * Name of the property that contains the name of the Hazelcast cluster.
+	 */
+	public static val CLUSTER_NAME_NAME = PREFIX + ".clusterName"; // $NON-NLS-1$
+
+	/** 
+	 * Prefix for the default cluster name.
+	 */
+	public static val CLUSTER_NAME_PREFIX = "io.sarl.sre-hazelcast-"; // $NON-NLS-1$
+
+	/** 
+	 * Default value for the explicit cluster name.
+	 */
+	public static val DEFAULT_CLUSTER_NAME_VALUE = ""; // $NON-NLS-1$
+
+	/** 
+	 * Name of the property that indicates the method for cluster joins.
+	 */
+	public static val JOIN_METHOD_NAME = PREFIX + ".joinMethod"; // $NON-NLS-1$
+
+	/**
+	 * Name of the property that enable or disable the auto-increment of the port numbers.
+	 */
+	public static val PORT_AUTO_INCREMENT_NAME = PREFIX + ".portAutoIncrement"; // $NON-NLS-1$
+
+	/** 
+	 * Default flag for the auto-increment of the port numbers.
+	 */
+	public static val DEFAULT_PORT_AUTO_INCREMENT_VALUE = true
+
+	/**
+	 * Name of the property that contains the minimal number of hazelcast nodes before starting.
+	 */
+	public static val MIN_CLUSTER_SIZE_NAME = PREFIX + ".minClusterSize"; // $NON-NLS-1$
+
+	/** 
+	 * Default value for the minimal number of hazelcast nodes before starting.
+	 */
+	public static val DEFAULT_MIN_CLUSTER_SIZE_VALUE = 2
+
+	@Accessors(PUBLIC_GETTER)
+	var enable : boolean = DEFAULT_ENABLE_VALUE
+
+	var clusterName : String
+
+	var joinMethod : JoinMethod
+
+	@Accessors(PUBLIC_GETTER)
+	var portAutoIncrement : boolean = DEFAULT_PORT_AUTO_INCREMENT_VALUE
+
+	@Accessors(PUBLIC_GETTER)
+	var minClusterSize : int = DEFAULT_MIN_CLUSTER_SIZE_VALUE
+
+	/** Change the flag that enable or disable the networking features.
+	 * 
+	 * @param enable the flag value.
+	 */
+	@BQConfigProperty("Enable or disable the networking features.")
+	def setEnable(enable : boolean) {
+		this.enable = enable
+	}
+
+	/** Replies the name of the Hazelcast cluster name.
+	 * 
+	 * @param generalConfiguration the reference to the general SRE configuration.
+	 * @return the cluster name.
+	 * @see #getExplicitClusterName()
+	 */
+	def getRealClusterName(generalConfiguration : SreConfig) : String {
+		val explicitName = getExplicitClusterName
+		if (explicitName.isNullOrEmpty) {
+			val id = generalConfiguration.boot.rootContextID
+			return CLUSTER_NAME_PREFIX + id.toString
+		}
+		return explicitName
+	}
+
+	/** Replies the name of the Hazelcast cluster name that is explicitly provided into the configuration.
+	 * 
+	 * @return the cluster name.
+	 * @see #getRealClusterName()
+	 */
+	def getExplicitClusterName : String {
+		return this.clusterName
+	}
+
+	/** Change the name of the Hazelcast cluster name.
+	 * 
+	 * @param name the new cluster name.
+	 * @see #getExplicitClusterName()
+	 * @see #getRealClusterName()
+	 */
+	@BQConfigProperty("Name of the Hazelcast cluster. By default, this name is based on the identifier of the agent root context.")
+	def setClusterName(name : String) {
+		this.clusterName = name
+	}
+
+	/** 
+	 * Replies the method for cluster joining.
+	 * 
+	 * @return the join method.
+	 */
+	def getJoinMethod() : JoinMethod {
+		ensureJoinMethod
+		return this.joinMethod
+	}
+
+	/** 
+	 * Set the method for cluster joining.
+	 * 
+	 * @param method the join method.
+	 */
+	@BQConfigProperty("method for joining the Hazelcast cluster")
+	def setJoinMethod(type : JoinMethod) {
+		this.joinMethod = type
+		ensureJoinMethod
+	}
+	/** 
+	 * Set the minimum number of nodes into the cluster before starting the SRE.
+	 * 
+	 * @param clusterSize the minimum number of nodes into the cluster.
+	 */
+	@BQConfigProperty("minimal number of nodes in the cluster before starting the SRE")
+	def setMinClusterSize(clusterSize : int) {
+		if (clusterSize < 1) {
+			this.minClusterSize = 1
+		} else {
+			this.minClusterSize = clusterSize
+		}
+	}
+
+	private def ensureJoinMethod : void {
+		if (this.joinMethod === null) {
+			this.joinMethod = JoinMethod::^default
+		}
+	}
+
+	/** Change the flag that enable or disable the auto-increment of the port numbers.
+	 * 
+	 * @param enable the flag value.
+	 */
+	@BQConfigProperty("Enable or disable the auto-incrementation of the Hazelcast port numbers.")
+	def setPortAutoIncrement(enable : boolean) {
+		this.portAutoIncrement = enable
+	}
+
+	/** Replies the configuration for the networking features of the SRE.
+	 * 
+	 * @param configFactory the general configuration factory.
+	 * @return the configuration.
+	 */
+	static def getConfiguration(configFactory : ConfigurationFactory) : SreNetworkConfig {
+		assert configFactory !== null
+		var factory = configFactory.config(typeof(SreNetworkConfig), PREFIX)
+		return factory
+	}
+
+}
+
+/** 
+ * Module for creating and configuring the networking features of the SRE.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+class SreNetworkConfigModule extends AbstractModule {
+
+	static val NETWORK_LONG_OPTION = "network"
+
+	override configure : void {
+		VariableDecls::extend(binder).declareVar(NETWORK_LONG_OPTION)
+		val cpDescription = MessageFormat::format(Messages::SreNetworkConfigModule_1, DEFAULT_ENABLE_VALUE.toString,
+				VariableNames::toEnvironmentVariableName(ENABLE_NAME))
+		binder.extend.addOption(OptionMetadata::builder(NETWORK_LONG_OPTION, cpDescription)
+				.valueRequired(Messages::SreNetworkConfigModule_0)
+				.build)
+				.mapConfigPath(NETWORK_LONG_OPTION, ENABLE_NAME)
+	}
+
+	/** Replies the instance of the network configuration.
+	 * 
+	 * @param configFactory accessor to the bootique factory.
+	 * @param injector the current injector.
+	 * @return the configuration accessor.
+	 */
+	@Provides
+	@Singleton
+	def provideSreNetworkConfig(configFactory : ConfigurationFactory, injector : Injector) : SreNetworkConfig  {
+		val config = getConfiguration(configFactory)
+		injector.injectMembers(config)
+		return config
+	}
+
+}
+
+/** Provider of the module for creating and configuring the networking features of the SRE.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 0.12
+ */
+class SreNetworkConfigModuleProvider implements BQModuleProvider {
+
+	override module : Module {
+		return new SreNetworkConfigModule
+	}
+
+	override configs : Map<String, Type> {
+		return Collections::singletonMap(PREFIX, typeof(SreNetworkConfig))
+	}
+
+	override moduleBuilder : BQModule.Builder {
+		return BQModule::builder(module).overrides(overrides).providerName(name).configs(configs).description(
+			Messages::SreNetworkConfigModuleProvider_0);
+	}
+
+}
