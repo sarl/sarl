@@ -70,7 +70,6 @@ import io.sarl.sre.boot.configs.SreConfig
 class NetworkModule extends AbstractModule {
 
 	protected override configure {
-		typeof(EventTransportService).bind.to(typeof(HazelcastEventTransportService)).in(typeof(Singleton))
 	}
 
 	@Provides

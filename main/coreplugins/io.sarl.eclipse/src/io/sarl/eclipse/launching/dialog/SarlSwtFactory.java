@@ -113,6 +113,7 @@ public final class SarlSwtFactory extends SWTFactory {
 	 * This function is OS dependent.
 	 *
 	 * @param name the name of the option.
+	 * @param value the value to put in the command-line option.
 	 * @return the command-line option.
 	 */
 	public static String getCommandLineOption(String name, boolean value) {
@@ -123,7 +124,7 @@ public final class SarlSwtFactory extends SWTFactory {
 	 * This function is OS dependent.
 	 *
 	 * @param name the name of the option.
-	 * @param value the value of the option.
+	 * @param value the value to put in the command-line option.
 	 * @return the command-line option.
 	 */
 	public static String getCommandLineDefinition(String name, boolean value) {
@@ -134,7 +135,7 @@ public final class SarlSwtFactory extends SWTFactory {
 	 * This function is OS dependent.
 	 *
 	 * @param name the name of the option.
-	 * @param value the value of the option.
+	 * @param value the value to put in the command-line option.
 	 * @return the command-line option.
 	 */
 	public static String getCommandLineDefinition(String name, long value) {
@@ -145,7 +146,7 @@ public final class SarlSwtFactory extends SWTFactory {
 	 * This function is OS dependent.
 	 *
 	 * @param name the name of the option.
-	 * @param value the value of the option.
+	 * @param value the value to put in the command-line option.
 	 * @return the command-line option.
 	 */
 	public static String getCommandLineDefinition(String name, double value) {
@@ -156,7 +157,7 @@ public final class SarlSwtFactory extends SWTFactory {
 	 * This function is OS dependent.
 	 *
 	 * @param name the name of the option.
-	 * @param value the value of the option.
+	 * @param value the value to put in the command-line option.
 	 * @return the command-line option.
 	 */
 	public static String getCommandLineDefinition(String name, String value) {

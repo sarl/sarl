@@ -30,7 +30,6 @@ import static org.eclipse.debug.internal.ui.SWTFactory.createSingleText;
 import static org.eclipse.debug.internal.ui.SWTFactory.createWrapLabel;
 
 import java.text.MessageFormat;
-
 import javax.inject.Inject;
 
 import org.arakhne.afc.bootique.variables.VariableNames;
@@ -130,7 +129,7 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 		createSeparator(parent, 2);
 		createVerticalSpacer(topComp, 2);
 
-		this.enableNetworkButton = SWTFactory.createCheckButton(topComp, 
+		this.enableNetworkButton = SWTFactory.createCheckButton(topComp,
 				MessageFormat.format(Messages.JanusLaunchNetworkTab_1,
 						getCommandLineOption(SreNetworkConfigModule.NETWORK_LONG_OPTION, true),
 						getCommandLineDefinition(VariableNames.toPropertyName(SreNetworkConfig.ENABLE_NAME), true)),
