@@ -261,7 +261,7 @@ class SreNetworkConfig {
  */
 class SreNetworkConfigModule extends AbstractModule {
 
-	static val NETWORK_LONG_OPTION = "network"
+	public static val NETWORK_LONG_OPTION = "network"
 
 	override configure : void {
 		VariableDecls::extend(binder).declareVar(NETWORK_LONG_OPTION)
