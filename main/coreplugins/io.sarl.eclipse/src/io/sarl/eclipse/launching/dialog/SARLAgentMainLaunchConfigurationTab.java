@@ -125,7 +125,7 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	public void sreChanged(ISREInstall sre) {
 		final Map<String, String> options = sre == null ? Collections.emptyMap() : sre.getAvailableCommandLineOptions();
 		assert options != null;
-		final String noOpt = SarlSwtFactory.getCommandLineOptionPrefix();
+		final String noOpt = SarlSwtFactory.getCommandLineLastOptionPrefix();
 		if (this.showLogInfoButton != null) {
 			final String infoOpt = options.getOrDefault(SRECommandLineOptions.CLI_SHOW_INFO, noOpt);
 			final String warnOpt = options.getOrDefault(SRECommandLineOptions.CLI_HIDE_INFO, noOpt);
@@ -224,7 +224,7 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	 */
 	protected void createContextIdentifierTypeEditor(Composite parent, String text) {
 		final Group group = SWTFactory.createGroup(parent, text, 1, 1, GridData.FILL_HORIZONTAL);
-		final String noOpt = SarlSwtFactory.getCommandLineOptionPrefix();
+		final String noOpt = SarlSwtFactory.getCommandLineLastOptionPrefix();
 		this.defaultContextIdentifierButton = createRadioButton(group, MessageFormat.format(Messages.MainLaunchConfigurationTab_11, noOpt));
 		this.defaultContextIdentifierButton.addSelectionListener(this.defaultListener);
 		this.randomContextIdentifierButton = createRadioButton(group, MessageFormat.format(Messages.MainLaunchConfigurationTab_12, noOpt));
@@ -255,7 +255,7 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	 */
 	protected void createLaunchOptionEditor(Composite parent, String text) {
 		final Group group = SWTFactory.createGroup(parent, text, 1, 1, GridData.FILL_HORIZONTAL);
-		final String noOpt = SarlSwtFactory.getCommandLineOptionPrefix();
+		final String noOpt = SarlSwtFactory.getCommandLineLastOptionPrefix();
 		this.showLogInfoButton = createCheckButton(group, MessageFormat.format(Messages.MainLaunchConfigurationTab_15, noOpt));
 		this.showLogInfoButton.addSelectionListener(this.defaultListener);
 		this.enableAssertionsInRunModeButton = createCheckButton(group, Messages.SARLMainLaunchConfigurationTab_2);
