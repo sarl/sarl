@@ -23,9 +23,14 @@ package io.sarl.eclipse.launching.dialog;
 
 import org.arakhne.afc.vmutil.OperatingSystem;
 import org.eclipse.debug.internal.ui.SWTFactory;
+import org.eclipse.jface.fieldassist.ControlDecoration;
+import org.eclipse.jface.fieldassist.FieldDecoration;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Spinner;
 
 /**
@@ -198,6 +203,33 @@ public final class SarlSwtFactory extends SWTFactory {
 	 */
 	public static Spinner createSpinner(Composite parent, int hspan, int min, int max) {
 		return createSpinner(parent, hspan, min, max, DEFAULT_INCREMENT, DEFAULT_PAGE_INCREMENT);
+	}
+
+	/** Attach an information decorator to the given component.
+	 *
+	 * @param parent the component that receives the info decorator.
+	 * @param text the information message.
+	 * @param location the attachment location. It may be bitwise value from {@link SWT#TOP},
+	 *     {@link SWT#DOWN}, {@link SWT#LEFT}, {@link SWT#RIGHT}, {@link SWT#CENTER}.
+	 * @return the decorator.
+	 */
+	public static ControlDecoration createInfoDecorator(Control parent, String text, int location) {
+		final ControlDecoration txtDecorator = new ControlDecoration(parent, location);
+		final FieldDecoration fieldDecoration = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_INFORMATION);
+		final Image img = fieldDecoration.getImage();
+		txtDecorator.setImage(img);
+		txtDecorator.setDescriptionText(text);
+		return txtDecorator;
+	}
+
+	/** Attach an information decorator to the given component at its top left corner.
+	 *
+	 * @param parent the component that receives the info decorator.
+	 * @param text the information message.
+	 * @return the decorator.
+	 */
+	public static ControlDecoration createInfoDecorator(Control parent, String text) {
+		return createInfoDecorator(parent, text, SWT.TOP|SWT.LEFT);
 	}
 
 }

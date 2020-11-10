@@ -111,7 +111,7 @@ class SreNetworkConfig {
 	/** 
 	 * Default value for the minimal number of hazelcast nodes before starting.
 	 */
-	public static val DEFAULT_MIN_CLUSTER_SIZE_VALUE = 2
+	public static val DEFAULT_MIN_CLUSTER_SIZE_VALUE = 1
 
 	@Accessors(PUBLIC_GETTER)
 	var enable : boolean = DEFAULT_ENABLE_VALUE

@@ -21,7 +21,7 @@
 
 package io.sarl.sre.eclipse.network;
 
-import static io.sarl.eclipse.launching.dialog.SarlSwtFactory.createSpinner;
+import static io.sarl.eclipse.launching.dialog.SarlSwtFactory.*;
 import static io.sarl.eclipse.launching.dialog.SarlSwtFactory.getCommandLineDefinition;
 import static io.sarl.eclipse.launching.dialog.SarlSwtFactory.getCommandLineOption;
 import static org.eclipse.debug.internal.ui.SWTFactory.createComposite;
@@ -140,14 +140,16 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 		createSeparator(parent, 2);
 		createVerticalSpacer(topComp, 2);
 
+		final String defaultClusterName = SreNetworkConfig.createStandardClusterName(Messages.JanusLaunchNetworkTab_6);
 		this.clusterNameLabel = createLabel(topComp,
 				MessageFormat.format(Messages.JanusLaunchNetworkTab_2,
 						getCommandLineDefinition(VariableNames.toPropertyName(SreNetworkConfig.CLUSTER_NAME_NAME), Messages.JanusLaunchNetworkTab_8)),
 				1);
 		this.clusterNameText = createSingleText(topComp, 1);
-		this.clusterNameText.setMessage(MessageFormat.format(Messages.JanusLaunchNetworkTab_7,
-				SreNetworkConfig.createStandardClusterName(Messages.JanusLaunchNetworkTab_6)));
+		this.clusterNameText.setMessage(defaultClusterName);
 		this.clusterNameText.addModifyListener(this.defaultListener);
+		createInfoDecorator(this.clusterNameText, 
+				MessageFormat.format(Messages.JanusLaunchNetworkTab_7, defaultClusterName, Messages.JanusLaunchNetworkTab_6));
 
 		this.minClusterSizeLabel = createLabel(topComp,
 				MessageFormat.format(Messages.JanusLaunchNetworkTab_3,
@@ -155,6 +157,8 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 				1);
 		this.minClusterSizeSpinner = createSpinner(topComp, 1, MIN_CLUSTER_SIZE, MAX_CLUSTER_SIZE);
 		this.minClusterSizeSpinner.addModifyListener(this.defaultListener);
+		createInfoDecorator(this.minClusterSizeSpinner, 
+				MessageFormat.format(Messages.JanusLaunchNetworkTab_10, MIN_CLUSTER_SIZE, SreNetworkConfig.DEFAULT_MIN_CLUSTER_SIZE_VALUE));
 
 		this.portAutoIncrementButton = SWTFactory.createCheckButton(topComp,
 				MessageFormat.format(Messages.JanusLaunchNetworkTab_4,
