@@ -137,6 +137,11 @@ public final class LaunchConfigurationUtils {
 			this.contributorId = contributorId;
 		}
 
+		@Override
+		public String toString() {
+			return this.argumentsToSet.toString();
+		}
+
 		/** Replies the identifier of the contributor.
 		 *
 		 * @return the contributor id.
@@ -145,13 +150,13 @@ public final class LaunchConfigurationUtils {
 			return this.contributorId;
 		}
 
-		/** Clear the argument with the given variable name.
+		/** Clear the argument with the given variable name in order to restore its default value.
 		 *
 		 * @param name the name of the variable.
 		 * @return {@code this}.
 		 */
 		@SuppressWarnings("unchecked")
-		public T clearArg(String name) {
+		public T resetArg(String name) {
 			final String varName = VariableNames.toPropertyName(name);
 			this.argumentsToSet.remove(varName);
 			return (T) this;
@@ -159,14 +164,21 @@ public final class LaunchConfigurationUtils {
 
 		/** Create an argument with the given variable name and its associated value.
 		 *
+		 * <p>If the given value is equal to the default value, the argument is removed from the
+		 * set of arguments in order to have a "stable" and "consistent" content of the attribute set.
+		 *
 		 * @param name the name of the variable.
 		 * @param value the value.
+		 * @param defaultValue is the default value.
 		 * @return {@code this}.
 		 */
 		@SuppressWarnings("unchecked")
-		public T arg(String name, String value) {
-			if (!Strings.isNullOrEmpty(value)) {
-				final String varName = VariableNames.toPropertyName(name);
+		public T arg(String name, String value, String defaultValue) {
+			final String varName = VariableNames.toPropertyName(name);
+			if (Strings.isNullOrEmpty(value) || value.equals(defaultValue)) {
+				// Clear the attribute
+				this.argumentsToSet.remove(varName);
+			} else {
 				final String arg = DECL_PREFIX + varName + DECL_INFIX + value;
 				this.argumentsToSet.put(varName, arg);
 			}
@@ -175,82 +187,114 @@ public final class LaunchConfigurationUtils {
 
 		/** Create an argument with the given variable name and its associated value.
 		 *
+		 * <p>If the given value is equal to the default value, the argument is removed from the
+		 * set of arguments in order to have a "stable" and "consistent" content of the attribute set.
+		 *
 		 * @param name the name of the variable.
 		 * @param value the value.
+		 * @param defaultValue is the default value.
 		 * @return {@code this}.
 		 */
-		public T arg(String name, boolean value) {
-			return arg(name, Boolean.toString(value));
+		public T arg(String name, boolean value, boolean defaultValue) {
+			return arg(name, Boolean.toString(value), Boolean.toString(defaultValue));
 		}
 
 		/** Create an argument with the given variable name and its associated value.
 		 *
+		 * <p>If the given value is equal to the default value, the argument is removed from the
+		 * set of arguments in order to have a "stable" and "consistent" content of the attribute set.
+		 *
 		 * @param name the name of the variable.
 		 * @param value the value.
+		 * @param defaultValue is the default value.
 		 * @return {@code this}.
 		 */
-		public T arg(String name, int value) {
-			return arg(name, Integer.toString(value));
+		public T arg(String name, int value, int defaultValue) {
+			return arg(name, Integer.toString(value), Integer.toString(defaultValue));
 		}
 
 		/** Create an argument with the given variable name and its associated value.
 		 *
+		 * <p>If the given value is equal to the default value, the argument is removed from the
+		 * set of arguments in order to have a "stable" and "consistent" content of the attribute set.
+		 *
 		 * @param name the name of the variable.
 		 * @param value the value.
+		 * @param defaultValue is the default value.
 		 * @return {@code this}.
 		 */
-		public T arg(String name, float value) {
-			return arg(name, Float.toString(value));
+		public T arg(String name, float value, float defaultValue) {
+			return arg(name, Float.toString(value), Float.toString(defaultValue));
 		}
 
 		/** Create an argument with the given variable name and its associated value.
 		 *
+		 * <p>If the given value is equal to the default value, the argument is removed from the
+		 * set of arguments in order to have a "stable" and "consistent" content of the attribute set.
+		 *
 		 * @param name the name of the variable.
 		 * @param value the value.
+		 * @param defaultValue is the default value.
 		 * @return {@code this}.
 		 */
-		public T arg(String name, double value) {
-			return arg(name, Double.toString(value));
+		public T arg(String name, double value, double defaultValue) {
+			return arg(name, Double.toString(value), Double.toString(defaultValue));
 		}
 
 		/** Create an argument with the given variable name and its associated value.
 		 *
+		 * <p>If the given value is equal to the default value, the argument is removed from the
+		 * set of arguments in order to have a "stable" and "consistent" content of the attribute set.
+		 *
 		 * @param name the name of the variable.
 		 * @param value the value.
+		 * @param defaultValue is the default value.
 		 * @return {@code this}.
 		 */
-		public T arg(String name, long value) {
-			return arg(name, Long.toString(value));
+		public T arg(String name, long value, long defaultValue) {
+			return arg(name, Long.toString(value), Long.toString(defaultValue));
 		}
 
 		/** Create an argument with the given variable name and its associated value.
 		 *
+		 * <p>If the given value is equal to the default value, the argument is removed from the
+		 * set of arguments in order to have a "stable" and "consistent" content of the attribute set.
+		 *
 		 * @param name the name of the variable.
 		 * @param value the value.
+		 * @param defaultValue is the default value.
 		 * @return {@code this}.
 		 */
-		public T arg(String name, byte value) {
-			return arg(name, Byte.toString(value));
+		public T arg(String name, byte value, byte defaultValue) {
+			return arg(name, Byte.toString(value), Byte.toString(defaultValue));
 		}
 
 		/** Create an argument with the given variable name and its associated value.
 		 *
+		 * <p>If the given value is equal to the default value, the argument is removed from the
+		 * set of arguments in order to have a "stable" and "consistent" content of the attribute set.
+		 *
 		 * @param name the name of the variable.
 		 * @param value the value.
+		 * @param defaultValue is the default value.
 		 * @return {@code this}.
 		 */
-		public T arg(String name, short value) {
-			return arg(name, Short.toString(value));
+		public T arg(String name, short value, short defaultValue) {
+			return arg(name, Short.toString(value), Short.toString(defaultValue));
 		}
 
 		/** Create an argument with the given variable name and its associated value.
 		 *
+		 * <p>If the given value is equal to the default value, the argument is removed from the
+		 * set of arguments in order to have a "stable" and "consistent" content of the attribute set.
+		 *
 		 * @param name the name of the variable.
 		 * @param value the value.
+		 * @param defaultValue is the default value.
 		 * @return {@code this}.
 		 */
-		public T arg(String name, char value) {
-			return arg(name, Character.toString(value));
+		public T arg(String name, char value, char defaultValue) {
+			return arg(name, Character.toString(value), Character.toString(defaultValue));
 		}
 
 		/** Add the arguments into the given configuration.
@@ -342,6 +386,11 @@ public final class LaunchConfigurationUtils {
 			this.contributorId = contributorId;
 		}
 
+		@Override
+		public String toString() {
+			return this.arguments.toString();
+		}
+
 		/** Replies the identifier of the contributor.
 		 *
 		 * @return the contributor id.
@@ -381,8 +430,11 @@ public final class LaunchConfigurationUtils {
 		public String arg(String name, String defaultValue) {
 			final String varName = VariableNames.toPropertyName(name);
 			final String value = this.arguments.get(varName);
-			if (Strings.isNullOrEmpty(value)) {
+			if (value == null) {
 				return defaultValue;
+			}
+			if (Strings.isNullOrEmpty(value)) {
+				return ""; //$NON-NLS-1$
 			}
 			return value;
 		}
@@ -396,15 +448,19 @@ public final class LaunchConfigurationUtils {
 		public boolean arg(String name, boolean defaultValue) {
 			final String varName = VariableNames.toPropertyName(name);
 			final String value = this.arguments.get(varName);
-			if (Strings.isNullOrEmpty(value)) {
+			if (value == null) {
+				// Value is not defined
 				return defaultValue;
+			}
+			if (Strings.isNullOrEmpty(value)) {
+				return false;
 			}
 			try {
 				return Boolean.parseBoolean(value);
 			} catch (Throwable exception) {
 				//
 			}
-			return defaultValue;
+			return false;
 		}
 
 		/** Read an argument with the given variable name.
@@ -416,15 +472,18 @@ public final class LaunchConfigurationUtils {
 		public int arg(String name, int defaultValue) {
 			final String varName = VariableNames.toPropertyName(name);
 			final String value = this.arguments.get(varName);
-			if (Strings.isNullOrEmpty(value)) {
+			if (value == null) {
 				return defaultValue;
+			}
+			if (Strings.isNullOrEmpty(value)) {
+				return 0;
 			}
 			try {
 				return Integer.parseInt(value);
 			} catch (Throwable exception) {
 				//
 			}
-			return defaultValue;
+			return 0;
 		}
 
 		/** Read an argument with the given variable name.
@@ -436,15 +495,18 @@ public final class LaunchConfigurationUtils {
 		public byte arg(String name, byte defaultValue) {
 			final String varName = VariableNames.toPropertyName(name);
 			final String value = this.arguments.get(varName);
-			if (Strings.isNullOrEmpty(value)) {
+			if (value == null) {
 				return defaultValue;
+			}
+			if (Strings.isNullOrEmpty(value)) {
+				return 0;
 			}
 			try {
 				return Byte.parseByte(value);
 			} catch (Throwable exception) {
 				//
 			}
-			return defaultValue;
+			return 0;
 		}
 
 		/** Read an argument with the given variable name.
@@ -456,15 +518,18 @@ public final class LaunchConfigurationUtils {
 		public short arg(String name, short defaultValue) {
 			final String varName = VariableNames.toPropertyName(name);
 			final String value = this.arguments.get(varName);
-			if (Strings.isNullOrEmpty(value)) {
+			if (value == null) {
 				return defaultValue;
+			}
+			if (Strings.isNullOrEmpty(value)) {
+				return 0;
 			}
 			try {
 				return Short.parseShort(value);
 			} catch (Throwable exception) {
 				//
 			}
-			return defaultValue;
+			return 0;
 		}
 
 		/** Read an argument with the given variable name.
@@ -476,15 +541,18 @@ public final class LaunchConfigurationUtils {
 		public long arg(String name, long defaultValue) {
 			final String varName = VariableNames.toPropertyName(name);
 			final String value = this.arguments.get(varName);
-			if (Strings.isNullOrEmpty(value)) {
+			if (value == null) {
 				return defaultValue;
+			}
+			if (Strings.isNullOrEmpty(value)) {
+				return 0;
 			}
 			try {
 				return Long.parseLong(value);
 			} catch (Throwable exception) {
 				//
 			}
-			return defaultValue;
+			return 0;
 		}
 
 		/** Read an argument with the given variable name.
@@ -496,15 +564,18 @@ public final class LaunchConfigurationUtils {
 		public float arg(String name, float defaultValue) {
 			final String varName = VariableNames.toPropertyName(name);
 			final String value = this.arguments.get(varName);
-			if (Strings.isNullOrEmpty(value)) {
+			if (value == null) {
 				return defaultValue;
+			}
+			if (Strings.isNullOrEmpty(value)) {
+				return 0f;
 			}
 			try {
 				return Float.parseFloat(value);
 			} catch (Throwable exception) {
 				//
 			}
-			return defaultValue;
+			return 0f;
 		}
 
 		/** Read an argument with the given variable name.
@@ -516,15 +587,18 @@ public final class LaunchConfigurationUtils {
 		public double arg(String name, double defaultValue) {
 			final String varName = VariableNames.toPropertyName(name);
 			final String value = this.arguments.get(varName);
-			if (Strings.isNullOrEmpty(value)) {
+			if (value == null) {
 				return defaultValue;
+			}
+			if (Strings.isNullOrEmpty(value)) {
+				return .0;
 			}
 			try {
 				return Double.parseDouble(value);
 			} catch (Throwable exception) {
 				//
 			}
-			return defaultValue;
+			return .0;
 		}
 
 		/** Read an argument with the given variable name.
@@ -536,15 +610,18 @@ public final class LaunchConfigurationUtils {
 		public char arg(String name, char defaultValue) {
 			final String varName = VariableNames.toPropertyName(name);
 			final String value = this.arguments.get(varName);
-			if (Strings.isNullOrEmpty(value)) {
+			if (value == null) {
 				return defaultValue;
+			}
+			if (Strings.isNullOrEmpty(value)) {
+				return 0;
 			}
 			try {
 				return value.charAt(0);
 			} catch (Throwable exception) {
 				//
 			}
-			return defaultValue;
+			return 0;
 		}
 
 	}

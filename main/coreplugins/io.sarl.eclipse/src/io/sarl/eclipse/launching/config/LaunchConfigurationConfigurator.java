@@ -309,12 +309,12 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 
 	@Override
 	public void setProjectName(ILaunchConfigurationWorkingCopy configuration, String projectName) {
-		configuration.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, projectName);
+		configuration.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, Strings.emptyToNull(projectName));
 	}
 
 	@Override
 	public void setAgent(ILaunchConfigurationWorkingCopy configuration, String agentFullyQualifiedName) {
-		configuration.setAttribute(ATTR_AGENT_NAME, agentFullyQualifiedName);
+		configuration.setAttribute(ATTR_AGENT_NAME, Strings.emptyToNull(agentFullyQualifiedName));
 	}
 
 	@Override
@@ -334,26 +334,26 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 
 	@Override
 	public void setSRELaunchingArguments(ILaunchConfigurationWorkingCopy configuration, String arguments) {
-		configuration.setAttribute(ATTR_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS, arguments);
+		configuration.setAttribute(ATTR_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS, Strings.emptyToNull(arguments));
 	}
 
 	@Override
 	public void setExtraSRELaunchingArguments(ILaunchConfigurationWorkingCopy configuration, String contributorId,
 			String arguments) {
 		final String attrName = contributorId + ATTR_EXTRA_SARL_RUNTIME_ENVIRONMENT_ARGUMENTS;
-		configuration.setAttribute(attrName, arguments);
+		configuration.setAttribute(attrName, Strings.emptyToNull(arguments));
 	}
 
 	@Override
 	public void setJRELaunchingArguments(ILaunchConfigurationWorkingCopy configuration, String arguments) {
-		configuration.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, arguments);
+		configuration.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, Strings.emptyToNull(arguments));
 	}
 
 	@Override
 	public void setExtraJRELaunchingArguments(ILaunchConfigurationWorkingCopy configuration, String contributorId,
 			String arguments) {
 		final String attrName = contributorId + ATTR_EXTRA_VM_ARGUMENTS;
-		configuration.setAttribute(attrName, arguments);
+		configuration.setAttribute(attrName, Strings.emptyToNull(arguments));
 	}
 
 	@Override
@@ -597,7 +597,7 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	@Override
 	public void setExtraClasspathProvider(ILaunchConfigurationWorkingCopy configuration, String contributorId, String classpathContainerId) {
 		final String attrName = contributorId + ATTR_EXTRA_CLASSPATH_PROVIDER;
-		configuration.setAttribute(attrName, classpathContainerId);
+		configuration.setAttribute(attrName, Strings.emptyToNull(classpathContainerId));
 	}
 
 	@Override
@@ -606,7 +606,7 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 		try {
 			for (final String key : configuration.getAttributes().keySet()) {
 				if (key.endsWith(ATTR_EXTRA_CLASSPATH_PROVIDER)) {
-					final String value = Strings.nullToEmpty(configuration.getAttribute(key, (String) null));
+					final String value = configuration.getAttribute(key, (String) null);
 					if (!Strings.isNullOrEmpty(value)) {
 						identifiers.add(value);
 					}

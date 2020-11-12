@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.google.common.base.Strings;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -95,13 +96,15 @@ public final class SrePathUtils {
 				}
 				for (final IRuntimeClasspathEntry containerEntry : sreClasspathEntries) {
 					final String location = containerEntry.getLocation();
-					if (addedEntries.add(location)) {
+					if (Strings.isNullOrEmpty(location)) {
+						filteredEntries.add(containerEntry);
+					} else if (addedEntries.add(location)) {
 						filteredEntries.add(containerEntry);
 					}
 				}
 			} else {
 				final String location = entry.getLocation();
-				if (location == null) {
+				if (Strings.isNullOrEmpty(location)) {
 					filteredEntries.add(entry);
 				} else if (addedEntries.add(location)) {
 					filteredEntries.add(entry);
@@ -116,7 +119,7 @@ public final class SrePathUtils {
 				if (extraEntries != null) {
 					for (final IRuntimeClasspathEntry extraEntry : extraEntries) {
 						final String location = extraEntry.getLocation();
-						if (location == null) {
+						if (Strings.isNullOrEmpty(location)) {
 							filteredEntries.add(extraEntry);
 						} else if (addedEntries.add(location)) {
 							filteredEntries.add(extraEntry);

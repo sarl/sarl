@@ -448,14 +448,17 @@ public abstract class AbstractLaunchProcess<T extends AbstractSARLLaunchConfigur
 			} else {
 				modulepath = null;
 			}
+			// TODO: Remove this logger when the launch process is fixed for Java 11.
+			final ILog logger = SARLEclipsePlugin.getDefault().getLog();
+			logger.info("CLASSPATH = " + (classpath == null ? null : Arrays.toString(classpath)));
+			logger.info("MODULEPATH = " + (modulepath == null ? null : Arrays.toString(modulepath)));
 		} else {
 			classpath = owner.getClasspath(this.configuration);
 			modulepath = null;
+			// TODO: Remove this logger when the launch process is fixed for Java 11.
+			final ILog logger = SARLEclipsePlugin.getDefault().getLog();
+			logger.info("CLASSPATH = " + (classpath == null ? null : Arrays.toString(classpath)));
 		}
-
-		// TODO: Remove this logger when the launch process is fixed for Java 11.
-		final ILog logger = SARLEclipsePlugin.getDefault().getLog();
-		logger.info("CLASSPATH = " + Arrays.toString(classpath));
 
 		final VMRunnerConfiguration cfg = new VMRunnerConfiguration(getMainTypeName(), classpath);
 
@@ -497,8 +500,6 @@ public abstract class AbstractLaunchProcess<T extends AbstractSARLLaunchConfigur
 		} else if (owner.supportsModule()) {
 			// module path
 			if (modulepath != null) {
-				// TODO: Remove this logger when the launch process is fixed for Java 11.
-				logger.info("MODULEPATH = " + Arrays.toString(modulepath));
 				cfg.setModulepath(modulepath);
 			}
 			if (!this.configuration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_MODULE_CLI_OPTIONS, true)) {

@@ -229,7 +229,7 @@ public final class SarlSwtFactory extends SWTFactory {
 	 * @return the decorator.
 	 */
 	public static ControlDecoration createInfoDecorator(Control parent, String text) {
-		return createInfoDecorator(parent, text, SWT.TOP|SWT.LEFT);
+		return createInfoDecorator(parent, text, SWT.TOP | SWT.LEFT);
 	}
 
 }
