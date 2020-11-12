@@ -188,7 +188,8 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 		super.initializeFrom(configuration);
 		final InputExtraJreArguments arguments = LaunchConfigurationUtils.createInputExtraJreArguments(CONTRIBUTOR_ID);
 		arguments.read(configuration, this.accessor);
-		this.enableNetworkButton.setSelection(arguments.arg(SreNetworkConfig.ENABLE_NAME, SreNetworkConfig.DEFAULT_ENABLE_VALUE));
+		final boolean enable = arguments.arg(SreNetworkConfig.ENABLE_NAME, SreNetworkConfig.DEFAULT_ENABLE_VALUE);
+		this.enableNetworkButton.setSelection(enable);
 		this.clusterNameText.setText(arguments.arg(SreNetworkConfig.CLUSTER_NAME_NAME, SreNetworkConfig.DEFAULT_CLUSTER_NAME_VALUE));
 		this.minClusterSizeSpinner.setSelection(arguments.arg(SreNetworkConfig.MIN_CLUSTER_SIZE_NAME, SreNetworkConfig.DEFAULT_MIN_CLUSTER_SIZE_VALUE));
 		this.portAutoIncrementButton.setSelection(arguments.arg(SreNetworkConfig.PORT_AUTO_INCREMENT_NAME, SreNetworkConfig.DEFAULT_PORT_AUTO_INCREMENT_VALUE));
@@ -198,11 +199,11 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 		final OutputExtraJreArguments arguments = LaunchConfigurationUtils.createOutputExtraJreArguments(CONTRIBUTOR_ID);
-		arguments.resetArg(SreNetworkConfig.ENABLE_NAME);
+		arguments.arg(SreNetworkConfig.ENABLE_NAME, SreNetworkConfig.DEFAULT_ENABLE_IN_ECLIPSE_VALUE, SreNetworkConfig.DEFAULT_ENABLE_VALUE);
 		arguments.resetArg(SreNetworkConfig.CLUSTER_NAME_NAME);
 		arguments.resetArg(SreNetworkConfig.MIN_CLUSTER_SIZE_NAME);
 		arguments.resetArg(SreNetworkConfig.PORT_AUTO_INCREMENT_NAME);
-		if (SreNetworkConfig.DEFAULT_ENABLE_VALUE) {
+		if (SreNetworkConfig.DEFAULT_ENABLE_IN_ECLIPSE_VALUE) {
 			this.configurator.setExtraClasspathProvider(configuration, CONTRIBUTOR_ID,
 					JanusNetworkClasspathProvider.class.getName());
 		} else {
@@ -219,7 +220,7 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 		arguments.arg(SreNetworkConfig.CLUSTER_NAME_NAME, this.clusterNameText.getText(), SreNetworkConfig.DEFAULT_CLUSTER_NAME_VALUE);
 		arguments.arg(SreNetworkConfig.MIN_CLUSTER_SIZE_NAME, this.minClusterSizeSpinner.getSelection(), SreNetworkConfig.DEFAULT_MIN_CLUSTER_SIZE_VALUE);
 		arguments.arg(SreNetworkConfig.PORT_AUTO_INCREMENT_NAME, this.portAutoIncrementButton.getSelection(), SreNetworkConfig.DEFAULT_PORT_AUTO_INCREMENT_VALUE);
-		if (enable && enable != SreNetworkConfig.DEFAULT_ENABLE_VALUE) {
+		if (enable) {
 			this.configurator.setExtraClasspathProvider(configuration, CONTRIBUTOR_ID,
 					JanusNetworkClasspathProvider.class.getName());
 		} else {

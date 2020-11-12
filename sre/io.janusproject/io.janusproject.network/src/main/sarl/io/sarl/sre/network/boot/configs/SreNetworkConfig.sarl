@@ -69,9 +69,14 @@ class SreNetworkConfig {
 	public static val ENABLE_NAME = PREFIX + ".enable"; // $NON-NLS-1$
 
 	/** 
-	 * Default name of the program.
+	 * Default value for the enabling state of the networking feature.
 	 */
 	public static val DEFAULT_ENABLE_VALUE = true
+
+	/** 
+	 * Default value for the enabling state of the networking feature when it is used in Eclipse.
+	 */
+	public static val DEFAULT_ENABLE_IN_ECLIPSE_VALUE = false
 
 	/** 
 	 * Name of the property that contains the name of the Hazelcast cluster.
