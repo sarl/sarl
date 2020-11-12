@@ -135,6 +135,9 @@ public abstract class AbstractSARLLaunchConfigurationTabGroup extends AbstractLa
 				final ILaunchConfigurationTab panel = factory.newLaunchConfigurationPanel(dialog, mode, list, runtimeTab);
 				if (panel != null) {
 					list.add(panel);
+					if (panel instanceof ISreChangeListener) {
+						runtimeTab.addSreChangeListener((ISreChangeListener) panel);
+					}
 				}
 			}
 		}
