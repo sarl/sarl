@@ -1,6 +1,19 @@
 <?eclipse version="3.0"?>
 
 <plugin>
+
+ 	<extension
+         point="org.eclipse.ui.splashHandlers">
+      <splashHandler
+            class="io.sarl.eclipse.splash.SarlSplashHandler"
+            id="io.sarl.eclipse.splash">
+      </splashHandler>
+      <splashHandlerProductBinding
+            productId="io.sarl.eclipse-dsl4sarl.io_sarl_lang_sarl_dsl_product"
+            splashId="io.sarl.eclipse.splash">
+      </splashHandlerProductBinding>
+   </extension>
+
     <extension
           id="io_sarl_lang_sarl_dsl_product"
           point="org.eclipse.core.runtime.products">
