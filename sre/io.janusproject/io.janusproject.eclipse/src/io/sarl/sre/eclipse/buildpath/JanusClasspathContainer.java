@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import com.google.common.base.Strings;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -36,7 +37,6 @@ import io.sarl.eclipse.buildpath.SARLClasspathContainer;
 import io.sarl.eclipse.util.BundleUtil;
 import io.sarl.eclipse.util.BundleUtil.IBundleDependencies;
 import io.sarl.eclipse.util.Utilities.SARLBundleJavadocURLMappings;
-import io.sarl.sre.eclipse.JanusEclipsePlugin;
 
 /** Classpath container dedicated to the Janus platform.
  *
@@ -58,10 +58,30 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 	 */
 	public static final String[] JANUS_DEPENDENCY_BUNDLE_NAMES;
 
+	/** Identifier of the main bundle of the Janus SRE.
+	 */
+	public static final String JANUS_MAIN_BUNDLE_ID;
+
+	private static final String BUNDLE_PROPERTY_BASENAME = "janus-bundles"; //$NON-NLS-1$
+
+	private static final String SLASH = "/"; //$NON-NLS-1$
+
+	private static final String POINT = "."; //$NON-NLS-1$
+
+	private static final String VALUE_SEPARATOR = "[ \\t\\n\\r\\f]*,[ \\\\t\\\\n\\\\r\\\\f]*"; //$NON-NLS-1$
+
+	private static final String MAIN_BUNDLE_PROPERTY_NAME = "JANUS_MAIN_BUNDLE"; //$NON-NLS-1$
+
+	private static final String BUNDLES_PROPERTY_NAME = "JANUS_BUNDLES"; //$NON-NLS-1$
+
+	private static final String ECLIPSE_BUNDLES_PROPERTY_NAME = "JANUS_ECLIPSE_BUNDLES"; //$NON-NLS-1$
+
+	private static final String JAVADOC_URL = "http://www.sarl.io/docs/api/"; //$NON-NLS-1$
+
 	static {
-		JANUS_DEPENDENCY_BUNDLE_NAMES_PROPERTY_FILE = "/" //$NON-NLS-1$
-				+ JanusClasspathContainer.class.getPackage().getName().replace(".", "/") //$NON-NLS-1$//$NON-NLS-2$
-				+ "/janus-bundles"; //$NON-NLS-1$
+		JANUS_DEPENDENCY_BUNDLE_NAMES_PROPERTY_FILE = SLASH
+				+ JanusClasspathContainer.class.getPackage().getName().replace(POINT, SLASH)
+				+ SLASH + BUNDLE_PROPERTY_BASENAME;
 		final ResourceBundle bundle = ResourceBundle.getBundle(JANUS_DEPENDENCY_BUNDLE_NAMES_PROPERTY_FILE);
 
 		final Set<String> libs = new HashSet<>();
@@ -70,11 +90,19 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 			libs.add(lib);
 		}
 
-		for (final String lib : bundle.getString("JANUS_BUNDLES").split("[ \t\n\r\f]*,[ \\t\\n\\r\\f]*")) { //$NON-NLS-1$//$NON-NLS-2$
-			libs.add(lib.trim());
+		JANUS_MAIN_BUNDLE_ID = bundle.getString(MAIN_BUNDLE_PROPERTY_NAME);
+		if (Strings.isNullOrEmpty(JANUS_MAIN_BUNDLE_ID)) {
+			throw new IllegalStateException(MAIN_BUNDLE_PROPERTY_NAME);
 		}
 
-		for (final String lib : bundle.getString("JANUS_ECLIPSE_BUNDLES").split("[ \t\n\r\f]*,[ \\t\\n\\r\\f]*")) { //$NON-NLS-1$//$NON-NLS-2$
+		for (final String lib : bundle.getString(BUNDLES_PROPERTY_NAME).split(VALUE_SEPARATOR)) {
+			libs.add(lib.trim());
+		}
+		if (!libs.contains(JANUS_MAIN_BUNDLE_ID)) {
+			throw new IllegalStateException(BUNDLES_PROPERTY_NAME);
+		}
+
+		for (final String lib : bundle.getString(ECLIPSE_BUNDLES_PROPERTY_NAME).split(VALUE_SEPARATOR)) {
 			libs.add(lib.trim());
 		}
 
@@ -82,8 +110,6 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 		allLibs = libs.toArray(allLibs);
 		JANUS_DEPENDENCY_BUNDLE_NAMES = allLibs;
 	}
-
-	private static final String JAVADOC_URL = "http://www.sarl.io/docs/api/"; //$NON-NLS-1$
 
 	/** Constructor.
 	 *
@@ -104,7 +130,7 @@ public class JanusClasspathContainer extends AbstractSARLBasedClasspathContainer
 	 * @return the classpath.
 	 */
 	public static IBundleDependencies getJanusPlatformClasspath() {
-		final Bundle bundle = Platform.getBundle(JanusEclipsePlugin.PLUGIN_ID);
+		final Bundle bundle = Platform.getBundle(JANUS_MAIN_BUNDLE_ID);
 		final IBundleDependencies resolvedBundles = BundleUtil.resolveBundleDependencies(bundle,
 				new JanusBundleJavadocURLMappings(),
 				JANUS_DEPENDENCY_BUNDLE_NAMES);
