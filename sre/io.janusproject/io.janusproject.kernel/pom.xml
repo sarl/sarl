@@ -134,26 +134,26 @@
 				<!-- to create a jar with all dependencies -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-					<descriptors>
-						<descriptor>with-dependencies.xml</descriptor>
-					</descriptors>
-					<archive>
-						<manifest>
-							<mainClass>${cliRunnerMainClass}</mainClass>
-						</manifest>
-						<manifestEntries>
-							<Automatic-Module-Name>${project.artifactId}</Automatic-Module-Name>
-						</manifestEntries>
-					</archive>
-				</configuration>
 				<executions>
 					<execution>
-						<id>make-assembly</id>
+						<id>make-assembly-with-deps</id>
 						<phase>package</phase>
 						<goals>
 							<goal>single</goal>
 						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>with-dependencies.xml</descriptor>
+							</descriptors>
+							<archive>
+								<manifest>
+									<mainClass>${cliRunnerMainClass}</mainClass>
+								</manifest>
+								<manifestEntries>
+									<Automatic-Module-Name>${project.artifactId}</Automatic-Module-Name>
+								</manifestEntries>
+							</archive>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -207,9 +207,9 @@
 						<configuration>
 							<target>
 								<property name="janus.linux.input"
-									value="${project.basedir}/src-templates/janus.sh" />
-								<property name="janus.linux.output" value="${project.build.directory}/janus.tmp" />
-								<property name="janus.linux.output.full" value="${project.build.directory}/janus" />
+									value="${project.basedir}/src-templates/${cliRunnerName}.sh" />
+								<property name="janus.linux.output" value="${project.build.directory}/${cliRunnerName}.tmp" />
+								<property name="janus.linux.output.full" value="${project.build.directory}/${cliRunnerName}" />
 								<copy overwrite="true" file="${janus.linux.input}" tofile="${janus.linux.output}" />
 								<replace file="${janus.linux.output}" token="{cliRunnerMainClass}"
 									value="${cliRunnerMainClass}" />
@@ -245,6 +245,9 @@
 							<mainClass>${cliRunnerMainClass}</mainClass>
 							<iconFile>/icons/janus.icns</iconFile>
 							<generateDiskImageFile>true</generateDiskImageFile>
+							<diskImageInternetEnable>true</diskImageInternetEnable>
+							<includeApplicationsSymlink>true</includeApplicationsSymlink>
+							<jvmVersion>${user.min.jdk.version}+</jvmVersion>
 						</configuration>
 					</execution>
 				</executions>
