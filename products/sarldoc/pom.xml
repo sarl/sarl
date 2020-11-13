@@ -165,11 +165,11 @@
 						<configuration>
 							<target>
 								<property name="sarldoc.linux.input"
-									value="${project.basedir}/src-templates/sarldoc.sh" />
+									value="${project.basedir}/src-templates/${cliToolName}.sh" />
 								<property name="sarldoc.linux.output"
-									value="${project.build.directory}/sarldoc.tmp" />
+									value="${project.build.directory}/${cliToolName}.tmp" />
 								<property name="sarldoc.linux.output.full"
-									value="${project.build.directory}/sarldoc" />
+									value="${project.build.directory}/${cliToolName}" />
 								<copy overwrite="true" file="${sarldoc.linux.input}"
 									tofile="${sarldoc.linux.output}" />
 								<replace file="${sarldoc.linux.output}"
@@ -207,6 +207,9 @@
 							<mainClass>${cliToolMainClass}</mainClass>
 							<iconFile>/icons/sarldoc.icns</iconFile>
 							<generateDiskImageFile>true</generateDiskImageFile>
+							<diskImageInternetEnable>true</diskImageInternetEnable>
+							<includeApplicationsSymlink>true</includeApplicationsSymlink>
+							<jvmVersion>${sarl-run.min.jdk.version}+</jvmVersion>
 							<additionalClasspath>:$JAVA_HOME/../Classes/classes.jar</additionalClasspath>
 						</configuration>
 					</execution>
