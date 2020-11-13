@@ -31,6 +31,8 @@
 **/io.janusproject.tests/src/test/generated-sources
 **/io.janusproject.network/src-gen/
 **/io.janusproject.network/src/main/generated-sources
+**/io.janusproject.kernel.network/src-gen/
+**/io.janusproject.kernel.network/src/main/generated-sources
 
 # Xtext templates
 **/*.xml_gen
