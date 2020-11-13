@@ -59,7 +59,7 @@ abstract class AbstractServiceManager implements IServiceManager {
 
 	def stopServices(logger : Logger) {
 		preStop(logger)
-		logger.fine(Messages::AbstractServiceManager_3)
+		logger.fine(Messages::AbstractServiceManager_0)
 		internalStopAllServices
 		// Await for stop
 		awaitStopped
@@ -68,7 +68,7 @@ abstract class AbstractServiceManager implements IServiceManager {
 	/** Pre-stop all the services that are implemented {@link
 	 */
 	protected def preStop(logger : Logger) : void {
-		logger.fine(Messages::AbstractServiceManager_4)
+		logger.fine(Messages::AbstractServiceManager_1)
 		for (service : servicesByState.values) {
 			if (service.isRunning && service instanceof PreReleasableService) {
 				(service as PreReleasableService).onPreStop

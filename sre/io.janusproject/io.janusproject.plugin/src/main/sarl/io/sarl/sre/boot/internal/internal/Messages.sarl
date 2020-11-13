@@ -42,7 +42,6 @@ final class Messages extends NLS {
 
 	public static var PlatformEventEmitterModuleProvider_0 : String
 	public static var ListenerNotifierModuleProvider_0 : String
-	public static var LockModuleProvider_0 : String
 
 	private new {
 	}

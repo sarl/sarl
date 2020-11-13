@@ -177,15 +177,15 @@ class LifecycleConfigModule extends AbstractModule {
 		VariableDecls::extend(binder).declareVar(AGENT_SPAWNING_COUNT_PER_THREAD_NAME)
 		binder.extend.addOption(
 			OptionMetadata::builder(AGENTSPAWNINGCOUNTPERTHREAD,
-				MessageFormat::format(Messages::LifecycleConfigModule_4, AGENT_SPAWNING_COUNT_PER_THREAD_VALUE)).valueRequired(
-				Messages::LifecycleConfigModule_5).build).mapConfigPath(AGENTSPAWNINGCOUNTPERTHREAD,
+				MessageFormat::format(Messages::LifecycleConfigModule_2, AGENT_SPAWNING_COUNT_PER_THREAD_VALUE)).valueRequired(
+				Messages::LifecycleConfigModule_3).build).mapConfigPath(AGENTSPAWNINGCOUNTPERTHREAD,
 			AGENT_SPAWNING_COUNT_PER_THREAD_NAME)
 
 		VariableDecls::extend(binder).declareVar(EVENT_BUS_TYPE_NAME)
 		binder.extend.addOption(
 			OptionMetadata::builder(EVENTBUSTYPE_OPTION,
-				MessageFormat::format(Messages::LifecycleConfigModule_6, EVENT_BUS_TYPE_VALUE.toJsonString))
-				.valueRequired(MessageFormat::format(Messages::LifecycleConfigModule_7, EventBusType::jsonLabels))
+				MessageFormat::format(Messages::LifecycleConfigModule_4, EVENT_BUS_TYPE_VALUE.toJsonString))
+				.valueRequired(MessageFormat::format(Messages::LifecycleConfigModule_5, EventBusType::jsonLabels))
 				.build)
 				.mapConfigPath(EVENTBUSTYPE_OPTION, EVENT_BUS_TYPE_NAME)
 	}

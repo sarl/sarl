@@ -39,18 +39,8 @@ final class Messages extends NLS {
 		NLS.initializeMessages(BUNDLE_NAME, typeof(Messages))
 	}
 
-	public static var StartingPhaseAccessors_0 : String
-	public static var StartingPhaseAccessors_1 : String
-	public static var StartingPhaseAccessors_2 : String
-
-	public static var StoppingPhaseAccessors_0 : String
-	public static var StoppingPhaseAccessors_1 : String
-	public static var StoppingPhaseAccessors_2 : String
-
 	public static var AbstractServiceManager_0 : String
-	public static var AbstractServiceManager_2 : String
-	public static var AbstractServiceManager_3 : String
-	public static var AbstractServiceManager_4 : String
+	public static var AbstractServiceManager_1 : String
 
 	public static var GoogleServiceManager_0 : String
 
