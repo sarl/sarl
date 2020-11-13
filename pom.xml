@@ -445,7 +445,17 @@
 			</dependency>
 			<dependency>
 				<groupId>io.janusproject</groupId>
+				<artifactId>io.janusproject.network</artifactId>
+				<version>${sarl.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.janusproject</groupId>
 				<artifactId>io.janusproject.kernel</artifactId>
+				<version>${janus.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.janusproject</groupId>
+				<artifactId>io.janusproject.kernel.network</artifactId>
 				<version>${janus.version}</version>
 			</dependency>
 			<dependency>
