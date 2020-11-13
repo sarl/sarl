@@ -186,11 +186,11 @@
 						<configuration>
 							<target>
 								<property name="sarlc.linux.input"
-									value="${project.basedir}/src-templates/sarlc.sh" />
+									value="${project.basedir}/src-templates/${cliCompilerName}.sh" />
 								<property name="sarlc.linux.output"
-									value="${project.build.directory}/sarlc.tmp" />
+									value="${project.build.directory}/${cliCompilerName}.tmp" />
 								<property name="sarlc.linux.output.full"
-									value="${project.build.directory}/sarlc" />
+									value="${project.build.directory}/${cliCompilerName}" />
 								<copy overwrite="true" file="${sarlc.linux.input}"
 									tofile="${sarlc.linux.output}" />
 								<replace file="${sarlc.linux.output}"
@@ -228,6 +228,9 @@
 							<mainClass>${cliCompilerMainClass}</mainClass>
 							<iconFile>/icons/sarlc.icns</iconFile>
 							<generateDiskImageFile>true</generateDiskImageFile>
+							<diskImageInternetEnable>true</diskImageInternetEnable>
+							<includeApplicationsSymlink>true</includeApplicationsSymlink>
+							<jvmVersion>${sarl-run.min.jdk.version}+</jvmVersion>
 						</configuration>
 					</execution>
 				</executions>
