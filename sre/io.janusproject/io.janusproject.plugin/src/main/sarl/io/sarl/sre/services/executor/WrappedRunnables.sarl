@@ -206,7 +206,7 @@ class SreRunnable extends SreExecutable implements Runnable {
 				this.exception = cause;
 				val log = getLogger
 				if (log !== null) {
-					this.logger.log(Level::SEVERE, cause.exceptionMessage, cause)
+					log.log(Level::SEVERE, cause) [cause.exceptionMessage]
 				}
 				onError(cause)
 				if (log === null) {
@@ -310,7 +310,7 @@ class SreCallable<T> extends SreExecutable implements Callable<T> {
 				this.exception = cause;
 				val log = getLogger
 				if (log !== null) {
-					this.logger.log(Level::SEVERE, cause.exceptionMessage, cause)
+					log.log(Level::SEVERE, cause) [cause.exceptionMessage]
 				}
 				onError(cause)
 				if (log === null) {
@@ -407,7 +407,7 @@ class SreConsumer<T> extends SreExecutable implements Consumer<T> {
 				this.exception = cause;
 				val log = getLogger
 				if (log !== null) {
-					this.logger.log(Level::SEVERE, cause.exceptionMessage, cause)
+					log.log(Level::SEVERE, cause) [cause.exceptionMessage]
 				}
 				onError(cause)
 				if (log === null) {

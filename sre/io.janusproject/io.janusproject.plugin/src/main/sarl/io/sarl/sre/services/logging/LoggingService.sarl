@@ -41,7 +41,7 @@ interface LoggingService extends Service {
 	 * @param name the name of the logger, usually the name of the agent.
 	 * @param initialLevel the initial level to associate to the logger.
 	 * @return the logger.
-	 * @since 0.7.0
+	 * @since 0.7
 	 */
 	def createAgentLogger(name : String, initialLevel : Level = null) : Logger
 
@@ -51,7 +51,7 @@ interface LoggingService extends Service {
 	 * 
 	 * @param name the name of the sub-logger.
 	 * @return the logger.
-	 * @since 0.7.0
+	 * @since 0.7
 	 */
 	def getPlatformLogger : Logger
 
@@ -60,7 +60,7 @@ interface LoggingService extends Service {
 	 * 
 	 * @param name the name of the sub-logger.
 	 * @return the logger.
-	 * @since 0.7.0
+	 * @since 0.7
 	 */
 	def getKernelLogger : Logger
 

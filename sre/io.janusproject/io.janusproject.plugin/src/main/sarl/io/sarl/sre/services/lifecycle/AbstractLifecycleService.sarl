@@ -305,7 +305,8 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 					fireAgentSpawningEvents(spawningAgent, parent, agentClazz, params, ^agent)
 				} else {
 					if (spawnError !== null) {
-						loggingService.kernelLogger.log(Level::SEVERE, spawnError.message, spawnError)
+						val spawnErrorFinal = spawnError
+						loggingService.kernelLogger.log(Level::SEVERE, spawnErrorFinal) [spawnErrorFinal.message]
 					}
 					fireAgentSpawningErrorEvents(spawningAgent, parent, agentClazz)
 					// The agent may be the boot agent, and it may have failed to be launched.

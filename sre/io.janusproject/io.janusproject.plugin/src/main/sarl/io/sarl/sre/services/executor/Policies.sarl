@@ -170,10 +170,13 @@ class VerboseThreadExecutorPolicy extends AbstractLoggingThreadExecutorPolicy {
 
 	override rejectedExecution(runnable : Runnable, executor : ThreadPoolExecutor) {
 		if (!runRejectedTask(runnable, executor)) {
-			val record = new LogRecord(Level::FINE,
-				MessageFormat::format(Messages::VerboseThreadExecutorPolicy_0,
-				IssueCodes::TASK_REJECT, runnable.toString))
-			this.logger.kernelLogger.log(record)
+			val log = this.logger.kernelLogger
+			if (log.isLoggable(Level::FINE)) {
+				val record = new LogRecord(Level::FINE,
+					MessageFormat::format(Messages::VerboseThreadExecutorPolicy_0,
+					IssueCodes::TASK_REJECT, runnable.toString))
+				log.log(record)
+			}
 		}
     }
 	

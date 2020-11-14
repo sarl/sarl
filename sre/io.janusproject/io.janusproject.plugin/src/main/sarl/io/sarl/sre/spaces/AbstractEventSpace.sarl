@@ -202,8 +202,9 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 				^event.emitLocally(scope)
 			}
 		} catch (e : Throwable) {
-			this.logger.kernelLogger.log(Level::SEVERE,
-				MessageFormat::format(Messages::AbstractEventSpace_0, IssueCodes::CANNOT_EMIT_IN_SPACE, ^event, scope, e), e)
+			this.logger.kernelLogger.log(Level::SEVERE, e) [
+				MessageFormat::format(Messages::AbstractEventSpace_0, IssueCodes::CANNOT_EMIT_IN_SPACE, ^event, scope, e)
+			]
 		}
 	}
 

@@ -233,7 +233,7 @@ final class AgentLife {
 				try {
 					this.agentLogger.error(e.localizedMessage, e)
 				} catch (iex : Throwable) {
-					logger.kernelLogger.log(Level::SEVERE, e.localizedMessage, e)
+					logger.kernelLogger.log(Level::SEVERE, e) [e.localizedMessage]
 				}
 				stop(skillUninstaller, logger, true)
 				throw e
@@ -328,7 +328,7 @@ final class AgentLife {
 			try {
 				skills = skillUninstaller.uninstallSkillsBeforeDestroy(dyingAgent)
 			} catch (e : Throwable) {
-				logger.kernelLogger.log(Level::SEVERE, e.localizedMessage, e)
+				logger.kernelLogger.log(Level::SEVERE, e) [e.localizedMessage]
 				skills = newArrayList
 			}
 			
@@ -344,7 +344,7 @@ final class AgentLife {
 					try {
 						this.agentLogger.error(e.localizedMessage, e)
 					} catch (ex : Throwable) {
-						logger.kernelLogger.log(Level::SEVERE, e.localizedMessage, e)
+						logger.kernelLogger.log(Level::SEVERE, e) [e.localizedMessage]
 					}
 				}
 			}
@@ -359,7 +359,7 @@ final class AgentLife {
 			try {
 				skillUninstaller.uninstallSkillsAfterDestroy(dyingAgent, skills)
 			} catch (e : Throwable) {
-				logger.kernelLogger.log(Level::SEVERE, e.localizedMessage, e)
+				logger.kernelLogger.log(Level::SEVERE, e) [e.localizedMessage]
 			}
 
 			// Detach the agent form the platform
@@ -368,7 +368,7 @@ final class AgentLife {
 			// Force unregistration to the enclosing spaces
 			return enclosingContextsCopy
 		} catch (e : Throwable) {
-			logger.kernelLogger.log(Level::SEVERE, e.localizedMessage, e)
+			logger.kernelLogger.log(Level::SEVERE, e) [e.localizedMessage]
 			return new ConcurrentLinkedDeque
 		} finally {
 			this.state = AgentState::DEAD

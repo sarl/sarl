@@ -222,7 +222,7 @@ class Kernel {
 	package def executeKernelStopWhenNoAgentAlive(internalStop : boolean) {
 		if (!this.isStopping.getAndSet(true)) {
 			val logger = getLogger
-			logger.info(if(internalStop) Messages.Kernel_0 else Messages.Kernel_3)
+			logger.info [if(internalStop) Messages.Kernel_0 else Messages.Kernel_3]
 			val ss = this.spawnService
 			val sl = this.stopListener
 			if (sl !== null && ss !== null) {
@@ -353,14 +353,16 @@ class Kernel {
 		override uncaughtException(thread : Thread, exception : Throwable) {
 			assert thread !== null;
 			assert exception !== null;
-			val record = new LogRecord(Level::SEVERE, exception.localizedMessage)
-			record.thrown = exception
-			val elt = exception.stackTrace.get(0)
-			assert elt !== null
-			record.sourceClassName = elt.className
-			record.sourceMethodName = elt.methodName
 			val logger = this.kernel.get.logger
-			logger.log(record)
+			if (logger !== null && logger.isLoggable(Level::SEVERE)) {
+				val record = new LogRecord(Level::SEVERE, exception.localizedMessage)
+				record.thrown = exception
+				val elt = exception.stackTrace.get(0)
+				assert elt !== null
+				record.sourceClassName = elt.className
+				record.sourceMethodName = elt.methodName
+				logger.log(record)
+			}
 		}
 
 	}
