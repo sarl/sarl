@@ -48,8 +48,8 @@ interface LoggingService extends Service {
 	/** 
 	 * Replies the logger used by the platform. The platform logger is the root logger
 	 * for all the other loggers (for kernel and agents).
+	 * It is not recommended to use this logger directly.
 	 * 
-	 * @param name the name of the sub-logger.
 	 * @return the logger.
 	 * @since 0.7
 	 */
@@ -57,11 +57,13 @@ interface LoggingService extends Service {
 
 	/** 
 	 * Replies the logger used by the kernel.
+	 * If the name is provided, a sub-logger of the kernel logger will be replied
+	 * with the given name included into the message. 
 	 * 
 	 * @param name the name of the sub-logger.
 	 * @return the logger.
 	 * @since 0.7
 	 */
-	def getKernelLogger : Logger
+	def getKernelLogger(moduleName : String) : Logger
 
 }

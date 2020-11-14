@@ -21,11 +21,11 @@
 package io.sarl.sre.services.logging.jul
 
 import io.sarl.sre.services.AbstractSreService
+import io.sarl.sre.services.logging.LoggingService
 import java.util.logging.Level
 import java.util.logging.Logger
 import javax.inject.Inject
 import javax.inject.Singleton
-import io.sarl.sre.services.logging.LoggingService
 
 /** 
  * This class enables to log information by ensuring that the values of the parameters are not evaluated until the information
@@ -77,11 +77,16 @@ class JulLoggingService extends AbstractSreService implements LoggingService {
 		this.platformLoggerInstance
 	}
 
-	override getKernelLogger : Logger {
+	override getKernelLogger(moduleName : String) : Logger {
 		if (this.kernelLoggerInstance === null) {
 			this.kernelLoggerInstance = this.loggerCreator.createModuleLogger(getPlatformLogger)
 		}
-		this.kernelLoggerInstance
+		if (!moduleName.isNullOrEmpty) {
+			val logger = this.loggerCreator.createModuleLogger(moduleName, this.kernelLoggerInstance)
+			logger.level = Level::ALL
+			return logger
+		}
+		return this.kernelLoggerInstance
 	}
 	
 	def createAgentLogger(name : String, initialLevel : Level = null) : Logger {

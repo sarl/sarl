@@ -24,11 +24,14 @@ package io.sarl.sre.tests.units.services.context
 import com.google.inject.Injector
 import io.sarl.sre.services.context.AbstractInjectionBasedContextService
 import io.sarl.sre.services.context.ContextFactory
+import io.sarl.sre.services.logging.LoggingService
 import io.sarl.tests.api.Nullable
+import java.util.logging.Logger
 import org.junit.jupiter.api.BeforeEach
 
+import static org.mockito.ArgumentMatchers.*
 import static org.mockito.ArgumentMatchers.any
-import static org.mockito.Mockito.when
+import static org.mockito.Mockito.*
 
 import static extension io.sarl.tests.api.tools.TestMockito.mock
 
@@ -46,10 +49,17 @@ abstract class AbstractInjectionBasedContextServiceTest<T extends AbstractInject
 	@Nullable
 	protected var contextFactory : ContextFactory
 	
+	@Nullable
+	protected var loggingService : LoggingService
+
 	@BeforeEach
 	override setUp : void {
 		this.injector = typeof(Injector).mock
 		this.contextFactory = typeof(ContextFactory).mock
+		this.loggingService = typeof(LoggingService).mock
+		val log = typeof(Logger).mock
+		when(this.loggingService.getKernelLogger(anyString)).thenReturn(log)
+		when(this.loggingService.getKernelLogger(null)).thenReturn(log)
 		when(this.contextFactory.newInstance(any, any, any)).thenAnswer [
 			when(this.context.ID).thenReturn(getArgument(0))
 			when(this.context.getOwner).thenReturn(getArgument(2))

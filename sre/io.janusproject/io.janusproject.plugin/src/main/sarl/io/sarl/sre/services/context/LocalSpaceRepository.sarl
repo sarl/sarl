@@ -30,6 +30,7 @@ import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 import javax.inject.Inject
+import io.sarl.sre.services.logging.LoggingService
 
 /** 
  * A repository of spaces specific to a given context.
@@ -50,31 +51,34 @@ class LocalSpaceRepository extends SpaceRepository {
 	 * 
 	 * @param injector the injector.
 	 * @param executor the asynchronous execution service.
+	 * @param loggingService the logging service.
 	 * @param config accessor to the configuration.
 	 * @param specificationFactory the factory of space specifications.
 	 * @param listenerCollection the instance of the listener collection.
 	 * @param lockProvider the provider of the locking objects that must be used to synchronize this repository.
 	 */
 	@Inject
-	new (injector : Injector, executor : ExecutorService, config : SreConfig,
+	new (injector : Injector, executor : ExecutorService, loggingService : LoggingService, config : SreConfig,
 		specificationFactory : SreSpaceSpecificationFactory, listenerCollection : SmartListenerCollection<?>) {
-		this(injector, executor, config, specificationFactory, null, listenerCollection)
+		this(injector, executor, loggingService, config, specificationFactory, null, listenerCollection)
 	}
 
 	/** Constructor.
 	 * 
 	 * @param injector the injector.
 	 * @param executor the asynchronous execution service.
+	 * @param loggingService the logging service.
 	 * @param config the configuration.
 	 * @param specificationFactory the factory of space specifications.
 	 * @param listenerCollection the instance of the listener collection.
 	 * @param lockProvider the provider of the locking objects that must be used to synchronize this repository.
 	 */
-	new (injector : Injector, executor : ExecutorService, config : SreConfig,
+	new (injector : Injector, executor : ExecutorService,
+		loggingService : LoggingService, config : SreConfig,
 		specificationFactory : SreSpaceSpecificationFactory,
 		internalStructure : ConcurrentHashMap<UUID, SpaceDescription>,
 		listenerCollection : SmartListenerCollection<?>) {
-		super(injector, executor, config, specificationFactory, listenerCollection)
+		super(injector, executor, loggingService, config, specificationFactory, listenerCollection)
 		if (internalStructure !== null) {
 			this.spaces = internalStructure
 		} else {

@@ -538,7 +538,7 @@ class AgentLifeTest {
 		when(installer.uninstallSkillsBeforeDestroy(any)).thenReturn(new ArrayList)
 		var logger = typeof(LoggingService).mock
 		var loglog = typeof(Logger).mock
-		when(logger.kernelLogger).thenReturn(loglog)
+		when(logger.getKernelLogger(anyString)).thenReturn(loglog)
 		var parent = UUID::randomUUID
 		var spawner = UUID::randomUUID
 		var spawningContext = typeof(Context).mock
@@ -551,7 +551,7 @@ class AgentLifeTest {
 		this.eventBus.failure = true
 		
 		try {
-			this.life.start(installer, logger, spawner, spawningContext, params)
+			this.life.start(installer, typeof(Logger).mock, spawner, spawningContext, params)
 		} catch (ex : RuntimeException) {
 			//
 		}
@@ -578,7 +578,7 @@ class AgentLifeTest {
 		when(installer.uninstallSkillsBeforeDestroy(any)).thenReturn(new ArrayList)
 		var logger = typeof(LoggingService).mock
 		var loglog = typeof(Logger).mock
-		when(logger.kernelLogger).thenReturn(loglog)
+		when(logger.getKernelLogger(anyString)).thenReturn(loglog)
 		// Force the logger to forward the exception
 		doAnswer([
 			Exceptions::sneakyThrow(it.getArgument(0) as Throwable)
@@ -594,7 +594,7 @@ class AgentLifeTest {
 		var defaultSpaceID = new SpaceID(parent, UUID::randomUUID, typeof(OpenEventSpaceSpecification))
 		when(defaultSpace.spaceID).thenReturn(defaultSpaceID)
 		
-		this.life.start(installer, logger, spawner, spawningContext, params).assertTrue
+		this.life.start(installer, typeof(Logger).mock, spawner, spawningContext, params).assertTrue
 		
 		AgentState::ALIVE.assertSame(this.life.state)
 		
@@ -625,9 +625,8 @@ class AgentLifeTest {
 		var installer = typeof(SkillUninstaller).mock
 		var it = new ArrayList(Collections.singletonList(this.eventBus))
 		when(installer.uninstallSkillsBeforeDestroy(any)).thenReturn(it)
-		var logger = typeof(LoggingService).mock
 		
-		this.life.stop(installer, logger, true)
+		this.life.stop(installer, typeof(Logger).mock, true)
 		
 		AgentState::DEAD.assertSame(this.life.state)
 		

@@ -100,7 +100,7 @@ class LoggingSkillTest {
 		this.logger = this.logger.spy
 		//
 		this.logService = typeof(LoggingService).mock
-		when(this.logService.getKernelLogger).thenReturn(this.parentLogger)
+		when(this.logService.getKernelLogger(anyString)).thenReturn(this.parentLogger)
 		when(this.logService.createAgentLogger(any)).thenReturn(this.logger)
 		when(this.logService.createAgentLogger(any, any)).thenReturn(this.logger)
 		//

@@ -130,7 +130,7 @@ class JreExecutorServiceTest extends AbstractExecutorServiceTest<JreExecutorServ
 		
 		var capturedLevel = typeof(Level).forClass
 		var capturedException = typeof(Throwable).forClass
-		this.logger.verify(1.times).log(capturedLevel.capture, any, capturedException.capture)
+		this.logger.verify(1.times).log(capturedLevel.capture, capturedException.capture, any)
 		Level::SEVERE.assertSame(capturedLevel.value)
 		exception.assertSame(capturedException.value)
 	}
@@ -180,7 +180,7 @@ class JreExecutorServiceTest extends AbstractExecutorServiceTest<JreExecutorServ
 		
 		var capturedLevel = typeof(Level).forClass
 		var capturedException = typeof(Throwable).forClass
-		this.logger.verify(1.times).log(capturedLevel.capture, any, capturedException.capture)
+		this.logger.verify(1.times).log(capturedLevel.capture, capturedException.capture, any)
 		Level::SEVERE.assertSame(capturedLevel.value)
 		exception.assertSame(capturedException.value)
 	}
@@ -234,7 +234,7 @@ class JreExecutorServiceTest extends AbstractExecutorServiceTest<JreExecutorServ
 		
 		var capturedLevel = typeof(Level).forClass
 		var capturedException = typeof(Throwable).forClass
-		this.logger.verify(1.times).log(capturedLevel.capture, any, capturedException.capture)
+		this.logger.verify(1.times).log(capturedLevel.capture, capturedException.capture, any)
 		Level::SEVERE.assertSame(capturedLevel.value)
 		exception.assertSame(capturedException.value)
 	}
@@ -284,7 +284,7 @@ class JreExecutorServiceTest extends AbstractExecutorServiceTest<JreExecutorServ
 		
 		var capturedLevel = typeof(Level).forClass
 		var capturedException = typeof(Throwable).forClass
-		this.logger.verify(1.times).log(capturedLevel.capture, any, capturedException.capture)
+		this.logger.verify(1.times).log(capturedLevel.capture, capturedException.capture, any)
 		Level::SEVERE.assertSame(capturedLevel.value)
 		exception.assertSame(capturedException.value)
 	}
@@ -344,7 +344,7 @@ class JreExecutorServiceTest extends AbstractExecutorServiceTest<JreExecutorServ
 		
 		var capturedLevel = typeof(Level).forClass
 		var capturedException = typeof(Throwable).forClass
-		this.logger.verify(1.times).log(capturedLevel.capture, any, capturedException.capture)
+		this.logger.verify(1.times).log(capturedLevel.capture, capturedException.capture, any)
 		Level::SEVERE.assertSame(capturedLevel.value)
 		exception.assertSame(capturedException.value)
 	}
@@ -402,7 +402,7 @@ class JreExecutorServiceTest extends AbstractExecutorServiceTest<JreExecutorServ
 		
 		var capturedLevel = typeof(Level).forClass
 		var capturedException = typeof(Throwable).forClass
-		this.logger.verify(1.times).log(capturedLevel.capture, any, capturedException.capture)
+		this.logger.verify(1.times).log(capturedLevel.capture, capturedException.capture, any)
 		Level::SEVERE.assertSame(capturedLevel.value)
 		exception.assertSame(capturedException.value)
 	}
@@ -466,7 +466,7 @@ class JreExecutorServiceTest extends AbstractExecutorServiceTest<JreExecutorServ
 		
 		var capturedLevel = typeof(Level).forClass
 		var capturedException = typeof(Throwable).forClass
-		this.logger.verify(1.times).log(capturedLevel.capture, any, capturedException.capture)
+		this.logger.verify(1.times).log(capturedLevel.capture, capturedException.capture, any)
 		assertSame(Level::SEVERE, capturedLevel.value)
 		assertSame(exception, capturedException.value)
 	}
@@ -530,7 +530,7 @@ class JreExecutorServiceTest extends AbstractExecutorServiceTest<JreExecutorServ
 		
 		var capturedLevel = typeof(Level).forClass
 		var capturedException = typeof(Throwable).forClass
-		this.logger.verify(1.times).log(capturedLevel.capture, any, capturedException.capture)
+		this.logger.verify(1.times).log(capturedLevel.capture, capturedException.capture, any)
 		Level::SEVERE.assertSame(capturedLevel.value)
 		exception.assertSame(capturedException.value)
 	}

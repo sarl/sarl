@@ -41,6 +41,8 @@ final class Messages extends NLS {
 	}
 
 	public static var AbstractEventSpace_0 : String
+	public static var AbstractEventSpace_1 : String
+	public static var AbstractEventSpace_2 : String
 
 	private new {
 	}

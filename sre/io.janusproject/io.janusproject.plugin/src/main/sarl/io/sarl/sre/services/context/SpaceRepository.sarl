@@ -52,6 +52,8 @@ import java.util.logging.Logger
 import javax.inject.Inject
 import io.sarl.sre.services.context.SpaceRepository.SpaceSpecificationKey
 import java.util.Objects
+import io.sarl.sre.services.logging.LoggingService
+import java.text.MessageFormat
 
 /** 
  * A repository of spaces specific to a given context.
@@ -71,6 +73,8 @@ abstract class SpaceRepository implements SpaceListener {
 	val injector : Injector
 
 	val executor : ExecutorService
+	
+	protected val logger : Logger
 
 	val contextsRepositoryConfig : ContextsConfig
 
@@ -91,19 +95,30 @@ abstract class SpaceRepository implements SpaceListener {
 	 * 
 	 * @param injector the injector.
 	 * @param executor the asynchronous execution service.
+	 * @param logger the logging service.
 	 * @param config the configuration.
 	 * @param specificiationFactory the factory of space spacification.
 	 * @param listenerCollection the instance of the listener collection.
 	 */
 	@Inject
-	new (injector : Injector, executor : ExecutorService, config : SreConfig,
-		specificationFactory : SreSpaceSpecificationFactory,
+	new (injector : Injector, executor : ExecutorService, logger : LoggingService, 
+		config : SreConfig, specificationFactory : SreSpaceSpecificationFactory,
 		listenerCollection : SmartListenerCollection<?>) {
 		this.injector = injector
 		this.executor = executor
+		this.logger = createLogger(logger)
 		this.contextsRepositoryConfig = config.contexts
 		this.listeners = listenerCollection
 		this.specificationFactory = specificationFactory
+	}
+
+	/** Create the loggier for this repository.
+	 *
+	 * @param loggingService the service for logging.
+	 * @return the logger.
+	 */
+	protected def createLogger(loggingService : LoggingService) : Logger {
+		loggingService.getKernelLogger(Messages::SpaceRepository_2)
 	}
 
 	/** Replies the internal map that contains the spaces
@@ -311,6 +326,7 @@ abstract class SpaceRepository implements SpaceListener {
 		creationParams : Object*) : S with S extends Space {
 		assert spaceID.spaceSpecification ==
 			spec, "The space identifier does not contains the same specification as the one given to the creation function"
+		this.logger.finer[MessageFormat::format(Messages::SpaceRepository_0, spaceID.contextID, spaceID.ID, spec.name)]
 		spec.createSpaceFirstInstance(spaceID, creationParams)
 	}
 
@@ -322,6 +338,7 @@ abstract class SpaceRepository implements SpaceListener {
 	def removeSpace(^space : Space) {
 		if (^space !== null) {
 			var spaceID = ^space.spaceID
+			this.logger.finer[MessageFormat::format(Messages::SpaceRepository_1, spaceID.contextID, spaceID.ID)]
 			var spaces = sharedStructure
 			assert spaces !== null
 			var description : SpaceDescription = spaces.remove(spaceID.ID)

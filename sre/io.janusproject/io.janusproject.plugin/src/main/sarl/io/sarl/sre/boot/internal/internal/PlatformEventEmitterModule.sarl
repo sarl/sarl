@@ -57,7 +57,7 @@ class PlatformEventEmitterModule extends AbstractModule {
 	@KernelScope
 	@Singleton
 	static def provideExternalContextMemberListener(logging : Provider<LoggingService>) : ExternalContextMemberListener {
-		new ContextMemberEventEmitter(logging.get.kernelLogger)
+		new ContextMemberEventEmitter(logging.get.getKernelLogger(null))
 	}
 
 	@Provides
@@ -85,7 +85,7 @@ class PlatformEventEmitterModule extends AbstractModule {
 	@KernelScope
 	@Singleton
 	static def provideLifecycleServiceListener(logging : Provider<LoggingService>) : LifecycleServiceListener {
-		new AgentEventEmitter(logging.get.kernelLogger)
+		new AgentEventEmitter(logging.get.getKernelLogger(null))
 	}
 
 }

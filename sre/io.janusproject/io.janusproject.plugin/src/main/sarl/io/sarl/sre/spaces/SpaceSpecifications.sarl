@@ -28,11 +28,11 @@ import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.EventSpaceSpecification
 import io.sarl.lang.core.SpaceID
 import io.sarl.lang.core.SpaceSpecification
+import io.sarl.sre.KernelScope
 import io.sarl.sre.services.logging.LoggingService
 import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton
-import io.sarl.sre.KernelScope
 
 /** 
  * Abstract specification for standard event spaces into the SRE. 
@@ -47,7 +47,7 @@ abstract class AbstractSreEventSpaceSpecification {
 
 	val injector : Injector
 
-	val logger : LoggingService
+	val loggingService : LoggingService
 
 	val spaceParticipantListenerFactory : SpaceParticipantListenerFactory
 
@@ -68,12 +68,13 @@ abstract class AbstractSreEventSpaceSpecification {
 		this.injector = injector;
 		this.defaultSpace = defaultSpace
 		this.spaceParticipantListenerFactory = spaceParticipantListenerFactory
-		this.logger = logger
+		this.loggingService = logger
 	}
 
 	protected def createSpaceInstance(id : SpaceID, params : Object*) : OpenLocalEventSpace {
-		val listener = this.spaceParticipantListenerFactory.create(this.defaultSpace, this.logger.kernelLogger)
-		val ^space = new OpenLocalEventSpace(id, listener, this.logger)
+		val logger = this.loggingService.getKernelLogger(null)
+		val listener = this.spaceParticipantListenerFactory.create(this.defaultSpace, logger)
+		val ^space = new OpenLocalEventSpace(id, listener, this.loggingService)
 		if (this.defaultSpace === null) {//Only useful for the default space of the default context
 			listener.defaultSpace = ^space;
 		}

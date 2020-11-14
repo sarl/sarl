@@ -149,16 +149,16 @@ class HazelcastLogListener implements LogListener {
 	/** 
 	 * SRE Kernel logger
 	 */
-	var kernelLogger : Logger;
+	var logger : Logger
 	
 	@Inject
 	new(logger : LoggingService) {
-		kernelLogger = logger.kernelLogger
+		this.logger = logger.getKernelLogger(Messages::HazelcastLogListener_1)
 	}
 	
 	
 	def log(logEvent : LogEvent) {		
-		this.kernelLogger.log(logEvent.logRecord.level,
+		this.logger.log(logEvent.logRecord.level,
 			MessageFormat::format(Messages::HazelcastLogListener_0, logEvent.member, logEvent.logRecord.message))
 	}
 	

@@ -47,7 +47,7 @@ class LocalSpaceRepositoryTest extends AbstractSpaceRepositoryTest<LocalSpaceRep
 
 	protected def newSpaceRepository : LocalSpaceRepository {
 		var coll = new SmartListenerCollection(new SequenceListenerNotifier)
-		new LocalSpaceRepository(typeof(Injector).mock, this.executor, this.configuration,
+		new LocalSpaceRepository(typeof(Injector).mock, this.executor, this.logger, this.configuration,
 			this.specificationFactory, this.internalStructure,
 			coll)
 	}

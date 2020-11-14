@@ -42,8 +42,8 @@ import io.sarl.sre.spaces.SreSpaceSpecificationFactory
 import java.text.MessageFormat
 import java.util.UUID
 import java.util.logging.Level
-import java.util.logging.Logger
 import javax.inject.Inject
+import java.util.logging.Logger
 
 /** Implementation of a space repository that is connected to remote SRE with Hazelcast framework.
  *
@@ -82,23 +82,18 @@ class HazelcastSpaceRepository extends LocalSpaceRepository {
 	 */
 	var availableTopicsName : ISet<String>
 
-	/** 
-	 * SRE Kernel logger
-	 */
-	var kernelLogger : Logger;
-
 	public static val HAZELCAST_SPACE_ID_MAP_NAME = "io.sarl.network.distributedSpaceIDMapName"
 
 	@Inject
-	new(injector : Injector, executor : ExecutorService, config : SreConfig,
+	new(injector : Injector, executor : ExecutorService,
+		loggingService : LoggingService, config : SreConfig,
 		specificationFactory : SreSpaceSpecificationFactory,
 		listenerCollection : SmartListenerCollection<?>,
-		icontextService : ContextService, iHazelcastInstance : HazelcastInstance, logger : LoggingService) {
-		super(injector, executor, config, specificationFactory, listenerCollection)
+		icontextService : ContextService, iHazelcastInstance : HazelcastInstance) {
+		super(injector, executor, loggingService, config, specificationFactory, listenerCollection)
 		contextService = icontextService
 		hazelcastInstance = iHazelcastInstance
-		kernelLogger = logger.kernelLogger
-		kernelLogger.log(Level::INFO, Messages::HazelcastSpaceRepository_0)
+		this.logger.log(Level::INFO, Messages::HazelcastSpaceRepository_0)
 		availableTopicsName = this.hazelcastInstance.getSet(
 			HazelcastEventTransportService.HAZELCAST_SARL_TOPICS_NAME_SET);
 		spaceIDs = this.hazelcastInstance.getMap(HAZELCAST_SPACE_ID_MAP_NAME);
@@ -136,8 +131,11 @@ class HazelcastSpaceRepository extends LocalSpaceRepository {
 
 		}
 		spaceIDsListernerID = spaceIDs.addEntryListener(spaceIDsListerner, true)
-		kernelLogger.log(Level::INFO, Messages::HazelcastSpaceRepository_1)
+		this.logger.log(Level::INFO, Messages::HazelcastSpaceRepository_1)
+	}
 
+	protected override createLogger(loggingService : LoggingService) : Logger {
+		loggingService.getKernelLogger(Messages::HazelcastSpaceRepository_5)
 	}
 
 	protected override createSpaceFirstInstance(spec : Class<? extends SpaceSpecification<S>>, spaceID : SpaceID,
@@ -146,12 +144,12 @@ class HazelcastSpaceRepository extends LocalSpaceRepository {
 		// checking that the enclosing context of this new space already exists locally before creating the space
 		var localContext = contextService.getContext(spaceID.contextID)
 		if (localContext === null) {
-			kernelLogger.log(Level::SEVERE, Messages::HazelcastSpaceRepository_2)
+			this.logger.log(Level::SEVERE, Messages::HazelcastSpaceRepository_2)
 		}
 		this.spaceIDs.putIfAbsent(spaceID, creationParams);
 		// FIXME Extract topic name creation in a dedicated function
 		var topicName : String = HazelcastEventTransportService.getTopicNameFromSpaceID(spaceID)
-		kernelLogger.log(Level::INFO, MessageFormat::format(Messages::HazelcastSpaceRepository_3, spaceID, topicName))
+		this.logger.log(Level::INFO, MessageFormat::format(Messages::HazelcastSpaceRepository_3, spaceID, topicName))
 		this.availableTopicsName.add(topicName)
 
 		return super.createSpaceFirstInstance(spec, spaceID, creationParams);
@@ -176,7 +174,7 @@ class HazelcastSpaceRepository extends LocalSpaceRepository {
 		// FIXME Extract topic name creation in a dedicated function
 		var topicName : String = HazelcastEventTransportService.HAZELCAST_SARL_TOPICS_ROOTWILCARD + SpaceName.SCHEME +
 			"." + id.contextID + "." + id.ID
-		kernelLogger.log(Level::INFO, MessageFormat::format(Messages::HazelcastSpaceRepository_4, topicName))
+		this.logger.log(Level::INFO, MessageFormat::format(Messages::HazelcastSpaceRepository_4, topicName))
 		this.availableTopicsName.remove(topicName)
 		super.removeSpaceIfEmpty(id.ID)
 	}

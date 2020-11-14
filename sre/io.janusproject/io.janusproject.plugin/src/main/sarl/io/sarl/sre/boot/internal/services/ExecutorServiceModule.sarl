@@ -74,7 +74,7 @@ class ExecutorServiceModule extends AbstractModule {
 	@Provides
 	@Singleton
 	def providesVerboseThreadExecutorPolicy(logService : Provider<LoggingService>) : VerboseThreadExecutorPolicy {
-		new VerboseThreadExecutorPolicy(logService.get)
+		new VerboseThreadExecutorPolicy(logService.get.getKernelLogger(Messages::ExecutorServiceModule_0))
 	}
 
 	/** 

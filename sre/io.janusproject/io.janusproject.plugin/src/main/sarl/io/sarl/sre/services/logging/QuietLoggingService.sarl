@@ -51,7 +51,7 @@ class QuietLoggingService extends AbstractSreService implements LoggingService {
 		this.platformLoggerInstance
 	}
 
-	override getKernelLogger : Logger {
+	override getKernelLogger(moduleName : String) : Logger {
 		if (this.kernelLoggerInstance === null) {
 			this.kernelLoggerInstance = new QuietLogger
 		}

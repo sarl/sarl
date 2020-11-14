@@ -137,7 +137,7 @@ abstract class AbstractExecutorServiceTest<T extends ExecutorService> {
 
 		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
 		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
-		this.logger.verify(atLeastOnce).log(capturedLevel.capture, any, capturedException.capture)
+		this.logger.verify(atLeastOnce).log(capturedLevel.capture, capturedException.capture, any)
 		Level.SEVERE.assertSame(capturedLevel.value)
 		typeof(RuntimeException).assertInstanceOf(capturedException.value)
 	}
@@ -169,7 +169,7 @@ abstract class AbstractExecutorServiceTest<T extends ExecutorService> {
 
 		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
 		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
-		this.logger.verify(atLeastOnce).log(capturedLevel.capture, any, capturedException.capture)
+		this.logger.verify(atLeastOnce).log(capturedLevel.capture, capturedException.capture, any)
 		Level::SEVERE.assertSame(capturedLevel.value)
 		typeof(IllegalStateException).assertInstanceOf(capturedException.value)
 	}
@@ -307,7 +307,7 @@ abstract class AbstractExecutorServiceTest<T extends ExecutorService> {
 
 		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
 		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
-		this.logger.verify.log(capturedLevel.capture, any, capturedException.capture)
+		this.logger.verify.log(capturedLevel.capture, capturedException.capture, any)
 		Level::SEVERE.assertSame(capturedLevel.value)
 		exception.assertSame(capturedException.value)
 	}
@@ -436,7 +436,7 @@ abstract class AbstractExecutorServiceTest<T extends ExecutorService> {
 		
 		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
 		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
-		this.logger.verify(1.times).log(capturedLevel.capture, any, capturedException.capture)
+		this.logger.verify(1.times).log(capturedLevel.capture, capturedException.capture, any)
 		Level::SEVERE.assertSame(capturedLevel.value)
 		exception.assertSame(capturedException.value)
 	}
@@ -457,7 +457,7 @@ abstract class AbstractExecutorServiceTest<T extends ExecutorService> {
 	
 		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
 		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
-		this.logger.verify(4.times).log(capturedLevel.capture, any, capturedException.capture)
+		this.logger.verify(4.times).log(capturedLevel.capture, capturedException.capture, any)
 		Level::SEVERE.assertSame(capturedLevel.value)
 		exception.assertSame(capturedException.value)
 	}
@@ -478,7 +478,7 @@ abstract class AbstractExecutorServiceTest<T extends ExecutorService> {
 		
 		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
 		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
-		this.logger.verify(4.times).log(capturedLevel.capture, any, capturedException.capture)
+		this.logger.verify(4.times).log(capturedLevel.capture, capturedException.capture, any)
 		Level::SEVERE.assertSame(capturedLevel.value)
 		exception.assertSame(capturedException.value)
 	}
@@ -499,7 +499,7 @@ abstract class AbstractExecutorServiceTest<T extends ExecutorService> {
 		
 		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
 		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
-		this.logger.verify(4.times).log(capturedLevel.capture, any, capturedException.capture)
+		this.logger.verify(4.times).log(capturedLevel.capture, capturedException.capture, any)
 		Level::SEVERE.assertSame(capturedLevel.value)
 		exception.assertSame(capturedException.value)
 	}
@@ -520,7 +520,7 @@ abstract class AbstractExecutorServiceTest<T extends ExecutorService> {
 		
 		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
 		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
-		this.logger.verify(4.times).log(capturedLevel.capture, any, capturedException.capture)
+		this.logger.verify(4.times).log(capturedLevel.capture, capturedException.capture, any)
 		Level::SEVERE.assertSame(capturedLevel.value)
 		exception.assertSame(capturedException.value)
 	}
@@ -541,7 +541,7 @@ abstract class AbstractExecutorServiceTest<T extends ExecutorService> {
 		
 		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
 		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
-		this.logger.verify(4.times).log(capturedLevel.capture, any, capturedException.capture)
+		this.logger.verify(4.times).log(capturedLevel.capture, capturedException.capture, any)
 		Level.SEVERE.assertSame(capturedLevel.value)
 		exception.assertSame(capturedException.value)
 	}
@@ -670,7 +670,7 @@ abstract class AbstractExecutorServiceTest<T extends ExecutorService> {
 
 		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
 		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
-		this.logger.verify(1.times).log(capturedLevel.capture, any, capturedException.capture)
+		this.logger.verify(1.times).log(capturedLevel.capture, capturedException.capture, any)
 		Level::SEVERE.assertSame(capturedLevel.value)
 		exception.assertSame(capturedException.value)
 	}
@@ -691,7 +691,7 @@ abstract class AbstractExecutorServiceTest<T extends ExecutorService> {
 
 		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
 		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
-		this.logger.verify(4.times).log(capturedLevel.capture, any, capturedException.capture)
+		this.logger.verify(4.times).log(capturedLevel.capture, capturedException.capture, any)
 		Level::SEVERE.assertSame(capturedLevel.value)
 		exception.assertSame(capturedException.value)
 	}
@@ -712,7 +712,7 @@ abstract class AbstractExecutorServiceTest<T extends ExecutorService> {
 
 		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
 		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
-		this.logger.verify(4.times).log(capturedLevel.capture, any, capturedException.capture)
+		this.logger.verify(4.times).log(capturedLevel.capture, capturedException.capture, any)
 		Level::SEVERE.assertSame(capturedLevel.value)
 		exception.assertSame(capturedException.value)
 	}
@@ -733,7 +733,7 @@ abstract class AbstractExecutorServiceTest<T extends ExecutorService> {
 
 		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
 		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
-		this.logger.verify(4.times).log(capturedLevel.capture, any, capturedException.capture)
+		this.logger.verify(4.times).log(capturedLevel.capture, capturedException.capture, any)
 		Level::SEVERE.assertSame(capturedLevel.value)
 		exception.assertSame(capturedException.value)
 	}
@@ -754,7 +754,7 @@ abstract class AbstractExecutorServiceTest<T extends ExecutorService> {
 
 		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
 		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
-		this.logger.verify(4.times).log(capturedLevel.capture, any, capturedException.capture)
+		this.logger.verify(4.times).log(capturedLevel.capture, capturedException.capture, any)
 		Level::SEVERE.assertSame(capturedLevel.value)
 		exception.assertSame(capturedException.value)
 	}
@@ -775,7 +775,7 @@ abstract class AbstractExecutorServiceTest<T extends ExecutorService> {
 
 		var capturedLevel = ArgumentCaptor::forClass(typeof(Level))
 		var capturedException = ArgumentCaptor::forClass(typeof(Throwable))
-		this.logger.verify(4.times).log(capturedLevel.capture, any, capturedException.capture)
+		this.logger.verify(4.times).log(capturedLevel.capture, capturedException.capture, any)
 		Level.SEVERE.assertSame(capturedLevel.value)
 		exception.assertSame(capturedException.value)
 	}

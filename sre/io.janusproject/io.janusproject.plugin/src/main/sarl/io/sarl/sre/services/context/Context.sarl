@@ -31,8 +31,10 @@ import io.sarl.lang.core.SpaceID
 import io.sarl.lang.core.SpaceSpecification
 import io.sarl.sre.KernelScope
 import io.sarl.sre.services.logging.LoggingService
+import java.text.MessageFormat
 import java.util.UUID
 import java.util.concurrent.ConcurrentLinkedDeque
+import java.util.logging.Logger
 import javax.inject.Inject
 import javax.inject.Provider
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder
@@ -61,7 +63,7 @@ class Context extends AgentTrait implements AgentContext {
 
 	val repositoryProvider : Provider<SpaceRepository>
 
-	val logger : LoggingService
+	val logger : Logger
 
 	/** Emitter of the platform events: SpaceCreated, SpaceDestroy
 	 */
@@ -86,7 +88,7 @@ class Context extends AgentTrait implements AgentContext {
 		this.id = id
 		this.defaultSpaceID = defaultSpaceID
 		this.repositoryProvider = spaceRepositoryProvider
-		this.logger = logger
+		this.logger = logger.getKernelLogger(Messages::Context_1)
 		this.spaceEventEmitterFactory = listenerFactory
 	}
 
@@ -114,7 +116,7 @@ class Context extends AgentTrait implements AgentContext {
 	private def getPlatformEventEmitter : SpaceRepositoryListener {
 		var instance = this.platformEventEmitter
 		if (instance === null) {
-			instance = this.spaceEventEmitterFactory.create(ID, defaultSpace, this.logger.kernelLogger)
+			instance = this.spaceEventEmitterFactory.create(ID, defaultSpace, this.logger)
 			this.platformEventEmitter = instance
 		}
 		return instance
@@ -192,7 +194,9 @@ class Context extends AgentTrait implements AgentContext {
 		if (spaceUUID == this.defaultSpaceID) {
 			return this.defaultSpaceInstance as S
 		}
-		var spaceID = new SpaceID(ID, spaceUUID, spec)
+		val contextId = ID
+		var spaceID = new SpaceID(contextId, spaceUUID, spec)
+		this.logger.fine[MessageFormat::format(Messages::Context_0, contextId, spaceUUID)]
 		return instance.createSpace(spaceID, spec, creationParams)
 	}
 

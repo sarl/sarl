@@ -39,7 +39,7 @@ import org.junit.jupiter.api.Tag
 class MemoryBasedContextServiceTest extends AbstractInjectionBasedContextServiceTest<MemoryBasedContextService> {
 
 	override newService(rootContext : Context) : MemoryBasedContextService {
-		new MemoryBasedContextService(rootContext, this.injector, this.contextFactory)
+		new MemoryBasedContextService(rootContext, this.loggingService, this.injector, this.contextFactory)
 	}
 
 }

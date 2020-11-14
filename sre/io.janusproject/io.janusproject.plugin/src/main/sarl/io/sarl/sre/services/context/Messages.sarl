@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package io.sarl.sre.services.lifecycle
+package io.sarl.sre.services.context
 
 import org.eclipse.osgi.util.NLS
 
@@ -33,23 +33,23 @@ import org.eclipse.osgi.util.NLS
 final class Messages extends NLS {
 
 	static val BUNDLE_NAME = typeof(Messages).getPackage.name + ".messages"
-
+	
 	static new {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, typeof(Messages))
 	}
 
-	public static var CannotSpawnException_0 : String
+	public static var AbstractContextService_0 : String
+	public static var AbstractContextService_1 : String
+	public static var AbstractContextService_2 : String
+	public static var AbstractContextService_3 : String
+	public static var Context_0 : String
+	public static var Context_1 : String
+	public static var SpaceRepository_0 : String
+	public static var SpaceRepository_1 : String
+	public static var SpaceRepository_2 : String
 
-	public static var InvalidSarlSpecificationException_0 : String
 	
-	public static var SpawnDisabledException_0 : String
-
-	public static var AbstractLifecycleService_0 : String
-	public static var AbstractLifecycleService_1 : String
-	public static var AbstractLifecycleService_2 : String
-	public static var AbstractLifecycleService_3 : String
-
 	private new {
 	}
 

@@ -40,6 +40,8 @@ import java.util.UUID
 import javax.inject.Named
 import javax.inject.Provider
 import javax.inject.Singleton
+import io.sarl.sre.services.logging.LoggingService
+import java.text.MessageFormat
 
 /** 
  * Module for configuring the kernel specific components.
@@ -58,17 +60,20 @@ class KernelModule extends AbstractModule {
 	 *
 	 * @param injector the current injector.
 	 * @param factory the factory of context for creating the root context.
-	 * @param rootContextID the identifier of the root context.
+	 * @param rootContextId the identifier of the root context.
 	 * @param rootDefaultSpaceId the identifier of the root default space.
+	 * @param logger the logging service.
 	 * @return the kernel instance.
 	 */
 	@Provides
 	@KernelScope
 	@Singleton
 	def provideKernelContext(injector : Injector, factory : ContextFactory,
-		@Named(BootConfig::ROOT_CONTEXT_ID_NAME) rootContextID : UUID,
-		@Named(BootConfig::ROOT_DEFAULT_SPACE_ID_NAME) rootDefaultSpaceId : UUID) : Context {
-		var context = factory.newInstance(rootContextID, rootDefaultSpaceId, null)
+		@Named(BootConfig::ROOT_CONTEXT_ID_NAME) rootContextId : UUID,
+		@Named(BootConfig::ROOT_DEFAULT_SPACE_ID_NAME) rootDefaultSpaceId : UUID,
+		logger : LoggingService) : Context {
+		logger.getKernelLogger(null).finer [MessageFormat::format(Messages::KernelModule_0, rootContextId, rootDefaultSpaceId)]
+		var context = factory.newInstance(rootContextId, rootDefaultSpaceId, null)
 		injector.injectMembers(context)
 		return context
 	}

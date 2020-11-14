@@ -44,7 +44,9 @@ final class Messages extends NLS {
 	public static var HazelcastSpaceRepository_2 : String
 	public static var HazelcastSpaceRepository_3 : String
 	public static var HazelcastSpaceRepository_4 : String
+	public static var HazelcastSpaceRepository_5 : String
 	public static var HazelcastEventTransportService_0 : String
+	public static var HazelcastEventTransportService_1 : String
 	public static var TopicNameListener_0 : String
 	public static var TopicNameListener_1 : String
 	public static var TopicNameListener_2 : String
@@ -59,6 +61,7 @@ final class Messages extends NLS {
 	public static var HazelcastContextService_6 : String
 	public static var HazelcastContextService_7 : String
 	public static var HazelcastContextService_8 : String
+	public static var HazelcastContextService_9 : String
 	
 	private new {
 	}

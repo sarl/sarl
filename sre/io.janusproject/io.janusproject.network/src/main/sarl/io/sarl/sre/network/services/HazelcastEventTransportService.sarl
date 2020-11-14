@@ -93,7 +93,7 @@ class HazelcastEventTransportService implements EventTransportService {
 	/** 
 	 * SRE Kernel logger
 	 */
-	var kernelLogger : Logger;
+	var kernelLogger : Logger
 
 	public static val HAZELCAST_SARL_TOPICS_NAME_SET = "io.sarl.topics.distributedset"
 
@@ -105,7 +105,7 @@ class HazelcastEventTransportService implements EventTransportService {
 		contextService = icontextService
 		hazelcastInstance = iHazelcastInstance
 
-		kernelLogger = logger.kernelLogger
+		kernelLogger = logger.getKernelLogger(Messages::HazelcastEventTransportService_1)
 
 		topicListenerIDs = new ConcurrentHashMap<String, UUID>();
 		this.availableTopicsName = this.hazelcastInstance.getSet(HAZELCAST_SARL_TOPICS_NAME_SET);

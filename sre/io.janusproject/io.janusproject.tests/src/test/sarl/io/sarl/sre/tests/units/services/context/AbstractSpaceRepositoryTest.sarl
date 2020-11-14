@@ -55,6 +55,8 @@ import static org.mockito.Mockito.*
 
 import static extension io.sarl.tests.api.tools.TestMockito.mock
 import static extension org.mockito.MockitoAnnotations.initMocks
+import io.sarl.sre.services.logging.LoggingService
+import java.util.logging.Logger
 
 /**
  * @author $Author: sgalland$
@@ -73,6 +75,9 @@ abstract class AbstractSpaceRepositoryTest<T extends SpaceRepository,
 	@Mock
 	protected var executor : ExecutorService
 	
+	@Mock
+	protected var logger : LoggingService
+
 	@Nullable
 	protected var configuration : SreConfig
 
@@ -99,6 +104,9 @@ abstract class AbstractSpaceRepositoryTest<T extends SpaceRepository,
 		when(this.specificationFactory.createOpenEventSpaceSpecificationForDefaultSpace(any)).thenReturn(null)
 		when(this.specificationFactory.createOpenEventSpaceSpecificationInInnerContext(any, any)).thenReturn(null)
 		this.initMocks
+		val log = typeof(Logger).mock
+		when(this.logger.getKernelLogger(anyString)).thenReturn(log)
+		when(this.logger.getKernelLogger(null)).thenReturn(log)
 		this.internalStructure = newInternalStructure
 		this.repository = newSpaceRepository
 	}

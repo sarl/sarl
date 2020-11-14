@@ -27,15 +27,16 @@ import io.sarl.lang.core.EventListener
 import io.sarl.lang.core.EventSpace
 import io.sarl.lang.core.Scope
 import io.sarl.lang.core.SpaceID
+import io.sarl.sre.IssueCodes
 import io.sarl.sre.services.logging.LoggingService
 import java.text.MessageFormat
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.logging.Level
+import java.util.logging.Logger
 import javax.inject.Inject
 import org.eclipse.xtend.lib.annotations.Accessors
-import io.sarl.sre.IssueCodes
 
 /** 
  * Abstract implementation of an event space.
@@ -51,11 +52,11 @@ import io.sarl.sre.IssueCodes
 @PrivateAPI(isCallerOnly = true)
 abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, SpaceWithParticipants {
 
-		/** 
-		 * Logging service.
-		 */
+	/** 
+	 * Logging service.
+	 */
 	@Accessors(PUBLIC_GETTER)
-	val logger : LoggingService
+	var logger : Logger
 
 	/** Router of the events.
 	 * @since 0.8
@@ -99,7 +100,7 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 		weakRepository : ConcurrentHashMap<UUID, Participant>) {
 		super(spaceId)
 		this.spaceParticipantListener = participantListener
-		this.logger = logger
+		this.logger = logger.getKernelLogger(MessageFormat::format(Messages::AbstractEventSpace_2, spaceId.ID))
 		if (strongRepository === null) {
 			this.strongRepository = new ConcurrentHashMap
 		} else {
@@ -202,7 +203,7 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 				^event.emitLocally(scope)
 			}
 		} catch (e : Throwable) {
-			this.logger.kernelLogger.log(Level::SEVERE, e) [
+			this.logger.log(Level::SEVERE, e) [
 				MessageFormat::format(Messages::AbstractEventSpace_0, IssueCodes::CANNOT_EMIT_IN_SPACE, ^event, scope, e)
 			]
 		}
@@ -267,6 +268,7 @@ abstract class AbstractEventSpace extends AbstractSpace implements EventSpace, S
 		// The emit process is run in the current thread.
 		// The reception process should be treated into a separate thread in order
 		// to never block the sender process.
+		this.logger.fine[MessageFormat::format(Messages::AbstractEventSpace_1, ^event, scope)]
 		val participants = scope.scopedParticipants
 		assert participants !== null
 		for (it : participants) {

@@ -26,6 +26,9 @@ import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Singleton
 import org.eclipse.xtend.lib.annotations.Accessors
+import io.sarl.sre.services.logging.LoggingService
+import java.text.MessageFormat
+import java.util.logging.Logger
 
 /** 
  * A service managing the root context and enabling the creation of contexts.
@@ -45,13 +48,26 @@ abstract class AbstractContextService extends AbstractSreService implements Cont
 	@Accessors(PUBLIC_GETTER)
 	val rootContext : Context
 
+	protected val logger : Logger
+
 	/** Constructor.
 	 * 
 	 * @param rootContext the root context.
-	 * @param lock is the lock that must be used by this service.
+	 * @param logger the logging service to be used.
 	 */
-	protected new (rootContext : Context) {
+	protected new (rootContext : Context, logger : LoggingService) {
 		this.rootContext = rootContext
+		this.logger = createLogger(logger)
+	}
+
+	/** Create the instance of the logger for this service.
+	 *
+	 * @param loggingService the logging service.
+	 * @return the logger.
+	 * @since 0.12
+	 */
+	protected def createLogger(loggingService : LoggingService) : Logger {
+		loggingService.getKernelLogger(Messages::AbstractContextService_3)
 	}
 
 	def onStart {
@@ -71,6 +87,7 @@ abstract class AbstractContextService extends AbstractSreService implements Cont
 	final def createContextWithoutRegistration(contextID : UUID, defaultSpaceID : UUID, owner : Agent) : Context {
 		assert contextID !== null, "The contextID cannot be null"
 		assert defaultSpaceID !== null, "The defaultSpaceUUID cannot be null"
+		this.logger.fine[MessageFormat::format(Messages::AbstractContextService_1, contextID, defaultSpaceID)]
 		return contextID.newContextInstance(defaultSpaceID, owner)
 	}
 
@@ -88,6 +105,7 @@ abstract class AbstractContextService extends AbstractSreService implements Cont
 			existingContext = repository.get(contextID)
 			if (existingContext === null) {
 				existingContext = contextID.newContextInstance(defaultSpaceID, owner)
+				this.logger.fine[MessageFormat::format(Messages::AbstractContextService_0, contextID, defaultSpaceID)]
 				repository.putIfAbsent(contextID, existingContext)
 			}
 
@@ -116,6 +134,7 @@ abstract class AbstractContextService extends AbstractSreService implements Cont
 		var existingContext : Context = repository.remove(contextID)
 
 		if (existingContext !== null) {
+			this.logger.fine[MessageFormat::format(Messages::AbstractContextService_2, contextID)]
 			existingContext.destroy
 		}
 		return existingContext

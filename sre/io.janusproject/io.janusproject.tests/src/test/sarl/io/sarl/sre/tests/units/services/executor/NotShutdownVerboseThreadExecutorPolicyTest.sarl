@@ -82,12 +82,13 @@ class NotShutdownVerboseThreadExecutorPolicyTest {
 		this.logger = typeof(Logger).mock
 		when(this.logger.isLoggable(typeof(Level).any)).thenReturn(true)
 		this.logService = typeof(LoggingService).mock
-		when(this.logService.kernelLogger).thenReturn(this.logger)
+		when(this.logService.getKernelLogger(anyString)).thenReturn(this.logger)
+		when(this.logService.getKernelLogger(null)).thenReturn(this.logger)
 
 		this.executor = typeof(ThreadPoolExecutor).mock
 		when(this.executor.isShutdown).thenReturn(false)
 
-		this.handler = new VerboseThreadExecutorPolicy(this.logService)
+		this.handler = new VerboseThreadExecutorPolicy(this.logger)
 	}
 
 	@Test

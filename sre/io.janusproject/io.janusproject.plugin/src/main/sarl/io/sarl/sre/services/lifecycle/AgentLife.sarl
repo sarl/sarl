@@ -35,7 +35,6 @@ import io.sarl.lang.core.Skill
 import io.sarl.lang.core.SpaceID
 import io.sarl.sre.capacities.InternalEventBusCapacity
 import io.sarl.sre.services.context.Context
-import io.sarl.sre.services.logging.LoggingService
 import java.util.List
 import java.util.Map
 import java.util.UUID
@@ -44,6 +43,7 @@ import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.locks.ReadWriteLock
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import java.util.logging.Level
+import java.util.logging.Logger
 import javax.inject.Provider
 
 import static extension io.sarl.lang.core.SREutils.*
@@ -170,7 +170,7 @@ final class AgentLife {
 	 * @param initializationParameters the parameters to give to the agent for its start-up.
 	 * @return {@code true} is successful, i.e. the {@code AgentSpawned} could be fired.
 	 */
-	def start(skillUninstaller : SkillUninstaller, logger : LoggingService, spawningAgent : UUID,
+	def start(skillUninstaller : SkillUninstaller, logger : Logger, spawningAgent : UUID,
 		spawningContext : Context, initializationParameters : Object*) : boolean {
 		val rlock0 = this.lock.readLock
 		var st : AgentState
@@ -233,7 +233,7 @@ final class AgentLife {
 				try {
 					this.agentLogger.error(e.localizedMessage, e)
 				} catch (iex : Throwable) {
-					logger.kernelLogger.log(Level::SEVERE, e) [e.localizedMessage]
+					logger.log(Level::SEVERE, e) [e.localizedMessage]
 				}
 				stop(skillUninstaller, logger, true)
 				throw e
@@ -311,7 +311,7 @@ final class AgentLife {
 	 * @param fireDestroy indicates if the {@code Destroy} event should be fired.
 	 * @return the contexts from which the agent was removed.
 	 */
-	def stop(skillUninstaller : SkillUninstaller, logger : LoggingService,
+	def stop(skillUninstaller : SkillUninstaller, logger : Logger,
 		fireDestroy : boolean = true) : ConcurrentLinkedDeque<ContextReference> {
 
 		this.state = AgentState::DYING
@@ -328,7 +328,7 @@ final class AgentLife {
 			try {
 				skills = skillUninstaller.uninstallSkillsBeforeDestroy(dyingAgent)
 			} catch (e : Throwable) {
-				logger.kernelLogger.log(Level::SEVERE, e) [e.localizedMessage]
+				logger.log(Level::SEVERE, e) [e.localizedMessage]
 				skills = newArrayList
 			}
 			
@@ -344,7 +344,7 @@ final class AgentLife {
 					try {
 						this.agentLogger.error(e.localizedMessage, e)
 					} catch (ex : Throwable) {
-						logger.kernelLogger.log(Level::SEVERE, e) [e.localizedMessage]
+						logger.log(Level::SEVERE, e) [e.localizedMessage]
 					}
 				}
 			}
@@ -359,7 +359,7 @@ final class AgentLife {
 			try {
 				skillUninstaller.uninstallSkillsAfterDestroy(dyingAgent, skills)
 			} catch (e : Throwable) {
-				logger.kernelLogger.log(Level::SEVERE, e) [e.localizedMessage]
+				logger.log(Level::SEVERE, e) [e.localizedMessage]
 			}
 
 			// Detach the agent form the platform
@@ -368,7 +368,7 @@ final class AgentLife {
 			// Force unregistration to the enclosing spaces
 			return enclosingContextsCopy
 		} catch (e : Throwable) {
-			logger.kernelLogger.log(Level::SEVERE, e) [e.localizedMessage]
+			logger.log(Level::SEVERE, e) [e.localizedMessage]
 			return new ConcurrentLinkedDeque
 		} finally {
 			this.state = AgentState::DEAD
