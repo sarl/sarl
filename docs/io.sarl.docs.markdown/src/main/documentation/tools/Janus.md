@@ -9,6 +9,13 @@ Its role is to provide all the libraries and plugins that are needed for running
 
 For launching the Janus platform from a command-line shell, you could use the [:name:] tool.
 
+> **_Caution:_** The [:name:] does not provide a support for exchaning events over a computer
+> network. If you would like to have benefit of this feature, you should use one of the following
+> methods:
+> 1. Add a library on the classpath that includes the networking feature to the SRE; or
+> 2. Use the version of the SRE that includes the standard network feature: [janusnode](./Janusnode.md).
+
+
 ## Usage
 
 The [:name:] tool takes arguments:

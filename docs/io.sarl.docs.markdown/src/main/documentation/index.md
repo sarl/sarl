@@ -33,6 +33,10 @@
 
 * [English Auction with Holons](./tutorials/HolonicAuction.md)
 
+### SARL Run-time Environment
+
+* [Creating an extension for the Janus SRE](./tutorials/SreExtension.md)
+
 ## Best Practices with SARL
 
 * [Event Creation with a Builder](./bestpractices/EventBuilder.md)
@@ -121,6 +125,7 @@
 * [sarlc](./tools/Sarlc.md): command-line SARL compiler.
 * [sarldoc](./tools/Sarldoc.md): command-line SARL documentation generator.
 * [janus](./tools/Janus.md): launching SARL agents with the Janus platform.
+* [janusnode](./tools/Janusnode.md): launching SARL agents with the Janus platform over a computer network.
 
 ## Documentation Format
 
