@@ -161,7 +161,7 @@ class JulLoggerCreator {
 		if (parent !== null) {
 			logger.parent = parent
 			logger.useParentHandlers = true
-			if (parent.level.intValue >= this.defaultLevel.intValue) {
+			if (parent.level.intValue <= this.defaultLevel.intValue) {
 				logger.level = this.defaultLevel
 			} else {
 				logger.level = parent.level			

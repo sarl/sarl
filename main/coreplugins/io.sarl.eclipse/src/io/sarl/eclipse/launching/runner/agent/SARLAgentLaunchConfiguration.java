@@ -26,6 +26,7 @@ import static io.sarl.eclipse.launching.config.LaunchConfigurationUtils.join;
 import java.util.Map;
 import java.util.Objects;
 
+import com.google.common.base.Strings;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.variables.IStringVariableManager;
@@ -42,6 +43,7 @@ import io.sarl.eclipse.launching.runner.general.AbstractSARLLaunchConfiguration;
 import io.sarl.eclipse.launching.runner.general.ILaunchProcess;
 import io.sarl.eclipse.runtime.ISREInstall;
 import io.sarl.eclipse.runtime.SRECommandLineOptions;
+import io.sarl.lang.util.CliUtilities;
 
 /**
  * Implementation of an eclipse LauncConfigurationDelegate to launch SARL agent.
@@ -88,14 +90,17 @@ public class SARLAgentLaunchConfiguration extends AbstractSARLLaunchConfiguratio
 		assert cliOptions != null;
 		String options = null;
 
-		if (getConfigurationAccessor().isEmbeddedSRE(configuration)) {
-			options = join(options, cliOptions.get(SRECommandLineOptions.CLI_EMBEDDED));
+		final String logOption = getConfigurationAccessor().getLogArgumentName(configuration);
+		final String logValue = getConfigurationAccessor().getLogArgumentValue(configuration);
+		if (!Strings.isNullOrEmpty(logOption) && !Strings.isNullOrEmpty(logValue)) {
+			final String fullOption = CliUtilities.getCommandLineOption(logOption, logValue);
+			if (!Strings.isNullOrEmpty(fullOption)) {
+				options = join(options, fullOption);
+			}
 		}
 
-		if (getConfigurationAccessor().getShowLogInfoFlag(configuration)) {
-			options = join(options, cliOptions.get(SRECommandLineOptions.CLI_SHOW_INFO));
-		} else {
-			options = join(options, cliOptions.get(SRECommandLineOptions.CLI_HIDE_INFO));
+		if (getConfigurationAccessor().isEmbeddedSRE(configuration)) {
+			options = join(options, cliOptions.get(SRECommandLineOptions.CLI_EMBEDDED));
 		}
 
 		final RootContextIdentifierType type = getConfigurationAccessor().getDefaultContextIdentifier(configuration);

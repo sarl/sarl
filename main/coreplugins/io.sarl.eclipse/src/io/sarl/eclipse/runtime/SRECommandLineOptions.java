@@ -33,14 +33,6 @@ package io.sarl.eclipse.runtime;
  */
 public final class SRECommandLineOptions {
 
-	/** Field name for CLI option for showing the log info information.
-	 */
-	public static final String CLI_SHOW_INFO = "CLI-Show-Info"; //$NON-NLS-1$
-
-	/** Field name for CLI option for hiding the log info information.
-	 */
-	public static final String CLI_HIDE_INFO = "CLI-Hide-Info"; //$NON-NLS-1$
-
 	/** Field name for CLI option for using the default identifier of the root context.
 	 */
 	public static final String CLI_DEFAULT_CONTEXT_ID = "CLI-Default-Context-ID"; //$NON-NLS-1$
@@ -60,6 +52,22 @@ public final class SRECommandLineOptions {
 	/** Field name for CLI option for marking the SRE as embedded in another application.
 	 */
 	public static final String CLI_EMBEDDED = "CLI-Embedded"; //$NON-NLS-1$
+
+	/** Field name for CLI option for changing the logging level.
+	 * @since 0.12
+	 */
+	public static final String CLI_LOG = "CLI-Log"; //$NON-NLS-1$
+
+	/** Field name for CLI option's values for the logging option.
+	 * The values are separated by comas.
+	 * @since 0.12
+	 */
+	public static final String CLI_LOG_VALUES = "CLI-Log-Values"; //$NON-NLS-1$
+
+	/** Field name for CLI option's default value for the logging option.
+	 * @since 0.12
+	 */
+	public static final String CLI_LOG_DEFAULT_VALUE = "CLI-Log-Default-Value"; //$NON-NLS-1$
 
 	private SRECommandLineOptions() {
 		//

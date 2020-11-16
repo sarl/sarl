@@ -65,12 +65,6 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	public static final String ATTR_ROOT_CONTEXT_ID_TYPE = SARLEclipsePlugin.PLUGIN_ID + ".ROOT_CONTEXT_ID_TYPE"; //$NON-NLS-1$
 
 	/**
-	 * Launch configuration attribute key. The value indicates if the logged information messages
-	 * should be displayed or not.
-	 */
-	public static final String ATTR_SHOW_LOG_INFO = SARLEclipsePlugin.PLUGIN_ID + ".SHOW_LOG_INFO"; //$NON-NLS-1$
-
-	/**
 	 * Launch configuration attribute key. The value is the identifier of the SRE;
 	 */
 	public static final String ATTR_SARL_RUNTIME_ENVIRONMENT = SARLEclipsePlugin.PLUGIN_ID
@@ -137,6 +131,18 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	 */
 	public static final String ATTR_ENABLE_ASSERTIONS_IN_RUN_MODE = SARLEclipsePlugin.PLUGIN_ID + ".ENABLE_ASSERTIONS_RUN"; //$NON-NLS-1$
 
+	/**
+	 * Launch configuration attribute key. The value indicates the name of the command-line option for changing
+	 * the log level of the application.
+	 */
+	public static final String ATTR_LOG_OPTION_NAME = SARLEclipsePlugin.PLUGIN_ID + ".LOG_OPTION_NAME"; //$NON-NLS-1$
+
+	/**
+	 * Launch configuration attribute key. The value indicates the value of the command-line option for changing
+	 * the log level of the application.
+	 */
+	public static final String ATTR_LOG_OPTION_VALUE = SARLEclipsePlugin.PLUGIN_ID + ".LOG_OPTION_VALUE"; //$NON-NLS-1$
+
 	/** Identifier of the type of launch configuration dedicated to SARL agents
 	 * (value <code>io.sarl.eclipse.debug.LaunchConfigType</code>).
 	 */
@@ -146,8 +152,6 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 	 * (value <code>io.sarl.eclipse.debug.LaunchConfigType</code>).
 	 */
 	public static final String SARL_APPLICATION_LAUNCH_CONFIG_TYPE = "io.sarl.eclipse.debug.ApplicationLaunchConfigType"; //$NON-NLS-1$
-
-	private static final boolean DEFAULT_SHOW_LOG_INFO = true;
 
 	private static final boolean DEFAULT_USE_SYSTEM_SRE = true;
 
@@ -233,7 +237,6 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 		final ILaunchConfigurationWorkingCopy wc = configType.newInstance(null, launchManager.generateLaunchConfigurationName(id));
 		setProjectName(wc, projectName);
 		setDefaultContextIdentifier(wc, null);
-		setLaunchingFlags(wc, DEFAULT_SHOW_LOG_INFO);
 		setRuntimeConfiguration(wc, SARLRuntime.getDefaultSREInstall(), DEFAULT_USE_SYSTEM_SRE, DEFAULT_USE_PROJECT_SRE, resetJavaMainClass);
 		JavaMigrationDelegate.updateResourceMapping(wc);
 		return wc;
@@ -299,12 +302,6 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 		configuration.setAttribute(ATTR_USE_PROJECT_SARL_RUNTIME_ENVIRONMENT, project);
 		// Use the default JRE
 		configuration.setAttribute(IJavaLaunchConfigurationConstants.ATTR_JRE_CONTAINER_PATH, (String) null);
-	}
-
-	@Override
-	public void setLaunchingFlags(ILaunchConfigurationWorkingCopy configuration, Boolean showLogInfo) {
-		configuration.setAttribute(ATTR_SHOW_LOG_INFO,
-				showLogInfo == null ? DEFAULT_SHOW_LOG_INFO : showLogInfo.booleanValue());
 	}
 
 	@Override
@@ -403,15 +400,6 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 			} catch (Throwable e2) {
 				return DEFAULT_USE_PROJECT_SRE;
 			}
-		}
-	}
-
-	@Override
-	public boolean getShowLogInfoFlag(ILaunchConfiguration configuration) {
-		try {
-			return configuration.getAttribute(ATTR_SHOW_LOG_INFO, DEFAULT_SHOW_LOG_INFO);
-		} catch (CoreException e) {
-			return DEFAULT_SHOW_LOG_INFO;
 		}
 	}
 
@@ -616,6 +604,36 @@ public class LaunchConfigurationConfigurator implements ILaunchConfigurationConf
 			//
 		}
 		return identifiers;
+	}
+
+	@Override
+	public String getLogArgumentName(ILaunchConfiguration configuration) {
+		try {
+			return configuration.getAttribute(ATTR_LOG_OPTION_NAME, (String) null);
+		} catch (CoreException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public String getLogArgumentValue(ILaunchConfiguration configuration) {
+		try {
+			return configuration.getAttribute(ATTR_LOG_OPTION_VALUE, (String) null);
+		} catch (CoreException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public void setLogArgument(ILaunchConfigurationWorkingCopy configuration, String optionName, String optionValue) {
+		String name = Strings.emptyToNull(optionName);
+		String value = Strings.emptyToNull(optionValue);
+		if (name == null || value == null) {
+			value = null;
+			name = null;
+		}
+		configuration.setAttribute(ATTR_LOG_OPTION_NAME, name);
+		configuration.setAttribute(ATTR_LOG_OPTION_VALUE, value);
 	}
 
 }

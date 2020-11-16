@@ -141,6 +141,8 @@ to the runtime environment library.
 > **_Caution:_** Replacing the SARL sdk library by the run-time environment library within the Maven dependencies is not the
 > recommended approach by the SARL core developers.
 
+#### Janus as maven dependency
+
 The runtime environment that is recommended by the developers of SARL is [Janus](http://www.janusproject.io). 
 
 Replace the version number ([:janus.version2:]) of the [Janus platform](http://www.janusproject.io) with the one you want to use.
@@ -190,6 +192,51 @@ You could search on the [Maven Central Repository](http://search.maven.org/) for
 > POM file, you must be sure that the imported version of the Google Guava library is the one provided by the Janus
 > platform. For ensuring this, you must specify the version of the Guava library by defining it in the "dependencyManagement"
 > section of your pom file.
+
+
+
+#### Janus with networking feature as maven dependency
+
+By default, the Janus framework does not activate its network feature. If you would like to build a project with this feature,
+you have to use another Maven dependency: [:janusnetworkplugin:].
+
+```xml
+ <project>
+   ...
+    <properties>
+       ...
+       <janus.version>[:janus.version2!]</janus.version>
+    </properties>
+    ...
+    <build>
+       <plugins>
+          ...
+          <plugin>
+             <groupId>[:plugingroupid!]</groupId>
+             <artifactId>[:pluginname!]</artifactId>
+             <version>${sarl.version}</version>
+             <extensions>true</extensions>
+             <configuration>
+                <source>${jdk.version}</source>
+                <target>${jdk.version}</target>
+                <encoding>[:project.encoding!]</encoding>
+             </configuration>
+          </plugin>
+       </plugins>
+    </build>
+    ...
+    <dependencies>
+       ...
+       <dependency>
+          <groupId>io.janusproject</groupId>
+          <artifactId>[:janusnetworkplugin](io.janusproject.kernel.network)</artifactId>
+          <version>${janus.version}</version>
+       </dependency>
+       ...
+    </dependencies>
+    ...
+ </project>
+```
 
 ## What's next?
 

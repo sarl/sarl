@@ -24,6 +24,7 @@ package io.sarl.eclipse.launching.dialog;
 import java.lang.ref.SoftReference;
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
@@ -51,6 +52,7 @@ import org.eclipse.jdt.internal.debug.ui.launcher.DebugTypeSelectionDialog;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.window.Window;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -59,8 +61,10 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import io.sarl.eclipse.SARLEclipseConfig;
@@ -84,6 +88,7 @@ import io.sarl.lang.util.CliUtilities;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("restriction")
 public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab implements ISreChangeListener {
 
 	private volatile SoftReference<Image> image;
@@ -93,8 +98,6 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	private Text agentNameTextField;
 
 	private Button agentNameSearchButton;
-
-	private Button showLogInfoButton;
 
 	private Button runInEclipseButton;
 
@@ -107,6 +110,10 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	private Button randomContextIdentifierButton;
 
 	private Button bootContextIdentifierButton;
+
+	private Label logLevelLabel;
+
+	private Combo logLevelCombo;
 
 	private final WidgetListener defaultListener = new WidgetListener();
 
@@ -123,15 +130,52 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	}
 
 	@Override
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public void sreChanged(ISREInstall sre) {
 		final Map<String, String> options = sre == null ? Collections.emptyMap() : sre.getAvailableCommandLineOptions();
 		assert options != null;
 		final String noOpt = CliUtilities.getCommandLineLastOptionPrefix();
-		if (this.showLogInfoButton != null) {
-			final String infoOpt = options.getOrDefault(SRECommandLineOptions.CLI_SHOW_INFO, noOpt);
-			final String warnOpt = options.getOrDefault(SRECommandLineOptions.CLI_HIDE_INFO, noOpt);
-			this.showLogInfoButton.setText(MessageFormat.format(Messages.MainLaunchConfigurationTab_15, infoOpt, warnOpt));
-			this.showLogInfoButton.setEnabled(!Objects.equals(infoOpt, noOpt));
+		if (this.logLevelCombo != null && this.logLevelLabel != null) {
+			final String logOpt = options.getOrDefault(SRECommandLineOptions.CLI_LOG, noOpt);
+			boolean enable = !Objects.equals(noOpt, logOpt);
+			final String logOptValuesStr = options.getOrDefault(SRECommandLineOptions.CLI_LOG_VALUES, null);
+			final String[] logOptValues;
+			if (Strings.isNullOrEmpty(logOptValuesStr)) {
+				logOptValues = new String[0];
+				enable = false;
+			} else {
+				logOptValues = logOptValuesStr.trim().split("\\s*,\\s*");
+			}
+			//
+			final ILaunchConfiguration currentConfig = getCurrentLaunchConfiguration();
+			int index;
+			if (currentConfig != null) {
+				final String current = this.accessor.getLogArgumentValue(currentConfig);
+				index = Arrays.asList(logOptValues).indexOf(current);
+			} else {
+				index = this.logLevelCombo.getSelectionIndex();
+				if (index >= 0 && index < this.logLevelCombo.getItemCount()) {
+					final String selectedValue = this.logLevelCombo.getItem(index);
+					index = Arrays.asList(logOptValues).indexOf(selectedValue);
+				}
+			}
+			final String logOptStr = CliUtilities.getCommandLineOption(logOpt, Messages.MainLaunchConfigurationTab_16);
+			this.logLevelLabel.setText(MessageFormat.format(Messages.MainLaunchConfigurationTab_15, logOptStr));
+			this.logLevelLabel.setData(logOpt);
+			this.logLevelCombo.setItems(logOptValues);
+			if (index >= 0 && index < this.logLevelCombo.getItemCount()) {
+				this.logLevelCombo.select(index);
+			} else if (this.logLevelCombo.getItemCount() > 0) {
+				final String defaultValue = options.getOrDefault(SRECommandLineOptions.CLI_LOG_DEFAULT_VALUE, "");
+				index = Arrays.asList(logOptValues).indexOf(defaultValue);
+				if (index >= 0 && index < this.logLevelCombo.getItemCount()) {
+					this.logLevelCombo.select(index);
+				} else {
+					this.logLevelCombo.select(0);
+				}
+			}
+			this.logLevelLabel.setEnabled(enable);
+			this.logLevelCombo.setEnabled(enable);
 		}
 		if (this.defaultContextIdentifierButton != null) {
 			final String opt = options.getOrDefault(SRECommandLineOptions.CLI_DEFAULT_CONTEXT_ID, noOpt);
@@ -255,15 +299,25 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	 * @param text the label of the group.
 	 */
 	protected void createLaunchOptionEditor(Composite parent, String text) {
-		final Group group = SWTFactory.createGroup(parent, text, 1, 1, GridData.FILL_HORIZONTAL);
+		final Group group = SWTFactory.createGroup(parent, text, 2, 1, GridData.FILL_HORIZONTAL);
+
 		final String noOpt = CliUtilities.getCommandLineLastOptionPrefix();
-		this.showLogInfoButton = createCheckButton(group, MessageFormat.format(Messages.MainLaunchConfigurationTab_15, noOpt));
-		this.showLogInfoButton.addSelectionListener(this.defaultListener);
-		this.enableAssertionsInRunModeButton = createCheckButton(group, Messages.SARLMainLaunchConfigurationTab_2);
+		this.logLevelLabel = SWTFactory.createLabel(group,
+				MessageFormat.format(Messages.MainLaunchConfigurationTab_15, noOpt), 1);
+		this.logLevelCombo = SWTFactory.createCombo(group, SWT.READ_ONLY, 1, new String[0]);
+		this.logLevelCombo.addSelectionListener(this.defaultListener);
+
+		createVerticalSpacer(group, 2);
+
+		this.enableAssertionsInRunModeButton = SWTFactory.createCheckButton(group, Messages.SARLMainLaunchConfigurationTab_2, null, false, 2);
 		this.enableAssertionsInRunModeButton.addSelectionListener(this.defaultListener);
-		this.enableAssertionsInDebugModeButton = createCheckButton(group, Messages.SARLMainLaunchConfigurationTab_1);
+
+		this.enableAssertionsInDebugModeButton = SWTFactory.createCheckButton(group, Messages.SARLMainLaunchConfigurationTab_1, null, false, 2);
 		this.enableAssertionsInDebugModeButton.addSelectionListener(this.defaultListener);
-		this.runInEclipseButton = createCheckButton(group, Messages.SARLMainLaunchConfigurationTab_0);
+
+		createVerticalSpacer(group, 2);
+
+		this.runInEclipseButton = SWTFactory.createCheckButton(group, Messages.SARLMainLaunchConfigurationTab_0, null, false, 2);
 		this.runInEclipseButton.addSelectionListener(this.defaultListener);
 	}
 
@@ -303,11 +357,14 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	 * @param config the config to load the agent name from
 	 */
 	protected void updateLaunchOptionsFromConfig(ILaunchConfiguration config) {
-		final boolean showLogInfo = this.accessor.getShowLogInfoFlag(config);
+		final String logOptValue = this.accessor.getLogArgumentValue(config);
 		final boolean runInEclipse = this.accessor.isEmbeddedSRE(config);
 		final boolean enableAssertionsRun = this.accessor.isAssertionEnabledInRunMode(config);
 		final boolean enableAssertionsDebug = this.accessor.isAssertionEnabledInDebugMode(config);
-		this.showLogInfoButton.setSelection(showLogInfo);
+		final int index = Arrays.asList(this.logLevelCombo.getItems()).indexOf(logOptValue);
+		if (index >= 0 && index < this.logLevelCombo.getItemCount()) {
+			this.logLevelCombo.select(index);
+		}
 		this.enableAssertionsInRunModeButton.setSelection(enableAssertionsRun);
 		this.enableAssertionsInDebugModeButton.setSelection(enableAssertionsDebug);
 		this.runInEclipseButton.setSelection(runInEclipse);
@@ -415,8 +472,11 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 		this.configurator.setProjectName(config, Strings.emptyToNull(this.fProjText.getText().trim()));
 		this.configurator.setAgent(config, Strings.emptyToNull(this.agentNameTextField.getText().trim()));
 		this.configurator.setDefaultContextIdentifier(config, getSelectedContextIdentifierType());
-		this.configurator.setLaunchingFlags(config,
-				this.showLogInfoButton.getSelection());
+		final Object optObj = this.logLevelLabel.getData();
+		final String opt = optObj == null ? null : Strings.emptyToNull(optObj.toString());
+		final int index = this.logLevelCombo.getSelectionIndex();
+		final String optValue = index >= 0 && index < this.logLevelCombo.getItemCount() ? this.logLevelCombo.getItem(index) : null;
+		this.configurator.setLogArgument(config, opt, optValue);
 		this.configurator.setAssertionEnabledInRunMode(config, this.enableAssertionsInRunModeButton.getSelection());
 		this.configurator.setAssertionEnabledInDebugMode(config, this.enableAssertionsInDebugModeButton.getSelection());
 		this.configurator.setEmbeddedSRE(config, this.runInEclipseButton.getSelection());
@@ -451,7 +511,7 @@ public class SARLAgentMainLaunchConfigurationTab extends AbstractJavaMainTab imp
 	 * @param config the config to set with the launch options.
 	 */
 	protected void initializeLaunchOptions(ILaunchConfigurationWorkingCopy config) {
-		this.configurator.setLaunchingFlags(config, null);
+		this.configurator.setLogArgument(config, null, null);
 	}
 
 	private String extractNameFromJavaElement(final IJavaElement javaElement) {

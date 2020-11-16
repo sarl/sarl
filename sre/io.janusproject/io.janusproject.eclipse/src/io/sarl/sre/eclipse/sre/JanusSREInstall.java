@@ -24,7 +24,6 @@ package io.sarl.sre.eclipse.sre;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
-import java.util.logging.Level;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
@@ -32,6 +31,7 @@ import org.eclipse.core.runtime.IPath;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import io.sarl.api.bootiquebase.config.LogConfig;
 import io.sarl.api.bootiquebase.config.LogConfigModule;
 import io.sarl.api.bootiquebase.config.LogLevel;
 import io.sarl.bootstrap.SREBootstrap;
@@ -110,10 +110,9 @@ public class JanusSREInstall extends AbstractSREInstall {
 	public Map<String, String> getAvailableCommandLineOptions() {
 		final Map<String, String> options = Maps.newHashMap();
 		// Logging
-		options.put(SRECommandLineOptions.CLI_SHOW_INFO, CliUtilities.getCommandLineOption(
-				LogConfigModule.LOG_LONG_OPTION, LogLevel.toJsonString(Level.INFO)));
-		options.put(SRECommandLineOptions.CLI_HIDE_INFO, CliUtilities.getCommandLineOption(
-				LogConfigModule.LOG_LONG_OPTION, LogLevel.toJsonString(Level.WARNING)));
+		options.put(SRECommandLineOptions.CLI_LOG, LogConfigModule.LOG_LONG_OPTION);
+		options.put(SRECommandLineOptions.CLI_LOG_VALUES, LogLevel.getAllJsonLabels(false));
+		options.put(SRECommandLineOptions.CLI_LOG_DEFAULT_VALUE, LogLevel.toJsonString(LogConfig.DEFAULT_LEVEL));
 		// Embedded
 		//options.put(SRECommandLineOptions.CLI_EMBEDDED, formatCommandLineOption(null, null));
 		// Root context configuration

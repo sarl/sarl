@@ -98,10 +98,6 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 
 	private String programArguments = Utilities.EMPTY_STRING;
 
-	private String cliShowInfo;
-
-	private String cliHideInfo;
-
 	private String cliDefaultContextID;
 
 	private String cliRandomContextID;
@@ -111,6 +107,12 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 	private String cliNoMoreOption;
 
 	private String cliEmbedded;
+
+	private String cliLogOption;
+
+	private String cliLogValues;
+
+	private String cliLogDefaultValue;
 
 	private String manifestMainClass;
 
@@ -258,13 +260,14 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 				//
 				// Specific CLI Options
 				this.optionBuffer = null;
-				this.cliShowInfo = sarlSection.getValue(SRECommandLineOptions.CLI_SHOW_INFO);
-				this.cliHideInfo = sarlSection.getValue(SRECommandLineOptions.CLI_HIDE_INFO);
 				this.cliDefaultContextID = sarlSection.getValue(SRECommandLineOptions.CLI_DEFAULT_CONTEXT_ID);
 				this.cliRandomContextID = sarlSection.getValue(SRECommandLineOptions.CLI_RANDOM_CONTEXT_ID);
 				this.cliBootAgentContextID = sarlSection.getValue(SRECommandLineOptions.CLI_BOOT_AGENT_CONTEXT_ID);
 				this.cliNoMoreOption = sarlSection.getValue(SRECommandLineOptions.CLI_NO_MORE_OPTION);
 				this.cliEmbedded = sarlSection.getValue(SRECommandLineOptions.CLI_EMBEDDED);
+				this.cliLogOption = sarlSection.getValue(SRECommandLineOptions.CLI_LOG);
+				this.cliLogValues = sarlSection.getValue(SRECommandLineOptions.CLI_LOG_VALUES);
+				this.cliLogDefaultValue = sarlSection.getValue(SRECommandLineOptions.CLI_LOG_DEFAULT_VALUE);
 				//
 				// Program arguments
 				final String programArgs = Strings.nullToEmpty(sarlSection.getValue(SREManifestPreferenceConstants.MANIFEST_PROGRAM_ARGUMENTS));
@@ -540,13 +543,14 @@ public class ManifestBasedSREInstall extends AbstractSREInstall {
 		Map<String, String> options = (this.optionBuffer == null) ? null : this.optionBuffer.get();
 		if (options == null) {
 			options = Maps.newHashMap();
-			putIfNotempty(options, SRECommandLineOptions.CLI_SHOW_INFO, this.cliShowInfo);
-			putIfNotempty(options, SRECommandLineOptions.CLI_HIDE_INFO, this.cliHideInfo);
 			putIfNotempty(options, SRECommandLineOptions.CLI_DEFAULT_CONTEXT_ID, this.cliDefaultContextID);
 			putIfNotempty(options, SRECommandLineOptions.CLI_RANDOM_CONTEXT_ID, this.cliRandomContextID);
 			putIfNotempty(options, SRECommandLineOptions.CLI_BOOT_AGENT_CONTEXT_ID, this.cliBootAgentContextID);
 			putIfNotempty(options, SRECommandLineOptions.CLI_NO_MORE_OPTION, this.cliNoMoreOption);
 			putIfNotempty(options, SRECommandLineOptions.CLI_EMBEDDED, this.cliEmbedded);
+			putIfNotempty(options, SRECommandLineOptions.CLI_LOG, this.cliLogOption);
+			putIfNotempty(options, SRECommandLineOptions.CLI_LOG_VALUES, this.cliLogValues);
+			putIfNotempty(options, SRECommandLineOptions.CLI_LOG_DEFAULT_VALUE, this.cliLogDefaultValue);
 			this.optionBuffer = new SoftReference<>(options);
 		}
 		return Collections.unmodifiableMap(options);

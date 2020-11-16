@@ -139,18 +139,27 @@ class LogLevel {
 
 	/** Replies all the available labels for the log levels.
 	 *
-	 * @return the log level labels.
+	 * @param synonyms indicates if synonyms are added into the replied values (separated by slashes).
+	 * @return the log level labels separated by comas.
 	 */
 	@Pure
-	static def getAllJsonLabels : String {
+	static def getAllJsonLabels(synonyms : boolean) : String {
 		val labels = new StringBuilder
 		labels.append(toJsonString(Level::OFF, false)).append(", ")
-		labels.append(ERROR).append("/").append(CRITICAL).append("/").append(toJsonString(Level::SEVERE, false)).append(", ")
+		labels.append(ERROR)
+		if (synonyms) {
+			labels.append("/").append(CRITICAL).append("/").append(toJsonString(Level::SEVERE, false))
+		}
+		labels.append(", ")
 		labels.append(toJsonString(Level::WARNING, false)).append(", ")
 		labels.append(toJsonString(Level::INFO, false)).append(", ")
 		labels.append(toJsonString(Level::CONFIG, false)).append(", ")
 		labels.append(toJsonString(Level::FINE, false)).append(", ")
-		labels.append(DEBUG).append("/").append(toJsonString(Level::FINER, false)).append(", ")
+		labels.append(DEBUG)
+		if (synonyms) {
+			labels.append("/").append(toJsonString(Level::FINER, false))
+		}
+		labels.append(", ")
 		labels.append(toJsonString(Level::FINEST, false)).append(", ")
 		labels.append(toJsonString(Level::ALL, false))
 		return labels.toString

@@ -85,14 +85,15 @@ After selecting the modules to be extended, you should write your code:
 			this.platformLogger
 		}
 
-		override [:getKernelLogger](getKernelLogger)(moduleName : String) : Logger {
+		override [:getKernelLogger](getKernelLogger) : Logger {
 			if (this.kernelLogger === null) {
 				this.kernelLogger = new MyLogger(this.platformLogger)
 			}
-			if (moduleName.nullOrEmpty) {
-				return new MyLogger(moduleName, this.kernelLogger)
-			}
 			return this.kernelLogger
+		}
+
+		override [:getKernelModuleLogger](getKernelModuleLogger)(moduleName : String) : Logger {
+			return new MyLogger(moduleName, getKernelLogger)
 		}
 
 		override [:createAgentLogger](createAgentLogger)(name : String, initialLevel : Level) : Logger {
@@ -118,7 +119,8 @@ The contruction takes as optional argument the name of the logger, and as mandat
 Three functions must be defined in your own implementation of the logging system, namely [:myloggerservicetype:]:
 
 * [:getPlatformLogger:]: replies the root logger of all the loggers of the SRE.
-* [:getKernelLogger:]: replies the logger that is dedicated to the SRE kernel. The argument of the function is the kernel module's name to be used when displaying the messages.
+* [:getKernelLogger:]: replies the logger that is dedicated to the SRE kernel.
+* [:getKernelModuleLogger:]: replies the logger that is dedicated to a module of the SRE kernel. The argument of the function is the kernel module's name to be used when displaying the messages.
 * [:createAgentLogger:]: create the logger for the agent with the given name. The second parameter permits to control the verbosity of the logger.
 
 

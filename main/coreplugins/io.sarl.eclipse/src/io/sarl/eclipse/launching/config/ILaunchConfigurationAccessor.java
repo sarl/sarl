@@ -81,13 +81,6 @@ public interface ILaunchConfigurationAccessor {
 	 */
 	boolean getUseProjectSREFlag(ILaunchConfiguration configuration);
 
-	/** Replies if the SRE should log information messages, or error messages.
-	 *
-	 * @param configuration the configuration.
-	 * @return <code>true</code> if the SRE logs information messages.
-	 */
-	boolean getShowLogInfoFlag(ILaunchConfiguration configuration);
-
 	/** Replies the name of the project attached to the configuration.
 	 *
 	 * @param configuration the configuration.
@@ -141,7 +134,7 @@ public interface ILaunchConfigurationAccessor {
 	 * These arguments are used only when launching an SRE directly, not when launching a Java application.
 	 * For passing arguments to the Java application also, see {@link #getExtraJRELaunchingArguments(ILaunchConfiguration)}.
 	 *
-	 * @param configuration the configuration to change.
+	 * @param configuration the configuration to read.
 	 * @return the arguments to give to the SRE.
 	 * @since 0.12
 	 * @see #getSRELaunchingArguments(ILaunchConfiguration)
@@ -175,7 +168,7 @@ public interface ILaunchConfigurationAccessor {
 	 * a Java application.
 	 * For passing arguments to only the agent-based application, see {@link #getExtraSRELaunchingArguments(ILaunchConfiguration)}.
 	 *
-	 * @param configuration the configuration to change.
+	 * @param configuration the configuration to read.
 	 * @return the arguments to give to the SRE.
 	 * @since 0.12
 	 * @see #getSRELaunchingArguments(ILaunchConfiguration)
@@ -215,7 +208,7 @@ public interface ILaunchConfigurationAccessor {
 	 * <p>A classpath provider has a specific definition of a set of libraries that is considered to be included into the
 	 * application classpath.
 	 *
-	 * @param configuration the configuration to change.
+	 * @param configuration the configuration to read.
 	 * @param contributorId the identifier of the contributor.
 	 * @return the identifier of the classpath provider.
 	 * @since 0.12
@@ -227,10 +220,26 @@ public interface ILaunchConfigurationAccessor {
 	 * <p>A classpath provider has a specific definition of a set of libraries that is considered to be included into the
 	 * application classpath.
 	 *
-	 * @param configuration the configuration to change.
+	 * @param configuration the configuration to read.
 	 * @return the identifiers of the classpath providers.
 	 * @since 0.12
 	 */
 	List<String> getExtraClasspathProviders(ILaunchConfiguration configuration);
+
+	/** Change the name of argument to pass to the application for changing its log level.
+	 *
+	 * @param configuration the configuration to read.
+	 * @return the name of the option.
+	 * @since 0.12
+	 */
+	String getLogArgumentName(ILaunchConfiguration configuration);
+
+	/** Change the value of argument to pass to the application for changing its log level.
+	 *
+	 * @param configuration the configuration to read.
+	 * @return the value of the option.
+	 * @since 0.12
+	 */
+	String getLogArgumentValue(ILaunchConfiguration configuration);
 
 }

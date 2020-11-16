@@ -154,13 +154,6 @@ public interface ILaunchConfigurationConfigurator {
 	void detachResources(ILaunchConfigurationWorkingCopy configuration, IResource... resources)
 			throws CoreException;
 
-	/** Change the option flags for the SRE launching.
-	 *
-	 * @param configuration the configuration to change.
-	 * @param showLogInfo indicates if informations are logged or only errors. If null, the default is used.
-	 */
-	void setLaunchingFlags(ILaunchConfigurationWorkingCopy configuration, Boolean showLogInfo);
-
 	/** Change the name of the project associated to the launch configuration.
 	 *
 	 * @param configuration the configuration to change.
@@ -272,5 +265,14 @@ public interface ILaunchConfigurationConfigurator {
 	 * @since 0.12
 	 */
 	void setExtraClasspathProvider(ILaunchConfigurationWorkingCopy configuration, String contributorId, String classpathProviderId);
+
+	/** Change the argument to pass to the application for changing its log level.
+	 *
+	 * @param configuration the configuration to change.
+	 * @param optionName is the name of the option.
+	 * @param optionValue is the value to pass with the option.
+	 * @since 0.12
+	 */
+	void setLogArgument(ILaunchConfigurationWorkingCopy configuration, String optionName, String optionValue);
 
 }

@@ -85,7 +85,9 @@ class JulLoggerCreatorTest {
 	def setUp : void {
 		this.loggerProvider = typeof(Function1).mock
 		this.logger0 = typeof(Logger).mock
+		when(this.logger0.getLevel).thenReturn(Level::ALL)
 		this.logger1 = typeof(Logger).mock
+		when(this.logger1.getLevel).thenReturn(Level::ALL)
 		when(this.loggerProvider.apply(any)).thenAnswer [
 			val name = it.getArgument(0) as String
 			if (name.startsWith(JulLoggerCreator::PLATFORM_LOGGER_NAME_PREFIX)) {
