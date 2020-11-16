@@ -153,7 +153,7 @@ class HazelcastLogListener implements LogListener {
 	
 	@Inject
 	new(logger : LoggingService) {
-		this.logger = logger.getKernelLogger(Messages::HazelcastLogListener_1)
+		this.logger = logger.getKernelModuleLogger(Messages::HazelcastLogListener_1)
 	}
 	
 	

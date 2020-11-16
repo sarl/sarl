@@ -58,8 +58,8 @@ abstract class AbstractInjectionBasedContextServiceTest<T extends AbstractInject
 		this.contextFactory = typeof(ContextFactory).mock
 		this.loggingService = typeof(LoggingService).mock
 		val log = typeof(Logger).mock
-		when(this.loggingService.getKernelLogger(anyString)).thenReturn(log)
-		when(this.loggingService.getKernelLogger(null)).thenReturn(log)
+		when(this.loggingService.getKernelModuleLogger(anyString)).thenReturn(log)
+		when(this.loggingService.getKernelLogger).thenReturn(log)
 		when(this.contextFactory.newInstance(any, any, any)).thenAnswer [
 			when(this.context.ID).thenReturn(getArgument(0))
 			when(this.context.getOwner).thenReturn(getArgument(2))

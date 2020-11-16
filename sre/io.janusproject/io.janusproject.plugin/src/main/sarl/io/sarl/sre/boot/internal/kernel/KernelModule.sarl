@@ -35,13 +35,13 @@ import io.sarl.sre.services.GoogleServiceManager
 import io.sarl.sre.services.IServiceManager
 import io.sarl.sre.services.context.Context
 import io.sarl.sre.services.context.ContextFactory
+import io.sarl.sre.services.logging.LoggingService
+import java.text.MessageFormat
 import java.util.Set
 import java.util.UUID
 import javax.inject.Named
 import javax.inject.Provider
 import javax.inject.Singleton
-import io.sarl.sre.services.logging.LoggingService
-import java.text.MessageFormat
 
 /** 
  * Module for configuring the kernel specific components.
@@ -72,7 +72,7 @@ class KernelModule extends AbstractModule {
 		@Named(BootConfig::ROOT_CONTEXT_ID_NAME) rootContextId : UUID,
 		@Named(BootConfig::ROOT_DEFAULT_SPACE_ID_NAME) rootDefaultSpaceId : UUID,
 		logger : LoggingService) : Context {
-		logger.getKernelLogger(null).finer [MessageFormat::format(Messages::KernelModule_0, rootContextId, rootDefaultSpaceId)]
+		logger.getKernelLogger.finer [MessageFormat::format(Messages::KernelModule_0, rootContextId, rootDefaultSpaceId)]
 		var context = factory.newInstance(rootContextId, rootDefaultSpaceId, null)
 		injector.injectMembers(context)
 		return context

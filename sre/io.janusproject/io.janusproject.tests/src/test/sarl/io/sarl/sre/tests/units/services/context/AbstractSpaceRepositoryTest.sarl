@@ -105,8 +105,8 @@ abstract class AbstractSpaceRepositoryTest<T extends SpaceRepository,
 		when(this.specificationFactory.createOpenEventSpaceSpecificationInInnerContext(any, any)).thenReturn(null)
 		this.initMocks
 		val log = typeof(Logger).mock
-		when(this.logger.getKernelLogger(anyString)).thenReturn(log)
-		when(this.logger.getKernelLogger(null)).thenReturn(log)
+		when(this.logger.getKernelModuleLogger(anyString)).thenReturn(log)
+		when(this.logger.getKernelLogger).thenReturn(log)
 		this.internalStructure = newInternalStructure
 		this.repository = newSpaceRepository
 	}

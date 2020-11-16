@@ -110,14 +110,14 @@ abstract class AbstractLifecycleService extends AbstractSreService implements Li
 	new (sarlSpecificationChecker : SarlSpecificationChecker, creator : AgentCreatorProvider,
 		globalListeners : SmartListenerCollection<?>, lifecycleListener : Provider<LifecycleServiceListener>,
 		externalContextListener : Provider<ExternalContextMemberListener>, skillUninstaller : SkillUninstaller,
-		executor : ExecutorService, logger : LoggingService, lifecycleConfig : LifecycleConfig) {
+		executor : ExecutorService, loggingService : LoggingService, lifecycleConfig : LifecycleConfig) {
 		this.sarlSpecificationChecker = sarlSpecificationChecker
 		this.agentCreatorProvider = creator
 		this.globalListeners = globalListeners
 		this.skillUninstaller = skillUninstaller
 		this.executor = executor
 		this.lifecycleConfig = lifecycleConfig
-		this.logger = logger.getKernelLogger(Messages::AbstractLifecycleService_3)
+		this.logger = loggingService.getKernelModuleLogger(Messages::AbstractLifecycleService_3)
 		this.platformLifecycleEventEmitter = lifecycleListener.get
 		this.platformContextEventEmitter = externalContextListener.get
 	}

@@ -98,7 +98,8 @@ class KernelTest {
 		this.rootContext = typeof(Context).mock
 		this.handler = typeof(UncaughtExceptionHandler).mock
 		this.logger = typeof(LoggingService).mock
-		when(this.logger.getKernelLogger(anyString)).thenReturn(typeof(Logger).mock)
+		when(this.logger.getKernelLogger).thenReturn(typeof(Logger).mock)
+		when(this.logger.getKernelModuleLogger(anyString)).thenReturn(typeof(Logger).mock)
 		this.lifecycle = typeof(LifecycleService).mock
 		this.context = typeof(ContextService).mock
 		when(this.context.rootContext).thenReturn(this.rootContext)
@@ -130,10 +131,12 @@ class KernelTest {
 	@Test
 	@DisplayName("getLogger")
 	def getLogger {
-		var log = typeof(Logger).mock
-		when(this.logger.getKernelLogger(anyString)).thenReturn(log)
-		var l = this.kernel.getLogger("xyz")
-		log.assertSame(l)
+		var log0 = typeof(Logger).mock
+		var log1 = typeof(Logger).mock
+		when(this.logger.getKernelModuleLogger(anyString)).thenReturn(log1)
+		when(this.logger.getKernelLogger).thenReturn(log0)
+		var l = this.kernel.getLogger
+		log0.assertSame(l)
 	}
 
 	@Test

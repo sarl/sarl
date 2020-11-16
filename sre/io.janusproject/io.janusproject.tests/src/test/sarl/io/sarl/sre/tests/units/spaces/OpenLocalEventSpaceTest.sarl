@@ -99,7 +99,8 @@ class OpenLocalEventSpaceTest {
 		this.address = new Address(this.spaceId, this.agentId)
 
 		val loggingService = typeof(LoggingService).mock
-		when(loggingService.getKernelLogger(anyString)).thenReturn(typeof(Logger).mock)
+		when(loggingService.getKernelModuleLogger(anyString)).thenReturn(typeof(Logger).mock)
+		when(loggingService.getKernelLogger).thenReturn(typeof(Logger).mock)
 
 		this.^space = new OpenLocalEventSpace(this.spaceId,
 			typeof(SpaceParticipantListener).mock, loggingService)

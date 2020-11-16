@@ -52,8 +52,8 @@ final class XAbstractEventSpaceMock extends AbstractEventSpace {
 	static def createLoggingServiceMock : LoggingService {
 		val service = typeof(LoggingService).mock
 		val logger = typeof(Logger).mock
-		when(service.getKernelLogger(anyString)).thenReturn(logger)
-		when(service.getKernelLogger(null)).thenReturn(logger)
+		when(service.getKernelModuleLogger(anyString)).thenReturn(logger)
+		when(service.getKernelLogger).thenReturn(logger)
 		return service
 	}
 	

@@ -135,7 +135,7 @@ class HazelcastSpaceRepository extends LocalSpaceRepository {
 	}
 
 	protected override createLogger(loggingService : LoggingService) : Logger {
-		loggingService.getKernelLogger(Messages::HazelcastSpaceRepository_5)
+		loggingService.getKernelModuleLogger(Messages::HazelcastSpaceRepository_5)
 	}
 
 	protected override createSpaceFirstInstance(spec : Class<? extends SpaceSpecification<S>>, spaceID : SpaceID,

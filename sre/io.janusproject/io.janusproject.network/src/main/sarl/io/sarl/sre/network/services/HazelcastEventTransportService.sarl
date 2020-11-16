@@ -105,7 +105,7 @@ class HazelcastEventTransportService implements EventTransportService {
 		contextService = icontextService
 		hazelcastInstance = iHazelcastInstance
 
-		kernelLogger = logger.getKernelLogger(Messages::HazelcastEventTransportService_1)
+		kernelLogger = logger.getKernelModuleLogger(Messages::HazelcastEventTransportService_1)
 
 		topicListenerIDs = new ConcurrentHashMap<String, UUID>();
 		this.availableTopicsName = this.hazelcastInstance.getSet(HAZELCAST_SARL_TOPICS_NAME_SET);

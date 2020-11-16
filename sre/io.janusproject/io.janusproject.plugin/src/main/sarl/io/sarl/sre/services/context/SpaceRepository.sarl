@@ -118,7 +118,7 @@ abstract class SpaceRepository implements SpaceListener {
 	 * @return the logger.
 	 */
 	protected def createLogger(loggingService : LoggingService) : Logger {
-		loggingService.getKernelLogger(Messages::SpaceRepository_2)
+		loggingService.getKernelModuleLogger(Messages::SpaceRepository_2)
 	}
 
 	/** Replies the internal map that contains the spaces

@@ -93,7 +93,7 @@ class HazelcastContextService extends MemoryBasedContextService {
 	}
 
 	protected override createLogger(loggingService : LoggingService) : Logger {
-		loggingService.getKernelLogger(Messages::HazelcastContextService_9)
+		loggingService.getKernelModuleLogger(Messages::HazelcastContextService_9)
 	}
 
 	protected def newContextInstance(contextID : UUID, defaultSpaceID : UUID, owner : Agent) : Context {

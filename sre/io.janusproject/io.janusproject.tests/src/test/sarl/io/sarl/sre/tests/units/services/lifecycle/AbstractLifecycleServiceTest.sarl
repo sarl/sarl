@@ -160,7 +160,8 @@ abstract class AbstractLifecycleServiceTest<T extends AbstractLifecycleService> 
 		].when(this.executor).executeAsap(typeof(Logger).any, typeof(Runnable).any)
 		
 		this.logger = typeof(LoggingService).mock
-		when(this.logger.getKernelLogger(anyString)).thenReturn(typeof(Logger).mock)
+		when(this.logger.getKernelLogger).thenReturn(typeof(Logger).mock)
+		when(this.logger.getKernelModuleLogger(anyString)).thenReturn(typeof(Logger).mock)
 		this.skillUninstaller = typeof(SkillUninstaller).mock
 		when(this.skillUninstaller.uninstallSkillsBeforeDestroy(any)).thenReturn(new ArrayList)
 

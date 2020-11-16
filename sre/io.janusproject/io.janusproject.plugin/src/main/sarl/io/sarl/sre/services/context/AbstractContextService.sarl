@@ -67,7 +67,7 @@ abstract class AbstractContextService extends AbstractSreService implements Cont
 	 * @since 0.12
 	 */
 	protected def createLogger(loggingService : LoggingService) : Logger {
-		loggingService.getKernelLogger(Messages::AbstractContextService_3)
+		loggingService.getKernelModuleLogger(Messages::AbstractContextService_3)
 	}
 
 	def onStart {

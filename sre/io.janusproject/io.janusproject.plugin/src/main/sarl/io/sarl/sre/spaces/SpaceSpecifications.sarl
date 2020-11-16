@@ -72,7 +72,7 @@ abstract class AbstractSreEventSpaceSpecification {
 	}
 
 	protected def createSpaceInstance(id : SpaceID, params : Object*) : OpenLocalEventSpace {
-		val logger = this.loggingService.getKernelLogger(null)
+		val logger = this.loggingService.getKernelLogger
 		val listener = this.spaceParticipantListenerFactory.create(this.defaultSpace, logger)
 		val ^space = new OpenLocalEventSpace(id, listener, this.loggingService)
 		if (this.defaultSpace === null) {//Only useful for the default space of the default context

@@ -83,12 +83,12 @@ class Context extends AgentTrait implements AgentContext {
 	 * @param listenerFactory the factory of space listeners.
 	 */
 	new (id : UUID, defaultSpaceID : UUID, owner : Agent, spaceRepositoryProvider : Provider<SpaceRepository>,
-		logger : LoggingService, listenerFactory : SpaceRepositoryListenerFactory) {
+		loggingService : LoggingService, listenerFactory : SpaceRepositoryListenerFactory) {
 		super(owner)
 		this.id = id
 		this.defaultSpaceID = defaultSpaceID
 		this.repositoryProvider = spaceRepositoryProvider
-		this.logger = logger.getKernelLogger(Messages::Context_1)
+		this.logger = loggingService.getKernelModuleLogger(Messages::Context_1)
 		this.spaceEventEmitterFactory = listenerFactory
 	}
 

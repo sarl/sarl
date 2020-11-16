@@ -82,7 +82,8 @@ class NotShutdownQuietThreadExecutorPolicyTest {
 		this.logger = typeof(Logger).mock
 		when(this.logger.isLoggable(typeof(Level).any)).thenReturn(true)
 		this.logService = typeof(LoggingService).mock
-		when(this.logService.getKernelLogger(anyString)).thenReturn(this.logger)
+		when(this.logService.getKernelLogger).thenReturn(this.logger)
+		when(this.logService.getKernelModuleLogger(anyString)).thenReturn(this.logger)
 
 		this.executor = typeof(ThreadPoolExecutor).mock
 		when(this.executor.isShutdown).thenReturn(false)

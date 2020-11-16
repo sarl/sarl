@@ -39,7 +39,9 @@ interface LoggingService extends Service {
 	 * Create a logger for an agent.
 	 * 
 	 * @param name the name of the logger, usually the name of the agent.
-	 * @param initialLevel the initial level to associate to the logger.
+	 * @param initialLevel the initial level to associate to the logger. If it is
+	 *     {@code null}, the level is the less verbose between the default level
+	 *     (given in the SRE configuration) and the parent level.
 	 * @return the logger.
 	 * @since 0.7
 	 */
@@ -57,13 +59,21 @@ interface LoggingService extends Service {
 
 	/** 
 	 * Replies the logger used by the kernel.
-	 * If the name is provided, a sub-logger of the kernel logger will be replied
-	 * with the given name included into the message. 
+	 * 
+	 * @return the logger.
+	 * @since 0.7
+	 * @see #getKernelModuleLogger(String)
+	 */
+	def getKernelLogger : Logger
+
+	/** 
+	 * Replies the logger used by a specific module of the kernel.
 	 * 
 	 * @param name the name of the sub-logger.
 	 * @return the logger.
-	 * @since 0.7
+	 * @since 0.12
+	 * @see #getKernelLogger()
 	 */
-	def getKernelLogger(moduleName : String) : Logger
+	def getKernelModuleLogger(moduleName : String) : Logger
 
 }

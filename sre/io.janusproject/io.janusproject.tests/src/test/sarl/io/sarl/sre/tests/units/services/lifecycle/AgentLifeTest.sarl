@@ -538,7 +538,8 @@ class AgentLifeTest {
 		when(installer.uninstallSkillsBeforeDestroy(any)).thenReturn(new ArrayList)
 		var logger = typeof(LoggingService).mock
 		var loglog = typeof(Logger).mock
-		when(logger.getKernelLogger(anyString)).thenReturn(loglog)
+		when(logger.getKernelLogger).thenReturn(loglog)
+		when(logger.getKernelModuleLogger(anyString)).thenReturn(loglog)
 		var parent = UUID::randomUUID
 		var spawner = UUID::randomUUID
 		var spawningContext = typeof(Context).mock
@@ -578,7 +579,8 @@ class AgentLifeTest {
 		when(installer.uninstallSkillsBeforeDestroy(any)).thenReturn(new ArrayList)
 		var logger = typeof(LoggingService).mock
 		var loglog = typeof(Logger).mock
-		when(logger.getKernelLogger(anyString)).thenReturn(loglog)
+		when(logger.getKernelLogger).thenReturn(loglog)
+		when(logger.getKernelModuleLogger(anyString)).thenReturn(loglog)
 		// Force the logger to forward the exception
 		doAnswer([
 			Exceptions::sneakyThrow(it.getArgument(0) as Throwable)

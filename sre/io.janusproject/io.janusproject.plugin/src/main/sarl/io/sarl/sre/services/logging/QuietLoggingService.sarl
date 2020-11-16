@@ -40,26 +40,29 @@ import javax.inject.Singleton
 @Singleton
 class QuietLoggingService extends AbstractSreService implements LoggingService {
 
-	var platformLoggerInstance : Logger
+	var loggerInstance : Logger
 
-	var kernelLoggerInstance : Logger
+	private def ensureLogger : Logger {
+		if (this.loggerInstance === null) {
+			this.loggerInstance = new QuietLogger
+		}
+		return this.loggerInstance
+	}
 
 	override getPlatformLogger : Logger {
-		if (this.platformLoggerInstance === null) {
-			this.platformLoggerInstance = new QuietLogger
-		}
-		this.platformLoggerInstance
+		ensureLogger
 	}
 
-	override getKernelLogger(moduleName : String) : Logger {
-		if (this.kernelLoggerInstance === null) {
-			this.kernelLoggerInstance = new QuietLogger
-		}
-		this.kernelLoggerInstance
+	override getKernelLogger : Logger {
+		ensureLogger
 	}
 
-	def createAgentLogger(name : String, initialLevel : Level = null) : Logger {
-		return new QuietLogger
+	override getKernelModuleLogger(moduleName : String) : Logger {
+		ensureLogger
+	}
+
+	override createAgentLogger(name : String, initialLevel : Level = null) : Logger {
+		ensureLogger
 	}
 
 	/** Quiet logger.
@@ -73,7 +76,7 @@ class QuietLoggingService extends AbstractSreService implements LoggingService {
 	private static class QuietLogger extends Logger {
 		
 		new {
-			super ("", null)
+			super("", null)
 			this.level = Level::OFF
 		}
 
