@@ -529,7 +529,7 @@ This mapping is declared into the injection module:
 
 			VariableDecls::extend(binder).declareVar(MyConfiguration::PROP1_NAME)
 
-			binder.extend.addOption(OptionMetadata::builder("[:commandlineoptname](opt)", "This is the option to set prop1")
+			binder.extend.[:addoptionfct](addOption)([:optionmetadatabuilder](OptionMetadata::builder)("[:commandlineoptname](opt)", "This is the option to set prop1")
 					.valueRequired("[:commandlineoptvalue](value)")
 					.build)
 					.mapConfigPath("opt", MyConfiguration::PROP1_NAME)
@@ -545,8 +545,8 @@ This mapping is declared into the injection module:
 [:End:]
 
 The Bootique API provides tools for declaring the command-line option, e.g. `--[:commandlineoptname!]`.
-In the previous example, this command-line option takes a mandaotry value, that is named [:commandlineoptvalue:]
-in the help pages of the application.
+In the previous example, this command-line option added with [:addoptionfct:] takes a mandatory value, that is named [:commandlineoptvalue:] in the help pages of the application.
+The function [:optionmetadatabuilder:] enables to create a description of the command-line option, with its name, descripton and its value description.
 
 
 [:Include:](../legal.inc)
