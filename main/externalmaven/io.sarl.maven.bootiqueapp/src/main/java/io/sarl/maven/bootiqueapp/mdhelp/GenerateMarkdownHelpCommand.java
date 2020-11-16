@@ -34,6 +34,8 @@ import io.bootique.help.HelpOptions;
 import io.bootique.meta.application.ApplicationMetadata;
 import io.bootique.meta.application.CommandMetadata;
 
+import io.sarl.lang.util.CliUtilities;
+
 /**
  * Command for displaying the help on the standard output using a Markdown format.
  *
@@ -136,7 +138,7 @@ public class GenerateMarkdownHelpCommand extends CommandWithMetadata {
 				if (option.isShortNameAllowed()) {
 					buffer0.append("<br>"); //$NON-NLS-1$
 				}
-				buffer0.append("--"); //$NON-NLS-1$
+				buffer0.append(CliUtilities.getCommandLineLongOptionPrefix()); //$NON-NLS-1$
 				buffer0.append(option.getOption().getName());
 				switch (option.getOption().getValueCardinality()) {
 				case REQUIRED:

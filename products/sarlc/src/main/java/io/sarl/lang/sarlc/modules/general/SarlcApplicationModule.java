@@ -36,6 +36,7 @@ import io.sarl.lang.SARLConfig;
 import io.sarl.lang.sarlc.Constants;
 import io.sarl.lang.sarlc.commands.CompilerCommand;
 import io.sarl.lang.sarlc.configs.SarlcConfig;
+import io.sarl.lang.util.CliUtilities;
 import io.sarl.maven.bootiqueapp.utils.SystemProperties;
 
 /** Module for configuring the sarlc application information.
@@ -76,9 +77,9 @@ public class SarlcApplicationModule extends AbstractModule {
 		@Override
 		public String get() {
 			final String sarlOutputDirectory = SARLConfig.FOLDER_SOURCE_GENERATED;
-			final String sarlOutputDirectoryOption = "--" + Constants.SARL_OUTPUT_DIRECTORY_OPTION; //$NON-NLS-1$
+			final String sarlOutputDirectoryOption = CliUtilities.getCommandLineOption(Constants.SARL_OUTPUT_DIRECTORY_OPTION);
 			final String javaOutputDirectory = SARLConfig.FOLDER_BIN;
-			final String javaOutputDirectoryOption = "--" + Constants.JAVA_OUTPUT_DIRECTORY_OPTION; //$NON-NLS-1$
+			final String javaOutputDirectoryOption = CliUtilities.getCommandLineOption(Constants.JAVA_OUTPUT_DIRECTORY_OPTION);
 			return MessageFormat.format(Messages.SarlcApplicationModule_2,
 					sarlOutputDirectory, sarlOutputDirectoryOption,
 					javaOutputDirectory, javaOutputDirectoryOption);

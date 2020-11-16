@@ -35,6 +35,15 @@ import com.fasterxml.jackson.annotation.JsonValue
  */
 class LogLevel {
 
+	/** Json label that is used for representing error messages, and synonym of "severe". */
+	public static val ERROR = "error"
+
+	/** Json label that is used for representing error messages, and synonym of "severe". */
+	public static val CRITICAL = "critical"
+
+	/** Json label that is used for representing debug messages, and synonym of "finer". */
+	public static val DEBUG = "debug"
+
 	val level : Level
 
 	/** Constructor.
@@ -58,15 +67,46 @@ class LogLevel {
 			throw new NullPointerException("Name is null")
 		}
 		var lvl : Level = null
-		try {
-			lvl = Level::parse(name.toUpperCase)
-		} catch (exception : Throwable) {
-			lvl = null
-		}
-		if (lvl === null) {
-			lvl = LogConfig::DEFAULT_LEVEL
+		switch (name) {
+			case ERROR,
+			case CRITICAL: {
+				lvl = Level::SEVERE
+			}
+			case DEBUG: {
+				lvl = Level::FINER
+			}
+			default: {
+				try {
+					lvl = Level::parse(name.toUpperCase)
+				} catch (exception : Throwable) {
+					lvl = null
+				}
+				if (lvl === null) {
+					lvl = LogConfig::DEFAULT_LEVEL
+				}
+			}
 		}
 		return new LogLevel(lvl)
+	}
+
+	/** Replies the Json representation of the given level.
+	 *
+	 * @param level the JUL level.
+	 * @param allowSynonyms indicates of the synonyms of levels should be considered.
+	 * @return the json representation.
+	 */
+	static def toJsonString(level : Level, allowSynonyms : boolean = true) : String {
+		if (allowSynonyms) {
+			switch (level) {
+				case Level::SEVERE: {
+					return ERROR
+				}
+				case Level::FINER: {
+					return DEBUG
+				}
+			}
+		}
+		return level.name.toLowerCase
 	}
 
 	/** Replies the preferred string representation of the level within a Json stream.
@@ -76,7 +116,7 @@ class LogLevel {
 	@JsonValue
 	@Pure
 	def toJsonString : String {
-		this.level.name.toLowerCase
+		this.level.toJsonString
 	}
 
 	/** Replies the JUL level associated to this logging level.
@@ -95,6 +135,25 @@ class LogLevel {
 	@Pure
 	def intValue : int {
 		this.level.intValue
+	}
+
+	/** Replies all the available labels for the log levels.
+	 *
+	 * @return the log level labels.
+	 */
+	@Pure
+	static def getAllJsonLabels : String {
+		val labels = new StringBuilder
+		labels.append(toJsonString(Level::OFF, false)).append(", ")
+		labels.append(ERROR).append("/").append(CRITICAL).append("/").append(toJsonString(Level::SEVERE, false)).append(", ")
+		labels.append(toJsonString(Level::WARNING, false)).append(", ")
+		labels.append(toJsonString(Level::INFO, false)).append(", ")
+		labels.append(toJsonString(Level::CONFIG, false)).append(", ")
+		labels.append(toJsonString(Level::FINE, false)).append(", ")
+		labels.append(DEBUG).append("/").append(toJsonString(Level::FINER, false)).append(", ")
+		labels.append(toJsonString(Level::FINEST, false)).append(", ")
+		labels.append(toJsonString(Level::ALL, false))
+		return labels.toString
 	}
 
 }

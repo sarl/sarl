@@ -41,6 +41,8 @@ import java.util.logging.Logger
 import org.arakhne.afc.bootique.variables.VariableDecls
 import org.arakhne.afc.bootique.variables.VariableNames
 
+import static io.sarl.api.bootiquebase.config.LogConfig.*
+
 import static extension io.bootique.BQCoreModule.extend
 
 /** 
@@ -227,13 +229,17 @@ class LogConfig implements Comparable<LogConfig> {
  */
 class LogConfigModule extends AbstractModule {
 
-	static val LOG_LONG_OPTION = "log"
+	/** Name of the command-line option.
+	 */
+	public static val LOG_LONG_OPTION = "log"
 	
 	override configure : void {
 		VariableDecls.extend(binder()).declareVar(LogConfig::LEVEL);
 		val cpDescription = MessageFormat::format(Messages::LogConfigModule_0,
 				VariableNames.toEnvironmentVariableName(LogConfig::LEVEL),
-				LOG_LONG_OPTION);
+				LOG_LONG_OPTION,
+				LogLevel::toJsonString(DEFAULT_LEVEL),
+				LogLevel::allJsonLabels)
 		binder.extend.addOption(
 				OptionMetadata.builder(LOG_LONG_OPTION, cpDescription)
 				.valueRequired(Messages::LogConfigModule_1)

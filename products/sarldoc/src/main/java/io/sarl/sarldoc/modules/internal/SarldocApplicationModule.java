@@ -33,6 +33,7 @@ import org.arakhne.afc.bootique.synopsishelp.annotations.ApplicationArgumentSyno
 import org.arakhne.afc.bootique.synopsishelp.annotations.ApplicationDetailedDescription;
 
 import io.sarl.lang.SARLConfig;
+import io.sarl.lang.util.CliUtilities;
 import io.sarl.maven.bootiqueapp.utils.SystemProperties;
 import io.sarl.sarldoc.Constants;
 import io.sarl.sarldoc.commands.SarldocCommand;
@@ -76,11 +77,11 @@ public class SarldocApplicationModule extends AbstractModule {
 		@Override
 		public String get() {
 			final String sarlOutputDirectory = SARLConfig.FOLDER_SOURCE_GENERATED;
-			final String sarlOutputDirectoryOption = "--" + io.sarl.lang.sarlc.Constants.SARL_OUTPUT_DIRECTORY_OPTION; //$NON-NLS-1$
+			final String sarlOutputDirectoryOption = CliUtilities.getCommandLineOption(io.sarl.lang.sarlc.Constants.SARL_OUTPUT_DIRECTORY_OPTION);
 			final String javaOutputDirectory = SARLConfig.FOLDER_BIN;
-			final String javaOutputDirectoryOption = "--" + io.sarl.lang.sarlc.Constants.JAVA_OUTPUT_DIRECTORY_OPTION; //$NON-NLS-1$
+			final String javaOutputDirectoryOption = CliUtilities.getCommandLineOption(io.sarl.lang.sarlc.Constants.JAVA_OUTPUT_DIRECTORY_OPTION);
 			final String docOutputDirectory = SarldocConfig.DOC_OUTPUT_DIRECTORY_VALUE;
-			final String docOutputDirectoryOption = "--" + Constants.DOCUMENTATION_OUTPUT_DIRECTORY_OPTION; //$NON-NLS-1$
+			final String docOutputDirectoryOption = CliUtilities.getCommandLineOption(Constants.DOCUMENTATION_OUTPUT_DIRECTORY_OPTION);
 			return MessageFormat.format(Messages.SarldocApplicationModule_2,
 					sarlOutputDirectory, sarlOutputDirectoryOption,
 					javaOutputDirectory, javaOutputDirectoryOption,

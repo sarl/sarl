@@ -24,6 +24,7 @@ package io.sarl.sre.eclipse.sre;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
+import java.util.logging.Level;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
@@ -31,10 +32,13 @@ import org.eclipse.core.runtime.IPath;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import io.sarl.api.bootiquebase.config.LogConfigModule;
+import io.sarl.api.bootiquebase.config.LogLevel;
 import io.sarl.bootstrap.SREBootstrap;
 import io.sarl.eclipse.runtime.AbstractSREInstall;
 import io.sarl.eclipse.runtime.SRECommandLineOptions;
 import io.sarl.eclipse.util.BundleUtil.IBundleDependencies;
+import io.sarl.lang.util.CliUtilities;
 import io.sarl.sre.boot.Boot;
 import io.sarl.sre.boot.configs.subconfigs.BootConfigModule;
 import io.sarl.sre.boot.configs.subconfigs.RootContextType;
@@ -56,11 +60,6 @@ public class JanusSREInstall extends AbstractSREInstall {
 	 * The unique identifier of this SRE.
 	 */
 	public static final String JANUS_SRE_ID = "io.janusproject.plugin.sre"; //$NON-NLS-1$
-
-	// TODO: the Log4jIntegrationModule does not provide a public field with the name of the option.
-	//private static final String LOG_CLI_OPTION = "log"; //$NON-NLS-1$
-
-	private static final String OPTION_TERMINATOR = "--"; //$NON-NLS-1$
 
 	/**
 	 * The path where this SRE plugin jar is effectively installed.
@@ -111,22 +110,21 @@ public class JanusSREInstall extends AbstractSREInstall {
 	public Map<String, String> getAvailableCommandLineOptions() {
 		final Map<String, String> options = Maps.newHashMap();
 		// Logging
-		//options.put(SRECommandLineOptions.CLI_SHOW_INFO, formatCommandLineOption(LOG_CLI_OPTION, new LogLevel(Level.INFO).toJsonString()));
-		//options.put(SRECommandLineOptions.CLI_HIDE_INFO, formatCommandLineOption(LOG_CLI_OPTION, new LogLevel(Level.WARNING).toJsonString()));
-		// Networking
-		//options.put(SRECommandLineOptions.CLI_SRE_OFFLINE, formatCommandLineOption(null, null));
-		//options.put(SRECommandLineOptions.CLI_SRE_ONLINE, formatCommandLineOption(null, null));
+		options.put(SRECommandLineOptions.CLI_SHOW_INFO, CliUtilities.getCommandLineOption(
+				LogConfigModule.LOG_LONG_OPTION, LogLevel.toJsonString(Level.INFO)));
+		options.put(SRECommandLineOptions.CLI_HIDE_INFO, CliUtilities.getCommandLineOption(
+				LogConfigModule.LOG_LONG_OPTION, LogLevel.toJsonString(Level.WARNING)));
 		// Embedded
 		//options.put(SRECommandLineOptions.CLI_EMBEDDED, formatCommandLineOption(null, null));
 		// Root context configuration
 		options.put(SRECommandLineOptions.CLI_DEFAULT_CONTEXT_ID,
-				formatCommandLineOption(BootConfigModule.BOOT_TYPE_OPTION, RootContextType.DEFAULT.toJsonString()));
+				CliUtilities.getCommandLineOption(BootConfigModule.BOOT_TYPE_OPTION, RootContextType.DEFAULT.toJsonString()));
 		options.put(SRECommandLineOptions.CLI_RANDOM_CONTEXT_ID,
-				formatCommandLineOption(BootConfigModule.BOOT_TYPE_OPTION, RootContextType.RANDOM.toJsonString()));
+				CliUtilities.getCommandLineOption(BootConfigModule.BOOT_TYPE_OPTION, RootContextType.RANDOM.toJsonString()));
 		options.put(SRECommandLineOptions.CLI_BOOT_AGENT_CONTEXT_ID,
-				formatCommandLineOption(BootConfigModule.BOOT_TYPE_OPTION, RootContextType.BOOT_AGENT_NAME.toJsonString()));
+				CliUtilities.getCommandLineOption(BootConfigModule.BOOT_TYPE_OPTION, RootContextType.BOOT_AGENT_NAME.toJsonString()));
 		// Option for disabling the command-line options.
-		options.put(SRECommandLineOptions.CLI_NO_MORE_OPTION, OPTION_TERMINATOR);
+		options.put(SRECommandLineOptions.CLI_NO_MORE_OPTION, CliUtilities.getCommandLineLastOptionPrefix());
 		return Collections.unmodifiableMap(options);
 	}
 

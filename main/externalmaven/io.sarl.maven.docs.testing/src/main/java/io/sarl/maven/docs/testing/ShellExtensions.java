@@ -29,6 +29,8 @@ import java.io.InputStreamReader;
 
 import org.arakhne.afc.vmutil.OperatingSystem;
 
+import io.sarl.lang.util.CliUtilities;
+
 /** Functions for shell.
  *
  * @author $Author: sgalland$
@@ -88,21 +90,7 @@ public final class ShellExtensions {
 	 * @return the formatted option.
 	 */
 	public static String makeCliOption(String opt) {
-		final StringBuilder buffer = new StringBuilder();
-		final OperatingSystem os = OperatingSystem.getCurrentOS();
-		switch (os) {
-		case WIN:
-			buffer.append("/"); //$NON-NLS-1$
-			break;
-		default:
-			if (opt.length() > 1) {
-				buffer.append("--"); //$NON-NLS-1$
-			} else {
-				buffer.append("-"); //$NON-NLS-1$
-			}
-		}
-		buffer.append(opt);
-		return buffer.toString();
+		return CliUtilities.getCommandLineOption(opt);
 	}
 
 	/** Run a shell command and capture its standard output and without exception output.

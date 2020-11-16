@@ -21,7 +21,6 @@
 
 package io.sarl.eclipse.launching.dialog;
 
-import org.arakhne.afc.vmutil.OperatingSystem;
 import org.eclipse.debug.internal.ui.SWTFactory;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecoration;
@@ -48,125 +47,8 @@ public final class SarlSwtFactory extends SWTFactory {
 
 	private static final int DEFAULT_PAGE_INCREMENT = 10;
 
-	private static final String UNIX_LOPT = "--"; //$NON-NLS-1$
-
-	private static final String WINDOWS_LOPT = "/"; //$NON-NLS-1$
-
-	private static final String UNIX_SOPT = "-"; //$NON-NLS-1$
-
-	private static final String WINDOWS_SOPT = "/"; //$NON-NLS-1$
-
-	private static final String EQUAL_SIGN = "="; //$NON-NLS-1$
-
-	private static final String DEFINITION_PREFIX = "D"; //$NON-NLS-1$
-
 	private SarlSwtFactory() {
 		//
-	}
-
-	/** Replies the characters to be used to mark the last option on the command line.
-	 * This function is OS dependent.
-	 *
-	 * @return the command-line option prefix.
-	 */
-	public static String getCommandLineLastOptionPrefix() {
-		if (OperatingSystem.getCurrentOS().isUnixCompliant()) {
-			return UNIX_LOPT;
-		}
-		return ""; //$NON-NLS-1$
-	}
-
-	/** Replies the characters to be used as long-option prefix on the command line.
-	 * This function is OS dependent.
-	 *
-	 * @return the command-line option prefix.
-	 */
-	public static String getCommandLineLongOptionPrefix() {
-		if (OperatingSystem.getCurrentOS().isUnixCompliant()) {
-			return UNIX_LOPT;
-		}
-		return WINDOWS_LOPT;
-	}
-
-	/** Replies the characters to be used as short-option prefix on the command line.
-	 * This function is OS dependent.
-	 *
-	 * @return the command-line option prefix.
-	 */
-	public static String getCommandLineShortOptionPrefix() {
-		if (OperatingSystem.getCurrentOS().isUnixCompliant()) {
-			return UNIX_SOPT;
-		}
-		return WINDOWS_SOPT;
-	}
-
-	/** Replies the option prefixed with the characters to be used as option prefix on the command line.
-	 * This function is OS dependent.
-	 *
-	 * @param name the name of the option.
-	 * @return the command-line option.
-	 */
-	public static String getCommandLineOption(String name) {
-		if (name.length() > 1) {
-			return getCommandLineLongOptionPrefix() + name;
-		}
-		return getCommandLineShortOptionPrefix() + name;
-	}
-
-	/** Replies the option prefixed with the characters to be used as option prefix on the command line and postfixed
-	 * with the given boolean value.
-	 * This function is OS dependent.
-	 *
-	 * @param name the name of the option.
-	 * @param value the value to put in the command-line option.
-	 * @return the command-line option.
-	 */
-	public static String getCommandLineOption(String name, boolean value) {
-		return getCommandLineOption(name) + EQUAL_SIGN + value;
-	}
-
-	/** Replies the option for definition a property.
-	 * This function is OS dependent.
-	 *
-	 * @param name the name of the option.
-	 * @param value the value to put in the command-line option.
-	 * @return the command-line option.
-	 */
-	public static String getCommandLineDefinition(String name, boolean value) {
-		return getCommandLineOption(DEFINITION_PREFIX) + name + "=" + value;
-	}
-
-	/** Replies the option for definition a property.
-	 * This function is OS dependent.
-	 *
-	 * @param name the name of the option.
-	 * @param value the value to put in the command-line option.
-	 * @return the command-line option.
-	 */
-	public static String getCommandLineDefinition(String name, long value) {
-		return getCommandLineOption(DEFINITION_PREFIX) + name + "=" + value;
-	}
-
-	/** Replies the option for definition a property.
-	 * This function is OS dependent.
-	 *
-	 * @param name the name of the option.
-	 * @param value the value to put in the command-line option.
-	 * @return the command-line option.
-	 */
-	public static String getCommandLineDefinition(String name, double value) {
-		return getCommandLineOption(DEFINITION_PREFIX) + name + "=" + value;
-	}
-
-	/** Replies the option for definition a property.
-	 * This function is OS dependent.
-	 *
-	 * @param name the name of the option.
-	 * @param value the value to put in the command-line option.
-	 * @return the command-line option.
-	 */
-	public static String getCommandLineDefinition(String name, String value) {
-		return getCommandLineOption(DEFINITION_PREFIX) + name + "=" + value;
 	}
 
 	/** Create a spinner component.

@@ -30,6 +30,8 @@ import java.util.regex.Pattern;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 
+import io.sarl.lang.util.CliUtilities;
+
 /** Tools for generating markdown from different sources.
  *
  * @author $Author: sgalland$
@@ -39,10 +41,6 @@ import org.apache.commons.cli.Options;
  * @since 0.6
  */
 public final class MarkdownExtensions {
-
-	private static final String DEFAULT_LONG_OPT_PREFIX = "--"; //$NON-NLS-1$
-
-	private static final String DEFAULT_OPT_PREFIX = "-"; //$NON-NLS-1$
 
 	private MarkdownExtensions() {
 		//
@@ -91,12 +89,12 @@ public final class MarkdownExtensions {
 		for (final Option option : optList) {
 			buffer.append("| `"); //$NON-NLS-1$
 			if (option.getOpt() == null) {
-				buffer.append(DEFAULT_LONG_OPT_PREFIX).append(option.getLongOpt());
+				buffer.append(CliUtilities.getCommandLineOption(option.getLongOpt()));
 			} else {
-				buffer.append(DEFAULT_OPT_PREFIX).append(option.getOpt());
+				buffer.append(CliUtilities.getCommandLineOption(option.getOpt()));
 				if (option.hasLongOpt()) {
 					buffer.append("`, `"); //$NON-NLS-1$
-					buffer.append(DEFAULT_LONG_OPT_PREFIX).append(option.getLongOpt());
+					buffer.append(CliUtilities.getCommandLineOption(option.getLongOpt()));
 				}
 			}
 

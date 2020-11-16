@@ -23,8 +23,6 @@ package io.sarl.sre.eclipse.network;
 
 import static io.sarl.eclipse.launching.dialog.SarlSwtFactory.createInfoDecorator;
 import static io.sarl.eclipse.launching.dialog.SarlSwtFactory.createSpinner;
-import static io.sarl.eclipse.launching.dialog.SarlSwtFactory.getCommandLineDefinition;
-import static io.sarl.eclipse.launching.dialog.SarlSwtFactory.getCommandLineOption;
 import static org.eclipse.debug.internal.ui.SWTFactory.createComposite;
 import static org.eclipse.debug.internal.ui.SWTFactory.createLabel;
 import static org.eclipse.debug.internal.ui.SWTFactory.createSingleText;
@@ -56,6 +54,7 @@ import io.sarl.eclipse.launching.config.ILaunchConfigurationConfigurator;
 import io.sarl.eclipse.launching.config.LaunchConfigurationUtils;
 import io.sarl.eclipse.launching.config.LaunchConfigurationUtils.InputExtraJreArguments;
 import io.sarl.eclipse.launching.config.LaunchConfigurationUtils.OutputExtraJreArguments;
+import io.sarl.lang.util.CliUtilities;
 import io.sarl.sre.eclipse.JanusEclipsePlugin;
 import io.sarl.sre.network.boot.configs.SreNetworkConfig;
 import io.sarl.sre.network.boot.configs.SreNetworkConfigModule;
@@ -132,8 +131,8 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 
 		this.enableNetworkButton = SWTFactory.createCheckButton(topComp,
 				MessageFormat.format(Messages.JanusLaunchNetworkTab_1,
-						getCommandLineOption(SreNetworkConfigModule.NETWORK_LONG_OPTION, true),
-						getCommandLineDefinition(VariableNames.toPropertyName(SreNetworkConfig.ENABLE_NAME), true)),
+						CliUtilities.getCommandLineOption(SreNetworkConfigModule.NETWORK_LONG_OPTION, true),
+						CliUtilities.getCommandLineDefinition(VariableNames.toPropertyName(SreNetworkConfig.ENABLE_NAME), true)),
 				null, false, 2);
 		this.enableNetworkButton.addSelectionListener(this.defaultListener);
 
@@ -144,7 +143,7 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 		final String defaultClusterName = SreNetworkConfig.createStandardClusterName(Messages.JanusLaunchNetworkTab_6);
 		this.clusterNameLabel = createLabel(topComp,
 				MessageFormat.format(Messages.JanusLaunchNetworkTab_2,
-						getCommandLineDefinition(VariableNames.toPropertyName(SreNetworkConfig.CLUSTER_NAME_NAME), Messages.JanusLaunchNetworkTab_8)),
+						CliUtilities.getCommandLineDefinition(VariableNames.toPropertyName(SreNetworkConfig.CLUSTER_NAME_NAME), Messages.JanusLaunchNetworkTab_8)),
 				1);
 		this.clusterNameText = createSingleText(topComp, 1);
 		this.clusterNameText.setMessage(defaultClusterName);
@@ -154,7 +153,7 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 
 		this.minClusterSizeLabel = createLabel(topComp,
 				MessageFormat.format(Messages.JanusLaunchNetworkTab_3,
-						getCommandLineDefinition(VariableNames.toPropertyName(SreNetworkConfig.MIN_CLUSTER_SIZE_NAME), Messages.JanusLaunchNetworkTab_9)),
+						CliUtilities.getCommandLineDefinition(VariableNames.toPropertyName(SreNetworkConfig.MIN_CLUSTER_SIZE_NAME), Messages.JanusLaunchNetworkTab_9)),
 				1);
 		this.minClusterSizeSpinner = createSpinner(topComp, 1, MIN_CLUSTER_SIZE, MAX_CLUSTER_SIZE);
 		this.minClusterSizeSpinner.addModifyListener(this.defaultListener);
@@ -163,7 +162,7 @@ public class JanusLaunchNetworkTab extends JavaLaunchTab {
 
 		this.portAutoIncrementButton = SWTFactory.createCheckButton(topComp,
 				MessageFormat.format(Messages.JanusLaunchNetworkTab_4,
-						getCommandLineDefinition(VariableNames.toPropertyName(SreNetworkConfig.PORT_AUTO_INCREMENT_NAME), true)),
+						CliUtilities.getCommandLineDefinition(VariableNames.toPropertyName(SreNetworkConfig.PORT_AUTO_INCREMENT_NAME), true)),
 				null, false, 2);
 		this.portAutoIncrementButton.addSelectionListener(this.defaultListener);
 
